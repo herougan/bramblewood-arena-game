@@ -20774,7 +20774,7 @@ function raidClaimsFor(def){
     const key = def.id+':'+c; if(claimed[key]) return;
     const st = RaidM.raidState(def, currentRaidAttempts(def, c).concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===c && a.pushed && !currentRaidAttempts(def, c).some(x=> x.at===a.at))), c===cyc ? now : (c+1)*RaidM.CYCLE_MS - 1, {cycle:c});
     const rw = RaidM.claimableReward(def, st, me, now);
-    if(rw) out.push({key, cycle:c, reward: rw});
+    if(rw) out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); // mine: 2026-10-18 (package RW), the claim screen counts it up
   });
   return out;
 }
@@ -20782,23 +20782,58 @@ function raidClaimsFor(def){
 // a raid's own cards (source {kind:'raid', id}) drop only when it falls: one for everyone who fought it, one more for the
 // top 10%. Commons are likelier than the Broodmother.
 function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id; }); }
-function grantRaidCards(def, n){
+function grantRaidCards(def, n, quiet){ // quiet (2026-10-18, package RW): the claim screen shows the cards, so no toast
   const defs = getCardDefs(), ids = raidCardIds(def); if(!ids.length) return [];
   const w = id=> ({common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6})[defs[id].rarity || 'common'] || 1, got = [];
   for(let i = 0; i < n; i++){ const tot = ids.reduce((a, id)=> a + w(id), 0); let r = Math.random() * tot, pick = ids[ids.length - 1]; for(const id of ids){ r -= w(id); if(r <= 0){ pick = id; break; } }
     unlockCardForPlayer(pick, 'raid'); got.push(pick); }
-  if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
+  if(got.length && !quiet) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
   return got;
 }
 function claimRaidReward(def, claim){
+  if(!claim || !claim.reward) return null;
   const all = Object.assign({}, claim.reward.base);
   Object.entries(claim.reward.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
-  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0)) : [];
+  const screen = raidClaimScreenReady();
+  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0), screen) : [];
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
-  awardXp(claim.reward.kind==='kill' ? 500 : 150, 'raid reward');
-  showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  const xp = claim.reward.kind==='kill' ? 500 : 150;
+  const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
+  // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
+  if(screen) showRaidClaimScreen(spec);
+  awardXp(xp, 'raid reward');
+  if(!screen) showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  return spec;
+}
+// The raid claim screen (2026-10-18, package RW, owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the
+// skirmish reward screen"): Claim opens the raid's own reward screen, FX.F.raidClaimScreen (bramblewood-fx-f.js): the boss looming
+// from the deep, a pressure burst, the standing stamped in, your raid damage counted up, then every reward one by one, the rarest last
+// and loudest (the top one shakes the screen). A tap skips to the end; Collect closes it. Reduced motion, Effects Off / Low or no GSAP
+// get the calm version (fades only). The old toast is the fallback when the screen can't open. Each reward's weight (1-5) sets its beat.
+const RAID_CLAIM_CUR_WEIGHT = {gold:1, dust:2, metal:3, gems:3, kroon:3};
+const RAID_CLAIM_CARD_WEIGHT = {starter:2, common:2, uncommon:3, rare:3, veryrare:4, superrare:4, epic:4, heroic:5, legendary:5, mythic:5};
+function raidClaimScreenReady(){ return !!(typeof document !== 'undefined' && document.body && window.FX && window.FX.F && typeof window.FX.F.raidClaimScreen === 'function'); }
+function raidClaimTierLabel(t){ return t === 'top1' ? TX('results.raid-tier-top1') : t === 'top10' ? TX('results.raid-tier-top10') : t === 'top50' ? TX('results.raid-tier-top50') : TX('results.raid-tier-participant'); }
+function raidClaimScreenSpec(def, claim, all, cardsGot, xp){
+  const rw = claim.reward, defs = getCardDefs(), name = def.name || '', rewards = [];
+  rewards.push({kind:'xp', icon:'⭐', amount:'+' + xp, label:TX('results.raid-claim-xp'), weight:1});
+  Object.entries(all).forEach(([k, v])=>{ if(!(v > 0) || !CURRENCY_META[k]) return;
+    rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
+  (cardsGot || []).forEach(id=>{ const d = defs[id]; if(!d) return;
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label:TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+  if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
+  const kill = rw.kind === 'kill';
+  return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards,
+    text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
+      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier:raidClaimTierLabel(rw.tier), damage:TX('results.raid-claim-damage'),
+      collect:TX('results.raid-claim-collect'), skip:TX('results.tap-to-skip')}};
+}
+function showRaidClaimScreen(spec){
+  if(!raidClaimScreenReady()) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
@@ -26803,12 +26838,12 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
-        ${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
+        ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
@@ -34482,6 +34517,14 @@ function rankLessonHTML(m){
   // 2026-10-12 (10:12, user: "The grade medal appears twice! The one beside First Clear is the one that should remain"): no hex here.
   return `<div class="wl-rank-lesson ${L.cheer ? 'is-cheer' : ''}" role="status"><div><b>${L.cheer ? '🎉 ' : ''}${escapeHtml(L.t)}</b><p>${escapeHtml(L.d)}</p></div></div>`;
 }
+// Boss victory results (2026-10-18, package RW, owner 20:52: "btw, the boss reward screen should be more crimsony I think"): a won boss
+// fight's results card is crimson (.winloss-card.is-glory.is-boss in arena_template.html: a deep-red wash, a crimson frame, an ember
+// glow on the title, crimson rays and embers drifting up), and FX.F.hooks.resultsShown adds an ember burst. Bosses are the kinds that
+// play as a boss (boss, sub-boss), the Campaign Boss and the world / raid bosses on the map; elites, champions, mini-bosses and
+// dungeon floors keep the gold look, and a raid fight (m.raidFull) keeps its own.
+const CRIMSON_RESULT_KINDS = new Set(['boss', 'subboss', 'finalboss', 'worldboss', 'raidboss', 'megaraid']);
+function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind)); }
+function bossEmbersHTML(){ return `<div class="wl-embers" aria-hidden="true">${Array.from({length:14}, (_, k)=> `<i style="left:${(k*31 + 5)%100}%; --dx:${((k%5) - 2)*14}px; animation-delay:-${(k*0.55).toFixed(2)}s; animation-duration:${(4.5 + (k*1.3)%3.5).toFixed(1)}s"></i>`).join('')}</div>`; }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
   const reward = m.conquestRewardEarned;

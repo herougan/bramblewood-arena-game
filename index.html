@@ -9514,6 +9514,29 @@
   .vs-lvl small{font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; opacity:.85;} .vs-lvl b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif;}
 
   .winloss-card.is-glory > .wl-rays-clip{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;}
+  /* Boss victory results (2026-10-18, package RW, owner 20:52: "btw, the boss reward screen should be more crimsony I think"): a won
+     boss fight (isBossResults in arena_app.js: boss, sub-boss, Campaign Boss, world / raid bosses on the map) gets the Victory card
+     in crimson: a deep-red wash, a crimson-and-ember frame, the title glowing like a coal, crimson rays and embers drifting up.
+     Elites, champions, mini-bosses and raids keep their own look. The card is dark in both themes; every text on it stays light
+     (cream / peach on #22050a-#8f1d24, AA or better). FX.F.hooks.resultsShown adds the ember burst (FX.F.bossVictory). */
+  .pass-card.winloss-card.is-glory.is-boss{background:radial-gradient(ellipse 85% 58% at 50% 0%, #9a1f27 0%, #5a0c15 42%, #2a060c 78%, #160306 100%) !important; color:#fff1e6;
+    border:2px solid #ff6a4a !important; box-shadow:0 0 0 4px rgba(214,48,36,.32), 0 0 70px rgba(200,24,24,.42), inset 0 0 60px rgba(255,80,40,.12), 0 30px 80px rgba(0,0,0,.65) !important;}
+  .winloss-card.is-glory.is-boss .wl-rays{background:repeating-conic-gradient(from 0deg, rgba(255,96,64,.6) 0deg 6deg, transparent 6deg 18deg); opacity:.42;}
+  .winloss-card.is-glory.is-boss .wl-title{background:linear-gradient(180deg, #fff1dc 8%, #ffb27a 46%, #ff5238 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 0 #3d0508) drop-shadow(0 0 20px rgba(255,64,40,.6)) drop-shadow(0 0 42px rgba(200,20,20,.45));}
+  .winloss-card.is-glory.is-boss .rw-panel{background:rgba(255,120,90,.08) !important; border-color:rgba(255,140,110,.32) !important; color:#fff1e6;}
+  .winloss-card.is-glory.is-boss .rw-head{color:#ffc7ad !important;}
+  .winloss-card.is-glory.is-boss .rw-cur, .winloss-card.is-glory.is-boss .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){border-color:rgba(255,150,120,.42) !important;}
+  .winloss-card.is-glory.is-boss .rw-cur .cur-label{color:#ffd2bd !important;}
+  .winloss-card.is-glory.is-boss .wls-compact{color:rgba(255,236,226,.78);}
+  .winloss-card.is-glory.is-boss .pass-ico{filter:drop-shadow(0 0 14px rgba(255,80,40,.7));}
+  .winloss-card.is-glory.is-boss > .wl-embers{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;
+    background:radial-gradient(ellipse 70% 30% at 50% 102%, rgba(255,70,30,.28), rgba(255,70,30,0) 70%);}
+  .winloss-card.is-glory.is-boss > .wl-embers i{position:absolute; bottom:-8px; width:5px; height:5px; border-radius:50%; background:#ffb067; box-shadow:0 0 6px 2px rgba(255,84,36,.8); opacity:0; animation:wlEmber linear infinite;}
+  .winloss-card.is-glory.is-boss > .wl-embers i:nth-child(3n){width:3px; height:3px; background:#ffe0a0;} .winloss-card.is-glory.is-boss > .wl-embers i:nth-child(4n){background:#ff5a3a;}
+  @keyframes wlEmber{0%{transform:translate(0, 0) scale(1); opacity:0;} 12%{opacity:.95;} 70%{opacity:.75;} 100%{transform:translate(var(--dx, 20px), -640px) scale(.4); opacity:0;}}
+  :where(html[data-fx="none"], html[data-fx="low"]) .winloss-card.is-boss > .wl-embers i{animation:none; display:none;}
+  @media (prefers-reduced-motion:reduce){ .winloss-card.is-boss > .wl-embers i{animation:none !important; display:none;} }
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
   /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */
@@ -33235,7 +33258,7 @@ H.toast = (t, message, kind, env)=>{
 // 2026-10-16 (user: "On win ... I see the exp bar level up, but the main ui is hidden by the reward UI. Only the bar is visible -
 // weird."): while a fight's results (or its reward reveal) are up, the level-up waits until they close, then plays over the page with
 // its badge; plain XP into a badge hidden behind the results is skipped.
-const resultsUp = ()=> !!document.querySelector('.winloss-card, .winloss-overlay, .rr-stage');
+const resultsUp = ()=> !!document.querySelector('.winloss-card, .winloss-overlay, .rr-stage, .fxf-rcs'); // 2026-10-18 (package RW): + the raid claim screen
 H.xpGain = (n, before, after, env)=>{
   if(!medOK(env)) return;
   const play = ()=>{ const badge = document.getElementById('playerLevelBadge'), bar = badge && (badge.querySelector('.pl-bar') || badge);
@@ -33292,8 +33315,9 @@ H.raidPanel = (panel, def, env)=>{ if(!panel || !medOK(env)) return; const id = 
   const fill = $('.raid-boss-hp-bar-fill', panel), frac = fill ? (parseFloat(fill.style.width) || 0)/100 : null, wasF = parseFloat(memo.get('hp:' + id));
   if(fill && !isNaN(wasF) && wasF > frac + .001) M.raidBars($('.r2-total', panel) || panel, {from:wasF}); else if(!barsShown.has(id)){ barsShown.add(id); M.raidBars(panel); } // 2026-10-15: the fill-in once per session, not on every re-render
   if(frac != null) memo.set('hp:' + id, String(frac));
-  // capture: read the button's place before the claim re-renders the panel
-  $$('[data-raid-claim]', panel).forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); later(()=> M.raidClaim({getBoundingClientRect:()=> r}), 30); }, {once:true, capture:true})); };
+  // 2026-10-18 (package RW): Claim opens the raid claim screen (M.raidClaimScreen, called by claimRaidReward), so the small ink splash
+  // on the button (M.raidClaim, still in the lab) no longer plays under it.
+};
 H.raidFeed = (el, env)=>{ if(!el || !medOK(env)) return; const first = $('.raid-attempt-row, :scope > div', el); if(!first) return;
   const key = first.textContent.slice(0, 80); if(el._fxfTop === key) return; const firstTime = el._fxfTop == null; el._fxfTop = key;
   $$(':scope > *', el).slice(0, firstTime ? 3 : 1).forEach((r, i)=> M.raidFeedRow(r, {delay:i*.08})); };
@@ -33304,6 +33328,7 @@ H.resultsShown = (card, m, env)=>{
   const cur = ()=>{ const c = document.querySelector('.winloss-card'); return c && c.isConnected ? c : (card.isConnected ? card : null); };
   const sec = (c, head)=> [...c.querySelectorAll('.rw-sec')].find(s=> ((s.querySelector('.rw-head') || {}).textContent || '').trim() === head);
   const jobs = [], add = (find, run)=>{ if(find(card)) jobs.push(()=>{ const c = cur(), el = c && find(c); if(el) run(el === true ? c : el, c); }); };
+  add(c=> c.classList.contains('is-boss') && m.winner === 1, el=> M.bossVictory(el, {sound:env.sound})); // 2026-10-18 (package RW): the boss win's crimson embers
   add(()=> m.winner === 0 && !m.raidFull && m.mode !== 'tutorial', (_, c)=> M.resDraw(c));
   add(()=> m.mode === 'tutorial', (_, c)=> M.tutorialResult(c, {won:m.winner === 1}));
   add(c=> c.querySelector('.wl-rank-lesson'), el=> M.rankLesson(el));
@@ -33324,6 +33349,220 @@ H.resultsShown = (card, m, env)=>{
   // gold bar with its glowing burst floated over the results' title (or the middle of the card), pointing at nothing; it is gone.
   // The account level-up waits for the results to close (H.xpGain).
   jobs.slice(0, 6).forEach((fn, i)=> later(fn, 900 + i*750));
+};
+
+// ---------- package RW (2026-10-18): the raid claim screen and the boss victory's crimson embers ----------
+// Owner (20:52): "The Raid Claim button → screen should be doubly more exciting than the skirmish reward screen. btw, the boss
+// reward screen should be more crimsony I think."
+// M.raidClaimScreen(spec, opts): a full reward screen of its own, opened by claimRaidReward (arena_app.js) when a raid reward tier is
+// claimed. The boss looms as a silhouette from the deep, a pressure burst (flash, a water shockwave, ink and a column of bubbles)
+// opens it, the title slams in, the standing (tier) badge stamps down, the raid damage counts up, then the rewards come one by one,
+// rarest last, each beat bigger than the one before; the top reward shakes the screen. A tap, Space, Enter or Esc fast-forwards to the
+// end state; "Collect" (or Esc again) closes it. opts.calm (reduced motion, Effects off / low, or no GSAP) shows the same screen with
+// fades only: no motion, no particles, no shake. It resolves when the player closes it.
+//   spec: {kind:'kill'|'compensation', boss:{name, art, icon}, tier:'top1'|'top10'|'top50'|'participant', contribution:N,
+//          rewards:[{kind:'currency'|'xp'|'card'|'title', icon:HTML, amount:'+400' (text), label:text, weight:1..5}],
+//          text:{kicker, title, sub, tier, damage, collect, skip}}   (every text already translated / TX'd by the caller; icons are HTML)
+//   opts: {calm, host (an element to fill instead of the window, for previews), sound(name, ...args), onDone}
+const RCS_TIER = {top1:'👑', top10:'🔱', top50:'🐚', participant:'🫧'};
+css('rcs', `
+.fxf-rcs{position:fixed; inset:0; z-index:9500; display:flex; align-items:center; justify-content:center; padding:16px; box-sizing:border-box; overflow:hidden; cursor:pointer;
+  color:#eaf6ff; font-family:'Baloo 2',system-ui,sans-serif; -webkit-tap-highlight-color:transparent; outline:none;}
+.fxf-rcs.is-hosted{position:absolute;} .fxf-rcs.is-done{cursor:default;}
+.fxf-rcs > *{pointer-events:none;} .fxf-rcs > .fxf-rcs-card{pointer-events:auto;}
+.fxf-rcs-deep{position:absolute; inset:0; background:radial-gradient(ellipse 120% 70% at 50% -12%, #1f86a3 0%, #0d4163 34%, #061c33 66%, #02070f 100%);}
+.fxf-rcs-rays{position:absolute; left:-20%; right:-20%; top:-10%; height:75%; background:repeating-linear-gradient(100deg, rgba(160,235,255,0) 0 46px, rgba(160,235,255,.11) 46px 74px, rgba(160,235,255,0) 74px 140px);
+  -webkit-mask:linear-gradient(180deg, #000, transparent); mask:linear-gradient(180deg, #000, transparent); animation:fxfRcsRays 9s ease-in-out infinite alternate;}
+@keyframes fxfRcsRays{to{transform:translateX(70px) skewX(-6deg);}}
+/* the boss looms behind everything: its portrait (opaque square art) huge, dimmed, fading out into the deep at its edges */
+/* the boss looms behind everything: its portrait (opaque square art) huge, fading out into the deep at its edges; .fxf-rcs-dim over it
+   is the dark water (its opacity is what flashes, so the big image is painted once and never re-filtered) */
+.fxf-rcs-boss{position:absolute; left:50%; top:46%; width:min(118vw, 940px); height:min(118vw, 940px); margin:calc(min(118vw, 940px) / -2) 0 0 calc(min(118vw, 940px) / -2); will-change:transform, opacity;}
+.fxf-rcs-bossin{position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; overflow:hidden;
+  -webkit-mask:radial-gradient(closest-side, #000 36%, rgba(0,0,0,.55) 56%, transparent 74%); mask:radial-gradient(closest-side, #000 36%, rgba(0,0,0,.55) 56%, transparent 74%);}
+.fxf-rcs-boss img{width:100%; height:100%; object-fit:cover; image-rendering:pixelated; will-change:transform;}
+.fxf-rcs-boss .fxf-rcs-emoji{display:flex; align-items:center; justify-content:center; width:100%; height:100%; font-size:min(78vw, 600px); line-height:1; font-family:${EMOJI};}
+.fxf-rcs-dim{position:absolute; inset:0; background:#020c18; opacity:.5; will-change:opacity;}
+.fxf-rcs-rays{will-change:transform;} .fxf-rcs-shock, .fxf-rcs-ink, .fxf-rcs-flash{will-change:transform, opacity;}
+.fxf-rcs-bubbles{position:absolute; inset:0; overflow:hidden;}
+.fxf-rcs-bubbles i{position:absolute; bottom:-40px; border-radius:50%; border:1.5px solid rgba(200,240,255,.55); background:radial-gradient(circle at 32% 30%, rgba(255,255,255,.6), rgba(150,220,255,.08) 62%); animation:fxfRcsRise linear infinite;}
+@keyframes fxfRcsRise{to{transform:translate(var(--dx, 0px), -120vh);}}
+.fxf-rcs-shock{position:absolute; left:50%; top:46%; width:60px; height:60px; margin:-30px 0 0 -30px; border-radius:50%; border:6px solid rgba(170,238,255,.9); box-shadow:0 0 34px rgba(120,220,255,.85), inset 0 0 22px rgba(120,220,255,.6); opacity:0;}
+.fxf-rcs-ink{position:absolute; left:50%; top:46%; width:120px; height:120px; margin:-60px 0 0 -60px; border-radius:50%; background:radial-gradient(circle, rgba(20,6,40,.85) 0%, rgba(30,10,60,.55) 45%, rgba(10,4,24,0) 70%); opacity:0;}
+.fxf-rcs-flash{position:absolute; inset:0; z-index:4; background:radial-gradient(circle at 50% 45%, rgba(215,248,255,.9), rgba(80,190,255,.3) 40%, rgba(0,0,0,0) 72%); opacity:0;}
+.fxf-rcs-card{position:relative; z-index:2; width:min(560px, 100%); max-height:100%; overflow-y:auto; overscroll-behavior:contain; text-align:center; padding:22px 18px 18px; border-radius:22px; box-sizing:border-box;
+  background:linear-gradient(180deg, rgba(6,32,56,.86), rgba(3,14,28,.94)); border:2px solid #57d0ff; box-shadow:0 0 0 4px rgba(87,208,255,.18), 0 0 60px rgba(40,170,255,.35), 0 30px 80px rgba(0,0,0,.6);}
+.fxf-rcs.k-compensation .fxf-rcs-card{border-color:#8fb8cc; box-shadow:0 0 0 4px rgba(143,184,204,.16), 0 30px 80px rgba(0,0,0,.6);}
+.fxf-rcs-kicker{font:800 13px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#a6e6ff;}
+.fxf-rcs-title{margin:6px 0 4px; font:900 clamp(30px, 7vw, 54px)/1.04 'Baloo 2',system-ui,sans-serif; background:linear-gradient(180deg, #f4fdff 12%, #a8ecff 55%, #4cc0ec);
+  -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 3px 0 #04263f) drop-shadow(0 0 18px rgba(90,210,255,.55)); overflow-wrap:anywhere;}
+.fxf-rcs-sub{margin:0 0 10px; font-size:15px; line-height:1.35; color:#c9e9f7;}
+.fxf-rcs-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px 20px; margin:4px 0 14px;}
+.fxf-rcs-tier{display:inline-flex; align-items:center; gap:8px; padding:8px 18px; border-radius:999px; font:900 20px/1 'Baloo 2',system-ui,sans-serif; color:#2a1a00;
+  background:linear-gradient(180deg, #fff0b8, #f5c84a 55%, #e0a42a); box-shadow:0 0 0 3px rgba(255,214,110,.35), 0 6px 18px rgba(0,0,0,.45);}
+.fxf-rcs-tier .ti{font-family:${EMOJI}; font-size:22px;}
+.fxf-rcs-tier.t-top10{color:#062a3b; background:linear-gradient(180deg, #ecfcff, #9fe6f7 55%, #5cc6e4); box-shadow:0 0 0 3px rgba(150,230,250,.35), 0 6px 18px rgba(0,0,0,.45);}
+.fxf-rcs-tier.t-top50{color:#3a1405; background:linear-gradient(180deg, #ffe4d2, #f7a77c 55%, #e98656); box-shadow:0 0 0 3px rgba(247,167,124,.3), 0 6px 18px rgba(0,0,0,.45);}
+.fxf-rcs-tier.t-participant{color:#0b3022; background:linear-gradient(180deg, #e2fbef, #9fe0c0 55%, #74c9a1); box-shadow:0 0 0 3px rgba(159,224,192,.3), 0 6px 18px rgba(0,0,0,.45);}
+.fxf-rcs-dmg{display:flex; flex-direction:column; align-items:center; line-height:1;}
+.fxf-rcs-dmg small{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#a9dcef;}
+.fxf-rcs-num{font:900 clamp(28px, 6vw, 40px)/1.05 'Baloo 2',system-ui,sans-serif; color:#fff; text-shadow:0 0 14px rgba(120,220,255,.75); font-variant-numeric:tabular-nums;}
+.fxf-rcs-list{list-style:none; margin:0 0 16px; padding:0; display:flex; flex-wrap:wrap; justify-content:center; gap:10px;}
+.fxf-rcs-rw{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px; min-width:92px; max-width:150px; padding:10px 10px 8px; border-radius:14px; box-sizing:border-box;
+  background:rgba(140,220,255,.10); border:1px solid rgba(140,220,255,.38);}
+.fxf-rcs-rw .ico{display:flex; align-items:center; justify-content:center; min-height:36px; font-size:30px; line-height:1; font-family:${EMOJI};}
+.fxf-rcs-rw .ico svg, .fxf-rcs-rw .ico img{width:32px; height:32px;}
+.fxf-rcs-rw .amt{font:900 20px/1.05 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
+.fxf-rcs-rw .lbl{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#c3e6f4; overflow-wrap:anywhere;}
+.fxf-rcs-rw.w-3{border-color:rgba(120,240,200,.6); background:rgba(90,220,180,.12);}
+.fxf-rcs-rw.w-4{border-color:#c9a2ff; background:rgba(170,120,255,.18); box-shadow:0 0 14px rgba(170,120,255,.35);}
+.fxf-rcs-rw.w-5{border-color:#ffd56e; background:rgba(255,200,90,.18); box-shadow:0 0 22px rgba(255,200,90,.45);}
+.fxf-rcs-rw.w-5 .lbl{color:#ffe7b0;}
+.fxf-rcs-rw.is-card .ico{min-height:0; padding:6px 0 10px;} /* room for the tile's own badges above and below it */ .fxf-rcs-rw.is-card .ico .card-tile{width:84px !important; height:105px !important; margin:0; font-size:9px;}
+.fxf-rcs-rw.is-title .amt{font-size:17px; color:#ffe39a;}
+.fxf-rcs-go{min-width:200px;}
+.fxf-rcs-hint{position:absolute; left:0; right:0; bottom:max(12px, env(safe-area-inset-bottom)); z-index:3; text-align:center; font:700 13px/1 'Baloo 2',system-ui,sans-serif; color:#d6f2fd; text-shadow:0 1px 3px rgba(0,0,0,.8);}
+.fxf-rcs.is-done .fxf-rcs-hint{visibility:hidden;}
+.fxf-rcs.is-calm .fxf-rcs-rays{animation:none;} .fxf-rcs.is-calm .fxf-rcs-bubbles{display:none;}
+.fxf-rcs.is-calm .fxf-rcs-fade{opacity:0; transition:opacity .45s ease;} .fxf-rcs.is-calm .fxf-rcs-fade.is-in{opacity:1;}
+.fxf-rcs.is-calm .fxf-rcs-boss.is-in{opacity:.6;}
+@media (max-width:480px){ .fxf-rcs{padding:10px;} .fxf-rcs-card{padding:16px 10px 14px; border-radius:18px;} .fxf-rcs-rw{min-width:74px; padding:8px 6px 6px;} .fxf-rcs-rw .ico{font-size:26px;}
+  .fxf-rcs-rw.is-card .ico .card-tile{width:70px !important; height:88px !important;} .fxf-rcs-tier{font-size:17px; padding:7px 14px;} .fxf-rcs-list{gap:8px;} }
+@media (prefers-reduced-motion:reduce){ .fxf-rcs-rays, .fxf-rcs-bubbles i{animation:none !important;} .fxf-rcs-bubbles{display:none;} }
+`);
+// Beat sounds by weight (SoundKit cues, layered): 1 a bubble, 2 coins, 3 a chime, 4 a rare rise, 5 the legendary rise and a fanfare.
+const RCS_BEAT = {1:['bubble'], 2:['gold', 'bubble'], 3:['unlockChime', 'splash'], 4:['rareRise', 'unlockChime'], 5:['rareRise:1', 'leaderFanfare', 'boom']};
+const RCS_COLS = {1:['#bff0ff', '#e8fbff', '#7fd8ff'], 2:['#ffe08a', '#fff3c4', '#7fd8ff'], 3:['#7dffd0', '#c9fff0', '#45d6ff'], 4:['#c9a2ff', '#f0e2ff', '#7fd8ff'], 5:['#ffd56e', '#fff3c4', '#ff9f5a', '#ffffff']};
+M.raidClaimScreen = function(spec, opts){
+  spec = spec || {}; opts = opts || {};
+  const g = G(), calm = !!opts.calm || !g || RM();
+  const T = Object.assign({kicker:'Raid reward', title:'', sub:'', tier:'', damage:'', collect:'Collect', skip:'Tap to skip'}, spec.text || {});
+  const sound = (name, ...a)=>{ try{ if(opts.sound) return opts.sound(name, ...a); const k = typeof SoundKit !== 'undefined' ? SoundKit : null; if(k && typeof k[name] === 'function') k[name](...a); }catch(e){} };
+  const beat = w=> (RCS_BEAT[w] || RCS_BEAT[1]).forEach((n, i)=>{ const [nm, arg] = n.split(':'); later(()=> sound(nm, arg ? true : undefined), i*90); });
+  const kind = spec.kind === 'compensation' ? 'compensation' : 'kill', tier = RCS_TIER[spec.tier] ? spec.tier : 'participant';
+  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=> Math.round(n).toLocaleString();
+  // the rewards in rising order of weight (stable), so the rarest comes last
+  const list = (spec.rewards || []).map((r, i)=> Object.assign({}, r, {weight:Math.max(1, Math.min(5, r.weight|0 || 1)), _i:i})).sort((a, b)=> a.weight - b.weight || a._i - b._i);
+  const boss = spec.boss || {};
+  const bossHTML = boss.art ? `<img src="${esc(boss.art)}" alt="">` : `<span class="fxf-rcs-emoji">${esc(boss.icon || '🐙')}</span>`;
+  const bubbles = calm ? '' : Array.from({length:16}, (_, k)=>{ const s = 6 + (k*7)%22; return `<i style="left:${(k*37 + 11)%100}%; width:${s}px; height:${s}px; --dx:${((k%5) - 2)*18}px; animation-duration:${(5 + (k*1.3)%5).toFixed(1)}s; animation-delay:-${(k*0.7).toFixed(1)}s"></i>`; }).join('');
+  const F = calm ? ' fxf-rcs-fade' : '';
+  const st = document.createElement('div');
+  st.className = 'fxf-rcs k-' + kind + (calm ? ' is-calm' : '') + (opts.host ? ' is-hosted' : '');
+  st.setAttribute('role', 'dialog'); st.setAttribute('aria-modal', 'true'); st.setAttribute('aria-label', T.kicker); st.tabIndex = -1;
+  st.innerHTML = `<div class="fxf-rcs-deep${F}"></div><div class="fxf-rcs-rays" aria-hidden="true"></div><div class="fxf-rcs-boss${F}" aria-hidden="true"><div class="fxf-rcs-bossin">${bossHTML}<i class="fxf-rcs-dim"></i></div></div>
+    <div class="fxf-rcs-bubbles" aria-hidden="true">${bubbles}</div><div class="fxf-rcs-ink" aria-hidden="true"></div><div class="fxf-rcs-shock" aria-hidden="true"></div>
+    <div class="fxf-rcs-card${F}">
+      <div class="fxf-rcs-kicker${F}">${esc(T.kicker)}</div>
+      <h2 class="fxf-rcs-title${F}">${esc(T.title)}</h2>
+      ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
+      <div class="fxf-rcs-row">
+        <span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
+        <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
+      </div>
+      <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
+      <button type="button" class="btn primary big fxf-rcs-go${F}">${esc(T.collect)}</button>
+    </div>
+    <div class="fxf-rcs-hint">${esc(T.skip)}</div><div class="fxf-rcs-flash" aria-hidden="true"></div>`;
+  (opts.host || document.body).appendChild(st);
+  const q = s=> st.querySelector(s), qa = s=> [...st.querySelectorAll(s)];
+  { const im = q('.fxf-rcs-bossin > img'); if(im) im.addEventListener('error', ()=>{ const e = document.createElement('span'); e.className = 'fxf-rcs-emoji'; e.textContent = boss.icon || '🐙'; im.replaceWith(e); }, {once:true}); } // no art: the emoji
+  const card = q('.fxf-rcs-card'), num = q('.fxf-rcs-num'), go = q('.fxf-rcs-go'), items = qa('.fxf-rcs-rw'), tierEl = q('.fxf-rcs-tier'), bossEl = q('.fxf-rcs-boss');
+  const before = document.activeElement;
+  try{ st.focus({preventScroll:true}); }catch(e){}
+  let done = false, closed = false, skippedAt = 0, tl = null, sway = null, calmTimers = [];
+  return new Promise(res=>{
+    const settle = ()=>{ // the end state, whatever was skipped
+      if(done) return; done = true; st.classList.add('is-done'); num.textContent = fmt(total);
+      if(calm) qa('.fxf-rcs-fade').forEach(e=> e.classList.add('is-in'));
+      try{ go.focus({preventScroll:true}); }catch(e){}
+    };
+    const skip = at=>{ if(done) return; skippedAt = at || performance.now(); // event timestamps, so a slow frame can't eat the Collect tap
+      if(tl){ tl.progress(1, true); tl.kill(); if(g) g.set(q('.fxf-rcs-dim'), {opacity:.5}); } calmTimers.forEach(clearTimeout);
+      settle(); setTimeout(()=>{ if(!closed) try{ go.focus({preventScroll:true}); }catch(e){} }, 0); sound('unlockChime'); };
+    const close = ()=>{ if(closed) return; closed = true; settle(); document.removeEventListener('keydown', onKey, true);
+      const end = ()=>{ if(sway) sway.kill(); st.remove(); try{ before && before.focus && before.isConnected && before.focus({preventScroll:true}); }catch(e){} call(opts.onDone); res(); };
+      st.style.pointerEvents = 'none'; st.style.transition = 'opacity .25s'; st.style.opacity = '0'; setTimeout(end, 260); }; // a CSS fade on a timer, so a slow frame can't keep it up
+    const onKey = e=>{ if(closed) return;
+      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ go.focus(); }catch(_){} return; }
+      if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); done ? close() : skip(); return; }
+      if(!done && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')){ e.preventDefault(); e.stopPropagation(); skip(); } };
+    document.addEventListener('keydown', onKey, true);
+    st.addEventListener('pointerdown', e=>{ if(e.target.closest && e.target.closest('.fxf-rcs-go')) return; if(!done) skip(e.timeStamp); });
+    go.addEventListener('click', e=>{ e.stopPropagation(); if(e.timeStamp - skippedAt < 300) return; if(!done) skip(e.timeStamp); close(); }); // a double tap doesn't skip and close at once
+    if(calm){ // fades only: the scene, the card, then each line, then each reward
+      const fades = qa('.fxf-rcs-fade'); let t = 30;
+      fades.forEach(e=>{ calmTimers.push(setTimeout(()=> e.classList.add('is-in'), t)); t += e.classList.contains('fxf-rcs-rw') ? 260 : 140; });
+      calmTimers.push(setTimeout(settle, t + 300)); sound('unlockChime');
+      return;
+    }
+    // ---- the full show (one GSAP timeline, so a skip jumps every tween to its end) ----
+    const bossIn = q('.fxf-rcs-bossin'), bossImg = bossIn.firstElementChild, dim = q('.fxf-rcs-dim'), shock = q('.fxf-rcs-shock'), ink = q('.fxf-rcs-ink'), flash = q('.fxf-rcs-flash');
+    g.set(q('.fxf-rcs-deep'), {opacity:0}); g.set(bossEl, {opacity:0, scale:1.22}); g.set(dim, {opacity:.9}); g.set(card, {opacity:0, scale:.9, y:24});
+    g.set([q('.fxf-rcs-kicker'), q('.fxf-rcs-sub')].filter(Boolean), {opacity:0, y:8}); g.set(q('.fxf-rcs-title'), {opacity:0, scale:1.7});
+    g.set(tierEl, {opacity:0, scale:3, rotation:-18}); g.set(q('.fxf-rcs-dmg'), {opacity:0, y:10}); g.set(items, {opacity:0, y:34, scale:.55}); g.set(go, {opacity:0, y:12});
+    const at = el=> pt(el);
+    const pressure = ()=>{ const c = at(shock); sound('boom'); sound('splash'); later(()=> sound('bubble'), 120); later(()=> sound('bubble'), 260);
+      burst(c.x, c.y, {n:10, colors:['rgba(24,8,48,.85)', 'rgba(48,16,84,.75)', 'rgba(8,30,60,.8)'], dist:[30, 120], dur:.9, size:30, from:.5, to:1.9});
+      burst(c.x, c.y + 40, {n:34, colors:['rgba(210,245,255,.85)', 'rgba(150,225,255,.75)', 'rgba(255,255,255,.9)'], spread:1.5, angle:-Math.PI/2, dist:[120, Math.max(220, VH()*.55)], dur:1.5, size:9, ease:'power1.out'});
+      shake(bossIn, {amp:9, n:6, y:4}); g.fromTo(dim, {opacity:0}, {opacity:.5, duration:.9, ease:'power2.out'}); };
+    const stampFx = ()=>{ const c = at(tierEl); sound('clang'); later(()=> sound('prestigeTone'), 70);
+      ring(c.x, c.y, {color:'#ffd56e', size:Math.max(110, c.w*1.3), width:4, dur:.55});
+      burst(c.x, c.y, {n:14, shape:'star', colors:['#ffd56e', '#fff3c4', '#7fd8ff'], glow:true, dist:[40, 120], dur:.7, size:9});
+      shake(card, {amp:4, n:4, y:3}); };
+    let lastTick = -1;
+    const count = {v:0};
+    const reveal = (el, w, top)=>{ const c = at(el), cols = RCS_COLS[w] || RCS_COLS[1];
+      beat(w); burst(c.x, c.y, {n:Math.min(36, 6 + w*5 + (top ? 8 : 0)), colors:cols, glow:w >= 3, dist:[30, 60 + w*26 + (top ? 60 : 0)], dur:.6 + w*.08, size:5 + w, shape:w >= 4 ? 'star' : null});
+      if(w >= 2) ring(c.x, c.y, {color:cols[0], size:60 + w*16, width:2 + (w >> 1), dur:.5});
+      if(w >= 4) burst(c.x, c.y, {n:8 + w*2, glyphs:w >= 5 ? ['✨', '⭐', '🫧', '💎'] : ['✨', '🫧'], gsize:14 + w*2, dist:[50, 130 + w*20], dur:1, spin:240, gravity:40});
+      if(w >= 4) vignette(w >= 5 ? 'rgba(255,190,80,.45)' : 'rgba(170,120,255,.4)', {peak:.8, hold:.12, outDur:.6});
+      if(top){ shake(st.querySelector('.fxf-rcs-card'), {amp:12, n:9, y:7, rot:1.2}); shake(bossIn, {amp:14, n:7, y:6}); g.fromTo(dim, {opacity:0}, {opacity:.5, duration:1, ease:'power2.out'}); g.fromTo(flash, {opacity:0}, {opacity:.85, duration:.08, yoyo:true, repeat:1});
+        ring(c.x, c.y, {color:'#ffffff', size:220, width:5, dur:.75, delay:.08}); later(()=> sound('bossRumble'), 160); } };
+    tl = g.timeline({onComplete:settle}); st._fxfTl = tl; // the timeline, for the tests and the screenshot tool
+    tl.to(q('.fxf-rcs-deep'), {opacity:1, duration:.45, ease:'power1.out'}, 0)
+      .add(()=> sound('bossRumble'), .05)
+      .to(bossEl, {opacity:1, scale:1, duration:1.6, ease:'power2.out'}, .15)
+      // the pressure burst: a flash, the water shockwave (two rings), the ink cloud
+      .add(pressure, .85)
+      .fromTo(flash, {opacity:0}, {opacity:.9, duration:.1, ease:'power1.out'}, .85).to(flash, {opacity:0, duration:.5, ease:'power1.in'}, .95)
+      .fromTo(shock, {opacity:.95, scale:.3}, {opacity:0, scale:16, duration:1, ease:'power2.out'}, .85)
+      .fromTo(ink, {opacity:.9, scale:.4}, {opacity:0, scale:6, duration:1.3, ease:'power2.out'}, .88)
+      .to(card, {opacity:1, scale:1, y:0, duration:.5, ease:'back.out(1.5)'}, 1.0).to(bossEl, {opacity:.75, duration:.7}, 1.8)
+      .to(q('.fxf-rcs-kicker'), {opacity:1, y:0, duration:.3}, 1.15)
+      .to(q('.fxf-rcs-title'), {opacity:1, scale:1, duration:.42, ease:'power4.in'}, 1.2)
+      .add(()=>{ sound('roar'); const c = at(q('.fxf-rcs-title')); ring(c.x, c.y, {color:'#7fd8ff', size:Math.max(200, c.w), width:3, dur:.6}); }, 1.62);
+    if(q('.fxf-rcs-sub')) tl.to(q('.fxf-rcs-sub'), {opacity:1, y:0, duration:.3}, 1.75);
+    // the standing stamps in
+    tl.to(tierEl, {opacity:1, scale:1, rotation:-4, duration:.24, ease:'power4.in'}, 2.0).add(stampFx, 2.24).to(tierEl, {rotation:0, duration:.3, ease:'back.out(3)'}, 2.26)
+      // the raid damage counts up
+      .to(q('.fxf-rcs-dmg'), {opacity:1, y:0, duration:.3}, 2.55)
+      .to(count, {v:total, duration:Math.min(1.25, .5 + Math.log10(total + 1)*.16), ease:'power2.out', onUpdate:()=>{ num.textContent = fmt(count.v); const k = Math.floor(count.v / Math.max(1, total) * 12); if(k !== lastTick){ lastTick = k; sound('bubble'); } }}, 2.65)
+      .add(()=>{ sound('coinRegister'); const c = at(num); ring(c.x, c.y, {color:'#7fd8ff', size:Math.max(90, c.w*1.4), dur:.5}); g.fromTo(num, {scale:1.3}, {scale:1, duration:.4, ease:'back.out(3)'}); }, '>');
+    // the rewards, one by one, each beat bigger; a held breath before the top one
+    let t = tl.duration() + .2;
+    items.forEach((el, i)=>{ const w = list[i].weight, top = i === items.length - 1 && (items.length > 1 || w >= 3);
+      if(top){ tl.add(()=>{ sound('bossRumble'); shake(bossIn, {amp:5, n:10, y:2}); }, t); t += .5; }
+      tl.to(el, {opacity:1, y:0, scale:1, duration:.42 + w*.03, ease:`back.out(${(1.6 + w*.35).toFixed(2)})`}, t).add(()=> reveal(el, w, top), t + .18);
+      t += .32 + w*.12 + (top ? .3 : 0); });
+    tl.to(bossEl, {opacity:kind === 'kill' ? .45 : .7, scale:kind === 'kill' ? .92 : 1, duration:1.1, ease:'power1.inOut'}, t) // a felled boss sinks back into the deep
+      .to(go, {opacity:1, y:0, duration:.35, ease:'back.out(2)'}, t + .1);
+    sway = bossImg ? g.to(bossImg, {rotation:2.2, y:-10, duration:2.6, ease:'sine.inOut', yoyo:true, repeat:-1}) : null;
+  });
+};
+// The boss victory (results: .winloss-card.is-boss): a crimson pulse, an ember ring round the title and embers rising from the card's
+// lower corners. The card's own crimson look and its drifting embers are CSS (arena_template.html, .winloss-card.is-boss).
+M.bossVictory = function(cardEl, opts){
+  opts = opts || {}; const g = G(); if(!g || !cardEl) return Promise.resolve();
+  const title = cardEl.querySelector('.wl-title') || cardEl, c = pt(title), r = cardEl.getBoundingClientRect();
+  const embers = ['#ff3b2f', '#ff7a3d', '#ffc06b', '#c4141f'];
+  try{ opts.sound && opts.sound('fireIgnite'); }catch(e){}
+  vignette('rgba(120,0,12,.6)', {peak:.85, hold:.2, outDur:.9});
+  ring(c.x, c.y, {color:'#ff5a3d', size:Math.max(170, c.w*1.15), width:4, dur:.75});
+  const jobs = [burst(c.x, c.y, {n:26, colors:embers, glow:true, size:6, spread:2.4, angle:-Math.PI/2, dist:[60, 210], dur:1.2, ease:'power1.out'})];
+  later(()=>{ if(!alive(cardEl)) return; [[r.left + r.width*.12, r.bottom - 20], [r.right - r.width*.12, r.bottom - 20]].forEach(([x, y])=>
+    burst(x, y, {n:14, colors:embers, glow:true, size:5, spread:.9, angle:-Math.PI/2, dist:[80, Math.min(260, r.height*.6)], dur:1.4, ease:'power1.out'})); }, 380);
+  return Promise.all(jobs).then(()=> wait(900)).then(()=> call(opts.onDone));
 };
 
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -34686,7 +34925,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=431d4ff3d9", "es": "assets/lang/es.js?v=6e9538a67f", "fr": "assets/lang/fr.js?v=024975278c", "id": "assets/lang/id.js?v=cf60555d65", "it": "assets/lang/it.js?v=89a3db88ff", "ja": "assets/lang/ja.js?v=b8cde2f43f", "ko": "assets/lang/ko.js?v=40989e9e69", "pt": "assets/lang/pt.js?v=029a3106a9", "ta": "assets/lang/ta.js?v=8df78fe0d9", "tl": "assets/lang/tl.js?v=d984aceb3e", "zh-Hans": "assets/lang/zh-Hans.js?v=7c67cd5a3f", "zh-Hant": "assets/lang/zh-Hant.js?v=51e1482fab"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0c3b858a95", "es": "assets/lang/es.js?v=fd4e2fc608", "fr": "assets/lang/fr.js?v=e217f87e92", "id": "assets/lang/id.js?v=f3c31b0c6a", "it": "assets/lang/it.js?v=b16472e759", "ja": "assets/lang/ja.js?v=9d5b154cd4", "ko": "assets/lang/ko.js?v=531e392b71", "pt": "assets/lang/pt.js?v=2b7761dc88", "ta": "assets/lang/ta.js?v=6776ea4a8f", "tl": "assets/lang/tl.js?v=14ade97b77", "zh-Hans": "assets/lang/zh-Hans.js?v=fa601ed1b8", "zh-Hant": "assets/lang/zh-Hant.js?v=06bbadd97d"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -35202,6 +35441,20 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.it-s-in-your-pack-place": "It's in your pack: place it in a hay nest in the Nest",
   "results.an-egg": "An egg",
   "results.egg-card-hatch": "An egg! You'll need a place to hatch it.",
+  "results.raid-claim-kicker": "Raid reward",
+  "results.raid-claim-fell": "{name} has fallen!",
+  "results.raid-claim-held": "{name} survived the week",
+  "results.raid-claim-sub-kill": "Your share of the spoils, raider.",
+  "results.raid-claim-sub-comp": "It held on, but every blow counted. Here is your compensation.",
+  "results.raid-claim-damage": "Your raid damage",
+  "results.raid-claim-xp": "XP",
+  "results.raid-claim-card": "Raid card",
+  "results.raid-claim-title": "New title",
+  "results.raid-claim-collect": "Collect",
+  "results.raid-tier-top1": "Top 1%",
+  "results.raid-tier-top10": "Top 10%",
+  "results.raid-tier-top50": "Top 50%",
+  "results.raid-tier-participant": "Participant",
   "results.egg-nest-on-map": "There's a Nest on Map {n}{where}.",
   "results.unlocked": "Unlocked",
   "results.conquest-map": "🗺️ Conquest Map",
@@ -38392,7 +38645,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '94f53c52290d', BUILD_CARD_HASH = '4e424212654e900615daa4652b7dec9d1efd9478abf8d7525a8f0941b4a868b0';
+const BUILD_ID = 'c62902658ed6', BUILD_CARD_HASH = '4e424212654e900615daa4652b7dec9d1efd9478abf8d7525a8f0941b4a868b0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56461,7 +56714,7 @@ function raidClaimsFor(def){
     const key = def.id+':'+c; if(claimed[key]) return;
     const st = RaidM.raidState(def, currentRaidAttempts(def, c).concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===c && a.pushed && !currentRaidAttempts(def, c).some(x=> x.at===a.at))), c===cyc ? now : (c+1)*RaidM.CYCLE_MS - 1, {cycle:c});
     const rw = RaidM.claimableReward(def, st, me, now);
-    if(rw) out.push({key, cycle:c, reward: rw});
+    if(rw) out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); // mine: 2026-10-18 (package RW), the claim screen counts it up
   });
   return out;
 }
@@ -56469,23 +56722,58 @@ function raidClaimsFor(def){
 // a raid's own cards (source {kind:'raid', id}) drop only when it falls: one for everyone who fought it, one more for the
 // top 10%. Commons are likelier than the Broodmother.
 function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id; }); }
-function grantRaidCards(def, n){
+function grantRaidCards(def, n, quiet){ // quiet (2026-10-18, package RW): the claim screen shows the cards, so no toast
   const defs = getCardDefs(), ids = raidCardIds(def); if(!ids.length) return [];
   const w = id=> ({common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6})[defs[id].rarity || 'common'] || 1, got = [];
   for(let i = 0; i < n; i++){ const tot = ids.reduce((a, id)=> a + w(id), 0); let r = Math.random() * tot, pick = ids[ids.length - 1]; for(const id of ids){ r -= w(id); if(r <= 0){ pick = id; break; } }
     unlockCardForPlayer(pick, 'raid'); got.push(pick); }
-  if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
+  if(got.length && !quiet) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
   return got;
 }
 function claimRaidReward(def, claim){
+  if(!claim || !claim.reward) return null;
   const all = Object.assign({}, claim.reward.base);
   Object.entries(claim.reward.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
-  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0)) : [];
+  const screen = raidClaimScreenReady();
+  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0), screen) : [];
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
-  awardXp(claim.reward.kind==='kill' ? 500 : 150, 'raid reward');
-  showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  const xp = claim.reward.kind==='kill' ? 500 : 150;
+  const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
+  // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
+  if(screen) showRaidClaimScreen(spec);
+  awardXp(xp, 'raid reward');
+  if(!screen) showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  return spec;
+}
+// The raid claim screen (2026-10-18, package RW, owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the
+// skirmish reward screen"): Claim opens the raid's own reward screen, FX.F.raidClaimScreen (bramblewood-fx-f.js): the boss looming
+// from the deep, a pressure burst, the standing stamped in, your raid damage counted up, then every reward one by one, the rarest last
+// and loudest (the top one shakes the screen). A tap skips to the end; Collect closes it. Reduced motion, Effects Off / Low or no GSAP
+// get the calm version (fades only). The old toast is the fallback when the screen can't open. Each reward's weight (1-5) sets its beat.
+const RAID_CLAIM_CUR_WEIGHT = {gold:1, dust:2, metal:3, gems:3, kroon:3};
+const RAID_CLAIM_CARD_WEIGHT = {starter:2, common:2, uncommon:3, rare:3, veryrare:4, superrare:4, epic:4, heroic:5, legendary:5, mythic:5};
+function raidClaimScreenReady(){ return !!(typeof document !== 'undefined' && document.body && window.FX && window.FX.F && typeof window.FX.F.raidClaimScreen === 'function'); }
+function raidClaimTierLabel(t){ return t === 'top1' ? TX('results.raid-tier-top1') : t === 'top10' ? TX('results.raid-tier-top10') : t === 'top50' ? TX('results.raid-tier-top50') : TX('results.raid-tier-participant'); }
+function raidClaimScreenSpec(def, claim, all, cardsGot, xp){
+  const rw = claim.reward, defs = getCardDefs(), name = def.name || '', rewards = [];
+  rewards.push({kind:'xp', icon:'⭐', amount:'+' + xp, label:TX('results.raid-claim-xp'), weight:1});
+  Object.entries(all).forEach(([k, v])=>{ if(!(v > 0) || !CURRENCY_META[k]) return;
+    rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
+  (cardsGot || []).forEach(id=>{ const d = defs[id]; if(!d) return;
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label:TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+  if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
+  const kill = rw.kind === 'kill';
+  return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards,
+    text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
+      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier:raidClaimTierLabel(rw.tier), damage:TX('results.raid-claim-damage'),
+      collect:TX('results.raid-claim-collect'), skip:TX('results.tap-to-skip')}};
+}
+function showRaidClaimScreen(spec){
+  if(!raidClaimScreenReady()) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
@@ -62490,12 +62778,12 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
-        ${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
+        ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
@@ -70169,6 +70457,14 @@ function rankLessonHTML(m){
   // 2026-10-12 (10:12, user: "The grade medal appears twice! The one beside First Clear is the one that should remain"): no hex here.
   return `<div class="wl-rank-lesson ${L.cheer ? 'is-cheer' : ''}" role="status"><div><b>${L.cheer ? '🎉 ' : ''}${escapeHtml(L.t)}</b><p>${escapeHtml(L.d)}</p></div></div>`;
 }
+// Boss victory results (2026-10-18, package RW, owner 20:52: "btw, the boss reward screen should be more crimsony I think"): a won boss
+// fight's results card is crimson (.winloss-card.is-glory.is-boss in arena_template.html: a deep-red wash, a crimson frame, an ember
+// glow on the title, crimson rays and embers drifting up), and FX.F.hooks.resultsShown adds an ember burst. Bosses are the kinds that
+// play as a boss (boss, sub-boss), the Campaign Boss and the world / raid bosses on the map; elites, champions, mini-bosses and
+// dungeon floors keep the gold look, and a raid fight (m.raidFull) keeps its own.
+const CRIMSON_RESULT_KINDS = new Set(['boss', 'subboss', 'finalboss', 'worldboss', 'raidboss', 'megaraid']);
+function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind)); }
+function bossEmbersHTML(){ return `<div class="wl-embers" aria-hidden="true">${Array.from({length:14}, (_, k)=> `<i style="left:${(k*31 + 5)%100}%; --dx:${((k%5) - 2)*14}px; animation-delay:-${(k*0.55).toFixed(2)}s; animation-duration:${(4.5 + (k*1.3)%3.5).toFixed(1)}s"></i>`).join('')}</div>`; }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
   const reward = m.conquestRewardEarned;

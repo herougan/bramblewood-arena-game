@@ -9469,6 +9469,29 @@
   .vs-lvl small{font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; opacity:.85;} .vs-lvl b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif;}
 
   .winloss-card.is-glory > .wl-rays-clip{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;}
+  /* Boss victory results (2026-10-18, package RW, owner 20:52: "btw, the boss reward screen should be more crimsony I think"): a won
+     boss fight (isBossResults in arena_app.js: boss, sub-boss, Campaign Boss, world / raid bosses on the map) gets the Victory card
+     in crimson: a deep-red wash, a crimson-and-ember frame, the title glowing like a coal, crimson rays and embers drifting up.
+     Elites, champions, mini-bosses and raids keep their own look. The card is dark in both themes; every text on it stays light
+     (cream / peach on #22050a-#8f1d24, AA or better). FX.F.hooks.resultsShown adds the ember burst (FX.F.bossVictory). */
+  .pass-card.winloss-card.is-glory.is-boss{background:radial-gradient(ellipse 85% 58% at 50% 0%, #9a1f27 0%, #5a0c15 42%, #2a060c 78%, #160306 100%) !important; color:#fff1e6;
+    border:2px solid #ff6a4a !important; box-shadow:0 0 0 4px rgba(214,48,36,.32), 0 0 70px rgba(200,24,24,.42), inset 0 0 60px rgba(255,80,40,.12), 0 30px 80px rgba(0,0,0,.65) !important;}
+  .winloss-card.is-glory.is-boss .wl-rays{background:repeating-conic-gradient(from 0deg, rgba(255,96,64,.6) 0deg 6deg, transparent 6deg 18deg); opacity:.42;}
+  .winloss-card.is-glory.is-boss .wl-title{background:linear-gradient(180deg, #fff1dc 8%, #ffb27a 46%, #ff5238 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 0 #3d0508) drop-shadow(0 0 20px rgba(255,64,40,.6)) drop-shadow(0 0 42px rgba(200,20,20,.45));}
+  .winloss-card.is-glory.is-boss .rw-panel{background:rgba(255,120,90,.08) !important; border-color:rgba(255,140,110,.32) !important; color:#fff1e6;}
+  .winloss-card.is-glory.is-boss .rw-head{color:#ffc7ad !important;}
+  .winloss-card.is-glory.is-boss .rw-cur, .winloss-card.is-glory.is-boss .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){border-color:rgba(255,150,120,.42) !important;}
+  .winloss-card.is-glory.is-boss .rw-cur .cur-label{color:#ffd2bd !important;}
+  .winloss-card.is-glory.is-boss .wls-compact{color:rgba(255,236,226,.78);}
+  .winloss-card.is-glory.is-boss .pass-ico{filter:drop-shadow(0 0 14px rgba(255,80,40,.7));}
+  .winloss-card.is-glory.is-boss > .wl-embers{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;
+    background:radial-gradient(ellipse 70% 30% at 50% 102%, rgba(255,70,30,.28), rgba(255,70,30,0) 70%);}
+  .winloss-card.is-glory.is-boss > .wl-embers i{position:absolute; bottom:-8px; width:5px; height:5px; border-radius:50%; background:#ffb067; box-shadow:0 0 6px 2px rgba(255,84,36,.8); opacity:0; animation:wlEmber linear infinite;}
+  .winloss-card.is-glory.is-boss > .wl-embers i:nth-child(3n){width:3px; height:3px; background:#ffe0a0;} .winloss-card.is-glory.is-boss > .wl-embers i:nth-child(4n){background:#ff5a3a;}
+  @keyframes wlEmber{0%{transform:translate(0, 0) scale(1); opacity:0;} 12%{opacity:.95;} 70%{opacity:.75;} 100%{transform:translate(var(--dx, 20px), -640px) scale(.4); opacity:0;}}
+  :where(html[data-fx="none"], html[data-fx="low"]) .winloss-card.is-boss > .wl-embers i{animation:none; display:none;}
+  @media (prefers-reduced-motion:reduce){ .winloss-card.is-boss > .wl-embers i{animation:none !important; display:none;} }
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
   /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */

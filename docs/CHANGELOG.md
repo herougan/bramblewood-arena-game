@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (RW: the raid claim screen, crimson boss results)
+- **Claiming a raid reward opens its own reward screen** (owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the skirmish reward screen"). It replaces the old toast.
+  - The boss looms out of the deep (the Goliath's portrait, huge and dim), and a pressure burst opens the screen: a flash, a water shockwave, an ink cloud and a column of bubbles. Light rays drift and bubbles rise behind it.
+  - The title slams in ("The Goliath has fallen!" or "… survived the week"). Your standing (Top 1% / 10% / 50% / Participant) stamps down as a badge, and your raid damage counts up.
+  - Then every reward comes one by one: XP, the currencies, the raid cards (as cards) and a title. They come in rising rarity, and each beat is bigger than the last, with more particles and layered SoundKit cues (a bubble, then coins, a chime, the rare rise, and finally the legendary rise with a fanfare and a boom). The top reward shakes the screen.
+  - A tap, Space, Enter or Esc skips to the end. **Collect** (or Esc again) closes it.
+  - With reduced motion, Effects Off or Low, or no GSAP, you get the calm version: the same screen with fades only.
+  - It fits a phone. The XP level-up waits until the screen closes, and the raid-card toast is gone because the screen shows the cards.
+- **Boss victories are crimson** (owner: "the boss reward screen should be more crimsony"). A won boss, sub-boss, Campaign Boss, or world or raid boss on the map gets a deep-red Victory card. It has a crimson and ember frame, a title that glows like a coal, crimson rays and embers drifting up, plus an ember burst when it opens. Under reduced motion or Effects Low the embers stay still.
+  - Elites, champions, mini-bosses, dungeon floors and raids keep their own look. Every text stays light on dark red (AA or better) in both themes.
+- Effects Lab: `res-raid-claim-screen` (A Top 1%, B Top 50%, C compensation, D calm) and `res-boss-crimson` (A the card with its burst, B still, C the ordinary card to compare) (`tools/effects-lab/manifest/rw.js`, inventory rows added).
+- Code: `FX.F.raidClaimScreen` and `FX.F.bossVictory` (`bramblewood-fx-f.js`); `claimRaidReward`, `raidClaimScreenSpec`, `showRaidClaimScreen`, `isBossResults` and `bossEmbersHTML` (`arena_app.js`); `.winloss-card.is-glory.is-boss` (`arena_template.html`).
+- Texts: 14 new TX keys (`results.raid-claim-*`, `results.raid-tier-*`), in all 12 packs via `tools/i18n_2026_10_18rw.py`. Test: `tests/reward-screens-2026-10-19.js` (in run-all).
+
 ## 2026-10-18 evening: raids, your row only
 
 - In a raid you can no longer play cards into your middle or back row: those are the CPU allies' rows. The rows show no "+" targets for you, and a drop there is refused (`playCardByUid`). Test: tests/raid-rows-2026-10-19.js.
