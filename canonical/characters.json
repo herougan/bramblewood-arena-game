@@ -221,6 +221,23 @@
     "unlockMap": "mp"
   },
   {
+    "id": "last-oasis",
+    "name": "The Last Oasis",
+    "icon": "🌴",
+    "health": 22,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle",
+      "Desert"
+    ],
+    "art": "data:image/png;base64,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",
+    "effects": {
+      "castleRegen": 1
+    },
+    "flavor": "The only water for a week in any direction, and everything in the desert knows the way.",
+    "unlockMap": "mpd"
+  },
+  {
     "id": "trojan-horse",
     "name": "Trojan Horse",
     "icon": "🐴",

@@ -44,7 +44,8 @@ Object.keys(T).forEach(mid=>{
   m.nodes.filter(n=> n.kind !== 'tutorial').forEach(n=> ok(news.includes(n.key), `${mid}: ${n.key} has its old key`));
   news.forEach(k=> ok(M.migrateNodeKey(mid, M.legacyNodeKey(mid, k)) === k, `${mid}: ${k} round-trips`));
 });
-CONQUEST_MAPS.filter(m=> !T[m.id] && !m.endless) /* 2026-10-16: every endless map (mm, mlb, tw) has X-CODE-n keys */.forEach(m=> m.nodes.forEach(n=> ok(n.kind === 'tutorial' || /^\d+-\d+$/.test(n.key), `${m.id}: ${n.key} needed no rename`)));
+// 2026-10-18 (package PD): a side map born after the rename (the Pale Desert, mpd) has its code as its key from the start (18-A-1 ...).
+CONQUEST_MAPS.filter(m=> !T[m.id] && !m.endless) /* 2026-10-16: every endless map (mm, mlb, tw) has X-CODE-n keys */.forEach(m=> m.nodes.forEach(n=> ok(n.kind === 'tutorial' || (m.sub ? /^\d+-[A-Z]-\d+$/ : /^\d+-\d+$/).test(n.key), `${m.id}: ${n.key} needed no rename`)));
 ok(M.migrateNodeKey('mf', 'f-1') === '1-1' && M.migrateNodeKey('m1', '1-1') === '0-1' && M.migrateNodeKey('mq', 'q-2') === '1-A-2', 'f-1 → 1-1, the Outskirts\' 1-1 → 0-1, q-2 → 1-A-2');
 ok(M.migrateNodeKey('mm', 'mm-37') === '6-MM-37' && M.legacyNodeKey('mm', '6-MM-37') === 'mm-37', 'the endless dungeon: mm-37 ↔ 6-MM-37');
 ok(M.migrateNodeKey('mtut', 'tutorial') === 'tutorial' && M.migrateNodeKey('mtut', 't-3') === 'T-3' && M.migrateNodeKey('mt', 't-3') === '16-3', 'tutorials stay; mtut t-3 and mt t-3 go their own ways');
