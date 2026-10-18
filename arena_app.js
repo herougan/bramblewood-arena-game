@@ -14412,6 +14412,28 @@ function leavesRevealToMap(){
 // Save publishes live for everyone (card_overrides) when you're a cloud admin. ➕ New skirmish adds
 // a node to the map (place it with 📐 Edit layout). ----
 const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss'];
+// CPU difficulty (2026-10-18, owner 10:33: "Let me select the difficulty in the skirmish editor. The Smarter CPU can act in Map5+,
+// in elite missions and bosses. At Map 21+, all maps use the smartest CPU."). The engine's opts.aiLevel: 0 Basic (the CPU before
+// 2026-10-18), 1 Smart (it reads the battlefield), 2 Smartest (it also focuses kills, blocks, holds field cards, pitches better).
+// Auto, by the map number (mapNumberOf; a side map counts as its parent): Maps 0–4 Basic; Map 5+ Smart in every fight that isn't
+// an ordinary skirmish (elite, champion, mini-boss, sub-boss, boss, dungeon, world boss, raid, campaign boss), Basic in the
+// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire (owner decision, a default): Smart below floor 25, Smartest from
+// it. Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
+// default, Smart (Arena vs AI, Gauntlet, PvP ghosts, raids, the old Dungeon run); the tutorial is Basic (cpuAiLevelOfMatch).
+const CPU_AI_KEYS = ['basic', 'smart', 'smartest'];
+const CPU_AI_LABEL = {basic:'Basic', smart:'Smart', smartest:'Smartest'};
+const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21, SPIRE_SMARTEST_FROM_FLOOR = 25;
+const CPU_SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss']);
+function cpuAiAutoLevel(mapId, node){
+  if(!node) return 1;
+  if(node.tower) return (Number(node.floor) || 0) >= SPIRE_SMARTEST_FROM_FLOOR ? 2 : 1;
+  const n = mapNumberOf(mapId); if(n == null) return 1;
+  if(n >= CPU_SMARTEST_FROM_MAP) return 2;
+  return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
+}
+function cpuAiLevelForNode(mapId, node){ const k = node && CPU_AI_KEYS.indexOf(node.ai); return k >= 0 ? k : cpuAiAutoLevel(mapId, node); }
+function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; return m.mode === 'tutorial' ? 0 : 1; }
+function cpuAiPillHTML(level){ const k = CPU_AI_KEYS[level] || 'smart'; return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
@@ -15218,6 +15240,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
+          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire Smart, Smartest from floor 25">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[CPU_AI_KEYS[cpuAiAutoLevel(mapId, draft)]] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
@@ -15286,7 +15309,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const v = id=> (document.getElementById(id)||{}).value;
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
       draft.flavor = v('seFlavor')||'';
-      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue','seLoop'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','ai'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue','seLoop','seAi'][i]); if(val) draft[k] = val; else delete draft[k]; }); // + ai, the CPU difficulty (2026-10-18)
       { const ph = v('sePhase'), pl = v('sePhaseLen'); const r = Object.assign({}, draft.rules||{}); delete r.phase; delete r.phaseLen;
         if(ph){ r.phase = ph; if(pl !== '' && pl != null && (ph==='cycle' || ph==='nightFirst')) r.phaseLen = Math.max(1, Math.min(9, Math.round(Number(pl)||3))); }
         { delete r.phaseDay; delete r.phaseNight; const pd = v('sePhaseDay'), pn = v('sePhaseNight'); // uneven Day/Night (2026-10-17)
@@ -15410,7 +15433,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
         const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
         const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -16576,7 +16599,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
+const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -18385,7 +18408,7 @@ function mapLayoutToolbarHTML(map){
 // Map edits list (2026-10-07, editor audit: "no overview of what's been changed on a map"): every
 // skirmish edit, added skirmish and the custom layout, each revertible, plus Revert all. Deleted
 // keys stay retired after a revert so an old key's progress never carries over to a new skirmish.
-const SE_FIELD_LABEL = {armour:'Skirmish Armour', armourLayers:'bonus health layers', cardLevels:'card levels', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
+const SE_FIELD_LABEL = {armour:'Skirmish Armour', armourLayers:'bonus health layers', cardLevels:'card levels', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', ai:'CPU difficulty', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
 function mapEditList(map){
   const e = nodeEdits[map.id] || {}, out = [];
   const nodeName = k=> { const n = map.nodes.find(x=> x.key===k); return n ? `${n.icon||''} ${n.name}`.trim() : k; };
@@ -22308,7 +22331,8 @@ function startConquestMatch(mapId, nodeKey, opts){
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node)}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
+  const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
   const enemyCharacter = skirmishCastle(node).character;
@@ -22337,7 +22361,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(node.floor > 1 && !node.tower) players[2].perks = Object.assign({}, players[2].perks || {}, {floorPct: (node.floor - 1) * 0.04}); // endless dungeon floors (the Tower's strength is its levels instead, 2026-10-16)
   if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
-    mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
+    mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, aiLevel,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
     fightSession, transcript: [], dungeonKeyStaked: !!dungeonKeyStaked,
     battleMode,
@@ -22486,6 +22510,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">${castleLineText(node)}</div>
+      ${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv) : ''; }catch(e){ return ''; } })()}${'' /* the CPU's difficulty (2026-10-18): always for elite / boss fights, else only when it isn't Basic */}
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
@@ -29153,6 +29178,7 @@ function aiActNow(){
   const m = matchState; if(!m) return;
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: where each unit stood, so one an arrival kills can stay drawn until its death plays
+  try{ if(m.engine.setAiLevel) m.engine.setAiLevel(cpuAiLevelOfMatch(m)); }catch(e){} // the CPU's difficulty (2026-10-18): a resumed fight, the tutorial (Basic)
   m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
   try{ events.filter(ev=> ev.type==='play' && ev.side==='B').forEach(ev=> maybeDangerWarn(ev.defId)); }catch(e){}
   // 2026-10-12 (user: "An opponent card with 0 wait deals damage immediately without animation"): whatever the new card
