@@ -9592,6 +9592,35 @@
   @keyframes wlEmber{0%{transform:translate(0, 0) scale(1); opacity:0;} 12%{opacity:.95;} 70%{opacity:.75;} 100%{transform:translate(var(--dx, 20px), -640px) scale(.4); opacity:0;}}
   :where(html[data-fx="none"], html[data-fx="low"]) .winloss-card.is-boss > .wl-embers i{animation:none; display:none;}
   @media (prefers-reduced-motion:reduce){ .winloss-card.is-boss > .wl-embers i{animation:none !important; display:none;} }
+  /* Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different
+     as well. It's triumphant to know that your deck has reached the next tier."): a won new Spire floor (isTowerResults) gets the Victory
+     card in a cool sky and stone-gold, a notch below the boss crimson, and the ascent line (.wl-ascent): a little tower whose cleared
+     floor is lit, a beam climbing to the next floor, "Floor N cleared → Floor N+1". Light text on dark blue (AA or better), both themes. */
+  .pass-card.winloss-card.is-glory.is-tower{background:radial-gradient(ellipse 85% 58% at 50% 0%, #4d7fae 0%, #284a6e 40%, #172a43 75%, #0e1828 100%) !important; color:#f2f6fc;
+    border:2px solid #d8c48c !important; box-shadow:0 0 0 4px rgba(216,196,140,.26), 0 0 50px rgba(120,170,230,.3), 0 30px 80px rgba(0,0,0,.6) !important;}
+  .winloss-card.is-glory.is-tower .wl-rays{background:repeating-conic-gradient(from 0deg, rgba(205,228,255,.5) 0deg 5deg, transparent 5deg 18deg); opacity:.3;}
+  .winloss-card.is-glory.is-tower .wl-title{background:linear-gradient(180deg, #ffffff 10%, #dbe8fb 50%, #ecd28c 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 0 #1b2f4a) drop-shadow(0 0 20px rgba(170,205,255,.5));}
+  .winloss-card.is-glory.is-tower .rw-panel{background:rgba(190,215,255,.07) !important; border-color:rgba(216,196,140,.3) !important; color:#f2f6fc;}
+  .winloss-card.is-glory.is-tower .rw-head{color:#ecd9a0 !important;}
+  .winloss-card.is-glory.is-tower .wls-compact{color:rgba(232,240,252,.78);}
+  .wl-ascent{display:inline-flex; align-items:center; gap:14px; margin:2px auto 10px; padding:8px 18px 8px 12px; border-radius:14px; text-align:left;
+    background:rgba(8,18,34,.5); border:1px solid rgba(216,196,140,.45); box-shadow:inset 0 0 18px rgba(150,190,240,.12);}
+  .wl-ascent-tower{position:relative; flex:none; display:flex; flex-direction:column-reverse; align-items:center; gap:2px; width:34px; height:58px;}
+  .wl-ascent-tower i{display:block; height:10px; border-radius:3px 3px 0 0; background:#62758f; box-shadow:inset 0 -2px 0 rgba(0,0,0,.28);}
+  .wl-ascent-tower i:nth-child(1){width:32px;} .wl-ascent-tower i:nth-child(2){width:27px;} .wl-ascent-tower i:nth-child(3){width:22px;} .wl-ascent-tower i:nth-child(4){width:17px;} .wl-ascent-tower i:nth-child(5){width:12px;}
+  .wl-ascent-tower i.is-lit{background:linear-gradient(180deg, #fff6d2, #f0c860); box-shadow:0 0 10px 2px rgba(255,214,110,.75);}
+  .wl-ascent-tower i.is-next{background:#9dbde4; animation:wlNextGlow 2.4s ease-in-out infinite;}
+  @keyframes wlNextGlow{50%{background:#d7e8ff; box-shadow:0 0 10px 2px rgba(190,220,255,.6);}}
+  .wl-ascent-beam{position:absolute; left:50%; bottom:22px; width:4px; height:22px; margin-left:-2px; border-radius:2px; background:linear-gradient(0deg, rgba(255,232,160,.95), rgba(210,232,255,0));
+    transform-origin:50% 100%; animation:wlBeam 2.4s ease-out infinite;}
+  .wl-ascent.is-top .wl-ascent-beam{bottom:58px; height:16px;}
+  @keyframes wlBeam{0%{transform:scaleY(0); opacity:0;} 20%{opacity:1;} 60%{transform:scaleY(1); opacity:1;} 100%{transform:scaleY(1.5); opacity:0;}}
+  .wl-ascent-txt{display:flex; flex-direction:column; gap:2px; line-height:1.2;}
+  .wl-ascent-txt b{font:800 clamp(15px, 2.2vw, 18px)/1.2 'Baloo 2',system-ui,sans-serif; color:#ffffff; letter-spacing:.01em;}
+  .wl-ascent-txt small{font-size:12.5px; color:#d3e2f5;}
+  :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-beam, :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-tower i.is-next{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .wl-ascent-beam, .wl-ascent-tower i.is-next{animation:none !important;} }
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
   /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */
@@ -33574,6 +33603,7 @@ H.resultsShown = (card, m, env)=>{
   const sec = (c, head)=> [...c.querySelectorAll('.rw-sec')].find(s=> ((s.querySelector('.rw-head') || {}).textContent || '').trim() === head);
   const jobs = [], add = (find, run)=>{ if(find(card)) jobs.push(()=>{ const c = cur(), el = c && find(c); if(el) run(el === true ? c : el, c); }); };
   add(c=> c.classList.contains('is-boss') && m.winner === 1, el=> M.bossVictory(el, {sound:env.sound})); // 2026-10-18 (package RW): the boss win's crimson embers
+  add(c=> c.classList.contains('is-tower') && m.winner === 1 && c.querySelector('.wl-ascent-tower'), el=> M.towerAscend(el, {sound:env.sound})); // 2026-10-18 (RW): a new Spire floor's light column
   add(()=> m.winner === 0 && !m.raidFull && m.mode !== 'tutorial', (_, c)=> M.resDraw(c));
   add(()=> m.mode === 'tutorial', (_, c)=> M.tutorialResult(c, {won:m.winner === 1}));
   add(c=> c.querySelector('.wl-rank-lesson'), el=> M.rankLesson(el));
@@ -33794,6 +33824,21 @@ M.raidClaimScreen = function(spec, opts){
       .to(go, {opacity:1, y:0, duration:.35, ease:'back.out(2)'}, t + .1);
     sway = bossImg ? g.to(bossImg, {rotation:2.2, y:-10, duration:2.6, ease:'sine.inOut', yoyo:true, repeat:-1}) : null;
   });
+};
+// A new Babel Spire floor won (results: .winloss-card.is-tower, its .wl-ascent-tower): a pale-gold ring on the lit floor, a column of
+// light climbing from it, sparks drifting up and a rising swell. Gentler than the boss's embers. (2026-10-18, package RW follow-up)
+css('tower', `.fxf .fxf-col{position:absolute; left:0; top:0; width:22px; border-radius:11px; background:linear-gradient(0deg, rgba(255,232,160,.95), rgba(200,228,255,.55) 55%, rgba(200,228,255,0)); filter:blur(1px); mix-blend-mode:screen; transform-origin:50% 100%; will-change:transform,opacity;}`);
+M.towerAscend = function(towerEl, opts){
+  opts = opts || {}; const g = G(); if(!g || !towerEl) return Promise.resolve();
+  const lit = towerEl.querySelector('.is-lit') || towerEl, c = pt(lit), H = Math.min(220, Math.max(120, VH()*.28));
+  try{ opts.sound && opts.sound('growthSwell'); }catch(e){}
+  ring(c.x, c.y, {color:'#f3d98c', size:70, width:3, dur:.6});
+  const host = lay('fxf-colhost', '', 3000), col = document.createElement('i'); col.className = 'fxf-col'; host.appendChild(col);
+  col.style.height = H + 'px'; g.set(col, {x:c.x - 11, y:c.y - H, scaleY:0, opacity:1});
+  burst(c.x, c.y, {n:12, colors:['#fff3c4', '#cfe4ff', '#f0d58a'], glow:true, size:4, spread:.8, angle:-Math.PI/2, dist:[60, H], dur:1.3, ease:'power1.out'});
+  later(()=>{ try{ opts.sound && opts.sound('unlockChime'); }catch(e){} }, 380);
+  return new Promise(res=> g.timeline({onComplete:()=>{ host.remove(); call(opts.onDone); res(); }})
+    .to(col, {scaleY:1, duration:.55, ease:'power2.out'}).to(col, {opacity:0, duration:.6, ease:'power1.in'}, '+=.25'));
 };
 // The boss victory (results: .winloss-card.is-boss): a crimson pulse, an ember ring round the title and embers rising from the card's
 // lower corners. The card's own crimson look and its drifting embers are CSS (arena_template.html, .winloss-card.is-boss).
@@ -35170,7 +35215,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=031f1fcedf", "es": "assets/lang/es.js?v=f75829723b", "fr": "assets/lang/fr.js?v=45be8a662f", "id": "assets/lang/id.js?v=b142e10e26", "it": "assets/lang/it.js?v=6d6a9cfa87", "ja": "assets/lang/ja.js?v=0ee2a1bca5", "ko": "assets/lang/ko.js?v=0fbf45dbad", "pt": "assets/lang/pt.js?v=87dada2458", "ta": "assets/lang/ta.js?v=31c08e5ee5", "tl": "assets/lang/tl.js?v=780f625a15", "zh-Hans": "assets/lang/zh-Hans.js?v=c2b5d7592e", "zh-Hant": "assets/lang/zh-Hant.js?v=79fc24e0c4"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ac5381dba5", "es": "assets/lang/es.js?v=9a8ded2561", "fr": "assets/lang/fr.js?v=9222d71289", "id": "assets/lang/id.js?v=598cc548f9", "it": "assets/lang/it.js?v=0dbc75c1c1", "ja": "assets/lang/ja.js?v=f7bfc56bb3", "ko": "assets/lang/ko.js?v=64c982e1c2", "pt": "assets/lang/pt.js?v=62755c1c3b", "ta": "assets/lang/ta.js?v=ccfd906963", "tl": "assets/lang/tl.js?v=6b62c69139", "zh-Hans": "assets/lang/zh-Hans.js?v=ae11536264", "zh-Hant": "assets/lang/zh-Hant.js?v=74cb7de33b"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -35779,6 +35824,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.raid-tier-top10": "Top 10%",
   "results.raid-tier-top50": "Top 50%",
   "results.raid-tier-participant": "Participant",
+  "results.tower-step-up": "Floor {n} cleared → Floor {next}",
+  "results.tower-step-top": "Floor {n} cleared: the top of the Spire!",
+  "results.tower-step-sub": "Your deck climbs to the next tier.",
   "results.egg-nest-on-map": "There's a Nest on Map {n}{where}.",
   "results.unlocked": "Unlocked",
   "results.conquest-map": "🗺️ Conquest Map",
@@ -39186,7 +39234,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1f0bc31c5aad', BUILD_CARD_HASH = '4f5468def71c08d3f96b5edc9c26bce2d1e2a682ee5af9d079fdce33dd191af4';
+const BUILD_ID = '821fb0a33bbe', BUILD_CARD_HASH = '4f5468def71c08d3f96b5edc9c26bce2d1e2a682ee5af9d079fdce33dd191af4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -63765,7 +63813,7 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}${!isPc && isTowerResults(m) ? ' is-tower' : '' /* 2026-10-18 (RW): a new Spire floor */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
@@ -63773,7 +63821,7 @@ function renderMatchUI(){
         ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
-        ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
+        ${gloryBadgesHTML(m)}${!isPc && isTowerResults(m) ? towerAscentHTML(m) : ''}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -71473,7 +71521,24 @@ function rankLessonHTML(m){
 // play as a boss (boss, sub-boss), the Campaign Boss and the world / raid bosses on the map; elites, champions, mini-bosses and
 // dungeon floors keep the gold look, and a raid fight (m.raidFull) keeps its own.
 const CRIMSON_RESULT_KINDS = new Set(['boss', 'subboss', 'finalboss', 'worldboss', 'raidboss', 'megaraid']);
-function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind)); }
+function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind) && !towerResultsFloor(m)); } // + not a Spire floor (2026-10-18, its own look below)
+// Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different as
+// well. It's triumphant to know that your deck has reached the next tier."): a won NEW Spire floor (every tenth floor's Keeper too) gets
+// its own Victory card, a notch below the boss crimson: a cool sky and stone-gold palette (.winloss-card.is-glory.is-tower in
+// arena_template.html) and an ascent line under the title: a little tower whose cleared floor lights up, a beam climbing to the next
+// floor, and "Floor N cleared → Floor N+1" (the 50th: "the top of the Spire"). FX.F.hooks.resultsShown adds a light column (FX.F.towerAscend).
+// A free replay of a cleared floor (m.towerReplay, 0 reward) keeps the ordinary card.
+function towerResultsFloor(m){
+  if(!m || !m.conquestNode) return 0;
+  let r = null; try{ r = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); }catch(e){}
+  return r && r.node && r.node.tower ? (r.node.floor | 0) : 0;
+}
+function isTowerResults(m){ return !!(m && m.winner === 1 && !m.towerReplay && !m.raidFull && m.mode === 'conquest' && towerResultsFloor(m) > 0); }
+function towerAscentHTML(m){
+  const f = towerResultsFloor(m), top = f >= TOWER_FLOORS, lit = top ? 4 : 1;
+  const line = top ? TX('results.tower-step-top', {n: f}) : TX('results.tower-step-up', {n: f, next: f + 1});
+  return `<div class="wl-ascent${top ? ' is-top' : ''}" role="status"><span class="wl-ascent-tower" aria-hidden="true">${[0, 1, 2, 3, 4].map(i=> `<i class="${i === lit ? 'is-lit' : !top && i === 2 ? 'is-next' : ''}"></i>`).join('')}<b class="wl-ascent-beam"></b></span><span class="wl-ascent-txt"><b>${escapeHtml(line)}</b><small>${escapeHtml(TX('results.tower-step-sub'))}</small></span></div>`;
+}
 function bossEmbersHTML(){ return `<div class="wl-embers" aria-hidden="true">${Array.from({length:14}, (_, k)=> `<i style="left:${(k*31 + 5)%100}%; --dx:${((k%5) - 2)*14}px; animation-delay:-${(k*0.55).toFixed(2)}s; animation-duration:${(4.5 + (k*1.3)%3.5).toFixed(1)}s"></i>`).join('')}</div>`; }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';

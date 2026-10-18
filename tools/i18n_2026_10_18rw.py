@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Game texts added on 2026-10-18 by package RW (owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the
+"""Game texts added on 2026-10-18 by package RW (and its 23:20 follow-up: the Babel Spire's Victory card) (owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the
 skirmish reward screen. btw, the boss reward screen should be more crimsony I think."): the raid claim screen's kicker, title, line
 under it, standing (tier) badges, the raid-damage label, the reward labels and its Collect button. The rules for a template row are
 those of i18n_2026_10_18d.py (every {placeholder} kept). Keys are the English as the page translator sees it. The raid words follow
@@ -47,6 +47,19 @@ T = {
 "Top 10%": ["Top 10 %", "Top 10 %", "Top 10 %", "Top 10%", "Top 10%", "Top 10%", "முதல் 10%", "10% Teratas", "前 10%", "前 10%", "上位10%", "상위 10%"],
 "Top 50%": ["Top 50 %", "Top 50 %", "Top 50 %", "Top 50%", "Top 50%", "Top 50%", "முதல் 50%", "50% Teratas", "前 50%", "前 50%", "上位50%", "상위 50%"],
 "Participant": ["Participant", "Teilnehmer", "Participante", "Partecipante", "Participante", "Kalahok", "பங்கேற்பாளர்", "Peserta", "参与者", "參與者", "参加者", "참가자"],
+# 2026-10-18 follow-up (owner 23:20): the Babel Spire's Victory card. The Spire words follow the packs (Flèche, 塔の階 ...).
+"Floor {n} cleared → Floor {next}": [
+  "Étage {n} vaincu → Étage {next}", "Stockwerk {n} geschafft → Stockwerk {next}", "Piso {n} superado → Piso {next}", "Piano {n} superato → Piano {next}",
+  "Andar {n} superado → Andar {next}", "Natapos ang Palapag {n} → Palapag {next}", "தளம் {n} வெல்லப்பட்டது → தளம் {next}", "Lantai {n} ditaklukkan → Lantai {next}",
+  "第 {n} 层已攻克 → 第 {next} 层", "第 {n} 層已攻克 → 第 {next} 層", "{n}階クリア → {next}階へ", "{n}층 돌파 → {next}층"],
+"Floor {n} cleared: the top of the Spire!": [
+  "Étage {n} vaincu : le sommet de la Flèche !", "Stockwerk {n} geschafft: die Spitze des Turms!", "Piso {n} superado: ¡la cima de la Aguja!", "Piano {n} superato: la cima della Guglia!",
+  "Andar {n} superado: o topo da Torre!", "Natapos ang Palapag {n}: ang tuktok ng Tore!", "தளம் {n} வெல்லப்பட்டது: கோபுரத்தின் உச்சி!", "Lantai {n} ditaklukkan: puncak Menara!",
+  "第 {n} 层已攻克：通天塔之巅！", "第 {n} 層已攻克：通天塔之巔！", "{n}階クリア：塔の頂上だ！", "{n}층 돌파: 탑의 꼭대기!"],
+"Your deck climbs to the next tier.": [
+  "Votre deck monte d'un palier.", "Dein Deck steigt eine Stufe höher.", "Tu mazo sube al siguiente nivel.", "Il tuo mazzo sale al livello successivo.",
+  "O teu baralho sobe ao nível seguinte.", "Umaakyat ang deck mo sa susunod na antas.", "உங்கள் அடுக்கு அடுத்த நிலைக்கு ஏறுகிறது.", "Dekmu naik ke tingkat berikutnya.",
+  "你的卡组登上了新的层级。", "你的牌組登上了新的層級。", "デッキが次の段階へ登る。", "덱이 다음 단계로 올라선다."],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 ph = lambda s: sorted(set(re.findall(r'\{\w+\}', s)))

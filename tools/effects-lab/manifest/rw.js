@@ -2,6 +2,7 @@
 // reward screen. btw, the boss reward screen should be more crimsony I think."). Contract: docs/effects-lab-contract.md.
 //   res-raid-claim-screen  FX.F.raidClaimScreen: the full raid claim screen (claimRaidReward in arena_app.js opens it). It fills the
 //                          window like in the game; tap to skip, Collect (or Esc) to close.
+//   res-tower-ascent       the Babel Spire's Victory card for a new floor (.winloss-card.is-tower, FX.F.towerAscend), 2026-10-18 follow-up
 //   res-boss-crimson       the boss victory's crimson results card (CSS .winloss-card.is-glory.is-boss, arena_template.html) and its
 //                          ember burst (FX.F.bossVictory, from FX.F.hooks.resultsShown).
 (function(){
@@ -43,5 +44,20 @@ R({id:'res-boss-crimson', stage:'ui', duration:3200,
     {key:'A', label:'Boss victory: the crimson card, its embers and the ember burst', play:ctx=>{ const c = crimson(ctx, true); ctx.sound('fireIgnite'); return ctx.wait(250).then(()=> X().bossVictory(c, {})).then(()=> ctx.wait(1200)); }},
     {key:'B', label:'At Effects Low / reduced motion: the same crimson card, still (no embers, no burst)', play:ctx=>{ crimson(ctx, false); return ctx.wait(2400); }},
     {key:'C', label:'For comparison: the ordinary Victory card (skirmishes, elites, mini-bosses)', play:ctx=> ctx.wait(2400)},
+  ]});
+// The Babel Spire's Victory card (2026-10-18 follow-up, owner 23:20: "The victory screen for Towers should be very slightly different as
+// well. It's triumphant to know that your deck has reached the next tier."): the same markup towerAscentHTML() writes in the game.
+const ascent = (f, top)=>{ const lit = top ? 4 : 1;
+  return `<div class="wl-ascent${top ? ' is-top' : ''}" role="status"><span class="wl-ascent-tower" aria-hidden="true">${[0, 1, 2, 3, 4].map(i=> `<i class="${i === lit ? 'is-lit' : !top && i === 2 ? 'is-next' : ''}"></i>`).join('')}<b class="wl-ascent-beam"></b></span><span class="wl-ascent-txt"><b>${top ? `Floor ${f} cleared: the top of the Spire!` : `Floor ${f} cleared → Floor ${f + 1}`}</b><small>Your deck climbs to the next tier.</small></span></div>`; };
+const tower = (ctx, f, top, still)=>{ const c = ctx.ui.results; c.classList.add('is-tower'); const t = c.querySelector('.wl-title'); t.insertAdjacentHTML('afterend', ascent(f, top));
+  if(still) c.querySelectorAll('.wl-ascent-beam, .wl-ascent-tower i').forEach(e=> e.style.animation = 'none'); return c; };
+R({id:'res-tower-ascent', stage:'ui', duration:3200,
+  inGameHook:'results (a won NEW Babel Spire floor, not a free replay): isTowerResults → .winloss-card.is-tower + towerAscentHTML (arena_app.js); FX.F.hooks.resultsShown → FX.F.towerAscend',
+  note:'A notch below the boss crimson: a cool sky and stone-gold card, and under the title a little tower whose cleared floor lights up, a beam climbing to the next floor, "Floor N cleared → Floor N+1". Replays of cleared floors keep the ordinary card.',
+  variants:[
+    {key:'A', label:'Floor 12 won: the sky card, the ascent line and the light column', play:ctx=>{ const c = tower(ctx, 12, false); return ctx.wait(250).then(()=> X().towerAscend(c.querySelector('.wl-ascent-tower'), {sound:ctx.sound})).then(()=> ctx.wait(1400)); }},
+    {key:'B', label:'Floor 50 won: "the top of the Spire!"', play:ctx=>{ const c = tower(ctx, 50, true); return ctx.wait(250).then(()=> X().towerAscend(c.querySelector('.wl-ascent-tower'), {sound:ctx.sound})).then(()=> ctx.wait(1400)); }},
+    {key:'C', label:'At Effects Low / reduced motion: the same card, still (no beam motion, no column)', play:ctx=>{ tower(ctx, 12, false, true); return ctx.wait(2400); }},
+    {key:'D', label:'A free replay of a cleared floor: the ordinary Victory card', play:ctx=>{ ctx.ui.results.querySelector('.wl-title').insertAdjacentHTML('afterend', '<p class="wl-tower-replay">A cleared Spire floor: free to fight again, no reward.</p>'); return ctx.wait(2400); }},
   ]});
 })();
