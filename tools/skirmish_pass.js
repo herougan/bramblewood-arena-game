@@ -307,6 +307,7 @@ function curveTune(f, band, steps){
     for(let step = 0; step < maxSteps && (coarse ? off(cur.win) > 6 : !good(cur.win)); step++){
       const easy = cur.win > want; let best = null;
       for(const mv of curveMoves(f, node.deck, easy)){
+        if(mv.inn && TH && TH.offThemeFor(f.map, f.n, mv.inn)) continue; // 2026-10-19 (TH): "more copies" of a capped card (Gannet Cliffs' Pelican Divers) too
         const nd = applyMove(node.deck, mv); if(!rareQuarterOk(f, nd) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
         const nn = Object.assign({}, node, {deck: nd}), r = T(nn, mv);
         if(!best || P(r, easy) < P(best.r, easy)) best = {mv, nn, r};
