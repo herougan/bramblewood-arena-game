@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-18",
- "note": "Road decks for Maps 1-9 (tools/skirmish_pass.js decks); Starter / Mid-road / Strong are docs/balance/difficulty-curve.json",
+ "generated": "2026-10-19",
+ "note": "Road decks (tools/skirmish_pass.js decks); the game reads them from arena_app.js WINRATE_REF_DECKS. Map 0 plays the Otter starter.",
  "road": {
   "1": {
    "pool": 54,
@@ -280,6 +280,541 @@
      "n": 4
     }
    ]
+  },
+  "10": {
+   "pool": 122,
+   "score": 63.9,
+   "cards": [
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
+     "n": 4
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "11": {
+   "pool": 128,
+   "score": 85,
+   "cards": [
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "12": {
+   "pool": 138,
+   "score": 88.1,
+   "cards": [
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "n": 4
+    },
+    {
+     "id": "eagle-diver",
+     "name": "Eagle Diver",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "13": {
+   "pool": 150,
+   "score": 79.2,
+   "cards": [
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    },
+    {
+     "id": "skunk-gasser",
+     "name": "Skunk Gasser",
+     "n": 4
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "14": {
+   "pool": 161,
+   "score": 85.4,
+   "cards": [
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "15": {
+   "pool": 172,
+   "score": 90.5,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "tunnel-wyrm",
+     "name": "Tunnel Wyrm",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "16": {
+   "pool": 182,
+   "score": 94,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "17": {
+   "pool": 191,
+   "score": 93.8,
+   "cards": [
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "monitor-rambler",
+     "name": "Monitor Rambler",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "18": {
+   "pool": 196,
+   "score": 91.7,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 3
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 1
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "19": {
+   "pool": 213,
+   "score": 95.8,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 3
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 1
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "20": {
+   "pool": 221,
+   "score": 66.7,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 3
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "monitor-rambler",
+     "name": "Monitor Rambler",
+     "n": 1
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 1
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "n": 3
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "21": {
+   "pool": 225,
+   "score": 100,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 3
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "monitor-rambler",
+     "name": "Monitor Rambler",
+     "n": 1
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 1
+    },
+    {
+     "id": "spitting-cobra",
+     "name": "Spitting Cobra",
+     "n": 3
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "22": {
+   "pool": 227,
+   "score": 69.8,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 3
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 1
+    },
+    {
+     "id": "king-maker",
+     "name": "King Maker",
+     "n": 1
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 3
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "n": 4
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "23": {
+   "pool": 231,
+   "score": 77.1,
+   "cards": [
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "squires-mount",
+     "name": "Squire's Mount",
+     "n": 4
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "24": {
+   "pool": 236,
+   "score": 93.8,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
   }
  }
 }

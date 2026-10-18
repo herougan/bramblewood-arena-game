@@ -2,6 +2,21 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (W2: the map win-rate panel no longer hangs; its comparison deck follows the road)
+- **"Check the whole map" can't get stuck any more.** A fight whose deck named an unknown card threw inside the engine, and the button sat on "Checking 2/4…" for good.
+  - Each fight now runs on its own. A broken one shows **"!"**, with the reason on hover, and the check carries on.
+  - A game is capped at 100 rounds or 3 s, a fight at 12 s (partial results say how many games they got), and a map at 90 s. Fights left over show ⏱; click again to carry on from the cache.
+  - The check pauses every ~40 ms, so the counter moves.
+- **The comparison deck now grows with the road.** The panel, "📊 vs a new player's deck", "🎯 Auto-tune Armour" and `tools/skirmish_pass.js` all play `simulateReferenceFight`, with the same seeds and the same numbers.
+  - The deck is a reference deck per map: the Otter starter on Map 0, then a Road deck per map (1–24) built from Base plus every earlier main map's rewards (no packs).
+  - Cards play at the road CPU's own skirmish level (Lv 1 to Map 4, Lv 2 from Map 5, +1 every 5 maps, inside the Forge's level gates).
+  - The enemy is built as the real fight builds it.
+  - Before, the panel used the stat-score top 20 (flat after Map 3), the viewer's own card levels and a silent CPU.
+- New Road decks for Maps 10–24. Maps 1–9 keep the 2026-10-18 pass's decks.
+- **Fix in the tools:** `tools/lib_bramble.js` applies the game's `applyRoadKinds`, so each map's last fight is measured as the kind the game gives it (1-5 is an elite, not a boss). The skirmish pass's leader grants and its trial copies' enemy levels work again.
+- **Measured with the new reference player** (`docs/balance/skirmish-pass-w2.jsonl`): Maps 0–9 are unchanged except their last fights. From Map 10 the road is much easier (59 of 262 fights over 92%, 8 under 12%). Nothing was retuned; the owner decides the curve first.
+- Docs: `docs/winrate-reference-decks-2026-10-19.md`. Test: `tests/winrate-panel-2026-10-19.js` (in run-all).
+
 ## 2026-10-18 (I3: the rest of the UI translated)
 - **Most of the UI that stayed English is now translated** (fixed labels and buttons, titles and tooltips, every NPC line and reply, errand writs, skill names and texts, card flavour, map and battle-log texts): their English is harvested into `lang/ui/<code>.json` and the page translator matches it like any pack key (texts with numbers as `{v1}` templates). Coverage of the 5,752 harvested texts (main pack + `lang/ui`): de, fr, es, ja, zh-Hans and zh-Hant 5,607 (97%: every NPC line, errand and flavour text; what is left is admin-only, CSS or regex strings and a few skill lines); it, pt, ko, id, tl and ta 3,099 (54%: all labels, buttons, dialogue, errands and screen texts; card flavour, skill texts and the battle-log/data lines are still English there). zh-Hant is converted from zh-Hans with OpenCC (s2twp). Live numbers: `python3 tools/i18n_ui.py`.
 - The 11 placeholder texts from package Z (Wildpaths "learn this" lines and guild renaming / Rename Ticket) are in all 12 main packs, so `tests/i18n-templates-2026-10-18.js` passes again.
