@@ -38294,7 +38294,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c552b8fb79d0', BUILD_CARD_HASH = '62153868ee8f015a6539c91f24d58e2c8829b0f83a7b60a420c2029832d26377';
+const BUILD_ID = '1fd614ee45ee', BUILD_CARD_HASH = '62153868ee8f015a6539c91f24d58e2c8829b0f83a7b60a420c2029832d26377';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -63757,7 +63757,9 @@ function renderBoard(opts){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass;
     document.querySelectorAll('#battlefieldInner .reserve-row').forEach(el=>{
       const pid = +el.dataset.respid, r = +el.dataset.resrow, pl = m.players[pid]; if(!pl || !pl.reserve) return;
-      const legal = new Set(showTargets && pid === viewerPid && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
+      // 2026-10-18 (owner 20:40: "for raids, i shouldnt be able to play cards on the other rows!"): in a raid the middle and back
+      // rows belong to the CPU allies, so they never show play targets for you.
+      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
       let html = `<span class="reserve-label">${r === 1 ? 'Middle' : 'Back'}</span>`;
       for(let sl = -slotRange; sl <= slotRange; sl++){
         const c = pl.reserve[r-1][sl];
@@ -65687,6 +65689,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const activePid = activePlayerId(m);
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
+  if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without

@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 evening: raids, your row only
+
+- In a raid you can no longer play cards into your middle or back row: those are the CPU allies' rows. The rows show no "+" targets for you, and a drop there is refused (`playCardByUid`). Test: tests/raid-rows-2026-10-19.js.
+
 ## 2026-10-19 (W2: the map win-rate panel no longer hangs; its comparison deck follows the road)
 - **"Check the whole map" can't get stuck any more.** A fight whose deck named an unknown card threw inside the engine, and the button sat on "Checking 2/4…" for good.
   - Each fight now runs on its own. A broken one shows **"!"**, with the reason on hover, and the check carries on.

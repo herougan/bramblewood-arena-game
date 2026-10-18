@@ -28162,7 +28162,9 @@ function renderBoard(opts){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass;
     document.querySelectorAll('#battlefieldInner .reserve-row').forEach(el=>{
       const pid = +el.dataset.respid, r = +el.dataset.resrow, pl = m.players[pid]; if(!pl || !pl.reserve) return;
-      const legal = new Set(showTargets && pid === viewerPid && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
+      // 2026-10-18 (owner 20:40: "for raids, i shouldnt be able to play cards on the other rows!"): in a raid the middle and back
+      // rows belong to the CPU allies, so they never show play targets for you.
+      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
       let html = `<span class="reserve-label">${r === 1 ? 'Middle' : 'Back'}</span>`;
       for(let sl = -slotRange; sl <= slotRange; sl++){
         const c = pl.reserve[r-1][sl];
@@ -30092,6 +30094,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const activePid = activePlayerId(m);
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
+  if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
