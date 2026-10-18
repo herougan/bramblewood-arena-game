@@ -18784,14 +18784,85 @@ function claimableReward(def, state, owner, now){
   const extra = ((rw.tiers||{})[tier]) || {};
   return {kind, tier, base, extra};
 }
-// Fight setup for one part: the part's deck and castle, and whether its cards are stripped of
-// abilities (stage rule stripAbilities, e.g. the < 1% "Exposed" stage).
-function fightFor(def, state, partId){
-  const p = (def.parts||[]).find(x=> x.id===partId); if(!p) return null;
-  const s = state.byId[partId];
-  const rules = (state.stage && state.stage.rules) || [];
-  return {part:p, deck: Object.assign({}, (p.fight||{}).deck||{}), castleHp: (p.fight||{}).castleHp || 200, rounds: fightRounds(def, p), stripAbilities: rules.some(r=> r.stripAbilities), locked: s.locked, defeated: s.defeated};
+// Stage rules (2026-10-18, R3-WP2: "Enraged" and "Thrashing" had no rules, and fightFor only understood stripAbilities). A stage's
+// `rules` is an object, or a list of objects (the older shape, merged in order). Keys, all optional; unknown keys are ignored:
+//   stripAbilities  true: the boss's cards lose every ability (Exposed)
+//   bossAtk / bossHp  +N Attack / +N Health on every boss card (its deck, its boss unit, its guards and the Commons it calls in)
+//   field           a field effect for this stage: a field-effect id or rule key ("landslide"), a list of them, or a rules object;
+//                   it goes on top of the raid's and the part's own field (a key it names replaces theirs)
+//   extraVolley     the boss's back two rows strike N times a round too (the volley your ally rows already make: half Attack)
+//   castleHpPct     your (the raiders') castle's max Health changes by N% (-10 = 10% less)
+const STAGE_NUM_KEYS = {bossAtk:[-20, 50], bossHp:[-50, 200], extraVolley:[0, 3], castleHpPct:[-90, 200]};
+function stageFieldOf(v, resolve){
+  if(!v) return {};
+  if(Array.isArray(v)) return v.reduce((o, x)=> Object.assign(o, stageFieldOf(x, resolve)), {});
+  if(typeof v === 'string') return String(v).split(/[\s,]+/).filter(Boolean).reduce((o, k)=>{ const r = resolve ? resolve(k) : null; if(r && typeof r === 'object') Object.assign(o, r); else o[k] = true; return o; }, {});
+  if(typeof v === 'object') return Object.assign({}, v);
+  return {};
 }
+function stageRules(stage, opts){
+  const raw = stage && stage.rules, list = Array.isArray(raw) ? raw : (raw && typeof raw === 'object') ? [raw] : [];
+  const out = {}, resolve = opts && opts.fieldRules;
+  list.forEach(r=>{ if(!r || typeof r !== 'object') return;
+    if(r.stripAbilities) out.stripAbilities = true;
+    Object.keys(STAGE_NUM_KEYS).forEach(k=>{ const n = Number(r[k]); if(r[k] == null || !isFinite(n) || !n) return; const [lo, hi] = STAGE_NUM_KEYS[k]; out[k] = Math.max(lo, Math.min(hi, Math.round((out[k] || 0) + n))); });
+    if(r.field){ const f = stageFieldOf(r.field, resolve); if(Object.keys(f).length) out.field = Object.assign(out.field || {}, f); }
+  });
+  Object.keys(out).forEach(k=>{ if(out[k] === 0) delete out[k]; });
+  return out;
+}
+// The raid editor's write side (2026-10-18): sets the keys named in `vals` on a stage (a 0 / blank / false clears one) and keeps
+// every other key it already had. Stored as a one-object list, the shape the trench reads (bramblewood-trench.js trenchConfig).
+function setStageRules(stage, vals){
+  if(!stage) return stage; vals = vals || {};
+  const raw = stage.rules, list = Array.isArray(raw) ? raw : (raw && typeof raw === 'object') ? [raw] : [];
+  const merged = Object.assign({}, ...list.filter(r=> r && typeof r === 'object'));
+  Object.keys(vals).forEach(k=>{ const v = vals[k];
+    if(k === 'stripAbilities'){ delete merged[k]; if(v) merged[k] = true; }
+    else if(k === 'field'){ delete merged[k]; if(v && (typeof v !== 'object' || Object.keys(v).length)) merged[k] = v; }
+    else if(STAGE_NUM_KEYS[k]){ delete merged[k]; const n = Number(v), [lo, hi] = STAGE_NUM_KEYS[k]; if(v !== '' && v != null && isFinite(n) && Math.round(n)) merged[k] = Math.max(lo, Math.min(hi, Math.round(n))); }
+  });
+  stage.rules = Object.keys(merged).length ? [merged] : [];
+  return stage;
+}
+// One line on what a stage does, for the raid tab, the fight's set-up and the editor. opts.fieldName(key) names a field rule (else
+// the key, spaced out: crushingDepths -> Crushing Depths; a name it returns empty is left out, e.g. a helper key).
+function describeStage(stage, opts){
+  const r = stageRules(stage, opts), bits = [], sg = n=> (n > 0 ? '+' : '') + n;
+  const nm = (opts && opts.fieldName) || (k=> String(k).replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c=> c.toUpperCase()));
+  if(r.stripAbilities) bits.push('the boss’s cards lose every ability');
+  if(r.bossAtk && r.bossHp) bits.push(`every boss card ${sg(r.bossAtk)} Attack, ${sg(r.bossHp)} Health`);
+  else if(r.bossAtk) bits.push(`every boss card ${sg(r.bossAtk)} Attack`);
+  else if(r.bossHp) bits.push(`every boss card ${sg(r.bossHp)} Health`);
+  if(r.extraVolley) bits.push(r.extraVolley === 1 ? 'its back two rows strike too, once a round' : `its back two rows strike ${r.extraVolley} times a round`);
+  if(r.field){ const names = [...new Set(Object.keys(r.field).filter(k=> r.field[k] !== false).map(k=> nm(k)).filter(Boolean))]; if(names.length) bits.push(names.join(' and ') + ' on the field'); }
+  if(r.castleHpPct) bits.push(`your castle ${r.castleHpPct > 0 ? '+' : '−'}${Math.abs(r.castleHpPct)}% Health`);
+  if(!bits.length) return '';
+  const s = bits.join('; '); return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+}
+// The field a fight is under: the raid's fieldRules, the part's own on top (false switches one off), then the stage's field.
+function fieldRulesFor(def, part, sr){
+  const r = Object.assign({}, (def && def.fieldRules) || {}, (part && part.fieldRules) || {}, (sr && sr.field) || {});
+  Object.keys(r).forEach(k=>{ if(r[k] === false || r[k] == null) delete r[k]; });
+  return r;
+}
+// Fight setup for one part: the part's deck and castle, and what the raid's current stage does to it (stageRules above). opts:
+// {fieldRules(key) -> rules object} resolves a stage's field id (the page passes its FIELD_EFFECTS); {myCastleHp} is your castle's
+// Health before the stage's castleHpPct (the result's myCastleHp is after it).
+function fightFor(def, state, partId, opts){
+  const p = (def.parts||[]).find(x=> x.id===partId); if(!p) return null;
+  const s = state.byId[partId] || {};
+  const sr = stageRules(state.stage, opts);
+  const out = {part:p, deck: Object.assign({}, (p.fight||{}).deck||{}), castleHp: (p.fight||{}).castleHp || 200, rounds: fightRounds(def, p), stripAbilities: !!sr.stripAbilities, locked: s.locked, defeated: s.defeated,
+    stage: state.stage ? (state.stage.name || '') : null, stageRules: sr, bossAtk: sr.bossAtk || 0, bossHp: sr.bossHp || 0, extraVolley: sr.extraVolley || 0, castleHpPct: sr.castleHpPct || 0,
+    fieldRules: fieldRulesFor(def, p, sr)};
+  if(opts && opts.myCastleHp != null) out.myCastleHp = scaleCastle(opts.myCastleHp, out.castleHpPct);
+  return out;
+}
+// Your castle's Health under a stage's castleHpPct (never below 1).
+function scaleCastle(hp, pct){ hp = Number(hp) || 0; return pct ? Math.max(1, Math.round(hp * (1 + pct / 100))) : hp; }
+// A boss card's copy under a stage: +bossAtk Attack and +bossHp Health (never below 0 Attack / 1 Health). Returns a new def.
+function stageCard(d, f){ if(!d || !f || !(f.bossAtk || f.bossHp)) return d; return Object.assign({}, d, {attack: Math.max(0, (Number(d.attack) || 0) + (f.bossAtk || 0)), health: Math.max(1, (Number(d.health) || 1) + (f.bossHp || 0))}); }
 // Each attempt lasts a fixed number of turns (part `fight.rounds`, else raid `fightRounds`, else 12):
 // the part's deck is finite, so without a clock any deck would grind its castle down eventually.
 function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.rounds) || def.fightRounds || 12) | 0); }
@@ -18858,7 +18929,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
   return out;
 }
 
-const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
@@ -37120,7 +37191,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'f54312b8ef42', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
+const BUILD_ID = 'f2d9a4c618d4', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -54535,7 +54606,7 @@ const ONLINE_RAID_VISIBLE = false;
 // raid damage (caps 5,000 / 10,000 for an overwhelm); locked parts wait for others; stages as HP
 // falls; everyone who took part claims the kill reward (or 40% compensation if it survives the
 // week), plus contribution-tier extras. Rules live in bramblewood-raid.js. ----
-const RAID_DEFS_BASE = [{"id": "goliath", "name": "The Goliath", "icon": "🐙", "art": "assets/raids/goliath.png?v=26461f5a79", "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.", "ground": "mabyss", "fieldRules": {"crushingDepths": 2, "tide": true, "psychicDampener": true}, "commonPool": ["inkcloud-squid", "cuttlefish-illusionist", "moon-jelly", "open-ocean-hermit-crab", "blind-cave-fish", "pufferfish-bulwark", "minnow-skitter"], "cost": {"raidPoints": 1, "energy": 4}, "parts": [{"id": "left", "name": "Left Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"goliath-tentacle": 2, "inkcloud-squid": 3, "kraken-spawnling": 3, "riptide-eel": 2}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "right", "name": "Right Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"glass-octopus": 3, "vampire-squid": 2, "kraken-spawnling": 3, "coral-reef-shark": 2}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "tail", "name": "Tail", "icon": "🌊", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"humpback-elder": 3, "abyss-lantern-squid": 3, "orca-vanguard": 2, "riptide-eel": 2}}, "trench": {"attacks": [{"id": "sweep", "name": "Tail Sweep", "pattern": "frontRow", "dmg": 3, "every": 2}]}}, {"id": "core", "name": "Core", "icon": "👁️", "bars": 8, "barHp": 80000, "lockedUntil": ["left", "right", "tail"], "fight": {"castleHp": 200, "deck": {"goliath-broodmother": 1, "abyss-lantern-squid": 3, "vampire-squid": 3, "kraken-spawnling": 4, "humpback-elder": 2, "glass-octopus": 2}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}], "entities": [{"id": "stump-l", "name": "Left Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-c", "name": "Tail Stump", "icon": "🌊", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-r", "name": "Right Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}], "shieldWhileEntities": true, "rules": {"waitDelta": 1, "illusory": 0.667}, "wallHp": 70}, "scoring": {"perInFightHp": 140}}], "stages": [{"at": 0.75, "name": "Enraged"}, {"at": 0.5, "name": "Thrashing"}, {"at": 0.01, "name": "Exposed", "rules": [{"stripAbilities": true}]}], "scoring": {"perInFightHp": 15, "cap": 5000, "overwhelmCap": 10000}, "standIns": {"perDayPct": 12}, "rewards": {"kill": {"gold": 400, "dust": 60, "metal": 3}, "compensationPct": 40, "tiers": {"top1": {"metal": 3, "title": "Goliath-Slayer"}, "top10": {"metal": 2, "dust": 30}, "top50": {"dust": 20}, "participant": {}}}, "fightRounds": 12, "trench": {"rows": 3, "wallHp": 45}, "allyDecks": [{"name": "Riverguard Line", "deck": {"otter-centurion": 3, "otter-guard": 3, "otter-paddler": 3, "otter-kit": 3, "bee-knight": 4, "dolphin-knight": 4}}, {"name": "Hive Wall", "deck": {"bee-drone": 4, "bee-knight": 4, "bee-sentry": 4, "honey-bee": 4, "forager-ant": 4}}, {"name": "Talon Sky", "deck": {"cobalt-talon-fledgling": 4, "cobalt-talon-skirmisher": 4, "crimson-wing-recruit": 4, "owl-fletcher": 4, "cave-flitter": 4}}, {"name": "Tundra Pack", "deck": {"timber-wolf-pack": 4, "ice-crevasse-wolf": 4, "snowshoe-hare": 4, "arctic-fox-raider": 4, "taiga-lynx": 4}}], "cards": ["inkcloud-squid", "abyss-lantern-squid", "glass-octopus", "vampire-squid", "goliath-tentacle", "goliath-broodmother", "fathom-leviathan"]}];
+const RAID_DEFS_BASE = [{"id": "goliath", "name": "The Goliath", "icon": "🐙", "art": "assets/raids/goliath.png?v=26461f5a79", "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.", "ground": "mabyss", "fieldRules": {"crushingDepths": 2, "tide": true, "psychicDampener": true}, "commonPool": ["inkcloud-squid", "cuttlefish-illusionist", "moon-jelly", "open-ocean-hermit-crab", "blind-cave-fish", "pufferfish-bulwark", "minnow-skitter"], "cost": {"raidPoints": 1, "energy": 4}, "parts": [{"id": "left", "name": "Left Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"goliath-tentacle": 2, "inkcloud-squid": 3, "kraken-spawnling": 3, "riptide-eel": 2}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "right", "name": "Right Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"glass-octopus": 3, "vampire-squid": 2, "kraken-spawnling": 3, "coral-reef-shark": 2}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "tail", "name": "Tail", "icon": "🌊", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"humpback-elder": 3, "abyss-lantern-squid": 3, "orca-vanguard": 2, "riptide-eel": 2}}, "trench": {"attacks": [{"id": "sweep", "name": "Tail Sweep", "pattern": "frontRow", "dmg": 3, "every": 2}]}}, {"id": "core", "name": "Core", "icon": "👁️", "bars": 8, "barHp": 80000, "lockedUntil": ["left", "right", "tail"], "fight": {"castleHp": 200, "deck": {"goliath-broodmother": 1, "abyss-lantern-squid": 3, "vampire-squid": 3, "kraken-spawnling": 4, "humpback-elder": 2, "glass-octopus": 2}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}], "entities": [{"id": "stump-l", "name": "Left Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-c", "name": "Tail Stump", "icon": "🌊", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-r", "name": "Right Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}], "shieldWhileEntities": true, "rules": {"waitDelta": 1, "illusory": 0.667}, "wallHp": 70}, "scoring": {"perInFightHp": 140}}], "stages": [{"at": 0.75, "name": "Enraged", "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +2 Attack, and its back two rows strike once a round.", "rules": [{"bossAtk": 2, "extraVolley": 1}]}, {"at": 0.5, "name": "Thrashing", "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +4 Attack, its back rows keep striking, Landslide comes down, and the raiders' castle has 10% less Health.", "rules": [{"bossAtk": 4, "extraVolley": 1, "field": "landslide", "castleHpPct": -10}]}, {"at": 0.01, "name": "Exposed", "rules": [{"stripAbilities": true}]}], "scoring": {"perInFightHp": 15, "cap": 5000, "overwhelmCap": 10000}, "standIns": {"perDayPct": 12}, "rewards": {"kill": {"gold": 400, "dust": 60, "metal": 3}, "compensationPct": 40, "tiers": {"top1": {"metal": 3, "title": "Goliath-Slayer"}, "top10": {"metal": 2, "dust": 30}, "top50": {"dust": 20}, "participant": {}}}, "fightRounds": 12, "trench": {"rows": 3, "wallHp": 45}, "allyDecks": [{"name": "Riverguard Line", "deck": {"otter-centurion": 3, "otter-guard": 3, "otter-paddler": 3, "otter-kit": 3, "bee-knight": 4, "dolphin-knight": 4}}, {"name": "Hive Wall", "deck": {"bee-drone": 4, "bee-knight": 4, "bee-sentry": 4, "honey-bee": 4, "forager-ant": 4}}, {"name": "Talon Sky", "deck": {"cobalt-talon-fledgling": 4, "cobalt-talon-skirmisher": 4, "crimson-wing-recruit": 4, "owl-fletcher": 4, "cave-flitter": 4}}, {"name": "Tundra Pack", "deck": {"timber-wolf-pack": 4, "ice-crevasse-wolf": 4, "snowshoe-hare": 4, "arctic-fox-raider": 4, "taiga-lynx": 4}}], "cards": ["inkcloud-squid", "abyss-lantern-squid", "glass-octopus", "vampire-squid", "goliath-tentacle", "goliath-broodmother", "fathom-leviathan"]}];
 const RAID_DEFS_KEY = 'bramblewood_raid_defs_v1';
 const RAID_PART_ATTEMPTS_KEY = 'bramblewood_raid_part_attempts_v1';
 const RAID_CLAIMS_KEY = 'bramblewood_raid_claims_v1';
@@ -54628,6 +54699,16 @@ function currentRaidStateFor(def, now){
   const cycle = RaidM.cycleOf(now);
   return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
 }
+// Raid stages (2026-10-18, R3-WP2: Enraged and Thrashing did nothing): a stage's rules (bossAtk, bossHp, field, extraVolley,
+// castleHpPct, stripAbilities; RaidM.stageRules) land in the fight, and its one-line description shows wherever the stage does. A
+// stage's field is a FIELD_EFFECTS id (or a rule key), resolved to that effect's rules; it is named as its Environment card names it.
+function raidStageFieldRules(k){
+  const f = fieldEffectById(k) || FIELD_EFFECTS.find(x=> x.rules && Object.keys(x.rules)[0] === k);
+  return f && f.rules ? Object.assign({}, f.rules) : null;
+}
+function raidStageFieldName(k){ try{ const row = fieldConditionRows({[k]: true})[0]; return row ? String(row.name).replace(/ · .*$/, '') : ''; }catch(e){ return ''; } }
+function raidStageOpts(extra){ return Object.assign({fieldRules: raidStageFieldRules, fieldName: raidStageFieldName}, extra || {}); }
+function raidStageText(stage){ return RaidM && RaidM.describeStage ? RaidM.describeStage(stage, raidStageOpts()) : ''; }
 // One health bar per raid part (2026-10-15, user: "It's not clear what the 3 hp bars represent. Is it the 3 hp bars of the 3 entities
 // we can fight? or each has 3 hp bars. It should say health left like X/Y. So players feel the epic progress."): a part's health is
 // one bar with its "X / Y HP left" under it. Its phases (p.bars health bars of p.barHp each) are faint marks on that bar, and a
@@ -54707,8 +54788,9 @@ function raidPanelHTML(){
     <div class="r3-hero">
       <div class="r3-boss-card" aria-hidden="true">${raidBossIconHTML(def, '🐙')}<span class="r3-boss-glow"></span></div>
       <div class="r3-boss-info">
-        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
+        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage" title="${escapeAttr(raidStageText(st.stage) || st.stage.name)}">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
         <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
+        ${st.stage && raidStageText(st.stage) ? `<p class="r3-hint r3-stage-now"><b>${escapeHtml(st.stage.name)}:</b> ${escapeHtml(raidStageText(st.stage))}</p>` : ''}
         <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
           <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span></span></div>
       </div>
@@ -54746,7 +54828,10 @@ function raidPanelHTML(){
         <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
-        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(raidFieldRulesOf(def, null))}</div></section>
+        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
+      ${(def.stages || []).length ? `<section class="r3-stages"><h3>Stages</h3>
+        <p class="r3-note">As the boss's total Health falls, it changes. Every fight is under the stage it is in now.</p>
+        <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
       <section class="r3-rewards"><h3>If it falls</h3>
         <ul class="r3-rw">
           <li><b>Everyone who fought</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
@@ -54904,10 +54989,20 @@ function openRaidEditor(raidId){
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
       <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
-      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> (s.rules||[]).some(r=> r.stripAbilities)) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
+      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> RaidM.stageRules(s).stripAbilities) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
       ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
       <h3 class="se-h">Stages (as total HP falls)</h3>
-      <div class="re-stages">${draft.stages.map((s,i)=> `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${(s.rules||[]).some(r=> r.stripAbilities)?'checked':''}> strips enemy abilities</label><button type="button" class="btn small ghost" data-st-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
+      <div class="re-stages">${draft.stages.map((s,i)=>{ const sr = RaidM.stageRules(s), raw = Object.assign({}, ...[].concat(s.rules || []).filter(r=> r && typeof r === 'object')), fv = raw.field;
+        // 2026-10-18 (R3-WP2): each stage's rules as simple inputs (RaidM.setStageRules writes them back); a field the list can't show (a rules object) is kept as it is.
+        const fx = FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift'), keep = fv && (typeof fv !== 'string' || !fx.some(f=> f.id === fv));
+        return `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${sr.stripAbilities?'checked':''}> strips enemy abilities</label>
+          <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
+          <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
+          <label title="The boss's back two rows strike this many times a round (half their Attack, like your ally rows)">back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
+          <label title="Your castle's max Health changes by this % (-10 = 10% less)">your castle %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
+          <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
+          <button type="button" class="btn small ghost" data-st-del="${i}">✕</button>
+          <small class="panel-sub re-stage-desc">${escapeHtml(raidStageText(s) || 'No rules: the stage is only a name.')}</small></div>`; }).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
       <h3 class="se-h">Scoring &amp; rewards</h3>
       <div class="se-grid">
         <label>Raid damage per castle HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
@@ -54970,7 +55065,12 @@ function openRaidEditor(raidId){
     draft.stages.forEach((s,i)=>{
       const n = overlay.querySelector(`[data-st-name="${i}"]`), a = overlay.querySelector(`[data-st-at="${i}"]`), x = overlay.querySelector(`[data-st-strip="${i}"]`);
       if(n) s.name = n.value; if(a) s.at = Math.max(0, Math.min(0.999, num(a.value, 50)/100));
-      if(x){ s.rules = (s.rules||[]).filter(r=> !r.stripAbilities); if(x.checked) s.rules.push({stripAbilities:true}); }
+      // 2026-10-18 (R3-WP2): the stage's rules through RaidM.setStageRules (keys the editor doesn't show are kept)
+      const g = k=> overlay.querySelector(`[data-st-${k}="${i}"]`), vals = {};
+      if(x) vals.stripAbilities = x.checked;
+      [['batk', 'bossAtk'], ['bhp', 'bossHp'], ['volley', 'extraVolley'], ['castle', 'castleHpPct']].forEach(([a, k])=>{ if(g(a)) vals[k] = g(a).value; });
+      if(g('field') && g('field').value !== '__keep') vals.field = g('field').value;
+      RaidM.setStageRules(s, vals);
     });
   };
   const wire = ()=>{
@@ -55197,7 +55297,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
 }
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
-  const f = RaidM.fightFor(def, st, partId);
+  const f = RaidM.fightFor(def, st, partId, raidStageOpts()); // 2026-10-18 (R3-WP2): with the stage's rules (raidStageOpts resolves its field)
   if(!f || f.locked || f.defeated) return;
   // 2026-10-12 (user: "I love that you made a whole entire minigame simulator of the full game. Lets bench that ... but for raids,
   // I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3 rows"): a trench raid is now a real match with
@@ -55216,9 +55316,13 @@ function startRaidPartMatch(def, partId){
     defs = Object.assign({}, defs); deck = {};
     Object.keys(f.deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}, name: defs[id].name+' (exposed)'}); deck[nid] = f.deck[id]; });
   }
-  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
+  // 2026-10-18 (R3-WP2): the stage's +Attack / +Health on run-only copies, its field, and your castle's Health (castleHpPct)
+  if(f.bossAtk || f.bossHp){ defs = Object.assign({}, defs); const d2 = {};
+    Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = f.stripAbilities ? id : id + '~raid'; defs[nid] = RaidM.stageCard(Object.assign({}, defs[id], {id:nid}), f); d2[nid] = deck[id]; }); deck = d2;
+    matchDefsOverlay = {}; Object.keys(deck).forEach(id=>{ matchDefsOverlay[id] = defs[id]; }); }
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = myCastleDef();
+  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = RaidM.scaleCastle(myCharacter.health || 30, f.castleHpPct);
   const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -55226,9 +55330,10 @@ function startRaidPartMatch(def, partId){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
+    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
+    raidFieldRules: f.fieldRules, raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : ''}; // 2026-10-18 (R3-WP2)
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stripAbilities ? ' · EXPOSED' : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
 function startRaidFullBattle(def, partId, f, st){
   if(!deckSizeOkOrWarn()) return;
@@ -55245,15 +55350,15 @@ function startRaidFullBattle(def, partId, f, st){
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
     const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
-    defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})});
+    defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
-    defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
+    defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
   // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
   // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
   // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
   const commonPool = (RaidM.raidCommonPool ? RaidM.raidCommonPool(def, f.part, defs) : []).map(id=>{ const nid = id + '~raid', src = defs[id];
-    if(!defs[nid]) defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})});
+    if(!defs[nid]) defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})}), f);
     return nid; });
   // The boss unit (2026-10-17, user: "I also noticed the raid has 2 variations of the same card. Then name them differently. Also the 100+
   // HP difference is too much."): it used to be the part's biggest card under its own name with its Health ×(2 + 10·r²) (a 24-Health
@@ -55266,7 +55371,7 @@ function startRaidFullBattle(def, partId, f, st){
   matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
-  const raidRules = raidFieldRulesOf(def, f.part);
+  const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
   // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
@@ -55275,7 +55380,7 @@ function startRaidFullBattle(def, partId, f, st){
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
   const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
   const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = Math.max(merged.health || 30, (cfg.wallHp || 45) * 2);
+  const myHp = RaidM.scaleCastle(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18)
   const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
@@ -55296,7 +55401,8 @@ function startRaidFullBattle(def, partId, f, st){
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name)),
-    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId};
+    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId,
+    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
@@ -55307,7 +55413,7 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -55397,6 +55503,9 @@ function raidPickColumn(m){
   const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
 }
 function raidSpecials(m, events){
+  // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
+  // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
+  for(let k = 0; k < Math.min(3, m.raidExtraVolley || 0) && m.engine.reserveVolley; k++){ m.engine.reserveVolley(m.players, m.sideOf, 2, m.stats, events); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events); }
   const atks = m.raidAttacks || []; if(!atks.length) return;
   const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
   atks.forEach((a, i)=>{

@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (R3-WP2: raid stages do something)
+- **The Goliath's Enraged (below 75%) and Thrashing (below 50%) stages now change the fight** (they were names only). Defaults, waiting on the owner: **Enraged:** every boss card +2 Attack, and its back two rows strike once a round (the volley your ally rows already make). **Thrashing:** every boss card +4 Attack, the back-row volley, Landslide on the field, and your (the raiders') castle 10% less Health. Exposed (below 1%) still strips every ability.
+- **The Raid tab** shows the current stage's one-line effect under the boss, a "Stages" panel with every stage (the current one marked), and the field panel includes the stage's field. The VS screen names the stage.
+- **The raid editor's stages** each get boss +Attack, boss +Health, back-row strikes, your castle %, and a field effect picker, with the stage's line under them.
+- **How:** stage `rules` (an object or the older list) are read by `BramblewoodRaid.stageRules` (keys `bossAtk`, `bossHp`, `field`, `extraVolley`, `castleHpPct`, `stripAbilities`; others ignored); `fightFor` returns them with the merged field; `stageCard` / `scaleCastle` apply them; `setStageRules` is the editor's write side; `describeStage` the line. The benched trench minigame and the editor's Simulate still read only stripAbilities.
+- `tests/raid-stages-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-18 (I1: translations for texts with placeholders)
 - **The 159 game texts with a {placeholder} now translate** in all 12 languages ("📜 Errand: The Old Bramble — 2/5" → "📜 おつかい：古いいばら — 2/5"): toasts, results-screen pills, dialogs, tutorial lines. `TX()` still returns English, so code that compares its result is unaffected.
 - **How:** `bramblewood-i18n.js` compiles every pack key with a {placeholder} into a template (once per pack load: ~2 ms). When the exact lookup misses, a text is tried only against the templates whose rarest literal word it contains, and a match fills the translation with the captured values; each value is looked up too, so a map, card or item name inside the sentence translates, as do English tails such as " · published" or ". Journey complete!". Counts only match digits, plural endings a few letters, ranks a capital letter. ~3 µs a string on first sight, cached after.

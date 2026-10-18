@@ -89,14 +89,85 @@ function claimableReward(def, state, owner, now){
   const extra = ((rw.tiers||{})[tier]) || {};
   return {kind, tier, base, extra};
 }
-// Fight setup for one part: the part's deck and castle, and whether its cards are stripped of
-// abilities (stage rule stripAbilities, e.g. the < 1% "Exposed" stage).
-function fightFor(def, state, partId){
-  const p = (def.parts||[]).find(x=> x.id===partId); if(!p) return null;
-  const s = state.byId[partId];
-  const rules = (state.stage && state.stage.rules) || [];
-  return {part:p, deck: Object.assign({}, (p.fight||{}).deck||{}), castleHp: (p.fight||{}).castleHp || 200, rounds: fightRounds(def, p), stripAbilities: rules.some(r=> r.stripAbilities), locked: s.locked, defeated: s.defeated};
+// Stage rules (2026-10-18, R3-WP2: "Enraged" and "Thrashing" had no rules, and fightFor only understood stripAbilities). A stage's
+// `rules` is an object, or a list of objects (the older shape, merged in order). Keys, all optional; unknown keys are ignored:
+//   stripAbilities  true: the boss's cards lose every ability (Exposed)
+//   bossAtk / bossHp  +N Attack / +N Health on every boss card (its deck, its boss unit, its guards and the Commons it calls in)
+//   field           a field effect for this stage: a field-effect id or rule key ("landslide"), a list of them, or a rules object;
+//                   it goes on top of the raid's and the part's own field (a key it names replaces theirs)
+//   extraVolley     the boss's back two rows strike N times a round too (the volley your ally rows already make: half Attack)
+//   castleHpPct     your (the raiders') castle's max Health changes by N% (-10 = 10% less)
+const STAGE_NUM_KEYS = {bossAtk:[-20, 50], bossHp:[-50, 200], extraVolley:[0, 3], castleHpPct:[-90, 200]};
+function stageFieldOf(v, resolve){
+  if(!v) return {};
+  if(Array.isArray(v)) return v.reduce((o, x)=> Object.assign(o, stageFieldOf(x, resolve)), {});
+  if(typeof v === 'string') return String(v).split(/[\s,]+/).filter(Boolean).reduce((o, k)=>{ const r = resolve ? resolve(k) : null; if(r && typeof r === 'object') Object.assign(o, r); else o[k] = true; return o; }, {});
+  if(typeof v === 'object') return Object.assign({}, v);
+  return {};
 }
+function stageRules(stage, opts){
+  const raw = stage && stage.rules, list = Array.isArray(raw) ? raw : (raw && typeof raw === 'object') ? [raw] : [];
+  const out = {}, resolve = opts && opts.fieldRules;
+  list.forEach(r=>{ if(!r || typeof r !== 'object') return;
+    if(r.stripAbilities) out.stripAbilities = true;
+    Object.keys(STAGE_NUM_KEYS).forEach(k=>{ const n = Number(r[k]); if(r[k] == null || !isFinite(n) || !n) return; const [lo, hi] = STAGE_NUM_KEYS[k]; out[k] = Math.max(lo, Math.min(hi, Math.round((out[k] || 0) + n))); });
+    if(r.field){ const f = stageFieldOf(r.field, resolve); if(Object.keys(f).length) out.field = Object.assign(out.field || {}, f); }
+  });
+  Object.keys(out).forEach(k=>{ if(out[k] === 0) delete out[k]; });
+  return out;
+}
+// The raid editor's write side (2026-10-18): sets the keys named in `vals` on a stage (a 0 / blank / false clears one) and keeps
+// every other key it already had. Stored as a one-object list, the shape the trench reads (bramblewood-trench.js trenchConfig).
+function setStageRules(stage, vals){
+  if(!stage) return stage; vals = vals || {};
+  const raw = stage.rules, list = Array.isArray(raw) ? raw : (raw && typeof raw === 'object') ? [raw] : [];
+  const merged = Object.assign({}, ...list.filter(r=> r && typeof r === 'object'));
+  Object.keys(vals).forEach(k=>{ const v = vals[k];
+    if(k === 'stripAbilities'){ delete merged[k]; if(v) merged[k] = true; }
+    else if(k === 'field'){ delete merged[k]; if(v && (typeof v !== 'object' || Object.keys(v).length)) merged[k] = v; }
+    else if(STAGE_NUM_KEYS[k]){ delete merged[k]; const n = Number(v), [lo, hi] = STAGE_NUM_KEYS[k]; if(v !== '' && v != null && isFinite(n) && Math.round(n)) merged[k] = Math.max(lo, Math.min(hi, Math.round(n))); }
+  });
+  stage.rules = Object.keys(merged).length ? [merged] : [];
+  return stage;
+}
+// One line on what a stage does, for the raid tab, the fight's set-up and the editor. opts.fieldName(key) names a field rule (else
+// the key, spaced out: crushingDepths -> Crushing Depths; a name it returns empty is left out, e.g. a helper key).
+function describeStage(stage, opts){
+  const r = stageRules(stage, opts), bits = [], sg = n=> (n > 0 ? '+' : '') + n;
+  const nm = (opts && opts.fieldName) || (k=> String(k).replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c=> c.toUpperCase()));
+  if(r.stripAbilities) bits.push('the boss’s cards lose every ability');
+  if(r.bossAtk && r.bossHp) bits.push(`every boss card ${sg(r.bossAtk)} Attack, ${sg(r.bossHp)} Health`);
+  else if(r.bossAtk) bits.push(`every boss card ${sg(r.bossAtk)} Attack`);
+  else if(r.bossHp) bits.push(`every boss card ${sg(r.bossHp)} Health`);
+  if(r.extraVolley) bits.push(r.extraVolley === 1 ? 'its back two rows strike too, once a round' : `its back two rows strike ${r.extraVolley} times a round`);
+  if(r.field){ const names = [...new Set(Object.keys(r.field).filter(k=> r.field[k] !== false).map(k=> nm(k)).filter(Boolean))]; if(names.length) bits.push(names.join(' and ') + ' on the field'); }
+  if(r.castleHpPct) bits.push(`your castle ${r.castleHpPct > 0 ? '+' : '−'}${Math.abs(r.castleHpPct)}% Health`);
+  if(!bits.length) return '';
+  const s = bits.join('; '); return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+}
+// The field a fight is under: the raid's fieldRules, the part's own on top (false switches one off), then the stage's field.
+function fieldRulesFor(def, part, sr){
+  const r = Object.assign({}, (def && def.fieldRules) || {}, (part && part.fieldRules) || {}, (sr && sr.field) || {});
+  Object.keys(r).forEach(k=>{ if(r[k] === false || r[k] == null) delete r[k]; });
+  return r;
+}
+// Fight setup for one part: the part's deck and castle, and what the raid's current stage does to it (stageRules above). opts:
+// {fieldRules(key) -> rules object} resolves a stage's field id (the page passes its FIELD_EFFECTS); {myCastleHp} is your castle's
+// Health before the stage's castleHpPct (the result's myCastleHp is after it).
+function fightFor(def, state, partId, opts){
+  const p = (def.parts||[]).find(x=> x.id===partId); if(!p) return null;
+  const s = state.byId[partId] || {};
+  const sr = stageRules(state.stage, opts);
+  const out = {part:p, deck: Object.assign({}, (p.fight||{}).deck||{}), castleHp: (p.fight||{}).castleHp || 200, rounds: fightRounds(def, p), stripAbilities: !!sr.stripAbilities, locked: s.locked, defeated: s.defeated,
+    stage: state.stage ? (state.stage.name || '') : null, stageRules: sr, bossAtk: sr.bossAtk || 0, bossHp: sr.bossHp || 0, extraVolley: sr.extraVolley || 0, castleHpPct: sr.castleHpPct || 0,
+    fieldRules: fieldRulesFor(def, p, sr)};
+  if(opts && opts.myCastleHp != null) out.myCastleHp = scaleCastle(opts.myCastleHp, out.castleHpPct);
+  return out;
+}
+// Your castle's Health under a stage's castleHpPct (never below 1).
+function scaleCastle(hp, pct){ hp = Number(hp) || 0; return pct ? Math.max(1, Math.round(hp * (1 + pct / 100))) : hp; }
+// A boss card's copy under a stage: +bossAtk Attack and +bossHp Health (never below 0 Attack / 1 Health). Returns a new def.
+function stageCard(d, f){ if(!d || !f || !(f.bossAtk || f.bossHp)) return d; return Object.assign({}, d, {attack: Math.max(0, (Number(d.attack) || 0) + (f.bossAtk || 0)), health: Math.max(1, (Number(d.health) || 1) + (f.bossHp || 0))}); }
 // Each attempt lasts a fixed number of turns (part `fight.rounds`, else raid `fightRounds`, else 12):
 // the part's deck is finite, so without a clock any deck would grind its castle down eventually.
 function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.rounds) || def.fightRounds || 12) | 0); }
@@ -163,7 +234,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
   return out;
 }
 
-const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
