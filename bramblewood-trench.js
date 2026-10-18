@@ -37,7 +37,9 @@ function trenchConfig(def, part, stage){
   cfg.entities = (own.entities || []).map(e=> Object.assign({}, e));
   cfg.rules = Object.assign({}, base.rules || {}, own.rules || {});
   cfg.rounds = (part && part.fight && part.fight.rounds) || def.fightRounds || cfg.rounds;
-  cfg.castleHp = (part && part.fight && part.fight.castleHp) || 200;
+  // 2026-10-18: raids went from 12 to 20 turns, so the three rows overwhelmed the outer parts every time.
+  // A part's trench.castleHp (own, else raid trench) overrides its fight castleHp for the trench only.
+  cfg.castleHp = own.castleHp || (part && part.fight && part.fight.castleHp) || 200;
   cfg.deck = Object.assign({}, (part && part.fight && part.fight.deck) || {});
   cfg.strip = !!(stage && (stage.rules||[]).some(r=> r.stripAbilities));
   if(cfg.strip){ cfg.rules = {}; cfg.entities.forEach(e=>{ e.aura = 0; }); cfg.shieldWhileEntities = false; }
