@@ -1694,6 +1694,103 @@ M.castleTemper = function(tile, opts){
   return new Promise(res=> tl.eventCallback('onComplete', ()=>{ stones.forEach(s=> s[0].remove()); res(); }));
 };
 
+// Forging Max Energy (meta-forge-energy, 2026-10-18, package NF, owner 23:37: "Forging your energy should have an amazing energy
+// and animation."). el: the Forge's ⚡ Max Energy panel (.stamina-panel). opts: {from, to, max (the top of the bar, 60), label (the
+// line that pops, "Max Energy 35!"), hud (the ⚡ pill to throw a bolt at, optional), sound(name, ...args), calm, onDone}.
+// Full: the room dims, motes of energy gather into a bar laid over the panel's pips, the bar charges from the old max to the new one
+// with lightning crackling along it and sparks off its head, overflows (the fill spills past the mark, drops of light fall, a white
+// flash), a shockwave and a spark burst, the new pip pops, the number counts up, a bolt leaps to the ⚡ pill. About 2.6 s.
+// calm (reduced motion, Effects Off / Low, no GSAP): no motion at all: the panel glows gold and fades back, the new pip brightens,
+// one soft chime.
+M.energyForge = function(el, opts){
+  opts = opts || {}; const g = G(), snd2 = (...a)=>{ try{ if(opts.sound) opts.sound(...a); else snd(...a); }catch(e){} };
+  if(!el || !el.isConnected) return Promise.resolve();
+  css('energyForge', `.fxd-ef-calm{animation:fxdEfCalm 1.6s ease-in-out 1;} @keyframes fxdEfCalm{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.12);} 35%{box-shadow:0 0 0 3px rgba(255,214,90,.85), 0 0 26px 6px rgba(255,196,60,.55);}}
+.fxd-ef-calm-pip{animation:fxdEfCalmPip 1.6s ease-in-out 1;} @keyframes fxdEfCalmPip{0%{filter:brightness(.6);} 40%{filter:brightness(1.8) drop-shadow(0 0 4px #ffd65a);} 100%{filter:none;}}
+.fxd-ef-veil{position:fixed; inset:0; background:radial-gradient(ellipse at var(--fx-x, 50%) var(--fx-y, 50%), rgba(20,40,80,0) 0, rgba(6,10,30,.55) 60%); opacity:0;}
+.fxd-ef-bar{position:fixed; border-radius:999px; background:rgba(20,24,40,.82); box-shadow:inset 0 0 0 1px rgba(255,230,140,.55), 0 0 18px rgba(255,200,60,.35); overflow:visible;}
+.fxd-ef-tick{position:absolute; top:3px; bottom:3px; width:1px; background:rgba(255,255,255,.22);}
+.fxd-ef-fill{position:absolute; left:2px; top:2px; bottom:2px; border-radius:999px; background:linear-gradient(90deg, #ffb52e, #ffe27a 55%, #fff7c8); box-shadow:0 0 12px 2px rgba(255,214,90,.75);}
+.fxd-ef-new{position:absolute; top:-3px; bottom:-3px; border-radius:6px; box-shadow:inset 0 0 0 2px rgba(140,230,255,.85), 0 0 10px rgba(120,220,255,.6);}
+.fxd-ef-head{position:absolute; top:50%; width:22px; height:22px; margin:-11px 0 0 -11px; border-radius:50%; background:radial-gradient(circle, #fff 0 25%, rgba(160,235,255,.9) 45%, rgba(120,200,255,0) 70%);}
+.fxd-ef-bolt{position:fixed; left:0; top:0; overflow:visible;} .fxd-ef-bolt polyline{fill:none; stroke-linecap:round; stroke-linejoin:round;}
+.fxd-ef-drop{position:fixed; width:6px; height:9px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:linear-gradient(#fffbe0, #ffcf4a); box-shadow:0 0 8px 2px rgba(255,214,90,.8);}
+.fxd-ef-flash{position:fixed; border-radius:999px; background:#fff; mix-blend-mode:screen;}`);
+  const pipsEl = el.querySelector('.wp-stam-pips'), lit = pipsEl ? [...pipsEl.querySelectorAll('i.on')] : [], pip = lit[lit.length - 1] || null;
+  const num = el.querySelector('h3 b'), numText = num ? num.textContent : null;
+  // ---- calm: colour only, no motion
+  if(opts.calm || !g){
+    snd2('energySurge', 'calm');
+    el.classList.add('fxd-ef-calm'); if(pip) pip.classList.add('fxd-ef-calm-pip');
+    return new Promise(res=> setTimeout(()=>{ el.classList.remove('fxd-ef-calm'); if(pip) pip.classList.remove('fxd-ef-calm-pip'); call(opts.onDone); res(); }, 1650));
+  }
+  packCss();
+  const max = Math.max(1, opts.max || 60), from = Math.max(0, Math.min(max, opts.from || 0)), to = Math.max(from, Math.min(max, opts.to || from));
+  const pr = el.getBoundingClientRect(), anchor = (pipsEl || el).getBoundingClientRect();
+  const bx = pr.left + 14, bw = Math.max(120, pr.width - 28), bh = 18, by = pipsEl ? anchor.top + anchor.height/2 - bh/2 : pr.bottom - 30;
+  const fx = w=> bx + 2 + (bw - 4) * w; // x of a share of the bar
+  const made = [], keep = e=>{ made.push(e); return e; };
+  const veil = keep(layer('fxd-ef-veil')); veil.style.setProperty('--fx-x', (pr.left + pr.width/2) + 'px'); veil.style.setProperty('--fx-y', (pr.top + pr.height/2) + 'px');
+  const bar = keep(layer('fxd-ef-bar')); g.set(bar, {left:bx, top:by, width:bw, height:bh, opacity:0, scaleX:.6, transformOrigin:'0% 50%'});
+  for(let v = 5; v < max; v += 5){ const t = document.createElement('i'); t.className = 'fxd-ef-tick'; t.style.left = (2 + (bw - 4) * v / max) + 'px'; bar.appendChild(t); }
+  const nw = document.createElement('i'); nw.className = 'fxd-ef-new'; nw.style.left = (2 + (bw - 4) * from / max) + 'px'; nw.style.width = Math.max(4, (bw - 4) * (to - from) / max) + 'px'; bar.appendChild(nw);
+  const fill = document.createElement('i'); fill.className = 'fxd-ef-fill'; fill.style.width = ((bw - 4) * from / max) + 'px'; bar.appendChild(fill);
+  const head = document.createElement('i'); head.className = 'fxd-ef-head'; head.style.left = (2 + (bw - 4) * from / max) + 'px'; bar.appendChild(head);
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const bolts = keep(document.createElementNS(SVGNS, 'svg')); bolts.setAttribute('class', 'fxd fxd-ef-bolt'); bolts.setAttribute('aria-hidden', 'true'); bolts.setAttribute('width', String(vw())); bolts.setAttribute('height', String(vh())); (overHost()).appendChild(bolts);
+  const zig = (x0, y0, x1, y1, n, amp)=>{ const pts = []; for(let k = 0; k <= n; k++){ const t = k/n, jx = (k && k < n) ? rnd(-amp, amp) * .3 : 0, jy = (k && k < n) ? rnd(-amp, amp) : 0; pts.push((x0 + (x1 - x0)*t + jx).toFixed(1) + ',' + (y0 + (y1 - y0)*t + jy).toFixed(1)); } return pts.join(' '); };
+  const bolt = (x0, y0, x1, y1, col, w, n, amp)=>{ const p = document.createElementNS(SVGNS, 'polyline'); p.setAttribute('points', zig(x0, y0, x1, y1, n || 9, amp || 8)); p.setAttribute('stroke', col || '#bdf0ff'); p.setAttribute('stroke-width', String(w || 2)); p.style.filter = 'drop-shadow(0 0 4px #8fe3ff)'; bolts.appendChild(p); return p; };
+  const spark = (x, y, big)=>{ const d = layer('fxd-dot'); const col = Math.random() < .5 ? '#fff3b0' : '#9fe8ff'; d.style.background = col; d.style.boxShadow = `0 0 6px 1px ${col}`; if(!big){ d.style.width = d.style.height = '4px'; }
+    const a = rnd(-Math.PI*.95, -Math.PI*.05), dist = rnd(big ? 40 : 18, big ? 110 : 54);
+    g.fromTo(d, {x, y, opacity:1, scale:1}, {x: x + Math.cos(a)*dist, y: y + Math.sin(a)*dist + rnd(10, 30), opacity:0, scale:.3, duration: rnd(.35, .6), ease:'power2.out', onComplete:()=> d.remove()}); };
+  const tl = g.timeline();
+  // 1. the room dims, the bar draws in, motes of energy gather into it (0 → 0.55 s)
+  snd2('energySurge', 'charge');
+  tl.to(veil, {opacity:1, duration:.35, ease:'power1.out'}, 0)
+    .to(el, {boxShadow:'0 0 0 2px rgba(255,214,90,.9), 0 0 30px 8px rgba(120,210,255,.45)', duration:.35}, 0)
+    .to(bar, {opacity:1, scaleX:1, duration:.35, ease:'back.out(1.6)'}, .05);
+  for(let k = 0; k < 16; k++){ const m = layer('fxd-dot'); const a = rnd(0, Math.PI*2), r0 = rnd(110, 210), col = k % 3 ? '#ffe27a' : '#9fe8ff'; m.style.background = col; m.style.boxShadow = `0 0 8px 2px ${col}`;
+    const tx = fx(from / max), ty = by + bh/2; keep(m);
+    tl.fromTo(m, {x: tx + Math.cos(a)*r0, y: ty + Math.sin(a)*r0*.6, opacity:0, scale:.5}, {x: tx + rnd(-6, 6), y: ty, opacity:1, scale:1.2, duration: rnd(.35, .55), ease:'power2.in'}, rnd(0, .25))
+      .to(m, {opacity:0, scale:.2, duration:.12}, '>-0.02'); }
+  // 2. the charge: the fill races from the old max to the new one, lightning crackles along it, sparks fly off its head (0.45 → 1.3 s)
+  const t0 = .45, tC = .85, endX = fx(to / max) - bx;
+  tl.to(fill, {width: ((bw - 4) * to / max) + 'px', duration: tC, ease:'power2.in'}, t0)
+    .to(head, {left: endX + 'px', duration: tC, ease:'power2.in'}, t0)
+    .fromTo(head, {scale:.6}, {scale:1.5, duration: tC, ease:'power1.in'}, t0);
+  for(let k = 0; k < 12; k++) tl.call(()=>{ while(bolts.childNodes.length > 3) bolts.removeChild(bolts.firstChild);
+    const hx = head.getBoundingClientRect(), x1 = hx.left + hx.width/2, y = by + bh/2; bolt(bx + 6, y, x1, y, k % 2 ? '#fff6c8' : '#bdf0ff', 1.6, 10, 7); spark(x1, y, false); spark(x1, y, false); }, null, t0 + k * tC/12);
+  // 3. the overflow: past the mark, a white flash, drops of light spill off the end, the new pip pops (1.3 s)
+  const tO = t0 + tC;
+  tl.call(()=>{ snd2('energySurge', 'overflow'); while(bolts.firstChild) bolts.removeChild(bolts.firstChild);
+      const x = fx(to / max), y = by + bh/2;
+      const fl = keep(layer('fxd-ef-flash')); g.set(fl, {left:bx, top:by - 4, width:bw, height:bh + 8, opacity:.9}); g.to(fl, {opacity:0, duration:.45, ease:'power2.out'});
+      for(let k = 0; k < 12; k++){ const d = keep(layer('fxd-ef-drop')); g.fromTo(d, {x: x + rnd(-8, 14), y: y - 2, opacity:1, rotation:0}, {x: x + rnd(-30, 50), y: y + rnd(60, 130), opacity:0, rotation:rnd(-40, 40), duration: rnd(.6, 1), ease:'power2.in', delay: k * .025}); }
+      if(pip) g.fromTo(pip, {scale:.2}, {scale:1, duration:.5, ease:'elastic.out(1.1, .45)', clearProps:'transform'}); }, null, tO)
+    .to(fill, {width: Math.min(bw + 26, (bw - 4) * to / max + 30) + 'px', duration:.16, ease:'power2.out'}, tO)
+    .to(fill, {width: ((bw - 4) * to / max) + 'px', duration:.4, ease:'elastic.out(1, .4)'}, tO + .16)
+    .to(nw, {boxShadow:'inset 0 0 0 2px #fff, 0 0 18px 4px rgba(160,235,255,.95)', duration:.15, yoyo:true, repeat:3}, tO);
+  // 4. the shockwave: rings out from the end and the panel, a spark burst, the panel jolts, the line pops (1.45 s)
+  const tS = tO + .15;
+  tl.call(()=>{ snd2('energySurge', 'boom'); const x = fx(to / max), y = by + bh/2, cx = pr.left + pr.width/2, cy = pr.top + pr.height/2;
+      ringAt(x, y, 60, {border:'3px solid rgba(190,240,255,.95)', boxShadow:'0 0 16px rgba(120,220,255,.8)'}, {to:5, dur:.75});
+      ringAt(cx, cy, Math.max(pr.width, pr.height) * .6, {border:'2px solid rgba(255,214,90,.8)'}, {from:.6, to:2.2, dur:.8, delay:.05});
+      burstAt(x, y, 18, ['#fff3b0', '#ffd65a', '#9fe8ff', '#ffffff'], {r0:50, r1:160, fall:30, dur:.8});
+      shake(el, 5, .3);
+      textPop(cx, pr.top - 18, opts.label || ('⚡ ' + to), {color:'#fffbe8', textShadow:'0 0 12px #7fd8ff, 0 0 4px #ffb52e, 0 2px 0 rgba(30,20,0,.6)', fontSize:'22px', fontWeight:'800', whiteSpace:'nowrap'}, {hold:.9});
+      if(to > from) textPop(x, y - 26, '+' + (to - from) + '⚡', {color:'#bdf0ff', textShadow:'0 0 8px #3aa8ff, 0 2px 0 rgba(0,0,0,.5)', fontSize:'16px', fontWeight:'800', whiteSpace:'nowrap'}, {hold:.6, delay:.08}); }, null, tS);
+  // the number counts up with it
+  if(num && numText != null){ num.textContent = String(from); const o = {v: from}; tl.to(o, {v: to, duration:.5, ease:'power1.out', onUpdate:()=>{ if(num.isConnected) num.textContent = String(Math.round(o.v)); }}, tO - .1); }
+  // 5. a bolt leaps to the ⚡ pill, which jumps (1.75 s)
+  const hud = opts.hud && opts.hud.isConnected && opts.hud.getBoundingClientRect().width ? opts.hud : null;
+  if(hud) tl.call(()=>{ const h = hud.getBoundingClientRect(), x = fx(to / max), y = by + bh/2; const b1 = bolt(x, y, h.left + h.width/2, h.top + h.height/2, '#e8fbff', 2.6, 14, 18), b2 = bolt(x, y, h.left + h.width/2, h.top + h.height/2, '#7fd8ff', 1.2, 14, 22);
+      g.to([b1, b2], {opacity:0, duration:.45, delay:.12}); g.fromTo(hud, {scale:1}, {scale:1.25, duration:.14, yoyo:true, repeat:1, ease:'power2.out', clearProps:'transform'}); snd2('readyChime'); }, null, tS + .3);
+  // 6. everything settles and goes (≈2.6 s)
+  tl.to([bar, veil], {opacity:0, duration:.45, ease:'power1.in'}, tS + .75)
+    .to(el, {boxShadow:'0 2px 8px rgba(0,0,0,.12)', duration:.45, clearProps:'boxShadow'}, tS + .75);
+  return new Promise(res=> tl.eventCallback('onComplete', ()=>{ made.forEach(e=>{ try{ e.remove(); }catch(_){} }); if(num && num.isConnected && numText != null) num.textContent = numText; call(opts.onDone); res(); }));
+};
+
 // ======================= HOOKS =======================
 // Battle events (fxBatchVfx → FX.D.onEvent). Gating (reduced motion, Effects "none") already happened in the caller.
 M.onEvent = function(ev, env){

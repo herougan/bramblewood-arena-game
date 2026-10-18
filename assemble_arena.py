@@ -307,6 +307,7 @@ out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n" + ghosts_src)
 out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
 # app_src references __CARD_DEFS__ / __ARCHETYPE_ICON__ / __CHARACTER_DEFS__ inside itself
 app_src = sub_once(app_src, "__CARD_DEFS__", card_defs_literal)
+app_src = sub_once(app_src, "__POOL_CARD_DEFS__", json.dumps(pool_defs_obj, ensure_ascii=False))  # 2026-10-19 (package AN): Admin only
 app_src = sub_once(app_src, "__ARCHETYPE_ICON__", archetype_icon_literal)
 app_src = sub_once(app_src, "__CHARACTER_DEFS__", character_defs_literal)
 # Version + card-data check (2026-10-11, user: "a per-session card_data hash plus version check: if the client is

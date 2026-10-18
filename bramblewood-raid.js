@@ -30,8 +30,12 @@ function raidState(def, attempts, now, opts){
   opts = opts || {};
   const cycle = opts.cycle!=null ? opts.cycle : cycleOf(now);
   const cycleStart = cycle * CYCLE_MS;
-  const daysIn = Math.max(0, Math.min(7, (now - cycleStart) / DAY));
-  const mine = (attempts||[]).filter(a=> a && a.raidId===def.id && a.cycle===cycle);
+  const daysIn = Math.max(0, Math.min(7, (now - (opts.since != null ? Number(opts.since) : cycleStart)) / DAY));
+  // 2026-10-19 (package RO, owner 21:48: "When the raid dies ... the respawn should start early"): opts.since / opts.until fence one
+  // life of the raid (a generation, see raidGenerations): only attempts in [since, until) count, and the stand-ins' days run from since.
+  const since = opts.since != null ? Number(opts.since) : null, until = opts.until != null ? Number(opts.until) : Infinity;
+  const tOf = a=> a.at != null && isFinite(Number(a.at)) ? Number(a.at) : cycleStart;
+  const mine = (attempts||[]).filter(a=> a && a.raidId===def.id && a.cycle===cycle && (since == null || (tOf(a) >= since && tOf(a) < until)));
   const parts = {};
   (def.parts||[]).forEach(p=>{ parts[p.id] = {id:p.id, def:p, total: partTotal(p), real:0, standIn:0, attempts:0}; });
   mine.forEach(a=>{ const s = parts[a.part]; if(s){ s.real += Math.max(0, a.contribution|0); s.attempts++; } });
@@ -63,9 +67,9 @@ function raidState(def, attempts, now, opts){
   const fraction = total ? left / total : 0;
   const stages = (def.stages||[]).slice().sort((a,b)=> b.at - a.at);
   let stage = null; stages.forEach(st=>{ if(fraction < st.at) stage = st; });
-  const owners = {};
-  mine.forEach(a=>{ owners[a.owner] = (owners[a.owner]||0) + (a.contribution|0); });
-  return {raid:def, cycle, parts:list, byId:parts, fraction, remaining:left, total, stage, defeated: left<=0, contributors: owners, daysIn};
+  const owners = {}, fights = {};
+  mine.forEach(a=>{ owners[a.owner] = (owners[a.owner]||0) + (a.contribution|0); fights[a.owner] = (fights[a.owner]||0) + 1; });
+  return {raid:def, cycle, parts:list, byId:parts, fraction, remaining:left, total, stage, defeated: left<=0, contributors: owners, fightsBy: fights, daysIn, since};
 }
 // Ranked contribution tier for a player this cycle: 'top1' / 'top10' / 'top50' / 'participant' / null.
 function contributionTier(state, owner){
@@ -204,6 +208,156 @@ function validateRaid(def, defs){
   return errs;
 }
 
+// ============================================================================
+// Raid ops (2026-10-19, package RO; see docs/raid-ops-2026-10-19.md). Owner 21:48 / 21:49 / 00:22 / 00:29.
+// ============================================================================
+// ---- Respawn: a raid that falls comes back respawnHours (24) after the kill, as a fresh generation with full Health, inside the
+// same weekly cycle (the cycle's end still starts a new one). An admin restart starts a fresh generation at once. A generation is
+// fenced by time only: [start, end) of the attempts' `at`, so the table needs no new column. The kill moment is the first attempt
+// (or, for the stand-ins' share, the first minute) at which that generation's Health reaches 0.
+const RESPAWN_HOURS_DEFAULT = 24;
+function respawnMs(def){ const h = Number(def && def.respawnHours); return Math.round((isFinite(h) && h > 0 ? Math.max(1, Math.min(168, h)) : RESPAWN_HOURS_DEFAULT) * 3600 * 1000); }
+function killTimeOf(def, attempts, cycle, since, until){
+  const dead = t=> raidState(def, attempts, t, {cycle, since, until: t + 1}).remaining <= 0;
+  if(!(until > since) || !dead(until - 1)) return null;
+  const times = (attempts || []).filter(a=> a && a.raidId === def.id && a.cycle === cycle).map(a=> Number(a.at) || 0).filter(t=> t >= since && t < until).sort((a, b)=> a - b);
+  // Health only falls with time, so: the first attempt at which it is down (a binary search over the attempts), then the minute
+  // between the attempt before it and it (the stand-ins may finish it in between)
+  let lo = since, hi = until - 1, a = 0, b = times.length - 1, first = -1;
+  while(a <= b){ const m = (a + b) >> 1; if(dead(times[m])){ first = m; b = m - 1; } else a = m + 1; }
+  if(first >= 0){ hi = times[first]; if(first > 0) lo = times[first - 1]; } else if(times.length) lo = times[times.length - 1];
+  if(lo > since && dead(lo)) hi = lo; // equal timestamps
+  while(hi - lo > 60 * 1000){ const mid = Math.floor((lo + hi) / 2); if(dead(mid)) hi = mid; else lo = mid; }
+  return hi;
+}
+// The lives of a raid in one cycle: [{gen, start, end, killAt, respawnAt, restartAt, over}] (end is the next life's start, or the
+// cycle's end). opts: {cycle, restarts: [ms] (admin restarts in this cycle)}.
+function raidGenerations(def, attempts, now, opts){
+  opts = opts || {};
+  const cycle = opts.cycle != null ? opts.cycle : cycleOf(now), cStart = cycle * CYCLE_MS, cEnd = cStart + CYCLE_MS, upto = Math.min(now, cEnd);
+  const rs = (opts.restarts || []).map(Number).filter(t=> isFinite(t) && t > cStart && t < cEnd).sort((a, b)=> a - b);
+  const gens = []; let start = cStart;
+  for(let guard = 0; guard < 64; guard++){
+    const nextR = rs.find(t=> t > start), until = Math.min(upto, nextR != null ? nextR : Infinity);
+    const killAt = killTimeOf(def, attempts, cycle, start, Math.max(start, until));
+    const g = {gen: gens.length, start, end: cEnd, killAt, respawnAt: null, restartAt: null, over: false};
+    gens.push(g);
+    if(killAt != null){
+      g.respawnAt = Math.min(cEnd, killAt + respawnMs(def));
+      const r = rs.find(t=> t > killAt && t < g.respawnAt); if(r != null){ g.respawnAt = r; g.restartAt = r; } // a restart brings it back sooner
+      g.end = g.respawnAt; g.over = true;
+      if(g.respawnAt >= cEnd || g.respawnAt > now) break;
+      start = g.respawnAt; continue;
+    }
+    if(nextR != null && nextR <= upto){ g.end = nextR; g.restartAt = nextR; g.over = true; start = nextR; continue; }
+    g.over = now >= cEnd; break;
+  }
+  return gens;
+}
+// The raid now: the current generation's state, with gen / genStart / killAt / respawnAt on it (respawnAt: when a fallen raid returns).
+function raidNow(def, attempts, now, opts){
+  opts = opts || {};
+  const cycle = opts.cycle != null ? opts.cycle : cycleOf(now), gens = raidGenerations(def, attempts, now, Object.assign({}, opts, {cycle}));
+  const g = gens[gens.length - 1];
+  const st = raidState(def, attempts, g.killAt != null ? Math.min(now, g.killAt) : now, Object.assign({}, opts, {cycle, since: g.start, until: g.end}));
+  return Object.assign(st, {gen: g.gen, genStart: g.start, genEnd: g.end, killAt: g.killAt, respawnAt: g.killAt != null ? g.respawnAt : null, gens});
+}
+// One generation's state as it stood when it ended (or now, if it hasn't), for its claims.
+function generationState(def, attempts, g, cycle, now){
+  const at = Math.min(now, g.killAt != null ? g.killAt : g.end - 1);
+  return Object.assign(raidState(def, attempts, at, {cycle, since: g.start, until: g.end}), {gen: g.gen, genStart: g.start, killAt: g.killAt, respawnAt: g.respawnAt});
+}
+
+// ---- Participation and rewards (owner 00:29): participating = 3+ fights AND 1,000+ raid damage in that life of the raid; a strong
+// contributor = 4+ fights AND 5,000+ damage, who gets strongPct (20%) more of everything. The raid falls: participants get the full
+// rewards. It survives (the life ends standing): half the general rewards (failPct 50: Gold, Dust, Metal, XP), and the raid-specific
+// ones (its cards, the tier extras, the title) scaled to 0..failSpecialMaxPct (10%) by how much of its Health was taken off. Under
+// the bar: no claim.
+const PARTICIPATION_DEFAULTS = {fights:3, damage:1000, strongFights:4, strongDamage:5000, strongPct:20};
+function participationRules(def){
+  const p = (def && def.participation) || {}, D = PARTICIPATION_DEFAULTS;
+  const n = (v, d, lo, hi)=>{ const x = Number(v); return (v !== '' && v != null && isFinite(x)) ? Math.max(lo, Math.min(hi, Math.round(x))) : d; };
+  return {fights: n(p.fights, D.fights, 0, 99), damage: n(p.damage, D.damage, 0, 1e7), strongFights: n(p.strongFights, D.strongFights, 0, 99),
+    strongDamage: n(p.strongDamage, D.strongDamage, 0, 1e7), strongPct: n(p.strongPct, D.strongPct, 0, 200)};
+}
+function participationOf(def, state, owner){
+  const r = participationRules(def), fights = ((state && state.fightsBy) || {})[owner] || 0, damage = ((state && state.contributors) || {})[owner] || 0;
+  const participant = fights >= r.fights && damage >= r.damage, strong = participant && fights >= r.strongFights && damage >= r.strongDamage;
+  return {fights, damage, participant, strong, rules: r, needFights: Math.max(0, r.fights - fights), needDamage: Math.max(0, r.damage - damage)};
+}
+// opts.over: that life of the raid has ended (it fell, was restarted, or the cycle ended). Returns null when there is nothing to claim.
+function raidReward(def, state, owner, opts){
+  opts = opts || {};
+  const p = participationOf(def, state, owner); if(!p.participant) return null;
+  const kill = !!state.defeated; if(!kill && !opts.over) return null;
+  const rw = (def && def.rewards) || {}, tier = contributionTier(state, owner) || 'participant';
+  const failPct = rw.failPct != null ? Number(rw.failPct) : 50, specMax = rw.failSpecialMaxPct != null ? Number(rw.failSpecialMaxPct) : 10;
+  const taken = Math.max(0, Math.min(1, 1 - (Number(state.fraction) || 0)));
+  const genMult = kill ? 1 : Math.max(0, failPct) / 100, specMult = kill ? 1 : Math.max(0, specMax) / 100 * taken, boost = p.strong ? 1 + p.rules.strongPct / 100 : 1;
+  const base = {}; Object.entries(rw.kill || {}).forEach(([k, v])=>{ if(typeof v === 'number' && v > 0){ const n = Math.round(v * genMult * boost); if(n > 0) base[k] = n; } });
+  const extra = {}; Object.entries((rw.tiers || {})[tier] || {}).forEach(([k, v])=>{
+    if(typeof v === 'number' && v > 0){ const n = kill ? Math.round(v * boost) : Math.floor(v * specMult * boost); if(n > 0) extra[k] = n; }
+    else if(k === 'title' && v && kill) extra.title = v; });
+  const xp = Math.round((rw.xp != null ? Number(rw.xp) : 500) * genMult * boost);
+  const cardsBase = Math.max(0, Math.round(rw.cards != null ? Number(rw.cards) : 1)) + (/^top(1|10)$/.test(tier) ? 1 : 0);
+  // cards: a kill gives them all (a strong contributor: strongPct% chance of one more); a survival only a chance at one, 0..10%
+  const cards = kill ? cardsBase : 0, cardChance = kill ? (p.strong ? p.rules.strongPct / 100 : 0) : Math.min(1, specMult * boost * cardsBase);
+  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost};
+}
+
+// ---- Raid tickets (owner 00:22: "10 tickets per week to do raids, regenerate 1 per day"): at most `cap` (10); +1 every regenMs (a
+// day) while under the cap, counted from the last tick (spending from a full stack starts the clock); every new weekly cycle tops the
+// stack back up to the cap. t: {n, at (the regen clock, ms), cycle}. Returns a new {n, at, cycle}.
+const TICKETS = {cap:10, regenMs: DAY};
+function settleTickets(t, now, rules){
+  const r = Object.assign({}, TICKETS, rules || {}); t = t || {};
+  let n = Number(t.n); if(t.n == null || !isFinite(n)) n = r.cap;
+  let at = Number(t.at); if(!(at > 0)) at = now;
+  let cycle = t.cycle != null && isFinite(Number(t.cycle)) ? Number(t.cycle) : null;
+  const cyc = cycleOf(now);
+  if(cycle == null || cyc > cycle){ if(n < r.cap) n = r.cap; at = now; cycle = cyc; }
+  if(n >= r.cap) return {n, at: now, cycle};
+  const ticks = Math.floor(Math.max(0, now - at) / r.regenMs);
+  if(ticks > 0){ n = Math.min(r.cap, n + ticks); at = n >= r.cap ? now : at + ticks * r.regenMs; }
+  return {n, at, cycle};
+}
+function spendTickets(t, k, now, rules){ const cap = Object.assign({}, TICKETS, rules || {}).cap, s = settleTickets(t, now, rules); if(s.n < k) return null;
+  return {n: s.n - k, at: s.n >= cap ? now : s.at, cycle: s.cycle}; }
+// ms until the next ticket (the next day's tick, or the weekly top-up if that comes first); null when full
+function nextTicketIn(t, now, rules){ const r = Object.assign({}, TICKETS, rules || {}), s = settleTickets(t, now, r); if(s.n >= r.cap) return null;
+  return Math.max(0, Math.min(r.regenMs - (now - s.at), (s.cycle + 1) * CYCLE_MS - now)); }
+// What one attempt costs (owner: "also takes 1-6 energy to participate"): the raid's tickets (cost.raidPoints, 1) and the part's
+// Energy (part.cost.energy, else the raid's cost.energy), plus the current stage's energyAdd, kept to 1..6.
+function attemptCost(def, partId, stage){
+  const c = (def && def.cost) || {}, p = ((def && def.parts) || []).find(x=> x.id === partId) || {};
+  const pe = p.cost && p.cost.energy != null ? Number(p.cost.energy) : (c.energy != null ? Number(c.energy) : 4);
+  const energy = Math.max(1, Math.min(6, Math.round((isFinite(pe) ? pe : 4) + (Number(stage && stage.energyAdd) || 0))));
+  const tickets = Math.max(0, Math.round(c.raidPoints != null ? Number(c.raidPoints) : 1));
+  return {tickets, energy};
+}
+
+// ---- Auto (owner 21:49: "Completing a raid lets you auto it in the future"): completed = a participant in a life of the raid that
+// fell. The page keeps the set of completed raids ({raidId: when}); this says whether a raid's Auto is open.
+function autoUnlocked(done, raidId){ return !!(done && raidId && done[raidId]); }
+
+// ---- Instances (owner 00:22: "When there are too many players, each raid can have multiple instances"): each cycle a raid has
+// instances 1..N of instanceCap (100) players, each with its own Health, lives and rewards. A player is placed on their first fight
+// of the cycle: in a guild-mate's instance that has room, else the lowest instance with room, else a new one (join order). The
+// server does it (join_raid_instance, supabase/proposed/20261019_raid_ops.sql); until that is applied everyone is in instance 1.
+// Attempts carry the instance in boss_id: "raid:part" is instance 1 (as before), "raid:part@2" instance 2.
+function instanceCap(def){ const n = Math.round(Number(def && def.instanceCap) || 100); return Math.max(10, Math.min(1000, n)); }
+function assignInstance(members, owner, opts){
+  opts = opts || {}; const cap = Math.max(1, Math.round(opts.cap || 100)), list = (members || []).filter(Boolean);
+  const mine = list.find(m=> m.owner === owner); if(mine) return Math.max(1, mine.instance | 0);
+  const count = {}; list.forEach(m=>{ count[m.instance | 0] = (count[m.instance | 0] || 0) + 1; });
+  const room = i=> (count[i] || 0) < cap;
+  if(opts.guild){ const g = [...new Set(list.filter(m=> m.guild && m.guild === opts.guild).map(m=> m.instance | 0))].sort((a, b)=> a - b).find(room); if(g) return g; }
+  let i = 1; while(!room(i) && i < 100000) i++; return i;
+}
+function partKey(raidId, partId, instance){ return raidId + ':' + partId + ((instance | 0) > 1 ? '@' + (instance | 0) : ''); }
+function parsePartKey(bossId){ const s = String(bossId || ''), i = s.indexOf(':'); if(i < 0) return {raidId: s, part: '', instance: 1};
+  const rest = s.slice(i + 1), m = rest.match(/^(.*)@(\d+)$/); return {raidId: s.slice(0, i), part: m ? m[1] : rest, instance: m ? Math.max(1, +m[2]) : 1}; }
+
 // ---- The full raid board (2026-10-17, user: "for 3 lane raids, the CPU allies can only place on their own rows! For the enemy, can you
 // enhance it by letting them playing commons on the back 2 rows every turn as well?"). Pure helpers over the engine's reserve rows
 // (E.legalReserveSlots / E.fillReserve), so tests/raid-arena-2026-10-17.js can check them without a page.
@@ -249,7 +403,9 @@ function bossReinforce(E, pl, pool, rnd, opts){
   return out;
 }
 
-const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
+  TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
+  CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

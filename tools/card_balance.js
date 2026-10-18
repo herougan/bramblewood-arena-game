@@ -9,7 +9,7 @@
 // suggested stat change found by re-simulating (±Attack / ±Health in small steps until it lands in
 // its band).
 //
-//   node tools/card_balance.js [games=60] [--suggest] [--mode=open]
+//   node tools/card_balance.js [games=60] [--suggest] [--mode=open] [--only=a,b] [--pool]
 // Writes docs/balance/card-balance.json and docs/card-balance-2026-10-09.md.
 'use strict';
 const fs = require('fs'), path = require('path');
@@ -31,7 +31,10 @@ function baseLevel0(d){ const k = d.source && d.source.kind; return !!(d.basic |
 function atLevel1(d){ if(!baseLevel0(d)) return d; const ov = d.levelStats && (d.levelStats[1] || d.levelStats['1']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 1.10));
   return Object.assign({}, d, {attack: ov && ov.attack!=null ? ov.attack : r(d.attack), health: ov && ov.health!=null ? ov.health : r(d.health), startsAt0: true}); }
 const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = atLevel1(d); });
-const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].baseId && !defs[id].field) // field cards are situational: measured in themed decks instead (fields-and-day-night-2026-10-09.md).sort();
+// 2026-10-19 (package AN): pool cards ("pool": true, unplaced candidates) are measured only when asked for: --only=<ids>, or --pool
+// for every pool card (written to the partial report like --only); the full report stays the live cards'.
+if(args.includes('--pool')) Object.keys(defs).forEach(id=>{ if(defs[id].pool && !ONLY.includes(id)) ONLY.push(id); });
+const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].baseId && !defs[id].field && (!defs[id].pool || ONLY.includes(id))) // field cards are situational: measured in themed decks instead (fields-and-day-night-2026-10-09.md).sort();
 
 // The reference: a mid-strength mix (two plain cost-0 units, a flyer, a cost-1 tank and a poisoner)
 // picked from a first pass so an average card lands near 50% and strong cards still have room to

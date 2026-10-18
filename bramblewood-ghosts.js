@@ -31,7 +31,7 @@ const AVATAR_COLORS = ['acorn','berry','river','moss','violet','sun','blossom','
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 function hashStr(s){ let h = 2166136261; for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h>>>0; }
 function capOf(d){ return RARITY_MAX_COPIES[(d && d.rarity) || 'common'] || 10; }
-function fieldable(defs){ return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && !(defs[id].hallOfFame)).sort(); }
+function fieldable(defs){ return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && !(defs[id].hallOfFame) && !defs[id].pool).sort(); } // + !pool (2026-10-19, package AN: unplaced candidates)
 
 // Rough stand-alone strength of one card — only used to pick stage-appropriate ghost decks.
 function cardPower(d){

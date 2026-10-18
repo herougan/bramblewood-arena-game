@@ -133,7 +133,10 @@ async def main():
         check(await pg.evaluate(f"getCardLevel('{fid}')") == l0 + 1, 'tempering should raise the level exactly once (double-click guarded)')
         check(await pg.evaluate("myCurrencies.dust < 300"), 'tempering should spend Magic Dust')
         # 5: a trench raid opens the full three-row battle (2026-10-12; the trench minigame is benched)
+        # 2026-10-19 (package RO): the Raid tab opens on the hub; its card opens the raid
         await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
+        check(await pg.evaluate("!!document.querySelector('.raid-hub [data-raid-open]')"), 'the Raid tab should open on the raids hub')
+        await pg.click('.raid-hub [data-raid-open]'); await pg.wait_for_timeout(500)
         await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(2500)
         check(await pg.evaluate("!!(matchState && matchState.raidFull && matchState.engine.reserveRows===2)"), 'a trench raid should open the full three-row battle')
         check(await pg.evaluate("!!(matchState && matchState.players[2].reserve && Object.keys(matchState.players[2].reserve[0]).length>0)"), "the boss's middle row should be filled")
