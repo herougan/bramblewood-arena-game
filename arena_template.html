@@ -5551,6 +5551,10 @@
   .grant-box{display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap; font-weight:700;} .grant-box .grant-pick{max-width:120px;}
   .grant-facet{display:inline-flex; align-items:center; gap:4px; margin-right:8px;} .grant-facet > b{font-size:12px; color:var(--ink-muted);}
   .abadge.exposed{background:color-mix(in srgb, #e0412f 24%, var(--surface-2)); color:#c62f1f;} /* Exposed (2026-10-15) */
+  .abadge.prayer{background:color-mix(in srgb, #e3c26a 34%, var(--surface-2)); color:#7a5a10;} /* Prayer tokens (2026-10-19, package E) */
+  /* Relic (2026-10-19, package E): the dead Ecclesia card's art, faded and ghostly */
+  .board-card.is-relic .card-tile{filter:grayscale(.75) brightness(1.18) contrast(.85); opacity:.72; box-shadow:inset 0 0 16px rgba(255,244,214,.85), 0 0 10px rgba(255,236,190,.55);}
+  .board-card.is-relic .card-art, .board-card.is-relic .card-tile img{opacity:.6; mix-blend-mode:luminosity;}
   /* Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid) —
      one overlay animation + badge tint each, matching Stun's existing treatment above. */
   .board-card.is-frozen .card-tile{background:color-mix(in srgb, var(--status-freeze-tint) 30%, var(--bg)); filter:saturate(.7) brightness(1.05);}

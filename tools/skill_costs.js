@@ -86,7 +86,7 @@
   }
   // Frozen copy of the 2026-10-18 model (SB_SKILLS in card_balance.js before this change; the Test Lab's SB_DEFAULT_SKILLS), for
   // comparisons only: every trigger list costs 1 in all, Bounty 0, a skill with no set cost 1 + floor(N/2).
-  const LEGACY = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v', creative:0, bleed:'v', snipe:'v', arrows:'v', crabClaws:0};
+  const LEGACY = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v', creative:0, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, relic:2}; // + Relic (2026-10-19, package E)
   const LEGACY_PAY = {penance:3, bloodTithe:2};
   function legacyS(effects){ let S = 0; Object.entries(effects || {}).forEach(([k, v])=>{ const rule = LEGACY[k], num = numOf(v);
     if(rule === 'v') S += Math.max(1, num); else if(rule === '-v') S -= Math.max(1, v === true ? (LEGACY_PAY[k] || 1) : num); else if(typeof rule === 'number') S += rule; else S += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
