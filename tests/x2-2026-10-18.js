@@ -11,6 +11,7 @@
 //       replaces the waded ring, Swimmers splash now and then.
 'use strict';
 const fs = require('fs'), path = require('path');
+const {TEXT: TEXT_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 const R = require('../bramblewood-raid.js');
@@ -156,8 +157,8 @@ ok(E.AI_LEVEL_MAX === 2, 'the engine names its highest CPU level (AI_LEVEL_MAX =
   ok(/const cpuAiKeyOf = lv=>/.test(src) && /cpuAiPillHTML\(level\)\{ const k = level == null \? 'smart' : cpuAiKeyOf\(level\)/.test(src), 'a level past the named ones shows the top name'); }
 
 // ---- 16a texts
-ok(/\{k:'wet'[^\n]*while the Tide is in, Flood or High Tide, so is every unit that isn’t Flying/.test(src), 'the Codex Wet entry explains the Flood rule');
-ok(/tide: +\{icon:'🌊', name:'Tide'[^\n]*A Flood fills the whole board: every unit that isn’t Flying is Wet; Swimmers and Tide units are Wet in Ebb too\./.test(src), 'the Tide field text explains Wet');
+ok(/\{k:'wet'[^\n]*codex:TX\('ui\.stx-wet'\)/.test(src) && /any unit that isn’t Flying while the Tide is in/.test(TEXT_D['ui.stx-wet']), 'the Codex Wet entry explains the Flood rule (2026-10-18, package D: a Codex line now)');
+ok(/tide: +\{icon:'🌊', name:'Tide'[^\n]*codex:TX\('ui\.fxx-tide'\)/.test(src) && /A Flood fills the board: every unit that isn’t Flying is Wet\. Swimmers and Tide units are Wet in Ebb too\./.test(TEXT_D['ui.fxx-tide']), 'the Tide field text explains Wet (2026-10-18, package D: in its Codex line)');
 
 // ---- 16b: the look
 ok(/const TIDE_SCENE_Y = \{none:'calc\(100% \+ 40px\)', ebb:'calc\(100% - 12px\)', flow:'0%', high:'0%'\}/.test(src), 'Flood and High Tide fill the whole board; Ebb is a thin band at the bottom');

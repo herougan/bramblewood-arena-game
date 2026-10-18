@@ -9,6 +9,7 @@
 //  28. "A creature under a status effect should have status effect explanations below the card description"
 'use strict';
 const fs = require('fs'), path = require('path');
+const {TEXT: TEXT_D, TX: TX_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
@@ -104,16 +105,16 @@ ok(/function devilPayVfx\(ev\)/.test(src) && /function devilPulse\(el\)/.test(sr
 ok(/\{key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3,/.test(src) && /get:e=> e\.ambush \? numOr\(e\.ambush, 3\) : undefined/.test(src), 'Ambush N: an old Ambush (true) reads as Ambush 3');
 ok(/ambush: v=> `When an enemy unit enters the slot facing it \(played, spawned or moved in\), deal \$\{numOr\(v, 3\)\} damage to it\.`/.test(src), 'Ambush card text (2026-10-17: any enemy unit entering, not only a card played)');
 ok(!/Its first attack always crits/.test(src), 'the old Ambush text is gone');
-ok(/expose: v=> `Its hits put \$\{numOr\(v, 1\)\} Expose counter/.test(src) && /name:'Exposed', c:'#e07b39', text:'each hit on it is a crit/.test(src), 'Expose card text and the Exposed gloss');
+ok(/expose: v=> `Its hits put \$\{numOr\(v, 1\)\} Expose counter/.test(src) && /name:'Exposed', c:'#e07b39', text:TX\('ui\.st-exposed'\)/.test(src) && /each hit on it crits/.test(TEXT_D['ui.st-exposed']), 'Expose card text and the Exposed gloss (2026-10-18, package D: terse)');
 ok(/opts\.crit \? '🎯 Crit!'/.test(fxb) && /M\.exposeCash\(t, \{crit:true\}\)/.test(fxb), 'the Exposed hit chip says Crit!');
 ok(/"Always Flooded\. Tide effects can't change it\."/.test(src) && /r\.rapids \? 'Always Flood' : 'Always Flooded'/.test(src), 'Perma-tide says "Always Flooded"');
 ok(/function liveStatusGlossHTML\(c\)/.test(src) && /\$\{abilityHTML\}\$\{liveStatusGlossHTML\(liveC\)\}/.test(src), 'a unit in play lists its statuses under its skills');
 // the live status list itself, run on its own
 { const vm = require('vm'); const grab = (re)=>{ const m = src.match(re); if(!m) throw new Error('not found: ' + re); return m[0]; };
   const code = grab(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROWS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROUNDS = [^\n]*/) + '\n' + grab(/function liveStatusGlossHTML\(c\)\{[\s\S]*?\n\}/);
-  const ctx = {escapeHtml: s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')}; vm.createContext(ctx); vm.runInContext(code + '\nthis.f = liveStatusGlossHTML;', ctx);
+  const ctx = {escapeHtml: s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'), TX: TX_D /* + TX (2026-10-18, package D) */}; vm.createContext(ctx); vm.runInContext(code + '\nthis.f = liveStatusGlossHTML;', ctx);
   const h = ctx.f({poison:3, exposed:2, stunned:true, frozen:1, hp:5});
-  ok(/Poison 3<\/b>: takes 3 damage at upkeep/.test(h) && /Exposed 2<\/b>: its next 2 hits are crits/.test(h) && /Stunned<\/b>: skips its next attack/.test(h) && /Frozen<\/b> <small>\(1 round\)<\/small>/.test(h), `the live lines (${h.slice(0, 300)})`);
+  ok(/Poison 3<\/b>: takes 3 damage at upkeep/.test(h) && /Exposed 2<\/b>: its next 2 hits crit/.test(h) && /Stunned<\/b>: skips its next attack/.test(h) && /Frozen<\/b> <small>\(1 round\)<\/small>/.test(h), `the live lines (${h.slice(0, 300)})`);
   ok(/--kw:#3fa535/.test(h) && /class="kw-gloss live-status-gloss"/.test(h), 'in the status colours and the kw-gloss look');
   ok(ctx.f({hp:5, poison:0}) === '' && ctx.f(null) === '', 'nothing when it has no statuses'); }
 console.log(`skills-2026-10-16-devilry: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);

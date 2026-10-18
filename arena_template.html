@@ -5652,6 +5652,8 @@
   .board-card.is-shocked .card-tile{background:color-mix(in srgb, var(--status-shock-tint) 26%, var(--bg));}
   .board-card.is-corroded .card-tile{background:color-mix(in srgb, var(--status-corrode-tint) 20%, var(--bg));}
   .blind-overlay{font-size:22px; animation:blindDim 2.2s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
+  /* 2026-10-18 (package D): when FX B's shut eye marks a Blind unit (sightSync 'blind'), it is the one eye; the 👁 overlay stays for FX off */
+  .board-card.fxb-why-blind .blind-overlay{display:none;}
   @keyframes blindDim{0%,100%{opacity:.5;}50%{opacity:1;}}
   .shock-overlay{font-size:22px; animation:paralyzeJitter .22s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   .abadge.blind{background:color-mix(in srgb, var(--status-blind-tint) 24%, var(--surface-2)); color:var(--status-blind-ink);}
