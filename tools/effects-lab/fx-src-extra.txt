@@ -54,3 +54,14 @@ w2SkillVfx
 isSlotMatch
 # Rebuild N / Rebuild castle N (2026-10-17): planks and stones into the castle, a green +N on its HP bar (sk-rebuild)
 rebuildVfx
+# the standing Tide (2026-10-18, package M: manifest/m19.js plays it with a stand-in match)
+TIDE_SCENE_Y
+TIDE_BOARD_CARDS
+TIDE_SCENE_MOVE_MS
+TIDE_MOTION_BASE
+TIDE_RISE_SKEW
+tideMotionPx
+tideSceneSet
+syncTideScene
+TIDE_EBB_OFFSET
+tideSceneY

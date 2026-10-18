@@ -11,6 +11,7 @@
 // (every lightning hit is its own bolt, never a thrown projectile; element emoji on numbers and log lines; Electricity's cyan bolt).
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
+const {TEXT: TEXT_D, TX: TX_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
@@ -104,7 +105,7 @@ ok(/\n  chainLightning: \{foes:FXL_FOES3/.test(src.slice(src.indexOf('const FXL_
 ok(/case 'chainLightning':/.test(src) && /ev\.type==='chainLightning'/.test(src), 'chainLightning: a log line and a look');
 ok(/lightning damage/.test(line('shockBolt')) && /lightning damage/.test(line('lightning')), 'Shock Bolt and Lightning say lightning damage');
 { const kws = (src.match(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) || [''])[0]; const wet = (kws.match(/\{k:'wet'[^\n]*/) || [''])[0];
-  ok(/name:'Wet'/.test(wet) && /cs:true/.test(wet) && /each Wet counter/.test(wet) && /Swimmer or Tide unit/.test(wet) && /Rain/.test(wet) && /Tide is in/.test(wet), 'Wet: a status keyword whose gloss explains the counters'); }
+  ok(/name:'Wet'/.test(wet) && /cs:true/.test(wet) && /text:TX\('ui\.st-wet'\), codex:TX\('ui\.stx-wet'\)/.test(wet) && /Wet counter/.test(TEXT_D['ui.st-wet']) && /Rain/.test(TEXT_D['ui.st-wet']) && /Swimmer or Tide unit/.test(TEXT_D['ui.stx-wet']) && /Tide is in/.test(TEXT_D['ui.stx-wet']), 'Wet: a status keyword whose gloss explains the counters (2026-10-18, package D: the water rule in the Codex)'); }
 ok(/if\(p\.codexNote\) txt \+= ' ' \+ p\.codexNote;/.test(src), 'the Skills Codex adds the codexNote');
 
 // ---- 6. The board: element emoji, and every lightning hit is its own bolt (nothing thrown)
