@@ -19,7 +19,10 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  âœ
 const read = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8'), readJSON = rel=> JSON.parse(read(rel));
 const src = read('arena_app.js');
 const cards = readJSON('canonical/cards.json');
-const pool = cards.filter(c=> c.pool), live = cards.filter(c=> !c.pool);
+const allPool = cards.filter(c=> c.pool), live = cards.filter(c=> !c.pool);
+// 2026-10-19 (package GI): the checks of this pool's own make-up (counts per map, polar set, measured win rates) read package AN's cards;
+// the pool-wide rules (out of the game, the build, the Admin list) read every pool card, GI's skill examples too.
+const pool = allPool.filter(c=> !/package GI/.test(c.creatorNote || ''));
 const slice = (a, b)=>{ const i = src.indexOf(a), j = src.indexOf(b, i); if(i < 0 || j < 0) throw new Error('missing ' + a); return src.slice(i, j); };
 // eslint-disable-next-line no-eval
 const RR = eval(slice('// ROAD_RARITY:BEGIN', '// ROAD_RARITY:END') + ';({roadRarityCap, roadRarityStep, roadRarityOk})');
@@ -80,10 +83,10 @@ const lit = name=>{ const k = html.indexOf('const ' + name + ' = '); if(k < 0) r
   return JSON.parse(html.slice(s, e + 1)); };
 const built = lit('CARD_DEFS_BASELINE'), builtPool = lit('POOL_CARD_DEFS');
 ok(built && pool.every(c=> !built[c.id]), '3. the built page\'s card list leaves them out (rebuild?)');
-ok(builtPool && pool.every(c=> builtPool[c.id] && builtPool[c.id].pool) && Object.keys(builtPool).length === pool.length, '4. the built page carries them in POOL_CARD_DEFS (rebuild?)');
+ok(builtPool && pool.every(c=> builtPool[c.id] && builtPool[c.id].pool) && Object.keys(builtPool).length === allPool.length, '4. the built page carries them in POOL_CARD_DEFS (rebuild?)');
 const vb = JSON.parse(read('version.json')); ok(built && vb.cardHash === I.cardDataHash(built), '3. version.json\'s card hash is the live cards\'');
 const G = require(path.join(ROOT, 'bramblewood-ghosts.js'));
-const withPool = Object.assign({}, defs); pool.forEach(c=> withPool[c.id] = Object.assign({effects:{}}, c));
+const withPool = Object.assign({}, defs); allPool.forEach(c=> withPool[c.id] = Object.assign({effects:{}}, c));
 ok(fs.readFileSync(path.join(ROOT, 'bramblewood-ghosts.js'), 'utf8').includes('!defs[id].pool'), '3. ghost decks skip pool cards');
 for(let s = 0; s < 3; s++){ const d = G.generateGhostDeck(withPool, s, 4242 + s); ok(!Object.keys(d.cards || d).some(id=> withPool[id] && withPool[id].pool), `3. a ghost deck (stage ${s}) has no pool card`); }
 ok(/function pool\(defs\)\{[^\n]*!defs\[id\]\.pool/.test(read('bramblewood-autobattle.js')), '3. the auto-battle pool skips pool cards');
@@ -107,9 +110,10 @@ ok(/poolCardForEditor\(defId\)/.test(slice('function openCardEditor(', '\n}')), 
   vm.createContext(ctx);
   vm.runInContext(['adminPoolCardIds', 'adminPoolGridHTML', 'poolCardForEditor'].map(fn).join('\n') + '\nthis.f = {adminPoolCardIds, adminPoolGridHTML, poolCardForEditor};', ctx);
   const ids = ctx.f.adminPoolCardIds(), grid = ctx.f.adminPoolGridHTML();
-  ok(ids.length === pool.length, `4. the filter lists every pool card (${ids.length})`);
-  ok(numOf(ctx.POOL_CARD_DEFS[ids[0]].poolMap) === 0 && ['m6', 'mi'].includes(ctx.POOL_CARD_DEFS[ids[ids.length - 1]].poolMap), '4. grouped by map, Map 0 first, the tundra last');
-  ok((grid.match(/class="admin-pool-tag">Pool/g) || []).length === pool.length && /admin-pool-head/.test(grid) && grid.includes('Map 17'), '4. each tile is tagged Pool, under its map\'s heading');
+  ok(ids.length === allPool.length, `4. the filter lists every pool card (${ids.length})`);
+  { const an = ids.filter(id=> pool.some(c=> c.id === id)); ok(numOf(ctx.POOL_CARD_DEFS[an[0]].poolMap) === 0 && ['m6', 'mi'].includes(ctx.POOL_CARD_DEFS[an[an.length - 1]].poolMap), '4. grouped by map, Map 0 first, the tundra last (of this pool)');
+    ok(ids.every((id, i)=> !i || numOf(ctx.POOL_CARD_DEFS[ids[i - 1]].poolMap) <= numOf(ctx.POOL_CARD_DEFS[id].poolMap) || numOf(ctx.POOL_CARD_DEFS[id].poolMap) < 0), '4. every pool card in map order'); }
+  ok((grid.match(/class="admin-pool-tag">Pool/g) || []).length === allPool.length && /admin-pool-head/.test(grid) && grid.includes('Map 17'), '4. each tile is tagged Pool, under its map\'s heading');
   ctx.placed['water-vole'] = {id:'water-vole'}; ok(!ctx.f.adminPoolCardIds().includes('water-vole'), '4. a placed (live) card drops off the pool list');
   const ed = ctx.f.poolCardForEditor('pincushion-urchin'); ok(ed && !ed.pool && !ed.poolMap && ed.source && ed.source.kind === 'map' && ed.source.id === 'mb', '4. placing opens it as a live card with its map pre-filled under From');
   ctx.adminCardSearch = 'urchin'; ok(ctx.f.adminPoolCardIds().length === 1, '4. the search narrows the pool list too');

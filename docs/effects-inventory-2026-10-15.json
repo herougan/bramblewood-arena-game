@@ -20433,5 +20433,26 @@
   "added": "2026-10-18",
   "lab": "rw.js",
   "inGameHook": "results: rewardXpBarHTML + syncRewardXpBar (arena_app.js, from m.xpBefore; awardXp feeds it and skips its toasts while it shows) → FX.F.xpBarFill; raid claim: spec.xp → the same bar"
+ },
+ {
+  "id": "meta-forge-energy",
+  "area": "meta-progression",
+  "name": "Forging Max Energy (a Forge step)",
+  "trigger": "Forge → ⬆️ Upgrades → ⚡ Max Energy → Raise to N (wireStamina → energyForgeCelebrate)",
+  "current": "FX.D.energyForge: the room dims, motes gather into a bar over the panel, it charges from the old max to the new one with lightning and sparks, overflows (flash, spilling drops of light), shockwave + spark burst, the new pip pops, the number counts up, a bolt to the ⚡ pill; SoundKit.energySurge (charge / overflow / boom); calm glow + one chime under reduced motion or Effects Off / Low",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Owner 2026-10-18 23:37: \"Forging your energy should have an amazing energy and animation.\" Hearth gold with electric blue.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-d.js: M.energyForge",
+   "arena_app.js: wireStamina, energyForgeCelebrate, SoundKit.energySurge"
+  ],
+  "batch": "NF",
+  "status": "live",
+  "added": "2026-10-18",
+  "lab": "nf.js",
+  "inGameHook": "Forge → ⬆️ Upgrades → ⚡ Max Energy → Raise to N: wireStamina → energyForgeCelebrate (arena_app.js) → FX.D.energyForge (calm under reduced motion, Effects Off / Low, no GSAP)"
  }
 ]

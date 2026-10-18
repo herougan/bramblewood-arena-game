@@ -8034,6 +8034,327 @@
     "uuid": "6ead4630-ce24-4ea7-9a0b-c4f61e44d0e4"
   },
   {
+    "id": "fen-mink",
+    "name": "Fen Mink",
+    "icon": "\ud83e\udda6",
+    "cost": 0,
+    "wait": 1,
+    "attack": 5,
+    "health": 12,
+    "rarity": "uncommon",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Swamp"
+    ],
+    "effects": {
+      "hunter": 2
+    },
+    "flavor": "It follows the sick ones. The swamp does half the work; the mink does the rest.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "skirmish",
+    "numericId": 9501,
+    "uuid": "39db673f-a0bd-570d-95c5-79141b3c626a",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Hunter 2 (Poisoned): a swamp predator for Swamp Fever and the Poison decks of Gatorback Swamp (5). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (hunter 2); 2A+H+S = 24 < 30.5 and A*H+S = 62 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "tidepool-trapper-crab",
+    "name": "Tidepool Trapper Crab",
+    "icon": "\ud83e\udd80",
+    "cost": 0,
+    "wait": 0,
+    "attack": 3,
+    "health": 9,
+    "rarity": "common",
+    "species": [
+      "Crustacean"
+    ],
+    "archetypes": [
+      "Coastal"
+    ],
+    "effects": {
+      "hunter": 1,
+      "hunterVs": "wet",
+      "crabClaws": true
+    },
+    "flavor": "It waits where the waves break. Anything soaked and slow gets pinched twice.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "skirmish",
+    "numericId": 9502,
+    "uuid": "4871a2a6-501e-5fc8-985c-3594970ceac9",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Hunter 1 (Wet) on Crab Claws: the \"Crab Trap\" idea as data, no new rule. Pebble Beach (2) Flood fights. Budget v3 at Level 1, common, Wait 0, Lumber 0: N = 23; S = 1 (hunter 1, hunterVs 0, crabClaws 0); 2A+H+S = 16 < 23 and A*H+S = 28 < (N/3)^2 = 58.78. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "grave-grin-hyena",
+    "name": "Grave-Grin Hyena",
+    "icon": "\ud83d\udc15",
+    "cost": 0,
+    "wait": 1,
+    "attack": 5,
+    "health": 13,
+    "rarity": "uncommon",
+    "species": [
+      "Hyaenid"
+    ],
+    "archetypes": [
+      "Savanna"
+    ],
+    "effects": {
+      "executioner": 2
+    },
+    "flavor": "It never starts a fight. It just arrives, grinning, for the end of one.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m5",
+    "poolSlot": "skirmish",
+    "numericId": 9503,
+    "uuid": "0f2d2da5-dabe-5029-9eca-757151139368",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Executioner 2: a finisher for Savanna Reaches (14); pairs with Bleed and Poison now that they fade. Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (executioner 2); 2A+H+S = 25 < 30.5 and A*H+S = 67 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "bogfire-newt",
+    "name": "Bogfire Newt",
+    "icon": "\ud83e\udd8e",
+    "cost": 0,
+    "wait": 1,
+    "attack": 4,
+    "health": 13,
+    "rarity": "uncommon",
+    "species": [
+      "Amphibian"
+    ],
+    "archetypes": [
+      "Newt",
+      "Swamp"
+    ],
+    "effects": {
+      "poison": 1,
+      "detonate": true
+    },
+    "flavor": "Its skin glows where the venom pools. Touch it twice and the glow goes off.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "skirmish",
+    "numericId": 9504,
+    "uuid": "0cc09502-0acd-5d97-8c3e-aa9c0c07504d",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Poison 1 + Detonate: each hit cashes in the Poison already there, then adds 1. Sable Swampmire (6). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (poison 1, detonate 1); 2A+H+S = 23 < 30.5 and A*H+S = 54 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "plague-gnat-cloud",
+    "name": "Plague Gnat Cloud",
+    "icon": "\ud83e\udd9f",
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 12,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Swamp"
+    ],
+    "effects": {
+      "proliferate": 1
+    },
+    "flavor": "One bite is nothing. The cloud makes sure there is never just one.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "skirmish",
+    "numericId": 9505,
+    "uuid": "98f6c68c-7348-59b0-935c-d221b19d250d",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Proliferate 1: Poison jumps along the enemy row. Gatorback Swamp (5), with Swamp Fever. Budget v3 at Level 1, common, Wait 1, Lumber 0: N = 29.5; S = 2 (proliferate 2); 2A+H+S = 20 < 29.5 and A*H+S = 38 < (N/3)^2 = 96.69. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "glasswing-moth",
+    "name": "Glasswing Moth",
+    "icon": "\ud83e\udd8b",
+    "cost": 0,
+    "wait": 0,
+    "attack": 3,
+    "health": 9,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Desert"
+    ],
+    "effects": {
+      "brittle": 2
+    },
+    "flavor": "Its wing dust settles like powdered glass. Whatever it touches starts to ring when struck.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "md",
+    "poolSlot": "skirmish",
+    "numericId": 9506,
+    "uuid": "fa87516a-72d7-5ee4-a319-c7c7577b2beb",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Brittle 2: gives Shatter a desert job (the Glass Dunes, 18), next to the Glass-storm. Budget v3 at Level 1, common, Wait 0, Lumber 0: N = 23; S = 1 (brittle 1); 2A+H+S = 16 < 23 and A*H+S = 28 < (N/3)^2 = 58.78. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "rivergate-drummer",
+    "name": "Rivergate Drummer",
+    "icon": "\ud83e\udda6",
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 13,
+    "rarity": "uncommon",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Otter",
+      "River"
+    ],
+    "effects": {
+      "kinRally": 1
+    },
+    "flavor": "One beat for every otter that wades in. The river has never been this loud.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "skirmish",
+    "numericId": 9507,
+    "uuid": "cdb984bb-d883-52f4-8148-ba9a0eb7fa0f",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Kin Rally 1: every Otter (or River unit) you play after it lands +1/+1. Thistlewood (1), an Otter map. Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 3.75 (kinRally 3.75); 2A+H+S = 22.75 < 30.5 and A*H+S = 42.75 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "frostmoon-howler",
+    "name": "Frostmoon Howler",
+    "icon": "\ud83d\udc3a",
+    "cost": 0,
+    "wait": 1,
+    "attack": 4,
+    "health": 13,
+    "rarity": "rare",
+    "species": [
+      "Canid"
+    ],
+    "archetypes": [
+      "Wolf",
+      "Tundra"
+    ],
+    "effects": {
+      "packHowl": 1
+    },
+    "flavor": "When it calls, the pack answers, and whatever stands in their way starts bleeding.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "skirmish",
+    "numericId": 9508,
+    "uuid": "d3761752-39c2-53e6-8be8-8be15738a8d2",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Pack Howl 1: gives Wolfsbane Tundra (17) its wolf identity; each Wolf you play makes its foe Bleed 1. Budget v3 at Level 1, rare, Wait 1, Lumber 0: N = 31.5; S = 2.5 (packHowl 2.5); 2A+H+S = 23.5 < 31.5 and A*H+S = 54.5 < (N/3)^2 = 110.25. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "chapel-tortoise",
+    "name": "Chapel Tortoise",
+    "icon": "\ud83d\udc22",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 18,
+    "rarity": "uncommon",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "Ecclesia",
+      "Turtle"
+    ],
+    "effects": {
+      "prayer": 1,
+      "prayerWard": 1
+    },
+    "flavor": "It carries its little shrine on its back and its prayers in its shell.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m21",
+    "poolSlot": "skirmish",
+    "numericId": 9509,
+    "uuid": "570ff76e-6191-5bc8-a87c-06a47452144f",
+    "mechanicLine": "grace",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Prayer 1 + Prayer Ward 1: the Prayer Bastion idea; a wall that keeps its tokens. The Quiet Summit (21). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 1.75 (prayer 1, prayerWard 0.75); 2A+H+S = 23.75 < 30.5 and A*H+S = 37.75 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+  },
+  {
+    "id": "weathervane-swift",
+    "name": "Weathervane Swift",
+    "icon": "\ud83d\udc26",
+    "cost": 1,
+    "wait": 1,
+    "attack": 5,
+    "health": 14,
+    "rarity": "rare",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird"
+    ],
+    "effects": {
+      "fieldBreaker": 2
+    },
+    "flavor": "It turns into the storm and the storm, for a while, turns away.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m22",
+    "poolSlot": "skirmish",
+    "numericId": 9510,
+    "uuid": "d384dd29-3204-5907-b60c-62e74f3e85fe",
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Field Breaker 2: counterplay to the heaviest field maps; the Rimefire Caldera (22) has seven fields in eight fights. Budget v3 at Level 1, rare, Wait 1, Lumber 1: N = 35.9; S = 2 (fieldBreaker 2); 2A+H+S = 26 < 35.9 and A*H+S = 72 < (N/3)^2 = 143.2. Not measured in fights yet (the balance phase)."
+  },
+  {
     "id": "otter-kit",
     "name": "Otter Kit",
     "icon": "\ud83e\udda6",
