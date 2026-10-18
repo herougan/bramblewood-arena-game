@@ -1,25 +1,37 @@
 # Action items
 
-## 10-18 daytime: your calls
+## 10-18 evening: your calls
+
+Answered and built today: everything in the 10-18 daytime and overnight tables below (your 15:05, 15:37, 15:56 and 17:28 answers). Still open:
 
 | Item | Question |
 |---|---|
-| Antlion | Antlion Pit already lives in the desert (Map 18, Komodo Wallow). A second antlion card (e.g. the adult lacewing)? |
-| Starting bramble | Still named "Castle" (🏰). Rename it? |
-| "Bramble" overload | The base, Bramble the courier mouse and the Bramble rank tier share a name. Rename the mouse or the tier? |
-| Raid back rows | The boss's back rows now strike every round; should Enraged / Thrashing still add their extra volley? |
-| Grounded lightning | Lightning aimed at a bramble does nothing now. If you only meant "no Shocked status on brambles", it's a one-line revert |
-| Raid boss arrivals | Boss units now also arrive on rounds 15 and 19 (20-turn raids). OK? |
-| Spire difficulty | Smart on every floor (your note). Or Smartest ("ultimate difficulty")? |
-| Tide water | Flood fills to 15% from the top, Ebb leaves the bottom 16%. Less? Pixel style's water ring is a flat bar: OK? |
-| Tutorial golden card | Often not in the first hand, so the drag hint falls back to the first playable card. Guarantee it in the opening hand? |
-| Deck rarity floor | "Put it in my deck" shows for cards at or above the tier at least half your deck is at. Right rule? |
-| Psychic Dampener | "?" until a Map 41+ win (no Map 41 yet). Tie it to an existing map? |
-| Creative | Creativity counters do nothing yet: what should they do? |
-| Second balance pass | Rerun against today's rules (Bleed/Poison, Wave crash, shooter kills, smarter CPU)? Cut Lumber on the slowest 2+ Lumber cards? |
-| Early eggs | About one egg expected on Map 0 (8% skirmish, 16% elite, 35% boss first clears). Lower before Map 2? |
-| Missing art | Sperm Whale Elder and Corpse Flower Beetle didn't come back from NightCafe (3.5 fast credits left to retry) |
-| Guild clean-up SQL | supabase/proposed/20261018_guild_creator_delete_empty.sql lets a founder delete a half-made empty guild. Apply it? |
+| Frost Vanguard (0-4) | Skirmish pass took Map 0's boss from 70% to 35% for the starter deck. Revert so the first boss stays gentle? |
+| 21-3 Cloud Ledge, 24-6 Gilded Guard | Still 100% / 98% wins; each needs a hand-picked attacker card |
+| Endless floors | Only +4% stats a floor now. Add shield too, or a gentler step? Murgle King floor 10 is 0% for a Map 6 deck |
+| Theme drift | Badger Berserker is in 9 more fights; Map 3 is full of Pelican Divers. Fine? |
+| Dragons, Caldera Wyrm | Still over budget N. Fit them? |
+| Bramblewood Macaque | 100% win rate; only fix found is 2/10 → 2/4 |
+| 11 skills | Cards whose skill can't fit N at any stats; skills need a rethink (list in balance-pass-2026-10-18) |
+| Strong reference deck | Rebuild it for the new card stats? |
+| Item-granting bosses | Main-map bosses from Map 12 allow a 3rd item and give one kit item on first clear. Other bosses, or only the +1 use? |
+| Dungeon Sweep | Sweeps your best floor, no key, pays clear-again Leaves/Dust only (no Long Burrow Gold Leaves). Use keys? Pay Gold Leaves? |
+| Premium flag | `isPremiumPlayer()` reads profiles.premium or lifetime_spend_usd > 10; neither column exists yet. Server must set one once payments exist |
+| Spire refund | Forfeits and draws refund Energy too, so scouting a new floor is free. OK? |
+| Ads | docs/ads-considerations-2026-10-18.md: at all? which spot first? premium gets the ad rewards without watching? |
+| Guild rename SQL | supabase/proposed/20261018_guild_rename.sql blocks A + B ("apply it"; B closes a join-as-owner hole), C optional |
+| Rename Ticket | 250 price, cap 9, free renames until 2026-10-26? |
+| Collection levels | Deck-prompt floor thresholds by Collection level (DECK_PROMPT_FLOORS) |
+| Tutorial | Player at 8 HP: playtest |
+| Crash kills | Should a Wave crash kill give Momentum? |
+| Simulate vs new player | Follow the chosen difficulty? |
+| Tentacle smacks | Row/column alternate; or 50/50? |
+| Emoji atlas | Cell size OK? |
+| Tide | Water heights and Pixel style look |
+
+## 10-18 daytime: answered
+
+All items answered at 15:05 / 15:37 / 15:56 and built.
 
 ## Overnight 10-18: your calls
 
