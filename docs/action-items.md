@@ -1,5 +1,26 @@
 # Action items
 
+## 10-18 daytime: your calls
+
+| Item | Question |
+|---|---|
+| Antlion | Antlion Pit already lives in the desert (Map 18, Komodo Wallow). A second antlion card (e.g. the adult lacewing)? |
+| Starting bramble | Still named "Castle" (🏰). Rename it? |
+| "Bramble" overload | The base, Bramble the courier mouse and the Bramble rank tier share a name. Rename the mouse or the tier? |
+| Raid back rows | The boss's back rows now strike every round; should Enraged / Thrashing still add their extra volley? |
+| Grounded lightning | Lightning aimed at a bramble does nothing now. If you only meant "no Shocked status on brambles", it's a one-line revert |
+| Raid boss arrivals | Boss units now also arrive on rounds 15 and 19 (20-turn raids). OK? |
+| Spire difficulty | Smart on every floor (your note). Or Smartest ("ultimate difficulty")? |
+| Tide water | Flood fills to 15% from the top, Ebb leaves the bottom 16%. Less? Pixel style's water ring is a flat bar: OK? |
+| Tutorial golden card | Often not in the first hand, so the drag hint falls back to the first playable card. Guarantee it in the opening hand? |
+| Deck rarity floor | "Put it in my deck" shows for cards at or above the tier at least half your deck is at. Right rule? |
+| Psychic Dampener | "?" until a Map 41+ win (no Map 41 yet). Tie it to an existing map? |
+| Creative | Creativity counters do nothing yet: what should they do? |
+| Second balance pass | Rerun against today's rules (Bleed/Poison, Wave crash, shooter kills, smarter CPU)? Cut Lumber on the slowest 2+ Lumber cards? |
+| Early eggs | About one egg expected on Map 0 (8% skirmish, 16% elite, 35% boss first clears). Lower before Map 2? |
+| Missing art | Sperm Whale Elder and Corpse Flower Beetle didn't come back from NightCafe (3.5 fast credits left to retry) |
+| Guild clean-up SQL | supabase/proposed/20261018_guild_creator_delete_empty.sql lets a founder delete a half-made empty guild. Apply it? |
+
 ## Overnight 10-18: your calls
 
 Built while you slept (two rounds): the Bleed / Poison / Cure / Awash rules, the balance pass (173 cards), three legendaries with creature ranks, the Scale Trail finale, Dragon / Supreme / Ghost looks, honest locks on uncharted maps, dead-code clean-up, Arena and Leylines scenes, boss banter, translations for every game text, the desktop build's offline fonts, icon and Steam stub; round 2: placeholder texts and card names translated, Steam achievements wired, dead drop-zone code removed. Details in the CHANGELOG.
