@@ -221,12 +221,13 @@ const AMB = {
     sweep:{c:[255,120,40], a:.3, every:5},
     parts:[{kind:'ember', n:16, c:[255,170,70], s:[.006,.01], vx:[-.01,.02], vy:[-.07,-.03], wob:.02}, {kind:'streak', n:6, c:[255,180,120], s:[.2,.4], vx:[.02,.05], y:[.55,.95], a:.12, haze:true}]},
   // Gannet Cliffs (mc): sea cliffs; gulls riding the wind, spray thrown up from the foot of the cliff, a bright salt light.
+  // 2026-10-18 (owner: "The flying seagull effect in gannet cliffs. Make them 50% smaller"): the gulls are half the size (both looks).
   cliffs: {label:'Sea cliffs: gulls, spray, wind', pools:[{x:.8, y:.02, r:.9, c:[255,248,226], a:.16, pulse:[.12, .03]}],
-    parts:[{kind:'gull', n:4, c:[250,250,250], s:[.035,.055]}, {kind:'streak', n:9, c:[255,255,255], s:[.14,.26], vx:[.3,.5], y:[.05,.9], a:.55}],
+    parts:[{kind:'gull', n:4, c:[250,250,250], s:[.0175,.0275]}, {kind:'streak', n:9, c:[255,255,255], s:[.14,.26], vx:[.3,.5], y:[.05,.9], a:.55}],
     events:[{kind:'spray', every:[.7,1.6], c:[240,250,255]}]},
   cliffsB: {label:'Squall: driving spray and white caps of mist', grade:{top:[90,110,130,.18], bottom:[60,80,100,.18]},
     fog:{n:6, c:[235,242,248], a:.3, w:[.5,.9], h:[.1,.18], y:[.6,1.05], vx:[.03,.06]},
-    parts:[{kind:'gull', n:2, c:[250,250,250], s:[.03,.045]}, {kind:'streak', n:14, c:[230,240,255], s:[.15,.3], vx:[.6,.9], y:[.05,.95], a:.4, gust:true}],
+    parts:[{kind:'gull', n:2, c:[250,250,250], s:[.015,.0225]}, {kind:'streak', n:14, c:[230,240,255], s:[.15,.3], vx:[.6,.9], y:[.05,.95], a:.4, gust:true}],
     events:[{kind:'spray', every:[.6,1.4], c:[240,250,255]}]},
 
   // ---- future lands (lab concepts, 2026-10-15) ----
