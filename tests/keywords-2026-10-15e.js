@@ -53,15 +53,17 @@ for(const rules of [null, {wind:'gale'}]){
 
 // ---- 4. Exposed
 { const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const X = put(e, P, 1, 'ke-expose', 0); const ev = [];
-  e.debugAttack(P, so, X.uid, {}, ev); ok(W.hp === 497 && W.exposed === 2, `4. Expose 2: a landed hit leaves it Exposed for 2 hits (${W.hp}, ${W.exposed})`);
+  // 2026-10-19 (package SK1, owner 21:36: "Expose now becomes about exposing hiding related skills"): Exposed N = N rounds of no hiding;
+  // the counters' extra damage moved to Exploit N tokens (+1 a hit, one used; tests/skills-sk1-2026-10-19.js).
+  e.debugAttack(P, so, X.uid, {}, ev); ok(W.hp === 497 && W.exposed === 2, `4. Expose 2: a landed hit leaves it Exposed for 2 rounds (${W.hp}, ${W.exposed})`);
   ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'expose' && x.targetUid === W.uid && x.amount === 2), '4. ...and says so (statusFx expose)');
   // 2026-10-16 (user: "Everytime it is hit again, that hit is guaranteed a crit, but the counters decrease by 1."): a crit, not +1
-  const ev2 = []; e.debugAttack(P, so, X.uid, {}, ev2); ok(W.hp === 491 && W.exposed === 3, `4. the next hit is a crit (3 × 2), one counter used, two more added (${W.hp}, ${W.exposed})`);
-  ok(ev2.some(x=> x.type === 'statusFx' && x.kind === 'exposedHit' && x.targetUid === W.uid && x.amount === 1 && x.crit === true), '4. a used counter is reported with what is left (1, before this hit adds 2), as a crit');
-  ok(ev2.some(x=> x.type === 'hit' && x.targetUid === W.uid && x.crit === true && x.exposedCrit === true), '4. the hit itself is flagged a crit'); }
+  const ev2 = []; e.debugAttack(P, so, X.uid, {}, ev2); ok(W.hp === 494 && W.exposed === 2, `4. (SK1) the next hit is a plain 3, and Expose refreshes to 2 rounds, it doesn't stack (${W.hp}, ${W.exposed})`);
+  ok(!ev2.some(x=> x.type === 'statusFx' && x.kind === 'exposedHit'), '4. (SK1) no counter is used up');
+  ok(ev2.some(x=> x.type === 'hit' && x.targetUid === W.uid && !x.exposedCrit), '4. (SK1) the hit is not an Exposed crit'); }
 { let landed = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk(null, s); const V = put(e, P, 2, 'ke-evade', 0); V.exposed = 50; const A = put(e, P, 1, 'ke-hit', 0);
-    e.debugAttack(P, so, A.uid, {}, []); if(V.hp === 494) landed++; }
-  ok(landed === 30, `4. attacks at an Exposed Evasive unit never miss, and crit (3 × 2) (${landed}/30)`); }
+    e.debugAttack(P, so, A.uid, {}, []); if(V.hp === 497) landed++; }
+  ok(landed === 30, `4. attacks at an Exposed Evasive unit never miss (its hiding is stripped), for a plain 3 (SK1) (${landed}/30)`); }
 { let dodged = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk(null, s); const V = put(e, P, 2, 'ke-evade', 0); const A = put(e, P, 1, 'ke-hit', 0);
     e.debugAttack(P, so, A.uid, {}, []); if(V.hp === 500) dodged++; }
   ok(dodged > 3 && dodged < 27, `4. (without Exposed it still dodges about half: ${dodged}/30)`); }
@@ -69,16 +71,17 @@ for(const rules of [null, {wind:'gale'}]){
     e.debugAttack(P, so, A.uid, {}, []); if(V.hp < 500) landed++; }
   ok(landed === 30, `4. Blind, in Absolute darkness, still hits an Exposed unit (${landed}/30)`); }
 // 2026-10-17: a unit on the other side (one that never swings), so the new "no enemy units: Expose fades" rule below doesn't clear it
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); F.wait = 99; W.exposed = 1; W.poison = 3; e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
-  ok(W.exposed === 1, `4. a Poison tick is not a hit: Exposed stays (${W.exposed})`); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); F.wait = 99; W.exploit = 1; W.poison = 3; e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
+  ok(W.exploit === 1, `4. a Poison tick is not a hit: the Exploit token (the old counter, SK1) stays (${W.exploit})`); }
 // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off.")
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); W.exposed = 2; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
-  ok(W.exposed === 0, `4b. no units across the board: Expose counters are gone by the end of the round (${W.exposed})`);
-  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'exposeFade' && x.targetUid === W.uid && x.amount === 2), '4b. ...and the board is told (statusFx exposeFade, with how many faded)'); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); W.exposed = 3; const ev = []; e.debugDamage(P, so, F.uid, 9999, {}, ev);
-  ok(W.exposed === 0 && ev.some(x=> x.type === 'statusFx' && x.kind === 'exposeFade' && x.targetUid === W.uid), `4b. the last enemy unit dying clears them at once (${W.exposed})`); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); F.wait = 99; W.exposed = 3; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
-  ok(W.exposed === 3 && !ev.some(x=> x.kind === 'exposeFade'), `4b. while an enemy unit stands, they stay (${W.exposed})`); }
+// 2026-10-19 (package SK1): the counters are Exploit tokens now, so the fade is theirs (statusFx exploitFade).
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); W.exploit = 2; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
+  ok(W.exploit === 0, `4b. no units across the board: Exploit tokens are gone by the end of the round (${W.exploit})`);
+  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'exploitFade' && x.targetUid === W.uid && x.amount === 2), '4b. ...and the board is told (statusFx exploitFade, with how many faded)'); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); W.exploit = 3; const ev = []; e.debugDamage(P, so, F.uid, 9999, {}, ev);
+  ok(W.exploit === 0 && ev.some(x=> x.type === 'statusFx' && x.kind === 'exploitFade' && x.targetUid === W.uid), `4b. the last enemy unit dying clears them at once (${W.exploit})`); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); F.wait = 99; W.exploit = 3; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
+  ok(W.exploit === 3 && !ev.some(x=> x.kind === 'exploitFade'), `4b. while an enemy unit stands, they stay (${W.exploit})`); }
 ok(/kind==='exposeFade'/.test(src), '4b. the board fades the crosshair on exposeFade');
 ok(/function exposedTip\(n\)/.test(src) && /abadge exposed/.test(src) && /\.abadge\.exposed\{/.test(tpl), '4. an Exposed badge with its tooltip');
 ok(/exposedHit/.test(fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-b.js'), 'utf8')), '4. FX.B.exposeCash plays on every Exposed hit');
