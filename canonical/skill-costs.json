@@ -314,7 +314,7 @@
   {"id":"swipe","scale":"half","value":1,"measuredS":3.19,"measuredConf":"low"},
   {"id":"tangle","scale":"half","value":1,"measuredS":3.44,"measuredConf":"low"},
   {"id":"taunt","scale":"half","value":0,"measuredS":-1.81,"measuredConf":"high","measuredSE":0.15,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
-  {"id":"thorns","scale":"n","value":1,"measuredS":3.23,"measuredConf":"low","measuredSE":1.93},
+  {"id":"thorns","scale":"n","value":3.23,"measuredS":3.23,"measuredConf":"low","measuredSE":5.93,"prevValue":1,"appliedAt":"2026-10-19 (BF3, owner 16:22: \"Thorns is reaallly strong\")","note":"re-measured 2026-10-19 (BF3) after package TS, 5 runs, 177k games: S per point 2.5-7.2, median 3.23; the head-to-head saturates (the Thorns side wins 96-100%), so 3.23 is a floor, not a ceiling"},
   {"id":"tide","scale":"fixed","value":2.79,"measuredS":2.79,"measuredConf":"high","measuredSE":0.53,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"tideGrant","scale":"half","value":1,"note":"a parameter of another skill; costed like a skill today","measuredS":19.9,"measuredConf":"low","measuredSE":2.82},
   {"id":"timber","scale":"half","value":3.29,"measuredS":3.29,"measuredConf":"high","measuredSE":0.39,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},

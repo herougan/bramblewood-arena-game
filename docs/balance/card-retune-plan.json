@@ -6,9 +6,9 @@
   "raiseTo": 0.65
  },
  "cards": 709,
- "within": 290,
+ "within": 296,
  "over": 25,
- "under": 393,
+ "under": 387,
  "owner": 1,
  "rows": [
   {
@@ -122,9 +122,9 @@
     12
    ],
    "N": 45.57,
-   "S": 13.51,
+   "S": 15.74,
    "m": 1,
-   "useWas": 64.8,
+   "useWas": 69.7,
    "verdict": "within"
   },
   {
@@ -2120,15 +2120,10 @@
     14
    ],
    "N": 37.61,
-   "S": 3,
+   "S": 9.69,
    "m": 1,
-   "useWas": 50.5,
-   "verdict": "under",
-   "now": [
-    1,
-    20
-   ],
-   "useNow": 66.5
+   "useWas": 68.3,
+   "verdict": "within"
   },
   {
    "id": "berserker-boar",
@@ -2427,15 +2422,15 @@
     14
    ],
    "N": 45.78,
-   "S": 2,
+   "S": 6.46,
    "m": 1,
-   "useWas": 48.1,
+   "useWas": 57.8,
    "verdict": "under",
    "now": [
     4,
-    20
+    16
    ],
-   "useNow": 65.5
+   "useNow": 66.5
   },
   {
    "id": "acacia-giraffe",
@@ -2549,9 +2544,9 @@
     24
    ],
    "N": 49.7,
-   "S": 2,
+   "S": 6.46,
    "m": 1,
-   "useWas": 72.4,
+   "useWas": 81.4,
    "verdict": "within"
   },
   {
@@ -3031,15 +3026,15 @@
     7
    ],
    "N": 29.97,
-   "S": 4.79,
+   "S": 7.02,
    "m": 1,
-   "useWas": 46,
+   "useWas": 53.5,
    "verdict": "under",
    "now": [
     2,
     11
    ],
-   "useNow": 66
+   "useNow": 73.5
   },
   {
    "id": "fire-drake-hatchling",
@@ -3544,15 +3539,15 @@
     39
    ],
    "N": 62,
-   "S": 10.11,
+   "S": 16.8,
    "m": 1,
-   "useWas": 105,
+   "useWas": 115.8,
    "verdict": "over",
    "now": [
-    7,
-    36
+    6,
+    32
    ],
-   "useNow": 97
+   "useNow": 98.1
   },
   {
    "id": "dune-jackal",
@@ -3639,15 +3634,10 @@
     6
    ],
    "N": 22.84,
-   "S": 2,
+   "S": 6.46,
    "m": 1,
-   "useWas": 43.8,
-   "verdict": "under",
-   "now": [
-    2,
-    9
-   ],
-   "useNow": 65.7
+   "useWas": 63.3,
+   "verdict": "within"
   },
   {
    "id": "quillback-elder",
@@ -5396,15 +5386,15 @@
     4
    ],
    "N": 22.01,
-   "S": 1,
+   "S": 3.23,
    "m": 1,
-   "useWas": 40.9,
+   "useWas": 51,
    "verdict": "under",
    "now": [
-    4,
-    7
+    3,
+    6
    ],
-   "useNow": 72.7
+   "useNow": 69.2
   },
   {
    "id": "meadow-frog",
@@ -6528,15 +6518,15 @@
     2
    ],
    "N": 25.52,
-   "S": 6.48,
+   "S": 8.71,
    "m": 1,
-   "useWas": 41.1,
+   "useWas": 49.8,
    "verdict": "under",
    "now": [
-    3,
-    5
+    2,
+    4
    ],
-   "useNow": 68.5
+   "useNow": 65.5
   },
   {
    "id": "talon-archer",
@@ -6591,15 +6581,10 @@
     18
    ],
    "N": 47.22,
-   "S": 2,
+   "S": 6.46,
    "m": 1,
-   "useWas": 55.1,
-   "verdict": "under",
-   "now": [
-    4,
-    21
-   ],
-   "useNow": 65.7
+   "useWas": 64.5,
+   "verdict": "within"
   },
   {
    "id": "old-shell",
@@ -7636,7 +7621,7 @@
    "m": 1,
    "useWas": 182.2,
    "verdict": "owner",
-   "why": "fitting it needs 2/13 (×0.37): its 0 Lumber / Wait 1 at legendary (N 36.79) is too little for its skills (S 19.03); a cost change, not a stat cut"
+   "why": "kept as printed (owner 16:22, decision B10): its power at 20-B-4 comes from the field; over its N at 0 Lumber"
   },
   {
    "id": "the-contradiction",
@@ -8309,15 +8294,10 @@
     14
    ],
    "N": 44.54,
-   "S": 7.75,
+   "S": 12.21,
    "m": 1,
-   "useWas": 57.8,
-   "verdict": "under",
-   "now": [
-    3,
-    18
-   ],
-   "useNow": 71.3
+   "useWas": 67.8,
+   "verdict": "within"
   },
   {
    "id": "fennec-fox",
@@ -8557,15 +8537,10 @@
     16
    ],
    "N": 44.74,
-   "S": 6.48,
+   "S": 8.71,
    "m": 1,
-   "useWas": 59.2,
-   "verdict": "under",
-   "now": [
-    2,
-    19
-   ],
-   "useNow": 65.9
+   "useWas": 64.2,
+   "verdict": "within"
   },
   {
    "id": "dynamite-packrat",
@@ -9312,15 +9287,15 @@
     6
    ],
    "N": 29.55,
-   "S": 1,
+   "S": 3.23,
    "m": 1,
-   "useWas": 37.2,
+   "useWas": 44.8,
    "verdict": "under",
    "now": [
-    4,
-    11
+    3,
+    10
    ],
-   "useNow": 67.7
+   "useNow": 65.1
   },
   {
    "id": "sheep",
@@ -12133,15 +12108,15 @@
     6
    ],
    "N": 28.93,
-   "S": 4.79,
+   "S": 9.25,
    "m": 1,
-   "useWas": 44.2,
+   "useWas": 59.6,
    "verdict": "under",
    "now": [
-    2,
-    11
+    1,
+    8
    ],
-   "useNow": 68.4
+   "useNow": 66.5
   },
   {
    "id": "rock-pool-starfish",
@@ -12292,9 +12267,9 @@
     9
    ],
    "N": 34.72,
-   "S": 2,
+   "S": 6.46,
    "m": 1.5,
-   "useWas": 64.8,
+   "useWas": 84.1,
    "verdict": "within"
   },
   {
@@ -12955,9 +12930,9 @@
     10
    ],
    "N": 36.17,
-   "S": 7.92,
+   "S": 12.38,
    "m": 1,
-   "useWas": 60.6,
+   "useWas": 72.9,
    "verdict": "within"
   },
   {
@@ -12992,15 +12967,10 @@
     8
    ],
    "N": 35.13,
-   "S": 4.79,
+   "S": 9.25,
    "m": 1,
-   "useWas": 53.5,
-   "verdict": "under",
-   "now": [
-    4,
-    11
-   ],
-   "useNow": 67.7
+   "useWas": 66.2,
+   "verdict": "within"
   },
   {
    "id": "giant-clam",
@@ -13114,15 +13084,15 @@
     6
    ],
    "N": 31.83,
-   "S": 1,
+   "S": 3.23,
    "m": 1.5,
-   "useWas": 42.4,
+   "useWas": 52.9,
    "verdict": "under",
    "now": [
-    2,
+    1,
     9
    ],
-   "useNow": 66
+   "useNow": 67.1
   },
   {
    "id": "mountain-hare",
@@ -13251,9 +13221,9 @@
     4
    ],
    "N": 22.84,
-   "S": 3.68,
+   "S": 5.91,
    "m": 1.5,
-   "useWas": 63.6,
+   "useWas": 78.2,
    "verdict": "within"
   },
   {

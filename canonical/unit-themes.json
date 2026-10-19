@@ -7561,7 +7561,7 @@
     ],
     "fights": {
      "md": 1,
-     "mpd": 10
+     "mpd": 12
     }
    },
    "source": "map",
@@ -7774,7 +7774,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 1,
-    "health": 20,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
@@ -8715,14 +8715,14 @@
    "animalGroup": "snake",
    "subtype": "plant",
    "faction": "wild",
-   "size": "large",
+   "size": "medium",
    "stage": 3,
    "firstMap": 14,
    "body": {
     "cost": 1,
     "wait": 2,
     "attack": 4,
-    "health": 20,
+    "health": 16,
     "dmg": "physical",
     "resist": []
    },
@@ -12255,8 +12255,8 @@
    "body": {
     "cost": 3,
     "wait": 3,
-    "attack": 7,
-    "health": 36,
+    "attack": 6,
+    "health": 32,
     "dmg": "physical",
     "resist": []
    },
@@ -12545,8 +12545,8 @@
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 2,
-    "health": 9,
+    "attack": 1,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -17716,8 +17716,8 @@
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 4,
-    "health": 7,
+    "attack": 3,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -20764,8 +20764,8 @@
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 3,
-    "health": 5,
+    "attack": 2,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
@@ -20915,14 +20915,14 @@
    "animalGroup": "badger",
    "subtype": null,
    "faction": "wild",
-   "size": "large",
+   "size": "medium",
    "stage": 1,
    "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 2,
-    "attack": 4,
-    "health": 21,
+    "attack": 3,
+    "health": 18,
     "dmg": "physical",
     "resist": []
    },
@@ -25980,8 +25980,8 @@
    "body": {
     "cost": 1,
     "wait": 2,
-    "attack": 3,
-    "health": 18,
+    "attack": 2,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
@@ -26691,7 +26691,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 2,
-    "health": 19,
+    "health": 16,
     "dmg": "physical",
     "resist": []
    },
@@ -28934,8 +28934,8 @@
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 4,
-    "health": 11,
+    "attack": 3,
+    "health": 10,
     "dmg": "physical",
     "resist": []
    },
@@ -35938,7 +35938,7 @@
     ],
     "fights": {
      "md": 6,
-     "mpd": 5
+     "mpd": 3
     }
    },
    "source": "map",
@@ -36605,8 +36605,8 @@
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 2,
-    "health": 11,
+    "attack": 1,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -39509,14 +39509,14 @@
    "animalGroup": "fish",
    "subtype": null,
    "faction": "wild",
-   "size": "medium",
+   "size": "small",
    "stage": 1,
    "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 4,
-    "health": 11,
+    "attack": 3,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -39959,7 +39959,7 @@
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 2,
+    "attack": 1,
     "health": 9,
     "dmg": "physical",
     "resist": []
@@ -42511,7 +42511,7 @@
    "nameProposal": true,
    "icon": "🦅",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "cliffs",
     "mountain-sky"
@@ -42558,8 +42558,8 @@
      "attack": 3,
      "health": 3.75
     },
-    "N": 33.79,
-    "N2": 126.86,
+    "N": 34.82,
+    "N2": 134.71,
     "x1": 27,
     "x2": 90,
     "budgetOk": true,
@@ -43527,8 +43527,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 3,
-    "health": 21,
+    "attack": 2,
+    "health": 23,
     "dmg": "physical",
     "resist": []
    },
@@ -43555,13 +43555,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.5,
-     "health": 1.91
+     "attack": 2,
+     "health": 2.88
     },
     "N": 34.1,
     "N2": 129.2,
     "x1": 27,
-    "x2": 63,
+    "x2": 46,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -43571,8 +43571,8 @@
      },
      "cost": 1,
      "wait": 1,
-     "attack": 3,
-     "health": 17
+     "attack": 1,
+     "health": 12
     },
     "baseSkills": [
      [
@@ -45036,7 +45036,7 @@
    "nameProposal": true,
    "icon": "🐦",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "mangrove",
     "coast",
@@ -45055,7 +45055,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 9,
-    "health": 20,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -45083,12 +45083,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.8,
-     "health": 2
+     "health": 2.1
     },
-    "N": 48.26,
-    "N2": 258.78,
-    "x1": 38,
-    "x2": 180,
+    "N": 49.29,
+    "N2": 269.94,
+    "x1": 39,
+    "x2": 189,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45404,7 +45404,7 @@
    "nameProposal": true,
    "icon": "🦭",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "mangrove",
     "reef-ocean"
@@ -45422,7 +45422,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 4,
-    "health": 37,
+    "health": 38,
     "dmg": "physical",
     "resist": []
    },
@@ -45450,12 +45450,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.33,
-     "health": 1.32
+     "health": 1.36
     },
-    "N": 57.04,
-    "N2": 361.51,
-    "x1": 45,
-    "x2": 148,
+    "N": 58.07,
+    "N2": 374.68,
+    "x1": 46,
+    "x2": 152,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45466,7 +45466,7 @@
      "cost": 2,
      "wait": 3,
      "attack": 4,
-     "health": 37
+     "health": 38
     },
     "baseSkills": [
      [
@@ -45499,7 +45499,7 @@
    "nameProposal": true,
    "icon": "🐒",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "mangrove",
     "reef-ocean"
@@ -45517,7 +45517,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 7,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -45545,12 +45545,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.75,
-     "health": 2
+     "health": 2.08
     },
-    "N": 48.26,
-    "N2": 258.78,
-    "x1": 38,
-    "x2": 168,
+    "N": 49.29,
+    "N2": 269.94,
+    "x1": 39,
+    "x2": 175,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45590,7 +45590,7 @@
    "nameProposal": true,
    "icon": "🐚",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "mangrove",
     "reef-ocean"
@@ -45608,7 +45608,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 4,
-    "health": 37,
+    "health": 38,
     "dmg": "physical",
     "resist": []
    },
@@ -45635,12 +45635,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.33,
-     "health": 1.32
+     "health": 1.36
     },
-    "N": 57.04,
-    "N2": 361.51,
-    "x1": 45,
-    "x2": 148,
+    "N": 58.07,
+    "N2": 374.68,
+    "x1": 46,
+    "x2": 152,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45651,7 +45651,7 @@
      "cost": 2,
      "wait": 3,
      "attack": 4,
-     "health": 37
+     "health": 38
     },
     "baseSkills": [
      [
@@ -45767,7 +45767,7 @@
    "nameProposal": true,
    "icon": "💧",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "mangrove",
     "volcanic-ash",
@@ -45785,8 +45785,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 8,
-    "health": 12,
+    "attack": 9,
+    "health": 10,
     "dmg": "cold",
     "resist": [
      "heat"
@@ -45814,13 +45814,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.33,
-     "health": 1.71
+     "attack": 1.5,
+     "health": 1.43
     },
-    "N": 35.13,
-    "N2": 137.12,
+    "N": 36.17,
+    "N2": 145.36,
     "x1": 28,
-    "x2": 96,
+    "x2": 90,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47267,8 +47267,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 4,
-    "health": 20,
+    "attack": 2,
+    "health": 24,
     "dmg": "physical",
     "resist": []
    },
@@ -47296,12 +47296,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 2,
-     "health": 2.22
+     "health": 2.67
     },
     "N": 35.13,
     "N2": 137.12,
     "x1": 28,
-    "x2": 80,
+    "x2": 48,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47311,7 +47311,7 @@
      },
      "cost": 1,
      "wait": 1,
-     "attack": 3,
+     "attack": 1,
      "health": 14
     },
     "baseSkills": [
@@ -47884,7 +47884,7 @@
    "nameProposal": true,
    "icon": "🦈",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "reef-ocean",
     "mangrove"
@@ -47901,8 +47901,8 @@
    "body": {
     "cost": 3,
     "wait": 2,
-    "attack": 10,
-    "health": 23,
+    "attack": 11,
+    "health": 22,
     "dmg": "physical",
     "resist": []
    },
@@ -47928,13 +47928,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 1.43,
-     "health": 1.64
+     "attack": 1.57,
+     "health": 1.57
     },
-    "N": 54.46,
-    "N2": 329.54,
-    "x1": 43,
-    "x2": 230,
+    "N": 55.49,
+    "N2": 342.13,
+    "x1": 44,
+    "x2": 242,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47945,7 +47945,7 @@
      "cost": 3,
      "wait": 2,
      "attack": 11,
-     "health": 21
+     "health": 22
     },
     "baseSkills": [
      [
@@ -51155,16 +51155,16 @@
    }
   },
   {
-   "id": "humpback-elder~boss",
-   "name": "Leviathan Elder",
+   "id": "orca-vanguard~boss",
+   "name": "Orca Warlord",
    "kind": "raid-boss-unit",
    "audience": "non-player",
    "raid": "goliath",
    "parts": [
     "tail"
    ],
-   "of": "humpback-elder",
-   "animal": "humpback whale",
+   "of": "orca-vanguard",
+   "animal": "orca",
    "subtype": null,
    "statsFrom": "multipliers",
    "mult": {
@@ -51177,15 +51177,15 @@
    "body": {
     "cost": 3,
     "wait": 3,
-    "attack": 8,
+    "attack": 9,
     "health": {
-     "fresh": 108,
-     "nearlyDown": 54
+     "fresh": 96,
+     "nearlyDown": 48
     }
    },
    "art": {
     "ownArt": false,
-    "uses": "art/cards/humpback-elder.png"
+    "uses": "art/cards/orca-vanguard.png"
    }
   },
   {

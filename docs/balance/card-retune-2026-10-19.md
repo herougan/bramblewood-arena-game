@@ -6,7 +6,7 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 
 - **The budget:** v5, N = (Base + L/10) × (1 + L/30), at **Level 1**, and a card must also pass at the level it starts at (a Base card's Lv 0: Base − 1). Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual + 0.2 × Map (the map it becomes obtainable on).
 - **The skill costs:** `canonical/skill-costs.json` as it is, the applied measured S included.
-- **The band:** the master hub's Skill costs tab. A card is **over** when 2A+H+S ≥ N or A·H+S ≥ (N/3)² (both ×1.5 per half-miss skill), **well under** (pink) when 2A+H+S ≤ 60% of N, and **within** between. Over cards come down until both rules pass; well-under cards go up to 65% of N, a few points inside the band so rounding never puts them back; cards within are left alone.
+- **The band:** the master hub's Skill costs tab. A card is **over** when 2A+H+S > N or A·H+S > (N/3)² (equal is fine, owner 16:22) (both ×1.5 per half-miss skill), **well under** (pink) when 2A+H+S ≤ 60% of N, and **within** between. Over cards come down until both rules pass; well-under cards go up to 65% of N, a few points inside the band so rounding never puts them back; cards within are left alone.
 - **The shape:** Attack and Health move by one factor, so a wall keeps 0 Attack and a glass cannon stays glass. Where a high-Attack card would break the A·H rule first, only its Health grows.
 - **Not changed:** costs, Wait, rarities and skills. A card that stats can't fix is an owner call (below).
 
@@ -15,9 +15,9 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | | Cards |
 |---|---|
 | Live cards checked | 709 |
-| Within, unchanged | 290 |
+| Within, unchanged | 296 |
 | Over, fitted down | 25 |
-| Well under, raised | 393 |
+| Well under, raised | 387 |
 | Owner calls | 1 |
 
 ## Every change
@@ -34,7 +34,7 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Antler Skirmisher | rare | 1 / 1 | 4/12 | 5/15 | 37.82 | 52.9% | 66.1% | well under |
 | Antlion Pit | uncommon | 1 / 1 | 3/11 | 4/15 | 37.82 | 50.5% | 66.4% | well under |
 | Anvil Thrush | common | 1 / 0 | 2/4 | 3/7 | 29.55 | 40.6% | 66% | well under |
-| Apollo Butterfly | uncommon | 1 / 0 | 1/6 | 2/9 | 31.83 | 42.4% | 66% | well under |
+| Apollo Butterfly | uncommon | 1 / 0 | 1/6 | 1/9 | 31.83 | 52.9% | 67.1% | well under |
 | Archerfish | uncommon | 1 / 1 | 3/8 | 5/12 | 35.96 | 44.5% | 66.7% | well under |
 | Arctic Tern | uncommon | 1 / 0 | 1/4 | 2/6 | 30.59 | 46.3% | 65.9% | well under |
 | Armadillo Guard | common | 0 / 1 | 3/5 | 5/8 | 30.07 | 43.2% | 66.5% | well under |
@@ -42,7 +42,7 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Ashbone Ghoul | common | 1 / 0 | 2/5 | 5/12 | 32.65 | 27.6% | 67.4% | well under |
 | Aye-aye Prowler | common | 0 / 0 | 4/4 | 6/6 | 24.7 | 48.6% | 72.9% | well under |
 | Baby Bat | common | 1 / 0 | 2/5 | 3/6 | 30.17 | 58.1% | 73% | well under |
-| Baby Horned Capybara | common | 1 / 0 | 2/6 | 4/11 | 29.55 | 37.2% | 67.7% | well under |
+| Baby Horned Capybara | common | 1 / 0 | 2/6 | 3/10 | 29.55 | 44.8% | 65.1% | well under |
 | Badger Berserker | rare | 1 / 1 | 3/12 | 4/18 | 39.68 | 46.6% | 66.8% | well under |
 | Badger Lumberjack | uncommon | 1 / 1 | 2/10 | 3/13 | 35.13 | 55.4% | 69.6% | well under |
 | Balloon Archer | uncommon | 2 / 1 | 1/8 | 2/14 | 44.12 | 40.8% | 68% | well under |
@@ -179,7 +179,7 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Heartwood Treant | rare | 2 / 2 | 2/14 | 3/23 | 49.29 | 43.2% | 65.5% | well under |
 | Hedge Changeling | uncommon | 1 / 0 | 2/7 | 4/12 | 30.59 | 36% | 65.4% | well under |
 | Hedge Weasel | uncommon | 1 / 0 | 3/5 | 6/9 | 32.03 | 38.8% | 70% | well under |
-| Hedgehog Scout | common | 0 / 0 | 2/4 | 4/7 | 22.01 | 40.9% | 72.7% | well under |
+| Hedgehog Scout | common | 0 / 0 | 2/4 | 3/6 | 22.01 | 51% | 69.2% | well under |
 | Hellbender | common | 0 / 0 | 2/6 | 4/11 | 25.73 | 38.9% | 73.8% | well under |
 | Helmeted Otter | common | 1 / 0 | 2/8 | 3/14 | 29.55 | 40.6% | 67.7% | well under |
 | Hercules Beetle | rare | 2 / 1 | 4/10 | 5/13 | 45.78 | 54.9% | 65.9% | well under |
@@ -190,13 +190,13 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | House Cat | common | 0 / 0 | 3/3 | 5/5 | 22.01 | 40.9% | 68.2% | well under |
 | Howdah Archers | rare | 1 / 1 | 2/7 | 3/11 | 39.89 | 51.5% | 66.6% | well under |
 | Howler Monkey | uncommon | 0 / 0 | 2/3 | 4/5 | 23.87 | 44.7% | 69.9% | well under |
-| Humpback Elder | common | 3 / 3 | 8/39 | 7/36 | 62 | 105% | 97% | over budget |
+| Humpback Elder | common | 3 / 3 | 8/39 | 6/32 | 62 | 115.8% | 98.1% | over budget |
 | Hymn Wren | common | 0 / 0 | 2/5 | 4/9 | 24.08 | 37.4% | 70.6% | well under |
 | Ibex Rockcaller | rare | 2 / 1 | 3/9 | 6/17 | 45.16 | 35.4% | 66.4% | well under |
 | Ice Fish | epic | 3 / 1 | 5/11 | 8/19 | 54.77 | 40.2% | 65.7% | well under |
 | Ice Petrel | uncommon | 1 / 1 | 3/6 | 6/12 | 38.65 | 36.2% | 67.3% | well under |
 | Ice-Crevasse Wolf | rare | 1 / 1 | 3/10 | 4/12 | 36.17 | 59.2% | 70.2% | well under |
-| Inside-Out Hedgehog | uncommon | 0 / 0 | 1/2 | 3/5 | 25.52 | 41.1% | 68.5% | well under |
+| Inside-Out Hedgehog | uncommon | 0 / 0 | 1/2 | 2/4 | 25.52 | 49.8% | 65.5% | well under |
 | Iron Warden | epic | 3 / 1 | 4/18 | 6/27 | 59.73 | 43.5% | 65.3% | well under |
 | Ironback Gorilla | rare | 4 / 1 | 8/20 | 9/22 | 62.52 | 59.2% | 65.6% | well under |
 | Ironmaw Warwolf | epic | 2 / 3 | 9/26 | 8/24 | 58.59 | 102.4% | 95.6% | over budget |
@@ -217,7 +217,6 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Lemming Swarm | common | 0 / 0 | 1/2 | 3/6 | 22.84 | 31.6% | 66.6% | well under |
 | Leopard Seal | rare | 2 / 1 | 6/10 | 8/13 | 42.88 | 53% | 69.3% | well under |
 | Lichen Tortoise | rare | 2 / 1 | 5/9 | 8/14 | 42.88 | 44.3% | 70% | well under |
-| Lionfish | uncommon | 1 / 1 | 3/8 | 4/11 | 35.13 | 53.5% | 67.7% | well under |
 | Lone Grey Wolf | veryrare | 2 / 1 | 4/18 | 5/20 | 47.43 | 59% | 67.5% | well under |
 | Lotus Frog | uncommon | 1 / 1 | 4/7 | 6/11 | 34.51 | 43.5% | 66.6% | well under |
 | Lovebird | common | 0 / 1 | 4/5 | 6/8 | 29.24 | 44.5% | 68.4% | well under |
@@ -246,7 +245,6 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Mirrorhide Mutant | rare | 2 / 0 | 3/6 | 6/12 | 38.34 | 33.9% | 65.2% | well under |
 | Monarch Wingblade | rare | 1 / 1 | 2/6 | 3/8 | 36.58 | 55.9% | 72.3% | well under |
 | Mongoose Duelist | uncommon | 1 / 1 | 4/7 | 7/11 | 36.99 | 40.6% | 67.6% | well under |
-| Monitor Rambler | uncommon | 2 / 1 | 2/16 | 2/19 | 44.74 | 59.2% | 65.9% | well under |
 | Moon Jelly | common | 1 / 0 | 1/7 | 2/11 | 28.52 | 52.3% | 73.4% | well under |
 | Mosquito Cloud | common | 0 / 0 | 1/4 | 1/6 | 22.84 | 57.1% | 70.3% | well under |
 | Mosswing | starter | 0 / 0 | 0/4 | 0/10 | 20.77 | 28.9% | 72.2% | well under |
@@ -293,7 +291,7 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Pika Hoarder | common | 0 / 0 | 3/7 | 4/9 | 26.14 | 49.7% | 65% | well under |
 | Pike Lancer | rare | 1 / 0 | 3/6 | 5/9 | 31 | 47.7% | 70.3% | well under |
 | Pill Bug | uncommon | 0 / 0 | 2/4 | 3/7 | 23.04 | 46.6% | 68.3% | well under |
-| Pincushion Urchin | common | 1 / 0 | 1/6 | 2/11 | 28.93 | 44.2% | 68.4% | well under |
+| Pincushion Urchin | common | 1 / 0 | 1/6 | 1/8 | 28.93 | 59.6% | 66.5% | well under |
 | Pinecone Sapper | common | 1 / 0 | 0/7 | 0/16 | 31.83 | 38.3% | 66.6% | well under |
 | Piranha Shoal | uncommon | 0 / 1 | 4/6 | 6/8 | 29.24 | 47.9% | 68.4% | well under |
 | Pit Glutton | rare | 1 / 1 | 3/9 | 5/15 | 39.06 | 41% | 66.6% | well under |
@@ -302,7 +300,6 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Pond Duck | starter | 0 / 0 | 2/3 | 4/6 | 20.77 | 33.7% | 67.4% | well under |
 | Pond Paddler | rare | 0 / 0 | 2/3 | 3/5 | 24.28 | 43.2% | 68% | well under |
 | Pond Trout | starter | 0 / 0 | 2/3 | 4/6 | 20.77 | 33.7% | 67.4% | well under |
-| Porcupine Roller | common | 0 / 0 | 1/6 | 2/9 | 22.84 | 43.8% | 65.7% | well under |
 | Pronghorn Racer | common | 0 / 1 | 3/5 | 5/8 | 29.45 | 50.6% | 74.4% | well under |
 | Puddle Changeling | common | 0 / 0 | 2/3 | 4/6 | 22.84 | 35% | 65.7% | well under |
 | Puddle Hopper | common | 0 / 0 | 2/6 | 3/8 | 22.01 | 58.1% | 76.3% | well under |
@@ -312,7 +309,6 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Puppeteer Imp | rare | 1 / 0 | 2/6 | 4/11 | 34.51 | 46.4% | 72.4% | well under |
 | Pyroclast Wyrm | common | 2 / 3 | 7/16 | 8/19 | 56.52 | 56.6% | 65.5% | well under |
 | Quill Volley | rare | 0 / 1 | 2/10 | 2/12 | 32.34 | 59.7% | 65.9% | well under |
-| Quill-Thorn Boar | rare | 1 / 1 | 1/14 | 1/20 | 37.61 | 50.5% | 66.5% | well under |
 | Rabbit Kit | common | 0 / 0 | 2/1 | 4/2 | 21.8 | 34.4% | 68.8% | well under |
 | Rabid Jackal | uncommon | 0 / 0 | 2/3 | 3/5 | 26.56 | 53.6% | 68.6% | well under |
 | Raccoon Bandit | rare | 1 / 0 | 4/6 | 6/8 | 33.69 | 51% | 68.8% | well under |
@@ -375,9 +371,9 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Stone Turtle Warden | common | 2 / 2 | 4/30 | 3/26 | 47.02 | 110.1% | 97.3% | over budget |
 | Stonedrop Vulture | uncommon | 1 / 1 | 3/6 | 4/7 | 37.82 | 57.8% | 69.7% | well under |
 | Storm Heron | rare | 1 / 0 | 3/7 | 5/11 | 32.86 | 45.6% | 70% | well under |
-| Strangler Vine | rare | 2 / 1 | 3/14 | 4/20 | 45.78 | 48.1% | 65.5% | well under |
+| Strangler Vine | rare | 2 / 1 | 3/14 | 4/16 | 45.78 | 57.8% | 66.5% | well under |
 | Subterraneaner | uncommon | 1 / 1 | 8/10 | 7/9 | 35.75 | 107.5% | 99.1% | over budget |
-| Sulfur Vent Crab | uncommon | 1 / 0 | 1/7 | 2/11 | 29.97 | 46% | 66% | well under |
+| Sulfur Vent Crab | uncommon | 1 / 0 | 1/7 | 2/11 | 29.97 | 53.5% | 73.5% | well under |
 | Sunbittern Strider | uncommon | 1 / 1 | 3/7 | 5/11 | 35.96 | 48.5% | 70.7% | well under |
 | Sunfeather Scout | common | 1 / 0 | 1/5 | 2/8 | 29.55 | 40.6% | 66% | well under |
 | Sunspire Choirmother | veryrare | 2 / 1 | 2/6 | 3/10 | 44.95 | 48% | 68% | well under |
@@ -396,10 +392,8 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 | Terrier Pup | uncommon | 0 / 0 | 2/6 | 3/10 | 23.87 | 41.9% | 67% | well under |
 | Testudo Tortoise | rare | 2 / 2 | 2/14 | 3/19 | 53.01 | 53.2% | 66.4% | well under |
 | The Magnate Duck | legendary | 4 / 4 | 6/59 | 6/56 | 86.28 | 103.2% | 99.7% | over budget |
-| The Thistle Baron | heroic | 2 / 1 | 3/18 | 4/21 | 47.22 | 55.1% | 65.7% | well under |
 | The Unremembered | rare | 1 / 1 | 3/6 | 6/12 | 36.37 | 33% | 66% | well under |
 | Thornvine Lasher | rare | 1 / 0 | 3/7 | 5/12 | 33.07 | 39.3% | 66.5% | well under |
-| Thorny Devil | common | 2 / 1 | 2/14 | 3/18 | 44.54 | 57.8% | 71.3% | well under |
 | Thunder Lizard | epic | 3 / 3 | 5/11 | 9/19 | 66.34 | 43% | 67.1% | well under |
 | Tide Spirit | rare | 1 / 0 | 4/5 | 6/7 | 32.45 | 48.7% | 67.1% | well under |
 | Tidepool Trapper Crab | common | 0 / 0 | 1/9 | 1/12 | 22.22 | 54% | 67.5% | well under |
@@ -447,4 +441,4 @@ Owner (15:48): "Retune to our L/10 stats. Retune all cards base on your assumpti
 
 | Card | Stats | N | Why |
 |---|---|---|---|
-| The Caldera Wyrm | 6/36 | 36.79 | fitting it needs 2/13 (×0.37): its 0 Lumber / Wait 1 at legendary (N 36.79) is too little for its skills (S 19.03); a cost change, not a stat cut |
+| The Caldera Wyrm | 6/36 | 36.79 | kept as printed (owner 16:22, decision B10): its power at 20-B-4 comes from the field; over its N at 0 Lumber |
