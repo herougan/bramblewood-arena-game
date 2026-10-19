@@ -115,15 +115,17 @@ const card = (id, a, h, x)=> Object.assign({id, attack: a, health: h, cost: 0, w
   let offers = 0, bad = [];
   teach.forEach(d=>{ const out = S.weakestDeckCard(d.id); if(!out) return; offers++; if(!(S.swapStrength(d) > S.swapStrength(defs[out]))) bad.push(d.id + '->' + out); });
   ok(teach.length > 0 && !bad.length, `${teach.length} teaching cards: ${offers} would be offered, none for a stronger deck card (${bad.join(', ')})`);
+  console.log(`  (Map 0-1 teaching swaps against the starter deck: ${offers} of ${teach.length} keyword cards are clearly better than a starter card and get the window)`);
   starter.forEach(id=>{ const out = S.weakestDeckCard(id); ok(!out || S.swapStrength(defs[id]) > S.swapStrength(defs[out]), `${id}: never for a card as strong or stronger (${out})`); }); }
 // the window's wiring
 { const f = B.grab('maybeOfferDeckSwap');
   ok(/const sOpts = swapOptsFor\(item\);/.test(f) && /const out = item\.forced \? weakestDeckCard\(id, sOpts\) : dominatedDeckCard\(id\); if\(!out\)\{ setTimeout\(maybeOfferDeckSwap, 50\); return; \}/.test(f), 'the window: a forced swap only for a card it beats; none = no window');
   ok(/deckIds\.some\(o=> swapOutAllowed\(o, k\) && swapClearlyBetter\(defs\[k\], defs\[o\]\)\)/.test(f), 'the right column only lists cards that beat a deck card');
-  ok(/swapOutAllowed\(k, inId\) && swapClearlyBetter\(defs\[inId\], defs\[k\], o2\)\)/.test(f), 'the left column only lists deck cards the chosen card beats'); }
+  ok(/swapOutAllowed\(k, inId\) && swapClearlyBetter\(defs\[inId\], defs\[k\], o2\)\)/.test(f), 'the left column only lists deck cards the chosen card beats');
+  ok(/better = from0\.filter\(id=> weakestDeckCard\(id\)\)/.test(B.grab('teachingCardPick')), 'the Map 0-1 teaching card is picked among those that beat a deck card, when any do (so the lesson still shows)'); }
 ok(/^## 2026-10-19 \(package MX/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), 'CHANGELOG entry');
 
-async function browser(){
+async function browser(){ if(process.env.MX_NO_BROWSER) return;
   let pw; try{ pw = require('playwright'); }catch(e){ try{ pw = require('/home/claude/.npm-global/lib/node_modules/playwright'); }catch(e2){ console.log('  (browser part skipped: no playwright)'); return; } }
   const EXE = process.env.BW_CHROMIUM || '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell';
   if(!fs.existsSync(EXE) || !fs.existsSync(path.join(ROOT, 'index.html'))){ console.log('  (browser part skipped: no Chromium or index.html)'); return; }

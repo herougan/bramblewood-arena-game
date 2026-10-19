@@ -21873,7 +21873,11 @@ function teachingCardPick(){
     const ok = id=>{ const d = defs[id]; return d && d.effects && d.effects[k] != null && !d.token && !d.test && !isEquipmentDef(d) && !d.hidden && !d.tutorial && !(d.cost > 0) && !isUnattainable(d) && ['common','starter','basic'].includes(d.rarity || 'common') && (d.attack||0) + (d.health||0) <= 9 && !(myDeckCounts[id] > 0); };
     const pool = Object.keys(defs).filter(ok); if(!pool.length) continue;
     const mine = arch ? pool.filter(id=> (defs[id].archetypes||[]).includes(arch)) : [];
-    const from = mine.length ? mine : pool; return from[Math.floor(Math.random() * from.length)];
+    const from0 = mine.length ? mine : pool;
+    // 2026-10-19 (package MX): a teaching card that is clearly better than a card in your deck where there is one, so its swap window
+    // (which now only opens for a better card: swapClearlyBetter) still comes up and teaches the keyword
+    let better = []; try{ better = from0.filter(id=> weakestDeckCard(id)); }catch(e){}
+    const from = better.length ? better : from0; return from[Math.floor(Math.random() * from.length)];
   }
   return null;
 }
