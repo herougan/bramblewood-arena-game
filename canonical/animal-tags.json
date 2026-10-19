@@ -67,30 +67,22 @@
  "counts": {
   "cards": 819,
   "creatures": 731,
-  "tagged": 734,
-  "animals": 356,
-  "groups": 144,
-  "withSubtype": 104,
-  "proposed": 38,
+  "tagged": 733,
+  "animals": 351,
+  "groups": 142,
+  "withSubtype": 100,
+  "proposed": 30,
   "subtype": {
-   "Bombardier beetle": 1,
-   "Giant panda": 1,
-   "Light-blade swarm": 1,
-   "Pepper drake": 1,
-   "Pom-pom lantern-bearer": 1,
-   "Round mouse": 1,
-   "Six-legged walker": 1,
-   "Star condor": 1,
    "changeling": 3,
-   "conjured": 2,
+   "conjured": 3,
    "construct": 7,
    "elemental": 11,
    "fiend": 11,
    "fungus": 2,
    "ghost": 4,
    "glitch": 1,
-   "mutant": 4,
-   "mythic": 13,
+   "mutant": 5,
+   "mythic": 15,
    "plant": 11,
    "spirit": 7,
    "structure": 13,
@@ -112,9 +104,9 @@
    "fish": 24,
    "beetle": 19,
    "fox": 17,
+   "cat": 16,
    "bat": 16,
    "salamander": 16,
-   "cat": 15,
    "lizard": 15,
    "duck": 15,
    "wolf": 14,
@@ -309,13 +301,6 @@
    "why": "no art yet; proposed: a raven (\"brings the shadow with it\")"
   },
   {
-   "id": "creeper",
-   "name": "Creeper",
-   "animal": "Beetle",
-   "subtype": "Bombardier beetle",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
    "id": "growth-sprout",
    "name": "Growth Sprout",
    "animal": "caterpillar",
@@ -356,55 +341,6 @@
    "animal": "duck",
    "subtype": "structure",
    "why": "a gate; proposed: a duck (the Magnate's keep it guards)"
-  },
-  {
-   "id": "terraumbra",
-   "name": "Terraumbra",
-   "animal": "Spirit",
-   "subtype": "Light-blade swarm",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
-   "id": "exo-podas",
-   "name": "Exo-podas",
-   "animal": "Insect",
-   "subtype": "Six-legged walker",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
-   "id": "galactic-condor",
-   "name": "Galactic Condor",
-   "animal": "Condor",
-   "subtype": "Star condor",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
-   "id": "pink-maus",
-   "name": "Pink Maus",
-   "animal": "Mouse",
-   "subtype": "Round mouse",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
-   "id": "nyoogle",
-   "name": "Nyoogle",
-   "animal": "Critter",
-   "subtype": "Pom-pom lantern-bearer",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
-   "id": "tobasco-drakon",
-   "name": "Habanero Drakon",
-   "animal": "Drake",
-   "subtype": "Pepper drake",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
-  },
-  {
-   "id": "demo-panda",
-   "name": "Kegfuse Panda",
-   "animal": "Panda",
-   "subtype": "Giant panda",
-   "why": "an Easter-egg card with package EE's own tags: align them with this vocabulary?"
   }
  ],
  "speciesNotes": [
@@ -5586,11 +5522,11 @@
    "name": "Creeper",
    "icon": "🪲",
    "creature": true,
-   "animal": "Beetle",
+   "animal": "beetle",
    "group": "beetle",
-   "subtype": "Bombardier beetle",
+   "subtype": null,
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "pigeon-peon",
@@ -8730,77 +8666,77 @@
    "name": "Terraumbra",
    "icon": "🌈",
    "creature": false,
-   "animal": "Spirit",
-   "group": "spirit",
-   "subtype": "Light-blade swarm",
+   "animal": null,
+   "group": null,
+   "subtype": "conjured",
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "exo-podas",
    "name": "Exo-podas",
    "icon": "🦗",
    "creature": true,
-   "animal": "Insect",
+   "animal": "insect",
    "group": "insect",
-   "subtype": "Six-legged walker",
+   "subtype": "mutant",
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "galactic-condor",
    "name": "Galactic Condor",
    "icon": "🦅",
    "creature": true,
-   "animal": "Condor",
+   "animal": "condor",
    "group": "vulture",
-   "subtype": "Star condor",
+   "subtype": null,
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "pink-maus",
    "name": "Pink Maus",
    "icon": "🐭",
    "creature": true,
-   "animal": "Mouse",
+   "animal": "mouse",
    "group": "mouse",
-   "subtype": "Round mouse",
+   "subtype": null,
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "nyoogle",
    "name": "Nyoogle",
    "icon": "🏮",
    "creature": true,
-   "animal": "Critter",
-   "group": "critter",
-   "subtype": "Pom-pom lantern-bearer",
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "mythic",
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "tobasco-drakon",
    "name": "Habanero Drakon",
    "icon": "🌶️",
    "creature": true,
-   "animal": "Drake",
-   "group": "drake",
-   "subtype": "Pepper drake",
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   },
   {
    "id": "demo-panda",
    "name": "Kegfuse Panda",
    "icon": "🐻",
    "creature": true,
-   "animal": "Panda",
+   "animal": "panda",
    "group": "panda",
-   "subtype": "Giant panda",
+   "subtype": null,
    "how": "ee",
-   "note": "package EE's own tags, left as they are (not in this tool's vocabulary)"
+   "note": "package EE's tags, aligned with this vocabulary"
   }
  ]
 }

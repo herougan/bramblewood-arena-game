@@ -19068,7 +19068,7 @@
     "species": [
       "Insect"
     ],
-    "animal": "Beetle",
+    "animal": "beetle",
     "effects": {
       "restless": true,
       "explode": {
@@ -19086,7 +19086,6 @@
     "dmgType": "physical",
     "tags": [],
     "easterEgg": true,
-    "subtype": "Bombardier beetle",
     "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Very Rare, Wait 1, Lumber 1: N = 36.9; S = 5.4 (restless 0.2, explode 5.2); 2A+H+S = 23.4 < 36.9 (63%) and A*H+S = 41.4 < (N/3)^2 = 151.29. Was a Common pack card (a smiling green Bee with Flying, Swarm, Scare 1); now an explosive creeping beetle."
   },
   {
@@ -31606,8 +31605,7 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Spirit",
-    "subtype": "Light-blade swarm"
+    "subtype": "conjured"
   },
   {
     "id": "exo-podas",
@@ -31643,8 +31641,8 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Insect",
-    "subtype": "Six-legged walker"
+    "animal": "insect",
+    "subtype": "mutant"
   },
   {
     "id": "galactic-condor",
@@ -31685,8 +31683,7 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Condor",
-    "subtype": "Star condor"
+    "animal": "condor"
   },
   {
     "id": "pink-maus",
@@ -31720,8 +31717,7 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Mouse",
-    "subtype": "Round mouse"
+    "animal": "mouse"
   },
   {
     "id": "nyoogle",
@@ -31757,8 +31753,8 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Critter",
-    "subtype": "Pom-pom lantern-bearer"
+    "animal": "cat",
+    "subtype": "mythic"
   },
   {
     "id": "tobasco-drakon",
@@ -31795,8 +31791,8 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Drake",
-    "subtype": "Pepper drake"
+    "animal": "dragon",
+    "subtype": "mythic"
   },
   {
     "id": "demo-panda",
@@ -31833,7 +31829,6 @@
       "kind": "easteregg"
     },
     "easterEgg": true,
-    "animal": "Panda",
-    "subtype": "Giant panda"
+    "animal": "panda"
   }
 ]

@@ -24,7 +24,7 @@ const creature = c=> !(c.test || c.field || c.eggKind || ['materia', 'equipment'
 ok(JSON.stringify(R.subtypes.map(s=> s.id)) === JSON.stringify(SUBTYPES), '2. the report lists the fixed subtype list');
 cards.forEach(c=>{
   // package EE's Easter-egg cards came with their own tags (2026-10-19): left as they are, reported for the owner
-  if(c.easterEgg){ ok(c.animal && R.cards.some(r=> r.id === c.id && r.how === 'ee') && R.ownerCalls.some(x=> x.id === c.id), `2. Easter egg ${c.id} keeps package EE's tags and is reported`); return; }
+  if(c.easterEgg){ ok(R.cards.some(r=> r.id === c.id && r.how === 'ee' && (r.animal || !r.creature)), `2. Easter egg ${c.id} keeps its (aligned) tags and is listed`); return; }
   if(creature(c)) ok(typeof c.animal === 'string' && /^[a-z][a-z' -]*[a-z]$/.test(c.animal), `2. creature ${c.id} has an animal (${c.animal})`);
   else ok(!c.animal || ['egg-otter', 'egg-red-dragon'].includes(c.id), `2. non-creature ${c.id} has an animal only when it embodies one`);
   ok(c.subtype == null || (SUBTYPES.includes(c.subtype) && c.animal), `2. ${c.id} subtype ${c.subtype} is from the fixed list`);

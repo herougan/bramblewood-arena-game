@@ -78,9 +78,9 @@ ok(/!isEasterEgg\(defs\[x\]\)[^\n]*\['pack','map'\]\.includes\(cardSourceOf\(def
 // unlockCardForPlayer: refused from every source but an admin's grant
 { const calls = []; const uctx = {CARD_DEFS_BASELINE: defs, liveCards: {}, out: {}, UNATTAINABLE_ADMIN_SOURCES: new Set(), pitchingUnlocked: ()=> true, loadPitchHeld: ()=> [], PITCH_HELD_KEY: 'x', localStorage: {setItem(){}},
     isUnattainable: ()=> false, grantCardCopy: id=> calls.push(id), noteSighted: ()=>{}, noteGainedForSwap: ()=>{}, myUnlockedCardIds: new Set(), saveUnlockedCardIds: ()=>{}, getCardDefs: ()=> defs, logTxn: ()=>{},
-    CARD_UNLOCK_SOURCES: {}, canLeadDef: ()=> false, loadDialogueFlags: ()=> ({}), setTimeout: ()=>{}, Set, Object, JSON, String};
+    CARD_UNLOCK_SOURCES: {}, canLeadDef: ()=> false, loadDialogueFlags: ()=> ({}), setTimeout: ()=>{}, tutorialCopyLevel0: ()=>{} /* 2026-10-19 (UT merge) */, Set, Object, JSON, String};
   vm.createContext(uctx);
-  vm.runInContext([constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), fnSrc('isEasterEgg'), fnSrc('unlockCardForPlayer')].join('\n') + '\nout.u = unlockCardForPlayer;', uctx);
+  vm.runInContext([constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), fnSrc('isEasterEgg'), fnSrc('isTutorialCopySource'), fnSrc('unlockCardForPlayer')].join('\n') + '\nout.u = unlockCardForPlayer;', uctx);
   const SOURCES = ['shopPack', 'factionPack', 'reward', 'conquestReward', 'conquestRareFind', 'bossBaseGift', 'cardDrop', 'raid', 'smith', 'fuse', 'nest', 'egg', 'tavern', 'market', 'progressTrack', 'baseGrowth', 'promotion', 'tutorialReward', 'tutorialBonus', 'secret', 'quest', 'scaleTrail', 'materia', 'errand', 'test', 'sandbox', undefined];
   LIST.forEach(id=> SOURCES.forEach(s=> ok(uctx.out.u(id, s) === false, `unlockCardForPlayer refuses ${id} from ${s}`)));
   ok(!calls.length, `no copy was granted (${calls.join(', ')})`);

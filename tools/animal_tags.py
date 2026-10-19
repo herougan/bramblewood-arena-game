@@ -347,11 +347,11 @@ def main():
     cre = is_creature(c)
     if c.get('easterEgg'):
       # Package EE's Easter-egg cards (2026-10-19) came with their own animal / subtype; they are EE's, left exactly as they are and
-      # reported (how 'ee'). Their values are not in this vocabulary yet (capitalised, free-text subtypes): an owner call.
+      # reported (how 'ee'). Aligned with this vocabulary at the UT merge (2026-10-19): lower-case animals, subtypes from SUBTYPES.
       row = OrderedDict([('id', c['id']), ('name', c.get('name')), ('icon', c.get('icon') or ''), ('creature', bool(cre)), ('animal', c.get('animal')),
         ('group', group_of(str(c.get('animal')).lower()) if c.get('animal') else None), ('subtype', c.get('subtype')), ('how', 'ee'),
-        ('note', "package EE's own tags, left as they are (not in this tool's vocabulary)")])
-      rows.append(row); calls.append({'id': c['id'], 'name': c.get('name'), 'animal': c.get('animal'), 'subtype': c.get('subtype'), 'why': "an Easter-egg card with package EE's own tags: align them with this vocabulary?"})
+        ('note', "package EE's tags, aligned with this vocabulary")])
+      rows.append(row)
       continue
     if cre:
       a, st, how, note = tag(c)
