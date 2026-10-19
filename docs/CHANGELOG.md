@@ -16,6 +16,41 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Texts:** 102 TX keys in 12 packs (`tools/i18n_2026_10_19_sk3.py`). The Codex skills book, the status chips, log lines and the trigger builder all have them.
 - **Docs:** `docs/strategies-2026-10-19.md` (the owner's question 18: the archetypes, the go-wide audit and 8 new directions).
 - **Tests:** `tests/skills-sk3-2026-10-19.js`. The GI test follows the Executioner, Hunter and status-list changes.
+## 2026-10-19 (package UX2: the Brambles page's filters)
+- **Owner (22:16):** "There's no filter in brambles search."
+- **The Codex's Brambles page has a filter bar like the card Codex's:**
+  - a name search;
+  - an Effect filter, listing each castle passive with its count: Starting Lumber, Lumber over time, First unit's Attack, Unit Health, Flyers' Attack, Healing, Enemy Wait, Ballista bolts, Thorns, Herb brew, Summons, Tentacle Smack, Tail Sweep and No passive;
+  - Owned / Not owned yet, using `castleUnlocked`;
+  - a sort: game order, Health (both ways) or name;
+  - "where it's from" chips with counts: Yours to own, Skirmishes, Bosses, Raids, and Tower & dungeons. These come from the fights that use each bramble (`nodeCastleId`, else the map's or the plain Bramble).
+- **Count and empty state:** a "N of M brambles" count, and an empty state with Clear filters. Owned brambles carry a ✓, and a bramble's fights show as small icons.
+- **Raid brambles:** Kraken's Reef and The Drowned Maw are listed from the live raids, with their Health a fight, the parts that use them and their throws. They are never owned.
+- **No "seen" filter:** brambles have no "seen" record, so that filter is left out.
+- **Texts and test:** 36 TX keys (`ui.ux2-*`), in the 12 packs via `tools/i18n_2026_10_19_ux.py`. `tests/ux-2026-10-19.js` is extended, including Playwright at 390 and 1366 and the screenshots `docs/screens/ux/brambles-*`.
+
+## 2026-10-19 (package RR: raid row parity)
+- **Owner (22:10): "Raid: Back units cleave the same way as the front units. And all the skills should work as if they were at the front okay!"** In a raid, a skill on a middle- or back-row unit now does what it does at the front.
+- **Swing shapes on the row it aims at.** A row unit's swing aims at the closest enemy row with a unit in its column (the front row when the column is empty everywhere). Every shape is worked out on that row, the same way as a front swing on the enemy front row:
+  - Cleave: the target and both neighbours in its row.
+  - Fork / Trident / Pitchfork: the target column ±1 (±2) in that row. Crab claws: L / R in that row. Octolash: the 8 nearest in that row. Tipsy: drifts along that row.
+  - Rook's Row / Bishop's Path, Wave (it pushes along the struck unit's row) and Puncture / Overwhelm.
+  - Backstab: the nearest unit in that row. With no unit in that row, it takes the closest row that has one. This also fixes a front Backstab holding its swing when only the boss's back rows had units.
+  - Taunt: a Taunt unit in that row, within a column, draws the swing. That includes a front-row swing that carries on to the middle row.
+  - Bloodlust: it leaps along its own row. Boomerang: thrown and caught from its row.
+  - Its prongs and lashes land at the row share too.
+- **Shots:** a row unit with Arrow, Bolt, Twin Shot, Volley and the like shoots, from its column. Shots are not cut by the row share.
+- **Round start and upkeep for every row:**
+  - Every round: Regeneration, Renewal, On Round Start, Per Turn, Bloom / Nursing / Healing / Cure (their allies found in every row), Satiety, Explode, Immolation, Irradiated, Proliferate, Restless (it walks along its row), Dynamite fuses, Charge, Cower and Prayer.
+  - While Ready: Lumber / Grace / Darkness, Rebuild and Creative.
+  - Auras from any row: Rally, Nature's Force, Kinship, Worship, Haste, Illuminate, Lumberjack, Fletcher and the others counted by `auraN`.
+  - A Wait that runs out on a row unit's action gives it Ready and its On Ready skills at that round's upkeep.
+  - On Ally / Enemy Ready, Played, Spawn and Healed, Esprit, Carrion, Amore and Ambush / Sentry now see the row units too.
+- **Slot refills in the unit's own row:** Revive, On Death: Spawn, Relic, Crystallise, Meiosis, Brood, Twin, Sprout and Spawn triggers. The first goes into its slot, the rest into the nearest free slots of that row.
+- **Arrival in a row:** a unit put into a middle or back row (an ally's play, a boss's Commons) arrives there at the start of the next combat. That fires its On Play skills (Pounce, Brood, Bounty, Shield, On Spawn ...) once. It doesn't arrive again if it later steps up.
+- **Ally-targeted actions** (Heal, Buff, Shield ...) can pick an ally in any raid row. "Adjacent" and "furthest" ally mean in the unit's own row. A row unit's "adjacent ally" used to hit the front row's leftmost unit.
+- **Unchanged, owner to decide:** a row swing still lands for half (rounded up), now one constant, `ROW_SWING_SHARE` (0.5). No owner rule set the half: it was Claude's call on 2026-10-17. Enemy-targeted skill pools (Pounce, Lightning, random-enemy actions) still pick from the enemy front row, as for a front unit.
+- Engine only (`bramblewood-engine.js`). Test: `tests/raid-row-parity-2026-10-19.js` (118 checks; 68 of them fail on the engine before RR).
 ## 2026-10-19 (package EQ: equipment on the slots, Weapon Master, slot hazards, the Crowbar, the Bucketknee Wolf, Creeper's art)
 - **Equipment on the slots** (owner 21:36: "Same slot placement rules except you can play over creature units as well ... they take 1 turn to take the benefits"):
   - An equipment card goes into any slot a unit could go to, where it lies alone, or onto a slot holding one of your units, where it goes under the unit. Dragging it onto a unit still works.

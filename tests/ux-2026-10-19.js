@@ -133,13 +133,41 @@ function codexApi(store, throwing){
 }
 // ---- texts
 {
-  const keys = Object.keys(TEXT).filter(k=> k.startsWith('ui.ux-'));
+  const keys = Object.keys(TEXT).filter(k=> /^ui\.ux2?-/.test(k)); // + package UX2's
   ok(keys.length >= 18, `TX keys (${keys.length})`);
   ok(keys.every(k=> src.includes(`TX('${k}'`)), 'every ui.ux- key is used by its literal name: ' + keys.filter(k=> !src.includes(`TX('${k}'`)).join(', '));
   const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   CODES.forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); const miss = keys.filter(k=> !pack[TEXT[k]]); ok(!miss.length, `pack ${c} has every new text (${miss.join(', ')})`); });
   ok(/<style id="uxStyles">/.test(tpl) && /\.ux-fcs-grid\{/.test(tpl) && /\.ux-fc-ov\{/.test(tpl) && /\.ux-kind\b/.test(tpl) && /\.ux-copy-count\{/.test(tpl), 'the CSS');
   ok(/^## 2026-10-19 \(package UX/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), 'CHANGELOG entry');
+  ok(/^## 2026-10-19 \(package UX2/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), 'UX2: CHANGELOG entry');
+}
+// ---- UX2 (owner 22:16: "There's no filter in brambles search."): the Brambles page's filters, evaluated with the real brambles
+{
+  const chars = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/characters.json'), 'utf8'));
+  // eslint-disable-next-line no-new-func
+  const B = new Function('TX', slice('// BRAMBLES_UX:BEGIN', '// BRAMBLES_UX:END') + ';return {BRAMBLE_ORIGINS, BRAMBLE_FX, brambleFxKeys, brambleFilterList, brambleCounts};')(TX);
+  const list = chars.map((ch, i)=> ({ch, owned: i < 3, attacks: [], origins: ['player'].concat(i % 4 === 0 ? ['skirmish'] : [], ch.unlockMap ? ['boss'] : [])}))
+    .concat([{ch: {id: 'raid-a', name: "Kraken's Reef", health: 350, effects: {}}, owned: false, origins: ['raid'], attacks: [{pattern: 'column', every: 2, dmg: 6}, {pattern: 'frontRow', every: 3, dmg: 4}]},
+             {ch: {id: 'raid-b', name: 'The Drowned Maw', health: 200, effects: {}}, owned: false, origins: ['raid'], attacks: [{pattern: 'column', every: 2, dmg: 6}]}]);
+  ok(JSON.stringify(B.BRAMBLE_ORIGINS.map(o=> o.key)) === JSON.stringify(['player', 'skirmish', 'boss', 'raid', 'tower']), 'UX2. where from: yours, skirmishes, bosses, raids, Tower & dungeons');
+  ok(B.brambleFilterList(list, {}).length === list.length, 'UX2. no filter: every bramble (' + list.length + ')');
+  const q = B.brambleFilterList(list, {q: 'REEF'}).map(e=> e.ch.name);
+  ok(q.includes("Kraken's Reef") && q.includes('Reef Shelf') && q.every(n=> /reef/i.test(n)), `UX2. the name search, any case (${q.join(', ')})`);
+  const bolt = B.brambleFilterList(list, {fx: 'castleBolt'}).map(e=> e.ch.id), want = chars.filter(c=> c.effects && c.effects.castleBolt).map(c=> c.id);
+  ok(bolt.length === want.length && want.length > 0, `UX2. the bolts filter (${bolt.join(', ')})`);
+  ok(B.brambleFilterList(list, {fx: 'herbRefinery'}).map(e=> e.ch.id).join() === 'herb-refinery', 'UX2. the Herb Refinery brew');
+  ok(B.brambleFilterList(list, {fx: 'smack'}).length === 2 && B.brambleFilterList(list, {fx: 'sweep'}).length === 1, 'UX2. the raid throws: Tentacle Smack, Tail Sweep');
+  ok(B.brambleFilterList(list, {fx: 'none'}).every(e=> !Object.values(e.ch.effects || {}).some(Boolean) && !(e.attacks || []).length), 'UX2. "No passive" is the plain ones');
+  ok(B.brambleFilterList(list, {origin: 'raid'}).length === 2 && B.brambleFilterList(list, {origin: 'player'}).length === chars.length, 'UX2. the origin filter');
+  ok(B.brambleFilterList(list, {own: 'owned'}).length === 3 && B.brambleFilterList(list, {own: 'not'}).length === list.length - 3, 'UX2. owned / not owned');
+  const hp = B.brambleFilterList(list, {sort: 'hp-desc'}).map(e=> e.ch.health), hpa = B.brambleFilterList(list, {sort: 'hp-asc'}).map(e=> e.ch.health);
+  ok(hp[0] === 350 && hp.every((h, i)=> !i || hp[i - 1] >= h) && hpa.every((h, i)=> !i || hpa[i - 1] <= h), 'UX2. sort by Health, both ways');
+  const nm = B.brambleFilterList(list, {sort: 'name'}).map(e=> e.ch.name); ok(nm.every((n, i)=> !i || nm[i - 1].localeCompare(n) <= 0), 'UX2. sort by name');
+  ok(B.brambleFilterList(list, {q: 'zzzz'}).length === 0, 'UX2. nothing matches: an empty list (the page shows the empty state)');
+  const c = B.brambleCounts(list); ok(c.origins.raid === 2 && c.fx.smack === 2 && c.fx.castleBolt === want.length, 'UX2. counts per origin and effect');
+  ok(/wireBramblesTab\(body\)/.test(src) && /brambleRaidEntries\(\)/.test(fnSrc('brambleCodexEntries')) && /castleUnlocked\(ch\)/.test(fnSrc('brambleCodexEntries')), 'UX2. wired into the Codex\'s Brambles tab; raid brambles listed; owned = castleUnlocked');
+  ok(/ui\.ux2-br-empty/.test(fnSrc('renderBrambleGrid')) && /ui\.ux2-br-count/.test(fnSrc('renderBrambleGrid')), 'UX2. a count and an empty state');
 }
 
 async function browser(){
@@ -207,12 +235,15 @@ async function browser(){
       await shot('forge-anvil');
       ok(await hscroll() <= 1, `${tag} no sideways scroll in the Forge`);
       // 8c. temper on the centre stage
-      await pg.click('#forgeLevelUpBtn'); await pg.waitForTimeout(1300);
-      const mid = await pg.evaluate(`(()=>{ const o = document.querySelector('.ux-fc-ov'), s = o && o.querySelector('#anvilStage'); if(!s) return null; const r = s.getBoundingClientRect();
-        return {cx: Math.round(r.left + r.width / 2 - innerWidth / 2), cy: Math.round(r.top + r.height / 2 - innerHeight / 2), w: Math.round(r.width)}; })()`);
+      await pg.click('#forgeLevelUpBtn');
+      const centreShot = (async()=>{ await pg.waitForTimeout(1200); await shot('forge-centre-stage'); })(); // mid-forge, on the centre stage
+      // sampled while it forges (a busy machine runs the flight late): the closest it sits to the middle of the screen
+      const mid = await pg.evaluate(`new Promise(res=>{ let best = null; const t0 = performance.now(); const tick = ()=>{ const o = document.querySelector('.ux-fc-ov'), s = o && o.querySelector('#anvilStage');
+        if(s){ const r = s.getBoundingClientRect(), v = {cx: Math.round(r.left + r.width / 2 - innerWidth / 2), cy: Math.round(r.top + r.height / 2 - innerHeight / 2), w: Math.round(r.width)}; if(!best || Math.abs(v.cy) + Math.abs(v.cx) < Math.abs(best.cy) + Math.abs(best.cx)) best = v; }
+        if(performance.now() - t0 < 2600) setTimeout(tick, 80); else res(best); }; tick(); })`);
       ok(mid && Math.abs(mid.cx) <= 12 && Math.abs(mid.cy) <= 30, `${tag} 8c. the anvil stage is in the middle of the screen while it forges (${JSON.stringify(mid)})`);
-      await shot('forge-centre-stage');
-      await pg.waitForTimeout(4200);
+      await centreShot;
+      await pg.waitForTimeout(3000);
       const after = await pg.evaluate(`(()=>({ov: !!document.querySelector('.ux-fc-ov'), inPanel: !!document.querySelector('#forgeDetail #anvilStage'), label: (document.querySelector('.forge-level-label') || {}).textContent}))()`);
       ok(after && !after.ov && after.inPanel && /Lv 3/.test(after.label || ''), `${tag} 8c. it returns to the anvil, tempered (${after && after.label})`);
       // 9 + 11. the Codex
@@ -239,6 +270,31 @@ async function browser(){
       ok(/My best/.test(cd2.chip) && /Lv 10/.test(cd2.chip) && cd2.atk === lv.best && cd2.saved === 'best', `${tag} 9. the toggle shows your best and is remembered (${cd2.chip}, ⚔ ${cd2.atk})`);
       await shot('codex-detail-best');
       await pg.evaluate("localStorage.setItem('bramblewood_codex_level_v1', 'base'); 1");
+      // UX2: the Brambles page's filters
+      await pg.evaluate("document.getElementById('cdCloseBtn') && document.getElementById('cdCloseBtn').click(); brambleFilter = {q:'', origin:'', fx:'', own:'', sort:''}; codexSubTab = 'brambles'; renderCodex(); scrollTo(0, 0); 1"); await pg.waitForTimeout(900);
+      const br0 = await pg.evaluate(`(()=>({count: (document.getElementById('brCount') || {}).textContent || '', cards: document.querySelectorAll('#brGrid .bramble-codex-card').length,
+        chips: [...document.querySelectorAll('[data-brorigin]')].map(b=> (b.dataset.brorigin || 'all') + ':' + b.querySelector('.ux-kind-n').textContent),
+        names: [...document.querySelectorAll('#brGrid .bramble-codex-card')].map(c=> (c.querySelector('.card-tile') || {}).getAttribute ? c.querySelector('.card-tile').textContent : '').join('|')}))()`);
+      ok(br0.cards >= 44 && /^\d+ of \d+ brambles$/.test(br0.count), `${tag} UX2. every bramble with a count (${br0.count}; ${br0.cards} cards)`);
+      ok(br0.chips.length === 6 && br0.chips.some(c=> /^raid:2$/.test(c)) && br0.chips.some(c=> /^skirmish:[1-9]/.test(c)) && br0.chips.some(c=> /^boss:[1-9]/.test(c)), `${tag} UX2. where-from chips with counts (${br0.chips.join(' ')})`);
+      ok(/Kraken/.test(br0.names) && /Drowned Maw/.test(br0.names), `${tag} UX2. the raid's brambles are listed`);
+      ok(await hscroll() <= 1, `${tag} UX2. no sideways scroll on the Brambles page`);
+      await shot('brambles-all');
+      await pg.fill('#brSearch', 'reef'); await pg.waitForTimeout(400);
+      const brq = await pg.evaluate("[...document.querySelectorAll('#brGrid .bramble-codex-card')].length + ' ' + document.getElementById('brCount').textContent");
+      ok(/^(\d+) \1 of \d+ brambles$/.test(brq) && +brq.split(' ')[0] >= 2, `${tag} UX2. the search narrows the list (${brq})`);
+      await pg.fill('#brSearch', ''); await pg.selectOption('#brFx', 'castleBolt'); await pg.selectOption('#brSort', 'hp-desc'); await pg.waitForTimeout(400);
+      const brf = await pg.evaluate("[...document.querySelectorAll('#brGrid .bramble-codex-card .desc')].map(d=> d.textContent)");
+      ok(brf.length >= 2 && brf.every(t=> /ballista/i.test(t)), `${tag} UX2. the bolts filter (${brf.length})`);
+      await shot('brambles-bolts');
+      await pg.selectOption('#brFx', ''); await pg.click('[data-brorigin="raid"]'); await pg.waitForTimeout(400);
+      ok(await pg.evaluate("document.querySelectorAll('#brGrid .bramble-codex-card .u3-bramble-abs li').length >= 2"), `${tag} UX2. a raid bramble lists its throws`);
+      await shot('brambles-raid');
+      await pg.fill('#brSearch', 'zzzz'); await pg.waitForTimeout(400);
+      ok(await pg.evaluate("!!document.querySelector('#brGrid .ux2-br-empty #brClear') && /^0 of/.test(document.getElementById('brCount').textContent)"), `${tag} UX2. the empty state with Clear filters`);
+      await shot('brambles-empty');
+      await pg.click('#brClear'); await pg.waitForTimeout(600);
+      ok(await pg.evaluate("document.querySelectorAll('#brGrid .bramble-codex-card').length >= 44 && brambleFilter.origin === ''"), `${tag} UX2. Clear filters shows them all again`);
       await ctx.close();
     }
   } finally { await b.close(); }

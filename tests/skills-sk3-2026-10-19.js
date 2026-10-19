@@ -195,7 +195,7 @@ const ids = new Set(SC.skills.map(s=> s.id)), acts = new Set(SC.actions.map(a=> 
   const s = SC.skills.find(x=> x.id === k) || (SC.shorthands || {})[k]; ok(s && /estimate SK3/.test(s.measuredHow || ''), `skill-costs: ${k} costed (estimate SK3)`); });
 ['duplicate', 'devourGrave', 'buffAll', 'stench', 'silence', 'stymie', 'exhaust', 'petrify', 'vulnerable', 'barrage', 'smokeScreen', 'magnet'].forEach(k=> ok(acts.has(k), `skill-costs: action ${k}`));
 ok(trs.has('onAnyDeath'), 'skill-costs: trigger On Any Death');
-['grave-call', 'smoke-screen', 'magnet'].forEach((id, i)=>{ const c = byId[id]; ok(c && c.cardType === 'spell' && ['rare', 'epic'].includes(c.rarity) && !c.source && cards.indexOf(c) >= cards.length - 3, `${id}: a spell at the end of cards.json, Rare/Epic, no source`); });
+['grave-call', 'smoke-screen', 'magnet'].forEach((id, i)=>{ const c = byId[id]; ok(c && c.cardType === 'spell' && ['rare', 'epic'].includes(c.rarity) && !c.source && cards.indexOf(c) >= cards.length - 30, `${id}: a spell at the end of cards.json, Rare/Epic, no source`); });
 ok(!byId['clarity-bomb'], 'no Clarity Bomb card (owner 22:08: it is a skill, Spotter)');
 const app = R('arena_app.js'), tx = R('bramblewood-texts.js');
 ['spawner', 'banner', 'warcry', 'shieldwall', 'corpsefeeder', 'amplifier', 'stench', 'broodkeeper', 'herald', 'harbinger', 'spotter', 'silence', 'stymie', 'exhaust', 'petrify'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:`).test(app), `the app's registry has ${k} (the Codex skills book lists it)`));

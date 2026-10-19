@@ -209,7 +209,9 @@ ok(appSrc.includes("'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledR
 ok(appSrc.includes('brittle:rc.brittle||0') && appSrc.includes('brittle:c.brittle||0'), 'the replay snapshot carries Brittle');
 const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)|hunter-vs-|st-brittle|stx-brittle|fx-name-(spore|thunder|tangled)|fxx?-(spore|thunder|tangled)|log-(spore|thunder|tangled|roots|detonate|proliferate|brittle|field-)|float-(brittle|field-break)|brittle-tip|prayer-ward-tip)/.test(k));
 // 2026-10-19 (package SK3): its own skill names (ui.skn-*) and Hunter's Weak pick are SK3's keys, counted in tests/skills-sk3-2026-10-19.js
-const SK3_NOT_GI = /^ui\.(skn-(spawner|banner|warcry|shieldwall|corpsefeeder|amplifier|stench|broodkeeper|herald|harbinger|spotter|silence|stymie|exhaust|petrify)|sk-hunter-weak|hunter-vs-weak)$/;
+// (and any later package's ui.skn-* name, e.g. EQ's: only GI's nine skill names count here)
+const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || (/^ui\.skn-/.test(k) && !/^ui\.skn-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)$/.test(k));
+SK3_NOT_GI.test = SK3_NOT_GI;
 ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 67, `67 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);
 TKEYS.forEach(k=> ok(appSrc.includes(`TX('${k}'`), `${k} is used in arena_app.js`));
 TKEYS.filter(k=> !/codex|^ui\.fxx-|^ui\.stx-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
