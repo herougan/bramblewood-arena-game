@@ -48,4 +48,14 @@ Rules for these prompts (as in `docs/art/easter-egg-art-briefs.md`):
 
 "A grizzled grey wolf with a dented tin bucket worn on its head, one eye peeking out under the rim, an old feathered stick lodged in its knee, a patched travelling cloak over its shoulders, standing proudly guard by a wooden village gate, thatched cottages and rolling green hills under a soft morning sky in the background, gently funny, detailed pixel art, full background"
 
+## Package SK3 spells (skills batch 3)
+
+These are spells, so the picture is the effect, not a creature card.
+
+| Card (id) | Placeholder | Prompt |
+|---|---|---|
+| Grave Call (`grave-call`) | 🪦 | "An old moss-covered bell hanging from a crooked yew branch above a small woodland graveyard, the bell glowing a soft ghostly green as if ringing, faint green wisps rising from the mossy earth below, a little fox-shaped silhouette of light climbing out of the moss, toadstools and tilted stones around, misty moonlit forest in the background, eerie but gentle, detailed pixel art, full background" |
+| Smoke Screen (`smoke-screen`) | 🌫️ | "A pile of damp autumn leaves smouldering on a small campfire, thick rolling grey-white smoke billowing out across a woodland clearing, the silhouettes of a hedgehog, an otter and a badger half hidden in the swirling smoke, warm orange embers glowing at the base, tall birch trees fading into the haze in the background, detailed pixel art, full background" |
+| Magnet (`magnet`) | 🧲 | "A large red-and-silver horseshoe magnet half buried in the grass of a riverside meadow, crackling arcs of pale blue light reaching up from its tips, a startled grey heron and two sparrows being tugged gently down out of the sky with ruffled feathers, loose iron nails and bottle caps lifting off the ground, a cloudy afternoon sky and a wooden footbridge in the background, playful, detailed pixel art, full background" |
+
 When a picture is made, add it as the card's `art` (as with the other cards). The Bucketknee Wolf is an Easter egg: the Codex shows its "???" mask until a player has seen it.

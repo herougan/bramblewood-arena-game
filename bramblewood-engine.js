@@ -212,7 +212,10 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   'onPitch',
   // On Enter Slot (2026-10-19, package EQ): fires on a unit each time it comes into a slot: played, spawned or moved in (open boards;
   // slotEntries / floorScan). The slot hazards use it too (hazard.triggers).
-  'onEnterSlot'];
+  'onEnterSlot',
+  // On Any Death (2026-10-19, package SK3, owner 21:59: "Harbinger - a unit that gets stronger when things die!"): fires on every
+  // live unit (either side) when any OTHER unit dies. Reactive: off while Waiting, as On Ally Die.
+  'onAnyDeath'];
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge','onEnterSlot' /* EQ, 2026-10-19 */]); // fire even while Waiting
 // Package SK1 (2026-10-19): On Enemy Enters (Facing), On Hit, On Kill (Creature); the last two fire on its own blow, so even while Waiting.
 TRIGGER_KEYS.push('onEnemyEnter', 'onHit', 'onKillCreature');
@@ -222,7 +225,7 @@ ALWAYS_ON_HOOKS.add('onHit'); ALWAYS_ON_HOOKS.add('onKillCreature'); // SK1 (202
 // 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
 // removeDeadCards (each pass of a death sweep is one layer deeper).
 const TRIGGER_LAYER_CAP = 5;
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam','duplicate','devourGrave','buffAll','stench','silence','stymie','exhaust','petrify','vulnerable','barrage','smokeScreen','magnet']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
 ACTION_KEYS.push('exploit', 'poisonTick'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -831,6 +834,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Sentry or Ambush strike), one seeded coin flip (rnd(), so sims and replays repeat): 1 in 2 it fumbles and nothing happens. One
   // event for all of them, {type:'confusedWhiff', what} ("😵 X is confused and fumbles."). A unit that isn't Confused draws no number.
   function confusedFumbles(c, side, events, what){
+    if(c && c.exhaust > 0 && what !== 'attack' && !ACTION_KEYS.includes(what) && !SK3_ACTIONS.includes(what) && sk3ExhaustSpends(c, side, events, what)) return true; // Package SK3 (2026-10-19): Exhaust (a trigger's own token is spent in sk3TrigGate)
     if(!(c && c.confused > 0) || rnd() >= 0.5) return false;
     if(recordEvents && events) events.push({type:'confusedWhiff', side, defId:c.defId, uid:c.uid, what});
     return true;
@@ -1180,7 +1184,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // True Strike (2026-10-18, package D; owner: "White Dragon has true strike - it never misses."): its attacks never miss: no Darkness,
   // Blind, Sun-shy, Night-blind, Evasive, Swift, Flying, Smoke, Fog, Sandstorm, Ashy, Slippery, Shadow, Tide-evade or Illusory roll.
   // What can't be targeted at all (Invisible) still can't be hit: there is nothing there to strike.
-  function trueStrikes(card){ return !!(card && ((CARD_DEFS[card.defId]||{}).effects||{}).trueStrike); }
+  function trueStrikes(card){ return !!(card && (((CARD_DEFS[card.defId]||{}).effects||{}).trueStrike || sk3Spotted(card))); } // + Spotter's side (2026-10-19, package SK3): no Blind / dark miss
   // darkOnly (2026-10-18, package D): just the dark's share (Darkness, Pitch Black, Absolute), for the card detail's "misses 1/4" line.
   function sightMiss(card, ownerId, darkOnly){
     if(!card) return 0;
@@ -1506,7 +1510,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const heatProof = c=>{ const d = CARD_DEFS[c.defId] || {}; return (d.resist||[]).includes('heat') || (d.resist||[]).includes('fire'); };
     const groundProof = c=> heatProof(c) || climbs(c); // Mountain Climber (2026-10-16): the volcano's ground hazards pass it by (Immolation is a unit's, not the ground's)
     let burnt = false;
-    [1,2].forEach(pid=>{ const pl = players[pid]; if(pl) allBoardCards(pl).forEach(c=>{ if(c && c.petrified) c.petrified = false; }); }); // last round's stone wears off
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(pl) allBoardCards(pl).forEach(c=>{ if(c && c.petrified && !(c.petrifyLeft > 0)) c.petrified = false; }); }); // last round's stone wears off (not a Petrify N's, 2026-10-19 SK3: its own count)
     if(paused) return; // Field Breaker (2026-10-19, package GI): no eruption, comet or lava this round
     // ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed, secondly, have to show damage
     // numbers!"): the old guaranteed eruption every round is Scorched Ground now (field 'scorched'); the volcano's Eruption hazard
@@ -1684,6 +1688,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // a test), it sweeps here with that book.
   function washPush(players, sideOf, tpid, t, n, dir, ev, events, stats, killCredit){
     const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1)); ev.n = n;
+    sk3Wash(t, n, sideOf(tpid), events); // Stench (2026-10-19, package SK3): a Wave / wash of N washes N Stench tokens off
     let crashInto = null;
     const live = c=> !!(c && c.hp > 0 && !c.gap);
     // 2026-10-19 (package RR): a unit in a middle or back row rides along its own row (the same rules; its row's units are the ones in
@@ -2298,7 +2303,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.supreme) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard); /* + Prayer Ward (2026-10-19, package GI) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
+    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard); /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     const armor = Math.max(0, nominalArmor - pierceN);
     const rend = pierceN > 0;
     // Rend (VFX/SFX coverage audit, 2026-09-21): rendBypass is a pure display flag for the front
@@ -2369,7 +2374,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
     if(shelledByCower(card) && !crush) r0.dmg = 0; // Cower 'shell' (2026-10-14): attacks can't hurt it this round
     if(card.invincible > 0) r0.dmg = 0; // Invincible N (2026-10-16): no damage of any kind for its first N rounds
-    if(card.petrified && !crush) r0.dmg = Math.floor(r0.dmg / 2); // Petrification (2026-10-14): stone takes half
+    if(card.petrified && !crush) r0.dmg = Math.floor(r0.dmg * sk3StoneFactor(card, attCard ? CARD_DEFS[attCard.defId] : null)); // Petrification (2026-10-14): stone takes half; Shatter doubles it instead (2026-10-19, SK3)
     const dmg = crush ? r0.dmg : spendTempHp(card, r0.dmg), tempSoak = r0.dmg - dmg; // Shell's temporary Health goes first (2026-10-12)
     const nul = isNullifier(attCard); // Nullify (2026-10-14): the hit doesn't count as "hit" for Cower, and Shell doesn't go up
     if(attCard) sk1NotePunish(card, attCard.uid); // Punish N (2026-10-19, package SK1, flagged)
@@ -2416,7 +2421,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dmg > 0 && atheistHalves(card, dmgType, attDef)) dmg = Math.max(1, Math.floor(dmg / 2)); // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
     if(card.shocked>0) dmg = Math.ceil(dmg*1.5); // Shock applies to ranged/flat hits too
     if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush) dmg = 0; // Cower 'shell': arrows and bolts too, not statuses
-    if(card.petrified && !crush) dmg = Math.floor(dmg / 2); // Petrification (2026-10-14)
+    if(card.petrified && !crush) dmg = Math.floor(dmg * sk3StoneFactor(card, attDef)); // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
     if(card.invincible > 0) dmg = 0; // Invincible N (2026-10-16): statuses, arrows and bolts too
     if(!crush) dmg = spendTempHp(card, dmg);
     noteHit(card, dmg, dmgType);
@@ -2731,9 +2736,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // attDefId (2026-10-16, optional): who shot it, for the Tide-evade test rule (a unit's ranged shot at a Tide unit).
   function dodgeCheck(card, attDefId){
     lastMissReason = 'evasive';
-    if(isInvisible(card)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it
+    const spot = sk3SpottedAgainst(card); // Spotter (2026-10-19, package SK3): the other side has one: True Strike for all, and Invisible is found
+    if(isInvisible(card) && !spot){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it
     // True Strike (2026-10-18): its shots and skills never miss; + 2026-10-18 (owner 23:05): a Legendary dodge still rolls (legendaryDodge)
-    const ts = attDefId != null && !!((CARD_DEFS[attDefId]||{}).effects||{}).trueStrike, dfx = (card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects) || {};
+    const ts = spot || (attDefId != null && !!((CARD_DEFS[attDefId]||{}).effects||{}).trueStrike), dfx = (card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects) || {};
     const L = r=> (!ts || legendaryDodge(r, dfx[r])) && !sk1Unhidden(card, r); // Exposed (2026-10-19, package SK1 rework): no hiding dodge (SK1_HIDING); was: no dodge at all
     if(card && card.webbed > 0) return true; // Webbed (2026-10-17): stuck in the web, it can't dodge
     if(L('prey') && preyAlert(card) && rnd() < 0.5) return false; // Prey (2026-10-16): Evasive while an enemy Predator is on the field
@@ -2750,12 +2756,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function combatHitLands(attCard, defCard, singleTarget){
     const ad = (CARD_DEFS[attCard.defId] && CARD_DEFS[attCard.defId].effects) || {};
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
-    if(isInvisible(defCard)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): nothing to swing at
+    const spot = sk3Spotted(attCard); // Spotter (2026-10-19, package SK3): True Strike for the side, and Invisible is found
+    if(isInvisible(defCard) && !spot){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): nothing to swing at
     // Exposed (2026-10-19, package SK1 rework): its hiding dodges don't roll (sk1Unhidden in L below); Swift, Flying and the fields still do.
     // True Strike (2026-10-18): no dodge or miss roll at all (Illusory included); Invisible, above, still can't be hit.
     // + 2026-10-18 (owner 23:05): except a Legendary dodge (legendaryDodge): L(reason) is false only for True Strike at a plain dodge,
     // and is checked before that dodge's roll, so True Strike draws no random numbers unless a Legendary dodge is in play.
-    const L = r=> (!ad.trueStrike || legendaryDodge(r, dd[r])) && !sk1Unhidden(defCard, r);
+    const L = r=> (!(ad.trueStrike || spot) || legendaryDodge(r, dd[r])) && !sk1Unhidden(defCard, r);
     const webbed = defCard.webbed > 0; // Webbed (2026-10-17): no Evasive, Prey, Tide, canopy, Swift or Flying dodge (Smoke, fog and the rest still count)
     // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
     // A Flyer's dodge still applies (it is out of reach, not quick).
@@ -2834,6 +2841,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const pr = prayerOf(pl);
       units.forEach(c=>{ const d = CARD_DEFS[c.defId]; c.worshipBonus = (d && d.effects && d.effects.worship) ? Math.floor(pr / 3) : 0; });
     });
+    sk3Sync(players); // Package SK3 (2026-10-19): War Banner, Herald, Amplifier
   }
   // Effective Attack: base Attack (already includes any permanent buffs, Render debuffs, etc.)
   // plus this round's live Rally aura bonus. Combat should read through this, not card.atk
@@ -2847,7 +2855,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // marks add up, and each lifts at the end of the round after the one it landed in.
   function dauntOf(card){ const d = card && card.daunts; if(!d || !d.length) return 0; let t = 0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; }
   function effAtk(card){
-    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) + (card.kinBonus||0) + (card.sk1Atk||0) + hoardBonus(card) - (card.corrode||0) - dauntOf(card)); // + Hoard N (2026-10-17); + Formation / Isolation (sk1Atk, 2026-10-19, package SK1)
+    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) + (card.kinBonus||0) + (card.sk1Atk||0) /* Formation / Isolation (SK1) */ + hoardBonus(card) - (card.corrode||0) - dauntOf(card) - sk3StenchOf(card)); // + Hoard N (2026-10-17); - Stench (2026-10-19, package SK3)
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
@@ -3364,6 +3372,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Spell actions: hasten N (your units lose N Wait), mend N (heal your units N), sap N (enemy units lose N Attack for
   // good, floored at 0).
   function castSpell(players, sideOf, pid, def, stats, events){
+    if(sk3CastSpell(players, sideOf, pid, def, stats, events)) return; // Grave Call, Smoke Screen, Magnet (2026-10-19, package SK3)
     const sp = def.spell || {}, n = Math.max(0, Number(sp.amount)||0), mine = allLive(players[pid]), foes = allLive(players[otherId(pid)]), hit = [];
     if(sp.do === 'hasten' || sp.do === 'tailwind') mine.forEach(c=>{ if(c.wait > 0){ const w = c.wait; c.wait = Math.max(0, c.wait - n); hit.push({uid:c.uid, amount:w - c.wait}); } });
     // Tailwind (2026-10-12, user: "Tailwind should do the same for Flyers"): Hasten, and every Flyer of yours also gets one
@@ -4316,7 +4325,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Burning status yet, so fire-on-fire waits for one.
   // 2026-10-19 (package GI, docs/gameplay-ideas-2026-10-19.md "Brittle: counts as Frozen for Shatter"): a Brittle unit counts as Frozen
   // here, and only here (it still acts, its Wait still ticks).
-  function shatterBonus(attDef, target){ const e = (attDef && attDef.effects) || {}; return (e.shatter && target && (target.frozen > 0 || target.brittle > 0)) ? numN(e.shatter, S17_DEF.shatter) : 0; }
+  // 2026-10-19 (package SK3, owner 21:56: "extra damage to frozen OR petrified OR heavily armored units"): Petrified and Armor 3+ too.
+  function shatterBonus(attDef, target){ const e = (attDef && attDef.effects) || {}; return (e.shatter && target && (target.frozen > 0 || target.brittle > 0 || sk3ShatterMore(target))) ? numN(e.shatter, S17_DEF.shatter) : 0; }
   // ---- Package GI (2026-10-19, owner 00:19: "continue with action items, and considering our gameplay-ideas ... After running through the
   // ideas, create what you want to create"; docs/gameplay-ideas-built-2026-10-19.md). The skill rules; the field effects are in
   // fieldEffects2Tick, Field Breaker's pause in fieldPaused, Kin Rally / Pack Howl in trigsOf.
@@ -4324,13 +4334,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // and shots deal N more to a unit with that status. Exposed is read before the hit uses up its counter.
   // Executioner N: its hits and shots deal N more to a unit below half its Health (the Wildpath Weak Spots test).
   // Neither adds to a status tick (Poison, Bleed ... are not hits), nor to a bramble.
-  const GI_HUNTER_VS = ['poison', 'bleed', 'wet', 'exposed'];
-  function hunterVsOf(e){ const v = e && e.hunterVs; return GI_HUNTER_VS.includes(v) ? v : 'poison'; }
-  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; return vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : t.poison > 0; }
+  // 2026-10-19 (package SK3, owner 21:56: "bonus damage when target is extremely weak and low"): + 'weak' (Attack <= 2 AND Health <= 4,
+  // SK3_DEF.cullAtk / cullHp), the new default; a card that stores no hunterVs reads Weak now (Fen Mink keeps its Poisoned explicitly).
+  const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed'];
+  function hunterVsOf(e){ const v = e && e.hunterVs; return GI_HUNTER_VS.includes(v) ? v : 'weak'; }
+  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : t.poison > 0; }
   function giHitBonus(attDef, t, dmgType){
     const e = (attDef && attDef.effects) || {}; if(!t || t.kind === 'hq' || !(t.hp > 0) || EXPOSE_TICKS.has(dmgType)) return 0; let b = 0;
     if(e.hunter && hunterMarked(t, hunterVsOf(e))) b += numN(e.hunter, 1);
-    if(e.executioner && t.hp < (t.maxHp || 0) / 2) b += numN(e.executioner, 1);
+    if(e.executioner && sk3ExecLow(t)) b += numN(e.executioner, 1); // 2026-10-19 (package SK3): below 25% (was half)
     return b; }
   // Detonate: its hit (or shot) deals extra damage equal to the target's Poison, then the Poison is gone (the board is told: 'detonate').
   function detonateBonus(attDef, t, dmgType){
@@ -4371,14 +4383,287 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const giTrigMemo = new WeakMap();
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
-    if(!e.kinRally && !e.packHowl && !e.milling) return sk1Trigs(e, base); // + Milling (2026-10-19, package SK2); + the SK1 keyword shorthands
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling) return sk1Trigs(e, m.list);
-    const list = base.slice();
+    const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
+    if(!e.kinRally && !e.packHowl && !e.milling && !s3) return sk1Trigs(e, base); // + Milling (2026-10-19, package SK2); + the SK1 keyword shorthands
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.s3 === s3) return sk1Trigs(e, m.list);
+    const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, list}); return sk1Trigs(e, list);
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, s3, list}); return sk1Trigs(e, list);
   }
+  // ==== Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. Owner principle: "if you can and it makes sense, feel
+  // free to use triggers and actions. if they dont suffice, add the required trigger or action." So most of these are keywords that
+  // expand into ordinary triggers (sk3Trigs, read by trigsOf: Waiting, the layer cap, Confused, Exhaust all apply), over the new actions
+  // in sk3RunAction and the new trigger On Any Death. Every number is a parameter: SK3_DEF below, overridable per fight by rules.sk3.
+  //   Spawner <unit>      On Turn Start (Ready) -> spawn that unit into a free slot right beside it (none free: nothing).
+  //   Duplicate (action)  the target gets an Illusion copy beside it: its Attack and skills, Health 1, Illusory (the raid bosses'
+  //                       dodge, 2 in 3; not Legendary), a token. The copy never carries a Duplicate trigger, so it can't loop.
+  //   War Banner N        aura: your other units have +N/+N while it lives (an anthem, the go-wide tool the audit found missing).
+  //   Warcry N            On Play -> your other units get +N/+N for good (action buffAll).
+  //   Shieldwall N        aura: the allies right beside it have +N Armor while it lives (Guardian's alternative; "Bulwark" is the
+  //                       bramble skill already, so this one is named Shieldwall: owner call).
+  //   Corpsefeeder N      On Turn Start (Ready) -> exile the oldest card in your graveyard; if one went, +N/+N (action devourGrave;
+  //                       the exile is a real one: Echo, On Exile).
+  //   Grave Call (spell)  revive a random creature from your graveyard into a free slot (it re-enters as a spawned unit: On Ally
+  //                       Spawn fires, its own On Play doesn't), then +X/+X, X = cards in your graveyard (the spell counts), cap 10.
+  //   Silence N (action)  its skills and triggers are off for N rounds (its card's skills are blanked on its own copy; stats stay).
+  //   Stymie N (action)   its Wait is frozen for N rounds: it doesn't count down, and a Ready unit goes back to Wait 1 (so it can't
+  //                       attack, and its reactive triggers sleep as for any Waiting unit). Freeze skips its swing while its Wait
+  //                       still ticks; Sleep skips swings until it is hit; Confuse is a coin flip; Silence keeps it swinging.
+  //   Exhaust N (action)  N Exhaust tokens: the next N times a trigger or skill of it would go off, it fizzles and a token goes
+  //                       (its plain attack is not a skill and still swings).
+  //   Petrify N (action)  Petrified for N rounds: it can't attack, its reactive triggers sleep, and it takes half damage (the
+  //                       volcano's stone rule). Shatter breaks stone (below).
+  //   Amplifier N         aura: the allies right beside it have +N on each of their skill numbers (SK3_AMP_KEYS: Poison 2 -> 3,
+  //                       Thorns 1 -> 2 ...), at most +ampCap (2) from all Amplifiers together. Not itself, not triggers.
+  //   Stench N            On Play -> N Stench tokens on each enemy facing it and beside that (action stench). A unit loses 1 Attack
+  //                       per token (up to 3). Tokens stay until washed: a Wave / wash push of N removes N, a Tide in (flow / high)
+  //                       removes 1 each upkeep. Flyers are above the smell.
+  //   Executioner N       (package GI's key, aligned to the owner's spec): +N damage to a unit below 25% of its Health (was half).
+  //   Shatter N           (2026-10-17's key, aligned): +N to a Frozen, Brittle, Petrified or heavily armored (Armor 3+) unit; on a
+  //                       Petrified one the whole hit is doubled instead of halved by the stone.
+  //   Hunter N -> "Cull"  (display rename, owner call; the key stays hunter): its picker gains Weak (Attack 2 or less AND Health 4 or
+  //                       less), the new default. Executioner is the low-Health-share one; Cull wants a small, weak target.
+  //   Broodkeeper N       your units put into play by abilities (tokens, brood, spawns) arrive with +N/+N ("Brood" stays the
+  //                       hatching skill; this is the owner's "Brood Mother" idea under its own name: owner call).
+  //   Exhaust, Silence, Stymie, Petrify keywords: On Attack -> that status on the enemy facing it.
+  //   Herald N            aura: your Leader (the deck's leader card, a Gladiator leader, a Natural Leader) has +N/+N while it lives.
+  //   Harbinger N         On Any Death (a new trigger: any other unit dies, either side) -> +N/+N for itself, at most 3 a round.
+  //   Vulnerable N (act.) Shocked for N rounds (the existing "vulnerable" status: hits on it +50%) on every enemy, or every unit.
+  //                       The non-damage cousin of Earthquake (N damage to every other unit, flyers excepted).
+  //   Barrage N (action)  an arrow (or a bolt: dmgType) of N at every enemy unit, as shots (each dodges, Reflect bounces, Fletcher adds).
+  //   Spotter             aura (owner 22:08: "makes your units attacks land"): while it lives, your units' attacks, shots and skills
+  //                       can't miss or be dodged: Evasive, Swift, Flying, Smoke, fog, darkness, Blind and Invisible don't stop them.
+  //                       It is True Strike for the whole side and keeps its hierarchy: a Legendary dodge still rolls.
+  //   Smoke Screen (spell / action smokeScreen) your units are hidden in Smoke for N rounds (attacks at them miss 1 in 2). Spotter
+  //                       sees through it: the pair counter each other.
+  //   Magnet (spell / action magnet) enemy flyers are Grounded for N rounds: no Flying (no dodge, no flight), so the ground can hit them.
+  const SK3_DEF = Object.assign({harbingerCap:3, executionerPct:25, cullAtk:2, cullHp:4, shatterArmor:3, shatterStoneMult:2, ampCap:2,
+    stenchPer:1, stenchCap:3, stenchTideWash:1, illusionHp:1, illusionDodge:0.667, graveCallCap:10, smokeRounds:2, magnetRounds:2,
+    banner:1, herald:2, shieldwall:1, broodkeeper:1, corpsefeeder:1, harbinger:1, warcry:1, amplifier:1, stench:1, silence:2, stymie:2, exhaust:2, petrify:1},
+    (rules && rules.sk3) || {});
+  const SK3_AMP_KEYS = (rules && rules.sk3 && Array.isArray(rules.sk3.ampKeys)) ? rules.sk3.ampKeys : ['poison', 'bleed', 'thorns', 'armor', 'regen', 'rebuild', 'shatter',
+    'executioner', 'hunter', 'venomous', 'toxin', 'arrow', 'fireArrow', 'iceArrow', 'fireBolt', 'iceBolt', 'acidBolt', 'poisonBolt', 'shockBolt', 'snipe', 'healing',
+    'nursing', 'cure', 'kingSlayer', 'demolisher', 'predator', 'brittle', 'web', 'prayerWard', 'shieldwall', 'banner', 'herald', 'harbinger', 'corpsefeeder', 'stench',
+    'proliferate', 'carrion', 'venomMaster', 'fletcher', 'herbalist', 'spiteful', 'retribution'];
+  const SK3_ACTIONS = ['duplicate', 'devourGrave', 'buffAll', 'stench', 'silence', 'stymie', 'exhaust', 'petrify', 'vulnerable', 'barrage', 'smokeScreen', 'magnet', 'graveCall'];
+  const SK3_KW = ['spawner', 'harbinger', 'corpsefeeder', 'warcry', 'stench', 'silence', 'stymie', 'exhaust', 'petrify'];
+  const sk3N = (e, k)=> numN(e && e[k], SK3_DEF[k]);
+  function sk3Sig(e){ let s = ''; for(const k of SK3_KW) if(e[k]) s += k + ':' + JSON.stringify(e[k]) + ';'; return s; }
+  // The keywords' triggers (appended to the card's own by trigsOf).
+  function sk3Trigs(e, list){
+    if(e.spawner){ const sp = typeof e.spawner === 'string' ? {defId: e.spawner} : e.spawner; if(sp && sp.defId) list.push({on:'perTurn', do:'spawnCard', defId: sp.defId, count: Math.max(1, Number(sp.count)||1), near:true, keyword:'spawner'}); }
+    if(e.harbinger){ const n = sk3N(e, 'harbinger'); list.push({on:'onAnyDeath', do:'buff', who:'self', amount:n, amount2:n, capPerRound: SK3_DEF.harbingerCap, keyword:'harbinger'}); }
+    if(e.corpsefeeder){ const n = sk3N(e, 'corpsefeeder'); list.push({on:'perTurn', do:'devourGrave', amount:n, amount2:n, keyword:'corpsefeeder'}); }
+    if(e.warcry){ const n = sk3N(e, 'warcry'); list.push({on:'onSpawn', do:'buffAll', who:'ally', amount:n, amount2:n, keyword:'warcry'}); }
+    if(e.stench) list.push({on:'onSpawn', do:'stench', who:'enemy', sub:'area', amount: sk3N(e, 'stench'), keyword:'stench'});
+    ['silence', 'stymie', 'exhaust', 'petrify'].forEach(k=>{ if(e[k]) list.push({on:'onAttack', do:k, who:'enemy', sub:'adjacent', amount: sk3N(e, k), keyword:k}); });
+    return list;
+  }
+  // The trigger gate (runCustomTriggersAt, after the filters, before it goes off): a Petrified unit's reactive triggers sleep; a
+  // per-round cap (t.capPerRound, Harbinger); an Exhaust token makes it fizzle.
+  function sk3TrigGate(c, hook, t, i, side, events){
+    if(!c || c.kind === 'hq') return false;
+    if(c.petrified && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting) return true;
+    if(t.capPerRound > 0){ const m = c._sk3Cap || (c._sk3Cap = {}), k = hook + ':' + i; if(!m[k] || m[k].r !== turnNo) m[k] = {r: turnNo, n: 0}; if(m[k].n >= t.capPerRound) return true; m[k].n++; }
+    if(sk3ExhaustSpends(c, side, events, t.do || hook)) return true;
+    return false;
+  }
+  function sk3ExhaustSpends(c, side, events, what){
+    if(!(c && c.exhaust > 0) || what === 'attack') return false;
+    c.exhaust -= 1;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'exhaustSpent', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:c.defId, targetUid:c.uid, amount:1, total:c.exhaust, what});
+    return true;
+  }
+  // A unit's own copy of its card while Silenced / Grounded / Amplified (like patchUnitDef, but undone when the status ends).
+  const SK3_KEEP = new Set(['resist', 'weakness', 'immune', 'level', 'baseLevel']);
+  function sk3Apply(c){
+    if(!c || c.kind === 'hq' || !CARD_DEFS[c.defId]) return;
+    const s = c.silenced > 0, g = c.grounded > 0, a = c._sk3Amp || 0, key = (s ? 's' : '') + (g ? 'g' : '') + (a ? 'a' + a : '');
+    if((c._sk3Key || '') === key) return;
+    if(c._sk3Base && CARD_DEFS[c._sk3Base]){ c.defId = c._sk3Base; } c._sk3Base = null; c._sk3Key = key; if(!key) return;
+    const base = CARD_DEFS[c.defId], id = base.id + '~sk3' + key;
+    if(!CARD_DEFS[id]){ const src = base.effects || {}; let eff = {};
+      if(s) Object.keys(src).forEach(k=>{ if(SK3_KEEP.has(k)) eff[k] = src[k]; }); // Silence: every skill and trigger off; resistances stay
+      else { eff = Object.assign({}, src); if(g) delete eff.flying;
+        if(a) SK3_AMP_KEYS.forEach(k=>{ if(typeof eff[k] === 'number' && eff[k] > 0) eff[k] += a; }); }
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, sk3Of: base.id, effects: eff}); }
+    c._sk3Base = c.defId; c.defId = id;
+  }
+  const sk3BaseFx = c=> ((CARD_DEFS[(c && c._sk3Base) || (c && c.defId)] || {}).effects) || {};
+  const sk3Live = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf);
+  // Neighbours in the row (slots on open boards, the physical order on packed rows).
+  function sk3Beside(pl, c){
+    if(!pl || !c) return [];
+    if(slotMode && Number.isInteger(c.slot)){ syncSlots(pl); return allBoardCards(pl).filter(x=> x !== c && sk3Live(x) && Number.isInteger(x.slot) && Math.abs(x.slot - c.slot) === 1); }
+    const o = physicalRowOrder(pl), i = o.indexOf(c); return i < 0 ? [] : [o[i-1], o[i+1]].filter(sk3Live);
+  }
+  // The auras, recomputed with the Rally family (computeRallyBonuses): War Banner and Herald (Attack and Health moved as a difference,
+  // like Kinship), Amplifier (the neighbours' card copies). Shieldwall and Spotter are read live (sk3ArmorOf, sk3Spotted).
+  function sk3Sync(players){
+    [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
+      const live = allBoardCards(pl).filter(sk3Live), fx = c=> effectsOf(c);
+      let bannerSum = 0; live.forEach(c=>{ if(fx(c).banner) bannerSum += sk3N(fx(c), 'banner'); });
+      const amp = new Map(); live.forEach(c=>{ const e = fx(c); if(!e.amplifier) return; const n = sk3N(sk3BaseFx(c), 'amplifier'); sk3Beside(pl, c).forEach(x=> amp.set(x, (amp.get(x)||0) + n)); });
+      live.forEach(c=>{ const want = Math.min(SK3_DEF.ampCap, amp.get(c) || 0); if((c._sk3Amp||0) !== want){ c._sk3Amp = want; sk3Apply(c); } });
+      live.forEach(c=>{ const e = fx(c); let b = bannerSum - (e.banner ? sk3N(e, 'banner') : 0);
+        if(c.isLeader || c.gladiatorLeader || e.leader) live.forEach(h=>{ if(h !== c && fx(h).herald) b += sk3N(fx(h), 'herald'); });
+        const da = b - (c._sk3Atk || 0); if(da){ c.atk = Math.max(0, (c.atk||0) + da); c.baseAtk = Math.max(0, (c.baseAtk||0) + da); c._sk3Atk = b; }
+        const dh = b - (c._sk3Hp || 0); if(dh){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dh); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dh)); c._sk3Hp = b; } });
+      // a unit that left an aura's reach above keeps nothing: the dead are skipped, and the next sync of a live one evens it out
+    });
+  }
+  function sk3ArmorOf(c){ if(!c || c.kind === 'hq' || !curPlayers) return 0; const pid = pidOfLive(c); if(!pid) return 0; let n = 0;
+    sk3Beside(curPlayers[pid], c).forEach(x=>{ const e = effectsOf(x); if(e.shieldwall) n += sk3N(e, 'shieldwall'); }); return n; }
+  // Spotter: c's side has a live Spotter (pid given, or c's own side).
+  function sk3SideSpots(pid){ const pl = curPlayers && curPlayers[pid]; return !!(pl && allBoardCards(pl).some(x=> sk3Live(x) && effectsOf(x).spotter)); }
+  function sk3Spotted(att){ const pid = att ? pidOfLive(att) : 0; return !!pid && sk3SideSpots(pid); }
+  function sk3SpottedAgainst(target){ const pid = target ? pidOfLive(target) : 0; return !!pid && sk3SideSpots(otherId(pid)); }
+  // Stench: -1 Attack a token (stenchPer), up to stenchCap; flyers are immune.
+  function sk3StenchOf(c){ return c && c.stench > 0 ? Math.min(SK3_DEF.stenchCap, c.stench * SK3_DEF.stenchPer) : 0; }
+  function sk3Wash(t, n, side, events){ if(!(t && t.stench > 0) || !(n > 0)) return; const w = Math.min(t.stench, n); t.stench -= w;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'stenchWash', side, targetSide:side, targetUid:t.uid, targetDefId:t.defId, amount:w, total:t.stench}); }
+  // Executioner N (aligned 2026-10-19, SK3): below executionerPct (25) % of its max Health. Cull (Hunter's Weak): small and weak.
+  function sk3ExecLow(t){ return t.hp < (t.maxHp || 0) * SK3_DEF.executionerPct / 100; }
+  function sk3Weak(t){ return effAtk(t) <= SK3_DEF.cullAtk && t.hp <= SK3_DEF.cullHp; }
+  // Shatter on stone or heavy Armor (the Frozen / Brittle part is shatterBonus's own).
+  function sk3ShatterMore(t){ if(!t || t.kind === 'hq') return false; const d = CARD_DEFS[t.defId] || {};
+    return !!t.petrified || Math.max(0, (Number((d.effects||{}).armor)||0) - (t.armorLoss||0)) + sk3ArmorOf(t) >= SK3_DEF.shatterArmor; }
+  function sk3StoneFactor(card, attDef){ return attDef && attDef.effects && attDef.effects.shatter ? SK3_DEF.shatterStoneMult : 0.5; } // stone halves, Shatter doubles
+  // The upkeep (endOfRoundUpkeep, per unit, after Brittle): the round counters (the upkeep right after they land doesn't count, Brittle's _justSet rule),
+  // the Tide's wash. Returns true when Stymie holds its Wait this upkeep.
+  function sk3UpkeepTick(c, pl, sideOf, events){
+    const held = c.stymied > 0, just = c._sk3Just || {}, side = sideOf(pl.id);
+    const tick = k=>{ if(!(c[k] > 0)) return false; if(just[k]){ just[k] = false; return false; } c[k] -= 1; return c[k] === 0; };
+    if(tick('silenced')) sk3Apply(c);
+    if(tick('grounded')) sk3Apply(c);
+    tick('stymied');
+    if(tick('petrifyLeft')) c.petrified = false;
+    { const td = getTide(); if(c.stench > 0 && (td === 'flow' || td === 'high') && !effectsOf(c).flying) sk3Wash(c, SK3_DEF.stenchTideWash, side, events); }
+    return held;
+  }
+  // Statuses: one helper sets each (marked just-set, so a status put on in combat still lasts its N upkeeps).
+  const SK3_STATUS = {
+    silence:  (c, n)=>{ c.silenced = Math.max(c.silenced||0, n); sk3Apply(c); return c.silenced; },
+    stymie:   (c, n)=>{ c.stymied = Math.max(c.stymied||0, n); if(!(c.wait > 0)) c.wait = 1; return c.stymied; },
+    exhaust:  (c, n)=>{ c.exhaust = (c.exhaust||0) + n; return c.exhaust; },
+    petrify:  (c, n)=>{ c.petrified = true; c.petrifyLeft = Math.max(c.petrifyLeft||0, n); return c.petrifyLeft; },
+    vulnerable:(c, n)=>{ c.shocked = Math.max(c.shocked||0, n); c._shockedJustSet = true; return c.shocked; },
+    smokeScreen:(c, n)=>{ c.smoke = Math.max(c.smoke||0, n); c._smokeJustSet = true; return c.smoke; },
+    magnet:   (c, n)=>{ if(!effectsOf(c).flying && !(c.grounded > 0)) return 0; c.grounded = Math.max(c.grounded||0, n); sk3Apply(c); return c.grounded; },
+    stench:   (c, n)=>{ if(effectsOf(c).flying) return 0; c.stench = (c.stench||0) + n; return c.stench; },
+  };
+  const SK3_FIELD = {silence:'silenced', stymie:'stymied', petrify:'petrifyLeft', magnet:'grounded'};
+  function sk3Mark(c, kind){ const f = SK3_FIELD[kind]; if(f){ (c._sk3Just || (c._sk3Just = {}))[f] = true; } }
+  // The units an SK3 action reaches: sub 'all' (who enemy / ally / both), 'area' (the enemy facing it and those beside that), or one
+  // target by the usual who/sub picker. Area and all effects can't be dodged (Evasive only dodges a single target), as ever.
+  function sk3Targets(players, pid, src, t){
+    const who = t.who || 'enemy', sub = t.sub || 'all', foe = otherId(pid);
+    if(who === 'self') return [{pid, c: src, single:false}];
+    if(sub === 'all'){ const sides = who === 'both' ? [pid, foe] : who === 'ally' ? [pid] : [foe];
+      return sides.flatMap(p=> allBoardCards(players[p]).filter(c=> sk3Live(c) && !(p === pid && c === src)).map(c=> ({pid:p, c, single:false}))); }
+    if(sub === 'area'){ const opp = src && src.uid >= 0 ? opposingCardOf(players, pid, src) : null; if(!opp || !opp.card) return [];
+      return [opp.card].concat(sk3Beside(players[foe], opp.card)).filter(sk3Live).map(c=> ({pid:foe, c, single:false})); }
+    const r = resolveGeneralTarget(players, pid, src, who, sub); return r && r.card ? [{pid: who === 'ally' || who === 'kin' ? pid : foe, c: r.card, single:true}] : [];
+  }
+  // A unit put into play by an ability, in the free slot right beside src (open boards; packed rows: the shorter flank).
+  function sk3SpawnAdjacent(players, sideOf, pid, src, defId, stats, events, kind, prep){
+    const pl = players[pid]; if(!pl || !CARD_DEFS[defId]) return null; let lane, sl = null;
+    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0).map(c=> c.slot)); const s0 = Number.isInteger(src.slot) ? src.slot : 0;
+      const free = [s0 - 1, s0 + 1].filter(s=> !used.has(s) && legalSlots(pl).includes(s)); if(!free.length) return null; sl = free.length > 1 ? free[Math.floor(rnd()*2)] : free[0]; }
+    const nc = makeBoardCard(defId); if(prep) prep(nc);
+    if(slotMode) lane = putInSlot(pl, nc, sl); else { lane = flankOrShorter(pl, findCardSide(pl, src.uid) || 'left'); pl.row[lane].push(nc); }
+    { const st = ensureStat(stats, sideOf(pid), src.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
+    if(recordEvents && events) events.push({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid});
+    fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned');
+    return nc;
+  }
+  // Duplicate's Illusion card: a copy of the card, Illusory, a token, no Duplicate of its own (one per card per match).
+  function sk3DupDefOf(defId){ const base = CARD_DEFS[defId], root = base.sk3Of ? (CARD_DEFS[base.sk3Of].derivedFrom || base.sk3Of) : (base.derivedFrom || base.id), id = root + '~dup';
+    if(!CARD_DEFS[id]){ const src = CARD_DEFS[root] || base, eff = Object.assign({}, src.effects || {});
+      if(Array.isArray(eff.triggers)) eff.triggers = eff.triggers.filter(t=> t.do !== 'duplicate'); delete eff.twin; eff.illusory = SK3_DEF.illusionDodge;
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, src, {id, name: (src.name || root) + ' Illusion', cost:0, stoneCost:0, metalCost:0, uraniumCost:0, graceCost:0, devilryCost:0,
+        derivedFrom: root, token:true, illusionOf: root, duplicateOf: root, effects: eff}); }
+    return id; }
+  // On Any Death (removeDeadCardsPass, after Carrion): every other live unit, either side, hears it.
+  function sk3AnyDeath(players, sideOf, dead, stats, events){
+    for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
+      allBoardCards(pl).filter(c=> c !== dead && sk3Live(c)).forEach(c=> runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onAnyDeath', stats, events, {diedCard: dead})); }
+  }
+  // Broodkeeper N (fireSpawnFamilyTriggers, kind 'spawned'): the new unit gets +N/+N per live Broodkeeper of yours (not itself).
+  function sk3TokenBoost(players, sideOf, pid, nc, events){
+    const pl = players[pid]; if(!pl || !nc) return; let n = 0, by = null;
+    allBoardCards(pl).forEach(c=>{ if(c !== nc && sk3Live(c) && effectsOf(c).broodkeeper){ n += sk3N(effectsOf(c), 'broodkeeper'); by = by || c; } });
+    if(!(n > 0)) return; nc.atk += n; nc.baseAtk += n; nc.hp += n; nc.maxHp += n;
+    if(recordEvents && events) events.push({type:'namedBuff', side:sideOf(pid), attDefId:by.defId, attUid:by.uid, targetDefId:nc.defId, targetUid:nc.uid, amount:n, amount2:n, broodkeeper:true});
+  }
+  // The SK3 actions (runAction's default branch, and the SK3 spells through sk3CastSpell). src may be a spell's stand-in (uid -1).
+  function sk3RunAction(players, sideOf, pid, src, t, stats, events, extra){
+    if(!SK3_ACTIONS.includes(t.do)) return false;
+    const pl = players[pid], side = sideOf(pid), n = Math.max(0, Number(t.amount)||0), ev = o=>{ if(recordEvents && events) events.push(o); };
+    if(t.do === 'duplicate'){
+      const tg = t.who && t.who !== 'self' ? sk3Targets(players, pid, src, Object.assign({sub:'random'}, t))[0] : {pid, c: src};
+      if(!tg || !sk3Live(tg.c) || tg.c.uid < 0) return true; const o = tg.c, did = sk3DupDefOf(o.defId);
+      const nc = sk3SpawnAdjacent(players, sideOf, tg.pid, o, did, stats, events, 'duplicate', x=>{ x.atk = o.atk; x.baseAtk = o.atk; x.hp = x.maxHp = Math.max(1, SK3_DEF.illusionHp); x.wait = o.wait||0; });
+      if(nc) ev({type:'statusFx', kind:'duplicate', side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tg.pid), targetDefId:o.defId, targetUid:o.uid, copyUid:nc.uid});
+      return true; }
+    if(t.do === 'devourGrave'){
+      if(!pl.graveyard.length || !sk3Live(src)) return true;
+      const [g] = pl.graveyard.splice(0, 1); pl.exile.push(g); pl.echoes = (pl.echoes||0) + 1; ensureStat(stats, side, g.defId).exiled++;
+      ev({type:'exile', side, defId:g.defId, zone:'graveyard'}); fireOnExile(players, sideOf, pid, g.defId, stats, events);
+      const a = n, h = Math.max(0, Number(t.amount2)||0); src.atk += a; src.baseAtk += a; src.hp += h; src.maxHp += h;
+      ev({type:'statusFx', kind:'corpsefeed', side, attDefId:src.defId, attUid:src.uid, targetSide:side, targetDefId:src.defId, targetUid:src.uid, amount:a, amount2:h, eatenDefId:g.defId});
+      return true; }
+    if(t.do === 'buffAll'){ const a = n, h = Math.max(0, Number(t.amount2)||0);
+      sk3Targets(players, pid, src, {who:'ally', sub:'all'}).forEach(({c})=>{ c.atk += a; c.baseAtk += a; c.hp += h; c.maxHp += h;
+        ev({type:'namedBuff', side, attDefId:src.defId, attUid:src.uid, targetDefId:c.defId, targetUid:c.uid, amount:a, amount2:h, warcry:true}); });
+      return true; }
+    if(t.do === 'barrage'){ const dt = t.dmgType || 'physical', plus = dt === 'physical' ? auraN(pl, 'fletcher') : 0;
+      ev({type:'statusFx', kind:'barrage', side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(otherId(pid)), amount:n, dmgType:dt});
+      allBoardCards(players[otherId(pid)]).filter(sk3Live).forEach(c=> fireDamageAction(players, sideOf, pid, src.defId, n + plus, dt, {kind:'card', card:c}, stats, events, null, src.uid, true));
+      return true; }
+    if(t.do === 'graveCall'){ return sk3GraveCall(players, sideOf, pid, src, t, stats, events), true; }
+    // the statuses
+    const kind = t.do, setter = SK3_STATUS[kind]; if(!setter) return true;
+    const rounds = n || SK3_DEF[kind] || (kind === 'smokeScreen' ? SK3_DEF.smokeRounds : kind === 'magnet' ? SK3_DEF.magnetRounds : 1);
+    const t2 = Object.assign({}, t, kind === 'smokeScreen' ? {who:'ally', sub: t.sub || 'all'} : kind === 'magnet' ? {who: t.who || 'enemy', sub: t.sub || 'all'} : {});
+    if(src.uid >= 0 && src.hp > 0) bleedTick(sideOf, pid, src, stats, events, 'skill');
+    sk3Targets(players, pid, src, t2).forEach(({pid: tp, c, single})=>{
+      if(single && tp !== pid && !dodgeCheck(c, src.defId)){ ev({type:'evaded', reason:lastMissReason, side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tp), targetDefId:c.defId, targetUid:c.uid}); return; }
+      const total = setter(c, rounds); if(!total) return; sk3Mark(c, kind);
+      ev({type:'statusFx', kind, side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tp), targetDefId:c.defId, targetUid:c.uid, amount:rounds, total});
+      if(tp !== pid && c.hp > 0){ bleedTick(sideOf, tp, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, tp, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); } });
+    return true;
+  }
+  // Grave Call (spell): a random creature card from your graveyard comes back into a free slot as a fresh unit (Revive's rule: it
+  // died for real, this is a re-entry), then +X/+X, X = the cards in your graveyard after it left (the spell, already there, counts).
+  function sk3GraveCall(players, sideOf, pid, src, t, stats, events){
+    const pl = players[pid]; const isUnit = d=> d && !d.cardType && !d.field && !d.spell && !d.token && !(d.health <= 0);
+    const pool = pl.graveyard.map((g, i)=> ({g, i})).filter(x=> isUnit(CARD_DEFS[x.g.defId])); if(!pool.length) return false;
+    const pick = pool[Math.floor(rnd()*pool.length)];
+    let slot = null; if(slotMode){ slot = resolvePlacementSlot(pl, rnd() < .5 ? 'left' : 'right'); if(slot === null) return false; }
+    pl.graveyard.splice(pick.i, 1);
+    const nc = makeBoardCard(pick.g.defId); let lane; if(slotMode) lane = putInSlot(pl, nc, slot); else { lane = pl.row.center.length ? (rnd() < .5 ? 'left' : 'right') : 'center'; pl.row[lane].push(nc); }
+    const x = Math.min(Math.max(0, Number(t.cap) || SK3_DEF.graveCallCap), pl.graveyard.length * Math.max(0, Number(t.per) || 1));
+    nc.atk += x; nc.baseAtk += x; nc.hp += x; nc.maxHp += x;
+    if(recordEvents && events){ events.push({type:'spawn', side:sideOf(pid), defId:nc.defId, count:1, cause:'triggerSpawn', kind:'graveCall', uids:[nc.uid], lane});
+      events.push({type:'statusFx', kind:'graveCall', side:sideOf(pid), attDefId:src.defId, targetSide:sideOf(pid), targetDefId:nc.defId, targetUid:nc.uid, amount:x, amount2:x}); }
+    fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned');
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){}
+    return true;
+  }
+  // The SK3 spells (castSpell): spell {do:'graveCall' | 'smokeScreen' | 'magnet', amount}.
+  function sk3CastSpell(players, sideOf, pid, def, stats, events){
+    const sp = def.spell || {}; if(!['graveCall', 'smokeScreen', 'magnet'].includes(sp.do)) return false;
+    const src = {uid:-1, defId:def.id, hp:1, bleed:0, firedOnce:{}};
+    sk3RunAction(players, sideOf, pid, src, Object.assign({}, sp), stats, events, null);
+    if(recordEvents && events) events.push({type:'spell', side:sideOf(pid), defId:def.id, action:sp.do, amount:Number(sp.amount)||0, targets:[]});
+    return true;
+  }
+  // The board's copy of the SK3 counters (the app's replay snapshot reads it).
+  function sk3SnapOf(c){ const o = {}; ['silenced', 'stymied', 'exhaust', 'petrifyLeft', 'grounded', 'stench'].forEach(k=>{ if(c && c[k] > 0) o[k] = c[k]; }); return o; }
+  // ==== end Package SK3
   let trigSubject = null; // the unit a trigger is about (the ally played, the one that died ...), for sub:'subject'
   // Vanguard N (2026-10-17, user: "This card draws itself into its hand at the start of the game, and you discard a random card. (If
   // you have >1, you only do this once. If you alr have a vanguard card in your hand, you skip this step) Vanguards also have +1/+1 if
@@ -5338,6 +5623,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(t.filterKin){ const sj = trigSubject, sd = sj ? CARD_DEFS[sj.defId] : null; if(!sj || !(isKinOf(boardCard, sj) || (sd && sd.effects && sd.effects.changeling))) return; }
       // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
+      if(sk3TrigGate(boardCard, hook, t, i, mySide, events)) return; // Package SK3 (2026-10-19): Petrified sleeps, a per-round cap (Harbinger), Exhaust fizzles
       const tfEv = {type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do};
       if(recordEvents && events) events.push(tfEv);
       // 2026-10-19 (package HN, owner: "if there's nothing to heal, it doesn't occur"): a Heal or Rebuild trigger that finds nothing
@@ -5617,6 +5903,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // replay-side handler can play the exact same "born from the spawner and jumps to its
         // slot" entrance instead of a silent pop-in.
         case 'spawnCard': {
+          if(t.near){ for(let i = 0; i < (t.count||1); i++){ if(!sk3SpawnAdjacent(players, sideOf, playerId, boardCard, t.defId, stats, events, t.keyword || 'spawner')) break; } break; } // Spawner (2026-10-19, package SK3): the free slot right beside it
           const side = flankOrShorter(pl, findCardSide(pl, boardCard.uid) || 'left');
           const newUids = [];
           const newCards = [];
@@ -5724,6 +6011,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           }
           break;
         }
+        default: sk3RunAction(players, sideOf, playerId, boardCard, t, stats, events, extra); break; // Package SK3 (2026-10-19): Duplicate, Silence, Stymie ...
       } };
       // Targets (2026-10-12, 23:12 list): an action with a who/sub picker can hit several distinct targets (t.targets),
       // and who:'any' picks an ally or an opponent at random each time.
@@ -5776,6 +6064,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function espritForArrival(players, sideOf, playerId, newCard, events){ const pl = players[playerId]; if(!pl) return; upkeepUnitsOf(pl).forEach(src=> espritFrom(sideOf, playerId, src, newCard, events)); } /* + a raid's middle / back rows (2026-10-19, RR) */
   function fireSpawnFamilyTriggers(players, sideOf, playerId, newlyPlacedCard, stats, events, kind){
+    if(kind==='spawned') sk3TokenBoost(players, sideOf, playerId, newlyPlacedCard, events); // Broodkeeper (2026-10-19, package SK3)
     const allyHook = kind==='spawned' ? 'onAllySpawn' : 'onAllyPlayed';
     const enemyHook = kind==='spawned' ? 'onEnemySpawn' : 'onEnemyPlayed';
     const pl = players[playerId];
@@ -5896,7 +6185,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.proliferate) v += Math.min(numN(e.proliferate, 1), foes.filter(c=> c.poison > 0).length) * 0.75;
     if(e.prayerWard && prayerNOf(probe) > 0) v += numN(e.prayerWard, 1);
     if(e.hunter){ const vs = hunterVsOf(e); v += foes.filter(c=> hunterMarked(c, vs)).length * numN(e.hunter, 1) * 0.5; }
-    if(e.executioner) v += foes.filter(c=> c.hp < (c.maxHp || 0) / 2).length * numN(e.executioner, 1) * 0.5;
+    if(e.executioner) v += foes.filter(sk3ExecLow /* 2026-10-19 (SK3): below 25% */).length * numN(e.executioner, 1) * 0.5;
     if(e.detonate) v += foes.reduce((t, c)=> t + Math.max(0, c.poison || 0), 0) * 0.3;
     if(e.fieldBreaker){ const hz = fieldHazardRules(); v += hz.length && !fieldPaused() ? 1.5 + (mine.length - foes.length) * 0.25 + (rules.arrowSlits && aiId === 1 ? 2 : 0) : -0.5; }
     if(rules.sporeCloud && resistFactor(defId, 'poison') === 0) v += 1;
@@ -6350,7 +6639,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // status ran out (its overlay just vanished at the next sync). These helpers only READ the units: statusSnap() notes every
   // live unit's statuses before a step that can end them, pushStatusEnds() then logs one {type:'statusEnd', status} per status
   // that went from on to off. noteWoke() logs a sleeper woken by damage (the line that wakes it calls it). No rule changes.
-  const STATUS_END_KEYS = ['poison','bleed','decay','frozen','asleep','paralyzed','stunned','staggered','blind','tipsy','confused','shocked','corrode','exposed','wither','irradiation','smoke','scar','petrified','bound','invincible','invisible','webbed','brittle']; // + W2 (2026-10-16); + Webbed (2026-10-17); + Brittle (2026-10-19, GI)
+  const STATUS_END_KEYS = ['poison','bleed','decay','frozen','asleep','paralyzed','stunned','staggered','blind','tipsy','confused','shocked','corrode','exposed','wither','irradiation','smoke','scar','petrified','bound','invincible','invisible','webbed','brittle','silenced','stymied','exhaust','grounded','stench']; /* + Package SK3 (2026-10-19) */ // + W2 (2026-10-16); + Webbed (2026-10-17); + Brittle (2026-10-19, GI)
   STATUS_END_KEYS.push('exploit'); // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
   const statusOn = (c, k)=> k === 'daunt' ? !!(c.daunts && c.daunts.length) : (c[k] === true || c[k] > 0);
   function statusSnap(players){
@@ -6628,6 +6917,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.webbed>0){ if(c._webbedJustSet) c._webbedJustSet=false; else c.webbed -= 1; } // Webbed (2026-10-17), same convention
       if(c.brittle>0){ if(c._brittleJustSet) c._brittleJustSet=false; else c.brittle -= 1; } // Brittle (2026-10-19, package GI), same convention
       sk1UpkeepTick(c); // Exposed N rounds (2026-10-19, package SK1), same convention
+      const sk3Hold = sk3UpkeepTick(c, pl, sideOf, events); // Package SK3 (2026-10-19): Silence, Magnet's Grounded, Stymie, Petrify N, the Tide washing Stench
       if(c.invincible>0) c.invincible -= 1; // Invincible N / Invisible N (2026-10-16): one of its first N rounds is over
       if(c.invisible>0) c.invisible -= 1;
       let moltedNow = !!c._bulldozeHold; c._bulldozeHold = false; // Molting / Bulldoze (2026-10-16): Wait gained this round isn't ticked straight back off below
@@ -6667,6 +6957,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         return; } // a freeze counter melts instead of the Wait ticking
       if(c.asleep>0) return; // Asleep: also skip the wait decrement while active, same as Stun
       if(resUnits.has(c)){ if(c._rowReadyNow){ c._rowReadyNow = false; if(c.wait === 0 && c.hp > 0) readyNow.push({pl, card:c}); } return; } // a middle / back-row unit's Wait counts down on its action (2026-10-19, TS); the one that ran out on it this round is Ready now (2026-10-19, RR)
+      if(sk3Hold) return; // Stymie (2026-10-19, package SK3): its Wait doesn't count down this upkeep
       // Chronos wait-countdown (2026-09-17, per explicit request): every ordinary decrement
       // that DOESN'T reach 0 pushes its own 'waitTick' event (used purely for the UI's
       // per-round tick pulse + sound on the ring badge) — reaching exactly 0 still only
@@ -6933,6 +7224,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
       carrionFeed(players, sideOf, card, events); // Carrion N (2026-10-17): the scavengers on the field eat
       sk1KillCreature(players, sideOf, card, stats, events); // On Kill (Creature) / Spoils N (2026-10-19, package SK1)
+      sk3AnyDeath(players, sideOf, card, stats, events); // On Any Death (2026-10-19, package SK3): Harbinger
       if(credit){
         const sidesCredited = new Set();
         credit.forEach(key=>{
@@ -8291,7 +8583,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
