@@ -6978,6 +6978,17 @@
   .inv-none{margin:0;}
   .inv-slot-n{position:absolute; right:3px; bottom:1px; font:800 13px/1 'Baloo 2',system-ui,sans-serif; color:#fff8e6; text-shadow:0 1px 0 #000, 0 0 3px #000;}
   .forge-castles{display:flex; flex-direction:column; gap:10px;}
+  /* The Forge's Raid tab (2026-10-19, package RC): each raid's cards with their recipes; an unseen one is a face-down "?" */
+  .forge-raid{display:flex; flex-direction:column; gap:14px;}
+  .fr-head{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px 12px;} .fr-head h3{margin:0;}
+  .fr-sub{margin:4px 0 10px;}
+  .fr-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap:10px;}
+  .fr-card{display:flex; gap:10px; align-items:center; padding:8px; border-radius:12px; background:rgba(127,127,127,.08); min-width:0;}
+  .fr-card.is-ready{box-shadow:0 0 0 2px rgba(255,190,80,.55) inset;}
+  .fr-tile{zoom:.55; flex-shrink:0;}
+  .fr-back{display:flex; align-items:center; justify-content:center; width:104px; height:146px; border-radius:10px; opacity:.8;} .fr-back b{display:none;}
+  .fr-body{display:flex; flex-direction:column; align-items:flex-start; gap:4px; min-width:0;} .fr-body .btn{white-space:normal; text-align:left;}
+  .fr-rar{opacity:.8;} .fr-unseen-note{opacity:.85; font-style:italic;} .fr-cost-peek .bc-sep{display:none;} .fr-cost-peek .bc{display:inline-block; margin-right:10px; white-space:nowrap;}
   .fc-row{display:flex; gap:14px; align-items:center; padding:8px; border-radius:12px;} .fc-row.is-on{background:rgba(255,200,90,.12);}
   .fc-tile{zoom:.62; flex-shrink:0;} .inv-grid > p.panel-sub{grid-column:1 / -1;} .fc-body{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; min-width:0;} .fc-lv{font-weight:700; opacity:.8;}
   /* Hatching (2026-10-12) */

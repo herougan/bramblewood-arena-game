@@ -144,8 +144,8 @@ ok(/facility: \{icon:'⬆️', get label\(\)\{ return TX\('ui\.upgrades-tab'\); 
 { const tabsAt = forge.indexOf('class="forge-modes"'), upAt = forge.indexOf("forgeMode === 'facility' ? `<div class=\"facility-upgrades\" id=\"forgeUpgradesTab\">${forgeUpgradeHTML() + staminaPanelHTML('forge') + dungeonKeyRingHTML()}</div>`");
   ok(upAt > tabsAt && tabsAt > 0, '5. the Forge tier, its Max Energy and the Key ring are inside the Upgrades tab');
   ok(forge.split('forgeUpgradeHTML()').length === 2 && forge.split("staminaPanelHTML('forge')").length === 2 && forge.split('dungeonKeyRingHTML()').length === 2, '5. and nowhere else on the Forge page');
-  ok(/<div class="forge-layout" \$\{forgeMode==='smith' \|\| forgeMode==='castles' \|\| forgeMode==='facility' \? 'hidden' : ''\}>/.test(forge), '5. the card bench hides on the Upgrades tab');
-  ok(/if\(forgeMode==='smith' \|\| forgeMode==='facility'\) return false;/.test(fnSrc('forgeReadyFor')), '5. no "ready" cards counted on it'); }
+  ok(/<div class="forge-layout" \$\{forgeMode==='smith' \|\| forgeMode==='castles' \|\| forgeMode==='facility'( \|\| forgeMode==='raid')? \? 'hidden' : ''\}>/.test(forge), '5. the card bench hides on the Upgrades tab'); // + the Raid tab (2026-10-19, package RC)
+  ok(/if\(forgeMode==='smith' \|\| forgeMode==='facility'( \|\| forgeMode==='raid')?\) return false;/.test(fnSrc('forgeReadyFor')), '5. no "ready" cards counted on it'); }
 { const nest = fnSrc('renderNest');
   ok(/facilityTabsHTML\('nest', nestTab, \[\['cards', TX\('ui\.nest-tab-cards'\)\], \['upgrades', '⬆️ ' \+ TX\('ui\.upgrades-tab'\)\]\]\)/.test(nest), '5. the Nest has 🪺 Cards and eggs | ⬆️ Upgrades');
   ok(/nestTab === 'upgrades' \? `<div class="facility-upgrades" id="nestUpgradesTab">\$\{staminaPanelHTML\('nest'\)[^`]*\$\{nestBuildRowHTML\(\)\}<\/div>` : nestKeeperHTML\(\)/.test(nest) && nest.split("staminaPanelHTML('nest')").length === 2, '5. the Nest\'s Max Energy and next nest are in its Upgrades tab only');
