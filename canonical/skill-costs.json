@@ -22,6 +22,7 @@
   {"id":"onEnemyReady","label":"On Enemy Ready","value":1.47,"note":"an enemy's Wait first reaches 0","measuredS":1.47,"measuredConf":"high","measuredSE":0.19,"prevValue":2,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"onAllyDie","label":"On Ally Die","value":1.23,"note":"each other ally that dies","measuredS":1.23,"measuredConf":"high","measuredSE":0.24,"prevValue":2,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"onMove","label":"On Move","value":0.5,"note":"moved by an ability (Swap, a push)","measuredS":1.7,"measuredConf":"high","measuredSE":0.42,"measuredHow":"2026-10-19 (package DC): scenario: Restless on every copy (it steps toward a column with a foe), so the copies move"},
+  {"id":"onEnterSlot","label":"On Enter Slot","value":0.5,"note":"2026-10-19 (package EQ): a unit comes into a slot (played, spawned or moved in; open boards). Not measured yet: costed like On Move. A slot hazard's On Enter Slot fires about once (tools/eq_cards_2026_10_19.js)"},
   {"id":"onHeal","label":"On Heal","value":2,"note":"each time it heals something","measuredS":2.73,"measuredConf":"high","measuredSE":0.59,"measuredHow":"2026-10-19 (package DC): scenario: Regeneration 1 on every copy (a heal it gives itself counts)"},
   {"id":"onHealed","label":"On Healed","value":1.5,"note":"each time it is healed","measuredS":4.97,"measuredConf":"low","measuredSE":3.11},
   {"id":"onAllyHealed","label":"On Ally Healed","value":1.5,"note":"each time another ally is healed","measuredS":2.82,"measuredConf":"low","measuredSE":4.85},
@@ -343,10 +344,7 @@
   {"id":"worthy","scale":"half","value":0,"measuredS":-0.04,"measuredConf":"high","measuredSE":0.17,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"weaponMaster","scale":"n","value":2,"note":"2026-10-19 (package EQ): not measured yet. Weapon Master N: its side's arrows +N (Fletcher's part, measured 0) and +1/+1 on each equipped ally while it lives"},
   {"id":"pry","scale":"n","value":0.5,"note":"2026-10-19 (package EQ): not measured yet. Pry N: a landed melee hit strips N Armor for good (Perforate's strip alone)"},
-  {"id":"hazardIce","scale":"n","value":1,"note":"2026-10-19 (package EQ): a hazard card's S = value x n x rounds (tools/eq_cards_2026_10_19.js). Ice Floor: a unit entering slides one slot on"},
-  {"id":"hazardLava","scale":"n","value":1.27,"note":"2026-10-19 (package EQ): value x n x rounds. Lava Floor: n fire a round to the unit on it (the damage action's 1.27 a point; flyers immune)"},
-  {"id":"hazardPoison","scale":"n","value":1.8,"note":"2026-10-19 (package EQ): value x n x rounds. Poison Floor: Poison n on entering and each round (the poison action's 1.61, + entering; flyers immune)"},
-  {"id":"hazardGas","scale":"n","value":1.61,"note":"2026-10-19 (package EQ): value x n x rounds. Toxic Gas: Poison n each round, flyers too"},
+  {"id":"hazardIce","scale":"n","value":1,"note":"2026-10-19 (package EQ): a hazard with no action for its effect: S = value x n x rounds (tools/eq_cards_2026_10_19.js). Ice Floor: a unit entering slides one slot on"},
   {"id":"hazardRubble","scale":"n","value":1,"note":"2026-10-19 (package EQ): value x n x rounds. Rubble: the foe can't play into that slot"}
  ],
  "measured": "2026-10-19 (package SW, + package DC's scenarios): measuredS = the entry's value as measured by tools/skill_worth.js (docs/skill-worth-2026-10-19.md) or, where measuredHow says so, tools/skill_combo.js (docs/skill-combos-2026-10-19.md); value is unchanged, the owner applies it in the hub"

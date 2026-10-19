@@ -197,8 +197,11 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   'onSacrifice',
   // On Pitch (2026-10-16, user: "A new skill: Whenever you pitch a card, this card does {}"): fires on every unit of yours on the
   // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
-  'onPitch'];
-const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
+  'onPitch',
+  // On Enter Slot (2026-10-19, package EQ): fires on a unit each time it comes into a slot: played, spawned or moved in (open boards;
+  // slotEntries / floorScan). The slot hazards use it too (hazard.triggers).
+  'onEnterSlot'];
+const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge','onEnterSlot' /* EQ, 2026-10-19 */]); // fire even while Waiting
 // 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
 // triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
 // 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
@@ -3726,8 +3729,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function floorAt(pid, slot){ return floors[pid + ':s' + slot] || null; }
   function isEquipDef(d){ return !!(d && d.cardType === 'equipment'); }
   function isHazardDef(d){ return !!(d && (d.cardType === 'hazard' || (d.cardType === 'spell' && d.hazard))); } // a hazard card is a spell with a hazard (owner: 'spell' if spells exist)
-  function hazardOf(d){ const h = (d && d.hazard) || {}, kind = EQ_KINDS.includes(h.kind) ? h.kind : 'rubble';
-    return {kind, n: eqN(h.n, EQ_DEF[kind]), rounds: Math.max(1, Math.round(eqN(h.rounds, EQ_DEF.hazardRounds)) || 1), target: h.target || (kind === 'rubble' ? 'enemyEmpty' : 'any')}; }
+  // A hazard's effect is written as triggers and actions (owner 21:56: "if you can and it makes sense, feel free to use triggers and
+  // actions. if they dont suffice, add the required trigger or action"): hazard.triggers [{on:'onEnterSlot'|'onRoundStart', do:'damage'|
+  // 'poison'|'bleed', amount, dmgType}] act on the unit standing in the slot (who 'self'); with none given, the kind's own (EQ_HZ_TRIGS,
+  // amount = hazard.n). Sliding (Ice) and closing the slot (Rubble) are what the floor itself does: no action moves a unit on, or closes a
+  // slot. hazard.flyers: true when flyers are hit too (Toxic Gas); otherwise flyers and Mountain Climbers are above it.
+  function hazardOf(d){ const h = (d && d.hazard) || {}, kind = EQ_KINDS.includes(h.kind) ? h.kind : 'rubble', n = eqN(h.n, EQ_DEF[kind]);
+    const trigs = Array.isArray(h.triggers) ? h.triggers.filter(t=> t && t.on && t.do).map(t=> Object.assign({who:'self'}, t, {amount: eqN(t.amount, n)})) : (EQ_HZ_TRIGS[kind] || []).map(t=> Object.assign({who:'self', amount:n}, t));
+    return {kind, n, rounds: Math.max(1, Math.round(eqN(h.rounds, EQ_DEF.hazardRounds)) || 1), target: h.target || (kind === 'rubble' ? 'enemyEmpty' : 'any'), triggers: trigs, flyers: h.flyers != null ? !!h.flyers : kind === 'gas'}; }
+  const EQ_HZ_TRIGS = {lava:[{on:'onRoundStart', do:'damage', dmgType:'heat'}], poison:[{on:'onEnterSlot', do:'poison'}, {on:'onRoundStart', do:'poison'}], gas:[{on:'onRoundStart', do:'poison'}]};
   function equipTurnsOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(eqN(e.turns, EQ_DEF.equipTurns))); }
   function eqSlotsOf(pl){ return pl ? (pl.eqSlots || (pl.eqSlots = {})) : {}; }
   function loneEquipAt(pl, slot){ return (pl && pl.eqSlots && pl.eqSlots[slot]) || null; }
@@ -3795,11 +3805,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(total > 1 && unseen === total) return [];
     return out;
   }
-  const floorImmune = (c, kind)=> kind === 'gas' ? false : (isFlyingCard(c) || climbs(c));
-  function floorPoison(pid, c, n, kind, sideOf, stats, events){
-    const got = addPoison(c, n); if(!(got > 0)) return 0;
-    if(recordEvents && events) events.push({type:'floorTick', kind, side:sideOf(pid), pid, slot:c.slot, uid:c.uid, defId:c.defId, poison:got});
-    return got;
+  const floorImmune = (c, f)=> f && f.flyers ? false : (isFlyingCard(c) || climbs(c));
+  // a floor's triggers for one moment (hook 'onEnterSlot' or 'onRoundStart') on the unit in the slot: the actions damage, poison, bleed
+  function floorTrigs(players, sideOf, pid, f, c, hook, stats, events){
+    if(!f || !c || !(c.hp > 0) || floorImmune(c, f)) return;
+    (f.triggers || []).filter(t=> t.on === hook).forEach(t=>{ if(!(c.hp > 0)) return; const n = eqN(t.amount, f.n); if(!(n > 0)) return;
+      const ev = {type:'floorTick', kind:f.kind, hook, side:sideOf(pid), pid, slot:c.slot, uid:c.uid, defId:c.defId, action:t.do};
+      if(t.do === 'damage'){ ev.dmg = damageCardFlat(c, n, t.dmgType || 'physical'); ensureStat(stats, sideOf(pid), c.defId).taken += ev.dmg; }
+      else if(t.do === 'poison'){ ev.poison = addPoison(c, n); if(!(ev.poison > 0)) return; }
+      else if(t.do === 'bleed'){ if(isGhost(c)) return; c.bleed = (c.bleed || 0) + n; ev.bleed = n; }
+      else return;
+      if(recordEvents && events) events.push(ev); });
   }
   // a unit came onto a slot: pick up a lone piece, take the poison, slip on the ice (and then the slot it slid to counts as entered)
   function floorScan(players, sideOf, stats, events){
@@ -3807,11 +3823,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(let pass = 0; pass < EQ_DEF.iceChain && list.length; pass++){
       const next = [];
       for(const en of list){ const c = en.card, pl = players[en.pid]; if(!(c.hp > 0) || c.slot !== en.to) continue;
+        runCustomTriggers(players, sideOf, en.pid, c, CARD_DEFS[c.defId], 'onEnterSlot', stats || {}, events, {movedCard: c, enteredSlot: en.to, fresh: en.fresh}); // On Enter Slot (EQ): played, spawned or moved in
         const lone = loneEquipAt(pl, en.to);
         if(lone && eqCarrier(c)){ delete pl.eqSlots[en.to]; eqMeet(players, sideOf, en.pid, c, lone.defId, events, 'pickup'); }
         const f = floorAt(en.pid, en.to); if(!f) continue;
-        if(f.kind === 'poison' && !floorImmune(c, 'poison')) floorPoison(en.pid, c, f.n, 'poison', sideOf, stats, events);
-        if(f.kind === 'ice' && !floorImmune(c, 'ice') && !stuckFast(c) && !c.cageOf){
+        floorTrigs(players, sideOf, en.pid, f, c, 'onEnterSlot', stats, events);
+        if(f.kind === 'ice' && c.hp > 0 && !floorImmune(c, f) && !stuckFast(c) && !c.cageOf){
           const live = new Set(allBoardCards(pl).filter(x=> x && x !== c && !x.gap && x.hp > 0).map(x=> x.slot));
           const free = d=> Math.abs(en.to + d) <= EQ_DEF.iceEdge && !live.has(en.to + d);
           let dir = en.fresh || en.from === en.to ? (rnd() < .5 ? -1 : 1) : Math.sign(en.to - en.from);
@@ -3831,10 +3848,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let hurt = false;
     Object.keys(floors).forEach(k=>{ const f = floors[k], pid = Number(k.split(':')[0]), slot = Number(k.split(':s')[1]), pl = players[pid]; if(!pl) return;
       const c = allLive(pl).find(x=> x.slot === slot);
-      if(c && !floorImmune(c, f.kind)){
-        if(f.kind === 'lava' && f.n > 0){ const dmg = damageCardFlat(c, f.n, 'heat'); ensureStat(stats, sideOf(pid), c.defId).taken += dmg; hurt = hurt || !(c.hp > 0);
-          if(recordEvents && events) events.push({type:'floorTick', kind:'lava', side:sideOf(pid), pid, slot, uid:c.uid, defId:c.defId, dmg}); }
-        if(f.kind === 'poison' || f.kind === 'gas') floorPoison(pid, c, f.n, f.kind, sideOf, stats, events); }
+      if(c){ floorTrigs(players, sideOf, pid, f, c, 'onRoundStart', stats, events); hurt = hurt || !(c.hp > 0); }
       f.rounds -= 1;
       if(f.rounds <= 0){ delete floors[k]; if(recordEvents && events) events.push({type:'floorEnd', kind:f.kind, side:sideOf(pid), pid, slot}); } });
     if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
@@ -3859,7 +3873,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     pl.hand.splice(pl.hand.findIndex(x=> x.uid === handUid), 1);
     pl.lumber -= costOfCard(h.defId); payOreCosts(pl, h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1;
     pl.graveyard.push({defId:h.defId}); ensureStat(stats, sideOf(pid), h.defId).played++;
-    floors[tpid + ':s' + slot] = {kind:hz.kind, n:hz.n, rounds:hz.rounds, by:pid, defId:h.defId};
+    floors[tpid + ':s' + slot] = {kind:hz.kind, n:hz.n, rounds:hz.rounds, by:pid, defId:h.defId, triggers:hz.triggers, flyers:hz.flyers};
     if(recordEvents && events) events.push({type:'floorSet', kind:hz.kind, n:hz.n, rounds:hz.rounds, side:sideOf(pid), targetSide:sideOf(tpid), pid:tpid, slot, defId:h.defId});
     return true;
   }
@@ -3888,7 +3902,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const hz = hazardOf(CARD_DEFS[defId]), foeId = otherId(aiId), foe = players[foeId], ai = players[aiId]; if(!foe || !ai || !slotMode) return null;
     const ok = hazardTargets(players, aiId, defId), can = (p, s)=> ok.some(t=> t.pid === p && t.slot === s);
     if(hz.kind === 'lava' || hz.kind === 'poison' || hz.kind === 'gas'){
-      const pick = allLive(foe).filter(c=> !floorImmune(c, hz.kind) && !(hz.kind !== 'lava' && poisonProof(c)) && can(foeId, c.slot) && !((floorAt(foeId, c.slot) || {}).kind === hz.kind))
+      const pick = allLive(foe).filter(c=> !floorImmune(c, hz) && !(hz.kind !== 'lava' && poisonProof(c)) && can(foeId, c.slot) && !((floorAt(foeId, c.slot) || {}).kind === hz.kind))
         .sort((a, b)=> (effAtk(b) + b.hp * 0.5) - (effAtk(a) + a.hp * 0.5))[0];
       if(!pick) return null; const per = hz.kind === 'lava' ? 1 : 0.8;
       return {pid:foeId, slot:pick.slot, score: 1 + hz.n * Math.min(hz.rounds, Math.ceil(pick.hp / Math.max(1, hz.n))) * per + effAtk(pick) * 0.2}; }

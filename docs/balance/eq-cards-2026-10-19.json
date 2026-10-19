@@ -60,8 +60,7 @@
    "cost": 0,
    "N": 22.84,
    "S": 3,
-   "per": 1,
-   "key": "hazardIce",
+   "how": "hazardIce 1 x 1 x 3",
    "use": 13.13
   },
   {
@@ -75,8 +74,7 @@
    "cost": 0,
    "N": 23.87,
    "S": 7.62,
-   "per": 1.27,
-   "key": "hazardLava",
+   "how": "onRoundStart damage 2: 3 x 2.54",
    "use": 31.92
   },
   {
@@ -87,12 +85,11 @@
     "n": 2,
     "rounds": 3
    },
-   "cost": 0,
-   "N": 22.84,
-   "S": 10.8,
-   "per": 1.8,
-   "key": "hazardPoison",
-   "use": 47.29
+   "cost": 1,
+   "N": 27.38,
+   "S": 12.88,
+   "how": "onEnterSlot poison 2: 1 x 3.22 + onRoundStart poison 2: 3 x 3.22",
+   "use": 47.04
   },
   {
    "id": "miasma",
@@ -105,8 +102,7 @@
    "cost": 0,
    "N": 23.87,
    "S": 6.44,
-   "per": 1.61,
-   "key": "hazardGas",
+   "how": "onRoundStart poison 1: 4 x 1.61",
    "use": 26.98
   },
   {
@@ -120,8 +116,7 @@
    "cost": 0,
    "N": 22.84,
    "S": 3,
-   "per": 1,
-   "key": "hazardRubble",
+   "how": "hazardRubble 1 x 1 x 3",
    "use": 13.13
   }
  ]

@@ -32040,7 +32040,7 @@
     "numericId": 1341,
     "uuid": "1da2692a-a826-5750-8ef1-16812c1e99ef",
     "unattainable": true,
-    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"): a slot-hazard spell. Ice Floor: a unit that enters the slot slides one slot on (a random way when it is played there). (ice 1 for 3 rounds; one slot on either side). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper): S = 1 x 1 x 3 = 3 (canonical/skill-costs.json hazardIce), 0 Lumber: N = 22.84, S is 13.13% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Ice Floor: a unit that enters the slot slides one slot on (a random way when it is played there). No action moves a unit on, so the floor does it itself. 3 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = hazardIce 1 x 1 x 3 = 3; 0 Lumber: N = 22.84, S is 13.13% of N (a card that uses the turn's play and leaves no body: up to 50%)."
   },
   {
     "id": "magma-vent",
@@ -32066,18 +32066,26 @@
     "hazard": {
       "kind": "lava",
       "n": 2,
-      "rounds": 3
+      "rounds": 3,
+      "triggers": [
+        {
+          "on": "onRoundStart",
+          "do": "damage",
+          "amount": 2,
+          "dmgType": "heat"
+        }
+      ]
     },
     "numericId": 1342,
     "uuid": "e5d08c49-5afe-5a14-8f79-b04c94da7835",
     "unattainable": true,
-    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"): a slot-hazard spell. Lava Floor: fire damage at the start of every round to the unit on it (flyers are above it). (lava 2 for 3 rounds; one slot on either side). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper): S = 1.27 x 2 x 3 = 7.62 (canonical/skill-costs.json hazardLava), 0 Lumber: N = 23.87, S is 31.92% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Lava Floor, written as a trigger: On Round Start, Damage 2 (fire) to the unit in the slot (flyers are above it). 3 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = onRoundStart damage 2: 3 x 2.54 = 7.62; 0 Lumber: N = 23.87, S is 31.92% of N (a card that uses the turn's play and leaves no body: up to 50%)."
   },
   {
     "id": "bog-seep",
     "name": "Bog Seep",
     "icon": "\ud83e\udee7",
-    "cost": 0,
+    "cost": 1,
     "wait": 0,
     "attack": 0,
     "health": 0,
@@ -32097,12 +32105,24 @@
     "hazard": {
       "kind": "poison",
       "n": 2,
-      "rounds": 3
+      "rounds": 3,
+      "triggers": [
+        {
+          "on": "onEnterSlot",
+          "do": "poison",
+          "amount": 2
+        },
+        {
+          "on": "onRoundStart",
+          "do": "poison",
+          "amount": 2
+        }
+      ]
     },
     "numericId": 1343,
     "uuid": "17a2d977-5dfb-538d-9e06-838897e4131c",
     "unattainable": true,
-    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"): a slot-hazard spell. Poison Floor: Poison on the unit that enters and on the unit on it each round (flyers are above it). (poison 2 for 3 rounds; one slot on either side). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper): S = 1.8 x 2 x 3 = 10.8 (canonical/skill-costs.json hazardPoison), 0 Lumber: N = 22.84, S is 47.29% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Poison Floor, written as triggers: On Enter Slot, Poison 2, and On Round Start, Poison 2, to the unit in the slot (flyers are above it). 3 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = onEnterSlot poison 2: 1 x 3.22 + onRoundStart poison 2: 3 x 3.22 = 12.88; 1 Lumber: N = 27.38, S is 47.04% of N (a card that uses the turn's play and leaves no body: up to 50%)."
   },
   {
     "id": "miasma",
@@ -32128,12 +32148,20 @@
     "hazard": {
       "kind": "gas",
       "n": 1,
-      "rounds": 4
+      "rounds": 4,
+      "triggers": [
+        {
+          "on": "onRoundStart",
+          "do": "poison",
+          "amount": 1
+        }
+      ],
+      "flyers": true
     },
     "numericId": 1344,
     "uuid": "8da4e0f6-713d-5d22-9fad-b5ab12300935",
     "unattainable": true,
-    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"): a slot-hazard spell. Toxic Gas: Poison on the unit in it each round, flyers too. (gas 1 for 4 rounds; one slot on either side). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper): S = 1.61 x 1 x 4 = 6.44 (canonical/skill-costs.json hazardGas), 0 Lumber: N = 23.87, S is 26.98% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Toxic Gas, written as a trigger: On Round Start, Poison 1 to the unit in the slot, flyers too. 4 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = onRoundStart poison 1: 4 x 1.61 = 6.44; 0 Lumber: N = 23.87, S is 26.98% of N (a card that uses the turn's play and leaves no body: up to 50%)."
   },
   {
     "id": "rockfall",
@@ -32164,6 +32192,6 @@
     "numericId": 1345,
     "uuid": "cb0d9bd5-86da-5607-93ad-18154a2b48d9",
     "unattainable": true,
-    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"): a slot-hazard spell. Rubble: the foe cannot play a card into that slot (units can still move in). (rubble 1 for 3 rounds; one slot on either side (an empty enemy slot)). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper): S = 1 x 1 x 3 = 3 (canonical/skill-costs.json hazardRubble), 0 Lumber: N = 22.84, S is 13.13% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Rubble: the foe cannot play a card into that slot (units can still move in). No action closes a slot, so the floor does it itself. 3 rounds, on one slot of either side (an empty enemy slot). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = hazardRubble 1 x 1 x 3 = 3; 0 Lumber: N = 22.84, S is 13.13% of N (a card that uses the turn's play and leaves no body: up to 50%)."
   }
 ]
