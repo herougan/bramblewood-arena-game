@@ -102,7 +102,13 @@ T.units.filter(u=> u.status !== 'proposed').forEach(u=>{ const c = cards.find(x=
 ok(V.subtypes && V.subtypes.length >= 5 && V.animalGroups && V.animalGroups.length >= 50, '4b. the vocabulary lists the subtypes and animal groups');
 ok(T.units.filter(u=> u.base).length === 27 && !T.units.some(u=> u.starterDeck === 'otters'), '4b. the 27 Base cards are marked base, none as the Otters\' starter deck');
 const np = T.nonPlayer || [];
-ok(np.some(n=> n.kind === 'raid-boss-unit' && n.name === 'Leviathan Elder') && np.every(n=> n.audience === 'non-player'), '4b. the non-player units are listed (the raid\'s boss units, the Leviathan Elder among them)');
+// 2026-10-19 (BF3): the elder of each raid part is the game's own pick, its deck's biggest card by Attack + Health (buildRaidFullFight). After
+// the card retune the tail's is the Orca Warlord (8/32 over the Leviathan Elder's 6/32), so the list is checked against that rule, not a name.
+{ const RAIDS = JSON.parse(rd('canonical/raids.json')), cOf = Object.fromEntries(cards.map(c=> [c.id, c])); let picks = 0, right = 0;
+  RAIDS.forEach(r=> (r.parts || []).forEach(p=>{ const ids = Object.keys(((p.fight || {}).deck) || {}).filter(id=> cOf[id]); if(!ids.length) return; picks++;
+    const top = ids.sort((a, b)=> ((cOf[b].attack || 0) + (cOf[b].health || 0)) - ((cOf[a].attack || 0) + (cOf[a].health || 0)))[0];
+    if(np.some(n=> n.kind === 'raid-boss-unit' && n.of === top && (n.parts || []).includes(p.id))) right++; }));
+  ok(picks > 0 && right === picks && np.every(n=> n.audience === 'non-player'), `4b. the non-player units are listed: each raid part's elder is its deck's biggest card (${right}/${picks})`); }
 np.filter(n=> n.kind === 'raid-boss-unit').forEach(n=> ok(n.statsFrom === 'multipliers' && n.mult && byId[n.of], `4b. ${n.id} keeps its multipliers and names its base`));
 
 // 5. the hub

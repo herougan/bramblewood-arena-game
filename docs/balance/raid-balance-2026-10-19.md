@@ -189,3 +189,44 @@ Leading was already practically out of reach: it took about five wins in one lif
     node tools/raid_completion_model.js cycle --rate 0.2,0.6      # 40% of tickets
     node tools/raid_completion_model.js cycle --standins 12 --scale 1 --floor 30   # Health scaled by participants
     node tools/raid_cells_table.js --md
+
+## RB2: the part brambles 350, the elders 55 (package RB2, 2026-10-19)
+
+The owner (16:22): "Raids can have special super-high health brambles. Maybe less than 420." (16:28): "let it remain at 350HP. Then now with the mega nerf, make the raid very slightly harder. its playing 3 cards at a time right?"
+
+- **The arms' and the tail's bramble: 350 a fight** (was 420; 2.33× the raiders' merged 150). The Core keeps its 200 behind the stumps.
+- **The elders start at up to 55 Health** (`bossHpBonusMax`, was 50). This is the "very slightly harder" lever: of the three tried, it lands closest to halfway between 420 and plain 350 on the arms and the tail, and it barely moves the Core, whose bramble did not change.
+- A raid edit saved on RB's scale (scale 2) takes the shipped 350 where it still holds 420, and 55 where it still holds 50. Values an admin set otherwise stay (`RaidM.migrateRaidScale`, scale 3). The raid editor's new part starts on 350.
+- **The boss plays 3 cards a turn**, as RV2 built it: its front row's through the CPU (`aiTakeTurn`), then one card into its middle row and one into its back row (`raidBossRowPlays`, `RAID_BOSS_PLAY_ROWS = [1, 2]`). A row play waits when that row already holds `rowCap` (2) live units, or when no free slot has a unit in front of it. Map 13 on the left arm (12 fights, 240 turns): 0.64 front-row plays and 0.78 row plays a turn. Of 480 row-play chances, 59% waited on a full row (rowCap), 7% found no covered slot and 34% landed. All 3 landed in 16% of turns. The boss tries 3 every turn, and its rows' caps hold it to about 1.4 on average.
+
+The fights were re-measured with today's cards (40 fights a cell, the same seeds for every candidate): `docs/balance/raid-balance-2026-10-19-fights-420.json` (before) and `raid-balance-2026-10-19-fights.json` (shipped). The whole world is harder than when RB measured it, for example a fresh tail for Map 13 is 100 now against RB's 195, so the "before" column is today's 420, not RB's table above.
+
+**Arms and tail, per deck: bramble damage a fight (average / worst point), raid damage a fight, wins (the bramble broken)**
+
+| Deck (map) | 420 (before) | 350 | 350, floor 0.65 | 350, stages +3 / +5 | **350, elders 55 (shipped)** |
+|---|---|---|---|---|---|
+| 10 (weak) | 136 / 73 · 171 · 0% | 136 / 73 · 173 · 0.3% | 133 · 170 · 0.3% | 132 · 164 · 0.2% | **130 / 73 · 165 · 0.3%** |
+| **13 (normal)** | 177 / 104 · 214 · 0.3% | 175 / 104 · 254 · 5.7% | 173 · 248 · 5.3% | 171 · 237 · 4.2% | **168 / 100 · 230 · 4.0%** |
+| 16 (good) | 264 / 145 · 488 · 18.7% | 246 / 144 · 613 · 33.5% | 244 · 593 · 31.8% | 240 · 572 · 30.7% | **241 / 141 · 566 · 29.8%** |
+| 20 (strong) | 304 / 192 · 636 · 30.5% | 279 / 188 · 740 · 42.8% | 276 · 724 · 41.7% | 273 · 703 · 40.2% | **274 / 185 · 700 · 40.2%** |
+
+**The Core (bramble 200 throughout):** Map 13 deals 112 a fight with 24.2% wins at RB's numbers, and 110 with 23.3% at elders 55. Stages +3 / +5 would cut that to 108 and 20.8%, so they harden the Core, which the bramble change never eased. Maps 10 / 16 / 20 at elders 55: 90 / 145 / 166, with 13% / 38% / 55% wins.
+
+A normal deck still meets a wall. It ends 96% of its fights on the arms and the tail with the bramble standing, at 168 damage a fight (worst point 100: the fresh tail). Only good and strong decks break it often (30% / 40%). A win counts 1,000 × the rank, so the lower bramble mostly adds wins, not damage: Map 13 earns 214 → 254 raid damage a fight at plain 350, and 230 shipped, about halfway. The floor lever hardly bites because `weakenCard` rounds a 2–5 Attack card back to the same number.
+
+**Completion** (200 weeks a row, 60% of tickets):
+
+| Participants | 20 | 30 | 40 | 50+ | Raid damage a fight (model's mix) |
+|---|---|---|---|---|---|
+| 420 (before, today's cards) | 11.5% | 90% | 100% | 100% | 357 |
+| 350 | 28% | 96.5% | 100% | 100% | 410 |
+| 350, stages +3 / +5 | 21.5% | 94% | 100% | 100% | 393 |
+| **350, elders 55 (shipped)** | 20.5% | **95%** | 100% | 100% | 380 |
+
+The raid falls on day 6.93 with 30 players and day 4.31 with 250. RB's goal holds: 30+ players complete at least 90% of weeks. At 40% ticket use the floor is about 50 players: 50 complete 97.5% shipped (95% at 420 today), while 40 complete 77.5% and 30 complete 20%.
+
+Tiers, shipped (any participant-life): Participant 76.5%, Competent 37.9%, Leading 0.1% (93% / 53.8% / 0.1% of the lives with the tier's fights). These are close to RB's.
+
+    node tools/raid_completion_model.js measure --n 40 --castle 420 --out FILE          # --castle / --core-castle / --elders / --stage-atk try values without editing raids.json
+    node tools/raid_completion_model.js measure --n 40                                 # the shipped brambles and elders (~10 min)
+    node tools/raid_completion_model.js cycle --cycles 200 --players 10,20,30,40,50,75,100,150,200,250

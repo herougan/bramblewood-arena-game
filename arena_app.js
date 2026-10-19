@@ -23189,7 +23189,7 @@ function openRaidEditor(raidId){
       if(k === 'frost'){ ['frostWait', 'frostCount', 'frostbite', 'frostResist'].forEach(x=> delete r[x]); }
       draft.fieldRules = r; dirty = true; render(); }); // an empty {} stays, so the shipped field doesn't come back (allRaidDefs)
     overlay.querySelectorAll('[data-open-part]').forEach(b=> b.onclick = ()=>{ read(); openPart = b.dataset.openPart; q = ''; render(); });
-    $('reAddPart').onclick = ()=>{ read(); let i = draft.parts.length+1; while(draft.parts.some(p=> p.id==='part'+i)) i++; draft.parts.push({id:'part'+i, name:'New part', icon:'🎯', bars:4, barHp:50000, fight:{castleHp:420, deck:{}}}); /* 2026-10-19 (package RB): 200,000 like the Goliath's arms */ openPart = 'part'+i; dirty = true; render(); };
+    $('reAddPart').onclick = ()=>{ read(); let i = draft.parts.length+1; while(draft.parts.some(p=> p.id==='part'+i)) i++; draft.parts.push({id:'part'+i, name:'New part', icon:'🎯', bars:4, barHp:50000, fight:{castleHp:350, deck:{}}}); /* 2026-10-19 (package RB): 200,000 like the Goliath's arms; (RB2) its 350 bramble */ openPart = 'part'+i; dirty = true; render(); };
     const P = draft.parts.find(p=> p.id===openPart);
     if(P){
       const deck = P.fight.deck;
@@ -23485,8 +23485,8 @@ function startRaidFullBattle(def, partId, f, st){
 function buildRaidFullFight(def, partId, f, st, opts){
   opts = opts || {}; const rand = opts.rand || Math.random, allies = opts.allies || [];
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
-  // 2026-10-19 (package RX, owner 20:48 "The raid is too hard"): the boss's bramble is the part's fight castleHp (420 on the outer
-  // parts). trench.castleHp (1250) is "for the trench only" (trenchConfig's 2026-10-18 note), but this fight read it too, so a raider
+  // 2026-10-19 (package RX, owner 20:48 "The raid is too hard"): the boss's bramble is the part's fight castleHp (350 on the outer
+  // parts since 2026-10-19, package RB2: was 420). trench.castleHp (1250) is "for the trench only" (trenchConfig's 2026-10-18 note), but this fight read it too, so a raider
   // had to chip 1250 to reach anything.
   cfg.castleHp = f.castleHp || cfg.castleHp;
   // 2026-10-19 (package RB, owner 12:23: "the boss gets weaker as it goes down in health"): every boss card (its deck, its Commons, its

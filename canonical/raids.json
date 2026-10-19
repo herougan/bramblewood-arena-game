@@ -32,7 +32,7 @@
         "bars": 4,
         "barHp": 50000,
         "fight": {
-          "castleHp": 420,
+          "castleHp": 350,
           "deck": {
             "goliath-tentacle": 2,
             "inkcloud-squid": 3,
@@ -63,7 +63,7 @@
         "bars": 4,
         "barHp": 50000,
         "fight": {
-          "castleHp": 420,
+          "castleHp": 350,
           "deck": {
             "glass-octopus": 3,
             "vampire-squid": 2,
@@ -94,7 +94,7 @@
         "bars": 4,
         "barHp": 50000,
         "fight": {
-          "castleHp": 420,
+          "castleHp": 350,
           "deck": {
             "humpback-elder": 3,
             "abyss-lantern-squid": 3,
@@ -261,7 +261,7 @@
       "cards": 1
     },
     "fightRounds": 20,
-    "bossHpBonusMax": 50,
+    "bossHpBonusMax": 55,
     "trench": {
       "rows": 3,
       "wallHp": 45

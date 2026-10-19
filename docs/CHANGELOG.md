@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RB2: raid brambles 350, the elders 55)
+- **Owner (16:22, 16:28):** "Raids can have special super-high health brambles. Maybe less than 420." / "let it remain at 350HP. Then ... make the raid very slightly harder."
+- **The Goliath's arms and tail now have a 350-Health bramble a fight** (was 420). The Core keeps its 200. With the Map 13 deck, a normal raider still ends 96% of fights with the bramble standing, at 168 damage a fight. Wins go 0.3% → 4.0% for that deck and 19% / 31% → 30% / 40% for good / strong decks.
+- **A touch harder to make up for it:** the elders start at up to 55 Health (was 50). Map 13's raid damage a fight is now 230, between 420's 214 and plain 350's 254. Completion with 30 players is 95% of weeks (90% at 420, 96.5% at plain 350), and 100% from 40.
+- Saved raid edits still at RB's 420 / 50 take the new numbers (scale 3), and the editor's new part starts on 350. The boss already plays 3 cards a turn (front row, then middle and back, rowCap 2): checked, unchanged.
+- `tools/raid_completion_model.js measure` takes `--castle`, `--core-castle`, `--elders` and `--stage-atk`. The fights were re-measured on today's cards. See the RB2 section of `docs/balance/raid-balance-2026-10-19.md`. Test: `tests/raid-rb2-2026-10-19.js`.
+
 ## 2026-10-19 (package BF2: Base's map term)
 - **Owner (15:25): "note that there is a Map * 0.2 number there."** Base is now `+ 0.2 × Map`, where Map is the map at which the card becomes obtainable (`cardObtainMap`):
   - map rewards: that map;
