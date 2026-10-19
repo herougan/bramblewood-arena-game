@@ -299,12 +299,18 @@ function curveMoves(f, deck, easy){
   const moves = [];
   movable.slice(0, 7).forEach(out=>{ const inn = pool.find(id=> id !== out && (deck[id]||0) < cap(id)); if(inn) moves.push({type:'swap', out, inn, k: Math.min(2, deck[out], cap(inn) - (deck[inn]||0))}); });
   if(deckSize(deck) > 12) movable.slice(0, 2).forEach(out=> moves.push({type:'remove', out, k: Math.min(2, deck[out])}));
+  if(WIDE){ // 2026-10-19 (BF3, --wide): a too-hard fight also tries the 2nd and 3rd weakest own-map cards in, and the third strongest out
+    const ins = pool.filter(id=> (deck[id]||0) < cap(id)).slice(1, 3);
+    movable.slice(0, 5).forEach(out=> ins.forEach(inn=>{ if(inn !== out) moves.push({type:'swap', out, inn, k: Math.min(2, deck[out], cap(inn) - (deck[inn]||0))}); }));
+    if(deckSize(deck) > 12 && movable[2]) moves.push({type:'remove', out: movable[2], k: Math.min(2, deck[movable[2]], deckSize(deck) - 12)});
+    return moves.filter(mv=> mv.k > 0).slice(0, 20); }
   return moves.filter(mv=> mv.k > 0).slice(0, 9);
 }
 const SHIELD_CAP = +opt('shieldcap', 0); // --shieldcap=K: an easy fight's Shield goes no higher than the rule x K (at least 40); round 2 used 4
 // 2026-10-19 (package LV, the level curve): --rule starts every fight from its bramble on the rule (no shieldOverride, no hqHp), so the
 // level curves and the deck carry the difficulty; --shieldx=K then caps a Shield override at the rule x K (2: "none over ~2x the rule"),
 // and a lower Health goes no further than --hpfloor (a share of the bramble's own Health, 0.6)
+const WIDE = argv.includes('--wide'); // 2026-10-19 (BF3): a wider deck search for the fights still off the curve (round 3)
 const DECKS_ONLY = argv.includes('--decks-only'); // 2026-10-19 (BF3): deck moves only (the enemy's level is the owner's schedule)
 const RULE_START = argv.includes('--rule'), SHIELD_X = +opt('shieldx', 0), HP_FLOOR = +opt('hpfloor', 0);
 const stripRule = n=>{ const c = Object.assign({}, n); delete c.shieldOverride; delete c.hqHp; return c; };

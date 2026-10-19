@@ -35,7 +35,11 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
   bf4-curve-fixes (with shields) set aside unapplied (scratchpad/bf4-curve-fixes.unapplied.jsonl)
 - Shield overrides above the rule: 26 fights (19 below, 171 hqHp); scratchpad/count_ov.js; measure --drop-above-rule added
 
+- D round 1: bf5-mid 50/179 main, 26/92 side -> bf5-curve-fixes (decks only, 172 applied, 11 not: no gain / 20-A-4) -> bf5-mid2 128/179, 58/92 (commit 4ea476a)
+- known failures from main, not BF: d test galactic-condor 27-word line (EE), pale-desert 7. mpd ambient arrive:[] 
+
 ## Next
+- round 2: tune4.sh 60 bf5-mid2 bf5-curve-fixes-2 --decks-only (running) -> mark_apply.js -> apply
 - D: bf5-mid measure (running, 120 games, 2 shards) -> tune4.sh 60 bf5-mid bf5-curve-fixes --decks-only -> apply -> bf-after + bf-fresh (--seed=5100);
   measure --drop-above-rule --tag=bf5-dropov on the final road; gaps list; pale-desert --measure; LV / side tests section 4 allow the gaps;
   docs (level-curve-2026-10-19c BF3 sections), CHANGELOG BF3; merge main; commit "Package BF3: L/10, Map term, full card retune, road retune"
