@@ -1879,5 +1879,15 @@
  "{name}'s might: its great beasts come in with up to {hp} Health while the raid is fresh, falling to their own Health as it falls (now {pct}%).": "{name}的威势：突袭完好时，它的巨兽登场时最多有 {hp} 生命，随突袭衰弱降至其本身生命（现在 {pct}%）。",
  "More raid damage means a bigger share of the rewards.": "突袭伤害越多，分到的奖励越多。",
  "Winning a fight counts as {n} raid damage.": "赢下一场战斗计为 {n} 突袭伤害。",
- "A higher rank in a fight counts for more raid damage.": "战斗评级越高，计入的突袭伤害越多。"
+ "A higher rank in a fight counts for more raid damage.": "战斗评级越高，计入的突袭伤害越多。",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "彩蛋 · 暂时无法获得",
+ "Easter egg": "彩蛋",
+ "An Easter egg you haven't found yet": "一个你还没找到的彩蛋",
+ "An Easter egg: it can't be obtained yet": "彩蛋：暂时无法获得",
+ "Position Beam": "站位光束",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "发射{n}点光束。中路：对面的单位和荆棘丛。侧路：斜向内侧。边缘：向内的整排。",
+ "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.": "🌈 {name}向正前方发射光束（{n}）：对面的单位和荆棘丛。",
+ "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.": "🌈 {name}斜向发射光束（{n}）：斜对面的单位。",
+ "🌈 {name} fires its beam flat along the row ({n}).": "🌈 {name}沿整排水平发射光束（{n}）。"
 }

@@ -1878,5 +1878,15 @@
  "{name}'s might: its great beasts come in with up to {hp} Health while the raid is fresh, falling to their own Health as it falls (now {pct}%).": "Kekuatan {name}: binatang besarnya datang dengan hingga {hp} Nyawa saat raid masih utuh, turun ke Nyawa mereka sendiri seiring raid melemah (sekarang {pct}%).",
  "More raid damage means a bigger share of the rewards.": "Kerusakan raid lebih banyak berarti bagian hadiah lebih besar.",
  "Winning a fight counts as {n} raid damage.": "Memenangkan pertarungan dihitung sebagai {n} kerusakan raid.",
- "A higher rank in a fight counts for more raid damage.": "Peringkat lebih tinggi dalam pertarungan dihitung sebagai kerusakan raid lebih besar."
+ "A higher rank in a fight counts for more raid damage.": "Peringkat lebih tinggi dalam pertarungan dihitung sebagai kerusakan raid lebih besar.",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Telur Paskah · belum bisa didapat",
+ "Easter egg": "Telur Paskah",
+ "An Easter egg you haven't found yet": "Telur Paskah yang belum kamu temukan",
+ "An Easter egg: it can't be obtained yet": "Telur Paskah: belum bisa didapat",
+ "Position Beam": "Sinar Posisi",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "menembakkan sinar {n}. Tengah: unit di seberang dan semak. Sisi: miring ke dalam. Tepi: barisan ke arah dalam.",
+ "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.": "🌈 {name} menembakkan sinarnya lurus ke depan ({n}): unit di seberang dan semak.",
+ "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.": "🌈 {name} menembakkan sinarnya miring ({n}): unit-unit di seberang secara diagonal.",
+ "🌈 {name} fires its beam flat along the row ({n}).": "🌈 {name} menembakkan sinarnya mendatar sepanjang barisan ({n})."
 }

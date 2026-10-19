@@ -1878,5 +1878,15 @@
  "{name}'s might: its great beasts come in with up to {hp} Health while the raid is fresh, falling to their own Health as it falls (now {pct}%).": "O poder de {name}: as suas grandes bestas entram com até {hp} de Vida enquanto o raide está intacto, descendo até à sua própria Vida à medida que ele cai (agora {pct}%).",
  "More raid damage means a bigger share of the rewards.": "Mais dano de raide significa uma parte maior das recompensas.",
  "Winning a fight counts as {n} raid damage.": "Vencer um combate conta como {n} de dano de raide.",
- "A higher rank in a fight counts for more raid damage.": "Uma classe mais alta num combate conta mais dano de raide."
+ "A higher rank in a fight counts for more raid damage.": "Uma classe mais alta num combate conta mais dano de raide.",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Easter eggs · ainda não obteníveis",
+ "Easter egg": "Easter egg",
+ "An Easter egg you haven't found yet": "Um easter egg que você ainda não encontrou",
+ "An Easter egg: it can't be obtained yet": "Um easter egg: ainda não pode ser obtido",
+ "Position Beam": "Raio de posição",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "dispara um raio de {n}. Centro: a unidade em frente e o silvado. Lado: na diagonal para dentro. Borda: a fileira para dentro.",
+ "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.": "🌈 {name} dispara o raio em frente ({n}): a unidade oposta e o silvado.",
+ "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.": "🌈 {name} dispara o raio em ângulo ({n}): as unidades na diagonal.",
+ "🌈 {name} fires its beam flat along the row ({n}).": "🌈 {name} dispara o raio rente ao longo da fileira ({n})."
 }

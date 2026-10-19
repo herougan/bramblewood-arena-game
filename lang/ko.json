@@ -1879,5 +1879,15 @@
  "{name}'s might: its great beasts come in with up to {hp} Health while the raid is fresh, falling to their own Health as it falls (now {pct}%).": "{name}의 위세: 레이드가 온전할 때 거대 짐승은 최대 {hp} 체력으로 나오고, 레이드가 약해질수록 본래 체력까지 내려갑니다 (현재 {pct}%).",
  "More raid damage means a bigger share of the rewards.": "레이드 피해가 많을수록 보상 몫이 커집니다.",
  "Winning a fight counts as {n} raid damage.": "전투에서 이기면 레이드 피해 {n}으로 계산됩니다.",
- "A higher rank in a fight counts for more raid damage.": "전투 등급이 높을수록 레이드 피해가 더 많이 계산됩니다."
+ "A higher rank in a fight counts for more raid damage.": "전투 등급이 높을수록 레이드 피해가 더 많이 계산됩니다.",
+ "Evomax": "에보맥스",
+ "Easter eggs · not obtainable yet": "이스터 에그 · 아직 얻을 수 없음",
+ "Easter egg": "이스터 에그",
+ "An Easter egg you haven't found yet": "아직 찾지 못한 이스터 에그",
+ "An Easter egg: it can't be obtained yet": "이스터 에그: 아직 얻을 수 없음",
+ "Position Beam": "위치 광선",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "{n} 광선을 쏜다. 중앙: 맞은편 유닛과 덤불. 측면: 안쪽 대각선. 가장자리: 안쪽 줄 전체.",
+ "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.": "🌈 {name}이(가) 광선을 정면으로 쏜다 ({n}): 맞은편 유닛과 덤불.",
+ "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.": "🌈 {name}이(가) 광선을 비스듬히 쏜다 ({n}): 대각선 맞은편 유닛들.",
+ "🌈 {name} fires its beam flat along the row ({n}).": "🌈 {name}이(가) 광선을 줄을 따라 수평으로 쏜다 ({n})."
 }

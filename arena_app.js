@@ -5289,7 +5289,7 @@ function fullCardHTML(defId, liveCard, opts){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
         : `${abilityListHTML(lines)}`)
     : '';
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
@@ -8073,7 +8073,7 @@ function openCardDetail(defId){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
         : `${abilityListHTML(lines)}`)
     : '<p class="panel-sub">No special abilities — a plain stat card.</p>';
   // "all the quotes should end with - Jz" — the creator's own signature, not shown at all when

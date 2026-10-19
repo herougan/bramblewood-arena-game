@@ -1879,5 +1879,15 @@
  "{name}'s might: its great beasts come in with up to {hp} Health while the raid is fresh, falling to their own Health as it falls (now {pct}%).": "La puissance de {name} : ses grandes bêtes arrivent avec jusqu'à {hp} de Santé tant que le raid est intact, puis retombent à leur propre Santé à mesure qu'il faiblit (maintenant {pct} %).",
  "More raid damage means a bigger share of the rewards.": "Plus de dégâts de raid, c'est une plus grosse part des récompenses.",
  "Winning a fight counts as {n} raid damage.": "Gagner un combat compte pour {n} dégâts de raid.",
- "A higher rank in a fight counts for more raid damage.": "Un meilleur rang dans un combat compte pour plus de dégâts de raid."
+ "A higher rank in a fight counts for more raid damage.": "Un meilleur rang dans un combat compte pour plus de dégâts de raid.",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Easter eggs · pas encore obtenables",
+ "Easter egg": "Easter egg",
+ "An Easter egg you haven't found yet": "Un easter egg que tu n'as pas encore trouvé",
+ "An Easter egg: it can't be obtained yet": "Un easter egg : on ne peut pas encore l'obtenir",
+ "Position Beam": "Rayon de position",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "tire un rayon de {n}. Centre : l'unité en face et le roncier. Côté : en diagonale vers l'intérieur. Bord : la rangée vers l'intérieur.",
+ "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.": "🌈 {name} tire son rayon droit devant ({n}) : l'unité en face et le roncier.",
+ "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.": "🌈 {name} tire son rayon en biais ({n}) : les unités en diagonale.",
+ "🌈 {name} fires its beam flat along the row ({n}).": "🌈 {name} tire son rayon à plat le long de la rangée ({n})."
 }

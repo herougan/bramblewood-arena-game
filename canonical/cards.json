@@ -18548,32 +18548,39 @@
   {
     "id": "creeper",
     "name": "Creeper",
-    "icon": "\ud83d\ude42",
-    "cost": 0,
-    "wait": 0,
-    "attack": 1,
-    "health": 2,
-    "rarity": "common",
-    "locked": false,
+    "icon": "\ud83e\udeb2",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 12,
+    "rarity": "veryrare",
+    "locked": true,
     "archetypes": [
-      "Bee"
+      "Insect"
     ],
     "species": [
       "Insect"
     ],
     "effects": {
-      "flying": true,
-      "swarm": true,
-      "scare": 1
+      "restless": true,
+      "explode": {
+        "time": 2,
+        "damage": 8
+      }
     },
     "source": {
-      "kind": "pack",
-      "tier": 1
+      "kind": "easteregg"
     },
-    "flavor": "A green bee with no face to speak of, only a smile. It never stops smiling. Whatever it is looking at stops wanting to hit it.",
+    "flavor": "It never hurries. It walks up to the biggest thing it can find, goes very still, and then it is the loudest beetle in the valley.",
     "numericId": 492,
     "uuid": "d20bf96f-1d47-49be-9bc8-f726d8852516",
-    "art": "data:image/png;base64,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"
+    "resist": [],
+    "dmgType": "physical",
+    "tags": [],
+    "easterEgg": true,
+    "animal": "Beetle",
+    "subtype": "Bombardier beetle",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Very Rare, Wait 1, Lumber 1: N = 36.9; S = 5.4 (restless 0.2, explode 5.2); 2A+H+S = 23.4 < 36.9 (63%) and A*H+S = 41.4 < (N/3)^2 = 151.29. Was a Common pack card (a smiling green Bee with Flying, Swarm, Scare 1); now an explosive creeping beetle."
   },
   {
     "id": "pigeon-peon",
@@ -30743,5 +30750,268 @@
       "kind": "pack",
       "tier": 1
     }
+  },
+  {
+    "id": "terraumbra",
+    "name": "Terraumbra",
+    "icon": "\ud83c\udf08",
+    "cost": 2,
+    "wait": 0,
+    "attack": 3,
+    "health": 3,
+    "rarity": "unique",
+    "species": [],
+    "archetypes": [],
+    "effects": {},
+    "flavor": "Seven slivers of rainbow light circle whoever holds them. Every few rounds they spin faster, and shine a little brighter.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1331,
+    "uuid": "4282dad9-49c0-5faf-bca6-39567ffcfeb4",
+    "mechanicLine": "evolution",
+    "cardType": "equipment",
+    "equip": {
+      "grant": {
+        "shedding": 2,
+        "sweep": 2
+      }
+    },
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Unique, Wait 0, Lumber 2 (an equipment card: its grant is counted as its skills): N = 39.6; S = 15.08 (shedding 6, sweep 9.08); 2A+H+S = 24.08 < 39.6 (61%) and A*H+S = 24.08 < (N/3)^2 = 174.24.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Spirit",
+    "subtype": "Light-blade swarm"
+  },
+  {
+    "id": "exo-podas",
+    "name": "Exo-podas",
+    "icon": "\ud83e\udd97",
+    "cost": 2,
+    "wait": 2,
+    "attack": 6,
+    "health": 20,
+    "rarity": "veryrare",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Mountain"
+    ],
+    "effects": {
+      "armor": 1,
+      "trident": true,
+      "mountainClimber": true
+    },
+    "flavor": "Six legs, no hurry. Every step leaves a crater, and the frogs move into it before the dust settles.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1332,
+    "uuid": "797dc8bf-844e-510f-b325-ea2c9cf9cacc",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Very Rare, Wait 2, Lumber 2: N = 49.6; S = 4.74 (armor 2.74, trident 1, mountainClimber 1); 2A+H+S = 36.74 < 49.6 (74%) and A*H+S = 124.74 < (N/3)^2 = 273.35.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Insect",
+    "subtype": "Six-legged walker"
+  },
+  {
+    "id": "galactic-condor",
+    "name": "Galactic Condor",
+    "icon": "\ud83e\udd85",
+    "cost": 2,
+    "wait": 2,
+    "attack": 4,
+    "health": 12,
+    "rarity": "epic",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird",
+      "Mountain"
+    ],
+    "effects": {
+      "flying": true,
+      "charge": {
+        "n": 2,
+        "do": {
+          "do": "positionBeam",
+          "amount": 5
+        }
+      }
+    },
+    "flavor": "It glides so high the stars are behind it. When its chest begins to glow, check where it is standing.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1333,
+    "uuid": "ca007286-4127-5e86-ba78-65c7e9b0d623",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Epic, Wait 2, Lumber 2: N = 51.6; S = 4.22 (flying 0, charge 4.22); 2A+H+S x 1.5 (Flying) = 36.33 < 51.6 (70%) and A*H+S x 1.5 (Flying) = 78.33 < (N/3)^2 = 295.84.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Condor",
+    "subtype": "Star condor"
+  },
+  {
+    "id": "pink-maus",
+    "name": "Pink Maus",
+    "icon": "\ud83d\udc2d",
+    "cost": 2,
+    "wait": 1,
+    "attack": 2,
+    "health": 24,
+    "rarity": "unique",
+    "species": [
+      "Rodent"
+    ],
+    "archetypes": [
+      "Mouse"
+    ],
+    "effects": {
+      "sturdy": true,
+      "taunt": true
+    },
+    "flavor": "Round, pink and about the size of a plum. Nothing has ever hurt it, and it has never noticed anyone trying.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1334,
+    "uuid": "b281bfc1-3031-5f89-9732-04686c82dc3b",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Unique, Wait 1, Lumber 2: N = 46.1; S = 16.9 (sturdy 16.9, taunt 0); 2A+H+S = 44.9 < 46.1 (97%) and A*H+S = 64.9 < (N/3)^2 = 236.13.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Mouse",
+    "subtype": "Round mouse"
+  },
+  {
+    "id": "nyoogle",
+    "name": "Nyoogle",
+    "icon": "\ud83c\udfee",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 11,
+    "rarity": "superrare",
+    "species": [
+      "Mammal"
+    ],
+    "archetypes": [
+      "Cave"
+    ],
+    "effects": {
+      "illuminate": true,
+      "restless": true,
+      "invisible": 2,
+      "backstab": 2
+    },
+    "flavor": "A pom-pom bobs above its head and a little lantern sways below. Every time you look up, it is one step closer.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1335,
+    "uuid": "443320cd-9ea7-5c36-aaaa-9df7b0bb367b",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Super Rare, Wait 1, Lumber 1: N = 37.9; S = 6.28 (illuminate 0, restless 0.2, invisible 2.5, backstab 3.58); 2A+H+S = 25.28 < 37.9 (67%) and A*H+S = 50.28 < (N/3)^2 = 159.6.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Critter",
+    "subtype": "Pom-pom lantern-bearer"
+  },
+  {
+    "id": "tobasco-drakon",
+    "name": "Habanero Drakon",
+    "icon": "\ud83c\udf36\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 13,
+    "rarity": "rare",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "Reptile",
+      "Volcanic"
+    ],
+    "effects": {
+      "chilli": 2,
+      "fireBolt": 2
+    },
+    "flavor": "Sniff it and your eyes water. Feed it a pepper and the whole row's eyes water too.",
+    "dmgType": "physical",
+    "resist": [
+      "fire"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1336,
+    "uuid": "ccd3086c-f406-5c16-bfaa-7b53b55e51af",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 35.9; S = 2 (chilli 0, fireBolt 2); 2A+H+S = 23 < 35.9 (64%) and A*H+S = 54 < (N/3)^2 = 143.2.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Drake",
+    "subtype": "Pepper drake"
+  },
+  {
+    "id": "demo-panda",
+    "name": "Kegfuse Panda",
+    "icon": "\ud83d\udc3b",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 14,
+    "rarity": "superrare",
+    "species": [
+      "Ursid"
+    ],
+    "archetypes": [
+      "Bear"
+    ],
+    "effects": {
+      "tipsy": {
+        "chance": 50,
+        "duration": 2
+      },
+      "nova": 3
+    },
+    "flavor": "One paw holds a fizzing keg, the other a suspicious jar. Nobody asks about the jar.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1337,
+    "uuid": "c6f893fc-22eb-58df-9de6-3a93daffb8d8",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Super Rare, Wait 1, Lumber 1: N = 37.9; S = 3.62 (tipsy 1.62, nova 2); 2A+H+S = 25.62 < 37.9 (68%) and A*H+S = 59.62 < (N/3)^2 = 159.6.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "Panda",
+    "subtype": "Giant panda"
   }
 ]

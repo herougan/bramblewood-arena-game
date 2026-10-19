@@ -1877,5 +1877,15 @@
  "{name}'s might: its great beasts come in with up to {hp} Health while the raid is fresh, falling to their own Health as it falls (now {pct}%).": "Lakas ni {name}: pumapasok ang malalaking halimaw nito na may hanggang {hp} Buhay habang sariwa ang raid, bumababa sa sarili nilang Buhay habang humihina ito (ngayon {pct}%).",
  "More raid damage means a bigger share of the rewards.": "Mas maraming pinsala sa raid, mas malaking bahagi ng gantimpala.",
  "Winning a fight counts as {n} raid damage.": "Ang pagkapanalo sa laban ay bilang na {n} pinsala sa raid.",
- "A higher rank in a fight counts for more raid damage.": "Mas mataas na ranggo sa laban, mas maraming bilang na pinsala sa raid."
+ "A higher rank in a fight counts for more raid damage.": "Mas mataas na ranggo sa laban, mas maraming bilang na pinsala sa raid.",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Mga Easter egg · hindi pa makukuha",
+ "Easter egg": "Easter egg",
+ "An Easter egg you haven't found yet": "Isang Easter egg na hindi mo pa nahahanap",
+ "An Easter egg: it can't be obtained yet": "Isang Easter egg: hindi pa ito makukuha",
+ "Position Beam": "Sinag ng Puwesto",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "nagpapaputok ng sinag na {n}. Gitna: ang yunit sa tapat at ang dawag. Gilid: pahilis papasok. Dulo: ang hanay papasok.",
+ "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.": "🌈 Pinaputok ni {name} ang sinag nang diretso ({n}): ang yunit sa tapat at ang dawag.",
+ "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.": "🌈 Pinaputok ni {name} ang sinag nang pahilis ({n}): ang mga yunit sa pahilis na tapat.",
+ "🌈 {name} fires its beam flat along the row ({n}).": "🌈 Pinaputok ni {name} ang sinag nang pahalang sa buong hanay ({n})."
 }
