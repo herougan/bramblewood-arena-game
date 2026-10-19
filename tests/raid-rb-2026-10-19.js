@@ -29,8 +29,9 @@ ok(goliath.parts.reduce((t, p)=> t + R.partTotal(p), 0) === 1100000, 'C4. 1,100,
 
 // ---- B: the elders
 { const fresh = R.raidState(goliath, [], 0, {cycle: 0});
-  ok(goliath.bossHpBonusMax === 50 && R.bossHpBonus(goliath, fresh, 18).health === 50 && R.bossHpBonus(goliath, {total: 10, remaining: 5}, 18).health === 34 && R.bossHpBonus(goliath, {total: 10, remaining: 0}, 18).health === 18, 'B. the elders: basic + (50 - basic) x the raid\'s share');
-  ok(R.bossHpBonus(goliath, fresh, 50).health === 50 && R.bossHpBonus(goliath, fresh, 64).health === 64 && R.bossHpBonus(goliath, fresh, 64).bonus === 0, 'B. basic at or above 50: its basic'); }
+  // 2026-10-19 (package RB2, owner 16:28 "make the raid very slightly harder"): the ceiling 50 -> 55
+  ok(goliath.bossHpBonusMax === 55 && R.bossHpBonus(goliath, fresh, 18).health === 55 && R.bossHpBonus(goliath, {total: 10, remaining: 5}, 18).health === 37 && R.bossHpBonus(goliath, {total: 10, remaining: 0}, 18).health === 18, 'B. the elders: basic + (55 - basic) x the raid\'s share (RB2: was 50)');
+  ok(R.bossHpBonus(goliath, fresh, 55).health === 55 && R.bossHpBonus(goliath, fresh, 64).health === 64 && R.bossHpBonus(goliath, fresh, 64).bonus === 0, 'B. basic at or above 55: its basic'); }
 
 // ---- C7: the weakening, one curve
 { ok(R.WEAKEN_FLOOR_DEFAULT === 0.6 && goliath.tuning.weakenFloor === 0.6, 'C7. the floor: 60%');
@@ -63,7 +64,7 @@ ok(goliath.instanceCap === 250 && R.instanceCap({}) === 250 && R.INSTANCE_CAP_DE
 { const old = {id: 'goliath', scoring: {perInFightHp: 15, cap: 5000, overwhelmCap: 10000}, bossHpBonusMax: 100, instanceCap: 100, participation: {fights: 3, damage: 1000},
     parts: [{id: 'left', bars: 3, barHp: 80000, fight: {castleHp: 333}}, {id: 'core', bars: 8, barHp: 80000, scoring: {perInFightHp: 140}}], blurb: 'kept'};
   const m = R.migrateRaidScale(old, goliath);
-  ok(m.scaleV === 2 && m.scoring.perInFightHp === 1 && m.bossHpBonusMax === 50 && m.instanceCap === 250 && m.participation.damage === 500 && m.blurb === 'kept', 'a pre-RB edit of the Goliath takes the new scale and keeps the rest');
+  ok(m.scaleV === R.RAID_SCALE_V && m.scoring.perInFightHp === 1 && m.bossHpBonusMax === goliath.bossHpBonusMax /* RB2: scale 3, 55 */ && m.instanceCap === 250 && m.participation.damage === 500 && m.blurb === 'kept', 'a pre-RB edit of the Goliath takes the new scale and keeps the rest');
   ok(m.parts[0].barHp === 50000 && m.parts[0].bars === 4 && m.parts[0].fight.castleHp === 333 && !m.parts[1].scoring && R.partTotal(m.parts[1]) === 500000, '...its parts\' Health bars, its own fight kept, the Core\'s x140 gone');
   ok(R.migrateRaidScale(m, goliath) === m && R.migrateRaidScale(Object.assign({}, old, {scaleV: 2}), goliath).scoring.perInFightHp === 15, 'an edit saved on the new scale is left alone');
   const own = R.migrateRaidScale({id: 'x', parts: [{id: 'a', bars: 2, barHp: 100000}], scoring: {perInFightHp: 15}}, null);

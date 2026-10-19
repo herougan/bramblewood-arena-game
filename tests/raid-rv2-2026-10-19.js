@@ -81,10 +81,11 @@ ok(/reserve-row enemy\$\{m\.raidFull \? ' raid-rows' : ''\}/.test(src) && /reser
 { const fresh = RaidM.raidState(goliath, [], 0, {cycle:0});
   const f = RaidM.bossHpBonus(goliath, fresh, 18), near = RaidM.bossHpBonus(goliath, {total:1000, remaining:1}, 18), dead = RaidM.bossHpBonus(goliath, {total:1000, remaining:0}, 18), half = RaidM.bossHpBonus(goliath, {total:100, remaining:50}, 18);
   // 2026-10-19 (package RB, owner 12:23: "Elder should be rebalanced to start at 50 HP at max."): the ceiling is 50 now
-  ok(f.health === 50 && f.bonus === 32, `fresh: 18 basic + 32 = 50 (${JSON.stringify(f)})`);
+  // 2026-10-19 (package RB2, owner 16:28: "make the raid very slightly harder"): 55
+  ok(f.health === 55 && f.bonus === 37, `fresh: 18 basic + 37 = 55 (${JSON.stringify(f)})`);
   ok(near.health === 18 && dead.health === 18 && dead.bonus === 0, `nearly dead: its basic Health (${near.health}, ${dead.health})`);
-  ok(half.health === 18 + 16, `half the raid left: 18 + (50 - 18) x 0.5 = 34 (${half.health})`);
-  ok(RaidM.bossHpBonus(goliath, fresh, 120).bonus === 0 && RaidM.bossHpBonus(goliath, fresh, 120).health === 120 && RaidM.bossHpBonus(goliath, fresh, 50).health === 50, 'basic Health at or above 50: its basic, no bonus'); }
+  ok(half.health === 18 + 19, `half the raid left: 18 + (55 - 18) x 0.5 = 37 (${half.health})`);
+  ok(RaidM.bossHpBonus(goliath, fresh, 120).bonus === 0 && RaidM.bossHpBonus(goliath, fresh, 120).health === 120 && RaidM.bossHpBonus(goliath, fresh, 55).health === 55, 'basic Health at or above 55: its basic, no bonus'); }
 const sim = require('../tools/raid_full_sim.js'), A = sim.A;
 function build(st, opts){ st = st || RaidM.raidState(goliath, [], 0, {cycle:0}); const f = RaidM.fightFor(goliath, st, 'left', {});
   const allies = [0, 1].map(i=> A.raidAllyOf({name:'Ally ' + i, deck: goliath.allyDecks[i].deck, level:0}, i));
@@ -92,9 +93,9 @@ function build(st, opts){ st = st || RaidM.raidState(goliath, [], 0, {cycle:0});
   const m = {raidDef: goliath, raidFull:true, round:1, players: b.players, engine: b.engine, sideOf: b.sideOf, stats: b.stats, raidAllies: allies, raidBossUnitId: b.bossUnitId, raidBossHpBonus: b.bossHpBonus, raidBossRowDecks: b.rowDecks, raidCommonPool: b.commonPool};
   return {b, m, f, allies}; }
 { const {b, m} = build(), u = b.overlay[b.bossUnitId];
-  ok(u && u.health < 50 && u.health + b.bossHpBonus === 50, `a fresh raid's boss unit: ${u && u.health} + ${b.bossHpBonus} = 50 Health`);
+  ok(u && u.health < 55 && u.health + b.bossHpBonus === 55, `a fresh raid's boss unit: ${u && u.health} + ${b.bossHpBonus} = 55 Health (RB2)`);
   Object.assign(B.CARD_DEFS_BASELINE, b.overlay); m.round = 3; const ev = []; A.raidBossUnit(m, ev);
-  const c = b.engine.allBoardCards(b.players[2]).find(x=> x.bossUnit); ok(c && c.hp === 50 && c.maxHp === 50, `it comes in at 50/50 (${c && c.hp}/${c && c.maxHp})`); }
+  const c = b.engine.allBoardCards(b.players[2]).find(x=> x.bossUnit); ok(c && c.hp === 55 && c.maxHp === 55, `it comes in at 55/55 (${c && c.hp}/${c && c.maxHp})`); }
 ok(/RaidM\.bossHpBonus\(def, st, defs\[bossUnitId\]\.health\)\.bonus/.test(src), 'the fight build passes the unit\'s basic Health');
 ok(/Boss unit Health, fresh raid<input id="reBossHpBonus"/.test(src), 'the raid editor names the field for what it is now');
 

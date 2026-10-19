@@ -32,6 +32,16 @@ function measure(){
   const sim = require('./raid_full_sim.js');
   const N = Number(arg('n', 20)), decks = String(arg('decks', Object.keys(SPREAD).join(','))).split(','), out = arg('out', DEF_OUT);
   const def = JSON.parse(JSON.stringify(RAIDS[0])), set = arg('set', null); if(set) def.tuning = Object.assign({}, def.tuning || {}, JSON.parse(set));
+  // 2026-10-19 (package RB2, owner 16:22: "Raids can have special super-high health brambles. Maybe less than 420."): --castle N tries
+  // another per-fight bramble Health on the outer parts (the arms and the tail; --core-castle N on the Core) without editing raids.json
+  if(arg('castle', null) != null) def.parts.filter(p=> !(p.lockedUntil || []).length).forEach(p=>{ p.fight = Object.assign({}, p.fight, {castleHp: Number(arg('castle'))}); });
+  if(arg('core-castle', null) != null) def.parts.filter(p=> (p.lockedUntil || []).length).forEach(p=>{ p.fight = Object.assign({}, p.fight, {castleHp: Number(arg('core-castle'))}); });
+  // RB2 (owner 16:28: "make the raid very slightly harder"): --elders N tries another bossHpBonusMax (the elders' starting Health cap),
+  // --stage-atk a,b another +Attack for the stages that have one (Enraged, Thrashing), in order
+  if(arg('elders', null) != null) def.bossHpBonusMax = Number(arg('elders'));
+  if(arg('stage-atk', null) != null){ const v = String(arg('stage-atk')).split(',').map(Number); let i = 0;
+    (def.stages || []).forEach(s=> (s.rules || []).forEach(r=>{ if(r.bossAtk != null && i < v.length) r.bossAtk = v[i++]; })); }
+  const castles = {}; def.parts.forEach(p=>{ castles[p.id] = (p.fight || {}).castleHp || 200; });
   const cells = {}, t0 = Date.now();
   const onlyParts = arg('parts', null) ? String(arg('parts')).split(',') : null;
   for(const d of decks) for(const p of def.parts.filter(q=> !onlyParts || onlyParts.includes(q.id))){
@@ -45,7 +55,10 @@ function measure(){
     }
   }
   const prev = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : null;
-  const merged = {meta: {date: '2026-10-19', n: N, tuning: def.tuning || {}, scoring: def.scoring, bossHpBonusMax: def.bossHpBonusMax}, cells: Object.assign({}, prev && JSON.stringify(prev.meta.tuning) === JSON.stringify(def.tuning || {}) ? prev.cells : {}, cells)};
+  const stageAtk = (def.stages || []).map(s=> (s.rules || []).reduce((t, r)=> t + (r.bossAtk || 0), 0));
+  const same = prev && JSON.stringify(prev.meta.tuning) === JSON.stringify(def.tuning || {}) && JSON.stringify(prev.meta.castleHp || null) === JSON.stringify(castles)
+    && prev.meta.bossHpBonusMax === def.bossHpBonusMax && JSON.stringify(prev.meta.stageAtk || null) === JSON.stringify(stageAtk); // RB2: and the same brambles, elders and stages
+  const merged = {meta: {date: '2026-10-19', n: N, tuning: def.tuning || {}, scoring: def.scoring, bossHpBonusMax: def.bossHpBonusMax, castleHp: castles, stageAtk}, cells: Object.assign({}, same ? prev.cells : {}, cells)};
   fs.writeFileSync(out, JSON.stringify(merged));
   console.log('wrote', path.relative(ROOT, out), Object.keys(merged.cells).length, 'cells');
 }

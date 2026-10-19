@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RB2: raid brambles 350, the elders 55)
+- **Owner (16:22, 16:28):** "Raids can have special super-high health brambles. Maybe less than 420." / "let it remain at 350HP. Then ... make the raid very slightly harder."
+- **The Goliath's arms and tail now have a 350-Health bramble a fight** (was 420). The Core keeps its 200. With the Map 13 deck, a normal raider still ends 96% of fights with the bramble standing, at 168 damage a fight. Wins go 0.3% → 4.0% for that deck and 19% / 31% → 30% / 40% for good / strong decks.
+- **A touch harder to make up for it:** the elders start at up to 55 Health (was 50). Map 13's raid damage a fight is now 230, between 420's 214 and plain 350's 254. Completion with 30 players is 95% of weeks (90% at 420, 96.5% at plain 350), and 100% from 40.
+- Saved raid edits still at RB's 420 / 50 take the new numbers (scale 3), and the editor's new part starts on 350. The boss already plays 3 cards a turn (front row, then middle and back, rowCap 2): checked, unchanged.
+- `tools/raid_completion_model.js measure` takes `--castle`, `--core-castle`, `--elders` and `--stage-atk`. The fights were re-measured on today's cards. See the RB2 section of `docs/balance/raid-balance-2026-10-19.md`. Test: `tests/raid-rb2-2026-10-19.js`.
+
 ## 2026-10-19 (package RJ: special monsters against the budget, and their BR)
 - **Owner (15:48):** "Justify special monster stats like Raid monster stats. What would that card's BR be then?" This is an analysis only: no stats changed.
 - **`docs/balance/special-monsters-2026-10-19.md`** has one table per group: the Goliath's brambles, the elders (boss units) through the raid's life, the boss's row-deck copies, its Commons, the Core's stumps, the async raid bosses, the conquest bosses' signature units, and the Tower and dungeon specials. Each row gives the stats the fight really builds, the skills, the score (2A+H+S and A·H+S), the N needed, the equivalent player card ("a Level 4 Epic with Wait 2, Lumber 3", or "exceeds any player budget by Y×"), the BR as a player card and as the boss, and a one-line justification.

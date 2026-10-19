@@ -65,9 +65,14 @@ const RB_TIER_DAMAGE = {participant: 500, competent: 2000, leading: 12500};
 // shipped raid takes its bars / barHp (its own scoring override goes when the shipped part has none). A raid with no shipped twin (made
 // in the editor) is scaled the way the Goliath was: scoring onto SCORING_DEFAULTS, every part's Health x RAID_SCALE_HP (1,100,000 /
 // 1,360,000, rounded to 10,000s), the tiers onto the defaults, and its elders' ceiling halved. Returns a new def (or the edit itself).
-const RAID_SCALE_V = 2, RAID_SCALE_HP = 1100000 / 1360000;
+// 2026-10-19 (package RB2, owner 16:22 / 16:28: the part brambles "less than 420" -> 350, then "make the raid very slightly harder" -> the
+// elders' ceiling 50 -> 55): scale 3. An edit on scale 2 (saved after RB) with a shipped twin keeps all it set, except the values RB2
+// moved that it still holds at RB's numbers: a part's fight bramble at 420 takes the shipped part's, and bossHpBonusMax 50 the shipped
+// one. A value the admin changed from those is theirs and stays. Scale 1 edits take both steps.
+const RAID_SCALE_V = 3, RAID_SCALE_HP = 1100000 / 1360000, RB_BRAMBLE_HP = 420, RB_ELDERS_MAX = 50;
 function migrateRaidScale(e, shipped){
   if(!e || typeof e !== 'object' || Number(e.scaleV) >= RAID_SCALE_V) return e;
+  if(Number(e.scaleV) >= 2) return migrateRb2(JSON.parse(JSON.stringify(e)), shipped);
   const out = JSON.parse(JSON.stringify(e)); out.scaleV = RAID_SCALE_V;
   if(shipped){
     ['scoring', 'bossHpBonusMax', 'instanceCap', 'participation'].forEach(k=>{ if(k in shipped) out[k] = JSON.parse(JSON.stringify(shipped[k])); else delete out[k]; });
@@ -81,6 +86,15 @@ function migrateRaidScale(e, shipped){
     if(out.bossHpBonusMax) out.bossHpBonusMax = Math.round(out.bossHpBonusMax / 2);
     if(out.instanceCap === 100) out.instanceCap = INSTANCE_CAP_DEFAULT;
   }
+  return migrateRb2(out, shipped);
+}
+// The RB2 step (scale 2 -> 3) of migrateRaidScale, on a copy it owns.
+function migrateRb2(out, shipped){
+  out.scaleV = RAID_SCALE_V;
+  if(!shipped) return out;
+  (out.parts || []).forEach(p=>{ const sp = (shipped.parts || []).find(x=> x.id === p.id), want = sp && sp.fight && sp.fight.castleHp;
+    if(want && p.fight && Number(p.fight.castleHp) === RB_BRAMBLE_HP) p.fight.castleHp = want; });
+  if(Number(out.bossHpBonusMax) === RB_ELDERS_MAX && shipped.bossHpBonusMax != null) out.bossHpBonusMax = shipped.bossHpBonusMax;
   return out;
 }
 // attempts: [{raidId, part, cycle, owner, contribution, at}]
@@ -248,6 +262,7 @@ function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.round
 // never below basic (basic ≥ 100: basic, no bonus). `bonus` is what it adds to basic. Called without `basic`, the old +100 × share.
 // 2026-10-19 (package RB, owner 12:23: "Elder should be rebalanced to start at 50 HP at max."): the ceiling is the raid's bossHpBonusMax,
 // 50 on the Goliath now (was 100): Health = basic + (50 − basic) × the raid's remaining share, never below basic; basic ≥ 50: basic.
+// 2026-10-19 (package RB2, owner 16:28: "make the raid very slightly harder", after the part brambles went 420 -> 350): 55 on the Goliath.
 function bossHpBonus(def, state, basic){
   const max = Math.max(0, Math.min(1000, Math.round(Number(def && def.bossHpBonusMax) || 0)));
   const fraction = state && state.total > 0 ? Math.max(0, Math.min(1, (Number(state.remaining) || 0) / state.total)) : 1;
