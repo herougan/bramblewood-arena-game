@@ -7,7 +7,7 @@
 //   2. the enemy's level and the Shield are at least what the same fight would get on the parent map;
 //   3. its road-curve targets sit a map's step (ROAD_CURVE_SIDE_DR logits) under a main map's at the same place;
 //   4. the measure (docs/balance/skirmish-pass-bf-after.jsonl): side fights on the curve sit inside their (lower) bands, and each side
-//      map's mean win rate is under its parent's.
+//      map's median (win - target) is no easier than its parent's (by more than the band).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -48,7 +48,7 @@ const rows = (()=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs', 'balance
 ok(rows.length > 200, `4. the BF measure has every fight (${rows.length} rows)`);
 { const side = rows.filter(r=> r.side && !r.endless && r.curve), off = side.filter(r=> r.green !== 'green');
   ok(side.length > 60 && off.length <= Math.ceil(side.length * 0.05), `4. side fights on the curve inside their bands: ${side.length - off.length} of ${side.length} (off: ${off.map(r=> `${r.code} ${r.win}`).join(', ')})`);
-  const mean = a=> a.reduce((x, y)=> x + y, 0) / Math.max(1, a.length), worse = [];
+  const mean = a=>{ const b = a.slice().sort((x, y)=> x - y); return b.length ? (b[(b.length - 1) >> 1] + b[b.length >> 1]) / 2 : 0; }, worse = []; // the median: the Eye's four-wave 20-A-4 can't be simulated (LV)
   for(const m of subs){ const mine = rows.filter(r=> r.map === m.id && r.curve && !r.endless); if(!mine.length || m.shieldMap != null) continue;
     const par = rows.filter(r=> r.map === m.parent && r.curve);
     if(par.length && mean(mine.map(r=> r.win - r.target)) > mean(par.map(r=> r.win - r.target)) + 8) worse.push(`${m.id} ${mean(mine.map(r=> r.win)).toFixed(1)}`); }

@@ -48,7 +48,7 @@ if(cmd === 'budget'){
   //   prints the markdown tables for docs/balance/level-curve-2026-10-19b.md
   const B = require('./lib_bramble.js'), G = B.G, opt = (k, d)=>{ const a = process.argv.find(x=> x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
   const rd = tag=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs', 'balance', `skirmish-pass-${tag}.jsonl`), 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
-  const before = rd(opt('before', 'bf-before')), mid = rd(opt('mid', 'bf-mid')), after = rd(opt('after', 'bf-after'));
+  const before = rd(opt('before', 'bf-before')), mid = rd(opt('mid', 'bf-mid3')), after = rd(opt('after', 'bf-after'));
   const md = [], mean = a=> a.length ? a.reduce((x, y)=> x + y, 0) / a.length : NaN, f1 = v=> Number.isFinite(v) ? (Math.round(v * 10) / 10).toString() : '–';
   const legacyLevelForGain = g=>{ if(!(g > 0)) return 1; const pts = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
     for(let i = 1; i < pts.length; i++) if(g <= pts[i][0]) return pts[i-1][1] + (g - pts[i-1][0]) / (pts[i][0] - pts[i-1][0]) * (pts[i][1] - pts[i-1][1]); return 11; };
@@ -69,9 +69,10 @@ if(cmd === 'budget'){
     const nd = m.nodes.find(x=> x.deck && x.kind !== 'tutorial'); if(nd) G.NODE_MAP_HINT.set(nd, m.id); const p = G.CONQUEST_MAPS.find(x=> x.id === m.parent);
     md.push(`| ${m.name} | ${p ? p.name : m.parent} (Map ${G.mapNumberOf(m.parent)}) | Map ${nd ? G.fightMapNumber(nd) : '?'} (your deck Map ${nd ? G.nodeMapNumber(nd) : '?'}) | ${(a.length ? a : b).length} | ${green(b)} | ${f1(mean(b.map(r=> r.win)))} / ${f1(mean(b.map(r=> r.target)))} | ${a.length ? green(a) : '–'} | ${f1(mean(a.map(r=> r.win)))} / ${f1(mean(a.map(r=> r.target)))} |`); });
   md.push('');
-  const fixes = (()=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs', 'balance', opt('fixes', 'bf-curve-fixes') + '.jsonl'), 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } })();
-  if(fixes.length){ md.push('<!-- bf:fixes -->', '| Fight | Kind | Target | Before (new curve) | After the tune | Moves | Shield | Health |', '|---|---|---|---|---|---|---|---|');
-    fixes.forEach(x=> md.push(`| ${x.code} ${x.name} | ${x.kind} | ${f1(x.target)} | ${x.before} | ${x.after ? x.after.win : '–'}${x.good ? '' : ' (off)'} | ${(x.moves || []).map(mv=> mv.type + ' ' + [mv.out, mv.inn].filter(Boolean).join(' → ') + (mv.k ? ' ×' + mv.k : '')).join('; ') || '–'} | ${x.shieldOverride != null ? x.shieldOverride : '–'} | ${x.hqHp != null ? x.hqHp : '–'} |`)); md.push(''); }
+  const fixes = opt('fixes', 'bf-curve-fixes,bf-curve-fixes-2,bf-curve-fixes-3').split(',').flatMap((f, round)=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs', 'balance', f + '.jsonl'), 'utf8').split('\n').filter(Boolean).map(l=> Object.assign(JSON.parse(l), {round: round + 1})); }catch(e){ return []; } })
+    .filter(x=> x.apply !== false && ((x.moves || []).length || x.shieldOverride != null || x.hqHp != null));
+  if(fixes.length){ md.push('<!-- bf:fixes -->', '| Round | Fight | Kind | Target | Before the round | Tuned to | Moves | Shield | Health |', '|---|---|---|---|---|---|---|---|---|');
+    fixes.forEach(x=> md.push(`| ${x.round} | ${x.code} ${x.name} | ${x.kind} | ${f1(x.target)} | ${x.before} | ${x.after ? x.after.win : '–'}${x.good ? '' : ' (off)'} | ${(x.moves || []).map(mv=> mv.type + ' ' + [mv.out, mv.inn].filter(Boolean).join(' → ') + (mv.k ? ' ×' + mv.k : '')).join('; ') || '–'} | ${x.shieldOverride != null ? x.shieldOverride : '–'} | ${x.hqHp != null ? x.hqHp : '–'} |`)); md.push(''); }
   console.log(md.join('\n'));
 } else if(cmd === 'cards'){
   (process.argv[3] || '').split(',').filter(Boolean).forEach(id=>{ const d = CARDS.find(c=> c.id === id); if(!d){ console.log('no card', id); return; }

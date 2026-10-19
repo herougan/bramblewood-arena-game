@@ -1,0 +1,2 @@
+{"map":"m1","mapNo":0,"side":false,"endless":false,"floor":null,"key":"0-2","code":"0-2","kind":"skirmish","name":"Scorpion Ambush","stageMap":0,"games":48,"wins":{"Y0":35,"Y8":47,"Y16":47,"Y24":48},"lv":0,"cpu":0,"hp":12,"shield":0,"rule":0,"overridden":false,"ms":8649}
+{"map":"m1","mapNo":0,"side":false,"endless":false,"floor":null,"key":"0-1","code":"0-1","kind":"skirmish","name":"Otter Patrol","stageMap":0,"games":48,"wins":{"Y0":44,"Y8":48,"Y16":47,"Y24":48},"lv":0,"cpu":0,"hp":10,"shield":0,"rule":0,"overridden":false,"ms":9202}
