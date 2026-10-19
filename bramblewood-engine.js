@@ -403,8 +403,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function rowsUnitsOf(pl){ return pl ? allBoardCards(pl).concat(reserveUnitsOf(pl)) : []; } // the front row, then the middle, then the back
   function reserveRowOf(pl, card){ if(!pl || !pl.reserve || !card) return 0; for(let r = 0; r < pl.reserve.length; r++) if(pl.reserve[r][card.slot] === card) return r + 1; return 0; }
   // One row's units as a column map (combatColumnsOf's shape, keyed by slot): row 0 is the front row.
+  // 2026-10-19 (package RR): each entry names its row (reserveRow), so a swing shape that picks its target from a row's map (Fork's
+  // lines, Crab claws, Tipsy, Taunt, Backstab) carries the row on to the hit, its Cleave and its events.
   function rowColsOf(pl, r){ if(!r) return combatColumnsOf(pl); const map = {}, rw = pl && pl.reserve && pl.reserve[r - 1];
-    if(rw) Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c) map[Number(sl)] = {kind:'card', card:c, dir:0}; }); return map; }
+    if(rw) Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c) map[Number(sl)] = {kind:'card', card:c, dir:0, reserveRow:r}; }); return map; }
+  // The share of its swing a middle- or back-row unit lands (2026-10-19, package RR): one constant, rounded up. 0.5 since the 2026-10-17
+  // back-row volley (the owner asked only that "all 3 rows are active at hitting the enemy"; the half was Claude's call then, never an
+  // owner rule). The owner's 2026-10-19 22:10 call ("all the skills should work as if they were at the front") may mean 1 (full):
+  // asked in the RR report, left at 0.5 until the owner says. A row unit's prong / lash hits, and its Boomerang's return, take it too.
+  const ROW_SWING_SHARE = 0.5;
+  function rowShareOf(n){ return n > 0 ? Math.ceil(n * ROW_SWING_SHARE) : n; }
+  // The free slot nearest s0 in a middle / back row (2026-10-19, package RR: a token, a Revive, a Relic or a split in that row),
+  // s0 itself first when allowed; ties at random, as spawnBeside's. null when none within 15 columns.
+  function rowFreeSlotNear(pl, r, s0, selfOk){ const rw = pl && pl.reserve && pl.reserve[r - 1]; if(!rw) return null; s0 = Number.isInteger(s0) ? s0 : 0;
+    const free = sl=> !(rw[sl] && rw[sl].hp > 0);
+    if(selfOk && free(s0)) return s0;
+    for(let d = 1; d < 16; d++){ const a = free(s0 - d), b = free(s0 + d); if(a && b) return rnd() < .5 ? s0 - d : s0 + d; if(a) return s0 - d; if(b) return s0 + d; }
+    return null; }
+  // Put a new unit into a middle / back row (2026-10-19, package RR): beside src (or into s0), keeping its row like src does (holdRow).
+  function rowPut(pl, r, sl, nc, src){ const rw = pl.reserve[r - 1]; nc.slot = sl; rw[sl] = nc; if(src && src.holdRow){ nc.holdRow = true; if(src.allyOf){ nc.allyOf = src.allyOf; nc.allyRow = src.allyRow; } } nc._rowArrived = true; return nc; }
   // The units the round's upkeep ticks (Poison, Bleed, Freeze, Sleep, Stun, Reload...): in a raid (RESERVE_ACTS) the middle and back
   // rows fight, so their statuses wear off and tick like the front row's (2026-10-19, TS: a Frozen back-row unit used to stay Frozen,
   // and its Poison never ticked).
@@ -1637,16 +1654,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1)); ev.n = n;
     let crashInto = null;
     const live = c=> !!(c && c.hp > 0 && !c.gap);
+    // 2026-10-19 (package RR): a unit in a middle or back row rides along its own row (the same rules; its row's units are the ones in
+    // the way, and the board's edge is the outermost column any unit stands in, any row, either side). Was: Wave left those rows alone.
+    const tRow = slotMode ? reserveRowOf(pl, t) : 0, rowMap = tRow ? pl.reserve[tRow - 1] : null;
     if(slotMode){
       syncSlots(players[1]); syncSlots(players[2]);
-      const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? allBoardCards(players[pid]).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
-      const s0 = t.slot, occ = new Map(allBoardCards(pl).filter(c=> c !== t && live(c)).map(c=> [c.slot, c]));
+      const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? (tRow ? rowsUnitsOf(players[pid]) : allBoardCards(players[pid])).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
+      const s0 = t.slot, occ = new Map((tRow ? Object.values(rowMap).filter(c=> c && !c.gap) /* a body not yet swept still holds its slot */ : allBoardCards(pl).filter(live)).filter(c=> c !== t).map(c=> [c.slot, c]));
       const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
       const first = dir || washDir(s0, 0); let way = first, r = ride(way);
       if(!dir && r.to === s0 && !r.hit){ way = -first; r = ride(way); if(r.to !== s0 || r.hit) ev.bounced = true; else way = first; }
       ev.dir = way < 0 ? 'left' : 'right';
       if(r.hit){ crashInto = r.hit; ev.crashUid = r.hit.uid; }
-      if(r.to !== s0){ t.slot = r.to; ev.moves.push({uid:t.uid, from:s0, to:r.to}); ev.cols = Math.abs(r.to - s0); relayoutRow(pl); }
+      if(r.to !== s0){ t.slot = r.to; ev.moves.push({uid:t.uid, from:s0, to:r.to}); ev.cols = Math.abs(r.to - s0); if(tRow){ delete rowMap[s0]; rowMap[r.to] = t; ev.row = tRow; } else relayoutRow(pl); }
       else if(crashInto) ev.cols = 0; // rammed the unit right beside it: no columns ridden
       else { ev.blocked = true; if(!dir){ ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); } }
     } else {
@@ -3070,11 +3090,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const front = directFrontOf(myCols, enemyCols, myCol);
     const colOf = c=>{ for(const k of Object.keys(enemyCols)){ const e = enemyCols[k]; if(e.kind==='card' && e.card===c){ e.col = Number(k); return e; } } return null; };
     if(front){ const e = colOf(front); if(e) return {entry:e, direct:true}; }
-    const enemyId = otherId(myId), me = liveSharedPos(players[myId], card.uid);
-    if(me===null) return null;
+    // Open (slot) battles: the column numbers are the shared line, so a middle- / back-row unit and a row's map work too (2026-10-19, RR).
+    const enemyId = otherId(myId), me = slotMode ? myCol : liveSharedPos(players[myId], card.uid);
+    if(me===null || me===undefined) return null;
     let best = [], bestD = Infinity;
     Object.keys(enemyCols).forEach(k=>{ const e = enemyCols[k]; if(e.kind!=='card' || e.card.hp<=0) return;
-      const p = liveSharedPos(players[enemyId], e.card.uid); if(p===null) return; const d = Math.abs(p - me);
+      const p = slotMode ? Number(k) : liveSharedPos(players[enemyId], e.card.uid); if(p===null) return; const d = Math.abs(p - me);
       if(d < bestD - 1e-9){ bestD = d; best = [k]; } else if(Math.abs(d - bestD) < 1e-9) best.push(k); });
     if(!best.length) return null;
     const k = best[Math.floor(rnd()*best.length)], e = enemyCols[k]; e.col = Number(k);
@@ -3799,6 +3820,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!slotMode || !c || !(c.hp > 0) || c.cageOf || stuckFast(c) || !effectsOf(c).bloodlust) return false;
     const me = players[pid], foe = players[otherId(pid)]; if(!me || !foe) return false;
     syncSlots(me); syncSlots(foe);
+    // 2026-10-19 (package RR): a middle- or back-row unit leaps along its own row: to face (in its column, any row: the rule its swing
+    // aims by, rowTargetAt) the nearest enemy creature whose column is free in its row. Nothing left in its column is the trigger.
+    const myRow = reserveRowOf(me, c);
+    if(myRow){ if(rowTargetAt(foe, c.slot)) return false; const rw = me.reserve[myRow - 1];
+      const prey = rowsUnitsOf(foe).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf && !isStructureCard(x) && !isInvisible(x) && Number.isInteger(x.slot) && !(rw[x.slot] && rw[x.slot] !== c));
+      if(!prey.length) return false;
+      const s0 = c.slot, best = Math.min(...prey.map(x=> Math.abs(x.slot - s0))), near = prey.filter(x=> Math.abs(x.slot - s0) === best);
+      const t = near.length > 1 ? near[Math.floor(rnd()*near.length)] : near[0];
+      delete rw[s0]; c.slot = t.slot; rw[c.slot] = c;
+      if(recordEvents && events) events.push({type:'bloodlustLeap', side:sideOf(pid), uid:c.uid, defId:c.defId, from:s0, to:c.slot, row:myRow, targetSide:sideOf(otherId(pid)), targetUid:t.uid, targetDefId:t.defId});
+      runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
+      return true; }
     if(allBoardCards(foe).some(x=> x && !x.gap && x.hp > 0 && x.slot === c.slot)) return false; // something stepped in front of it already
     const mine = new Set(allBoardCards(me).filter(x=> x && !x.gap && x.hp > 0 && x !== c).map(x=> x.slot));
     const prey = allBoardCards(foe).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf && !isStructureCard(x) && !isInvisible(x) && Number.isInteger(x.slot) && !mine.has(x.slot));
@@ -4739,6 +4772,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function arrowTargetOf(players, ownerId, boardCard){
     const myCols = combatColumnsOf(players[ownerId]), enemyCols = combatColumnsOf(players[otherId(ownerId)]);
     let myCol = null; Object.keys(myCols).forEach(k=>{ const e = myCols[k]; if(e.kind==='card' && e.card.uid===boardCard.uid) myCol = Number(k); });
+    if(myCol === null && slotMode && Number.isInteger(boardCard.slot) && reserveRowOf(players[ownerId], boardCard)) myCol = boardCard.slot; // a middle / back-row shooter aims from its column, as at the front (2026-10-19, RR)
     if(myCol === null) return null;
     const r = nearestEnemyCard(players, ownerId, boardCard, myCols, enemyCols, myCol);
     return r && r.entry ? r.entry.card : null;
@@ -6498,23 +6532,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(const pid of [first, otherId(first)]){
       const pl = players[pid]; if(!pl || !Array.isArray(pl.boomerangs) || !pl.boomerangs.length) continue;
       const keep = [];
-      pl.boomerangs.forEach(b=>{ const thrower = allBoardCards(pl).find(c=> c && c.uid === b.uid && c.hp > 0); const spd = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0));
+      pl.boomerangs.forEach(b=>{ const thrower = rowsUnitsOf(pl).find(c=> c && c.uid === b.uid && c.hp > 0); const spd = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0)); // + a middle / back-row thrower (2026-10-19, RR)
         if(minSpeed == null || spd > minSpeed) go.push({pid, b, spd}); else keep.push(b); });
       pl.boomerangs = keep;
     }
     go.sort((x, y)=> y.spd - x.spd); // stable: on a tie the side with initiative goes first
     for(const {pid, b} of go){
       const pl = players[pid], foeId = otherId(pid), foe = players[foeId]; if(!foe) continue;
-      const thrower = allBoardCards(pl).find(c=> c && c.uid === b.uid && c.hp > 0) || null;
-      const dmg = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0)), dmgType = b.dmgType || 'physical';
-      let lane = b.col; if(thrower){ const lc = liveColOf(pl, thrower.uid); if(lc) lane = lc.col; }
+      // 2026-10-19 (package RR): a boomerang thrown from a middle or back row (b.row) flies home the same way: the thrower found in its row,
+      // the far end's target in any row, its return at that row's share (ROW_SWING_SHARE, like the throw), and home is its own row's lane.
+      const thrower = rowsUnitsOf(pl).find(c=> c && c.uid === b.uid && c.hp > 0) || null;
+      const dmg0 = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0)), dmg = b.row ? rowShareOf(dmg0) : dmg0, dmgType = b.dmgType || 'physical';
+      let lane = b.col; if(thrower){ const lc = liveColOf(pl, thrower.uid); if(lc) lane = lc.col; else if(b.row && Number.isInteger(thrower.slot)) lane = thrower.slot; }
       if(recordEvents && events) events.push({type:'boomerangReturn', side:sideOf(pid), defId:b.defId, uid:b.uid, thrownBy: thrower ? thrower.uid : null, speed: dmg});
       // the far end: the same target again
       if(b.hitCastle){
         const d = damageHQ(foe, dmg);
         if(recordEvents && events) events.push({type:'hitHQ', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), dmg:d, boomerang:true});
       } else {
-        const tgt = b.targetUid != null ? allBoardCards(foe).find(c=> c && c.uid === b.targetUid && c.hp > 0) : null;
+        const tgt = b.targetUid != null ? rowsUnitsOf(foe).find(c=> c && c.uid === b.targetUid && c.hp > 0) : null; // + the middle / back rows (2026-10-19, RR)
         if(tgt){
           const r = damageCard(tgt, dmg, dmgType, null);
           ensureStat(stats, sideOf(foeId), tgt.defId).taken += r.dmg; ensureStat(stats, sideOf(pid), b.defId).dealt += r.dmg;
@@ -6524,7 +6560,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       removeDeadCards(players, sideOf, {}, stats, events);
       if(foe.hq.hp <= 0) return true;
       // home
-      const stillThere = thrower && thrower.hp > 0 && allBoardCards(pl).includes(thrower);
+      const stillThere = thrower && thrower.hp > 0 && rowsUnitsOf(pl).includes(thrower);
       if(stillThere){
         thrower._boomerangCombat = combatNo; thrower.boomerangOut = false; // catching it is its attack this round
         if(recordEvents && events) events.push({type:'boomerangCaught', side:sideOf(pid), uid:thrower.uid, defId:thrower.defId});
@@ -6535,7 +6571,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'banana', action:'eat', bananarang:true, side:sideOf(pid), uid:thrower.uid, defId:thrower.defId, amount:healed, n:numN(br, 3)});
           if(healed > 0) fireHealTriggers(players, sideOf, pid, thrower, thrower, healed, stats, events); }
       } else {
-        const myCols = combatColumnsOf(pl), home = myCols[lane] && myCols[lane].kind === 'card' ? myCols[lane].card : null;
+        const myCols = b.row ? rowColsOf(pl, b.row) : combatColumnsOf(pl), home = myCols[lane] && myCols[lane].kind === 'card' ? myCols[lane].card : null; // its own row's lane (2026-10-19, RR)
         if(home && home.hp > 0){
           if(isBoomerangDef(CARD_DEFS[home.defId])){ if(recordEvents && events) events.push({type:'boomerangCaught', side:sideOf(pid), uid:home.uid, defId:home.defId}); }
           else {
@@ -6613,7 +6649,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // one volley before it. Units that arrive or turn Ready later this round shoot from next round, as before.
     const shotPool = new Map(); // uid -> {att, attId}
     [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
-      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); }); });
+      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); });
+      // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) a middle- or back-row shooter shoots too, as at the front (its shot aims from its
+      // column: opposingCardOf / arrowTargetOf), at its column's place in the order, after that column's front row.
+      if(RESERVE_ACTS && pl.reserve) pl.reserve.forEach((rw, i)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId, row:i + 1}); })); });
     // The reserve rows' actions (2026-10-18, RESERVE_ACTS): every reserve unit on the board as the round starts gets one, in the main order.
     const reservePool = new Map(); // uid -> {att, attId, row, slot}
     // 2026-10-19 (package TS): or the one reserve unit a single-unit pass names (reserveVolley's strikes, onlyUid), raid or not.
@@ -6737,7 +6776,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.stunned){ skipTurn('stunned', c, ownId); return false; }
       if(c.frozen>0){ if(!frozeNoted.has(c.uid)){ frozeNoted.add(c.uid); skipTurn('frozen', c, ownId); } c._frozenJustSet = false; return false; }
       if(c.asleep>0){ skipTurn('asleep', c, ownId); return false; }
-      if(c.wait > 0){ c.wait -= 1; return false; }
+      // 2026-10-19 (package RR): the Wait that runs out on its action makes it Ready as at the front: the round's upkeep gives it its
+      // 'ready' and its On Ready skills (endOfRoundUpkeep's readyNow, _rowReadyNow); a Boomerang it caught this round was its action.
+      if(c.wait > 0){ c.wait -= 1; if(c.wait === 0) c._rowReadyNow = true; return false; }
+      if(c._boomerangCombat === combatNo && !passOnlyUid) return false;
       if(c.reloadRemaining>0){ skipTurn('reload', c, ownId); return false; }
       if(c.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', c, ownId); return false; }
       if(c.chained){ skipTurn('chained', c, ownId); return false; }
@@ -6766,8 +6808,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
       shotPool.forEach((meta, uid)=>{ // 2026-10-17: the Speed 1 shot actions (see shotPool above)
         if(!(meta.att.hp > 0)){ shotPool.delete(uid); return; }
-        const pos = liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; }
-        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: SHOT_SPEED, shot:true});
+        const pos = meta.row ? (reserveRowOf(players[meta.attId], meta.att) === meta.row ? meta.att.slot : null) : liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; } // a row shooter: its column (2026-10-19, RR)
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: SHOT_SPEED, shot:true, shotRow: meta.row || 0});
       });
       reservePool.forEach((meta, uid)=>{ // 2026-10-18: a reserve unit acts at its own column, after that column's front row (resRow below)
         const rw = players[meta.attId].reserve[meta.row - 1]; if(!rw || rw[meta.slot] !== meta.att || !(meta.att.hp > 0)){ reservePool.delete(uid); return; }
@@ -6785,7 +6827,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const ra = speedRank(a), rb = speedRank(b);
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
-        if((a.reserve||0) !== (b.reserve||0)) return (a.reserve||0) - (b.reserve||0); // one column: the front row, then the middle, then the back (2026-10-18)
+        if((a.reserve||a.shotRow||0) !== (b.reserve||b.shotRow||0)) return (a.reserve||a.shotRow||0) - (b.reserve||b.shotRow||0); // one column: the front row, then the middle, then the back (2026-10-18; + a row's shots, 2026-10-19 RR)
         if(a.uid===b.uid) return a.shot ? -1 : 1; // one unit at Speed 1 both ways: it shoots, then swings
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
@@ -6909,7 +6951,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // If an earlier attacker's kill this same round already caused this card to fall toward
       // center (or its flank to close up), it now swings from wherever it actually stands.
       const rowSwing = a.reserve || 0; // its row (1 middle, 2 back), 0 for the front row (2026-10-19, TS)
-      const rowHalf = n=> rowSwing ? Math.ceil(n / 2) : n; // a middle / back-row swing lands for half, rounded up (as its strike did since 2026-10-17)
+      const rowHalf = n=> rowSwing ? rowShareOf(n) : n; // a middle / back-row swing lands for ROW_SWING_SHARE (half), rounded up (as its strike did since 2026-10-17; one constant since 2026-10-19, RR)
       // Its events keep the shape the page's raid replay reads (2026-10-17): a hit is a volleyHit, a castle hit a volleyCastle, a dodge
       // an evaded with volley / row / targetRow. A front-row swing's events are unchanged.
       const rowEv = o=>{ if(!rowSwing || !o) return o;
@@ -6921,7 +6963,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const liveSelf = rowSwing ? {col:a.slot, dir:0} : liveColOf(players[a.attId], a.att.uid);
       if(!liveSelf){ pending = pickNextAttacker(); continue; } // shouldn't happen (hp>0 just checked), but nothing to attack from
       const liveOwnCols = rowSwing ? rowColsOf(players[a.attId], rowSwing) : combatColumnsOf(players[a.attId]); // its own row (Inspiring / Friction's neighbours)
-      const liveEnemyCols = combatColumnsOf(players[a.enemyId]);
+      // 2026-10-19 (package RR, owner 22:10: "Raid: Back units cleave the same way as the front units. And all the skills should work as
+      // if they were at the front okay!"): a middle- or back-row swing aims at a row: the closest enemy row holding a unit in its column
+      // (rowTargetAt, the row it strikes), else the front row (nothing in its column anywhere: it faces the front row, as a front-row
+      // unit with an empty column does). Every swing shape is worked out on that row's map exactly as a front-row swing's is on the
+      // enemy front row: Fork / Trident / Pitchfork lines (its column ±1 / ±2 in that row), Crab claws (L / R in that row), Tipsy's
+      // drift, Octolash's 8 nearest (in that row), Rook / Bishop lane bonuses, Taunt (a Taunt unit in that row, within a column, draws
+      // it), Backstab (the nearest unit in that row; none there: the closest other row's nearest). (Was TS: all of these off.)
+      let rowAim = 0; if(rowSwing){ const rt0 = rowTargetAt(players[a.enemyId], a.slot); rowAim = rt0 ? rt0.row : 0; }
+      let liveEnemyCols = rowAim ? rowColsOf(players[a.enemyId], rowAim) : combatColumnsOf(players[a.enemyId]);
       // Stealth: ignores normal targeting entirely and always hits the enemy HQ directly.
       let target = (attDef.effects && (attDef.effects.stealth || (attDef.effects.rainrunner && field && field.id === 'rain'))) ? {kind:'hq'} : rowSwing ? rowSwingTarget(players[a.enemyId], a.slot) : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col); // Rainrunner: unblockable in the rain (2026-10-12)
       // Trident / Pitchfork / Octolash (2026-10-12, user: "Maybe Pitchfork is Trident + Pierce. Trident is Sweep ... When a unit
@@ -6929,14 +6979,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Octolash - hit 8 nearest opposing units in front of this unit"). Trident strikes the unit in front and both columns
       // beside it with its full Attack; an empty side column takes that prong to the castle. Pitchfork is a Trident whose
       // prongs ignore Armour. Octolash lashes the 8 enemy units nearest it (front first), full Attack each, never the castle.
-      const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth && !rowSwing);
+      const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth); // + a middle / back-row swing, on its row (2026-10-19, RR)
       // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
       // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
       // one), never the castle (no enemy units: it holds its swing), and hits for N more when that unit isn't the one
       // directly in front of it.
       let backstabBonus = 0;
-      if(attDef.effects && Number(attDef.effects.backstab) > 0 && !attDef.effects.stealth && !rowSwing){
-        const near = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, liveEnemyCols, liveSelf.col);
+      if(attDef.effects && Number(attDef.effects.backstab) > 0 && !attDef.effects.stealth){ // + a middle / back-row swing (2026-10-19, RR)
+        let near = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, liveEnemyCols, liveSelf.col);
+        // In a raid (RESERVE_ACTS) a row with no unit at all is passed over for the closest row that has one (2026-10-19, RR: "never
+        // the castle" held a raid Backstab's swing whenever the enemy front row was empty, whatever stood behind it).
+        if(!near && RESERVE_ACTS && slotMode) for(let r = 0; r <= RESERVE_ROWS && !near; r++){ if(r === rowAim) continue; const cols = rowColsOf(players[a.enemyId], r);
+          const nr = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, cols, liveSelf.col); if(nr){ near = nr; liveEnemyCols = cols; rowAim = r; } }
         target = near ? near.entry : null;
         if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
       }
@@ -6946,7 +7000,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // fitting."): each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one).
       // Neither side has a unit: it attacks straight ahead as normal (the unit in front, or the castle). (Was: alternating
       // left/right, and a wasted pinch with a unit in front.)
-      if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0) && !rowSwing){
+      if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0)){ // + a middle / back-row swing, its row's L / R (2026-10-19, RR)
         const lanesC = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
         const has = col=>{ const en = col != null ? liveEnemyCols[col] : null; return !!(en && en.kind==='card' && en.card && en.card.hp > 0); };
         // 2026-10-17 (user: "Crab claws effect is: normal attacks always attack L or R, 50%, random."): a coin flip picks the side; if that side
@@ -6963,7 +7017,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Taunt (2026-10-16, user: "Add a sheep card (basic) - it has taunt."): an enemy Taunt unit facing it or one column beside it
       // draws the swing, even one that was going to the castle. Stealth slips past it; Octolash lashes its usual 8.
       let tauntDrew = null; // the Taunt unit that drew this swing (Fork keeps it among its lines, 2026-10-17)
-      if(target && !(attDef.effects && attDef.effects.stealth) && !octoAtk && !rowSwing){
+      if(target && !(attDef.effects && attDef.effects.stealth) && !octoAtk){ // + a middle / back-row swing: a Taunt unit in the row it aims at (2026-10-19, RR)
         const tt = tauntTargetOf(liveOwnCols, liveEnemyCols, liveSelf.col);
         if(tt && !(target.kind === 'card' && target.card && target.card.uid === tt.card.uid)){ target = tt; tauntDrew = tt;
           if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); }
@@ -6990,7 +7044,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // prongs (forkStrike), never the castle. Interlocked ranks (Collapse mode): Fork's L / R are the two enemies it stands between;
       // Trident / Pitchfork count their lines from the unit its swing picks. (Was 2026-10-15: the 2 / 3 / 4 nearest units within 1 / 1 / 2
       // columns, every one at full damage.) An empty line is a thrust at thin air. The forkSwing event lists every line for the picture.
-      const prongSpec = (target && !rowSwing && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
+      const prongSpec = (target && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
       let prongCols = [], forkPlan = null;
       const halfAtk = n=> n > 0 ? Math.max(1, Math.floor(n / 2)) : 0;
       if(prongSpec){
@@ -7024,7 +7078,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Tipsy (2026-10-11, user: "Tipsy means attacks L, Centre or R, randomly"): the swing drifts one column left, stays,
       // or drifts right at random. A drift onto an empty column misses (the castle is never hit by a stumble).
       let tipsyMiss = false;
-      if(target && a.att.tipsy>0 && !prongSpec && !rowSwing && !(attDef.effects && attDef.effects.stealth)){ // Fork / Trident / Pitchfork prongs don't stumble (2026-10-12; all three 2026-10-15)
+      if(target && a.att.tipsy>0 && !prongSpec && !(attDef.effects && attDef.effects.stealth)){ // + a middle / back-row swing, drifting along its row (2026-10-19, RR) // Fork / Trident / Pitchfork prongs don't stumble (2026-10-12; all three 2026-10-15)
         const d = [-1, 0, 1][Math.floor(rnd()*3)];
         if(d){ const baseCol = (target.kind==='card' && target.col!=null) ? target.col : liveSelf.col, col = baseCol + d, e = liveEnemyCols[col];
           if(e && e.kind==='card' && e.card.hp>0){ e.col = col; target = e; } else tipsyMiss = true;
@@ -7038,7 +7092,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let resTarget = !!(target && target.reserveRow); // a row swing's target in the middle / back row (2026-10-19, TS)
       if(RESERVE_ACTS && target && target.kind === 'hq' && !tipsyMiss && !(attDef.effects && (attDef.effects.stealth || attDef.effects.crabClaws || (attDef.effects.rainrunner && field && field.id === 'rain')))){
         const rt = rowTargetAt(players[a.enemyId], liveSelf.col);
-        if(rt && rt.row > 0){ target = {kind:'card', card:rt.card, col:liveSelf.col, reserveRow:rt.row}; resTarget = true; }
+        if(rt && rt.row > 0){ target = {kind:'card', card:rt.card, col:liveSelf.col, reserveRow:rt.row}; resTarget = true;
+          // 2026-10-19 (package RR): "Taunt: units in any row with Taunt draw attacks aimed at their row": the swing now goes at that row,
+          // so a Taunt unit there, within a column of it, draws it (as a front-row Taunt unit draws a swing at the front row).
+          if(!octoAtk && !tauntDrew){ const tc = rowColsOf(players[a.enemyId], rt.row), tt = tauntTargetOf(liveOwnCols, tc, liveSelf.col);
+            if(tt && tt.card.uid !== rt.card.uid){ target = {kind:'card', card:tt.card, col:tt.col, reserveRow:rt.row}; tauntDrew = tt;
+              if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); } } }
       }
       if(!target || tipsyMiss){ pending = pickNextAttacker(); continue; }
       if(a.att.invisible > 0){ a.att.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(a.attId), uid:a.att.uid, defId:a.att.defId, attacked:true}); } // Invisible (2026-10-16): attacking gives it away
@@ -7104,7 +7163,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // line (2026-10-17): a Fork / Trident / Pitchfork line {off, half}: a half line strikes for half the Attack; its events name the swing.
       const forkStrike = (flankCol, castleOk, prong, line)=>{ if(castleOk === undefined) castleOk = false;
             const lineTag = o=> (line && forkPlan) ? Object.assign(o, {forkSwing:forkPlan.id, forkLine:line.off, half: line.half || undefined}) : o;
-            const strikeAtk = (line && line.half) ? halfAtk(atkThisRound) : atkThisRound;
+            const strikeAtk = (line && line.half) ? halfAtk(atkThisRound) : atkThisRound; // (a middle / back-row swing's prong: its row share, rowHalf below, 2026-10-19 RR)
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
@@ -7114,8 +7173,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
               const c2GuardianRedirect = c2.uid !== c2raw.uid;
-              const r3 = damageCard(c2, strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
-              aStat.dealt += r3.dmg;
+              const r3 = damageCard(c2, rowHalf(strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol)), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
+              aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
               if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
@@ -7184,7 +7243,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
-        const laneBonus = rowSwing ? 0 : laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col);
+        const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col); // + a middle / back-row swing, on the row it aims at (2026-10-19, RR)
         const swingAmt0 = ((mainHalf ? halfAtk(atkThisRound) : atkThisRound) + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1); // a half line (2026-10-17)
         const swingAmt = rowHalf(bloodlustHalves(a.att, defCard) ? Math.ceil(swingAmt0 / 2) : swingAmt0); // Bloodlust (2026-10-17): half on Structures; a row swing: half (2026-10-19, TS)
         const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, swingAmt, dmgType, a.att);
@@ -7291,7 +7350,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
         if(attDef.effects && attDef.effects.brittle && defCard.hp > 0) brittleUnit(a.att, defCard, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
         if(!nullHit) wiltOnHit(defCard, sideOf(a.enemyId), events); // Wilting (2026-10-16): the unit that was hit
-        if(attDef.effects && attDef.effects.wave && defCard.hp>0 && !resTarget && !rowSwing) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
+        if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
         if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
@@ -7325,7 +7384,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(defCard.hp<=0){
           if(!killCredit[defCard.uid]) killCredit[defCard.uid] = new Set();
           killCredit[defCard.uid].add(statKey(mySide, a.att.defId));
-          if(attDef.effects && attDef.effects.bloodlust && slotMode && !rowSwing && !resTarget && defCard.slot === a.att.slot) a.att._bloodlustKill = true; // Bloodlust (2026-10-17): it killed the unit facing it; it leaps after its turn
+          if(attDef.effects && attDef.effects.bloodlust && slotMode && (rowSwing || !resTarget) && defCard.slot === a.att.slot) a.att._bloodlustKill = true; // + a middle / back-row swing (2026-10-19, RR: it leaps along its own row, see bloodlustLeap) // Bloodlust (2026-10-17): it killed the unit facing it; it leaps after its turn
           if(attDef.effects && attDef.effects.slashBurn) layHazard(a.enemyId, defCard.slot, 'scorch', w2N(attDef, 'slashBurn'), a.att, sideOf, events); // Slash & Burn (2026-10-16)
           // Overwhelm (2026-09-17): whatever damage this killing blow had left over after
           // defCard's HP hit 0 carries through to the enemy castle — a cleave-through reward
@@ -7460,9 +7519,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           forkStrike(c, false, prongSpec.kind, ln); swingLanded = true;
         });
       }
-      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow && !rowSwing){ // thrown: it flies on even if the thrower falls
+      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // + a middle / back-row thrower: b.row (2026-10-19, RR) // thrown: it flies on even if the thrower falls
         const pl = players[a.attId]; if(!Array.isArray(pl.boomerangs)) pl.boomerangs = [];
-        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null});
+        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null, row: rowSwing || undefined});
         a.att.boomerangOut = true;
       }
       a.att.inspired = 0; // Inspiring's bonus is spent on this swing
@@ -7513,7 +7572,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       reflowAfterKills(killCreditKeysAtTurnStart);
       // Bloodlust (2026-10-17 rework): it killed the unit facing it, so it leaps to face the next creature; then whoever entered a
       // watched slot this turn (a token, a push, the leap) meets any Ambush or Sentry (watchScan).
-      if(a.att._bloodlustKill){ a.att._bloodlustKill = false; if(a.att.hp > 0) bloodlustLeap(players, sideOf, a.attId, a.att, stats, events); }
+      if(a.att._bloodlustKill){ a.att._bloodlustKill = false; if(a.att.hp > 0) bloodlustLeap(players, sideOf, a.attId, a.att, stats, events); if(a.reserve) a.slot = a.att.slot; } // a row unit's leap moves its column (2026-10-19, RR)
       watchScan(players, sideOf, stats, events);
       // Frenzy keeps `pending` pointed at this SAME candidate (see this block's own comment,
       // above pickNextAttacker's declaration) rather than pulling a fresh one from the pool —
