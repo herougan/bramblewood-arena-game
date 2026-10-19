@@ -2089,5 +2089,20 @@
  "Crafting materials for the Blacksmith": "Materiais de forja para o ferreiro",
  "The Drowned Maw": "A Bocarra Afogada",
  "The boss's bramble, {name}, strikes too": "O espinheiro do chefe, {name}, também ataca",
- "fire a {n} beam, aimed by its column": "dispara um raio de {n}, mirado pela sua coluna"
+ "fire a {n} beam, aimed by its column": "dispara um raio de {n}, mirado pela sua coluna",
+ "On the anvil": "Na bigorna",
+ "All copies": "Todas as cópias",
+ "Alt art": "Arte alternativa",
+ "You own {n}: {list}": "Tens {n}: {list}",
+ "Card type": "Tipo de carta",
+ "Creatures": "Criaturas",
+ "Structures": "Estruturas",
+ "Spells": "Feitiços",
+ "Equipment": "Equipamento",
+ "No cards of this type yet": "Ainda não há cartas deste tipo",
+ "Brambles have their own page: this opens it": "As Silvas têm a sua própria página: isto abre-a",
+ "Card level": "Nível das cartas",
+ "Base level": "Nível base",
+ "My best": "O meu melhor",
+ "Show each card at its starting level, or at the highest level you own": "Mostra cada carta no seu nível inicial ou no nível mais alto que tens"
 }

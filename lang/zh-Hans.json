@@ -2090,5 +2090,20 @@
  "Crafting materials for the Blacksmith": "给铁匠的打造材料",
  "The Drowned Maw": "溺亡巨口",
  "The boss's bramble, {name}, strikes too": "首领的荆棘堡 {name} 也会出手",
- "fire a {n} beam, aimed by its column": "发射 {n} 光束，按所在列瞄准"
+ "fire a {n} beam, aimed by its column": "发射 {n} 光束，按所在列瞄准",
+ "On the anvil": "在铁砧上",
+ "All copies": "全部卡",
+ "Alt art": "异画",
+ "You own {n}: {list}": "你有 {n} 张：{list}",
+ "Card type": "卡牌类型",
+ "Creatures": "生物",
+ "Structures": "建筑",
+ "Spells": "法术",
+ "Equipment": "装备",
+ "No cards of this type yet": "暂时没有这类卡牌",
+ "Brambles have their own page: this opens it": "荆棘有自己的页面：点这里打开",
+ "Card level": "卡牌等级",
+ "Base level": "初始等级",
+ "My best": "我的最高",
+ "Show each card at its starting level, or at the highest level you own": "按初始等级显示每张卡，或按你拥有的最高等级显示"
 }

@@ -2089,5 +2089,20 @@
  "Crafting materials for the Blacksmith": "Material für den Schmied",
  "The Drowned Maw": "Der Ertrunkene Schlund",
  "The boss's bramble, {name}, strikes too": "Auch das Dornengestrüpp des Bosses, {name}, schlägt zu",
- "fire a {n} beam, aimed by its column": "feuert einen Strahl ({n}), gezielt nach seiner Spalte"
+ "fire a {n} beam, aimed by its column": "feuert einen Strahl ({n}), gezielt nach seiner Spalte",
+ "On the anvil": "Auf dem Amboss",
+ "All copies": "Alle Exemplare",
+ "Alt art": "Alternatives Bild",
+ "You own {n}: {list}": "Du hast {n}: {list}",
+ "Card type": "Kartentyp",
+ "Creatures": "Kreaturen",
+ "Structures": "Bauwerke",
+ "Spells": "Zauber",
+ "Equipment": "Ausrüstung",
+ "No cards of this type yet": "Noch keine Karten dieses Typs",
+ "Brambles have their own page: this opens it": "Dornen haben eine eigene Seite: Das hier öffnet sie",
+ "Card level": "Kartenstufe",
+ "Base level": "Grundstufe",
+ "My best": "Mein bestes",
+ "Show each card at its starting level, or at the highest level you own": "Jede Karte auf ihrer Anfangsstufe zeigen oder auf der höchsten Stufe, die du besitzt"
 }

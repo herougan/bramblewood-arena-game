@@ -2089,5 +2089,20 @@
  "Crafting materials for the Blacksmith": "Bahan tempa untuk pandai besi",
  "The Drowned Maw": "Rahang Tenggelam",
  "The boss's bramble, {name}, strikes too": "Semak duri bos, {name}, juga menyerang",
- "fire a {n} beam, aimed by its column": "menembakkan sinar {n}, dibidik menurut kolomnya"
+ "fire a {n} beam, aimed by its column": "menembakkan sinar {n}, dibidik menurut kolomnya",
+ "On the anvil": "Di landasan",
+ "All copies": "Semua salinan",
+ "Alt art": "Seni alternatif",
+ "You own {n}: {list}": "Kamu punya {n}: {list}",
+ "Card type": "Jenis kartu",
+ "Creatures": "Makhluk",
+ "Structures": "Bangunan",
+ "Spells": "Mantra",
+ "Equipment": "Perlengkapan",
+ "No cards of this type yet": "Belum ada kartu jenis ini",
+ "Brambles have their own page: this opens it": "Semak duri punya halaman sendiri: ini membukanya",
+ "Card level": "Level kartu",
+ "Base level": "Level dasar",
+ "My best": "Terbaikku",
+ "Show each card at its starting level, or at the highest level you own": "Tampilkan setiap kartu di level awalnya, atau di level tertinggi yang kamu punya"
 }

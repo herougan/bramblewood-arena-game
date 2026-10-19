@@ -2090,5 +2090,20 @@
  "Crafting materials for the Blacksmith": "鍛冶屋のための素材",
  "The Drowned Maw": "溺れた大顎",
  "The boss's bramble, {name}, strikes too": "ボスのいばら「{name}」も攻撃してくる",
- "fire a {n} beam, aimed by its column": "列に応じて狙う {n} のビームを放つ"
+ "fire a {n} beam, aimed by its column": "列に応じて狙う {n} のビームを放つ",
+ "On the anvil": "金床の上",
+ "All copies": "すべての1枚",
+ "Alt art": "別イラスト",
+ "You own {n}: {list}": "{n}枚所持：{list}",
+ "Card type": "カードの種類",
+ "Creatures": "クリーチャー",
+ "Structures": "建造物",
+ "Spells": "呪文",
+ "Equipment": "装備",
+ "No cards of this type yet": "この種類のカードはまだありません",
+ "Brambles have their own page: this opens it": "茨の砦には専用のページがあります。ここから開けます",
+ "Card level": "カードのレベル",
+ "Base level": "基本レベル",
+ "My best": "自分の最高",
+ "Show each card at its starting level, or at the highest level you own": "各カードを初期レベル、または手持ちの最高レベルで表示します"
 }

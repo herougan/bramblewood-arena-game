@@ -2089,5 +2089,20 @@
  "Crafting materials for the Blacksmith": "Materiales de fabricación para el herrero",
  "The Drowned Maw": "Las Fauces Ahogadas",
  "The boss's bramble, {name}, strikes too": "La zarza del jefe, {name}, también ataca",
- "fire a {n} beam, aimed by its column": "dispara un rayo de {n}, apuntado según su columna"
+ "fire a {n} beam, aimed by its column": "dispara un rayo de {n}, apuntado según su columna",
+ "On the anvil": "En el yunque",
+ "All copies": "Todas las copias",
+ "Alt art": "Arte alternativo",
+ "You own {n}: {list}": "Tienes {n}: {list}",
+ "Card type": "Tipo de carta",
+ "Creatures": "Criaturas",
+ "Structures": "Estructuras",
+ "Spells": "Hechizos",
+ "Equipment": "Equipo",
+ "No cards of this type yet": "Aún no hay cartas de este tipo",
+ "Brambles have their own page: this opens it": "Las Zarzas tienen su propia página: esto la abre",
+ "Card level": "Nivel de las cartas",
+ "Base level": "Nivel base",
+ "My best": "Mi mejor",
+ "Show each card at its starting level, or at the highest level you own": "Muestra cada carta en su nivel inicial o en el nivel más alto que tienes"
 }

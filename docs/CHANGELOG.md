@@ -27,6 +27,34 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Skill costs:** Milling and Fortification are shorthands (trigger × action). The rest have S estimates (`measuredHow: "estimate SK2"`, low confidence).
 - **Tests:** `tests/skills-sk2-2026-10-19.js` (260 checks).
 
+## 2026-10-19 (package UX: the tutorial summary, the Forge's copies sheet, count badges and centre stage, the Codex's types and base level)
+- **Owner (21:36, UI notes 7, 8a–c, 9, 11).**
+- **Tutorial summary (7):** the map panel of T-0 and T-1 now reads like a skirmish's.
+  - It shows the rival deck the tutorial really deals (`tutorialDecksFor`, the tutorial editor's deck or the faction default), as card chips. The nodes' own decks are empty and were never used.
+  - It shows that deck's BR and the rival bramble's real Health (`tutHp`: 9 / 11, not the map's 28). The hover tooltip lists the same deck.
+  - The Field panel is gone ("Mist — There is no day/night cycle." taught nothing).
+- **Forge, copies sheet (8a):** picking a card whose copies differ opens a sheet of every copy you own.
+  - Copies are grouped by level and treatment, such as "Lv 10 · Plain ×5", strongest first (level, then finish). Plain, Foil steps, Shiny and Alt art are told apart.
+  - The tiles sit in a scrolling grid. ⭐ marks the copies your main deck fights with, and 🧩 marks a copy with Forge credit. A tap puts that copy on the anvil, preferring the one with credit.
+  - The anvil's two-row chip grid became one line ("Your copies ×8 · On the anvil Lv 2 Plain · 🃏 All copies"). The old selected chip's pale-on-pale text is fixed too.
+- **Forge, count badges (8b):** every pool tile shows ×N copies owned. Hovering (title), long-pressing or tapping it gives the breakdown by treatment ("You own 11: Plain ×8, ✨ Hex ×1, …").
+- **Forge, centre stage (8c):** tempering, refining, limit breaks, promotions and prestige lift the anvil stage out of the panel.
+  - The stage flies to the middle of the screen over a dimmed hearth spotlight and plays the smithing there. Tempering also plays its LEVEL burst there, then the stage flies back.
+  - Forging Max Energy (package NF's effect) lifts its Energy panel the same way.
+  - Reduced motion and Effects None keep everything in place (`forgeCentreStage`).
+- **Codex, base level (9):** card tiles and the card detail opened from the Codex show each card at its starting level (`cardBaseLevel`: Lv 1, or Lv 0 for Base, quest and tutorial cards).
+  - A "🌱 Base level / ⭐ My best" toggle at the end of the type row switches to the highest level you own. The detail has a chip that flips it.
+  - The choice is kept per device (`bramblewood_codex_level_v1`, try/catch).
+- **Codex, card types (11):** a chip row under the toolbar: All, 🐾 Creatures, 🏯 Structures, 📜 Spells, 🛡️ Equipment and 🌿 Brambles.
+  - Each chip shows how many cards the other filters leave. An empty type stays at 0, dashed: Spells are shelved, and no Equipment card is obtainable yet.
+  - Field cards count as Spells.
+  - Brambles are not Codex cards: their chip counts the Brambles page and opens it.
+  - On phones the row scrolls sideways.
+- **Texts:** 18 TX keys (`ui.ux-*`), in the 12 packs via `tools/i18n_2026_10_19_ux.py`. Rows a pack already had ("Close", "All", "Brambles") are kept.
+- **Test:** `tests/ux-2026-10-19.js` covers the base-level default, the storage fallback, the type rules and counts against `canonical/cards.json`, the copy groups and the wiring.
+  - With Playwright it also plays all of it at 390×844 (touch) and 1366×768.
+  - With `UX_SHOTS=1`, the screenshots go to `docs/screens/ux/`.
+
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
 - **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.

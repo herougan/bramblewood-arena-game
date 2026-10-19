@@ -2090,5 +2090,20 @@
  "Crafting materials for the Blacksmith": "Matériaux de fabrication pour le forgeron",
  "The Drowned Maw": "La Gueule Noyée",
  "The boss's bramble, {name}, strikes too": "La ronce du boss, {name}, frappe aussi",
- "fire a {n} beam, aimed by its column": "tire un rayon de {n}, visé selon sa colonne"
+ "fire a {n} beam, aimed by its column": "tire un rayon de {n}, visé selon sa colonne",
+ "On the anvil": "Sur l’enclume",
+ "All copies": "Tous les exemplaires",
+ "Alt art": "Illustration alternative",
+ "You own {n}: {list}": "Vous en avez {n} : {list}",
+ "Card type": "Type de carte",
+ "Creatures": "Créatures",
+ "Structures": "Structures",
+ "Spells": "Sorts",
+ "Equipment": "Équipement",
+ "No cards of this type yet": "Aucune carte de ce type pour l’instant",
+ "Brambles have their own page: this opens it": "Les Ronces ont leur propre page : ceci l’ouvre",
+ "Card level": "Niveau des cartes",
+ "Base level": "Niveau de base",
+ "My best": "Mon meilleur",
+ "Show each card at its starting level, or at the highest level you own": "Afficher chaque carte à son niveau de départ, ou au plus haut niveau que vous possédez"
 }
