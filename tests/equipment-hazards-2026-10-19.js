@@ -165,7 +165,7 @@ const hz = (e, P, pid, id, tpid, sl)=>{ fresh(P[pid]); const u = give(P[pid], id
 // ---- 8. the cards
 { const cards = JSON.parse(R('canonical/cards.json')), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   const NEW = ['crowbar', 'bucketknee-wolf', 'armory', 'frost-slick', 'magma-vent', 'bog-seep', 'miasma', 'rockfall'];
-  ok(JSON.stringify(cards.slice(-NEW.length).map(c=> c.id)) === JSON.stringify(NEW), '8. the new cards sit at the end of cards.json');
+  { const at = cards.findIndex(c=> c.id === NEW[0]); ok(at >= 0 && JSON.stringify(cards.slice(at, at + NEW.length).map(c=> c.id)) === JSON.stringify(NEW), '8. the new cards sit together, appended after the older cards'); } // 2026-10-19 (merge): later packages append after them
   NEW.forEach(id=> ok(/package EQ/.test(by[id].creatorNote || '') && /N = [\d.]+/.test(by[id].creatorNote), `8. ${id}: its creatorNote shows the budget`));
   ok(by.crowbar.cardType === 'equipment' && by.crowbar.attack === 2 && by.crowbar.health === 0 && by.crowbar.equip.grant.pry === 1 && by.crowbar.rarity === 'rare', '8. Crowbar: equipment +2/+0, Pry 1, Rare');
   ok(!by.crowbar.source && !/half-life|gordon|freeman|headcrab/i.test(by.crowbar.name + ' ' + by.crowbar.flavor), '8. Crowbar: no source yet, a generic name and flavour');
