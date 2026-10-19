@@ -1,0 +1,295 @@
+{
+ "curve": {
+  "floorMaps": 0.5,
+  "floorPct": 0,
+  "levelCap": 11
+ },
+ "rows": [
+  {
+   "map": "mm",
+   "floor": 1,
+   "kind": "skirmish",
+   "enemy": 1.5,
+   "shield": 6,
+   "hp": 26,
+   "parentWin": 60,
+   "countsAs": 6,
+   "atWin": 60
+  },
+  {
+   "map": "mm",
+   "floor": 2,
+   "kind": "skirmish",
+   "enemy": 1.63,
+   "shield": 7,
+   "hp": 26,
+   "parentWin": 58.3,
+   "countsAs": 6.5,
+   "atWin": 58.3
+  },
+  {
+   "map": "mm",
+   "floor": 5,
+   "kind": "skirmish",
+   "enemy": 2,
+   "shield": 8,
+   "hp": 26,
+   "parentWin": 63.3,
+   "countsAs": 8,
+   "atWin": 75
+  },
+  {
+   "map": "mm",
+   "floor": 9,
+   "kind": "skirmish",
+   "enemy": 2.5,
+   "shield": 10,
+   "hp": 26,
+   "parentWin": 43.3,
+   "countsAs": 10,
+   "atWin": 56.7
+  },
+  {
+   "map": "mm",
+   "floor": 10,
+   "kind": "miniboss",
+   "enemy": 2.63,
+   "shield": 21,
+   "hp": 29,
+   "parentWin": 38.3,
+   "countsAs": 10.5,
+   "atWin": 43.3
+  },
+  {
+   "map": "mm",
+   "floor": 15,
+   "kind": "skirmish",
+   "enemy": 3.38,
+   "shield": 13,
+   "hp": 26,
+   "parentWin": 25,
+   "countsAs": 13,
+   "atWin": 81.7
+  },
+  {
+   "map": "mm",
+   "floor": 19,
+   "kind": "skirmish",
+   "enemy": 4.13,
+   "shield": 15,
+   "hp": 26,
+   "parentWin": 25,
+   "countsAs": 15,
+   "atWin": 85
+  },
+  {
+   "map": "mm",
+   "floor": 20,
+   "kind": "miniboss",
+   "enemy": 4.31,
+   "shield": 31,
+   "hp": 29,
+   "parentWin": 15,
+   "countsAs": 15.5,
+   "atWin": 68.3
+  },
+  {
+   "map": "mm",
+   "floor": 25,
+   "kind": "skirmish",
+   "enemy": 5.25,
+   "shield": 18,
+   "hp": 26,
+   "parentWin": 16.7,
+   "countsAs": 18,
+   "atWin": 65
+  },
+  {
+   "map": "mm",
+   "floor": 30,
+   "kind": "miniboss",
+   "enemy": 6.19,
+   "shield": 41,
+   "hp": 29,
+   "parentWin": 5,
+   "countsAs": 20.5,
+   "atWin": 63.3
+  },
+  {
+   "map": "mm",
+   "floor": 39,
+   "kind": "skirmish",
+   "enemy": 7.88,
+   "shield": 25,
+   "hp": 26,
+   "parentWin": 3.3,
+   "countsAs": 25,
+   "atWin": 81.7
+  },
+  {
+   "map": "mm",
+   "floor": 40,
+   "kind": "miniboss",
+   "enemy": 8.06,
+   "shield": 51,
+   "hp": 29,
+   "parentWin": 3.3,
+   "countsAs": 25.5,
+   "atWin": 71.7
+  },
+  {
+   "map": "mm",
+   "floor": 50,
+   "kind": "miniboss",
+   "enemy": 9.63,
+   "shield": 61,
+   "hp": 29,
+   "parentWin": 1.7,
+   "countsAs": 30.5,
+   "atWin": 70
+  },
+  {
+   "map": "mlb",
+   "floor": 1,
+   "kind": "skirmish",
+   "enemy": 6.75,
+   "shield": 22,
+   "hp": 30,
+   "parentWin": 81.7,
+   "countsAs": 22,
+   "atWin": 81.7
+  },
+  {
+   "map": "mlb",
+   "floor": 2,
+   "kind": "skirmish",
+   "enemy": 6.94,
+   "shield": 23,
+   "hp": 30,
+   "parentWin": 75,
+   "countsAs": 22.5,
+   "atWin": 75
+  },
+  {
+   "map": "mlb",
+   "floor": 5,
+   "kind": "skirmish",
+   "enemy": 7.5,
+   "shield": 24,
+   "hp": 30,
+   "parentWin": 65,
+   "countsAs": 24,
+   "atWin": 71.7
+  },
+  {
+   "map": "mlb",
+   "floor": 9,
+   "kind": "skirmish",
+   "enemy": 8.25,
+   "shield": 26,
+   "hp": 30,
+   "parentWin": 61.7,
+   "countsAs": 26,
+   "atWin": 70
+  },
+  {
+   "map": "mlb",
+   "floor": 10,
+   "kind": "miniboss",
+   "enemy": 8.44,
+   "shield": 53,
+   "hp": 30,
+   "parentWin": 68.3,
+   "countsAs": 26.5,
+   "atWin": 63.3
+  },
+  {
+   "map": "mlb",
+   "floor": 15,
+   "kind": "skirmish",
+   "enemy": 9.25,
+   "shield": 29,
+   "hp": 30,
+   "parentWin": 58.3,
+   "countsAs": 29,
+   "atWin": 68.3
+  },
+  {
+   "map": "mlb",
+   "floor": 19,
+   "kind": "skirmish",
+   "enemy": 9.75,
+   "shield": 31,
+   "hp": 30,
+   "parentWin": 55,
+   "countsAs": 31,
+   "atWin": 65
+  },
+  {
+   "map": "mlb",
+   "floor": 20,
+   "kind": "miniboss",
+   "enemy": 9.88,
+   "shield": 63,
+   "hp": 30,
+   "parentWin": 48.3,
+   "countsAs": 31.5,
+   "atWin": 61.7
+  },
+  {
+   "map": "mlb",
+   "floor": 25,
+   "kind": "skirmish",
+   "enemy": 10.25,
+   "shield": 34,
+   "hp": 30,
+   "parentWin": 50,
+   "countsAs": 34,
+   "atWin": 60
+  },
+  {
+   "map": "mlb",
+   "floor": 30,
+   "kind": "miniboss",
+   "enemy": 10.56,
+   "shield": 73,
+   "hp": 30,
+   "parentWin": 36.7,
+   "countsAs": 36.5,
+   "atWin": 55
+  },
+  {
+   "map": "mlb",
+   "floor": 39,
+   "kind": "skirmish",
+   "enemy": 11,
+   "shield": 41,
+   "hp": 30,
+   "parentWin": 26.7,
+   "countsAs": 41,
+   "atWin": 50
+  },
+  {
+   "map": "mlb",
+   "floor": 40,
+   "kind": "miniboss",
+   "enemy": 11,
+   "shield": 83,
+   "hp": 30,
+   "parentWin": 28.3,
+   "countsAs": 41.5,
+   "atWin": 48.3
+  },
+  {
+   "map": "mlb",
+   "floor": 50,
+   "kind": "miniboss",
+   "enemy": 11,
+   "shield": 93,
+   "hp": 30,
+   "parentWin": 25,
+   "countsAs": 46.5,
+   "atWin": 46.7
+  }
+ ]
+}

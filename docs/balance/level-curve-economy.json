@@ -1,0 +1,1310 @@
+{
+ "costs": [
+  {
+   "map": 1,
+   "dustSoFar": 80,
+   "goldSoFar": 160,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1916,
+     "gold": 1272
+    },
+    "L6": {
+     "dust": 7220,
+     "gold": 4800
+    }
+   }
+  },
+  {
+   "map": 2,
+   "dustSoFar": 228,
+   "goldSoFar": 390,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1780,
+     "gold": 1184
+    },
+    "L6": {
+     "dust": 6700,
+     "gold": 4460
+    }
+   }
+  },
+  {
+   "map": 3,
+   "dustSoFar": 376,
+   "goldSoFar": 620,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1780,
+     "gold": 1184
+    },
+    "L6": {
+     "dust": 6700,
+     "gold": 4460
+    }
+   }
+  },
+  {
+   "map": 4,
+   "dustSoFar": 660,
+   "goldSoFar": 990,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1388,
+     "gold": 920
+    },
+    "L6": {
+     "dust": 5180,
+     "gold": 3440
+    }
+   }
+  },
+  {
+   "map": 5,
+   "dustSoFar": 904,
+   "goldSoFar": 1280,
+   "cost": {
+    "L1": {
+     "dust": 120,
+     "gold": 80
+    },
+    "L3": {
+     "dust": 1712,
+     "gold": 1136
+    },
+    "L6": {
+     "dust": 6260,
+     "gold": 4160
+    }
+   }
+  },
+  {
+   "map": 6,
+   "dustSoFar": 1289,
+   "goldSoFar": 1700,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 2044,
+     "gold": 1360
+    },
+    "L6": {
+     "dust": 7720,
+     "gold": 5140
+    }
+   }
+  },
+  {
+   "map": 7,
+   "dustSoFar": 1641,
+   "goldSoFar": 2140,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1652,
+     "gold": 1096
+    },
+    "L6": {
+     "dust": 6200,
+     "gold": 4120
+    }
+   }
+  },
+  {
+   "map": 8,
+   "dustSoFar": 1857,
+   "goldSoFar": 2440,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1652,
+     "gold": 1096
+    },
+    "L6": {
+     "dust": 6200,
+     "gold": 4120
+    }
+   }
+  },
+  {
+   "map": 9,
+   "dustSoFar": 2113,
+   "goldSoFar": 2820,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 1652,
+     "gold": 1096
+    },
+    "L6": {
+     "dust": 6200,
+     "gold": 4120
+    }
+   }
+  },
+  {
+   "map": 10,
+   "dustSoFar": 2397,
+   "goldSoFar": 3190,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 2436,
+     "gold": 1624
+    },
+    "L6": {
+     "dust": 9240,
+     "gold": 6160
+    }
+   }
+  },
+  {
+   "map": 11,
+   "dustSoFar": 2870,
+   "goldSoFar": 3720,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 2308,
+     "gold": 1536
+    },
+    "L6": {
+     "dust": 8740,
+     "gold": 5820
+    }
+   }
+  },
+  {
+   "map": 12,
+   "dustSoFar": 3628,
+   "goldSoFar": 4500,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 2308,
+     "gold": 1536
+    },
+    "L6": {
+     "dust": 8740,
+     "gold": 5820
+    }
+   }
+  },
+  {
+   "map": 13,
+   "dustSoFar": 3912,
+   "goldSoFar": 4870,
+   "cost": {
+    "L1": {
+     "dust": 60,
+     "gold": 40
+    },
+    "L3": {
+     "dust": 2700,
+     "gold": 1800
+    },
+    "L6": {
+     "dust": 10260,
+     "gold": 6840
+    }
+   }
+  },
+  {
+   "map": 14,
+   "dustSoFar": 4264,
+   "goldSoFar": 5310,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2640,
+     "gold": 1760
+    },
+    "L6": {
+     "dust": 10200,
+     "gold": 6800
+    }
+   }
+  },
+  {
+   "map": 15,
+   "dustSoFar": 4616,
+   "goldSoFar": 5750,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2376,
+     "gold": 1584
+    },
+    "L6": {
+     "dust": 9180,
+     "gold": 6120
+    }
+   }
+  },
+  {
+   "map": 16,
+   "dustSoFar": 5001,
+   "goldSoFar": 6170,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2640,
+     "gold": 1760
+    },
+    "L6": {
+     "dust": 10200,
+     "gold": 6800
+    }
+   }
+  },
+  {
+   "map": 17,
+   "dustSoFar": 5285,
+   "goldSoFar": 6540,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2376,
+     "gold": 1584
+    },
+    "L6": {
+     "dust": 9180,
+     "gold": 6120
+    }
+   }
+  },
+  {
+   "map": 18,
+   "dustSoFar": 5637,
+   "goldSoFar": 6980,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2640,
+     "gold": 1760
+    },
+    "L6": {
+     "dust": 10200,
+     "gold": 6800
+    }
+   }
+  },
+  {
+   "map": 19,
+   "dustSoFar": 5921,
+   "goldSoFar": 7350,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2376,
+     "gold": 1584
+    },
+    "L6": {
+     "dust": 9180,
+     "gold": 6120
+    }
+   }
+  },
+  {
+   "map": 20,
+   "dustSoFar": 6233,
+   "goldSoFar": 7710,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2050,
+     "gold": 1364
+    },
+    "L6": {
+     "dust": 7915,
+     "gold": 5270
+    }
+   }
+  },
+  {
+   "map": 21,
+   "dustSoFar": 7294,
+   "goldSoFar": 8670,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2050,
+     "gold": 1364
+    },
+    "L6": {
+     "dust": 7915,
+     "gold": 5270
+    }
+   }
+  },
+  {
+   "map": 22,
+   "dustSoFar": 7558,
+   "goldSoFar": 9000,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 1984,
+     "gold": 1320
+    },
+    "L6": {
+     "dust": 7660,
+     "gold": 5100
+    }
+   }
+  },
+  {
+   "map": 23,
+   "dustSoFar": 7862,
+   "goldSoFar": 9410,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2248,
+     "gold": 1496
+    },
+    "L6": {
+     "dust": 8680,
+     "gold": 5780
+    }
+   }
+  },
+  {
+   "map": 24,
+   "dustSoFar": 8166,
+   "goldSoFar": 9820,
+   "cost": {
+    "L1": {
+     "dust": 0,
+     "gold": 0
+    },
+    "L3": {
+     "dust": 2546,
+     "gold": 1694
+    },
+    "L6": {
+     "dust": 9830,
+     "gold": 6545
+    }
+   }
+  }
+ ],
+ "all": [
+  {
+   "map": 1,
+   "earned": 257,
+   "bank": 257,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 2,
+   "earned": 397,
+   "bank": 654,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 3,
+   "earned": 594,
+   "bank": 1248,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 4,
+   "earned": 284,
+   "bank": 1532,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 5,
+   "earned": 244,
+   "bank": 1776,
+   "meanGain": 0,
+   "levels": "8xL0 12xL1"
+  },
+  {
+   "map": 6,
+   "earned": 454,
+   "bank": 2230,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 7,
+   "earned": 1927,
+   "bank": 4157,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 8,
+   "earned": 293,
+   "bank": 4450,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 9,
+   "earned": 325,
+   "bank": 4775,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 10,
+   "earned": 284,
+   "bank": 5059,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 11,
+   "earned": 770,
+   "bank": 3521,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 12,
+   "earned": 827,
+   "bank": 3820,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 13,
+   "earned": 284,
+   "bank": 2520,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 14,
+   "earned": 352,
+   "bank": 1288,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 15,
+   "earned": 649,
+   "bank": 617,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 16,
+   "earned": 385,
+   "bank": 78,
+   "meanGain": 9.5,
+   "levels": "1xL1 19xL3"
+  },
+  {
+   "map": 17,
+   "earned": 284,
+   "bank": 98,
+   "meanGain": 9.5,
+   "levels": "1xL1 19xL3"
+  },
+  {
+   "map": 18,
+   "earned": 421,
+   "bank": 123,
+   "meanGain": 9,
+   "levels": "2xL1 18xL3"
+  },
+  {
+   "map": 19,
+   "earned": 437,
+   "bank": 182,
+   "meanGain": 11,
+   "levels": "18xL3 2xL6"
+  },
+  {
+   "map": 20,
+   "earned": 805,
+   "bank": 14,
+   "meanGain": 12,
+   "levels": "1xL1 14xL3 5xL6"
+  },
+  {
+   "map": 21,
+   "earned": 1476,
+   "bank": 158,
+   "meanGain": 14.5,
+   "levels": "11xL3 9xL6"
+  },
+  {
+   "map": 22,
+   "earned": 264,
+   "bank": 26,
+   "meanGain": 14,
+   "levels": "12xL3 8xL6"
+  },
+  {
+   "map": 23,
+   "earned": 1879,
+   "bank": 243,
+   "meanGain": 13.5,
+   "levels": "13xL3 7xL6"
+  },
+  {
+   "map": 24,
+   "earned": 304,
+   "bank": 187,
+   "meanGain": 13,
+   "levels": "2xL1 10xL3 8xL6"
+  }
+ ],
+ "threeQuarters": [
+  {
+   "map": 1,
+   "earned": 257,
+   "bank": 193,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 2,
+   "earned": 397,
+   "bank": 491,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 3,
+   "earned": 594,
+   "bank": 936,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 4,
+   "earned": 284,
+   "bank": 1149,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 5,
+   "earned": 244,
+   "bank": 1332,
+   "meanGain": 0,
+   "levels": "8xL0 12xL1"
+  },
+  {
+   "map": 6,
+   "earned": 454,
+   "bank": 1673,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 7,
+   "earned": 1927,
+   "bank": 3118,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 8,
+   "earned": 293,
+   "bank": 3338,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 9,
+   "earned": 325,
+   "bank": 3581,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 10,
+   "earned": 284,
+   "bank": 3794,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 11,
+   "earned": 770,
+   "bank": 2064,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 12,
+   "earned": 827,
+   "bank": 2156,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 13,
+   "earned": 284,
+   "bank": 785,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 14,
+   "earned": 352,
+   "bank": 125,
+   "meanGain": 7.5,
+   "levels": "5xL1 15xL3"
+  },
+  {
+   "map": 15,
+   "earned": 649,
+   "bank": 84,
+   "meanGain": 6.5,
+   "levels": "7xL1 13xL3"
+  },
+  {
+   "map": 16,
+   "earned": 385,
+   "bank": 109,
+   "meanGain": 5.5,
+   "levels": "9xL1 11xL3"
+  },
+  {
+   "map": 17,
+   "earned": 284,
+   "bank": 58,
+   "meanGain": 7.5,
+   "levels": "5xL1 15xL3"
+  },
+  {
+   "map": 18,
+   "earned": 421,
+   "bank": 109,
+   "meanGain": 6.5,
+   "levels": "7xL1 13xL3"
+  },
+  {
+   "map": 19,
+   "earned": 437,
+   "bank": 41,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 20,
+   "earned": 805,
+   "bank": 53,
+   "meanGain": 10.5,
+   "levels": "1xL1 17xL3 2xL6"
+  },
+  {
+   "map": 21,
+   "earned": 1476,
+   "bank": 14,
+   "meanGain": 14,
+   "levels": "12xL3 8xL6"
+  },
+  {
+   "map": 22,
+   "earned": 264,
+   "bank": 80,
+   "meanGain": 13,
+   "levels": "2xL1 10xL3 8xL6"
+  },
+  {
+   "map": 23,
+   "earned": 1879,
+   "bank": 187,
+   "meanGain": 12.5,
+   "levels": "15xL3 5xL6"
+  },
+  {
+   "map": 24,
+   "earned": 304,
+   "bank": 55,
+   "meanGain": 12,
+   "levels": "2xL1 12xL3 6xL6"
+  }
+ ],
+ "half": [
+  {
+   "map": 1,
+   "earned": 257,
+   "bank": 129,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 2,
+   "earned": 397,
+   "bank": 327,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 3,
+   "earned": 594,
+   "bank": 624,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 4,
+   "earned": 284,
+   "bank": 766,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 5,
+   "earned": 244,
+   "bank": 888,
+   "meanGain": 0,
+   "levels": "8xL0 12xL1"
+  },
+  {
+   "map": 6,
+   "earned": 454,
+   "bank": 1115,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 7,
+   "earned": 1927,
+   "bank": 2079,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 8,
+   "earned": 293,
+   "bank": 2225,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 9,
+   "earned": 325,
+   "bank": 2388,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 10,
+   "earned": 284,
+   "bank": 2530,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 11,
+   "earned": 770,
+   "bank": 607,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 12,
+   "earned": 827,
+   "bank": 492,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 13,
+   "earned": 284,
+   "bank": 106,
+   "meanGain": 8,
+   "levels": "8xL1 12xL3"
+  },
+  {
+   "map": 14,
+   "earned": 352,
+   "bank": 18,
+   "meanGain": 3,
+   "levels": "14xL1 6xL3"
+  },
+  {
+   "map": 15,
+   "earned": 649,
+   "bank": 79,
+   "meanGain": 3,
+   "levels": "14xL1 6xL3"
+  },
+  {
+   "map": 16,
+   "earned": 385,
+   "bank": 7,
+   "meanGain": 4,
+   "levels": "12xL1 8xL3"
+  },
+  {
+   "map": 17,
+   "earned": 284,
+   "bank": 17,
+   "meanGain": 5,
+   "levels": "10xL1 10xL3"
+  },
+  {
+   "map": 18,
+   "earned": 421,
+   "bank": 96,
+   "meanGain": 4.5,
+   "levels": "11xL1 9xL3"
+  },
+  {
+   "map": 19,
+   "earned": 437,
+   "bank": 50,
+   "meanGain": 7.5,
+   "levels": "5xL1 15xL3"
+  },
+  {
+   "map": 20,
+   "earned": 805,
+   "bank": 53,
+   "meanGain": 8,
+   "levels": "4xL1 16xL3"
+  },
+  {
+   "map": 21,
+   "earned": 1476,
+   "bank": 11,
+   "meanGain": 11,
+   "levels": "2xL1 14xL3 4xL6"
+  },
+  {
+   "map": 22,
+   "earned": 264,
+   "bank": 11,
+   "meanGain": 10,
+   "levels": "4xL1 12xL3 4xL6"
+  },
+  {
+   "map": 23,
+   "earned": 1879,
+   "bank": 26,
+   "meanGain": 10,
+   "levels": "4xL1 12xL3 4xL6"
+  },
+  {
+   "map": 24,
+   "earned": 304,
+   "bank": 82,
+   "meanGain": 10,
+   "levels": "5xL1 10xL3 5xL6"
+  }
+ ],
+ "dayPerMap": [
+  {
+   "map": 1,
+   "earned": 257,
+   "bank": 193,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 2,
+   "earned": 397,
+   "bank": 491,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 3,
+   "earned": 594,
+   "bank": 936,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 4,
+   "earned": 284,
+   "bank": 1149,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 5,
+   "earned": 884,
+   "bank": 1812,
+   "meanGain": 0,
+   "levels": "8xL0 12xL1"
+  },
+  {
+   "map": 6,
+   "earned": 1094,
+   "bank": 2633,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 7,
+   "earned": 2567,
+   "bank": 4558,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 8,
+   "earned": 933,
+   "bank": 5258,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 9,
+   "earned": 965,
+   "bank": 5981,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 10,
+   "earned": 924,
+   "bank": 6674,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 11,
+   "earned": 1410,
+   "bank": 5424,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 12,
+   "earned": 1467,
+   "bank": 5996,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 13,
+   "earned": 924,
+   "bank": 5105,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 14,
+   "earned": 992,
+   "bank": 4265,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 15,
+   "earned": 1289,
+   "bank": 3912,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 16,
+   "earned": 1025,
+   "bank": 223,
+   "meanGain": 14.5,
+   "levels": "11xL3 9xL6"
+  },
+  {
+   "map": 17,
+   "earned": 924,
+   "bank": 85,
+   "meanGain": 16,
+   "levels": "8xL3 12xL6"
+  },
+  {
+   "map": 18,
+   "earned": 1061,
+   "bank": 352,
+   "meanGain": 14.5,
+   "levels": "11xL3 9xL6"
+  },
+  {
+   "map": 19,
+   "earned": 1077,
+   "bank": 26,
+   "meanGain": 17,
+   "levels": "6xL3 14xL6"
+  },
+  {
+   "map": 20,
+   "earned": 1445,
+   "bank": 137,
+   "meanGain": 14,
+   "levels": "1xL1 10xL3 9xL6"
+  },
+  {
+   "map": 21,
+   "earned": 2116,
+   "bank": 203,
+   "meanGain": 17.5,
+   "levels": "5xL3 15xL6"
+  },
+  {
+   "map": 22,
+   "earned": 904,
+   "bank": 107,
+   "meanGain": 17.5,
+   "levels": "5xL3 15xL6"
+  },
+  {
+   "map": 23,
+   "earned": 2519,
+   "bank": 334,
+   "meanGain": 14.5,
+   "levels": "11xL3 9xL6"
+  },
+  {
+   "map": 24,
+   "earned": 944,
+   "bank": 154,
+   "meanGain": 15,
+   "levels": "10xL3 10xL6"
+  }
+ ],
+ "dayPerMapLight": [
+  {
+   "map": 1,
+   "earned": 257,
+   "bank": 193,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 2,
+   "earned": 397,
+   "bank": 491,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 3,
+   "earned": 594,
+   "bank": 936,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 4,
+   "earned": 284,
+   "bank": 1149,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 5,
+   "earned": 564,
+   "bank": 1572,
+   "meanGain": 0,
+   "levels": "8xL0 12xL1"
+  },
+  {
+   "map": 6,
+   "earned": 774,
+   "bank": 2153,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 7,
+   "earned": 2247,
+   "bank": 3838,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 8,
+   "earned": 613,
+   "bank": 4298,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 9,
+   "earned": 645,
+   "bank": 4781,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 10,
+   "earned": 604,
+   "bank": 5234,
+   "meanGain": 0,
+   "levels": "4xL0 16xL1"
+  },
+  {
+   "map": 11,
+   "earned": 1090,
+   "bank": 3744,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 12,
+   "earned": 1147,
+   "bank": 4076,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 13,
+   "earned": 604,
+   "bank": 2945,
+   "meanGain": 12,
+   "levels": "20xL3"
+  },
+  {
+   "map": 14,
+   "earned": 672,
+   "bank": 1865,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 15,
+   "earned": 969,
+   "bank": 1272,
+   "meanGain": 10,
+   "levels": "20xL3"
+  },
+  {
+   "map": 16,
+   "earned": 705,
+   "bank": 367,
+   "meanGain": 10.5,
+   "levels": "19xL3 1xL6"
+  },
+  {
+   "map": 17,
+   "earned": 604,
+   "bank": 178,
+   "meanGain": 11.5,
+   "levels": "17xL3 3xL6"
+  },
+  {
+   "map": 18,
+   "earned": 741,
+   "bank": 205,
+   "meanGain": 10.5,
+   "levels": "19xL3 1xL6"
+  },
+  {
+   "map": 19,
+   "earned": 757,
+   "bank": 17,
+   "meanGain": 12.5,
+   "levels": "15xL3 5xL6"
+  },
+  {
+   "map": 20,
+   "earned": 1125,
+   "bank": 77,
+   "meanGain": 11.5,
+   "levels": "1xL1 15xL3 4xL6"
+  },
+  {
+   "map": 21,
+   "earned": 1796,
+   "bank": 92,
+   "meanGain": 15,
+   "levels": "10xL3 10xL6"
+  },
+  {
+   "map": 22,
+   "earned": 584,
+   "bank": 134,
+   "meanGain": 14,
+   "levels": "12xL3 8xL6"
+  },
+  {
+   "map": 23,
+   "earned": 2199,
+   "bank": 121,
+   "meanGain": 13.5,
+   "levels": "13xL3 7xL6"
+  },
+  {
+   "map": 24,
+   "earned": 624,
+   "bank": 229,
+   "meanGain": 13,
+   "levels": "2xL1 10xL3 8xL6"
+  }
+ ]
+}

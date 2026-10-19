@@ -302,6 +302,11 @@ function curveMoves(f, deck, easy){
   return moves.filter(mv=> mv.k > 0).slice(0, 9);
 }
 const SHIELD_CAP = +opt('shieldcap', 0); // --shieldcap=K: an easy fight's Shield goes no higher than the rule x K (at least 40); round 2 used 4
+// 2026-10-19 (package LV, the level curve): --rule starts every fight from its bramble on the rule (no shieldOverride, no hqHp), so the
+// level curves and the deck carry the difficulty; --shieldx=K then caps a Shield override at the rule x K (2: "none over ~2x the rule"),
+// and a lower Health goes no further than --hpfloor (a share of the bramble's own Health, 0.6)
+const RULE_START = argv.includes('--rule'), SHIELD_X = +opt('shieldx', 0), HP_FLOOR = +opt('hpfloor', 0);
+const stripRule = n=>{ const c = Object.assign({}, n); delete c.shieldOverride; delete c.hqHp; return c; };
 function curveTune(f, band, steps){
   const want = band.t * 100, lo = band.lo * 100, hi = band.hi * 100, AIM = Math.min(4, (hi - lo) / 2 - 1), trail = [];
   const off = w=> Math.abs(w - want), good = w=> off(w) <= AIM && w >= lo && w <= hi;
@@ -309,7 +314,7 @@ function curveTune(f, band, steps){
   // still has a way down (up): a move that makes the CPU hit harder counts before it costs you a game
   const P = (r, easy)=> off(r.win) + 10 * (easy ? 1 - r.hpLost / 100 : r.hpLost / 100);
   const T = (nn, what)=>{ const r = measure(f, nn, N, TUNE_SEED); trail.push({what, win: r.win}); return r; };
-  let node = f.n, cur = T(node, 'start'); const moves = [];
+  let node = RULE_START ? stripRule(f.n) : f.n, cur = T(node, 'start'); const moves = [];
   const deckRound = (maxSteps, coarse)=>{
     for(let step = 0; step < maxSteps && (coarse ? off(cur.win) > 6 : !good(cur.win)); step++){
       const easy = cur.win > want; let best = null;
@@ -329,7 +334,7 @@ function curveTune(f, band, steps){
     if(good(cur.win)) return;
     const base = cur.shield, easy = cur.win > want, rule = G.ruleShieldOf(node);
     if(!easy && base <= 0) return;
-    let a = easy ? base + 1 : 0, b = easy ? (SHIELD_CAP ? Math.max(base, 40, rule * SHIELD_CAP) : Math.max(40, rule * 5, base + 40)) : base - 1, best = null;
+    let a = easy ? base + 1 : 0, b = easy ? (SHIELD_X ? Math.max(base, Math.round(rule * SHIELD_X)) : SHIELD_CAP ? Math.max(base, 40, rule * SHIELD_CAP) : Math.max(40, rule * 5, base + 40)) : base - 1, best = null;
     for(let it = 0; it < 8 && a <= b; it++){
       const sv = Math.floor((a + b) / 2), nn = Object.assign({}, node, {shieldOverride: sv}), r = T(nn, {shield: sv});
       if(!best || off(r.win) < off(best.r.win) || (off(r.win) === off(best.r.win) && Math.abs(sv - base) < Math.abs(best.sv - base))) best = {sv, r, nn};
@@ -339,7 +344,7 @@ function curveTune(f, band, steps){
   };
   const hpRound = ()=>{
     if(good(cur.win) || cur.win > want || cur.shield > 0) return;
-    let a = 6, b = cur.hp - 1, best = null;
+    let a = HP_FLOOR ? Math.max(6, Math.round(cur.hp * HP_FLOOR)) : 6, b = cur.hp - 1, best = null;
     for(let it = 0; it < 6 && a <= b; it++){
       const h = Math.floor((a + b) / 2), nn = Object.assign({}, node, {hqHp: h}), r = T(nn, {hqHp: h});
       if(!best || off(r.win) < off(best.r.win)) best = {h, r, nn};
@@ -349,7 +354,7 @@ function curveTune(f, band, steps){
   };
   deckRound(steps || 6, true); shieldRound(); hpRound();
   if(!good(cur.win)){ deckRound(3, false); shieldRound(); }
-  return {moves, deck: moves.length ? node.deck : null, shieldOverride: shield, hqHp, after: cur, good: good(cur.win), trail};
+  return {moves, deck: moves.length ? node.deck : null, shieldOverride: shield, hqHp, after: cur, good: good(cur.win), trail, rule: RULE_START || undefined};
 }
 
 // ---- commands
@@ -411,7 +416,7 @@ if(CMD === 'list'){
   // `apply --fixes=road-curve-fixes` writes the fixes into arena_app.js.
   const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'r2-before')}.jsonl`));
   const OUT = path.join(OUTDIR, opt('fixes', 'road-curve-fixes') + '.jsonl'), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
-  const todo = all.filter(f=>{ const b = before.find(r=> r.map === f.map && r.key === f.key); if(!b) return false; const bd = bandOf(f, b.win); return bd.curve && bd.green !== 'green' && !f.endless; })
+  const todo = all.filter(f=>{ const b = before.find(r=> r.map === f.map && r.key === f.key); if(!b) return false; const bd = bandOf(f, b.win); return (bd.curve || argv.includes('--any')) && bd.green !== 'green' && !f.endless; }) // --any (2026-10-19, LV): the fights off the curve too, toward their older targets
     .filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights off the road curve to tune', todo.length);
   for(const f of todo){ const b = before.find(r=> r.map === f.map && r.key === f.key), t = Date.now(), band = G.skirmishTargetBand(f.map, f.n), fx = curveTune(f, band, +opt('steps', 6));

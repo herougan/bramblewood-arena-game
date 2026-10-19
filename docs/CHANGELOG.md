@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package LV: the level curve)
+- **Owner (00:19, the plan's last step): "balance level to balance with the overall linear increase in difficulty over time."** The road curve had been held up by 96 hand-set Shields (47 over 2× the rule, up to 33× / 252). Level curves carry it now.
+- **The enemy's level is a straight line:** its cards are 1.25% stronger every map after Map 4: Lv 3 at Map 12, Lv 6 at Map 20, Lv 9 at Map 28. Bosses fight two maps on, and the Map 20 world boss is levelled too (it fought at its printed level). A fractional level is a per-copy mix of its two stat steps.
+- **Your expected level follows the Forge:**
+  - Lv 0 to Map 10, because the Forge opens on Map 11 (this answers W2's "lower the curve if players don't reach Lv 3 by Map 10");
+  - Lv 3 from Map 11;
+  - then 6% more of the deck at Lv 6 each map from Map 16 (Lv 4.6 at Map 24), checked against the Dust a player earns (`level_curve econ`).
+- **Shield overrides 96 → 35, none over 2× the rule; lower Health 53 → 2.** The reference decks were rebuilt and every fight was retuned from the rule, deck moves first. **179/179 main fights green**, 151 on fresh seeds, 174 on the mean of both. The Eye of the Volcano and the Old Bramble are on the curve now and tuned; the Pale Desert is re-measured.
+- **Absolute difficulty** (four fixed yardstick decks, one rating scale) now rises 0.19 DR a map from Map 1, r² 0.80, against 0.135 and r² 0.68 before; the late maps no longer go flat. Maps 8, 13 and 20 stay off the line. They follow their reference decks; the owner decides.
+- **Endless floors:** +4% a floor compounding is gone. A floor counts as half a map further down the road (enemy level and Shield). The Murgle King on floor 10 is 38% for a Map 6 deck (was 0%). The Long Burrow got the Caldera's badger warband: its diggers had been 100% on every floor.
+- Doc `docs/level-curve-2026-10-19.md` + `.xlsx` + `.png`. Tools: `tools/level_curve_2026_10_19.js`, `tools/level_curve_xlsx.py`; `skirmish_pass.js curve --rule --shieldx --hpfloor --any`. New test `tests/level-curve-2026-10-19.js`; shields, winrate-panel and thematic updated.
+
 ## 2026-10-19 (package CB: the card pass)
 - **Owner (00:19): "balance the cards themselves (L1) + balance rarity, choose where the cards come from".** Every live card measured at Level 1 on card_balance.js's yardstick: 733 at 100 games, the 133 more than 3 points out again at 400.
 - **61 cards changed** (47 now in their band, 11 toward it, 3 budget fits), all within budget v3 at today's `value` S. Toned down: the Bounty fighters at 89–95% (Badger Berserker 5/12 → 3/12, War Hound, Squire's Mount, Woodland Brawler 4/12 → 3/12, Bramblewood Lynx 6/9 → 6/6, Boar Rampager 4/14 → 4/9 …), Pall Wraith 5/15 → 3/13, Lurking Dread 4/9 → 3/8, Bramblewood Macaque 2/10 → 2/4 (100% → 75.5%). Lifted: Tunnel Ant 5/5 → 5/7 (23.5% → 73%), Beaver Builder / Chipmunk Stockpiler / Cinder Stoker 1/9 → 1/13, The Sixfold 8/20 → 9/22, Sunspire Choirmother 5/10 at 2 Lumber → 2/6 at 1. Fitted: Raven Harbinger 5/18, Bone Diviner 5/19, The Magnate Duck 6/59. In band (measured cards): 400 → 444; more than 8 points out: 77 → 27.

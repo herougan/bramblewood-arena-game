@@ -69,7 +69,7 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
       ok(r.stage === 'starter' ? size === 18 : size === 20, `${m.id}: the reference deck has ${size} cards`); });
     ok(mono, 'the reference deck and card level never step back along the main maps');
     const r0 = G.referenceDeckFor('m1', fightsOf(G.CONQUEST_MAPS.find(m=> m.id === 'm1'))[0]), last = mains[mains.length - 1], rL = G.referenceDeckFor(last.id, fightsOf(last)[0]);
-    ok(r0.stage === 'starter' && r0.level === 1, 'Map 0 plays the starter deck at Level 1');
+    ok(r0.stage === 'starter' && r0.level === 0, 'Map 0 plays the starter deck at its own level (2026-10-19, LV: the Forge opens on Map 11, so Lv 0)');
     ok(rL.stage === 'road' && rL.deckMap >= 10 && rL.level > r0.level, `the last map (${last.id}) plays a late road deck (Map ${rL.deckMap}) at a higher level (${rL.level})`);
     ok(JSON.stringify(rL.deck) !== JSON.stringify(r0.deck), 'the late deck is not the starter deck');
     // the same fights (Maps 8 and 12, 12 games each), played by both decks: the late one must win clearly more
@@ -116,7 +116,9 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
     ok(bossOk, 'every main map\'s last fight is its boss fight: target 40-45%, green 30-49%');
     ok(G.skirmishTargetBand('m1', B.byKey('m1', '0-4')).t === .45, 'Map 0\'s Frost Vanguard keeps a gentler 45%');
     ok(G.skirmishTargetBand('m11', B.byKey('m11', '20-9')).t === .5 && G.skirmishTargetBand('m11', B.byKey('m11', '20-9')).role === 'miniboss', 'a boss before the map\'s last fight (20-9) is a mini-boss at 50%');
-    ok(!G.skirmishTargetBand('mtut', B.byKey('mtut', 'T-3')).curve && !G.skirmishTargetBand('mo', B.byKey('mo', '0-B-4')).curve, 'the come-back-later fights keep their older targets');
+    ok(!G.skirmishTargetBand('mtut', B.byKey('mtut', 'T-3')).curve, 'the Tutorial\'s come-back-later fights keep their older targets');
+    // 2026-10-19 (package LV): the Old Bramble and the Eye of the Volcano are on the curve (the Eye's boss fight is its Heart of the Mountain)
+    ok(G.skirmishTargetBand('mo', B.byKey('mo', '0-B-4')).role === 'boss' && G.skirmishTargetBand('me', B.byKey('me', '20-A-4')).role === 'boss' && G.skirmishTargetBand('me', B.byKey('me', '20-A-1')).t === .9, 'the Old Bramble and the Eye of the Volcano are on the curve');
     ok(G.skirmishTargetBand('mq', B.byKey('mq', '1-A-1')).t === .9 && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', 'side maps follow the same curve');
     const n1 = B.byKey('mc', '3-1'), nB = B.byKey('mc', '3-7'), cls = (mid, n, v)=>{ G.skirmishCurveCache[mid + ':' + n.key] = v; const h = G.skirmishCurveChipHTML(mid, n, ''); return (/se-curve-chip (\w*)/.exec(h) || [])[1]; };
     ok(cls('mc', n1, .90) === 'ok' && cls('mc', n1, .83) === 'ok' && cls('mc', n1, .80) === 'hard' && cls('mc', n1, .99) === 'easy', 'the first fight: 82-98% green, under red, over blue');

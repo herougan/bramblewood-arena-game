@@ -1,0 +1,93 @@
+[
+ {
+  "deck": "starter",
+  "level": 1,
+  "R": -3.6,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "1",
+  "level": 1,
+  "R": -0.29,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "2",
+  "level": 1,
+  "R": 0.23,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "3",
+  "level": 1,
+  "R": 0.51,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "4",
+  "level": 1,
+  "R": 0.14,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "5",
+  "level": 1,
+  "R": -0.15,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "6",
+  "level": 1,
+  "R": 0.4,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "7",
+  "level": 1,
+  "R": 0.28,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "8",
+  "level": 1,
+  "R": -0.11,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "9",
+  "level": 1,
+  "R": 0.88,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "10",
+  "level": 1,
+  "R": 1.51,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "11",
+  "level": 1,
+  "R": 2.09,
+  "panel": 59,
+  "games": 24
+ },
+ {
+  "deck": "12",
+  "level": 1,
+  "R": 1.92,
+  "panel": 59,
+  "games": 24
+ }
+]
