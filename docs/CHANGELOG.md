@@ -2,6 +2,28 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
+- **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
+- **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.
+- **Folded into `canonical/cards.json`** (`tools/fold_server_overrides_2026_10_19.js`, from a read-only dump):
+  - The server's design choices win: rarity, skills, cost, Wait, name and art.
+  - A field the file changed after the server save keeps the file's value and is listed. There are 25 such conflicts: 20 factions from UT's Base cards, Cave Flitter's rarity, Sunspire Choirmother's cost, Cataphract Destrier's flavour, and the effects of the White Dragon and the Cataphract.
+  - The editor's copy of a Dragon's resistances inside its skills became one list, the card's own `resist`.
+- **Every folded card was run through BF3's retune rules** at its real rarity (budget v5 with L/10 and the map term, inclusive; Legendary 9, Mythic 10, Ancient 11, Divine 12): 14 were within, 51 raised, 6 fitted down, and 1 is an owner call.
+  - **Over budget before:** Green Dragon 1.26×, Black Dragon 1.20×, Cave Bat Swarm 1.20×, Red Dragon 1.11×, White Dragon 1.11×, Cataphract Destrier 1.04×, Cave Flitter 1.01×.
+  - **Over budget after:** the Cave Bat Swarm only. Its server skills (Darksight, Nocturnal, Fork) would need a cut to 1/1, past the retune's half limit. It is an owner call.
+  - **The Dragons:** Green (Mythic) 8/38, Red (Mythic) 9/39, White (Divine) 8/37 with True Strike, Black (Ancient) 8/41.
+- **Map 0 and the Tutorial:** the owner's node edits of 10-18 are folded into `CONQUEST_MAPS`.
+  - Pond Patrol, Thicket Swarm, Raccoon Heist and Frost Vanguard take the owner's decks, Health and links.
+  - The two tutorials get hqHp 28 and tutHp 9 / 11.
+  - The server's `bee-knight-classic`, a Classic card removed on 10-13, became `bee-knight`.
+- **The road was re-checked, not retuned:** 61 touched fights were re-measured. Main maps on target went from 150 to 146 of 179, and the gaps list from 43 to 47.
+- **Proposed, NOT applied:** `supabase/proposed/20261019_clear_folded_overrides.sql`.
+  - It resets the 72 card rows to an empty patch, never `deleted = true`, which for a card would remove it from the game.
+  - It clears the two node rows, keeping every old row in `deleted_snapshot` and a backup table.
+  - The owner must approve it first. Nothing touched the live database.
+- **Docs and tests:** the doc is `docs/balance/server-overrides-fold-2026-10-19.md`, and the new test is `tests/server-overrides-fold-2026-10-19.js`. The card-pass, d, thematic, shields and side-maps tests now accept the fold.
+
 ## 2026-10-19 (package BF3: L/10, the map term, the full card retune, the honest road)
 - **Owner (15:48, 16:22):** "Retune to our L/10 stats. Retune all cards ... Balance our dragons and everything." / "it's fine to be = to budget" / "the cards as seen should be the cards when you get them" / "Thorns is reaallly strong" / "Where honest levers can't reach the target, LEAVE it and list the gap".
 - **Budget v5 is now N = (Base + L/10) × (1 + L/30),** with `levelLinDiv` 10 (was 5). Level 0 is Base − 1, and Base includes **0.2 × Map** (`perMap`). The rules are now **inclusive**: 2A+H+S ≤ N and A·H+S ≤ (N/3)². This applies in the helper, the budget panel, the Test Lab, the hub, the queue and the tests.

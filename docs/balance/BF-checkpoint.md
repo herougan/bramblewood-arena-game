@@ -42,5 +42,9 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
   gaps 43 (20 easy = cheat field, 23 hard) in docs/balance/road-gaps-2026-10-19.json; Shield overrides above the rule 26, on the rule main 147;
   tests read the gaps; docs + CHANGELOG; merged main (HB); Package BF3 committed
 
+- BF4 (coordinator 19:34 relay of owner): 72 live card overrides folded (tools/fold_server_overrides_2026_10_19.js; dump in
+  docs/balance/server-overrides/), retuned (1 owner call: cave-bat-swarm), Map 0 / tutorial node edits folded (bee-knight-classic -> bee-knight),
+  road re-checked 150 -> 146 main, gaps 47; SQL proposed (not applied); doc docs/balance/server-overrides-fold-2026-10-19.md
+
 ## Next
-- SubagentHandback report
+- merge main, build, tests, commit "Package BF4: ...", SubagentHandback

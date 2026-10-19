@@ -77,7 +77,10 @@ PLAN.fights.forEach(f=>{ const o = Object.values(f.out || {}).reduce((a, b)=> a 
 
 // ---- 4. the themes
 const TH = require(path.join(ROOT, 'tools', 'thematic_pass_2026_10_19.js'));
-const aud = TH.audit(), offs = aud.filter(f=> f.off.length);
+// 2026-10-19 (BF4): Map 0's four decks are the owner's own (the live server's node edits of 10-18, folded in; the owner's choice wins),
+// so their cards are the owner's theme for the Outskirts, not the TH pass's (docs/balance/server-overrides-fold-2026-10-19.md)
+const OWNER_DECKS = new Set(['0-1', '0-2', '0-3', '0-4']);
+const aud = TH.audit(), offs = aud.filter(f=> f.off.length && !OWNER_DECKS.has(f.key));
 ok(aud.length > 200 && !offs.length, `4. no off-theme card in any of ${aud.length} fights: ` + offs.slice(0, 5).map(f=> f.key + ' ' + f.off.map(o=> o.id).join('/')).join('; '));
 const mc = MAPS.find(m=> m.id === 'mc'), pel = mc.nodes.filter(x=> (x.deck || {})['pelican-diver']);
 ok(pel.length <= 2 && pel.every(x=> x.deck['pelican-diver'] <= 2), `4. Gannet Cliffs: Pelican Divers in at most 2 fights, 2 copies each (${pel.map(x=> x.key)})`);

@@ -719,7 +719,7 @@
     3
    ],
    "verdict": "owner",
-   "why": "fitting it needs 1/1 (×0.5): its 0 Lumber / Wait 0 at rare (N 24.9) is too little for its skills (S 12.94); a cost change, not a stat cut",
+   "why": "fitting it needs 1/1 (\u00d70.5): its 0 Lumber / Wait 0 at rare (N 24.9) is too little for its skills (S 12.94); a cost change, not a stat cut",
    "budgetServer": {
     "N": 24.9,
     "S": 12.94,
@@ -3752,7 +3752,7 @@
      "chipmunk-forager": 2
     },
     "hqHp": 30,
-    "icon": "🐌",
+    "icon": "\ud83d\udc0c",
     "name": "Pond Patrol",
     "armour": 0
    }
@@ -3777,7 +3777,7 @@
      "bee-knight-classic": 2
     },
     "hqHp": 28,
-    "icon": "🐝",
+    "icon": "\ud83d\udc1d",
     "name": "Thicket Swarm",
     "armour": 0,
     "requires": [
@@ -3825,7 +3825,7 @@
      "trash-panda-trickster": 2
     },
     "hqHp": 25,
-    "icon": "🦊",
+    "icon": "\ud83e\udd8a",
     "kind": "skirmish",
     "ender": true,
     "armour": 5,
@@ -3868,8 +3868,8 @@
     },
     {
      "field": "icon",
-     "from": "🦦",
-     "to": "🐌"
+     "from": "\ud83e\udda6",
+     "to": "\ud83d\udc0c"
     },
     {
      "field": "deck",
@@ -3915,8 +3915,8 @@
     },
     {
      "field": "icon",
-     "from": "🦂",
-     "to": "🐝"
+     "from": "\ud83e\udd82",
+     "to": "\ud83d\udc1d"
     },
     {
      "field": "deck",
@@ -3938,7 +3938,7 @@
       "bee-forager": 2,
       "forager-ant": 2,
       "acorn-chipmunk": 1,
-      "bee-knight-classic": 2
+      "bee-knight": 2
      }
     },
     {
@@ -3955,6 +3955,7 @@
     }
    ],
    "ignored": [
+    "bee-knight-classic -> bee-knight (no such card since 10-13)",
     "armour 0"
    ]
   },
@@ -4013,8 +4014,8 @@
     },
     {
      "field": "icon",
-     "from": "❄️",
-     "to": "🦊"
+     "from": "\u2744\ufe0f",
+     "to": "\ud83e\udd8a"
     },
     {
      "field": "deck",

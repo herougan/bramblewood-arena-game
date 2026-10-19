@@ -37,6 +37,7 @@ const HIST = JSON.parse(fs.readFileSync(path.join(DIR, 'file-field-history-2026-
 const PLAN_FILE = path.join(DIR, 'fold-plan-2026-10-19.json');
 const NODE_ROWS = {'__cfg:map-nodes:m1': ['0-1', '0-2', '0-3', '0-4'], '__cfg:map-nodes:mtut': ['tutorial', 'tutorial2']};
 const cmd = process.argv[2] || 'plan';
+const CARD_RENAME = {'bee-knight-classic': 'bee-knight'};
 const J = v=> JSON.stringify(v), eq = (a, b)=> J(sortKeys(a)) === J(sortKeys(b));
 function sortKeys(v){ if(Array.isArray(v)) return v.map(sortKeys); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).sort().forEach(k=> o[k] = sortKeys(v[k])); return o; } return v; }
 const r2 = v=> Math.round(v * 100) / 100;
@@ -131,7 +132,11 @@ function foldNodes(src, nodes){
     const re = new RegExp(`^(\\s*)(\\{ ?key:"${nd.key.replace(/[-]/g, '\\-')}",[^\\n]*\\})(,?)\\s*$`, 'm'), mm = re.exec(src);
     if(!mm) throw new Error('node line not found: ' + nd.key);
     const cur = new Function('return (' + mm[2] + ');')(), next = Object.assign({}, cur), patch = Object.assign({}, nd.patch);
-    const ignored = []; if('armour' in patch){ ignored.push('armour ' + J(patch.armour)); delete patch.armour; } // the game ignores node.armour since 10-18 (the Shield rule)
+    const ignored = [];
+    // a deck card the file no longer has: the Hall of Fame's Classic cards went on 10-13 ("mechanically identical to today's version"), so
+    // the server's bee-knight-classic is today's bee-knight
+    if(patch.deck){ const d = {}; Object.entries(patch.deck).forEach(([id, n])=>{ const to = CARD_RENAME[id] || id; if(to !== id) ignored.push(`${id} -> ${to} (no such card since 10-13)`); d[to] = (d[to] || 0) + n; }); patch.deck = d; }
+    if('armour' in patch){ ignored.push('armour ' + J(patch.armour)); delete patch.armour; } // the game ignores node.armour since 10-18 (the Shield rule)
     Object.keys(patch).forEach(k=>{ if(patch[k] === null) delete next[k]; else next[k] = patch[k]; });
     const diff = Object.keys(Object.assign({}, cur, next)).filter(k=> !eq(cur[k], next[k])).map(k=> ({field: k, from: cur[k] === undefined ? null : cur[k], to: next[k] === undefined ? null : next[k]}));
     src = src.slice(0, mm.index) + mm[1] + lit(next) + mm[3] + src.slice(mm.index + mm[0].length);
@@ -152,7 +157,7 @@ else if(cmd === 'apply'){
   fs.writeFileSync(APP, src); P.nodesDone = done; fs.writeFileSync(PLAN_FILE, JSON.stringify(P, null, 1) + '\n');
   console.log('folded', P.rows.length, 'cards into canonical/cards.json and', done.length, 'node edits into arena_app.js');
 } else if(cmd === 'doc'){
-  const P = JSON.parse(fs.readFileSync(PLAN_FILE, 'utf8')), fmtE = e=> Object.keys(e || {}).join(', ') || '—';
+  const P = JSON.parse(fs.readFileSync(PLAN_FILE, 'utf8')), fmtE = e=> Object.keys(e || {}).join(', ') || '—', CUR = {}; JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')).forEach(c=> CUR[c.id] = c);
   const st = a=> a.join('/'), ratio = b=> `${b.ratio}× ${b.ok ? '' : '(over)'}`.trim();
   const md = ['# The live server\'s card overrides folded into the file, 2026-10-19 (package BF4)', '',
     'Owner (19:34): "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".', '',
@@ -172,8 +177,9 @@ else if(cmd === 'apply'){
     `**Over budget before** (the live server versions): ${P.overBefore.map(r=> `${r.id} ${r.ratio}×${r.ratio2 > 1 ? ' (A·H ' + r.ratio2 + '×)' : ''}`).join(', ')}.`, '',
     `**Over budget after:** ${P.overAfter.length ? P.overAfter.map(r=> `${r.id} ${r.ratio}×`).join(', ') : 'none'}.`, '',
     '## The Dragons', '',
-    '| Card | Rarity (server / file before) | Server A/H | File before | Now | N (Lv 1) | 2A+H+S | Skills now |', '|---|---|---|---|---|---|---|---|',
-    ...P.rows.filter(r=> /dragon/.test(r.id)).map(r=>{ const c = r.changes.find(x=> x.field === 'effects'); return `| ${r.name} | ${r.serverRarity} / ${r.fileRarity} | ${st(r.server)} | ${st(r.file)} | **${st(r.now)}** | ${r.budgetNow.N} | ${ratio(r.budgetNow)} | ${fmtE(c ? c.to : null)} |`; }), '',
+    '| Card | Rarity (server / file before) | Server A/H | File before | Now | N (Lv 1) | 2A+H+S | Skills now | Resist |', '|---|---|---|---|---|---|---|---|---|',
+    ...P.rows.filter(r=> /dragon/.test(r.id)).map(r=> `| ${r.name} | ${r.serverRarity} / ${r.fileRarity} | ${st(r.server)} | ${st(r.file)} | **${st(r.now)}** | ${r.budgetNow.N} | ${ratio(r.budgetNow)} | ${fmtE(CUR[r.id].effects)} | ${(CUR[r.id].resist || []).join(', ')} |`), '',
+    'The server rows also carried each Dragon\'s resistance as a copy inside its skills (`effects.resist`, which the editor writes). It is now one list, the card\'s `resist`. The engine reads both lists, but the heat-proof check only reads the card\'s own, so nothing is lost. Past that, the server\'s skills differ from the file only by the Green Dragon\'s Overwhelm. The White Dragon keeps True Strike, which package D added after the save (a conflict, listed).', '',
     '## Every card', '',
     '| Card | Server saved | Rarity | Server → now | File before | Budget (server → now) | Fields folded | Conflicts |', '|---|---|---|---|---|---|---|---|',
     ...P.rows.slice().sort((a, b)=> a.name.localeCompare(b.name)).map(r=> `| ${r.name} | ${r.upd.slice(0, 10)} | ${r.rarity}${r.serverRarity !== r.rarity ? ' (server ' + r.serverRarity + ')' : ''} | ${st(r.server)} → **${st(r.now)}** | ${st(r.file)} | ${ratio(r.budgetServer)} → ${ratio(r.budgetNow)} | ${r.changes.map(c=> c.field === 'effects' ? 'skills' + (c.gained.length ? ' +' + c.gained.join(' +') : '') + (c.dropped.length ? ' −' + c.dropped.join(' −') : '') + (c.moved.length ? ' ~' + c.moved.join(' ~') : '') : c.field === 'art' ? 'art' : `${c.field} ${J(c.from)} → ${J(c.to)}`).join('; ') || '—'} | ${r.conflicts.map(c=> `${c.field}: kept ${c.kept}`).join('; ') || '—'} |`), '',
@@ -187,7 +193,16 @@ else if(cmd === 'apply'){
     'These rows were folded into `CONQUEST_MAPS` in `arena_app.js` the way the game applies them (each patch laid over the node). Before, they overrode the road on the live site.', '',
     '| Row | Node | Field | File before | Now (the owner\'s) |', '|---|---|---|---|---|',
     ...(P.nodesDone || []).flatMap(n=> n.diff.map(d=> `| ${n.map} | ${n.key} | ${d.field} | ${J(d.from)} | ${J(d.to)} |`)), '',
-    ...(P.nodesDone || []).filter(n=> n.ignored.length).map(n=> `- ${n.key}: ${n.ignored.join(', ')} was not written: the game ignores \`node.armour\` since 10-18 (the Shield rule).`), '',
+    ...(P.nodesDone || []).filter(n=> n.ignored.length).map(n=> `- ${n.key}: ${n.ignored.join('; ')}. (\`node.armour\` is not written: the game ignores it since 10-18, the Shield rule.)`), '',
+    ...(()=>{ let RC = null; try{ RC = JSON.parse(fs.readFileSync(path.join(DIR, 'road-recheck-2026-10-19.json'), 'utf8')); }catch(e){} if(!RC) return [];
+      const moved = RC.rows.filter(r=> r.greenBefore !== r.greenAfter || Math.abs(r.after - r.before) >= 8);
+      return ['## The road, re-checked (not retuned)', '',
+        `${RC.fights} fights use a folded card that changed. Some hold it in their enemy deck; the rest play the Maps 0–3 reference decks, whose Bee Drone, Riverwing Envoy and Rabbit Kit changed. All of them were re-measured (120 games, the measure seeds; \`docs/balance/server-overrides/road-recheck-2026-10-19.json\`).`, '',
+        `- **Main maps on target:** ${RC.mainGreen.before} → **${RC.mainGreen.after}** of ${RC.mainGreen.of}. Side maps: ${RC.sideGreen.before} → ${RC.sideGreen.after} of ${RC.sideGreen.of}. Fresh seeds, main: ${RC.freshMainGreen.before} → ${RC.freshMainGreen.after}.`,
+        `- **${RC.greenLost} fights left their band and ${RC.greenGained} came into it.** The gaps list (\`docs/balance/road-gaps-2026-10-19.json\`) now has ${RC.gaps.after} fights (was ${RC.gaps.before}).`,
+        '- **Map 0\'s fights are the owner\'s own decks.** They were measured as they are and not tuned.', '',
+        '| Fight | Kind | Before | After | Target (band) | Band before → after |', '|---|---|---|---|---|---|',
+        ...moved.map(r=> `| ${r.code} | ${r.kind} | ${r.before}% | ${r.after}% | ${r.target}% (${r.lo}–${r.hi}) | ${r.greenBefore} → ${r.greenAfter} |`), '']; })(),
     '## Clearing the live rows (proposed, NOT applied)', '',
     '`supabase/proposed/20261019_clear_folded_overrides.sql` is waiting for the owner\'s approval. Nothing has touched the live database.',
     '- **The 72 card rows are reset to an empty patch** (`data = {"__patch": true}`). The game reads that as the file\'s card. The old row is kept in `deleted_snapshot` and in a backup table. **The card rows must not be marked `deleted = true`:** for a card, that is the editor\'s tombstone, and the game would remove the card from play (`liveDeletes`). The reset also bumps `updated_at`, so open games pick it up on their next 30-second poll.',

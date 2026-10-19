@@ -57,7 +57,7 @@ ok(rows.length > 200, `4. the BF measure has every fight (${rows.length} rows)`)
   const mean = a=>{ const b = a.slice().sort((x, y)=> x - y); return b.length ? (b[(b.length - 1) >> 1] + b[b.length >> 1]) / 2 : 0; }, worse = []; // the median: the Eye's four-wave 20-A-4 can't be simulated (LV)
   // (BF3) a listed gap is left out: Gannet Cliffs' 2-B-2 / 2-B-3 / 2-B-4 are all easy gaps (a future "cheat" field), so mg is not compared
   for(const m of subs){ const mine = rows.filter(r=> r.map === m.id && r.curve && !r.endless && !listed.has(r.map + ':' + r.code)); if(!mine.length || m.shieldMap != null) continue;
-    const par = rows.filter(r=> r.map === m.parent && r.curve);
+    const par = rows.filter(r=> r.map === m.parent && r.curve && !listed.has(r.map + ':' + r.code)); // (BF4) the parent's listed gaps are left out too
     if(par.length && mean(mine.map(r=> r.win - r.target)) > mean(par.map(r=> r.win - r.target)) + 8) worse.push(`${m.id} ${mean(mine.map(r=> r.win)).toFixed(1)}`); }
   ok(!worse.length, '4. no side map plays easier against its targets than its parent (by more than the band): ' + worse.join(', ')); }
 console.log(fail ? `side-maps-2026-10-19: ${fail} of ${n} checks failed` : `side-maps-2026-10-19: all ${n} checks pass`);
