@@ -25,7 +25,7 @@ const TUT = src.match(/^const TUTORIAL_CFG_DEFAULT = \{\.\.\.STARTER_CFG_DEFAULT
 const H = new Function('CONQUEST_MAPS', 'CHARACTER_DEFS', [
   constLine('KIND_BASE'), fn('baseKind'), fn('mainConquestMaps'), fn('mapNumberOf'), constLine('MAP_CASTLE'), constLine('KIND_CASTLE_LEVEL'),
   constLine('NODE_MAP_HINT'), fn('mapOfNode'), constLine('TUT_SIDE_GATE'), fn('nodeCastleId'), fn('nodeCastleLevel'), constLine('SHIELD_RULE_MULT'), fn('nodeMapNumber'),
-  fn('shieldRuleMult'), fn('ruleShieldOf'), fn('shieldOverrideOf'), constLine('BASE_BRAMBLE_HP'), fn('baseBrambleHp'), fn('castleLeveled'),
+  constLine('ENDLESS_FLOOR_CURVE'), fn('shieldMapOf'), /* 2026-10-19 (LV): an endless floor counts half a map a floor further on */ fn('shieldRuleMult'), fn('ruleShieldOf'), fn('shieldOverrideOf'), constLine('BASE_BRAMBLE_HP'), fn('baseBrambleHp'), fn('castleLeveled'),
   constLine('ARMOUR_LAYER_MAX'), fn('armourLayersOf'), fn('skirmishCastle'), constLine('DUNGEON_DEFAULTS'), fn('dungeonConfig'), fn('dungeonWaves'),
   'const _t = s=> s;', fn('castleLineText'),
 ].join('\n') + '\nreturn {mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, baseBrambleHp, nodeCastleLevel, dungeonWaves, castleLineText, NODE_MAP_HINT, SHIELD_RULE_MULT};')(CONQUEST_MAPS, CHARACTER_DEFS);
@@ -38,7 +38,7 @@ ok(JSON.stringify(H.SHIELD_RULE_MULT) === JSON.stringify(MULT), 'the multipliers
 const EFFECTIVE = {'T-2':1, 'T-3':8, 'T-4':18, '0-B-1':17, '0-B-2':17, '0-B-3':17, '0-B-4':17};
 let n = 0, nOverride = 0; const seen = {};
 for(const m of CONQUEST_MAPS){ const no = H.mapNumberOf(m.id); for(const node of m.nodes || []){
-  const eff = EFFECTIVE[node.key] != null ? EFFECTIVE[node.key] : (m.shieldMap != null ? m.shieldMap : (no || 0)), /* + a map's own shieldMap (Lilypad Reach counts as Map 6, 2026-10-18) */ k = node.kind || 'skirmish', want = Math.round(eff * MULT[k]), sc = H.skirmishCastle(node); n++;
+  const eff = EFFECTIVE[node.key] != null ? EFFECTIVE[node.key] : (m.shieldMap != null ? m.shieldMap : (no || 0)), /* + a map's own shieldMap (Lilypad Reach counts as Map 6, 2026-10-18) */ k = node.kind || 'skirmish', want = Math.round((eff + (m.endless && !m.tower && node.floor > 1 ? (node.floor - 1) * 0.5 : 0)) * MULT[k]) /* 2026-10-19 (LV): + half a map a floor */, sc = H.skirmishCastle(node); n++;
   ok(H.nodeMapNumber(node) === eff, `${node.key}: the rule counts Map ${H.nodeMapNumber(node)} (want ${eff})`);
   // 2026-10-18 (skirmish pass SKB): a fight the pass tuned carries its own shieldOverride; the rule still stands under it
   const ovr = node.shieldOverride != null ? [].concat(node.shieldOverride).reduce((a, b)=> a + Math.max(0, Math.round(+b || 0)), 0) : null;
@@ -52,7 +52,7 @@ const sh = (mapId, key)=> H.skirmishCastle(byKey(mapId, key)).rule; // the rule'
 ok(sh('m1', '0-2') === 0 && sh('m1', '0-4') === 0, 'Map 0: no Shield (skirmish, boss)');
 ok(sh('m21', '21-1') === 21 && sh('m21', '21-4') === 32 && sh('m21', '21-6') === 63, 'Map 21: skirmish 21, elite round(31.5) = 32, boss 63');
 ok(sh('mc', '3-1') === 3 && sh('mc', '3-5') === 5 && sh('mc', '3-7') === 9, 'Map 3: skirmish 3, elite round(4.5) = 5, boss 9');
-ok(sh('mm', '6-MM-10') === 12, 'a mini-boss on a Map 6 side map: 12');
+ok(sh('mm', '6-MM-10') === 21, 'a mini-boss on a Map 6 endless floor 10: 21 (2026-10-19, LV: the floor counts as Map 10.5; was 12)');
 ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') === 60 && sh('m11', '20-R') === 60, 'Map 20: dungeon 30, world boss 60, campaign boss 60, raid 60');
 { const tot = (m, k)=> H.skirmishCastle(byKey(m, k)).total, shv = (m, k)=> H.skirmishCastle(byKey(m, k)).rule;
   ok(shv('mtut', 'T-2') === 1 && shv('mtut', 'T-3') === 8 && shv('mtut', 'T-4') === 27, `T-2 / T-3 / T-4 Shield ${shv('mtut', 'T-2')} / ${shv('mtut', 'T-3')} / ${shv('mtut', 'T-4')}`);

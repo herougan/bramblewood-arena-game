@@ -41,13 +41,13 @@ const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', '
   'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
   'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
   'CPU_AI_MAX', 'cpuAiAutoLevel', 'cpuAiLevelForNode', 'MAP_CASTLE', 'KIND_CASTLE_LEVEL', 'NODE_MAP_HINT', 'mapOfNode', 'nodeCastleId', 'nodeCastleLevel', 'SHIELD_RULE_MULT',
-  'nodeMapNumber', 'shieldRuleMult', 'ruleShieldOf', 'shieldOverrideOf', 'BASE_BRAMBLE_HP', 'baseBrambleHp', 'ARMOUR_LAYER_MAX', 'skirmishCastle', 'prepareLeaderGrants', 'applySkirmishSetup',
+  'nodeMapNumber', 'shieldRuleMult', 'shieldMapOf', 'ruleShieldOf', 'shieldOverrideOf', 'BASE_BRAMBLE_HP', 'baseBrambleHp', 'ARMOUR_LAYER_MAX', 'skirmishCastle', 'prepareLeaderGrants', 'applySkirmishSetup',
   'skirmishCardScore', 'expectedPlayerDeck', 'MAP_DAYNIGHT', 'mapDayNight', 'TIDESPOUT_NODES', 'MISTY_MAPS', 'PERMATIDE_MAPS', 'RAPIDS_MAPS', 'wetMap', 'mapIdOfNode', 'fightRules',
   'TERRAIN_BIOMES', 'TERRAIN_TIER_STATS', 'terrainTierFor', 'terrainFor', 'terrainObj', 'DARK_MAPS', 'WINDY_MAPS', 'VOLCANO_MAPS', 'VOLCANO_GLOW', 'MAP_MUSIC', 'MAP_BIOME_OF',
-  'roadEnemyLevel', 'levelledEnemyDeck', 'hashStr', 'KIND_BASE', 'baseKind',
+  /* 2026-10-19 (LV): the level curves */ 'ROAD_LEVEL_CURVE', 'LEVEL_STAT_STEPS', 'levelForGain', 'levelMix', 'levelMixDeck', 'ENDLESS_FLOOR_CURVE', 'roadMapOfFight', 'roadEnemyLevelExact', 'roadEnemyLevel', 'levelledEnemyDeck', 'hashStr', 'KIND_BASE', 'baseKind',
   // 2026-10-19 (W2): the map win-rate panel's reference player, so the tools play exactly what the skirmish editor's panel plays
   'seededRng', 'sleep', 'CONQUEST_DEFAULT_MODE', 'levelGateMap', 'WINRATE_REF_DECKS', 'referencePlayerLevel', 'referenceDeckFor', 'referenceBaseDefs', 'referencePlayerDeck',
-  'referenceFightSetup', 'playReferenceGame', 'simulateReferenceFight', 'skirmishTargetWinRate', /* 2026-10-19 (R2): the road curve */ 'ROAD_CURVE_TOL', /* + _SKIP: one declaration */ 'ROAD_CURVE_BOSSY', 'roadCurveFights', 'roadCurveTarget', 'skirmishTargetBand', 'skirmishCurveCache', 'skirmishCurveNote', 'skirmishCurveChipHTML', 'SKIRMISH_CURVE_SIMS', 'skirmishCurveSimCache', 'SKIRMISH_CURVE_GAME_MS', /* + _FIGHT_MS, _BUDGET_MS: one declaration */ 'roadEnderKind', 'applyRoadKinds',
+  'referenceFightSetup', 'playReferenceGame', 'simulateReferenceFight', 'skirmishTargetWinRate', /* 2026-10-19 (R2): the road curve */ 'ROAD_CURVE_TOL', /* + _SKIP, _ENDER: one declaration */ 'ROAD_CURVE_BOSSY', 'roadCurveFights', 'roadCurveTarget', 'skirmishTargetBand', 'skirmishCurveCache', 'skirmishCurveNote', 'skirmishCurveChipHTML', 'SKIRMISH_CURVE_SIMS', 'skirmishCurveSimCache', 'SKIRMISH_CURVE_GAME_MS', /* + _FIGHT_MS, _BUDGET_MS: one declaration */ 'roadEnderKind', 'applyRoadKinds',
   'skirmishCurveSig', 'skirmishCurveErrText', 'checkSkirmishCurve'];
 const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) + 3;
 const dg = src.indexOf('function endlessDungeon(cfg){'), dgEnd = src.indexOf('\nconst TOWER_LEVEL_CAP', dg); // the endless dungeons; the Tower is left out
@@ -69,6 +69,7 @@ const body = [
   'return {CONQUEST_MAPS, mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, prepareLeaderGrants, applySkirmishSetup, fightRules, levelledEnemyDeck, roadEnemyLevel, cpuAiLevelForNode,',
   '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
   '  roadEnderKind, WINRATE_REF_DECKS, referencePlayerLevel, referenceDeckFor, referenceFightSetup, playReferenceGame, simulateReferenceFight, skirmishTargetWinRate, roadCurveTarget, skirmishTargetBand, skirmishCurveChipHTML, skirmishCurveCache, skirmishCurveNote, checkSkirmishCurve, skirmishCurveSimCache, SKIRMISH_CURVE_SIMS,',
+  '  ROAD_LEVEL_CURVE, ENDLESS_FLOOR_CURVE, levelForGain, levelMix, levelMixDeck, roadEnemyLevelExact, roadMapOfFight, shieldMapOf,',
   '  overlay: ()=> matchDefsOverlay, resetOverlay: ()=>{ matchDefsOverlay = {}; matchLeaderGrantMap = null; }, setGrantMap: m=>{ matchLeaderGrantMap = m; }, getCardDefs};',
 ].join('\n');
 const G = new Function('E', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', body)(E, CARD_DEFS_BASELINE, CHARACTER_DEFS);

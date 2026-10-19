@@ -1,0 +1,543 @@
+{
+ "curve": {
+  "enemyFrom": 4,
+  "enemyGainPerMap": 0.0125,
+  "bossMaps": 2,
+  "playerForgeMap": 11,
+  "playerForgeLevel": 3,
+  "playerRiseFrom": 15,
+  "playerRisePerMap": 0.18
+ },
+ "floors": {
+  "floorMaps": 0.5,
+  "floorPct": 0,
+  "levelCap": 11
+ },
+ "maps": [
+  {
+   "map": 0,
+   "id": "m1",
+   "enemy": 0,
+   "enemyBoss": 0,
+   "enemyGain": 0,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 0,
+    "elite": 0,
+    "miniboss": 0,
+    "boss": 0
+   },
+   "hp": {
+    "skirmish": 10,
+    "elite": null,
+    "boss": null
+   },
+   "cpu": "Basic / Basic"
+  },
+  {
+   "map": 1,
+   "id": "mf",
+   "enemy": 0,
+   "enemyBoss": 0,
+   "enemyGain": 0,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 1,
+    "elite": 2,
+    "miniboss": 2,
+    "boss": 3
+   },
+   "hp": {
+    "skirmish": 24,
+    "elite": 23,
+    "boss": null
+   },
+   "cpu": "Basic / Basic"
+  },
+  {
+   "map": 2,
+   "id": "mb",
+   "enemy": 0,
+   "enemyBoss": 0,
+   "enemyGain": 0,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 2,
+    "elite": 3,
+    "miniboss": 4,
+    "boss": 6
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 33,
+    "boss": null
+   },
+   "cpu": "Basic / Basic"
+  },
+  {
+   "map": 3,
+   "id": "mc",
+   "enemy": 0,
+   "enemyBoss": 1.25,
+   "enemyGain": 0,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 3,
+    "elite": 5,
+    "miniboss": 6,
+    "boss": 9
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": null
+   },
+   "cpu": "Basic / Basic"
+  },
+  {
+   "map": 4,
+   "id": "m2",
+   "enemy": 0,
+   "enemyBoss": 1.5,
+   "enemyGain": 0,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 4,
+    "elite": 6,
+    "miniboss": 8,
+    "boss": 12
+   },
+   "hp": {
+    "skirmish": 22,
+    "elite": 25,
+    "boss": null
+   },
+   "cpu": "Basic / Basic"
+  },
+  {
+   "map": 5,
+   "id": "mw",
+   "enemy": 1.25,
+   "enemyBoss": 1.75,
+   "enemyGain": 1.3,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 5,
+    "elite": 8,
+    "miniboss": 10,
+    "boss": 15
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 6,
+   "id": "m8",
+   "enemy": 1.5,
+   "enemyBoss": 2,
+   "enemyGain": 2.5,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 6,
+    "elite": 9,
+    "miniboss": 12,
+    "boss": 18
+   },
+   "hp": {
+    "skirmish": 26,
+    "elite": 23,
+    "boss": 29
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 7,
+   "id": "mu",
+   "enemy": 1.75,
+   "enemyBoss": 2.25,
+   "enemyGain": 3.8,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 7,
+    "elite": 11,
+    "miniboss": 14,
+    "boss": 21
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 8,
+   "id": "m4",
+   "enemy": 2,
+   "enemyBoss": 2.5,
+   "enemyGain": 5,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 8,
+    "elite": 12,
+    "miniboss": 16,
+    "boss": 24
+   },
+   "hp": {
+    "skirmish": 22,
+    "elite": 23,
+    "boss": 25
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 9,
+   "id": "mk",
+   "enemy": 2.25,
+   "enemyBoss": 2.75,
+   "enemyGain": 6.3,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 9,
+    "elite": 14,
+    "miniboss": 18,
+    "boss": 27
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 10,
+   "id": "m7",
+   "enemy": 2.5,
+   "enemyBoss": 3,
+   "enemyGain": 7.5,
+   "player": 0,
+   "playerGain": 0,
+   "shield": {
+    "skirmish": 10,
+    "elite": 15,
+    "miniboss": 20,
+    "boss": 30
+   },
+   "hp": {
+    "skirmish": 24,
+    "elite": 23,
+    "boss": 32
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 11,
+   "id": "m10",
+   "enemy": 2.75,
+   "enemyBoss": 3.38,
+   "enemyGain": 8.8,
+   "player": 3,
+   "playerGain": 10,
+   "shield": {
+    "skirmish": 11,
+    "elite": 17,
+    "miniboss": 22,
+    "boss": 33
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 12,
+   "id": "mh",
+   "enemy": 3,
+   "enemyBoss": 3.75,
+   "enemyGain": 10,
+   "player": 3,
+   "playerGain": 10,
+   "shield": {
+    "skirmish": 12,
+    "elite": 18,
+    "miniboss": 24,
+    "boss": 36
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 13,
+   "id": "mr",
+   "enemy": 3.38,
+   "enemyBoss": 4.13,
+   "enemyGain": 11.3,
+   "player": 3,
+   "playerGain": 10,
+   "shield": {
+    "skirmish": 13,
+    "elite": 20,
+    "miniboss": 26,
+    "boss": 39
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 14,
+   "id": "m5",
+   "enemy": 3.75,
+   "enemyBoss": 4.5,
+   "enemyGain": 12.5,
+   "player": 3,
+   "playerGain": 10,
+   "shield": {
+    "skirmish": 14,
+    "elite": 21,
+    "miniboss": 28,
+    "boss": 42
+   },
+   "hp": {
+    "skirmish": 28,
+    "elite": 23,
+    "boss": 31
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 15,
+   "id": "ml",
+   "enemy": 4.13,
+   "enemyBoss": 4.88,
+   "enemyGain": 13.8,
+   "player": 3,
+   "playerGain": 10,
+   "shield": {
+    "skirmish": 15,
+    "elite": 23,
+    "miniboss": 30,
+    "boss": 45
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 16,
+   "id": "mt",
+   "enemy": 4.5,
+   "enemyBoss": 5.25,
+   "enemyGain": 15,
+   "player": 3.18,
+   "playerGain": 10.6,
+   "shield": {
+    "skirmish": 16,
+    "elite": 24,
+    "miniboss": 32,
+    "boss": 48
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 17,
+   "id": "m6",
+   "enemy": 4.88,
+   "enemyBoss": 5.63,
+   "enemyGain": 16.3,
+   "player": 3.36,
+   "playerGain": 11.2,
+   "shield": {
+    "skirmish": 17,
+    "elite": 26,
+    "miniboss": 34,
+    "boss": 51
+   },
+   "hp": {
+    "skirmish": 34,
+    "elite": 23,
+    "boss": 37
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 18,
+   "id": "md",
+   "enemy": 5.25,
+   "enemyBoss": 6,
+   "enemyGain": 17.5,
+   "player": 3.54,
+   "playerGain": 11.8,
+   "shield": {
+    "skirmish": 18,
+    "elite": 27,
+    "miniboss": 36,
+    "boss": 54
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 19,
+   "id": "m3",
+   "enemy": 5.63,
+   "enemyBoss": 6.38,
+   "enemyGain": 18.8,
+   "player": 3.72,
+   "playerGain": 12.4,
+   "shield": {
+    "skirmish": 19,
+    "elite": 29,
+    "miniboss": 38,
+    "boss": 57
+   },
+   "hp": {
+    "skirmish": 32,
+    "elite": 23,
+    "boss": 35
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 20,
+   "id": "m11",
+   "enemy": 6,
+   "enemyBoss": 6.75,
+   "enemyGain": 20,
+   "player": 3.9,
+   "playerGain": 13,
+   "shield": {
+    "skirmish": 20,
+    "elite": 30,
+    "miniboss": 40,
+    "boss": 60
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 23,
+    "boss": 30
+   },
+   "cpu": "Basic / Smart"
+  },
+  {
+   "map": 21,
+   "id": "m21",
+   "enemy": 6.38,
+   "enemyBoss": 7.13,
+   "enemyGain": 21.3,
+   "player": 4.08,
+   "playerGain": 13.6,
+   "shield": {
+    "skirmish": 21,
+    "elite": 32,
+    "miniboss": 42,
+    "boss": 63
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Smartest / Smartest"
+  },
+  {
+   "map": 22,
+   "id": "m22",
+   "enemy": 6.75,
+   "enemyBoss": 7.5,
+   "enemyGain": 22.5,
+   "player": 4.26,
+   "playerGain": 14.2,
+   "shield": {
+    "skirmish": 22,
+    "elite": 33,
+    "miniboss": 44,
+    "boss": 66
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Smartest / Smartest"
+  },
+  {
+   "map": 23,
+   "id": "m23",
+   "enemy": 7.13,
+   "enemyBoss": 7.88,
+   "enemyGain": 23.8,
+   "player": 4.44,
+   "playerGain": 14.8,
+   "shield": {
+    "skirmish": 23,
+    "elite": 35,
+    "miniboss": 46,
+    "boss": 69
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Smartest / Smartest"
+  },
+  {
+   "map": 24,
+   "id": "m24",
+   "enemy": 7.5,
+   "enemyBoss": 8.25,
+   "enemyGain": 25,
+   "player": 4.62,
+   "playerGain": 15.4,
+   "shield": {
+    "skirmish": 24,
+    "elite": 36,
+    "miniboss": 48,
+    "boss": 72
+   },
+   "hp": {
+    "skirmish": 30,
+    "elite": 30,
+    "boss": 30
+   },
+   "cpu": "Smartest / Smartest"
+  }
+ ]
+}

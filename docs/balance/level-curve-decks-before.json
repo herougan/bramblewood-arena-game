@@ -1,0 +1,828 @@
+{
+ "generated": "2026-10-19",
+ "note": "Road decks (tools/skirmish_pass.js decks); the game reads them from arena_app.js WINRATE_REF_DECKS. Map 0 plays the Otter starter.",
+ "road": {
+  "1": {
+   "pool": 58,
+   "score": 95,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "n": 4
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    }
+   ],
+   "level": 1,
+   "generated": "2026-10-18"
+  },
+  "2": {
+   "pool": 69,
+   "score": 80,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "n": 4
+    },
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "n": 4
+    },
+    {
+     "id": "gold-throated-acolyte",
+     "name": "Gold-throated Acolyte",
+     "n": 4
+    }
+   ],
+   "level": 1,
+   "generated": "2026-10-18"
+  },
+  "3": {
+   "pool": 77,
+   "score": 84.5,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "n": 4
+    },
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "n": 4
+    },
+    {
+     "id": "voidfeather-scout",
+     "name": "Voidfeather Scout",
+     "n": 4
+    }
+   ],
+   "level": 1,
+   "generated": "2026-10-18"
+  },
+  "4": {
+   "pool": 87,
+   "score": 78.3,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "n": 4
+    },
+    {
+     "id": "voidfeather-scout",
+     "name": "Voidfeather Scout",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 4
+    }
+   ],
+   "level": 1,
+   "generated": "2026-10-18"
+  },
+  "5": {
+   "pool": 98,
+   "score": 81,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "amber-cicada",
+     "name": "Amber Cicada",
+     "n": 4
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 4
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "n": 4
+    }
+   ],
+   "level": 2,
+   "generated": "2026-10-18"
+  },
+  "6": {
+   "pool": 111,
+   "score": 82.3,
+   "cards": [
+    {
+     "id": "voidfeather-scout",
+     "name": "Voidfeather Scout",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "n": 4
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "n": 4
+    }
+   ],
+   "level": 2,
+   "generated": "2026-10-18"
+  },
+  "7": {
+   "pool": 128,
+   "score": 93.1,
+   "cards": [
+    {
+     "id": "voidfeather-scout",
+     "name": "Voidfeather Scout",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 4
+    }
+   ],
+   "level": 2,
+   "generated": "2026-10-18"
+  },
+  "8": {
+   "pool": 142,
+   "score": 75,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 4
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "n": 4
+    }
+   ],
+   "level": 2,
+   "generated": "2026-10-18"
+  },
+  "9": {
+   "pool": 156,
+   "score": 85.7,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "n": 4
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    }
+   ],
+   "level": 2,
+   "generated": "2026-10-18"
+  },
+  "10": {
+   "pool": 171,
+   "score": 80.6,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "n": 4
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "trapdoor-spider",
+     "name": "Trapdoor Spider",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "11": {
+   "pool": 183,
+   "score": 80,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "12": {
+   "pool": 196,
+   "score": 84.5,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "mangrove-kingfisher",
+     "name": "Mangrove Kingfisher",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "13": {
+   "pool": 216,
+   "score": 81.3,
+   "cards": [
+    {
+     "id": "trapdoor-spider",
+     "name": "Trapdoor Spider",
+     "n": 4
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "14": {
+   "pool": 237,
+   "score": 80.2,
+   "cards": [
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "warren-scout",
+     "name": "Warren Scout",
+     "n": 4
+    },
+    {
+     "id": "old-sturgeon",
+     "name": "Old Sturgeon",
+     "n": 4
+    }
+   ],
+   "level": 3,
+   "generated": "2026-10-18"
+  },
+  "15": {
+   "pool": 250,
+   "score": 81,
+   "cards": [
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "warren-scout",
+     "name": "Warren Scout",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "rockslide-ram",
+     "name": "Rockslide Ram",
+     "n": 4
+    },
+    {
+     "id": "thornvine-lasher",
+     "name": "Thornvine Lasher",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "16": {
+   "pool": 264,
+   "score": 85.7,
+   "cards": [
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "17": {
+   "pool": 275,
+   "score": 76,
+   "cards": [
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "18": {
+   "pool": 285,
+   "score": 73.8,
+   "cards": [
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    },
+    {
+     "id": "thorn-shrike",
+     "name": "Thorn Shrike",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "19": {
+   "pool": 303,
+   "score": 87.5,
+   "cards": [
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 4
+    },
+    {
+     "id": "rockslide-ram",
+     "name": "Rockslide Ram",
+     "n": 4
+    }
+   ],
+   "level": 4,
+   "generated": "2026-10-18"
+  },
+  "20": {
+   "pool": 310,
+   "score": 86.7,
+   "cards": [
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 3
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 1
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "21": {
+   "pool": 326,
+   "score": 82,
+   "cards": [
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 3
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "n": 1
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "22": {
+   "pool": 333,
+   "score": 88.6,
+   "cards": [
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "n": 4
+    },
+    {
+     "id": "warren-scout",
+     "name": "Warren Scout",
+     "n": 1
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "n": 3
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "23": {
+   "pool": 343,
+   "score": 97.9,
+   "cards": [
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "n": 3
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "n": 4
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 1
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  },
+  "24": {
+   "pool": 352,
+   "score": 85.4,
+   "cards": [
+    {
+     "id": "boar-rampager",
+     "name": "Boar Rampager",
+     "n": 4
+    },
+    {
+     "id": "cinder-imp",
+     "name": "Cinder Imp",
+     "n": 4
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "n": 4
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "n": 3
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "n": 1
+    },
+    {
+     "id": "snow-owl-sentinel",
+     "name": "Snow Owl Sentinel",
+     "n": 3
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 1
+    }
+   ],
+   "level": 5,
+   "generated": "2026-10-18"
+  }
+ }
+}

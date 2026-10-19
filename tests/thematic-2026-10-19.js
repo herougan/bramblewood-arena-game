@@ -96,7 +96,8 @@ ok(MAPS.every(m=> m.id === 'mu' || m.id === 'mk' || m.id === 'm7' || m.nodes.eve
 // ---- 6. the road curve
 // 2026-10-19 (package CB): the card pass changed card stats, rebuilt the reference decks and retuned the curve after TH, so the latest
 // road-curve measure is the card pass's (TH's own final is docs/balance/skirmish-pass-th-after.jsonl)
-const rows = read('docs/balance/skirmish-pass-cb-after.jsonl').split('\n').filter(Boolean).map(l=> JSON.parse(l));
+// 2026-10-19 (package LV): the level curve rebuilt the reference decks and retuned every fight after CB, so the latest is LV's
+const rows = read('docs/balance/skirmish-pass-lv-after.jsonl').split('\n').filter(Boolean).map(l=> JSON.parse(l));
 const mainFights = []; mains.forEach(m=>{ if(m.id === 'mtut') return; m.nodes.forEach(x=>{ if(x.deck && Object.keys(x.deck).length && x.kind !== 'tutorial' && !/raidboss/.test(x.kind || '')) mainFights.push([m.id, x]); }); });
 ok(mainFights.length >= 179, `6. the main maps' fights (${mainFights.length})`);
 const miss = [], off = [], stale = [];
@@ -114,7 +115,7 @@ const md = read('docs/thematic-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'thematic-pass-2026-10-19.xlsx')), '7. the spreadsheet');
 ok(REC.every(p=> md.includes(p.name)) && left.every(id=> md.includes(defs[id].name)), '7. the doc lists every placed card and the ones left in the pool');
 ok(/^# /.test(md) && md.includes('Badger Berserker') && md.includes('Pelican Diver'), '7. the doc names the drift it fixed');
-ok(read('docs/CHANGELOG.md').slice(0, 4000).includes('package TH'), '7. a CHANGELOG entry at the top');
+ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('package TH'), '7. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
 
 console.log(fail ? `thematic-2026-10-19: ${fail} of ${n} failed` : `thematic-2026-10-19: all ${n} checks passed`);
 process.exit(fail ? 1 : 0);

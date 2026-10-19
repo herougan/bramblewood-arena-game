@@ -22,6 +22,18 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - The hub must be published with `capabilities: {db: {}}`.
 - `tools/hub/pull_unit_picks.md` says how Claude reads the picks and works the queue, with `tools/hub/unit_picks_queue.js`. New test `tests/unit-themes-2026-10-19.js` (in run-all).
 
+## 2026-10-19 (package LV: the level curve)
+- **Owner (00:19, the plan's last step): "balance level to balance with the overall linear increase in difficulty over time."** The road curve had been held up by 96 hand-set Shields (47 over 2× the rule, up to 33× / 252). Level curves carry it now.
+- **The enemy's level is a straight line:** its cards are 1.25% stronger every map after Map 4: Lv 3 at Map 12, Lv 6 at Map 20, Lv 9 at Map 28. Bosses fight two maps on, and the Map 20 world boss is levelled too (it fought at its printed level). A fractional level is a per-copy mix of its two stat steps.
+- **Your expected level follows the Forge:**
+  - Lv 0 to Map 10, because the Forge opens on Map 11 (this answers W2's "lower the curve if players don't reach Lv 3 by Map 10");
+  - Lv 3 from Map 11;
+  - then 6% more of the deck at Lv 6 each map from Map 16 (Lv 4.6 at Map 24), checked against the Dust a player earns (`level_curve econ`).
+- **Shield overrides 96 → 35, none over 2× the rule; lower Health 53 → 2.** The reference decks were rebuilt and every fight was retuned from the rule, deck moves first. **179/179 main fights green**, 151 on fresh seeds, 174 on the mean of both. The Eye of the Volcano and the Old Bramble are on the curve now and tuned; the Pale Desert is re-measured.
+- **Absolute difficulty** (four fixed yardstick decks, one rating scale) now rises 0.19 DR a map from Map 1, r² 0.80, against 0.135 and r² 0.68 before; the late maps no longer go flat. Maps 8, 13 and 20 stay off the line. They follow their reference decks; the owner decides.
+- **Endless floors:** +4% a floor compounding is gone. A floor counts as half a map further down the road (enemy level and Shield). The Murgle King on floor 10 is 38% for a Map 6 deck (was 0%). The Long Burrow got the Caldera's badger warband: its diggers had been 100% on every floor.
+- Doc `docs/level-curve-2026-10-19.md` + `.xlsx` + `.png`. Tools: `tools/level_curve_2026_10_19.js`, `tools/level_curve_xlsx.py`; `skirmish_pass.js curve --rule --shieldx --hpfloor --any`. New test `tests/level-curve-2026-10-19.js`; shields, winrate-panel and thematic updated.
+
 ## 2026-10-19 (package BR: the raid's battle rating)
 - **Owner (08:18): "The raid's BR is being calculated wrongly ... the total of their 3 20-card decks and any other bonus ... played straight away ×2 ... our total BR = sum of total BR with leaders contributing 2×."** The raid now uses the same per-card rating as every fight (rarity weight × level factor; raid and ally cards at their starting level, yours at your copies' levels).
 - **Boss BR** = its 3 rows, each a 20-card deck of the part's cards (scaled to 20 like any enemy deck) + every card on its board at the start counted again (×2; a guard, e.g. the Core's stumps, which isn't in the deck, counts 2× its own) + a boss unit for each boss-unit round in the fight (3/7/11/15/19), each × (Health + the super whales' bonus) / Health + the Commons it can call in (its reinforce tuning). Stat shares, a stage's +Attack/+Health and the brambles' Health are left out, as in every fight's BR.

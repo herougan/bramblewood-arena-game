@@ -71,7 +71,7 @@ const md = read('docs/card-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'card-pass-2026-10-19.xlsx')), '5. the spreadsheet');
 ok(ST.every(([id])=> md.includes(defs[id].name)), '5. the doc lists every changed card');
 ok(Object.keys(P.SOURCELESS).every(id=> md.includes(defs[id].name)), '5. the doc lists the cards that stay sourceless');
-ok(read('docs/CHANGELOG.md').slice(0, 4000).includes('package CB'), '5. a CHANGELOG entry at the top');
+ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
 
 console.log(fail ? `card-pass-2026-10-19: ${fail} of ${n} failed` : `card-pass-2026-10-19: all ${n} passed`);
 process.exit(fail ? 1 : 0);
