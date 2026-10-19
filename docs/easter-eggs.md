@@ -24,7 +24,7 @@ Owner, 09:52: "Easter eggs: Special category, ungettable atm."
     - the engine's egg hatch (`eggPoolFor`), for the Nest's egg cards.
   - No Blacksmith recipe makes one.
 - **Hidden until seen.**
-  - The Codex shows each Easter egg as a masked "???" tile with a 🥚, its rarity band only, in its own "🥚 Easter eggs · not obtainable yet" section. The tile opens nothing.
+  - The Codex shows each Easter egg as a masked "???" tile with a 🥚, its rarity band only, in its own "Easter eggs" section (2026-10-19, package CX: "not obtainable yet" is the section's tooltip now). The tile opens nothing.
   - Once the player has seen the card (in a fight, say) or owns it, the real card shows.
   - Admins see the whole card with 👁 Show unseen, tagged "🥚 Easter egg".
   - A masked egg never matches a search or a skill filter.

@@ -47,6 +47,9 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Raid | Back-row attacker hooks (TS) | Mid/back rows now fire On Attack, Crit, Recoil, Reload, Twin Strike, Frenzy (same as normal attacks): small buff |
 | Raid | Start-of-round in back rows (TS) | Regeneration, Renewal, On Round Start still front row only |
 | UI | Small-card chips (TS) | Small cards show 2 chips then "+N" ("☠3 +2"); shrink to fit 3? "NEW!" tag covers chips for 4.5 s |
+| Cards | Base vs faction pack (CX check) | 5 cards tagged Base are also in the Factions pack (tier 11): Shellwright Apprentice, Otter Royal Guard, Otter Flag-Bearer, Otter Lantern-Bearer, Riverbed Diver. Base = skirmish only: drop them from the pack, or untag Base? |
+| UI | Codex on phones (CX) | 4×4 cards ~64 px under the global 80% width; full width would give ~80 px |
+| UI | Codex controls (CX) | Phones: top-corner « ‹ › »; desktop: side tabs. One layout everywhere? |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |

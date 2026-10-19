@@ -3278,25 +3278,28 @@ function codexSectionOf(d){
   const src = cardSourceOf(d);
   const split = baseGameBeaten(); // admins see what players see; the "View by" options organise for editing
   const mapTier = idx=> idx < BASE_GAME_MAPS ? 1 : 2 + Math.floor((idx - BASE_GAME_MAPS)/10);
-  if(src.kind==='materia') return {key:'materia', order:[9990,0,0,''], label:'💠 Materia · crafting materials for the Blacksmith'};
-  if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
-  if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:'Your journey: base cards, map rewards and packs', tier:1};
-  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:`${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}`, tier:1};
+  // 2026-10-19 (package CX, owner 14:07: "Rename all the pool names to simple names like just 'Factions'"): every section name is a
+  // short plain name (a TX key); the detail it used to carry after a "·" is its tooltip (tip).
+  if(src.kind==='materia') return {key:'materia', order:[9990,0,0,''], label:TX('ui.cx-sec-materia'), tip:TX('ui.cx-sec-materia-tip')};
+  if(src.kind==='smith') return codexSmithSection();
+  if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:codexTierName(1), tier:1};
+  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:codexTierName(1), tip:TX('ui.cx-sec-maps-tip', {n: 1, to: BASE_GAME_MAPS}), tier:1};
   if(src.kind==='map'){
     const idx = Math.max(0, mainConquestMaps().findIndex(m=> m.id===src.id || m.id===(CONQUEST_MAPS.find(x=> x.id===src.id)||{}).parent));
     const tier = mapTier(idx);
-    return {key:`${tier}-0`, order:[tier,0,0,''], label: tier===1 ? `${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}` : `${codexTierName(tier)} · maps ${BASE_GAME_MAPS + (tier-2)*10 + 1}–${BASE_GAME_MAPS + (tier-1)*10}`, tier};
+    return {key:`${tier}-0`, order:[tier,0,0,''], label:codexTierName(tier), tip: tier===1 ? TX('ui.cx-sec-maps-tip', {n: 1, to: BASE_GAME_MAPS}) : TX('ui.cx-sec-maps-tip', {n: BASE_GAME_MAPS + (tier-2)*10 + 1, to: BASE_GAME_MAPS + (tier-1)*10}), tier};
   }
   if(src.kind==='pack'){
     const tier = Math.max(1, Number(src.tier)||1);
-    return {key:`${tier}-1`, order:[tier,1,0,''], label:`${codexTierName(tier)} · card packs`, tier};
+    return {key:`${tier}-1`, order:[tier,1,0,''], label:TX('ui.cx-sec-packs'), tip:codexTierName(tier), tier};
   }
   if(src.kind==='event'){
     const theme = (src.theme||'Event').trim(), name = (src.name||'').trim();
-    return {key:`ev-${theme}`, order:[9998,0,0,theme.toLowerCase()], label:`🎉 Events · ${theme}`, event:true, eventName:name};
+    return {key:`ev-${theme}`, order:[9998,0,0,theme.toLowerCase()], label:theme, tip:TX('ui.cx-sec-events'), event:true, eventName:name};
   }
-  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unassigned — not obtainable yet (set where to get it in the card’s detail view)' : 'More cards'};
+  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unassigned' : TX('ui.cx-sec-other'), tip: adminModeEnabled ? 'Not obtainable yet: set where to get it in the card’s detail view' : ''};
 }
+function codexSmithSection(){ return {key:'smith', order:[9991,0,0,''], label:TX('ui.cx-sec-smith'), tip:TX('ui.cx-sec-smith-tip')}; }
 // "View by" grouping (2026-10-02): the same cards split by Skirmish (each node's reward cards),
 // Card pack (each pack tier), Event (theme → event) or Unassigned, so each kind of source can be
 // reviewed and edited on its own. Returns null for cards that don't belong in the chosen view.
@@ -3324,73 +3327,80 @@ function mapBandOf(num){
   // 2026-10-12 (23:12, user: "Call Map 0-5 the first season, then second season, third season and fourth season accordingly.
   // These make up the 'first world'"). 2026-10-13 (user: "'First season' is sufficient ... the 4 seasons. In the order: Autumn,
   // Spring, Winter, Summer"): short names, a season glyph each; the map range is in `tip`.
-  if(num < 0) return {key:'band-base', order:[0,-1,0,''], label:'🌱 Base'};
-  if(num <= 5) return {key:'band-0', order:[0,0,0,''], label:'🍂 First season', tip:'Maps 0–5'};
-  if(num <= 10) return {key:'band-6', order:[1,6,0,''], label:'🌸 Second season', tip:'Maps 6–10'};
-  if(num <= 15) return {key:'band-11', order:[1,11,0,''], label:'❄️ Third season', tip:'Maps 11–15'};
-  if(num <= 20) return {key:'band-16', order:[1,16,0,''], label:'☀️ Fourth season', tip:'Maps 16–20'};
-  if(num <= 40) return {key:'band-21', order:[1,21,0,''], label:'🗺️ Maps 21–40'};
+  // 2026-10-19 (package CX, owner 14:07: simple names): plain names (TX keys), no glyphs; the map range is the tooltip.
+  const band = (key, order, label, n, to)=> ({key, order, label, tip:TX('ui.cx-sec-maps-tip', {n, to})});
+  if(num < 0) return {key:'band-base', order:[0,-1,0,''], label:TX('ui.cx-sec-base'), tip:TX('ui.codex-base-tip')};
+  if(num <= 5) return band('band-0', [0,0,0,''], TX('ui.cx-sec-season-1'), 0, 5);
+  if(num <= 10) return band('band-6', [1,6,0,''], TX('ui.cx-sec-season-2'), 6, 10);
+  if(num <= 15) return band('band-11', [1,11,0,''], TX('ui.cx-sec-season-3'), 11, 15);
+  if(num <= 20) return band('band-16', [1,16,0,''], TX('ui.cx-sec-season-4'), 16, 20);
+  if(num <= 40) return band('band-21', [1,21,0,''], TX('ui.cx-sec-maps', {n: 21, to: 40}), 21, 40);
   const lo = 41 + Math.floor((num - 41)/10)*10;
-  return {key:'band-' + lo, order:[1,lo,0,''], label:`🗺️ Maps ${lo}–${lo + 9}`};
+  return band('band-' + lo, [1,lo,0,''], TX('ui.cx-sec-maps', {n: lo, to: lo + 9}), lo, lo + 9);
 }
 // Packs by their real names (2026-10-12, 21:01, user: "Don't call it Pack A, B, C in the codex. Call it by their actual names.
 // Only 3 packs and 1 advanced pack ... the rivergate and sunfeather pools can be combined into the factions pool"): pool 1 is
 // what the three basic packs share, pool 11 the Factions pool (Otter, Hummingbird and shared cards, in every basic pack too),
 // pool 99 the advanced Mystery Booster.
-const PACK_POOL_LABEL = {1:'🎁 Hedgerow Pouch · Tidemire Chest · Highcrest Case', 11:'🎁 Factions pool (in every basic pack)', 99:'❓ Mystery Booster'};
+// 2026-10-19 (package CX, owner 14:07: "Rename all the pool names to simple names like just 'Factions'"): Factions, Packs and Mystery
+// Booster; the packs' names and "in every basic pack" moved to the tooltip.
+function packPoolSection(k){ return k === 11 ? {label:TX('ui.cx-sec-factions'), tip:TX('ui.cx-sec-factions-tip')} : k === 99 ? {label:TX('ui.cx-sec-mystery'), tip:TX('ui.cx-sec-mystery-tip')} : {label:TX('ui.cx-sec-packs'), tip:TX('ui.cx-sec-packs-tip')}; }
 function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
   // 2026-10-13 (user: "Move the factions pool first, before the Base pool"): the factions' own cards lead the Codex.
-  return {key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
+  return Object.assign({key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, '']}, packPoolSection(k)); }
 // Easter eggs' own Codex section (2026-10-19, package EE), last before the materia, in every view but the per-source ones.
-function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:'🥚 ' + TX('ui.ee-section')}; }
+// 2026-10-19 (package CX): "Easter eggs", with "not obtainable yet" as its tooltip.
+function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:TX('ui.cx-sec-eggs'), tip:TX('ui.cx-sec-eggs-tip')}; }
 function codexViewSectionOf(d, view){
   if(isEasterEgg(d) && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
   if(view==='all'){
-    if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
+    if(src.kind==='smith') return codexSmithSection();
     return {key:'all', order:[0,0,0,''], label:'', bare:true};
   }
   if(view==='bands'){
     if(src.kind==='base') return mapBandOf(-1);
     if(src.kind==='map') return mapBandOf(mapNumberOf(src.id) ?? 999);
     if(src.kind==='pack') return packSectionOf(src, 'band');
-    if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:'🎉 Events'};
-    if(src.kind==='raid') return {key:'band-raid-' + (src.id||''), order:[5,0,0,''], label:'🐙 Raid cards'};
-    if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
-    return {key:'band-more', order:[9,0,0,''], label:'More cards'};
+    // 2026-10-19 (package CX, owner 14:07): short plain names (TX keys)
+    if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:TX('ui.cx-sec-events')};
+    if(src.kind==='raid') return {key:'band-raid-' + (src.id||''), order:[5,0,0,''], label:TX('ui.cx-sec-raid'), tip:TX('ui.cx-sec-raid-tip')};
+    if(src.kind==='smith') return codexSmithSection();
+    return {key:'band-more', order:[9,0,0,''], label:TX('ui.cx-sec-other')};
   }
   if(view==='advance'){
     // Advancement (2026-10-12): one section per step of the journey, in the order a player meets them.
     const k = advancementKey(d);
-    if(src.kind==='base') return {key:'adv-base', order:[0,0,0,''], label:'🌱 Base'};
-    if(src.kind==='map'){ const b = mapBandOf(mapNumberOf(src.id) ?? 999); return {key:'adv-' + b.key, order:[1, b.order[1], 0, ''], label: b.label.replace('🌱 Base cards & ', '🗺️ ')}; }
+    // 2026-10-19 (package CX, owner 14:07): the same short names as the player's Separated view
+    if(src.kind==='base') return {key:'adv-base', order:[0,0,0,''], label:TX('ui.cx-sec-base'), tip:TX('ui.codex-base-tip')};
+    if(src.kind==='map'){ const b = mapBandOf(mapNumberOf(src.id) ?? 999); return {key:'adv-' + b.key, order:[1, b.order[1], 0, ''], label:b.label, tip:b.tip}; }
     if(src.kind==='pack') return packSectionOf(src, 'adv');
-    if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:`🎉 Event: ${src.name || src.theme || 'unnamed'}`};
-    if(src.kind==='raid') return {key:'adv-raid-' + (src.id||''), order:[5,0,0,k], label:'🐙 Raid cards'};
-    return {key:'adv-un', order:[9,0,0,''], label:'Not obtainable yet'};
+    if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:src.name || src.theme || 'unnamed', tip:TX('ui.cx-sec-events')};
+    if(src.kind==='raid') return {key:'adv-raid-' + (src.id||''), order:[5,0,0,k], label:TX('ui.cx-sec-raid'), tip:TX('ui.cx-sec-raid-tip')};
+    return {key:'adv-un', order:[9,0,0,''], label:'Unassigned', tip:'Not obtainable yet'};
   }
   if(view==='skirmish'){
     if(src.kind!=='map') return null;
     const mi = mapIndexOf(src.id);
     const f = src.node ? findConquestNode(src.id, src.node) : null;
     const ni = f ? f.map.nodes.indexOf(f.node) : 999;
-    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: src.node ? conquestNodeLabel(src.id, src.node) : `Map ${mapNumberOf(src.id)} — no node chosen (not obtainable)`, mapId:src.id, nodeKey:src.node||null};
+    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: f ? `${skirmishCode(src.id, src.node)} ${f.node.name}` : `Map ${mapNumberOf(src.id)}`, tip: src.node ? conquestNodeLabel(src.id, src.node) : 'No node chosen (not obtainable)', mapId:src.id, nodeKey:src.node||null}; // 2026-10-19 (package CX): short name, the rest in the tooltip
   }
   if(view==='pack'){
     if(src.kind!=='pack') return null;
     const tier = Math.max(1, Number(src.tier)||1);
-    if(tier >= 11 && tier <= 13) return {key:'pk-factions', order:[0,0,0,''], label:PACK_POOL_LABEL[11]}; // the Factions pool, first (2026-10-13)
-    return {key:`pk-${tier}`, order:[tier,0,0,''], label: tier === 99 ? PACK_POOL_LABEL[99] : `Pack pool ${tier}`};
+    if(tier >= 11 && tier <= 13) return Object.assign({key:'pk-factions', order:[0,0,0,'']}, packPoolSection(11)); // the Factions pool, first (2026-10-13)
+    return Object.assign({key:`pk-${tier}`, order:[tier,0,0,'']}, tier === 99 ? packPoolSection(99) : {label:`Pack pool ${tier}`}); // 2026-10-19 (package CX): short names
   }
   if(view==='event'){
     if(src.kind!=='event') return null;
     const theme = (src.theme||'Event').trim(), name = (src.name||'(unnamed event)').trim();
-    return {key:`ev-${theme}-${name}`, order:[0,0,0,theme.toLowerCase()+'|'+name.toLowerCase()], label:`🎉 ${theme} — ${name}`};
+    return {key:`ev-${theme}-${name}`, order:[0,0,0,theme.toLowerCase()+'|'+name.toLowerCase()], label:name, tip:theme}; // 2026-10-19 (package CX): short name
   }
   if(view==='unassigned'){
     if(src.kind!=='unsorted') return null;
-    return {key:'un', order:[0,0,0,''], label:'Unassigned — not obtainable anywhere yet'};
+    return {key:'un', order:[0,0,0,''], label:'Unassigned', tip:'Not obtainable anywhere yet'}; // 2026-10-19 (package CX): short name
   }
   return codexSectionOf(d);
 }
@@ -4479,6 +4489,31 @@ const SoundKit = (()=>{
       for(let i = 0; i < 4; i++) sweep(900 + Math.random()*700, 1600 + Math.random()*900, 0.05, 'sine', 0.025, 0.08 + i*0.05); },
   };
 })();
+// ---- The Pale Desert's sand gusts (2026-10-19, package CX, owner 14:07: "Pale Desert - the sand sfx plays here and there, but not
+// permanently on") ----
+// Before: the Pale Desert borrowed the open-plains soundscape (MAP_KIND 4), a looping noise bed with a 4.6 kHz shimmer that never
+// stopped, which over bone-white sand read as sand hissing on and on; its own sand hiss came only on the map view (every 25–45 s), and
+// in its fights there was no sand at all (a fight's ambience carried no map flavour). Now the sand comes in gusts and only in gusts:
+// one every 8–20 s of quiet, each 2–4 s long, fading in and out, its loudness, pitch and side a little different every time, over a
+// quiet low breath of hot air. They keep coming for as long as you are on the map or in one of its fights (the fight keeps the map's
+// scene), stop when you leave (the scene's timers die with it), follow the SFX volume and mute, and, being ambience, its level too.
+const SAND_GUST = {gapMin:8, gapMax:20, durMin:2, durMax:4, gainMin:0.05, gainMax:0.085, rateMin:0.85, rateMax:1.18, firstMin:1, firstMax:4};
+// One gust: how long the quiet after it lasts (gap, s), its length (dur, s), peak gain, playback rate (pitch), band centre (Hz) and pan.
+function sandGustPlan(rand){
+  const G = SAND_GUST, r = (a, b)=> a + rand() * (b - a);
+  return {gap: r(G.gapMin, G.gapMax), dur: r(G.durMin, G.durMax), gain: r(G.gainMin, G.gainMax), rate: r(G.rateMin, G.rateMax), freq: r(1500, 2600), pan: r(-0.6, 0.6)};
+}
+// Gust after gust on a scene ({alive, timers}) until the scene is retired. env: {setTimeout, rand, play(plan), sfx()}, sfx() the SFX
+// level now (0 = muted). A muted gust is skipped but the next is still booked, so un-muting brings them back without leaving the map.
+function sandGustLoop(sc, env){
+  const G = SAND_GUST, R = env.rand || Math.random; let last = null;
+  const book = (fn, s)=>{ const i = sc.timers.indexOf(last); if(i >= 0) sc.timers.splice(i, 1); last = env.setTimeout(fn, s * 1000); sc.timers.push(last); };
+  const tick = ()=>{ if(!sc.alive) return;
+    const p = sandGustPlan(R), lv = env.sfx ? env.sfx() : 1;
+    if(lv > 0){ p.gain *= lv; try{ env.play(p); }catch(e){} }
+    book(tick, p.dur + p.gap); };
+  book(tick, G.firstMin + R() * (G.firstMax - G.firstMin));
+}
 // ---- Ambience (2026-10-05, immersion point #1: "every place should sound like itself") ----
 // A soundscape per place, synthesised live (no audio files): continuous "beds" (filtered noise
 // with slow movement) plus little scheduled events (birds, drips, frogs, crackles, bubbles,
@@ -4579,6 +4614,16 @@ const Ambience = (()=>{
   const whirr = sc=>{ for(let i=0;i<14;i++) puff(sc, 0.02, 0.006, 'bandpass', 2600, 4, i*0.03); };
   const rumble = sc=> puff(sc, 2.4, 0.08, 'lowpass', 160, 0.6, 0, 50);
   const hiss = sc=> puff(sc, 2.2, 0.03, 'highpass', 4000, 0.6, 0, 1800);
+  // A sand gust (2026-10-19, package CX; sandGustPlan above): a breath of wind through a band that rises and falls, with a thin layer
+  // of grains hissing on top, faded in over 40% of it and out over the last 45%, panned a little to one side.
+  const sandGust = (sc, p)=>{ const c = C(); if(!c) return; const t = c.currentTime + 0.02, d = p.dur;
+    let dest = sc.bus; try{ if(c.createStereoPanner){ const pn = c.createStereoPanner(); pn.pan.value = p.pan; pn.connect(sc.bus); dest = pn; } }catch(e){}
+    const layer = (type, f0, f1, q, peak)=>{ const src = c.createBufferSource(); src.buffer = noiseBuffer(c); src.loop = true; src.playbackRate.value = p.rate;
+      const f = c.createBiquadFilter(); f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, t); f.frequency.linearRampToValueAtTime(f1, t + d * 0.45); f.frequency.linearRampToValueAtTime(f0 * 0.9, t + d);
+      const g = c.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + d * 0.4); g.gain.setValueAtTime(peak, t + d * 0.55); g.gain.linearRampToValueAtTime(0, t + d);
+      src.connect(f); f.connect(g); g.connect(dest); src.start(t, Math.random() * 2); src.stop(t + d + 0.1); };
+    layer('bandpass', p.freq * 0.55, p.freq, 0.8, p.gain);
+    layer('highpass', 4800 * p.rate, 6200 * p.rate, 0.7, p.gain * 0.35); };
   const gulls = sc=>{ cry(sc); setTimeout(()=>{ try{ if(sc.alive) cry(sc); }catch(e){} }, 380); };
   const MAP_FLAVOR = {
     m1:{arrive:[sc=>{ bird(sc); setTimeout(()=>{ try{ if(sc.alive) bird(sc); }catch(e){} }, 300); }], events:[[woodpecker, 25, 45], [steps('grass'), 55, 90]]},
@@ -4610,7 +4655,7 @@ const Ambience = (()=>{
     ml:{arrive:[sc=> puff(sc, 2.6, 0.04, 'bandpass', 2200, 0.6, 0, 1400)], events:[[chirps, 8, 18], [steps('grass'), 55, 90]]},
     mt:{arrive:[sc=> puff(sc, 3, 0.04, 'bandpass', 700, 2, 0, 1100)], events:[[hoot, 25, 45], [sc=> puff(sc, 0.4, 0.04, 'lowpass', 400, 0.7, 0, 120), 25, 45], [steps('snow'), 55, 90]]},
     md:{arrive:[hiss], events:[[chime, 12, 25], [steps('sand'), 55, 90]]},
-    mpd:{arrive:[hiss], events:[[steps('sand'), 50, 85], [hiss, 25, 45]]}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes
+    mpd:{arrive:[], events:[[steps('sand'), 50, 85]], beds:[{freq:240, gain:0.022, lfo:0.05, depth:0.6}], bedsKind:4, gusts:true, noNight:true}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes; 2026-10-19 (package CX): the sand in gusts now (sandGustLoop), over a quiet low breath instead of the plains' constant shimmer, and no night crickets
   };
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
@@ -4641,7 +4686,7 @@ const Ambience = (()=>{
     const c = C(), o = out(); if(!c || !o) return null;
     const r0 = RECIPES[kind]; if(!r0) return null;
     const fl = flavor && MAP_FLAVOR[flavor];
-    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[])}) : r0;
+    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[]), beds: fl.beds && (fl.bedsKind == null || fl.bedsKind === kind) ? fl.beds : r0.beds}) : r0; // 2026-10-19 (package CX): + a map's own beds (the Pale Desert's)
     const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.8); bus.connect(o);
     const sc = {kind, flavor: flavor || null, bus, nodes:[], timers:[], alive:true};
     r.beds.forEach(b=> bed(sc, b));
@@ -4651,6 +4696,9 @@ const Ambience = (()=>{
       sc.timers.push(setTimeout(next, rnd(0.15, 1) * hi * 1000)); // random phase: a rare tidbit isn't always a full interval away
     });
     if(fl && fl.arrive) sc.timers.push(setTimeout(()=>{ if(!sc.alive || document.hidden || vol <= 0) return; fl.arrive.forEach(fn=>{ try{ fn(sc); }catch(e){} }); }, 450));
+    // 2026-10-19 (package CX): the Pale Desert's sand gusts, for as long as this scene lives (on the map, and in its fights)
+    if(fl && fl.gusts && (fl.bedsKind == null || fl.bedsKind === kind)) sandGustLoop(sc, {setTimeout:(f, ms)=> setTimeout(f, ms), rand:Math.random, play:p=> sandGust(sc, p),
+      sfx:()=>{ if(document.hidden || vol <= 0) return 0; try{ return typeof SoundKit !== 'undefined' && SoundKit.getSfxVolume ? SoundKit.getSfxVolume() : 1; }catch(e){ return 1; } }});
     return sc;
   }
   function retire(sc){
@@ -4684,7 +4732,8 @@ const Ambience = (()=>{
     // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling."): no night crickets or dawn chorus on Map 0's
     // world map or in its fights (sc.flavor is the map id; a fight on Map 0 is checked through matchState).
     try{ const mid = sc.flavor || (typeof matchState !== 'undefined' && matchState && !matchState.over && matchState.conquestNode && matchState.conquestNode.mapId); if(mid && typeof MISTY_MAPS !== 'undefined' && MISTY_MAPS.has(mid)) return; }catch(e){}
-    if(tod==='night'){ bed(sc, CRICKET); }
+    const fl = sc.flavor && MAP_FLAVOR[sc.flavor];
+    if(tod==='night' && !(fl && fl.noNight)){ bed(sc, CRICKET); } // 2026-10-19 (package CX): not on the Pale Desert (its own hiss was never meant to run on)
     if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
   }
   return {
@@ -5211,6 +5260,10 @@ function rivalPeopleForMatch(m){
     return peopleOfDeck(counts);
   }catch(e){ return 'folk'; }
 }
+// 2026-10-19 (package CX, owner 14:07, the Pale Desert's sand): a fight on a map whose sound is part of what it is keeps that map's
+// flavour (the scene carries on from the map view unbroken): only the Pale Desert so far. Not under rain (a rain scene has its own beds).
+const MATCH_AMBIENCE_FLAVOR = new Set(['mpd']);
+function ambienceFlavorForMatch(m){ const id = m && m.conquestNode && m.conquestNode.mapId; return id && MATCH_AMBIENCE_FLAVOR.has(id) && ambienceKindForMatch(m) !== 11 ? id : null; }
 function ambienceKindForMatch(m){
   if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
   try{ if(matchIsRainy(m)) return 11; }catch(e){}
@@ -6332,7 +6385,7 @@ function renderCodexGrid(keepPage){
     const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
     // Admin: take every card of a section (a season, a pack, a skirmish) at once (2026-10-13).
     const getAll = adminModeEnabled && all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
-    if(!sec.bare){ const head = `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`; items.push({tiles:0, html:()=> head}); }
+    if(!sec.bare){ const head = `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span${sec.tip ? ` title="${escapeAttr(sec.tip)}"` : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`; items.push({tiles:0, html:()=> head}); }
     gIds.forEach(id=> items.push({tiles:1, html:()=> tileFor(id)}));
   });
   const chunks = []; // arrays of items: chunks[0] is drawn at once, the rest later
@@ -6497,10 +6550,12 @@ function codexShowCardsWithSkill(key){
 // Only the open spread is drawn (at most 18 tiles, from codexTileCache); the next spread's tiles are built while the browser is
 // idle, so a turn finds them ready. The search, filters, sorts and the rarity filter all still apply (renderCodexGrid filters,
 // this lays out). Turn with ‹ ›, the arrow keys, a swipe, or jump to a section.
+// 2026-10-19 (package CX, owner 14:07: "Show 16 cards on each page"): 4 × 4 sleeves a page at every width (two pages side by side
+// on a wide screen, one on a phone, its cards smaller); the page-turn tabs sit on the book's outer edges (codexEdgeTabsHTML).
 let codexAlbumState = null, codexTurnFn = null, codexSwipedAt = 0;
 function albumLayout(){
   const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200;
-  return w >= 960 ? {pages:2, cols:3, rows:3, key:'2x9'} : w >= 560 ? {pages:1, cols:3, rows:3, key:'1x9'} : {pages:1, cols:2, rows:3, key:'1x6'};
+  return w >= 960 ? {pages:2, cols:4, rows:4, key:'2x16'} : {pages:1, cols:4, rows:4, key:'1x16'};
 }
 // groups [{sec, ids (sorted), all}] -> album pages [{sec, ids, all, cont}]: a section starts a page; a long one runs on (cont).
 function albumPaginate(groups, per){
@@ -6531,7 +6586,7 @@ function albumPageHTML(p, i, side){
   const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (p.cont ? ' ' + TX('ui.codex-cont') : '');
   const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
   return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
-    <header class="al-head"><span class="al-sec">${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
+    <header class="al-head"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
     <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
 }
 function albumDraw(){
@@ -6542,9 +6597,11 @@ function albumDraw(){
   const sides = L.pages === 2 ? ['left', 'right'] : ['single'];
   // the sections, for "Go to section": each one's first page
   const sections = []; pages.forEach((p, i)=>{ if(!p.cont && !p.sec.bare && !sections.some(s=> s.key === p.sec.key)) sections.push({key:p.sec.key, label:p.sec.label, page:i}); });
-  gridEl.innerHTML = `<div class="al-album al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}</div>`
-    + codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections);
-  gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(+b.dataset.turn)));
+  // 2026-10-19 (package CX, owner 14:07: "The goto previous or next page buttons should be on the books themselves"): the page
+  // count and "Go to section" sit above the album; ‹ « and › » are tabs on its outer edges (no bar below).
+  gridEl.innerHTML = codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections)
+    + `<div class="al-album pg-book al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}${codexEdgeTabsHTML(codexPage, L.pages, pages.length)}</div>`;
+  gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(b.dataset.turn)));
   { const j = gridEl.querySelector('[data-pgjump]'); if(j) j.addEventListener('change', ()=>{ if(j.value !== '') albumGo(+j.value); }); }
   wireCodexGrid(S.groupIds);
   codexTurnFn = albumTurn;
@@ -6554,21 +6611,35 @@ function albumDraw(){
 }
 function albumTurn(dir){
   const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
-  const next = codexPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  if(dir === 'first' || dir === 'last'){ albumGo(dir === 'first' ? 0 : S.pages.length - 1); return; } // 2026-10-19 (package CX): « and »
+  dir = +dir; const next = codexPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
   codexLeafTurn(S.gridEl, dir, ()=>{ codexPage = next; albumDraw(); codexKeepInView(S.gridEl); });
 }
 function albumGo(page){
   const S = codexAlbumState; if(!S) return; const to = page - (page % S.L.pages); if(to === codexPage){ albumDraw(); return; }
   codexLeafTurn(S.gridEl, to > codexPage ? 1 : -1, ()=>{ codexPage = to; albumDraw(); codexKeepInView(S.gridEl); });
 }
-// After a turn from the bottom buttons on a small screen, the page's top comes back into view.
+// After a turn on a small screen, the page's top comes back into view.
 function codexKeepInView(el){ try{ const r = el.getBoundingClientRect(); if(r.top < 0) el.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(e){} }
-// The turn buttons under the album / the book: ‹ Page 3–4 of 12 ›, and for the album a "Go to section" list.
+// Above the album / the book: "Pages 3–4 of 12" (read out on a turn) and, for the album, a "Go to section" list.
+// 2026-10-19 (package CX, owner 14:07: "The goto previous or next page buttons should be on the books themselves"): the turn buttons
+// moved onto the book (codexEdgeTabsHTML); this row keeps only the page count and the section list.
 function codexPagerNavHTML(kind, first, per, total, sections){
   const last = Math.min(total, first + per);
   const label = last - first > 1 ? TX('ui.codex-pages-of', {n: first + 1, to: last, total}) : TX('ui.codex-page-of', {n: first + 1, total});
   const jump = sections && sections.length > 1 ? `<select class="pg-jump" data-pgjump aria-label="${escapeAttr(TX('ui.codex-go-to-section'))}"><option value="">${escapeHtml(TX('ui.codex-go-to-section'))}</option>${sections.map(s=> `<option value="${s.page}">${escapeHtml(s.label)}</option>`).join('')}</select>` : '';
-  return `<nav class="pg-nav pg-nav-${kind}" aria-label="${escapeAttr(TX('ui.codex-page-nav'))}"><button type="button" class="btn small pg-btn" data-turn="-1" ${first <= 0 ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-prev-page'))}" title="${escapeAttr(TX('ui.codex-prev-page'))}">‹</button><span class="pg-of" aria-live="polite">${escapeHtml(label)}</span><button type="button" class="btn small pg-btn" data-turn="1" ${last >= total ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-next-page'))}" title="${escapeAttr(TX('ui.codex-next-page'))}">›</button>${jump}</nav>`;
+  return `<div class="pg-info pg-info-${kind}"><span class="pg-of" aria-live="polite">${escapeHtml(label)}</span>${jump}</div>`;
+}
+// The page-turn tabs ON the book (2026-10-19, package CX, owner 14:07: "<< and >> for to first and to last page"; "The goto previous
+// or next page buttons should be on the books themselves"): like bookmark tabs on the cover's outer edges, ‹ with « under it on the
+// left page's edge, › with » on the right one (on a single page, its two edges). They follow you down a tall page (sticky), so a
+// turn is always in reach. Swipes, ← / → and Home / End still turn too (codexWireSwipe, the keydown below).
+function codexEdgeTabsHTML(first, per, total){
+  const atStart = first <= 0, atEnd = first + per >= total;
+  const tab = (turn, cls, glyph, label, off)=> `<button type="button" class="pg-tab ${cls}" data-turn="${turn}" ${off ? 'disabled' : ''} aria-label="${escapeAttr(label)}" title="${escapeAttr(label)}"><span aria-hidden="true">${glyph}</span></button>`;
+  const grp = 'role="group" aria-label="' + escapeAttr(TX('ui.codex-page-nav')) + '"';
+  return `<div class="pg-edge pg-edge-l" ${grp}><div class="pg-edge-in">${tab(-1, 'pg-corner pg-prev', '‹', TX('ui.codex-prev-page'), atStart)}${tab('first', 'pg-corner pg-first', '«', TX('ui.codex-first-page'), atStart)}</div></div>`
+    + `<div class="pg-edge pg-edge-r" ${grp}><div class="pg-edge-in">${tab(1, 'pg-corner pg-next', '›', TX('ui.codex-next-page'), atEnd)}${tab('last', 'pg-corner pg-last', '»', TX('ui.codex-last-page'), atEnd)}</div></div>`;
 }
 // A page turn (album and book): the page you leave lifts off at the spine and swings away (a copy of it, over the new pages), with
 // a shadow across it. Transform and opacity only. None with reduced motion or Low / None effects (like codexPageTurn): the new pages
@@ -6601,12 +6672,14 @@ function codexWireSwipe(el){
     if(Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - t0 < 900 && codexTurnFn){ codexSwipedAt = Date.now(); codexTurnFn(dx < 0 ? 1 : -1); } });
 }
 // ← / → turn the album or the book while the Codex is open (not while typing, or with a window open over it).
+// 2026-10-19 (package CX): Home / End open the first / last page, like « and ».
+const CODEX_TURN_KEYS = {ArrowLeft:-1, ArrowRight:1, Home:'first', End:'last'};
 document.addEventListener('keydown', e=>{
-  if(!codexTurnFn || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if(!codexTurnFn || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Home' && e.key !== 'End') || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
   try{ if(currentTab !== 'codex') return; }catch(_){ return; }
   const t = e.target; if(t && t.closest && t.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
   if(document.querySelector('.modal-overlay:not([hidden])')) return;
-  e.preventDefault(); codexTurnFn(e.key === 'ArrowRight' ? 1 : -1);
+  e.preventDefault(); codexTurnFn(CODEX_TURN_KEYS[e.key]);
 });
 // A resize that changes the layout (two pages / one, 3 or 2 across) packs the pages again.
 { let t = null; window.addEventListener('resize', ()=>{ clearTimeout(t); t = setTimeout(()=>{ try{
@@ -7619,7 +7692,7 @@ function bookTocHTML(S){
     ${letters.length > 1 ? `<h4 class="bk-az-h">${escapeHtml(TX('ui.book-az'))}</h4><div class="bk-az">${letters.map(L=> `<button type="button" data-bkgo="${S.az[L]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.az[L] + 1}))}">${escapeHtml(L)}</button>`).join('')}</div>` : ''}`;
 }
 // The pages from `first` (one, or two side by side): pages[i] is {toc}, {items:[...]} or {blank}.
-function bookSpreadHTML(pages, first, per){
+function bookSpreadHTML(pages, first, per, tabs){
   const S = codexBookState, sides = per === 2 ? ['left', 'right'] : ['single'];
   const page = (pg, i, side)=>{
     if(!pg) return `<section class="bk-page pg-${side} is-blank" aria-hidden="true"></section>`;
@@ -7629,22 +7702,24 @@ function bookSpreadHTML(pages, first, per){
     return `<section class="bk-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S && S.pages ? S.pages.length : 1}))}"><header class="bk-run">${escapeHtml(head)}</header><div class="bk-body">${inner}</div><footer class="bk-foot">${pg.blank ? '' : i + 1}</footer></section>`;
   };
   const shown = []; for(let k = 0; k < sides.length; k++) shown.push(pages[first + k]);
-  return `<div class="bk-spread bk-${per === 2 ? 'two' : 'one'}">${shown.map((pg, k)=> page(pg, first + k, sides[k])).join(per === 2 ? '<div class="bk-spine" aria-hidden="true"></div>' : '')}</div>`;
+  return `<div class="bk-spread pg-book bk-${per === 2 ? 'two' : 'one'}">${shown.map((pg, k)=> page(pg, first + k, sides[k])).join(per === 2 ? '<div class="bk-spine" aria-hidden="true"></div>' : '')}${tabs && S && S.pages ? codexEdgeTabsHTML(first, per, S.pages.length) : '' /* 2026-10-19 (package CX): the turn tabs on the book */}</div>`;
 }
 function bookDraw(){
   const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
   const per = S.L.pages, total = S.pages.length;
   skillBookPage = Math.max(0, Math.min(skillBookPage, total - 1)); skillBookPage -= skillBookPage % per;
   try{ uiStickySave('skills', {page: skillBookPage}); }catch(e){}
-  book.innerHTML = bookSpreadHTML(S.pages, skillBookPage, per) + codexPagerNavHTML('book', skillBookPage, per, total, null);
+  // 2026-10-19 (package CX, owner 14:07): the page count above, the turn tabs (‹ « › ») on the book's edges (bookSpreadHTML)
+  book.innerHTML = codexPagerNavHTML('book', skillBookPage, per, total, null) + bookSpreadHTML(S.pages, skillBookPage, per, true);
   book.querySelectorAll('[data-bkgo]').forEach(b=> b.addEventListener('click', ()=> bookGo(+b.dataset.bkgo)));
-  book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(+b.dataset.turn)));
+  book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(b.dataset.turn)));
   book.querySelectorAll('[data-bkskill]').forEach(b=> b.addEventListener('click', ()=> codexShowCardsWithSkill(b.dataset.bkskill)));
   codexTurnFn = bookTurn;
 }
 function bookTurn(dir){
   const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
-  const next = skillBookPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  if(dir === 'first' || dir === 'last'){ bookGo(dir === 'first' ? 0 : S.pages.length - 1); return; } // 2026-10-19 (package CX): « and »
+  dir = +dir; const next = skillBookPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
   codexLeafTurn(book, dir, ()=>{ skillBookPage = next; bookDraw(); });
 }
 function bookGo(page){
@@ -29718,7 +29793,7 @@ function wireDropZones(){
   try{ mountCaveLamp(matchState); }catch(e){}
   try{ maybeDeckShuffle(matchState); }catch(e){}
   if(matchState && !matchState._pixRevealed){ matchState._pixRevealed = true; if(!document.querySelector('.vs-opener, .vs-screen')) try{ pixelReveal(); }catch(e){} }
-  try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
+  try{ Ambience.play(ambienceKindForMatch(matchState), ambienceFlavorForMatch(matchState)); }catch(e){} // 2026-10-19 (package CX): + the map's flavour (the Pale Desert's sand gusts)
   try{ if(matchState && !matchState.over && !matchState.testKit) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
