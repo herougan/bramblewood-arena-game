@@ -36,6 +36,13 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Raid | Small instances (RB) | 30-player floor relies on stand-ins (14%/day, my pick) and Core stumps 14 HP. Scale HP by participants instead? (needs last week's count) |
 | Raid | Tier thresholds (RB) | Participant 1,000→500, Competent 10,000→2,000, Leading 50,000→12,500 (0.1% reach it; 7,500 gives ~5%) |
 | Raid | Instance cap 250 (RB) | Republish the Goliath from the raid editor, or apply supabase/proposed/20261019_raid_cap_250.sql |
+| Balance | Forge curve size (BF) | Gains are absolute budget points: small cards grow most (Otter Centurion 3/5 → 11/18 at Lv 10, mean +228%). Alternative: scale by budget use (~+90% at Lv 10 for all) |
+| Balance | "Base" in N (BF) | Read as v3 N without the level term. If you meant v3's L1 N, every card's N rises ~2.1 |
+| Balance | Nest Lv 0 → 1 (BF) | Most Base cards gain nothing at Lv 1 (gain arrives at Lv 2). Make Lv 1 a minor step? |
+| Balance | 16-6 Reaver's Hollow (BF) | 74% vs 52–68% band at the 2× Shield cap: raise the cap or accept |
+| Balance | Side maps ahead (BF) | aheadMaps = 1 on every side map; set 2 for Volcano Lair, the Eye? |
+| UI | Centre slack (BU) | Keeping the centre column centred costs card size sometimes (75 → 69.5 px at 390) |
+| UI | CPU fills centre (BU) | CPU now fills an empty centre first (follows the always-legal centre rule) |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
