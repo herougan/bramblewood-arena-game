@@ -2,6 +2,28 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package EE: Easter eggs, the Condor's beam, Evomax)
+- **Owner (09:52): "Easter eggs: Special category, ungettable atm."** This adds a new card category: source `{kind:'easteregg'}` plus `easterEgg: true`, with one list, `EASTER_EGG_IDS` in `arena_app.js`.
+  - No source gives one out yet: packs, drops, skirmish rewards, raids, the reward tracks, the Forge, the Nest's hatch.
+  - `unlockCardForPlayer` refuses them from every source except an admin's grant.
+  - The Codex shows an unseen one as a "???" tile in its own 🥚 Easter eggs section. The hub's card list masks it too.
+  - Test: `tests/easter-eggs-2026-10-19.js`. Internal notes and inspirations: `docs/easter-eggs.md`.
+- **The eight Easter eggs**, all within budget v3. They use emoji placeholders; the NightCafe prompts are in `docs/art/easter-egg-art-briefs.md` (nothing was generated).
+  - Creeper (now Very Rare, an exploding creeping beetle).
+  - Terraumbra (Unique Evomax equipment).
+  - Exo-podas (Very Rare).
+  - Galactic Condor (Epic).
+  - Pink Maus (Unique).
+  - Nyoogle (Super Rare).
+  - Habanero Drakon (id `tobasco-drakon`, Rare).
+  - Kegfuse Panda (id `demo-panda`, Super Rare).
+- **New action: Position Beam**, used by the Galactic Condor's Charge 2.
+  - From the exact centre it hits the unit across and the bramble.
+  - From a side it angles inward across the units diagonally across.
+  - From the edge (5 out) it hits the whole row inward of the unit opposite.
+  - It reuses the lightning bolt with a prismatic glow. Test: `tests/position-beam-2026-10-19.js`.
+- **The Evolution archetype is called Evomax** wherever a player sees it: the Codex filter and pie, the corner mark, the editor and the card detail. The detail had been showing such cards as Devilry. The internal id `evolution` is unchanged.
+
 ## 2026-10-19 (package TC: the tests follow the applied skill costs)
 - **The owner applied the measured skill worth** to `canonical/skill-costs.json`: 199 entries use their high-confidence `measuredS` (a negative one floored at 0), and each keeps `prevValue` and `appliedAt`. His own values stay: On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike. Owner 08:49: separate the units by theme, he picks the units for each map, then a post-balance step sets skills and stats. **No card was refit.**
 - **Post-balance queue: 29 cards** that fitted budget v3 before the new costs and are over it now. Each fails only 2A+H+S < N, by +0.01 (Bone Diviner) to +9.5 (Marshal of Rivergate). The list is in `docs/balance/post-balance-queue.json` (built by `node tools/post_balance_queue.js`, `--check` for staleness) and `docs/post-balance-queue-2026-10-19.md`.
