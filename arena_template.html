@@ -11792,6 +11792,67 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .raid-results .nv-raid-calc{flex:0 0 100%; text-align:center; font-size:13px; line-height:1.35; opacity:.92; margin:-2px 0 2px;}
 .raid-results .nv-admin-test{background:rgba(255,120,120,.18); border:1px dashed rgba(255,140,140,.7);}
 </style>
+<style id="tsStyles">
+/* ===== Package TS (2026-10-19, owner 13:37: "In small mode, the status icon is wrongly sized and not fitting the contents! When in
+   mini mode, should poison and status symbols be on the top boundary instead?" Yes, and at every card size). A board card's live
+   statuses (Poison, Bleed, Sleep, Paralyze...) are small round chips, icon + number, in a strip straddling the card's TOP edge, the
+   way the skill strip straddles the bottom edge. They used to be tinted pills over the art (in the middle of a tiny card, at the
+   bottom of a big one), sized by a font rule that didn't follow the card, so on a raid's small cards a pale pill with an oversized
+   icon covered the art and the Health. The strip starts at the top-left corner and stops short of the Wait clock (top-right); chip
+   size follows the card (--sc-h); past what fits, the last chip is "+N" (statusChipsHTML: oK on the strip = more than K statuses,
+   data-mK = the +N at K slots; K is 2 on a small card, 3 on a phone or desktop card, 4 on a big one). The old class badges-bottom
+   stays on the strip for the effects code (FX.D); the rules below take its old placement over. ===== */
+.board-card .card-tile .badges-bottom.status-chips{--sc-h:clamp(11px, calc(var(--cw, 120px) * .15), 18px);
+  top:0 !important; bottom:auto !important; left:-3px !important; right:auto !important; transform:translateY(-50%) !important;
+  display:flex; flex-wrap:nowrap; justify-content:flex-start; align-items:center; gap:2px; width:max-content;
+  max-width:calc(100% + 3px - 4px) !important; overflow:visible; z-index:6; pointer-events:none;}
+/* with the Wait clock in the top-right corner, the strip stops short of it */
+.board-card .card-tile:has(.waitbadge) .badges-bottom.status-chips{max-width:calc(100% + 3px - max(16px, 22cqw) - 4px) !important;}
+.board-card .card-tile .status-chips > .abadge, .board-card .card-tile .status-chips > .sc-more{
+  display:inline-flex; align-items:center; justify-content:center; gap:1px; flex:none; box-sizing:border-box;
+  height:var(--sc-h); min-width:var(--sc-h); padding:0 calc(var(--sc-h) * .2) !important; border-radius:999px !important;
+  font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:calc(var(--sc-h) * .7) !important; line-height:1 !important;
+  color:#fff; background:linear-gradient(180deg, rgba(48,36,24,.96), rgba(22,16,10,.96)) !important;
+  box-shadow:0 0 0 1px var(--sc-ring, rgba(201,162,90,.85)), 0 1px 3px rgba(0,0,0,.55) !important; filter:none !important;
+  text-shadow:0 1px 0 rgba(0,0,0,.7); white-space:nowrap; letter-spacing:0;}
+.board-card .card-tile .status-chips > .abadge img.tw-emoji{width:1.05em !important; height:1.05em !important; margin:0 !important; vertical-align:0 !important;}
+/* each status keeps its colour as the chip's ring and number */
+.board-card .card-tile .status-chips > .abadge.poison{--sc-ring:var(--poison, #7ac943); color:#c9f59a;}
+.board-card .card-tile .status-chips > .abadge.toxin{--sc-ring:#9bd64a; color:#d8ff9a;}
+.board-card .card-tile .status-chips > .abadge.bleed{--sc-ring:#e0413a; color:#ffb3ad;}
+.board-card .card-tile .status-chips > .abadge.sleep{--sc-ring:#9a8cff; color:#ddd6ff;}
+.board-card .card-tile .status-chips > .abadge.paralyze, .board-card .card-tile .status-chips > .abadge.shock{--sc-ring:#f2c94c; color:#ffeaa0;}
+.board-card .card-tile .status-chips > .abadge.blind, .board-card .card-tile .status-chips > .abadge.smoke{--sc-ring:#a9b0bb; color:#eef1f5;}
+.board-card .card-tile .status-chips > .abadge.exposed, .board-card .card-tile .status-chips > .abadge.scar{--sc-ring:#e0663f; color:#ffc2ae;}
+.board-card .card-tile .status-chips > .abadge.corrode, .board-card .card-tile .status-chips > .abadge.irradiation{--sc-ring:#8fd14f; color:#d9ffa8;}
+.board-card .card-tile .status-chips > .abadge.unit-shield, .board-card .card-tile .status-chips > .abadge.freeze{--sc-ring:#5ab0ff; color:#cfe8ff;}
+.board-card .card-tile .status-chips > .abadge.prayer, .board-card .card-tile .status-chips > .abadge.prayer-ward{--sc-ring:#e3c26a; color:#fff0c2;}
+/* A frozen card's ice frame (.board-card.is-frozen::after, laid over the whole tile) leaves the strip's band clear, as it leaves the
+   Wait clock's corner clear: its top-left crystal used to bury the first chip. */
+.board-card.is-frozen:has(.status-chips)::after, .board-card.is-frozen:has(.status-chips) > .fly-body::after{
+  -webkit-mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px), linear-gradient(180deg, transparent 0 10px, #000 10px); -webkit-mask-composite:source-in;
+  mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px), linear-gradient(180deg, transparent 0 10px, #000 10px); mask-composite:intersect;}
+/* "+N": hidden unless the strip has more statuses than the card's slots */
+.board-card .card-tile .status-chips > .sc-more{display:none; color:#f3e6cc;}
+.board-card .card-tile .status-chips > .sc-more::after{content:attr(data-m3);}
+@container (max-width: 47px){ /* a small card (under ~63 px: a raid's rows, a crowded phone row): 2 slots */
+  .board-card .card-tile .status-chips.o2 > .abadge:nth-child(n+2){display:none !important;}
+  .board-card .card-tile .status-chips.o2 > .sc-more{display:inline-flex;}
+  .board-card .card-tile .status-chips > .sc-more::after{content:attr(data-m2);}
+}
+@container (min-width: 48px) and (max-width: 133px){ /* a phone or desktop card: 3 slots */
+  .board-card .card-tile .status-chips.o3 > .abadge:nth-child(n+3){display:none !important;}
+  .board-card .card-tile .status-chips.o3 > .sc-more{display:inline-flex;}
+}
+@container (min-width: 134px){ /* a big card: 4 slots */
+  .board-card .card-tile .status-chips.o4 > .abadge:nth-child(n+4){display:none !important;}
+  .board-card .card-tile .status-chips.o4 > .sc-more{display:inline-flex;}
+  .board-card .card-tile .status-chips > .sc-more::after{content:attr(data-m4);}
+}
+/* The status icons over the art (Sleep's 💤, Paralyze's ⚡, Blind's 👁, Shock, Stagger, Chained) follow the card's size too: a fixed
+   22 px icon was a third of a small card. */
+.board-card .card-tile .status-overlay:not(.stun-overlay):not(.smoke-overlay){font-size:clamp(11px, calc(var(--cw, 120px) * .2), 22px) !important;}
+</style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
      at the top of the screen so i can 'change accounts'... an account that is perpetually in

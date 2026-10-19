@@ -32250,7 +32250,7 @@ function boardCardHTML(c, defs, opts){
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
-      bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
+      bottomHTML: statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
   </div>`);
 }
@@ -32258,6 +32258,20 @@ function boardCardHTML(c, defs, opts){
 // them fade during card animations or successfully make the aura follow the card's movements exactly"): the strip lives in the
 // card tile itself, so every lunge, shake, flip and topple carries it along.
 function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[^>]*>)/, '$1<span class="owner-edge" aria-hidden="true"></span>'); }
+// Status chips (2026-10-19, package TS, owner 13:37: "In small mode, the status icon is wrongly sized and not fitting the contents! When
+// in mini mode, should poison and status symbols be on the top boundary instead?" Yes, at every card size): a board card's live
+// statuses (the abadge spans boardCardHTML / updateCardStatusDisplay build) as a strip of small round chips straddling the card's top
+// edge, as the skill strip straddles the bottom one, clear of the Attack and Health numbers. The card's width decides how many show
+// (2, 3 or 4 slots, CSS container queries in #tsStyles); past that the last slot is a "+N" chip: oK on the strip says there are more
+// than K statuses, data-mK is the +N it shows at K slots (the rest, plus the chip it replaces). The strip keeps the old class
+// badges-bottom for the effects code that finds it (FX.D's poison drop and chip pop).
+const STATUS_CHIP_SLOTS = [2, 3, 4];
+function statusChipsHTML(badges){
+  if(!badges || !badges.length) return '';
+  const n = badges.length, over = STATUS_CHIP_SLOTS.filter(k=> n > k);
+  const more = over.length ? `<span class="sc-more" aria-hidden="true" ${over.map(k=> `data-m${k}="+${n - k + 1}"`).join(' ')}></span>` : '';
+  return `<div class="badges-bottom status-chips${over.map(k=> ' o' + k).join('')}">${badges.join('')}${more}</div>`;
+}
 // 2026-10-17 (user: "the angel wings should be reserved for units with the subtype angel"): an Angel is a card whose type, subtype,
 // archetypes or species name one (none ship yet; the wings wait for them).
 function isAngelDef(d){ if(!d) return false; const all = [].concat(d.archetypes || [], d.species || [], d.subtype || [], d.subtypes || [], d.type || []);
@@ -33633,9 +33647,9 @@ function updateCardStatusDisplay(uid){
   // old `.badges` class here would have overwritten/destroyed the card's ability badges every
   // time a status effect changed.
   let badgesEl = tile.querySelector('.badges-bottom');
-  if(badges.length){
-    if(!badgesEl){ badgesEl = document.createElement('div'); badgesEl.className = 'badges-bottom'; tile.appendChild(badgesEl); }
-    badgesEl.innerHTML = badges.join('');
+  if(badges.length){ // the status chips on the card's top edge (2026-10-19, package TS: statusChipsHTML, one builder for both paths)
+    const wrap = document.createElement('div'); wrap.innerHTML = statusChipsHTML(badges); const fresh = wrap.firstElementChild;
+    if(badgesEl){ badgesEl.className = fresh.className; badgesEl.innerHTML = fresh.innerHTML; } else tile.appendChild(fresh);
   } else if(badgesEl){
     badgesEl.remove();
   }
