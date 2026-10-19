@@ -38,8 +38,9 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
 - D round 1: bf5-mid 50/179 main, 26/92 side -> bf5-curve-fixes (decks only, 172 applied, 11 not: no gain / 20-A-4) -> bf5-mid2 128/179, 58/92 (commit 4ea476a)
 - known failures from main, not BF: d test galactic-condor 27-word line (EE), pale-desert 7. mpd ambient arrive:[] 
 
+- D rounds 2-4 (round 4: the gap fights at 120 games, 41 applied); final bf-after main 150/179, side 63/77; fresh 131/179;
+  gaps 43 (20 easy = cheat field, 23 hard) in docs/balance/road-gaps-2026-10-19.json; Shield overrides above the rule 26, on the rule main 147;
+  tests read the gaps; docs + CHANGELOG; merged main (HB); Package BF3 committed
+
 ## Next
-- round 2: tune4.sh 60 bf5-mid2 bf5-curve-fixes-2 --decks-only (running) -> mark_apply.js -> apply
-- D: bf5-mid measure (running, 120 games, 2 shards) -> tune4.sh 60 bf5-mid bf5-curve-fixes --decks-only -> apply -> bf-after + bf-fresh (--seed=5100);
-  measure --drop-above-rule --tag=bf5-dropov on the final road; gaps list; pale-desert --measure; LV / side tests section 4 allow the gaps;
-  docs (level-curve-2026-10-19c BF3 sections), CHANGELOG BF3; merge main; commit "Package BF3: L/10, Map term, full card retune, road retune"
+- SubagentHandback report

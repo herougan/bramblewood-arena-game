@@ -26,6 +26,22 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - Stale pins were updated: the shields test (side maps count a map ahead), road rarity (Map 10) and the win-rate panel (side targets 88.2%).
 - **Docs:** `docs/balance/level-curve-2026-10-19c.md` has the BF3 sections.
 
+## 2026-10-19 (package HB: the balance, the monsters and the budget, editable in the hub)
+- **Owner (17:44):** "Where is our balance, monsters, and skills file -> can it be put into the artefact for my assessment. Also s.t. i can edit the values".
+- **A new hub tab, 🎚️ Budget & stats**, with three views:
+  - **Budget:** every budget constant as a number box, from base 20 and the rarity values to the band. The tab shows both files' values, a Reset to file for each, and an N(L) table (Base 14 / 21 / 30 / 40 at Levels 0–11). Any change recomputes every card's Base, N(L1), 2A+H+S and band in the page, and shows the count in band, over and well under, plus the cards that flip.
+  - **Cards:** all 740 live cards with Wait, Lumber, Map, Attack / Health (editable in the table), skills with their S, Base, N, both rules and the band. Sort by any column; filter by band, flipped, edited, rarity, map and animal. Tap a card for its breakdown and a note.
+  - **Monsters:** the 125 special-monster rows from `canonical/special-monsters.json` (package RJ), with editable Attack / Health and a note. Score, N needed, N at its level, the equivalent card and BR as player recompute; BR as boss is RJ's number.
+- Skills keep the 🧮 Skill costs tab (measured S, confidence, Combos), linked from the new tab and from ⚖️ Balance.
+- **Edits save in the hub's db:** `budgetEdits`, `cardEdits`, `monsterEdits` (the Skill costs tab's pattern). Without the db, the tab offers Copy JSON.
+- **Claude applies them** with `tools/hub/pull_balance_edits.md` and `node tools/hub/apply_balance_edits.js edits.json --dry-run` (then without `--dry-run`). Where each edit goes:
+  - budget → skill-costs.json and bramblewood-budget.js DEFAULTS;
+  - cards → cards.json, with a creatorNote line;
+  - brambles → raids.json castleHp;
+  - async bosses → raid-bosses.json hqHp;
+  - computed monsters → `docs/balance/monster-overrides.json`, reported.
+- Test: `tests/hb-2026-10-19.js` (the tool on a temp copy, and the hub in Chromium with a stub db). Screens: `docs/screens/hb/`.
+
 ## 2026-10-19 (package RB2: raid brambles 350, the elders 55)
 - **Owner (16:22, 16:28):** "Raids can have special super-high health brambles. Maybe less than 420." / "let it remain at 350HP. Then ... make the raid very slightly harder."
 - **The Goliath's arms and tail now have a 350-Health bramble a fight** (was 420). The Core keeps its 200. With the Map 13 deck, a normal raider still ends 96% of fights with the bramble standing, at 168 damage a fight. Wins go 0.3% → 4.0% for that deck and 19% / 31% → 30% / 40% for good / strong decks.

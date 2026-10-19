@@ -1,0 +1,55 @@
+/* balance_edit_tab.css — the 🎚️ Budget & stats tab (2026-10-19, package HB). Builds on the Skill costs tab's classes (sc-*, hub_app.css)
+   and the hub's tokens; tables scroll inside .bal-wrap, never the page. */
+.hb .hb-xlink, .hb-xlink{font-size:14px; margin:4px 0 12px; color:var(--ink-muted);} .hb-xlink a{color:var(--link); font-weight:700;}
+.hb-views{display:flex; flex-wrap:wrap; margin:12px 0 4px; max-width:100%;} .hb-views button{flex:1 1 auto;}
+.hb-views button b{font-weight:700; font-size:11.5px; opacity:.8;}
+.hb-grid{grid-template-columns:minmax(300px,460px) minmax(0,1fr);}
+@media (max-width:1100px){ .hb-grid{grid-template-columns:minmax(0,1fr);} }
+.hb-rows{max-height:none;}
+@media (max-width:1100px){ .hb-rows{max-height:none; overflow:visible;} }
+.hb-cr{flex-wrap:wrap;}
+.hb-cr .sc-lb{flex:1 1 180px;}
+.hb-rst{font:700 12px Nunito,system-ui,sans-serif; padding:4px 10px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; white-space:nowrap;}
+.hb-rst:disabled{opacity:.4; cursor:default;} .hb-rst:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+.hb-rar{margin-top:4px; line-height:1.9;} .hb-rar .chip{font-size:11.5px;}
+.hb-warn{color:var(--sc-over);}
+.hb-live{min-width:0;}
+.hb-h{font:800 16px 'Baloo 2',system-ui,sans-serif; margin:16px 0 4px;} .hb-h small{font-weight:600; color:var(--ink-muted);}
+.sc-tile.v-ok b{color:var(--sc-ok);}
+.hb-nt td.num small, .hb-nt td small{color:var(--ink-muted);}
+.hb-nt{font-variant-numeric:tabular-nums;}
+.hb-flips{display:flex; flex-wrap:wrap; gap:2px; max-height:340px; overflow:auto;}
+.hb-flip{border:1px solid var(--line); cursor:pointer; color:var(--ink); text-align:left;}
+.hb-flip small{color:var(--ink-muted); font-weight:600;}
+.hb-flip.v-over{background:var(--sc-over-bg);} .hb-flip.v-over b{color:var(--sc-over);}
+.hb-flip.v-under{background:var(--sc-under-bg);} .hb-flip.v-under b{color:var(--sc-under);}
+.hb-flip.v-in b{color:var(--sc-ok);}
+.hb-wrap{max-height:72vh; overflow:auto;}
+.hb .note{color:var(--ink-muted); font-size:13.5px; margin:6px 0;}
+.hb-o{color:var(--sc-over);} .hb-u{color:var(--sc-under);}
+.hb-num{width:56px; font:700 14px Nunito,system-ui,sans-serif; padding:4px 5px; border-radius:7px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font-variant-numeric:tabular-nums;}
+.hb-num.is-ch{border-color:var(--sc-ed); background:var(--sc-ed-bg); box-shadow:inset 0 0 0 1px var(--sc-ed);}
+.hb-num:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
+.hb-ct td.hb-name, .hb-mt td.hb-name{cursor:pointer; white-space:normal; min-width:150px;}
+.hb-ct td.hb-name b, .hb-mt td.hb-name b{display:block; line-height:1.25;}
+.hb-ct td.hb-name small, .hb-mt td.hb-name small{display:block; white-space:normal; color:var(--ink-muted); overflow-wrap:anywhere;}
+.hb-ct td.hb-name:focus-visible, .hb-mt td.hb-name:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+.hb-ct tr.is-ed td:first-child, .hb-mt tr.is-ed td:first-child{background:var(--sc-ed-bg);}
+.hb-ct td.hb-sk{white-space:normal; min-width:150px; max-width:260px;} .hb-ct td.hb-sk .chip{font-size:11.5px; margin:1px 3px 1px 0;}
+.hb-mt td.hb-sk{white-space:normal; min-width:140px; max-width:240px;}
+.hb-mt td:nth-child(2), .hb-mt td:nth-child(14), .hb-mt td:nth-child(17){white-space:normal; min-width:120px; max-width:240px;}
+.hb-ct td:nth-child(3), .hb-ct th:nth-child(3){display:table-cell;}
+.hb .sc-t td:nth-child(3), .hb .sc-t th:nth-child(3){display:table-cell;}
+.hb-ct tr.v-ok td:first-child{box-shadow:inset 4px 0 0 var(--sc-ok);}
+.hb-mt tr.v-ok td:first-child{box-shadow:inset 4px 0 0 var(--sc-ok);} .hb-mt tr.v-over td:first-child{box-shadow:inset 4px 0 0 var(--sc-over);}
+.hb-mt tr.v-over .sc-v{color:var(--sc-over); font-weight:800;} .hb-mt tr.v-ok .sc-v{color:var(--sc-ok);}
+.hb-ct .sc-v small, .hb-mt .sc-v small{font-weight:600;}
+.hb-det{display:flex; flex-direction:column; gap:6px; max-width:900px; white-space:normal;}
+.hb-note{display:flex; flex-direction:column; gap:3px; font-size:13px; font-weight:700;}
+.hb-note textarea{font:14px Nunito,system-ui,sans-serif; padding:6px 8px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); width:100%; max-width:560px; resize:vertical;}
+.hb-det .hb-rst{align-self:flex-start;}
+.hb-mt td code, .hb-det code{font:600 11px ui-monospace,Menlo,monospace; overflow-wrap:anywhere;}
+@media (max-width:600px){ .hb-views button{font-size:12.5px; padding:6px 8px;} .hb-num{width:48px;} .hb .sc-in{grid-template-columns:70px 0;} .hb .sc-in input{width:70px;} }
+.hb .hb-ed{position:static; max-height:none; display:block;} .hb .hb-ed .sc-rows{overflow:visible; max-height:none;}
+.hb-rar .chip b{display:inline; font-size:inherit;}
+.hb-mt td.hb-name{min-width:200px;} .hb-mt td:nth-child(2){min-width:170px;} .hb-mt td.hb-sk{min-width:170px;}

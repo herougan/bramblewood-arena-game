@@ -1089,7 +1089,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.goliath-core-bramble": "The Drowned Maw",
   "ui.u3-bramble-kicker": "The boss's bramble",
   "ui.u3-bramble-vs": "The boss's bramble: {name}",
-  "ui.u3-bramble-rules":"The boss's bramble, {name}, strikes too:",
+  "ui.u3-bramble-rules": "The boss's bramble, {name}, strikes too:",
   "ui.u3-smack-desc": "{name}: every {every} turns a tentacle lashes out of the reef at one of your columns or rows (a column first, then a row), {dmg} damage to each unit there. Its target glows red the turn before; if no unit is there, your bramble takes the hit.",
   "ui.u3-sweep-desc": "{name}: every {every} turns the reef sweeps your front row, {dmg} damage to each unit there.",
   "ui.nv-vs-start": "Start the fight",

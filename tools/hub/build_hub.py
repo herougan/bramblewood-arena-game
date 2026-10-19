@@ -367,6 +367,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🗳️', 'decisions', 'Decisions', 'Waiting on you, and decided'), ('📐', 'design', 'Design', 'Design sheets and audits'),
   ('🗒️', 'changelog', 'Changelog', 'What changed, newest first'), ('✨', 'lab', 'Effects Lab', 'Skill effects on a live stage'),
   ('🧪', 'playground', 'VFX Playground', 'GSAP and shader experiments'), ('🖼️', 'library', 'Visual Library', 'Screenshots taken while building'),
+  ('🎚️', 'budget', 'Budget & stats', 'Edit the budget constants, card Attack / Health and the special monsters; see what flips'),  # 2026-10-19 (package HB)
   ('🧮', 'costs', 'Skill costs', 'Edit what skills, triggers and actions cost; see who goes over budget'),
   ('🗂', 'units', 'Units by theme', 'Every creature by biome, family and faction; pick units per map for the post-balance step'),
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
@@ -440,6 +441,64 @@ _sm_slim = {k: _sm.get(k) for k in ('generated', 'doc', 'nonPlayer', 'others')} 
 if _sm: _sm_slim['budget'] = {'v5': (_sm.get('budget') or {}).get('v5', {}).get('formula'), 'v6': (_sm.get('budget') or {}).get('v6', {}).get('formula'), 'playerTop': (_sm.get('budget') or {}).get('playerTop')}
 UT_INLINE = (f'const UT_DATA = {_js(_ut)};\nconst SM_DATA = {_js(_sm_slim)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.js'), encoding='utf-8').read()) if _ut else ''
 UT_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.css'), encoding='utf-8').read()
+# 2026-10-19 (package HB, owner 17:44: "Where is our balance, monsters, and skills file -> can it be put into the artefact for my assessment.
+# Also s.t. i can edit the values"): the 🎚️ Budget & stats tab. Budget constants, card Attack / Health and the special monsters, each an
+# editable number saved in the artifact's db (collections budgetEdits, cardEdits, monsterEdits; tools/hub/pull_balance_edits.md), with a
+# live recompute in the page. It reads SC_SEED / SC_CARDS / BramblewoodBudget / SkillCosts (inlined above, so BF3's budget numbers and Map
+# term arrive with whatever the files say at build time) and HB_DATA: each card's map, animal and the monsters' rows, built here.
+def _hb_data():
+    _om_p = os.path.join(ROOT, 'canonical', 'card-obtain-maps.json')
+    om = json.load(open(_om_p, encoding='utf-8')).get('maps', {}) if os.path.exists(_om_p) else None
+    _at_p = os.path.join(ROOT, 'canonical', 'animal-tags.json')
+    at = {c['id']: c for c in json.load(open(_at_p, encoding='utf-8')).get('cards', [])} if os.path.exists(_at_p) else {}
+    hcm = {c['id']: c for c in HC['cards']}; mnum = {m['id']: m for m in HC['maps']}
+    live = [d for d in CANON if not (d.get('token') or d.get('test') or d.get('hallOfFame') or d.get('baseId') or d.get('field') or d.get('pool'))]
+    cards = {}
+    for d in live:
+        h = hcm.get(d['id'], {}); hm = mnum.get(h.get('map') or '', {})
+        a = at.get(d['id'], {})
+        x = {'m': (om.get(d['id'], 0) if om is not None else (hm.get('num') or 0)), 'mi': h.get('map') or '', 'an': a.get('animal') or d.get('animal') or '', 'ag': a.get('group') or ''}
+        if d.get('creatorNote'): x['cn'] = d['creatorNote'][-160:]
+        cards[d['id']] = x
+    # the special monsters: every row of canonical/special-monsters.json's groups (package RJ), one key each (the db doc id)
+    mons = []
+    if _sm:
+        rows = [(k, g['title'], r) for k, g in (_sm.get('groups') or {}).items() for r in g.get('rows', [])]
+        ids = {}
+        for _, _, r in rows: ids[r['id']] = ids.get(r['id'], 0) + 1
+        raids = json.load(open(os.path.join(ROOT, 'canonical', 'raids.json'), encoding='utf-8'))
+        rb = {b['id']: b for b in json.load(open(os.path.join(ROOT, 'canonical', 'raid-bosses.json'), encoding='utf-8'))}
+        seen = set()
+        for gk, gt, r in rows:
+            where = r.get('node') or ((r.get('partName') or '') + ' · ' + (r.get('scenario') or '')).strip(' ·') or r.get('where') or ''
+            key = r['id'] if ids[r['id']] == 1 else (r['id'] + '@' + re.sub(r'[^a-z0-9]+', '-', where.lower()).strip('-'))[:120]
+            k0, n = key, 2
+            while key in seen: key = f'{k0}-{n}'; n += 1
+            seen.add(key)
+            src = {'computed': 1}
+            if gk == 'brambles':  # a raid part's bramble: the part fight's castleHp in canonical/raids.json
+                for rd in raids:
+                    for p in rd.get('parts', []):
+                        if p.get('id') == r.get('part') and 'castleHp' in (p.get('fight') or {}):
+                            src = {'file': 'canonical/raids.json', 'path': f"{rd['id']}.parts[{p['id']}].fight.castleHp", 'field': 'health', 'now': p['fight']['castleHp']}
+            elif gk == 'async' and r['id'] in rb and 'hqHp' in rb[r['id']]:
+                src = {'file': 'canonical/raid-bosses.json', 'path': f"{r['id']}.hqHp", 'field': 'health', 'now': rb[r['id']]['hqHp']}
+            sc = r.get('score') or {}; bb = r.get('brBoss') or {}; e5 = (r.get('equiv') or {}).get('v5') or {}
+            stats = dict(r.get('stats') or {})
+            if src.get('now') is not None: stats['health'] = src['now']  # a bramble / async boss starts from its file's value today (RJ's run may predate it)
+            mons.append({'key': key, 'g': gk, 'gt': gt, 'id': r['id'], 'name': r['name'], 'where': where, 'role': r.get('role') or r.get('kind') or '',
+                         'st': stats, 'rj': (r.get('stats') or {}).get('health'), 'sk': r.get('skills') or '', 'S': sc.get('S') or 0, 'mm': sc.get('m') or 1, 'lv': r.get('level') or 1, 'map': r.get('map') or 0,
+                         'file': {'x1': sc.get('x1'), 'x2': sc.get('x2'), 'need': sc.get('need'), 'N': (r.get('N') or {}).get('v5'), 'ok': (r.get('inBand') or {}).get('v5'),
+                                  'eq': e5, 'equiv': r.get('equivText') or '', 'brP': r.get('brPlayer'), 'brB': bb.get('perCopy') if bb.get('perCopy') is not None else bb.get('inPart'),
+                                  'brNote': bb.get('note') or ''},
+                         'flag': bool(r.get('flag')), 'why': (r.get('why') or '')[:400], 'src': src})
+    _aa = open(os.path.join(ROOT, 'arena_app.js'), encoding='utf-8').read()
+    _rw = re.search(r'const RATING_WEIGHT = (\{[^}]*\});', _aa)
+    rw = json.loads(re.sub(r'(\w+):', r'"\1":', _rw.group(1))) if _rw else {}
+    return {'built': datetime.date.today().isoformat(), 'obtainMaps': om is not None, 'cards': cards, 'monsters': mons, 'monstersGenerated': (_sm or {}).get('generated'),
+            'ratingWeight': rw, 'maps': [{'id': m['id'], 'num': m['num'], 'name': m['name'], 'sub': m['sub']} for m in HC['maps']]}
+HB_INLINE = f'const HB_DATA = {_js(_hb_data())};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'balance_edit_tab.js'), encoding='utf-8').read()
+HB_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'balance_edit_tab.css'), encoding='utf-8').read()
 _fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
 FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -542,7 +601,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style><style>{HUB_CSS}</style><style>{UT_CSS}</style></head><body>
+</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style></head><body>
 <header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
@@ -552,6 +611,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-actions" aria-controls="p-actions" data-tab="actions">🎯 Action items</button>
 <button role="tab" id="t-cards" aria-controls="p-cards" data-tab="cards">🎴 Cards</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
+<button role="tab" id="t-budget" aria-controls="p-budget" data-tab="budget">🎚️ Budget &amp; stats</button>
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
 <button role="tab" id="t-units" aria-controls="p-units" data-tab="units">🗂 Units by theme</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
@@ -581,10 +641,12 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden>{lazy('<article class="doc cl-doc">' + changelog + '</article>')}</section>
 <section class="panel" id="p-balance" role="tabpanel" aria-labelledby="t-balance" hidden><div class="bal">
-<div class="dec-head"><h2>Card balance</h2><p>Each card's win rate in simulated matches (<span id="balN"></span>). About 50% means it adds nothing over the reference deck; the band is what its rarity should deliver. The method and findings are in the 📐 Design tab → Card balance report. Click a column to sort.</p></div>
+<div class="dec-head"><h2>Card balance</h2><p>Each card's win rate in simulated matches (<span id="balN"></span>). About 50% means it adds nothing over the reference deck; the band is what its rarity should deliver. The method and findings are in the 📐 Design tab → Card balance report. Click a column to sort.</p>
+<p class="hb-xlink"><b>Edit the numbers:</b> <a href="#budget" data-tab="budget">🎚️ Budget &amp; stats</a> (the budget constants, every card's Attack / Health, the special monsters) · <a href="#costs" data-tab="costs">🧮 Skill costs</a> (S of every skill, trigger and action; measured S; Combos).</p></div>
 <div class="dec-bar"><div class="dec-seg" role="group" aria-label="Verdict" id="balSeg"><button data-v="" aria-pressed="true">All</button><button data-v="strong" aria-pressed="false">Too strong</button><button data-v="weak" aria-pressed="false">Too weak</button><button data-v="ok" aria-pressed="false">In band</button><button data-v="norar" aria-pressed="false">No rarity</button><button data-v="fix" aria-pressed="false">Has a fix</button></div>
 <input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
+<section class="panel" id="p-budget" role="tabpanel" aria-labelledby="t-budget" hidden><div class="bal hb" id="hbHost"><p class="dec-empty">Loading the budget…</p></div></section>
 <section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
 <section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
 {curve_panel}
@@ -675,6 +737,7 @@ const SEARCH = {SEARCH_JSON};
 {HUB_JS}
 {SC_INLINE}
 {UT_INLINE}
+{HB_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)
