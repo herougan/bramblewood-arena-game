@@ -11910,7 +11910,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 /* ===== Package UX (2026-10-19, owner 21:36: UI notes 8a, 8b, 8c, 9, 11) ===== */
 /* 8a: the anvil's copy summary (the copies sheet holds every copy) */
 .forge-copy-picker.ux-fcp{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; padding:6px 10px; border-radius:12px; background:rgba(0,0,0,.18); border:1px solid var(--surface-border); font-size:12.5px;}
-.ux-fcp .ux-fcp-k b{color:var(--ink);} .ux-fcp .ux-fcp-n{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:2px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a;}
+.ux-fcp .ux-fcp-k b{color:var(--ink);} .ux-fcp .ux-fcp-k b.ux-fcp-n{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:2px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a;}
 .ux-fcp .ux-fcp-cur{color:var(--ink-muted);} .ux-fcp .ux-fcp-cur b{color:var(--ink); font:800 13px 'Baloo 2',system-ui,sans-serif;}
 .ux-fcp .ux-fcp-open{white-space:nowrap;}
 /* the copies sheet */
@@ -11930,7 +11930,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 /* the old chip's "on" state read pale-on-pale in dark mode (owner's screenshot): keep its text dark on the light fill */
 .fcp-chip.on, .fcp-chip.on b{color:#2b1d10;} .fcp-chip.on small{color:#5a4630;}
 /* 8b: how many copies, on each Forge pool tile */
-.forge-tile .ux-copy-count{position:absolute; top:-7px; left:-7px; z-index:8; min-width:22px; height:22px; padding:0 6px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#2b2117; color:#fff8e6; font:800 12px/1 'Baloo 2',system-ui,sans-serif; box-shadow:0 0 0 1.5px #c9a46a, 0 2px 6px rgba(0,0,0,.4); cursor:help; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation;}
+.forge-tile .ux-copy-count{position:absolute; top:-7px; left:-2px; z-index:8; min-width:22px; height:22px; padding:0 6px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#2b2117; color:#fff8e6; font:800 12px/1 'Baloo 2',system-ui,sans-serif; box-shadow:0 0 0 1.5px #c9a46a, 0 2px 6px rgba(0,0,0,.4); cursor:help; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation;}
 .forge-tile .ux-copy-count.is-many{box-shadow:0 0 0 2px #e0b85a, 0 2px 6px rgba(0,0,0,.4);}
 .forge-tile .ux-copy-count:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
 .speech-bubble.ux-count-bubble{max-width:210px;}
@@ -11939,7 +11939,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .ux-fc-spot{position:absolute; left:50%; top:50%; width:min(94vw, 620px); height:min(74vh, 560px); transform:translate(-50%, -50%); pointer-events:none;
   background:radial-gradient(ellipse at 50% 58%, rgba(255,196,120,.38), rgba(255,140,50,.12) 42%, transparent 70%); animation:uxFcPulse 1.4s ease-in-out infinite alternate;}
 .ux-fc-host{position:fixed; left:50%; top:50%; transform:translate(-50%, -50%) scale(var(--ux-fc-s, 1.4)); transform-origin:50% 50%; will-change:transform;}
-.ux-fc-host .anvil-stage{margin:0;}
+.ux-fc-host > .ux-fc-on{margin:0 !important; max-width:none;}
 @keyframes uxFcPulse{from{opacity:.75;} to{opacity:1;}}
 @media (prefers-reduced-motion: reduce){ .ux-fc-spot{animation:none;} }
 /* 11 + 9: the Codex's card types and its Base level / My best toggle */

@@ -11956,7 +11956,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 /* ===== Package UX (2026-10-19, owner 21:36: UI notes 8a, 8b, 8c, 9, 11) ===== */
 /* 8a: the anvil's copy summary (the copies sheet holds every copy) */
 .forge-copy-picker.ux-fcp{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; padding:6px 10px; border-radius:12px; background:rgba(0,0,0,.18); border:1px solid var(--surface-border); font-size:12.5px;}
-.ux-fcp .ux-fcp-k b{color:var(--ink);} .ux-fcp .ux-fcp-n{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:2px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a;}
+.ux-fcp .ux-fcp-k b{color:var(--ink);} .ux-fcp .ux-fcp-k b.ux-fcp-n{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:2px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a;}
 .ux-fcp .ux-fcp-cur{color:var(--ink-muted);} .ux-fcp .ux-fcp-cur b{color:var(--ink); font:800 13px 'Baloo 2',system-ui,sans-serif;}
 .ux-fcp .ux-fcp-open{white-space:nowrap;}
 /* the copies sheet */
@@ -11976,7 +11976,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 /* the old chip's "on" state read pale-on-pale in dark mode (owner's screenshot): keep its text dark on the light fill */
 .fcp-chip.on, .fcp-chip.on b{color:#2b1d10;} .fcp-chip.on small{color:#5a4630;}
 /* 8b: how many copies, on each Forge pool tile */
-.forge-tile .ux-copy-count{position:absolute; top:-7px; left:-7px; z-index:8; min-width:22px; height:22px; padding:0 6px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#2b2117; color:#fff8e6; font:800 12px/1 'Baloo 2',system-ui,sans-serif; box-shadow:0 0 0 1.5px #c9a46a, 0 2px 6px rgba(0,0,0,.4); cursor:help; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation;}
+.forge-tile .ux-copy-count{position:absolute; top:-7px; left:-2px; z-index:8; min-width:22px; height:22px; padding:0 6px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#2b2117; color:#fff8e6; font:800 12px/1 'Baloo 2',system-ui,sans-serif; box-shadow:0 0 0 1.5px #c9a46a, 0 2px 6px rgba(0,0,0,.4); cursor:help; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation;}
 .forge-tile .ux-copy-count.is-many{box-shadow:0 0 0 2px #e0b85a, 0 2px 6px rgba(0,0,0,.4);}
 .forge-tile .ux-copy-count:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
 .speech-bubble.ux-count-bubble{max-width:210px;}
@@ -11985,7 +11985,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .ux-fc-spot{position:absolute; left:50%; top:50%; width:min(94vw, 620px); height:min(74vh, 560px); transform:translate(-50%, -50%); pointer-events:none;
   background:radial-gradient(ellipse at 50% 58%, rgba(255,196,120,.38), rgba(255,140,50,.12) 42%, transparent 70%); animation:uxFcPulse 1.4s ease-in-out infinite alternate;}
 .ux-fc-host{position:fixed; left:50%; top:50%; transform:translate(-50%, -50%) scale(var(--ux-fc-s, 1.4)); transform-origin:50% 50%; will-change:transform;}
-.ux-fc-host .anvil-stage{margin:0;}
+.ux-fc-host > .ux-fc-on{margin:0 !important; max-width:none;}
 @keyframes uxFcPulse{from{opacity:.75;} to{opacity:1;}}
 @media (prefers-reduced-motion: reduce){ .ux-fc-spot{animation:none;} }
 /* 11 + 9: the Codex's card types and its Base level / My best toggle */
@@ -41383,7 +41383,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '241941080fd8', BUILD_CARD_HASH = '009c78b2e40dae54eb1f214fb9c2e26718fc426fdfa9c71d2024732949780e6a';
+const BUILD_ID = 'd6908b348287', BUILD_CARD_HASH = '009c78b2e40dae54eb1f214fb9c2e26718fc426fdfa9c71d2024732949780e6a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -50192,7 +50192,11 @@ function energyForgeCelebrate(from, to){
   const sound = (n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} };
   if(!panel || !window.FX || !FX.D || !FX.D.energyForge){ sound('unlockChime'); return Promise.resolve(); }
   const hud = ['energyPill', 'energyPillPlay'].map(k=> document.getElementById(k)).find(e=> e && e.offsetParent) || null;
-  try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); }
+  const play = ()=>{ try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); } };
+  // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the Energy panel goes to the centre stage
+  // for it (forgeCentreStage), then back; the calm version stays where it is
+  if(calm || typeof forgeCentreStage !== 'function') return play();
+  return forgeCentreStage(play, {el: panel, hold: 450});
 }
 // D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
 function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
@@ -81143,12 +81147,13 @@ function openForgeCopySheet(id){
 // the anvil stage (the card, its glow, the hammer) lifts out of the panel and flies to the middle of the screen over a dimmed
 // spotlight, as the battle field's centre spotlight does; the smithing plays there (run), the result holds a beat (with the LEVEL
 // burst when one is given), then the stage flies back into its place in the panel. Resolves true when it played centred. Reduced
-// motion, Effects None or no Web Animations: run() where it is, unchanged.
+// motion, Effects None or no Web Animations: run() where it is, unchanged. opts.el: another element to put on the stage (forging Max
+// Energy lifts its Energy panel, package NF's effect, the same way).
 let forgeCentreBusy = false;
 async function forgeCentreStage(run, opts){
   opts = opts || {};
-  const stage = document.getElementById('anvilStage');
-  if(!stage || forgeCentreBusy || reducedMotion() || fxLevel() === 'none' || !stage.animate || typeof document === 'undefined'){ await run(); return false; }
+  const stage = opts.el || document.getElementById('anvilStage');
+  if(!stage || !stage.parentNode || forgeCentreBusy || reducedMotion() || fxLevel() === 'none' || !stage.animate || typeof document === 'undefined'){ await run(); return false; }
   forgeCentreBusy = true;
   const r0 = stage.getBoundingClientRect();
   const ph = document.createElement('div'); ph.className = 'ux-fc-ph'; ph.style.height = r0.height + 'px'; ph.setAttribute('aria-hidden', 'true');
@@ -81156,7 +81161,7 @@ async function forgeCentreStage(run, opts){
   const ov = document.createElement('div'); ov.className = 'ux-fc-ov'; ov.innerHTML = '<div class="ux-fc-spot" aria-hidden="true"></div><div class="ux-fc-host"></div>';
   document.body.appendChild(ov);
   const host = ov.querySelector('.ux-fc-host'); host.style.width = r0.width + 'px'; host.appendChild(stage); stage.classList.add('ux-fc-on');
-  const scale = Math.max(1, Math.min(1.7, (innerWidth - 32) / Math.max(1, r0.width), (innerHeight * 0.62) / Math.max(1, r0.height)));
+  const scale = Math.max(.6, Math.min(1.7, (innerWidth - 32) / Math.max(1, r0.width), (innerHeight * 0.62) / Math.max(1, r0.height)));
   host.style.setProperty('--ux-fc-s', scale.toFixed(3));
   const r1 = host.getBoundingClientRect(); // its centred place (the CSS centres it, scaled)
   const dx = (r0.left + r0.width / 2) - (r1.left + r1.width / 2), dy = (r0.top + r0.height / 2) - (r1.top + r1.height / 2);

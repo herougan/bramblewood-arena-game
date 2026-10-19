@@ -6364,6 +6364,7 @@ function codexKindRowUpdate(counts, all){
 }
 function wireCodexKindRow(){
   const row = document.getElementById('cxKindRow'); if(!row) return;
+  { const chips = row.querySelector('.ux-kind-chips'), on = row.querySelector('.ux-kind.on'); if(chips && on && on.offsetLeft + on.offsetWidth > chips.clientWidth) chips.scrollLeft = on.offsetLeft - 8; } // a phone's row starts at the chosen type
   row.querySelectorAll('[data-cxkind]').forEach(b=> b.addEventListener('click', ()=>{
     const k = b.dataset.cxkind;
     if(k === 'bramble'){ codexSubTab = 'brambles'; renderCodex(); try{ codexPageTurn('fwd'); }catch(e){} return; } // their own page
@@ -11587,7 +11588,11 @@ function energyForgeCelebrate(from, to){
   const sound = (n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} };
   if(!panel || !window.FX || !FX.D || !FX.D.energyForge){ sound('unlockChime'); return Promise.resolve(); }
   const hud = ['energyPill', 'energyPillPlay'].map(k=> document.getElementById(k)).find(e=> e && e.offsetParent) || null;
-  try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); }
+  const play = ()=>{ try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); } };
+  // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the Energy panel goes to the centre stage
+  // for it (forgeCentreStage), then back; the calm version stays where it is
+  if(calm || typeof forgeCentreStage !== 'function') return play();
+  return forgeCentreStage(play, {el: panel, hold: 450});
 }
 // D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
 function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
@@ -42538,12 +42543,13 @@ function openForgeCopySheet(id){
 // the anvil stage (the card, its glow, the hammer) lifts out of the panel and flies to the middle of the screen over a dimmed
 // spotlight, as the battle field's centre spotlight does; the smithing plays there (run), the result holds a beat (with the LEVEL
 // burst when one is given), then the stage flies back into its place in the panel. Resolves true when it played centred. Reduced
-// motion, Effects None or no Web Animations: run() where it is, unchanged.
+// motion, Effects None or no Web Animations: run() where it is, unchanged. opts.el: another element to put on the stage (forging Max
+// Energy lifts its Energy panel, package NF's effect, the same way).
 let forgeCentreBusy = false;
 async function forgeCentreStage(run, opts){
   opts = opts || {};
-  const stage = document.getElementById('anvilStage');
-  if(!stage || forgeCentreBusy || reducedMotion() || fxLevel() === 'none' || !stage.animate || typeof document === 'undefined'){ await run(); return false; }
+  const stage = opts.el || document.getElementById('anvilStage');
+  if(!stage || !stage.parentNode || forgeCentreBusy || reducedMotion() || fxLevel() === 'none' || !stage.animate || typeof document === 'undefined'){ await run(); return false; }
   forgeCentreBusy = true;
   const r0 = stage.getBoundingClientRect();
   const ph = document.createElement('div'); ph.className = 'ux-fc-ph'; ph.style.height = r0.height + 'px'; ph.setAttribute('aria-hidden', 'true');
@@ -42551,7 +42557,7 @@ async function forgeCentreStage(run, opts){
   const ov = document.createElement('div'); ov.className = 'ux-fc-ov'; ov.innerHTML = '<div class="ux-fc-spot" aria-hidden="true"></div><div class="ux-fc-host"></div>';
   document.body.appendChild(ov);
   const host = ov.querySelector('.ux-fc-host'); host.style.width = r0.width + 'px'; host.appendChild(stage); stage.classList.add('ux-fc-on');
-  const scale = Math.max(1, Math.min(1.7, (innerWidth - 32) / Math.max(1, r0.width), (innerHeight * 0.62) / Math.max(1, r0.height)));
+  const scale = Math.max(.6, Math.min(1.7, (innerWidth - 32) / Math.max(1, r0.width), (innerHeight * 0.62) / Math.max(1, r0.height)));
   host.style.setProperty('--ux-fc-s', scale.toFixed(3));
   const r1 = host.getBoundingClientRect(); // its centred place (the CSS centres it, scaled)
   const dx = (r0.left + r0.width / 2) - (r1.left + r1.width / 2), dy = (r0.top + r0.height / 2) - (r1.top + r1.height / 2);
