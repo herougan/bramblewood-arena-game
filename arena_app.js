@@ -42453,7 +42453,7 @@ function forgeCopyPickerHTML(id){
   return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
     <span class="ux-fcp-k"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <b class="ux-fcp-n">×${a.length}</b></span>
     ${g ? `<span class="ux-fcp-cur"><small>${escapeHtml(TX('ui.ux-copy-on-anvil'))}</small> <b>${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))}</b> <small>${escapeHtml(g.label)}</small></span>` : ''}
-    <button type="button" class="btn small ux-fcp-open" data-forge-copies="${escapeAttr(id)}" aria-haspopup="dialog">🃏 ${escapeHtml(TX('ui.ux-copy-change'))}</button></div>`;
+    <button type="button" class="btn small ux-fcp-open" data-forge-copy-sheet="${escapeAttr(id)}" aria-haspopup="dialog">🃏 ${escapeHtml(TX('ui.ux-copy-change'))}</button></div>`;
 }
 // FORGE_UX:BEGIN (2026-10-19, package UX: the copies sheet, the copy-count badges, the centre-stage forging; tests/ux-2026-10-19.js)
 // A copy's treatment in words: Shiny, its foil step (Foil, Hex, Etched...), Alt art; Plain when it has none.
@@ -42759,7 +42759,7 @@ function renderForge(){
   poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; const was = forgeSelectedId; forgeSelectedId = el.getAttribute('data-defid'); renderForge();
     if(forgeSelectedId !== was && forgeCopiesWorthASheet(forgeSelectedId)) openForgeCopySheet(forgeSelectedId); }));
   wireForgeCountBadges(poolEl);
-  root.querySelectorAll('[data-forge-copies]').forEach(b=> b.addEventListener('click', ()=>{ if(!forgeBusy) openForgeCopySheet(b.dataset.forgeCopies); }));
+  root.querySelectorAll('[data-forge-copy-sheet]').forEach(b=> b.addEventListener('click', ()=>{ if(!forgeBusy) openForgeCopySheet(b.dataset.forgeCopySheet); }));
   const search = document.getElementById('forgeSearch');
   search.addEventListener('input', ()=>{ forgeSearch = search.value; const pos = search.selectionStart; renderForge(); const s2 = document.getElementById('forgeSearch'); s2.focus(); try{ s2.setSelectionRange(pos, pos); }catch(e){} });
   root.querySelectorAll('[data-forgefilter]').forEach(b=> b.addEventListener('click', ()=>{ forgeFilter = b.dataset.forgefilter; renderForge(); }));

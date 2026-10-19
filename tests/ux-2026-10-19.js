@@ -112,8 +112,8 @@ function codexApi(store, throwing){
 {
   const rf = fnSrc('renderForge');
   ok(/forgeCountBadgeHTML\(id\)/.test(rf) && /wireForgeCountBadges\(poolEl\)/.test(rf), '8b. every pool tile carries its count badge');
-  ok(/forgeCopiesWorthASheet\(forgeSelectedId\)\) openForgeCopySheet\(forgeSelectedId\)/.test(rf) && /data-forge-copies/.test(rf), '8a. picking a card opens the copies sheet; the anvil\'s button opens it again');
-  ok(/data-forge-copies/.test(fnSrc('forgeCopyPickerHTML')) && /forgeCopyPickerHTML\(id\)/.test(fnSrc('forgeAnvilHTML')) && /forgeCopyPickerHTML\(id\)/.test(fnSrc('refineAnvilHTML')), '8a. Upgrade and Refine show the copy summary');
+  ok(/forgeCopiesWorthASheet\(forgeSelectedId\)\) openForgeCopySheet\(forgeSelectedId\)/.test(rf) && /data-forge-copy-sheet/.test(rf), '8a. picking a card opens the copies sheet; the anvil\'s button opens it again');
+  ok(/data-forge-copy-sheet/.test(fnSrc('forgeCopyPickerHTML')) && /forgeCopyPickerHTML\(id\)/.test(fnSrc('forgeAnvilHTML')) && /forgeCopyPickerHTML\(id\)/.test(fnSrc('refineAnvilHTML')), '8a. Upgrade and Refine show the copy summary');
   ok((src.match(/await forgeCentreStage\(/g) || []).length >= 5, '8c. temper, refine, limit break, promote and prestige play on the centre stage');
   ok(/forgeCentreStage\(play, \{el: panel/.test(fnSrc('energyForgeCelebrate')), '8c. forging Max Energy lifts its panel to the centre stage too');
   ok(/if\(!centred\) metaFx\('levelUp'/.test(fnSrc('forgeTemper')), '8c. the LEVEL burst plays once (centred, or on the anvil)');
