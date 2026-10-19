@@ -24672,14 +24672,23 @@ const LEGACY_STEP = {1: 0.10, 3: 0.10, 6: 0.10, 9: 0.10, 10: 0.05, 11: 0.10};
 function legacyCardGain(b, L){ const base = cardBaseLevel(b), cum = l=>{ let g = 0; for(let x = base + 1; x <= l; x++) g += LEGACY_STEP[x] || 0; return g; };
   const steps = [0, 1, 3, 6, 9, 10, 11]; if(L >= 11) return cum(11); let i = 0; while(i < steps.length - 1 && steps[i + 1] <= L) i++;
   const a = steps[i], c = steps[i + 1], f = (L - a) / (c - a); return cum(a) + f * (cum(c) - cum(a)); }
+// A deck's strength gain at a (fractional) level over its printed cards (ROAD_LEVEL_CURVE.paceMetric): 'ah' (default) the mean over its
+// copies of (A+1) x H, a unit's fighting worth (it hits A a round for H rounds; +1 so a wall counts), against its printed (A+1) x H;
+// 'sum' the deck's summed 2A+H. legacy: the old +10% / +5% steps (each stat x (1 + gain), rounded), else the BF curve (statsAtLevel).
+function legacyStatsAt(b, Lstep){ const g = legacyCardGain(b, Lstep), r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g))); return {attack: r(b.attack), health: r(b.health)}; }
 function deckStatGain(deck, L, defs, legacy){
-  let w0 = 0, w = 0; const ww = s=> 2 * (s.attack || 0) + (s.health || 0);
+  const metric = ROAD_LEVEL_CURVE.paceMetric || 'ah', ww = metric === 'sum' ? (s=> 2 * (s.attack || 0) + (s.health || 0)) : (s=> ((s.attack || 0) + 1) * Math.max(1, s.health || 0));
+  let w0 = 0, w = 0, n = 0;
   for(const [id, k] of Object.entries(deck || {})){ const b = defs[id]; if(!b || (b.attack == null && b.health == null) || !(k > 0)) continue;
-    const p = ww(b); if(!(p > 0)) continue; w0 += k * p;
-    if(legacy){ w += k * p * (1 + legacyCardGain(b, L)); continue; }
-    const base = cardBaseLevel(b), lo = Math.floor(L), f = L - lo, a = ww(statsAtLevel(b, Math.max(base, lo))), c = f > 0 ? ww(statsAtLevel(b, Math.max(base, lo + 1))) : a;
-    w += k * (a + f * (c - a)); }
-  return w0 > 0 ? w / w0 - 1 : null;
+    const p = ww(b); if(!(p > 0)) continue; let a, c, f;
+    if(legacy && Math.abs(L - Math.round(L)) < 1e-6){ a = c = ww(legacyStatsAt(b, Math.round(L))); f = 0; } // the old levelMix: a whole level was itself (Lv 2: the Lv 1 stats)
+    else if(legacy){ const steps = [0, 1, 3, 6, 9, 10, 11]; let i = 0; while(i < steps.length - 1 && steps[i + 1] <= L) i++; const lo = steps[i], hi = steps[Math.min(steps.length - 1, i + 1)];
+      f = hi > lo ? (L - lo) / (hi - lo) : 0; a = ww(legacyStatsAt(b, lo)); c = f > 0 ? ww(legacyStatsAt(b, hi)) : a; }
+    else { const base = cardBaseLevel(b), lo = Math.floor(L); f = L - lo; a = ww(statsAtLevel(b, Math.max(base, lo))); c = f > 0 ? ww(statsAtLevel(b, Math.max(base, lo + 1))) : a; }
+    const v = a + f * (c - a);
+    if(metric === 'sum'){ w0 += k * p; w += k * v; } else { w += k * (v / p); n += k; } }
+  if(metric === 'sum') return w0 > 0 ? w / w0 - 1 : null;
+  return n > 0 ? w / n - 1 : null;
 }
 function legacyLevelForGain(g){ if(!(g > 0)) return 1; const pts = LEGACY_LEVEL_GAIN;
   for(let i = 1; i < pts.length; i++) if(g <= pts[i][0]) return pts[i-1][1] + (g - pts[i-1][0]) / (pts[i][0] - pts[i-1][0]) * (pts[i][1] - pts[i-1][1]); return 11; }
