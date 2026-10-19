@@ -21501,7 +21501,7 @@ function renderConquestSubTab(body){
   // The world is hidden at first (2026-10-12, user: "When you defeat the 2nd map for the first time, you also see the world
   // expand, then you get to see the world map... (otherwise its hidden till then)"): no map list, no world map button.
   const worldOpen = worldRevealed();
-  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(TX('toast.the-world-opens-up-every-map'), 'ok'); SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
+  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(TX(window.matchMedia && matchMedia('(max-width: 820px)').matches ? 'toast.the-world-opens-up-phone' : 'toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (NV merge): phones have no map list on the left */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
   // 2026-10-17 (user: "Tutorial only: You see the tutorials placed left and right (T1  T2), not anymore"): on the Tutorial map itself
   // T-0 and T-1 show as they always will (their own spots, the trail between them); only the Outskirts keep the opening look.

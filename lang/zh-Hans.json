@@ -1966,5 +1966,6 @@
  "Your decks are saved to your account and show on every device you sign in on.": "你的卡组已保存到你的账号，在你登录的每台设备上都能看到。",
  "Saving your decks to your account…": "正在把你的卡组保存到账号…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "无法连接服务器。你的卡组在这台设备上很安全，恢复联网后会自动同步。",
- "The deck “{name}” was deleted on another device, so it's gone from here too.": "卡组“{name}”已在另一台设备上删除，所以这里也没有了。"
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "卡组“{name}”已在另一台设备上删除，所以这里也没有了。",
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界展开了：点击 🧭 查看你能到达的所有地图。"
 }

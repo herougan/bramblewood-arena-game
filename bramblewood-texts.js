@@ -452,6 +452,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.keep-auto-sweeping-here-spare-energy": "🌙 Keep auto-sweeping here: spare Energy goes into this fight while you are away.",
   "toast.stopped-auto-sweeping-here": "Stopped auto-sweeping here.",
   "toast.the-world-opens-up-every-map": "🧭 The world opens up: every map you can reach is on the left, and the 🧭 shows them all.",
+  "toast.the-world-opens-up-phone": "🧭 The world opens up: tap the 🧭 to see every map you can reach.",
   "toast.has-fallen": "🌍 {name} has fallen!{v2}",
   "toast.for-being-there-when-it-fell": "🎁 For being there when it fell: +5 Dust, +4 Maple Leaves.",
   "toast.raid-felled": "Raid felled!",

@@ -1965,5 +1965,6 @@
  "Your decks are saved to your account and show on every device you sign in on.": "Deine Decks sind in deinem Konto gespeichert und erscheinen auf jedem Gerät, auf dem du dich anmeldest.",
  "Saving your decks to your account…": "Deine Decks werden in deinem Konto gespeichert…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Der Server ist nicht erreichbar. Deine Decks sind auf diesem Gerät sicher und werden synchronisiert, sobald du wieder online bist.",
- "The deck “{name}” was deleted on another device, so it's gone from here too.": "Das Deck „{name}“ wurde auf einem anderen Gerät gelöscht und ist deshalb auch hier weg."
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "Das Deck „{name}“ wurde auf einem anderen Gerät gelöscht und ist deshalb auch hier weg.",
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Die Welt öffnet sich: Tippe auf den 🧭, um jede Karte zu sehen, die du erreichen kannst."
 }

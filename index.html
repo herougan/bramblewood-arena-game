@@ -36327,7 +36327,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=667b9e12a9", "es": "assets/lang/es.js?v=7314fb44b8", "fr": "assets/lang/fr.js?v=377c06b898", "id": "assets/lang/id.js?v=f66790871b", "it": "assets/lang/it.js?v=903de5e01f", "ja": "assets/lang/ja.js?v=6c1f3b2d55", "ko": "assets/lang/ko.js?v=467450016c", "pt": "assets/lang/pt.js?v=2b32d002c0", "ta": "assets/lang/ta.js?v=242d6f277a", "tl": "assets/lang/tl.js?v=e43fd6d021", "zh-Hans": "assets/lang/zh-Hans.js?v=e3bc2c8c4d", "zh-Hant": "assets/lang/zh-Hant.js?v=6265950453"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4fadbff64b", "es": "assets/lang/es.js?v=5068452bee", "fr": "assets/lang/fr.js?v=f93085b58b", "id": "assets/lang/id.js?v=6728a7ddb9", "it": "assets/lang/it.js?v=193b7f5e17", "ja": "assets/lang/ja.js?v=90503608f9", "ko": "assets/lang/ko.js?v=260c8b54e4", "pt": "assets/lang/pt.js?v=1a114bc0ce", "ta": "assets/lang/ta.js?v=62897bd60e", "tl": "assets/lang/tl.js?v=4b052e45ac", "zh-Hans": "assets/lang/zh-Hans.js?v=ac1e5e989f", "zh-Hant": "assets/lang/zh-Hant.js?v=a581520309"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -36905,6 +36905,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.keep-auto-sweeping-here-spare-energy": "🌙 Keep auto-sweeping here: spare Energy goes into this fight while you are away.",
   "toast.stopped-auto-sweeping-here": "Stopped auto-sweeping here.",
   "toast.the-world-opens-up-every-map": "🧭 The world opens up: every map you can reach is on the left, and the 🧭 shows them all.",
+  "toast.the-world-opens-up-phone": "🧭 The world opens up: tap the 🧭 to see every map you can reach.",
   "toast.has-fallen": "🌍 {name} has fallen!{v2}",
   "toast.for-being-there-when-it-fell": "🎁 For being there when it fell: +5 Dust, +4 Maple Leaves.",
   "toast.raid-felled": "Raid felled!",
@@ -40721,7 +40722,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a6f27866041e', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = '34a649001a79', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -59445,7 +59446,7 @@ function renderConquestSubTab(body){
   // The world is hidden at first (2026-10-12, user: "When you defeat the 2nd map for the first time, you also see the world
   // expand, then you get to see the world map... (otherwise its hidden till then)"): no map list, no world map button.
   const worldOpen = worldRevealed();
-  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(TX('toast.the-world-opens-up-every-map'), 'ok'); SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
+  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(TX(window.matchMedia && matchMedia('(max-width: 820px)').matches ? 'toast.the-world-opens-up-phone' : 'toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (NV merge): phones have no map list on the left */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
   // 2026-10-17 (user: "Tutorial only: You see the tutorials placed left and right (T1  T2), not anymore"): on the Tutorial map itself
   // T-0 and T-1 show as they always will (their own spots, the trail between them); only the Outskirts keep the opening look.
