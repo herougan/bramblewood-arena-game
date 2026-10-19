@@ -20,6 +20,12 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Horizontal (row):** unchanged. It lies along the row from the board's edge on the bramble's side.
 - **Mask region:** the base's fade mask now covers the limb's own box, not a 30000 px square.
 - **Test:** `tests/e2e/tentacle_fx_2026_10_19.py` (run with `--e2e`). It runs at 1366×768 (desktop) and 390×844 (phone), with reduced motion off and on, through the game's event path and a real round. At impact, it checks that the tentacle element is visible, inside the viewport, at opacity > 0.3 and painting pixels, and that it spans the right axis. Screenshots are in `docs/screens/tf/`, including 1920×1080 and 1440×900.
+## 2026-10-19 (package RW3: raid reward cards show as cards)
+- **Owner (22:14, 22:32):** "What is 'honeybrew'? it was a reward upon completion of the raid" … "The raid just showed Honeybrew, not a card image."
+- **What it was:** the card **Honeyjoe Brewer**, an Uncommon pack card. A won raid fight drops one pack card (package RC). The results showed it only as a small "🃏 Honeyjoe Brewer" pill, with no art, no rarity and nothing saying it was a card. No name builder, drink, item or currency called "Honeybrew" exists.
+- **Raid fight results:** the pill is gone. The dropped card sits under "Cards won" as the card itself: its tile (art), full name, rarity and "Pack card" (or "Raid card" for one of the raid's own). It flips in on the reward reveal like any victory's card, and a tap opens its details.
+- **Raid claim screen:** each card reward shows the tile, the full name, the rarity and "Pack card" / "Faction card". Once the screen has settled, a tap opens the card's details over it, and Esc closes the details, not the screen. The tile's stat glyphs no longer blow up to 32px (the reward-icon rule had reached into the tile).
+- New text: "Tap to see the card" (TX `results.rw3-card-open`, 12 packs). Test: `tests/raid-reward-card-2026-10-19.js`. Screens: `docs/screens/rw3/`.
 
 ## 2026-10-19 (package SK3: skills batch 3, triggers × actions)
 - **Owner (21:56):** "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the required trigger or action." Most new skills are keywords that expand into ordinary triggers (Waiting, the layer cap, Confused and Exhaust all apply).

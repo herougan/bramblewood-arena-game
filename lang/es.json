@@ -2278,5 +2278,6 @@
  "Sort: Name": "Orden: Nombre",
  "No brambles match these filters.": "Ninguna zarza coincide con estos filtros.",
  "Clear filters": "Quitar filtros",
- "{hp} Health a fight ({parts})": "{hp} de Salud por combate ({parts})"
+ "{hp} Health a fight ({parts})": "{hp} de Salud por combate ({parts})",
+ "Tap to see the card": "Toca para ver la carta"
 }

@@ -2279,5 +2279,6 @@
  "Sort: Name": "Tri : nom",
  "No brambles match these filters.": "Aucune ronce ne correspond à ces filtres.",
  "Clear filters": "Effacer les filtres",
- "{hp} Health a fight ({parts})": "{hp} PV par combat ({parts})"
+ "{hp} Health a fight ({parts})": "{hp} PV par combat ({parts})",
+ "Tap to see the card": "Touchez pour voir la carte"
 }

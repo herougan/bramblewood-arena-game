@@ -2278,5 +2278,6 @@
  "Sort: Name": "Sortierung: Name",
  "No brambles match these filters.": "Keine Dornen passen zu diesen Filtern.",
  "Clear filters": "Filter zurücksetzen",
- "{hp} Health a fight ({parts})": "{hp} Leben pro Kampf ({parts})"
+ "{hp} Health a fight ({parts})": "{hp} Leben pro Kampf ({parts})",
+ "Tap to see the card": "Tippen, um die Karte zu sehen"
 }

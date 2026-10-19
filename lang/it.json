@@ -2278,5 +2278,6 @@
  "Sort: Name": "Ordine: Nome",
  "No brambles match these filters.": "Nessun rovo corrisponde a questi filtri.",
  "Clear filters": "Azzera i filtri",
- "{hp} Health a fight ({parts})": "{hp} Salute a combattimento ({parts})"
+ "{hp} Health a fight ({parts})": "{hp} Salute a combattimento ({parts})",
+ "Tap to see the card": "Tocca per vedere la carta"
 }

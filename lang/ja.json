@@ -2279,5 +2279,6 @@
  "Sort: Name": "並び：名前",
  "No brambles match these filters.": "この条件に合う茨の砦はありません。",
  "Clear filters": "フィルターを解除",
- "{hp} Health a fight ({parts})": "1戦ごとに体力{hp}（{parts}）"
+ "{hp} Health a fight ({parts})": "1戦ごとに体力{hp}（{parts}）",
+ "Tap to see the card": "タップしてカードを見る"
 }

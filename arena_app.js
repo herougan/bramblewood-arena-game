@@ -23030,8 +23030,10 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
     rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(raidLocale()), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
   if(shards > 0) rewards.push({kind:'currency', id:'raidShards', icon: raidShardIcon(def), amount:'+' + shards.toLocaleString(raidLocale()), label: raidShardName(def), weight:3}); // 2026-10-19 (package RC)
   // 2026-10-19 (package RC): a card is {id, from: 'pack' | 'faction' | 'raid'} (a bare id is a raid card, the older shape)
+  // 2026-10-19 (package RW3): + the card's full name, its rarity and a tap to its details (open), see raidRewardCardInfo
   (cardsGot || []).forEach(c=>{ const id = typeof c === 'string' ? c : c.id, from = typeof c === 'string' ? 'raid' : c.from, d = defs[id]; if(!d) return;
-    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+    const ci = raidRewardCardInfo(id, from) || {};
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: raidRewardFromLabel(from), name: ci.name || d.name || id, rarity: ci.rarity || '', rarityColor: ci.color || '', open: id, tip: ci.tip || '', weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
   if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
@@ -23043,8 +23045,39 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
 function showRaidClaimScreen(spec){
   if(!raidClaimScreenReady()) return Promise.resolve();
   const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
-  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), openCard: openRaidRewardCard, covered: raidRewardCardOpen /* 2026-10-19 (package RW3) */, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
+// ---- Raid reward cards, shown as cards (2026-10-19, package RW3, owner 22:14 / 22:32: "What is 'honeybrew'? it was a reward upon
+// completion of the raid" … "The raid just showed Honeybrew, not a card image."): "Honeybrew" was no item, drink or currency: it was the
+// card Honeyjoe Brewer (an Uncommon pack card) that the won raid fight dropped (raidFightCardDrop), shown on the results only as a small
+// "🃏 Honeyjoe Brewer" pill with no art, no rarity and nothing saying it was a card. A raid's card reward now always shows the card: its
+// tile (the art, as in the victory screens' Cards won), its full name, its rarity and where it came from (Pack card / Faction card /
+// Raid card), and a tap opens the card's details. Used by the raid fight's results (raidOfflineHTML) and the claim screen (FX.F).
+function raidRewardFromLabel(from){ return from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'); }
+function raidRewardCardInfo(id, from){
+  const d = getCardDefs()[id]; if(!d) return null;
+  const r = rarityDef(d.rarity || 'common') || {}, name = d.name || id, rarity = r.label || d.rarity || '', fromLabel = raidRewardFromLabel(from);
+  return {d, name, rarity, color: r.color || '', fromLabel, aria: [name, rarity, fromLabel].filter(Boolean).join(' · '), tip: TX('results.rw3-card-open')};
+}
+// A won raid fight's card: 'raid' when it is one of the raid's own cards, else a pack card (raidFightCardDrop draws only those two)
+function raidDropFrom(m, id){ try{ return m && m.raidDef && raidCardIds(m.raidDef).includes(id) ? 'raid' : 'pack'; }catch(e){ return 'pack'; } }
+function raidRewardCardHTML(id, from){
+  const c = raidRewardCardInfo(id, from); if(!c) return '';
+  return `<button type="button" class="rw3-card" data-rw3-card="${escapeAttr(id)}" aria-label="${escapeAttr(c.aria + '. ' + c.tip)}" title="${escapeAttr(c.tip)}">`
+    + `<span class="rw3-tile">${cardTileHTML(c.d, {inPlay:true})}</span>`
+    + `<span class="rw3-txt"><b class="rw3-name">${escapeHtml(c.name)}</b><span class="rw3-rarity"><i style="background:${escapeAttr(c.color)}" aria-hidden="true"></i>${escapeHtml(c.rarity)}</span><span class="rw3-from">🃏 ${escapeHtml(c.fromLabel)}</span></span></button>`;
+}
+// A tap on a reward card opens its details; over the claim screen (z-index 9500) the details sit on top until they close.
+function openRaidRewardCard(id){
+  if(!id || !getCardDefs()[id]) return;
+  try{ openCardDetail(id); }catch(e){ return; }
+  const ov = document.getElementById('cardDetailOverlay'); if(!ov || ov.hidden || !document.querySelector('.fxf-rcs')) return;
+  ov.classList.add('rw3-over');
+  const mo = new MutationObserver(()=>{ if(ov.hidden){ ov.classList.remove('rw3-over'); mo.disconnect(); } }); mo.observe(ov, {attributes:true, attributeFilter:['hidden']});
+}
+// the details opened over the claim screen are up (the screen leaves its keys to them: Esc closes the details, not the screen)
+function raidRewardCardOpen(){ const ov = typeof document !== 'undefined' && document.getElementById('cardDetailOverlay'); return !!(ov && !ov.hidden && ov.classList.contains('rw3-over')); }
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('[data-rw3-card]'); if(!b || b.closest('.fxf-rcs')) return; openRaidRewardCard(b.getAttribute('data-rw3-card')); });
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
 // then three panels: how a raid fight's rows work (you in front, an ally in each row behind, the boss calling in Commons), the raid's
@@ -37499,7 +37532,7 @@ function victoryParade(rowId, upOverride){
 // board with a very slight shake. A click, tap or key skips straight to the results.
 function playRewardReveal(m){
   const defs = getCardDefs();
-  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || [])].filter(id=> defs[id]);
+  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || (m.raidCardDrop ? [m.raidCardDrop] : []) /* + a won raid fight's card (2026-10-19, package RW3) */)].filter(id=> defs[id]);
   const unlocks = [...(m.unlockedFights||[]).map(f=> ({icon:(f.node && f.node.icon) || '⚔️', label: _t('New fight: {name}', {name:(f.node && f.node.name) || ''})})),
                    ...(m.unlockedActivities||[]).map(a=> ({icon:a.icon || '✨', label:a.label || ''}))];
   if(!cards.length && !unlocks.length) return Promise.resolve();
@@ -38277,9 +38310,10 @@ function matchStatsHTML(m){
       ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)})}</span>
       ${adminModeEnabled ? raidDamageCalcHTML(m) : '' /* 2026-10-19 (NV): how that number was made; (package RB, owner 12:23: "Do not show the damage formula to players.") admins only */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: raidNum(m.raidRemainingAfter), v2: m.raidRemainingAfter<=0?' — defeated!':''}) /* 2026-10-19 (package RB): 1,234 */}</span>
-      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
+      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${'' /* 2026-10-19 (package RW3): the dropped card is no longer a name pill (the owner's "Honeybrew"): it shows as the card, below */}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">${TX('results.dust', {v1: rewardCountSpan(orReward.dust)})}</span>` : ''}
+      ${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<div class="rw3-drop" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}"><div class="rw-head">${TX('results.cards-won')}</div>${raidRewardCardHTML(m.raidCardDrop, raidDropFrom(m, m.raidCardDrop))}</div>` : '' /* 2026-10-19 (package RW3): the card won, as a card (art, name, rarity, Pack card), a tap to its details */}
     </div>` : '';
   const gReward = m.gauntletRewardEarned;
   const gauntletHTML = (m.mode==='gauntlet' && m.gauntletStreakAfter!=null) ? `<div class="winloss-conquest-rewards">

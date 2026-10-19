@@ -2278,5 +2278,6 @@
  "Sort: Name": "Ordem: Nome",
  "No brambles match these filters.": "Nenhuma silva corresponde a estes filtros.",
  "Clear filters": "Limpar filtros",
- "{hp} Health a fight ({parts})": "{hp} de Vida por combate ({parts})"
+ "{hp} Health a fight ({parts})": "{hp} de Vida por combate ({parts})",
+ "Tap to see the card": "Toque para ver a carta"
 }

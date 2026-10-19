@@ -2279,5 +2279,6 @@
  "Sort: Name": "排序：名称",
  "No brambles match these filters.": "没有符合这些筛选条件的荆棘。",
  "Clear filters": "清除筛选",
- "{hp} Health a fight ({parts})": "每场战斗 {hp} 生命（{parts}）"
+ "{hp} Health a fight ({parts})": "每场战斗 {hp} 生命（{parts}）",
+ "Tap to see the card": "点按查看卡牌"
 }

@@ -2279,5 +2279,6 @@
  "Sort: Name": "정렬: 이름",
  "No brambles match these filters.": "이 필터에 맞는 가시덤불이 없어요.",
  "Clear filters": "필터 지우기",
- "{hp} Health a fight ({parts})": "전투마다 체력 {hp} ({parts})"
+ "{hp} Health a fight ({parts})": "전투마다 체력 {hp} ({parts})",
+ "Tap to see the card": "탭하여 카드 보기"
 }

@@ -2279,5 +2279,6 @@
  "Sort: Name": "வரிசை: பெயர்",
  "No brambles match these filters.": "இந்த வடிகட்டிகளுக்குப் பொருந்தும் முட்புதர் இல்லை.",
  "Clear filters": "வடிகட்டிகளை அழி",
- "{hp} Health a fight ({parts})": "ஒரு போருக்கு {hp} உயிர் ({parts})"
+ "{hp} Health a fight ({parts})": "ஒரு போருக்கு {hp} உயிர் ({parts})",
+ "Tap to see the card": "அட்டையைப் பார்க்கத் தட்டவும்"
 }
