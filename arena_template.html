@@ -3806,6 +3806,23 @@
   .board-row.reserve-row .board-card.is-reserve{filter:saturate(.8) brightness(.92);}
   .board-row.reserve-row .reserve-label{position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap;}
   .board-row.reserve-row .reserve-target{border-style:dashed;}
+  /* 2026-10-19 (package RV2, owner 08:42: "Increase the size of all the back-row creatures by 15%."): a raid's middle and back rows at
+     .84 x 1.15 = .966 of a front card, the rows as tall as their cards. */
+  .board-row.reserve-row.raid-rows{height:calc(var(--match-card-h, 149px) * .966 + 8px) !important;}
+  .board-row.reserve-row.raid-rows > .board-card{transform:scale(.966); margin-bottom:calc(var(--match-card-h, 149px) * -.034);}
+  /* RV2: a reserve strike under reduced motion / Low effects (no lunge), and an ally's play: its name tag, its hand of card backs,
+     the face-down card it plays (turned face up mid-flight), the sparkle trail */
+  .board-card.raid-strike-flash .card-tile{box-shadow:0 0 0 2px rgba(255,214,120,.95), 0 0 14px 3px rgba(255,190,80,.55); transition:box-shadow .12s;}
+  .board-row.reserve-row > .ally-play-tag{position:absolute; left:6px; top:-14px; z-index:30; padding:3px 10px; border-radius:999px; font:800 12px 'Baloo 2',system-ui,sans-serif; white-space:nowrap; color:#2b1d08; background:linear-gradient(#ffe7a3,#f3c55a); box-shadow:0 2px 8px rgba(0,0,0,.35), 0 0 0 2px rgba(255,255,255,.55); pointer-events:none; animation:allyTagPop .3s cubic-bezier(.2,1.6,.4,1) both, allyTagPulse .55s ease-in-out .3s 2; transition:opacity .35s, transform .35s;}
+  .board-row.reserve-row > .ally-play-tag.is-out{opacity:0; transform:translateY(-6px);}
+  @keyframes allyTagPop{from{opacity:0; transform:scale(.6) translateY(6px);} to{opacity:1; transform:none;}}
+  @keyframes allyTagPulse{50%{transform:scale(1.1); box-shadow:0 2px 12px rgba(0,0,0,.35), 0 0 0 3px rgba(255,236,170,.9), 0 0 18px 4px rgba(255,200,90,.6);}}
+  .ally-card-back{position:absolute; inset:0; border-radius:10px; z-index:5; pointer-events:none; background:radial-gradient(circle at 50% 42%, rgba(255,220,140,.55) 0 14%, transparent 15%), repeating-linear-gradient(45deg, #6b3f1d 0 6px, #7d4b23 6px 12px); box-shadow:inset 0 0 0 3px #e7c27a, inset 0 0 0 5px #5a3414;}
+  .ally-hand-fan{position:fixed; z-index:1250; width:0; height:0; pointer-events:none;}
+  .ally-hand-fan > .ally-card-back{position:absolute; inset:auto; left:calc(var(--w) * -.5); top:calc(var(--w) * -.7); width:var(--w); height:calc(var(--w) * 1.4); transform-origin:50% 120%; transform:rotate(var(--r)); box-shadow:inset 0 0 0 2px #e7c27a, 0 3px 8px rgba(0,0,0,.4);}
+  .ally-trail-dot{position:fixed; z-index:1290; width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%; pointer-events:none; background:radial-gradient(circle, #fff7d6 0 30%, rgba(255,200,90,.85) 45%, transparent 70%); animation:allyTrail .5s ease-out forwards;}
+  @keyframes allyTrail{to{opacity:0; transform:scale(.3) translateY(6px);}}
+  @media (prefers-reduced-motion: reduce){ .board-row.reserve-row > .ally-play-tag{animation:none;} .ally-trail-dot{display:none;} }
   .board-card.raid-tele{box-shadow:0 0 0 2px rgba(230,60,50,.85), 0 0 18px 4px rgba(230,60,50,.45) !important; border-radius:12px; animation:raidTele 1s ease-in-out infinite;}
   @keyframes raidTele{50%{box-shadow:0 0 0 2px rgba(230,60,50,.5), 0 0 6px 1px rgba(230,60,50,.25);}}
   .battle-log{max-height:210px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; font-size:12.5px;}
@@ -7053,6 +7070,14 @@
   /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
   .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
+  /* 2026-10-19 (package RV2, owner 08:46: "If you actually win the fight, you get a special emblemed rank (same rank but with more
+     outlines to show it's special)"): a raid fight's rank badge, and its emblemed form for a win: the same letter in rings and a crest */
+  .conquest-rank-badge.raid-rank{position:relative; margin:0 auto 6px; font-size:15px; padding:5px 14px;}
+  .winloss-card.is-raid .conquest-rank-badge.raid-rank{flex-basis:auto;}
+  .conquest-rank-badge.raid-rank.is-emblem{margin:10px auto 8px; box-shadow:0 0 0 2px #fff3c4, 0 0 0 4px #b8832a, 0 0 0 7px rgba(255,236,170,.8), 0 0 16px 6px rgba(255,210,110,.55);}
+  .conquest-rank-badge.raid-rank .raid-rank-crest{position:absolute; top:-13px; left:50%; transform:translateX(-50%); font-style:normal; font-size:13px; color:#ffe9a0; text-shadow:0 0 6px rgba(255,200,90,.95), 0 1px 0 #6b4210;}
+  .r2-claim .conquest-rank-badge.raid-rank{margin:0 4px; font-size:12px; padding:2px 9px;}
+  .r2-claim .conquest-rank-badge.raid-rank.is-emblem{margin:0 8px;}
   .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}
   /* Raid rows (2026-10-12, user: "The middle and backrows shouldnt be so small, at most a bit smaller") */

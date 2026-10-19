@@ -139,7 +139,8 @@ async def main():
         await pg.click('.raid-hub [data-raid-open]'); await pg.wait_for_timeout(500)
         await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(2500)
         check(await pg.evaluate("!!(matchState && matchState.raidFull && matchState.engine.reserveRows===2)"), 'a trench raid should open the full three-row battle')
-        check(await pg.evaluate("!!(matchState && matchState.players[2].reserve && Object.keys(matchState.players[2].reserve[0]).length>0)"), "the boss's middle row should be filled")
+        # 2026-10-19 (package RV2): no card waits in the boss's middle row at the start; it plays 3 cards a turn from turn 1 (raidBossRowPlays)
+        check(await pg.evaluate("!!(matchState && matchState.players[2].reserve && Object.keys(matchState.players[2].reserve[0]).length===0 && matchState.raidBossRowDecks && matchState.raidBossRowDecks[1].length===20)"), "the boss's middle row should start empty, with its own 20-card deck")
         await pg.evaluate("document.querySelectorAll('.vs-screen,#vsScreen,.vs-overlay').forEach(e=> e.remove()); matchState=null; switchTab('home'); 1"); await pg.wait_for_timeout(400)
         # 6: Conquest world panning
         await pg.evaluate("(()=>{ const pr=loadConquestProgress(); CONQUEST_MAPS.slice(0,2).forEach(m=> m.nodes.forEach(n=>{ const id=conquestNodeId(m.id,n.key); if(!pr.completed.includes(id)) pr.completed.push(id); })); saveConquestProgress(pr); conquestSelectedMap='m1'; playSubTab='conquest'; switchTab('play'); return 1; })()")

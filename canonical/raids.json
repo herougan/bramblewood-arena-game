@@ -323,12 +323,13 @@
     ],
     "minDamage": 40,
     "tuning": {
-      "bossAtkPct": 0.35,
-      "bossHpPct": 0.25,
+      "bossAtkPct": 0.2,
+      "bossHpPct": 0.15,
       "raiderCastleBonus": 60,
       "alliesPerTurn": 2,
+      "rowCap": 2,
       "reinforce": {
-        "max": 1,
+        "max": 0,
         "every": 3,
         "from": 3
       }
@@ -340,8 +341,12 @@
       "fights": 3,
       "damage": 1000,
       "strongFights": 4,
-      "strongDamage": 5000,
-      "strongPct": 20
+      "strongDamage": 10000,
+      "strongPct": 20,
+      "leadFights": 4,
+      "leadDamage": 50000,
+      "leadPct": 40,
+      "leadCards": 1
     }
   }
 ]

@@ -20,10 +20,14 @@ const CYCLE_MS = 7*DAY;
 function cycleOf(now){ return Math.floor(now / CYCLE_MS); }
 function partTotal(p){ return Math.max(1, (p.bars|0) * (p.barHp|0)); }
 // `part` (optional) may carry its own scoring overrides, e.g. the Core's stumps are worth more per HP.
-function contributionFor(def, dealt, overwhelmed, part){
+// 2026-10-19 (package RV2): `rank` (optional, the fight's B..SSS) multiplies a fight that didn't overwhelm by raidRankMult (below), on
+// top of the cap, never past the overwhelm's 10,000; a win counts the overwhelm cap whatever the rank.
+function contributionFor(def, dealt, overwhelmed, part, rank){
   const sc = Object.assign({}, def.scoring || {}, (part && part.scoring) || {});
   if(overwhelmed) return sc.overwhelmCap || 10000;
-  return Math.max(0, Math.min(sc.cap || 5000, Math.round((dealt||0) * (sc.perInFightHp || 50))));
+  const base = Math.max(0, Math.min(sc.cap || 5000, Math.round((dealt||0) * (sc.perInFightHp || 50))));
+  const mult = raidRankMult(rank); if(mult === 1) return base;
+  return Math.max(0, Math.min(sc.overwhelmCap || 10000, Math.round(base * mult)));
 }
 // attempts: [{raidId, part, cycle, owner, contribution, at}]
 function raidState(def, attempts, now, opts){
@@ -184,10 +188,15 @@ function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.round
 // +round(bossHpBonusMax × the share of the raid's total Health still standing) Health on top of its peer-scaled Health: about
 // +100 on a fresh Goliath, about +0 on a nearly-dead one. The state is whatever raidState was given (the cloud's attempts, or
 // only this device's when offline). bossHpBonusMax is clamped to 0–1000; unset = no bonus.
-function bossHpBonus(def, state){
+// 2026-10-19 (package RV2, owner 08:42: "Lower the HP of these HP-scaled elders. (They start with 100 HP instead, then scale down to
+// the basic HP.)"): with the unit's `basic` Health given, bossHpBonusMax (100) is the unit's whole Health on a fresh raid, not a bonus
+// on top: Health = basic + (100 − basic) × the raid's remaining share, so 100 fresh, its basic Health when the raid is nearly dead,
+// never below basic (basic ≥ 100: basic, no bonus). `bonus` is what it adds to basic. Called without `basic`, the old +100 × share.
+function bossHpBonus(def, state, basic){
   const max = Math.max(0, Math.min(1000, Math.round(Number(def && def.bossHpBonusMax) || 0)));
   const fraction = state && state.total > 0 ? Math.max(0, Math.min(1, (Number(state.remaining) || 0) / state.total)) : 1;
-  return {bonus: Math.round(max * fraction), fraction, max};
+  const b = Math.max(0, Math.round(Number(basic) || 0));
+  return {bonus: Math.round(Math.max(0, max - b) * fraction), fraction, max, basic: b, health: b + Math.round(Math.max(0, max - b) * fraction)};
 }
 function validateRaid(def, defs){
   const errs = [];
@@ -273,18 +282,33 @@ function generationState(def, attempts, g, cycle, now){
 // rewards. It survives (the life ends standing): half the general rewards (failPct 50: Gold, Dust, Metal, XP), and the raid-specific
 // ones (its cards, the tier extras, the title) scaled to 0..failSpecialMaxPct (10%) by how much of its Health was taken off. Under
 // the bar: no claim.
-const PARTICIPATION_DEFAULTS = {fights:3, damage:1000, strongFights:4, strongDamage:5000, strongPct:20};
+// 2026-10-19 (package RV2, owner 08:46: "The previous requirement for competent participant at 5,000 should be changed to 10,000. Then
+// leading participant changed to 50,000."): the strong contributor is the Competent participant now, at 10,000+ damage (still 4+
+// fights, +strongPct 20% of everything, a strongPct% chance of an extra raid card), and a new top tier, the Leading participant, at
+// 50,000+ damage (leadFights 4+ fights): +leadPct (40%) of everything and leadCards (1) extra raid card for certain (a proposal: the
+// owner may retune it). The damage is the raid damage counted for you, rank multiplier in (contributionFor). `strong` stays true for a
+// leader, so every reader of the old flag still sees the better tier.
+const PARTICIPATION_DEFAULTS = {fights:3, damage:1000, strongFights:4, strongDamage:10000, strongPct:20, leadFights:4, leadDamage:50000, leadPct:40, leadCards:1};
 function participationRules(def){
   const p = (def && def.participation) || {}, D = PARTICIPATION_DEFAULTS;
   const n = (v, d, lo, hi)=>{ const x = Number(v); return (v !== '' && v != null && isFinite(x)) ? Math.max(lo, Math.min(hi, Math.round(x))) : d; };
   return {fights: n(p.fights, D.fights, 0, 99), damage: n(p.damage, D.damage, 0, 1e7), strongFights: n(p.strongFights, D.strongFights, 0, 99),
-    strongDamage: n(p.strongDamage, D.strongDamage, 0, 1e7), strongPct: n(p.strongPct, D.strongPct, 0, 200)};
+    strongDamage: n(p.strongDamage, D.strongDamage, 0, 1e7), strongPct: n(p.strongPct, D.strongPct, 0, 200),
+    leadFights: n(p.leadFights, D.leadFights, 0, 99), leadDamage: n(p.leadDamage, D.leadDamage, 0, 1e8), leadPct: n(p.leadPct, D.leadPct, 0, 300), leadCards: n(p.leadCards, D.leadCards, 0, 5)};
 }
 function participationOf(def, state, owner){
   const r = participationRules(def), fights = ((state && state.fightsBy) || {})[owner] || 0, damage = ((state && state.contributors) || {})[owner] || 0;
   const participant = fights >= r.fights && damage >= r.damage, strong = participant && fights >= r.strongFights && damage >= r.strongDamage;
-  return {fights, damage, participant, strong, rules: r, needFights: Math.max(0, r.fights - fights), needDamage: Math.max(0, r.damage - damage)};
+  const leading = strong && fights >= r.leadFights && damage >= r.leadDamage;
+  const level = leading ? 'leading' : strong ? 'competent' : participant ? 'participant' : null;
+  return {fights, damage, participant, strong, leading, level, rules: r, needFights: Math.max(0, r.fights - fights), needDamage: Math.max(0, r.damage - damage)};
 }
+// The rank multiplier (2026-10-19, package RV2, owner 08:46: "You do 1.01× damage if B, 1.1× if A, 1.2× if S, 1.5× if SS, 2.0× if SSS
+// ... it's just in the raid rules that ... higher rank = more damage"): a raid fight's rank (raidFightRank on the page: your bramble's
+// Health left, SS no damage taken, SSS no damage and no unit lost) multiplies the raid damage that fight counts for, still capped
+// (scoring.cap; a win is overwhelmCap, 10,000, whatever the rank). Below B: ×1. The numbers are not shown to players.
+const RAID_RANK_MULT = {B:1.01, A:1.1, S:1.2, SS:1.5, SSS:2.0};
+function raidRankMult(rank){ return RAID_RANK_MULT[rank] || 1; }
 // opts.over: that life of the raid has ended (it fell, was restarted, or the cycle ended). Returns null when there is nothing to claim.
 function raidReward(def, state, owner, opts){
   opts = opts || {};
@@ -293,7 +317,7 @@ function raidReward(def, state, owner, opts){
   const rw = (def && def.rewards) || {}, tier = contributionTier(state, owner) || 'participant';
   const failPct = rw.failPct != null ? Number(rw.failPct) : 50, specMax = rw.failSpecialMaxPct != null ? Number(rw.failSpecialMaxPct) : 10;
   const taken = Math.max(0, Math.min(1, 1 - (Number(state.fraction) || 0)));
-  const genMult = kill ? 1 : Math.max(0, failPct) / 100, specMult = kill ? 1 : Math.max(0, specMax) / 100 * taken, boost = p.strong ? 1 + p.rules.strongPct / 100 : 1;
+  const genMult = kill ? 1 : Math.max(0, failPct) / 100, specMult = kill ? 1 : Math.max(0, specMax) / 100 * taken, boost = p.leading ? 1 + p.rules.leadPct / 100 : p.strong ? 1 + p.rules.strongPct / 100 : 1; // + the Leading participant (2026-10-19, RV2)
   const base = {}; Object.entries(rw.kill || {}).forEach(([k, v])=>{ if(typeof v === 'number' && v > 0){ const n = Math.round(v * genMult * boost); if(n > 0) base[k] = n; } });
   const extra = {}; Object.entries((rw.tiers || {})[tier] || {}).forEach(([k, v])=>{
     if(typeof v === 'number' && v > 0){ const n = kill ? Math.round(v * boost) : Math.floor(v * specMult * boost); if(n > 0) extra[k] = n; }
@@ -301,8 +325,9 @@ function raidReward(def, state, owner, opts){
   const xp = Math.round((rw.xp != null ? Number(rw.xp) : 500) * genMult * boost);
   const cardsBase = Math.max(0, Math.round(rw.cards != null ? Number(rw.cards) : 1)) + (/^top(1|10)$/.test(tier) ? 1 : 0);
   // cards: a kill gives them all (a strong contributor: strongPct% chance of one more); a survival only a chance at one, 0..10%
-  const cards = kill ? cardsBase : 0, cardChance = kill ? (p.strong ? p.rules.strongPct / 100 : 0) : Math.min(1, specMult * boost * cardsBase);
-  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost};
+  // 2026-10-19 (RV2): a Leading participant's kill brings leadCards (1) more for certain, and no chance roll on top
+  const cards = kill ? cardsBase + (p.leading ? p.rules.leadCards : 0) : 0, cardChance = kill ? (p.leading ? 0 : p.strong ? p.rules.strongPct / 100 : 0) : Math.min(1, specMult * boost * cardsBase);
+  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, leading: !!p.leading, level: p.level, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost};
 }
 
 // ---- Raid tickets (owner 00:22: "10 tickets per week to do raids, regenerate 1 per day"): at most `cap` (10); +1 every regenMs (a
@@ -405,7 +430,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+  CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

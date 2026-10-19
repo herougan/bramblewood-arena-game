@@ -104,10 +104,11 @@ ok(/extra time as each round starts/.test(R.describeStage({name:'Enraged', rules
   ok(R.bossHpBonus(g, half).bonus === want && want < 100 && want > 70, `a raid down to ${Math.round(half.fraction * 100)}%: +${R.bossHpBonus(g, half).bonus}`);
   ok(R.bossHpBonus(g, {total:100, remaining:1}).bonus === 1 && R.bossHpBonus(g, {total:100, remaining:0}).bonus === 0 && R.bossHpBonus(g, {total:100, remaining:500}).bonus === 100, 'nearly dead: about +0; never below 0 or above the max');
   ok(R.bossHpBonus({}, fresh).bonus === 0 && R.bossHpBonus({bossHpBonusMax:5000}, fresh).bonus === 1000 && R.bossHpBonus({bossHpBonusMax:-5}, fresh).bonus === 0, 'no bossHpBonusMax: no bonus; clamped to 0–1000'); }
-ok(/const bossHpBonus = \(bossUnitId && RaidM\.bossHpBonus\) \? RaidM\.bossHpBonus\(def, st\)\.bonus : 0;/.test(src) && /raidBossHpBonus: bossHpBonus/.test(src), 'the fight is built with the bonus from the raid state (cloud, or this device offline)');
+// 2026-10-19 (package RV2): the bonus takes the unit's basic Health now (100 fresh, down to basic), see tests/raid-rv2-2026-10-19.js
+ok(/const bossHpBonus = \(bossUnitId && RaidM\.bossHpBonus\) \? RaidM\.bossHpBonus\(def, st, defs\[bossUnitId\]\.health\)\.bonus : 0;/.test(src) && /raidBossHpBonus: bossHpBonus/.test(src), 'the fight is built with the bonus from the raid state (cloud, or this device offline)');
 ok(/const bonus = Math\.max\(0, m\.raidBossHpBonus \| 0\); if\(bonus\)\{ c\.hp \+= bonus; c\.maxHp = /.test(src) && /c\.bossHpBonus = bonus/.test(src), 'each boss unit comes in with the bonus on its Health and max Health');
 ok(/!irr && !lc\.bossHpBonus\) return/.test(src), 'the card details show the bonus as a bonus (base + N)');
-ok(/its great beasts carry <b>\+\$\{bh\.bonus\} Health<\/b> while the raid is at/.test(src), "the raid tab names the bonus and the raid's share");
+ok(/TX\('ui\.raid-might', \{name: def\.name \|\| 'The boss', hp: bh\.max, pct: Math\.ceil\(bh\.fraction \* 100\)\}\)/.test(src), "the raid tab names the elders' fresh Health and the raid's share (2026-10-19, RV2: a TX line)");
 ok(/RAID_BOSS_UNIT_ROUNDS = new Set\(\[3, 7, 11, 15, 19\]\)/.test(src), 'boss units on rounds 3, 7, 11, 15 and 19');
 ok(/raidRoundCap: f\.rounds \|\| cfg\.rounds/.test(src) && /lasts \$\{RaidM\.fightRounds\(def\)\} turns \(or until your bramble falls\)/.test(src), 'the fight and the raid tab take the 20-turn clock from the data');
 ok(/m\.round >= SUDDEN_DEATH_ROUND && !\(m\.raidRoundCap && m\.raidRoundCap <= SUDDEN_DEATH_ROUND\)/.test(src), 'a raid that ends by turn 20 never goes into sudden death');
