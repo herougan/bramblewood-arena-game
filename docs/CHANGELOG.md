@@ -9,6 +9,26 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **`once` fix** (`tools/skill_costs.js`): onceCap is 0.66 now, lower than On Spawn's 1. A `once` on On Spawn, On Death or On Ready (triggers that fire once anyway) no longer makes a card cheaper. Only repeating triggers are capped. No live card changes: the only `once` cards are Nest and Sea Cucumber, on repeating triggers. The old "once caps the weight" failure was a test bug: it compared an unrounded product against the rounded cost.
 - The hub was rebuilt: its Skill costs tab shows the applied values.
 
+## 2026-10-19 (package UC: units by theme)
+- **Owner (08:49): "let's separate the units thematically? Then we pick and choose, then do post-balancing — meaning we apply skills post-facto. Dangerous versions of a biome monster can come later in the game."**
+- **The catalogue** is `canonical/unit-themes.json`, written by `node tools/unit_themes.js`. It covers 725 creature cards: 721 live and 4 still in the pool.
+  - Each one is tagged with its biomes (21; the main one first), its family (20), its faction (16: the Otters, the Hummingbirds, the lore bible's sub-factions, the beasts and the wild), its size and its road stage.
+  - Its **base body** (Lumber, Wait, Attack, Health, damage type, resists) is kept apart from its current skills.
+  - The tags come from the maps' identities, the archetypes and species, names and emoji. A hand-checked table of 22 overrides comes on top, each with its reason.
+- **Dangerous versions later:** the variant convention.
+  - "Dire" is one road stage later: Attack ×1.4, Health ×1.5, +1 Lumber, rarity +1.
+  - "Elder" is two stages later: ×1.8 / ×2.0, +1 Lumber, +1 Wait, rarity +2.
+  - "Ancient" is three stages later: ×2.3 / ×2.6, +2 Lumber, +1 Wait, rarity +3.
+  - The draft body is fitted under budget v3, with room left for skills, and its skills are applied later.
+  - 39 cards are already such versions (Old Snapjaw, the Alphas and Matriarchs, the Kits and Hatchlings, the tortoise line up to the Dragon-Turtle).
+  - **109 later versions are proposed** (77 Dire, 32 Elder), 1–2 for each biome and family with an early creature. They are rows marked `proposed`, not cards.
+- **The hub's 🗂 Units by theme tab:**
+  - Filter and group by biome, family, faction, map, rarity and live / pool / proposed. Tiles show the art or emoji, the base body, and "Skills · applied later". Tiles come 120 at a time.
+  - A **per-map picker**: "Picking for" a map, a checkbox on each tile, and a strip with each map's picked count. Picks save in the artifact's db (collection `unitPicks`, `{map, unit, picked, updatedAt}`). Without db, a read-only note and Copy JSON.
+  - A **🧰 Post-balance queue** lists each picked unit's remaining work: create, place, re-stage or give skills.
+  - The hub must be published with `capabilities: {db: {}}`.
+- `tools/hub/pull_unit_picks.md` says how Claude reads the picks and works the queue, with `tools/hub/unit_picks_queue.js`. New test `tests/unit-themes-2026-10-19.js` (in run-all).
+
 ## 2026-10-19 (package LV: the level curve)
 - **Owner (00:19, the plan's last step): "balance level to balance with the overall linear increase in difficulty over time."** The road curve had been held up by 96 hand-set Shields (47 over 2× the rule, up to 33× / 252). Level curves carry it now.
 - **The enemy's level is a straight line:** its cards are 1.25% stronger every map after Map 4: Lv 3 at Map 12, Lv 6 at Map 20, Lv 9 at Map 28. Bosses fight two maps on, and the Map 20 world boss is levelled too (it fought at its printed level). A fractional level is a per-copy mix of its two stat steps.

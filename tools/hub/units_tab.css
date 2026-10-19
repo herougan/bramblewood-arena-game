@@ -1,0 +1,51 @@
+/* units_tab.css — the 🗂 Units by theme tab (tools/hub/units_tab.js), inlined by tools/hub/build_hub.py after hub_app.css.
+   2026-10-19 (package UC): tiles, the per-map pick strip and the post-balance queue. Colours only from tokens, light and dark. */
+:root{--ut-live:#2f7d43; --ut-pool:#9a6a12; --ut-prop:#7a4fc0; --ut-pick:#2f6b3a; --ut-pick-bg:#e5f1e3; --ut-todo:#a1461f;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--ut-live:#7fd38f; --ut-pool:#e8bf5c; --ut-prop:#b99bf0; --ut-pick:#7fc28a; --ut-pick-bg:#1f2f1f; --ut-todo:#f0a07a;} }
+:root[data-theme="dark"]{--ut-live:#7fd38f; --ut-pool:#e8bf5c; --ut-prop:#b99bf0; --ut-pick:#7fc28a; --ut-pick-bg:#1f2f1f; --ut-todo:#f0a07a;}
+.ut .dec-head p{max-width:78ch;}
+.ut-bar{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:12px 0 6px;}
+.ut-pick{display:flex; align-items:center; gap:6px; font:700 14px Nunito,system-ui,sans-serif; color:var(--ink-muted); min-width:0; flex:1 1 260px;}
+.ut-pick select{flex:1 1 auto; min-width:0; max-width:100%; font:700 14px Nunito,system-ui,sans-serif; padding:6px 8px; border-radius:999px; border:1px solid var(--accent); background:var(--surface); color:var(--ink);}
+.ut-maps{display:flex; gap:6px; overflow-x:auto; padding:4px 0 8px; scrollbar-width:thin;}
+.ut-mc{flex:0 0 auto; display:flex; flex-direction:column; align-items:center; min-width:62px; padding:4px 8px; border-radius:10px; border:1px solid var(--line); background:var(--surface);
+  color:var(--ink-muted); font:700 11.5px Nunito,system-ui,sans-serif; cursor:pointer; line-height:1.2;}
+.ut-mc em{font-style:normal; font-weight:600; font-size:10.5px; max-width:88px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.ut-mc b{font:800 16px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);} .ut-mc.has b{color:var(--ut-pick);}
+.ut-mc small{font-size:10.5px; color:var(--ut-todo);}
+.ut-mc.is-on{border-color:var(--accent); background:var(--ut-pick-bg); color:var(--ink); box-shadow:inset 0 -3px 0 var(--accent);}
+.ut-mc:focus-visible, .ut-cb input:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.ut-filters .dec-seg{flex:0 1 auto;}
+.ut-gh{font:800 17px 'Baloo 2',system-ui,sans-serif; margin:18px 0 6px; padding-top:6px; border-top:1px solid var(--line);}
+.ut-gh small{font:700 13px Nunito,system-ui,sans-serif; color:var(--ink-muted); margin-left:4px;}
+.ut-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:8px;}
+.ut-tile{display:flex; flex-direction:column; gap:5px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--rc,var(--line)); border-radius:10px; padding:8px 10px;
+  min-width:0; content-visibility:auto; contain-intrinsic-size:auto 230px;}
+.ut-tile.is-picked{background:var(--ut-pick-bg); border-color:var(--ut-pick); border-left-color:var(--rc,var(--ut-pick));}
+.ut-tile.st-proposed{border-style:dashed; border-left-style:solid;}
+.ut-top{display:flex; gap:10px; align-items:center; min-width:0;}
+.ut-tile.st-proposed .th{filter:saturate(.55) contrast(1.1);}
+.ut-name{min-width:0; flex:1;} .ut-name b{display:block; font:800 15px 'Baloo 2',system-ui,sans-serif; line-height:1.2; overflow-wrap:anywhere;}
+.ut-name > span{display:flex; flex-wrap:wrap; gap:3px; align-items:center; margin-top:2px;}
+.ut-name .chip{font-size:11px; padding:0 7px; margin:0;}
+.ut-st{font:800 10.5px Nunito,system-ui,sans-serif; text-transform:uppercase; letter-spacing:.04em; padding:0 6px; border-radius:999px; border:1px solid currentColor;}
+.ut-st.s-live{color:var(--ut-live);} .ut-st.s-pool{color:var(--ut-pool);} .ut-st.s-proposed{color:var(--ut-prop);}
+.ut-tags{display:flex; flex-wrap:wrap; gap:3px;}
+.ut-tag{font:600 11.5px Nunito,system-ui,sans-serif; background:var(--surface-2); color:var(--ink); border-radius:999px; padding:1px 7px; white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis;}
+.ut-tag.is-main{font-weight:800; box-shadow:inset 0 0 0 1px var(--line);} .ut-tag small{color:var(--ink-muted); font-size:10.5px;}
+.ut-body{display:flex; flex-wrap:wrap; gap:3px 10px; align-items:baseline; font:700 14px Nunito,system-ui,sans-serif; font-variant-numeric:tabular-nums; padding:4px 8px; border-radius:8px; background:var(--bg); border:1px solid var(--line);}
+.ut-body small, .ut-sk small{flex:1 1 100%; font:800 10px Nunito,system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-muted);}
+.ut-sk{display:flex; flex-wrap:wrap; font-size:12.5px; line-height:1.35; padding:3px 8px; border-radius:8px; border:1px dashed var(--line);}
+.ut-sk small{margin-bottom:1px;} .ut-sk.is-todo{color:var(--ut-todo); font-weight:700;} .ut-was{color:var(--ink-muted); font-weight:600;}
+.ut-var{margin:0; font-size:12.5px; color:var(--ut-prop); line-height:1.35;}
+.ut-where{margin:0; font-size:12px; color:var(--ink-muted); line-height:1.35;}
+.ut-cb{display:flex; align-items:center; gap:6px; font:700 13.5px Nunito,system-ui,sans-serif; cursor:pointer; margin-top:auto; padding-top:2px;}
+.ut-cb input{width:18px; height:18px; accent-color:var(--ut-pick);}
+.ut-also{margin:0; font-size:11.5px; color:var(--ut-pick);} .ut-also:empty{display:none;}
+.ut-hand{cursor:help;}
+.ut-more{text-align:center; margin:14px 0;}
+.ut-qhead{display:flex; flex-wrap:wrap; gap:6px 16px; align-items:center; margin:8px 0;} .ut-qhead p{margin:0; flex:1 1 320px;}
+.ut-qmap h3{font:800 17px 'Baloo 2',system-ui,sans-serif; margin:16px 0 0;} .ut-qmap h3 small{color:var(--ink-muted); font-size:13px;}
+.ut-qt td{white-space:normal; vertical-align:top;} .ut-qt td small{display:block; color:var(--ink-muted);} .ut-qt td.num{white-space:nowrap; font-variant-numeric:tabular-nums;}
+.ut-qt ul{margin:0; padding-left:16px; color:var(--ut-todo);} .ut-qt tr.is-ready td{opacity:.7;}
+@media (max-width:600px){ .ut-grid{grid-template-columns:minmax(0,1fr);} .ut-qt th:nth-child(3), .ut-qt td:nth-child(3){display:none;} .ut-filters select{flex:1 1 40%;} }

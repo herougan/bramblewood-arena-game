@@ -9,6 +9,9 @@ at 08:49 (separate the units by theme, you pick the units for each map, then a p
 **they are not refit now**. They wait here for the post-balance step. The Dragons and the Caldera Wyrm are not on the
 list: they are over on purpose (your creature-ranks call).
 
+This is not the hub's 🧰 Post-balance queue in the Units by theme tab, which tracks the work left on each unit you picked.
+This list is the existing cards that the post-balance step also has to refit.
+
 The data is in `docs/balance/post-balance-queue.json`, built by `node tools/post_balance_queue.js`. Until the
 post-balance step, the tests treat these cards as known to be over budget. They fail if the list goes stale, for example
 when a card is refit or another cost changes.

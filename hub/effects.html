@@ -3304,6 +3304,10 @@
   .raid2-panel .r2-part-num{font-size:12px; font-weight:800; opacity:.75; font-variant-numeric:tabular-nums;}
   .raid2-panel .r2-part-foot{display:flex; flex-direction:column; gap:4px; font-size:13px;}
   .raid2-panel .r2-note{font-size:12px; color:var(--ink-muted);}
+  /* 2026-10-19 (package BR): each part's boss BR and your side's, coloured by the gap (deckLevelGapClass) */
+  .raid2-panel .r3-br{display:block; font-weight:700; margin:2px 0;}
+  .raid2-panel .r3-br.lv-darkred{color:#ff8a7a;} .raid2-panel .r3-br.lv-red{color:#ffb4a8;} .raid2-panel .r3-br.lv-orange{color:#ffcf8f;}
+  .raid2-panel .r3-br.lv-green, .raid2-panel .r3-br.lv-ltgreen{color:#b8f5b0;} .raid2-panel .r3-br.lv-pink, .raid2-panel .r3-br.lv-ltpink{color:#f7b8e4;}
   .raid2-panel .r2-me{margin:12px 0 4px; font-size:14px;}
   .raid2-panel .r2-rules{margin:0; font-size:12.5px; opacity:.75;}
   .rp-bars{display:grid; grid-template-columns:repeat(auto-fit, minmax(14px, 1fr)); gap:3px;}
@@ -22172,6 +22176,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.raid-leader-too-costly": "Leader cost {cost}/{cap} — too costly for this raid",
   "ui.raid-leader-cap": "👑 Leader cost cap: {cap} points (each Lumber 1, Stone 2, Metal 3).",
   "ui.raid-leader-cost-ok": "Your leader {name}: {cost}/{cap}.",
+  "ui.raid-br-boss": "Boss BR",
+  "ui.raid-br-side": "Your side's BR",
+  "ui.raid-br-line": "Boss BR {boss} · your side about {side}",
+  "ui.raid-br-boss-tip": "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.",
+  "ui.raid-br-side-tip": "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.",
   "ui.raid-change-leader": "Change leader",
   "ui.raid-closest-row-note": "Every unit, in every row, strikes the nearest enemy in its own column: the front row first, then the middle, then the back. Only a column with no enemy in it lets a strike through to the bramble.",
   "ui.raid-commons-every": "The boss holds three rows too: its guards in front, and every {every} turns it calls up to {max} Common{s} into its back two rows (only into a free slot with a card in front).",
