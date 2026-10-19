@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package CF: card frames for equipment, Devilry and Evomax)
+- **Owner (22:32):** "Equipment & devilry card frame - can it be improved? ... too pink ... I don't want to stray too far from [the normal frame]. Just abit different."
+- **Before:** there was no equipment frame. Equipment wore whatever its archetype gave it: Quill Spear and the other plain equipment the normal walnut frame, Terraumbra (an Evomax equipment Easter egg) the pink nacre Evomax frame (`a-evolution.png`). Devilry units wore their own dark-iron frame with blood drips and pentagram studs.
+- **Equipment frame (`.fr-equip`, every `cardType: 'equipment'` card):** the normal frame, forged: a gunmetal band instead of walnut, a pewter inlay and corner rivets, a small gear and two rivets on each side band.
+  - An archetype's equipment (Terraumbra, a Scrapper Crowbar) keeps the equipment frame and shows its archetype with the corner mark, as other unframed archetype cards do.
+- **Devilry:** the normal frame, smouldering: a crimson-to-charcoal band, an ember-red inlay, a seal sigil over each corner pin and a few ember glints that flicker (they hold still under reduced motion and Effects Low). The old Devilry aura stays.
+- **Evomax units:** the normal walnut frame with a pearl inlay, shell-rib ticks on the top band and plate, and a spiral shell on each side band, in place of the pink nacre frame. No Evomax unit exists yet; the sheet uses a stand-in.
+- CSS only (pixel-grid SVG ornaments on a new `.cframe-orn` layer, so the inlay's tint filter doesn't touch them). No new raster art. Structures keep their `s-<key>` boards; Ecclesia, Scrappers and the other archetypes are unchanged.
+- Comparison sheets (before / after, hand and detail size, 390 and 1366): `docs/screens/cf/`, rendered by `node tools/card_frame_sheet.js <tag>`.
+
 ## 2026-10-19 (package UX: the tutorial summary, the Forge's copies sheet, count badges and centre stage, the Codex's types and base level)
 - **Owner (21:36, UI notes 7, 8a–c, 9, 11).**
 - **Tutorial summary (7):** the map panel of T-0 and T-1 now reads like a skirmish's.

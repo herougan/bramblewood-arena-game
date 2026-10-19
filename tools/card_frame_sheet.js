@@ -48,7 +48,8 @@ const MOCKS = `(()=>{ window.__cfDefs = ()=>{ const defs = getCardDefs();
     for(const [id] of CARDS){
       await pg.evaluate(`(window.__cfDefs(), openCardDetail(${JSON.stringify(id)}), 1)`); await pg.waitForTimeout(500);
       const loc = pg.locator('#cardDetailOverlay .card-tile').first();
-      const f = path.join(OUT, `_tmp-${TAG}-${vw}-${id}.png`); await loc.screenshot({path: f}); shots.push(f);
+      const f = path.join(OUT, `_tmp-${TAG}-${vw}-${id}.png`); const bb = await loc.boundingBox(), m = 12; // a margin, so the corner badges and mark that overhang the tile are in the shot
+      await pg.screenshot({path: f, clip:{x: Math.max(0, bb.x - m), y: Math.max(0, bb.y - m), width: bb.width + 2 * m, height: bb.height + 2 * m}}); shots.push(f);
       await pg.evaluate("(()=>{ try{ closeCardDetail(); }catch(e){ const o = document.getElementById('cardDetailOverlay'); if(o) o.classList.remove('open'); } return 1; })()");
     }
     fs.writeFileSync(path.join(OUT, `_tmp-${TAG}-${vw}.json`), JSON.stringify({shots, labels: CARDS.map(c=> c[1])}));
