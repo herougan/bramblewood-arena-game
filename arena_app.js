@@ -23326,7 +23326,7 @@ function startRaidFullBattle(def, partId, f, st){
   const vsBramble = raidBrambleOf(def); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
     bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks)} : null},
-    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 900); }); // + Turn 1's tick (2026-10-19, U3)
+    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600); }); // + Turn 1's tick (2026-10-19, U3)
 }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
 // plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
