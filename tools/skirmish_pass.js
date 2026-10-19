@@ -305,6 +305,7 @@ const SHIELD_CAP = +opt('shieldcap', 0); // --shieldcap=K: an easy fight's Shiel
 // 2026-10-19 (package LV, the level curve): --rule starts every fight from its bramble on the rule (no shieldOverride, no hqHp), so the
 // level curves and the deck carry the difficulty; --shieldx=K then caps a Shield override at the rule x K (2: "none over ~2x the rule"),
 // and a lower Health goes no further than --hpfloor (a share of the bramble's own Health, 0.6)
+const DECKS_ONLY = argv.includes('--decks-only'); // 2026-10-19 (BF3): deck moves only (the enemy's level is the owner's schedule)
 const RULE_START = argv.includes('--rule'), SHIELD_X = +opt('shieldx', 0), HP_FLOOR = +opt('hpfloor', 0);
 const stripRule = n=>{ const c = Object.assign({}, n); delete c.shieldOverride; delete c.hqHp; return c; };
 function curveTune(f, band, steps){
@@ -332,6 +333,7 @@ function curveTune(f, band, steps){
   };
   let shield = null, hqHp = null;
   const shieldRound = ()=>{
+    if(DECKS_ONLY) return; // 2026-10-19 (BF3, owner 16:22): honest levers only, no Shield above the rule
     if(f.map === 'mpd') return; // 2026-10-19 (BF3): the Pale Desert keeps the bramble by rule (tests/pale-desert-2026-10-19.js 3)
     if(good(cur.win)) return;
     const base = cur.shield, easy = cur.win > want, rule = G.ruleShieldOf(node);
@@ -345,6 +347,7 @@ function curveTune(f, band, steps){
     if(best && off(best.r.win) < off(cur.win) - 1){ node = best.nn; cur = best.r; shield = best.sv; }
   };
   const hpRound = ()=>{
+    if(DECKS_ONLY) return;
     if(good(cur.win) || cur.win > want || cur.shield > 0) return;
     let a = HP_FLOOR ? Math.max(6, Math.round(cur.hp * HP_FLOOR)) : 6, b = cur.hp - 1, best = null;
     for(let it = 0; it < 6 && a <= b; it++){
@@ -388,7 +391,9 @@ if(CMD === 'list'){
   const OUT = path.join(OUTDIR, `skirmish-pass-${opt('tag', 'before')}.jsonl`), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
   const mine = all.filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights', all.length, 'mine', mine.length);
-  for(const f of mine){ const t = Date.now(), r = measure(f, null, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}, bandOf(f, r.win), {deck: f.n.deck /* 2026-10-19 (TH): which deck was measured */}))) + '\n'); }
+  const NO_OV = argv.includes('--no-overrides'); // 2026-10-19 (BF3): the bramble by rule everywhere (shieldOverride / hqHp dropped)
+  for(const f of mine){ const t = Date.now(), nn = NO_OV ? Object.assign({}, f.n) : null; if(nn){ delete nn.shieldOverride; delete nn.hqHp; }
+    const r = measure(f, nn, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}, bandOf(f, r.win), {deck: f.n.deck /* 2026-10-19 (TH): which deck was measured */}))) + '\n'); }
   console.log('done');
 } else if(CMD === 'tune'){
   const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'before')}.jsonl`));

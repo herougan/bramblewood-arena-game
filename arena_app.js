@@ -1841,7 +1841,7 @@ function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] 
 // 0-20 // first world). For Map 21-40, rares are much more common place. the first Epic in a normal skirmish happens around Map 36.
 // The first Heroic, Map 41. The first Unique (in skirmishes), in Map 51"). The highest rarity a card in an enemy deck, or a card a
 // fight pays, may have, by map number (a side map counts as its parent) and fight kind:
-//   skirmish  Rare to Map 15 · Very Rare 16–20 · Super Rare 21–35 · Epic 36–40 · Heroic 41–50 · Unique 51+
+//   skirmish  Rare to Map 9 · Very Rare 10–20 (from Map 10 since 2026-10-19, BF3) · Super Rare 21–35 · Epic 36–40 · Heroic 41–50 · Unique 51+
 //   elite     Rare to Map 9, then one step above a skirmish (Very Rare 10–15, Super Rare 16–20, Epic 21–35 …), never above a boss
 //   boss      Very Rare to Map 9 · Epic 10–19 (no Heroic) · Unique on Map 20 · Legendary from 21 (a dungeon counts as a boss)
 //   worldboss the dragon lair's extra boss (20-B-4, the Caldera Wyrm): Legendary, the only Legendary in Maps 0–20
@@ -1851,7 +1851,8 @@ function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] 
 const ROAD_RARITY_STEPS = ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic'];
 const ROAD_RARITY_ALIAS = {starter:'common', quest:'uncommon', questunique:'unique', special:'rare', eventrare:'rare', devlegendary:'legendary', eventlegendary:'legendary', devancient:'ancient'};
 function roadRarityStep(r){ r = r || 'common'; const i = ROAD_RARITY_STEPS.indexOf(ROAD_RARITY_ALIAS[r] || r); return i < 0 ? 0 : i; }
-function roadSkirmishCap(n){ return n >= 51 ? 'unique' : n >= 41 ? 'heroic' : n >= 36 ? 'epic' : n >= 21 ? 'superrare' : n >= 16 ? 'veryrare' : 'rare'; }
+// 2026-10-19 (BF3, owner 16:22: "In Map 10+, there will be lvl 2+. and rarity >rare"): Very Rare from Map 10 (was 16)
+function roadSkirmishCap(n){ return n >= 51 ? 'unique' : n >= 41 ? 'heroic' : n >= 36 ? 'epic' : n >= 21 ? 'superrare' : n >= 10 ? 'veryrare' : 'rare'; }
 function roadBossCap(n){ return n <= 9 ? 'veryrare' : n <= 19 ? 'epic' : n === 20 ? 'unique' : 'legendary'; }
 function roadRarityCap(n, kind){
   if(n == null || n < 0) return null;
@@ -16741,7 +16742,10 @@ const WINRATE_REF_DECKS = {"starter":{"duck-paddler":2,"pond-trout":2,"meadow-fr
 //     maps further on. An endless dungeon's floor f counts `floorMaps` (0.5) maps per floor further on (ENDLESS_FLOOR_CURVE).
 //     Before: Lv 2 from Map 5, +1 every 5 maps, bosses +1, which only showed as stats at Lv 3 (Map 10) and Lv 6 (the Map 20 boss).
 //   - The reference player (referencePlayerLevel, below).
-const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, playerForgeMap: 11, playerForgeLevel: 3, playerRiseFrom: 15, playerRisePerMap: 0.18, enemyKeepsPace: true};
+const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, playerForgeMap: 11, playerForgeLevel: 3, playerRiseFrom: 15, playerRisePerMap: 0.18, enemyKeepsPace: false,
+  // 2026-10-19 (BF3, owner 16:22: "In Map 5+, there's lvl 1-2. In Map 10+, there will be lvl 2+ ... Let them be strong full stop for now"): the
+  // enemy's level is the owner's schedule (roadEnemyScheduleLevel), the honest lever; enemyKeepsPace (BF) is off
+  enemySchedule: {firstMap: 1, lv1To: 4, lv2At: 9, from10: 2, risePerMap: 0.2}};
 // 2026-10-19 (package BF): enemyKeepsPace - the enemy's gain also gets forgeGainShift (the BF Forge curve's extra over the old steps at
 // the reference player's level), so the new curve doesn't hand the late maps to the player. playerForgeMap stays 11 (owner 09:52:
 // "No Forge is fine. The player has to deck build to win."; docs/decisions.json).
@@ -25398,8 +25402,16 @@ function roadMapOfFight(node){
   if(map.endless && !map.tower && node.floor > 1) no += (node.floor - 1) * ENDLESS_FLOOR_CURVE.floorMaps;
   return no;
 }
+// The owner's schedule (2026-10-19, BF3, 16:22) at the map a fight counts as (roadMapOfFight: a boss 2 maps on, a side map 1 on, an endless
+// floor half a map a floor): Map 0 printed; Maps 1-4 Lv 1; Maps 5-9 from Lv 1 to Lv 2 (a quarter a map); Map 10 Lv 2, then +0.2 a map
+// (Lv 4 at Map 20, Lv 4.8 at Map 24, a step over the reference player's 3.9 / 4.6).
+function roadEnemyScheduleLevel(no){ const S = ROAD_LEVEL_CURVE.enemySchedule; if(no == null || no < S.firstMap) return 0;
+  if(no <= S.lv1To) return 1; if(no < 10) return Math.min(2, 1 + (no - (S.lv1To + 1)) / Math.max(1, S.lv2At - (S.lv1To + 1))); return S.from10 + (no - 10) * S.risePerMap; }
 function roadEnemyLevelExact(node){
-  const no = roadMapOfFight(node), C = ROAD_LEVEL_CURVE; if(no == null || no <= C.enemyFrom) return 0;
+  const no = roadMapOfFight(node), C = ROAD_LEVEL_CURVE;
+  if(C.enemySchedule && !C.enemyKeepsPace){ if(no == null) return 0; const cap = node.floor > 1 && !node.tower ? ENDLESS_FLOOR_CURVE.levelCap : 10;
+    return Math.min(cap, Math.round(roadEnemyScheduleLevel(no) * 100) / 100); }
+  if(no == null || no <= C.enemyFrom) return 0;
   const cap = node.floor > 1 && !node.tower ? ENDLESS_FLOOR_CURVE.levelCap : 10; // an endless floor past Lv 10 limit-breaks (Lv 11)
   const g = (no - C.enemyFrom) * C.enemyGainPerMap;
   if(C.enemyKeepsPace){ const L = enemyLevelKeepingPace(node, g, cap); if(L != null) return L; } // 2026-10-19 (BF): keeps pace with the Forge curve

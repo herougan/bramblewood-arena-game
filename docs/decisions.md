@@ -378,6 +378,13 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Waves
 - **Outcome:** Owner 15:25: "There will be waves of balance during limit break. (Older cards get a bigger step than newer cards.)" Limit break comes in waves of balance; older cards (earlier maps / older sets) get a bigger limit-break step than newer ones. Design only, nothing built: docs/balance/limit-break-waves.md proposes a step x (1 + (W - Map) / 20) with W the newest wave's last map and Map the card's obtain map (the budget's map term), and one more cap level per 10-map wave for cards 10+ maps older than the wave.
 
+**B10. Printed card = obtained card; enemy strength comes from levels, decks / synergy and fields, not altered stats** · Decide · Balance · asked 2026-10-19 · decided 2026-10-19
+- Can an enemy's copy of a card fight with stats other than the card as printed (plus its level), to make a fight harder? (The Caldera Wyrm is 6/36 at 0 Lumber, over its budget as printed.)
+  - Printed = obtained: enemies only get levels, better decks and fields
+  - Allow per-fight stat changes on enemy copies
+- **Default:** Printed = obtained
+- **Outcome:** Owner 16:22: "the cards as seen should be the cards when you get them. no change. The Wyrm is only stronger cause the field effect gives it fiery skills." Printed card = obtained card; enemy strength comes from levels, decks / synergy and fields, not altered stats. The Caldera Wyrm stays as printed. On the road the enemy's levels follow the owner's schedule (Maps 1-4 Lv 1, 5-9 Lv 1-2, 10+ Lv 2 and rising) and rarity above Rare is allowed from Map 10; no new Shield overrides and no field buffs for difficulty ("Let them be strong full stop for now. In the future we will make them challenging by cheating."). Still altering enemy stats outside level and fields, flagged and left as they are: the endless dungeons' floorPct perk (+x% stats a floor, set to 0 since LV, the mechanism remains), the raid's staged decks (cards scaled by the raid's attack / health factors) and its boss units (+1 Attack, Health x1.5-3, the Health bonus): raid boss mechanics, unchanged. Shield overrides above the rule are bramble, not card, changes: counted and measured in docs/balance/level-curve-2026-10-19c.md as an owner call.
+
 ## Stated rules · 2026-10-18
 
 The owner's notes (23:05) on a far-future map and the Legendary ability tier. Pinned by `tests/legendary-2026-10-19.js`.

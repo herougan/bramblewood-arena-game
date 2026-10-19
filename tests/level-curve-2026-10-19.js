@@ -30,18 +30,14 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-9);
   ok(gated && near(G.referencePlayerLevel(31), 5.88, .01), '1. never past the Forge\'s level gates (Lv 5+ from Map 16, 9 from 26, 10 from 31); about Lv 6 by Map 31'); }
 const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find(x=> x.deck && x.kind !== 'tutorial'); const nn = Object.assign({}, n0, {kind, key: '__t'}); G.NODE_MAP_HINT.set(nn, m.id); return nn; };
 { let last = -1, mono = true, line = true;
+  // 2026-10-19 (BF3, owner 16:22: "In Map 5+, there's lvl 1-2. In Map 10+, there will be lvl 2+"): the enemy's level is the owner's schedule
   for(let no = 0; no < mains.length; no++){ if(!mains[no].nodes.some(x=> x.deck)) continue; const L = G.roadEnemyLevelExact(fightAt(no, 'skirmish'));
-    // 2026-10-19 (BF): the level depends on the fight's deck now, so the rise is checked on one fight's deck along the line's gain
-    { const f20 = fightAt(20, 'skirmish'), g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, Lf = g > 0 ? G.enemyLevelKeepingPace(f20, g, 10) : 0; if(Lf < last - 0.15) mono = false; last = Lf; } // a dip of a tenth or so is the old curve's own: a whole Lv 2 (Map 8) had Lv 1's stats
-    // 2026-10-19 (package BF): the line's gain g, turned into a level that keeps the old ratio to your deck (enemyLevelKeepingPace)
-    const g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, f = fightAt(no, 'skirmish'), kp = G.enemyLevelKeepingPace(f, g, 10);
-    if(L && !near(kp != null ? kp : G.levelForGain(g), L, 0.01)) line = false; }
+    if(L < last - 1e-9) mono = false; last = L; if(!near(L, Math.round(G.roadEnemyScheduleLevel(no) * 100) / 100, 0.001)) line = false; }
   ok(mono, '1. the enemy\'s level only rises along the road');
-  ok(line && G.ROAD_LEVEL_CURVE.enemyGainPerMap === 0.0125 && G.ROAD_LEVEL_CURVE.enemyFrom === 4, '1. the enemy\'s stats rise in a straight line: 1.25% a map from Map 4 (kept in step with your Forge curve, BF)');
-  { const f = fightAt(20, 'skirmish'), L = G.roadEnemyLevelExact(f), defs = G.getCardDefs(), ref = G.referenceDeckFor(mains[20].id, f);
-    const keep = (1 + G.deckStatGain(f.deck, L, defs, false)) / (1 + G.deckStatGain(ref.deck, ref.level, defs, false)), was = (1 + G.deckStatGain(f.deck, G.legacyLevelForGain(0.20), defs, true)) / (1 + G.deckStatGain(ref.deck, ref.level, defs, true));
-    ok(G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 0 && G.ROAD_LEVEL_CURVE.enemyKeepsPace && near(keep, was, 0.01),
-      `1. the enemy: printed to Map 4; at Map 20 (Lv ${L}) it keeps the strength ratio to your deck it had under the old steps (${keep.toFixed(3)} vs ${was.toFixed(3)}; 2026-10-19, BF)`); }
+  ok(line && !G.ROAD_LEVEL_CURVE.enemyKeepsPace, '1. the enemy\'s level is the owner\'s schedule (BF3; enemyKeepsPace off)');
+  ok(G.roadEnemyLevelExact(fightAt(0, 'skirmish')) === 0 && G.roadEnemyLevelExact(fightAt(1, 'skirmish')) === 1 && G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 1
+    && near(G.roadEnemyLevelExact(fightAt(7, 'skirmish')), 1.5, 0.01) && near(G.roadEnemyLevelExact(fightAt(9, 'skirmish')), 2, 0.01) && near(G.roadEnemyLevelExact(fightAt(10, 'skirmish')), 2, 0.01) && near(G.roadEnemyLevelExact(fightAt(20, 'skirmish')), 4, 0.01),
+    '1. the enemy: printed on Map 0, Lv 1 on Maps 1-4, Lv 1 -> 2 on Maps 5-9, Lv 2 at Map 10, then +0.2 a map (Lv 4 at Map 20)');
   ok(G.roadEnemyLevelExact(fightAt(14, 'boss')) > G.roadEnemyLevelExact(fightAt(14, 'skirmish')) && G.roadEnemyLevelExact(fightAt(14, 'elite')) === G.roadEnemyLevelExact(fightAt(14, 'skirmish')), '1. a boss fights two maps further on; an elite on its map\'s line');
   const w = G.CONQUEST_MAPS.find(m=> m.id === 'm11').nodes.find(x=> x.kind === 'worldboss'); G.NODE_MAP_HINT.set(w, 'm11');
   ok(w && G.roadMapOfFight(w) === 20 + G.ROAD_LEVEL_CURVE.bossMaps && G.roadEnemyLevelExact(w) > 1, '1. the Map 20 world boss is levelled like a boss, two maps on (it fought at its printed level before)');
