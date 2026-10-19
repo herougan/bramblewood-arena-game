@@ -24653,8 +24653,51 @@ function roadMapOfFight(node){
 function roadEnemyLevelExact(node){
   const no = roadMapOfFight(node), C = ROAD_LEVEL_CURVE; if(no == null || no <= C.enemyFrom) return 0;
   const cap = node.floor > 1 && !node.tower ? ENDLESS_FLOOR_CURVE.levelCap : 10; // an endless floor past Lv 10 limit-breaks (Lv 11)
-  const shift = C.enemyKeepsPace ? forgeGainShift(nodeMapNumber(node)) : 0; // 2026-10-19 (BF): keeps pace with the player's Forge curve
-  return Math.min(cap, Math.round(levelForGain((no - C.enemyFrom) * C.enemyGainPerMap + shift) * 100) / 100);
+  const g = (no - C.enemyFrom) * C.enemyGainPerMap;
+  if(C.enemyKeepsPace){ const L = enemyLevelKeepingPace(node, g, cap); if(L != null) return L; } // 2026-10-19 (BF): keeps pace with the Forge curve
+  return Math.min(cap, Math.round(levelForGain(g) * 100) / 100);
+}
+// The enemy keeps its lead (2026-10-19, package BF). The R2 / LV road curves were tuned when every card grew by the same +10% steps, so
+// the enemy at gain g and the reference player at their level stood in a known ratio of strength. The BF curve grows a card by its
+// budget gain instead (small cards far more than big ones), so the level that keeps that ratio is worked out on the two decks
+// themselves: with W(deck, L) = the deck's summed 2A+H at level L (a fractional level mixes its two whole levels, as levelMixDeck
+// does) over its printed sum,
+//   the old ratio  (1 + Wold(enemy, Lold)) / (1 + Wold(you, pL)),  Lold = the old line's level (LEGACY_LEVEL_GAIN), Wold the old steps,
+//   is kept: the enemy's level L is where W(enemy, L) = (1 + Wold(enemy, Lold)) x (1 + W(you, pL)) / (1 + Wold(you, pL)) - 1.
+// Your deck is the fight's reference deck (referenceDeckFor) at referencePlayerLevel; before Map 11 (Lv 0) that is the old line's own
+// gain on the enemy's deck under the new curve. null when the fight has no deck with stats (the old line then).
+const ENEMY_PACE_CACHE = new Map();
+const LEGACY_STEP = {1: 0.10, 3: 0.10, 6: 0.10, 9: 0.10, 10: 0.05, 11: 0.10};
+// the old steps' gain of a card at a (fractional) level: a fractional level mixed the two old stat steps around it (0, 1, 3, 6, 9, 10, 11)
+function legacyCardGain(b, L){ const base = cardBaseLevel(b), cum = l=>{ let g = 0; for(let x = base + 1; x <= l; x++) g += LEGACY_STEP[x] || 0; return g; };
+  const steps = [0, 1, 3, 6, 9, 10, 11]; if(L >= 11) return cum(11); let i = 0; while(i < steps.length - 1 && steps[i + 1] <= L) i++;
+  const a = steps[i], c = steps[i + 1], f = (L - a) / (c - a); return cum(a) + f * (cum(c) - cum(a)); }
+function deckStatGain(deck, L, defs, legacy){
+  let w0 = 0, w = 0; const ww = s=> 2 * (s.attack || 0) + (s.health || 0);
+  for(const [id, k] of Object.entries(deck || {})){ const b = defs[id]; if(!b || (b.attack == null && b.health == null) || !(k > 0)) continue;
+    const p = ww(b); if(!(p > 0)) continue; w0 += k * p;
+    if(legacy){ w += k * p * (1 + legacyCardGain(b, L)); continue; }
+    const base = cardBaseLevel(b), lo = Math.floor(L), f = L - lo, a = ww(statsAtLevel(b, Math.max(base, lo))), c = f > 0 ? ww(statsAtLevel(b, Math.max(base, lo + 1))) : a;
+    w += k * (a + f * (c - a)); }
+  return w0 > 0 ? w / w0 - 1 : null;
+}
+function legacyLevelForGain(g){ if(!(g > 0)) return 1; const pts = LEGACY_LEVEL_GAIN;
+  for(let i = 1; i < pts.length; i++) if(g <= pts[i][0]) return pts[i-1][1] + (g - pts[i-1][0]) / (pts[i][0] - pts[i-1][0]) * (pts[i][1] - pts[i-1][1]); return 11; }
+function enemyLevelKeepingPace(node, g, cap){
+  const map = mapOfNode(node); if(!map || !node.deck) return null;
+  let ref = null; try{ ref = referenceDeckFor(map.id, node); }catch(e){} if(!ref) return null;
+  const defs = referenceBaseDefs(), key = JSON.stringify([node.deck, g, cap, ref.level, ref.deck]);
+  if(ENEMY_PACE_CACHE.has(key)) return ENEMY_PACE_CACHE.get(key);
+  const Lold = legacyLevelForGain(g), eOld = deckStatGain(node.deck, Lold, defs, true);
+  const pNew = ref.level > 0 ? deckStatGain(ref.deck, ref.level, defs, false) : 0, pOld = ref.level > 0 ? deckStatGain(ref.deck, ref.level, defs, true) : 0;
+  let out = null;
+  if(eOld != null && pNew != null && pOld != null){
+    const want = (1 + eOld) * (1 + pNew) / (1 + pOld) - 1, at = L=> deckStatGain(node.deck, L, defs, false);
+    let lo = 1, hi = cap; if(at(hi) <= want) out = hi; else if(at(lo) >= want) out = lo; else { for(let i = 0; i < 24; i++){ const mid = (lo + hi) / 2; if(at(mid) < want) lo = mid; else hi = mid; } out = (lo + hi) / 2; }
+    out = Math.round(out * 100) / 100;
+  }
+  if(ENEMY_PACE_CACHE.size > 4000) ENEMY_PACE_CACHE.clear(); ENEMY_PACE_CACHE.set(key, out);
+  return out;
 }
 function roadEnemyLevel(node){ return Math.round(roadEnemyLevelExact(node)); }
 function levelledEnemyDeck(node, deck){

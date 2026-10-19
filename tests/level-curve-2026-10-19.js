@@ -31,16 +31,19 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-9);
 const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find(x=> x.deck && x.kind !== 'tutorial'); const nn = Object.assign({}, n0, {kind, key: '__t'}); G.NODE_MAP_HINT.set(nn, m.id); return nn; };
 { let last = -1, mono = true, line = true;
   for(let no = 0; no < mains.length; no++){ if(!mains[no].nodes.some(x=> x.deck)) continue; const L = G.roadEnemyLevelExact(fightAt(no, 'skirmish')); if(L < last - 1e-9) mono = false; last = L;
-    const g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap; if(L && !near(G.levelForGain(g), L, 0.01)) line = false; }
+    // 2026-10-19 (package BF): + forgeGainShift, the enemy keeping pace with the player's budget Forge curve
+    const g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap + G.forgeGainShift(no); if(L && !near(G.levelForGain(g), L, 0.01)) line = false; }
   ok(mono, '1. the enemy\'s level only rises along the road');
   ok(line && G.ROAD_LEVEL_CURVE.enemyGainPerMap === 0.0125 && G.ROAD_LEVEL_CURVE.enemyFrom === 4, '1. the enemy\'s stats rise in a straight line: 1.25% a map from Map 4');
-  ok(G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 0 && near(G.roadEnemyLevelExact(fightAt(12, 'skirmish')), 3, .01) && near(G.roadEnemyLevelExact(fightAt(20, 'skirmish')), 6, .01), '1. the enemy: printed to Map 4, Lv 3 (+10%) at Map 12, Lv 6 (+20%) at Map 20');
+  ok(G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 0 && G.forgeGainShift(10) === 0 && G.forgeGainShift(11) > 0 && G.ROAD_LEVEL_CURVE.enemyKeepsPace && near(G.gainOfLevel(G.roadEnemyLevelExact(fightAt(20, 'skirmish'))), 0.20 + G.forgeGainShift(20), .005),
+    '1. the enemy: printed to Map 4; at Map 20 its stats are +20% plus what the BF Forge curve adds to your Lv 3.9 (2026-10-19, BF; was Lv 6)');
   ok(G.roadEnemyLevelExact(fightAt(14, 'boss')) > G.roadEnemyLevelExact(fightAt(14, 'skirmish')) && G.roadEnemyLevelExact(fightAt(14, 'elite')) === G.roadEnemyLevelExact(fightAt(14, 'skirmish')), '1. a boss fights two maps further on; an elite on its map\'s line');
   const w = G.CONQUEST_MAPS.find(m=> m.id === 'm11').nodes.find(x=> x.kind === 'worldboss'); G.NODE_MAP_HINT.set(w, 'm11');
-  ok(w && G.roadEnemyLevelExact(w) > 6, '1. the Map 20 world boss is levelled like a boss (it fought at its printed level before)');
-  ok(near(G.levelForGain(0), 1) && near(G.levelForGain(.1), 3) && near(G.levelForGain(.15), 4.5) && near(G.levelForGain(.2), 6) && near(G.levelForGain(.3), 9), '1. levelForGain: +10% = Lv 3, +15% = Lv 4.5, +20% = Lv 6, +30% = Lv 9');
-  const deck = {a: 4, b: 4, c: 3, d: 2, e: 4, f: 3}, mix = G.levelMixDeck(deck, 4.5), tot = mix.reduce((t, p)=> t + p[1], 0), hi = mix.filter(p=> p[2] === 6).reduce((t, p)=> t + p[1], 0);
-  ok(tot === 20 && Math.abs(hi - 10) <= 1 && mix.every(p=> p[2] === 3 || p[2] === 6), `1. Lv 4.5 on a 20-card deck: ${hi} copies at Lv 6, the rest at Lv 3, every copy kept`);
+  ok(w && G.roadEnemyLevelExact(w) > G.roadEnemyLevelExact(fightAt(20, 'skirmish')), '1. the Map 20 world boss is levelled like a boss (it fought at its printed level before)');
+  // 2026-10-19 (BF): levelForGain inverts the BF curve's mean gain (FORGE_MEAN_GAIN); every level is a stat step now
+  ok(near(G.levelForGain(0), 1) && [2, 3, 4, 6, 9, 10].every(L=> near(G.levelForGain(G.gainOfLevel(L)), L, 1e-6)), '1. levelForGain is the inverse of the mean gain at every level');
+  const deck = {a: 4, b: 4, c: 3, d: 2, e: 4, f: 3}, mix = G.levelMixDeck(deck, 4.5), tot = mix.reduce((t, p)=> t + p[1], 0), hi = mix.filter(p=> p[2] === 5).reduce((t, p)=> t + p[1], 0);
+  ok(tot === 20 && Math.abs(hi - 10) <= 1 && mix.every(p=> p[2] === 4 || p[2] === 5), `1. Lv 4.5 on a 20-card deck: ${hi} copies at Lv 5, the rest at Lv 4, every copy kept`);
   ok(JSON.stringify(G.levelMixDeck(deck, 3)) === JSON.stringify(Object.entries(deck).map(([id, k])=> [id, k, 3])), '1. a whole level is every copy at it'); }
 
 // ---- 2. the endless floors
@@ -64,7 +67,7 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
   ok(!low.length, '3. a lower Health is never under 60% of the bramble\'s own: ' + low.join(', ')); }
 
 // ---- 4. the bands
-{ const after = readJsonl('skirmish-pass-lv-after.jsonl'), fresh = readJsonl('skirmish-pass-lv-fresh.jsonl');
+{ const after = readJsonl('skirmish-pass-bf-after.jsonl'), fresh = readJsonl('skirmish-pass-bf-fresh.jsonl'); // 2026-10-19 (BF): the measure after the budget Forge curve (was lv-after / lv-fresh)
   const main = after.filter(r=> !r.side && !r.endless);
   ok(main.length === 179, `4. the final measure has all 179 main-map fights (${main.length})`);
   const off = main.filter(r=> r.green !== 'green');

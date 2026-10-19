@@ -43,6 +43,36 @@ if(cmd === 'budget'){
     const c = curveOf(d); for(let L = 1; L <= 11; L++){ const r = c.rows[Math.max(L, c.from)]; (acc[L] = acc[L] || []).push((2 * r.attack + r.health) / w0 - 1); } });
   const table = Object.keys(acc).map(L=> [Math.round(acc[L].reduce((a, b)=> a + b, 0) / acc[L].length * 1000) / 1000, +L]);
   console.log(n, 'cards; FORGE_MEAN_GAIN =', JSON.stringify(table));
+} else if(cmd === 'report'){
+  // node tools/forge_curve_2026_10_19.js report [--before=bf-before] [--mid=bf-mid] [--after=bf-after] [--fixes=bf-curve-fixes]
+  //   prints the markdown tables for docs/balance/level-curve-2026-10-19b.md
+  const B = require('./lib_bramble.js'), G = B.G, opt = (k, d)=>{ const a = process.argv.find(x=> x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
+  const rd = tag=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs', 'balance', `skirmish-pass-${tag}.jsonl`), 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
+  const before = rd(opt('before', 'bf-before')), mid = rd(opt('mid', 'bf-mid')), after = rd(opt('after', 'bf-after'));
+  const md = [], mean = a=> a.length ? a.reduce((x, y)=> x + y, 0) / a.length : NaN, f1 = v=> Number.isFinite(v) ? (Math.round(v * 10) / 10).toString() : '–';
+  const legacyLevelForGain = g=>{ if(!(g > 0)) return 1; const pts = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
+    for(let i = 1; i < pts.length; i++) if(g <= pts[i][0]) return pts[i-1][1] + (g - pts[i-1][0]) / (pts[i][0] - pts[i-1][0]) * (pts[i][1] - pts[i-1][1]); return 11; };
+  const C = G.ROAD_LEVEL_CURVE, mains = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved && !m.tower);
+  md.push('<!-- bf:curves -->', '| Map | Your level | Your stats, old steps | Your stats, BF curve | Enemy skirmish level, before | Enemy stats, before | Enemy skirmish level, BF | Enemy stats, BF |', '|---|---|---|---|---|---|---|---|');
+  mains.forEach((m, no)=>{ if(no > 24) return; const pL = G.referencePlayerLevel(no), g0 = Math.max(0, no - C.enemyFrom) * C.enemyGainPerMap, sh = G.forgeGainShift(no);
+    const e0 = no <= C.enemyFrom ? 0 : Math.round(legacyLevelForGain(g0) * 100) / 100, e1 = no <= C.enemyFrom ? 0 : Math.round(G.levelForGain(g0 + sh) * 100) / 100, pc = v=> '+' + Math.round(v * 1000) / 10 + '%';
+    md.push(`| ${no} | ${pL} | ${pc(G.legacyGainOfLevel(pL))} | ${pc(G.gainOfLevel(pL))} | ${e0} | ${pc(g0)} | ${e1} | ${pc(no <= C.enemyFrom ? 0 : g0 + sh)} |`); });
+  md.push('');
+  const green = rows=> rows.filter(r=> r.green === 'green').length;
+  md.push('<!-- bf:maps -->', '| Map | Name | Fights | Green before | Mean win before | Green, new curve untuned | Mean win untuned | Green after | Mean win after | Mean target |', '|---|---|---|---|---|---|---|---|---|---|');
+  mains.forEach((m, no)=>{ if(no > 24) return; const pick = rows=> rows.filter(r=> r.map === m.id && r.curve), b = pick(before), x = pick(mid), a = pick(after); if(!b.length) return;
+    md.push(`| ${no} | ${m.name} | ${b.length} | ${green(b)} | ${f1(mean(b.map(r=> r.win)))} | ${x.length ? green(x) : '–'} | ${f1(mean(x.map(r=> r.win)))} | ${a.length ? green(a) : '–'} | ${f1(mean(a.map(r=> r.win)))} | ${f1(mean((a.length ? a : b).map(r=> r.target)))} |`); });
+  const tot = rows=> rows.filter(r=> !r.side && !r.endless && r.curve);
+  md.push(`| | **Main maps** | ${tot(before).length} | **${green(tot(before))}** | | **${green(tot(mid))}** | | **${green(tot(after))}** | | |`, '');
+  md.push('<!-- bf:side -->', '| Side map | Parent | Counts as (enemy, Shield) | Fights on the curve | Green before | Mean win / target before | Green after | Mean win / target after |', '|---|---|---|---|---|---|---|---|');
+  G.CONQUEST_MAPS.filter(m=> m.sub && !m.tower && !m.reserved && !m.endless).forEach(m=>{ const pick = rows=> rows.filter(r=> r.map === m.id && r.curve), b = pick(before), a = pick(after); if(!b.length && !a.length) return;
+    const nd = m.nodes.find(x=> x.deck && x.kind !== 'tutorial'); if(nd) G.NODE_MAP_HINT.set(nd, m.id); const p = G.CONQUEST_MAPS.find(x=> x.id === m.parent);
+    md.push(`| ${m.name} | ${p ? p.name : m.parent} (Map ${G.mapNumberOf(m.parent)}) | Map ${nd ? G.fightMapNumber(nd) : '?'} (your deck Map ${nd ? G.nodeMapNumber(nd) : '?'}) | ${(a.length ? a : b).length} | ${green(b)} | ${f1(mean(b.map(r=> r.win)))} / ${f1(mean(b.map(r=> r.target)))} | ${a.length ? green(a) : '–'} | ${f1(mean(a.map(r=> r.win)))} / ${f1(mean(a.map(r=> r.target)))} |`); });
+  md.push('');
+  const fixes = (()=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs', 'balance', opt('fixes', 'bf-curve-fixes') + '.jsonl'), 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } })();
+  if(fixes.length){ md.push('<!-- bf:fixes -->', '| Fight | Kind | Target | Before (new curve) | After the tune | Moves | Shield | Health |', '|---|---|---|---|---|---|---|---|');
+    fixes.forEach(x=> md.push(`| ${x.code} ${x.name} | ${x.kind} | ${f1(x.target)} | ${x.before} | ${x.after ? x.after.win : '–'}${x.good ? '' : ' (off)'} | ${(x.moves || []).map(mv=> mv.type + ' ' + [mv.out, mv.inn].filter(Boolean).join(' → ') + (mv.k ? ' ×' + mv.k : '')).join('; ') || '–'} | ${x.shieldOverride != null ? x.shieldOverride : '–'} | ${x.hqHp != null ? x.hqHp : '–'} |`)); md.push(''); }
+  console.log(md.join('\n'));
 } else if(cmd === 'cards'){
   (process.argv[3] || '').split(',').filter(Boolean).forEach(id=>{ const d = CARDS.find(c=> c.id === id); if(!d){ console.log('no card', id); return; }
     const c = curveOf(d); console.log(`${d.name} (${d.rarity}, Wait ${d.wait || 0}, Lumber ${d.cost || 0}; Base ${c.base}, starts Lv ${c.from}${c.m !== 1 ? ', half-miss x' + c.m : ''})`);
