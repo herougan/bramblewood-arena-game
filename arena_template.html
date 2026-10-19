@@ -11760,6 +11760,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   body.conquest-full .conquest-maps{padding:12px 8px 4px !important; max-height:none !important; gap:6px !important; box-sizing:border-box;
     width:var(--u3-strip-w, 100%) !important; max-width:100%; flex:0 0 auto !important; align-self:flex-start; border-bottom:0 !important; scrollbar-width:none;}
   body.conquest-full .conquest-maps::-webkit-scrollbar{display:none;}
+  body.conquest-full.u3-strip-below .conquest-maps{padding-top:56px !important; width:100% !important;} /* too narrow beside the cluster: its own line under it */
   body.conquest-full .conquest-map-item{position:relative; height:38px; min-width:38px; box-sizing:border-box; padding:0 8px 0 6px !important; gap:3px !important; border-radius:999px; justify-content:center;
     border-left-width:4px !important; -webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
   body.conquest-full .conquest-map-item .cmi-body{display:none;}
@@ -11781,6 +11782,8 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .u3-bramble-abs li b{color:#7a3aa6;}
 .vs2 .u3-bramble-abs li b, .r3-info .u3-bramble-abs li b{color:#e6c8ff;}
 .vs2 .u3-bramble-line{font-size:12.5px; opacity:.92; font-weight:700;}
+/* the boss card is taller with its bramble: on a phone the Start button stays in view at the bottom while the screen scrolls */
+@media (max-width:600px){ .vs2 .u3-bramble-abs li{font-size:11.5px; padding:4px 7px;} .vs2.is-raid .vs-start{position:sticky; bottom:calc(12px + env(safe-area-inset-bottom, 0px)); z-index:3;} }
 .r3-bramble{display:flex; gap:10px; align-items:flex-start;}
 .r3-bramble > img{width:56px; height:56px; border-radius:10px; flex:0 0 auto; border:1px solid rgba(200,150,255,.45);}
 /* the bramble tile winds up as it smacks */

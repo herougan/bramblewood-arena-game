@@ -2,6 +2,33 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package U3: the owner's UI notes, 13:41–13:45)
+- **🌰 Home is an icon in the top-right cluster** (owner: *"the home button shouldnt be on the btm bar but as an icon beside the fullscreen button and arena button"*). It is the cluster's first icon, before 🏟️, ⚙️ and Energy, and the same size. It shows on Conquest, Arena, Raid and Dungeons, on phones and desktop. NV's Home in the bottom tab bar is gone. The full-screen map's Home is an acorn too. NV's iOS Safari fix stays: only the tab strip scrolls, never the row that holds the cluster.
+- **The map strip is back on phones, with no empty margin above it** (owner: *"the map tab on the top is okay. Just that there was a empty margin above for no reason ... can be just number + emoji"*).
+  - It shares the cluster's line at the top and stops short of the buttons (`u3FitMapStrip`). On a phone too narrow for that (360 px with the Admin buttons), it takes its own line under them.
+  - On phones each chip shows only the map's number and emoji, plus a small ✓ once cleared. The name and progress are in its title and aria-label ("Map 1: Thistlewood (cleared)"). Touch and hold (450 ms) shows them; the hold doesn't change the map.
+  - Desktop keeps its side list of full chips (a number-only chip would only add a column there).
+  - The world toast reads "every map you can reach is along the top" on phones again ("on the left" on desktop).
+- **The raid's bramble is Kraken's Reef, and the Tentacle Smack is its ability** (owner: *"The tentacle smack should be a property of the Raid's bramble. Which should be appropriately named and art'd."*).
+  - The boss side's bramble in a Goliath raid fight is named "Kraken's Reef" (`RAID_BRAMBLES`, `raidBrambleOf`). A published raid can name its own with `def.bramble`.
+  - Its portrait is a crisp placeholder pixel SVG (`art/raids/krakens-reef.svg`, from `tools/make_raid_bramble_art.py`): a coral reef fortress with a maw-like gate and two tentacles curled around it. The NightCafe prompt for a painted one is in `docs/art/raid-bramble-art-brief.md`; nothing was generated.
+  - Its info panel (hover or hold), the VS screen's boss card and the raid's rules list its attacks: "Tentacle Smack: every 3 turns a tentacle lashes out of the reef at one of your columns or rows (a column first, then a row), 6 damage to each unit there ..." and the Tail's Tail Sweep.
+  - The tentacle now reaches out of the bramble's tile. A column smack grows from the tile to the struck column, slams, and draws back into it. A row smack comes in from the board's edge on the bramble's side. The tile flares as it strikes.
+  - Mechanics and balance are unchanged: the same attacks, rolls and damage, and the same Health with no effects on the castle.
+- **The raid rows are about 3% closer, and the cards are bigger.** Each row's spacing is 3 px less. The bottom row's cards meet the board's edge (the HP ribbon), and any height left over goes above the board. Board cards are now 68×86 at 390 px (was 67×84), 77×96 at 430 px (was 75×94) and 64×80 at 1366 px (was 61×77). The hand follows the board's size, as MB2 set it: 69, 77 and 74 px wide. Facing lines and number floats stay on their cards, and the page doesn't scroll.
+- **The turn meter is faded out and only ticks on your turn** (owner: *"It only fades in to tick on your turn, then it fades out. It shouldn't say 2/20, but just Turn 2."*).
+  - The raid's pill reads "Turn 2" and rests at opacity 0, taking no clicks.
+  - At the start of your turn (and for Turn 1 as the fight opens), a copy fades in over it. The old turn rolls up and out, the new one pops in, it holds 1.2 s, then fades out (`u3TurnFlash`). Under reduced motion it is a plain fade.
+  - Owner call: in the last 3 turns a second line under it reads "3 turns left", "2 turns left", then "Last turn!". The last-turn banner still plays.
+- **Castle damage numbers pop where the HP bar's fill ends again, in every mode** (owner 13:45: *"It comes out at where the health bar% is currently at. We could do that for all games."*). This partly reverses BU.
+  - The position is read from the bar's on-screen rect and its fill % (`hqFillEndX`), so MB2's camera can't skew it.
+  - At very low or full Health the number is pulled in so it stays fully on screen (`u3ClampOnBar`).
+- 14 TX keys, translated in the 12 packs (`tools/i18n_2026_10_19_u3.py`).
+- **Tests:**
+  - New: `tests/u3-2026-10-19.js` (in run-all) and `tests/e2e/u3_2026_10_19.py` (390, 430 and 1366; not in run-all).
+  - Updated: `tests/nv-2026-10-19.js` and `tests/mobile-nav-2026-10-19.js` follow the Home and the strip; `tests/bu-2026-10-19.js` and `tests/e2e/battle_ui_2026_10_19.py` follow the fill-end numbers and the bramble's tentacle.
+  - Screenshots are in `docs/screens/u3/`.
+
 ## 2026-10-19 (package BU: battle UI fixes from the owner's iPhone, 12:23)
 - **You can always play in the centre column.** Root cause: the engine's `legalSlots` only offered a slot beside one of your live units, so a row thinned or pushed to one side (units at 2..4) could not play the empty centre. The centre (slot 0) is now legal whenever it is empty; every other slot still needs a neighbour. The CPU follows the same rule, so it fills an empty centre first too (`tests/golden/card-matrix.json` re-accepted: 22 open-mode matches changed, all from this rule).
 - **The centre column is always on screen, in the middle when it's cheap.** MB2b's phone window framed only the units' span plus one (units at 2..4 framed 1..5, so the centre was off the frame). The window now always holds column 0, and it is centred on column 0 whenever that costs at most one more column (`MB2_CENTRE_SLACK`, -4..3 becomes -4..4). A row far off to one side keeps its tighter, off-centre window, so the cards stay bigger.

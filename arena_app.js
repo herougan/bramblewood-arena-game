@@ -3198,14 +3198,19 @@ function cardWhereToGetText(d){
 // The phone map strip (2026-10-19, package U3, owner 13:42: "In the mobile version, the map tab on the top is okay. Just that there was
 // a empty margin above for no reason."): NV hid the strip on phones; it is back, on the top-right cluster's own line (the cluster is
 // fixed at top 12 px on the right), so nothing sits empty above it. The strip stops 8 px short of the cluster (--u3-strip-w on the
-// body, read from the cluster's on-screen left edge); on a wide screen (the desktop side list) the variable is cleared.
+// body, read from the cluster's on-screen left edge); on a wide screen (the desktop side list) the variable is cleared. When the
+// cluster leaves it less than 110 px (a 360 px phone with the Admin buttons), the strip takes its own line under the cluster
+// (body.u3-strip-below) rather than squeezing under the buttons.
 function u3FitMapStrip(){
   const b = document.body; if(!b) return;
   const phone = !!(window.matchMedia && matchMedia('(max-width:820px)').matches);
   const cl = document.querySelector('#view-play .play-subtabs-actions');
-  if(!phone || !b.classList.contains('conquest-full') || !cl || !cl.getClientRects().length){ b.style.removeProperty('--u3-strip-w'); return; }
-  const r = cl.getBoundingClientRect(); if(!(r.width > 0)) { b.style.removeProperty('--u3-strip-w'); return; }
-  b.style.setProperty('--u3-strip-w', Math.max(120, Math.floor(r.left - 6)) + 'px');
+  const off = ()=>{ b.style.removeProperty('--u3-strip-w'); b.classList.remove('u3-strip-below'); };
+  if(!phone || !b.classList.contains('conquest-full') || !cl || !cl.getClientRects().length){ off(); return; }
+  const r = cl.getBoundingClientRect(); if(!(r.width > 0)){ off(); return; }
+  const room = Math.floor(r.left - 6);
+  b.classList.toggle('u3-strip-below', room < 110);
+  if(room < 110) b.style.removeProperty('--u3-strip-w'); else b.style.setProperty('--u3-strip-w', room + 'px');
 }
 try{ window.addEventListener('resize', ()=>{ try{ u3FitMapStrip(); }catch(e){} }, {passive:true}); }catch(e){}
 // Touch-and-hold on a phone chip shows its name and progress (the chip itself is just the number and emoji): 450 ms, cancelled by a

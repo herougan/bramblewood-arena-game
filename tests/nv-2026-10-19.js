@@ -27,19 +27,21 @@ const fn = (names, ret, extra)=>{ extra = Object.assign({raidLocale: ()=> 'en', 
   return new Function('TX', 'escapeHtml', 'escapeAttr', 'RaidM', ...Object.keys(extra), names.map(nm=> B.grab(nm)).join('\n') + '\nreturn ' + ret + ';')(TX, escapeHtml, escapeAttr, RaidM, ...Object.values(extra)); };
 
 // ======================= 1. Home and the map strip =======================
+// 2026-10-19 (package U3, owner 13:41: "the home button shouldnt be on the btm bar but as an icon beside the fullscreen button and arena
+// button"; 13:42: "the map tab on the top is okay ... can be just number + emoji"): NV's 🌰 left the tab bar for the top-right cluster
+// (#homeNavBtnPlay, an acorn), and the phone map strip is back (compact chips, tests/e2e/u3_2026_10_19.py). NV's iOS fix stays.
 const rp = B.grab('renderPlay');
-ok(/<button type="button" class="play-home-tab" id="playHomeTabBtn" title="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}" aria-label="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}"><span class="pht-nut" aria-hidden="true">🌰<\/span><span class="pht-label">\$\{escapeHtml\(TX\('ui\.nv-home'\)\)\}<\/span><\/button>\s*<div class="play-subtabs" role="tablist"/.test(rp),
-  '1. the tab bar starts with a 🌰 Home (TX label, aria-label), outside the scrolling tab strip');
-ok(/getElementById\('playHomeTabBtn'\); if\(ph\) ph\.addEventListener\('click', \(\)=>\{ try\{ SoundKit\.woodKnock\(\); \}catch\(e\)\{\} exitConquestImmersive\(\); switchTab\('home'\); \}\);/.test(rp), '1. it goes Home the way every Home does (switchTab(\'home\'))');
+ok(!/playHomeTabBtn|play-home-tab/.test(rp), '1. (U3) no Home in the floating tab bar any more');
+ok(/<button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}" aria-label="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}"><span class="tab-emoji" aria-hidden="true">🌰<\/span> \$\{escapeHtml\(TX\('ui\.nv-home'\)\)\}<\/button>/.test(rp),
+  '1. (U3) the top-right cluster starts with the 🌰 Home (TX label, aria-label)');
+ok(/getElementById\('homeNavBtnPlay'\);\s*if\(backBtn\) backBtn\.addEventListener\('click', \(\)=>\{ try\{ SoundKit\.woodKnock\(\); \}catch\(e\)\{\} exitConquestImmersive\(\); switchTab\('home'\); \}\);/.test(rp), '1. it goes Home the way every Home does (switchTab(\'home\'))');
 const nv = (tpl.match(/<style id="nvStyles">([^]*?)<\/style>/) || [])[1] || '';
 ok(nv.length > 0, '1. the NV style block is there');
-ok(/\.play-home-tab\{display:none;\}/.test(nv) && /body\.conquest-full #appWrap\.cq-hud:not\(\.cq-no-tabs\):not\(\.in-match\) #view-play \.play-home-tab\{display:inline-flex;/.test(nv), '1. shown on the floating tab bar (map, Arena, Raid, Dungeons) only');
-ok(/#view-play \.play-subtabs-actions #homeNavBtnPlay\{display:none !important;\}/.test(nv), '1. the top-right 🏠 steps aside while the bar has the Home');
+ok(!/play-home-tab/.test(nv) && !/#homeNavBtnPlay\{display:none/.test(nv), '1. (U3) the cluster\'s Home is not hidden');
 ok(/\.play-subtabs-row\{overflow:visible !important;/.test(nv) && /\.play-subtabs-row \.play-subtabs\{min-width:0; flex:0 1 auto; overflow-x:auto;/.test(nv), '1. the tab strip scrolls inside the bar, not the bar (a fixed child of a scrolling row is clipped on iOS Safari)');
 ok(/bottom:calc\(14px \+ env\(safe-area-inset-bottom, 0px\)\)/.test(nv), '1. the bar keeps clear of the iPhone home indicator');
-ok(/@media \(max-width:820px\)\{\s*body\.conquest-full #conquestMapList\{display:none !important;\}/.test(nv), '1. phones: no map strip');
+ok(!/#conquestMapList\{display:none !important;\}/.test(nv), '1. (U3) phones keep the map strip');
 ok(/class="conquest-world-btn" id="conquestWorldBtn"/.test(src) && /class="world-edge world-edge-\$\{side\}/.test(src), '1. maps still change: the 🧭 World atlas button and the map edges stay');
-ok(/body\.conquest-full:not\(\.conquest-immersive\) \.conquest-world-btn\{top:58px;\}/.test(nv) && /body\.conquest-full:not\(\.conquest-immersive\) \.conquest-fs-btn\{top:58px;\}/.test(nv), '1. phones: 🧭 and ⛶ on one row, under the 🏟️ / ⚙️ / Energy row');
 ok(TEXT['ui.nv-home'] === 'Home', '1. TX ui.nv-home');
 
 // ======================= 2. the pre-battle screen =======================
@@ -137,14 +139,14 @@ async function browser(){
       await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); 1");
       for(const tab of ['conquest', 'arena', 'raid']){
         await pg.evaluate(`(()=>{ playSubTab = '${tab}'; switchTab('play'); return 1; })()`); await pg.waitForTimeout(500);
-        const home = await pg.evaluate(vis('playHomeTabBtn')), list = await pg.evaluate(vis('conquestMapList')), top = await pg.evaluate(vis('homeNavBtnPlay'));
-        ok(home && home.l >= 0 && home.r <= w + 1 && home.b <= h + 1, `B1. ${w}x${h} ${tab}: the 🌰 Home is on screen (${JSON.stringify(home)})`);
-        ok(!top, `B1. ${w}x${h} ${tab}: one Home (the top-right 🏠 steps aside)`);
-        if(tab === 'conquest'){ ok(mobile ? !list : !!list, `B1. ${w}x${h}: the map list is ${mobile ? 'gone on phones' : 'kept on desktop'}`);
+        const home = await pg.evaluate(vis('homeNavBtnPlay')), list = await pg.evaluate(vis('conquestMapList')), bar = await pg.evaluate(vis('playHomeTabBtn'));
+        ok(home && home.l >= 0 && home.r <= w + 1 && home.t >= 0 && home.b <= 80, `B1. ${w}x${h} ${tab}: the 🌰 Home is on screen, top right (${JSON.stringify(home)})`);
+        ok(!bar, `B1. ${w}x${h} ${tab}: one Home (none in the tab bar, U3)`);
+        if(tab === 'conquest'){ ok(!!list, `B1. ${w}x${h}: the map list is there (the phone strip is back, U3)`);
           ok(!!(await pg.evaluate(vis('conquestWorldBtn'))), `B1. ${w}x${h}: the 🧭 World button is there to change maps`); }
       }
       await pg.evaluate("(()=>{ playSubTab = 'conquest'; switchTab('play'); return 1; })()"); await pg.waitForTimeout(400);
-      await pg.click('#playHomeTabBtn'); await pg.waitForTimeout(500);
+      await pg.click('#homeNavBtnPlay'); await pg.waitForTimeout(500);
       ok(await pg.evaluate("currentTab === 'home' && !document.getElementById('view-home').hidden"), `B1. ${w}x${h}: the 🌰 goes Home`);
       // the raid's VS screen: you, your side's parts and total, the boss; the button below the art; nothing cut off
       await pg.evaluate("(()=>{ playSubTab='raid'; switchTab('play'); window.payRaidAttempt = ()=> true; window.raidLeaderCapCheck = ()=> ({ok:true}); startRaidPartMatch(activeRaidDef(), 'tail'); return 1; })()"); await pg.waitForTimeout(1200);

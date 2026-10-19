@@ -24,8 +24,8 @@ ok(/\.conquest-admin-btn\{position:absolute; top:58px; right:12px;/.test(tpl) &&
 
 // ---- 2. Home on the full-screen map (static)
 ok(typeof TEXT['ui.back-to-home'] === 'string' && TEXT['ui.back-to-home'] === 'Back to Home', '2. TX key ui.back-to-home');
-ok(/class="conquest-home-btn" id="conquestHomeBtn" aria-label="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}" title="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}"><span class="tab-emoji" aria-hidden="true">🏠<\/span><\/button>/.test(src),
-  '2. the map renders a 🏠 button with a TX aria-label / title');
+ok(/class="conquest-home-btn" id="conquestHomeBtn" aria-label="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}" title="\$\{escapeAttr\(TX\('ui\.back-to-home'\)\)\}"><span class="tab-emoji" aria-hidden="true">🌰<\/span><\/button>/.test(src),
+  '2. the map renders a Home button (an acorn since 2026-10-19, U3) with a TX aria-label / title');
 ok(/const hb = document\.getElementById\('conquestHomeBtn'\); if\(hb\) hb\.onclick = \(\)=>\{ try\{ SoundKit\.woodKnock\(\); \}catch\(e\)\{\} exitConquestImmersive\(\); switchTab\('home'\); \}; \}/.test(src), '2. it leaves full screen and goes Home');
 ok(/\.conquest-home-btn\{display:none; position:absolute; top:12px; right:104px;/.test(tpl) && /body\.conquest-immersive \.conquest-home-btn\{display:flex;\}/.test(tpl), '2. shown only on the full-screen map, left of 🧭');
 ok(/body\.conquest-immersive\.world-hidden \.conquest-home-btn\{right:58px;\}/.test(tpl), '2. no 🧭 yet: 🏠 right beside ⛶');
@@ -53,9 +53,12 @@ async function browser(){
     await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); 1");
     const MEASURE = `(()=>{ const box = id=>{ const e = document.getElementById(id); if(!e) return null; const cs = getComputedStyle(e); if(cs.display === 'none' || cs.visibility === 'hidden') return null;
         const r = e.getBoundingClientRect(); return r.width && r.height ? {id, l:r.left, t:r.top, r:r.right, b:r.bottom} : null; };
-      const all = ['homeNavBtnPlay', 'arenaNavBtnPlay', 'dungeonKeyBtnPlay', 'settingsBtnPlaySub', 'energyPillPlay', 'conquestWorldBtn', 'conquestAdminBtn', 'conquestFsBtn', 'conquestHomeBtn', 'playHomeTabBtn'].map(box).filter(Boolean);
+      const all = ['homeNavBtnPlay', 'arenaNavBtnPlay', 'dungeonKeyBtnPlay', 'settingsBtnPlaySub', 'energyPillPlay', 'conquestWorldBtn', 'conquestAdminBtn', 'conquestFsBtn', 'conquestHomeBtn'].map(box).filter(Boolean);
+      // 2026-10-19 (package U3): the phone map strip is back on the cluster's line; its chips must not sit under any of these buttons
+      const strip = (()=>{ const L = document.getElementById('conquestMapList'); if(!L || !box('conquestMapList')) return null; const lr = L.getBoundingClientRect(), cs = [...L.querySelectorAll('.conquest-map-item')].map(c=> c.getBoundingClientRect()).filter(r=> r.width && r.right > lr.left && r.left < lr.right); return cs.length ? {l: Math.max(lr.left, Math.min(...cs.map(r=> r.left))), r: Math.min(lr.right, Math.max(...cs.map(r=> r.right))), t: Math.min(...cs.map(r=> r.top)), b: Math.max(...cs.map(r=> r.bottom))} : null; })(); /* its chips */ if(strip) all.forEach(x=>{ if(x.id !== 'conquestWorldBtn' && x.id !== 'conquestFsBtn' && x.id !== 'conquestAdminBtn' && x.id !== 'conquestHomeBtn' && strip.r > x.l + 1 && strip.l < x.r - 1 && strip.t < x.b - 1 && x.t < strip.b - 1) all.hitStrip = (all.hitStrip || []).concat(x.id); });
       const hit = []; for(let i = 0; i < all.length; i++) for(let j = i + 1; j < all.length; j++){ const a = all[i], c = all[j]; if(a.l < c.r - 1 && c.l < a.r - 1 && a.t < c.b - 1 && c.t < a.b - 1) hit.push(a.id + '/' + c.id); }
-      const g = id=> all.find(x=> x.id === id); return {hit, fs: g('conquestFsBtn'), world: g('conquestWorldBtn'), admin: g('conquestAdminBtn'), home: g('conquestHomeBtn') || g('homeNavBtnPlay') || g('playHomeTabBtn'), /* + the tab bar's 🌰 (2026-10-19, package NV) */
+      if(all.hitStrip) hit.push(...all.hitStrip.map(id=> 'strip/' + id));
+      const g = id=> all.find(x=> x.id === id); return {hit, fs: g('conquestFsBtn'), world: g('conquestWorldBtn'), admin: g('conquestAdminBtn'), home: g('conquestHomeBtn') || g('homeNavBtnPlay'), /* the cluster's 🌰 (2026-10-19, package U3) */
         inside: all.every(x=> x.l >= 0 && x.r <= innerWidth + 1 && x.t >= 0)}; })()`;
     for(const admin of [false, true]) for(const imm of [false, true]) for(const [w, h] of SIZES){
       await pg.setViewportSize({width:w, height:h});
