@@ -22723,12 +22723,12 @@ function openRaidEditor(raidId){
         <label title="Raid tickets one fight takes. Players hold up to ${RAID_POINTS_MAX}, +1 a day, topped up to ${RAID_POINTS_MAX} each week.">Tickets per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints != null ? draft.cost.raidPoints : 1}"></label>
         <label title="Energy a fight takes on a part with no Energy of its own (1-6); each part and stage can change it below">Energy per fight (default)<input id="reCostEn" type="number" min="1" max="6" value="${draft.cost.energy||4}"></label>
         <label title="Hours after a kill until the raid comes back at full Health, as a new life with its own rewards (1-168; the week's end still starts a new cycle)">Respawn after a kill (hours)<input id="reRespawn" type="number" min="1" max="168" value="${draft.respawnHours||RaidM.RESPAWN_HOURS_DEFAULT}"></label>
-        <label title="Players in one instance before the next opens, each with its own Health and rewards (10-1000). The server reads the published value.">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
+        <label title="Players in one instance before the next opens, each with its own Health and rewards (10-1000; 250 by default since 2026-10-19). The server reads the published value.">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
         ${adminModeEnabled ? `<div class="se-wide re-restart"><button type="button" class="btn small" id="reRestart">${escapeHtml(TX('ui.raid-restart'))}</button><small class="panel-sub">Every instance starts a fresh life now, at full Health (live once the raid-ops SQL is applied; this browser only until then).</small></div>` : ''}
       </div>
       <h3 class="se-h">Tuning</h3>
       <div class="se-grid">
-        <label title="The boss unit's Health on a fresh raid; it falls with the raid's remaining Health to the unit's own Health (2026-10-19, package RV2: was a bonus on top)">Boss unit Health, fresh raid<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
+        <label title="The boss unit's Health on a fresh raid; it falls with the raid's remaining Health to the unit's own Health (2026-10-19, package RV2: was a bonus on top; package RB: 50 on the Goliath, was 100)">Boss unit Health, fresh raid<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
         <label title="Your leader's cost in points: each Lumber 1, each Stone 2, each Metal 3. A leader over it can't go into this raid. 0 = no cap (2026-10-19)">Leader cost cap (points)<input id="reLeaderCap" type="number" min="0" max="99" value="${draft.leaderCostCap||0}"></label>
         <label title="Below this much bramble damage an attempt pays a pittance (2026-10-19)">Paying damage (min)<input id="reMinDmg" type="number" min="1" max="9999" value="${draft.minDamage||120}"></label>
         ${(()=>{ const t = draft.tuning || {}, rf = t.reinforce || {}, D = RAID_TUNE_DEFAULTS; // 2026-10-19 (package RX): the full raid's tuning knobs (raidTune)
@@ -22738,7 +22738,8 @@ function openRaidEditor(raidId){
         <label title="How many of your two CPU allies play a card each turn">Allies playing a turn<input id="reTAllies" type="number" min="1" max="2" value="${t.alliesPerTurn || D.alliesPerTurn}"></label>
         <label title="The boss calls in Commons every N turns">Commons every N turns<input id="reTRfEvery" type="number" min="1" max="10" value="${rf.every || 1}"></label>
         <label title="The most Commons the boss calls in at once">Commons per call (max)<input id="reTRfMax" type="number" min="0" max="2" value="${rf.max != null ? rf.max : (RaidM.REINFORCE || {}).max || 2}"></label>
-        <label title="The boss plays a card into each of its back two rows every turn; a row holding this many waits (2026-10-19, package RV2)">Boss row cap<input id="reTRowCap" type="number" min="0" max="7" value="${t.rowCap != null ? t.rowCap : D.rowCap}"></label>`; })()}
+        <label title="The boss plays a card into each of its back two rows every turn; a row holding this many waits (2026-10-19, package RV2)">Boss row cap<input id="reTRowCap" type="number" min="0" max="7" value="${t.rowCap != null ? t.rowCap : D.rowCap}"></label>
+        <label title="As a part's Health falls its boss cards weaken, down to this % of their stats as it falls (2026-10-19, package RB: RaidM.bossWeakening)">Boss weakest %<input id="reTWeak" type="number" min="10" max="100" value="${Math.round((RaidM.weakenFloor ? RaidM.weakenFloor(draft) : 0.6) * 100)}"></label>`; })()}
       </div>
       ${(()=>{ // Field effects and the boss's Commons (2026-10-17): the whole raid's fieldRules as chips (✕ takes one off), an "add" list from
         // FIELD_EFFECTS (Psychic Dampener among them), and the Commons the boss calls in each round (blank = picked from its decks' types).
@@ -22753,7 +22754,7 @@ function openRaidEditor(raidId){
         <label>Part name<input data-pf="name" value="${escapeAttr(P.name||'')}"></label>
         <label>Icon<input data-pf="icon" value="${escapeAttr(P.icon||'')}" maxlength="4"></label>
         <label>HP bars<input data-pf="bars" type="number" min="1" max="20" value="${P.bars||1}"></label>
-        <label>HP per bar<input data-pf="barHp" type="number" min="1000" step="1000" value="${P.barHp||80000}"></label>
+        <label>HP per bar<input data-pf="barHp" type="number" min="1000" step="1000" value="${P.barHp||50000}"></label>
         <label>Fight bramble HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
         <label title="Energy a fight on this part takes (1-6; blank = the raid's)">Energy per fight (blank = raid)<input data-pf="energy" type="number" min="1" max="6" value="${(P.cost||{}).energy||''}"></label>
@@ -22792,9 +22793,9 @@ function openRaidEditor(raidId){
           <small class="panel-sub re-stage-desc">${escapeHtml(raidStageText(s) || 'No rules: the stage is only a name.')}</small></div>`; }).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
       <h3 class="se-h">Scoring &amp; rewards</h3>
       <div class="se-grid">
-        <label>Raid damage per bramble HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
-        <label>Cap per fight<input id="reCap" type="number" min="100" step="100" value="${draft.scoring.cap||5000}"></label>
-        <label>Overwhelm (bramble destroyed)<input id="reOver" type="number" min="100" step="100" value="${draft.scoring.overwhelmCap||10000}"></label>
+        <label>Raid damage per bramble HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||RaidM.SCORING_DEFAULTS.perInFightHp}"></label>
+        <label>Cap per fight<input id="reCap" type="number" min="100" step="100" value="${draft.scoring.cap||RaidM.SCORING_DEFAULTS.cap}"></label>
+        <label><span title="A win's raid damage, before the rank multiplier (2026-10-19, package RB: 1,000, was 10,000)">Win (bramble destroyed)</span><input id="reOver" type="number" min="100" step="100" value="${draft.scoring.overwhelmCap||RaidM.SCORING_DEFAULTS.overwhelmCap}"></label>
         <label>Stand-in raiders % per day<input id="reStand" type="number" min="0" max="50" value="${draft.standIns.perDayPct||0}"></label>
       </div>
       <h3 class="se-h">Taking part and rewards <small>per life of the raid</small></h3>
@@ -22844,23 +22845,26 @@ function openRaidEditor(raidId){
       t.bossAtkPct = Math.max(0.05, Math.min(2, num(v('reTAtk'), 60) / 100)); t.bossHpPct = Math.max(0.05, Math.min(2, num(v('reTHp'), 70) / 100));
       t.raiderCastleBonus = Math.max(0, Math.min(999, Math.round(num(v('reTCastle'), 0)))); t.alliesPerTurn = Math.max(1, Math.min(2, Math.round(num(v('reTAllies'), 1))));
       t.reinforce = Object.assign({}, t.reinforce || {}, {every: Math.max(1, Math.min(10, Math.round(num(v('reTRfEvery'), 1)))), max: Math.max(0, Math.min(2, Math.round(num(v('reTRfMax'), 2))))});
-      t.rowCap = Math.max(0, Math.min(7, Math.round(num(v('reTRowCap'), RAID_TUNE_DEFAULTS.rowCap)))); } // 2026-10-19 (RV2)
+      t.rowCap = Math.max(0, Math.min(7, Math.round(num(v('reTRowCap'), RAID_TUNE_DEFAULTS.rowCap)))); // 2026-10-19 (RV2)
+      if(overlay.querySelector('#reTWeak')) t.weakenFloor = Math.max(0.1, Math.min(1, num(v('reTWeak'), 60) / 100)); } // 2026-10-19 (package RB): the weakening's floor
     const tr = overlay.querySelector('#reTrench');
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
     draft.cost.raidPoints = Math.max(0, Math.min(5, Math.round(num(v('reCostRp'), 1)))); draft.cost.energy = Math.max(1, Math.min(6, Math.round(num(v('reCostEn'), 4)))); // 1-6 Energy (2026-10-19)
     // 2026-10-19 (package RO): respawn, instances, art, participation and the new reward knobs, the ally decks
     if(overlay.querySelector('#reRespawn')) draft.respawnHours = Math.max(1, Math.min(168, Math.round(num(v('reRespawn'), 24))));
-    if(overlay.querySelector('#reInstCap')) draft.instanceCap = Math.max(10, Math.min(1000, Math.round(num(v('reInstCap'), 100))));
+    if(overlay.querySelector('#reInstCap')) draft.instanceCap = Math.max(10, Math.min(1000, Math.round(num(v('reInstCap'), RaidM.INSTANCE_CAP_DEFAULT || 250))));
     if(overlay.querySelector('#reArt')){ const a = String(v('reArt') || '').trim(); if(a) draft.art = a; else delete draft.art; }
     if(overlay.querySelector('#rePFights')){ const n = (id, d, hi)=> Math.max(0, Math.min(hi, Math.round(num(v(id), d))));
-      draft.participation = {fights: n('rePFights', 3, 99), damage: n('rePDmg', 1000, 1e7), strongFights: n('reSFights', 4, 99), strongDamage: n('reSDmg', 10000, 1e7), strongPct: n('reSPct', 20, 200),
-        leadFights: n('reLFights', 4, 99), leadDamage: n('reLDmg', 50000, 1e8), leadPct: n('reLPct', 40, 300), leadCards: n('reLCards', 1, 5)}; } // + the Leading participant (2026-10-19, RV2)
+      const PD = RaidM.PARTICIPATION_DEFAULTS; // 2026-10-19 (package RB): the rescaled tiers
+      draft.participation = {fights: n('rePFights', 3, 99), damage: n('rePDmg', PD.damage, 1e7), strongFights: n('reSFights', 4, 99), strongDamage: n('reSDmg', PD.strongDamage, 1e7), strongPct: n('reSPct', 20, 200),
+        leadFights: n('reLFights', 4, 99), leadDamage: n('reLDmg', PD.leadDamage, 1e8), leadPct: n('reLPct', 40, 300), leadCards: n('reLCards', 1, 5)}; } // + the Leading participant (2026-10-19, RV2)
     overlay.querySelectorAll('[data-al-name]').forEach(el=>{ const i = +el.dataset.alName, a = (draft.allyDecks || [])[i]; if(!a) return; a.name = el.value;
       const d = overlay.querySelector(`[data-al-deck="${i}"]`); if(d){ const deck = {}; String(d.value).split(',').forEach(x=>{ const m = x.trim().match(/^([\w~-]+)\s*[:x×]\s*(\d+)$/); if(m && +m[2] > 0) deck[m[1]] = Math.min(9, +m[2]); }); a.deck = deck; } });
     const live = overlay.querySelector('#reLive'); if(live) draft.live = live.checked;
     const cp = overlay.querySelector('#reCommonPool'); if(cp){ const ids = cp.value.split(/[\s,]+/).map(x=> x.trim()).filter(Boolean); draft.commonPool = ids; } // 2026-10-17 (an empty list = picked from its decks' types)
-    draft.scoring.perInFightHp = Math.max(1, num(v('reRate'), 50)); draft.scoring.cap = Math.max(1, num(v('reCap'), 5000)); draft.scoring.overwhelmCap = Math.max(1, num(v('reOver'), 10000));
+    const SD = RaidM.SCORING_DEFAULTS; // 2026-10-19 (package RB): the new scale's defaults (x1, cap 1,000, a win 1,000)
+    draft.scoring.perInFightHp = Math.max(1, num(v('reRate'), SD.perInFightHp)); draft.scoring.cap = Math.max(1, num(v('reCap'), SD.cap)); draft.scoring.overwhelmCap = Math.max(1, num(v('reOver'), SD.overwhelmCap));
     draft.standIns.perDayPct = Math.max(0, Math.min(50, num(v('reStand'), 0)));
     const rw = draft.rewards;
     rw.kill.gold = Math.max(0, num(v('reKGold'), 0)); rw.kill.dust = Math.max(0, num(v('reKDust'), 0)); rw.kill.metal = Math.max(0, num(v('reKMetal'), 0));
@@ -22879,7 +22883,7 @@ function openRaidEditor(raidId){
         else if(k==='energy'){ if(el.value===''){ if(P.cost){ delete P.cost.energy; if(!Object.keys(P.cost).length) delete P.cost; } } else P.cost = Object.assign({}, P.cost||{}, {energy: Math.max(1, Math.min(6, Math.round(num(el.value, 4))))}); } // 2026-10-19
         else if(k==='rounds'){ if(el.value==='') delete P.fight.rounds; else P.fight.rounds = Math.max(3, Math.min(40, Math.round(num(el.value, 12)))); } else P[k] = Math.max(1, Math.round(num(el.value, 1))); });
       const ph = overlay.querySelector('[data-pf="perHp"]');
-      if(ph){ if(ph.value==='') { if(P.scoring) delete P.scoring.perInFightHp; if(P.scoring && !Object.keys(P.scoring).length) delete P.scoring; } else { P.scoring = Object.assign({}, P.scoring||{}, {perInFightHp: Math.max(1, num(ph.value, 50))}); } }
+      if(ph){ if(ph.value==='') { if(P.scoring) delete P.scoring.perInFightHp; if(P.scoring && !Object.keys(P.scoring).length) delete P.scoring; } else { P.scoring = Object.assign({}, P.scoring||{}, {perInFightHp: Math.max(1, num(ph.value, 1))}); } }
       if(draft.trench){
         const T = P.trench = P.trench || {}; T.rules = T.rules || {};
         const pt = k=> overlay.querySelector(`[data-pt="${k}"]`);
@@ -22922,7 +22926,7 @@ function openRaidEditor(raidId){
       if(k === 'frost'){ ['frostWait', 'frostCount', 'frostbite', 'frostResist'].forEach(x=> delete r[x]); }
       draft.fieldRules = r; dirty = true; render(); }); // an empty {} stays, so the shipped field doesn't come back (allRaidDefs)
     overlay.querySelectorAll('[data-open-part]').forEach(b=> b.onclick = ()=>{ read(); openPart = b.dataset.openPart; q = ''; render(); });
-    $('reAddPart').onclick = ()=>{ read(); let i = draft.parts.length+1; while(draft.parts.some(p=> p.id==='part'+i)) i++; draft.parts.push({id:'part'+i, name:'New part', icon:'🎯', bars:3, barHp:80000, fight:{castleHp:200, deck:{}}}); openPart = 'part'+i; dirty = true; render(); };
+    $('reAddPart').onclick = ()=>{ read(); let i = draft.parts.length+1; while(draft.parts.some(p=> p.id==='part'+i)) i++; draft.parts.push({id:'part'+i, name:'New part', icon:'🎯', bars:4, barHp:50000, fight:{castleHp:420, deck:{}}}); /* 2026-10-19 (package RB): 200,000 like the Goliath's arms */ openPart = 'part'+i; dirty = true; render(); };
     const P = draft.parts.find(p=> p.id===openPart);
     if(P){
       const deck = P.fight.deck;
@@ -23220,7 +23224,11 @@ function buildRaidFullFight(def, partId, f, st, opts){
   // parts). trench.castleHp (1250) is "for the trench only" (trenchConfig's 2026-10-18 note), but this fight read it too, so a raider
   // had to chip 1250 to reach anything.
   cfg.castleHp = f.castleHp || cfg.castleHp;
-  const bAtk = raidTune(def, 'bossAtkPct'), bHp = raidTune(def, 'bossHpPct'); // the boss's cards' share of their printed Attack / Health (2026-10-19)
+  // 2026-10-19 (package RB, owner 12:23: "the boss gets weaker as it goes down in health"): x RaidM.bossWeakening (the curve's one home),
+  // by the part's remaining share: 100% fresh, down to the raid's weakenFloor (60%) as the part falls; the guards too (below).
+  const partShare = (()=>{ try{ const ps = st.byId[String(partId)]; return ps && ps.total ? Math.max(0, Math.min(1, ps.remaining / ps.total)) : 1; }catch(e){ return 1; } })();
+  const weaken = RaidM.bossWeakening ? RaidM.bossWeakening(def, partShare) : 1;
+  const bAtk = raidTune(def, 'bossAtkPct') * weaken, bHp = raidTune(def, 'bossHpPct') * weaken; // the boss's cards' share of their printed Attack / Health (2026-10-19)
   // the boss's cards, run-only copies when the stage strips abilities or the rule makes them illusory (as in the trench)
   // A raid deck was built to face three decks at once (the trench). Alone, your one deck met it at full strength and lost
   // almost every time (CPU sims: ~0 damage dealt). Here its cards fight at 35% Attack and 45% Health, and your castle is
@@ -23231,7 +23239,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
     defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
-    defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
+    defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: Math.round((e.attack || 0) * weaken), health: Math.max(1, Math.round((e.health || 20) * weaken)), wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
   // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
   // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
   // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
@@ -23290,9 +23298,9 @@ function buildRaidFullFight(def, partId, f, st, opts){
   let leaderUid = null;
   try{ const lid = opts.leaderId, E = engine; if(lid && defs[lid]){ const ev = []; E.debugSpawnCard(players, sideOf, 1, lid, 0, stats, ev); const c = E.allBoardCards(players[1]).find(x=> x.defId === lid);
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
-    allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.isLeader = true; a.leaderId = id; } }); }catch(e){}
+    allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.allyRow = a.row; c.holdRow = true; c.isLeader = true; a.leaderId = id; } }); }catch(e){} // + holdRow (2026-10-19, package RB): its own row, always
   const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
-  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks};
+  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks, weaken, partShare};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -23564,7 +23572,11 @@ function raidAllyPlays(m, a, events){
   const placed = sl == null ? null : E.fillReserve(pl, a.row, sl, id), where = a.row === 1 ? 'middle row' : 'back row';
   if(!placed) return;
   a.played++;
-  placed.allyOf = a.name; placed.allyRow = a.row; m.raidAllyNew = placed.uid;
+  // 2026-10-19 (package RB, owner 12:23: "Raid: Allies are still playing cards in the front column."): the play always went into the
+  // ally's own row, but the unit then stepped up into your front row (or the back-row ally's into the middle) at the next round start
+  // whenever the slot ahead was clear (engine advanceReserves). holdRow keeps it in its row for the whole fight: it strikes from there.
+  // No spill: a raid's play rows are always 'own' (matchPlayRows), so a full row keeps the card in the ally's hand.
+  placed.allyOf = a.name; placed.allyRow = a.row; placed.holdRow = true; m.raidAllyNew = placed.uid;
   const ev = {type:'raidAlly', name:a.name, defId:id, where, row:a.row, slot:sl};
   // 2026-10-19 (package RV2, owner 08:42: "Watch out not to redraw everything as well"): outside a round's events (the opening play,
   // and every turn's plays now, see resolveRoundCore), the card goes into its slot alone (reserveSlotPut); the board isn't redrawn.
