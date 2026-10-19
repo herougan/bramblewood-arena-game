@@ -53,9 +53,9 @@ async function browser(){
     await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); 1");
     const MEASURE = `(()=>{ const box = id=>{ const e = document.getElementById(id); if(!e) return null; const cs = getComputedStyle(e); if(cs.display === 'none' || cs.visibility === 'hidden') return null;
         const r = e.getBoundingClientRect(); return r.width && r.height ? {id, l:r.left, t:r.top, r:r.right, b:r.bottom} : null; };
-      const all = ['homeNavBtnPlay', 'arenaNavBtnPlay', 'dungeonKeyBtnPlay', 'settingsBtnPlaySub', 'energyPillPlay', 'conquestWorldBtn', 'conquestAdminBtn', 'conquestFsBtn', 'conquestHomeBtn'].map(box).filter(Boolean);
+      const all = ['homeNavBtnPlay', 'arenaNavBtnPlay', 'dungeonKeyBtnPlay', 'settingsBtnPlaySub', 'energyPillPlay', 'conquestWorldBtn', 'conquestAdminBtn', 'conquestFsBtn', 'conquestHomeBtn', 'playHomeTabBtn'].map(box).filter(Boolean);
       const hit = []; for(let i = 0; i < all.length; i++) for(let j = i + 1; j < all.length; j++){ const a = all[i], c = all[j]; if(a.l < c.r - 1 && c.l < a.r - 1 && a.t < c.b - 1 && c.t < a.b - 1) hit.push(a.id + '/' + c.id); }
-      const g = id=> all.find(x=> x.id === id); return {hit, fs: g('conquestFsBtn'), world: g('conquestWorldBtn'), admin: g('conquestAdminBtn'), home: g('conquestHomeBtn') || g('homeNavBtnPlay'),
+      const g = id=> all.find(x=> x.id === id); return {hit, fs: g('conquestFsBtn'), world: g('conquestWorldBtn'), admin: g('conquestAdminBtn'), home: g('conquestHomeBtn') || g('homeNavBtnPlay') || g('playHomeTabBtn'), /* + the tab bar's 🌰 (2026-10-19, package NV) */
         inside: all.every(x=> x.l >= 0 && x.r <= innerWidth + 1 && x.t >= 0)}; })()`;
     for(const admin of [false, true]) for(const imm of [false, true]) for(const [w, h] of SIZES){
       await pg.setViewportSize({width:w, height:h});
