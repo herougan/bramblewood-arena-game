@@ -319,6 +319,7 @@ function curveTune(f, band, steps){
     for(let step = 0; step < maxSteps && (coarse ? off(cur.win) > 6 : !good(cur.win)); step++){
       const easy = cur.win > want; let best = null;
       for(const mv of curveMoves(f, node.deck, easy)){
+        if(f.code === '18-A-9' && mv.inn === 'quicksand-queen') continue; // 2026-10-19 (BF3): one Queen leads her own fight (tests/pale-desert-2026-10-19.js 3)
         if(mv.inn && TH && TH.offThemeFor(f.map, f.n, mv.inn)) continue; // 2026-10-19 (TH): "more copies" of a capped card (Gannet Cliffs' Pelican Divers) too
         const nd = applyMove(node.deck, mv); if(!rareQuarterOk(f, nd) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
         const nn = Object.assign({}, node, {deck: nd}), r = T(nn, mv);
@@ -331,6 +332,7 @@ function curveTune(f, band, steps){
   };
   let shield = null, hqHp = null;
   const shieldRound = ()=>{
+    if(f.map === 'mpd') return; // 2026-10-19 (BF3): the Pale Desert keeps the bramble by rule (tests/pale-desert-2026-10-19.js 3)
     if(good(cur.win)) return;
     const base = cur.shield, easy = cur.win > want, rule = G.ruleShieldOf(node);
     if(!easy && base <= 0) return;

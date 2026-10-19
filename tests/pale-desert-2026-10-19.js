@@ -25,8 +25,12 @@ const constLine = name=>{ const m = src.match(new RegExp(`^const ${name} = [^\\n
 const NEW = ['sandfish', 'pale-oryx', 'quicksand-queen'];
 const KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i=> '18-A-' + i);
 // The owner's curve (2026-10-18): the skirmishes in trail order from 90% down to 60%, the elite on that line, the boss ~40%; green = +-8.
-const target = (node, i, n)=> node.kind === 'boss' ? 0.40 : 0.90 - 0.30 * (i / Math.max(1, n - 1));
-const band = (node, t)=> node.kind === 'boss' ? [0.30, 0.49] : [t - 0.08, t + 0.08];
+// (2026-10-19, BF: a map's step lower, as a side map; below)
+// 2026-10-19 (BF): a side map counts a map past its parent, so its targets sit one map's step lower (the game's roadCurveTarget: 88% -> 55%,
+// the boss 26-44%); was the main curve's 90% -> 60%, boss 30-49%
+const rct = node=>{ G.NODE_MAP_HINT.set(node, 'mpd'); return G.roadCurveTarget('mpd', node); };
+const target = (node, i, n)=> rct(node).t;
+const band = (node, t)=>{ const r = rct(node); return [r.lo, r.hi]; };
 
 const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G;
 const map = B.MAPS.find(m=> m.id === 'mpd'), md = B.MAPS.find(m=> m.id === 'md');
@@ -117,7 +121,7 @@ ok(new Set(map.nodes.map(n=> n.icon)).size >= 8 && map.nodes.every(n=> n.flavor 
 // --- 4. the new cards
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
 NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
-  ok(d && b.ok && !b.missing.length, `4. ${id} fits budget v3 (2A+H+S ${b && b.x1} < N ${b && b.N}, A*H+S ${b && b.x2} < ${b && b.N2})`);
+  ok(d && b.ok && !b.missing.length, `4. ${id} fits the stat budget (2A+H+S ${b && b.x1} < N ${b && b.N}, A*H+S ${b && b.x2} < ${b && b.N2})`);
   ok(d && d.locked && d.source && d.source.kind === 'map' && d.source.id === 'mpd' && KEYS.includes(d.source.node), `4. ${id} is a Pale Desert reward (${JSON.stringify(d && d.source)})`);
   ok(d && JSON.stringify(d.revealAfter) === JSON.stringify({map: 'md'}), `4. ${id}'s skills stay "?" until Map 18 is cleared`);
   ok(d && d.icon && d.flavor && (d.archetypes || []).includes('Desert') && /NightCafe/.test(d.creatorNote || ''), `4. ${id}: emoji, flavour, Desert, and the art brief in its note`);
