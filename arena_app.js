@@ -1433,6 +1433,9 @@ const ACTION_DEFS = [
   // (already shipped for the legacy Arrow N preset). Skyfall (evergreen, see PASSIVE_DEFS) is the
   // fixed-shorthand equivalent of "On Spawn: Missile N."
   {key:'missile', label:'Missile', fields:['amount'], desc:'Deal that much damage to a random live enemy unit (the enemy bramble, if none are left).'},
+  // Position Beam (2026-10-19, package EE, owner 09:52: the Galactic Condor's charged beam): its path depends on where it stands (the
+  // engine's positionBeamPlan): the centre lane hits the unit across and the bramble; a side angles inward; the edge (5 out) sweeps the row.
+  {key:'positionBeam', get label(){ return TX('ui.act-position-beam'); }, fields:['amount'], get desc(){ return TX('ui.act-position-beam-desc', {n:'N'}); }},
   // Exile (2026-09-30, per explicit request: "Same for exile, why does it assume itself. ... All
   // the actions should be general"): now takes a `who`. Themselves keeps the exact original
   // behavior — it only ever changes where THIS card's own death sends it (graveyard vs. Removal
@@ -1970,7 +1973,7 @@ const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
 // nailed to both posts (s-<key>), so it still reads as a structure first. Castles and field cards keep their kind's frame. The tile
 // takes `ar-<key>` (the CSS picks the image) and drops the top-right archetype corner mark (archMarkHTML).
 //   devilry dark iron, blood and pentagram studs · grace (Ecclesia) white marble, gold and a stained-glass plate · exile (Scrappers)
-//   riveted scrap plates and hazard stripes · evolution nacre shell ribs and cells · exiled ash, cracks and a dead thorn vine ·
+//   riveted scrap plates and hazard stripes · evolution (Evomax) nacre shell ribs and cells · exiled ash, cracks and a dead thorn vine ·
 //   forgotten dust, cobwebs and candle wax · ancient weathered runestone with glowing runes · outer a violet starfield ·
 //   void black with an event-horizon rim and black holes on the corners
 const CARD_ARCH_FRAMES = {
@@ -3129,13 +3132,27 @@ function cardSourceOf(d){
   if(d.rarity==='starter' || d.basic || d.id==='wandering-traveller' || !rawLocked) return {kind:'base', auto:true};
   return {kind:'unsorted', auto:true};
 }
+// Easter eggs (2026-10-19, package EE, owner 09:52: "Easter eggs: Special category, ungettable atm."): a special category of card,
+// source {kind:'easteregg'} plus easterEgg:true on the card. EASTER_EGG_IDS is the one list ("More to come..."): to add one, put its
+// id here and give the card that source and flag (tests/easter-eggs-2026-10-19.js checks the two agree). Nothing gives them out
+// yet: cardObtainableFrom says no, unlockCardForPlayer refuses them from every source but an admin's grant, and the givers (packs,
+// drops, skirmish rewards, raids, the reward tracks, the Forge's fuse, the Nest's hatchlings in the engine) leave them out of their
+// pools. The Codex shows one you haven't seen as a masked "???" tile (easterEggMasked); the hub's card list masks it too.
+const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda'];
+const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant']);
+function isEasterEgg(d){ return !!(d && (d.easterEgg || EASTER_EGG_IDS.includes(d.derivedFrom || d.id) || (d.source && d.source.kind === 'easteregg'))); }
+function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id]||[]).length || seenCardIds().has(id)); }catch(e){ return false; } }
+function easterEggMasked(d){ return isEasterEgg(d) && !easterEggSeen(d.id) && !(adminModeEnabled && codexShowUnseen); }
+// The "???" tile an unseen Easter egg shows in the Codex: its rarity band only; no name, art, numbers or skills, and it opens nothing.
+function easterEggMaskDef(d){ return {id:'ee-mask', name:'???', icon:'🥚', cost:0, wait:0, attack:0, health:0, effects:{}, archetypes:[], species:[], rarity:d.rarity, flavor:'', locked:true}; }
 // How a card can actually be obtained right now (null = it can't).
 function cardObtainableFrom(d){
+  if(isEasterEgg(d)) return null; // 2026-10-19 (package EE): Easter eggs can't be obtained yet
   const src = cardSourceOf(d);
   if(src.kind==='pack') return 'pack';
   if(src.kind==='map' && src.node) return 'skirmish';
   if(src.kind==='base') return 'base';
-  if(src.kind==='raid') return 'raid'; // a raid's own cards (2026-10-12): they drop when that raid falls
+  if(src.kind==='raid') return 'raid'; // a raid's own cards (2026-10-12); 2026-10-19 (package RC): crafted in the Forge's Raid tab from its trophy shards
   if(src.kind==='nest') return 'nest'; // egg cards (2026-10-14): the Nest gives one when you set that kind of egg in a nest
   // 2026-10-18 (Scale Trail package): the anvil's equipment (source 'smith'), the Map 2 cave's secret card (source 'secret') and a
   // hidden quest's reward (source 'quest', e.g. the Scale Trail's Red Dragon Egg) all have a real giver, but none was listed here,
@@ -3159,17 +3176,19 @@ function creatureRankText(d){
 }
 // Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
 function cardWhereToGetText(d){
+  if(isEasterEgg(d)) return TX('ui.ee-where'); // 2026-10-19 (package EE)
   if(isUnattainable(d)) return 'Not obtainable yet';
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
+  if(src.kind==='pack' && d.faction === 'base') return TX('ui.codex-base-tip'); // 2026-10-19 (package UT, owner: "Base cards just mean they come from Skirmish rewards, not Card Packs")
   if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Hedgerow Pouch, Tidemire Chest or Highcrest Case' : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   if(src.kind==='smith') return 'The Blacksmith: craft it at the Forge'; // 2026-10-18: smith / secret / quest are obtainable now (cardObtainableFrom)
   if(src.kind==='secret') return 'A secret somewhere on the road';
   if(src.kind==='quest') return src.id === 'scale-trail' ? 'A hidden trail: follow the Dragon Scales' : 'A hidden quest on the road';
-  if(src.kind==='raid'){ const r = (typeof allRaidDefs === 'function' ? allRaidDefs() : []).find(x=> x.id === src.id); return `Raid only: ${r ? r.name : 'a raid'} drops its cards when it falls (more for the top raiders)`; }
+  if(src.kind==='raid'){ const r = (typeof allRaidDefs === 'function' ? allRaidDefs() : []).find(x=> x.id === src.id); return TX('ui.rc-source-raid', {name: r ? r.name : TX('ui.rc-a-raid'), shards: r ? raidShardName(r) : TX('ui.rc-trophy-shards')}); } // 2026-10-19 (package RC, owner 09:53): crafted in the Forge's Raid tab, not dropped
   return 'Not obtainable yet';
 }
 // Map numbers and skirmish codes (2026-10-10, user: "Skirmish ID-names X-Y"; then "Pebble Beach counts as Map 3"): the
@@ -3322,7 +3341,10 @@ const PACK_POOL_LABEL = {1:'🎁 Hedgerow Pouch · Tidemire Chest · Highcrest C
 function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
   // 2026-10-13 (user: "Move the factions pool first, before the Base pool"): the factions' own cards lead the Codex.
   return {key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
+// Easter eggs' own Codex section (2026-10-19, package EE), last before the materia, in every view but the per-source ones.
+function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:'🥚 ' + TX('ui.ee-section')}; }
 function codexViewSectionOf(d, view){
+  if(isEasterEgg(d) && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
   if(view==='all'){
@@ -5268,7 +5290,7 @@ function fullCardHTML(defId, liveCard, opts){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
         : `${abilityListHTML(lines)}`)
     : '';
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
@@ -5637,6 +5659,40 @@ function stickyControls(page, ids){
     el.addEventListener('input', save); el.addEventListener('change', save); });
 }
 let codexFilter = Object.assign({q:'', archetype:'', mechLine:'', sort:'advance', dir:'desc', showTest:false}, (()=>{ const o = uiSticky('codex'); delete o.showTest; return o; })());
+// CODEX_ANIMAL_UT:BEGIN
+// Animals (2026-10-19, package UT, owner 09:52: "tag an animal to the card. For ghosts and spirits and elementals - they have an animal
+// embodiment, see. But subtype ghost or elemental etc."): every creature card carries `animal` (what it is, or the animal its ghost /
+// spirit / elemental body takes) and those beings a `subtype` (python3 tools/animal_tags.py; the report is canonical/animal-tags.json).
+// ANIMAL_GROUPS (the build inlines it from that report) folds each animal into its kind, for the Codex's animal filter: a wolf spider
+// and a raft spider are both spiders. The card detail shows the animal, the subtype and the Base mark (faction 'base': a Base card,
+// earned from skirmish rewards, not card packs).
+const ANIMAL_GROUPS = __ANIMAL_GROUPS__;
+function animalGroupOf(a){ return a ? (ANIMAL_GROUPS[a] || String(a).split(' ').pop()) : ''; }
+function animalSubtypeLabel(st){
+  return ({ghost: TX('ui.subtype-ghost'), spirit: TX('ui.subtype-spirit'), elemental: TX('ui.subtype-elemental'), undead: TX('ui.subtype-undead'),
+    construct: TX('ui.subtype-construct'), structure: TX('ui.subtype-structure'), fiend: TX('ui.subtype-fiend'), conjured: TX('ui.subtype-conjured'),
+    plant: TX('ui.subtype-plant'), fungus: TX('ui.subtype-fungus'), mythic: TX('ui.subtype-mythic'), changeling: TX('ui.subtype-changeling'),
+    were: TX('ui.subtype-were'), mutant: TX('ui.subtype-mutant'), glitch: TX('ui.subtype-glitch')})[st] || st;
+}
+const ANIMAL_SUBTYPE_ICON = {ghost:'👻', spirit:'✨', elemental:'🔥', undead:'💀', construct:'🗿', structure:'🏗️', fiend:'😈', conjured:'🌀', plant:'🌿', fungus:'🍄',
+  mythic:'🐉', changeling:'🎭', were:'🌕', mutant:'🧬', glitch:'▦'};
+const animalCap = s=> String(s || '').replace(/^\w/, c=> c.toUpperCase());
+// The chips under a card's name in its detail view.
+function animalChipsHTML(d){
+  const out = [];
+  if(d && d.animal){
+    out.push(`<span class="cd-chip cd-animal" title="${escapeAttr(TX('ui.codex-animal-tip', {animal: d.animal}))}">🐾 ${escapeHtml(animalCap(d.animal))}</span>`);
+    if(d.subtype) out.push(`<span class="cd-chip cd-subtype" title="${escapeAttr(TX('ui.codex-subtype-tip', {subtype: animalSubtypeLabel(d.subtype), animal: d.animal}))}">${ANIMAL_SUBTYPE_ICON[d.subtype] || '✨'} ${escapeHtml(animalSubtypeLabel(d.subtype))}</span>`);
+  }
+  if(d && d.faction === 'base') out.push(`<span class="cd-chip cd-base" title="${escapeAttr(TX('ui.codex-base-tip'))}">🌰 ${escapeHtml(TX('ui.codex-base-chip'))}</span>`);
+  return out;
+}
+// The Codex's animal filter: each kind present in `defs`, with its count.
+function codexAnimalOptionsHTML(defs){
+  const n = {}; Object.values(defs).forEach(d=>{ if(!d || d.test || !d.animal) return; const g = animalGroupOf(d.animal); n[g] = (n[g] || 0) + 1; });
+  return Object.keys(n).sort().map(g=> `<option value="${escapeAttr(g)}" ${codexFilter.animal===g?'selected':''}>${escapeHtml(animalCap(g))} (${n[g]})</option>`).join('');
+}
+// CODEX_ANIMAL_UT:END
 // Advancement order (2026-10-12, user: "sort by Advancement - as in, Base, Map 1, Map 2... then Pack A, Pack B... then
 // Mystery Pack A, B..., Event A, B, C..."): base cards, then map rewards by map number (side maps after their parent) and
 // fight order, then packs by pool, the faction pools, Mystery, events by name, and anything unsorted last.
@@ -5892,6 +5948,7 @@ function renderCodex(){
       <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = codexFilterCount(); return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
+      <select id="cxAnimal" aria-label="${escapeAttr(TX('ui.codex-animal-filter'))}"><option value="">🐾 ${escapeHtml(TX('ui.codex-all-animals'))}</option>${codexAnimalOptionsHTML(defs)}</select>${'' /* 2026-10-19 (package UT): the animal filter */}
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxRarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${(()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${codexFilter.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })()}</select>${'' /* 2026-10-18 (package C): the album's rarity filter */}
       <button type="button" class="btn small cx-skill-btn" id="cxSkillBtn" aria-expanded="false" aria-controls="cxSkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${codexSkillsChosen().length ? '' : 'hidden'}>${codexSkillsChosen().length}</b></button>
@@ -5931,6 +5988,7 @@ function renderCodex(){
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
   { const ph = document.getElementById('cxPhylum'); if(ph) ph.addEventListener('change', e=>{ codexFilter.phylum = e.target.value; renderCodexGrid(); }); }
+  { const an = document.getElementById('cxAnimal'); if(an) an.addEventListener('change', e=>{ codexFilter.animal = e.target.value; renderCodexGrid(); }); } // 2026-10-19 (package UT)
   document.getElementById('cxSort').addEventListener('change', e=>{ codexFilter.sort = e.target.value; renderCodexGrid(); });
   document.getElementById('cxSortDir').addEventListener('click', (e)=>{
     codexFilter.dir = codexFilter.dir==='desc'?'asc':'desc';
@@ -5991,7 +6049,8 @@ const GEO_TYPE_ARCHETYPES = ['River','Ocean','Desert','Frost','Rainforest','Sava
 // resource of its own yet — its mechanic "has not been developed yet" (design docs only, see
 // game-design-v31-addendum.md) — this just makes "Evolution" a selectable, filterable
 // category so cards can be tagged into it ahead of that build.
-const MECH_LINE_LABEL = {none:'None', grace:'Ecclesia', exile:'Scrapper', devilry:'Devilry', evolution:'Evolution'};
+// 2026-10-19 (package EE, owner 09:52): the Evolution archetype is called Evomax now (player-facing; the internal id stays 'evolution').
+const MECH_LINE_LABEL = {none:'None', grace:'Ecclesia', exile:'Scrapper', devilry:'Devilry', evolution:TX('ui.arch-evomax')};
 function codexStatsHTML(defs){
   const list = Object.values(defs);
   const n = list.length || 1;
@@ -6120,10 +6179,11 @@ function renderCodexGrid(keepPage){
   // instead of merging them into the normal grid, so testing content stays clearly separated from
   // the real roster rather than cluttering it.
   ids = ids.filter(id=> !!defs[id].test === !!codexFilter.showTest);
-  if(codexFilter.q){ const q = codexFilter.q.toLowerCase(); ids = ids.filter(id=> defs[id].name.toLowerCase().includes(q)); } // 2026-10-18: lowercased once, not once per card
+  if(codexFilter.q){ const q = codexFilter.q.toLowerCase(); ids = ids.filter(id=> defs[id].name.toLowerCase().includes(q) || (defs[id].animal || '').includes(q)); } // 2026-10-18: lowercased once, not once per card; 2026-10-19 (package UT): the animal too ("spider" finds the Webspire Sentinel)
   if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
+  if(codexFilter.animal) ids = ids.filter(id=> animalGroupOf(defs[id].animal) === codexFilter.animal); // 2026-10-19 (package UT): the animal filter
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
   { const want = codexSkillsChosen(); if(want.length){ const ps = want.map(skillDefOf); ids = ids.filter(id=> ps.every((p, i)=> cardHasSkill(defs[id], want[i], p))); } } // 2026-10-18 (package C): every skill picked
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
@@ -6156,7 +6216,9 @@ function renderCodexGrid(keepPage){
   // they own or have seen, plus the cards of a pack once its merchant is on the map (the map table's "Cards revealed").
   // Materia live in the Inventory, for everyone.
   const visMemo = new Map(); // 2026-10-18: asked twice per card below (the shown list and the total), worked out once
-  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id]))); visMemo.set(id, v); } return v; };
+  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || isEasterEgg(defs[id]) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id]))); visMemo.set(id, v); } return v; }; // + Easter eggs: always a slot, a masked "???" one until seen (2026-10-19, package EE)
+  // 2026-10-19 (package EE): a masked Easter egg never matches a search or a skill filter (its name and skills are the secret)
+  if(codexFilter.q || codexSkillsChosen().length) ids = ids.filter(id=> !easterEggMasked(defs[id]));
   // 2026-10-13 (user: "The codex shouldn't show cards unseen. All cards are hidden by default"): admins too, unless they tick
   // "Show unseen" in the toolbar.
   ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
@@ -6198,10 +6260,13 @@ function renderCodexGrid(keepPage){
     // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
     // is redrawn once Map 0 is cleared, without a reload.
     let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
+    if(easterEggMasked(d)){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
     if(hit && hit.sig === sig) return hit.html;
     const tags = [];
-    if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
+    if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob" title="${escapeAttr(TX('ui.ee-admin-tip'))}">🥚 ${escapeHtml(TX('ui.ee-tag'))}</span>`); // 2026-10-19 (package EE)
+    else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
     let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable'})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
@@ -6356,7 +6421,7 @@ function cardHasSkill(d, key, p){
   const e = (d && d.effects) || {}; p = p === undefined ? skillDefOf(key) : p;
   try{ return p && p.get ? p.get(e) !== undefined : (e[key] != null && e[key] !== false); }catch(_){ return false; }
 }
-function codexFilterCount(){ return [codexFilter.archetype, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
+function codexFilterCount(){ return [codexFilter.archetype, codexFilter.animal, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
 function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
@@ -6875,10 +6940,10 @@ function shinyHue(id){ let h = 0; for(const ch of String(id||'')) h = (h*31 + ch
 // top-right corner, or just left of the Wait badge while there is one.
 // 2026-10-12 (user: "Remove the animal type marker on the top right hand corner of the card. When I said archetype marker
 // previously - i meant ecclesia etc. Types are like volcano, river (geographic) and otter, insect (family), ant (tribe)"): the
-// corner mark is the card's archetype (Ecclesia, Devilry, Scrapper, Evolution, Swarm, Tide), never its type.
+// corner mark is the card's archetype (Ecclesia, Devilry, Scrapper, Evolution (Evomax since 2026-10-19), Swarm, Tide), never its type.
 // 2026-10-13 (user: "Swarm and Tide are NOT archetypes. Archetypes are complete skill frameworks like Devilry, Ecclesia, Evolution,
 // Scrappers, Exiled ones, Forgotten ones, Ancient ones, Outer ones, Void"): Swarm and Tide are keyword families and lose the mark.
-const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrappers','🌫️'], evolution:['Evolution','🧬'], exiled:['Exiled Ones','🥀'], forgotten:['Forgotten Ones','🕯️'], ancient:['Ancient Ones','🗿'], outer:['Outer Ones','🌌'], void:['Void','🕳️']};
+const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrappers','🌫️'], evolution:[TX('ui.arch-evomax'),'🧬'] /* Evomax (2026-10-19, package EE) */, exiled:['Exiled Ones','🥀'], forgotten:['Forgotten Ones','🕯️'], ancient:['Ancient Ones','🗿'], outer:['Outer Ones','🌌'], void:['Void','🕳️']};
 const ARCHETYPE_NAMES = Object.values(CARD_ARCHETYPE_MARK).map(x=> x[0]);
 function cardArchetypeKey(d){
   const line = inferMechanicLine(d||{}); if(line && line !== 'none' && line !== 'None' && CARD_ARCHETYPE_MARK[line]) return line;
@@ -7028,6 +7093,7 @@ function triggerActionEmoji(t){
     case 'spawnCard': return (defs[t.defId] && defs[t.defId].icon) || '🐣';
     case 'damage': return (t.who==='enemy' && t.sub==='random') ? '🏹' : '💥';
     case 'missile': return '🏹';
+    case 'positionBeam': return '🌈'; // 2026-10-19 (package EE)
     case 'gain': return ({lumber:'🪵', grace:'🕊️', stone:'🪨', devilry:'★'})[t.resource||'lumber'] || '🪵';
     case 'gainGold': case 'gainLumber': return '🪵';
     case 'gainGrace': return '🕊️';
@@ -8045,7 +8111,7 @@ function openCardDetail(defId){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
         : `${abilityListHTML(lines)}`)
     : '<p class="panel-sub">No special abilities — a plain stat card.</p>';
   // "all the quotes should end with - Jz" — the creator's own signature, not shown at all when
@@ -8059,6 +8125,7 @@ function openCardDetail(defId){
   const rar = String(d.rarity||'common').replace(/_/g,' ');
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
+    .concat(animalChipsHTML(d)) // 2026-10-19 (package UT): the animal, the subtype, the Base mark
     .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
   // A card that brings another card (2026-10-13, user: "If a card spawns another card - show the other card's detail on the right
   // side"): every other card named in its skills or triggers, shown beside it with its abilities.
@@ -8361,7 +8428,7 @@ function wireCodexPlacement(defId){
 function isEquipmentDef(d){ return !!(d && d.cardType === 'equipment'); }
 function nodeRewardCardIds(mapId, nodeKey){
   const defs = getCardDefs();
-  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]); });
+  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]); }); // + no Easter egg (2026-10-19, package EE)
 }
 // Unattainable cards (2026-10-12, user: "Help me make all cards unattainable, then we build them together"): a card with
 // `unattainable: true` can't come out of a pack, a reward, a find, a craft or a promotion. Base, starter and tutorial
@@ -8384,7 +8451,7 @@ function openNodeRewardsEditor(mapId, nodeKey){
     const defs = getCardDefs();
     const current = nodeRewardCardIds(mapId, nodeKey);
     const matches = q.trim().length < 2 ? [] : Object.keys(defs)
-      .filter(id=> !defs[id].test && !defs[id].token && !isEquipmentDef(defs[id]) && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
+      .filter(id=> !defs[id].test && !defs[id].token && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]) /* 2026-10-19 (package EE): not placeable */ && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
       .slice(0, 24);
     const srcNote = id=>{ const s = cardSourceOf(defs[id]); return s.kind==='unsorted' ? 'unassigned' : s.kind==='map' ? (s.node ? 'another node' : 'map, no node') : s.kind; };
     overlay.innerHTML = `<div class="modal node-rewards-modal">
@@ -8868,7 +8935,7 @@ function renderEditorInner(){
           <option value="devilry" ${inferMechanicLine(c)==='devilry'?'selected':''}>Devilry</option>
           <option value="grace" ${inferMechanicLine(c)==='grace'?'selected':''}>Ecclesia</option>
           <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
-          <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>Evolution</option>
+          <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>${escapeHtml(TX('ui.arch-evomax'))}</option>
         </select></div>
         <div class="field mech-field" data-mech="grace" title="Ecclesia (2026-10-10): the Prayer value needed to play this card. Never spent. Prayer = the Prayer tokens on your units on the field (2026-10-19: a Prayer N unit gains N a turn)."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
         <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
@@ -9464,6 +9531,7 @@ function triggerPreviewText(t){
     case 'stun': doText = `stun ${whoTarget}`; break;
     case 'reduceWaitOfSpawned': doText = `reduce the just-played ally's Wait by ${amt}`; break;
     case 'missile': doText = `deal ${amt} damage to a random enemy unit`; break;
+    case 'positionBeam': doText = TX('ui.act-position-beam-desc', {n: amt}); break; // 2026-10-19 (package EE)
     case 'exile': doText = t.who==='self' ? `exile itself instead of going to the graveyard` : `instantly exile ${whoTarget} to the Removal Zone`; break;
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
@@ -10484,7 +10552,10 @@ async function cloudPullState(){
         raidPoints: cur.raid_points!=null ? Number(cur.raid_points) : 3, raidPointsUpdatedAt: cur.raid_points_updated_at || null,
         kroon: Number((myCurrencies && myCurrencies.kroon) || 0), laurels: Number((myCurrencies && myCurrencies.laurels) || 0),
         // 2026-10-15: Kibble, Food tokens and Beer are local too; a cloud load keeps them instead of dropping them
-        kibble: Number((myCurrencies && myCurrencies.kibble) || 0), food: Number((myCurrencies && myCurrencies.food) || 0), beer: Number((myCurrencies && myCurrencies.beer) || 0)}; // local-only until the cloud table gets a column
+        kibble: Number((myCurrencies && myCurrencies.kibble) || 0), food: Number((myCurrencies && myCurrencies.food) || 0), beer: Number((myCurrencies && myCurrencies.beer) || 0), // local-only until the cloud table gets a column
+        // 2026-10-19 (package RC): the raid trophy shards come from the row's raid_shards (supabase/proposed/20261019_raid_shards.sql)
+        // once that column exists and has been written; until then this browser's are kept
+        raidShards: cur.raid_shards && typeof cur.raid_shards === 'object' && Object.keys(cur.raid_shards).length ? raidShardsClean(cur.raid_shards) : raidShardsClean(myCurrencies && myCurrencies.raidShards)};
       settleRaidPoints();
       saveCurrencies(true);
     }
@@ -10525,11 +10596,19 @@ async function cloudPullState(){
 // out. Before, every save sent its own upsert at once, so they could land out of order and briefly put an older balance
 // back; with the server now adding and taking amounts itself (market, fight rewards) the order matters.
 let cloudCurPushInFlight = null, cloudCurPushQueued = null;
+var cloudShardsColumn = null; // 2026-10-19 (package RC): null not known yet; false: no player_currencies.raid_shards column (not applied yet)
+function cloudShardsColumnMissing(error){ return !!error && (/raid_shards/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
 function cloudPushCurrencies(){
   if(!sbClient || !isSignedIn()) return;
   if(cloudCurPushQueued) return cloudCurPushQueued;
   const send = ()=>{ cloudCurPushQueued = null; if(!sbClient || !isSignedIn()) return Promise.resolve();
-    return sbClient.from('player_currencies').upsert({ profile_id: cloudUserId, gold: myCurrencies.gold, gems: myCurrencies.gems, dust: myCurrencies.dust, metal: myCurrencies.metal||0, raid_points: myCurrencies.raidPoints||0, raid_points_updated_at: myCurrencies.raidPointsUpdatedAt||new Date().toISOString() }).then(()=>{}, ()=>{}); };
+    const row = { profile_id: cloudUserId, gold: myCurrencies.gold, gems: myCurrencies.gems, dust: myCurrencies.dust, metal: myCurrencies.metal||0, raid_points: myCurrencies.raidPoints||0, raid_points_updated_at: myCurrencies.raidPointsUpdatedAt||new Date().toISOString() };
+    // 2026-10-19 (package RC): + the raid trophy shards, in the proposed raid_shards column; a server without it says so once, and the
+    // row goes again without it (and without it from then on, this session), as the card copies' column does
+    if(cloudShardsColumn !== false) row.raid_shards = raidShardsClean(myCurrencies.raidShards);
+    return sbClient.from('player_currencies').upsert(row).then(r=>{ const error = r && r.error;
+      if(error && row.raid_shards && cloudShardsColumnMissing(error)){ cloudShardsColumn = false; delete row.raid_shards; return sbClient.from('player_currencies').upsert(row).then(()=>{}, ()=>{}); }
+      if(!error && row.raid_shards) cloudShardsColumn = true; }, ()=>{}); };
   const p = (cloudCurPushInFlight || Promise.resolve()).then(send);
   cloudCurPushQueued = p;
   const tail = p.then(()=>{ if(cloudCurPushInFlight === tail) cloudCurPushInFlight = null; });
@@ -10854,6 +10933,8 @@ function loadRatingLocal(){
 }
 let myRating = loadRatingLocal();
 function saveRatingLocal(){ try{ localStorage.setItem('bramblewood_arena_rating', String(myRating)); }catch(e){} soonCheckMilestones(); }
+// A raid trophy shard map, cleaned (2026-10-19, package RC): {raidId: whole n >= 0}; anything else is dropped.
+function raidShardsClean(v){ const out = {}; if(v && typeof v === 'object' && !Array.isArray(v)) Object.keys(v).forEach(k=>{ const n = Math.floor(Number(v[k])); if(k && n > 0 && isFinite(n)) out[String(k).slice(0, 64)] = n; }); return out; }
 function loadCurrencies(){
   try{
     const raw = localStorage.getItem('bramblewood_arena_currencies');
@@ -10864,7 +10945,8 @@ function loadCurrencies(){
         // entirely on an existing save (anyone who played before this field existed) defaults to
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
-        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0, kibble: parsed.kibble!=null ? Number(parsed.kibble)||0 : 4, beer: Number(parsed.beer)||0};
+        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0, kibble: parsed.kibble!=null ? Number(parsed.kibble)||0 : 4, beer: Number(parsed.beer)||0,
+        raidShards: raidShardsClean(parsed.raidShards)}; // 2026-10-19 (package RC): each raid's trophy shards {raidId: n}
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -11362,6 +11444,9 @@ function cardBaseLevel(d){
   const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base'); // 2026-10-13: "all quest cards and base cards start at level 0"
   // 2026-10-14 (22:50, user: "Faction cards come in at level 1. Wandering Trader comes in at level 1."): a faction's own cards
   // and the Wandering Traveller start at Level 1 (their printed stats are their Level 1 stats).
+  // 2026-10-19 (package UT, owner 09:52: "The starter cards are not Otters. Just considered as 'Base' ... The tutorial base cards
+  // come as Level 0 is the special thing."): the old 'otters' cards are faction 'base' now (Base cards: skirmish rewards, not packs)
+  // and still start at Level 1; only the copies the tutorial hands out are Level 0 (tutorialCopyLevel0 below).
   if(d.faction || d.id==='wandering-traveller') return 1;
   return (d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1;
 }
@@ -11485,6 +11570,8 @@ const CARD_UNLOCK_SOURCES = {
   skirmishReward: 'Skirmish reward',
   achievement: 'Achievement',
   promotion: 'Promotion',
+  raidReward: 'Raid reward', // 2026-10-19 (package RC): a raid claim's pack or faction card
+  raidCraft: 'Forge: raid recipe', // 2026-10-19 (package RC): crafted in the Forge's Raid tab
 };
 // Pitching gate (2026-10-12, user: "Don't give lumber-cost cards until the player is ready to learn pitching. Don't allow
 // pitching at the start: no tooltip, and dropping on the graveyard does nothing"). Pitching opens once Map 1's last fight is
@@ -11517,6 +11604,7 @@ function maybeOpenPitching(){
 }
 function unlockCardForPlayer(id, source, copyOpts){
   if(!id || !CARD_DEFS_BASELINE[id] && !liveCards[id]) return false; // not a real card id
+  if(isEasterEgg(liveCards[id] || CARD_DEFS_BASELINE[id]) && !EASTER_EGG_GRANT_SOURCES.has(source)) return false; // 2026-10-19 (package EE): Easter eggs, admin grants only
   { const pd = liveCards[id] || CARD_DEFS_BASELINE[id]; if(pd && (pd.cost||0) > 0 && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !pitchingUnlocked()){
       const held = loadPitchHeld(); held.push({id, source}); try{ localStorage.setItem(PITCH_HELD_KEY, JSON.stringify(held)); }catch(e){} return false; } } // held until pitching opens
   { const ud = liveCards[id] || CARD_DEFS_BASELINE[id]; if(isUnattainable(ud) && !UNATTAINABLE_ADMIN_SOURCES.has(source)) return false; } // not obtainable yet (2026-10-12)
@@ -11525,6 +11613,7 @@ function unlockCardForPlayer(id, source, copyOpts){
   // already-unlocked early-return below so a 2nd/3rd/4th pull of the same card still counts as
   // owning more copies, not a silent no-op.
   grantCardCopy(id, copyOpts);
+  if(isTutorialCopySource(source)) tutorialCopyLevel0(id); // 2026-10-19 (package UT): a tutorial reward is a Level 0 copy
   noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
   noteGainedForSwap(id, source); // a clearly better card than one in your deck is offered as a swap (2026-10-15, at most 10 ever)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
@@ -11722,6 +11811,8 @@ function grantCardCopy(id, opts){
   try{ ensureCopyModel(); }catch(e){}
   if(copyModelReady){ copy.uid = newCopyUid(); copy.level = copyBaseLevelOf(id); }
   myCardCopies[id].push(copy);
+  // 2026-10-19 (package UT): a card shown at Level 0 (a tutorial or hatchling copy) shows its new Level 1 copy once one arrives
+  if(copyModelReady && copy.level > 0) try{ if(hatchlingIds().has(id)){ syncBestLevel(id); saveCardLevels(); } }catch(e){}
   saveCardCopies();
   if(shiny && !forcedShiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(TX('toast.shiny-your-new-came-out-shiny', {v1: d ? d.name : 'card'}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
 }
@@ -18540,7 +18631,8 @@ const CONQUEST_MAPS = [
   { id:"mq", sub:true, parent:"mf", entry:{x:36, y:26, after:"1-1", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
     nodes: [
       { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":3,"pigeon-peon":2,"field-crow":1,"clover-butterfly":2,"ash-cloud-condor":2}, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
-      { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":1,"bee-forager":3,"bee-sentry":2,"paper-wasp":2,"creeper":2,"stag-beetle":2,"harvest-mouse":3}, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
+      // 2026-10-19 (EE merge): Creeper became an ungettable Easter egg (3/12, explodes), so Bee Lines swaps its 2 for Honey Bees
+      { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":3,"bee-forager":3,"bee-sentry":2,"paper-wasp":2,"stag-beetle":2,"harvest-mouse":3}, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
       { key:"1-A-3", kind:"skirmish", name:"Puddle Hop", icon:"🐸", shieldOverride:0, deck:{"meadow-frog":3,"puddle-hopper":3,"burrow-rabbit":2,"ash-cloud-condor":2}, flavor:"Last night's rain left a puddle for every frog.", requires:["1-A-1"] },
       { key:"1-A-4", kind:"skirmish", name:"Harvest Mice", icon:"🐭", deck:{"harvest-mouse":1,"field-mouse":2,"chipmunk-forager":1,"house-cat":1,"farm-dog":1,"village-miller":2,"burrow-rabbit":4,"ash-cloud-condor":4}, flavor:"They are bringing in the harvest. Yours, mostly.", requires:["1-A-2","1-A-3"] },
       { key:"1-A-5", kind:"boss", name:"The Old Hare", icon:"🐇", deck:{"buck-brawler":1,"cottontail":3,"burrow-rabbit":4,"lucky-hopper":1,"ash-cloud-condor":4,"beetle-battering-ram":2}, flavor:"The oldest hare in the meadow, and still the fastest.", characterId:"plains-terrace", requires:["1-A-4"] },
@@ -22010,17 +22102,47 @@ function raidClaimsFor(def){
   });
   return out;
 }
-// Raid cards (2026-10-12, user: "raids give their own 5-6 cards, many raid-only" + "generate some cephalopods for my raid"):
-// a raid's own cards (source {kind:'raid', id}) drop only when it falls: one for everyone who fought it, one more for the
-// top 10%. Commons are likelier than the Broodmother.
-function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id; }); }
-function grantRaidCards(def, n, quiet){ // quiet (2026-10-18, package RW): the claim screen shows the cards, so no toast
-  const defs = getCardDefs(), ids = raidCardIds(def); if(!ids.length) return [];
-  const w = id=> ({common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6})[defs[id].rarity || 'common'] || 1, got = [];
-  for(let i = 0; i < n; i++){ const tot = ids.reduce((a, id)=> a + w(id), 0); let r = Math.random() * tot, pick = ids[ids.length - 1]; for(const id of ids){ r -= w(id); if(r <= 0){ pick = id; break; } }
-    unlockCardForPlayer(pick, 'raid'); got.push(pick); }
-  if(got.length && !quiet) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
-  return got;
+// Raid cards (2026-10-12, user: "raids give their own 5-6 cards, many raid-only" + "generate some cephalopods for my raid"): a raid's
+// own cards (source {kind:'raid', id}). 2026-10-19 (package RC, owner 09:53: "Raids almost never give raid cards. only maybe pack cards
+// or faction cards (maybe), raid cards must be crafted in the Forge. Under a special tab."): a claim's cards come from the normal pack
+// pools (a faction card now and then) at the participation level's rarity floor, plus the raid's 🏆 trophy shards; a raid's own card
+// only at RaidM.RAID_CARD_DROP_CHANCE (1.5%). The Forge's 🐙 Raid tab crafts them (forgeRaidHTML).
+function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id && !isEasterEgg(defs[id]); }); } // + no Easter egg (2026-10-19, package EE)
+// The raid's trophy shards (2026-10-19, package RC): one kind per raid, kept in myCurrencies.raidShards {raidId: n} (saved and synced
+// with the other currencies; the cloud column is proposed: supabase/proposed/20261019_raid_shards.sql). A raid's shardName / shardIcon
+// override the default ("Goliath trophy shards", 🏆).
+function raidShardName(def){ return (def && def.shardName) || TX('ui.rc-shard-name', {name: String((def && (def.name || def.id)) || '').replace(/^the\s+/i, '')}); }
+function raidShardIcon(def){ return (def && def.shardIcon) || '🏆'; }
+function raidShardsOf(raidId){ return Math.max(0, Number(((myCurrencies && myCurrencies.raidShards) || {})[raidId]) || 0); }
+function grantRaidShards(raidId, n){
+  if(!raidId || !(n > 0)) return 0;
+  myCurrencies.raidShards = Object.assign({}, myCurrencies.raidShards || {}); myCurrencies.raidShards[raidId] = raidShardsOf(raidId) + Math.round(n);
+  saveCurrencies(); return Math.round(n);
+}
+// The pools a raid reward draws from: the basic pack pools (at the pack weights), your faction's own cards, the raid's own cards.
+function raidRewardPools(def){
+  const defs = getCardDefs(), w = id=> legendaryHeldBack(defs[id]) ? 0 : Math.max(0, +(PACK_RARITY_WEIGHT[defs[id].rarity || 'common'] ?? 4) || 0);
+  let faction = []; try{ faction = factionTrackPool(); }catch(e){}
+  return {pack: packCardPool(defs, 1), faction, raid: raidCardIds(def), rarityOf: id=> (defs[id] || {}).rarity || 'common', weight: w};
+}
+// What a claim's cards are, granted: [{id, from:'pack'|'faction'|'raid'}].
+function grantRaidRewardCards(def, rw){
+  const got = RaidM.rollRaidRewardCards(Object.assign({packFloor:'common', factionChance:0, raidCardChance:0}, rw), raidRewardPools(def));
+  const out = [];
+  got.pack.forEach(id=>{ unlockCardForPlayer(id, 'raidReward'); out.push({id, from:'pack'}); });
+  got.faction.forEach(id=>{ unlockCardForPlayer(id, 'raidReward'); out.push({id, from:'faction'}); });
+  got.raid.forEach(id=>{ unlockCardForPlayer(id, 'cardDrop'); out.push({id, from:'raid'}); });
+  return out;
+}
+// A won raid fight's card (2026-10-19, package RC; was rollCardDrop over the boss's deck, i.e. one of the raid's cards every win): a
+// pack card at the raid-win rarity roll (cardDropRarity), and only at RaidM.RAID_CARD_DROP_CHANCE one of the raid's own cards.
+function raidFightCardDrop(def){
+  const pools = raidRewardPools(def || {});
+  if(pools.raid.length && Math.random() < RaidM.RAID_CARD_DROP_CHANCE){ const got = RaidM.rollRaidRewardCards({cards:0, raidCardChance:1}, pools); if(got.raid[0]){ unlockCardForPlayer(got.raid[0], 'cardDrop'); return got.raid[0]; } }
+  const want = cardDropRarity('raidWin'), exact = pools.pack.filter(id=> pools.rarityOf(id) === want);
+  const got = RaidM.rollRaidRewardCards({cards:1}, Object.assign({}, pools, {pack: exact.length ? exact : pools.pack}));
+  const id = got.pack[0]; if(id){ unlockCardForPlayer(id, 'raidReward'); return id; }
+  return null;
 }
 function claimRaidReward(def, claim){
   if(!claim || !claim.reward) return null;
@@ -22029,22 +22151,24 @@ function claimRaidReward(def, claim){
   Object.entries(rw.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
   const screen = raidClaimScreenReady();
-  // 2026-10-19 (package RO): the reward says how many of the raid's cards (RaidM.raidReward: a fall gives them, a strong contributor
-  // has a chance at one more, a held raid only a small chance at one). A reward without `cards` is the older shape: 1, +1 for the top 10%.
-  let nCards = rw.cards != null ? Math.max(0, rw.cards | 0) : (kill ? 1 + (/top1$|top10$/.test(rw.tier || '') ? 1 : 0) : 0);
-  if(rw.cardChance > 0 && Math.random() < rw.cardChance) nCards++;
-  const cardsGot = nCards > 0 ? grantRaidCards(def, nCards, screen) : [];
+  // 2026-10-19 (package RO): the reward says how many cards (RaidM.raidReward: a fall gives them, a strong contributor has a chance at
+  // one more, a held raid only a small chance at one). A reward without `cards` is the older shape: 1, +1 for the top 10%.
+  // 2026-10-19 (package RC): those are pack / faction cards now (grantRaidRewardCards), plus the raid's trophy shards.
+  const rwc = rw.cards != null ? rw : Object.assign({}, rw, {cards: kill ? 1 + (/top1$|top10$/.test(rw.tier || '') ? 1 : 0) : 0});
+  const cardsGot = grantRaidRewardCards(def, rwc);
+  const shardsGot = grantRaidShards(def.id, rw.shards || 0);
+  if(!screen && cardsGot.length){ const defs = getCardDefs(); setTimeout(()=>{ try{ showToast(TX('toast.rc-reward-cards', {v1: cardsGot.map(c=> (defs[c.id] || {}).name || c.id).join(', ')}), 'ok'); }catch(e){} }, 1200); }
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
   const autoNew = kill && markRaidCompleted(def); // 2026-10-19 (package RO, owner 21:49): completing a raid opens its Auto
   if(autoNew) setTimeout(()=>{ try{ showToast(TX('toast.raid-auto-unlocked', {name: def.name || ''}), 'ok'); }catch(e){} }, screen ? 600 : 2800);
   const xp = rw.xp != null ? Math.max(0, Math.round(rw.xp)) : (kill ? 500 : 150);
-  const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
+  const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp, shardsGot);
   if(xpBarReady()){ const x0 = loadXp().xp; spec.xp = xpBarSpec(x0, x0 + xp); } // 2026-10-18 (RW follow-up): the claim screen's XP bar
   // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
   if(screen) showRaidClaimScreen(spec);
   awardXp(xp, 'raid reward');
-  if(!screen) showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  if(!screen) showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${shardsGot ? ', ' + TX('ui.rc-shards-plus', {n: shardsGot, icon: raidShardIcon(def), name: raidShardName(def)}) : '' /* 2026-10-19 (package RC) */}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
   return spec;
 }
 // The raid claim screen (2026-10-18, package RW, owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the
@@ -22056,13 +22180,15 @@ const RAID_CLAIM_CUR_WEIGHT = {gold:1, dust:2, metal:3, gems:3, kroon:3};
 const RAID_CLAIM_CARD_WEIGHT = {starter:2, common:2, uncommon:3, rare:3, veryrare:4, superrare:4, epic:4, heroic:5, legendary:5, mythic:5};
 function raidClaimScreenReady(){ return !!(typeof document !== 'undefined' && document.body && window.FX && window.FX.F && typeof window.FX.F.raidClaimScreen === 'function'); }
 function raidClaimTierLabel(t){ return t === 'top1' ? TX('results.raid-tier-top1') : t === 'top10' ? TX('results.raid-tier-top10') : t === 'top50' ? TX('results.raid-tier-top50') : TX('results.raid-tier-participant'); }
-function raidClaimScreenSpec(def, claim, all, cardsGot, xp){
+function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards (2026-10-19, package RC): the raid's trophy shards
   const rw = claim.reward, defs = getCardDefs(), name = def.name || '', rewards = [];
   rewards.push({kind:'xp', icon:'⭐', amount:'+' + xp, label:TX('results.raid-claim-xp'), weight:1});
   Object.entries(all).forEach(([k, v])=>{ if(!(v > 0) || !CURRENCY_META[k]) return;
     rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
-  (cardsGot || []).forEach(id=>{ const d = defs[id]; if(!d) return;
-    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label:TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+  if(shards > 0) rewards.push({kind:'currency', id:'raidShards', icon: raidShardIcon(def), amount:'+' + shards.toLocaleString(), label: raidShardName(def), weight:3}); // 2026-10-19 (package RC)
+  // 2026-10-19 (package RC): a card is {id, from: 'pack' | 'faction' | 'raid'} (a bare id is a raid card, the older shape)
+  (cardsGot || []).forEach(c=>{ const id = typeof c === 'string' ? c : c.id, from = typeof c === 'string' ? 'raid' : c.from, d = defs[id]; if(!d) return;
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
   if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
@@ -22161,6 +22287,8 @@ function raidPanelHTML(){
   const pct = st.total ? Math.ceil(st.remaining / st.total * 100) : 0, ground = raidGroundOf({raidDef: def});
   const kill = Object.entries(rw.kill || {}).filter(([k, v])=> typeof v === 'number' && v > 0).map(([k, v])=> `${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
   const tierTxt = t=> Object.entries((rw.tiers || {})[t] || {}).map(([k, v])=> k === 'title' ? `title “${escapeHtml(v)}”` : `+${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
+  // 2026-10-19 (package RC): a participant's fall pays reward cards from the packs and trophy shards (RaidM.RAID_REWARD_TABLE)
+  const rcCards = Math.max(0, Math.round(rw.cards != null ? Number(rw.cards) : 1)), rcShards = rw.shards != null ? Math.max(0, Math.round(Number(rw.shards) || 0)) : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 0;
   const allyNames = (def.allyDecks || []).map(a=> a.name).filter(Boolean);
   return `<div class="panel raid2-panel raid3 map-theme-${escapeAttr(ground)}">
     <button type="button" class="btn small ghost r3-back" data-raid-hub>${escapeHtml(TX('ui.raid-all-raids'))}</button>
@@ -22230,10 +22358,11 @@ function raidPanelHTML(){
         <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
       <section class="r3-rewards"><h3>If it falls</h3>
         <ul class="r3-rw">
-          <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString()}))}</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
-          <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString()}))}</b><span>${kill || '—'} · ${escapeHtml(TX('ui.rc-rw-participant-what', {n: rcCards, s: rcCards === 1 ? '' : 's', shards: rcShards, icon: raidShardIcon(def)}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct, chance: pr.strongPct}))}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-leading', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-leading-what', {pct: pr.leadPct}))}</span></li>
-          ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)}${t !== 'top50' && raidCardIds(def).length ? ' and a second card' : ''}</span></li>`).join('')}
+          ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)} · ${escapeHtml(t !== 'top50' ? TX('ui.rc-rw-tier-extra', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}) : TX('ui.rc-rw-tier-shards', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}))}</span></li>`).join('')}
+          ${raidCardIds(def).length ? `<li><b>${escapeHtml(TX('ui.rc-rw-craft-h'))}</b><span>${escapeHtml(TX('ui.rc-rw-craft', {icon: raidShardIcon(def), name: raidShardName(def)}))}</span></li>` : '' /* 2026-10-19 (package RC, owner 09:53): its own cards are crafted in the Forge */}
           <li><b>${escapeHtml(TX('ui.raid-rw-held'))}</b><span>${escapeHtml(TX('ui.raid-rw-held-what', {pct: rw.failPct != null ? rw.failPct : 50, max: rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}))}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-respawn-h'))}</b><span>${escapeHtml(TX('ui.raid-rw-respawn', {h: Math.round(RaidM.respawnMs(def) / 3600000)}))}</span></li>
         </ul></section>
@@ -22458,7 +22587,8 @@ function openRaidEditor(raidId){
         <label>Kill: dust<input id="reKDust" type="number" min="0" value="${rw.kill.dust||0}"></label>
         <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
         <label>Kill: XP<input id="reKXp" type="number" min="0" max="5000" value="${rw.xp != null ? rw.xp : 500}"></label>
-        <label title="The raid's own cards a participant gets when it falls (the top 10% one more)">Kill: raid cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
+        <label title="Reward cards (from the pack pools, now and then a faction card) a participant gets when it falls (the top 10% one more). 2026-10-19 (package RC): never the raid's own cards">Kill: reward cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
+        <label title="2026-10-19 (package RC): the raid's trophy shards a participant gets when it falls, before the Competent / Leading boost and their extras (the Forge's Raid tab crafts its cards from them)">Kill: trophy shards<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
         <label title="If it survives: this % of the general rewards (Gold, Dust, Metal, XP)">Held: general %<input id="reComp" type="number" min="0" max="100" value="${rw.failPct != null ? rw.failPct : 50}"></label>
         <label title="If it survives: the raid's own rewards (cards, tier extras) at most this %, scaled by how much of its Health went">Held: raid rewards max %<input id="reFailSpec" type="number" min="0" max="100" value="${rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}"></label>
         ${['top1','top10','top50','participant'].map(tierRow).join('')}
@@ -22513,6 +22643,7 @@ function openRaidEditor(raidId){
     if(overlay.querySelector('#reFailSpec')) rw.failSpecialMaxPct = Math.max(0, Math.min(100, num(v('reFailSpec'), 10)));
     if(overlay.querySelector('#reKXp')) rw.xp = Math.max(0, Math.min(5000, Math.round(num(v('reKXp'), 500))));
     if(overlay.querySelector('#reKCards')) rw.cards = Math.max(0, Math.min(5, Math.round(num(v('reKCards'), 1))));
+    if(overlay.querySelector('#reKShards')) rw.shards = Math.max(0, Math.min(999, Math.round(num(v('reKShards'), 6)))); // 2026-10-19 (package RC)
     overlay.querySelectorAll('[data-tier-n]').forEach(el=>{ const t = el.dataset.tierN, k = el.dataset.cur; rw.tiers[t] = rw.tiers[t] || {}; const g = Math.max(0, Math.round(num(el.value, 0))); if(g) rw.tiers[t][k] = g; else delete rw.tiers[t][k]; });
     overlay.querySelectorAll('[data-tier-title]').forEach(el=>{ const t = el.dataset.tierTitle; rw.tiers[t] = rw.tiers[t] || {}; if(el.value.trim()) rw.tiers[t].title = el.value.trim(); else delete rw.tiers[t].title; });
     const P = draft.parts.find(p=> p.id===openPart);
@@ -23348,7 +23479,7 @@ function settleRaidPartAfterMatch(m){
   m.raidRank = m.raidFull ? raidFightRank(m) : null; // 2026-10-19 (RV2): the full raid's fights are ranked; the rank multiplies their damage
   const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed, m.raidRank);
   m.raidRewardEarned = {gold:r.gold, dust:r.dust}; m.raidInk = r.ink; m.raidBelow = r.below; m.raidMinDamage = r.minDamage;
-  if(m.winner === 1){ try{ const cd = rollCardDrop({kind:'raidWin', deck: (m.raidBoss||{}).deck || {}}, null, {kind:'raidWin'}); if(cd) m.raidCardDrop = cd; }catch(e){} }
+  if(m.winner === 1){ try{ const cd = raidFightCardDrop(def); if(cd) m.raidCardDrop = cd; }catch(e){} } // 2026-10-19 (package RC): a pack card; the raid's own only at RAID_CARD_DROP_CHANCE (was a card of the boss's deck every win)
   if(m.winner === 1){ try{ const egg = rollEggDrop({kind:'raidWin', deck: (m.raidBoss||{}).deck || {}}, null, true); if(egg) m.raidEggDrop = egg; }catch(e){} }
   m.raidDamageDealt = r.contribution; m.raidOverwhelmed = overwhelmed;
   m.raidRemainingAfter = r.remainingAfter;
@@ -24299,6 +24430,7 @@ function claimTutorialWin(pick){
     const won = grantTutorialSeriesRewards(pick);
     // 2026-10-10 (user: "Playing the tutorial forces the player to put the 3 cards they won from the tutorial into their deck -> forming 20!")
     const deck = buildFactionStarterDeck(pick); won.forEach(id=> deck[id] = (deck[id]||0) + 1);
+    tutorialStarterCopiesLevel0(deck); // 2026-10-19 (package UT): the starting deck's copies are Level 0
     myDeckCounts = deck; saveMyDeck(); saveTutorialDone();
     noteTutorialProgress({level:4, doneAt:Date.now()});
   }
@@ -24309,6 +24441,40 @@ function grantTutorialSeriesRewards(pick){
   rewardIds.forEach(id=> unlockCardForPlayer(id, 'tutorialReward'));
   return rewardIds;
 }
+// TUTORIAL_LEVEL0_UT:BEGIN (tests/animal-tags-2026-10-19.js evaluates this block)
+// Tutorial copies at Level 0 (2026-10-19, package UT, owner 09:52: "The starter cards are not Otters. Just considered as 'Base'. Base
+// cards just mean they come from Skirmish rewards, not Card Packs. The tutorial base cards come as Level 0 is the special thing."):
+// every copy the tutorial hands out (the starting deck, and the tutorial's reward and bonus cards) is a Level 0 copy. A card whose
+// starting level is 1 (a Base card, a faction card) gets the hatchling marks the Nest already knows: the copy hatch:1 (copyLevel lets
+// it sit under the card's starting level) and the card in hatchlingIds while no copy of it is above Level 0, so the Codex and the deck
+// show Level 0 too; the Nest trains it to Level 1 (finishNurture). tut:1 says where the copy came from. Base cards won later from
+// skirmishes start at their normal level (grantCardCopy).
+function isTutorialCopySource(source){ return source === 'tutorialReward' || source === 'tutorialBonus' || source === 'starterDeck'; }
+function tutorialMarkLevel0(id, c){
+  const d = copyBaseDef(id); if(!d || !c) return;
+  c.level = 0; c.tut = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
+}
+function tutorialHatchlingIfAllZero(id){
+  const d = copyBaseDef(id); if(!d || cardBaseLevel(d) <= 0 || topCopyLevel(id) > 0 || (myCardLevels[id] | 0) > cardBaseLevel(d)) return;
+  if(myCardLevels[id] === cardBaseLevel(d)){ delete myCardLevels[id]; try{ saveCardLevels(); }catch(e){} }
+  if(!hatchlingIds().has(id)){ hatchlingIds().add(id); saveHatchlings(); }
+}
+// The newest copy of `id` (the one just granted) becomes a Level 0 copy.
+function tutorialCopyLevel0(id){
+  try{ if(!copyModelOn()) return; const a = myCardCopies[id] || [], c = a[a.length - 1]; if(!c) return;
+    tutorialMarkLevel0(id, c); tutorialHatchlingIfAllZero(id); saveCardCopies(); }catch(e){}
+}
+// The starting deck: Base and starter cards are unlimited, so their copies are made here, at Level 0 (made for a deck: m:1), up to
+// the count the deck holds (the reward copies granted a moment earlier count).
+function tutorialStarterCopiesLevel0(deck){
+  try{ if(!copyModelOn()) return;
+    Object.entries(deck || {}).forEach(([id, n])=>{ if(!isUnlimitedCard(id)) return;
+      const a = myCardCopies[id] = myCardCopies[id] || [];
+      while(a.length < (n | 0)){ const c = {foil:false, m:1, uid: newCopyUid()}; tutorialMarkLevel0(id, c); a.push(c); }
+      tutorialHatchlingIfAllZero(id); });
+    saveCardCopies(); }catch(e){}
+}
+// TUTORIAL_LEVEL0_UT:END
 // Win/loss modal copy for tutorial-mode matches -- pulled out of renderMatchUI's big template
 // literal so the stage-number/reward-callout logic reads clearly on its own.
 // 2026-10-07 playtest: a 0–30 loss was titled "So Close!". It says so only when it was close.
@@ -37011,6 +37177,7 @@ function logText(ev){
     case 'irradiation': { const pts = (ev.points||[]).map(p=> p.kind==='hp' ? '−1 max Health' : p.kind==='atk' ? '−1 Attack' : p.what==='removed' ? `lost ${irrSkillName(p)}` : p.what==='weakened' ? `${irrSkillName(p)} weakened` : p.what==='narrowed' ? `${irrSkillName(p)} narrowed` : `${irrSkillName(p)} −1`);
       return {cls:'', text:`☢️ Radiation eats at ${nm(ev.defId)}: ${pts.join(', ') || 'nothing'}. ${ev.left} token${ev.left===1?'':'s'} left.`}; }
     case 'pounce': return {cls:'', text:`🐾 ${nm(ev.defId)} pounces (${ev.amount}).`};
+    case 'positionBeam': return {cls:'', text: ev.lane === 'centre' ? TX('ui.log-position-beam-centre', {name: nm(ev.defId), n: ev.amount}) : ev.lane === 'edge' ? TX('ui.log-position-beam-edge', {name: nm(ev.defId), n: ev.amount}) : TX('ui.log-position-beam-side', {name: nm(ev.defId), n: ev.amount})}; // 2026-10-19 (package EE)
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
@@ -38963,6 +39130,7 @@ function lightningBoltOf(ev){
   else if(ev.chainLightning){ kind = 'chainLightning'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, el(ev.viaUid), tgt]; more = strikeMore('chainLightning'); }
   else if(ev.dragonLightning){ kind = 'dragonLightning'; cls = 'sfx-bolt-red'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, tgt]; more = strikeMore('dragonLightning'); }
   else if(ev.skyBolt){ kind = 'sky'; sky = true; chain = [tgt]; }
+  else if(ev.positionBeam){ kind = 'beam'; cls = 'sfx-bolt-beam'; chain = [src, tgt]; } // 2026-10-19 (package EE): the Condor's beam reuses the bolt, prismatic
   else if(pb && pb.element === 'shock' && String(pb.uid) === String(ev.attUid)){ kind = 'shockBolt'; chain = [src, tgt]; }
   else if(ev.dmgType === 'shock'){ kind = 'shock'; chain = [src, tgt]; }
   else { ev._bolt = null; return null; }
@@ -39846,6 +40014,7 @@ function renderVfxForEvent(ev){
   // card. The continuous per-round buff itself stays a live stat recompute with no per-round
   // event, same as before — this only marks the moment the aura turns on.
   // Pounce (2026-10-12): a quick crouch-and-spring on the card as it lands, then the hit plays as normal.
+  if(ev.type==='positionBeam'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `🌈 ${TX('ui.act-position-beam')} ${ev.amount}`, 'gold'); } // 2026-10-19 (package EE): the hits draw the beam (lightningBoltOf)
   if(ev.type==='pounce'){
     const el = boardCardEl(ev.uid);
     if(el){ floatText(el, `🐾 Pounce ${ev.amount}`, 'gold'); } // 2026-10-15: the spring is now the hit's own leap onto its target (SkillFX.pounceOnto)
@@ -41362,12 +41531,13 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
-    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}${k === 'raid' && forgeRaidAnyReady() ? ' has-ready' : '' /* 2026-10-19 (package RC) */}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
     ${forgeMode === 'facility' ? `<div class="facility-upgrades" id="forgeUpgradesTab">${forgeUpgradeHTML() + staminaPanelHTML('forge') + dungeonKeyRingHTML()}</div>` : '' /* 2026-10-18 (package DK, owner 00:08): the Forge's upgrades live in its ⬆️ Upgrades tab (were above the tabs) */}
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     ${forgeMode==='smith' ? blacksmithHTML() : ''}
     ${forgeMode==='castles' ? forgeCastlesHTML() : ''}
-    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' || forgeMode==='facility' ? 'hidden' : ''}>
+    ${forgeMode==='raid' ? forgeRaidHTML() : '' /* 2026-10-19 (package RC): the 🐙 Raid tab, raid cards by recipe */}
+    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' || forgeMode==='facility' || forgeMode==='raid' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
           <input data-text-filter autocomplete="off" type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
@@ -41412,6 +41582,7 @@ function renderForge(){
   if(disBtn) disBtn.onclick = ()=> openForgeBulk('dis', disBtn);
   const faBtn = document.getElementById('forgeFuseAllBtn');
   if(faBtn) faBtn.onclick = ()=> openForgeBulk('fuse', faBtn);
+  wireForgeRaid(root); // 2026-10-19 (package RC)
   root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(TX('toast.tempered-to-lv-2', {v1: (CHARACTER_DEFS[id]||{}).name||'Bramble', v2: castleLevelOf(id)}), 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
   root.querySelectorAll('[data-fuse-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.fuseCastle, v = fuseCastleDuplicates(id); if(!v){ denyShake(b); return; } renderForge(); showToast(TX('toast.fused-spare-castle-of-credit', {n: v.n, s: v.n===1?'':'s', dust: v.dust}), 'ok'); }));
   { const fe = document.getElementById('forgeTierEditBtn'); if(fe) fe.addEventListener('click', openForgeTierEditor); }
@@ -41703,7 +41874,7 @@ function wireBlacksmith(root){
   root.querySelectorAll('[data-fuse]').forEach(b=> b.onclick = async ()=>{
     const id = b.dataset.fuse, defs = getCardDefs(), to = fuseTargetRarity(defs[id] && defs[id].rarity);
     if(!to || ownedCount(id) <= FUSE_COPIES) return;
-    const pool = Object.keys(defs).filter(x=> defs[x].rarity === to && !defs[x].token && !defs[x].test && defs[x].cardType !== 'materia' && ['pack','map'].includes(cardSourceOf(defs[x]).kind));
+    const pool = Object.keys(defs).filter(x=> defs[x].rarity === to && !defs[x].token && !defs[x].test && defs[x].cardType !== 'materia' && !isEasterEgg(defs[x]) /* 2026-10-19 (package EE) */ && ['pack','map'].includes(cardSourceOf(defs[x]).kind));
     if(!pool.length){ showToast(TX('toast.nothing-to-fuse-into-yet'), 'warn'); return; }
     const ok = await bwConfirm({title:TX('dialog.fuse'), body:TX('dialog.melt-copies-of-into-one-random', {FUSE_COPIES, v2: defs[id].name, v3: rarityDef(to).label}), okLabel:TX('dialog.fuse-2')});
     if(!ok) return;
@@ -41732,7 +41903,7 @@ function rollCardDrop(node, mapId, opts){
   if(!node) return null; const kind = (opts && opts.kind) || node.kind || 'skirmish';
   const chance = CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
   if(Math.random() >= chance) return null;
-  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !(d.archetypes||[]).includes('Castle'); };
+  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }; // + no Easter egg (2026-10-19, package EE)
   const base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
   const deckIds = [...new Set(Object.keys(node.deck||{}).map(base).filter(ok))];
   const map = CONQUEST_MAPS.find(m2=> m2.id === mapId); const mapIds = map ? [...new Set(map.nodes.flatMap(n=> Object.keys(n.deck||{})).map(base).filter(ok))] : [];
@@ -41761,12 +41932,73 @@ const FORGE_MODES = {
   enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
   // 2026-10-18 (package DK, owner 00:08): the Forge's own upgrades (tier, Max Energy, the 🗝️ Key ring) have their own tab
   facility: {icon:'⬆️', get label(){ return TX('ui.upgrades-tab'); }, get blurb(){ return TX('ui.forge-upgrades-blurb'); }},
+  // 2026-10-19 (package RC, owner 09:53: "raid cards must be crafted in the Forge. Under a special tab."): forgeRaidHTML
+  raid: {icon:'🐙', get label(){ return TX('ui.rc-forge-tab'); }, get blurb(){ return TX('ui.rc-forge-blurb'); }},
 };
 function forgeReadyFor(id){
-  if(forgeMode==='smith' || forgeMode==='facility') return false; // + the ⬆️ Upgrades tab (2026-10-18, package DK)
+  if(forgeMode==='smith' || forgeMode==='facility' || forgeMode==='raid') return false; // + the ⬆️ Upgrades tab (2026-10-18, package DK); + the 🐙 Raid tab (2026-10-19, package RC)
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
   if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
   const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
+}
+// ---- The Forge's 🐙 Raid tab (2026-10-19, package RC, owner 09:53: "Raids almost never give raid cards. only maybe pack cards or
+// faction cards (maybe), raid cards must be crafted in the Forge. Under a special tab."): every raid's own cards, each with its recipe
+// (RaidM.raidRecipeFor: that raid's 🏆 trophy shards + Magic Dust + Maple Leaves, by rarity). A card you haven't met is a face-down
+// "?" with its rarity and cost (the Codex's hidden-until-seen rule); you meet it in a raid fight, and then it can be crafted. A craft
+// is a new copy of its own (the card-copy model), at the card's starting level (Level 1 for a raid card), plain.
+function raidCardRevealed(id, d){ return !!d && (adminModeEnabled || (!isCardHiddenForPlayer(d) && codexRevealedForPlayer(id, d))); }
+function raidRecipeOf(raid, id){ const d = getCardDefs()[id] || {}; return RaidM.raidRecipeFor(raid, id, d.rarity || 'common'); }
+function raidRecipeReady(raid, id){ const d = getCardDefs()[id]; return !!d && raidCardRevealed(id, d) && !RaidM.raidRecipeShort(myCurrencies, raid.id, raidRecipeOf(raid, id)).length; }
+function forgeRaidAnyReady(){ try{ return allRaidDefs().some(r=> raidCardIds(r).some(id=> raidRecipeReady(r, id))); }catch(e){ return false; } }
+// Crafts one copy: pays the recipe and grants the card. null (nothing paid) when it can't: unknown raid or card, not met yet, can't be
+// had (unattainable), or short of something.
+function craftRaidCard(raidId, cardId){
+  const raid = allRaidDefs().find(r=> r.id === raidId), defs = getCardDefs(), d = defs[cardId];
+  if(!raid || !d || !raidCardIds(raid).includes(cardId) || !raidCardRevealed(cardId, d) || isUnattainable(d)) return null;
+  const cost = raidRecipeOf(raid, cardId), have = (myCardCopies[cardId] || []).length;
+  if(!RaidM.payRaidRecipe(myCurrencies, raidId, cost)) return null;
+  saveCurrencies();
+  unlockCardForPlayer(cardId, 'raidCraft', {shiny:false});
+  const copies = myCardCopies[cardId] || [], copy = copies.length > have ? copies[copies.length - 1] : null;
+  try{ logTxn({action:'crafted', cardId, cardName:d.name, icon:d.icon, source: CARD_UNLOCK_SOURCES.raidCraft, before:null, after:null}); }catch(e){}
+  return {raid, id: cardId, cost, copy, level: copy ? copyLevel(cardId, copy) : copyBaseLevelOf(cardId)};
+}
+function forgeRaidCostHTML(raid, cost){
+  const sh = raidShardsOf(raid.id);
+  return btnCostHTML({dust: cost.dust, gold: cost.gold}, [{icon: raidShardIcon(raid), need: cost.shards, have: sh, label: raidShardName(raid)}]);
+}
+function forgeRaidHTML(){
+  const raids = allRaidDefs().filter(r=> r && r.id && raidCardIds(r).length), defs = getCardDefs();
+  if(!raids.length) return `<div class="panel forge-raid"><p class="panel-sub">${escapeHtml(TX('ui.rc-forge-none'))}</p></div>`;
+  const order = id=> RARITY_TIER_BANDS.indexOf((defs[id] || {}).rarity || 'common');
+  return `<div class="panel forge-raid">${raids.map(raid=>{
+    const ids = raidCardIds(raid).sort((a, b)=> order(a) - order(b) || String(defs[a].name).localeCompare(String(defs[b].name)));
+    const tb = RaidM.RAID_REWARD_TABLE || {}, p = (tb.participant || {}).shards || 0, l = Math.round(p * 1.4) + ((tb.leading || {}).extraShards || 0);
+    return `<section class="fr-raid" aria-label="${escapeAttr(raid.name || raid.id)}">
+      <div class="fr-head"><h3>${escapeHtml(raid.icon || '🐙')} ${escapeHtml(raid.name || raid.id)}</h3>
+        <span class="forge-coin fr-shards" title="${escapeAttr(raidShardName(raid))}">${escapeHtml(TX('ui.rc-shards-count', {icon: raidShardIcon(raid), n: raidShardsOf(raid.id), name: raidShardName(raid)}))}</span></div>
+      <p class="panel-sub fr-sub">${escapeHtml(TX('ui.rc-forge-raid-sub', {name: raid.name || raid.id, p, l}))}</p>
+      <div class="fr-grid">${ids.map(id=>{ const d = defs[id], seen = raidCardRevealed(id, d), cost = raidRecipeOf(raid, id), ready = seen && raidRecipeReady(raid, id), n = (myCardCopies[id] || []).length;
+        const rar = (typeof rarityLabelOf === 'function' ? rarityLabelOf(d.rarity || 'common') : (d.rarity || 'common'));
+        return `<div class="fr-card ${seen ? '' : 'is-unseen'} ${ready ? 'is-ready' : ''}">
+          <span class="fr-tile">${seen ? cardTileHTML(d, {inPlay:true}) : `<span class="fr-back bw-back bk-unit" role="img" aria-label="${escapeAttr(TX('ui.rc-forge-unknown'))}"><b aria-hidden="true">?</b></span>`}</span>
+          <div class="fr-body"><b>${escapeHtml(seen ? d.name : TX('ui.rc-forge-unknown'))}</b><small class="fr-rar">${escapeHtml(String(rar))}${seen && n ? ' · ' + escapeHtml(TX('ui.rc-forge-owned', {n})) : ''}</small>
+            ${seen ? `<button type="button" class="btn small ${ready ? 'primary' : ''}" data-rc-craft="${escapeAttr(id)}" data-rc-raid="${escapeAttr(raid.id)}" ${ready ? '' : 'aria-disabled="true"'}>🔨 ${escapeHtml(TX('ui.rc-forge-craft'))}${forgeRaidCostHTML(raid, cost)}</button>`
+              : `<small class="fr-unseen-note">${escapeHtml(TX('ui.rc-forge-unseen'))}</small><span class="fr-cost-peek">${forgeRaidCostHTML(raid, cost)}</span>`}</div></div>`; }).join('')}</div>
+    </section>`; }).join('')}</div>`;
+}
+function wireForgeRaid(root){
+  root.querySelectorAll('[data-rc-craft]').forEach(b=> b.addEventListener('click', ()=>{
+    if(forgeBusy) return;
+    const raid = allRaidDefs().find(r=> r.id === b.dataset.rcRaid), id = b.dataset.rcCraft, d = getCardDefs()[id];
+    const v = craftRaidCard(b.dataset.rcRaid, id);
+    if(!v){ denyShake(b);
+      if(raid && d){ const short = RaidM.raidRecipeShort(myCurrencies, raid.id, raidRecipeOf(raid, id)).map(x=> `${x.kind === 'shards' ? raidShardIcon(raid) : x.kind === 'dust' ? '✨' : '🍁'} ${x.need - x.have}`).join(' ');
+        if(short) showToast(TX('toast.rc-cant-afford', {name: d.name, short}), 'error'); }
+      return; }
+    try{ SoundKit.clang && SoundKit.clang(); }catch(e){}
+    renderForge(); showToast(TX('toast.rc-crafted', {name: d.name, level: v.level}), 'ok');
+  }));
 }
 // Costs inside the button (2026-10-14, user: "Nest and Forge - upgrade costs are written into the button itself"): " · 🍁 500 ✨ 40",
 // each part dimmed and struck when you are short of it (the full need and what you have sit in its tooltip).
@@ -44284,7 +44516,7 @@ function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12)
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,
 // so every slot rolled it. A pack now needs at least as many different cards as it holds (Shop says "coming soon"
@@ -44660,7 +44892,7 @@ function copiesOwned(id){ return ((myCardCopies && myCardCopies[id]) || []).leng
 function trackMapReached(){ try{ const prog = loadConquestProgress(); const mains = mainConquestMaps(); let hi = 0; mains.forEach((m, i)=>{ if((prog.completed||[]).some(cid=> cid.indexOf(m.id + ':') === 0)) hi = i; }); return hi; }catch(e){ return 0; } }
 function trackPick(pool, rnd){
   rnd = rnd || Math.random;
-  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isEquipmentDef(defs[id]));
+  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id])); // + no Easter egg (2026-10-19, package EE)
   const rar = id=> defs[id].rarity || 'common';
   const stages = TRACK_STAGES.concat(trackMapReached() >= TRACK_LATE_MAP ? TRACK_LATE : []);
   for(const r of stages){ const missing = pool.filter(id=> rar(id) === r && !copiesOwned(id)); if(missing.length) return missing[Math.floor(rnd()*missing.length)]; }

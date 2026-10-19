@@ -342,6 +342,8 @@ raid_bosses_literal = json.dumps(_with_path_art(json.load(open(SCRATCH + "canoni
 app_src = _re.sub(r"art:'(art/(?:npc|fields|backings|frames)/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
+# 2026-10-19 (package UT): each animal's kind, for the Codex's animal filter (canonical/animal-tags.json, python3 tools/animal_tags.py)
+app_src = sub_once(app_src, "__ANIMAL_GROUPS__", json.dumps({r["animal"]: r["group"] for r in json.load(open(SCRATCH + "canonical/animal-tags.json", encoding="utf-8"))["cards"] if r.get("animal")}, ensure_ascii=False, sort_keys=True))
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --
 # GSAP must load and register its plugin BEFORE arena_app.js runs (it calls gsap.Flip.from()
 # and gsap.timeline() at module-eval-adjacent times, e.g. inside renderBoard()).

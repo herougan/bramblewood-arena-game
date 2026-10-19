@@ -36,6 +36,7 @@
  "actions": [
   {"id":"damage","label":"Deal damage","value":1.27,"per":"amount","note":"per point of damage","measuredS":1.27,"measuredConf":"high","measuredSE":0.25,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"missile","label":"Missile","value":1.27,"per":"amount","note":"per point of damage, a random enemy","measuredS":1.27,"measuredConf":"high","measuredSE":0.25,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
+  {"id":"positionBeam","label":"Position Beam","value":2.54,"per":"amount","note":"2026-10-19 (package EE): per point of damage; the Galactic Condor's beam hits about two things (the unit across and the bramble from the centre, 1 to 4 units from a side, the row from the edge): 2 x Deal damage (1.27). Not measured yet"},
   {"id":"fireHit","label":"Fire on hit","value":1,"per":"amount","note":"per point of fire damage","measuredS":1.13,"measuredConf":"high","measuredSE":0.32},
   {"id":"heal","label":"Heal","value":0.5,"per":"amount","note":"per point healed","measuredS":0.82,"measuredConf":"medium","measuredSE":0.95},
   {"id":"rebuild","label":"Rebuild bramble","value":0.2,"per":"amount","note":"per point restored","measuredS":0.2,"measuredConf":"high","measuredSE":0.25,"prevValue":0.5,"appliedAt":"2026-10-19 (owner: apply measured worth)"},

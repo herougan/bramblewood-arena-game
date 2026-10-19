@@ -68,7 +68,12 @@ tab uses the same database. Without it, the tab says "Picks can't be saved here"
        did.
      - Then add its name and flavour to all 12 language packs (`lang/cards`, `lang/ui`), check its emoji is in the three emoji sets,
        and write a `creatorNote` (date, owner quote, N, S, both rules, the win rate).
-     - The variant convention is in `unit-themes.json` → `vocab.variantTiers`. Keep the prefix.
+     - The variant convention is in `unit-themes.json` → `vocab.variantTiers`. The id keeps the internal prefix (`dire-…`,
+       `elder-…`); the card's `name` is the row's thematic `name` (a proposal: ask the owner if `nameProposal` is still true), never
+       "Dire X" / "Elder X" (2026-10-19, owner: "Dire and Elder are internal naming").
+     - A player variant's body comes from N (its rarity, Lumber and Wait: `bodyFromN` in `tools/unit_themes.js`), not from
+       multipliers; only non-player units (`nonPlayer`: the raid's boss units, raid bosses) keep multipliers.
+     - Give it the base's `animal` (and `subtype`), then run `python3 tools/animal_tags.py`.
    - **place (a pool card)**
      - Place it the way package TH did: drop `pool` / `poolMap` / `poolSlot`, give it the next live number, and set
        `source: {kind:'map', id, node}` on the picked map.

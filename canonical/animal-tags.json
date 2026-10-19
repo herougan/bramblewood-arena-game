@@ -1,0 +1,8742 @@
+{
+ "generated": "2026-10-19",
+ "tool": "tools/animal_tags.py",
+ "note": "Every creature card's animal (what it is, or the animal its ghost / spirit / elemental / construct body takes), its group (the head kind, for grouping) and, for those beings, its subtype. how: name / icon / type (archetype) / art / flavor / proposed (no animal in the art: an owner call) / item (a non-creature that embodies one). speciesNote: where the animal and the species field disagree (species is unchanged).",
+ "subtypes": [
+  {
+   "id": "ghost",
+   "label": "Ghost: a wraith, wisp or shade of the restless dead"
+  },
+  {
+   "id": "spirit",
+   "label": "Spirit: a shrine spirit, a candle-keeper, a shadow-thing"
+  },
+  {
+   "id": "elemental",
+   "label": "Elemental: fire, water, air, storm, stone or ice given an animal shape"
+  },
+  {
+   "id": "undead",
+   "label": "Undead: bones and revenants that stood back up"
+  },
+  {
+   "id": "construct",
+   "label": "Construct: a golem, a summoned shield, an iron warden"
+  },
+  {
+   "id": "structure",
+   "label": "Structure: a building that fights (a hill, a hive, a dam, a gate)"
+  },
+  {
+   "id": "fiend",
+   "label": "Fiend: imps, devils and the things the Ashen Choir calls up"
+  },
+  {
+   "id": "conjured",
+   "label": "Conjured: a plague creature summoned out of nothing (Frog, Fly)"
+  },
+  {
+   "id": "plant",
+   "label": "Plant: an ent, a vine, a walking willow"
+  },
+  {
+   "id": "fungus",
+   "label": "Fungus: a mushroom that walks"
+  },
+  {
+   "id": "mythic",
+   "label": "Mythic: a great beast of the old songs (dragons, the leviathan, the dragon-turtle)"
+  },
+  {
+   "id": "changeling",
+   "label": "Changeling: wears whatever shape you hoped for"
+  },
+  {
+   "id": "were",
+   "label": "Were-beast: a creature that becomes more of itself at night"
+  },
+  {
+   "id": "mutant",
+   "label": "Mutant: changed by the glow or the high ground"
+  },
+  {
+   "id": "glitch",
+   "label": "Glitch: data not found"
+  }
+ ],
+ "counts": {
+  "cards": 819,
+  "creatures": 731,
+  "tagged": 733,
+  "animals": 351,
+  "groups": 142,
+  "withSubtype": 100,
+  "proposed": 30,
+  "subtype": {
+   "changeling": 3,
+   "conjured": 3,
+   "construct": 7,
+   "elemental": 11,
+   "fiend": 11,
+   "fungus": 2,
+   "ghost": 4,
+   "glitch": 1,
+   "mutant": 5,
+   "mythic": 15,
+   "plant": 11,
+   "spirit": 7,
+   "structure": 13,
+   "undead": 5,
+   "were": 2
+  },
+  "how": {
+   "art": 60,
+   "ee": 7,
+   "flavor": 14,
+   "icon": 30,
+   "name": 536,
+   "proposed": 30,
+   "type": 54
+  },
+  "topGroups": {
+   "otter": 27,
+   "hummingbird": 25,
+   "fish": 24,
+   "beetle": 19,
+   "fox": 17,
+   "cat": 16,
+   "bat": 16,
+   "salamander": 16,
+   "lizard": 15,
+   "duck": 15,
+   "wolf": 14,
+   "turtle": 14,
+   "frog": 14,
+   "rabbit": 14,
+   "heron": 12,
+   "snake": 12,
+   "songbird": 12,
+   "owl": 11,
+   "ant": 11,
+   "bear": 11,
+   "mouse": 11,
+   "ape": 10,
+   "spider": 10,
+   "badger": 10,
+   "crow": 10,
+   "deer": 10,
+   "bee": 9,
+   "dog": 9,
+   "boar": 9,
+   "squirrel": 9
+  }
+ },
+ "ownerCalls": [
+  {
+   "id": "ent",
+   "name": "Ent",
+   "animal": "owl",
+   "subtype": "plant",
+   "why": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "animal": "hedgehog",
+   "subtype": "plant",
+   "why": "art is a seedling; proposed: a hedgehog (\"barely a seedling, somehow already armed\")"
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "animal": "heron",
+   "subtype": "plant",
+   "why": "art is a willow with a face; proposed: a heron (the willow by the water)"
+  },
+  {
+   "id": "ember-wisp",
+   "name": "Ember Wisp",
+   "animal": "firefly",
+   "subtype": "elemental",
+   "why": "art is a floating spark with a face; proposed: a firefly"
+  },
+  {
+   "id": "stoneheart-golem",
+   "name": "Stoneheart Golem",
+   "animal": "gorilla",
+   "subtype": "construct",
+   "why": "art is a stone golem; proposed: a gorilla (its build)"
+  },
+  {
+   "id": "stormcaller",
+   "name": "Stormcaller",
+   "animal": "owl",
+   "subtype": "elemental",
+   "why": "art is a storm cloud with eyes; proposed: an owl (round, glaring, flies at night)"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "animal": "viper",
+   "subtype": null,
+   "why": "a venomous serpent; proposed: a viper"
+  },
+  {
+   "id": "strangler-vine",
+   "name": "Strangler Vine",
+   "animal": "snake",
+   "subtype": "plant",
+   "why": "art is a tree face; proposed: a snake (\"load-bearing\" coils)"
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "animal": "alligator",
+   "subtype": "plant",
+   "why": "art is a root face in the water; proposed: an alligator (lurks in the swamp)"
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Golem",
+   "animal": "gorilla",
+   "subtype": "construct",
+   "why": "art is a crystal cave golem; proposed: a gorilla"
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "animal": "pangolin",
+   "subtype": "plant",
+   "why": "art is a pinecone with eyes; proposed: a pangolin (scales like a cone)"
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Titan",
+   "animal": "gorilla",
+   "subtype": "elemental",
+   "why": "art is a hunched lava golem; proposed: a gorilla (its stance)"
+  },
+  {
+   "id": "marsh-wisp",
+   "name": "Marsh Wisp",
+   "animal": "newt",
+   "subtype": "ghost",
+   "why": "art is a blue wisp; proposed: a newt (the marsh it haunts)"
+  },
+  {
+   "id": "bog-revenant",
+   "name": "Bog Revenant",
+   "animal": "bog turtle",
+   "subtype": "undead",
+   "why": "art is a mossy drowned shape; proposed: a bog turtle (\"the mire keeps what it drowns\")"
+  },
+  {
+   "id": "the-unremembered",
+   "name": "The Unremembered",
+   "animal": "heron",
+   "subtype": "ghost",
+   "why": "art is a faceless water-shade; proposed: a heron (the swamp's tall silhouette)"
+  },
+  {
+   "id": "blackmass-acolyte",
+   "name": "Blackmass Acolyte",
+   "animal": "rat",
+   "subtype": "fiend",
+   "why": "art is a hooded shadow; proposed: a rat (the cult's hooded acolyte)"
+  },
+  {
+   "id": "dread-bell",
+   "name": "Dread Bell",
+   "animal": "bat",
+   "subtype": "fiend",
+   "why": "art is a horned bell with eyes; proposed: a bat (horns like ears, rings in the dark)"
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "animal": "pigeon",
+   "subtype": null,
+   "why": "a cross-eyed little bird (🐦); proposed: a pigeon"
+  },
+  {
+   "id": "missingno",
+   "name": "MissingNo.",
+   "animal": "bird",
+   "subtype": "glitch",
+   "why": "species Bird; the art reads as a pixel cat: owner call"
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "animal": "heron",
+   "subtype": "plant",
+   "why": "art is the willow; proposed: a heron, like the Elder Willow"
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "animal": "hedgehog",
+   "subtype": "structure",
+   "why": "a wall of stakes; proposed: a hedgehog (all spines)"
+  },
+  {
+   "id": "heartwood-treant",
+   "name": "Heartwood Treant",
+   "animal": "bear",
+   "subtype": "plant",
+   "why": "art is a wooden giant; proposed: a bear"
+  },
+  {
+   "id": "iron-warden",
+   "name": "Iron Warden",
+   "animal": "badger",
+   "subtype": "construct",
+   "why": "art is a walking suit of iron; proposed: a badger (the forge folk)"
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "animal": "raven",
+   "subtype": "ghost",
+   "why": "no art yet; proposed: a raven (\"brings the shadow with it\")"
+  },
+  {
+   "id": "growth-sprout",
+   "name": "Growth Sprout",
+   "animal": "caterpillar",
+   "subtype": "plant",
+   "why": "art is a sprout; proposed: a caterpillar (\"every swarm counts it as one of its own\")"
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "animal": "minnow",
+   "subtype": null,
+   "why": "a fish fry; proposed: a minnow"
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "animal": "carrion fly",
+   "subtype": "plant",
+   "why": "a flower that smells of carcass; proposed: a carrion fly"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "animal": "toad",
+   "subtype": "fungus",
+   "why": "art is a puffball with a face; proposed: a toad (toadstool)"
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "animal": "gorilla",
+   "subtype": "elemental",
+   "why": "art is a half-ice, half-lava giant; proposed: a gorilla, like the Magma Titan"
+  },
+  {
+   "id": "great-gate",
+   "name": "Great Gate",
+   "animal": "duck",
+   "subtype": "structure",
+   "why": "a gate; proposed: a duck (the Magnate's keep it guards)"
+  }
+ ],
+ "speciesNotes": [
+  {
+   "id": "compost-grub",
+   "note": "species Annelid; a grub is a beetle larva (Insect)"
+  },
+  {
+   "id": "tunnel-wyrm",
+   "note": "species Dragon; a giant worm (Annelid)"
+  },
+  {
+   "id": "gorge-wyrm",
+   "note": "species Dragon; a giant worm (Annelid)"
+  },
+  {
+   "id": "moray-ambusher",
+   "note": "species Cnidarian; a moray eel is a fish (Fish)"
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "note": "species Annelid; its art and name are maggots, fly larvae (Insect)"
+  },
+  {
+   "id": "quarry-mole",
+   "note": "species Rodent; moles are not rodents (Mammal)"
+  },
+  {
+   "id": "pill-bug",
+   "note": "species Insect; a pill bug is a woodlouse, a crustacean (Crustacean)"
+  },
+  {
+   "id": "missingno",
+   "note": "species Bird; the art reads as a pixel cat"
+  },
+  {
+   "id": "ore-smelter-mole",
+   "note": "species Rodent; moles are not rodents (Mammal)"
+  },
+  {
+   "id": "star-nosed-mole",
+   "note": "species Rodent; moles are not rodents (Mammal)"
+  },
+  {
+   "id": "tardigrade",
+   "note": "species Insect; a tardigrade is a water bear, not an insect"
+  }
+ ],
+ "cards": [
+  {
+   "id": "otter-centurion",
+   "name": "Otter Centurion",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ent",
+   "name": "Ent",
+   "icon": "🌳",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Knight",
+   "icon": "🐬",
+   "creature": true,
+   "animal": "dolphin",
+   "group": "dolphin",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Knight",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "icon": "🍯",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "icon": "🦂",
+   "creature": true,
+   "animal": "scorpion",
+   "group": "scorpion",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "icon": "🦣",
+   "creature": true,
+   "animal": "yeti",
+   "group": "ape",
+   "subtype": null,
+   "how": "name",
+   "note": "the snow ape"
+  },
+  {
+   "id": "scraper-of-skies",
+   "name": "Scraper of Skies",
+   "icon": "🏗️",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": "structure",
+   "how": "flavor",
+   "note": "a hive-tower that answers with bees"
+  },
+  {
+   "id": "bee-swarmling",
+   "name": "Bee Swarmling",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "icon": "⛰️",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": "structure",
+   "how": "name"
+  },
+  {
+   "id": "otter-scout",
+   "name": "Otter Scout",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "otter-shieldback",
+   "name": "Otter Shieldback",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "great horned owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "war-hound",
+   "name": "War Hound",
+   "icon": "🐕‍🦺",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "armored-mastiff",
+   "name": "Armored Mastiff",
+   "icon": "🦮",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "icon": "🐈‍⬛",
+   "creature": true,
+   "animal": "lynx",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "war-panther",
+   "name": "War Panther",
+   "icon": "🐆",
+   "creature": true,
+   "animal": "panther",
+   "group": "big cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bramblewood-macaque",
+   "name": "Bramblewood Macaque",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "macaque",
+   "group": "monkey",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "silverback-brawler",
+   "name": "Silverback Brawler",
+   "icon": "🦍",
+   "creature": true,
+   "animal": "gorilla",
+   "group": "ape",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "trapdoor spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "webspire-sentinel",
+   "name": "Webspire Sentinel",
+   "icon": "🕸️",
+   "creature": true,
+   "animal": "spider",
+   "group": "spider",
+   "subtype": "structure",
+   "how": "art"
+  },
+  {
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "grub",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name",
+   "note": "species Annelid, a beetle grub by name",
+   "speciesNote": "species Annelid; a grub is a beetle larva (Insect)"
+  },
+  {
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "icon",
+   "note": "a giant worm (species Dragon)",
+   "speciesNote": "species Dragon; a giant worm (Annelid)"
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "icon",
+   "note": "a giant worm (species Dragon)",
+   "speciesNote": "species Dragon; a giant worm (Annelid)"
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "cricket",
+   "group": "cricket",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "icon": "🪰",
+   "creature": true,
+   "animal": "carrion fly",
+   "group": "fly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "monarch butterfly",
+   "group": "butterfly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "icon": "🌱",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a seedling; proposed: a hedgehog (\"barely a seedling, somehow already armed\")"
+  },
+  {
+   "id": "thornvine-lasher",
+   "name": "Thornvine Lasher",
+   "icon": "🌿",
+   "creature": true,
+   "animal": "lizard",
+   "group": "lizard",
+   "subtype": "plant",
+   "how": "art",
+   "note": "a lizard-shaped tangle of thorny vine"
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "icon": "🍄",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": "fungus",
+   "how": "art",
+   "note": "a bear under a toadstool cap"
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "icon": "🌲",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a willow with a face; proposed: a heron (the willow by the water)"
+  },
+  {
+   "id": "ember-wisp",
+   "name": "Ember Wisp",
+   "icon": "🔥",
+   "creature": true,
+   "animal": "firefly",
+   "group": "beetle",
+   "subtype": "elemental",
+   "how": "proposed",
+   "note": "art is a floating spark with a face; proposed: a firefly"
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Spirit",
+   "icon": "💧",
+   "creature": true,
+   "animal": "seahorse",
+   "group": "seahorse",
+   "subtype": "elemental",
+   "how": "art",
+   "note": "a wave curled into a seahorse head"
+  },
+  {
+   "id": "stoneheart-golem",
+   "name": "Stoneheart Golem",
+   "icon": "🪨",
+   "creature": true,
+   "animal": "gorilla",
+   "group": "ape",
+   "subtype": "construct",
+   "how": "proposed",
+   "note": "art is a stone golem; proposed: a gorilla (its build)"
+  },
+  {
+   "id": "gale-sprite",
+   "name": "Gale Sprite",
+   "icon": "💨",
+   "creature": true,
+   "animal": "swift",
+   "group": "swift",
+   "subtype": "elemental",
+   "how": "art",
+   "note": "a white swift in a whirl of wind"
+  },
+  {
+   "id": "stormcaller",
+   "name": "Stormcaller",
+   "icon": "⚡",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": "elemental",
+   "how": "proposed",
+   "note": "art is a storm cloud with eyes; proposed: an owl (round, glaring, flies at night)"
+  },
+  {
+   "id": "minnow-skitter",
+   "name": "Minnow Skitter",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "minnow",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "icon": "🐠",
+   "creature": true,
+   "animal": "pike",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pufferfish-bulwark",
+   "name": "Pufferfish Bulwark",
+   "icon": "🐡",
+   "creature": true,
+   "animal": "pufferfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "porcupine",
+   "group": "porcupine",
+   "subtype": null,
+   "how": "icon",
+   "note": "archetype Porcupine"
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "komodo dragon",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name",
+   "note": "a lizard"
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "icon": "🦝",
+   "creature": true,
+   "animal": "raccoon",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "raccoon-warlord",
+   "name": "Raccoon Warlord",
+   "icon": "🦝",
+   "creature": true,
+   "animal": "raccoon",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "badger-berserker",
+   "name": "Badger Berserker",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "beetle-battering-ram",
+   "name": "Beetle Battering-Ram",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "icon": "🐊",
+   "creature": true,
+   "animal": "crocodile",
+   "group": "crocodile",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "raven",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "wolf-pack-runner",
+   "name": "Wolf Pack Runner",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "boar-rampager",
+   "name": "Boar Rampager",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "turtle-bastion",
+   "name": "Turtle Bastion",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "eagle-diver",
+   "name": "Eagle Diver",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "nautilus-drifter",
+   "name": "Nautilus Drifter",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "nautilus",
+   "group": "nautilus",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "alpha-howler",
+   "name": "Alpha Howler",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tusked-vanguard",
+   "name": "Tusked Vanguard",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snapper-hatchling",
+   "name": "Snapper Hatchling",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "snapping turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "snapping turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chipmunk-stockpiler",
+   "name": "Chipmunk Stockpiler",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "badger-sapper",
+   "name": "Badger Sapper",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "raven",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "icon": "🐻",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "woodland-brawler",
+   "name": "Woodland Brawler",
+   "icon": "🐻",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "icon": "🐻",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "icon": "🐻",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "deer",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "antler-skirmisher",
+   "name": "Antler Skirmisher",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "deer",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "stag-knight",
+   "name": "Stag Knight",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "deer",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "elderhorn-monarch",
+   "name": "Elderhorn Monarch",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "deer",
+   "group": "deer",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "firetail-trickster",
+   "name": "Firetail Trickster",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "beaver-builder",
+   "name": "Beaver Builder",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dam-wall",
+   "name": "Dam Wall",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": "structure",
+   "how": "icon"
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": "structure",
+   "how": "icon"
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "viper",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "adder",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "python",
+   "group": "snake",
+   "subtype": null,
+   "how": "flavor",
+   "note": "a constrictor"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "viper",
+   "group": "snake",
+   "subtype": null,
+   "how": "proposed",
+   "note": "a venomous serpent; proposed: a viper"
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "bat-swarmling",
+   "name": "Bat Swarmling",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "vampire bat",
+   "group": "bat",
+   "subtype": "structure",
+   "how": "name"
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "flavor"
+  },
+  {
+   "id": "stable-colt",
+   "name": "Stable Colt",
+   "icon": "🐴",
+   "creature": true,
+   "animal": "horse",
+   "group": "horse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "squires-mount",
+   "name": "Squire's Mount",
+   "icon": "🐴",
+   "creature": true,
+   "animal": "horse",
+   "group": "horse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "warhorse-charger",
+   "name": "Warhorse Charger",
+   "icon": "🐴",
+   "creature": true,
+   "animal": "horse",
+   "group": "horse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Cataphract Destrier",
+   "icon": "🐴",
+   "creature": true,
+   "animal": "horse",
+   "group": "horse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "puddle-hopper",
+   "name": "Puddle Hopper",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "warren-scout",
+   "name": "Warren Scout",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "buck-brawler",
+   "name": "Buck Brawler",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "hanging-loafer",
+   "name": "Hanging Loafer",
+   "icon": "🦥",
+   "creature": true,
+   "animal": "sloth",
+   "group": "sloth",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "icon": "🦥",
+   "creature": true,
+   "animal": "sloth",
+   "group": "sloth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pond-paddler",
+   "name": "Pond Paddler",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "mallard",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "icon": "🦣",
+   "creature": true,
+   "animal": "ape",
+   "group": "ape",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "icon": "🦂",
+   "creature": true,
+   "animal": "widow spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "icon": "🐋",
+   "creature": true,
+   "animal": "orca",
+   "group": "dolphin",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "porcupine",
+   "group": "porcupine",
+   "subtype": null,
+   "how": "icon",
+   "note": "archetype Porcupine"
+  },
+  {
+   "id": "stone-turtle-warden",
+   "name": "Stone Turtle Warden",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "name": "Pack Wolf Reaver",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "raven-hexcaller",
+   "name": "Raven Hexcaller",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "raven",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "hawk",
+   "group": "hawk",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "shrine-acolyte",
+   "name": "Shrine Acolyte",
+   "icon": "🙏",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "spirit",
+   "how": "art",
+   "note": "a pink shrine kitten"
+  },
+  {
+   "id": "shrine-high-priest",
+   "name": "Shrine High Priest",
+   "icon": "🙏",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": "spirit",
+   "how": "art",
+   "note": "a many-tailed shrine fox"
+  },
+  {
+   "id": "blessed-avatar",
+   "name": "Blessed Avatar",
+   "icon": "🙏",
+   "creature": true,
+   "animal": "deer",
+   "group": "deer",
+   "subtype": "spirit",
+   "how": "art",
+   "note": "a white stag"
+  },
+  {
+   "id": "hollow-oath-keeper",
+   "name": "Hollow Oath-Keeper",
+   "icon": "🌳",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": "spirit",
+   "how": "art",
+   "note": "a wooden salamander with a glowing face (Flora)"
+  },
+  {
+   "id": "bone-diviner",
+   "name": "Bone Diviner",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "raven",
+   "group": "crow",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "insect-swarmling",
+   "name": "Insect Swarmling",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": "structure",
+   "how": "icon"
+  },
+  {
+   "id": "nest",
+   "name": "Nest",
+   "icon": "🪺",
+   "creature": true,
+   "animal": "wasp",
+   "group": "wasp",
+   "subtype": "structure",
+   "how": "art",
+   "note": "a paper wasp nest (species Insect)"
+  },
+  {
+   "id": "howler-monkey",
+   "name": "Howler Monkey",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "howler monkey",
+   "group": "monkey",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "jaguar-stalker",
+   "name": "Jaguar Stalker",
+   "icon": "🐆",
+   "creature": true,
+   "animal": "jaguar",
+   "group": "big cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "toucan-courier",
+   "name": "Toucan Courier",
+   "icon": "🦜",
+   "creature": true,
+   "animal": "toucan",
+   "group": "toucan",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "poison-dart-frog",
+   "name": "Poison Dart Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "strangler-vine",
+   "name": "Strangler Vine",
+   "icon": "🌿",
+   "creature": true,
+   "animal": "snake",
+   "group": "snake",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a tree face; proposed: a snake (\"load-bearing\" coils)"
+  },
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "icon": "🦒",
+   "creature": true,
+   "animal": "giraffe",
+   "group": "giraffe",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "icon": "🐆",
+   "creature": true,
+   "animal": "cheetah",
+   "group": "big cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "hyena",
+   "group": "hyena",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "termite-mound",
+   "name": "Termite Mound",
+   "icon": "🏔️",
+   "creature": true,
+   "animal": "termite",
+   "group": "termite",
+   "subtype": "structure",
+   "how": "name"
+  },
+  {
+   "id": "plains-zebra",
+   "name": "Plains Zebra",
+   "icon": "🦓",
+   "creature": true,
+   "animal": "zebra",
+   "group": "horse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "snowy owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tundra-musk-ox",
+   "name": "Tundra Musk Ox",
+   "icon": "🐂",
+   "creature": true,
+   "animal": "musk ox",
+   "group": "ox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "arctic-fox-raider",
+   "name": "Arctic Fox Raider",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "arctic fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "icon": "🦣",
+   "creature": true,
+   "animal": "mammoth",
+   "group": "elephant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "icon": "🐠",
+   "creature": true,
+   "animal": "clownfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "moray eel",
+   "group": "eel",
+   "subtype": null,
+   "how": "name",
+   "note": "species says Cnidarian; a moray is a fish",
+   "speciesNote": "species Cnidarian; a moray eel is a fish (Fish)"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "sea turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "icon": "🪸",
+   "creature": true,
+   "animal": "coral",
+   "group": "coral",
+   "subtype": "structure",
+   "how": "name",
+   "note": "coral polyps are animals"
+  },
+  {
+   "id": "mountain-goat-climber",
+   "name": "Mountain Goat Climber",
+   "icon": "🐐",
+   "creature": true,
+   "animal": "mountain goat",
+   "group": "goat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "alpine-avalanche",
+   "name": "Alpine Avalanche",
+   "icon": "🏔️",
+   "creature": true,
+   "animal": "polar bear",
+   "group": "bear",
+   "subtype": "elemental",
+   "how": "art",
+   "note": "snow rolling down as a white bear"
+  },
+  {
+   "id": "rockslide-ram",
+   "name": "Rockslide Ram",
+   "icon": "🐏",
+   "creature": true,
+   "animal": "ram",
+   "group": "sheep",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "icon": "🦤",
+   "creature": true,
+   "animal": "condor",
+   "group": "vulture",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "icon": "🩸",
+   "creature": true,
+   "animal": "leech",
+   "group": "leech",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "icon": "🐊",
+   "creature": true,
+   "animal": "alligator",
+   "group": "crocodile",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mire-witch-heron",
+   "name": "Mire Witch-Heron",
+   "icon": "🪶",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "marsh-gas-toad",
+   "name": "Marsh Gas Toad",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "toad",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "icon": "🌳",
+   "creature": true,
+   "animal": "alligator",
+   "group": "crocodile",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a root face in the water; proposed: an alligator (lurks in the swamp)"
+  },
+  {
+   "id": "cave-bat-swarm",
+   "name": "Cave Bat Swarm",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "cavefish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Golem",
+   "icon": "🗿",
+   "creature": true,
+   "animal": "gorilla",
+   "group": "ape",
+   "subtype": "construct",
+   "how": "proposed",
+   "note": "art is a crystal cave golem; proposed: a gorilla"
+  },
+  {
+   "id": "glowworm-cluster",
+   "name": "Glowworm Cluster",
+   "icon": "✨",
+   "creature": true,
+   "animal": "glowworm",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "icon": "🐻",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": "elemental",
+   "how": "name"
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "condor",
+   "group": "vulture",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "icon": "🦂",
+   "creature": true,
+   "animal": "scorpion",
+   "group": "scorpion",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "lynx",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "elk",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "icon": "🌰",
+   "creature": true,
+   "animal": "pangolin",
+   "group": "pangolin",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a pinecone with eyes; proposed: a pangolin (scales like a cone)"
+  },
+  {
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "hare",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "timber-wolf-pack",
+   "name": "Timber Wolf Pack Leader",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "icon": "🕊️",
+   "creature": true,
+   "animal": "gull",
+   "group": "gull",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "eel",
+   "group": "eel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "barnacle",
+   "group": "barnacle",
+   "subtype": "structure",
+   "how": "name"
+  },
+  {
+   "id": "pelican-diver",
+   "name": "Pelican Diver",
+   "icon": "🦩",
+   "creature": true,
+   "animal": "pelican",
+   "group": "pelican",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "mudskipper",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "monitor lizard",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "fiddler crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mangrove-kingfisher",
+   "name": "Mangrove Kingfisher",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "kingfisher",
+   "group": "kingfisher",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "leech",
+   "group": "leech",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "icon": "🗡️",
+   "creature": true,
+   "animal": "lizard",
+   "group": "lizard",
+   "subtype": "elemental",
+   "how": "art",
+   "note": "a lava lizard"
+  },
+  {
+   "id": "war-drum-mandrill",
+   "name": "War-Drum Mandrill",
+   "icon": "🥁",
+   "creature": true,
+   "animal": "mandrill",
+   "group": "monkey",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "feral-tuskboar",
+   "name": "Feral Tuskboar",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ravenous-wolverine",
+   "name": "Ravenous Wolverine",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "wolverine",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "trickster-fox",
+   "name": "Trickster Fox",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "old-growth-tortoise",
+   "name": "Old-Growth Tortoise",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "tortoise",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "shimmerwing-stag",
+   "name": "Shimmerwing Stag",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "deer",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "hermit crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "reef-manta-glider",
+   "name": "Reef Manta Glider",
+   "icon": "🐡",
+   "creature": true,
+   "animal": "manta ray",
+   "group": "ray",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "narwhal-lancer",
+   "name": "Narwhal Lancer",
+   "icon": "🐋",
+   "creature": true,
+   "animal": "narwhal",
+   "group": "whale",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "icon": "🐳",
+   "creature": true,
+   "animal": "humpback whale",
+   "group": "whale",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "jackal",
+   "group": "jackal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sandstorm-roc",
+   "name": "Sandstorm Roc",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": "mythic",
+   "how": "icon",
+   "note": "the roc: a giant eagle"
+  },
+  {
+   "id": "frost-hare-sprinter",
+   "name": "Frost Hare Sprinter",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "hare",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "name": "Glacier Wolf Pack",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "porcupine",
+   "group": "porcupine",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "porcupine",
+   "group": "porcupine",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "icon": "🦝",
+   "creature": true,
+   "animal": "raccoon",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "icon": "🦝",
+   "creature": true,
+   "animal": "raccoon",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "honey badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "badger-trench-digger",
+   "name": "Badger Trench Digger",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cuttlefish-illusionist",
+   "name": "Cuttlefish Illusionist",
+   "icon": "🦑",
+   "creature": true,
+   "animal": "cuttlefish",
+   "group": "cuttlefish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "name": "Slowpoke Sentinel",
+   "icon": "🦥",
+   "creature": true,
+   "animal": "sloth",
+   "group": "sloth",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "canopy-sloth-guardian",
+   "name": "Canopy Sloth Guardian",
+   "icon": "🦥",
+   "creature": true,
+   "animal": "sloth",
+   "group": "sloth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "duckling-squadron",
+   "name": "Duckling Squadron",
+   "icon": "🐤",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "migration-leader",
+   "name": "Migration Leader",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd",
+   "icon": "🐕‍🦺",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "icon": "🐈‍⬛",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pack-rat-looter",
+   "name": "Pack Rat Looter",
+   "icon": "🐀",
+   "creature": true,
+   "animal": "pack rat",
+   "group": "rat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "hare",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "shrine-bell-ringer",
+   "name": "Shrine Bell-Ringer",
+   "icon": "🔔",
+   "creature": true,
+   "animal": "sparrow",
+   "group": "songbird",
+   "subtype": "spirit",
+   "how": "art",
+   "note": "a sparrow ringing the shrine bell"
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "jackal",
+   "group": "jackal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Titan",
+   "icon": "🗿",
+   "creature": true,
+   "animal": "gorilla",
+   "group": "ape",
+   "subtype": "elemental",
+   "how": "proposed",
+   "note": "art is a hunched lava golem; proposed: a gorilla (its stance)"
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "phoenix",
+   "group": "bird",
+   "subtype": "mythic",
+   "how": "name",
+   "note": "a firebird"
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "leech",
+   "group": "leech",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "coral-current-eel",
+   "name": "Coral Current Eel",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "eel",
+   "group": "eel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "name": "Frost Thistle Lynx",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "lynx",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "jackal",
+   "group": "jackal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "icon": "🐂",
+   "creature": true,
+   "animal": "yak",
+   "group": "ox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "electric eel",
+   "group": "eel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "hornet",
+   "group": "wasp",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "tortoise",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "maggot-swarmling",
+   "name": "Maggot",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "maggot",
+   "group": "fly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "icon": "💀",
+   "creature": true,
+   "animal": "maggot",
+   "group": "fly",
+   "subtype": null,
+   "how": "art",
+   "note": "a log full of maggots (species Annelid)",
+   "speciesNote": "species Annelid; its art and name are maggots, fly larvae (Insect)"
+  },
+  {
+   "id": "king-maker",
+   "name": "King Maker",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "test-training-dummy",
+   "name": "Training Dummy",
+   "icon": "🎯",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-punching-bag",
+   "name": "Punching Bag",
+   "icon": "🥊",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-glass-cannon",
+   "name": "Glass Cannon",
+   "icon": "💥",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-kitchen-sink",
+   "name": "Kitchen Sink",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-training-king",
+   "name": "Training King",
+   "icon": "🤴",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "mink",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "hyena",
+   "group": "hyena",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "newt",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "icon": "🦟",
+   "creature": true,
+   "animal": "gnat",
+   "group": "fly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glasswing-moth",
+   "name": "Glasswing Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "frostmoon-howler",
+   "name": "Frostmoon Howler",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chapel-tortoise",
+   "name": "Chapel Tortoise",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "tortoise",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "weathervane-swift",
+   "name": "Weathervane Swift",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "swift",
+   "group": "swift",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "honey bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "minnow",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "trout",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "carp",
+   "group": "fish",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "type",
+   "base": true
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "type",
+   "base": true
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Fledgling",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Dominion Nestguard",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "icon": "🪨",
+   "creature": true,
+   "animal": "mole",
+   "group": "mole",
+   "subtype": null,
+   "how": "name",
+   "speciesNote": "species Rodent; moles are not rodents (Mammal)"
+  },
+  {
+   "id": "test-swipe-filler",
+   "name": "Fork Filler",
+   "icon": "🪶",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-poison",
+   "name": "Test: Poison",
+   "icon": "☠️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-armor",
+   "name": "Test: Armor",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-thorns",
+   "name": "Test: Thorns",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-swipe",
+   "name": "Test: Fork",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-sweep",
+   "name": "Test: Sweep",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-rage",
+   "name": "Test: Rage",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-expose",
+   "name": "Test: Expose",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-guardian",
+   "name": "Test: Guardian",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-quick",
+   "name": "Test: Quick",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-reload",
+   "name": "Test: Reload",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-shell",
+   "name": "Test: Shell",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-stealth",
+   "name": "Test: Stealth",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-evasive",
+   "name": "Test: Evasive",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-crit",
+   "name": "Test: Crit",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-fester",
+   "name": "Test: Fester",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-rupture",
+   "name": "Test: Rupture",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-bleed",
+   "name": "Test: Bleed",
+   "icon": "🩸",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-skyfall",
+   "name": "Test: Skyfall",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-esprit",
+   "name": "Test: Esprit",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-regen",
+   "name": "Test: Regeneration",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-stun-on-hit",
+   "name": "Test: Stun",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-pierce",
+   "name": "Test: Puncture",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-gash",
+   "name": "Test: Gash",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-overwhelm",
+   "name": "Test: Overwhelm",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-berserk",
+   "name": "Test: Berserk",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-bulwark",
+   "name": "Test: Bulwark",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-reflect",
+   "name": "Test: Reflect",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-momentum",
+   "name": "Test: Momentum",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-bloom",
+   "name": "Test: Bloom",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-ambush",
+   "name": "Test: Ambush",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-siege",
+   "name": "Test: Siege",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-corrode",
+   "name": "Test: Corrode",
+   "icon": "🦠",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-inherent-darkness",
+   "name": "Test: Inherent Darkness",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-core-evil",
+   "name": "Test: Core Evil",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-frenzy",
+   "name": "Test: Frenzy",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-rend",
+   "name": "Test: Pierce",
+   "icon": "🧪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-flying",
+   "name": "Test: Flying",
+   "icon": "🪽",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-earthquake",
+   "name": "Test: Earthquake",
+   "icon": "🌋",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-king-slayer",
+   "name": "Test: King Slayer",
+   "icon": "👑",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-explode",
+   "name": "Test: Explode",
+   "icon": "💣",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-freeze",
+   "name": "Test: Freeze",
+   "icon": "🧊",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-sleep",
+   "name": "Test: Sleep",
+   "icon": "😴",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-paralyze",
+   "name": "Test: Paralyze",
+   "icon": "🥴",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-blind",
+   "name": "Test: Blind",
+   "icon": "🙈",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-shock",
+   "name": "Test: Shock",
+   "icon": "⚡",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-chained",
+   "name": "Test: Chained",
+   "icon": "⛓️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-render",
+   "name": "Test: Render",
+   "icon": "📉",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-revive",
+   "name": "Test: Revivificated",
+   "icon": "✨",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-on-death-spawn",
+   "name": "Test: On Death: Spawn",
+   "icon": "🪦",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-trigger-onspawn-strike",
+   "name": "Trigger Test: Spawn Strike",
+   "icon": "🎯",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-trigger-perturn-heal",
+   "name": "Trigger Test: Mender",
+   "icon": "💚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "test-skill-stagger",
+   "name": "Test: Stagger",
+   "icon": "💢",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "bramblewood-bonebreaker",
+   "name": "Bonebreaker",
+   "icon": "🦴",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "bee-tank",
+   "name": "Big Bee",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "bee",
+   "group": "bee",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "wandering-traveller",
+   "name": "Wandering Traveller",
+   "icon": "🧳",
+   "creature": true,
+   "animal": "rat",
+   "group": "rat",
+   "subtype": null,
+   "how": "art",
+   "note": "a grey rat with a bandana and pack"
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "straw-training-dummy",
+   "name": "Straw Training Dummy",
+   "icon": "🎯",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "frog-imp",
+   "name": "Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": "conjured",
+   "how": "name",
+   "note": "the plague of frogs"
+  },
+  {
+   "id": "fly-imp",
+   "name": "Fly",
+   "icon": "🪰",
+   "creature": true,
+   "animal": "fly",
+   "group": "fly",
+   "subtype": "conjured",
+   "how": "name",
+   "note": "the plague of flies"
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "icon": "🐌",
+   "creature": true,
+   "animal": "snail",
+   "group": "snail",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hedgehog-scout",
+   "name": "Hedgehog Scout",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "pill bug",
+   "group": "woodlouse",
+   "subtype": null,
+   "how": "name",
+   "note": "a woodlouse (species Insect)",
+   "speciesNote": "species Insect; a pill bug is a woodlouse, a crustacean (Crustacean)"
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "sparrow",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "earthworm",
+   "group": "worm",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "icon": "🐁",
+   "creature": true,
+   "animal": "dormouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "guppy",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "isopod",
+   "group": "woodlouse",
+   "subtype": null,
+   "how": "art",
+   "note": "a round cave crustacean with feelers"
+  },
+  {
+   "id": "blizzard",
+   "name": "Blizzard",
+   "icon": "🌨️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "heatwave",
+   "name": "Heatwave",
+   "icon": "🔥",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "spring-rain",
+   "name": "Spring Rain",
+   "icon": "🌧️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "thick-fog",
+   "name": "Thick Fog",
+   "icon": "🌫️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "full-moon",
+   "name": "Full Moon",
+   "icon": "🌕",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "courier-pigeon",
+   "name": "Courier Pigeon",
+   "icon": "🕊️",
+   "creature": true,
+   "animal": "pigeon",
+   "group": "pigeon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "echo-keeper",
+   "name": "Echo Keeper",
+   "icon": "🕯️",
+   "creature": true,
+   "animal": "crow",
+   "group": "crow",
+   "subtype": "spirit",
+   "how": "art",
+   "note": "a crow among candles"
+  },
+  {
+   "id": "marsh-wisp",
+   "name": "Marsh Wisp",
+   "icon": "👻",
+   "creature": true,
+   "animal": "newt",
+   "group": "salamander",
+   "subtype": "ghost",
+   "how": "proposed",
+   "note": "art is a blue wisp; proposed: a newt (the marsh it haunts)"
+  },
+  {
+   "id": "bog-revenant",
+   "name": "Bog Revenant",
+   "icon": "🧟",
+   "creature": true,
+   "animal": "bog turtle",
+   "group": "turtle",
+   "subtype": "undead",
+   "how": "proposed",
+   "note": "art is a mossy drowned shape; proposed: a bog turtle (\"the mire keeps what it drowns\")"
+  },
+  {
+   "id": "the-unremembered",
+   "name": "The Unremembered",
+   "icon": "🕯️",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": "ghost",
+   "how": "proposed",
+   "note": "art is a faceless water-shade; proposed: a heron (the swamp's tall silhouette)"
+  },
+  {
+   "id": "cinder-imp",
+   "name": "Cinder Imp",
+   "icon": "😈",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a fire fox-imp"
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "icon": "👺",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a grey ash cat-imp"
+  },
+  {
+   "id": "pit-glutton",
+   "name": "Pit Glutton",
+   "icon": "🫦",
+   "creature": true,
+   "animal": "toad",
+   "group": "frog",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a fire toad"
+  },
+  {
+   "id": "brimstone-hound",
+   "name": "Brimstone Hound",
+   "icon": "🐕‍🦺",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a black hellhound (Devil type)"
+  },
+  {
+   "id": "blackmass-acolyte",
+   "name": "Blackmass Acolyte",
+   "icon": "🕯️",
+   "creature": true,
+   "animal": "rat",
+   "group": "rat",
+   "subtype": "fiend",
+   "how": "proposed",
+   "note": "art is a hooded shadow; proposed: a rat (the cult's hooded acolyte)"
+  },
+  {
+   "id": "dread-bell",
+   "name": "Dread Bell",
+   "icon": "🔔",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": "fiend",
+   "how": "proposed",
+   "note": "art is a horned bell with eyes; proposed: a bat (horns like ears, rings in the dark)"
+  },
+  {
+   "id": "tithe-collector",
+   "name": "Tithe Collector",
+   "icon": "🧾",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a black cat collecting coins"
+  },
+  {
+   "id": "lurking-dread",
+   "name": "Lurking Dread",
+   "icon": "👁️",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a black cat-shape in the roots"
+  },
+  {
+   "id": "puppeteer-imp",
+   "name": "Puppeteer Imp",
+   "icon": "🎭",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a fox pulling golden strings"
+  },
+  {
+   "id": "the-sixfold",
+   "name": "The Sixfold",
+   "icon": "👹",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a horned black cat-demon in a ring of runes"
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type",
+   "base": true
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "pigeon",
+   "group": "pigeon",
+   "subtype": null,
+   "how": "proposed",
+   "note": "a cross-eyed little bird (🐦); proposed: a pigeon"
+  },
+  {
+   "id": "chapel-sparrow",
+   "name": "Chapel Sparrow",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "sparrow",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "candle-moth",
+   "name": "Candle Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hymn-wren",
+   "name": "Hymn Wren",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "wren",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "abbey-goose",
+   "name": "Abbey Goose",
+   "icon": "🪿",
+   "creature": true,
+   "animal": "goose",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "golden-magpie",
+   "name": "Golden Magpie",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "magpie",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "friar-badger",
+   "name": "Friar Badger",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "storm-heron",
+   "name": "Storm Heron",
+   "icon": "🪶",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": "elemental",
+   "how": "name",
+   "note": "species Bird + Elemental"
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cathedral-eagle",
+   "name": "Cathedral Eagle",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "missingno",
+   "name": "MissingNo.",
+   "icon": "▦",
+   "creature": true,
+   "animal": "bird",
+   "group": "bird",
+   "subtype": "glitch",
+   "how": "proposed",
+   "note": "species Bird; the art reads as a pixel cat: owner call",
+   "speciesNote": "species Bird; the art reads as a pixel cat"
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name",
+   "note": "with Kip the monkey on its back"
+  },
+  {
+   "id": "weredog",
+   "name": "Weredog",
+   "icon": "🐕‍🦺",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": "were",
+   "how": "name"
+  },
+  {
+   "id": "parish-sergeant",
+   "name": "Parish Sergeant",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "land-tiller",
+   "name": "Land Tiller",
+   "icon": "🐹",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "village-miller",
+   "name": "Village Miller",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "night-watchman",
+   "name": "Night Watchman",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "otter-ferryman",
+   "name": "Otter Ferryman",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "otter-netmender",
+   "name": "Otter Netmender",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "dawn-bellringer",
+   "name": "Dawn Bellringer",
+   "icon": "🔔",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "flavor"
+  },
+  {
+   "id": "summoned-shield",
+   "name": "Guardian Shield",
+   "icon": "🛡️",
+   "creature": true,
+   "animal": "pangolin",
+   "group": "pangolin",
+   "subtype": "construct",
+   "how": "art",
+   "note": "a golden pangolin curled into a shield"
+  },
+  {
+   "id": "shieldbearer-hound",
+   "name": "Shieldbearer Hound",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "icon": "🗡️",
+   "creature": true,
+   "animal": "stoat",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "two-headed-calf",
+   "name": "Two-Headed Calf",
+   "icon": "🐄",
+   "creature": true,
+   "animal": "cow",
+   "group": "ox",
+   "subtype": "mutant",
+   "how": "name"
+  },
+  {
+   "id": "upside-down-bat",
+   "name": "Upside-Down Bat",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "teatime-toad",
+   "name": "Teatime Toad",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "toad",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mirror-moth",
+   "name": "Mirror Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "icon": "🐌",
+   "creature": true,
+   "animal": "snail",
+   "group": "snail",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glass-golem",
+   "name": "Glass Golem",
+   "icon": "🫙",
+   "creature": true,
+   "animal": "armadillo",
+   "group": "armadillo",
+   "subtype": "construct",
+   "how": "art",
+   "note": "an armadillo with a glass shell"
+  },
+  {
+   "id": "wrong-way-salmon",
+   "name": "Wrong-Way Salmon",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "salmon",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "inside-out-hedgehog",
+   "name": "Inside-Out Hedgehog",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "talon-archer",
+   "name": "Talon Archer",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "hawk",
+   "group": "hawk",
+   "subtype": null,
+   "how": "icon",
+   "note": "🦅 with a bow"
+  },
+  {
+   "id": "sergeant-bramblefox",
+   "name": "Sergeant Bramblefox",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "thistle-baron",
+   "name": "The Thistle Baron",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "old-shell",
+   "name": "The Old Shell",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "sea turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "flavor",
+   "note": "\"came up the beach\""
+  },
+  {
+   "id": "drowned-matriarch",
+   "name": "The Drowned Matriarch",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "yeti-chieftain",
+   "name": "Yeti Chieftain",
+   "icon": "🦍",
+   "creature": true,
+   "animal": "yeti",
+   "group": "ape",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "echo-matriarch",
+   "name": "Echo Matriarch",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "pride-queen",
+   "name": "Pride Queen",
+   "icon": "🦁",
+   "creature": true,
+   "animal": "lion",
+   "group": "big cat",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "name": "Wolfsbane Alpha",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "reef-admiral",
+   "name": "Reef Admiral",
+   "icon": "🐠",
+   "creature": true,
+   "animal": "clownfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "icon",
+   "note": "a reef fish (🐠)"
+  },
+  {
+   "id": "heron-hag",
+   "name": "The Heron Hag",
+   "icon": "🦩",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "shell-cracker",
+   "name": "Shell-Cracker",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "rivergate-recruit",
+   "name": "Rivergate Recruit",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "riverstone-slinger",
+   "name": "Riverstone Slinger",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "net-thrower",
+   "name": "Net Thrower",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "optio-of-the-ford",
+   "name": "Optio of the Ford",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "petal-fletcher",
+   "name": "Petal Fletcher",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "nectar-sipper",
+   "name": "Nectar Sipper",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "sunfeather-scout",
+   "name": "Sunfeather Scout",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "lantern-bearer",
+   "name": "Lantern Bearer",
+   "icon": "🏮",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "hush-wing-spy",
+   "name": "Hush-Wing Spy",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "ferry-toll-frog",
+   "name": "Ferry Toll-Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "riverside-peddler",
+   "name": "Riverside Peddler",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "ford-kingfisher",
+   "name": "Ford Kingfisher",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "kingfisher",
+   "group": "kingfisher",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "truce-heron",
+   "name": "Truce Heron",
+   "icon": "🪶",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "icon": "🌳",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is the willow; proposed: a heron, like the Elder Willow"
+  },
+  {
+   "id": "iron-shard",
+   "name": "Iron Shard",
+   "icon": "⛓️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "river-pearl",
+   "name": "River Pearl",
+   "icon": "🦪",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "ember-core",
+   "name": "Ember Core",
+   "icon": "🔥",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "dragon-scale",
+   "name": "Dragon Scale",
+   "icon": "🐉",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "bark-buckler",
+   "name": "Bark Buckler",
+   "icon": "🛡️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "netmender-harpoon",
+   "name": "Netmender's Harpoon",
+   "icon": "🔱",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "quill-spear",
+   "name": "Quill Spear",
+   "icon": "🗡️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "sunfeather-plume",
+   "name": "Sunfeather Plume",
+   "icon": "🪶",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "siege-hammer",
+   "name": "Siege Hammer",
+   "icon": "🔨",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "dragonscale-mail",
+   "name": "Dragonscale Mail",
+   "icon": "🐉",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "puddle-changeling",
+   "name": "Puddle Changeling",
+   "icon": "🎭",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": "changeling",
+   "how": "art",
+   "note": "a fox at a puddle (\"looked like a frog yesterday\")"
+  },
+  {
+   "id": "hedge-changeling",
+   "name": "Hedge Changeling",
+   "icon": "🎭",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "changeling",
+   "how": "art",
+   "note": "a cat in the hedge"
+  },
+  {
+   "id": "glass-changeling",
+   "name": "Glass Changeling",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": "changeling",
+   "how": "art",
+   "note": "a fox with glass butterfly wings"
+  },
+  {
+   "id": "tempering-stone",
+   "name": "Tempering Stone",
+   "icon": "🪨",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "willow-o-wisp",
+   "name": "Willow-o'-Wisp",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": "spirit",
+   "how": "flavor",
+   "note": "\"a beetle made of shadow\""
+  },
+  {
+   "id": "cinder-stoker",
+   "name": "Cinder Stoker",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": null,
+   "how": "flavor",
+   "note": "crawls into the forge-pits (species Amphibian)"
+  },
+  {
+   "id": "pack-mule",
+   "name": "Pack Mule",
+   "icon": "🫏",
+   "creature": true,
+   "animal": "mule",
+   "group": "horse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tailwind",
+   "name": "Tailwind",
+   "icon": "🍃",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "bramble-gauntlet",
+   "name": "Bramble Gauntlet",
+   "icon": "🧤",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "icon": "🪵",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": "structure",
+   "how": "proposed",
+   "note": "a wall of stakes; proposed: a hedgehog (all spines)"
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "conch",
+   "group": "snail",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "hermit crab",
+   "group": "crab",
+   "subtype": null,
+   "how": "icon",
+   "note": "species Crustacean, blowing a conch"
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "icon": "🗿",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": "construct",
+   "how": "art",
+   "note": "a green malachite beetle"
+  },
+  {
+   "id": "irradiated-axolotl",
+   "name": "Irradiated Axolotl",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "axolotl",
+   "group": "salamander",
+   "subtype": "mutant",
+   "how": "name"
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "worm",
+   "group": "worm",
+   "subtype": "mutant",
+   "how": "art",
+   "note": "a glowing green worm"
+  },
+  {
+   "id": "irradiated-couatl",
+   "name": "Irradiated Couatl",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "snake",
+   "group": "snake",
+   "subtype": "mythic",
+   "how": "flavor",
+   "note": "the feathered serpent"
+  },
+  {
+   "id": "heartwood-treant",
+   "name": "Heartwood Treant",
+   "icon": "🌳",
+   "creature": true,
+   "animal": "bear",
+   "group": "bear",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a wooden giant; proposed: a bear"
+  },
+  {
+   "id": "quarry-troll",
+   "name": "Quarry Troll",
+   "icon": "🪨",
+   "creature": true,
+   "animal": "donkey",
+   "group": "horse",
+   "subtype": "construct",
+   "how": "art",
+   "note": "a donkey of quarried stone"
+  },
+  {
+   "id": "iron-warden",
+   "name": "Iron Warden",
+   "icon": "🛡️",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": "construct",
+   "how": "proposed",
+   "note": "art is a walking suit of iron; proposed: a badger (the forge folk)"
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ore-smelter-mole",
+   "name": "Ore-Smelter Mole",
+   "icon": "⚒️",
+   "creature": true,
+   "animal": "mole",
+   "group": "mole",
+   "subtype": null,
+   "how": "name",
+   "speciesNote": "species Rodent; moles are not rodents (Mammal)"
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "name": "Sworn Shieldbearer",
+   "icon": "🛡️",
+   "creature": true,
+   "animal": "stoat",
+   "group": "weasel",
+   "subtype": null,
+   "how": "art",
+   "note": "a white stoat with a shield"
+  },
+  {
+   "id": "crown-pretender",
+   "name": "Crown Pretender",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rainmaker-frog",
+   "name": "Rainmaker Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "icon": "🦟",
+   "creature": true,
+   "animal": "pond skater",
+   "group": "water bug",
+   "subtype": null,
+   "how": "flavor"
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "hare",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "name": "Frostbitten Wolverine",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "wolverine",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "icon": "💀",
+   "creature": true,
+   "animal": "vulture",
+   "group": "vulture",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "icon": "🐉",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "icon": "🐻‍❄️",
+   "creature": true,
+   "animal": "polar bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "flavor"
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "icon": "🦴",
+   "creature": true,
+   "animal": "hyena",
+   "group": "hyena",
+   "subtype": "undead",
+   "how": "art",
+   "note": "a burnt canid skeleton; hyena by the skull"
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "icon": "💀",
+   "creature": true,
+   "animal": "horse",
+   "group": "horse",
+   "subtype": "undead",
+   "how": "art",
+   "note": "a horse skeleton"
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "icon": "👻",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": "ghost",
+   "how": "art",
+   "note": "a wolf of flame"
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "icon": "🌑",
+   "creature": true,
+   "animal": "raven",
+   "group": "crow",
+   "subtype": "ghost",
+   "how": "proposed",
+   "note": "no art yet; proposed: a raven (\"brings the shadow with it\")"
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "icon": "🧙",
+   "creature": true,
+   "animal": "lizard",
+   "group": "lizard",
+   "subtype": "undead",
+   "how": "art",
+   "note": "a skeletal horned lizard over lava"
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "icon": "⚔️",
+   "creature": true,
+   "animal": "boar",
+   "group": "boar",
+   "subtype": "undead",
+   "how": "art",
+   "note": "an armoured burning boar"
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "name": "Meerkat Wayfarer",
+   "icon": "🐾",
+   "creature": true,
+   "animal": "meerkat",
+   "group": "mongoose",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "abyssal-ink",
+   "name": "Abyssal Ink",
+   "icon": "🦑",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "strange-materia",
+   "name": "Strange Materia",
+   "icon": "🔮",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "creeper",
+   "name": "Creeper",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "pigeon",
+   "group": "pigeon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "marching-elephant",
+   "name": "Marching Elephant",
+   "icon": "🐘",
+   "creature": true,
+   "animal": "elephant",
+   "group": "elephant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "icon": "🦏",
+   "creature": true,
+   "animal": "rhino",
+   "group": "rhino",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "icon": "🪨",
+   "creature": true,
+   "animal": "vulture",
+   "group": "vulture",
+   "subtype": null,
+   "how": "flavor",
+   "note": "an Egyptian vulture"
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "newt",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": null,
+   "how": "icon",
+   "note": "quills (🦔)"
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "dung beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "elk",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "subterraneaner",
+   "name": "Subterraneaner",
+   "icon": "🕳️",
+   "creature": true,
+   "animal": "mole",
+   "group": "mole",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type",
+   "base": true
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type",
+   "base": true
+  },
+  {
+   "id": "otter-flag-bearer",
+   "name": "Otter Flag Bearer",
+   "icon": "🚩",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "otter-lantern-bearer",
+   "name": "Otter Lantern Bearer",
+   "icon": "🏮",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "riverbed-diver",
+   "name": "Riverbed Diver",
+   "icon": "🤿",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type",
+   "base": true
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "icon": "🪡",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "icon": "🪶",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type",
+   "note": "an Otter-and-Hummingbird envoy; the first species (Mustelid) wins"
+  },
+  {
+   "id": "trojan-raider",
+   "name": "Trojan Raider",
+   "icon": "🗡️",
+   "creature": true,
+   "animal": "raccoon",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "art",
+   "note": "a raccoon peeking out of the wooden horse"
+  },
+  {
+   "id": "nest-hatchling",
+   "name": "Nest Hatchling",
+   "icon": "🐣",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "triumvirate",
+   "name": "Triumphvirate",
+   "icon": "🦁",
+   "creature": true,
+   "animal": "lion",
+   "group": "big cat",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "inkcloud-squid",
+   "name": "Inkcloud Squid",
+   "icon": "🦑",
+   "creature": true,
+   "animal": "squid",
+   "group": "squid",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "abyss-lantern-squid",
+   "name": "Abyss Lantern Squid",
+   "icon": "🦑",
+   "creature": true,
+   "animal": "squid",
+   "group": "squid",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "vampire-squid",
+   "name": "Vampire Squid",
+   "icon": "🦑",
+   "creature": true,
+   "animal": "vampire squid",
+   "group": "squid",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "goliath-broodmother",
+   "name": "Goliath Broodmother",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "cave-centipede",
+   "name": "Cave Centipede",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "centipede",
+   "group": "centipede",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "millipede",
+   "group": "millipede",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "thorny devil",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fennec fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "meerkat",
+   "group": "mongoose",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "buzzed-chipmunk",
+   "name": "Buzzed Chipmunk",
+   "icon": "☕",
+   "creature": true,
+   "animal": "chipmunk",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "scree-goat",
+   "name": "Scree Goat",
+   "icon": "🐐",
+   "creature": true,
+   "animal": "mountain goat",
+   "group": "goat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "bombardier beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fox-sharpshot",
+   "name": "Fox Sharpshot",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "icon": "🎈",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "frilled lizard",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "monitor-rambler",
+   "name": "Monitor Rambler",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "monitor lizard",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "icon": "🧨",
+   "creature": true,
+   "animal": "pack rat",
+   "group": "rat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "helmeted-otter",
+   "name": "Helmeted Otter",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "butterfly",
+   "group": "butterfly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "gannet",
+   "group": "seabird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "icon": "🐊",
+   "creature": true,
+   "animal": "crocodile",
+   "group": "crocodile",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "marmot",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "meerkat",
+   "group": "mongoose",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "icon": "🪼",
+   "creature": true,
+   "animal": "jellyfish",
+   "group": "jellyfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "icon": "🪼",
+   "creature": true,
+   "animal": "jellyfish",
+   "group": "jellyfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "icon": "🐊",
+   "creature": true,
+   "animal": "caiman",
+   "group": "crocodile",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "mudpuppy",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "harbor seal",
+   "group": "seal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "stoat",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "icon": "🐛",
+   "creature": true,
+   "animal": "centipede",
+   "group": "centipede",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "gecko",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "olm",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "crow",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "jackal",
+   "group": "jackal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mirrorhide-mutant",
+   "name": "Mirrorhide Mutant",
+   "icon": "🧬",
+   "creature": true,
+   "animal": "goat",
+   "group": "goat",
+   "subtype": "mutant",
+   "how": "art",
+   "note": "a mountain goat"
+  },
+  {
+   "id": "growth-sprout",
+   "name": "Growth Sprout",
+   "icon": "🌱",
+   "creature": true,
+   "animal": "caterpillar",
+   "group": "caterpillar",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "art is a sprout; proposed: a caterpillar (\"every swarm counts it as one of its own\")"
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "minnow",
+   "group": "fish",
+   "subtype": null,
+   "how": "proposed",
+   "note": "a fish fry; proposed: a minnow"
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "wandering-mage",
+   "name": "Wandering Mage",
+   "icon": "🧙",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": null,
+   "how": "flavor",
+   "note": "\"a cat in a starry hat\""
+  },
+  {
+   "id": "egg-woodland",
+   "name": "Woodland Egg",
+   "icon": "🥚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "egg-bird",
+   "name": "Speckled Egg",
+   "icon": "🥚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "egg-otter",
+   "name": "River Bundle",
+   "icon": "🥚",
+   "creature": false,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "item",
+   "note": "the River Bundle hatches otters"
+  },
+  {
+   "id": "egg-scaly",
+   "name": "Leathery Egg",
+   "icon": "🥚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "egg-bug",
+   "name": "Cocoon",
+   "icon": "🥚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "egg-water",
+   "name": "Roe Pearl",
+   "icon": "🥚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "egg-beast",
+   "name": "Den Bundle",
+   "icon": "🥚",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "icon": "🌺",
+   "creature": true,
+   "animal": "carrion fly",
+   "group": "fly",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "a flower that smells of carcass; proposed: a carrion fly"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "icon": "🍄",
+   "creature": true,
+   "animal": "toad",
+   "group": "frog",
+   "subtype": "fungus",
+   "how": "proposed",
+   "note": "art is a puffball with a face; proposed: a toad (toadstool)"
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "icon": "🎣",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name",
+   "base": true
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "icon": "☕",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type",
+   "note": "Hummingbird + Bee types"
+  },
+  {
+   "id": "voltwing-bat",
+   "name": "Voltwing Bat",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hammerhead-shark",
+   "name": "Hammerhead Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "hammerhead shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ironback-gorilla",
+   "name": "Ironback Gorilla",
+   "icon": "🦍",
+   "creature": true,
+   "animal": "gorilla",
+   "group": "ape",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "icon": "🦝",
+   "creature": true,
+   "animal": "raccoon",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "blister beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "icon": "🦑",
+   "creature": true,
+   "animal": "squid",
+   "group": "squid",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "icon": "🪔",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "art"
+  },
+  {
+   "id": "baby-bat",
+   "name": "Baby Bat",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "capybara",
+   "group": "rodent",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "egg-red-dragon",
+   "name": "Red Dragon Egg",
+   "icon": "🥚",
+   "creature": false,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": null,
+   "how": "item",
+   "note": "it hatches the Red Dragon"
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "icon": "🐑",
+   "creature": true,
+   "animal": "sheep",
+   "group": "sheep",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "jay",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "dog",
+   "group": "dog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mongoose-duelist",
+   "name": "Mongoose Duelist",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "mongoose",
+   "group": "mongoose",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dhole-runner",
+   "name": "Dhole Runner",
+   "icon": "🐕",
+   "creature": true,
+   "animal": "dhole",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "dhole",
+   "group": "wolf",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "nightjar",
+   "group": "nightjar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "aye-aye-prowler",
+   "name": "Aye-aye Prowler",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "aye-aye",
+   "group": "primate",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hoopoe",
+   "group": "hoopoe",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "sunbittern",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "kinkajou",
+   "group": "raccoon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mudflat-godwit",
+   "name": "Mudflat Godwit",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "godwit",
+   "group": "wader",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "jerboa",
+   "group": "mouse",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "werebadger",
+   "name": "Werebadger",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "badger",
+   "group": "badger",
+   "subtype": "were",
+   "how": "name"
+  },
+  {
+   "id": "carrion-beetle",
+   "name": "Carrion Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "carrion beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "icon": "🐘",
+   "creature": true,
+   "animal": "elephant",
+   "group": "elephant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "icon": "🐀",
+   "creature": true,
+   "animal": "mole",
+   "group": "mole",
+   "subtype": null,
+   "how": "name",
+   "speciesNote": "species Rodent; moles are not rodents (Mammal)"
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "icon": "🐹",
+   "creature": true,
+   "animal": "pika",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tarantula-hawk",
+   "name": "Tarantula Hawk",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "tarantula hawk",
+   "group": "wasp",
+   "subtype": null,
+   "how": "name",
+   "note": "a spider-hunting wasp"
+  },
+  {
+   "id": "swordfish-spearman",
+   "name": "Swordfish Spearman",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "swordfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "icon": "🐙",
+   "creature": true,
+   "animal": "blue-ringed octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "pronghorn",
+   "group": "antelope",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "roadrunner",
+   "group": "roadrunner",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "box-turtle",
+   "name": "Box Turtle",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "box turtle",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "butterfly",
+   "group": "butterfly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "velvet-worm",
+   "name": "Velvet Worm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "velvet worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glowing-gecko",
+   "name": "Glowing Gecko",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "gecko",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "gloom-gibbon",
+   "name": "Gloom Gibbon",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "gibbon",
+   "group": "ape",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "icon": "🐈‍⬛",
+   "creature": true,
+   "animal": "margay",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "name": "Seed-cache Squirrel",
+   "icon": "🐿️",
+   "creature": true,
+   "animal": "squirrel",
+   "group": "squirrel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "leafcutter ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "icon": "🐸",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "flatworm",
+   "group": "worm",
+   "subtype": null,
+   "how": "name",
+   "note": "a planarian"
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "hagfish",
+   "group": "hagfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "icon": "⚡",
+   "creature": true,
+   "animal": "ray",
+   "group": "ray",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lichen-tortoise",
+   "name": "Lichen Tortoise",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "tortoise",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "icon": "🦊",
+   "creature": true,
+   "animal": "swift fox",
+   "group": "fox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "slow-loris",
+   "name": "Slow Loris",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "slow loris",
+   "group": "primate",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "hercules beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "icon": "🦟",
+   "creature": true,
+   "animal": "mayfly",
+   "group": "mayfly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "pangolin",
+   "group": "pangolin",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sawfish",
+   "name": "Sawfish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "sawfish",
+   "group": "ray",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "icon": "😈",
+   "creature": true,
+   "animal": "tasmanian devil",
+   "group": "marsupial",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mantis-shrimp",
+   "name": "Mantis Shrimp",
+   "icon": "🦐",
+   "creature": true,
+   "animal": "mantis shrimp",
+   "group": "shrimp",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fruit-bat-familiar",
+   "name": "Fruit-bat Familiar",
+   "icon": "🦇",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hellbender",
+   "name": "Hellbender",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "hellbender",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "woodpecker",
+   "group": "woodpecker",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "snow bunting",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "cobra",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "echidna-quillshot",
+   "name": "Echidna Quillshot",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "echidna",
+   "group": "monotreme",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "firefly-swarm",
+   "name": "Firefly Swarm",
+   "icon": "✨",
+   "creature": true,
+   "animal": "firefly",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "archerfish",
+   "name": "Archerfish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "archerfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "spitting spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "petrel",
+   "group": "seabird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "electric-catfish",
+   "name": "Electric Catfish",
+   "icon": "⚡",
+   "creature": true,
+   "animal": "electric catfish",
+   "group": "catfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "kestrel",
+   "group": "falcon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "icon": "🐐",
+   "creature": true,
+   "animal": "ibex",
+   "group": "goat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "icon": "🐋",
+   "creature": true,
+   "animal": "sperm whale",
+   "group": "whale",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "lizard",
+   "group": "lizard",
+   "subtype": null,
+   "how": "flavor",
+   "note": "\"not a dragon\""
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "armadillo",
+   "group": "armadillo",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "elephantnose fish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "piranha-shoal",
+   "name": "Piranha Shoal",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "piranha",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chilli-parrot",
+   "name": "Chilli Parrot",
+   "icon": "🦜",
+   "creature": true,
+   "animal": "parrot",
+   "group": "parrot",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "platypus",
+   "group": "monotreme",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cone-snail",
+   "name": "Cone Snail",
+   "icon": "🐌",
+   "creature": true,
+   "animal": "cone snail",
+   "group": "snail",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "lamprey",
+   "group": "lamprey",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "icon": "🐝",
+   "creature": true,
+   "animal": "paper wasp",
+   "group": "wasp",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "icon": "🦬",
+   "creature": true,
+   "animal": "bison",
+   "group": "ox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "weaver bird",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "anaconda",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tardigrade",
+   "name": "Tardigrade",
+   "icon": "🦠",
+   "creature": true,
+   "animal": "tardigrade",
+   "group": "tardigrade",
+   "subtype": null,
+   "how": "name",
+   "speciesNote": "species Insect; a tardigrade is a water bear, not an insect"
+  },
+  {
+   "id": "leaf-chameleon",
+   "name": "Leaf Chameleon",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "chameleon",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "oilbird",
+   "name": "Oilbird",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "oilbird",
+   "group": "nightjar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "skunk-gasser",
+   "name": "Skunk Gasser",
+   "icon": "🦨",
+   "creature": true,
+   "animal": "skunk",
+   "group": "skunk",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ice-fish",
+   "name": "Ice Fish",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "icefish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fire-hawk",
+   "name": "Fire Hawk",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "kite",
+   "group": "hawk",
+   "subtype": null,
+   "how": "name",
+   "note": "the fire hawks are kites that spread bushfires"
+  },
+  {
+   "id": "flagellant-vulture",
+   "name": "Flagellant Vulture",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "vulture",
+   "group": "vulture",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "vampire-finch",
+   "name": "Vampire Finch",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "finch",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "antlion",
+   "group": "antlion",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "leopard-seal",
+   "name": "Leopard Seal",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "leopard seal",
+   "group": "seal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "springbok-pronker",
+   "name": "Springbok Pronker",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "springbok",
+   "group": "antelope",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "icon": "🪼",
+   "creature": true,
+   "animal": "jellyfish",
+   "group": "jellyfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "geode-scorpion",
+   "name": "Geode Scorpion",
+   "icon": "🦂",
+   "creature": true,
+   "animal": "scorpion",
+   "group": "scorpion",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cleaner-wrasse",
+   "name": "Cleaner Wrasse",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "wrasse",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "icon": "🐆",
+   "creature": true,
+   "animal": "snow leopard",
+   "group": "leopard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lovebird",
+   "name": "Lovebird",
+   "icon": "🦜",
+   "creature": true,
+   "animal": "lovebird",
+   "group": "lovebird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "horned lizard",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "dromedary",
+   "name": "Dromedary",
+   "icon": "🐪",
+   "creature": true,
+   "animal": "camel",
+   "group": "camel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "marula-monkey",
+   "name": "Marula Monkey",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "vervet monkey",
+   "group": "monkey",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lyrebird-mimic",
+   "name": "Lyrebird Mimic",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "lyrebird",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chained-binturong",
+   "name": "Chained Binturong",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "binturong",
+   "group": "civet",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rimefire-salamander",
+   "name": "Rimefire Salamander",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": "elemental",
+   "how": "name"
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "icon": "🐐",
+   "creature": true,
+   "animal": "ibex",
+   "group": "goat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "name": "Ashwing Ptarmigan",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "ptarmigan",
+   "group": "ptarmigan",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "icon": "🐆",
+   "creature": true,
+   "animal": "snow leopard",
+   "group": "leopard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "icon": "🗿",
+   "creature": true,
+   "animal": "gorilla",
+   "group": "ape",
+   "subtype": "elemental",
+   "how": "proposed",
+   "note": "art is a half-ice, half-lava giant; proposed: a gorilla, like the Magma Titan"
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "icon": "🐘",
+   "creature": true,
+   "animal": "elephant",
+   "group": "elephant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "howdah-archers",
+   "name": "Howdah Archers",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "langur",
+   "group": "monkey",
+   "subtype": null,
+   "how": "flavor",
+   "note": "\"two langurs\""
+  },
+  {
+   "id": "testudo-tortoise",
+   "name": "Testudo Tortoise",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "tortoise",
+   "group": "turtle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "trebuchet-crew",
+   "name": "Trebuchet Crew",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "icon": "🐘",
+   "creature": true,
+   "animal": "elephant",
+   "group": "elephant",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "great-gate",
+   "name": "Great Gate",
+   "icon": "🚪",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": "structure",
+   "how": "proposed",
+   "note": "a gate; proposed: a duck (the Magnate's keep it guards)"
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry",
+   "icon": "🪿",
+   "creature": true,
+   "animal": "goose",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mallard-halberdier",
+   "name": "Mallard Halberdier",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "mallard",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "teal",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "heron",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "gilded-swan-knight",
+   "name": "Gilded Swan Knight",
+   "icon": "🦢",
+   "creature": true,
+   "animal": "swan",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "duck",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "icon": "🕸️",
+   "creature": true,
+   "animal": "orb-weaver spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "cottonmouth",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "icon": "🦔",
+   "creature": true,
+   "animal": "hedgehog",
+   "group": "hedgehog",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "icon": "🦉",
+   "creature": true,
+   "animal": "eagle owl",
+   "group": "owl",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "lammergeier",
+   "group": "vulture",
+   "subtype": null,
+   "how": "name",
+   "note": "a bearded vulture"
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "walrus",
+   "group": "walrus",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sea-cucumber",
+   "name": "Sea Cucumber",
+   "icon": "🥒",
+   "creature": true,
+   "animal": "sea cucumber",
+   "group": "sea cucumber",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "icon": "🌊",
+   "creature": true,
+   "animal": "whale",
+   "group": "whale",
+   "subtype": "mythic",
+   "how": "art",
+   "note": "a whale-shaped leviathan"
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "icon": "🐢",
+   "creature": true,
+   "animal": "tortoise",
+   "group": "turtle",
+   "subtype": "mythic",
+   "how": "art"
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "icon": "👺",
+   "creature": true,
+   "animal": "bat",
+   "group": "bat",
+   "subtype": "fiend",
+   "how": "art",
+   "note": "a bat-winged fire fiend"
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "icon": "🦞",
+   "creature": true,
+   "animal": "lobster",
+   "group": "lobster",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "cicada",
+   "group": "cicada",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "sandfish skink",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pale-oryx",
+   "name": "Pale Oryx",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "oryx",
+   "group": "antelope",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "icon": "🐀",
+   "creature": true,
+   "animal": "vole",
+   "group": "vole",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "mink",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish",
+   "icon": "🦞",
+   "creature": true,
+   "animal": "crayfish",
+   "group": "lobster",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "pine marten",
+   "group": "marten",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "woodcock",
+   "group": "wader",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "grass snake",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard",
+   "icon": "🐞",
+   "creature": true,
+   "animal": "ladybird",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "icon": "🐁",
+   "creature": true,
+   "animal": "shrew",
+   "group": "shrew",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "stag beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "slow-worm",
+   "group": "lizard",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "robin",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "icon": "🐁",
+   "creature": true,
+   "animal": "vole",
+   "group": "vole",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "icon": "🌰",
+   "creature": true,
+   "animal": "sea urchin",
+   "group": "urchin",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "icon": "⭐",
+   "creature": true,
+   "animal": "starfish",
+   "group": "starfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "oystercatcher",
+   "group": "wader",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sanderling",
+   "name": "Sanderling",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "sanderling",
+   "group": "wader",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "grey seal",
+   "group": "seal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "limpet",
+   "group": "limpet",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "icon": "🦜",
+   "creature": true,
+   "animal": "puffin",
+   "group": "seabird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "razorbill",
+   "group": "seabird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "icon": "🕊️",
+   "creature": true,
+   "animal": "kittiwake",
+   "group": "gull",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "peregrine falcon",
+   "group": "falcon",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "icon": "🪶",
+   "creature": true,
+   "animal": "fulmar",
+   "group": "seabird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "chough",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "icon": "🦫",
+   "creature": true,
+   "animal": "muskrat",
+   "group": "vole",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "icon": "🐁",
+   "creature": true,
+   "animal": "shrew",
+   "group": "shrew",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "icon": "🐀",
+   "creature": true,
+   "animal": "desman",
+   "group": "mole",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "great-crested-grebe",
+   "name": "Great Crested Grebe",
+   "icon": "🦆",
+   "creature": true,
+   "animal": "grebe",
+   "group": "duck",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "sturgeon",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "diving-bell-spider",
+   "name": "Diving Bell Spider",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "diving bell spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "gar",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "swamp-rabbit",
+   "name": "Swamp Rabbit",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "rabbit",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "icon": "🦟",
+   "creature": true,
+   "animal": "mosquito",
+   "group": "fly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "icon": "🐜",
+   "creature": true,
+   "animal": "fire ant",
+   "group": "ant",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "anhinga",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "roseate-spoonbill",
+   "name": "Roseate Spoonbill",
+   "icon": "🦩",
+   "creature": true,
+   "animal": "spoonbill",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "icon": "🦤",
+   "creature": true,
+   "animal": "bittern",
+   "group": "heron",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "water bug",
+   "group": "water bug",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "water-scorpion",
+   "name": "Water Scorpion",
+   "icon": "🦂",
+   "creature": true,
+   "animal": "water scorpion",
+   "group": "water bug",
+   "subtype": null,
+   "how": "name",
+   "note": "an aquatic bug (species Insect)"
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "siren",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "harrier",
+   "group": "hawk",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "raft spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "icon": "🐌",
+   "creature": true,
+   "animal": "leopard slug",
+   "group": "slug",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "wolf spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "icon": "🐗",
+   "creature": true,
+   "animal": "pig",
+   "group": "boar",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "icon": "🦟",
+   "creature": true,
+   "animal": "fungus gnat",
+   "group": "gnat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "springtail-hopper",
+   "name": "Springtail Hopper",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "springtail",
+   "group": "springtail",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cave-cricket",
+   "name": "Cave Cricket",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "cave cricket",
+   "group": "cricket",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "icon": "🦞",
+   "creature": true,
+   "animal": "crayfish",
+   "group": "lobster",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "swiftlet",
+   "group": "swift",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "name": "Cave Pseudoscorpion",
+   "icon": "🦂",
+   "creature": true,
+   "animal": "pseudoscorpion",
+   "group": "pseudoscorpion",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "whip spider",
+   "group": "whip spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "icon": "🕷️",
+   "creature": true,
+   "animal": "huntsman spider",
+   "group": "spider",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "guano-beetle",
+   "name": "Guano Beetle",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "beetle",
+   "group": "beetle",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "sea krait",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "icon": "🐈",
+   "creature": true,
+   "animal": "fishing cat",
+   "group": "cat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "icon": "🐒",
+   "creature": true,
+   "animal": "proboscis monkey",
+   "group": "monkey",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "icon": "🦀",
+   "creature": true,
+   "animal": "horseshoe crab",
+   "group": "horseshoe crab",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "sea-hare",
+   "name": "Sea Hare",
+   "icon": "🐌",
+   "creature": true,
+   "animal": "sea slug",
+   "group": "slug",
+   "subtype": null,
+   "how": "name",
+   "note": "a sea hare is a sea slug"
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "manatee",
+   "group": "manatee",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "icon": "🐍",
+   "creature": true,
+   "animal": "sea snake",
+   "group": "snake",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "icon": "⭐",
+   "creature": true,
+   "animal": "starfish",
+   "group": "starfish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish",
+   "icon": "🐠",
+   "creature": true,
+   "animal": "parrotfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "icon": "🐡",
+   "creature": true,
+   "animal": "lionfish",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "icon": "🦪",
+   "creature": true,
+   "animal": "giant clam",
+   "group": "clam",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "icon": "🐟",
+   "creature": true,
+   "animal": "barracuda",
+   "group": "fish",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "whale shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "icon": "🐐",
+   "creature": true,
+   "animal": "chamois",
+   "group": "goat",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "swift",
+   "group": "swift",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "wallcreeper",
+   "name": "Wallcreeper",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "wallcreeper",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "icon": "🦎",
+   "creature": true,
+   "animal": "salamander",
+   "group": "salamander",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "butterfly",
+   "group": "butterfly",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "icon": "🐇",
+   "creature": true,
+   "animal": "hare",
+   "group": "rabbit",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "shrike",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "icon": "🦡",
+   "creature": true,
+   "animal": "weasel",
+   "group": "weasel",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "icon": "🪲",
+   "creature": true,
+   "animal": "shieldbug",
+   "group": "shieldbug",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "muntjac-barker",
+   "name": "Muntjac Barker",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "muntjac",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "thrush",
+   "group": "songbird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "garden-tiger-moth",
+   "name": "Garden Tiger Moth",
+   "icon": "🦋",
+   "creature": true,
+   "animal": "moth",
+   "group": "moth",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "icon": "🐻‍❄️",
+   "creature": true,
+   "animal": "polar bear",
+   "group": "bear",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "harp-seal-pup",
+   "name": "Harp Seal Pup",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "harp seal",
+   "group": "seal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "icon": "🐋",
+   "creature": true,
+   "animal": "beluga",
+   "group": "whale",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "icon": "🕊️",
+   "creature": true,
+   "animal": "arctic tern",
+   "group": "tern",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "icon": "🐁",
+   "creature": true,
+   "animal": "lemming",
+   "group": "vole",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "icon": "🦐",
+   "creature": true,
+   "animal": "krill",
+   "group": "shrimp",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "icon": "🦈",
+   "creature": true,
+   "animal": "greenland shark",
+   "group": "shark",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "icon": "🦭",
+   "creature": true,
+   "animal": "ringed seal",
+   "group": "seal",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "icon": "🦌",
+   "creature": true,
+   "animal": "caribou",
+   "group": "deer",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "musk-ox-calf",
+   "name": "Musk Ox Calf",
+   "icon": "🐂",
+   "creature": true,
+   "animal": "musk ox",
+   "group": "ox",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "terraumbra",
+   "name": "Terraumbra",
+   "icon": "🌈",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": "conjured",
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "exo-podas",
+   "name": "Exo-podas",
+   "icon": "🦗",
+   "creature": true,
+   "animal": "insect",
+   "group": "insect",
+   "subtype": "mutant",
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "galactic-condor",
+   "name": "Galactic Condor",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "condor",
+   "group": "vulture",
+   "subtype": null,
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "pink-maus",
+   "name": "Pink Maus",
+   "icon": "🐭",
+   "creature": true,
+   "animal": "mouse",
+   "group": "mouse",
+   "subtype": null,
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "nyoogle",
+   "name": "Nyoogle",
+   "icon": "🏮",
+   "creature": true,
+   "animal": "cat",
+   "group": "cat",
+   "subtype": "mythic",
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "tobasco-drakon",
+   "name": "Habanero Drakon",
+   "icon": "🌶️",
+   "creature": true,
+   "animal": "dragon",
+   "group": "dragon",
+   "subtype": "mythic",
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "demo-panda",
+   "name": "Kegfuse Panda",
+   "icon": "🐻",
+   "creature": true,
+   "animal": "panda",
+   "group": "panda",
+   "subtype": null,
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  }
+ ]
+}

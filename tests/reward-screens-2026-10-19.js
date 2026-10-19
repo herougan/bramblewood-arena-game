@@ -27,7 +27,8 @@ const lineOf = start=>{ const i = src.indexOf(start); if(i < 0) return ''; retur
 // ---- 1. the claim flow (static)
 const claimFn = fnSrc('claimRaidReward');
 ok(/const screen = raidClaimScreenReady\(\);/.test(claimFn) && /if\(screen\) showRaidClaimScreen\(spec\);/.test(claimFn), '1. claimRaidReward opens the claim screen');
-ok(/grantRaidCards\(def, [^;]*, screen\)/.test(claimFn) && /function grantRaidCards\(def, n, quiet\)/.test(src) && /if\(got\.length && !quiet\)/.test(src), '1. the raid-card toast is quiet when the screen shows the cards');
+// 2026-10-19 (package RC): the claim's cards are pack / faction cards now (grantRaidRewardCards); their toast is still only for no screen
+ok(/grantRaidRewardCards\(def, rwc\)/.test(claimFn) && /if\(!screen && cardsGot\.length\)/.test(claimFn) && !/function grantRaidCards\(/.test(src), '1. the reward-card toast is quiet when the screen shows the cards');
 ok(/if\(!screen\) showToast\(/.test(claimFn), '1. the old toast is only the fallback');
 ok(claimFn.indexOf('showRaidClaimScreen(spec)') < claimFn.indexOf('awardXp(xp'), '1. the screen opens before the XP, so a level-up waits for it');
 ok(/out\.push\(\{key, cycle:c, reward: rw, mine: st\.contributors\[me\] \|\| 0\}\)/.test(fnSrc('raidClaimsFor')), '1. a claim carries your contribution');

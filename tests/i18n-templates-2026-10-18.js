@@ -63,6 +63,7 @@ for(const code of CODES){
   }
   // every placeholder text of the game, filled, comes out translated
   for(const [key, en] of templatesEn){
+    if(!/\p{L}/u.test(en.replace(PH, ''))) continue;   // 2026-10-19 (RC): placeholders and emoji only ("+{n} {icon} {name}"): nothing to translate
     const cut = HTML_VALUED[key];
     if(cut || en.includes('<')){
       // reaches the page in pieces: each piece with letters is a key (or a template) of its own

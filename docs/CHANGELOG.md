@@ -2,6 +2,67 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package UT: animal tags, Base cards, variants balanced by N, raid elder art brief, art reuse map)
+- **Owner (09:52):** *"tag an animal to the card. For ghosts and spirits and elementals - they have an animal embodiment, see. But subtype ghost or elemental etc."*
+- **Every creature card has an `animal`** (724 tagged here, 349 animals in 140 kinds). Package EE's 7 Easter-egg creatures keep their own tags, reported as an owner call. It names what the card is, or the animal its body takes. 96 beings also have a `subtype` from a fixed list of 15: ghost, spirit, elemental, undead, construct, structure, fiend, conjured, plant, fungus, mythic, changeling, were, mutant, glitch.
+  - The tags come from the name, the type, the emoji, and a hand-checked table of art and flavor reads. Examples: the Magma Wraith is a wolf of flame, the Tide Spirit a seahorse wave, the Guardian Shield a pangolin.
+  - 30 beings show no animal in their art (the Ent, golems, the storm cloud…). Their animal is a proposal for the owner.
+  - `species` is unchanged. 11 places where it disagrees with the animal are listed (the Moray's species is Cnidarian, the moles are Rodent…).
+  - Tool: `python3 tools/animal_tags.py`, which writes `cards.json` in place and the report `canonical/animal-tags.json`.
+  - Two non-creature cards have an animal too: the River Bundle egg (otter) and the Red Dragon Egg (dragon).
+- **The Codex:**
+  - The card detail shows 🐾 the animal, the subtype and a 🌰 **Base** chip.
+  - A new 🐾 animal filter groups by kind: every spider together.
+  - The Codex search also matches the animal.
+  - All new text uses TX keys, in 12 languages (`tools/i18n_2026_10_19_ut.py`). The build inlines the animal kinds (`__ANIMAL_GROUPS__`).
+- **Base cards (owner: "The starter cards are not Otters. Just considered as 'Base'."):**
+  - The 27 cards with faction `otters` are faction `base` now. They are Base cards: earned from skirmish rewards, not card packs. Their Codex "where to get" line says so.
+  - Levels and budgets are unchanged: a Base card still starts at Level 1.
+  - The Otters / Hummingbirds side pick and `basicSet` are left alone.
+  - **The Hummingbirds stay a faction:** 12 cards, all hummingbirds.
+- **The tutorial's copies are Level 0** ("The tutorial base cards come as Level 0 is the special thing"):
+  - This covers the starting deck, the tutorial rewards and the "both" bonus.
+  - A card that starts at Level 1 gets the Nest's hatchling marks (`hatch:1`, plus `tut:1`) and shows Level 0 until the Nest trains it or a Level 1 copy arrives.
+  - Base cards won later from skirmishes start at their normal level.
+- **Dire / Elder balanced by N (owner: "we can't do 1.4x, 1.5x etc. They should balance based on N"):**
+  - The 109 proposed later versions are player units now. Each body comes from the budget N of its rarity, Lumber and Wait, through the shared helper `tools/skill_costs.js`. 2A+H takes 80% of N in the base's shape. The old ×1.4 / ×1.8 draft is kept beside it (`variant.multDraft`).
+  - "Dire" / "Elder" stay internal ids. Each version has a thematic name proposal, for example Peakroot Olm, Scarred Reef Shark and Venom Patriarch (`nameProposal: true`).
+  - Non-player units keep multipliers. These are the raid's boss units (the Leviathan Elder and the Kraken Brute) and the 13 raid bosses, listed under `nonPlayer` in `canonical/unit-themes.json`.
+  - Units are grouped by animal as well as theme.
+  - The hub's Units by theme tab is updated but not rebuilt or published. It gets an animal filter, groups by animal and subtype, N-based variant lines and a 👹 Non-player view.
+- **Art:**
+  - `docs/art/raid-elder-art-brief.md` has prompts for the Leviathan Elder (built on `art/cards/humpback-elder.png`) and the Kraken Brute. No art was generated.
+  - `docs/art/art-reuse-map.md` (`python3 tools/art_reuse_map.py`) covers 840 units. 806 (96.0%) keep existing art: their own, their base's, or a same-animal stand-in. 34 have no usable match and are flagged: 30 have only a loose stand-in, and 4 are Easter eggs with no art yet.
+- New test `tests/animal-tags-2026-10-19.js` (in run-all). `tests/unit-themes-2026-10-19.js` follows the N-based variants, the names, `nonPlayer` and the animals.
+
+## 2026-10-19 (package EE: Easter eggs, the Condor's beam, Evomax)
+- **Owner (09:52): "Easter eggs: Special category, ungettable atm."** This adds a new card category: source `{kind:'easteregg'}` plus `easterEgg: true`, with one list, `EASTER_EGG_IDS` in `arena_app.js`.
+  - No source gives one out yet: packs, drops, skirmish rewards, raids, the reward tracks, the Forge, the Nest's hatch.
+  - `unlockCardForPlayer` refuses them from every source except an admin's grant.
+  - The Codex shows an unseen one as a "???" tile in its own 🥚 Easter eggs section. The hub's card list masks it too.
+  - Test: `tests/easter-eggs-2026-10-19.js`. Internal notes and inspirations: `docs/easter-eggs.md`.
+- **The eight Easter eggs**, all within budget v3. They use emoji placeholders; the NightCafe prompts are in `docs/art/easter-egg-art-briefs.md` (nothing was generated).
+  - Creeper (now Very Rare, an exploding creeping beetle).
+  - Terraumbra (Unique Evomax equipment).
+  - Exo-podas (Very Rare).
+  - Galactic Condor (Epic).
+  - Pink Maus (Unique).
+  - Nyoogle (Super Rare).
+  - Habanero Drakon (id `tobasco-drakon`, Rare).
+  - Kegfuse Panda (id `demo-panda`, Super Rare).
+- **New action: Position Beam**, used by the Galactic Condor's Charge 2.
+  - From the exact centre it hits the unit across and the bramble.
+  - From a side it angles inward across the units diagonally across.
+  - From the edge (5 out) it hits the whole row inward of the unit opposite.
+  - It reuses the lightning bolt with a prismatic glow. Test: `tests/position-beam-2026-10-19.js`.
+- **The Evolution archetype is called Evomax** wherever a player sees it: the Codex filter and pie, the corner mark, the editor and the card detail. The detail had been showing such cards as Devilry. The internal id `evolution` is unchanged.
+
+## 2026-10-19 (package RC: raid cards are crafted)
+- **Raids almost never give their own cards now** (owner 09:53). A fall's claim gives reward cards from the normal pack pools instead: 1 for taking part (+1 for the top 1% / 10%), with a 10–25% chance that each one is a faction card. Competent participants get a 20% chance of one more and Leading participants get one more for certain. The pack cards have a rarity floor: Competent get Uncommon or better, Leading get Rare or better. A raid's own card comes only at `RAID_CARD_DROP_CHANCE` (1.5%, `bramblewood-raid.js`): once per fall's claim and once per won raid fight. A won raid fight used to drop a boss-deck card every time; it now gives a pack card.
+- **Trophy shards:** each raid has its own crafting material ("Goliath trophy shards" 🏆). A fall pays 6 for taking part, 9 for Competent and 13 for Leading, before the top 1% / 10% / 50% bonus (+4 / +2 / +1). A raid that holds pays a share based on how much Health it lost.
+- **Forge → 🐙 Raid tab:** lists each raid's cards with a recipe (shards + Magic Dust + Maple Leaves, by rarity: Common 8/40/80 up to Legendary 160/960/1920). A card you haven't met yet shows face-down as "?" with its cost. A craft gives one plain Level-1 copy.
+- Shards are saved with the currencies. Cloud sync waits on `supabase/proposed/20261019_raid_shards.sql` (**not applied**); until then they stay in the browser. The reward screen, raid rules and Codex source line no longer promise raid cards. 24 new TX keys + 4 changed, translated in 12 packs. Tests: `tests/rc-2026-10-19.js`.
+
 ## 2026-10-19 (package TC: the tests follow the applied skill costs)
 - **The owner applied the measured skill worth** to `canonical/skill-costs.json`: 199 entries use their high-confidence `measuredS` (a negative one floored at 0), and each keeps `prevValue` and `appliedAt`. His own values stay: On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike. Owner 08:49: separate the units by theme, he picks the units for each map, then a post-balance step sets skills and stats. **No card was refit.**
 - **Post-balance queue: 29 cards** that fitted budget v3 before the new costs and are over it now. Each fails only 2A+H+S < N, by +0.01 (Bone Diviner) to +9.5 (Marshal of Rivergate). The list is in `docs/balance/post-balance-queue.json` (built by `node tools/post_balance_queue.js`, `--check` for staleness) and `docs/post-balance-queue-2026-10-19.md`.
