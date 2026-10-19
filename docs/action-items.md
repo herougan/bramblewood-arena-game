@@ -54,6 +54,9 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Balance | Two-skill costing (DC) | Cost two-skill cards with family multipliers (dot×dot 1.55, control×offense 1.29…; global 1.11)? |
 | Balance | Removals (DC) | Exile, Mind Control, Tsunami only bounds (beat a sure kill): cost by hand? |
 | Balance | Combo outliers (DC) | Freeze + Rage (+28.9), Evasive/Flying/Supreme + On Ready: Gold: watch any card printing them together |
+| Raid | Bramble name (U3) | "Kraken's Reef" (alt: "The Drowned Maw"); placeholder SVG until painted art from docs/art/raid-bramble-art-brief.md |
+| Raid | Last turns (U3) | "3/2 turns left", "Last turn!" under the tick in the final 3 turns, plus the existing banner |
+| UI | Trench header (U3) | Still "Turn X / Y": make it "Turn X" too? |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
