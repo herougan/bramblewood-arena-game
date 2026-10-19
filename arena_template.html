@@ -438,6 +438,16 @@
   .account-chip.signed-in{border-style:solid; border-color:#4caf50;}
   .account-chip.signed-in .account-chip-ico::after{content:'';}
   .account-chip:hover{filter:brightness(1.08);}
+  /* 2026-10-19 (package SY): the deck sync indicator next to the account chip (Synced ✓ / Syncing… / Offline); a dot alone on a phone */
+  .sync-ind{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; color:var(--ink-soft, var(--ink)); opacity:.78; white-space:nowrap; cursor:default; flex-shrink:0;}
+  .sync-ind[hidden]{display:none;}
+  .sync-ind-dot{width:7px; height:7px; border-radius:50%; background:#4caf50; flex-shrink:0;}
+  .sync-ind[data-state="syncing"] .sync-ind-dot{background:#e0a030; animation:syncIndPulse 1s ease-in-out infinite;}
+  .sync-ind[data-state="offline"] .sync-ind-dot{background:#9e9e9e;}
+  .sync-ind[data-state="offline"]{opacity:.9;}
+  @keyframes syncIndPulse{50%{opacity:.35;}}
+  @media (prefers-reduced-motion: reduce){ .sync-ind[data-state="syncing"] .sync-ind-dot{animation:none;} }
+  @media (max-width: 600px){ .sync-ind .sync-ind-txt{display:none;} }
   .account-identity{display:flex; align-items:center; gap:10px; margin:6px 0 4px; padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid #4caf50;}
   .account-identity-ico{font-size:18px;}
   .auth-gate-later{display:block; margin:12px auto 0;}

@@ -1934,5 +1934,12 @@
  "Changeling": "变形者",
  "Were-beast": "兽化者",
  "Mutant": "变异体",
- "Glitch": "故障"
+ "Glitch": "故障",
+ "Synced ✓": "已同步 ✓",
+ "Syncing…": "同步中…",
+ "Offline": "离线",
+ "Your decks are saved to your account and show on every device you sign in on.": "你的卡组已保存到你的账号，在你登录的每台设备上都能看到。",
+ "Saving your decks to your account…": "正在把你的卡组保存到账号…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "无法连接服务器。你的卡组在这台设备上很安全，恢复联网后会自动同步。",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "卡组“{name}”已在另一台设备上删除，所以这里也没有了。"
 }
