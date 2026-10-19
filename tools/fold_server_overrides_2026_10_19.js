@@ -26,7 +26,7 @@
 //   node tools/fold_server_overrides_2026_10_19.js plan    -> docs/balance/server-overrides/fold-plan-2026-10-19.json (+ summary)
 //   node tools/fold_server_overrides_2026_10_19.js apply   -> canonical/cards.json, arena_app.js (CONQUEST_MAPS m1 / mtut nodes)
 //   node tools/fold_server_overrides_2026_10_19.js doc     -> docs/balance/server-overrides-fold-2026-10-19.md and
-//                                                            supabase/proposed/20261019_clear_folded_overrides.sql (NOT applied)
+//                                                            supabase/migrations/20261019_clear_folded_overrides.sql (NOT applied)
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), DIR = path.join(ROOT, 'docs', 'balance', 'server-overrides');
@@ -204,7 +204,7 @@ else if(cmd === 'apply'){
         '| Fight | Kind | Before | After | Target (band) | Band before → after |', '|---|---|---|---|---|---|',
         ...moved.map(r=> `| ${r.code} | ${r.kind} | ${r.before}% | ${r.after}% | ${r.target}% (${r.lo}–${r.hi}) | ${r.greenBefore} → ${r.greenAfter} |`), '']; })(),
     '## Clearing the live rows (proposed, NOT applied)', '',
-    '`supabase/proposed/20261019_clear_folded_overrides.sql` is waiting for the owner\'s approval. Nothing has touched the live database.',
+    '`supabase/migrations/20261019_clear_folded_overrides.sql` is waiting for the owner\'s approval. Nothing has touched the live database.',
     '- **The 72 card rows are reset to an empty patch** (`data = {"__patch": true}`). The game reads that as the file\'s card. The old row is kept in `deleted_snapshot` and in a backup table. **The card rows must not be marked `deleted = true`:** for a card, that is the editor\'s tombstone, and the game would remove the card from play (`liveDeletes`). The reset also bumps `updated_at`, so open games pick it up on their next 30-second poll.',
     '- **The 2 node rows** (`__cfg:map-nodes:m1` with 0-1 to 0-4, and `__cfg:map-nodes:mtut` with the two tutorials) are marked deleted with their data kept in `deleted_snapshot`, the way the editor\'s "drop every edit" does. Each row holds only the folded edits.',
     '- **Left alone:** the map-layout rows, the other map-node rows (`requires` links and added nodes on older map ids) and `__cfg:tutorial`.',
@@ -236,5 +236,5 @@ else if(cmd === 'apply'){
     'commit;', ''];
   fs.mkdirSync(path.join(ROOT, 'supabase', 'proposed'), {recursive: true});
   fs.writeFileSync(path.join(ROOT, 'supabase', 'proposed', '20261019_clear_folded_overrides.sql'), sql.join('\n'));
-  console.log('wrote docs/balance/server-overrides-fold-2026-10-19.md and supabase/proposed/20261019_clear_folded_overrides.sql');
+  console.log('wrote docs/balance/server-overrides-fold-2026-10-19.md and supabase/migrations/20261019_clear_folded_overrides.sql');
 }

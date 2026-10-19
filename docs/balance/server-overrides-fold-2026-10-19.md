@@ -215,7 +215,7 @@ These rows were folded into `CONQUEST_MAPS` in `arena_app.js` the way the game a
 
 ## Clearing the live rows (proposed, NOT applied)
 
-`supabase/proposed/20261019_clear_folded_overrides.sql` is waiting for the owner's approval. Nothing has touched the live database.
+`supabase/migrations/20261019_clear_folded_overrides.sql` is waiting for the owner's approval. Nothing has touched the live database.
 - **The 72 card rows are reset to an empty patch** (`data = {"__patch": true}`). The game reads that as the file's card. The old row is kept in `deleted_snapshot` and in a backup table. **The card rows must not be marked `deleted = true`:** for a card, that is the editor's tombstone, and the game would remove the card from play (`liveDeletes`). The reset also bumps `updated_at`, so open games pick it up on their next 30-second poll.
 - **The 2 node rows** (`__cfg:map-nodes:m1` with 0-1 to 0-4, and `__cfg:map-nodes:mtut` with the two tutorials) are marked deleted with their data kept in `deleted_snapshot`, the way the editor's "drop every edit" does. Each row holds only the folded edits.
 - **Left alone:** the map-layout rows, the other map-node rows (`requires` links and added nodes on older map ids) and `__cfg:tutorial`.

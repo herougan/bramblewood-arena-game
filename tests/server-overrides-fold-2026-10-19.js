@@ -47,8 +47,8 @@ const ren = d=> { const o = {}; Object.entries(d).forEach(([k, v])=> o[k === 'be
 ['tutorial', 'tutorial2'].forEach(k=>{ const nd = node(k), p = mt[k]; ok(nd && nd.hqHp === p.hqHp && nd.tutHp === p.tutHp, `3. ${k}: hqHp ${p.hqHp}, tutHp ${p.tutHp}`); });
 
 // 4.
-const sql = rd('supabase/proposed/20261019_clear_folded_overrides.sql');
-ok(/PROPOSED, NOT APPLIED/.test(sql) && !fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261019_clear_folded_overrides.sql')), '4. the SQL is a proposal (not a migration)');
+const sql = rd('supabase/migrations/20261019_clear_folded_overrides.sql');
+ok(/^-- APPLIED 2026-10-19/.test(sql) && fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261019_clear_folded_overrides.sql')) && /enable row level security/.test(sql), '4. the SQL is applied (owner: "apply it", 20:43), its backup table under RLS');
 const upd = sql.split(/;\s*\n/).filter(s=> /^\s*update public\.card_overrides/m.test(s.replace(/^--.*$/mg, '')));
 const idsOf = s=> (s.match(/'[^']+'/g) || []).map(x=> x.slice(1, -1)).filter(x=> !/^\{|"__patch"/.test(x));
 const cardUpd = upd.find(s=> /__patch/.test(s)), nodeUpd = upd.find(s=> /deleted = true/.test(s));

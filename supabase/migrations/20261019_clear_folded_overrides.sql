@@ -1,3 +1,4 @@
+-- APPLIED 2026-10-19 20:45 SGT via the Supabase MCP (owner: "apply it"). Backup table also given RLS on + revoke from anon/authenticated (added at apply time).
 -- 2026-10-19 (package BF4) PROPOSED, NOT APPLIED. The owner must approve before this runs against the live database.
 -- The 72 card_overrides card rows folded into canonical/cards.json (docs/balance/server-overrides-fold-2026-10-19.md) and the two
 -- map-node rows folded into CONQUEST_MAPS (Map 0 nodes 0-1 to 0-4; the Tutorial's tutorial and tutorial2) fall back to the file.
@@ -10,6 +11,8 @@
 begin;
 
 create table if not exists public.card_overrides_backup_20261019 as select * from public.card_overrides where false;
+alter table public.card_overrides_backup_20261019 enable row level security;
+revoke all on public.card_overrides_backup_20261019 from anon, authenticated;
 insert into public.card_overrides_backup_20261019
   select * from public.card_overrides where id in (
     'acorn-chipmunk',

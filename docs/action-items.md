@@ -64,7 +64,7 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Balance | Thorns (BF3) | Re-measured 3.23 per point (was 1), low confidence, likely a floor |
 | Raid | Tail elder (BF3) | Retune made Orca Warlord the tail's elder (biggest card). Pin the Leviathan Elder per part? |
 | Balance | Enemy stat changes (BF3, B10) | Flagged, not changed: endless floor perk (0 now), raid staged decks, raid elders (+1 Attack, HP multiplier, floor 55) |
-| Server | Clear folded overrides (BF4) | supabase/proposed/20261019_clear_folded_overrides.sql: resets the 72 folded card rows to an empty patch and clears map-nodes m1/mtut (backup table + deleted_snapshot). Needs "apply it" |
+| Server | Clear folded overrides (BF4) | APPLIED 10-19 20:45: 72 card rows reset to the file, map-nodes m1/mtut cleared; backup in card_overrides_backup_20261019 (RLS on) |
 | Balance | Cave Bat Swarm (BF4) | Still over budget with its server skills (Darksight, Nocturnal, Fork): 1/1, or drop Darksight? |
 | Balance | Road after fold (BF4) | 146/179 main on target (was 150): 0-2, 3-1, 8-3, 8-4, 20-8, 1-A-1 now too hard; 15-3, 0-3 too easy |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
