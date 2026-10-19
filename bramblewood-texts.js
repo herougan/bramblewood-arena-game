@@ -399,6 +399,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.budget-part-lumber": "Lumber {v}",
   "ui.budget-part-ritual": "Ritual {v}",
   "ui.budget-part-map": "Map {map} × {coef} = {v}",
+  "ui.budget-scale": "Then all of N × {scale}.",
   "ui.budget-formula": "N = (Base + Level/{lin}) × (1 + Level/{div}); Level 0: Base − {zero}. Base = {base} + Rarity + {w}×Wait + {w2}×Wait² + {l}×Lumber + {l2}×Lumber² + Ritual + {mc}×Map.",
   "ui.budget-pink": "(pink: under {pct}% of N)",
   "ui.budget-pink-tip": "Pink: the Stats score is at or below {pct}% of N, so the card has room to grow.",

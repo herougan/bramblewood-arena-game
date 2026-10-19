@@ -168,6 +168,7 @@
  "The boss's bramble, {name}, strikes too:": "La zarza del jefe, {name}, también ataca:",
  "The boss's bramble: {name}": "La zarza del jefe: {name}",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "El mundo se abre: cada mapa al que puedes llegar está arriba, y la 🧭 los muestra todos.",
+ "Then all of N × {scale}.": "Luego todo N × {scale}.",
  "Turn {n}": "Turno {n}",
  "Wait {v}": "Espera {v}",
  "Well under budget · N = {n} (Base = {base})": "Muy por debajo del presupuesto · N = {n} (Base = {base})",

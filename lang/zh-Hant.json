@@ -168,6 +168,7 @@
  "The boss's bramble, {name}, strikes too:": "首領的荊棘堡 {name} 也會出手：",
  "The boss's bramble: {name}": "首領的荊棘堡：{name}",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "世界展開了：你能去的每張地圖都在頂部，🧭 能一次顯示全部。",
+ "Then all of N × {scale}.": "然後整個 N × {scale}。",
  "Turn {n}": "第 {n} 回合",
  "Wait {v}": "等待 {v}",
  "Well under budget · N = {n} (Base = {base})": "遠低於預算 · N = {n}（基數 = {base}）",

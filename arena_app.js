@@ -25856,7 +25856,7 @@ const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts 
 //   N = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 10 (15:48: "let's try L/10"), levelDiv 30; Level 0: Base − zeroPenalty (1).
 //   The formula lives in bramblewood-budget.js (BramblewoodBudget.nAt), shared with tools/skill_costs.js and the hub; perLevel is v3's,
 //   no longer read.
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, missMult:1.5, levelLinDiv:10, levelDiv:30, zeroPenalty:1}; // + perMap (BF2, 15:25)
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, missMult:1.5, levelLinDiv:10, levelDiv:30, zeroPenalty:1, scale:0.5}; // + scale (BF5, owner 21:36: halve N) // + perMap (BF2, 15:25)
 // 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
 // its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
 function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }
@@ -25878,7 +25878,7 @@ function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r
 // N for a card at a level (v3, 2026-10-17).
 function sbBudgetAt(d, cfg, lv){
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], L = Math.max(0, Number(lv)||0), c = {};
-  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap', 'levelLinDiv', 'levelDiv', 'zeroPenalty'].forEach(k=> c[k] = g(k));
+  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap', 'levelLinDiv', 'levelDiv', 'zeroPenalty', 'scale'].forEach(k=> c[k] = g(k));
   let om = 0; try{ om = cardObtainMap(d); }catch(e){} // 2026-10-19 (BF2, 15:25): + 0.2 × the map where it becomes obtainable
   return BramblewoodBudget.nAt(BramblewoodBudget.baseOf(Object.assign({}, d, {obtainMap: om}), c), L, c); // 2026-10-19 (BF2): budget v5, the shared helper (was Base + 2×Level)
 }
@@ -25894,7 +25894,7 @@ function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 // 2026-10-19 (BF2): the formula line, from the numbers in use (the helper's v5 unless the Test Lab changed them), in words through TX
 function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
-  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), mc: g('perMap')}); }
+  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), mc: g('perMap')}) + (Number(g('scale')) !== 1 ? ' ' + TX('ui.budget-scale', {scale: g('scale')}) : ''); }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
 // before; both checks shown, coloured green within both, red over either, pink well under on the first.
@@ -25933,7 +25933,7 @@ function renderStatBudget(host){
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
     <p class="panel-sub">${escapeHtml(TX('ui.budget-lab-intro'))} ${escapeHtml(sbFormulaText(cfg))}. ${escapeHtml(TX('ui.budget-lab-miss', {m: g('missMult'), skills: (cfg.halfMiss || SB_HALF_MISS).join(', ')}))} <!-- 2026-10-19 (BF2): v5, through TX --> Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Bounty costs 0. <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
-    <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label title="N = (Base + Level / this) × (1 + Level / growth)">Level ÷ ${inp('sbLevelLin', 'levelLinDiv')}</label><label title="N = (Base + Level / ÷) × (1 + Level / this)">Level growth ÷ ${inp('sbLevelDiv', 'levelDiv')}</label><label title="Level 0: Base − this">Level 0 − ${inp('sbZero', 'zeroPenalty', '0.5')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
+    <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label title="BF5 (owner 21:36): the whole N times this; 0.5 halves it">N × ${inp('sbScale', 'scale', '0.05')}</label><label title="N = (Base + Level / this) × (1 + Level / growth)">Level ÷ ${inp('sbLevelLin', 'levelLinDiv')}</label><label title="N = (Base + Level / ÷) × (1 + Level / this)">Level growth ÷ ${inp('sbLevelDiv', 'levelDiv')}</label><label title="Level 0: Base − this">Level 0 − ${inp('sbZero', 'zeroPenalty', '0.5')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
       <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label title="Ritual points = the sum of the Ritual's counts">Per Ritual point ${inp('sbRitual', 'perRitual', '0.1')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
       <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v5 numbers">Reset to v5</button>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
@@ -25943,7 +25943,7 @@ function renderStatBudget(host){
     ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
-  num('#sbBase', 'base'); num('#sbLevelLin', 'levelLinDiv'); num('#sbLevelDiv', 'levelDiv'); num('#sbZero', 'zeroPenalty'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbRitual', 'perRitual'); num('#sbMissMult', 'missMult');
+  num('#sbBase', 'base'); num('#sbScale', 'scale'); num('#sbLevelLin', 'levelLinDiv'); num('#sbLevelDiv', 'levelDiv'); num('#sbZero', 'zeroPenalty'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbRitual', 'perRitual'); num('#sbMissMult', 'missMult');
   { const rb = host.querySelector('#sbResetV3'); if(rb) rb.onclick = ()=>{ const c = sbLoad(); Object.assign(c, SB_V3_DEFAULTS); sbSave(c); re(); }; }
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };

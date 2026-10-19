@@ -168,6 +168,7 @@
  "The boss's bramble, {name}, strikes too:": "ボスのいばら「{name}」も攻撃してくる：",
  "The boss's bramble: {name}": "ボスのいばら：{name}",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "世界が広がった：行けるマップはすべて上に並び、🧭 で全部見られる。",
+ "Then all of N × {scale}.": "その後、N 全体を × {scale}。",
  "Turn {n}": "ターン {n}",
  "Wait {v}": "待機 {v}",
  "Well under budget · N = {n} (Base = {base})": "予算を大きく下回る · N = {n}（基礎 = {base}）",

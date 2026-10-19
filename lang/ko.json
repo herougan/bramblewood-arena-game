@@ -168,6 +168,7 @@
  "The boss's bramble, {name}, strikes too:": "보스의 가시덤불 {name}도 공격한다:",
  "The boss's bramble: {name}": "보스의 가시덤불: {name}",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "세상이 열렸다: 갈 수 있는 지도는 모두 위쪽에 있고, 🧭 로 한눈에 볼 수 있다.",
+ "Then all of N × {scale}.": "그다음 N 전체 × {scale}.",
  "Turn {n}": "{n}턴",
  "Wait {v}": "대기 {v}",
  "Well under budget · N = {n} (Base = {base})": "예산보다 한참 아래 · N = {n} (기본 = {base})",

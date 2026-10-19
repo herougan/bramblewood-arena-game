@@ -31,6 +31,7 @@
     ['perLumber', 'Lumber', '× Lumber', 0.5], ['perLumber2', 'Lumber²', '× Lumber²', 0.1],
     ['perRitual', 'Ritual', '× Ritual points', 0.5],
     ['perMap', 'Map', '× the map where the card becomes obtainable', 0.05],
+    ['scale', 'N × (scale)', 'BF5 (owner 21:36): the whole N times this; 0.5 halves it', 0.05],
     ['levelLinDiv', 'Level ÷ (in Base)', 'N = (Base + L ÷ this) × …', 1],
     ['levelDiv', 'Level ÷ (growth)', '… × (1 + L ÷ this)', 1],
     ['zeroPenalty', 'Level 0 penalty', 'N at Level 0 = Base − this', 0.5],

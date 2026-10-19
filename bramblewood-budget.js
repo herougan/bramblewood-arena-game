@@ -30,7 +30,9 @@
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
 'use strict';
 // canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
-const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5}; // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
+const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5, scale:0.5};
+// scale (2026-10-19, BF5; owner 21:36: "I think numbers are way too big. Can we HALF everything?" ... "Straight up, the total N value"):
+// the whole N (Base, the Level terms, the Map term) times this, so N_BF5(L) = 0.5 × N_v5(L); the A·H rule is (N/3)² of that N. Skill costs stay. // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
@@ -57,12 +59,13 @@ function baseParts(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 
   const M = +(d.obtainMap != null ? d.obtainMap : (typeof d.map === 'number' ? d.map : 0)) || 0; if(M && num(cfg, 'perMap')) parts.push({k: 'map', v: r2(num(cfg, 'perMap') * M), map: M, coef: num(cfg, 'perMap')});
   return {total: baseOf(d, cfg), parts}; }
 // N at level L for a Base (v5): (Base + L/levelLinDiv) × (1 + L/levelDiv); Level 0 is Base − zeroPenalty.
-function nAt(base, L, cfg){ L = Math.max(0, Number(L) || 0); if(L <= 0) return r2(base - num(cfg, 'zeroPenalty')); return r2((base + L / num(cfg, 'levelLinDiv')) * (1 + L / num(cfg, 'levelDiv'))); }
+function nAt(base, L, cfg){ L = Math.max(0, Number(L) || 0); const k = num(cfg, 'scale'); if(L <= 0) return r2(k * (base - num(cfg, 'zeroPenalty'))); return r2(k * (base + L / num(cfg, 'levelLinDiv')) * (1 + L / num(cfg, 'levelDiv'))); }
 // v4's N (2026-10-19 09:52, replaced at 13:52), for comparisons only: (Base − 1 + L) × (1 + L/20).
 function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L) * (1 + L / 20)); }
 // The formula as text, from the numbers in use (the card editor, the Test Lab, the hub): {n, base}.
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
-  return {n: `N = (Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: Base − ${g('zeroPenalty')}`,
+  const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
+  return {n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k,
     base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
 function nOf(d, L, cfg){ return nAt(baseOf(d, cfg), L, cfg); }
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.

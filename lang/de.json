@@ -168,6 +168,7 @@
  "The boss's bramble, {name}, strikes too:": "Auch das Dornengestrüpp des Bosses, {name}, schlägt zu:",
  "The boss's bramble: {name}": "Das Dornengestrüpp des Bosses: {name}",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "Die Welt öffnet sich: Jede Karte, die du erreichen kannst, steht oben, und der 🧭 zeigt sie alle.",
+ "Then all of N × {scale}.": "Dann das ganze N × {scale}.",
  "Turn {n}": "Zug {n}",
  "Wait {v}": "Warten {v}",
  "Well under budget · N = {n} (Base = {base})": "Deutlich unter Budget · N = {n} (Basis = {base})",

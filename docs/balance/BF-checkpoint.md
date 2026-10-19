@@ -46,5 +46,10 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
   docs/balance/server-overrides/), retuned (1 owner call: cave-bat-swarm), Map 0 / tutorial node edits folded (bee-knight-classic -> bee-knight),
   road re-checked 150 -> 146 main, gaps 47; SQL proposed (not applied); doc docs/balance/server-overrides-fold-2026-10-19.md
 
+- BF4 committed a22857e (merged to main; live overrides cleared 20:45)
+- BF5 (owner 21:36 "HALF everything" = the total N): A. scale 0.5 in bramblewood-budget.js (nAt), skill-costs.json budget,
+  Test Lab sbScale, hub Budget & stats 'scale', ui.budget-scale (+12 packs, tools/i18n_2026_10_19_bf5.py); B. Bounty 0.5 -> 1
+
 ## Next
-- merge main, build, tests, commit "Package BF4: ...", SubagentHandback
+- C: re-derive every live card under N/2 (tools/halve_2026_10_19.js), cave-bat-swarm target 1/2, Caldera Wyrm halved in proportion
+- D: brambles (measure rounds with full brambles), raid, Forge, skill flags; E: road + raid re-measure; F: hub, tests; commit "Package BF5: ..."
