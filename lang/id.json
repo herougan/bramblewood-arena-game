@@ -1858,5 +1858,10 @@
  "{name} restarted for everyone.": "{name} dimulai ulang untuk semua.",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name} dimulai ulang di peramban ini saja: sisi server belum dinyalakan.",
  "No raid tickets left. The next one comes in {span}.": "Tiket raid habis. Yang berikutnya datang dalam {span}.",
- "You completed {name}: Auto is open for its fights from now on.": "Kamu menyelesaikan {name}: mulai sekarang Auto terbuka untuk pertarungannya."
+ "You completed {name}: Auto is open for its fights from now on.": "Kamu menyelesaikan {name}: mulai sekarang Auto terbuka untuk pertarungannya.",
+ "Boss BR": "BR bos",
+ "Your side's BR": "BR pihakmu",
+ "Boss BR {boss} · your side about {side}": "BR bos {boss} · pihakmu sekitar {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "Peringkat tempur bos: tiga barisnya, masing-masing dek 20 kartunya, kartu yang sudah di papan sejak awal dihitung dua kali, ditambah unit bosnya dan kartu Biasa yang ia panggil.",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "Peringkat tempur pihakmu: dekmu ditambah dek kedua sekutumu, setiap pemimpin dihitung dua kali. Sekutumu berganti di setiap pertarungan."
 }

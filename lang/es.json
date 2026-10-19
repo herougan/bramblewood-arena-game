@@ -1858,5 +1858,10 @@
  "{name} restarted for everyone.": "{name} reiniciado para todos.",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name} reiniciado solo en este navegador: la parte del servidor aún no está activada.",
  "No raid tickets left. The next one comes in {span}.": "No te quedan tickets de asalto. El siguiente llega en {span}.",
- "You completed {name}: Auto is open for its fights from now on.": "Has completado {name}: desde ahora el Auto está disponible en sus combates."
+ "You completed {name}: Auto is open for its fights from now on.": "Has completado {name}: desde ahora el Auto está disponible en sus combates.",
+ "Boss BR": "IC del jefe",
+ "Your side's BR": "IC de tu bando",
+ "Boss BR {boss} · your side about {side}": "IC del jefe {boss} · tu bando unos {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "El índice de combate del jefe: sus tres filas, cada una un mazo de 20 de sus cartas, las cartas con las que empieza en el tablero cuentan doble, más sus unidades de jefe y las Comunes que convoca.",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "El índice de combate de tu bando: tu mazo más los de tus dos aliados, cada líder cuenta doble. Tus aliados cambian de un combate a otro."
 }

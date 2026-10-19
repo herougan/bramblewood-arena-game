@@ -1859,5 +1859,10 @@
  "{name} restarted for everyone.": "{name}이(가) 모두에게 재시작되었습니다.",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name}이(가) 이 브라우저에서만 재시작되었습니다. 서버 쪽은 아직 켜지지 않았습니다.",
  "No raid tickets left. The next one comes in {span}.": "레이드 티켓이 없습니다. 다음 티켓은 {span} 후에 옵니다.",
- "You completed {name}: Auto is open for its fights from now on.": "{name}을(를) 완료했습니다: 이제부터 그 전투에서 자동을 쓸 수 있습니다."
+ "You completed {name}: Auto is open for its fights from now on.": "{name}을(를) 완료했습니다: 이제부터 그 전투에서 자동을 쓸 수 있습니다.",
+ "Boss BR": "보스 BR",
+ "Your side's BR": "우리 편 BR",
+ "Boss BR {boss} · your side about {side}": "보스 BR {boss} · 우리 편 약 {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "보스의 전투 등급: 세 줄 각각을 보스 카드 20장 덱으로 치고, 시작할 때 판에 있는 카드는 두 번 세며, 보스 유닛과 불러오는 일반 카드를 더한 값이에요.",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "우리 편 전투 등급: 내 덱과 두 아군의 덱을 더한 값이고, 리더는 각각 두 번 세요. 아군은 전투마다 바뀌어요."
 }

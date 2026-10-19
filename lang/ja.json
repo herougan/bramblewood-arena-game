@@ -1859,5 +1859,10 @@
  "{name} restarted for everyone.": "{name}を全員に向けて再開した。",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name}はこのブラウザでだけ再開した。サーバー側はまだ有効になっていない。",
  "No raid tickets left. The next one comes in {span}.": "レイドチケットがない。次の1枚は{span}後。",
- "You completed {name}: Auto is open for its fights from now on.": "{name}を達成した：これからはその戦闘でオートが使える。"
+ "You completed {name}: Auto is open for its fights from now on.": "{name}を達成した：これからはその戦闘でオートが使える。",
+ "Boss BR": "ボスのBR",
+ "Your side's BR": "味方のBR",
+ "Boss BR {boss} · your side about {side}": "ボスのBR {boss} · 味方は約{side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "ボスのバトルレーティング：3つの列それぞれをボスのカード20枚のデッキとして数え、開始時に盤面にいるカードは2倍、さらにボスユニットと呼び出すコモンを加えたもの。",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "味方のバトルレーティング：あなたのデッキと2人の仲間のデッキの合計で、リーダーはそれぞれ2倍。仲間は戦いごとに変わります。"
 }

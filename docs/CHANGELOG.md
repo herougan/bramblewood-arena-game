@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package BR: the raid's battle rating)
+- **Owner (08:18): "The raid's BR is being calculated wrongly ... the total of their 3 20-card decks and any other bonus ... played straight away ×2 ... our total BR = sum of total BR with leaders contributing 2×."** The raid now uses the same per-card rating as every fight (rarity weight × level factor; raid and ally cards at their starting level, yours at your copies' levels).
+- **Boss BR** = its 3 rows, each a 20-card deck of the part's cards (scaled to 20 like any enemy deck) + every card on its board at the start counted again (×2; a guard, e.g. the Core's stumps, which isn't in the deck, counts 2× its own) + a boss unit for each boss-unit round in the fight (3/7/11/15/19), each × (Health + the super whales' bonus) / Health + the Commons it can call in (its reinforce tuning). Stat shares, a stage's +Attack/+Health and the brambles' Health are left out, as in every fight's BR.
+- **Your side's BR** = your BR + each ally's (its deck + its leader 2×). The leaders that start on the board count 2× once, not 4×.
+- **Where:** the raid VS screen shows "Your side's BR" against "Boss BR" (coloured by the gap), each ally chip its real BR (it was the old power score); the raid page shows each open part's "Boss BR · your side about" line. The Goliath, fresh: Left 32 → 507, Right 27 → 463, Tail 15 → 339, Core 53 → 483; ally decks 32–44 → 56–67. Normal fights' BR is unchanged.
+- New test `tests/raid-br-2026-10-19.js` (in run-all); 5 TX keys in all 12 packs (`tools/i18n_2026_10_19_br.py`).
+
 ## 2026-10-19 08:10 — SQL applied (owner "apply it")
 
 - Applied in the Supabase SQL editor (project xjctfwobcsyiztecutrb), each in one transaction, then verified with a read-only query: `20261018_guild_rename.sql` blocks A (rename_guild) and B (the join-as-owner hole closed; block C, server-side tickets, not applied), `20261019_guild_skills.sql` (Guild Seeds, Rooted Walls, upgrade_guild_skill, the Seeds trigger), `20261019_raid_ops.sql` (admin_restart_raid, raid instances, the own-instance trigger) and `20261019_card_copy_levels.sql` (player_card_unlocks.copies + its check; `card_copies_ok` now pins `search_path`). All four moved from supabase/proposed to supabase/migrations; their tests now check the applied files.

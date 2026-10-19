@@ -1858,5 +1858,10 @@
  "{name} restarted for everyone.": "{name} für alle neu gestartet.",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name} nur in diesem Browser neu gestartet: Die Serverseite ist noch nicht eingeschaltet.",
  "No raid tickets left. The next one comes in {span}.": "Keine Raid-Tickets mehr. Das nächste kommt in {span}.",
- "You completed {name}: Auto is open for its fights from now on.": "Du hast {name} geschafft: Auto ist ab jetzt für seine Kämpfe frei."
+ "You completed {name}: Auto is open for its fights from now on.": "Du hast {name} geschafft: Auto ist ab jetzt für seine Kämpfe frei.",
+ "Boss BR": "Boss-KW",
+ "Your side's BR": "KW deiner Seite",
+ "Boss BR {boss} · your side about {side}": "Boss-KW {boss} · deine Seite etwa {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "Die Kampfwertung des Bosses: seine drei Reihen, jede ein Deck aus 20 seiner Karten, die Karten, mit denen er auf dem Feld beginnt, doppelt gezählt, dazu seine Boss-Einheiten und die gewöhnlichen Karten, die er herbeiruft.",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "Die Kampfwertung deiner Seite: dein Deck plus die Decks deiner zwei Verbündeten, jeder Anführer doppelt gezählt. Deine Verbündeten wechseln von Kampf zu Kampf."
 }
