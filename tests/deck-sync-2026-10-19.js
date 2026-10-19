@@ -10,6 +10,10 @@
 //   4. the proposed columns: missing → the client falls back once; present → looks travel
 //   5. per-copy uids: decks hold counts, never copy uids; the cloud's copy levels map onto another device's own copies
 //   6. the seen map is per account; a guest pushes nothing; the indicator's states; texts + 12 packs; the proposed SQL
+//   7. (package SY2, owner 15:48: "the leader: It's not synced across decks across devices") the leader and castle travel with their
+//      deck: set on A, B has them after a pull, and opening the deck on B keeps them (the old switchActiveDeck wrote B's previous
+//      deck's leader into it and pushed that back); edits merge by timestamp; the device's leader is attached once; looks ride in
+//      the counts JSON when the server has no looks column
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = require('crypto');
 const ROOT = path.join(__dirname, '..');
@@ -64,8 +68,12 @@ const syncBlock = between('// DECK_SYNC_SY:BEGIN', '// DECK_SYNC_SY:END');
 ok(syncBlock.length > 3000, '0. the DECK_SYNC_SY block is there');
 const boot = between('let myDecks = loadMyDecks();', 'if(!mainDeckId || !myDecks.find(d=> d.id===mainDeckId)) mainDeckId = activeDeckId;');
 ok(/deckSyncPrepareLocal\(myDecks\)/.test(boot), '0. the load path moves old deck ids (deckSyncPrepareLocal)');
+const leaderBlock = between('// DECK_LEADER_SY2:BEGIN', '// DECK_LEADER_SY2:END');
+ok(leaderBlock.length > 1000, '0. the DECK_LEADER_SY2 block is there');
+// 2026-10-19 (package SY2): the real deck switch and the three legacy saves (the SY harness stubbed switchActiveDeck, which hid the bug)
 const appFns = ['genDeckId', 'loadMyDecks', 'saveMyDecks', 'loadActiveDeckId', 'saveActiveDeckId', 'setMainDeck', 'createNewDeck', 'renameDeck', 'deleteDeck',
-  'cloudPushDecks', 'deckSyncFlush', 'deckSyncRetrySoon', 'deckSyncPull', 'deckSyncOnWake', 'setDeckSyncState', 'renderDeckSyncInd'];
+  'cloudPushDecks', 'deckSyncFlush', 'deckSyncRetrySoon', 'deckSyncPull', 'deckSyncOnWake', 'setDeckSyncState', 'renderDeckSyncInd',
+  'deckTotal', 'saveMyDeck', 'saveMyCharacter', 'saveMyLeader', 'syncActiveDeckFromGlobals', 'switchActiveDeck'];
 appFns.forEach(f=> ok(fnSrc(f), `arena_app.js has ${f}`));
 let clock = Date.parse('2026-10-19T11:00:00Z');
 function makeDevice(cloud, o){
@@ -77,20 +85,27 @@ function makeDevice(cloud, o){
     setTimeout: (f, ms)=>{ timers.set(++tid, {f, ms}); return tid; }, clearTimeout: id=> timers.delete(id),
     genUUID: ()=> crypto.randomUUID(), uid: o.uid === undefined ? 'u-1111' : o.uid, signedIn: o.signedIn !== false,
     toasts: [], switched: 0, matchState: null, currentTab: 'home', renderDeckSection: ()=>{},
-    myCharacterId: 'castle', myLeaderId: null, myDeckCounts: {'bee-knight': 4}};
+    myCharacterId: o.character || 'castle', myLeaderId: o.leader === undefined ? null : o.leader, myDeckCounts: o.counts || {'bee-knight': 4}};
   ctx.showToast = m=> ctx.toasts.push(m);
   ctx.sbClient = cloud.client(()=> ctx.uid);
   vm.createContext(ctx);
   vm.runInContext(`
     var cloudUserId = this.uid; function isSignedIn(){ return !!this_ctx().signedIn && !!cloudUserId; } function this_ctx(){ return globalThis; }
     var sbClient = this.sbClient, deckDirty = false, deckDraftOn = false, deckEditingId = null;
-    function switchActiveDeck(id){ activeDeckId = id; saveActiveDeckId(); globalThis.switched++; }
+    var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null;
+    function legacyDeckLooks(){ return {}; } function deckLooksAll(){ return myDeckLooks || (myDeckLooks = {}); } function saveDeckLooks(){}
+    function deckDraftActive(){ return deckDraftOn; } function markDeckDirty(){ deckDirty = true; }
     ${syncBlock}
+    ${leaderBlock}
     ${appFns.map(fnSrc).join('\n')}
     ${boot}
     if(!mainDeckId || !myDecks.find(d=> d.id===mainDeckId)) mainDeckId = activeDeckId;
     this.D = {get decks(){ return myDecks; }, set decks(v){ myDecks = v; }, get active(){ return activeDeckId; }, get main(){ return mainDeckId; },
       get state(){ return deckSyncState; }, get cols(){ return cloudDeckCols; }, setUid(u){ cloudUserId = u; globalThis.uid = u; },
+      get leader(){ return myLeaderId; }, get character(){ return myCharacterId; }, get activeDeck(){ return getActiveDeck(); },
+      pickLeader(id){ myLeaderId = id || null; saveMyLeader(); }, pickCastle(id){ myCharacterId = id; saveMyCharacter(); }, switchTo: switchActiveDeck,
+      setDraft(on){ deckDraftOn = !!on; }, commitDraft(){ deckDraftOn = false; try{ saveMyDeck(); saveMyCharacter(); saveMyLeader(); } finally { deckDraftOn = true; } deckDirty = false; },
+      get dirty(){ return deckDirty; }, deckTotal, deckToRow, deckFromRow,
       createNewDeck, renameDeck, deleteDeck, saveMyDecks, deckSyncPull, deckSyncFlush, deckSyncMerge, deckSyncPrepareLocal, deckContentHash,
       seen(){ return deckSyncRead(deckSyncKey(DECK_SYNC_SEEN_KEY)); }, removed(){ try{ return JSON.parse(localStorage.getItem(DECK_SYNC_REMOVED_KEY) || '[]'); }catch(e){ return []; } }};`, ctx);
   ctx.timers = timers;
@@ -270,6 +285,85 @@ const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261019_de
 ok(/PROPOSED, NOT APPLIED/.test(sql) && /add column if not exists looks jsonb/.test(sql) && /add column if not exists deleted_at timestamptz/.test(sql)
   && /guard_deck_stale_write/.test(sql) && /new\.updated_at < old\.updated_at then return old/.test(sql) && !/drop table|truncate|delete from/i.test(sql.replace(/^--.*$/gm, '')),
   '6. supabase/proposed/20261019_deck_sync.sql: looks + deleted_at + the stale-write guard, nothing destructive');
+
+// ======================= 7. (package SY2) the leader and castle travel with their deck =======================
+const ups = c=> c.ops.filter(x=> x === 'upsert').length;
+{ const c7 = makeCloud();
+  const A7 = makeDevice(c7, {leader: 'wandering-traveller'}), B7 = makeDevice(c7, {leader: 'wandering-traveller'});
+  later(); await A7.D.deckSyncPull('load'); await settle(); later(); await B7.D.deckSyncPull('load'); await settle();
+  const deckA = A7.D.activeDeck;
+  // set the leader on A
+  later(); const t0 = deckA.updatedAt, up0 = ups(c7);
+  A7.D.pickLeader('oak-king'); A7.D.pickCastle('fortress');
+  ok(deckA.leaderId === 'oak-king' && deckA.characterId === 'fortress' && deckA.updatedAt > t0, '7. a leader (and castle) pick on A is on the deck, with a new updatedAt');
+  await A7.tick();
+  ok(ups(c7) - up0 === 1, '7. and is pushed (one upsert for the burst)');
+  const rowA = ()=> c7.rows.find(r=> r.id === deckA.id);
+  ok(rowA() && rowA().leader_id === 'oak-king' && rowA().character_id === 'fortress', '7. the cloud row carries leader_id and character_id (columns player_decks already has)');
+  // B sees it after a pull
+  later(); await B7.D.deckSyncPull('wake'); await settle();
+  const onB = B7.D.decks.find(d=> d.id === deckA.id);
+  ok(onB && onB.leaderId === 'oak-king' && onB.characterId === 'fortress', "7. B has A's deck with A's leader and castle after a pull");
+  ok(B7.D.leader === 'wandering-traveller', "7. (B's own active deck still leads with its own leader)");
+  // opening it on B keeps them: the bug the owner saw
+  const tB = onB.updatedAt, upB = ups(c7);
+  later(); B7.D.switchTo(onB.id); await B7.tick();
+  ok(B7.D.leader === 'oak-king' && B7.D.character === 'fortress', "7. opening it on B: B plays with A's leader and castle");
+  ok(onB.leaderId === 'oak-king' && onB.characterId === 'fortress' && onB.updatedAt === tB,
+    "7. and the deck keeps them, unedited (the old switch wrote B's previous deck's leader and castle into it, as a new edit)");
+  ok(ups(c7) === upB && rowA().leader_id === 'oak-king', '7. nothing is pushed back: the cloud still says oak-king');
+  ok(B7.localStorage.getItem('bramblewood_arena_leader') === 'oak-king' && B7.localStorage.getItem('bramblewood_arena_character') === 'fortress', "7. B's leader / castle keys mirror the deck it opened");
+  // edits merge by timestamp
+  later(); c7.offline = true; A7.D.pickLeader('elder-ent'); await A7.tick();                    // A, offline, earlier
+  c7.offline = false; later(); B7.D.pickLeader('storm-queen'); await B7.tick();                  // B, later
+  ok(rowA().leader_id === 'storm-queen', "7. B's later leader pick is in the cloud");
+  later(); await A7.D.deckSyncFlush(); await settle(); await settle();
+  ok(rowA().leader_id === 'storm-queen', "7. A's older offline pick doesn't overwrite it");
+  ok(A7.D.activeDeck.leaderId === 'storm-queen' && A7.D.leader === 'storm-queen', "7. A takes B's newer leader, on the deck and as the leader it plays with");
+  later(); A7.D.pickLeader('elder-ent'); await A7.tick(); later(); await B7.D.deckSyncPull('wake'); await settle();
+  ok(B7.D.activeDeck.leaderId === 'elder-ent' && B7.D.leader === 'elder-ent', '7. a newer pick on A reaches B the same way');
+  // the builder: a pick in the open builder waits for Save, then goes as an edit
+  A7.D.setDraft(true); later(); const upD = ups(c7); A7.D.pickLeader('moss-witch'); await A7.tick();
+  ok(A7.D.dirty && A7.D.activeDeck.leaderId === 'elder-ent' && ups(c7) === upD, '7. in the open builder a leader pick waits for Save');
+  later(); A7.D.commitDraft(); A7.D.setDraft(false); await A7.tick();
+  ok(A7.D.activeDeck.leaderId === 'moss-witch' && rowA().leader_id === 'moss-witch', '7. Save puts it on the deck and pushes it');
+  // a deck with no leader yet leads with the Wandering Traveller, as after a reload, and isn't edited by opening it
+  later(); const nd = A7.D.createNewDeck(); await A7.tick();
+  ok(A7.D.leader === 'wandering-traveller' && nd.leaderId === null, '7. a new deck leads with the Wandering Traveller until a leader is picked');
+  ok(A7.D.deckContentHash({name: 'x', looks: {}}) === A7.D.deckContentHash({name: 'x'}), '7. empty looks are no looks (opening a deck is not an edit)'); }
+// the device's current leader is attached once
+{ const c8 = makeCloud(), ls = fakeStorage(), d1 = crypto.randomUUID(), d2 = crypto.randomUUID(), old = clock - 5000;
+  ls.setItem('bramblewood_arena_decks', JSON.stringify([{id: d1, name: 'Phone deck', characterId: 'castle', leaderId: 'wandering-traveller', counts: {ent: 2}, updatedAt: old},
+    {id: d2, name: 'Other', characterId: 'castle', leaderId: 'oak-king', counts: {}, updatedAt: old}]));
+  ls.setItem('bramblewood_arena_active_deck', d1);
+  later(); const M = makeDevice(c8, {storage: ls, leader: 'storm-queen', character: 'fortress'}); // this device's leader / castle keys
+  const m1 = M.D.decks.find(d=> d.id === d1), m2 = M.D.decks.find(d=> d.id === d2);
+  ok(m1.leaderId === 'storm-queen' && m1.characterId === 'fortress' && m1.updatedAt > old, "7. (migration) this device's current leader and castle are attached to its active deck, as an edit");
+  ok(m2.leaderId === 'oak-king' && m2.updatedAt === old, '7. (migration) the other decks keep their own leaders, untouched');
+  ok(ls.getItem('bramblewood_deck_leader_attached_v1') === '1', '7. (migration) and it is marked done');
+  await M.D.deckSyncPull('load'); await settle();
+  ok(c8.rows.find(r=> r.id === d1).leader_id === 'storm-queen' && c8.rows.find(r=> r.id === d2).leader_id === 'oak-king', '7. (migration) both are uploaded with the first sync');
+  later(); const M2 = makeDevice(c8, {storage: ls, leader: 'moss-witch', character: 'castle'}); // a stale leader key
+  ok(M2.D.decks.find(d=> d.id === d1).leaderId === 'storm-queen' && M2.D.leader === 'storm-queen' && M2.D.character === 'fortress',
+    '7. (migration) it runs once: from then on the active deck sets the leader at load, not the key');
+  ok(ls.getItem('bramblewood_arena_leader') === 'storm-queen', '7. (migration) and the key follows the deck'); }
+// card looks without the proposed looks column: inside the counts JSON
+{ const c9 = makeCloud(); const X = makeDevice(c9), Y = makeDevice(c9);
+  X.D.decks[0].looks = {'bee-knight': {shiny: 2}}; later(); X.D.saveMyDecks(); await X.tick();
+  const r = c9.rows.find(x=> x.id === X.D.decks[0].id);
+  ok(r && !('looks' in r) && r.counts.__deck && r.counts.__deck.looks['bee-knight'].shiny === 2 && r.counts['bee-knight'] === 4,
+    '7. no looks column: the looks ride inside counts (__deck), no migration needed; the card counts are as they were');
+  later(); await Y.D.deckSyncPull('load'); await settle();
+  const y = Y.D.decks.find(d=> d.id === X.D.decks[0].id);
+  ok(y && y.looks && y.looks['bee-knight'].shiny === 2, '7. and come down on the other device');
+  ok(y && !('__deck' in y.counts) && Y.D.deckTotal(y.counts) === 4, "7. the pulled deck's counts hold card counts only");
+  ok(Y.D.deckTotal({a: 3, __deck: {looks: {}}}) === 3, '7. deckTotal counts numbers only');
+  const withCol = Y.D.deckToRow({id: 'x', name: 'n', counts: {a: 1}, looks: {a: {shiny: 1}}, updatedAt: 1}, 'u', {looks: true, deleted_at: true});
+  ok(withCol.looks.a.shiny === 1 && !('__deck' in withCol.counts), '7. with the looks column: the looks go in it, counts stay plain');
+  const both = Y.D.deckFromRow({id: 'x', counts: {a: 1, __deck: {looks: {a: {shiny: 1}}}}, looks: {b: {shiny: 1}}, updated_at: '2026-10-19T12:00:00Z'});
+  ok(both.looks.b && !both.looks.a, '7. the looks column wins over the counts fallback');
+  ok(/name: String\(d\.name/.test(fnSrc('deckToRow')) && /character_id: d\.characterId/.test(fnSrc('deckToRow')) && /leader_id: d\.leaderId/.test(fnSrc('deckToRow')),
+    '7. the deck row carries its name, castle and leader'); }
 
 console.log(fail ? `deck-sync-2026-10-19: ${fail} of ${n} checks failed` : `deck-sync-2026-10-19: all ${n} checks passed`);
 process.exit(fail ? 1 : 0);
