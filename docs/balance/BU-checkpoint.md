@@ -16,4 +16,4 @@ Owner feedback 12:23 (iPhone 430 px). Items:
 - [x] 5 tests/bu-2026-10-19.js (46 checks, in run-all.sh), tests/e2e/battle_ui_2026_10_19.py (passes); card-matrix golden re-accepted (22 open matches, the centre rule only: verified by running with the rule off = 0 diffs)
 - [x] 6 FX.F.tentacleSmack rebuilt (tentacleSVG, smokePuff); raidSmackFx shows at Low and under reduced motion (flash); lab inventory + row smack entry
 - [x] CHANGELOG, screenshots docs/screens/bu (before-*, after-*)
-- [ ] merge main, rebuild, final commit
+- [x] merged main (RB), rebuilt, e2e + unit + affected tests pass; final commit

@@ -92,11 +92,15 @@ async def hp_float(pg, tag):
 
 async def cleave(pg, tag):
     # ours: the Beetle Battering-Ram (Cleave 3) at slot 1 facing three enemies at 0..2
-    await pg.evaluate(SETUP, {'theirs': [['chipmunk-stockpiler', s] for s in (0, 1, 2)], 'mine': [['beetle-battering-ram', 1], ['chipmunk-skirmisher', 0]]})
-    await pg.wait_for_timeout(800)
-    await pg.evaluate("matchState.speedMult = 0.5; (async()=>{ try{ await skipTurn(); }catch(e){} })(); 1")
+    # (a round can roll a miss on the main strike, e.g. the map's Mist: then there's no grouped swing; up to three rounds are tried)
     box = None
-    for _ in range(140):
+    for attempt in range(3):
+      if box and box['t']: break
+      await pg.evaluate("(async()=>{ for(let i = 0; i < 80 && matchState.resolving; i++) await new Promise(r=> setTimeout(r, 100)); })()")
+      await pg.evaluate(SETUP, {'theirs': [['chipmunk-stockpiler', s] for s in (0, 1, 2)], 'mine': [['beetle-battering-ram', 1], ['chipmunk-skirmisher', 0]]})
+      await pg.wait_for_timeout(800)
+      await pg.evaluate("matchState.speedMult = 0.5; (async()=>{ try{ await skipTurn(); }catch(e){} })(); 1")
+      for _ in range(140):
         box = await pg.evaluate("""(()=>{ const s = document.querySelector('svg.sfx-crescent, svg.sfx-arc'); if(!s) return null;
           const p = [...s.querySelectorAll('path')].filter(e=> getComputedStyle(e).display !== 'none'); if(!p.length) return null;
           let L=1e9,T=1e9,R=-1e9,B=-1e9; p.forEach(e=>{ const r = e.getBoundingClientRect(); L=Math.min(L,r.left); T=Math.min(T,r.top); R=Math.max(R,r.right); B=Math.max(B,r.bottom); });
