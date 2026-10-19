@@ -10660,7 +10660,7 @@ const DECK_SYNC_SEEN_KEY = 'bramblewood_deck_cloud_seen_v1';  // {deckId: update
 const DECK_SYNC_REMOVED_KEY = 'bramblewood_deck_removed_v1';  // decks another device deleted, kept here in case (newest last, 20 at most)
 const DECK_SYNC_DEBOUNCE_MS = 1200, DECK_SYNC_WAKE_MS = 10000, DECK_SYNC_RETRY_MS = 30000;
 const DECK_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-var deckSyncHashes = {}, deckSyncMerging = false, deckSyncTimer = null, deckSyncInFlight = null, deckSyncDirty = false, deckSyncPulling = null, deckSyncLastWake = 0, deckSyncRetryTimer = null;
+var deckSyncHashes = {}, deckSyncMerging = false, deckSyncNeedPull = false, deckSyncTimer = null, deckSyncInFlight = null, deckSyncDirty = false, deckSyncPulling = null, deckSyncLastWake = 0, deckSyncRetryTimer = null;
 var deckSyncState = 'idle'; // 'synced' | 'syncing' | 'offline' | 'idle' (no account: the indicator is hidden)
 var cloudDeckCols = {looks: null, deleted_at: null}; // null: not known yet; false: the server has no such column (proposed SQL not applied)
 // The tombstones and the seen map are per account (another account's seen decks must never look deleted here).
@@ -10763,7 +10763,14 @@ function deckSyncFlush(){
     let ok = true;
     try{
       const seen = deckSyncRead(deckSyncKey(DECK_SYNC_SEEN_KEY)), tombs = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY));
-      const send = deckSyncPending(myDecks, seen);
+      let send = deckSyncPending(myDecks, seen);
+      // A deck the cloud holds a newer edit of is not sent (an older edit made offline must not overwrite it): the pull after this merges it.
+      if(send.length){
+        const { data: have, error: haveErr } = await sbClient.from('player_decks').select('id, updated_at').eq('profile_id', uid);
+        if(haveErr){ ok = false; send = []; }
+        else { const at = {}; (have || []).forEach(r=>{ at[r.id] = Date.parse(r.updated_at) || 0; });
+          const n0 = send.length; send = send.filter(d=> !(at[d.id] > (Number(d.updatedAt) || 0))); if(send.length < n0) deckSyncNeedPull = true; }
+      }
       for(let tries = 0; send.length && tries < 3; tries++){
         const rows = send.map(d=> deckToRow(d, uid, cloudDeckCols));
         const { error } = await sbClient.from('player_decks').upsert(rows);
@@ -10794,6 +10801,7 @@ function deckSyncFlush(){
     if(deckSyncDirty && isSignedIn()) return deckSyncFlush();
     setDeckSyncState(ok ? 'synced' : 'offline');
     if(!ok) deckSyncRetrySoon();
+    else if(deckSyncNeedPull && !deckSyncPulling){ deckSyncNeedPull = false; return deckSyncPull('newer-in-cloud'); }
   });
   return deckSyncInFlight;
 }
