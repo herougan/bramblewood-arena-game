@@ -320,7 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
-Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', quarry:'🪓🪨', smelter:'🏭', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -1274,7 +1274,7 @@ PASSIVE_DEFS.push(
 // numbers come from the engine's SK2_DEFAULTS (the fallbacks below are the same values, for a page or sandbox without the engine).
 // On no card yet. The Skills chapter of the Codex book and the keyword registry read PASSIVE_DEFS, so they list them too.
 const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, salvageN:1, salvageEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
-  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
+  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6, quarryN:1, quarryLumber:1, smelterN:1, smelterLumber:2, smelterStone:2, smelterMetal:1}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
 const sk2Num = (v, k)=> numOr(v, SK2_UI[k]);
 const sk2ScavengeEvery = e=> (e && Number(e.scavengeEvery) >= 1) ? Math.round(Number(e.scavengeEvery)) : SK2_UI.scavengeEvery;
 const sk2SalvageEvery = e=> (e && Number(e.salvageEvery) >= 1) ? Math.round(Number(e.salvageEvery)) : SK2_UI.salvageEvery;
@@ -1286,6 +1286,8 @@ const SK2_LINE = {
   repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
   foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
   milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
+  quarry: v=> TX('ui.sk2-quarry', {n: sk2Num(v, 'quarryN'), l: SK2_UI.quarryLumber}),
+  smelter: v=>{ const n = sk2Num(v, 'smelterN'), o = {n, l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}; return n === 1 ? TX('ui.sk2-smelter-1', o) : TX('ui.sk2-smelter', o); },
   pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
   sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
   arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
@@ -1298,6 +1300,8 @@ PASSIVE_DEFS.push(
   {key:'repair', category:'passive', label:TX('ui.sk2n-repair'), kind:'number', min:1, defaultValue:SK2_UI.repairN, desc:v=> SK2_LINE.repair(v), codexNote:TX('ui.sk2-repair-codex'), get:e=> e.repair ? sk2Num(e.repair, 'repairN') : undefined},
   {key:'foraging', category:'passive', label:TX('ui.sk2n-foraging'), kind:'number', min:1, defaultValue:SK2_UI.foragingN, desc:v=> SK2_LINE.foraging(v), codexNote:TX('ui.sk2-foraging-codex'), get:e=> e.foraging ? sk2Num(e.foraging, 'foragingN') : undefined},
   {key:'milling', category:'passive', label:TX('ui.sk2n-milling'), kind:'number', min:1, defaultValue:SK2_UI.millingN, desc:v=> SK2_LINE.milling(v), codexNote:TX('ui.sk2-milling-codex'), get:e=> e.milling ? sk2Num(e.milling, 'millingN') : undefined},
+  {key:'quarry', category:'passive', label:TX('ui.sk2n-quarry'), kind:'number', min:1, defaultValue:SK2_UI.quarryN, desc:v=> SK2_LINE.quarry(v), codexNote:TX('ui.sk2-quarry-codex'), get:e=> e.quarry ? sk2Num(e.quarry, 'quarryN') : undefined}, // SK2b (2026-10-19, owner 23:43): the Stone tier
+  {key:'smelter', category:'passive', label:TX('ui.sk2n-smelter'), kind:'number', min:1, defaultValue:SK2_UI.smelterN, desc:v=> SK2_LINE.smelter(v), codexNote:TX('ui.sk2-smelter-codex'), get:e=> e.smelter ? sk2Num(e.smelter, 'smelterN') : undefined}, // SK2b: the Metal tier
   {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
   {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
   {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
@@ -7531,7 +7535,7 @@ function triggerBadges(d, live){
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
-CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
+CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -40968,6 +40972,8 @@ function sk2LogText(ev, nm){
     if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
     if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
     if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
+    if(ev.kind === 'pay') return {cls:'', text:TX('ui.sk2-log-pay', {name, list: sk2ResList(ev.price)})}; // a price paid (SK2b: Quarry, Smelter)
+    if(ev.kind === 'cantPay') return {cls:'', text:TX('ui.sk2-log-cant-pay', {name, list: sk2ResList(ev.price)})};
     return null; }
   if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage')){ const name = nm(ev.attDefId), stone = ev.kind === 'sk2Salvage';
     if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
@@ -41002,6 +41008,8 @@ function sk2Vfx(ev){
   if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪛 −${ev.amount}`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'fortify'){ fl(el, '🏯', 'quick'); return; }
+  if(ev.kind === 'pay'){ fl(el, '−' + (ev.price || []).map(x=> x.n + (x.res === 'stone' ? '🪨' : x.res === 'metal' ? '🔩' : '🪵')).join(' '), 'debuff'); return; } // SK2b
+  if(ev.kind === 'cantPay'){ fl(el, '🚫', 'quick'); return; }
 }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)

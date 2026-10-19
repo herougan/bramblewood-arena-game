@@ -176,7 +176,7 @@ ok(/function isStructureCard\(c\)\{[^\n]*d\.cardType === 'structure'/.test(eng),
 
 // ---- 10. The app: the skill registry (Codex skill book, keyword registry), card lines, icons, chips, the log / looks / chips hooks
 const src = R('arena_app.js');
-const SK2_KEYS = ['harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'];
+const SK2_KEYS = ['harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'quarry', 'smelter', 'pickpocket', 'sabotage', 'arson', 'fortification']; // + SK2b's Quarry, Smelter
 const sk2At = src.indexOf('// ---- Package SK2 (2026-10-19, owner 21:36)'); const blkA = src.slice(sk2At, src.indexOf('PASSIVE_DEFS.push(', sk2At) + 4000); // 2026-10-19 (SK3 merge): SK3's own push comes earlier in the file
 const icoLine = (src.match(/^Object\.assign\(SKILL_ICON, \{harvest:[^\n]*/m) || [''])[0];
 const icons = [...icoLine.matchAll(/(\w+):'([^']+)'/g)].map(m=> m[2]);
@@ -184,10 +184,10 @@ SK2_KEYS.forEach(k=>{
   ok(new RegExp(`\\{key:'${k}', category:'passive', label:TX\\('ui\\.sk2n-`).test(blkA), `${k}: in PASSIVE_DEFS with a TX name (the Codex skill book, the keyword registry, "+ Add Skill")`);
   ok(new RegExp(`\\n  ${k}: [^\\n]*TX\\('ui\\.sk2-`).test(blkA), `${k}: a terse card line (SK2_LINE, merged into SKILL_TEXT)`);
   ok(new RegExp(`\\b${k}:'`).test(icoLine), `${k}: an icon`); });
-ok(icons.length === SK2_KEYS.length && new Set(icons).size === icons.length, `ten distinct icons (${icons.join(' ')})`);
+ok(icons.length === SK2_KEYS.length && new Set(icons).size === icons.length, `twelve distinct icons (${icons.join(' ')})`);
 { const other = [...src.matchAll(/^(?:Object\.assign\(SKILL_ICON, \{|const SKILL_ICON = \{)([^\n]*)/gm)].filter(m=> !m[0].includes('harvest:')).map(m=> m[1]).join(' ');
   ok(icons.every(i=> !other.includes(`'${i}'`)), 'no SK2 icon is shared with another skill'); }
-ok(src.includes("Object.assign(SKILL_TEXT, SK2_LINE);") && /CHIP_FALLBACK_SKILLS\.push\('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'\)/.test(src), 'card lines and card-face chips');
+ok(src.includes("Object.assign(SKILL_TEXT, SK2_LINE);") && /CHIP_FALLBACK_SKILLS\.push\('harvest', 'scavenge', 'salvage', 'quarry', 'smelter', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'\)/.test(src), 'card lines and card-face chips');
 ok(src.includes('{ const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; }') && src.includes('try{ sk2Vfx(ev); }catch(e){}') && src.includes('try{ sk2StatusBadges(c, badges); }catch(e){}'), 'the log, the looks and the chips are hooked');
 ok(/rc\.sk2Berries = c\.sk2Berries\|\|0; rc\.sk2Scavenge = c\.sk2Scavenge\|\|0; rc\.sk2Salvage = c\.sk2Salvage\|\|0;/.test(src), 'the replay snapshot carries the chip counts');
 ok(src.includes("if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name');"), 'the Palisade token is named from the text table');
@@ -197,7 +197,7 @@ ok(/typeof SK2_DEFAULTS !== 'undefined'/.test(blkA), "the app's numbers come fro
 const TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
 const words = s=> String(s).trim().split(/\s+/).filter(Boolean).length;
 const TK = Object.keys(TXT).filter(k=> /^ui\.sk2/.test(k));
-ok(TK.length === 55, `55 package SK2 TX keys (${TK.length})`);
+ok(TK.length === 64, `64 package SK2 / SK2b TX keys (${TK.length})`);
 TK.forEach(k=> ok(src.includes(`TX('${k}'`), `${k} is used`));
 TK.filter(k=> !/-codex$/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is under 20 words (${words(TXT[k])})`));
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];

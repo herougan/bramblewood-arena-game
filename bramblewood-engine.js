@@ -129,6 +129,8 @@ const SK2_DEFAULTS = Object.freeze({
   repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
   foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
   millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks
+  quarryN: 1, quarryLumber: 1,                                           // Quarry N (SK2b, owner 23:43): pay 1 Lumber, gain N Stone, each turn while Ready
+  smelterN: 1, smelterLumber: 2, smelterStone: 2, smelterMetal: 1,       // Smelter N (SK2b): 2 Lumber + 2 Stone -> 1 Metal, up to N times a turn while Ready
   pickpocketN: 1, sabotageN: 1, arsonN: 1,                               // what a plain (true) Pickpocket / Sabotage / Arson takes
   fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {}, // the Palisade 0/6; every K turns (0: on play only); its look
 });
@@ -4228,13 +4230,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !s3) return base; // + Milling (2026-10-19, package SK2)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.s3 === s3) return m.list;
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !s3) return base; // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.s3 === s3) return m.list;
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, s3, list}); return list;
+    sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, s3, list}); return list;
   }
   // ==== Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. Owner principle: "if you can and it makes sense, feel
   // free to use triggers and actions. if they dont suffice, add the required trigger or action." So most of these are keywords that
@@ -5468,6 +5471,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
       if(sk3TrigGate(boardCard, hook, t, i, mySide, events)) return; // Package SK3 (2026-10-19): Petrified sleeps, a per-round cap (Harbinger), Exhaust fizzles
+      if(t.pay && !sk2PayFor(pl, boardCard, t, mySide, events)){ if(t.once && boardCard && boardCard.firedOnce) delete boardCard.firedOnce['once:'+hook+':'+i]; return; } // a price (SK2b, 2026-10-19): can't pay, nothing happens
       const tfEv = {type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do};
       if(recordEvents && events) events.push(tfEv);
       // 2026-10-19 (package HN, owner: "if there's nothing to heal, it doesn't occur"): a Heal or Rebuild trigger that finds nothing
@@ -6676,6 +6680,29 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.repair) sk2Repair(players, sideOf, pl, c, sk2N(c, 'repair', SK2.repairN), stats, events);
     if(e.foraging) sk2Forage(players, sideOf, pl, c, stats, events);
     if(e.fortification && SK2.fortifyEvery > 0){ c.sk2FortAge = (c.sk2FortAge||0) + 1; if(c.sk2FortAge % Math.round(SK2.fortifyEvery) === 0) sk2Fortify(players, sideOf, pl.id, c, stats, events); }
+  }
+  // ---- SK2b (2026-10-19, owner 23:43: "do we have 3 simple skills -> to generate lumber every turn, stone every turn, and metal every
+  // turn? Maybe for metal, it's 2 lumber + 2 stone = 1 metal. For stone, it's possible to harvest it, but it usually takes lumber ... I
+  // want to make resources really a strategic move"). The three tiers, all On Turn Start × Gain in the trigger layer (trigsOf):
+  //   Milling N   (Lumber)  +N Lumber, free.
+  //   Quarry N    (Stone)   pay 1 Lumber, gain N Stone.
+  //   Smelter N   (Metal)   pay 2 Lumber + 2 Stone, gain 1 Metal; Smelter N is N such conversions (each paid whole, or not at all).
+  // The price is a new trigger condition, t.pay = {lumber, stone, metal, uranium}: a trigger with a price goes off only if its player
+  // holds all of it, and pays it as it goes off (after every other gate: Waiting, Confused, Slippery, the filters, SK3's gates), so a
+  // fizzle never costs anything. No price, no change. Units act in the upkeep's order (each side's row: the left flank from the centre
+  // out, the centre, the right flank), so a Quarry that acts first can feed a Smelter. (The older t.cost 'burnLumber' is untouched.)
+  function sk2EconomyTrigs(e, list){
+    if(e.quarry) list.push({on:'perTurn', do:'gain', resource:'stone', amount:numN(e.quarry, SK2.quarryN), pay:{lumber:SK2.quarryLumber}, keyword:'quarry'});
+    if(e.smelter){ const n = Math.max(1, Math.min(8, Math.round(numN(e.smelter, SK2.smelterN))));
+      for(let k = 0; k < n; k++) list.push({on:'perTurn', do:'gain', resource:'metal', amount:SK2.smelterMetal, pay:{lumber:SK2.smelterLumber, stone:SK2.smelterStone}, keyword:'smelter'}); }
+  }
+  function sk2Price(pay){ return SK2_RES_RANK.map(r=> ({res:r, n:Math.max(0, Math.floor(Number(pay && pay[r])||0))})).filter(x=> x.n > 0); }
+  function sk2PayFor(pl, c, t, side, events){
+    const price = sk2Price(t.pay), base = {type:'sk2', side, uid: c ? c.uid : null, defId: c ? c.defId : null, price, action:t.do, keyword:t.keyword};
+    if(!pl || price.some(x=> (Number(pl[x.res])||0) < x.n)){ if(recordEvents && events) events.push(Object.assign(base, {kind:'cantPay'})); return false; }
+    price.forEach(x=>{ pl[x.res] = (Number(pl[x.res])||0) - x.n; });
+    if(recordEvents && events && price.length) events.push(Object.assign(base, {kind:'pay'}));
+    return true;
   }
   // ==== [SK2 END] ====
   function endOfRoundUpkeep(players, sideOf, stats, events){
