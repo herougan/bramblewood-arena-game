@@ -180,7 +180,7 @@ KEYS.forEach(k=> ok(new RegExp(`^${k}\\s+mpd\\s+\\w+\\s+deck road 18 `, 'm').tes
 ok(/mpd:'map-mpd'/.test(src) && /"mpd"\]\);/.test(constLine('MAP_ART_IDS')) && fs.existsSync(path.join(ROOT, 'art', 'maps', 'mpd.png')), '7. battlefield class, map art id and art/maps/mpd.png');
 ok(/def mpd\(rng\):/.test(fs.readFileSync(path.join(ROOT, 'tools', 'make_map_backgrounds.py'), 'utf8')) && /"abyss", "pd"\]/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')), '7. the art is painted by make_map_backgrounds.py and baked in by the build');
 ok(/\.battlefield\.map-mpd\{/.test(tpl) && /\.map-theme-mpd\{/.test(tpl) && /\.scene-paledesert \.pd-sun\{/.test(tpl) && /'paledesert'/.test(fn('syncSceneFx')), '7. the pale sand scene: floor gradient, map theme, white-sun glare and heat haze');
-ok(/mpd:'map_sand'/.test(src) && /mpd:\{arrive:\[hiss\]/.test(src) && /mpd:'paledesert'/.test(constLine('MAP_BIOME_OF')) && /paledesert:\{trees:/.test(src), '7. music, ambient sound, map decor');
+ok(/mpd:'map_sand'/.test(src) && /mpd:\{arrive:\[[^\]]*\][^\n]*gusts:true/.test(src) /* 2026-10-19 (CX): the arrive hiss became intermittent sand gusts */ && /mpd:'paledesert'/.test(constLine('MAP_BIOME_OF')) && /paledesert:\{trees:/.test(src), '7. music, ambient sound, map decor');
 ok(/\n  mpd: `<svg/.test(src), '7. its own emblem on the Glass Dunes');
 ok(/mpd:'paledesert'\}/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-fx-e.js'), 'utf8')) && /mpd:'desert'/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-fx-g.js'), 'utf8')) && /mpd:4/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-shaders.js'), 'utf8')), '7. map ambience, title theme and heat-shimmer shader');
 

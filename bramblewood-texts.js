@@ -83,7 +83,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ee-admin-tip": "Easter egg: nothing gives it out yet (EASTER_EGG_IDS). Admin grants still work.",
   "ui.ee-where": "An Easter egg: it can't be obtained yet",
   "ui.act-position-beam": "Position Beam",
-  "ui.act-position-beam-desc": "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.",
+  "ui.act-position-beam-desc": "fire a {n} beam, aimed by its column",
   "ui.log-position-beam-centre": "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.",
   "ui.log-position-beam-side": "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.",
   "ui.log-position-beam-edge": "🌈 {name} fires its beam flat along the row ({n}).",

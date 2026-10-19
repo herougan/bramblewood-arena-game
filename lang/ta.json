@@ -1974,7 +1974,6 @@
  "An Easter egg you haven't found yet": "நீங்கள் இன்னும் கண்டுபிடிக்காத ஈஸ்டர் முட்டை",
  "An Easter egg: it can't be obtained yet": "ஒரு ஈஸ்டர் முட்டை: இன்னும் பெற முடியாது",
  "Position Beam": "நிலைக் கதிர்",
- "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "{n} கதிரைச் சுடும். நடு: எதிரே உள்ள அலகும் முட்புதரும். பக்கம்: உள்நோக்கி சாய்வாக. ஓரம்: உள்நோக்கிய வரிசை.",
  "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} தன் கதிரை நேராகச் சுடுகிறது ({n}): எதிரே உள்ள அலகும் முட்புதரும்.",
  "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} தன் கதிரைச் சாய்வாகச் சுடுகிறது ({n}): சாய்வாக எதிரே உள்ள அலகுகள்.",
  "{name} fires its beam flat along the row ({n}).": "{name} தன் கதிரை வரிசை நெடுகத் தட்டையாகச் சுடுகிறது ({n}).",
@@ -2035,5 +2034,6 @@
  "Materia": "மெட்டீரியா",
  "Crafting materials for the Blacksmith": "கொல்லருக்கான செய்பொருட்கள்",
  "The Drowned Maw": "மூழ்கிய வாய்",
- "The boss's bramble, {name}, strikes too": "முதலாளியின் முட்புதர், {name}, கூட தாக்கும்"
+ "The boss's bramble, {name}, strikes too": "முதலாளியின் முட்புதர், {name}, கூட தாக்கும்",
+ "fire a {n} beam, aimed by its column": "தன் நெடுவரிசையைப் பொறுத்து குறிவைத்த {n} கதிரை எய்கிறது"
 }

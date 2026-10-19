@@ -1973,7 +1973,6 @@
  "An Easter egg you haven't found yet": "Telur Paskah yang belum kamu temukan",
  "An Easter egg: it can't be obtained yet": "Telur Paskah: belum bisa didapat",
  "Position Beam": "Sinar Posisi",
- "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "menembakkan sinar {n}. Tengah: unit di seberang dan semak. Sisi: miring ke dalam. Tepi: barisan ke arah dalam.",
  "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} menembakkan sinarnya lurus ke depan ({n}): unit di seberang dan semak.",
  "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} menembakkan sinarnya miring ({n}): unit-unit di seberang secara diagonal.",
  "{name} fires its beam flat along the row ({n}).": "{name} menembakkan sinarnya mendatar sepanjang barisan ({n}).",
@@ -2034,5 +2033,6 @@
  "Materia": "Materia",
  "Crafting materials for the Blacksmith": "Bahan tempa untuk pandai besi",
  "The Drowned Maw": "Rahang Tenggelam",
- "The boss's bramble, {name}, strikes too": "Semak duri bos, {name}, juga menyerang"
+ "The boss's bramble, {name}, strikes too": "Semak duri bos, {name}, juga menyerang",
+ "fire a {n} beam, aimed by its column": "menembakkan sinar {n}, dibidik menurut kolomnya"
 }

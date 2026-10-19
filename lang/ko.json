@@ -1974,7 +1974,6 @@
  "An Easter egg you haven't found yet": "아직 찾지 못한 이스터 에그",
  "An Easter egg: it can't be obtained yet": "이스터 에그: 아직 얻을 수 없음",
  "Position Beam": "위치 광선",
- "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "{n} 광선을 쏜다. 중앙: 맞은편 유닛과 덤불. 측면: 안쪽 대각선. 가장자리: 안쪽 줄 전체.",
  "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name}이(가) 광선을 정면으로 쏜다 ({n}): 맞은편 유닛과 덤불.",
  "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name}이(가) 광선을 비스듬히 쏜다 ({n}): 대각선 맞은편 유닛들.",
  "{name} fires its beam flat along the row ({n}).": "{name}이(가) 광선을 줄을 따라 수평으로 쏜다 ({n}).",
@@ -2035,5 +2034,6 @@
  "Materia": "마테리아",
  "Crafting materials for the Blacksmith": "대장장이에게 줄 제작 재료",
  "The Drowned Maw": "익사한 아가리",
- "The boss's bramble, {name}, strikes too": "보스의 가시덤불 {name}도 공격한다"
+ "The boss's bramble, {name}, strikes too": "보스의 가시덤불 {name}도 공격한다",
+ "fire a {n} beam, aimed by its column": "열에 따라 조준한 {n} 광선을 쏜다"
 }

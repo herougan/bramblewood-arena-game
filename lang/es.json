@@ -1973,7 +1973,6 @@
  "An Easter egg you haven't found yet": "Un huevo de Pascua que aún no has encontrado",
  "An Easter egg: it can't be obtained yet": "Un huevo de Pascua: aún no se puede conseguir",
  "Position Beam": "Rayo de posición",
- "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "dispara un rayo de {n}. Centro: la unidad de enfrente y el zarzal. Lado: en diagonal hacia dentro. Borde: la fila hacia dentro.",
  "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} dispara su rayo de frente ({n}): la unidad de enfrente y el zarzal.",
  "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} dispara su rayo en ángulo ({n}): las unidades en diagonal.",
  "{name} fires its beam flat along the row ({n}).": "{name} dispara su rayo a ras de la fila ({n}).",
@@ -2034,5 +2033,6 @@
  "Materia": "Materia",
  "Crafting materials for the Blacksmith": "Materiales de fabricación para el herrero",
  "The Drowned Maw": "Las Fauces Ahogadas",
- "The boss's bramble, {name}, strikes too": "La zarza del jefe, {name}, también ataca"
+ "The boss's bramble, {name}, strikes too": "La zarza del jefe, {name}, también ataca",
+ "fire a {n} beam, aimed by its column": "dispara un rayo de {n}, apuntado según su columna"
 }

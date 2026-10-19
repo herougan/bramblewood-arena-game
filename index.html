@@ -36739,7 +36739,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2e2e79cf5f", "es": "assets/lang/es.js?v=813361e082", "fr": "assets/lang/fr.js?v=eddc585df1", "id": "assets/lang/id.js?v=3abb365791", "it": "assets/lang/it.js?v=9aa977b2f6", "ja": "assets/lang/ja.js?v=e073ad7c45", "ko": "assets/lang/ko.js?v=edc2c7a279", "pt": "assets/lang/pt.js?v=57936acecd", "ta": "assets/lang/ta.js?v=86ea2e5d42", "tl": "assets/lang/tl.js?v=e2fc3e2211", "zh-Hans": "assets/lang/zh-Hans.js?v=1e5781b3e6", "zh-Hant": "assets/lang/zh-Hant.js?v=97f44cae34"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=144b0e0c02", "es": "assets/lang/es.js?v=0a68a2c70a", "fr": "assets/lang/fr.js?v=f2965349d7", "id": "assets/lang/id.js?v=33a8bccbca", "it": "assets/lang/it.js?v=755d147477", "ja": "assets/lang/ja.js?v=0ec5c387ba", "ko": "assets/lang/ko.js?v=ddc981e2a9", "pt": "assets/lang/pt.js?v=904a8997d8", "ta": "assets/lang/ta.js?v=452ff226aa", "tl": "assets/lang/tl.js?v=a4f8ee22d9", "zh-Hans": "assets/lang/zh-Hans.js?v=3eeb197dc4", "zh-Hant": "assets/lang/zh-Hant.js?v=f134891f44"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -36948,7 +36948,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ee-admin-tip": "Easter egg: nothing gives it out yet (EASTER_EGG_IDS). Admin grants still work.",
   "ui.ee-where": "An Easter egg: it can't be obtained yet",
   "ui.act-position-beam": "Position Beam",
-  "ui.act-position-beam-desc": "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.",
+  "ui.act-position-beam-desc": "fire a {n} beam, aimed by its column",
   "ui.log-position-beam-centre": "🌈 {name} fires its beam straight across ({n}): the unit opposite and the bramble.",
   "ui.log-position-beam-side": "🌈 {name} fires its beam at an angle ({n}): the units diagonally across.",
   "ui.log-position-beam-edge": "🌈 {name} fires its beam flat along the row ({n}).",
@@ -37954,7 +37954,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.goliath-core-bramble": "The Drowned Maw",
   "ui.u3-bramble-kicker": "The boss's bramble",
   "ui.u3-bramble-vs": "The boss's bramble: {name}",
-  "ui.u3-bramble-rules":"The boss's bramble, {name}, strikes too:",
+  "ui.u3-bramble-rules": "The boss's bramble, {name}, strikes too:",
   "ui.u3-smack-desc": "{name}: every {every} turns a tentacle lashes out of the reef at one of your columns or rows (a column first, then a row), {dmg} damage to each unit there. Its target glows red the turn before; if no unit is there, your bramble takes the hit.",
   "ui.u3-sweep-desc": "{name}: every {every} turns the reef sweeps your front row, {dmg} damage to each unit there.",
   "ui.nv-vs-start": "Start the fight",
@@ -41309,7 +41309,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '14049246822e', BUILD_CARD_HASH = '94387c5c7d2f6518d707a90c151e073c872b2ed362fe42de5eb7e47ccfd1603c';
+const BUILD_ID = 'f0c28a638b52', BUILD_CARD_HASH = '94387c5c7d2f6518d707a90c151e073c872b2ed362fe42de5eb7e47ccfd1603c';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
