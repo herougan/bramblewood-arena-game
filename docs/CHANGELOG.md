@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package SY2: deck leaders sync)
+- **The leader and castle now travel with their deck** (owner 15:48: *"the leader: It's not synced across decks across devices. So I can see my laptop's deck, but it's a different leader."*).
+  - **Cause:** each deck already held its leader and castle, and they already went to the cloud (`player_decks.leader_id` / `character_id`). But opening a deck (`switchActiveDeck`) saved its cards first. That save copied the leader and castle still loaded, which were the previous deck's, into the deck it was opening. Then it read them back. The save counted as a fresh edit, so the next push sent the wrong leader to the cloud as the newest version, and the laptop pulled it back. SY's test stubbed `switchActiveDeck`, so it never ran this path.
+  - **Fix:** opening a deck sets its cards, looks, castle and leader first, then writes them to this device's keys and leaves the deck unchanged. A leader pick saves to the deck with a new `updatedAt` and is pushed. In the open builder it waits for Save, as before. On a pull, the deck's leader comes with it. When the active deck changes, the leader it plays with changes too. A deck with no leader yet leads with the Wandering Traveller, as it already did after a reload.
+  - **Once per device:** its current leader and castle are attached to its active deck and uploaded on the next sync (`deckAttachDeviceLeaderOnce`). From then on the active deck sets the leader at load, not the separate `bramblewood_arena_leader` key.
+  - **Card looks (Shiny / alt-art copies) sync without a migration.** With no `looks` column on the server, they ride inside the counts JSON (`counts.__deck.looks`) and are taken out on pull. The deck name already synced. Decks have no per-deck cover, sleeve or card back to sync (card backs are per card kind).
+- No migration needed. `tests/deck-sync-2026-10-19.js` has 141 checks, 30 of them new: two devices, the leader set on A and seen on B, merging by timestamp, the attach-once step and looks in counts.
+
 ## 2026-10-19 (package BF2: budget v5, a softer Forge curve, the budget panel with Base)
 - **Owner (13:52):** "That's too much. ... (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." **Budget v5:** N = (Base + L/5) × (1 + L/30) from Level 1, and Base − 1 at Level 0, in `bramblewood-budget.js` and `canonical/skill-costs.json`. The owner's example with L/3 checks out: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10.
   - **L/5, not L/3** (13:54: "change it to L/4 or L/5" if L/3 favours weak cards). Weak cards' Lv 10 stat growth is 1.82× / 1.74× / 1.65× the strong cards' with L/3 / L/4 / L/5. None meets 1.3×, so the closest, L/5, is used. Most of the gap comes from the absolute conversion. `levelLinDiv` is one constant.
