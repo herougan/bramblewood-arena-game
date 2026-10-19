@@ -4489,6 +4489,31 @@ const SoundKit = (()=>{
       for(let i = 0; i < 4; i++) sweep(900 + Math.random()*700, 1600 + Math.random()*900, 0.05, 'sine', 0.025, 0.08 + i*0.05); },
   };
 })();
+// ---- The Pale Desert's sand gusts (2026-10-19, package CX, owner 14:07: "Pale Desert - the sand sfx plays here and there, but not
+// permanently on") ----
+// Before: the Pale Desert borrowed the open-plains soundscape (MAP_KIND 4), a looping noise bed with a 4.6 kHz shimmer that never
+// stopped, which over bone-white sand read as sand hissing on and on; its own sand hiss came only on the map view (every 25–45 s), and
+// in its fights there was no sand at all (a fight's ambience carried no map flavour). Now the sand comes in gusts and only in gusts:
+// one every 8–20 s of quiet, each 2–4 s long, fading in and out, its loudness, pitch and side a little different every time, over a
+// quiet low breath of hot air. They keep coming for as long as you are on the map or in one of its fights (the fight keeps the map's
+// scene), stop when you leave (the scene's timers die with it), follow the SFX volume and mute, and, being ambience, its level too.
+const SAND_GUST = {gapMin:8, gapMax:20, durMin:2, durMax:4, gainMin:0.05, gainMax:0.085, rateMin:0.85, rateMax:1.18, firstMin:1, firstMax:4};
+// One gust: how long the quiet after it lasts (gap, s), its length (dur, s), peak gain, playback rate (pitch), band centre (Hz) and pan.
+function sandGustPlan(rand){
+  const G = SAND_GUST, r = (a, b)=> a + rand() * (b - a);
+  return {gap: r(G.gapMin, G.gapMax), dur: r(G.durMin, G.durMax), gain: r(G.gainMin, G.gainMax), rate: r(G.rateMin, G.rateMax), freq: r(1500, 2600), pan: r(-0.6, 0.6)};
+}
+// Gust after gust on a scene ({alive, timers}) until the scene is retired. env: {setTimeout, rand, play(plan), sfx()}, sfx() the SFX
+// level now (0 = muted). A muted gust is skipped but the next is still booked, so un-muting brings them back without leaving the map.
+function sandGustLoop(sc, env){
+  const G = SAND_GUST, R = env.rand || Math.random; let last = null;
+  const book = (fn, s)=>{ const i = sc.timers.indexOf(last); if(i >= 0) sc.timers.splice(i, 1); last = env.setTimeout(fn, s * 1000); sc.timers.push(last); };
+  const tick = ()=>{ if(!sc.alive) return;
+    const p = sandGustPlan(R), lv = env.sfx ? env.sfx() : 1;
+    if(lv > 0){ p.gain *= lv; try{ env.play(p); }catch(e){} }
+    book(tick, p.dur + p.gap); };
+  book(tick, G.firstMin + R() * (G.firstMax - G.firstMin));
+}
 // ---- Ambience (2026-10-05, immersion point #1: "every place should sound like itself") ----
 // A soundscape per place, synthesised live (no audio files): continuous "beds" (filtered noise
 // with slow movement) plus little scheduled events (birds, drips, frogs, crackles, bubbles,
@@ -4589,6 +4614,16 @@ const Ambience = (()=>{
   const whirr = sc=>{ for(let i=0;i<14;i++) puff(sc, 0.02, 0.006, 'bandpass', 2600, 4, i*0.03); };
   const rumble = sc=> puff(sc, 2.4, 0.08, 'lowpass', 160, 0.6, 0, 50);
   const hiss = sc=> puff(sc, 2.2, 0.03, 'highpass', 4000, 0.6, 0, 1800);
+  // A sand gust (2026-10-19, package CX; sandGustPlan above): a breath of wind through a band that rises and falls, with a thin layer
+  // of grains hissing on top, faded in over 40% of it and out over the last 45%, panned a little to one side.
+  const sandGust = (sc, p)=>{ const c = C(); if(!c) return; const t = c.currentTime + 0.02, d = p.dur;
+    let dest = sc.bus; try{ if(c.createStereoPanner){ const pn = c.createStereoPanner(); pn.pan.value = p.pan; pn.connect(sc.bus); dest = pn; } }catch(e){}
+    const layer = (type, f0, f1, q, peak)=>{ const src = c.createBufferSource(); src.buffer = noiseBuffer(c); src.loop = true; src.playbackRate.value = p.rate;
+      const f = c.createBiquadFilter(); f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, t); f.frequency.linearRampToValueAtTime(f1, t + d * 0.45); f.frequency.linearRampToValueAtTime(f0 * 0.9, t + d);
+      const g = c.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + d * 0.4); g.gain.setValueAtTime(peak, t + d * 0.55); g.gain.linearRampToValueAtTime(0, t + d);
+      src.connect(f); f.connect(g); g.connect(dest); src.start(t, Math.random() * 2); src.stop(t + d + 0.1); };
+    layer('bandpass', p.freq * 0.55, p.freq, 0.8, p.gain);
+    layer('highpass', 4800 * p.rate, 6200 * p.rate, 0.7, p.gain * 0.35); };
   const gulls = sc=>{ cry(sc); setTimeout(()=>{ try{ if(sc.alive) cry(sc); }catch(e){} }, 380); };
   const MAP_FLAVOR = {
     m1:{arrive:[sc=>{ bird(sc); setTimeout(()=>{ try{ if(sc.alive) bird(sc); }catch(e){} }, 300); }], events:[[woodpecker, 25, 45], [steps('grass'), 55, 90]]},
@@ -4620,7 +4655,7 @@ const Ambience = (()=>{
     ml:{arrive:[sc=> puff(sc, 2.6, 0.04, 'bandpass', 2200, 0.6, 0, 1400)], events:[[chirps, 8, 18], [steps('grass'), 55, 90]]},
     mt:{arrive:[sc=> puff(sc, 3, 0.04, 'bandpass', 700, 2, 0, 1100)], events:[[hoot, 25, 45], [sc=> puff(sc, 0.4, 0.04, 'lowpass', 400, 0.7, 0, 120), 25, 45], [steps('snow'), 55, 90]]},
     md:{arrive:[hiss], events:[[chime, 12, 25], [steps('sand'), 55, 90]]},
-    mpd:{arrive:[hiss], events:[[steps('sand'), 50, 85], [hiss, 25, 45]]}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes
+    mpd:{arrive:[], events:[[steps('sand'), 50, 85]], beds:[{freq:240, gain:0.022, lfo:0.05, depth:0.6}], bedsKind:4, gusts:true, noNight:true}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes; 2026-10-19 (package CX): the sand in gusts now (sandGustLoop), over a quiet low breath instead of the plains' constant shimmer, and no night crickets
   };
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
@@ -4651,7 +4686,7 @@ const Ambience = (()=>{
     const c = C(), o = out(); if(!c || !o) return null;
     const r0 = RECIPES[kind]; if(!r0) return null;
     const fl = flavor && MAP_FLAVOR[flavor];
-    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[])}) : r0;
+    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[]), beds: fl.beds && (fl.bedsKind == null || fl.bedsKind === kind) ? fl.beds : r0.beds}) : r0; // 2026-10-19 (package CX): + a map's own beds (the Pale Desert's)
     const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.8); bus.connect(o);
     const sc = {kind, flavor: flavor || null, bus, nodes:[], timers:[], alive:true};
     r.beds.forEach(b=> bed(sc, b));
@@ -4661,6 +4696,9 @@ const Ambience = (()=>{
       sc.timers.push(setTimeout(next, rnd(0.15, 1) * hi * 1000)); // random phase: a rare tidbit isn't always a full interval away
     });
     if(fl && fl.arrive) sc.timers.push(setTimeout(()=>{ if(!sc.alive || document.hidden || vol <= 0) return; fl.arrive.forEach(fn=>{ try{ fn(sc); }catch(e){} }); }, 450));
+    // 2026-10-19 (package CX): the Pale Desert's sand gusts, for as long as this scene lives (on the map, and in its fights)
+    if(fl && fl.gusts && (fl.bedsKind == null || fl.bedsKind === kind)) sandGustLoop(sc, {setTimeout:(f, ms)=> setTimeout(f, ms), rand:Math.random, play:p=> sandGust(sc, p),
+      sfx:()=>{ if(document.hidden || vol <= 0) return 0; try{ return typeof SoundKit !== 'undefined' && SoundKit.getSfxVolume ? SoundKit.getSfxVolume() : 1; }catch(e){ return 1; } }});
     return sc;
   }
   function retire(sc){
@@ -4694,7 +4732,8 @@ const Ambience = (()=>{
     // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling."): no night crickets or dawn chorus on Map 0's
     // world map or in its fights (sc.flavor is the map id; a fight on Map 0 is checked through matchState).
     try{ const mid = sc.flavor || (typeof matchState !== 'undefined' && matchState && !matchState.over && matchState.conquestNode && matchState.conquestNode.mapId); if(mid && typeof MISTY_MAPS !== 'undefined' && MISTY_MAPS.has(mid)) return; }catch(e){}
-    if(tod==='night'){ bed(sc, CRICKET); }
+    const fl = sc.flavor && MAP_FLAVOR[sc.flavor];
+    if(tod==='night' && !(fl && fl.noNight)){ bed(sc, CRICKET); } // 2026-10-19 (package CX): not on the Pale Desert (its own hiss was never meant to run on)
     if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
   }
   return {
@@ -5221,6 +5260,10 @@ function rivalPeopleForMatch(m){
     return peopleOfDeck(counts);
   }catch(e){ return 'folk'; }
 }
+// 2026-10-19 (package CX, owner 14:07, the Pale Desert's sand): a fight on a map whose sound is part of what it is keeps that map's
+// flavour (the scene carries on from the map view unbroken): only the Pale Desert so far. Not under rain (a rain scene has its own beds).
+const MATCH_AMBIENCE_FLAVOR = new Set(['mpd']);
+function ambienceFlavorForMatch(m){ const id = m && m.conquestNode && m.conquestNode.mapId; return id && MATCH_AMBIENCE_FLAVOR.has(id) && ambienceKindForMatch(m) !== 11 ? id : null; }
 function ambienceKindForMatch(m){
   if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
   try{ if(matchIsRainy(m)) return 11; }catch(e){}
@@ -6543,7 +6586,7 @@ function albumPageHTML(p, i, side){
   const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (p.cont ? ' ' + TX('ui.codex-cont') : '');
   const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
   return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
-    <header class="al-head"><span class="al-sec"${sec.tip ? ` title="${escapeAttr(sec.tip)}"` : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
+    <header class="al-head"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
     <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
 }
 function albumDraw(){
@@ -6594,7 +6637,7 @@ function codexPagerNavHTML(kind, first, per, total, sections){
 function codexEdgeTabsHTML(first, per, total){
   const atStart = first <= 0, atEnd = first + per >= total;
   const tab = (turn, cls, glyph, label, off)=> `<button type="button" class="pg-tab ${cls}" data-turn="${turn}" ${off ? 'disabled' : ''} aria-label="${escapeAttr(label)}" title="${escapeAttr(label)}"><span aria-hidden="true">${glyph}</span></button>`;
-  const grp = `role="group" aria-label="${escapeAttr(TX('ui.codex-page-nav'))}"`;
+  const grp = 'role="group" aria-label="' + escapeAttr(TX('ui.codex-page-nav')) + '"';
   return `<div class="pg-edge pg-edge-l" ${grp}><div class="pg-edge-in">${tab(-1, 'pg-corner pg-prev', '‹', TX('ui.codex-prev-page'), atStart)}${tab('first', 'pg-corner pg-first', '«', TX('ui.codex-first-page'), atStart)}</div></div>`
     + `<div class="pg-edge pg-edge-r" ${grp}><div class="pg-edge-in">${tab(1, 'pg-corner pg-next', '›', TX('ui.codex-next-page'), atEnd)}${tab('last', 'pg-corner pg-last', '»', TX('ui.codex-last-page'), atEnd)}</div></div>`;
 }
@@ -29750,7 +29793,7 @@ function wireDropZones(){
   try{ mountCaveLamp(matchState); }catch(e){}
   try{ maybeDeckShuffle(matchState); }catch(e){}
   if(matchState && !matchState._pixRevealed){ matchState._pixRevealed = true; if(!document.querySelector('.vs-opener, .vs-screen')) try{ pixelReveal(); }catch(e){} }
-  try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
+  try{ Ambience.play(ambienceKindForMatch(matchState), ambienceFlavorForMatch(matchState)); }catch(e){} // 2026-10-19 (package CX): + the map's flavour (the Pale Desert's sand gusts)
   try{ if(matchState && !matchState.over && !matchState.testKit) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });

@@ -11,6 +11,8 @@
 //   5. the collection score (Collection level: owned cards' levels) and its Codex bar
 //   6. the Profile shows the score beside the achievements
 //   7. every new string is a TX key, in the table, used, and in all 12 packs; the new templates carry no inline English
+// 2026-10-19 (package CX, owner 14:07): 4 × 4 album pages; 10. short section names (TX keys, the detail in a tooltip), « » first /
+// last, the turn tabs on the book (no bar below), Home / End
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..');
@@ -48,7 +50,11 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(pages[3].sec === B && pages[3].ids.length === 0, '1. an empty section (an admin\'s skirmish) still gets its page; a bare empty one none');
   pages = R.albumPaginate([{sec:A, ids:ids(5), all:ids(5)}, {sec:B, ids:ids(7), all:ids(7)}], 6);
   ok(pages.length === 3 && pages[0].ids.length === 5 && pages[1].sec === B && pages[1].ids.length === 6 && pages[2].ids.length === 1, '1. a section starts its own page (phone: 6 a page)');
-  ok(/w >= 960 \? \{pages:2, cols:3, rows:3/.test(src) && /w >= 560 \? \{pages:1, cols:3, rows:3/.test(src) && /\{pages:1, cols:2, rows:3, key:'1x6'\}/.test(src), '1. two 3 × 3 pages wide, one 3 × 3, one 2 × 3 on a phone');
+  // 2026-10-19 (package CX, owner 14:07: "Show 16 cards on each page"): 4 × 4 at every width (was 3 × 3, and 2 × 3 on a phone)
+  ok(/w >= 960 \? \{pages:2, cols:4, rows:4, key:'2x16'\} : \{pages:1, cols:4, rows:4, key:'1x16'\}/.test(src), '1. two 4 × 4 pages wide, one 4 × 4 page (smaller cards) on a phone');
+  { const R16 = run(['albumPaginate'], {}); const ids40 = Array.from({length:40}, (_, i)=> 'c' + i);
+    const pg16 = R16.albumPaginate([{sec:{key:'a', label:'A'}, ids:ids40, all:ids40}], 16);
+    ok(pg16.length === 3 && pg16[0].ids.length === 16 && pg16[1].ids.length === 16 && pg16[2].ids.length === 8, '1. 16 sleeves a page: 40 cards are 16, 16, 8'); }
   ok(/const shown = \[\]; for\(let k = 0; k < sides\.length; k\+\+\) shown\.push\(pages\[first \+ k\]\)/.test(src) && /sides\.map\(\(sd, k\)=> albumPageHTML\(pages\[codexPage \+ k\], codexPage \+ k, sd\)\)/.test(src), '1. only the open spread is drawn (album and book)');
   ok(/S\.tileFor\(id\)/.test(fnSrc('albumPageHTML')) && /codexTileCache\.set\(id, \{sig, html\}\)/.test(src), '1. the album\'s sleeves come from tileFor and its cache');
   ok(/ahead\.forEach\(p=> p\.ids\.forEach\(id=>\{ try\{ S\.tileFor\(id\); \}/.test(fnSrc('albumDraw')), '1. the next spread\'s tiles are built while idle');
@@ -148,7 +154,7 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
     const miss = keys.filter(k=> !pack[TEXT[k]]); ok(!miss.length, `7. ${code} has them all (missing: ${miss.join(', ')})`); }
   // no inline English in the new templates (admin-only buttons excepted, as before)
   const ADMIN = ['Edit rewards', 'Get all', 'Admin: add one copy of every card in this section to your collection'];
-  for(const f of ['albumPageHTML', 'albumDraw', 'codexPagerNavHTML', 'renderSkillBook', 'bookBuild', 'bookTocHTML', 'bookSpreadHTML', 'bookEntryHTML', 'collectionScoreBarHTML', 'profileCollectionCardHTML']){
+  for(const f of ['albumPageHTML', 'albumDraw', 'codexPagerNavHTML', 'codexEdgeTabsHTML', 'renderSkillBook', 'bookBuild', 'bookTocHTML', 'bookSpreadHTML', 'bookEntryHTML', 'collectionScoreBarHTML', 'profileCollectionCardHTML']){
     let s = fnSrc(f); ok(s, `7. ${f} exists`);
     s = s.replace(/\/\*[\s\S]*?\*\//g, '');
     const words = templateTexts(s).map(t=> t.replace(/<[^>]*>/g, ' ')).join(' ');
@@ -189,6 +195,48 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(JSON.stringify(ctx.codexFilter.skills) === '["armor"]' && ctx.codexFilter.q === '' && ctx.codexFilter.rarity === 'rare' && ctx.codexSubTab === 'browse' && ctx.codexPage === 0 && ctx.saved === 1 && ctx.rendered === 1, '9. it opens Browse with just that skill picked (search emptied, other filters kept)');
   ok(/data-bkskill.*codexShowCardsWithSkill/.test(fnSrc('bookDraw').replace(/\n/g, ' ')), '9. the book wires the button');
   for(const f of ['codexSkillPanelHTML', 'codexSkillUI']){ const words = templateTexts(fnSrc(f)).map(t=> t.replace(/<[^>]*>/g, ' ')).join(' '); const eng = words.match(/[A-Za-z]{3,}/g) || []; ok(!eng.length, `9. ${f}: no inline English (${eng.slice(0, 4).join(' | ')})`); }
+}
+
+// ---- 10. package CX (2026-10-19, owner 14:07): short section names, first / last, the turn controls on the book
+{ // short names: every section the player can see is a TX key with no "·" detail in it; the detail is a tooltip
+  const ctx = {TX, adminModeEnabled:false, codexFlatById:false, BASE_GAME_MAPS:21, CODEX_TIER_THEMES:['The Wildwood', 'The Far Reaches'], baseGameBeaten: ()=> true,
+    isEasterEgg: d=> !!d.egg, advancementKey: ()=> '', mapNumberOf: id=> ({m3:3, m8:8, m13:13, m18:18, m30:30, m45:45})[id], mainConquestMaps: ()=> [], CONQUEST_MAPS: [],
+    cardSourceOf: d=> d.src, Math, Number, Object};
+  const R = run(['codexTierName', 'codexSectionOf', 'codexSmithSection', 'mapBandOf', 'packPoolSection', 'packSectionOf', 'easterEggSectionOf', 'codexViewSectionOf'], ctx);
+  const cards = [{src:{kind:'base'}}, {src:{kind:'map', id:'m3'}}, {src:{kind:'map', id:'m8'}}, {src:{kind:'map', id:'m13'}}, {src:{kind:'map', id:'m18'}}, {src:{kind:'map', id:'m30'}}, {src:{kind:'map', id:'m45'}},
+    {src:{kind:'pack', tier:1}}, {src:{kind:'pack', tier:11}}, {src:{kind:'pack', tier:99}}, {src:{kind:'event', theme:'Harvest'}}, {src:{kind:'raid', id:'r1'}}, {src:{kind:'smith'}}, {src:{kind:'unsorted'}}, {egg:true, src:{kind:'pack', tier:1}}];
+  const secs = []; ['bands', 'all', 'advance'].forEach(v=> cards.forEach(d=>{ const s = R.codexViewSectionOf(d, v); if(s && !s.bare) secs.push(s); }));
+  const labels = [...new Set(secs.map(s=> s.label))];
+  ok(labels.every(l=> l && !/·|\(|—/.test(l) && l.length <= 18 && /^[A-Za-z]/.test(l)), `10. short plain section names, no glyphs or "·" detail: ${labels.join(', ')}`);
+  ok(['Factions', 'Base', 'Packs', 'Mystery Booster', 'Easter eggs', 'Raid', 'Events', 'Blacksmith', 'First season', 'Maps 21–40'].every(l=> labels.includes(l)), '10. Factions, Base, Packs, Mystery Booster, Easter eggs, Raid, Events, Blacksmith, the seasons, Maps 21–40');
+  const fac = R.codexViewSectionOf(cards[8], 'bands'), egg = R.codexViewSectionOf(cards[14], 'bands'), s1 = R.codexViewSectionOf(cards[1], 'bands');
+  ok(fac.label === 'Factions' && /every basic pack/.test(fac.tip) && egg.label === 'Easter eggs' && /Not obtainable/.test(egg.tip) && s1.tip === 'Map rewards from Maps 0–5', '10. the detail is in the tooltip (tip)');
+  ok(/<span class="al-sec"\$\{sec\.tip \? ' title="' \+ escapeAttr\(sec\.tip\)/.test(fnSrc('albumPageHTML')) && /cx-section-head[^\n]*sec\.tip \? ` title=/.test(src), '10. the album page and the grid views show it on hover');
+  ok(!/PACK_POOL_LABEL|'⚒️ Blacksmith · |'🎉 Events'|'🐙 Raid cards'|label:'🌱 Base'|'🍂 First season'/.test(src) && !('ui.ee-section' in TEXT), '10. none of the long names is left');
+  // the controls on the book
+  const tabs = run(['codexEdgeTabsHTML'], {TX, escapeAttr: s=> String(s).replace(/"/g, '&quot;')}).codexEdgeTabsHTML;
+  const mid = tabs(4, 2, 12), start = tabs(0, 2, 12), end = tabs(10, 2, 12);
+  ok(/pg-edge-l[\s\S]*data-turn="-1"[\s\S]*data-turn="first"[\s\S]*pg-edge-r[\s\S]*data-turn="1"[\s\S]*data-turn="last"/.test(mid) && !/disabled/.test(mid), '10. ‹ and « on the left edge, › and » on the right');
+  ok((start.match(/disabled/g) || []).length === 2 && /data-turn="-1" disabled/.test(start) && /data-turn="first" disabled/.test(start), '10. on the first spread ‹ « are off');
+  ok((end.match(/disabled/g) || []).length === 2 && /data-turn="1" disabled/.test(end) && /data-turn="last" disabled/.test(end), '10. on the last spread › » are off');
+  ok(/aria-label="First page"/.test(mid) && /aria-label="Last page"/.test(mid) && /role="group"/.test(mid), '10. labelled for screen readers');
+  const ad = fnSrc('albumDraw'), bd = fnSrc('bookDraw');
+  ok(/codexPagerNavHTML\('album'[^;]*\+ `<div class="al-album pg-book[^`]*\$\{codexEdgeTabsHTML\(codexPage, L\.pages, pages\.length\)\}<\/div>`/.test(ad), '10. the album: the page count above, the tabs on the album, no bar below');
+  ok(/book\.innerHTML = codexPagerNavHTML\('book'[^;]*\+ bookSpreadHTML\(S\.pages, skillBookPage, per, true\)/.test(bd) && /codexEdgeTabsHTML\(first, per, S\.pages\.length\)/.test(fnSrc('bookSpreadHTML')), '10. the book: the same, its tabs on the spread');
+  ok(!/pg-btn|<nav/.test(fnSrc('codexPagerNavHTML')), '10. the old bar\'s buttons are gone');
+  // first / last
+  const at = {codexPage:6, codexAlbumState:{gridEl:{isConnected:true}, L:{pages:2}, pages:new Array(13)}, went:[], albumGo(p){ at.went.push(p); }, codexLeafTurn(){}, albumDraw(){}, codexKeepInView(){}};
+  const T = run(['albumTurn'], at); T.albumTurn('first'); T.albumTurn('last');
+  ok(JSON.stringify(at.went) === '[0,12]', '10. « opens the first page, » the last (album)');
+  const bt = {skillBookPage:4, codexBookState:{L:{pages:1}, pages:new Array(9)}, went:[], bookGo(p){ bt.went.push(p); }, codexLeafTurn(){}, bookDraw(){}, document:{getElementById: ()=> ({})}};
+  const B = run(['bookTurn'], bt); B.bookTurn('first'); B.bookTurn('last');
+  ok(JSON.stringify(bt.went) === '[0,8]', '10. « opens the contents, » the last page (book)');
+  ok(/const CODEX_TURN_KEYS = \{ArrowLeft:-1, ArrowRight:1, Home:'first', End:'last'\}/.test(src) && /codexTurnFn\(CODEX_TURN_KEYS\[e\.key\]\)/.test(src), '10. ← → turn, Home / End go to the first / last page');
+  ok(/\.pg-edge-in\{position:sticky; top:calc\(50vh - 60px\); bottom:14px;/.test(css) && /@media \(max-width:559px\)\{ \.pg-book\{padding-left:6px !important;/.test(css), '10. the tabs stay in reach down a tall page; on a phone they sit in the page\'s top corners');
+  for(const k of ['ui.codex-first-page', 'ui.codex-last-page']) ok(k in TEXT, `10. ${k} is in the table`);
+  const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'], cxKeys = Object.keys(TEXT).filter(k=> /^ui\.cx-sec-/.test(k));
+  ok(cxKeys.length >= 20 && cxKeys.every(k=> src.includes(`TX('${k}'`)), `10. the section names are TX keys, all used (${cxKeys.length})`);
+  for(const code of CODES){ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')); const miss = cxKeys.filter(k=> !pack[TEXT[k]]); ok(!miss.length, `10. ${code} has the section names (missing: ${miss.join(', ')})`); }
 }
 
 console.log(`codex-book: ${fail ? fail + ' failure(s)' : 'all passed'} (${n} checks)`);

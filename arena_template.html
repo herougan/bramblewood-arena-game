@@ -10627,10 +10627,18 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .pg-tab:active:not(:disabled){filter:brightness(.94);}
 .pg-tab:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
 .pg-tab:disabled{opacity:.38; cursor:default; box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--surface-border) 85%, transparent);}
-@media (max-width:559px){ .pg-book{--pg-edge:24px; padding-left:calc(var(--pg-edge) + 4px) !important; padding-right:calc(var(--pg-edge) + 4px) !important;}
-  .pg-edge{top:6px; bottom:6px;} .pg-edge-l{left:2px;} .pg-edge-r{right:2px;}
-  .pg-tab{height:58px; font-size:24px;} .pg-tab.pg-first, .pg-tab.pg-last{height:42px; font-size:18px;}
-  .pg-edge-l .pg-tab{border-radius:10px 3px 3px 10px;} .pg-edge-r .pg-tab{border-radius:3px 10px 10px 3px;} }
+/* On a phone the cards need the width, so the tabs fold into the page's top corners instead (« ‹ on the left, › » on the right,
+   either side of the page's heading); a swipe turns as well. The album also reaches into the content's side padding. */
+@media (max-width:559px){ .pg-book{padding-left:6px !important; padding-right:6px !important;}
+  .al-album.pg-book{margin-left:-8px; margin-right:-8px;}
+  .pg-edge{top:10px; bottom:auto; width:auto; flex-direction:row;} .pg-edge-l{left:12px;} .pg-edge-r{right:12px;}
+  .pg-edge-in{position:static; flex-direction:row; gap:4px;} .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
+  .pg-tab, .pg-tab.pg-first, .pg-tab.pg-last{width:36px; height:32px; font-size:22px; box-shadow:0 2px 4px rgba(0,0,0,.28), inset 0 0 0 1px color-mix(in srgb, var(--surface-border) 85%, transparent);}
+  .pg-tab.pg-first, .pg-tab.pg-last{font-size:17px;}
+  .pg-edge-l .pg-tab.pg-first{border-radius:10px 3px 3px 3px;} .pg-edge-l .pg-tab.pg-prev{border-radius:3px;}
+  .pg-edge-r .pg-tab.pg-last{border-radius:3px 10px 3px 3px;} .pg-edge-r .pg-tab.pg-next{border-radius:3px;}
+  .pg-edge-l .pg-tab:hover:not(:disabled), .pg-edge-r .pg-tab:hover:not(:disabled){transform:none;}
+  .pg-book .al-head, .pg-book .bk-run{padding-left:72px; padding-right:72px; min-height:32px;} .pg-book .al-head{justify-content:center; text-align:center;} .pg-book .al-head .al-sec{flex:0 1 auto;} }
 /* the turning leaf: a copy of the page you leave, lifting off at the spine */
 .pg-leaf{position:absolute; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
   animation:pgLeafFwd 460ms cubic-bezier(.45,.05,.35,1) forwards;}
