@@ -165,7 +165,9 @@ details.cl > summary:hover{color:var(--link);}
 .sc-ed{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:10px; min-width:0;}
 @media (min-width:1101px){ .sc-ed{position:sticky; top:12px; max-height:calc(100vh - 120px); display:flex; flex-direction:column;} .sc-rows{overflow:auto; min-height:0;} }
 @media (max-width:1100px){ .sc-rows{max-height:60vh; overflow:auto;} }
-.sc-kinds{display:flex;} .sc-kinds button{flex:1 1 auto;}
+.sc-kinds{display:flex; flex-wrap:wrap;} .sc-kinds button{flex:1 1 auto;}
+/* Combos view (2026-10-19, package DC) */
+.sc-cbh{font-size:.95rem; margin:12px 6px 4px;} .sc-cbh small{font-weight:400; color:var(--ink-muted);} .sc-cbf{margin:4px 6px; line-height:2;} .sc-cb .sc-ms{flex-basis:96px;}
 .sc-hint{color:var(--ink-muted); font-size:13px; margin:6px 2px;}
 .sc-bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:6px 0;}
 .sc-bar input[type=search]{flex:1 1 180px; min-width:0; font:15px Nunito,system-ui,sans-serif; padding:7px 12px; border-radius:999px; border:1px solid var(--line); background:var(--bg); color:var(--ink);}

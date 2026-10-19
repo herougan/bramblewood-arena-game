@@ -408,9 +408,22 @@ _sc_cards = [_sc_card(d) for d in CANON if not (d.get('token') or d.get('test') 
 _js = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 SC_LIB = re.sub(r'^#!.*\n', '', open(os.path.join(ROOT, 'tools', 'skill_costs.js'), encoding='utf-8').read())
 SC_TAB = open(os.path.join(ROOT, 'tools', 'hub', 'skill_costs_tab.js'), encoding='utf-8').read()
+# 2026-10-19 (package DC, owner 08:10: "duo-skill combos"): the Combos view's data, the measured pairs from tools/skill_combo.js
+# (docs/balance/skill-combos-2026-10-19.json), kept compact: the top synergies / anti-synergies, the family multipliers.
+def _sc_combos():
+    f = os.path.join(ROOT, 'docs', 'balance', 'skill-combos-2026-10-19.json')
+    if not os.path.exists(f): return None
+    d = json.load(open(f, encoding='utf-8'))
+    keep = lambda r: {k: r.get(k) for k in ('pair', 'ctx', 'S', 'Sa', 'Sb', 'sumSingles', 'interaction', 'se', 'confidence', 'cards', 'source')}
+    sure = [r for r in d.get('pairs', []) if r.get('confidence') in ('high', 'medium')]
+    syn = sorted([r for r in sure if r['interaction'] > 0], key=lambda r: -r['interaction'])[:40]
+    anti = sorted([r for r in sure if r['interaction'] < 0], key=lambda r: r['interaction'])[:40]
+    m = d.get('model') or {}
+    return {'generated': d.get('generated'), 'games': d.get('games'), 'pairs': len(d.get('pairs', [])), 'G': d.get('G'), 'syn': [keep(r) for r in syn], 'anti': [keep(r) for r in anti],
+            'model': {'global': m.get('global'), 'rmse': m.get('rmse'), 'families': [f for f in (m.get('families') or []) if f.get('pairs', 0) >= 3]}}
 # 2026-10-19 (package BF): budget v4's N lives in bramblewood-budget.js (window.BramblewoodBudget), which tools/skill_costs.js reads
 BB_LIB = open(os.path.join(ROOT, 'bramblewood-budget.js'), encoding='utf-8').read()
-SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\n{BB_LIB}\n{SC_LIB}\n{SC_TAB}'
+SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\nconst SC_COMBOS = {_js(_sc_combos())};\n{BB_LIB}\n{SC_LIB}\n{SC_TAB}'
 # 2026-10-19 (package UC, owner 08:49: "let's separate the units thematically? Then we pick and choose, then do post-balancing"): the
 # 🗂 Units by theme tab. canonical/unit-themes.json (node tools/unit_themes.js) and the tab's script and styles, inlined. Picks live in
 # the artifact's db (collection unitPicks), so the hub is published with capabilities {db: {}}; tools/hub/pull_unit_picks.md.

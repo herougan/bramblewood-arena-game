@@ -28,6 +28,23 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - New: `tests/u3-2026-10-19.js` (in run-all) and `tests/e2e/u3_2026_10_19.py` (390, 430 and 1366; not in run-all).
   - Updated: `tests/nv-2026-10-19.js` and `tests/mobile-nav-2026-10-19.js` follow the Home and the strip; `tests/bu-2026-10-19.js` and `tests/e2e/battle_ui_2026_10_19.py` follow the fill-end numbers and the bramble's tentacle.
   - Screenshots are in `docs/screens/u3/`.
+## 2026-10-19 (package DC: duo-skill combos and the coverage gaps)
+- **Owner (08:10): "Have you tested & costed all skills yet? We can do a sample testing with duo-skill combos, 1,000–2,000 times."** Nothing in the game changed: `value` and every card's S stay as they were.
+- **905 skill pairs measured** with `node tools/skill_combo.js` (on SW's lab, the live engine). They are every pair among the 40 skills live cards print most (42 with the ties at the cutoff), every pair live cards print together, and the owner's examples. Each pair is put on one unit (b2, 4/14 Wait 2) and compared with its two singles, on the same seeds. That took 1.24M games: about 880 for the pair's own run (median) plus about 920 for each single, so ~2,700 games behind each interaction. A replicate run on other seeds puts the noise at ±0.5 for one S and ±0.7 for one interaction.
+  - **189 interactions are flagged** at medium or high confidence: 139 synergies and 50 anti-synergies.
+  - **Biggest synergies:** Freeze + Rage (+28.9), Evasive + On Ready: Gold (+14.6), Evasive + Freeze, Supreme + On Ready: Gold, Flying + On Ready: Gold. Freeze stacks with anything that hits hard or often.
+  - **Biggest anti-synergies:** Backstab + Fork (−5.9), Guardian + Rage, Guardian + Fork, Darksight + Keen Sense, Armor + Freeze.
+  - **The owner's examples:** Poison + Proliferate +4.9, Flying + Arrow +4.0. Taunt + Thorns reads as additive within noise, and Guardian + Thorns as −1.7.
+- **Interaction model** for the budget. A card with skills A and B costs m(family A, family B) × (S(A) + S(B)), with 92 family-pair multipliers. Examples: dot × dot 1.55, control × offense 1.29, dot × evade 1.35, economy × evade 1.84, control × control 0.72. A per-pair adjustment table (273 pairs, shrunk by their noise) covers the measured pairs. One global multiplier is 1.11. Prediction error (RMSE) is 2.26 additive, 1.75 with the family multipliers and 0.64 with the table (in-sample).
+- **Coverage:**
+  - **The 9 triggers that never fired on plain decks now have scenario decks** (an enabler on the test unit and on its control deck). The weights below are as measured, against today's values in brackets: On Ally Spawn 1.38 (1), On Enemy Spawn 2.26 (0.5), On Move 1.7 (0.5), On Heal 2.73 (2), On Exile 1.14 (0.25), On Charge 1.62 at N 2 (1; 3.05 at N 1, 1.11 at N 3), On Sacrifice 0.29 (0.5). On Discard (0.96) and On Chain Break (0.27) are low confidence.
+  - **Crepuscular** is now measured in a fixed twilight: 3.72.
+  - **Exile, Mind Control, Tsunami, Acid Bolt, Meteor, Gain and Bounty** are measured as damage-equivalents in a mixed deck (5 copies among 20 vanilla). These are low confidence (a bridge shows the scale is 0.15–2.6× SW's). Exile, Mind Control and Tsunami stay bounds: more than a sure kill a play.
+  - Still open: Prayer, Leader, Weakness, Hunter's status parameter, On Any Played (no engine hook), cross-field pairs.
+- These are written as measured fields (`measuredS`, `measuredConf`, `measuredSE`, `measuredHow`) in `canonical/skill-costs.json`.
+- **Outputs:** `docs/skill-combos-2026-10-19.md`, `.xlsx` and `docs/balance/skill-combos-2026-10-19.json`, plus the checkpoints in `docs/balance/skill-combos-*`.
+- **The hub's 🧮 Skill costs tab has a Combos view** with the top 40 synergies and anti-synergies and the family multipliers. New test `tests/skill-combos-2026-10-19.js` (in run-all).
+
 ## 2026-10-19 (package CX: the Codex books, the Pale Desert's sand; owner notes 14:07)
 - **Short section names in the Bestiary.** Every section is a plain name now: Factions, Base, First to Fourth season, Maps 21–40, Packs, Mystery Booster, Raid, Events, Other, Easter eggs, Blacksmith. The detail they carried ("in every basic pack", the pack names, the map range, "not obtainable yet") is the section's tooltip. All are TX keys (`ui.cx-sec-*`) in all 12 packs. The admin views got short names too (a skirmish is "18-A-1 Bleached Flats", its full label in the tooltip).
 - **16 cards a page.** The album's pages are 4 × 4: two pages side by side on a wide screen (32 a spread), one on a phone with smaller cards (about 64 px wide at 390 px).
