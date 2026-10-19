@@ -5526,7 +5526,7 @@ function castleHoverHTML(hqSide){
   const raidAbs = def.raidBramble && m.raidFull ? raidBrambleAbsHTML(raidBrambleAbilityLines(m.raidAttacks)) : '';
   return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Bramble'}</h4>
     <div class="statrow"><span class="hp" style="color:var(--health)">❤${Math.max(0,pl.hq.hp)}/${pl.hq.maxHp}</span></div>
-    ${raidAbs ? `<p class="panel-sub">${escapeHtml(TX('ui.u3-bramble-kicker'))}${def.partName ? ' · ' + escapeHtml(def.partName) : ''}</p>${raidAbs}` : `<p class="panel-sub">${passiveText}</p>`}
+    ${raidAbs ? `<p class="panel-sub"><span>${escapeHtml(TX('ui.u3-bramble-kicker'))}</span>${def.partName ? ` · <span>${escapeHtml(def.partName)}</span>` : ''}</p>${raidAbs}` : `<p class="panel-sub">${passiveText}</p>`}
     ${def.flavor?`<div class="flavor">${def.flavor}</div>`:''}`;
 }
 (function initPopover(){
@@ -21611,7 +21611,7 @@ function renderConquestSubTab(body){
     // 2026-10-19 (package U3, owner 13:42: "the map tab however, can be just number + emoji. No need for name."): on a phone a chip is
     // its number (.cmi-num) and emoji, and a small ✓ (.cmi-tick) once cleared (CSS hides the name block there); the name and progress
     // are in its title / aria-label, and a touch-and-hold shows them (u3ChipPeek). Desktop's side list keeps the full chip.
-    const num = mapNumberOf(map.id), tip = TX(cleared ? 'ui.u3-map-chip-tip-cleared' : 'ui.u3-map-chip-tip', {n: num, name: map.name, done: doneN, total: fightable.length});
+    const num = mapNumberOf(map.id), tip = cleared ? TX('ui.u3-map-chip-tip-cleared', {n: num, name: map.name}) : TX('ui.u3-map-chip-tip', {n: num, name: map.name, done: doneN, total: fightable.length});
     return `<div class="conquest-map-item ${map.id===selMain?'selected':''}${cleared ? ' is-cleared' : ''}" data-mapid="${map.id}" role="button" tabindex="0" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" style="${mapBandStyle(num)}">
       <div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">${map.icon}</div>${cleared ? '<i class="cmi-tick" aria-hidden="true">✓</i>' : ''}
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
@@ -21719,7 +21719,7 @@ function renderConquestSubTab(body){
   mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : '') + (map.endless && map.axis !== 'x' ? ' endless-y-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
   mainEl.dataset.mapId = map.id;
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🏠</span></button><button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span></button>${'' /* 2026-10-19 (package U3): the acorn, as the cluster's Home */}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px; --endless-h:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
@@ -23548,16 +23548,16 @@ function raidBossUnitName(base, name){ return RAID_BOSS_UNIT_NAMES[base] || ('Gr
 // (raidSpecials: the same attacks, rolls and damage). A published raid can name its own with def.bramble {name, icon, art}.
 // Owner call: the Goliath's bramble is "Kraken's Reef" (alternative: "The Drowned Maw"); its portrait is a placeholder pixel SVG
 // (tools/make_raid_bramble_art.py) until a painted one replaces it (docs/art/raid-bramble-art-brief.md).
-const RAID_BRAMBLES = {goliath: {nameKey:'ui.u3-goliath-bramble', icon:'🪸', art:'art/raids/krakens-reef.svg'}};
+const RAID_BRAMBLES = {goliath: {nameTx: ()=> TX('ui.u3-goliath-bramble'), icon:'🪸', art:'art/raids/krakens-reef.svg'}};
 function raidBrambleOf(def){
   const b = Object.assign({}, RAID_BRAMBLES[def && def.id] || {}, (def && def.bramble) || {});
-  const name = b.name || (b.nameKey && typeof TX === 'function' ? TX(b.nameKey) : '');
+  let name = b.name || ''; if(!name && b.nameTx) try{ name = b.nameTx(); }catch(e){ name = ''; }
   return name ? {name, icon: b.icon || '🏰', art: b.art || ''} : null;
 }
 // Each of the bramble's attacks as one line (TX, so the page translator takes the whole line): when it fires and what it does.
 function raidBrambleAbilityLines(attacks){
   return (attacks || []).map(a=>{ const v = {name: a.name || (a.pattern === 'frontRow' ? 'Tail Sweep' : 'Tentacle Smack'), every: Math.max(1, a.every || 1), dmg: a.dmg || 0};
-    return a.pattern === 'column' ? TX('ui.u3-smack-desc', v) : a.pattern === 'frontRow' ? TX('ui.u3-sweep-desc', v) : ''; }).filter(Boolean);
+    return a.pattern === 'column' ? TX('ui.u3-smack-desc', {name: v.name, every: v.every, dmg: v.dmg}) : a.pattern === 'frontRow' ? TX('ui.u3-sweep-desc', {name: v.name, every: v.every, dmg: v.dmg}) : ''; }).filter(Boolean);
 }
 function raidBrambleAbsHTML(lines, notes){
   return lines.length ? `<ul class="u3-bramble-abs">${lines.map((t, i)=> `<li>${/^Tail/.test(t) ? '🌊' : '🦑'} ${escapeHtml(t)}${notes && notes[i] ? ` <small>(${escapeHtml(notes[i])})</small>` : ''}</li>`).join('')}</ul>` : '';
@@ -28847,7 +28847,7 @@ function u3TurnFlash(m){
   const pill = document.querySelector('.battlefield .bf-hp[data-hpribbon="B"] .bf-turn-pill.raid-clock'); if(!pill || !pill.getClientRects().length) return;
   const r = pill.getBoundingClientRect();
   document.querySelectorAll('.u3-turn-flash').forEach(e=> e.remove());
-  const left = cap - n + 1, warn = left <= 3 ? TX(left <= 1 ? 'ui.u3-last-turn' : 'ui.u3-turns-left', {n: left}) : '';
+  const left = cap - n + 1, warn = left > 3 ? '' : left <= 1 ? TX('ui.u3-last-turn') : TX('ui.u3-turns-left', {n: left});
   const roll = from != null && from !== n && !reducedMotion();
   const el = document.createElement('div'); el.className = 'u3-turn-flash' + (left <= 1 ? ' is-last' : ''); el.setAttribute('role', 'status');
   el.innerHTML = `<span class="u3tf-pill"><span class="u3tf-roll">${roll ? `<span class="u3tf-old">${escapeHtml(TX('ui.u3-turn', {n: from}))}</span>` : ''}<span class="u3tf-new">${escapeHtml(TX('ui.u3-turn', {n}))}</span></span></span>${warn ? `<span class="u3tf-warn">${escapeHtml(warn)}</span>` : ''}`;
@@ -36830,7 +36830,7 @@ function showVsScreen(left, right){
       </div>`; };
     const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-kicker'))}: ${escapeHtml(p.bramble.name)}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}` : '' /* 2026-10-19 (package U3) */}</div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}` : '' /* 2026-10-19 (package U3) */}</div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;

@@ -4,7 +4,8 @@
 //      player's progress: 3x once Map 20 is cleared, 4x at Map 40, 5x at Map 60; locked speeds are left out; Admin Mode has them all.
 //   1. "You should always be able to play a card in the centre column." -> the engine's legalSlots: slot 0 is legal whenever it is
 //      empty (a row thinned to one side, units at 2..4, could not play there before).
-//   + the static shape of the other fixes (castle numbers centred on the HP bar, the Cleave crescent on the target row, the tentacle).
+//   + the static shape of the other fixes (castle numbers on the HP bar, the Cleave crescent on the target row, the tentacle).
+//   (2026-10-19, package U3: the castle numbers moved from the bar's centre to its fill's end, the owner's 13:45 call.)
 // The browser half: tests/e2e/battle_ui_2026_10_19.py (Playwright, 430/390 phones and 1366).
 'use strict';
 const fs = require('fs'), path = require('path');
@@ -73,8 +74,12 @@ ok(W(0, 0, 3) === '-1..1', `one unit in the centre: three columns (${W(0, 0, 3)}
 ok(W(0, 0, 3, true) === '-2..2', `a raid: at least five, centred (${W(0, 0, 3, true)})`);
 for(let lo = -6; lo <= 6; lo++) for(let hi = lo; hi <= 6; hi++){ const [a, b] = W(lo, hi, 7).split('..').map(Number); if(!(a <= 0 && b >= 0)) ok(false, `units at ${lo}..${hi}: column 0 outside the window ${a}..${b}`); }
 
-// ---- 2. castle numbers centred on the HP bar they hit
-ok(/function hqRibbonFloatAnchor\(side\)\{[^]*?const track = rib\.querySelector\('\.bf-hp-track'\)[^]*?const x = bar\.left \+ bar\.width\/2/.test(src), 'the castle number sits at the HP bar\'s horizontal centre (its screen rect)');
+// ---- 2. castle numbers on the HP bar they hit
+// 2026-10-19 (package U3, owner 13:45: "It comes out at where the health bar% is currently at. We could do that for all games."): no
+// longer the bar's centre: the fill's end (hqFillEndX, from the bar's screen rect and the fill's width %), kept on screen (u3ClampOnBar).
+ok(/function hqRibbonFloatAnchor\(side\)\{[^]*?const track = rib\.querySelector\('\.bf-hp-track'\)[^]*?const x = hqFillEndX\(rib, bar\)/.test(src), 'the castle number sits where the HP bar\'s fill ends (its screen rect)');
+ok(/function hqFillEndX\(rib, bar\)\{[^]*?parseFloat\(fill\.style\.width\)[^]*?return fromRight \? bar\.right - bar\.width\*pct : bar\.left \+ bar\.width\*pct;/.test(src), 'the fill\'s end: the bar\'s left edge plus the fill %, mirrored for a fill from the right');
+ok(/const barShift = onBar \? u3ClampOnBar\(el, f, big\) : 0;/.test(src) && /function u3ClampOnBar\(anchor, f, big\)/.test(src), 'and the number is kept fully on screen at very low or full Health');
 ok(/const onBar = !!\(el\.classList && el\.classList\.contains\('hq-float-anchor'\)\);\s*const dx = onBar \? 0 :/.test(src), 'and does not drift sideways');
 
 // ---- 3. Cleave: the crescent on the target's row, sized to the card

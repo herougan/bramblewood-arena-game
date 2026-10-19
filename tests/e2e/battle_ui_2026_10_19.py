@@ -9,7 +9,8 @@ Owner on an iPhone (2026-10-19 12:23), at 430x932 and 390x844 (touch, isMobile) 
   1. "You should always be able to play a card in the centre column": a normal fight with our row offset (units at 2..4, the
      centre and slot 1 empty) has a slot-0 drop target, inside the frame; on a phone the centre column sits in the frame's middle.
   2. "The damage numbers in mobile appear on the right. They should be in the centre of the opposing HP Bar": a castle hit's
-     number is centred on the HP bar it hits (within 6 px).
+     number is centred on the HP bar it hits (within 6 px). 2026-10-19 (package U3, owner 13:45): at the fill's end again, on
+     screen (within 6 px of the fill's end, or pulled in from the screen's edge by up to half its width).
   3. "Cleave doesn't look so nice on mobile. Also, it is not centered": a real Cleave swing's crescent sits over the target's column
      and its neighbours (its box centre within half a card of the target's centre, no wider than about four columns).
   4. "Fast forward - 3x, 4x, 5x should only be unlocked at Map 20, 40, and 60": the speed cycle by progress (and Admin Mode).
@@ -82,12 +83,19 @@ async def hp_float(pg, tag):
     # the real anchor (every castle hit's number goes through hqRibbonFloatAnchor), then where the number is drawn
     await pg.evaluate("document.querySelectorAll('.dmg-float').forEach(e=> e.remove()); floatText(hqRibbonFloatAnchor('B'), '💥 -5', 'hq-big'); floatText(hqRibbonFloatAnchor('A'), '🗡 -3', 'hq-big'); 1")
     await pg.wait_for_timeout(120)
+    # 2026-10-19 (package U3, owner 13:45: "It comes out at where the health bar% is currently at. We could do that for all games."):
+    # the number pops at the fill's end now (not the bar's centre), and stays fully on screen
     r = await pg.evaluate("""(()=>{ const out = {}; ['B','A'].forEach(s=>{ const tr = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${s}"] .bf-hp-track`).getBoundingClientRect();
+        const fill = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${s}"] .bf-hp-fill`);
         const f = [...document.querySelectorAll('.hq-float-anchor .dmg-float')][s==='B' ? 0 : 1]; const fr = f && f.getBoundingClientRect();
-        out[s] = {bar: tr.left + tr.width/2, num: fr ? fr.left + fr.width/2 : null}; }); return out; })()""")
+        out[s] = {bar: tr.left + tr.width * parseFloat(fill.style.width) / 100, num: fr ? fr.left + fr.width/2 : null, l: fr ? fr.left : null, r: fr ? fr.right : null, vw: document.documentElement.clientWidth}; }); return out; })()""")
     for s, v in r.items():
-        print(f'  {tag}: HP bar {s} centre {v["bar"]:.1f}, number {v["num"]}')
-        check(v['num'] is not None and abs(v['num'] - v['bar']) <= 6, f'{tag}: the castle number should be centred on the {s} HP bar ({v["num"]} vs {v["bar"]:.1f})')
+        print(f'  {tag}: HP bar {s} fill end {v["bar"]:.1f}, number {v["num"]}')
+        on = v['l'] is not None and v['l'] >= -0.5 and v['r'] <= v['vw'] + 0.5
+        check(on, f'{tag}: the {s} castle number should be fully on screen ({v})')
+        # a full (or nearly empty) bar's end is at the screen's edge: the number is pulled in by up to half its width at full size
+        clamped = v['num'] is not None and on and abs(v['num'] - v['bar']) <= 90 and (v['bar'] > v['vw'] - 90 or v['bar'] < 90)
+        check(v['num'] is not None and (abs(v['num'] - v['bar']) <= 6 or clamped), f'{tag}: the castle number should pop at the {s} HP bar\'s fill end ({v["num"]} vs {v["bar"]:.1f})')
     await shot(pg, f'hpfloat-{tag}')
 
 async def cleave(pg, tag):
@@ -184,7 +192,8 @@ async def tentacle(pg, tag):
     # the game's own path: a column smack event through fxBatchVfx reaches down the whole column (front, middle and back rows)
     await pg.evaluate("fxBatchVfx({type:'raidSmack', kind:'column', name:'Smack', col:0, row:null, dmg:3, hits:2}); 1")
     for _ in range(200):
-        if await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return false; if(Math.abs(gsap.getProperty(b, 'y')) < 1 && +getComputedStyle(b).opacity > .9){ gsap.globalTimeline.pause(); return true; } return false; })()"): break
+        # (2026-10-19, package U3: the game's smack grows out of the bramble's tile, so "reached" is full scale, not y 0 alone)
+        if await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return false; if(Math.abs(gsap.getProperty(b, 'y')) < 1 && gsap.getProperty(b, 'scaleX') > .99 && +getComputedStyle(b).opacity > .9){ gsap.globalTimeline.pause(); return true; } return false; })()"): break
         await pg.wait_for_timeout(5)
     r = await pg.evaluate("""(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return null; const t = b.getBoundingClientRect();
       const all = [...document.querySelectorAll('#rowMine > .board-card')], i = Math.floor(all.length/2);
