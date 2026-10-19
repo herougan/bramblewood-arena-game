@@ -14,7 +14,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - "Ancient" is three stages later: ×2.3 / ×2.6, +2 Lumber, +1 Wait, rarity +3.
   - The draft body is fitted under budget v3, with room left for skills, and its skills are applied later.
   - 39 cards are already such versions (Old Snapjaw, the Alphas and Matriarchs, the Kits and Hatchlings, the tortoise line up to the Dragon-Turtle).
-  - **108 later versions are proposed** (77 Dire, 31 Elder), 1–2 for each biome and family with an early creature. They are rows marked `proposed`, not cards.
+  - **109 later versions are proposed** (77 Dire, 32 Elder), 1–2 for each biome and family with an early creature. They are rows marked `proposed`, not cards.
 - **The hub's 🗂 Units by theme tab:**
   - Filter and group by biome, family, faction, map, rarity and live / pool / proposed. Tiles show the art or emoji, the base body, and "Skills · applied later". Tiles come 120 at a time.
   - A **per-map picker**: "Picking for" a map, a checkbox on each tile, and a strip with each map's picked count. Picks save in the artifact's db (collection `unitPicks`, `{map, unit, picked, updatedAt}`). Without db, a read-only note and Copy JSON.
