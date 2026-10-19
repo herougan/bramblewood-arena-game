@@ -5520,22 +5520,37 @@ function castleHoverHTML(hqSide){
   // 0.25s"): a finger resting 0.25 s on a card (moving less than 8 px) opens its details; lifting or dragging cancels.
   const TOUCH_HOLD_MS = 250;
   let holdT = null, holdX = 0, holdY = 0, holdOpenedAt = 0;
-  const cancelHold = ()=>{ if(holdT){ clearTimeout(holdT); holdT = null; } };
+  const cancelHold = ()=>{ if(holdT){ clearTimeout(holdT); holdT = null; } document.body.classList.remove('bw-holding'); };
   // 2026-10-15 (user: "...tooltips on 1.0s hover or 0.5s mobile hold"): the skirmish panel's enemy-deck strip (.cnp-squad) gets the
   // same press-and-hold outside a fight, after 0.5 s; a plain tap still opens the card's full details.
-  const STRIP_HOLD_MS = 500;
-  let stripHeld = false; // a strip card's details opened by a hold stay up after the finger lifts, until the next touch
+  // 2026-10-19 (package MB2, owner on an iPhone: "In mobile, in the card preview - i can't touch and hold to see the card detail"):
+  // touch-and-hold now works on every card outside a fight too (the Codex, the deck builder, the Nest, a deck's preview, the
+  // skirmish strip): 450 ms, cancelled by moving more than 10 px. A fight keeps the owner's 0.25 s (2026-10-12). The details
+  // stay up after the finger lifts, until the next touch; tapping them opens the card's full detail page. The lift never
+  // plays, picks, adds or removes the card: the click after it, a long-press context menu and the browser's own drag are dropped.
+  const STRIP_HOLD_MS = 450, HOLD_SLOP_PX = 10;
+  let stripHeld = false; // details opened by a hold stay up after the finger lifts, until the next touch
+  let holdFired = false, swallowClickUntil = 0, lastPointerType = '';
   document.addEventListener('pointerdown', e=>{
-    cancelHold(); stripHeld = false;
-    if(e.pointerType !== 'touch') return;
+    lastPointerType = e.pointerType || '';
+    if(stripHeld && pop.contains(e.target)) return; // a tap on the held details: see the click handler below
+    cancelHold(); stripHeld = false; holdFired = false; pop.classList.remove('is-held');
+    if(e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+    if(e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
     const el = e.target.closest && e.target.closest('[data-defid]'); if(!el) return;
-    const inStrip = !!el.closest('.cnp-squad');
-    if(!matchState && !inStrip) return;
     holdX = e.clientX; holdY = e.clientY;
-    holdT = setTimeout(()=>{ holdT = null; if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } openPopFor(el); holdOpenedAt = Date.now(); stripHeld = inStrip && !matchState; }, inStrip && !matchState ? STRIP_HOLD_MS : TOUCH_HOLD_MS);
+    document.body.classList.add('bw-holding'); // no text selection or iOS callout while the finger rests (CSS)
+    holdT = setTimeout(()=>{ holdT = null; if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } openPopFor(el); holdOpenedAt = Date.now(); holdFired = true;
+      stripHeld = !pop.hidden; if(stripHeld){ pop.classList.add('is-held'); pop.dataset.heldDefid = el.getAttribute('data-defid') || ''; }
+      try{ if(navigator.vibrate) navigator.vibrate(8); }catch(_){} }, matchState ? TOUCH_HOLD_MS : STRIP_HOLD_MS);
   }, true);
-  document.addEventListener('pointermove', e=>{ if(holdT && Math.hypot(e.clientX - holdX, e.clientY - holdY) > 8) cancelHold(); }, {passive:true, capture:true});
-  ['pointerup', 'pointercancel'].forEach(t=> document.addEventListener(t, cancelHold, true));
+  document.addEventListener('pointermove', e=>{ if(holdT && Math.hypot(e.clientX - holdX, e.clientY - holdY) > HOLD_SLOP_PX) cancelHold(); }, {passive:true, capture:true});
+  document.addEventListener('pointerup', e=>{ const fired = holdFired; cancelHold(); if(fired){ holdFired = false; swallowClickUntil = Date.now() + 700; } }, true);
+  document.addEventListener('pointercancel', ()=>{ cancelHold(); holdFired = false; }, true);
+  // a long-press on Android opens a context menu (a deck chip's right-click removes a copy): not after a touch hold
+  document.addEventListener('contextmenu', e=>{ if((lastPointerType === 'touch' || lastPointerType === 'pen') && (holdT || holdFired || Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 1500)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+  // iOS starts its own drag from a held draggable card (the deck builder's pool): touch drags are the touch shim's, never the browser's
+  document.addEventListener('dragstart', e=>{ if(e.isTrusted && (lastPointerType === 'touch' || lastPointerType === 'pen')){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   function openPopFor(el){
       hoverTimer = null;
       if(!el.isConnected) return; // re-rendered away while we waited
@@ -5577,7 +5592,13 @@ function castleHoverHTML(hqSide){
   // A click usually re-renders the card away, and a removed element never fires mouseout — so the
   // popover would stay stuck on screen. Any click closes it.
   // ...except the lift that ends a press-and-hold peek: that one keeps the details open and doesn't play or pick the card.
-  document.addEventListener('click', e=>{ if(Date.now() - holdOpenedAt < 1200){ holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; } if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; }, true);
+  // 2026-10-19 (MB2): the swallow window now counts from the lift (a long hold used to outlast it and play the card), and a tap on
+  // details a hold opened opens that card's full detail page.
+  document.addEventListener('click', e=>{
+    if(stripHeld && !pop.hidden && pop.contains(e.target)){ e.preventDefault(); e.stopPropagation(); const id = pop.dataset.heldDefid; pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; popSrc = null;
+      if(id && getCardDefs()[id]) try{ openCardDetail(id); }catch(_){} return; }
+    if(Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 250){ swallowClickUntil = 0; holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; }
+    if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; }, true);
   function positionPop(el){
     const r = el.getBoundingClientRect();
     const pw = 230;
@@ -28511,6 +28532,7 @@ function renderMatchUI(){
   const wrapEl = document.getElementById('appWrap');
   if(wrapEl){
     wrapEl.classList.add('in-match');
+    wrapEl.classList.toggle('mb2-raid', !!(matchState && matchState.raidFull)); // 2026-10-19 (package MB2): the raid board fills the screen (CSS + mb2FitRaidCards)
     // Bugfix (2026-09-19, found while narrowing the in-match battlefield per explicit request
     // "the battlefield could be a bit more compact... less wide"): starting a match FROM the
     // Conquest/Raid sub-tab (the default playSubTab) leaves 'wide-map' on #appWrap — that class
@@ -30939,7 +30961,68 @@ function setBoardLean(lean, scale, panMax){
 // framed once and keeps that scale for the whole fight; it is framed again only when the window changes size (or the board grows past
 // its seven columns). raidFrameKey is what a framing was made for.
 function raidFrameKey(m){ return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0); }
-if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && matchState.raidFull && !matchState.over) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
+// 2026-10-19 (package MB2): a phone's normal fight re-frames on a resize too (rotation, the browser bar), as the raid does.
+if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && !matchState.over && (matchState.raidFull || mb2IsPhone())) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
+// ---- Package MB2 (2026-10-19): the battle board fills the screen ----
+// Owner on an iPhone (10:55): "The raid battle btw is too small! we can afford to use all the vertical and horizontal space,
+// especially since it's mobile phone" and "On mobile phones, the battle arena should be centered. It's currently abit higher."
+// Fill mode: on a phone (any fight) and in a raid (any size) the match is one screen tall (CSS: #appWrap.in-match is a 100svh
+// column, the battlefield takes what the rows above and below leave, and the board sits in its middle). The raid's cards are
+// sized here from that frame, as real CSS sizes rather than a zoom, so the attack lines, floats and FX, which read card rects,
+// follow them:
+//   --mb2-bh   the board card's height (width = .8 of it); the most that fits 7 columns across and the six rows down;
+//   --mb2-ch   the castle, deck, Graveyard and hand cards: the same size as the board's (owner: "our cards in hand/deck/etc.
+//              should be as large as the cards in the field"), never under 65 px tall on a phone (tappable) or 92 px on a
+//              computer (their names stay readable); smaller than a normal fight's, which gives the six rows their height;
+//   --mb2-gap  the gap between columns, the same in every row so the columns line up;
+//   --mb2-rgap the height left over, shared out between the rows (each row gets the same extra above and below).
+// It runs when the raid is framed (the start, a resize, the board growing past 7 columns): the raid's camera stays fixed.
+function mb2IsPhone(){ try{ return !!(window.matchMedia && matchMedia('(max-width:700px)').matches); }catch(e){ return false; } }
+function mb2FillMode(m){ return !!(m && (m.raidFull || mb2IsPhone())); }
+const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, reserveExtra:12 /* 8 px in the row's height + 2+2 px margin */, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200}, chromeMinH:{phone:65, pc:92}};
+function mb2FitRaidCards(m, battlefield, inner){
+  const app = document.getElementById('appWrap');
+  if(!app || !battlefield || !inner || !m || !m.raidFull) return;
+  const phone = mb2IsPhone(), cols = Math.max(7, 2*((m._slotRange|0) || 3) + 1);
+  const gap = phone ? 4 : 8, padX = 4; // the rows' own side padding (2 px each side, see the CSS)
+  const rowsA = MB2_RAID.frontRows + MB2_RAID.reserveRows*MB2_RAID.reserveScale; // the board's height grows by this much per px of card height
+  inner.style.transform = '';
+  app.classList.remove('battlefield-zoomed');
+  let bh = parseFloat(app.style.getPropertyValue('--mb2-bh')) || (phone ? 62 : 90);
+  let ch = parseFloat(app.style.getPropertyValue('--mb2-ch')) || (phone ? 75 : 110);
+  let rgap = 0;
+  const write = ()=>{
+    app.style.setProperty('--mb2-bh', bh.toFixed(2) + 'px'); app.style.setProperty('--mb2-gap', gap + 'px');
+    app.style.setProperty('--mb2-rgap', rgap.toFixed(2) + 'px');
+    app.style.setProperty('--mb2-ch', ch.toFixed(2) + 'px');
+  };
+  // A few passes: on a phone the hand and piles follow the board's size, which gives the board back some height.
+  for(let pass = 0; pass < 6; pass++){
+    write();
+    const cs = getComputedStyle(battlefield);
+    const availH = battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0);
+    const availW = inner.clientWidth;
+    const fixedH = Math.max(0, inner.offsetHeight - rowsA*bh - 12*rgap); // dividers, padding and row margins: what doesn't scale
+    const hFromW = ((availW - padX - (cols - 1)*gap) / cols) / 0.8;
+    const hFromH = (availH - fixedH) / rowsA;
+    const k = phone ? 'phone' : 'pc';
+    let nbh = Math.max(MB2_RAID.minH[k], Math.min(MB2_RAID.maxH[k], hFromW, hFromH));
+    nbh = Math.floor(nbh*2)/2;
+    const spare = Math.max(0, availH - fixedH - rowsA*nbh);
+    const nrgap = Math.min(spare/12, nbh*0.22); // six rows, a little above and below each
+    const nch = Math.max(MB2_RAID.chromeMinH[k], nbh);
+    const done = Math.abs(nbh - bh) < 0.6 && Math.abs(nch - ch) < 0.6 && Math.abs(nrgap - rgap) < 0.6;
+    // the hand follows halfway each pass so a height-bound board settles instead of see-sawing
+    bh = nbh; rgap = nrgap; ch = pass < 4 ? (ch + nch)/2 : nch;
+    if(done) break;
+  }
+  write();
+}
+// Fill mode's height check: the board's own height against the frame's inside (the frame no longer grows with the board).
+function mb2FrameInnerHeight(battlefield){
+  const cs = getComputedStyle(battlefield);
+  return Math.max(40, battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0));
+}
 function fitBattlefieldZoom(){
   const inner = document.getElementById('battlefieldInner');
   if(!inner) return;
@@ -31072,6 +31155,9 @@ function fitBattlefieldZoomNow(instant){
   // (a plain DOM property that Flip's position:absolute never changes) times each card's own
   // fixed CSS box (width + that row's gap/padding), instead of ever re-measuring live flex-flow
   // layout while a reflow could be mid-flight.
+  // 2026-10-19 (package MB2): fill mode (a phone, or a raid): the raid's cards are sized to the frame first (mb2FitRaidCards).
+  const mb2Fill = mb2FillMode(matchState);
+  if(matchState && matchState.raidFull) mb2FitRaidCards(matchState, battlefield, inner);
   const cardEl = rowMine.querySelector('.board-card') || rowEnemy.querySelector('.board-card');
   if(!cardEl){
     // Nothing on the board yet to size against — plain reset, nothing to center/pan either.
@@ -31127,6 +31213,10 @@ function fitBattlefieldZoomNow(instant){
     const widthScale = containerWidth>0 ? containerWidth/neededWidth : 1;
     const rect = battlefield.getBoundingClientRect();
     const viewportH = window.innerHeight || document.documentElement.clientHeight || 0;
+    // 2026-10-19 (package MB2): in fill mode the frame is as tall as the screen leaves it, so the board is measured against the
+    // frame's inside instead of the page below the frame's top.
+    if(mb2Fill){ const frameH = mb2FrameInnerHeight(battlefield), natH = inner.offsetHeight || 1; // the rows' own boxes: a card or tag poking out above them is no reason to shrink
+      return {containerWidth, availableHeight: frameH, fill: true, scale: Math.min(widthScale, frameH/natH)}; }
     const availableHeight = Math.max(80, viewportH - rect.top - 12); // 12px of breathing room at the bottom edge
     const heightScale = rect.height>0 ? availableHeight/rect.height : 1;
     return {containerWidth, availableHeight, scale: Math.min(widthScale, heightScale)};
@@ -31181,12 +31271,14 @@ function fitBattlefieldZoomNow(instant){
   // before centering) does freeInViewport go negative, which the Math.max(0,...) floors back to
   // plain top-anchoring — exactly the old, always-visible-from-the-top behavior — rather than
   // making an already-overflowing board worse by centering it further off-screen.
-  const naturalHeight = inner.scrollHeight;
+  const naturalHeight = m.fill ? inner.offsetHeight : inner.scrollHeight; // fill mode (MB2): the rows' own boxes
   const scaledHeight = naturalHeight*clampedScale;
   const freeInFrame = naturalHeight - scaledHeight;
   const freeInViewport = m.availableHeight - scaledHeight;
   smoothIfChanged(()=>{
-    battlefieldCenterY = Math.max(0, Math.min(freeInFrame, freeInViewport))/2;
+    // fill mode (2026-10-19, MB2): the board's box is already centred in the frame (CSS), so the shrunk board only needs to come
+    // down half of what it gave up (its transform shrinks it toward its top edge).
+    battlefieldCenterY = m.fill ? freeInFrame/2 : Math.max(0, Math.min(freeInFrame, freeInViewport))/2;
     battlefieldScale = clampedScale;
 
     // Elastic pan range (items 4/5 — even at the scale FLOOR above, the content can still be wider
@@ -31727,6 +31819,7 @@ function renderHand(){
     if(m._tutHlUid != null && !me.hand.some(hc=> hc.uid === m._tutHlUid)) m._tutHlDone = true;
     else if(m._tutHlUid == null){ const first = me.hand.find(isHlCard); if(first) m._tutHlUid = first.uid; }
   }
+  strip.style.setProperty('--hand-n', String(Math.max(1, me.hand.length))); // 2026-10-19 (package MB2): a phone's hand overlaps to fit (CSS)
   strip.innerHTML = me.hand.map(hc=>{
     let d = defs[hc.defId]; if(!d) return '';
     // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep"): the hand card shows what it has left.
