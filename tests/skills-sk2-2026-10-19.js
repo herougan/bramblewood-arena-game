@@ -174,4 +174,45 @@ ok(blk.length > 2000 && /^const SK2_DEFAULTS = Object\.freeze\(\{/m.test(eng) &&
 const D = E.SK2_DEFAULTS; ok(D && D.harvestChance === 0.5 && D.harvestLumber === 1 && D.scavengeN === 1 && D.scavengeEvery === 3 && D.repairN === 2 && D.repairBrambleRate === 0.5 && D.foragingN === 3 && D.foragingBerries === 3 && D.millingN === 1 && D.millingAttacks === true && D.pickpocketN === 1 && D.sabotageN === 1 && D.arsonN === 1 && D.fortifyAtk === 0 && D.fortifyHp === 6 && D.fortifyEvery === 0 && Object.isFrozen(D), 'SK2_DEFAULTS: the defaults, exported and frozen');
 ok(/function isStructureCard\(c\)\{[^\n]*d\.cardType === 'structure'/.test(eng), 'isStructureCard: the one structure test includes cardType structure');
 
+// ---- 10. The app: the skill registry (Codex skill book, keyword registry), card lines, icons, chips, the log / looks / chips hooks
+const src = R('arena_app.js');
+const SK2_KEYS = ['harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'];
+const blkA = src.slice(src.indexOf('// ---- Package SK2 (2026-10-19, owner 21:36)'), src.indexOf('PASSIVE_DEFS.push(') + 4000);
+const icoLine = (src.match(/^Object\.assign\(SKILL_ICON, \{harvest:[^\n]*/m) || [''])[0];
+const icons = [...icoLine.matchAll(/(\w+):'([^']+)'/g)].map(m=> m[2]);
+SK2_KEYS.forEach(k=>{
+  ok(new RegExp(`\\{key:'${k}', category:'passive', label:TX\\('ui\\.sk2n-`).test(blkA), `${k}: in PASSIVE_DEFS with a TX name (the Codex skill book, the keyword registry, "+ Add Skill")`);
+  ok(new RegExp(`\\n  ${k}: [^\\n]*TX\\('ui\\.sk2-`).test(blkA), `${k}: a terse card line (SK2_LINE, merged into SKILL_TEXT)`);
+  ok(new RegExp(`\\b${k}:'`).test(icoLine), `${k}: an icon`); });
+ok(icons.length === SK2_KEYS.length && new Set(icons).size === icons.length, `ten distinct icons (${icons.join(' ')})`);
+{ const other = [...src.matchAll(/^(?:Object\.assign\(SKILL_ICON, \{|const SKILL_ICON = \{)([^\n]*)/gm)].filter(m=> !m[0].includes('harvest:')).map(m=> m[1]).join(' ');
+  ok(icons.every(i=> !other.includes(`'${i}'`)), 'no SK2 icon is shared with another skill'); }
+ok(src.includes("Object.assign(SKILL_TEXT, SK2_LINE);") && /CHIP_FALLBACK_SKILLS\.push\('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'\)/.test(src), 'card lines and card-face chips');
+ok(src.includes('{ const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; }') && src.includes('try{ sk2Vfx(ev); }catch(e){}') && src.includes('try{ sk2StatusBadges(c, badges); }catch(e){}'), 'the log, the looks and the chips are hooked');
+ok(/rc\.sk2Berries = c\.sk2Berries\|\|0; rc\.sk2Scavenge = c\.sk2Scavenge\|\|0; rc\.sk2Salvage = c\.sk2Salvage\|\|0;/.test(src), 'the replay snapshot carries the chip counts');
+ok(src.includes("if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name');"), 'the Palisade token is named from the text table');
+ok(src.includes("KEYWORD_TERMS.push({name:'Berry', re:'berr(?:y|ies)', cs:true, text:TX('ui.sk2-term-berry')});"), 'Berry: a keyword term with a gloss');
+ok(/typeof SK2_DEFAULTS !== 'undefined'/.test(blkA), "the app's numbers come from the engine's SK2_DEFAULTS");
+// ---- 11. Texts: TX keys, terse, translated in the 12 packs (placeholders kept)
+const TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
+const words = s=> String(s).trim().split(/\s+/).filter(Boolean).length;
+const TK = Object.keys(TXT).filter(k=> /^ui\.sk2/.test(k));
+ok(TK.length === 55, `55 package SK2 TX keys (${TK.length})`);
+TK.forEach(k=> ok(src.includes(`TX('${k}'`), `${k} is used`));
+TK.filter(k=> !/-codex$/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is under 20 words (${words(TXT[k])})`));
+const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
+const pt = JSON.parse(R('canonical/cards.json')).find(c=> c.id === 'petrified-tree');
+CODES.forEach(code=>{ const pack = JSON.parse(R('lang/' + code + '.json')), names = JSON.parse(R('lang/cards/' + code + '.json')), ui = JSON.parse(R('lang/ui/' + code + '.json'));
+  const miss = TK.filter(k=> !(TXT[k] in pack)); ok(!miss.length, `${code}: every SK2 text is translated (${miss.join(', ')})`);
+  const bad = TK.filter(k=> pack[TXT[k]] && JSON.stringify((TXT[k].match(/\{\w+\}/g) || []).sort()) !== JSON.stringify((pack[TXT[k]].match(/\{\w+\}/g) || []).sort()));
+  ok(!bad.length, `${code}: every {placeholder} kept (${bad.join(', ')})`);
+  ok(names[pt.name] && ui[pt.flavor], `${code}: the Petrified Tree's name and flavour`); });
+// ---- 12. Skill costs: trigger × action where the trigger layer expresses it, keyword estimates otherwise
+const SCt = JSON.parse(R('canonical/skill-costs.json')), SCm = require('../tools/skill_costs.js').make(SCt);
+ok(SCt.shorthands.milling && SCt.shorthands.milling.trigger === 'perTurn' && SCt.shorthands.milling.action === 'gain' && SCm.cardS({milling:2}).S === 6, `Milling N = On Turn Start × Gain × N (${SCm.cardS({milling:2}).S} at N 2)`);
+ok(SCt.shorthands.fortification && SCt.shorthands.fortification.trigger === 'onSpawn' && SCt.shorthands.fortification.action === 'spawnCard', 'Fortification = On Spawn × Spawn 1');
+['harvest', 'scavenge', 'scavengeEvery', 'salvage', 'salvageEvery', 'repair', 'foraging', 'pickpocket', 'sabotage', 'arson'].forEach(id=>{ const e = SCt.skills.find(x=> x.id === id);
+  ok(e && typeof e.value === 'number' && e.measuredConf === 'low' && /^estimate SK2/.test(e.measuredHow || ''), `skill-costs: ${id} has an S estimate (measuredHow "estimate SK2", low confidence)`); });
+ok(!JSON.parse(R('canonical/cards.json')).some(c=> c.id !== 'petrified-tree' && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
+
 console.log(fail ? `skills-sk2-2026-10-19: ${fail} of ${n} checks FAILED` : `skills-sk2-2026-10-19: all ${n} checks passed`); process.exit(fail ? 1 : 0);

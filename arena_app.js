@@ -320,7 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
-Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -1243,14 +1243,16 @@ function giHunterHead(p, e){ const h = giHunterParts(null, e); return `${p.label
 // ---- Package SK2 (2026-10-19, owner 21:36): the economy and structure skills (rules: the SK2 block in bramblewood-engine.js). Their
 // numbers come from the engine's SK2_DEFAULTS (the fallbacks below are the same values, for a page or sandbox without the engine).
 // On no card yet. The Skills chapter of the Codex book and the keyword registry read PASSIVE_DEFS, so they list them too.
-const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
+const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, salvageN:1, salvageEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
   pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
 const sk2Num = (v, k)=> numOr(v, SK2_UI[k]);
 const sk2ScavengeEvery = e=> (e && Number(e.scavengeEvery) >= 1) ? Math.round(Number(e.scavengeEvery)) : SK2_UI.scavengeEvery;
+const sk2SalvageEvery = e=> (e && Number(e.salvageEvery) >= 1) ? Math.round(Number(e.salvageEvery)) : SK2_UI.salvageEvery;
 const sk2RepairBramble = n=> Math.max(1, Math.floor(n * SK2_UI.repairBrambleRate));
 const SK2_LINE = {
   harvest: v=> TX('ui.sk2-harvest', {n: sk2Num(v, 'harvestLumber')}),
   scavenge: (v, n, e)=> TX('ui.sk2-scavenge', {n: sk2Num(v, 'scavengeN'), m: sk2ScavengeEvery(e)}),
+  salvage: (v, n, e)=> TX('ui.sk2-salvage', {n: sk2Num(v, 'salvageN'), m: sk2SalvageEvery(e)}),
   repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
   foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
   milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
@@ -1262,6 +1264,7 @@ const SK2_LINE = {
 PASSIVE_DEFS.push(
   {key:'harvest', category:'passive', label:TX('ui.sk2n-harvest'), kind:'boolean', desc:v=> SK2_LINE.harvest(v), codexNote:TX('ui.sk2-harvest-codex')},
   {key:'scavenge', category:'passive', label:TX('ui.sk2n-scavenge'), kind:'number', min:1, defaultValue:SK2_UI.scavengeN, desc:(v, n, e)=> SK2_LINE.scavenge(v, n, e), codexNote:TX('ui.sk2-scavenge-codex'), get:e=> e.scavenge ? sk2Num(e.scavenge, 'scavengeN') : undefined},
+  {key:'salvage', category:'passive', label:TX('ui.sk2n-salvage'), kind:'number', min:1, defaultValue:SK2_UI.salvageN, desc:(v, n, e)=> SK2_LINE.salvage(v, n, e), codexNote:TX('ui.sk2-salvage-codex'), get:e=> e.salvage ? sk2Num(e.salvage, 'salvageN') : undefined},
   {key:'repair', category:'passive', label:TX('ui.sk2n-repair'), kind:'number', min:1, defaultValue:SK2_UI.repairN, desc:v=> SK2_LINE.repair(v), codexNote:TX('ui.sk2-repair-codex'), get:e=> e.repair ? sk2Num(e.repair, 'repairN') : undefined},
   {key:'foraging', category:'passive', label:TX('ui.sk2n-foraging'), kind:'number', min:1, defaultValue:SK2_UI.foragingN, desc:v=> SK2_LINE.foraging(v), codexNote:TX('ui.sk2-foraging-codex'), get:e=> e.foraging ? sk2Num(e.foraging, 'foragingN') : undefined},
   {key:'milling', category:'passive', label:TX('ui.sk2n-milling'), kind:'number', min:1, defaultValue:SK2_UI.millingN, desc:v=> SK2_LINE.milling(v), codexNote:TX('ui.sk2-milling-codex'), get:e=> e.milling ? sk2Num(e.milling, 'millingN') : undefined},
@@ -2149,6 +2152,7 @@ const KEYWORD_TERMS = [
   {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
 ];
+KEYWORD_TERMS.push({name:'Berry', re:'berr(?:y|ies)', cs:true, text:TX('ui.sk2-term-berry')}); // Foraging's token (2026-10-19, package SK2)
 const KEYWORD_RESOURCES = [
   {name:'Lumber', re:'lumber', c:'#a0662f'}, {name:'Stone', re:'stone', c:'#7d8590', cs:true}, {name:'Metal', re:'metal', c:'#6f8fae', cs:true},
   {name:'Grace', re:'grace', c:'#c39a1e', cs:true}, {name:'Prayer', re:'prayer', c:'#b8892a', cs:true}, {name:'Darkness', re:'darkness|dark points?', c:'#8b3fbf'},
@@ -2929,7 +2933,8 @@ function getCardDefs(){
   const res = getCardDefs0();
   try{ const dd = matchState && matchState.engine && matchState.engine.derivedDefs; if(dd) for(const k in dd){ if(res[k] !== dd[k]) res[k] = dd[k];
     // Relic (2026-10-19, package E): the engine names the ghost "<Card> Relic" in English; the shown name comes from the text table.
-    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } } } }catch(e){}
+    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } }
+    if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name'); r._sk2Named = true; } } }catch(e){} // Fortification's Palisade (2026-10-19, package SK2)
   return res;
 }
 function getCardDefs0(){
@@ -7343,7 +7348,7 @@ function triggerBadges(d, live){
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
-CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
+CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -34824,6 +34829,7 @@ async function resolveRoundCore(opts){
       });
     });
   });
+  [1,2].forEach(pid=> ['left','center','right'].forEach(side=> m.players[pid].row[side].forEach(c=>{ const rc = m.replayCards[c.uid]; if(rc){ rc.sk2Berries = c.sk2Berries||0; rc.sk2Scavenge = c.sk2Scavenge||0; rc.sk2Salvage = c.sk2Salvage||0; } }))); // Package SK2 (2026-10-19): the chips' counts
   // The middle and back rows replay too (2026-10-19, package RV2, owner 08:42: "if the first row's interaction changes the board state
   // somehow, the next row reacts to that board state"): their units join replayCards (a shallow copy each, so their Health steps down
   // hit by hit), and m.replayReserve keeps who stands where as the round starts, losing a unit only when its death plays. Before, each
@@ -38113,6 +38119,7 @@ function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
+  { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
@@ -40258,6 +40265,7 @@ function ninthPassVfx(ev){
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
+  try{ sk2StatusBadges(c, badges); }catch(e){} // Berries, scavenge and salvage points (2026-10-19, package SK2)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
@@ -40419,6 +40427,63 @@ function giStatusBadges(c, badges){
   if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🫙${c.brittle}</span>`);
   const e = ((getCardDefs()[c.defId] || {}).effects) || {};
   if(e.prayerWard && (c.prayerTokens||0) > 0) badges.push(`<span class="abadge prayer-ward" title="${escapeAttr(TX('ui.prayer-ward-tip', {n: numOr(e.prayerWard, 1)}))}">🧿${numOr(e.prayerWard, 1)}</span>`);
+}
+// ==== Package SK2 (2026-10-19): the board's side of the economy and structure skills (rules: the SK2 block in bramblewood-engine.js):
+// the Berry / scavenge / salvage chips, battle-log lines and floats. Every string is a TX key. A replay card (replayCardLike) carries no
+// SK2 field, so the chips read the round's replay snapshot (m.replayCards, seeded in resolveRoundCore) when the card has none.
+function sk2Val(c, k){ if(!c) return 0; if(k in c) return Number(c[k]) || 0; const rc = matchState && matchState.replayCards && matchState.replayCards[c.uid]; return rc ? (Number(rc[k]) || 0) : 0; }
+function sk2StatusBadges(c, badges){
+  const e = ((getCardDefs()[c.defId] || {}).effects) || {};
+  const b = sk2Val(c, 'sk2Berries'), sc = sk2Val(c, 'sk2Scavenge'), sv = sk2Val(c, 'sk2Salvage');
+  if(b > 0) badges.push(`<span class="abadge sk2-berries" title="${escapeAttr(TX('ui.sk2-berries-tip', {n: b, b: SK2_UI.foragingBerries}))}">🫐${b}</span>`);
+  if(sc > 0) badges.push(`<span class="abadge sk2-scavenge" title="${escapeAttr(TX('ui.sk2-scavenge-tip', {n: sc, m: sk2ScavengeEvery(e)}))}">🦝${sc}</span>`);
+  if(sv > 0) badges.push(`<span class="abadge sk2-salvage" title="${escapeAttr(TX('ui.sk2-salvage-tip', {n: sv, m: sk2SalvageEvery(e)}))}">🏚️${sv}</span>`);
+}
+const SK2_RES_TX = {lumber: n=> TX('ui.sk2-res-lumber', {n}), stone: n=> TX('ui.sk2-res-stone', {n}), metal: n=> TX('ui.sk2-res-metal', {n}), uranium: n=> TX('ui.sk2-res-uranium', {n})};
+const sk2ResList = list=> (list || []).map(t=> (SK2_RES_TX[t.res] || SK2_RES_TX.lumber)(t.n)).join(', ');
+function sk2LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'sk2'){ const name = nm(ev.defId);
+    if(ev.kind === 'harvest') return {cls:'gold', text: ev.forced ? TX('ui.sk2-log-harvest-forced', {name, n: ev.amount}) : TX('ui.sk2-log-harvest', {name, n: ev.amount})};
+    if(ev.kind === 'pickpocket') return {cls:'', text:TX('ui.sk2-log-pickpocket', {name, n: ev.amount, target: nm(ev.targetDefId)})};
+    if(ev.kind === 'pickpocketRes') return {cls:'gold', text:TX('ui.sk2-log-pickpocket-res', {name, list: sk2ResList(ev.taken)})};
+    if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
+    if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
+    if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
+    return null; }
+  if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage')){ const name = nm(ev.attDefId), stone = ev.kind === 'sk2Salvage';
+    if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
+    return {cls:'', text: stone ? TX('ui.sk2-log-salvage', {name, total: ev.total}) : TX('ui.sk2-log-scavenge', {name, total: ev.total})}; }
+  if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
+  if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
+  if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'heal' && ev.cause === 'forage') return {cls:'heal', text:TX('ui.sk2-log-forage', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'rebuild' && ev.repair) return {cls:'heal', text:TX('ui.sk2-log-repair-bramble', {name: nm(ev.defId), n: ev.amount})};
+  if(ev.type === 'skipTurn' && ev.reason === 'milling') return {cls:'', text:TX('ui.sk2-log-mill-holds', {name: nm(ev.defId)})};
+  return null;
+}
+function sk2Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage' || ev.kind === 'sk2Berry' || ev.kind === 'sk2BerryEat')){
+    const fld = ev.kind === 'sk2Scavenge' ? 'sk2Scavenge' : ev.kind === 'sk2Salvage' ? 'sk2Salvage' : 'sk2Berries', u = ev.attUid, rc = rcOf(u); if(rc) rc[fld] = ev.total || 0;
+    const el = boardCardEl(u);
+    if(ev.kind === 'sk2BerryEat') fl(el, '🫐 → 💚', 'heal');
+    else if(ev.gain > 0){ fl(el, `+${ev.gain}${ev.res === 'stone' ? '🪨' : '🪵'}`, 'gold'); snd('coin'); }
+    else fl(el, `${ev.kind === 'sk2Berry' ? '🫐' : ev.kind === 'sk2Salvage' ? '🏚️' : '🦝'} +${ev.amount || 1}`, 'buff');
+    refresh(u); return; }
+  if(ev.type !== 'sk2') return;
+  const el = boardCardEl(ev.uid);
+  if(ev.kind === 'harvest'){ fl(el, `🌽 +${ev.amount}🪵`, 'gold'); snd('coin'); return; }
+  if(ev.kind === 'pickpocket'){ const tr = rcOf(ev.targetUid), me = rcOf(ev.uid); (ev.taken || []).forEach(t=>{ if(tr) tr[t.key] = t.left; if(me) me[t.key] = t.total; });
+    fl(el, `👛 +${ev.amount}`, 'gold'); refresh(ev.uid); refresh(ev.targetUid); snd('coin'); return; }
+  if(ev.kind === 'pickpocketRes'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪵'); }catch(e){} } fl(el, `👛 +${ev.amount}`, 'gold'); snd('coin'); return; }
+  if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪛 −${ev.amount}`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'fortify'){ fl(el, '🏯', 'quick'); return; }
 }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
@@ -40738,6 +40803,7 @@ function renderVfxForEvent(ev){
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
+  try{ sk2Vfx(ev); }catch(e){} // Package SK2 (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
