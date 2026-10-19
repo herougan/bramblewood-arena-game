@@ -22025,7 +22025,7 @@ function offlineRaidPanelHTML(){
   return `<div class="panel offline-raid-panel">
     <h2>${raidBossIconHTML(b, b.icon)} ${escapeHtml(b.name)} ${st.defeated ? raidRespawnHTML(b, st, Ghosts.RAID.CYCLE_DAYS*24*3600*1000, 'or-week') /* 2026-10-19: down, it says when it returns */ : `<span class="or-week">This week's raid · ${daysLeft} day${daysLeft===1?'':'s'} left</span>`}</h2>
     <p class="panel-sub">${escapeHtml(b.blurb||'')} Every deck that fights it this week chips down one shared health pool.</p>
-    <div class="or-hp"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${pct}%"></div></div><span><b>${st.remaining}</b> / ${st.max} HP</span></div>
+    <div class="or-hp"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${pct}%"></div></div><span><b>${raidNum(st.remaining)}</b> / ${raidNum(st.max)} HP</span></div>
     <div class="or-actions">${st.defeated ? `<span class="conquest-rank-badge">🏆 Defeated this week — a new boss arrives in ${daysLeft} day${daysLeft===1?'':'s'}</span>`
       : `<button class="btn primary" id="offlineRaidFightBtn">⚔️ Fight (${ENERGY_COST.onlineRaid}⚡) — boss bramble ${st.nextCastleHp} HP</button>`}</div>
     <h3 class="or-party-h">Raid party this week <span class="or-count">${party.length} decks</span></h3>
@@ -22065,7 +22065,7 @@ function startOfflineRaidMatch(){
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: boss, raidCycle: st.cycle, raidCastleStart: castle, opponentName: boss.name, leaderDefId: matchLeaderId(), leaderUid: null};
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: boss.name, deck: `${castle} HP of ${st.remaining} left`, avatar: {character:'otter', color:'night', title:'newcomer'}, icon: boss.icon, art: raidBossArt(boss)}).then(()=> renderPlay());
+  showVsScreen(me, {name: boss.name, deck: `${castle} HP of ${raidNum(st.remaining)} left`, avatar: {character:'otter', color:'night', title:'newcomer'}, icon: boss.icon, art: raidBossArt(boss)}).then(()=> renderPlay());
 }
 function settleOfflineRaidAfterMatch(m){
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
@@ -22121,18 +22121,29 @@ function applyCloudRaidDef(id, r){
 function loadRaidPartAttempts(){ try{ return JSON.parse(localStorage.getItem(RAID_PART_ATTEMPTS_KEY)||'[]') || []; }catch(e){ return []; } }
 function saveRaidPartAttempts(l){ try{ localStorage.setItem(RAID_PART_ATTEMPTS_KEY, JSON.stringify(l.slice(-500))); }catch(e){} }
 const liveRaidParts = {}; // `${raidId}:${cycle}` -> {at, rows}
+const RAID_LIVE_PAGE = 1000, RAID_LIVE_MAX_ROWS = 20000; // 2026-10-19 (package RB): the raid's rows, paged (liveRefreshRaidParts)
 async function liveRefreshRaidParts(raidId, cycle){
   if(!sbClient || LiveData.available===false) return false;
   const key = raidId+':'+cycle, cur = liveRaidParts[key];
   if(cur && Date.now() - cur.at < 60*1000) return false;
   liveRaidParts[key] = {at: Date.now(), rows: cur ? cur.rows : []};
   try{
-    const { data, error } = await sbClient.from('raid_week_attempts').select('boss_id, owner_id, display_name, damage, fought_at').like('boss_id', raidId+':%').eq('cycle', cycle).order('fought_at', {ascending:true}).limit(5000);
-    if(error){ if(liveTableMissing(error)) LiveData.available = false; return false; }
+    // 2026-10-19 (package RB): without the x15 a fight is ~150 raid damage, so a 1,100,000-Health life takes thousands of rows, past one
+    // request's rows (Supabase answers at most 1,000 a request): read your instance's rows only ("raid:part" is instance 1, "raid:part@N"
+    // instance N), a page of RAID_LIVE_PAGE at a time, up to RAID_LIVE_MAX_ROWS.
+    const inst = myRaidInstance({id: raidId}, cycle), data = []; let error = null;
+    for(let from = 0; from < RAID_LIVE_MAX_ROWS; from += RAID_LIVE_PAGE){
+      let q = sbClient.from('raid_week_attempts').select('boss_id, owner_id, display_name, damage, fought_at').eq('cycle', cycle);
+      q = inst > 1 ? q.like('boss_id', raidId + ':%@' + inst) : q.like('boss_id', raidId + ':%').not('boss_id', 'like', '%@%');
+      const res = await q.order('fought_at', {ascending:true}).order('id', {ascending:true}).range(from, from + RAID_LIVE_PAGE - 1);
+      if(res.error){ error = res.error; break; } (res.data || []).forEach(r=> data.push(r)); if(!res.data || res.data.length < RAID_LIVE_PAGE) break;
+    }
+    if(error && !data.length){ if(liveTableMissing(error)) LiveData.available = false; return false; }
     LiveData.available = true;
     // 2026-10-19 (package RO): "raid:part@N" is instance N's attempt ("raid:part" instance 1)
     liveRaidParts[key] = {at: Date.now(), rows: (data||[]).map(r=>{ const k = RaidM.parsePartKey(r.boss_id); return {raidId, part: k.part, instance: k.instance, cycle, owner: r.owner_id, name: r.display_name, contribution: r.damage, at: Date.parse(r.fought_at)||0, live:true}; })};
     try{ await Promise.all([liveRefreshRaidRestarts(raidId, cycle), liveRaidInstance({id: raidId}, cycle, false)]); }catch(e){} // 2026-10-19: restarts and your instance
+    if(myRaidInstance({id: raidId}, cycle) !== inst) liveRaidParts[key].at = 0; // 2026-10-19 (package RB): another instance: read its rows next time
     return true;
   }catch(e){ return false; }
 }
@@ -22298,14 +22309,20 @@ function raidStageText(stage){ return RaidM && RaidM.describeStage ? RaidM.descr
 // we can fight? or each has 3 hp bars. It should say health left like X/Y. So players feel the epic progress."): a part's health is
 // one bar with its "X / Y HP left" under it. Its phases (p.bars health bars of p.barHp each) are faint marks on that bar, and a
 // "Phase n of N" chip says which one you are cutting through (its tooltip explains the marks).
+// Raid numbers in the game's language (2026-10-19, package RB, owner 12:23: "In the X HP left of the Raid menu, use commas."): every raid
+// Health, damage and tier number goes through toLocaleString(raidLocale()): thousands separators as the picked language writes them
+// (1,100,000 in English, 1.100.000 in German), the browser's own when the language isn't one Intl knows. raidNum(n) rounds first.
+function raidLocale(){ try{ const c = (window.BramblewoodI18n && window.BramblewoodI18n.current && window.BramblewoodI18n.current()) || 'en';
+  return (typeof Intl !== 'undefined' && Intl.NumberFormat.supportedLocalesOf([c]).length) ? c : undefined; }catch(e){ return undefined; } }
+function raidNum(n){ return Math.round(Number(n) || 0).toLocaleString(raidLocale()); }
 function raidPhaseOf(ps){ const bars = Math.max(1, ps.def.bars|0); return ps.defeated ? bars : Math.max(1, Math.min(bars, bars - Math.ceil(ps.barsLeft - 1e-9) + 1)); }
 function raidBarsHTML(ps){
   const p = ps.def, bars = Math.max(1, p.bars|0), total = ps.total || bars * (p.barHp||0), left = Math.max(0, Math.ceil(ps.remaining));
   const frac = total ? Math.max(0, Math.min(1, ps.remaining / total)) : 0, phase = raidPhaseOf(ps);
   const ticks = bars > 1 ? Array.from({length: bars - 1}, (_, i)=> `<i class="rp-tick" style="left:${((i + 1) / bars * 100).toFixed(3)}%"></i>`).join('') : '';
-  const tip = bars > 1 ? `${p.name} has ${bars} phases of ${(p.barHp||0).toLocaleString()} HP: the marks on its bar. Phase ${phase} of ${bars} now.` : '';
+  const tip = bars > 1 ? `${p.name} has ${bars} phases of ${(p.barHp||0).toLocaleString(raidLocale())} HP: the marks on its bar. Phase ${phase} of ${bars} now.` : '';
   return `<div class="rp-bars is-single" role="meter" aria-label="${escapeAttr(p.name)} health" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${left}"${tip ? ` title="${escapeAttr(tip)}"` : ''}><span class="rp-bar"><span style="width:${(frac*100).toFixed(2)}%"></span>${ticks}</span></div>
-    <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString()}</b> / ${total.toLocaleString()} <small>HP left</small></span>${bars > 1 ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
+    <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString(raidLocale())}</b> / ${total.toLocaleString(raidLocale())} <small>HP left</small></span>${bars > 1 ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
 }
 // 2026-10-19 (package RO, owner 00:29): a claim per life of the raid (it falls: the full rewards; it ends standing, by a restart or the
 // cycle's end: the held-raid share), in your instance, for this cycle and the last; only if you took part (RaidM.raidReward). The key
@@ -22409,8 +22426,8 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
   const rw = claim.reward, defs = getCardDefs(), name = def.name || '', rewards = [];
   rewards.push({kind:'xp', icon:'⭐', amount:'+' + xp, label:TX('results.raid-claim-xp'), weight:1});
   Object.entries(all).forEach(([k, v])=>{ if(!(v > 0) || !CURRENCY_META[k]) return;
-    rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
-  if(shards > 0) rewards.push({kind:'currency', id:'raidShards', icon: raidShardIcon(def), amount:'+' + shards.toLocaleString(), label: raidShardName(def), weight:3}); // 2026-10-19 (package RC)
+    rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(raidLocale()), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
+  if(shards > 0) rewards.push({kind:'currency', id:'raidShards', icon: raidShardIcon(def), amount:'+' + shards.toLocaleString(raidLocale()), label: raidShardName(def), weight:3}); // 2026-10-19 (package RC)
   // 2026-10-19 (package RC): a card is {id, from: 'pack' | 'faction' | 'raid'} (a bare id is a raid card, the older shape)
   (cardsGot || []).forEach(c=>{ const id = typeof c === 'string' ? c : c.id, from = typeof c === 'string' ? 'raid' : c.from, d = defs[id]; if(!d) return;
     rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
@@ -22425,7 +22442,7 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
 function showRaidClaimScreen(spec){
   if(!raidClaimScreenReady()) return Promise.resolve();
   const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
-  try{ return window.FX.F.raidClaimScreen(spec, {calm, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
@@ -22452,7 +22469,7 @@ function raidParticipationText(p){
   if(p.leading) return TX('ui.raid-leading'); // 2026-10-19 (RV2)
   if(p.strong) return TX('ui.raid-strong');
   if(p.participant) return TX('ui.raid-in');
-  return TX('ui.raid-part-progress', {fights: p.fights, nf: p.rules.fights, damage: p.damage.toLocaleString(), nd: p.rules.damage.toLocaleString()});
+  return TX('ui.raid-part-progress', {fights: p.fights, nf: p.rules.fights, damage: p.damage.toLocaleString(raidLocale()), nd: p.rules.damage.toLocaleString(raidLocale())});
 }
 function raidClaimRowHTML(c, i, raidId){
   const kill = c.reward.kind === 'kill';
@@ -22524,18 +22541,18 @@ function raidPanelHTML(){
         <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
         ${st.stage && raidStageText(st.stage) ? `<p class="r3-hint r3-stage-now"><b>${escapeHtml(st.stage.name)}:</b> ${escapeHtml(raidStageText(st.stage))}</p>` : ''}
         <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
-          <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span>${st.defeated ? raidRespawnHTML(def, st) /* 2026-10-19 (owner 23:19): down, it says when it returns */ : `<span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span>`}</span></div>
+          <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString(raidLocale())}</b> / ${st.total.toLocaleString(raidLocale())} left <small>(${pct}%)</small></span>${st.defeated ? raidRespawnHTML(def, st) /* 2026-10-19 (owner 23:19): down, it says when it returns */ : `<span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span>`}</span></div>
       </div>
       ${adminModeEnabled ? `<div class="r3-admin"><button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button><button type="button" class="btn small" data-raid-admin-dmg="0.1" title="Admin: take 10% of the boss's total Health off its open parts">💥 Deal 10%</button><button type="button" class="btn small" data-raid-admin-dmg="0.5" title="Admin: take 50% of the boss's total Health off its open parts">💥 Deal 50%</button><button type="button" class="btn small" data-raid-restart title="${escapeAttr(TX('ui.raid-restart-tip'))}">${escapeHtml(TX('ui.raid-restart'))}</button></div>` : ''}
     </div>
     ${claims.map((c,i)=> raidClaimRowHTML(c, i)).join('')}
     <div class="r3-me" role="group" aria-label="Your raid this week">
-      <span class="r3-chip"><small>Your damage</small><b>${mine.toLocaleString()}</b></span>
+      <span class="r3-chip"><small>Your damage</small><b>${mine.toLocaleString(raidLocale())}</b></span>
       <span class="r3-chip"><small>Standing</small><b>${tierLabel || '—'}</b></span>
       <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
       ${raidTicketChipHTML(tickets, tkNext)}
       <span class="r3-chip"><small>${escapeHtml(TX('ui.raid-fight-costs'))}</small><b>${tkCost} 🎫 + ${enLo === enHi ? enLo : enLo + '–' + enHi} ⚡</b></span>
-      <span class="r3-chip r3-part${part.participant ? ' is-in' : ''}${part.strong ? ' is-strong' : ''}${part.leading ? ' is-leading' : ''}" title="${escapeAttr(TX('ui.raid-part-rules', {fights: pr.fights, damage: pr.damage.toLocaleString(), sfights: pr.strongFights, sdamage: pr.strongDamage.toLocaleString(), pct: pr.strongPct}) + ' ' + TX('ui.raid-part-rules-lead', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(), pct: pr.leadPct}))}"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small><b>${escapeHtml(raidParticipationText(part))}</b></span>
+      <span class="r3-chip r3-part${part.participant ? ' is-in' : ''}${part.strong ? ' is-strong' : ''}${part.leading ? ' is-leading' : ''}" title="${escapeAttr(TX('ui.raid-part-rules', {fights: pr.fights, damage: pr.damage.toLocaleString(raidLocale()), sfights: pr.strongFights, sdamage: pr.strongDamage.toLocaleString(raidLocale()), pct: pr.strongPct}) + ' ' + TX('ui.raid-part-rules-lead', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(raidLocale()), pct: pr.leadPct}))}"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small><b>${escapeHtml(raidParticipationText(part))}</b></span>
       ${st.instance > 1 ? `<span class="r3-chip r3-inst" title="${escapeAttr(TX('ui.raid-instance-tip'))}"><small>${escapeHtml(TX('ui.raid-instance-label'))}</small><b>${st.instance}</b></span>` : ''}
       ${raidAutoOpen(def) ? `<span class="r3-chip r3-auto"><small>🤖</small><b>${escapeHtml(TX('ui.raid-auto-open'))}</b></span>` : ''}
       ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
@@ -22556,13 +22573,13 @@ function raidPanelHTML(){
         ${atk ? `<span class="r2-note r3-atk" title="${escapeAttr(TX('ui.raid-attacks-telegraph-title'))}">${atk}</span>` : ''}
         ${(()=>{ try{ return raidPartBRLine(def, p.id, st); }catch(e){ return ''; } })() /* 2026-10-19 (package BR): the boss's BR and your side's */}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary${noTickets ? ' is-blocked' : ''}" data-raid-part="${escapeAttr(p.id)}"${noTickets ? ` aria-disabled="true" title="${escapeAttr(raidNoTicketsText())}"` : ''}>⚔️ Fight (${costOf(p.id).tickets}🎫 ${costOf(p.id).energy}⚡)</button>`}
-          <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
+          <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString(raidLocale())} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
     <div class="r3-info">
       <section class="r3-lanes"><h3>Three rows a side</h3>
         <ol class="r3-rows" aria-label="Your side of a raid fight, front to back">
           <li class="is-you"><b>Front row · You</b><span>Your deck and your leader. You play here, and your units fight the boss's front.</span></li>
-          <li><b>Middle row · Ally 1</b><span>A CPU ally. It plays only into its own row, one card on its turn; a card steps up when the column ahead is clear.</span></li>
+          <li><b>Middle row · Ally 1</b><span>${escapeHtml(TX('ui.rb-ally-row-mid')) /* 2026-10-19 (package RB): its units stay in its row now */}</span></li>
           <li><b>Back row · Ally 2</b><span>The other CPU ally, the same way, in its own row.</span></li>
         </ol>
         <p class="r3-note">Your three brambles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
@@ -22573,8 +22590,8 @@ function raidPanelHTML(){
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
         ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
-        <ul class="r3-rules">${[TX('ui.raid-rule-share'), TX('ui.raid-rule-win', {n: (sc.overwhelmCap||10000).toLocaleString()}), TX('ui.raid-rule-rank')].map(t=> `<li>${escapeHtml(t)}</li>`).join('') /* 2026-10-19 (RV2, owner 08:46): the raid's rules, no multipliers shown */}</ul>
-        <p class="r3-note">Each fight lasts ${RaidM.fightRounds(def)} turns (or until your bramble falls) and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's bramble (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
+        <ul class="r3-rules">${[TX('ui.raid-rule-share'), TX('ui.raid-rule-win', {n: raidNum(sc.overwhelmCap || RaidM.SCORING_DEFAULTS.overwhelmCap)}), TX('ui.raid-rule-rank'), TX('ui.rb-rule-weaken')].map(t=> `<li>${escapeHtml(t)}</li>`).join('') /* 2026-10-19 (RV2, owner 08:46): the raid's rules, no multipliers shown; (package RB) a win's 1,000 and the boss's weakening */}</ul>
+        <p class="r3-note">${escapeHtml(TX('ui.rb-fight-note', {turns: RaidM.fightRounds(def)})) /* 2026-10-19 (package RB, owner 12:23: "Do not show the damage formula to players."): no per-fight cap or rate */}</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
         <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
@@ -22583,9 +22600,9 @@ function raidPanelHTML(){
         <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
       <section class="r3-rewards"><h3>If it falls</h3>
         <ul class="r3-rw">
-          <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString()}))}</b><span>${kill || '—'} · ${escapeHtml(TX('ui.rc-rw-participant-what', {n: rcCards, s: rcCards === 1 ? '' : 's', shards: rcShards, icon: raidShardIcon(def)}))}</span></li>
-          <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct, chance: pr.strongPct}))}</span></li>
-          <li><b>${escapeHtml(TX('ui.raid-rw-leading', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-leading-what', {pct: pr.leadPct}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString(raidLocale())}))}</b><span>${kill || '—'} · ${escapeHtml(TX('ui.rc-rw-participant-what', {n: rcCards, s: rcCards === 1 ? '' : 's', shards: rcShards, icon: raidShardIcon(def)}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString(raidLocale())}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct, chance: pr.strongPct}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-leading', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(raidLocale())}))}</b><span>${escapeHtml(TX('ui.raid-rw-leading-what', {pct: pr.leadPct}))}</span></li>
           ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)} · ${escapeHtml(t !== 'top50' ? TX('ui.rc-rw-tier-extra', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}) : TX('ui.rc-rw-tier-shards', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}))}</span></li>`).join('')}
           ${raidCardIds(def).length ? `<li><b>${escapeHtml(TX('ui.rc-rw-craft-h'))}</b><span>${escapeHtml(TX('ui.rc-rw-craft', {icon: raidShardIcon(def), name: raidShardName(def)}))}</span></li>` : '' /* 2026-10-19 (package RC, owner 09:53): its own cards are crafted in the Forge */}
           <li><b>${escapeHtml(TX('ui.raid-rw-held'))}</b><span>${escapeHtml(TX('ui.raid-rw-held-what', {pct: rw.failPct != null ? rw.failPct : 50, max: rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}))}</span></li>
@@ -22631,7 +22648,7 @@ function wireRaidPanel(){
   document.querySelectorAll('.raid2-panel [data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
   const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
   document.querySelectorAll('[data-raid-admin-dmg]').forEach(b=> b.addEventListener('click', async ()=>{ if(!adminModeEnabled) return; b.disabled = true;
-    try{ const r = await adminRaidDamage(def, Number(b.dataset.raidAdminDmg)); showToast(TX('toast.admin-raid-damage-dealt', {toLocaleString: r.dealt.toLocaleString(), v2: r.live ? ' (live)' : ' (this browser only)'}), 'ok'); }catch(e){ showToast((TX('toast.admin-damage-failed') + ' ') + ((e && e.message) || e), 'error'); }
+    try{ const r = await adminRaidDamage(def, Number(b.dataset.raidAdminDmg)); showToast(TX('toast.admin-raid-damage-dealt', {toLocaleString: r.dealt.toLocaleString(raidLocale()), v2: r.live ? ' (live)' : ' (this browser only)'}), 'ok'); }catch(e){ showToast((TX('toast.admin-damage-failed') + ' ') + ((e && e.message) || e), 'error'); }
     renderRaidSubTab(document.getElementById('playSubBody')); }));
   try{ fxHook('raidPanel', document.querySelector('.raid2-panel'), def); }catch(e){} // 2026-10-15 batch F: stage change, parts down, bars, claim
 }
@@ -22748,8 +22765,8 @@ function openRaidEditor(raidId){
         <div class="se-fx-list re-fx">${rows.map(r=> `<span class="se-fx-chip"><span aria-hidden="true">${r.icon}</span> <b>${escapeHtml(r.name)}</b> <small>${escapeHtml(r.short||'')}</small><button type="button" class="se-fx-x" data-rfx-del="${escapeAttr(r.key)}" aria-label="Remove ${escapeAttr(r.name)}">✕</button></span>`).join('') || '<i class="panel-sub">None</i>'}
           <select id="reFxAdd" aria-label="Add a field effect"><option value="">＋ Add a field effect…</option>${FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift').map(f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></div>
         <label class="se-wide re-pool">Commons the boss calls in (card ids, comma-separated; blank = from its decks' types)<input id="reCommonPool" value="${escapeAttr(pool)}" placeholder="${escapeAttr((RaidM.raidCommonPool ? RaidM.raidCommonPool(Object.assign({}, draft, {commonPool:null}), draft.parts[0], getCardDefs()) : []).slice(0, 6).join(', '))}"></label>`; })()}
-      <h3 class="se-h">Parts · ${st.total.toLocaleString()} HP in all</h3>
-      <div class="re-parts">${draft.parts.map(p=> `<button type="button" class="re-part-tab ${p.id===openPart?'on':''}" data-open-part="${escapeAttr(p.id)}">${escapeHtml(p.icon||'🎯')} ${escapeHtml(p.name||p.id)}<small>${p.bars}×${(p.barHp||0).toLocaleString()}${(p.lockedUntil||[]).length?' 🔒':''}</small></button>`).join('')}<button type="button" class="btn small" id="reAddPart">＋ Part</button></div>
+      <h3 class="se-h">Parts · ${st.total.toLocaleString(raidLocale())} HP in all</h3>
+      <div class="re-parts">${draft.parts.map(p=> `<button type="button" class="re-part-tab ${p.id===openPart?'on':''}" data-open-part="${escapeAttr(p.id)}">${escapeHtml(p.icon||'🎯')} ${escapeHtml(p.name||p.id)}<small>${p.bars}×${(p.barHp||0).toLocaleString(raidLocale())}${(p.lockedUntil||[]).length?' 🔒':''}</small></button>`).join('')}<button type="button" class="btn small" id="reAddPart">＋ Part</button></div>
       ${P ? `<div class="se-grid re-part">
         <label>Part name<input data-pf="name" value="${escapeAttr(P.name||'')}"></label>
         <label>Icon<input data-pf="icon" value="${escapeAttr(P.icon||'')}" maxlength="4"></label>
@@ -22936,7 +22953,7 @@ function openRaidEditor(raidId){
       const search = $('reSearch');
       search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = $('reSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
       const sim = strip=>{ read(); const r = simulateRaidPart(draft, P, strip, draft.trench ? 40 : 100); const need = Math.ceil(RaidM.partTotal(P) / Math.max(1, r.avg));
-        simText[P.id] = `Your deck${r.trench ? ' (middle row, two stand-in allies)' : ''} vs ${escapeHtml(P.name)}${strip?' (Exposed)':''}, ${r.n} attempts: <b>${Math.round(r.avg).toLocaleString()}</b> raid damage on average · <b>${r.overwhelmPct.toFixed(0)}%</b> overwhelms${r.trench ? ` · wall broken ${r.wallPct.toFixed(0)}%` : ''} · about <b>${need.toLocaleString()}</b> attempts like yours to drain this part.`; render(); };
+        simText[P.id] = `Your deck${r.trench ? ' (middle row, two stand-in allies)' : ''} vs ${escapeHtml(P.name)}${strip?' (Exposed)':''}, ${r.n} attempts: <b>${Math.round(r.avg).toLocaleString(raidLocale())}</b> raid damage on average · <b>${r.overwhelmPct.toFixed(0)}%</b> overwhelms${r.trench ? ` · wall broken ${r.wallPct.toFixed(0)}%` : ''} · about <b>${need.toLocaleString(raidLocale())}</b> attempts like yours to drain this part.`; render(); };
       $('reSim').onclick = ()=> sim(false);
       if($('reSimExposed')) $('reSimExposed').onclick = ()=> sim(true);
       $('reDelPart').onclick = ()=>{ if(!confirm(`Remove ${P.name}?`)) return; draft.parts = draft.parts.filter(p=> p!==P); draft.parts.forEach(p=>{ if(p.lockedUntil){ p.lockedUntil = p.lockedUntil.filter(x=> x!==P.id); if(!p.lockedUntil.length) delete p.lockedUntil; } }); openPart = draft.parts[0] ? draft.parts[0].id : null; dirty = true; render(); };
@@ -23107,8 +23124,8 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
       <div class="tr-notes">${(danger.size || v.frontRowHit) && !opts.anim ? `<div class="tr-warn">⚠️ ${v.frontRowHit ? 'A sweep hits the front row' : 'The red column gets smacked'} this turn</div>` : ''}${v.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Bramble −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
       ${finished ? `<div class="tr-result ${r.res.overwhelmed?'is-win':''}">
           <h3>${r.res.overwhelmed ? '🏆 Overwhelmed!' : r.res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
-          <p>Bramble damage <b>${r.res.castleDealt}</b>${r.res.entityDealt ? ` · stump damage <b>${r.res.entityDealt}</b>` : ''} → <b>${r.contribution.toLocaleString()}</b> raid damage${r.gold||r.dust ? ` · +${r.gold} gold${r.dust ? `, +${r.dust} dust` : ''}` : ''}</p>
-          <p class="panel-sub">${escapeHtml(part.name)} has ${r.remainingAfter.toLocaleString()} HP left this week.</p>
+          <p>Bramble damage <b>${r.res.castleDealt}</b>${r.res.entityDealt ? ` · stump damage <b>${r.res.entityDealt}</b>` : ''} → <b>${r.contribution.toLocaleString(raidLocale())}</b> raid damage${r.gold||r.dust ? ` · +${r.gold} gold${r.dust ? `, +${r.dust} dust` : ''}` : ''}</p>
+          <p class="panel-sub">${escapeHtml(part.name)} has ${r.remainingAfter.toLocaleString(raidLocale())} HP left this week.</p>
           <button type="button" class="btn primary" id="trDone">Back to the raid</button></div>`
         : `<div class="tm-hand-bar"><span class="tm-lumber" title="Lumber — pays for cards">🪵 ${v.lumber}</span><div class="tm-hand">${hand || '<span class="panel-sub">No cards in hand</span>'}</div></div>
           <div class="se-actions">${selected!=null && !opts.anim ? `<button type="button" class="btn small" id="tmDiscard">🗑 Discard (+1🪵)</button>` : ''}<span class="tm-hint">${opts.anim ? 'Resolving…' : v.played ? 'Card played — end your turn.' : selected!=null ? (T.canPlayMine(selected) ? 'Pick a lit slot in your row.' : 'Not enough 🪵 — discard something for lumber.') : 'Pick a card, then a lit slot.'}</span><span style="flex:1"></span><button type="button" class="btn primary" id="tmEnd" ${opts.anim?'disabled':''}>End turn ▶</button></div>`}
@@ -23224,11 +23241,13 @@ function buildRaidFullFight(def, partId, f, st, opts){
   // parts). trench.castleHp (1250) is "for the trench only" (trenchConfig's 2026-10-18 note), but this fight read it too, so a raider
   // had to chip 1250 to reach anything.
   cfg.castleHp = f.castleHp || cfg.castleHp;
-  // 2026-10-19 (package RB, owner 12:23: "the boss gets weaker as it goes down in health"): x RaidM.bossWeakening (the curve's one home),
-  // by the part's remaining share: 100% fresh, down to the raid's weakenFloor (60%) as the part falls; the guards too (below).
-  const partShare = (()=>{ try{ const ps = st.byId[String(partId)]; return ps && ps.total ? Math.max(0, Math.min(1, ps.remaining / ps.total)) : 1; }catch(e){ return 1; } })();
-  const weaken = RaidM.bossWeakening ? RaidM.bossWeakening(def, partShare) : 1;
-  const bAtk = raidTune(def, 'bossAtkPct') * weaken, bHp = raidTune(def, 'bossHpPct') * weaken; // the boss's cards' share of their printed Attack / Health (2026-10-19)
+  // 2026-10-19 (package RB, owner 12:23: "the boss gets weaker as it goes down in health"): every boss card (its deck, its Commons, its
+  // guards, its boss unit) goes through RaidM.weakenCard, the curve's one home (RaidM.bossWeakening): 100% fresh, down to the raid's
+  // weakenFloor (60%) as it falls, by RaidM.weakenShare (the part's remaining share, or the whole raid's when that is lower: the Core).
+  // It comes after the stage's +Attack, so Enraged / Thrashing weaken with it.
+  const partShare = RaidM.weakenShare ? RaidM.weakenShare(st, partId) : 1;
+  const weaken = RaidM.bossWeakening ? RaidM.bossWeakening(def, partShare) : 1, wk = d=> RaidM.weakenCard ? RaidM.weakenCard(d, weaken) : d;
+  const bAtk = raidTune(def, 'bossAtkPct'), bHp = raidTune(def, 'bossHpPct'); // the boss's cards' share of their printed Attack / Health (2026-10-19)
   // the boss's cards, run-only copies when the stage strips abilities or the rule makes them illusory (as in the trench)
   // A raid deck was built to face three decks at once (the trench). Alone, your one deck met it at full strength and lost
   // almost every time (CPU sims: ~0 damage dealt). Here its cards fight at 35% Attack and 45% Health, and your castle is
@@ -23236,15 +23255,15 @@ function buildRaidFullFight(def, partId, f, st, opts){
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
     const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
-    defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
+    defs[nid] = wk(RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f)); // + the stage's bossAtk / bossHp (2026-10-18), then the weakening (2026-10-19, RB)
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
-    defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: Math.round((e.attack || 0) * weaken), health: Math.max(1, Math.round((e.health || 20) * weaken)), wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
+    defs[id] = wk(RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f)); return id; });
   // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
   // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
   // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
   const commonPool = (RaidM.raidCommonPool ? RaidM.raidCommonPool(def, f.part, defs) : []).map(id=>{ const nid = id + '~raid', src = defs[id];
-    if(!defs[nid]) defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : (src.effects || {})}), f);
+    if(!defs[nid]) defs[nid] = wk(RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : (src.effects || {})}), f));
     return nid; });
   // The boss unit (2026-10-17, user: "I also noticed the raid has 2 variations of the same card. Then name them differently. Also the 100+
   // HP difference is too much."): it used to be the part's biggest card under its own name with its Health ×(2 + 10·r²) (a 24-Health
@@ -23294,7 +23313,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
-  // their own rows on either side (they step up into the front once nothing stands before them).
+  // their own rows on either side (2026-10-19, package RB: and they stay there, holdRow; they used to step up into the front).
   let leaderUid = null;
   try{ const lid = opts.leaderId, E = engine; if(lid && defs[lid]){ const ev = []; E.debugSpawnCard(players, sideOf, 1, lid, 0, stats, ev); const c = E.allBoardCards(players[1]).find(x=> x.defId === lid);
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
@@ -23382,7 +23401,7 @@ function raidPartBRLine(def, partId, st){
   const r = raidPartBR(def, partId, st); if(!r) return '';
   let mine = 0; try{ mine = mainDeckLevel(myDeckCounts, matchLeaderId()); }catch(e){}
   const side = mine + 2 * r.allyAvg, cls = deckLevelGapClass(r.boss.total, side);
-  return `<span class="r2-note r3-br ${cls}" title="${escapeAttr(TX('ui.raid-br-boss-tip') + ' ' + TX('ui.raid-br-side-tip') + ' · ' + deckLevelGapTip(cls))}">⚔ ${escapeHtml(TX('ui.raid-br-line', {boss: r.boss.total.toLocaleString(), side: side.toLocaleString()}))}</span>`;
+  return `<span class="r2-note r3-br ${cls}" title="${escapeAttr(TX('ui.raid-br-boss-tip') + ' ' + TX('ui.raid-br-side-tip') + ' · ' + deckLevelGapTip(cls))}">⚔ ${escapeHtml(TX('ui.raid-br-line', {boss: r.boss.total.toLocaleString(raidLocale()), side: side.toLocaleString(raidLocale())}))}</span>`;
 }
 function raidAllyOf(a, i){
   const defs = getCardDefs(), ids = Object.entries(a.deck||{}).filter(([id])=> defs[id]).flatMap(([id, n])=> Array(Math.max(1, n|0)).fill(id));
@@ -23724,7 +23743,7 @@ window.bwRaidRankEmblemHTML = raidRankEmblemHTML; // the raid claim screen (bram
 // rank's bonus (RaidM.raidRankMult), capped per fight; a fallen bramble scores the overwhelm figure. Fields: settleRaidPartAfterMatch.
 function raidDamageCalcHTML(m){
   if(!m || m.raidBrambleDealt == null) return '';
-  const n = Number(m.raidDamageDealt) || 0, fmt = v=> Math.round(Number(v) || 0).toLocaleString();
+  const n = Number(m.raidDamageDealt) || 0, fmt = v=> Math.round(Number(v) || 0).toLocaleString(raidLocale());
   let t, cap = '';
   if(m.raidOverwhelmed) t = TX('results.nv-raid-calc-win', {n: fmt(n)});
   else {
@@ -23774,6 +23793,7 @@ function settleRaidPartAfterMatch(m){
 }
 // Shared by the single-row fight and the trench: scores an attempt, stores it locally, pushes it
 // live, bumps quests and pays the small per-attempt reward.
+const RAID_ATTEMPT_PAY = {goldPer: 17, dustPer: 67}; // 2026-10-19 (package RB): raid damage per Maple Leaf / per 3 Magic Dust (was 250 / 1,000 on the x15 scale)
 function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   const part = (def.parts||[]).find(p=> p.id===partId);
   const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part, rank); // + the fight's rank (2026-10-19, RV2): the server row gets the multiplied damage
@@ -23790,7 +23810,9 @@ function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   // confirmed at least 1 raid materia ... at least 120 damage on the first raid"): below the raid's minDamage (120 by default)
   // an attempt pays a pittance; every attempt brings home at least one Abyssal Ink.
   const minDamage = Number(def.minDamage) || 120, below = dealt < minDamage;
-  const g = below ? 8 : Math.round(contribution/250), d = below ? 6 : 3 * Math.round(contribution/1000); // ×3, forge economy v2
+  // 2026-10-19 (package RB): without the x15 a fight's raid damage is ~1/15 of what it was, so the pay per raid damage is x15 (250 -> 17
+  // per Maple Leaf, 1,000 -> 67 per 3 Magic Dust): a fight pays about what it did
+  const g = below ? 8 : Math.round(contribution/RAID_ATTEMPT_PAY.goldPer), d = below ? 6 : 3 * Math.round(contribution/RAID_ATTEMPT_PAY.dustPer); // ×3, forge economy v2
   if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
   const ink = below ? 1 : 1 + Math.min(4, Math.floor(dealt / (minDamage * 2))); for(let i = 0; i < ink; i++) try{ unlockCardForPlayer('abyssal-ink', 'materia'); }catch(e){}
   const after = currentRaidStateFor(def);
@@ -37422,9 +37444,9 @@ function matchStatsHTML(m){
     </div>` : '';
   const orReward = m.raidRewardEarned;
   const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards raid-results">
-      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
-      ${raidDamageCalcHTML(m) /* 2026-10-19 (NV): how that number was made */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
-      <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: m.raidRemainingAfter, v2: m.raidRemainingAfter<=0?' — defeated!':''})}</span>
+      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)})}</span>
+      ${adminModeEnabled ? raidDamageCalcHTML(m) : '' /* 2026-10-19 (NV): how that number was made; (package RB, owner 12:23: "Do not show the damage formula to players.") admins only */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
+      <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: raidNum(m.raidRemainingAfter), v2: m.raidRemainingAfter<=0?' — defeated!':''}) /* 2026-10-19 (package RB): 1,234 */}</span>
       ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">${TX('results.dust', {v1: rewardCountSpan(orReward.dust)})}</span>` : ''}

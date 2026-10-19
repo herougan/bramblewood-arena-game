@@ -1967,5 +1967,9 @@
  "Saving your decks to your account…": "Enregistrement de vos decks sur votre compte…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Impossible de joindre le serveur. Vos decks sont en sécurité sur cet appareil et se synchroniseront dès votre retour en ligne.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "Le deck « {name} » a été supprimé sur un autre appareil, il disparaît donc aussi d’ici.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Le monde s'ouvre : touche le 🧭 pour voir toutes les cartes à ta portée."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Le monde s'ouvre : touche le 🧭 pour voir toutes les cartes à ta portée.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "À mesure que la Santé d'une partie baisse, le boss s'affaiblit : ses cartes frappent moins fort et tombent plus vite.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "Chaque combat dure {turns} tours, ou jusqu'à la chute de votre roncier. Les dégâts que votre camp inflige au roncier de la partie comptent comme dégâts de raid.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "Un allié CPU. Il ne joue que dans sa propre rangée, une carte à son tour, et ses unités restent dans cette rangée.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "Gagner un combat compte pour {n} dégâts de raid, davantage avec un meilleur rang."
 }

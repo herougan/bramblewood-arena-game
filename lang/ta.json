@@ -1967,5 +1967,9 @@
  "Saving your decks to your account…": "உங்கள் அடுக்குகளை உங்கள் கணக்கில் சேமிக்கிறது…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "சேவையகத்தை அடைய முடியவில்லை. உங்கள் அடுக்குகள் இந்தச் சாதனத்தில் பாதுகாப்பாக உள்ளன; மீண்டும் இணைந்ததும் ஒத்திசைக்கப்படும்.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "“{name}” அடுக்கு வேறொரு சாதனத்தில் நீக்கப்பட்டது, அதனால் இங்கிருந்தும் போய்விட்டது.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 உலகம் திறக்கிறது: நீங்கள் அடையக்கூடிய எல்லா வரைபடங்களையும் பார்க்க 🧭 ஐத் தட்டுங்கள்."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 உலகம் திறக்கிறது: நீங்கள் அடையக்கூடிய எல்லா வரைபடங்களையும் பார்க்க 🧭 ஐத் தட்டுங்கள்.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "ஒரு பகுதியின் உயிர் குறையக் குறைய முதலாளி பலவீனமடைகிறது: அதன் அட்டைகள் மென்மையாகத் தாக்கி விரைவில் விழுகின்றன.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "ஒவ்வொரு சண்டையும் {turns} முறைகள் அல்லது உங்கள் முட்புதர் விழும் வரை நீடிக்கும். உங்கள் அணி அந்தப் பகுதியின் முட்புதருக்கு செய்யும் சேதம் ரெய்டு சேதமாகக் கணக்கிடப்படும்.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "ஒரு CPU கூட்டாளி. அது தன் சொந்த வரிசையில் மட்டுமே, தன் முறைக்கு ஒரு அட்டை இறக்குகிறது; அதன் அலகுகள் அந்த வரிசையிலேயே இருக்கும்.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "ஒரு சண்டையை வெல்வது {n} ரெய்டு சேதமாகக் கணக்கிடப்படும்; உயர்ந்த தரத்தில் அதிகம்."
 }

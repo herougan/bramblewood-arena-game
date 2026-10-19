@@ -1967,5 +1967,9 @@
  "Saving your decks to your account…": "デッキをアカウントに保存しています…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "サーバーに接続できません。デッキはこの端末に安全に保存されていて、オンラインに戻ると同期されます。",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "デッキ「{name}」は別の端末で削除されたため、ここからもなくなりました。",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界が開けた：🧭 をタップすると、行けるマップがすべて見られます。"
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界が開けた：🧭 をタップすると、行けるマップがすべて見られます。",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "部位の体力が減るほどボスは弱る：カードの攻撃は軽くなり、倒れやすくなる。",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "各戦闘は{turns}ターン、またはあなたのいばらが倒れるまで続く。あなたの陣営が部位のいばらに与えたダメージがレイドダメージになる。",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "CPUの味方。自分の列にだけ、自分の番に1枚ずつ出し、そのユニットはその列にとどまる。",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "戦いに勝つとレイドダメージ{n}として数えられ、ランクが高いほど多くなる。"
 }

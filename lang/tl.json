@@ -1965,5 +1965,9 @@
  "Saving your decks to your account…": "Sine-save ang mga deck mo sa account mo…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Hindi maabot ang server. Ligtas ang mga deck mo sa device na ito at magsi-sync pagbalik mo online.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "Binura ang deck na “{name}” sa ibang device, kaya wala na rin ito rito.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Bumubukas ang mundo: i-tap ang 🧭 para makita ang bawat mapang kaya mong marating."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Bumubukas ang mundo: i-tap ang 🧭 para makita ang bawat mapang kaya mong marating.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "Habang bumababa ang Buhay ng isang bahagi, humihina ang boss: mas mahina ang tama ng mga card nito at mas maagang bumabagsak.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "Ang bawat laban ay tumatagal ng {turns} tira, o hanggang bumagsak ang iyong dawag. Ang pinsalang ginagawa ng iyong panig sa dawag ng bahagi ay bilang na pinsala sa raid.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "Isang kakampi na CPU. Naglalaro lang ito sa sarili nitong hanay, isang card sa tira nito, at nananatili sa hanay na iyon ang mga unit nito.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "Ang pagkapanalo sa laban ay bilang na {n} pinsala sa raid, mas marami sa mas mataas na ranggo."
 }

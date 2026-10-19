@@ -38,12 +38,22 @@ function contributionFor(def, dealt, overwhelmed, part, rank){
 // 'wins'."). THE curve, in this one place: every boss card of a part (its deck, its rows' decks, the Commons it calls in, its guards and
 // its boss unit) fights at
 //     weaken = floor + (1 - floor) x share
-// of its raid stats (Attack and Health, after the raid's bossAtkPct / bossHpPct, before a stage's +Attack), where share = the part's
-// remaining Health / its total (1 fresh, 0 down) and floor = the raid's tuning.weakenFloor (WEAKEN_FLOOR_DEFAULT, 0.6): 100% fresh,
-// 80% at half, 60% as the part falls. The elders' Health (bossHpBonus) falls on its own curve, with the whole raid's share.
+// of its stats (Attack and Health: its raid stats after bossAtkPct / bossHpPct AND a stage's +Attack / +Health), where
+//     share = the lower of the part's remaining Health / its total and the whole raid's remaining / its total (weakenShare)
+// (an outer part: its own share, 1 fresh to 0 down; the Core, which opens with the raid at 45%: the raid's) and floor = the raid's
+// tuning.weakenFloor (WEAKEN_FLOOR_DEFAULT, 0.6): 100% fresh, 80% at half, 60% as it falls. weakenCard applies it (Attack never
+// below 1 when it had any, Health never below 1). The elders' Health (bossHpBonus) falls on its own line, with the raid's share.
 const WEAKEN_FLOOR_DEFAULT = 0.6;
 function weakenFloor(def){ const v = def && def.tuning && def.tuning.weakenFloor; return (typeof v === 'number' && isFinite(v)) ? Math.max(0.1, Math.min(1, v)) : WEAKEN_FLOOR_DEFAULT; }
 function bossWeakening(def, share){ const f = weakenFloor(def), s = Math.max(0, Math.min(1, share == null || !isFinite(Number(share)) ? 1 : Number(share))); return f + (1 - f) * s; }
+function weakenShare(state, partId){
+  if(!state) return 1; const ps = state.byId && state.byId[partId], sh = (a, b)=> b > 0 ? Math.max(0, Math.min(1, a / b)) : 1;
+  return Math.min(ps ? sh(ps.remaining, ps.total) : 1, state.total ? sh(state.remaining, state.total) : 1);
+}
+function weakenCard(d, w){
+  if(!d || !(w > 0) || w >= 1) return d; const a = Number(d.attack) || 0;
+  return Object.assign({}, d, {attack: a > 0 ? Math.max(1, Math.round(a * w)) : 0, health: Math.max(1, Math.round((Number(d.health) || 1) * w))});
+}
 // The participation tiers' raid damage (2026-10-19, package RB): see PARTICIPATION_DEFAULTS below.
 const RB_TIER_DAMAGE = {participant: 1000, competent: 10000, leading: 50000};
 // attempts: [{raidId, part, cycle, owner, contribution, at}]
@@ -521,7 +531,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
   RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
    fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;

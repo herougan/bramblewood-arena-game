@@ -1966,5 +1966,9 @@
  "Saving your decks to your account…": "Guardando tus mazos en tu cuenta…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "No se puede conectar con el servidor. Tus mazos están a salvo en este dispositivo y se sincronizarán cuando vuelvas a estar en línea.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "El mazo «{name}» se borró en otro dispositivo, así que también desaparece de aquí.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 El mundo se abre: toca el 🧭 para ver todos los mapas a tu alcance."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 El mundo se abre: toca el 🧭 para ver todos los mapas a tu alcance.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "A medida que baja la Salud de una parte, el jefe se debilita: sus cartas golpean más flojo y caen antes.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "Cada combate dura {turns} turnos, o hasta que caiga tu zarzal. El daño que tu bando inflige al zarzal de la parte cuenta como daño de incursión.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "Un aliado de la CPU. Solo juega en su propia fila, una carta en su turno, y sus unidades se quedan en esa fila.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "Ganar un combate cuenta como {n} de daño de incursión, más con un rango más alto."
 }
