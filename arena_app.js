@@ -38165,6 +38165,7 @@ const STATUS_END_NAMES = {brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, we
 // snapshot's counters, the status chips (🚫 Silenced, ⏸️ Stymied, 😫 Exhausted, 🪨 Petrified N, 🧲 Grounded, 🦨 Stench with its green
 // wavy-line look), the battle-log lines and floats. Every string is a TX key.
 Object.assign(STATUS_END_NAMES, {silenced:TX('ui.stn3-silenced'), stymied:TX('ui.stn3-stymied'), exhaust:TX('ui.stn3-exhausted'), grounded:TX('ui.stn3-grounded'), stench:TX('ui.skn-stench')});
+CHIP_FALLBACK_SKILLS.push('spawner', 'banner', 'warcry', 'shieldwall', 'corpsefeeder', 'amplifier', 'stench', 'broodkeeper', 'herald', 'harbinger', 'spotter', 'silence', 'stymie', 'exhaust', 'petrify'); // their chips on the card face
 function sk3Snap(c){ const o = {}; if(c) ['silenced', 'stymied', 'exhaust', 'petrifyLeft', 'grounded', 'stench'].forEach(k=>{ if(c[k] > 0) o[k] = c[k]; }); return o; }
 function sk3StatusBadges(c, badges){
   if(c.silenced > 0) badges.push(`<span class="abadge sk3-silenced" title="${escapeAttr(TX('ui.sk3-tip-silenced', {n: c.silenced}))}">🚫${c.silenced}</span>`);

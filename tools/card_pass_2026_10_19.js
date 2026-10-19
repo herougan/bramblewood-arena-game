@@ -123,6 +123,10 @@ const SOURCELESS = {
   'raven-harbinger': 'parked: an omen raven for a raven/omen fight (none on Maps 0-24)', 'raven-hexcaller': 'parked: an omen raven for a raven/omen fight (none on Maps 0-24)', 'bone-diviner': 'parked: an omen raven for a raven/omen fight (none on Maps 0-24)',
   'colony': 'parked: an insect spawner structure for a hive map (none yet)', 'nest': 'parked: an insect spawner structure for a hive map (none yet)',
   'moon-jelly': 'parked: Moonpull waits (owner: "dont do moonpull yet till >Map 10 or Map 20"); no fitting ocean fight past Map 10 yet',
+  // 2026-10-19 (package SK3, owner 21:56 / 21:59): the new spells, "no source yet" (placement is the owner's call)
+  'grave-call': 'new spell (package SK3, 2026-10-19): no source yet, placement is the owner\'s call',
+  'smoke-screen': 'new spell (package SK3, 2026-10-19): no source yet, placement is the owner\'s call',
+  'magnet': 'new spell (package SK3, 2026-10-19): no source yet, placement is the owner\'s call',
 };
 // Fixed choices: the three map leaders with no home take their map's last fight, as every other map leader does; a raid's namesake its raid
 const FIXED = {
