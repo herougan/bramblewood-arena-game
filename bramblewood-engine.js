@@ -120,6 +120,18 @@
 // ============================================================================
 const CARD_DEFS_GLOBAL = (typeof __CARD_DEFS__ !== 'undefined') ? __CARD_DEFS__ : null;
 
+// Package SK2 (2026-10-19, owner 21:36; the rules are in makeSimEngine's SK2 block): every number of the economy and structure skills,
+// one table (top level, so the app's card lines read the same defaults). A fight overrides any of them with opts.sk2.
+const SK2_DEFAULTS = Object.freeze({
+  harvestChance: 0.5, harvestLumber: 1,                                  // Harvest: the odds a swing harvests instead; Lumber a harvest pays
+  scavengeN: 1, scavengeEvery: 3, scavengeLumber: 1, scavengeRange: 1,   // Scavenge N, M: points a death; M points -> Lumber; within 1 column
+  salvageN: 1, salvageEvery: 3, salvageStone: 1, salvageRange: 1,        // Salvage N, M (owner 21:56): Scavenge for Structures' deaths; M points -> Stone
+  repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
+  foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
+  millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks
+  pickpocketN: 1, sabotageN: 1, arsonN: 1,                               // what a plain (true) Pickpocket / Sabotage / Arson takes
+  fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {}, // the Palisade 0/6; every K turns (0: on play only); its look
+});
 function otherId(id){ return id===1?2:1; }
 function mulberry32(seed){
   return function(){
@@ -1962,7 +1974,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function bountyOf(def){ const e = (def && def.effects) || {}; const n = Math.max(0, Number(e.bounty)||0); return n > 0 && canopyMode() === 'canopy' ? n + 1 : n; } // High Canopy (2026-10-16): Bounty +1
   // Poison immunity (2026-10-15, user: "Units not ready can be poisoned. Structures are immune to poison."): a Structure, or a unit
   // Immune to poison, never takes Poison stacks. (A unit still under Wait can be poisoned like any other.)
-  function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && Array.isArray(d.archetypes) && d.archetypes.includes('Structure')); }
+  // 2026-10-19 (package SK2): the one structure test (Repair, Siege, Bloodlust, poison immunity ...): the Structure type, as the app's
+  // isStructure reads it (archetypes, or a legacy type 'Structure'), or cardType 'structure'.
+  function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && ((Array.isArray(d.archetypes) && d.archetypes.includes('Structure')) || d.type === 'Structure' || d.cardType === 'structure')); }
   function poisonProof(c){ return !c || isStructureCard(c) || resistFactor(c.defId, 'poison') === 0; }
   function addPoison(c, n){ if(!(n > 0) || poisonProof(c)) return 0; c.poison = (c.poison||0) + n; return n; }
   // Toxin (planned, 2026-10-14, user: "Toxin: More dangerous poison - not yet defined."): not built; no behaviour yet.
@@ -4049,6 +4063,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       for(const c of allBoardCards(pl)){ if(!c || c.gap || c === dead || !(c.hp > 0) || c.cageOf || !effectsOf(c).carrion) continue;
         const healed = applyHeal(c, s17N(c, 'carrion'), sideOf(pid), events);
         if(healed > 0 && recordEvents && events) events.push({type:'statusFx', kind:'carrion', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:healed, fromUid:dead.uid}); } }
+    sk2ScavengeFeed(players, sideOf, dead, events); // Package SK2 (2026-10-19): Scavenge counts the same deaths
   }
   // The side a live unit is on (curPlayers: the current fight), or 0.
   function pidOfLive(c){ if(!curPlayers || !c) return 0; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).includes(c)) return pid; } return 0; }
@@ -4121,12 +4136,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const giTrigMemo = new WeakMap();
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
-    if(!e.kinRally && !e.packHowl) return base;
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl) return m.list;
+    if(!e.kinRally && !e.packHowl && !e.milling) return base; // + Milling (2026-10-19, package SK2)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling) return m.list;
     const list = base.slice();
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, list}); return list;
+    if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, list}); return list;
   }
   let trigSubject = null; // the unit a trigger is about (the ally played, the one that died ...), for sub:'subject'
   // Vanguard N (2026-10-17, user: "This card draws itself into its hand at the start of the game, and you discard a random card. (If
@@ -4178,6 +4194,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Fire on hit N (2026-10-16, see the 'fireHit' action): the swing's extra fire damage, on the unit it hit (if it still stands) or on
   // the castle. Spent here, once per swing.
   function fireHitLands(att, target, side, tSide, foe, aStat, stats, events){
+    if(att) sk2SwingHit = {att, target: target || 'hq'}; // Package SK2 (2026-10-19): what the swing landed on, for Pickpocket / Sabotage / Arson
     const n = att ? (att._fireHit||0) : 0; if(!(n > 0)) return; att._fireHit = 0;
     if(target){ if(!(target.hp > 0)) return; const d = damageCardFlat(target, n, 'heat', att.defId, att.uid); if(aStat) aStat.dealt += d; ensureStat(stats, tSide, target.defId).taken += d;
       if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, targetUid:target.uid, targetDefId:target.defId, dmg:d, n}); return; }
@@ -4618,6 +4635,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.tsunami) tsunamiStrike(players, sideOf, playerId, boardCard, numN(def.effects.tsunami, 1), stats, events); // Tsunami N (2026-10-14)
     if(def.effects.fieldBreaker) fieldBreak(sideOf, playerId, boardCard, Math.max(1, numN(def.effects.fieldBreaker, 2)), events); // Field Breaker N (2026-10-19, package GI)
     if(def.effects.rainmaker){ const rr = Math.max(1, Number(def.effects.rainmaker)||3); setField('rain', rr, mySide); if(recordEvents && events) events.push({type:'fieldSet', side:mySide, defId:boardCard.defId, field:'rain', rounds:rr, rainmaker:true}); }
+    if(def.effects.fortification) sk2Fortify(players, sideOf, playerId, boardCard, stats, events); // Package SK2 (2026-10-19): a Palisade beside it
     // Bounty N (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty. Bounty means - I give lumber to my owner on
     // play, but also to the enemy on kill."): on play its owner gains N Lumber; when it dies, the other side gains N (removeDeadCards).
     // (An old Worthy N on a saved or published card is turned into Bounty N when the app loads it, 2026-10-16.)
@@ -6121,6 +6139,167 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'rebuild', side:sideOf(pid), defId: src ? src.defId : null, uid: src ? src.uid : null, amount:h, n:Math.floor(Number(n)||0), trigger: how === 'trigger', hp:pl.hq.hp, maxHp:pl.hq.maxHp});
     return h;
   }
+  // ==== Package SK2 (2026-10-19, owner 21:36: economy and structure skills) [SK2 BEGIN] ====
+  // The resource model these skills work on: a card costs Lumber to play (pl.lumber), and some cards also cost Stone, Metal or
+  // Uranium (pl.stone / pl.metal / pl.uranium). Lumber comes from pitching a card (1 a turn), Bounty, onSpawnGold / onReadyGold,
+  // the castle's and the field's Lumber rules, Leylines and Lumberjack (+1 on every gain, addLumber). There is no automatic per-turn
+  // income. The resources rank as the raid's leader cost cap counts them (Lumber 1, Stone 2, Metal 3; Uranium 4 after them):
+  // "the lowest-ranked resource" is the first of SK2_RES_RANK the player holds any of. Grace, Darkness (devilry), Prayer and
+  // Elemental Energy are not ranked: no SK2 skill takes them. The bramble is the castle (pl.hq). A structure is a unit whose card
+  // is a Structure (isStructureCard: the Structure type, or a legacy type / cardType 'structure'); Repair and Siege read it.
+  // Every number is a parameter (SK2_DEFAULTS); a fight may override any of them with opts.sk2, so a global halving is one edit here.
+  //   Harvest         on its swing, 1 in 2 it harvests instead: its owner gains 1 Lumber (Harvest N: N). Nothing opposite it (its swing
+  //                   would reach the bramble): it always harvests. Seeded RNG (rnd).
+  //   Scavenge N      whenever a unit dies within 1 of it (same row or the row across, diagonals included; a raid's rows too), it gains N
+  //                   scavenge points (c.sk2Scavenge, a chip); every M points (effects.scavengeEvery, 3) become 1 Lumber for its owner.
+  //   Repair N        each turn while Ready, it restores N Health to the most damaged allied structure within 1 column (not itself); with
+  //                   none, N/2 (rounded down, at least 1) to its own bramble (rebuildCastle, so a full bramble takes nothing).
+  //   Foraging N      each turn while Ready, it gathers 1 Berry (c.sk2Berries, holds 3); at 3 it eats them to heal the most damaged OTHER
+  //                   ally for N (3). With nobody hurt it keeps the 3 Berries.
+  //   Milling N       the trigger layer's On Turn Start × Gain N Lumber (trigsOf): each turn while Ready, its owner gains N Lumber
+  //                   (Confused / Slippery can fumble it, as any trigger). It still attacks (SK2.millingAttacks false: it skips its swing).
+  //   Salvage N, M    (owner 21:56: "like Scavenge but for structures. but gives Stone!") a Structure dying within 1 gives N salvage points
+  //                   (c.sk2Salvage, a chip); every M (effects.salvageEvery, 3) become 1 Stone.
+  //   Pickpocket N    its landed swing on a unit moves up to N counters (SK2_STEALABLE: Prayer tokens, Berries, scavenge points,
+  //                   Creativity; never a debuff) from that unit onto itself; on the bramble it steals N resources, lowest rank first.
+  //   Sabotage N      its landed swing (a unit or the bramble) destroys N of the opponent's resources, lowest rank first.
+  //   Arson N         its landed swing destroys N of the opponent's Lumber.
+  //   Fortification   on play it builds a 0/6 Palisade (a Structure token, no skills; the Thornwood Palisade's look) in an empty slot
+  //                   beside it (a coin flip when both are free; none free: nothing). SK2.fortifyEvery K > 0: also every K turns while Ready.
+  // A Waiting, Stunned, Frozen or Asleep unit doesn't Repair, Forage or Mill that turn (upkeep actions; Milling, a trigger, is off then too).
+  const SK2 = Object.assign({}, SK2_DEFAULTS, (opts && opts.sk2) || {});
+  const SK2_RES_RANK = ['lumber', 'stone', 'metal', 'uranium']; // lowest rank first
+  const SK2_STEALABLE = ['prayerTokens', 'sk2Berries', 'sk2Scavenge', 'sk2Salvage', 'creativity']; // counters Pickpocket takes, in this order (append new token kinds)
+  let sk2SwingHit = null; // {att, target: the unit or 'hq'}: what the current swing landed on (fireHitLands notes it)
+  const sk2N = (c, k, d)=> numN(effectsOf(c)[k], d);
+  // A unit's place on one grid for "within 1": x = its column (the shared position on a packed row), y = its row (side A's front 0,
+  // its middle -1, back -2; side B's front 1, middle 2, back 3), so the two front rows are one row apart.
+  function sk2PosOf(players, c){
+    for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl || !c) continue;
+      if(allBoardCards(pl).includes(c)){ const x = slotMode ? c.slot : liveSharedPos(pl, c.uid); return x == null ? null : {pid, y: pid === 1 ? 0 : 1, x}; }
+      if(pl.reserve) for(let i = 0; i < pl.reserve.length; i++){ const rw = pl.reserve[i]; for(const sl of Object.keys(rw)) if(rw[sl] === c) return {pid, y: pid === 1 ? -(i + 1) : 2 + i, x: Number(sl)}; } }
+    return null;
+  }
+  const sk2Near = (a, b, r)=> !!(a && b && Math.abs(a.y - b.y) <= 1 && Math.abs(a.x - b.x) <= r);
+  // Takes up to n of a player's ranked resources, lowest rank first: [{res, n}].
+  function sk2TakeRes(pl, n){
+    const out = []; let left = Math.max(0, Math.floor(Number(n)||0)); if(!pl) return out;
+    for(const r of SK2_RES_RANK){ if(left <= 0) break; const have = Math.max(0, Math.floor(Number(pl[r])||0)), k = Math.min(have, left);
+      if(k > 0){ pl[r] = have - k; left -= k; out.push({res:r, n:k}); } }
+    return out;
+  }
+  // Would this swing reach a unit? (The column it faces, as resolveLiveTarget and RX's rows see it, without a coin flip.)
+  function sk2HasOpposing(players, a){
+    const e = effectsOf(a.att), foe = players[a.enemyId]; if(!foe) return false;
+    if(e.stealth || (e.rainrunner && field && field.id === 'rain')) return false;
+    if(a.reserve) return rowSwingTarget(foe, a.slot).kind === 'card';
+    const me = liveColOf(players[a.attId], a.att.uid); if(!me) return false;
+    const ec = combatColumnsOf(foe), live = en=> !!(en && en.kind === 'card' && en.card && en.card.hp > 0);
+    if(slotMode){ if(live(ec[me.col])) return true; }
+    else { const mk = Object.keys(combatColumnsOf(players[a.attId])).map(Number).sort((x, y)=> x - y), ek = Object.keys(ec).map(Number).sort((x, y)=> x - y);
+      const i = mk.indexOf(me.col) + 1, jf = i + (ek.length - mk.length) / 2, at = j=> j >= 1 && j <= ek.length && live(ec[ek[j - 1]]);
+      if(i > 0 && (Number.isInteger(jf) ? at(jf) : (at(Math.floor(jf)) || at(Math.ceil(jf))))) return true; }
+    if(RESERVE_ACTS){ const rt = rowTargetAt(foe, me.col); if(rt && rt.row > 0) return true; }
+    return false;
+  }
+  // Before a swing (resolveCombat): Harvest may take its place; a mill that doesn't attack (SK2.millingAttacks false) holds. True = no swing.
+  function sk2SwingReplaced(players, sideOf, a, stats, events){
+    sk2SwingHit = null;
+    const e = effectsOf(a.att), side = sideOf(a.attId);
+    if(e.milling && SK2.millingAttacks === false){ if(recordEvents && events) events.push({type:'skipTurn', reason:'milling', side, defId:a.att.defId, uid:a.att.uid}); return true; }
+    if(!e.harvest) return false;
+    const forced = !sk2HasOpposing(players, a);
+    if(!forced && !(rnd() < SK2.harvestChance)) return false;
+    const got = addLumber(players[a.attId], numN(e.harvest, SK2.harvestLumber));
+    ensureStat(stats || {}, side, a.att.defId).lumberGenerated += got;
+    if(recordEvents && events) events.push({type:'sk2', kind:'harvest', side, uid:a.att.uid, defId:a.att.defId, amount:got, forced: forced || undefined});
+    return true;
+  }
+  // After a swing: Pickpocket, Sabotage, Arson on what the swing landed on.
+  function sk2AfterSwing(players, sideOf, a, stats, events){
+    const hit = sk2SwingHit; sk2SwingHit = null; if(!hit || hit.att !== a.att) return;
+    const e = effectsOf(a.att); if(!(e.pickpocket || e.sabotage || e.arson)) return;
+    const me = players[a.attId], foe = players[a.enemyId], side = sideOf(a.attId), tSide = sideOf(a.enemyId), ev = recordEvents && events;
+    const base = {type:'sk2', side, uid:a.att.uid, defId:a.att.defId, targetSide:tSide};
+    if(e.pickpocket){ const n = sk2N(a.att, 'pickpocket', SK2.pickpocketN);
+      if(hit.target === 'hq'){ const took = sk2TakeRes(foe, n); took.forEach(t=>{ me[t.res] = (Number(me[t.res])||0) + t.n; });
+        if(took.length && ev) events.push(Object.assign({}, base, {kind:'pickpocketRes', taken:took, amount:took.reduce((s, t)=> s + t.n, 0)})); }
+      else { const t = hit.target; let left = n; const taken = [];
+        SK2_STEALABLE.forEach(k=>{ if(left <= 0 || !t) return; const have = Math.max(0, Math.floor(Number(t[k])||0)), k2 = Math.min(have, left); if(!(k2 > 0)) return;
+          t[k] = have - k2; a.att[k] = (Number(a.att[k])||0) + k2; left -= k2; taken.push({key:k, n:k2, left:t[k], total:a.att[k]}); });
+        if(taken.length && ev) events.push(Object.assign({}, base, {kind:'pickpocket', targetUid:t.uid, targetDefId:t.defId, taken, amount:n - left})); } }
+    if(e.sabotage){ const lost = sk2TakeRes(foe, sk2N(a.att, 'sabotage', SK2.sabotageN));
+      if(lost.length && ev) events.push(Object.assign({}, base, {kind:'sabotage', lost, amount:lost.reduce((s, t)=> s + t.n, 0)})); }
+    if(e.arson){ const have = Math.max(0, Math.floor(Number(foe.lumber)||0)), k = Math.min(have, sk2N(a.att, 'arson', SK2.arsonN));
+      if(k > 0){ foe.lumber = have - k; if(ev) events.push(Object.assign({}, base, {kind:'arson', amount:k})); } }
+  }
+  // Scavenge / Salvage (from carrionFeed, for every death): the scavengers within 1 of the dead unit gain their points. Salvage counts only
+  // a Structure's death and its points become Stone (addOre: Heavy Metal adds to it).
+  const SK2_SCAV = [{k:'scavenge', fld:'sk2Scavenge', N:'scavengeN', M:'scavengeEvery', pay:'scavengeLumber', range:'scavengeRange', res:'lumber', fx:'sk2Scavenge'},
+    {k:'salvage', fld:'sk2Salvage', N:'salvageN', M:'salvageEvery', pay:'salvageStone', range:'salvageRange', res:'stone', fx:'sk2Salvage', structuresOnly:true}];
+  function sk2ScavengeFeed(players, sideOf, dead, events){
+    if(!dead || !players) return; let dp = null; const deadStruct = isStructureCard(dead);
+    for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
+      for(const c of rowsUnitsOf(pl)){ if(!c || c === dead || c.gap || !(c.hp > 0) || c.cageOf) continue; const e = effectsOf(c);
+        for(const K of SK2_SCAV){ if(!e[K.k] || (K.structuresOnly && !deadStruct)) continue;
+          if(!dp){ dp = sk2PosOf(players, dead); if(!dp) return; }
+          if(!sk2Near(sk2PosOf(players, c), dp, SK2[K.range])) continue;
+          const n = sk2N(c, K.k, SK2[K.N]), mv = Number(e[K.M]), m = mv >= 1 ? Math.round(mv) : Math.max(1, Math.round(SK2[K.M])); if(!(n > 0)) continue;
+          c[K.fld] = (c[K.fld]||0) + n; let got = 0;
+          while(c[K.fld] >= m){ c[K.fld] -= m; got += K.res === 'lumber' ? addLumber(pl, SK2[K.pay]) : addOre(pl, K.res, SK2[K.pay]); }
+          if(recordEvents && events) events.push({type:'statusFx', kind:K.fx, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c[K.fld], gain:got || undefined, res:K.res, lumber:(K.res === 'lumber' && got) || undefined, fromUid:dead.uid}); } } }
+  }
+  // Repair N: the most damaged allied structure within range (not itself), else the bramble at the bramble rate.
+  function sk2Repair(players, sideOf, pl, c, n, stats, events){
+    if(!(n > 0)) return 0; const me = sk2PosOf(players, c);
+    const hurt = rowsUnitsOf(pl).filter(s=> s && s !== c && !s.gap && s.hp > 0 && !s.cageOf && s.hp < s.maxHp && isStructureCard(s) && sk2Near(sk2PosOf(players, s), me, SK2.repairRange));
+    if(hurt.length){ hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
+      const t = hurt[0], h = Math.min(Math.floor(n), t.maxHp - t.hp); if(!(h > 0)) return 0; t.hp += h; healWork++;
+      if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetDefId:t.defId, targetUid:t.uid, amount:h, cause:'repair'});
+      return h; }
+    const i0 = events ? events.length : 0, got = rebuildCastle(players, sideOf, pl.id, c, Math.max(1, Math.floor(n * SK2.repairBrambleRate)), stats, events, 'repair');
+    if(got > 0 && events && events[i0] && events[i0].type === 'rebuild') events[i0].repair = true;
+    return got;
+  }
+  // Foraging N: a Berry a turn; a full basket heals the most damaged other ally.
+  function sk2Forage(players, sideOf, pl, c, stats, events){
+    const side = sideOf(pl.id), need = Math.max(1, Math.round(SK2.foragingBerries)), n = sk2N(c, 'foraging', SK2.foragingN), b0 = c.sk2Berries || 0;
+    c.sk2Berries = Math.min(need, b0 + Math.max(0, Math.round(SK2.foragingGather)));
+    if(c.sk2Berries > b0 && recordEvents && events) events.push({type:'statusFx', kind:'sk2Berry', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:c.defId, targetUid:c.uid, amount:c.sk2Berries - b0, total:c.sk2Berries});
+    if(c.sk2Berries < need || !(n > 0)) return;
+    const hurt = rowsUnitsOf(pl).filter(o=> o && o !== c && !o.gap && o.hp > 0 && !o.cageOf && (o.hp < o.maxHp || o.bleed > 0)); if(!hurt.length) return;
+    hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
+    const t = hurt[0]; c.sk2Berries -= need;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'sk2BerryEat', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:t.defId, targetUid:t.uid, amount:need, total:c.sk2Berries});
+    const h = applyHeal(t, n, side, events);
+    if(h > 0){ const i0 = events ? events.length : 0; fireHealTriggers(players, sideOf, pl.id, c, t, h, stats, events); if(events && events[i0] && events[i0].type === 'heal') events[i0].cause = 'forage'; }
+  }
+  // Fortification: the Palisade token (one derived card per size), built in an empty slot beside its builder.
+  function sk2PalisadeDefOf(){
+    const atk = Math.max(0, Math.round(Number(SK2.fortifyAtk)||0)), hp = Math.max(1, Math.round(Number(SK2.fortifyHp)||1)), id = 'sk2-palisade~' + atk + 'x' + hp;
+    if(!CARD_DEFS[id]){ const look = CARD_DEFS[SK2.fortifyFrom] || {};
+      CARD_DEFS[id] = derivedDefs[id] = {id, name:'Palisade' /* the app shows TX('ui.sk2-palisade-name') */, icon: look.icon || '🪵', art: look.art, attack:atk, health:hp, wait:0, cost:0,
+        rarity:'common', token:true, sk2Palisade:true, archetypes:['Structure'], species:[], effects: Object.assign({}, SK2.fortifyEffects || {})}; }
+    return id;
+  }
+  function sk2Fortify(players, sideOf, pid, src, stats, events){
+    const pl = players && players[pid]; if(!pl || !src || !(src.hp > 0) || !allBoardCards(pl).includes(src)) return null;
+    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(x=> x.slot)), s0 = Number.isInteger(src.slot) ? src.slot : 0;
+      if(used.has(s0 - 1) && used.has(s0 + 1)) return null; } // only right beside it
+    const tok = spawnBeside(players, sideOf, pid, src, sk2PalisadeDefOf(), stats, events, 'sk2Fortify');
+    if(tok && recordEvents && events) events.push({type:'sk2', kind:'fortify', side:sideOf(pid), uid:src.uid, defId:src.defId, tokenUid:tok.uid, tokenDefId:tok.defId, slot:tok.slot});
+    return tok;
+  }
+  // The upkeep actions, every turn while Ready (endOfRoundUpkeep's Ready pass, beside onReadyGold and Rebuild). Milling is a trigger (trigsOf).
+  function sk2ReadyUpkeep(players, sideOf, pl, c, stats, events){
+    const e = effectsOf(c); if(!(e.repair || e.foraging || (e.fortification && SK2.fortifyEvery > 0))) return;
+    if(!c || c.gap || !(c.hp > 0) || c.cageOf || c.wait > 0 || c.stunned || c.frozen > 0 || c.asleep > 0) return;
+    const side = sideOf(pl.id);
+    if(e.repair) sk2Repair(players, sideOf, pl, c, sk2N(c, 'repair', SK2.repairN), stats, events);
+    if(e.foraging) sk2Forage(players, sideOf, pl, c, stats, events);
+    if(e.fortification && SK2.fortifyEvery > 0){ c.sk2FortAge = (c.sk2FortAge||0) + 1; if(c.sk2FortAge % Math.round(SK2.fortifyEvery) === 0) sk2Fortify(players, sideOf, pl.id, c, stats, events); }
+  }
+  // ==== [SK2 END] ====
   function endOfRoundUpkeep(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     // 2026-10-19 (package TS): in a raid (RESERVE_ACTS) the middle and back rows go through this upkeep too (Shell, Crit, Frenzy, and
@@ -6291,6 +6470,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
         if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');
+        sk2ReadyUpkeep(players, sideOf, pl, c, stats, events); // Package SK2 (2026-10-19): Milling, Repair, Foraging (and Fortification every K)
         // Creative N (2026-10-18, package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to
         // cards somehow"): every upkeep while Ready, like Rebuild, N Creativity counters go on one random other living unit on its side.
         // c.creativity does nothing else yet (reserved). Event: statusFx kind 'creativity' {attUid, targetUid, amount, total}.
@@ -7096,6 +7276,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Confused (2026-10-19, package FZ, owner 23:32): its swing is an action, so 1 in 2 it fumbles: no swing, no On Attack, no
       // on-hit skill, no Bleed tick from swinging (Confuse had no other effect on the swing, so this is the whole rule for it).
       if(confusedFumbles(a.att, sideOf(a.attId), events, 'attack')){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
+      if(sk2SwingReplaced(players, sideOf, a, stats, events)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package SK2 (2026-10-19): Harvest instead of the swing
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
       currentAttacker = a.att;
       const attDef = CARD_DEFS[a.att.defId];
@@ -7701,6 +7882,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         a.att.boomerangOut = true;
       }
       a.att.inspired = 0; // Inspiring's bonus is spent on this swing
+      sk2AfterSwing(players, sideOf, a, stats, events); // Package SK2 (2026-10-19): Pickpocket, Sabotage, Arson on what the swing hit
       // Recoil N (2026-10-12, user: "New passive skill: Recoil N: On attack, deal N damage to itself").
       if(attDef.effects && Number(attDef.effects.recoil) > 0 && a.att.hp > 0){
         const rd = damageCardFlat(a.att, Number(attDef.effects.recoil), 'recoil');
@@ -7879,3 +8061,4 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 if(typeof module !== 'undefined' && module.exports){
   module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
+if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS; // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests

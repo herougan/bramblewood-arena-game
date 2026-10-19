@@ -31922,6 +31922,42 @@
     "animal": "panda"
   },
   {
+    "id": "petrified-tree",
+    "name": "Petrified Tree",
+    "icon": "\ud83e\udea8",
+    "cost": 5,
+    "wait": 3,
+    "attack": 0,
+    "health": 45,
+    "rarity": "rare",
+    "species": [],
+    "animal": "owl",
+    "subtype": "plant",
+    "archetypes": [
+      "Flora",
+      "Structure"
+    ],
+    "effects": {
+      "triggers": [
+        {
+          "on": "perTurn",
+          "do": "gain",
+          "resource": "stone",
+          "amount": 1
+        }
+      ]
+    },
+    "flavor": "An oak that stood so long it forgot to stop. Every season it sheds a little more of itself as stone.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 9072,
+    "uuid": "057c5daa-232e-55a2-aea9-12e4060ea4ef",
+    "creatorNote": "2026-10-19 (package SK2, owner 21:56: \"Petrified Tree: generates stones instead, but super expensive.\"): Milling's Stone cousin, built from the trigger layer (On Turn Start x Gain 1 Stone, every turn while Ready). No source yet. Budget v5 at Level 1, Rare, Wait 3, Lumber 5: N = 78.12; S = 3 (On Turn Start 3 x Gain 1); 2A+H+S = 48 < 78.12 (61%) and A*H+S = 3 < (N/3)^2 = 678.08. Expensive on purpose: Lumber 5 and Wait 3 for a 0-Attack wall whose only pay-off is 1 Stone a turn."
+  },
+  {
     "id": "crowbar",
     "name": "Crowbar",
     "icon": "\ud83d\udd27",

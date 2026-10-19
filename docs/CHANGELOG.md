@@ -23,7 +23,60 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Creeper** wears its old art again (`art/cards/creeper.png`).
 - **Shared code for SK1:** `slotEntries(players, key)` in the engine is the "a unit entered a slot" scan. Each caller keeps its own memory key. The On Enter Slot trigger and the floors use it (`floorScan`, run at the start of `watchScan`).
 - **Texts:** 36 new TX keys, in the 12 language packs with the new card names and flavour (`tools/i18n_2026_10_19_eq.py`).
+- **Merged with SK2:** the Petrified Tree had no animal, so `tools/animal_tags.py` stopped. It now has a proposed owl, like the Ent (an owner call). SK2's test now finds the tree by id, because the EQ cards come after it. Pry wears 🪝, since 🔧 is SK2's Repair.
 - **Tests:** `tests/equipment-hazards-2026-10-19.js` (new, 119 checks). `tests/equipment.js` and `tests/easter-eggs-2026-10-19.js` were updated. There is also a browser smoke test, `tests/e2e/eq_2026_10_19.py`.
+## 2026-10-19 (package SK2: economy and structure skills)
+- **Owner (21:36, 21:56):** economy and structure skills, plus Salvage and a Stone-making Petrified Tree. Use triggers and actions where they fit.
+- **Ten new skills, on no existing card yet** (engine: the `[SK2 BEGIN]` block in `bramblewood-engine.js`):
+  - **Harvest:** half its swings give 1 Lumber instead. With nothing opposite, it always harvests.
+  - **Scavenge N, M:** a death within 1 gives N points. Every M points (3) become 1 Lumber.
+  - **Salvage N, M:** like Scavenge, but only Structures count, and the points become Stone.
+  - **Repair N:** each turn it mends the most damaged allied structure within 1 column for N. With none, it mends your bramble for N/2.
+  - **Foraging N:** 1 Berry a turn. At 3 Berries it heals the most damaged other ally for N (3).
+  - **Milling N:** On Turn Start × Gain N Lumber, in the trigger layer. It still attacks.
+  - **Pickpocket N:** steals N counters from the unit it hits (Prayer tokens, Berries, points, Creativity; never debuffs). On the bramble it steals N resources, lowest rank first.
+  - **Sabotage N:** destroys N of the foe's resources, lowest rank first (Lumber, Stone, Metal, Uranium).
+  - **Arson N:** burns N of the foe's Lumber.
+  - **Fortification:** on play, it builds a 0/6 Palisade (a Structure token) in an empty slot beside it.
+- **Numbers:** every number is in `SK2_DEFAULTS` at the top of the engine. A fight can override any of them with `opts.sk2`. The app's card lines read the same table.
+- **Structures** are one unit category: `isStructureCard` covers the Structure type, a legacy type and `cardType: 'structure'`. Repair uses it, and so does Siege.
+- **New card:** Petrified Tree (Rare, Lumber 5, Wait 3, 0/45, Flora Structure). It gains 1 Stone each turn through On Turn Start × Gain Stone. It is the last card in `canonical/cards.json` and has no source yet. Its art prompt is in `docs/art/new-cards-2026-10-19-briefs.md`.
+- **App:**
+  - Skill names, card lines, Codex notes, icons and card-face chips.
+  - Berry, scavenge and salvage chips on the unit.
+  - Battle-log lines and floats.
+  - The Palisade's name, and a Berry keyword.
+  - Every string is a TX key, translated into the 12 packs (`tools/i18n_2026_10_19_sk2.py`).
+- **Skill costs:** Milling and Fortification are shorthands (trigger × action). The rest have S estimates (`measuredHow: "estimate SK2"`, low confidence).
+- **Tests:** `tests/skills-sk2-2026-10-19.js` (260 checks).
+
+## 2026-10-19 (package UX: the tutorial summary, the Forge's copies sheet, count badges and centre stage, the Codex's types and base level)
+- **Owner (21:36, UI notes 7, 8a–c, 9, 11).**
+- **Tutorial summary (7):** the map panel of T-0 and T-1 now reads like a skirmish's.
+  - It shows the rival deck the tutorial really deals (`tutorialDecksFor`, the tutorial editor's deck or the faction default), as card chips. The nodes' own decks are empty and were never used.
+  - It shows that deck's BR and the rival bramble's real Health (`tutHp`: 9 / 11, not the map's 28). The hover tooltip lists the same deck.
+  - The Field panel is gone ("Mist — There is no day/night cycle." taught nothing).
+- **Forge, copies sheet (8a):** picking a card whose copies differ opens a sheet of every copy you own.
+  - Copies are grouped by level and treatment, such as "Lv 10 · Plain ×5", strongest first (level, then finish). Plain, Foil steps, Shiny and Alt art are told apart.
+  - The tiles sit in a scrolling grid. ⭐ marks the copies your main deck fights with, and 🧩 marks a copy with Forge credit. A tap puts that copy on the anvil, preferring the one with credit.
+  - The anvil's two-row chip grid became one line ("Your copies ×8 · On the anvil Lv 2 Plain · 🃏 All copies"). The old selected chip's pale-on-pale text is fixed too.
+- **Forge, count badges (8b):** every pool tile shows ×N copies owned. Hovering (title), long-pressing or tapping it gives the breakdown by treatment ("You own 11: Plain ×8, ✨ Hex ×1, …").
+- **Forge, centre stage (8c):** tempering, refining, limit breaks, promotions and prestige lift the anvil stage out of the panel.
+  - The stage flies to the middle of the screen over a dimmed hearth spotlight and plays the smithing there. Tempering also plays its LEVEL burst there, then the stage flies back.
+  - Forging Max Energy (package NF's effect) lifts its Energy panel the same way.
+  - Reduced motion and Effects None keep everything in place (`forgeCentreStage`).
+- **Codex, base level (9):** card tiles and the card detail opened from the Codex show each card at its starting level (`cardBaseLevel`: Lv 1, or Lv 0 for Base, quest and tutorial cards).
+  - A "🌱 Base level / ⭐ My best" toggle at the end of the type row switches to the highest level you own. The detail has a chip that flips it.
+  - The choice is kept per device (`bramblewood_codex_level_v1`, try/catch).
+- **Codex, card types (11):** a chip row under the toolbar: All, 🐾 Creatures, 🏯 Structures, 📜 Spells, 🛡️ Equipment and 🌿 Brambles.
+  - Each chip shows how many cards the other filters leave. An empty type stays at 0, dashed: Spells are shelved, and no Equipment card is obtainable yet.
+  - Field cards count as Spells.
+  - Brambles are not Codex cards: their chip counts the Brambles page and opens it.
+  - On phones the row scrolls sideways.
+- **Texts:** 18 TX keys (`ui.ux-*`), in the 12 packs via `tools/i18n_2026_10_19_ux.py`. Rows a pack already had ("Close", "All", "Brambles") are kept.
+- **Test:** `tests/ux-2026-10-19.js` covers the base-level default, the storage fallback, the type rules and counts against `canonical/cards.json`, the copy groups and the wiring.
+  - With Playwright it also plays all of it at 390×844 (touch) and 1366×768.
+  - With `UX_SHOTS=1`, the screenshots go to `docs/screens/ux/`.
 
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
