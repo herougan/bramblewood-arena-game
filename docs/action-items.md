@@ -9,12 +9,15 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Workflow | Units by theme (hub) | Pick units per map; then I run the post-balance step from your picks |
 | Balance | Post-balance queue | 29 cards over budget under the measured costs (docs/post-balance-queue-2026-10-19.md); refit in post-balance |
 | Balance | Map bumps | Maps 8, 13, 20 sit off the linear climb (reference decks). Build decks against neighbours, move a strong reward later, or accept |
-| Balance | Forge opens Map 11 | Maps 1–10 only get harder through rewards. Open the Forge sooner? |
+| Balance | Forge opens Map 11 | ANSWERED 10-19: keep it; players deck-build to win |
 | Balance | Starters | Burrow Rabbit 85%, Crimson Wing Recruit 79% (band 20–48) |
 | Balance | Sacrifice imps | Ash/Cinder Imp 94–97%, Puppeteer Imp 99% whatever stats: rethink Sacrifice |
 | Balance | 27 cards out of band | Mostly 2+ Lumber (Lumber cut overshoots) |
 | Balance | Dragons / Caldera Wyrm | Over budget, untouched |
 | Balance | Arrow | Petal Fletcher 87.5% at 1/1: needs the cost change (now applied: re-measure in post-balance) |
+| Raid | Raid cards crafted (RC) | 1.5% own-card drop per claim / won fight; faction-card chance 10/15/25%; rarity floors C/U/R |
+| Raid | Trophy shards (RC) | 6/9/13 per claim (+4/+2/+1 by standing; half if it survives); recipe table in CHANGELOG; unseen cards can't be crafted |
+| Server | raid_shards column | supabase/proposed/20261019_raid_shards.sql (cap +200 a save): apply? |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
