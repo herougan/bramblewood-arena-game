@@ -54,8 +54,9 @@ function weakenCard(d, w){
   if(!d || !(w > 0) || w >= 1) return d; const a = Number(d.attack) || 0;
   return Object.assign({}, d, {attack: a > 0 ? Math.max(1, Math.round(a * w)) : 0, health: Math.max(1, Math.round((Number(d.health) || 1) * w))});
 }
-// The participation tiers' raid damage (2026-10-19, package RB): see PARTICIPATION_DEFAULTS below.
-const RB_TIER_DAMAGE = {participant: 1000, competent: 10000, leading: 50000};
+// The participation tiers' raid damage (2026-10-19, package RB): 1,000 / 10,000 / 50,000 on the x15 scale -> 500 / 2,000 / 12,500, so the
+// same share of the lives with the tier's fights reaches each (completion model: 98% / 62% / 0.1%; tools/raid_completion_model.js).
+const RB_TIER_DAMAGE = {participant: 500, competent: 2000, leading: 12500};
 // ---- The new scale for saved raid edits (2026-10-19, package RB). A raid edit (this browser's, or the published one an admin saved in
 // the raid editor, card_overrides '__cfg:raid:<id>') replaces the shipped def whole, so an edit saved before RB still carried the x15
 // scale (scoring 15 / 5,000 / 10,000, the Goliath's 80,000 bars, its elders at 100, 100 players an instance, the 1,000 / 10,000 / 50,000

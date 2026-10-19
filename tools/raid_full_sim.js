@@ -9,6 +9,8 @@
 // (RaidM.contributionFor's rank); the rank shares are printed per row.
 //   node tools/raid_full_sim.js [--n 40] [--parts left,right,tail,core] [--stages fresh,Enraged,Thrashing] [--decks starter,6,10,15,20]
 //     [--raids canonical/raids.json] [--leader <cardId>]
+// 2026-10-19 (package RB): --stages also takes s<share> (s1, s0.5, s0.05: the part at that share of its Health, the raid around it as
+// it stands then), and tools/raid_completion_model.js builds the completion model on playOne (docs/balance/raid-balance-2026-10-19.md).
 // Prints, per deck x part x stage: average damage dealt to the part's bramble, the share of attempts reaching the raid's minDamage
 // (the first paying tier; below it an attempt pays a pittance), the overwhelm share, and the average turns your bramble survived.
 'use strict';

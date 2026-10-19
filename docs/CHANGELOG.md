@@ -2,6 +2,25 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RB: raid balance: no ×15, a win 1,000, 200k ×3 + 500k, the boss weakens, allies keep their rows, 250 an instance)
+- **Allies keep their rows.** An ally's play always went into its own row, but the unit then stepped up into your front row, or the back ally's into the middle row, whenever the slot ahead was clear. Ally units and ally leaders now hold their row for the whole fight (`holdRow`; the engine's `advanceReserves` skips them). New test `tests/raid-ally-rows-2026-10-19.js`: 200+ seeded ally plays in the page's raid fight, none outside the ally's row.
+- **Raid damage = bramble damage × the rank** (B 1.01 … SSS 2.0), with no ×15 (the Core's ×140 is gone too). The bramble damage is capped at 1,000 per fight. **A win counts 1,000 × the rank** (was 10,000).
+- **Health:** 200,000 for each arm and the tail (4 × 50,000) and 500,000 for the Core (5 × 100,000), 1,100,000 in all.
+- **The elders** start at 50 Health at most: basic + (50 − basic) × the raid's share (was 100).
+- **The boss weakens as it falls.** All its cards scale to `RaidM.bossWeakening`: 100% fresh, 80% at half, 60% at the end. The share is the part's or, when lower, the raid's. The weakening applies after the stage's +Attack. Its floor is `tuning.weakenFloor`, editable as "Boss weakest %".
+- **Completion model** (`tools/raid_completion_model.js`, `docs/balance/raid-balance-2026-10-19.md`):
+  - A normal deck at the Raid Banner's map deals about 217 bramble damage a fight on the arms and the tail, and 97 to 170 on the Core.
+  - With stand-ins at 14% a day (was 12%) and the Core's stumps at 14 Health (was 20), the raid falls in 100% of weeks with 30+ participants and 83% with 20.
+- **Instances of 250** (was 100). The server default is a proposal, not applied: `supabase/proposed/20261019_raid_cap_250.sql`. Republishing the raid from the editor does the same.
+- **Tiers rescaled** so the same share of raiders reaches each: Participant 1,000 → 500, Competent 10,000 → 2,000, Leading 50,000 → 12,500.
+  - Weekly quest: 20,000 → 4,000 raid damage. Medals: /5.
+  - Pay for each fight: ×5.25 per raid damage, so a fight pays what it did.
+- **Saved edits:** a raid edit saved on the old scale, local or published, is brought onto the new one on load (`RaidM.migrateRaidScale`). The editor stamps `scaleV: 2`, and its defaults follow the new scale.
+- **Raid numbers** (Health left, damage, tiers, the claim screen) use thousands separators in the game's language (`raidLocale` / `raidNum`).
+- **No damage formula for players:** NV's breakdown line ("28 bramble damage × 15 × 1.01 = 424") shows to admins only. The raid tab's "scores up to 5,000" line now reads "the damage your side deals to the part's bramble counts as raid damage". The rules add "the boss weakens", and "a win counts 1,000, more at a higher rank".
+- **The raid's rows from the server** are read a page of 1,000 at a time (up to 20,000), for your instance only. A life now takes thousands of rows, and one request returned at most 1,000.
+- New test `tests/raid-rb-2026-10-19.js`. 4 TX keys (new or changed), translated in the 12 packs.
+
 ## 2026-10-19 (package MB2b: the field as big as the hand, the raid framed to its columns in use)
 - **The field is bigger, not the hand smaller** (follow-up to MB2: the field's cards were about 48 px against the hand's 75).
   - The camera frames the columns in use, plus one empty column on each side. That is at least 3 columns in a normal fight and 5 in a raid. Every unit counts, on both sides and in every row.

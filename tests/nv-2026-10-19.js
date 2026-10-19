@@ -22,7 +22,9 @@ const raids = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'raids.jso
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const escapeHtml = s=> (s==null || s===false ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const escapeAttr = s=> (s==null || s===false ? '' : String(s)).replace(/"/g,'&quot;');
-const fn = (names, ret, extra)=> new Function('TX', 'escapeHtml', 'escapeAttr', 'RaidM', ...(extra ? Object.keys(extra) : []), names.map(nm=> B.grab(nm)).join('\n') + '\nreturn ' + ret + ';')(TX, escapeHtml, escapeAttr, RaidM, ...(extra ? Object.values(extra) : []));
+// 2026-10-19 (package RB): raid numbers go through raidLocale() / raidNum() (the game's language; English here)
+const fn = (names, ret, extra)=>{ extra = Object.assign({raidLocale: ()=> 'en', raidNum: n=> Math.round(Number(n) || 0).toLocaleString('en')}, extra || {});
+  return new Function('TX', 'escapeHtml', 'escapeAttr', 'RaidM', ...Object.keys(extra), names.map(nm=> B.grab(nm)).join('\n') + '\nreturn ' + ret + ';')(TX, escapeHtml, escapeAttr, RaidM, ...Object.values(extra)); };
 
 // ======================= 1. Home and the map strip =======================
 const rp = B.grab('renderPlay');
@@ -76,19 +78,20 @@ ok(/m\.players\[2\]\.hq\.shield = 0; m\.players\[2\]\.hq\.hp = 0; m\.forcedWinne
     raidFightCardDrop: ()=> null, rollEggDrop: ()=> null, currentRaidStateFor: ()=> ({byId:{tail:{remaining: 99}}}) });
   const mk = (bossHp, extra)=> Object.assign({raidDef: goliath, raidPart:'tail', raidCycle: 1, raidFull: true, raidCastleStart: 420, winner: bossHp <= 0 ? 1 : 0, players:{1:{hq:{hp:150, maxHp:150}}, 2:{hq:{hp:bossHp, maxHp:420}}}, raidBoss:{deck:{}}}, extra || {});
   const a = mk(0, {adminWin: true, _rank: 'SSS'}); settle(a);
-  ok(calls.length === 0 && a.raidAdminTest === true && a.raidDamageDealt === 10000 && a.raidRemainingAfter === 99 && !a.raidRewardEarned, `4a. an admin win: shown (${a.raidDamageDealt}), not recorded, pushed or paid (${calls.length} attempts)`);
+  // 2026-10-19 (package RB, owner 12:23: "deal 1,000 instead of 10,000, counting in the bonus damage"): a win is 1,000 x the rank (SSS: 2,000)
+  ok(calls.length === 0 && a.raidAdminTest === true && a.raidDamageDealt === 2000 && a.raidRemainingAfter === 99 && !a.raidRewardEarned, `4a. an admin win: shown (${a.raidDamageDealt}), not recorded, pushed or paid (${calls.length} attempts)`);
   const w = mk(0, {_rank: 'SSS'}); settle(w);
-  ok(calls.length === 1 && calls[0].over === true && w.raidDamageDealt === 10000 && !w.raidAdminTest, '4a. a real win still scores its overwhelm');
+  ok(calls.length === 1 && calls[0].over === true && w.raidDamageDealt === 2000 && !w.raidAdminTest, '4a. a real win still scores its overwhelm (1,000 x SSS 2.0)');
   const b = mk(392, {_rank: 'B'}); settle(b);
   const tail = goliath.parts.find(p=> p.id==='tail'), per = Object.assign({}, goliath.scoring || {}, tail.scoring || {}).perInFightHp;
   ok(b.raidBrambleDealt === 28 && b.raidPerHp === per && b.raidRankMult === RaidM.raidRankMult('B') && b.raidDamageDealt === RaidM.contributionFor(goliath, 28, false, tail, 'B'),
     `4b. the settle keeps the breakdown: 28 bramble x ${b.raidPerHp} x ${b.raidRankMult} -> ${b.raidDamageDealt}`);
-  ok(b.raidDamageDealt === Math.round(Math.round(28 * per) * RaidM.raidRankMult('B')), `4b. the owner's numbers add up: 28 x ${per} x 1.01 = ${b.raidDamageDealt} (the screenshot's 424)`);
+  ok(per === 1 && b.raidDamageDealt === 28 && b.raidDamageDealt === Math.round(Math.round(28 * per) * RaidM.raidRankMult('B')), `4b. no x15 now (2026-10-19, RB): 28 x 1.01 = ${b.raidDamageDealt} (the screenshot's 424 before)`);
   // the breakdown line agrees with the headline number
   const calc = fn(['raidDamageCalcHTML'], 'raidDamageCalcHTML');
   const line = calc(b);
   ok(line.includes(`28 bramble damage × ${per} × 1.01 for Rank B = ${b.raidDamageDealt.toLocaleString()} raid damage`), `4b. the breakdown: "${line.replace(/<[^>]+>/g, '')}"`);
-  ok(/The boss's bramble fell: a win scores 10,000 raid damage/.test(calc(w).replace(/&#39;|&apos;/g, "'")), '4b. a win says it scores the overwhelm figure');
+  ok(/The boss's bramble fell: a win scores 2,000 raid damage/.test(calc(w).replace(/&#39;|&apos;/g, "'")), '4b. a win says it scores the overwhelm figure (admins only since 2026-10-19, RB)');
   const big = mk(20, {_rank: 'SSS'}); settle(big); // 400 bramble damage: over the per-fight cap
   ok(/\(one fight scores at most /.test(calc(big)) === (Math.round(Math.round(400 * per) * 2) > big.raidDamageDealt), '4b. a capped fight says so');
   ok(calc({}) === '', '4b. no breakdown without a raid'); }

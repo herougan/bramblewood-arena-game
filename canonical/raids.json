@@ -337,12 +337,12 @@
     "instanceCap": 250,
     "participation": {
       "fights": 3,
-      "damage": 1000,
+      "damage": 500,
       "strongFights": 4,
-      "strongDamage": 10000,
+      "strongDamage": 2000,
       "strongPct": 20,
       "leadFights": 4,
-      "leadDamage": 50000,
+      "leadDamage": 12500,
       "leadPct": 40,
       "leadCards": 1
     }

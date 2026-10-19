@@ -17307,7 +17307,7 @@ const QUEST_TIERS = {
       {id:'w1-units', counter:'unitsDefeated', goal:100, label:'Defeat 100 enemy units'}]},
     {reward:{gold:225, dust:345, metal:1}, quests:[
       {id:'w2-raid', counter:'raidsJoined', goal:3, label:'Join 3 Raids'},
-      {id:'w2-raiddmg', counter:'raidDamage', goal:20000, label:'Deal 20,000 Raid damage'},
+      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:'Deal 4,000 Raid damage'}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
       {id:'w2-wins', counter:'wins', goal:15, label:'Win 15 matches'}]},
     {reward:{gold:110, dust:170}, quests:[
       {id:'w3-conquest', counter:'conquestWins', goal:10, label:'Clear 10 Conquest fights'},
@@ -17320,7 +17320,7 @@ const STAT_MEDALS = [
   {counter:'wins', label:'Matches won', icon:'🏆', steps:[10, 100, 500, 2000]},
   {counter:'pvpWins', label:'PvP wins', icon:'🎟️', steps:[10, 100, 500, 2000]},
   {counter:'conquestWins', label:'Conquest fights cleared', icon:'🗺️', steps:[10, 100, 400, 1500]},
-  {counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:[10000, 100000, 500000, 2500000]},
+  {counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:[2000, 20000, 100000, 500000]}, // 2026-10-19 (package RB): /5 with the raid's new scale (was 10,000 .. 2,500,000)
   {counter:'energyConquest', label:'Energy spent', icon:'⚡', steps:[200, 2000, 10000, 50000]},
 ];
 const MEDAL_NAMES = ['Bronze','Silver','Gold','Platinum'];
@@ -23796,7 +23796,7 @@ function settleRaidPartAfterMatch(m){
 }
 // Shared by the single-row fight and the trench: scores an attempt, stores it locally, pushes it
 // live, bumps quests and pays the small per-attempt reward.
-const RAID_ATTEMPT_PAY = {goldPer: 17, dustPer: 67}; // 2026-10-19 (package RB): raid damage per Maple Leaf / per 3 Magic Dust (was 250 / 1,000 on the x15 scale)
+const RAID_ATTEMPT_PAY = {goldPer: 48, dustPer: 190}; // 2026-10-19 (package RB): raid damage per Maple Leaf / per 3 Magic Dust (was 250 / 1,000 on the x15 scale)
 function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   const part = (def.parts||[]).find(p=> p.id===partId);
   const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part, rank); // + the fight's rank (2026-10-19, RV2): the server row gets the multiplied damage
@@ -23813,8 +23813,9 @@ function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   // confirmed at least 1 raid materia ... at least 120 damage on the first raid"): below the raid's minDamage (120 by default)
   // an attempt pays a pittance; every attempt brings home at least one Abyssal Ink.
   const minDamage = Number(def.minDamage) || 120, below = dealt < minDamage;
-  // 2026-10-19 (package RB): without the x15 a fight's raid damage is ~1/15 of what it was, so the pay per raid damage is x15 (250 -> 17
-  // per Maple Leaf, 1,000 -> 67 per 3 Magic Dust): a fight pays about what it did
+  // 2026-10-19 (package RB): without the x15 an average fight counts ~1/5 of what it did (2,518 -> 479 raid damage in the completion
+  // model; the allies holding their rows deal more), so the pay per raid damage is x5.25 (250 -> 48 per Maple Leaf, 1,000 -> 190 per 3
+  // Magic Dust): a fight pays about what it did
   const g = below ? 8 : Math.round(contribution/RAID_ATTEMPT_PAY.goldPer), d = below ? 6 : 3 * Math.round(contribution/RAID_ATTEMPT_PAY.dustPer); // ×3, forge economy v2
   if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
   const ink = below ? 1 : 1 + Math.min(4, Math.floor(dealt / (minDamage * 2))); for(let i = 0; i < ink; i++) try{ unlockCardForPlayer('abyssal-ink', 'materia'); }catch(e){}

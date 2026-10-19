@@ -48,7 +48,9 @@ for(const partId of ['left', 'right', 'tail', 'core']){
   // boss units: one per boss-unit round in 20 turns (3, 7, 11, 15, 19), an Epic x (Health + bonus) / Health
   const u = b.overlay[b.bossUnitId], uw = A.ratingWeightOf(u) * A.ratingLevelFactor(G.cardBaseLevel(defs[u.bossUnitOf])) * (1 + b.bossHpBonus / u.health);
   // 2026-10-19 (package RV2): a fresh raid's boss unit has 100 Health in all (its basic Health + the bonus), not +100 on top
-  ok(br.bossUnitN === 5 && b.bossHpBonus === Math.max(0, 100 - u.health) && u.health + b.bossHpBonus === 100 && near(br.bossUnits, 5 * uw), `${partId}: 5 boss units at the fresh raid's 100 Health (${u.health} + ${b.bossHpBonus}; +${br.bossUnits}, want ${Math.round(5 * uw)})`);
+  // 2026-10-19 (package RB): the ceiling is the raid's bossHpBonusMax, 50 now (was 100)
+  const top = def.bossHpBonusMax;
+  ok(top === 50 && br.bossUnitN === 5 && b.bossHpBonus === Math.max(0, top - u.health) && u.health + b.bossHpBonus === top && near(br.bossUnits, 5 * uw), `${partId}: 5 boss units at the fresh raid's ${top} Health (${u.health} + ${b.bossHpBonus}; +${br.bossUnits}, want ${Math.round(5 * uw)})`);
   // Commons: tuning.reinforce {max, every 3, from 3} over 20 turns = rounds 3, 6, 9, 12, 15, 18 -> 6 x max (2026-10-19, package RV2: max 0,
   // the boss's row plays took the call-ins' place)
   { const rf = def.tuning.reinforce, want = 6 * rf.max; ok(br.commonN === want && (want ? br.commons >= want : br.commons === 0), `${partId}: ${want} Commons called in over the fight (+${br.commons})`); }
@@ -62,7 +64,7 @@ for(const partId of ['left', 'right', 'tail', 'core']){
 }
 // a nearly-dead raid: the boss units' Health bonus shrinks with it, so their part of the BR does too
 { const st = fresh(); st.remaining = Math.round(st.total * 0.1); const a = A.raidBossBR(def, ...Object.values(build('left', fresh())).slice(0, 2)), bb = build('left', st), c = A.raidBossBR(def, bb.f, bb.b);
-  ok(bb.b.bossHpBonus === Math.round((100 - bb.b.overlay[bb.b.bossUnitId].health) * 0.1) && c.bossUnits < a.bossUnits, `a nearly-dead raid's boss units weigh less (bonus ${bb.b.bossHpBonus}: ${a.bossUnits} -> ${c.bossUnits})`); }
+  ok(bb.b.bossHpBonus === Math.round((def.bossHpBonusMax - bb.b.overlay[bb.b.bossUnitId].health) * 0.1) && c.bossUnits < a.bossUnits, `a nearly-dead raid's boss units weigh less (bonus ${bb.b.bossHpBonus}: ${a.bossUnits} -> ${c.bossUnits})`); }
 // no tuning.reinforce: the default call-ins (1 + 1 from round 2) over 20 turns
 { const d2 = JSON.parse(JSON.stringify(def)); delete d2.tuning.reinforce; const st = fresh(), f = RaidM.fightFor(d2, st, 'left', {}), b = A.buildRaidFullFight(d2, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(7), recordEvents:false, allies: [], myDeck: {}});
   ok(A.raidBossBR(d2, f, b).commonN === 38, `the default reinforce (2 a round from round 2) is 38 Commons over 20 turns (${A.raidBossBR(d2, f, b).commonN})`); }

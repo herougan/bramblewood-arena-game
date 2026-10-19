@@ -152,8 +152,8 @@ function cycle(){
     return {tier: k, fights: f, bar: bars[i], sharePct: Math.round(reach * 1000) / 10, eligPct: Math.round(elig.filter(p=> p.nw >= bars[i]).length / Math.max(1, elig.length) * 1000) / 10,
       barForTarget: barFor, targetPct: target ? Math.round(target[i] * 1000) / 10 : null, barForElig, targetEligPct: targetElig ? Math.round(targetElig[i] * 1000) / 10 : null};
   });
-  const fightsPerLife = lives.reduce((t, p)=> t + p.fights, 0) / Math.max(1, lives.length);
-  return {meta, scale, floor, standIns, cycles: C, rows, tiers, tierShares, lives: lives.length, fightsPerLife: +fightsPerLife.toFixed(2), medianNew: pctile(nw, 0.5), medianOld: pctile(old, 0.5),
+  const fightsPerLife = lives.reduce((t, p)=> t + p.fights, 0) / Math.max(1, lives.length), perFight = lives.reduce((t, p)=> t + p.nw, 0) / Math.max(1, lives.reduce((t, p)=> t + p.fights, 0));
+  return {meta, scale, floor, standIns, cycles: C, rows, tiers, tierShares, lives: lives.length, fightsPerLife: +fightsPerLife.toFixed(2), perFight: Math.round(perFight), medianNew: pctile(nw, 0.5), medianOld: pctile(old, 0.5),
     p90New: pctile(nw, 0.9), p99New: pctile(nw, 0.99)};
 }
 if(require.main === module){
@@ -165,7 +165,7 @@ if(require.main === module){
       console.log('players  completed%  avg kill day  lives fallen/week');
       out.rows.forEach(r=> console.log(`${String(r.players).padStart(7)}  ${String(r.completedPct).padStart(9)}  ${String(r.avgKillDay).padStart(12)}  ${String(r.livesFallen).padStart(8)}`));
       console.log(`participant-lives ${out.lives}: median raid damage ${out.medianNew} (new) vs ${out.medianOld} (old x15)`);
-      console.log(`fights per participant-life ${out.fightsPerLife}; raid damage per life: median ${out.medianNew}, 90th ${out.p90New}, 99th ${out.p99New}`);
+      console.log(`fights per participant-life ${out.fightsPerLife}; raid damage per fight ${out.perFight}; raid damage per life: median ${out.medianNew}, 90th ${out.p90New}, 99th ${out.p99New}`);
       out.tierShares.forEach(t=> console.log(`  ${t.tier.padEnd(12)} ${t.fights}+ fights and ${t.bar}+ damage: ${t.sharePct}% of participant-lives, ${t.eligPct}% of those with the fights${t.targetPct != null ? ` | for ${t.targetPct}%: ${t.barForTarget}` : ''}${t.targetEligPct != null ? ` | for ${t.targetEligPct}% of those with the fights: ${t.barForElig}` : ''}`));
     }
   }
