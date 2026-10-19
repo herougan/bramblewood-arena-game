@@ -1,0 +1,123 @@
+{
+ "_about": "Package EQ new cards, budget under the 2026-10-19 helper (tools/eq_cards_2026_10_19.js)",
+ "rows": [
+  {
+   "id": "bucketknee-wolf",
+   "kind": "creature",
+   "attack": 6,
+   "health": 14,
+   "N": 43.92,
+   "S": 2.74,
+   "x1": 28.74,
+   "x2": 86.74,
+   "N2": 214.33,
+   "use": 65.44,
+   "parts": [
+    "armor 2.74",
+    "helmet 0"
+   ]
+  },
+  {
+   "id": "armory",
+   "kind": "creature",
+   "attack": 0,
+   "health": 21,
+   "N": 35.13,
+   "S": 2,
+   "x1": 23,
+   "x2": 2,
+   "N2": 137.12,
+   "use": 65.47,
+   "parts": [
+    "weaponMaster 2"
+   ]
+  },
+  {
+   "id": "crowbar",
+   "kind": "equipment",
+   "attack": 2,
+   "health": 0,
+   "N": 28.42,
+   "S": 0.5,
+   "x1": 4.5,
+   "x2": 0.5,
+   "N2": 89.74,
+   "ok": true,
+   "use": 15.83,
+   "missing": [],
+   "parts": [
+    "pry 0.5"
+   ]
+  },
+  {
+   "id": "frost-slick",
+   "kind": "hazard",
+   "hazard": {
+    "kind": "ice",
+    "n": 1,
+    "rounds": 3
+   },
+   "cost": 0,
+   "N": 22.84,
+   "S": 3,
+   "how": "hazardIce 1 x 1 x 3",
+   "use": 13.13
+  },
+  {
+   "id": "magma-vent",
+   "kind": "hazard",
+   "hazard": {
+    "kind": "lava",
+    "n": 2,
+    "rounds": 3
+   },
+   "cost": 0,
+   "N": 23.87,
+   "S": 7.62,
+   "how": "onRoundStart damage 2: 3 x 2.54",
+   "use": 31.92
+  },
+  {
+   "id": "bog-seep",
+   "kind": "hazard",
+   "hazard": {
+    "kind": "poison",
+    "n": 2,
+    "rounds": 3
+   },
+   "cost": 1,
+   "N": 27.38,
+   "S": 12.88,
+   "how": "onEnterSlot poison 2: 1 x 3.22 + onRoundStart poison 2: 3 x 3.22",
+   "use": 47.04
+  },
+  {
+   "id": "miasma",
+   "kind": "hazard",
+   "hazard": {
+    "kind": "gas",
+    "n": 1,
+    "rounds": 4
+   },
+   "cost": 0,
+   "N": 23.87,
+   "S": 6.44,
+   "how": "onRoundStart poison 1: 4 x 1.61",
+   "use": 26.98
+  },
+  {
+   "id": "rockfall",
+   "kind": "hazard",
+   "hazard": {
+    "kind": "rubble",
+    "n": 1,
+    "rounds": 3
+   },
+   "cost": 0,
+   "N": 22.84,
+   "S": 3,
+   "how": "hazardRubble 1 x 1 x 3",
+   "use": 13.13
+  }
+ ]
+}
