@@ -936,7 +936,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (effects.nocturnal = N, effects.nocturnalHp = M; the old `true` means +1/+0). syncPhaseStats applies and removes it
   // as the phase turns, reporting phaseGrow / phaseFade so the board can show it.
   function twilightOn(players){ if(rules.twilight) return true; if(!players) return false;
-    return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); })); }
+    return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...rowsUnitsOf(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); }) /* + the middle / back rows (2026-10-19, RR) */); }
   function phaseActive(){ return !!((turnNo && !phaseOff) || phaseFixed); }
   function phaseStatsOf(e, ph){
     const pick0 = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
@@ -1033,7 +1033,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let fullMoonWas = false;
   function isFullMoon(){ return !!((field && field.id === 'moon') || (phaseActive() && getPhase() === 'night' && lunar === 4)); }
   function moonFullness(){ const p = moonPhase(); return [0, 0.25, 0.5, 0.75, 1, 0.75, 0.5, 0.25][p]; }
-  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && (d.effects.moonborn || d.effects.fullMoon || d.effects.fullMoonGrant)); })); } // + Full Moon (2026-10-15)
+  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...rowsUnitsOf(players[pid]).map(c=> c.defId)] /* + the middle / back rows (2026-10-19, RR) */.some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && (d.effects.moonborn || d.effects.fullMoon || d.effects.fullMoonGrant)); })); } // + Full Moon (2026-10-15)
   // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
   // hit +1 (Wash, which pushed the enemy facing it back, was retired 2026-10-14); on Ebb, Tide units take
@@ -1170,7 +1170,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
     // allies."): while a unit with Illuminate (Lantern's new name; an old `lantern` reads the same) stands on your side, none of your
     // units miss for the dark: Darkness, Pitch Black and Absolute darkness alike (Lantern used to leave Absolute at 1 in 2).
-    const lit = ()=> !!(pl && allBoardCards(pl).some(c=> c.hp > 0 && illuminates(CARD_DEFS[c.defId])));
+    const lit = ()=> !!(pl && upkeepUnitsOf(pl).some(c=> c.hp > 0 && illuminates(CARD_DEFS[c.defId]))); /* + a raid's middle / back rows (2026-10-19, RR) */
     let miss = 0; const dk = darkRule(); // + a Cast Darkness unit (2026-10-18)
     const ph = phaseActive() ? getPhase() : null;
     // 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit
@@ -1824,7 +1824,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): +N per ally; a number on its own means
     // "any shared type, N each"; with a type list, swarmN sets N.
     const per = typeof def.effects.swarm === 'number' ? Math.max(0, def.effects.swarm) : Math.max(1, Number(def.effects.swarmN) || 1);
-    const mine = picked || new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic && !(curPlayers && [1,2].some(pid=> curPlayers[pid] && allBoardCards(curPlayers[pid]).some(c=> c!==card && c.hp>0 && ((CARD_DEFS[c.defId]||{}).effects||{}).growth)))) return 0;
+    const mine = picked || new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic && !(curPlayers && [1,2].some(pid=> curPlayers[pid] && upkeepUnitsOf(curPlayers[pid]).some(c=> c!==card && c.hp>0 && ((CARD_DEFS[c.defId]||{}).effects||{}).growth)))) return 0;
     // Growth (2026-10-14, user: "Growth unit tokens - 1/3. Very strong - empowered by Swarm"): a Growth token counts for every Swarm.
     const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || (d.archetypes||[]).some(a=> mine.has(a)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -1840,7 +1840,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const types = new Set(Array.isArray(dv) ? dv : String(dv).split(',').map(x=> x.trim()).filter(Boolean)); if(!types.size) return 0;
     const per = Math.max(1, Number(def.effects.defianceN) || 1);
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue;
-      if(allBoardCards(pl).includes(card)){ const foe = curPlayers[otherId(pid)]; if(!foe) return 0;
+      if(rowsUnitsOf(pl).includes(card)){ const foe = curPlayers[otherId(pid)]; if(!foe) return 0; /* + a raid's middle / back rows (2026-10-19, RR) */
         return allBoardCards(foe).filter(c=> c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(t=> types.has(t))).length * per; } }
     return 0;
   }
@@ -1900,7 +1900,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // syncPhaseStats, which runs at every round start and after every arrival). c.speed is the live value (for the board's badge).
   function computeSpeeds(players){
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
-      const cards = allBoardCards(pl), add = new Map();
+      const cards = upkeepUnitsOf(pl), add = new Map(); /* + a raid's middle / back rows (2026-10-19, RR) */
       if(cards.some(c=> c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).haste)){
         const order = physicalRowOrder(pl);
         order.forEach((c, i)=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || !effectsOf(c).haste) return;
@@ -1931,7 +1931,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function shelledByCower(c){ return !!c && c.cowerRound === combatNo && cowerMode(c) === 'shell'; }
   function startCower(players, sideOf, events){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allBoardCards(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const m = cowerMode(c);
+      upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const m = cowerMode(c); /* + a raid's middle / back rows (2026-10-19, RR) */
         if(!m || c.lastHitRound !== combatNo - 1) return;
         c.cowerRound = combatNo; let healed = 0;
         if(m === 'flee') healed = applyHeal(c, 2, sideOf(pid), events);
@@ -2134,7 +2134,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const add = (v, g)=>{ const [x, y] = pairOf(v); a += x; h += y; if(g && typeof g === 'object') grant = Object.assign(grant || {}, g); };
     const addGrant = g=>{ const [x, y, r] = grantStats(g); a += x; h += y; if(r) grant = Object.assign(grant || {}, r); };
     { const ph = phaseActive() ? getPhase() : null; // Diurnal – {…} / Nocturnal – {…} (2026-10-15)
-      const lit = ph === 'night' && pl && allBoardCards(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
+      const lit = ph === 'night' && pl && upkeepUnitsOf(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); /* + a raid's middle / back rows (2026-10-19, RR) */ // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
       if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight' || (lit && !(e.nocturnal || e.nocturnalHp)))) addGrant(e.diurnalGrant);
       if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant); }
     if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
@@ -2458,7 +2458,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let shieldEvents = null, shieldSideOf = null; // set by the skill resolvers for the event log
   function shieldCall(ownerPl, card){
     if(!ownerPl || !card || card.hp<=0 || card.defId===SHIELD_TOKEN || !CARD_DEFS[SHIELD_TOKEN]) return null;
-    const dog = allBoardCards(ownerPl).find(c=> c.hp>0 && !c.shieldCallUsed && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.shieldCall);
+    const dog = upkeepUnitsOf(ownerPl).find(c=> c.hp>0 && !c.shieldCallUsed /* + a raid's middle / back-row Shield Call unit (2026-10-19, RR) */ && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.shieldCall);
     if(!dog) return null;
     dog.shieldCallUsed = true;
     const shield = makeBoardCard(SHIELD_TOKEN);
@@ -2882,7 +2882,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // with effects.festering is on either side, Bleed and Poison stacks don't wear down.
   function statusDecayHeld(){
     const P = curPlayers; if(!P) return false;
-    return [1,2].some(pid=> P[pid] && P[pid].row && [...P[pid].row.left, ...P[pid].row.center, ...P[pid].row.right].some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.festering));
+    return [1,2].some(pid=> P[pid] && P[pid].row && upkeepUnitsOf(P[pid]).some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.festering)); // + a raid's middle / back rows (2026-10-19, RR)
   }
   // Elemental status effects (2026-09-16) — Frozen (cold), Asleep (poison, "Sleeping" flavor),
   // Paralyzed (acid), and a passive chance-based Stun (heat), one per non-physical DMG_TYPE.
@@ -3288,7 +3288,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function prayerOf(pl){
     if(!pl) return 0;
     let n = Number(pl.prayerTokens)||0; // the player's own tokens (offerings)
-    allBoardCards(pl).forEach(c=>{ n += prayerTokensOf(c); });
+    upkeepUnitsOf(pl).forEach(c=>{ n += prayerTokensOf(c); }); /* + a raid's middle / back rows (2026-10-19, RR) */
     return n;
   }
   // Remove n Prayer tokens (2026-10-19, owner: the player's token "is always spent last"): units' tokens first, the fewest-held unit
@@ -3296,18 +3296,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // rules spends Prayer yet (thresholds are never spent); this is the one way to do it when something does.
   function removePrayerTokens(pl, n){
     if(!pl) return 0; let left = Math.max(0, Math.floor(Number(n)||0)); const want = left;
-    allBoardCards(pl).filter(c=> prayerTokensOf(c) > 0).sort((a, b)=> a.prayerTokens - b.prayerTokens || a.uid - b.uid).forEach(c=>{
+    upkeepUnitsOf(pl).filter(c=> prayerTokensOf(c) > 0).sort((a, b)=> a.prayerTokens - b.prayerTokens || a.uid - b.uid).forEach(c=>{
       const k = Math.min(left, c.prayerTokens); c.prayerTokens -= k; left -= k; });
     if(left > 0){ const k = Math.min(left, Number(pl.prayerTokens)||0); pl.prayerTokens = (Number(pl.prayerTokens)||0) - k; left -= k; }
     return want - left;
   }
   function prayerNOf(c){ const v = effectsOf(c).prayer; return v === true ? 1 : Math.max(0, Math.floor(Number(v)||0)); }
   // The tokens a side gains at its next upkeep (the HUD's "+N a turn").
-  function prayerRateOf(pl){ return pl ? allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).reduce((t, c)=> t + prayerNOf(c), 0) : 0; }
+  function prayerRateOf(pl){ return pl ? upkeepUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).reduce((t, c)=> t + prayerNOf(c), 0) : 0; }
   // Prayer tokens (2026-10-19, package E): every living unit with Prayer N on a side in upkeep gains N tokens.
   // Event: statusFx kind 'prayer' {targetUid, amount, total} (the board's 📿 badge follows it).
   function prayerTick(players, sideOf, events){
-    [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=> allBoardCards(pl).forEach(c=>{
+    [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ /* + a raid's middle / back rows (2026-10-19, RR) */
       if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const n = prayerNOf(c); if(!(n > 0)) return;
       c.prayerTokens = (Number(c.prayerTokens)||0) + n;
       if(recordEvents && events) events.push({type:'statusFx', kind:'prayer', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c.prayerTokens}); }));
@@ -3797,7 +3797,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(const pid of [1,2]){ const foeId = otherId(pid);
       for(const x of entered[pid]){
         if(!(x.hp > 0) || isInvisible(x) || x.cageOf) continue;
-        for(const a of allBoardCards(players[foeId])){
+        for(const a of upkeepUnitsOf(players[foeId])){ // + a raid's middle / back-row Ambush / Sentry, watching the slots of its column as at the front (2026-10-19, RR)
           if(!(x.hp > 0)) break;
           if(!a || a.gap || !(a.hp > 0) || a.cageOf || moved.has(a)) continue;
           const e = effectsOf(a);
@@ -3894,12 +3894,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // it heals N. Called from removeDeadCardsPass for each death.
   function carrionFeed(players, sideOf, dead, events){
     for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
-      for(const c of allBoardCards(pl)){ if(!c || c.gap || c === dead || !(c.hp > 0) || c.cageOf || !effectsOf(c).carrion) continue;
+      for(const c of upkeepUnitsOf(pl)){ if(!c || c.gap || c === dead || !(c.hp > 0) || c.cageOf || !effectsOf(c).carrion) continue; /* + a raid's middle / back rows (2026-10-19, RR) */
         const healed = applyHeal(c, s17N(c, 'carrion'), sideOf(pid), events);
         if(healed > 0 && recordEvents && events) events.push({type:'statusFx', kind:'carrion', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:healed, fromUid:dead.uid}); } }
   }
   // The side a live unit is on (curPlayers: the current fight), or 0.
-  function pidOfLive(c){ if(!curPlayers || !c) return 0; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).includes(c)) return pid; } return 0; }
+  function pidOfLive(c){ if(!curPlayers || !c) return 0; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && rowsUnitsOf(pl).includes(c)) return pid; } return 0; } // + the middle / back rows (2026-10-19, RR)
   // The sum of one aura skill's N over a side's live units (Venom Master, Fletcher, Herbalist).
   function auraN(pl, k){ if(!pl) return 0; let n = 0; upkeepUnitsOf(pl).forEach( /* + a raid's middle / back rows (2026-10-19, RR) */c=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c)[k]) n += s17N(c, k); }); return n; }
   // Hoard N (2026-10-17, user: "Do damage based on number of lumber"): +1 Attack for every N Lumber its side holds (live, effAtk).
@@ -4009,7 +4009,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const types = amoreTypes(card); if(!types.length) return;
     const pl = players[pid]; if(!pl) return;
     const pos = c=> Number.isInteger(c.slot) ? c.slot : 0;
-    const cands = allBoardCards(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && amoreTypes(o).some(t=> types.includes(t)))
+    const cands = upkeepUnitsOf(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && amoreTypes(o).some(t=> types.includes(t)))
       .sort((a, b)=> Math.abs(pos(a) - pos(card)) - Math.abs(pos(b) - pos(card)) || a.uid - b.uid);
     const mate = cands[0]; if(!mate) return;
     [[card, mate], [mate, card]].forEach(([c, o])=>{ c.amoreUsed = true; c.amoreWith = o.uid; c.amoreRegen = AMORE_REGEN; c.maxHp += AMORE_HP; c.hp += AMORE_HP; });
@@ -4019,7 +4019,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function amoreBreak(players, sideOf, dead, events){
     if(!dead || dead.amoreWith == null) return;
     for(const pid of [1, 2]){ const pl = players[pid]; if(!pl) continue;
-      const mate = allBoardCards(pl).find(o=> o && o.uid === dead.amoreWith && o.hp > 0 && o.amoreWith === dead.uid);
+      const mate = upkeepUnitsOf(pl).find(o=> o && o.uid === dead.amoreWith && o.hp > 0 && o.amoreWith === dead.uid);
       if(mate && !mate.amoreBroken){ mate.amoreBroken = true; mate.amoreRegen = 0;
         if(recordEvents && events) events.push({type:'amoreBroken', side:sideOf(pid), uid:mate.uid, defId:mate.defId, deadUid:dead.uid, deadDefId:dead.defId}); } }
   }
@@ -4038,7 +4038,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function firePitchTriggers(players, sideOf, pid, pitchedDefId, stats, events){
     const pl = players && players[pid]; if(!pl) return;
     curPlayers = curPlayers || players;
-    allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).forEach(c=>{ const d = CARD_DEFS[c.defId];
+    upkeepUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).forEach(c=>{ const d = CARD_DEFS[c.defId]; /* + a raid's middle / back rows (2026-10-19, RR) */
       if(d && d.effects && Array.isArray(d.effects.triggers) && d.effects.triggers.some(t=> t && t.on === 'onPitch')) runCustomTriggers(players, sideOf, pid, c, d, 'onPitch', stats || {}, events, {pitchedDefId}); });
     removeDeadCards(players, sideOf, {}, stats || {}, events);
   }
@@ -4094,7 +4094,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.penance){ const n = numN(e.penance, PAY_DEF.penance), paid = payFromCastle(pl, n);
       if(recordEvents && events) events.push({type:'penance', side, uid:card.uid, defId:card.defId, amount:n, dmg:paid}); }
     if(e.bloodTithe){ const n = numN(e.bloodTithe, PAY_DEF.bloodTithe);
-      const pool = allBoardCards(pl).filter(c=> c && c !== card && !c.gap && c.hp > 0 && !c.cageOf);
+      const pool = upkeepUnitsOf(pl).filter(c=> c && c !== card && !c.gap && c.hp > 0 && !c.cageOf); /* + a raid's middle / back rows (2026-10-19, RR) */
       if(!pool.length){ const paid = payFromCastle(pl, n); if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, castle:true, dmg:paid}); }
       else { const t = pool[Math.floor(rnd() * pool.length)], dmg = damageCardFlat(t, n, 'curse');
         ensureStat(stats, side, t.defId).taken += dmg;
@@ -5314,7 +5314,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // and who:'any' picks an ally or an opponent at random each time.
       // who:'killer' (2026-10-14): aim the action at the unit that killed it (On Death only); no killer, no action.
       if(t.who === 'killer'){ const k = extra && extra.killerCard; if(!k || !(k.hp > 0)) return;
-        const kpid = allBoardCards(pl).includes(k) ? playerId : otherId(playerId);
+        const kpid = rowsUnitsOf(pl).includes(k) ? playerId : otherId(playerId); /* + a raid's middle / back rows (2026-10-19, RR) */
         forcedTarget = k; try{ runAction(Object.assign({}, t, {who: kpid === playerId ? 'ally' : 'enemy', sub:'killer', targets:1})); } finally{ forcedTarget = null; }
         healNoop(); return; }
       const reps = (t.who && t.who!=='self' && t.sub!=='all' && (t.targets|0) > 1) ? Math.min(8, t.targets|0) : 1;
@@ -5359,7 +5359,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'statusFx', kind:'esprit', side:sideOf(playerId), attDefId:src.defId, attUid:src.uid, amount:ea, hp:eh});
     return true;
   }
-  function espritForArrival(players, sideOf, playerId, newCard, events){ const pl = players[playerId]; if(!pl) return; allBoardCards(pl).forEach(src=> espritFrom(sideOf, playerId, src, newCard, events)); }
+  function espritForArrival(players, sideOf, playerId, newCard, events){ const pl = players[playerId]; if(!pl) return; upkeepUnitsOf(pl).forEach(src=> espritFrom(sideOf, playerId, src, newCard, events)); } /* + a raid's middle / back rows (2026-10-19, RR) */
   function fireSpawnFamilyTriggers(players, sideOf, playerId, newlyPlacedCard, stats, events, kind){
     const allyHook = kind==='spawned' ? 'onAllySpawn' : 'onAllyPlayed';
     const enemyHook = kind==='spawned' ? 'onEnemySpawn' : 'onEnemyPlayed';
