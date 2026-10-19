@@ -10669,7 +10669,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .bk-page.is-blank{background:color-mix(in srgb, var(--surface) 82%, var(--surface-border));}
 .bk-spine{flex:0 0 6px; background:linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 50%, rgba(0,0,0,.35));}
 .bk-run{min-height:18px; font:400 13px/1.3 'MedievalSharp','Baloo 2',serif; letter-spacing:.04em; color:var(--ink-soft); text-align:center; border-bottom:1px solid color-mix(in srgb, var(--surface-border) 70%, transparent); padding-bottom:4px; margin-bottom:10px;}
-.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin;}
+.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin; touch-action:pan-y; /* 2026-10-19 (package CX): a page that scrolls inside used to take a sideways swipe as its own pan (pointercancel), so the swipe didn't turn */}
 .bk-measure{position:absolute; visibility:hidden; pointer-events:none; left:0; top:0; height:auto; overflow:visible; flex:none;}
 .bk-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px; min-height:20px;}
 .bk-title{margin:4px 0 6px; font:400 30px/1.1 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink);}

@@ -35,7 +35,7 @@ ACTIONS = [
     ('open', "(async()=>{ switchTab('home'); await __settle(); return __time(()=> switchTab('codex'), 100); })()", None),
     ('sort', "__time(()=>{ const s = document.getElementById('cxSort'); s.value = s.value === 'attack' ? 'health' : 'attack'; s.dispatchEvent(new Event('change')); }, 100)", None),
     ('search', "__time(()=>{ const el = document.getElementById('cxSearch'); el.value = el.value ? '' : 'o'; el.dispatchEvent(new Event('input')); }, 300)", None),
-    ('next page', "__time(()=>{ document.querySelector(`#codexGrid .pg-nav [data-turn=\"${codexPage ? -1 : 1}\"]`).click(); }, 100)", None),
+    ('next page', "__time(()=>{ document.querySelector(`#codexGrid .pg-edge [data-turn=\"${codexPage ? -1 : 1}\"]`).click(); }, 100)", None),
     ('detail', "__time(()=>{ document.querySelector('#codexGrid .card-tile').click(); }, 50)",
      "(async()=>{ document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape', bubbles:true})); await new Promise(r=> setTimeout(r, 200)); return 1; })()"),
 ]
@@ -77,7 +77,7 @@ async def run(b, rate):
           const S = codexAlbumState, total = S.pages.length, firstIds = S.pages[0].ids.slice();
           await new Promise(r=> setTimeout(r, 1500));
           const ahead = S.pages.slice(S.L.pages, 2 * S.L.pages).every(p=> p.ids.every(id=> codexTileCache.has(id)));
-          document.querySelector('#codexGrid .pg-nav [data-turn="1"]').click(); await __settle();
+          document.querySelector('#codexGrid .pg-edge [data-turn="1"]').click(); await __settle();
           const turned = codexPage === S.L.pages && !document.querySelector('#codexGrid .al-page:not(.pg-leaf) .card-tile[data-defid="' + firstIds[0] + '"]');
           document.dispatchEvent(new KeyboardEvent('keydown', {key:'ArrowLeft', bubbles:true})); await __settle();
           const keyBack = codexPage === 0;

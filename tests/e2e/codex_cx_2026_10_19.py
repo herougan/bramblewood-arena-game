@@ -38,6 +38,9 @@ async def boot(pg):
       Object.keys(getCardDefs()).filter(id=> !getCardDefs()[id].test).forEach(id=>{ try{ unlockCardForPlayer(id, 'test'); }catch(e){} });
       try{ const pr = loadConquestProgress(); mainConquestMaps().slice(0, 12).forEach(m=> m.nodes.forEach(n=>{ const k = conquestNodeId(m.id, n.key); if(!pr.completed.includes(k)) pr.completed.push(k); })); saveConquestProgress(pr); }catch(e){}
       1""")
+    # a fresh load (the unlocks' level-up moments and toasts are over), and no dialogue / toast / FX overlay over the screenshots
+    await pg.reload(); await pg.wait_for_timeout(1500)
+    await pg.add_style_tag(content='#toastHost, #dialogueDock, body > [class*="fx"], body > [class*="fs-"]{display:none !important;}')
 
 
 async def swipe(pg, cdp, sel, dx):
