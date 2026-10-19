@@ -363,6 +363,14 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Keep it at Map 11
 - **Outcome:** Owner 09:52: "No Forge is fine. The player has to deck build to win." The Forge stays at Map 11 (ROAD_LEVEL_CURVE.playerForgeMap 11); before it referencePlayerLevel is Lv 0, so Maps 0-10 are won by deck building alone. From Map 11 the reference player is Lv 3, then a little more a map from Map 16, as before; the road's enemy keeps pace with the new curve (ROAD_LEVEL_CURVE.enemyKeepsPace). docs/balance/level-curve-2026-10-19b.md; tests/level-curve-2026-10-19.js.
 
+**B8. The stat budget is v5: (Base + L/5)(1 + L/30), Level 0 Base - 1** · Decide · Balance · asked 2026-10-19 · decided 2026-10-19
+- Budget v4 ((Base - 1 + L)(1 + L/20), 09:52) made the Forge curve far too strong (the mean card +228% by Lv 10). Which formula replaces it, and does its linear Level term favour weak cards?
+  - v5 with L/3, the owner's example (Base 14: 14.8 at Lv 1, 23.1 at Lv 10)
+  - v5 with L/4
+  - v5 with L/5
+- **Default:** v5, L/3 unless it favours weak cards too much
+- **Outcome:** Owner 13:52: "Oh shit to the balance. That's too much. ... maybe instead: (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." 13:54: "if you think it favours weak cards too much (low rarity, wait, or resource count), then change it to L/4 or L/5." Measured (docs/balance/level-curve-2026-10-19c.md): weak cards' Lv 10 stat growth is 1.82x the strong cards' with L/3, 1.74x with L/4, 1.65x with L/5 (Rare+ with 3+ Wait and 3+ Lumber; 1.46 / 1.40 / 1.31 against Rare+ with 3+ Wait or Lumber). None meets the 1.3x rule, so the budget uses L/5, the closest (levelLinDiv in bramblewood-budget.js and canonical/skill-costs.json). Most of the gap comes from the absolute conversion, not the divisor. Budget v5: N = (Base + L/5) x (1 + L/30) for Level 1 and up, Base - 1 at Level 0; Base = 20 + Rarity + 6W + 0.5W^2 + 4 Lumber + 0.4 Lumber^2 + Ritual points. The Forge curve keeps majors 4/7/10, minor 2 and the limit break 11 on v5's gain: the mean card is +6% at Lv 2, +27% at Lv 4 and +96% at Lv 10.
+
 ## Stated rules · 2026-10-18
 
 The owner's notes (23:05) on a far-future map and the Legendary ability tier. Pinned by `tests/legendary-2026-10-19.js`.

@@ -15,7 +15,7 @@
 //                   `both` (2026-10-19): the number fills both fields (Kin Rally N = On Ally Played × Buff +N/+N).
 //   CLI             node tools/skill_costs.js --diff [table.json]  cards whose S moved more than 2 from the 2026-10-18 model,
 //                   and every card whose budget pass/fail flips.
-// 2026-10-19 (package BF): N comes from bramblewood-budget.js (budget v4, owner 09:52: "(Base-1 + L) * (1+L/20)"), the one copy of the
+// 2026-10-19 (package BF): N comes from bramblewood-budget.js (budget v5 since 13:52: "(Base + L/3) * (1 + L/30)", L/5 here), the one copy of the
 // formula the game, these tools and the hub share; the hub inlines that file ahead of this one (window.BramblewoodBudget).
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(require('../bramblewood-budget.js')); else root.SkillCosts = factory(root.BramblewoodBudget); })(typeof self !== 'undefined' ? self : this, function(BB){
   'use strict';
@@ -79,18 +79,20 @@
       return {S:r2(S), parts, missing};
     }
     const g = (k, d)=> B[k] == null ? d : B[k];
-    // N at the level the card starts at (or `lv`): budget v4 (2026-10-19, BF), N = (Base - 1 + L) x (1 + L/20); B (the table's budget
-    // numbers) feeds Base. budgetV3N is the old Base + 2L, for comparisons.
+    // N at the level the card starts at (or `lv`): budget v5 (2026-10-19 13:52, BF2), N = (Base + L/5) x (1 + L/30), Level 0 Base - 1
+    // (bramblewood-budget.js); B (the table's budget numbers) feeds Base. budgetV3N (Base + 2L) and budgetV4N ((Base - 1 + L)(1 + L/20))
+    // are the old ones, for comparisons.
     function budgetBase(d){ return BB.baseOf(d, B); }
     function budgetN(d, lv){ return BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B); }
     function budgetV3N(d, lv){ return r2(budgetBase(d) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
+    function budgetV4N(d, lv){ return BB.nV4(budgetBase(d), lv == null ? levelOf(d) : lv); }
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
       const A = d.attack || 0, H = d.health || 0, x1 = r2((2 * A + H + s.S) * m), x2 = r2((A * H + s.S) * m), N2 = r2((N / 3) * (N / 3));
       return {N, S:s.S, x1, x2, N2, ok: x1 < N && x2 < N2, wellUnder: x1 < N && x2 < N2 && x1 <= N * 0.6, m, parts:s.parts, missing:s.missing};
     }
-    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetV3N, budget};
+    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetV3N, budgetV4N, budget};
   }
   // Frozen copy of the 2026-10-18 model (SB_SKILLS in card_balance.js before this change; the Test Lab's SB_DEFAULT_SKILLS), for
   // comparisons only: every trigger list costs 1 in all, Bounty 0, a skill with no set cost 1 + floor(N/2).

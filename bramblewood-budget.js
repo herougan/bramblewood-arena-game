@@ -3,11 +3,16 @@
 // into the page: global `BramblewoodBudget`), the balance tools (tools/skill_costs.js, tools/card_balance.js ...) and the master
 // hub (tools/hub/build_hub.py inlines it ahead of tools/skill_costs.js).
 //
-// Budget v4 (owner 2026-10-19 09:52: "L should scale. So this is my new formula. (Base-1 + L) * (1+L/20) e.g. (Base-1 + 5) * (1.25)."):
+// Budget v5 (owner 2026-10-19 13:52, replacing v4: "Oh shit to the balance. That's too much. ... maybe instead: (Base + L/3) * (1 + L/30)
+// -> this should weaken Level's contribution significantly. Level 0 gives an additional minus 1. So if Base = 14, then at L1, N = (14+1/3)
+// x (1+1/30) = 14.8 and at level 10, N = (14+10/3) x (1+10/30) = 23.1"; 13:54: "if you think it favours weak cards too much ... change it
+// to L/4 or L/5"):
 //   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + 1×Ritual points   (v3's N without its 2×Level term)
-//   N(L) = (Base − 1 + L) × (1 + L/20)
-//   v3 was N = Base + 2L, so at Level 1 v4 is 1.05×Base against Base + 2: 0.05×Base − 2 apart (−0.95 at Base 21, 0 at Base 40,
-//   +1 at Base 60); at Level 0 it is Base − 1 (v3: Base). The rules are v3's: 2A+H+S < N and A·H+S < (N/3)² (×1.5 per half-miss skill).
+//   N(L) = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 5 (the owner offered 3, 4 or 5; 5 favours weak cards least), levelDiv 30;
+//   N(0) = Base − zeroPenalty (1)
+//   v4 (09:52) was (Base − 1 + L) × (1 + L/20), v3 Base + 2L. At Level 1 v5 is Base × 31/30 + 0.21 (Base 21: 21.91; v3 23, v4 22.05).
+//   The rules are v3's: 2A+H+S < N and A·H+S < (N/3)², both ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind: about half
+//   the attacks at the card miss, so its stats count half again).
 //
 // The Forge curve (owner 09:52: "change majors to 4, 7, 10, minor to 2. Then divvy out strength updates at all levels. If there is no
 // space for minor, then all are minor OR potentially still 0, then majors expect SOME improvement."):
@@ -24,7 +29,7 @@
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
 'use strict';
 // canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
-const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, levelDiv:20, missMult:1.5};
+const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, levelLinDiv:5, levelDiv:30, zeroPenalty:1, missMult:1.5}; // v5 (2026-10-19 13:52); levelLinDiv 5, not the owner's 3: the 13:54 check (docs/balance/level-curve-2026-10-19c.md)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
@@ -39,7 +44,21 @@ function ritualPts(effects){ const r = effects && effects.ritual; return r && ty
 function baseOf(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 0;
   return r2(num(cfg, 'base') + num(cfg, 'perRarity') * rankOf(d.rarity) + num(cfg, 'perWait') * W + num(cfg, 'perWait2') * W * W + num(cfg, 'perLumber') * C + num(cfg, 'perLumber2') * C * C + num(cfg, 'perRitual') * ritualPts(d.effects)); }
 // N at level L for a Base: (Base − 1 + L) × (1 + L/20).
-function nAt(base, L, cfg){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L) * (1 + L / num(cfg, 'levelDiv'))); }
+// Base in its parts (2026-10-19, BF2; owner 14:07: "There should be a Base = ..."): {total, parts: [{k: 'base'|'rarity'|'wait'|'lumber'|'ritual', v}]},
+// zero parts left out but the starting number; the parts add up to total (each rounded to 0.01, as baseOf).
+function baseParts(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 0, parts = [{k: 'base', v: num(cfg, 'base')}];
+  const add = (k, v)=>{ v = r2(v); if(v) parts.push({k, v}); };
+  add('rarity', num(cfg, 'perRarity') * rankOf(d.rarity)); add('wait', num(cfg, 'perWait') * W + num(cfg, 'perWait2') * W * W);
+  add('lumber', num(cfg, 'perLumber') * C + num(cfg, 'perLumber2') * C * C); add('ritual', num(cfg, 'perRitual') * ritualPts(d.effects));
+  return {total: baseOf(d, cfg), parts}; }
+// N at level L for a Base (v5): (Base + L/levelLinDiv) × (1 + L/levelDiv); Level 0 is Base − zeroPenalty.
+function nAt(base, L, cfg){ L = Math.max(0, Number(L) || 0); if(L <= 0) return r2(base - num(cfg, 'zeroPenalty')); return r2((base + L / num(cfg, 'levelLinDiv')) * (1 + L / num(cfg, 'levelDiv'))); }
+// v4's N (2026-10-19 09:52, replaced at 13:52), for comparisons only: (Base − 1 + L) × (1 + L/20).
+function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L) * (1 + L / 20)); }
+// The formula as text, from the numbers in use (the card editor, the Test Lab, the hub): {n, base}.
+function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
+  return {n: `N = (Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: Base − ${g('zeroPenalty')}`,
+    base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')}`}; }
 function nOf(d, L, cfg){ return nAt(baseOf(d, cfg), L, cfg); }
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
 function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }
@@ -80,5 +99,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {DEFAULTS, LADDER, AS, HALF_MISS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, nAt, nOf, nV3, missMultOf, levelKind, forgeCurve};
+return {DEFAULTS, LADDER, AS, HALF_MISS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, levelKind, forgeCurve};
 });

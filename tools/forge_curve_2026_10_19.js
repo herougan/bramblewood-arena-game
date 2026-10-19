@@ -20,23 +20,25 @@ const curveOf = d=> BB.forgeCurve(d, SC.levelOf(d), topOf(d));
 
 function budgetRows(){
   return CARDS.filter(SC.measured).map(c=>{
-    const lv = SC.levelOf(c), at = L=>{ const v4 = T.budget(c, {level: L}), v3 = T.budget(c, {N: T.budgetV3N(c, L)}); return {N3: v3.N, N4: v4.N, ok3: v3.ok, ok4: v4.ok, x1: v4.x1, x2: v4.x2}; };
+    const lv = SC.levelOf(c), at = L=>{ const v5 = T.budget(c, {level: L}), v4 = T.budget(c, {N: T.budgetV4N(c, L)}), v3 = T.budget(c, {N: T.budgetV3N(c, L)});
+      return {N3: v3.N, N4: v4.N, N5: v5.N, ok3: v3.ok, ok4: v4.ok, ok5: v5.ok, x1: v5.x1, x2: v5.x2}; };
     return {id: c.id, name: c.name, rarity: c.rarity || 'common', pool: !!c.pool, start: lv, base: T.budgetBase(c), S: T.budget(c).S, L1: at(1), start_: at(lv)};
   });
 }
+// 2026-10-19 (BF2): budget v5 against v3 and v4 (in = passes v5 but not the old one, out = the other way)
 if(cmd === 'budget'){
-  const rows = budgetRows(), tally = k=>{ const t = {in: [], out: [], same: 0}; rows.forEach(r=>{ const x = r[k]; if(x.ok4 && !x.ok3) t.in.push(r); else if(!x.ok4 && x.ok3) t.out.push(r); else t.same++; }); return t; };
-  const L1 = tally('L1'), st = tally('start_'), d1 = rows.map(r=> r2(r.L1.N4 - r.L1.N3)), d0 = rows.filter(r=> r.start === 0).map(r=> r2(r.start_.N4 - r.start_.N3));
-  const brief = r=> ({id: r.id, name: r.name, rarity: r.rarity, start: r.start, base: r.base, S: r.S, N3: r.L1.N3, N4: r.L1.N4, x1: r.L1.x1, x2: r.L1.x2});
-  const out = {_about: 'Budget v4 (2026-10-19, package BF: N = (Base - 1 + L) x (1 + L/20)) against v3 (N = Base + 2L) for every measured card (tools/forge_curve_2026_10_19.js budget). "in" = passes v4 but not v3, "out" = passes v3 but not v4. At L1 every card is checked at Level 1; at start, at the level it starts at (Base / quest cards 0, rewards 1), which is what the tests and the post-balance queue use.',
-    generated: '2026-10-19', cards: rows.length,
-    atL1: {passV3: rows.filter(r=> r.L1.ok3).length, passV4: rows.filter(r=> r.L1.ok4).length, in: L1.in.map(brief), out: L1.out.map(brief), dN: {min: Math.min(...d1), max: Math.max(...d1)}},
-    atStart: {passV3: rows.filter(r=> r.start_.ok3).length, passV4: rows.filter(r=> r.start_.ok4).length, in: st.in.map(r=> ({id: r.id, name: r.name, start: r.start, N3: r.start_.N3, N4: r.start_.N4})), out: st.out.map(r=> ({id: r.id, name: r.name, start: r.start, N3: r.start_.N3, N4: r.start_.N4})), startsAt0: d0.length}};
-  fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'budget-v4-2026-10-19.json'), JSON.stringify(out, null, 1) + '\n');
-  console.log(`${rows.length} measured cards. At Level 1: v3 passes ${out.atL1.passV3}, v4 ${out.atL1.passV4}; in ${L1.in.length}, out ${L1.out.length}; N moves ${out.atL1.dN.min} to +${out.atL1.dN.max}.`);
-  L1.in.forEach(r=> console.log('  in ', r.name, `N ${r.L1.N3} -> ${r.L1.N4}, 2A+H+S ${r.L1.x1}`)); L1.out.forEach(r=> console.log('  out', r.name, `N ${r.L1.N3} -> ${r.L1.N4}, 2A+H+S ${r.L1.x1}`));
-  console.log(`At the start level: v3 passes ${out.atStart.passV3}, v4 ${out.atStart.passV4}; in ${st.in.length}, out ${st.out.length} (${d0.length} cards start at Lv 0, where v4 is Base - 1, v3 Base).`);
-  st.in.forEach(r=> console.log('  in ', r.name, 'Lv', r.start, `N ${r.start_.N3} -> ${r.start_.N4}`)); st.out.forEach(r=> console.log('  out', r.name, 'Lv', r.start, `N ${r.start_.N3} -> ${r.start_.N4}`));
+  const rows = budgetRows(), cmp = (k, old)=>{ const t = {in: [], out: []}; rows.forEach(r=>{ const x = r[k]; if(x.ok5 && !x['ok' + old]) t.in.push(r); else if(!x.ok5 && x['ok' + old]) t.out.push(r); }); return t; };
+  const brief = (r, k)=> ({id: r.id, name: r.name, rarity: r.rarity, start: r.start, base: r.base, S: r.S, N3: r[k].N3, N4: r[k].N4, N5: r[k].N5, x1: r[k].x1, x2: r[k].x2});
+  const dN = (k, a, b)=>{ const d = rows.map(r=> r2(r[k][a] - r[k][b])); return {min: Math.min(...d), max: Math.max(...d)}; };
+  const out = {_about: 'Budget v5 (2026-10-19 13:52, package BF2: N = (Base + L/5) x (1 + L/30), Level 0 Base - 1) against v4 ((Base - 1 + L)(1 + L/20)) and v3 (Base + 2L) for every measured card (node tools/forge_curve_2026_10_19.js budget). At L1 every card is checked at Level 1; at start, at the level it starts at (what the tests and the post-balance queue use).',
+    generated: '2026-10-19', cards: rows.length};
+  for(const k of ['L1', 'start_']){ const v3 = cmp(k, 3), v4 = cmp(k, 4);
+    out[k === 'L1' ? 'atL1' : 'atStart'] = {passV3: rows.filter(r=> r[k].ok3).length, passV4: rows.filter(r=> r[k].ok4).length, passV5: rows.filter(r=> r[k].ok5).length,
+      vsV3: {in: v3.in.map(r=> brief(r, k)), out: v3.out.map(r=> brief(r, k))}, vsV4: {in: v4.in.map(r=> brief(r, k)), out: v4.out.map(r=> brief(r, k))}, dN5minus3: dN(k, 'N5', 'N3'), dN5minus4: dN(k, 'N5', 'N4')}; }
+  fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'budget-v5-2026-10-19.json'), JSON.stringify(out, null, 1) + '\n');
+  for(const [lab, o] of [['At Level 1', out.atL1], ['At the start level', out.atStart]]){
+    console.log(`${lab}: ${rows.length} cards; pass v3 ${o.passV3}, v4 ${o.passV4}, v5 ${o.passV5}. N v5 - v3 ${o.dN5minus3.min}..${o.dN5minus3.max}, v5 - v4 ${o.dN5minus4.min}..${o.dN5minus4.max}`);
+    for(const [vs, t] of [['v3', o.vsV3], ['v4', o.vsV4]]){ console.log(`  vs ${vs}: in ${t.in.length}, out ${t.out.length}`); t.in.forEach(r=> console.log(`    in  ${r.name} N3 ${r.N3} N4 ${r.N4} N5 ${r.N5} 2A+H+S ${r.x1}`)); t.out.forEach(r=> console.log(`    out ${r.name} N3 ${r.N3} N4 ${r.N4} N5 ${r.N5} 2A+H+S ${r.x1}`)); } }
 } else if(cmd === 'gain'){
   const acc = {}; let n = 0;
   CARDS.filter(c=> SC.measured(c) && !c.pool && c.attack != null && c.health != null).forEach(d=>{ const w0 = 2 * (d.attack || 0) + (d.health || 0); if(w0 <= 0) return; n++;
@@ -77,5 +79,7 @@ if(cmd === 'budget'){
 } else if(cmd === 'cards'){
   (process.argv[3] || '').split(',').filter(Boolean).forEach(id=>{ const d = CARDS.find(c=> c.id === id); if(!d){ console.log('no card', id); return; }
     const c = curveOf(d); console.log(`${d.name} (${d.rarity}, Wait ${d.wait || 0}, Lumber ${d.cost || 0}; Base ${c.base}, starts Lv ${c.from}${c.m !== 1 ? ', half-miss x' + c.m : ''})`);
-    Object.entries(c.rows).forEach(([L, r])=> console.log(`  Lv ${String(L).padStart(2)} ${String(r.kind).padEnd(5)} N ${String(r.N).padEnd(6)} ${r.attack}/${r.health}${r.points ? '  +' + r.points : ''}`)); });
+    // 2026-10-19 (BF2): beside it, the proportional conversion the owner asked to compare (not shipped): the card's 2A+H x N(L) / N(1), its shape kept
+    const n1 = c.rows[Math.max(1, c.from)].N, prop = L=>{ const f = L <= Math.max(1, c.from) ? 1 : c.rows[L].N / n1; return `${Math.round((d.attack || 0) * f)}/${Math.round((d.health || 0) * f)}`; };
+    Object.entries(c.rows).forEach(([L, r])=> console.log(`  Lv ${String(L).padStart(2)} ${String(r.kind).padEnd(5)} N ${String(r.N).padEnd(6)} ${r.attack}/${r.health}${r.points ? '  +' + r.points : ''}   proportional ${prop(+L)}`)); });
 }

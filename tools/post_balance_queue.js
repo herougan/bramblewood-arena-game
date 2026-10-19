@@ -33,7 +33,7 @@ function build(){
   }).sort((a, z)=> Math.max(z.overBy.x1, z.overBy.x2 / z.N2 * z.N) - Math.max(a.overBy.x1, a.overBy.x2 / a.N2 * a.N));
   const applied = KINDS.reduce((n, k)=> n + (table[k] || []).filter(e=> e.appliedAt).length, 0);
   return {
-    _about: 'Cards over the stat budget (v4 since 2026-10-19, package BF: N = (Base - 1 + L) x (1 + L/20) at the level the card starts at) under the applied measured skill costs (canonical/skill-costs.json, 2026-10-19). Not refit now: the owner\'s workflow (08:49) is thematic units -> he picks units per map -> a post-balance step applies skills and stats. Built by tools/post_balance_queue.js; tests accept these ids as known-over-budget. Rules: a card passes when x1 = (2A+H+S) x missMult < N and x2 = (A*H+S) x missMult < (N/3)^2 = N2; overBy is x - limit (>= 0 fails). sBefore = S with every applied entry at its prevValue.',
+    _about: 'Cards over the stat budget (v5 since 2026-10-19 13:52, package BF2: N = (Base + L/5) x (1 + L/30), Level 0 Base - 1, at the level the card starts at) under the applied measured skill costs (canonical/skill-costs.json, 2026-10-19). Not refit now: the owner\'s workflow (08:49) is thematic units -> he picks units per map -> a post-balance step applies skills and stats. Built by tools/post_balance_queue.js; tests accept these ids as known-over-budget. Rules: a card passes when x1 = (2A+H+S) x missMult < N and x2 = (A*H+S) x missMult < (N/3)^2 = N2; overBy is x - limit (>= 0 fails). sBefore = S with every applied entry at its prevValue.',
     version: '2026-10-19', table: {version: table.version, appliedEntries: applied}, ownerCall: OVER_OK, count: queue.length, cards: queue};
 }
 

@@ -58,7 +58,7 @@
   function build(){
     if(build.done) return; build.done = true;
     const host = $('scHost'); if(!host) return;
-    host.innerHTML = `<div class="dec-head"><h2>Skill costs</h2><p>Every number behind S, the skill part of the stat budget. A trigger costs <b>how often × how strong</b>: its weight here × its action's value (On Death = 1, so an On Death "deal 2 damage" costs 2; On Any Played = 5 with a value-2 action costs 10). Keyword skills keep the costs they had. Change a number and every card's S, N and both rules (2A+H+S &lt; N, A·H+S &lt; (N/3)²) update below.</p></div>
+    host.innerHTML = `<div class="dec-head"><h2>Skill costs</h2><p>Every number behind S, the skill part of the stat budget. A trigger costs <b>how often × how strong</b>: its weight here × its action's value (On Death = 1, so an On Death "deal 2 damage" costs 2; On Any Played = 5 with a value-2 action costs 10). Keyword skills keep the costs they had. Change a number and every card's S, N and both rules (2A+H+S &lt; N, A·H+S &lt; (N/3)²) update below.</p><p class="sc-formula">${(()=>{ const f = window.BramblewoodBudget && BramblewoodBudget.formulaParts((SC_SEED && SC_SEED.budget) || {}); return f ? `${f.n}; ${f.zero}. ${f.base}. Both scores ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind).` : ''; })()}</p></div>
       <div class="sc-status" id="scStatus" role="status"></div>
       <div class="sc-grid"><section class="sc-ed" aria-label="Cost table">
         <div class="dec-seg sc-kinds" role="group" aria-label="Kind" id="scKinds">${KINDS.map(([k, , l])=> `<button type="button" data-k="${k}" aria-pressed="${k === st.kind}">${l} <b>${LIST[k].length}</b></button>`).join('')}</div>
@@ -202,7 +202,7 @@
       if(terms.length){ const hay = (c.name + ' ' + c.id + ' ' + Object.keys(c.effects || {}).join(' ') + ' ' + (c.effects.triggers || []).map(t=> t && (t.on + ' ' + t.do)).join(' ')).toLowerCase(); if(!terms.every(t=> hay.includes(t))) return false; }
       return true; });
     // Margin: how far inside (positive) or over (negative) the tighter rule is, as a share of its limit.
-    const gap = b=> Math.min((b.N - b.x1) / b.N, (b.N2 - b.x2) / b.N2);
+    const gap = b=> Math.min((b.N - b.x1) / b.N, (b.N2 - b.x2) / b.N2), f1 = v=> Math.round(v * 10) / 10;
     const val = (c, k)=>{ const b = NOW[c.id]; return k === 'name' ? c.name : k === 'rarity' ? SC.LADDER.indexOf(c.rarity || 'common') : k === 'map' ? (mapName(c.map) || '~') : k === 'gap' ? -gap(b) : b[k]; };
     list.sort((a, b)=>{ const x = val(a, st.key), y = val(b, st.key); return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y))) * st.dir || a.name.localeCompare(b.name); });
     document.querySelectorAll('.sc-t th').forEach(th=> th.dataset.k === st.key ? th.setAttribute('aria-sort', st.dir > 0 ? 'ascending' : 'descending') : th.removeAttribute('aria-sort'));
@@ -210,7 +210,7 @@
     $('scBody').innerHTML = shown.map(c=>{ const b = NOW[c.id], s = SEEDB[c.id], v = verdict(b), g = gap(b);
       const sCell = b.S === s.S ? `${b.S}` : `<s>${s.S}</s> ${b.S}`;
       const row = `<tr data-id="${esc(c.id)}" class="v-${v}${st.open === c.id ? ' is-open' : ''}" tabindex="0" aria-expanded="${st.open === c.id}"><td><b>${esc(c.name)}</b> <small>${c.attack}/${c.health} · 🪵${c.cost} · ⏳${c.wait}</small></td><td>${esc(rarName(c.rarity))}</td><td><small>${esc(mapName(c.map) || '—')}</small></td>`
-        + `<td class="num">${sCell}</td><td class="num">${b.N}</td><td class="num${b.x1 < b.N ? '' : ' bad'}">${b.x1} <small>/ ${b.N}</small></td><td class="num${b.x2 < b.N2 ? '' : ' bad'}">${b.x2} <small>/ ${b.N2}</small></td>`
+        + `<td class="num">${sCell}</td><td class="num">${b.N}</td><td class="num${b.x1 < b.N ? '' : ' bad'}">${f1(b.x1)} <small>${b.x1 < b.N ? '&lt;' : '≥'} N = ${f1(b.N)}</small></td><td class="num${b.x2 < b.N2 ? '' : ' bad'}">${f1(b.x2)} <small>${b.x2 < b.N2 ? '&lt;' : '≥'} (N/3)² = ${f1(b.N2)}</small></td>` /* 2026-10-19 (BF2, owner 13:57: "Say 5 < N = 20") */
         + `<td class="num sc-v">${v === 'over' ? 'over ' : v === 'under' ? 'under ' : ''}${Math.abs(g) < 0.1 ? Math.round(g * 1000) / 10 : Math.round(g * 100)}%</td></tr>`;
       if(st.open !== c.id) return row;
       const parts = b.parts.length ? b.parts.map(p=> `<span class="chip">${esc(p[0] === 'skill' ? label('skill', {id:p[1]}) : p[1])} <b>${p[2]}</b>${p[3] ? ' <small>(' + esc(p[3]) + ')</small>' : ''}</span>`).join(' ') : 'No skills (S = 0).';

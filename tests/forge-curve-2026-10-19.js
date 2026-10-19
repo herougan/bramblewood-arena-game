@@ -20,14 +20,17 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
 const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-6);
 
 // ---- 1. the formula
-ok(near(BB.nAt(30, 5), (30 - 1 + 5) * 1.25) && near(BB.nAt(30, 1), 31.5) && near(BB.nAt(30, 0), 29) && near(BB.nAt(25, 10), 34 * 1.5), '1. N(L) = (Base - 1 + L)(1 + L/20): Base 30 -> 29 at Lv 0, 31.5 at Lv 1, 42.5 at Lv 5');
-ok(Object.keys(BB.DEFAULTS).filter(k=> k !== 'levelDiv').every(k=> table.budget[k] === BB.DEFAULTS[k]) && table.budget.levelDiv === BB.DEFAULTS.levelDiv, '1. the helper\'s numbers are canonical/skill-costs.json\'s budget');
+// 2026-10-19 (package BF2): budget v5, N(L) = (Base + L/5)(1 + L/30), Level 0 Base - 1 (owner 13:52, L/3; L/5 after the 13:54 check)
+ok(near(BB.nAt(30, 5), (30 + 1) * (1 + 5 / 30), 0.006) && near(BB.nAt(30, 1), 30.2 * (31 / 30), 0.006) && near(BB.nAt(30, 0), 29) && BB.DEFAULTS.levelLinDiv === 5 && BB.DEFAULTS.levelDiv === 30,
+  '1. N(L) = (Base + L/5)(1 + L/30), Level 0 Base - 1: Base 30 -> 29 at Lv 0, 31.21 at Lv 1, 36.17 at Lv 5');
+ok(near(BB.nAt(14, 1, {levelLinDiv: 3}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3}), 23.11), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
+ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. the helper\'s numbers (levelLinDiv, levelDiv, zeroPenalty too) are canonical/skill-costs.json\'s budget');
 { const live = cards.filter(SC.measured); let same = 0; const diff = [];
   live.forEach(c=>{ const L = SC.levelOf(c), want = BB.nAt(BB.baseOf(c), L); if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
   ok(!diff.length, `1. tools/skill_costs.js gives v4's N for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
-  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(d, c\), L, c\)/.test(src) && /levelDiv:20/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
+  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(d, c\), L, c\)/.test(src) && /levelLinDiv:5, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
-  const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1 + 1e-9), `1. at Level 1, v4 is never more than 1 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
+  const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1.2 + 1e-9), `1. at Level 1, v5 is never more than 1.2 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
 
 // ---- 2. the curve
 const QUEUE = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'post-balance-queue.json'), 'utf8')).cards.map(c=> c.id));
@@ -39,7 +42,7 @@ for(const c of withStats){
   for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
     if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
     if([4, 7, 10].includes(L) && !(r.points > 0)) majors.push(`${c.id} Lv ${L}`);
-    const inside = b0.ok ? room1(L) > 1e-9 && room2(L) > 1e-9 : room1(L) >= room1(from) - 1e-9 && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
+    const inside = b0.ok ? room1(L) > 1e-9 && room2(L) > 1e-9 : room1(L) >= room1(from) - cv.m - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
     if(!inside) budget.push(`${c.id} Lv ${L} (2A+H+S ${(2 * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
     if(!c.levelStats){ const st = G.statsAtLevel(c, L); if(st.attack !== r.attack || st.health !== r.health) game.push(`${c.id} Lv ${L}`); } }
   if(c.attack === 0 && Object.values(cv.rows).some(r=> r.attack !== 0)) walls.push(c.id);

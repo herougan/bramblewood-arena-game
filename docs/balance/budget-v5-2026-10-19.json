@@ -1,0 +1,183 @@
+{
+ "_about": "Budget v5 (2026-10-19 13:52, package BF2: N = (Base + L/5) x (1 + L/30), Level 0 Base - 1) against v4 ((Base - 1 + L)(1 + L/20)) and v3 (Base + 2L) for every measured card (node tools/forge_curve_2026_10_19.js budget). At L1 every card is checked at Level 1; at start, at the level it starts at (what the tests and the post-balance queue use).",
+ "generated": "2026-10-19",
+ "cards": 744,
+ "atL1": {
+  "passV3": 709,
+  "passV4": 710,
+  "passV5": 708,
+  "vsV3": {
+   "in": [
+    {
+     "id": "grovebearer-dragon-turtle",
+     "name": "Grovebearer Dragon-Turtle",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 36.37,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.24,
+     "x1": 96.37,
+     "x2": 324.37
+    }
+   ],
+   "out": [
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "rarity": "common",
+     "start": 1,
+     "base": 44.6,
+     "S": 12.51,
+     "N3": 46.6,
+     "N4": 46.83,
+     "N5": 46.29,
+     "x1": 46.51,
+     "x2": 144.51
+    },
+    {
+     "id": "barnacle-fortress",
+     "name": "Barnacle Fortress",
+     "rarity": "common",
+     "start": 1,
+     "base": 31.9,
+     "S": 13.7,
+     "N3": 33.9,
+     "N4": 33.49,
+     "N5": 33.17,
+     "x1": 33.7,
+     "x2": 13.7
+    }
+   ]
+  },
+  "vsV4": {
+   "in": [],
+   "out": [
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "rarity": "common",
+     "start": 1,
+     "base": 44.6,
+     "S": 12.51,
+     "N3": 46.6,
+     "N4": 46.83,
+     "N5": 46.29,
+     "x1": 46.51,
+     "x2": 144.51
+    },
+    {
+     "id": "bone-diviner",
+     "name": "Bone Diviner",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 45.6,
+     "S": 2.74,
+     "N3": 47.6,
+     "N4": 47.88,
+     "N5": 47.33,
+     "x1": 47.61,
+     "x2": 146.61
+    }
+   ]
+  },
+  "dN5minus3": {
+   "min": -1.13,
+   "max": 3.97
+  },
+  "dN5minus4": {
+   "min": -2.68,
+   "max": -0.13
+  }
+ },
+ "atStart": {
+  "passV3": 709,
+  "passV4": 710,
+  "passV5": 708,
+  "vsV3": {
+   "in": [
+    {
+     "id": "grovebearer-dragon-turtle",
+     "name": "Grovebearer Dragon-Turtle",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 36.37,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.24,
+     "x1": 96.37,
+     "x2": 324.37
+    }
+   ],
+   "out": [
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "rarity": "common",
+     "start": 1,
+     "base": 44.6,
+     "S": 12.51,
+     "N3": 46.6,
+     "N4": 46.83,
+     "N5": 46.29,
+     "x1": 46.51,
+     "x2": 144.51
+    },
+    {
+     "id": "barnacle-fortress",
+     "name": "Barnacle Fortress",
+     "rarity": "common",
+     "start": 1,
+     "base": 31.9,
+     "S": 13.7,
+     "N3": 33.9,
+     "N4": 33.49,
+     "N5": 33.17,
+     "x1": 33.7,
+     "x2": 13.7
+    }
+   ]
+  },
+  "vsV4": {
+   "in": [],
+   "out": [
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "rarity": "common",
+     "start": 1,
+     "base": 44.6,
+     "S": 12.51,
+     "N3": 46.6,
+     "N4": 46.83,
+     "N5": 46.29,
+     "x1": 46.51,
+     "x2": 144.51
+    },
+    {
+     "id": "bone-diviner",
+     "name": "Bone Diviner",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 45.6,
+     "S": 2.74,
+     "N3": 47.6,
+     "N4": 47.88,
+     "N5": 47.33,
+     "x1": 47.61,
+     "x2": 146.61
+    }
+   ]
+  },
+  "dN5minus3": {
+   "min": -1.13,
+   "max": 2.61
+  },
+  "dN5minus4": {
+   "min": -1.99,
+   "max": 0
+  }
+ }
+}
