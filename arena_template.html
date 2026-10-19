@@ -11906,6 +11906,73 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
    22 px icon was a third of a small card. */
 .board-card .card-tile .status-overlay:not(.stun-overlay):not(.smoke-overlay){font-size:clamp(11px, calc(var(--cw, 120px) * .2), 22px) !important;}
 </style>
+<style id="uxStyles">
+/* ===== Package UX (2026-10-19, owner 21:36: UI notes 8a, 8b, 8c, 9, 11) ===== */
+/* 8a: the anvil's copy summary (the copies sheet holds every copy) */
+.forge-copy-picker.ux-fcp{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; padding:6px 10px; border-radius:12px; background:rgba(0,0,0,.18); border:1px solid var(--surface-border); font-size:12.5px;}
+.ux-fcp .ux-fcp-k b{color:var(--ink);} .ux-fcp .ux-fcp-k b.ux-fcp-n{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:2px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a;}
+.ux-fcp .ux-fcp-cur{color:var(--ink-muted);} .ux-fcp .ux-fcp-cur b{color:var(--ink); font:800 13px 'Baloo 2',system-ui,sans-serif;}
+.ux-fcp .ux-fcp-open{white-space:nowrap;}
+/* the copies sheet */
+.ux-fcs{max-width:min(720px, calc(100vw - 24px)); width:100%; padding:18px 18px 16px;}
+.ux-fcs h2{margin:0; font-size:20px;} .ux-fcs .ux-fcs-total{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:3px 8px; margin-left:4px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a; vertical-align:middle;}
+.ux-fcs .ux-fcs-sub{margin:6px 0 10px;}
+.ux-fcs-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:14px 10px; max-height:min(60vh, 520px); overflow-y:auto; overscroll-behavior:contain; padding:10px 6px 6px;}
+.ux-fcs-g{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px 6px; border-radius:12px; border:1.5px solid transparent; background:transparent; color:var(--ink); font:inherit; cursor:pointer; transition:transform .15s ease, border-color .15s ease, background .15s ease;}
+.ux-fcs-g:hover{transform:translateY(-2px); background:rgba(201,164,106,.10);}
+.ux-fcs-g.on{border-color:#e0b85a; background:rgba(224,184,90,.16); box-shadow:0 0 0 2px rgba(224,184,90,.35);}
+.ux-fcs-g:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+.ux-fcs-tile .card-tile{width:78px !important; height:98px !important; font-size:8px; margin:0; pointer-events:none;}
+.ux-fcs-lbl{display:flex; flex-direction:column; align-items:center; line-height:1.15; text-align:center;}
+.ux-fcs-lbl b{font:800 14px 'Baloo 2',system-ui,sans-serif; color:var(--ink);} .ux-fcs-lbl small{font-size:11px; color:var(--ink-muted);}
+.ux-fcs-n{position:absolute; top:-2px; right:2px; z-index:8; font:800 12px/1 'Baloo 2',system-ui,sans-serif; padding:3px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
+.ux-fcs-g em{position:absolute; top:-2px; font-style:normal; font-size:13px; line-height:1; z-index:8;} .ux-fcs-g .ux-fcs-deck{left:2px;} .ux-fcs-g .ux-fcs-cr{left:20px;}
+/* the old chip's "on" state read pale-on-pale in dark mode (owner's screenshot): keep its text dark on the light fill */
+.fcp-chip.on, .fcp-chip.on b{color:#2b1d10;} .fcp-chip.on small{color:#5a4630;}
+/* 8b: how many copies, on each Forge pool tile */
+.forge-tile .ux-copy-count{position:absolute; top:-7px; left:-2px; z-index:8; min-width:22px; height:22px; padding:0 6px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#2b2117; color:#fff8e6; font:800 12px/1 'Baloo 2',system-ui,sans-serif; box-shadow:0 0 0 1.5px #c9a46a, 0 2px 6px rgba(0,0,0,.4); cursor:help; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation;}
+.forge-tile .ux-copy-count.is-many{box-shadow:0 0 0 2px #e0b85a, 0 2px 6px rgba(0,0,0,.4);}
+.forge-tile .ux-copy-count:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+.speech-bubble.ux-count-bubble{max-width:210px;}
+/* 8c: forging on the centre stage */
+.ux-fc-ov{position:fixed; inset:0; z-index:1150; background:radial-gradient(ellipse at 50% 48%, rgba(70,38,14,.55), rgba(8,5,3,.86) 60%); pointer-events:auto;}
+.ux-fc-spot{position:absolute; left:50%; top:50%; width:min(94vw, 620px); height:min(74vh, 560px); transform:translate(-50%, -50%); pointer-events:none;
+  background:radial-gradient(ellipse at 50% 58%, rgba(255,196,120,.38), rgba(255,140,50,.12) 42%, transparent 70%); animation:uxFcPulse 1.4s ease-in-out infinite alternate;}
+.ux-fc-host{position:fixed; left:50%; top:50%; transform:translate(-50%, -50%) scale(var(--ux-fc-s, 1.4)); transform-origin:50% 50%; will-change:transform;}
+.ux-fc-host > .ux-fc-on{margin:0 !important; max-width:none;}
+@keyframes uxFcPulse{from{opacity:.75;} to{opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .ux-fc-spot{animation:none;} }
+/* 11 + 9: the Codex's card types and its Base level / My best toggle */
+.ux-cx-kinds{display:flex; align-items:center; gap:8px 12px; flex-wrap:wrap; margin:0 0 10px;}
+.ux-kind-chips{display:flex; gap:6px; flex-wrap:wrap; flex:1 1 auto; min-width:0;}
+.ux-kind, .ux-lv{display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(255,255,255,.06)); color:var(--ink); font:700 12.5px/1.1 inherit; font-family:inherit; cursor:pointer; white-space:nowrap;}
+.ux-kind .ux-kind-n{font:800 11.5px/1 'Baloo 2',system-ui,sans-serif; padding:2px 6px; border-radius:999px; background:rgba(0,0,0,.25); min-width:1.4em; text-align:center;}
+.ux-kind.on, .ux-lv.on{background:#e0b85a; border-color:#e0b85a; color:#2b1d10;} .ux-kind.on .ux-kind-n{background:rgba(43,29,16,.18);}
+.ux-kind.is-empty:not(.on){opacity:.55; border-style:dashed;}
+.ux-kind:focus-visible, .ux-lv:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+.ux-cx-level{display:inline-flex; border-radius:999px; overflow:hidden; border:1px solid var(--surface-border); flex:none;}
+.ux-cx-level .ux-lv{border:0; border-radius:0;} .ux-cx-level .ux-lv + .ux-lv{border-left:1px solid var(--surface-border);}
+.cd-chip.ux-cd-lv{font-family:inherit; color:inherit; cursor:default;} button.cd-chip.ux-cd-lv{cursor:pointer;} button.cd-chip.ux-cd-lv:hover{background:rgba(201,164,106,.35);}
+@media (max-width:600px){
+  .ux-cx-kinds{gap:6px;}
+  .ux-kind-chips{flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; padding-bottom:2px; -webkit-mask-image:linear-gradient(90deg, #000 88%, transparent); mask-image:linear-gradient(90deg, #000 88%, transparent);}
+  .ux-kind-chips::-webkit-scrollbar{display:none;}
+  .ux-kind, .ux-lv{padding:5px 9px; font-size:12px;}
+  .ux-fcs{padding:14px 12px 12px;} .ux-fcs-grid{grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); max-height:62vh;}
+  .ux-fcs-tile .card-tile{width:70px !important; height:88px !important;}
+}
+/* UX2 (2026-10-19, owner 22:16: "There's no filter in brambles search."): the Brambles page's filter bar */
+.ux2-brambles .ux2-br-bar{margin:10px 0 8px;}
+.ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 220px; min-width:0;}
+.ux2-br-count{margin:2px 0 10px; font-size:12.5px; color:var(--ink-muted);}
+.ux2-brambles .bramble-codex-card{position:relative;}
+.ux2-br-owned{position:absolute; top:4px; left:4px; z-index:9; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#2f6b2a; color:#fff; font:800 13px/1 system-ui,sans-serif; box-shadow:0 0 0 2px #bfe6a8;}
+.ux2-br-tags{position:absolute; top:4px; right:4px; z-index:9; display:flex; gap:2px; font-size:13px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+.ux2-brambles .u3-bramble-abs{margin:6px 0 4px; padding-left:0; list-style:none; font-size:12px; text-align:left;}
+.ux2-br-empty{flex:1 1 100%; text-align:center; padding:28px 12px; color:var(--ink-muted); border:1.5px dashed var(--surface-border); border-radius:14px;}
+.ux2-br-empty p{margin:0 0 10px;}
+@media (max-width:600px){ .ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 100%;} .ux2-brambles .ux2-br-bar select{flex:1 1 45%; min-width:0;} .ux2-brambles .bramble-codex-card{min-width:140px;} }
+</style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
      at the top of the screen so i can 'change accounts'... an account that is perpetually in
