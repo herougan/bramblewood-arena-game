@@ -30,7 +30,9 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-9);
   ok(gated && near(G.referencePlayerLevel(31), 5.88, .01), '1. never past the Forge\'s level gates (Lv 5+ from Map 16, 9 from 26, 10 from 31); about Lv 6 by Map 31'); }
 const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find(x=> x.deck && x.kind !== 'tutorial'); const nn = Object.assign({}, n0, {kind, key: '__t'}); G.NODE_MAP_HINT.set(nn, m.id); return nn; };
 { let last = -1, mono = true, line = true;
-  for(let no = 0; no < mains.length; no++){ if(!mains[no].nodes.some(x=> x.deck)) continue; const L = G.roadEnemyLevelExact(fightAt(no, 'skirmish')); if(L < last - 1e-9) mono = false; last = L;
+  for(let no = 0; no < mains.length; no++){ if(!mains[no].nodes.some(x=> x.deck)) continue; const L = G.roadEnemyLevelExact(fightAt(no, 'skirmish'));
+    // 2026-10-19 (BF): the level depends on the fight's deck now, so the rise is checked on one fight's deck along the line's gain
+    { const f20 = fightAt(20, 'skirmish'), g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, Lf = g > 0 ? G.enemyLevelKeepingPace(f20, g, 10) : 0; if(Lf < last - 0.05) mono = false; last = Lf; } // a dip of a few hundredths is the old curve's own: a whole Lv 2 (Map 8) had Lv 1's stats
     // 2026-10-19 (package BF): the line's gain g, turned into a level that keeps the old ratio to your deck (enemyLevelKeepingPace)
     const g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, f = fightAt(no, 'skirmish'), kp = G.enemyLevelKeepingPace(f, g, 10);
     if(L && !near(kp != null ? kp : G.levelForGain(g), L, 0.01)) line = false; }
@@ -42,7 +44,7 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
       `1. the enemy: printed to Map 4; at Map 20 (Lv ${L}) it keeps the strength ratio to your deck it had under the old steps (${keep.toFixed(3)} vs ${was.toFixed(3)}; 2026-10-19, BF)`); }
   ok(G.roadEnemyLevelExact(fightAt(14, 'boss')) > G.roadEnemyLevelExact(fightAt(14, 'skirmish')) && G.roadEnemyLevelExact(fightAt(14, 'elite')) === G.roadEnemyLevelExact(fightAt(14, 'skirmish')), '1. a boss fights two maps further on; an elite on its map\'s line');
   const w = G.CONQUEST_MAPS.find(m=> m.id === 'm11').nodes.find(x=> x.kind === 'worldboss'); G.NODE_MAP_HINT.set(w, 'm11');
-  ok(w && G.roadEnemyLevelExact(w) > G.roadEnemyLevelExact(fightAt(20, 'skirmish')), '1. the Map 20 world boss is levelled like a boss (it fought at its printed level before)');
+  ok(w && G.roadMapOfFight(w) === 20 + G.ROAD_LEVEL_CURVE.bossMaps && G.roadEnemyLevelExact(w) > 1, '1. the Map 20 world boss is levelled like a boss, two maps on (it fought at its printed level before)');
   // 2026-10-19 (BF): levelForGain inverts the BF curve's mean gain (FORGE_MEAN_GAIN); every level is a stat step now
   ok(near(G.levelForGain(0), 1) && [2, 3, 4, 6, 9, 10].every(L=> near(G.levelForGain(G.gainOfLevel(L)), L, 1e-6)), '1. levelForGain is the inverse of the mean gain at every level');
   const deck = {a: 4, b: 4, c: 3, d: 2, e: 4, f: 3}, mix = G.levelMixDeck(deck, 4.5), tot = mix.reduce((t, p)=> t + p[1], 0), hi = mix.filter(p=> p[2] === 5).reduce((t, p)=> t + p[1], 0);
@@ -52,10 +54,10 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
 // ---- 2. the endless floors
 { const C = G.ENDLESS_FLOOR_CURVE; ok(C.floorMaps === 0.5 && C.floorPct <= 0.01, '2. a floor is half a map further on; no compounding stat bonus (was +4% a floor)');
   for(const id of ['mm', 'mlb']){ const m = G.CONQUEST_MAPS.find(x=> x.id === id); let lastL = -1, lastS = -1, mono = true;
-    m.nodes.filter(x=> x.kind === 'skirmish').forEach(x=>{ G.NODE_MAP_HINT.set(x, id); const L = G.roadEnemyLevelExact(x), S = G.ruleShieldOf(x); if(L < lastL - 1e-9 || S < lastS) mono = false; lastL = L; lastS = S; });
-    ok(mono, `2. ${id}: the enemy level and the Shield climb floor by floor`); }
+    m.nodes.filter(x=> x.kind === 'skirmish').forEach(x=>{ G.NODE_MAP_HINT.set(x, id); const L = G.roadMapOfFight(x), S = G.ruleShieldOf(x); if(L < lastL - 1e-9 || S < lastS) mono = false; /* 2026-10-19 (BF): the map it counts as (its level depends on its deck now) */ lastL = L; lastS = S; });
+    ok(mono, `2. ${id}: the map it counts as and the Shield climb floor by floor`); }
   const k10 = G.CONQUEST_MAPS.find(x=> x.id === 'mm').nodes.find(x=> x.floor === 10); G.NODE_MAP_HINT.set(k10, 'mm');
-  ok(G.roadMapOfFight(k10) === 6 + 4.5 && G.ruleShieldOf(k10) === Math.round(10.5 * 2), '2. the Murgle King on floor 10 counts as Map 10.5 (its Shield 21 by rule)');
+  ok(G.roadMapOfFight(k10) === 6 + 1 + 4.5 && G.ruleShieldOf(k10) === Math.round(11.5 * 2), '2. the Murgle King on floor 10 counts as Map 11.5: its parent Map 6, a map ahead (BF), 4.5 maps of floors (its Shield 23 by rule)');
   ok(/floorPct: \(ctx\.node\.floor - 1\) \* ENDLESS_FLOOR_CURVE\.floorPct/.test(B.src) && /floorPct: \(node\.floor - 1\) \* ENDLESS_FLOOR_CURVE\.floorPct/.test(B.src), '2. the game and the reference fight both use the floor curve'); }
 
 // ---- 3. overrides
