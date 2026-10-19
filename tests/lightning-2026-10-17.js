@@ -133,7 +133,7 @@ ok(/const bolt = lightningBoltOf\(ev\);/.test(src) && /: bolt \? bolt\.ms :/.tes
 ok(src.indexOf('else if(bolt) drawLightningBolt(ev);') < src.indexOf("else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);"), 'the bolt branch comes before the generic projectile');
 ok(/\{ const lb = lightningBoltOf\(ev\); if\(lb\) return lb\.ms; \}/.test(fnSrc('eighthHitAtMs')), 'eighthHitAtMs (and FX env.hitAtMs) reads the bolt');
 ok(/ev\._bolt\) base = ev\._bolt\.more \? ev\._bolt\.ms \+ 30 : 640;/.test(fnSrc('delayForEvent')), 'delayForEvent: a lightning hit is quick; a chain hands over to its next jump');
-ok(/try\{ lightningBoltOf\(ev\); \}catch\(e\)\{\}/.test(fnSrc('renderVfxForEvent').split('\n').slice(0, 4).join('\n')), 'renderVfxForEvent works the bolt out first');
+ok(/try\{ lightningBoltOf\(ev\); \}catch\(e\)\{\}/.test(fnSrc('renderVfxForEvent').split('\n').slice(0, 5).join('\n')), 'renderVfxForEvent works the bolt out first');
 ok(/if\(ev\.element === 'shock'\) return;/.test(fnSrc('ninthPassVfx')), 'a Shock Bolt lobs no glob');
 ok(!/F\.lightning\(att, ts/.test(src), 'the Dragon Lightning event no longer flashes its own bolt ahead of the hits');
 { const fxa = fs.readFileSync(path.join(H.ROOT, 'bramblewood-fx-a.js'), 'utf8');

@@ -57,7 +57,7 @@ ctx.adminModeEnabled = false; R.reset();
 ok(/function describeEffects\(def, liveCard\)\{\n  def = maskHiddenSkills\(def\);/.test(src), '1. card text lines go through the mask');
 ok(/if\(def\._hiddenSkills\) lines\.push\(`<span class="skill-q-line">\$\{skillQChipHTML\(\)\}<\/span>`\);/.test(src), '1. ...and get one "?" line');
 ok(/function abilityBadges\(d, bopts\)\{\n  d = maskHiddenSkills\(d\);/.test(src) && /if\(d\._hiddenSkills\) out\.push\(skillQChipHTML\(\)\);/.test(src), '1. the skill strip shows one "?" chip');
-ok(/PASSIVE_DEFS\.filter\(p=> met\.has\(p\.key\) && p\.label && !p\.retired && !skillHiddenNow\(p\.key\)\)/.test(src), '1. the Skills codex leaves hidden skills out');
+ok(/PASSIVE_DEFS\.filter\(p=> met\.has\(p\.key\) && p\.label && !p\.retired && !skillHiddenNow\(p\.key\)\)/.test(src) || /shown = p=> p\.label && !p\.retired && !skillHiddenNow\(p\.key\)/.test(src) /* 2026-10-19: the Skills book */, '1. the Skills codex leaves hidden skills out');
 ok(/if\(hid\) return open \? `<span class="sbm-chip" title="\$\{escapeAttr\(SKILL_Q_TIP\)\}">\?<\/span>`/.test(src), '1. Skills along the road: a bare "?"');
 ok(/Registry\.skills\(\)\.filter\(sd=> sd\.key !== 'leader' && !sd\.retired && !skillHiddenNow\(sd\.key\)\)/.test(src), '1. no coach tip for a hidden skill');
 ok(/if\(skillHiddenNow\(k\)\) continue; \/\/ 2026-10-15: a keyword still hidden/.test(src), '1. no teaching card for a hidden keyword');

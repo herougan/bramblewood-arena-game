@@ -90,7 +90,7 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
 const pw = cards.find(c=> c.id === 'pall-wraith');
 ok(!!pw && pw.effects.castDarkness === true && pw.effects.darksight === true && !pw.test, 'the Pall Wraith: Cast Darkness + Darksight');
 ok(pw && pw.source && pw.source.kind === 'map' && pw.source.id === 'me' && pw.source.node === '20-A-2', 'its card reward: 20-A-2 (the Wraith Vents, Eye of the Volcano)');
-ok(/name:"The Wraith Vents", icon:"👻", deck:\{[^}]*"pall-wraith":2/.test(src), 'two Pall Wraiths in the Wraith Vents deck');
+ok(/name:"The Wraith Vents", icon:"👻"/.test(src) && (JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')).find(c=> c.id === 'pall-wraith') || {}).source?.node === '20-A-2', 'Pall Wraith is the Wraith Vents reward (the 10-19 level pass took it out of the deck)');
 ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its numericId is unique');
 { // budget v3 (SB_V3_DEFAULTS + SB_DEFAULT_SKILLS, as the Test Lab reads them)
   const line = src.match(/^const SB_DEFAULT_SKILLS = (\{[^\n]*\});/m), costs = line ? new Function('return ' + line[1].replace(/\/\*[\s\S]*?\*\//g, ''))() : {};

@@ -58,7 +58,7 @@ const A = ctx.api;
   const fx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-e.js'), 'utf8');
   ENTR.forEach(k=> ok(new RegExp(`\\n  ${k}\\(node, c, g`).test(fx), `FX.E.jumperArrive has the ${k} entrance`)); }
 // The new card and the boar art
-{ const t = defs['snapstick-turtle']; ok(t && t.rarity === 'common' && /^data:image\/png;base64,/.test(t.art || '') && !t.source, 'Snapstick Turtle: a common with art, not on any map');
+{ const t = defs['snapstick-turtle']; ok(t && t.rarity === 'common' && /^data:image\/png;base64,/.test(t.art || '') && (!t.source || t.source.kind === 'map'), 'Snapstick Turtle: a common with art (a map reward since the 10-19 card pass)');
   ok(new Set(cards.map(c=> c.numericId)).size === cards.length, 'cards: numericIds stay unique');
   ok(fs.existsSync(path.join(__dirname, '..', 'art', 'cards', 'snapstick-turtle.png')) && fs.existsSync(path.join(__dirname, '..', 'art', 'cards', 'tusked-vanguard.png')), 'card art files'); }
 console.log(fail ? `keywords-2026-10-15w3: ${fail} failure(s)` : 'keywords-2026-10-15w3: all passed');

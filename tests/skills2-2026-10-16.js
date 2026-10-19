@@ -112,7 +112,7 @@ ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', n
   const names = [...doc.matchAll(/^\| \d+ \| \S+ ([^|]+?) \|/gm)].map(m=> m[1].trim());
   ok(names.length >= 90, `the list names the new cards (${names.length})`);
   // 2026-10-16 (placement and rarity): most are now placed on the road, so a source is a map reward or nothing
-  const bad = names.filter(n=> { const c = byName[n]; return !c || (c.source && c.source.kind !== 'map') || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
+  const bad = names.filter(n=> { const c = byName[n]; return !c || (c.source && !['map','pack'].includes(c.source.kind)) /* 2026-10-19 card pass: some went into the basic pack */ || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
   ok(!bad.length, `each is in cards.json: locked, no source or a map reward (art came 10-18), a species and its skill (${bad.slice(0, 5)})`);
   const lc = names.map(n=> n.toLowerCase()); ok(new Set(lc).size === lc.length, 'no two share a name');
 }
