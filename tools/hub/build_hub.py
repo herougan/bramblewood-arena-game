@@ -368,6 +368,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🗒️', 'changelog', 'Changelog', 'What changed, newest first'), ('✨', 'lab', 'Effects Lab', 'Skill effects on a live stage'),
   ('🧪', 'playground', 'VFX Playground', 'GSAP and shader experiments'), ('🖼️', 'library', 'Visual Library', 'Screenshots taken while building'),
   ('🧮', 'costs', 'Skill costs', 'Edit what skills, triggers and actions cost; see who goes over budget'),
+  ('🗂', 'units', 'Units by theme', 'Every creature by biome, family and faction; pick units per map for the post-balance step'),
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
@@ -408,6 +409,13 @@ _js = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace
 SC_LIB = re.sub(r'^#!.*\n', '', open(os.path.join(ROOT, 'tools', 'skill_costs.js'), encoding='utf-8').read())
 SC_TAB = open(os.path.join(ROOT, 'tools', 'hub', 'skill_costs_tab.js'), encoding='utf-8').read()
 SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\n{SC_LIB}\n{SC_TAB}'
+# 2026-10-19 (package UC, owner 08:49: "let's separate the units thematically? Then we pick and choose, then do post-balancing"): the
+# 🗂 Units by theme tab. canonical/unit-themes.json (node tools/unit_themes.js) and the tab's script and styles, inlined. Picks live in
+# the artifact's db (collection unitPicks), so the hub is published with capabilities {db: {}}; tools/hub/pull_unit_picks.md.
+_ut_path = os.path.join(ROOT, 'canonical', 'unit-themes.json')
+_ut = json.load(open(_ut_path, encoding='utf-8')) if os.path.exists(_ut_path) else None
+UT_INLINE = (f'const UT_DATA = {_js(_ut)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.js'), encoding='utf-8').read()) if _ut else ''
+UT_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.css'), encoding='utf-8').read()
 _fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
 FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -510,7 +518,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style><style>{HUB_CSS}</style></head><body>
+</style><style>{HUB_CSS}</style><style>{UT_CSS}</style></head><body>
 <header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
@@ -521,6 +529,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-cards" aria-controls="p-cards" data-tab="cards">🎴 Cards</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
+<button role="tab" id="t-units" aria-controls="p-units" data-tab="units">🗂 Units by theme</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
@@ -553,6 +562,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
 <section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
+<section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
 {curve_panel}
 {decks_panel}
 {dialogues_panel}
@@ -640,6 +650,7 @@ document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
 const SEARCH = {SEARCH_JSON};
 {HUB_JS}
 {SC_INLINE}
+{UT_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)

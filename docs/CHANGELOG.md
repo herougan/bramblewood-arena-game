@@ -2,6 +2,26 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package UC: units by theme)
+- **Owner (08:49): "let's separate the units thematically? Then we pick and choose, then do post-balancing — meaning we apply skills post-facto. Dangerous versions of a biome monster can come later in the game."**
+- **The catalogue** is `canonical/unit-themes.json`, written by `node tools/unit_themes.js`. It covers 725 creature cards: 721 live and 4 still in the pool.
+  - Each one is tagged with its biomes (21; the main one first), its family (20), its faction (16: the Otters, the Hummingbirds, the lore bible's sub-factions, the beasts and the wild), its size and its road stage.
+  - Its **base body** (Lumber, Wait, Attack, Health, damage type, resists) is kept apart from its current skills.
+  - The tags come from the maps' identities, the archetypes and species, names and emoji. A hand-checked table of 22 overrides comes on top, each with its reason.
+- **Dangerous versions later:** the variant convention.
+  - "Dire" is one road stage later: Attack ×1.4, Health ×1.5, +1 Lumber, rarity +1.
+  - "Elder" is two stages later: ×1.8 / ×2.0, +1 Lumber, +1 Wait, rarity +2.
+  - "Ancient" is three stages later: ×2.3 / ×2.6, +2 Lumber, +1 Wait, rarity +3.
+  - The draft body is fitted under budget v3, with room left for skills, and its skills are applied later.
+  - 39 cards are already such versions (Old Snapjaw, the Alphas and Matriarchs, the Kits and Hatchlings, the tortoise line up to the Dragon-Turtle).
+  - **108 later versions are proposed** (77 Dire, 31 Elder), 1–2 for each biome and family with an early creature. They are rows marked `proposed`, not cards.
+- **The hub's 🗂 Units by theme tab:**
+  - Filter and group by biome, family, faction, map, rarity and live / pool / proposed. Tiles show the art or emoji, the base body, and "Skills · applied later". Tiles come 120 at a time.
+  - A **per-map picker**: "Picking for" a map, a checkbox on each tile, and a strip with each map's picked count. Picks save in the artifact's db (collection `unitPicks`, `{map, unit, picked, updatedAt}`). Without db, a read-only note and Copy JSON.
+  - A **🧰 Post-balance queue** lists each picked unit's remaining work: create, place, re-stage or give skills.
+  - The hub must be published with `capabilities: {db: {}}`.
+- `tools/hub/pull_unit_picks.md` says how Claude reads the picks and works the queue, with `tools/hub/unit_picks_queue.js`. New test `tests/unit-themes-2026-10-19.js` (in run-all).
+
 ## 2026-10-19 (package BR: the raid's battle rating)
 - **Owner (08:18): "The raid's BR is being calculated wrongly ... the total of their 3 20-card decks and any other bonus ... played straight away ×2 ... our total BR = sum of total BR with leaders contributing 2×."** The raid now uses the same per-card rating as every fight (rarity weight × level factor; raid and ally cards at their starting level, yours at your copies' levels).
 - **Boss BR** = its 3 rows, each a 20-card deck of the part's cards (scaled to 20 like any enemy deck) + every card on its board at the start counted again (×2; a guard, e.g. the Core's stumps, which isn't in the deck, counts 2× its own) + a boss unit for each boss-unit round in the fight (3/7/11/15/19), each × (Health + the super whales' bonus) / Health + the Commons it can call in (its reinforce tuning). Stat shares, a stage's +Attack/+Health and the brambles' Health are left out, as in every fight's BR.
