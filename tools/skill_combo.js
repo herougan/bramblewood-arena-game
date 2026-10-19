@@ -242,7 +242,10 @@ function scenarioEntries(table, scen){
     const ws = list.map(r=> r.w).filter(x=> x != null); if(!ws.length){ out['trigger:' + id] = {why:'the scenario did not move the win rate enough to divide by On Spawn'}; return; }
     // the weight's standard error from both solves (a ratio)
     const ses = list.filter(r=> r.w != null && r.se != null && r.refSe != null).map(r=> Math.abs(r.w) * Math.sqrt(Math.pow(r.se / Math.max(0.3, Math.abs(r.S)), 2) + Math.pow(r.refSe / Math.max(0.3, Math.abs(r.refS)), 2)));
-    const w = mean(ws), se = ses.length ? mean(ses) / Math.sqrt(ses.length) : null;
+    // ... and the spread across the baselines (2026-10-19: a weight moves more with the baseline than with the seeds; the
+    // standard error of the mean of the three is the honest one)
+    const w = mean(ws), sd = ws.length > 1 ? Math.sqrt(ws.reduce((t, x)=> t + (x - w) * (x - w), 0) / (ws.length - 1)) / Math.sqrt(ws.length) : null;
+    const se = ses.length || sd != null ? Math.max(ses.length ? mean(ses) / Math.sqrt(ses.length) : 0, sd || 0) : null;
     out['trigger:' + id] = {measuredS: r2(w), se: se == null ? null : r2(se), conf: confOf(w, se, list.some(r=> r.clamp)), how: 'scenario: ' + sc.why, at: list.map(r=> ({b:r.b, S:r.S, refS:r.refS, w:r.w})),
       perN: sc.charge ? Object.fromEntries([1, 2, 3].map(n=> [n, r2(mean(by('trigger', id).filter(r=> r.n === n && r.w != null).map(r=> r.w)) || 0)])) : undefined}; });
   const tbl = (f, id)=> (table[f] || []).find(e=> e.id === id) || {};
@@ -251,7 +254,10 @@ function scenarioEntries(table, scen){
     const e = m.kind === 'skill' ? tbl('skills', m.id) : {};
     const f = r=> m.kind === 'skill' ? (e.scale === 'n' ? Math.max(1, r.value) : e.scale === 'half' ? 1 + (r.value > 1 ? Math.floor(r.value / 2) : 0) : 1) : m.kind === 'shorthand' ? r.value : (m.per || 1);
     const vs = list.map(r=> r.S / f(r)), se = mean(list.map(r=> (r.se || 0) / f(r))) / Math.sqrt(list.length), v = mean(vs);
-    out[key] = {measuredS: r2(v), se: r2(se), conf: confOf(v, se, list.every(r=> r.clamp)), off: list.every(r=> r.clamp) ? list[0].clamp : null, how: `damage-equivalent in a mixed deck: ${MIX_K} copies among 20 vanilla, inverted on ${MIX_K} copies of On Spawn: Damage D (D 0-48) vs the mirror and SW's calibrated mix, ${MIX_G} games a point; S = D × the damage action's measuredS per point${list.every(r=> r.clamp) ? ' (beyond the ladder: more than Damage 48, a kill a play, so only a bound)' : ''}`, D: r2(mean(list.map(r=> r.D))), at: list.map(r=> ({b:r.b, n:r.value, D:r.D, S:r.S, se:r.se, clamp:r.clamp}))}; });
+    // always low confidence (2026-10-19): the bridge entries put the damage-equivalent at 0.15x to 2.6x SW's 20-copy S (Armor,
+    // Poison, Quick under; Sweep over), so it ranks these entries and bounds the removals, it does not price them on SW's scale
+    const all = list.every(r=> r.clamp), some = list.some(r=> r.clamp);
+    out[key] = {measuredS: r2(v), se: r2(se), conf: 'low', off: all ? list[0].clamp : null, how: `damage-equivalent in a mixed deck: ${MIX_K} copies among 20 vanilla, inverted on ${MIX_K} copies of On Spawn: Damage D (D 0-48) vs SW's calibrated mix, ${MIX_G} games a point; S = D × the damage action's measuredS per point (low confidence: the bridge puts this scale at 0.15-2.6x SW's)${all ? '; beyond the ladder on every baseline: more than Damage 48 (a kill a play), so only a bound' : some ? '; beyond the ladder on ' + list.filter(r=> r.clamp).map(r=> r.b).join(', ') + ' (a bound there)' : ''}`, D: r2(mean(list.map(r=> r.D))), at: list.map(r=> ({b:r.b, n:r.value, D:r.D, S:r.S, se:r.se, clamp:r.clamp}))}; });
   ['crepuscular', 'crepuscularHp'].forEach(id=>{ const r = scen.find(x=> x.kind === 'skill' && x.id === id && !x.error); if(!r) return;
     out['skill:' + id] = {measuredS: r2(r.S), se: r.se, conf: confOf(r.S, r.se, r.clamp), how: id === 'crepuscular' ? 'SW\'s measure in a fixed twilight ({"phase":"twilight"}), b2' : 'S(Crepuscular + Crepuscular Hp 1) − S(Crepuscular) in a fixed twilight, b2', field:'twilight'}; });
   return out;
