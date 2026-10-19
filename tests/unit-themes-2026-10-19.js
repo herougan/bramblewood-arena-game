@@ -7,6 +7,8 @@
 //   4. the hand-checked overrides are used and counted; the variant rows are well-formed: existing ones point at real cards,
 //      proposed ones at a live early base, a later map of a known biome, a stepped-up rarity, an unchanged-or-bigger body inside budget
 //      v3, no skills (applied later), an id that is not a card; 1-2 per biome + family;
+//   4b. (2026-10-19, package UT) every unit carries its card's animal; proposed variants have thematic name proposals and N-based
+//      bodies (player units); the non-player units (the raid's boss units, raid bosses) keep multipliers;
 //   5. the hub has the 🗂 Units by theme tab: the data inlined, db collection "unitPicks" with {map, unit, picked, updatedAt},
 //      read-only note + Copy JSON when db is null, no localStorage for the picks, the post-balance queue; tools/hub/pull_unit_picks.md
 //      and tools/hub/unit_picks_queue.js work on a sample.
@@ -77,7 +79,11 @@ const perGroup = {};
 prop.forEach(u=>{ const v = u.variant || {}, base = byId[v.of], tier = V.variantTiers.find(t=> t.id === v.tier);
   ok(v.kind === 'proposed' && tier && tier.proposable !== false, `4. ${u.id} has a proposable tier`);
   ok(!cardIds.has(u.id) && u.id === v.tier + '-' + v.of, `4. ${u.id} is not a card id and names its base`);
-  ok(u.name === tier.prefix + ' ' + (base && base.name), `4. ${u.id} is named "${tier && tier.prefix} <base>"`);
+  // 2026-10-19 (package UT, owner 09:52: "Dire and Elder are internal naming"): the internal name keeps the prefix; the name is a thematic proposal
+  ok(u.internalName === tier.prefix + ' ' + (base && base.name) && u.nameProposal === true && u.name && !/^(Dire|Elder|Ancient) /.test(u.name), `4. ${u.id} has a thematic name proposal ("${u.name}"), internal "${tier && tier.prefix} <base>"`);
+  // "They should balance based on N, based on their rarity and resource requirement. Unless this are non-player units."
+  ok(u.variant.audience === 'player' && u.variant.statsFrom === 'N' && u.variant.multDraft && u.variant.multDraft.mult, `4. ${u.id} is a player variant with its stats from N (the old multiplier draft kept apart)`);
+  ok(u.animal && base && u.animal === base.animal, `4. ${u.id} keeps its base's animal`);
   ok(base && base.status === 'live' && base.stage <= 2, `4. ${u.id} comes from a live early creature`);
   ok(MAPIDS.has(v.map) && T.maps.find(m=> m.id === v.map).no > base.firstMap, `4. ${u.id} lives on a later map (${v.map})`);
   ok(u.biomes[0] === base.biomes[0] && u.family === base.family, `4. ${u.id} keeps its base's biome and family`);
@@ -86,8 +92,18 @@ prop.forEach(u=>{ const v = u.variant || {}, base = byId[v.of], tier = V.variant
   ok(!u.skills.length, `4. ${u.id} has no skills (applied later)`);
   const b = calc.budget({cost: u.body.cost, wait: u.body.wait, attack: u.body.attack, health: u.body.health, rarity: u.rarity, effects: {}, source: {kind: 'map'}});
   ok(b.ok, `4. ${u.id} base body is inside budget v3 (2A+H ${b.x1} < N ${b.N})`);
+  ok(b.x1 <= b.N * V.variantFit + 1e-9 && b.x1 >= b.N * V.variantFit - 4, `4. ${u.id} body fills about ${V.variantFit} of N (2A+H ${b.x1}, N ${b.N})`);
   const k = base.biomes[0] + '|' + base.family; perGroup[k] = (perGroup[k] || 0) + 1; });
 Object.entries(perGroup).forEach(([k, n])=> ok(n >= 1 && n <= 2, `4. ${k} has 1-2 proposals (${n})`));
+
+// 4b. animals and non-player units (2026-10-19, package UT)
+T.units.filter(u=> u.status !== 'proposed').forEach(u=>{ const c = cards.find(x=> x.id === u.id);
+  ok(u.animal && u.animal === c.animal && u.animalGroup && (u.subtype || null) === (c.subtype || null), `4b. ${u.id} carries its card's animal (${u.animal}) and group`); });
+ok(V.subtypes && V.subtypes.length >= 5 && V.animalGroups && V.animalGroups.length >= 50, '4b. the vocabulary lists the subtypes and animal groups');
+ok(T.units.filter(u=> u.base).length === 27 && !T.units.some(u=> u.starterDeck === 'otters'), '4b. the 27 Base cards are marked base, none as the Otters\' starter deck');
+const np = T.nonPlayer || [];
+ok(np.some(n=> n.kind === 'raid-boss-unit' && n.name === 'Leviathan Elder') && np.every(n=> n.audience === 'non-player'), '4b. the non-player units are listed (the raid\'s boss units, the Leviathan Elder among them)');
+np.filter(n=> n.kind === 'raid-boss-unit').forEach(n=> ok(n.statsFrom === 'multipliers' && n.mult && byId[n.of], `4b. ${n.id} keeps its multipliers and names its base`));
 
 // 5. the hub
 const bh = rd('tools/hub/build_hub.py'), tab = rd('tools/hub/units_tab.js');
