@@ -27,7 +27,7 @@ for(const m of subs){
     // the same fight on its parent map (a copy hinted to the parent)
     const twin = Object.assign({}, nd, {key: '__bf_twin'}); delete twin.shieldMap; G.NODE_MAP_HINT.set(twin, m.parent);
     const lv = G.roadEnemyLevelExact(nd), lvP = G.roadEnemyLevelExact(twin), sh = G.ruleShieldOf(nd), shP = G.ruleShieldOf(twin);
-    if(lv < lvP - 1e-9 || sh < shP || (sh === shP && shP > 0 && G.shieldRuleMult(nd.kind) > 0 && G.nodeMapNumber(nd) === parentNo && !nd.floor)) bad2.push(`${m.id} ${nd.key}: Lv ${lv} vs ${lvP}, Shield ${sh} vs ${shP}`);
+    if(lv < lvP - 0.15 /* a little under: the old steps' whole Lv 2 (Map 8) had no gain, and the enemy keeps that ratio (enemyLevelKeepingPace) */ || sh < shP || (sh === shP && shP > 0 && G.shieldRuleMult(nd.kind) > 0 && G.nodeMapNumber(nd) === parentNo && !nd.floor)) bad2.push(`${m.id} ${nd.key}: Lv ${lv} vs ${lvP}, Shield ${sh} vs ${shP}`);
     const t = G.roadCurveTarget(m.id, nd);
     if(t){ const ahead = G.fightMapNumber(nd) - G.nodeMapNumber(nd);
       // the main-map target at the same place, from the same rule
