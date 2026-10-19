@@ -2050,5 +2050,7 @@
  "Card level": "カードのレベル",
  "Base level": "基本レベル",
  "My best": "自分の最高",
- "Show each card at its starting level, or at the highest level you own": "各カードを初期レベル、または手持ちの最高レベルで表示します"
+ "Show each card at its starting level, or at the highest level you own": "各カードを初期レベル、または手持ちの最高レベルで表示します",
+ "Shield {n} (falls as the raid weakens)": "シールド {n}（レイドが弱まるにつれて減少）",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "ボスのいばらは各戦闘をこのシールドで始めます。シールドは体力より先にダメージを受け止め、部位の残り体力に合わせて減っていきます。"
 }

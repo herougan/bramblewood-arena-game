@@ -2050,5 +2050,7 @@
  "Card level": "அட்டை நிலை",
  "Base level": "அடிப்படை நிலை",
  "My best": "என் சிறந்தது",
- "Show each card at its starting level, or at the highest level you own": "ஒவ்வொரு அட்டையையும் அதன் தொடக்க நிலையில், அல்லது உங்களிடம் உள்ள உயர்ந்த நிலையில் காட்டு"
+ "Show each card at its starting level, or at the highest level you own": "ஒவ்வொரு அட்டையையும் அதன் தொடக்க நிலையில், அல்லது உங்களிடம் உள்ள உயர்ந்த நிலையில் காட்டு",
+ "Shield {n} (falls as the raid weakens)": "கேடயம் {n} (ரெய்டு பலவீனமாகும்போது குறையும்)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "முதலாளியின் முட்புதர் ஒவ்வொரு சண்டையையும் இந்தக் கேடயத்துடன் தொடங்குகிறது. அது உயிருக்கு முன் தாக்குதல்களை உறிஞ்சுகிறது, பகுதியின் மீதமுள்ள உயிருடன் குறைகிறது."
 }

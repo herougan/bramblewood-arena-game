@@ -2049,5 +2049,7 @@
  "Card level": "Kartenstufe",
  "Base level": "Grundstufe",
  "My best": "Mein bestes",
- "Show each card at its starting level, or at the highest level you own": "Jede Karte auf ihrer Anfangsstufe zeigen oder auf der höchsten Stufe, die du besitzt"
+ "Show each card at its starting level, or at the highest level you own": "Jede Karte auf ihrer Anfangsstufe zeigen oder auf der höchsten Stufe, die du besitzt",
+ "Shield {n} (falls as the raid weakens)": "Schild {n} (sinkt, wenn der Raid schwächer wird)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Das Dornengestrüpp des Bosses beginnt jeden Kampf mit diesem Schild. Er fängt Treffer vor seiner Gesundheit ab und sinkt mit der verbleibenden Gesundheit des Teils."
 }

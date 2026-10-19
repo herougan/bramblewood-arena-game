@@ -21645,8 +21645,11 @@ function swapOutAllowed(outId, newId){
   return starterDeckCardIds().has(outId) || (o.attack||0) + (o.health||0) <= 3 || o.rarity === 'starter' || o.rarity === 'basic' || !!o.tutorial;
 }
 // The weakest card in the deck: a 1-Attack or 1-Health card first, then the smallest total (only cards swapOutAllowed lets go).
-function weakestDeckCard(exceptId){
-  const defs = getCardDefs(), ids = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== exceptId && !defs[k].isLeader && (!exceptId || swapOutAllowed(k, exceptId)));
+// 2026-10-19 (package MX, owner 22:47: "Swap: For Map 0-1, there are some card swap popups. Don't recommend cards that are lousier
+// than what i have in my deck."): with a card coming in (exceptId), only deck cards it is clearly better than (swapClearlyBetter);
+// none: null, and the swap window doesn't open. opts: {anyCost} (swapClearlyBetter).
+function weakestDeckCard(exceptId, opts){
+  const defs = getCardDefs(), ids = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== exceptId && !defs[k].isLeader && (!exceptId || (swapOutAllowed(k, exceptId) && swapClearlyBetter(defs[exceptId], defs[k], opts))));
   const one = d=> (d.attack||0) <= 1 || (d.health||0) <= 1 ? 0 : 1;
   return ids.sort((a, b)=> one(defs[a]) - one(defs[b]) || ((defs[a].attack||0) + (defs[a].health||0)) - ((defs[b].attack||0) + (defs[b].health||0)) || (defs[a].cost||0) - (defs[b].cost||0))[0] || null;
 }
@@ -21670,11 +21673,34 @@ function strictlyDominates(d, o){
   if(c(d) > c(o) || w(d) > w(o) || a(d) < a(o) || h(d) < h(o) || cardSkillCount(d) < cardSkillCount(o)) return false;
   return c(d) < c(o) || w(d) < w(o) || a(d) > a(o) || h(d) > h(o);
 }
+// SWAP_STRENGTH (2026-10-19, package MX, owner 22:47: "Don't recommend cards that are lousier than what i have in my deck."): a swap is
+// offered only when the card coming in is clearly better than the deck card going out, as the stat budget scores them: its budget
+// score (2A + H + S) x the half-miss multiplier (sbSkillCost / sbMissMult with the shipped skill costs, the same score the budget's
+// first rule checks against N), both at the levels getCardDefs shows them (your best copy: the conservative side for the card going
+// out), in the same cost bracket or a cheaper one (Lumber points: Stone 2, Metal 3; brackets 0 | 1-2 | 3-4 | 5+) and with no more Wait.
+// Clearly better = it strictly dominates the deck card (strictlyDominates) and scores higher, or it scores at least SWAP_CLEAR_MARGIN
+// (10%, and at least 1 point) higher. Equal or weaker: never. opts.anyCost drops the bracket (the Lumber lesson's swap, whose whole point
+// is a card that costs Lumber); the score and the Wait still apply.
+const SWAP_CLEAR_MARGIN = 0.1;
+function swapStrength(d){
+  if(!d) return 0; const cfg = {skills: SB_DEFAULT_SKILLS, halfMiss: SB_HALF_MISS, missMult: 1.5};
+  return Math.round((2 * (+d.attack || 0) + (+d.health || 0) + sbSkillCost(d.effects, cfg)) * sbMissMult(d, cfg) * 100) / 100;
+}
+function swapCostBracket(d){ const c = (+(d && d.cost) || 0) + 2 * (+(d && d.stoneCost) || 0) + 3 * (+(d && d.metalCost) || 0); return c <= 0 ? 0 : c <= 2 ? 1 : c <= 4 ? 2 : 3; }
+function swapClearlyBetter(d, o, opts){
+  if(!d || !o || d.id === o.id || typeof d.attack !== 'number' || typeof o.attack !== 'number') return false;
+  if(!(opts && opts.anyCost) && swapCostBracket(d) > swapCostBracket(o)) return false;
+  if((+d.wait || 0) > (+o.wait || 0)) return false;
+  const a = swapStrength(d), b = swapStrength(o); if(!(a > b)) return false;
+  return strictlyDominates(d, o) || a - b >= Math.max(1, b * SWAP_CLEAR_MARGIN);
+}
+function swapOptsFor(item){ return item && item.teach === 'lumber' ? {anyCost: true} : null; }
+// SWAP_STRENGTH:END
 function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d.isLeader && !isEggRewardCard(d) /* 2026-10-18: eggs hatch in the Nest, never a swap */ && (!d.cardType || d.cardType === 'unit') && d.id !== 'wandering-traveller' && typeof d.attack === 'number' && (d.health || 0) > 0); }
 // The weakest card in your main deck that `id` strictly dominates, or null.
 function dominatedDeckCard(id){
   const defs = getCardDefs(), d = defs[id]; if(!swapEligibleDef(d)) return null;
-  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && strictlyDominates(d, defs[k]));
+  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && strictlyDominates(d, defs[k]) && swapClearlyBetter(d, defs[k])); // + a higher score (2026-10-19, package MX: a dominating card with cheaper skills could score lower)
   const pw = x=> (x.attack||0) + (x.health||0);
   return ids.sort((a, b)=> pw(defs[a]) - pw(defs[b]) || (defs[b].cost||0) - (defs[a].cost||0) || a.localeCompare(b))[0] || null;
 }
@@ -21709,7 +21735,8 @@ function maybeOfferDeckSwap(){
   if((myDeckCounts[id]||0) > 0 && (myDeckCounts[id]||0) >= Math.min(maxCopiesForRarity(d.rarity), copiesOwned(id))){ setTimeout(maybeOfferDeckSwap, 50); return; }
   // 2026-10-15: a forced (teaching) swap trades out the weakest card; any other offer needs a deck card it strictly dominates,
   // after the tutorial swap, and no more than SWAP_OFFERS_MAX of them ever (see strictlyDominates).
-  const out = item.forced ? weakestDeckCard(id) : dominatedDeckCard(id); if(!out){ setTimeout(maybeOfferDeckSwap, 50); return; }
+  const sOpts = swapOptsFor(item); // 2026-10-19 (package MX): only deck cards it is clearly better than; none: no window
+  const out = item.forced ? weakestDeckCard(id, sOpts) : dominatedDeckCard(id); if(!out){ setTimeout(maybeOfferDeckSwap, 50); return; }
   const od = defs[out];
   if(!item.forced){
     if(swapOffersShown() >= SWAP_OFFERS_MAX || !swapTutorialDone() || (d.cost||0) > 0 && !pitchingUnlocked()){ setTimeout(maybeOfferDeckSwap, 50); return; }
@@ -21723,10 +21750,10 @@ function maybeOfferDeckSwap(){
   const pw = k=> (defs[k].attack||0) + (defs[k].health||0);
   const pitchOk = k=> !((defs[k].cost||0) > 0 && !pitchingUnlocked());
   const deckIds = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && swapEligibleDef(defs[k]));
-  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && deckIds.some(o=> swapOutAllowed(o, k)))
+  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && deckIds.some(o=> swapOutAllowed(o, k) && swapClearlyBetter(defs[k], defs[o])))
     .sort((a, b)=> pw(b) - pw(a) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b)).slice(0, 2));
-  const outListFor = inId=>{ const rec = inId === id ? out : (dominatedDeckCard(inId) || weakestDeckCard(inId));
-    const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId)).sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
+  const outListFor = inId=>{ const o2 = inId === id ? sOpts : null, rec = inId === id ? out : (dominatedDeckCard(inId) || weakestDeckCard(inId, o2));
+    const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId) && swapClearlyBetter(defs[inId], defs[k], o2)) // 2026-10-19 (package MX): never a stronger deck card.sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
     return (rec ? [rec] : []).concat(rest).slice(0, 3); };
   let inSel = id, outList = outListFor(id), outSel = out;
   const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (item.teach === 'lumber' ? TX('ui.swap-teach-lumber') : (TEACH_SAY[item.teach] || '')) : item.forced ? `${dIn.attack||0}/${dIn.health||0} in place of ${dOut.attack||0}/${dOut.health||0}.`
@@ -22942,6 +22969,7 @@ function raidPanelHTML(){
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
         ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
+        ${raidShieldLineHTML(def, st) /* 2026-10-19 (package MX): the boss bramble's Shield, 50 falling with the raid */}
         ${(()=>{ const br = raidBrambleOf(def); if(!br) return ''; // 2026-10-19 (package U3): the boss's bramble and its attacks, with the parts that use each
           const seen = new Map(); (def.parts || []).forEach(p=>{ let atks = []; try{ atks = TrenchM.trenchConfig(def, p, st.stage).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
             atks.forEach(a=>{ const k = (a.name || '') + '|' + a.pattern + '|' + a.every + '|' + a.dmg; if(!seen.has(k)) seen.set(k, {a, parts: []}); seen.get(k).parts.push(p.name); }); });
@@ -23591,9 +23619,15 @@ function startRaidFullBattle(def, partId, f, st){
     me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
   const vsBramble = raidBrambleOf(def, f.part && f.part.id); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
-    bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks)} : null},
+    bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks), shield: b.raidShield && b.raidShield.shield > 0 ? TX('ui.mx-raid-shield', {n: b.raidShield.shield}) : '', shieldTip: TX('ui.mx-raid-shield-tip')} : null}, // + its Shield (2026-10-19, package MX)
     bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600); }); // + Turn 1's tick (2026-10-19, U3)
 }
+// The raid bramble's Shield line (2026-10-19, package MX, owner 22:47): "Shield N (falls as the raid weakens)" on the raid screen, N the
+// most any open part's bramble opens with now (RaidM.raidShield: 50 on a fresh raid); nothing when the raid's Shield is off.
+function raidShieldNow(def, st){ if(!RaidM || !RaidM.raidShield || !def) return 0; let n = 0;
+  ((st && st.parts) || []).forEach(ps=>{ if(ps.locked || ps.defeated) return; n = Math.max(n, RaidM.raidShield(def, st, ps.id).shield); }); return n; }
+function raidShieldLineHTML(def, st){ const n = raidShieldNow(def, st); if(!(n > 0)) return '';
+  return `<p class="r3-note mx-raid-shield" title="${escapeAttr(TX('ui.mx-raid-shield-tip'))}"><span aria-hidden="true">🔷</span> ${escapeHtml(TX('ui.mx-raid-shield', {n}))}</p>`; }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
 // plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
 // draws; Math.random)}. Returns {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay (the run-only defs), raidRules,
@@ -37153,7 +37187,7 @@ function showVsScreen(left, right){
       </div>`; };
     const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}` : '' /* 2026-10-19 (package U3) */}</div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}${p.bramble.shield ? `<div class="u3-bramble-line mx-raid-shield" title="${escapeAttr(p.bramble.shieldTip || '')}"><span aria-hidden="true">🔷</span> ${escapeHtml(p.bramble.shield)}</div>` : '' /* 2026-10-19 (package MX) */}` : '' /* 2026-10-19 (package U3) */}</div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;

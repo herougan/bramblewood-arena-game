@@ -1211,6 +1211,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sy-syncing-tip": "Saving your decks to your account…",
   "ui.sy-offline-tip": "Can't reach the server. Your decks are safe on this device and will sync when you're back online.",
   "toast.sy-deck-deleted-elsewhere": "The deck “{name}” was deleted on another device, so it's gone from here too.",
+  "ui.mx-raid-shield": "Shield {n} (falls as the raid weakens)",
+  "ui.mx-raid-shield-tip": "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.",
   "ui.ux-copy-on-anvil": "On the anvil",
   "ui.ux-copy-change": "All copies",
   "ui.ux-copy-alt-art": "Alt art",

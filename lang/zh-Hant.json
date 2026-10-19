@@ -2050,5 +2050,7 @@
  "Card level": "卡牌等級",
  "Base level": "初始等級",
  "My best": "我的最高",
- "Show each card at its starting level, or at the highest level you own": "按初始等級顯示每張卡，或按你擁有的最高等級顯示"
+ "Show each card at its starting level, or at the highest level you own": "按初始等級顯示每張卡，或按你擁有的最高等級顯示",
+ "Shield {n} (falls as the raid weakens)": "護盾 {n}（隨突襲減弱而下降）",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "首領的荊棘在每場戰鬥開始時擁有此護盾。它先於生命值吸收傷害，並隨該部位剩餘的生命值下降。"
 }

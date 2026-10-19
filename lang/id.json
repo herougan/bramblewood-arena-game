@@ -2049,5 +2049,7 @@
  "Card level": "Level kartu",
  "Base level": "Level dasar",
  "My best": "Terbaikku",
- "Show each card at its starting level, or at the highest level you own": "Tampilkan setiap kartu di level awalnya, atau di level tertinggi yang kamu punya"
+ "Show each card at its starting level, or at the highest level you own": "Tampilkan setiap kartu di level awalnya, atau di level tertinggi yang kamu punya",
+ "Shield {n} (falls as the raid weakens)": "Perisai {n} (berkurang saat raid melemah)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Semak duri bos memulai setiap pertarungan dengan Perisai ini. Perisai menahan serangan sebelum Nyawanya, dan berkurang seiring sisa Nyawa bagian itu."
 }

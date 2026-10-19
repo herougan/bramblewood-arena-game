@@ -2049,5 +2049,7 @@
  "Card level": "Livello delle carte",
  "Base level": "Livello base",
  "My best": "Il mio migliore",
- "Show each card at its starting level, or at the highest level you own": "Mostra ogni carta al suo livello iniziale o al livello più alto che possiedi"
+ "Show each card at its starting level, or at the highest level you own": "Mostra ogni carta al suo livello iniziale o al livello più alto che possiedi",
+ "Shield {n} (falls as the raid weakens)": "Scudo {n} (cala man mano che il raid si indebolisce)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Il rovo del boss inizia ogni scontro con questo scudo. Assorbe i colpi prima della sua salute e cala con la salute rimasta alla parte."
 }

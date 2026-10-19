@@ -2050,5 +2050,7 @@
  "Card level": "카드 레벨",
  "Base level": "기본 레벨",
  "My best": "내 최고",
- "Show each card at its starting level, or at the highest level you own": "각 카드를 시작 레벨이나 가지고 있는 가장 높은 레벨로 보여 줘요"
+ "Show each card at its starting level, or at the highest level you own": "각 카드를 시작 레벨이나 가지고 있는 가장 높은 레벨로 보여 줘요",
+ "Shield {n} (falls as the raid weakens)": "보호막 {n} (레이드가 약해질수록 줄어듦)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "보스의 가시덤불은 매 전투를 이 보호막으로 시작합니다. 보호막은 체력보다 먼저 피해를 막고, 부위의 남은 체력에 따라 줄어듭니다."
 }

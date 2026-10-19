@@ -2048,5 +2048,7 @@
  "Card level": "Antas ng card",
  "Base level": "Panimulang antas",
  "My best": "Pinakamagaling ko",
- "Show each card at its starting level, or at the highest level you own": "Ipakita ang bawat card sa panimulang antas nito, o sa pinakamataas na antas na hawak mo"
+ "Show each card at its starting level, or at the highest level you own": "Ipakita ang bawat card sa panimulang antas nito, o sa pinakamataas na antas na hawak mo",
+ "Shield {n} (falls as the raid weakens)": "Kalasag {n} (bumababa habang humihina ang raid)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Sinisimulan ng tinik ng boss ang bawat laban gamit ang Kalasag na ito. Sinasalo nito ang mga tama bago ang Buhay nito, at bumababa ito kasabay ng natitirang Buhay ng bahagi."
 }

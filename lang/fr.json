@@ -2050,5 +2050,7 @@
  "Card level": "Niveau des cartes",
  "Base level": "Niveau de base",
  "My best": "Mon meilleur",
- "Show each card at its starting level, or at the highest level you own": "Afficher chaque carte à son niveau de départ, ou au plus haut niveau que vous possédez"
+ "Show each card at its starting level, or at the highest level you own": "Afficher chaque carte à son niveau de départ, ou au plus haut niveau que vous possédez",
+ "Shield {n} (falls as the raid weakens)": "Bouclier {n} (diminue à mesure que le raid faiblit)",
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "La ronce du boss commence chaque combat avec ce bouclier. Il encaisse les coups avant sa santé et diminue avec la santé restante de la partie."
 }
