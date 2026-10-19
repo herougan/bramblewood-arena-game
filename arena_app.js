@@ -39282,8 +39282,9 @@ function cleavePlan(events, i){
 }
 // 2026-10-19 (package BU, owner on an iPhone: "Cleave doesn't look so nice on mobile. Also, it is not centered."): the swing's three
 // points are the target's column and its two neighbours IN THE TARGET'S ROW, read from that row's own cells (their screen rects).
-// A side event's target is used only when it stands in that same row: a Confused cleaver's side blow lands on its OWN row (its ally
-// beside it), which put the crescent's end in the other row and drew a huge loop from the bottom-left corner across the board.
+// A side event's target is used only when its element stands in that same row (and within half a card of its height): in the owner's
+// screenshot the crescent began at our row's empty left slot and ended on an ENEMY card (the side point had been read from an element
+// in the other row), a huge loop from the bottom-left corner across the board. Whatever puts a side point elsewhere, it now can't.
 function cleaveSlots(evL, evM, evR){
   const Mel = evM && boardCardEl(evM.targetUid); if(!Mel) return null;
   const c = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height}; };

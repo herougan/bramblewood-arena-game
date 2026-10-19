@@ -28,7 +28,7 @@ R({id:'atk-evade-evasive', stage:'board', inGameHook:'labSkillFx evaded → Skil
   ]});
 
 // 31: one Cleave swing, slots 0.2 s apart in time with the blade
-// 2026-10-19 (package BU): stray = a Confused cleaver's right-hand blow lands on its own row (its ally); the crescent stays on the target row.
+// 2026-10-19 (package BU): stray = the right-hand point comes in from the other row (the owner's loop); the crescent stays on the target row.
 function cleaveDemo(ctx, outcomes, stray){
   const a = mine(ctx)[1], f = foe(ctx), pts = [C(f[0]), C(f[1]), stray ? C(mine(ctx)[2]) : C(f[2])];
   S().cleaveSwing(a, pts, {windup:T.windup, step:200}); ctx.float(a, '🪓 Cleave!', 'quick');
@@ -46,7 +46,7 @@ R({id:'atk-cleave', stage:'board', inGameHook:'resolveRound groups the sides and
   variants:[
     {key:'G', label:'One arc: hit, hit, hit', play:ctx=> cleaveDemo(ctx, ['hit', 'hit', 'hit'])},
     {key:'H', label:'Empty left slot, dodge on the right: whoosh, hit, Evaded', play:ctx=> cleaveDemo(ctx, ['whoosh', 'hit', 'miss'])},
-    {key:'I', label:'Confused: the right blow hits its own ally (the crescent stays on the target row)', play:ctx=> cleaveDemo(ctx, ['hit', 'hit', 'hit'], true)},
+    {key:'F', label:'A stray point in the other row (the 10-19 loop): the crescent stays on the target row', play:ctx=> cleaveDemo(ctx, ['hit', 'hit', 'hit'], true)},
   ]});
 R({id:'atk-sweep-whiff', stage:'board', inGameHook:'sweepWhiff inside a Cleave group: "whoosh" as the blade passes (no lunge at the empty slot)', variants:[
   {key:'G', label:'Inside the swing: whoosh at the empty slot', play:ctx=> cleaveDemo(ctx, ['whoosh', 'hit', 'whoosh'])}]});

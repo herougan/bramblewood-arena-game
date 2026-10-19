@@ -36406,7 +36406,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4fadbff64b", "es": "assets/lang/es.js?v=5068452bee", "fr": "assets/lang/fr.js?v=f93085b58b", "id": "assets/lang/id.js?v=6728a7ddb9", "it": "assets/lang/it.js?v=193b7f5e17", "ja": "assets/lang/ja.js?v=90503608f9", "ko": "assets/lang/ko.js?v=260c8b54e4", "pt": "assets/lang/pt.js?v=1a114bc0ce", "ta": "assets/lang/ta.js?v=62897bd60e", "tl": "assets/lang/tl.js?v=4b052e45ac", "zh-Hans": "assets/lang/zh-Hans.js?v=ac1e5e989f", "zh-Hant": "assets/lang/zh-Hant.js?v=a581520309"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=5403040b1d", "es": "assets/lang/es.js?v=6806b42fbb", "fr": "assets/lang/fr.js?v=f30e344ada", "id": "assets/lang/id.js?v=09eda89f30", "it": "assets/lang/it.js?v=9974b28a50", "ja": "assets/lang/ja.js?v=58f4d17033", "ko": "assets/lang/ko.js?v=99396e575f", "pt": "assets/lang/pt.js?v=32db56da05", "ta": "assets/lang/ta.js?v=dca88ad9c4", "tl": "assets/lang/tl.js?v=b53a1ea7b8", "zh-Hans": "assets/lang/zh-Hans.js?v=57cf4e9286", "zh-Hant": "assets/lang/zh-Hant.js?v=e7eda5ab4c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -40802,7 +40802,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b79a747004f1', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = '6cdeaed00514', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -77307,8 +77307,9 @@ function cleavePlan(events, i){
 }
 // 2026-10-19 (package BU, owner on an iPhone: "Cleave doesn't look so nice on mobile. Also, it is not centered."): the swing's three
 // points are the target's column and its two neighbours IN THE TARGET'S ROW, read from that row's own cells (their screen rects).
-// A side event's target is used only when it stands in that same row: a Confused cleaver's side blow lands on its OWN row (its ally
-// beside it), which put the crescent's end in the other row and drew a huge loop from the bottom-left corner across the board.
+// A side event's target is used only when its element stands in that same row (and within half a card of its height): in the owner's
+// screenshot the crescent began at our row's empty left slot and ended on an ENEMY card (the side point had been read from an element
+// in the other row), a huge loop from the bottom-left corner across the board. Whatever puts a side point elsewhere, it now can't.
 function cleaveSlots(evL, evM, evR){
   const Mel = evM && boardCardEl(evM.targetUid); if(!Mel) return null;
   const c = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height}; };

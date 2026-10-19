@@ -78,7 +78,7 @@ ok(/function hqRibbonFloatAnchor\(side\)\{[^]*?const track = rib\.querySelector\
 ok(/const onBar = !!\(el\.classList && el\.classList\.contains\('hq-float-anchor'\)\);\s*const dx = onBar \? 0 :/.test(src), 'and does not drift sideways');
 
 // ---- 3. Cleave: the crescent on the target's row, sized to the card
-ok(/function cleaveSlots\(evL, evM, evR\)\{[^]*?\(t && t\.parentElement === row\) \? t : sib\(d\)/.test(src), 'a side blow is used only when it lands in the target\'s row (a Confused cleaver hits its own row)');
+ok(/function cleaveSlots\(evL, evM, evR\)\{[^]*?\(t && t\.parentElement === row\) \? t : sib\(d\)/.test(src), 'a side point is used only when its element is in the target\'s row (the 10-19 loop came from a point in the other row)');
 ok(/function crescentSlash\(pts, away, t0, tipEnd, o\)/.test(sfx) && /thick = Math\.max\(4, Math\.min\(14, cw\*0\.18\)\)/.test(sfx) && !/Math\.max\(34, Math\.abs\(P2\.x - P0\.x\)\*0\.16\)/.test(sfx), 'the crescent is sized to the card (no 34 px minimum bow)');
 ok(/crescentSlash\(P\.map\(/.test(sfx), 'cleaveSwing draws the crescent');
 

@@ -17862,8 +17862,8 @@
   "area": "raid-dungeon-pvp",
   "name": "Tentacle Smack (whole column)",
   "trigger": "special attack column",
-  "current": "telegraph + hits",
-  "quality": "basic — no tentacle",
+  "current": "a drawn SVG tentacle slams down the column (220 ms), squash + shake + smoke, pulls back fading (350 ms); reduced motion: a flash (2026-10-19, BU)",
+  "quality": "good",
   "priority": 2,
   "themeNotes": "Tentacle slams down the column.",
   "variantsSuggested": false,
@@ -17875,6 +17875,25 @@
   "status": "live",
   "lab": "f.js",
   "inGameHook": "onEvent: raidSmack (column)"
+ },
+ {
+  "id": "raid-tentacle-row-smack",
+  "area": "raid-dungeon-pvp",
+  "name": "Tentacle Smack (a row)",
+  "trigger": "special attack row (every 2nd smack)",
+  "current": "the drawn tentacle lies along the row from the board's edge, slams down on it (squash, shake, smoke) and pulls back fading (2026-10-19, BU)",
+  "quality": "good",
+  "priority": 2,
+  "themeNotes": "Tentacle slams down across the row.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js raidSpecials (2026-10-18, owner 15:56: row and column smacks)"
+  ],
+  "batch": "F",
+  "status": "live",
+  "lab": "f.js",
+  "inGameHook": "onEvent: raidSmack (kind row)"
  },
  {
   "id": "raid-tail-sweep",
