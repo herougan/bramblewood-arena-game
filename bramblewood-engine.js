@@ -120,6 +120,17 @@
 // ============================================================================
 const CARD_DEFS_GLOBAL = (typeof __CARD_DEFS__ !== 'undefined') ? __CARD_DEFS__ : null;
 
+// Package SK2 (2026-10-19, owner 21:36; the rules are in makeSimEngine's SK2 block): every number of the economy and structure skills,
+// one table (top level, so the app's card lines read the same defaults). A fight overrides any of them with opts.sk2.
+const SK2_DEFAULTS = Object.freeze({
+  harvestChance: 0.5, harvestLumber: 1,                                  // Harvest: the odds a swing harvests instead; Lumber a harvest pays
+  scavengeN: 1, scavengeEvery: 3, scavengeLumber: 1, scavengeRange: 1,   // Scavenge N, M: points a death; M points -> Lumber; within 1 column
+  repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
+  foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
+  millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks
+  pickpocketN: 1, sabotageN: 1, arsonN: 1,                               // what a plain (true) Pickpocket / Sabotage / Arson takes
+  fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {}, // the Palisade 0/6; every K turns (0: on play only); its look
+});
 function otherId(id){ return id===1?2:1; }
 function mulberry32(seed){
   return function(){
@@ -5918,15 +5929,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Fortification   on play it builds a 0/6 Palisade (a Structure token, no skills; the Thornwood Palisade's look) in an empty slot
   //                   beside it (a coin flip when both are free; none free: nothing). SK2.fortifyEvery K > 0: also every K turns while Ready.
   // A Waiting, Stunned, Frozen or Asleep unit doesn't Repair, Forage or Mill that turn (they are its upkeep actions).
-  const SK2_DEFAULTS = {
-    harvestChance: 0.5, harvestLumber: 1,
-    scavengeN: 1, scavengeEvery: 3, scavengeLumber: 1, scavengeRange: 1,
-    repairN: 2, repairBrambleRate: 0.5, repairRange: 1,
-    foragingN: 3, foragingBerries: 3, foragingGather: 1,
-    millingN: 1, millingAttacks: true,
-    pickpocketN: 1, sabotageN: 1, arsonN: 1,
-    fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {},
-  };
   const SK2 = Object.assign({}, SK2_DEFAULTS, (opts && opts.sk2) || {});
   const SK2_RES_RANK = ['lumber', 'stone', 'metal', 'uranium']; // lowest rank first
   const SK2_STEALABLE = ['prayerTokens', 'sk2Berries', 'sk2Scavenge', 'creativity']; // counters Pickpocket takes, in this order (append new token kinds)
@@ -7818,3 +7820,4 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 if(typeof module !== 'undefined' && module.exports){
   module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
+if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS; // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests

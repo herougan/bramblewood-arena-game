@@ -150,7 +150,8 @@ const sk2Ev = (ev, kind)=> ev.filter(x=> x.type === 'sk2' && x.kind === kind);
 // ---- 9. Wiring: the engine block is self-contained, every number is a parameter
 const eng = R('bramblewood-engine.js');
 const blk = eng.slice(eng.indexOf('[SK2 BEGIN]'), eng.indexOf('[SK2 END]'));
-ok(blk.length > 2000 && /const SK2_DEFAULTS = \{/.test(blk) && /Object\.assign\(\{\}, SK2_DEFAULTS, \(opts && opts\.sk2\) \|\| \{\}\)/.test(blk), 'the SK2 block with SK2_DEFAULTS, overridable with opts.sk2');
+ok(blk.length > 2000 && /^const SK2_DEFAULTS = Object\.freeze\(\{/m.test(eng) && /Object\.assign\(\{\}, SK2_DEFAULTS, \(opts && opts\.sk2\) \|\| \{\}\)/.test(blk), 'the SK2 block reads the top-level SK2_DEFAULTS, overridable with opts.sk2');
+const D = E.SK2_DEFAULTS; ok(D && D.harvestChance === 0.5 && D.harvestLumber === 1 && D.scavengeN === 1 && D.scavengeEvery === 3 && D.repairN === 2 && D.repairBrambleRate === 0.5 && D.foragingN === 3 && D.foragingBerries === 3 && D.millingN === 1 && D.millingAttacks === true && D.pickpocketN === 1 && D.sabotageN === 1 && D.arsonN === 1 && D.fortifyAtk === 0 && D.fortifyHp === 6 && D.fortifyEvery === 0 && Object.isFrozen(D), 'SK2_DEFAULTS: the defaults, exported and frozen');
 ok(/function isStructureCard\(c\)\{[^\n]*d\.cardType === 'structure'/.test(eng), 'isStructureCard: the one structure test includes cardType structure');
 
 console.log(fail ? `skills-sk2-2026-10-19: ${fail} of ${n} checks FAILED` : `skills-sk2-2026-10-19: all ${n} checks passed`); process.exit(fail ? 1 : 0);
