@@ -85,7 +85,7 @@ function oldBudget(d){ const e = d.effects || {}, k = d.rarity || 'common', rank
   const L = (d.faction || d.id==='wandering-traveller') ? 1 : ((d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1);
   const W = +d.wait||0, C = +d.cost||0, rit = e.ritual && typeof e.ritual === 'object' ? Object.values(e.ritual).reduce((a, b)=> a + (+b||0), 0) : 0;
   // 2026-10-19 (package BF2): N is budget v5, (Base + L/5) x (1 + L/30), Level 0 Base - 1; Base = v3's N without its 2L
-  const base = 20 + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit, N = Math.round((L ? (base + L / 5) * (1 + L / 30) : base - 1) * 100) / 100;
+  const base = 20 + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit + 0.2 * T.obtainMapOf(d) /* + the map term (BF2, 15:25) */, N = Math.round((L ? (base + L / 5) * (1 + L / 30) : base - 1) * 100) / 100;
   let S = 0; Object.entries(e).forEach(([key, v])=>{ if(key === 'triggers' || key === 'bounty') return; // the two the new model prices differently
     if(APPLIED.has(key)) return; // applied measured worth (2026-10-19): not the frozen value any more
     const rule = OLD[key], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);

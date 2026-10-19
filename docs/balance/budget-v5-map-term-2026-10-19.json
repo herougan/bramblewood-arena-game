@@ -1,0 +1,148 @@
+{
+ "_about": "Budget v5 with Base + 0.2 x Map (owner 15:25) against v5 without it (node tools/forge_curve_2026_10_19.js mapterm).",
+ "cards": 744,
+ "atL1": {
+  "pass": 718,
+  "passNoMap": 708,
+  "in": [
+   {
+    "id": "great-horned-owl",
+    "name": "Great Horned Owl",
+    "map": 15
+   },
+   {
+    "id": "gorge-wyrm",
+    "name": "Gorge Wyrm",
+    "map": 20
+   },
+   {
+    "id": "cave-warlord",
+    "name": "Cave Warlord",
+    "map": 20
+   },
+   {
+    "id": "venomlord-serpent",
+    "name": "Venomlord Serpent",
+    "map": 5
+   },
+   {
+    "id": "sand-widow",
+    "name": "Sand Widow",
+    "map": 18
+   },
+   {
+    "id": "permafrost-mammoth",
+    "name": "Permafrost Mammoth",
+    "map": 22
+   },
+   {
+    "id": "barnacle-fortress",
+    "name": "Barnacle Fortress",
+    "map": 9
+   },
+   {
+    "id": "ember-revenant",
+    "name": "Ember Revenant",
+    "map": 19
+   },
+   {
+    "id": "sea-cucumber",
+    "name": "Sea Cucumber",
+    "map": 10
+   },
+   {
+    "id": "giant-cave-huntsman",
+    "name": "Giant Cave Huntsman",
+    "map": 8
+   }
+  ],
+  "out": []
+ },
+ "atStart": {
+  "pass": 718,
+  "passNoMap": 708,
+  "in": [
+   {
+    "id": "great-horned-owl",
+    "name": "Great Horned Owl",
+    "map": 15,
+    "N0": 55.08,
+    "N": 58.18,
+    "x1": 57.81
+   },
+   {
+    "id": "gorge-wyrm",
+    "name": "Gorge Wyrm",
+    "map": 20,
+    "N0": 71.09,
+    "N": 75.23,
+    "x1": 73.46
+   },
+   {
+    "id": "cave-warlord",
+    "name": "Cave Warlord",
+    "map": 20,
+    "N0": 88.97,
+    "N": 93.1,
+    "x1": 91.44
+   },
+   {
+    "id": "venomlord-serpent",
+    "name": "Venomlord Serpent",
+    "map": 5,
+    "N0": 61.28,
+    "N": 62.31,
+    "x1": 62.06
+   },
+   {
+    "id": "sand-widow",
+    "name": "Sand Widow",
+    "map": 18,
+    "N0": 46.29,
+    "N": 50.01,
+    "x1": 46.51
+   },
+   {
+    "id": "permafrost-mammoth",
+    "name": "Permafrost Mammoth",
+    "map": 22,
+    "N0": 61.28,
+    "N": 65.82,
+    "x1": 63.76
+   },
+   {
+    "id": "barnacle-fortress",
+    "name": "Barnacle Fortress",
+    "map": 9,
+    "N0": 33.17,
+    "N": 35.03,
+    "x1": 33.7
+   },
+   {
+    "id": "ember-revenant",
+    "name": "Ember Revenant",
+    "map": 19,
+    "N0": 43.71,
+    "N": 47.64,
+    "x1": 46.85
+   },
+   {
+    "id": "sea-cucumber",
+    "name": "Sea Cucumber",
+    "map": 10,
+    "N0": 34.2,
+    "N": 36.27,
+    "x1": 35.52
+   },
+   {
+    "id": "giant-cave-huntsman",
+    "name": "Giant Cave Huntsman",
+    "map": 8,
+    "N0": 42.99,
+    "N": 44.64,
+    "x1": 43.47
+   }
+  ],
+  "out": []
+ }
+}

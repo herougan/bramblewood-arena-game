@@ -371,6 +371,13 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** v5, L/3 unless it favours weak cards too much
 - **Outcome:** Owner 13:52: "Oh shit to the balance. That's too much. ... maybe instead: (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." 13:54: "if you think it favours weak cards too much (low rarity, wait, or resource count), then change it to L/4 or L/5." Measured (docs/balance/level-curve-2026-10-19c.md): weak cards' Lv 10 stat growth is 1.82x the strong cards' with L/3, 1.74x with L/4, 1.65x with L/5 (Rare+ with 3+ Wait and 3+ Lumber; 1.46 / 1.40 / 1.31 against Rare+ with 3+ Wait or Lumber). None meets the 1.3x rule, so the budget uses L/5, the closest (levelLinDiv in bramblewood-budget.js and canonical/skill-costs.json). Most of the gap comes from the absolute conversion, not the divisor. Budget v5: N = (Base + L/5) x (1 + L/30) for Level 1 and up, Base - 1 at Level 0; Base = 20 + Rarity + 6W + 0.5W^2 + 4 Lumber + 0.4 Lumber^2 + Ritual points. The Forge curve keeps majors 4/7/10, minor 2 and the limit break 11 on v5's gain: the mean card is +6% at Lv 2, +27% at Lv 4 and +96% at Lv 10.
 
+**B9. Limit break comes in waves; older cards get a bigger step** · Decide · Balance · asked 2026-10-19 · decided 2026-10-19
+- How should limit breaks (Lv 11 and later caps) treat old cards as the road grows?
+  - One rule for every card
+  - Waves of balance: older cards (earlier maps / older sets) get a bigger limit-break step than newer ones
+- **Default:** Waves
+- **Outcome:** Owner 15:25: "There will be waves of balance during limit break. (Older cards get a bigger step than newer cards.)" Limit break comes in waves of balance; older cards (earlier maps / older sets) get a bigger limit-break step than newer ones. Design only, nothing built: docs/balance/limit-break-waves.md proposes a step x (1 + (W - Map) / 20) with W the newest wave's last map and Map the card's obtain map (the budget's map term), and one more cap level per 10-map wave for cards 10+ maps older than the wave.
+
 ## Stated rules · 2026-10-18
 
 The owner's notes (23:05) on a far-future map and the Legendary ability tier. Pinned by `tests/legendary-2026-10-19.js`.

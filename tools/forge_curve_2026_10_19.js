@@ -16,7 +16,7 @@ const cmd = process.argv[2] || 'budget';
 
 // the curve the game uses (arena_app.js forgeCurveOf: from the card's start level to 11, or its own top)
 const topOf = d=> d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11;
-const curveOf = d=> BB.forgeCurve(d, SC.levelOf(d), topOf(d));
+const curveOf = d=> BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d)}), SC.levelOf(d), topOf(d)); // + Base's map term (BF2, 15:25)
 
 function budgetRows(){
   return CARDS.filter(SC.measured).map(c=>{
@@ -76,6 +76,27 @@ if(cmd === 'budget'){
   if(fixes.length){ md.push('<!-- bf:fixes -->', '| Round | Fight | Kind | Target | Before the round | Tuned to | Moves | Shield | Health |', '|---|---|---|---|---|---|---|---|---|');
     fixes.forEach(x=> md.push(`| ${x.round} | ${x.code} ${x.name} | ${x.kind} | ${f1(x.target)} | ${x.before} | ${x.after ? x.after.win : '–'}${x.good ? '' : ' (off)'} | ${(x.moves || []).map(mv=> mv.type + ' ' + [mv.out, mv.inn].filter(Boolean).join(' → ') + (mv.k ? ' ×' + mv.k : '')).join('; ') || '–'} | ${x.shieldOverride != null ? x.shieldOverride : '–'} | ${x.hqHp != null ? x.hqHp : '–'} |`)); md.push(''); }
   console.log(md.join('\n'));
+} else if(cmd === 'maps'){
+  // 2026-10-19 (BF2, owner 15:25): canonical/card-obtain-maps.json, the map where each card becomes obtainable (the game's cardObtainMap),
+  // for Base's map term in tools/skill_costs.js and the hub. --check: exit 1 when it is stale.
+  const G = require('./lib_bramble.js').G, maps = {};
+  CARDS.forEach(c=>{ const m = G.cardObtainMap(c); if(m) maps[c.id] = m; });
+  const text = '{"_about": "The map where each card becomes obtainable (arena_app.js cardObtainMap; node tools/forge_curve_2026_10_19.js maps). Budget Base + mapCoef x this (bramblewood-budget.js). Cards not listed are 0 (Base, tutorial, quest, Easter eggs, unsorted).",\n "maps": {\n' + Object.entries(maps).map(([k, v])=> '  ' + JSON.stringify(k) + ': ' + v).join(',\n') + '\n }\n}\n';
+  const OUTF = path.join(ROOT, 'canonical', 'card-obtain-maps.json');
+  if(process.argv.includes('--check')){ const cur = fs.existsSync(OUTF) ? fs.readFileSync(OUTF, 'utf8') : ''; if(cur !== text){ console.log('canonical/card-obtain-maps.json is stale: node tools/forge_curve_2026_10_19.js maps'); process.exit(1); } console.log('card-obtain-maps.json is current'); }
+  else { fs.writeFileSync(OUTF, text); console.log(Object.keys(maps).length, 'cards with a map'); }
+} else if(cmd === 'mapterm'){
+  // 2026-10-19 (BF2, owner 15:25): v5 with and without Base's map term, at Level 1 and at each card's start level
+  const T0 = SC.make(Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), {budget: Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).budget, {mapCoef: 0})}));
+  const rows = CARDS.filter(SC.measured).map(c=>{ const lv = SC.levelOf(c), a = T0.budget(c, {level: lv}), b = T.budget(c, {level: lv}), a1 = T0.budget(c, {level: 1}), b1 = T.budget(c, {level: 1});
+    return {id: c.id, name: c.name, map: T.obtainMapOf(c), N0: a.N, N: b.N, ok0: a.ok, ok: b.ok, ok01: a1.ok, ok1: b1.ok, x1: b.x1}; });
+  const inn = k=> rows.filter(r=> r[k === 'L1' ? 'ok1' : 'ok'] && !r[k === 'L1' ? 'ok01' : 'ok0']), out = k=> rows.filter(r=> !r[k === 'L1' ? 'ok1' : 'ok'] && r[k === 'L1' ? 'ok01' : 'ok0']);
+  const res = {_about: 'Budget v5 with Base + 0.2 x Map (owner 15:25) against v5 without it (node tools/forge_curve_2026_10_19.js mapterm).', cards: rows.length,
+    atL1: {pass: rows.filter(r=> r.ok1).length, passNoMap: rows.filter(r=> r.ok01).length, in: inn('L1').map(r=> ({id: r.id, name: r.name, map: r.map})), out: out('L1').map(r=> ({id: r.id, name: r.name, map: r.map}))},
+    atStart: {pass: rows.filter(r=> r.ok).length, passNoMap: rows.filter(r=> r.ok0).length, in: inn('S').map(r=> ({id: r.id, name: r.name, map: r.map, N0: r.N0, N: r.N, x1: r.x1})), out: out('S').map(r=> ({id: r.id, name: r.name, map: r.map}))}};
+  fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'budget-v5-map-term-2026-10-19.json'), JSON.stringify(res, null, 1) + '\n');
+  console.log(`At Level 1: ${res.atL1.passNoMap} -> ${res.atL1.pass} pass; in ${res.atL1.in.length}: ${res.atL1.in.map(r=> r.name + ' (Map ' + r.map + ')').join(', ')}; out ${res.atL1.out.length}`);
+  console.log(`At the start level: ${res.atStart.passNoMap} -> ${res.atStart.pass} pass; in ${res.atStart.in.length}: ${res.atStart.in.map(r=> r.name + ' (Map ' + r.map + ', N ' + r.N0 + ' -> ' + r.N + ', 2A+H+S ' + r.x1 + ')').join(', ')}; out ${res.atStart.out.length}`);
 } else if(cmd === 'cards'){
   (process.argv[3] || '').split(',').filter(Boolean).forEach(id=>{ const d = CARDS.find(c=> c.id === id); if(!d){ console.log('no card', id); return; }
     const c = curveOf(d); console.log(`${d.name} (${d.rarity}, Wait ${d.wait || 0}, Lumber ${d.cost || 0}; Base ${c.base}, starts Lv ${c.from}${c.m !== 1 ? ', half-miss x' + c.m : ''})`);

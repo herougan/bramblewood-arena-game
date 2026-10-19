@@ -3145,6 +3145,20 @@ function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardI
 function easterEggMasked(d){ return isEasterEgg(d) && !easterEggSeen(d.id) && !(adminModeEnabled && codexShowUnseen); }
 // The "???" tile an unseen Easter egg shows in the Codex: its rarity band only; no name, art, numbers or skills, and it opens nothing.
 function easterEggMaskDef(d){ return {id:'ee-mask', name:'???', icon:'🥚', cost:0, wait:0, attack:0, health:0, effects:{}, archetypes:[], species:[], rarity:d.rarity, flavor:'', locked:true}; }
+// The map where a card becomes obtainable (2026-10-19, package BF2; owner 15:25: "note that there is a Map * 0.2 number there"), for the
+// stat budget's map term (Base + 0.2 × Map, bramblewood-budget.js): a map reward (or a map's secret card) its map's number (a side map
+// counts as its parent); a pack card where its pack goes on sale (FEATURE_SPOTS: the Hedgerow Pouch, pool 1 and the Factions pool in every
+// basic pack, from Map 5; the Mystery Booster at the Wanderer's Camp, Map 13); a raid's card where raids open (Map 13); a Nest egg card
+// where the Nest opens (Map 3); the Blacksmith's equipment with the Forge (Map 11). Base, tutorial, quest, Easter-egg and unsorted cards
+// 0. tests/forge-curve-2026-10-19.js checks these against FEATURE_SPOTS and canonical/card-obtain-maps.json against this.
+const OBTAIN_MAP_OF = {pack: 5, mystery: 13, raid: 13, nest: 3, smith: 11};
+function cardObtainMap(d){
+  if(!d || isEasterEgg(d)) return 0;
+  const s = cardSourceOf(d);
+  if(s.kind === 'map' || s.kind === 'secret'){ const n = s.id ? mapNumberOf(s.id) : null; return n == null ? 0 : n; }
+  if(s.kind === 'pack') return Number(s.tier) === 99 ? OBTAIN_MAP_OF.mystery : OBTAIN_MAP_OF.pack;
+  return OBTAIN_MAP_OF[s.kind] != null ? OBTAIN_MAP_OF[s.kind] : 0;
+}
 // How a card can actually be obtained right now (null = it can't).
 function cardObtainableFrom(d){
   if(isEasterEgg(d)) return null; // 2026-10-19 (package EE): Easter eggs can't be obtained yet
@@ -11811,9 +11825,10 @@ const LEVEL_STEP_GAIN = {major:0.10, minor:0.05}; // before 2026-10-19 (BF): the
 const FORGE_CURVE_CACHE = new Map();
 function forgeCurveOf(d){
   const from = cardBaseLevel(d), top = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d), e = (d && d.effects) || {}, BB = BramblewoodBudget;
-  const key = [d.id, d.attack, d.health, d.rarity, d.wait, d.cost, from, top, BB.HALF_MISS.map(k=> e[k] ? 1 : 0).join(''), BB.ritualPts(e)].join('|');
+  let om = 0; try{ om = cardObtainMap(d.derivedFrom ? Object.assign({}, d, {id: d.derivedFrom}) : d); }catch(e){} // 2026-10-19 (BF2): Base's map term
+  const key = [d.id, d.attack, d.health, d.rarity, d.wait, d.cost, from, top, BB.HALF_MISS.map(k=> e[k] ? 1 : 0).join(''), BB.ritualPts(e), om].join('|');
   let c = FORGE_CURVE_CACHE.get(key);
-  if(!c){ if(FORGE_CURVE_CACHE.size > 6000) FORGE_CURVE_CACHE.clear(); c = BB.forgeCurve(d, from, top); FORGE_CURVE_CACHE.set(key, c); }
+  if(!c){ if(FORGE_CURVE_CACHE.size > 6000) FORGE_CURVE_CACHE.clear(); c = BB.forgeCurve(Object.assign({}, d, {obtainMap: om}), from, top); FORGE_CURVE_CACHE.set(key, c); }
   return c;
 }
 function cardBaseLevel(d){
@@ -16684,7 +16699,7 @@ const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, pl
 const LEVEL_STAT_STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 // The mean 2A+H gain over Lv 1 of the live cards with stats at each level (tools/forge_curve_2026_10_19.js gain; the test checks it
 // against the cards), the BF curve; and the old +10% / +5% steps' (LEGACY_LEVEL_GAIN: 0.10 at Lv 3, 0.20 at 6, 0.30 at 9 ...).
-const FORGE_MEAN_GAIN = [[0, 1], [0.057, 2], [0.059, 3], [0.272, 4], [0.275, 5], [0.302, 6], [0.611, 7], [0.614, 8], [0.644, 9], [0.958, 10], [1.071, 11]]; // 2026-10-19 (BF2): budget v5
+const FORGE_MEAN_GAIN = [[0, 1], [0.062, 2], [0.065, 3], [0.29, 4], [0.294, 5], [0.328, 6], [0.634, 7], [0.637, 8], [0.678, 9], [0.993, 10], [1.118, 11]]; // 2026-10-19 (BF2): budget v5 with the map term
 const LEGACY_LEVEL_GAIN = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
 function gainTableAt(pts, L){ L = Number(L) || 0; if(L <= pts[0][1]) return 0;
   for(let i = 1; i < pts.length; i++) if(L <= pts[i][1]) return pts[i-1][0] + (L - pts[i-1][1]) / (pts[i][1] - pts[i-1][1]) * (pts[i][0] - pts[i-1][0]);
@@ -25778,7 +25793,7 @@ const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts 
 //   N = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 5, levelDiv 30; Level 0: Base − zeroPenalty (1).
 //   The formula lives in bramblewood-budget.js (BramblewoodBudget.nAt), shared with tools/skill_costs.js and the hub; perLevel is v3's,
 //   no longer read.
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5, levelLinDiv:5, levelDiv:30, zeroPenalty:1};
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, missMult:1.5, levelLinDiv:5, levelDiv:30, zeroPenalty:1}; // + mapCoef (BF2, 15:25)
 // 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
 // its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
 function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }
@@ -25800,8 +25815,9 @@ function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r
 // N for a card at a level (v3, 2026-10-17).
 function sbBudgetAt(d, cfg, lv){
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], L = Math.max(0, Number(lv)||0), c = {};
-  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'levelLinDiv', 'levelDiv', 'zeroPenalty'].forEach(k=> c[k] = g(k));
-  return BramblewoodBudget.nAt(BramblewoodBudget.baseOf(d, c), L, c); // 2026-10-19 (BF2): budget v5, the shared helper (was Base + 2×Level)
+  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'mapCoef', 'levelLinDiv', 'levelDiv', 'zeroPenalty'].forEach(k=> c[k] = g(k));
+  let om = 0; try{ om = cardObtainMap(d); }catch(e){} // 2026-10-19 (BF2, 15:25): + 0.2 × the map where it becomes obtainable
+  return BramblewoodBudget.nAt(BramblewoodBudget.baseOf(Object.assign({}, d, {obtainMap: om}), c), L, c); // 2026-10-19 (BF2): budget v5, the shared helper (was Base + 2×Level)
 }
 function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 // v3 check (2026-10-17): x1 = added score (2×Attack + Health + Skills) < N; x2 = multiplied score (Attack × Health + Skills)
@@ -25815,7 +25831,7 @@ function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 // 2026-10-19 (BF2): the formula line, from the numbers in use (the helper's v5 unless the Test Lab changed them), in words through TX
 function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
-  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2')}); }
+  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), mc: g('mapCoef')}); }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
 // before; both checks shown, coloured green within both, red over either, pink well under on the first.
@@ -25828,8 +25844,9 @@ function ceBudgetHTML(d){
   const W = Number(d.wait)||0, C = Number(d.cost)||0, f1 = v=> Math.round(v * 10) / 10, m = M !== 1 ? ` × ${f1(M)}` : '', mark = ok=> ok ? '✓' : '✗', op = ok=> ok ? '&lt;' : '≥';
   const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
   // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
-  const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
-  const bp = BramblewoodBudget.baseParts(d, bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
+  const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'mapCoef'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
+  let om = 0; try{ om = cardObtainMap(d); }catch(e){}
+  const bp = BramblewoodBudget.baseParts(Object.assign({}, d, {obtainMap: om}), bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : q.k === 'map' ? TX('ui.budget-part-map', {map: q.map, coef: q.coef, v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
   const head = !c.ok ? TX('ui.budget-head-over', {n: f1(N), base: f1(bp.total)}) : c.wellUnder ? TX('ui.budget-head-under', {n: f1(N), base: f1(bp.total)}) : TX('ui.budget-head-ok', {n: f1(N), base: f1(bp.total)});
   return `<div style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(head)}</div>
     <div style="font-size:12px; margin:2px 0">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</div>

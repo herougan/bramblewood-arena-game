@@ -245,6 +245,36 @@ Each run is 120 games a fight. The targets are unchanged: 90% → 60% before the
 | 1 | 18-A-6 The Salt Pan | skirmish | 64.4 | 81.7 | 62.2 | add rabid-jackal ×2 | – | – |
 | 1 | 18-A-8 The Dry Well | elite | 55.4 | 65 | 58.9 | swap komodo-warlord → fennec-fox ×2 | – | – |
 
+## Base's map term (owner 15:25)
+
+> "Once its finished balancing, note that there is a Map * 0.2 number there."
+
+**Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual + 0.2 × Map.** This was committed on its own, after the v5 retune.
+
+**Map** is the map where the card becomes obtainable (`cardObtainMap` in `arena_app.js`, the shared `mapCoef` 0.2):
+
+| Source | Map |
+|---|---|
+| A map reward or a map's secret card | That map's number (a side map counts as its parent) |
+| Pack cards, pool 1 and the Factions pool | 5 (the Hedgerow Pouch at the Traveller's Cart) |
+| The Mystery Booster | 13 (the Wanderer's Camp) |
+| Raid cards | 13 (the Raid Banner) |
+| Nest egg cards | 3 |
+| The Blacksmith's equipment | 11 (with the Forge) |
+| Base, tutorial and quest cards, Easter eggs and unsorted cards | 0 |
+
+- The tools and the hub read `canonical/card-obtain-maps.json` (`node tools/forge_curve_2026_10_19.js maps`; the test checks it is current). The pack, raid, Nest and Forge maps are checked against the unlock schedule (`FEATURE_SPOTS`).
+- **The budget panel** shows it in the Base line: "Base = 20 + Rare 3 + Wait 6.5 + Lumber 4.4 + Map 12 × 0.2 = 2.4 = 36.3".
+
+**At Level 1** (`docs/balance/budget-v5-map-term-2026-10-19.json`):
+- 708 of 744 pass without the map term, and 718 pass with it. **10 move in, 0 move out.**
+- At each card's own start level: Great Horned Owl (Map 15, N 55.08 → 58.18, 2A+H+S 57.81), Gorge Wyrm (Map 20, N 71.09 → 75.23, 2A+H+S 73.46), Cave Warlord (Map 20, N 88.97 → 93.1, 2A+H+S 91.44), Venomlord Serpent (Map 5, N 61.28 → 62.31, 2A+H+S 62.06), Sand Widow (Map 18, N 46.29 → 50.01, 2A+H+S 46.51), Permafrost Mammoth (Map 22, N 61.28 → 65.82, 2A+H+S 63.76), Barnacle Fortress (Map 9, N 33.17 → 35.03, 2A+H+S 33.7), Ember Revenant (Map 19, N 43.71 → 47.64, 2A+H+S 46.85), Sea Cucumber (Map 10, N 34.2 → 36.27, 2A+H+S 35.52), Giant Cave Huntsman (Map 8, N 42.99 → 44.64, 2A+H+S 43.47).
+- **The post-balance queue** drops from 30 to 20 cards.
+
+**What doesn't change:**
+- **No card's stats changed.** The extra room is largest for late-map cards (Base +4.8 at Map 24, about +5 N), so more of them sit further under their budget. As the owner expected, that is room, not a fault.
+- **The Forge curve barely moves.** The map term adds 0.2 × Map × L/30 to a level's gain: for a Map 20 card, 0.13 points a level. The mean card's Lv 10 gain is +99%, from +96%. The road was not re-measured for it.
+
 ## Owner calls
 
 1. **L/5 instead of L/3.** No divisor reaches the 1.3× rule, because the absolute conversion favours cards that sit well under their budget. If that matters more than simplicity, use the proportional conversion (the side column above).

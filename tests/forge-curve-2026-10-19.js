@@ -26,18 +26,26 @@ ok(near(BB.nAt(30, 5), (30 + 1) * (1 + 5 / 30), 0.006) && near(BB.nAt(30, 1), 30
 ok(near(BB.nAt(14, 1, {levelLinDiv: 3}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3}), 23.11), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
 ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. the helper\'s numbers (levelLinDiv, levelDiv, zeroPenalty too) are canonical/skill-costs.json\'s budget');
 { const live = cards.filter(SC.measured); let same = 0; const diff = [];
-  live.forEach(c=>{ const L = SC.levelOf(c), want = BB.nAt(BB.baseOf(c), L); if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
-  ok(!diff.length, `1. tools/skill_costs.js gives v4's N for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
-  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(d, c\), L, c\)/.test(src) && /levelLinDiv:5, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
+  live.forEach(c=>{ const L = SC.levelOf(c), want = BB.nAt(BB.baseOf(Object.assign({}, c, {obtainMap: T.obtainMapOf(c)})), L) /* + Base's map term (BF2, 15:25) */; if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
+  ok(!diff.length, `1. tools/skill_costs.js gives v5's N (with the map term) for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
+  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\)/.test(src) && /levelLinDiv:5, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
   const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1.2 + 1e-9), `1. at Level 1, v5 is never more than 1.2 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
+
+// 2026-10-19 (BF2, owner 15:25): Base's map term: + mapCoef (0.2) x the map where the card becomes obtainable
+{ const spot = k=>{ const m = new RegExp(`\\{key:'${k}',[^\\n]*?mapNumber:(\\d+)`).exec(src); return m ? +m[1] : null; }, O = G.OBTAIN_MAP_OF;
+  ok(BB.DEFAULTS.mapCoef === 0.2 && near(BB.baseOf({rarity: 'common', obtainMap: 12}) - BB.baseOf({rarity: 'common'}), 2.4), '1. Base + 0.2 x Map (a Map 12 card: +2.4)');
+  ok(O.pack === spot('shop') && O.mystery === spot('wanderer') && O.raid === spot('raid') && O.nest === spot('nest') && O.smith === spot('forge'), `1. the obtain maps follow FEATURE_SPOTS (packs ${O.pack}, the Mystery Booster ${O.mystery}, raids ${O.raid}, the Nest ${O.nest}, the Forge ${O.smith})`);
+  const om = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'card-obtain-maps.json'), 'utf8')).maps, stale = cards.filter(c=> (om[c.id] || 0) !== G.cardObtainMap(c)).map(c=> c.id);
+  ok(!stale.length, '1. canonical/card-obtain-maps.json is current (node tools/forge_curve_2026_10_19.js maps): ' + stale.slice(0, 5).join(', '));
+  ok(G.cardObtainMap(cards.find(c=> c.id === 'creeper') || {}) === 0, '1. an Easter egg counts as Map 0'); }
 
 // ---- 2. the curve
 const QUEUE = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'post-balance-queue.json'), 'utf8')).cards.map(c=> c.id));
 const withStats = cards.filter(c=> SC.measured(c) && !c.pool && (c.attack != null || c.health != null));
 let mono = [], majors = [], budget = [], walls = [], game = [], checked = 0;
 for(const c of withStats){
-  const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(c, from, top), b0 = T.budget(c, {level: from}); checked++;
+  const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c)}), from, top), b0 = T.budget(c, {level: from}); checked++;
   const room1 = L=> BB.nAt(cv.base, L) - (2 * (cv.rows[L].attack || 0) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(BB.nAt(cv.base, L) / 3, 2) - ((cv.rows[L].attack || 0) * (cv.rows[L].health || 0) + b0.S) * cv.m;
   for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
     if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
@@ -61,7 +69,7 @@ ok(/const LEVEL_STEPS = \{1:null, 2:'minor', 3:null, 4:'major', 5:null, 6:null, 
 
 // ---- 3. the enemy's gain table, the Forge preview
 { const acc = {}; withStats.filter(c=> c.attack != null && c.health != null).forEach(d=>{ const w0 = 2 * (d.attack || 0) + (d.health || 0); if(w0 <= 0) return;
-    const from = SC.levelOf(d), cv = BB.forgeCurve(d, from, d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11);
+    const from = SC.levelOf(d), cv = BB.forgeCurve(Object.assign({}, d, {obtainMap: T.obtainMapOf(d)}), from, d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11);
     for(let L = 1; L <= 11; L++){ const r = cv.rows[Math.max(L, from)]; (acc[L] = acc[L] || []).push((2 * r.attack + r.health) / w0 - 1); } });
   const off = G.FORGE_MEAN_GAIN.filter(([g, L])=> L >= 2 && Math.abs(g - acc[L].reduce((a, b)=> a + b, 0) / acc[L].length) > 0.03).map(([g, L])=> `Lv ${L} ${g}`);
   ok(!off.length, '3. FORGE_MEAN_GAIN is the live cards\' mean gain (within 0.03; node tools/forge_curve_2026_10_19.js gain): ' + off.join(', '));

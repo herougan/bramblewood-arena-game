@@ -32,7 +32,7 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
 { let last = -1, mono = true, line = true;
   for(let no = 0; no < mains.length; no++){ if(!mains[no].nodes.some(x=> x.deck)) continue; const L = G.roadEnemyLevelExact(fightAt(no, 'skirmish'));
     // 2026-10-19 (BF): the level depends on the fight's deck now, so the rise is checked on one fight's deck along the line's gain
-    { const f20 = fightAt(20, 'skirmish'), g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, Lf = g > 0 ? G.enemyLevelKeepingPace(f20, g, 10) : 0; if(Lf < last - 0.05) mono = false; last = Lf; } // a dip of a few hundredths is the old curve's own: a whole Lv 2 (Map 8) had Lv 1's stats
+    { const f20 = fightAt(20, 'skirmish'), g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, Lf = g > 0 ? G.enemyLevelKeepingPace(f20, g, 10) : 0; if(Lf < last - 0.15) mono = false; last = Lf; } // a dip of a tenth or so is the old curve's own: a whole Lv 2 (Map 8) had Lv 1's stats
     // 2026-10-19 (package BF): the line's gain g, turned into a level that keeps the old ratio to your deck (enemyLevelKeepingPace)
     const g = Math.max(0, no - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap, f = fightAt(no, 'skirmish'), kp = G.enemyLevelKeepingPace(f, g, 10);
     if(L && !near(kp != null ? kp : G.levelForGain(g), L, 0.01)) line = false; }

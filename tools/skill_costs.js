@@ -17,7 +17,11 @@
 //                   and every card whose budget pass/fail flips.
 // 2026-10-19 (package BF): N comes from bramblewood-budget.js (budget v5 since 13:52: "(Base + L/3) * (1 + L/30)", L/5 here), the one copy of the
 // formula the game, these tools and the hub share; the hub inlines that file ahead of this one (window.BramblewoodBudget).
-(function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(require('../bramblewood-budget.js')); else root.SkillCosts = factory(root.BramblewoodBudget); })(typeof self !== 'undefined' ? self : this, function(BB){
+// 2026-10-19 (BF2, owner 15:25): Base's map term needs the map where each card becomes obtainable: canonical/card-obtain-maps.json
+// (node tools/forge_curve_2026_10_19.js maps, from the game's cardObtainMap); the hub inlines it as SC_OBTAIN_MAPS. A card's own
+// obtainMap field wins.
+(function(root, factory){ if(typeof module === 'object' && module.exports){ let om = {}; try{ om = require('../canonical/card-obtain-maps.json').maps || {}; }catch(e){} module.exports = factory(require('../bramblewood-budget.js'), om); }
+  else root.SkillCosts = factory(root.BramblewoodBudget, typeof SC_OBTAIN_MAPS !== 'undefined' ? SC_OBTAIN_MAPS : (root.SC_OBTAIN_MAPS || {})); })(typeof self !== 'undefined' ? self : this, function(BB, OBTAIN){
   'use strict';
   const LADDER = BB.LADDER;
   const r2 = v=> Math.round(v * 100) / 100;
@@ -82,17 +86,20 @@
     // N at the level the card starts at (or `lv`): budget v5 (2026-10-19 13:52, BF2), N = (Base + L/5) x (1 + L/30), Level 0 Base - 1
     // (bramblewood-budget.js); B (the table's budget numbers) feeds Base. budgetV3N (Base + 2L) and budgetV4N ((Base - 1 + L)(1 + L/20))
     // are the old ones, for comparisons.
-    function budgetBase(d){ return BB.baseOf(d, B); }
+    const withMap = d=> d && d.obtainMap == null && OBTAIN && OBTAIN[d.id] != null ? Object.assign({}, d, {obtainMap: OBTAIN[d.id]}) : d;
+    function budgetBase(d){ return BB.baseOf(withMap(d), B); }
     function budgetN(d, lv){ return BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B); }
-    function budgetV3N(d, lv){ return r2(budgetBase(d) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
-    function budgetV4N(d, lv){ return BB.nV4(budgetBase(d), lv == null ? levelOf(d) : lv); }
+    // v3 / v4 comparisons use the Base they had (no map term)
+    function budgetV3N(d, lv){ return r2(BB.baseOf(d, Object.assign({}, B, {mapCoef: 0})) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
+    function budgetV4N(d, lv){ return BB.nV4(BB.baseOf(d, Object.assign({}, B, {mapCoef: 0})), lv == null ? levelOf(d) : lv); }
+    function obtainMapOf(d){ const x = withMap(d); return +(x && x.obtainMap) || 0; }
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
       const A = d.attack || 0, H = d.health || 0, x1 = r2((2 * A + H + s.S) * m), x2 = r2((A * H + s.S) * m), N2 = r2((N / 3) * (N / 3));
       return {N, S:s.S, x1, x2, N2, ok: x1 < N && x2 < N2, wellUnder: x1 < N && x2 < N2 && x1 <= N * 0.6, m, parts:s.parts, missing:s.missing};
     }
-    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetV3N, budgetV4N, budget};
+    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetV3N, budgetV4N, obtainMapOf, budget};
   }
   // Frozen copy of the 2026-10-18 model (SB_SKILLS in card_balance.js before this change; the Test Lab's SB_DEFAULT_SKILLS), for
   // comparisons only: every trigger list costs 1 in all, Bounty 0, a skill with no set cost 1 + floor(N/2).

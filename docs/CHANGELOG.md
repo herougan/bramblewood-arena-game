@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package BF2: Base's map term)
+- **Owner (15:25): "note that there is a Map * 0.2 number there."** Base is now `+ 0.2 × Map`, where Map is the map at which the card becomes obtainable (`cardObtainMap`):
+  - map rewards: that map;
+  - pack cards: 5;
+  - Mystery Booster and raid cards: 13;
+  - Nest eggs: 3;
+  - Blacksmith equipment: 11;
+  - Base, tutorial, quest and Easter-egg cards: 0.
+
+  The shared constant is `mapCoef`, the tools read `canonical/card-obtain-maps.json`, and the budget panel's Base line shows "Map 12 × 0.2 = 2.4".
+- **At Level 1:** 708 → 718 cards pass, with 10 moving in and none out (Great Horned Owl, Gorge Wyrm, Cave Warlord, Venomlord Serpent, Sand Widow, Permafrost Mammoth, Barnacle Fortress, Ember Revenant, Sea Cucumber, Giant Cave Huntsman). The post-balance queue drops from 30 to 20 cards. No card's stats changed.
+- **Limit break comes in waves** (decision B9, design only): `docs/balance/limit-break-waves.md`.
+
 ## 2026-10-19 (package BF2: budget v5, a softer Forge curve, the budget panel with Base)
 - **Owner (13:52):** "That's too much. ... (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." **Budget v5:** N = (Base + L/5) × (1 + L/30) from Level 1, and Base − 1 at Level 0, in `bramblewood-budget.js` and `canonical/skill-costs.json`. The owner's example with L/3 checks out: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10.
   - **L/5, not L/3** (13:54: "change it to L/4 or L/5" if L/3 favours weak cards). Weak cards' Lv 10 stat growth is 1.82× / 1.74× / 1.65× the strong cards' with L/3 / L/4 / L/5. None meets 1.3×, so the closest, L/5, is used. Most of the gap comes from the absolute conversion. `levelLinDiv` is one constant.

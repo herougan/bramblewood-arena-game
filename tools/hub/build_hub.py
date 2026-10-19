@@ -423,7 +423,10 @@ def _sc_combos():
             'model': {'global': m.get('global'), 'rmse': m.get('rmse'), 'families': [f for f in (m.get('families') or []) if f.get('pairs', 0) >= 3]}}
 # 2026-10-19 (package BF): budget v4's N lives in bramblewood-budget.js (window.BramblewoodBudget), which tools/skill_costs.js reads
 BB_LIB = open(os.path.join(ROOT, 'bramblewood-budget.js'), encoding='utf-8').read()
-SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\nconst SC_COMBOS = {_js(_sc_combos())};\n{BB_LIB}\n{SC_LIB}\n{SC_TAB}'
+# 2026-10-19 (BF2, owner 15:25): Base's map term reads where each card becomes obtainable (canonical/card-obtain-maps.json)
+_om_path = os.path.join(ROOT, 'canonical', 'card-obtain-maps.json')
+_om = json.load(open(_om_path, encoding='utf-8')).get('maps', {}) if os.path.exists(_om_path) else {}
+SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\nconst SC_COMBOS = {_js(_sc_combos())};\nconst SC_OBTAIN_MAPS = {_js(_om)};\n{BB_LIB}\n{SC_LIB}\n{SC_TAB}'
 # 2026-10-19 (package UC, owner 08:49: "let's separate the units thematically? Then we pick and choose, then do post-balancing"): the
 # 🗂 Units by theme tab. canonical/unit-themes.json (node tools/unit_themes.js) and the tab's script and styles, inlined. Picks live in
 # the artifact's db (collection unitPicks), so the hub is published with capabilities {db: {}}; tools/hub/pull_unit_picks.md.
