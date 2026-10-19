@@ -1755,7 +1755,7 @@ M.raidClaimScreen = function(spec, opts){
   const sound = (name, ...a)=>{ try{ if(opts.sound) return opts.sound(name, ...a); const k = typeof SoundKit !== 'undefined' ? SoundKit : null; if(k && typeof k[name] === 'function') k[name](...a); }catch(e){} };
   const beat = w=> (RCS_BEAT[w] || RCS_BEAT[1]).forEach((n, i)=>{ const [nm, arg] = n.split(':'); later(()=> sound(nm, arg ? true : undefined), i*90); });
   const kind = spec.kind === 'compensation' ? 'compensation' : 'kill', tier = RCS_TIER[spec.tier] ? spec.tier : 'participant';
-  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=> Math.round(n).toLocaleString();
+  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=>{ try{ return Math.round(n).toLocaleString(opts.locale || undefined); }catch(e){ return Math.round(n).toLocaleString(); } }; // opts.locale: the game's language (2026-10-19, package RB)
   // the rewards in rising order of weight (stable), so the rarest comes last
   const list = (spec.rewards || []).map((r, i)=> Object.assign({}, r, {weight:Math.max(1, Math.min(5, r.weight|0 || 1)), _i:i})).sort((a, b)=> a.weight - b.weight || a._i - b._i);
   const boss = spec.boss || {};
@@ -1773,7 +1773,8 @@ M.raidClaimScreen = function(spec, opts){
       <h2 class="fxf-rcs-title${F}">${esc(T.title)}</h2>
       ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
       <div class="fxf-rcs-row">
-        ${spec.rank && spec.rank.letter ? `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>` : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
+        ${spec.rank && spec.rank.letter ? (typeof window.bwRaidRankEmblemHTML === 'function' ? `<span class="fxf-rcs-emblem${F}">${window.bwRaidRankEmblemHTML(spec.rank.letter, !!spec.rank.emblem, 'md')}</span>` /* 2026-10-19 (package NV): the raid's rank emblem, as on the raid results */
+          : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
       <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>

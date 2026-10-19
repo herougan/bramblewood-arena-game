@@ -29,8 +29,8 @@
         "id": "left",
         "name": "Left Tentacle",
         "icon": "🦑",
-        "bars": 3,
-        "barHp": 80000,
+        "bars": 4,
+        "barHp": 50000,
         "fight": {
           "castleHp": 420,
           "deck": {
@@ -60,8 +60,8 @@
         "id": "right",
         "name": "Right Tentacle",
         "icon": "🦑",
-        "bars": 3,
-        "barHp": 80000,
+        "bars": 4,
+        "barHp": 50000,
         "fight": {
           "castleHp": 420,
           "deck": {
@@ -91,8 +91,8 @@
         "id": "tail",
         "name": "Tail",
         "icon": "🌊",
-        "bars": 3,
-        "barHp": 80000,
+        "bars": 4,
+        "barHp": 50000,
         "fight": {
           "castleHp": 420,
           "deck": {
@@ -122,8 +122,8 @@
         "id": "core",
         "name": "Core",
         "icon": "👁️",
-        "bars": 8,
-        "barHp": 80000,
+        "bars": 5,
+        "barHp": 100000,
         "lockedUntil": [
           "left",
           "right",
@@ -156,7 +156,7 @@
               "name": "Left Stump",
               "icon": "🦑",
               "attack": 3,
-              "health": 20,
+              "health": 14,
               "armor": 0,
               "aura": 1
             },
@@ -165,7 +165,7 @@
               "name": "Tail Stump",
               "icon": "🌊",
               "attack": 3,
-              "health": 20,
+              "health": 14,
               "armor": 0,
               "aura": 1
             },
@@ -174,7 +174,7 @@
               "name": "Right Stump",
               "icon": "🦑",
               "attack": 3,
-              "health": 20,
+              "health": 14,
               "armor": 0,
               "aura": 1
             }
@@ -185,9 +185,6 @@
             "illusory": 0.667
           },
           "wallHp": 70
-        },
-        "scoring": {
-          "perInFightHp": 140
         },
         "cost": {
           "energy": 5
@@ -230,12 +227,12 @@
       }
     ],
     "scoring": {
-      "perInFightHp": 15,
-      "cap": 5000,
-      "overwhelmCap": 10000
+      "perInFightHp": 1,
+      "cap": 1000,
+      "overwhelmCap": 1000
     },
     "standIns": {
-      "perDayPct": 12
+      "perDayPct": 14
     },
     "rewards": {
       "kill": {
@@ -264,7 +261,7 @@
       "cards": 1
     },
     "fightRounds": 20,
-    "bossHpBonusMax": 100,
+    "bossHpBonusMax": 50,
     "trench": {
       "rows": 3,
       "wallHp": 45
@@ -332,19 +329,20 @@
         "max": 0,
         "every": 3,
         "from": 3
-      }
+      },
+      "weakenFloor": 0.6
     },
     "leaderCostCap": 5,
     "respawnHours": 24,
-    "instanceCap": 100,
+    "instanceCap": 250,
     "participation": {
       "fights": 3,
-      "damage": 1000,
+      "damage": 500,
       "strongFights": 4,
-      "strongDamage": 10000,
+      "strongDamage": 2000,
       "strongPct": 20,
       "leadFights": 4,
-      "leadDamage": 50000,
+      "leadDamage": 12500,
       "leadPct": 40,
       "leadCards": 1
     }

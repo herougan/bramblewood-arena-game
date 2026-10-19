@@ -27,6 +27,84 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - 16-6 Reaver's Hollow stays easy at its 2× Shield cap. 20-A-4 (the four-wave dungeon) was not retuned.
   - The tables are in `docs/balance/level-curve-2026-10-19b.md`.
 
+## 2026-10-19 (package RB: raid balance: no ×15, a win 1,000, 200k ×3 + 500k, the boss weakens, allies keep their rows, 250 an instance)
+- **Allies keep their rows.** An ally's play always went into its own row, but the unit then stepped up into your front row, or the back ally's into the middle row, whenever the slot ahead was clear. Ally units and ally leaders now hold their row for the whole fight (`holdRow`; the engine's `advanceReserves` skips them). New test `tests/raid-ally-rows-2026-10-19.js`: 200+ seeded ally plays in the page's raid fight, none outside the ally's row.
+- **Raid damage = bramble damage × the rank** (B 1.01 … SSS 2.0), with no ×15 (the Core's ×140 is gone too). The bramble damage is capped at 1,000 per fight. **A win counts 1,000 × the rank** (was 10,000).
+- **Health:** 200,000 for each arm and the tail (4 × 50,000) and 500,000 for the Core (5 × 100,000), 1,100,000 in all.
+- **The elders** start at 50 Health at most: basic + (50 − basic) × the raid's share (was 100).
+- **The boss weakens as it falls.** All its cards scale to `RaidM.bossWeakening`: 100% fresh, 80% at half, 60% at the end. The share is the part's or, when lower, the raid's. The weakening applies after the stage's +Attack. Its floor is `tuning.weakenFloor`, editable as "Boss weakest %".
+- **Completion model** (`tools/raid_completion_model.js`, `docs/balance/raid-balance-2026-10-19.md`):
+  - A normal deck at the Raid Banner's map deals about 217 bramble damage a fight on the arms and the tail, and 97 to 170 on the Core.
+  - With stand-ins at 14% a day (was 12%) and the Core's stumps at 14 Health (was 20), the raid falls in 100% of weeks with 30+ participants and 83% with 20.
+- **Instances of 250** (was 100). The server default is a proposal, not applied: `supabase/proposed/20261019_raid_cap_250.sql`. Republishing the raid from the editor does the same.
+- **Tiers rescaled** so the same share of raiders reaches each: Participant 1,000 → 500, Competent 10,000 → 2,000, Leading 50,000 → 12,500.
+  - Weekly quest: 20,000 → 4,000 raid damage. Medals: /5.
+  - Pay for each fight: ×5.25 per raid damage, so a fight pays what it did.
+- **Saved edits:** a raid edit saved on the old scale, local or published, is brought onto the new one on load (`RaidM.migrateRaidScale`). The editor stamps `scaleV: 2`, and its defaults follow the new scale.
+- **Raid numbers** (Health left, damage, tiers, the claim screen) use thousands separators in the game's language (`raidLocale` / `raidNum`).
+- **No damage formula for players:** NV's breakdown line ("28 bramble damage × 15 × 1.01 = 424") shows to admins only. The raid tab's "scores up to 5,000" line now reads "the damage your side deals to the part's bramble counts as raid damage". The rules add "the boss weakens", and "a win counts 1,000, more at a higher rank".
+- **The raid's rows from the server** are read a page of 1,000 at a time (up to 20,000), for your instance only. A life now takes thousands of rows, and one request returned at most 1,000.
+- New test `tests/raid-rb-2026-10-19.js`. 4 TX keys (new or changed), translated in the 12 packs.
+
+## 2026-10-19 (package MB2b: the field as big as the hand, the raid framed to its columns in use)
+- **The field is bigger, not the hand smaller** (follow-up to MB2: the field's cards were about 48 px against the hand's 75).
+  - The camera frames the columns in use, plus one empty column on each side. That is at least 3 columns in a normal fight and 5 in a raid. Every unit counts, on both sides and in every row.
+  - The cards are sized for that window (`mb2SpanWindow`, `mb2FitPhoneBoard`, `mb2FitRaidCards`). The empty columns outside it sit off the frame.
+  - On a phone, a normal fight's cards are the hand's size (75 px) for as long as the window fits at that size. Past that they shrink to fit the window, never below.
+- **Re-framing, a deliberate exception to the raid's 2026-10-18 note "the raid shouldn't keep zooming in and out when I place a card":**
+  - The camera re-frames only when the column span changes: a unit lands on the window's edge column or past it.
+  - It happens once, in one 300 ms step (`mb2FlipReframe`), never every turn or continuously.
+  - The window only widens during a fight. A re-frame also happens when the window or the frame changes size.
+- **The raid uses the screen's height too.** The spare height is shared out between the six rows. The enemy's row (castle, deck, Environment cards) is a quarter smaller (`--mb2-th`). So are your castle, deck and Graveyard on a phone; on a computer they share the hand's row, so they stay the hand's size.
+- **The raid hand** is at least the field's card size and never smaller than it was before MB2 (65 px wide on a phone, 92 px tall on a computer).
+  - The "thin sliver" in an MB2 screenshot was a card caught mid-deal by the screenshot (the deal-in transform). It was not an overlap bug.
+- **Raid fight controls on a phone** sit in a 4-wide grid of two short lines inside the top row. They no longer take a line of their own.
+- **The Codex** no longer opens on the Easter eggs' masked "???" slots when no card has been seen yet. The masked slots join once a real card is seen, and they stay last.
+- **Card widths now:**
+
+  | Screen | Normal fight | Raid, 5 columns | Raid, 6 columns | Raid, 7 columns | Raid hand |
+  |---|---|---|---|---|---|
+  | 390×844 | 75 px (up to 4 framed columns), 69 (5), 57 (6) | 67 px | 58 px | about 49 px (MB2 was 49, before MB2 44) | 67 px |
+  | 430×932 | 75 px | 75 px | | | 75 px |
+  | 1366×768 | 97 px (unchanged) | | | 61 px (height-bound) | 74 px |
+
+- `tests/e2e/mobile_layout_2026_10_19.py` (about 1.5 min, not in run-all) adds checks for the board cards against the hand and the framed columns, the raid hand's size, the top row being one line, the re-frame when a unit lands on the edge column, and a fresh Codex. Screenshots, including the new `after-raid-reframed-390.png` and `after-*-430.png`: `docs/screens/mb2/`.
+
+## 2026-10-19 (NV: Home on the map and the Arena, the pre-battle screen, the raid's rank emblem, the raid results)
+- **Owner (10:55, iPhone):** *"There should be a home button somewhere on mobile. The top bar of the conquest screen is not used - remove this."* / *"Improve the pre-battle A v B screen ... I want to know how i contribute, then our total BR."* / *"Raid complete: Still use our victory emblems ... abit more special looking."*
+- **🌰 Home** at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones and desktop; the top-right 🏠 steps aside. Why it was missing on the iPhone: the 🏠 / ⚙️ / Energy cluster is a fixed child of the tab bar, and the bar itself scrolled sideways; iOS Safari clips a fixed child of a scrolling box. The tab strip now scrolls inside the bar.
+- **No map strip on phones.** Maps change on the 🧭 World atlas (the button on the map) and at the map's edges; desktop keeps its side list.
+- **Pre-battle screen v2** (`showVsScreen`): a card a side and a real Start button under the art (a tap anywhere still starts). A raid shows your part first (your BR, your row), then **your side**: you + each ally (leaders 2x) = the side's total, against the boss's framed portrait, name and BR. Names and rows wrap instead of being cut off. Normal fights: you vs them, both BRs.
+- **Raid rank emblem** (`raidRankEmblemHTML`): the victory screens' hexagon in an abyssal ring with crimson tentacle curls and a glow, stamped in (S / SS / SSS harder, with a shockwave; still under reduced motion). On the raid results for every rank (a crest for a win) and on the raid claim screen.
+- **The turn-1 "Rank SSS, Overwhelm! 10,000" with 0 dealt** was the Admin 👑 Win button: it empties the boss's bramble, and the raid scored that as a real overwhelm (10,000 raid damage, saved, pushed to the shared raid, paid). A raid no longer scores an admin win (the results say so). **Play again** after a raid built a plain Quick Battle (`startMatch('raidOffline')`); it now builds a fresh fight on the same raid part.
+- **Raid results say what each number counts**: "424 raid damage" + "28 bramble damage × 15 × 1.01 for Rank B = 424 raid damage"; "Full reward from 40 bramble damage (this fight: 28)"; the stats row adds "🏰 28 to the bramble". "Dealt / taken / best hit" no longer lose hits to the 200-line log (a running tally).
+- Tests: `tests/nv-2026-10-19.js`; `tests/mobile-nav-2026-10-19.js` and `tests/raid-rv2-2026-10-19.js` know the new Home and emblem. Screens: `docs/screens/nv/`.
+
+## 2026-10-19 (package MB2: the battle fills a phone screen, bigger raid board, hand = field size, touch-and-hold)
+- **Owner (10:55, iPhone):** *"The raid battle btw is too small! we can afford to use all the vertical and horizontal space"*, *"the battle arena should be centered"*, *"our cards in hand/deck/etc. should be as large as the cards in the field"*, *"i can't touch and hold to see the card detail"*.
+- **A fight on a phone is one screen tall.** The match is a `100svh` column: the height with Safari's bars showing, plus the safe-area insets. The hand no longer ends up behind the toolbar. The battlefield takes the height that the rows above and below leave, and the board sits in its middle.
+- **The raid board fills its frame, on a phone and on a computer.** Its cards are sized from the frame (`mb2FitRaidCards`): seven columns across, six rows down, the same gap in every row so the columns line up, and the spare height shared between the rows. These are real CSS sizes, not a zoom, so the attack lines, floats and FX follow. The page no longer scrolls in a raid (it did by about 400 px on a computer).
+  - 390×844: cards 44 → 49 px wide (a 430 px iPhone gets about 55). 1366×768: 48 px on screen (with the page scrolled) → 60 px, the whole board visible.
+  - The raid keeps its fixed camera. It is framed again only when the window or the frame's size changes.
+- **Hand, deck, castle and Graveyard are the board's card size on a phone:** 75×93 (was 65×81 against the field's 75×93), or 62×78 on a short phone. In a raid they follow the raid's card size, never under 65 px tall on a phone or 92 px on a computer. A crowded hand overlaps to fit, and still scrolls past that. A crowded normal board still shrinks its own cards to fit its columns.
+- **Touch-and-hold opens a card's details everywhere:** the Codex, the deck builder, the Nest, deck previews, the skirmish strip, the hand and the board. It takes 450 ms outside a fight; a fight keeps the owner's 0.25 s from 10-12. Moving more than 10 px cancels it. The details stay up after the lift; tapping them opens the card's full page.
+  - The lift never plays, arms, adds or removes the card. The click after it is dropped, even after a long hold (before, a hold longer than about 1.2 s played the card). Android's long-press context menu and iOS's own drag are dropped too.
+  - Cards get no iOS callout and no text selection.
+- New `tests/e2e/mobile_layout_2026_10_19.py` (Playwright, about a minute, not in run-all). It covers 390×844 touch and 1366×768, a normal fight and a raid: no sideways scroll, one screen tall, the hand on screen and board-sized, the raid cards bigger and inside the frame, the board centred, and touch-and-hold in the hand and the Codex. `MB2_SHOTS=docs/screens/mb2` saves the screenshots. Before and after: `docs/screens/mb2/`.
+
+## 2026-10-19 (package SY: decks sync across devices)
+- **Owner (10:55):** *"im using the same account in mobile AND web. They don't see each other's decks!"*
+- **Root cause:** deck ids were `deck-xxxxxxx`, but the cloud table's `player_decks.id` is a uuid. Every deck upload was refused (22P02), and the client ignored the error. The table holds no deck for any player (read-only check). Pulls also ran only at load, and the cloud list replaced the device's list whole.
+- **Fix (client only, works with the table as it is):**
+  - Deck ids are uuids. Old ids are moved once at load, and the active and main deck keys follow them.
+  - Each deck has an `updatedAt`. A change uploads after a 1.2 s pause, and edits made in a burst go up together. Errors are checked now.
+  - The game pulls on load and sign-in, when the tab comes back (focus or visibility, at most every 10 s) and when the browser is back online.
+  - The merge goes deck by deck, and the newest edit wins. An older offline edit never overwrites a newer one: the upload checks the cloud's time first.
+  - A deck deleted on one device leaves the other devices with a toast, and a copy is kept locally. A deck edited after its last sync is kept and sent back. Decks are never deleted silently.
+- **Sync indicator:** "Synced ✓ / Syncing… / Offline" next to the account chip, only when signed in. On phones it is just a coloured dot. It uses TX keys, in 12 languages (`tools/i18n_2026_10_19_sy.py`).
+- **Proposed, NOT applied (optional):** `supabase/proposed/20261019_deck_sync.sql`. It adds `looks` (the deck's Shiny and skin picks) and `deleted_at` (delete marks), JSON shape checks, and a trigger that keeps the newer row when a stale write arrives. Until it is applied, the client falls back to working without it.
+- **Test:** `tests/deck-sync-2026-10-19.js` runs two devices against a fake cloud (104 checks).
+
 ## 2026-10-19 (package UT: animal tags, Base cards, variants balanced by N, raid elder art brief, art reuse map)
 - **Owner (09:52):** *"tag an animal to the card. For ghosts and spirits and elementals - they have an animal embodiment, see. But subtype ghost or elemental etc."*
 - **Every creature card has an `animal`** (724 tagged here, 349 animals in 140 kinds). Package EE's 7 Easter-egg creatures keep their own tags, reported as an owner call. It names what the card is, or the animal its body takes. 96 beings also have a `subtype` from a fixed list of 15: ghost, spirit, elemental, undead, construct, structure, fiend, conjured, plant, fungus, mythic, changeling, were, mutant, glitch.

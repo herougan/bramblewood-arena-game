@@ -26,6 +26,16 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Easter eggs | Codex teaser | 8 "???" tiles visible from the start and counted, or hidden until seen? |
 | Easter eggs | Condor "+5" | Taken literally (5 columns out): the edge beam needs a very wide row |
 | Easter eggs | Rarities | Drakon Rare, Panda Super Rare; Nyoogle tagged cat/mythic |
+| Server | Deck sync migration (SY) | supabase/proposed/20261019_deck_sync.sql: looks + deleted_at columns, checks, stale-write guard. Optional: apply? |
+| Server | Device-only data (SY) | Per-copy foil/Shiny/skins and Kibble, Food, Beer, Kroon, Laurels still don't sync. Sync next? |
+| Server | Currency guard (SY) | guard_currency_write rejects a whole upload when one currency jumps past its limit: a device far ahead never syncs |
+| Raid | Admin wins (NV) | An admin 👑 Win in a raid no longer counts (test only). Earlier admin wins pushed ~20,019 to the live Goliath pool: remove those rows? (needs your OK) |
+| Raid | VS countdown (NV) | Raid VS screen waits 9 s before auto-start (normal fights 2.8 s): right length? |
+| UI | Conquest fight opener (NV) | Separate screen, not redesigned yet |
+| UI | Hold timing (MB2) | Touch-and-hold is 0.25 s in fights, 0.45 s elsewhere: same everywhere? |
+| Raid | Small instances (RB) | 30-player floor relies on stand-ins (14%/day, my pick) and Core stumps 14 HP. Scale HP by participants instead? (needs last week's count) |
+| Raid | Tier thresholds (RB) | Participant 1,000→500, Competent 10,000→2,000, Leading 50,000→12,500 (0.1% reach it; 7,500 gives ~5%) |
+| Raid | Instance cap 250 (RB) | Republish the Goliath from the raid editor, or apply supabase/proposed/20261019_raid_cap_250.sql |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |

@@ -352,6 +352,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       for(let r = 0; r < pl.reserve.length; r++){
         Object.keys(pl.reserve[r]).map(Number).sort((a,b)=> Math.abs(a)-Math.abs(b)).forEach(sl=>{
           const c = pl.reserve[r][sl]; if(!c) return;
+          if(c.holdRow) return; // 2026-10-19 (package RB, owner 12:23: "Raid: Allies are still playing cards in the front column."): a raid ally's unit stays in its own row
           if(r === 0){
             if(frontCardAt(pl, sl)) return;
             delete pl.reserve[0][sl];

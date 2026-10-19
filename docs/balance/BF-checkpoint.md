@@ -15,5 +15,9 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
 - 5. measures bf-mid (mean-gain pace), bf-mid2 (sum 2A+H), bf-mid3 (final pace, after merge); curve tune -> bf-curve-fixes.jsonl
   (54 fights; 20-A-4 not applied; 16-6 retuned with --shieldx=2); applied
 
+- 5 (cont). round 2 (bf-curve-fixes-2), round 3 on measure seeds (bf-curve-fixes-3); final bf-after 178/179 main, 76/77 side; bf-fresh 154/179;
+  yardsticks bf-abs + level-curve-fit-bf.json (0.266 DR a map, r2 0.87)
+- docs/balance/level-curve-2026-10-19b.md, CHANGELOG; merged main twice; tests forge-curve, side-maps, level-curve, game-texts pass
+
 ## Next
-- bf-after + bf-fresh measures (running); tests level-curve / side-maps; doc level-curve-2026-10-19b.md; CHANGELOG; merge main; final commit
+- Done. Owner calls are listed at the end of docs/balance/level-curve-2026-10-19b.md. The hub wasn't rebuilt (build_hub.py needs .hub/effects.html).

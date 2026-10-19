@@ -37,7 +37,7 @@ ok(/calm = reducedMotion\(\) \|\| !fxAtLeast\('med'\) \|\| !hasGsap\(\)/.test(fn
     getCardDefs: ()=> ({c1:{id:'c1', name:'Ink Squid', rarity:'common'}, c2:{id:'c2', name:'Broodmother', rarity:'legendary'}}), cardTileHTML: d=> `<div class="card-tile">${d.name}</div>`,
     raidBossArt: ()=> 'art/raids/goliath.png'};
   vm.createContext(ctx);
-  vm.runInContext([lineOf('const RAID_CLAIM_CUR_WEIGHT'), lineOf('const RAID_CLAIM_CARD_WEIGHT'), fnSrc('raidClaimTierLabel'), fnSrc('raidClaimScreenSpec')].join('\n') + '\nthis.S = raidClaimScreenSpec;', ctx);
+  vm.runInContext([lineOf('const RAID_CLAIM_CUR_WEIGHT'), lineOf('const RAID_CLAIM_CARD_WEIGHT'), fnSrc('raidClaimTierLabel'), fnSrc('raidClaimScreenSpec'), fnSrc('raidLocale') /* 2026-10-19 (package RB): raid numbers in the game's language */].join('\n') + '\nthis.S = raidClaimScreenSpec;', ctx);
   const def = {id:'goliath', name:'The Goliath', icon:'🐙'};
   const claim = {key:'goliath:1', cycle:1, mine:48250, reward:{kind:'kill', tier:'top1', base:{gold:400, dust:60, metal:3}, extra:{metal:3, title:'Goliath-Slayer'}}};
   const sp = ctx.S(def, claim, {gold:400, dust:60, metal:6}, ['c1', 'c2'], 500);
