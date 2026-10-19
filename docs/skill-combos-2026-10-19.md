@@ -2,18 +2,18 @@
 
 Package DC (owner 08:10: "Have you tested & costed all skills yet? We can do a sample testing with duo-skill combos, 1,000–2,000 times.").
 
-**828 skill pairs** on one unit, each against its two single skills (172 single runs), 921 games per pair on average (400–1800), 1160440 games in all (with the scenarios). Data: `docs/balance/skill-combos-2026-10-19.json`, the sheet `docs/skill-combos-2026-10-19.xlsx`; the scenario results are `measuredS` (with `measuredHow`) in `canonical/skill-costs.json` (`value` unchanged). The hub's 🧮 Skill costs tab has a Combos view.
+**905 skill pairs** on one unit, each against its two single skills (177 single runs), 919 games per pair on average (400–1800), 1235720 games in all (with the scenarios). Data: `docs/balance/skill-combos-2026-10-19.json`, the sheet `docs/skill-combos-2026-10-19.xlsx`; the scenario results are `measuredS` (with `measuredHow`) in `canonical/skill-costs.json` (`value` unchanged). The hub's 🧮 Skill costs tab has a Combos view.
 
 ## Coverage: is every skill costed?
 
-331 entries in canonical/skill-costs.json (270 skills, 28 triggers, 27 actions, 3 modifiers, 3 shorthands); every engine trigger and action key has an entry.
+332 entries in canonical/skill-costs.json (270 skills, 28 triggers, 28 actions, 3 modifiers, 3 shorthands); every engine trigger and action key has an entry.
 
 | Status | Entries |
 |---|---|
 | measured by SW (20-copy decks) | 308 |
 | measured here (scenarios, mixed decks) | 15 |
 | off the scale (only a bound) | 3 |
-| not measured (a reason each) | 5 |
+| not measured (a reason each) | 6 |
 
 **Measured here** (they had no number, or a number SW flagged):
 
@@ -99,6 +99,7 @@ Trigger scenarios per baseline (S of the trigger with its action, S of On Spawn 
 - skill `tsunami`: off the scale (a bound) — damage-equivalent in a mixed deck: 5 copies among 20 vanilla, inverted on 5 copies of On Spawn: Damage D (D 0-48) vs SW's calibrated mix, 800 games a point; S = D × the damage action's measuredS per point (low confidence: the bridge puts this scale at 0.15-2.6x SW's); beyond the ladder on every baseline: more than Damage 48 (a kill a play), so only a bound
 - skill `weakness`: not measured — Weakness (a damage type) needs a foe that deals that type; the plain decks deal physical damage only
 - trigger `onAnyPlayed`: not measured — On Any Played has no engine hook yet (a reference value)
+- action `positionBeam`: not measured — added to the table after the measurement runs (no measuredS yet; 2026-10-19 (package EE): per point of damage; the Galactic Condor's beam hits about two things (the unit across and the bramble from the centre, 1 to 4 units from a side, the row from the edge): 2 x Deal damage (1.27). Not measured yet)
 - action `mindControl`: off the scale (a bound) — damage-equivalent in a mixed deck: 5 copies among 20 vanilla, inverted on 5 copies of On Spawn: Damage D (D 0-48) vs SW's calibrated mix, 800 games a point; S = D × the damage action's measuredS per point (low confidence: the bridge puts this scale at 0.15-2.6x SW's); beyond the ladder on every baseline: more than Damage 48 (a kill a play), so only a bound
 - action `exile`: off the scale (a bound) — damage-equivalent in a mixed deck: 5 copies among 20 vanilla, inverted on 5 copies of On Spawn: Damage D (D 0-48) vs SW's calibrated mix, 800 games a point; S = D × the damage action's measuredS per point (low confidence: the bridge puts this scale at 0.15-2.6x SW's); beyond the ladder on every baseline: more than Damage 48 (a kill a play), so only a bound
 - The damage-equivalents (Exile, Mind Control, Tsunami, Acid Bolt, Meteor, Gain, Bounty) are all **low confidence**: the bridge above puts that scale at 0.15–2.6× SW's 20-copy S depending on the kind of skill, so they rank these entries and bound the removals (5 copies of Exile, Mind Control or Tsunami beat 5 copies of Damage 48, a sure kill a play) but do not price them. Pricing a removal needs a removal yardstick (e.g. "Destroy a random enemy" as its own rung), not damage.
@@ -108,12 +109,12 @@ Trigger scenarios per baseline (S of the trigger with its action, S of On Spawn 
 
 ## Method (pairs)
 
-- **Which pairs**: all pairs among the 40 skills live cards print most (flying, tide, armor, nocturnal, poison, evasive, regen, quick, bleed, pounce, sweep, thorns, diurnal, guardian, arrow, onReadyGold, fork, inspiring, rage, scare, shell, stealth, ambush, daunt, fireArrow, onDeathSpawn, revive, supreme, brood, freeze, onReadyDamage, overwhelm, relic, gash, immolation, invisible, molting, reach, venomous, backstab), every pair live cards print together on 2+ cards, and targeted pairs (the owner's examples: Poison + Proliferate, Flying + Arrow, Taunt + Thorns, and on-hit × multi-hit, Freeze + Frostbite, Remember + On Death: Exile, three null checks). Left out of the 40 (no effect alone and nothing on the same unit can switch them on): darksight (23 cards: bound to a field (dark): its live pairs only); dry (17 cards: bound to a field (heat): its live pairs only); swarm (14 cards: counts allies of its tribe (a test unit has no type)); pierce (10 cards: ignores the foe's Armor (the test opponents have none)); prayer (8 cards: Prayer only pays with cards that need Prayer (prayerReq); a plain deck has none, so its worth is the deck's, not the unit's); crabClaws (6 cards: changes who it may attack (no effect seen alone)); esprit (6 cards: grows when Kin arrive (a test unit has no type)); frostbite (6 cards: hurts Frozen foes (paired with Freeze below)); mountainClimber (6 cards: bound to a field (frost): its live pairs only); demolisher (5 cards: extra damage to the foe's Structures); wave (5 cards: bound to a field (tide): its live pairs only); keenEye (4 cards: extra damage to Changelings); keenSense (4 cards: bound to a field (dark): its live pairs only); remember (4 cards: pays out of the Removal Zone (paired with On Death: Exile below)); sonar (4 cards: sees in the dark (dark field only)).
+- **Which pairs**: all pairs among the 42 skills live cards print most (flying, tide, armor, nocturnal, poison, evasive, regen, quick, bleed, pounce, sweep, thorns, diurnal, guardian, arrow, onReadyGold, fork, inspiring, rage, scare, shell, stealth, ambush, daunt, fireArrow, onDeathSpawn, revive, supreme, brood, freeze, invisible, onReadyDamage, overwhelm, relic, backstab, explode, gash, immolation, molting, reach, taunt, venomous), every pair live cards print together on 2+ cards, and targeted pairs (the owner's examples: Poison + Proliferate, Flying + Arrow, Taunt + Thorns, and on-hit × multi-hit, Freeze + Frostbite, Remember + On Death: Exile, three null checks). Left out of the 40 (no effect alone and nothing on the same unit can switch them on): darksight (23 cards: bound to a field (dark): its live pairs only); dry (17 cards: bound to a field (heat): its live pairs only); swarm (13 cards: counts allies of its tribe (a test unit has no type)); pierce (10 cards: ignores the foe's Armor (the test opponents have none)); prayer (8 cards: Prayer only pays with cards that need Prayer (prayerReq); a plain deck has none, so its worth is the deck's, not the unit's); mountainClimber (7 cards: bound to a field (frost): its live pairs only); crabClaws (6 cards: changes who it may attack (no effect seen alone)); esprit (6 cards: grows when Kin arrive (a test unit has no type)); frostbite (6 cards: hurts Frozen foes (paired with Freeze below)); demolisher (5 cards: extra damage to the foe's Structures); wave (5 cards: bound to a field (tide): its live pairs only); illuminate (4 cards: bound to a field (night): its live pairs only); keenEye (4 cards: extra damage to Changelings); keenSense (4 cards: bound to a field (dark): its live pairs only); remember (4 cards: pays out of the Removal Zone (paired with On Death: Exile below)); sonar (4 cards: sees in the dark (dark field only)).
 - **The unit**: b2 (4/14 Wait 2, Lumber 1, Common; Legendary when a skill is) + both skills at the value live cards print most, in the field a field-bound skill needs (Tide on a perma-tide, Nocturnal at night, Darksight in the dark, Dry in a heatwave, Mountain Climber in the frost).
 - **Games**: a deck of 20 copies against SW's calibrated mix (5 glass cannons, 5 tanks, 5 flyers, 5 of the 0-cost swarm, the opponent vanilla wins about half against) with Health, then Attack, added to every foe until the deck wins half (bisection on whole points, then a 1/20 step: m of the 20 foes one point higher); less the vanilla unit's own crossing; S = (ΔHealth + 2 ΔAttack) / 2 (Budget-v3 units). Why not SW's vanilla mirror: 20 copies against 20 copies of one unit play near-deterministic games and Health counts only in whole hits, so small skills all read "one breakpoint"; the mix's four bodies smear the breakpoints. The win rates against the mirror and SW's reference pool are recorded too (the sheet), not averaged in. 40 games per point; every pair and both its singles play the same seeds against the same opponents (common random numbers).
-- **Games per pair**: the pair's own run played 880 games (median; 400–1800); its interaction also rests on its two singles' runs (920 games each, median), so ~2720 games behind each interaction. The first 340 pairs searched their crossings from 0 (median 1040 games); the other 488 started from the sum of their singles' crossings (median 840 games): every batch is the same seeds whichever order it is asked in, so the crossing is the same one (checked on two pairs: identical S, 1,520 → 1,280 and 1,160 → 760 games), only fewer batches are played.
+- **Games per pair**: the pair's own run played 880 games (median; 400–1800); its interaction also rests on its two singles' runs (920 games each, median), so ~2720 games behind each interaction. The first 397 pairs searched their crossings from 0 (median 1000 games); the other 508 started from the sum of their singles' crossings (median 840 games): every batch is the same seeds whichever order it is asked in, so the crossing is the same one (checked on two pairs: identical S, 1,520 → 1,280 and 1,160 → 760 games), only fewer batches are played.
 - **Interaction** = S(A + B) − S(A) − S(B), all three measured here. **Noise, measured**: 20 pairs and 26 singles were run again on other seeds; one S moves ±0.51 and one interaction ±0.69 between seed sets (the solve's own error formula said ~0.05, far too small). Every interaction's standard error is floored at ±0.69. Confidence: high at |I| ≥ 3 SE (≥ 2.07), medium at ≥ 2 SE, low otherwise or when a solve ran off its range (a pair worth more than 8× the baseline's Health).
-- **The comparison asked for** (the sum of single-skill measuredS): the sheet's "Sum SW" column adds SW's own single-skill runs (b2, same field, 40 games a point) and "Interaction vs SW" is the pair against that sum. The singles re-measured here are the fair yardstick (same seeds, same opponent, same solver), so the headline uses them. The two yardsticks differ: over the 74 singles with a SW number the median gap is 1.75 (mean here − SW -1.4, root-mean-square 3.98), and a few skills differ a lot (supreme 7.72 here vs 30.18 SW, sap 3.56 here vs 15.07 SW, shell 2.68 here vs 9.74 SW, proliferate 0 here vs 6.98 SW). SW's S averages a head-to-head against the vanilla mirror with the reference pool, while this one solves against the calibrated mix only (one opponent, so the pair and its singles see the same games); a skill that crushes the mirror (Supreme) reads far higher in SW's. So "Interaction vs SW" mixes two yardsticks and is for reference; the synergy flags use the same-yardstick interaction.
+- **The comparison asked for** (the sum of single-skill measuredS): the sheet's "Sum SW" column adds SW's own single-skill runs (b2, same field, 40 games a point) and "Interaction vs SW" is the pair against that sum. The singles re-measured here are the fair yardstick (same seeds, same opponent, same solver), so the headline uses them. The two yardsticks differ: over the 75 singles with a SW number the median gap is 1.75 (mean here − SW -1.44, root-mean-square 3.99), and a few skills differ a lot (supreme 7.72 here vs 30.18 SW, sap 3.56 here vs 15.07 SW, shell 2.68 here vs 9.74 SW, proliferate 0 here vs 6.98 SW). SW's S averages a head-to-head against the vanilla mirror with the reference pool, while this one solves against the calibrated mix only (one opponent, so the pair and its singles see the same games); a skill that crushes the mirror (Supreme) reads far higher in SW's. So "Interaction vs SW" mixes two yardsticks and is for reference; the synergy flags use the same-yardstick interaction.
 
 ## Top synergies (pair worth ≫ the sum of its singles)
 
@@ -192,13 +193,13 @@ Trigger scenarios per baseline (S of the trigger with its action, S of On Spawn 
 
 ## Interaction model
 
-Fitted on the 661 pairs whose solves stayed in range (167 clamped pairs left out). Error of a pair's predicted worth (RMSE, in S; the replicate noise of one S is ±0.51, so ~0.88 of any RMSE here is noise):
+Fitted on the 697 pairs whose solves stayed in range (208 clamped pairs left out). Error of a pair's predicted worth (RMSE, in S; the replicate noise of one S is ±0.51, so ~0.88 of any RMSE here is noise):
 
 | Model | RMSE |
 |---|---|
-| additive (S(A) + S(B)) | 2.32 |
-| one global multiplier (× 1.116) | 2.13 |
-| a multiplier per family pair (below; the global one where a family pair has < 3 pairs) | 1.79 |
+| additive (S(A) + S(B)) | 2.26 |
+| one global multiplier (× 1.11) | 2.09 |
+| a multiplier per family pair (below; the global one where a family pair has < 3 pairs) | 1.75 |
 | family multiplier + the per-pair adjustment table (in-sample: the table is these pairs, shrunk by their noise) | 0.64 |
 
 **How the budget could use it**: S(card with skills A and B) = m(fam A, fam B) × (S(A) + S(B)), and for a pair in the adjustment table use S(A) + S(B) + adj instead. Families: evade (flying, evasive, stealth, invisible, swift, shadow); ranged (arrow, fireArrow, fireBolt, boomerang, volley, twinShot…); dot (poison, bleed, venomous, rabid, toxin, proliferate…); defense (armor, regen, shell, thorns, guardian, revive…); tempo (quick, ambush, pounce, haste, speed, fastForward); offense (sweep, rage, supreme, gash, immolation, twinStrike…); control (scare, daunt, freeze, stunOnHit, shock, sleep…); economy (onReadyGold, bounty, lumberjack, midas); summon (onDeathSpawn, brood, sprout, meiosis); aura (inspiring, rally, kinship, sociable); ready (onReadyDamage, explode, render); field (tide, nocturnal, darksight, dry, mountainClimber, wave…); anything else is "other".
@@ -223,6 +224,7 @@ Fitted on the 661 pairs whose solves stayed in range (167 clamped pairs left out
 | defense×ranged | 12 | 1.03 | +0.26 |
 | field×other | 12 | 1.213 | +0.68 |
 | defense×summon | 12 | 1.007 | +0.05 |
+| defense×ready | 12 | 0.916 | -0.54 |
 | evade×field | 11 | 1.234 | +1.96 |
 | field×tempo | 10 | 1.055 | +0.24 |
 | offense×offense | 10 | 1.079 | +1.04 |
@@ -232,6 +234,7 @@ Fitted on the 661 pairs whose solves stayed in range (167 clamped pairs left out
 | control×field | 10 | 1.299 | +1.31 |
 | offense×ranged | 10 | 1.139 | +1.71 |
 | offense×summon | 10 | 1.015 | +0.16 |
+| offense×ready | 10 | 0.952 | -0.48 |
 | dot×evade | 9 | 1.346 | +2.64 |
 | evade×tempo | 9 | 1.071 | +0.56 |
 | dot×tempo | 9 | 1.146 | +0.54 |
@@ -242,9 +245,12 @@ Fitted on the 661 pairs whose solves stayed in range (167 clamped pairs left out
 | control×evade | 8 | 1.152 | +1.38 |
 | field×ranged | 7 | 0.958 | -0.27 |
 | dot×dot | 7 | 1.546 | +1.04 |
+| evade×ready | 7 | 1.037 | +0.35 |
 | aura×defense | 6 | 1.055 | +0.24 |
 | evade×ranged | 6 | 1.278 | +3.22 |
 | evade×summon | 6 | 1.068 | +0.68 |
+| control×ready | 6 | 0.884 | -0.87 |
+| field×ready | 6 | 1.068 | +0.31 |
 | dot×ranged | 6 | 0.962 | -0.28 |
 | ranged×tempo | 6 | 1.083 | +0.64 |
 | defense×economy | 6 | 1.196 | +1.78 |
@@ -253,19 +259,19 @@ Fitted on the 661 pairs whose solves stayed in range (167 clamped pairs left out
 | dot×summon | 6 | 1 | 0 |
 | summon×tempo | 6 | 0.906 | -0.56 |
 | control×summon | 6 | 1.073 | +0.6 |
-| defense×ready | 6 | 0.795 | -1.13 |
+| dot×ready | 6 | 1.013 | +0.06 |
+| ready×tempo | 6 | 0.94 | -0.32 |
 | other×summon | 6 | 0.977 | -0.13 |
+| other×ready | 6 | 1.009 | +0.05 |
 | other×other | 5 | 1.132 | +0.54 |
 | economy×offense | 5 | 1.456 | +5.74 |
 | aura×offense | 5 | 1.203 | +1.59 |
-| offense×ready | 5 | 0.924 | -0.68 |
-| evade×ready | 4 | 1.024 | +0.21 |
 | ranged×summon | 4 | 1.008 | +0.08 |
-| control×ready | 3 | 0.794 | -1.36 |
+| ranged×ready | 4 | 0.904 | -0.87 |
+| ready×summon | 4 | 0.918 | -0.6 |
 | evade×evade | 3 | 1.066 | +0.77 |
 | tempo×tempo | 3 | 1.107 | +0.42 |
 | field×field | 3 | 0.87 | -0.58 |
-| field×ready | 3 | 1.033 | +0.11 |
 | aura×field | 3 | 1.161 | +0.46 |
 | economy×evade | 3 | 1.835 | +9.88 |
 | economy×field | 3 | 1.132 | +0.95 |
@@ -276,13 +282,10 @@ Fitted on the 661 pairs whose solves stayed in range (167 clamped pairs left out
 | aura×tempo | 3 | 1.332 | +1.05 |
 | aura×control | 3 | 1.113 | +0.61 |
 | control×control | 3 | 0.719 | -2.37 |
-| dot×ready | 3 | 0.887 | -0.46 |
-| ready×tempo | 3 | 0.82 | -0.78 |
 | economy×other | 3 | 1.175 | +1.33 |
 | aura×other | 3 | 1.217 | +0.61 |
-| other×ready | 3 | 0.889 | -0.44 |
 
-**Per-pair adjustment table** (the 30 largest of 263; adj = interaction × max(0, 1 − 1/z²), so a noisy one shrinks toward 0; all in the JSON):
+**Per-pair adjustment table** (the 30 largest of 273; adj = interaction × max(0, 1 − 1/z²), so a noisy one shrinks toward 0; all in the JSON):
 
 | Pair | Field | adj | Interaction | SE |
 |---|---|---|---|---|

@@ -328,7 +328,10 @@ function pairPlan(table, o){
   const FULL_FIELD = ['tide', 'nocturnal'];
   const skip = id=> SW.WHY[id] || SW.PARAM_OF[id] || NULL_ALONE[id] || (fieldOf(id) && !FULL_FIELD.includes(id) ? 'bound to a field (' + fieldOf(id) + '): its live pairs only' : null);
   const ranked = Object.entries(cnt).sort((a, b)=> b[1] - a[1] || a[0].localeCompare(b[0]));
-  const top = ranked.filter(([k])=> !skip(k)).slice(0, o.top || 40).map(([k])=> k);
+  // the 40, plus every skill tied with the 40th (2026-10-19: eight skills sit on 4 live cards at the cutoff, and which of them made
+  // the 40 flipped with a later cards.json; the whole tie group is in, 42 skills today)
+  const elig = ranked.filter(([k])=> !skip(k)), N = o.top || 40, cut = elig.length > N ? elig[N - 1][1] : 0;
+  const top = elig.filter(([, n], i)=> i < N || (o.ties !== false && n === cut)).map(([k])=> k);
   const left = ranked.slice(0, ranked.findIndex(([k])=> k === top[top.length - 1]) + 1).filter(([k])=> skip(k)).map(([k, n])=> ({id:k, cards:n, why: SW.WHY[k] ? SW.WHY[k] : SW.PARAM_OF[k] ? 'a parameter of ' + SW.PARAM_OF[k] : NULL_ALONE[k] || skip(k)}));
   const pairs = {}, skipped = [];
   const addPair = (a, b, source)=>{ const ids2 = [a, b].sort(), k = ids2.join('+'); if(pairs[k]){ if(!pairs[k].source.includes(source)) pairs[k].source.push(source); return; }
@@ -423,7 +426,7 @@ function coverage(table, scenEnt, plan){
   const rows = [], add = (kind, id, e, extra)=>{ const s = scenEnt['' + (kind === 'shorthand' ? 'shorthand' : kind) + ':' + id];
     const st = s && s.measuredS != null ? (s.off ? 'off the scale (a bound)' : 'measured here (' + s.conf + ')') : typeof e.measuredS === 'number' ? (e.measuredOff ? 'off the scale (a bound)' : 'measured by SW (' + (e.measuredConf || 'low') + ')') : 'not measured';
     rows.push(Object.assign({kind, id, status: st, measuredS: s && s.measuredS != null ? s.measuredS : typeof e.measuredS === 'number' ? e.measuredS : null, conf: s && s.measuredS != null ? s.conf : e.measuredConf || '',
-      source: s && s.measuredS != null ? 'DC' : typeof e.measuredS === 'number' ? 'SW' : '', why: s && s.measuredS != null ? s.how : e.measuredWhy || '', value: e.value}, extra || {})); };
+      source: s && s.measuredS != null ? 'DC' : typeof e.measuredS === 'number' ? 'SW' : '', why: s && s.measuredS != null ? s.how : e.measuredWhy || (typeof e.measuredS === 'number' ? '' : 'added to the table after the measurement runs (no measuredS yet; ' + (e.note || 'no note') + ')'), value: e.value}, extra || {})); };
   [['skill', 'skills'], ['trigger', 'triggers'], ['action', 'actions'], ['modifier', 'modifiers']].forEach(([k, f])=> (table[f] || []).forEach(e=> add(k, e.id, e)));
   Object.entries(table.shorthands || {}).forEach(([k, sh])=> add('shorthand', k, sh));
   // engine keys with no entry of their own (none today: the check stays so a new key shows up)

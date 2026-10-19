@@ -38,8 +38,8 @@ try{ fs.rmSync(tmp, {recursive:true, force:true}); }catch(e){}
 
 // 2. the plan
 const plan = C.pairPlan(table), cards = JSON.parse(rd('canonical/cards.json')).filter(c=> !c.pool && !c.token);
-ok(plan.top.length === 40, 'the 40 skills live cards print most (left out: no effect alone, a parameter, or a rare field)');
 const cnt = {}; cards.forEach(c=> Object.keys(c.effects || {}).forEach(k=> cnt[k] = (cnt[k] || 0) + 1));
+ok(plan.top.length >= 40 && plan.top.slice(40).every(k=> cnt[k] === cnt[plan.top[39]]), `the 40 skills live cards print most + the ties at the cutoff (${plan.top.length}; left out: no effect alone, a parameter, or a rare field)`);
 ok(plan.top.every((k, i)=> i === 0 || cnt[plan.top[i - 1]] >= cnt[k]), 'the 40 are in order of how many live cards print them');
 ok(Object.keys(plan.pairs).length >= 780, `all pairs among the 40 + live + targeted (${Object.keys(plan.pairs).length})`);
 const mustPairs = [];
