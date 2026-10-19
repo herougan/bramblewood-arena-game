@@ -321,11 +321,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const occ = occupiedSlots(pl);
     // A cage (Caged Fight) takes its slot but isn't one of your cards: it doesn't open the slots beside it.
     const own = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0 && !c.cageOf) own.add(c.slot); });
-    if(own.size===0) return occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0];
+    if(own.size===0) return (occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0]).filter(sl=> !eqRubbleBlocks(pl, sl)); // + Rubble (EQ, 2026-10-19)
     const out = new Set();
     own.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
     if(!occ.has(0)) out.add(0); // the centre is always open (2026-10-19, BU)
-    return [...out].sort((a,b)=>a-b);
+    return [...out].filter(sl=> !eqRubbleBlocks(pl, sl)).sort((a,b)=>a-b); // Rubble: the foe's hazard closes the slot to your plays (EQ, 2026-10-19)
   }
   // Resolves a placement request to a concrete slot: a number is taken as-is if legal; a
   // 'left'/'right'/'center' string (L/R buttons, AI, leader summon) picks the legal slot on that
@@ -937,6 +937,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
+        { const [wa, wh] = eqSituational(c, pid, players); a += wa; h += wh; } // Weapon Master's +1/+1 on equipped units (EQ, 2026-10-19)
         { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
           const key = grant ? JSON.stringify(grant) : '';
           if((c._condKey||'') !== key){ if(c._condBase){ c.defId = c._condBase; c._condBase = null; } if(key){ c._condBase = c.defId; deriveDef(c, grant); } c._condKey = key; } }
@@ -1202,6 +1203,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       blasts.forEach(([pid, c])=>{ if(c.hp > 0) fireDynamite(players, sideOf, pid, c, stats, events); });
       if(blasts.length) removeDeadCards(players, sideOf, {}, stats, events); }
     restlessMoves(players, sideOf, stats, events); // Restless (2026-10-14)
+    eqRoundStart(players, round, sideOf, stats, events); // EQ (2026-10-19): equipping takes hold, the slot hazards tick and wear off
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
@@ -1709,26 +1711,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return true;
   }
   // Equipment (2026-10-11, user: "a blacksmith portion for crafting weapons ... These weapons are just cards ... equipment
-  // can't block attacks"). An equipment card never takes a slot on the board: you drag it from your hand onto one of your
-  // units, pay its Lumber, and that unit gains its Attack/Health and any skills it grants (equip.grant). One piece per
-  // unit. Equipping uses your play for the turn. When the unit dies, the equipment goes to the graveyard with it.
+  // can't block attacks"). Drag it from your hand onto one of your units (or onto its slot), pay its Lumber: it goes under the unit.
+  // One piece per unit; it uses your play for the turn. 2026-10-19 (package EQ, owner 21:36: "When an equip card and creature unit
+  // card meets, they take 1 turn to take the benefits"): the unit is equipping for a round (equip.turns), then it gains the piece's
+  // Attack/Health and skills (equip.grant); when it dies the piece stays in the slot (see the Package EQ block). A piece can also lie
+  // alone in an empty slot (placeEquipment). Structures and cages carry nothing.
   function canEquip(pl, handUid, targetUid){
     if(!pl || pl.playedThisTurn || (pl.skipTurns||0) > 0) return false;
     const h = pl.hand.find(x=> x.uid===handUid); const eq = h && CARD_DEFS[h.defId]; if(!eq || eq.cardType !== 'equipment') return false;
-    const tgt = allLive(pl).find(c=> c.uid===targetUid); if(!tgt || tgt.equipment || tgt.defId==='__cage') return false;
+    const tgt = allLive(pl).find(c=> c.uid===targetUid); if(!eqCarrier(tgt)) return false; // EQ (2026-10-19): no Structure either
     return costOfCard(h.defId) <= pl.lumber;
   }
   function equip(players, sideOf, pid, targetUid, handUid, stats, events){
     const pl = players[pid]; if(!canEquip(pl, handUid, targetUid)) return false;
-    const idx = pl.hand.findIndex(h=> h.uid===handUid); const [h] = pl.hand.splice(idx, 1); const eq = CARD_DEFS[h.defId];
+    const idx = pl.hand.findIndex(h=> h.uid===handUid); const [h] = pl.hand.splice(idx, 1);
     const tgt = allLive(pl).find(c=> c.uid===targetUid);
-    pl.lumber -= costOfCard(h.defId); markPlayed(pl);
-    const a = eq.attack||0, hp = eq.health||0;
-    tgt.atk += a; tgt.baseAtk += a; tgt.hp += hp; tgt.maxHp += hp; tgt.equipment = h.defId;
-    const grant = eq.equip && eq.equip.grant;
-    if(grant && typeof grant==='object' && Object.keys(grant).length) deriveDef(tgt, grant);
+    pl.lumber -= costOfCard(h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
+    eqMeet(players, sideOf, pid, tgt, h.defId, events, 'onto'); // EQ (2026-10-19): equipping for a round, then +stats and skills
     ensureStat(stats, sideOf(pid), h.defId).played++;
-    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:tgt.uid, defId:tgt.defId, equipDefId:h.defId, attack:a, health:hp, grant: grant || null});
     return true;
   }
   // Sacrifice N sits on the fodder: play a Dark Summon card onto that unit and the unit dies; the new card costs N less
@@ -3299,7 +3299,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function payOreCosts(pl, defId){ const od = CARD_DEFS[defId] || {}; pl.stone = (pl.stone||0) - (od.stoneCost||0); pl.metal = (pl.metal||0) - (od.metalCost||0); pl.uranium = (pl.uranium||0) - (od.uraniumCost||0); }
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
-    { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'equipment' || ct === 'materia') return false; } // 2026-10-11: equipment is equipped onto a unit; materia is a crafting material
+    { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'materia') return false; // 2026-10-11: materia is a crafting material
+      if(ct === 'equipment' && !eqHasTarget(pl)) return false; if(ct === 'hazard' && !slotMode) return false; } // EQ (2026-10-19): equipment and hazards are played (a unit or a slot to go to)
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
     if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
     if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
@@ -3324,6 +3325,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const discount = (popts && popts.discount) || 0;
     const offerUid = (popts && popts.prayerOffer != null && popts.prayerOffer !== uid && canOfferPrayer(pl, hc.defId, popts.prayerOffer)) ? popts.prayerOffer : null;
     if(!canPlay(pl, hc.defId, uid, discount, offerUid != null ? 1 : 0)) return false;
+    { const ed = CARD_DEFS[hc.defId]; if(isEquipDef(ed)) return placeEquipment(players, sideOf, playerId, uid, side, stats, events); // EQ (2026-10-19): a slot, or under your unit there
+      if(isHazardDef(ed)) return placeHazard(players, sideOf, playerId, uid, popts && popts.hazardPid != null ? popts.hazardPid : null, side, stats, events); } // EQ: a slot on either side (popts.hazardPid)
     const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
     const fdef = CARD_DEFS[hc.defId];
     const firstCardEver = !pl.cardsPlayedEver; // Vanguard (2026-10-17): the first card this player plays this game (any card)
@@ -3685,6 +3688,219 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'hazardSprung', kind, side:sideOf(pid), pid, slot:card.slot, uid:card.uid, defId:card.defId, dmg}); });
     if(!(card.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events);
   }
+  // ==== Package EQ (2026-10-19, owner 21:36): equipment on the slots, Weapon Master, Pry, and slot hazards (floors) ==========
+  // Every number is a parameter with a default (EQ_DEF; a card's own field wins), so a global halving only touches this table.
+  //   Equipment (owner: "Same slot placement rules except you can play over creature units as well. The equip goes under the creature.
+  //   You can also play creature units over an equip card. When an equip card and creature unit card meets, they take 1 turn to take the
+  //   benefits."): an equipment card goes into any slot that is legal for a unit (it then lies there alone: no body, no block, the swing
+  //   facing it goes past to the bramble as if the slot were empty, and it doesn't open the slots beside it) or onto a slot holding one of
+  //   your units with no equipment (it goes under the unit). A unit played, spawned or moved onto a slot with a lone piece picks it up.
+  //   When they meet the unit is "equipping" for equip.turns rounds (EQ_DEF.equipTurns, 1): at the start of the next round it gains the
+  //   piece's Attack, Health and skills (equip.grant). When the unit dies the piece stays in its slot for the next unit (equip.breaks:
+  //   true sends it to the graveyard with the unit instead; a slot that already holds a lone piece sends the second one there too).
+  //   Equipped pieces move with their unit. pl.eqSlots {slot: {defId}} holds the lone pieces (player data, so a saved fight keeps them).
+  //   Weapon Master N: while it is on the field, its side's arrows (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deal N more and each
+  //   of its side's equipped (not still equipping) units gets +EQ_DEF.weaponMasterStats/+EQ_DEF.weaponMasterStats (situational, like the
+  //   day and night bonus: it goes when the last Weapon Master does). Pry N: every landed melee hit strips N Armor from the target for
+  //   good (Perforate's armorLoss, without the rest of Perforate).
+  //   Slot hazards (owner 21:36: "cards that create slot hazards ... Ice Floor (slippery), Lava Floor, Poison Floor, Toxic Gas (affects
+  //   flying as well), and Rubble - blocks the opponent from playing cards there"): a hazard card (cardType 'hazard', card.hazard =
+  //   {kind, n, rounds}) is played onto a slot on either side and lies there for `rounds` rounds (one hazard per slot, a new one replaces
+  //   it), occupied or not. Keyed like the traps: floors[pid + ':s' + slot].
+  //     ice     a unit entering it slides one slot on in the way it was moving (a placed or spawned unit: a random way, the other if
+  //             that is blocked); it stops at a unit of its own side or past EQ_DEF.iceEdge. Flyers, Mountain Climbers, Webbed and
+  //             pinned units don't slide.
+  //     lava    N fire (heat) damage at the start of every round to the unit on it. Flyers and Mountain Climbers are immune.
+  //     poison  Poison N on the unit entering it, and at the start of every round to the unit on it. Flyers and Mountain Climbers
+  //             are immune.
+  //     gas     Poison N at the start of every round to the unit on it, flyers included.
+  //     rubble  the side whose row it lies on can't play a card into that slot (legalSlots). Units may still move or be pushed in.
+  //   Entering is seen by slotEntries (the shared "a unit entered a slot" scan, below): every live unit remembers the slot it stood in
+  //   at its key's last look; no memory = it was placed or spawned there, a different slot = it moved there. watchScan (Ambush,
+  //   Sentry) runs floorScan first, so a unit that slid is seen where it stopped.
+  const EQ_DEF = {equipTurns:1, weaponMaster:1, weaponMasterStats:1, pry:1, hazardRounds:3, ice:1, lava:2, poison:1, gas:1, rubble:1, iceEdge:6, iceChain:6};
+  const EQ_KINDS = ['ice', 'lava', 'poison', 'gas', 'rubble'];
+  const eqN = (v, d)=> v === true || v == null ? d : Math.max(0, Number(v) || 0);
+  const floors = {};
+  function getFloors(){ const o = {}; Object.keys(floors).forEach(k=> o[k] = Object.assign({}, floors[k])); return o; }
+  function floorAt(pid, slot){ return floors[pid + ':s' + slot] || null; }
+  function isEquipDef(d){ return !!(d && d.cardType === 'equipment'); }
+  function isHazardDef(d){ return !!(d && d.cardType === 'hazard'); }
+  function hazardOf(d){ const h = (d && d.hazard) || {}, kind = EQ_KINDS.includes(h.kind) ? h.kind : 'rubble';
+    return {kind, n: eqN(h.n, EQ_DEF[kind]), rounds: Math.max(1, Math.round(eqN(h.rounds, EQ_DEF.hazardRounds)) || 1), target: h.target || (kind === 'rubble' ? 'enemyEmpty' : 'any')}; }
+  function equipTurnsOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(eqN(e.turns, EQ_DEF.equipTurns))); }
+  function eqSlotsOf(pl){ return pl ? (pl.eqSlots || (pl.eqSlots = {})) : {}; }
+  function loneEquipAt(pl, slot){ return (pl && pl.eqSlots && pl.eqSlots[slot]) || null; }
+  function eqRubbleBlocks(pl, slot){ const f = pl && floorAt(pl.id, slot); return !!(f && f.kind === 'rubble'); }
+  // who can carry a piece: a live unit with none, not a cage or a Structure
+  function eqCarrier(c){ return !!(c && !c.gap && c.hp > 0 && !c.equipment && !c.cageOf && c.defId !== '__cage' && !isStructureCard(c)); }
+  function eqHasTarget(pl){ if(!pl) return false; if(allLive(pl).some(eqCarrier)) return true; return slotMode && eqFreeSlots(pl).length > 0; }
+  // the empty slots an equipment card may lie in: a unit's legal slots without a lone piece already
+  function eqFreeSlots(pl){ return legalSlots(pl).filter(sl=> !loneEquipAt(pl, sl)); }
+  // every slot an equipment card from this hand may go to (the board's "+" targets for it): the free slots, and the slots of your carriers
+  function equipSlotsFor(pl){ if(!slotMode || !pl) return []; syncSlots(pl); const out = new Set(eqFreeSlots(pl)); allLive(pl).forEach(c=>{ if(eqCarrier(c) && Number.isInteger(c.slot)) out.add(c.slot); }); return [...out].sort((a, b)=> a - b); }
+  // the stats and skills a piece gives when it takes hold (once its equipping turn is over)
+  function eqApply(players, sideOf, pid, c, events){
+    const eq = CARD_DEFS[c.equipment]; if(!eq || c.equipOn) return;
+    const a = eq.attack || 0, hp = eq.health || 0;
+    c.atk += a; c.baseAtk = (c.baseAtk || 0) + a; c.hp += hp; c.maxHp += hp; c.equipping = 0; c.equipOn = true;
+    const grant = eq.equip && eq.equip.grant;
+    if(grant && typeof grant === 'object' && Object.keys(grant).length) deriveDef(c, grant);
+    if(recordEvents && events) events.push({type:'equipReady', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId:eq.id, attack:a, health:hp, grant: grant || null});
+  }
+  // a unit and a piece meet (played onto it, or the unit came onto a lone piece): it starts equipping
+  function eqMeet(players, sideOf, pid, c, equipDefId, events, how){
+    c.equipment = equipDefId; c.equipOn = false; c.equipping = equipTurnsOf(CARD_DEFS[equipDefId]);
+    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId, slot:c.slot, pending: c.equipping > 0, turns:c.equipping, how: how || 'onto',
+      attack:(CARD_DEFS[equipDefId] || {}).attack || 0, health:(CARD_DEFS[equipDefId] || {}).health || 0, grant:((CARD_DEFS[equipDefId] || {}).equip || {}).grant || null});
+    if(!(c.equipping > 0)) eqApply(players, sideOf, pid, c, events);
+  }
+  // an equipment card from the hand onto a slot: under your unit there, or lying alone in a free legal slot
+  function placeEquipment(players, sideOf, pid, handUid, slot, stats, events){
+    const pl = players[pid]; if(!pl || !slotMode) return false;
+    const h = pl.hand.find(x=> x.uid === handUid), d = h && CARD_DEFS[h.defId]; if(!isEquipDef(d) || !canPlay(pl, h.defId, handUid)) return false;
+    syncSlots(pl);
+    const sl = typeof slot === 'number' ? slot : resolvePlacementSlot(pl, slot);
+    const unit = Number.isInteger(sl) ? allLive(pl).find(c=> c.slot === sl) : null;
+    if(unit) return eqCarrier(unit) ? equip(players, sideOf, pid, unit.uid, handUid, stats, events) : false;
+    if(!Number.isInteger(sl) || !eqFreeSlots(pl).includes(sl)) return false;
+    pl.hand.splice(pl.hand.findIndex(x=> x.uid === handUid), 1);
+    pl.lumber -= costOfCard(h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1;
+    eqSlotsOf(pl)[sl] = {defId: h.defId};
+    ensureStat(stats, sideOf(pid), h.defId).played++;
+    if(recordEvents && events) events.push({type:'equipLaid', side:sideOf(pid), pid, slot:sl, equipDefId:h.defId});
+    return true;
+  }
+  // its unit died: the piece stays in the slot (or goes with it, equip.breaks)
+  function eqDrop(pl, card, sideOf, events){
+    if(!card || !card.equipment) return;
+    const eqId = card.equipment, d = CARD_DEFS[eqId] || {}; card.equipment = null; card.equipOn = false; card.equipping = 0;
+    if(!slotMode || !Number.isInteger(card.slot) || (d.equip && d.equip.breaks) || loneEquipAt(pl, card.slot)){ pl.graveyard.push({defId:eqId}); return; }
+    eqSlotsOf(pl)[card.slot] = {defId:eqId};
+    if(recordEvents && events) events.push({type:'equipDrop', side:sideOf(pl.id), pid:pl.id, slot:card.slot, equipDefId:eqId, fromUid:card.uid, fromDefId:card.defId});
+  }
+  // The shared "a unit entered a slot" scan (2026-10-19, package EQ; open boards). Each caller keeps its own memory key on the unit, so
+  // two systems (the floors here; a Sentry-style watcher) never use up each other's sightings. Returns [{pid, card, from, to, fresh}]
+  // (fresh: no memory, so placed or spawned; from null then) and remembers where every live front-row unit stands now. A board no one
+  // has looked at yet (a loaded save, a staged set-up with 2+ units) is just remembered.
+  function slotEntries(players, key){
+    if(!slotMode || !players || !players[1] || !players[2]) return [];
+    syncSlots(players[1]); syncSlots(players[2]);
+    const out = []; let total = 0, unseen = 0;
+    for(const pid of [1,2]) for(const c of allBoardCards(players[pid])){ if(!c || c.gap || !(c.hp > 0) || !Number.isInteger(c.slot)) continue; total++;
+      const m = c[key];
+      if(m === undefined || m === null){ unseen++; out.push({pid, card:c, from:null, to:c.slot, fresh:true}); }
+      else if(m !== c.slot) out.push({pid, card:c, from:m, to:c.slot, fresh:false});
+      c[key] = c.slot; }
+    if(total > 1 && unseen === total) return [];
+    return out;
+  }
+  const floorImmune = (c, kind)=> kind === 'gas' ? false : (isFlyingCard(c) || climbs(c));
+  function floorPoison(pid, c, n, kind, sideOf, stats, events){
+    const got = addPoison(c, n); if(!(got > 0)) return 0;
+    if(recordEvents && events) events.push({type:'floorTick', kind, side:sideOf(pid), pid, slot:c.slot, uid:c.uid, defId:c.defId, poison:got});
+    return got;
+  }
+  // a unit came onto a slot: pick up a lone piece, take the poison, slip on the ice (and then the slot it slid to counts as entered)
+  function floorScan(players, sideOf, stats, events){
+    let list = slotEntries(players, '_eqAt');
+    for(let pass = 0; pass < EQ_DEF.iceChain && list.length; pass++){
+      const next = [];
+      for(const en of list){ const c = en.card, pl = players[en.pid]; if(!(c.hp > 0) || c.slot !== en.to) continue;
+        const lone = loneEquipAt(pl, en.to);
+        if(lone && eqCarrier(c)){ delete pl.eqSlots[en.to]; eqMeet(players, sideOf, en.pid, c, lone.defId, events, 'pickup'); }
+        const f = floorAt(en.pid, en.to); if(!f) continue;
+        if(f.kind === 'poison' && !floorImmune(c, 'poison')) floorPoison(en.pid, c, f.n, 'poison', sideOf, stats, events);
+        if(f.kind === 'ice' && !floorImmune(c, 'ice') && !stuckFast(c) && !c.cageOf){
+          const live = new Set(allBoardCards(pl).filter(x=> x && x !== c && !x.gap && x.hp > 0).map(x=> x.slot));
+          const free = d=> Math.abs(en.to + d) <= EQ_DEF.iceEdge && !live.has(en.to + d);
+          let dir = en.fresh || en.from === en.to ? (rnd() < .5 ? -1 : 1) : Math.sign(en.to - en.from);
+          if(!free(dir) && (en.fresh || en.from === en.to)) dir = -dir;
+          if(free(dir)){ const s0 = c.slot; c.slot = s0 + dir; c._eqAt = c.slot; relayoutRow(pl);
+            if(recordEvents && events) events.push({type:'floorSlide', side:sideOf(en.pid), pid:en.pid, uid:c.uid, defId:c.defId, from:s0, to:c.slot});
+            runCustomTriggers(players, sideOf, en.pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
+            next.push({pid:en.pid, card:c, from:s0, to:c.slot, fresh:false}); } } }
+      list = next;
+    }
+  }
+  // the start of a round: equipping counts down (the piece takes hold at 0), then the floors tick and wear off
+  function eqRoundStart(players, round, sideOf, stats, events){
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+      allLive(pl).forEach(c=>{ if(c.equipment && !c.equipOn){ c.equipping = Math.max(0, (c.equipping || 0) - 1); if(!(c.equipping > 0)) eqApply(players, sideOf, pid, c, events); } }); });
+    if(!slotMode) return;
+    let hurt = false;
+    Object.keys(floors).forEach(k=>{ const f = floors[k], pid = Number(k.split(':')[0]), slot = Number(k.split(':s')[1]), pl = players[pid]; if(!pl) return;
+      const c = allLive(pl).find(x=> x.slot === slot);
+      if(c && !floorImmune(c, f.kind)){
+        if(f.kind === 'lava' && f.n > 0){ const dmg = damageCardFlat(c, f.n, 'heat'); ensureStat(stats, sideOf(pid), c.defId).taken += dmg; hurt = hurt || !(c.hp > 0);
+          if(recordEvents && events) events.push({type:'floorTick', kind:'lava', side:sideOf(pid), pid, slot, uid:c.uid, defId:c.defId, dmg}); }
+        if(f.kind === 'poison' || f.kind === 'gas') floorPoison(pid, c, f.n, f.kind, sideOf, stats, events); }
+      f.rounds -= 1;
+      if(f.rounds <= 0){ delete floors[k]; if(recordEvents && events) events.push({type:'floorEnd', kind:f.kind, side:sideOf(pid), pid, slot}); } });
+    if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // where a hazard card may go: [{pid, slot}] over the board's columns (both sides; Rubble only the foe's empty legal-or-not slots)
+  function hazardTargets(players, pid, defId){
+    if(!slotMode || !players || !players[1] || !players[2]) return [];
+    const hz = hazardOf(CARD_DEFS[defId]); syncSlots(players[1]); syncSlots(players[2]);
+    const edge = Math.max(1, ...[1,2].flatMap(p=> allBoardCards(players[p]).filter(c=> c && !c.gap && c.hp > 0 && Number.isInteger(c.slot)).map(c=> Math.abs(c.slot))), ...[1,2].flatMap(p=> legalSlots(players[p]).map(Math.abs))) + (hz.kind === 'rubble' ? 1 : 0);
+    const out = [];
+    [1,2].forEach(tp=>{ if(hz.target === 'enemyEmpty' && tp === pid) return;
+      for(let s = -edge; s <= edge; s++){ const occ = allLive(players[tp]).some(c=> c.slot === s);
+        if((hz.target === 'empty' || hz.target === 'enemyEmpty') && occ) continue; out.push({pid:tp, slot:s}); } });
+    return out;
+  }
+  function placeHazard(players, sideOf, pid, handUid, tpid, slot, stats, events){
+    const pl = players[pid]; if(!pl || !slotMode) return false;
+    const h = pl.hand.find(x=> x.uid === handUid), d = h && CARD_DEFS[h.defId]; if(!isHazardDef(d) || !canPlay(pl, h.defId, handUid)) return false;
+    if(tpid == null || typeof slot !== 'number'){ const pick = aiHazardPick(players, pid, h.defId); if(!pick) return false; tpid = pick.pid; slot = pick.slot; }
+    if(!hazardTargets(players, pid, h.defId).some(t=> t.pid === tpid && t.slot === slot)) return false;
+    const hz = hazardOf(d);
+    pl.hand.splice(pl.hand.findIndex(x=> x.uid === handUid), 1);
+    pl.lumber -= costOfCard(h.defId); payOreCosts(pl, h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1;
+    pl.graveyard.push({defId:h.defId}); ensureStat(stats, sideOf(pid), h.defId).played++;
+    floors[tpid + ':s' + slot] = {kind:hz.kind, n:hz.n, rounds:hz.rounds, by:pid, defId:h.defId};
+    if(recordEvents && events) events.push({type:'floorSet', kind:hz.kind, n:hz.n, rounds:hz.rounds, side:sideOf(pid), targetSide:sideOf(tpid), pid:tpid, slot, defId:h.defId});
+    return true;
+  }
+  // Weapon Master N: the arrows' bonus, and the equipped units' +1/+1 (read by syncPhaseStats with the day and night bonus)
+  function eqArrowBonus(pl){ if(!pl) return 0; let n = 0; allLive(pl).forEach(c=>{ const e = effectsOf(c); if(e.weaponMaster && !c.cageOf) n += eqN(e.weaponMaster, EQ_DEF.weaponMaster); }); return n; }
+  function eqSituational(c, pid, players){ if(!c || !c.equipOn || !players || !players[pid]) return [0, 0];
+    const wm = allLive(players[pid]).some(x=> effectsOf(x).weaponMaster && !x.cageOf); const k = wm ? EQ_DEF.weaponMasterStats : 0; return [k, k]; }
+  // Pry N: a landed melee hit strips N Armor for good (the Perforate bookkeeping: armorLoss, up to the printed Armor)
+  function eqPryHit(attDef, att, defCard, mySide, targetSide, events){
+    const e = (attDef && attDef.effects) || {}; if(!e.pry || !defCard || !(defCard.hp > 0)) return;
+    const n = eqN(e.pry, EQ_DEF.pry), d0 = CARD_DEFS[defCard.defId], base = (d0 && d0.effects && Number(d0.effects.armor)) || 0;
+    if(!(n > 0) || !(base - (defCard.armorLoss || 0) > 0)) return;
+    const was = defCard.armorLoss || 0; defCard.armorLoss = Math.min(base, was + n);
+    if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', pry:true, side:mySide, attDefId:att.defId, attUid:att.uid, targetSide, targetDefId:defCard.defId, targetUid:defCard.uid, amount:defCard.armorLoss - was});
+  }
+  // The CPU (2026-10-19, EQ). Equipment: worth its stats and skills when it has a unit to go under (it goes under the strongest).
+  function aiEquipWorth(ai, defId){ const d = CARD_DEFS[defId] || {}; if(!allLive(ai).some(eqCarrier)) return -99;
+    return 2 + (d.attack || 0) * 1.2 + (d.health || 0) * 0.5 + Object.keys((d.equip || {}).grant || {}).length * 1.5; }
+  function aiEquipPlay(players, sideOf, aiId, hc, stats, events){ const ai = players[aiId];
+    const tgt = allLive(ai).filter(eqCarrier).sort((a, b)=> (effAtk(b) + b.hp) - (effAtk(a) + a.hp))[0]; if(!tgt) return false;
+    return equip(players, sideOf, aiId, tgt.uid, hc.uid, stats, events); }
+  // Hazards: Lava / Poison / Gas under the strongest enemy unit they can hurt (not one already standing in the same hazard); Ice on the
+  // enemy's own best open slot (where its next card would go); Rubble on the open enemy slot facing the CPU's strongest unit (so nothing
+  // can be played to block it), else the enemy's open slot nearest the centre. {pid, slot, score} or null.
+  function aiHazardPick(players, aiId, defId){
+    const hz = hazardOf(CARD_DEFS[defId]), foeId = otherId(aiId), foe = players[foeId], ai = players[aiId]; if(!foe || !ai || !slotMode) return null;
+    const ok = hazardTargets(players, aiId, defId), can = (p, s)=> ok.some(t=> t.pid === p && t.slot === s);
+    if(hz.kind === 'lava' || hz.kind === 'poison' || hz.kind === 'gas'){
+      const pick = allLive(foe).filter(c=> !floorImmune(c, hz.kind) && !(hz.kind !== 'lava' && poisonProof(c)) && can(foeId, c.slot) && !((floorAt(foeId, c.slot) || {}).kind === hz.kind))
+        .sort((a, b)=> (effAtk(b) + b.hp * 0.5) - (effAtk(a) + a.hp * 0.5))[0];
+      if(!pick) return null; const per = hz.kind === 'lava' ? 1 : 0.8;
+      return {pid:foeId, slot:pick.slot, score: 1 + hz.n * Math.min(hz.rounds, Math.ceil(pick.hp / Math.max(1, hz.n))) * per + effAtk(pick) * 0.2}; }
+    const open = legalSlots(foe).filter(s=> can(foeId, s) && !floorAt(foeId, s)).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b);
+    if(!open.length) return null;
+    if(hz.kind === 'rubble'){ const best = allLive(ai).sort((a, b)=> effAtk(b) - effAtk(a))[0]; const sl = best && open.includes(best.slot) ? best.slot : open[0];
+      return {pid:foeId, slot:sl, score: 3 + (best && sl === best.slot ? effAtk(best) * 0.3 : 0)}; }
+    return {pid:foeId, slot:open[0], score: 2.5};
+  }
+  function aiHazardWorth(players, aiId, defId){ const p = aiHazardPick(players, aiId, defId); return p ? p.score : -99; }
+  const EQ_API = {getFloors, floorAt, equipSlotsFor, placeEquipment, hazardTargets, placeHazard, hazardOf, slotEntries, floorScan, eqArrowBonus, aiHazardPick, EQ_DEF, loneEquipAt};
+  // ==== end Package EQ ==========================================================================================================
   // Ambush N (2026-10-16, user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of
   // the Crit)"): when the enemy plays a card into the slot facing an Ambush unit (opposingCardOf: the unit in its column on open
   // boards, the matching lane on row boards), the ambusher strikes it for N as it arrives (N = 3 for an old Ambush saved as true).
@@ -3717,6 +3933,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function watchScan(players, sideOf, stats, events){
     if(!players || !players[1] || !players[2]) return;
+    floorScan(players, sideOf, stats, events); // EQ (2026-10-19): lone equipment picked up, poison floors, ice slides, before Ambush / Sentry look
     const live = pid=> allBoardCards(players[pid]).filter(c=> c && !c.gap && c.hp > 0);
     if(slotMode){ syncSlots(players[1]); syncSlots(players[2]); }
     const posOf = c=> slotMode ? c.slot : 0;
@@ -4667,7 +4884,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
-        const fl17 = auraN(pl, 'fletcher'); // Fletcher N (2026-10-17): every arrow of your side deals N more
+        const fl17 = auraN(pl, 'fletcher') + eqArrowBonus(pl); // Fletcher N (2026-10-17): every arrow of your side deals N more; + Weapon Master N (EQ, 2026-10-19)
         // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
         // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
         // each aimed on its own (the second one goes on to the nearest if the first killed the target). The card reads "Arrow 2" twice.
@@ -5631,6 +5848,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
             : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
           v = gain > 0 ? gain : -99; }
+        if(isEquipDef(d)) v = aiEquipWorth(ai, id); else if(isHazardDef(d)) v = aiHazardWorth(players, aiId, id); // EQ (2026-10-19): a piece under its strongest unit; a hazard where it bites
         // Focus (2026-10-18, the smartest CPU): a Ready unit that can kill one of your units this round from a slot it may take is
         // worth more (the better the victim, the more), and its pick is steadier (less noise).
         if(aiSmartest() && !d.cardType){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; }
@@ -5639,7 +5857,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
       const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
       // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
-      if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
+      if(best[1] > -50 && isEquipDef(CARD_DEFS[best[0].defId])) aiEquipPlay(players, sideOf, aiId, best[0], stats, events); // EQ (2026-10-19)
+      else if(best[1] > -50 && isHazardDef(CARD_DEFS[best[0].defId])) placeHazard(players, sideOf, aiId, best[0].uid, null, null, stats, events); // EQ: aiHazardPick's slot
+      else if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
         { const aim = aiChooseSlot(players, aiId, best[0].defId); if(aim != null) side = aim; } // its own slot choice (2026-10-16)
         { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
         placeCard(players, sideOf, aiId, best[0].uid, side, stats, events); }
@@ -6301,7 +6521,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       } else {
         pl.graveyard.push(zoneEntry);
       }
-      if(card.equipment && !rv) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11); a reviving unit keeps it (2026-10-19)
+      if(card.equipment && !rv) eqDrop(pl, card, sideOf, events); // its equipment stays in the slot (EQ, 2026-10-19; was: falls with it, 2026-10-11); a reviving unit keeps it (2026-10-19)
       if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
       // Nova N and Crystallise N (2026-10-16): a burst of magic at every enemy unit; a 0/N crystal left in its slot.
       if(cdef.effects && cdef.effects.nova && !nulled) novaBurst(players, sideOf, pl.id, card, w2N(cdef, 'nova'), stats, events);
@@ -7258,6 +7478,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
           if(base - (defCard.armorLoss||0) > 0){ defCard.armorLoss = Math.min(base, (defCard.armorLoss||0) + attDef.effects.perforate); if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.perforate}); } }
+        eqPryHit(attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // Pry N (EQ, 2026-10-19): strips N Armor for good
         // Corrode (status, 2026-09-17): stacks like Poison/Bleed, but saps effective Attack
         // instead of dealing damage — see effAtk/endOfRoundUpkeep for the read/decay sides.
         // Unlike Poison/Bleed (silent on application, only their periodic tick is logged),
@@ -7578,7 +7799,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */ };
 }
 
