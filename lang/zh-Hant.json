@@ -2035,5 +2035,20 @@
  "Crafting materials for the Blacksmith": "給鐵匠的打造材料",
  "The Drowned Maw": "溺亡巨口",
  "The boss's bramble, {name}, strikes too": "首領的荊棘堡 {name} 也會出手",
- "fire a {n} beam, aimed by its column": "發射 {n} 光束，按所在列瞄準"
+ "fire a {n} beam, aimed by its column": "發射 {n} 光束，按所在列瞄準",
+ "On the anvil": "在鐵砧上",
+ "All copies": "全部卡",
+ "Alt art": "異畫",
+ "You own {n}: {list}": "你有 {n} 張：{list}",
+ "Card type": "卡牌類型",
+ "Creatures": "生物",
+ "Structures": "建築",
+ "Spells": "法術",
+ "Equipment": "裝備",
+ "No cards of this type yet": "暫時沒有這類卡牌",
+ "Brambles have their own page: this opens it": "荊棘有自己的頁面：點這裡打開",
+ "Card level": "卡牌等級",
+ "Base level": "初始等級",
+ "My best": "我的最高",
+ "Show each card at its starting level, or at the highest level you own": "按初始等級顯示每張卡，或按你擁有的最高等級顯示"
 }

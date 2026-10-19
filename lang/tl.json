@@ -2033,5 +2033,20 @@
  "Crafting materials for the Blacksmith": "Mga materyales para sa Panday",
  "The Drowned Maw": "Ang Nalunod na Bunganga",
  "The boss's bramble, {name}, strikes too": "Umaatake rin ang bramble ng boss, ang {name}",
- "fire a {n} beam, aimed by its column": "nagpapaputok ng {n} na sinag, tinutok ayon sa hanay nito"
+ "fire a {n} beam, aimed by its column": "nagpapaputok ng {n} na sinag, tinutok ayon sa hanay nito",
+ "On the anvil": "Nasa palihan",
+ "All copies": "Lahat ng kopya",
+ "Alt art": "Ibang larawan",
+ "You own {n}: {list}": "May {n} ka: {list}",
+ "Card type": "Uri ng card",
+ "Creatures": "Mga nilalang",
+ "Structures": "Mga istruktura",
+ "Spells": "Mga spell",
+ "Equipment": "Kagamitan",
+ "No cards of this type yet": "Wala pang card na ganitong uri",
+ "Brambles have their own page: this opens it": "May sariling pahina ang mga bramble: bubuksan ito nito",
+ "Card level": "Antas ng card",
+ "Base level": "Panimulang antas",
+ "My best": "Pinakamagaling ko",
+ "Show each card at its starting level, or at the highest level you own": "Ipakita ang bawat card sa panimulang antas nito, o sa pinakamataas na antas na hawak mo"
 }

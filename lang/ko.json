@@ -2035,5 +2035,20 @@
  "Crafting materials for the Blacksmith": "대장장이에게 줄 제작 재료",
  "The Drowned Maw": "익사한 아가리",
  "The boss's bramble, {name}, strikes too": "보스의 가시덤불 {name}도 공격한다",
- "fire a {n} beam, aimed by its column": "열에 따라 조준한 {n} 광선을 쏜다"
+ "fire a {n} beam, aimed by its column": "열에 따라 조준한 {n} 광선을 쏜다",
+ "On the anvil": "모루 위",
+ "All copies": "모든 사본",
+ "Alt art": "다른 일러스트",
+ "You own {n}: {list}": "{n}장 보유: {list}",
+ "Card type": "카드 종류",
+ "Creatures": "생물",
+ "Structures": "건축물",
+ "Spells": "주문",
+ "Equipment": "장비",
+ "No cards of this type yet": "아직 이 종류의 카드가 없어요",
+ "Brambles have their own page: this opens it": "가시덤불은 전용 페이지가 있어요. 여기서 열려요",
+ "Card level": "카드 레벨",
+ "Base level": "기본 레벨",
+ "My best": "내 최고",
+ "Show each card at its starting level, or at the highest level you own": "각 카드를 시작 레벨이나 가지고 있는 가장 높은 레벨로 보여 줘요"
 }

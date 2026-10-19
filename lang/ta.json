@@ -2035,5 +2035,20 @@
  "Crafting materials for the Blacksmith": "கொல்லருக்கான செய்பொருட்கள்",
  "The Drowned Maw": "மூழ்கிய வாய்",
  "The boss's bramble, {name}, strikes too": "முதலாளியின் முட்புதர், {name}, கூட தாக்கும்",
- "fire a {n} beam, aimed by its column": "தன் நெடுவரிசையைப் பொறுத்து குறிவைத்த {n} கதிரை எய்கிறது"
+ "fire a {n} beam, aimed by its column": "தன் நெடுவரிசையைப் பொறுத்து குறிவைத்த {n} கதிரை எய்கிறது",
+ "On the anvil": "பட்டறைக்கல்லில்",
+ "All copies": "எல்லாப் பிரதிகளும்",
+ "Alt art": "மாற்று ஓவியம்",
+ "You own {n}: {list}": "உங்களிடம் {n}: {list}",
+ "Card type": "அட்டை வகை",
+ "Creatures": "உயிரினங்கள்",
+ "Structures": "கட்டமைப்புகள்",
+ "Spells": "மந்திரங்கள்",
+ "Equipment": "உபகரணங்கள்",
+ "No cards of this type yet": "இந்த வகை அட்டைகள் இன்னும் இல்லை",
+ "Brambles have their own page: this opens it": "முட்புதர்களுக்குத் தனிப் பக்கம் உண்டு: இது அதைத் திறக்கும்",
+ "Card level": "அட்டை நிலை",
+ "Base level": "அடிப்படை நிலை",
+ "My best": "என் சிறந்தது",
+ "Show each card at its starting level, or at the highest level you own": "ஒவ்வொரு அட்டையையும் அதன் தொடக்க நிலையில், அல்லது உங்களிடம் உள்ள உயர்ந்த நிலையில் காட்டு"
 }

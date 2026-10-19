@@ -2034,5 +2034,20 @@
  "Crafting materials for the Blacksmith": "Materiali per il fabbro",
  "The Drowned Maw": "Le Fauci Annegate",
  "The boss's bramble, {name}, strikes too": "Anche il rovo del boss, {name}, colpisce",
- "fire a {n} beam, aimed by its column": "spara un raggio da {n}, mirato in base alla sua colonna"
+ "fire a {n} beam, aimed by its column": "spara un raggio da {n}, mirato in base alla sua colonna",
+ "On the anvil": "Sull’incudine",
+ "All copies": "Tutte le copie",
+ "Alt art": "Arte alternativa",
+ "You own {n}: {list}": "Ne hai {n}: {list}",
+ "Card type": "Tipo di carta",
+ "Creatures": "Creature",
+ "Structures": "Strutture",
+ "Spells": "Incantesimi",
+ "Equipment": "Equipaggiamento",
+ "No cards of this type yet": "Ancora nessuna carta di questo tipo",
+ "Brambles have their own page: this opens it": "I Rovi hanno una pagina tutta loro: questo la apre",
+ "Card level": "Livello delle carte",
+ "Base level": "Livello base",
+ "My best": "Il mio migliore",
+ "Show each card at its starting level, or at the highest level you own": "Mostra ogni carta al suo livello iniziale o al livello più alto che possiedi"
 }

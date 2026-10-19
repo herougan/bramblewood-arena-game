@@ -1210,7 +1210,25 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sy-synced-tip": "Your decks are saved to your account and show on every device you sign in on.",
   "ui.sy-syncing-tip": "Saving your decks to your account…",
   "ui.sy-offline-tip": "Can't reach the server. Your decks are safe on this device and will sync when you're back online.",
-  "toast.sy-deck-deleted-elsewhere": "The deck “{name}” was deleted on another device, so it's gone from here too."
+  "toast.sy-deck-deleted-elsewhere": "The deck “{name}” was deleted on another device, so it's gone from here too.",
+  "ui.ux-copy-on-anvil": "On the anvil",
+  "ui.ux-copy-change": "All copies",
+  "ui.ux-copy-alt-art": "Alt art",
+  "ui.ux-copy-count-tip": "You own {n}: {list}",
+  "ui.ux-close": "Close",
+  "ui.ux-kind-label": "Card type",
+  "ui.ux-kind-all": "All",
+  "ui.ux-kind-creature": "Creatures",
+  "ui.ux-kind-structure": "Structures",
+  "ui.ux-kind-spell": "Spells",
+  "ui.ux-kind-equipment": "Equipment",
+  "ui.ux-kind-bramble": "Brambles",
+  "ui.ux-kind-empty": "No cards of this type yet",
+  "ui.ux-kind-bramble-tip": "Brambles have their own page: this opens it",
+  "ui.ux-level-label": "Card level",
+  "ui.ux-level-base": "Base level",
+  "ui.ux-level-best": "My best",
+  "ui.ux-level-tip": "Show each card at its starting level, or at the highest level you own"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

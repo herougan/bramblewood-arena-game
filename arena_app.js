@@ -6105,6 +6105,7 @@ function renderCodex(){
       </select>
       ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
+    ${codexKindRowHTML() /* 2026-10-19 (package UX): card types + the Base level / My best toggle */}
     <div class="cx-skill-active" id="cxSkillActive" hidden></div>
     <span id="codexResultCount"></span>
     <div class="${codexViewMode==='album' ? 'al-host' : 'grid-view'} ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
@@ -6133,6 +6134,7 @@ function renderCodex(){
   });
   { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; codexFilterBadge(); renderCodexGrid(); }); }
   wireCodexSkillFilter();
+  wireCodexKindRow(); // 2026-10-19 (package UX)
   const cxShowTest = document.getElementById('cxShowTest');
   if(cxShowTest) cxShowTest.addEventListener('change', e=>{ codexFilter.showTest = e.target.checked; renderCodexGrid(); });
   renderCodexGrid();
@@ -6298,6 +6300,79 @@ const codexTileCache = new Map(); // Codex tile HTML by card id, with the key it
 function saveCodexFilters(){ const o = Object.assign({}, codexFilter); delete o.showTest; uiStickySave('codex', o); } // 2026-10-16: kept (uiSticky)
 // 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
 let codexFlatById = (()=>{ try{ return localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){ return false; } })();
+// CODEX_UX:BEGIN (2026-10-19, package UX; tests/ux-2026-10-19.js evaluates this block)
+// Card types in the Codex (owner 21:36: "Filter in codex for Spells (unused), Equipment (unused), creature units, structure units,
+// Brambles."). A chip row under the toolbar: All, Creatures, Structures, Spells, Equipment, Brambles, each with how many cards the
+// other filters leave of it. A type with none still shows, at 0 (Spells are shelved, SPELLS_SHELVED; no Equipment card is
+// obtainable yet). The kinds come from the card's own fields: cardType 'equipment' / 'spell' (a field card, played for its effect, is
+// counted with the spells), the Structure tag (isStructure), a Castle card a Bramble; the rest are creatures. The Brambles are not
+// cards in the Codex list but have their own Codex page (the Brambles tab, every CHARACTER_DEFS entry): their chip counts them and
+// opens that page.
+const CODEX_KINDS = [
+  {key:'creature', icon:'🐾', label:()=> TX('ui.ux-kind-creature')},
+  {key:'structure', icon:'🏯', label:()=> TX('ui.ux-kind-structure')},
+  {key:'spell', icon:'📜', label:()=> TX('ui.ux-kind-spell')},
+  {key:'equipment', icon:'🛡️', label:()=> TX('ui.ux-kind-equipment')},
+  {key:'bramble', icon:'🌿', label:()=> TX('ui.ux-kind-bramble')},
+];
+function codexCardKind(d){
+  if(!d) return 'creature';
+  if(d.cardType === 'equipment') return 'equipment';
+  if(d.cardType === 'spell' || d.field) return 'spell';
+  if(d.isCastle || (d.archetypes || []).includes('Castle')) return 'bramble';
+  if(isStructure(d)) return 'structure';
+  return 'creature';
+}
+// {creature, structure, spell, equipment, bramble}: the cards of each kind among ids, plus brambles (the Brambles page's count).
+function codexKindCounts(ids, defs, brambles){
+  const out = {creature:0, structure:0, spell:0, equipment:0, bramble: brambles | 0};
+  (ids || []).forEach(id=>{ const k = codexCardKind(defs[id]); out[k] = (out[k] || 0) + 1; });
+  return out;
+}
+// The level the Codex shows a card at (owner 21:36: "The entry in the codex should be looking at the lvl 1 version(s), not the highest
+// level of what you own. I guess maybe you can toggle it. (Base level or not)"): 'base' (the default) shows every card at its starting
+// level (cardBaseLevel: Level 1, or Level 0 for Base, quest and tutorial cards), 'best' at the highest level you own of it. Kept per
+// device (localStorage; a blocked storage just means the default).
+const CODEX_LEVEL_KEY = 'bramblewood_codex_level_v1';
+function codexLevelMode(){ try{ return localStorage.getItem(CODEX_LEVEL_KEY) === 'best' ? 'best' : 'base'; }catch(e){ return 'base'; } }
+function setCodexLevelMode(m){ const v = m === 'best' ? 'best' : 'base'; try{ localStorage.setItem(CODEX_LEVEL_KEY, v); }catch(e){} return v; }
+// The card as the Codex shows it: at its base level (copyDefAt, the stats and level skills a copy at that level has) unless 'best'.
+// It keeps the card's own id and lock, so the tile, its click and its 🔒 stay the card's.
+function codexShownDef(id, d){
+  if(!d || codexLevelMode() === 'best') return d;
+  const b = copyBaseDef(id); if(!b) return d;
+  let x = null; try{ x = copyDefAt(id, cardBaseLevel(b)); }catch(e){ x = null; }
+  if(!x) return d; // already at its base level
+  const o = Object.assign({}, x, {id: d.id, locked: d.locked});
+  if(d.derivedFrom == null) delete o.derivedFrom; else o.derivedFrom = d.derivedFrom;
+  if(d.copyOf == null) delete o.copyOf; else o.copyOf = d.copyOf;
+  return o;
+}
+// CODEX_UX:END
+// The chip row's HTML (counts are filled in by renderCodexGrid, codexKindRowUpdate) and the level toggle at its end.
+function codexKindRowHTML(){
+  const k = codexFilter.kind || '', lv = codexLevelMode();
+  const chip = (key, icon, label)=> `<button type="button" class="ux-kind ${k === key ? 'on' : ''}" data-cxkind="${key}" aria-pressed="${k === key}">${icon} ${escapeHtml(label)} <b class="ux-kind-n" data-kn="${key || 'all'}"></b></button>`;
+  return `<div class="ux-cx-kinds" id="cxKindRow"><div class="ux-kind-chips" role="group" aria-label="${escapeAttr(TX('ui.ux-kind-label'))}">${chip('', '🗂️', TX('ui.ux-kind-all'))}${CODEX_KINDS.map(x=> chip(x.key, x.icon, x.label())).join('')}</div>
+    <span class="ux-cx-level" role="group" aria-label="${escapeAttr(TX('ui.ux-level-label'))}" title="${escapeAttr(TX('ui.ux-level-tip'))}"><button type="button" class="ux-lv ${lv === 'base' ? 'on' : ''}" data-cxlevel="base" aria-pressed="${lv === 'base'}">🌱 ${escapeHtml(TX('ui.ux-level-base'))}</button><button type="button" class="ux-lv ${lv === 'best' ? 'on' : ''}" data-cxlevel="best" aria-pressed="${lv === 'best'}">⭐ ${escapeHtml(TX('ui.ux-level-best'))}</button></span></div>`;
+}
+function codexKindRowUpdate(counts, all){
+  const row = document.getElementById('cxKindRow'); if(!row) return;
+  row.querySelectorAll('[data-kn]').forEach(b=>{ const key = b.dataset.kn, n = key === 'all' ? all : (counts[key] | 0); b.textContent = n;
+    const chip = b.closest('.ux-kind'); if(chip){ chip.classList.toggle('is-empty', !n); if(!n) chip.title = TX('ui.ux-kind-empty'); else chip.removeAttribute('title'); } });
+  const br = row.querySelector('[data-cxkind="bramble"]'); if(br) br.title = TX('ui.ux-kind-bramble-tip');
+}
+function wireCodexKindRow(){
+  const row = document.getElementById('cxKindRow'); if(!row) return;
+  row.querySelectorAll('[data-cxkind]').forEach(b=> b.addEventListener('click', ()=>{
+    const k = b.dataset.cxkind;
+    if(k === 'bramble'){ codexSubTab = 'brambles'; renderCodex(); try{ codexPageTurn('fwd'); }catch(e){} return; } // their own page
+    codexFilter.kind = k; row.querySelectorAll('[data-cxkind]').forEach(x=>{ const on = x.dataset.cxkind === k; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+    renderCodexGrid(); }));
+  row.querySelectorAll('[data-cxlevel]').forEach(b=> b.addEventListener('click', ()=>{
+    const v = setCodexLevelMode(b.dataset.cxlevel); row.querySelectorAll('[data-cxlevel]').forEach(x=>{ const on = x.dataset.cxlevel === v; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+    renderCodexGrid(true); }));
+}
 function renderCodexGrid(keepPage){
   if(keepPage !== true) codexPage = 0;
   saveCodexFilters();
@@ -6357,6 +6432,10 @@ function renderCodexGrid(keepPage){
   // The masked slots only join once the player has seen a real card; they always come last (easterEggSectionOf).
   const eggsOnly = !adminModeEnabled && !Object.keys(defs).some(id=> !defs[id].test && !isHofVariant(defs[id]) && !isEasterEgg(defs[id]) && codexVisible(id));
   if(eggsOnly) ids = ids.filter(id=> !easterEggMasked(defs[id]));
+  // 2026-10-19 (package UX): how many of each card type the other filters leave, then the type filter itself
+  { let nb = 0; try{ nb = Object.keys(CHARACTER_DEFS).length; }catch(e){}
+    codexKindRowUpdate(codexKindCounts(ids, defs, nb), ids.length);
+    if(codexFilter.kind && codexFilter.kind !== 'bramble') ids = ids.filter(id=> codexCardKind(defs[id]) === codexFilter.kind); }
   const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id) && !(eggsOnly && easterEggMasked(defs[id]))).length;
   const unlockedCount = ids.filter(id=>!defs[id].locked).length;
   document.getElementById('codexResultCount').textContent = `${ids.length} of ${totalVisible} cards (${unlockedCount} unlocked)`;
@@ -6384,7 +6463,7 @@ function renderCodexGrid(keepPage){
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
   let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + ((window.BramblewoodI18n && window.BramblewoodI18n.current()) || 'en') + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
   const tileFor = id=>{
-    const d = defs[id];
+    const d = codexShownDef(id, defs[id]); // 2026-10-19 (package UX): at its base level unless "My best" (the cache key below is this def)
     // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)
     // will be greyed out. Those locked will have a locked symbol on them"): one list; no copies = greyed; locked = 🔒.
     const owned = (myCardCopies[id]||[]).length > 0;
@@ -6540,7 +6619,7 @@ function wireCodexGrid(groupIds){
 // C): a click that ends a swipe (the page just turned) doesn't open the card.
 function codexWireGridClick(gridEl){
   if(gridEl._cxClick) return; gridEl._cxClick = true;
-  gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); });
+  gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid'), {codex:true}); }); // 2026-10-19 (package UX): at the Codex's level
 }
 // ---- The skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") ----
 // Browse (album, Compressed and Full Art): a ✨ Skills button with the other filters opens a panel of the skills you have seen (the
@@ -8258,8 +8337,9 @@ let cardDetailOpenId = null;
 // button riding at the same height as the top of the card instead of a whole header row, and the
 // creator's note / usage stats trimmed down (no section headings, a real sign-in button instead
 // of a paragraph telling you to go find one).
-function openCardDetail(defId){
-  const d = getCardDefs()[defId];
+function openCardDetail(defId, opts){
+  // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
+  const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), d = fromCodex ? codexShownDef(defId, d0) : d0;
   const overlay = document.getElementById('cardDetailOverlay');
   if(!d || !overlay) return;
   cardDetailOpenId = defId;
@@ -8283,7 +8363,8 @@ function openCardDetail(defId){
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
     .concat(animalChipsHTML(d)) // 2026-10-19 (package UT): the animal, the subtype, the Base mark
-    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
+    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : [])
+    .concat(fromCodex ? [codexDetailLevelChipHTML(defId, d0, d)] : []).join(''); // 2026-10-19 (package UX): Base level / My best
   // A card that brings another card (2026-10-13, user: "If a card spawns another card - show the other card's detail on the right
   // side"): every other card named in its skills or triggers, shown beside it with its abilities.
   const spawnIds = (()=>{ const defsAll = getCardDefs(), txt = JSON.stringify(d.effects||{}) + JSON.stringify(d.triggers||[]) + JSON.stringify(d.onDeath||'') + JSON.stringify(d.spawn||'');
@@ -8337,17 +8418,31 @@ function openCardDetail(defId){
   if(bigTile){ bigTile.style.cursor = 'zoom-in'; bigTile.addEventListener('click', inspect); }
   if(adminModeEnabled) wireCodexPlacement(defId);
   const signInBtn = document.getElementById('cdSignInStatsBtn');
-  if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId)));
+  if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId, opts)));
+  { const lc = document.getElementById('uxCdLevel'); if(lc) lc.addEventListener('click', ()=>{ setCodexLevelMode(codexLevelMode() === 'base' ? 'best' : 'base'); // 2026-10-19 (package UX)
+      try{ const row = document.getElementById('cxKindRow'); if(row){ row.querySelectorAll('[data-cxlevel]').forEach(x=>{ const on = x.dataset.cxlevel === codexLevelMode(); x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); renderCodexGrid(true); } }catch(e){}
+      openCardDetail(defId, opts); try{ const n = document.getElementById('uxCdLevel'); if(n) n.focus(); }catch(e){} }); }
   // Signed-in players' match history loads lazily (see loadMatchHistory) — if it's still in
   // flight when this modal opens, refresh just the stats section once it resolves instead of
   // leaving "Loading…" stuck forever.
   if(isSignedIn() && matchHistoryList===null){
     loadMatchHistory().then(()=>{
       if(cardDetailOpenId===defId && !overlay.hidden){
-        openCardDetail(defId);
+        openCardDetail(defId, opts);
       }
     });
   }
+}
+// The detail's level chip (2026-10-19, package UX): which level the Codex shows the card at; a button that flips Base level / My best
+// when you own it above its base level, a plain chip otherwise.
+function codexDetailLevelChipHTML(defId, d0, d){
+  let bl = null; try{ const b = copyBaseDef(defId); bl = b ? cardBaseLevel(b) : null; }catch(e){}
+  const lvOf = x=> x && x.level != null && Number.isFinite(Number(x.level)) ? Number(x.level) : bl; // a card at its base level may carry no level
+  const lv = lvOf(d), best = lvOf(d0), mode = codexLevelMode();
+  const lvTxt = lv != null ? ' · ' + escapeHtml(TX('ui.nf-copy-level', {n: lv})) : '';
+  const label = (mode === 'base' ? '🌱 ' + escapeHtml(TX('ui.ux-level-base')) : '⭐ ' + escapeHtml(TX('ui.ux-level-best'))) + lvTxt;
+  const differs = best != null && bl != null && best !== bl; // you own it above its base level: the two views differ
+  return differs ? `<button type="button" class="cd-chip ux-cd-lv" id="uxCdLevel" title="${escapeAttr(TX('ui.ux-level-tip'))}" aria-pressed="${mode === 'best'}">${label} ⇄</button>` : `<span class="cd-chip ux-cd-lv">${label}</span>`;
 }
 // Card inspector (2026-10-08, user: "Cards should be displayed prominently and in large size, to
 // appreciate the card. In the codex, the player can somehow open the card in large and spin the
@@ -22067,7 +22162,7 @@ function renderConquestSubTab(body){
                             : [{transform:'scale(1.5)', opacity:0}, {transform:'none', opacity:1}], {duration: z==='in' ? 520 : 300, easing:'cubic-bezier(.2,.8,.3,1)'}); }
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
-    const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
+    const squad = Object.entries((node.kind === 'tutorial' ? tutorialSummaryNode(node) : node).deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', '); // 2026-10-19 (package UX): a tutorial lists the deck it deals
     // 2026-09-30, per explicit request ("The skirmish doesn't say how much energy it takes to
     // do the skirmish"): every fight already costs Energy scaled by node kind (ENERGY_COST,
     // keyed the same way KIND_LABEL is) -- this tooltip just never surfaced that cost before you
@@ -22075,7 +22170,7 @@ function renderConquestSubTab(body){
     // not fightable nodes and cost nothing.
     const towerFree = towerFloorCleared(node, progress), energyCost = towerFree ? 0 : nodeEnergyCost(map, node); // 2026-10-18 (package Z): a cleared Spire floor is free
     return `<div class="ctt-title"><span class="sk-code">${skirmishCode(map.id, node.key)}</span> ${node.icon} ${node.name}</div>
-      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}${towerFree ? ` · ${escapeHtml(TX('ui.tower-free-tag'))}` : ''}</div>
+      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node.kind === 'tutorial' ? tutorialSummaryNode(node) : node)}${energyCost?` · ${energyCost}⚡`:''}${towerFree ? ` · ${escapeHtml(TX('ui.tower-free-tag'))}` : ''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
       <div class="ctt-squad">${squad}</div>`;
   }
@@ -22127,11 +22222,15 @@ function renderConquestSubTab(body){
     // `revealDeck` at all is unconditionally revealed, same as every node behaved before this.
     // Once earned, conquestDeckShowOverride lets the player manually re-hide/reshow it (a real
     // toggle, not just a one-way reveal) — e.g. for a self-imposed "blind" run.
-    const earned = conquestDeckRevealed(map, selectedNode, progress);
+    // 2026-10-19 (package UX, owner 21:36: "Make the tutorial summary like the normal skirmish summary - deck list, and doesn't list
+    // field effect."): a tutorial node is summed up like a skirmish: the rival deck the tutorial really deals (tutorialDecksFor, the
+    // tutorial editor's or the faction default), its battle rating, always shown, and no Field panel (Map 0 teaches no field effect).
+    const isTut = selectedNode.kind === 'tutorial', sumNode = isTut ? tutorialSummaryNode(selectedNode) : selectedNode;
+    const earned = isTut || conquestDeckRevealed(map, selectedNode, progress);
     const revealed = earned; // 2026-10-10: no Show/Hide toggle any more
     // 2026-10-13 (user: "Improve the skirmish card detail"): a revealed deck is a strip of the real cards with their counts, each
     // opening its details, instead of a list of names.
-    const squadChips = Object.entries(selectedNode.deck||{}).filter(([id])=> defs[id]).sort((x, y)=> (defs[y[0]].cost||0) - (defs[x[0]].cost||0) || ((defs[y[0]].attack||0) + (defs[y[0]].health||0)) - ((defs[x[0]].attack||0) + (defs[x[0]].health||0)))
+    const squadChips = Object.entries(sumNode.deck||{}).filter(([id])=> defs[id]).sort((x, y)=> (defs[y[0]].cost||0) - (defs[x[0]].cost||0) || ((defs[y[0]].attack||0) + (defs[y[0]].health||0)) - ((defs[x[0]].attack||0) + (defs[x[0]].health||0)))
       // 2026-10-15 (user: "The skirmish detail shows the deck preview. Those cards should have tooltips on 1.0s hover or 0.5s mobile
       // hold"): each strip card carries data-defid, so the shared card popover opens after a 1 s hover (initPopover) or a 0.5 s hold
       // on touch; no native title, which would pop up on top of it.
@@ -22145,9 +22244,9 @@ function renderConquestSubTab(body){
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
     document.body.classList.add('cq-node-focus');
-    { const ev0 = selectedNode.virtual ? 0 : enemyDeckLevel(selectedNode), gap0 = selectedNode.virtual ? '' : deckLevelGapClass(ev0, mainDeckLevel(myDeckCounts, myLeaderId));
+    { const ev0 = selectedNode.virtual ? 0 : enemyDeckLevel(sumNode), gap0 = selectedNode.virtual ? '' : deckLevelGapClass(ev0, mainDeckLevel(myDeckCounts, myLeaderId));
       panelEl.classList.toggle('is-cleared', !!done); panelEl.classList.toggle('is-outlevel', !done && (gap0==='lv-red' || gap0==='lv-darkred')); }
-    if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
+    if(revealed) noteSighted(Object.keys(sumNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${'' /* 2026-10-12 (22:04, user: "The green tick is unecessary ... just put the S emblem on the top right hand corner"): the best rank sits on the panel's top-right edge */}
       ${done && progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]} cnp-rank-corner" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
@@ -22158,7 +22257,7 @@ function renderConquestSubTab(body){
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
-      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
@@ -22166,7 +22265,7 @@ function renderConquestSubTab(body){
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
-      ${skirmishFieldHTML(map.id, selectedNode)}
+      ${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial */}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
@@ -24712,6 +24811,16 @@ function tutorialNodeDecksHTML(node){
     <h3 class="se-h">Rival deck (${escapeHtml(pick)} pick) · ${n(D.rival)} cards</h3>
     ${stacks(D.rival)}
     <p class="panel-sub">The cards play with their own skills. Highlighted card: ${escapeHtml((defs[tutorialHighlightId(st, pick)]||{}).name || 'none')}.</p></div>`;
+}
+// The tutorial node as the map's summary panel sees it (2026-10-19, package UX): the node with the rival deck the tutorial deals
+// (tutorialDecksFor, the same call startTutorialMatch makes) in place of its own deck, which is empty: the tutorial never reads it.
+function tutorialSummaryNode(node){
+  if(!node || node.kind !== 'tutorial') return node;
+  const st = node.stage === 2 ? 2 : 1;
+  let rival = {}; try{ rival = tutorialDecksFor(st, loadFactionChoice() || 'both').rival || {}; }catch(e){ rival = {}; }
+  // the rival bramble's Health as startTutorialMatch sets it (the node's tutHp, else the tutorial editor's), not the map's hqHp
+  let hp = Number(node.tutHp) || 0; try{ if(!hp && tutorialCfg && tutorialCfg.rivalHp) hp = tutorialCfg.rivalHp + (st >= 2 ? 2 : 0); }catch(e){}
+  return Object.assign({}, node, {deck: rival}, hp > 0 ? {hqHp: hp} : {});
 }
 function tutorialDeckPreviewHTML(deck){
   const defs = getCardDefs(), ids = Object.keys(deck||{}).filter(id=> deck[id] > 0 && defs[id]);
@@ -42328,18 +42437,142 @@ let forgeCopyPick = {id:null, uid:null};
 function forgeUid(id){ if(!id || forgeCopyPick.id !== id || !forgeCopyPick.uid) return null; return (myCardCopies[id]||[]).some(c=> c && c.uid === forgeCopyPick.uid) ? forgeCopyPick.uid : null; }
 // The picked card as the picked copy: its own level's stats (copyDefAt), under the card's own id so the tile looks the same.
 function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]||[]).length) return sel; const L = forgeCopyLevel(id, forgeUid(id)), d = copyDefAt(id, L); return d ? Object.assign({}, d, {id}) : sel; }
-// The copy picker on the anvil (Upgrade and Refine): one chip per copy, strongest first, with its level and finish; the copies your
-// main deck fights with are marked. Shown when the card has more than one copy.
+// The copy picker on the anvil (Upgrade and Refine). 2026-10-19 (package UX, owner 21:36: "After selecting a card to forge, there is
+// a sub-window that shows ALL cards of the same name."): the row of one chip per copy (package NF) did not scale (eight Ant Scouts
+// filled two rows; fifty would fill the anvil), so the anvil keeps a one-line summary (how many copies, which one is on the anvil, a
+// button) and every copy lives in the copies sheet (openForgeCopySheet), which also opens by itself when you pick a card whose
+// copies differ. Shown when the card has more than one copy.
 function forgeCopyPickerHTML(id){
   if(!copyModelOn()) return ''; const a = myCardCopies[id] || []; if(a.length < 2) return '';
-  copyModelSync(id); const cur = copyIndexByUid(id, forgeUid(id)), order = copyOrder(id);
-  let inDeck = 0; try{ inDeck = Math.max(0, ((myDecks||[]).find(d=> d.id === mainDeckId) || getActiveDeck() || {counts: myDeckCounts}).counts[id] | 0); }catch(e){ inDeck = (myDeckCounts||{})[id] | 0; }
-  const chips = order.map((i, k)=>{ const c = a[i], r = copyRefineRank(c), step = c.foil ? (REFINE_LADDER[r] || REFINE_LADDER[1]) : null;
-    const finish = c.shiny ? '✦ ' + TX('ui.nf-copy-shiny') : step ? '✨ ' + _t(step.label) : TX('ui.nf-copy-plain');
-    const tags = [k < inDeck ? `<em class="fcp-deck" title="${escapeAttr(TX('ui.nf-copy-deck'))}">⭐</em>` : '', (copyCreditOf(c).dust || copyCreditOf(c).gold) ? `<em class="fcp-cr" title="${escapeAttr(TX('ui.nf-copy-has-credit'))}">🧩</em>` : ''].join('');
-    return `<button type="button" class="fcp-chip ${i === cur ? 'on' : ''}" data-forge-copy="${escapeAttr(c.uid)}" aria-pressed="${i === cur}"><b>${escapeHtml(TX('ui.nf-copy-level', {n: copyLevel(id, c)}))}</b><small>${escapeHtml(finish)}</small>${tags}</button>`; }).join('');
-  return `<div class="forge-copy-picker" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}"><div class="fcp-head"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <small>${escapeHtml(TX('ui.nf-copies-help'))}</small></div><div class="fcp-row">${chips}</div></div>`;
+  const groups = forgeCopyGroups(id), cur = forgeAnvilCopyUid(id), g = groups.find(x=> x.uids.includes(cur)) || groups[0];
+  return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
+    <span class="ux-fcp-k"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <b class="ux-fcp-n">×${a.length}</b></span>
+    ${g ? `<span class="ux-fcp-cur"><small>${escapeHtml(TX('ui.ux-copy-on-anvil'))}</small> <b>${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))}</b> <small>${escapeHtml(g.label)}</small></span>` : ''}
+    <button type="button" class="btn small ux-fcp-open" data-forge-copies="${escapeAttr(id)}" aria-haspopup="dialog">🃏 ${escapeHtml(TX('ui.ux-copy-change'))}</button></div>`;
 }
+// FORGE_UX:BEGIN (2026-10-19, package UX: the copies sheet, the copy-count badges, the centre-stage forging; tests/ux-2026-10-19.js)
+// A copy's treatment in words: Shiny, its foil step (Foil, Hex, Etched...), Alt art; Plain when it has none.
+function forgeCopyTreatment(c){
+  const parts = [];
+  if(c && c.shiny) parts.push('✦ ' + TX('ui.nf-copy-shiny'));
+  if(c && c.foil){ let st = null; try{ st = REFINE_LADDER[copyRefineRank(c)] || REFINE_LADDER[1]; }catch(e){} parts.push('✨ ' + _t((st && st.label) || 'Foil')); }
+  if(c && c.skin) parts.push('🎨 ' + TX('ui.ux-copy-alt-art'));
+  return parts.length ? parts.join(' · ') : TX('ui.nf-copy-plain');
+}
+// Your copies of a card in groups of the same level and treatment, strongest first (copyOrder: the level, then the finish, then
+// the oldest). Each group: {key, level, label, copy (its first copy, for the look), uids, pick (the copy a tap puts on the anvil:
+// one with Forge credit when the group has one, it tempers cheaper), credit}.
+function forgeCopyGroups(id){
+  const a = (typeof myCardCopies !== 'undefined' && myCardCopies[id]) || []; if(!a.length) return [];
+  try{ copyModelSync(id); }catch(e){}
+  const groups = [], byKey = new Map();
+  copyOrder(id).forEach(i=>{ const c = a[i]; if(!c) return; const L = copyLevel(id, c);
+    const key = [L, c.shiny ? 1 : 0, c.foil ? (c.finish || 'auto') : '', c.skin || ''].join('|');
+    let g = byKey.get(key); if(!g){ g = {key, level: L, copy: c, label: forgeCopyTreatment(c), uids: [], pick: c.uid, credit: false}; byKey.set(key, g); groups.push(g); }
+    g.uids.push(c.uid); const cr = copyCreditOf(c); if((cr.dust || cr.gold) && !g.credit){ g.credit = true; g.pick = c.uid; } });
+  return groups;
+}
+// "Plain ×5, ✨ Foil ×2, ✦ Shiny ×1": how many copies of each treatment you own, the most first.
+function forgeCopyBreakdown(id){
+  const m = new Map(); ((typeof myCardCopies !== 'undefined' && myCardCopies[id]) || []).forEach(c=>{ const t = forgeCopyTreatment(c); m.set(t, (m.get(t) || 0) + 1); });
+  return [...m.entries()].sort((x, y)=> y[1] - x[1]).map(([t, n])=> t + ' ×' + n).join(', ');
+}
+// The copy on the anvil: the picker's, else what the mode opens on (Upgrade: your best copy; Refine: your finest foil).
+function forgeAnvilCopyUid(id){
+  const a = myCardCopies[id] || []; let c = null;
+  try{ c = forgeMode === 'refine' ? a[forgeRefineIdx(id)] : copyByUid(id, forgeUid(id)); }catch(e){ c = null; }
+  return c ? c.uid : null;
+}
+// The pool tile's badge: "×8", with the breakdown by treatment on hover (title) and on a long press or a tap (a speech bubble).
+function forgeCountBadgeHTML(id){
+  const n = ((typeof myCardCopies !== 'undefined' && myCardCopies[id]) || []).length; if(!n) return '';
+  const tip = TX('ui.ux-copy-count-tip', {n, list: forgeCopyBreakdown(id)});
+  return `<span class="ux-copy-count${n > 1 ? ' is-many' : ''}" data-ux-count="${escapeAttr(id)}" tabindex="0" role="note" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">×${n}</span>`;
+}
+function wireForgeCountBadges(root){
+  if(!root) return;
+  root.querySelectorAll('[data-ux-count]').forEach(b=>{ if(b._ux) return; b._ux = 1; let t = null;
+    const show = ()=>{ try{ showSpeechBubble(b, b.getAttribute('aria-label'), 'ux-count-bubble', {hold: 2.4}); }catch(e){} };
+    b.addEventListener('pointerdown', e=>{ if(e.pointerType === 'mouse') return; clearTimeout(t); t = setTimeout(()=>{ t = null; b._lp = Date.now(); show(); }, 420); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(k=> b.addEventListener(k, ()=>{ clearTimeout(t); t = null; }));
+    b.addEventListener('contextmenu', e=> e.preventDefault());
+    b.addEventListener('click', e=>{ e.stopPropagation(); if(Date.now() - (b._lp || 0) < 600) return; show(); });
+    b.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); show(); } });
+  });
+}
+// The copies sheet: every copy you own of the card, one tile per group ("Lv 10 · Plain ×5"), in a scrolling grid. Tapping a group
+// puts its copy on the anvil. Only for Upgrade and Refine (the modes that work on one copy).
+function forgeCopiesWorthASheet(id){ return (forgeMode === 'upgrade' || forgeMode === 'refine') && copyModelOn() && forgeCopyGroups(id).length > 1; }
+function openForgeCopySheet(id){
+  const defs = getCardDefs(), d = defs[id], a = myCardCopies[id] || []; if(!d || a.length < 2) return;
+  const groups = forgeCopyGroups(id); if(!groups.length) return;
+  document.querySelectorAll('.ux-fcs-ov').forEach(x=> x.remove());
+  const cur = forgeAnvilCopyUid(id);
+  let inDeck = 0; try{ inDeck = Math.max(0, ((myDecks||[]).find(x=> x.id === mainDeckId) || getActiveDeck() || {counts: myDeckCounts}).counts[id] | 0); }catch(e){ inDeck = (myDeckCounts||{})[id] | 0; }
+  const deckUids = new Set(copyOrder(id).slice(0, inDeck).map(i=> a[i] && a[i].uid));
+  const tile = g=>{ let td = null; try{ td = copyDefAt(id, g.level); }catch(e){ td = null; }
+    const show = Object.assign({}, td || d, {id}), cls = [copyFinishClass(d, g.copy), g.copy.shiny ? 'is-shiny' : ''].filter(Boolean).join(' '), on = g.uids.includes(cur);
+    return `<button type="button" class="ux-fcs-g ${on ? 'on' : ''}" data-fcs="${escapeAttr(g.key)}" aria-pressed="${on}">
+      <span class="ux-fcs-tile">${cardTileHTML(show, {inPlay:true, extraClass: cls})}</span>
+      <span class="ux-fcs-lbl"><b>${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))}</b><small>${escapeHtml(g.label)}</small></span>
+      ${g.uids.length > 1 ? `<b class="ux-fcs-n">×${g.uids.length}</b>` : ''}${g.uids.some(u=> deckUids.has(u)) ? `<em class="ux-fcs-deck" title="${escapeAttr(TX('ui.nf-copy-deck'))}">⭐</em>` : ''}${g.credit ? `<em class="ux-fcs-cr" title="${escapeAttr(TX('ui.nf-copy-has-credit'))}">🧩</em>` : ''}</button>`; };
+  const ov = document.createElement('div'); ov.className = 'modal-overlay bw-centre-dialog ux-fcs-ov';
+  ov.innerHTML = `<div class="modal ux-fcs" role="dialog" aria-modal="true" aria-labelledby="uxFcsTitle">
+    <div class="modal-head-row"><h2 id="uxFcsTitle">${escapeHtml(d.name)} <small class="ux-fcs-total">×${a.length}</small></h2><button type="button" class="modal-close-btn" data-x aria-label="${escapeAttr(TX('ui.ux-close'))}">✕</button></div>
+    <p class="panel-sub ux-fcs-sub"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> · ${escapeHtml(TX('ui.nf-copies-help'))}</p>
+    <div class="ux-fcs-grid">${groups.map(tile).join('')}</div></div>`;
+  document.body.appendChild(ov);
+  try{ decorateHolo(ov); }catch(e){}
+  let closed = false;
+  const close = ()=>{ if(closed) return; closed = true; document.removeEventListener('keydown', onKey, true); if(!reducedMotion()){ ov.classList.add('is-out'); setTimeout(()=> ov.remove(), 240); } else ov.remove(); };
+  const onKey = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
+  document.addEventListener('keydown', onKey, true);
+  ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = close);
+  ov.onclick = e=>{ if(e.target === ov) close(); };
+  ov.querySelectorAll('[data-fcs]').forEach(b=> b.onclick = ()=>{ const g = groups.find(x=> x.key === b.dataset.fcs); if(!g || forgeBusy) return;
+    forgeCopyPick = {id, uid: g.uids.includes(cur) ? cur : g.pick}; forgeMeltArmed = null; try{ SoundKit.gadget && SoundKit.gadget(); }catch(e){}
+    close(); renderForge(); });
+  setTimeout(()=>{ const f = ov.querySelector('.ux-fcs-g.on') || ov.querySelector('.ux-fcs-g'); if(f) try{ f.focus({preventScroll:false}); f.scrollIntoView({block:'nearest'}); }catch(e){} }, 30);
+}
+// Forging on the centre stage (2026-10-19, package UX, owner 21:36: "I also think Forging should have centre of field treatment."):
+// the anvil stage (the card, its glow, the hammer) lifts out of the panel and flies to the middle of the screen over a dimmed
+// spotlight, as the battle field's centre spotlight does; the smithing plays there (run), the result holds a beat (with the LEVEL
+// burst when one is given), then the stage flies back into its place in the panel. Resolves true when it played centred. Reduced
+// motion, Effects None or no Web Animations: run() where it is, unchanged.
+let forgeCentreBusy = false;
+async function forgeCentreStage(run, opts){
+  opts = opts || {};
+  const stage = document.getElementById('anvilStage');
+  if(!stage || forgeCentreBusy || reducedMotion() || fxLevel() === 'none' || !stage.animate || typeof document === 'undefined'){ await run(); return false; }
+  forgeCentreBusy = true;
+  const r0 = stage.getBoundingClientRect();
+  const ph = document.createElement('div'); ph.className = 'ux-fc-ph'; ph.style.height = r0.height + 'px'; ph.setAttribute('aria-hidden', 'true');
+  stage.parentNode.insertBefore(ph, stage);
+  const ov = document.createElement('div'); ov.className = 'ux-fc-ov'; ov.innerHTML = '<div class="ux-fc-spot" aria-hidden="true"></div><div class="ux-fc-host"></div>';
+  document.body.appendChild(ov);
+  const host = ov.querySelector('.ux-fc-host'); host.style.width = r0.width + 'px'; host.appendChild(stage); stage.classList.add('ux-fc-on');
+  const scale = Math.max(1, Math.min(1.7, (innerWidth - 32) / Math.max(1, r0.width), (innerHeight * 0.62) / Math.max(1, r0.height)));
+  host.style.setProperty('--ux-fc-s', scale.toFixed(3));
+  const r1 = host.getBoundingClientRect(); // its centred place (the CSS centres it, scaled)
+  const dx = (r0.left + r0.width / 2) - (r1.left + r1.width / 2), dy = (r0.top + r0.height / 2) - (r1.top + r1.height / 2);
+  const from = `translate(-50%, -50%) translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(1)`, mid = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+  const wait = ms=> new Promise(r=> setTimeout(r, ms));
+  try{
+    ov.animate([{opacity:0}, {opacity:1}], {duration:280, easing:'ease-out', fill:'both'});
+    await new Promise(r=>{ const a = host.animate([{transform: from}, {transform: mid}], {duration:380, easing:'cubic-bezier(.2,.8,.25,1.1)', fill:'forwards'}); a.onfinish = a.oncancel = r; setTimeout(r, 600); });
+    try{ await run(); }catch(e){}
+    if(opts.burst){ try{ metaFx(opts.burst.kind || 'levelUp', host.querySelector('.card-tile'), {text: opts.burst.text}); }catch(e){} }
+    await wait(opts.hold != null ? opts.hold : 650);
+    const r2 = ph.getBoundingClientRect(); // the panel may have scrolled meanwhile: fly back to where the slot is now
+    const bx = (r2.left + r2.width / 2) - (innerWidth / 2), by = (r2.top + r2.height / 2) - (innerHeight / 2);
+    ov.animate([{opacity:1}, {opacity:0}], {duration:340, easing:'ease-in', fill:'forwards'});
+    await new Promise(r=>{ const a = host.animate([{transform: mid}, {transform: `translate(-50%, -50%) translate(${bx.toFixed(1)}px, ${by.toFixed(1)}px) scale(1)`}], {duration:340, easing:'cubic-bezier(.5,0,.75,0)', fill:'forwards'}); a.onfinish = a.oncancel = r; setTimeout(r, 520); });
+  }finally{
+    stage.classList.remove('ux-fc-on'); if(ph.isConnected) ph.replaceWith(stage); ov.remove(); forgeCentreBusy = false;
+  }
+  return true;
+}
+// FORGE_UX:END
 // Forge (reworked 2026-10-03, "Furnish the forge more fully... animations prepared for on-forge"):
 // a hearth header with only the currencies the Forge spends (T4: show a currency only where it
 // matters), a searchable/filterable pool that marks cards you can temper right now, and an anvil
@@ -42515,8 +42748,12 @@ function renderForge(){
     </div>`;
   const poolEl = document.getElementById('forgePool');
   const tileCls = id=> (id===forgeSelectedId?'selected ':'') + (forgeMode==='refine' ? bestCopyClass(id, defs[id]) : '');
-  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}</div>`).join('');
-  poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; forgeSelectedId = el.getAttribute('data-defid'); renderForge(); }));
+  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}${forgeCountBadgeHTML(id) /* 2026-10-19 (package UX): ×N copies */}</div>`).join('');
+  // 2026-10-19 (package UX): picking a card whose copies differ (levels or finishes) opens the copies sheet over the Forge
+  poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; const was = forgeSelectedId; forgeSelectedId = el.getAttribute('data-defid'); renderForge();
+    if(forgeSelectedId !== was && forgeCopiesWorthASheet(forgeSelectedId)) openForgeCopySheet(forgeSelectedId); }));
+  wireForgeCountBadges(poolEl);
+  root.querySelectorAll('[data-forge-copies]').forEach(b=> b.addEventListener('click', ()=>{ if(!forgeBusy) openForgeCopySheet(b.dataset.forgeCopies); }));
   const search = document.getElementById('forgeSearch');
   search.addEventListener('input', ()=>{ forgeSearch = search.value; const pos = search.selectionStart; renderForge(); const s2 = document.getElementById('forgeSearch'); s2.focus(); try{ s2.setSelectionRange(pos, pos); }catch(e){} });
   root.querySelectorAll('[data-forgefilter]').forEach(b=> b.addEventListener('click', ()=>{ forgeFilter = b.dataset.forgefilter; renderForge(); }));
@@ -43011,8 +43248,9 @@ async function forgeRefine(btn){
   if(!step){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
   const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
-  fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }); }catch(e){}
   forgeBusy = false; renderForge();
   showToast(TX('toast.refined-to', {name: d.name, label: step.label}), 'ok');
 }
@@ -43102,8 +43340,9 @@ async function forgeLimitBreak(btn){
   const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
   limitBreakCard(id, uid); if(keep) forgeCopyPick = {id, uid: keep};
   const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
-  fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
   forgeBusy = false; renderForge();
   showToast(TX('toast.broke-its-limit-level', {v1: getCardDefs()[id].name, LIMIT_BREAK_LEVEL}), 'ok');
 }
@@ -43164,8 +43403,9 @@ async function forgePromote(btn){
   if(changed){ try{ saveMyDecks(); localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
   logTxn({action:'promoted', cardId:to, cardName:defs[to].name, icon:defs[to].icon, source:'Promotion from '+d.name, before:id, after:to});
   const afterHTML = cardTileHTML(defs[to], {extraClass:'forge-preview'});
-  fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
   forgeBusy = false; forgePromotePick = null; forgeSelectedId = to; renderForge();
   showToast(TX('toast.was-promoted-to', {name: escapeHtml(d.name), v2: escapeHtml(defs[to].name), v3: changed ? ' Your decks have the new card.' : ''}), 'ok');
 }
@@ -43273,11 +43513,13 @@ async function forgeTemper(btn){
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   forgeSetCopyLevel(id, uid, L+1); if(keep) forgeCopyPick = {id, uid: keep}; // the tempered copy stays on the anvil
   const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
-  try{ await forgeTemperAnimation(beforeHTML, afterHTML); }catch(e){}
+  // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the tempering and its LEVEL burst play on
+  // the centre stage, then the card flies back to the anvil
+  let centred = false; try{ centred = await forgeCentreStage(()=> forgeTemperAnimation(beforeHTML, afterHTML), {burst: {kind: 'levelUp', text: 'LEVEL ' + (L+1) + '!'}, hold: 900}); }catch(e){}
   forgeBusy = false; renderForge();
   const pop = document.querySelector('#forgeDetail .forge-level-label');
   if(pop){ pop.classList.add('pop'); }
-  metaFx('levelUp', '#forgeDetail .card-tile', {text:'LEVEL ' + (L+1) + '!'});
+  if(!centred) metaFx('levelUp', '#forgeDetail .card-tile', {text:'LEVEL ' + (L+1) + '!'});
   showToast(TX('toast.is-now-level', {v1: getCardDefs()[id].name, v2: L+1}), 'ok');
 }
 async function forgePrestige(btn){
@@ -43289,8 +43531,9 @@ async function forgePrestige(btn){
   if(!prestigeUpCard(id)){ forgeBusy = false; denyShake(btn); return; }
   try{ SoundKit.prestigeTone && SoundKit.prestigeTone(); }catch(e){}
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
-  fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
   forgeBusy = false; renderForge();
 }
 /* ---- Home landing page (2026-09-20, per explicit request: "Have a 'Home' landing page...
