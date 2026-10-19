@@ -57,6 +57,8 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Raid | Bramble name (U3) | "Kraken's Reef" (alt: "The Drowned Maw"); placeholder SVG until painted art from docs/art/raid-bramble-art-brief.md |
 | Raid | Last turns (U3) | "3/2 turns left", "Last turn!" under the tick in the final 3 turns, plus the existing banner |
 | UI | Trench header (U3) | Still "Turn X / Y": make it "Turn X" too? |
+| Raid | Raid BR weighting (RJ) | Boss BR counts elders at Epic × (1 + bonus/basic HP) and row copies at printed rarity: reads high vs what they do (a 5/4 Broodmother copy adds 21) |
+| Balance | Caldera Wyrm (RJ) | 1.82× its N, no source. Option 1: 6/11 at Lv 6 with its 30 HP moved onto the 20-B-4 bramble; option 2: keep 6/41, list as non-player |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
