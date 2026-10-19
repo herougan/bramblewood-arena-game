@@ -1958,5 +1958,12 @@
  "Changeling": "Metamorfo",
  "Were-beast": "Lobisomem",
  "Mutant": "Mutante",
- "Glitch": "Falha"
+ "Glitch": "Falha",
+ "Synced ✓": "Sincronizado ✓",
+ "Syncing…": "A sincronizar…",
+ "Offline": "Offline",
+ "Your decks are saved to your account and show on every device you sign in on.": "Os teus baralhos ficam guardados na tua conta e aparecem em todos os dispositivos onde entrares.",
+ "Saving your decks to your account…": "A guardar os teus baralhos na tua conta…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Não foi possível contactar o servidor. Os teus baralhos estão seguros neste dispositivo e vão sincronizar quando voltares a estar online.",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "O baralho «{name}» foi apagado noutro dispositivo, por isso também desaparece daqui."
 }

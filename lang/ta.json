@@ -1959,5 +1959,12 @@
  "Changeling": "உருமாறி",
  "Were-beast": "உருமாறும் விலங்கு",
  "Mutant": "திடீர்மாற்ற உயிரி",
- "Glitch": "கோளாறு"
+ "Glitch": "கோளாறு",
+ "Synced ✓": "ஒத்திசைந்தது ✓",
+ "Syncing…": "ஒத்திசைக்கிறது…",
+ "Offline": "இணைப்பில் இல்லை",
+ "Your decks are saved to your account and show on every device you sign in on.": "உங்கள் அடுக்குகள் உங்கள் கணக்கில் சேமிக்கப்பட்டு, நீங்கள் உள்நுழையும் ஒவ்வொரு சாதனத்திலும் தெரியும்.",
+ "Saving your decks to your account…": "உங்கள் அடுக்குகளை உங்கள் கணக்கில் சேமிக்கிறது…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "சேவையகத்தை அடைய முடியவில்லை. உங்கள் அடுக்குகள் இந்தச் சாதனத்தில் பாதுகாப்பாக உள்ளன; மீண்டும் இணைந்ததும் ஒத்திசைக்கப்படும்.",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "“{name}” அடுக்கு வேறொரு சாதனத்தில் நீக்கப்பட்டது, அதனால் இங்கிருந்தும் போய்விட்டது."
 }

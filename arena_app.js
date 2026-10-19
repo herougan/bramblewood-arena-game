@@ -5520,22 +5520,37 @@ function castleHoverHTML(hqSide){
   // 0.25s"): a finger resting 0.25 s on a card (moving less than 8 px) opens its details; lifting or dragging cancels.
   const TOUCH_HOLD_MS = 250;
   let holdT = null, holdX = 0, holdY = 0, holdOpenedAt = 0;
-  const cancelHold = ()=>{ if(holdT){ clearTimeout(holdT); holdT = null; } };
+  const cancelHold = ()=>{ if(holdT){ clearTimeout(holdT); holdT = null; } document.body.classList.remove('bw-holding'); };
   // 2026-10-15 (user: "...tooltips on 1.0s hover or 0.5s mobile hold"): the skirmish panel's enemy-deck strip (.cnp-squad) gets the
   // same press-and-hold outside a fight, after 0.5 s; a plain tap still opens the card's full details.
-  const STRIP_HOLD_MS = 500;
-  let stripHeld = false; // a strip card's details opened by a hold stay up after the finger lifts, until the next touch
+  // 2026-10-19 (package MB2, owner on an iPhone: "In mobile, in the card preview - i can't touch and hold to see the card detail"):
+  // touch-and-hold now works on every card outside a fight too (the Codex, the deck builder, the Nest, a deck's preview, the
+  // skirmish strip): 450 ms, cancelled by moving more than 10 px. A fight keeps the owner's 0.25 s (2026-10-12). The details
+  // stay up after the finger lifts, until the next touch; tapping them opens the card's full detail page. The lift never
+  // plays, picks, adds or removes the card: the click after it, a long-press context menu and the browser's own drag are dropped.
+  const STRIP_HOLD_MS = 450, HOLD_SLOP_PX = 10;
+  let stripHeld = false; // details opened by a hold stay up after the finger lifts, until the next touch
+  let holdFired = false, swallowClickUntil = 0, lastPointerType = '';
   document.addEventListener('pointerdown', e=>{
-    cancelHold(); stripHeld = false;
-    if(e.pointerType !== 'touch') return;
+    lastPointerType = e.pointerType || '';
+    if(stripHeld && pop.contains(e.target)) return; // a tap on the held details: see the click handler below
+    cancelHold(); stripHeld = false; holdFired = false; pop.classList.remove('is-held');
+    if(e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+    if(e.target.closest && e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
     const el = e.target.closest && e.target.closest('[data-defid]'); if(!el) return;
-    const inStrip = !!el.closest('.cnp-squad');
-    if(!matchState && !inStrip) return;
     holdX = e.clientX; holdY = e.clientY;
-    holdT = setTimeout(()=>{ holdT = null; if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } openPopFor(el); holdOpenedAt = Date.now(); stripHeld = inStrip && !matchState; }, inStrip && !matchState ? STRIP_HOLD_MS : TOUCH_HOLD_MS);
+    document.body.classList.add('bw-holding'); // no text selection or iOS callout while the finger rests (CSS)
+    holdT = setTimeout(()=>{ holdT = null; if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } openPopFor(el); holdOpenedAt = Date.now(); holdFired = true;
+      stripHeld = !pop.hidden; if(stripHeld){ pop.classList.add('is-held'); pop.dataset.heldDefid = el.getAttribute('data-defid') || ''; }
+      try{ if(navigator.vibrate) navigator.vibrate(8); }catch(_){} }, matchState ? TOUCH_HOLD_MS : STRIP_HOLD_MS);
   }, true);
-  document.addEventListener('pointermove', e=>{ if(holdT && Math.hypot(e.clientX - holdX, e.clientY - holdY) > 8) cancelHold(); }, {passive:true, capture:true});
-  ['pointerup', 'pointercancel'].forEach(t=> document.addEventListener(t, cancelHold, true));
+  document.addEventListener('pointermove', e=>{ if(holdT && Math.hypot(e.clientX - holdX, e.clientY - holdY) > HOLD_SLOP_PX) cancelHold(); }, {passive:true, capture:true});
+  document.addEventListener('pointerup', e=>{ const fired = holdFired; cancelHold(); if(fired){ holdFired = false; swallowClickUntil = Date.now() + 700; } }, true);
+  document.addEventListener('pointercancel', ()=>{ cancelHold(); holdFired = false; }, true);
+  // a long-press on Android opens a context menu (a deck chip's right-click removes a copy): not after a touch hold
+  document.addEventListener('contextmenu', e=>{ if((lastPointerType === 'touch' || lastPointerType === 'pen') && (holdT || holdFired || Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 1500)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+  // iOS starts its own drag from a held draggable card (the deck builder's pool): touch drags are the touch shim's, never the browser's
+  document.addEventListener('dragstart', e=>{ if(e.isTrusted && (lastPointerType === 'touch' || lastPointerType === 'pen')){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   function openPopFor(el){
       hoverTimer = null;
       if(!el.isConnected) return; // re-rendered away while we waited
@@ -5577,7 +5592,14 @@ function castleHoverHTML(hqSide){
   // A click usually re-renders the card away, and a removed element never fires mouseout — so the
   // popover would stay stuck on screen. Any click closes it.
   // ...except the lift that ends a press-and-hold peek: that one keeps the details open and doesn't play or pick the card.
-  document.addEventListener('click', e=>{ if(Date.now() - holdOpenedAt < 1200){ holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; } if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; }, true);
+  // 2026-10-19 (MB2): the swallow window now counts from the lift (a long hold used to outlast it and play the card), and a tap on
+  // details a hold opened opens that card's full detail page.
+  document.addEventListener('click', e=>{
+    // first the lift's own click (the details may have opened right under the finger), then a real tap on the details
+    if(Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 250){ swallowClickUntil = 0; holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; }
+    if(stripHeld && !pop.hidden && pop.contains(e.target)){ e.preventDefault(); e.stopPropagation(); const id = pop.dataset.heldDefid; pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; popSrc = null;
+      if(id && getCardDefs()[id]) try{ openCardDetail(id); }catch(_){} return; }
+    if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; }, true);
   function positionPop(el){
     const r = el.getBoundingClientRect();
     const pw = 230;
@@ -10333,6 +10355,7 @@ function setCloudPill(ok, label){ refreshAccountUI(); }
 // entrance screen's account line / Sign-in button.
 function refreshAccountUI(){
   const signedIn = isSignedIn();
+  try{ renderDeckSyncInd(); }catch(e){} // 2026-10-19 (package SY): Synced ✓ / Syncing… / Offline next to the chip
   if(signedIn) hideSignInBanner();
   const chip = document.getElementById('accountChip');
   if(chip){
@@ -10395,7 +10418,7 @@ async function applySessionIdentity(user){
     // device. Only actually pushes anything once isSignedIn() is true (see cloudPush* below) — a
     // brand-new ANONYMOUS session correctly seeds nothing yet, matching "data saved locally."
     await sbClient.from('profiles').upsert({ id: cloudUserId, display_name: (myProfile && myProfile.name) || 'Woodland Warrior' }); // 2026-10-16: no rating here: anti-cheat tier 1 (S2) makes rating server-only, and an upsert naming it would be refused whole
-    if(isSignedIn()) await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks()]);
+    if(isSignedIn()) await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]);
   } else {
     // Existing cloud account (returning session, an email/Google-linked account signed in fresh,
     // or a plain returning anonymous session): the server is now the source of truth for this
@@ -10575,12 +10598,10 @@ async function cloudPullState(){
       try{ copyModelSyncAll(); cloudApplyCopyLevels(unlocks); }catch(e){}
       saveUnlockedCardIds(true); saveCardLevels(true);
     }
-    const { data: decks } = await sbClient.from('player_decks').select('*').eq('profile_id', cloudUserId);
-    if(decks && decks.length){
-      myDecks = decks.map(d=>({id:d.id, name:d.name, characterId:d.character_id, leaderId:d.leader_id, counts: d.counts||{}}));
-      saveMyDecks(true);
-    }
+    // 2026-10-19 (package SY, owner: "same account in mobile AND web. They don't see each other's decks!"): the decks merge deck by
+    // deck (the newest edit wins, nothing is dropped without a word) instead of the cloud list replacing this device's; see deckSyncPull
   } catch(e){ /* offline/RLS hiccup — local state stays authoritative for this session */ }
+  try{ await deckSyncPull('load'); }catch(e){}
 }
 // Called from the existing save*() functions right after they write to localStorage.
 // Fire-and-forget (never blocks the UI/awaited by callers) and silently no-ops with no cloud
@@ -10634,11 +10655,248 @@ function cloudPushCardLevels(){
 }
 var cloudCopiesColumn = null; // null: not known yet; false: the server has no player_card_unlocks.copies column (not applied yet)
 function cloudCopiesColumnMissing(error){ return !!error && (/copies/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
-function cloudPushDecks(){
+// 2026-10-19 (package SY): decks never reached the cloud. player_decks.id is a uuid, the game's deck ids were 'deck-xxxxxxx', so every
+// upsert was refused (22P02) and the refusal was dropped (supabase-js resolves with {error}; it doesn't reject). The table held no deck
+// for anyone. Deck ids are uuids now (old ones are moved once, deckSyncPrepareLocal), and the push is debounced and checked (deckSyncFlush).
+// now: send at once (sign-in / account creation await it); otherwise the push waits DECK_SYNC_DEBOUNCE_MS for more edits.
+function cloudPushDecks(now){
   if(!sbClient || !isSignedIn()) return;
-  const rows = (myDecks||[]).map(d=>({ id: d.id, profile_id: cloudUserId, name: d.name, character_id: d.characterId||null, leader_id: d.leaderId||null, counts: d.counts||{} }));
-  if(!rows.length) return;
-  return sbClient.from('player_decks').upsert(rows).then(()=>{}, ()=>{});
+  deckSyncDirty = true; setDeckSyncState('syncing');
+  if(deckSyncTimer){ clearTimeout(deckSyncTimer); deckSyncTimer = null; }
+  if(now) return deckSyncFlush();
+  deckSyncTimer = setTimeout(()=>{ deckSyncTimer = null; deckSyncFlush(); }, DECK_SYNC_DEBOUNCE_MS);
+}
+// DECK_SYNC_SY:BEGIN (tests/deck-sync-2026-10-19.js evaluates this block)
+// Cross-device decks (2026-10-19, package SY). Each deck carries updatedAt (ms, bumped by deckSyncTouch whenever saveMyDecks sees its
+// content change). The cloud row keeps it in updated_at (written by the client: the table has no trigger). A pull merges deck by deck:
+//   - on both sides: the newer updatedAt wins; the loser is overwritten, not dropped;
+//   - only here: pushed, unless the cloud had it before (seen) and it hasn't been edited here since: then another device deleted it.
+//     It leaves the list with a toast and is kept in DECK_SYNC_REMOVED_KEY (the last 20), never dropped silently;
+//   - only in the cloud: added here;
+//   - deleted here (a tombstone): deleted in the cloud too, unless the cloud copy was edited after the delete (then it comes back).
+// With the proposed columns (supabase/proposed/20261019_deck_sync.sql) a delete is a deleted_at mark rather than a row delete, so a
+// device that was offline hears about it, and the deck's looks (which copies are Shiny or wear a skin) ride along. Without them the
+// client says so once (PGRST204 / 42703) and works without them.
+const DECK_SYNC_TOMBS_KEY = 'bramblewood_deck_tombstones_v1'; // {deckId: deletedAt}: decks deleted on this device, until the cloud has it
+const DECK_SYNC_SEEN_KEY = 'bramblewood_deck_cloud_seen_v1';  // {deckId: updatedAt}: the version the cloud last had (pushed or pulled)
+const DECK_SYNC_REMOVED_KEY = 'bramblewood_deck_removed_v1';  // decks another device deleted, kept here in case (newest last, 20 at most)
+const DECK_SYNC_DEBOUNCE_MS = 1200, DECK_SYNC_WAKE_MS = 10000, DECK_SYNC_RETRY_MS = 30000;
+const DECK_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+var deckSyncHashes = {}, deckSyncMerging = false, deckSyncNeedPull = false, deckSyncTimer = null, deckSyncInFlight = null, deckSyncDirty = false, deckSyncPulling = null, deckSyncLastWake = 0, deckSyncRetryTimer = null;
+var deckSyncState = 'idle'; // 'synced' | 'syncing' | 'offline' | 'idle' (no account: the indicator is hidden)
+var cloudDeckCols = {looks: null, deleted_at: null}; // null: not known yet; false: the server has no such column (proposed SQL not applied)
+// The tombstones and the seen map are per account (another account's seen decks must never look deleted here).
+function deckSyncKey(base){ return base + ':' + (cloudUserId || 'guest'); }
+function deckSyncRead(key){ try{ const v = JSON.parse(localStorage.getItem(key) || 'null'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }catch(e){ return {}; } }
+function deckSyncWrite(key, v){ try{ localStorage.setItem(key, JSON.stringify(v)); }catch(e){} }
+// A key-sorted JSON, so the same deck always hashes the same however its objects were built.
+function deckStable(v){ if(Array.isArray(v)) return '[' + v.map(deckStable).join(',') + ']'; if(v && typeof v === 'object') return '{' + Object.keys(v).sort().map(k=> JSON.stringify(k) + ':' + deckStable(v[k])).join(',') + '}'; return JSON.stringify(v === undefined ? null : v); }
+function deckContentHash(d){ return deckStable({n: (d && d.name) || '', c: (d && d.characterId) || null, l: (d && d.leaderId) || null, k: (d && d.counts) || {}, x: (d && d.looks) || null}); }
+// Once per save at load: old 'deck-xxxx' ids become uuids (remap: old → new, for the active and main deck keys), every deck gets an
+// updatedAt, a doubled id gets a new one. The hashes start from what was loaded, so loading never counts as an edit.
+function deckSyncPrepareLocal(decks, now){
+  const remap = {}, used = new Set(); now = now || Date.now();
+  (decks || []).forEach(d=>{ if(!d || typeof d !== 'object') return;
+    if(!DECK_UUID_RE.test(String(d.id || '')) || used.has(d.id)){ const nid = genUUID(); if(d.id && !remap[d.id]) remap[d.id] = nid; d.id = nid; }
+    used.add(d.id);
+    if(!Number.isFinite(d.updatedAt)) d.updatedAt = now; });
+  deckSyncSeed(decks);
+  return remap;
+}
+function deckSyncSeed(decks){ deckSyncHashes = {}; (decks || []).forEach(d=>{ if(d && d.id) deckSyncHashes[d.id] = deckContentHash(d); }); }
+// Called by saveMyDecks before it writes: a deck whose content changed (or that is new) gets a fresh updatedAt. Returns how many.
+function deckSyncTouch(decks, now){
+  now = now || Date.now(); let n = 0; const next = {};
+  (decks || []).forEach(d=>{ if(!d || !d.id) return; const h = deckContentHash(d);
+    if(deckSyncHashes[d.id] !== h){ d.updatedAt = Math.max(now, (Number(d.updatedAt) || 0) + 1); n++; }
+    next[d.id] = h; });
+  deckSyncHashes = next; return n;
+}
+// deleteDeck's note: the deck goes from the cloud too on the next push.
+function deckSyncTomb(id, now){ if(!id) return; const t = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)); t[id] = now || Date.now(); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), t); }
+function deckFromRow(r){
+  const d = {id: r.id, name: r.name || 'Deck', characterId: r.character_id || null, leaderId: r.leader_id || null,
+    counts: (r.counts && typeof r.counts === 'object' && !Array.isArray(r.counts)) ? r.counts : {}, updatedAt: Date.parse(r.updated_at) || 0};
+  if(r.looks && typeof r.looks === 'object') d.looks = r.looks;
+  if(r.deleted_at) d.deletedAt = Date.parse(r.deleted_at) || 1;
+  return d;
+}
+function deckToRow(d, uid, cols){
+  const row = {id: d.id, profile_id: uid, name: String(d.name || 'Deck').slice(0, 40), character_id: d.characterId || null, leader_id: d.leaderId || null,
+    counts: d.counts || {}, updated_at: new Date(Number(d.updatedAt) || Date.now()).toISOString()};
+  if(cols && cols.looks !== false) row.looks = d.looks || null;
+  if(cols && cols.deleted_at !== false) row.deleted_at = null;
+  return row;
+}
+// The merge (pure). local: this device's decks; rows: the account's player_decks rows; o: {tombs, seen}. Returns the deck list to keep,
+// the decks another device deleted (removed), the ids to delete in the cloud (deleteRemote), the tombstones that are settled (dropTombs)
+// and the new seen map. The order: this device's decks first, as they were, then new ones from the cloud, oldest first.
+function deckSyncMerge(local, rows, o){
+  o = o || {}; const tombs = o.tombs || {}, seen = o.seen || {}, nextSeen = Object.assign({}, seen);
+  const L = new Map(), C = new Map(); (local || []).forEach(d=>{ if(d && d.id) L.set(d.id, d); });
+  (rows || []).forEach(r=>{ if(r && r.id) C.set(r.id, deckFromRow(r)); });
+  const keep = new Map(), removed = [], deleteRemote = [], dropTombs = [];
+  const ids = Array.from(new Set([].concat(Array.from(L.keys()), Array.from(C.keys()), Object.keys(tombs))));
+  ids.forEach(id=>{
+    const l = L.get(id), c = C.get(id), t = Number(tombs[id]) || 0;
+    if(c && c.deletedAt){ // a delete mark in the cloud (the deleted_at column)
+      if(l && (Number(l.updatedAt) || 0) > c.deletedAt) keep.set(id, l); // edited here after it was deleted: it comes back
+      else if(l) removed.push(l);
+      if(t) dropTombs.push(id); delete nextSeen[id]; return; }
+    if(t && !l){ // deleted here
+      if(c && c.updatedAt > t){ keep.set(id, c); dropTombs.push(id); nextSeen[id] = c.updatedAt; } // edited elsewhere after the delete
+      else if(c) deleteRemote.push(id);
+      else { dropTombs.push(id); delete nextSeen[id]; }
+      return; }
+    if(t && l) dropTombs.push(id); // a stale tombstone (the deck is here again)
+    if(l && c){
+      const lu = Number(l.updatedAt) || 0;
+      if(c.updatedAt > lu){ const w = Object.assign({}, c); if(w.looks === undefined && l.looks) w.looks = l.looks; keep.set(id, w); }
+      else keep.set(id, l);
+      nextSeen[id] = c.updatedAt; return; }
+    if(l){
+      if(seen[id] != null && (Number(l.updatedAt) || 0) <= Number(seen[id])){ removed.push(l); delete nextSeen[id]; } // deleted on another device
+      else keep.set(id, l);
+      return; }
+    if(c){ keep.set(id, c); nextSeen[id] = c.updatedAt; }
+  });
+  let decks = (local || []).filter(d=> d && keep.has(d.id)).map(d=> keep.get(d.id));
+  const fresh = Array.from(keep.values()).filter(d=> !L.has(d.id)).sort((a, b)=> (a.updatedAt || 0) - (b.updatedAt || 0));
+  decks = decks.concat(fresh).map(d=>{ const x = Object.assign({}, d); delete x.deletedAt; return x; });
+  if(!decks.length && removed.length){ decks = removed.splice(0).map(d=> Object.assign({}, d)); } // never leave the player with no deck
+  return {decks, removed, deleteRemote, dropTombs, seen: nextSeen};
+}
+// The decks that need sending: changed since the cloud last had them (or never sent).
+function deckSyncPending(decks, seen){ return (decks || []).filter(d=> d && DECK_UUID_RE.test(String(d.id || '')) && Number(seen[d.id]) !== Number(d.updatedAt)); }
+function deckSyncColMissing(error){ if(!error) return null; const m = String(error.message || '');
+  if(error.code === 'PGRST204' || error.code === '42703' || /column/i.test(m)){ if(/deleted_at/i.test(m)) return 'deleted_at'; if(/looks/i.test(m)) return 'looks'; }
+  return null; }
+function deckSyncNetError(error){ return !error || error.name === 'TypeError' || /fetch|network|timeout|offline|Load failed/i.test(String(error.message || error)) || error.status === 0; }
+// DECK_SYNC_SY:END
+// The push: the changed decks in one upsert, then the deletes. One at a time; an edit made while one is out goes in the next.
+function deckSyncFlush(){
+  if(deckSyncTimer){ clearTimeout(deckSyncTimer); deckSyncTimer = null; }
+  if(!sbClient || !isSignedIn()){ setDeckSyncState('idle'); return Promise.resolve(); }
+  if(deckSyncInFlight){ deckSyncDirty = true; return deckSyncInFlight; }
+  if(deckSyncMerging){ deckSyncDirty = true; return Promise.resolve(); } // a pull is merging: it sends what's waiting when it's done
+  deckSyncDirty = false; setDeckSyncState('syncing');
+  const uid = cloudUserId;
+  deckSyncInFlight = (async ()=>{
+    let ok = true;
+    try{
+      const seen = deckSyncRead(deckSyncKey(DECK_SYNC_SEEN_KEY)), tombs = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY));
+      let send = deckSyncPending(myDecks, seen);
+      // A deck the cloud holds a newer edit of is not sent (an older edit made offline must not overwrite it): the pull after this merges it.
+      if(send.length){
+        const { data: have, error: haveErr } = await sbClient.from('player_decks').select('id, updated_at').eq('profile_id', uid);
+        if(haveErr){ ok = false; send = []; }
+        else { const at = {}; (have || []).forEach(r=>{ at[r.id] = Date.parse(r.updated_at) || 0; });
+          const n0 = send.length; send = send.filter(d=> !(at[d.id] > (Number(d.updatedAt) || 0))); if(send.length < n0) deckSyncNeedPull = true; }
+      }
+      for(let tries = 0; send.length && tries < 3; tries++){
+        const rows = send.map(d=> deckToRow(d, uid, cloudDeckCols));
+        const { error } = await sbClient.from('player_decks').upsert(rows);
+        const col = deckSyncColMissing(error);
+        if(error && col && cloudDeckCols[col] !== false){ cloudDeckCols[col] = false; continue; }
+        if(error){ ok = false; if(!deckSyncNetError(error)) console.warn('[Bramblewood] deck sync refused:', error.code || '', error.message || error); break; }
+        if(rows.some(r=> 'looks' in r)) cloudDeckCols.looks = true;
+        send.forEach(d=>{ seen[d.id] = d.updatedAt; });
+        break;
+      }
+      for(const id of Object.keys(tombs)){
+        if(!DECK_UUID_RE.test(id)){ delete tombs[id]; continue; }
+        let error = null, done = false;
+        if(cloudDeckCols.deleted_at !== false){ // a delete mark, so a device that was offline hears of it
+          const at = new Date(Number(tombs[id]) || Date.now()).toISOString();
+          ({ error } = await sbClient.from('player_decks').update({deleted_at: at, updated_at: at}).eq('id', id).eq('profile_id', uid));
+          if(!error){ cloudDeckCols.deleted_at = true; done = true; }
+          else if(deckSyncColMissing(error) === 'deleted_at'){ cloudDeckCols.deleted_at = false; error = null; }
+        }
+        if(!done && !error){ ({ error } = await sbClient.from('player_decks').delete().eq('id', id).eq('profile_id', uid)); done = !error; }
+        if(done){ delete tombs[id]; delete seen[id]; } else ok = false;
+      }
+      deckSyncWrite(deckSyncKey(DECK_SYNC_SEEN_KEY), seen); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), tombs);
+    }catch(e){ ok = false; }
+    return ok;
+  })().then(ok=>{
+    deckSyncInFlight = null;
+    if(deckSyncDirty && isSignedIn()) return deckSyncFlush();
+    setDeckSyncState(ok ? 'synced' : 'offline');
+    if(!ok) deckSyncRetrySoon();
+    else if(deckSyncNeedPull && !deckSyncPulling){ deckSyncNeedPull = false; return deckSyncPull('newer-in-cloud'); }
+  });
+  return deckSyncInFlight;
+}
+function deckSyncRetrySoon(){ if(deckSyncRetryTimer) return; deckSyncRetryTimer = setTimeout(()=>{ deckSyncRetryTimer = null; if(isSignedIn()) deckSyncPull('retry'); }, DECK_SYNC_RETRY_MS); }
+// The pull: on load and sign-in (cloudPullState), when the tab comes back (visibility / focus, at most every DECK_SYNC_WAKE_MS) and
+// when the browser is back online. Sends what's still waiting first, so this device's edits are in the cloud before the merge.
+function deckSyncPull(reason){
+  if(!sbClient || !isSignedIn()){ setDeckSyncState('idle'); return Promise.resolve(false); }
+  if(deckSyncPulling) return deckSyncPulling;
+  setDeckSyncState('syncing');
+  deckSyncPulling = (async ()=>{
+    try{
+      if(deckSyncInFlight) await deckSyncInFlight;
+      deckSyncMerging = true; // no push while the cloud list is read and merged (the seen map would race)
+      const uid = cloudUserId;
+      const { data, error } = await sbClient.from('player_decks').select('*').eq('profile_id', uid);
+      if(error || !Array.isArray(data) || uid !== cloudUserId){ setDeckSyncState('offline'); deckSyncRetrySoon(); return false; }
+      if(data.length){ const r0 = data[0]; if(!('looks' in r0)) cloudDeckCols.looks = false; if(!('deleted_at' in r0)) cloudDeckCols.deleted_at = false; }
+      const before = getActiveDeck(), beforeHash = before ? deckContentHash(before) : '';
+      const m = deckSyncMerge(myDecks, data, {tombs: deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)), seen: deckSyncRead(deckSyncKey(DECK_SYNC_SEEN_KEY))});
+      const tombs = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)); m.dropTombs.forEach(id=> delete tombs[id]); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), tombs);
+      deckSyncWrite(deckSyncKey(DECK_SYNC_SEEN_KEY), m.seen);
+      if(m.removed.length){ const kept = (()=>{ try{ const a = JSON.parse(localStorage.getItem(DECK_SYNC_REMOVED_KEY) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } })();
+        deckSyncWrite(DECK_SYNC_REMOVED_KEY, kept.concat(m.removed.map(d=> Object.assign({}, d, {removedAt: Date.now()}))).slice(-20)); }
+      const changed = deckStable((myDecks || []).map(d=> [d.id, d.updatedAt])) !== deckStable(m.decks.map(d=> [d.id, d.updatedAt]));
+      if(changed){
+        myDecks = m.decks; deckSyncSeed(myDecks);
+        if(!myDecks.find(d=> d.id === mainDeckId)) setMainDeck(myDecks[0].id);
+        if(!myDecks.find(d=> d.id === activeDeckId)){ activeDeckId = mainDeckId || myDecks[0].id; saveActiveDeckId(); }
+        saveMyDecks(true);
+        const now = getActiveDeck();
+        // The working copy follows the active deck when it changed, unless the builder holds unsaved edits (they win when saved: newer).
+        if(now && (!before || now.id !== before.id || deckContentHash(now) !== beforeHash) && !deckDirty){
+          const draft = deckDraftOn; deckDraftOn = false;
+          try{ switchActiveDeck(now.id); } finally { deckDraftOn = draft; }
+        }
+        if(deckEditingId && !myDecks.find(d=> d.id === deckEditingId)){ deckEditingId = null; deckDraftOn = false; deckDirty = false; }
+        try{ if(!matchState && typeof currentTab !== 'undefined' && currentTab === 'deck' && !deckDirty) renderDeckSection(); }catch(e){}
+      }
+      m.removed.forEach(d=>{ try{ showToast(TX('toast.sy-deck-deleted-elsewhere', {name: d.name || 'Deck'}), 'info'); }catch(e){} });
+      deckSyncMerging = false;
+      if(deckSyncDirty || m.deleteRemote.length || deckSyncPending(myDecks, m.seen).length){ deckSyncDirty = true; await deckSyncFlush(); }
+      else setDeckSyncState('synced');
+      return true;
+    }catch(e){ setDeckSyncState('offline'); deckSyncRetrySoon(); return false; }
+    finally{ deckSyncMerging = false; }
+  })().finally(()=>{ deckSyncPulling = null; if(deckSyncDirty && isSignedIn() && !deckSyncInFlight) deckSyncFlush(); });
+  return deckSyncPulling;
+}
+function deckSyncOnWake(){
+  if(!isSignedIn() || (typeof document !== 'undefined' && document.hidden)) return;
+  const t = Date.now(); if(t - deckSyncLastWake < DECK_SYNC_WAKE_MS) return; deckSyncLastWake = t;
+  deckSyncPull('wake');
+}
+if(typeof document !== 'undefined' && document.addEventListener){
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ if(deckSyncTimer && isSignedIn()) deckSyncFlush(); } else deckSyncOnWake(); }); // leaving: send what's waiting
+  window.addEventListener('focus', deckSyncOnWake);
+  window.addEventListener('online', ()=>{ deckSyncLastWake = 0; deckSyncOnWake(); });
+  window.addEventListener('offline', ()=>{ if(isSignedIn()) setDeckSyncState('offline'); });
+}
+// The indicator (#deckSyncInd, next to the account chip): Synced ✓ / Syncing… / Offline, hidden for a guest.
+function setDeckSyncState(s){ deckSyncState = s; renderDeckSyncInd(); }
+function renderDeckSyncInd(){
+  if(typeof document === 'undefined') return;
+  const chip = document.getElementById('accountChip'); if(!chip || !chip.parentNode) return;
+  let el = document.getElementById('deckSyncInd');
+  if(!el){ el = document.createElement('span'); el.id = 'deckSyncInd'; el.className = 'sync-ind'; el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite');
+    el.innerHTML = '<span class="sync-ind-dot" aria-hidden="true"></span><span class="sync-ind-txt"></span>'; chip.insertAdjacentElement('afterend', el); }
+  const s = isSignedIn() ? (deckSyncState === 'idle' ? 'synced' : deckSyncState) : 'idle';
+  el.hidden = s === 'idle'; el.dataset.state = s;
+  if(s === 'idle') return;
+  el.querySelector('.sync-ind-txt').textContent = s === 'synced' ? TX('ui.sy-synced') : s === 'syncing' ? TX('ui.sy-syncing') : TX('ui.sy-offline');
+  el.title = s === 'synced' ? TX('ui.sy-synced-tip') : s === 'syncing' ? TX('ui.sy-syncing-tip') : TX('ui.sy-offline-tip');
 }
 function cloudPushRating(){
   if(!sbClient || !isSignedIn()) return;
@@ -10668,7 +10926,7 @@ async function cloudLinkEmail(email, password){
   // The account/session itself is already real and saved at this point — a hiccup pushing local
   // state up (a network blip, or any of these four throwing) must never turn into "your account
   // wasn't created," which is what an uncaught rejection here would otherwise report to the UI.
-  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(), cloudPushRating()]); }catch(e){}
+  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true), cloudPushRating()]); }catch(e){}
   cloudReady = true;
   setCloudPill(true, 'Cloud sync active');
   return data;
@@ -12882,7 +13140,7 @@ function deckSizeBadgeHTML(counts){
 // you'd actually play a match with), kept in sync by syncActiveDeckFromGlobals()/
 // switchActiveDeck() below. Every existing call site that reads/writes those three globals
 // (renderPlayerSubTab, startMatch, etc.) keeps working completely unchanged.
-function genDeckId(){ return 'deck-' + Math.random().toString(36).slice(2,9); }
+function genDeckId(){ return genUUID(); } // 2026-10-19 (package SY): a uuid, as player_decks.id is (the old 'deck-xxxxxxx' ids were refused by the cloud)
 function loadMyDecks(){
   try{
     const raw = localStorage.getItem('bramblewood_arena_decks');
@@ -12893,11 +13151,16 @@ function loadMyDecks(){
   }catch(e){}
   return null; // signals "never migrated yet" to initMyDecks()
 }
-function saveMyDecks(skipCloudPush){ try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); }catch(e){} if(!skipCloudPush) cloudPushDecks(); }
+function saveMyDecks(skipCloudPush){ try{ deckSyncTouch(myDecks); }catch(e){} /* 2026-10-19 (package SY): an edited deck gets a new updatedAt */ try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); }catch(e){} if(!skipCloudPush) cloudPushDecks(); }
 function loadActiveDeckId(){ try{ return localStorage.getItem('bramblewood_arena_active_deck') || null; }catch(e){ return null; } }
 function saveActiveDeckId(){ try{ localStorage.setItem('bramblewood_arena_active_deck', activeDeckId); }catch(e){} }
 let myDecks = loadMyDecks();
 let activeDeckId = loadActiveDeckId();
+// 2026-10-19 (package SY): old deck ids become uuids once (the cloud only takes uuids), with the active and main deck keys following
+if(myDecks){ try{ const remap = deckSyncPrepareLocal(myDecks);
+  if(Object.keys(remap).length){ if(remap[activeDeckId]) activeDeckId = remap[activeDeckId];
+    try{ const mk = localStorage.getItem('bramblewood_arena_main_deck'); if(mk && remap[mk]) localStorage.setItem('bramblewood_arena_main_deck', remap[mk]); }catch(e){}
+    try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); saveActiveDeckId(); }catch(e){} } }catch(e){} }
 if(!myDecks){
   // First run under the multi-deck system: fold the pre-existing single deck (already loaded
   // into myDeckCounts/myCharacterId/myLeaderId above) into deck #1 so nobody's existing
@@ -12955,6 +13218,7 @@ function deleteDeck(id){
   const idx = myDecks.findIndex(x=>x.id===id);
   if(idx<0) return false;
   myDecks.splice(idx,1);
+  try{ deckSyncTomb(id); }catch(e){} // 2026-10-19 (package SY): deleted from the cloud too, on the next push
   saveMyDecks();
   if(mainDeckId===id) setMainDeck(myDecks[0].id);
   if(activeDeckId===id) switchActiveDeck(mainDeckId || myDecks[0].id);
@@ -28567,6 +28831,7 @@ function renderMatchUI(){
   const wrapEl = document.getElementById('appWrap');
   if(wrapEl){
     wrapEl.classList.add('in-match');
+    wrapEl.classList.toggle('mb2-raid', !!(matchState && matchState.raidFull)); // 2026-10-19 (package MB2): the raid board fills the screen (CSS + mb2FitRaidCards)
     // Bugfix (2026-09-19, found while narrowing the in-match battlefield per explicit request
     // "the battlefield could be a bit more compact... less wide"): starting a match FROM the
     // Conquest/Raid sub-tab (the default playSubTab) leaves 'wide-map' on #appWrap — that class
@@ -30998,8 +31263,79 @@ function setBoardLean(lean, scale, panMax){
 // The raid's camera is fixed (2026-10-18, user: "the raid shouldnt keep zooming in and out when i place a card"): the three-row board is
 // framed once and keeps that scale for the whole fight; it is framed again only when the window changes size (or the board grows past
 // its seven columns). raidFrameKey is what a framing was made for.
-function raidFrameKey(m){ return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0); }
-if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && matchState.raidFull && !matchState.over) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
+// 2026-10-19 (package MB2): + the frame's own size (to 4 px), so the raid is framed again when the rows around it change height
+// (the hand, the leader, the top row wrapping): its cards are sized from that frame now.
+function raidFrameKey(m){ const bf = document.getElementById('battlefieldEl'); return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0) + (bf ? ':' + Math.round(bf.clientWidth/4) + 'x' + Math.round(bf.clientHeight/4) : ''); }
+// 2026-10-19 (package MB2): a phone's normal fight re-frames on a resize too (rotation, the browser bar), as the raid does.
+if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && !matchState.over && (matchState.raidFull || mb2IsPhone())) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
+// ---- Package MB2 (2026-10-19): the battle board fills the screen ----
+// Owner on an iPhone (10:55): "The raid battle btw is too small! we can afford to use all the vertical and horizontal space,
+// especially since it's mobile phone" and "On mobile phones, the battle arena should be centered. It's currently abit higher."
+// Fill mode: on a phone (any fight) and in a raid (any size) the match is one screen tall (CSS: #appWrap.in-match is a 100svh
+// column, the battlefield takes what the rows above and below leave, and the board sits in its middle). The raid's cards are
+// sized here from that frame, as real CSS sizes rather than a zoom, so the attack lines, floats and FX, which read card rects,
+// follow them:
+//   --mb2-bh   the board card's height (width = .8 of it); the most that fits 7 columns across and the six rows down;
+//   --mb2-ch   the castle, deck, Graveyard and hand cards: the same size as the board's (owner: "our cards in hand/deck/etc.
+//              should be as large as the cards in the field"), never under 65 px tall on a phone (tappable) or 92 px on a
+//              computer (their names stay readable); smaller than a normal fight's, which gives the six rows their height;
+//   --mb2-gap  the gap between columns, the same in every row so the columns line up;
+//   --mb2-rgap the height left over, shared out between the rows (each row gets the same extra above and below).
+// It runs when the raid is framed (the start, a resize, the board growing past 7 columns): the raid's camera stays fixed.
+function mb2IsPhone(){ try{ return !!(window.matchMedia && matchMedia('(max-width:700px)').matches); }catch(e){ return false; } }
+function mb2FillMode(m){ return !!(m && (m.raidFull || mb2IsPhone())); }
+const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, reserveExtra:12 /* 8 px in the row's height + 2+2 px margin */, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200}, chromeMinH:{phone:65, pc:92}};
+function mb2FitRaidCards(m, battlefield, inner){
+  const app = document.getElementById('appWrap');
+  if(!app || !battlefield || !inner || !m || !m.raidFull) return;
+  const phone = mb2IsPhone(), cols = Math.max(7, 2*((m._slotRange|0) || 3) + 1);
+  const gap = phone ? 4 : 8, padX = 4; // the rows' own side padding (2 px each side, see the CSS)
+  const rowsA = MB2_RAID.frontRows + MB2_RAID.reserveRows*MB2_RAID.reserveScale; // the board's height grows by this much per px of card height
+  inner.style.transform = '';
+  app.classList.remove('battlefield-zoomed');
+  let bh = parseFloat(app.style.getPropertyValue('--mb2-bh')) || (phone ? 62 : 90);
+  let ch = parseFloat(app.style.getPropertyValue('--mb2-ch')) || (phone ? 75 : 110);
+  let rgap = 0;
+  const write = ()=>{
+    app.style.setProperty('--mb2-bh', bh.toFixed(2) + 'px'); app.style.setProperty('--mb2-gap', gap + 'px');
+    app.style.setProperty('--mb2-rgap', rgap.toFixed(2) + 'px');
+    app.style.setProperty('--mb2-ch', ch.toFixed(2) + 'px');
+  };
+  // A few passes: on a phone the hand and piles follow the board's size, which gives the board back some height.
+  for(let pass = 0; pass < 5; pass++){
+    write();
+    const cs = getComputedStyle(battlefield);
+    const availH = battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0);
+    const availW = inner.clientWidth;
+    const fixedH = Math.max(0, inner.offsetHeight - rowsA*bh - 12*rgap); // dividers, padding and row margins: what doesn't scale
+    const hFromW = ((availW - padX - (cols - 1)*gap) / cols) / 0.8;
+    const hFromH = (availH - fixedH) / rowsA;
+    const k = phone ? 'phone' : 'pc';
+    let nbh = Math.max(MB2_RAID.minH[k], Math.min(MB2_RAID.maxH[k], hFromW, hFromH));
+    nbh = Math.floor(nbh*2)/2;
+    const spare = Math.max(0, availH - fixedH - rowsA*nbh);
+    const nrgap = Math.min(spare/12, nbh*0.22); // six rows, a little above and below each
+    const last = pass >= 4; // the last pass keeps the hand's size, so the board is sized for the frame it really has
+    const nch = last ? ch : Math.max(MB2_RAID.chromeMinH[k], nbh);
+    const done = Math.abs(nbh - bh) < 0.6 && Math.abs(nch - ch) < 0.6 && Math.abs(nrgap - rgap) < 0.6;
+    // the hand follows halfway each pass so a height-bound board settles instead of see-sawing
+    bh = nbh; rgap = nrgap; ch = last ? ch : pass < 3 ? (ch + nch)/2 : nch;
+    if(done || last) break;
+  }
+  write();
+}
+// Fill mode: the frame's size changes without a board render (a hand drawn or played, the window, the browser bar), so it is
+// watched and the board framed again (a raid only when its frame key changed, see raidFrameKey).
+function mb2WatchFrame(bf){
+  if(!bf || typeof ResizeObserver === 'undefined' || mb2WatchFrame._el === bf) return;
+  if(!mb2WatchFrame._ro) mb2WatchFrame._ro = new ResizeObserver(()=>{ clearTimeout(mb2WatchFrame._t); mb2WatchFrame._t = setTimeout(()=>{ try{ if(matchState && !matchState.over && mb2FillMode(matchState) && document.getElementById('battlefieldEl') === mb2WatchFrame._el) fitBattlefieldZoom(); }catch(e){} }, 120); });
+  try{ mb2WatchFrame._ro.disconnect(); mb2WatchFrame._ro.observe(bf); mb2WatchFrame._el = bf; }catch(e){}
+}
+// Fill mode's height check: the board's own height against the frame's inside (the frame no longer grows with the board).
+function mb2FrameInnerHeight(battlefield){
+  const cs = getComputedStyle(battlefield);
+  return Math.max(40, battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0));
+}
 function fitBattlefieldZoom(){
   const inner = document.getElementById('battlefieldInner');
   if(!inner) return;
@@ -31132,6 +31468,10 @@ function fitBattlefieldZoomNow(instant){
   // (a plain DOM property that Flip's position:absolute never changes) times each card's own
   // fixed CSS box (width + that row's gap/padding), instead of ever re-measuring live flex-flow
   // layout while a reflow could be mid-flight.
+  // 2026-10-19 (package MB2): fill mode (a phone, or a raid): the raid's cards are sized to the frame first (mb2FitRaidCards).
+  const mb2Fill = mb2FillMode(matchState);
+  if(mb2Fill) mb2WatchFrame(battlefield);
+  if(matchState && matchState.raidFull) mb2FitRaidCards(matchState, battlefield, inner);
   const cardEl = rowMine.querySelector('.board-card') || rowEnemy.querySelector('.board-card');
   if(!cardEl){
     // Nothing on the board yet to size against — plain reset, nothing to center/pan either.
@@ -31187,6 +31527,10 @@ function fitBattlefieldZoomNow(instant){
     const widthScale = containerWidth>0 ? containerWidth/neededWidth : 1;
     const rect = battlefield.getBoundingClientRect();
     const viewportH = window.innerHeight || document.documentElement.clientHeight || 0;
+    // 2026-10-19 (package MB2): in fill mode the frame is as tall as the screen leaves it, so the board is measured against the
+    // frame's inside instead of the page below the frame's top.
+    if(mb2Fill){ const frameH = mb2FrameInnerHeight(battlefield), natH = inner.offsetHeight || 1; // the rows' own boxes: a card or tag poking out above them is no reason to shrink
+      return {containerWidth, availableHeight: frameH, fill: true, scale: Math.min(widthScale, frameH/natH)}; }
     const availableHeight = Math.max(80, viewportH - rect.top - 12); // 12px of breathing room at the bottom edge
     const heightScale = rect.height>0 ? availableHeight/rect.height : 1;
     return {containerWidth, availableHeight, scale: Math.min(widthScale, heightScale)};
@@ -31241,12 +31585,14 @@ function fitBattlefieldZoomNow(instant){
   // before centering) does freeInViewport go negative, which the Math.max(0,...) floors back to
   // plain top-anchoring — exactly the old, always-visible-from-the-top behavior — rather than
   // making an already-overflowing board worse by centering it further off-screen.
-  const naturalHeight = inner.scrollHeight;
+  const naturalHeight = m.fill ? inner.offsetHeight : inner.scrollHeight; // fill mode (MB2): the rows' own boxes
   const scaledHeight = naturalHeight*clampedScale;
   const freeInFrame = naturalHeight - scaledHeight;
   const freeInViewport = m.availableHeight - scaledHeight;
   smoothIfChanged(()=>{
-    battlefieldCenterY = Math.max(0, Math.min(freeInFrame, freeInViewport))/2;
+    // fill mode (2026-10-19, MB2): the board's box is already centred in the frame (CSS), so the shrunk board only needs to come
+    // down half of what it gave up (its transform shrinks it toward its top edge).
+    battlefieldCenterY = m.fill ? freeInFrame/2 : Math.max(0, Math.min(freeInFrame, freeInViewport))/2;
     battlefieldScale = clampedScale;
 
     // Elastic pan range (items 4/5 — even at the scale FLOOR above, the content can still be wider
@@ -31787,6 +32133,7 @@ function renderHand(){
     if(m._tutHlUid != null && !me.hand.some(hc=> hc.uid === m._tutHlUid)) m._tutHlDone = true;
     else if(m._tutHlUid == null){ const first = me.hand.find(isHlCard); if(first) m._tutHlUid = first.uid; }
   }
+  strip.style.setProperty('--hand-n', String(Math.max(1, me.hand.length))); // 2026-10-19 (package MB2): a phone's hand overlaps to fit (CSS)
   strip.innerHTML = me.hand.map(hc=>{
     let d = defs[hc.defId]; if(!d) return '';
     // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep"): the hand card shows what it has left.

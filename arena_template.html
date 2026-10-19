@@ -438,6 +438,16 @@
   .account-chip.signed-in{border-style:solid; border-color:#4caf50;}
   .account-chip.signed-in .account-chip-ico::after{content:'';}
   .account-chip:hover{filter:brightness(1.08);}
+  /* 2026-10-19 (package SY): the deck sync indicator next to the account chip (Synced ✓ / Syncing… / Offline); a dot alone on a phone */
+  .sync-ind{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; color:var(--ink-soft, var(--ink)); opacity:.78; white-space:nowrap; cursor:default; flex-shrink:0;}
+  .sync-ind[hidden]{display:none;}
+  .sync-ind-dot{width:7px; height:7px; border-radius:50%; background:#4caf50; flex-shrink:0;}
+  .sync-ind[data-state="syncing"] .sync-ind-dot{background:#e0a030; animation:syncIndPulse 1s ease-in-out infinite;}
+  .sync-ind[data-state="offline"] .sync-ind-dot{background:#9e9e9e;}
+  .sync-ind[data-state="offline"]{opacity:.9;}
+  @keyframes syncIndPulse{50%{opacity:.35;}}
+  @media (prefers-reduced-motion: reduce){ .sync-ind[data-state="syncing"] .sync-ind-dot{animation:none;} }
+  @media (max-width: 600px){ .sync-ind .sync-ind-txt{display:none;} }
   .account-identity{display:flex; align-items:center; gap:10px; margin:6px 0 4px; padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid #4caf50;}
   .account-identity-ico{font-size:18px;}
   .auth-gate-later{display:block; margin:12px auto 0;}
@@ -5853,6 +5863,67 @@
   }
   @media (max-height:700px) and (max-width:700px){
     #appWrap .battlefield{--match-card-w:62px; --match-card-h:78px;}
+  }
+  /* ===== Package MB2 (2026-10-19): the fight fills the screen on a phone, and a raid fills it everywhere =====
+     Owner on an iPhone (10:55): "The raid battle btw is too small! we can afford to use all the vertical and horizontal space",
+     "On mobile phones, the battle arena should be centered. It's currently abit higher.", "our cards in hand/deck/etc. should be
+     as large as the cards in the field", and the hand was cut off behind Safari's toolbar.
+     Fill mode: the match is a column exactly one screen tall. 100svh is the height with the browser's bars showing, so nothing
+     ends up behind them; the safe-area insets keep it off the home indicator. The battlefield takes the height that the rows
+     above and below leave, and the board sits in its middle (fitBattlefieldZoomNow centres a shrunk board the same way). A
+     raid's card sizes come from mb2FitRaidCards() as --mb2-bh / --mb2-ch / --mb2-gap / --mb2-rgap on #appWrap. */
+  @media (max-width:700px){
+    /* the hand, the castles, the decks and the Graveyard are the board's card size (75x93; 62x78 on a short phone) */
+    #appWrap.in-match{--match-card-w:75px; --match-card-h:93px;}
+  }
+  @media (max-width:700px) and (max-height:700px){
+    #appWrap.in-match{--match-card-w:62px; --match-card-h:78px;}
+  }
+  @media (max-width:700px){
+    #appWrap.in-match{display:flex; flex-direction:column; box-sizing:border-box; height:100vh; height:100svh; min-height:0 !important;
+      padding-top:max(6px, env(safe-area-inset-top, 0px)) !important; padding-bottom:max(6px, env(safe-area-inset-bottom, 0px)) !important;}
+    #appWrap.in-match > .content-wrap{flex:1 1 auto; min-height:0; width:100%; box-sizing:border-box; display:flex; flex-direction:column;}
+    #appWrap.in-match #view-play{flex:1 1 auto; min-height:0; display:flex; flex-direction:column;}
+    #appWrap.in-match #view-play > *{flex:none;}
+    #appWrap.in-match #view-play > .battlefield{flex:1 1 0; min-height:0; display:flex; flex-direction:column; justify-content:center; margin-bottom:6px;}
+    #appWrap.in-match #view-play > .battlefield > .battlefield-inner{flex:none;}
+    #appWrap.in-match .hud:empty{display:none;}
+    #appWrap.in-match .top-play-row{margin-bottom:6px;}
+    #appWrap.in-match .bottom-play-row{margin-bottom:0;}
+    /* the hand: one line of board-sized cards that overlap when there are too many to sit side by side (it still scrolls
+       sideways past that); the card you touch or arm comes to the front */
+    #appWrap.in-match .bottom-play-row .hand-strip{gap:0 !important; justify-content:center; padding-bottom:12px; margin-bottom:0;} /* the room under the cards for their skill badges is inside the screen now */
+    #appWrap.in-match .bottom-play-row .hand-strip > .card-tile + .card-tile{margin-left:clamp(calc(var(--match-card-w) * -.62), calc((100% - var(--hand-n, 1) * var(--match-card-w)) / max(1, var(--hand-n, 1) - 1)), 6px);}
+    #appWrap.in-match .bottom-play-row .hand-strip > .card-tile.armed, #appWrap.in-match .bottom-play-row .hand-strip > .card-tile:active{z-index:5;}
+  }
+  /* the raid, at every size: one screen tall too */
+  #appWrap.in-match.mb2-raid{display:flex; flex-direction:column; box-sizing:border-box; height:100vh; height:100svh; min-height:0 !important;
+    padding-top:max(6px, env(safe-area-inset-top, 0px)) !important; padding-bottom:max(6px, env(safe-area-inset-bottom, 0px)) !important;}
+  #appWrap.in-match.mb2-raid > .content-wrap{flex:1 1 auto; min-height:0; width:100%; box-sizing:border-box; display:flex; flex-direction:column;}
+  #appWrap.in-match.mb2-raid #view-play{flex:1 1 auto; min-height:0; display:flex; flex-direction:column;}
+  #appWrap.in-match.mb2-raid #view-play > *{flex:none;}
+  #appWrap.in-match.mb2-raid #view-play > .battlefield{flex:1 1 0; min-height:0; display:flex; flex-direction:column; justify-content:center; padding-top:6px; padding-bottom:6px;}
+  #appWrap.in-match.mb2-raid #view-play > .battlefield > .battlefield-inner{flex:none;}
+  #appWrap.in-match.mb2-raid .hud:empty{display:none;}
+  /* the raid board: every row the same columns and gap, its cards the size mb2FitRaidCards() found */
+  #appWrap.in-match.mb2-raid .battlefield{--match-card-h:var(--mb2-bh, 62px); --match-card-w:calc(var(--mb2-bh, 62px) * .8);}
+  #appWrap.in-match.mb2-raid #battlefieldInner{display:flex; flex-direction:column;}
+  #appWrap.in-match.mb2-raid #battlefieldInner > .board-row{flex:none; gap:var(--mb2-gap, 4px) !important; --gapx:var(--mb2-gap, 4px); padding-left:2px !important; padding-right:2px !important; box-sizing:border-box;}
+  #appWrap.in-match.mb2-raid #battlefieldInner > .board-row > .board-card{width:var(--match-card-w) !important; flex-shrink:0; margin-left:0;}
+  #appWrap.in-match.mb2-raid #battlefieldInner > #rowEnemy, #appWrap.in-match.mb2-raid #battlefieldInner > #rowMine{min-height:0 !important; height:calc(var(--match-card-h) + 12px) !important; padding-top:6px !important; padding-bottom:6px !important; margin:var(--mb2-rgap, 0px) 0 !important;}
+  #appWrap.in-match.mb2-raid #battlefieldInner > .board-row.reserve-row.raid-rows{margin:calc(2px + var(--mb2-rgap, 0px)) 0 !important;}
+  /* the hand, castles, decks and Graveyard follow the raid board's card size (never under 65 px tall on a phone, 92 px on a computer) */
+  #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);}
+  /* touch-and-hold on a card (MB2, owner: "i can't touch and hold to see the card detail"): no text selection, magnifier or iOS
+     callout on a card or while a finger rests on one; the details a hold opened take a tap (it opens the full card page) */
+  [data-defid]:not(input, textarea, select){-webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
+  body.bw-holding{-webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
+  #cardPop.is-held{pointer-events:auto; cursor:pointer;}
+  #cardPop.is-held .card-pop-visual-tile{pointer-events:none;}
+  @media (max-width:700px){
+    #appWrap.in-match.mb2-raid #view-play > .battlefield{padding:4px;}
+    #appWrap.in-match.mb2-raid > .content-wrap{padding-left:4px; padding-right:4px;}
+    #appWrap.in-match .bottom-play-row .graveyard-pile{font-size:min(10.5px, calc(var(--match-card-w) * .15));} /* "Graveyard" fits a small pile */
   }
   /* ===== Card sizes that scale (2026-10-03, explicit: "There should be several card sizes, and they
      need to scale sensibly... text just needs to stay legible at all sizes"). Every .card-tile is its

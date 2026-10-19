@@ -1958,5 +1958,12 @@
  "Changeling": "Cambiante",
  "Were-beast": "Licántropo",
  "Mutant": "Mutante",
- "Glitch": "Fallo"
+ "Glitch": "Fallo",
+ "Synced ✓": "Sincronizado ✓",
+ "Syncing…": "Sincronizando…",
+ "Offline": "Sin conexión",
+ "Your decks are saved to your account and show on every device you sign in on.": "Tus mazos se guardan en tu cuenta y aparecen en cada dispositivo en el que inicies sesión.",
+ "Saving your decks to your account…": "Guardando tus mazos en tu cuenta…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "No se puede conectar con el servidor. Tus mazos están a salvo en este dispositivo y se sincronizarán cuando vuelvas a estar en línea.",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "El mazo «{name}» se borró en otro dispositivo, así que también desaparece de aquí."
 }

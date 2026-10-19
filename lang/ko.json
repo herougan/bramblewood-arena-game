@@ -1959,5 +1959,12 @@
  "Changeling": "체인질링",
  "Were-beast": "수인",
  "Mutant": "돌연변이",
- "Glitch": "글리치"
+ "Glitch": "글리치",
+ "Synced ✓": "동기화됨 ✓",
+ "Syncing…": "동기화 중…",
+ "Offline": "오프라인",
+ "Your decks are saved to your account and show on every device you sign in on.": "덱은 계정에 저장되어 로그인한 모든 기기에 표시돼요.",
+ "Saving your decks to your account…": "덱을 계정에 저장하는 중…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "서버에 연결할 수 없어요. 덱은 이 기기에 안전하게 있고, 다시 온라인이 되면 동기화돼요.",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "덱 “{name}”이(가) 다른 기기에서 삭제되어 여기서도 사라졌어요."
 }

@@ -12,6 +12,31 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Raid results say what each number counts**: "424 raid damage" + "28 bramble damage × 15 × 1.01 for Rank B = 424 raid damage"; "Full reward from 40 bramble damage (this fight: 28)"; the stats row adds "🏰 28 to the bramble". "Dealt / taken / best hit" no longer lose hits to the 200-line log (a running tally).
 - Tests: `tests/nv-2026-10-19.js`; `tests/mobile-nav-2026-10-19.js` and `tests/raid-rv2-2026-10-19.js` know the new Home and emblem. Screens: `docs/screens/nv/`.
 
+## 2026-10-19 (package MB2: the battle fills a phone screen, bigger raid board, hand = field size, touch-and-hold)
+- **Owner (10:55, iPhone):** *"The raid battle btw is too small! we can afford to use all the vertical and horizontal space"*, *"the battle arena should be centered"*, *"our cards in hand/deck/etc. should be as large as the cards in the field"*, *"i can't touch and hold to see the card detail"*.
+- **A fight on a phone is one screen tall.** The match is a `100svh` column: the height with Safari's bars showing, plus the safe-area insets. The hand no longer ends up behind the toolbar. The battlefield takes the height that the rows above and below leave, and the board sits in its middle.
+- **The raid board fills its frame, on a phone and on a computer.** Its cards are sized from the frame (`mb2FitRaidCards`): seven columns across, six rows down, the same gap in every row so the columns line up, and the spare height shared between the rows. These are real CSS sizes, not a zoom, so the attack lines, floats and FX follow. The page no longer scrolls in a raid (it did by about 400 px on a computer).
+  - 390×844: cards 44 → 49 px wide (a 430 px iPhone gets about 55). 1366×768: 48 px on screen (with the page scrolled) → 60 px, the whole board visible.
+  - The raid keeps its fixed camera. It is framed again only when the window or the frame's size changes.
+- **Hand, deck, castle and Graveyard are the board's card size on a phone:** 75×93 (was 65×81 against the field's 75×93), or 62×78 on a short phone. In a raid they follow the raid's card size, never under 65 px tall on a phone or 92 px on a computer. A crowded hand overlaps to fit, and still scrolls past that. A crowded normal board still shrinks its own cards to fit its columns.
+- **Touch-and-hold opens a card's details everywhere:** the Codex, the deck builder, the Nest, deck previews, the skirmish strip, the hand and the board. It takes 450 ms outside a fight; a fight keeps the owner's 0.25 s from 10-12. Moving more than 10 px cancels it. The details stay up after the lift; tapping them opens the card's full page.
+  - The lift never plays, arms, adds or removes the card. The click after it is dropped, even after a long hold (before, a hold longer than about 1.2 s played the card). Android's long-press context menu and iOS's own drag are dropped too.
+  - Cards get no iOS callout and no text selection.
+- New `tests/e2e/mobile_layout_2026_10_19.py` (Playwright, about a minute, not in run-all). It covers 390×844 touch and 1366×768, a normal fight and a raid: no sideways scroll, one screen tall, the hand on screen and board-sized, the raid cards bigger and inside the frame, the board centred, and touch-and-hold in the hand and the Codex. `MB2_SHOTS=docs/screens/mb2` saves the screenshots. Before and after: `docs/screens/mb2/`.
+
+## 2026-10-19 (package SY: decks sync across devices)
+- **Owner (10:55):** *"im using the same account in mobile AND web. They don't see each other's decks!"*
+- **Root cause:** deck ids were `deck-xxxxxxx`, but the cloud table's `player_decks.id` is a uuid. Every deck upload was refused (22P02), and the client ignored the error. The table holds no deck for any player (read-only check). Pulls also ran only at load, and the cloud list replaced the device's list whole.
+- **Fix (client only, works with the table as it is):**
+  - Deck ids are uuids. Old ids are moved once at load, and the active and main deck keys follow them.
+  - Each deck has an `updatedAt`. A change uploads after a 1.2 s pause, and edits made in a burst go up together. Errors are checked now.
+  - The game pulls on load and sign-in, when the tab comes back (focus or visibility, at most every 10 s) and when the browser is back online.
+  - The merge goes deck by deck, and the newest edit wins. An older offline edit never overwrites a newer one: the upload checks the cloud's time first.
+  - A deck deleted on one device leaves the other devices with a toast, and a copy is kept locally. A deck edited after its last sync is kept and sent back. Decks are never deleted silently.
+- **Sync indicator:** "Synced ✓ / Syncing… / Offline" next to the account chip, only when signed in. On phones it is just a coloured dot. It uses TX keys, in 12 languages (`tools/i18n_2026_10_19_sy.py`).
+- **Proposed, NOT applied (optional):** `supabase/proposed/20261019_deck_sync.sql`. It adds `looks` (the deck's Shiny and skin picks) and `deleted_at` (delete marks), JSON shape checks, and a trigger that keeps the newer row when a stale write arrives. Until it is applied, the client falls back to working without it.
+- **Test:** `tests/deck-sync-2026-10-19.js` runs two devices against a fake cloud (104 checks).
+
 ## 2026-10-19 (package UT: animal tags, Base cards, variants balanced by N, raid elder art brief, art reuse map)
 - **Owner (09:52):** *"tag an animal to the card. For ghosts and spirits and elementals - they have an animal embodiment, see. But subtype ghost or elemental etc."*
 - **Every creature card has an `animal`** (724 tagged here, 349 animals in 140 kinds). Package EE's 7 Easter-egg creatures keep their own tags, reported as an owner call. It names what the card is, or the animal its body takes. 96 beings also have a `subtype` from a fixed list of 15: ghost, spirit, elemental, undead, construct, structure, fiend, conjured, plant, fungus, mythic, changeling, were, mutant, glitch.

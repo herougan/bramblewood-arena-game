@@ -1137,7 +1137,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.float-brittle": "🫙 Brittle",
   "ui.float-field-break": "🧹 Field broken",
   "ui.brittle-tip": "Brittle for {n}: Shatter treats it as Frozen",
-  "ui.prayer-ward-tip": "Prayer Ward: Armor {n} while it holds Prayer tokens"
+  "ui.prayer-ward-tip": "Prayer Ward: Armor {n} while it holds Prayer tokens",
+  "ui.sy-synced": "Synced ✓",
+  "ui.sy-syncing": "Syncing…",
+  "ui.sy-offline": "Offline",
+  "ui.sy-synced-tip": "Your decks are saved to your account and show on every device you sign in on.",
+  "ui.sy-syncing-tip": "Saving your decks to your account…",
+  "ui.sy-offline-tip": "Can't reach the server. Your decks are safe on this device and will sync when you're back online.",
+  "toast.sy-deck-deleted-elsewhere": "The deck “{name}” was deleted on another device, so it's gone from here too."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
