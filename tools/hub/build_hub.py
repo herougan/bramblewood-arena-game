@@ -481,8 +481,10 @@ def _hb_data():
             elif gk == 'async' and r['id'] in rb and 'hqHp' in rb[r['id']]:
                 src = {'file': 'canonical/raid-bosses.json', 'path': f"{r['id']}.hqHp", 'field': 'health', 'now': rb[r['id']]['hqHp']}
             sc = r.get('score') or {}; bb = r.get('brBoss') or {}; e5 = (r.get('equiv') or {}).get('v5') or {}
+            stats = dict(r.get('stats') or {})
+            if src.get('now') is not None: stats['health'] = src['now']  # a bramble / async boss starts from its file's value today (RJ's run may predate it)
             mons.append({'key': key, 'g': gk, 'gt': gt, 'id': r['id'], 'name': r['name'], 'where': where, 'role': r.get('role') or r.get('kind') or '',
-                         'st': r.get('stats') or {}, 'sk': r.get('skills') or '', 'S': sc.get('S') or 0, 'mm': sc.get('m') or 1, 'lv': r.get('level') or 1, 'map': r.get('map') or 0,
+                         'st': stats, 'rj': (r.get('stats') or {}).get('health'), 'sk': r.get('skills') or '', 'S': sc.get('S') or 0, 'mm': sc.get('m') or 1, 'lv': r.get('level') or 1, 'map': r.get('map') or 0,
                          'file': {'x1': sc.get('x1'), 'x2': sc.get('x2'), 'need': sc.get('need'), 'N': (r.get('N') or {}).get('v5'), 'ok': (r.get('inBand') or {}).get('v5'),
                                   'eq': e5, 'equiv': r.get('equivText') or '', 'brP': r.get('brPlayer'), 'brB': bb.get('perCopy') if bb.get('perCopy') is not None else bb.get('inPart'),
                                   'brNote': bb.get('note') or ''},

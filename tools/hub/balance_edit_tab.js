@@ -353,7 +353,7 @@
       brP: `${fmt(b.brP)}${r.file.brP != null && r.file.brP !== b.brP ? ` <small>RJ ${fmt(r.file.brP)}</small>` : ''}`}; }
   function monRow(r){ const b = MNOW[r.key], s = mStats(r), e = mEd[r.key], cells = monCells(r), open = st.mopen === r.key;
     const statIn = k=> s[k] == null ? '–' : `<input type="number" min="0" step="1" inputmode="numeric" class="hb-num${s[k] !== r.st[k] ? ' is-ch' : ''}" data-mon="${esc(r.key)}" data-stat="${k}" value="${s[k]}" aria-label="${esc(r.name)} ${k === 'attack' ? 'Attack' : 'Health'}">`;
-    const src = r.src.file ? `<small>${esc(r.src.file.replace('canonical/', ''))} <code>${esc(r.src.path)}</code>${r.src.now != null && r.src.now !== r.st.health ? ` · now ${esc(r.src.now)} there` : ''}</small>` : '<small>computed → override list</small>';
+    const src = r.src.file ? `<small>${esc(r.src.file.replace('canonical/', ''))} <code>${esc(r.src.path)}</code>${r.rj != null && r.rj !== r.st.health ? ` · RJ measured it at ${esc(r.rj)}` : ''}</small>` : '<small>computed → override list</small>';
     const row = `<tr data-row="${esc(r.key)}" class="v-${b.ok ? 'ok' : 'over'}${e ? ' is-ed' : ''}"><td data-toggle="${esc(r.key)}" data-kind="m" tabindex="0" aria-expanded="${open}" class="hb-name"><b>${esc(r.name)}${r.flag ? ' ⚑' : ''}</b><small>${esc(r.where)}${e && e.note ? ' · 📝' : ''}</small></td>`
       + `<td><small>${esc(r.gt)}</small></td><td class="num">${r.lv}</td><td><small>${esc(rarName(r.st.rarity))} · W${r.st.wait || 0} · 🪵${r.st.cost || 0}</small></td><td>${statIn('attack')}</td><td>${statIn('health')}</td>`
       + `<td class="hb-sk"><small>${esc(r.sk)}</small></td><td class="num">${fmt(r.S)}</td>` + ['x1', 'x2', 'need', 'N'].map(k=> `<td class="num" data-c="${k}">${cells[k]}</td>`).join('')
