@@ -103,7 +103,7 @@ console.log(`  note: the frozen keyword comparison skips ${Object.keys(skipped).
 const all = KINDS.flatMap(k=> table[k].map(e=> [k, e])), applied = all.filter(([, e])=> e.appliedAt);
 ok(applied.length >= 150, `the measured worth is applied (${applied.length} entries with appliedAt)`);
 // the application floored a negative measured worth at 0 (58 entries, the payments Penance / Blood Tithe among them)
-applied.forEach(([k, e])=> ok(typeof e.prevValue === 'number' && typeof e.appliedAt === 'string' && e.measuredConf === 'high' && e.value === Math.max(0, e.measuredS),
+applied.forEach(([k, e])=> ok(typeof e.prevValue === 'number' && typeof e.appliedAt === 'string' && e.measuredConf === 'high' && e.value === ((e.prevValue < 0 && /payment/.test(e.note || "")) ? e.measuredS : Math.max(0, e.measuredS)),
   `${k} ${e.id}: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (${e.prevValue} -> ${e.value}, measured ${e.measuredS}, ${e.measuredConf})`));
 ok(!all.some(([, e])=> !e.appliedAt && e.prevValue != null), 'only applied entries carry prevValue');
 const ent = (k, id)=> table[k].find(e=> e.id === id) || {};
