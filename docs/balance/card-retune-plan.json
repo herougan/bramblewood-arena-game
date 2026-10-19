@@ -1,0 +1,13450 @@
+{
+ "_about": "Full card retune (2026-10-19, package BF3): every live card at Level 1 under budget v5 (L/10, + 0.2 x Map) and today's skill costs, to the master hub's band: over (2A+H+S >= N or A*H+S >= (N/3)^2) down until both pass, well under (2A+H+S <= 60% of N) up to 65% of N; within left alone. tools/card_retune_2026_10_19.js.",
+ "generated": "2026-10-19",
+ "band": {
+  "wellUnder": 0.6,
+  "raiseTo": 0.65
+ },
+ "cards": 709,
+ "within": 290,
+ "over": 25,
+ "under": 393,
+ "owner": 1,
+ "rows": [
+  {
+   "id": "otter-centurion",
+   "name": "Otter Centurion",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 30.59,
+   "S": 1,
+   "m": 1,
+   "useWas": 39.2,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "ent",
+   "name": "Ent",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 0,
+   "was": [
+    2,
+    20
+   ],
+   "N": 47.12,
+   "S": 0,
+   "m": 1,
+   "useWas": 50.9,
+   "verdict": "under",
+   "now": [
+    3,
+    25
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Knight",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    4,
+    4
+   ],
+   "N": 31.62,
+   "S": 6.9,
+   "m": 1,
+   "useWas": 59.8,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 69.3
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Knight",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 26.3,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    7
+   ],
+   "N": 23.87,
+   "S": 6.36,
+   "m": 1.5,
+   "useWas": 84,
+   "verdict": "within"
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 45.57,
+   "S": 13.51,
+   "m": 1,
+   "useWas": 64.8,
+   "verdict": "within"
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": "common",
+   "wait": 5,
+   "cost": 3,
+   "was": [
+    10,
+    50
+   ],
+   "N": 85.77,
+   "S": 5.98,
+   "m": 1,
+   "useWas": 88.6,
+   "verdict": "within"
+  },
+  {
+   "id": "scraper-of-skies",
+   "name": "Scraper of Skies",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 2,
+   "was": [
+    0,
+    50
+   ],
+   "N": 68.72,
+   "S": 6.86,
+   "m": 1,
+   "useWas": 82.7,
+   "verdict": "within"
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 21.8,
+   "S": 1.5,
+   "m": 1,
+   "useWas": 34.4,
+   "verdict": "under",
+   "now": [
+    2,
+    9
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 29.55,
+   "S": 0,
+   "m": 1,
+   "useWas": 37.2,
+   "verdict": "under",
+   "now": [
+    6,
+    9
+   ],
+   "useNow": 71.1
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 24.28,
+   "S": 1,
+   "m": 1,
+   "useWas": 32.9,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    5,
+    30
+   ],
+   "N": 56.42,
+   "S": 1.5,
+   "m": 1,
+   "useWas": 73.6,
+   "verdict": "within"
+  },
+  {
+   "id": "otter-scout",
+   "name": "Otter Scout",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 24.9,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 42.2,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "otter-shieldback",
+   "name": "Otter Shieldback",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 42.88,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 47.8,
+   "verdict": "under",
+   "now": [
+    4,
+    20
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 31.62,
+   "S": 3.68,
+   "m": 1.5,
+   "useWas": 41.2,
+   "verdict": "under",
+   "now": [
+    2,
+    7
+   ],
+   "useNow": 69.6
+  },
+  {
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 41.85,
+   "S": 3.18,
+   "m": 1.5,
+   "useWas": 61.6,
+   "verdict": "within"
+  },
+  {
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    6,
+    21
+   ],
+   "N": 58.07,
+   "S": 5.54,
+   "m": 1.5,
+   "useWas": 99.6,
+   "verdict": "within"
+  },
+  {
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 23.87,
+   "S": 0,
+   "m": 1,
+   "useWas": 41.9,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "war-hound",
+   "name": "War Hound",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 36.17,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 51.1,
+   "verdict": "under",
+   "now": [
+    4,
+    16
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "armored-mastiff",
+   "name": "Armored Mastiff",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    6,
+    28
+   ],
+   "N": 58.07,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 69.7,
+   "verdict": "within"
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    2
+   ],
+   "N": 24.9,
+   "S": 3.7,
+   "m": 1,
+   "useWas": 39,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 75.1
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    6,
+    6
+   ],
+   "N": 37.82,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 48.9,
+   "verdict": "under",
+   "now": [
+    9,
+    9
+   ],
+   "useNow": 72.7
+  },
+  {
+   "id": "war-panther",
+   "name": "War Panther",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    7,
+    20
+   ],
+   "N": 57.66,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 59.8,
+   "verdict": "under",
+   "now": [
+    8,
+    22
+   ],
+   "useNow": 66.8
+  },
+  {
+   "id": "bramblewood-macaque",
+   "name": "Bramblewood Macaque",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 31.62,
+   "S": 14.58,
+   "m": 1,
+   "useWas": 71.4,
+   "verdict": "within"
+  },
+  {
+   "id": "silverback-brawler",
+   "name": "Silverback Brawler",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    7,
+    30
+   ],
+   "N": 59.11,
+   "S": 9.58,
+   "m": 1,
+   "useWas": 90.6,
+   "verdict": "within"
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    4,
+    5
+   ],
+   "N": 32.03,
+   "S": 3.13,
+   "m": 1,
+   "useWas": 50.4,
+   "verdict": "under",
+   "now": [
+    6,
+    7
+   ],
+   "useNow": 69.1
+  },
+  {
+   "id": "webspire-sentinel",
+   "name": "Webspire Sentinel",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    5,
+    26
+   ],
+   "N": 56.42,
+   "S": 9.58,
+   "m": 1,
+   "useWas": 80.8,
+   "verdict": "within"
+  },
+  {
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    10
+   ],
+   "N": 23.25,
+   "S": 0,
+   "m": 1,
+   "useWas": 51.6,
+   "verdict": "under",
+   "now": [
+    1,
+    14
+   ],
+   "useNow": 68.8
+  },
+  {
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    16
+   ],
+   "N": 43.3,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 52,
+   "verdict": "under",
+   "now": [
+    4,
+    20
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    9,
+    45
+   ],
+   "N": 75.12,
+   "S": 10.46,
+   "m": 1,
+   "useWas": 97.8,
+   "verdict": "within"
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 32.03,
+   "S": 6.34,
+   "m": 1.5,
+   "useWas": 53.1,
+   "verdict": "under",
+   "now": [
+    2,
+    5
+   ],
+   "useNow": 71.8
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 36.58,
+   "S": 3.63,
+   "m": 1.5,
+   "useWas": 55.9,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 72.3
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 23.25,
+   "S": 0,
+   "m": 1,
+   "useWas": 43,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 68.8
+  },
+  {
+   "id": "thornvine-lasher",
+   "name": "Thornvine Lasher",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    7
+   ],
+   "N": 33.07,
+   "S": 0,
+   "m": 1,
+   "useWas": 39.3,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    6,
+    32
+   ],
+   "N": 56.42,
+   "S": 1.5,
+   "m": 1,
+   "useWas": 80.6,
+   "verdict": "within"
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "wait": 5,
+   "cost": 3,
+   "was": [
+    9,
+    48
+   ],
+   "N": 81.84,
+   "S": 2,
+   "m": 1,
+   "useWas": 83.1,
+   "verdict": "within"
+  },
+  {
+   "id": "ember-wisp",
+   "name": "Ember Wisp",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    4,
+    3
+   ],
+   "N": 23.87,
+   "S": 1,
+   "m": 1,
+   "useWas": 50.3,
+   "verdict": "under",
+   "now": [
+    6,
+    4
+   ],
+   "useNow": 71.2
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Spirit",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    4,
+    5
+   ],
+   "N": 32.45,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 48.7,
+   "verdict": "under",
+   "now": [
+    6,
+    7
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "stoneheart-golem",
+   "name": "Stoneheart Golem",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    5,
+    34
+   ],
+   "N": 54.97,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 81,
+   "verdict": "within"
+  },
+  {
+   "id": "gale-sprite",
+   "name": "Gale Sprite",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 26.35,
+   "S": 0,
+   "m": 1,
+   "useWas": 53.1,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 68.3
+  },
+  {
+   "id": "stormcaller",
+   "name": "Stormcaller",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    9,
+    26
+   ],
+   "N": 70.99,
+   "S": 12.45,
+   "m": 1,
+   "useWas": 79.5,
+   "verdict": "within"
+  },
+  {
+   "id": "minnow-skitter",
+   "name": "Minnow Skitter",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.22,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 53.1,
+   "verdict": "under",
+   "now": [
+    3,
+    6
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    6
+   ],
+   "N": 31,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 47.7,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 70.3
+  },
+  {
+   "id": "pufferfish-bulwark",
+   "name": "Pufferfish Bulwark",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    20
+   ],
+   "N": 42.68,
+   "S": 3.29,
+   "m": 1,
+   "useWas": 59.3,
+   "verdict": "under",
+   "now": [
+    1,
+    23
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    8,
+    22
+   ],
+   "N": 56.83,
+   "S": 12.37,
+   "m": 1,
+   "useWas": 88.6,
+   "verdict": "within"
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    22
+   ],
+   "N": 45.36,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 62.8,
+   "verdict": "within"
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    9,
+    38
+   ],
+   "N": 74.71,
+   "S": 11.89,
+   "m": 1,
+   "useWas": 90.9,
+   "verdict": "within"
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    4,
+    6
+   ],
+   "N": 33.69,
+   "S": 3.18,
+   "m": 1,
+   "useWas": 51,
+   "verdict": "under",
+   "now": [
+    6,
+    8
+   ],
+   "useNow": 68.8
+  },
+  {
+   "id": "raccoon-warlord",
+   "name": "Raccoon Warlord",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    7,
+    32
+   ],
+   "N": 57.45,
+   "S": 3.18,
+   "m": 1,
+   "useWas": 85.6,
+   "verdict": "within"
+  },
+  {
+   "id": "badger-berserker",
+   "name": "Badger Berserker",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 39.68,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 46.6,
+   "verdict": "under",
+   "now": [
+    4,
+    18
+   ],
+   "useNow": 66.8
+  },
+  {
+   "id": "beetle-battering-ram",
+   "name": "Beetle Battering-Ram",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 47.64,
+   "S": 12.26,
+   "m": 1,
+   "useWas": 61.4,
+   "verdict": "within"
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    8,
+    24
+   ],
+   "N": 56.01,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 72.3,
+   "verdict": "within"
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 25.11,
+   "S": 4.8,
+   "m": 1.5,
+   "useWas": 58.5,
+   "verdict": "under",
+   "now": [
+    2,
+    5
+   ],
+   "useNow": 82.4
+  },
+  {
+   "id": "wolf-pack-runner",
+   "name": "Wolf Pack Runner",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 38.44,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    6,
+    13
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "boar-rampager",
+   "name": "Boar Rampager",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 45.57,
+   "S": 9.58,
+   "m": 1,
+   "useWas": 58.3,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "turtle-bastion",
+   "name": "Turtle Bastion",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    4,
+    36
+   ],
+   "N": 57.04,
+   "S": 3.29,
+   "m": 1,
+   "useWas": 82.9,
+   "verdict": "within"
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "eagle-diver",
+   "name": "Eagle Diver",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    5
+   ],
+   "N": 35.75,
+   "S": 8.73,
+   "m": 1.5,
+   "useWas": 74.4,
+   "verdict": "within"
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    22
+   ],
+   "N": 48.67,
+   "S": 12.37,
+   "m": 1,
+   "useWas": 95.3,
+   "verdict": "within"
+  },
+  {
+   "id": "nautilus-drifter",
+   "name": "Nautilus Drifter",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    3,
+    24
+   ],
+   "N": 53.53,
+   "S": 1.5,
+   "m": 1,
+   "useWas": 58.8,
+   "verdict": "under",
+   "now": [
+    3,
+    28
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "alpha-howler",
+   "name": "Alpha Howler",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    7,
+    24
+   ],
+   "N": 58.28,
+   "S": 12.26,
+   "m": 1,
+   "useWas": 86.2,
+   "verdict": "within"
+  },
+  {
+   "id": "tusked-vanguard",
+   "name": "Tusked Vanguard",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 26.56,
+   "S": 0,
+   "m": 1,
+   "useWas": 41.4,
+   "verdict": "under",
+   "now": [
+    3,
+    12
+   ],
+   "useNow": 67.8
+  },
+  {
+   "id": "snapper-hatchling",
+   "name": "Snapper Hatchling",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    13
+   ],
+   "N": 22.84,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 77.9,
+   "verdict": "within"
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 33.89,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 67.2,
+   "verdict": "within"
+  },
+  {
+   "id": "chipmunk-stockpiler",
+   "name": "Chipmunk Stockpiler",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    13
+   ],
+   "N": 24.28,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 63.8,
+   "verdict": "within"
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    7,
+    24
+   ],
+   "N": 63.45,
+   "S": 6.15,
+   "m": 1.5,
+   "useWas": 104.4,
+   "verdict": "over",
+   "now": [
+    7,
+    22
+   ],
+   "useNow": 99.6
+  },
+  {
+   "id": "badger-sapper",
+   "name": "Badger Sapper",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    7,
+    24
+   ],
+   "N": 48.88,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 78.8,
+   "verdict": "within"
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    18
+   ],
+   "N": 46.19,
+   "S": 6.76,
+   "m": 1.5,
+   "useWas": 112.9,
+   "verdict": "over",
+   "now": [
+    4,
+    16
+   ],
+   "useNow": 99.9
+  },
+  {
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 26.97,
+   "S": 0,
+   "m": 1,
+   "useWas": 44.5,
+   "verdict": "under",
+   "now": [
+    3,
+    12
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "woodland-brawler",
+   "name": "Woodland Brawler",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 39.27,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 47.1,
+   "verdict": "under",
+   "now": [
+    4,
+    18
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    7,
+    30
+   ],
+   "N": 57.66,
+   "S": 9.58,
+   "m": 1,
+   "useWas": 92.9,
+   "verdict": "within"
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    12,
+    58
+   ],
+   "N": 93,
+   "S": 9.44,
+   "m": 1,
+   "useWas": 98.3,
+   "verdict": "within"
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 26.56,
+   "S": 0,
+   "m": 1,
+   "useWas": 41.4,
+   "verdict": "under",
+   "now": [
+    3,
+    12
+   ],
+   "useNow": 67.8
+  },
+  {
+   "id": "antler-skirmisher",
+   "name": "Antler Skirmisher",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 1,
+   "useWas": 52.9,
+   "verdict": "under",
+   "now": [
+    5,
+    15
+   ],
+   "useNow": 66.1
+  },
+  {
+   "id": "stag-knight",
+   "name": "Stag Knight",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    22
+   ],
+   "N": 48.88,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 70.6,
+   "verdict": "within"
+  },
+  {
+   "id": "elderhorn-monarch",
+   "name": "Elderhorn Monarch",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    8,
+    40
+   ],
+   "N": 73.68,
+   "S": 2,
+   "m": 1,
+   "useWas": 78.7,
+   "verdict": "within"
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 25.52,
+   "S": 0,
+   "m": 1,
+   "useWas": 35.3,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "firetail-trickster",
+   "name": "Firetail Trickster",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    9
+   ],
+   "N": 31.1,
+   "S": 5.3,
+   "m": 1,
+   "useWas": 58.8,
+   "verdict": "under",
+   "now": [
+    2,
+    11
+   ],
+   "useNow": 65.3
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    20
+   ],
+   "N": 48.88,
+   "S": 9.58,
+   "m": 1,
+   "useWas": 85.1,
+   "verdict": "within"
+  },
+  {
+   "id": "beaver-builder",
+   "name": "Beaver Builder",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    13
+   ],
+   "N": 22.22,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 69.8,
+   "verdict": "within"
+  },
+  {
+   "id": "dam-wall",
+   "name": "Dam Wall",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    0,
+    20
+   ],
+   "N": 41.23,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 49.7,
+   "verdict": "under",
+   "now": [
+    0,
+    27
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    26
+   ],
+   "N": 47.64,
+   "S": 1.5,
+   "m": 1,
+   "useWas": 78.7,
+   "verdict": "within"
+  },
+  {
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    4,
+    48
+   ],
+   "N": 61.59,
+   "S": 1,
+   "m": 1,
+   "useWas": 92.5,
+   "verdict": "within"
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 23.87,
+   "S": 9.13,
+   "m": 1,
+   "useWas": 67.6,
+   "verdict": "within"
+  },
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 36.37,
+   "S": 12.26,
+   "m": 1,
+   "useWas": 77.7,
+   "verdict": "within"
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    24
+   ],
+   "N": 47.22,
+   "S": 9.58,
+   "m": 1,
+   "useWas": 96.5,
+   "verdict": "within"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    8,
+    34
+   ],
+   "N": 62.21,
+   "S": 12.06,
+   "m": 1,
+   "useWas": 99.8,
+   "verdict": "within"
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 23.87,
+   "S": 2.68,
+   "m": 1.5,
+   "useWas": 60.8,
+   "verdict": "within"
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 36.79,
+   "S": 5.04,
+   "m": 1.5,
+   "useWas": 69.5,
+   "verdict": "within"
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    5,
+    18
+   ],
+   "N": 56.63,
+   "S": 4.18,
+   "m": 1,
+   "useWas": 56.8,
+   "verdict": "under",
+   "now": [
+    6,
+    21
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 24.28,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 39.1,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 72.1
+  },
+  {
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 35.55,
+   "S": 0,
+   "m": 1,
+   "useWas": 42.2,
+   "verdict": "under",
+   "now": [
+    5,
+    14
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    19
+   ],
+   "N": 49.7,
+   "S": 1.5,
+   "m": 1,
+   "useWas": 61.4,
+   "verdict": "within"
+  },
+  {
+   "id": "stable-colt",
+   "name": "Stable Colt",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 25.94,
+   "S": 0,
+   "m": 1,
+   "useWas": 46.3,
+   "verdict": "under",
+   "now": [
+    3,
+    11
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "squires-mount",
+   "name": "Squire's Mount",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 38.23,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 48.4,
+   "verdict": "under",
+   "now": [
+    4,
+    17
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "warhorse-charger",
+   "name": "Warhorse Charger",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    8,
+    22
+   ],
+   "N": 49.29,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 78.1,
+   "verdict": "within"
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Cataphract Destrier",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    11,
+    52
+   ],
+   "N": 81.12,
+   "S": 0.78,
+   "m": 1,
+   "useWas": 92.2,
+   "verdict": "within"
+  },
+  {
+   "id": "puddle-hopper",
+   "name": "Puddle Hopper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 22.01,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 58.1,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 76.3
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 33.48,
+   "S": 9.05,
+   "m": 1,
+   "useWas": 68.8,
+   "verdict": "within"
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    7,
+    38
+   ],
+   "N": 72.02,
+   "S": 12.48,
+   "m": 1,
+   "useWas": 89.5,
+   "verdict": "within"
+  },
+  {
+   "id": "warren-scout",
+   "name": "Warren Scout",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    4
+   ],
+   "N": 26.35,
+   "S": 0,
+   "m": 1,
+   "useWas": 38,
+   "verdict": "under",
+   "now": [
+    6,
+    7
+   ],
+   "useNow": 72.1
+  },
+  {
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    14
+   ],
+   "N": 28.62,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 64.6,
+   "verdict": "within"
+  },
+  {
+   "id": "buck-brawler",
+   "name": "Buck Brawler",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    20
+   ],
+   "N": 48.67,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 66.8,
+   "verdict": "within"
+  },
+  {
+   "id": "hanging-loafer",
+   "name": "Hanging Loafer",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 1,
+   "was": [
+    3,
+    22
+   ],
+   "N": 62.31,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 45.7,
+   "verdict": "under",
+   "now": [
+    4,
+    33
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "wait": 6,
+   "cost": 3,
+   "was": [
+    6,
+    58
+   ],
+   "N": 97.86,
+   "S": 2.5,
+   "m": 1,
+   "useWas": 74.1,
+   "verdict": "within"
+  },
+  {
+   "id": "pond-paddler",
+   "name": "Pond Paddler",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 24.28,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 43.2,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 68
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 33.38,
+   "S": 2.4,
+   "m": 1.5,
+   "useWas": 60.2,
+   "verdict": "within"
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "rarity": "common",
+   "wait": 6,
+   "cost": 4,
+   "was": [
+    13,
+    62
+   ],
+   "N": 104.26,
+   "S": 1.82,
+   "m": 1,
+   "useWas": 86.2,
+   "verdict": "within"
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    22
+   ],
+   "N": 49.91,
+   "S": 12.51,
+   "m": 1,
+   "useWas": 93.2,
+   "verdict": "within"
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    9,
+    36
+   ],
+   "N": 63.24,
+   "S": 14.37,
+   "m": 1,
+   "useWas": 108.1,
+   "verdict": "over",
+   "now": [
+    8,
+    32
+   ],
+   "useNow": 98.6
+  },
+  {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 32.34,
+   "S": 5.3,
+   "m": 1,
+   "useWas": 59.7,
+   "verdict": "under",
+   "now": [
+    2,
+    12
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "stone-turtle-warden",
+   "name": "Stone Turtle Warden",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    4,
+    30
+   ],
+   "N": 47.02,
+   "S": 13.75,
+   "m": 1,
+   "useWas": 110.1,
+   "verdict": "over",
+   "now": [
+    3,
+    26
+   ],
+   "useNow": 97.3
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    14
+   ],
+   "N": 37.61,
+   "S": 3,
+   "m": 1,
+   "useWas": 50.5,
+   "verdict": "under",
+   "now": [
+    1,
+    20
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    6,
+    16
+   ],
+   "N": 41.13,
+   "S": 1,
+   "m": 1,
+   "useWas": 70.5,
+   "verdict": "within"
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "name": "Pack Wolf Reaver",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    22
+   ],
+   "N": 49.5,
+   "S": 5.14,
+   "m": 1,
+   "useWas": 75,
+   "verdict": "within"
+  },
+  {
+   "id": "raven-hexcaller",
+   "name": "Raven Hexcaller",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 33.07,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 68,
+   "verdict": "within"
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    3,
+    14
+   ],
+   "N": 42.78,
+   "S": 5.43,
+   "m": 1.5,
+   "useWas": 89.2,
+   "verdict": "within"
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    8
+   ],
+   "N": 33.69,
+   "S": 8.23,
+   "m": 1.5,
+   "useWas": 81.2,
+   "verdict": "within"
+  },
+  {
+   "id": "shrine-acolyte",
+   "name": "Shrine Acolyte",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 32.65,
+   "S": 1,
+   "m": 1,
+   "useWas": 39.8,
+   "verdict": "under",
+   "now": [
+    4,
+    14
+   ],
+   "useNow": 70.4
+  },
+  {
+   "id": "shrine-high-priest",
+   "name": "Shrine High Priest",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 37.41,
+   "S": 5.23,
+   "m": 1,
+   "useWas": 62.1,
+   "verdict": "within"
+  },
+  {
+   "id": "blessed-avatar",
+   "name": "Blessed Avatar",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 0,
+   "was": [
+    6,
+    20
+   ],
+   "N": 40.4,
+   "S": 0,
+   "m": 1,
+   "useWas": 79.2,
+   "verdict": "within"
+  },
+  {
+   "id": "hollow-oath-keeper",
+   "name": "Hollow Oath-Keeper",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    16
+   ],
+   "N": 34.51,
+   "S": 0,
+   "m": 1,
+   "useWas": 69.5,
+   "verdict": "within"
+  },
+  {
+   "id": "bone-diviner",
+   "name": "Bone Diviner",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    19
+   ],
+   "N": 47.22,
+   "S": 2.74,
+   "m": 1.5,
+   "useWas": 100.8,
+   "verdict": "over",
+   "now": [
+    5,
+    18
+   ],
+   "useNow": 97.6
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    20
+   ],
+   "N": 23.87,
+   "S": 6.36,
+   "m": 1,
+   "useWas": 110.4,
+   "verdict": "over",
+   "now": [
+    0,
+    17
+   ],
+   "useNow": 97.9
+  },
+  {
+   "id": "nest",
+   "name": "Nest",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    18
+   ],
+   "N": 21.8,
+   "S": 2.58,
+   "m": 1,
+   "useWas": 94.4,
+   "verdict": "within"
+  },
+  {
+   "id": "howler-monkey",
+   "name": "Howler Monkey",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 23.87,
+   "S": 3.68,
+   "m": 1,
+   "useWas": 44.7,
+   "verdict": "under",
+   "now": [
+    4,
+    5
+   ],
+   "useNow": 69.9
+  },
+  {
+   "id": "jaguar-stalker",
+   "name": "Jaguar Stalker",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 38.03,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 64.6,
+   "verdict": "within"
+  },
+  {
+   "id": "toucan-courier",
+   "name": "Toucan Courier",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 24.7,
+   "S": 3.93,
+   "m": 1,
+   "useWas": 40.2,
+   "verdict": "under",
+   "now": [
+    2,
+    9
+   ],
+   "useNow": 68.5
+  },
+  {
+   "id": "poison-dart-frog",
+   "name": "Poison Dart Frog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    6
+   ],
+   "N": 29.24,
+   "S": 9.39,
+   "m": 1,
+   "useWas": 59.5,
+   "verdict": "under",
+   "now": [
+    1,
+    8
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "strangler-vine",
+   "name": "Strangler Vine",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 45.78,
+   "S": 2,
+   "m": 1,
+   "useWas": 48.1,
+   "verdict": "under",
+   "now": [
+    4,
+    20
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    4,
+    20
+   ],
+   "N": 47.22,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 88.9,
+   "verdict": "within"
+  },
+  {
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 29.45,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 73.2,
+   "verdict": "within"
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 26.56,
+   "S": 1.37,
+   "m": 1,
+   "useWas": 42.8,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "termite-mound",
+   "name": "Termite Mound",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    0,
+    22
+   ],
+   "N": 35.96,
+   "S": 8.22,
+   "m": 1,
+   "useWas": 84,
+   "verdict": "within"
+  },
+  {
+   "id": "plains-zebra",
+   "name": "Plains Zebra",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    9
+   ],
+   "N": 23.87,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 69.1,
+   "verdict": "within"
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "rarity": "superrare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 41.54,
+   "S": 6.32,
+   "m": 1.5,
+   "useWas": 77,
+   "verdict": "within"
+  },
+  {
+   "id": "tundra-musk-ox",
+   "name": "Tundra Musk Ox",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    24
+   ],
+   "N": 49.7,
+   "S": 2,
+   "m": 1,
+   "useWas": 72.4,
+   "verdict": "within"
+  },
+  {
+   "id": "arctic-fox-raider",
+   "name": "Arctic Fox Raider",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 29.45,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 71.3,
+   "verdict": "within"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    9,
+    34
+   ],
+   "N": 65.72,
+   "S": 11.76,
+   "m": 1,
+   "useWas": 97,
+   "verdict": "within"
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 36.17,
+   "S": 5.4,
+   "m": 1,
+   "useWas": 59.2,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 70.2
+  },
+  {
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 22.84,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 47.2,
+   "verdict": "under",
+   "now": [
+    2,
+    8
+   ],
+   "useNow": 69.1
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    7,
+    14
+   ],
+   "N": 41.54,
+   "S": 8.8,
+   "m": 1,
+   "useWas": 88.6,
+   "verdict": "within"
+  },
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    8,
+    14
+   ],
+   "N": 41.85,
+   "S": 7.9,
+   "m": 1,
+   "useWas": 90.6,
+   "verdict": "within"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    2,
+    30
+   ],
+   "N": 55.39,
+   "S": 19.12,
+   "m": 1,
+   "useWas": 95.9,
+   "verdict": "within"
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    0,
+    14
+   ],
+   "N": 29.55,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 60.2,
+   "verdict": "within"
+  },
+  {
+   "id": "mountain-goat-climber",
+   "name": "Mountain Goat Climber",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    7
+   ],
+   "N": 23.46,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 57.5,
+   "verdict": "under",
+   "now": [
+    1,
+    9
+   ],
+   "useNow": 70.3
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    4
+   ],
+   "N": 29.04,
+   "S": 8.23,
+   "m": 1.5,
+   "useWas": 83.8,
+   "verdict": "within"
+  },
+  {
+   "id": "alpine-avalanche",
+   "name": "Alpine Avalanche",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    15
+   ],
+   "N": 46.81,
+   "S": 5.14,
+   "m": 1,
+   "useWas": 68.7,
+   "verdict": "within"
+  },
+  {
+   "id": "rockslide-ram",
+   "name": "Rockslide Ram",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 34.72,
+   "S": 9.99,
+   "m": 1,
+   "useWas": 74.9,
+   "verdict": "within"
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    5,
+    8
+   ],
+   "N": 33.69,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 80.1,
+   "verdict": "within"
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 23.87,
+   "S": 2.7,
+   "m": 1,
+   "useWas": 49,
+   "verdict": "under",
+   "now": [
+    3,
+    7
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    7,
+    18
+   ],
+   "N": 47.22,
+   "S": 5.48,
+   "m": 1,
+   "useWas": 79.4,
+   "verdict": "within"
+  },
+  {
+   "id": "mire-witch-heron",
+   "name": "Mire Witch-Heron",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    8
+   ],
+   "N": 34.31,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 56.8,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 65.6
+  },
+  {
+   "id": "marsh-gas-toad",
+   "name": "Marsh Gas Toad",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    11
+   ],
+   "N": 34.1,
+   "S": 5.2,
+   "m": 1,
+   "useWas": 59.2,
+   "verdict": "under",
+   "now": [
+    2,
+    13
+   ],
+   "useNow": 65.1
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    13
+   ],
+   "N": 41.85,
+   "S": 1,
+   "m": 1,
+   "useWas": 52.6,
+   "verdict": "under",
+   "now": [
+    5,
+    17
+   ],
+   "useNow": 66.9
+  },
+  {
+   "id": "cave-bat-swarm",
+   "name": "Cave Bat Swarm",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    2
+   ],
+   "N": 24.9,
+   "S": 7.82,
+   "m": 1.5,
+   "useWas": 83.3,
+   "verdict": "within"
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 23.46,
+   "S": 7.91,
+   "m": 1.5,
+   "useWas": 101.7,
+   "verdict": "over",
+   "now": [
+    1,
+    5
+   ],
+   "useNow": 95.4
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Golem",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    6,
+    26
+   ],
+   "N": 56.63,
+   "S": 8.07,
+   "m": 1,
+   "useWas": 81.4,
+   "verdict": "within"
+  },
+  {
+   "id": "glowworm-cluster",
+   "name": "Glowworm Cluster",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 29.55,
+   "S": 3.68,
+   "m": 1,
+   "useWas": 46.3,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    8,
+    28
+   ],
+   "N": 56.52,
+   "S": 7.2,
+   "m": 1,
+   "useWas": 90.6,
+   "verdict": "within"
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 39.27,
+   "S": 1,
+   "m": 1,
+   "useWas": 40.7,
+   "verdict": "under",
+   "now": [
+    7,
+    11
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 39.27,
+   "S": 5.6,
+   "m": 1.5,
+   "useWas": 71,
+   "verdict": "within"
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 38.85,
+   "S": 11.74,
+   "m": 1,
+   "useWas": 66.3,
+   "verdict": "within"
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    7
+   ],
+   "N": 29.97,
+   "S": 4.79,
+   "m": 1,
+   "useWas": 46,
+   "verdict": "under",
+   "now": [
+    2,
+    11
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    13
+   ],
+   "N": 50.32,
+   "S": 2,
+   "m": 1,
+   "useWas": 53.7,
+   "verdict": "under",
+   "now": [
+    8,
+    16
+   ],
+   "useNow": 67.6
+  },
+  {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 29.45,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 71.3,
+   "verdict": "within"
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    5,
+    17
+   ],
+   "N": 41.75,
+   "S": 9.08,
+   "m": 1,
+   "useWas": 86.4,
+   "verdict": "within"
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    0,
+    7
+   ],
+   "N": 31.83,
+   "S": 5.2,
+   "m": 1,
+   "useWas": 38.3,
+   "verdict": "under",
+   "now": [
+    0,
+    16
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 52.5,
+   "verdict": "under",
+   "now": [
+    1,
+    8
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "timber-wolf-pack",
+   "name": "Timber Wolf Pack Leader",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 34.1,
+   "S": 0,
+   "m": 1,
+   "useWas": 58.7,
+   "verdict": "under",
+   "now": [
+    4,
+    16
+   ],
+   "useNow": 70.4
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 22.84,
+   "S": 10.64,
+   "m": 1,
+   "useWas": 72.9,
+   "verdict": "within"
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 22.22,
+   "S": 1.37,
+   "m": 1.5,
+   "useWas": 63.3,
+   "verdict": "within"
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    9,
+    6
+   ],
+   "N": 34.51,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 77.6,
+   "verdict": "within"
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    0,
+    20
+   ],
+   "N": 34.93,
+   "S": 13.7,
+   "m": 1,
+   "useWas": 96.5,
+   "verdict": "within"
+  },
+  {
+   "id": "pelican-diver",
+   "name": "Pelican Diver",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 35.55,
+   "S": 2.54,
+   "m": 1.5,
+   "useWas": 74,
+   "verdict": "within"
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 23.66,
+   "S": 10.34,
+   "m": 1,
+   "useWas": 77.5,
+   "verdict": "within"
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 34.93,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 44.4,
+   "verdict": "under",
+   "now": [
+    5,
+    14
+   ],
+   "useNow": 70.1
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.22,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 44.1,
+   "verdict": "under",
+   "now": [
+    4,
+    5
+   ],
+   "useNow": 71.1
+  },
+  {
+   "id": "mangrove-kingfisher",
+   "name": "Mangrove Kingfisher",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    4
+   ],
+   "N": 30.28,
+   "S": 0,
+   "m": 2.25,
+   "useWas": 74.3,
+   "verdict": "within"
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 35.55,
+   "S": 6.26,
+   "m": 1,
+   "useWas": 62.6,
+   "verdict": "within"
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    13
+   ],
+   "N": 37.41,
+   "S": 5.4,
+   "m": 1,
+   "useWas": 65.2,
+   "verdict": "within"
+  },
+  {
+   "id": "war-drum-mandrill",
+   "name": "War-Drum Mandrill",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    4,
+    16
+   ],
+   "N": 41.33,
+   "S": 2.11,
+   "m": 1,
+   "useWas": 63.2,
+   "verdict": "within"
+  },
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    7
+   ],
+   "N": 36.58,
+   "S": 3.21,
+   "m": 1.5,
+   "useWas": 50.1,
+   "verdict": "under",
+   "now": [
+    2,
+    11
+   ],
+   "useNow": 74.7
+  },
+  {
+   "id": "feral-tuskboar",
+   "name": "Feral Tuskboar",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 37.82,
+   "S": 4.03,
+   "m": 1,
+   "useWas": 63.5,
+   "verdict": "within"
+  },
+  {
+   "id": "ravenous-wolverine",
+   "name": "Ravenous Wolverine",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    12
+   ],
+   "N": 31.93,
+   "S": 19.98,
+   "m": 1,
+   "useWas": 106.4,
+   "verdict": "over",
+   "now": [
+    1,
+    9
+   ],
+   "useNow": 97
+  },
+  {
+   "id": "trickster-fox",
+   "name": "Trickster Fox",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 29.66,
+   "S": 0,
+   "m": 1,
+   "useWas": 43.8,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 70.8
+  },
+  {
+   "id": "old-growth-tortoise",
+   "name": "Old-Growth Tortoise",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    20
+   ],
+   "N": 43.71,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 68.2,
+   "verdict": "within"
+  },
+  {
+   "id": "shimmerwing-stag",
+   "name": "Shimmerwing Stag",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    18
+   ],
+   "N": 45.57,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 79,
+   "verdict": "within"
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 22.84,
+   "S": 6.53,
+   "m": 1,
+   "useWas": 54.9,
+   "verdict": "under",
+   "now": [
+    2,
+    6
+   ],
+   "useNow": 72.4
+  },
+  {
+   "id": "reef-manta-glider",
+   "name": "Reef Manta Glider",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    4,
+    15
+   ],
+   "N": 39.27,
+   "S": 6.9,
+   "m": 1.5,
+   "useWas": 114.2,
+   "verdict": "over",
+   "now": [
+    3,
+    13
+   ],
+   "useNow": 98.9
+  },
+  {
+   "id": "narwhal-lancer",
+   "name": "Narwhal Lancer",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    7,
+    20
+   ],
+   "N": 39.47,
+   "S": 6.43,
+   "m": 1,
+   "useWas": 102.4,
+   "verdict": "over",
+   "now": [
+    7,
+    19
+   ],
+   "useNow": 99.9
+  },
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    8,
+    39
+   ],
+   "N": 62,
+   "S": 10.11,
+   "m": 1,
+   "useWas": 105,
+   "verdict": "over",
+   "now": [
+    7,
+    36
+   ],
+   "useNow": 97
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 27.38,
+   "S": 13.3,
+   "m": 1,
+   "useWas": 107,
+   "verdict": "over",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 99.7
+  },
+  {
+   "id": "sandstorm-roc",
+   "name": "Sandstorm Roc",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    18
+   ],
+   "N": 49.91,
+   "S": 10.89,
+   "m": 1,
+   "useWas": 81.9,
+   "verdict": "within"
+  },
+  {
+   "id": "frost-hare-sprinter",
+   "name": "Frost Hare Sprinter",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 25.11,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 41.8,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "name": "Glacier Wolf Pack",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    6,
+    16
+   ],
+   "N": 42.37,
+   "S": 5.4,
+   "m": 1,
+   "useWas": 78.8,
+   "verdict": "within"
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 22.84,
+   "S": 2,
+   "m": 1,
+   "useWas": 43.8,
+   "verdict": "under",
+   "now": [
+    2,
+    9
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    4,
+    26
+   ],
+   "N": 48.67,
+   "S": 8.22,
+   "m": 1,
+   "useWas": 86.7,
+   "verdict": "within"
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    3
+   ],
+   "N": 22.84,
+   "S": 3.18,
+   "m": 1,
+   "useWas": 53.3,
+   "verdict": "under",
+   "now": [
+    4,
+    4
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    8,
+    12
+   ],
+   "N": 36.17,
+   "S": 3.68,
+   "m": 1,
+   "useWas": 87.6,
+   "verdict": "within"
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 27.38,
+   "S": 1,
+   "m": 1,
+   "useWas": 54.8,
+   "verdict": "under",
+   "now": [
+    3,
+    13
+   ],
+   "useNow": 73
+  },
+  {
+   "id": "badger-trench-digger",
+   "name": "Badger Trench Digger",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    22
+   ],
+   "N": 47.22,
+   "S": 1,
+   "m": 1,
+   "useWas": 74.1,
+   "verdict": "within"
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 30.79,
+   "S": 1,
+   "m": 1,
+   "useWas": 32.5,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 71.5
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 26.35,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 85.6,
+   "verdict": "within"
+  },
+  {
+   "id": "cuttlefish-illusionist",
+   "name": "Cuttlefish Illusionist",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    8
+   ],
+   "N": 33.89,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 65.5,
+   "verdict": "within"
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    9,
+    31
+   ],
+   "N": 54.46,
+   "S": 7.14,
+   "m": 1,
+   "useWas": 103.1,
+   "verdict": "over",
+   "now": [
+    9,
+    29
+   ],
+   "useNow": 99.4
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "name": "Slowpoke Sentinel",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    8
+   ],
+   "N": 31.41,
+   "S": 5.48,
+   "m": 1,
+   "useWas": 49.3,
+   "verdict": "under",
+   "now": [
+    2,
+    12
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "canopy-sloth-guardian",
+   "name": "Canopy Sloth Guardian",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    3,
+    30
+   ],
+   "N": 49.08,
+   "S": 1,
+   "m": 1,
+   "useWas": 75.4,
+   "verdict": "within"
+  },
+  {
+   "id": "duckling-squadron",
+   "name": "Duckling Squadron",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 26.76,
+   "S": 5.14,
+   "m": 1.5,
+   "useWas": 62.4,
+   "verdict": "within"
+  },
+  {
+   "id": "migration-leader",
+   "name": "Migration Leader",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 33.89,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 70.8,
+   "verdict": "within"
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    5,
+    20
+   ],
+   "N": 38.44,
+   "S": 5.48,
+   "m": 1,
+   "useWas": 92.3,
+   "verdict": "within"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 33.07,
+   "S": 3.68,
+   "m": 1.5,
+   "useWas": 43.9,
+   "verdict": "under",
+   "now": [
+    2,
+    7
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 33.07,
+   "S": 1,
+   "m": 1,
+   "useWas": 51.4,
+   "verdict": "under",
+   "now": [
+    3,
+    15
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 21.8,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 66.7,
+   "verdict": "within"
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    14
+   ],
+   "N": 34.51,
+   "S": 6.26,
+   "m": 1,
+   "useWas": 70.3,
+   "verdict": "within"
+  },
+  {
+   "id": "pack-rat-looter",
+   "name": "Pack Rat Looter",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 28.83,
+   "S": 1.37,
+   "m": 1,
+   "useWas": 53.3,
+   "verdict": "under",
+   "now": [
+    3,
+    13
+   ],
+   "useNow": 70.7
+  },
+  {
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 33.48,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 79.7,
+   "verdict": "within"
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 29.45,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 73.2,
+   "verdict": "within"
+  },
+  {
+   "id": "shrine-bell-ringer",
+   "name": "Shrine Bell-Ringer",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 37.2,
+   "S": 4.23,
+   "m": 1,
+   "useWas": 59.8,
+   "verdict": "under",
+   "now": [
+    3,
+    14
+   ],
+   "useNow": 65.1
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 32.55,
+   "S": 0,
+   "m": 1,
+   "useWas": 46.1,
+   "verdict": "under",
+   "now": [
+    5,
+    14
+   ],
+   "useNow": 73.7
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Titan",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    6,
+    26
+   ],
+   "N": 56.32,
+   "S": 3.86,
+   "m": 1,
+   "useWas": 74.3,
+   "verdict": "within"
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    3,
+    14
+   ],
+   "N": 42.37,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 70.8,
+   "verdict": "within"
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    20
+   ],
+   "N": 37.2,
+   "S": 0.05,
+   "m": 1,
+   "useWas": 64.7,
+   "verdict": "within"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    7,
+    16
+   ],
+   "N": 56.52,
+   "S": 2,
+   "m": 1,
+   "useWas": 56.6,
+   "verdict": "under",
+   "now": [
+    8,
+    19
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    7
+   ],
+   "N": 29.45,
+   "S": 3.68,
+   "m": 1.5,
+   "useWas": 74.8,
+   "verdict": "within"
+  },
+  {
+   "id": "coral-current-eel",
+   "name": "Coral Current Eel",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 29.45,
+   "S": 9.05,
+   "m": 1,
+   "useWas": 71.5,
+   "verdict": "within"
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "name": "Frost Thistle Lynx",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    5,
+    12
+   ],
+   "N": 41.75,
+   "S": 5.4,
+   "m": 1,
+   "useWas": 65.6,
+   "verdict": "within"
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 30.07,
+   "S": 8.49,
+   "m": 1,
+   "useWas": 68.1,
+   "verdict": "within"
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 28,
+   "S": 5.22,
+   "m": 1.5,
+   "useWas": 81.5,
+   "verdict": "within"
+  },
+  {
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 3,
+   "was": [
+    4,
+    16
+   ],
+   "N": 48.98,
+   "S": 7.49,
+   "m": 1,
+   "useWas": 64.3,
+   "verdict": "within"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    3,
+    7
+   ],
+   "N": 33.17,
+   "S": 7.84,
+   "m": 1.5,
+   "useWas": 94.2,
+   "verdict": "within"
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    3,
+    10
+   ],
+   "N": 34.2,
+   "S": 11.39,
+   "m": 1,
+   "useWas": 80.1,
+   "verdict": "within"
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    4,
+    6
+   ],
+   "N": 35.86,
+   "S": 3.04,
+   "m": 1.5,
+   "useWas": 71.3,
+   "verdict": "within"
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 3,
+   "was": [
+    1,
+    18
+   ],
+   "N": 45.05,
+   "S": 17.69,
+   "m": 1,
+   "useWas": 83.7,
+   "verdict": "within"
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    3,
+    20
+   ],
+   "N": 53.63,
+   "S": 6.6,
+   "m": 1,
+   "useWas": 60.8,
+   "verdict": "within"
+  },
+  {
+   "id": "king-maker",
+   "name": "King Maker",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    11
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 1,
+   "useWas": 50.2,
+   "verdict": "under",
+   "now": [
+    5,
+    15
+   ],
+   "useNow": 66.1
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    9
+   ],
+   "N": 30.59,
+   "S": 2,
+   "m": 1,
+   "useWas": 49,
+   "verdict": "under",
+   "now": [
+    3,
+    12
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    9
+   ],
+   "N": 22.22,
+   "S": 1,
+   "m": 1,
+   "useWas": 54,
+   "verdict": "under",
+   "now": [
+    1,
+    12
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    9
+   ],
+   "N": 32.45,
+   "S": 0.2,
+   "m": 1,
+   "useWas": 40.7,
+   "verdict": "under",
+   "now": [
+    3,
+    15
+   ],
+   "useNow": 65.3
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    13
+   ],
+   "N": 30.79,
+   "S": 3.13,
+   "m": 1,
+   "useWas": 58.9,
+   "verdict": "under",
+   "now": [
+    1,
+    15
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    12
+   ],
+   "N": 29.55,
+   "S": 10.68,
+   "m": 1,
+   "useWas": 83.5,
+   "verdict": "within"
+  },
+  {
+   "id": "glasswing-moth",
+   "name": "Glasswing Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 25.52,
+   "S": 2.28,
+   "m": 1,
+   "useWas": 48.1,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    7
+   ],
+   "N": 29.76,
+   "S": 9.57,
+   "m": 1,
+   "useWas": 62.4,
+   "verdict": "within"
+  },
+  {
+   "id": "frostmoon-howler",
+   "name": "Frostmoon Howler",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    9
+   ],
+   "N": 34.1,
+   "S": 2.5,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    3,
+    14
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "chapel-tortoise",
+   "name": "Chapel Tortoise",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    18
+   ],
+   "N": 33.89,
+   "S": 3.74,
+   "m": 1,
+   "useWas": 70.1,
+   "verdict": "within"
+  },
+  {
+   "id": "weathervane-swift",
+   "name": "Weathervane Swift",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 39.68,
+   "S": 0,
+   "m": 1,
+   "useWas": 42.8,
+   "verdict": "under",
+   "now": [
+    6,
+    14
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 24.1,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 38.5,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 34.1,
+   "S": 2,
+   "m": 1,
+   "useWas": 41.1,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 28.9,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 79.4
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    3
+   ],
+   "N": 20.77,
+   "S": 1.5,
+   "m": 1.5,
+   "useWas": 32.5,
+   "verdict": "under",
+   "now": [
+    0,
+    8
+   ],
+   "useNow": 68.6
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "starter",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 27.49,
+   "S": 3.13,
+   "m": 1.5,
+   "useWas": 55.3,
+   "verdict": "under",
+   "now": [
+    3,
+    4
+   ],
+   "useNow": 71.7
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 20.77,
+   "S": 15.36,
+   "m": 1,
+   "useWas": 98,
+   "verdict": "within"
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    5,
+    7
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1,
+   "useWas": 48.4,
+   "verdict": "under",
+   "now": [
+    7,
+    9
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 19.3,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 19.3,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 33.7,
+   "verdict": "under",
+   "now": [
+    4,
+    6
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "rarity": "starter",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 27.49,
+   "S": 0,
+   "m": 1,
+   "useWas": 40,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 14.4,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 33.7,
+   "verdict": "under",
+   "now": [
+    4,
+    6
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "rarity": "starter",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 27.49,
+   "S": 0,
+   "m": 1,
+   "useWas": 40,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    1
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 24.1,
+   "verdict": "under",
+   "now": [
+    6,
+    3
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    1
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 33.7,
+   "verdict": "under",
+   "now": [
+    6,
+    2
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "rarity": "starter",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    7
+   ],
+   "N": 27.49,
+   "S": 0,
+   "m": 1,
+   "useWas": 47.3,
+   "verdict": "under",
+   "now": [
+    4,
+    10
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 28.9,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    2
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 28.9,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Fledgling",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 53.7,
+   "verdict": "under",
+   "now": [
+    2,
+    3
+   ],
+   "useNow": 75.3
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    1
+   ],
+   "N": 20.77,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 60.9,
+   "verdict": "within"
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    4
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 28.9,
+   "verdict": "under",
+   "now": [
+    0,
+    10
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 37.3,
+   "S": 0,
+   "m": 2.25,
+   "useWas": 42.2,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 20.77,
+   "S": 4.54,
+   "m": 1.5,
+   "useWas": 68.9,
+   "verdict": "within"
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 29.55,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 35.5,
+   "verdict": "under",
+   "now": [
+    4,
+    5
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 29.55,
+   "S": 2.99,
+   "m": 1.5,
+   "useWas": 55.8,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 71
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "rarity": "starter",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    2
+   ],
+   "N": 27.49,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 51.5,
+   "verdict": "under",
+   "now": [
+    3,
+    3
+   ],
+   "useNow": 67.8
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "rarity": "starter",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 27.49,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 51.5,
+   "verdict": "under",
+   "now": [
+    2,
+    6
+   ],
+   "useNow": 73.3
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Dominion Nestguard",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    4
+   ],
+   "N": 34.1,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 52.8,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    7,
+    14
+   ],
+   "N": 41.54,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 74.1,
+   "verdict": "within"
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 36.17,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 49.8,
+   "verdict": "under",
+   "now": [
+    4,
+    8
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 33.07,
+   "S": 9.26,
+   "m": 1,
+   "useWas": 76.4,
+   "verdict": "within"
+  },
+  {
+   "id": "bramblewood-bonebreaker",
+   "name": "Bonebreaker",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    12
+   ],
+   "N": 50.32,
+   "S": 4.39,
+   "m": 1,
+   "useWas": 56.4,
+   "verdict": "under",
+   "now": [
+    7,
+    15
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "wandering-traveller",
+   "name": "Wandering Traveller",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    3
+   ],
+   "N": 23.87,
+   "S": 0,
+   "m": 1,
+   "useWas": 37.7,
+   "verdict": "under",
+   "now": [
+    6,
+    6
+   ],
+   "useNow": 75.4
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    10,
+    44
+   ],
+   "N": 97.13,
+   "S": 7.54,
+   "m": 1.5,
+   "useWas": 110.5,
+   "verdict": "over",
+   "now": [
+    9,
+    39
+   ],
+   "useNow": 99.7
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    10,
+    44
+   ],
+   "N": 97.13,
+   "S": 10.87,
+   "m": 1.5,
+   "useWas": 115.6,
+   "verdict": "over",
+   "now": [
+    8,
+    37
+   ],
+   "useNow": 98.6
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    10,
+    44
+   ],
+   "N": 97.13,
+   "S": 7.3,
+   "m": 1.5,
+   "useWas": 110.1,
+   "verdict": "over",
+   "now": [
+    9,
+    39
+   ],
+   "useNow": 99.3
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    10,
+    50
+   ],
+   "N": 97.13,
+   "S": 10.89,
+   "m": 1.5,
+   "useWas": 124.9,
+   "verdict": "over",
+   "now": [
+    7,
+    37
+   ],
+   "useNow": 95.6
+  },
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    10,
+    50
+   ],
+   "N": 97.13,
+   "S": 8.62,
+   "m": 1.5,
+   "useWas": 121.4,
+   "verdict": "over",
+   "now": [
+    8,
+    40
+   ],
+   "useNow": 99.8
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 19.3,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    4
+   ],
+   "N": 20.77,
+   "S": 2.74,
+   "m": 1,
+   "useWas": 32.5,
+   "verdict": "under",
+   "now": [
+    0,
+    11
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "hedgehog-scout",
+   "name": "Hedgehog Scout",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 22.01,
+   "S": 1,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 72.7
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    3
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 23.04,
+   "S": 2.74,
+   "m": 1,
+   "useWas": 46.6,
+   "verdict": "under",
+   "now": [
+    3,
+    7
+   ],
+   "useNow": 68.3
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 2.7,
+   "m": 1.5,
+   "useWas": 48.4,
+   "verdict": "under",
+   "now": [
+    2,
+    3
+   ],
+   "useNow": 70.1
+  },
+  {
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    1
+   ],
+   "N": 21.8,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 34.4,
+   "verdict": "under",
+   "now": [
+    4,
+    2
+   ],
+   "useNow": 68.8
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    4
+   ],
+   "N": 28.73,
+   "S": 2.74,
+   "m": 1,
+   "useWas": 44.3,
+   "verdict": "under",
+   "now": [
+    5,
+    6
+   ],
+   "useNow": 65.2
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    4
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 19.3,
+   "verdict": "under",
+   "now": [
+    0,
+    14
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.77,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 32.7,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 23.66,
+   "S": 5.92,
+   "m": 1,
+   "useWas": 58.8,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 71.5
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    4
+   ],
+   "N": 28.52,
+   "S": 1,
+   "m": 1,
+   "useWas": 38.6,
+   "verdict": "under",
+   "now": [
+    6,
+    7
+   ],
+   "useNow": 70.1
+  },
+  {
+   "id": "courier-pigeon",
+   "name": "Courier Pigeon",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 21.8,
+   "S": 5.12,
+   "m": 1.5,
+   "useWas": 62.8,
+   "verdict": "within"
+  },
+  {
+   "id": "echo-keeper",
+   "name": "Echo Keeper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 23.04,
+   "S": 0,
+   "m": 1,
+   "useWas": 43.4,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 65.1
+  },
+  {
+   "id": "marsh-wisp",
+   "name": "Marsh Wisp",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 29.76,
+   "S": 0,
+   "m": 1,
+   "useWas": 26.9,
+   "verdict": "under",
+   "now": [
+    5,
+    10
+   ],
+   "useNow": 67.2
+  },
+  {
+   "id": "bog-revenant",
+   "name": "Bog Revenant",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 36.37,
+   "S": 0,
+   "m": 1,
+   "useWas": 41.2,
+   "verdict": "under",
+   "now": [
+    7,
+    11
+   ],
+   "useNow": 68.7
+  },
+  {
+   "id": "the-unremembered",
+   "name": "The Unremembered",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 36.37,
+   "S": 0,
+   "m": 1,
+   "useWas": 33,
+   "verdict": "under",
+   "now": [
+    6,
+    12
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "cinder-imp",
+   "name": "Cinder Imp",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 25.73,
+   "S": 0,
+   "m": 1,
+   "useWas": 27.2,
+   "verdict": "under",
+   "now": [
+    5,
+    7
+   ],
+   "useNow": 66.1
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 25.73,
+   "S": 0,
+   "m": 1,
+   "useWas": 19.4,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 73.8
+  },
+  {
+   "id": "pit-glutton",
+   "name": "Pit Glutton",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 39.06,
+   "S": 1,
+   "m": 1,
+   "useWas": 41,
+   "verdict": "under",
+   "now": [
+    5,
+    15
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "brimstone-hound",
+   "name": "Brimstone Hound",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    3
+   ],
+   "N": 33.48,
+   "S": 4.1,
+   "m": 1,
+   "useWas": 39.1,
+   "verdict": "under",
+   "now": [
+    6,
+    6
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "blackmass-acolyte",
+   "name": "Blackmass Acolyte",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 33.48,
+   "S": 9.41,
+   "m": 1,
+   "useWas": 52,
+   "verdict": "under",
+   "now": [
+    2,
+    9
+   ],
+   "useNow": 66.9
+  },
+  {
+   "id": "dread-bell",
+   "name": "Dread Bell",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    10
+   ],
+   "N": 26.76,
+   "S": 1.89,
+   "m": 1,
+   "useWas": 44.4,
+   "verdict": "under",
+   "now": [
+    0,
+    16
+   ],
+   "useNow": 66.9
+  },
+  {
+   "id": "tithe-collector",
+   "name": "Tithe Collector",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    5,
+    8
+   ],
+   "N": 33.48,
+   "S": 0,
+   "m": 1,
+   "useWas": 53.8,
+   "verdict": "under",
+   "now": [
+    6,
+    10
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "lurking-dread",
+   "name": "Lurking Dread",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 39.06,
+   "S": 5.48,
+   "m": 1,
+   "useWas": 49.9,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 65.2
+  },
+  {
+   "id": "puppeteer-imp",
+   "name": "Puppeteer Imp",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 34.51,
+   "S": 6,
+   "m": 1,
+   "useWas": 46.4,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 72.4
+  },
+  {
+   "id": "the-sixfold",
+   "name": "The Sixfold",
+   "rarity": "epic",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    9,
+    22
+   ],
+   "N": 49.5,
+   "S": 1,
+   "m": 1,
+   "useWas": 82.8,
+   "verdict": "within"
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 22.84,
+   "S": 10.34,
+   "m": 1,
+   "useWas": 80.3,
+   "verdict": "within"
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    2
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 28.9,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 72.2
+  },
+  {
+   "id": "chapel-sparrow",
+   "name": "Chapel Sparrow",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.01,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 54.5,
+   "verdict": "under",
+   "now": [
+    3,
+    4
+   ],
+   "useNow": 75
+  },
+  {
+   "id": "candle-moth",
+   "name": "Candle Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 24.08,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 43.6,
+   "verdict": "under",
+   "now": [
+    2,
+    6
+   ],
+   "useNow": 68.5
+  },
+  {
+   "id": "hymn-wren",
+   "name": "Hymn Wren",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 24.08,
+   "S": 0,
+   "m": 1,
+   "useWas": 37.4,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 70.6
+  },
+  {
+   "id": "abbey-goose",
+   "name": "Abbey Goose",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 31.83,
+   "S": 11.28,
+   "m": 1,
+   "useWas": 70,
+   "verdict": "within"
+  },
+  {
+   "id": "golden-magpie",
+   "name": "Golden Magpie",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 25.11,
+   "S": 2,
+   "m": 1.5,
+   "useWas": 65.7,
+   "verdict": "within"
+  },
+  {
+   "id": "friar-badger",
+   "name": "Friar Badger",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    10
+   ],
+   "N": 31.83,
+   "S": 5.21,
+   "m": 1,
+   "useWas": 66.6,
+   "verdict": "within"
+  },
+  {
+   "id": "storm-heron",
+   "name": "Storm Heron",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    7
+   ],
+   "N": 32.86,
+   "S": 2,
+   "m": 1,
+   "useWas": 45.6,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 70
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    9
+   ],
+   "N": 32.86,
+   "S": 12.63,
+   "m": 1,
+   "useWas": 84.1,
+   "verdict": "within"
+  },
+  {
+   "id": "cathedral-eagle",
+   "name": "Cathedral Eagle",
+   "rarity": "legendary",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    4,
+    12
+   ],
+   "N": 41.13,
+   "S": 4.23,
+   "m": 1.5,
+   "useWas": 88.4,
+   "verdict": "within"
+  },
+  {
+   "id": "missingno",
+   "name": "MissingNo.",
+   "rarity": "unique",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    13
+   ],
+   "N": 33.38,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 85.4,
+   "verdict": "within"
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "rarity": "epic",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    9,
+    26
+   ],
+   "N": 58.59,
+   "S": 16.02,
+   "m": 1,
+   "useWas": 102.4,
+   "verdict": "over",
+   "now": [
+    8,
+    24
+   ],
+   "useNow": 95.6
+  },
+  {
+   "id": "weredog",
+   "name": "Weredog",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 36.17,
+   "S": 3.92,
+   "m": 1,
+   "useWas": 52.3,
+   "verdict": "under",
+   "now": [
+    5,
+    10
+   ],
+   "useNow": 66.1
+  },
+  {
+   "id": "parish-sergeant",
+   "name": "Parish Sergeant",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 35.13,
+   "S": 1,
+   "m": 1,
+   "useWas": 39.9,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "land-tiller",
+   "name": "Land Tiller",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 22.84,
+   "S": 1,
+   "m": 1,
+   "useWas": 35,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "village-miller",
+   "name": "Village Miller",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 22.84,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 37.2,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 67.9
+  },
+  {
+   "id": "night-watchman",
+   "name": "Night Watchman",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.84,
+   "S": 2.99,
+   "m": 1.5,
+   "useWas": 65.6,
+   "verdict": "within"
+  },
+  {
+   "id": "otter-ferryman",
+   "name": "Otter Ferryman",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 29.55,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 46.7,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 70.4
+  },
+  {
+   "id": "otter-netmender",
+   "name": "Otter Netmender",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 22.84,
+   "S": 2.74,
+   "m": 1,
+   "useWas": 47,
+   "verdict": "under",
+   "now": [
+    3,
+    7
+   ],
+   "useNow": 68.9
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 22.84,
+   "S": 4.24,
+   "m": 1.5,
+   "useWas": 60.7,
+   "verdict": "within"
+  },
+  {
+   "id": "dawn-bellringer",
+   "name": "Dawn Bellringer",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    3
+   ],
+   "N": 28.42,
+   "S": 4.37,
+   "m": 1.5,
+   "useWas": 60,
+   "verdict": "within"
+  },
+  {
+   "id": "shieldbearer-hound",
+   "name": "Shieldbearer Hound",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    5
+   ],
+   "N": 49.29,
+   "S": 0,
+   "m": 1,
+   "useWas": 18.3,
+   "verdict": "under",
+   "now": [
+    7,
+    19
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 38.23,
+   "S": 3.58,
+   "m": 1,
+   "useWas": 48.6,
+   "verdict": "under",
+   "now": [
+    5,
+    14
+   ],
+   "useNow": 72.1
+  },
+  {
+   "id": "two-headed-calf",
+   "name": "Two-Headed Calf",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 37.82,
+   "S": 5.14,
+   "m": 1,
+   "useWas": 55.9,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "upside-down-bat",
+   "name": "Upside-Down Bat",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 25.52,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 43.7,
+   "verdict": "under",
+   "now": [
+    2,
+    4
+   ],
+   "useNow": 67.2
+  },
+  {
+   "id": "teatime-toad",
+   "name": "Teatime Toad",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    10
+   ],
+   "N": 32.24,
+   "S": 6.2,
+   "m": 1,
+   "useWas": 56.5,
+   "verdict": "under",
+   "now": [
+    1,
+    13
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "mirror-moth",
+   "name": "Mirror Moth",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 2.25,
+   "useWas": 71.4,
+   "verdict": "within"
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 0,
+   "was": [
+    0,
+    8
+   ],
+   "N": 39.99,
+   "S": 12.98,
+   "m": 1,
+   "useWas": 52.5,
+   "verdict": "under",
+   "now": [
+    0,
+    14
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "glass-golem",
+   "name": "Glass Golem",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    8,
+    5
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 1,
+   "useWas": 55.5,
+   "verdict": "under",
+   "now": [
+    10,
+    6
+   ],
+   "useNow": 68.7
+  },
+  {
+   "id": "wrong-way-salmon",
+   "name": "Wrong-Way Salmon",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 25.52,
+   "S": 6.37,
+   "m": 1,
+   "useWas": 44.6,
+   "verdict": "under",
+   "now": [
+    2,
+    7
+   ],
+   "useNow": 68.1
+  },
+  {
+   "id": "inside-out-hedgehog",
+   "name": "Inside-Out Hedgehog",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 25.52,
+   "S": 6.48,
+   "m": 1,
+   "useWas": 41.1,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 68.5
+  },
+  {
+   "id": "talon-archer",
+   "name": "Talon Archer",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    5
+   ],
+   "N": 38.23,
+   "S": 5.43,
+   "m": 1.5,
+   "useWas": 48.8,
+   "verdict": "under",
+   "now": [
+    2,
+    8
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "sergeant-bramblefox",
+   "name": "Sergeant Bramblefox",
+   "rarity": "heroic",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 32.55,
+   "S": 0,
+   "m": 1,
+   "useWas": 49.2,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 70.7
+  },
+  {
+   "id": "thistle-baron",
+   "name": "The Thistle Baron",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    18
+   ],
+   "N": 47.22,
+   "S": 2,
+   "m": 1,
+   "useWas": 55.1,
+   "verdict": "under",
+   "now": [
+    4,
+    21
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "old-shell",
+   "name": "The Old Shell",
+   "rarity": "heroic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    3,
+    30
+   ],
+   "N": 56.21,
+   "S": 11.01,
+   "m": 1,
+   "useWas": 83.6,
+   "verdict": "within"
+  },
+  {
+   "id": "drowned-matriarch",
+   "name": "The Drowned Matriarch",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    20
+   ],
+   "N": 47.84,
+   "S": 7.93,
+   "m": 1,
+   "useWas": 70.9,
+   "verdict": "within"
+  },
+  {
+   "id": "yeti-chieftain",
+   "name": "Yeti Chieftain",
+   "rarity": "heroic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    6,
+    24
+   ],
+   "N": 59.73,
+   "S": 1,
+   "m": 1,
+   "useWas": 61.9,
+   "verdict": "within"
+  },
+  {
+   "id": "echo-matriarch",
+   "name": "Echo Matriarch",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 48.67,
+   "S": 5.04,
+   "m": 1.5,
+   "useWas": 77.2,
+   "verdict": "within"
+  },
+  {
+   "id": "pride-queen",
+   "name": "Pride Queen",
+   "rarity": "heroic",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    14
+   ],
+   "N": 42.16,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 70.1,
+   "verdict": "within"
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "name": "Wolfsbane Alpha",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    18
+   ],
+   "N": 50.53,
+   "S": 8.08,
+   "m": 1,
+   "useWas": 71.4,
+   "verdict": "within"
+  },
+  {
+   "id": "reef-admiral",
+   "name": "Reef Admiral",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    16
+   ],
+   "N": 49.08,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 81.9,
+   "verdict": "within"
+  },
+  {
+   "id": "heron-hag",
+   "name": "The Heron Hag",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 48.26,
+   "S": 6.26,
+   "m": 1.5,
+   "useWas": 81.6,
+   "verdict": "within"
+  },
+  {
+   "id": "shell-cracker",
+   "name": "Shell-Cracker",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1,
+   "useWas": 39.4,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "rivergate-recruit",
+   "name": "Rivergate Recruit",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    9
+   ],
+   "N": 29.55,
+   "S": 0,
+   "m": 1,
+   "useWas": 44,
+   "verdict": "under",
+   "now": [
+    3,
+    14
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "riverstone-slinger",
+   "name": "Riverstone Slinger",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    6
+   ],
+   "N": 30.59,
+   "S": 1,
+   "m": 1,
+   "useWas": 42.5,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "net-thrower",
+   "name": "Net Thrower",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 35.13,
+   "S": 1,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    6,
+    10
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "optio-of-the-ford",
+   "name": "Optio of the Ford",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 36.17,
+   "S": 1,
+   "m": 1,
+   "useWas": 58.1,
+   "verdict": "under",
+   "now": [
+    5,
+    14
+   ],
+   "useNow": 69.1
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    8,
+    26
+   ],
+   "N": 52.39,
+   "S": 19.1,
+   "m": 1,
+   "useWas": 116.6,
+   "verdict": "over",
+   "now": [
+    6,
+    21
+   ],
+   "useNow": 99.4
+  },
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 22.84,
+   "S": 5.12,
+   "m": 1.5,
+   "useWas": 66.5,
+   "verdict": "within"
+  },
+  {
+   "id": "petal-fletcher",
+   "name": "Petal Fletcher",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 22.84,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 26.3,
+   "verdict": "under",
+   "now": [
+    3,
+    3
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "nectar-sipper",
+   "name": "Nectar Sipper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    2
+   ],
+   "N": 22.84,
+   "S": 3.1,
+   "m": 1.5,
+   "useWas": 59.8,
+   "verdict": "under",
+   "now": [
+    3,
+    3
+   ],
+   "useNow": 79.5
+  },
+  {
+   "id": "sunfeather-scout",
+   "name": "Sunfeather Scout",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 29.55,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 40.6,
+   "verdict": "under",
+   "now": [
+    2,
+    8
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "lantern-bearer",
+   "name": "Lantern Bearer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 30.59,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 44.1,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 68.6
+  },
+  {
+   "id": "hush-wing-spy",
+   "name": "Hush-Wing Spy",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    4,
+    5
+   ],
+   "N": 30.59,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 68.6,
+   "verdict": "within"
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 31.62,
+   "S": 7.55,
+   "m": 2.25,
+   "useWas": 110.7,
+   "verdict": "over",
+   "now": [
+    1,
+    4
+   ],
+   "useNow": 96.4
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "rarity": "veryrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 44.95,
+   "S": 4.37,
+   "m": 1.5,
+   "useWas": 48,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 68
+  },
+  {
+   "id": "ferry-toll-frog",
+   "name": "Ferry Toll-Frog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.84,
+   "S": 4.16,
+   "m": 1,
+   "useWas": 57.6,
+   "verdict": "under",
+   "now": [
+    3,
+    6
+   ],
+   "useNow": 70.8
+  },
+  {
+   "id": "riverside-peddler",
+   "name": "Riverside Peddler",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.84,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 41.6,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 67.9
+  },
+  {
+   "id": "ford-kingfisher",
+   "name": "Ford Kingfisher",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    4
+   ],
+   "N": 28.42,
+   "S": 4.8,
+   "m": 1.5,
+   "useWas": 78.1,
+   "verdict": "within"
+  },
+  {
+   "id": "truce-heron",
+   "name": "Truce Heron",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 43.92,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 71.7,
+   "verdict": "within"
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "rarity": "legendary",
+   "wait": 4,
+   "cost": 1,
+   "was": [
+    6,
+    40
+   ],
+   "N": 68.72,
+   "S": 10.3,
+   "m": 1,
+   "useWas": 90.7,
+   "verdict": "within"
+  },
+  {
+   "id": "puddle-changeling",
+   "name": "Puddle Changeling",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.84,
+   "S": 1,
+   "m": 1,
+   "useWas": 35,
+   "verdict": "under",
+   "now": [
+    4,
+    6
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "hedge-changeling",
+   "name": "Hedge Changeling",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 30.59,
+   "S": 0,
+   "m": 1,
+   "useWas": 36,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "glass-changeling",
+   "name": "Glass Changeling",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 55.5,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "willow-o-wisp",
+   "name": "Willow-o'-Wisp",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.34,
+   "S": 7.39,
+   "m": 1,
+   "useWas": 60.5,
+   "verdict": "within"
+  },
+  {
+   "id": "cinder-stoker",
+   "name": "Cinder Stoker",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    13
+   ],
+   "N": 25.73,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 60.2,
+   "verdict": "within"
+  },
+  {
+   "id": "pack-mule",
+   "name": "Pack Mule",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    11
+   ],
+   "N": 25.94,
+   "S": 0.5,
+   "m": 1,
+   "useWas": 52,
+   "verdict": "under",
+   "now": [
+    1,
+    15
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    19
+   ],
+   "N": 36.17,
+   "S": 3,
+   "m": 1,
+   "useWas": 71.9,
+   "verdict": "within"
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    10
+   ],
+   "N": 29.55,
+   "S": 8.17,
+   "m": 1,
+   "useWas": 68.3,
+   "verdict": "within"
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 35.13,
+   "S": 4.95,
+   "m": 1,
+   "useWas": 56.8,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    6,
+    14
+   ],
+   "N": 42.88,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 67.1,
+   "verdict": "within"
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    8,
+    34
+   ],
+   "N": 58.07,
+   "S": 13.19,
+   "m": 1,
+   "useWas": 108.8,
+   "verdict": "over",
+   "now": [
+    7,
+    30
+   ],
+   "useNow": 98.5
+  },
+  {
+   "id": "irradiated-axolotl",
+   "name": "Irradiated Axolotl",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 36.79,
+   "S": 1,
+   "m": 1,
+   "useWas": 51.6,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 65.2
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    7,
+    22
+   ],
+   "N": 45.57,
+   "S": 6.26,
+   "m": 1,
+   "useWas": 92.7,
+   "verdict": "within"
+  },
+  {
+   "id": "irradiated-couatl",
+   "name": "Irradiated Couatl",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    8,
+    24
+   ],
+   "N": 61.17,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 98.1,
+   "verdict": "within"
+  },
+  {
+   "id": "heartwood-treant",
+   "name": "Heartwood Treant",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    14
+   ],
+   "N": 49.29,
+   "S": 3.29,
+   "m": 1,
+   "useWas": 43.2,
+   "verdict": "under",
+   "now": [
+    3,
+    23
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "quarry-troll",
+   "name": "Quarry Troll",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    16
+   ],
+   "N": 43.92,
+   "S": 5.12,
+   "m": 1,
+   "useWas": 66.3,
+   "verdict": "within"
+  },
+  {
+   "id": "iron-warden",
+   "name": "Iron Warden",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    4,
+    18
+   ],
+   "N": 59.73,
+   "S": 0,
+   "m": 1,
+   "useWas": 43.5,
+   "verdict": "under",
+   "now": [
+    6,
+    27
+   ],
+   "useNow": 65.3
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 35.13,
+   "S": 5.45,
+   "m": 1,
+   "useWas": 55.4,
+   "verdict": "under",
+   "now": [
+    3,
+    13
+   ],
+   "useNow": 69.6
+  },
+  {
+   "id": "ore-smelter-mole",
+   "name": "Ore-Smelter Mole",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 35.13,
+   "S": 10.26,
+   "m": 1,
+   "useWas": 80.4,
+   "verdict": "within"
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "name": "Sworn Shieldbearer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    13
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1,
+   "useWas": 54.1,
+   "verdict": "under",
+   "now": [
+    4,
+    15
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "crown-pretender",
+   "name": "Crown Pretender",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1,
+   "useWas": 51.2,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    6,
+    19
+   ],
+   "N": 34.1,
+   "S": 2,
+   "m": 1,
+   "useWas": 96.8,
+   "verdict": "within"
+  },
+  {
+   "id": "rainmaker-frog",
+   "name": "Rainmaker Frog",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 35.13,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 64.9,
+   "verdict": "within"
+  },
+  {
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    6
+   ],
+   "N": 30.59,
+   "S": 2,
+   "m": 1,
+   "useWas": 45.8,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 68.6
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 30.59,
+   "S": 8,
+   "m": 1,
+   "useWas": 65.4,
+   "verdict": "within"
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    16
+   ],
+   "N": 43.92,
+   "S": 12,
+   "m": 1,
+   "useWas": 82,
+   "verdict": "within"
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "name": "Frostbitten Wolverine",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    13
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1,
+   "useWas": 54.1,
+   "verdict": "under",
+   "now": [
+    4,
+    15
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    4
+   ],
+   "N": 35.34,
+   "S": 5.97,
+   "m": 1.5,
+   "useWas": 67.8,
+   "verdict": "within"
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "legendary",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    6,
+    36
+   ],
+   "N": 36.79,
+   "S": 19.03,
+   "m": 1,
+   "useWas": 182.2,
+   "verdict": "owner",
+   "why": "fitting it needs 2/13 (×0.37): its 0 Lumber / Wait 1 at legendary (N 36.79) is too little for its skills (S 19.03); a cost change, not a stat cut"
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "rarity": "unique",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    6,
+    17
+   ],
+   "N": 52.18,
+   "S": 12.6,
+   "m": 1,
+   "useWas": 79.7,
+   "verdict": "within"
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 32.65,
+   "S": 0,
+   "m": 1,
+   "useWas": 27.6,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 30.48,
+   "S": 5.37,
+   "m": 1,
+   "useWas": 53.7,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 66.8
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    9
+   ],
+   "N": 38.23,
+   "S": 2,
+   "m": 1.5,
+   "useWas": 51,
+   "verdict": "under",
+   "now": [
+    1,
+    13
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    13
+   ],
+   "N": 39.27,
+   "S": 5.66,
+   "m": 1,
+   "useWas": 62.8,
+   "verdict": "within"
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    18
+   ],
+   "N": 47.02,
+   "S": 11.68,
+   "m": 1,
+   "useWas": 75.9,
+   "verdict": "within"
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "rarity": "epic",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    7,
+    22
+   ],
+   "N": 47.53,
+   "S": 10.85,
+   "m": 1,
+   "useWas": 98.6,
+   "verdict": "within"
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "name": "Meerkat Wayfarer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 29.55,
+   "S": 3.16,
+   "m": 1,
+   "useWas": 41.2,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 47.7,
+   "verdict": "under",
+   "now": [
+    3,
+    4
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "marching-elephant",
+   "name": "Marching Elephant",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    3,
+    30
+   ],
+   "N": 56.42,
+   "S": 3.02,
+   "m": 1,
+   "useWas": 69.2,
+   "verdict": "within"
+  },
+  {
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    7,
+    20
+   ],
+   "N": 56.42,
+   "S": 1.08,
+   "m": 1,
+   "useWas": 62.2,
+   "verdict": "within"
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 37.82,
+   "S": 2.58,
+   "m": 1.5,
+   "useWas": 57.8,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 69.7
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 29.97,
+   "S": 5.64,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    7
+   ],
+   "N": 35.34,
+   "S": 2,
+   "m": 1,
+   "useWas": 36.8,
+   "verdict": "under",
+   "now": [
+    4,
+    13
+   ],
+   "useNow": 65.1
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 23.25,
+   "S": 1,
+   "m": 1,
+   "useWas": 30.1,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 73.1
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "rarity": "veryrare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    7,
+    22
+   ],
+   "N": 57.25,
+   "S": 1.28,
+   "m": 1,
+   "useWas": 65.1,
+   "verdict": "within"
+  },
+  {
+   "id": "subterraneaner",
+   "name": "Subterraneaner",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    8,
+    10
+   ],
+   "N": 35.75,
+   "S": 12.43,
+   "m": 1,
+   "useWas": 107.5,
+   "verdict": "over",
+   "now": [
+    7,
+    9
+   ],
+   "useNow": 99.1
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    3
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 29.55,
+   "S": 2.69,
+   "m": 1,
+   "useWas": 42.9,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 73.4
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "rarity": "veryrare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 37.2,
+   "S": 3.74,
+   "m": 1,
+   "useWas": 47.7,
+   "verdict": "under",
+   "now": [
+    6,
+    9
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "otter-flag-bearer",
+   "name": "Otter Flag Bearer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 30.59,
+   "S": 2.16,
+   "m": 1,
+   "useWas": 39.8,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 69.2
+  },
+  {
+   "id": "otter-lantern-bearer",
+   "name": "Otter Lantern Bearer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    6
+   ],
+   "N": 30.59,
+   "S": 0,
+   "m": 1,
+   "useWas": 39.2,
+   "verdict": "under",
+   "now": [
+    5,
+    10
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "riverbed-diver",
+   "name": "Riverbed Diver",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 59.8,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 72.6
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 23.87,
+   "S": 2.7,
+   "m": 1.5,
+   "useWas": 61,
+   "verdict": "within"
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1,
+   "useWas": 35,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "triumvirate",
+   "name": "Triumphvirate",
+   "rarity": "unique",
+   "wait": 1,
+   "cost": 3,
+   "was": [
+    6,
+    22
+   ],
+   "N": 56.63,
+   "S": 4.32,
+   "m": 1,
+   "useWas": 67.7,
+   "verdict": "within"
+  },
+  {
+   "id": "inkcloud-squid",
+   "name": "Inkcloud Squid",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 31.21,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 66.3,
+   "verdict": "within"
+  },
+  {
+   "id": "abyss-lantern-squid",
+   "name": "Abyss Lantern Squid",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    11
+   ],
+   "N": 44.54,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 46.7,
+   "verdict": "under",
+   "now": [
+    5,
+    17
+   ],
+   "useNow": 69.1
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    14
+   ],
+   "N": 45.57,
+   "S": 3,
+   "m": 1,
+   "useWas": 54.9,
+   "verdict": "under",
+   "now": [
+    5,
+    17
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "vampire-squid",
+   "name": "Vampire Squid",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    6,
+    18
+   ],
+   "N": 50.94,
+   "S": 11.6,
+   "m": 1,
+   "useWas": 81.7,
+   "verdict": "within"
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    8,
+    26
+   ],
+   "N": 62.83,
+   "S": 16.41,
+   "m": 1,
+   "useWas": 93,
+   "verdict": "within"
+  },
+  {
+   "id": "goliath-broodmother",
+   "name": "Goliath Broodmother",
+   "rarity": "legendary",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    9,
+    34
+   ],
+   "N": 72.13,
+   "S": 5.32,
+   "m": 1,
+   "useWas": 79.5,
+   "verdict": "within"
+  },
+  {
+   "id": "cave-centipede",
+   "name": "Cave Centipede",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 30.17,
+   "S": 15.8,
+   "m": 1,
+   "useWas": 85.5,
+   "verdict": "within"
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    16
+   ],
+   "N": 43.5,
+   "S": 8.86,
+   "m": 1,
+   "useWas": 61.7,
+   "verdict": "within"
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    14
+   ],
+   "N": 44.54,
+   "S": 7.75,
+   "m": 1,
+   "useWas": 57.8,
+   "verdict": "under",
+   "now": [
+    3,
+    18
+   ],
+   "useNow": 71.3
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 37.82,
+   "S": 10.87,
+   "m": 1,
+   "useWas": 76.3,
+   "verdict": "within"
+  },
+  {
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    7
+   ],
+   "N": 36.79,
+   "S": 7.75,
+   "m": 1,
+   "useWas": 51,
+   "verdict": "under",
+   "now": [
+    3,
+    11
+   ],
+   "useNow": 67.3
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "rarity": "veryrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    18
+   ],
+   "N": 47.43,
+   "S": 2,
+   "m": 1,
+   "useWas": 59,
+   "verdict": "under",
+   "now": [
+    5,
+    20
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "buzzed-chipmunk",
+   "name": "Buzzed Chipmunk",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 41.85,
+   "S": 0.44,
+   "m": 1,
+   "useWas": 32.1,
+   "verdict": "under",
+   "now": [
+    6,
+    15
+   ],
+   "useNow": 65.6
+  },
+  {
+   "id": "scree-goat",
+   "name": "Scree Goat",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    14
+   ],
+   "N": 45.78,
+   "S": 4,
+   "m": 1,
+   "useWas": 56.8,
+   "verdict": "under",
+   "now": [
+    5,
+    16
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    8,
+    30
+   ],
+   "N": 59.62,
+   "S": 6.48,
+   "m": 1,
+   "useWas": 88,
+   "verdict": "within"
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "rarity": "heroic",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    15
+   ],
+   "N": 40.3,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 78.2,
+   "verdict": "within"
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 43.3,
+   "S": 3,
+   "m": 1,
+   "useWas": 43.9,
+   "verdict": "under",
+   "now": [
+    5,
+    16
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    8
+   ],
+   "N": 36.58,
+   "S": 3.58,
+   "m": 1.5,
+   "useWas": 63.9,
+   "verdict": "within"
+  },
+  {
+   "id": "fox-sharpshot",
+   "name": "Fox Sharpshot",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 43.3,
+   "S": 3,
+   "m": 1,
+   "useWas": 43.9,
+   "verdict": "under",
+   "now": [
+    5,
+    16
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    8
+   ],
+   "N": 44.12,
+   "S": 2,
+   "m": 1.5,
+   "useWas": 40.8,
+   "verdict": "under",
+   "now": [
+    2,
+    14
+   ],
+   "useNow": 68
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    5,
+    11
+   ],
+   "N": 44.23,
+   "S": 13.3,
+   "m": 1,
+   "useWas": 77.5,
+   "verdict": "within"
+  },
+  {
+   "id": "monitor-rambler",
+   "name": "Monitor Rambler",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    16
+   ],
+   "N": 44.74,
+   "S": 6.48,
+   "m": 1,
+   "useWas": 59.2,
+   "verdict": "under",
+   "now": [
+    2,
+    19
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    18
+   ],
+   "N": 24.49,
+   "S": 1.22,
+   "m": 1,
+   "useWas": 86.6,
+   "verdict": "within"
+  },
+  {
+   "id": "helmeted-otter",
+   "name": "Helmeted Otter",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 29.55,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.6,
+   "verdict": "under",
+   "now": [
+    3,
+    14
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    9
+   ],
+   "N": 24.28,
+   "S": 3.1,
+   "m": 1,
+   "useWas": 58.1,
+   "verdict": "under",
+   "now": [
+    1,
+    11
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 22.01,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 57.5,
+   "verdict": "under",
+   "now": [
+    2,
+    5
+   ],
+   "useNow": 84.7
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "rarity": "heroic",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    4,
+    14
+   ],
+   "N": 53.01,
+   "S": 4.8,
+   "m": 1.5,
+   "useWas": 75.8,
+   "verdict": "within"
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "heroic",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    5,
+    24
+   ],
+   "N": 62.21,
+   "S": 5.44,
+   "m": 1,
+   "useWas": 63.4,
+   "verdict": "within"
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 33.07,
+   "S": 1,
+   "m": 1,
+   "useWas": 39.3,
+   "verdict": "under",
+   "now": [
+    4,
+    14
+   ],
+   "useNow": 69.5
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 36.79,
+   "S": 10.87,
+   "m": 1,
+   "useWas": 73,
+   "verdict": "within"
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    7
+   ],
+   "N": 28.52,
+   "S": 5.92,
+   "m": 1,
+   "useWas": 52.3,
+   "verdict": "under",
+   "now": [
+    2,
+    11
+   ],
+   "useNow": 73.4
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    13
+   ],
+   "N": 43.92,
+   "S": 9.05,
+   "m": 1,
+   "useWas": 68.4,
+   "verdict": "within"
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.84,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 72.5,
+   "verdict": "within"
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 29.55,
+   "S": 5.89,
+   "m": 1,
+   "useWas": 53.8,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 67.3
+  },
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    11
+   ],
+   "N": 36.58,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 73,
+   "verdict": "within"
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 25.32,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 41.5,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 65.2
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 32.65,
+   "S": 13.3,
+   "m": 1,
+   "useWas": 74.4,
+   "verdict": "within"
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 25.94,
+   "S": 5.75,
+   "m": 1.5,
+   "useWas": 73.7,
+   "verdict": "within"
+  },
+  {
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 30.48,
+   "S": 2.68,
+   "m": 1.5,
+   "useWas": 62.4,
+   "verdict": "within"
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    11
+   ],
+   "N": 30.17,
+   "S": 8.22,
+   "m": 1,
+   "useWas": 70.3,
+   "verdict": "within"
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 35.75,
+   "S": 8.25,
+   "m": 1,
+   "useWas": 70.6,
+   "verdict": "within"
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.01,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 47.7,
+   "verdict": "under",
+   "now": [
+    3,
+    4
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 26.56,
+   "S": 7.23,
+   "m": 1,
+   "useWas": 53.6,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 68.6
+  },
+  {
+   "id": "mirrorhide-mutant",
+   "name": "Mirrorhide Mutant",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 0,
+   "was": [
+    3,
+    6
+   ],
+   "N": 38.34,
+   "S": 1,
+   "m": 1,
+   "useWas": 33.9,
+   "verdict": "under",
+   "now": [
+    6,
+    12
+   ],
+   "useNow": 65.2
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    2
+   ],
+   "N": 22.22,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 48.6,
+   "verdict": "under",
+   "now": [
+    5,
+    3
+   ],
+   "useNow": 71.1
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 31,
+   "S": 3.68,
+   "m": 1.5,
+   "useWas": 56.5,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 71
+  },
+  {
+   "id": "wandering-mage",
+   "name": "Wandering Mage",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 0,
+   "was": [
+    5,
+    8
+   ],
+   "N": 47.12,
+   "S": 5.12,
+   "m": 1,
+   "useWas": 49.1,
+   "verdict": "under",
+   "now": [
+    7,
+    12
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    15
+   ],
+   "N": 29.45,
+   "S": 8.88,
+   "m": 1,
+   "useWas": 87.9,
+   "verdict": "within"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 30.59,
+   "S": 4.13,
+   "m": 1,
+   "useWas": 36.4,
+   "verdict": "under",
+   "now": [
+    2,
+    12
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    11
+   ],
+   "N": 29.55,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 56.8,
+   "verdict": "under",
+   "now": [
+    1,
+    14
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 23.87,
+   "S": 1.22,
+   "m": 1.5,
+   "useWas": 32.8,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 76.8
+  },
+  {
+   "id": "voltwing-bat",
+   "name": "Voltwing Bat",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 29.55,
+   "S": 6.28,
+   "m": 1.5,
+   "useWas": 62.3,
+   "verdict": "within"
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 35.13,
+   "S": 6.28,
+   "m": 1.5,
+   "useWas": 69.5,
+   "verdict": "within"
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 43.92,
+   "S": 9.88,
+   "m": 1.5,
+   "useWas": 78.1,
+   "verdict": "within"
+  },
+  {
+   "id": "hammerhead-shark",
+   "name": "Hammerhead Shark",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    4,
+    12
+   ],
+   "N": 47.22,
+   "S": 11.87,
+   "m": 1,
+   "useWas": 67.5,
+   "verdict": "within"
+  },
+  {
+   "id": "ironback-gorilla",
+   "name": "Ironback Gorilla",
+   "rarity": "rare",
+   "wait": 4,
+   "cost": 1,
+   "was": [
+    8,
+    20
+   ],
+   "N": 62.52,
+   "S": 1,
+   "m": 1,
+   "useWas": 59.2,
+   "verdict": "under",
+   "now": [
+    9,
+    22
+   ],
+   "useNow": 65.6
+  },
+  {
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 35.13,
+   "S": 2.2,
+   "m": 1,
+   "useWas": 49,
+   "verdict": "under",
+   "now": [
+    6,
+    10
+   ],
+   "useNow": 68.9
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 29.55,
+   "S": 8.05,
+   "m": 1,
+   "useWas": 50.9,
+   "verdict": "under",
+   "now": [
+    2,
+    8
+   ],
+   "useNow": 67.9
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 4,
+   "was": [
+    4,
+    10
+   ],
+   "N": 72.33,
+   "S": 9.93,
+   "m": 1,
+   "useWas": 38.6,
+   "verdict": "under",
+   "now": [
+    9,
+    21
+   ],
+   "useNow": 67.6
+  },
+  {
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 31.21,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 43.3,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 67.3
+  },
+  {
+   "id": "baby-bat",
+   "name": "Baby Bat",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 30.17,
+   "S": 2.68,
+   "m": 1.5,
+   "useWas": 58.1,
+   "verdict": "under",
+   "now": [
+    3,
+    6
+   ],
+   "useNow": 73
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 29.55,
+   "S": 1,
+   "m": 1,
+   "useWas": 37.2,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 20.77,
+   "S": 0,
+   "m": 1,
+   "useWas": 33.7,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 26.56,
+   "S": 1,
+   "m": 1,
+   "useWas": 45.2,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 71.5
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 37.2,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.3,
+   "verdict": "under",
+   "now": [
+    7,
+    11
+   ],
+   "useNow": 67.2
+  },
+  {
+   "id": "mongoose-duelist",
+   "name": "Mongoose Duelist",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 36.99,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.6,
+   "verdict": "under",
+   "now": [
+    7,
+    11
+   ],
+   "useNow": 67.6
+  },
+  {
+   "id": "dhole-runner",
+   "name": "Dhole Runner",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 36.37,
+   "S": 0,
+   "m": 1,
+   "useWas": 38.5,
+   "verdict": "under",
+   "now": [
+    7,
+    10
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    7
+   ],
+   "N": 51.56,
+   "S": 0,
+   "m": 1,
+   "useWas": 33,
+   "verdict": "under",
+   "now": [
+    10,
+    14
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    5
+   ],
+   "N": 27.8,
+   "S": 2,
+   "m": 1,
+   "useWas": 54,
+   "verdict": "under",
+   "now": [
+    5,
+    7
+   ],
+   "useNow": 68.3
+  },
+  {
+   "id": "aye-aye-prowler",
+   "name": "Aye-aye Prowler",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    4,
+    4
+   ],
+   "N": 24.7,
+   "S": 0,
+   "m": 1,
+   "useWas": 48.6,
+   "verdict": "under",
+   "now": [
+    6,
+    6
+   ],
+   "useNow": 72.9
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 24.7,
+   "S": 0,
+   "m": 1,
+   "useWas": 40.5,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 76.9
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 35.96,
+   "S": 4.43,
+   "m": 1,
+   "useWas": 48.5,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 70.7
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 36.99,
+   "S": 3.68,
+   "m": 1,
+   "useWas": 50.5,
+   "verdict": "under",
+   "now": [
+    6,
+    10
+   ],
+   "useNow": 69.4
+  },
+  {
+   "id": "mudflat-godwit",
+   "name": "Mudflat Godwit",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 35.96,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 52.3,
+   "verdict": "under",
+   "now": [
+    5,
+    10
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 37.82,
+   "S": 8,
+   "m": 1,
+   "useWas": 60.8,
+   "verdict": "within"
+  },
+  {
+   "id": "werebadger",
+   "name": "Werebadger",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    5,
+    13
+   ],
+   "N": 53.01,
+   "S": 1,
+   "m": 1,
+   "useWas": 45.3,
+   "verdict": "under",
+   "now": [
+    8,
+    20
+   ],
+   "useNow": 69.8
+  },
+  {
+   "id": "carrion-beetle",
+   "name": "Carrion Beetle",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.34,
+   "S": 0,
+   "m": 1,
+   "useWas": 45.3,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 65.1
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    4,
+    8
+   ],
+   "N": 50.12,
+   "S": 0,
+   "m": 1,
+   "useWas": 31.9,
+   "verdict": "under",
+   "now": [
+    8,
+    17
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    4,
+    4
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1,
+   "useWas": 52.5,
+   "verdict": "under",
+   "now": [
+    5,
+    5
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    7
+   ],
+   "N": 26.14,
+   "S": 0,
+   "m": 1,
+   "useWas": 49.7,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 65
+  },
+  {
+   "id": "tarantula-hawk",
+   "name": "Tarantula Hawk",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 1,
+   "useWas": 42.3,
+   "verdict": "under",
+   "now": [
+    6,
+    13
+   ],
+   "useNow": 66.1
+  },
+  {
+   "id": "swordfish-spearman",
+   "name": "Swordfish Spearman",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 44.95,
+   "S": 1,
+   "m": 1,
+   "useWas": 40,
+   "verdict": "under",
+   "now": [
+    7,
+    15
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 44.95,
+   "S": 1,
+   "m": 1,
+   "useWas": 35.6,
+   "verdict": "under",
+   "now": [
+    6,
+    17
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 29.45,
+   "S": 3.9,
+   "m": 1,
+   "useWas": 50.6,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 74.4
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 30.07,
+   "S": 1,
+   "m": 1,
+   "useWas": 39.9,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "box-turtle",
+   "name": "Box Turtle",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.63,
+   "S": 0,
+   "m": 1,
+   "useWas": 39.8,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 39.27,
+   "S": 1,
+   "m": 1,
+   "useWas": 35.7,
+   "verdict": "under",
+   "now": [
+    6,
+    13
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "velvet-worm",
+   "name": "Velvet Worm",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 36.99,
+   "S": 2,
+   "m": 1,
+   "useWas": 43.3,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 67.6
+  },
+  {
+   "id": "glowing-gecko",
+   "name": "Glowing Gecko",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    7,
+    12
+   ],
+   "N": 37.82,
+   "S": 2,
+   "m": 1,
+   "useWas": 74,
+   "verdict": "within"
+  },
+  {
+   "id": "gloom-gibbon",
+   "name": "Gloom Gibbon",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    3,
+    8
+   ],
+   "N": 50.94,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 41.2,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "name": "Seed-cache Squirrel",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 28.83,
+   "S": 3.19,
+   "m": 1,
+   "useWas": 49.2,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 73.5
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 23.25,
+   "S": 0,
+   "m": 1,
+   "useWas": 43,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 68.8
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 34.51,
+   "S": 0,
+   "m": 1,
+   "useWas": 43.5,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 35.55,
+   "S": 1,
+   "m": 1,
+   "useWas": 47.8,
+   "verdict": "under",
+   "now": [
+    4,
+    15
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.13,
+   "S": 0,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 36.17,
+   "S": 4.22,
+   "m": 1,
+   "useWas": 55.9,
+   "verdict": "under",
+   "now": [
+    5,
+    10
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 35.75,
+   "S": 10.06,
+   "m": 1,
+   "useWas": 64.5,
+   "verdict": "within"
+  },
+  {
+   "id": "lichen-tortoise",
+   "name": "Lichen Tortoise",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    9
+   ],
+   "N": 42.88,
+   "S": 0,
+   "m": 1,
+   "useWas": 44.3,
+   "verdict": "under",
+   "now": [
+    8,
+    14
+   ],
+   "useNow": 70
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 29.04,
+   "S": 7.17,
+   "m": 1,
+   "useWas": 62.6,
+   "verdict": "within"
+  },
+  {
+   "id": "slow-loris",
+   "name": "Slow Loris",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    7
+   ],
+   "N": 24.7,
+   "S": 0,
+   "m": 1,
+   "useWas": 52.6,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 68.8
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 45.78,
+   "S": 7.15,
+   "m": 1,
+   "useWas": 54.9,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 22.22,
+   "S": 0,
+   "m": 1,
+   "useWas": 49.5,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 36.99,
+   "S": 16.9,
+   "m": 1,
+   "useWas": 83.5,
+   "verdict": "within"
+  },
+  {
+   "id": "sawfish",
+   "name": "Sawfish",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 36.17,
+   "S": 1.48,
+   "m": 1,
+   "useWas": 48.3,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 36.79,
+   "S": 5.02,
+   "m": 1,
+   "useWas": 51.7,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 65.3
+  },
+  {
+   "id": "mantis-shrimp",
+   "name": "Mantis Shrimp",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    3,
+    10
+   ],
+   "N": 42.57,
+   "S": 2,
+   "m": 1,
+   "useWas": 42.3,
+   "verdict": "under",
+   "now": [
+    5,
+    16
+   ],
+   "useNow": 65.8
+  },
+  {
+   "id": "fruit-bat-familiar",
+   "name": "Fruit-bat Familiar",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 38.03,
+   "S": 0,
+   "m": 1,
+   "useWas": 42.1,
+   "verdict": "under",
+   "now": [
+    6,
+    13
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "hellbender",
+   "name": "Hellbender",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    6
+   ],
+   "N": 25.73,
+   "S": 0,
+   "m": 1,
+   "useWas": 38.9,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 73.8
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 36.79,
+   "S": 7.44,
+   "m": 1,
+   "useWas": 55.6,
+   "verdict": "under",
+   "now": [
+    4,
+    9
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 37.61,
+   "S": 2,
+   "m": 1,
+   "useWas": 37.2,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 45.78,
+   "S": 2,
+   "m": 1,
+   "useWas": 37.1,
+   "verdict": "under",
+   "now": [
+    8,
+    13
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "echidna-quillshot",
+   "name": "Echidna Quillshot",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 46.81,
+   "S": 1,
+   "m": 1,
+   "useWas": 38.5,
+   "verdict": "under",
+   "now": [
+    7,
+    16
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "firefly-swarm",
+   "name": "Firefly Swarm",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 38.23,
+   "S": 2,
+   "m": 1,
+   "useWas": 41.9,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "archerfish",
+   "name": "Archerfish",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.96,
+   "S": 2,
+   "m": 1,
+   "useWas": 44.5,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 37.61,
+   "S": 2,
+   "m": 1,
+   "useWas": 42.5,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 38.65,
+   "S": 2,
+   "m": 1,
+   "useWas": 36.2,
+   "verdict": "under",
+   "now": [
+    6,
+    12
+   ],
+   "useNow": 67.3
+  },
+  {
+   "id": "electric-catfish",
+   "name": "Electric Catfish",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 36.17,
+   "S": 2,
+   "m": 1,
+   "useWas": 44.2,
+   "verdict": "under",
+   "now": [
+    3,
+    16
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    9
+   ],
+   "N": 46.6,
+   "S": 2.17,
+   "m": 1,
+   "useWas": 45.4,
+   "verdict": "under",
+   "now": [
+    8,
+    14
+   ],
+   "useNow": 69
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 45.16,
+   "S": 1,
+   "m": 1,
+   "useWas": 35.4,
+   "verdict": "under",
+   "now": [
+    6,
+    17
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    5,
+    11
+   ],
+   "N": 54.77,
+   "S": 1,
+   "m": 1,
+   "useWas": 40.2,
+   "verdict": "under",
+   "now": [
+    8,
+    19
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    5,
+    11
+   ],
+   "N": 66.34,
+   "S": 7.5,
+   "m": 1,
+   "useWas": 43,
+   "verdict": "under",
+   "now": [
+    9,
+    19
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    12
+   ],
+   "N": 42.88,
+   "S": 2.97,
+   "m": 1,
+   "useWas": 58.2,
+   "verdict": "under",
+   "now": [
+    6,
+    13
+   ],
+   "useNow": 65.2
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 54.77,
+   "S": 8,
+   "m": 1,
+   "useWas": 51.1,
+   "verdict": "under",
+   "now": [
+    6,
+    17
+   ],
+   "useNow": 67.6
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "rarity": "legendary",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    5,
+    12
+   ],
+   "N": 86.28,
+   "S": 11,
+   "m": 1,
+   "useWas": 38.2,
+   "verdict": "under",
+   "now": [
+    11,
+    25
+   ],
+   "useNow": 67.2
+  },
+  {
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 30.07,
+   "S": 2,
+   "m": 1,
+   "useWas": 43.2,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 66.5
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.13,
+   "S": 2.04,
+   "m": 1,
+   "useWas": 45.7,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "piranha-shoal",
+   "name": "Piranha Shoal",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 29.24,
+   "S": 0,
+   "m": 1,
+   "useWas": 47.9,
+   "verdict": "under",
+   "now": [
+    6,
+    8
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "chilli-parrot",
+   "name": "Chilli Parrot",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    11
+   ],
+   "N": 36.99,
+   "S": 0,
+   "m": 1,
+   "useWas": 51.4,
+   "verdict": "under",
+   "now": [
+    5,
+    15
+   ],
+   "useNow": 67.6
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 34.93,
+   "S": 6.26,
+   "m": 1,
+   "useWas": 60.9,
+   "verdict": "within"
+  },
+  {
+   "id": "cone-snail",
+   "name": "Cone Snail",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 36.17,
+   "S": 6.21,
+   "m": 1,
+   "useWas": 55.9,
+   "verdict": "under",
+   "now": [
+    4,
+    10
+   ],
+   "useNow": 66.9
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 27.59,
+   "S": 1,
+   "m": 1,
+   "useWas": 43.5,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 68.9
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 22.01,
+   "S": 1,
+   "m": 1,
+   "useWas": 54.5,
+   "verdict": "under",
+   "now": [
+    3,
+    9
+   ],
+   "useNow": 72.7
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 37.2,
+   "S": 5.51,
+   "m": 1,
+   "useWas": 55.1,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 29.24,
+   "S": 1,
+   "m": 1,
+   "useWas": 41,
+   "verdict": "under",
+   "now": [
+    5,
+    9
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    10
+   ],
+   "N": 43.92,
+   "S": 2,
+   "m": 1,
+   "useWas": 50.1,
+   "verdict": "under",
+   "now": [
+    7,
+    13
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "tardigrade",
+   "name": "Tardigrade",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.13,
+   "S": 1,
+   "m": 1,
+   "useWas": 48.4,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 68.3
+  },
+  {
+   "id": "leaf-chameleon",
+   "name": "Leaf Chameleon",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 36.99,
+   "S": 2.5,
+   "m": 1,
+   "useWas": 50,
+   "verdict": "under",
+   "now": [
+    4,
+    14
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "oilbird",
+   "name": "Oilbird",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.75,
+   "S": 0,
+   "m": 1,
+   "useWas": 44.8,
+   "verdict": "under",
+   "now": [
+    6,
+    12
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "skunk-gasser",
+   "name": "Skunk Gasser",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 36.58,
+   "S": 2,
+   "m": 1,
+   "useWas": 41,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 65.6
+  },
+  {
+   "id": "ice-fish",
+   "name": "Ice Fish",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    5,
+    11
+   ],
+   "N": 54.77,
+   "S": 1,
+   "m": 1,
+   "useWas": 40.2,
+   "verdict": "under",
+   "now": [
+    8,
+    19
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 38.03,
+   "S": 2,
+   "m": 1,
+   "useWas": 42.1,
+   "verdict": "under",
+   "now": [
+    5,
+    13
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "fire-hawk",
+   "name": "Fire Hawk",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    10
+   ],
+   "N": 47.02,
+   "S": 0.9,
+   "m": 1,
+   "useWas": 44.4,
+   "verdict": "under",
+   "now": [
+    8,
+    15
+   ],
+   "useNow": 67.8
+  },
+  {
+   "id": "flagellant-vulture",
+   "name": "Flagellant Vulture",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 38.03,
+   "S": -0.63,
+   "m": 1,
+   "useWas": 37.8,
+   "verdict": "under",
+   "now": [
+    7,
+    12
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "vampire-finch",
+   "name": "Vampire Finch",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    5,
+    7
+   ],
+   "N": 38.03,
+   "S": -2.36,
+   "m": 1,
+   "useWas": 38.5,
+   "verdict": "under",
+   "now": [
+    8,
+    12
+   ],
+   "useNow": 67.4
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    11
+   ],
+   "N": 37.82,
+   "S": 2.1,
+   "m": 1,
+   "useWas": 50.5,
+   "verdict": "under",
+   "now": [
+    4,
+    15
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "leopard-seal",
+   "name": "Leopard Seal",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    6,
+    10
+   ],
+   "N": 42.88,
+   "S": 0.71,
+   "m": 1,
+   "useWas": 53,
+   "verdict": "under",
+   "now": [
+    8,
+    13
+   ],
+   "useNow": 69.3
+  },
+  {
+   "id": "springbok-pronker",
+   "name": "Springbok Pronker",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    5
+   ],
+   "N": 29.24,
+   "S": 0,
+   "m": 1,
+   "useWas": 44.5,
+   "verdict": "under",
+   "now": [
+    6,
+    8
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.13,
+   "S": 2,
+   "m": 1,
+   "useWas": 45.5,
+   "verdict": "under",
+   "now": [
+    5,
+    12
+   ],
+   "useNow": 68.3
+  },
+  {
+   "id": "geode-scorpion",
+   "name": "Geode Scorpion",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 42.88,
+   "S": 1.38,
+   "m": 1,
+   "useWas": 45.2,
+   "verdict": "under",
+   "now": [
+    6,
+    15
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "cleaner-wrasse",
+   "name": "Cleaner Wrasse",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 36.17,
+   "S": 0,
+   "m": 1,
+   "useWas": 44.2,
+   "verdict": "under",
+   "now": [
+    6,
+    12
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.13,
+   "S": 1,
+   "m": 1,
+   "useWas": 48.4,
+   "verdict": "under",
+   "now": [
+    6,
+    11
+   ],
+   "useNow": 68.3
+  },
+  {
+   "id": "lovebird",
+   "name": "Lovebird",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    4,
+    5
+   ],
+   "N": 29.24,
+   "S": 0,
+   "m": 1,
+   "useWas": 44.5,
+   "verdict": "under",
+   "now": [
+    6,
+    8
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    5,
+    6
+   ],
+   "N": 37.82,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 63.5,
+   "verdict": "within"
+  },
+  {
+   "id": "dromedary",
+   "name": "Dromedary",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    26
+   ],
+   "N": 45.57,
+   "S": 8.85,
+   "m": 1,
+   "useWas": 89.6,
+   "verdict": "within"
+  },
+  {
+   "id": "marula-monkey",
+   "name": "Marula Monkey",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 29.24,
+   "S": 1.62,
+   "m": 1,
+   "useWas": 43.2,
+   "verdict": "under",
+   "now": [
+    5,
+    8
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "lyrebird-mimic",
+   "name": "Lyrebird Mimic",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 36.58,
+   "S": 3.41,
+   "m": 1,
+   "useWas": 53.1,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "chained-binturong",
+   "name": "Chained Binturong",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 31.31,
+   "S": 1,
+   "m": 1,
+   "useWas": 41.5,
+   "verdict": "under",
+   "now": [
+    5,
+    10
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "rimefire-salamander",
+   "name": "Rimefire Salamander",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    7
+   ],
+   "N": 39.68,
+   "S": 2,
+   "m": 1,
+   "useWas": 32.8,
+   "verdict": "under",
+   "now": [
+    4,
+    16
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 39.68,
+   "S": 11.55,
+   "m": 1,
+   "useWas": 69.4,
+   "verdict": "within"
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "name": "Ashwing Ptarmigan",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 32.96,
+   "S": 5.12,
+   "m": 1.5,
+   "useWas": 73.4,
+   "verdict": "within"
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "rarity": "superrare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 41.75,
+   "S": 12.84,
+   "m": 1,
+   "useWas": 66.7,
+   "verdict": "within"
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    8,
+    40
+   ],
+   "N": 66.34,
+   "S": 8.37,
+   "m": 1,
+   "useWas": 97,
+   "verdict": "within"
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "rarity": "superrare",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    2,
+    22
+   ],
+   "N": 70.06,
+   "S": 10.48,
+   "m": 1,
+   "useWas": 52.1,
+   "verdict": "under",
+   "now": [
+    3,
+    30
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "howdah-archers",
+   "name": "Howdah Archers",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    7
+   ],
+   "N": 39.89,
+   "S": 9.55,
+   "m": 1,
+   "useWas": 51.5,
+   "verdict": "under",
+   "now": [
+    3,
+    11
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "testudo-tortoise",
+   "name": "Testudo Tortoise",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    14
+   ],
+   "N": 53.01,
+   "S": 10.22,
+   "m": 1,
+   "useWas": 53.2,
+   "verdict": "under",
+   "now": [
+    3,
+    19
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "trebuchet-crew",
+   "name": "Trebuchet Crew",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    0,
+    24
+   ],
+   "N": 61.79,
+   "S": 2,
+   "m": 1,
+   "useWas": 42.1,
+   "verdict": "under",
+   "now": [
+    0,
+    39
+   ],
+   "useNow": 66.4
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "rarity": "epic",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    9,
+    48
+   ],
+   "N": 83.18,
+   "S": 15.82,
+   "m": 1,
+   "useWas": 98.4,
+   "verdict": "within"
+  },
+  {
+   "id": "great-gate",
+   "name": "Great Gate",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    0,
+    28
+   ],
+   "N": 31.72,
+   "S": 9.22,
+   "m": 1,
+   "useWas": 117.3,
+   "verdict": "over",
+   "now": [
+    0,
+    22
+   ],
+   "useNow": 98.4
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 40.09,
+   "S": 4.4,
+   "m": 1,
+   "useWas": 55.9,
+   "verdict": "under",
+   "now": [
+    4,
+    14
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "mallard-halberdier",
+   "name": "Mallard Halberdier",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 40.09,
+   "S": 1,
+   "m": 1,
+   "useWas": 42.4,
+   "verdict": "under",
+   "now": [
+    7,
+    13
+   ],
+   "useNow": 69.8
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 27.8,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 32.4,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 80.9
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 40.09,
+   "S": 6.4,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "gilded-swan-knight",
+   "name": "Gilded Swan Knight",
+   "rarity": "superrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    8
+   ],
+   "N": 49.91,
+   "S": 8.64,
+   "m": 1,
+   "useWas": 41.4,
+   "verdict": "under",
+   "now": [
+    4,
+    16
+   ],
+   "useNow": 65.4
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "rarity": "legendary",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    6,
+    59
+   ],
+   "N": 86.28,
+   "S": 18.04,
+   "m": 1,
+   "useWas": 103.2,
+   "verdict": "over",
+   "now": [
+    6,
+    56
+   ],
+   "useNow": 99.7
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 36.58,
+   "S": 3.47,
+   "m": 1,
+   "useWas": 58.7,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 66.9
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 44.12,
+   "S": 3.13,
+   "m": 1,
+   "useWas": 52.4,
+   "verdict": "under",
+   "now": [
+    5,
+    16
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 36.17,
+   "S": 8.48,
+   "m": 1,
+   "useWas": 62.2,
+   "verdict": "within"
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    6
+   ],
+   "N": 37.41,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 36.1,
+   "verdict": "under",
+   "now": [
+    2,
+    12
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "rarity": "veryrare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 40.3,
+   "S": 2.78,
+   "m": 1.5,
+   "useWas": 55,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 66.2
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    13
+   ],
+   "N": 47.43,
+   "S": 4.63,
+   "m": 1,
+   "useWas": 54,
+   "verdict": "under",
+   "now": [
+    5,
+    17
+   ],
+   "useNow": 66.7
+  },
+  {
+   "id": "sea-cucumber",
+   "name": "Sea Cucumber",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    14
+   ],
+   "N": 36.17,
+   "S": 17.52,
+   "m": 1,
+   "useWas": 98.2,
+   "verdict": "within"
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "rarity": "legendary",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    9,
+    40
+   ],
+   "N": 88.97,
+   "S": 10.4,
+   "m": 1,
+   "useWas": 76.9,
+   "verdict": "within"
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    6,
+    48
+   ],
+   "N": 101.89,
+   "S": 36.37,
+   "m": 1,
+   "useWas": 94.6,
+   "verdict": "within"
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "rarity": "unique",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    8,
+    30
+   ],
+   "N": 72.54,
+   "S": 7.48,
+   "m": 1,
+   "useWas": 73.7,
+   "verdict": "within"
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 43.3,
+   "S": 11.07,
+   "m": 1,
+   "useWas": 67.1,
+   "verdict": "within"
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "rarity": "uncommon",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    3,
+    20
+   ],
+   "N": 50.84,
+   "S": 8.3,
+   "m": 1,
+   "useWas": 67.5,
+   "verdict": "within"
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    11
+   ],
+   "N": 36.79,
+   "S": 8.25,
+   "m": 1,
+   "useWas": 68.6,
+   "verdict": "within"
+  },
+  {
+   "id": "pale-oryx",
+   "name": "Pale Oryx",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    17
+   ],
+   "N": 37.82,
+   "S": 5.75,
+   "m": 1,
+   "useWas": 76,
+   "verdict": "within"
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    28
+   ],
+   "N": 47.64,
+   "S": 9.55,
+   "m": 1,
+   "useWas": 91.4,
+   "verdict": "within"
+  },
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 21.8,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 74.2,
+   "verdict": "within"
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 34.1,
+   "S": 7.59,
+   "m": 1,
+   "useWas": 63.3,
+   "verdict": "within"
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 34.1,
+   "S": 2.74,
+   "m": 1,
+   "useWas": 55,
+   "verdict": "under",
+   "now": [
+    3,
+    15
+   ],
+   "useNow": 69.6
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.13,
+   "S": 12.35,
+   "m": 1,
+   "useWas": 75,
+   "verdict": "within"
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 29.55,
+   "S": 1,
+   "m": 1,
+   "useWas": 40.6,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 71.1
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 34.1,
+   "S": 8.16,
+   "m": 1,
+   "useWas": 65,
+   "verdict": "within"
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 22.01,
+   "S": 1,
+   "m": 1,
+   "useWas": 40.9,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.84,
+   "S": 7.55,
+   "m": 1,
+   "useWas": 63.7,
+   "verdict": "within"
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    10
+   ],
+   "N": 43.09,
+   "S": 7.28,
+   "m": 1,
+   "useWas": 58.7,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 65.6
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 29.55,
+   "S": 5.37,
+   "m": 1,
+   "useWas": 48.6,
+   "verdict": "under",
+   "now": [
+    3,
+    8
+   ],
+   "useNow": 65.5
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 23.04,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 54.9,
+   "verdict": "under",
+   "now": [
+    2,
+    5
+   ],
+   "useNow": 80.9
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    5
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1,
+   "useWas": 30.6,
+   "verdict": "under",
+   "now": [
+    2,
+    11
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 28.93,
+   "S": 4.79,
+   "m": 1,
+   "useWas": 44.2,
+   "verdict": "under",
+   "now": [
+    2,
+    11
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    9
+   ],
+   "N": 29.55,
+   "S": 8.99,
+   "m": 1,
+   "useWas": 67.6,
+   "verdict": "within"
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 34.1,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 52.8,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    16
+   ],
+   "N": 43.3,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 68.8,
+   "verdict": "within"
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    8
+   ],
+   "N": 22.84,
+   "S": 8.17,
+   "m": 1,
+   "useWas": 79.6,
+   "verdict": "within"
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 33.69,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 65.9,
+   "verdict": "within"
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 35.13,
+   "S": 2.7,
+   "m": 1.5,
+   "useWas": 62.8,
+   "verdict": "within"
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 32.8,
+   "verdict": "under",
+   "now": [
+    2,
+    6
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    6
+   ],
+   "N": 35.75,
+   "S": 12.35,
+   "m": 1.5,
+   "useWas": 93.8,
+   "verdict": "within"
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    9
+   ],
+   "N": 34.72,
+   "S": 2,
+   "m": 1.5,
+   "useWas": 64.8,
+   "verdict": "within"
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 29.55,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 45.7,
+   "verdict": "under",
+   "now": [
+    3,
+    6
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    14
+   ],
+   "N": 42.68,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 55.7,
+   "verdict": "under",
+   "now": [
+    4,
+    16
+   ],
+   "useNow": 65.1
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 22.84,
+   "S": 5.92,
+   "m": 1,
+   "useWas": 60.9,
+   "verdict": "within"
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 30.38,
+   "S": 6.93,
+   "m": 1,
+   "useWas": 62.3,
+   "verdict": "within"
+  },
+  {
+   "id": "great-crested-grebe",
+   "name": "Great Crested Grebe",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 34.1,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 65.1,
+   "verdict": "within"
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    4,
+    24
+   ],
+   "N": 52.49,
+   "S": 8.27,
+   "m": 1,
+   "useWas": 76.7,
+   "verdict": "within"
+  },
+  {
+   "id": "diving-bell-spider",
+   "name": "Diving Bell Spider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 35.13,
+   "S": 7.13,
+   "m": 1,
+   "useWas": 65.8,
+   "verdict": "within"
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 43.92,
+   "S": 8.23,
+   "m": 1,
+   "useWas": 64.3,
+   "verdict": "within"
+  },
+  {
+   "id": "swamp-rabbit",
+   "name": "Swamp Rabbit",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.84,
+   "S": 2.79,
+   "m": 1.5,
+   "useWas": 64.3,
+   "verdict": "within"
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 22.84,
+   "S": 2.7,
+   "m": 1.5,
+   "useWas": 57.1,
+   "verdict": "under",
+   "now": [
+    1,
+    6
+   ],
+   "useNow": 70.3
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 35.13,
+   "S": 5.92,
+   "m": 1,
+   "useWas": 68.1,
+   "verdict": "within"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    6
+   ],
+   "N": 35.13,
+   "S": 7.59,
+   "m": 1,
+   "useWas": 61.5,
+   "verdict": "within"
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.34,
+   "S": 5.79,
+   "m": 1,
+   "useWas": 56,
+   "verdict": "under",
+   "now": [
+    4,
+    10
+   ],
+   "useNow": 67.3
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "N": 35.34,
+   "S": 9.05,
+   "m": 1,
+   "useWas": 68.1,
+   "verdict": "within"
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    18
+   ],
+   "N": 44.12,
+   "S": 12.09,
+   "m": 1,
+   "useWas": 81.8,
+   "verdict": "within"
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    6
+   ],
+   "N": 35.13,
+   "S": 0.71,
+   "m": 1.5,
+   "useWas": 54.3,
+   "verdict": "under",
+   "now": [
+    4,
+    7
+   ],
+   "useNow": 67.1
+  },
+  {
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 34.1,
+   "S": 7.91,
+   "m": 1,
+   "useWas": 70.1,
+   "verdict": "within"
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    12
+   ],
+   "N": 29.55,
+   "S": 5.78,
+   "m": 1,
+   "useWas": 66.9,
+   "verdict": "within"
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "N": 36.58,
+   "S": 11.22,
+   "m": 1,
+   "useWas": 66.2,
+   "verdict": "within"
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    8
+   ],
+   "N": 35.55,
+   "S": 1,
+   "m": 1,
+   "useWas": 36.6,
+   "verdict": "under",
+   "now": [
+    4,
+    15
+   ],
+   "useNow": 67.5
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 22.84,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 32.8,
+   "verdict": "under",
+   "now": [
+    2,
+    6
+   ],
+   "useNow": 65.7
+  },
+  {
+   "id": "springtail-hopper",
+   "name": "Springtail Hopper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 22.84,
+   "S": 7.55,
+   "m": 1.5,
+   "useWas": 89,
+   "verdict": "within"
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 29.55,
+   "S": 6.2,
+   "m": 1,
+   "useWas": 48.1,
+   "verdict": "under",
+   "now": [
+    2,
+    10
+   ],
+   "useNow": 68.4
+  },
+  {
+   "id": "cave-cricket",
+   "name": "Cave Cricket",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.84,
+   "S": 5.12,
+   "m": 1.5,
+   "useWas": 79.6,
+   "verdict": "within"
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    18
+   ],
+   "N": 43.5,
+   "S": 10.96,
+   "m": 1,
+   "useWas": 80.4,
+   "verdict": "within"
+  },
+  {
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 29.55,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 40.6,
+   "verdict": "under",
+   "now": [
+    3,
+    7
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "name": "Cave Pseudoscorpion",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.84,
+   "S": 8.25,
+   "m": 1,
+   "useWas": 75.5,
+   "verdict": "within"
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 35.75,
+   "S": 2.7,
+   "m": 1,
+   "useWas": 55.1,
+   "verdict": "under",
+   "now": [
+    5,
+    11
+   ],
+   "useNow": 66.3
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    6,
+    12
+   ],
+   "N": 44.54,
+   "S": 19.47,
+   "m": 1,
+   "useWas": 97.6,
+   "verdict": "within"
+  },
+  {
+   "id": "guano-beetle",
+   "name": "Guano Beetle",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    9
+   ],
+   "N": 29.55,
+   "S": 7.9,
+   "m": 1,
+   "useWas": 64,
+   "verdict": "within"
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.96,
+   "S": 11.73,
+   "m": 1,
+   "useWas": 71.6,
+   "verdict": "within"
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 36.99,
+   "S": 7.59,
+   "m": 1,
+   "useWas": 63.8,
+   "verdict": "within"
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    12
+   ],
+   "N": 35.13,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 64.9,
+   "verdict": "within"
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    15
+   ],
+   "N": 34.1,
+   "S": 8.27,
+   "m": 1,
+   "useWas": 80,
+   "verdict": "within"
+  },
+  {
+   "id": "sea-hare",
+   "name": "Sea Hare",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    8
+   ],
+   "N": 29.55,
+   "S": 4.99,
+   "m": 1,
+   "useWas": 57.5,
+   "verdict": "under",
+   "now": [
+    3,
+    10
+   ],
+   "useNow": 71
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    3,
+    28
+   ],
+   "N": 53.53,
+   "S": 9.99,
+   "m": 1,
+   "useWas": 82.2,
+   "verdict": "within"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    8
+   ],
+   "N": 37.2,
+   "S": 12.18,
+   "m": 1,
+   "useWas": 75.8,
+   "verdict": "within"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    10
+   ],
+   "N": 36.17,
+   "S": 7.92,
+   "m": 1,
+   "useWas": 60.6,
+   "verdict": "within"
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    7
+   ],
+   "N": 29.55,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 46.7,
+   "verdict": "under",
+   "now": [
+    3,
+    11
+   ],
+   "useNow": 67
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.13,
+   "S": 4.79,
+   "m": 1,
+   "useWas": 53.5,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 67.7
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    23
+   ],
+   "N": 41.85,
+   "S": 11.27,
+   "m": 1,
+   "useWas": 91.4,
+   "verdict": "within"
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    5,
+    5
+   ],
+   "N": 37.2,
+   "S": 10.34,
+   "m": 1,
+   "useWas": 68.1,
+   "verdict": "within"
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    3,
+    28
+   ],
+   "N": 53.73,
+   "S": 8.27,
+   "m": 1,
+   "useWas": 78.7,
+   "verdict": "within"
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    9
+   ],
+   "N": 36.37,
+   "S": 5.8,
+   "m": 1,
+   "useWas": 57.2,
+   "verdict": "under",
+   "now": [
+    4,
+    11
+   ],
+   "useNow": 68.2
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 29.55,
+   "S": 7.55,
+   "m": 1.5,
+   "useWas": 73.9,
+   "verdict": "within"
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 34.1,
+   "S": 5.84,
+   "m": 1,
+   "useWas": 64,
+   "verdict": "within"
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    6
+   ],
+   "N": 31.83,
+   "S": 1,
+   "m": 1.5,
+   "useWas": 42.4,
+   "verdict": "under",
+   "now": [
+    2,
+    9
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 24.08,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 43.6,
+   "verdict": "under",
+   "now": [
+    3,
+    5
+   ],
+   "useNow": 68.5
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    5
+   ],
+   "N": 37.61,
+   "S": 5.4,
+   "m": 1.5,
+   "useWas": 73.4,
+   "verdict": "within"
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    3,
+    5
+   ],
+   "N": 32.03,
+   "S": 1.42,
+   "m": 1,
+   "useWas": 38.8,
+   "verdict": "under",
+   "now": [
+    6,
+    9
+   ],
+   "useNow": 70
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    12
+   ],
+   "N": 34.1,
+   "S": 6.03,
+   "m": 1,
+   "useWas": 64.6,
+   "verdict": "within"
+  },
+  {
+   "id": "muntjac-barker",
+   "name": "Muntjac Barker",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    8
+   ],
+   "N": 35.13,
+   "S": 3.4,
+   "m": 1,
+   "useWas": 49.5,
+   "verdict": "under",
+   "now": [
+    4,
+    12
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    2,
+    4
+   ],
+   "N": 29.55,
+   "S": 0,
+   "m": 1.5,
+   "useWas": 40.6,
+   "verdict": "under",
+   "now": [
+    3,
+    7
+   ],
+   "useNow": 66
+  },
+  {
+   "id": "garden-tiger-moth",
+   "name": "Garden Tiger Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 22.84,
+   "S": 3.68,
+   "m": 1.5,
+   "useWas": 63.6,
+   "verdict": "within"
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    5,
+    10
+   ],
+   "N": 47.43,
+   "S": 9.3,
+   "m": 1,
+   "useWas": 61.8,
+   "verdict": "within"
+  },
+  {
+   "id": "harp-seal-pup",
+   "name": "Harp Seal Pup",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "N": 22.84,
+   "S": 3.79,
+   "m": 1,
+   "useWas": 56,
+   "verdict": "under",
+   "now": [
+    3,
+    6
+   ],
+   "useNow": 69.1
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    18
+   ],
+   "N": 46.4,
+   "S": 4.95,
+   "m": 1,
+   "useWas": 62.4,
+   "verdict": "within"
+  },
+  {
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 30.59,
+   "S": 3.43,
+   "m": 1.5,
+   "useWas": 46.3,
+   "verdict": "under",
+   "now": [
+    2,
+    6
+   ],
+   "useNow": 65.9
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 22.84,
+   "S": 3.21,
+   "m": 1,
+   "useWas": 31.6,
+   "verdict": "under",
+   "now": [
+    3,
+    6
+   ],
+   "useNow": 66.6
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    3
+   ],
+   "N": 22.84,
+   "S": 2.79,
+   "m": 1,
+   "useWas": 42.9,
+   "verdict": "under",
+   "now": [
+    4,
+    5
+   ],
+   "useNow": 69.1
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    4,
+    26
+   ],
+   "N": 55.18,
+   "S": 8.31,
+   "m": 1,
+   "useWas": 76.7,
+   "verdict": "within"
+  },
+  {
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    10
+   ],
+   "N": 34.1,
+   "S": 5.29,
+   "m": 1,
+   "useWas": 62.4,
+   "verdict": "within"
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    9
+   ],
+   "N": 37.41,
+   "S": 1,
+   "m": 1,
+   "useWas": 48.1,
+   "verdict": "under",
+   "now": [
+    6,
+    12
+   ],
+   "useNow": 66.8
+  },
+  {
+   "id": "musk-ox-calf",
+   "name": "Musk Ox Calf",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    3,
+    12
+   ],
+   "N": 35.13,
+   "S": 2.74,
+   "m": 1,
+   "useWas": 59,
+   "verdict": "under",
+   "now": [
+    4,
+    14
+   ],
+   "useNow": 70.4
+  }
+ ]
+}
