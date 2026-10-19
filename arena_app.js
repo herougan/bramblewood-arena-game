@@ -2048,6 +2048,7 @@ function speciesLine(def){
 }
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
+  if(sp.do==='hazard' && d.hazard) return eqHazardText(d); // a slot hazard (2026-10-19, package EQ)
   if(sp.do==='hasten') return `Each of your units on the field loses ${n} Wait.`;
   if(sp.do==='tailwind') return TX('ui.spell-tailwind', {n}); // 2026-10-18 (package D): terse
   if(sp.do==='mend') return `Heals each of your units by ${n}.`;
@@ -2446,6 +2447,13 @@ Object.assign(SKILL_TEXT, {
   prayerWard: v=> TX('ui.sk-prayer-ward', {n: numOr(v, 1)}),
   fieldBreaker: v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}),
 });
+// Package EQ (2026-10-19, owner 21:36): Weapon Master N and Pry N (rules in bramblewood-engine.js, the Package EQ block), and the On Enter Slot trigger.
+PASSIVE_DEFS.push(
+  {key:'weaponMaster', category:'passive', label:TX('ui.skn-weapon-master'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), codexNote:TX('ui.sk-weapon-master-codex', {n: 1}), get:e=> e.weaponMaster ? numOr(e.weaponMaster, 1) : undefined},
+  {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
+Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
+Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🔧'});
+TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
 // Amore's state on a live unit (2026-10-16): 'love' (paired), 'broken' (partner gone) or 'single'.
@@ -2527,10 +2535,11 @@ function describeEffects(def, liveCard){
     lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''}`); lines.push(TX('ui.de-field-replaces')); // 2026-10-18 (package D): two short lines
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
-  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines
+  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(def.hazard ? TX('ui.eq-hz-how') : TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines; a slot hazard says where it goes (EQ, 2026-10-19)
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
+  { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
   else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
@@ -30553,7 +30562,7 @@ function renderBoard(opts){
     const hazardMap = (()=>{ try{ return m.engine.getHazards ? m.engine.getHazards() : {}; }catch(e){ return {}; } })(); // Trap / Slash & Burn (2026-10-16)
     for(let sl=-slotRange; sl<=slotRange; sl++){
       const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
-      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]); // + traps and burning ground (2026-10-16)
+      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
       if(c){ let h = boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: (c.gladiatorLeader ? 'is-gladiator-leader' : '') + (cur ? ' is-cursed' : '')});
         if(mark){ const k = h.lastIndexOf('</div>'); if(k >= 0) h = h.slice(0, k) + mark + h.slice(k); }
         html += h; continue; }
@@ -33022,7 +33031,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   if(matchPlayRows(m) === 'own' && popts && popts.reserve) return false; // 2026-10-19 (package RX): "Your row only" (a tag-team dungeon's playRows)
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}) : undefined); // + a hazard's row (EQ, 2026-10-19)
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -38079,6 +38088,7 @@ function logText(ev){
   if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
+  { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
@@ -40241,6 +40251,105 @@ function w2HazardMark(h){
   if(h.scorch > 0) out.push(`<span class="w2-hazard-mark scorch" title="Burning ground: the next card played here takes ${h.scorch} fire damage">🔥 ${h.scorch}</span>`);
   return out.join('');
 }
+// ==== Package EQ (2026-10-19, owner 21:36): the board side of equipment on the slots and the slot hazards (rules in bramblewood-engine.js,
+// the Package EQ block). eqSlotMarks draws, in each slot cell: the floor (an overlay with its icon and rounds left), a lone piece lying
+// there, the piece tucked under a unit (pulsing while it is equipping), and a hidden drop target (data-hzcell) that shows on both rows
+// while a hazard card is held (body.eq-hz-holding): drop or tap one to lay the hazard there.
+const EQ_FLOOR_ICON = {ice:'🧊', lava:'🌋', poison:'🫧', gas:'☁️', rubble:'🪨'};
+const EQ_KIND_NAME = {ice:()=> TX('ui.eq-kind-ice'), lava:()=> TX('ui.eq-kind-lava'), poison:()=> TX('ui.eq-kind-poison'), gas:()=> TX('ui.eq-kind-gas'), rubble:()=> TX('ui.eq-kind-rubble')};
+const EQ_FLOOR_TIP = {ice:f=> TX('ui.eq-floor-ice', {r:f.rounds}), lava:f=> TX('ui.eq-floor-lava', {r:f.rounds, n:f.n}), poison:f=> TX('ui.eq-floor-poison', {r:f.rounds, n:f.n}),
+  gas:f=> TX('ui.eq-floor-gas', {r:f.rounds, n:f.n}), rubble:f=> TX('ui.eq-floor-rubble', {r:f.rounds})};
+const EQ_HZ_TEXT = {ice:h=> TX('ui.eq-hz-ice', {r:h.rounds}), lava:h=> TX('ui.eq-hz-lava', {r:h.rounds, n:h.n}), poison:h=> TX('ui.eq-hz-poison', {r:h.rounds, n:h.n}),
+  gas:h=> TX('ui.eq-hz-gas', {r:h.rounds, n:h.n}), rubble:h=> TX('ui.eq-hz-rubble', {r:h.rounds})};
+function eqIsHazardDef(d){ return !!(d && d.cardType === 'spell' && d.hazard); }
+function eqHazardText(d){ const h = d.hazard || {}, k = EQ_HZ_TEXT[h.kind] ? h.kind : 'rubble'; return EQ_HZ_TEXT[k]({rounds: h.rounds || 3, n: h.n || 1}); }
+function eqLiveUnit(m, uid){ if(!m || uid == null) return null; for(const pid of [1,2]){ const pl = m.players && m.players[pid]; if(!pl || !pl.row) continue; const c = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x && x.uid === uid); if(c) return c; } return null; }
+function eqGrantText(grant){ return grant ? Object.entries(grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key === k); return (pd ? pd.label : k) + valSuffix(v); }).join(', ') : ''; }
+function eqSlotMarks(pid, sl, c){
+  const m = matchState; if(!m || !m.engine || !m.engine.floorAt) return '';
+  const defs = getCardDefs(), pl = m.players[pid]; let out = '';
+  const f = m.engine.floorAt(pid, sl);
+  if(f) out += `<span class="eq-floor eq-floor-${f.kind}" title="${escapeAttr((EQ_FLOOR_TIP[f.kind] || EQ_FLOOR_TIP.rubble)(f))}">${EQ_FLOOR_ICON[f.kind] || '⚠️'}<small>${f.rounds}</small></span>`;
+  const lone = m.engine.loneEquipAt ? m.engine.loneEquipAt(pl, sl) : null;
+  if(lone){ const d = defs[lone.defId] || {}; out += `<span class="eq-lone" title="${escapeAttr(TX('ui.eq-lone-tip', {name: d.name || lone.defId}))}">${d.icon || '⚒️'}</span>`; }
+  const u = c ? eqLiveUnit(m, c.uid) : null;
+  if(u && u.equipment){ const d = defs[u.equipment] || {};
+    const tip = u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: eqGrantText((d.equip || {}).grant) ? ', ' + eqGrantText((d.equip || {}).grant) : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
+    out += `<span class="eq-under${u.equipOn ? '' : ' is-equipping'}" title="${escapeAttr(tip)}">${d.icon || '⚒️'}</span>`; }
+  out += `<span class="eq-hz-drop" data-hzcell="${pid}:${sl}" aria-hidden="true"></span>`;
+  return out;
+}
+// the card detail of a unit on the board: what it carries
+function eqDetailLine(liveCard){
+  const m = matchState, u = liveCard ? (eqLiveUnit(m, liveCard.uid) || liveCard) : null; if(!u || !u.equipment) return null;
+  const d = getCardDefs()[u.equipment] || {}, g = eqGrantText((d.equip || {}).grant);
+  return u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: g ? ', ' + g : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
+}
+function eqLogText(ev, nm){
+  switch(ev.type){
+    case 'equip': return ev.pending ? {cls:'gold', text: TX('ui.eq-log-equip-pending', {unit: nm(ev.defId), item: nm(ev.equipDefId)})} : null;
+    case 'equipReady': return {cls:'gold', text: TX('ui.eq-log-equip-ready', {unit: nm(ev.defId), item: nm(ev.equipDefId), a: ev.attack, h: ev.health})};
+    case 'equipLaid': return {cls:'', text: TX('ui.eq-log-laid', {side: sideLabel(ev.side), item: nm(ev.equipDefId)})};
+    case 'equipDrop': return {cls:'', text: TX('ui.eq-log-drop', {item: nm(ev.equipDefId), unit: nm(ev.fromDefId)})};
+    case 'floorSet': return {cls:'', text: TX('ui.eq-log-floor-set', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', side: sideLabel(ev.side), kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)(), r: ev.rounds})};
+    case 'floorTick': return ev.dmg != null ? {cls:'', text: TX('ui.eq-log-tick-dmg', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', unit: nm(ev.defId), n: ev.dmg, kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})}
+      : {cls:'poison', text: TX('ui.eq-log-tick-poison', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', unit: nm(ev.defId), n: ev.poison || ev.bleed || 0, kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})};
+    case 'floorSlide': return {cls:'', text: TX('ui.eq-log-slide', {unit: nm(ev.defId)})};
+    case 'floorEnd': return {cls:'', text: TX('ui.eq-log-end', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})};
+  }
+  return null;
+}
+function eqVfx(ev){
+  if(ev.type === 'equipReady'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `⚒️ +${ev.attack}/+${ev.health}`, 'buff'); }
+  else if(ev.type === 'floorTick' && ev.dmg > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} -${ev.dmg}`, 'dmg'); }
+  else if(ev.type === 'floorTick' && ev.poison > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} ☠${ev.poison}`, 'poison'); }
+  else if(ev.type === 'floorSlide'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⛸️', 'buff'); }
+}
+// Holding a hazard card (pressed, dragged or tapped to arm): every cell of both rows becomes a drop target.
+function eqHeldHazardUid(){
+  const m = matchState; if(!m || m.over || m.resolving) return null; const pl = m.players && m.players[viewerHandPid(m)]; if(!pl) return null; const defs = getCardDefs();
+  const pick = uid=>{ const hc = uid != null && pl.hand.find(h=> h.uid === uid); return hc && eqIsHazardDef(defs[hc.defId]) ? hc.uid : null; };
+  const el = document.querySelector('#handStrip .card-tile.dragging') || (bwPressedCard && bwPressedCard.isConnected ? bwPressedCard : null);
+  const fromEl = el ? pick(Number(el.getAttribute('data-handuid'))) : null; return fromEl != null ? fromEl : pick(m.selectedUid);
+}
+let eqHoldQueued = false;
+function eqSyncHolding(){ if(eqHoldQueued) return; eqHoldQueued = true; requestAnimationFrame(()=>{ eqHoldQueued = false; document.body.classList.toggle('eq-hz-holding', eqHeldHazardUid() != null); }); }
+['dragstart','dragend','drop','click','pointerdown','pointerup','pointercancel','touchend','keyup'].forEach(t=> document.addEventListener(t, eqSyncHolding, true));
+function eqPlayHazardAt(uid, cell, dropPoint){
+  const m = matchState; if(!m || uid == null || !cell) return false;
+  const [tp, sl] = String(cell.getAttribute('data-hzcell')).split(':').map(Number);
+  const ok = (m.engine.hazardTargets(m.players, activePlayerId(m), (m.players[activePlayerId(m)].hand.find(h=> h.uid === uid) || {}).defId) || []).some(t=> t.pid === tp && t.slot === sl);
+  if(!ok){ showToast(TX('toast.eq-hz-no'), 'warn'); return true; }
+  playCardByUid(uid, sl, dropPoint, {hazardPid: tp}); return true;
+}
+document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(t && document.body.classList.contains('eq-hz-holding')){ e.preventDefault(); e.stopPropagation();
+  document.querySelectorAll('.eq-hz-drop.is-over').forEach(x=>{ if(x !== t) x.classList.remove('is-over'); }); t.classList.add('is-over'); } }, true);
+document.addEventListener('drop', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(!t || !document.body.classList.contains('eq-hz-holding')) return;
+  const uid = Number(e.dataTransfer && e.dataTransfer.getData('text/plain')); const m = matchState, pl = m && m.players[viewerHandPid(m)], hc = pl && pl.hand.find(h=> h.uid === uid);
+  if(!hc || !eqIsHazardDef(getCardDefs()[hc.defId])) return;
+  e.preventDefault(); e.stopImmediatePropagation(); t.classList.remove('is-over'); eqPlayHazardAt(uid, t, {x:e.clientX, y:e.clientY}); }, true);
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(!t || !document.body.classList.contains('eq-hz-holding')) return;
+  const m = matchState; if(!m || m.selectedUid == null) return; const uid = eqHeldHazardUid(); if(uid == null) return;
+  e.preventDefault(); e.stopImmediatePropagation(); eqPlayHazardAt(uid, t); }, true);
+(function eqStyles(){ if(typeof document === 'undefined' || document.getElementById('eqStyles')) return; const st = document.createElement('style'); st.id = 'eqStyles';
+  st.textContent = `.board-card .eq-floor{position:absolute; left:4%; right:4%; bottom:3%; height:26%; border-radius:8px; display:flex; align-items:flex-end; justify-content:center; gap:2px; font-size:13px; line-height:1; padding-bottom:2px; visibility:visible; z-index:1; pointer-events:auto; box-shadow:inset 0 0 10px rgba(0,0,0,.25);}
+  .board-card .eq-floor small{font-size:10px; font-weight:700; color:#fff; text-shadow:0 1px 2px #000;}
+  .eq-floor-ice{background:linear-gradient(180deg, rgba(190,235,255,.15), rgba(150,215,255,.6));}
+  .eq-floor-lava{background:linear-gradient(180deg, rgba(255,150,40,.1), rgba(255,90,20,.65)); animation:eqLava 1.6s ease-in-out infinite alternate;}
+  .eq-floor-poison{background:linear-gradient(180deg, rgba(110,210,90,.1), rgba(80,170,60,.6));}
+  .board-card .eq-floor-gas{top:6%; height:auto; background:radial-gradient(ellipse at 50% 60%, rgba(210,225,100,.45), rgba(170,190,70,.12) 70%, transparent); align-items:flex-start; padding-top:3px;}
+  .eq-floor-rubble{background:linear-gradient(180deg, rgba(150,130,105,.25), rgba(110,92,70,.8));}
+  @keyframes eqLava{from{filter:brightness(.9);} to{filter:brightness(1.25);}}
+  .board-card .eq-lone{position:absolute; left:50%; bottom:30%; transform:translateX(-50%); font-size:20px; visibility:visible; z-index:2; filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));}
+  .board-card .eq-under{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font-size:13px; line-height:16px; padding:0 4px; border-radius:8px; background:rgba(45,32,20,.88); border:1px solid rgba(255,214,140,.6); visibility:visible; z-index:4;}
+  .board-card .eq-under.is-equipping{animation:eqEquip 0.9s ease-in-out infinite alternate;}
+  @keyframes eqEquip{from{opacity:.45;} to{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .eq-floor-lava, .board-card .eq-under.is-equipping{animation:none;} }
+  .board-card .eq-hz-drop{display:none;}
+  body.eq-hz-holding .board-card .eq-hz-drop{display:block; position:absolute; inset:0; z-index:8; visibility:visible; border:2px dashed rgba(255,205,100,.9); border-radius:8px; background:rgba(255,205,100,.1); cursor:copy; pointer-events:auto;}
+  body.eq-hz-holding .board-card .eq-hz-drop.is-over{background:rgba(255,205,100,.35);}`;
+  try{ document.head.appendChild(st); }catch(e){} })();
+// ==== end Package EQ (board) ===================================================================================================
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
@@ -40705,6 +40814,7 @@ function renderVfxForEvent(ev){
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
+  try{ eqVfx(ev); }catch(e){} // package EQ (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
