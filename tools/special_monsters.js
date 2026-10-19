@@ -290,10 +290,16 @@ function build(){
     const a = groups.async.rows.find(r=> r.id === u.id); if(!a) return {id: u.id, missing: true};
     return {id: u.id, name: u.name, fresh: {stats: a.stats, score: a.score.x1, need: a.score.need, N: a.N.v5, over: a.over, equiv: a.equivText, brPlayer: a.brPlayer, brBoss: a.brBoss.inPart}, why: a.why};
   });
-  return {generated: '2026-10-19', tool: 'tools/special_monsters.js', package: 'RJ',
+  // the hub's Units tab (👹 Non-player view): the nonPlayer rows above, and the other special monsters, worst point per name
+  const others = [];
+  ['brambles', 'units', 'guards', 'road', 'tower'].forEach(k=>{ const worst = {}; groups[k].rows.forEach(r=>{ if(k === 'road' && !/leader/.test(r.role || '') && !r.flag) return; if(k === 'tower' && !r.flag && !/head/.test(r.role || '')) return;
+    const key = r.name; if(!worst[key] || r.over > worst[key].over) worst[key] = r; });
+    Object.values(worst).forEach(r=> others.push({group: groups[k].title, name: r.name, where: r.part ? r.partName + ' · ' + r.scenario : (r.node || ''), stats: r.stats, score: r.score.x1, need: r.score.need, N: r.N.v5, level: r.level, over: r.over, inBand: r.inBand.v5,
+      equiv: r.equivText, brPlayer: r.brPlayer, brBoss: r.brBoss.perCopy != null ? r.brBoss.perCopy : r.brBoss.inPart, why: r.why, flag: r.flag, proposal: r.proposal ? r.proposal.text : null})); });
+  return {generated: '2026-10-19', tool: 'tools/special_monsters.js', package: 'RJ', doc: 'docs/balance/special-monsters-2026-10-19.md',
     budget: {v5: {formula: BB.formulaParts(CFG.v5), numbers: CFG.v5}, v6: {formula: '(Base + L/10) × (1 + L/30), Base + 0.2 × Map' + (HELPER_HAS_MAP ? ' (the helper\'s Map term)' : ' (Map term added here: the helper has none yet)'), levelLinDiv: 10, perMap: 0.2},
       playerTop: PLAYER_TOP, playerBramble: PLAYER_BRAMBLE, raidMap: RAID_MAP, tuning: raid.tuning},
-    groups, nonPlayer: np};
+    groups, nonPlayer: np, others};
 }
 
 // ---------- the doc ----------
@@ -309,6 +315,23 @@ function doc(D){
   const L = [], b = D.budget, t = b.tuning || {};
   L.push('# Special monsters against the stat budget (package RJ, 2026-10-19)', '');
   L.push('The owner (15:48): *"Justify special monster stats like Raid monster stats. What would that card\'s BR be then?"* An analysis: no stats change here. Regenerate with `node tools/special_monsters.js` (it also writes `canonical/special-monsters.json`, which the hub\'s Units tab reads).', '');
+  // the findings, from the numbers below
+  { const g = D.groups, u = g.units.rows, fr = id=> u.filter(r=> r.id === id && r.share === 1)[0], kb = fr('kraken-spawnling~boss'), le = fr('humpback-elder~boss');
+    const br = g.brambles.rows, rowsAll = g.rows.rows, small = rowsAll.filter(r=> r.smallest && r.smallest.rarity === 'common' && r.smallest.level <= 1).length;
+    const brood = rowsAll.find(r=> r.id === 'goliath-broodmother'), st = g.guards.rows.find(r=> r.share === 1), as = g.async.rows;
+    const flaggedIds = [...new Set(Object.values(g).flatMap(x=> x.rows).filter(r=> r.flag).map(r=> r.name))];
+    const npStale = D.nonPlayer.filter(n=> n.stale);
+    L.push('## Findings', '');
+    if(kb) L.push(`- **The elders are near their budget, and the raid's BR weighs them more than their stats do.** A fresh Kraken Brute fights at ${kb.stats.attack}/${kb.stats.health} (from its ~raid copy: +1 Attack, Health up to the raid's ${RAIDS[0].bossHpBonusMax} ceiling): ${kb.over}× an Epic's N, ${kb.equivText.replace(/^equivalent to a /, 'a ')}, BR ${kb.brPlayer} as a player card. On the boss side each one counts ${kb.brBoss.perCopy} (an Epic × (1 + bonus / basic Health)), 5 a fight = ${kb.brBoss.inPart} of the Left Tentacle's ${kb.brBoss.partTotal}.${le ? ` A fresh Leviathan Elder (${le.stats.attack}/${le.stats.health}, Wait 3) is in band as a Level 1 Epic (BR ${le.brPlayer}) but counts ${le.brBoss.perCopy}.` : ''} Both fall into band as the raid falls (the Health ceiling and the weakening).`);
+    if(brood) L.push(`- **The boss's row-deck copies are tiny next to their cards, but the BR counts their printed rarity.** At ${Math.round(100 * b.tuning.bossAtkPct)}% Attack / ${Math.round(100 * b.tuning.bossHpPct)}% Health every copy is in band at its strongest point; ${small} of ${rowsAll.length} fit a Level 1 Common. The Goliath Broodmother fights at ${brood.stats.attack}/${brood.stats.health} (a Level 1 Common's size, BR 1) and still adds ${brood.brBoss.perCopy} a copy (a Legendary) to the Core's BR. The raid's BR is a count of rarity × 60 cards (3 rows × 20), not of strength; that is the BR package's rule ("no fight's BR counts stats"), so it reads high against what the cards do.`);
+    if(br.length) L.push(`- **The brambles are the boss.** Each arm and the tail is a ${br[0].stats.health}-Health bramble a fight (${br[0].vsRaiders}× the raiders' merged ${br[0].raidersBramble}), the Core ${br[br.length - 1].stats.health} behind its stumps; as a 0-Attack wall card it ${br[0].equivText.replace(/; the N line.*$/, ')')}. It is allowed because the part is ${br[0].poolHp.toLocaleString('en')} raid Health shared by an instance of 250, and no BR counts a bramble.`);
+    if(st) L.push(`- **The Core's stumps** fight at ${st.stats.attack}/${st.stats.health} on a fresh Core (Thrashing's +4 Attack, then the weakening): ${st.over}× a Common's N, a Level ${st.equiv.v5.level} Common. Their job is the shield, so a little over is fine.`);
+    L.push(`- **The Commons are not called in today** (tuning.reinforce.max ${((RAIDS[0].tuning || {}).reinforce || {}).max}); at 20% / 15% they would be 1-Attack Commons.`);
+    if(as.length) L.push(`- **Async raid bosses** (raid-bosses.json and the road's 11-R / 20-R) are brambles of ${Math.min(...as.map(r=> r.stats.health))}–${Math.max(...as.map(r=> r.stats.health))} Health (${Math.min(...as.map(r=> r.vsPlayer))}–${Math.max(...as.map(r=> r.vsPlayer))}× the biggest player bramble, ${b.playerBramble.hp}) behind decks of base-level player cards (BR ${Math.min(...as.map(r=> r.brBoss.inPart))}–${Math.max(...as.map(r=> r.brBoss.inPart))}): every card is a player card; only the bramble exceeds a player's.`);
+    L.push(`- **Conquest, Tower and dungeon specials are player cards at the level they fight at**, nearly all in band. The Tower's Legendary heads are in band for their Level 13–20 except ${[...new Set(g.tower.rows.filter(r=> /head/.test(r.role || '') && !r.inBand.v5).map(r=> r.name + (DESIGN_OVER[r.id] ? ' (a rank-1 Dragon, over on purpose)' : r.flag ? ' (flagged)' : '')))].join(' and ') || 'none'}. The ones over their N are mostly player cards over their own budget as printed (listed after the flags: the card pass's, not this doc's).`);
+    L.push(`- **Flagged: ${flaggedIds.length ? flaggedIds.join(', ') : 'none'}.**${flaggedIds.length ? ' See Flagged below.' : ''}`);
+    if(npStale.length) L.push(`- **canonical/unit-themes.json's nonPlayer bodies are stale** for ${npStale.map(n=> n.name).join(' and ')}: it lists ⚔${npStale[0].unitThemesBody.attack} ❤${npStale[0].unitThemesBody.health.fresh} fresh (the printed card × 3), while the fight builds ${npStale[0].fresh.stats.attack}/${npStale[0].fresh.stats.health} (the ~raid copy at 20% / 15%, then the elder rule). tools/unit_themes.js should read the built fight (left as is here: another package owns it).`);
+    L.push(''); }
   L.push('## How each number is worked out', '');
   L.push(`- **Stats** are the ones the game builds for the fight, not the printed card: the raid's from \`buildRaidFullFight\` (the boss copies at ${Math.round(100 * t.bossAtkPct)}% Attack / ${Math.round(100 * t.bossHpPct)}% Health, then the stage's +Attack, then the weakening ${t.weakenFloor} + ${r2(1 - t.weakenFloor)} × share; the elders' Health from 50 down to basic with the raid's share; the stumps' 14 Health), the road's from \`levelledEnemyDeck\` at the level each card fights at, the Tower's from \`towerFloorDeck\` + \`statsBeyondLevel\`.`);
   L.push('- **Score**: 2A+H+S and A·H+S, ×1.5 per half-miss skill (`SkillCosts.budget`, `canonical/skill-costs.json`). Skills with no entry in the table cost 1 + ⌊N/2⌋ (the old default).');
@@ -344,8 +367,9 @@ function doc(D){
 if(require.main === module){
   const D = build();
   if(process.argv.includes('--print')){ console.log(doc(D)); process.exit(0); }
-  fs.writeFileSync(path.join(ROOT, 'canonical', 'special-monsters.json'), JSON.stringify(D, null, 1) + '\n');
   fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'special-monsters-2026-10-19.md'), doc(D));
+  Object.values(D.groups).forEach(g=> g.rows.forEach(r=>{ delete r.fx; if(r.score && !(r.score.missing || []).length) delete r.score.missing; })); // the doc is written; keep the json lean
+  fs.writeFileSync(path.join(ROOT, 'canonical', 'special-monsters.json'), JSON.stringify(D) + '\n');
   const all = Object.values(D.groups).flatMap(g=> g.rows);
   console.log(`special_monsters: ${all.length} rows, ${all.filter(r=> !r.inBand.v5).length} over their N, ${all.filter(r=> r.flag).length} flagged -> canonical/special-monsters.json, docs/balance/special-monsters-2026-10-19.md`);
 }

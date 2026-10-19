@@ -277,14 +277,24 @@
     el.innerHTML = html;
   }
   // ---------- non-player units (2026-10-19, package UT): the raid's boss units and raid bosses keep their multipliers ----------
+  // 2026-10-19 (package RJ, owner 15:48: "Justify special monster stats like Raid monster stats. What would that card's BR be then?"): the
+  // score (2A+H+S against N), the player card it would be and its BR as a player card and on the boss side, from SM_DATA
+  // (canonical/special-monsters.json, node tools/special_monsters.js; build_hub.py inlines its nonPlayer and "others" rows).
+  const SM = (typeof SM_DATA !== 'undefined' && SM_DATA) || null, SMNP = {}; ((SM && SM.nonPlayer) || []).forEach(x=> SMNP[x.id] = x);
+  const smStats = s=> s ? `⚔${s.attack} ❤${s.health} ⏳${s.wait} 🪵${s.cost}` : '';
+  const smCells = x=> x ? `<td class="num">${esc(smStats(x.stats))}<br><small>${esc(x.score)} vs N ${esc(x.N)}${x.over > 1 ? ' · <b>' + esc(x.over) + '×</b>' : ' · in band'}</small></td><td>${esc(x.equiv)}</td><td class="num">${esc(x.brPlayer)} <small>/ ${esc(x.brBoss)}</small></td>` : '<td colspan="3"><i>not in canonical/special-monsters.json</i></td>';
   function renderNp(){
     const el = $('utNp'); if(!el) return; const list = D.nonPlayer || [];
     el.innerHTML = `<p>Non-player units are not balanced by N: only enemies field them, so they keep their multipliers. The player variants (the proposed later versions) take their stats from N.</p>`
-      + `<div class="bal-wrap"><table class="bal-t ut-qt"><thead><tr><th>Unit</th><th>Kind</th><th>From</th><th>Stats</th><th>Art</th></tr></thead><tbody>`
+      + (SM ? `<p><small>Score, equivalent card and BR: ${esc(SM.doc || '')} (${esc(SM.generated || '')}). Score = 2A+H+S at the stats the fight builds (fresh, the strongest point); N = ${esc((SM.budget || {}).v5 && SM.budget.v5.n || '')}. BR as player = the equivalent card's battle rating; BR as boss = what one copy adds to the boss's BR now.</small></p>` : '')
+      + `<div class="bal-wrap"><table class="bal-t ut-qt"><thead><tr><th>Unit</th><th>Kind</th><th>From</th><th>Stats</th>${SM ? '<th>Fights as · score vs N</th><th>Equivalent player card</th><th>BR player / boss</th>' : ''}<th>Art</th></tr></thead><tbody>`
       + list.map(n=> `<tr><td><b>${esc(n.name)}</b> <small>${esc(n.id)}${n.animal ? ' · 🐾 ' + esc(n.animal) : ''}</small></td><td>${esc(n.kind === 'raid-boss-unit' ? 'raid boss unit (' + n.raid + ': ' + (n.parts || []).join(', ') + ')' : 'raid boss')}</td>`
         + `<td>${n.of ? esc((BYID[n.of] || {}).name || n.of) : esc(Object.keys(n.deck || {}).join(', '))}</td>`
-        + `<td>${n.mult ? esc('Attack ' + n.mult.attack + ', Health ' + n.mult.health + ', ' + n.mult.rarity + (n.body ? ` (⚔${n.body.attack}, ❤${n.body.health.fresh} fresh … ${n.body.health.nearlyDown})` : '')) : esc(n.statsFrom || '')}</td>`
-        + `<td>${n.art && n.art.ownArt ? 'own art' : '<b>no art of its own</b> (uses ' + esc(n.art && n.art.uses || '?') + ')'}</td></tr>`).join('') + '</tbody></table></div>';
+        + `<td>${n.mult ? esc('Attack ' + n.mult.attack + ', Health ' + n.mult.health + ', ' + n.mult.rarity + (n.body ? ` (⚔${n.body.attack}, ❤${n.body.health.fresh} fresh … ${n.body.health.nearlyDown})` : '')) : esc(n.statsFrom || '')}${SMNP[n.id] && SMNP[n.id].stale ? ' <b title="The fight builds other stats: see the next column">(stale)</b>' : ''}</td>`
+        + (SM ? smCells(SMNP[n.id] && SMNP[n.id].fresh) : '')
+        + `<td>${n.art && n.art.ownArt ? 'own art' : '<b>no art of its own</b> (uses ' + esc(n.art && n.art.uses || '?') + ')'}</td></tr>`).join('') + '</tbody></table></div>'
+      + (SM && (SM.others || []).length ? `<h3>Other special monsters <small>${SM.others.length}</small></h3><div class="bal-wrap"><table class="bal-t ut-qt"><thead><tr><th>Monster</th><th>Where (its strongest point)</th><th>Fights as · score vs N</th><th>Equivalent player card</th><th>BR player / boss</th><th>Why it may exceed the budget</th></tr></thead><tbody>`
+        + SM.others.map(x=> `<tr><td><b>${esc(x.name)}</b>${x.flag ? ' ⚑' : ''} <small>${esc(x.group)}</small></td><td>${esc(x.where)} <small>Lv ${esc(x.level)}</small></td>${smCells(x)}<td>${esc(x.why)}${x.proposal ? '<br><small><b>Proposed (not applied):</b> ' + esc(x.proposal) + '</small>' : ''}</td></tr>`).join('') + '</tbody></table></div>' : '');
   }
   function renderView(){ $('utCat').hidden = st.view !== 'cat'; $('utQueue').hidden = st.view !== 'queue'; $('utNp').hidden = st.view !== 'np'; if(st.view === 'cat') render(); else if(st.view === 'np') renderNp(); else renderQueue(); }
   hub.onShow.units = build;

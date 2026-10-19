@@ -429,7 +429,13 @@ SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)
 # the artifact's db (collection unitPicks), so the hub is published with capabilities {db: {}}; tools/hub/pull_unit_picks.md.
 _ut_path = os.path.join(ROOT, 'canonical', 'unit-themes.json')
 _ut = json.load(open(_ut_path, encoding='utf-8')) if os.path.exists(_ut_path) else None
-UT_INLINE = (f'const UT_DATA = {_js(_ut)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.js'), encoding='utf-8').read()) if _ut else ''
+# 2026-10-19 (package RJ): the 👹 Non-player view's score, equivalent card and BR columns: canonical/special-monsters.json
+# (node tools/special_monsters.js), its nonPlayer and "others" rows only (the full tables are in docs/balance/special-monsters-2026-10-19.md)
+_sm_path = os.path.join(ROOT, 'canonical', 'special-monsters.json')
+_sm = json.load(open(_sm_path, encoding='utf-8')) if os.path.exists(_sm_path) else None
+_sm_slim = {k: _sm.get(k) for k in ('generated', 'doc', 'nonPlayer', 'others')} if _sm else None
+if _sm: _sm_slim['budget'] = {'v5': (_sm.get('budget') or {}).get('v5', {}).get('formula'), 'v6': (_sm.get('budget') or {}).get('v6', {}).get('formula'), 'playerTop': (_sm.get('budget') or {}).get('playerTop')}
+UT_INLINE = (f'const UT_DATA = {_js(_ut)};\nconst SM_DATA = {_js(_sm_slim)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.js'), encoding='utf-8').read()) if _ut else ''
 UT_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.css'), encoding='utf-8').read()
 _fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
 FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'

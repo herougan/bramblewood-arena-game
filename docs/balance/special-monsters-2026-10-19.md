@@ -2,6 +2,18 @@
 
 The owner (15:48): *"Justify special monster stats like Raid monster stats. What would that card's BR be then?"* An analysis: no stats change here. Regenerate with `node tools/special_monsters.js` (it also writes `canonical/special-monsters.json`, which the hub's Units tab reads).
 
+## Findings
+
+- **The elders are near their budget, and the raid's BR weighs them more than their stats do.** A fresh Kraken Brute fights at 3/50 (from its ~raid copy: +1 Attack, Health up to the raid's 50 ceiling): 1.1× an Epic's N, a Level 4 Epic with Wait 2, Lumber 3; as small as a Lv 7 Common (BR 2.9), BR 21.2 as a player card. On the boss side each one counts 36.6 (an Epic × (1 + bonus / basic Health)), 5 a fight = 183 of the Left Tentacle's 399. A fresh Leviathan Elder (3/50, Wait 3) is in band as a Level 1 Epic (BR 11) but counts 30.6. Both fall into band as the raid falls (the Health ceiling and the weakening).
+- **The boss's row-deck copies are tiny next to their cards, but the BR counts their printed rarity.** At 20% Attack / 15% Health every copy is in band at its strongest point; 18 of 18 fit a Level 1 Common. The Goliath Broodmother fights at 5/4 (a Level 1 Common's size, BR 1) and still adds 21 a copy (a Legendary) to the Core's BR. The raid's BR is a count of rarity × 60 cards (3 rows × 20), not of strength; that is the BR package's rule ("no fight's BR counts stats"), so it reads high against what the cards do.
+- **The brambles are the boss.** Each arm and the tail is a 420-Health bramble a fight (2.8× the raiders' merged 150), the Core 200 behind its stumps; as a 0-Attack wall card it exceeds any player budget by 3.09× (9.85× a Lv 11 Legendary with Wait 0, Lumber 0). It is allowed because the part is 200,000 raid Health shared by an instance of 250, and no BR counts a bramble.
+- **The Core's stumps** fight at 5/11 on a fresh Core (Thrashing's +4 Attack, then the weakening): 1.13× a Common's N, a Level 5 Common. Their job is the shield, so a little over is fine.
+- **The Commons are not called in today** (tuning.reinforce.max 0); at 20% / 15% they would be 1-Attack Commons.
+- **Async raid bosses** (raid-bosses.json and the road's 11-R / 20-R) are brambles of 100–350 Health (1.85–6.48× the biggest player bramble, 54) behind decks of base-level player cards (BR 20–68): every card is a player card; only the bramble exceeds a player's.
+- **Conquest, Tower and dungeon specials are player cards at the level they fight at**, nearly all in band. The Tower's Legendary heads are in band for their Level 13–20 except Blue Dragon (a rank-1 Dragon, over on purpose) and The Caldera Wyrm (flagged). The ones over their N are mostly player cards over their own budget as printed (listed after the flags: the card pass's, not this doc's).
+- **Flagged: The Caldera Wyrm.** See Flagged below.
+- **canonical/unit-themes.json's nonPlayer bodies are stale** for Kraken Brute and Leviathan Elder: it lists ⚔10 ❤93 fresh (the printed card × 3), while the fight builds 3/50 (the ~raid copy at 20% / 15%, then the elder rule). tools/unit_themes.js should read the built fight (left as is here: another package owns it).
+
 ## How each number is worked out
 
 - **Stats** are the ones the game builds for the fight, not the printed card: the raid's from `buildRaidFullFight` (the boss copies at 20% Attack / 15% Health, then the stage's +Attack, then the weakening 0.6 + 0.4 × share; the elders' Health from 50 down to basic with the raid's share; the stumps' 14 Health), the road's from `levelledEnemyDeck` at the level each card fights at, the Tower's from `towerFloorDeck` + `statsBeyondLevel`.

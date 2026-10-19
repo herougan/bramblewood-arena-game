@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RJ: special monsters against the budget, and their BR)
+- **Owner (15:48):** "Justify special monster stats like Raid monster stats. What would that card's BR be then?" This is an analysis only: no stats changed.
+- **`docs/balance/special-monsters-2026-10-19.md`** has one table per group: the Goliath's brambles, the elders (boss units) through the raid's life, the boss's row-deck copies, its Commons, the Core's stumps, the async raid bosses, the conquest bosses' signature units, and the Tower and dungeon specials. Each row gives the stats the fight really builds, the skills, the score (2A+H+S and A·H+S), the N needed, the equivalent player card ("a Level 4 Epic with Wait 2, Lumber 3", or "exceeds any player budget by Y×"), the BR as a player card and as the boss, and a one-line justification.
+- **`tools/special_monsters.js`** regenerates the doc and `canonical/special-monsters.json`. It reads the game's own fight builds (`buildRaidFullFight` at 100% / 50% / 5% of each part, `levelledEnemyDeck`, `towerFloorDeck`) and N from `bramblewood-budget.js` with the table's numbers (v5). It also previews v6: (Base + L/10)(1 + L/30), with 0.2 × Map added to Base until the helper has the Map term.
+- **Findings:**
+  - A fresh Kraken Brute (3/50) is 1.1× an Epic's N, the size of a Level 4 Epic (BR 21). The raid's BR counts each one at 37.
+  - The row copies at 20% / 15% all fit a Level 1 Common, yet they count at their printed rarity: a Broodmother copy at 5/4 adds 21.
+  - The brambles (420 a fight) are the over-budget part, which is fine because they share 200,000 raid Health among 250 raiders.
+  - **Flagged:** the Caldera Wyrm, 1.82× its N as printed. It has no source. Two options are proposed, neither applied: trim its Health onto the fight's bramble, or list it as non-player.
+  - 13 player cards are over their own budget as printed. They are listed for the card pass.
+  - `canonical/unit-themes.json`'s elder bodies are stale (⚔10 ❤93 against the built 3/50).
+- **Hub, not published:** the Units tab's 👹 Non-player view has columns for score vs N, the equivalent card and BR as player / as boss, plus a table of the other special monsters (`SM_DATA`, inlined by `build_hub.py`).
+
 ## 2026-10-19 (package BF2: budget v5, a softer Forge curve, the budget panel with Base)
 - **Owner (13:52):** "That's too much. ... (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." **Budget v5:** N = (Base + L/5) × (1 + L/30) from Level 1, and Base − 1 at Level 0, in `bramblewood-budget.js` and `canonical/skill-costs.json`. The owner's example with L/3 checks out: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10.
   - **L/5, not L/3** (13:54: "change it to L/4 or L/5" if L/3 favours weak cards). Weak cards' Lv 10 stat growth is 1.82× / 1.74× / 1.65× the strong cards' with L/3 / L/4 / L/5. None meets 1.3×, so the closest, L/5, is used. Most of the gap comes from the absolute conversion. `levelLinDiv` is one constant.
