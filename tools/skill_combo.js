@@ -72,11 +72,18 @@ function makeLab(o){
   }
   // Bisection on the opponent's added stat until deck T wins half (integers, doubling out from 0), then the 1/20 step inside the last
   // integer bracket; the worth is where the win rate crosses 50% (interpolated).
-  function solveN(S, T, stat, n, deckAt, key){
+  function solveN(S, T, stat, n, deckAt, key, guess){
     const b = S.b, lo = deckAt.lo ? deckAt.lo[stat] : (stat === 'h' ? -(b.health - 1) : -b.attack), hi = stat === 'h' ? (o.hiMult || 5) * b.health : (o.hiMult || 5) * b.attack;
     const testId = Object.keys(T)[0], cache = {}, f = k=>{ if(cache[k] == null) cache[k] = lab.batch(testId, T, deckAt(stat, k, 0), S.ctx, key, n).wr; return cache[k]; };
     let a, z, clamp = null;
-    if(f(0) > 0.5){ a = 0; z = 1; while(f(z) > 0.5){ if(z >= hi){ clamp = '>'; break; } a = z; z = Math.min(hi, z * 2); } }
+    // warm start (2026-10-19, resumed: the box is shared and slow, ~20 runs in 9 minutes): a pair starts its bracket at the sum of
+    // its singles' crossings and steps out 1, 2, 4 ... from there instead of doubling out from 0. Every f(k) is the same batch on
+    // the same seeds whichever order it is asked in (common random numbers), so on a monotone curve the bracket, and the crossing,
+    // are the ones the cold search finds; only the number of batches played drops.
+    if(guess != null && isFinite(guess)){ const g = Math.max(lo, Math.min(hi, Math.round(guess)));
+      if(f(g) > 0.5){ a = g; let st = 1; z = Math.min(hi, g + st); while(f(z) > 0.5){ if(z >= hi){ clamp = '>'; break; } a = z; st *= 2; z = Math.min(hi, a + st); } }
+      else { z = g; let st = 1; a = Math.max(lo, g - st); while(f(a) <= 0.5){ if(a <= lo){ clamp = '<'; break; } z = a; st *= 2; a = Math.max(lo, z - st); } } }
+    else if(f(0) > 0.5){ a = 0; z = 1; while(f(z) > 0.5){ if(z >= hi){ clamp = '>'; break; } a = z; z = Math.min(hi, z * 2); } }
     else { z = 0; a = Math.max(lo, -1); while(f(a) <= 0.5){ if(a <= lo){ clamp = '<'; break; } z = a; a = Math.max(lo, a * 2); } }
     if(clamp) return {d: clamp === '>' ? hi : lo, se:null, evals: Object.keys(cache).length, clamp};
     while(z - a > 1){ const mid = Math.floor((a + z) / 2); if(f(mid) > 0.5) a = mid; else z = mid; }
@@ -104,7 +111,7 @@ function measureLite(lab, run, n){
   const m0 = lab.batch(id, T, deckOf(S.v), S.ctx, `vs:mirror:${b.id}` + salt, n);
   const per = {}; S.pool.forEach(r=> per[r] = lab.batch(id, T, S.refs[r], S.ctx, `vs:${r}:${b.id}` + salt, n).wr);
   const deckAt = lab.mixDeckAt(S), key = `cb:mix:${b.id}` + salt, z = lab.zeroOf(S, n, deckAt, key);
-  const sh = lab.solveN(S, T, 'h', n, deckAt, key), sa = lab.solveN(S, T, 'a', n, deckAt, key);
+  const gs = run.guess || {}, sh = lab.solveN(S, T, 'h', n, deckAt, key, gs.h), sa = lab.solveN(S, T, 'a', n, deckAt, key, gs.a);
   const dh = sh.d - z.h.d, da = sa.d - z.a.d, clamp = sh.clamp || sa.clamp || null;
   const se = sh.se == null || sa.se == null ? null : r2(Math.sqrt(sh.se * sh.se + 4 * sa.se * sa.se) / 2);
   delete lab.defs[id];
@@ -526,8 +533,11 @@ if(require.main === module){
     if(opt('replicate')){ runs = replicatePlan(p, +opt('replicate')); }
     const ckOut = shard.length === 2 ? ck + '.s' + shard[0] : ck; let left = 0, did = 0;
     console.log(`${runs.length} runs (${runs.filter(r=> done[r.key]).length} from the checkpoint), ${G} games per point${shard.length === 2 ? ', shard ' + shard.join('/') : ''}`);
+    // the warm start: a pair's guess is the zero + both singles' shifts (the singles all ran first)
+    const guessOf = r=>{ if(r.kind !== 'pair' || opt('cold')) return null; const s = r.ids.map(id=> done[['single', id, r.ctx, r.b].join('|') + (r.salt ? '|rep' : '')]);
+      if(s.some(x=> !x || x.error || x.solve.clamp)) return null; return {h: s[0].solve.zeroH + s[0].solve.dh + s[1].solve.dh, a: s[0].solve.zeroA + s[0].solve.da + s[1].solve.da}; };
     runs.forEach((r, i)=>{ if(done[r.key]) return; if(shard.length === 2 && i % shard[1] !== shard[0]) return; if(budget && Date.now() - t0 > budget){ left++; return; }
-      let out; try{ out = measureLite(lab, r, G); }catch(e){ out = {key:r.key, kind:r.kind, ids:r.ids, ctx:r.ctx, b:r.b, error: String(e && e.stack || e).slice(0, 300)}; }
+      let out; try{ const g = guessOf(r); out = measureLite(lab, g ? Object.assign({}, r, {guess: g}) : r, G); if(g) out.warm = true; }catch(e){ out = {key:r.key, kind:r.kind, ids:r.ids, ctx:r.ctx, b:r.b, error: String(e && e.stack || e).slice(0, 300)}; }
       out.G = G; fs.appendFileSync(ckOut, JSON.stringify(out) + '\n'); did++;
       console.log(`[${i + 1}/${runs.length}] ${r.kind} ${r.ids.join('+')} ${r.ctx}: ${out.error ? 'ERROR ' + out.error : `S ${out.S.all} (H ${out.S.H}, A ${out.S.A}, ±${out.S.se}) vs pool ${out.wr.pool} ${out.games} games`} · ${Math.round((Date.now() - t0) / 1000)}s`); });
     console.log(`${did} done this chunk, ${left} left for this shard`); process.exit(left ? 3 : 0);
