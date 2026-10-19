@@ -2046,7 +2046,10 @@ function cardFrameKind(d, opts){
   if(/\b(env-card|match-field-tile)\b/.test(opts.extraClass||'')) return 'field';
   return cardBackingKind(d);
 }
-const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
+// 2026-10-19 (package CF, owner 22:32: "Equipment & devilry card frame - can it be improved? ... I don't want to stray too far from
+// that. Just abit different."): .cframe-orn is the frame's ornament layer (rivets and gears, sigils and embers, shell ribs), a sibling
+// of .cframe so the filter that re-tints the normal frame's inlay doesn't touch it. It only shows on the frames that use it.
+const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i><i class="cframe-orn" aria-hidden="true"></i>';
 // Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
 // (then we can remove the top right hand corner context symbol for those. like the 5 point star for devilry and prayer)"): each
 // archetype (the CARD_ARCHETYPE_MARK keys) has its own frame, drawn by tools/make_card_frames.py. The call: a UNIT of an archetype
@@ -2069,13 +2072,18 @@ const CARD_ARCH_FRAMES = {
   void:{a:{art:'art/frames/a-void.png'}, s:{art:'art/frames/s-void.png'}},
 };
 // The archetype frame a card face wears (its CARD_ARCHETYPE_MARK key), or null. Only units and structures take one.
+// 2026-10-19 (package CF): equipment never takes an archetype frame. Every equipment card wears the equipment frame (fr-equip); an
+// archetype's equipment (Terraumbra, an Evomax Easter egg, used to wear the pink nacre Evomax frame) shows its archetype by the corner mark.
+// Devilry and Evomax units keep ar-<key>, but their CSS now draws the normal frame with a light touch (see "Package CF" in the template).
 function cardFrameArch(d, kind){
-  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia') return null;
+  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia' || d.cardType === 'equipment') return null;
   let key = null; try{ key = cardArchetypeKey(d); }catch(e){}
   return key && CARD_ARCH_FRAMES[key] ? key : null;
 }
 // fr-<kind>, plus ar-<archetype> when one applies: the classes that pick a card face's frame
-function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind); return 'fr-' + kind + (ar ? ' ar-' + ar : ''); }
+// + fr-equip (2026-10-19, package CF) on every equipment card: the normal frame, forged (gunmetal band, pewter inlay, rivets and gears)
+function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind);
+  return 'fr-' + kind + (kind === 'unit' && d && d.cardType === 'equipment' ? ' fr-equip' : '') + (ar ? ' ar-' + ar : ''); }
 (function installCardFrames(){
   try{
     if(document.getElementById('bwCardFrames')) return;

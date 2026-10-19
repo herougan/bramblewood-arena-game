@@ -11528,6 +11528,53 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   .card-tile.fr-unit.ar-ancient > .cframe{border-image-source:var(--fr-a-ancient);} .card-tile.fr-structure.ar-ancient > .cframe{border-image-source:var(--fr-s-ancient);}
   .card-tile.fr-unit.ar-outer > .cframe{border-image-source:var(--fr-a-outer);} .card-tile.fr-structure.ar-outer > .cframe{border-image-source:var(--fr-s-outer);}
   .card-tile.fr-unit.ar-void > .cframe{border-image-source:var(--fr-a-void);} .card-tile.fr-structure.ar-void > .cframe{border-image-source:var(--fr-s-void);}
+  /* ===== Package CF (2026-10-19, owner 22:32: "Equipment & devilry card frame - can it be improved? ... If it's equipment - it's too
+     pink and doesn't make you think of equipment. Is there Evomax card frame? Oh no, quill spear uses the normal card frame. I don't
+     want to stray too far from that. Just abit different.") =====
+     Equipment, Devilry and Evomax now all wear the NORMAL frame (unit.png: same shape, band widths, plate and layout) with a light
+     touch of their own, so they read as kin of the normal card rather than a different design:
+       equipment  (.fr-equip, every cardType 'equipment' card)  the band is gunmetal instead of walnut, the gold inlay and corner pins
+                  go pewter-bronze (a filter on .cframe), and the side bands carry a small gear and two rivets. An archetype's
+                  equipment (Terraumbra: Evomax, a Scrapper Crowbar) keeps this frame and shows its archetype by the corner mark.
+       Devilry    a crimson-to-charcoal band, the inlay goes ember red, sigils over the corner pins, a few ember glints.
+       Evomax     the walnut band as normal, a pearl (nacre) inlay, shell-rib ticks along the top band and plate, a spiral shell on
+                  each side band.
+     The ornaments are crisp pixel-grid SVGs on .cframe-orn (the sibling of .cframe, so the inlay's filter doesn't touch them),
+     placed on the frame's own 126x156 grid (background-size = the emblem's size on that grid). Ecclesia, Scrappers and the rest keep
+     their own frames; structures keep their boards (s-<key>). */
+  :root{
+    --cf-gear:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' width='9' height='9' shape-rendering='crispEdges'><path fill='%2314171a' d='M2 0h1v1h-1zM4 0h1v1h-1zM6 0h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM5 1h1v1h-1zM7 1h1v1h-1zM0 2h1v1h-1zM8 2h1v1h-1zM1 3h1v1h-1zM7 3h1v1h-1zM0 4h1v1h-1zM8 4h1v1h-1zM1 5h1v1h-1zM7 5h1v1h-1zM0 6h1v1h-1zM8 6h1v1h-1zM1 7h1v1h-1zM3 7h1v1h-1zM5 7h1v1h-1zM7 7h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1z'/><path fill='%23aab2bc' d='M2 1h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM5 3h1v1h-1zM6 3h1v1h-1zM1 4h1v1h-1zM2 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM6 7h1v1h-1z'/><path fill='%234a525c' d='M4 3h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM4 5h1v1h-1z'/></svg>");
+    --cf-rivet:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 6' width='6' height='6' shape-rendering='crispEdges'><path fill='%2314171a' d='M2 0h1v1h-1zM3 0h1v1h-1zM1 1h1v1h-1zM4 1h1v1h-1zM0 2h1v1h-1zM5 2h1v1h-1zM0 3h1v1h-1zM5 3h1v1h-1zM1 4h1v1h-1zM4 4h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1z'/><path fill='%237d8790' d='M2 1h1v1h-1zM3 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1z'/><path fill='%23d6dde4' d='M2 2h1v1h-1z'/></svg>");
+    --cf-sigil:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' width='9' height='9' shape-rendering='crispEdges'><path fill='%230a0405' d='M3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM2 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM7 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM1 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM7 6h1v1h-1zM2 7h1v1h-1zM6 7h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1z'/><path fill='%23c8243a' d='M3 1h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM2 2h1v1h-1zM6 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM1 4h1v1h-1zM7 4h1v1h-1zM1 5h1v1h-1zM3 5h1v1h-1zM5 5h1v1h-1zM7 5h1v1h-1zM2 6h1v1h-1zM6 6h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1z'/><path fill='%23ff9a4a' d='M4 4h1v1h-1z'/></svg>");
+    --cf-ember:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 3' width='3' height='3' shape-rendering='crispEdges'><path fill='%23ff6a1a' d='M1 0h1v1h-1zM0 1h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1z'/><path fill='%23ffd27a' d='M1 1h1v1h-1z'/></svg>");
+    --cf-spiral:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' width='9' height='9' shape-rendering='crispEdges'><path fill='%232a1a16' d='M2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM1 1h1v1h-1zM7 1h1v1h-1zM0 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM7 5h1v1h-1zM0 6h1v1h-1zM7 6h1v1h-1zM1 7h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM2 8h1v1h-1z'/><path fill='%23f3e6dc' d='M2 1h1v1h-1zM3 1h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM7 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1zM5 4h1v1h-1zM7 4h1v1h-1zM1 5h1v1h-1zM3 5h1v1h-1zM6 5h1v1h-1zM1 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM2 7h1v1h-1z'/><path fill='%239fc8b8' d='M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM2 3h1v1h-1zM6 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1z'/></svg>");
+  }
+  .card-tile > .cframe-orn{display:none; position:absolute; z-index:1; left:-2.5%; right:-2.5%; top:-2%; bottom:-2%; pointer-events:none; image-rendering:pixelated;}
+  /* -- equipment: forged (gunmetal band, pewter-bronze inlay and pins, a gear and two rivets on each side band) -- */
+  .card-tile.fr-equip.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 18%, #424a54) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 14%, #1a1e23) 100%) !important;}
+  .card-tile.fr-equip.art-extended{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 16%, #262c33) 0%, #101317 100%) !important;}
+  .card-tile.fr-equip.no-art{background:repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 14%, #56606a) 0%, #2b3138 45%, #121518 100%) !important;}
+  .card-tile.fr-equip > .cframe{filter:grayscale(1) sepia(.3) brightness(1.08);}
+  .card-tile.fr-equip > .cframe-orn{display:block; background:var(--cf-gear) 1.71% 44.56% / 7.143% 5.769% no-repeat, var(--cf-gear) 98.29% 44.56% / 7.143% 5.769% no-repeat, var(--cf-rivet) 2.92% 19.33% / 4.762% 3.846% no-repeat, var(--cf-rivet) 97.08% 19.33% / 4.762% 3.846% no-repeat, var(--cf-rivet) 2.92% 70.00% / 4.762% 3.846% no-repeat, var(--cf-rivet) 97.08% 70.00% / 4.762% 3.846% no-repeat;}
+  /* -- Devilry: the normal frame, smouldering (crimson-to-charcoal band, ember inlay, sigils on the corner pins, ember glints) -- */
+  .card-tile.fr-unit.ar-devilry > .cframe{border-image-source:var(--fr-unit); filter:hue-rotate(-38deg) saturate(1.7) brightness(.92);}
+  .card-tile.fr-unit.ar-devilry.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 20%, #3c1418) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 14%, #150809) 100%) !important;}
+  .card-tile.fr-unit.ar-devilry.art-extended{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 16%, #2c0f12) 0%, #100607 100%) !important;}
+  .card-tile.fr-unit.ar-devilry.no-art{background:linear-gradient(180deg, #3a1519 0%, #22100f 45%, #0e0606 100%) !important;}
+  .card-tile.fr-unit.ar-devilry > .cframe-orn{display:block; background:var(--cf-sigil) 2.56% 2.04% / 7.143% 5.769% no-repeat, var(--cf-sigil) 97.44% 2.04% / 7.143% 5.769% no-repeat, var(--cf-sigil) 2.56% 97.96% / 7.143% 5.769% no-repeat, var(--cf-sigil) 97.44% 97.96% / 7.143% 5.769% no-repeat;}
+  .card-tile.fr-unit.ar-devilry > .cframe-orn::after{content:''; position:absolute; inset:0; background:var(--cf-ember) 16.67% 3.27% / 2.381% 1.923% no-repeat, var(--cf-ember) 95.93% 59.15% / 2.381% 1.923% no-repeat, var(--cf-ember) 4.07% 31.70% / 2.381% 1.923% no-repeat, var(--cf-ember) 80.89% 96.41% / 2.381% 1.923% no-repeat; animation:cfEmber 2.8s ease-in-out infinite;}
+  @keyframes cfEmber{0%,100%{opacity:.35;} 40%{opacity:1;} 70%{opacity:.6;}}
+  /* -- Evomax: the normal walnut, a nacre inlay, shell ribs on the top band and plate, a spiral shell on each side band -- */
+  .card-tile.fr-unit.ar-evolution > .cframe{border-image-source:var(--fr-unit); filter:saturate(.22) brightness(1.32);}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn{display:block; background:var(--cf-spiral) 1.71% 44.56% / 7.143% 5.769% no-repeat, var(--cf-spiral) 98.29% 44.56% / 7.143% 5.769% no-repeat;}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn::before, .card-tile.fr-unit.ar-evolution > .cframe-orn::after{content:''; position:absolute; left:11.9%; right:11.9%; height:2.6%;
+    background:repeating-linear-gradient(90deg, rgba(246,234,226,.55) 0 1.1%, transparent 1.1% 6.9%);}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn::before{top:3.4%;}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn::after{bottom:3%;}
+  @media (prefers-reduced-motion:reduce){ .card-tile > .cframe-orn::after{animation:none !important;} }
+  :where(html[data-fx="none"], html[data-fx="low"]) .card-tile > .cframe-orn::after{animation:none !important;}
+  /* ===== /Package CF ===== */
 /* ==== Arena and raid, 2026-10-17 (the user's notes, 23:25) ==== */
 /* The scene's own layers (syncSceneFx): the Abyss's light shafts from far above, marine snow and a murk below; the Arena's bunting.
    Transform / opacity animations only, on a handful of elements. */
@@ -41729,7 +41776,10 @@ function cardFrameKind(d, opts){
   if(/\b(env-card|match-field-tile)\b/.test(opts.extraClass||'')) return 'field';
   return cardBackingKind(d);
 }
-const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
+// 2026-10-19 (package CF, owner 22:32: "Equipment & devilry card frame - can it be improved? ... I don't want to stray too far from
+// that. Just abit different."): .cframe-orn is the frame's ornament layer (rivets and gears, sigils and embers, shell ribs), a sibling
+// of .cframe so the filter that re-tints the normal frame's inlay doesn't touch it. It only shows on the frames that use it.
+const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i><i class="cframe-orn" aria-hidden="true"></i>';
 // Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
 // (then we can remove the top right hand corner context symbol for those. like the 5 point star for devilry and prayer)"): each
 // archetype (the CARD_ARCHETYPE_MARK keys) has its own frame, drawn by tools/make_card_frames.py. The call: a UNIT of an archetype
@@ -41752,13 +41802,18 @@ const CARD_ARCH_FRAMES = {
   void:{a:{art:'assets/frames/a-void.png?v=b2a81d3048'}, s:{art:'assets/frames/s-void.png?v=942c074dff'}},
 };
 // The archetype frame a card face wears (its CARD_ARCHETYPE_MARK key), or null. Only units and structures take one.
+// 2026-10-19 (package CF): equipment never takes an archetype frame. Every equipment card wears the equipment frame (fr-equip); an
+// archetype's equipment (Terraumbra, an Evomax Easter egg, used to wear the pink nacre Evomax frame) shows its archetype by the corner mark.
+// Devilry and Evomax units keep ar-<key>, but their CSS now draws the normal frame with a light touch (see "Package CF" in the template).
 function cardFrameArch(d, kind){
-  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia') return null;
+  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia' || d.cardType === 'equipment') return null;
   let key = null; try{ key = cardArchetypeKey(d); }catch(e){}
   return key && CARD_ARCH_FRAMES[key] ? key : null;
 }
 // fr-<kind>, plus ar-<archetype> when one applies: the classes that pick a card face's frame
-function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind); return 'fr-' + kind + (ar ? ' ar-' + ar : ''); }
+// + fr-equip (2026-10-19, package CF) on every equipment card: the normal frame, forged (gunmetal band, pewter inlay, rivets and gears)
+function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind);
+  return 'fr-' + kind + (kind === 'unit' && d && d.cardType === 'equipment' ? ' fr-equip' : '') + (ar ? ' ar-' + ar : ''); }
 (function installCardFrames(){
   try{
     if(document.getElementById('bwCardFrames')) return;
@@ -42587,7 +42642,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '450faffbdd4d', BUILD_CARD_HASH = 'c8715ee851e1e9c5196edd68e3307776aa47b81df5c590af18a5c3fddddfec99';
+const BUILD_ID = '9761d64682c9', BUILD_CARD_HASH = 'c8715ee851e1e9c5196edd68e3307776aa47b81df5c590af18a5c3fddddfec99';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
