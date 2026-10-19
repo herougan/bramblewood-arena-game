@@ -1857,5 +1857,10 @@
  "{name} restarted for everyone.": "Na-restart ang {name} para sa lahat.",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "Na-restart ang {name} sa browser na ito lang: hindi pa naka-on ang server.",
  "No raid tickets left. The next one comes in {span}.": "Wala ka nang raid ticket. Darating ang susunod sa loob ng {span}.",
- "You completed {name}: Auto is open for its fights from now on.": "Natapos mo ang {name}: bukas na ang Auto sa mga laban nito mula ngayon."
+ "You completed {name}: Auto is open for its fights from now on.": "Natapos mo ang {name}: bukas na ang Auto sa mga laban nito mula ngayon.",
+ "Boss BR": "BR ng boss",
+ "Your side's BR": "BR ng panig mo",
+ "Boss BR {boss} · your side about {side}": "BR ng boss {boss} · panig mo mga {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "Ang rating sa laban ng boss: ang tatlo niyang hanay, bawat isa ay deck na may 20 sa kanyang card, dobleng bilang ang mga card na nasa board na sa simula, dagdag ang mga boss unit niya at ang mga Karaniwang card na tinatawag niya.",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "Ang rating sa laban ng panig mo: ang deck mo at ang mga deck ng dalawa mong kakampi, dobleng bilang ang bawat pinuno. Nagbabago ang mga kakampi mo bawat laban."
 }

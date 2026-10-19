@@ -1859,5 +1859,10 @@
  "{name} restarted for everyone.": "{name} அனைவருக்கும் மீண்டும் தொடங்கியது.",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name} இந்த உலாவியில் மட்டும் மீண்டும் தொடங்கியது: சேவையகப் பக்கம் இன்னும் இயக்கப்படவில்லை.",
  "No raid tickets left. The next one comes in {span}.": "படையெடுப்பு டிக்கெட்டுகள் இல்லை. அடுத்தது {span} இல் வரும்.",
- "You completed {name}: Auto is open for its fights from now on.": "நீங்கள் {name} ஐ முடித்தீர்கள்: இனி அதன் சண்டைகளுக்குத் தானியங்கி திறந்திருக்கும்."
+ "You completed {name}: Auto is open for its fights from now on.": "நீங்கள் {name} ஐ முடித்தீர்கள்: இனி அதன் சண்டைகளுக்குத் தானியங்கி திறந்திருக்கும்.",
+ "Boss BR": "தலைவனின் BR",
+ "Your side's BR": "உன் அணியின் BR",
+ "Boss BR {boss} · your side about {side}": "தலைவனின் BR {boss} · உன் அணி சுமார் {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "தலைவனின் போர் மதிப்பீடு: அதன் மூன்று வரிசைகள், ஒவ்வொன்றும் அதன் அட்டைகளால் ஆன 20 அட்டை அடுக்கு, தொடக்கத்தில் களத்தில் உள்ள அட்டைகள் இருமுறை எண்ணப்படும், கூடவே அதன் தலைவன் அலகுகளும் அது அழைக்கும் சாதாரண அட்டைகளும்.",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "உன் அணியின் போர் மதிப்பீடு: உன் அடுக்கும் உன் இரண்டு கூட்டாளிகளின் அடுக்குகளும், ஒவ்வொரு தலைவரும் இருமுறை எண்ணப்படுவர். உன் கூட்டாளிகள் ஒவ்வொரு சண்டைக்கும் மாறுவர்."
 }

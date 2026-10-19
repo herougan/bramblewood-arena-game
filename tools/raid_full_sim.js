@@ -22,7 +22,7 @@ const RAIDS = JSON.parse(fs.readFileSync(path.resolve(arg('raids', path.join(__d
 
 const NAMES = ['RARITY_TIER_BANDS', 'canLeadDef', 'RAID_BOSS_ATK', 'raidAllyOf', 'raidAllyLeaderOf', 'RAID_BOSS_UNIT_ROUNDS', 'raidBossUnit', 'RAID_BOSS_UNIT_NAMES',
   'raidBossUnitName', 'raidBossCommons', 'raidFieldRulesOf', 'mergeRaidCastles', 'raidAlliesTurn', 'raidAllyPlays', 'RAID_TUNE_DEFAULTS', 'raidTune', 'raidSmackRoll', 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind',
-  'guildScaledBramble', 'raidRowUnits', 'raidColUnits', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget', 'raidSpecials', 'buildRaidFullFight', 'seededRng', 'referencePlayerDeck', 'referencePlayerLevel', 'levelGateMap'];
+  'guildScaledBramble', 'raidRowUnits', 'raidColUnits', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget', 'raidSpecials', 'buildRaidFullFight', 'seededRng', 'referencePlayerDeck', 'referencePlayerLevel', 'levelGateMap', /* 2026-10-19 (LV): the fractional level curve */ 'ROAD_LEVEL_CURVE', 'LEVEL_STAT_STEPS', 'levelMix', 'levelMixDeck'];
 const body = [
   'let matchDefsOverlay = {}; const makeSimEngine = E.makeSimEngine; function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',
   'function pushLog(){} function renderBoard(){} function allyPlayFx(){} const statsAtLevel = G.statsAtLevel, cardBaseLevel = G.cardBaseLevel;',

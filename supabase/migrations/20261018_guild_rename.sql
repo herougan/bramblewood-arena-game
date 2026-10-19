@@ -1,4 +1,4 @@
--- PROPOSED, NOT APPLIED (2026-10-18, package X4: guild rename). Apply only on the owner's "apply it".
+-- APPLIED 2026-10-19 08:10 (owner "apply it"), via the Supabase SQL editor: blocks A and B (B uncommented); block C not applied.
 -- Owner (2026-10-18 15:05): "okay. + rename feature (but takes a rename ticket)."
 --
 -- Why: the guild panel (arena_app.js, renameGuild) lets a guild's owner rename it for one Rename Ticket. The live policies

@@ -22151,6 +22151,7 @@ function raidPanelHTML(){
         <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
         ${atk ? `<span class="r2-note r3-atk" title="${escapeAttr(TX('ui.raid-attacks-telegraph-title'))}">${atk}</span>` : ''}
+        ${(()=>{ try{ return raidPartBRLine(def, p.id, st); }catch(e){ return ''; } })() /* 2026-10-19 (package BR): the boss's BR and your side's */}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary${noTickets ? ' is-blocked' : ''}" data-raid-part="${escapeAttr(p.id)}"${noTickets ? ` aria-disabled="true" title="${escapeAttr(raidNoTicketsText())}"` : ''}>⚔️ Fight (${costOf(p.id).tickets}🎫 ${costOf(p.id).energy}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
@@ -22784,7 +22785,11 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  // 2026-10-19 (package BR, owner 08:18): both sides' raid BR (raidBossBR / raidSideBR); each ally's chip shows its own real BR
+  let bossBR = null, sideBR = null; try{ bossBR = raidBossBR(def, f, b); sideBR = raidSideBR(mainDeckLevel(myDeckCounts, matchLeaderId()), allies); allies.forEach((a, i)=>{ a.level = sideBR.allies[i]; });
+    m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')}); }catch(e){}
+  showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)},
+    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
 // plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
@@ -22881,6 +22886,67 @@ function raidLeaderCapCheck(def, leaderId){
   return {ok:false, cap, cost, text: TX('ui.raid-leader-too-costly', {cost, cap})};
 }
 function raidTune(def, k){ const v = def && def.tuning && def.tuning[k]; return (typeof v === 'number' && isFinite(v)) ? v : RAID_TUNE_DEFAULTS[k]; }
+// Raid battle rating (2026-10-19, package BR, owner 08:18: "The raid's BR is being calculated wrongly. It should be the same way we
+// calculate, but with the total of their 3 20-card decks and any other bonus. If the card is played straight away, it gets x2 bonus.
+// On the ally side, our total BR = sum of total BR with leaders contributing 2x."). Every card is rated as in any fight (its rarity
+// weight x its level factor, ratingWeightOf x ratingLevelFactor), at the level it fights at: the raid's cards and the allies' at their
+// starting level (cardBaseLevel), yours at your copies' levels (mainDeckLevel). Before, the VS screen rated only the boss's one deck
+// left after its set-up and draws (about 6 cards), and the allies on the old power score (simpleDeckLevel).
+// The boss (raidBossBR, from a built fight, buildRaidFullFight):
+//   decks   each of its rows (trench.rows, 3) as a 20-card deck of the part's cards (scaled to 20 as any enemy deck, enemyDeckLevel)
+//   set-up  every card standing on its board as the fight starts counts twice: a deck card once more, a guard (not in the deck) 2x
+//   units   a boss unit for each boss-unit round in the fight's turns (RAID_BOSS_UNIT_ROUNDS), its rating x (Health + the super
+//           whales' bonus) / Health
+//   commons the Commons it can call in over the fight (its reinforce tuning), each at the pool's average
+// The stat shares (bossAtkPct / bossHpPct), a stage's +Attack / +Health and the brambles' Health are not in it, as no fight's BR
+// counts stats or brambles.
+function raidCardBR(id, defs){ const k = String(id).split('~')[0], d = defs[id] || defs[k]; if(!d) return 0;
+  const base = CARD_DEFS_BASELINE[k] || defs[k] || d; return ratingWeightOf(d) * ratingLevelFactor(cardBaseLevel(base)); }
+function raidBossBR(def, f, b){
+  const defs = Object.assign({}, getCardDefs(), (b && b.overlay) || {}), cfg = (b && b.cfg) || {}, deck = cfg.deck || (f && f.deck) || {};
+  const rows = Math.max(1, (cfg.rows || 3) | 0), n = Object.values(deck).reduce((a, c)=> a + (c|0), 0);
+  const perDeck = n ? Object.keys(deck).reduce((t, id)=> t + (deck[id]|0) * raidCardBR(id, defs), 0) * (DECK_SIZE / n) : 0;
+  const P2 = b && b.players && b.players[2], start = P2 ? P2.row.left.concat(P2.row.center, P2.row.right, ...(P2.reserve || []).map(r=> Object.values(r))) : [];
+  const setUp = start.reduce((t, c)=> t + (deck[String(c.defId).split('~')[0]] ? 1 : 2) * raidCardBR(c.defId, defs), 0);
+  const rounds = (f && f.rounds) || cfg.rounds || 20, unit = b && b.bossUnitId && defs[b.bossUnitId], bonus = Math.max(0, (b && b.bossHpBonus) | 0);
+  const bossUnitN = unit ? [...RAID_BOSS_UNIT_ROUNDS].filter(r=> r <= rounds).length : 0;
+  const bossUnits = unit ? bossUnitN * ratingWeightOf(unit) * ratingLevelFactor(cardBaseLevel(CARD_DEFS_BASELINE[unit.bossUnitOf] || defs[unit.bossUnitOf] || unit)) * (1 + bonus / Math.max(1, unit.health || 1)) : 0; // an Epic, at its card's level
+  const pool = (b && b.commonPool) || [], ro = Object.assign({}, (RaidM && RaidM.REINFORCE) || {max:2, from:2, every:1}, ((def || {}).tuning || {}).reinforce || {});
+  let commonN = 0; if(pool.length) for(let r = Math.max(1, ro.from | 0); r <= rounds; r++){ if(ro.every > 1 && (r - ro.from) % Math.round(ro.every) !== 0) continue; commonN += Math.max(0, ro.max | 0); }
+  const commons = commonN * (pool.length ? pool.reduce((t, id)=> t + raidCardBR(id, defs), 0) / pool.length : 0);
+  const decks = rows * perDeck;
+  return {total: Math.max(0, Math.round(decks + setUp + bossUnits + commons)), rows, perDeck: Math.round(perDeck), decks: Math.round(decks), setUp: Math.round(setUp), setUpCards: start.length,
+    bossUnits: Math.round(bossUnits), bossUnitN, hpBonus: bonus, commons: Math.round(commons), commonN};
+}
+// Your side (raidSideBR): your BR (mainDeckLevel: your copies at their levels, your leader 2x) + each ally's (its deck at its cards'
+// starting level, its leader 2x). The leaders are the cards your side has on the board as the fight starts, so their 2x is that
+// x2 (not 4x). allies: raidAllyOf's, after the build gave each its leaderId (raidAllyLeaderOf takes it out of the deck).
+function raidAllyBR(a){ const defs = getCardDefs(); let t = 0;
+  (Array.isArray(a.deck) ? a.deck : Object.keys(a.deck || {}).flatMap(id=> Array(Math.max(0, a.deck[id]|0)).fill(id))).forEach(id=>{ t += raidCardBR(id, defs); });
+  if(a.leaderId && defs[a.leaderId]) t += 2 * raidCardBR(a.leaderId, defs);
+  return Math.max(0, Math.round(t)); }
+function raidSideBR(mine, allies){ const each = (allies || []).map(raidAllyBR); return {total: Math.max(0, Math.round(mine || 0)) + each.reduce((a, c)=> a + c, 0), mine: Math.round(mine || 0), allies: each}; }
+// The raid page's line for a part (raidPartBRLine): the boss's BR from a fight built the way the page builds it (fixed seeds), and your
+// side's about: your BR + the raid's ally decks' average x2 (the two allies change from fight to fight). Cached per part and state.
+const raidBRCache = new Map();
+function raidPartBR(def, partId, st){
+  if(!def || !def.trench || typeof TrenchM === 'undefined' || !TrenchM || !RaidM) return null;
+  const f = RaidM.fightFor(def, st, partId, raidStageOpts()); if(!f || f.locked || f.defeated) return null;
+  const key = [def.id, partId, st.cycle, f.stage || '', RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st).bonus : 0, JSON.stringify(def.tuning || {})].join('|');
+  if(raidBRCache.has(key)) return raidBRCache.get(key);
+  let out = null;
+  try{ const b = buildRaidFullFight(def, partId, f, st, {rng: seededRng(1), rand: seededRng(7), recordEvents:false, allies: [], myDeck: {}});
+    const ds = (def.allyDecks || []).filter(d=> d.deck && Object.keys(d.deck).every(id=> getCardDefs()[id]));
+    const ally = ds.length ? ds.reduce((t, d, i)=>{ const a = raidAllyOf({name: d.name, deck: d.deck}, i % 2); a.leaderId = raidAllyLeaderOf(a); return t + raidAllyBR(a); }, 0) / ds.length : 0;
+    out = {boss: raidBossBR(def, f, b), allyAvg: Math.round(ally)}; }catch(e){ out = null; }
+  if(raidBRCache.size > 40) raidBRCache.clear(); raidBRCache.set(key, out); return out;
+}
+function raidPartBRLine(def, partId, st){
+  const r = raidPartBR(def, partId, st); if(!r) return '';
+  let mine = 0; try{ mine = mainDeckLevel(myDeckCounts, matchLeaderId()); }catch(e){}
+  const side = mine + 2 * r.allyAvg, cls = deckLevelGapClass(r.boss.total, side);
+  return `<span class="r2-note r3-br ${cls}" title="${escapeAttr(TX('ui.raid-br-boss-tip') + ' ' + TX('ui.raid-br-side-tip') + ' · ' + deckLevelGapTip(cls))}">⚔ ${escapeHtml(TX('ui.raid-br-line', {boss: r.boss.total.toLocaleString(), side: side.toLocaleString()}))}</span>`;
+}
 function raidAllyOf(a, i){
   const defs = getCardDefs(), ids = Object.entries(a.deck||{}).filter(([id])=> defs[id]).flatMap(([id, n])=> Array(Math.max(1, n|0)).fill(id));
   for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(Math.random()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; }
@@ -35592,9 +35658,11 @@ function showVsScreen(left, right){
       let theirs = right.level;
       if(theirs == null && m && m.players && m.players[2]){ const p2 = m.players[2], counts = {}; (p2.deck||[]).concat(p2.hand||[]).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id]||0) + 1; }); theirs = deckLevelFrom(counts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), []); }
       // 2026-10-17 (user: "It should show your BR in the pre-battle screen"): your battle rating always sits on your side, theirs on theirs.
-      const chip = (n, cls, who)=> `<div class="vs-lvl ${cls}" title="${who} battle rating"><small>${who} BR</small><b>⚔ ${n}</b></div>`;
-      el.querySelector('.vs-left .vs-deck').insertAdjacentHTML('afterend', chip(mine || '?', 'is-mine', 'Your'));
-      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their'));
+      // 2026-10-19 (package BR): a raid's chips say whose BR it is ("Your side's BR" / "Boss BR", p.brLabel / p.brTip)
+      const chip = (n, cls, who, p)=> p.brLabel ? `<div class="vs-lvl ${cls}" title="${escapeAttr(p.brTip || '')}"><small>${escapeHtml(p.brLabel)}</small><b>⚔ ${typeof n === 'number' ? n.toLocaleString() : n}</b></div>`
+        : `<div class="vs-lvl ${cls}" title="${who} battle rating"><small>${who} BR</small><b>⚔ ${n}</b></div>`;
+      el.querySelector('.vs-left .vs-deck').insertAdjacentHTML('afterend', chip(mine || '?', 'is-mine', 'Your', left));
+      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their', right));
     }catch(e){}
     document.body.appendChild(el);
     let done = false;

@@ -1859,5 +1859,10 @@
  "{name} restarted for everyone.": "{name}已為所有人重啟。",
  "{name} restarted in this browser only: the server side isn't switched on yet.": "{name}只在此瀏覽器中重啟：伺服器端還沒有開啟。",
  "No raid tickets left. The next one comes in {span}.": "突襲券用完了。下一張將在 {span} 後到來。",
- "You completed {name}: Auto is open for its fights from now on.": "你完成了{name}：從現在起它的戰鬥可以使用自動。"
+ "You completed {name}: Auto is open for its fights from now on.": "你完成了{name}：從現在起它的戰鬥可以使用自動。",
+ "Boss BR": "首領評分",
+ "Your side's BR": "你方評分",
+ "Boss BR {boss} · your side about {side}": "首領評分 {boss} · 你方約 {side}",
+ "The boss's battle rating: its three rows, each a 20-card deck of its cards, the cards it starts with on the board counted twice, plus its boss units and the Commons it calls in.": "首領的戰鬥評分：它的三排，每排算作一副由它的卡組成的20張牌組，開局就在場上的卡算兩次，再加上它的首領單位和它召來的普通卡。",
+ "Your side's battle rating: your deck plus your two allies' decks, each leader counted twice. Your allies change from fight to fight.": "你方的戰鬥評分：你的牌組加上兩位盟友的牌組，每位領袖算兩次。你的盟友每場戰鬥都會換。"
 }

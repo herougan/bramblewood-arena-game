@@ -184,9 +184,9 @@ function makeCopies(o){
   const push = fnSrc('cloudPushCardLevels'), pull = fnSrc('cloudPullState');
   ok(/copies: cloudCopiesOf\(id\)/.test(push) && /cloudCopiesColumnMissing/.test(push) && /level: myCardLevels\[id\]/.test(push), '3. the push sends each card\'s best level and its copies, and drops the copies if the column is missing');
   ok(/'card_id, level, copies'/.test(pull) && /cloudApplyCopyLevels\(unlocks\)/.test(pull) && /copyModelSyncAll\(\)/.test(pull), '3. the pull reads the copies and never lowers one'); }
-{ const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261019_card_copy_levels.sql'), 'utf8');
-  ok(/PROPOSED, NOT APPLIED/.test(sql) && /alter table public\.player_card_unlocks add column if not exists copies jsonb/.test(sql) && /check \(public\.card_copies_ok\(copies\)\)/.test(sql), '3. the proposed SQL adds player_card_unlocks.copies with a shape check');
-  ok(!fs.readdirSync(path.join(ROOT, 'supabase', 'migrations')).some(f=> /card_copy/.test(f)), '3. nothing is in supabase/migrations (the owner applies it)'); }
+{ const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'migrations', '20261019_card_copy_levels.sql'), 'utf8');
+  ok(/APPLIED 2026-10-19/.test(sql) && /alter table public\.player_card_unlocks add column if not exists copies jsonb/.test(sql) && /check \(public\.card_copies_ok\(copies\)\)/.test(sql), '3. the proposed SQL adds player_card_unlocks.copies with a shape check');
+  ok(!fs.readdirSync(path.join(ROOT, 'supabase', 'proposed')).some(f=> /card_copy/.test(f)), '3. applied: moved out of supabase/proposed'); }
 
 // ======================= 2. forging Max Energy =======================
 { const fx = fxd.slice(fxd.indexOf('M.energyForge = function'), fxd.indexOf('// ======================= HOOKS'));

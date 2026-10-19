@@ -7,7 +7,7 @@
 //      "Guild: +12% bramble Health"; the admin's local preview counts only in Admin mode;
 //   3. no bonus while the table is missing: loadGuildSkills on "relation does not exist" (PGRST205 / 42P01) is 'missing', the bonus
 //      is 0, the Guild tab shows the list as a preview with no upgrade button, and an upgrade says skills aren't switched on;
-//   4. supabase/proposed/20261019_guild_skills.sql: RLS on every new table, member-only reads, no write policies, writes revoked,
+//   4. supabase/migrations/20261019_guild_skills.sql: RLS on every new table, member-only reads, no write policies, writes revoked,
 //      upgrade_guild_skill is SECURITY DEFINER with a pinned search_path, checks owner + creator, locks and spends atomically, the
 //      Seeds trigger has a weekly cap and never blocks a raid attempt, costs match bramblewood-guild.js; it is only proposed;
 //   5. every new text is a TX key with a translation in all 12 packs;
@@ -143,10 +143,10 @@ ok(fnSrc('guildScaledBramble') && fnSrc('guildSkillsPanelHTML') && fnSrc('loadGu
   ok(/root\.BramblewoodGuild = api/.test(html), 'the built index.html carries BramblewoodGuild');
 
   // --- 4. the proposed SQL
-  const sqlPath = path.join(ROOT, 'supabase', 'proposed', '20261019_guild_skills.sql');
+  const sqlPath = path.join(ROOT, 'supabase', 'migrations', '20261019_guild_skills.sql');
   const sql = fs.existsSync(sqlPath) ? fs.readFileSync(sqlPath, 'utf8') : '';
-  ok(/^-- PROPOSED, NOT APPLIED/.test(sql), 'the SQL is marked PROPOSED, NOT APPLIED');
-  ok(!fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261019_guild_skills.sql')), 'it is not in supabase/migrations');
+  ok(/^-- APPLIED 2026-10-19/.test(sql), 'the SQL is marked APPLIED (owner "apply it", 2026-10-19)');
+  ok(!fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261019_guild_skills.sql')), 'it moved out of supabase/proposed');
   const tables = ['guild_skill_defs', 'guild_skill_levels', 'guild_seeds', 'guild_seed_earnings'];
   tables.forEach(t=>{
     ok(new RegExp(`create table if not exists public\\.${t} \\(`).test(sql), `${t}: created`);

@@ -1,3 +1,4 @@
+-- APPLIED 2026-10-19 08:12 (owner "apply it"), via the Supabase SQL editor.
 -- PROPOSED 2026-10-19 (package RO, raid ops). Apply only on the owner's "apply it". Idempotent: safe to run twice.
 -- Owner 21:48: "When the raid dies ... respawn within 24h. I have admin access to restart the raid."
 -- Owner 00:22: "When there are too many players, each raid can have multiple instances."

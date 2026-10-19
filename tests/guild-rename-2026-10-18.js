@@ -7,7 +7,7 @@
 //   4. the client's fallback path: while rename_guild isn't applied (PGRST202 / 42883 "function does not exist") the player
 //      is told renaming isn't switched on yet and keeps the ticket; a refused name keeps it too; a rename that goes through
 //      spends exactly one;
-//   5. supabase/proposed/20261018_guild_rename.sql is a SECURITY DEFINER function that checks the owner and the name, and it
+//   5. supabase/migrations/20261018_guild_rename.sql is a SECURITY DEFINER function that checks the owner and the name, and it
 //      is only proposed (not in supabase/migrations).
 'use strict';
 const fs = require('fs'), path = require('path');
@@ -125,11 +125,11 @@ ok(!base.guildRenameRpcMissing({code:'23505', message:'name_taken'}) && !base.gu
   ok(r.ok === true && r.name === 'New Name' && good.renameTickets() === 1, 'a rename that goes through spends one ticket');
 
   // --- 5. the proposed SQL
-  const sqlPath = path.join(ROOT, 'supabase', 'proposed', '20261018_guild_rename.sql');
+  const sqlPath = path.join(ROOT, 'supabase', 'migrations', '20261018_guild_rename.sql');
   const sql = fs.existsSync(sqlPath) ? fs.readFileSync(sqlPath, 'utf8') : '';
-  ok(sql.length > 0, 'supabase/proposed/20261018_guild_rename.sql exists');
-  ok(/^-- PROPOSED, NOT APPLIED/.test(sql), 'it is marked PROPOSED, NOT APPLIED');
-  ok(!fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261018_guild_rename.sql')), 'it is not in supabase/migrations');
+  ok(sql.length > 0, 'supabase/migrations/20261018_guild_rename.sql exists');
+  ok(/^-- APPLIED 2026-10-19/.test(sql), 'it is marked APPLIED (owner "apply it", 2026-10-19)');
+  ok(!fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261018_guild_rename.sql')), 'it moved out of supabase/proposed');
   const fnA = (sql.match(/create or replace function public\.rename_guild\(p_guild uuid, p_name text\)[\s\S]*?\n\$\$;/) || [''])[0];
   ok(fnA && /security definer/.test(fnA) && /set search_path = ''/.test(fnA), 'rename_guild is SECURITY DEFINER with a pinned search_path');
   ok(/auth\.uid\(\)/.test(fnA) && /m\.role = 'owner'/.test(fnA) && /g\.created_by = v_uid/.test(fnA), 'it checks the caller is the guild\'s owner (role and creator)');
