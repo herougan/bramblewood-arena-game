@@ -13,4 +13,4 @@ Owner 13:35: Thorns not affecting raid back rows; 13:37: small-mode status icon 
 - [x] Status chips (part 2): `statusChipsHTML` + `#tsStyles`; tests/ts-status-chips-2026-10-19.js (Playwright, 40 checks).
 - [x] Screens docs/screens/ts/ (before-*, after-*).
 - [x] CHANGELOG
-- [ ] merge main, rebuild, final commit
+- [x] merge main, rebuild, final commit
