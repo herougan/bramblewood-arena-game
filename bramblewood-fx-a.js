@@ -1284,12 +1284,12 @@ M.heatBend = function(el){
   later(()=> tag(el, 'Dry', 'linear-gradient(#c49a4e, #8a6420)', {fx:.25, hold:420}), 200);
   return done(1300);
 };
-// Demolisher vs a Structure: a hammer-crack and bricks knocked out of it.
+// Siege (the old Demolisher, 2026-10-19 SK1) vs a Structure: a hammer-crack and bricks knocked out of it.
 M.demolishCrack = function(el){
   const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el));
   spray(c.x, c.y, {n:9, size:()=> rnd(7, 10), color:i=> i % 2 ? '#b8562a' : '#d87a44', style:{height:'6px', borderRadius:'1px', boxShadow:'inset 0 -2px 0 rgba(0,0,0,.25)'}, spin:300, a0:180, a1:360, d0:c.w*.3, d1:c.w*.8, grav:40, dur:.6});
   M.weakCrackOnly(el);
-  later(()=> tag(el, '🔨 Demolish', 'linear-gradient(#b8562a, #7a3412)', {fx:.3, hold:420}), 80);
+  later(()=> tag(el, '🔨 ' + ((typeof TX === 'function') ? TX('ui.skn-siege') : 'Siege'), 'linear-gradient(#b8562a, #7a3412)', {fx:.3, hold:420}), 80); // the skill's name, translated (2026-10-19, SK1)
   return done(1150);
 };
 M.weakCrackOnly = function(el){
@@ -1421,7 +1421,7 @@ M.onEvent = function(ev, env){
     if(ev.festerBonus > 0 && med) env.at(hitMs + 60, ()=> M.festerBoils(tgt));
     if(ev.ruptureBonus > 0 && med) env.at(hitMs + 60, ()=> M.ruptureBurst(tgt));
     if(af.reload && att && med) env.at(A.strike + 60, ()=> M.reloadDial(att));
-    if(T === 'hit' && Number(af.demolisher) > 0 && ((defs[ev.targetDefId] || {}).archetypes || []).includes('Structure') && med) env.at(hitMs, ()=> M.demolishCrack(tgt));
+    if(T === 'hit' && (Number(af.demolisher) > 0 || !!af.siege) /* Siege N is the old Demolisher too (2026-10-19, SK1) */ && ((defs[ev.targetDefId] || {}).archetypes || []).includes('Structure') && med) env.at(hitMs, ()=> M.demolishCrack(tgt));
     if(af.supreme && med && env.once('supreme' + ev.attUid + ':' + (ev.targetUid || ev.targetSide))) env.at(hitMs, ()=> M.supremeSparkle(tgt));
     return;
   }

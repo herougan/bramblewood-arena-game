@@ -193,5 +193,71 @@ const fx = (ev, kind)=> ev.filter(x=> x.type === 'statusFx' && x.kind === kind);
   const ev2 = []; e.resolveCombat(P, so, {}, ev2, 1); ok(fx(ev2, 'punish').length === 1, 'every round it is hit'); }
 { const {e, P} = mk(1, {}, 'open', {flags:{punish:true}}); const a = put(e, P, 1, 'sk-wall'); put(e, P, 2, 'sk-punish'); const ev = fight(e, P); ok(!fx(ev, 'punish').length && a.hp === 30, 'flag on (opts.flags.punish): nobody hit it, nobody pays'); }
 
-module.exports = {defs, mk, put, fight};
-if(require.main === module){ require('./skills-sk1-app-checks.js'); }
+// ---- 12. Triggers × actions (owner 21:56): the keyword shorthands, and the new triggers / actions on a hand-made card
+const eng = R('bramblewood-engine.js');
+ok(E.TRIGGER_KEYS ? ['onEnemyEnter', 'onHit', 'onKillCreature'].every(k=> E.TRIGGER_KEYS.includes(k)) : /TRIGGER_KEYS\.push\('onEnemyEnter', 'onHit', 'onKillCreature'\)/.test(eng), 'new triggers: On Enemy Enters (Facing), On Hit, On Kill (Creature)');
+ok(/ACTION_KEYS\.push\('exploit', 'poisonTick'\)/.test(eng), 'new actions: Exploit, Poison Tick');
+ok(/do:'damage', who:'enemy', sub:'subject', amount:N\('sentry'\)/.test(eng) && /on:'onHit', do:'expose'/.test(eng) && /on:'onHit', do:'exploit'/.test(eng) && /on:'onHit', do:'poisonTick'/.test(eng) && /on:'onKillCreature', do:'buff', who:'self', amount2:N\('spoils'\)/.test(eng), 'Sentry / Expose / Exploit / Venom Pulse / Spoils are trigger × action shorthands');
+{ const d2 = Object.assign({}, defs, {'sk-hand': U('sk-hand', {triggers:[{on:'onHit', do:'poisonTick', who:'enemy', sub:'subject', amount:1}, {on:'onKillCreature', do:'buff', who:'self', amount:1}]}, {attack:30})});
+  const e = E.makeSimEngine(d2, E.mulberry32(3), {recordEvents:true, battleMode:'open'}), P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'sk-hand', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'sk-weak', 'left', {}, []); const h = all(P[1])[0];
+  const ev = []; e.resolveCombat(P, so, {}, ev, 1); ok(h.atk === 31, `a hand-made On Kill (Creature): Buff +1 Attack works (${h.atk})`); }
+
+// ---- 13. The app: registry (the Skills chapter of the Codex book), short lines, icons, statuses, hooks
+const appSrc = R('arena_app.js');
+const TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
+const words = s=> String(s).replace(/<[^>]*>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+const blockA = appSrc.slice(appSrc.indexOf('// ==== Package SK1 (2026-10-19, owner 21:36: new combat skills; rules'), appSrc.indexOf('// ==== end of Package SK1 (registry)'));
+const blockB = appSrc.slice(appSrc.indexOf('// ==== Package SK1 (2026-10-19): statuses'), appSrc.indexOf('// ==== end of Package SK1 (statuses and board)'));
+ok(blockA.length > 500 && blockB.length > 500, 'the two SK1 app blocks');
+ok(appSrc.indexOf('// ==== end of Package SK1 (registry)') < appSrc.indexOf('const SKILL_DEFS = ['), 'the registry block runs before SKILL_DEFS is built from PASSIVE_DEFS');
+['formation', 'isolation', 'anchor', 'exploit', 'spoils', 'venomPulse', 'punish'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'(passive|evergreen)', (hidden:true, reserved:true, )?label:TX\\('ui\\.skn-`).test(blockA), `${k}: in PASSIVE_DEFS with a TX name`));
+['sentry', 'expose', 'siege', 'demolisher', 'cure', 'healing'].forEach(k=> ok(blockA.includes(`sk1Patch(PASSIVE_DEFS, '${k}'`), `${k}: patched in place (TX text)`));
+['onEnemyEnter', 'onHit', 'onKillCreature'].forEach(k=> ok(blockA.includes(`{key:'${k}', label:TX(`), `trigger ${k} in TRIGGER_DEFS`));
+['exploit', 'poisonTick'].forEach(k=> ok(blockA.includes(`{key:'${k}', label:TX(`), `action ${k} in ACTION_DEFS`));
+['heal', 'cleanse', 'expose'].forEach(k=> ok(blockA.includes(`sk1Patch(ACTION_DEFS, '${k}'`), `the ${k} action's text is rewritten`));
+['sentry', 'expose', 'exploit', 'siege', 'formation', 'isolation', 'anchor', 'spoils', 'venomPulse', 'punish', 'cure', 'healing'].forEach(k=> ok(new RegExp(`\\n  ${k}: [^\\n]*TX\\('ui\\.sk-`).test(blockB), `${k}: a terse SKILL_TEXT line (TX)`));
+['formation', 'isolation', 'anchor', 'exploit', 'spoils', 'venomPulse', 'punish'].forEach(k=> ok(new RegExp(`\\b${k}:'[^']+'`).test(blockA), `${k}: an icon`));
+ok(blockB.includes("['exploit', 'exploit', TX('ui.skn-exploit')") && blockB.includes("STATUS_KEYWORDS.push({k:'exploit'"), 'Exploit is a live status line and a status (the Statuses chapter)');
+ok(appSrc.includes('{ const k = sk1LogText(ev, nm); if(k) return k; }') && appSrc.includes('try{ sk1Vfx(ev); }catch(e){}') && appSrc.includes('try{ sk1StatusBadges(c, badges); }catch(e){}'), 'the log, the looks and the status chips are hooked');
+ok(appSrc.includes('exploit:c.exploit||0, sk1Atk:c.sk1Atk||0') && appSrc.includes('exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0'), 'the replay snapshot carries Exploit and the Formation / Isolation bonus');
+ok((appSrc.match(/\(liveC\.sk1Atk\|\|0\)|\(c\.sk1Atk\|\|0\)/g) || []).length >= 2, 'the board\'s Attack shows the Formation / Isolation bonus');
+ok(appSrc.includes('const m = sk1MigrateSiege(liveCards[id]);'), 'saved / server cards with Demolisher read as Siege (buildCardDefs)');
+{ const fn = new Function('numOr', appSrc.slice(appSrc.indexOf('function sk1MigrateSiege(c){'), appSrc.indexOf('// ==== end of Package SK1 (registry)')) + '; return sk1MigrateSiege;')((v, d)=> v === true || v == null ? d : (Number(v) || d));
+  const a = fn({id:'x', effects:{demolisher:3}}), b = fn({id:'y', effects:{siege:4, demolisher:3}}), c = fn({id:'z', effects:{armor:1}});
+  ok(a.effects.siege === 3 && a.effects.demolisher == null && b.effects.siege === 4 && !('demolisher' in b.effects) && c.effects.armor === 1 && !c.effects.siege, 'alias loading: Demolisher 3 → Siege 3; Siege 4 + Demolisher 3 → Siege 4; others untouched'); }
+// ---- 14. Texts: TX keys used, terse, in the 12 packs
+const SK1_KEY = /^ui\.(skn-(sentry|expose|siege|formation|isolation|anchor|exploit|spoils|venom-pulse|punish)|sk-(sentry|expose|exploit|siege|formation|isolation|anchor|spoils|venom-pulse|punish|cure|healing)|st-exploit|ls-exploit|exploit-tip|aura-|log-(expose-rounds|exploit|poison-pulse|punish|formation|isolation|aura-off)|float-(sentry|exploit|punish)|trg-on-(enemy-enter|hit|kill-creature)|act-(exploit|poison-tick|expose-desc|heal-desc|cleanse-desc))/;
+const TKEYS = Object.keys(TXT).filter(k=> SK1_KEY.test(k));
+ok(TKEYS.length === 63, `63 package SK1 TX keys (${TKEYS.length})`);
+TKEYS.forEach(k=> ok(appSrc.includes(`TX('${k}'`) || R('bramblewood-fx-a.js').includes(`TX('${k}'`), `${k} is used`));
+TKEYS.filter(k=> !/codex|desc|^ui\.act-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
+ok(/hiding/.test(TXT['ui.st-exposed']) && /hiding/.test(TXT['ui.ls-exposed']) && !/crit/.test(TXT['ui.exposed-tip']), 'the Exposed texts describe hiding, not crits');
+const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
+const LEAD = /^[\s\p{Extended_Pictographic}\p{So}️‍]*/u, core = s=> s.trim().replace(LEAD, '').trim();
+const ph = s=> JSON.stringify((String(s).match(/\{\w+\}/g) || []).filter(x=> x !== '{s}').sort());
+CODES.forEach(code=>{ const pack = JSON.parse(R('lang/' + code + '.json'));
+  const keys = TKEYS.concat(['ui.st-exposed', 'ui.ls-exposed', 'ui.exposed-tip']);
+  const miss = keys.filter(k=> !(TXT[k] in pack) && !(core(TXT[k]) in pack)); ok(!miss.length, `${code}: every SK1 text is translated (${miss.join(', ')})`);
+  const bad = keys.filter(k=>{ const tr = pack[TXT[k]] || pack[core(TXT[k])]; return tr && ph(TXT[k]) !== ph(tr); }); ok(!bad.length, `${code}: every {placeholder} kept (${bad.join(', ')})`); });
+// ---- 15. Skill costs (canonical/skill-costs.json): estimates, low confidence
+const SC = require('../tools/skill_costs.js'), table = JSON.parse(R('canonical/skill-costs.json')), Tc = SC.make(table);
+const est = e=> e && e.measuredHow === 'estimate SK1' && e.measuredConf === 'low' && typeof e.measuredS === 'number' && !e.appliedAt;
+['formation', 'isolation', 'anchor', 'punish'].forEach(id=> ok(est(table.skills.find(x=> x.id === id)), `skill ${id}: an S estimate (estimate SK1, low)`));
+['onEnemyEnter', 'onHit', 'onKillCreature'].forEach(id=> ok(est(table.triggers.find(x=> x.id === id)), `trigger ${id}: a weight estimate`));
+['exploit', 'poisonTick'].forEach(id=> ok(est(table.actions.find(x=> x.id === id)), `action ${id}: a value estimate`));
+['exploit', 'venomPulse', 'spoils'].forEach(id=> ok(est(table.shorthands[id]), `shorthand ${id}: trigger × action, estimated`));
+ok(table.skills.find(x=> x.id === 'isolation').value < 0, 'Isolation costs less than nothing (a drawback, like the payments)');
+ok(Tc.cardS({spoils:2}).S === Math.round(table.triggers.find(x=> x.id === 'onKillCreature').value * table.actions.find(x=> x.id === 'buff.amount2').value * 2 * 100) / 100, `Spoils 2 = On Kill (Creature) × Buff (+Health) × 2 (${Tc.cardS({spoils:2}).S})`);
+['formation', 'isolation', 'anchor', 'punish', 'exploit', 'venomPulse', 'spoils'].forEach(k=> ok(!Tc.cardS({[k]: 1}).missing.length, `${k} has a cost (no missing entry)`));
+['sentry', 'expose', 'siege'].forEach(id=> ok(/package SK1/.test((table.skills.find(x=> x.id === id) || {}).sk1Note || ''), `${id}: flagged for re-measuring (sk1Note)`));
+// ---- 16. No live card carries a new skill; the docs
+const ALL = JSON.parse(R('canonical/cards.json'));
+ok(!ALL.some(c=> c.effects && ['formation', 'isolation', 'anchor', 'exploit', 'spoils', 'venomPulse', 'punish'].some(k=> c.effects[k] != null)), 'no card has a new skill yet (owner: not on existing cards)');
+const D = JSON.parse(R('docs/decisions.json')), md = R('docs/decisions.md'), sk = (D.rules || []).find(r=> /Package SK1/.test(r.intro || ''));
+ok(sk && sk.items.some(x=> /Maps 21–40 are mostly about using the skills already learnt/.test(x)) && sk.items.some(x=> /canonical animals, arrange skills and stats/.test(x)), 'decisions.json: the two design notes');
+ok(md.includes('**Maps 21–40 are mostly about using the skills already learnt**') && md.includes('**Cure / Heal / Cleanse**'), 'decisions.md regenerated with them');
+ok(fs.existsSync(path.join(ROOT, 'docs/skills-punish-proposal.md')) && /## B\./.test(R('docs/skills-punish-proposal.md')), 'docs/skills-punish-proposal.md (three designs, B built)');
+ok(/skills-sk1-2026-10-19\.js/.test(R('tests/run-all.sh')), 'in tests/run-all.sh');
+console.log(fail ? `skills-sk1-2026-10-19: ${fail} of ${n} checks FAILED` : `skills-sk1-2026-10-19: all ${n} checks passed`);
+process.exit(fail ? 1 : 0);

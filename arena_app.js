@@ -5420,9 +5420,9 @@ const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 
 // ==== Package SK1 (2026-10-19): statuses, short card lines, the battle log, the looks and the badges (registry: the first SK1 block) ==
 // Exposed counts rounds now (its hiding stripped); Exploit tokens are the old Expose counters' damage (+1 a hit); Formation and
 // Isolation show as a chip with the bonus (c.sk1Atk; the Health part is real max Health). Every string is a TX key.
-LIVE_STATUS_ROUNDS.add('exposed');
-{ const ex = LIVE_STATUS_ROWS.find(r=> r[0] === 'exposed'); if(ex){ ex[3] = n=> TX('ui.ls-exposed', {n, s: n === 1 ? '' : 's'}); ex[4] = false; }
-  LIVE_STATUS_ROWS.splice(LIVE_STATUS_ROWS.indexOf(ex) + 1, 0, ['exploit', 'exploit', TX('ui.skn-exploit'), n=> TX('ui.ls-exploit', {n, s: n === 1 ? '' : 's'}), true]); }
+// (The Exposed row keeps its number, now the rounds left: ui.ls-exposed says "no hiding for N more rounds".)
+{ const ex = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'exposed');
+  LIVE_STATUS_ROWS.splice(ex + 1, 0, ['exploit', 'exploit', TX('ui.skn-exploit'), n=> TX('ui.ls-exploit', {n, s: n === 1 ? '' : 's'}), true]); }
 STATUS_KEYWORDS.push({k:'exploit', re:/\b(exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')});
 Object.assign(SKILL_TEXT, {
   sentry: v=> TX('ui.sk-sentry', {n: numOr(v, SK1_DEFAULTS.sentry)}),

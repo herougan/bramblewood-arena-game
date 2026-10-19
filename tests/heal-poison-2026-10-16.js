@@ -29,10 +29,10 @@ const tickOf = (ev, c)=> ev.filter(x=> x.type === 'poisonTick' && x.uid === c.ui
 { const {c, ev} = run('hp-regen', c=>{ c.poison = 1; });
   ok(c.poison === 0, 'Poison 1 ticks down to 0');
   ok(!ev.some(x=> x.type === 'heal' && x.targetUid === c.uid && x.amount > 0 && x.cause === 'regen'), 'nothing to heal but the tick'); }
-// 3) Bleed: wears down 1 a round (before the upkeep heals), then a heal stanches the rest before Health
+// 3) Bleed: wears down 1 a round (before the upkeep heals); 2026-10-19 (package SK1, owner 21:36: "heal only heals now"): the heal no longer stanches it
 { const {c, ev} = run('hp-regen', c=>{ c.hp = 10; c.bleed = 3; });
   ok(ev.some(x=> x.type === 'bleedFade' && x.uid === c.uid && x.left === 2), 'Bleed 3 → 2 at upkeep (bleedFade)');
-  ok(c.bleed === 0 && c.hp === 13, `Regeneration 5: 2 Bleed stanched, 3 Health (bleed ${c.bleed}, hp ${c.hp})`); }
+  ok(c.bleed === 2 && c.hp === 15, `Regeneration 5: all 5 to Health, the Bleed stays (SK1: Cleanse takes it) (bleed ${c.bleed}, hp ${c.hp})`); }
 // 4) A unit that doesn't act still loses 1 Bleed a round, and takes no Bleed damage
 { const {c, ev} = run('hp-idle', c=>{ c.bleed = 4; });
   ok(c.bleed === 3 && c.hp === 30 && !ev.some(x=> x.type === 'bleedTick'), `an idle unit: Bleed 4 → 3, no damage (bleed ${c.bleed}, hp ${c.hp})`); }

@@ -2815,7 +2815,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return healed;
   }
   function cleanseCounters(players, pid, c, budget){
-    let n = budget|0, removed = 0;
+    let n = budget === Infinity ? Infinity : budget|0, removed = 0; // Infinity = no limit (an empty Cleanse, 2026-10-19 SK1)
     const take = (k)=>{ if(n<=0 || !(c[k]>0)) return; const d = Math.min(n, c[k]|0); c[k] -= d; n -= d; removed += d; };
     // a curse on the cell it stands on (Desecrate) comes off first
     const cell = cellKeyOf(players, pid, c);

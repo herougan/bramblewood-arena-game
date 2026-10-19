@@ -56,7 +56,8 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterB'); const t = put(e, P, 2, 'gi-wall'); t.poison = 4; const ev = fight(e, P);
   ok(hitOn(ev, t.uid) === 3, 'Hunter (Bleeding) ignores Poison: the picker picks one status'); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterX'); const t = put(e, P, 2, 'gi-wall'); t.exposed = 1; const ev = fight(e, P);
-  ok(hitOn(ev, t.uid) === 10 && t.exposed === 0, `Hunter 2 (Exposed): (3 + 2) crit = 10, the counter used (${hitOn(ev, t.uid)})`); }
+  // 2026-10-19 (package SK1): Exposed strips hiding for N rounds now (no crit, nothing used up); the old crit counters' damage is Exploit's.
+  ok(hitOn(ev, t.uid) === 5 && t.exposed === 0, `Hunter 2 (Exposed): 3 + 2 = 5 (no crit since SK1); its 1 round of Exposed wears off at the upkeep (${hitOn(ev, t.uid)})`); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterW'); const t = put(e, P, 2, 'gi-wall'); e.setField('rain', 3); const ev = fight(e, P);
   ok(hitOn(ev, t.uid) === 4, `Hunter 1 (Wet) under Spring Rain: +1 (${hitOn(ev, t.uid)})`); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'gi-hunterArrow'); const t = put(e, P, 2, 'gi-wall'); t.poison = 2; const hp0 = t.hp; const ev = start(e, P, 2).concat(fight(e, P));
@@ -207,7 +208,7 @@ ok(appSrc.indexOf('Object.assign(FIELD2, {\n  sporeCloud') > 0 && appSrc.indexOf
 ok(appSrc.includes('{ const g = giLogText(ev, nm); if(g) return g; }') && appSrc.includes('try{ giVfx(ev); }catch(e){}') && appSrc.includes('try{ giStatusBadges(c, badges); }catch(e){}'), 'the log, the looks and the badges are hooked');
 ok(appSrc.includes("'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots'].includes(ev.field)) hit = markFieldRow"), 'a new field row is learned when it first does something');
 ok(appSrc.includes('brittle:rc.brittle||0') && appSrc.includes('brittle:c.brittle||0'), 'the replay snapshot carries Brittle');
-const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)|hunter-vs-|st-brittle|stx-brittle|fx-name-(spore|thunder|tangled)|fxx?-(spore|thunder|tangled)|log-(spore|thunder|tangled|roots|detonate|proliferate|brittle|field-)|float-(brittle|field-break)|brittle-tip|prayer-ward-tip)/.test(k));
+const TKEYS = Object.keys(TXT).filter(k=> !/^ui\.skn-(sentry|expose|siege|formation|isolation|anchor|exploit|spoils|venom-pulse|punish)$/.test(k) /* package SK1's names (2026-10-19) */).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)|hunter-vs-|st-brittle|stx-brittle|fx-name-(spore|thunder|tangled)|fxx?-(spore|thunder|tangled)|log-(spore|thunder|tangled|roots|detonate|proliferate|brittle|field-)|float-(brittle|field-break)|brittle-tip|prayer-ward-tip)/.test(k));
 ok(TKEYS.length === 67, `67 package GI TX keys (${TKEYS.length})`);
 TKEYS.forEach(k=> ok(appSrc.includes(`TX('${k}'`), `${k} is used in arena_app.js`));
 TKEYS.filter(k=> !/codex|^ui\.fxx-|^ui\.stx-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
