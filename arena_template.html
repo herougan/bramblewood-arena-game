@@ -11964,6 +11964,17 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   .ux-fcs{padding:14px 12px 12px;} .ux-fcs-grid{grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); max-height:62vh;}
   .ux-fcs-tile .card-tile{width:70px !important; height:88px !important;}
 }
+/* UX2 (2026-10-19, owner 22:16: "There's no filter in brambles search."): the Brambles page's filter bar */
+.ux2-brambles .ux2-br-bar{margin:10px 0 8px;}
+.ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 220px; min-width:0;}
+.ux2-br-count{margin:2px 0 10px; font-size:12.5px; color:var(--ink-muted);}
+.ux2-brambles .bramble-codex-card{position:relative;}
+.ux2-br-owned{position:absolute; top:4px; left:4px; z-index:9; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#2f6b2a; color:#fff; font:800 13px/1 system-ui,sans-serif; box-shadow:0 0 0 2px #bfe6a8;}
+.ux2-br-tags{position:absolute; top:4px; right:4px; z-index:9; display:flex; gap:2px; font-size:13px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+.ux2-brambles .u3-bramble-abs{margin:6px 0 4px; padding-left:0; list-style:none; font-size:12px; text-align:left;}
+.ux2-br-empty{flex:1 1 100%; text-align:center; padding:28px 12px; color:var(--ink-muted); border:1.5px dashed var(--surface-border); border-radius:14px;}
+.ux2-br-empty p{margin:0 0 10px;}
+@media (max-width:600px){ .ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 100%;} .ux2-brambles .ux2-br-bar select{flex:1 1 45%; min-width:0;} .ux2-brambles .bramble-codex-card{min-width:140px;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
