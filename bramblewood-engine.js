@@ -6962,10 +6962,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Kill, Crown of Thorns or Midas). Now it is this loop's own swing (rowSwing below): it may act when a front-row unit could
       // (rowSwingReady: Stunned, Frozen, Asleep, Paralyzed, Reload... skip it; Waiting, it counts its Wait down instead, as before), and
       // its swing runs every hook below, at the unit RX's rule picks (the closest row's unit in its column, else the bramble), for half
-      // its swing rounded up (rowHalf). Swing shapes that read the front row's geometry stay off for it (Taunt, Backstab, Crab Claws,
-      // Fork / Trident / Pitchfork, Octolash, Tipsy's drift, Wave, Bloodlust's leap, a Boomerang throw, Rook / Bishop lane bonuses);
-      // Cleave (Sweep) strikes the neighbours in the struck unit's own row. Its events stay volleyHit / volleyCastle (the page's
-      // raid strike replay, raidStrikeVfx).
+      // its swing rounded up (rowHalf). (TS left the swing shapes that read the front row's geometry off for it; since 2026-10-19,
+      // package RR, every one of them works on the row it aims at: see rowAim below.) Cleave (Sweep) strikes the neighbours in the
+      // struck unit's own row. Its swing proper's events stay volleyHit / volleyCastle (the page's raid strike replay, raidStrikeVfx);
+      // its prongs, lashes and Cleave side hits are ordinary 'hit' events, as at the front.
       if(a.reserve && !rowSwingReady(a.att, a.attId)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // Snapshot taken BEFORE this iteration can credit any new kills, so reflowAfterKills()
       // can tell "died just now, this turn" apart from "was already dead/credited earlier
@@ -7157,7 +7157,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // first. Only if nothing, does it hit the opposing bramble."): in a raid (RESERVE_ACTS), a front-row swing with nothing to hit in
       // the enemy's front row in its column goes on to the middle row's unit there, then the back row's (rowTargetAt), and reaches the
       // bramble only when no row holds one. Stealth / Rainrunner (unblockable) and Crab claws (never straight ahead) keep their castle.
-      // A Sweep's side hits and a Wave's push only work on a front-row target (resTarget turns them off).
+      // (A Sweep's side hits go along the struck unit's row (sweepCols); a Wave pushes it along that row (washPush, 2026-10-19 RR).)
       let resTarget = !!(target && target.reserveRow); // a row swing's target in the middle / back row (2026-10-19, TS)
       if(RESERVE_ACTS && target && target.kind === 'hq' && !tipsyMiss && !(attDef.effects && (attDef.effects.stealth || attDef.effects.crabClaws || (attDef.effects.rainrunner && field && field.id === 'rain')))){
         const rt = rowTargetAt(players[a.enemyId], liveSelf.col);
