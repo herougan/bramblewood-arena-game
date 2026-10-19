@@ -2,6 +2,29 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package EQ: equipment on the slots, Weapon Master, slot hazards, the Crowbar, the Bucketknee Wolf, Creeper's art)
+- **Equipment on the slots** (owner 21:36: "Same slot placement rules except you can play over creature units as well ... they take 1 turn to take the benefits"):
+  - An equipment card goes into any slot a unit could go to, where it lies alone, or onto a slot holding one of your units, where it goes under the unit. Dragging it onto a unit still works.
+  - A unit played, spawned or moved onto a lone piece picks it up.
+  - When they meet, the unit is equipping for one round (`equip.turns`, default 1). At the next round's start it gains the piece's Attack, Health and skills.
+  - A lone piece does nothing. It can't be hit, and the swing facing it goes past to the bramble, as for an empty slot. It doesn't open the slots beside it.
+  - When the unit dies, the piece stays in its slot for the next unit (`equip.breaks: true` sends it to the graveyard instead). An equipped piece moves with its unit. Structures and cages carry nothing.
+  - On the board: a lone piece is a small item in its cell, a carried one is tucked under the card (pulsing while equipping), and the card detail says what the unit carries. The CPU puts a piece under its strongest unit.
+- **Weapon Master N** (a skill): while it is on the field, its side's arrows deal N more (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) and each equipped ally gets +1/+1. **Armory** (new, Rare Structure, 0/21, Weapon Master 1, no source) is its structure version. **Pry N** (a skill): a landed hit strips N Armor for good.
+- **Slot hazards** (owner 21:36), five new hazard spells (no source yet). Each goes on one slot on either side, for 3 or 4 rounds:
+  - **Frost Slick** (Ice Floor): a unit coming in slides one slot on.
+  - **Magma Vent** (Lava Floor): On Round Start, Damage 2 (fire).
+  - **Bog Seep** (Poison Floor): On Enter Slot and On Round Start, Poison 2.
+  - **Miasma** (Toxic Gas): On Round Start, Poison 1, flyers too.
+  - **Rockfall** (Rubble): the foe can't play into that empty slot.
+  - Owner 21:56: their effects are **triggers and actions**, with one new trigger, **On Enter Slot**: it fires on a unit played, spawned or moved into a slot, and units can use it too. Flyers and Mountain Climbers are above the floors, except the gas.
+  - Drawn as an overlay on the slot. While a hazard card is held, every cell of both rows is a drop target. The CPU lays them where they bite.
+- **New cards** (at the end of `canonical/cards.json`, budgeted with today's helper by `tools/eq_cards_2026_10_19.js`): Crowbar (Rare equipment, +2/+0, Pry 1, 1 Lumber, no source), Bucketknee Wolf (Very Rare Easter egg, 6/14, Armor 1, Helmet, Wait 2), Armory, and the five hazards. The art prompts are in `docs/art/new-cards-2026-10-19-briefs.md`; no art was generated.
+- **Creeper** wears its old art again (`art/cards/creeper.png`).
+- **Shared code for SK1:** `slotEntries(players, key)` in the engine is the "a unit entered a slot" scan. Each caller keeps its own memory key. The On Enter Slot trigger and the floors use it (`floorScan`, run at the start of `watchScan`).
+- **Texts:** 36 new TX keys, in the 12 language packs with the new card names and flavour (`tools/i18n_2026_10_19_eq.py`).
+- **Tests:** `tests/equipment-hazards-2026-10-19.js` (new, 119 checks). `tests/equipment.js` and `tests/easter-eggs-2026-10-19.js` were updated. There is also a browser smoke test, `tests/e2e/eq_2026_10_19.py`.
+
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
 - **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.
