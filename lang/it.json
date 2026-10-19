@@ -1933,5 +1933,12 @@
  "Changeling": "Mutaforma",
  "Were-beast": "Mannaro",
  "Mutant": "Mutante",
- "Glitch": "Glitch"
+ "Glitch": "Glitch",
+ "Synced ✓": "Sincronizzato ✓",
+ "Syncing…": "Sincronizzazione…",
+ "Offline": "Offline",
+ "Your decks are saved to your account and show on every device you sign in on.": "I tuoi mazzi sono salvati nel tuo account e compaiono su ogni dispositivo in cui accedi.",
+ "Saving your decks to your account…": "Salvataggio dei tuoi mazzi nel tuo account…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Impossibile raggiungere il server. I tuoi mazzi sono al sicuro su questo dispositivo e si sincronizzeranno quando tornerai online.",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "Il mazzo «{name}» è stato eliminato su un altro dispositivo, quindi sparisce anche da qui."
 }

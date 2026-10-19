@@ -1934,5 +1934,12 @@
  "Changeling": "Changelin",
  "Were-beast": "Garou",
  "Mutant": "Mutant",
- "Glitch": "Bug"
+ "Glitch": "Bug",
+ "Synced ✓": "Synchronisé ✓",
+ "Syncing…": "Synchronisation…",
+ "Offline": "Hors ligne",
+ "Your decks are saved to your account and show on every device you sign in on.": "Vos decks sont enregistrés sur votre compte et apparaissent sur chaque appareil où vous vous connectez.",
+ "Saving your decks to your account…": "Enregistrement de vos decks sur votre compte…",
+ "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Impossible de joindre le serveur. Vos decks sont en sécurité sur cet appareil et se synchroniseront dès votre retour en ligne.",
+ "The deck “{name}” was deleted on another device, so it's gone from here too.": "Le deck « {name} » a été supprimé sur un autre appareil, il disparaît donc aussi d’ici."
 }

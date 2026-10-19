@@ -26,6 +26,9 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Easter eggs | Codex teaser | 8 "???" tiles visible from the start and counted, or hidden until seen? |
 | Easter eggs | Condor "+5" | Taken literally (5 columns out): the edge beam needs a very wide row |
 | Easter eggs | Rarities | Drakon Rare, Panda Super Rare; Nyoogle tagged cat/mythic |
+| Server | Deck sync migration (SY) | supabase/proposed/20261019_deck_sync.sql: looks + deleted_at columns, checks, stale-write guard. Optional: apply? |
+| Server | Device-only data (SY) | Per-copy foil/Shiny/skins and Kibble, Food, Beer, Kroon, Laurels still don't sync. Sync next? |
+| Server | Currency guard (SY) | guard_currency_write rejects a whole upload when one currency jumps past its limit: a device far ahead never syncs |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
