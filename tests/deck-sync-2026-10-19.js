@@ -144,7 +144,6 @@ ok(!B.D.decks.some(d=> d.id === made.id), '1. B does not have it before a pull')
 later(20000); await B.D.deckSyncPull('wake'); await settle();
 const onB = B.D.decks.find(d=> d.id === made.id);
 ok(onB && onB.name === 'Mobile Bees' && onB.counts['bee-drone'] === 3, '1. after a pull, B has the deck made on A (same id, name, cards)');
-ok(ids(A) !== ids(B) || true, '');
 later(); await A.D.deckSyncPull('wake'); await settle();
 ok(ids(A) === ids(B) && A.D.decks.length === 3, '1. both devices list the same 3 decks');
 ok(/document\.addEventListener\('visibilitychange'[^\n]*deckSyncOnWake/.test(src) && /window\.addEventListener\('focus', deckSyncOnWake\)/.test(src) && /window\.addEventListener\('online'/.test(src),
