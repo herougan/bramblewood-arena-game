@@ -3163,6 +3163,7 @@ function cardWhereToGetText(d){
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
+  if(src.kind==='pack' && d.faction === 'base') return TX('ui.codex-base-tip'); // 2026-10-19 (package UT, owner: "Base cards just mean they come from Skirmish rewards, not Card Packs")
   if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Hedgerow Pouch, Tidemire Chest or Highcrest Case' : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
@@ -5637,6 +5638,40 @@ function stickyControls(page, ids){
     el.addEventListener('input', save); el.addEventListener('change', save); });
 }
 let codexFilter = Object.assign({q:'', archetype:'', mechLine:'', sort:'advance', dir:'desc', showTest:false}, (()=>{ const o = uiSticky('codex'); delete o.showTest; return o; })());
+// CODEX_ANIMAL_UT:BEGIN
+// Animals (2026-10-19, package UT, owner 09:52: "tag an animal to the card. For ghosts and spirits and elementals - they have an animal
+// embodiment, see. But subtype ghost or elemental etc."): every creature card carries `animal` (what it is, or the animal its ghost /
+// spirit / elemental body takes) and those beings a `subtype` (python3 tools/animal_tags.py; the report is canonical/animal-tags.json).
+// ANIMAL_GROUPS (the build inlines it from that report) folds each animal into its kind, for the Codex's animal filter: a wolf spider
+// and a raft spider are both spiders. The card detail shows the animal, the subtype and the Base mark (faction 'base': a Base card,
+// earned from skirmish rewards, not card packs).
+const ANIMAL_GROUPS = __ANIMAL_GROUPS__;
+function animalGroupOf(a){ return a ? (ANIMAL_GROUPS[a] || String(a).split(' ').pop()) : ''; }
+function animalSubtypeLabel(st){
+  return ({ghost: TX('ui.subtype-ghost'), spirit: TX('ui.subtype-spirit'), elemental: TX('ui.subtype-elemental'), undead: TX('ui.subtype-undead'),
+    construct: TX('ui.subtype-construct'), structure: TX('ui.subtype-structure'), fiend: TX('ui.subtype-fiend'), conjured: TX('ui.subtype-conjured'),
+    plant: TX('ui.subtype-plant'), fungus: TX('ui.subtype-fungus'), mythic: TX('ui.subtype-mythic'), changeling: TX('ui.subtype-changeling'),
+    were: TX('ui.subtype-were'), mutant: TX('ui.subtype-mutant'), glitch: TX('ui.subtype-glitch')})[st] || st;
+}
+const ANIMAL_SUBTYPE_ICON = {ghost:'👻', spirit:'✨', elemental:'🔥', undead:'💀', construct:'🗿', structure:'🏗️', fiend:'😈', conjured:'🌀', plant:'🌿', fungus:'🍄',
+  mythic:'🐉', changeling:'🎭', were:'🌕', mutant:'🧬', glitch:'▦'};
+const animalCap = s=> String(s || '').replace(/^\w/, c=> c.toUpperCase());
+// The chips under a card's name in its detail view.
+function animalChipsHTML(d){
+  const out = [];
+  if(d && d.animal){
+    out.push(`<span class="cd-chip cd-animal" title="${escapeAttr(TX('ui.codex-animal-tip', {animal: d.animal}))}">🐾 ${escapeHtml(animalCap(d.animal))}</span>`);
+    if(d.subtype) out.push(`<span class="cd-chip cd-subtype" title="${escapeAttr(TX('ui.codex-subtype-tip', {subtype: animalSubtypeLabel(d.subtype), animal: d.animal}))}">${ANIMAL_SUBTYPE_ICON[d.subtype] || '✨'} ${escapeHtml(animalSubtypeLabel(d.subtype))}</span>`);
+  }
+  if(d && d.faction === 'base') out.push(`<span class="cd-chip cd-base" title="${escapeAttr(TX('ui.codex-base-tip'))}">🌰 ${escapeHtml(TX('ui.codex-base-chip'))}</span>`);
+  return out;
+}
+// The Codex's animal filter: each kind present in `defs`, with its count.
+function codexAnimalOptionsHTML(defs){
+  const n = {}; Object.values(defs).forEach(d=>{ if(!d || d.test || !d.animal) return; const g = animalGroupOf(d.animal); n[g] = (n[g] || 0) + 1; });
+  return Object.keys(n).sort().map(g=> `<option value="${escapeAttr(g)}" ${codexFilter.animal===g?'selected':''}>${escapeHtml(animalCap(g))} (${n[g]})</option>`).join('');
+}
+// CODEX_ANIMAL_UT:END
 // Advancement order (2026-10-12, user: "sort by Advancement - as in, Base, Map 1, Map 2... then Pack A, Pack B... then
 // Mystery Pack A, B..., Event A, B, C..."): base cards, then map rewards by map number (side maps after their parent) and
 // fight order, then packs by pool, the faction pools, Mystery, events by name, and anything unsorted last.
@@ -5892,6 +5927,7 @@ function renderCodex(){
       <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = codexFilterCount(); return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
+      <select id="cxAnimal" aria-label="${escapeAttr(TX('ui.codex-animal-filter'))}"><option value="">🐾 ${escapeHtml(TX('ui.codex-all-animals'))}</option>${codexAnimalOptionsHTML(defs)}</select>${'' /* 2026-10-19 (package UT): the animal filter */}
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxRarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${(()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${codexFilter.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })()}</select>${'' /* 2026-10-18 (package C): the album's rarity filter */}
       <button type="button" class="btn small cx-skill-btn" id="cxSkillBtn" aria-expanded="false" aria-controls="cxSkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${codexSkillsChosen().length ? '' : 'hidden'}>${codexSkillsChosen().length}</b></button>
@@ -5931,6 +5967,7 @@ function renderCodex(){
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
   { const ph = document.getElementById('cxPhylum'); if(ph) ph.addEventListener('change', e=>{ codexFilter.phylum = e.target.value; renderCodexGrid(); }); }
+  { const an = document.getElementById('cxAnimal'); if(an) an.addEventListener('change', e=>{ codexFilter.animal = e.target.value; renderCodexGrid(); }); } // 2026-10-19 (package UT)
   document.getElementById('cxSort').addEventListener('change', e=>{ codexFilter.sort = e.target.value; renderCodexGrid(); });
   document.getElementById('cxSortDir').addEventListener('click', (e)=>{
     codexFilter.dir = codexFilter.dir==='desc'?'asc':'desc';
@@ -6120,10 +6157,11 @@ function renderCodexGrid(keepPage){
   // instead of merging them into the normal grid, so testing content stays clearly separated from
   // the real roster rather than cluttering it.
   ids = ids.filter(id=> !!defs[id].test === !!codexFilter.showTest);
-  if(codexFilter.q){ const q = codexFilter.q.toLowerCase(); ids = ids.filter(id=> defs[id].name.toLowerCase().includes(q)); } // 2026-10-18: lowercased once, not once per card
+  if(codexFilter.q){ const q = codexFilter.q.toLowerCase(); ids = ids.filter(id=> defs[id].name.toLowerCase().includes(q) || (defs[id].animal || '').includes(q)); } // 2026-10-18: lowercased once, not once per card; 2026-10-19 (package UT): the animal too ("spider" finds the Webspire Sentinel)
   if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
+  if(codexFilter.animal) ids = ids.filter(id=> animalGroupOf(defs[id].animal) === codexFilter.animal); // 2026-10-19 (package UT): the animal filter
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
   { const want = codexSkillsChosen(); if(want.length){ const ps = want.map(skillDefOf); ids = ids.filter(id=> ps.every((p, i)=> cardHasSkill(defs[id], want[i], p))); } } // 2026-10-18 (package C): every skill picked
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
@@ -6356,7 +6394,7 @@ function cardHasSkill(d, key, p){
   const e = (d && d.effects) || {}; p = p === undefined ? skillDefOf(key) : p;
   try{ return p && p.get ? p.get(e) !== undefined : (e[key] != null && e[key] !== false); }catch(_){ return false; }
 }
-function codexFilterCount(){ return [codexFilter.archetype, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
+function codexFilterCount(){ return [codexFilter.archetype, codexFilter.animal, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
 function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
@@ -8059,6 +8097,7 @@ function openCardDetail(defId){
   const rar = String(d.rarity||'common').replace(/_/g,' ');
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
+    .concat(animalChipsHTML(d)) // 2026-10-19 (package UT): the animal, the subtype, the Base mark
     .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
   // A card that brings another card (2026-10-13, user: "If a card spawns another card - show the other card's detail on the right
   // side"): every other card named in its skills or triggers, shown beside it with its abilities.
@@ -11347,6 +11386,9 @@ function cardBaseLevel(d){
   const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base'); // 2026-10-13: "all quest cards and base cards start at level 0"
   // 2026-10-14 (22:50, user: "Faction cards come in at level 1. Wandering Trader comes in at level 1."): a faction's own cards
   // and the Wandering Traveller start at Level 1 (their printed stats are their Level 1 stats).
+  // 2026-10-19 (package UT, owner 09:52: "The starter cards are not Otters. Just considered as 'Base' ... The tutorial base cards
+  // come as Level 0 is the special thing."): the old 'otters' cards are faction 'base' now (Base cards: skirmish rewards, not packs)
+  // and still start at Level 1; only the copies the tutorial hands out are Level 0 (tutorialCopyLevel0 below).
   if(d.faction || d.id==='wandering-traveller') return 1;
   return (d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1;
 }
@@ -11512,6 +11554,7 @@ function unlockCardForPlayer(id, source, copyOpts){
   // already-unlocked early-return below so a 2nd/3rd/4th pull of the same card still counts as
   // owning more copies, not a silent no-op.
   grantCardCopy(id, copyOpts);
+  if(isTutorialCopySource(source)) tutorialCopyLevel0(id); // 2026-10-19 (package UT): a tutorial reward is a Level 0 copy
   noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
   noteGainedForSwap(id, source); // a clearly better card than one in your deck is offered as a swap (2026-10-15, at most 10 ever)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
@@ -11709,6 +11752,8 @@ function grantCardCopy(id, opts){
   try{ ensureCopyModel(); }catch(e){}
   if(copyModelReady){ copy.uid = newCopyUid(); copy.level = copyBaseLevelOf(id); }
   myCardCopies[id].push(copy);
+  // 2026-10-19 (package UT): a card shown at Level 0 (a tutorial or hatchling copy) shows its new Level 1 copy once one arrives
+  if(copyModelReady && copy.level > 0) try{ if(hatchlingIds().has(id)){ syncBestLevel(id); saveCardLevels(); } }catch(e){}
   saveCardCopies();
   if(shiny && !forcedShiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(TX('toast.shiny-your-new-came-out-shiny', {v1: d ? d.name : 'card'}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
 }
@@ -24251,6 +24296,7 @@ function claimTutorialWin(pick){
     const won = grantTutorialSeriesRewards(pick);
     // 2026-10-10 (user: "Playing the tutorial forces the player to put the 3 cards they won from the tutorial into their deck -> forming 20!")
     const deck = buildFactionStarterDeck(pick); won.forEach(id=> deck[id] = (deck[id]||0) + 1);
+    tutorialStarterCopiesLevel0(deck); // 2026-10-19 (package UT): the starting deck's copies are Level 0
     myDeckCounts = deck; saveMyDeck(); saveTutorialDone();
     noteTutorialProgress({level:4, doneAt:Date.now()});
   }
@@ -24261,6 +24307,40 @@ function grantTutorialSeriesRewards(pick){
   rewardIds.forEach(id=> unlockCardForPlayer(id, 'tutorialReward'));
   return rewardIds;
 }
+// TUTORIAL_LEVEL0_UT:BEGIN (tests/animal-tags-2026-10-19.js evaluates this block)
+// Tutorial copies at Level 0 (2026-10-19, package UT, owner 09:52: "The starter cards are not Otters. Just considered as 'Base'. Base
+// cards just mean they come from Skirmish rewards, not Card Packs. The tutorial base cards come as Level 0 is the special thing."):
+// every copy the tutorial hands out (the starting deck, and the tutorial's reward and bonus cards) is a Level 0 copy. A card whose
+// starting level is 1 (a Base card, a faction card) gets the hatchling marks the Nest already knows: the copy hatch:1 (copyLevel lets
+// it sit under the card's starting level) and the card in hatchlingIds while no copy of it is above Level 0, so the Codex and the deck
+// show Level 0 too; the Nest trains it to Level 1 (finishNurture). tut:1 says where the copy came from. Base cards won later from
+// skirmishes start at their normal level (grantCardCopy).
+function isTutorialCopySource(source){ return source === 'tutorialReward' || source === 'tutorialBonus' || source === 'starterDeck'; }
+function tutorialMarkLevel0(id, c){
+  const d = copyBaseDef(id); if(!d || !c) return;
+  c.level = 0; c.tut = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
+}
+function tutorialHatchlingIfAllZero(id){
+  const d = copyBaseDef(id); if(!d || cardBaseLevel(d) <= 0 || topCopyLevel(id) > 0 || (myCardLevels[id] | 0) > cardBaseLevel(d)) return;
+  if(myCardLevels[id] === cardBaseLevel(d)){ delete myCardLevels[id]; try{ saveCardLevels(); }catch(e){} }
+  if(!hatchlingIds().has(id)){ hatchlingIds().add(id); saveHatchlings(); }
+}
+// The newest copy of `id` (the one just granted) becomes a Level 0 copy.
+function tutorialCopyLevel0(id){
+  try{ if(!copyModelOn()) return; const a = myCardCopies[id] || [], c = a[a.length - 1]; if(!c) return;
+    tutorialMarkLevel0(id, c); tutorialHatchlingIfAllZero(id); saveCardCopies(); }catch(e){}
+}
+// The starting deck: Base and starter cards are unlimited, so their copies are made here, at Level 0 (made for a deck: m:1), up to
+// the count the deck holds (the reward copies granted a moment earlier count).
+function tutorialStarterCopiesLevel0(deck){
+  try{ if(!copyModelOn()) return;
+    Object.entries(deck || {}).forEach(([id, n])=>{ if(!isUnlimitedCard(id)) return;
+      const a = myCardCopies[id] = myCardCopies[id] || [];
+      while(a.length < (n | 0)){ const c = {foil:false, m:1, uid: newCopyUid()}; tutorialMarkLevel0(id, c); a.push(c); }
+      tutorialHatchlingIfAllZero(id); });
+    saveCardCopies(); }catch(e){}
+}
+// TUTORIAL_LEVEL0_UT:END
 // Win/loss modal copy for tutorial-mode matches -- pulled out of renderMatchUI's big template
 // literal so the stage-number/reward-callout logic reads clearly on its own.
 // 2026-10-07 playtest: a 0–30 loss was titled "So Close!". It says so only when it was close.
