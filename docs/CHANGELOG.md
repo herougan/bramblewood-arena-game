@@ -2,6 +2,31 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package SK2: economy and structure skills)
+- **Owner (21:36, 21:56):** economy and structure skills, plus Salvage and a Stone-making Petrified Tree. Use triggers and actions where they fit.
+- **Ten new skills, on no existing card yet** (engine: the `[SK2 BEGIN]` block in `bramblewood-engine.js`):
+  - **Harvest:** half its swings give 1 Lumber instead. With nothing opposite, it always harvests.
+  - **Scavenge N, M:** a death within 1 gives N points. Every M points (3) become 1 Lumber.
+  - **Salvage N, M:** like Scavenge, but only Structures count, and the points become Stone.
+  - **Repair N:** each turn it mends the most damaged allied structure within 1 column for N. With none, it mends your bramble for N/2.
+  - **Foraging N:** 1 Berry a turn. At 3 Berries it heals the most damaged other ally for N (3).
+  - **Milling N:** On Turn Start × Gain N Lumber, in the trigger layer. It still attacks.
+  - **Pickpocket N:** steals N counters from the unit it hits (Prayer tokens, Berries, points, Creativity; never debuffs). On the bramble it steals N resources, lowest rank first.
+  - **Sabotage N:** destroys N of the foe's resources, lowest rank first (Lumber, Stone, Metal, Uranium).
+  - **Arson N:** burns N of the foe's Lumber.
+  - **Fortification:** on play, it builds a 0/6 Palisade (a Structure token) in an empty slot beside it.
+- **Numbers:** every number is in `SK2_DEFAULTS` at the top of the engine. A fight can override any of them with `opts.sk2`. The app's card lines read the same table.
+- **Structures** are one unit category: `isStructureCard` covers the Structure type, a legacy type and `cardType: 'structure'`. Repair uses it, and so does Siege.
+- **New card:** Petrified Tree (Rare, Lumber 5, Wait 3, 0/45, Flora Structure). It gains 1 Stone each turn through On Turn Start × Gain Stone. It is the last card in `canonical/cards.json` and has no source yet. Its art prompt is in `docs/art/new-cards-2026-10-19-briefs.md`.
+- **App:**
+  - Skill names, card lines, Codex notes, icons and card-face chips.
+  - Berry, scavenge and salvage chips on the unit.
+  - Battle-log lines and floats.
+  - The Palisade's name, and a Berry keyword.
+  - Every string is a TX key, translated into the 12 packs (`tools/i18n_2026_10_19_sk2.py`).
+- **Skill costs:** Milling and Fortification are shorthands (trigger × action). The rest have S estimates (`measuredHow: "estimate SK2"`, low confidence).
+- **Tests:** `tests/skills-sk2-2026-10-19.js` (260 checks).
+
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
 - **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.
