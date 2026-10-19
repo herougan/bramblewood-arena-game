@@ -6,8 +6,9 @@ Scope: Home button / conquest top strip; pre-battle VS screen; raid-complete emb
 - [x] 3 Raid emblem: raidRankEmblemHTML (+ window.bwRaidRankEmblemHTML for fx-f claim screen)
 - [x] 4a root cause: Admin 👑 Win (adminAutoWin) on turn 1 → scored as overwhelm 10k + pushed. Fix: m.adminWin → raid not recorded (m.raidAdminTest). Also Play again on raid built a Quick Battle → raidReplayPart
 - [x] 4b raidDamageCalcHTML breakdown, nv-full-reward-from, bramble span in stats, running stat tally (log cap 200 undercounted)
-- [ ] tests (tests/nv-2026-10-19.js), update mobile-nav + raid-rv2 tests
-- [ ] screenshots review
-- [ ] keyify/export, CHANGELOG, lang translations
+- [x] tests (tests/nv-2026-10-19.js 121/121), mobile-nav + raid-rv2 updated and passing; i18n-templates + game-texts pass
+- [x] screenshots in docs/screens/nv/ reviewed
+- [x] keyify/export, CHANGELOG, lang translations (12 packs)
+- [ ] merge main, rebuild, final commit
 ## Notes
 - scratch scripts: /tmp/claude-0/-home-claude/37fc5715-ea38-5d46-be56-06a8c754a559/scratchpad/nv/ (shots.js, spec-nv.js)
