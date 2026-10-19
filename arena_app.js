@@ -21902,7 +21902,7 @@ function raidClaimsFor(def){
       const key = raidClaimKey(def, c, g.gen, inst); if(claimed[key]) return;
       const st = RaidM.generationState(def, atts, g, c, now);
       const rw = RaidM.raidReward(def, st, me, {over: g.over || g.end <= now});
-      if(rw){ out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); Object.assign(out[out.length - 1], {gen: g.gen, instance: inst}); } // mine: 2026-10-18 (package RW), the claim screen counts it up
+      if(rw){ out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); Object.assign(out[out.length - 1], {gen: g.gen, instance: inst, rank: raidBestRankOf(def, c, g)}); } // mine: 2026-10-18 (package RW), the claim screen counts it up; rank: 2026-10-19 (RV2)
     });
   });
   return out;
@@ -21962,9 +21962,10 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp){
     rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label:TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
   if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
   const kill = rw.kind === 'kill';
-  return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards,
+  const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
+  return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards, rank: rk,
     text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
-      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier: raidClaimTierLabel(rw.tier) + (rw.strong ? ' · ' + TX('results.raid-strong') : ''), damage:TX('results.raid-claim-damage'), // + strong contributor (2026-10-19)
+      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier: raidClaimTierLabel(rw.tier) + (rw.leading ? ' · ' + TX('results.raid-leading') : rw.strong ? ' · ' + TX('results.raid-strong') : ''), damage:TX('results.raid-claim-damage'), // + strong contributor (2026-10-19); + the Leading participant (RV2)
       collect:TX('results.raid-claim-collect'), skip:TX('results.tap-to-skip')}};
 }
 function showRaidClaimScreen(spec){
@@ -21994,13 +21995,14 @@ function raidTicketChipHTML(tickets, nextMs){
 }
 // "★ Strong contributor" / "✓ Taking part" / "2/3 fights · 640/1,000 damage"
 function raidParticipationText(p){
+  if(p.leading) return TX('ui.raid-leading'); // 2026-10-19 (RV2)
   if(p.strong) return TX('ui.raid-strong');
   if(p.participant) return TX('ui.raid-in');
   return TX('ui.raid-part-progress', {fights: p.fights, nf: p.rules.fights, damage: p.damage.toLocaleString(), nd: p.rules.damage.toLocaleString()});
 }
 function raidClaimRowHTML(c, i, raidId){
   const kill = c.reward.kind === 'kill';
-  return `<div class="r2-claim">🎁 ${escapeHtml(kill ? TX('ui.raid-claim-kill') : TX('ui.raid-claim-held'))}${c.reward.strong ? ` <span class="r2-strong">${escapeHtml(TX('ui.raid-strong'))}</span>` : ''} <button type="button" class="btn small primary" data-raid-claim="${i}"${raidId ? ` data-raid-id="${escapeAttr(raidId)}"` : ''}>${escapeHtml(TX('ui.raid-claim'))}</button></div>`;
+  return `<div class="r2-claim">🎁 ${escapeHtml(kill ? TX('ui.raid-claim-kill') : TX('ui.raid-claim-held'))}${c.reward.strong ? ` <span class="r2-strong">${escapeHtml(TX(c.reward.leading ? 'ui.raid-leading' : 'ui.raid-strong'))}</span>` : ''}${c.rank ? ' ' + raidRankBadgeHTML(c.rank.rank, c.rank.won) : ''} <button type="button" class="btn small primary" data-raid-claim="${i}"${raidId ? ` data-raid-id="${escapeAttr(raidId)}"` : ''}>${escapeHtml(TX('ui.raid-claim'))}</button></div>`;
 }
 function raidHubCardHTML(def){
   const st = currentRaidStateFor(def), me = myGhostOwnerId(), p = RaidM.participationOf(def, st, me);
@@ -22077,7 +22079,7 @@ function raidPanelHTML(){
       <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
       ${raidTicketChipHTML(tickets, tkNext)}
       <span class="r3-chip"><small>${escapeHtml(TX('ui.raid-fight-costs'))}</small><b>${tkCost} 🎫 + ${enLo === enHi ? enLo : enLo + '–' + enHi} ⚡</b></span>
-      <span class="r3-chip r3-part${part.participant ? ' is-in' : ''}${part.strong ? ' is-strong' : ''}" title="${escapeAttr(TX('ui.raid-part-rules', {fights: pr.fights, damage: pr.damage.toLocaleString(), sfights: pr.strongFights, sdamage: pr.strongDamage.toLocaleString(), pct: pr.strongPct}))}"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small><b>${escapeHtml(raidParticipationText(part))}</b></span>
+      <span class="r3-chip r3-part${part.participant ? ' is-in' : ''}${part.strong ? ' is-strong' : ''}${part.leading ? ' is-leading' : ''}" title="${escapeAttr(TX('ui.raid-part-rules', {fights: pr.fights, damage: pr.damage.toLocaleString(), sfights: pr.strongFights, sdamage: pr.strongDamage.toLocaleString(), pct: pr.strongPct}) + ' ' + TX('ui.raid-part-rules-lead', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(), pct: pr.leadPct}))}"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small><b>${escapeHtml(raidParticipationText(part))}</b></span>
       ${st.instance > 1 ? `<span class="r3-chip r3-inst" title="${escapeAttr(TX('ui.raid-instance-tip'))}"><small>${escapeHtml(TX('ui.raid-instance-label'))}</small><b>${st.instance}</b></span>` : ''}
       ${raidAutoOpen(def) ? `<span class="r3-chip r3-auto"><small>🤖</small><b>${escapeHtml(TX('ui.raid-auto-open'))}</b></span>` : ''}
       ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
@@ -22110,9 +22112,12 @@ function raidPanelHTML(){
         <p class="r3-note">Your three brambles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
         <p class="r3-note">${escapeHtml(TX('ui.raid-closest-row-note')) /* 2026-10-19 (package RX): closest-row targeting */}</p>
         ${(()=>{ const rf = Object.assign({}, RaidM.REINFORCE || {}, (def.tuning || {}).reinforce || {}); // 2026-10-19: the raid's own reinforce tuning
+          if(rf.max != null && !(rf.max > 0)) return ''; // no call-ins (2026-10-19, RV2: the boss's row plays took their place)
           return (rf.every || 1) > 1 ? `<p class="r3-note">${escapeHtml(TX('ui.raid-commons-every', {every: rf.every, max: rf.max, s: rf.max === 1 ? '' : 's'}))}</p>`
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
-        ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(def.name || 'The boss')}'s might: its great beasts carry <b>+${bh.bonus} Health</b> while the raid is at ${Math.ceil(bh.fraction * 100)}%.</p>` : ''; })()}
+        <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
+        ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
+        <ul class="r3-rules">${[TX('ui.raid-rule-share'), TX('ui.raid-rule-win', {n: (sc.overwhelmCap||10000).toLocaleString()}), TX('ui.raid-rule-rank')].map(t=> `<li>${escapeHtml(t)}</li>`).join('') /* 2026-10-19 (RV2, owner 08:46): the raid's rules, no multipliers shown */}</ul>
         <p class="r3-note">Each fight lasts ${RaidM.fightRounds(def)} turns (or until your bramble falls) and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's bramble (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
@@ -22124,6 +22129,7 @@ function raidPanelHTML(){
         <ul class="r3-rw">
           <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString()}))}</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-leading', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-leading-what', {pct: pr.leadPct}))}</span></li>
           ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)}${t !== 'top50' && raidCardIds(def).length ? ' and a second card' : ''}</span></li>`).join('')}
           <li><b>${escapeHtml(TX('ui.raid-rw-held'))}</b><span>${escapeHtml(TX('ui.raid-rw-held-what', {pct: rw.failPct != null ? rw.failPct : 50, max: rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}))}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-respawn-h'))}</b><span>${escapeHtml(TX('ui.raid-rw-respawn', {h: Math.round(RaidM.respawnMs(def) / 3600000)}))}</span></li>
@@ -22265,7 +22271,7 @@ function openRaidEditor(raidId){
       </div>
       <h3 class="se-h">Tuning</h3>
       <div class="se-grid">
-        <label title="The boss unit's extra Health on a fresh raid, shrinking with the raid's remaining Health (2026-10-18)">Boss unit bonus Health<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
+        <label title="The boss unit's Health on a fresh raid; it falls with the raid's remaining Health to the unit's own Health (2026-10-19, package RV2: was a bonus on top)">Boss unit Health, fresh raid<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
         <label title="Your leader's cost in points: each Lumber 1, each Stone 2, each Metal 3. A leader over it can't go into this raid. 0 = no cap (2026-10-19)">Leader cost cap (points)<input id="reLeaderCap" type="number" min="0" max="99" value="${draft.leaderCostCap||0}"></label>
         <label title="Below this much bramble damage an attempt pays a pittance (2026-10-19)">Paying damage (min)<input id="reMinDmg" type="number" min="1" max="9999" value="${draft.minDamage||120}"></label>
         ${(()=>{ const t = draft.tuning || {}, rf = t.reinforce || {}, D = RAID_TUNE_DEFAULTS; // 2026-10-19 (package RX): the full raid's tuning knobs (raidTune)
@@ -22274,7 +22280,8 @@ function openRaidEditor(raidId){
         <label title="Extra Health on the raiders' merged bramble">Raiders' bramble +Health<input id="reTCastle" type="number" min="0" max="999" value="${t.raiderCastleBonus || 0}"></label>
         <label title="How many of your two CPU allies play a card each turn">Allies playing a turn<input id="reTAllies" type="number" min="1" max="2" value="${t.alliesPerTurn || D.alliesPerTurn}"></label>
         <label title="The boss calls in Commons every N turns">Commons every N turns<input id="reTRfEvery" type="number" min="1" max="10" value="${rf.every || 1}"></label>
-        <label title="The most Commons the boss calls in at once">Commons per call (max)<input id="reTRfMax" type="number" min="0" max="2" value="${rf.max != null ? rf.max : (RaidM.REINFORCE || {}).max || 2}"></label>`; })()}
+        <label title="The most Commons the boss calls in at once">Commons per call (max)<input id="reTRfMax" type="number" min="0" max="2" value="${rf.max != null ? rf.max : (RaidM.REINFORCE || {}).max || 2}"></label>
+        <label title="The boss plays a card into each of its back two rows every turn; a row holding this many waits (2026-10-19, package RV2)">Boss row cap<input id="reTRowCap" type="number" min="0" max="7" value="${t.rowCap != null ? t.rowCap : D.rowCap}"></label>`; })()}
       </div>
       ${(()=>{ // Field effects and the boss's Commons (2026-10-17): the whole raid's fieldRules as chips (✕ takes one off), an "add" list from
         // FIELD_EFFECTS (Psychic Dampener among them), and the Commons the boss calls in each round (blank = picked from its decks' types).
@@ -22337,9 +22344,13 @@ function openRaidEditor(raidId){
       <div class="se-grid">
         <label title="A participant has at least this many fights and this much raid damage in that life of the raid; under it, no reward">Taking part: fights<input id="rePFights" type="number" min="0" max="99" value="${pr.fights}"></label>
         <label>Taking part: damage<input id="rePDmg" type="number" min="0" step="100" value="${pr.damage}"></label>
-        <label title="A strong contributor gets the bonus % more of every reward">Strong: fights<input id="reSFights" type="number" min="0" max="99" value="${pr.strongFights}"></label>
-        <label>Strong: damage<input id="reSDmg" type="number" min="0" step="100" value="${pr.strongDamage}"></label>
-        <label>Strong: bonus %<input id="reSPct" type="number" min="0" max="200" value="${pr.strongPct}"></label>
+        <label title="A competent participant gets the bonus % more of every reward, and that % chance of an extra raid card (2026-10-19: was the strong contributor, at 5,000)">Competent: fights<input id="reSFights" type="number" min="0" max="99" value="${pr.strongFights}"></label>
+        <label>Competent: damage<input id="reSDmg" type="number" min="0" step="100" value="${pr.strongDamage}"></label>
+        <label>Competent: bonus %<input id="reSPct" type="number" min="0" max="200" value="${pr.strongPct}"></label>
+        <label title="A leading participant gets the bonus % more of every reward and the extra raid cards for certain (2026-10-19, package RV2)">Leading: fights<input id="reLFights" type="number" min="0" max="99" value="${pr.leadFights}"></label>
+        <label>Leading: damage<input id="reLDmg" type="number" min="0" step="1000" value="${pr.leadDamage}"></label>
+        <label>Leading: bonus %<input id="reLPct" type="number" min="0" max="300" value="${pr.leadPct}"></label>
+        <label>Leading: extra cards<input id="reLCards" type="number" min="0" max="5" value="${pr.leadCards}"></label>
         <label>Kill: gold<input id="reKGold" type="number" min="0" value="${rw.kill.gold||0}"></label>
         <label>Kill: dust<input id="reKDust" type="number" min="0" value="${rw.kill.dust||0}"></label>
         <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
@@ -22374,7 +22385,8 @@ function openRaidEditor(raidId){
     if(overlay.querySelector('#reTAtk')){ const t = draft.tuning = Object.assign({}, draft.tuning || {});
       t.bossAtkPct = Math.max(0.05, Math.min(2, num(v('reTAtk'), 60) / 100)); t.bossHpPct = Math.max(0.05, Math.min(2, num(v('reTHp'), 70) / 100));
       t.raiderCastleBonus = Math.max(0, Math.min(999, Math.round(num(v('reTCastle'), 0)))); t.alliesPerTurn = Math.max(1, Math.min(2, Math.round(num(v('reTAllies'), 1))));
-      t.reinforce = Object.assign({}, t.reinforce || {}, {every: Math.max(1, Math.min(10, Math.round(num(v('reTRfEvery'), 1)))), max: Math.max(0, Math.min(2, Math.round(num(v('reTRfMax'), 2))))}); }
+      t.reinforce = Object.assign({}, t.reinforce || {}, {every: Math.max(1, Math.min(10, Math.round(num(v('reTRfEvery'), 1)))), max: Math.max(0, Math.min(2, Math.round(num(v('reTRfMax'), 2))))});
+      t.rowCap = Math.max(0, Math.min(7, Math.round(num(v('reTRowCap'), RAID_TUNE_DEFAULTS.rowCap)))); } // 2026-10-19 (RV2)
     const tr = overlay.querySelector('#reTrench');
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
@@ -22384,7 +22396,8 @@ function openRaidEditor(raidId){
     if(overlay.querySelector('#reInstCap')) draft.instanceCap = Math.max(10, Math.min(1000, Math.round(num(v('reInstCap'), 100))));
     if(overlay.querySelector('#reArt')){ const a = String(v('reArt') || '').trim(); if(a) draft.art = a; else delete draft.art; }
     if(overlay.querySelector('#rePFights')){ const n = (id, d, hi)=> Math.max(0, Math.min(hi, Math.round(num(v(id), d))));
-      draft.participation = {fights: n('rePFights', 3, 99), damage: n('rePDmg', 1000, 1e7), strongFights: n('reSFights', 4, 99), strongDamage: n('reSDmg', 5000, 1e7), strongPct: n('reSPct', 20, 200)}; }
+      draft.participation = {fights: n('rePFights', 3, 99), damage: n('rePDmg', 1000, 1e7), strongFights: n('reSFights', 4, 99), strongDamage: n('reSDmg', 10000, 1e7), strongPct: n('reSPct', 20, 200),
+        leadFights: n('reLFights', 4, 99), leadDamage: n('reLDmg', 50000, 1e8), leadPct: n('reLPct', 40, 300), leadCards: n('reLCards', 1, 5)}; } // + the Leading participant (2026-10-19, RV2)
     overlay.querySelectorAll('[data-al-name]').forEach(el=>{ const i = +el.dataset.alName, a = (draft.allyDecks || [])[i]; if(!a) return; a.name = el.value;
       const d = overlay.querySelector(`[data-al-deck="${i}"]`); if(d){ const deck = {}; String(d.value).split(',').forEach(x=>{ const m = x.trim().match(/^([\w~-]+)\s*[:x×]\s*(\d+)$/); if(m && +m[2] > 0) deck[m[1]] = Math.min(9, +m[2]); }); a.deck = deck; } });
     const live = overlay.querySelector('#reLive'); if(live) draft.live = live.checked;
@@ -22723,7 +22736,7 @@ function startRaidFullBattle(def, partId, f, st){
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: f.rounds || cfg.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: b.leaderUid,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
-    raidFieldRules: b.raidRules, raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: bossHpBonus,
+    raidFieldRules: b.raidRules, raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: bossHpBonus, raidBossRowDecks: b.rowDecks, // + its rows' decks (2026-10-19, RV2)
     raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
     raidSeed: currentMatchSeed}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
@@ -22775,7 +22788,9 @@ function buildRaidFullFight(def, partId, f, st, opts){
       bossUnitId = base + '~boss'; defs[bossUnitId] = Object.assign({}, src, {id: bossUnitId, name: raidBossUnitName(base, src.name), attack: (src.attack||0) + 1, health: Math.max(1, Math.round((src.health||1) * (1.5 + 1.5 * r))), bossUnitOf: base, rarity: 'epic'}); } }
   // 2026-10-18 (owner 11:46, the super whales): on top of that, +round(bossHpBonusMax × the raid's remaining share) Health (RaidM.bossHpBonus),
   // fixed here as the fight is built (st: the cloud's attempts, or only this device's offline) and added as each boss unit comes in.
-  const bossHpBonus = (bossUnitId && RaidM.bossHpBonus) ? RaidM.bossHpBonus(def, st).bonus : 0;
+  // 2026-10-19 (package RV2, owner 08:42: "They start with 100 HP instead, then scale down to the basic HP"): the bonus now takes the
+  // unit's basic Health, so the unit comes in at 100 Health on a fresh raid and at its basic Health when the raid is nearly dead.
+  const bossHpBonus = (bossUnitId && RaidM.bossHpBonus) ? RaidM.bossHpBonus(def, st, defs[bossUnitId].health).bonus : 0;
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
   const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
@@ -22796,8 +22811,16 @@ function buildRaidFullFight(def, partId, f, st, opts){
   if(!entIds.length){ [0, -1, 1].forEach(sl=>{ const id = take(); if(id) engine.debugSpawnCard(players, sideOf, 2, id, sl, stats, []); }); }
   // 2026-10-12 (user: "Why does the raid immediately have cards played? too much, maybe less"): its guards, and one card
   // waiting in the middle row; the rest it plays turn by turn.
-  const front = engine.allBoardCards(players[2]).map(c=> c.slot);
-  front.slice(0, 1).forEach(sl=>{ const id = take(); if(id) engine.fillReserve(players[2], 1, sl, id); });
+  // 2026-10-19 (package RV2, owner 08:42: "The enemy raid, like a real enemy, plays 3 cards all at once, not twice at the start."):
+  // no card waits in its middle row at the start any more (that read as a first play); from turn 1 it plays 3 cards at once each turn,
+  // one a row (raidBossRowPlays): its front row's from its deck as any CPU, its middle and back rows' each from that row's own deck
+  // (rowDecks, below: the part's cards scaled to a 20-card deck, as the raid's BR counts them, each shuffled).
+  const rowDecks = {};
+  { const ids = Object.keys(bossDeck), n = ids.reduce((t, id)=> t + Math.max(0, bossDeck[id]|0), 0), size = 20; // RAID_ROW_DECK_SIZE (here too, for the tools that lift this function alone)
+    [1, 2].forEach(r=>{ const out = [];
+      if(n) ids.forEach(id=>{ const k = Math.max(0, Math.round((bossDeck[id]|0) * size / n)); for(let i = 0; i < k; i++) out.push(id); });
+      for(let k = out.length - 1; k > 0; k--){ const j = Math.floor(rand() * (k + 1)); [out[k], out[j]] = [out[j], out[k]]; }
+      rowDecks[r] = out; }); }
   if(cfg.shieldWhileEntities && entIds.length) players[2].onHqHit = ()=> engine.allBoardCards(players[2]).some(c=> c.hp > 0 && entIds.includes(c.defId)) ? 0 : undefined;
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
@@ -22809,7 +22832,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
     allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.isLeader = true; a.leaderId = id; } }); }catch(e){}
   const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
-  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid};
+  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -22819,7 +22842,8 @@ const RAID_BOSS_ATK = 0.6, RAID_BOSS_HP = 0.7;
 // had before: bossAtkPct / bossHpPct (the boss's cards' share of their printed Attack / Health), raiderCastleBonus (+Health on the
 // raiders' merged bramble), reinforce ({max, every, from}: the Commons the boss calls in, see RaidM.bossReinforce), alliesPerTurn
 // (how many of your two CPU allies play a card each turn). Measured with tools/raid_full_sim.js.
-const RAID_TUNE_DEFAULTS = {bossAtkPct: RAID_BOSS_ATK, bossHpPct: RAID_BOSS_HP, raiderCastleBonus: 0, alliesPerTurn: 1};
+// rowCap (2026-10-19, package RV2): the most cards each of the boss's back two rows holds before its row plays wait (raidBossRowPlays).
+const RAID_TUNE_DEFAULTS = {bossAtkPct: RAID_BOSS_ATK, bossHpPct: RAID_BOSS_HP, raiderCastleBonus: 0, alliesPerTurn: 1, rowCap: 2};
 // Leader cost cap (2026-10-19, package RX, owner 20:46: "Raids get a setting limiting the resource cost of your leader"): a raid's
 // leaderCostCap, in points: each Lumber of the leader card's cost is 1, each Stone 2, each Metal 3. A leader over it is greyed in
 // the raid's leader picker with the reason, and the fight won't start with it (startRaidFullBattle). No cap (0 / unset): any leader.
@@ -22841,7 +22865,7 @@ function raidTune(def, k){ const v = def && def.tuning && def.tuning[k]; return 
 //   decks   each of its rows (trench.rows, 3) as a 20-card deck of the part's cards (scaled to 20 as any enemy deck, enemyDeckLevel)
 //   set-up  every card standing on its board as the fight starts counts twice: a deck card once more, a guard (not in the deck) 2x
 //   units   a boss unit for each boss-unit round in the fight's turns (RAID_BOSS_UNIT_ROUNDS), its rating x (Health + the super
-//           whales' bonus) / Health
+//           whales' bonus) / Health; since 2026-10-19 (RV2) that is 100 / its basic Health on a fresh raid, 1 when nearly dead
 //   commons the Commons it can call in over the fight (its reinforce tuning), each at the pool's average
 // The stat shares (bossAtkPct / bossHpPct), a stage's +Attack / +Health and the brambles' Health are not in it, as no fight's BR
 // counts stats or brambles.
@@ -22940,6 +22964,110 @@ function raidBossCommons(m, events){
   got.forEach(g=>{ g.card.bossCommon = true; });
   (events || []).push({type:'raidCommons', side:'B', defIds: got.map(g=> g.defId), rows: got.map(g=> g.row), uids: got.map(g=> g.card.uid)});
 }
+// The boss plays like a CPU enemy (2026-10-19, package RV2, owner 08:42: "The enemy raid, like a real enemy, plays 3 cards all at once,
+// not twice at the start."): each turn, as its front-row play goes down (the engine's CPU, aiTakeTurn), it also plays one card into
+// its middle row and one into its back row, from each row's own deck (m.raidBossRowDecks, made by buildRaidFullFight), so 3 cards land
+// together. Each goes into the centre-most free slot of its row with a unit right in front of it (E.legalReserveSlots, as its Commons
+// do): it waits behind its lines and never fills a column that stands open, so your strikes there still reach its bramble. With no
+// such slot, or with the row holding the raid's tuning.rowCap (2) already, the card waits in its row's deck for a later turn. No cost: a
+// raid boss's rows are its own decks.
+// Returns the plays [{row, slot, defId, uid, card}] and logs a 'raidBossPlay' event for each.
+const RAID_ROW_DECK_SIZE = 20;
+const RAID_BOSS_PLAY_ROWS = [1, 2];
+function raidBossRowPlays(m, events){
+  if(!m || !m.raidFull || m.over || !m.raidBossRowDecks || !m.engine || !m.engine.legalReserveSlots) return [];
+  const E = m.engine, P2 = m.players[2], defs = getCardDefs(), out = [];
+  const cap = Math.max(0, Math.round(raidTune(m.raidDef, 'rowCap')));
+  RAID_BOSS_PLAY_ROWS.forEach(row=>{ const deck = m.raidBossRowDecks[row]; if(!deck || !deck.length || !P2.reserve || !P2.reserve[row - 1]) return;
+    if(Object.values(P2.reserve[row - 1]).filter(c=> c && c.hp > 0).length >= cap) return; // that row is as full as the raid lets it get
+    const id = deck[0]; if(!defs[id]){ deck.shift(); return; }
+    const legal = E.legalReserveSlots(P2, row).slice().sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b), sl = legal.length ? legal[0] : null; if(sl == null) return;
+    const card = E.fillReserve(P2, row, sl, id); if(!card) return;
+    deck.shift(); card.bossPlay = true;
+    try{ if(m.stats && E.ensureStat) E.ensureStat(m.stats, 'B', id).played++; }catch(e){}
+    out.push({row, slot: sl, defId: id, uid: card.uid, card});
+    if(events) events.push({type:'raidBossPlay', side:'B', defId:id, uid:card.uid, row, slot:sl}); });
+  return out;
+}
+// ---- The raid's combat, played back column by column (2026-10-19, package RV2, owner 08:42: "It should look like the columns all
+// attack for real, staggered by 0.25s each. Then if the first row's interaction changes the board state somehow, the next row reacts
+// to that board state — e.g. if an opposing enemy dies, the next row attacks the next one then."). The engine already resolves a raid
+// round in that order (RESERVE_ACTS: column by column, left to right; in each column the front row, then the middle, then the back,
+// both sides; every strike picks its target from the board as the strikes before it left it: rowTargetAt passes over the dead, and a
+// unit that falls is swept out before the next action). The playback now shows it so: every strike (a front-row swing, a middle- or
+// back-row strike) is a real attack, the lunge toward its target and the blow landing, and each starts RAID_COLUMN_STAGGER_MS after
+// the one before, so the swings run across the board in order and overlap. A death breaks the run: it plays (its blow lands first),
+// then the next strike, which already went for whatever stood next. A blow that could end the fight plays out in full. Reduced motion
+// / Low effects: a shorter stagger (RAID_COLUMN_STAGGER_LOW_MS) and a flash in place of the lunge, in the same order.
+const RAID_COLUMN_STAGGER_MS = 250;
+const RAID_COLUMN_STAGGER_LOW_MS = 150;
+function raidSpeedOf(){ return (matchState && matchState.speedMult) || 1; }
+function raidLowFx(){ return reducedMotion() || !fxAtLeast('low'); }
+function raidStaggerMs(){ return Math.max(18, Math.round((raidLowFx() ? RAID_COLUMN_STAGGER_LOW_MS : RAID_COLUMN_STAGGER_MS) / raidSpeedOf())); }
+function raidStrikeBeatMs(){ return Math.max(18, Math.round((raidLowFx() ? 420 : 900) / raidSpeedOf())); }
+function raidDeathBeatMs(){ return Math.max(18, Math.round((raidLowFx() ? 300 : 560) / raidSpeedOf())); }
+// A plain strike (a unit's swing or a reserve unit's strike, not a Sweep / Cleave / Fork / Pounce / bolt / triggered shot, which keep
+// their own pacing), and who struck.
+function raidStrikeEv(ev){
+  if(!ev) return false;
+  if(ev.type === 'fieldTick') return ev.field === 'volleyHit' || ev.field === 'volleyCastle';
+  if(ev.type !== 'hit' && ev.type !== 'hitHQ' && ev.type !== 'evaded') return false;
+  return ev.attUid != null && !ev.ranged && !ev.sweep && !ev._cleave && ev.forkSwing == null && !ev.quake && !ev.pounce && !ev._bolt && !ev.source;
+}
+function raidStrikerOf(ev){ return String(ev && ev.type === 'fieldTick' ? ev.fromUid : ev && ev.attUid); }
+// How long before the next event when this strike is followed straight on by another unit's strike (0: not staggered).
+function raidStaggerNext(ev, nx, over){
+  if(!raidStrikeEv(ev) || !raidStrikeEv(nx) || raidStrikerOf(ev) === raidStrikerOf(nx)) return 0;
+  if(over && (ev.type === 'hitHQ' || ev.field === 'volleyCastle')) return 0; // it may be the blow that ends the fight
+  return raidStaggerMs();
+}
+// A middle- or back-row strike (the engine's volleyHit / volleyCastle), as a real attack: the striker lunges at its target (the
+// unit it found in its column, or the bramble), and the blow lands windup + impactPad later: the number, the shake and squash, the
+// sound, its Health (or the bramble's bar) stepping down. The blow is registered with the replay (m._pendingImpacts) so a death it
+// causes waits for it.
+function raidStrikeVfx(ev){
+  const m = matchState; if(!m || !ev) return;
+  const castle = ev.field === 'volleyCastle', isMine = ev.fromSide === 'A', simple = raidLowFx();
+  const from = boardCardEl(ev.fromUid);
+  let target = null; try{ target = castle ? hqTileEl(ev.side) : boardCardEl(ev.uid); }catch(e){}
+  const am = animMs(), impact = simple ? Math.max(30, am.impactPad) : am.windup + am.impactPad;
+  if(from){ if(m.movedUids) m.movedUids.add(String(ev.fromUid));
+    if(!simple){ let leanX = 0;
+      if(target && !castle){ const a = from.getBoundingClientRect(), t = target.getBoundingClientRect(); leanX = Math.max(-16, Math.min(16, ((t.left + t.width/2) - (a.left + a.width/2)) * 0.12)); }
+      try{ animateAttacker(ev.fromUid, isMine, {leanX, toCastle: castle}); }catch(e){} }
+    else { from.classList.remove('raid-strike-flash'); void from.offsetWidth; from.classList.add('raid-strike-flash'); setTimeout(()=> from.classList.remove('raid-strike-flash'), 420); } }
+  try{ panCameraToShowUid(ev.fromUid); }catch(e){}
+  let done; const pr = new Promise(res=> done = res); pr.landed = false;
+  if(!castle && ev.uid != null){ const pi = m._pendingImpacts || (m._pendingImpacts = {}); pi[String(ev.uid)] = pr; }
+  setTimeout(()=>{
+    try{ if(matchState === m){
+      if(castle){ if(target){ floatText(hqRibbonFloatAnchor(ev.side) || target, `🏹 -${ev.dmg}`, 'hq-big'); if(!simple) try{ shakeEl(target); }catch(e){} }
+        if(ev.dmg > 0) displayHqDamage(m, ev.side, ev.dmg); } // the bar steps down with it (2026-10-18)
+      else { const rc = m.replayCards && m.replayCards[ev.uid]; if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg);
+        try{ updateCardHpDisplay(ev.uid); }catch(e){}
+        const el = boardCardEl(ev.uid); if(el){ floatText(el, `🏹-${ev.dmg}`, 'dmg'); if(!simple){ try{ impactSquash(el, ev.dmg||0); }catch(e){} try{ shakeEl(el); }catch(e){} } } }
+      if(target) SoundKit.at(target, ()=> SoundKit.hitAt(ev.dmg||0, castle)); } }catch(e){}
+    pr.landed = true; done(); }, impact);
+}
+// The middle and back rows mid-replay (see m.replayReserve in resolveRoundCore): a unit leaves its slot when its death plays, and only
+// that slot is redrawn (an empty slot), so the strikes still in the air elsewhere keep their elements.
+function raidReplayReserveDrop(m, side, uid){
+  const pid = side === 'A' ? 1 : 2, rows = m && m.replayReserve && m.replayReserve[pid]; if(!rows) return false;
+  let hit = false; rows.forEach(o=> Object.keys(o).forEach(sl=>{ if(String(o[sl]) === String(uid)){ delete o[sl]; hit = true; } }));
+  if(hit && typeof document !== 'undefined'){ const el = boardCardEl(uid); if(el && el.closest('.reserve-row')){ const e = document.createElement('div'); e.className = 'board-card empty-slot'; e.setAttribute('aria-hidden', 'true'); el.replaceWith(e); } }
+  return hit;
+}
+// The card a reserve slot shows mid-replay: the unit standing there as the replay stands, with its replay Health and statuses.
+function raidReplayReserveCard(m, pid, r, sl, like){
+  const rows = m.replayReserve && m.replayReserve[pid], o = rows && rows[r - 1];
+  if(!o){ const pl = m.players[pid]; return pl && pl.reserve && pl.reserve[r - 1] ? pl.reserve[r - 1][sl] : null; }
+  const uid = o[sl]; if(uid == null) return null; const rc = m.replayCards && m.replayCards[uid]; if(!rc) return null;
+  return Object.assign({}, rc.reserveCard || rc, (like && like(uid)) || {}, {slot: Number(sl)});
+}
+function raidReplayReserveEnd(m){
+  if(!m) return; m.replayReserve = null;
+  (m._replayResUids || []).forEach(u=>{ if(m.replayCards) delete m.replayCards[u]; }); m._replayResUids = [];
+}
 // The raid's field effects (2026-10-17): def.fieldRules, then the part's own fieldRules on top (false switches one off).
 function raidFieldRulesOf(def, part){
   const r = Object.assign({}, (def && def.fieldRules) || {}, (part && part.fieldRules) || {});
@@ -22978,10 +23106,12 @@ function raidAllyPlays(m, a, events){
   a.played++;
   placed.allyOf = a.name; placed.allyRow = a.row; m.raidAllyNew = placed.uid;
   const ev = {type:'raidAlly', name:a.name, defId:id, where, row:a.row, slot:sl};
-  if(events) events.push(ev); else { pushLog(ev); renderBoard(); }
+  // 2026-10-19 (package RV2, owner 08:42: "Watch out not to redraw everything as well"): outside a round's events (the opening play,
+  // and every turn's plays now, see resolveRoundCore), the card goes into its slot alone (reserveSlotPut); the board isn't redrawn.
+  if(events) events.push(ev); else { pushLog(ev); try{ if(typeof document !== 'undefined' && !reserveSlotPut(m, 1, a.row, sl)) renderBoard(); }catch(e){} }
   // 2026-10-19 (package RX, owner 20:46: "Allies should look like they are playing their cards from hand"): the card flies in from
   // the ally's side of its row and lands like a hand play, once its tile is on the board (allyPlayFx waits for it).
-  allyPlayFx(placed.uid, {row: a.row, mode: 'raid'});
+  allyPlayFx(placed.uid, {row: a.row, mode: 'raid', name: a.name, defId: id});
 }
 // Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A smack is marked a round ahead (its row
 // or column glows red in your rows), then lands; a front-row attack ('frontRow', the Tail Sweep) hits every unit in your front row.
@@ -23083,11 +23213,37 @@ function raidLastTurnBanner(m){
   el.innerHTML = `🌊 Last turn<small>The tide turns after turn ${m.raidRoundCap}: the raid ends then, whatever the brambles’ Health.</small>`;
   bf.appendChild(el); setTimeout(()=>{ el.classList.add('next-turn-sign-out'); setTimeout(()=> el.remove(), 260); }, 2600);
 }
+// A raid fight's rank (2026-10-19, package RV2, owner 08:46: "If you actually win the fight, you get a special emblemed rank ... higher
+// rank = more damage"): graded as any fight on your bramble's Health left (rankForHqFraction: S 90%+, A 70%+, B 50%+ ...), SS with no
+// damage taken, SSS with no damage and none of your side's units lost; null when your bramble fell or you gave up. It multiplies the
+// fight's raid damage (RaidM.contributionFor). A win (the part overwhelmed) shows it emblemed.
+function raidFightRank(m){
+  if(!m || !m.players || m.endReason === 'forfeit') return null;
+  const hq = m.players[1].hq; if(!(hq.hp > 0)) return null;
+  const base = rankForHqFraction(hq.maxHp > 0 ? Math.max(0, hq.hp) / hq.maxHp : 0);
+  if(base !== 'S' || hq.hp < hq.maxHp) return base;
+  let lost = 0; Object.values(m.stats || {}).forEach(st=>{ if(st && st.side === 'A') lost += (st.deaths || 0); });
+  return lost === 0 ? 'SSS' : 'SS';
+}
+// The rank badge on the raid results and claim screens; won: the emblemed one (extra rings and a crest), for a fight you won.
+function raidRankBadgeHTML(rank, won){
+  if(!rank) return '';
+  const tip = won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip');
+  return `<span class="conquest-rank-badge rank-${escapeAttr(rank)} raid-rank${won ? ' is-emblem' : ''}" title="${escapeAttr(tip)}">${won ? '<i class="raid-rank-crest" aria-hidden="true">✦</i>' : ''}${escapeHtml(TX('results.raid-rank', {rank}))}</span>`;
+}
+// Your best raid rank in one life of a raid (this device's attempts carry it): {rank, won} or null.
+function raidBestRankOf(def, cycle, g){
+  let best = null, won = false; const me = myGhostOwnerId();
+  loadRaidPartAttempts().forEach(a=>{ if(!a || a.raidId !== def.id || a.cycle !== cycle || (a.owner && a.owner !== me)) return; const t = Number(a.at) || 0; if(g && (t < g.start || t >= g.end)) return;
+    if(a.overwhelmed) won = true; if(a.rank && (!best || RANK_ORDER.indexOf(a.rank) > RANK_ORDER.indexOf(best))) best = a.rank; });
+  return best ? {rank: best, won} : null;
+}
 function settleRaidPartAfterMatch(m){
   const def = m.raidDef;
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
   const overwhelmed = m.players[2].hq.hp <= 0 && m.endReason!=='forfeit';
-  const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed);
+  m.raidRank = m.raidFull ? raidFightRank(m) : null; // 2026-10-19 (RV2): the full raid's fights are ranked; the rank multiplies their damage
+  const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed, m.raidRank);
   m.raidRewardEarned = {gold:r.gold, dust:r.dust}; m.raidInk = r.ink; m.raidBelow = r.below; m.raidMinDamage = r.minDamage;
   if(m.winner === 1){ try{ const cd = rollCardDrop({kind:'raidWin', deck: (m.raidBoss||{}).deck || {}}, null, {kind:'raidWin'}); if(cd) m.raidCardDrop = cd; }catch(e){} }
   if(m.winner === 1){ try{ const egg = rollEggDrop({kind:'raidWin', deck: (m.raidBoss||{}).deck || {}}, null, true); if(egg) m.raidEggDrop = egg; }catch(e){} }
@@ -23096,11 +23252,11 @@ function settleRaidPartAfterMatch(m){
 }
 // Shared by the single-row fight and the trench: scores an attempt, stores it locally, pushes it
 // live, bumps quests and pays the small per-attempt reward.
-function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed){
+function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   const part = (def.parts||[]).find(p=> p.id===partId);
-  const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part);
+  const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part, rank); // + the fight's rank (2026-10-19, RV2): the server row gets the multiplied damage
   const m = {raidPart: partId, raidCycle: cycle}, inst = myRaidInstance(def, cycle); // 2026-10-19 (package RO): your instance
-  const attempt = {raidId: def.id, part: m.raidPart, cycle: m.raidCycle, instance: inst, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', contribution, dealt, overwhelmed, at: Date.now()};
+  const attempt = {raidId: def.id, part: m.raidPart, cycle: m.raidCycle, instance: inst, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', contribution, dealt, overwhelmed, rank: rank || null, at: Date.now()};
   const list = loadRaidPartAttempts(); list.push(attempt); saveRaidPartAttempts(list);
   livePushRaidAttempt({bossId: RaidM.partKey(def.id, m.raidPart, inst), cycle: m.raidCycle, name: attempt.name, avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: contribution, won: overwhelmed}, ok=>{
     if(!ok) return; const l = loadRaidPartAttempts(); const x = l.find(a=> a.at===attempt.at); if(x){ x.pushed = true; saveRaidPartAttempts(l); }
@@ -28265,11 +28421,11 @@ function renderMatchUI(){
     <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
-        ${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row enemy" id="resEnemy2" data-respid="2" data-resrow="2"></div>' : ''}${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row enemy" id="resEnemy1" data-respid="2" data-resrow="1"></div>' : ''}
+        ${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy2" data-respid="2" data-resrow="2"></div>` : ''}${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy1" data-respid="2" data-resrow="1"></div>` : ''}
         <div class="board-row enemy" id="rowEnemy"></div>
         <div class="battlefield-divider">${bfPillsHTML(m) /* 2026-10-14: the phase/tide/wind pills ride the board's middle line, left, where no card ever stands */}</div>
         <div class="board-row mine" id="rowMine"></div>
-        ${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row mine" id="resMine1" data-respid="1" data-resrow="1"></div>' : ''}${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row mine" id="resMine2" data-respid="1" data-resrow="2"></div>' : ''}
+        ${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row mine${m.raidFull ? ' raid-rows' : ''}" id="resMine1" data-respid="1" data-resrow="1"></div>` : ''}${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row mine${m.raidFull ? ' raid-rows' : ''}" id="resMine2" data-respid="1" data-resrow="2"></div>` : ''}
       </div>
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
@@ -29715,13 +29871,16 @@ function renderBoard(opts){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass;
     document.querySelectorAll('#battlefieldInner .reserve-row').forEach(el=>{
       const pid = +el.dataset.respid, r = +el.dataset.resrow, pl = m.players[pid]; if(!pl || !pl.reserve) return;
+      // mid-replay (2026-10-19, RV2): rows already drawn are kept as they are (their strikes' lunges and numbers in flight); a death
+      // clears its own slot (raidReplayReserveDrop)
+      if(m.replayReserve && el.querySelectorAll(':scope > .board-card').length === 2 * slotRange + 1) return;
       // 2026-10-18 (owner 20:40: "for raids, i shouldnt be able to play cards on the other rows!"): in a raid the middle and back
       // rows belong to the CPU allies, so they never show play targets for you.
       // 2026-10-19 (package RX): a match whose play rows are 'own' (matchPlayRows: a tag-team dungeon's "Your row only") the same way.
       const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots && matchPlayRows(m) === 'any' ? m.engine.legalReserveSlots(pl, r) : []);
       let html = `<span class="reserve-label">${r === 1 ? 'Middle' : 'Back'}</span>`;
       for(let sl = -slotRange; sl <= slotRange; sl++){
-        const c = pl.reserve[r-1][sl];
+        const c = m.replayReserve ? raidReplayReserveCard(m, pid, r, sl, replayCardLike) : pl.reserve[r-1][sl]; // mid-round: as the replay stands (2026-10-19, RV2)
         if(c) html += boardCardHTML(c, defs, {pid, extraClass:'is-reserve'});
         else if(legal.has(sl)) html += `<div class="board-card slot-target reserve-target" data-slot="${sl}" data-reserve="${r}" title="Play here, ${r === 1 ? 'in the middle row' : 'in the back row'}: it steps up when the unit in front falls"><span class="slot-plus" aria-hidden="true">+</span></div>`;
         else html += '<div class="board-card empty-slot" aria-hidden="true"></div>';
@@ -31460,6 +31619,9 @@ function aiActNow(){
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
   fightSafe(()=> holdArrivalDead(m, prePos, deferred), 'holdArrivalDead');
+  // 2026-10-19 (package RV2): a raid boss plays 3 cards at once, its middle and back rows' with its front row's (raidBossRowPlays); they
+  // fly in from its hand above the board with the front play, each into its own slot (no board redraw).
+  if(m.raidFull) fightSafe(()=>{ const plays = raidBossRowPlays(m, null); plays.forEach((pl, i)=>{ pushLog({type:'raidBossPlay', side:'B', defId:pl.defId, uid:pl.uid, row:pl.row, slot:pl.slot}); reserveSlotPut(m, 2, pl.row, pl.slot); bossRowPlayFx(pl.uid, i); }); }, 'raidBossRowPlays');
   // 2026-10-15 (user: "When the enemy has no cards to play, and did not pitch AND has no cards on their field, there is a puff of
   // smoke on his middle field (very translucent). Just as a joke. Like dust flying off."): tumbleweed moment.
   try{ const p2 = m.players[2], acted = events.some(ev=> ev.side==='B' && (ev.type==='play' || ev.type==='pitch' || ev.type==='discard'));
@@ -33333,7 +33495,7 @@ async function resolveRound(opts){
   catch(e){
     try{ console.error('[fight] resolveRound failed', e); }catch(_){}
     if(!m || matchState !== m) return;
-    m.resolving = false; m._upkeep = false; m._coachWait = false; m.replayRows = null; m.ending = false;
+    m.resolving = false; m._upkeep = false; m._coachWait = false; m.replayRows = null; m.ending = false; try{ raidReplayReserveEnd(m); }catch(e){}
     try{ document.documentElement.classList.remove('bw-resolving', 'bw-upkeep', 'bw-coach-wait'); hideUpkeepChip(); syncFightTimeScale(m); }catch(_){}
     if(!m._rrCombatDone) m._rrFails = (m._rrFails||0) + 1; // the next try skips the tutorial/effects waits (resolveRoundCore)
     if(m.over || !m._rrCombatDone || m.round !== r0) { fightSafe(renderMatchUI, 'renderMatchUI'); return; }
@@ -33393,6 +33555,15 @@ async function resolveRoundCore(opts){
       });
     });
   });
+  // The middle and back rows replay too (2026-10-19, package RV2, owner 08:42: "if the first row's interaction changes the board state
+  // somehow, the next row reacts to that board state"): their units join replayCards (a shallow copy each, so their Health steps down
+  // hit by hit), and m.replayReserve keeps who stands where as the round starts, losing a unit only when its death plays. Before, each
+  // mid-round redraw read the rows' end-of-round state, so every unit that would die later in the round vanished at the first death,
+  // and the strikes on it played at nothing.
+  m.replayReserve = null; m._replayResUids = [];
+  if(reserveRowsOf(m)){ m.replayReserve = {};
+    [1, 2].forEach(pid=>{ const pl = m.players[pid]; m.replayReserve[pid] = (pl.reserve || []).map(rw=>{ const o = {};
+      Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(!c) return; o[sl] = c.uid; m.replayCards[c.uid] = Object.assign({}, c, {slot:Number(sl), reserveCard:c}); m._replayResUids.push(c.uid); }); return o; }); }); }
   // The AI already acted in aiActNow(), called from whichever action (play/discard/skip)
   // the player just committed — see there for why (simultaneous reveal, 2026-09-14).
   // 2026-09-17 follow-up ("the first creature attacking should alternate between the players...
@@ -33498,7 +33669,16 @@ async function resolveRoundCore(opts){
       // out the hit's full 0.9 s beat; the replay moves on the moment the blow lands, so the death starts right under the number.
       const killNow = !rapid && !ev._cleave && ev.type==='hit' && ev.targetUid!=null && lethalDeathFollows(mainEvents, evIdx);
       const pi = killNow && m._pendingImpacts && m._pendingImpacts[String(ev.targetUid)];
+      // The raid's columns (2026-10-19, package RV2, owner 08:42: "It should look like the columns all attack for real, staggered by
+      // 0.25s each"): a strike followed straight on by another unit's strike starts that one RAID_COLUMN_STAGGER_MS later, so the
+      // board's swings overlap in order; a death in between breaks the run (it plays, then the next strike), see raidStaggerNext.
+      const stag = !pi && m.raidFull ? raidStaggerNext(ev, nx, over) : 0;
       if(pi){ if(!pi.landed) await Promise.race([pi, sleep(1600)]); await sleep(Math.max(16, Math.round(40 / ((matchState && matchState.speedMult) || 1)))); }
+      else if(stag) await sleep(stag);
+      else if(m.raidFull && raidStrikeEv(ev) && nx && nx.type==='death' && m._pendingImpacts && m._pendingImpacts[String(nx.uid)]){ // a killing strike: on to its death once it lands
+        const rpi = m._pendingImpacts[String(nx.uid)]; if(!rpi.landed) await Promise.race([rpi, sleep(1600)]); await sleep(Math.max(16, Math.round(40 / raidSpeedOf()))); }
+      else if(m.raidFull && raidStrikeEv(ev)) await sleep(raidStrikeBeatMs()); // the last strike of a run plays out
+      else if(m.raidFull && ev.type==='death') await sleep(raidDeathBeatMs());
       else await sleep(rapid ? Math.max(18, Math.round(300 / ((matchState && matchState.speedMult) || 1))) : delayForEvent(ev, lastVfxKind)); } }
     if(ev._cleave === 'R' || (ev._cleave === 'M' && m._cl && m._cl.ri < 0)) m._cl = null;
     lastVfxKind = vfxKindOf(ev);
@@ -33528,6 +33708,7 @@ async function resolveRoundCore(opts){
         lastDeathOrigin = {x:r.left+r.width/2, y:r.top+r.height/2};
       }
       removeUidFromReplayRow(ev.side, ev.uid);
+      if(m.replayReserve) raidReplayReserveDrop(m, ev.side, ev.uid); // a middle- or back-row unit leaves its slot alone (2026-10-19, RV2)
       renderBoard({collapseLandingUids:[]});
     } else if(ev.type==='collapseIn'){
       const rr = m.replayRows[ev.side==='A'?1:2];
@@ -33713,6 +33894,7 @@ async function resolveRoundCore(opts){
   // onDeathSpawn tokens mid-round, which don't carry a uid in their event) — every render from
   // here until the next resolveRound() call reflects the actual resolved state exactly.
   m.replayRows = null;
+  raidReplayReserveEnd(m); // 2026-10-19 (RV2): the middle and back rows read the live board again
   // 2026-10-18 (user: "Why did my raid randomly end although my bramble's hp was not 0?"): the castle bars read the replay's running
   // numbers (displayHqHp) while m.resolving, and those only step down on hitHQ events. Castle damage that isn't a hitHQ (a back-row
   // strike, a field tick, a raid smack) left the bar above the real Health, so a castle at 0 could fall with its bar still showing
@@ -34127,7 +34309,10 @@ async function resolveRoundCore(opts){
     // 2026-10-17 (user: "all 3 rows are active at hitting the enemy"): your two ally rows struck their columns here (engine reserveVolley).
     // 2026-10-18: every reserve unit, both sides, now strikes in the round's combat instead, column by column (reserveActs; the
     // engine's RESERVE_ACTS), so there's no round-start volley for your rows any more.
-  if(m.raidFull) try{ raidAlliesTurn(m, drawEvents); }catch(e){}
+  // 2026-10-19 (package RV2, owner 08:42: "It looked like the cards spawned there. Watch out not to redraw everything"): the allies'
+  // plays no longer go in with the round-start events, where the turn's full redraw (renderMatchUI) drew them before their flights.
+  // They are played right after that redraw, before your turn opens (m._raidAlliesDue below), each into its slot alone.
+  if(m.raidFull) m._raidAlliesDue = true;
   if(m.raidFull) try{ raidBossUnit(m, drawEvents); }catch(e){}
   if(m.raidFull) try{ raidBossCommons(m, drawEvents); }catch(e){} // 2026-10-17
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
@@ -34153,6 +34338,7 @@ async function resolveRoundCore(opts){
   if(m.over && m.winner === (m.mode==='liveRanked' ? m.liveMySeat : 1)){ try{ await playRewardReveal(m); }catch(e){ console.warn('reward reveal', e); } }
   m.resolving = false; document.documentElement.classList.remove('bw-resolving'); syncFightTimeScale(m);
   renderMatchUI();
+  if(m._raidAlliesDue){ m._raidAlliesDue = false; if(m.raidFull && !m.over && matchState === m) try{ raidAlliesTurn(m, null); }catch(e){} } // 2026-10-19 (RV2)
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
@@ -36432,7 +36618,7 @@ function matchStatsHTML(m){
     </div>` : '';
   const orReward = m.raidRewardEarned;
   const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards raid-results">
-      <span class="conquest-rank-badge raid-dmg-pill">${TX('results.damage-dealt-to', {v1: m.raidOverwhelmed ? '💥 Overwhelm! ' : '⚔️ ', v2: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
+      ${raidRankBadgeHTML(m.raidRank, m.raidOverwhelmed) /* 2026-10-19 (RV2): the fight's rank, emblemed for a win */}<span class="conquest-rank-badge raid-dmg-pill">${TX('results.damage-dealt-to', {v1: m.raidOverwhelmed ? '💥 Overwhelm! ' : '⚔️ ', v2: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: m.raidRemainingAfter, v2: m.raidRemainingAfter<=0?' — defeated!':''})}</span>
       ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.deal-at-least-damage-for-the', {raidMinDamage: m.raidMinDamage}))}">${TX('results.full-reward-from-damage', {raidMinDamage: m.raidMinDamage})}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
@@ -36834,6 +37020,7 @@ function logText(ev){
     case 'raidAlly': return {cls:'gold', text:`🤝 ${ev.name} plays ${nm(ev.defId)} into your ${ev.where}.`};
     case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health${ev.bonus ? ` (+${ev.bonus} from the raid's might)` : ''} (less the more the raid has pounded it).`};
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
+    case 'raidBossPlay': return {cls:'', text: ev.row === 2 ? TX('ui.raid-boss-play-back', {card: nm(ev.defId)}) : TX('ui.raid-boss-play-mid', {card: nm(ev.defId)})}; // its row plays (2026-10-19, RV2)
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the brambles' Health.`}; // 2026-10-18
     // 2026-10-18 (owner 15:56): a row smack names its row, a column smack its column; either one with nobody to hit lands on the bramble
@@ -37053,6 +37240,10 @@ function handFlightProxy(el, uid, origin){
   [['position','fixed'], ['left','0'], ['top','0'], ['margin','0'], ['width', w0 + 'px'], ['height', h0 + 'px'], ['box-sizing','border-box'], ['pointer-events','none'], ['z-index','1300'], ['transition','none'], ['animation','none']]
     .forEach(([k, v])=> p.style.setProperty(k, v, 'important'));
   document.body.appendChild(p);
+  // 2026-10-19 (package RV2, an ally's play): origin.flip starts the copy face down (a card back over it) and turns it face up midway
+  // along the path; origin.trail leaves a short sparkle trail; origin.dust kicks up dust where it lands.
+  let back = null; if(origin.flip){ back = document.createElement('div'); back.className = 'ally-card-back'; back.setAttribute('aria-hidden', 'true'); p.appendChild(back); }
+  let trailAt = 0;
   const s0 = origin.w ? Math.max(.4, Math.min(1.6, origin.w / w0)) : .7, r0 = origin.rotate != null ? origin.rotate : (Math.random()*14 - 7);
   const key = String(uid), land = leader ? 1.16 : 1.08;
   let last = tile.getBoundingClientRect(), cur = el;
@@ -37067,6 +37258,9 @@ function handFlightProxy(el, uid, origin){
     const k = st.k, tx = last.left + last.width/2, ty = last.top + last.height/2, s1 = last.width / w0;
     const x = origin.x + (tx - origin.x)*k, y = origin.y + (ty - origin.y)*k - (leader ? Math.sin(Math.max(0, Math.min(1, k))*Math.PI)*28 : 0);
     gsap.set(p, {x: x - w0/2, y: y - h0/2, scale: s0 + (s1 - s0)*k, rotation: r0*(1 - Math.max(0, Math.min(1, k))), transformOrigin:'50% 50%', opacity: origin.fadeIn ? Math.max(0, Math.min(1, k / origin.fadeIn)) : 1}); // fadeIn (2026-10-19, an ally's play): it fades in over the first part of the path
+    if(back){ const f = Math.max(0, Math.min(1, (k - 0.3) / 0.3)), sc = s0 + (s1 - s0)*k; // the turn: edge-on at f = 0.5, the face from there
+      gsap.set(p, {scaleX: sc * Math.max(0.04, Math.abs(Math.cos(f * Math.PI))), scaleY: sc}); back.style.opacity = f < 0.5 ? '1' : '0'; }
+    if(origin.trail && k > 0.04 && k < 0.97){ const now = performance.now(); if(now - trailAt > 34){ trailAt = now; allyTrailDot(x, y); } }
   };
   let done = false; const gone = landed=>{ if(done) return; done = true; try{ gsap.killTweensOf(st); }catch(e){} p.remove(); handFlightsLive.delete(key);
     const c = boardCardEl(uid) || cur; if(!c) return; c.style.visibility = '';
@@ -37074,7 +37268,7 @@ function handFlightProxy(el, uid, origin){
     // the landing: the face lands a touch big and squashes into place (the leader harder: its stomp), then the usual thud and glow
     const t = c.querySelector('.card-tile'); if(t){ const sq = gsap.fromTo(t, {scale:land}, {scale:1, duration: leader ? .32 : .2, ease: leader ? 'back.out(5)' : 'back.out(4)', clearProps:'scale'});
       handFlightDue.set(key + ':squash', {due: performance.now() + (leader ? 320 : 200) + 250, land: ()=>{ try{ if(sq.progress() < 1){ sq.progress(1); return true; } }catch(e){} return false; }, squash: true}); } // the watchdog settles it on time (2026-10-19)
-    try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); }catch(e){} };
+    try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); if(origin.dust) impactDust(c); }catch(e){} };
   place();
   gsap.to(st, {k:1, duration:fl, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
   // 2026-10-19 (package RX): on the wall clock, the flight lands when it should even if frames stall (playAnimWatchdog lands it)
@@ -37088,15 +37282,24 @@ function handFlightProxy(el, uid, origin){
 // label (its "hand", off the row's left edge), fading in partway along the path, and lands with the normal hand-play landing
 // (handFlightProxy: the squash, the thud, the glow). It waits up to 3 s for the card's tile to be drawn (the turn's own render puts
 // it there). Reduced motion or Low effects: the card just fades in where it stands; Effects None: nothing. opts: {row (1 middle,
-// 2 back), mode ('raid' | 'tagteam'), from: {x, y} (a screen point to fly from instead)}. window.__bwAllyPlays counts the plays.
+// 2 back), mode ('raid' | 'tagteam'), from: {x, y} (a screen point to fly from instead), name (the ally's), defId (the card's)}. window.__bwAllyPlays
+// counts the plays.
+// 2026-10-19 (package RV2, owner 08:42: "Your allies playing cards are still not obvious enough. It looked like the cards spawned
+// there. Watch out not to redraw everything as well."): the play now reads as a play. The ally's name tag pops up at its row's edge
+// and pulses ("Captain Swiftpaw plays Otter Guard", opts.name), a fan of card backs (its hand) opens there, the top card rises out of
+// it face down, turns face up midway, trails sparkles, and lands with the squash, the thud and a puff of dust. The card stays hidden
+// at its slot until the flight lands. Reduced motion / Low effects: the name tag and a fade in place. The caller puts the card into
+// its slot alone (reserveSlotPut), so nothing else on the board is redrawn.
+const ALLY_PLAY_RISE_MS = 170; // the hand fan opens and the card rises before it flies
 function allyPlayFx(uid, opts){
   opts = opts || {}; if(uid == null || typeof document === 'undefined') return;
-  try{ window.__bwAllyPlays = (window.__bwAllyPlays || 0) + 1; window.__bwAllyPlayLast = {uid, mode: opts.mode || 'raid', row: opts.row || 0, at: Date.now()}; }catch(e){}
+  try{ window.__bwAllyPlays = (window.__bwAllyPlays || 0) + 1; window.__bwAllyPlayLast = {uid, mode: opts.mode || 'raid', row: opts.row || 0, name: opts.name || '', at: Date.now()}; }catch(e){}
   const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high'; if(lvl === 'none') return;
   const t0 = Date.now();
   const go = ()=>{
     const el = boardCardEl(uid);
     if(!el){ if(Date.now() - t0 < 3000) return requestAnimationFrame(go); return; }
+    try{ allyNameTagPulse(el, opts); }catch(e){}
     if(reducedMotion() || lvl === 'low' || !hasGsap()){ // no flight: a quick fade where it stands
       const t = el.querySelector('.card-tile') || el; t.style.transition = 'opacity .22s ease-out'; t.style.opacity = '0';
       requestAnimationFrame(()=> requestAnimationFrame(()=>{ t.style.opacity = ''; setTimeout(()=>{ t.style.transition = ''; }, 260); })); return; }
@@ -37104,9 +37307,66 @@ function allyPlayFx(uid, opts){
     if(!from){ const row = el.closest('.reserve-row') || el.closest('.board-row'), lab = row && row.querySelector('.reserve-label'), rr = (lab || row || el).getBoundingClientRect(), er = el.getBoundingClientRect();
       from = {x: (lab ? rr.left + rr.width / 2 : rr.left) - er.width * 0.25, y: (row ? row.getBoundingClientRect().bottom : er.bottom) + er.height * 0.55}; }
     const tile = el.querySelector('.card-tile'), w = tile ? tile.getBoundingClientRect().width * 0.6 : 0;
-    handFlightProxy(el, uid, {x: from.x, y: from.y, kind:'hand', w: w || null, rotate: -8, fadeIn: 0.45, ally: true});
+    el.style.visibility = 'hidden'; // until the flight takes over (it keeps the card hidden until it lands)
+    try{ allyHandFan(from, w || 40); }catch(e){}
+    setTimeout(()=>{ const c = boardCardEl(uid) || el;
+      if(!handFlightProxy(c, uid, {x: from.x, y: from.y - 18, kind:'hand', w: w || null, rotate: -8, fadeIn: 0.45, ally: true, flip: true, trail: true, dust: true})) c.style.visibility = ''; }, ALLY_PLAY_RISE_MS);
   };
   requestAnimationFrame(go);
+}
+// The ally's name tag at its row's edge: "Captain Swiftpaw plays Otter Guard", popping in and pulsing twice, then fading (2026-10-19, RV2).
+function allyNameTagPulse(el, opts){
+  if(!opts || !opts.name) return;
+  const row = el.closest('.reserve-row') || el.closest('.board-row'); if(!row) return;
+  const nm = (getCardDefs()[opts.defId || (currentCardByUid(el.getAttribute('data-uid')) || {}).defId] || {}).name || ''; // opts.defId: a reserve card isn't in currentCardByUid's rows
+  row.querySelectorAll(':scope > .ally-play-tag').forEach(t=> t.remove());
+  const tag = document.createElement('span'); tag.className = 'ally-play-tag'; tag.setAttribute('role', 'status');
+  tag.textContent = nm ? TX('ui.raid-ally-plays', {name: opts.name, card: nm}) : opts.name;
+  row.appendChild(tag); setTimeout(()=> tag.classList.add('is-out'), 2100); setTimeout(()=> tag.remove(), 2500);
+}
+// The ally's hand: three card backs fanned out at the row's edge for a moment, the card it plays rising from them (2026-10-19, RV2).
+function allyHandFan(from, w){
+  if(!from || !hasGsap()) return;
+  const fan = document.createElement('div'); fan.className = 'ally-hand-fan'; fan.setAttribute('aria-hidden', 'true');
+  fan.style.cssText = `left:${from.x}px; top:${from.y}px; --w:${Math.round(w)}px;`;
+  for(let i = 0; i < 3; i++){ const b = document.createElement('i'); b.className = 'ally-card-back'; b.style.setProperty('--r', ((i - 1) * 14) + 'deg'); fan.appendChild(b); }
+  document.body.appendChild(fan);
+  gsap.fromTo(fan, {opacity:0, y:14, scale:.8}, {opacity:1, y:0, scale:1, duration:.16, ease:'power2.out'});
+  gsap.to(fan, {opacity:0, y:10, duration:.3, delay:.55, ease:'power2.in', onComplete:()=> fan.remove()});
+  setTimeout(()=> fan.remove(), 1400);
+}
+// One sparkle of the flying card's trail (2026-10-19, RV2).
+function allyTrailDot(x, y){
+  const d = document.createElement('i'); d.className = 'ally-trail-dot'; d.setAttribute('aria-hidden', 'true');
+  d.style.cssText = `left:${x}px; top:${y}px;`; document.body.appendChild(d); setTimeout(()=> d.remove(), 520);
+}
+// One reserve slot, drawn alone (2026-10-19, package RV2, owner 08:42: "Watch out not to redraw everything"): a card put into a middle
+// or back row outside a round's replay (an ally's play, the boss's row plays) replaces just that slot's element; the rest of the board
+// is left as it is. A row that isn't drawn the way this expects (no row element, a different slot count) is left to the next render.
+// Returns the new element or null.
+function reserveSlotPut(m, pid, row, slot){
+  if(!m || typeof document === 'undefined') return null;
+  const rowEl = document.querySelector(`#battlefieldInner .reserve-row[data-respid="${pid}"][data-resrow="${row}"]`); if(!rowEl) return null;
+  const range = m._slotRange || 0, cells = rowEl.querySelectorAll(':scope > .board-card'), i = slot + range;
+  if(!range || cells.length !== 2 * range + 1 || i < 0 || i >= cells.length) return null;
+  const pl = m.players[pid], c = pl && pl.reserve && pl.reserve[row - 1] && pl.reserve[row - 1][slot]; if(!c) return null;
+  const tmp = document.createElement('div'); tmp.innerHTML = boardCardHTML(c, getCardDefs(), {pid, extraClass:'is-reserve'});
+  const el = tmp.firstElementChild; if(!el) return null;
+  cells[i].replaceWith(el); try{ knownBoardUids.add(String(c.uid)); }catch(e){}
+  try{ applySkinClasses(el); }catch(e){}
+  return el;
+}
+// A raid boss's middle- or back-row play (2026-10-19, RV2): flies in from its hand above the board, as its front row's play does,
+// a beat apart so the three read as one turn's plays. Reduced motion / Low: a fade in place.
+function bossRowPlayFx(uid, i){
+  const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high'; if(lvl === 'none' || typeof document === 'undefined') return;
+  const el = boardCardEl(uid); if(!el) return;
+  if(reducedMotion() || lvl === 'low' || !hasGsap()){ const t = el.querySelector('.card-tile') || el; t.style.transition = 'opacity .22s ease-out'; t.style.opacity = '0';
+    requestAnimationFrame(()=> requestAnimationFrame(()=>{ t.style.opacity = ''; setTimeout(()=>{ t.style.transition = ''; }, 260); })); return; }
+  const re = document.getElementById('rowEnemy'), r = re ? re.getBoundingClientRect() : null; if(!r) return;
+  const tile = el.querySelector('.card-tile'), w = tile ? tile.getBoundingClientRect().width * 0.6 : 0;
+  el.style.visibility = 'hidden';
+  setTimeout(()=>{ const c = boardCardEl(uid) || el; if(!handFlightProxy(c, uid, {x: r.left + r.width/2 + (i ? 30 : -30), y: Math.max(-60, r.top - 150), kind:'hand', w: w || null, rotate: i ? 8 : -8})) c.style.visibility = ''; }, 90 * (i + 1));
 }
 // Play rows (2026-10-19, package RX, owner 20:48: "Tag-team dungeons get a play-rows setting with 2 options: 'Your row only' ... or
 // 'Anywhere'"): where you may play in a match with rows behind the front: 'own' (only your own row: raids always, a tag-team dungeon
@@ -38768,10 +39028,9 @@ function field2Vfx(ev){
       case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
       case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Wave ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows (2026-10-18: "Wave", not "Awash")
       // The raid's back-row volley (2026-10-17): the striker bobs forward, the struck card (or castle) shows the number.
-      case 'volleyHit': case 'volleyCastle': { const from = boardCardEl(ev.fromUid); if(from && fx()){ from.classList.remove('volley-lunge'); void from.offsetWidth; from.classList.add('volley-lunge'); setTimeout(()=> from.classList.remove('volley-lunge'), 500); }
-        if(ev.field === 'volleyHit'){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){} if(el){ fl(el, `🏹-${ev.dmg}`, 'dmg'); try{ shakeEl(el); }catch(e){} } }
-        else { let el = null; try{ el = hqTileEl(ev.side); }catch(e){} if(el) fl(el, `🏹-${ev.dmg}`, 'dmg'); if(ev.dmg > 0) try{ displayHqDamage(m, ev.side, ev.dmg); }catch(e){} } // the bar steps down with it (2026-10-18)
-        snd('swipeTone'); break; }
+      // 2026-10-19 (package RV2, owner 08:42: "It should look like the columns all attack for real"): a real attack now (raidStrikeVfx):
+      // the lunge toward its target, then the impact (number, shake, squash, sound) as the blow lands, Health stepping down with it.
+      case 'volleyHit': case 'volleyCastle': { raidStrikeVfx(ev); break; }
       case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
     }
     return;

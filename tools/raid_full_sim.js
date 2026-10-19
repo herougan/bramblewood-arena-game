@@ -4,6 +4,9 @@
 // raidAlliesTurn, raidSpecials, raidBossUnit and raidBossCommons (via tools/lib_bramble.js's grab), and plays each round the way the
 // page does: allies first (round 1), you (the W2 reference deck at its map's level, the CPU's smart level), the boss, combat; then
 // the round start, the boss's specials, the next ally card, a boss unit on rounds 3/7/11/15/19, its Commons, and the draws.
+// 2026-10-19 (package RV2): the boss plays 3 cards a turn (its front row's as the CPU, then raidBossRowPlays: one into its middle row and
+// one into its back row from their own decks), and each attempt is ranked (raidFightRank) and counted with the rank multiplier
+// (RaidM.contributionFor's rank); the rank shares are printed per row.
 //   node tools/raid_full_sim.js [--n 40] [--parts left,right,tail,core] [--stages fresh,Enraged,Thrashing] [--decks starter,6,10,15,20]
 //     [--raids canonical/raids.json] [--leader <cardId>]
 // Prints, per deck x part x stage: average damage dealt to the part's bramble, the share of attempts reaching the raid's minDamage
@@ -22,7 +25,7 @@ const RAIDS = JSON.parse(fs.readFileSync(path.resolve(arg('raids', path.join(__d
 
 const NAMES = ['RARITY_TIER_BANDS', 'canLeadDef', 'RAID_BOSS_ATK', 'raidAllyOf', 'raidAllyLeaderOf', 'RAID_BOSS_UNIT_ROUNDS', 'raidBossUnit', 'RAID_BOSS_UNIT_NAMES',
   'raidBossUnitName', 'raidBossCommons', 'raidFieldRulesOf', 'mergeRaidCastles', 'raidAlliesTurn', 'raidAllyPlays', 'RAID_TUNE_DEFAULTS', 'raidTune', 'raidSmackRoll', 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind',
-  'guildScaledBramble', 'raidRowUnits', 'raidColUnits', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget', 'raidSpecials', 'buildRaidFullFight', 'seededRng', 'referencePlayerDeck', 'referencePlayerLevel', 'levelGateMap'];
+  'guildScaledBramble', 'RAID_ROW_DECK_SIZE', 'RAID_BOSS_PLAY_ROWS', 'raidBossRowPlays', 'RANK_ORDER', 'rankForHqFraction', 'raidFightRank', 'raidRowUnits', 'raidColUnits', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget', 'raidSpecials', 'buildRaidFullFight', 'seededRng', 'referencePlayerDeck', 'referencePlayerLevel', 'levelGateMap'];
 const body = [
   'let matchDefsOverlay = {}; const makeSimEngine = E.makeSimEngine; function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',
   'function pushLog(){} function renderBoard(){} function allyPlayFx(){} const statsAtLevel = G.statsAtLevel, cardBaseLevel = G.cardBaseLevel;',
@@ -57,7 +60,7 @@ function playOne(def, partId, stageName, deckKey, g){
     const b = A.buildRaidFullFight(def, partId, f, st, {rng, allies, myCastle: Object.assign({}, CHARACTER_DEFS.castle || {id:'castle', health:30}), myDeck: me.deck, leaderId: LEADER, recordEvents:false, rand: Math.random});
     const {engine: En, players: P, sideOf} = b;
     const m = {raidDef: def, engine: En, players: P, sideOf, stats: b.stats, round: 1, raidFull: true, over: false, raidAllies: allies, raidAttacks: b.cfg.attacks || [], raidPending: {},
-      raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: b.bossHpBonus, raidExtraVolley: f.extraVolley || 0, raidSeed: (0xBEEF + g * 7919) >>> 0};
+      raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: b.bossHpBonus, raidBossRowDecks: b.rowDecks, raidExtraVolley: f.extraVolley || 0, raidSeed: (0xBEEF + g * 7919) >>> 0};
     // the page's defs: the run-only overlay goes on top of the base defs
     const saved = {}; Object.keys(b.overlay).forEach(id=>{ saved[id] = CARD_DEFS_BASELINE[id]; CARD_DEFS_BASELINE[id] = b.overlay[id]; });
     (b.cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) m.raidPending[i] = A.raidSmackTarget(m, 2, i, a); });
@@ -69,7 +72,7 @@ function playOne(def, partId, stageName, deckKey, g){
         En.draw(P[1], 1, 'A', b.stats, null); En.draw(P[2], 1, 'B', b.stats, null);
         if(P[1].hq.hp <= 0){ survived = r - 1; break; } if(P[2].hq.hp <= 0) break; }
       [1, 2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
-      En.setAiLevel(1); En.aiTakeTurn(P, sideOf, 1, b.stats, null); En.aiTakeTurn(P, sideOf, 2, b.stats, null);
+      En.setAiLevel(1); En.aiTakeTurn(P, sideOf, 1, b.stats, null); En.aiTakeTurn(P, sideOf, 2, b.stats, null); A.raidBossRowPlays(m, null); // + its rows' plays (RV2)
       over = En.resolveCombat(P, sideOf, b.stats, null, r % 2 === 0 ? 1 : 2);
       if(TRACE && g === 0){ const cnt = pl=> En.allBoardCards(pl).filter(c=> c.hp > 0).length + '/' + (pl.reserve||[]).map(rw=> Object.values(rw).filter(c=> c && c.hp > 0).length).join('/'); console.log(`  r${r} me ${P[1].hq.hp}/${P[1].hq.maxHp} board ${cnt(P[1])} hand ${P[1].hand.length} lumber ${P[1].lumber||0} | boss ${P[2].hq.hp} board ${cnt(P[2])}`); }
       if(P[1].hq.hp <= 0){ survived = r; break; }
@@ -78,24 +81,24 @@ function playOne(def, partId, stageName, deckKey, g){
     Object.keys(saved).forEach(id=>{ if(saved[id] === undefined) delete CARD_DEFS_BASELINE[id]; else CARD_DEFS_BASELINE[id] = saved[id]; });
     Object.keys(playerOverlay).forEach(id=>{ delete CARD_DEFS_BASELINE[id]; });
     const dealt = Math.max(0, start - Math.max(0, P[2].hq.hp)), ow = P[2].hq.hp <= 0;
-    const part = def.parts.find(p=> p.id === partId);
-    return {dealt, overwhelmed: ow, survived, contribution: RaidM.contributionFor(def, dealt, ow, part), level: me.level};
+    const part = def.parts.find(p=> p.id === partId), rank = A.raidFightRank(m);
+    return {dealt, overwhelmed: ow, survived, rank, contribution: RaidM.contributionFor(def, dealt, ow, part, rank), level: me.level};
   } finally { Math.random = saveRandom; }
 }
 function run(){
   const def = RAIDS[0]; if(SET) def.tuning = Object.assign({}, def.tuning || {}, SET); const minDamage = Number(def.minDamage) || 120, rows = [];
   for(const deckKey of DECKS) for(const partId of PARTS) for(const stageName of STAGES){
-    let dealt = 0, paid = 0, ow = 0, surv = 0, contrib = 0, lvl = 1;
-    for(let g = 0; g < N; g++){ const r = playOne(def, partId, stageName, deckKey, g); dealt += r.dealt; if(r.dealt >= minDamage || r.overwhelmed) paid++; if(r.overwhelmed) ow++; surv += r.survived; contrib += r.contribution; lvl = r.level; }
-    rows.push({deck: deckKey, level: lvl, part: partId, stage: stageName, avgDealt: Math.round(dealt / N), paidPct: Math.round(paid / N * 100), overwhelmPct: Math.round(ow / N * 100), avgSurvived: +(surv / N).toFixed(1), avgContribution: Math.round(contrib / N)});
+    let dealt = 0, paid = 0, ow = 0, surv = 0, contrib = 0, lvl = 1; const ranks = {};
+    for(let g = 0; g < N; g++){ const r = playOne(def, partId, stageName, deckKey, g); dealt += r.dealt; if(r.dealt >= minDamage || r.overwhelmed) paid++; if(r.overwhelmed) ow++; surv += r.survived; contrib += r.contribution; lvl = r.level; ranks[r.rank || '-'] = (ranks[r.rank || '-'] || 0) + 1; }
+    rows.push({deck: deckKey, level: lvl, part: partId, stage: stageName, avgDealt: Math.round(dealt / N), paidPct: Math.round(paid / N * 100), overwhelmPct: Math.round(ow / N * 100), avgSurvived: +(surv / N).toFixed(1), avgContribution: Math.round(contrib / N), ranks});
   }
   return {minDamage, rows};
 }
 if(require.main === module){
   const t0 = Date.now(), out = run();
   console.log(`raid_full_sim: n=${N} per cell, minDamage ${out.minDamage} (the first paying tier)`);
-  console.log('deck   lvl  part   stage      dealt  >=min%  overwhelm%  survived  contribution');
-  out.rows.forEach(r=> console.log(`${String(r.deck).padEnd(7)}${String(r.level).padEnd(5)}${r.part.padEnd(7)}${r.stage.padEnd(11)}${String(r.avgDealt).padStart(5)}  ${String(r.paidPct).padStart(5)}  ${String(r.overwhelmPct).padStart(9)}  ${String(r.avgSurvived).padStart(8)}  ${String(r.avgContribution).padStart(11)}`));
+  console.log('deck   lvl  part   stage      dealt  >=min%  overwhelm%  survived  contribution  ranks');
+  out.rows.forEach(r=> console.log(`${String(r.deck).padEnd(7)}${String(r.level).padEnd(5)}${r.part.padEnd(7)}${r.stage.padEnd(11)}${String(r.avgDealt).padStart(5)}  ${String(r.paidPct).padStart(5)}  ${String(r.overwhelmPct).padStart(9)}  ${String(r.avgSurvived).padStart(8)}  ${String(r.avgContribution).padStart(11)}  ${Object.entries(r.ranks || {}).map(([k, v])=> k + ':' + v).join(' ')}`));
   console.log(`(${((Date.now() - t0) / 1000).toFixed(1)}s)`);
 }
 module.exports = {run, playOne, A};

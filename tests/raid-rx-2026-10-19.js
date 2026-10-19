@@ -80,7 +80,7 @@ ok(goliath.tuning && goliath.tuning.alliesPerTurn === 2 && goliath.tuning.bossAt
   const m = {raidDef: goliath, raidFull:true, round:1, players: b.players, engine: b.engine, raidAllies: allies};
   const n0 = allies.reduce((t, a)=> t + a.played, 0); A.raidAlliesTurn(m, []); const n1 = allies.reduce((t, a)=> t + a.played, 0);
   ok(n1 - n0 === 2, `both allies played this turn (${n1 - n0})`); }
-ok(/function raidAllyPlays\(m, a, events\)[\s\S]{0,1600}allyPlayFx\(placed\.uid, \{row: a\.row, mode: 'raid'\}\)/.test(src), 'each ally play in a raid calls the hand-play animation (allyPlayFx, mode raid)');
+ok(/function raidAllyPlays\(m, a, events\)[\s\S]{0,2400}allyPlayFx\(placed\.uid, \{row: a\.row, mode: 'raid', name: a\.name, defId: id\}\)/.test(src), 'each ally play in a raid calls the hand-play animation (allyPlayFx, mode raid)'); // + the ally's name (2026-10-19, RV2)
 ok(/function allyPlayFx\(uid, opts\)[\s\S]{0,700}mode: opts\.mode \|\| 'raid'/.test(src) && /'tagteam'/.test(src), 'allyPlayFx takes a tag-team partner too (mode tagteam) and counts its plays');
 ok(/allyPlayFx[\s\S]{0,1500}reducedMotion\(\) \|\| lvl === 'low'/.test(src) && /lvl === 'none'\) return/.test(src), 'reduced motion / Low effects: a fade in place; None: nothing');
 ok(/fadeIn: 0\.45/.test(src) && /opacity: origin\.fadeIn \?/.test(src), 'the ally card fades in partway along its flight');

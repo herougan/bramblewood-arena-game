@@ -92,7 +92,7 @@ const noStand = Object.assign({}, goliath, {standIns: {perDayPct: 0}});
   ok(/data-raid-open="goliath"[\s\S]*?<b>100%<\/b>/.test(html), '3. a standing raid\'s card shows its Health %');
   ok(html.includes('7/10 🎫') && html.includes(TX('ui.raid-ticket-next', {span: '5h 0m'})), '3. your tickets and the next one\'s time sit on top');
   ok(html.includes(TX('ui.raid-instance', {n: 2})) && html.includes(TX('ui.raid-auto-open')), '3. your instance (when not 1) and Auto show on the card');
-  ok(html.includes(TX('ui.raid-strong')), '3. your part in it shows (strong contributor in the Hydra)');
+  ok(html.includes(TX('ui.raid-strong')) || html.includes(TX('ui.raid-leading')), '3. your part in it shows (a Competent or Leading participant in the Hydra; 2026-10-19, RV2)');
   const rt = B.grab('renderRaidSubTab');
   ok(/raidView === 'raid' \? raidPanelHTML\(\) : raidHubHTML\(\)/.test(rt) && /let raidView = 'hub'/.test(src), '3. the Raid tab opens on the hub, a card opens the raid (one raid: still the hub)');
   ok(/data-raid-hub/.test(B.grab('raidPanelHTML')) && /raidView = 'hub'/.test(B.grab('wireRaidPanel')) && /raidView = 'raid'/.test(B.grab('wireRaidHub')), '3. "All raids" goes back, a card goes in'); }
@@ -144,9 +144,12 @@ const noStand = Object.assign({}, goliath, {standIns: {perDayPct: 0}});
   ok(rk(killed(mk(3, 333))) === null, '6. 3 fights but 999 damage: not taking part');
   const full = rk(killed(mk(3, 400)));
   ok(full && full.kind === 'kill' && !full.strong && full.base.gold === 400 && full.base.dust === 60 && full.base.metal === 3 && full.xp === 500 && full.cards === 1, `6. took part in a fall: the full rewards (${JSON.stringify(full && full.base)}, ${full && full.xp} XP, ${full && full.cards} card)`);
-  const strong = rk(killed(mk(4, 1250)));
-  ok(strong && strong.strong && strong.base.gold === 480 && strong.base.dust === 72 && strong.base.metal === 4 && strong.xp === 600 && strong.cardChance === 0.2, `6. strong contributor (4 fights, 5,000): +20% of everything (${JSON.stringify(strong && strong.base)}, ${strong && strong.xp} XP, +${strong && strong.cardChance} card chance)`);
-  ok(rk(killed(mk(4, 1249))) && !rk(killed(mk(4, 1249))).strong, '6. 4,996 damage: not strong');
+  // 2026-10-19 (package RV2, owner 08:46): the Competent participant (was the strong contributor) needs 10,000 now
+  const strong = rk(killed(mk(4, 2500)));
+  ok(strong && strong.strong && !strong.leading && strong.base.gold === 480 && strong.base.dust === 72 && strong.base.metal === 4 && strong.xp === 600 && strong.cardChance === 0.2, `6. Competent participant (4 fights, 10,000): +20% of everything (${JSON.stringify(strong && strong.base)}, ${strong && strong.xp} XP, +${strong && strong.cardChance} card chance)`);
+  ok(rk(killed(mk(4, 1250))) && !rk(killed(mk(4, 1250))).strong && rk(killed(mk(4, 2499))) && !rk(killed(mk(4, 2499))).strong, '6. 5,000 and 9,996 damage: not Competent');
+  const lead = rk(killed(mk(5, 10000)));
+  ok(lead && lead.leading && lead.base.gold === 560 && lead.xp === 700 && lead.cards === full.cards + 1 && lead.cardChance === 0, `6. Leading participant (5 fights, 50,000): +40% of everything and an extra card for certain (${JSON.stringify(lead && lead.base)}, ${lead && lead.cards} cards)`);
   // held: the life ends standing (the cycle ends), barely scratched
   const att = mk(3, 2000), st = R.generationState(noStand, att, R.raidGenerations(noStand, att, S + R.CYCLE_MS + 1, {cycle: C})[0], C, S + R.CYCLE_MS + 1);
   const held = R.raidReward(noStand, st, 'p', {over: true});
@@ -160,7 +163,8 @@ const noStand = Object.assign({}, goliath, {standIns: {perDayPct: 0}});
   const kt = R.raidReward(top, R.raidNow(top, killed(mk(3, 400)), S + 3 * H, {cycle: C}), 'p', {}), ht = R.raidReward(top, Object.assign({}, st, {raid: top, fraction: 0.05}), 'p', {over: true});
   ok(kt.extra.metal === 30 && kt.extra.title === 'X' && ht.extra.metal === Math.floor(30 * 0.1 * 0.95) && ht.extra.metal === 2 && !ht.extra.title, `6. tier extras: full on a fall, ${ht.extra.metal || 0} when held, no title`);
   const pr = R.participationRules(goliath);
-  ok(pr.fights === 3 && pr.damage === 1000 && pr.strongFights === 4 && pr.strongDamage === 5000 && pr.strongPct === 20, '6. the Goliath carries the owner\'s numbers');
+  // 2026-10-19 (package RV2, owner 08:46): the Competent participant (was the strong contributor) at 10,000, the Leading participant at 50,000
+  ok(pr.fights === 3 && pr.damage === 1000 && pr.strongFights === 4 && pr.strongDamage === 10000 && pr.strongPct === 20 && pr.leadFights === 4 && pr.leadDamage === 50000 && pr.leadPct === 40 && pr.leadCards === 1, '6. the Goliath carries the owner\'s numbers');
   ok(/RaidM\.raidReward\(def, st, me, \{over: g\.over \|\| g\.end <= now\}\)/.test(B.grab('raidClaimsFor')), '6. the page claims per life of the raid with raidReward');
   ok(/raidClaimKey\(def, c, g\.gen, inst\)/.test(B.grab('raidClaimsFor')) && B.grab('raidClaimKey').includes("(gen ? ':g' + gen : '')"), '6. a claim per life and instance (life 1, instance 1 keeps the old key)'); }
 

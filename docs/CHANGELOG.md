@@ -2,6 +2,33 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RV2: the raid round column by column, bigger back rows, the elders' Health, the boss's 3 plays, allies' plays, ranks, Competent / Leading participants)
+- **The columns attack for real, 0.25 s apart** (owner 08:42). The engine already resolved a raid round strictly in order (column by column, left to right; front, middle, back; each strike picks its target from the board the strikes before it left, so after a death the next row goes for the next unit). Engine unchanged; a new test pins it. The playback now matches:
+  - every middle- and back-row strike is a real attack (lunge, blow, number, shake, squash, sound), like a front-row swing (`raidStrikeVfx`);
+  - each strike starts `RAID_COLUMN_STAGGER_MS` (250 ms) after the one before, so the swings overlap in order; a death breaks the run (its blow lands, it falls, then the next strike plays); a blow that may end the fight plays in full; reduced motion / Low effects: 150 ms and a flash instead of a lunge, same order;
+  - the middle and back rows replay hit by hit (`m.replayReserve`): before, any mid-round redraw showed their end-of-round state, so units dying later vanished at the first death and their hits played at nothing.
+- **The raid's middle and back rows are 15% larger:** .84 → .966 of a front card (`.reserve-row.raid-rows`). It fits at 1366 and 390 px (no sideways scroll).
+- **The HP-scaled elders** (Kraken Brute, Leviathan Elder…): Health = basic + (100 − basic) × the raid's remaining share. So 100 on a fresh raid, their basic Health when it is nearly dead, never below basic. `RaidM.bossHpBonus(def, state, basic)`; the raid BR uses it; the editor field is "Boss unit Health, fresh raid"; the raid tab's might line is a TX line.
+- **The boss plays 3 cards at once each turn** (owner: "not twice at the start"). Its front-row card comes from the CPU's normal play. With it, one card goes into its middle row and one into its back row (`raidBossRowPlays`), each from that row's own 20-card deck of the part's cards (`rowDecks`). Each goes into the centre-most free slot with a unit in front. No card waits in its middle row at the start any more.
+  - They fly in together from its hand, each into its own slot.
+  - Balance: new `tuning.rowCap` (2): a back row holding 2 waits. Boss cards are now at 20% Attack / 15% Health (were 35% / 25%). The Commons call-ins are off (`reinforce.max` 0): the row plays replaced them.
+- **Allies' plays are unmistakable, and nothing else is redrawn.** The ally's name tag pops and pulses at its row ("Hive Wall plays Forager Ant"). A fan of card backs opens at the row's edge, and the card rises from it face down, turns face up mid-flight and trails sparkles. It lands with the squash, the thud and dust.
+  - The card goes into its slot alone (`reserveSlotPut`): measured in Chromium, 0 `renderBoard` / `renderMatchUI` calls, and the other cards keep their DOM nodes.
+  - Each turn's ally plays now come after the turn's redraw (before, `renderMatchUI` drew them before their flights, so they looked spawned).
+  - Reduced motion / Low effects: the name tag and a fade. The tag-team hook `allyPlayFx(uid, {mode:'tagteam', name})` gets the same.
+- **A raid fight's rank multiplies its damage** (owner 08:46).
+  - A full-raid fight is ranked on your bramble's Health left (SS: no damage taken; SSS: no damage and no unit lost). B ×1.01, A ×1.1, S ×1.2, SS ×1.5, SSS ×2, capped at 10,000; a win counts 10,000. The attempt and the server row carry the multiplied damage.
+  - A win shows the rank **emblemed** (extra rings and a crest) on the results. The claim row and claim screen show your best rank in that life.
+  - The raid tab's rules gain three short lines (more damage = a bigger share, a win = 10,000, a higher rank = more damage), with no multipliers shown.
+- **Competent participant** (was the strong contributor) needs 10,000 damage (was 5,000). The new **Leading participant** needs 50,000 (4+ fights): +40% of everything and one more raid card for certain. This is a proposal. All of it is in `raids.json` `participation` and the raid editor; the hub, raid tab and claim screen name the tier.
+- **Sims** (`tools/raid_full_sim.js`, n = 30, outer parts, damage dealt before → after; it now plays the 3-card boss and prints each fight's rank):
+  - starter deck 30–42 → 24–43;
+  - Map 6 deck 84–156 → 84–145;
+  - Map 20 deck 110–177 → 106–181.
+  - The Core is harder: Map 6 88/53/36 → 51/29/21 (fresh / Enraged / Thrashing); Map 20 84/49/56 → 70/53/39.
+  - Contributions are up 10–40%, from the rank multiplier.
+- Texts: 16 new TX keys, 4 reworded, all 12 packs (`tools/i18n_2026_10_19_rv2.py`; the 3 retired "Strong contributor" pack keys dropped). Test: `tests/raid-rv2-2026-10-19.js` (in run-all). Updated: raid-rx, raid-ops, raid-br, raid-fixes, ui_smoke. Docs: `docs/raid-ops-2026-10-19.md` § 5 / 5b.
+
 ## 2026-10-19 (package BR: the raid's battle rating)
 - **Owner (08:18): "The raid's BR is being calculated wrongly ... the total of their 3 20-card decks and any other bonus ... played straight away ×2 ... our total BR = sum of total BR with leaders contributing 2×."** The raid now uses the same per-card rating as every fight (rarity weight × level factor; raid and ally cards at their starting level, yours at your copies' levels).
 - **Boss BR** = its 3 rows, each a 20-card deck of the part's cards (scaled to 20 like any enemy deck) + every card on its board at the start counted again (×2; a guard, e.g. the Core's stumps, which isn't in the deck, counts 2× its own) + a boss unit for each boss-unit round in the fight (3/7/11/15/19), each × (Health + the super whales' bonus) / Health + the Commons it can call in (its reinforce tuning). Stat shares, a stage's +Attack/+Health and the brambles' Health are left out, as in every fight's BR.

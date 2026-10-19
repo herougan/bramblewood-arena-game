@@ -1709,6 +1709,10 @@ css('rcs', `
   -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 3px 0 #04263f) drop-shadow(0 0 18px rgba(90,210,255,.55)); overflow-wrap:anywhere;}
 .fxf-rcs-sub{margin:0 0 10px; font-size:15px; line-height:1.35; color:#c9e9f7;}
 .fxf-rcs-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px 20px; margin:4px 0 14px;}
+/* 2026-10-19 (package RV2): your best fight rank in this life of the raid; emblemed (extra rings, a crest) when you won a fight */
+.fxf-rcs-rank{position:relative; display:inline-flex; align-items:center; justify-content:center; min-width:44px; height:44px; padding:0 10px; border-radius:999px; font:900 20px/1 'Baloo 2',system-ui,sans-serif; color:#2a1a00; background:linear-gradient(180deg, #fff6d0, #f3cf64 55%, #d9a73a); box-shadow:0 0 0 3px rgba(243,207,100,.35), 0 6px 18px rgba(0,0,0,.45);}
+.fxf-rcs-rank.is-emblem{box-shadow:0 0 0 3px #fff3c4, 0 0 0 6px #b8832a, 0 0 0 9px rgba(255,236,170,.75), 0 0 22px 8px rgba(255,210,110,.55), 0 6px 18px rgba(0,0,0,.45);}
+.fxf-rcs-rank.is-emblem::before{content:'✦'; position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:15px; color:#fff1b8; text-shadow:0 0 8px rgba(255,200,90,.95);}
 .fxf-rcs-tier{display:inline-flex; align-items:center; gap:8px; padding:8px 18px; border-radius:999px; font:900 20px/1 'Baloo 2',system-ui,sans-serif; color:#2a1a00;
   background:linear-gradient(180deg, #fff0b8, #f5c84a 55%, #e0a42a); box-shadow:0 0 0 3px rgba(255,214,110,.35), 0 6px 18px rgba(0,0,0,.45);}
 .fxf-rcs-tier .ti{font-family:${EMOJI}; font-size:22px;}
@@ -1769,7 +1773,7 @@ M.raidClaimScreen = function(spec, opts){
       <h2 class="fxf-rcs-title${F}">${esc(T.title)}</h2>
       ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
       <div class="fxf-rcs-row">
-        <span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
+        ${spec.rank && spec.rank.letter ? `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>` : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
       <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>

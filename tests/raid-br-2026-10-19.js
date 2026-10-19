@@ -43,13 +43,15 @@ for(const partId of ['left', 'right', 'tail', 'core']){
   // set-up: every card on the boss's board at the start, a deck card once more (its x2), a guard (not in the deck) 2x
   const P2 = b.players[2], start = P2.row.left.concat(P2.row.center, P2.row.right, ...P2.reserve.map(r=> Object.values(r)));
   const want = start.reduce((t, c)=>{ const k = String(c.defId).split('~')[0]; return t + (deck[k] ? 1 : 2) * A.raidCardBR(c.defId, Object.assign({}, defs, b.overlay)); }, 0);
-  ok(start.length >= 4 && br.setUpCards === start.length && near(br.setUp, want), `${partId}: ${start.length} cards on its board at the start count x2 (+${br.setUp}, want ${Math.round(want)})`);
+  ok(start.length >= 3 && br.setUpCards === start.length && near(br.setUp, want), `${partId}: ${start.length} cards on its board at the start count x2 (+${br.setUp}, want ${Math.round(want)})`);
   if(partId === 'core') ok(start.filter(c=> /^raid-ent-/.test(c.defId)).length === 3 && br.setUp >= 6, `core: its 3 stumps (guards, not in its deck) count 2x each (+${br.setUp})`);
   // boss units: one per boss-unit round in 20 turns (3, 7, 11, 15, 19), an Epic x (Health + bonus) / Health
   const u = b.overlay[b.bossUnitId], uw = A.ratingWeightOf(u) * A.ratingLevelFactor(G.cardBaseLevel(defs[u.bossUnitOf])) * (1 + b.bossHpBonus / u.health);
-  ok(br.bossUnitN === 5 && b.bossHpBonus === 100 && near(br.bossUnits, 5 * uw), `${partId}: 5 boss units with the fresh raid's +100 Health (+${br.bossUnits}, want ${Math.round(5 * uw)})`);
-  // Commons: tuning.reinforce {max 1, every 3, from 3} over 20 turns = rounds 3, 6, 9, 12, 15, 18 -> 6
-  ok(br.commonN === 6 && br.commons >= 6, `${partId}: 6 Commons called in over the fight (+${br.commons})`);
+  // 2026-10-19 (package RV2): a fresh raid's boss unit has 100 Health in all (its basic Health + the bonus), not +100 on top
+  ok(br.bossUnitN === 5 && b.bossHpBonus === Math.max(0, 100 - u.health) && u.health + b.bossHpBonus === 100 && near(br.bossUnits, 5 * uw), `${partId}: 5 boss units at the fresh raid's 100 Health (${u.health} + ${b.bossHpBonus}; +${br.bossUnits}, want ${Math.round(5 * uw)})`);
+  // Commons: tuning.reinforce {max, every 3, from 3} over 20 turns = rounds 3, 6, 9, 12, 15, 18 -> 6 x max (2026-10-19, package RV2: max 0,
+  // the boss's row plays took the call-ins' place)
+  { const rf = def.tuning.reinforce, want = 6 * rf.max; ok(br.commonN === want && (want ? br.commons >= want : br.commons === 0), `${partId}: ${want} Commons called in over the fight (+${br.commons})`); }
   ok(br.total === Math.round(br.decks + br.setUp + br.bossUnits + br.commons) || near(br.total, br.decks + br.setUp + br.bossUnits + br.commons) || Math.abs(br.total - (br.decks + br.setUp + br.bossUnits + br.commons)) <= 2,
     `${partId}: total = decks + set-up + boss units + Commons (${br.total})`);
   // the old number: the VS screen's deckLevelFrom over the deck + hand left after the set-up and draws, at base levels
@@ -60,7 +62,7 @@ for(const partId of ['left', 'right', 'tail', 'core']){
 }
 // a nearly-dead raid: the boss units' Health bonus shrinks with it, so their part of the BR does too
 { const st = fresh(); st.remaining = Math.round(st.total * 0.1); const a = A.raidBossBR(def, ...Object.values(build('left', fresh())).slice(0, 2)), bb = build('left', st), c = A.raidBossBR(def, bb.f, bb.b);
-  ok(bb.b.bossHpBonus === 10 && c.bossUnits < a.bossUnits, `a nearly-dead raid's boss units weigh less (bonus ${bb.b.bossHpBonus}: ${a.bossUnits} -> ${c.bossUnits})`); }
+  ok(bb.b.bossHpBonus === Math.round((100 - bb.b.overlay[bb.b.bossUnitId].health) * 0.1) && c.bossUnits < a.bossUnits, `a nearly-dead raid's boss units weigh less (bonus ${bb.b.bossHpBonus}: ${a.bossUnits} -> ${c.bossUnits})`); }
 // no tuning.reinforce: the default call-ins (1 + 1 from round 2) over 20 turns
 { const d2 = JSON.parse(JSON.stringify(def)); delete d2.tuning.reinforce; const st = fresh(), f = RaidM.fightFor(d2, st, 'left', {}), b = A.buildRaidFullFight(d2, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(7), recordEvents:false, allies: [], myDeck: {}});
   ok(A.raidBossBR(d2, f, b).commonN === 38, `the default reinforce (2 a round from round 2) is 38 Commons over 20 turns (${A.raidBossBR(d2, f, b).commonN})`); }
