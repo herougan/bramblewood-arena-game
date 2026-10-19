@@ -50,6 +50,12 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
 - BF5 (owner 21:36 "HALF everything" = the total N): A. scale 0.5 in bramblewood-budget.js (nAt), skill-costs.json budget,
   Test Lab sbScale, hub Budget & stats 'scale', ui.budget-scale (+12 packs, tools/i18n_2026_10_19_bf5.py); B. Bounty 0.5 -> 1
 
+- BF5 C (ad55224): tools/halve_2026_10_19.js applied (708 live: 678 band, 29 owner calls halved in proportion, Cave Bat 1/2; 31 proportion)
+- BF5 D (305d2c6): BRAMBLE_SCALE 0.5 (arena_app brambleHp/brambleChar/raidDefScaled at every fight builder); probe JSON
+- tests updated (a77be17); reference decks rebuilt (decks --keep); bf6-mid2: 28/179 green (141 easy)
+- E round 1: tune4.sh 30 bf6-mid2t bf6-curve-fixes "--decks-only --wide" (bf6-mid2t = bf6-mid2 without Map 0's owner decks)
+
 ## Next
-- C: re-derive every live card under N/2 (tools/halve_2026_10_19.js), cave-bat-swarm target 1/2, Caldera Wyrm halved in proportion
-- D: brambles (measure rounds with full brambles), raid, Forge, skill flags; E: road + raid re-measure; F: hub, tests; commit "Package BF5: ..."
+- mark_apply (apply:false for 0-1..0-4), apply, measure bf6-mid3, round 2 at 60, final bf-after / bf-fresh, road_gaps, tests floors
+- raid: raid_completion_model measure --n 20 --out docs/balance/raid-balance-bf5-fights.json, cycle; doc halve-raid json
+- docs (halve doc doc cmd), CHANGELOG, merge main, tests, commit "Package BF5: ..."

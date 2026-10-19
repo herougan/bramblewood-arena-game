@@ -106,6 +106,43 @@ if(cmd === 'plan' || cmd === 'apply'){
     '## Halved in proportion', '', '| Card | Kind | Was | Now |', '|---|---|---|---|', ...P.prop.map(r=> `| ${r.name} | ${r.kind} | ${st(r.was)} | ${st(r.now)} |`), '',
     '## Every live card', '', '| Card | Rarity | Wait / Lumber | Was | Now | N v5 → halved | Share of N, v5 → now | S |', '|---|---|---|---|---|---|---|---|',
     ...ch.slice().sort((a, b)=> a.name.localeCompare(b.name)).map(r=> `| ${r.name} | ${r.rarity} | ${r.wait} / ${r.cost} | ${st(r.was)} | **${st(r.now)}** | ${r.N0} → ${r.N} | ${pct(r.use0)} → ${pct(r.use)} | ${r.S} |`), ''];
+  // the rest of the package: brambles, the Forge, the skill numbers, the road, the raid (each from its own file when it is there)
+  const rdj = rel=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8')); }catch(e){ return null; } };
+  const PR = rdj('docs/balance/halve-bramble-probe-2026-10-19.json'), GP = rdj('docs/balance/road-gaps-2026-10-19.json'), RD = rdj('docs/balance/halve-raid-2026-10-19.json');
+  const live = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')).filter(R.live), med = a=>{ const b = a.slice().sort((x, y)=> x - y); return b[b.length >> 1]; };
+  const mA = med(live.map(c=> c.attack || 0)), mH = med(live.map(c=> c.health || 0));
+  const FLAG = {meteor: 'Meteor', fireball: 'Fireball', trap: 'Trap', onReadyDamage: 'On Ready damage', pounce: 'Pounce', sweep: 'Sweep', thorns: 'Thorns', poison: 'Poison', armor: 'Armor', regen: 'Regeneration', fireArrow: 'Fire Arrow', earthquake: 'Earthquake', siege: 'Siege', lightning: 'Lightning', rocket: 'Rocket', crystallise: 'Crystallise', bleed: 'Bleed', sentry: 'Sentry'};
+  const flags = Object.entries(FLAG).map(([k, label])=>{ const v = live.filter(c=> c.effects && typeof c.effects[k] === 'number').map(c=> [c.effects[k], c]); if(!v.length) return null;
+    const top = v.sort((a, b)=> b[0] - a[0]), mx = top[0][0], against = k === 'armor' ? mA : mH; if(mx < (k === 'armor' ? mA : Math.max(3, mH - 1))) return null;
+    return `| ${label} | ${v.length} | ${[...new Set(v.map(x=> x[0]))].sort((a, b)=> a - b).join(', ')} | ${top.slice(0, 2).map(x=> `${x[1].name} ${x[1].attack}/${x[1].health} (${x[0]})`).join('; ')} | ${k === 'armor' ? `Armor ${mx} against a median Attack of ${mA}: most attackers barely scratch it` : `${mx} against a median Health of ${mH}`} |`; }).filter(Boolean);
+  const trig = live.filter(c=> (c.effects && c.effects.triggers || []).some(t=> typeof t.amount === 'number' && t.amount >= mH)).map(c=> c.name);
+  md.push('## Brambles: halved too (measured)', '',
+    'Whether the owner\'s "HALF everything" covers the brambles was not plain, so it was measured. The halved cards were played against full-size brambles, then against halved ones.' + (PR ? ` The sample is ${PR.fights} road fights (every 9th of the BF4 measure, 60 games each, \`docs/balance/halve-bramble-probe-2026-10-19.json\`). Sudden death starts at round 20.` : ''), '',
+    ...(PR ? ['| | BF4 (full cards, full brambles) | Halved cards, full brambles | Halved cards, halved brambles |', '|---|---|---|---|',
+      `| Mean rounds a fight | ${PR.meanRounds.bf4} | ${PR.meanRounds.fullBrambles} | ${PR.meanRounds.halvedBrambles} |`,
+      `| Fights averaging 17+ rounds | ${PR.over17.bf4} | ${PR.over17.fullBrambles} | ${PR.over17.halvedBrambles} |`,
+      `| Fights averaging 20+ rounds (sudden death) | ${PR.at20plus.bf4} | ${PR.at20plus.fullBrambles} | ${PR.at20plus.halvedBrambles} |`, ''] : []),
+    '**With full brambles, fights dragged toward the turn caps.** So the brambles are halved too. It is one constant, `BRAMBLE_SCALE = 0.5` in `arena_app.js`, applied when a fight is built. The stored numbers (`characters.json`, node `hqHp` / `shieldOverride`, `raids.json`) stay full-size, so it can be tuned back. It covers:',
+    '- **The road\'s brambles:** the map castles, Map 0\'s base brambles, a node\'s lower Health and the **Shield rule** (Map × 1 / 1.5 / 2 / 3, then halved) and its overrides.',
+    '- **Your castle** in every mode (road, arena, gauntlet, ghosts, PvP, dungeon, raids).',
+    '- **The raid:** the arms\' and tail\'s brambles **350 → 175** a fight, the **Core 200 → 100**, the **elders\' Health floor 55 → 28** (`bossHpBonusMax`), the trench wall, and the raiders\' merged castle.',
+    '- **The tutorial** (both brambles) and the **dungeon** (its foes\' brambles).', '',
+    '## The Forge curve', '',
+    'It follows N on its own (`forgeCurve` banks each level\'s ΔN, halved with N). The mean 2A+H gain over Level 1 (`FORGE_MEAN_GAIN`) is now **+1.2% at Lv 2, +22.7% at Lv 4, +52% at Lv 7, +81.8% at Lv 10 and +99% at Lv 11**. Under v5 it was +4.4%, +20.8%, +45.8%, +70.5% and +79.6%.',
+    '- **The minor step (Lv 2) mostly rounds to nothing** at halved sizes.',
+    '- **The majors weigh relatively more**, because a card\'s stats are a smaller part of its halved N (S didn\'t halve).',
+    '- **The majors still always add a point.** On the smallest cards that point can run one point past N at Lv 10 and 11. `tests/forge-curve-2026-10-19.js` allows exactly that.', '',
+    '## Skill numbers that now look big (flagged, not changed)', '',
+    `The owner said to halve N only, so the skills' own numbers stay. A live card is now a median **${mA}/${mH}**. These fixed numbers are large against that:`, '',
+    '| Skill | Cards | Values | Largest | Against halved stats |', '|---|---|---|---|---|', ...flags, '',
+    ...(trig.length ? [`Triggers with a fixed amount at or above the median Health (${mH}): ${trig.join(', ')}.`, ''] : []),
+    '**Suggestion (owner call):**',
+    '- **Halve the fixed amounts too** (damage, Poison, Thorns, Trap, Pounce, Sweep, On Ready damage, Meteor 20 → 10, Fireball 15 → 8), at least 1 each.',
+    '- **Cap Armor** at about half the card\'s Attack, or halve it (Armor 4–5 on 50 cards makes many fights stall into sudden death).',
+    '- **Re-measure the skill worth afterwards** (`tools/skill_worth`). The costs (S) were measured at the old sizes.', '');
+  if(GP) md.push('## The road, re-measured (honest levers only)', '',
+    `The levers are the owner's from 16:22: enemy decks only, levels on the schedule, no new Shield, no field buffs. The final measure is \`docs/balance/skirmish-pass-bf-after.jsonl\` (120 games, the measure seeds). On target: **main maps ${GP.counts.main.green} / ${GP.counts.main.fights}**, **side maps ${GP.counts.side.green} / ${GP.counts.side.fights}**. On fresh seeds: ${GP.freshCounts && GP.freshCounts.main ? GP.freshCounts.main.green + ' / ' + GP.freshCounts.main.fights : '—'}. There are **${GP.gaps.total} gaps** (${GP.gaps.easy} too easy: a future "cheat" field; ${GP.gaps.hard} too hard), listed in \`docs/balance/road-gaps-2026-10-19.json\`.`, '');
+  if(RD) md.push('## The raid, re-measured', '', ...RD.lines, '');
   fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'halve-2026-10-19.md'), md.join('\n'));
   console.log('wrote docs/balance/halve-2026-10-19.md');
 }
