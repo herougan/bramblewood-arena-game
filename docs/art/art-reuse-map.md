@@ -2,20 +2,20 @@
 
 The owner, 09:52: *"After we re-divvy out units, we will try to reuse 99% of the art."*
 
-This lists every unit in `canonical/unit-themes.json`: 721 live, 4 in the pool and 109 proposed later versions. For each one it gives the existing art file it keeps. Built by `python3 tools/art_reuse_map.py`.
+This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool and 109 proposed later versions. For each one it gives the existing art file it keeps. Built by `python3 tools/art_reuse_map.py`.
 
 ## Summary
 
-- **804 of 834 units (96.4%) keep existing art.**
+- **806 of 840 units (96.0%) keep existing art.**
   - 621 have art of their own.
   - 81 proposed versions keep their base card's art.
-  - 102 have no art of their own yet. Another card's art of the same animal (or the same kind) stands in for now.
-- **30 have no usable match** and need new art. They are flagged below: 30 of them have a loose stand-in of the same species field (a different animal), 0 have nothing.
+  - 104 have no art of their own yet. Another card's art of the same animal (or the same kind) stands in for now.
+- **34 have no usable match** and need new art. They are flagged below: 30 of them have a loose stand-in of the same species field (a different animal), 4 have nothing.
 - The raid's boss units (the Leviathan Elder and the Kraken Brute) borrow their base card's art. Their own epic art is briefed in `docs/art/raid-elder-art-brief.md`.
 
 "Own" art is a file in `art/cards/`, or the art embedded in `cards.json`. The build writes the embedded art to `assets/cards/<id>.webp`. A stand-in is only a placeholder: the card shows another creature's picture until its own is made.
 
-## No usable match (30)
+## No usable match (34)
 
 | Unit | Status | Animal | Note |
 |---|---|---|---|
@@ -41,6 +41,10 @@ This lists every unit in `canonical/unit-themes.json`: 721 live, 4 in the pool a
 | Hawthorn Shieldbug (`hawthorn-shieldbug`) | live | shieldbug | NO USABLE MATCH (needs new art); the nearest, loosely: Amber Cicada (cicada): `art/cards/amber-cicada.png` |
 | Arctic Tern (`arctic-tern`) | live | arctic tern | NO USABLE MATCH (needs new art); the nearest, loosely: Abbey Goose (goose): `art/cards/abbey-goose.png` |
 | Lemming Swarm (`lemming-swarm`) | live | lemming | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
+| Exo-podas (`exo-podas`) | live | Insect | NO USABLE MATCH: needs new art |
+| Nyoogle (`nyoogle`) | live | Critter | NO USABLE MATCH: needs new art |
+| Habanero Drakon (`tobasco-drakon`) | live | Drake | NO USABLE MATCH: needs new art |
+| Kegfuse Panda (`demo-panda`) | live | Panda | NO USABLE MATCH: needs new art |
 | Shardclaw Pseudoscorpion (`dire-cave-pseudoscorpion`) | proposed | pseudoscorpion | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
 | Grandmother Whip Spider (`elder-whip-spider`) | proposed | whip spider | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
 | Needlebed Urchin (`dire-pincushion-urchin`) | proposed | sea urchin | NO USABLE MATCH (needs new art); the nearest, loosely: Sea Cucumber (sea cucumber): `art/cards/sea-cucumber.png` |
@@ -50,7 +54,7 @@ This lists every unit in `canonical/unit-themes.json`: 721 live, 4 in the pool a
 | Oldwood Leopard Slug (`dire-leopard-slug`) | proposed | leopard slug | NO USABLE MATCH (needs new art); the nearest, loosely: Abyss Lantern Squid (squid): `art/cards/abyss-lantern-squid.png` |
 | Rootlodge Muskrat (`dire-muskrat-lodgekeeper`) | proposed | muskrat | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
 
-## Stand-ins: no own art yet (102)
+## Stand-ins: no own art yet (104)
 
 | Unit | Status | Animal | Uses for now |
 |---|---|---|---|
@@ -136,6 +140,8 @@ This lists every unit in `canonical/unit-themes.json`: 721 live, 4 in the pool a
 | Ringed Seal (`ringed-seal`) | live | ringed seal | `art/cards/harbor-seal.png`: same kind: Harbor Seal (harbor seal), until it has its own |
 | Woodland Caribou (`woodland-caribou`) | live | caribou | `art/cards/antler-skirmisher.png`: same kind: Antler Skirmisher (deer), until it has its own |
 | Musk Ox Calf (`musk-ox-calf`) | live | musk ox | `art/cards/tundra-musk-ox.png`: same animal: Tundra Musk Ox (musk ox), until it has its own |
+| Galactic Condor (`galactic-condor`) | live | Condor | `cards.json (embedded; built to assets/cards/ash-cloud-condor.webp)`: same kind: Ash Cloud Condor (condor), until it has its own |
+| Pink Maus (`pink-maus`) | live | Mouse | `art/cards/balloon-archer.png`: same kind: Balloon Archer (mouse), until it has its own |
 | Old Pale Crayfish (`elder-ghost-crayfish`) | proposed | crayfish | `art/cards/grotto-lobster.png`: same kind: Grotto Lobster (lobster), until it has its own |
 | Breakwater Seal Bull (`dire-grey-seal-bull`) | proposed | grey seal | `art/cards/harbor-seal.png`: same kind: Harbor Seal (harbor seal), until it has its own |
 | Old Brood Wolf Spider (`elder-wolf-spider-mother`) | proposed | wolf spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
@@ -678,7 +684,7 @@ This lists every unit in `canonical/unit-themes.json`: 721 live, 4 in the pool a
 | Obsidian Lich (`obsidian-lich`) | live | lizard | `art/cards/obsidian-lich.png` |
 | Ember Revenant (`ember-revenant`) | live | boar | `art/cards/ember-revenant.png` |
 | Meerkat Wayfarer (`meerkat-wayfarer`) | live | meerkat | `art/cards/meerkat-wayfarer.png` |
-| Creeper (`creeper`) | live | bee | `art/cards/creeper.png` |
+| Creeper (`creeper`) | live | Beetle | `art/cards/creeper.png` |
 | Pigeon Peon (`pigeon-peon`) | live | pigeon | `art/cards/pigeon-peon.png` |
 | Marching Elephant (`marching-elephant`) | live | elephant | `art/cards/marching-elephant.png` |
 | Siege Rhino (`siege-rhino`) | live | rhino | `art/cards/siege-rhino.png` |

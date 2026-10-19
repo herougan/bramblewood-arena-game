@@ -39,6 +39,9 @@ JS = r"""(()=>{
       let src = {}; try{ src = cardSourceOf(d) || {}; }catch(e){}
       let where = ''; try{ where = cardWhereToGetText(d); }catch(e){}
       let un = false; try{ un = isUnattainable(d); }catch(e){}
+      // Easter eggs (2026-10-19, package EE, owner 09:52): the hub's card list shows one only as "???" (no name, numbers, skills or text)
+      let egg = false; try{ egg = isEasterEgg(d); }catch(e){}
+      if(egg) return {id:d.id, name:'???', icon:'🥚', r:d.rarity||'', c:0, w:0, a:0, h:0, sk:[], sp:'', ar:[], f:'', src:'easteregg', map:'', node:'', where:'Easter egg', un:true, tok:false, test:false, fl:'', egg:true};
       return {id:d.id, name:d.name, icon:d.icon||'', r:d.rarity||'', c:d.cost||0, w:d.wait||0, a:d.attack, h:d.health, sk,
         sp:(d.species||[]).join(', '), ar:(d.archetypes||[]), f:d.faction||'', src:src.kind||'', map: src.kind==='map' ? (src.id||'') : '', node: src.node||'',
         where, un, tok: !!d.token, test: !!d.test, fl: d.flavor||''};

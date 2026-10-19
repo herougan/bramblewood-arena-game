@@ -17,4 +17,6 @@ Owner directions 09:52: animal tags, Base cards, Dire/Elder balanced by N, raid 
 
 ## Status (WIP)
 - Done: tools/animal_tags.py, tools/art_reuse_map.py, tools/i18n_2026_10_19_ut.py, tests/animal-tags-2026-10-19.js, unit_themes.js (N bodies, names, nonPlayer), units_tab.js, Codex chips/filter, tutorial Level 0.
-- Left: CHANGELOG, hub rebuild (local only), merge main, final build, commit.
+- Merged main (EE, RC): EE's Easter-egg cards keep their own animal/subtype (how 'ee', owner call); demo-panda biome hand-set.
+- Hub: source updated (units_tab.js, unit-themes.json); hub/ not rebuilt (needs .fxcat/.vislib; and not to be published).
+- Done; final commit 'Package UT'.

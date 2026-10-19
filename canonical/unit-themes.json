@@ -609,6 +609,7 @@
    "coral",
    "crab",
    "cricket",
+   "critter",
    "crocodile",
    "crow",
    "cuttlefish",
@@ -616,6 +617,7 @@
    "dog",
    "dolphin",
    "dragon",
+   "drake",
    "duck",
    "eagle",
    "eel",
@@ -638,6 +640,7 @@
    "horseshoe crab",
    "hummingbird",
    "hyena",
+   "insect",
    "jackal",
    "jellyfish",
    "kingfisher",
@@ -665,6 +668,7 @@
    "otter",
    "owl",
    "ox",
+   "panda",
    "pangolin",
    "parrot",
    "pelican",
@@ -1071,56 +1075,56 @@
   }
  ],
  "counts": {
-  "units": 725,
-  "live": 721,
+  "units": 731,
+  "live": 727,
   "pool": 4,
   "proposed": 109,
-  "manual": 22,
+  "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
-   "type": 198,
+   "type": 202,
    "home map": 453,
-   "fights": 18,
+   "fights": 19,
    "fallback": 38,
    "name": 11,
-   "manual": 7
+   "manual": 8
   },
   "biome": {
    "river": 74,
-   "meadow-forest": 91,
+   "meadow-forest": 92,
    "reef-ocean": 43,
    "desert-glass": 21,
    "tundra-ice": 30,
-   "volcanic-ash": 71,
+   "volcanic-ash": 72,
    "fungal": 24,
    "village-keep": 36,
    "taiga": 18,
    "long-grass": 18,
    "redwood": 21,
-   "jungle": 22,
+   "jungle": 23,
    "maze-briar": 24,
    "mangrove": 18,
-   "mountain-sky": 35,
+   "mountain-sky": 37,
    "swamp": 52,
    "cliffs": 38,
-   "caves": 44,
+   "caves": 45,
    "savanna": 17,
    "pale-desert": 9,
    "coast": 19
   },
   "family": {
-   "mammal": 283,
+   "mammal": 286,
    "plant": 11,
-   "insect": 71,
+   "insect": 72,
    "arachnid": 15,
-   "bird": 125,
+   "bird": 126,
    "worm": 11,
    "fungus": 2,
    "spirit-undead": 19,
    "construct": 12,
    "elemental": 3,
    "fish": 40,
-   "reptile": 38,
+   "reptile": 39,
    "mollusc": 21,
    "amphibian": 26,
    "sea-invertebrate": 8,
@@ -1132,9 +1136,9 @@
   },
   "faction": {
    "otters": 28,
-   "wild": 336,
-   "hives": 21,
-   "beasts": 119,
+   "wild": 342,
+   "hives": 20,
+   "beasts": 120,
    "dogs-cats": 12,
    "spirits": 25,
    "supporting-folk": 61,
@@ -1152,7 +1156,7 @@
    "otter": 27,
    "owl": 11,
    "dolphin": 2,
-   "bee": 10,
+   "bee": 9,
    "scorpion": 3,
    "ape": 10,
    "ant": 11,
@@ -1161,7 +1165,7 @@
    "big cat": 5,
    "monkey": 6,
    "spider": 10,
-   "beetle": 18,
+   "beetle": 19,
    "worm": 7,
    "cricket": 2,
    "fly": 7,
@@ -1191,7 +1195,7 @@
    "beaver": 6,
    "snake": 12,
    "bat": 16,
-   "mouse": 10,
+   "mouse": 11,
    "horse": 8,
    "frog": 14,
    "rabbit": 14,
@@ -1210,7 +1214,7 @@
    "coral": 1,
    "goat": 6,
    "sheep": 2,
-   "vulture": 6,
+   "vulture": 7,
    "leech": 3,
    "crab": 6,
    "dragon": 8,
@@ -1288,7 +1292,11 @@
    "manatee": 1,
    "clam": 1,
    "shieldbug": 1,
-   "tern": 1
+   "tern": 1,
+   "insect": 1,
+   "critter": 1,
+   "drake": 1,
+   "panda": 1
   },
   "subtype": {
    "plant": 11,
@@ -1305,7 +1313,14 @@
    "glitch": 1,
    "were": 2,
    "mutant": 4,
-   "changeling": 3
+   "changeling": 3,
+   "Bombardier beetle": 1,
+   "Six-legged walker": 1,
+   "Star condor": 1,
+   "Round mouse": 1,
+   "Pom-pom lantern-bearer": 1,
+   "Pepper drake": 1,
+   "Giant panda": 1
   },
   "base": 27,
   "nonPlayer": 15,
@@ -24359,45 +24374,41 @@
   {
    "id": "creeper",
    "name": "Creeper",
-   "icon": "🙂",
+   "icon": "🪲",
    "status": "live",
-   "rarity": "common",
+   "rarity": "veryrare",
    "biomes": [
     "meadow-forest"
    ],
    "family": "insect",
    "sub": "Insect",
-   "animal": "bee",
-   "animalGroup": "bee",
-   "subtype": null,
-   "faction": "hives",
-   "size": "tiny",
+   "animal": "Beetle",
+   "animalGroup": "beetle",
+   "subtype": "Bombardier beetle",
+   "faction": "wild",
+   "size": "medium",
    "stage": 1,
    "firstMap": 1,
    "body": {
-    "cost": 0,
-    "wait": 0,
-    "attack": 1,
-    "health": 2,
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 12,
     "dmg": "physical",
     "resist": []
    },
    "skills": [
     [
-     "flying",
+     "restless",
      null
     ],
     [
-     "swarm",
-     null
-    ],
-    [
-     "scare",
-     1
+     "explode",
+     "time 2, damage 8"
     ]
    ],
    "types": [
-    "Bee",
+    "Insect",
     "Insect"
    ],
    "maps": {
@@ -24406,11 +24417,11 @@
      "mq": 2
     }
    },
-   "source": "pack",
+   "source": "easteregg",
    "why": {
-    "biome": "type Bee",
+    "biome": "fights mostly on meadow-forest",
     "family": "species Insect",
-    "faction": "Ants / Bee"
+    "faction": "default"
    }
   },
   {
@@ -40979,6 +40990,333 @@
     "kind": "existing",
     "audience": "player"
    }
+  },
+  {
+   "id": "exo-podas",
+   "name": "Exo-podas",
+   "icon": "🦗",
+   "status": "live",
+   "rarity": "veryrare",
+   "biomes": [
+    "mountain-sky"
+   ],
+   "family": "insect",
+   "sub": "Insect",
+   "animal": "Insect",
+   "animalGroup": "insect",
+   "subtype": "Six-legged walker",
+   "faction": "wild",
+   "size": "large",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 6,
+    "health": 20,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "armor",
+     1
+    ],
+    [
+     "trident",
+     null
+    ],
+    [
+     "mountainClimber",
+     null
+    ]
+   ],
+   "types": [
+    "Insect",
+    "Mountain",
+    "Insect"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "type Mountain",
+    "family": "species Insect",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "galactic-condor",
+   "name": "Galactic Condor",
+   "icon": "🦅",
+   "status": "live",
+   "rarity": "epic",
+   "biomes": [
+    "mountain-sky"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "Condor",
+   "animalGroup": "vulture",
+   "subtype": "Star condor",
+   "faction": "wild",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 4,
+    "health": 12,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "flying",
+     null
+    ],
+    [
+     "charge",
+     "n 2, do {\"do\":\"positionBeam\",\"amount\":5}"
+    ]
+   ],
+   "types": [
+    "Bird",
+    "Mountain",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "type Mountain",
+    "family": "species Bird",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "pink-maus",
+   "name": "Pink Maus",
+   "icon": "🐭",
+   "status": "live",
+   "rarity": "unique",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "mammal",
+   "sub": "Rodent",
+   "animal": "Mouse",
+   "animalGroup": "mouse",
+   "subtype": "Round mouse",
+   "faction": "wild",
+   "size": "large",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 2,
+    "wait": 1,
+    "attack": 2,
+    "health": 24,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "sturdy",
+     null
+    ],
+    [
+     "taunt",
+     null
+    ]
+   ],
+   "types": [
+    "Mouse",
+    "Rodent"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "type Mouse",
+    "family": "species Rodent",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "nyoogle",
+   "name": "Nyoogle",
+   "icon": "🏮",
+   "status": "live",
+   "rarity": "superrare",
+   "biomes": [
+    "caves"
+   ],
+   "family": "mammal",
+   "sub": "Mammal",
+   "animal": "Critter",
+   "animalGroup": "critter",
+   "subtype": "Pom-pom lantern-bearer",
+   "faction": "wild",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 11,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "illuminate",
+     null
+    ],
+    [
+     "restless",
+     null
+    ],
+    [
+     "invisible",
+     2
+    ],
+    [
+     "backstab",
+     2
+    ]
+   ],
+   "types": [
+    "Cave",
+    "Mammal"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "type Cave",
+    "family": "species Mammal",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "tobasco-drakon",
+   "name": "Habanero Drakon",
+   "icon": "🌶️",
+   "status": "live",
+   "rarity": "rare",
+   "biomes": [
+    "volcanic-ash"
+   ],
+   "family": "reptile",
+   "sub": "Reptile",
+   "animal": "Drake",
+   "animalGroup": "drake",
+   "subtype": "Pepper drake",
+   "faction": "wild",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 13,
+    "dmg": "physical",
+    "resist": [
+     "fire"
+    ]
+   },
+   "skills": [
+    [
+     "chilli",
+     2
+    ],
+    [
+     "fireBolt",
+     2
+    ]
+   ],
+   "types": [
+    "Reptile",
+    "Volcanic",
+    "Reptile"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "type Volcanic",
+    "family": "species Reptile",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "demo-panda",
+   "name": "Kegfuse Panda",
+   "icon": "🐻",
+   "status": "live",
+   "rarity": "superrare",
+   "biomes": [
+    "jungle"
+   ],
+   "family": "mammal",
+   "sub": "Ursid",
+   "animal": "Panda",
+   "animalGroup": "panda",
+   "subtype": "Giant panda",
+   "faction": "beasts",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 14,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "tipsy",
+     "chance 50, duration 2"
+    ],
+    [
+     "nova",
+     3
+    ]
+   ],
+   "types": [
+    "Bear",
+    "Ursid"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "",
+    "family": "species Ursid",
+    "faction": "hunter type / name",
+    "manual": "an Easter egg (package EE, 2026-10-19): a panda with no map or habitat type; the bamboo forest is the nearest biome"
+   },
+   "manual": [
+    "biomes"
+   ]
   },
   {
    "id": "dire-cave-olm",

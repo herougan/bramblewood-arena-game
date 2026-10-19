@@ -326,8 +326,76 @@ function raidReward(def, state, owner, opts){
   const cardsBase = Math.max(0, Math.round(rw.cards != null ? Number(rw.cards) : 1)) + (/^top(1|10)$/.test(tier) ? 1 : 0);
   // cards: a kill gives them all (a strong contributor: strongPct% chance of one more); a survival only a chance at one, 0..10%
   // 2026-10-19 (RV2): a Leading participant's kill brings leadCards (1) more for certain, and no chance roll on top
+  // 2026-10-19 (package RC, owner 09:53): these are REWARD cards now, from the normal pack pools (or, at factionChance, a faction
+  // card), never the raid's own; its own cards come only at RAID_CARD_DROP_CHANCE (raidCardChance) and from the Forge's Raid tab.
   const cards = kill ? cardsBase + (p.leading ? p.rules.leadCards : 0) : 0, cardChance = kill ? (p.leading ? 0 : p.strong ? p.rules.strongPct / 100 : 0) : Math.min(1, specMult * boost * cardsBase);
-  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, leading: !!p.leading, level: p.level, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost};
+  const row = RAID_REWARD_TABLE[p.level] || RAID_REWARD_TABLE.participant;
+  const fullShards = Math.round((rw.shards != null && isFinite(Number(rw.shards)) ? Math.max(0, Number(rw.shards)) : row.shards) * boost) + row.extraShards + (RAID_TIER_SHARDS[tier] || 0);
+  const shards = kill ? fullShards : Math.floor(fullShards * genMult * taken); // a held raid: its share (failPct) by how much Health went
+  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, leading: !!p.leading, level: p.level, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost,
+    packFloor: row.packFloor, factionChance: row.factionChance, shards, raidCardChance: kill ? RAID_CARD_DROP_CHANCE : 0};
+}
+// ---- Raid rewards v3 (2026-10-19, package RC, owner 09:53: "Raids almost never give raid cards. only maybe pack cards or faction
+// cards (maybe), raid cards must be crafted in the Forge. Under a special tab."). A claim pays its reward cards from the normal pack
+// pools at the participation level's rarity floor, each one a faction card at factionChance instead, plus the raid's trophy shards
+// (its crafting material: the Forge's Raid tab turns them, with Magic Dust and Maple Leaves, into the raid's own cards).
+// RAID_CARD_DROP_CHANCE is the ONE place the raid-card chance lives (the owner wants "almost never"): a fall's claim rolls it once,
+// and so does a won raid fight (the page's raidFightCardDrop). A held raid's claim never rolls it.
+const RAID_CARD_DROP_CHANCE = 0.015;
+// shards: trophy shards on a fall before the boost (Competent x1.2, Leading x1.4; a raid's rewards.shards replaces it); extraShards
+// on top for the level; RAID_TIER_SHARDS on top for the standing (top 1% / 10% / 50%). Owner may retune every number here.
+const RAID_REWARD_TABLE = {
+  participant: {packFloor:'common',   factionChance:0.10, shards:6, extraShards:0},
+  competent:   {packFloor:'uncommon', factionChance:0.15, shards:6, extraShards:2},
+  leading:     {packFloor:'rare',     factionChance:0.25, shards:6, extraShards:5},
+};
+const RAID_TIER_SHARDS = {top1:4, top10:2, top50:1, participant:0};
+const RAID_RARITY_ORDER = ['starter', 'common', 'uncommon', 'quest', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient'];
+const RAID_CARD_WEIGHT = {common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6}; // which of a raid's own cards, when one does come (was grantRaidCards')
+function raidRarityRank(r){ const i = RAID_RARITY_ORDER.indexOf(r || 'common'); return i < 0 ? 1 : i; }
+// pools: {pack:[ids], faction:[ids], raid:[ids], rarityOf(id), weight(id) (a pack card's weight; default 1)}. rnd: a seeded random.
+// Returns {pack:[ids], faction:[ids], raid:[ids]}: what this claim's cards are. Pure, so tests can run it seeded.
+function rollRaidRewardCards(reward, pools, rnd){
+  rnd = rnd || Math.random; pools = pools || {}; const out = {pack:[], faction:[], raid:[]}; if(!reward) return out;
+  const rar = id=> (pools.rarityOf ? pools.rarityOf(id) : 'common') || 'common';
+  const pick = (list, w)=>{ if(!list.length) return null; const tot = list.reduce((t, id)=> t + Math.max(0, w(id)), 0); if(!(tot > 0)) return list[Math.floor(rnd() * list.length)];
+    let r = rnd() * tot; for(const id of list){ r -= Math.max(0, w(id)); if(r <= 0) return id; } return list[list.length - 1]; };
+  const floor = raidRarityRank(reward.packFloor || 'common'), atFloor = list=>{ const f = (list || []).filter(id=> raidRarityRank(rar(id)) >= floor); return f.length ? f : (list || []); };
+  const packW = id=> pools.weight ? pools.weight(id) : 1;
+  let n = Math.max(0, reward.cards | 0); if(reward.cardChance > 0 && rnd() < reward.cardChance) n++;
+  for(let i = 0; i < n; i++){
+    const fac = (pools.faction || []).length > 0 && rnd() < (reward.factionChance || 0);
+    const id = pick(atFloor(fac ? pools.faction : pools.pack), packW); if(id) out[fac ? 'faction' : 'pack'].push(id);
+  }
+  if(reward.raidCardChance > 0 && (pools.raid || []).length && rnd() < reward.raidCardChance){ const id = pick(pools.raid, id=> RAID_CARD_WEIGHT[rar(id)] || 1); if(id) out.raid.push(id); }
+  return out;
+}
+// ---- Raid recipes (2026-10-19, package RC): what crafting one of a raid's own cards costs in the Forge's Raid tab, by rarity: that
+// raid's trophy shards + Magic Dust + Maple Leaves. A raid's recipeCost {rarity: {shards, dust, gold}} or recipes {cardId: {...}}
+// overrides. Proposal numbers (a participant's fall pays 6 shards, a Leading participant's 13): a Common ~2 falls, a Legendary ~27
+// (~12 leading).
+const RAID_RECIPE_COST = {
+  starter:{shards:8, dust:40, gold:80}, common:{shards:8, dust:40, gold:80}, uncommon:{shards:16, dust:90, gold:180}, quest:{shards:16, dust:90, gold:180},
+  rare:{shards:30, dust:180, gold:360}, veryrare:{shards:45, dust:270, gold:540}, superrare:{shards:60, dust:360, gold:720}, epic:{shards:80, dust:480, gold:960},
+  heroic:{shards:110, dust:640, gold:1280}, unique:{shards:130, dust:760, gold:1520}, questunique:{shards:130, dust:760, gold:1520}, legendary:{shards:160, dust:960, gold:1920},
+  mythic:{shards:220, dust:1300, gold:2600}, ancient:{shards:300, dust:1800, gold:3600},
+};
+function raidRecipeFor(raid, cardId, rarity){
+  const r = raid || {}, own = (r.recipes || {})[cardId], byR = (r.recipeCost || {})[rarity || 'common'], base = RAID_RECIPE_COST[rarity] || RAID_RECIPE_COST.common;
+  const src = Object.assign({}, base, byR || {}, own || {}), n = v=> Math.max(0, Math.round(Number(v) || 0));
+  return {shards: n(src.shards), dust: n(src.dust), gold: n(src.gold)};
+}
+// wallet: {gold, dust, raidShards:{raidId: n}} (the page's myCurrencies). What's missing, by kind (empty: affordable).
+function raidRecipeShort(wallet, raidId, cost){
+  const w = wallet || {}, have = {shards: Number(((w.raidShards || {})[raidId])) || 0, dust: Number(w.dust) || 0, gold: Number(w.gold) || 0};
+  return ['shards', 'dust', 'gold'].filter(k=> (cost[k] || 0) > have[k]).map(k=> ({kind:k, need:cost[k], have:have[k]}));
+}
+// Pays a recipe out of the wallet (mutates it). false (and nothing taken) when it can't be paid.
+function payRaidRecipe(wallet, raidId, cost){
+  if(!wallet || !raidId || raidRecipeShort(wallet, raidId, cost).length) return false;
+  wallet.raidShards = Object.assign({}, wallet.raidShards || {}); wallet.raidShards[raidId] = (Number(wallet.raidShards[raidId]) || 0) - (cost.shards || 0);
+  wallet.dust = (Number(wallet.dust) || 0) - (cost.dust || 0); wallet.gold = (Number(wallet.gold) || 0) - (cost.gold || 0);
+  return true;
 }
 
 // ---- Raid tickets (owner 00:22: "10 tickets per week to do raids, regenerate 1 per day"): at most `cap` (10); +1 every regenMs (a
@@ -429,6 +497,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 }
 
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
+  RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
   CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;

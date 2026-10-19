@@ -211,6 +211,7 @@ const MANUAL = {
   'old-willow-of-the-ford': {biomes: ['river', 'meadow-forest'], why: 'the willow of the ford: a river tree'},
   'sea-turtle-elder': {biomes: ['coast', 'reef-ocean'], why: 'checked: Pebble Beach\'s old turtle'},
   'ember-jackal': {faction: 'beasts', why: 'a volcano jackal with the Dog type: a beast, not a village dog'},
+  'demo-panda': {biomes: ['jungle'], why: 'an Easter egg (package EE, 2026-10-19): a panda with no map or habitat type; the bamboo forest is the nearest biome'},
 };
 
 // ---------- the cards ----------

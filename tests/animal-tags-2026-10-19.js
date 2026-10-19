@@ -23,6 +23,8 @@ const cards = JSON.parse(rd('canonical/cards.json')), R = JSON.parse(rd('canonic
 const creature = c=> !(c.test || c.field || c.eggKind || ['materia', 'equipment', 'spell'].includes(c.cardType) || c.hallOfFame);
 ok(JSON.stringify(R.subtypes.map(s=> s.id)) === JSON.stringify(SUBTYPES), '2. the report lists the fixed subtype list');
 cards.forEach(c=>{
+  // package EE's Easter-egg cards came with their own tags (2026-10-19): left as they are, reported for the owner
+  if(c.easterEgg){ ok(c.animal && R.cards.some(r=> r.id === c.id && r.how === 'ee') && R.ownerCalls.some(x=> x.id === c.id), `2. Easter egg ${c.id} keeps package EE's tags and is reported`); return; }
   if(creature(c)) ok(typeof c.animal === 'string' && /^[a-z][a-z' -]*[a-z]$/.test(c.animal), `2. creature ${c.id} has an animal (${c.animal})`);
   else ok(!c.animal || ['egg-otter', 'egg-red-dragon'].includes(c.id), `2. non-creature ${c.id} has an animal only when it embodies one`);
   ok(c.subtype == null || (SUBTYPES.includes(c.subtype) && c.animal), `2. ${c.id} subtype ${c.subtype} is from the fixed list`);
@@ -53,7 +55,7 @@ ok(app.includes('.concat(animalChipsHTML(d))'), '4. the card detail shows the an
 ['ui.codex-all-animals', 'ui.codex-animal-filter', 'ui.codex-animal-tip', 'ui.codex-subtype-tip', 'ui.codex-base-chip', 'ui.codex-base-tip'].concat(SUBTYPES.map(s=> 'ui.subtype-' + s))
   .forEach(k=> ok(tx.includes('"' + k + '":') && app.includes("TX('" + k + "'"), `4. TX key ${k} exists and is used`));
 ok(/sub_once\(app_src, "__ANIMAL_GROUPS__"/.test(rd('assemble_arena.py')), '4. the build inlines the animal groups');
-if(fs.existsSync(path.join(ROOT, 'index.html'))) ok(/const ANIMAL_GROUPS = \{"[a-z]/.test(rd('index.html')), '4. index.html carries the animal groups');
+if(fs.existsSync(path.join(ROOT, 'index.html'))) ok(/const ANIMAL_GROUPS = \{"[A-Za-z]/.test(rd('index.html')), '4. index.html carries the animal groups');
 
 // 5. the tutorial's copies at Level 0
 const m = app.match(/\/\/ TUTORIAL_LEVEL0_UT:BEGIN[\s\S]*?\/\/ TUTORIAL_LEVEL0_UT:END/);
