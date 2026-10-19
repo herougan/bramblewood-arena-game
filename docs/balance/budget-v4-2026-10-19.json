@@ -1,10 +1,10 @@
 {
  "_about": "Budget v4 (2026-10-19, package BF: N = (Base - 1 + L) x (1 + L/20)) against v3 (N = Base + 2L) for every measured card (tools/forge_curve_2026_10_19.js budget). \"in\" = passes v4 but not v3, \"out\" = passes v3 but not v4. At L1 every card is checked at Level 1; at start, at the level it starts at (Base / quest cards 0, rewards 1), which is what the tests and the post-balance queue use.",
  "generated": "2026-10-19",
- "cards": 737,
+ "cards": 744,
  "atL1": {
-  "passV3": 702,
-  "passV4": 703,
+  "passV3": 709,
+  "passV4": 710,
   "in": [
    {
     "id": "bone-diviner",
@@ -51,8 +51,8 @@
   }
  },
  "atStart": {
-  "passV3": 702,
-  "passV4": 703,
+  "passV3": 709,
+  "passV4": 710,
   "in": [
    {
     "id": "bone-diviner",
