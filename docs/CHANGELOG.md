@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package BF2: budget v5, a softer Forge curve, the budget panel with Base)
+- **Owner (13:52):** "That's too much. ... (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." **Budget v5:** N = (Base + L/5) × (1 + L/30) from Level 1, and Base − 1 at Level 0, in `bramblewood-budget.js` and `canonical/skill-costs.json`. The owner's example with L/3 checks out: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10.
+  - **L/5, not L/3** (13:54: "change it to L/4 or L/5" if L/3 favours weak cards). Weak cards' Lv 10 stat growth is 1.82× / 1.74× / 1.65× the strong cards' with L/3 / L/4 / L/5. None meets 1.3×, so the closest, L/5, is used. Most of the gap comes from the absolute conversion. `levelLinDiv` is one constant.
+  - **The squared Wait and Lumber terms stay** (14:25). Cards with Wait 3+ or Lumber 3+ use more of their budget yet win 18–26 points under their band, so 0.5×Wait² and 0.4×Lumber² don't over-reward them. No change.
+  - **At Level 1:** v3 passes 709 cards, v4 710 and v5 708. Against v3, the Dragon-Turtle moves in, and Sand Widow and Barnacle Fortress move out. Against v4, Sand Widow and Bone Diviner move out. The post-balance queue has 30 cards. No card's stats changed.
+- **The Forge curve on v5:** majors 4 / 7 / 10, minor 2 and limit break 11, as before, on v5's smaller gain. The mean card is +6% at Lv 2, +27% at Lv 4 and +96% at Lv 10 (v4: +19% / +65% / +228%). The enemy's pace (`enemyLevelKeepingPace`) follows automatically.
+- **The budget panel** in the card editor, the Test Lab and the hub's Skill costs tab:
+  - The heading is "⚖️ Within budget · N = 39.4 (Base = 37.9)".
+  - The rules read "Stats: … = 34.5 < N = 39.4 ✓" and "Product: … < (N/3)² = 172.2 ✓".
+  - Base is shown in its parts ("Base = 20 + Heroic 7 + Wait 6.5 + Lumber 4.4"), the ×1.5 half-miss is explained, and the formula comes from the helper.
+  - Every line is a TX key in the 12 packs. The Test Lab's saved numbers start fresh for v5.
+- **Follow-up to BF:** the skill-costs browser check loads `bramblewood-budget.js` first (the LADDER crash). card-pass re-measures are within 3 points, after BU's centre-column engine rule. Stale RB rows were taken out of `lang/ui`, and "Deal 4,000 Raid damage" was added.
+- **Road retune on v5 and BU's engine:** 38 fights tuned (25 main, 13 side), mostly 1–2 copy moves; 178 of 179 main and 76 of 77 side fights green at 120 games (fresh seeds 151 of 179); 16-6 and 20-A-4 as before. `docs/balance/level-curve-2026-10-19c.md`.
+
 ## 2026-10-19 (package U3: the owner's UI notes, 13:41–13:45)
 - **🌰 Home is an icon in the top-right cluster** (owner: *"the home button shouldnt be on the btm bar but as an icon beside the fullscreen button and arena button"*). It is the cluster's first icon, before 🏟️, ⚙️ and Energy, and the same size. It shows on Conquest, Arena, Raid and Dungeons, on phones and desktop. NV's Home in the bottom tab bar is gone. The full-screen map's Home is an acorn too. NV's iOS Safari fix stays: only the tab strip scrolls, never the row that holds the cluster.
 - **The map strip is back on phones, with no empty margin above it** (owner: *"the map tab on the top is okay. Just that there was a empty margin above for no reason ... can be just number + emoji"*).

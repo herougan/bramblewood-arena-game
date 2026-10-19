@@ -23287,7 +23287,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
     const finished = T.over && !opts.anim;
     const r = finished ? settle() : null;
     overlay.innerHTML = `<div class="modal trench-replay trench-match" role="dialog" aria-label="Trench fight">
-      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">Turn ${Math.min(v.round, cfg.rounds)} / ${cfg.rounds}</span></h2>
+      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">${escapeHtml(TX('ui.u3-turn', {n: Math.min(v.round, cfg.rounds)}))}</span></h2>
         <button class="${finished ? 'modal-close-btn' : 'btn small tr-leave-btn'}" id="trClose" aria-label="${finished ? 'Close' : 'Leave the fight'}">${finished ? '✕' : '🚪 Leave'}</button></div>
       <div class="tr-bars">
         <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(v.castle.hp/v.castle.max*100)}%"></span></div><b>${v.castle.hp}/${v.castle.max}</b></div>
@@ -23403,7 +23403,7 @@ function startRaidFullBattle(def, partId, f, st){
   let bossBR = null, sideBR = null; try{ bossBR = raidBossBR(def, f, b); sideBR = raidSideBR(mainDeckLevel(myDeckCounts, matchLeaderId()), allies); allies.forEach((a, i)=>{ a.level = sideBR.allies[i]; });
     m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')});
     me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
-  const vsBramble = raidBrambleOf(def); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
+  const vsBramble = raidBrambleOf(def, f.part && f.part.id); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
     bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks)} : null},
     bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600); }); // + Turn 1's tick (2026-10-19, U3)
@@ -23466,7 +23466,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
   const sideOf = id=> id===1?'A':'B';
   const mine = opts.myCastle || {}, merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
   const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct) + raidTune(def, 'raiderCastleBonus'); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19) + the raid's raiderCastleBonus (2026-10-19, package RX)
-  const bramble = typeof raidBrambleOf === 'function' ? raidBrambleOf(def) : null; // its name and portrait (2026-10-19, package U3); its smacks stay in raidSpecials
+  const bramble = typeof raidBrambleOf === 'function' ? raidBrambleOf(def, partId) : null; // its name and portrait (2026-10-19, package U3); its smacks stay in raidSpecials
   const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, Object.assign({id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}},
     bramble ? {name: bramble.name, icon: bramble.icon, art: bramble.art || undefined, raidBramble: true, partName: f.part.name} : {}))};
   players[2].loopCards = [];
@@ -23628,9 +23628,13 @@ function raidBossUnitName(base, name){ return RAID_BOSS_UNIT_NAMES[base] || ('Gr
 // (raidSpecials: the same attacks, rolls and damage). A published raid can name its own with def.bramble {name, icon, art}.
 // Owner call: the Goliath's bramble is "Kraken's Reef" (alternative: "The Drowned Maw"); its portrait is a placeholder pixel SVG
 // (tools/make_raid_bramble_art.py) until a painted one replaces it (docs/art/raid-bramble-art-brief.md).
-const RAID_BRAMBLES = {goliath: {nameTx: ()=> TX('ui.u3-goliath-bramble'), icon:'🪸', art:'art/raids/krakens-reef.svg'}};
-function raidBrambleOf(def){
-  const b = Object.assign({}, RAID_BRAMBLES[def && def.id] || {}, (def && def.bramble) || {});
+// 2026-10-19 (owner 15:17: "Bramble's name for raid: Core: The Drowned Maw"): a part can name its own bramble (parts.<partId>), so the
+// Goliath's Core fights from The Drowned Maw while its arms and tail keep Kraken's Reef.
+const RAID_BRAMBLES = {goliath: {nameTx: ()=> TX('ui.u3-goliath-bramble'), icon:'🪸', art:'art/raids/krakens-reef.svg',
+  parts: {core: {nameTx: ()=> TX('ui.goliath-core-bramble'), icon:'🌊'}}}};
+function raidBrambleOf(def, partId){
+  const base = RAID_BRAMBLES[def && def.id] || {}, own = (def && def.bramble) || {};
+  const b = Object.assign({}, base, own, (partId && base.parts && base.parts[partId]) || {}, (partId && own.parts && own.parts[partId]) || {});
   let name = b.name || ''; if(!name && b.nameTx) try{ name = b.nameTx(); }catch(e){ name = ''; }
   return name ? {name, icon: b.icon || '🏰', art: b.art || ''} : null;
 }
@@ -25826,7 +25830,7 @@ function ceBudgetHTML(d){
   // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
   const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
   const bp = BramblewoodBudget.baseParts(d, bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
-  const hv = {n: f1(N), base: f1(bp.total)}, head = !c.ok ? TX('ui.budget-head-over', hv) : c.wellUnder ? TX('ui.budget-head-under', hv) : TX('ui.budget-head-ok', hv);
+  const head = !c.ok ? TX('ui.budget-head-over', {n: f1(N), base: f1(bp.total)}) : c.wellUnder ? TX('ui.budget-head-under', {n: f1(N), base: f1(bp.total)}) : TX('ui.budget-head-ok', {n: f1(N), base: f1(bp.total)});
   return `<div style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(head)}</div>
     <div style="font-size:12px; margin:2px 0">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</div>
     <div style="font-size:12.5px">${TX('ui.budget-stats', {a: A, h: D, s: f1(S), m, x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)})}</div>

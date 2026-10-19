@@ -19,5 +19,9 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
   yardsticks bf-abs + level-curve-fit-bf.json (0.266 DR a map, r2 0.87)
 - docs/balance/level-curve-2026-10-19b.md, CHANGELOG; merged main twice; tests forge-curve, side-maps, level-curve, game-texts pass
 
+- BF2 (13:52-14:25): budget v5 (Base + L/5)(1 + L/30), L0 Base - 1; divisor check (L/5), squared terms check (no change);
+  budget panel through TX with Base; decision B8; road retune on v5 + BU (bf2-curve-fixes; bf-after 178/179, 76/77; fresh 151/179);
+  docs/balance/level-curve-2026-10-19c.md; SW positionBeam reason; stale lang/ui rows (RB, U3) out
+
 ## Next
-- Done. Owner calls are listed at the end of docs/balance/level-curve-2026-10-19b.md. The hub wasn't rebuilt (build_hub.py needs .hub/effects.html).
+- Map term (15:25): Base + 0.2 x Map (own commit), then the limit-break waves note and decision.
