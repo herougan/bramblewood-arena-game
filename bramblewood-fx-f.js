@@ -1128,8 +1128,8 @@ function tentacleSVG(B, T, w, dir){
   const smooth = (pts, move)=>{ let d = (move ? 'M' : 'L') + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
     for(let i = 1; i < pts.length - 1; i++){ const m = [(pts[i][0] + pts[i + 1][0])/2, (pts[i][1] + pts[i + 1][1])/2]; d += `Q${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)} ${m[0].toFixed(1)},${m[1].toFixed(1)}`; }
     const z = pts[pts.length - 1]; return d + `L${z[0].toFixed(1)},${z[1].toFixed(1)}`; };
-  const Lp = side(1, 1), Rp = side(-1, 1).reverse(), tipR = hw(1);
-  const skin = smooth(Lp, true) + `A${tipR.toFixed(1)},${tipR.toFixed(1)} 0 0 1 ${Rp[0][0].toFixed(1)},${Rp[0][1].toFixed(1)}` + smooth(Rp, false) + 'Z';
+  const Lp = side(1, 1), Rp = side(-1, 1).reverse();
+  const skin = smooth(Lp, true) + smooth(Rp, false) + 'Z'; // the two sides meet in a fine point at the curled tip
   const under = side(dir, .5).slice(3, N - 1), top = side(-dir, .5).slice(2, Math.round(N*.8));
   let suck = '';
   for(let i = 5; i < N - 2; i += 2){ const n = nrm(i), h = hw(i/N), r = Math.max(1.2, h*.36), c = [P[i][0] + n[0]*h*.52*dir, P[i][1] + n[1]*h*.52*dir];

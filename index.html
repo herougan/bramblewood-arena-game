@@ -22275,7 +22275,7 @@ function evasiveDodgeHit(target, o){
 // The Cleave crescent (2026-10-19, package BU, owner on an iPhone: "Cleave doesn't look so nice on mobile. Also, it is not centered."):
 // was a quadratic stroke 16 px wide under a 4 px blur that bowed at least 34-40 px off the row, a big glowing loop on 40-75 px cards.
 // Now a filled, tapered crescent (a blade's edge: white core, gold rim, a thin dark edge) laid across the three slot centres of ONE
-// row, its bow and thickness scaled to the card (bow about a fifth of a card's height, at most 3/20 of its width thick), revealed by
+// row, its bow and thickness scaled to the card (bow about a quarter of a card's height, at most a sixth of its width thick), revealed by
 // its tip as it sweeps, with a short trail (about one column long) that follows the tip and fades, then a quick fade. Fixed overlay,
 // screen pixels from getBoundingClientRect, so the board's camera can't move it off its cards.
 //   pts: the slot centres {x, y, w, h} in sweep order; away: +1 bows down the screen, -1 up (away from the attacker).
@@ -22290,7 +22290,7 @@ function crescentSlash(pts, away, t0, tipEnd, o){
   const dirX = Math.sign(last.x - first.x) || 1, pitch = Math.abs(last.x - first.x)/Math.max(1, P.length - 1) || cw + 8;
   const lead = pitch*0.42, y0 = mid.y + away*ch*0.08;                    // just past the cards' middle, on the side away from the attacker
   const A = {x:first.x - dirX*lead, y:y0 - away*ch*0.1}, B = {x:last.x + dirX*lead, y:y0 - away*ch*0.1};
-  const bow = Math.max(8, Math.min(28, ch*0.2)), thick = Math.max(3.5, Math.min(12, cw*0.15));
+  const bow = Math.max(8, Math.min(30, ch*0.24)), thick = Math.max(4, Math.min(14, cw*0.18));
   const mx = (A.x + B.x)/2, outer = {x:mx, y:y0 + away*bow*2}, inner = {x:mx, y:y0 + away*(bow*2 - thick*2)};
   const d = `M${A.x.toFixed(1)},${A.y.toFixed(1)} Q${outer.x.toFixed(1)},${outer.y.toFixed(1)} ${B.x.toFixed(1)},${B.y.toFixed(1)} Q${inner.x.toFixed(1)},${inner.y.toFixed(1)} ${A.x.toFixed(1)},${A.y.toFixed(1)}Z`;
   const sv = svgLayer('sfx-crescent'), NS = 'http://www.w3.org/2000/svg', n = ++crescentSlash.n, id = 'sfxCrClip' + n, gid = 'sfxCrGrad' + n;
@@ -34203,8 +34203,8 @@ function tentacleSVG(B, T, w, dir){
   const smooth = (pts, move)=>{ let d = (move ? 'M' : 'L') + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
     for(let i = 1; i < pts.length - 1; i++){ const m = [(pts[i][0] + pts[i + 1][0])/2, (pts[i][1] + pts[i + 1][1])/2]; d += `Q${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)} ${m[0].toFixed(1)},${m[1].toFixed(1)}`; }
     const z = pts[pts.length - 1]; return d + `L${z[0].toFixed(1)},${z[1].toFixed(1)}`; };
-  const Lp = side(1, 1), Rp = side(-1, 1).reverse(), tipR = hw(1);
-  const skin = smooth(Lp, true) + `A${tipR.toFixed(1)},${tipR.toFixed(1)} 0 0 1 ${Rp[0][0].toFixed(1)},${Rp[0][1].toFixed(1)}` + smooth(Rp, false) + 'Z';
+  const Lp = side(1, 1), Rp = side(-1, 1).reverse();
+  const skin = smooth(Lp, true) + smooth(Rp, false) + 'Z'; // the two sides meet in a fine point at the curled tip
   const under = side(dir, .5).slice(3, N - 1), top = side(-dir, .5).slice(2, Math.round(N*.8));
   let suck = '';
   for(let i = 5; i < N - 2; i += 2){ const n = nrm(i), h = hw(i/N), r = Math.max(1.2, h*.36), c = [P[i][0] + n[0]*h*.52*dir, P[i][1] + n[1]*h*.52*dir];
@@ -40797,7 +40797,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '5320c22301f5', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = '276726fd5c48', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -69345,18 +69345,21 @@ function mb2OccupiedSlots(m){
   return lo <= hi ? [lo, hi] : null;
 }
 // 2026-10-19 (package BU, owner on an iPhone: "You should always be able to play a card in the centre column", and the row sat
-// off-centre): the window is symmetric about the centre column (slot 0), so column 0 is always in the frame and in its middle (the
-// camera's pan is 0). An offset row (units at 2..4) used to frame 1..5, which left the centre, a legal play, off the screen, and
-// a window with an even number of columns (-4..3) put column 0 half a column off the middle. Costs a column on the far side.
+// off-centre): the window always holds the centre column (slot 0): an offset row (units at 2..4) used to frame 1..5, which left
+// the centre, a legal play, off the screen. And it is centred on column 0 (the camera's pan 0) whenever that costs at most
+// MB2_CENTRE_SLACK more columns than the units' own span (-4..3 becomes -4..4): a window with an even number of columns put column 0
+// half a column off the middle. A row far off to one side keeps its tighter, off-centre window (bigger cards); column 0 still shows.
+const MB2_CENTRE_SLACK = 1;
 function mb2SpanWindow(m){
   const R = Math.max(1, (m && m._slotRange)|0), minV = Math.min(2*R + 1, m && m.raidFull ? 5 : 3);
   const occ = mb2OccupiedSlots(m) || [0, 0], cur = m && m._mb2Win;
-  const roomy = w=> w.lo === -w.hi && w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
+  const roomy = w=> w.lo <= 0 && w.hi >= 0 && w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
   if(cur && roomy(cur)) return cur;
-  let k = Math.min(R, Math.max(-occ[0] + 1, occ[1] + 1, 0));
-  if(cur) k = Math.max(k, Math.min(R, Math.max(-cur.lo, cur.hi))); // it only widens
-  while(2*k + 1 < minV && k < R) k++;
-  return {lo: -k, hi: k};
+  let lo = Math.min(0, Math.max(-R, occ[0] - 1)), hi = Math.max(0, Math.min(R, occ[1] + 1));
+  if(cur){ lo = Math.min(lo, Math.max(-R, cur.lo)); hi = Math.max(hi, Math.min(R, cur.hi)); } // it only widens
+  const k = Math.max(-lo, hi); if(2*k + 1 - (hi - lo + 1) <= MB2_CENTRE_SLACK){ lo = -k; hi = k; }
+  while(hi - lo + 1 < minV){ if(lo + hi <= 0 && hi < R) hi++; else if(lo > -R) lo--; else hi++; }
+  return {lo, hi};
 }
 const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200},
   handMinH:{phone:81 /* 65 px wide: the size it was before MB2 */, pc:92}, topScale:.75, topMinH:{phone:56, pc:80}};

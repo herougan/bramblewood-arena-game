@@ -31325,18 +31325,21 @@ function mb2OccupiedSlots(m){
   return lo <= hi ? [lo, hi] : null;
 }
 // 2026-10-19 (package BU, owner on an iPhone: "You should always be able to play a card in the centre column", and the row sat
-// off-centre): the window is symmetric about the centre column (slot 0), so column 0 is always in the frame and in its middle (the
-// camera's pan is 0). An offset row (units at 2..4) used to frame 1..5, which left the centre, a legal play, off the screen, and
-// a window with an even number of columns (-4..3) put column 0 half a column off the middle. Costs a column on the far side.
+// off-centre): the window always holds the centre column (slot 0): an offset row (units at 2..4) used to frame 1..5, which left
+// the centre, a legal play, off the screen. And it is centred on column 0 (the camera's pan 0) whenever that costs at most
+// MB2_CENTRE_SLACK more columns than the units' own span (-4..3 becomes -4..4): a window with an even number of columns put column 0
+// half a column off the middle. A row far off to one side keeps its tighter, off-centre window (bigger cards); column 0 still shows.
+const MB2_CENTRE_SLACK = 1;
 function mb2SpanWindow(m){
   const R = Math.max(1, (m && m._slotRange)|0), minV = Math.min(2*R + 1, m && m.raidFull ? 5 : 3);
   const occ = mb2OccupiedSlots(m) || [0, 0], cur = m && m._mb2Win;
-  const roomy = w=> w.lo === -w.hi && w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
+  const roomy = w=> w.lo <= 0 && w.hi >= 0 && w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
   if(cur && roomy(cur)) return cur;
-  let k = Math.min(R, Math.max(-occ[0] + 1, occ[1] + 1, 0));
-  if(cur) k = Math.max(k, Math.min(R, Math.max(-cur.lo, cur.hi))); // it only widens
-  while(2*k + 1 < minV && k < R) k++;
-  return {lo: -k, hi: k};
+  let lo = Math.min(0, Math.max(-R, occ[0] - 1)), hi = Math.max(0, Math.min(R, occ[1] + 1));
+  if(cur){ lo = Math.min(lo, Math.max(-R, cur.lo)); hi = Math.max(hi, Math.min(R, cur.hi)); } // it only widens
+  const k = Math.max(-lo, hi); if(2*k + 1 - (hi - lo + 1) <= MB2_CENTRE_SLACK){ lo = -k; hi = k; }
+  while(hi - lo + 1 < minV){ if(lo + hi <= 0 && hi < R) hi++; else if(lo > -R) lo--; else hi++; }
+  return {lo, hi};
 }
 const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200},
   handMinH:{phone:81 /* 65 px wide: the size it was before MB2 */, pc:92}, topScale:.75, topMinH:{phone:56, pc:80}};

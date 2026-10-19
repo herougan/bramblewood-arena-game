@@ -61,8 +61,9 @@ async def shot(pg, name):
 async def centre_column(pg, tag, phone):
     legal = await pg.evaluate(SETUP, {'theirs': [['chipmunk-skirmisher', s] for s in range(-3, 3)], 'mine': [['chipmunk-skirmisher', s] for s in (2, 3, 4)]})
     await pg.wait_for_timeout(700)
-    await pg.evaluate("document.body.classList.add('bw-holding'); 1")  # the '+' targets show while a card is held
-    await pg.wait_for_timeout(400)
+    # the '+' targets show while a card is held (armed): arm the first hand card, as a tap does
+    await pg.evaluate("(()=>{ const h = matchState.players[1].hand[0]; if(h) matchState.selectedUid = h.uid; renderBoard(); document.body.classList.add('bw-holding'); return 1; })()")
+    await pg.wait_for_timeout(1000)  # the targets fade in (.28 s), after any re-frame
     r = await pg.evaluate("""(()=>{ const bf = document.getElementById('battlefieldEl').getBoundingClientRect();
       const t = document.querySelector('#rowMine [data-slot="0"]'), e0 = [...document.querySelectorAll('#rowEnemy .board-card')][0];
       const tr = t && t.getBoundingClientRect();
@@ -75,7 +76,7 @@ async def centre_column(pg, tag, phone):
         check(float(r['vis'] or 0) > 0.5, f'{tag}: the slot-0 target is not visible while holding a card (opacity {r["vis"]})')
         if phone: check(abs((t[0] + t[1])/2 - (f[0] + f[1])/2) <= max(4, t[2]*0.1), f'{tag}: the centre column should sit in the frame middle ({(t[0]+t[1])/2:.0f} vs {(f[0]+f[1])/2:.0f})')
     await shot(pg, f'centre-{tag}')
-    await pg.evaluate("document.body.classList.remove('bw-holding'); 1")
+    await pg.evaluate("matchState.selectedUid = null; document.body.classList.remove('bw-holding'); renderBoard(); 1")
 
 async def hp_float(pg, tag):
     # the real anchor (every castle hit's number goes through hqRibbonFloatAnchor), then where the number is drawn
@@ -96,7 +97,7 @@ async def cleave(pg, tag):
     await pg.evaluate("matchState.speedMult = 0.5; (async()=>{ try{ await skipTurn(); }catch(e){} })(); 1")
     box = None
     for _ in range(140):
-        box = await pg.evaluate("""(()=>{ const s = document.querySelector('svg.sfx-arc, svg.sfx-cleave'); if(!s) return null;
+        box = await pg.evaluate("""(()=>{ const s = document.querySelector('svg.sfx-crescent, svg.sfx-arc'); if(!s) return null;
           const p = [...s.querySelectorAll('path')].filter(e=> getComputedStyle(e).display !== 'none'); if(!p.length) return null;
           let L=1e9,T=1e9,R=-1e9,B=-1e9; p.forEach(e=>{ const r = e.getBoundingClientRect(); L=Math.min(L,r.left); T=Math.min(T,r.top); R=Math.max(R,r.right); B=Math.max(B,r.bottom); });
           const m = matchState, tgt = (m.players[2].row.right.concat(m.players[2].row.center)).find(c=> c.slot===1), te = tgt && boardCardEl(tgt.uid);
@@ -106,8 +107,14 @@ async def cleave(pg, tag):
         if box and box['t']: break
         await pg.wait_for_timeout(50)
     if not check(box and box['t'], f'{tag}: no Cleave swing drawn'): return
-    await pg.wait_for_timeout(260)
+    # the picture: GSAP's clock slowed (the crescent only) until the blade has cut past the target's column
+    await pg.evaluate("try{ gsap.globalTimeline.timeScale(.3); }catch(e){} 1")
+    for _ in range(120):
+        if await pg.evaluate("""(()=>{ const w = document.querySelector('svg.sfx-crescent .cr-win'); if(!w) return !document.querySelector('svg.sfx-crescent');
+            const bx = document.querySelector('svg.sfx-crescent .cr-blade').getBBox(); return +w.getAttribute('width') >= bx.width*.36; })()"""): break
+        await pg.wait_for_timeout(25)
     await shot(pg, f'cleave-{tag}')
+    await pg.evaluate("try{ gsap.globalTimeline.timeScale(1); }catch(e){} 1")
     b, t = box['box'], box['t']; tw = t[2] - t[0]
     cx, tcx = (b[0] + b[2])/2, (t[0] + t[2])/2
     print(f'  {tag}: cleave box {[round(x) for x in b]}, target {[round(x) for x in t]}, attacker {[round(x) for x in box["a"]] if box["a"] else None}')
@@ -140,7 +147,7 @@ async def tentacle(pg, tag):
     if not check(await pg.evaluate("!!(matchState && matchState.raidFull)"), f'{tag}: the raid did not open'): return
     # a strike on our column 0 (the FX the boss's column attack plays), slowed for the camera
     # GSAP's clock at a quarter speed so the frames can be caught (the before build's canvas arm runs on its own clock)
-    res = await pg.evaluate("""(()=>{ const el = document.querySelector('#rowMine .board-card[data-w2cell$=":s0"]') || document.querySelector('#rowMine .board-card'); if(!el) return null;
+    res = await pg.evaluate("""(()=>{ const all = [...document.querySelectorAll('#rowMine > .board-card')], el = all[Math.floor(all.length/2)]; if(!el) return null; window.__tentEl = el; // column 0, as FX.F's raidSmack picks it
       window.__tent = {phase:null}; const F = window.FX && FX.F && FX.F.tentacleSmack; if(!F) return 'none';
       try{ gsap.globalTimeline.timeScale(.25); }catch(e){}
       F([el], {host: document.getElementById('battlefieldEl'), onImpact: ()=>{ window.__tent.phase = 'impact'; }}); return 'ok'; })()""")
@@ -149,7 +156,7 @@ async def tentacle(pg, tag):
         if await pg.evaluate("window.__tent.phase") == 'impact': break
         await pg.wait_for_timeout(20)
     r = await pg.evaluate("""(()=>{ const t = document.querySelector('.fxf-tentacle .tb-body') || document.querySelector('.fxf-tent canvas'); if(!t) return null; const b = t.getBoundingClientRect();
-      const e0 = document.querySelector('#rowMine .board-card[data-w2cell$=":s0"]') || document.querySelector('#rowMine .board-card'), el = e0.getBoundingClientRect();
+      const el = window.__tentEl.getBoundingClientRect();
       return {t:[b.left, b.top, b.right, b.bottom], c:[el.left, el.top, el.right, el.bottom], vw: innerWidth, vh: innerHeight}; })()""")
     await shot(pg, f'tentacle-impact-{tag}')
     if check(r is not None, f'{tag}: no tentacle drawn at impact') and STRICT:
@@ -159,11 +166,27 @@ async def tentacle(pg, tag):
         check(t[3] >= c[1] and t[3] <= c[3] + (c[3] - c[1]), f'{tag}: the tentacle tip should reach the struck card')
         check(t[2] - t[0] <= (c[2] - c[0])*2.2, f'{tag}: the tentacle should be sized to the card ({t[2]-t[0]:.0f}px vs {c[2]-c[0]:.0f}px)')
         check(t[0] >= -2 and t[2] <= r['vw'] + 2 and t[1] >= -2, f'{tag}: the tentacle should be on screen {t}')
-    await pg.wait_for_timeout(700)  # a quarter speed: ~175 ms into the pull-back
+    # mid pull-back: the limb on its way up and out, half faded
+    for _ in range(200):
+        op = await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); return b ? +getComputedStyle(b).opacity : -1; })()")
+        if op < 0 or op < .75: break
+        await pg.wait_for_timeout(15)
     await shot(pg, f'tentacle-retract-{tag}')
     await pg.wait_for_timeout(2500)
     await pg.evaluate("try{ gsap.globalTimeline.timeScale(1); }catch(e){} 1")
     check(not await pg.evaluate("!!document.querySelector('.fxf-tentacle')"), f'{tag}: the tentacle layer should be removed afterwards')
+    if not STRICT: return
+    # the game's own path: a column smack event through fxBatchVfx reaches down the whole column (front, middle and back rows)
+    await pg.evaluate("fxBatchVfx({type:'raidSmack', kind:'column', name:'Smack', col:0, row:null, dmg:3, hits:2}); 1")
+    await pg.wait_for_timeout(330)
+    r = await pg.evaluate("""(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return null; const t = b.getBoundingClientRect();
+      const all = [...document.querySelectorAll('#rowMine > .board-card')], i = Math.floor(all.length/2);
+      const cells = [all[i]].concat([...document.querySelectorAll('#battlefieldInner .reserve-row.mine')].map(r=> r.querySelectorAll(':scope > .board-card')[i])).filter(Boolean).map(e=> e.getBoundingClientRect());
+      return {t:[t.left, t.top, t.right, t.bottom], low: Math.max(...cells.map(c=> c.top)), n: cells.length}; })()""")
+    await shot(pg, f'tentacle-column-{tag}')
+    if check(r is not None, f'{tag}: a raidSmack event should draw the tentacle'):
+        check(r['t'][3] >= r['low'], f'{tag}: the column smack should reach the column\\'s last row ({r["t"][3]:.0f} vs {r["low"]:.0f}, {r["n"]} rows)')
+    await pg.wait_for_timeout(1200)
 
 async def main():
     async with async_playwright() as p:

@@ -731,7 +731,7 @@ function evasiveDodgeHit(target, o){
 // The Cleave crescent (2026-10-19, package BU, owner on an iPhone: "Cleave doesn't look so nice on mobile. Also, it is not centered."):
 // was a quadratic stroke 16 px wide under a 4 px blur that bowed at least 34-40 px off the row, a big glowing loop on 40-75 px cards.
 // Now a filled, tapered crescent (a blade's edge: white core, gold rim, a thin dark edge) laid across the three slot centres of ONE
-// row, its bow and thickness scaled to the card (bow about a fifth of a card's height, at most 3/20 of its width thick), revealed by
+// row, its bow and thickness scaled to the card (bow about a quarter of a card's height, at most a sixth of its width thick), revealed by
 // its tip as it sweeps, with a short trail (about one column long) that follows the tip and fades, then a quick fade. Fixed overlay,
 // screen pixels from getBoundingClientRect, so the board's camera can't move it off its cards.
 //   pts: the slot centres {x, y, w, h} in sweep order; away: +1 bows down the screen, -1 up (away from the attacker).
@@ -746,7 +746,7 @@ function crescentSlash(pts, away, t0, tipEnd, o){
   const dirX = Math.sign(last.x - first.x) || 1, pitch = Math.abs(last.x - first.x)/Math.max(1, P.length - 1) || cw + 8;
   const lead = pitch*0.42, y0 = mid.y + away*ch*0.08;                    // just past the cards' middle, on the side away from the attacker
   const A = {x:first.x - dirX*lead, y:y0 - away*ch*0.1}, B = {x:last.x + dirX*lead, y:y0 - away*ch*0.1};
-  const bow = Math.max(8, Math.min(28, ch*0.2)), thick = Math.max(3.5, Math.min(12, cw*0.15));
+  const bow = Math.max(8, Math.min(30, ch*0.24)), thick = Math.max(4, Math.min(14, cw*0.18));
   const mx = (A.x + B.x)/2, outer = {x:mx, y:y0 + away*bow*2}, inner = {x:mx, y:y0 + away*(bow*2 - thick*2)};
   const d = `M${A.x.toFixed(1)},${A.y.toFixed(1)} Q${outer.x.toFixed(1)},${outer.y.toFixed(1)} ${B.x.toFixed(1)},${B.y.toFixed(1)} Q${inner.x.toFixed(1)},${inner.y.toFixed(1)} ${A.x.toFixed(1)},${A.y.toFixed(1)}Z`;
   const sv = svgLayer('sfx-crescent'), NS = 'http://www.w3.org/2000/svg', n = ++crescentSlash.n, id = 'sfxCrClip' + n, gid = 'sfxCrGrad' + n;
