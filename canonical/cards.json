@@ -19135,6 +19135,7 @@
     "id": "creeper",
     "name": "Creeper",
     "icon": "\ud83e\udeb2",
+    "art": "data:image/png;base64,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",
     "cost": 1,
     "wait": 1,
     "attack": 3,
@@ -19165,7 +19166,7 @@
     "dmgType": "physical",
     "tags": [],
     "easterEgg": true,
-    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Very Rare, Wait 1, Lumber 1: N = 36.9; S = 5.4 (restless 0.2, explode 5.2); 2A+H+S = 23.4 < 36.9 (63%) and A*H+S = 41.4 < (N/3)^2 = 151.29. Was a Common pack card (a smiling green Bee with Flying, Swarm, Scare 1); now an explosive creeping beetle."
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Very Rare, Wait 1, Lumber 1: N = 36.9; S = 5.4 (restless 0.2, explode 5.2); 2A+H+S = 23.4 < 36.9 (63%) and A*H+S = 41.4 < (N/3)^2 = 151.29. Was a Common pack card (a smiling green Bee with Flying, Swarm, Scare 1); now an explosive creeping beetle. 2026-10-19 (package EQ, owner 21:36: \"We can use the existing creeper art.\"): its art is back (art/cards/creeper.png, the card's old art)."
   },
   {
     "id": "pigeon-peon",
@@ -31922,6 +31923,315 @@
     "animal": "panda"
   },
   {
+    "id": "petrified-tree",
+    "name": "Petrified Tree",
+    "icon": "\ud83e\udea8",
+    "cost": 5,
+    "wait": 3,
+    "attack": 0,
+    "health": 45,
+    "rarity": "rare",
+    "species": [],
+    "animal": "owl",
+    "subtype": "plant",
+    "archetypes": [
+      "Flora",
+      "Structure"
+    ],
+    "effects": {
+      "triggers": [
+        {
+          "on": "perTurn",
+          "do": "gain",
+          "resource": "stone",
+          "amount": 1
+        }
+      ]
+    },
+    "flavor": "An oak that stood so long it forgot to stop. Every season it sheds a little more of itself as stone.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 9072,
+    "uuid": "057c5daa-232e-55a2-aea9-12e4060ea4ef",
+    "creatorNote": "2026-10-19 (package SK2, owner 21:56: \"Petrified Tree: generates stones instead, but super expensive.\"): Milling's Stone cousin, built from the trigger layer (On Turn Start x Gain 1 Stone, every turn while Ready). No source yet. Budget v5 at Level 1, Rare, Wait 3, Lumber 5: N = 78.12; S = 3 (On Turn Start 3 x Gain 1); 2A+H+S = 48 < 78.12 (61%) and A*H+S = 3 < (N/3)^2 = 678.08. Expensive on purpose: Lumber 5 and Wait 3 for a 0-Attack wall whose only pay-off is 1 Stone a turn."
+  },
+  {
+    "id": "crowbar",
+    "name": "Crowbar",
+    "icon": "\ud83d\udd27",
+    "cost": 1,
+    "wait": 0,
+    "attack": 2,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Bent at one end, scuffed at the other. It has opened more stuck doors than any key, and it is a great comfort when something small and leggy drops from the rafters.",
+    "locked": true,
+    "archetypes": [],
+    "rarity": "rare",
+    "numericId": 1338,
+    "uuid": "78641ce9-34f9-50aa-b6b3-07e58fb02254",
+    "cardType": "equipment",
+    "equip": {
+      "grant": {
+        "pry": 1
+      }
+    },
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"Crowbar\"): equipment, +2/+0 and Pry 1 (a landed melee hit strips 1 Armor for good). No source yet (the Blacksmith is the natural home: an owner call). Budget (an equipment card: its grant counted as its skills, as for Terraumbra; today's helper, before the halving pass) at Level 1, Rare, Lumber 1: N = 28.42; S = 0.5 (pry 0.5); 2A+H+S = 4.5 (15.83% of N), within N like the other Blacksmith pieces (it adds to a unit)."
+  },
+  {
+    "id": "bucketknee-wolf",
+    "name": "Bucketknee Wolf",
+    "icon": "\ud83d\udc3a",
+    "cost": 1,
+    "wait": 2,
+    "attack": 6,
+    "health": 14,
+    "rarity": "veryrare",
+    "species": [
+      "Canid"
+    ],
+    "archetypes": [
+      "Wolf"
+    ],
+    "effects": {
+      "armor": 1,
+      "helmet": true
+    },
+    "flavor": "It used to take the high roads and the hard jobs. Then it took one to the knee. Now it keeps the village gate with a bucket on its head and stories nobody asked for.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1339,
+    "uuid": "97a9ed62-b3cb-59a5-bc77-d17d0de0c823",
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36): An Easter egg (package EE's category: ungettable for now). A retired adventurer wolf: the bucket is its Armor 1 and its Helmet (half the arrows glance off it), the old wound in its knee is its Wait 2 (slow to get going), and it has no Pounce. Very Rare, Wait 2, Lumber 1. Budget (today's helper, before the coming halving pass; tools/eq_cards_2026_10_19.js) at Level 1: N = 43.92; S = 2.74 (armor 2.74, helmet 0); 2A+H+S = 28.74 (65.44% of N) and A*H+S = 86.74 <= (N/3)^2 = 214.33.",
+    "source": {
+      "kind": "easteregg"
+    },
+    "easterEgg": true,
+    "animal": "wolf"
+  },
+  {
+    "id": "armory",
+    "name": "Armory",
+    "icon": "\u2694\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 0,
+    "health": 21,
+    "rarity": "rare",
+    "species": [],
+    "animal": "beaver",
+    "subtype": "structure",
+    "archetypes": [
+      "Structure"
+    ],
+    "effects": {
+      "weaponMaster": 1
+    },
+    "flavor": "A beaver-built lodge of racks and pegs. Every blade in it is oiled and labelled, and every archer who walks past leaves with straighter arrows.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 1340,
+    "uuid": "feb67956-65c2-56fe-80c8-2966e1c5f43b",
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36): Weapon Master 1 as a Structure (owner: \"Armory is the structure version, if that fits\": an owner call). While it stands, its side's arrows deal 1 more and each equipped ally gets +1/+1. No source yet. Rare, Wait 1, Lumber 1. Budget (today's helper, before the coming halving pass; tools/eq_cards_2026_10_19.js) at Level 1: N = 35.13; S = 2 (weaponMaster 2); 2A+H+S = 23 (65.47% of N) and A*H+S = 2 <= (N/3)^2 = 137.12."
+  },
+  {
+    "id": "frost-slick",
+    "name": "Frost Slick",
+    "icon": "\u2744\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A puddle that froze flat overnight. Whoever steps onto it keeps going, whether they meant to or not.",
+    "locked": true,
+    "archetypes": [],
+    "rarity": "uncommon",
+    "cardType": "spell",
+    "spell": {
+      "do": "hazard",
+      "amount": 1
+    },
+    "hazard": {
+      "kind": "ice",
+      "n": 1,
+      "rounds": 3
+    },
+    "numericId": 1341,
+    "uuid": "1da2692a-a826-5750-8ef1-16812c1e99ef",
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Ice Floor: a unit that enters the slot slides one slot on (a random way when it is played there). No action moves a unit on, so the floor does it itself. 3 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = hazardIce 1 x 1 x 3 = 3; 0 Lumber: N = 22.84, S is 13.13% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+  },
+  {
+    "id": "magma-vent",
+    "name": "Magma Vent",
+    "icon": "\ud83c\udf0b",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A crack in the ground breathes orange. Standing on it is a choice, and a short one.",
+    "locked": true,
+    "archetypes": [],
+    "rarity": "rare",
+    "cardType": "spell",
+    "spell": {
+      "do": "hazard",
+      "amount": 2
+    },
+    "hazard": {
+      "kind": "lava",
+      "n": 2,
+      "rounds": 3,
+      "triggers": [
+        {
+          "on": "onRoundStart",
+          "do": "damage",
+          "amount": 2,
+          "dmgType": "heat"
+        }
+      ]
+    },
+    "numericId": 1342,
+    "uuid": "e5d08c49-5afe-5a14-8f79-b04c94da7835",
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Lava Floor, written as a trigger: On Round Start, Damage 2 (fire) to the unit in the slot (flyers are above it). 3 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = onRoundStart damage 2: 3 x 2.54 = 7.62; 0 Lumber: N = 23.87, S is 31.92% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+  },
+  {
+    "id": "bog-seep",
+    "name": "Bog Seep",
+    "icon": "\ud83e\udee7",
+    "cost": 1,
+    "wait": 0,
+    "attack": 0,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Green water rises between the stones. It smells of old eggs and worse decisions.",
+    "locked": true,
+    "archetypes": [],
+    "rarity": "uncommon",
+    "cardType": "spell",
+    "spell": {
+      "do": "hazard",
+      "amount": 2
+    },
+    "hazard": {
+      "kind": "poison",
+      "n": 2,
+      "rounds": 3,
+      "triggers": [
+        {
+          "on": "onEnterSlot",
+          "do": "poison",
+          "amount": 2
+        },
+        {
+          "on": "onRoundStart",
+          "do": "poison",
+          "amount": 2
+        }
+      ]
+    },
+    "numericId": 1343,
+    "uuid": "17a2d977-5dfb-538d-9e06-838897e4131c",
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Poison Floor, written as triggers: On Enter Slot, Poison 2, and On Round Start, Poison 2, to the unit in the slot (flyers are above it). 3 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = onEnterSlot poison 2: 1 x 3.22 + onRoundStart poison 2: 3 x 3.22 = 12.88; 1 Lumber: N = 27.38, S is 47.04% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+  },
+  {
+    "id": "miasma",
+    "name": "Miasma",
+    "icon": "\u2601\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A yellow fog that hangs at head height, and at wing height too.",
+    "locked": true,
+    "archetypes": [],
+    "rarity": "rare",
+    "cardType": "spell",
+    "spell": {
+      "do": "hazard",
+      "amount": 1
+    },
+    "hazard": {
+      "kind": "gas",
+      "n": 1,
+      "rounds": 4,
+      "triggers": [
+        {
+          "on": "onRoundStart",
+          "do": "poison",
+          "amount": 1
+        }
+      ],
+      "flyers": true
+    },
+    "numericId": 1344,
+    "uuid": "8da4e0f6-713d-5d22-9fad-b5ab12300935",
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Toxic Gas, written as a trigger: On Round Start, Poison 1 to the unit in the slot, flyers too. 4 rounds, on one slot of either side. No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = onRoundStart poison 1: 4 x 1.61 = 6.44; 0 Lumber: N = 23.87, S is 26.98% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+  },
+  {
+    "id": "rockfall",
+    "name": "Rockfall",
+    "icon": "\ud83e\udea8",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "The ledge gave way. Nobody is building anything there for a while.",
+    "locked": true,
+    "archetypes": [],
+    "rarity": "uncommon",
+    "cardType": "spell",
+    "spell": {
+      "do": "hazard",
+      "amount": 1
+    },
+    "hazard": {
+      "kind": "rubble",
+      "n": 1,
+      "rounds": 3
+    },
+    "numericId": 1345,
+    "uuid": "cb0d9bd5-86da-5607-93ad-18154a2b48d9",
+    "unattainable": true,
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36: \"cards that create slot hazards\"; 21:56: \"feel free to use triggers and actions\"): a slot-hazard spell. Rubble: the foe cannot play a card into that slot (units can still move in). No action closes a slot, so the floor does it itself. 3 rounds, on one slot of either side (an empty enemy slot). No source yet. Budget (tools/eq_cards_2026_10_19.js, today's helper, before the halving pass): S = hazardRubble 1 x 1 x 3 = 3; 0 Lumber: N = 22.84, S is 13.13% of N (a card that uses the turn's play and leaves no body: up to 50%)."
+  },
+  {
     "id": "grave-call",
     "name": "Grave Call",
     "icon": "\ud83e\udea6",
@@ -31943,7 +32253,7 @@
       "cap": 10,
       "per": 1
     },
-    "numericId": 9072,
+    "numericId": 9073,
     "uuid": "faefb6ae-ac5f-5a74-8209-bcfee9f53be0",
     "creatorNote": "2026-10-19 (package SK3, owner 21:56 / 21:59): a new spell, no source yet (placement is the owner's call). Cost from the budget: S (estimate SK3) / perLumber 4 = Lumber, rounded; a spell has no Attack or Health, so 2A+H+S = S < N at any Level. S ~ 16: a revived unit (~8, the average live creature 2A+H at Level 1 / 2) + X/X, X = the graveyard (~3 mid-game: 3 x (3.33 + 0.5) ~ 11, discounted for the random pick) -> 4 Lumber, Epic."
   },
@@ -31968,7 +32278,7 @@
       "do": "smokeScreen",
       "amount": 2
     },
-    "numericId": 9073,
+    "numericId": 9074,
     "uuid": "b077b766-fd60-53b1-ab0c-587c0cd34740",
     "creatorNote": "2026-10-19 (package SK3, owner 21:56 / 21:59): a new spell, no source yet (placement is the owner's call). Cost from the budget: S (estimate SK3) / perLumber 4 = Lumber, rounded; a spell has no Attack or Health, so 2A+H+S = S < N at any Level. S ~ 8: Smoke on ~4 units for 2 rounds (attacks at them miss 1 in 2; ~1 dodge each) -> 2 Lumber, Rare. Spotter is its counter."
   },
@@ -31993,7 +32303,7 @@
       "do": "magnet",
       "amount": 2
     },
-    "numericId": 9074,
+    "numericId": 9075,
     "uuid": "b096e71a-c3ad-50a0-8738-6b8a98ee6476",
     "creatorNote": "2026-10-19 (package SK3, owner 21:56 / 21:59): a new spell, no source yet (placement is the owner's call). Cost from the budget: S (estimate SK3) / perLumber 4 = Lumber, rounded; a spell has no Attack or Health, so 2A+H+S = S < N at any Level. S ~ 5: the enemy flyers lose Flying for 2 rounds (no dodge from the ground, no flight); narrow, so 1 Lumber, Rare."
   }

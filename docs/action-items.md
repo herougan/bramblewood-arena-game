@@ -70,6 +70,9 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Design | On Play share (owner 21:36, note only) | Owner may give 5%+ of units On Play effects himself |
 | Design | 20 more skill ideas (owner 21:36) | Owner adding more ideas soon |
 | Balance | Wait / Lumber values | Wait 3+ cards win −18 pts and Lumber 3+ −26.5 pts under their rarity band while using more of their budget: costs look under-rewarded. Raise perWait / perLumber after the halving pass? |
+| UI | Codex types (UX) | Brambles chip opens the Brambles page (they aren't cards); the 5 field cards count as Spells; the 🔍 Inspect view still shows your best level |
+| UI | Tutorial BR (UX) | Tutorial panel now shows the real rival deck BR (⚔ 10), which may look high |
+| UI | Cobble over windows (UX) | Cobble's lines show over the Forge copies window and centre stage: should he wait? |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |

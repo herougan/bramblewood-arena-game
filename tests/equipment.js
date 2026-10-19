@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // 2026-10-11: Equipment (drag onto a unit: +stats and granted skills; never on the board; falls with its unit), materia
 // can't be played, and Demolisher N adds N damage against Structures.
+// 2026-10-19 (package EQ, owner 21:36): the unit is equipping for a round (the stats and skills come at the next round's start), and
+// when it dies the piece stays in its slot (tests/equipment-hazards-2026-10-19.js has the rest).
 'use strict';
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -18,12 +20,14 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   e.debugSpawnCard(P, so, 1, 'te-unit', 'left', {}, []);
   const u = [...P[1].row.left, ...P[1].row.center, ...P[1].row.right][0];
   P[1].hand.push({uid: 9001, defId:'te-sword'}, {uid: 9002, defId:'te-ore'});
-  ok(!e.canPlay(P[1], 'te-sword', 9001), 'equipment cannot be placed on the board');
+  ok(!e.canPlay(P[1], 'te-sword', 9001), 'equipment needs its Lumber to be played');
   ok(!e.canPlay(P[1], 'te-ore', 9002), 'materia cannot be played');
   P[1].lumber = 0; ok(!e.canEquip(P[1], 9001, u.uid), 'equipping needs its Lumber');
   P[1].lumber = 1; const ev = [];
   ok(e.equip(P, so, 1, u.uid, 9001, {}, ev), 'equip succeeds with Lumber');
-  ok(u.atk === 5 && u.maxHp === 8 && u.hp === 8, `unit gains +3/+2 (got ${u.atk}/${u.hp}/${u.maxHp})`);
+  ok(u.atk === 2 && u.equipment === 'te-sword' && u.equipping === 1, `equipping: no stats yet (got ${u.atk}, equipping ${u.equipping})`);
+  e.roundStart(P, 2, so, {}, []);
+  ok(u.atk === 5 && u.maxHp === 8 && u.hp === 8, `after a round the unit gains +3/+2 (got ${u.atk}/${u.hp}/${u.maxHp})`);
   ok(u.defId !== 'te-unit', 'unit now carries a derived def (for the granted skill)');
   ok(P[1].lumber === 0 && P[1].playedThisTurn, 'pays Lumber and uses the play');
   ok(ev.some(x=> x.type==='equip'), 'equip event');
@@ -31,7 +35,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   const all = [...e.allBoardCards(P[1]), ...e.allBoardCards(P[2])];
   ok(!all.some(c=> c.defId==='te-sword'), 'equipment never takes a board slot');
   u.hp = 0; e.removeDeadCards(P, so, {}, {}, []);
-  ok(P[1].graveyard.some(g=> g.defId==='te-sword'), 'equipment falls into the graveyard with its unit'); }
+  ok(!P[1].graveyard.some(g=> g.defId==='te-sword') && (P[1].eqSlots||{})[u.slot] && P[1].eqSlots[u.slot].defId === 'te-sword', 'equipment stays in the slot when its unit dies (EQ, 2026-10-19)'); }
 { const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open'});
   const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'te-sap', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'te-wall', 'left', {}, []);
