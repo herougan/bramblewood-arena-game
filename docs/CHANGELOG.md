@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package UX2: the Brambles page's filters)
+- **Owner (22:16):** "There's no filter in brambles search."
+- **The Codex's Brambles page has a filter bar like the card Codex's:**
+  - a name search;
+  - an Effect filter, listing each castle passive with its count: Starting Lumber, Lumber over time, First unit's Attack, Unit Health, Flyers' Attack, Healing, Enemy Wait, Ballista bolts, Thorns, Herb brew, Summons, Tentacle Smack, Tail Sweep and No passive;
+  - Owned / Not owned yet, using `castleUnlocked`;
+  - a sort: game order, Health (both ways) or name;
+  - "where it's from" chips with counts: Yours to own, Skirmishes, Bosses, Raids, and Tower & dungeons. These come from the fights that use each bramble (`nodeCastleId`, else the map's or the plain Bramble).
+- **Count and empty state:** a "N of M brambles" count, and an empty state with Clear filters. Owned brambles carry a ✓, and a bramble's fights show as small icons.
+- **Raid brambles:** Kraken's Reef and The Drowned Maw are listed from the live raids, with their Health a fight, the parts that use them and their throws. They are never owned.
+- **No "seen" filter:** brambles have no "seen" record, so that filter is left out.
+- **Texts and test:** 36 TX keys (`ui.ux2-*`), in the 12 packs via `tools/i18n_2026_10_19_ux.py`. `tests/ux-2026-10-19.js` is extended, including Playwright at 390 and 1366 and the screenshots `docs/screens/ux/brambles-*`.
+
 ## 2026-10-19 (package EQ: equipment on the slots, Weapon Master, slot hazards, the Crowbar, the Bucketknee Wolf, Creeper's art)
 - **Equipment on the slots** (owner 21:36: "Same slot placement rules except you can play over creature units as well ... they take 1 turn to take the benefits"):
   - An equipment card goes into any slot a unit could go to, where it lies alone, or onto a slot holding one of your units, where it goes under the unit. Dragging it onto a unit still works.

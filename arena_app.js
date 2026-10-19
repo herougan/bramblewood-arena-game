@@ -6102,7 +6102,7 @@ function renderCodex(){
   codexTurnFn = null; codexAlbumState = null; // 2026-10-18 (package C): the album / book set these again when they draw
   { const sc = document.getElementById('codexScore'); if(sc) setTimeout(()=>{ try{ if(!sc.isConnected) return; sc.innerHTML = collectionScoreBarHTML(); wireCollectionScoreBar(sc); }catch(e){} }, 60); } // after the tab's first frame (it sits at the bottom)
   const body = document.getElementById('codexBody');
-  if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
+  if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); wireBramblesTab(body); return; } // + the filter bar (2026-10-19, package UX2)
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse'; // the Forge opens on Map 11 (2026-10-12)
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
@@ -13365,15 +13365,130 @@ function characterPickerHTML(){
 // read-only Codex reference view — a dedicated portion listing every Bramble like a card (icon,
 // HP, passive, flavor) — separate from the actual in-deck PICKER, which now lives inline inside
 // the "Build your deck" panel (see renderPlayerSubTab) rather than its own standalone panel.
+// The Codex's Brambles page (2026-10-19, package UX2, owner 22:16: "There's no filter in brambles search."): the same kind of filter bar
+// as the card Codex: a name search, where a bramble is from (yours to own, skirmishes, bosses, raids, the Tower and the dungeons), its
+// effect (its castle passive, or a raid bramble's throws), owned or not, and a sort (game order, Health, name), with a count and an
+// empty state. The raid's brambles (Kraken's Reef, The Drowned Maw) are not CHARACTER_DEFS entries: they are listed from the live raids
+// (raidBrambleOf, their part fights' Health and attacks), never owned. The choices are kept like the Codex's (uiSticky; the search box
+// starts empty).
+// BRAMBLES_UX:BEGIN (tests/ux-2026-10-19.js evaluates this block)
+const BRAMBLE_ORIGINS = [
+  {key:'player', icon:'🏰', label:()=> TX('ui.ux2-br-player')},
+  {key:'skirmish', icon:'⚔️', label:()=> TX('ui.ux2-br-skirmish')},
+  {key:'boss', icon:'👑', label:()=> TX('ui.ux2-br-boss')},
+  {key:'raid', icon:'🐙', label:()=> TX('ui.ux2-br-raid')},
+  {key:'tower', icon:'🗼', label:()=> TX('ui.ux2-br-tower')},
+];
+const BRAMBLE_FX = [
+  {key:'startGold', icon:'🪵', label:()=> TX('ui.ux2-fx-start-lumber')},
+  {key:'castleLumberEvery', icon:'🪵', label:()=> TX('ui.ux2-fx-lumber-time')},
+  {key:'firstUnitAtkBonus', icon:'⚔️', label:()=> TX('ui.ux2-fx-first-atk')},
+  {key:'unitHpBonus', icon:'❤️', label:()=> TX('ui.ux2-fx-unit-hp')},
+  {key:'flyerAtkBonus', icon:'🪽', label:()=> TX('ui.ux2-fx-flyer-atk')},
+  {key:'castleRegen', icon:'💚', label:()=> TX('ui.ux2-fx-regen')},
+  {key:'enemyWaitBonus', icon:'⏳', label:()=> TX('ui.ux2-fx-enemy-wait')},
+  {key:'castleBolt', icon:'🏹', label:()=> TX('ui.ux2-fx-bolt')},
+  {key:'castleThorns', icon:'🌵', label:()=> TX('ui.ux2-fx-thorns')},
+  {key:'herbRefinery', icon:'🌿', label:()=> TX('ui.ux2-fx-herb')},
+  {key:'castleSpawn', icon:'🐣', label:()=> TX('ui.ux2-fx-spawn')},
+  {key:'smack', icon:'🦑', label:()=> TX('ui.ux2-fx-smack')},
+  {key:'sweep', icon:'🌊', label:()=> TX('ui.ux2-fx-sweep')},
+  {key:'none', icon:'▫️', label:()=> TX('ui.ux2-fx-none')},
+];
+// The effects of an entry {ch, attacks}: its castle passives that are on, its raid throws (a column smack, a front-row sweep), or 'none'.
+function brambleFxKeys(e){
+  const fx = (e && e.ch && e.ch.effects) || {}, out = BRAMBLE_FX.map(x=> x.key).filter(k=> k !== 'smack' && k !== 'sweep' && k !== 'none' && fx[k]);
+  ((e && e.attacks) || []).forEach(a=>{ const k = a && a.pattern === 'frontRow' ? 'sweep' : 'smack'; if(!out.includes(k)) out.push(k); });
+  return out.length ? out : ['none'];
+}
+// Filters and sorts entries [{ch, origins:[...], owned, attacks}] by f {q, origin, fx, own, sort}.
+function brambleFilterList(list, f){
+  f = f || {}; const q = String(f.q || '').trim().toLowerCase();
+  let out = (list || []).filter(e=> e && e.ch);
+  if(q) out = out.filter(e=> String(e.ch.name || '').toLowerCase().includes(q));
+  if(f.origin) out = out.filter(e=> (e.origins || []).includes(f.origin));
+  if(f.fx) out = out.filter(e=> brambleFxKeys(e).includes(f.fx));
+  if(f.own === 'owned') out = out.filter(e=> e.owned); else if(f.own === 'not') out = out.filter(e=> !e.owned);
+  const hp = e=> Number(e.ch.health) || 0, nm = (a, b)=> String(a.ch.name || '').localeCompare(String(b.ch.name || ''));
+  if(f.sort === 'hp-desc') out = out.slice().sort((a, b)=> hp(b) - hp(a) || nm(a, b));
+  else if(f.sort === 'hp-asc') out = out.slice().sort((a, b)=> hp(a) - hp(b) || nm(a, b));
+  else if(f.sort === 'name') out = out.slice().sort(nm);
+  return out;
+}
+// How many entries each origin / effect has (for the option labels).
+function brambleCounts(list){
+  const o = {}, fx = {}; (list || []).forEach(e=>{ (e.origins || []).forEach(k=>{ o[k] = (o[k] || 0) + 1; }); brambleFxKeys(e).forEach(k=>{ fx[k] = (fx[k] || 0) + 1; }); });
+  return {origins: o, fx};
+}
+// BRAMBLES_UX:END
+// Where each bramble fights: skirmishes, bosses (boss / final boss nodes), the Tower and the dungeons (endless maps). A fight with no
+// bramble of its own fights from the map's (MAP_CASTLE), else the plain Bramble.
+function brambleUsage(){
+  const use = new Map(), add = (id, k)=>{ if(!id) return; if(!use.has(id)) use.set(id, new Set()); use.get(id).add(k); };
+  try{ CONQUEST_MAPS.forEach(m=> (m.nodes || []).forEach(n=>{ const kind = baseKind(n.kind || 'skirmish'); if(kind === 'tutorial') return;
+    let id = null; try{ id = nodeCastleId(n); }catch(e){ id = n.characterId || null; }
+    add(id || 'castle', (m.tower || m.endless) ? 'tower' : (kind === 'boss' || kind === 'finalboss') ? 'boss' : 'skirmish'); })); }catch(e){}
+  return use;
+}
+function brambleRaidEntries(){
+  const out = [], byName = new Map();
+  let defs = []; try{ defs = liveRaidDefs(); }catch(e){ defs = []; }
+  defs.forEach(def=> (def.parts || []).forEach(p=>{ let br = null; try{ br = raidBrambleOf(def, p.id); }catch(e){ br = null; } if(!br) return;
+    let atks = []; try{ atks = (TrenchM.trenchConfig(def, p, null) || {}).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
+    let e = byName.get(br.name);
+    if(!e){ e = {ch: {id: 'raid-bramble-' + out.length, name: br.name, icon: br.icon, art: br.art, health: 0, rarity: 'mythic', archetypes: ['Castle'], effects: {}}, origins: ['raid'], owned: false, attacks: [], parts: [], raid: def.name || ''}; byName.set(br.name, e); out.push(e); }
+    e.ch.health = Math.max(e.ch.health, Number((p.fight || {}).castleHp) || 0); e.parts.push(p.name || p.id);
+    atks.forEach(a=>{ if(!e.attacks.some(x=> x.pattern === a.pattern && x.every === a.every && x.dmg === a.dmg && x.name === a.name)) e.attacks.push(a); }); }));
+  return out;
+}
+function brambleCodexEntries(){
+  const use = brambleUsage();
+  return Object.values(CHARACTER_DEFS).filter(Boolean).map(ch=>{ let owned = false; try{ owned = castleUnlocked(ch); }catch(e){}
+    return {ch, owned, attacks: [], origins: ['player'].concat([...(use.get(ch.id) || [])])}; }).concat(brambleRaidEntries());
+}
+let brambleFilter = Object.assign({q:'', origin:'', fx:'', own:'', sort:''}, uiSticky('brambles'));
 function bramblesTabHTML(){
-  return `<div class="panel"><h2>🌿 Brambles</h2><p class="panel-sub">A Bramble is the base you bring into battle — it sets your max HP and gives your whole team a passive for the match. Pick one from the Player tab, inside Build your deck.</p>
-    <div class="char-picker bramble-codex-grid">${Object.values(CHARACTER_DEFS).map(ch=>`
-      <div class="char-card bramble-codex-card">
-        ${cardTileHTML(ch, {isCastle:true, magnetic:true, extraClass:'castle-picker-tile'})}
-        <div class="desc">${characterDescHTML(ch)}</div>
-        <div class="flavor">${ch.flavor||''}</div>
-      </div>`).join('')}</div>
+  const all = brambleCodexEntries(), c = brambleCounts(all), f = brambleFilter;
+  const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${cur === v ? 'selected' : ''}>${escapeHtml(label)}</option>`;
+  return `<div class="panel ux2-brambles"><h2>🌿 Brambles</h2><p class="panel-sub">A Bramble is the base you bring into battle — it sets your max HP and gives your whole team a passive for the match. Pick one from the Player tab, inside Build your deck.</p>
+    <div class="codex-toolbar ux2-br-bar">
+      <input data-text-filter autocomplete="off" type="search" id="brSearch" placeholder="${escapeAttr(TX('ui.ux2-br-search'))}" aria-label="${escapeAttr(TX('ui.ux2-br-search'))}" value="${escapeAttr(f.q || '')}">
+      <select id="brFx" aria-label="${escapeAttr(TX('ui.ux2-fx-label'))}">${opt('', f.fx, '✨ ' + TX('ui.ux2-fx-all'))}${BRAMBLE_FX.filter(x=> c.fx[x.key] || f.fx === x.key).map(x=> opt(x.key, f.fx, `${x.icon} ${x.label()} (${c.fx[x.key] || 0})`)).join('')}</select>
+      <select id="brOwn" aria-label="${escapeAttr(TX('ui.ux2-own-label'))}">${opt('', f.own, TX('ui.ux2-own-any'))}${opt('owned', f.own, '✓ ' + TX('ui.ux2-own-yes'))}${opt('not', f.own, TX('ui.ux2-own-no'))}</select>
+      <select id="brSort" aria-label="${escapeAttr(TX('ui.ux2-sort-label'))}">${opt('', f.sort, TX('ui.ux2-sort-game'))}${opt('hp-desc', f.sort, TX('ui.ux2-sort-hp-desc'))}${opt('hp-asc', f.sort, TX('ui.ux2-sort-hp-asc'))}${opt('name', f.sort, TX('ui.ux2-sort-name'))}</select>
+    </div>
+    <div class="ux-cx-kinds"><div class="ux-kind-chips" role="group" aria-label="${escapeAttr(TX('ui.ux2-br-from'))}">${[{key:'', icon:'🗂️', label:()=> TX('ui.ux-kind-all')}].concat(BRAMBLE_ORIGINS).map(o=>{ const n = o.key ? (c.origins[o.key] || 0) : all.length, on = (f.origin || '') === o.key;
+      return `<button type="button" class="ux-kind ${on ? 'on' : ''} ${n ? '' : 'is-empty'}" data-brorigin="${o.key}" aria-pressed="${on}">${o.icon} ${escapeHtml(o.label())} <b class="ux-kind-n">${n}</b></button>`; }).join('')}</div></div>
+    <p class="ux2-br-count" id="brCount" aria-live="polite"></p>
+    <div class="char-picker bramble-codex-grid" id="brGrid"></div>
   </div>`;
+}
+function brambleCardHTML(e){
+  const ch = e.ch, isRaid = (e.origins || []).includes('raid'), raidDesc = isRaid ? `${raidBrambleAbsHTML(raidBrambleAbilityLines(e.attacks))}<div class="desc">${escapeHtml(TX('ui.ux2-raid-hp', {hp: ch.health, parts: e.parts.join(', ')}))}</div>` : '';
+  const tags = (e.origins || []).filter(k=> k !== 'player').map(k=> { const o = BRAMBLE_ORIGINS.find(x=> x.key === k); return o ? `<span class="ux2-br-tag" title="${escapeAttr(o.label())}">${o.icon}</span>` : ''; }).join('');
+  return `<div class="char-card bramble-codex-card ${e.owned ? 'is-owned' : ''}" data-brid="${escapeAttr(ch.id)}">
+    ${e.owned ? `<span class="ux2-br-owned" title="${escapeAttr(TX('ui.ux2-own-yes'))}">✓</span>` : ''}${tags ? `<span class="ux2-br-tags">${tags}</span>` : ''}
+    ${cardTileHTML(ch, {isCastle:true, magnetic:true, extraClass:'castle-picker-tile'})}
+    ${isRaid ? raidDesc : `<div class="desc">${characterDescHTML(ch)}</div>`}
+    <div class="flavor">${ch.flavor || ''}</div></div>`;
+}
+function renderBrambleGrid(){
+  const grid = document.getElementById('brGrid'), cnt = document.getElementById('brCount'); if(!grid) return;
+  const all = brambleCodexEntries(), shown = brambleFilterList(all, brambleFilter);
+  if(cnt) cnt.textContent = TX('ui.ux2-br-count', {n: shown.length, total: all.length});
+  grid.innerHTML = shown.length ? shown.map(brambleCardHTML).join('')
+    : `<div class="ux2-br-empty"><p>${escapeHtml(TX('ui.ux2-br-empty'))}</p><button type="button" class="btn small" id="brClear">${escapeHtml(TX('ui.ux2-br-clear'))}</button></div>`;
+  const cl = document.getElementById('brClear'); if(cl) cl.onclick = ()=>{ brambleFilter = {q:'', origin:'', fx:'', own:'', sort:''}; uiStickySave('brambles', brambleFilter); renderCodex(); };
+  try{ wireCardTileFlourish(grid); }catch(e){}
+}
+function wireBramblesTab(body){
+  if(!body) return;
+  const save = ()=>{ uiStickySave('brambles', brambleFilter); renderBrambleGrid(); };
+  const s = body.querySelector('#brSearch'); if(s){ let t = null; s.addEventListener('input', ()=>{ brambleFilter.q = s.value; clearTimeout(t); t = setTimeout(save, 100); }); }
+  [['brFx', 'fx'], ['brOwn', 'own'], ['brSort', 'sort']].forEach(([id, k])=>{ const el = body.querySelector('#' + id); if(el) el.addEventListener('change', ()=>{ brambleFilter[k] = el.value; save(); }); });
+  body.querySelectorAll('[data-brorigin]').forEach(b=> b.addEventListener('click', ()=>{ brambleFilter.origin = b.dataset.brorigin;
+    body.querySelectorAll('[data-brorigin]').forEach(x=>{ const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); save(); }));
+  renderBrambleGrid();
 }
 var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null; // 2026-10-16: per-copy looks (see deckLooksAll)
 function loadMyDeck(){
