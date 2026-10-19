@@ -7,7 +7,7 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Area | Item | Question |
 |---|---|---|
 | Workflow | Units by theme (hub) | Pick units per map; then I run the post-balance step from your picks |
-| Balance | Post-balance queue | 29 cards over budget under the measured costs (docs/post-balance-queue-2026-10-19.md); refit in post-balance |
+| Balance | Post-balance queue | 28 cards over budget v4 under the measured costs (docs/balance/post-balance-queue.json; 10-19 BF: Bone Diviner and the Dragon-Turtle left, Barnacle Fortress joined); refit in post-balance |
 | Balance | Map bumps | Maps 8, 13, 20 sit off the linear climb (reference decks). Build decks against neighbours, move a strong reward later, or accept |
 | Balance | Forge opens Map 11 | ANSWERED 10-19: keep it; players deck-build to win |
 | Balance | Starters | Burrow Rabbit 85%, Crimson Wing Recruit 79% (band 20–48) |

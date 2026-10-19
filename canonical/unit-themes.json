@@ -41360,8 +41360,8 @@
      "attack": 2,
      "health": 2.09
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 46,
     "budgetOk": true,
@@ -41420,8 +41420,8 @@
    "body": {
     "cost": 1,
     "wait": 0,
-    "attack": 5,
-    "health": 12,
+    "attack": 4,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
@@ -41448,13 +41448,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 2.5,
-     "health": 2.4
+     "attack": 2,
+     "health": 2.8
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
-    "x2": 60,
+    "x2": 56,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -41542,8 +41542,8 @@
      "attack": 2.25,
      "health": 2.33
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 189,
     "budgetOk": true,
@@ -41633,8 +41633,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 128,
     "budgetOk": true,
@@ -41719,8 +41719,8 @@
      "attack": 3,
      "health": 3.14
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 66,
     "budgetOk": true,
@@ -41788,7 +41788,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 5,
-    "health": 36,
+    "health": 37,
     "dmg": "physical",
     "resist": []
    },
@@ -41815,12 +41815,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.67,
-     "health": 2
+     "health": 2.06
     },
-    "N": 58.1,
-    "N2": 375.07,
-    "x1": 46,
-    "x2": 180,
+    "N": 58.91,
+    "N2": 385.6,
+    "x1": 47,
+    "x2": 185,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -41910,8 +41910,8 @@
      "attack": 2,
      "health": 3
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 36,
     "budgetOk": true,
@@ -42005,8 +42005,8 @@
      "attack": 2.5,
      "health": 2.83
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 85,
     "budgetOk": true,
@@ -42096,8 +42096,8 @@
      "attack": 3,
      "health": 3.33
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 120,
     "budgetOk": true,
@@ -42160,8 +42160,8 @@
    "body": {
     "cost": 1,
     "wait": 0,
-    "attack": 8,
-    "health": 8,
+    "attack": 7,
+    "health": 9,
     "dmg": "physical",
     "resist": []
    },
@@ -42187,13 +42187,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 4,
-     "health": 4
+     "attack": 3.5,
+     "health": 4.5
     },
-    "N": 30.4,
-    "N2": 102.68,
-    "x1": 24,
-    "x2": 64,
+    "N": 29.82,
+    "N2": 98.8,
+    "x1": 23,
+    "x2": 63,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42284,8 +42284,8 @@
      "attack": 3,
      "health": 3.5
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 189,
     "budgetOk": true,
@@ -42349,7 +42349,7 @@
     "cost": 3,
     "wait": 2,
     "attack": 7,
-    "health": 29,
+    "health": 30,
     "dmg": "physical",
     "resist": []
    },
@@ -42376,12 +42376,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.17,
-     "health": 1.32
+     "health": 1.36
     },
-    "N": 54.6,
-    "N2": 331.24,
-    "x1": 43,
-    "x2": 203,
+    "N": 55.23,
+    "N2": 338.93,
+    "x1": 44,
+    "x2": 210,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42392,7 +42392,7 @@
      "cost": 3,
      "wait": 2,
      "attack": 8,
-     "health": 27
+     "health": 28
     },
     "baseSkills": [
      [
@@ -42444,7 +42444,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 2,
-    "health": 34,
+    "health": 35,
     "dmg": "physical",
     "resist": []
    },
@@ -42472,12 +42472,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 2,
-     "health": 2.13
+     "health": 2.19
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 68,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 70,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42568,8 +42568,8 @@
      "attack": 3,
      "health": 3.75
     },
-    "N": 34.6,
-    "N2": 133.02,
+    "N": 34.23,
+    "N2": 130.19,
     "x1": 27,
     "x2": 90,
     "budgetOk": true,
@@ -42633,7 +42633,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 10,
-    "health": 18,
+    "health": 19,
     "dmg": "physical",
     "resist": []
    },
@@ -42660,12 +42660,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 2,
-     "health": 2.25
+     "health": 2.38
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 180,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 190,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42723,7 +42723,7 @@
     "cost": 3,
     "wait": 2,
     "attack": 9,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -42750,12 +42750,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.5,
-     "health": 1.6
+     "health": 1.67
     },
-    "N": 53.6,
-    "N2": 319.22,
-    "x1": 42,
-    "x2": 216,
+    "N": 54.18,
+    "N2": 326.16,
+    "x1": 43,
+    "x2": 225,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42838,8 +42838,8 @@
      "attack": 2,
      "health": 2.71
     },
-    "N": 29.4,
-    "N2": 96.04,
+    "N": 28.77,
+    "N2": 91.97,
     "x1": 23,
     "x2": 38,
     "budgetOk": true,
@@ -42924,8 +42924,8 @@
      "attack": 2,
      "health": 3
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 36,
     "budgetOk": true,
@@ -43014,8 +43014,8 @@
      "attack": 2.33,
      "health": 2.78
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 175,
     "budgetOk": true,
@@ -43104,8 +43104,8 @@
      "attack": 3,
      "health": 4
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 48,
     "budgetOk": true,
@@ -43203,8 +43203,8 @@
      "attack": 4,
      "health": 4
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -43294,8 +43294,8 @@
      "attack": 1.33,
      "health": 1.33
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 96,
     "budgetOk": true,
@@ -43356,7 +43356,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 7,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -43384,12 +43384,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.4,
-     "health": 1.5
+     "health": 1.56
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 168,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 175,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -43476,8 +43476,8 @@
      "attack": 2,
      "health": 2.3
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 46,
     "budgetOk": true,
@@ -43568,8 +43568,8 @@
      "attack": 3,
      "health": 3.5
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 63,
     "budgetOk": true,
@@ -43629,7 +43629,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 4,
-    "health": 30,
+    "health": 31,
     "dmg": "physical",
     "resist": [
      "heat"
@@ -43659,12 +43659,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 2,
-     "health": 2.5
+     "health": 2.58
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 120,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 124,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -43759,8 +43759,8 @@
      "attack": 2,
      "health": 2.4
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -43816,8 +43816,8 @@
    "body": {
     "cost": 2,
     "wait": 2,
-    "attack": 8,
-    "health": 22,
+    "attack": 9,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -43844,13 +43844,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 2.67,
-     "health": 3.14
+     "attack": 3,
+     "health": 3
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 176,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 189,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -43939,8 +43939,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 33.6,
-    "N2": 125.44,
+    "N": 33.18,
+    "N2": 122.32,
     "x1": 26,
     "x2": 80,
     "budgetOk": true,
@@ -44001,7 +44001,7 @@
     "cost": 3,
     "wait": 3,
     "attack": 6,
-    "health": 37,
+    "health": 38,
     "dmg": "physical",
     "resist": []
    },
@@ -44028,12 +44028,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.16
+     "health": 1.19
     },
-    "N": 62.1,
-    "N2": 428.49,
-    "x1": 49,
-    "x2": 222,
+    "N": 63.11,
+    "N2": 442.54,
+    "x1": 50,
+    "x2": 228,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -44043,7 +44043,7 @@
      },
      "cost": 3,
      "wait": 3,
-     "attack": 6,
+     "attack": 7,
      "health": 36
     },
     "baseSkills": [
@@ -44122,8 +44122,8 @@
      "attack": 2.33,
      "health": 2.43
     },
-    "N": 39.6,
-    "N2": 174.24,
+    "N": 39.48,
+    "N2": 173.19,
     "x1": 31,
     "x2": 119,
     "budgetOk": true,
@@ -44187,7 +44187,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 7,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": [
      "poison"
@@ -44216,12 +44216,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 3.5,
-     "health": 4
+     "health": 4.17
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 168,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 175,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -44314,8 +44314,8 @@
      "attack": 2.5,
      "health": 2.75
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 110,
     "budgetOk": true,
@@ -44401,8 +44401,8 @@
      "attack": 2,
      "health": 2.33
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 56,
     "budgetOk": true,
@@ -44483,8 +44483,8 @@
      "attack": 1.25,
      "health": 1.38
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 110,
     "budgetOk": true,
@@ -44564,8 +44564,8 @@
      "attack": 1,
      "health": 2
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 20,
     "budgetOk": true,
@@ -44618,7 +44618,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 4,
-    "health": 30,
+    "health": 31,
     "dmg": "physical",
     "resist": []
    },
@@ -44645,12 +44645,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 2,
-     "health": 2.5
+     "health": 2.58
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 120,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 124,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -44737,8 +44737,8 @@
      "attack": 3,
      "health": 4
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 48,
     "budgetOk": true,
@@ -44798,7 +44798,7 @@
     "cost": 2,
     "wait": 4,
     "attack": 12,
-    "health": 30,
+    "health": 31,
     "dmg": "physical",
     "resist": []
    },
@@ -44825,12 +44825,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.5,
-     "health": 1.5
+     "health": 1.55
     },
-    "N": 67.6,
-    "N2": 507.75,
-    "x1": 54,
-    "x2": 360,
+    "N": 68.88,
+    "N2": 527.16,
+    "x1": 55,
+    "x2": 372,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -44915,8 +44915,8 @@
      "attack": 1,
      "health": 1.73
     },
-    "N": 35.6,
-    "N2": 140.82,
+    "N": 35.28,
+    "N2": 138.3,
     "x1": 28,
     "x2": 26,
     "budgetOk": true,
@@ -45003,8 +45003,8 @@
      "attack": 2.33,
      "health": 2.57
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 126,
     "budgetOk": true,
@@ -45065,7 +45065,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 10,
-    "health": 18,
+    "health": 19,
     "dmg": "physical",
     "resist": []
    },
@@ -45093,12 +45093,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 2.5,
-     "health": 2.57
+     "health": 2.71
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 180,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 190,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45186,8 +45186,8 @@
      "attack": 1.5,
      "health": 1.73
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 78,
     "budgetOk": true,
@@ -45277,8 +45277,8 @@
      "attack": 2.5,
      "health": 3
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 60,
     "budgetOk": true,
@@ -45338,7 +45338,7 @@
     "cost": 3,
     "wait": 4,
     "attack": 12,
-    "health": 34,
+    "health": 35,
     "dmg": "physical",
     "resist": []
    },
@@ -45365,12 +45365,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.5,
-     "health": 1.55
+     "health": 1.59
     },
-    "N": 72.6,
-    "N2": 585.64,
-    "x1": 58,
-    "x2": 408,
+    "N": 74.13,
+    "N2": 610.58,
+    "x1": 59,
+    "x2": 420,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45381,7 +45381,7 @@
      "cost": 3,
      "wait": 4,
      "attack": 14,
-     "health": 30
+     "health": 31
     },
     "baseSkills": [
      [
@@ -45432,7 +45432,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 4,
-    "health": 37,
+    "health": 38,
     "dmg": "physical",
     "resist": []
    },
@@ -45460,12 +45460,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.33,
-     "health": 1.32
+     "health": 1.36
     },
-    "N": 57.1,
-    "N2": 362.27,
-    "x1": 45,
-    "x2": 148,
+    "N": 57.86,
+    "N2": 371.98,
+    "x1": 46,
+    "x2": 152,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45476,7 +45476,7 @@
      "cost": 2,
      "wait": 3,
      "attack": 4,
-     "health": 37
+     "health": 38
     },
     "baseSkills": [
      [
@@ -45527,7 +45527,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 7,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -45555,12 +45555,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.75,
-     "health": 2
+     "health": 2.08
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 168,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 175,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45618,7 +45618,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 4,
-    "health": 37,
+    "health": 38,
     "dmg": "physical",
     "resist": []
    },
@@ -45645,12 +45645,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.33,
-     "health": 1.54
+     "health": 1.58
     },
-    "N": 57.1,
-    "N2": 362.27,
-    "x1": 45,
-    "x2": 148,
+    "N": 57.86,
+    "N2": 371.98,
+    "x1": 46,
+    "x2": 152,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45738,8 +45738,8 @@
      "attack": 2,
      "health": 2.22
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 120,
     "budgetOk": true,
@@ -45827,8 +45827,8 @@
      "attack": 2,
      "health": 2.4
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -45913,8 +45913,8 @@
      "attack": 2,
      "health": 2.33
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 56,
     "budgetOk": true,
@@ -45999,8 +45999,8 @@
      "attack": 3,
      "health": 3.33
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 90,
     "budgetOk": true,
@@ -46080,8 +46080,8 @@
      "attack": 4,
      "health": 5
     },
-    "N": 29.4,
-    "N2": 96.04,
+    "N": 28.77,
+    "N2": 91.97,
     "x1": 23,
     "x2": 60,
     "budgetOk": true,
@@ -46169,8 +46169,8 @@
      "attack": 4,
      "health": 4
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -46256,8 +46256,8 @@
      "attack": 4,
      "health": 4
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 80,
     "budgetOk": true,
@@ -46346,8 +46346,8 @@
      "attack": 1.8,
      "health": 2.14
     },
-    "N": 42.1,
-    "N2": 196.93,
+    "N": 42.11,
+    "N2": 197.03,
     "x1": 33,
     "x2": 135,
     "budgetOk": true,
@@ -46435,8 +46435,8 @@
      "attack": 3,
      "health": 3.2
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -46515,8 +46515,8 @@
      "attack": 2.33,
      "health": 2.38
     },
-    "N": 42.1,
-    "N2": 196.93,
+    "N": 42.11,
+    "N2": 197.03,
     "x1": 33,
     "x2": 133,
     "budgetOk": true,
@@ -46604,8 +46604,8 @@
      "attack": 3,
      "health": 3.2
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -46686,8 +46686,8 @@
      "attack": 1,
      "health": 2.08
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 25,
     "budgetOk": true,
@@ -46775,8 +46775,8 @@
      "attack": 1.5,
      "health": 1.8
     },
-    "N": 52.9,
-    "N2": 310.93,
+    "N": 53.45,
+    "N2": 317.43,
     "x1": 42,
     "x2": 108,
     "budgetOk": true,
@@ -46826,7 +46826,7 @@
     "cost": 3,
     "wait": 3,
     "attack": 5,
-    "health": 41,
+    "health": 42,
     "dmg": "physical",
     "resist": []
    },
@@ -46853,12 +46853,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 2.5,
-     "health": 2.93
+     "health": 3
     },
-    "N": 64.1,
-    "N2": 456.53,
-    "x1": 51,
-    "x2": 205,
+    "N": 65.21,
+    "N2": 472.48,
+    "x1": 52,
+    "x2": 210,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -46941,8 +46941,8 @@
      "attack": 3,
      "health": 3
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 90,
     "budgetOk": true,
@@ -47027,8 +47027,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 96,
     "budgetOk": true,
@@ -47117,8 +47117,8 @@
      "attack": 4,
      "health": 4.17
     },
-    "N": 42.1,
-    "N2": 196.93,
+    "N": 42.11,
+    "N2": 197.03,
     "x1": 33,
     "x2": 100,
     "budgetOk": true,
@@ -47181,7 +47181,7 @@
     "cost": 4,
     "wait": 4,
     "attack": 11,
-    "health": 41,
+    "health": 43,
     "dmg": "physical",
     "resist": []
    },
@@ -47208,12 +47208,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.57,
-     "health": 1.71
+     "health": 1.79
     },
-    "N": 79.4,
-    "N2": 700.48,
-    "x1": 63,
-    "x2": 451,
+    "N": 81.27,
+    "N2": 733.87,
+    "x1": 65,
+    "x2": 473,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47224,7 +47224,7 @@
      "cost": 4,
      "wait": 4,
      "attack": 13,
-     "health": 37
+     "health": 39
     },
     "baseSkills": [
      [
@@ -47308,8 +47308,8 @@
      "attack": 3,
      "health": 3.67
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 66,
     "budgetOk": true,
@@ -47397,8 +47397,8 @@
      "attack": 2,
      "health": 2.38
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 76,
     "budgetOk": true,
@@ -47482,8 +47482,8 @@
      "attack": 2.33,
      "health": 2.78
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 175,
     "budgetOk": true,
@@ -47572,8 +47572,8 @@
      "attack": 1.67,
      "health": 1.77
     },
-    "N": 42.1,
-    "N2": 196.93,
+    "N": 42.11,
+    "N2": 197.03,
     "x1": 33,
     "x2": 115,
     "budgetOk": true,
@@ -47664,8 +47664,8 @@
      "attack": 2.67,
      "health": 2.67
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 128,
     "budgetOk": true,
@@ -47754,8 +47754,8 @@
      "attack": 3,
      "health": 4
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 48,
     "budgetOk": true,
@@ -47851,8 +47851,8 @@
      "attack": 3,
      "health": 3.2
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 48,
     "budgetOk": true,
@@ -47911,8 +47911,8 @@
    "body": {
     "cost": 3,
     "wait": 2,
-    "attack": 10,
-    "health": 23,
+    "attack": 11,
+    "health": 22,
     "dmg": "physical",
     "resist": []
    },
@@ -47938,13 +47938,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 1.43,
-     "health": 1.64
+     "attack": 1.57,
+     "health": 1.57
     },
-    "N": 54.6,
-    "N2": 331.24,
-    "x1": 43,
-    "x2": 230,
+    "N": 55.23,
+    "N2": 338.93,
+    "x1": 44,
+    "x2": 242,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47955,7 +47955,7 @@
      "cost": 3,
      "wait": 2,
      "attack": 11,
-     "health": 21
+     "health": 22
     },
     "baseSkills": [
      [
@@ -48000,8 +48000,8 @@
    "body": {
     "cost": 3,
     "wait": 2,
-    "attack": 8,
-    "health": 27,
+    "attack": 9,
+    "health": 26,
     "dmg": "physical",
     "resist": []
    },
@@ -48027,13 +48027,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 1.14,
-     "health": 1.35
+     "attack": 1.29,
+     "health": 1.3
     },
-    "N": 54.6,
-    "N2": 331.24,
-    "x1": 43,
-    "x2": 216,
+    "N": 55.23,
+    "N2": 338.93,
+    "x1": 44,
+    "x2": 234,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48043,7 +48043,7 @@
      },
      "cost": 3,
      "wait": 2,
-     "attack": 10,
+     "attack": 11,
      "health": 22
     },
     "baseSkills": [
@@ -48087,10 +48087,10 @@
    "stage": 2,
    "firstMap": 10,
    "body": {
-    "cost": 5,
+    "cost": 4,
     "wait": 2,
     "attack": 9,
-    "health": 36,
+    "health": 31,
     "dmg": "physical",
     "resist": []
    },
@@ -48112,17 +48112,17 @@
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
-    "lumber": 2,
+    "lumber": 1,
     "wait": 0,
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.16
+     "health": 1
     },
-    "N": 68,
-    "N2": 513.78,
-    "x1": 54,
-    "x2": 324,
+    "N": 61.32,
+    "N2": 417.79,
+    "x1": 49,
+    "x2": 279,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48132,7 +48132,7 @@
      },
      "cost": 5,
      "wait": 2,
-     "attack": 9,
+     "attack": 10,
      "health": 35
     },
     "baseSkills": [
@@ -48209,8 +48209,8 @@
      "attack": 2,
      "health": 2.22
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 120,
     "budgetOk": true,
@@ -48300,8 +48300,8 @@
      "attack": 2.5,
      "health": 2.71
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 190,
     "budgetOk": true,
@@ -48387,8 +48387,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 128,
     "budgetOk": true,
@@ -48449,7 +48449,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 6,
-    "health": 12,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -48476,12 +48476,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 3,
-     "health": 4
+     "health": 3.67
     },
-    "N": 30.4,
-    "N2": 102.68,
-    "x1": 24,
-    "x2": 72,
+    "N": 29.82,
+    "N2": 98.8,
+    "x1": 23,
+    "x2": 66,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48565,8 +48565,8 @@
      "attack": 3.33,
      "health": 3.25
     },
-    "N": 42.1,
-    "N2": 196.93,
+    "N": 42.11,
+    "N2": 197.03,
     "x1": 33,
     "x2": 130,
     "budgetOk": true,
@@ -48655,8 +48655,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 96,
     "budgetOk": true,
@@ -48717,7 +48717,7 @@
     "cost": 3,
     "wait": 1,
     "attack": 6,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -48744,12 +48744,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.5,
-     "health": 1.6
+     "health": 1.67
     },
-    "N": 46.1,
-    "N2": 236.13,
-    "x1": 36,
-    "x2": 144,
+    "N": 46.31,
+    "N2": 238.29,
+    "x1": 37,
+    "x2": 150,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48840,8 +48840,8 @@
      "attack": 3,
      "health": 3.2
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 96,
     "budgetOk": true,
@@ -48927,8 +48927,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 28.4,
-    "N2": 89.62,
+    "N": 27.72,
+    "N2": 85.38,
     "x1": 22,
     "x2": 60,
     "budgetOk": true,
@@ -48984,7 +48984,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 5,
-    "health": 28,
+    "health": 29,
     "dmg": "physical",
     "resist": []
    },
@@ -49012,12 +49012,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.67,
-     "health": 2
+     "health": 2.07
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 140,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 145,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -49104,8 +49104,8 @@
      "attack": 2.5,
      "health": 3.13
     },
-    "N": 44.4,
-    "N2": 219.04,
+    "N": 44.52,
+    "N2": 220.23,
     "x1": 35,
     "x2": 125,
     "budgetOk": true,
@@ -49195,8 +49195,8 @@
      "attack": 2.5,
      "health": 2.75
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 110,
     "budgetOk": true,
@@ -49286,8 +49286,8 @@
      "attack": 2.33,
      "health": 2.25
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 126,
     "budgetOk": true,
@@ -49377,8 +49377,8 @@
      "attack": 1,
      "health": 2
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 26,
     "budgetOk": true,
@@ -49438,7 +49438,7 @@
     "cost": 4,
     "wait": 5,
     "attack": 9,
-    "health": 53,
+    "health": 55,
     "dmg": "physical",
     "resist": [
      "acid"
@@ -49467,12 +49467,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.29,
-     "health": 1.39
+     "health": 1.45
     },
-    "N": 89.9,
-    "N2": 898,
-    "x1": 71,
-    "x2": 477,
+    "N": 92.3,
+    "N2": 946.59,
+    "x1": 73,
+    "x2": 495,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -49483,7 +49483,7 @@
      "cost": 4,
      "wait": 5,
      "attack": 13,
-     "health": 45
+     "health": 47
     },
     "baseSkills": [
      [
@@ -49564,8 +49564,8 @@
      "attack": 2,
      "health": 2
     },
-    "N": 40.1,
-    "N2": 178.67,
+    "N": 40.01,
+    "N2": 177.87,
     "x1": 32,
     "x2": 128,
     "budgetOk": true,
@@ -49654,8 +49654,8 @@
      "attack": 4,
      "health": 5
     },
-    "N": 29.4,
-    "N2": 96.04,
+    "N": 28.77,
+    "N2": 91.97,
     "x1": 23,
     "x2": 60,
     "budgetOk": true,
@@ -49715,7 +49715,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 11,
-    "health": 16,
+    "health": 17,
     "dmg": "physical",
     "resist": []
    },
@@ -49743,12 +49743,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 2.75,
-     "health": 2.67
+     "health": 2.83
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 176,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 187,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -49805,7 +49805,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 7,
-    "health": 24,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -49833,12 +49833,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.75,
-     "health": 2
+     "health": 2.08
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 168,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 175,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -49930,8 +49930,8 @@
      "attack": 2.33,
      "health": 2.25
     },
-    "N": 41.1,
-    "N2": 187.69,
+    "N": 41.06,
+    "N2": 187.32,
     "x1": 32,
     "x2": 126,
     "budgetOk": true,
@@ -49996,7 +49996,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 6,
-    "health": 26,
+    "health": 27,
     "dmg": "physical",
     "resist": []
    },
@@ -50025,12 +50025,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 2,
-     "health": 2.17
+     "health": 2.25
     },
-    "N": 48.6,
-    "N2": 262.44,
-    "x1": 38,
-    "x2": 156,
+    "N": 48.93,
+    "N2": 266.02,
+    "x1": 39,
+    "x2": 162,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -50120,8 +50120,8 @@
      "attack": 2,
      "health": 2.22
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 80,
     "budgetOk": true,
@@ -50207,8 +50207,8 @@
      "attack": 1.75,
      "health": 1.85
     },
-    "N": 47.6,
-    "N2": 251.75,
+    "N": 47.88,
+    "N2": 254.72,
     "x1": 38,
     "x2": 168,
     "budgetOk": true,
@@ -50263,7 +50263,7 @@
     "cost": 3,
     "wait": 2,
     "attack": 7,
-    "health": 28,
+    "health": 29,
     "dmg": "physical",
     "resist": []
    },
@@ -50290,12 +50290,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.17,
-     "health": 1.17
+     "health": 1.21
     },
-    "N": 53.6,
-    "N2": 319.22,
-    "x1": 42,
-    "x2": 196,
+    "N": 54.18,
+    "N2": 326.16,
+    "x1": 43,
+    "x2": 203,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -50305,7 +50305,7 @@
      },
      "cost": 3,
      "wait": 2,
-     "attack": 7,
+     "attack": 8,
      "health": 27
     },
     "baseSkills": [
@@ -50353,7 +50353,7 @@
     "cost": 4,
     "wait": 4,
     "attack": 10,
-    "health": 43,
+    "health": 45,
     "dmg": "physical",
     "resist": [
      "poison"
@@ -50382,12 +50382,12 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.25,
-     "health": 1.26
+     "health": 1.32
     },
-    "N": 79.4,
-    "N2": 700.48,
-    "x1": 63,
-    "x2": 430,
+    "N": 81.27,
+    "N2": 733.87,
+    "x1": 65,
+    "x2": 450,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -50397,7 +50397,7 @@
      },
      "cost": 4,
      "wait": 4,
-     "attack": 12,
+     "attack": 13,
      "health": 38
     },
     "baseSkills": [
@@ -50478,8 +50478,8 @@
      "attack": 3,
      "health": 3.75
     },
-    "N": 34.9,
-    "N2": 135.33,
+    "N": 34.55,
+    "N2": 132.63,
     "x1": 27,
     "x2": 90,
     "budgetOk": true,
@@ -50568,8 +50568,8 @@
      "attack": 2.5,
      "health": 3
     },
-    "N": 35.9,
-    "N2": 143.2,
+    "N": 35.6,
+    "N2": 140.82,
     "x1": 28,
     "x2": 90,
     "budgetOk": true,
@@ -50653,8 +50653,8 @@
      "attack": 2.5,
      "health": 2.6
     },
-    "N": 29.4,
-    "N2": 96.04,
+    "N": 28.77,
+    "N2": 91.97,
     "x1": 23,
     "x2": 65,
     "budgetOk": true,
@@ -50739,8 +50739,8 @@
      "attack": 1.5,
      "health": 1.69
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 162,
     "budgetOk": true,
@@ -50797,7 +50797,7 @@
     "cost": 3,
     "wait": 1,
     "attack": 7,
-    "health": 22,
+    "health": 23,
     "dmg": "physical",
     "resist": []
    },
@@ -50824,12 +50824,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.17,
-     "health": 1.38
+     "health": 1.44
     },
-    "N": 46.1,
-    "N2": 236.13,
-    "x1": 36,
-    "x2": 154,
+    "N": 46.31,
+    "N2": 238.29,
+    "x1": 37,
+    "x2": 161,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -50840,7 +50840,7 @@
      "cost": 3,
      "wait": 1,
      "attack": 8,
-     "health": 20
+     "health": 21
     },
     "baseSkills": [
      [
@@ -50912,8 +50912,8 @@
      "attack": 2,
      "health": 2.08
     },
-    "N": 49.6,
-    "N2": 273.35,
+    "N": 49.98,
+    "N2": 277.56,
     "x1": 39,
     "x2": 162,
     "budgetOk": true,
@@ -50998,8 +50998,8 @@
      "attack": 2.33,
      "health": 2.71
     },
-    "N": 42.1,
-    "N2": 196.93,
+    "N": 42.11,
+    "N2": 197.03,
     "x1": 33,
     "x2": 133,
     "budgetOk": true,
@@ -51055,10 +51055,10 @@
    "stage": 4,
    "firstMap": 20,
    "body": {
-    "cost": 5,
+    "cost": 4,
     "wait": 4,
     "attack": 9,
-    "health": 50,
+    "health": 46,
     "dmg": "physical",
     "resist": []
    },
@@ -51080,17 +51080,17 @@
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
-    "lumber": 2,
+    "lumber": 1,
     "wait": 0,
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.11
+     "health": 1.02
     },
-    "N": 86,
-    "N2": 821.78,
-    "x1": 68,
-    "x2": 450,
+    "N": 80.22,
+    "N2": 715.03,
+    "x1": 64,
+    "x2": 414,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -51100,7 +51100,7 @@
      },
      "cost": 5,
      "wait": 4,
-     "attack": 9,
+     "attack": 10,
      "health": 50
     },
     "baseSkills": [

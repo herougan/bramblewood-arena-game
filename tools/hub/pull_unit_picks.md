@@ -48,8 +48,8 @@ tab uses the same database. Without it, the tab says "Picks can't be saved here"
    - **skills**: a live card with no skills.
    - **ready**: nothing to do but put it in the map's decks or rewards.
 
-3. **Work each map in road order.** Budget v3 is the rule for every stat line:
-   - N = 20 + 2L + rarity + 6W + 0.5W² + 4·Lumber + 0.4·Lumber²
+3. **Work each map in road order.** The stat budget (v4 since 2026-10-19) is the rule for every stat line:
+   - N = (Base − 1 + L) × (1 + L/20), Base = 20 + rarity + 6W + 0.5W² + 4·Lumber + 0.4·Lumber² + Ritual points (`bramblewood-budget.js`)
    - 2A + H + S < N
    - A·H + S < (N/3)²
    - S is a card's skill cost, from `tools/skill_costs.js` and `canonical/skill-costs.json`.

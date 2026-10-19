@@ -15,10 +15,10 @@ const constSrc = name=>{ const i = src.indexOf('const ' + name + ' ='); if(i < 0
   for(let k = i; k < src.length; k++){ const c = src[k]; if(q){ if(c === '\\'){ k++; continue; } if(c === q) q = null; continue; }
     if(c === '"' || c === "'" || c === '`'){ q = c; continue; } if('([{'.includes(c)) d++; else if(')]}'.includes(c)) d--; else if(c === ';' && !d) return src.slice(i, k + 1); } };
 const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')), defs = {}; cards.forEach(c=> defs[c.id] = c);
-const ctx = {CARD_DEFS_BASELINE: defs, RARITY_DEFS: [], DECK_SIZE: 20}; vm.createContext(ctx);
+const ctx = {CARD_DEFS_BASELINE: defs, RARITY_DEFS: [], DECK_SIZE: 20, BramblewoodBudget: require(path.join(__dirname, '..', 'bramblewood-budget.js'))}; vm.createContext(ctx); // + the budget Forge curve (2026-10-19, package BF)
 const towerConsts = src.slice(src.indexOf('const TOWER_LEVEL_CAP'), src.indexOf(';', src.indexOf('const TOWER_LEVEL_CAP')) + 1);
-vm.runInContext([constSrc('RATING_WEIGHT'), constSrc('LEVEL_STEPS'), constSrc('LEVEL_STEP_GAIN'), constSrc('RARITY_MAX_LEVEL'), towerConsts, constSrc('TOWER_POOLS'), constSrc('JUMPER_SKIRMISHES'), constSrc('TOWER_LUMBER_POOL'),
-  ...['hashStr', 'cardBaseLevel', 'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'ratingWeightOf', 'ratingLevelFactor', 'towerTargetBR', 'seededUnit', 'towerDeckBR', 'isLumberSource', 'towerNeedsLumber', 'towerFloorDeck'].map(fnSrc),
+vm.runInContext([constSrc('RATING_WEIGHT'), constSrc('LEVEL_STEPS'), constSrc('LEVEL_STEP_GAIN'), constSrc('FORGE_CURVE_CACHE'), constSrc('RARITY_MAX_LEVEL'), towerConsts, constSrc('TOWER_POOLS'), constSrc('JUMPER_SKIRMISHES'), constSrc('TOWER_LUMBER_POOL'),
+  ...['hashStr', 'cardBaseLevel', 'cardMaxLevel', 'forgeCurveOf', 'statsAtLevel', 'statsBeyondLevel', 'ratingWeightOf', 'ratingLevelFactor', 'towerTargetBR', 'seededUnit', 'towerDeckBR', 'isLumberSource', 'towerNeedsLumber', 'towerFloorDeck'].map(fnSrc),
   'this.api = {statsAtLevel, statsBeyondLevel, ratingLevelFactor, towerFloorDeck, towerDeckBR, TOWER_POOLS, JUMPER_SKIRMISHES, TOWER_FLOORS, TOWER_BR_START, TOWER_BR_STEP};'].join('\n'), ctx);
 const A = ctx.api;
 // Past the top: at or below 11 the usual curve; above, +1 Attack or Health per level, stable for a card and level

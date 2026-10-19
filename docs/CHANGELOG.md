@@ -17,6 +17,30 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - It is never clipped by the board frame. It shows from Low effects up, and with reduced motion it is a plain flash.
   - It is in the Effects Lab (the row smack now has an inventory entry).
 - Tests: `tests/bu-2026-10-19.js` (speed gates, the centre rule, the framing window, static checks) and `tests/e2e/battle_ui_2026_10_19.py` (430 and 390 phones and 1366 desktop: the centre target, centred castle numbers, the Cleave box over the target, the speed cycle, tentacle frames). Before and after pictures are in `docs/screens/bu/`.
+## 2026-10-19 (package BF: budget v4, the budget Forge curve, side maps a map ahead)
+- **Owner (09:52):** "(Base-1 + L) * (1+L/20)", "majors to 4, 7, 10, minor to 2 ... divvy out strength updates at all levels", "No Forge is fine. The player has to deck build to win.", "Submap's difficulty floor varies. But at least 1 map ahead of difficulty."
+- **Budget v4.** N = (Base − 1 + L) × (1 + L/20), where Base is v3's N without its 2L.
+  - It lives in one shared file, `bramblewood-budget.js`. The page inlines it (Test Lab, card editor, Forge), `tools/skill_costs.js` reads it (so every balance tool does), and the hub inlines it.
+  - At Level 1 it is 1.05 × Base, against v3's Base + 2: −0.95 at Base 21, the same at 40, +6.65 for the Dragons.
+  - Of 744 measured cards, 2 move into budget (Bone Diviner, the Dragon-Turtle) and 1 moves out (Barnacle Fortress). The post-balance queue is 28 cards (was 29). No card's stats changed.
+  - The report is in `docs/balance/budget-v4-2026-10-19.json`.
+- **The Forge curve follows N(L).** Each level banks its budget gain in 2A+H points:
+  - the majors (4, 7, 10) and the limit break spend all of it, always at least 1;
+  - the minor (2) spends its smaller bank;
+  - every other level spends a third, often 0.
+
+  Attack grows where that keeps the card's shape, the rest goes to Health, and walls only grow Health. No level loses a stat, and every level stays inside N(L).
+  - This is much stronger than the old +10% steps. The mean card gains +65% at Lv 4 and +228% at Lv 10 (was +10% / +35%).
+  - The anvil shows it: **📈 What each level gives** (TX keys, 12 packs).
+  - Test: `tests/forge-curve-2026-10-19.js`.
+- **The Forge stays at Map 11** (decision B7). Before Map 11 the reference player is at Lv 0.
+- **The enemy keeps pace.** The road's enemy level (`enemyLevelKeepingPace`) keeps the strength ratio each fight had to your reference deck under the old steps, deck by deck, so the late maps aren't handed to the player.
+- **Side maps count at least a map past their parent** (`fightMapNumber`) for the enemy's level and the Shield, while your deck stays the parent's. Their road-curve targets sit one map's step lower: 88% → 55%, boss 26–44%. Test: `tests/side-maps-2026-10-19.js`.
+- **Retune, measured at 120 games on the measure seeds:**
+  - Before: 179 of 179 main-map fights and 76 of 77 side fights green. With the new curve and no retune: 144 main.
+  - Three rounds of `skirmish_pass.js curve` changed 54 fights, mostly with 1–2 copy moves. After: 178 of 179 main fights and 76 of 77 side fights green; on fresh seeds, 154 of 179 main.
+  - 16-6 Reaver's Hollow stays easy at its 2× Shield cap. 20-A-4 (the four-wave dungeon) was not retuned.
+  - The tables are in `docs/balance/level-curve-2026-10-19b.md`.
 
 ## 2026-10-19 (package RB: raid balance: no ×15, a win 1,000, 200k ×3 + 500k, the boss weakens, allies keep their rows, 250 an instance)
 - **Allies keep their rows.** An ally's play always went into its own row, but the unit then stepped up into your front row, or the back ally's into the middle row, whenever the slot ahead was clear. Ally units and ally leaders now hold their row for the whole fight (`holdRow`; the engine's `advanceReserves` skips them). New test `tests/raid-ally-rows-2026-10-19.js`: 200+ seeded ally plays in the page's raid fight, none outside the ally's row.

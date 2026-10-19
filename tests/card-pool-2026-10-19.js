@@ -73,7 +73,9 @@ pool.forEach(c=>{
   ok(RR.roadRarityOk(c.rarity, numOf(c.poolMap), 'skirmish'), `2. ${c.id}: ${c.rarity} within the Map ${numOf(c.poolMap)} skirmish cap (${RR.roadRarityCap(numOf(c.poolMap), 'skirmish')})`);
   const note = c.creatorNote || '', wr = /Measured ([\d.]+)% over (\d+) games/.exec(note), band = BANDS[c.rarity];
   ok(/N = /.test(note) && /S = /.test(note) && /2A\+H\+S/.test(note) && /A\*H\+S/.test(note), `2. ${c.id}: the creatorNote shows N, S and both rules`);
-  ok(note.includes(String(b.N)) && note.includes(String(b.N2)), `2. ${c.id}: the note's N and (N/3)^2 match the card`);
+  // 2026-10-19 (package BF): the notes were written under budget v3 (N = Base + 2L); they may show that N, or v4's
+  const b3 = T.budget(c, {N: T.budgetV3N(c)});
+  ok((note.includes(String(b.N)) && note.includes(String(b.N2))) || (note.includes(String(b3.N)) && note.includes(String(b3.N2))), `2. ${c.id}: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)`);
   ok(wr && +wr[1] >= band[0] && +wr[1] <= band[1], `2. ${c.id}: its measured win rate is in the ${c.rarity} band (${wr && wr[1]}%)`);
   ok(c.effects && !('swimmer' in c.effects), `2. ${c.id}: uses Tide, not the retired Swimmer`);
 });

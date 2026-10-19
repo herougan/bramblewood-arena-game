@@ -83,14 +83,14 @@ v3g = lambda k, d: V3.get(k, d)
 b = v3g('base', 20)
 LEG = [('Budget v3', 'What N is made of (the same numbers as the game\'s Test Lab and card editor)'),
        ('Base', f'N starts at {b}'),
-       ('Level', f'+{v3g("perLevel", 2)} per level (the Test Lab uses the level the card starts at: Base and quest cards 0, rewards 1; the card editor Level 1)'),
+       ('Level', 'v4 (2026-10-19): N = (Base - 1 + Level) x (1 + Level/20), Base = everything else on this list (the Test Lab uses the level the card starts at: Base and quest cards 0, rewards 1; the card editor Level 1)'),
        ('Rarity', f'+{v3g("perRarity", 1)} per rarity step: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11, Divine 12, Void 13, Daemonic 14. Quest and special rarities count as the tier they stand for'),
        ('Wait', f'+{v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait²'),
        ('Lumber', f'+{v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber²'),
        ('Ritual', f'+{v3g("perRitual", 1)} per Ritual point, the sum of its counts (2026-10-18, owner: Ritual "increases N")'),
        ('Half-miss ×', f'Both scores are ×{v3g("missMult", 1.5)} for each of: {", ".join(HALF_MISS)} (they cost 0 themselves)'),
        ('Bounty', 'Costs 0: it pays the player who plays it and, when it dies, the other side'),
-       ('Formula', f'N = {b} + {v3g("perLevel", 2)}×Level + Rarity + {v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait² + {v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber² + {v3g("perRitual", 1)}×Ritual points. Pass: 2A+H+S < N and A×H+S < (N/3)²')]
+       ('Formula', f'N = (Base - 1 + Level) × (1 + Level/20), Base = {b} + Rarity + {v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait² + {v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber² + {v3g("perRitual", 1)}×Ritual points (budget v4, 2026-10-19). Pass: 2A+H+S < N and A×H+S < (N/3)²')]
 for k, v in LEG: ws.append([k, None, v])
 LEG0 = ws.max_row - len(LEG) + 1
 ws.append([])
@@ -188,7 +188,7 @@ for g, ic, nm, v, n, sg in detail:
 fr.append([])
 fr.append(['Proposed subfactions (design only, not in the game yet)'])
 fr.cell(fr.max_row, 1).font = Font(name=F, bold=True, size=12)
-fr.append(['Stats checked against the stat budget v3 (2026-10-17) at Level 1: N = 20 + 2×Level + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² (Common 1, Uncommon 2, Rare 3). Skills = the budget cost of the card\'s skills (Skill N values sheet).'])
+fr.append(['Stats checked against the stat budget v4 (2026-10-19) at Level 1: N = (Base - 1 + 1) × 1.05, Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² (Common 1, Uncommon 2, Rare 3). Skills = the budget cost of the card\'s skills (Skill N values sheet).'])
 fr.cell(fr.max_row, 1).font = SUB
 fr.append(['Subfaction', 'Theme', 'Signature skills', 'Card', 'Animal', 'Rarity', 'Lumber', 'Wait', 'Attack', 'Health', 'Skills on the card', 'Skill cost', 'N', '2A+H+S < N', 'A×H+S < (N/3)²', 'Flavour'])
 H3 = fr.max_row
@@ -207,7 +207,7 @@ SUBF = [
 for (sf, theme, sig, cardn, animal, rar, lum, wait, a, h, sk, s, step, flav) in SUBF:
     fr.append([sf, theme, sig, cardn, animal, rar, lum, wait, a, h, sk, s, None, None, None, flav]); r = fr.max_row
     rank = {'Common': 1, 'Uncommon': 2, 'Rare': 3}.get(rar, 1)  # v3 (2026-10-17): the rarity rank, not v1's step
-    fr.cell(r, 13).value = f'={v3g("base", 20)}+{v3g("perLevel", 2)}*1+{rank}+{v3g("perWait", 6)}*H{r}+{v3g("perWait2", 0.5)}*H{r}^2+{v3g("perLumber", 4)}*G{r}+{v3g("perLumber2", 0.4)}*G{r}^2'
+    fr.cell(r, 13).value = f'=({v3g("base", 20)}+{rank}+{v3g("perWait", 6)}*H{r}+{v3g("perWait2", 0.5)}*H{r}^2+{v3g("perLumber", 4)}*G{r}+{v3g("perLumber2", 0.4)}*G{r}^2-1+1)*(1+1/20)'  # 2026-10-19 (BF): budget v4 at Level 1
     fr.cell(r, 14).value = f'=IF(2*I{r}+J{r}+L{r}<M{r},"✓ "&(2*I{r}+J{r}+L{r})&" < "&M{r},"✗ over")'
     fr.cell(r, 15).value = f'=IF(I{r}*J{r}+L{r}<(M{r}/3)^2,"✓ "&(I{r}*J{r}+L{r})&" < "&ROUND((M{r}/3)^2,1),"✗ over")'
     for c in fr[r]: c.font = BODY; c.alignment = WRAP

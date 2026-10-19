@@ -16,6 +16,9 @@ ghosts_src += "\n" + open(SCRATCH + "bramblewood-texts.js", encoding="utf-8").re
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-a11y.js", encoding="utf-8").read()
 # 2026-10-19 (package G, guild skills): the skill list, costs and the Rooted Walls bramble Health math (BramblewoodGuild), DOM-free.
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-guild.js", encoding="utf-8").read()
+# 2026-10-19 (package BF): the stat budget N(L) = (Base - 1 + L) x (1 + L/20) and the Forge level curve (BramblewoodBudget), DOM-free;
+# the same file tools/skill_costs.js and the master hub use.
+ghosts_src += "\n" + open(SCRATCH + "bramblewood-budget.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is

@@ -15,18 +15,19 @@
 //                   `both` (2026-10-19): the number fills both fields (Kin Rally N = On Ally Played × Buff +N/+N).
 //   CLI             node tools/skill_costs.js --diff [table.json]  cards whose S moved more than 2 from the 2026-10-18 model,
 //                   and every card whose budget pass/fail flips.
-(function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.SkillCosts = factory(); })(typeof self !== 'undefined' ? self : this, function(){
+// 2026-10-19 (package BF): N comes from bramblewood-budget.js (budget v4, owner 09:52: "(Base-1 + L) * (1+L/20)"), the one copy of the
+// formula the game, these tools and the hub share; the hub inlines that file ahead of this one (window.BramblewoodBudget).
+(function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(require('../bramblewood-budget.js')); else root.SkillCosts = factory(root.BramblewoodBudget); })(typeof self !== 'undefined' ? self : this, function(BB){
   'use strict';
-  const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
-  const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
+  const LADDER = BB.LADDER;
   const r2 = v=> Math.round(v * 100) / 100;
   const ONE_SHOT = ['onSpawn', 'onDeath', 'onReady']; // 2026-10-19 (package TC): triggers that fire at most once anyway; `once` changes nothing
   const numOf = v=> typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
   // The level the budget uses (card_balance.js since 2026-10-18): rewards 1, Base / Starter / tutorial / quest cards 0.
   function levelOf(d){ const k = d.source && d.source.kind, qs = k === 'quest' || k === 'errand' || k === 'base';
     return (d.faction || d.id === 'wandering-traveller') ? 1 : ((d.basic || d.rarity === 'starter' || d.tutorial || d.quest || qs) ? 0 : 1); }
-  function rankOf(d){ const k = d.rarity || 'common'; return Math.max(0, LADDER.indexOf(AS[k] || k)); }
-  function ritualPts(e){ const r = e && e.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (+b || 0), 0) : 0; }
+  function rankOf(d){ return BB.rankOf(d && d.rarity); }
+  const ritualPts = BB.ritualPts;
 
   function make(table){
     const by = kind=>{ const m = {}; (table[kind] || []).forEach(x=> m[x.id] = x); return m; };
@@ -78,15 +79,18 @@
       return {S:r2(S), parts, missing};
     }
     const g = (k, d)=> B[k] == null ? d : B[k];
-    function budgetN(d){ const W = +d.wait || 0, C = +d.cost || 0, L = levelOf(d);
-      return r2(g('base', 20) + g('perLevel', 2) * L + g('perRarity', 1) * rankOf(d) + g('perWait', 6) * W + g('perWait2', 0.5) * W * W + g('perLumber', 4) * C + g('perLumber2', 0.4) * C * C + g('perRitual', 1) * ritualPts(d.effects)); }
-    // Budget v3 for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}.
-    function budget(d){
-      const e = d.effects || {}, N = budgetN(d), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
+    // N at the level the card starts at (or `lv`): budget v4 (2026-10-19, BF), N = (Base - 1 + L) x (1 + L/20); B (the table's budget
+    // numbers) feeds Base. budgetV3N is the old Base + 2L, for comparisons.
+    function budgetBase(d){ return BB.baseOf(d, B); }
+    function budgetN(d, lv){ return BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B); }
+    function budgetV3N(d, lv){ return r2(budgetBase(d) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
+    // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
+    function budget(d, opts){
+      const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
       const A = d.attack || 0, H = d.health || 0, x1 = r2((2 * A + H + s.S) * m), x2 = r2((A * H + s.S) * m), N2 = r2((N / 3) * (N / 3));
       return {N, S:s.S, x1, x2, N2, ok: x1 < N && x2 < N2, wellUnder: x1 < N && x2 < N2 && x1 <= N * 0.6, m, parts:s.parts, missing:s.missing};
     }
-    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetN, budget};
+    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetV3N, budget};
   }
   // Frozen copy of the 2026-10-18 model (SB_SKILLS in card_balance.js before this change; the Test Lab's SB_DEFAULT_SKILLS), for
   // comparisons only: every trigger list costs 1 in all, Bounty 0, a skill with no set cost 1 + floor(N/2).
