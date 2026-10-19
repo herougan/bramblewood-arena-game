@@ -67,6 +67,9 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Server | Clear folded overrides (BF4) | APPLIED 10-19 20:45: 72 card rows reset to the file, map-nodes m1/mtut cleared; backup in card_overrides_backup_20261019 (RLS on) |
 | Balance | Cave Bat Swarm (BF4) | Still over budget with its server skills (Darksight, Nocturnal, Fork): 1/1, or drop Darksight? |
 | Balance | Road after fold (BF4) | 146/179 main on target (was 150): 0-2, 3-1, 8-3, 8-4, 20-8, 1-A-1 now too hard; 15-3, 0-3 too easy |
+| Design | On Play share (owner 21:36, note only) | Owner may give 5%+ of units On Play effects himself |
+| Design | 20 more skill ideas (owner 21:36) | Owner adding more ideas soon |
+| Balance | Wait / Lumber values | Wait 3+ cards win −18 pts and Lumber 3+ −26.5 pts under their rarity band while using more of their budget: costs look under-rewarded. Raise perWait / perLumber after the halving pass? |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
