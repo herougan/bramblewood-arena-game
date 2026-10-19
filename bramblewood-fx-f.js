@@ -1177,6 +1177,24 @@ function smokePuff(x, y, size, o){
 // itself on document ('fxf:tentacle', detail {phase:'impact', horizontal, reduced}) at impact / full show, for the e2e test.
 const TENT_LEAN = Math.tan(16*Math.PI/180);
 const tentEmit = d=>{ try{ document.dispatchEvent(new CustomEvent('fxf:tentacle', {detail:d})); }catch(e){} };
+// 2026-10-19 (package TF): the tentacle runs on its own clock, at most 1/30 s per frame. During a fight GSAP's lag smoothing is off
+// (syncFightTimeScale), so one long frame as the round opens (the round-start events and the board's redraw, heavier on a big desktop
+// board) used to jump the whole 0.7 s slam: its impact fired with the limb never painted (seen in headless Chromium at 1920x1080).
+// Now a long frame only holds it, so every phase gets painted (at 60 fps it plays at its normal speed; about 25 frames in all). It
+// follows GSAP's time scale (hit-stop, the Lab's slow motion) and holds while GSAP's global timeline is paused (the e2e test freezes
+// it at impact). Its layers' safety removal is long for the same reason (GSAP's delayedCall runs on real time during a fight).
+const TENT_SAFE = 30000;
+function tentTL(vars){
+  const g = G(), tl = g.timeline(Object.assign({}, vars, {paused:true})); let last = 0;
+  const next = f=> (document.hidden || typeof requestAnimationFrame !== 'function') ? setTimeout(()=> f(performance.now()), 50) : requestAnimationFrame(f);
+  const step = now=>{
+    const gt = g.globalTimeline;
+    if(last && !gt.paused()) tl.time(Math.min(tl.duration(), tl.time() + Math.min(Math.max(0, now - last)/1000, 1/30)*gt.timeScale()));
+    last = now;
+    if(tl.progress() < 1) next(step); else tl.kill();
+  };
+  next(step); return tl;
+}
 // cells: the struck .board-card cells (a column: front to back; a row: left to right), or rects. opts: host (the battlefield, for the
 // base's edge), origin (the boss's bramble tile), horizontal (a row smack), from 'left'|'right' (a row smack's side), flashOnly (a plain
 // flash on the cells under reduced motion: the Tail Sweep's), onImpact, onDone.
@@ -1189,7 +1207,7 @@ M.tentacleSmack = function(cells, opts){
   const g = G(), reduced = RM() || !g;
   if(!rs.length){ call(opts.onImpact); return Promise.resolve(finish(opts)); }
   // the flash on the struck cards (reduced motion; with the still tentacle unless flashOnly)
-  const flash = ms=>{ const host = lay('fxf-tflashh', '', ms + 400);
+  const flash = ms=>{ const host = lay('fxf-tflashh', '', TENT_SAFE);
     rs.forEach(r=>{ const f = document.createElement('i'); f.className = 'fxf-tflash'; Object.assign(f.style, {left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px'}); host.appendChild(f);
       try{ f.animate([{opacity:0}, {opacity:.85, offset:.25}, {opacity:0}], {duration:ms, easing:'ease-out'}); }catch(e){} });
     return host; };
@@ -1236,7 +1254,7 @@ M.tentacleSmack = function(cells, opts){
     hits = rs.map(r=> ({x:r.left + r.width/2, y:r.top + r.height*.75}));
     slamY = -(cy - (hr ? hr.top : 0) + chh*1.2);
   }
-  const h = lay('fxf-tenth', '', 4000), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
+  const h = lay('fxf-tenth', '', TENT_SAFE), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
   sv.setAttribute('class', 'fxf-tentacle' + (horiz ? ' is-row' : ' is-col') + (reduced ? ' is-still' : '')); sv.setAttribute('width', VW()); sv.setAttribute('height', VH()); sv.style.width = VW() + 'px'; sv.style.height = VH() + 'px';
   sv.innerHTML = tentacleSVG(B, T, w, dir); h.appendChild(sv);
   const body = sv.querySelector('.tb-body'), origin = grow ? `${B.x.toFixed(1)} ${B.y.toFixed(1)}` : horiz ? `${((B.x + T.x)/2).toFixed(1)} ${T.y.toFixed(1)}` : `${T.x.toFixed(1)} ${T.y.toFixed(1)}`;
@@ -1247,7 +1265,7 @@ M.tentacleSmack = function(cells, opts){
     return new Promise(res=>{
       const hit = ()=>{ call(opts.onImpact); tentEmit(info); };
       if(g){ g.set(body, {opacity:0});
-        g.timeline({onComplete:()=>{ fl.remove(); done(res); }}).to(body, {opacity:1, duration:.08, ease:'none'}).add(hit)
+        tentTL({onComplete:()=>{ fl.remove(); done(res); }}).to(body, {opacity:1, duration:.08, ease:'none'}).add(hit)
           .to(body, {opacity:0, duration:.2, ease:'power1.in'}, '+=' + (HOLD/1000)); }
       else { hit(); setTimeout(()=>{ fl.remove(); done(res); }, HOLD + 200); }
     });
@@ -1262,7 +1280,7 @@ M.tentacleSmack = function(cells, opts){
     return new Promise(res=>{
       const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
       g.set(body, {scale:.06, opacity:0, svgOrigin:origin});
-      g.timeline({onComplete:done})
+      tentTL({onComplete:done})
         .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
         .to(body, {scale:1, duration:TENT.slam/1000, ease:'power3.in'}, 0)
         .add(impact)
@@ -1274,7 +1292,7 @@ M.tentacleSmack = function(cells, opts){
   return new Promise(res=>{
     const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
     g.set(body, {y:slamY, opacity:0, svgOrigin:origin});
-    g.timeline({onComplete:done})
+    tentTL({onComplete:done})
       .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
       .to(body, {y:0, duration:TENT.slam/1000, ease:'power3.in'}, 0)
       .add(impact)

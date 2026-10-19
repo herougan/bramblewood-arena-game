@@ -16,7 +16,8 @@ go through the game's own per-event path (renderVfxForEvent -> fxBatchVfx -> FX.
     tall, across the row's cards, its base on the bramble's side);
   - reduced motion: the tentacle is still drawn (not just a flash), and it doesn't move while it holds;
   - the layer is removed afterwards.
-On the desktop size with motion, one more column smack comes through a real round (resolveRound) to check the whole path.
+At every size, one more column smack comes through a real round (resolveRound) to check the whole path (a slow frame at the round's
+start used to skip the whole slam: TF's frame-capped clock).
 Not in tests/run-all.sh's fast suites (a browser run). Exit code 1 on any failure.
 """
 import asyncio, os, sys, io, math
@@ -47,14 +48,14 @@ ARM = """(want)=>{ window.__tfAt = null; window.__tfWant = want == null ? null :
     let op = 0, box = null;
     if(b){ const r = b.getBoundingClientRect(); box = {l:r.left, t:r.top, r:r.right, b:r.bottom, w:r.width, h:r.height};
       op = [b, sv, lay].reduce((o, x)=> o * (x ? +getComputedStyle(x).opacity : 1), 1); }
-    const cells = (window.__tfCells || []).map(x=> x.getBoundingClientRect()).map(r=> ({l:r.left, t:r.top, r:r.right, b:r.bottom, w:r.width, h:r.height}));
+    const cells = window.__tfCellRects || [];
     window.__tfAt = {d: e.detail, box, op, cells, cls: sv ? sv.getAttribute('class') : null}; }); return 1; }"""
-# The struck cells, found as FX.F's raidSmackFx finds them (a column: your front row's slot + the reserve rows' same slot; a row: its units)
+# The struck cells' rects as the smack starts (FX.F reads them then too), found as FX.F's raidSmackFx finds them (a column: your front row's slot + the reserve rows' same slot; a row: its units)
 CELLS = """(ev)=>{ const all = [...document.querySelectorAll('#rowMine > .board-card')], res = [...document.querySelectorAll('#battlefieldInner .reserve-row.mine')];
   let cells;
   if(ev.kind === 'row'){ const c = all.filter(e=> e.querySelector('.card-tile')); cells = c.length ? c : all; }
   else { const i = Math.max(0, Math.min(all.length - 1, (ev.col|0) + Math.floor(all.length/2))); cells = [all[i]].concat(res.map(r=> r.querySelectorAll(':scope > .board-card')[i])).filter(Boolean); }
-  window.__tfCells = cells; return cells.length; }"""
+  window.__tfCellRects = cells.map(x=> x.getBoundingClientRect()).map(r=> ({l:r.left, t:r.top, r:r.right, b:r.bottom, w:r.width, h:r.height})); return cells.length; }"""
 
 async def open_raid(b, w, h, phone, reduced):
     ctx = await b.new_context(viewport={'width': w, 'height': h}, has_touch=phone, is_mobile=phone, device_scale_factor=2 if phone else 1,
@@ -157,12 +158,13 @@ async def main():
                 if not check(await pg.evaluate("!!(matchState && matchState.raidFull)"), f'{tag}: the raid fight opened'):
                     await ctx.close(); continue
                 for kind in ('column', 'row'): await smack(pg, tag, kind, w, h, reduced)
-                if not phone and not reduced and (w, h) == SIZES[0]:  # the whole path: a real round whose upkeep smacks a column
+                if True:  # the whole path: a real round whose upkeep smacks a column (its board redraw and round-start events around it)
                     await pg.evaluate("try{ gsap.globalTimeline.resume(); }catch(e){} matchState.round = 2; matchState.raidPending = {}; 1")
-                    await pg.evaluate(ARM, False)
+                    await pg.evaluate("window.__tfCellRects = []; 1"); await pg.evaluate(ARM, False)
                     await pg.evaluate("resolveRound(); 1")
-                    at = await wait_impact(pg, 15000)
-                    check(at is not None and at['box'] is not None and at['op'] > .3 and not at['d']['horizontal'], f'{tag}: a real round\'s column smack draws the tentacle ({at and at["box"]})')
+                    at = await wait_impact(pg, 60000)
+                    check(at is not None and at['box'] is not None and at['box']['h'] > 20 and at['op'] > .3 and not at['d']['horizontal'], f'{tag}: a real round\'s column smack draws the tentacle ({at and at["box"]}, opacity {at and at["op"]})')
+                    if at and at['box']: check(await drawn_ratio(pg, at['box'], w, h) >= .08, f'{tag}: ...and paints it')
                     if at and SHOTS: await pg.evaluate(FRAMES); await pg.screenshot(path=os.path.join(ROOT, SHOTS, f'{tag}-round.png'), animations='allow')
                     await pg.evaluate("try{ gsap.globalTimeline.resume(); }catch(e){} 1"); await pg.wait_for_timeout(1500)
                 check(not errs, f'{tag}: no page errors {errs[:3]}')
