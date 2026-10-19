@@ -39277,11 +39277,18 @@ function cleavePlan(events, i){
     if(mi >= 0 && cleaveIsSide(e)){ ri = j; break; } }
   return mi < 0 ? null : {mi, ri};
 }
+// 2026-10-19 (package BU, owner on an iPhone: "Cleave doesn't look so nice on mobile. Also, it is not centered."): the swing's three
+// points are the target's column and its two neighbours IN THE TARGET'S ROW, read from that row's own cells (their screen rects).
+// A side event's target is used only when it stands in that same row: a Confused cleaver's side blow lands on its OWN row (its ally
+// beside it), which put the crescent's end in the other row and drew a huge loop from the bottom-left corner across the board.
 function cleaveSlots(evL, evM, evR){
   const Mel = evM && boardCardEl(evM.targetUid); if(!Mel) return null;
-  const c = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width}; };
-  const mc = c(Mel), sib = d=>{ const e = d < 0 ? Mel.previousElementSibling : Mel.nextElementSibling; return e && e.classList.contains('board-card') ? e : null; };
-  const side = (ev, d)=>{ const el = (ev && ev.targetUid!=null && boardCardEl(ev.targetUid)) || sib(d); if(el){ const p = c(el); if(p.w > 4) return p; } return {x:mc.x + d*(mc.w + 12), y:mc.y, w:mc.w}; };
+  const c = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height}; };
+  const mc = c(Mel), row = Mel.parentElement, sib = d=>{ const e = d < 0 ? Mel.previousElementSibling : Mel.nextElementSibling; return e && e.classList.contains('board-card') ? e : null; };
+  const side = (ev, d)=>{ const t = ev && ev.targetUid!=null ? boardCardEl(ev.targetUid) : null;
+    const el = (t && t.parentElement === row) ? t : sib(d);
+    if(el){ const p = c(el); if(p.w > 4 && Math.abs(p.y - mc.y) < mc.h*0.5) return p; }
+    return {x:mc.x + d*(mc.w + 8), y:mc.y, w:mc.w, h:mc.h}; };
   return [side(evL, -1), mc, side(evR, 1)];
 }
 // When a hit/evade's blow lands on screen, ms after its event starts (mirrors renderVfxForEvent's impactDelay). 2026-10-15
@@ -40187,7 +40194,8 @@ function fxEnv(){
   };
 }
 function fxBatchVfx(ev){
-  const FX = window.FX; if(!FX || !ev || reducedMotion() || fxLevel() === 'none') return;
+  // 2026-10-19 (package BU): the raid boss's smack still shows under reduced motion, as a flash on the struck cards (FX.F)
+  const FX = window.FX; if(!FX || !ev || (reducedMotion() && ev.type !== 'raidSmack') || fxLevel() === 'none') return;
   let env = null;
   FX_BATCHES.forEach(k=>{ const M = FX[k]; if(!M || typeof M.onEvent !== 'function') return;
     try{ M.onEvent(ev, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.onEvent', e); } });
