@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "레이드가 쓰러지면 보상 증가.",
  "a card": "카드",
  "A card dropped for winning the raid": "레이드 승리로 떨어진 카드",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "둘 다 맞으면 통과: 능력치 (2×공격 + 체력 + 스킬) < N, 곱 (공격 × 체력 + 스킬) < (N/3)². 레벨은 카드의 시작 레벨입니다 (기본·퀘스트 카드 0, 보상 1).",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "둘 다 맞으면 통과: 능력치 (2×공격 + 체력 + 스킬) ≤ N, 곱 (공격 × 체력 + 스킬) ≤ (N/3)². 레벨은 카드의 시작 레벨입니다 (기본·퀘스트 카드 0, 보상 1).",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "고추를 하나 더 먹은 다람쥐. 공격하는 상대에게 불길을 내뿜습니다.",
  "A cleared Spire floor: free to fight again, no reward.": "이미 깬 탑 층: 무료로 다시 싸울 수 있지만 보상은 없어요.",
  "A deck is exactly {DECK_SIZE} cards.": "덱은 정확히 {DECK_SIZE}장이에요.",

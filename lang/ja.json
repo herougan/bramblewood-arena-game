@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "レイドが倒れたときの報酬が増える。",
  "a card": "カード",
  "A card dropped for winning the raid": "レイド勝利でドロップしたカード",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "両方を満たせば合格：ステータス (2×攻撃 + 体力 + スキル) < N、積 (攻撃 × 体力 + スキル) < (N/3)²。レベルはカードの開始レベル（ベース・クエストカードは0、報酬は1）。",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "両方を満たせば合格：ステータス (2×攻撃 + 体力 + スキル) ≤ N、積 (攻撃 × 体力 + スキル) ≤ (N/3)²。レベルはカードの開始レベル（ベース・クエストカードは0、報酬は1）。",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "唐辛子を一本食べすぎたシマリス。攻撃する相手に炎を吹きかけます。",
  "A cleared Spire floor: free to fight again, no reward.": "クリア済みの塔の階：無料で再挑戦できるが、報酬なし。",
  "A deck is exactly {DECK_SIZE} cards.": "デッキはちょうど{DECK_SIZE}枚です。",

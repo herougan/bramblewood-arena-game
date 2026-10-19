@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "Una recompensa mayor cuando cae un asalto.",
  "a card": "una carta",
  "A card dropped for winning the raid": "Una carta obtenida por ganar el asalto",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "Una carta pasa si se cumplen ambas: Estadísticas (2×Ataque + Vida + Habilidades) < N y Producto (Ataque × Vida + Habilidades) < (N/3)². El nivel es el inicial de la carta (cartas base y de misión 0, recompensas 1).",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "Una carta pasa si se cumplen ambas: Estadísticas (2×Ataque + Vida + Habilidades) ≤ N y Producto (Ataque × Vida + Habilidades) ≤ (N/3)². El nivel es el inicial de la carta (cartas base y de misión 0, recompensas 1).",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "Una ardilla que comió un chile de más. Lanza un chorro de fuego a todo lo que ataca.",
  "A cleared Spire floor: free to fight again, no reward.": "Un piso de la Aguja ya superado: gratis repetirlo, sin recompensa.",
  "A deck is exactly {DECK_SIZE} cards.": "Un mazo tiene exactamente {DECK_SIZE} cartas.",

@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "突袭首领倒下时奖励更多。",
  "a card": "一张卡",
  "A card dropped for winning the raid": "赢得突袭掉落的卡牌",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "两项都满足时卡牌通过：属性 (2×攻击 + 生命 + 技能) < N，乘积 (攻击 × 生命 + 技能) < (N/3)²。等级为卡牌的起始等级（基础卡和任务卡为 0，奖励卡为 1）。",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "两项都满足时卡牌通过：属性 (2×攻击 + 生命 + 技能) ≤ N，乘积 (攻击 × 生命 + 技能) ≤ (N/3)²。等级为卡牌的起始等级（基础卡和任务卡为 0，奖励卡为 1）。",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "一只多吃了一颗辣椒的花栗鼠。它会对攻击目标喷出一道火焰。",
  "A cleared Spire floor: free to fight again, no reward.": "已通关的高塔楼层：可免费再战，没有奖励。",
  "A deck is exactly {DECK_SIZE} cards.": "一套卡组正好 {DECK_SIZE} 张卡。",

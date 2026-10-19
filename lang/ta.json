@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "படையெடுப்பு வீழும்போது பெரிய வெகுமதி.",
  "a card": "ஓர் அட்டை",
  "A card dropped for winning the raid": "படையெடுப்பை வென்றதற்குக் கிடைத்த அட்டை",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "இரண்டும் உண்மையானால் அட்டை தேறும்: புள்ளிகள் (2×தாக்குதல் + உயிர் + திறன்கள்) < N, பெருக்கம் (தாக்குதல் × உயிர் + திறன்கள்) < (N/3)². நிலை என்பது அட்டை தொடங்கும் நிலை (அடிப்படை, தேடல் அட்டைகள் 0, பரிசுகள் 1).",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "இரண்டும் உண்மையானால் அட்டை தேறும்: புள்ளிகள் (2×தாக்குதல் + உயிர் + திறன்கள்) ≤ N, பெருக்கம் (தாக்குதல் × உயிர் + திறன்கள்) ≤ (N/3)². நிலை என்பது அட்டை தொடங்கும் நிலை (அடிப்படை, தேடல் அட்டைகள் 0, பரிசுகள் 1).",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "ஒரு மிளகாய் அதிகமாகத் தின்ற அணில். அது தாக்கும் எதன் மீதும் நெருப்பைக் கக்கும்.",
  "A cleared Spire floor: free to fight again, no reward.": "ஏற்கெனவே வென்ற கோபுரத் தளம்: இலவசமாக மீண்டும் போரிடலாம், வெகுமதி இல்லை.",
  "A deck is exactly {DECK_SIZE} cards.": "ஒரு அடுக்கில் சரியாக {DECK_SIZE} அட்டைகள் இருக்கும்.",

@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "Mas malaking gantimpala kapag bumagsak ang raid.",
  "a card": "isang card",
  "A card dropped for winning the raid": "Card na nakuha sa pagkapanalo sa raid",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "Pasado ang card kapag totoo ang dalawa: Stats (2×Atake + Buhay + Skill) < N at Product (Atake × Buhay + Skill) < (N/3)². Ang Level ay ang simulang level ng card (Base at quest card 0, gantimpala 1).",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "Pasado ang card kapag totoo ang dalawa: Stats (2×Atake + Buhay + Skill) ≤ N at Product (Atake × Buhay + Skill) ≤ (N/3)². Ang Level ay ang simulang level ng card (Base at quest card 0, gantimpala 1).",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "Isang chipmunk na nakakain ng isang siling sobra. Bumubuga ito ng apoy sa anumang inaatake nito.",
  "A cleared Spire floor: free to fight again, no reward.": "Natapos nang palapag ng Tore: libreng ulitin, walang gantimpala.",
  "A deck is exactly {DECK_SIZE} cards.": "Eksaktong {DECK_SIZE} card ang isang deck.",

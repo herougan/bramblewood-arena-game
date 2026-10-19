@@ -20,7 +20,7 @@
  "A bigger reward when a raid falls.": "Hadiah lebih besar saat raid tumbang.",
  "a card": "sebuah kartu",
  "A card dropped for winning the raid": "Kartu yang didapat karena memenangkan raid",
- "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "Kartu lolos bila keduanya terpenuhi: Stat (2×Serangan + Nyawa + Skill) < N dan Hasil kali (Serangan × Nyawa + Skill) < (N/3)². Level adalah level awal kartu (kartu dasar dan misi 0, hadiah 1).",
+ "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).": "Kartu lolos bila keduanya terpenuhi: Stat (2×Serangan + Nyawa + Skill) ≤ N dan Hasil kali (Serangan × Nyawa + Skill) ≤ (N/3)². Level adalah level awal kartu (kartu dasar dan misi 0, hadiah 1).",
  "A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.": "Tupai yang kebanyakan makan cabai. Ia menyemburkan api ke apa pun yang diserangnya.",
  "A cleared Spire floor: free to fight again, no reward.": "Lantai Menara yang sudah dituntaskan: gratis dilawan lagi, tanpa hadiah.",
  "A deck is exactly {DECK_SIZE} cards.": "Satu dek berisi tepat {DECK_SIZE} kartu.",

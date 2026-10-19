@@ -12,7 +12,7 @@
 //   he offered at 13:54), levelDiv 30;
 //   N(0) = Base − zeroPenalty (1)
 //   v4 (09:52) was (Base − 1 + L) × (1 + L/20), v3 Base + 2L. At Level 1 v5 (L/10) is Base × 31/30 + 0.10 (Base 21: 21.80; v3 23, v4 22.05).
-//   The rules are v3's: 2A+H+S < N and A·H+S < (N/3)², both ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind: about half
+//   The rules: 2A+H+S ≤ N and A·H+S ≤ (N/3)² (inclusive since 16:22, "it's fine to be = to budget"), both ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind: about half
 //   the attacks at the card miss, so its stats count half again).
 //
 // The Forge curve (owner 09:52: "change majors to 4, 7, 10, minor to 2. Then divvy out strength updates at all levels. If there is no

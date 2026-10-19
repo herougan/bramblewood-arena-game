@@ -50,7 +50,7 @@ for(const c of withStats){
   for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
     if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
     if([4, 7, 10].includes(L) && !(r.points > 0)) majors.push(`${c.id} Lv ${L}`);
-    const inside = b0.ok ? room1(L) > 1e-9 && room2(L) > 1e-9 : room1(L) >= room1(from) - cv.m - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
+    const inside = b0.ok ? room1(L) >= -1e-9 && room2(L) >= -1e-9 /* inclusive (16:22) */ : room1(L) >= room1(from) - cv.m - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
     if(!inside) budget.push(`${c.id} Lv ${L} (2A+H+S ${(2 * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
     if(!c.levelStats){ const st = G.statsAtLevel(c, L); if(st.attack !== r.attack || st.health !== r.health) game.push(`${c.id} Lv ${L}`); } }
   if(c.attack === 0 && Object.values(cv.rows).some(r=> r.attack !== 0)) walls.push(c.id);

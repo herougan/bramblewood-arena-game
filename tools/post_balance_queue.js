@@ -24,7 +24,7 @@ function build(){
   const prev = JSON.parse(JSON.stringify(table)); KINDS.forEach(k=> (prev[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));
   const T = SC.make(table), P = SC.make(prev), skip = new Set(OVER_OK);
   const queue = cards.filter(c=> SC.measured(c) && !skip.has(c.id)).map(c=> ({c, b: T.budget(c), p: P.budget(c)})).filter(x=> !x.b.ok).map(({c, b, p})=>{
-    const over1 = r2(b.x1 - b.N), over2 = r2(b.x2 - b.N2), rules = [over1 >= 0 && '2A+H+S', over2 >= 0 && 'A*H+S'].filter(Boolean);
+    const over1 = r2(b.x1 - b.N), over2 = r2(b.x2 - b.N2), rules = [over1 > 0 && '2A+H+S', over2 > 0 && 'A*H+S'].filter(Boolean);
     return {id: c.id, name: c.name, rarity: c.rarity, attack: c.attack || 0, health: c.health || 0, wait: c.wait || 0, cost: c.cost || 0,
       pool: !!c.pool, source: c.source ? [c.source.kind, c.source.id, c.source.node].filter(Boolean).join(':') : null,
       sBefore: p.S, sAfter: b.S, sLegacy: SC.legacyS(c.effects), passedBefore: p.ok,
@@ -33,7 +33,7 @@ function build(){
   }).sort((a, z)=> Math.max(z.overBy.x1, z.overBy.x2 / z.N2 * z.N) - Math.max(a.overBy.x1, a.overBy.x2 / a.N2 * a.N));
   const applied = KINDS.reduce((n, k)=> n + (table[k] || []).filter(e=> e.appliedAt).length, 0);
   return {
-    _about: 'Cards over the stat budget (v5 since 2026-10-19 13:52, package BF2: N = (Base + L/5) x (1 + L/30), Level 0 Base - 1, at the level the card starts at) under the applied measured skill costs (canonical/skill-costs.json, 2026-10-19). Not refit now: the owner\'s workflow (08:49) is thematic units -> he picks units per map -> a post-balance step applies skills and stats. Built by tools/post_balance_queue.js; tests accept these ids as known-over-budget. Rules: a card passes when x1 = (2A+H+S) x missMult < N and x2 = (A*H+S) x missMult < (N/3)^2 = N2; overBy is x - limit (>= 0 fails). sBefore = S with every applied entry at its prevValue.',
+    _about: 'Cards over the stat budget (v5 since 2026-10-19 13:52, package BF2: N = (Base + L/5) x (1 + L/30), Level 0 Base - 1, at the level the card starts at) under the applied measured skill costs (canonical/skill-costs.json, 2026-10-19). Not refit now: the owner\'s workflow (08:49) is thematic units -> he picks units per map -> a post-balance step applies skills and stats. Built by tools/post_balance_queue.js; tests accept these ids as known-over-budget. Rules (inclusive since 2026-10-19 16:22): a card passes when x1 = (2A+H+S) x missMult <= N and x2 = (A*H+S) x missMult <= (N/3)^2 = N2; overBy is x - limit (> 0 fails). sBefore = S with every applied entry at its prevValue.',
     version: '2026-10-19', table: {version: table.version, appliedEntries: applied}, ownerCall: OVER_OK, count: queue.length, cards: queue};
 }
 

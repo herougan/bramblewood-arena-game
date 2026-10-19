@@ -115,7 +115,7 @@ const Q = JSON.parse(rd('docs/balance/post-balance-queue.json')), QB = require(p
 ok(JSON.stringify(Q.cards.map(c=> c.id).sort()) === JSON.stringify(QB.cards.map(c=> c.id).sort()) && Q.count === Q.cards.length, `the post-balance queue is current (${Q.count} in the file, ${QB.count} from the table): run node tools/post_balance_queue.js`);
 // 2026-10-19 (package BF2): budget v5's N at Level 1 is a little under v4's for some cards, so a few queued cards (Great Gate, Colony) fail
 // even under prevValue: the formula put them over, the new costs only further
-ok(Q.cards.every(c=> c.sAfter > c.sBefore && (c.overBy.x1 >= 0 || c.overBy.x2 >= 0)) && Q.cards.filter(c=> !c.passedBefore).length <= 3, `every queued card costs more now and is over by its recorded margin; most passed under prevValue (${Q.cards.filter(c=> !c.passedBefore).map(c=> c.id).join(', ') || 'all'} over under the formula alone)`);
+ok(Q.cards.every(c=> c.sAfter > c.sBefore && (c.overBy.x1 > 0 || c.overBy.x2 > 0)) && Q.cards.filter(c=> !c.passedBefore).length <= 3, `every queued card costs more now and is over by its recorded margin; most passed under prevValue (${Q.cards.filter(c=> !c.passedBefore).map(c=> c.id).join(', ') || 'all'} over under the formula alone)`);
 
 // 5. the balance tool and the browser build
 const cb = rd('tools/card_balance.js');

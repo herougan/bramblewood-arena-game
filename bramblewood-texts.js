@@ -402,7 +402,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.budget-formula": "N = (Base + Level/{lin}) × (1 + Level/{div}); Level 0: Base − {zero}. Base = {base} + Rarity + {w}×Wait + {w2}×Wait² + {l}×Lumber + {l2}×Lumber² + Ritual + {mc}×Map.",
   "ui.budget-pink": "(pink: under {pct}% of N)",
   "ui.budget-pink-tip": "Pink: the Stats score is at or below {pct}% of N, so the card has room to grow.",
-  "ui.budget-lab-intro": "A card passes when both hold: Stats (2×Attack + Health + Skills) < N and Product (Attack × Health + Skills) < (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).",
+  "ui.budget-lab-intro": "A card passes when both hold: Stats (2×Attack + Health + Skills) ≤ N and Product (Attack × Health + Skills) ≤ (N/3)². Level is the level the card starts at (Base and quest cards 0, rewards 1).",
   "ui.budget-lab-miss": "Both scores × {m} for each skill that makes about half the attacks at a card miss ({skills}); those skills cost 0.",
   "ui.forge-curve-title": "📈 What each level gives",
   "ui.forge-curve-help": "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.",
