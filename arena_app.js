@@ -23470,7 +23470,7 @@ function openRaidEditor(raidId){
         <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
         <label>Kill: XP<input id="reKXp" type="number" min="0" max="5000" value="${rw.xp != null ? rw.xp : 500}"></label>
         <label title="Reward cards (from the pack pools, now and then a faction card) a participant gets when it falls (the top 10% one more). 2026-10-19 (package RC): never the raid's own cards">Kill: reward cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
-        <label title="2026-10-19 (package RC): the raid's trophy shards a participant gets when it falls, before the Competent / Leading boost and their extras (the Forge's Raid tab crafts its cards from them)">Kill: trophy shards<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
+        <label title="2026-10-19 (package RC): the raid's trophy shards a participant gets at least when it falls (package MX: 1 a fight played when that is more; x2 Competent, x5 Leading; the Forge's Raid tab crafts its cards from them)">Kill: trophy shards (at least)<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
         <label title="If it survives: this % of the general rewards (Gold, Dust, Metal, XP)">Held: general %<input id="reComp" type="number" min="0" max="100" value="${rw.failPct != null ? rw.failPct : 50}"></label>
         <label title="If it survives: the raid's own rewards (cards, tier extras) at most this %, scaled by how much of its Health went">Held: raid rewards max %<input id="reFailSpec" type="number" min="0" max="100" value="${rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}"></label>
         ${['top1','top10','top50','participant'].map(tierRow).join('')}
@@ -43688,7 +43688,7 @@ function forgeRaidHTML(){
   const order = id=> RARITY_TIER_BANDS.indexOf((defs[id] || {}).rarity || 'common');
   return `<div class="panel forge-raid">${raids.map(raid=>{
     const ids = raidCardIds(raid).sort((a, b)=> order(a) - order(b) || String(defs[a].name).localeCompare(String(defs[b].name)));
-    const tb = RaidM.RAID_REWARD_TABLE || {}, p = (tb.participant || {}).shards || 0, l = Math.round(p * 1.4) + ((tb.leading || {}).extraShards || 0);
+    const tb = RaidM.RAID_REWARD_TABLE || {}, p = ((raid.rewards || {}).shards != null ? Number(raid.rewards.shards) : (tb.participant || {}).shards) || 0, l = p * ((tb.leading || {}).shardMult || 1); // 2026-10-19 (package MX): 1 a fight, at least the base; x2 / x5
     return `<section class="fr-raid" aria-label="${escapeAttr(raid.name || raid.id)}">
       <div class="fr-head"><h3>${escapeHtml(raid.icon || '🐙')} ${escapeHtml(raid.name || raid.id)}</h3>
         <span class="forge-coin fr-shards" title="${escapeAttr(raidShardName(raid))}">${escapeHtml(TX('ui.rc-shards-count', {icon: raidShardIcon(raid), n: raidShardsOf(raid.id), name: raidShardName(raid)}))}</span></div>
