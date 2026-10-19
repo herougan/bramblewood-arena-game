@@ -18,6 +18,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'k2-harvest2': U('k2-harvest2', {harvest:2}, {attack:3}),
   'k2-scav':    U('k2-scav', {scavenge:1}),
   'k2-scav2':   U('k2-scav2', {scavenge:1, scavengeEvery:2}),
+  'k2-salv':    U('k2-salv', {salvage:1}),
   'k2-repair':  U('k2-repair', {repair:2}),
   'k2-repair5': U('k2-repair5', {repair:5}),
   'k2-struct':  U('k2-struct', {}, {health:20, archetypes:['Structure']}),
@@ -93,14 +94,33 @@ const sk2Ev = (ev, kind)=> ev.filter(x=> x.type === 'sk2' && x.kind === kind);
 { const {e, P} = mk(); const F = put(e, P, 1, 'k2-forage', 0); put(e, P, 1, 'k2-wall', 1); for(let i = 0; i < 5; i++) round(e, P); ok(F.sk2Berries === 3, `nobody hurt: it keeps 3 Berries (${F.sk2Berries})`); }
 { const {e, P} = mk(1, {foragingBerries:2, foragingN:7}); const F = put(e, P, 1, 'k2-forage', 0), A = put(e, P, 1, 'k2-wall', 1); A.hp = 400; round(e, P); round(e, P); ok(A.hp === 407 && F.sk2Berries === 0, 'opts.sk2 foragingBerries 2 / foragingN 7'); }
 
-// ---- 5. Milling N: N Lumber a turn once Ready; it still attacks (SK2.millingAttacks)
+// ---- 5. Milling N: the trigger layer's On Turn Start × Gain N Lumber, each turn while Ready; it still attacks (SK2.millingAttacks)
 { const {e, P} = mk(); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 2; const W = put(e, P, 2, 'k2-wall', 0);
   round(e, P); ok(P[1].lumber === 0 && M.wait === 1, `still Waiting: no Lumber (${P[1].lumber})`);
-  round(e, P); ok(P[1].lumber === 2 && M.wait === 0, `the upkeep its Wait runs out: +2 (${P[1].lumber})`);
-  const ev = round(e, P); ok(P[1].lumber === 4 && W.hp === 497 && ev.some(x=> x.type === 'lumber' && x.cause === 'milling' && x.amount === 2), `Ready: +2 a turn, and it still swings (${P[1].lumber}, wall ${W.hp})`); }
+  round(e, P); ok(P[1].lumber === 0 && M.wait === 0, `its Wait runs out at this upkeep (${P[1].lumber})`);
+  const ev = round(e, P); ok(P[1].lumber === 2 && W.hp === 497 && ev.some(x=> x.type === 'lumber' && x.uid === M.uid && x.amount === 2), `Ready: +2 at its turn's start, and it still swings (${P[1].lumber}, wall ${W.hp})`);
+  round(e, P); ok(P[1].lumber === 4, `+2 every turn (${P[1].lumber})`); }
 { const {e, P} = mk(1, {millingAttacks:false}); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; const W = put(e, P, 2, 'k2-wall', 0); const ev = round(e, P);
   ok(W.hp === 500 && P[1].lumber === 2 && ev.some(x=> x.type === 'skipTurn' && x.reason === 'milling'), 'opts.sk2.millingAttacks false: the mill holds its swing'); }
-{ const {e, P} = mk(); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; M.stunned = 2; round(e, P); ok(P[1].lumber === 0, 'a mill still Stunned at the upkeep makes nothing that turn'); }
+{ const {e, P} = mk(); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; M.stunned = 2; round(e, P); ok(P[1].lumber === 0, 'a Stunned mill makes nothing that turn (its trigger is off)'); }
+{ const {e, P} = mk(1, {millingN:3}); defs['k2-mill'].effects.milling = true; const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; round(e, P); defs['k2-mill'].effects.milling = 2;
+  ok(P[1].lumber === 3, `opts.sk2.millingN 3: Milling with no number mills 3 (${P[1].lumber})`); }
+ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'lumber', amount:numN\(e\.milling, SK2\.millingN\), keyword:'milling'\}\)/.test(R('bramblewood-engine.js')), 'Milling is expressed in the trigger layer (trigsOf: perTurn × gain)');
+
+// ---- 5b. Salvage N, M (owner 21:56): Scavenge for Structures, paid in Stone; Petrified Tree: perTurn × Gain Stone
+{ const {e, P} = mk(); const S = put(e, P, 1, 'k2-salv', 0); const s1 = put(e, P, 2, 'k2-struct', 1), s2 = put(e, P, 1, 'k2-struct', -1), s3 = put(e, P, 2, 'k2-struct', 0), u = put(e, P, 2, 'k2-wall', -1), far = put(e, P, 1, 'k2-struct', 3);
+  e.debugDamage(P, so, u.uid, 9999, {}, []); e.debugDamage(P, so, far.uid, 9999, {}, []); ok(!(S.sk2Salvage > 0), `a plain unit's death, or a far structure's, gives nothing (${S.sk2Salvage||0})`);
+  e.debugDamage(P, so, s1.uid, 9999, {}, []); e.debugDamage(P, so, s2.uid, 9999, {}, []); ok(S.sk2Salvage === 2 && !(P[1].stone > 0), `two nearby structures: 2 points (${S.sk2Salvage})`);
+  const ev = []; e.debugDamage(P, so, s3.uid, 9999, {}, ev); ok(S.sk2Salvage === 0 && P[1].stone === 1 && P[1].lumber === 0, `the 3rd becomes 1 Stone (${P[1].stone} Stone, ${P[1].lumber} Lumber)`);
+  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'sk2Salvage' && x.gain === 1 && x.res === 'stone'), 'a statusFx sk2Salvage with the Stone'); }
+{ const {e, P} = mk(1, {salvageEvery:1, salvageStone:2}); put(e, P, 1, 'k2-salv', 0); const s1 = put(e, P, 2, 'k2-struct', 0); e.debugDamage(P, so, s1.uid, 9999, {}, []); ok(P[1].stone === 2, 'opts.sk2 salvageEvery / salvageStone'); }
+{ const cards = JSON.parse(R('canonical/cards.json')), pt = cards[cards.length - 1];
+  ok(pt && pt.id === 'petrified-tree' && (pt.archetypes||[]).includes('Structure') && !pt.source && pt.attack === 0, 'Petrified Tree: the last card of cards.json, a Structure, no source yet');
+  const t = (pt.effects.triggers||[])[0]; ok(t && t.on === 'perTurn' && t.do === 'gain' && t.resource === 'stone' && t.amount === 1, 'its Stone is the trigger layer: On Turn Start × Gain 1 Stone');
+  const d2 = Object.assign({}, defs, {'petrified-tree': Object.assign({effects:{}}, pt)}); const e = E.makeSimEngine(d2, E.mulberry32(1), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1, {}), 2:e.newPlayer(2, {})};
+  const T = put(e, P, 1, 'petrified-tree', 0); T.wait = 0; round(e, P); round(e, P); ok(P[1].stone === 2 && P[1].lumber === 0, `a Ready Petrified Tree: 1 Stone a turn (${P[1].stone})`);
+  const SC = require('../tools/skill_costs.js'), Tb = SC.make(JSON.parse(R('canonical/skill-costs.json'))), b = Tb.budget(pt);
+  ok(b.ok && pt.cost >= 5 && pt.wait >= 3, `inside its budget at a high cost (Lumber ${pt.cost}, Wait ${pt.wait}; 2A+H+S ${b.x1} / N ${b.N})`); }
 
 // ---- 6. Pickpocket N: counters off the unit it hits (not debuffs); on the bramble, resources lowest rank first
 { const {e, P} = mk(); const T = put(e, P, 1, 'k2-thief', 0), V = put(e, P, 2, 'k2-wall', 0); V.prayerTokens = 1; V.sk2Berries = 2; V.poison = 3; const ev = []; e.debugAttack(P, so, T.uid, {}, ev);

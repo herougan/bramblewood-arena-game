@@ -320,6 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -1239,6 +1240,36 @@ function giHunterParts(v, e){ const vs = e && e.hunter ? e.hunterVs : (Array.isA
   return {vs: GI_HUNTER_VS.includes(vs) ? vs : 'poison', n}; }
 function giHunterText(v, e){ const h = giHunterParts(v, e); return GI_HUNTER_TX[h.vs](h.n); }
 function giHunterHead(p, e){ const h = giHunterParts(null, e); return `${p.label} ${h.n} (${GI_HUNTER_WORD[h.vs]()})`; }
+// ---- Package SK2 (2026-10-19, owner 21:36): the economy and structure skills (rules: the SK2 block in bramblewood-engine.js). Their
+// numbers come from the engine's SK2_DEFAULTS (the fallbacks below are the same values, for a page or sandbox without the engine).
+// On no card yet. The Skills chapter of the Codex book and the keyword registry read PASSIVE_DEFS, so they list them too.
+const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
+  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
+const sk2Num = (v, k)=> numOr(v, SK2_UI[k]);
+const sk2ScavengeEvery = e=> (e && Number(e.scavengeEvery) >= 1) ? Math.round(Number(e.scavengeEvery)) : SK2_UI.scavengeEvery;
+const sk2RepairBramble = n=> Math.max(1, Math.floor(n * SK2_UI.repairBrambleRate));
+const SK2_LINE = {
+  harvest: v=> TX('ui.sk2-harvest', {n: sk2Num(v, 'harvestLumber')}),
+  scavenge: (v, n, e)=> TX('ui.sk2-scavenge', {n: sk2Num(v, 'scavengeN'), m: sk2ScavengeEvery(e)}),
+  repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
+  foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
+  milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
+  pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
+  sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
+  arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
+  fortification: ()=> TX('ui.sk2-fortification', {a: SK2_UI.fortifyAtk, h: SK2_UI.fortifyHp}),
+};
+PASSIVE_DEFS.push(
+  {key:'harvest', category:'passive', label:TX('ui.sk2n-harvest'), kind:'boolean', desc:v=> SK2_LINE.harvest(v), codexNote:TX('ui.sk2-harvest-codex')},
+  {key:'scavenge', category:'passive', label:TX('ui.sk2n-scavenge'), kind:'number', min:1, defaultValue:SK2_UI.scavengeN, desc:(v, n, e)=> SK2_LINE.scavenge(v, n, e), codexNote:TX('ui.sk2-scavenge-codex'), get:e=> e.scavenge ? sk2Num(e.scavenge, 'scavengeN') : undefined},
+  {key:'repair', category:'passive', label:TX('ui.sk2n-repair'), kind:'number', min:1, defaultValue:SK2_UI.repairN, desc:v=> SK2_LINE.repair(v), codexNote:TX('ui.sk2-repair-codex'), get:e=> e.repair ? sk2Num(e.repair, 'repairN') : undefined},
+  {key:'foraging', category:'passive', label:TX('ui.sk2n-foraging'), kind:'number', min:1, defaultValue:SK2_UI.foragingN, desc:v=> SK2_LINE.foraging(v), codexNote:TX('ui.sk2-foraging-codex'), get:e=> e.foraging ? sk2Num(e.foraging, 'foragingN') : undefined},
+  {key:'milling', category:'passive', label:TX('ui.sk2n-milling'), kind:'number', min:1, defaultValue:SK2_UI.millingN, desc:v=> SK2_LINE.milling(v), codexNote:TX('ui.sk2-milling-codex'), get:e=> e.milling ? sk2Num(e.milling, 'millingN') : undefined},
+  {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
+  {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
+  {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
+  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'boolean', desc:()=> SK2_LINE.fortification(), codexNote:TX('ui.sk2-fortification-codex')},
+);
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
@@ -2446,6 +2477,7 @@ Object.assign(SKILL_TEXT, {
   prayerWard: v=> TX('ui.sk-prayer-ward', {n: numOr(v, 1)}),
   fieldBreaker: v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}),
 });
+Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
 // Amore's state on a live unit (2026-10-16): 'love' (paired), 'broken' (partner gone) or 'single'.
@@ -7311,6 +7343,7 @@ function triggerBadges(d, live){
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
+CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
