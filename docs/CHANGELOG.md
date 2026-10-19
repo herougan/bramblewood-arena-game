@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package BU: battle UI fixes from the owner's iPhone, 12:23)
+- **You can always play in the centre column.** Root cause: the engine's `legalSlots` only offered a slot beside one of your live units, so a row thinned or pushed to one side (units at 2..4) could not play the empty centre. The centre (slot 0) is now legal whenever it is empty; every other slot still needs a neighbour. The CPU follows the same rule, so it fills an empty centre first too (`tests/golden/card-matrix.json` re-accepted: 22 open-mode matches changed, all from this rule).
+- **The centre column is always on screen, in the middle when it's cheap.** MB2b's phone window framed only the units' span plus one (units at 2..4 framed 1..5, so the centre was off the frame). The window now always holds column 0, and it is centred on column 0 whenever that costs at most one more column (`MB2_CENTRE_SLACK`, -4..3 becomes -4..4). A row far off to one side keeps its tighter, off-centre window, so the cards stay bigger.
+- **Castle damage numbers sit in the middle of the HP bar they hit.** They used to pop where the bar's fill ends, at the far right of a healthy bar on a phone. They now use the bar's on-screen rect (`getBoundingClientRect`), so the board's camera can't skew them, and they don't drift sideways.
+- **Cleave is a crisp crescent on the target's row.**
+  - In the owner's screenshot the arc started at our row's empty left slot and ended on an enemy card. One side point had been read from an element in the other row, which drew a huge loop from the bottom-left corner. Side points now come only from the target's own row.
+  - The old stroke was 16 px wide, blurred, and bowed at least 34 px off the row. It is now a filled, tapered blade sized to the card, with a short trail behind its tip.
+  - The Effects Lab has a new variant F, "a stray point in the other row".
+- **Fast forward: 3× opens at Map 20, 4× at Map 40, 5× at Map 60.** These were Maps 2, 15 and 30. A locked speed is skipped in the cycle, and the button's tooltip lists the locks ("3×: Clear Map 20", TX `ui.speed-locked`, in all 12 packs) for maps that exist on the road. Admin Mode has every speed.
+- **The raid's Tentacle Smack, redrawn.** Owner: "I still can't see the tentacle strike".
+  - It is one drawn tentacle (inline SVG, no art file): a tapered violet limb with a pale rim and halo, so it reads on the Abyss's dark ground. It has a pink underside with suckers and a coiled tip, about one card wide.
+  - It slams down onto the column in 220 ms (a row smack lies across the row), squashes, shakes the struck cards and puffs smoke. Then it pulls back up and out while fading, in 350 ms.
+  - It is never clipped by the board frame. It shows from Low effects up, and with reduced motion it is a plain flash.
+  - It is in the Effects Lab (the row smack now has an inventory entry).
+- Tests: `tests/bu-2026-10-19.js` (speed gates, the centre rule, the framing window, static checks) and `tests/e2e/battle_ui_2026_10_19.py` (430 and 390 phones and 1366 desktop: the centre target, centred castle numbers, the Cleave box over the target, the speed cycle, tentacle frames). Before and after pictures are in `docs/screens/bu/`.
+
 ## 2026-10-19 (package MB2b: the field as big as the hand, the raid framed to its columns in use)
 - **The field is bigger, not the hand smaller** (follow-up to MB2: the field's cards were about 48 px against the hand's 75).
   - The camera frames the columns in use, plus one empty column on each side. That is at least 3 columns in a normal fight and 5 in a raid. Every unit counts, on both sides and in every row.
