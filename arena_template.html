@@ -5875,6 +5875,12 @@
   @media (max-width:700px){
     /* the hand, the castles, the decks and the Graveyard are the board's card size (75x93; 62x78 on a short phone) */
     #appWrap.in-match{--match-card-w:75px; --match-card-h:93px;}
+    /* 2026-10-19 (MB2b, the owner: the field's cards as large as the hand's, by making the field bigger): a phone's normal fight
+       sizes its board cards in JS (mb2FitPhoneBoard, --mb2-bw): the hand's size for the columns in use plus one each side, the
+       empty columns past them off the frame; every row the same columns and gap */
+    #appWrap.in-match:not(.mb2-raid) .battlefield{--match-card-w:var(--mb2-bw, 75px); --match-card-h:calc(var(--mb2-bw, 75px) * 1.25); padding-left:4px; padding-right:4px;}
+    #appWrap.in-match:not(.mb2-raid) #battlefieldInner > .board-row{gap:var(--mb2-gap, 4px) !important; --gapx:var(--mb2-gap, 4px); padding-left:2px !important; padding-right:2px !important;}
+    #appWrap.in-match:not(.mb2-raid) #battlefieldInner > .board-row > .board-card{width:var(--match-card-w) !important; flex-shrink:0; margin-left:0 !important;}
   }
   @media (max-width:700px) and (max-height:700px){
     #appWrap.in-match{--match-card-w:62px; --match-card-h:78px;}
@@ -5912,8 +5918,22 @@
   #appWrap.in-match.mb2-raid #battlefieldInner > .board-row > .board-card{width:var(--match-card-w) !important; flex-shrink:0; margin-left:0;}
   #appWrap.in-match.mb2-raid #battlefieldInner > #rowEnemy, #appWrap.in-match.mb2-raid #battlefieldInner > #rowMine{min-height:0 !important; height:calc(var(--match-card-h) + 12px) !important; padding-top:6px !important; padding-bottom:6px !important; margin:var(--mb2-rgap, 0px) 0 !important;}
   #appWrap.in-match.mb2-raid #battlefieldInner > .board-row.reserve-row.raid-rows{margin:calc(2px + var(--mb2-rgap, 0px)) 0 !important;}
-  /* the hand, castles, decks and Graveyard follow the raid board's card size (never under 65 px tall on a phone, 92 px on a computer) */
-  #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);}
+  /* the hand follows the raid board's card size (never under 81 px tall on a phone, its size before MB2, or 92 px on a computer);
+     2026-10-19 (MB2b): the enemy's row (castle, deck, the Environment cards) and, on a phone, your castle, deck and Graveyard are
+     a quarter smaller (--mb2-th), which gives the six rows their height */
+  #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);}
+  #appWrap.in-match.mb2-raid .bottom-play-row .hand-strip, #appWrap.in-match.mb2-raid .bottom-play-row #leaderWidgetWrap{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);}
+  @media (min-width:701px){ #appWrap.in-match.mb2-raid .bottom-play-row{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);} }
+  /* MB2b: on a phone the raid's fight controls sit in a 4-wide grid of two short lines inside the top row, not on a line of their own */
+  @media (max-width:700px){
+    #appWrap.in-match.mb2-raid .top-play-row{flex-wrap:nowrap;}
+    #appWrap.in-match.mb2-raid .top-right-stack{flex:none; margin-left:auto;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls{display:grid; grid-template-columns:repeat(4, auto); gap:3px; justify-items:stretch;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls .hud-opponent-tag{display:none;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls > .btn.small, #appWrap.in-match.mb2-raid #view-play .top-row-controls .settings-btn{height:26px; min-height:26px; min-width:26px; padding:0 4px; font-size:11.5px;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls .trc-lbl{display:none;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls .trc-ico{display:inline;}
+  }
   /* touch-and-hold on a card (MB2, owner: "i can't touch and hold to see the card detail"): no text selection, magnifier or iOS
      callout on a card or while a finger rests on one; the details a hold opened take a tap (it opens the full card page) */
   [data-defid]:not(input, textarea, select){-webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}

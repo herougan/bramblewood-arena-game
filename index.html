@@ -5921,6 +5921,12 @@
   @media (max-width:700px){
     /* the hand, the castles, the decks and the Graveyard are the board's card size (75x93; 62x78 on a short phone) */
     #appWrap.in-match{--match-card-w:75px; --match-card-h:93px;}
+    /* 2026-10-19 (MB2b, the owner: the field's cards as large as the hand's, by making the field bigger): a phone's normal fight
+       sizes its board cards in JS (mb2FitPhoneBoard, --mb2-bw): the hand's size for the columns in use plus one each side, the
+       empty columns past them off the frame; every row the same columns and gap */
+    #appWrap.in-match:not(.mb2-raid) .battlefield{--match-card-w:var(--mb2-bw, 75px); --match-card-h:calc(var(--mb2-bw, 75px) * 1.25); padding-left:4px; padding-right:4px;}
+    #appWrap.in-match:not(.mb2-raid) #battlefieldInner > .board-row{gap:var(--mb2-gap, 4px) !important; --gapx:var(--mb2-gap, 4px); padding-left:2px !important; padding-right:2px !important;}
+    #appWrap.in-match:not(.mb2-raid) #battlefieldInner > .board-row > .board-card{width:var(--match-card-w) !important; flex-shrink:0; margin-left:0 !important;}
   }
   @media (max-width:700px) and (max-height:700px){
     #appWrap.in-match{--match-card-w:62px; --match-card-h:78px;}
@@ -5958,8 +5964,22 @@
   #appWrap.in-match.mb2-raid #battlefieldInner > .board-row > .board-card{width:var(--match-card-w) !important; flex-shrink:0; margin-left:0;}
   #appWrap.in-match.mb2-raid #battlefieldInner > #rowEnemy, #appWrap.in-match.mb2-raid #battlefieldInner > #rowMine{min-height:0 !important; height:calc(var(--match-card-h) + 12px) !important; padding-top:6px !important; padding-bottom:6px !important; margin:var(--mb2-rgap, 0px) 0 !important;}
   #appWrap.in-match.mb2-raid #battlefieldInner > .board-row.reserve-row.raid-rows{margin:calc(2px + var(--mb2-rgap, 0px)) 0 !important;}
-  /* the hand, castles, decks and Graveyard follow the raid board's card size (never under 65 px tall on a phone, 92 px on a computer) */
-  #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);}
+  /* the hand follows the raid board's card size (never under 81 px tall on a phone, its size before MB2, or 92 px on a computer);
+     2026-10-19 (MB2b): the enemy's row (castle, deck, the Environment cards) and, on a phone, your castle, deck and Graveyard are
+     a quarter smaller (--mb2-th), which gives the six rows their height */
+  #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);}
+  #appWrap.in-match.mb2-raid .bottom-play-row .hand-strip, #appWrap.in-match.mb2-raid .bottom-play-row #leaderWidgetWrap{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);}
+  @media (min-width:701px){ #appWrap.in-match.mb2-raid .bottom-play-row{--match-card-h:var(--mb2-ch, 110px); --match-card-w:calc(var(--mb2-ch, 110px) * .8);} }
+  /* MB2b: on a phone the raid's fight controls sit in a 4-wide grid of two short lines inside the top row, not on a line of their own */
+  @media (max-width:700px){
+    #appWrap.in-match.mb2-raid .top-play-row{flex-wrap:nowrap;}
+    #appWrap.in-match.mb2-raid .top-right-stack{flex:none; margin-left:auto;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls{display:grid; grid-template-columns:repeat(4, auto); gap:3px; justify-items:stretch;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls .hud-opponent-tag{display:none;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls > .btn.small, #appWrap.in-match.mb2-raid #view-play .top-row-controls .settings-btn{height:26px; min-height:26px; min-width:26px; padding:0 4px; font-size:11.5px;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls .trc-lbl{display:none;}
+    #appWrap.in-match.mb2-raid #view-play .top-row-controls .trc-ico{display:inline;}
+  }
   /* touch-and-hold on a card (MB2, owner: "i can't touch and hold to see the card detail"): no text selection, magnifier or iOS
      callout on a card or while a finger rests on one; the details a hold opened take a tap (it opens the full card page) */
   [data-defid]:not(input, textarea, select){-webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
@@ -40549,7 +40569,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '14d31e768d43', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = '83f346388028', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -44016,7 +44036,11 @@ function renderCodexGrid(keepPage){
   // 2026-10-13 (user: "The codex shouldn't show cards unseen. All cards are hidden by default"): admins too, unless they tick
   // "Show unseen" in the toolbar.
   ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
-  const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id)).length;
+  // 2026-10-19 (package MB2b): a Codex with no card seen yet opened on nothing but the Easter eggs' masked "???" slots (8 of 8).
+  // The masked slots only join once the player has seen a real card; they always come last (easterEggSectionOf).
+  const eggsOnly = !adminModeEnabled && !Object.keys(defs).some(id=> !defs[id].test && !isHofVariant(defs[id]) && !isEasterEgg(defs[id]) && codexVisible(id));
+  if(eggsOnly) ids = ids.filter(id=> !easterEggMasked(defs[id]));
+  const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id) && !(eggsOnly && easterEggMasked(defs[id]))).length;
   const unlockedCount = ids.filter(id=>!defs[id].locked).length;
   document.getElementById('codexResultCount').textContent = `${ids.length} of ${totalVisible} cards (${unlockedCount} unlocked)`;
   // Codex tiers (2026-10-02): grouped by where a card comes from — Tier 1 (Tutorial, Base & maps
@@ -68977,7 +69001,9 @@ function setBoardLean(lean, scale, panMax){
 // its seven columns). raidFrameKey is what a framing was made for.
 // 2026-10-19 (package MB2): + the frame's own size (to 4 px), so the raid is framed again when the rows around it change height
 // (the hand, the leader, the top row wrapping): its cards are sized from that frame now.
-function raidFrameKey(m){ const bf = document.getElementById('battlefieldEl'); return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0) + (bf ? ':' + Math.round(bf.clientWidth/4) + 'x' + Math.round(bf.clientHeight/4) : ''); }
+// 2026-10-19 (package MB2b): + the column window the camera should frame (mb2SpanWindow), so a unit landing on its edge re-frames it.
+function raidFrameKey(m){ const bf = document.getElementById('battlefieldEl'); let w = ''; try{ const sw = m && mb2SpanWindow(m); if(sw) w = ':w' + sw.lo + ',' + sw.hi; }catch(e){}
+  return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0) + (bf ? ':' + Math.round(bf.clientWidth/4) + 'x' + Math.round(bf.clientHeight/4) : '') + w; }
 // 2026-10-19 (package MB2): a phone's normal fight re-frames on a resize too (rotation, the browser bar), as the raid does.
 if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && !matchState.over && (matchState.raidFull || mb2IsPhone())) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
 // ---- Package MB2 (2026-10-19): the battle board fills the screen ----
@@ -68987,54 +69013,122 @@ if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearT
 // column, the battlefield takes what the rows above and below leave, and the board sits in its middle). The raid's cards are
 // sized here from that frame, as real CSS sizes rather than a zoom, so the attack lines, floats and FX, which read card rects,
 // follow them:
-//   --mb2-bh   the board card's height (width = .8 of it); the most that fits 7 columns across and the six rows down;
+//   --mb2-bh   the board card's height (width = .8 of it); the most that fits the framed columns across (MB2b: the column window) and the six rows down;
 //   --mb2-ch   the castle, deck, Graveyard and hand cards: the same size as the board's (owner: "our cards in hand/deck/etc.
 //              should be as large as the cards in the field"), never under 65 px tall on a phone (tappable) or 92 px on a
 //              computer (their names stay readable); smaller than a normal fight's, which gives the six rows their height;
 //   --mb2-gap  the gap between columns, the same in every row so the columns line up;
 //   --mb2-rgap the height left over, shared out between the rows (each row gets the same extra above and below).
-// It runs when the raid is framed (the start, a resize, the board growing past 7 columns): the raid's camera stays fixed.
+// It runs when the raid is framed (the start, a resize, the column window widening: MB2b, below).
 function mb2IsPhone(){ try{ return !!(window.matchMedia && matchMedia('(max-width:700px)').matches); }catch(e){ return false; } }
 function mb2FillMode(m){ return !!(m && (m.raidFull || mb2IsPhone())); }
-const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, reserveExtra:12 /* 8 px in the row's height + 2+2 px margin */, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200}, chromeMinH:{phone:65, pc:92}};
+// 2026-10-19 (package MB2b, follow-up on the owner's "we can afford to use all the vertical and horizontal space"): the camera
+// frames the columns in use, not every column. The window is the units' span (both sides, every row) plus one column on each
+// side, at least 5 columns in a raid and 3 in a fight; the cards are sized for that window, and the empty columns outside it sit
+// off the frame. It is framed again only when a unit lands in the window's edge column (or past it), in one 300 ms step
+// (mb2FlipReframe), never every turn: a deliberate exception to the raid's old "the camera stays fixed" note (2026-10-18). The
+// window only widens during a fight.
+function mb2OccupiedSlots(m){
+  let lo = Infinity, hi = -Infinity;
+  const see = s=>{ s = +s; if(Number.isFinite(s)){ if(s < lo) lo = s; if(s > hi) hi = s; } };
+  [1, 2].forEach(pid=>{ const pl = m && m.players && m.players[pid]; if(!pl) return;
+    ['left', 'center', 'right'].forEach(k=> ((pl.row && pl.row[k]) || []).forEach(c=>{ if(c && Number.isInteger(c.slot)) see(c.slot); }));
+    (pl.reserve || []).forEach(row=>{ if(row) Object.keys(row).forEach(sl=>{ if(row[sl]) see(sl); }); }); });
+  return lo <= hi ? [lo, hi] : null;
+}
+function mb2SpanWindow(m){
+  const R = Math.max(1, (m && m._slotRange)|0), minV = Math.min(2*R + 1, m && m.raidFull ? 5 : 3);
+  const occ = mb2OccupiedSlots(m) || [0, 0], cur = m && m._mb2Win;
+  const roomy = w=> w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
+  if(cur && roomy(cur)) return cur;
+  let lo = Math.max(-R, occ[0] - 1), hi = Math.min(R, occ[1] + 1);
+  if(cur){ lo = Math.min(lo, Math.max(-R, cur.lo)); hi = Math.max(hi, Math.min(R, cur.hi)); } // it only widens
+  while(hi - lo + 1 < minV){ if(lo + hi <= 0 && hi < R) hi++; else if(lo > -R) lo--; else hi++; }
+  return {lo, hi};
+}
+const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200},
+  handMinH:{phone:81 /* 65 px wide: the size it was before MB2 */, pc:92}, topScale:.75, topMinH:{phone:56, pc:80}};
+// The size of a column window: card width w, how many columns it shows (all of them when they all fit at w), the pan to its middle.
+function mb2ColumnsFor(m, win, wFromCols){
+  const R = Math.max(1, m._slotRange|0), N = 2*R + 1, V = win.hi - win.lo + 1;
+  return {N, V, wV: wFromCols(V), wN: wFromCols(N), mid: (win.lo + win.hi)/2};
+}
 function mb2FitRaidCards(m, battlefield, inner){
   const app = document.getElementById('appWrap');
-  if(!app || !battlefield || !inner || !m || !m.raidFull) return;
-  const phone = mb2IsPhone(), cols = Math.max(7, 2*((m._slotRange|0) || 3) + 1);
+  if(!app || !battlefield || !inner || !m || !m.raidFull) return null;
+  const phone = mb2IsPhone(), k = phone ? 'phone' : 'pc', win = mb2SpanWindow(m);
   const gap = phone ? 4 : 8, padX = 4; // the rows' own side padding (2 px each side, see the CSS)
   const rowsA = MB2_RAID.frontRows + MB2_RAID.reserveRows*MB2_RAID.reserveScale; // the board's height grows by this much per px of card height
   inner.style.transform = '';
   app.classList.remove('battlefield-zoomed');
-  let bh = parseFloat(app.style.getPropertyValue('--mb2-bh')) || (phone ? 62 : 90);
-  let ch = parseFloat(app.style.getPropertyValue('--mb2-ch')) || (phone ? 75 : 110);
-  let rgap = 0;
+  let bh = parseFloat(app.style.getPropertyValue('--mb2-bh')) || (phone ? 80 : 90);
+  let ch = parseFloat(app.style.getPropertyValue('--mb2-ch')) || (phone ? 81 : 110);
+  let rgap = 0, all = false;
+  const th = ()=> Math.max(MB2_RAID.topMinH[k], Math.round(ch*MB2_RAID.topScale));
   const write = ()=>{
     app.style.setProperty('--mb2-bh', bh.toFixed(2) + 'px'); app.style.setProperty('--mb2-gap', gap + 'px');
     app.style.setProperty('--mb2-rgap', rgap.toFixed(2) + 'px');
-    app.style.setProperty('--mb2-ch', ch.toFixed(2) + 'px');
+    app.style.setProperty('--mb2-ch', ch.toFixed(2) + 'px'); app.style.setProperty('--mb2-th', th() + 'px');
   };
-  // A few passes: on a phone the hand and piles follow the board's size, which gives the board back some height.
+  // A few passes: the hand follows the board's size, and the rows around the board give it back some height.
   for(let pass = 0; pass < 5; pass++){
     write();
     const cs = getComputedStyle(battlefield);
     const availH = battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0);
     const availW = inner.clientWidth;
     const fixedH = Math.max(0, inner.offsetHeight - rowsA*bh - 12*rgap); // dividers, padding and row margins: what doesn't scale
-    const hFromW = ((availW - padX - (cols - 1)*gap) / cols) / 0.8;
+    const cols = mb2ColumnsFor(m, win, n=> ((availW - padX - (n - 1)*gap) / n) / 0.8);
     const hFromH = (availH - fixedH) / rowsA;
-    const k = phone ? 'phone' : 'pc';
-    let nbh = Math.max(MB2_RAID.minH[k], Math.min(MB2_RAID.maxH[k], hFromW, hFromH));
+    let nbh = Math.max(MB2_RAID.minH[k], Math.min(MB2_RAID.maxH[k], cols.wV, hFromH));
     nbh = Math.floor(nbh*2)/2;
+    all = cols.wN >= nbh - 0.5; // every column fits at this size: show them all
     const spare = Math.max(0, availH - fixedH - rowsA*nbh);
     const nrgap = Math.min(spare/12, nbh*0.22); // six rows, a little above and below each
     const last = pass >= 4; // the last pass keeps the hand's size, so the board is sized for the frame it really has
-    const nch = last ? ch : Math.max(MB2_RAID.chromeMinH[k], nbh);
+    const nch = last ? ch : Math.max(MB2_RAID.handMinH[k], nbh);
     const done = Math.abs(nbh - bh) < 0.6 && Math.abs(nch - ch) < 0.6 && Math.abs(nrgap - rgap) < 0.6;
     // the hand follows halfway each pass so a height-bound board settles instead of see-sawing
     bh = nbh; rgap = nrgap; ch = last ? ch : pass < 3 ? (ch + nch)/2 : nch;
     if(done || last) break;
   }
   write();
+  const N = 2*Math.max(1, m._slotRange|0) + 1;
+  return {win, cols: all ? N : win.hi - win.lo + 1, mid: all ? 0 : (win.lo + win.hi)/2, pitch: bh*0.8 + gap};
+}
+// A phone's normal fight: the board's cards are the hand's size (75 px, 62 on a short phone) for the columns in the window, or
+// smaller when even the window can't fit at that size; never smaller than what fits.
+function mb2FitPhoneBoard(m, battlefield, inner, rowMine){
+  const app = document.getElementById('appWrap');
+  if(!app || !battlefield || !inner || !m || m.raidFull || !mb2IsPhone()) return null;
+  const win = mb2SpanWindow(m), gap = 4, padX = 4;
+  const handW = parseFloat(getComputedStyle(app).getPropertyValue('--match-card-w')) || 75;
+  inner.style.transform = '';
+  const availW = inner.clientWidth;
+  const frameH = mb2FrameInnerHeight(battlefield);
+  const cols = mb2ColumnsFor(m, win, n=> (availW - padX - (n - 1)*gap) / n);
+  const rowExtra = 40, divider = 8; // a front row is its card + 40 px (see the phone .board-row rule)
+  const wFromH = ((frameH - divider)/2 - rowExtra) * 0.8;
+  let w = Math.max(24, Math.min(handW, cols.wV, wFromH)); w = Math.floor(w*2)/2;
+  const all = cols.wN >= w - 0.5;
+  app.style.setProperty('--mb2-bw', w + 'px'); app.style.setProperty('--mb2-gap', gap + 'px');
+  return {win, cols: all ? cols.N : cols.V, mid: all ? 0 : cols.mid, pitch: w + gap};
+}
+// The one-step re-frame (300 ms): the board is laid out at its new size at once, then drawn from where it was (a transform that
+// matches the old size and pan) and eased to the new framing. Cards are measured where they are drawn, so lines and FX follow.
+function mb2FlipReframe(inner, before, after){
+  if(!inner || !before || !after || !(before.pitch > 0) || !(after.pitch > 0)) return;
+  if(Math.abs(before.pitch - after.pitch) < 0.5 && Math.abs(before.x - after.x) < 1) return;
+  try{ if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
+  const s = (before.scale * before.pitch) / after.pitch, dy = (before.top + before.cy) - after.top;
+  const target = inner.style.transform;
+  inner.style.transition = 'none';
+  inner.style.transform = `translateX(${before.x.toFixed(1)}px) translateY(${dy.toFixed(1)}px) scale(${s.toFixed(4)})`;
+  void inner.offsetWidth;
+  inner.style.transition = 'transform .3s cubic-bezier(.3,.1,.2,1)';
+  inner.style.transform = target;
+  fitBattlefieldZoom._transitionActive = true; panCameraToShowUid._transitionActive = true;
+  clearTimeout(mb2FlipReframe._t);
+  mb2FlipReframe._t = setTimeout(()=>{ inner.style.transition = ''; fitBattlefieldZoom._transitionActive = false; panCameraToShowUid._transitionActive = false; }, 340);
 }
 // Fill mode: the frame's size changes without a board render (a hand drawn or played, the window, the browser bar), so it is
 // watched and the board framed again (a raid only when its frame key changed, see raidFrameKey).
@@ -69066,7 +69160,23 @@ function fitBattlefieldZoom(){
   };
   fitBattlefieldZoom._settleT = setTimeout(tick, 140);
 }
+// 2026-10-19 (package MB2b): fill mode's re-frame (a new column window or card size) eases in one 300 ms step from the old framing.
 function fitBattlefieldZoomNow(instant){
+  const m = matchState, inner0 = document.getElementById('battlefieldInner'), fill = mb2FillMode(m);
+  const before = fill && inner0 && m && m._mb2Pitch ? {pitch: m._mb2Pitch, x: battlefieldLeanX + battlefieldPanX, scale: battlefieldScale || 1, cy: battlefieldCenterY, top: inner0.offsetTop} : null;
+  fitBattlefieldZoomNowCore(instant);
+  const sp = m && m._mb2Span, inner = document.getElementById('battlefieldInner');
+  if(!fill || !sp || !inner) return;
+  if(!instant && before && sp.changed && inner === inner0) mb2FlipReframe(inner, before, {pitch: sp.pitch, x: battlefieldLeanX + battlefieldPanX, top: inner.offsetTop});
+  m._mb2Pitch = sp.pitch; sp.changed = false;
+}
+// The camera's resting pan to the window's middle (slot `mid` to the frame's middle), in screen px; no lean or turn toward the cards.
+function mb2SetSpanLean(sp, scale){
+  const x = -sp.mid * sp.pitch * (scale || 1);
+  battlefieldLeanX = Math.abs(x) < 0.5 ? 0 : x; battlefieldTilt = 0;
+  battlefieldPanLo = Math.min(0, battlefieldLeanX); battlefieldPanHi = Math.max(0, battlefieldLeanX);
+}
+function fitBattlefieldZoomNowCore(instant){
   const rowEnemy = document.getElementById('rowEnemy'), rowMine = document.getElementById('rowMine');
   if(!rowEnemy || !rowMine) return;
   const battlefield = rowMine.closest('.battlefield');
@@ -69183,7 +69293,14 @@ function fitBattlefieldZoomNow(instant){
   // 2026-10-19 (package MB2): fill mode (a phone, or a raid): the raid's cards are sized to the frame first (mb2FitRaidCards).
   const mb2Fill = mb2FillMode(matchState);
   if(mb2Fill) mb2WatchFrame(battlefield);
-  if(matchState && matchState.raidFull) mb2FitRaidCards(matchState, battlefield, inner);
+  // 2026-10-19 (package MB2b): the cards are sized for the column window (mb2SpanWindow); mb2Span says what it frames
+  let mb2Span = null;
+  if(mb2Fill && matchState){
+    mb2Span = matchState.raidFull ? mb2FitRaidCards(matchState, battlefield, inner) : mb2FitPhoneBoard(matchState, battlefield, inner, rowMine);
+    if(mb2Span){ const pw = matchState._mb2Win;
+      mb2Span.changed = !pw || pw.lo !== mb2Span.win.lo || pw.hi !== mb2Span.win.hi || Math.abs((matchState._mb2Pitch || 0) - mb2Span.pitch) > 0.5;
+      matchState._mb2Win = mb2Span.win; matchState._mb2Span = mb2Span; }
+  }
   const cardEl = rowMine.querySelector('.board-card') || rowEnemy.querySelector('.board-card');
   if(!cardEl){
     // Nothing on the board yet to size against — plain reset, nothing to center/pan either.
@@ -69207,7 +69324,7 @@ function fitBattlefieldZoomNow(instant){
   // The raid (2026-10-18): its fixed column count, not the rows' children (a dragged card's placement ghost is a child too, and it
   // zoomed the board out and back in on every placement).
   const raidCols = matchState && matchState.raidFull && matchState._slotRange ? 2*matchState._slotRange + 1 : 0;
-  const neededWidth = raidCols ? widthForCount(raidCols) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
+  const neededWidth = mb2Span ? widthForCount(mb2Span.cols) : raidCols ? widthForCount(raidCols) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
 
   // 2026-09-20 (explicit bug report: "Cards are not fitting in reduced PC screen size mode"):
   // this function used to ONLY ever measure horizontal overflow, so a browser window that was
@@ -69260,7 +69377,7 @@ function fitBattlefieldZoomNow(instant){
   if(m.scale>=0.995){ // fits already (both dimensions, at whichever width this landed on) — stay at 1:1, no zoom
     smoothIfChanged(()=>{
       battlefieldScale = 1; battlefieldCenterY = 0; battlefieldPanX = 0; battlefieldPanMaxX = 0;
-      setBoardLean(lean, 1, 0);
+      if(mb2Span) mb2SetSpanLean(mb2Span, 1); else setBoardLean(lean, 1, 0);
       applyBattlefieldTransform();
     });
     battlefield.classList.remove('pannable', 'panning');
@@ -69315,7 +69432,8 @@ function fitBattlefieldZoomNow(instant){
     battlefieldPanMaxX = Math.max(0, (neededWidth*clampedScale - m.containerWidth)/2);
     battlefield.classList.toggle('pannable', battlefieldPanMaxX>0.5);
     if(battlefieldPanMaxX<=0.5) battlefieldPanX = 0;
-    setBoardLean(lean, clampedScale, battlefieldPanMaxX);
+    if(mb2Span){ battlefieldPanMaxX = 0; battlefield.classList.remove('pannable'); battlefieldPanX = 0; mb2SetSpanLean(mb2Span, clampedScale); }
+    else setBoardLean(lean, clampedScale, battlefieldPanMaxX);
 
     applyBattlefieldTransform();
   });

@@ -11,3 +11,11 @@ Scope: battle board layout only (CSS + battle layout code in arena_app.js). NV o
 
 ## Status
 - [x] 1  - [x] 2  - [x] 3  - [x] 4  - [x] 5 (tests/e2e/mobile_layout_2026_10_19.py passes; merged main; done)
+
+## MB2b (follow-up)
+- [x] field = hand size on phones via the column window (mb2SpanWindow / mb2FitPhoneBoard)
+- [x] raid framed to the columns in use +1 (min 5), one 300 ms re-frame (mb2FlipReframe), smaller enemy row / phone piles (--mb2-th)
+- [x] raid hand >= field and >= 65 px; the sliver was a mid-deal frame
+- [x] raid phone controls in a 4-wide grid inside the top row
+- [x] Codex: no egg-only page for a profile with no card seen
+- [x] test passes; screenshots in docs/screens/mb2/

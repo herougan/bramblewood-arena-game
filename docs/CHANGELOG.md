@@ -2,6 +2,30 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package MB2b: the field as big as the hand, the raid framed to its columns in use)
+- **The field is bigger, not the hand smaller** (follow-up to MB2: the field's cards were about 48 px against the hand's 75).
+  - The camera frames the columns in use, plus one empty column on each side. That is at least 3 columns in a normal fight and 5 in a raid. Every unit counts, on both sides and in every row.
+  - The cards are sized for that window (`mb2SpanWindow`, `mb2FitPhoneBoard`, `mb2FitRaidCards`). The empty columns outside it sit off the frame.
+  - On a phone, a normal fight's cards are the hand's size (75 px) for as long as the window fits at that size. Past that they shrink to fit the window, never below.
+- **Re-framing, a deliberate exception to the raid's 2026-10-18 note "the raid shouldn't keep zooming in and out when I place a card":**
+  - The camera re-frames only when the column span changes: a unit lands on the window's edge column or past it.
+  - It happens once, in one 300 ms step (`mb2FlipReframe`), never every turn or continuously.
+  - The window only widens during a fight. A re-frame also happens when the window or the frame changes size.
+- **The raid uses the screen's height too.** The spare height is shared out between the six rows. The enemy's row (castle, deck, Environment cards) is a quarter smaller (`--mb2-th`). So are your castle, deck and Graveyard on a phone; on a computer they share the hand's row, so they stay the hand's size.
+- **The raid hand** is at least the field's card size and never smaller than it was before MB2 (65 px wide on a phone, 92 px tall on a computer).
+  - The "thin sliver" in an MB2 screenshot was a card caught mid-deal by the screenshot (the deal-in transform). It was not an overlap bug.
+- **Raid fight controls on a phone** sit in a 4-wide grid of two short lines inside the top row. They no longer take a line of their own.
+- **The Codex** no longer opens on the Easter eggs' masked "???" slots when no card has been seen yet. The masked slots join once a real card is seen, and they stay last.
+- **Card widths now:**
+
+  | Screen | Normal fight | Raid, 5 columns | Raid, 6 columns | Raid, 7 columns | Raid hand |
+  |---|---|---|---|---|---|
+  | 390×844 | 75 px (up to 4 framed columns), 69 (5), 57 (6) | 67 px | 58 px | about 49 px (MB2 was 49, before MB2 44) | 67 px |
+  | 430×932 | 75 px | 75 px | | | 75 px |
+  | 1366×768 | 97 px (unchanged) | | | 61 px (height-bound) | 74 px |
+
+- `tests/e2e/mobile_layout_2026_10_19.py` (about 1.5 min, not in run-all) adds checks for the board cards against the hand and the framed columns, the raid hand's size, the top row being one line, the re-frame when a unit lands on the edge column, and a fresh Codex. Screenshots, including the new `after-raid-reframed-390.png` and `after-*-430.png`: `docs/screens/mb2/`.
+
 ## 2026-10-19 (package MB2: the battle fills a phone screen, bigger raid board, hand = field size, touch-and-hold)
 - **Owner (10:55, iPhone):** *"The raid battle btw is too small! we can afford to use all the vertical and horizontal space"*, *"the battle arena should be centered"*, *"our cards in hand/deck/etc. should be as large as the cards in the field"*, *"i can't touch and hold to see the card detail"*.
 - **A fight on a phone is one screen tall.** The match is a `100svh` column: the height with Safari's bars showing, plus the safe-area insets. The hand no longer ends up behind the toolbar. The battlefield takes the height that the rows above and below leave, and the board sits in its middle.
