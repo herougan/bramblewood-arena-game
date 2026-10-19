@@ -22104,7 +22104,10 @@ try{ raidDefEdits = JSON.parse(localStorage.getItem(RAID_DEFS_KEY)||'{}') || {};
 // purpose stays).
 const RAID_NEW_KEYS = ['fieldRules', 'commonPool', 'ground', 'bossHpBonusMax', 'respawnHours', 'instanceCap', 'participation']; // + the raid-ops keys (2026-10-19)
 const RAID_RETIRED_VALUES = {fightRounds: 12};
-function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=>{ const e = raidDefEdits[d.id]; if(!e) return d; const add = RAID_NEW_KEYS.filter(k=> !(k in e) && (k in d)).concat(e.roundsV >= 2 ? [] : Object.keys(RAID_RETIRED_VALUES).filter(k=> e[k] === RAID_RETIRED_VALUES[k] && (k in d) && d[k] !== e[k])); return add.length ? Object.assign({}, e, Object.fromEntries(add.map(k=> [k, d[k]]))) : e; }); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
+// 2026-10-19 (package RB): an edit saved before the new raid scale (no scaleV 2) comes onto it (RaidM.migrateRaidScale): the shipped
+// scoring, Health bars, elders, instance size and tiers; the rest of the edit stays. A raid made in the editor is scaled like the Goliath.
+function raidEditScaled(e, d){ try{ return RaidM && RaidM.migrateRaidScale ? RaidM.migrateRaidScale(e, d) : e; }catch(err){ return e; } }
+function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=>{ const e0 = raidDefEdits[d.id]; if(!e0) return d; const e = raidEditScaled(e0, d); const add = RAID_NEW_KEYS.filter(k=> !(k in e) && (k in d)).concat(e.roundsV >= 2 ? [] : Object.keys(RAID_RETIRED_VALUES).filter(k=> e[k] === RAID_RETIRED_VALUES[k] && (k in d) && d[k] !== e[k])); return add.length ? Object.assign({}, e, Object.fromEntries(add.map(k=> [k, d[k]]))) : e; }); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidEditScaled(raidDefEdits[id], null)); }); return base; }
 // 2026-10-10 (user: "like the shop, its title is the first raid's title until you unlock the 2nd, then it's just called
 // 'Raids' and hosts all the raids you've unlocked"): with two or more live raids a row of raid buttons picks which one
 // the tab shows.
@@ -22853,7 +22856,7 @@ function openRaidEditor(raidId){
   const read = ()=>{
     const v = id=> (overlay.querySelector('#'+id)||{}).value;
     draft.name = v('reName') || draft.name; draft.icon = v('reIcon') || draft.icon; draft.blurb = v('reBlurb') || '';
-    draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), RaidM.FIGHT_ROUNDS_DEFAULT || 20)))); draft.roundsV = 2; // 20 turns by default (2026-10-18)
+    draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), RaidM.FIGHT_ROUNDS_DEFAULT || 20)))); draft.roundsV = 2; draft.scaleV = (RaidM && RaidM.RAID_SCALE_V) || 2; // 20 turns by default (2026-10-18); saved on the new raid scale (2026-10-19, package RB)
     draft.bossHpBonusMax = Math.max(0, Math.min(1000, Math.round(num(v('reBossHpBonus'), 0))));
     // 2026-10-19 (package RX): the leader cost cap, the paying damage and the full raid's tuning knobs
     if(overlay.querySelector('#reLeaderCap')){ const lc = Math.max(0, Math.min(99, Math.round(num(v('reLeaderCap'), 0)))); if(lc) draft.leaderCostCap = lc; else delete draft.leaderCostCap; }

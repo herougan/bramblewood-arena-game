@@ -10,9 +10,9 @@
 //      drawn from the spread; each fight draws a measured result for that deck, part and share; the stand-ins (standIns.perDayPct)
 //      wear the open parts down as raidState does; a fallen raid returns 24 h later (respawnHours). Completion = the first life
 //      falls inside the week. Also: each participant-life's raid damage on the new scale and on the old x15 scale (for the tiers).
-//   node tools/raid_completion_model.js measure [--n 20] [--decks 10,13,16,20] [--out FILE] [--set '{"weakenFloor":0.6}']
+//   node tools/raid_completion_model.js measure [--n 20] [--decks 10,13,16,20] [--parts core] [--out FILE] [--set '{"weakenFloor":0.6}']
 //   node tools/raid_completion_model.js cycle [--in FILE[,FILE2]] [--cycles 200] [--players 30,50,100,150,200,250] [--scale 0|1]
-//     [--floor 30] [--standins 12] [--json]
+//     [--floor 30] [--standins 12] [--rate 0.35,0.85] [--bars 1000,10000,50000] [--target 0.5,0.2,0.01] [--target-elig 0.98,0.6,0.01] [--json]
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -25,13 +25,16 @@ const DEF_OUT = path.join(ROOT, 'docs', 'balance', 'raid-balance-2026-10-19-figh
 const OUTER_SHARES = [1, 0.75, 0.5, 0.25, 0.05], CORE_SHARES = [1, 0.5, 0.1];
 // the deck spread of the raiders (the road's reference decks at their map's level): weak, normal (Map 13, the Raid Banner), good, strong
 const SPREAD = {10: 0.2, 13: 0.4, 16: 0.25, 20: 0.15};
+// each player's share of their tickets used: uniform in RATE (35..85%, 60% on average; --rate lo,hi)
+const RATE = String(arg('rate', '0.35,0.85')).split(',').map(Number);
 
 function measure(){
   const sim = require('./raid_full_sim.js');
   const N = Number(arg('n', 20)), decks = String(arg('decks', Object.keys(SPREAD).join(','))).split(','), out = arg('out', DEF_OUT);
   const def = JSON.parse(JSON.stringify(RAIDS[0])), set = arg('set', null); if(set) def.tuning = Object.assign({}, def.tuning || {}, JSON.parse(set));
   const cells = {}, t0 = Date.now();
-  for(const d of decks) for(const p of def.parts){
+  const onlyParts = arg('parts', null) ? String(arg('parts')).split(',') : null;
+  for(const d of decks) for(const p of def.parts.filter(q=> !onlyParts || onlyParts.includes(q.id))){
     const core = (p.lockedUntil || []).length;
     for(const s of core ? CORE_SHARES : OUTER_SHARES){
       const list = [];
@@ -71,7 +74,7 @@ function oneCycle(def, opts){
   // the players and their fights (hours into the week); fight i (0-based) needs i - 9 days of regen first (cap 10, +1 a day)
   const fights = [];
   for(let k = 0; k < opts.players; k++){
-    const deck = pickDeck(), rate = 0.35 + 0.5 * rnd(); let F = 0; for(let t = 0; t < 16; t++) if(rnd() < rate) F++; F = Math.max(1, F);
+    const deck = pickDeck(), rate = RATE[0] + (RATE[1] - RATE[0]) * rnd(); let F = 0; for(let t = 0; t < 16; t++) if(rnd() < rate) F++; F = Math.max(1, F);
     const times = Array.from({length: F}, ()=> rnd() * WEEK).sort((a, b)=> a - b).map((t, i)=> Math.max(t, i >= 10 ? (i - 9) * 24 + rnd() * 4 : 0)).sort((a, b)=> a - b);
     times.forEach(t=> fights.push({t, who: k, deck}));
   }
@@ -136,7 +139,22 @@ function cycle(){
     const sh = share(o, oldBar), at = sh <= 0 ? w[w.length - 1] : pctile(w, 1 - sh);
     return {tier: k, fights: f, oldBar, oldShareOfEligible: Math.round(sh * 1000) / 10, newBarAtSameShare: at, eligible: elig.length};
   });
-  return {meta, scale, floor, standIns, cycles: C, rows, tiers, lives: lives.length, medianNew: pctile(nw, 0.5), medianOld: pctile(old, 0.5)};
+  // the tiers over every participant-life (any fights): the share reaching each tier at --bars (default: the raid's own tiers), and with
+  // --target s1,s2,s3 (shares measured on another world, e.g. the pre-RB code's run) the damage bar giving each share here
+  const bars = String(arg('bars', [pr.damage, pr.strongDamage, pr.leadDamage].join(','))).split(',').map(Number), target = arg('target', null) ? String(arg('target')).split(',').map(Number) : null;
+  const targetElig = arg('target-elig', null) ? String(arg('target-elig')).split(',').map(Number) : null;
+  const tierShares = [['participant', pr.fights], ['competent', pr.strongFights], ['leading', pr.leadFights]].map(([k, f], i)=>{
+    const reach = lives.filter(p=> p.fights >= f && p.nw >= bars[i]).length / Math.max(1, lives.length);
+    const elig = lives.filter(p=> p.fights >= f), w = elig.map(p=> p.nw).sort((a, b)=> b - a);
+    let barFor = null; if(target){ const want = Math.round(target[i] * lives.length); barFor = want <= 0 ? null : want > w.length ? 0 : w[want - 1]; }
+    // --target-elig s1,s2,s3: the same, as shares of the lives with the tier's fights (the damage bar's own effect)
+    let barForElig = null; if(targetElig){ const want = Math.round(targetElig[i] * w.length); barForElig = want <= 0 ? w[0] + 1 : want > w.length ? 0 : w[want - 1]; }
+    return {tier: k, fights: f, bar: bars[i], sharePct: Math.round(reach * 1000) / 10, eligPct: Math.round(elig.filter(p=> p.nw >= bars[i]).length / Math.max(1, elig.length) * 1000) / 10,
+      barForTarget: barFor, targetPct: target ? Math.round(target[i] * 1000) / 10 : null, barForElig, targetEligPct: targetElig ? Math.round(targetElig[i] * 1000) / 10 : null};
+  });
+  const fightsPerLife = lives.reduce((t, p)=> t + p.fights, 0) / Math.max(1, lives.length);
+  return {meta, scale, floor, standIns, cycles: C, rows, tiers, tierShares, lives: lives.length, fightsPerLife: +fightsPerLife.toFixed(2), medianNew: pctile(nw, 0.5), medianOld: pctile(old, 0.5),
+    p90New: pctile(nw, 0.9), p99New: pctile(nw, 0.99)};
 }
 if(require.main === module){
   if(CMD === 'measure') measure();
@@ -147,7 +165,8 @@ if(require.main === module){
       console.log('players  completed%  avg kill day  lives fallen/week');
       out.rows.forEach(r=> console.log(`${String(r.players).padStart(7)}  ${String(r.completedPct).padStart(9)}  ${String(r.avgKillDay).padStart(12)}  ${String(r.livesFallen).padStart(8)}`));
       console.log(`participant-lives ${out.lives}: median raid damage ${out.medianNew} (new) vs ${out.medianOld} (old x15)`);
-      out.tiers.forEach(t=> console.log(`  ${t.tier.padEnd(12)} ${t.fights}+ fights: old bar ${t.oldBar} reached by ${t.oldShareOfEligible}% -> new bar at the same share: ${t.newBarAtSameShare}`));
+      console.log(`fights per participant-life ${out.fightsPerLife}; raid damage per life: median ${out.medianNew}, 90th ${out.p90New}, 99th ${out.p99New}`);
+      out.tierShares.forEach(t=> console.log(`  ${t.tier.padEnd(12)} ${t.fights}+ fights and ${t.bar}+ damage: ${t.sharePct}% of participant-lives, ${t.eligPct}% of those with the fights${t.targetPct != null ? ` | for ${t.targetPct}%: ${t.barForTarget}` : ''}${t.targetEligPct != null ? ` | for ${t.targetEligPct}% of those with the fights: ${t.barForElig}` : ''}`));
     }
   }
 }

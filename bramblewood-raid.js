@@ -56,6 +56,32 @@ function weakenCard(d, w){
 }
 // The participation tiers' raid damage (2026-10-19, package RB): see PARTICIPATION_DEFAULTS below.
 const RB_TIER_DAMAGE = {participant: 1000, competent: 10000, leading: 50000};
+// ---- The new scale for saved raid edits (2026-10-19, package RB). A raid edit (this browser's, or the published one an admin saved in
+// the raid editor, card_overrides '__cfg:raid:<id>') replaces the shipped def whole, so an edit saved before RB still carried the x15
+// scale (scoring 15 / 5,000 / 10,000, the Goliath's 80,000 bars, its elders at 100, 100 players an instance, the 1,000 / 10,000 / 50,000
+// tiers). migrateRaidScale(edit, shipped) brings such an edit (no scaleV >= 2; the editor stamps it now) onto the new scale and keeps
+// everything else it set: the shipped raid's scoring, bossHpBonusMax, instanceCap and participation, and each part it shares with the
+// shipped raid takes its bars / barHp (its own scoring override goes when the shipped part has none). A raid with no shipped twin (made
+// in the editor) is scaled the way the Goliath was: scoring onto SCORING_DEFAULTS, every part's Health x RAID_SCALE_HP (1,100,000 /
+// 1,360,000, rounded to 10,000s), the tiers onto the defaults, and its elders' ceiling halved. Returns a new def (or the edit itself).
+const RAID_SCALE_V = 2, RAID_SCALE_HP = 1100000 / 1360000;
+function migrateRaidScale(e, shipped){
+  if(!e || typeof e !== 'object' || Number(e.scaleV) >= RAID_SCALE_V) return e;
+  const out = JSON.parse(JSON.stringify(e)); out.scaleV = RAID_SCALE_V;
+  if(shipped){
+    ['scoring', 'bossHpBonusMax', 'instanceCap', 'participation'].forEach(k=>{ if(k in shipped) out[k] = JSON.parse(JSON.stringify(shipped[k])); else delete out[k]; });
+    (out.parts || []).forEach(p=>{ const sp = (shipped.parts || []).find(x=> x.id === p.id); if(!sp) return; p.bars = sp.bars; p.barHp = sp.barHp;
+      if(p.scoring && !sp.scoring){ delete p.scoring.perInFightHp; if(!Object.keys(p.scoring).length) delete p.scoring; } });
+  } else {
+    out.scoring = Object.assign({}, out.scoring || {}, SCORING_DEFAULTS);
+    (out.parts || []).forEach(p=>{ const tot = Math.max(1, (p.bars | 0) * (p.barHp | 0)), want = Math.max(10000, Math.round(tot * RAID_SCALE_HP / 10000) * 10000), bars = Math.max(1, p.bars | 0);
+      p.barHp = Math.max(1000, Math.round(want / bars)); if(p.scoring){ delete p.scoring.perInFightHp; if(!Object.keys(p.scoring).length) delete p.scoring; } });
+    if(out.participation) out.participation = Object.assign({}, out.participation, {damage: PARTICIPATION_DEFAULTS.damage, strongDamage: PARTICIPATION_DEFAULTS.strongDamage, leadDamage: PARTICIPATION_DEFAULTS.leadDamage});
+    if(out.bossHpBonusMax) out.bossHpBonusMax = Math.round(out.bossHpBonusMax / 2);
+    if(out.instanceCap === 100) out.instanceCap = INSTANCE_CAP_DEFAULT;
+  }
+  return out;
+}
 // attempts: [{raidId, part, cycle, owner, contribution, at}]
 function raidState(def, attempts, now, opts){
   opts = opts || {};
@@ -531,7 +557,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
   RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
    fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;

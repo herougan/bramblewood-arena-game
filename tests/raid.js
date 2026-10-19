@@ -18,10 +18,11 @@ RAIDS.forEach(r=> R.validateRaid(r, defs).forEach(e=> failures.push(`${r.id}: ${
 check(R.validateRaid({id:'x', parts:[{id:'a', bars:1, barHp:10, lockedUntil:['b'], fight:{deck:{yeti:1}}}, {id:'b', bars:1, barHp:10, lockedUntil:['a'], fight:{deck:{yeti:1}}}]}, defs).some(e=> /loop/.test(e)), 'lock loops are not detected');
 
 // 2. scoring caps
-check(R.contributionFor(raid, 40, false)===40*raid.scoring.perInFightHp, 'perInFightHp conversion wrong');
-check(R.contributionFor(raid, 10, false, {scoring:{perInFightHp:140}})===1400, 'per-part scoring override ignored');
-check(R.contributionFor(raid, 9999, false)===5000, 'normal cap not applied');
-check(R.contributionFor(raid, 10, true)===10000, 'overwhelm cap not applied');
+// 2026-10-19 (package RB): raid damage = bramble damage (x perInFightHp, 1 now: no x15), capped at 1,000; a win counts 1,000; x the rank
+check(R.contributionFor(raid, 40, false)===40*raid.scoring.perInFightHp && raid.scoring.perInFightHp===1, 'perInFightHp conversion wrong');
+check(R.contributionFor(raid, 5, false, {scoring:{perInFightHp:140}})===700, 'per-part scoring override ignored');
+check(R.contributionFor(raid, 9999, false)===1000, 'normal cap not applied');
+check(R.contributionFor(raid, 10, true)===1000 && R.contributionFor(raid, 10, true, null, 'SSS')===2000, 'a win: 1,000 x the rank');
 
 // 3. locks, stand-ins, stages
 const noStand = Object.assign({}, raid, {standIns:{perDayPct:0}});
@@ -77,7 +78,7 @@ check(killed.defeated && kr && kr.kind==='kill' && kr.base.gold===400, 'a felled
     const dealt = Math.round((100 - Math.max(0, m.players[2].hq.hp)) * f.castleHp / 100);
     const over = m.players[2].hq.hp <= 0;
     const c = R.contributionFor(raid, dealt, over);
-    check(c <= (over ? 10000 : 5000) && c >= 0, `fight ${i}: contribution ${c} out of bounds`);
+    check(c <= 1000 && c >= 0, `fight ${i}: contribution ${c} out of bounds`); // 2026-10-19 (RB): cap and win both 1,000 (no rank here)
     if(over) overwhelms++;
     fights++;
     attempts.push({raidId: raid.id, part, cycle, owner:'p'+(i%40), contribution: c, at: start + i});

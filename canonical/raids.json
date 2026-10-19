@@ -156,7 +156,7 @@
               "name": "Left Stump",
               "icon": "🦑",
               "attack": 3,
-              "health": 20,
+              "health": 14,
               "armor": 0,
               "aura": 1
             },
@@ -165,7 +165,7 @@
               "name": "Tail Stump",
               "icon": "🌊",
               "attack": 3,
-              "health": 20,
+              "health": 14,
               "armor": 0,
               "aura": 1
             },
@@ -174,7 +174,7 @@
               "name": "Right Stump",
               "icon": "🦑",
               "attack": 3,
-              "health": 20,
+              "health": 14,
               "armor": 0,
               "aura": 1
             }
@@ -232,7 +232,7 @@
       "overwhelmCap": 1000
     },
     "standIns": {
-      "perDayPct": 12
+      "perDayPct": 14
     },
     "rewards": {
       "kill": {
@@ -329,7 +329,8 @@
         "max": 0,
         "every": 3,
         "from": 3
-      }
+      },
+      "weakenFloor": 0.6
     },
     "leaderCostCap": 5,
     "respawnHours": 24,
