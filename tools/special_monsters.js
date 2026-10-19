@@ -34,7 +34,7 @@ const r2 = v=> Math.round(v * 100) / 100, r1 = v=> Math.round(v * 10) / 10;
 
 // ---------- the game's own functions (arena_app.js) ----------
 const NAMES = ['RARITY_DEFS', 'RATING_WEIGHT', 'ratingWeightOf', 'ratingLevelFactor', 'deckLevelFrom', 'RARITY_TIER_BANDS', 'canLeadDef', 'RAID_BOSS_ATK', 'raidAllyOf', 'raidAllyLeaderOf',
-  'RAID_BOSS_UNIT_ROUNDS', 'RAID_BOSS_UNIT_NAMES', 'raidBossUnitName', 'raidFieldRulesOf', 'mergeRaidCastles', 'RAID_TUNE_DEFAULTS', 'raidTune', 'guildScaledBramble', 'buildRaidFullFight', 'seededRng',
+  'RAID_BOSS_UNIT_ROUNDS', 'RAID_BOSS_UNIT_NAMES', 'raidBossUnitName', 'raidFieldRulesOf', 'mergeRaidCastles', 'RAID_TUNE_DEFAULTS', 'raidTune', 'guildScaledBramble', 'BRAMBLE_SCALE', 'brambleHp', 'brambleChar', 'raidDefScaled', /* BF5 */ 'buildRaidFullFight', 'seededRng',
   'raidCardBR', 'raidBossBR', 'RAID_BRAMBLES', 'raidBrambleOf',
   'hashStr', 'statsBeyondLevel', 'TOWER_LEVEL_CAP', 'TOWER_POOLS', 'TOWER_LUMBER_POOL', 'isLumberSource', 'towerNeedsLumber', 'towerTargetBR', 'seededUnit', 'towerDeckBR', 'towerFloorDeck'];
 const A = new Function('E', 'G', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', 'RaidM', 'TrenchM', 'require', 'ROOT_TEXTS', [

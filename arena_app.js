@@ -12886,7 +12886,7 @@ function castleLevelUpCost(L, id){
   return {dust: Math.round((15 + step*12) * k * f), gold: Math.round((10 + step*8) * k * f)};
 }
 function castleLeveled(base, L){ return base ? Object.assign({}, base, {health: (base.health||30) + L, level: L}) : base; }
-function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return castleLeveled(base, castleLevelOf(base && base.id)); }
+function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return brambleChar(castleLeveled(base, castleLevelOf(base && base.id))); } // BF5: at BRAMBLE_SCALE
 // Castle duplicates (2026-10-12, user: "Remove the temper feature within the castle itself. It will be in the Forge. In the
 // forge, allow for us to fuse all extra duplicates. For castles, every extra castle is a duplicate since you can only use
 // 1"): a castle granted again counts as a spare; fusing it banks 1/8 of its road to Lv 20 as credit on that castle.
@@ -14321,7 +14321,7 @@ function startDungeonFight(){
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
   const hqHp = DUNGEON_ENEMY_HQ_HP[Math.min(run.stage-1, DUNGEON_ENEMY_HQ_HP.length-1)];
-  const enemyCharacter = {id:'dungeon-enemy', name:`Dungeon Foe ${run.stage}`, health:hqHp, effects:{}};
+  const enemyCharacter = {id:'dungeon-enemy', name:`Dungeon Foe ${run.stage}`, health:brambleHp(hqHp), effects:{}}; // BF5: at BRAMBLE_SCALE
   const players = {
     1: engine.newPlayer(1, run.deckCounts, myCharacter),
     2: engine.newPlayer(2, randomAiDeck(), enemyCharacter),
@@ -14467,8 +14467,8 @@ function startLiveRankedMatch(cfg){
   const sideOf = id=> id===1?'A':'B';
   const p1Deck = cfg.mySeat===1 ? cfg.myDeck : cfg.oppDeck;
   const p2Deck = cfg.mySeat===1 ? cfg.oppDeck : cfg.myDeck;
-  const p1Character = CHARACTER_DEFS[cfg.mySeat===1 ? cfg.myCharacter : cfg.oppCharacter] || CHARACTER_DEFS['castle'];
-  const p2Character = CHARACTER_DEFS[cfg.mySeat===1 ? cfg.oppCharacter : cfg.myCharacter] || CHARACTER_DEFS['castle'];
+  const p1Character = brambleChar(CHARACTER_DEFS[cfg.mySeat===1 ? cfg.myCharacter : cfg.oppCharacter] || CHARACTER_DEFS['castle']); // BF5: at BRAMBLE_SCALE
+  const p2Character = brambleChar(CHARACTER_DEFS[cfg.mySeat===1 ? cfg.oppCharacter : cfg.myCharacter] || CHARACTER_DEFS['castle']);
   const players = { 1: engine.newPlayer(1, p1Deck, p1Character), 2: engine.newPlayer(2, p2Deck, p2Character) };
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -16081,6 +16081,16 @@ function shieldOverrideOf(node){
 // a base bramble we can use (starts at lvl 0 instead)"): on Map 0's own road (not its Tutorial or Old Bramble side maps, which are
 // meant to be come-back-later fights) the enemy bramble is the Lv 0 base one with a tiny Health, so the first fights end fast.
 // The tutorial's two fights already use the tutorial config's rival Health (6, then 8).
+// 2026-10-19 (package BF5; owner 21:36: "I think numbers are way too big. Can we HALF everything?"): the budget's N is halved, so every
+// card's stats are; a bramble (yours and the enemy's: castles, road brambles, their Shield, the raid's brambles, the elders' Health
+// floor, the trench wall, the tutorial) is halved with them when a fight is built. The stored numbers (characters.json, node hqHp /
+// shieldOverride, raids.json) stay at full size, so one constant tunes it. Measured: with full brambles and halved units the road's
+// fights ran 11.2 -> 15.0 rounds on average, the slow ones into sudden death (round 20); see docs/balance/halve-2026-10-19.md.
+const BRAMBLE_SCALE = 0.5;
+function brambleHp(v){ const n = Number(v); return n > 0 ? Math.max(1, Math.round(n * BRAMBLE_SCALE)) : v; }
+function brambleChar(ch){ return ch && Number(ch.health) > 0 ? Object.assign({}, ch, {health: brambleHp(ch.health)}) : ch; }
+// a raid as its fights see it: the elders' Health floor (bossHpBonusMax) at BRAMBLE_SCALE
+function raidDefScaled(def){ return def && def.bossHpBonusMax ? Object.assign({}, def, {bossHpBonusMax: brambleHp(def.bossHpBonusMax)}) : def; }
 const BASE_BRAMBLE_HP = {skirmish:[10, 12, 14, 15], elite:16, boss:20};
 function baseBrambleHp(node){
   const m = mapOfNode(node); if(!m || m.sub || mapNumberOf(m.id) !== 0 || !node) return null;
@@ -16122,8 +16132,8 @@ function skirmishCastle(node){
   // the rule above unless the editor set node.shieldOverride.
   let hp = Number(node.hqHp) > 0 ? Math.min(baseHp, Math.round(Number(node.hqHp))) : baseHp;
   const early = baseBrambleHp(node); if(early != null) hp = Math.min(hp, early);
-  const ov = shieldOverrideOf(node), rule = ruleShieldOf(node);
-  const layers = ov || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
+  const ov = shieldOverrideOf(node), rule = brambleHp(ruleShieldOf(node)); hp = brambleHp(hp); // BF5: the bramble and its Shield at BRAMBLE_SCALE
+  const layers = (ov ? ov.map(brambleHp) : null) || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
   const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
   return {character, hp, shield, total: hp + shield, layers, rule, overridden: !!ov};
 }
@@ -16666,7 +16676,7 @@ const VOLCANO_GLOW = {day:4, night:2};
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
   const defs = getCardDefs(), engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)});
   const sideOf = id=> id===1?'A':'B', stats = {};
-  const P = {1: engine.newPlayer(1, deckCounts, playerChar || CHARACTER_DEFS.castle), 2: engine.newPlayer(2, node.deck||{}, skirmishCastle(node).character)};
+  const P = {1: engine.newPlayer(1, deckCounts, playerChar || brambleChar(CHARACTER_DEFS.castle)), 2: engine.newPlayer(2, node.deck||{}, skirmishCastle(node).character)};
   P[2].loopCards = []; applySkirmishSetup(P, node);
   engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
   let over = false, lastSig = null, stalled = 0;
@@ -16689,7 +16699,7 @@ function simulateSkirmishVsMyDeck(node, n, ai){ return simulateSkirmishVsDeck(no
 function simulateSkirmishVsDeck(node, deckCounts, n, playerChar, ai){
   const aimed = !!(ai && ai.level != null), cpuLv = aimed ? Math.max(0, Math.min(2, Number(ai.level) || 0)) : null;
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
-  const myChar = playerChar || CHARACTER_DEFS.castle;
+  const myChar = playerChar || brambleChar(CHARACTER_DEFS.castle); // BF5
   const enemyChar = skirmishCastle(node).character;
   for(let i=0;i<n;i++){
     const engine = makeSimEngine(defs, seededRng(9100+i), Object.assign({recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)}, aimed ? {aiAim:true, aiLevel:cpuLv} : {}));
@@ -16842,7 +16852,7 @@ function referenceFightSetup(mapId, node, opts){
     const missing = [...new Set(Object.keys(enemyDeck).concat(Object.keys(mine)).filter(id=> !defs[id]))];
     if(missing.length){ const e = new Error('unknown cards: ' + missing.join(', ')); e.unknownCards = missing; throw e; }
     return {mapId, node, ref, defs, mine, enemyDeck, setup: setup[2], seed0: opts.seed0 || 9100, rules: fightRules(mapId, node), cpu: cpuAiLevelForNode(mapId, node),
-      mode: node.battleMode || CONQUEST_DEFAULT_MODE, sc: skirmishCastle(node), myCastle: CHARACTER_DEFS.castle || {id:'castle', health:30}};
+      mode: node.battleMode || CONQUEST_DEFAULT_MODE, sc: skirmishCastle(node), myCastle: brambleChar(CHARACTER_DEFS.castle || {id:'castle', health:30})}; // BF5: at BRAMBLE_SCALE
   } finally { matchDefsOverlay = savedOverlay; matchLeaderGrantMap = savedGrant; invalidateCardDefs(); }
 }
 // One game g of a reference fight. It ends at DRAW_ROUND_CAP rounds (the stall rule earlier), and after maxMs (if given) as a draw.
@@ -22293,7 +22303,7 @@ function startOfflineRaidMatch(){
   const castle = st.nextCastleHp;
   const players = {
     1: engine.newPlayer(1, myFightDeck, myCharacter),
-    2: engine.newPlayer(2, boss.deck, {id:'raid-boss-'+boss.id, name:boss.name, health:castle, effects:{}}),
+    2: engine.newPlayer(2, boss.deck, {id:'raid-boss-'+boss.id, name:boss.name, health:brambleHp(castle), effects:{}}), // BF5
   };
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -22830,7 +22840,7 @@ function raidPanelHTML(){
           return (rf.every || 1) > 1 ? `<p class="r3-note">${escapeHtml(TX('ui.raid-commons-every', {every: rf.every, max: rf.max, s: rf.max === 1 ? '' : 's'}))}</p>`
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
-        ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
+        ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(raidDefScaled(def), st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
         ${(()=>{ const br = raidBrambleOf(def); if(!br) return ''; // 2026-10-19 (package U3): the boss's bramble and its attacks, with the parts that use each
           const seen = new Map(); (def.parts || []).forEach(p=>{ let atks = []; try{ atks = TrenchM.trenchConfig(def, p, st.stage).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
             atks.forEach(a=>{ const k = (a.name || '') + '|' + a.pattern + '|' + a.every + '|' + a.dmg; if(!seen.has(k)) seen.set(k, {a, parts: []}); seen.get(k).parts.push(p.name); }); });
@@ -22922,7 +22932,7 @@ function simulateRaidPart(def, part, strip, n){
   for(let i=0;i<n;i++){
     const engine = makeSimEngine(defs, seededRng(7700+i), {recordEvents:false, suddenDeathCastles:false});
     const sideOf = id=> id===1?'A':'B', stats = {};
-    const P = {1: engine.newPlayer(1, myDeckCounts, myChar), 2: engine.newPlayer(2, deck, {id:'sim-raid', name: part.name, health: castle, effects:{}})};
+    const P = {1: engine.newPlayer(1, myDeckCounts, myChar), 2: engine.newPlayer(2, deck, {id:'sim-raid', name: part.name, health: brambleHp(castle), effects:{}})};
     P[2].loopCards = [];
     engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
     let lastSig = null, stalled = 0;
@@ -23280,7 +23290,8 @@ function openTrenchSetup(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId);
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
-  cfg.wallHp = guildScaledBramble(cfg.wallHp, 0); // 2026-10-19 (guild skills): Rooted Walls on the trench's shared wall
+  cfg.wallHp = brambleHp(guildScaledBramble(cfg.wallHp, 0)); // 2026-10-19 (guild skills): Rooted Walls on the trench's shared wall; BF5: at BRAMBLE_SCALE
+  if(cfg.castleHp) cfg.castleHp = brambleHp(cfg.castleHp);
   const seed = (Math.floor(Math.random()*0xFFFFFFFF))>>>0;
   let allies = trenchAllies(def, [], seed);
   let overlay = document.getElementById('trenchOverlay');
@@ -23430,17 +23441,17 @@ function startRaidPartMatch(def, partId){
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = guildScaledBramble(myCharacter.health || 30, f.castleHpPct); // + the guild's Rooted Walls (2026-10-19)
-  const players = {1: engine.newPlayer(1, myFightDeck, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
+  const players = {1: engine.newPlayer(1, myFightDeck, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: brambleHp(f.castleHp), effects:{}}) /* BF5 */};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
+    raidCastleStart: brambleHp(f.castleHp), raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidFieldRules: f.fieldRules, raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : ''}; // 2026-10-18 (R3-WP2)
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · bramble ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · bramble ${brambleHp(f.castleHp)} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
 function startRaidFullBattle(def, partId, f, st){
   if(!deckSizeOkOrWarn()) return;
@@ -23488,7 +23499,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
   // 2026-10-19 (package RX, owner 20:48 "The raid is too hard"): the boss's bramble is the part's fight castleHp (350 on the outer
   // parts since 2026-10-19, package RB2: was 420). trench.castleHp (1250) is "for the trench only" (trenchConfig's 2026-10-18 note), but this fight read it too, so a raider
   // had to chip 1250 to reach anything.
-  cfg.castleHp = f.castleHp || cfg.castleHp;
+  cfg.castleHp = brambleHp(f.castleHp || cfg.castleHp); // BF5: at BRAMBLE_SCALE (350 -> 175 on the outer parts, the Core 200 -> 100)
   // 2026-10-19 (package RB, owner 12:23: "the boss gets weaker as it goes down in health"): every boss card (its deck, its Commons, its
   // guards, its boss unit) goes through RaidM.weakenCard, the curve's one home (RaidM.bossWeakening): 100% fresh, down to the raid's
   // weakenFloor (60%) as it falls, by RaidM.weakenShare (the part's remaining share, or the whole raid's when that is lower: the Core).
@@ -23525,7 +23536,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
   // fixed here as the fight is built (st: the cloud's attempts, or only this device's offline) and added as each boss unit comes in.
   // 2026-10-19 (package RV2, owner 08:42: "They start with 100 HP instead, then scale down to the basic HP"): the bonus now takes the
   // unit's basic Health, so the unit comes in at 100 Health on a fresh raid and at its basic Health when the raid is nearly dead.
-  const bossHpBonus = (bossUnitId && RaidM.bossHpBonus) ? RaidM.bossHpBonus(def, st, defs[bossUnitId].health).bonus : 0;
+  const bossHpBonus = (bossUnitId && RaidM.bossHpBonus) ? RaidM.bossHpBonus(raidDefScaled(def), st, defs[bossUnitId].health).bonus : 0; // BF5: the elders' floor at BRAMBLE_SCALE (55 -> 28)
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
   const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
@@ -23534,8 +23545,8 @@ function buildRaidFullFight(def, partId, f, st, opts){
   // volley of your ally rows is gone (each unit's strike is its action in combat now).
   const engine = makeSimEngine(defs, opts.rng || seededRng(1), {recordEvents: opts.recordEvents !== false, aiAim:true, battleMode:'open', reserveRows:2, reserveActs:true, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
-  const mine = opts.myCastle || {}, merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct) + raidTune(def, 'raiderCastleBonus'); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19) + the raid's raiderCastleBonus (2026-10-19, package RX)
+  const mine = opts.myCastle || {}, merged = mergeRaidCastles([mine].concat(allies.map(a=> brambleChar(a.castle)))); // BF5: the allies' castles at BRAMBLE_SCALE (yours is already)
+  const myHp = guildScaledBramble(Math.max(merged.health || brambleHp(30), brambleHp(cfg.wallHp || 45) * 2), f.castleHpPct) + brambleHp(raidTune(def, 'raiderCastleBonus') || 0); // BF5: at BRAMBLE_SCALE // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19) + the raid's raiderCastleBonus (2026-10-19, package RX)
   const bramble = typeof raidBrambleOf === 'function' ? raidBrambleOf(def, partId) : null; // its name and portrait (2026-10-19, package U3); its smacks stay in raidSpecials
   const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, Object.assign({id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}},
     bramble ? {name: bramble.name, icon: bramble.icon, art: bramble.art || undefined, raidBramble: true, partName: f.part.name} : {}))};
@@ -24739,7 +24750,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const deckCounts = tutorialPlainDeck(tutDecks.mine, st), rivalCounts = tutorialPlainDeck(tutDecks.rival, st); invalidateCardDefs();
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode:'open'}); // 2026-10-12 (user: "Tutorial -> non collapse rules"): it was left on the engine's old default
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = Object.assign({}, myCastleDef(), {health: Math.min(TUTORIAL_MY_HP_MAX, cfg.myHp || TUTORIAL_MY_HP_MAX)}); // 2026-10-18 (X3): at most 8
+  const myCharacter = Object.assign({}, myCastleDef(), {health: brambleHp(Math.min(TUTORIAL_MY_HP_MAX, cfg.myHp || TUTORIAL_MY_HP_MAX))}); // 2026-10-18 (X3): at most 8; BF5: at BRAMBLE_SCALE
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
   // Part 2 (2026-10-12) plays your real starter deck (+ the tutorial reward cards), with your leader beside it.
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
@@ -24752,7 +24763,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const chosen = tutNode && tutNode.characterId && CHARACTER_DEFS[tutNode.characterId]; // the editor's Castle choice (2026-10-13)
   const watch = !chosen && st >= 2 && CHARACTER_DEFS['outskirts-watchtower'];
   const rivalCharacter = Object.assign({}, chosen || watch || CHARACTER_DEFS['castle'], {id: chosen ? tutNode.characterId : watch ? 'outskirts-watchtower' : 'tutorial-rival', name: chosen ? chosen.name : watch ? watch.name : rivalName},
-    tutNode && tutNode.tutHp ? {health: tutNode.tutHp} : cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
+    tutNode && tutNode.tutHp ? {health: tutNode.tutHp} : cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); rivalCharacter.health = brambleHp(rivalCharacter.health || 30); // BF5: at BRAMBLE_SCALE // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
     2: engine.newPlayer(2, rivalCounts, rivalCharacter),
@@ -27961,7 +27972,7 @@ function startRaidMatch(bossId){
   const myCharacter = myCastleDef();
   const bossHp = (boss.stats && boss.stats.hqHp) || 200;
   const bossDeck = (boss.stats && boss.stats.deck) || {};
-  const bossCharacter = {id:'raid-boss-'+boss.id, name:boss.name, health:bossHp, effects:{}};
+  const bossCharacter = {id:'raid-boss-'+boss.id, name:boss.name, health:brambleHp(bossHp), effects:{}}; // BF5
   const players = {
     1: engine.newPlayer(1, myFightDeck, myCharacter),
     2: engine.newPlayer(2, bossDeck, bossCharacter),
@@ -28510,7 +28521,7 @@ function startMatchInner(mode, opts, standardDeck){
     asyncGhost = Ghosts.pickOpponent(asyncStagePool(asyncStage), currentMatchSeed, run.faced);
     if(asyncGhost){ run.faced = (run.faced||[]).concat([asyncGhost.owner]); saveAsyncRun(run); }
   }
-  players[2] = engine.newPlayer(2, (mode==='ai'||mode==='gauntlet') ? randomAiDeck() : (asyncGhost ? asyncGhost.deck : DEFAULT_DECK), CHARACTER_DEFS['castle']);
+  players[2] = engine.newPlayer(2, (mode==='ai'||mode==='gauntlet') ? randomAiDeck() : (asyncGhost ? asyncGhost.deck : DEFAULT_DECK), brambleChar(CHARACTER_DEFS['castle'])); // BF5: at BRAMBLE_SCALE
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length}; // item #65: "Deck" tile shows X/Y — captured before the opening draw
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []);

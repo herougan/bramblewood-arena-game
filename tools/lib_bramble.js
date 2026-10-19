@@ -43,7 +43,7 @@ const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', '
   'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
   'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
   'CPU_AI_MAX', 'cpuAiAutoLevel', 'cpuAiLevelForNode', 'MAP_CASTLE', 'KIND_CASTLE_LEVEL', 'NODE_MAP_HINT', 'mapOfNode', 'nodeCastleId', 'nodeCastleLevel', 'SHIELD_RULE_MULT',
-  'nodeMapNumber', 'shieldRuleMult', 'shieldMapOf', 'ruleShieldOf', 'shieldOverrideOf', 'BASE_BRAMBLE_HP', 'baseBrambleHp', 'ARMOUR_LAYER_MAX', 'skirmishCastle', 'prepareLeaderGrants', 'applySkirmishSetup',
+  'nodeMapNumber', 'shieldRuleMult', 'shieldMapOf', 'ruleShieldOf', 'shieldOverrideOf', 'BRAMBLE_SCALE', 'brambleHp', 'brambleChar', /* BF5 */ 'BASE_BRAMBLE_HP', 'baseBrambleHp', 'ARMOUR_LAYER_MAX', 'skirmishCastle', 'prepareLeaderGrants', 'applySkirmishSetup',
   'skirmishCardScore', 'expectedPlayerDeck', 'MAP_DAYNIGHT', 'mapDayNight', 'TIDESPOUT_NODES', 'MISTY_MAPS', 'PERMATIDE_MAPS', 'RAPIDS_MAPS', 'wetMap', 'mapIdOfNode', 'fightRules',
   'TERRAIN_BIOMES', 'TERRAIN_TIER_STATS', 'terrainTierFor', 'terrainFor', 'terrainObj', 'DARK_MAPS', 'WINDY_MAPS', 'VOLCANO_MAPS', 'VOLCANO_GLOW', 'MAP_MUSIC', 'MAP_BIOME_OF',
   /* 2026-10-19 (LV): the level curves */ 'ROAD_LEVEL_CURVE', 'LEVEL_STAT_STEPS', 'levelForGain', 'levelMix', 'levelMixDeck', 'ENDLESS_FLOOR_CURVE', 'roadMapOfFight', 'roadEnemyLevelExact', 'roadEnemyLevel', 'levelledEnemyDeck', 'hashStr', 'KIND_BASE', 'baseKind',

@@ -16,7 +16,7 @@ const near = (a, b)=> Math.abs(a - b) <= 1;
 const src = B.src, TEXT = texts.TEXT || {};
 
 const NAMES = ['RARITY_DEFS', 'RATING_WEIGHT', 'ratingWeightOf', 'ratingLevelFactor', 'deckLevelFrom', 'RARITY_TIER_BANDS', 'canLeadDef', 'RAID_BOSS_ATK', 'raidAllyOf', 'raidAllyLeaderOf',
-  'RAID_BOSS_UNIT_ROUNDS', 'RAID_BOSS_UNIT_NAMES', 'raidBossUnitName', 'raidFieldRulesOf', 'mergeRaidCastles', 'RAID_TUNE_DEFAULTS', 'raidTune', 'guildScaledBramble', 'buildRaidFullFight', 'seededRng',
+  'RAID_BOSS_UNIT_ROUNDS', 'RAID_BOSS_UNIT_NAMES', 'raidBossUnitName', 'raidFieldRulesOf', 'mergeRaidCastles', 'RAID_TUNE_DEFAULTS', 'raidTune', 'guildScaledBramble', 'BRAMBLE_SCALE', 'brambleHp', 'brambleChar', 'raidDefScaled', /* BF5 */ 'buildRaidFullFight', 'seededRng',
   'raidCardBR', 'raidBossBR', 'raidAllyBR', 'raidSideBR'];
 const body = [
   'let matchDefsOverlay = {}; const makeSimEngine = E.makeSimEngine; function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',

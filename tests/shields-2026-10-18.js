@@ -26,7 +26,7 @@ const H = new Function('CONQUEST_MAPS', 'CHARACTER_DEFS', [
   constLine('KIND_BASE'), fn('baseKind'), fn('mainConquestMaps'), fn('mapNumberOf'), constLine('MAP_CASTLE'), constLine('KIND_CASTLE_LEVEL'),
   constLine('NODE_MAP_HINT'), fn('mapOfNode'), constLine('TUT_SIDE_GATE'), fn('nodeCastleId'), fn('nodeCastleLevel'), constLine('SHIELD_RULE_MULT'), fn('nodeMapNumber'),
   constLine('ENDLESS_FLOOR_CURVE'), constLine('SIDE_MAP_AHEAD'), fn('sideMapAhead'), fn('fightMapNumber'), /* 2026-10-19 (BF): a side map counts a map ahead */ fn('shieldMapOf'), /* 2026-10-19 (LV): an endless floor counts half a map a floor further on */ fn('shieldRuleMult'), fn('ruleShieldOf'), fn('shieldOverrideOf'), constLine('BASE_BRAMBLE_HP'), fn('baseBrambleHp'), fn('castleLeveled'),
-  constLine('ARMOUR_LAYER_MAX'), fn('armourLayersOf'), fn('skirmishCastle'), constLine('DUNGEON_DEFAULTS'), fn('dungeonConfig'), fn('dungeonWaves'),
+  constLine('ARMOUR_LAYER_MAX'), fn('armourLayersOf'), constLine('BRAMBLE_SCALE'), fn('brambleHp'), fn('brambleChar'), /* BF5 */ fn('skirmishCastle'), constLine('DUNGEON_DEFAULTS'), fn('dungeonConfig'), fn('dungeonWaves'),
   'const _t = s=> s;', fn('castleLineText'),
 ].join('\n') + '\nreturn {mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, baseBrambleHp, nodeCastleLevel, dungeonWaves, castleLineText, NODE_MAP_HINT, SHIELD_RULE_MULT};')(CONQUEST_MAPS, CHARACTER_DEFS);
 
