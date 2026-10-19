@@ -12615,7 +12615,12 @@ function copySpareIdx(id, target){
     .sort((x, y)=> copyLevel(id, a[x]) - copyLevel(id, a[y]) || y - x);
 }
 // How many copies "Fuse all extras" takes from a card: its spares beyond what a deck can hold (cap).
-function fuseAllCountFor(id, cap){ const a = myCardCopies[id] || []; return Math.min(copySpareIdx(id).length, Math.max(0, a.length - Math.max(1, cap))); }
+// Extras (2026-10-19, package FG, owner: "Extras are defined as cards beyond the max deck limit for that rarity. So for commons, having
+// 5 is not considered 'extra'."): of `owned` copies, the ones beyond a deck's limit for the card's rarity (cap = maxCopiesForRarity,
+// RARITY_MAX_COPIES: Common 10, Uncommon 5, Rare 4 ...). The one rule for "Fuse all extras", "Disenchant extras", melting and the Fuse
+// tab: nothing that counts as an extra ever takes a card below a full deck's worth.
+function copiesBeyondCap(owned, cap){ return Math.max(0, (owned | 0) - Math.max(1, cap | 0)); }
+function fuseAllCountFor(id, cap){ const a = myCardCopies[id] || []; return Math.min(copySpareIdx(id).length, copiesBeyondCap(a.length, cap)); }
 // What the cloud row carries (proposed column player_card_unlocks.copies, supabase/proposed/20261019_card_copy_levels.sql): each
 // copy's uid and level, best first. null when the card has no copy.
 function cloudCopiesOf(id){ const a = myCardCopies[id] || []; if(!a.length) return null; return copyOrder(id).map(i=> ({u: a[i].uid, l: copyLevel(id, a[i])})); }
@@ -12675,12 +12680,15 @@ function disenchantableCopies(id, keepUid){
   const d = getCardDefs()[id], copies = myCardCopies[id] || [];
   if(!d || copies.length < 2 || !canDisenchantCard(d)) return [];
   if(myCardPrestige[id]) return [];
+  // 2026-10-19 (package FG, owner: "For disenchanting extras - make sure you have extras"): only the extras, the copies beyond the
+  // deck limit for the card's rarity (copiesBeyondCap), ever melt; 5 Commons (limit 10) melt none. Was: everything but one copy.
+  const extra = copiesBeyondCap(copies.length, maxCopiesForRarity(d.rarity)); if(!extra) return [];
   // keep one copy (the best one: a shiny or foil first), melt the other plain ones
   // 2026-10-18 (package NF): every copy has its own level now. The copy kept is your best one (copyOrder: the highest level, then
   // the finest foil), or the copy being melted down; a copy with levels you paid for on it is never melted away as a spare.
-  if(!copyModelOn()){ const keepIdx = Math.max(0, copies.findIndex(c=> c && (c.shiny || c.foil))); return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil || copies[i].skin)); }
+  if(!copyModelOn()){ const keepIdx = Math.max(0, copies.findIndex(c=> c && (c.shiny || c.foil))); return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil || copies[i].skin)).slice(0, extra); }
   copyModelSync(id);
-  return copySpareIdx(id, keepUid ? copyIndexByUid(id, keepUid) : -1);
+  return copySpareIdx(id, keepUid ? copyIndexByUid(id, keepUid) : -1).slice(0, extra); // weakest first
 }
 function disenchantSummary(){
   const defs = getCardDefs(); let copies = 0, dust = 0; const per = [];

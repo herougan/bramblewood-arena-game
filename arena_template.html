@@ -7093,6 +7093,10 @@
   @keyframes hatchSpin{to{transform:rotate(360deg);}}
   .hatch-ov:has(.hatch-egg.crack2) .hatch-rays{opacity:.6;} .hatch-ov.is-open .hatch-rays{opacity:1;}
   .hatch-egg{position:relative; font-size:110px; line-height:1; filter:drop-shadow(0 0 0 rgba(var(--glow),0)); transition:filter .4s;}
+  /* 2026-10-19 (package FG, owner: "The nest hatch animation is not centered. I think the icon and crack need to be a few % higher."):
+     the egg (its icon and its cracks together) sits on the rays' and beams' centre, 42% down the stage, where it used to sit 8% lower
+     (the flex centre, 50%); -54% rather than -50% because the egg glyph rides a little low in its line box. */
+  .hatch-egg{position:absolute; left:50%; top:42%; translate:-50% -54%;}
   .hatch-egg.crack1{filter:drop-shadow(0 0 10px rgba(var(--glow),.5));} .hatch-egg.crack2{filter:drop-shadow(0 0 22px rgba(var(--glow),.75));} .hatch-egg.crack3{filter:drop-shadow(0 0 40px rgba(var(--glow),1));}
   .hatch-egg.rock{animation:hatchRock .5s ease-in-out;}
   @keyframes hatchRock{0%,100%{transform:rotate(0);} 25%{transform:rotate(calc(var(--rock,8deg) * -1));} 75%{transform:rotate(var(--rock,8deg));}}
