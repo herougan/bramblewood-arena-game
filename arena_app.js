@@ -5522,9 +5522,11 @@ function castleHoverHTML(hqSide){
   if((def.effects||{}).firstUnitAtkBonus){
     passiveText += pl.firstUnitBonusUsed ? ' <span class="live-stat-val">(already used this match)</span>' : ' <span class="live-stat-val">(ready)</span>';
   }
+  // 2026-10-19 (package U3): the raid boss's bramble lists its own abilities (the Tentacle Smack: when it fires and what it does)
+  const raidAbs = def.raidBramble && m.raidFull ? raidBrambleAbsHTML(raidBrambleAbilityLines(m.raidAttacks)) : '';
   return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Bramble'}</h4>
     <div class="statrow"><span class="hp" style="color:var(--health)">❤${Math.max(0,pl.hq.hp)}/${pl.hq.maxHp}</span></div>
-    <p class="panel-sub">${passiveText}</p>
+    ${raidAbs ? `<p class="panel-sub">${escapeHtml(TX('ui.u3-bramble-kicker'))}${def.partName ? ' · ' + escapeHtml(def.partName) : ''}</p>${raidAbs}` : `<p class="panel-sub">${passiveText}</p>`}
     ${def.flavor?`<div class="flavor">${def.flavor}</div>`:''}`;
 }
 (function initPopover(){
@@ -22679,6 +22681,11 @@ function raidPanelHTML(){
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
         ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
+        ${(()=>{ const br = raidBrambleOf(def); if(!br) return ''; // 2026-10-19 (package U3): the boss's bramble and its attacks, with the parts that use each
+          const seen = new Map(); (def.parts || []).forEach(p=>{ let atks = []; try{ atks = TrenchM.trenchConfig(def, p, st.stage).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
+            atks.forEach(a=>{ const k = (a.name || '') + '|' + a.pattern + '|' + a.every + '|' + a.dmg; if(!seen.has(k)) seen.set(k, {a, parts: []}); seen.get(k).parts.push(p.name); }); });
+          const list = [...seen.values()];
+          return `<div class="r3-bramble">${br.art ? `<img src="${escapeAttr(br.art)}" alt="">` : ''}<div><p class="r3-note">${escapeHtml(TX('ui.u3-bramble-rules', {name: br.name}))}</p>${raidBrambleAbsHTML(raidBrambleAbilityLines(list.map(x=> x.a)), list.map(x=> x.parts.join(', ')))}</div></div>`; })()}
         <ul class="r3-rules">${[TX('ui.raid-rule-share'), TX('ui.raid-rule-win', {n: raidNum(sc.overwhelmCap || RaidM.SCORING_DEFAULTS.overwhelmCap)}), TX('ui.raid-rule-rank'), TX('ui.rb-rule-weaken')].map(t=> `<li>${escapeHtml(t)}</li>`).join('') /* 2026-10-19 (RV2, owner 08:46): the raid's rules, no multipliers shown; (package RB) a win's 1,000 and the boss's weakening */}</ul>
         <p class="r3-note">${escapeHtml(TX('ui.rb-fight-note', {turns: RaidM.fightRounds(def)})) /* 2026-10-19 (package RB, owner 12:23: "Do not show the damage formula to players."): no per-fight cap or rate */}</p>
       </section>
@@ -23316,7 +23323,9 @@ function startRaidFullBattle(def, partId, f, st){
   let bossBR = null, sideBR = null; try{ bossBR = raidBossBR(def, f, b); sideBR = raidSideBR(mainDeckLevel(myDeckCounts, matchLeaderId()), allies); allies.forEach((a, i)=>{ a.level = sideBR.allies[i]; });
     m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')});
     me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
-  showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)},
+  const vsBramble = raidBrambleOf(def); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
+  showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
+    bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks)} : null},
     bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 900); }); // + Turn 1's tick (2026-10-19, U3)
 }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
@@ -23377,7 +23386,9 @@ function buildRaidFullFight(def, partId, f, st, opts){
   const sideOf = id=> id===1?'A':'B';
   const mine = opts.myCastle || {}, merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
   const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct) + raidTune(def, 'raiderCastleBonus'); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19) + the raid's raiderCastleBonus (2026-10-19, package RX)
-  const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
+  const bramble = typeof raidBrambleOf === 'function' ? raidBrambleOf(def) : null; // its name and portrait (2026-10-19, package U3); its smacks stay in raidSpecials
+  const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, Object.assign({id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}},
+    bramble ? {name: bramble.name, icon: bramble.icon, art: bramble.art || undefined, raidBramble: true, partName: f.part.name} : {}))};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
@@ -23530,6 +23541,27 @@ function raidBossUnit(m, events){
 const RAID_BOSS_UNIT_NAMES = {'kraken-spawnling':'Kraken Brute', 'goliath-tentacle':'Crushing Tentacle', 'humpback-elder':'Leviathan Elder', 'orca-vanguard':'Orca Warlord',
   'goliath-broodmother':'Broodmother Ascendant', 'vampire-squid':'Vampyre Matriarch', 'coral-reef-shark':'Reef Tyrant', 'glass-octopus':'Mirror Octopus', 'abyss-lantern-squid':'Abyssal Beacon'};
 function raidBossUnitName(base, name){ return RAID_BOSS_UNIT_NAMES[base] || ('Great ' + String(name || base).replace(/^(The|A) /, '')); }
+// The raid's bramble (2026-10-19, package U3, owner 13:43: "The tentacle smack should be a property of the Raid's bramble. Which should
+// be appropriately named and art'd."): the boss side's castle in a raid fight has a name, a portrait and abilities of its own. The
+// Tentacle Smack (and the Tail's Tail Sweep) are its abilities: its info panel (castleHoverHTML), the VS screen's boss card and the
+// raid's rules list them, and the tentacle reaches out of it (FX.F tentacleSmack's origin). The mechanics are unchanged
+// (raidSpecials: the same attacks, rolls and damage). A published raid can name its own with def.bramble {name, icon, art}.
+// Owner call: the Goliath's bramble is "Kraken's Reef" (alternative: "The Drowned Maw"); its portrait is a placeholder pixel SVG
+// (tools/make_raid_bramble_art.py) until a painted one replaces it (docs/art/raid-bramble-art-brief.md).
+const RAID_BRAMBLES = {goliath: {nameKey:'ui.u3-goliath-bramble', icon:'🪸', art:'art/raids/krakens-reef.svg'}};
+function raidBrambleOf(def){
+  const b = Object.assign({}, RAID_BRAMBLES[def && def.id] || {}, (def && def.bramble) || {});
+  const name = b.name || (b.nameKey && typeof TX === 'function' ? TX(b.nameKey) : '');
+  return name ? {name, icon: b.icon || '🏰', art: b.art || ''} : null;
+}
+// Each of the bramble's attacks as one line (TX, so the page translator takes the whole line): when it fires and what it does.
+function raidBrambleAbilityLines(attacks){
+  return (attacks || []).map(a=>{ const v = {name: a.name || (a.pattern === 'frontRow' ? 'Tail Sweep' : 'Tentacle Smack'), every: Math.max(1, a.every || 1), dmg: a.dmg || 0};
+    return a.pattern === 'column' ? TX('ui.u3-smack-desc', v) : a.pattern === 'frontRow' ? TX('ui.u3-sweep-desc', v) : ''; }).filter(Boolean);
+}
+function raidBrambleAbsHTML(lines, notes){
+  return lines.length ? `<ul class="u3-bramble-abs">${lines.map((t, i)=> `<li>${/^Tail/.test(t) ? '🌊' : '🦑'} ${escapeHtml(t)}${notes && notes[i] ? ` <small>(${escapeHtml(notes[i])})</small>` : ''}</li>`).join('')}</ul>` : '';
+}
 // The boss calls in Commons (2026-10-17): every round from round 2, on top of its normal play, up to 1 Common into its middle row
 // and 1 into its back row (2 at most), each into an empty slot with a card right in front of it, and none while its back rows
 // already hold 6. The rule itself is RaidM.bossReinforce (bramblewood-raid.js); the pool is the raid's commonPool.
@@ -36798,7 +36830,7 @@ function showVsScreen(left, right){
       </div>`; };
     const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-kicker'))}: ${escapeHtml(p.bramble.name)}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}` : '' /* 2026-10-19 (package U3) */}</div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;

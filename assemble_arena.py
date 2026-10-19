@@ -340,6 +340,12 @@ raid_bosses_literal = json.dumps(_with_path_art(json.load(open(SCRATCH + "canoni
 # 2026-10-16 (user: "Card backings -> 4 types for now…"): art/backings/<kind>.png (CARD_BACKINGS in arena_app.js) too.
 # 2026-10-16 (user: "...I meant the front card frame. To have 4 types..."): and art/frames/<kind>.png (CARD_FRAMES).
 app_src = _re.sub(r"art:'(art/(?:npc|fields|backings|frames)/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
+# 2026-10-19 (package U3): the raid brambles' portraits (RAID_BRAMBLES in arena_app.js: art/raids/<name>.svg or .png) too.
+def _path_art_any(rel):
+    fp = SCRATCH + rel
+    if not os.path.exists(fp): return rel
+    return asset_url(rel[len("art/"):], open(fp, "rb").read(), "image/svg+xml" if rel.endswith(".svg") else "image/png")
+app_src = _re.sub(r"art:'(art/raids/[a-z0-9_-]+\.(?:svg|png))'", lambda m: "art:'%s'" % _path_art_any(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # 2026-10-19 (package UT): each animal's kind, for the Codex's animal filter (canonical/animal-tags.json, python3 tools/animal_tags.py)

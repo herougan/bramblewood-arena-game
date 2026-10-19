@@ -11789,13 +11789,13 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 @keyframes u3BrambleSmack{0%{filter:none;} 30%{filter:drop-shadow(0 0 10px rgba(214,150,255,.95)) brightness(1.25);} 100%{filter:none;}}
 @media (prefers-reduced-motion: reduce){ .match-castle-tile.u3-bramble-smack{animation:none;} }
 /* 4. The raid board's rows a touch closer (owner 13:43: "maybe 3% closer? then zoom in abit more? It's okay if the boundary of the
-   map touches the border of the bottom row's cards"): each row's own spacing is 3 px (about 3% of a row) less, the board has no
-   bottom padding and its last row no bottom margin, so the bottom row's cards meet the board's edge; mb2FitRaidCards measures the
-   room this frees and the cards grow into it. */
+   map touches the border of the bottom row's cards"): each row's own spacing is 3 px (about 3% of a row) less, and the board's
+   bottom padding is just the HP ribbon's 8 px with the last row's spare space under its cards pulled in (-3 px), so the bottom
+   row's cards meet the board's edge (the ribbon); mb2FitRaidCards measures the room this frees and the cards grow into it. */
 #appWrap.in-match.mb2-raid #battlefieldInner > #rowEnemy, #appWrap.in-match.mb2-raid #battlefieldInner > #rowMine{height:calc(var(--match-card-h) + 9px) !important; padding-top:4.5px !important; padding-bottom:4.5px !important;}
 #appWrap.in-match.mb2-raid #battlefieldInner > .board-row.reserve-row.raid-rows{height:calc(var(--match-card-h) * .966 + 6px) !important; margin:calc(1.5px + var(--mb2-rgap, 0px)) 0 !important;}
-#appWrap.in-match.mb2-raid #battlefieldInner > .board-row.reserve-row.raid-rows.u3-last-row{margin-bottom:0 !important;}
-#appWrap.in-match.mb2-raid #view-play > .battlefield{padding-bottom:0 !important;}
+#appWrap.in-match.mb2-raid #battlefieldInner > .board-row.reserve-row.raid-rows:last-child{margin-bottom:-3px !important;}
+#appWrap.in-match.mb2-raid #view-play > .battlefield{padding-bottom:8px !important; justify-content:flex-end !important;} /* any height left over goes above the board, not under it */
 /* 5. The turn meter (owner 13:43: "should be faded out. It only fades in to tick on your turn, then it fades out. It shouldn't say
    2/20, but just Turn 2."): the raid's clock pill stays on the boss's ribbon but faded out and taking no clicks; at the start of
    your turn u3TurnFlash shows a copy over it that fades in, rolls from the old turn to the new, holds about 1.2 s and fades out.
