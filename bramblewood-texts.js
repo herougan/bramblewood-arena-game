@@ -1069,6 +1069,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.u3-turns-left": "{n} turns left",
   "ui.u3-last-turn": "Last turn!",
   "ui.u3-goliath-bramble": "Kraken's Reef",
+  "ui.goliath-core-bramble": "The Drowned Maw",
   "ui.u3-bramble-kicker": "The boss's bramble",
   "ui.u3-bramble-vs": "The boss's bramble: {name}",
   "ui.u3-bramble-rules":"The boss's bramble, {name}, strikes too:",
