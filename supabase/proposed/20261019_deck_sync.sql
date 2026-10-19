@@ -3,7 +3,7 @@
 --
 -- NOT NEEDED FOR THE FIX. The decks failed to sync because the game's deck ids ('deck-xxxxxxx') aren't uuids and player_decks.id is
 -- one: every upsert was refused (22P02) and the client ignored the error. The client now uses uuid ids (and moves the old ones once),
--- so decks sync with the table exactly as it is today. This file only adds two optional columns that make the sync better:
+-- so decks sync with the table exactly as it is today. This file only adds optional improvements to that sync:
 --
 -- 1. Two columns:
 --   looks       jsonb, null    which copies in the deck are Shiny or wear an alternate-art skin ({cardId: {"shiny": 1, "skin:x": 1}}).
