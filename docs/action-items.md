@@ -59,6 +59,11 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | UI | Trench header (U3) | Still "Turn X / Y": make it "Turn X" too? |
 | Raid | Raid BR weighting (RJ) | Boss BR counts elders at Epic × (1 + bonus/basic HP) and row copies at printed rarity: reads high vs what they do (a 5/4 Broodmother copy adds 21) |
 | Balance | Caldera Wyrm (RJ) | 1.82× its N, no source. Option 1: 6/11 at Lv 6 with its 30 HP moved onto the 20-B-4 bramble; option 2: keep 6/41, list as non-player |
+| Balance | Road gaps (BF3) | 43 fights off target with honest levers (docs/balance/road-gaps-2026-10-19.json): 20 too easy (future cheat fields: 21-6, 16-7, 2-B-2..4, 1-5, 1-A-5, 20-A-4, 18-A-7…), 23 too hard (Map 9 at Lv 2 before the Forge; 2-A-2, 2-A-5, 0-B-1, 0-B-2) |
+| Balance | Shield overrides (BF3) | 26 fights above the Shield rule; back on the rule would drop on-target 150 → 147. Keep or remove? |
+| Balance | Thorns (BF3) | Re-measured 3.23 per point (was 1), low confidence, likely a floor |
+| Raid | Tail elder (BF3) | Retune made Orca Warlord the tail's elder (biggest card). Pin the Leviathan Elder per part? |
+| Balance | Enemy stat changes (BF3, B10) | Flagged, not changed: endless floor perk (0 now), raid staged decks, raid elders (+1 Attack, HP multiplier, floor 55) |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
