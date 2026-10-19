@@ -119,7 +119,8 @@ ok(Q.cards.every(c=> c.sAfter > c.sBefore && c.passedBefore && (c.overBy.x1 >= 0
 const cb = rd('tools/card_balance.js');
 ok(/require\(path\.join\(__dirname, 'skill_costs\.js'\)\)/.test(cb) && cb.includes('canonical/skill-costs.json'), 'card_balance.js reads the table through tools/skill_costs.js');
 ok(!/const SB_SKILLS = \{/.test(cb), 'card_balance.js has no skill-cost table of its own');
-const win = {}; vm.runInNewContext(rd('tools/skill_costs.js').replace(/^#!.*\n/, ''), {self: win});
+// 2026-10-19 (package BF): as the hub inlines them, bramblewood-budget.js (window.BramblewoodBudget, budget v4's N) comes first
+const win = {}; vm.runInNewContext(rd('bramblewood-budget.js') + '\n' + rd('tools/skill_costs.js').replace(/^#!.*\n/, ''), {self: win});
 ok(win.SkillCosts && typeof win.SkillCosts.make === 'function', 'tools/skill_costs.js runs as a browser script (window.SkillCosts)');
 if(win.SkillCosts && ant) ok(win.SkillCosts.make(table).budget(ant).S === T.budget(ant).S, 'browser and Node builds agree');
 
