@@ -356,6 +356,13 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Rarity pass, then stat fixes
 - **Outcome:** Taken as default on 'continue' (revertible): the 199 unrated cards got a rarity from measured strength, capped at Rare for now (114 Common, 11 Uncommon, 74 Rare), and 39 extreme outliers moved half-way toward their suggested stat (e.g. Feral Tomcat 3/5 → 3/3, Honey Badger Fury 5 → 3 Attack, Raccoon Nightcrew 5 → 7 Attack). Cards in band: 124 → 162 of 288. Walls, 3+ cost cards (B4) and the Wandering Traveller were left alone.
 
+**B7. The Forge stays shut until Map 11: no levels before it** · Decide · Balance · asked 2026-10-19 · decided 2026-10-19
+- Should the reference player have Forge levels before Map 11, now that the Forge curve follows the budget (package BF: N(L) = (Base - 1 + L) x (1 + L/20), majors 4, 7, 10, minor 2)? Before Map 11 every card plays at the level it starts at (Base cards Lv 0, rewards Lv 1).
+  - Keep the Forge at Map 11: Lv 0 before it
+  - Open it earlier and give the reference player levels on Maps 1-10
+- **Default:** Keep it at Map 11
+- **Outcome:** Owner 09:52: "No Forge is fine. The player has to deck build to win." The Forge stays at Map 11 (ROAD_LEVEL_CURVE.playerForgeMap 11); before it referencePlayerLevel is Lv 0, so Maps 0-10 are won by deck building alone. From Map 11 the reference player is Lv 3, then a little more a map from Map 16, as before; the road's enemy keeps pace with the new curve (ROAD_LEVEL_CURVE.enemyKeepsPace). docs/balance/level-curve-2026-10-19b.md; tests/level-curve-2026-10-19.js.
+
 ## Stated rules · 2026-10-18
 
 The owner's notes (23:05) on a far-future map and the Legendary ability tier. Pinned by `tests/legendary-2026-10-19.js`.

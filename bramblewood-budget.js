@@ -14,7 +14,8 @@
 //   every level L above the card's start level banks its budget gain ΔN = N(L) − N(L−1) (÷ the half-miss multiplier, which scales the
 //   score), in 2A+H points (1 Health = 1, 1 Attack = 2). A level spends whole points out of the bank:
 //     major (4, 7, 10; past 10 every third level, 13, 16 …) and the limit break (11): everything banked, at least 1;
-//     minor (2): half the bank;  any other level: a third of the bank (often 0 on small cards).
+//     minor (2): everything banked too, which is only a level or two of gain, so a smaller step;
+//     any other level: a third of the bank (often 0 on small cards), the rest waits for the next major.
 //   So the stats never get ahead of N(L) (2A+H rises by at most N(L) − N(start)), majors take the big chunks, and the gains are the same
 //   for the same card everywhere. Points go to Attack where that keeps the card's A:H shape (Attack ≈ A0 × (2A0+H0+P)/(2A0+H0)), never
 //   taking a point of Health back, the rest to Health; a 0-Attack wall only grows Health. A step that would shrink the card's A·H room,
@@ -28,7 +29,7 @@ const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epi
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const MAJOR = [4, 7, 10], MINOR = [2], LIMIT = 11;
-const SHARE = {major: 1, limit: 1, minor: 0.5, other: 1 / 3};
+const SHARE = {major: 1, limit: 1, minor: 1, other: 1 / 3};
 const r2 = v=> Math.round(v * 100) / 100;
 const cfgOf = cfg=> Object.assign({}, DEFAULTS, cfg || {});
 const num = (cfg, k)=>{ const v = cfg && cfg[k]; return v == null || v === '' || !Number.isFinite(Number(v)) ? DEFAULTS[k] : Number(v); };

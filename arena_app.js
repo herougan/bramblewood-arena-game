@@ -11342,7 +11342,7 @@ function levelStatMultiplier(level){
 // 2026-10-19 (package BF, owner 09:52: "Forge curve out - Use our N formula below, and change majors to 4, 7, 10, minor to 2. Then divvy
 // out strength updates at all levels. If there is no space for minor, then all are minor OR potentially still 0, then majors expect SOME
 // improvement."): a card's stats at level L follow the stat budget N(L) = (Base - 1 + L) x (1 + L/20) (bramblewood-budget.js). Each level
-// banks its budget gain in 2A+H points; the majors (4, 7, 10) and the limit break (11) spend the bank, the minor (2) half of it, every
+// banks its budget gain in 2A+H points; the majors (4, 7, 10), the limit break (11) and the minor (2, only a level or two banked) spend the bank, every
 // other level a third (often 0). Was: +10% of the printed stats on Lv 1, 3, 6, 9 and 11, +5% on Lv 10 (LEVEL_STEP_GAIN, kept for the
 // old tables below). LEVEL_STEPS now only labels the levels (the card editor's badges); forgeCurveOf gives the numbers.
 const LEVEL_STEPS = {1:null, 2:'minor', 3:null, 4:'major', 5:null, 6:null, 7:'major', 8:null, 9:null, 10:'major', 11:'major'}; // 11 = limit break (2026-10-12)
@@ -16206,14 +16206,14 @@ const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, pl
 const LEVEL_STAT_STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 // The mean 2A+H gain over Lv 1 of the live cards with stats at each level (tools/forge_curve_2026_10_19.js gain; the test checks it
 // against the cards), the BF curve; and the old +10% / +5% steps' (LEGACY_LEVEL_GAIN: 0.10 at Lv 3, 0.20 at 6, 0.30 at 9 ...).
-const FORGE_MEAN_GAIN = [[0, 1], [0.08, 2], [0.173, 3], [0.656, 4], [0.722, 5], [0.832, 6], [1.441, 7], [1.506, 8], [1.637, 9], [2.29, 10], [2.61, 11]];
+const FORGE_MEAN_GAIN = [[0, 1], [0.192, 2], [0.232, 3], [0.656, 4], [0.722, 5], [0.832, 6], [1.441, 7], [1.506, 8], [1.637, 9], [2.29, 10], [2.61, 11]];
 const LEGACY_LEVEL_GAIN = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
 function gainTableAt(pts, L){ L = Number(L) || 0; if(L <= pts[0][1]) return 0;
   for(let i = 1; i < pts.length; i++) if(L <= pts[i][1]) return pts[i-1][0] + (L - pts[i-1][1]) / (pts[i][1] - pts[i-1][1]) * (pts[i][0] - pts[i-1][0]);
   return pts[pts.length - 1][0]; }
 function gainOfLevel(L){ return gainTableAt(FORGE_MEAN_GAIN, L); }
 function legacyGainOfLevel(L){ return gainTableAt(LEGACY_LEVEL_GAIN, L); }
-// The fractional level whose stats are `g` above Lv 1 on the mean card (BF: 0.08 -> 2, 0.173 -> 3, 0.656 -> 4 ...; before BF 0.10 -> 3,
+// The fractional level whose stats are `g` above Lv 1 on the mean card (BF: 0.192 -> 2, 0.232 -> 3, 0.656 -> 4 ...; before BF 0.10 -> 3,
 // 0.20 -> 6, 0.30 -> 9).
 function levelForGain(g){
   if(!(g > 0)) return 1;
@@ -41808,6 +41808,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
     <div class="forge-level-row"><span class="forge-level-label">Lv ${L}${L>=LIMIT_BREAK_LEVEL?' · Limit broken':maxed?' · Max':''}</span><span class="forge-pips" role="img" aria-label="Level ${L} of 10">${pips}</span></div>
     <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
+    ${forgeCurveStripHTML(id, L)}
     ${!maxed ? `
       ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ ${mapIsCharted(levelGateNeed(L+1)) ? `Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.` : `Level ${L+1} ${UNCHARTED_LOCK.toLowerCase()}.` /* 2026-10-18: Lv 9 and 10 wait for Maps 26 and 31, not charted yet */}</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
       ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is trained to Level 1 in the Nest, with Kibble.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}${btnCostHTML(cost)}</button>`}
@@ -41819,6 +41820,20 @@ function forgeAnvilHTML(id, sel, L, maxed){
         <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}${btnCostHTML(tier.cost)}</button>
       ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
     `}${forgeDupMeltHTML(id, L)}${forgePromotionHTML(id, sel, L)}`;
+}
+// The level curve on the anvil (2026-10-19, package BF; owner 09:52: "majors to 4, 7, 10, minor to 2. Then divvy out strength updates
+// at all levels"): what each level adds to this card (statsAtLevel, so a level the designer set by hand shows as set), the big steps
+// (4, 7, 10) and the small one (2) marked, the levels already reached ticked, the next one lit.
+function forgeCurveStripHTML(id, L){
+  const b = forgeBaseDef(id) || {}; if(b.attack == null && b.health == null) return '';
+  const from = cardBaseLevel(b), top = canLimitBreakDef(b) ? LIMIT_BREAK_LEVEL : 10, cells = []; let prev = statsAtLevel(b, from);
+  for(let l = from + 1; l <= top; l++){
+    const st = statsAtLevel(b, l), da = (st.attack || 0) - (prev.attack || 0), dh = (st.health || 0) - (prev.health || 0), k = LEVEL_STEPS[l]; prev = st;
+    const tag = k === 'major' ? TX('ui.forge-curve-major') : k === 'minor' ? TX('ui.forge-curve-minor') : '';
+    cells.push(`<li class="fc-lv${k ? ' is-' + k : ''}${l <= L ? ' done' : ''}${l === L + 1 ? ' next' : ''}" title="${escapeAttr('Lv ' + l + (tag ? ' · ' + tag : ''))}"><b>${l}</b><span>${da ? `<i class="atk">+${da}⚔</i>` : ''}${dh ? `<i class="hp">+${dh}❤</i>` : ''}${!da && !dh ? `<i class="none" aria-label="${escapeAttr(TX('ui.forge-curve-none'))}">·</i>` : ''}</span></li>`);
+  }
+  if(!cells.length) return '';
+  return `<details class="forge-curve"><summary>${escapeHtml(TX('ui.forge-curve-title'))}</summary><p class="forge-note">${escapeHtml(TX('ui.forge-curve-help'))}</p><ol class="forge-curve-list" aria-label="${escapeAttr(TX('ui.forge-curve-aria', {from: from + 1, to: top}))}">${cells.join('')}</ol></details>`;
 }
 // The limit-break panel on a level-10 card (2026-10-12).
 function forgeLimitBreakHTML(id, lb){

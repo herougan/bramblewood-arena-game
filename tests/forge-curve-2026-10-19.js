@@ -1,0 +1,78 @@
+#!/usr/bin/env node
+// 2026-10-19 (package BF; owner 09:52: "L should scale. So this is my new formula. (Base-1 + L) * (1+L/20)" and "Forge curve out - Use our
+// N formula below, and change majors to 4, 7, 10, minor to 2. Then divvy out strength updates at all levels. If there is no space for
+// minor, then all are minor OR potentially still 0, then majors expect SOME improvement."). Checks:
+//   1. the formula: bramblewood-budget.js's N(L) = (Base - 1 + L)(1 + L/20), its numbers = canonical/skill-costs.json's, the tools'
+//      (tools/skill_costs.js) and the Test Lab (arena_app.js sbBudgetAt) give the same N;
+//   2. the curve, for every live card with stats: no level loses a stat (monotonic); the majors 4, 7 and 10 always add something;
+//      the stats at every level stay inside the budget rules at N(L) (a card inside at its start level stays inside; one over keeps
+//      its room from shrinking); a 0-Attack wall only grows Health; the game's statsAtLevel is this curve;
+//   3. FORGE_MEAN_GAIN (the enemy's level for a gain) is the cards' mean; the Forge shows the curve (TX keys, the 12 packs);
+//   4. a few spot cards, printed.
+'use strict';
+const fs = require('fs'), path = require('path');
+const ROOT = path.join(__dirname, '..');
+let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
+const BB = require(path.join(ROOT, 'bramblewood-budget.js')), SC = require(path.join(ROOT, 'tools', 'skill_costs.js'));
+const table = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), T = SC.make(table);
+const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G, src = B.src;
+const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
+const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-6);
+
+// ---- 1. the formula
+ok(near(BB.nAt(30, 5), (30 - 1 + 5) * 1.25) && near(BB.nAt(30, 1), 31.5) && near(BB.nAt(30, 0), 29) && near(BB.nAt(25, 10), 34 * 1.5), '1. N(L) = (Base - 1 + L)(1 + L/20): Base 30 -> 29 at Lv 0, 31.5 at Lv 1, 42.5 at Lv 5');
+ok(Object.keys(BB.DEFAULTS).filter(k=> k !== 'levelDiv').every(k=> table.budget[k] === BB.DEFAULTS[k]) && table.budget.levelDiv === BB.DEFAULTS.levelDiv, '1. the helper\'s numbers are canonical/skill-costs.json\'s budget');
+{ const live = cards.filter(SC.measured); let same = 0; const diff = [];
+  live.forEach(c=>{ const L = SC.levelOf(c), want = BB.nAt(BB.baseOf(c), L); if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
+  ok(!diff.length, `1. tools/skill_costs.js gives v4's N for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
+  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(d, c\), L, c\)/.test(src) && /levelDiv:20/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
+  ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
+  const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1 + 1e-9), `1. at Level 1, v4 is never more than 1 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
+
+// ---- 2. the curve
+const QUEUE = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'post-balance-queue.json'), 'utf8')).cards.map(c=> c.id));
+const withStats = cards.filter(c=> SC.measured(c) && !c.pool && (c.attack != null || c.health != null));
+let mono = [], majors = [], budget = [], walls = [], game = [], checked = 0;
+for(const c of withStats){
+  const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(c, from, top), b0 = T.budget(c, {level: from}); checked++;
+  const room1 = L=> BB.nAt(cv.base, L) - (2 * (cv.rows[L].attack || 0) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(BB.nAt(cv.base, L) / 3, 2) - ((cv.rows[L].attack || 0) * (cv.rows[L].health || 0) + b0.S) * cv.m;
+  for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
+    if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
+    if([4, 7, 10].includes(L) && !(r.points > 0)) majors.push(`${c.id} Lv ${L}`);
+    const inside = b0.ok ? room1(L) > 1e-9 && room2(L) > 1e-9 : room1(L) >= room1(from) - 1e-9 && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
+    if(!inside) budget.push(`${c.id} Lv ${L} (2A+H+S ${(2 * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
+    if(!c.levelStats){ const st = G.statsAtLevel(c, L); if(st.attack !== r.attack || st.health !== r.health) game.push(`${c.id} Lv ${L}`); } }
+  if(c.attack === 0 && Object.values(cv.rows).some(r=> r.attack !== 0)) walls.push(c.id);
+}
+ok(checked > 600, `2. ${checked} live cards with stats checked`);
+ok(!mono.length, '2. monotonic: no level loses Attack or Health: ' + mono.slice(0, 6).join('; '));
+ok(!majors.length, '2. the majors (Lv 4, 7, 10) always add something: ' + majors.slice(0, 6).join('; '));
+ok(!budget.length, '2. every level stays inside the budget at N(L) (a card over at its start keeps its room): ' + budget.slice(0, 6).join('; '));
+ok(!walls.length, '2. a 0-Attack wall only grows Health: ' + walls.slice(0, 6).join(', '));
+ok(!game.length, '2. the game\'s statsAtLevel is the curve (cards with no levelStats): ' + game.slice(0, 6).join('; '));
+{ const minorGives = withStats.filter(c=> G.cardBaseLevel(c) <= 1).map(c=> BB.forgeCurve(c, G.cardBaseLevel(c), 11)), mean = L=> minorGives.reduce((t, cv)=> t + cv.rows[L].points, 0) / minorGives.length;
+  ok(mean(4) > mean(2) && mean(7) > mean(2) && mean(10) > mean(2) && mean(2) >= mean(3) && mean(2) >= mean(5), `2. the majors take the big chunks, the minor a smaller one (mean points: Lv 2 ${mean(2).toFixed(2)}, 3 ${mean(3).toFixed(2)}, 4 ${mean(4).toFixed(2)}, 7 ${mean(7).toFixed(2)}, 10 ${mean(10).toFixed(2)})`); }
+{ const s1 = withStats.find(c=> c.id === 'otter-centurion'), cv = BB.forgeCurve(s1, 1, 11), w = r=> 2 * r.attack + r.health;
+  ok(w(cv.rows[10]) - w(cv.rows[1]) <= BB.nAt(cv.base, 10) - BB.nAt(cv.base, 1) + 1e-9, '2. the gain over Lv 1 is at most the budget gain N(10) - N(1)'); }
+ok(/const LEVEL_STEPS = \{1:null, 2:'minor', 3:null, 4:'major', 5:null, 6:null, 7:'major', 8:null, 9:null, 10:'major', 11:'major'\}/.test(src), '2. LEVEL_STEPS labels 2 minor, 4 / 7 / 10 major (the card editor\'s badges)');
+
+// ---- 3. the enemy's gain table, the Forge preview
+{ const acc = {}; withStats.filter(c=> c.attack != null && c.health != null).forEach(d=>{ const w0 = 2 * (d.attack || 0) + (d.health || 0); if(w0 <= 0) return;
+    const from = SC.levelOf(d), cv = BB.forgeCurve(d, from, d.id === 'hero' ? 100 : (d.isCastle || (d.archetypes || []).includes('Castle')) ? 20 : 11);
+    for(let L = 1; L <= 11; L++){ const r = cv.rows[Math.max(L, from)]; (acc[L] = acc[L] || []).push((2 * r.attack + r.health) / w0 - 1); } });
+  const off = G.FORGE_MEAN_GAIN.filter(([g, L])=> L >= 2 && Math.abs(g - acc[L].reduce((a, b)=> a + b, 0) / acc[L].length) > 0.03).map(([g, L])=> `Lv ${L} ${g}`);
+  ok(!off.length, '3. FORGE_MEAN_GAIN is the live cards\' mean gain (within 0.03; node tools/forge_curve_2026_10_19.js gain): ' + off.join(', '));
+  ok(near(G.levelForGain(G.gainOfLevel(4)), 4, 1e-6) && near(G.levelForGain(G.FORGE_MEAN_GAIN[1][0]), 2, 1e-6), '3. levelForGain is the inverse of the mean gain'); }
+{ const texts = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8'), keys = ['ui.forge-curve-title', 'ui.forge-curve-help', 'ui.forge-curve-major', 'ui.forge-curve-minor', 'ui.forge-curve-none', 'ui.forge-curve-aria'];
+  ok(keys.every(k=> texts.includes(`"${k}":`) && src.includes(`TX('${k}'`)), '3. the Forge\'s level strip (forgeCurveStripHTML) uses its TX keys');
+  ok(/\$\{forgeCurveStripHTML\(id, L\)\}/.test(src), '3. the anvil shows the level strip');
+  const packs = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].map(c=> JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')));
+  ok(packs.every(p=> p['What each level gives'] && p['big step'] && p['Stat gains from level {from} to level {to}']), '3. the strip\'s words are in all 12 packs'); }
+
+// ---- 4. spot cards
+for(const id of ['burrow-rabbit', 'otter-centurion', 'quillguard', 'bramblewood-lynx', 'honey-bee']){
+  const c = cards.find(x=> x.id === id); if(!c) continue; const from = G.cardBaseLevel(c), cv = BB.forgeCurve(c, from, 11);
+  console.log(`  ${c.name} (${c.rarity}, W${c.wait || 0} L${c.cost || 0}, Base ${cv.base}${cv.m !== 1 ? ', x' + cv.m : ''}): ` + Object.entries(cv.rows).map(([L, r])=> `${L}:${r.attack}/${r.health}`).join(' '));
+}
+console.log(fail ? `forge-curve-2026-10-19: ${fail} of ${n} checks failed` : `forge-curve-2026-10-19: all ${n} checks pass`);
+process.exit(fail ? 1 : 0);

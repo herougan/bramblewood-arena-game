@@ -8456,6 +8456,14 @@
   .forge-act{width:100%; font-size:15px;}
   .forge-act[aria-disabled="true"]{opacity:.55;}
   .forge-note{font-size:12.5px; color:var(--ink-muted); margin:6px 0;}
+  /* 2026-10-19 (package BF): the level curve on the anvil */
+  .forge-curve{margin:4px 0 8px; font-size:12.5px;} .forge-curve summary{cursor:pointer; font-weight:700; color:var(--ink-muted);}
+  .forge-curve-list{list-style:none; margin:6px 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(52px, 1fr)); gap:4px;}
+  .fc-lv{border:1px solid var(--surface-border); border-radius:8px; padding:3px 2px; text-align:center; background:var(--surface-2); display:flex; flex-direction:column; gap:1px; min-width:0;}
+  .fc-lv b{font:800 12px 'Baloo 2',system-ui,sans-serif;} .fc-lv span{display:flex; flex-direction:column; font-size:11px; line-height:1.2; font-variant-numeric:tabular-nums;}
+  .fc-lv i{font-style:normal;} .fc-lv i.atk{color:var(--attack);} .fc-lv i.hp{color:var(--health);} .fc-lv i.none{opacity:.45;}
+  .fc-lv.is-major{border-color:#d4a23a; border-width:2px;} .fc-lv.is-minor{border-style:dashed; border-color:#d4a23a;}
+  .fc-lv.done{opacity:.6;} .fc-lv.next{box-shadow:0 0 0 2px var(--accent, #3f9b4c);}
   .forge-medals{display:flex; justify-content:center; gap:8px; margin:6px 0 4px;}
   .forge-medal{flex:1; padding:8px 4px; border-radius:12px; border:1px solid var(--surface-border); background:var(--surface-2); display:flex; flex-direction:column; align-items:center; gap:2px; opacity:.55;}
   .forge-medal.owned{opacity:1; border-color:#d4a23a; background:linear-gradient(180deg, color-mix(in srgb, #ffd77a 30%, var(--surface)), var(--surface));}
@@ -35984,7 +35992,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2fe79a972a", "es": "assets/lang/es.js?v=5862d0126e", "fr": "assets/lang/fr.js?v=4482bcc806", "id": "assets/lang/id.js?v=46a3941de1", "it": "assets/lang/it.js?v=6c88587df8", "ja": "assets/lang/ja.js?v=f65eacf13e", "ko": "assets/lang/ko.js?v=49a79e9ac6", "pt": "assets/lang/pt.js?v=8eb3be366d", "ta": "assets/lang/ta.js?v=d26a038d18", "tl": "assets/lang/tl.js?v=5116fdc328", "zh-Hans": "assets/lang/zh-Hans.js?v=38474f7811", "zh-Hant": "assets/lang/zh-Hant.js?v=f684b7d4a4"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1054ff055f", "es": "assets/lang/es.js?v=2bdcb7380b", "fr": "assets/lang/fr.js?v=7de0ccd94f", "id": "assets/lang/id.js?v=d1d4cb0f7b", "it": "assets/lang/it.js?v=e13130c210", "ja": "assets/lang/ja.js?v=954cf195e5", "ko": "assets/lang/ko.js?v=a97026e127", "pt": "assets/lang/pt.js?v=ca85ede107", "ta": "assets/lang/ta.js?v=4a5d5fc100", "tl": "assets/lang/tl.js?v=1a9f081233", "zh-Hans": "assets/lang/zh-Hans.js?v=f249a9435e", "zh-Hant": "assets/lang/zh-Hant.js?v=90189d87b3"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -36414,6 +36422,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.dungeon-sweep-tip": "Sweep floor {floor}, your best: the CPU plays it for you. Each run costs {e}⚡ and a Dungeon key; a win pays the clear-again reward.",
   "ui.upgrades-tab": "Upgrades",
   "ui.forge-upgrades-blurb": "Upgrade the Forge itself: its tier (how far it can temper), your max Energy and the Dungeon key ring.",
+  "ui.forge-curve-title": "📈 What each level gives",
+  "ui.forge-curve-help": "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.",
+  "ui.forge-curve-major": "big step",
+  "ui.forge-curve-minor": "small step",
+  "ui.forge-curve-none": "no change",
+  "ui.forge-curve-aria": "Stat gains from level {from} to level {to}",
   "ui.nest-tab-cards": "🪺 Cards and eggs",
   "ui.tavern-tab-recruit": "🤝 Recruit",
   "ui.nest-upg-title": "🪺 Nests",
@@ -37463,6 +37477,91 @@ const api = {SKILLS, SEEDS_PER_DAMAGE, SEED_WEEK_CAP, byId, normaliseLevels, nex
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodGuild = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
+
+// ============================================================================
+// Bramblewood stat budget N and the Forge level curve (2026-10-19, package BF). DOM-free, one implementation for the game (inlined
+// into the page: global `BramblewoodBudget`), the balance tools (tools/skill_costs.js, tools/card_balance.js ...) and the master
+// hub (tools/hub/build_hub.py inlines it ahead of tools/skill_costs.js).
+//
+// Budget v4 (owner 2026-10-19 09:52: "L should scale. So this is my new formula. (Base-1 + L) * (1+L/20) e.g. (Base-1 + 5) * (1.25)."):
+//   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + 1×Ritual points   (v3's N without its 2×Level term)
+//   N(L) = (Base − 1 + L) × (1 + L/20)
+//   v3 was N = Base + 2L, so at Level 1 v4 is 1.05×Base against Base + 2: 0.05×Base − 2 apart (−0.95 at Base 21, 0 at Base 40,
+//   +1 at Base 60); at Level 0 it is Base − 1 (v3: Base). The rules are v3's: 2A+H+S < N and A·H+S < (N/3)² (×1.5 per half-miss skill).
+//
+// The Forge curve (owner 09:52: "change majors to 4, 7, 10, minor to 2. Then divvy out strength updates at all levels. If there is no
+// space for minor, then all are minor OR potentially still 0, then majors expect SOME improvement."):
+//   every level L above the card's start level banks its budget gain ΔN = N(L) − N(L−1) (÷ the half-miss multiplier, which scales the
+//   score), in 2A+H points (1 Health = 1, 1 Attack = 2). A level spends whole points out of the bank:
+//     major (4, 7, 10; past 10 every third level, 13, 16 …) and the limit break (11): everything banked, at least 1;
+//     minor (2): everything banked too, which is only a level or two of gain, so a smaller step;
+//     any other level: a third of the bank (often 0 on small cards), the rest waits for the next major.
+//   So the stats never get ahead of N(L) (2A+H rises by at most N(L) − N(start)), majors take the big chunks, and the gains are the same
+//   for the same card everywhere. Points go to Attack where that keeps the card's A:H shape (Attack ≈ A0 × (2A0+H0+P)/(2A0+H0)), never
+//   taking a point of Health back, the rest to Health; a 0-Attack wall only grows Health. A step that would shrink the card's A·H room,
+//   (N(L)/3)² − m·A·H, below what it had at its start level goes to the cheaper stat, or spends less (a major still spends 1).
+// ============================================================================
+(function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
+'use strict';
+// canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
+const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, levelDiv:20, missMult:1.5};
+const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
+const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
+const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
+const MAJOR = [4, 7, 10], MINOR = [2], LIMIT = 11;
+const SHARE = {major: 1, limit: 1, minor: 1, other: 1 / 3};
+const r2 = v=> Math.round(v * 100) / 100;
+const cfgOf = cfg=> Object.assign({}, DEFAULTS, cfg || {});
+const num = (cfg, k)=>{ const v = cfg && cfg[k]; return v == null || v === '' || !Number.isFinite(Number(v)) ? DEFAULTS[k] : Number(v); };
+function rankOf(rarity){ const k = rarity || 'common'; return Math.max(0, LADDER.indexOf(AS[k] || k)); }
+function ritualPts(effects){ const r = effects && effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (+b || 0), 0) : 0; }
+// The level-independent part of N for a card ({rarity, wait, cost, effects}).
+function baseOf(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 0;
+  return r2(num(cfg, 'base') + num(cfg, 'perRarity') * rankOf(d.rarity) + num(cfg, 'perWait') * W + num(cfg, 'perWait2') * W * W + num(cfg, 'perLumber') * C + num(cfg, 'perLumber2') * C * C + num(cfg, 'perRitual') * ritualPts(d.effects)); }
+// N at level L for a Base: (Base − 1 + L) × (1 + L/20).
+function nAt(base, L, cfg){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L) * (1 + L / num(cfg, 'levelDiv'))); }
+function nOf(d, L, cfg){ return nAt(baseOf(d, cfg), L, cfg); }
+// v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
+function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }
+function missMultOf(effects, cfg){ const e = effects || {}, m = num(cfg, 'missMult'); let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
+function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (L > 10 && L % 3 === 1)) return 'major'; if(MINOR.includes(L)) return 'minor'; return 'other'; }
+
+// The curve for a card d ({attack, health, rarity, wait, cost, effects}) from its start level `from` (0 or 1) to `top` (11 for the
+// usual Lv 10 cards: the limit break). Returns {base, from, top, m, rows: {L: {attack, health, points, kind, N}}}, rows[from] the
+// printed stats. Stats that are null (a spell) stay null.
+function forgeCurve(d, from, top, cfg){
+  d = d || {}; from = Math.max(0, from | 0); top = Math.max(from, top | 0);
+  const base = baseOf(d, cfg), m = missMultOf(d.effects, cfg), A0 = d.attack, H0 = d.health;
+  const rows = {}; rows[from] = {attack: A0, health: H0, points: 0, kind: 'base', N: nAt(base, from, cfg)};
+  if(A0 == null && H0 == null){ for(let L = from + 1; L <= top; L++) rows[L] = {attack: A0, health: H0, points: 0, kind: levelKind(L), N: nAt(base, L, cfg)}; return {base, from, top, m, rows}; }
+  const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), room0 = Math.pow(nAt(base, from, cfg) / 3, 2) - m * a0 * h0;
+  let A = a0, H = h0, P = 0, bank = 0;
+  for(let L = from + 1; L <= top; L++){
+    const N = nAt(base, L, cfg), kind = levelKind(L), room = h=> (N / 3) * (N / 3) - m * h.a * h.h;
+    bank = r2(bank + (N - nAt(base, L - 1, cfg)) / m);
+    let p = Math.floor(bank * SHARE[kind] + 1e-9); if(kind === 'major' || kind === 'limit') p = Math.max(1, p);
+    // split p points: Attack toward the shape (never more than p/2), the rest Health; Attack only when there is no Health stat
+    const split = (pp, prefer)=>{
+      if(H0 == null) { const da = Math.floor(pp / 2); return {a: A + da, h: H, used: 2 * da}; }
+      if(A0 == null || a0 <= 0) return {a: A, h: H + pp, used: pp};
+      let da = Math.max(0, Math.min(Math.floor(pp / 2), Math.round(a0 * (w0 + P + pp) / w0) - A));
+      if(prefer === 'health') da = 0; else if(prefer === 'attack') da = Math.floor(pp / 2);
+      return {a: A + da, h: H + pp - 2 * da, used: pp};
+    };
+    let pick = null;
+    for(let pp = p; pp >= (kind === 'major' || kind === 'limit' ? 1 : 0) && !pick; pp--){
+      const tries = [split(pp), split(pp, 'health'), split(pp, 'attack')];
+      pick = tries.find(t=> room(t) >= Math.min(room0, room({a: A, h: H})) - 1e-9) || null;
+    }
+    if(!pick) pick = split(kind === 'major' || kind === 'limit' ? 1 : 0); // a major always gives something (the room was already short)
+    const used = pick.used;
+    bank = r2(bank - used); P += used; A = pick.a; H = pick.h;
+    rows[L] = {attack: A0 == null ? A0 : A, health: H0 == null ? H0 : H, points: used, kind, N};
+  }
+  return {base, from, top, m, rows};
+}
+return {DEFAULTS, LADDER, AS, HALF_MISS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, nAt, nOf, nV3, missMultOf, levelKind, forgeCurve};
+});
 
 </script>
 <script>
@@ -40287,7 +40386,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9380e79a435d', BUILD_CARD_HASH = '19b5f37b2a9910481e02285e4a8180476bb13efda3d1e9e896c26f86e1e962e9';
+const BUILD_ID = '5bd4f711f7f7', BUILD_CARD_HASH = '19b5f37b2a9910481e02285e4a8180476bb13efda3d1e9e896c26f86e1e962e9';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -48852,8 +48951,23 @@ function levelStatMultiplier(level){
 // Above the base level, stats grow only on the LEVEL_STEPS levels. A card can override any level with
 // def.levelStats = {"3": {attack, health}, ...} (absolute stats at that level), e.g. a big-number card that gains a little
 // on every level. Higher-level numbers are to be filled in later; the defaults below are placeholders.
-const LEVEL_STEPS = {1:'major', 2:null, 3:'major', 4:null, 5:null, 6:'major', 7:null, 8:null, 9:'major', 10:'minor', 11:'major'}; // 11 = limit break (2026-10-12)
-const LEVEL_STEP_GAIN = {major:0.10, minor:0.05};
+// 2026-10-19 (package BF, owner 09:52: "Forge curve out - Use our N formula below, and change majors to 4, 7, 10, minor to 2. Then divvy
+// out strength updates at all levels. If there is no space for minor, then all are minor OR potentially still 0, then majors expect SOME
+// improvement."): a card's stats at level L follow the stat budget N(L) = (Base - 1 + L) x (1 + L/20) (bramblewood-budget.js). Each level
+// banks its budget gain in 2A+H points; the majors (4, 7, 10), the limit break (11) and the minor (2, only a level or two banked) spend the bank, every
+// other level a third (often 0). Was: +10% of the printed stats on Lv 1, 3, 6, 9 and 11, +5% on Lv 10 (LEVEL_STEP_GAIN, kept for the
+// old tables below). LEVEL_STEPS now only labels the levels (the card editor's badges); forgeCurveOf gives the numbers.
+const LEVEL_STEPS = {1:null, 2:'minor', 3:null, 4:'major', 5:null, 6:null, 7:'major', 8:null, 9:null, 10:'major', 11:'major'}; // 11 = limit break (2026-10-12)
+const LEVEL_STEP_GAIN = {major:0.10, minor:0.05}; // before 2026-10-19 (BF): the percentage steps
+// The curve of a card (cached by the fields it depends on): {base, from, top, m, rows: {L: {attack, health, points, kind, N}}}.
+const FORGE_CURVE_CACHE = new Map();
+function forgeCurveOf(d){
+  const from = cardBaseLevel(d), top = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d), e = (d && d.effects) || {}, BB = BramblewoodBudget;
+  const key = [d.id, d.attack, d.health, d.rarity, d.wait, d.cost, from, top, BB.HALF_MISS.map(k=> e[k] ? 1 : 0).join(''), BB.ritualPts(e)].join('|');
+  let c = FORGE_CURVE_CACHE.get(key);
+  if(!c){ if(FORGE_CURVE_CACHE.size > 6000) FORGE_CURVE_CACHE.clear(); c = BB.forgeCurve(d, from, top); FORGE_CURVE_CACHE.set(key, c); }
+  return c;
+}
 function cardBaseLevel(d){
   if(!d) return 1;
   // 2026-10-12 (user: "base creatures start at 0, rewarded creatures at 1, quest creatures should also start at 0").
@@ -48873,9 +48987,8 @@ function cardLevelRange(d){ return {from: cardBaseLevel(d), to: cardMaxLevel(d)}
 function curveStatsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(d.attack), health: r(d.health)}; } // Lv 0 hatchling
   const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cardMaxLevel(d), L|0));
-  let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l] !== undefined ? LEVEL_STEPS[l] : (l % 3 === 0 ? 'minor' : null); if(k) g += LEVEL_STEP_GAIN[k]; }
-  const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g)));
-  return {attack: r(d.attack), health: r(d.health)};
+  const row = forgeCurveOf(d).rows[lv]; // 2026-10-19 (BF): the budget curve (was +10% / +5% steps)
+  return {attack: row ? row.attack : d.attack, health: row ? row.health : d.health};
 }
 function statsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
@@ -48884,9 +48997,8 @@ function statsAtLevel(d, L){
   const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cap, L|0));
   const ov = d.levelStats && (d.levelStats[lv] || d.levelStats[String(lv)]);
   if(ov) return {attack: ov.attack!=null ? ov.attack : d.attack, health: ov.health!=null ? ov.health : d.health};
-  let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l]; if(k) g += LEVEL_STEP_GAIN[k]; }
-  const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g)));
-  return {attack: r(d.attack), health: r(d.health)};
+  const row = lv > base ? forgeCurveOf(d).rows[lv] : null; // 2026-10-19 (BF): the budget curve (was +10% on Lv 1/3/6/9/11, +5% on 10)
+  return {attack: row ? row.attack : d.attack, health: row ? row.health : d.health};
 }
 // Past the top (2026-10-16, user: "Limit breaking to whatever lvl like 20. (Any stats undefined by us = assume a random +1 stat in att or
 // def)"): above a card's own top level (11 for the usual Lv 10 cards) each level adds +1 Attack or +1 Health, chosen by a seed of the
@@ -53011,9 +53123,20 @@ function nodeMapNumber(node){
   if(m.id === 'mtut' && node && typeof TUT_SIDE_GATE !== 'undefined' && TUT_SIDE_GATE[node.key] != null) return TUT_SIDE_GATE[node.key];
   const n = mapNumberOf(m.id); return n == null ? 0 : n;
 }
+// Side maps a map ahead (2026-10-19, package BF; owner 09:52: "Submap's difficulty floor varies. But at least 1 map ahead of
+// difficulty."): a side map's (and an endless dungeon's) fights count at least one map past their parent for the enemy's level and the
+// Shield: the map's own aheadMaps (default SIDE_MAP_AHEAD, never under 1), or more when the map already counts as a later one
+// (shieldMap: the Old Bramble 17, Lilypad Reach 6; the Tutorial's T-2 / T-3 / T-4). Your reference deck and level stay the parent's
+// (nodeMapNumber), so a side map is a step harder for the player who reaches it; its road-curve targets sit lower to match.
+const SIDE_MAP_AHEAD = 1;
+function sideMapAhead(m){ if(!m || !m.sub || m.tower) return 0; const a = Number(m.aheadMaps); return Math.max(1, Number.isFinite(a) && m.aheadMaps != null ? Math.round(a) : SIDE_MAP_AHEAD); }
+function fightMapNumber(node){
+  const no = nodeMapNumber(node), m = mapOfNode(node); if(!m || !m.sub || m.tower) return no;
+  const parentNo = mapNumberOf(m.parent); return parentNo == null ? no : Math.max(no, parentNo + sideMapAhead(m));
+}
 function shieldRuleMult(kind){ const k = kind || 'skirmish'; return SHIELD_RULE_MULT[k] != null ? SHIELD_RULE_MULT[k] : (SHIELD_RULE_MULT[baseKind(k)] != null ? SHIELD_RULE_MULT[baseKind(k)] : 1); }
 // 2026-10-19 (LV): an endless dungeon's floor f counts ENDLESS_FLOOR_CURVE.floorMaps maps a floor further on for its Shield too (it had the parent map's Shield on every floor)
-function shieldMapOf(node){ let no = nodeMapNumber(node); const m = node && node.floor > 1 ? mapOfNode(node) : null; if(m && m.endless && !m.tower) no += (node.floor - 1) * ENDLESS_FLOOR_CURVE.floorMaps; return no; }
+function shieldMapOf(node){ let no = fightMapNumber(node); /* 2026-10-19 (BF): a side map counts a map ahead */ const m = node && node.floor > 1 ? mapOfNode(node) : null; if(m && m.endless && !m.tower) no += (node.floor - 1) * ENDLESS_FLOOR_CURVE.floorMaps; return no; }
 function ruleShieldOf(node){ return Math.max(0, Math.round(shieldMapOf(node) * shieldRuleMult(node && node.kind))); }
 function shieldOverrideOf(node){
   const o = node && node.shieldOverride; if(o == null || o === '') return null;
@@ -53147,17 +53270,22 @@ function skirmishTargetWinRate(mapId, node){
 // roaming elites (20-A-5 to 20-A-7, 35% chance) take the line's harder end after its three gate elites.
 const ROAD_CURVE_TOL = .08, ROAD_CURVE_SKIP = new Set(['mtut', 'mx']), ROAD_CURVE_ENDER = {me: '20-A-4'};
 const ROAD_CURVE_BOSSY = new Set(['boss', 'miniboss', 'subboss', 'finalboss', 'worldboss']);
+const ROAD_CURVE_SIDE_DR = 0.19; // 2026-10-19 (BF): one map's step on the logit scale (docs/level-curve-2026-10-19.md: ML rises 0.19 DR a map)
 function roadCurveFights(map){ return (map.nodes || []).filter(n=> n.deck && Object.keys(n.deck).length && n.kind !== 'tutorial' && !/raidboss|megaraid/.test(n.kind || '')); }
 function roadCurveTarget(mapId, node){
   const map = CONQUEST_MAPS.find(m=> m.id === mapId);
   if(!map || !node || map.endless || map.tower || map.reserved || ROAD_CURVE_SKIP.has(map.id)) return null;
   const list = roadCurveFights(map); if(!list.some(n=> n.key === node.key)) return null;
   const ender = list.find(n=> n.ender) || (ROAD_CURVE_ENDER[map.id] && list.find(n=> n.key === ROAD_CURVE_ENDER[map.id])) || list[list.length - 1];
-  if(node.key === ender.key){ const t = mapNumberOf(map.id) === 0 && !map.sub ? .45 : .40; return {t, lo: .30, hi: .49, role: 'boss'}; }
-  if(ROAD_CURVE_BOSSY.has(node.kind)) return {t: .50, lo: .50 - ROAD_CURVE_TOL, hi: .50 + ROAD_CURVE_TOL, role: 'miniboss'};
+  // 2026-10-19 (BF): a side map's fights count `ahead` maps past the player's deck (fightMapNumber - nodeMapNumber), so its targets sit
+  // `ahead` map steps lower, ROAD_CURVE_SIDE_DR logits a map step (90% -> 88%, 60% -> 55%, the boss's 30-49% -> 26-44%)
+  let ahead = 0; if(map.sub){ if(!mapOfNode(node)) NODE_MAP_HINT.set(node, map.id); ahead = Math.max(0, fightMapNumber(node) - nodeMapNumber(node)); }
+  const sh = v=> ahead ? Math.round(1000 / (1 + Math.exp(-(Math.log(v / (1 - v)) - ROAD_CURVE_SIDE_DR * ahead)))) / 1000 : v, side = ahead ? {ahead} : {};
+  if(node.key === ender.key){ const t = mapNumberOf(map.id) === 0 && !map.sub ? .45 : .40; return Object.assign({t: sh(t), lo: sh(.30), hi: sh(.49), role: 'boss'}, side); }
+  if(ROAD_CURVE_BOSSY.has(node.kind)){ const t = sh(.50); return Object.assign({t, lo: t - ROAD_CURVE_TOL, hi: t + ROAD_CURVE_TOL, role: 'miniboss'}, side); }
   const line = list.filter(n=> n.key !== ender.key && !ROAD_CURVE_BOSSY.has(n.kind)), j = Math.max(0, line.findIndex(n=> n.key === node.key));
-  const elite = baseKind(node.kind) === 'elite', t = Math.round((.90 - .30 * (j / Math.max(1, line.length - 1))) * 1000) / 1000;
-  return {t, lo: t - ROAD_CURVE_TOL, hi: Math.min(1, t + ROAD_CURVE_TOL), role: elite ? 'elite' : 'skirmish', pos: j + 1, of: line.length};
+  const elite = baseKind(node.kind) === 'elite', t = sh(Math.round((.90 - .30 * (j / Math.max(1, line.length - 1))) * 1000) / 1000);
+  return Object.assign({t, lo: t - ROAD_CURVE_TOL, hi: Math.min(1, t + ROAD_CURVE_TOL), role: elite ? 'elite' : 'skirmish', pos: j + 1, of: line.length}, side);
 }
 // The green band of a fight (the win-rate panel's colours, the tools' "on target"): the road curve's, else the old target ±12 points.
 function skirmishTargetBand(mapId, node){
@@ -53681,15 +53809,34 @@ const WINRATE_REF_DECKS = {"starter":{"duck-paddler":2,"pond-trout":2,"meadow-fr
 //     maps further on. An endless dungeon's floor f counts `floorMaps` (0.5) maps per floor further on (ENDLESS_FLOOR_CURVE).
 //     Before: Lv 2 from Map 5, +1 every 5 maps, bosses +1, which only showed as stats at Lv 3 (Map 10) and Lv 6 (the Map 20 boss).
 //   - The reference player (referencePlayerLevel, below).
-const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, playerForgeMap: 11, playerForgeLevel: 3, playerRiseFrom: 15, playerRisePerMap: 0.18};
-const LEVEL_STAT_STEPS = [0, 1, 3, 6, 9, 10, 11]; // the levels where a card's default stats move (LEVEL_STEPS): +10% each, 10 +5%
-// The fractional level whose stats are `g` above Lv 1 (0 -> 1, 0.10 -> 3, 0.15 -> 4.5, 0.20 -> 6, 0.30 -> 9, 0.35 -> 10).
+const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, playerForgeMap: 11, playerForgeLevel: 3, playerRiseFrom: 15, playerRisePerMap: 0.18, enemyKeepsPace: true};
+// 2026-10-19 (package BF): enemyKeepsPace - the enemy's gain also gets forgeGainShift (the BF Forge curve's extra over the old steps at
+// the reference player's level), so the new curve doesn't hand the late maps to the player. playerForgeMap stays 11 (owner 09:52:
+// "No Forge is fine. The player has to deck build to win."; docs/decisions.json).
+// 2026-10-19 (package BF): the Forge curve follows the budget N(L) now (forgeCurveOf), so a card's stats can move on every level; a
+// fractional level mixes two neighbouring whole levels. Was [0, 1, 3, 6, 9, 10, 11] (the +10% / +5% steps).
+const LEVEL_STAT_STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+// The mean 2A+H gain over Lv 1 of the live cards with stats at each level (tools/forge_curve_2026_10_19.js gain; the test checks it
+// against the cards), the BF curve; and the old +10% / +5% steps' (LEGACY_LEVEL_GAIN: 0.10 at Lv 3, 0.20 at 6, 0.30 at 9 ...).
+const FORGE_MEAN_GAIN = [[0, 1], [0.192, 2], [0.232, 3], [0.656, 4], [0.722, 5], [0.832, 6], [1.441, 7], [1.506, 8], [1.637, 9], [2.29, 10], [2.61, 11]];
+const LEGACY_LEVEL_GAIN = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
+function gainTableAt(pts, L){ L = Number(L) || 0; if(L <= pts[0][1]) return 0;
+  for(let i = 1; i < pts.length; i++) if(L <= pts[i][1]) return pts[i-1][0] + (L - pts[i-1][1]) / (pts[i][1] - pts[i-1][1]) * (pts[i][0] - pts[i-1][0]);
+  return pts[pts.length - 1][0]; }
+function gainOfLevel(L){ return gainTableAt(FORGE_MEAN_GAIN, L); }
+function legacyGainOfLevel(L){ return gainTableAt(LEGACY_LEVEL_GAIN, L); }
+// The fractional level whose stats are `g` above Lv 1 on the mean card (BF: 0.192 -> 2, 0.232 -> 3, 0.656 -> 4 ...; before BF 0.10 -> 3,
+// 0.20 -> 6, 0.30 -> 9).
 function levelForGain(g){
   if(!(g > 0)) return 1;
-  const pts = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
+  const pts = FORGE_MEAN_GAIN;
   for(let i = 1; i < pts.length; i++) if(g <= pts[i][0]) return pts[i-1][1] + (g - pts[i-1][0]) / (pts[i][0] - pts[i-1][0]) * (pts[i][1] - pts[i-1][1]);
   return 11;
 }
+// What the BF curve adds to the reference player's stats at the map a fight counts as, over the old steps at the same level (0 before
+// Map 11: the player is at Lv 0 there, and the Forge stays shut). The road's enemy gets the same on top of its own line
+// (ROAD_LEVEL_CURVE.enemyKeepsPace), so every fight keeps the lead it had over the player when the curve was tuned (R2 / LV).
+function forgeGainShift(mapNo){ const pL = referencePlayerLevel(mapNo); return pL > 0 ? Math.max(0, gainOfLevel(pL) - legacyGainOfLevel(pL)) : 0; }
 // A fractional level as its two stat steps: {lo, hi, frac} (frac of the copies at hi). A whole level is itself (frac 0).
 function levelMix(level){
   const L = Math.max(0, Number(level) || 0);
@@ -62110,7 +62257,7 @@ const ENDLESS_FLOOR_CURVE = {floorMaps: 0.5, floorPct: 0, levelCap: 11};
 function roadMapOfFight(node){
   if(!node) return null; let map = null; try{ map = mapOfNode(node); }catch(e){} if(!map) return null; // 2026-10-19 (W2): mapOfNode also knows an editor draft / a tool's trial copy (NODE_MAP_HINT), which fought at Level 0 before
   const k = baseKind(node.kind || 'skirmish'); if(k === 'tutorial' || (k === 'raidboss' && node.kind !== 'worldboss')) return null;
-  let no = nodeMapNumber(node); if(!Number.isFinite(no)) return null;
+  let no = fightMapNumber(node); if(!Number.isFinite(no)) return null; // 2026-10-19 (BF): a side map counts at least a map past its parent
   if(node.kind === 'boss' || node.kind === 'finalboss' || node.kind === 'worldboss') no += ROAD_LEVEL_CURVE.bossMaps;
   if(map.endless && !map.tower && node.floor > 1) no += (node.floor - 1) * ENDLESS_FLOOR_CURVE.floorMaps;
   return no;
@@ -62118,7 +62265,8 @@ function roadMapOfFight(node){
 function roadEnemyLevelExact(node){
   const no = roadMapOfFight(node), C = ROAD_LEVEL_CURVE; if(no == null || no <= C.enemyFrom) return 0;
   const cap = node.floor > 1 && !node.tower ? ENDLESS_FLOOR_CURVE.levelCap : 10; // an endless floor past Lv 10 limit-breaks (Lv 11)
-  return Math.min(cap, Math.round(levelForGain((no - C.enemyFrom) * C.enemyGainPerMap) * 100) / 100);
+  const shift = C.enemyKeepsPace ? forgeGainShift(nodeMapNumber(node)) : 0; // 2026-10-19 (BF): keeps pace with the player's Forge curve
+  return Math.min(cap, Math.round(levelForGain((no - C.enemyFrom) * C.enemyGainPerMap + shift) * 100) / 100);
 }
 function roadEnemyLevel(node){ return Math.round(roadEnemyLevelExact(node)); }
 function levelledEnemyDeck(node, deck){
@@ -62502,7 +62650,11 @@ const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budge
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5};
+// Stat budget v4 (2026-10-19, package BF; owner 09:52: "L should scale. So this is my new formula. (Base-1 + L) * (1+L/20)"):
+//   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual points (v3's N without its 2×Level), N = (Base − 1 + L) × (1 + L/levelDiv)
+//   with levelDiv 20. The formula lives in bramblewood-budget.js (BramblewoodBudget.nAt), shared with tools/skill_costs.js and the hub;
+//   perLevel is v3's and no longer read. At Level 1, v4 is 1.05×Base against v3's Base + 2 (−0.95 at Base 21, even at 40).
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5, levelDiv:20};
 // 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
 // its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
 function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }
@@ -62523,8 +62675,9 @@ function sbMissMult(d, cfg){ const e = (d && d.effects) || {}, m = cfg.missMult 
 function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r.key), d = RARITY_DEFS.find(r=> r.key === k); return Math.max(0, ladder.indexOf(d && d.as ? d.as : (k || 'common'))); }
 // N for a card at a level (v3, 2026-10-17).
 function sbBudgetAt(d, cfg, lv){
-  const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], W = Number(d.wait)||0, C = Number(d.cost)||0, L = Math.max(0, Number(lv)||0);
-  return Math.round((g('base') + g('perLevel')*L + g('perRarity')*sbRarityRank(d.rarity) + g('perWait')*W + g('perWait2')*W*W + g('perLumber')*C + g('perLumber2')*C*C + g('perRitual')*sbRitualPts(d)) * 100) / 100;
+  const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], L = Math.max(0, Number(lv)||0), c = {};
+  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'levelDiv'].forEach(k=> c[k] = g(k));
+  return BramblewoodBudget.nAt(BramblewoodBudget.baseOf(d, c), L, c); // 2026-10-19 (BF): budget v4, the shared helper (was Base + 2×Level)
 }
 function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 // v3 check (2026-10-17): x1 = added score (2×Attack + Health + Skills) < N; x2 = multiplied score (Attack × Health + Skills)
@@ -62537,7 +62690,7 @@ function sbFit(d, S, N, M){ let A = d.attack||0, D = d.health||1; let guard = 20
 function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57'); }
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
-  return `N = ${g('base')} + ${g('perLevel')}×Level + ${g('perRarity') === 1 ? '' : g('perRarity') + '×'}Rarity + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${g('perRitual')}×Ritual points`; }
+  return `N = (Base − 1 + Level) × (1 + Level/${g('levelDiv')}), Base = ${g('base')} + ${g('perRarity') === 1 ? '' : g('perRarity') + '×'}Rarity + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${g('perRitual')}×Ritual points`; } // 2026-10-19 (BF): v4
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
 // before; both checks shown, coloured green within both, red over either, pink well under on the first.
@@ -62562,10 +62715,10 @@ function renderStatBudget(host){
   const fails = rows.filter(r=> !r.c.ok), pinks = rows.filter(r=> r.c.wellUnder), shown = sbState.onlyFail ? fails : rows;
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">Budget v3 (2026-10-17). A card passes when <b>both</b> hold: <b>2×Attack + Health + Skills &lt; N</b> and <b>Attack × Health + Skills &lt; (N/3)²</b>. ${escapeHtml(sbFormulaText(cfg))}. Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Bounty costs 0. <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
-    <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label>Per Level ${inp('sbPerLevel', 'perLevel')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
+    <p class="panel-sub">Budget v4 (2026-10-19). A card passes when <b>both</b> hold: <b>2×Attack + Health + Skills &lt; N</b> and <b>Attack × Health + Skills &lt; (N/3)²</b>. ${escapeHtml(sbFormulaText(cfg))}. Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Bounty costs 0. <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
+    <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label title="N = (Base − 1 + Level) × (1 + Level / this)">Level growth ÷ ${inp('sbLevelDiv', 'levelDiv')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
       <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label title="Ritual points = the sum of the Ritual's counts">Per Ritual point ${inp('sbRitual', 'perRitual', '0.1')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
-      <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v3 numbers">Reset to v3</button>
+      <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v4 numbers">Reset to v4</button>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
     <details><summary>Skill costs (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
     <p class="panel-sub">${fails.length} of ${rows.length} cards over budget · ${rows.length - fails.length - pinks.length} within · ${pinks.length} well under.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
@@ -62573,7 +62726,7 @@ function renderStatBudget(host){
     ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
-  num('#sbBase', 'base'); num('#sbPerLevel', 'perLevel'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbRitual', 'perRitual'); num('#sbMissMult', 'missMult');
+  num('#sbBase', 'base'); num('#sbLevelDiv', 'levelDiv'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbRitual', 'perRitual'); num('#sbMissMult', 'missMult');
   { const rb = host.querySelector('#sbResetV3'); if(rb) rb.onclick = ()=>{ const c = sbLoad(); Object.assign(c, SB_V3_DEFAULTS); sbSave(c); re(); }; }
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };
@@ -79267,6 +79420,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
     <div class="forge-level-row"><span class="forge-level-label">Lv ${L}${L>=LIMIT_BREAK_LEVEL?' · Limit broken':maxed?' · Max':''}</span><span class="forge-pips" role="img" aria-label="Level ${L} of 10">${pips}</span></div>
     <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
+    ${forgeCurveStripHTML(id, L)}
     ${!maxed ? `
       ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ ${mapIsCharted(levelGateNeed(L+1)) ? `Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.` : `Level ${L+1} ${UNCHARTED_LOCK.toLowerCase()}.` /* 2026-10-18: Lv 9 and 10 wait for Maps 26 and 31, not charted yet */}</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
       ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is trained to Level 1 in the Nest, with Kibble.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}${btnCostHTML(cost)}</button>`}
@@ -79278,6 +79432,20 @@ function forgeAnvilHTML(id, sel, L, maxed){
         <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}${btnCostHTML(tier.cost)}</button>
       ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
     `}${forgeDupMeltHTML(id, L)}${forgePromotionHTML(id, sel, L)}`;
+}
+// The level curve on the anvil (2026-10-19, package BF; owner 09:52: "majors to 4, 7, 10, minor to 2. Then divvy out strength updates
+// at all levels"): what each level adds to this card (statsAtLevel, so a level the designer set by hand shows as set), the big steps
+// (4, 7, 10) and the small one (2) marked, the levels already reached ticked, the next one lit.
+function forgeCurveStripHTML(id, L){
+  const b = forgeBaseDef(id) || {}; if(b.attack == null && b.health == null) return '';
+  const from = cardBaseLevel(b), top = canLimitBreakDef(b) ? LIMIT_BREAK_LEVEL : 10, cells = []; let prev = statsAtLevel(b, from);
+  for(let l = from + 1; l <= top; l++){
+    const st = statsAtLevel(b, l), da = (st.attack || 0) - (prev.attack || 0), dh = (st.health || 0) - (prev.health || 0), k = LEVEL_STEPS[l]; prev = st;
+    const tag = k === 'major' ? TX('ui.forge-curve-major') : k === 'minor' ? TX('ui.forge-curve-minor') : '';
+    cells.push(`<li class="fc-lv${k ? ' is-' + k : ''}${l <= L ? ' done' : ''}${l === L + 1 ? ' next' : ''}" title="${escapeAttr('Lv ' + l + (tag ? ' · ' + tag : ''))}"><b>${l}</b><span>${da ? `<i class="atk">+${da}⚔</i>` : ''}${dh ? `<i class="hp">+${dh}❤</i>` : ''}${!da && !dh ? `<i class="none" aria-label="${escapeAttr(TX('ui.forge-curve-none'))}">·</i>` : ''}</span></li>`);
+  }
+  if(!cells.length) return '';
+  return `<details class="forge-curve"><summary>${escapeHtml(TX('ui.forge-curve-title'))}</summary><p class="forge-note">${escapeHtml(TX('ui.forge-curve-help'))}</p><ol class="forge-curve-list" aria-label="${escapeAttr(TX('ui.forge-curve-aria', {from: from + 1, to: top}))}">${cells.join('')}</ol></details>`;
 }
 // The limit-break panel on a level-10 card (2026-10-12).
 function forgeLimitBreakHTML(id, lb){
