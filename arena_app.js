@@ -1433,6 +1433,9 @@ const ACTION_DEFS = [
   // (already shipped for the legacy Arrow N preset). Skyfall (evergreen, see PASSIVE_DEFS) is the
   // fixed-shorthand equivalent of "On Spawn: Missile N."
   {key:'missile', label:'Missile', fields:['amount'], desc:'Deal that much damage to a random live enemy unit (the enemy bramble, if none are left).'},
+  // Position Beam (2026-10-19, package EE, owner 09:52: the Galactic Condor's charged beam): its path depends on where it stands (the
+  // engine's positionBeamPlan): the centre lane hits the unit across and the bramble; a side angles inward; the edge (5 out) sweeps the row.
+  {key:'positionBeam', get label(){ return TX('ui.act-position-beam'); }, fields:['amount'], get desc(){ return TX('ui.act-position-beam-desc', {n:'N'}); }},
   // Exile (2026-09-30, per explicit request: "Same for exile, why does it assume itself. ... All
   // the actions should be general"): now takes a `who`. Themselves keeps the exact original
   // behavior — it only ever changes where THIS card's own death sends it (graveyard vs. Removal
@@ -1970,7 +1973,7 @@ const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
 // nailed to both posts (s-<key>), so it still reads as a structure first. Castles and field cards keep their kind's frame. The tile
 // takes `ar-<key>` (the CSS picks the image) and drops the top-right archetype corner mark (archMarkHTML).
 //   devilry dark iron, blood and pentagram studs · grace (Ecclesia) white marble, gold and a stained-glass plate · exile (Scrappers)
-//   riveted scrap plates and hazard stripes · evolution nacre shell ribs and cells · exiled ash, cracks and a dead thorn vine ·
+//   riveted scrap plates and hazard stripes · evolution (Evomax) nacre shell ribs and cells · exiled ash, cracks and a dead thorn vine ·
 //   forgotten dust, cobwebs and candle wax · ancient weathered runestone with glowing runes · outer a violet starfield ·
 //   void black with an event-horizon rim and black holes on the corners
 const CARD_ARCH_FRAMES = {
@@ -3129,8 +3132,22 @@ function cardSourceOf(d){
   if(d.rarity==='starter' || d.basic || d.id==='wandering-traveller' || !rawLocked) return {kind:'base', auto:true};
   return {kind:'unsorted', auto:true};
 }
+// Easter eggs (2026-10-19, package EE, owner 09:52: "Easter eggs: Special category, ungettable atm."): a special category of card,
+// source {kind:'easteregg'} plus easterEgg:true on the card. EASTER_EGG_IDS is the one list ("More to come..."): to add one, put its
+// id here and give the card that source and flag (tests/easter-eggs-2026-10-19.js checks the two agree). Nothing gives them out
+// yet: cardObtainableFrom says no, unlockCardForPlayer refuses them from every source but an admin's grant, and the givers (packs,
+// drops, skirmish rewards, raids, the reward tracks, the Forge's fuse, the Nest's hatchlings in the engine) leave them out of their
+// pools. The Codex shows one you haven't seen as a masked "???" tile (easterEggMasked); the hub's card list masks it too.
+const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda'];
+const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant']);
+function isEasterEgg(d){ return !!(d && (d.easterEgg || EASTER_EGG_IDS.includes(d.derivedFrom || d.id) || (d.source && d.source.kind === 'easteregg'))); }
+function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id]||[]).length || seenCardIds().has(id)); }catch(e){ return false; } }
+function easterEggMasked(d){ return isEasterEgg(d) && !easterEggSeen(d.id) && !(adminModeEnabled && codexShowUnseen); }
+// The "???" tile an unseen Easter egg shows in the Codex: its rarity band only; no name, art, numbers or skills, and it opens nothing.
+function easterEggMaskDef(d){ return {id:'ee-mask', name:'???', icon:'🥚', cost:0, wait:0, attack:0, health:0, effects:{}, archetypes:[], species:[], rarity:d.rarity, flavor:'', locked:true}; }
 // How a card can actually be obtained right now (null = it can't).
 function cardObtainableFrom(d){
+  if(isEasterEgg(d)) return null; // 2026-10-19 (package EE): Easter eggs can't be obtained yet
   const src = cardSourceOf(d);
   if(src.kind==='pack') return 'pack';
   if(src.kind==='map' && src.node) return 'skirmish';
@@ -3159,6 +3176,7 @@ function creatureRankText(d){
 }
 // Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
 function cardWhereToGetText(d){
+  if(isEasterEgg(d)) return TX('ui.ee-where'); // 2026-10-19 (package EE)
   if(isUnattainable(d)) return 'Not obtainable yet';
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
@@ -3322,7 +3340,10 @@ const PACK_POOL_LABEL = {1:'🎁 Hedgerow Pouch · Tidemire Chest · Highcrest C
 function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
   // 2026-10-13 (user: "Move the factions pool first, before the Base pool"): the factions' own cards lead the Codex.
   return {key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
+// Easter eggs' own Codex section (2026-10-19, package EE), last before the materia, in every view but the per-source ones.
+function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:'🥚 ' + TX('ui.ee-section')}; }
 function codexViewSectionOf(d, view){
+  if(isEasterEgg(d) && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
   if(view==='all'){
@@ -5991,7 +6012,8 @@ const GEO_TYPE_ARCHETYPES = ['River','Ocean','Desert','Frost','Rainforest','Sava
 // resource of its own yet — its mechanic "has not been developed yet" (design docs only, see
 // game-design-v31-addendum.md) — this just makes "Evolution" a selectable, filterable
 // category so cards can be tagged into it ahead of that build.
-const MECH_LINE_LABEL = {none:'None', grace:'Ecclesia', exile:'Scrapper', devilry:'Devilry', evolution:'Evolution'};
+// 2026-10-19 (package EE, owner 09:52): the Evolution archetype is called Evomax now (player-facing; the internal id stays 'evolution').
+const MECH_LINE_LABEL = {none:'None', grace:'Ecclesia', exile:'Scrapper', devilry:'Devilry', evolution:TX('ui.arch-evomax')};
 function codexStatsHTML(defs){
   const list = Object.values(defs);
   const n = list.length || 1;
@@ -6156,7 +6178,9 @@ function renderCodexGrid(keepPage){
   // they own or have seen, plus the cards of a pack once its merchant is on the map (the map table's "Cards revealed").
   // Materia live in the Inventory, for everyone.
   const visMemo = new Map(); // 2026-10-18: asked twice per card below (the shown list and the total), worked out once
-  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id]))); visMemo.set(id, v); } return v; };
+  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || isEasterEgg(defs[id]) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id]))); visMemo.set(id, v); } return v; }; // + Easter eggs: always a slot, a masked "???" one until seen (2026-10-19, package EE)
+  // 2026-10-19 (package EE): a masked Easter egg never matches a search or a skill filter (its name and skills are the secret)
+  if(codexFilter.q || codexSkillsChosen().length) ids = ids.filter(id=> !easterEggMasked(defs[id]));
   // 2026-10-13 (user: "The codex shouldn't show cards unseen. All cards are hidden by default"): admins too, unless they tick
   // "Show unseen" in the toolbar.
   ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
@@ -6198,10 +6222,13 @@ function renderCodexGrid(keepPage){
     // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
     // is redrawn once Map 0 is cleared, without a reload.
     let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
+    if(easterEggMasked(d)){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
     if(hit && hit.sig === sig) return hit.html;
     const tags = [];
-    if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
+    if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob" title="${escapeAttr(TX('ui.ee-admin-tip'))}">🥚 ${escapeHtml(TX('ui.ee-tag'))}</span>`); // 2026-10-19 (package EE)
+    else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
     let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable'})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
@@ -6875,10 +6902,10 @@ function shinyHue(id){ let h = 0; for(const ch of String(id||'')) h = (h*31 + ch
 // top-right corner, or just left of the Wait badge while there is one.
 // 2026-10-12 (user: "Remove the animal type marker on the top right hand corner of the card. When I said archetype marker
 // previously - i meant ecclesia etc. Types are like volcano, river (geographic) and otter, insect (family), ant (tribe)"): the
-// corner mark is the card's archetype (Ecclesia, Devilry, Scrapper, Evolution, Swarm, Tide), never its type.
+// corner mark is the card's archetype (Ecclesia, Devilry, Scrapper, Evolution (Evomax since 2026-10-19), Swarm, Tide), never its type.
 // 2026-10-13 (user: "Swarm and Tide are NOT archetypes. Archetypes are complete skill frameworks like Devilry, Ecclesia, Evolution,
 // Scrappers, Exiled ones, Forgotten ones, Ancient ones, Outer ones, Void"): Swarm and Tide are keyword families and lose the mark.
-const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrappers','🌫️'], evolution:['Evolution','🧬'], exiled:['Exiled Ones','🥀'], forgotten:['Forgotten Ones','🕯️'], ancient:['Ancient Ones','🗿'], outer:['Outer Ones','🌌'], void:['Void','🕳️']};
+const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrappers','🌫️'], evolution:[TX('ui.arch-evomax'),'🧬'] /* Evomax (2026-10-19, package EE) */, exiled:['Exiled Ones','🥀'], forgotten:['Forgotten Ones','🕯️'], ancient:['Ancient Ones','🗿'], outer:['Outer Ones','🌌'], void:['Void','🕳️']};
 const ARCHETYPE_NAMES = Object.values(CARD_ARCHETYPE_MARK).map(x=> x[0]);
 function cardArchetypeKey(d){
   const line = inferMechanicLine(d||{}); if(line && line !== 'none' && line !== 'None' && CARD_ARCHETYPE_MARK[line]) return line;
@@ -7028,6 +7055,7 @@ function triggerActionEmoji(t){
     case 'spawnCard': return (defs[t.defId] && defs[t.defId].icon) || '🐣';
     case 'damage': return (t.who==='enemy' && t.sub==='random') ? '🏹' : '💥';
     case 'missile': return '🏹';
+    case 'positionBeam': return '🌈'; // 2026-10-19 (package EE)
     case 'gain': return ({lumber:'🪵', grace:'🕊️', stone:'🪨', devilry:'★'})[t.resource||'lumber'] || '🪵';
     case 'gainGold': case 'gainLumber': return '🪵';
     case 'gainGrace': return '🕊️';
@@ -8361,7 +8389,7 @@ function wireCodexPlacement(defId){
 function isEquipmentDef(d){ return !!(d && d.cardType === 'equipment'); }
 function nodeRewardCardIds(mapId, nodeKey){
   const defs = getCardDefs();
-  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]); });
+  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]); }); // + no Easter egg (2026-10-19, package EE)
 }
 // Unattainable cards (2026-10-12, user: "Help me make all cards unattainable, then we build them together"): a card with
 // `unattainable: true` can't come out of a pack, a reward, a find, a craft or a promotion. Base, starter and tutorial
@@ -8384,7 +8412,7 @@ function openNodeRewardsEditor(mapId, nodeKey){
     const defs = getCardDefs();
     const current = nodeRewardCardIds(mapId, nodeKey);
     const matches = q.trim().length < 2 ? [] : Object.keys(defs)
-      .filter(id=> !defs[id].test && !defs[id].token && !isEquipmentDef(defs[id]) && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
+      .filter(id=> !defs[id].test && !defs[id].token && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]) /* 2026-10-19 (package EE): not placeable */ && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
       .slice(0, 24);
     const srcNote = id=>{ const s = cardSourceOf(defs[id]); return s.kind==='unsorted' ? 'unassigned' : s.kind==='map' ? (s.node ? 'another node' : 'map, no node') : s.kind; };
     overlay.innerHTML = `<div class="modal node-rewards-modal">
@@ -8868,7 +8896,7 @@ function renderEditorInner(){
           <option value="devilry" ${inferMechanicLine(c)==='devilry'?'selected':''}>Devilry</option>
           <option value="grace" ${inferMechanicLine(c)==='grace'?'selected':''}>Ecclesia</option>
           <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
-          <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>Evolution</option>
+          <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>${escapeHtml(TX('ui.arch-evomax'))}</option>
         </select></div>
         <div class="field mech-field" data-mech="grace" title="Ecclesia (2026-10-10): the Prayer value needed to play this card. Never spent. Prayer = the Prayer tokens on your units on the field (2026-10-19: a Prayer N unit gains N a turn)."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
         <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
@@ -9464,6 +9492,7 @@ function triggerPreviewText(t){
     case 'stun': doText = `stun ${whoTarget}`; break;
     case 'reduceWaitOfSpawned': doText = `reduce the just-played ally's Wait by ${amt}`; break;
     case 'missile': doText = `deal ${amt} damage to a random enemy unit`; break;
+    case 'positionBeam': doText = TX('ui.act-position-beam-desc', {n: amt}); break; // 2026-10-19 (package EE)
     case 'exile': doText = t.who==='self' ? `exile itself instead of going to the graveyard` : `instantly exile ${whoTarget} to the Removal Zone`; break;
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
@@ -11504,6 +11533,7 @@ function maybeOpenPitching(){
 }
 function unlockCardForPlayer(id, source, copyOpts){
   if(!id || !CARD_DEFS_BASELINE[id] && !liveCards[id]) return false; // not a real card id
+  if(isEasterEgg(liveCards[id] || CARD_DEFS_BASELINE[id]) && !EASTER_EGG_GRANT_SOURCES.has(source)) return false; // 2026-10-19 (package EE): Easter eggs, admin grants only
   { const pd = liveCards[id] || CARD_DEFS_BASELINE[id]; if(pd && (pd.cost||0) > 0 && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !pitchingUnlocked()){
       const held = loadPitchHeld(); held.push({id, source}); try{ localStorage.setItem(PITCH_HELD_KEY, JSON.stringify(held)); }catch(e){} return false; } } // held until pitching opens
   { const ud = liveCards[id] || CARD_DEFS_BASELINE[id]; if(isUnattainable(ud) && !UNATTAINABLE_ADMIN_SOURCES.has(source)) return false; } // not obtainable yet (2026-10-12)
@@ -21965,7 +21995,7 @@ function raidClaimsFor(def){
 // Raid cards (2026-10-12, user: "raids give their own 5-6 cards, many raid-only" + "generate some cephalopods for my raid"):
 // a raid's own cards (source {kind:'raid', id}) drop only when it falls: one for everyone who fought it, one more for the
 // top 10%. Commons are likelier than the Broodmother.
-function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id; }); }
+function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id && !isEasterEgg(defs[id]); }); } // + no Easter egg (2026-10-19, package EE)
 function grantRaidCards(def, n, quiet){ // quiet (2026-10-18, package RW): the claim screen shows the cards, so no toast
   const defs = getCardDefs(), ids = raidCardIds(def); if(!ids.length) return [];
   const w = id=> ({common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6})[defs[id].rarity || 'common'] || 1, got = [];
@@ -36905,6 +36935,7 @@ function logText(ev){
     case 'irradiation': { const pts = (ev.points||[]).map(p=> p.kind==='hp' ? '−1 max Health' : p.kind==='atk' ? '−1 Attack' : p.what==='removed' ? `lost ${irrSkillName(p)}` : p.what==='weakened' ? `${irrSkillName(p)} weakened` : p.what==='narrowed' ? `${irrSkillName(p)} narrowed` : `${irrSkillName(p)} −1`);
       return {cls:'', text:`☢️ Radiation eats at ${nm(ev.defId)}: ${pts.join(', ') || 'nothing'}. ${ev.left} token${ev.left===1?'':'s'} left.`}; }
     case 'pounce': return {cls:'', text:`🐾 ${nm(ev.defId)} pounces (${ev.amount}).`};
+    case 'positionBeam': return {cls:'', text: ev.lane === 'centre' ? TX('ui.log-position-beam-centre', {name: nm(ev.defId), n: ev.amount}) : ev.lane === 'edge' ? TX('ui.log-position-beam-edge', {name: nm(ev.defId), n: ev.amount}) : TX('ui.log-position-beam-side', {name: nm(ev.defId), n: ev.amount})}; // 2026-10-19 (package EE)
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
@@ -38857,6 +38888,7 @@ function lightningBoltOf(ev){
   else if(ev.chainLightning){ kind = 'chainLightning'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, el(ev.viaUid), tgt]; more = strikeMore('chainLightning'); }
   else if(ev.dragonLightning){ kind = 'dragonLightning'; cls = 'sfx-bolt-red'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, tgt]; more = strikeMore('dragonLightning'); }
   else if(ev.skyBolt){ kind = 'sky'; sky = true; chain = [tgt]; }
+  else if(ev.positionBeam){ kind = 'beam'; cls = 'sfx-bolt-beam'; chain = [src, tgt]; } // 2026-10-19 (package EE): the Condor's beam reuses the bolt, prismatic
   else if(pb && pb.element === 'shock' && String(pb.uid) === String(ev.attUid)){ kind = 'shockBolt'; chain = [src, tgt]; }
   else if(ev.dmgType === 'shock'){ kind = 'shock'; chain = [src, tgt]; }
   else { ev._bolt = null; return null; }
@@ -39740,6 +39772,7 @@ function renderVfxForEvent(ev){
   // card. The continuous per-round buff itself stays a live stat recompute with no per-round
   // event, same as before — this only marks the moment the aura turns on.
   // Pounce (2026-10-12): a quick crouch-and-spring on the card as it lands, then the hit plays as normal.
+  if(ev.type==='positionBeam'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `🌈 ${TX('ui.act-position-beam')} ${ev.amount}`, 'gold'); } // 2026-10-19 (package EE): the hits draw the beam (lightningBoltOf)
   if(ev.type==='pounce'){
     const el = boardCardEl(ev.uid);
     if(el){ floatText(el, `🐾 Pounce ${ev.amount}`, 'gold'); } // 2026-10-15: the spring is now the hit's own leap onto its target (SkillFX.pounceOnto)
@@ -41597,7 +41630,7 @@ function wireBlacksmith(root){
   root.querySelectorAll('[data-fuse]').forEach(b=> b.onclick = async ()=>{
     const id = b.dataset.fuse, defs = getCardDefs(), to = fuseTargetRarity(defs[id] && defs[id].rarity);
     if(!to || ownedCount(id) <= FUSE_COPIES) return;
-    const pool = Object.keys(defs).filter(x=> defs[x].rarity === to && !defs[x].token && !defs[x].test && defs[x].cardType !== 'materia' && ['pack','map'].includes(cardSourceOf(defs[x]).kind));
+    const pool = Object.keys(defs).filter(x=> defs[x].rarity === to && !defs[x].token && !defs[x].test && defs[x].cardType !== 'materia' && !isEasterEgg(defs[x]) /* 2026-10-19 (package EE) */ && ['pack','map'].includes(cardSourceOf(defs[x]).kind));
     if(!pool.length){ showToast(TX('toast.nothing-to-fuse-into-yet'), 'warn'); return; }
     const ok = await bwConfirm({title:TX('dialog.fuse'), body:TX('dialog.melt-copies-of-into-one-random', {FUSE_COPIES, v2: defs[id].name, v3: rarityDef(to).label}), okLabel:TX('dialog.fuse-2')});
     if(!ok) return;
@@ -41626,7 +41659,7 @@ function rollCardDrop(node, mapId, opts){
   if(!node) return null; const kind = (opts && opts.kind) || node.kind || 'skirmish';
   const chance = CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
   if(Math.random() >= chance) return null;
-  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !(d.archetypes||[]).includes('Castle'); };
+  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }; // + no Easter egg (2026-10-19, package EE)
   const base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
   const deckIds = [...new Set(Object.keys(node.deck||{}).map(base).filter(ok))];
   const map = CONQUEST_MAPS.find(m2=> m2.id === mapId); const mapIds = map ? [...new Set(map.nodes.flatMap(n=> Object.keys(n.deck||{})).map(base).filter(ok))] : [];
@@ -44163,7 +44196,7 @@ function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12)
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,
 // so every slot rolled it. A pack now needs at least as many different cards as it holds (Shop says "coming soon"
@@ -44539,7 +44572,7 @@ function copiesOwned(id){ return ((myCardCopies && myCardCopies[id]) || []).leng
 function trackMapReached(){ try{ const prog = loadConquestProgress(); const mains = mainConquestMaps(); let hi = 0; mains.forEach((m, i)=>{ if((prog.completed||[]).some(cid=> cid.indexOf(m.id + ':') === 0)) hi = i; }); return hi; }catch(e){ return 0; } }
 function trackPick(pool, rnd){
   rnd = rnd || Math.random;
-  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isEquipmentDef(defs[id]));
+  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id])); // + no Easter egg (2026-10-19, package EE)
   const rar = id=> defs[id].rarity || 'common';
   const stages = TRACK_STAGES.concat(trackMapReached() >= TRACK_LATE_MAP ? TRACK_LATE : []);
   for(const r of stages){ const missing = pool.filter(id=> rar(id) === r && !copiesOwned(id)); if(missing.length) return missing[Math.floor(rnd()*missing.length)]; }
