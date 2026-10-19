@@ -7459,6 +7459,9 @@
   .card-tile .castle-shield{position:absolute; z-index:4; left:clamp(3px, 6cqw, 10px); bottom:clamp(3px, 4cqw, 8px); font:800 clamp(10px, 13cqw, 17px)/1.1 'Baloo 2',system-ui,sans-serif; color:#cfe8ff; padding:.02em .3em 0; border-radius:.38em;
     background:linear-gradient(180deg, rgba(14,34,66,.9), rgba(6,16,34,.92)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,180,255,.55);}
   .card-tile .castle-shield.is-broken{opacity:.45; filter:grayscale(.6);}
+  /* 2026-10-19 (package MX): on a small bramble tile (the fight's HUD tiles) a Shield badge and a 3-digit Health (the raid's 🔷50 and 350)
+     overlapped, hiding the Health; there the badge sits just above the Health row */
+  @container (max-width: 72px){ .card-tile .castle-shield{bottom:calc(clamp(3px, 4cqw, 8px) + 1.45em);} }
   .card-tile .castle-shield{color:var(--sh-a, #cfe8ff); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px var(--sh-b, rgba(120,180,255,.55));} /* layer colour, blue → violet → magenta → pink (2026-10-12) */
   .se-armour{display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end;} .se-armour-layer{display:flex; flex-direction:column; gap:2px; font-weight:700; padding:4px 6px; border-radius:8px; background:linear-gradient(180deg, color-mix(in srgb, var(--sh-a) 35%, transparent), color-mix(in srgb, var(--sh-b) 25%, transparent)); border:1px solid var(--sh-b);}
   .se-armour-layer input{width:84px;}

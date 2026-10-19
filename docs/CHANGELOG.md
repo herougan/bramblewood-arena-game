@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package MX: raid Shield 50, the key badge at 0, swaps only for better cards)
+- **Raid Shield (owner 22:47: "Add a shield value of 50 to the Raid. As the HP% goes down, this 50 goes down proportionally."):** the boss's bramble in a raid fight opens with a Shield of 50 × the part's remaining Health share (the same share the boss's weakening uses): 50 fresh, 25 at half, 0 at the end. It soaks hits before Health and shows as 🔷 on the bramble, like any Shield. The raid screen and the VS boss card say "Shield 50 (falls as the raid weakens)" (TX keys, 12 packs).
+- **Raid editor:** a "Shield" field beside "Energy" for the raid (default 50; 0 turns it off) and for each part (blank = the raid's). A saved raid edit without one gets 50. `canonical/raids.json`: the Goliath's `shield: 50`. `tools/raid_completion_model.js measure --shield N`.
+- **Daily Dungeon key (owner 22:47):** the top-right 🗝️ always shows its count. At 0 keys the key greys out, the badge becomes an empty "0", and its tip says when the keys refill. Checked: the Energy pill (0/20) and the raid tickets chip (0/10) already show 0.
+- **Swaps (owner 22:47: "Don't recommend cards that are lousier than what i have in my deck."):** the swap window (the Map 0-1 teaching swaps, the Lumber lesson and the later offers) only suggests a swap when the new card is clearly better than the deck card going out. Clearly better means a higher budget score (2A+H+S × the half-miss multiplier), the same Lumber bracket or a cheaper one, and no more Wait. The new card also has to dominate the deck card or beat its score by 10% (at least 1 point). If nothing in the deck is weaker, no window opens. Both columns of the window follow the same rule. Test: `tests/mx-2026-10-19.js`.
+
 ## 2026-10-19 (package SK3: skills batch 3, triggers × actions)
 - **Owner (21:56):** "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the required trigger or action." Most new skills are keywords that expand into ordinary triggers (Waiting, the layer cap, Confused and Exhaust all apply).
 - **New trigger:** On Any Death (any other unit dies, either side).
