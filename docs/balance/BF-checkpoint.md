@@ -4,16 +4,16 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
 (3) Forge stays at Map 11 (decision); (4) side maps at least one map ahead; (5) re-measure level / road curves, retune.
 
 ## Done
-- 0. baseline measure: docs/balance/skirmish-pass-bf-before.jsonl (271 fights, 120 games, old code)
-- 1. bramblewood-budget.js (N v4, forge curve); tools/skill_costs.js, Test Lab (sbBudgetAt), hub inline, assemble, tests
-  (decisions-2026-10-18, skill-costs-2026-10-19, d-2026-10-19), post-balance queue refreshed (28), docs/balance/budget-v4-2026-10-19.json
-  via `node tools/forge_curve_2026_10_19.js budget` (L1: 2 in, 1 out)
-- 2. statsAtLevel / curveStatsAtLevel use forgeCurveOf; LEVEL_STAT_STEPS all levels; FORGE_MEAN_GAIN / levelForGain; enemyKeepsPace
-  (forgeGainShift); Forge anvil strip (forgeCurveStripHTML, TX keys, tools/i18n_2026_10_19_bf.py); tests/forge-curve-2026-10-19.js passes
-- 3. decision B7 in docs/decisions.json, decisions.md regenerated
-- 4. sideMapAhead / fightMapNumber (enemy level + Shield), side road-curve targets shifted 0.19 logit a map (roadCurveTarget)
+- 0. baseline: docs/balance/skirmish-pass-bf-before.jsonl (271 fights, 120 games, pre-BF code at 5ec913a)
+- 1. bramblewood-budget.js (N v4 + forge curve), skill_costs.js, Test Lab, hub, assemble, tests; queue refreshed (28);
+  docs/balance/budget-v4-2026-10-19.json (`node tools/forge_curve_2026_10_19.js budget`)
+- 2. statsAtLevel via forgeCurveOf; LEVEL_STAT_STEPS all levels; FORGE_MEAN_GAIN; enemy keeps pace deck by deck
+  (enemyLevelKeepingPace, (A+1)xH metric, old whole-level semantics); Forge anvil strip; tests/forge-curve-2026-10-19.js
+- 3. decision B7, decisions.md regenerated
+- 4. side maps (sideMapAhead / fightMapNumber, side curve targets); tests/side-maps-2026-10-19.js
+- merged main (RC, EE, UT) at the WIP; unit_themes regenerated
+- 5. measures bf-mid (mean-gain pace), bf-mid2 (sum 2A+H), bf-mid3 (final pace, after merge); curve tune -> bf-curve-fixes.jsonl
+  (54 fights; 20-A-4 not applied; 16-6 retuned with --shieldx=2); applied
 
 ## Next
-- 5. measure bf-mid (running), tune off-curve fights (`skirmish_pass.js curve --from=bf-mid --fixes=bf-curve-fixes`), apply, measure bf-after
-- tests/side-maps-2026-10-19.js; update tests/level-curve-2026-10-19.js (levelForGain values, bands file); run-all.sh
-- docs/balance/level-curve-2026-10-19b.md, CHANGELOG top section, merge main, final commit "Package BF: ..."
+- bf-after + bf-fresh measures (running); tests level-curve / side-maps; doc level-curve-2026-10-19b.md; CHANGELOG; merge main; final commit
