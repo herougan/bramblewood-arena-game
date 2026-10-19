@@ -1,4 +1,4 @@
-# Budget v5 and the softer Forge curve, 2026-10-19 (package BF2)
+# Budget v5 and the softer Forge curve, 2026-10-19 (packages BF2 and BF3)
 
 This replaces budget v4 and the Forge curve built on it (`docs/balance/level-curve-2026-10-19b.md`, package BF).
 
@@ -275,9 +275,182 @@ Each run is 120 games a fight. The targets are unchanged: 90% → 60% before the
 - **No card's stats changed.** The extra room is largest for late-map cards (Base +4.8 at Map 24, about +5 N), so more of them sit further under their budget. As the owner expected, that is room, not a fault.
 - **The Forge curve barely moves.** The map term adds 0.2 × Map × L/30 to a level's gain: for a Map 20 card, 0.13 points a level. The mean card's Lv 10 gain is +99%, from +96%. The road was not re-measured for it.
 
+## BF3: L/10, the map term, the full card retune and the honest road (owner 15:48, 16:22)
+
+> 15:48: "Retune to our L/10 stats. Retune all cards base on your assumptions in the balance calculation in master hub. Balance our dragons and everything."
+>
+> 16:22: "it's fine to be = to budget" · "the cards as seen should be the cards when you get them" · "Thorns is reaallly strong" · "In Map 5+, there's lvl 1-2. In Map 10+, there will be lvl 2+. and rarity >rare ... Let them be strong full stop for now" · "Where honest levers can't reach the target, LEAVE it and list the gap"
+
+### A. L/10
+
+**N(L) = (Base + L/10) × (1 + L/30)**, and Level 0 is Base − 1. The shared constant is `levelLinDiv` (10) in `bramblewood-budget.js`.
+
+| Base | Lv 0 | Lv 1 | Lv 2 | Lv 4 | Lv 7 | Lv 10 | Lv 11 |
+|---|---|---|---|---|---|---|---|
+| 14 | 13 | 14.57 | 15.15 | 16.32 | 18.13 | 20 | 20.64 |
+| 20 | 19 | 20.77 | 21.55 | 23.12 | 25.53 | 28 | 28.84 |
+| 30 | 29 | 31.1 | 32.21 | 34.45 | 37.86 | 41.33 | 42.5 |
+| 40 | 39 | 41.44 | 42.88 | 45.79 | 50.2 | 54.67 | 56.17 |
+| 60 | 59 | 62.1 | 64.21 | 68.45 | 74.86 | 81.33 | 83.5 |
+
+For comparison, Base 14 reaches 23.11 at Lv 10 with L/3 and 21.33 with L/5. Base 40 reaches 57.78 with L/3 and 56 with L/5.
+
+**Weak vs strong cards at Lv 10** (2A+H growth, the weak group over the strong; the owner's rule is 1.3× or less):
+
+| Divisor | Strict grouping | "Or" grouping |
+|---|---|---|
+| L/3 | 1.59 | 1.47 |
+| L/5 | 1.48 | 1.39 |
+| L/10, before the retune | 1.52 | 1.22 |
+| **L/10, after the retune** | **1.33** | **1.26** |
+
+### B. Base's map term
+
+**Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual + 0.2 × Map.** The constant is `perMap`, and the map is `canonical/card-obtain-maps.json` (see "Base's map term" above).
+
+### C. The full card retune
+
+The full table is in **`docs/balance/card-retune-2026-10-19.md`**, made by `tools/card_retune_2026_10_19.js` (`plan`, `apply`, `restore`, `doc`).
+- **The budget:** every live creature at Level 1, under v5 with L/10 and the map term, with the inclusive rules (owner 16:22).
+- **The band:** the hub's band.
+  - Within: above 60% of N and passing both rules.
+  - Well under (pink): raised to 65% of N, with the A:H shape kept.
+  - Over: fitted down until it passes.
+  - A cut of more than half is an owner call.
+- **Each changed card's creatorNote** reads "2026-10-19 retune (v5 L/10): was A/H".
+
+| | Cards |
+|---|---|
+| Live creatures checked | 709 |
+| Within, unchanged | 296 |
+| Over, fitted down | 25 |
+| Well under, raised | 387 |
+| Owner calls | 1 (the Caldera Wyrm, kept as printed) |
+
+- **At Level 1:** 743 of 744 cards now pass v5. Before the retune, 718 of 744 passed (and 708 without the map term). The one card left over is the Caldera Wyrm.
+- **The 13 cards that were over budget** (RJ's list) are all in band now, the dragons among them. For example, the White Dragon went from 10/44 to 8/37, at 98.6% of its N.
+- **The mean Forge gain in 2A+H** (`FORGE_MEAN_GAIN`, re-derived by `node tools/forge_curve_2026_10_19.js gain`): +4.4% at Lv 2, +20.8% at Lv 4, +45.8% at Lv 7, +70.5% at Lv 10 and +79.6% at Lv 11.
+- **Examples** (Lv 1 → 2 → 4 → 7 → 10 → 11):
+
+  | Card | Stats by level |
+  |---|---|
+  | Otter Centurion | 5/9 → 6/10 → 6/12 → 7/13 → 8/15 → 8/16 |
+  | Bramblewood Lynx | 9/9 → 9/10 → 10/11 → 12/11 → 13/13 → 13/14 |
+  | Quillguard | 3/22 → 3/23 → 3/26 → 4/29 → 5/32 → 5/34 |
+
+- **Regenerated:**
+  - The golden card matrix, `tests/golden/card-matrix.json` (failures 0, stalemates 42).
+  - `canonical/unit-themes.json`.
+  - `canonical/special-monsters.json` and `docs/balance/special-monsters-2026-10-19.md`, on RB2's 350-Health brambles and 55-Health elders.
+- **The raid tail's elder** is now the Orca Warlord. The game picks the part deck's biggest card by A+H. After the retune, the Orca Vanguard (8/32) outgrows the humpback (6/32), so the Leviathan Elder no longer appears as an elder. The unit-themes test now checks the rule, not a name.
+
+### The rules are inclusive (owner 16:22)
+
+2A+H+S **≤** N and A·H+S **≤** (N/3)². Both still take ×1.5 for each half-miss skill. This holds in the shared helper (`tools/skill_costs.js`), the card editor's budget panel and the Test Lab ("≤"), the hub's Skill costs tab, `tools/post_balance_queue.js` (now 0 cards) and the tests.
+
+### Thorns re-measured (owner 16:22: "Thorns is reaallly strong")
+
+- **The measure:** `tools/skill_worth` ran 5 runs and about 177,000 games. Its median is **3.23 per point**, with low confidence (SE 5.93).
+- **Why 3.23 is a floor:** the head-to-head saturates. Thorns wins nearly every vanilla match-up (99.7% to 96.2%).
+- **Applied:** `canonical/skill-costs.json` thorns value 3.23 (was 1), with `measuredS`, `measuredConf` and `prevValue`. The retune was re-run on it.
+
+### Printed card = obtained card (decision B10)
+
+An enemy's copy fights as printed, plus its level. Enemy strength comes from levels, decks and synergy, and fields. These places change an enemy card's stats outside levels and fields. They are flagged only; raid mechanics were not changed:
+- **The endless floor perk** (`floorPct`) is 0 now, so it changes nothing today.
+- **The raid's staged decks** (`bAtk` / `bHp` on a part's stages).
+- **The raid's boss units (elders):** +1 Attack, and Health ×(1.5 + 1.5·r), at least `bossHpBonusMax` (55 since RB2).
+
+### D. The road with honest levers only
+
+**The levers:**
+- **Enemy decks**, built for synergy inside the map's theme and the road's rarity cap. The cap now allows Very Rare from **Map 10** (was 16; `roadSkirmishCap`).
+- **Enemy levels on the owner's schedule** (`roadEnemyScheduleLevel`, `ROAD_LEVEL_CURVE.enemySchedule`):
+
+  | Map | Enemy level |
+  |---|---|
+  | 0 | printed |
+  | 1–4 | 1 |
+  | 5–9 | 1 → 2, a quarter of a level a map |
+  | 10 | 2 |
+  | 10+ | 2 + 0.2 a map (Lv 4 at Map 20) |
+
+  A boss counts 2 maps on, a side map 1 map on, and an endless floor half a map a floor. BF's deck-by-deck pace rule (`enemyKeepsPace`) is off.
+- **Not used:** no new Shield override, no lower bramble Health and no field buff. The tuner's `--decks-only` skips both Shield and Health rounds. A tune that had used Shields (`bf4-curve-fixes`) was set aside without being applied.
+
+**The rounds** (`tools/skirmish_pass.js curve ... --decks-only`, with fixes kept only when they move a fight nearer its target):
+
+| Measure | Main green | Side green |
+|---|---|---|
+| After the card retune (`bf5-mid`) | 50 / 179 | 26 / 92 |
+| Round 1 (`bf5-curve-fixes`, 172 fights) → `bf5-mid2` | 128 / 179 | 58 / 92 |
+| Rounds 2–3 (13 fights; round 3 with the wider hard-side search `--wide`) | | |
+| Round 4 (the 68 gap fights, 120 games a trial, 41 fights) → **`bf-after`** | **150 / 179** | **63 / 77** on the curve |
+| Fresh seeds (`bf-fresh`, seed 5100) | 131 / 179 | 53 / 77 |
+
+In all, 181 fights had their enemy decks changed.
+
+### The gaps (owner 16:22: "LEAVE it and list the gap")
+
+The list is **`docs/balance/road-gaps-2026-10-19.json`**, made by `node tools/road_gaps_2026_10_19.js` (`--check` is run by the tests). There are **43 fights off target**: 29 on main maps and 14 on side maps.
+- **20 are too easy** (14 main, 6 side). The decks are already the strongest the theme and the rarity cap allow, so these are the fights that would need a future "cheat" field.
+- **23 are too hard** (15 main, 8 side). The deck is already the weakest honest build of the map's own cards. A field can't help here: they need a lower enemy level than the schedule's, or weaker cards on the map.
+
+**The largest gaps** (more than 10 points outside the band):
+
+| Fight | Kind | Measured | Target (band) | Way |
+|---|---|---|---|---|
+| 0-4 | skirmish | 61.7% | 45% (30–49) | easy |
+| 1-5 | elite | 66.7% | 40% (30–49) | easy |
+| 9-1 | skirmish | 59.2% | 90% (82–98) | hard |
+| 9-2 | skirmish | 48.3% | 84% (76–92) | hard |
+| 9-3 | skirmish | 45.8% | 78% (70–86) | hard |
+| 9-6 | elite | 35% | 60% (52–68) | hard |
+| 16-7 | miniboss | 75% | 40% (30–49) | easy |
+| 20-2 | skirmish | 66.7% | 85.7% (77.7–93.7) | hard |
+| 21-6 | miniboss | 80.8% | 40% (30–49) | easy |
+| 0-B-1 | skirmish | 61.7% | 90% (82–98) | hard |
+| 0-B-2 | skirmish | 45% | 75% (67–83) | hard |
+| 1-A-5 | boss | 63.3% | 35.5% (26–44) | easy |
+| 2-A-2 | skirmish | 35.8% | 84% (76–92) | hard |
+| 2-A-5 | elite | 40% | 66% (58–74) | hard |
+| 2-B-2 | elite | 97.5% | 71.3% (63–79) | easy |
+| 2-B-3 | elite | 90.8% | 55.4% (47–63) | easy |
+| 2-B-4 | elite | 75% | 35.5% (26–44) | easy |
+| 18-A-7 | skirmish | 78.3% | 59.8% (52–68) | easy |
+| 20-A-4 | dungeon | 56.7% | 35.5% (26–44) | easy |
+
+**Where they cluster:**
+- **Map 9 (9-1, 9-2, 9-3, 9-6)** comes from the schedule. The enemy reaches Lv 2 at Map 9 while your cards are still at their printed level until the Forge at Map 11.
+- **Gannet Cliffs' side map (2-B-2 to 2-B-4)** stays easy at the rare cap.
+- **The minibosses 16-7 and 21-6** have no stronger themed cards to take.
+- **20-A-4** has four waves the tool can't simulate. It was left as it is.
+
+The tests (level curve, side maps, Pale Desert, thematic) now require every fight off its band to be in this list. They also keep floors of 145 main greens, 125 fresh-seed greens and 60 side greens.
+
+### The Shield overrides above the rule (an owner call; kept)
+
+**26 fights** carry a Shield override above the rule. 19 others are below it, and 171 have a lower Health (hqHp, which only makes a fight easier). `measure --drop-above-rule` (`skirmish-pass-bf5-dropov.jsonl`) plays the 26 with their override dropped, the Shield back on the rule:
+
+| | With the override | On the rule |
+|---|---|---|
+| Of the 26, green | 19 | 13 |
+| Main maps green | 150 / 179 | 147 / 179 |
+
+- **Green → easy without the override:** 6-8, 10-A-3, 16-3, 17-8, 20-A-5, 20-A-6.
+- **Easy either way:** 1-5, 3-7, 11-10, 17-7, 21-6, 22-8 and T-4 stay easy with or without it.
+
+Removing all 26 would cost 3 main greens and 6 greens overall, and the decks can't make up the difference. The per-fight table is in the gaps JSON (`dropov`).
+
 ## Owner calls
 
 1. **L/5 instead of L/3.** No divisor reaches the 1.3× rule, because the absolute conversion favours cards that sit well under their budget. If that matters more than simplicity, use the proportional conversion (the side column above).
 2. **16-6 Reaver's Hollow** stays easy at its 2× Shield cap.
 3. **The old curve's whole-level gap** (Maps 8, 16 and 18 kept the stats of the step below) is still kept by the enemy's pace rule. Murgle Mayhem floor 3 is now Lv 1, against 1.56 for the same deck on its parent. Dropping the gap needs a retune of Maps 8, 16 and 18.
 4. **Squared Wait and Lumber:** no change. The data shows high-Wait and high-Lumber cards under their bands, not over.
+5. **(BF3) The Shield overrides above the rule:** 26 fights. Dropping them costs 3 main greens (150 → 147). They are kept until the owner decides.
+6. **(BF3) The 20 easy gaps** would need a future "cheat" field, and the **23 hard gaps** would need a lower enemy level or weaker cards. Map 9's four come from the schedule's Lv 2 before the Forge at Map 11 (`docs/balance/road-gaps-2026-10-19.json`).
+7. **(BF3) The Caldera Wyrm** stays as printed (6/36, over its N of 36.79 at 0 Lumber), per decision B10.
+8. **(BF3) Thorns at 3.23** is a floor: the head-to-head saturates. A stronger measure needs harder opponents.
+9. **(BF3) The raid's staged decks and elders** change enemy stats outside levels and fields. They are flagged under B10 but not changed (raid mechanics).
+10. **(BF3) The raid tail's elder** is now the Orca Warlord, because the retune made the Orca Vanguard the tail deck's biggest card. To keep the Leviathan Elder, pin the elder per part.

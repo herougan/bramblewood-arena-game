@@ -2,6 +2,30 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package BF3: L/10, the map term, the full card retune, the honest road)
+- **Owner (15:48, 16:22):** "Retune to our L/10 stats. Retune all cards ... Balance our dragons and everything." / "it's fine to be = to budget" / "the cards as seen should be the cards when you get them" / "Thorns is reaallly strong" / "Where honest levers can't reach the target, LEAVE it and list the gap".
+- **Budget v5 is now N = (Base + L/10) × (1 + L/30),** with `levelLinDiv` 10 (was 5). Level 0 is Base − 1, and Base includes **0.2 × Map** (`perMap`). The rules are now **inclusive**: 2A+H+S ≤ N and A·H+S ≤ (N/3)². This applies in the helper, the budget panel, the Test Lab, the hub, the queue and the tests.
+- **The full card retune at Level 1** (`tools/card_retune_2026_10_19.js`, `docs/balance/card-retune-2026-10-19.md`): of 709 live creatures, 296 are unchanged, 25 were fitted down and 387 were raised to 65% of N.
+  - Each changed card carries a creatorNote "2026-10-19 retune (v5 L/10): was A/H".
+  - 743 of 744 cards now pass. The Caldera Wyrm is kept as printed.
+  - The weak/strong Lv 10 growth ratio is 1.33 / 1.26.
+  - Regenerated: the golden card matrix, unit themes and special monsters. The raid tail's elder is now the Orca Warlord.
+- **Thorns was re-measured** at 3.23 a point (was 1). The confidence is low, and the value is a floor.
+- **Decision B10: the printed card is the obtained card.** Enemy strength comes from levels, decks and fields. The raid's staged decks and elders are flagged, not changed.
+- **The road was retuned with honest levers only:**
+  - Enemy decks only (`--decks-only`; `--wide` for hard fights).
+  - Enemy levels follow the owner's schedule: Maps 1–4 Lv 1, Maps 5–9 Lv 1–2, Map 10 Lv 2, then +0.2 a map.
+  - Very Rare is allowed in skirmishes from Map 10 (was 16).
+  - No new Shield overrides, no lower Health, no field buffs.
+- **Road results:**
+  - Main maps 150/179 green and side maps 63/77, on the measure seeds; fresh seeds 131/179.
+  - **43 gaps are listed** in `docs/balance/road-gaps-2026-10-19.json` (`tools/road_gaps_2026_10_19.js`): 20 too easy, which would need a future "cheat" field, and 23 too hard.
+  - **26 Shield overrides sit above the rule.** On the rule, main greens would drop to 147. They are kept as an owner call.
+- **Tests:**
+  - The level-curve, side-map, Pale Desert and thematic tests now read the gaps list.
+  - Stale pins were updated: the shields test (side maps count a map ahead), road rarity (Map 10) and the win-rate panel (side targets 88.2%).
+- **Docs:** `docs/balance/level-curve-2026-10-19c.md` has the BF3 sections.
+
 ## 2026-10-19 (package RB2: raid brambles 350, the elders 55)
 - **Owner (16:22, 16:28):** "Raids can have special super-high health brambles. Maybe less than 420." / "let it remain at 350HP. Then ... make the raid very slightly harder."
 - **The Goliath's arms and tail now have a 350-Health bramble a fight** (was 420). The Core keeps its 200. With the Map 13 deck, a normal raider still ends 96% of fights with the bramble standing, at 168 damage a fight. Wins go 0.3% → 4.0% for that deck and 19% / 31% → 30% / 40% for good / strong decks.
