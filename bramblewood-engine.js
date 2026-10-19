@@ -204,7 +204,7 @@ const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAtta
 // 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
 // removeDeadCards (each pass of a death sweep is one layer deeper).
 const TRIGGER_LAYER_CAP = 5;
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17)
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -4148,7 +4148,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.hatchInto && def.hatchInto.defId) return CARD_DEFS[def.hatchInto.defId] ? [CARD_DEFS[def.hatchInto.defId]] : []; // a fixed hatch, e.g. the Red Dragon Egg (2026-10-14)
     const h = def.hatchInto || {}, cap = Math.max(EGG_RARITY_ORDER.indexOf('uncommon'), EGG_RARITY_ORDER.indexOf(def.rarity||'common'));
     const sp = h.species || [], ar = h.archetypes || [];
-    return Object.keys(CARD_DEFS).sort().map(k=> CARD_DEFS[k]).filter(d=> d && !d.token && !d.test && !d.pool /* 2026-10-19 (package AN): never an unplaced pool card */ && !d.hidden && !d.hero &&!d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss
+    return Object.keys(CARD_DEFS).sort().map(k=> CARD_DEFS[k]).filter(d=> d && !d.token && !d.test && !d.pool /* 2026-10-19 (package AN): never an unplaced pool card */
+      && !d.easterEgg && !(d.source && d.source.kind === 'easteregg') /* 2026-10-19 (package EE): never an Easter egg (ungettable for now) */ && !d.hidden && !d.hero &&!d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss
       && !d.derivedFrom && !d.hatchInto && !(d.effects && d.effects.leader) && (d.attack|0) > 0
       && EGG_RARITY_ORDER.indexOf(d.rarity) >= 0 && EGG_RARITY_ORDER.indexOf(d.rarity) <= cap
       && (h.any || (d.species||[]).some(x=> sp.includes(x)) || (d.archetypes||[]).some(x=> ar.includes(x))));
@@ -4929,6 +4930,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // picker. Reuses the same fireMissile helper Skyfall (evergreen, see applyOnSpawnEffects
         // below) and the legacy Arrow N preset both call.
         case 'missile': fireMissile(players, sideOf, playerId, boardCard, {amount:t.amount||0, dmgType:'physical'}, stats, events); break;
+        case 'positionBeam': firePositionBeam(players, sideOf, playerId, boardCard, t.amount, t.dmgType, stats, events); break; // 2026-10-19 (package EE): the Galactic Condor's beam
         // Fire on hit N (2026-10-16, "Deal N extra fire damage on hit", meant for Map 20, paired with On Attack and Burn 1 Lumber):
         // this attack's hit also deals N fire damage to whatever it hits (resolveCombat reads boardCard._fireHit; spent on the swing).
         case 'fireHit': if(boardCard && (Number(t.amount)||0) > 0){ boardCard._fireHit = (boardCard._fireHit||0) + (Number(t.amount)||0);
@@ -6084,6 +6086,40 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const fire = c.chargeLeft <= 0; if(fire) c.chargeLeft = ch.n;
         if(recordEvents && events) events.push({type:'charge', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.chargeLeft, fired:fire});
         if(fire) runCustomTriggers(players, sideOf, pid, c, {effects:{triggers:[Object.assign({}, ch.act, {on:'onCharge'})]}}, 'onCharge', stats || {}, events); }); });
+  }
+  // Position Beam (2026-10-19, package EE, owner 09:52, the Galactic Condor's charged beam): an action (most often a Charge's) whose
+  // path depends on where the firer stands in its own row: its column (0 = the exact centre, 1, 2 ... out to either flank; in slot
+  // battles its slot). Distances to the enemy units are taken on the shared left-to-right line (liveSharedPos), so an interlocked
+  // row (half-slot offsets) still reads right.
+  //   centre (column 0)        straight across: the enemy unit directly opposite AND the enemy bramble behind it
+  //   a side (1 to 4 out)      angled toward the far side: the enemy units diagonally across, from one step inward of the one
+  //                            opposite in to the centre line (as many units deep as the firer stands columns out)
+  //   the edge (BEAM_EDGE out) nearly flat: every enemy unit inward of the one opposite (owner: "hits the entire row except its
+  //                            opposing onwards"); the unit opposite and the ones beyond it are spared
+  // A side or edge beam that finds no unit on its path goes on into the enemy bramble. Each unit hit takes the amount (Evasion and
+  // Guardian apply as for any skill hit; it is not a shot, so Reflect doesn't bounce it). Its hits carry positionBeam: <lane>.
+  const BEAM_EDGE = 5;
+  function positionBeamPlan(players, ownerId, card){
+    const myCols = combatColumnsOf(players[ownerId]);
+    let col = null; Object.keys(myCols).forEach(k=>{ const e = myCols[k]; if(e.kind==='card' && e.card.uid===card.uid) col = Number(k); });
+    if(col === null) return null;
+    if(col === 0){ const o = opposingCardOf(players, ownerId, card); const t = o && o.card && o.card.hp > 0 && !o.card.cageOf ? [o.card] : []; return {lane:'centre', col, cards:t, hq:true}; }
+    const enemyId = otherId(ownerId), foes = allBoardCards(players[enemyId]).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
+    const me = liveSharedPos(players[ownerId], card.uid), s = Math.sign(col), out = Math.abs(col), edge = out >= BEAM_EDGE;
+    const cards = foes.map(c=> ({c, d: s * (me - liveSharedPos(players[enemyId], c.uid))})).filter(x=> x.d > 1e-9 && (edge || x.d <= out + 1e-9))
+      .sort((a, b)=> a.d - b.d).map(x=> x.c);
+    return {lane: edge ? 'edge' : 'side', col, cards, hq: !cards.length};
+  }
+  function firePositionBeam(players, sideOf, ownerId, card, amount, dmgType, stats, events){
+    const plan = positionBeamPlan(players, ownerId, card); if(!plan) return null;
+    bleedTick(sideOf, ownerId, card, stats, events, 'skill');
+    const amt = amount === 'attack' ? Math.max(0, effAtk(card)) : Math.max(0, Number(amount)||0), dt = dmgType || 'magic';
+    if(recordEvents && events) events.push({type:'positionBeam', side:sideOf(ownerId), defId:card.defId, uid:card.uid, lane:plan.lane, col:plan.col, amount:amt,
+      targetSide:sideOf(otherId(ownerId)), targetUids:plan.cards.map(c=> c.uid), hq:plan.hq});
+    const tag = n0=>{ if(events) for(let i = n0; i < events.length; i++){ const e = events[i]; if((e.type==='hit' || e.type==='hitHQ' || e.type==='evaded') && e.attUid===card.uid) e.positionBeam = plan.lane; } };
+    plan.cards.forEach(c=>{ if(!(c.hp > 0)) return; const n0 = events ? events.length : 0; fireDamageAction(players, sideOf, ownerId, card.defId, amt, dt, {kind:'card', card:c}, stats, events, null, card.uid); tag(n0); });
+    if(plan.hq){ const n0 = events ? events.length : 0; fireDamageAction(players, sideOf, ownerId, card.defId, amt, dt, {kind:'hq'}, stats, events, null, card.uid); tag(n0); }
+    return plan;
   }
   // Repeats the pass while something is still at 0 HP (Divine Retribution can kill during a pass), at most 6 times.
   // 2026-10-18 (engine parity, R3-WP1): On Kill fires here now, for every kill this sweep settles (once per killer card, as before),

@@ -1903,5 +1903,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "선두 참가자: {fights}회 이상 전투와 {damage} 이상 피해로, 모든 보상 {pct}% 증가, 팩 카드 1장 추가, 트로피 조각 추가.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "모든 보상 {pct}% 증가, 팩 카드 1장 확정 추가, 트로피 조각 추가",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "모든 보상 {pct}% 증가, {chance}% 확률로 팩 카드 1장 추가, 트로피 조각 추가",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "단풍잎, 마법 가루, 금속, XP의 {pct}%, 트로피 조각 일부, 그리고 다른 보상(팩 카드, 추가 보상)의 최대 {max}%. 깎은 체력에 따라"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "단풍잎, 마법 가루, 금속, XP의 {pct}%, 트로피 조각 일부, 그리고 다른 보상(팩 카드, 추가 보상)의 최대 {max}%. 깎은 체력에 따라",
+ "Evomax": "에보맥스",
+ "Easter eggs · not obtainable yet": "이스터 에그 · 아직 얻을 수 없음",
+ "Easter egg": "이스터 에그",
+ "An Easter egg you haven't found yet": "아직 찾지 못한 이스터 에그",
+ "An Easter egg: it can't be obtained yet": "이스터 에그: 아직 얻을 수 없음",
+ "Position Beam": "위치 광선",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "{n} 광선을 쏜다. 중앙: 맞은편 유닛과 덤불. 측면: 안쪽 대각선. 가장자리: 안쪽 줄 전체.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name}이(가) 광선을 정면으로 쏜다 ({n}): 맞은편 유닛과 덤불.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name}이(가) 광선을 비스듬히 쏜다 ({n}): 대각선 맞은편 유닛들.",
+ "{name} fires its beam flat along the row ({n}).": "{name}이(가) 광선을 줄을 따라 수평으로 쏜다 ({n})."
 }

@@ -2,6 +2,28 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package EE: Easter eggs, the Condor's beam, Evomax)
+- **Owner (09:52): "Easter eggs: Special category, ungettable atm."** This adds a new card category: source `{kind:'easteregg'}` plus `easterEgg: true`, with one list, `EASTER_EGG_IDS` in `arena_app.js`.
+  - No source gives one out yet: packs, drops, skirmish rewards, raids, the reward tracks, the Forge, the Nest's hatch.
+  - `unlockCardForPlayer` refuses them from every source except an admin's grant.
+  - The Codex shows an unseen one as a "???" tile in its own 🥚 Easter eggs section. The hub's card list masks it too.
+  - Test: `tests/easter-eggs-2026-10-19.js`. Internal notes and inspirations: `docs/easter-eggs.md`.
+- **The eight Easter eggs**, all within budget v3. They use emoji placeholders; the NightCafe prompts are in `docs/art/easter-egg-art-briefs.md` (nothing was generated).
+  - Creeper (now Very Rare, an exploding creeping beetle).
+  - Terraumbra (Unique Evomax equipment).
+  - Exo-podas (Very Rare).
+  - Galactic Condor (Epic).
+  - Pink Maus (Unique).
+  - Nyoogle (Super Rare).
+  - Habanero Drakon (id `tobasco-drakon`, Rare).
+  - Kegfuse Panda (id `demo-panda`, Super Rare).
+- **New action: Position Beam**, used by the Galactic Condor's Charge 2.
+  - From the exact centre it hits the unit across and the bramble.
+  - From a side it angles inward across the units diagonally across.
+  - From the edge (5 out) it hits the whole row inward of the unit opposite.
+  - It reuses the lightning bolt with a prismatic glow. Test: `tests/position-beam-2026-10-19.js`.
+- **The Evolution archetype is called Evomax** wherever a player sees it: the Codex filter and pie, the corner mark, the editor and the card detail. The detail had been showing such cards as Devilry. The internal id `evolution` is unchanged.
+
 ## 2026-10-19 (package RC: raid cards are crafted)
 - **Raids almost never give their own cards now** (owner 09:53). A fall's claim gives reward cards from the normal pack pools instead: 1 for taking part (+1 for the top 1% / 10%), with a 10–25% chance that each one is a faction card. Competent participants get a 20% chance of one more and Leading participants get one more for certain. The pack cards have a rarity floor: Competent get Uncommon or better, Leading get Rare or better. A raid's own card comes only at `RAID_CARD_DROP_CHANCE` (1.5%, `bramblewood-raid.js`): once per fall's claim and once per won raid fight. A won raid fight used to drop a boss-deck card every time; it now gives a pack card.
 - **Trophy shards:** each raid has its own crafting material ("Goliath trophy shards" 🏆). A fall pays 6 for taking part, 9 for Competent and 13 for Leading, before the top 1% / 10% / 50% bonus (+4 / +2 / +1). A raid that holds pays a share based on how much Health it lost.

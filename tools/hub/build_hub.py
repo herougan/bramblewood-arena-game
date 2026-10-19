@@ -315,7 +315,7 @@ CANON = json.load(open(os.path.join(ROOT, 'canonical', 'cards.json'), encoding='
 _canon_art = {c['id']: c.get('art') for c in CANON}
 _assets = {os.path.splitext(f)[0]: f for f in os.listdir(os.path.join(ROOT, 'assets', 'cards'))}
 THUMB = 96
-_thumb_ids = [c['id'] for c in HC['cards'] if c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image')]
+_thumb_ids = [c['id'] for c in HC['cards'] if not c.get('egg') and (c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image'))]  # 2026-10-19 (package EE): no thumbnail for a masked Easter egg
 if _thumb_ids:
     import base64, io
     cols = math.ceil(math.sqrt(len(_thumb_ids)))

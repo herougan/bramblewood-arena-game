@@ -1902,5 +1902,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "Partecipante di punta: {fights}+ scontri e {damage}+ danni, per il {pct}% in più di ogni ricompensa, una carta del pacchetto in più e più frammenti di trofeo.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "il {pct}% in più di ogni ricompensa, una carta del pacchetto in più di sicuro e più frammenti di trofeo",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "il {pct}% in più di ogni ricompensa, il {chance}% di probabilità di una carta del pacchetto in più e più frammenti di trofeo",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "il {pct}% delle Foglie d’acero, della Polvere magica, del Metallo e dei PE, parte dei frammenti di trofeo e fino al {max}% delle sue altre ricompense (una carta del pacchetto, extra), in base a quanta Salute ha perso"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "il {pct}% delle Foglie d’acero, della Polvere magica, del Metallo e dei PE, parte dei frammenti di trofeo e fino al {max}% delle sue altre ricompense (una carta del pacchetto, extra), in base a quanta Salute ha perso",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Easter egg · non ancora ottenibili",
+ "Easter egg": "Easter egg",
+ "An Easter egg you haven't found yet": "Un easter egg che non hai ancora trovato",
+ "An Easter egg: it can't be obtained yet": "Un easter egg: non si può ancora ottenere",
+ "Position Beam": "Raggio di posizione",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "spara un raggio da {n}. Centro: l'unità di fronte e il rovo. Lato: in diagonale verso l'interno. Bordo: la fila verso l'interno.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} spara il raggio dritto davanti ({n}): l'unità di fronte e il rovo.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} spara il raggio di sbieco ({n}): le unità in diagonale.",
+ "{name} fires its beam flat along the row ({n}).": "{name} spara il raggio radente lungo la fila ({n})."
 }

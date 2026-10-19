@@ -1903,5 +1903,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "முன்னணி பங்கேற்பாளர்: {fights}+ சண்டைகள் மற்றும் {damage}+ சேதம், ஒவ்வொரு பரிசிலும் {pct}% அதிகம், ஒரு கூடுதல் பொதி அட்டை மற்றும் அதிக கோப்பைத் துண்டுகள்.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "ஒவ்வொரு பரிசிலும் {pct}% அதிகம், உறுதியாக ஒரு கூடுதல் பொதி அட்டை, மற்றும் அதிக கோப்பைத் துண்டுகள்",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "ஒவ்வொரு பரிசிலும் {pct}% அதிகம், கூடுதல் பொதி அட்டைக்கு {chance}% வாய்ப்பு, மற்றும் அதிக கோப்பைத் துண்டுகள்",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "மேப்பிள் இலைகள், மாய தூசி, உலோகம் மற்றும் XP இல் {pct}%, கோப்பைத் துண்டுகளில் ஒரு பகுதி, மற்றும் அதன் பிற பரிசுகளில் (ஒரு பொதி அட்டை, கூடுதல்கள்) {max}% வரை, அது இழந்த உயிர்ப்புக்கு ஏற்ப"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "மேப்பிள் இலைகள், மாய தூசி, உலோகம் மற்றும் XP இல் {pct}%, கோப்பைத் துண்டுகளில் ஒரு பகுதி, மற்றும் அதன் பிற பரிசுகளில் (ஒரு பொதி அட்டை, கூடுதல்கள்) {max}% வரை, அது இழந்த உயிர்ப்புக்கு ஏற்ப",
+ "Evomax": "எவோமேக்ஸ்",
+ "Easter eggs · not obtainable yet": "ஈஸ்டர் முட்டைகள் · இன்னும் பெற முடியாது",
+ "Easter egg": "ஈஸ்டர் முட்டை",
+ "An Easter egg you haven't found yet": "நீங்கள் இன்னும் கண்டுபிடிக்காத ஈஸ்டர் முட்டை",
+ "An Easter egg: it can't be obtained yet": "ஒரு ஈஸ்டர் முட்டை: இன்னும் பெற முடியாது",
+ "Position Beam": "நிலைக் கதிர்",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "{n} கதிரைச் சுடும். நடு: எதிரே உள்ள அலகும் முட்புதரும். பக்கம்: உள்நோக்கி சாய்வாக. ஓரம்: உள்நோக்கிய வரிசை.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} தன் கதிரை நேராகச் சுடுகிறது ({n}): எதிரே உள்ள அலகும் முட்புதரும்.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} தன் கதிரைச் சாய்வாகச் சுடுகிறது ({n}): சாய்வாக எதிரே உள்ள அலகுகள்.",
+ "{name} fires its beam flat along the row ({n}).": "{name} தன் கதிரை வரிசை நெடுகத் தட்டையாகச் சுடுகிறது ({n})."
 }

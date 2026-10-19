@@ -1902,5 +1902,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "Participante destacado: {fights}+ combates y {damage}+ de daño, para un {pct} % más de cada recompensa, una carta de sobre extra y más fragmentos de trofeo.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "un {pct} % más de cada recompensa, una carta de sobre extra segura y más fragmentos de trofeo",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "un {pct} % más de cada recompensa, un {chance} % de probabilidad de una carta de sobre extra y más fragmentos de trofeo",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "el {pct} % de las Hojas de arce, el Polvo mágico, el Metal y la XP, parte de los fragmentos de trofeo y hasta el {max} % de sus otras recompensas (una carta de sobre, extras), según cuánta Salud perdió"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "el {pct} % de las Hojas de arce, el Polvo mágico, el Metal y la XP, parte de los fragmentos de trofeo y hasta el {max} % de sus otras recompensas (una carta de sobre, extras), según cuánta Salud perdió",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Huevos de Pascua · aún no se pueden conseguir",
+ "Easter egg": "Huevo de Pascua",
+ "An Easter egg you haven't found yet": "Un huevo de Pascua que aún no has encontrado",
+ "An Easter egg: it can't be obtained yet": "Un huevo de Pascua: aún no se puede conseguir",
+ "Position Beam": "Rayo de posición",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "dispara un rayo de {n}. Centro: la unidad de enfrente y el zarzal. Lado: en diagonal hacia dentro. Borde: la fila hacia dentro.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} dispara su rayo de frente ({n}): la unidad de enfrente y el zarzal.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} dispara su rayo en ángulo ({n}): las unidades en diagonal.",
+ "{name} fires its beam flat along the row ({n}).": "{name} dispara su rayo a ras de la fila ({n})."
 }

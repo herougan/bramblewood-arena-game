@@ -1902,5 +1902,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "Führender Teilnehmer: {fights}+ Kämpfe und {damage}+ Schaden, für {pct} % mehr von jeder Belohnung, eine zusätzliche Packkarte und mehr Trophäensplitter.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "{pct} % mehr von jeder Belohnung, sicher eine zusätzliche Packkarte und mehr Trophäensplitter",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "{pct} % mehr von jeder Belohnung, {chance} % Chance auf eine zusätzliche Packkarte und mehr Trophäensplitter",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct} % der Ahornblätter, des Zauberstaubs, des Metalls und der EP, ein Teil der Trophäensplitter und bis zu {max} % seiner anderen Belohnungen (eine Packkarte, Extras), je nachdem, wie viel Leben er verloren hat"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct} % der Ahornblätter, des Zauberstaubs, des Metalls und der EP, ein Teil der Trophäensplitter und bis zu {max} % seiner anderen Belohnungen (eine Packkarte, Extras), je nachdem, wie viel Leben er verloren hat",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Easter Eggs · noch nicht erhältlich",
+ "Easter egg": "Easter Egg",
+ "An Easter egg you haven't found yet": "Ein Easter Egg, das du noch nicht gefunden hast",
+ "An Easter egg: it can't be obtained yet": "Ein Easter Egg: noch nicht erhältlich",
+ "Position Beam": "Positionsstrahl",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "feuert einen Strahl ({n}). Mitte: die Einheit gegenüber und die Dornenhecke. Seite: schräg nach innen. Rand: die Reihe nach innen.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} feuert den Strahl geradeaus ({n}): die Einheit gegenüber und die Dornenhecke.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} feuert den Strahl schräg ({n}): die Einheiten schräg gegenüber.",
+ "{name} fires its beam flat along the row ({n}).": "{name} feuert den Strahl flach die Reihe entlang ({n})."
 }

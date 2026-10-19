@@ -1903,5 +1903,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "领头参与者：{fights}+场战斗和{damage}+伤害，每项奖励多{pct}%，额外一张卡包卡牌和更多战利品碎片。",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "每项奖励多{pct}%，必得一张额外卡包卡牌，以及更多战利品碎片",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "每项奖励多{pct}%，{chance}%几率额外一张卡包卡牌，以及更多战利品碎片",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "枫叶、魔法粉尘、金属和经验的{pct}%，部分战利品碎片，以及最多{max}%的其他奖励（一张卡包卡牌、额外奖励），按它失去的生命计算"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "枫叶、魔法粉尘、金属和经验的{pct}%，部分战利品碎片，以及最多{max}%的其他奖励（一张卡包卡牌、额外奖励），按它失去的生命计算",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "彩蛋 · 暂时无法获得",
+ "Easter egg": "彩蛋",
+ "An Easter egg you haven't found yet": "一个你还没找到的彩蛋",
+ "An Easter egg: it can't be obtained yet": "彩蛋：暂时无法获得",
+ "Position Beam": "站位光束",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "发射{n}点光束。中路：对面的单位和荆棘丛。侧路：斜向内侧。边缘：向内的整排。",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name}向正前方发射光束（{n}）：对面的单位和荆棘丛。",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name}斜向发射光束（{n}）：斜对面的单位。",
+ "{name} fires its beam flat along the row ({n}).": "{name}沿整排水平发射光束（{n}）。"
 }

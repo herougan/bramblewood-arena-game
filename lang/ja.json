@@ -1903,5 +1903,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "トップ参加者：{fights}戦以上、{damage}ダメージ以上で、すべての報酬が{pct}%増え、パックカードが1枚増え、トロフィーの欠片も増える。",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "すべての報酬が{pct}%増え、パックカードが確実に1枚増え、トロフィーの欠片も増える",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "すべての報酬が{pct}%増え、{chance}%の確率でパックカードが1枚増え、トロフィーの欠片も増える",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "カエデの葉、魔法の粉、金属、XPの{pct}%、トロフィーの欠片の一部、その他の報酬（パックカード、おまけ）の最大{max}%。削った体力による"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "カエデの葉、魔法の粉、金属、XPの{pct}%、トロフィーの欠片の一部、その他の報酬（パックカード、おまけ）の最大{max}%。削った体力による",
+ "Evomax": "エボマックス",
+ "Easter eggs · not obtainable yet": "イースターエッグ · まだ入手できません",
+ "Easter egg": "イースターエッグ",
+ "An Easter egg you haven't found yet": "まだ見つけていないイースターエッグ",
+ "An Easter egg: it can't be obtained yet": "イースターエッグ：まだ入手できません",
+ "Position Beam": "ポジションビーム",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "{n}のビームを放つ。中央：正面のユニットといばら。側面：斜め内側へ。端：内側の列全体。",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name}がビームをまっすぐ放つ（{n}）：正面のユニットといばら。",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name}がビームを斜めに放つ（{n}）：斜め向かいのユニット。",
+ "{name} fires its beam flat along the row ({n}).": "{name}がビームを列に沿って水平に放つ（{n}）。"
 }

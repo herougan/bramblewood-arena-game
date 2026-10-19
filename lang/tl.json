@@ -1901,5 +1901,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "Nangungunang kalahok: {fights}+ laban at {damage}+ damage, para sa {pct}% dagdag sa bawat reward, isang dagdag na pack card at mas maraming trophy shard.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "{pct}% dagdag sa bawat reward, siguradong dagdag na pack card, at mas maraming trophy shard",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "{pct}% dagdag sa bawat reward, {chance}% tsansa ng dagdag na pack card, at mas maraming trophy shard",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct}% ng Dahon ng Maple, Mahikang Alikabok, Metal at XP, bahagi ng mga trophy shard, at hanggang {max}% ng iba pa nitong reward (isang pack card, extra), ayon sa kung gaano karaming Health ang nawala"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct}% ng Dahon ng Maple, Mahikang Alikabok, Metal at XP, bahagi ng mga trophy shard, at hanggang {max}% ng iba pa nitong reward (isang pack card, extra), ayon sa kung gaano karaming Health ang nawala",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Mga Easter egg · hindi pa makukuha",
+ "Easter egg": "Easter egg",
+ "An Easter egg you haven't found yet": "Isang Easter egg na hindi mo pa nahahanap",
+ "An Easter egg: it can't be obtained yet": "Isang Easter egg: hindi pa ito makukuha",
+ "Position Beam": "Sinag ng Puwesto",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "nagpapaputok ng sinag na {n}. Gitna: ang yunit sa tapat at ang dawag. Gilid: pahilis papasok. Dulo: ang hanay papasok.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "Pinaputok ni {name} ang sinag nang diretso ({n}): ang yunit sa tapat at ang dawag.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "Pinaputok ni {name} ang sinag nang pahilis ({n}): ang mga yunit sa pahilis na tapat.",
+ "{name} fires its beam flat along the row ({n}).": "Pinaputok ni {name} ang sinag nang pahalang sa buong hanay ({n})."
 }

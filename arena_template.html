@@ -11080,6 +11080,16 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
      glow rgb(150,180,255) -> rgb(135,188,255). */
   .sfx-bolt.sfx-bolt-electric path{stroke:#daf7ff;}
   .sfx-bolt.sfx-bolt-electric path.glow{stroke:rgba(135,188,255,.65);}
+  /* 2026-10-19 (package EE): the Galactic Condor's Position Beam reuses the bolt, white-hot with a prismatic glow that cycles its hue
+     (no motion under reduced motion: drawLightningBolt draws nothing then). */
+  .sfx-bolt.sfx-bolt-beam path{stroke:#fffbea; stroke-width:5;}
+  .sfx-bolt.sfx-bolt-beam path.glow{stroke:rgba(255,110,210,.8); stroke-width:15;}
+  .sfx-bolt.sfx-bolt-beam{animation:sfxBeamHue .45s linear infinite;}
+  @keyframes sfxBeamHue{from{filter:hue-rotate(0deg) drop-shadow(0 0 6px rgba(140,220,255,.9));} to{filter:hue-rotate(360deg) drop-shadow(0 0 6px rgba(140,220,255,.9));}}
+  /* Easter eggs (2026-10-19, package EE): an unseen one's Codex tile is a "???" with its rarity band only. */
+  .card-tile.ee-masked .stats, .card-tile.ee-masked .costbadge, .card-tile.ee-masked .waitbadge{visibility:hidden;}
+  .card-tile.ee-masked .nm{letter-spacing:.18em;}
+  .cx-tile-wrap.cx-ee-mask > .card-tile{cursor:default;}
   .dmg-float.psychic{--g1:#fbeaff; --g2:#b04fd0; --edge:#24082e;} /* psychic's 💭 number (2026-10-17, DMG_ICON) */
   .board-card.dragon-struck .card-tile{box-shadow:0 0 0 2px rgba(255,70,50,.9), 0 0 22px rgba(230,30,20,.75);}
   .wither-smoke{position:fixed; width:18px; height:18px; margin:-9px 0 0 -9px; border-radius:50%; background:radial-gradient(circle, rgba(20,16,22,.85), rgba(20,16,22,0) 70%); pointer-events:none; z-index:9986;}

@@ -1903,5 +1903,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "Participant de premier plan : {fights}+ combats et {damage}+ dégâts, pour {pct} % de plus sur chaque récompense, une carte de paquet en plus et plus d'éclats de trophée.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "{pct} % de plus sur chaque récompense, une carte de paquet en plus à coup sûr, et plus d'éclats de trophée",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "{pct} % de plus sur chaque récompense, {chance} % de chances d'une carte de paquet en plus, et plus d'éclats de trophée",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct} % des Feuilles d’érable, de la Poussière magique, du Métal et de l'XP, une part des éclats de trophée, et jusqu'à {max} % de ses autres récompenses (une carte de paquet, des bonus), selon la Santé qu'il a perdue"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct} % des Feuilles d’érable, de la Poussière magique, du Métal et de l'XP, une part des éclats de trophée, et jusqu'à {max} % de ses autres récompenses (une carte de paquet, des bonus), selon la Santé qu'il a perdue",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Easter eggs · pas encore obtenables",
+ "Easter egg": "Easter egg",
+ "An Easter egg you haven't found yet": "Un easter egg que tu n'as pas encore trouvé",
+ "An Easter egg: it can't be obtained yet": "Un easter egg : on ne peut pas encore l'obtenir",
+ "Position Beam": "Rayon de position",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "tire un rayon de {n}. Centre : l'unité en face et le roncier. Côté : en diagonale vers l'intérieur. Bord : la rangée vers l'intérieur.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} tire son rayon droit devant ({n}) : l'unité en face et le roncier.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} tire son rayon en biais ({n}) : les unités en diagonale.",
+ "{name} fires its beam flat along the row ({n}).": "{name} tire son rayon à plat le long de la rangée ({n})."
 }

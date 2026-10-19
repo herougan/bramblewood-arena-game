@@ -1902,5 +1902,15 @@
  "Leading participant: {fights}+ fights and {damage}+ damage, for {pct}% more of every reward, an extra pack card and more trophy shards.": "Peserta terdepan: {fights}+ pertarungan dan {damage}+ kerusakan, untuk {pct}% lebih banyak dari setiap hadiah, satu kartu paket tambahan, dan lebih banyak pecahan trofi.",
  "{pct}% more of every reward, an extra pack card for certain, and more trophy shards": "{pct}% lebih banyak dari setiap hadiah, satu kartu paket tambahan yang pasti, dan lebih banyak pecahan trofi",
  "{pct}% more of every reward, a {chance}% chance of an extra pack card, and more trophy shards": "{pct}% lebih banyak dari setiap hadiah, peluang {chance}% untuk satu kartu paket tambahan, dan lebih banyak pecahan trofi",
- "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct}% dari Daun Maple, Debu Ajaib, Logam, dan XP, sebagian pecahan trofi, dan hingga {max}% dari hadiah lainnya (satu kartu paket, tambahan), sesuai berapa banyak Nyawa yang hilang"
+ "{pct}% of the Maple Leaves, Magic Dust, Metal and XP, part of the trophy shards, and up to {max}% of its other rewards (a pack card, extras), by how much of its Health went": "{pct}% dari Daun Maple, Debu Ajaib, Logam, dan XP, sebagian pecahan trofi, dan hingga {max}% dari hadiah lainnya (satu kartu paket, tambahan), sesuai berapa banyak Nyawa yang hilang",
+ "Evomax": "Evomax",
+ "Easter eggs · not obtainable yet": "Telur Paskah · belum bisa didapat",
+ "Easter egg": "Telur Paskah",
+ "An Easter egg you haven't found yet": "Telur Paskah yang belum kamu temukan",
+ "An Easter egg: it can't be obtained yet": "Telur Paskah: belum bisa didapat",
+ "Position Beam": "Sinar Posisi",
+ "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "menembakkan sinar {n}. Tengah: unit di seberang dan semak. Sisi: miring ke dalam. Tepi: barisan ke arah dalam.",
+ "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name} menembakkan sinarnya lurus ke depan ({n}): unit di seberang dan semak.",
+ "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name} menembakkan sinarnya miring ({n}): unit-unit di seberang secara diagonal.",
+ "{name} fires its beam flat along the row ({n}).": "{name} menembakkan sinarnya mendatar sepanjang barisan ({n})."
 }
