@@ -139,7 +139,9 @@ async def main():
             ctx, pg, errs = await open_page(b, w, h, phone)
             await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
             await pg.evaluate("document.querySelector('.raid-hub [data-raid-open]').click()"); await pg.wait_for_timeout(500)
-            await pg.evaluate("document.querySelector('[data-raid-part=left]').click()"); await pg.wait_for_timeout(5000)
+            await pg.evaluate("document.querySelector('[data-raid-part=left]').click()"); await pg.wait_for_timeout(1500)
+            # the pre-battle VS screen (package NV) waits for a tap
+            await pg.evaluate("(()=>{ const v = document.querySelector('.vs-screen'); if(v) v.click(); return 1; })()"); await pg.wait_for_timeout(5000)
             if check(await pg.evaluate("!!(matchState && matchState.raidFull)"), f'raid@{w}: the raid did not open'):
                 await layout_checks(pg, f'raid@{w}', phone, True)
                 # the attack lines and floats read card rects: a card's rect sits where the card is drawn (no stale zoom)
