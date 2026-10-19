@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package SK3: skills batch 3, triggers × actions)
+- **Owner (21:56):** "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the required trigger or action." Most new skills are keywords that expand into ordinary triggers (Waiting, the layer cap, Confused and Exhaust all apply).
+- **New trigger:** On Any Death (any other unit dies, either side).
+- **New actions:** Duplicate, Feed on the graveyard, Buff all allies, Stench, Silence, Stymie, Exhaust, Petrify, Vulnerable, Barrage, Smoke Screen and Magnet.
+- **New skills** (on no existing card): Spawner, War Banner, Warcry, Shieldwall, Corpsefeeder, Amplifier, Stench, Broodkeeper, Herald, Harbinger, Spotter, and Silence / Stymie / Exhaust / Petrify as On Attack keywords. Every number is in the engine's `SK3_DEF` (per fight: `rules.sk3`).
+- **Aligned:**
+  - Executioner N: below 25% Health (was half). Grave-Grin Hyena's bonus now comes later.
+  - Shatter N: also hits Petrified and heavily armored (Armor 3+) units. On stone the hit is doubled, not halved.
+  - Hunter is shown as **Cull** (the key stays `hunter`; owner call). Its new default pick, Weak, means Attack 2 or less AND Health 4 or less. Fen Mink keeps its Poisoned pick.
+- **New spells** at the end of `canonical/cards.json`, with no source yet: Grave Call (Epic, 4), Smoke Screen (Rare, 2) and Magnet (Rare, 1). Their art prompts are in `docs/art/new-cards-2026-10-19-briefs.md`. No Clarity Bomb card (owner 22:08: it is the Spotter skill).
+- **Costs:** estimates in `canonical/skill-costs.json` (measuredHow "estimate SK3").
+- **Texts:** 102 TX keys in 12 packs (`tools/i18n_2026_10_19_sk3.py`). The Codex skills book, the status chips, log lines and the trigger builder all have them.
+- **Docs:** `docs/strategies-2026-10-19.md` (the owner's question 18: the archetypes, the go-wide audit and 8 new directions).
+- **Tests:** `tests/skills-sk3-2026-10-19.js`. The GI test follows the Executioner, Hunter and status-list changes.
 ## 2026-10-19 (package UX2: the Brambles page's filters)
 - **Owner (22:16):** "There's no filter in brambles search."
 - **The Codex's Brambles page has a filter bar like the card Codex's:**
