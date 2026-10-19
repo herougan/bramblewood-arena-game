@@ -18,6 +18,14 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Raid | Raid cards crafted (RC) | 1.5% own-card drop per claim / won fight; faction-card chance 10/15/25%; rarity floors C/U/R |
 | Raid | Trophy shards (RC) | 6/9/13 per claim (+4/+2/+1 by standing; half if it survives); recipe table in CHANGELOG; unseen cards can't be crafted |
 | Server | raid_shards column | supabase/proposed/20261019_raid_shards.sql (cap +200 a save): apply? |
+| Units | Variant names (UT) | 109 thematic names proposed (nameProposal in unit-themes); many Kelp Mangroves start with "Kelp" |
+| Units | Proposed animals (UT) | 30 beings with no animal in the art (Ent owl, golems gorilla, Great Gate duck…); MissingNo bird vs cat art |
+| Units | species vs animal | 11 cards disagree (Moray "Cnidarian", moles "Rodent", Tardigrade "Insect"): fix species? |
+| Units | Tutorial Level 0 | Hummingbird side's tutorial cards also Level 0 (fairness): OK? |
+| Easter eggs | Names | Tobasco shown as "Habanero Drakon" (trademark); panda "Kegfuse Panda"; keep "Nyoogle"? |
+| Easter eggs | Codex teaser | 8 "???" tiles visible from the start and counted, or hidden until seen? |
+| Easter eggs | Condor "+5" | Taken literally (5 columns out): the edge beam needs a very wide row |
+| Easter eggs | Rarities | Drakon Rare, Panda Super Rare; Nyoogle tagged cat/mythic |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
