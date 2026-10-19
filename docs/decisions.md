@@ -463,3 +463,12 @@ Package GI (owner 00:19: "continue with action items, and considering our gamepl
 - **Tangled Roots** (for the Kelp Mangroves): from round 2, one random unit a side that isn't Flying or a Structure is Webbed for the round.
 - **Crab Trap is data, not a rule** (Claude's call): a Crab Claws card with Hunter 1 (Wet) (the pool card Tidepool Trapper Crab). Crab Claws itself is unchanged, so no live crab changed.
 - **Skipped, each against a standing rule or the owner's earlier no**: Isolation (fights Lone Wolf), Rescue Chain and Death Spiral (loops), a generic Contagion (folded into Proliferate), and Hallowed Ground and Blood in the Water (left for the placement phase: small-engine but each one fight).
+
+## Stated rules · 2026-10-19
+
+Package SK2b (owner 23:43: "I want to make resources really a strategic move. Not a simple - just put."): the three-tier economy and the cost principle. Details: docs/economy-resources-2026-10-19.md. Pinned by `tests/skills-sk2b-2026-10-19.js`.
+
+- **Strong creatures can be low costed - and their power is that they are low costed** (the owner, 23:43). A cheap strong card is a design tool, not a balance error: its strength is tempo. Costly cards are strong because they need an economy, and the economy is what the opponent can attack. The budget is not bent for such cards; they are a deliberate, marked class (recommendation, not applied).
+- **Three tiers, each paid with the one below** (all On Turn Start × Gain, while Ready): Milling N gives N Lumber free; Quarry N pays 1 Lumber for N Stone; Smelter N pays 2 Lumber + 2 Stone for 1 Metal, up to N times. The ratios are parameters (SK2_DEFAULTS). The Petrified Tree stays the expensive no-input Stone source.
+- **A trigger can have a price** (t.pay, Lumber / Stone / Metal / Uranium): it goes off only if its player holds all of it, and pays after every other gate, so a fizzle costs nothing. A conversion is paid whole or not at all; can't pay, nothing happens. Units pay in the upkeep's order, so a Quarry acting first can feed a Smelter the same turn.
+- **Smelter, not Forge-works** (Claude's call): the Forge is already the card-upgrade screen.
