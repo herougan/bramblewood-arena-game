@@ -1076,14 +1076,14 @@
   "units": 731,
   "live": 727,
   "pool": 4,
-  "proposed": 109,
+  "proposed": 108,
   "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
    "type": 202,
    "home map": 453,
-   "fights": 18,
-   "fallback": 39,
+   "fights": 19,
+   "fallback": 38,
    "name": 11,
    "manual": 8
   },
@@ -1538,7 +1538,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 0,
-    "health": 7,
+    "health": 5,
     "dmg": "physical",
     "resist": []
    },
@@ -1846,7 +1846,9 @@
    ],
    "maps": {
     "home": [],
-    "fights": {}
+    "fights": {
+     "m1": 2
+    }
    },
    "source": null,
    "why": {
@@ -1876,8 +1878,8 @@
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 6,
-    "health": 9,
+    "attack": 5,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -2091,7 +2093,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 4,
-    "health": 20,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -2474,7 +2476,7 @@
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 5,
+    "attack": 4,
     "health": 5,
     "dmg": "physical",
     "resist": []
@@ -4524,7 +4526,7 @@
    "faction": "supporting-folk",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -4542,7 +4544,9 @@
     "home": [
      "mq"
     ],
-    "fights": {}
+    "fights": {
+     "m1": 2
+    }
    },
    "source": "map",
    "enemyOnly": true,
@@ -5648,7 +5652,7 @@
    "faction": "greenhood",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -5667,6 +5671,7 @@
      "mr"
     ],
     "fights": {
+     "m1": 2,
      "mf": 3,
      "mr": 13
     }
@@ -6273,7 +6278,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 3,
+    "health": 2,
     "dmg": "physical",
     "resist": []
    },
@@ -6283,8 +6288,12 @@
      null
     ],
     [
-     "nocturnal",
+     "darksight",
      null
+    ],
+    [
+     "nocturnal",
+     1
     ]
    ],
    "types": [
@@ -6838,8 +6847,8 @@
    "body": {
     "cost": 4,
     "wait": 4,
-    "attack": 11,
-    "health": 52,
+    "attack": 10,
+    "health": 49,
     "dmg": "physical",
     "resist": []
    },
@@ -6847,6 +6856,10 @@
     [
      "bounty",
      1
+    ],
+    [
+     "pounce",
+     6
     ],
     [
      "overwhelm",
@@ -8397,9 +8410,9 @@
    "firstMap": null,
    "body": {
     "cost": 0,
-    "wait": 0,
+    "wait": 1,
     "attack": 0,
-    "health": 17,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -10179,22 +10192,26 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 2,
+    "health": 3,
     "dmg": "physical",
     "resist": []
    },
    "skills": [
     [
+     "fork",
+     null
+    ],
+    [
      "flying",
      null
     ],
     [
-     "nocturnal",
+     "darksight",
      null
     ],
     [
-     "fork",
-     null
+     "nocturnal",
+     1
     ]
    ],
    "types": [
@@ -12482,8 +12499,8 @@
    "subtype": null,
    "faction": "beasts",
    "size": "swarm",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 3,
+   "firstMap": 17,
    "body": {
     "cost": 2,
     "wait": 1,
@@ -12507,7 +12524,6 @@
      "m3"
     ],
     "fights": {
-     "m1": 3,
      "mo": 5
     }
    },
@@ -12650,8 +12666,8 @@
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 4,
-    "health": 4,
+    "attack": 3,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -12672,7 +12688,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 9,
+     "m1": 5,
      "ml": 7,
      "mtut": 2,
      "mg": 8,
@@ -13445,13 +13461,13 @@
    "animalGroup": "cat",
    "subtype": null,
    "faction": "dogs-cats",
-   "size": "tiny",
+   "size": "small",
    "stage": 1,
    "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 3,
     "dmg": "physical",
     "resist": []
@@ -14064,16 +14080,16 @@
    },
    "skills": [
     [
-     "sap",
-     null
-    ],
-    [
      "flying",
      null
     ],
     [
-     "nocturnal",
+     "darksight",
      null
+    ],
+    [
+     "nocturnal",
+     1
     ]
    ],
    "types": [
@@ -14291,15 +14307,19 @@
    },
    "skills": [
     [
-     "trigger",
-     "onDeath→damage 2"
-    ],
-    [
      "flying",
      null
     ],
     [
+     "trigger",
+     "onDeath→damage 2"
+    ],
+    [
      "nocturnal",
+     1
+    ],
+    [
+     "illuminate",
      null
     ]
    ],
@@ -15329,8 +15349,8 @@
    "subtype": null,
    "faction": "otters",
    "size": "small",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 2,
+   "firstMap": 8,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -15347,7 +15367,6 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 7,
      "mtut": 1,
      "mo": 14
     }
@@ -15383,8 +15402,8 @@
    "subtype": null,
    "faction": "otters",
    "size": "small",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 2,
+   "firstMap": 8,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -15401,7 +15420,6 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 4,
      "mtut": 3,
      "mo": 7
     }
@@ -15480,7 +15498,7 @@
    "faction": "hives",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -15502,6 +15520,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 4,
      "mu": 11,
      "mq": 3,
      "mz": 8
@@ -15533,7 +15552,7 @@
    "faction": "hives",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -15563,6 +15582,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 2,
      "mu": 6,
      "mq": 3,
      "mz": 2
@@ -15593,7 +15613,7 @@
    "faction": "hives",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -15619,6 +15639,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 3,
      "mq": 2
     }
    },
@@ -15637,8 +15658,7 @@
    "status": "live",
    "rarity": "starter",
    "biomes": [
-    "meadow-forest",
-    "fungal"
+    "meadow-forest"
    ],
    "family": "insect",
    "sub": "Insect",
@@ -15647,8 +15667,8 @@
    "subtype": null,
    "faction": "hives",
    "size": "tiny",
-   "stage": 2,
-   "firstMap": 7,
+   "stage": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -15671,6 +15691,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 2,
      "mu": 3,
      "mtut": 3,
      "mz": 2
@@ -15679,7 +15700,7 @@
    "source": null,
    "base": true,
    "why": {
-    "biome": "type Ants; fights mostly on fungal",
+    "biome": "type Ants",
     "family": "species Insect",
     "faction": "Ants / Bee"
    },
@@ -15707,12 +15728,12 @@
    "faction": "hives",
    "size": "medium",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 7,
-    "health": 9,
+    "attack": 6,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -15734,7 +15755,6 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 8,
      "mf": 4,
      "mu": 1,
      "mn": 2,
@@ -15788,7 +15808,9 @@
    ],
    "maps": {
     "home": [],
-    "fights": {}
+    "fights": {
+     "m1": 2
+    }
    },
    "source": null,
    "base": true,
@@ -15880,7 +15902,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 2,
+     "m1": 6,
      "m2": 17,
      "mtut": 3,
      "mo": 3
@@ -16019,7 +16041,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 6,
+     "m1": 9,
      "mp": 7,
      "mo": 3
     }
@@ -16109,7 +16131,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 6,
+     "m1": 4,
      "mf": 2,
      "mh": 6,
      "mtut": 1,
@@ -16131,8 +16153,7 @@
    "status": "live",
    "rarity": "starter",
    "biomes": [
-    "meadow-forest",
-    "long-grass"
+    "meadow-forest"
    ],
    "family": "mammal",
    "sub": "Lagomorph",
@@ -16142,7 +16163,7 @@
    "faction": "supporting-folk",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -16159,6 +16180,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 5,
      "ml": 1,
      "mq": 1
     }
@@ -16166,7 +16188,7 @@
    "source": null,
    "base": true,
    "why": {
-    "biome": "type Rabbit; fights mostly on long-grass",
+    "biome": "type Rabbit",
     "family": "species Lagomorph",
     "faction": "craft folk type"
    }
@@ -16188,7 +16210,7 @@
    "faction": "supporting-folk",
    "size": "medium",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -16205,7 +16227,6 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 2,
      "mf": 7,
      "mtut": 6,
      "mq": 12,
@@ -16237,7 +16258,7 @@
    "faction": "supporting-folk",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -16254,6 +16275,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 3,
      "mf": 4,
      "mq": 1
     }
@@ -16299,12 +16321,14 @@
    ],
    "maps": {
     "home": [],
-    "fights": {}
+    "fights": {
+     "m1": 4
+    }
    },
    "source": null,
    "base": true,
    "why": {
-    "biome": "usual ground of Chipmunk",
+    "biome": "fights mostly on meadow-forest",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -16586,8 +16610,8 @@
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 4,
-    "health": 5,
+    "attack": 3,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -16792,14 +16816,14 @@
    "animalGroup": "hummingbird",
    "subtype": null,
    "faction": "hummingbirds",
-   "size": "small",
+   "size": "medium",
    "stage": 1,
    "firstMap": 0,
    "body": {
     "cost": 1,
     "wait": 1,
     "attack": 5,
-    "health": 5,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -16840,14 +16864,14 @@
    "animalGroup": "otter",
    "subtype": null,
    "faction": "otters",
-   "size": "large",
+   "size": "medium",
    "stage": 2,
    "firstMap": 11,
    "body": {
     "cost": 2,
     "wait": 1,
-    "attack": 7,
-    "health": 14,
+    "attack": 5,
+    "health": 16,
     "dmg": "physical",
     "resist": []
    },
@@ -16893,8 +16917,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 4,
-    "health": 8,
+    "attack": 2,
+    "health": 12,
     "dmg": "physical",
     "resist": []
    },
@@ -16939,13 +16963,13 @@
    "animalGroup": "mole",
    "subtype": null,
    "faction": "hollow-kin",
-   "size": "medium",
+   "size": "small",
    "stage": 1,
    "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 3,
+    "attack": 2,
     "health": 10,
     "dmg": "physical",
     "resist": []
@@ -17131,7 +17155,7 @@
    "name": "Red Dragon",
    "icon": "🐉",
    "status": "live",
-   "rarity": "legendary",
+   "rarity": "mythic",
    "biomes": [
     "volcanic-ash"
    ],
@@ -17204,7 +17228,7 @@
    "name": "White Dragon",
    "icon": "🐉",
    "status": "live",
-   "rarity": "legendary",
+   "rarity": "divine",
    "biomes": [
     "volcanic-ash",
     "tundra-ice"
@@ -17230,20 +17254,20 @@
    },
    "skills": [
     [
-     "flying",
-     null
+     "scare",
+     3
     ],
     [
      "bounty",
      1
     ],
     [
-     "freeze",
-     "chance 50, duration 1"
+     "flying",
+     null
     ],
     [
-     "scare",
-     3
+     "freeze",
+     "chance 50, duration 1"
     ],
     [
      "supreme",
@@ -17360,7 +17384,7 @@
    "name": "Green Dragon",
    "icon": "🐉",
    "status": "live",
-   "rarity": "legendary",
+   "rarity": "mythic",
    "biomes": [
     "volcanic-ash",
     "swamp"
@@ -17377,8 +17401,8 @@
    "body": {
     "cost": 4,
     "wait": 5,
-    "attack": 7,
-    "health": 37,
+    "attack": 8,
+    "health": 38,
     "dmg": "poison",
     "resist": [
      "poison"
@@ -17386,12 +17410,12 @@
    },
    "skills": [
     [
-     "flying",
-     null
-    ],
-    [
      "bounty",
      1
+    ],
+    [
+     "flying",
+     null
     ],
     [
      "poison",
@@ -17399,6 +17423,10 @@
     ],
     [
      "supreme",
+     null
+    ],
+    [
+     "overwhelm",
      null
     ]
    ],
@@ -17430,7 +17458,7 @@
    "name": "Black Dragon",
    "icon": "🐉",
    "status": "live",
-   "rarity": "legendary",
+   "rarity": "ancient",
    "biomes": [
     "volcanic-ash",
     "caves"
@@ -17448,7 +17476,7 @@
     "cost": 4,
     "wait": 5,
     "attack": 8,
-    "health": 40,
+    "health": 41,
     "dmg": "decay",
     "resist": [
      "decay"
@@ -17655,8 +17683,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 2,
-   "firstMap": 7,
+   "stage": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -17678,6 +17706,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 2,
      "mu": 15,
      "mz": 14
     }
@@ -17761,7 +17790,7 @@
    "faction": "wild",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -17780,6 +17809,7 @@
      "mf"
     ],
     "fights": {
+     "m1": 2,
      "mf": 5,
      "m8": 2,
      "mq": 1,
@@ -17814,8 +17844,8 @@
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 3,
-    "health": 7,
+    "attack": 2,
+    "health": 9,
     "dmg": "physical",
     "resist": []
    },
@@ -17918,7 +17948,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 4,
-    "health": 2,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
@@ -17970,12 +18000,12 @@
    "faction": "wild",
    "size": "medium",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 5,
-    "health": 6,
+    "attack": 4,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -17994,6 +18024,7 @@
      "mf"
     ],
     "fights": {
+     "m1": 2,
      "mf": 2,
      "mn": 2
     }
@@ -18023,7 +18054,7 @@
    "faction": "wild",
    "size": "small",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -18040,7 +18071,6 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 3,
      "mtut": 4
     }
    },
@@ -19062,7 +19092,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "river"
+    "river",
+    "meadow-forest"
    ],
    "family": "mammal",
    "sub": "Mustelid",
@@ -19098,12 +19129,14 @@
    ],
    "maps": {
     "home": [],
-    "fights": {}
+    "fights": {
+     "m1": 2
+    }
    },
    "source": null,
    "base": true,
    "why": {
-    "biome": "type Otter",
+    "biome": "type Otter; fights mostly on meadow-forest",
     "family": "species Mustelid",
     "faction": "Otter type"
    }
@@ -19125,7 +19158,7 @@
    "faction": "wild",
    "size": "small",
    "stage": 1,
-   "firstMap": 3,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19142,6 +19175,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 5,
      "mc": 9
     }
    },
@@ -22060,7 +22094,7 @@
    "body": {
     "cost": 1,
     "wait": 2,
-    "attack": 3,
+    "attack": 5,
     "health": 10,
     "dmg": "physical",
     "resist": []
@@ -25065,8 +25099,7 @@
    "status": "live",
    "rarity": "veryrare",
    "biomes": [
-    "river",
-    "meadow-forest"
+    "river"
    ],
    "family": "mammal",
    "sub": "Mustelid",
@@ -25075,8 +25108,8 @@
    "subtype": null,
    "faction": "otters",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 2,
+   "firstMap": 11,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -25101,14 +25134,12 @@
    ],
    "maps": {
     "home": [],
-    "fights": {
-     "m1": 3
-    }
+    "fights": {}
    },
    "source": "pack",
    "base": true,
    "why": {
-    "biome": "type Otter; fights mostly on meadow-forest",
+    "biome": "type Otter",
     "family": "species Mustelid",
     "faction": "Otter type"
    }
@@ -25330,14 +25361,14 @@
    "animalGroup": "otter",
    "subtype": null,
    "faction": "otters",
-   "size": "small",
+   "size": "medium",
    "stage": 1,
    "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 4,
-    "health": 7,
+    "attack": 3,
+    "health": 10,
     "dmg": "physical",
     "resist": []
    },
@@ -26732,7 +26763,7 @@
    "faction": "road-folk",
    "size": "medium",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -26756,7 +26787,6 @@
      "m4"
     ],
     "fights": {
-     "m1": 2,
      "mtut": 3
     }
    },
@@ -26784,8 +26814,8 @@
    "subtype": null,
    "faction": "otters",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 3,
+   "firstMap": 17,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -26808,7 +26838,6 @@
    "maps": {
     "home": [],
     "fights": {
-     "m1": 2,
      "mo": 2
     }
    },
@@ -35966,9 +35995,7 @@
     "home": [
      "m1"
     ],
-    "fights": {
-     "m1": 2
-    }
+    "fights": {}
    },
    "source": "map",
    "why": {
@@ -36127,9 +36154,7 @@
     "home": [
      "m1"
     ],
-    "fights": {
-     "m1": 2
-    }
+    "fights": {}
    },
    "source": "map",
    "why": {
@@ -42165,15 +42190,19 @@
     },
     "baseSkills": [
      [
-      "trigger",
-      "onDeath→damage 2"
-     ],
-     [
       "flying",
       null
      ],
      [
+      "trigger",
+      "onDeath→damage 2"
+     ],
+     [
       "nocturnal",
+      1
+     ],
+     [
+      "illuminate",
       null
      ]
     ],
@@ -42211,8 +42240,8 @@
    "body": {
     "cost": 1,
     "wait": 0,
-    "attack": 7,
-    "health": 9,
+    "attack": 6,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -42238,13 +42267,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 3.5,
-     "health": 4.5
+     "attack": 3,
+     "health": 3.67
     },
     "N": 29.45,
     "N2": 96.37,
     "x1": 23,
-    "x2": 63,
+    "x2": 66,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42255,20 +42284,24 @@
      "cost": 1,
      "wait": 0,
      "attack": 3,
-     "health": 3
+     "health": 5
     },
     "baseSkills": [
+     [
+      "fork",
+      null
+     ],
      [
       "flying",
       null
      ],
      [
-      "nocturnal",
+      "darksight",
       null
      ],
      [
-      "fork",
-      null
+      "nocturnal",
+      1
      ]
     ],
     "map": "m11",
@@ -46357,8 +46390,8 @@
    "body": {
     "cost": 2,
     "wait": 1,
-    "attack": 10,
-    "health": 13,
+    "attack": 8,
+    "health": 17,
     "dmg": "physical",
     "resist": []
    },
@@ -46385,13 +46418,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.43,
-     "health": 1.44
+     "attack": 1.33,
+     "health": 1.55
     },
     "N": 41.54,
     "N2": 191.73,
     "x1": 33,
-    "x2": 130,
+    "x2": 136,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -46401,8 +46434,8 @@
      },
      "cost": 2,
      "wait": 1,
-     "attack": 9,
-     "health": 14
+     "attack": 8,
+     "health": 17
     },
     "baseSkills": [
      [
@@ -50724,100 +50757,13 @@
    }
   },
   {
-   "id": "dire-glacier-wolf-pack",
-   "name": "Rimefire Wolf Pack",
-   "internalName": "Dire Glacier Wolf Pack",
-   "nameProposal": true,
-   "icon": "🐺",
-   "status": "proposed",
-   "rarity": "uncommon",
-   "biomes": [
-    "tundra-ice",
-    "meadow-forest",
-    "volcanic-ash"
-   ],
-   "family": "mammal",
-   "sub": "Canid",
-   "animal": "wolf",
-   "animalGroup": "wolf",
-   "subtype": null,
-   "faction": "beasts",
-   "size": "swarm",
-   "stage": 4,
-   "firstMap": 22,
-   "body": {
-    "cost": 3,
-    "wait": 1,
-    "attack": 7,
-    "health": 22,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Frost",
-    "Canid"
-   ],
-   "maps": {
-    "home": [
-     "m22"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "glacier-wolf-pack",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 1.17,
-     "health": 1.38
-    },
-    "N": 45.67,
-    "N2": 231.75,
-    "x1": 36,
-    "x2": 154,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 3,
-     "wait": 1,
-     "attack": 8,
-     "health": 20
-    },
-    "baseSkills": [
-     [
-      "bleed",
-      2
-     ]
-    ],
-    "map": "m22",
-    "mapName": "The Rimefire Caldera",
-    "mapNo": 22
-   },
-   "why": {
-    "biome": "Glacier Wolf Pack's ground, later on The Rimefire Caldera (Map 22)",
-    "family": "from Glacier Wolf Pack",
-    "faction": "from Glacier Wolf Pack"
-   }
-  },
-  {
-   "id": "elder-frostbitten-wolverine",
-   "name": "Old Rimefire Wolverine",
-   "internalName": "Elder Frostbitten Wolverine",
+   "id": "dire-frostbitten-wolverine",
+   "name": "Rimefire Frostbitten Wolverine",
+   "internalName": "Dire Frostbitten Wolverine",
    "nameProposal": true,
    "icon": "🦡",
    "status": "proposed",
-   "rarity": "veryrare",
+   "rarity": "rare",
    "biomes": [
     "tundra-ice",
     "volcanic-ash"
@@ -50828,14 +50774,14 @@
    "animalGroup": "weasel",
    "subtype": null,
    "faction": "beasts",
-   "size": "huge",
+   "size": "large",
    "stage": 4,
    "firstMap": 22,
    "body": {
     "cost": 2,
-    "wait": 2,
-    "attack": 6,
-    "health": 27,
+    "wait": 1,
+    "attack": 5,
+    "health": 22,
     "dmg": "physical",
     "resist": []
    },
@@ -50852,33 +50798,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "elder",
+    "tier": "dire",
     "of": "frostbitten-wolverine",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
+    "wait": 0,
+    "rarityStep": 1,
     "eff": {
-     "attack": 1.5,
-     "health": 1.8
+     "attack": 1.25,
+     "health": 1.47
     },
-    "N": 49.29,
-    "N2": 269.94,
-    "x1": 39,
-    "x2": 162,
+    "N": 40.51,
+    "N2": 182.34,
+    "x1": 32,
+    "x2": 110,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.8,
-      "health": 2
+      "attack": 1.4,
+      "health": 1.5
      },
      "cost": 2,
-     "wait": 2,
-     "attack": 7,
-     "health": 25
+     "wait": 1,
+     "attack": 6,
+     "health": 20
     },
     "baseSkills": [
      [

@@ -109,7 +109,7 @@ ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its num
 ok(/\{key:'castDarkness', category:'passive', label:'Cast Darkness'/.test(src) && /\{key:'trueStrike', category:'passive', label:'True Strike'/.test(src), 'both skills are in the skill list (keywords, Codex, editor)');
 
 // ---- 3. True Strike
-{ const wd = cards.find(c=> c.id === 'white-dragon'); ok(wd && wd.effects.trueStrike === true && ((wd.attack === 10 && wd.health === 44) || /2026-10-19 retune \(v5 L\/10\): was 10\/44 /.test(wd.creatorNote || '')), 'the White Dragon has True Strike (stats unchanged, or the 10-19 retune from 10/44)'); }
+{ const wd = cards.find(c=> c.id === 'white-dragon'); ok(wd && wd.effects.trueStrike === true && ((wd.attack === 10 && wd.health === 44) || /2026-10-19 retune \((v5 L\/10|server override folded)\): was 10\/44 /.test(wd.creatorNote || '')), 'the White Dragon has True Strike (stats unchanged, or the 10-19 retune from 10/44; BF4: the server\'s Divine 10/44 folded)'); }
 { const k = mk({dark:'absolute'}, 17), t = spawn(k, 1, 'dk-true').card; spawn(k, 2, 'dk-dodger');
   t.blind = 3; let miss = 0, hits = 0;
   for(let r = 0; r < 60; r++) round(k, r % 2 ? 1 : 2).forEach(e=>{ if(e.attUid !== t.uid) return; if(e.type === 'blindMiss' || e.type === 'evaded') miss++; if(e.type === 'hit') hits++; });

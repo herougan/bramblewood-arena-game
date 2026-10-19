@@ -1,0 +1,4111 @@
+{
+ "_about": "BF4 (2026-10-19): the live server card overrides folded into canonical/cards.json and run through the BF3 retune rules (budget v5, L/10 + 0.2 x Map, inclusive). server = the live card (its stats); now = the folded, retuned stats.",
+ "generated": "2026-10-19",
+ "cards": 72,
+ "within": 14,
+ "raised": 51,
+ "fitted": 6,
+ "owner": 1,
+ "overBefore": [
+  {
+   "id": "black-dragon",
+   "ratio": 1.2,
+   "ratio2": 0.7
+  },
+  {
+   "id": "cataphract-destrier",
+   "ratio": 1.04,
+   "ratio2": 0.8
+  },
+  {
+   "id": "cave-bat-swarm",
+   "ratio": 1.2,
+   "ratio2": 0.41
+  },
+  {
+   "id": "cave-flitter",
+   "ratio": 1.01,
+   "ratio2": 0.37
+  },
+  {
+   "id": "green-dragon",
+   "ratio": 1.26,
+   "ratio2": 0.72
+  },
+  {
+   "id": "red-dragon",
+   "ratio": 1.11,
+   "ratio2": 0.63
+  },
+  {
+   "id": "white-dragon",
+   "ratio": 1.11,
+   "ratio2": 0.6
+  }
+ ],
+ "overAfter": [
+  {
+   "id": "cave-bat-swarm",
+   "ratio": 1.2,
+   "ratio2": 0.41
+  }
+ ],
+ "conflicts": 25,
+ "rows": [
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "upd": "2026-10-12T02:27:28.136+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    5,
+    5
+   ],
+   "server": [
+    2,
+    2
+   ],
+   "now": [
+    5,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 6,
+    "x2": 4,
+    "N2": 47.93,
+    "ratio": 0.29,
+    "ratio2": 0.08,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 25,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.52,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "upd": "2026-10-11T13:40:35.346+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    5,
+    5
+   ],
+   "server": [
+    3,
+    4
+   ],
+   "now": [
+    4,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 24.9,
+    "S": 3.7,
+    "x1": 13.7,
+    "x2": 15.7,
+    "N2": 68.89,
+    "ratio": 0.55,
+    "ratio2": 0.23,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 24.9,
+    "S": 3.7,
+    "x1": 16.7,
+    "x2": 23.7,
+    "N2": 68.89,
+    "ratio": 0.67,
+    "ratio2": 0.34,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "upd": "2026-10-12T14:52:58.219+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    4,
+    7
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    4,
+    7
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 4,
+    "x2": 2,
+    "N2": 47.93,
+    "ratio": 0.19,
+    "ratio2": 0.04,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 28,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.58,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "armored-mastiff",
+   "name": "Armored Mastiff",
+   "upd": "2026-10-15T14:13:50.877+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    6,
+    28
+   ],
+   "server": [
+    6,
+    28
+   ],
+   "now": [
+    6,
+    28
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 58.07,
+    "S": 0.5,
+    "x1": 40.5,
+    "x2": 168.5,
+    "N2": 374.68,
+    "ratio": 0.7,
+    "ratio2": 0.45,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 58.07,
+    "S": 0.5,
+    "x1": 40.5,
+    "x2": 168.5,
+    "N2": 374.68,
+    "ratio": 0.7,
+    "ratio2": 0.45,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "art",
+     "from": "(file art)",
+     "to": "(the owner's uploaded image, 24982 chars)"
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "upd": "2026-10-16T04:54:11.733+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    2,
+    7
+   ],
+   "server": [
+    2,
+    7
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 29.45,
+    "S": 7.8,
+    "x1": 28.2,
+    "x2": 32.7,
+    "N2": 96.37,
+    "ratio": 0.96,
+    "ratio2": 0.34,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 29.45,
+    "S": 7.8,
+    "x1": 28.2,
+    "x2": 32.7,
+    "N2": 96.37,
+    "ratio": 0.96,
+    "ratio2": 0.34,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "sap": true,
+      "flying": true,
+      "nocturnal": true
+     },
+     "to": {
+      "flying": true,
+      "darksight": true,
+      "nocturnal": 1
+     },
+     "gained": [
+      "darksight"
+     ],
+     "dropped": [
+      "sap"
+     ],
+     "moved": [
+      "nocturnal"
+     ]
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "upd": "2026-10-12T14:58:13.869+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    0,
+    7
+   ],
+   "server": [
+    0,
+    5
+   ],
+   "now": [
+    0,
+    5
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 23.87,
+    "S": 6.36,
+    "x1": 17.04,
+    "x2": 9.54,
+    "N2": 63.31,
+    "ratio": 0.71,
+    "ratio2": 0.15,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 23.87,
+    "S": 6.36,
+    "x1": 17.04,
+    "x2": 9.54,
+    "N2": 63.31,
+    "ratio": 0.71,
+    "ratio2": 0.15,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "upd": "2026-10-12T14:58:22.675+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    0,
+    8
+   ],
+   "server": [
+    0,
+    3
+   ],
+   "now": [
+    0,
+    8
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 1.5,
+    "x1": 6.75,
+    "x2": 2.25,
+    "N2": 47.93,
+    "ratio": 0.32,
+    "ratio2": 0.05,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 1.5,
+    "x1": 14.25,
+    "x2": 2.25,
+    "N2": 47.93,
+    "ratio": 0.69,
+    "ratio2": 0.05,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Knight",
+   "upd": "2026-10-12T14:56:20.108+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    3,
+    5
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 22.84,
+    "S": 0,
+    "x1": 6,
+    "x2": 3,
+    "N2": 57.96,
+    "ratio": 0.26,
+    "ratio2": 0.05,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 22.84,
+    "S": 0,
+    "x1": 16.5,
+    "x2": 22.5,
+    "N2": 57.96,
+    "ratio": 0.72,
+    "ratio2": 0.39,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "upd": "2026-10-12T14:55:52.808+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    3,
+    4
+   ],
+   "server": [
+    2,
+    3
+   ],
+   "now": [
+    3,
+    4
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 27.49,
+    "S": 3.13,
+    "x1": 15.19,
+    "x2": 13.69,
+    "N2": 83.97,
+    "ratio": 0.55,
+    "ratio2": 0.16,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 27.49,
+    "S": 3.13,
+    "x1": 19.7,
+    "x2": 22.7,
+    "N2": 83.97,
+    "ratio": 0.72,
+    "ratio2": 0.27,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "upd": "2026-10-12T14:54:07.561+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    5,
+    6
+   ],
+   "server": [
+    2,
+    4
+   ],
+   "now": [
+    4,
+    8
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 28.73,
+    "S": 2.74,
+    "x1": 10.74,
+    "x2": 10.74,
+    "N2": 91.71,
+    "ratio": 0.37,
+    "ratio2": 0.12,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 28.73,
+    "S": 2.74,
+    "x1": 18.74,
+    "x2": 34.74,
+    "N2": 91.71,
+    "ratio": 0.65,
+    "ratio2": 0.38,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "upd": "2026-10-16T16:41:20.487+00:00",
+   "rarity": "ancient",
+   "serverRarity": "ancient",
+   "fileRarity": "legendary",
+   "file": [
+    8,
+    40
+   ],
+   "server": [
+    10,
+    50
+   ],
+   "now": [
+    8,
+    41
+   ],
+   "verdict": "over",
+   "why": null,
+   "budgetServer": {
+    "N": 99.2,
+    "S": 9.62,
+    "x1": 119.43,
+    "x2": 764.43,
+    "N2": 1093.4,
+    "ratio": 1.2,
+    "ratio2": 0.7,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 99.2,
+    "S": 8.62,
+    "x1": 98.43,
+    "x2": 504.93,
+    "N2": 1093.4,
+    "ratio": 0.99,
+    "ratio2": 0.46,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "rarity",
+     "from": "legendary",
+     "to": "ancient"
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Cataphract Destrier",
+   "upd": "2026-10-16T04:30:49.936+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    11,
+    52
+   ],
+   "server": [
+    11,
+    52
+   ],
+   "now": [
+    10,
+    49
+   ],
+   "verdict": "over",
+   "why": null,
+   "budgetServer": {
+    "N": 81.12,
+    "S": 10.38,
+    "x1": 84.38,
+    "x2": 582.38,
+    "N2": 731.16,
+    "ratio": 1.04,
+    "ratio2": 0.8,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 81.12,
+    "S": 10.38,
+    "x1": 79.38,
+    "x2": 500.38,
+    "N2": 731.16,
+    "ratio": 0.98,
+    "ratio2": 0.68,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "bounty": 1,
+      "overwhelm": true
+     },
+     "to": {
+      "bounty": 1,
+      "pounce": 6,
+      "overwhelm": true
+     },
+     "gained": [
+      "pounce"
+     ],
+     "dropped": [],
+     "moved": []
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "flavor",
+     "server": "Armored nose to tail in wood-fired steel. The rider is almost beside the point.",
+     "file": "Gilded from crest to hoof, it keeps the old road out of the wood. Most who meet it there turn back. The wise ones come back later.",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-16T12:56:33+08:00"
+    },
+    {
+     "field": "effects",
+     "server": {
+      "bounty": 1,
+      "pounce": 6,
+      "overwhelm": true
+     },
+     "file": {
+      "bounty": 1,
+      "overwhelm": true
+     },
+     "kept": "server (the file's newer change is compatible: no skill of its own)",
+     "fileAt": "2026-10-16T14:21:03+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "cave-bat-swarm",
+   "name": "Cave Bat Swarm",
+   "upd": "2026-10-16T04:53:56.893+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    2,
+    2
+   ],
+   "server": [
+    2,
+    3
+   ],
+   "now": [
+    2,
+    3
+   ],
+   "verdict": "owner",
+   "why": "fitting it needs 1/1 (×0.5): its 0 Lumber / Wait 0 at rare (N 24.9) is too little for its skills (S 12.94); a cost change, not a stat cut",
+   "budgetServer": {
+    "N": 24.9,
+    "S": 12.94,
+    "x1": 29.91,
+    "x2": 28.41,
+    "N2": 68.89,
+    "ratio": 1.2,
+    "ratio2": 0.41,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 24.9,
+    "S": 12.94,
+    "x1": 29.91,
+    "x2": 28.41,
+    "N2": 68.89,
+    "ratio": 1.2,
+    "ratio2": 0.41,
+    "ok": false
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "nocturnal": true,
+      "fork": true
+     },
+     "to": {
+      "fork": true,
+      "flying": true,
+      "darksight": true,
+      "nocturnal": 1
+     },
+     "gained": [
+      "darksight"
+     ],
+     "dropped": [],
+     "moved": [
+      "nocturnal"
+     ]
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "upd": "2026-10-16T04:53:44.406+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "rare",
+   "fileRarity": "uncommon",
+   "file": [
+    2,
+    3
+   ],
+   "server": [
+    3,
+    3
+   ],
+   "now": [
+    2,
+    2
+   ],
+   "verdict": "over",
+   "why": null,
+   "budgetServer": {
+    "N": 24.9,
+    "S": 7.8,
+    "x1": 25.2,
+    "x2": 25.2,
+    "N2": 68.89,
+    "ratio": 1.01,
+    "ratio2": 0.37,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 23.87,
+    "S": 7.8,
+    "x1": 20.7,
+    "x2": 17.7,
+    "N2": 63.31,
+    "ratio": 0.87,
+    "ratio2": 0.28,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "nocturnal": true
+     },
+     "to": {
+      "flying": true,
+      "darksight": true,
+      "nocturnal": 1
+     },
+     "gained": [
+      "darksight"
+     ],
+     "dropped": [],
+     "moved": [
+      "nocturnal"
+     ]
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "rarity",
+     "server": "rare",
+     "file": "uncommon",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-17T20:40:59+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "upd": "2026-10-12T02:27:43.9+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    2,
+    10
+   ],
+   "server": [
+    1,
+    4
+   ],
+   "now": [
+    2,
+    10
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 6,
+    "x2": 4,
+    "N2": 47.93,
+    "ratio": 0.29,
+    "ratio2": 0.08,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 14,
+    "x2": 20,
+    "N2": 47.93,
+    "ratio": 0.67,
+    "ratio2": 0.42,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "upd": "2026-10-12T15:19:20.309+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    2,
+    6
+   ],
+   "server": [
+    1,
+    4
+   ],
+   "now": [
+    2,
+    6
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 27.49,
+    "S": 3.43,
+    "x1": 14.15,
+    "x2": 11.15,
+    "N2": 83.97,
+    "ratio": 0.51,
+    "ratio2": 0.13,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 27.49,
+    "S": 3.43,
+    "x1": 20.15,
+    "x2": 23.15,
+    "N2": 83.97,
+    "ratio": 0.73,
+    "ratio2": 0.28,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "upd": "2026-10-16T16:40:10.188+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    0,
+    17
+   ],
+   "server": [
+    0,
+    21
+   ],
+   "now": [
+    0,
+    21
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 30.59,
+    "S": 6.36,
+    "x1": 27.36,
+    "x2": 6.36,
+    "N2": 103.97,
+    "ratio": 0.89,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 30.59,
+    "S": 6.36,
+    "x1": 27.36,
+    "x2": 6.36,
+    "N2": 103.97,
+    "ratio": 0.89,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "wait",
+     "from": 0,
+     "to": 1
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "upd": "2026-10-12T02:27:17.868+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    6,
+    2
+   ],
+   "server": [
+    3,
+    1
+   ],
+   "now": [
+    6,
+    2
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 7,
+    "x2": 3,
+    "N2": 47.93,
+    "ratio": 0.34,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 14,
+    "x2": 12,
+    "N2": 47.93,
+    "ratio": 0.67,
+    "ratio2": 0.25,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "upd": "2026-10-12T15:19:29.393+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    3,
+    3
+   ],
+   "server": [
+    2,
+    2
+   ],
+   "now": [
+    3,
+    3
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 27.49,
+    "S": 3.43,
+    "x1": 14.15,
+    "x2": 11.15,
+    "N2": 83.97,
+    "ratio": 0.51,
+    "ratio2": 0.13,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 27.49,
+    "S": 3.43,
+    "x1": 18.65,
+    "x2": 18.65,
+    "N2": 83.97,
+    "ratio": 0.68,
+    "ratio2": 0.22,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "upd": "2026-10-12T15:19:02.359+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    2,
+    1
+   ],
+   "server": [
+    2,
+    1
+   ],
+   "now": [
+    2,
+    1
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 3.43,
+    "x1": 12.65,
+    "x2": 8.15,
+    "N2": 47.93,
+    "ratio": 0.61,
+    "ratio2": 0.17,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 3.43,
+    "x1": 12.65,
+    "x2": 8.15,
+    "N2": 47.93,
+    "ratio": 0.61,
+    "ratio2": 0.17,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "upd": "2026-10-13T15:24:48.878+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    5,
+    5
+   ],
+   "server": [
+    2,
+    2
+   ],
+   "now": [
+    5,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 6,
+    "x2": 4,
+    "N2": 47.93,
+    "ratio": 0.29,
+    "ratio2": 0.08,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 25,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.52,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Dominion Nestguard",
+   "upd": "2026-10-12T15:12:47.859+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    5,
+    5
+   ],
+   "server": [
+    3,
+    4
+   ],
+   "now": [
+    5,
+    6
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 34.1,
+    "S": 0,
+    "x1": 15,
+    "x2": 18,
+    "N2": 129.2,
+    "ratio": 0.44,
+    "ratio2": 0.14,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 34.1,
+    "S": 0,
+    "x1": 24,
+    "x2": 45,
+    "N2": 129.2,
+    "ratio": 0.7,
+    "ratio2": 0.35,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "upd": "2026-10-12T02:25:58.122+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    5,
+    8
+   ],
+   "server": [
+    3,
+    5
+   ],
+   "now": [
+    5,
+    8
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 27.49,
+    "S": 0,
+    "x1": 11,
+    "x2": 15,
+    "N2": 83.97,
+    "ratio": 0.4,
+    "ratio2": 0.18,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 27.49,
+    "S": 0,
+    "x1": 18,
+    "x2": 40,
+    "N2": 83.97,
+    "ratio": 0.65,
+    "ratio2": 0.48,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "upd": "2026-10-12T15:09:59.592+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    5,
+    5
+   ],
+   "server": [
+    1,
+    1
+   ],
+   "now": [
+    5,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 3,
+    "x2": 1,
+    "N2": 47.93,
+    "ratio": 0.14,
+    "ratio2": 0.02,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 25,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.52,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "upd": "2026-10-14T15:11:37.506+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    0,
+    14
+   ],
+   "server": [
+    0,
+    4
+   ],
+   "now": [
+    0,
+    14
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 4,
+    "x2": 0,
+    "N2": 47.93,
+    "ratio": 0.19,
+    "ratio2": 0,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 14,
+    "x2": 0,
+    "N2": 47.93,
+    "ratio": 0.67,
+    "ratio2": 0,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "upd": "2026-10-12T14:34:31.55+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    2,
+    3
+   ],
+   "server": [
+    3,
+    3
+   ],
+   "now": [
+    3,
+    3
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 21.8,
+    "S": 7.55,
+    "x1": 16.55,
+    "x2": 16.55,
+    "N2": 52.8,
+    "ratio": 0.76,
+    "ratio2": 0.31,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 21.8,
+    "S": 7.55,
+    "x1": 16.55,
+    "x2": 16.55,
+    "N2": 52.8,
+    "ratio": 0.76,
+    "ratio2": 0.31,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "upd": "2026-10-12T15:09:48.248+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    2,
+    4
+   ],
+   "server": [
+    2,
+    4
+   ],
+   "now": [
+    2,
+    4
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 22.84,
+    "S": 10.34,
+    "x1": 18.34,
+    "x2": 18.34,
+    "N2": 57.96,
+    "ratio": 0.8,
+    "ratio2": 0.32,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 22.84,
+    "S": 10.34,
+    "x1": 18.34,
+    "x2": 18.34,
+    "N2": 57.96,
+    "ratio": 0.8,
+    "ratio2": 0.32,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "upd": "2026-10-12T14:49:40.666+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    2,
+    9
+   ],
+   "server": [
+    1,
+    4
+   ],
+   "now": [
+    2,
+    9
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 21.8,
+    "S": 1.5,
+    "x1": 7.5,
+    "x2": 5.5,
+    "N2": 52.8,
+    "ratio": 0.34,
+    "ratio2": 0.1,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 21.8,
+    "S": 1.5,
+    "x1": 14.5,
+    "x2": 19.5,
+    "N2": 52.8,
+    "ratio": 0.67,
+    "ratio2": 0.37,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "upd": "2026-10-12T15:09:04.18+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    0,
+    11
+   ],
+   "server": [
+    0,
+    4
+   ],
+   "now": [
+    0,
+    11
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 2.74,
+    "x1": 6.74,
+    "x2": 2.74,
+    "N2": 47.93,
+    "ratio": 0.32,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 2.74,
+    "x1": 13.74,
+    "x2": 2.74,
+    "N2": 47.93,
+    "ratio": 0.66,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "upd": "2026-10-12T15:22:16.579+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    3,
+    5
+   ],
+   "server": [
+    2,
+    3
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 37.3,
+    "S": 0,
+    "x1": 15.75,
+    "x2": 13.5,
+    "N2": 154.59,
+    "ratio": 0.42,
+    "ratio2": 0.09,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 37.3,
+    "S": 0,
+    "x1": 24.75,
+    "x2": 33.75,
+    "N2": 154.59,
+    "ratio": 0.66,
+    "ratio2": 0.22,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "upd": "2026-10-18T15:27:12.481+00:00",
+   "rarity": "mythic",
+   "serverRarity": "mythic",
+   "fileRarity": "legendary",
+   "file": [
+    7,
+    37
+   ],
+   "server": [
+    10,
+    50
+   ],
+   "now": [
+    8,
+    38
+   ],
+   "verdict": "over",
+   "why": null,
+   "budgetServer": {
+    "N": 98.17,
+    "S": 12.17,
+    "x1": 123.26,
+    "x2": 768.25,
+    "N2": 1070.82,
+    "ratio": 1.26,
+    "ratio2": 0.72,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 98.17,
+    "S": 11.17,
+    "x1": 97.76,
+    "x2": 472.76,
+    "N2": 1070.82,
+    "ratio": 1,
+    "ratio2": 0.44,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "rarity",
+     "from": "legendary",
+     "to": "mythic"
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "bounty": 1,
+      "poison": 3,
+      "supreme": true
+     },
+     "to": {
+      "bounty": 1,
+      "flying": true,
+      "poison": 3,
+      "supreme": true,
+      "overwhelm": true
+     },
+     "gained": [
+      "overwhelm"
+     ],
+     "dropped": [],
+     "moved": []
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "upd": "2026-10-12T15:10:47.611+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    3,
+    5
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 2.79,
+    "x1": 6.79,
+    "x2": 4.79,
+    "N2": 47.93,
+    "ratio": 0.33,
+    "ratio2": 0.1,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 2.79,
+    "x1": 13.79,
+    "x2": 17.79,
+    "N2": 47.93,
+    "ratio": 0.66,
+    "ratio2": 0.37,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "upd": "2026-10-12T15:08:50.623+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    4,
+    7
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    4,
+    7
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 4,
+    "x2": 2,
+    "N2": 47.93,
+    "ratio": 0.19,
+    "ratio2": 0.04,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 28,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.58,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "upd": "2026-10-12T14:58:04.62+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    3,
+    5
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 6,
+    "x2": 3,
+    "N2": 47.93,
+    "ratio": 0.29,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 16.5,
+    "x2": 22.5,
+    "N2": 47.93,
+    "ratio": 0.79,
+    "ratio2": 0.47,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "upd": "2026-10-14T15:39:50.32+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    5,
+    5
+   ],
+   "server": [
+    3,
+    3
+   ],
+   "now": [
+    5,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 22.01,
+    "S": 0,
+    "x1": 9,
+    "x2": 9,
+    "N2": 53.83,
+    "ratio": 0.41,
+    "ratio2": 0.17,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 22.01,
+    "S": 0,
+    "x1": 15,
+    "x2": 25,
+    "N2": 53.83,
+    "ratio": 0.68,
+    "ratio2": 0.46,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "upd": "2026-10-12T15:08:41.269+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    6,
+    3
+   ],
+   "server": [
+    2,
+    1
+   ],
+   "now": [
+    6,
+    3
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 5,
+    "x2": 2,
+    "N2": 47.93,
+    "ratio": 0.24,
+    "ratio2": 0.04,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 18,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.38,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "name": "Meerkat Wayfarer",
+   "upd": "2026-10-12T15:40:23.368+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    4,
+    9
+   ],
+   "server": [
+    2,
+    5
+   ],
+   "now": [
+    4,
+    9
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 29.55,
+    "S": 3.16,
+    "x1": 12.16,
+    "x2": 13.16,
+    "N2": 97.02,
+    "ratio": 0.41,
+    "ratio2": 0.14,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 29.55,
+    "S": 3.16,
+    "x1": 20.16,
+    "x2": 39.16,
+    "N2": 97.02,
+    "ratio": 0.68,
+    "ratio2": 0.4,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "upd": "2026-10-12T15:21:07.209+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    0,
+    10
+   ],
+   "server": [
+    0,
+    4
+   ],
+   "now": [
+    0,
+    10
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 6,
+    "x2": 0,
+    "N2": 47.93,
+    "ratio": 0.29,
+    "ratio2": 0,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 0,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "otter-centurion",
+   "name": "Otter Centurion",
+   "upd": "2026-10-12T15:07:59.305+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    5,
+    9
+   ],
+   "server": [
+    3,
+    5
+   ],
+   "now": [
+    5,
+    9
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 30.59,
+    "S": 1,
+    "x1": 12,
+    "x2": 16,
+    "N2": 103.97,
+    "ratio": 0.39,
+    "ratio2": 0.15,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 30.59,
+    "S": 1,
+    "x1": 20,
+    "x2": 46,
+    "N2": 103.97,
+    "ratio": 0.65,
+    "ratio2": 0.44,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "upd": "2026-10-12T15:28:14.467+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    5,
+    11
+   ],
+   "server": [
+    2,
+    5
+   ],
+   "now": [
+    5,
+    11
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 34.1,
+    "S": 2,
+    "x1": 11,
+    "x2": 12,
+    "N2": 129.2,
+    "ratio": 0.32,
+    "ratio2": 0.09,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 34.1,
+    "S": 2,
+    "x1": 23,
+    "x2": 57,
+    "N2": 129.2,
+    "ratio": 0.67,
+    "ratio2": 0.44,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "upd": "2026-10-12T15:04:16.097+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    4,
+    7
+   ],
+   "server": [
+    2,
+    4
+   ],
+   "now": [
+    4,
+    7
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 8,
+    "x2": 8,
+    "N2": 47.93,
+    "ratio": 0.39,
+    "ratio2": 0.17,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 28,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.58,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "upd": "2026-10-13T15:36:21.372+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    5,
+    20
+   ],
+   "server": [
+    5,
+    20
+   ],
+   "now": [
+    5,
+    20
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 38.44,
+    "S": 5.48,
+    "x1": 35.48,
+    "x2": 105.48,
+    "N2": 164.18,
+    "ratio": 0.92,
+    "ratio2": 0.64,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 38.44,
+    "S": 5.48,
+    "x1": 35.48,
+    "x2": 105.48,
+    "N2": 164.18,
+    "ratio": 0.92,
+    "ratio2": 0.64,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "upd": "2026-10-12T15:34:49.76+00:00",
+   "rarity": "veryrare",
+   "serverRarity": "veryrare",
+   "fileRarity": "veryrare",
+   "file": [
+    6,
+    9
+   ],
+   "server": [
+    4,
+    6
+   ],
+   "now": [
+    6,
+    9
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 37.2,
+    "S": 3.74,
+    "x1": 17.74,
+    "x2": 27.74,
+    "N2": 153.76,
+    "ratio": 0.48,
+    "ratio2": 0.18,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 37.2,
+    "S": 3.74,
+    "x1": 24.74,
+    "x2": 57.74,
+    "N2": 153.76,
+    "ratio": 0.67,
+    "ratio2": 0.38,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "otter-shieldback",
+   "name": "Otter Shieldback",
+   "upd": "2026-10-18T01:59:17.102+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    4,
+    20
+   ],
+   "server": [
+    3,
+    18
+   ],
+   "now": [
+    4,
+    21
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 42.88,
+    "S": 0.5,
+    "x1": 24.5,
+    "x2": 54.5,
+    "N2": 204.3,
+    "ratio": 0.57,
+    "ratio2": 0.27,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 42.88,
+    "S": 0.5,
+    "x1": 29.5,
+    "x2": 84.5,
+    "N2": 204.3,
+    "ratio": 0.69,
+    "ratio2": 0.41,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "art",
+     "from": "(file art)",
+     "to": "(the owner's uploaded image, 14274 chars)"
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "upd": "2026-10-12T14:35:15.981+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    2,
+    7
+   ],
+   "server": [
+    1,
+    4
+   ],
+   "now": [
+    2,
+    7
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 33.07,
+    "S": 3.68,
+    "x1": 14.52,
+    "x2": 11.52,
+    "N2": 121.51,
+    "ratio": 0.44,
+    "ratio2": 0.09,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 33.07,
+    "S": 3.68,
+    "x1": 22.02,
+    "x2": 26.52,
+    "N2": 121.51,
+    "ratio": 0.67,
+    "ratio2": 0.22,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "upd": "2026-10-12T15:40:35.244+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    3,
+    7
+   ],
+   "server": [
+    1,
+    4
+   ],
+   "now": [
+    2,
+    9
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 23.04,
+    "S": 2.74,
+    "x1": 8.74,
+    "x2": 6.74,
+    "N2": 58.98,
+    "ratio": 0.38,
+    "ratio2": 0.11,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 23.04,
+    "S": 2.74,
+    "x1": 15.74,
+    "x2": 20.74,
+    "N2": 58.98,
+    "ratio": 0.68,
+    "ratio2": 0.35,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "upd": "2026-10-12T02:25:37.306+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    4,
+    6
+   ],
+   "server": [
+    2,
+    3
+   ],
+   "now": [
+    4,
+    6
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 7,
+    "x2": 6,
+    "N2": 47.93,
+    "ratio": 0.34,
+    "ratio2": 0.13,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 14,
+    "x2": 24,
+    "N2": 47.93,
+    "ratio": 0.67,
+    "ratio2": 0.5,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "upd": "2026-10-12T02:27:00.904+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    4,
+    6
+   ],
+   "server": [
+    2,
+    3
+   ],
+   "now": [
+    4,
+    6
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 7,
+    "x2": 6,
+    "N2": 47.93,
+    "ratio": 0.34,
+    "ratio2": 0.13,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 14,
+    "x2": 24,
+    "N2": 47.93,
+    "ratio": 0.67,
+    "ratio2": 0.5,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "upd": "2026-10-14T15:39:30.234+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    3,
+    10
+   ],
+   "server": [
+    2,
+    10
+   ],
+   "now": [
+    2,
+    10
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 33.07,
+    "S": 9.26,
+    "x1": 23.26,
+    "x2": 29.26,
+    "N2": 121.51,
+    "ratio": 0.7,
+    "ratio2": 0.24,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 33.07,
+    "S": 9.26,
+    "x1": 23.26,
+    "x2": 29.26,
+    "N2": 121.51,
+    "ratio": 0.7,
+    "ratio2": 0.24,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "upd": "2026-10-12T15:40:59.113+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    4,
+    2
+   ],
+   "server": [
+    1,
+    1
+   ],
+   "now": [
+    4,
+    4
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 21.8,
+    "S": 0,
+    "x1": 4.5,
+    "x2": 1.5,
+    "N2": 52.8,
+    "ratio": 0.21,
+    "ratio2": 0.03,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 21.8,
+    "S": 0,
+    "x1": 18,
+    "x2": 24,
+    "N2": 52.8,
+    "ratio": 0.83,
+    "ratio2": 0.45,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "upd": "2026-10-14T06:04:07.679+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    3,
+    5
+   ],
+   "server": [
+    2,
+    3
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 26.56,
+    "S": 7.23,
+    "x1": 14.23,
+    "x2": 13.23,
+    "N2": 78.38,
+    "ratio": 0.54,
+    "ratio2": 0.17,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 26.56,
+    "S": 7.23,
+    "x1": 18.23,
+    "x2": 22.23,
+    "N2": 78.38,
+    "ratio": 0.69,
+    "ratio2": 0.28,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "upd": "2026-10-16T16:41:10.804+00:00",
+   "rarity": "mythic",
+   "serverRarity": "mythic",
+   "fileRarity": "legendary",
+   "file": [
+    9,
+    39
+   ],
+   "server": [
+    10,
+    44
+   ],
+   "now": [
+    9,
+    39
+   ],
+   "verdict": "over",
+   "why": null,
+   "budgetServer": {
+    "N": 98.17,
+    "S": 8.54,
+    "x1": 108.81,
+    "x2": 672.81,
+    "N2": 1070.82,
+    "ratio": 1.11,
+    "ratio2": 0.63,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 98.17,
+    "S": 7.54,
+    "x1": 96.81,
+    "x2": 537.81,
+    "N2": 1070.82,
+    "ratio": 0.99,
+    "ratio2": 0.5,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "rarity",
+     "from": "legendary",
+     "to": "mythic"
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "upd": "2026-10-12T15:03:55.855+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    5,
+    8
+   ],
+   "server": [
+    3,
+    5
+   ],
+   "now": [
+    5,
+    8
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 27.49,
+    "S": 0,
+    "x1": 11,
+    "x2": 15,
+    "N2": 83.97,
+    "ratio": 0.4,
+    "ratio2": 0.18,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 27.49,
+    "S": 0,
+    "x1": 18,
+    "x2": 40,
+    "N2": 83.97,
+    "ratio": 0.65,
+    "ratio2": 0.48,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "upd": "2026-10-14T13:57:24.515+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    7,
+    14
+   ],
+   "server": [
+    4,
+    14
+   ],
+   "now": [
+    5,
+    16
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 41.54,
+    "S": 2.79,
+    "x1": 24.79,
+    "x2": 58.79,
+    "N2": 191.73,
+    "ratio": 0.6,
+    "ratio2": 0.31,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 41.54,
+    "S": 2.79,
+    "x1": 28.79,
+    "x2": 82.79,
+    "N2": 191.73,
+    "ratio": 0.69,
+    "ratio2": 0.43,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "upd": "2026-10-12T15:22:40.339+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    4,
+    7
+   ],
+   "server": [
+    1,
+    4
+   ],
+   "now": [
+    3,
+    10
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 22.84,
+    "S": 0,
+    "x1": 6,
+    "x2": 4,
+    "N2": 57.96,
+    "ratio": 0.26,
+    "ratio2": 0.07,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 22.84,
+    "S": 0,
+    "x1": 16,
+    "x2": 30,
+    "N2": 57.96,
+    "ratio": 0.7,
+    "ratio2": 0.52,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "sergeant-bramblefox",
+   "name": "Sergeant Bramblefox",
+   "upd": "2026-10-12T14:33:58.31+00:00",
+   "rarity": "heroic",
+   "serverRarity": "heroic",
+   "fileRarity": "heroic",
+   "file": [
+    6,
+    11
+   ],
+   "server": [
+    4,
+    8
+   ],
+   "now": [
+    6,
+    11
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 32.55,
+    "S": 0,
+    "x1": 16,
+    "x2": 32,
+    "N2": 117.72,
+    "ratio": 0.49,
+    "ratio2": 0.27,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 32.55,
+    "S": 0,
+    "x1": 23,
+    "x2": 66,
+    "N2": 117.72,
+    "ratio": 0.71,
+    "ratio2": 0.56,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd",
+   "upd": "2026-10-12T14:37:07.472+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    3,
+    15
+   ],
+   "server": [
+    2,
+    12
+   ],
+   "now": [
+    3,
+    15
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 33.07,
+    "S": 1,
+    "x1": 17,
+    "x2": 25,
+    "N2": 121.51,
+    "ratio": 0.51,
+    "ratio2": 0.21,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 33.07,
+    "S": 1,
+    "x1": 22,
+    "x2": 46,
+    "N2": 121.51,
+    "ratio": 0.67,
+    "ratio2": 0.38,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "upd": "2026-10-13T15:02:35.763+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    4,
+    7
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    4,
+    7
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 4,
+    "x2": 2,
+    "N2": 47.93,
+    "ratio": 0.19,
+    "ratio2": 0.04,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 0,
+    "x1": 15,
+    "x2": 28,
+    "N2": 47.93,
+    "ratio": 0.72,
+    "ratio2": 0.58,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "upd": "2026-10-12T14:53:12.629+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    6,
+    9
+   ],
+   "server": [
+    2,
+    5
+   ],
+   "now": [
+    5,
+    11
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 29.55,
+    "S": 0,
+    "x1": 9,
+    "x2": 10,
+    "N2": 97.02,
+    "ratio": 0.3,
+    "ratio2": 0.1,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 29.55,
+    "S": 0,
+    "x1": 21,
+    "x2": 55,
+    "N2": 97.02,
+    "ratio": 0.71,
+    "ratio2": 0.57,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "upd": "2026-10-12T15:24:37.223+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    2,
+    3
+   ],
+   "server": [
+    1,
+    2
+   ],
+   "now": [
+    2,
+    3
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 2.7,
+    "x1": 10.05,
+    "x2": 7.05,
+    "N2": 47.93,
+    "ratio": 0.48,
+    "ratio2": 0.15,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 2.7,
+    "x1": 14.55,
+    "x2": 13.05,
+    "N2": 47.93,
+    "ratio": 0.7,
+    "ratio2": 0.27,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Golem",
+   "upd": "2026-10-11T14:04:23.693+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    6,
+    26
+   ],
+   "server": [
+    6,
+    26
+   ],
+   "now": [
+    6,
+    26
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 56.63,
+    "S": 8.07,
+    "x1": 46.07,
+    "x2": 164.07,
+    "N2": 356.33,
+    "ratio": 0.81,
+    "ratio2": 0.46,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 56.63,
+    "S": 8.07,
+    "x1": 46.07,
+    "x2": 164.07,
+    "N2": 356.33,
+    "ratio": 0.81,
+    "ratio2": 0.46,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "upd": "2026-10-16T04:53:26.574+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    2,
+    6
+   ],
+   "server": [
+    2,
+    6
+   ],
+   "now": [
+    2,
+    6
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 28,
+    "S": 5.22,
+    "x1": 22.83,
+    "x2": 25.83,
+    "N2": 87.11,
+    "ratio": 0.82,
+    "ratio2": 0.3,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 28,
+    "S": 5.22,
+    "x1": 22.83,
+    "x2": 25.83,
+    "N2": 87.11,
+    "ratio": 0.82,
+    "ratio2": 0.3,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "triggers": [
+       {
+        "on": "onDeath",
+        "do": "damage",
+        "amount": 2,
+        "dmgType": "heat",
+        "who": "enemy",
+        "sub": "adjacent"
+       }
+      ],
+      "flying": true,
+      "nocturnal": true
+     },
+     "to": {
+      "flying": true,
+      "triggers": [
+       {
+        "do": "damage",
+        "on": "onDeath",
+        "sub": "adjacent",
+        "who": "enemy",
+        "amount": 2,
+        "dmgType": "heat"
+       }
+      ],
+      "nocturnal": 1,
+      "illuminate": true
+     },
+     "gained": [
+      "illuminate"
+     ],
+     "dropped": [],
+     "moved": [
+      "nocturnal"
+     ]
+    }
+   ],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "upd": "2026-10-12T15:32:09.38+00:00",
+   "rarity": "veryrare",
+   "serverRarity": "veryrare",
+   "fileRarity": "veryrare",
+   "file": [
+    3,
+    10
+   ],
+   "server": [
+    5,
+    10
+   ],
+   "now": [
+    5,
+    10
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 50.32,
+    "S": 4.37,
+    "x1": 36.56,
+    "x2": 81.55,
+    "N2": 281.34,
+    "ratio": 0.73,
+    "ratio2": 0.29,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 44.95,
+    "S": 4.37,
+    "x1": 36.56,
+    "x2": 81.55,
+    "N2": 224.5,
+    "ratio": 0.81,
+    "ratio2": 0.36,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "cost",
+     "server": 2,
+     "file": 1,
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T05:47:56+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "upd": "2026-10-14T13:57:13.35+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    4,
+    8
+   ],
+   "server": [
+    1,
+    6
+   ],
+   "now": [
+    2,
+    12
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 36.17,
+    "S": 0,
+    "x1": 12,
+    "x2": 9,
+    "N2": 145.36,
+    "ratio": 0.33,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 36.17,
+    "S": 0,
+    "x1": 24,
+    "x2": 36,
+    "N2": 145.36,
+    "ratio": 0.66,
+    "ratio2": 0.25,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "upd": "2026-10-12T15:25:57.921+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    4,
+    5
+   ],
+   "server": [
+    1,
+    3
+   ],
+   "now": [
+    3,
+    8
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 29.55,
+    "S": 0,
+    "x1": 7.5,
+    "x2": 4.5,
+    "N2": 97.02,
+    "ratio": 0.25,
+    "ratio2": 0.05,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 29.55,
+    "S": 0,
+    "x1": 21,
+    "x2": 36,
+    "N2": 97.02,
+    "ratio": 0.71,
+    "ratio2": 0.37,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "upd": "2026-10-13T12:03:08.587+00:00",
+   "rarity": "common",
+   "serverRarity": "common",
+   "fileRarity": "common",
+   "file": [
+    4,
+    4
+   ],
+   "server": [
+    2,
+    5
+   ],
+   "now": [
+    3,
+    6
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 22.84,
+    "S": 3.18,
+    "x1": 12.18,
+    "x2": 13.18,
+    "N2": 57.96,
+    "ratio": 0.53,
+    "ratio2": 0.23,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 22.84,
+    "S": 3.18,
+    "x1": 15.18,
+    "x2": 21.18,
+    "N2": 57.96,
+    "ratio": 0.66,
+    "ratio2": 0.37,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "upd": "2026-10-12T15:06:25.319+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    7,
+    9
+   ],
+   "server": [
+    2,
+    4
+   ],
+   "now": [
+    6,
+    11
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 35.13,
+    "S": 0,
+    "x1": 8,
+    "x2": 8,
+    "N2": 137.12,
+    "ratio": 0.23,
+    "ratio2": 0.06,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 35.13,
+    "S": 0,
+    "x1": 23,
+    "x2": 66,
+    "N2": 137.12,
+    "ratio": 0.65,
+    "ratio2": 0.48,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "upd": "2026-10-12T15:26:44.097+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    1,
+    3
+   ],
+   "server": [
+    1,
+    3
+   ],
+   "now": [
+    1,
+    3
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 4.54,
+    "x1": 14.31,
+    "x2": 11.31,
+    "N2": 47.93,
+    "ratio": 0.69,
+    "ratio2": 0.24,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 4.54,
+    "x1": 14.31,
+    "x2": 11.31,
+    "N2": 47.93,
+    "ratio": 0.69,
+    "ratio2": 0.24,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "upd": "2026-10-13T15:29:54.132+00:00",
+   "rarity": "uncommon",
+   "serverRarity": "uncommon",
+   "fileRarity": "uncommon",
+   "file": [
+    3,
+    5
+   ],
+   "server": [
+    2,
+    4
+   ],
+   "now": [
+    3,
+    5
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 29.55,
+    "S": 2.99,
+    "x1": 16.49,
+    "x2": 16.49,
+    "N2": 97.02,
+    "ratio": 0.56,
+    "ratio2": 0.17,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 29.55,
+    "S": 2.99,
+    "x1": 20.99,
+    "x2": 26.99,
+    "N2": 97.02,
+    "ratio": 0.71,
+    "ratio2": 0.28,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "wandering-traveller",
+   "name": "Wandering Traveller",
+   "upd": "2026-10-16T05:50:11.36+00:00",
+   "rarity": "rare",
+   "serverRarity": "rare",
+   "fileRarity": "rare",
+   "file": [
+    6,
+    6
+   ],
+   "server": [
+    4,
+    4
+   ],
+   "now": [
+    6,
+    6
+   ],
+   "verdict": "under",
+   "why": null,
+   "budgetServer": {
+    "N": 23.87,
+    "S": 0,
+    "x1": 12,
+    "x2": 16,
+    "N2": 63.31,
+    "ratio": 0.5,
+    "ratio2": 0.25,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 23.87,
+    "S": 0,
+    "x1": 18,
+    "x2": 36,
+    "N2": 63.31,
+    "ratio": 0.75,
+    "ratio2": 0.57,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": []
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "upd": "2026-10-16T16:41:39.222+00:00",
+   "rarity": "divine",
+   "serverRarity": "divine",
+   "fileRarity": "legendary",
+   "file": [
+    8,
+    37
+   ],
+   "server": [
+    10,
+    44
+   ],
+   "now": [
+    8,
+    37
+   ],
+   "verdict": "over",
+   "why": null,
+   "budgetServer": {
+    "N": 100.23,
+    "S": 9.87,
+    "x1": 110.81,
+    "x2": 674.81,
+    "N2": 1116.23,
+    "ratio": 1.11,
+    "ratio2": 0.6,
+    "ok": false
+   },
+   "budgetNow": {
+    "N": 100.23,
+    "S": 10.87,
+    "x1": 95.81,
+    "x2": 460.31,
+    "N2": 1116.23,
+    "ratio": 0.96,
+    "ratio2": 0.41,
+    "ok": true
+   },
+   "changes": [
+    {
+     "field": "rarity",
+     "from": "legendary",
+     "to": "divine"
+    },
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "bounty": 1,
+      "freeze": {
+       "chance": 50,
+       "duration": 1
+      },
+      "scare": 3,
+      "supreme": true,
+      "trueStrike": true
+     },
+     "to": {
+      "scare": 3,
+      "bounty": 1,
+      "flying": true,
+      "freeze": {
+       "chance": 50,
+       "duration": 1
+      },
+      "supreme": true,
+      "trueStrike": true
+     },
+     "gained": [],
+     "dropped": [],
+     "moved": []
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "effects",
+     "server": {
+      "scare": 3,
+      "bounty": 1,
+      "flying": true,
+      "freeze": {
+       "chance": 50,
+       "duration": 1
+      },
+      "supreme": true
+     },
+     "file": {
+      "flying": true,
+      "bounty": 1,
+      "freeze": {
+       "chance": 50,
+       "duration": 1
+      },
+      "scare": 3,
+      "supreme": true,
+      "trueStrike": true
+     },
+     "kept": "both: the server's skills, plus trueStrike (the file added after the save)",
+     "fileAt": "2026-10-18T22:57:45+08:00"
+    }
+   ],
+   "kept": []
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "upd": "2026-10-12T14:52:17.351+00:00",
+   "rarity": "starter",
+   "serverRarity": "starter",
+   "fileRarity": "starter",
+   "file": [
+    1,
+    3
+   ],
+   "server": [
+    1,
+    3
+   ],
+   "now": [
+    1,
+    3
+   ],
+   "verdict": "within",
+   "why": null,
+   "budgetServer": {
+    "N": 20.77,
+    "S": 15.36,
+    "x1": 20.36,
+    "x2": 18.36,
+    "N2": 47.93,
+    "ratio": 0.98,
+    "ratio2": 0.38,
+    "ok": true
+   },
+   "budgetNow": {
+    "N": 20.77,
+    "S": 15.36,
+    "x1": 20.36,
+    "x2": 18.36,
+    "N2": 47.93,
+    "ratio": 0.98,
+    "ratio2": 0.38,
+    "ok": true
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "faction",
+     "server": "otters",
+     "file": "base",
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-19T10:45:39+08:00"
+    }
+   ],
+   "kept": []
+  }
+ ],
+ "nodes": [
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-1",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "patch": {
+    "deck": {
+     "honey-bee": 2,
+     "pond-duck": 2,
+     "cottontail": 2,
+     "pond-trout": 2,
+     "meadow-frog": 2,
+     "crossed-eyes": 2,
+     "garden-snail": 2,
+     "meadow-rabbit": 2,
+     "acorn-chipmunk": 2,
+     "chipmunk-forager": 2
+    },
+    "hqHp": 30,
+    "icon": "🐌",
+    "name": "Pond Patrol",
+    "armour": 0
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-2",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "patch": {
+    "deck": {
+     "ant-scout": 2,
+     "honey-bee": 2,
+     "pond-duck": 2,
+     "bee-sentry": 2,
+     "cottontail": 1,
+     "pond-trout": 2,
+     "worker-ant": 2,
+     "bee-forager": 2,
+     "forager-ant": 2,
+     "acorn-chipmunk": 1,
+     "bee-knight-classic": 2
+    },
+    "hqHp": 28,
+    "icon": "🐝",
+    "name": "Thicket Swarm",
+    "armour": 0,
+    "requires": [
+     "0-1"
+    ]
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-3",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "patch": {
+    "deck": {
+     "pond-duck": 2,
+     "cottontail": 2,
+     "fleetfootd": 2,
+     "pond-trout": 2,
+     "crossed-eyes": 1,
+     "meadow-rabbit": 2,
+     "chipmunk-skirmisher": 1,
+     "trash-panda-trickster": 3
+    },
+    "hqHp": 28,
+    "requires": [
+     "0-2"
+    ]
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-4",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "patch": {
+    "deck": {
+     "fox-kit": 2,
+     "pond-duck": 3,
+     "bee-sentry": 1,
+     "beetle-grunt": 2,
+     "crossed-eyes": 2,
+     "acorn-chipmunk": 1,
+     "chipmunk-forager": 1,
+     "chipmunk-skirmisher": 1,
+     "trash-panda-trickster": 2
+    },
+    "hqHp": 25,
+    "icon": "🦊",
+    "kind": "skirmish",
+    "ender": true,
+    "armour": 5,
+    "revealDeck": null
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mtut",
+   "map": "mtut",
+   "key": "tutorial",
+   "upd": "2026-10-18T09:41:01.164+00:00",
+   "patch": {
+    "deck": {},
+    "hqHp": 28,
+    "tutHp": 9
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mtut",
+   "map": "mtut",
+   "key": "tutorial2",
+   "upd": "2026-10-18T09:41:01.164+00:00",
+   "patch": {
+    "deck": {},
+    "hqHp": 28,
+    "tutHp": 11
+   }
+  }
+ ],
+ "nodesDone": [
+  {
+   "map": "m1",
+   "key": "0-1",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "diff": [
+    {
+     "field": "name",
+     "from": "Otter Patrol",
+     "to": "Pond Patrol"
+    },
+    {
+     "field": "icon",
+     "from": "🦦",
+     "to": "🐌"
+    },
+    {
+     "field": "deck",
+     "from": {
+      "otter-kit": 2,
+      "otter-paddler": 2,
+      "meadow-rabbit": 3,
+      "pond-duck": 2,
+      "water-vole": 2
+     },
+     "to": {
+      "honey-bee": 2,
+      "pond-duck": 2,
+      "cottontail": 2,
+      "pond-trout": 2,
+      "meadow-frog": 2,
+      "crossed-eyes": 2,
+      "garden-snail": 2,
+      "meadow-rabbit": 2,
+      "acorn-chipmunk": 2,
+      "chipmunk-forager": 2
+     }
+    },
+    {
+     "field": "hqHp",
+     "from": 20,
+     "to": 30
+    }
+   ],
+   "ignored": [
+    "armour 0"
+   ]
+  },
+  {
+   "map": "m1",
+   "key": "0-2",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "diff": [
+    {
+     "field": "name",
+     "from": "Scorpion Ambush",
+     "to": "Thicket Swarm"
+    },
+    {
+     "field": "icon",
+     "from": "🦂",
+     "to": "🐝"
+    },
+    {
+     "field": "deck",
+     "from": {
+      "tunnel-ant": 4,
+      "otter-kit": 4,
+      "earthworm": 3,
+      "trash-panda-trickster": 2,
+      "dynamite-packrat": 2
+     },
+     "to": {
+      "ant-scout": 2,
+      "honey-bee": 2,
+      "pond-duck": 2,
+      "bee-sentry": 2,
+      "cottontail": 1,
+      "pond-trout": 2,
+      "worker-ant": 2,
+      "bee-forager": 2,
+      "forager-ant": 2,
+      "acorn-chipmunk": 1,
+      "bee-knight-classic": 2
+     }
+    },
+    {
+     "field": "requires",
+     "from": [],
+     "to": [
+      "0-1"
+     ]
+    },
+    {
+     "field": "hqHp",
+     "from": null,
+     "to": 28
+    }
+   ],
+   "ignored": [
+    "armour 0"
+   ]
+  },
+  {
+   "map": "m1",
+   "key": "0-3",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "trash-panda-trickster": 5,
+      "meadow-rabbit": 2,
+      "pond-trout": 2,
+      "tunnel-ant": 4,
+      "burrow-rabbit": 2
+     },
+     "to": {
+      "pond-duck": 2,
+      "cottontail": 2,
+      "fleetfootd": 2,
+      "pond-trout": 2,
+      "crossed-eyes": 1,
+      "meadow-rabbit": 2,
+      "chipmunk-skirmisher": 1,
+      "trash-panda-trickster": 3
+     }
+    },
+    {
+     "field": "hqHp",
+     "from": 22,
+     "to": 28
+    },
+    {
+     "field": "requires",
+     "from": [
+      "0-1",
+      "0-2"
+     ],
+     "to": [
+      "0-2"
+     ]
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "m1",
+   "key": "0-4",
+   "upd": "2026-10-18T09:51:16.535+00:00",
+   "diff": [
+    {
+     "field": "kind",
+     "from": "boss",
+     "to": "skirmish"
+    },
+    {
+     "field": "icon",
+     "from": "❄️",
+     "to": "🦊"
+    },
+    {
+     "field": "deck",
+     "from": {
+      "glacier-wolf-pack": 3,
+      "pond-duck": 4,
+      "otter-kit": 1,
+      "otter-royal-guard": 3,
+      "pine-marten": 2,
+      "trash-panda-trickster": 2,
+      "otter-paddler": 2,
+      "helmeted-otter": 2,
+      "meadow-rabbit": 1
+     },
+     "to": {
+      "fox-kit": 2,
+      "pond-duck": 3,
+      "bee-sentry": 1,
+      "beetle-grunt": 2,
+      "crossed-eyes": 2,
+      "acorn-chipmunk": 1,
+      "chipmunk-forager": 1,
+      "chipmunk-skirmisher": 1,
+      "trash-panda-trickster": 2
+     }
+    },
+    {
+     "field": "hqHp",
+     "from": 52,
+     "to": 25
+    },
+    {
+     "field": "revealDeck",
+     "from": "win",
+     "to": null
+    },
+    {
+     "field": "ender",
+     "from": null,
+     "to": true
+    }
+   ],
+   "ignored": [
+    "armour 5"
+   ]
+  },
+  {
+   "map": "mtut",
+   "key": "tutorial",
+   "upd": "2026-10-18T09:41:01.164+00:00",
+   "diff": [
+    {
+     "field": "hqHp",
+     "from": 20,
+     "to": 28
+    },
+    {
+     "field": "deck",
+     "from": null,
+     "to": {}
+    },
+    {
+     "field": "tutHp",
+     "from": null,
+     "to": 9
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mtut",
+   "key": "tutorial2",
+   "upd": "2026-10-18T09:41:01.164+00:00",
+   "diff": [
+    {
+     "field": "hqHp",
+     "from": 20,
+     "to": 28
+    },
+    {
+     "field": "deck",
+     "from": null,
+     "to": {}
+    },
+    {
+     "field": "tutHp",
+     "from": null,
+     "to": 11
+    }
+   ],
+   "ignored": []
+  }
+ ]
+}

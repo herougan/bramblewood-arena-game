@@ -1,0 +1,1882 @@
+{
+ "beetle-grunt|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "meadow-frog|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "rabbit-kit|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "shepherds-bark|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "soldier-ant|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "crimson-wing-recruit|name": {
+  "commit": "f691ef8",
+  "at": "2026-10-10T02:13:43+08:00"
+ },
+ "mosswing-laborer|name": {
+  "commit": "f691ef8",
+  "at": "2026-10-10T02:13:43+08:00"
+ },
+ "wandering-traveller|wait": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "ant-scout|effects": {
+  "commit": "c37b47a",
+  "at": "2026-10-10T19:43:28+08:00"
+ },
+ "ant-scout|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "bee-drone|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-drone|attack": {
+  "commit": "c37b47a",
+  "at": "2026-10-10T19:43:28+08:00"
+ },
+ "bee-drone|health": {
+  "commit": "b773214",
+  "at": "2026-10-18T18:18:49+08:00"
+ },
+ "bee-forager|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-forager|attack": {
+  "commit": "c37b47a",
+  "at": "2026-10-10T19:43:28+08:00"
+ },
+ "bee-forager|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "bee-knight|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-knight|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "forager-ant|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "forager-ant|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "honey-bee|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "soldier-ant|effects": {
+  "commit": "c37b47a",
+  "at": "2026-10-10T19:43:28+08:00"
+ },
+ "tunnel-ant|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "tunnel-ant|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "worker-ant|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-centurion|effects": {
+  "commit": "a9eae8a",
+  "at": "2026-10-11T22:34:11+08:00"
+ },
+ "otter-centurion|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-centurion|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "wandering-traveller|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "wandering-traveller|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "acorn-chipmunk|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "alley-cat|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "ant-scout|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "armored-mastiff|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "barrow-leech-bat|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "bee-drone|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "bee-forager|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "bee-knight|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "bee-sentry|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "beetle-grunt|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "black-dragon|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "cataphract-destrier|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "cave-bat-swarm|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "cave-flitter|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "chipmunk-forager|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "cobalt-talon-skirmisher|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "colony|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "cottontail|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "crimson-wing-duelist-cadet|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "crimson-wing-recruit|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "crossed-eyes|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "dominion-nestguard|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "duck-paddler|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "duckling|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "earthworm|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "feral-tomcat|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "fleetfootd|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "forager-ant|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "garden-snail|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "gold-throated-acolyte|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "green-dragon|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "guppy|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "harvest-mouse|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "honey-bee|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "meadow-frog|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "meadow-rabbit|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "mosswing-laborer|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "otter-centurion|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "otter-guard|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "otter-paddler|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "otter-riverguard|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "otter-shieldback|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "owl-nightwatch|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "pill-bug|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "pond-duck|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "pond-trout|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "quarry-mole|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "rabbit-kit|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "red-dragon|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "river-carp|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "river-warden|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "shepherds-bark|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "silver-minnow|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "soldier-ant|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "sparrow-chick|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "stalactite-golem|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "sulfur-cinder-moth|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "sunspire-envoy|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "sunthroat-courier|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "trash-panda-trickster|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "tunnel-ant|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "violet-vane-fletcher|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "voidfeather-scout|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "wandering-traveller|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "white-dragon|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "worker-ant|species": {
+  "commit": "229756e",
+  "at": "2026-10-10T21:27:38+08:00"
+ },
+ "otter-shieldback|source": {
+  "commit": "7c4eb63",
+  "at": "2026-10-11T00:46:51+08:00"
+ },
+ "otter-shieldback|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "armored-mastiff|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "cataphract-destrier|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "cave-bat-swarm|effects": {
+  "commit": "a69c937",
+  "at": "2026-10-11T21:06:06+08:00"
+ },
+ "trash-panda-trickster|effects": {
+  "commit": "b5d1a68",
+  "at": "2026-10-16T00:24:27+08:00"
+ },
+ "ant-scout|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "bee-forager|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "bee-sentry|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "duck-paddler|art": {
+  "commit": "115bf01",
+  "at": "2026-10-12T09:40:49+08:00"
+ },
+ "duckling|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "honey-bee|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "pond-duck|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "pond-trout|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "river-carp|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "silver-minnow|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "sunspire-choirmother|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "tunnel-ant|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "worker-ant|art": {
+  "commit": "49bd8a7",
+  "at": "2026-10-12T01:22:08+08:00"
+ },
+ "acorn-chipmunk|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "chipmunk-forager|art": {
+  "commit": "84a6ac7",
+  "at": "2026-10-12T08:00:11+08:00"
+ },
+ "cottontail|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "earthworm|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "fleetfootd|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "garden-snail|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "guppy|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "harvest-mouse|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "meadow-rabbit|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "pill-bug|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "sparrow-chick|art": {
+  "commit": "572e45b",
+  "at": "2026-10-12T07:34:48+08:00"
+ },
+ "beetle-grunt|art": {
+  "commit": "84a6ac7",
+  "at": "2026-10-12T08:00:11+08:00"
+ },
+ "crossed-eyes|art": {
+  "commit": "84a6ac7",
+  "at": "2026-10-12T08:00:11+08:00"
+ },
+ "meadow-frog|art": {
+  "commit": "84a6ac7",
+  "at": "2026-10-12T08:00:11+08:00"
+ },
+ "quarry-mole|art": {
+  "commit": "84a6ac7",
+  "at": "2026-10-12T08:00:11+08:00"
+ },
+ "rabbit-kit|art": {
+  "commit": "84a6ac7",
+  "at": "2026-10-12T08:00:11+08:00"
+ },
+ "soldier-ant|art": {
+  "commit": "4eba951",
+  "at": "2026-10-12T10:29:55+08:00"
+ },
+ "black-dragon|effects": {
+  "commit": "4448f28",
+  "at": "2026-10-14T11:51:18+08:00"
+ },
+ "cataphract-destrier|effects": {
+  "commit": "0f6c71c",
+  "at": "2026-10-16T14:21:03+08:00"
+ },
+ "green-dragon|effects": {
+  "commit": "4448f28",
+  "at": "2026-10-14T11:51:18+08:00"
+ },
+ "red-dragon|effects": {
+  "commit": "0f6c71c",
+  "at": "2026-10-16T14:21:03+08:00"
+ },
+ "white-dragon|effects": {
+  "commit": "cfb4134",
+  "at": "2026-10-18T22:57:45+08:00"
+ },
+ "barrow-leech-bat|attack": {
+  "commit": "9578ce3",
+  "at": "2026-10-12T16:54:12+08:00"
+ },
+ "barrow-leech-bat|health": {
+  "commit": "9578ce3",
+  "at": "2026-10-12T16:54:12+08:00"
+ },
+ "cataphract-destrier|art": {
+  "commit": "9578ce3",
+  "at": "2026-10-12T16:54:12+08:00"
+ },
+ "shepherds-bark|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "trash-panda-trickster|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "trash-panda-trickster|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "meerkat-wayfarer|art": {
+  "commit": "21da790",
+  "at": "2026-10-12T19:04:47+08:00"
+ },
+ "otter-royal-guard|species": {
+  "commit": "21da790",
+  "at": "2026-10-12T19:04:47+08:00"
+ },
+ "otter-royal-guard|art": {
+  "commit": "21da790",
+  "at": "2026-10-12T19:04:47+08:00"
+ },
+ "riverwing-envoy|species": {
+  "commit": "21da790",
+  "at": "2026-10-12T19:04:47+08:00"
+ },
+ "riverwing-envoy|art": {
+  "commit": "21da790",
+  "at": "2026-10-12T19:04:47+08:00"
+ },
+ "sunspire-choirmother|source": {
+  "commit": "54baaa4",
+  "at": "2026-10-12T21:29:46+08:00"
+ },
+ "colony|art": {
+  "commit": "dee2a7c",
+  "at": "2026-10-14T17:57:45+08:00"
+ },
+ "feral-tomcat|art": {
+  "commit": "dee2a7c",
+  "at": "2026-10-14T17:57:45+08:00"
+ },
+ "owl-nightwatch|art": {
+  "commit": "1a66271",
+  "at": "2026-10-14T12:39:56+08:00"
+ },
+ "sergeant-bramblefox|art": {
+  "commit": "dee2a7c",
+  "at": "2026-10-14T17:57:45+08:00"
+ },
+ "shepherds-bark|art": {
+  "commit": "dee2a7c",
+  "at": "2026-10-14T17:57:45+08:00"
+ },
+ "wandering-traveller|archetypes": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|source": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|locked": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "quarry-mole|effects": {
+  "commit": "2de53d5",
+  "at": "2026-10-14T17:34:07+08:00"
+ },
+ "stalactite-golem|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "guppy|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-frog|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-trout|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-carp|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "silver-minnow|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cobalt-talon-skirmisher|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crimson-wing-duelist-cadet|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crimson-wing-recruit|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-knight|art": {
+  "commit": "2615a6c",
+  "at": "2026-10-18T11:10:40+08:00"
+ },
+ "cave-bat-swarm|art": {
+  "commit": "4448f28",
+  "at": "2026-10-14T11:51:18+08:00"
+ },
+ "sunspire-envoy|art": {
+  "commit": "4448f28",
+  "at": "2026-10-14T11:51:18+08:00"
+ },
+ "bee-drone|art": {
+  "commit": "2615a6c",
+  "at": "2026-10-18T11:10:40+08:00"
+ },
+ "rabid-jackal|art": {
+  "commit": "b93da19",
+  "at": "2026-10-14T16:02:49+08:00"
+ },
+ "barrow-leech-bat|art": {
+  "commit": "2615a6c",
+  "at": "2026-10-18T11:10:40+08:00"
+ },
+ "beetle-grunt|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "feral-tomcat|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "meadow-frog|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "otter-riverguard|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "owl-nightwatch|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "quarry-mole|source": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sergeant-bramblefox|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "shepherds-bark|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "stalactite-golem|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "sulfur-cinder-moth|source": {
+  "commit": "27e3fe0",
+  "at": "2026-10-14T23:36:10+08:00"
+ },
+ "acorn-chipmunk|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "acorn-chipmunk|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "acorn-chipmunk|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "acorn-chipmunk|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "alley-cat|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "alley-cat|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "alley-cat|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "ant-scout|wait": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "ant-scout|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "ant-scout|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "ant-scout|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "bee-drone|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-drone|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-forager|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-forager|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-knight|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-knight|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-knight|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "bee-sentry|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-sentry|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-sentry|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "bee-sentry|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "beetle-grunt|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "beetle-grunt|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "beetle-grunt|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "chipmunk-forager|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "chipmunk-forager|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "chipmunk-forager|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "chipmunk-forager|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "cobalt-talon-skirmisher|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cobalt-talon-skirmisher|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cobalt-talon-skirmisher|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "cobalt-talon-skirmisher|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "cottontail|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cottontail|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cottontail|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cottontail|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "cottontail|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "crimson-wing-duelist-cadet|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crimson-wing-duelist-cadet|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crimson-wing-duelist-cadet|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "crimson-wing-duelist-cadet|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "crimson-wing-recruit|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crimson-wing-recruit|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crimson-wing-recruit|health": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crossed-eyes|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crossed-eyes|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crossed-eyes|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "crossed-eyes|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "dominion-nestguard|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "dominion-nestguard|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "dominion-nestguard|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "dominion-nestguard|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "dominion-nestguard|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "duck-paddler|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "duck-paddler|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "duck-paddler|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "duck-paddler|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "duckling|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "duckling|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "duckling|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "duckling|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "earthworm|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "earthworm|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "earthworm|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "earthworm|attack": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "earthworm|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "feral-tomcat|name": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "fleetfootd|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "fleetfootd|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "fleetfootd|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "fleetfootd|archetypes": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "fleetfootd|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "forager-ant|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "forager-ant|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "garden-snail|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "garden-snail|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "garden-snail|attack": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "garden-snail|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "gold-throated-acolyte|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "gold-throated-acolyte|wait": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "gold-throated-acolyte|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "gold-throated-acolyte|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "gold-throated-acolyte|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "gold-throated-acolyte|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "gold-throated-acolyte|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "guppy|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "guppy|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "harvest-mouse|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "harvest-mouse|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "harvest-mouse|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "harvest-mouse|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "honey-bee|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "honey-bee|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-frog|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-frog|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-rabbit|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-rabbit|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-rabbit|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meadow-rabbit|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "meadow-rabbit|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "meerkat-wayfarer|cost": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meerkat-wayfarer|wait": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meerkat-wayfarer|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meerkat-wayfarer|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "meerkat-wayfarer|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "meerkat-wayfarer|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "mosswing-laborer|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "mosswing-laborer|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "mosswing-laborer|attack": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "mosswing-laborer|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-centurion|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-centurion|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-guard|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-guard|cost": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-guard|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-guard|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-guard|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-guard|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-guard|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-paddler|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-paddler|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-paddler|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-paddler|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-royal-guard|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-royal-guard|name": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-royal-guard|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-royal-guard|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-royal-guard|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "otter-royal-guard|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-royal-guard|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "owl-nightwatch|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "owl-nightwatch|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "owl-nightwatch|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "pill-bug|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pill-bug|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pill-bug|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-duck|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-duck|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-duck|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-duck|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "pond-trout|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-trout|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "pond-trout|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "quarry-mole|cost": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "quarry-mole|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "quarry-mole|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "rabbit-kit|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "rabbit-kit|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "rabbit-kit|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "rabbit-kit|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "rabid-jackal|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-carp|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-carp|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-carp|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "river-warden|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-warden|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-warden|source": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-warden|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "river-warden|attack": {
+  "commit": "7bb6697",
+  "at": "2026-10-19T05:47:56+08:00"
+ },
+ "river-warden|health": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "riverwing-envoy|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "riverwing-envoy|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "riverwing-envoy|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sergeant-bramblefox|cost": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sergeant-bramblefox|wait": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sergeant-bramblefox|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sergeant-bramblefox|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "shepherds-bark|name": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "silver-minnow|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "silver-minnow|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "soldier-ant|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "soldier-ant|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "soldier-ant|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sparrow-chick|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sparrow-chick|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sparrow-chick|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "stalactite-golem|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "stalactite-golem|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-choirmother|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-choirmother|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-choirmother|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sunspire-envoy|cost": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-envoy|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-envoy|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-envoy|source": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-envoy|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunspire-envoy|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sunspire-envoy|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sunthroat-courier|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunthroat-courier|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunthroat-courier|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunthroat-courier|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "sunthroat-courier|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sunthroat-courier|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "tunnel-ant|rarity": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "tunnel-ant|cost": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "tunnel-ant|wait": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "tunnel-ant|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "tunnel-ant|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "violet-vane-fletcher|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "violet-vane-fletcher|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "violet-vane-fletcher|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "violet-vane-fletcher|attack": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "violet-vane-fletcher|health": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|effects": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "voidfeather-scout|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "wandering-traveller|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "wandering-traveller|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "wandering-traveller|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "worker-ant|resist": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "worker-ant|dmgType": {
+  "commit": "005f3ce",
+  "at": "2026-10-15T10:23:34+08:00"
+ },
+ "cataphract-destrier|flavor": {
+  "commit": "cddcda5",
+  "at": "2026-10-16T12:56:33+08:00"
+ },
+ "cave-flitter|rarity": {
+  "commit": "868aec2",
+  "at": "2026-10-17T20:40:59+08:00"
+ },
+ "alley-cat|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "alley-cat|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "beetle-grunt|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "cave-bat-swarm|health": {
+  "commit": "8acc6e0",
+  "at": "2026-10-18T00:53:22+08:00"
+ },
+ "cave-flitter|attack": {
+  "commit": "8acc6e0",
+  "at": "2026-10-18T00:53:22+08:00"
+ },
+ "feral-tomcat|attack": {
+  "commit": "8acc6e0",
+  "at": "2026-10-18T00:53:22+08:00"
+ },
+ "pill-bug|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "quarry-mole|attack": {
+  "commit": "8acc6e0",
+  "at": "2026-10-18T00:53:22+08:00"
+ },
+ "riverwing-envoy|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "tunnel-ant|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "rabid-jackal|source": {
+  "commit": "9429733",
+  "at": "2026-10-18T23:44:50+08:00"
+ },
+ "otter-shieldback|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "pill-bug|source": {
+  "commit": "7bb6697",
+  "at": "2026-10-19T05:47:56+08:00"
+ },
+ "sunspire-choirmother|cost": {
+  "commit": "7bb6697",
+  "at": "2026-10-19T05:47:56+08:00"
+ },
+ "sunspire-choirmother|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "acorn-chipmunk|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "ant-scout|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "bee-forager|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "bee-sentry|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "chipmunk-forager|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "cottontail|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "duck-paddler|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "duckling|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "fleetfootd|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "honey-bee|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "meadow-rabbit|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "otter-guard|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "otter-paddler|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "otter-royal-guard|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "pond-duck|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "pond-trout|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "river-carp|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "silver-minnow|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "tunnel-ant|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "worker-ant|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "acorn-chipmunk|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "bee-sentry|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "black-dragon|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "black-dragon|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "chipmunk-forager|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "colony|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "crossed-eyes|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "duck-paddler|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "duckling|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "forager-ant|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "green-dragon|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "green-dragon|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "guppy|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "guppy|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "harvest-mouse|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "honey-bee|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "honey-bee|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "meadow-frog|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "otter-paddler|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "pill-bug|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "pond-duck|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "pond-trout|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "rabid-jackal|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "rabid-jackal|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "red-dragon|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "red-dragon|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "river-carp|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sergeant-bramblefox|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "silver-minnow|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "silver-minnow|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sparrow-chick|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "sparrow-chick|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "voidfeather-scout|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "white-dragon|attack": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ },
+ "white-dragon|health": {
+  "commit": "d346230",
+  "at": "2026-10-19T16:02:12+08:00"
+ }
+}

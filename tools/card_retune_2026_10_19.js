@@ -49,7 +49,9 @@ function plan(c){
   return Object.assign(out, {verdict: 'owner', why: `well under (${out.useWas}% of N) and no shape-keeping step lands inside both rules`});
 }
 
-if(cmd === 'plan'){
+// 2026-10-19 (BF4): required as a module (tools/fold_server_overrides_2026_10_19.js) it runs nothing and hands over the same rules
+if(require.main !== module){ module.exports = {plan, check, live, KEEP, WELL_UNDER, RAISE_TO, MAX_CUT, T, SC}; }
+else if(cmd === 'plan'){
   const cards = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')).filter(live), rows = cards.map(plan);
   const by = v=> rows.filter(r=> r.verdict === v);
   const out = {_about: 'Full card retune (2026-10-19, package BF3): every live card at Level 1 under budget v5 (L/10, + 0.2 x Map) and today\'s skill costs, to the master hub\'s band: over (2A+H+S >= N or A*H+S >= (N/3)^2) down until both pass, well under (2A+H+S <= 60% of N) up to 65% of N; within left alone. tools/card_retune_2026_10_19.js.',

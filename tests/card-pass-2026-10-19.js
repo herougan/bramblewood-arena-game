@@ -45,7 +45,10 @@ ok(ST.length >= 20, `2. the pass changed cards' stats (${ST.length})`);
 ST.forEach(([id, x])=>{ const c = defs[id], [lo, hi] = P.bandOf((PLAN.rarity && PLAN.rarity[id] && PLAN.rarity[id].to) || c.rarity).map(v=> v * 100);
   // 2026-10-19 (BF3): or the full card retune moved it from those stats, which its creatorNote records ("2026-10-19 retune (v5 L/10): was A/H")
   const retuned = c && new RegExp(`2026-10-19 retune \\(v5 L/10\\): was ${x.attack}/${x.health} `).test(c.creatorNote || '');
-  ok(c && ((c.attack === x.attack && c.health === x.health) || retuned) && (x.cost == null || c.cost === x.cost), `2. ${id}: carries its recorded stats ${x.attack}/${x.health} (or the 10-19 retune from them)`);
+  // 2026-10-19 (BF4): or the live server's override of the card was folded in and retuned from the server's stats (the live game showed those,
+  // not the pass's; docs/balance/server-overrides-fold-2026-10-19.md)
+  const folded = c && /2026-10-19 retune \(server override folded\): was \d+\/\d+ /.test(c.creatorNote || '');
+  ok(c && ((c.attack === x.attack && c.health === x.health) || retuned || folded) && (x.cost == null || c.cost === x.cost), `2. ${id}: carries its recorded stats ${x.attack}/${x.health} (or the 10-19 retune from them, or the BF4 fold)`);
   if(x.fit) return; // a budget fit (no win-rate aim)
   const inBand = x.wrAfter >= lo && x.wrAfter <= hi, nearer = Math.abs(P.outside(x.wrAfter / 100, c.rarity)) <= Math.abs(P.outside(x.wrBefore / 100, c.rarity)) - 5;
   ok(inBand || (x.nearest && nearer), `2. ${id}: ${x.wrBefore}% -> ${x.wrAfter}% (band ${lo}-${hi})`); });

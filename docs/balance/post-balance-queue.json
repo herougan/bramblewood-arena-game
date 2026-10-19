@@ -13,8 +13,8 @@
   "black-dragon",
   "caldera-wyrm"
  ],
- "count": 0,
+ "count": 1,
  "cards": [
-
+  {"id":"cave-bat-swarm","name":"Cave Bat Swarm","rarity":"rare","attack":2,"health":3,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":3,"sAfter":12.94,"sLegacy":3,"passedBefore":true,"N":24.9,"x1":29.91,"N2":68.89,"x2":28.41,"missMult":1.5,"overBy":{"x1":5.01,"x2":-40.48},"fails":["2A+H+S"],"costParts":["fork 5.14","darksight 5.12","nocturnal 2.68"]}
  ]
 }
