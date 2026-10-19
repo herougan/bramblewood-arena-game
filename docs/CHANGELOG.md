@@ -2,6 +2,39 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package UT: animal tags, Base cards, variants balanced by N, raid elder art brief, art reuse map)
+- **Owner (09:52):** *"tag an animal to the card. For ghosts and spirits and elementals - they have an animal embodiment, see. But subtype ghost or elemental etc."*
+- **Every creature card has an `animal`** (725 cards, 349 animals in 140 kinds). It names what the card is, or the animal its body takes. 96 beings also have a `subtype` from a fixed list of 15: ghost, spirit, elemental, undead, construct, structure, fiend, conjured, plant, fungus, mythic, changeling, were, mutant, glitch.
+  - The tags come from the name, the type, the emoji, and a hand-checked table of art and flavor reads. Examples: the Magma Wraith is a wolf of flame, the Tide Spirit a seahorse wave, the Guardian Shield a pangolin.
+  - 30 beings show no animal in their art (the Ent, golems, the storm cloud…). Their animal is a proposal for the owner.
+  - `species` is unchanged. 11 places where it disagrees with the animal are listed (the Moray's species is Cnidarian, the moles are Rodent…).
+  - Tool: `python3 tools/animal_tags.py`, which writes `cards.json` in place and the report `canonical/animal-tags.json`.
+  - Two non-creature cards have an animal too: the River Bundle egg (otter) and the Red Dragon Egg (dragon).
+- **The Codex:**
+  - The card detail shows 🐾 the animal, the subtype and a 🌰 **Base** chip.
+  - A new 🐾 animal filter groups by kind: every spider together.
+  - The Codex search also matches the animal.
+  - All new text uses TX keys, in 12 languages (`tools/i18n_2026_10_19_ut.py`). The build inlines the animal kinds (`__ANIMAL_GROUPS__`).
+- **Base cards (owner: "The starter cards are not Otters. Just considered as 'Base'."):**
+  - The 27 cards with faction `otters` are faction `base` now. They are Base cards: earned from skirmish rewards, not card packs. Their Codex "where to get" line says so.
+  - Levels and budgets are unchanged: a Base card still starts at Level 1.
+  - The Otters / Hummingbirds side pick and `basicSet` are left alone.
+  - **The Hummingbirds stay a faction:** 12 cards, all hummingbirds.
+- **The tutorial's copies are Level 0** ("The tutorial base cards come as Level 0 is the special thing"):
+  - This covers the starting deck, the tutorial rewards and the "both" bonus.
+  - A card that starts at Level 1 gets the Nest's hatchling marks (`hatch:1`, plus `tut:1`) and shows Level 0 until the Nest trains it or a Level 1 copy arrives.
+  - Base cards won later from skirmishes start at their normal level.
+- **Dire / Elder balanced by N (owner: "we can't do 1.4x, 1.5x etc. They should balance based on N"):**
+  - The 109 proposed later versions are player units now. Each body comes from the budget N of its rarity, Lumber and Wait, through the shared helper `tools/skill_costs.js`. 2A+H takes 80% of N in the base's shape. The old ×1.4 / ×1.8 draft is kept beside it (`variant.multDraft`).
+  - "Dire" / "Elder" stay internal ids. Each version has a thematic name proposal, for example Peakroot Olm, Scarred Reef Shark and Venom Patriarch (`nameProposal: true`).
+  - Non-player units keep multipliers. These are the raid's boss units (the Leviathan Elder and the Kraken Brute) and the 13 raid bosses, listed under `nonPlayer` in `canonical/unit-themes.json`.
+  - Units are grouped by animal as well as theme.
+  - The hub's Units by theme tab is updated but not rebuilt or published. It gets an animal filter, groups by animal and subtype, N-based variant lines and a 👹 Non-player view.
+- **Art:**
+  - `docs/art/raid-elder-art-brief.md` has prompts for the Leviathan Elder (built on `art/cards/humpback-elder.png`) and the Kraken Brute. No art was generated.
+  - `docs/art/art-reuse-map.md` (`python3 tools/art_reuse_map.py`) covers 834 units. 804 (96.4%) keep existing art: their own, their base's, or a same-animal stand-in. 30 have no usable match and are flagged.
+- New test `tests/animal-tags-2026-10-19.js` (in run-all). `tests/unit-themes-2026-10-19.js` follows the N-based variants, the names, `nonPlayer` and the animals.
+
 ## 2026-10-19 (package TC: the tests follow the applied skill costs)
 - **The owner applied the measured skill worth** to `canonical/skill-costs.json`: 199 entries use their high-confidence `measuredS` (a negative one floored at 0), and each keeps `prevValue` and `appliedAt`. His own values stay: On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike. Owner 08:49: separate the units by theme, he picks the units for each map, then a post-balance step sets skills and stats. **No card was refit.**
 - **Post-balance queue: 29 cards** that fitted budget v3 before the new costs and are over it now. Each fails only 2A+H+S < N, by +0.01 (Bone Diviner) to +9.5 (Marshal of Rivergate). The list is in `docs/balance/post-balance-queue.json` (built by `node tools/post_balance_queue.js`, `--check` for staleness) and `docs/post-balance-queue-2026-10-19.md`.
