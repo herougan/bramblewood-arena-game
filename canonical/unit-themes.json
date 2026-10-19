@@ -1480,7 +1480,7 @@
    "faction": "hives",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -1506,6 +1506,7 @@
    "maps": {
     "home": [],
     "fights": {
+     "m1": 2,
      "mtut": 2
     }
    },

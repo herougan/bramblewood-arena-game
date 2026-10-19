@@ -1974,7 +1974,6 @@
  "An Easter egg you haven't found yet": "一个你还没找到的彩蛋",
  "An Easter egg: it can't be obtained yet": "彩蛋：暂时无法获得",
  "Position Beam": "站位光束",
- "fire a {n} beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward.": "发射{n}点光束。中路：对面的单位和荆棘丛。侧路：斜向内侧。边缘：向内的整排。",
  "{name} fires its beam straight across ({n}): the unit opposite and the bramble.": "{name}向正前方发射光束（{n}）：对面的单位和荆棘丛。",
  "{name} fires its beam at an angle ({n}): the units diagonally across.": "{name}斜向发射光束（{n}）：斜对面的单位。",
  "{name} fires its beam flat along the row ({n}).": "{name}沿整排水平发射光束（{n}）。",
@@ -2035,5 +2034,6 @@
  "Materia": "魔晶",
  "Crafting materials for the Blacksmith": "给铁匠的打造材料",
  "The Drowned Maw": "溺亡巨口",
- "The boss's bramble, {name}, strikes too": "首领的荆棘堡 {name} 也会出手"
+ "The boss's bramble, {name}, strikes too": "首领的荆棘堡 {name} 也会出手",
+ "fire a {n} beam, aimed by its column": "发射 {n} 光束，按所在列瞄准"
 }

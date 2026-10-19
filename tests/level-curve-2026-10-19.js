@@ -103,7 +103,7 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
 { const md = fs.existsSync(path.join(ROOT, 'docs', 'level-curve-2026-10-19.md')) ? fs.readFileSync(path.join(ROOT, 'docs', 'level-curve-2026-10-19.md'), 'utf8') : '';
   ok(md.length > 4000 && /## The curves/.test(md) && /## Absolute difficulty/.test(md) && /## Shield overrides/.test(md) && /## Endless dungeons/.test(md), '6. docs/level-curve-2026-10-19.md has its sections');
   ok(fs.existsSync(path.join(ROOT, 'docs', 'level-curve-2026-10-19.xlsx')), '6. docs/level-curve-2026-10-19.xlsx');
-  ok(/package LV/i.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 60000)), '6. a CHANGELOG entry near the top'); } // 2026-10-19 (BF): later packages sit above it
+  ok(/package LV/i.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 150000)), '6. a CHANGELOG entry near the top'); } // 2026-10-19 (BF, BF4): later packages sit above it
 
 console.log(`level-curve-2026-10-19: ${n - fail}/${n} checks passed`);
 process.exit(fail ? 1 : 0);
