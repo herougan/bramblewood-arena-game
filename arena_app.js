@@ -3195,6 +3195,45 @@ function cardWhereToGetText(d){
 // first map is Map 1. Fights are numbered 1, 2, 3… along the map's trail (the tutorial is X-0, a raid boss X-R). A sub-map's
 // fights carry its parent's number and the sub-map's first letter, e.g. 2-G1 for Smugglers' Grotto under Map 2.
 // Display only: save data keeps the original node keys.
+// The phone map strip (2026-10-19, package U3, owner 13:42: "In the mobile version, the map tab on the top is okay. Just that there was
+// a empty margin above for no reason."): NV hid the strip on phones; it is back, on the top-right cluster's own line (the cluster is
+// fixed at top 12 px on the right), so nothing sits empty above it. The strip stops 8 px short of the cluster (--u3-strip-w on the
+// body, read from the cluster's on-screen left edge); on a wide screen (the desktop side list) the variable is cleared. When the
+// cluster leaves it less than 110 px (a 360 px phone with the Admin buttons), the strip takes its own line under the cluster
+// (body.u3-strip-below) rather than squeezing under the buttons.
+function u3FitMapStrip(){
+  const b = document.body; if(!b) return;
+  const phone = !!(window.matchMedia && matchMedia('(max-width:820px)').matches);
+  const cl = document.querySelector('#view-play .play-subtabs-actions');
+  const off = ()=>{ b.style.removeProperty('--u3-strip-w'); b.classList.remove('u3-strip-below'); };
+  if(!phone || !b.classList.contains('conquest-full') || !cl || !cl.getClientRects().length){ off(); return; }
+  const r = cl.getBoundingClientRect(); if(!(r.width > 0)){ off(); return; }
+  const room = Math.floor(r.left - 6);
+  b.classList.toggle('u3-strip-below', room < 110);
+  if(room < 110) b.style.removeProperty('--u3-strip-w'); else b.style.setProperty('--u3-strip-w', room + 'px');
+}
+try{ window.addEventListener('resize', ()=>{ try{ u3FitMapStrip(); }catch(e){} }, {passive:true}); }catch(e){}
+// Touch-and-hold on a phone chip shows its name and progress (the chip itself is just the number and emoji): 450 ms, cancelled by a
+// move of more than 10 px (the strip scrolls sideways); the click after a hold is dropped, so a hold never changes the map.
+function u3WireChipPeek(listEl){
+  if(!listEl || listEl.dataset.u3Peek) return; listEl.dataset.u3Peek = '1';
+  let t = 0, x0 = 0, y0 = 0, peek = null, held = false;
+  const clear = ()=>{ clearTimeout(t); t = 0; };
+  const hide = ()=>{ if(peek){ const p = peek; peek = null; setTimeout(()=> p.remove(), 900); } };
+  listEl.addEventListener('pointerdown', e=>{
+    if(e.pointerType !== 'touch') return; const chip = e.target.closest('.conquest-map-item'); if(!chip) return;
+    held = false; x0 = e.clientX; y0 = e.clientY; clear();
+    t = setTimeout(()=>{ t = 0; held = true; document.querySelectorAll('.u3-chip-peek').forEach(p=> p.remove());
+      const tip = chip.getAttribute('aria-label') || chip.getAttribute('title') || ''; if(!tip) return;
+      const r = chip.getBoundingClientRect(); peek = document.createElement('div'); peek.className = 'u3-chip-peek'; peek.setAttribute('role', 'tooltip'); peek.textContent = tip;
+      peek.style.left = Math.max(70, Math.min(innerWidth - 70, r.left + r.width/2)) + 'px'; peek.style.top = (r.bottom + 8) + 'px'; document.body.appendChild(peek);
+      try{ navigator.vibrate && navigator.vibrate(8); }catch(_){} }, 450);
+  }, {passive:true});
+  listEl.addEventListener('pointermove', e=>{ if(t && Math.hypot(e.clientX - x0, e.clientY - y0) > 10) clear(); }, {passive:true});
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(k=> listEl.addEventListener(k, ()=>{ clear(); hide(); }, {passive:true}));
+  listEl.addEventListener('click', e=>{ if(held){ held = false; e.stopPropagation(); e.preventDefault(); } }, true);
+  listEl.addEventListener('contextmenu', e=>{ if(e.target.closest('.conquest-map-item')) e.preventDefault(); });
+}
 function mapNumberOf(mapId){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
   const main = mainConquestMaps(); const i = main.indexOf(m.sub ? all.find(x=> x.id===m.parent) : m);
@@ -3278,25 +3317,28 @@ function codexSectionOf(d){
   const src = cardSourceOf(d);
   const split = baseGameBeaten(); // admins see what players see; the "View by" options organise for editing
   const mapTier = idx=> idx < BASE_GAME_MAPS ? 1 : 2 + Math.floor((idx - BASE_GAME_MAPS)/10);
-  if(src.kind==='materia') return {key:'materia', order:[9990,0,0,''], label:'💠 Materia · crafting materials for the Blacksmith'};
-  if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
-  if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:'Your journey: base cards, map rewards and packs', tier:1};
-  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:`${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}`, tier:1};
+  // 2026-10-19 (package CX, owner 14:07: "Rename all the pool names to simple names like just 'Factions'"): every section name is a
+  // short plain name (a TX key); the detail it used to carry after a "·" is its tooltip (tip).
+  if(src.kind==='materia') return {key:'materia', order:[9990,0,0,''], label:TX('ui.cx-sec-materia'), tip:TX('ui.cx-sec-materia-tip')};
+  if(src.kind==='smith') return codexSmithSection();
+  if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:codexTierName(1), tier:1};
+  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:codexTierName(1), tip:TX('ui.cx-sec-maps-tip', {n: 1, to: BASE_GAME_MAPS}), tier:1};
   if(src.kind==='map'){
     const idx = Math.max(0, mainConquestMaps().findIndex(m=> m.id===src.id || m.id===(CONQUEST_MAPS.find(x=> x.id===src.id)||{}).parent));
     const tier = mapTier(idx);
-    return {key:`${tier}-0`, order:[tier,0,0,''], label: tier===1 ? `${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}` : `${codexTierName(tier)} · maps ${BASE_GAME_MAPS + (tier-2)*10 + 1}–${BASE_GAME_MAPS + (tier-1)*10}`, tier};
+    return {key:`${tier}-0`, order:[tier,0,0,''], label:codexTierName(tier), tip: tier===1 ? TX('ui.cx-sec-maps-tip', {n: 1, to: BASE_GAME_MAPS}) : TX('ui.cx-sec-maps-tip', {n: BASE_GAME_MAPS + (tier-2)*10 + 1, to: BASE_GAME_MAPS + (tier-1)*10}), tier};
   }
   if(src.kind==='pack'){
     const tier = Math.max(1, Number(src.tier)||1);
-    return {key:`${tier}-1`, order:[tier,1,0,''], label:`${codexTierName(tier)} · card packs`, tier};
+    return {key:`${tier}-1`, order:[tier,1,0,''], label:TX('ui.cx-sec-packs'), tip:codexTierName(tier), tier};
   }
   if(src.kind==='event'){
     const theme = (src.theme||'Event').trim(), name = (src.name||'').trim();
-    return {key:`ev-${theme}`, order:[9998,0,0,theme.toLowerCase()], label:`🎉 Events · ${theme}`, event:true, eventName:name};
+    return {key:`ev-${theme}`, order:[9998,0,0,theme.toLowerCase()], label:theme, tip:TX('ui.cx-sec-events'), event:true, eventName:name};
   }
-  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unassigned — not obtainable yet (set where to get it in the card’s detail view)' : 'More cards'};
+  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unassigned' : TX('ui.cx-sec-other'), tip: adminModeEnabled ? 'Not obtainable yet: set where to get it in the card’s detail view' : ''};
 }
+function codexSmithSection(){ return {key:'smith', order:[9991,0,0,''], label:TX('ui.cx-sec-smith'), tip:TX('ui.cx-sec-smith-tip')}; }
 // "View by" grouping (2026-10-02): the same cards split by Skirmish (each node's reward cards),
 // Card pack (each pack tier), Event (theme → event) or Unassigned, so each kind of source can be
 // reviewed and edited on its own. Returns null for cards that don't belong in the chosen view.
@@ -3324,73 +3366,80 @@ function mapBandOf(num){
   // 2026-10-12 (23:12, user: "Call Map 0-5 the first season, then second season, third season and fourth season accordingly.
   // These make up the 'first world'"). 2026-10-13 (user: "'First season' is sufficient ... the 4 seasons. In the order: Autumn,
   // Spring, Winter, Summer"): short names, a season glyph each; the map range is in `tip`.
-  if(num < 0) return {key:'band-base', order:[0,-1,0,''], label:'🌱 Base'};
-  if(num <= 5) return {key:'band-0', order:[0,0,0,''], label:'🍂 First season', tip:'Maps 0–5'};
-  if(num <= 10) return {key:'band-6', order:[1,6,0,''], label:'🌸 Second season', tip:'Maps 6–10'};
-  if(num <= 15) return {key:'band-11', order:[1,11,0,''], label:'❄️ Third season', tip:'Maps 11–15'};
-  if(num <= 20) return {key:'band-16', order:[1,16,0,''], label:'☀️ Fourth season', tip:'Maps 16–20'};
-  if(num <= 40) return {key:'band-21', order:[1,21,0,''], label:'🗺️ Maps 21–40'};
+  // 2026-10-19 (package CX, owner 14:07: simple names): plain names (TX keys), no glyphs; the map range is the tooltip.
+  const band = (key, order, label, n, to)=> ({key, order, label, tip:TX('ui.cx-sec-maps-tip', {n, to})});
+  if(num < 0) return {key:'band-base', order:[0,-1,0,''], label:TX('ui.cx-sec-base'), tip:TX('ui.codex-base-tip')};
+  if(num <= 5) return band('band-0', [0,0,0,''], TX('ui.cx-sec-season-1'), 0, 5);
+  if(num <= 10) return band('band-6', [1,6,0,''], TX('ui.cx-sec-season-2'), 6, 10);
+  if(num <= 15) return band('band-11', [1,11,0,''], TX('ui.cx-sec-season-3'), 11, 15);
+  if(num <= 20) return band('band-16', [1,16,0,''], TX('ui.cx-sec-season-4'), 16, 20);
+  if(num <= 40) return band('band-21', [1,21,0,''], TX('ui.cx-sec-maps', {n: 21, to: 40}), 21, 40);
   const lo = 41 + Math.floor((num - 41)/10)*10;
-  return {key:'band-' + lo, order:[1,lo,0,''], label:`🗺️ Maps ${lo}–${lo + 9}`};
+  return band('band-' + lo, [1,lo,0,''], TX('ui.cx-sec-maps', {n: lo, to: lo + 9}), lo, lo + 9);
 }
 // Packs by their real names (2026-10-12, 21:01, user: "Don't call it Pack A, B, C in the codex. Call it by their actual names.
 // Only 3 packs and 1 advanced pack ... the rivergate and sunfeather pools can be combined into the factions pool"): pool 1 is
 // what the three basic packs share, pool 11 the Factions pool (Otter, Hummingbird and shared cards, in every basic pack too),
 // pool 99 the advanced Mystery Booster.
-const PACK_POOL_LABEL = {1:'🎁 Hedgerow Pouch · Tidemire Chest · Highcrest Case', 11:'🎁 Factions pool (in every basic pack)', 99:'❓ Mystery Booster'};
+// 2026-10-19 (package CX, owner 14:07: "Rename all the pool names to simple names like just 'Factions'"): Factions, Packs and Mystery
+// Booster; the packs' names and "in every basic pack" moved to the tooltip.
+function packPoolSection(k){ return k === 11 ? {label:TX('ui.cx-sec-factions'), tip:TX('ui.cx-sec-factions-tip')} : k === 99 ? {label:TX('ui.cx-sec-mystery'), tip:TX('ui.cx-sec-mystery-tip')} : {label:TX('ui.cx-sec-packs'), tip:TX('ui.cx-sec-packs-tip')}; }
 function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
   // 2026-10-13 (user: "Move the factions pool first, before the Base pool"): the factions' own cards lead the Codex.
-  return {key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
+  return Object.assign({key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, '']}, packPoolSection(k)); }
 // Easter eggs' own Codex section (2026-10-19, package EE), last before the materia, in every view but the per-source ones.
-function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:'🥚 ' + TX('ui.ee-section')}; }
+// 2026-10-19 (package CX): "Easter eggs", with "not obtainable yet" as its tooltip.
+function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:TX('ui.cx-sec-eggs'), tip:TX('ui.cx-sec-eggs-tip')}; }
 function codexViewSectionOf(d, view){
   if(isEasterEgg(d) && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
   if(view==='all'){
-    if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
+    if(src.kind==='smith') return codexSmithSection();
     return {key:'all', order:[0,0,0,''], label:'', bare:true};
   }
   if(view==='bands'){
     if(src.kind==='base') return mapBandOf(-1);
     if(src.kind==='map') return mapBandOf(mapNumberOf(src.id) ?? 999);
     if(src.kind==='pack') return packSectionOf(src, 'band');
-    if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:'🎉 Events'};
-    if(src.kind==='raid') return {key:'band-raid-' + (src.id||''), order:[5,0,0,''], label:'🐙 Raid cards'};
-    if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
-    return {key:'band-more', order:[9,0,0,''], label:'More cards'};
+    // 2026-10-19 (package CX, owner 14:07): short plain names (TX keys)
+    if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:TX('ui.cx-sec-events')};
+    if(src.kind==='raid') return {key:'band-raid-' + (src.id||''), order:[5,0,0,''], label:TX('ui.cx-sec-raid'), tip:TX('ui.cx-sec-raid-tip')};
+    if(src.kind==='smith') return codexSmithSection();
+    return {key:'band-more', order:[9,0,0,''], label:TX('ui.cx-sec-other')};
   }
   if(view==='advance'){
     // Advancement (2026-10-12): one section per step of the journey, in the order a player meets them.
     const k = advancementKey(d);
-    if(src.kind==='base') return {key:'adv-base', order:[0,0,0,''], label:'🌱 Base'};
-    if(src.kind==='map'){ const b = mapBandOf(mapNumberOf(src.id) ?? 999); return {key:'adv-' + b.key, order:[1, b.order[1], 0, ''], label: b.label.replace('🌱 Base cards & ', '🗺️ ')}; }
+    // 2026-10-19 (package CX, owner 14:07): the same short names as the player's Separated view
+    if(src.kind==='base') return {key:'adv-base', order:[0,0,0,''], label:TX('ui.cx-sec-base'), tip:TX('ui.codex-base-tip')};
+    if(src.kind==='map'){ const b = mapBandOf(mapNumberOf(src.id) ?? 999); return {key:'adv-' + b.key, order:[1, b.order[1], 0, ''], label:b.label, tip:b.tip}; }
     if(src.kind==='pack') return packSectionOf(src, 'adv');
-    if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:`🎉 Event: ${src.name || src.theme || 'unnamed'}`};
-    if(src.kind==='raid') return {key:'adv-raid-' + (src.id||''), order:[5,0,0,k], label:'🐙 Raid cards'};
-    return {key:'adv-un', order:[9,0,0,''], label:'Not obtainable yet'};
+    if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:src.name || src.theme || 'unnamed', tip:TX('ui.cx-sec-events')};
+    if(src.kind==='raid') return {key:'adv-raid-' + (src.id||''), order:[5,0,0,k], label:TX('ui.cx-sec-raid'), tip:TX('ui.cx-sec-raid-tip')};
+    return {key:'adv-un', order:[9,0,0,''], label:'Unassigned', tip:'Not obtainable yet'};
   }
   if(view==='skirmish'){
     if(src.kind!=='map') return null;
     const mi = mapIndexOf(src.id);
     const f = src.node ? findConquestNode(src.id, src.node) : null;
     const ni = f ? f.map.nodes.indexOf(f.node) : 999;
-    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: src.node ? conquestNodeLabel(src.id, src.node) : `Map ${mapNumberOf(src.id)} — no node chosen (not obtainable)`, mapId:src.id, nodeKey:src.node||null};
+    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: f ? `${skirmishCode(src.id, src.node)} ${f.node.name}` : `Map ${mapNumberOf(src.id)}`, tip: src.node ? conquestNodeLabel(src.id, src.node) : 'No node chosen (not obtainable)', mapId:src.id, nodeKey:src.node||null}; // 2026-10-19 (package CX): short name, the rest in the tooltip
   }
   if(view==='pack'){
     if(src.kind!=='pack') return null;
     const tier = Math.max(1, Number(src.tier)||1);
-    if(tier >= 11 && tier <= 13) return {key:'pk-factions', order:[0,0,0,''], label:PACK_POOL_LABEL[11]}; // the Factions pool, first (2026-10-13)
-    return {key:`pk-${tier}`, order:[tier,0,0,''], label: tier === 99 ? PACK_POOL_LABEL[99] : `Pack pool ${tier}`};
+    if(tier >= 11 && tier <= 13) return Object.assign({key:'pk-factions', order:[0,0,0,'']}, packPoolSection(11)); // the Factions pool, first (2026-10-13)
+    return Object.assign({key:`pk-${tier}`, order:[tier,0,0,'']}, tier === 99 ? packPoolSection(99) : {label:`Pack pool ${tier}`}); // 2026-10-19 (package CX): short names
   }
   if(view==='event'){
     if(src.kind!=='event') return null;
     const theme = (src.theme||'Event').trim(), name = (src.name||'(unnamed event)').trim();
-    return {key:`ev-${theme}-${name}`, order:[0,0,0,theme.toLowerCase()+'|'+name.toLowerCase()], label:`🎉 ${theme} — ${name}`};
+    return {key:`ev-${theme}-${name}`, order:[0,0,0,theme.toLowerCase()+'|'+name.toLowerCase()], label:name, tip:theme}; // 2026-10-19 (package CX): short name
   }
   if(view==='unassigned'){
     if(src.kind!=='unsorted') return null;
-    return {key:'un', order:[0,0,0,''], label:'Unassigned — not obtainable anywhere yet'};
+    return {key:'un', order:[0,0,0,''], label:'Unassigned', tip:'Not obtainable anywhere yet'}; // 2026-10-19 (package CX): short name
   }
   return codexSectionOf(d);
 }
@@ -4479,6 +4528,31 @@ const SoundKit = (()=>{
       for(let i = 0; i < 4; i++) sweep(900 + Math.random()*700, 1600 + Math.random()*900, 0.05, 'sine', 0.025, 0.08 + i*0.05); },
   };
 })();
+// ---- The Pale Desert's sand gusts (2026-10-19, package CX, owner 14:07: "Pale Desert - the sand sfx plays here and there, but not
+// permanently on") ----
+// Before: the Pale Desert borrowed the open-plains soundscape (MAP_KIND 4), a looping noise bed with a 4.6 kHz shimmer that never
+// stopped, which over bone-white sand read as sand hissing on and on; its own sand hiss came only on the map view (every 25–45 s), and
+// in its fights there was no sand at all (a fight's ambience carried no map flavour). Now the sand comes in gusts and only in gusts:
+// one every 8–20 s of quiet, each 2–4 s long, fading in and out, its loudness, pitch and side a little different every time, over a
+// quiet low breath of hot air. They keep coming for as long as you are on the map or in one of its fights (the fight keeps the map's
+// scene), stop when you leave (the scene's timers die with it), follow the SFX volume and mute, and, being ambience, its level too.
+const SAND_GUST = {gapMin:8, gapMax:20, durMin:2, durMax:4, gainMin:0.05, gainMax:0.085, rateMin:0.85, rateMax:1.18, firstMin:1, firstMax:4};
+// One gust: how long the quiet after it lasts (gap, s), its length (dur, s), peak gain, playback rate (pitch), band centre (Hz) and pan.
+function sandGustPlan(rand){
+  const G = SAND_GUST, r = (a, b)=> a + rand() * (b - a);
+  return {gap: r(G.gapMin, G.gapMax), dur: r(G.durMin, G.durMax), gain: r(G.gainMin, G.gainMax), rate: r(G.rateMin, G.rateMax), freq: r(1500, 2600), pan: r(-0.6, 0.6)};
+}
+// Gust after gust on a scene ({alive, timers}) until the scene is retired. env: {setTimeout, rand, play(plan), sfx()}, sfx() the SFX
+// level now (0 = muted). A muted gust is skipped but the next is still booked, so un-muting brings them back without leaving the map.
+function sandGustLoop(sc, env){
+  const G = SAND_GUST, R = env.rand || Math.random; let last = null;
+  const book = (fn, s)=>{ const i = sc.timers.indexOf(last); if(i >= 0) sc.timers.splice(i, 1); last = env.setTimeout(fn, s * 1000); sc.timers.push(last); };
+  const tick = ()=>{ if(!sc.alive) return;
+    const p = sandGustPlan(R), lv = env.sfx ? env.sfx() : 1;
+    if(lv > 0){ p.gain *= lv; try{ env.play(p); }catch(e){} }
+    book(tick, p.dur + p.gap); };
+  book(tick, G.firstMin + R() * (G.firstMax - G.firstMin));
+}
 // ---- Ambience (2026-10-05, immersion point #1: "every place should sound like itself") ----
 // A soundscape per place, synthesised live (no audio files): continuous "beds" (filtered noise
 // with slow movement) plus little scheduled events (birds, drips, frogs, crackles, bubbles,
@@ -4579,6 +4653,16 @@ const Ambience = (()=>{
   const whirr = sc=>{ for(let i=0;i<14;i++) puff(sc, 0.02, 0.006, 'bandpass', 2600, 4, i*0.03); };
   const rumble = sc=> puff(sc, 2.4, 0.08, 'lowpass', 160, 0.6, 0, 50);
   const hiss = sc=> puff(sc, 2.2, 0.03, 'highpass', 4000, 0.6, 0, 1800);
+  // A sand gust (2026-10-19, package CX; sandGustPlan above): a breath of wind through a band that rises and falls, with a thin layer
+  // of grains hissing on top, faded in over 40% of it and out over the last 45%, panned a little to one side.
+  const sandGust = (sc, p)=>{ const c = C(); if(!c) return; const t = c.currentTime + 0.02, d = p.dur;
+    let dest = sc.bus; try{ if(c.createStereoPanner){ const pn = c.createStereoPanner(); pn.pan.value = p.pan; pn.connect(sc.bus); dest = pn; } }catch(e){}
+    const layer = (type, f0, f1, q, peak)=>{ const src = c.createBufferSource(); src.buffer = noiseBuffer(c); src.loop = true; src.playbackRate.value = p.rate;
+      const f = c.createBiquadFilter(); f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, t); f.frequency.linearRampToValueAtTime(f1, t + d * 0.45); f.frequency.linearRampToValueAtTime(f0 * 0.9, t + d);
+      const g = c.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + d * 0.4); g.gain.setValueAtTime(peak, t + d * 0.55); g.gain.linearRampToValueAtTime(0, t + d);
+      src.connect(f); f.connect(g); g.connect(dest); src.start(t, Math.random() * 2); src.stop(t + d + 0.1); };
+    layer('bandpass', p.freq * 0.55, p.freq, 0.8, p.gain);
+    layer('highpass', 4800 * p.rate, 6200 * p.rate, 0.7, p.gain * 0.35); };
   const gulls = sc=>{ cry(sc); setTimeout(()=>{ try{ if(sc.alive) cry(sc); }catch(e){} }, 380); };
   const MAP_FLAVOR = {
     m1:{arrive:[sc=>{ bird(sc); setTimeout(()=>{ try{ if(sc.alive) bird(sc); }catch(e){} }, 300); }], events:[[woodpecker, 25, 45], [steps('grass'), 55, 90]]},
@@ -4610,7 +4694,7 @@ const Ambience = (()=>{
     ml:{arrive:[sc=> puff(sc, 2.6, 0.04, 'bandpass', 2200, 0.6, 0, 1400)], events:[[chirps, 8, 18], [steps('grass'), 55, 90]]},
     mt:{arrive:[sc=> puff(sc, 3, 0.04, 'bandpass', 700, 2, 0, 1100)], events:[[hoot, 25, 45], [sc=> puff(sc, 0.4, 0.04, 'lowpass', 400, 0.7, 0, 120), 25, 45], [steps('snow'), 55, 90]]},
     md:{arrive:[hiss], events:[[chime, 12, 25], [steps('sand'), 55, 90]]},
-    mpd:{arrive:[hiss], events:[[steps('sand'), 50, 85], [hiss, 25, 45]]}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes
+    mpd:{arrive:[], events:[[steps('sand'), 50, 85]], beds:[{freq:240, gain:0.022, lfo:0.05, depth:0.6}], bedsKind:4, gusts:true, noNight:true}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes; 2026-10-19 (package CX): the sand in gusts now (sandGustLoop), over a quiet low breath instead of the plains' constant shimmer, and no night crickets
   };
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
@@ -4641,7 +4725,7 @@ const Ambience = (()=>{
     const c = C(), o = out(); if(!c || !o) return null;
     const r0 = RECIPES[kind]; if(!r0) return null;
     const fl = flavor && MAP_FLAVOR[flavor];
-    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[])}) : r0;
+    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[]), beds: fl.beds && (fl.bedsKind == null || fl.bedsKind === kind) ? fl.beds : r0.beds}) : r0; // 2026-10-19 (package CX): + a map's own beds (the Pale Desert's)
     const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.8); bus.connect(o);
     const sc = {kind, flavor: flavor || null, bus, nodes:[], timers:[], alive:true};
     r.beds.forEach(b=> bed(sc, b));
@@ -4651,6 +4735,9 @@ const Ambience = (()=>{
       sc.timers.push(setTimeout(next, rnd(0.15, 1) * hi * 1000)); // random phase: a rare tidbit isn't always a full interval away
     });
     if(fl && fl.arrive) sc.timers.push(setTimeout(()=>{ if(!sc.alive || document.hidden || vol <= 0) return; fl.arrive.forEach(fn=>{ try{ fn(sc); }catch(e){} }); }, 450));
+    // 2026-10-19 (package CX): the Pale Desert's sand gusts, for as long as this scene lives (on the map, and in its fights)
+    if(fl && fl.gusts && (fl.bedsKind == null || fl.bedsKind === kind)) sandGustLoop(sc, {setTimeout:(f, ms)=> setTimeout(f, ms), rand:Math.random, play:p=> sandGust(sc, p),
+      sfx:()=>{ if(document.hidden || vol <= 0) return 0; try{ return typeof SoundKit !== 'undefined' && SoundKit.getSfxVolume ? SoundKit.getSfxVolume() : 1; }catch(e){ return 1; } }});
     return sc;
   }
   function retire(sc){
@@ -4684,7 +4771,8 @@ const Ambience = (()=>{
     // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling."): no night crickets or dawn chorus on Map 0's
     // world map or in its fights (sc.flavor is the map id; a fight on Map 0 is checked through matchState).
     try{ const mid = sc.flavor || (typeof matchState !== 'undefined' && matchState && !matchState.over && matchState.conquestNode && matchState.conquestNode.mapId); if(mid && typeof MISTY_MAPS !== 'undefined' && MISTY_MAPS.has(mid)) return; }catch(e){}
-    if(tod==='night'){ bed(sc, CRICKET); }
+    const fl = sc.flavor && MAP_FLAVOR[sc.flavor];
+    if(tod==='night' && !(fl && fl.noNight)){ bed(sc, CRICKET); } // 2026-10-19 (package CX): not on the Pale Desert (its own hiss was never meant to run on)
     if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
   }
   return {
@@ -5211,6 +5299,10 @@ function rivalPeopleForMatch(m){
     return peopleOfDeck(counts);
   }catch(e){ return 'folk'; }
 }
+// 2026-10-19 (package CX, owner 14:07, the Pale Desert's sand): a fight on a map whose sound is part of what it is keeps that map's
+// flavour (the scene carries on from the map view unbroken): only the Pale Desert so far. Not under rain (a rain scene has its own beds).
+const MATCH_AMBIENCE_FLAVOR = new Set(['mpd']);
+function ambienceFlavorForMatch(m){ const id = m && m.conquestNode && m.conquestNode.mapId; return id && MATCH_AMBIENCE_FLAVOR.has(id) && ambienceKindForMatch(m) !== 11 ? id : null; }
 function ambienceKindForMatch(m){
   if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
   try{ if(matchIsRainy(m)) return 11; }catch(e){}
@@ -5488,9 +5580,11 @@ function castleHoverHTML(hqSide){
   if((def.effects||{}).firstUnitAtkBonus){
     passiveText += pl.firstUnitBonusUsed ? ' <span class="live-stat-val">(already used this match)</span>' : ' <span class="live-stat-val">(ready)</span>';
   }
+  // 2026-10-19 (package U3): the raid boss's bramble lists its own abilities (the Tentacle Smack: when it fires and what it does)
+  const raidAbs = def.raidBramble && m.raidFull ? raidBrambleAbsHTML(raidBrambleAbilityLines(m.raidAttacks)) : '';
   return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Bramble'}</h4>
     <div class="statrow"><span class="hp" style="color:var(--health)">❤${Math.max(0,pl.hq.hp)}/${pl.hq.maxHp}</span></div>
-    <p class="panel-sub">${passiveText}</p>
+    ${raidAbs ? `<p class="panel-sub"><span>${escapeHtml(TX('ui.u3-bramble-kicker'))}</span>${def.partName ? ` · <span>${escapeHtml(def.partName)}</span>` : ''}</p>${raidAbs}` : `<p class="panel-sub">${passiveText}</p>`}
     ${def.flavor?`<div class="flavor">${def.flavor}</div>`:''}`;
 }
 (function initPopover(){
@@ -6332,7 +6426,7 @@ function renderCodexGrid(keepPage){
     const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
     // Admin: take every card of a section (a season, a pack, a skirmish) at once (2026-10-13).
     const getAll = adminModeEnabled && all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
-    if(!sec.bare){ const head = `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`; items.push({tiles:0, html:()=> head}); }
+    if(!sec.bare){ const head = `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span${sec.tip ? ` title="${escapeAttr(sec.tip)}"` : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`; items.push({tiles:0, html:()=> head}); }
     gIds.forEach(id=> items.push({tiles:1, html:()=> tileFor(id)}));
   });
   const chunks = []; // arrays of items: chunks[0] is drawn at once, the rest later
@@ -6497,10 +6591,12 @@ function codexShowCardsWithSkill(key){
 // Only the open spread is drawn (at most 18 tiles, from codexTileCache); the next spread's tiles are built while the browser is
 // idle, so a turn finds them ready. The search, filters, sorts and the rarity filter all still apply (renderCodexGrid filters,
 // this lays out). Turn with ‹ ›, the arrow keys, a swipe, or jump to a section.
+// 2026-10-19 (package CX, owner 14:07: "Show 16 cards on each page"): 4 × 4 sleeves a page at every width (two pages side by side
+// on a wide screen, one on a phone, its cards smaller); the page-turn tabs sit on the book's outer edges (codexEdgeTabsHTML).
 let codexAlbumState = null, codexTurnFn = null, codexSwipedAt = 0;
 function albumLayout(){
   const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200;
-  return w >= 960 ? {pages:2, cols:3, rows:3, key:'2x9'} : w >= 560 ? {pages:1, cols:3, rows:3, key:'1x9'} : {pages:1, cols:2, rows:3, key:'1x6'};
+  return w >= 960 ? {pages:2, cols:4, rows:4, key:'2x16'} : {pages:1, cols:4, rows:4, key:'1x16'};
 }
 // groups [{sec, ids (sorted), all}] -> album pages [{sec, ids, all, cont}]: a section starts a page; a long one runs on (cont).
 function albumPaginate(groups, per){
@@ -6531,7 +6627,7 @@ function albumPageHTML(p, i, side){
   const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (p.cont ? ' ' + TX('ui.codex-cont') : '');
   const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
   return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
-    <header class="al-head"><span class="al-sec">${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
+    <header class="al-head"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
     <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
 }
 function albumDraw(){
@@ -6542,9 +6638,11 @@ function albumDraw(){
   const sides = L.pages === 2 ? ['left', 'right'] : ['single'];
   // the sections, for "Go to section": each one's first page
   const sections = []; pages.forEach((p, i)=>{ if(!p.cont && !p.sec.bare && !sections.some(s=> s.key === p.sec.key)) sections.push({key:p.sec.key, label:p.sec.label, page:i}); });
-  gridEl.innerHTML = `<div class="al-album al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}</div>`
-    + codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections);
-  gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(+b.dataset.turn)));
+  // 2026-10-19 (package CX, owner 14:07: "The goto previous or next page buttons should be on the books themselves"): the page
+  // count and "Go to section" sit above the album; ‹ « and › » are tabs on its outer edges (no bar below).
+  gridEl.innerHTML = codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections)
+    + `<div class="al-album pg-book al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}${codexEdgeTabsHTML(codexPage, L.pages, pages.length)}</div>`;
+  gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(b.dataset.turn)));
   { const j = gridEl.querySelector('[data-pgjump]'); if(j) j.addEventListener('change', ()=>{ if(j.value !== '') albumGo(+j.value); }); }
   wireCodexGrid(S.groupIds);
   codexTurnFn = albumTurn;
@@ -6554,21 +6652,35 @@ function albumDraw(){
 }
 function albumTurn(dir){
   const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
-  const next = codexPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  if(dir === 'first' || dir === 'last'){ albumGo(dir === 'first' ? 0 : S.pages.length - 1); return; } // 2026-10-19 (package CX): « and »
+  dir = +dir; const next = codexPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
   codexLeafTurn(S.gridEl, dir, ()=>{ codexPage = next; albumDraw(); codexKeepInView(S.gridEl); });
 }
 function albumGo(page){
   const S = codexAlbumState; if(!S) return; const to = page - (page % S.L.pages); if(to === codexPage){ albumDraw(); return; }
   codexLeafTurn(S.gridEl, to > codexPage ? 1 : -1, ()=>{ codexPage = to; albumDraw(); codexKeepInView(S.gridEl); });
 }
-// After a turn from the bottom buttons on a small screen, the page's top comes back into view.
+// After a turn on a small screen, the page's top comes back into view.
 function codexKeepInView(el){ try{ const r = el.getBoundingClientRect(); if(r.top < 0) el.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(e){} }
-// The turn buttons under the album / the book: ‹ Page 3–4 of 12 ›, and for the album a "Go to section" list.
+// Above the album / the book: "Pages 3–4 of 12" (read out on a turn) and, for the album, a "Go to section" list.
+// 2026-10-19 (package CX, owner 14:07: "The goto previous or next page buttons should be on the books themselves"): the turn buttons
+// moved onto the book (codexEdgeTabsHTML); this row keeps only the page count and the section list.
 function codexPagerNavHTML(kind, first, per, total, sections){
   const last = Math.min(total, first + per);
   const label = last - first > 1 ? TX('ui.codex-pages-of', {n: first + 1, to: last, total}) : TX('ui.codex-page-of', {n: first + 1, total});
   const jump = sections && sections.length > 1 ? `<select class="pg-jump" data-pgjump aria-label="${escapeAttr(TX('ui.codex-go-to-section'))}"><option value="">${escapeHtml(TX('ui.codex-go-to-section'))}</option>${sections.map(s=> `<option value="${s.page}">${escapeHtml(s.label)}</option>`).join('')}</select>` : '';
-  return `<nav class="pg-nav pg-nav-${kind}" aria-label="${escapeAttr(TX('ui.codex-page-nav'))}"><button type="button" class="btn small pg-btn" data-turn="-1" ${first <= 0 ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-prev-page'))}" title="${escapeAttr(TX('ui.codex-prev-page'))}">‹</button><span class="pg-of" aria-live="polite">${escapeHtml(label)}</span><button type="button" class="btn small pg-btn" data-turn="1" ${last >= total ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-next-page'))}" title="${escapeAttr(TX('ui.codex-next-page'))}">›</button>${jump}</nav>`;
+  return `<div class="pg-info pg-info-${kind}"><span class="pg-of" aria-live="polite">${escapeHtml(label)}</span>${jump}</div>`;
+}
+// The page-turn tabs ON the book (2026-10-19, package CX, owner 14:07: "<< and >> for to first and to last page"; "The goto previous
+// or next page buttons should be on the books themselves"): like bookmark tabs on the cover's outer edges, ‹ with « under it on the
+// left page's edge, › with » on the right one (on a single page, its two edges). They follow you down a tall page (sticky), so a
+// turn is always in reach. Swipes, ← / → and Home / End still turn too (codexWireSwipe, the keydown below).
+function codexEdgeTabsHTML(first, per, total){
+  const atStart = first <= 0, atEnd = first + per >= total;
+  const tab = (turn, cls, glyph, label, off)=> `<button type="button" class="pg-tab ${cls}" data-turn="${turn}" ${off ? 'disabled' : ''} aria-label="${escapeAttr(label)}" title="${escapeAttr(label)}"><span aria-hidden="true">${glyph}</span></button>`;
+  const grp = 'role="group" aria-label="' + escapeAttr(TX('ui.codex-page-nav')) + '"';
+  return `<div class="pg-edge pg-edge-l" ${grp}><div class="pg-edge-in">${tab(-1, 'pg-corner pg-prev', '‹', TX('ui.codex-prev-page'), atStart)}${tab('first', 'pg-corner pg-first', '«', TX('ui.codex-first-page'), atStart)}</div></div>`
+    + `<div class="pg-edge pg-edge-r" ${grp}><div class="pg-edge-in">${tab(1, 'pg-corner pg-next', '›', TX('ui.codex-next-page'), atEnd)}${tab('last', 'pg-corner pg-last', '»', TX('ui.codex-last-page'), atEnd)}</div></div>`;
 }
 // A page turn (album and book): the page you leave lifts off at the spine and swings away (a copy of it, over the new pages), with
 // a shadow across it. Transform and opacity only. None with reduced motion or Low / None effects (like codexPageTurn): the new pages
@@ -6601,12 +6713,14 @@ function codexWireSwipe(el){
     if(Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - t0 < 900 && codexTurnFn){ codexSwipedAt = Date.now(); codexTurnFn(dx < 0 ? 1 : -1); } });
 }
 // ← / → turn the album or the book while the Codex is open (not while typing, or with a window open over it).
+// 2026-10-19 (package CX): Home / End open the first / last page, like « and ».
+const CODEX_TURN_KEYS = {ArrowLeft:-1, ArrowRight:1, Home:'first', End:'last'};
 document.addEventListener('keydown', e=>{
-  if(!codexTurnFn || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if(!codexTurnFn || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Home' && e.key !== 'End') || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
   try{ if(currentTab !== 'codex') return; }catch(_){ return; }
   const t = e.target; if(t && t.closest && t.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
   if(document.querySelector('.modal-overlay:not([hidden])')) return;
-  e.preventDefault(); codexTurnFn(e.key === 'ArrowRight' ? 1 : -1);
+  e.preventDefault(); codexTurnFn(CODEX_TURN_KEYS[e.key]);
 });
 // A resize that changes the layout (two pages / one, 3 or 2 across) packs the pages again.
 { let t = null; window.addEventListener('resize', ()=>{ clearTimeout(t); t = setTimeout(()=>{ try{
@@ -7619,7 +7733,7 @@ function bookTocHTML(S){
     ${letters.length > 1 ? `<h4 class="bk-az-h">${escapeHtml(TX('ui.book-az'))}</h4><div class="bk-az">${letters.map(L=> `<button type="button" data-bkgo="${S.az[L]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.az[L] + 1}))}">${escapeHtml(L)}</button>`).join('')}</div>` : ''}`;
 }
 // The pages from `first` (one, or two side by side): pages[i] is {toc}, {items:[...]} or {blank}.
-function bookSpreadHTML(pages, first, per){
+function bookSpreadHTML(pages, first, per, tabs){
   const S = codexBookState, sides = per === 2 ? ['left', 'right'] : ['single'];
   const page = (pg, i, side)=>{
     if(!pg) return `<section class="bk-page pg-${side} is-blank" aria-hidden="true"></section>`;
@@ -7629,22 +7743,24 @@ function bookSpreadHTML(pages, first, per){
     return `<section class="bk-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S && S.pages ? S.pages.length : 1}))}"><header class="bk-run">${escapeHtml(head)}</header><div class="bk-body">${inner}</div><footer class="bk-foot">${pg.blank ? '' : i + 1}</footer></section>`;
   };
   const shown = []; for(let k = 0; k < sides.length; k++) shown.push(pages[first + k]);
-  return `<div class="bk-spread bk-${per === 2 ? 'two' : 'one'}">${shown.map((pg, k)=> page(pg, first + k, sides[k])).join(per === 2 ? '<div class="bk-spine" aria-hidden="true"></div>' : '')}</div>`;
+  return `<div class="bk-spread pg-book bk-${per === 2 ? 'two' : 'one'}">${shown.map((pg, k)=> page(pg, first + k, sides[k])).join(per === 2 ? '<div class="bk-spine" aria-hidden="true"></div>' : '')}${tabs && S && S.pages ? codexEdgeTabsHTML(first, per, S.pages.length) : '' /* 2026-10-19 (package CX): the turn tabs on the book */}</div>`;
 }
 function bookDraw(){
   const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
   const per = S.L.pages, total = S.pages.length;
   skillBookPage = Math.max(0, Math.min(skillBookPage, total - 1)); skillBookPage -= skillBookPage % per;
   try{ uiStickySave('skills', {page: skillBookPage}); }catch(e){}
-  book.innerHTML = bookSpreadHTML(S.pages, skillBookPage, per) + codexPagerNavHTML('book', skillBookPage, per, total, null);
+  // 2026-10-19 (package CX, owner 14:07): the page count above, the turn tabs (‹ « › ») on the book's edges (bookSpreadHTML)
+  book.innerHTML = codexPagerNavHTML('book', skillBookPage, per, total, null) + bookSpreadHTML(S.pages, skillBookPage, per, true);
   book.querySelectorAll('[data-bkgo]').forEach(b=> b.addEventListener('click', ()=> bookGo(+b.dataset.bkgo)));
-  book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(+b.dataset.turn)));
+  book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(b.dataset.turn)));
   book.querySelectorAll('[data-bkskill]').forEach(b=> b.addEventListener('click', ()=> codexShowCardsWithSkill(b.dataset.bkskill)));
   codexTurnFn = bookTurn;
 }
 function bookTurn(dir){
   const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
-  const next = skillBookPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  if(dir === 'first' || dir === 'last'){ bookGo(dir === 'first' ? 0 : S.pages.length - 1); return; } // 2026-10-19 (package CX): « and »
+  dir = +dir; const next = skillBookPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
   codexLeafTurn(book, dir, ()=>{ skillBookPage = next; bookDraw(); });
 }
 function bookGo(page){
@@ -13791,11 +13907,10 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
-        ${'' /* 2026-10-19 (package NV, owner on an iPhone: "There should be a home button somewhere on mobile ... add the bramble acorn symbol
-             OR home symbol in the map/arena"): a 🌰 Home at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones
-             and desktop. It sits outside the tab strip, so it never scrolls away with the tabs, and the top-right 🏠 steps aside while it shows
-             (CSS). Same path as every other Home: switchTab('home'). */}<button type="button" class="play-home-tab" id="playHomeTabBtn" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="pht-nut" aria-hidden="true">🌰</span><span class="pht-label">${escapeHtml(TX('ui.nv-home'))}</span></button>
-        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
+        ${'' /* 2026-10-19 (package U3, owner 13:41: "I think the home button shouldnt be on the btm bar but as an icon beside the fullscreen
+             button and arena button."): NV's 🌰 Home left the floating tab bar; it is the first icon of the top-right cluster again
+             (#homeNavBtnPlay below), as an acorn, sized like the 🏟️ / ⚙️ beside it. NV's iOS fix stays: only the tab strip scrolls, never
+             the row that holds the cluster. */}<div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
           ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
                Codex"): deck-building now lives in its own top-level Deck section (see
@@ -13822,7 +13937,7 @@ function renderPlay(){
                costing 1-5⚡ by kind (ENERGY_COST). A second copy of the same pill, mirrored by
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
-          <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="Home"><span class="tab-emoji">🏠</span> Home</button>
+          <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
           ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="Back to the Arena">← Arena</button>` : ''}
           ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
           <div class="settings-wrap">
@@ -13867,8 +13982,7 @@ function renderPlay(){
     root.querySelectorAll('[data-playtab]').forEach(b=> b.addEventListener('click', ()=>{ playSubTab = b.getAttribute('data-playtab'); playerStatsOpen = false; if(playSubTab!=='conquest') exitConquestImmersive(); renderPlay(); }));
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
     const backBtn = document.getElementById('homeNavBtnPlay');
-    if(backBtn) backBtn.addEventListener('click', ()=> switchTab('home'));
-    { const ph = document.getElementById('playHomeTabBtn'); if(ph) ph.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); } // 2026-10-19 (package NV): the tab bar's 🌰 Home
+    if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
     wireSettingsButton('PlaySub');
@@ -21553,7 +21667,7 @@ function renderConquestSubTab(body){
   // The world is hidden at first (2026-10-12, user: "When you defeat the 2nd map for the first time, you also see the world
   // expand, then you get to see the world map... (otherwise its hidden till then)"): no map list, no world map button.
   const worldOpen = worldRevealed();
-  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(window.matchMedia && matchMedia('(max-width: 820px)').matches ? TX('toast.the-world-opens-up-phone') : TX('toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (NV merge): phones have no map list on the left */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
+  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(window.matchMedia && matchMedia('(max-width: 820px)').matches ? TX('toast.the-world-opens-up-phone') : TX('toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (package U3): phones have the map strip again, along the top (desktop: the list on the left) */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
   // 2026-10-17 (user: "Tutorial only: You see the tutorials placed left and right (T1  T2), not anymore"): on the Tutorial map itself
   // T-0 and T-1 show as they always will (their own spots, the trail between them); only the Outskirts keep the opening look.
@@ -21574,21 +21688,27 @@ function renderConquestSubTab(body){
     const fightable = map.nodes.filter(n=> n.kind!=='raidboss' && n.kind!=='tutorial');
     const doneN = fightable.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
     const cleared = doneN===fightable.length;
-    return `<div class="conquest-map-item ${map.id===selMain?'selected':''}" data-mapid="${map.id}" role="button" tabindex="0" style="${mapBandStyle(mapNumberOf(map.id))}">
-      <div class="cmi-ico">${map.icon}</div>
+    // 2026-10-19 (package U3, owner 13:42: "the map tab however, can be just number + emoji. No need for name."): on a phone a chip is
+    // its number (.cmi-num) and emoji, and a small ✓ (.cmi-tick) once cleared (CSS hides the name block there); the name and progress
+    // are in its title / aria-label, and a touch-and-hold shows them (u3ChipPeek). Desktop's side list keeps the full chip.
+    const num = mapNumberOf(map.id), tip = cleared ? TX('ui.u3-map-chip-tip-cleared', {n: num, name: map.name}) : TX('ui.u3-map-chip-tip', {n: num, name: map.name, done: doneN, total: fightable.length});
+    return `<div class="conquest-map-item ${map.id===selMain?'selected':''}${cleared ? ' is-cleared' : ''}" data-mapid="${map.id}" role="button" tabindex="0" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" style="${mapBandStyle(num)}">
+      <div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">${map.icon}</div>${cleared ? '<i class="cmi-tick" aria-hidden="true">✓</i>' : ''}
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
-  }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
+  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name});
+    return `<div class="conquest-map-item locked next-locked" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>`; })() : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   // 2026-10-15 (user: "The world - all maps design doesn't look like the other map tabs. It should also have the side shine thing,
   // but maybe its blue"): the same banded tab as the maps, in a sky blue.
-  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once" style="--band:#4f9fe0; --band-mix:30%;"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
+  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once" aria-label="${escapeAttr(TX('ui.u3-map-chip-world'))}" style="--band:#4f9fe0; --band-mix:30%;"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
   // 2026-10-10 (user: "Remove the Home Map from the conquest page"): Home is the top-right mini icon, or the chestnut on the World map.
   { const wc = document.getElementById('conquestWorldChip'); const go = ()=> openConquestWorld(body);
     wc.addEventListener('click', go); wc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
   if(conquestWorldView) listEl.querySelectorAll('.conquest-map-item.selected:not(.world-chip)').forEach(el=> el.classList.remove('selected'));
   // 2026-10-12 (user: "Moving to the next map shouldn't reset your map y-scroll on the left"): the list keeps its scroll across re-renders.
-  if(window.__cqListScroll){ listEl.scrollTop = window.__cqListScroll.top; } listEl.addEventListener('scroll', ()=>{ window.__cqListScroll = {top: listEl.scrollTop}; }, {passive:true});
+  if(window.__cqListScroll){ listEl.scrollTop = window.__cqListScroll.top; if(window.__cqListScroll.left) listEl.scrollLeft = window.__cqListScroll.left; } listEl.addEventListener('scroll', ()=>{ window.__cqListScroll = {top: listEl.scrollTop, left: listEl.scrollLeft}; }, {passive:true});
+  try{ u3FitMapStrip(); u3WireChipPeek(listEl); requestAnimationFrame(u3FitMapStrip); }catch(e){} // 2026-10-19 (package U3): the phone strip shares the cluster's line; touch-and-hold shows a chip's name
   listEl.querySelectorAll('[data-mapid]').forEach(el=>{
     const go = ()=>{ if(conquestWorldView){ conquestWorldView = false; conquestSelectedMap = el.getAttribute('data-mapid'); conquestSelectedNodeKey = null; renderConquestSubTab(body); return; } conquestPanTo(el.getAttribute('data-mapid'), body, progress); };
     el.addEventListener('click', go);
@@ -21679,7 +21799,7 @@ function renderConquestSubTab(body){
   mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : '') + (map.endless && map.axis !== 'x' ? ' endless-y-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
   mainEl.dataset.mapId = map.id;
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🏠</span></button><button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span></button>${'' /* 2026-10-19 (package U3): the acorn, as the cluster's Home */}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px; --endless-h:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
@@ -22641,6 +22761,11 @@ function raidPanelHTML(){
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
         ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
+        ${(()=>{ const br = raidBrambleOf(def); if(!br) return ''; // 2026-10-19 (package U3): the boss's bramble and its attacks, with the parts that use each
+          const seen = new Map(); (def.parts || []).forEach(p=>{ let atks = []; try{ atks = TrenchM.trenchConfig(def, p, st.stage).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
+            atks.forEach(a=>{ const k = (a.name || '') + '|' + a.pattern + '|' + a.every + '|' + a.dmg; if(!seen.has(k)) seen.set(k, {a, parts: []}); seen.get(k).parts.push(p.name); }); });
+          const list = [...seen.values()];
+          return `<div class="r3-bramble">${br.art ? `<img src="${escapeAttr(br.art)}" alt="">` : ''}<div><p class="r3-note">${escapeHtml(TX('ui.u3-bramble-rules', {name: br.name}))}</p>${raidBrambleAbsHTML(raidBrambleAbilityLines(list.map(x=> x.a)), list.map(x=> x.parts.join(', ')))}</div></div>`; })()}
         <ul class="r3-rules">${[TX('ui.raid-rule-share'), TX('ui.raid-rule-win', {n: raidNum(sc.overwhelmCap || RaidM.SCORING_DEFAULTS.overwhelmCap)}), TX('ui.raid-rule-rank'), TX('ui.rb-rule-weaken')].map(t=> `<li>${escapeHtml(t)}</li>`).join('') /* 2026-10-19 (RV2, owner 08:46): the raid's rules, no multipliers shown; (package RB) a win's 1,000 and the boss's weakening */}</ul>
         <p class="r3-note">${escapeHtml(TX('ui.rb-fight-note', {turns: RaidM.fightRounds(def)})) /* 2026-10-19 (package RB, owner 12:23: "Do not show the damage formula to players."): no per-fight cap or rate */}</p>
       </section>
@@ -23278,8 +23403,10 @@ function startRaidFullBattle(def, partId, f, st){
   let bossBR = null, sideBR = null; try{ bossBR = raidBossBR(def, f, b); sideBR = raidSideBR(mainDeckLevel(myDeckCounts, matchLeaderId()), allies); allies.forEach((a, i)=>{ a.level = sideBR.allies[i]; });
     m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')});
     me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
-  showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)},
-    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  const vsBramble = raidBrambleOf(def); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
+  showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
+    bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks)} : null},
+    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600); }); // + Turn 1's tick (2026-10-19, U3)
 }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
 // plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
@@ -23339,7 +23466,9 @@ function buildRaidFullFight(def, partId, f, st, opts){
   const sideOf = id=> id===1?'A':'B';
   const mine = opts.myCastle || {}, merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
   const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct) + raidTune(def, 'raiderCastleBonus'); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19) + the raid's raiderCastleBonus (2026-10-19, package RX)
-  const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
+  const bramble = typeof raidBrambleOf === 'function' ? raidBrambleOf(def) : null; // its name and portrait (2026-10-19, package U3); its smacks stay in raidSpecials
+  const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, Object.assign({id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}},
+    bramble ? {name: bramble.name, icon: bramble.icon, art: bramble.art || undefined, raidBramble: true, partName: f.part.name} : {}))};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
@@ -23492,6 +23621,27 @@ function raidBossUnit(m, events){
 const RAID_BOSS_UNIT_NAMES = {'kraken-spawnling':'Kraken Brute', 'goliath-tentacle':'Crushing Tentacle', 'humpback-elder':'Leviathan Elder', 'orca-vanguard':'Orca Warlord',
   'goliath-broodmother':'Broodmother Ascendant', 'vampire-squid':'Vampyre Matriarch', 'coral-reef-shark':'Reef Tyrant', 'glass-octopus':'Mirror Octopus', 'abyss-lantern-squid':'Abyssal Beacon'};
 function raidBossUnitName(base, name){ return RAID_BOSS_UNIT_NAMES[base] || ('Great ' + String(name || base).replace(/^(The|A) /, '')); }
+// The raid's bramble (2026-10-19, package U3, owner 13:43: "The tentacle smack should be a property of the Raid's bramble. Which should
+// be appropriately named and art'd."): the boss side's castle in a raid fight has a name, a portrait and abilities of its own. The
+// Tentacle Smack (and the Tail's Tail Sweep) are its abilities: its info panel (castleHoverHTML), the VS screen's boss card and the
+// raid's rules list them, and the tentacle reaches out of it (FX.F tentacleSmack's origin). The mechanics are unchanged
+// (raidSpecials: the same attacks, rolls and damage). A published raid can name its own with def.bramble {name, icon, art}.
+// Owner call: the Goliath's bramble is "Kraken's Reef" (alternative: "The Drowned Maw"); its portrait is a placeholder pixel SVG
+// (tools/make_raid_bramble_art.py) until a painted one replaces it (docs/art/raid-bramble-art-brief.md).
+const RAID_BRAMBLES = {goliath: {nameTx: ()=> TX('ui.u3-goliath-bramble'), icon:'🪸', art:'art/raids/krakens-reef.svg'}};
+function raidBrambleOf(def){
+  const b = Object.assign({}, RAID_BRAMBLES[def && def.id] || {}, (def && def.bramble) || {});
+  let name = b.name || ''; if(!name && b.nameTx) try{ name = b.nameTx(); }catch(e){ name = ''; }
+  return name ? {name, icon: b.icon || '🏰', art: b.art || ''} : null;
+}
+// Each of the bramble's attacks as one line (TX, so the page translator takes the whole line): when it fires and what it does.
+function raidBrambleAbilityLines(attacks){
+  return (attacks || []).map(a=>{ const v = {name: a.name || (a.pattern === 'frontRow' ? 'Tail Sweep' : 'Tentacle Smack'), every: Math.max(1, a.every || 1), dmg: a.dmg || 0};
+    return a.pattern === 'column' ? TX('ui.u3-smack-desc', {name: v.name, every: v.every, dmg: v.dmg}) : a.pattern === 'frontRow' ? TX('ui.u3-sweep-desc', {name: v.name, every: v.every, dmg: v.dmg}) : ''; }).filter(Boolean);
+}
+function raidBrambleAbsHTML(lines, notes){
+  return lines.length ? `<ul class="u3-bramble-abs">${lines.map((t, i)=> `<li>${/^Tail/.test(t) ? '🌊' : '🦑'} ${escapeHtml(t)}${notes && notes[i] ? ` <small>(${escapeHtml(notes[i])})</small>` : ''}</li>`).join('')}</ul>` : '';
+}
 // The boss calls in Commons (2026-10-17): every round from round 2, on top of its normal play, up to 1 Common into its middle row
 // and 1 into its back row (2 at most), each into an empty slot with a card right in front of it, and none while its back rows
 // already hold 6. The rule itself is RaidM.bossReinforce (bramblewood-raid.js); the pool is the raid's commonPool.
@@ -25675,9 +25825,9 @@ function ceBudgetHTML(d){
   const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
   // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
   const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
-  const bp = BramblewoodBudget.baseParts(d, bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : TX('ui.budget-part-' + q.k, {v: f1(q.v)});
-  const head = !c.ok ? 'ui.budget-head-over' : c.wellUnder ? 'ui.budget-head-under' : 'ui.budget-head-ok';
-  return `<div style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(TX(head, {n: f1(N), base: f1(bp.total)}))}</div>
+  const bp = BramblewoodBudget.baseParts(d, bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
+  const hv = {n: f1(N), base: f1(bp.total)}, head = !c.ok ? TX('ui.budget-head-over', hv) : c.wellUnder ? TX('ui.budget-head-under', hv) : TX('ui.budget-head-ok', hv);
+  return `<div style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(head)}</div>
     <div style="font-size:12px; margin:2px 0">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</div>
     <div style="font-size:12.5px">${TX('ui.budget-stats', {a: A, h: D, s: f1(S), m, x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)})}</div>
     <div style="font-size:12.5px">${TX('ui.budget-product', {a: A, h: D, s: f1(S), m, x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)})}</div>
@@ -28775,8 +28925,38 @@ function hpRibbonHTML(m, side, label){
 // The raid's clock (2026-10-18, user: "Why did my raid randomly end although my bramble's hp was not 0?"): a raid attempt lasts
 // m.raidRoundCap turns (the part's fight.rounds, else the raid's fightRounds, 20 from 2026-10-18), then the part sinks back and you score what you dealt. It used to end with
 // no warning; the turn and the limit now sit on the boss's HP ribbon all fight, and the last turn is marked (and announced).
+// 2026-10-19 (package U3, owner 13:43: "The turn metre ... should be faded out. It only fades in to tick on your turn, then it fades
+// out. It shouldn't say 2/20, but just Turn 2."): it reads "Turn 2" (TX ui.u3-turn), and it stays on the ribbon faded out, taking no
+// clicks (CSS); u3TurnFlash shows it as your turn starts.
 function raidClockPillHTML(m){ const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)), last = n >= cap;
-  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" title="${last ? 'The last turn: the raid ends after this one, whatever the brambles’ Health' : `The raid ends after turn ${cap}, whatever the brambles’ Health`}">${last ? '🌊 Last turn' : `🌊 Turn ${n} / ${cap}`}</span>`; }
+  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" aria-hidden="true">${escapeHtml(TX('ui.u3-turn', {n}))}</span>`; }
+// The turn's tick (2026-10-19, package U3): at the start of your turn the faded pill's copy fades in over it, rolls from the old turn to
+// the new (the old slides up and out, the new pops in), holds about 1.2 s and fades out. A page-level copy, so the board's redraws
+// can't cut it short. Owner call (the last-turns warning): in the raid's last 3 turns a second line says "3 turns left", "2 turns
+// left", then "Last turn!" (the 10-18 last-turn banner still plays too). Reduced motion: a plain fade, no roll or pop. Once a turn.
+const U3_TURN_HOLD_MS = 1200;
+function u3TurnFlash(m){
+  if(!m || m.over || !m.raidRoundCap || matchState !== m) return;
+  const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)); if(m._u3TurnSeen === n) return;
+  const from = m._u3TurnSeen; m._u3TurnSeen = n;
+  const pill = document.querySelector('.battlefield .bf-hp[data-hpribbon="B"] .bf-turn-pill.raid-clock'); if(!pill || !pill.getClientRects().length) return;
+  const r = pill.getBoundingClientRect();
+  document.querySelectorAll('.u3-turn-flash').forEach(e=> e.remove());
+  const left = cap - n + 1, warn = left > 3 ? '' : left <= 1 ? TX('ui.u3-last-turn') : TX('ui.u3-turns-left', {n: left});
+  const roll = from != null && from !== n && !reducedMotion();
+  const el = document.createElement('div'); el.className = 'u3-turn-flash' + (left <= 1 ? ' is-last' : ''); el.setAttribute('role', 'status');
+  el.innerHTML = `<span class="u3tf-pill"><span class="u3tf-roll">${roll ? `<span class="u3tf-old">${escapeHtml(TX('ui.u3-turn', {n: from}))}</span>` : ''}<span class="u3tf-new">${escapeHtml(TX('ui.u3-turn', {n}))}</span></span></span>${warn ? `<span class="u3tf-warn">${escapeHtml(warn)}</span>` : ''}`;
+  el.style.left = (r.left + r.width/2).toFixed(1) + 'px'; el.style.top = (r.top + r.height/2 - 11).toFixed(1) + 'px';
+  document.body.appendChild(el);
+  const total = 260 + 420 + U3_TURN_HOLD_MS + 380;
+  if(!el.animate){ el.style.opacity = '1'; setTimeout(()=> el.remove(), total); return; }
+  const fade = el.animate([{opacity:0}, {opacity:1, offset:260/total}, {opacity:1, offset:(total - 380)/total}, {opacity:0}], {duration:total, easing:'linear', fill:'forwards'});
+  fade.onfinish = ()=> el.remove();
+  if(roll){ const o = el.querySelector('.u3tf-old'), nw = el.querySelector('.u3tf-new'), pl = el.querySelector('.u3tf-pill');
+    o.animate([{transform:'translateY(0)', opacity:1}, {transform:'translateY(0)', opacity:1, offset:.45}, {transform:'translateY(-110%)', opacity:0}], {duration:620, easing:'ease-in', fill:'forwards'});
+    nw.animate([{transform:'translateY(110%)', opacity:0}, {transform:'translateY(110%)', opacity:0, offset:.45}, {transform:'translateY(0)', opacity:1}], {duration:620, easing:'cubic-bezier(.2,1.4,.4,1)', fill:'forwards'});
+    pl.animate([{transform:'scale(1)'}, {transform:'scale(1)', offset:.55}, {transform:'scale(1.16)', offset:.75}, {transform:'scale(1)'}], {duration:820, easing:'ease-out'}); }
+}
 // 2026-10-15 (user: "When the match is over, and I view the post-battlefield, I want to see the turn#. It shows up as a pill on the
 // opponent's HP bar in the centre."): the turn the fight ended on, centred on the top HP ribbon once it's over.
 function finalTurnPillHTML(m){ const n = Math.max(1, m.round || 1); return `<span class="bf-turn-pill" title="The fight ended on turn ${n}">Turn ${n}</span>`; }
@@ -29733,7 +29913,7 @@ function wireDropZones(){
   try{ mountCaveLamp(matchState); }catch(e){}
   try{ maybeDeckShuffle(matchState); }catch(e){}
   if(matchState && !matchState._pixRevealed){ matchState._pixRevealed = true; if(!document.querySelector('.vs-opener, .vs-screen')) try{ pixelReveal(); }catch(e){} }
-  try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
+  try{ Ambience.play(ambienceKindForMatch(matchState), ambienceFlavorForMatch(matchState)); }catch(e){} // 2026-10-19 (package CX): + the map's flavour (the Pale Desert's sand gusts)
   try{ if(matchState && !matchState.over && !matchState.testKit) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
@@ -32190,7 +32370,7 @@ function boardCardHTML(c, defs, opts){
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
-      bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
+      bottomHTML: statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
   </div>`);
 }
@@ -32198,6 +32378,20 @@ function boardCardHTML(c, defs, opts){
 // them fade during card animations or successfully make the aura follow the card's movements exactly"): the strip lives in the
 // card tile itself, so every lunge, shake, flip and topple carries it along.
 function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[^>]*>)/, '$1<span class="owner-edge" aria-hidden="true"></span>'); }
+// Status chips (2026-10-19, package TS, owner 13:37: "In small mode, the status icon is wrongly sized and not fitting the contents! When
+// in mini mode, should poison and status symbols be on the top boundary instead?" Yes, at every card size): a board card's live
+// statuses (the abadge spans boardCardHTML / updateCardStatusDisplay build) as a strip of small round chips straddling the card's top
+// edge, as the skill strip straddles the bottom one, clear of the Attack and Health numbers. The card's width decides how many show
+// (2, 3 or 4 slots, CSS container queries in #tsStyles); past that the last slot is a "+N" chip: oK on the strip says there are more
+// than K statuses, data-mK is the +N it shows at K slots (the rest, plus the chip it replaces). The strip keeps the old class
+// badges-bottom for the effects code that finds it (FX.D's poison drop and chip pop).
+const STATUS_CHIP_SLOTS = [2, 3, 4];
+function statusChipsHTML(badges){
+  if(!badges || !badges.length) return '';
+  const n = badges.length, over = STATUS_CHIP_SLOTS.filter(k=> n > k);
+  const more = over.length ? `<span class="sc-more" aria-hidden="true" ${over.map(k=> `data-m${k}="+${n - k + 1}"`).join(' ')}></span>` : '';
+  return `<div class="badges-bottom status-chips${over.map(k=> ' o' + k).join('')}">${badges.join('')}${more}</div>`;
+}
 // 2026-10-17 (user: "the angel wings should be reserved for units with the subtype angel"): an Angel is a card whose type, subtype,
 // archetypes or species name one (none ship yet; the wings wait for them).
 function isAngelDef(d){ if(!d) return false; const all = [].concat(d.archetypes || [], d.species || [], d.subtype || [], d.subtypes || [], d.type || []);
@@ -33451,17 +33645,41 @@ function updateCastleCracks(el, hp, maxHp){
 // opposing HP Bar."): the number pops at the horizontal centre of the bar it hits (its track's screen rect), not where the fill ends
 // (on a phone a healthy bar's fill ends at the far right). Read from getBoundingClientRect, so the board's camera can't skew it;
 // floatText keeps an hq-big number on that centre (no sideways jitter).
+// 2026-10-19 (package U3, owner 13:45, partly reversing BU: "Oh I get the raid health bar damage number now. Okay, I kinda like it. It
+// comes out at where the health bar% is currently at. We could do that for all games."): the number pops where the bar's fill ends
+// now, the Health % the castle is at, in every mode (normal fights, raids, the Tower, dungeons). Still read from the bar's on-screen
+// rect (getBoundingClientRect), so MB2's camera can't skew it; the fill's end comes from its width % (the target, not a width still
+// sliding), mirrored if the fill runs from the right. floatText clamps the number so it stays fully on screen at very low or very
+// full Health (u3ClampOnBar), and keeps it from drifting sideways.
 function hqRibbonFloatAnchor(side){
   const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`);
   if(!rib || !rib.getClientRects().length) return null;
   const r = rib.getBoundingClientRect(); if(!r.width) return null;
   const track = rib.querySelector('.bf-hp-track'), tr = track && track.getClientRects().length ? track.getBoundingClientRect() : null;
   const bar = tr && tr.width > 0 ? tr : r;
-  const x = bar.left + bar.width/2, y = bar.top + bar.height/2;
+  const x = hqFillEndX(rib, bar), y = bar.top + bar.height/2;
   const a = document.createElement('div'); a.className = 'hq-float-anchor'; a.setAttribute('aria-hidden', 'true');
   a.style.cssText = `position:fixed; width:0; height:0; z-index:1100; pointer-events:none; left:${x.toFixed(1)}px; top:${y.toFixed(1)}px;`;
   document.body.appendChild(a); setTimeout(()=> a.remove(), 2200);
   return a;
+}
+// Where a castle's HP fill ends on screen (2026-10-19, package U3): the bar's left edge plus its fill % (its style width, the Health
+// it is at now), or from the right when the fill is drawn from the right edge.
+function hqFillEndX(rib, bar){
+  const fill = rib && rib.querySelector('.bf-hp-fill');
+  let pct = fill ? parseFloat(fill.style.width) : NaN;
+  if(!Number.isFinite(pct) && fill && fill.getClientRects().length) pct = fill.getBoundingClientRect().width / Math.max(1, bar.width) * 100;
+  if(!Number.isFinite(pct)) return bar.left + bar.width/2;
+  pct = Math.max(0, Math.min(100, pct)) / 100;
+  let fromRight = false;
+  try{ if(fill && fill.getClientRects().length){ const fr = fill.getBoundingClientRect(); fromRight = fr.width > 1 && Math.abs(fr.right - bar.right) < 1.5 && Math.abs(fr.left - bar.left) > 1.5; } }catch(e){}
+  return fromRight ? bar.right - bar.width*pct : bar.left + bar.width*pct;
+}
+// A number on a castle's HP bar stays fully on screen (2026-10-19, package U3): at the fill's end at 2% or 100% Health its centre would
+// put half of it past the screen's edge. Measured at its biggest (the burst scale), with a 6 px margin; returns the px to shift it by.
+function u3ClampOnBar(anchor, f, big){
+  try{ const ax = anchor.getBoundingClientRect().left, half = (f.offsetWidth || 0) * (big || 1) / 2 + 6, W = document.documentElement.clientWidth || innerWidth;
+    const lo = half - ax, hi = W - half - ax; return Math.round(lo > hi ? lo : Math.min(hi, Math.max(lo, 0))); }catch(e){ return 0; }
 }
 function displayHqDamage(mm, side, dmg){
   if(!mm || !mm.displayHqHp){ updateHqHpDisplay(side); return; }
@@ -33573,9 +33791,9 @@ function updateCardStatusDisplay(uid){
   // old `.badges` class here would have overwritten/destroyed the card's ability badges every
   // time a status effect changed.
   let badgesEl = tile.querySelector('.badges-bottom');
-  if(badges.length){
-    if(!badgesEl){ badgesEl = document.createElement('div'); badgesEl.className = 'badges-bottom'; tile.appendChild(badgesEl); }
-    badgesEl.innerHTML = badges.join('');
+  if(badges.length){ // the status chips on the card's top edge (2026-10-19, package TS: statusChipsHTML, one builder for both paths)
+    const wrap = document.createElement('div'); wrap.innerHTML = statusChipsHTML(badges); const fresh = wrap.firstElementChild;
+    if(badgesEl){ badgesEl.className = fresh.className; badgesEl.innerHTML = fresh.innerHTML; } else tile.appendChild(fresh);
   } else if(badgesEl){
     badgesEl.remove();
   }
@@ -35276,6 +35494,7 @@ async function resolveRoundCore(opts){
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
+  if(!m.over && m.raidRoundCap) try{ u3TurnFlash(m); }catch(e){} // 2026-10-19 (package U3): the turn meter ticks as your turn starts
   if(!m.over && document.querySelector('.bounty-bubble')) bountyPeek(); // bounty bubbles show for 3s as your turn starts
   syncBountyHolding();
 }
@@ -36720,7 +36939,7 @@ function showVsScreen(left, right){
       </div>`; };
     const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}` : '' /* 2026-10-19 (package U3) */}</div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;
@@ -38638,12 +38857,13 @@ function floatText(el, text, cls){
   const travel = 0.9 + Math.random()*0.2;
   const big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
+  const barShift = onBar ? u3ClampOnBar(el, f, big) : 0; // 2026-10-19 (package U3): a number at the HP fill's end stays on screen
   if(hasGsap()){
     // 2026-10-03: GSAP owns the motion (the old CSS bounce read as a second number).
     // 2026-10-08: burst out big, recoil back to size together with the burst, then rise and fade.
     f.style.animation = 'none';
     const b = f.querySelector('.df-burst');
-    gsap.set(f, {position:'absolute', left:'50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
+    gsap.set(f, {position:'absolute', left: barShift ? `calc(50% + ${barShift}px)` : '50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:big, y:-8*travel, x:dx*0.3, duration:.09, ease:'power3.out'})
       .to(f, {scale:1, duration:.26, ease:'back.out(3)'})
@@ -38652,6 +38872,7 @@ function floatText(el, text, cls){
     if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
   } else {
     f.style.top = enemyRow ? (top0 + dy0*0.5)+'%' : (-6+dy0)+'px'; // no-GSAP fallback: CSS bounce from here
+    if(barShift) f.style.marginLeft = barShift + 'px';
     f.style.setProperty('--dx', dx.toFixed(1)+'px');
     setTimeout(()=> f.remove(), 1150);
   }

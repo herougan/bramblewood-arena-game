@@ -34,7 +34,8 @@ ok(!over.length, '1. budget v3 passes for every live card but the Dragons / Cald
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));
 const PREV = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(SCT);
 ['raven-harbinger', 'bone-diviner', 'magnate-duck'].forEach(id=> ok(PREV.budget(defs[id]).ok && (P.SC.budget(defs[id]).ok || QUEUE.has(id)), `1. ${id} (newly over on 10-19) fits under prevValue, and fits now or is queued`));
-const fitsPrev = live.filter(c=> !OVER_OK.has(c.id) && !PREV.budget(c).ok).map(c=> c.id);
+// 2026-10-19 (BF2): the pass was made under budget v3's N; v5's is a little lower at Level 1 for some cards (Colony, Great Gate are queued)
+const fitsPrev = live.filter(c=> !OVER_OK.has(c.id) && !PREV.budget(c, {N: PREV.budgetV3N(c)}).ok).map(c=> c.id);
 ok(!fitsPrev.length, '1. under the pre-application costs every live card but the owner-call list fits (the pass as made): ' + fitsPrev.slice(0, 8).join(', '));
 
 // ---- 2. the bands

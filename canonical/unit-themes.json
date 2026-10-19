@@ -1952,7 +1952,8 @@
      "mu"
     ],
     "fights": {
-     "mu": 1
+     "mu": 1,
+     "mz": 2
     }
    },
    "source": "map",
@@ -2228,7 +2229,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "mt": 6
+     "mt": 4
     }
    },
    "source": "pack",
@@ -2707,7 +2708,7 @@
     "fights": {
      "mr": 12,
      "m11": 5,
-     "me": 2,
+     "me": 4,
      "mx": 2
     }
    },
@@ -3478,7 +3479,7 @@
      "mk"
     ],
     "fights": {
-     "m9": 9,
+     "m9": 7,
      "mx": 6
     }
    },
@@ -4606,7 +4607,7 @@
      "mc"
     ],
     "fights": {
-     "m21": 4
+     "m21": 6
     }
    },
    "source": "map",
@@ -5000,7 +5001,7 @@
      "mh"
     ],
     "fights": {
-     "m10": 19,
+     "m10": 18,
      "mh": 5,
      "mv": 4
     }
@@ -5066,7 +5067,7 @@
      "mv"
     ],
     "fights": {
-     "m10": 12,
+     "m10": 15,
      "mv": 8
     }
    },
@@ -6354,7 +6355,7 @@
     ],
     "fights": {
      "m4": 5,
-     "mn": 7
+     "mn": 5
     }
    },
    "source": "map",
@@ -6699,7 +6700,7 @@
     "fights": {
      "ml": 9,
      "m11": 7,
-     "m23": 2
+     "m23": 4
     }
    },
    "source": "map",
@@ -6751,7 +6752,7 @@
      "ml"
     ],
     "fights": {
-     "ml": 18
+     "ml": 14
     }
    },
    "source": "map",
@@ -7488,8 +7489,7 @@
      "mi"
     ],
     "fights": {
-     "m6": 19,
-     "m22": 1,
+     "m6": 23,
      "mi": 7
     }
    },
@@ -7561,7 +7561,7 @@
     ],
     "fights": {
      "md": 1,
-     "mpd": 12
+     "mpd": 10
     }
    },
    "source": "map",
@@ -8221,7 +8221,7 @@
     ],
     "fights": {
      "m11": 18,
-     "me": 5
+     "me": 7
     }
    },
    "source": "map",
@@ -9066,7 +9066,7 @@
     ],
     "fights": {
      "m21": 11,
-     "m22": 5
+     "m22": 6
     }
    },
    "source": "map",
@@ -9233,7 +9233,7 @@
     ],
     "fights": {
      "m6": 4,
-     "m22": 4
+     "m22": 3
     }
    },
    "source": "map",
@@ -9641,8 +9641,8 @@
     ],
     "fights": {
      "mc": 18,
-     "m10": 15,
-     "m21": 11,
+     "m10": 14,
+     "m21": 9,
      "m22": 3,
      "mv": 8
     }
@@ -10271,7 +10271,7 @@
      "m4": 6,
      "mp": 2,
      "mg": 3,
-     "mn": 9
+     "mn": 7
     }
    },
    "source": "map",
@@ -10379,7 +10379,7 @@
     "home": [],
     "fights": {
      "m4": 26,
-     "mn": 4
+     "mn": 6
     }
    },
    "source": "pack",
@@ -10500,7 +10500,7 @@
      "m11": 6,
      "m22": 8,
      "m9": 5,
-     "me": 3,
+     "me": 1,
      "mx": 6
     }
    },
@@ -10558,7 +10558,7 @@
      "me"
     ],
     "fights": {
-     "m11": 4,
+     "m11": 6,
      "m21": 2,
      "m22": 2,
      "mtut": 1,
@@ -10960,7 +10960,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "mt": 12,
+     "mt": 10,
      "m21": 8
     }
    },
@@ -11364,7 +11364,7 @@
     "fights": {
      "mw": 11,
      "mk": 4,
-     "ms": 4
+     "ms": 6
     }
    },
    "source": "map",
@@ -12677,7 +12677,7 @@
     "home": [],
     "fights": {
      "m1": 7,
-     "ml": 8,
+     "ml": 9,
      "mtut": 2,
      "mg": 6,
      "mo": 5
@@ -12736,7 +12736,7 @@
      "ml"
     ],
     "fights": {
-     "ml": 2
+     "ml": 1
     }
    },
    "source": "map",
@@ -14378,7 +14378,7 @@
      "m21"
     ],
     "fights": {
-     "m21": 16
+     "m21": 12
     }
    },
    "source": "map",
@@ -15258,7 +15258,7 @@
      "m21"
     ],
     "fights": {
-     "m21": 6
+     "m21": 8
     }
    },
    "source": "map",
@@ -15744,6 +15744,7 @@
      "m1": 2,
      "mf": 4,
      "mu": 1,
+     "mn": 2,
      "mo": 8
     }
    },
@@ -16025,7 +16026,7 @@
     "home": [],
     "fights": {
      "m1": 6,
-     "mp": 5,
+     "mp": 3,
      "mo": 3
     }
    },
@@ -16212,7 +16213,7 @@
      "mf": 13,
      "mtut": 6,
      "mq": 14,
-     "mo": 7
+     "mo": 9
     }
    },
    "source": null,
@@ -17735,7 +17736,7 @@
      "mf"
     ],
     "fights": {
-     "mf": 1,
+     "mf": 3,
      "mh": 4
     }
    },
@@ -18140,8 +18141,8 @@
    "maps": {
     "home": [],
     "fights": {
-     "mk": 8,
-     "mp": 16
+     "mk": 10,
+     "mp": 18
     }
    },
    "source": null,
@@ -19416,7 +19417,7 @@
      "m10"
     ],
     "fights": {
-     "m24": 4
+     "m24": 6
     }
    },
    "source": "map",
@@ -20336,7 +20337,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "ml": 17
+     "ml": 21
     }
    },
    "source": "pack",
@@ -24844,8 +24845,8 @@
      "m22"
     ],
     "fights": {
-     "m21": 5,
-     "m22": 8,
+     "m21": 7,
+     "m22": 9,
      "mlb": 50
     }
    },
@@ -26063,7 +26064,7 @@
     ],
     "fights": {
      "md": 3,
-     "mpd": 5
+     "mpd": 7
     }
    },
    "source": "map",
@@ -26176,7 +26177,7 @@
     ],
     "fights": {
      "mt": 14,
-     "m6": 8,
+     "m6": 4,
      "mi": 6
     }
    },
@@ -27088,7 +27089,7 @@
      "m22"
     ],
     "fights": {
-     "m10": 14,
+     "m10": 13,
      "m21": 1,
      "m22": 1
     }
@@ -27310,8 +27311,7 @@
     ],
     "fights": {
      "mw": 2,
-     "m8": 7,
-     "ms": 2
+     "m8": 7
     }
    },
    "source": "map",
@@ -27602,7 +27602,7 @@
      "md": 6,
      "m3": 2,
      "m11": 4,
-     "m22": 4,
+     "m22": 6,
      "m9": 5,
      "me": 6,
      "mx": 4
@@ -27845,8 +27845,7 @@
    "rarity": "uncommon",
    "biomes": [
     "pale-desert",
-    "savanna",
-    "desert-glass"
+    "savanna"
    ],
    "family": "mammal",
    "sub": "Canid",
@@ -27886,12 +27885,12 @@
     ],
     "fights": {
      "md": 3,
-     "mpd": 3
+     "mpd": 5
     }
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Savanna; fights mostly on desert-glass",
+    "biome": "home map mpd; type Savanna",
     "family": "species Canid",
     "faction": "hunter type / name"
    }
@@ -29273,7 +29272,7 @@
      "mt"
     ],
     "fights": {
-     "mt": 3
+     "mt": 5
     }
    },
    "source": "map",
@@ -30029,7 +30028,7 @@
      "mj"
     ],
     "fights": {
-     "mk": 3
+     "mk": 1
     }
    },
    "source": "map",
@@ -30976,7 +30975,8 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "jungle"
+    "jungle",
+    "savanna"
    ],
    "family": "mammal",
    "sub": "Primate",
@@ -31011,13 +31011,13 @@
      "my"
     ],
     "fights": {
-     "m5": 2,
+     "m5": 4,
      "my": 4
     }
    },
    "source": "map",
    "why": {
-    "biome": "home map my",
+    "biome": "home map my; fights mostly on savanna",
     "family": "species Primate",
     "faction": "default"
    }
@@ -34080,7 +34080,7 @@
     ],
     "fights": {
      "m3": 3,
-     "m11": 3,
+     "m11": 1,
      "m21": 8,
      "m22": 7
     }
@@ -34946,7 +34946,7 @@
      "m24"
     ],
     "fights": {
-     "m24": 14
+     "m24": 10
     }
    },
    "source": "map",
@@ -35338,7 +35338,7 @@
    "faction": "wild",
    "size": "medium",
    "stage": 3,
-   "firstMap": 17,
+   "firstMap": 16,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -35373,6 +35373,7 @@
      "m6"
     ],
     "fights": {
+     "mt": 2,
      "m6": 5
     }
    },
@@ -35937,7 +35938,7 @@
     ],
     "fights": {
      "md": 6,
-     "mpd": 3
+     "mpd": 5
     }
    },
    "source": "map",
@@ -39316,7 +39317,8 @@
      "mk"
     ],
     "fights": {
-     "mk": 7
+     "mk": 7,
+     "m7": 2
     }
    },
    "source": "map",

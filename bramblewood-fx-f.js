@@ -1182,8 +1182,20 @@ M.tentacleSmack = function(cells, opts){
   const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
   const horiz = !!opts.horizontal, ref = rs[0], cw = Math.min(...rs.map(r=> r.width)), chh = Math.min(...rs.map(r=> r.height));
   const w = Math.max(30, Math.min(110, cw*.95));     // the base about one card wide
-  let B, T, hits, slamY, dir, fromLeft = false;
-  if(!horiz){
+  // 2026-10-19 (package U3, owner 13:43: "The tentacle smack should be a property of the Raid's bramble"): with opts.origin (the boss's
+  // bramble tile, top left) the tentacle reaches out of the bramble instead of dropping from nowhere: a column smack's base sits on
+  // the bramble and the limb grows from it to the struck column, slams, and draws back into it; a row smack comes in from the board's
+  // edge on the bramble's side. The bramble tile flares as it strikes (.u3-bramble-smack). Rects are read once, as before.
+  const org = opts.origin && opts.origin.getBoundingClientRect && opts.origin.getClientRects().length ? opts.origin.getBoundingClientRect() : null;
+  if(org && opts.origin.classList){ opts.origin.classList.remove('u3-bramble-smack'); void opts.origin.offsetWidth; opts.origin.classList.add('u3-bramble-smack'); setTimeout(()=>{ try{ opts.origin.classList.remove('u3-bramble-smack'); }catch(e){} }, 700); }
+  let B, T, hits, slamY, dir, fromLeft = false, grow = false;
+  if(!horiz && org){
+    const cx = ref.left + ref.width/2, bottom = Math.max(...rs.map(r=> r.bottom));
+    T = {x:cx, y:bottom - chh*.18}; B = {x:org.left + org.width*.62, y:org.top + org.height*.62};
+    dir = T.x >= B.x ? 1 : -1; // the tip curls back toward the bramble's side
+    hits = [{x:cx, y:bottom - chh*.1}, {x:cx, y:ref.top + chh*.15}];
+    slamY = 0; grow = true;
+  } else if(!horiz){
     const cx = ref.left + ref.width/2, bottom = Math.max(...rs.map(r=> r.bottom)), top0 = hr ? hr.top : 0;
     dir = Math.random() < .5 ? 1 : -1;
     T = {x:cx, y:bottom - chh*.18}; B = {x:cx + dir*w*.35, y:Math.min(top0, ref.top - chh*.6) - w*.3};
@@ -1192,8 +1204,9 @@ M.tentacleSmack = function(cells, opts){
   } else {
     const lo = Math.min(...rs.map(r=> r.left)), hi = Math.max(...rs.map(r=> r.right)), cy = rs.reduce((t, r)=> t + r.top + r.height/2, 0)/rs.length;
     const left0 = hr ? hr.left : 0, right0 = hr ? hr.right : VW();
-    fromLeft = opts.from ? opts.from === 'left' : Math.random() < .5;
+    fromLeft = opts.from ? opts.from === 'left' : org ? (org.left + org.width/2) < (lo + hi)/2 : Math.random() < .5; // from the bramble's side (U3)
     B = {x:fromLeft ? left0 - w*.2 : right0 + w*.2, y:cy + chh*.05}; T = {x:fromLeft ? hi - cw*.15 : lo + cw*.15, y:cy + chh*.05};
+    if(org) grow = true;
     dir = fromLeft ? -1 : 1; // the tip curls up, away from the row
     hits = rs.map(r=> ({x:r.left + r.width/2, y:r.top + r.height*.75}));
     slamY = -(cy - (hr ? hr.top : 0) + chh*1.2);
@@ -1201,8 +1214,25 @@ M.tentacleSmack = function(cells, opts){
   const h = lay('fxf-tenth', '', 4000), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
   sv.setAttribute('class', 'fxf-tentacle'); sv.setAttribute('width', VW()); sv.setAttribute('height', VH()); sv.style.width = VW() + 'px'; sv.style.height = VH() + 'px';
   sv.innerHTML = tentacleSVG(B, T, w, dir); h.appendChild(sv);
-  const body = sv.querySelector('.tb-body'), origin = horiz ? `${((B.x + T.x)/2).toFixed(1)} ${T.y.toFixed(1)}` : `${T.x.toFixed(1)} ${T.y.toFixed(1)}`;
-  const squash = horiz ? {scaleX:1.02, scaleY:.78} : {scaleX:1.12, scaleY:.9};
+  const body = sv.querySelector('.tb-body'), origin = grow ? `${B.x.toFixed(1)} ${B.y.toFixed(1)}` : horiz ? `${((B.x + T.x)/2).toFixed(1)} ${T.y.toFixed(1)}` : `${T.x.toFixed(1)} ${T.y.toFixed(1)}`;
+  const squash = grow ? {scaleX:1.05, scaleY:1.05} : horiz ? {scaleX:1.02, scaleY:.78} : {scaleX:1.12, scaleY:.9};
+  if(grow){ // out of the bramble: it grows from its base to the struck cards, slams, then draws back into the bramble while fading
+    return new Promise(res=>{
+      const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
+      g.set(body, {scale:.06, opacity:0, svgOrigin:origin});
+      g.timeline({onComplete:done})
+        .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
+        .to(body, {scale:1, duration:TENT.slam/1000, ease:'power3.in'}, 0)
+        .add(()=>{
+          cells.map(relive).filter(Boolean).forEach(e=> shake(e, {amp:Math.max(3, cw*.07), n:5, y:2}));
+          hits.forEach((p, k)=> smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (k ? 5 : 9), spread:Math.PI*1.7}));
+          ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
+          call(opts.onImpact); })
+        .to(body, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
+        .to(body, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
+        .to(body, {scale:.08, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
+    });
+  }
   return new Promise(res=>{
     const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
     g.set(body, {y:slamY, opacity:0, svgOrigin:origin});
@@ -1550,6 +1580,8 @@ M.onEvent = function(ev, env){
 function raidSmackFx(ev, env){
   {
     const row = rowOf('A', env); if(!row) return;
+    // 2026-10-19 (package U3): the smacks are the boss's bramble's (Kraken's Reef): the tentacle reaches out of its tile, top left
+    const origin = (mineSide('A', env) ? document.querySelector('.top-play-row [data-hq="B"]') : null) || document.querySelector('[data-hq="B"]');
     if(ev.front && env.reduced){ M.tentacleSmack(cardsOn('A', env), {horizontal:true}); return; } // a flash, no motion
     if(ev.front){ M.tailSweep(cardsOn('A', env).filter(e=> e.querySelector('.card-tile')), {host:env.battlefield}); return; }
     // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
@@ -1558,10 +1590,10 @@ function raidSmackFx(ev, env){
     if(ev.kind === 'row'){
       const r = ev.row | 0, rr = r ? resRows.find(x=> +x.dataset.resrow === r) : null, cells = r ? (rr ? $$(':scope > .board-card', rr) : []) : all;
       const units = cells.filter(e=> e.querySelector('.card-tile'));
-      M.tentacleSmack(units.length ? units : cells, {host:env.battlefield, horizontal:true}); return;
+      M.tentacleSmack(units.length ? units : cells, {host:env.battlefield, origin, horizontal:true}); return;
     }
     const i = Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)));
-    M.tentacleSmack([all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean), {host:env.battlefield});
+    M.tentacleSmack([all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean), {host:env.battlefield, origin});
   }
 }
 

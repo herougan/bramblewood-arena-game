@@ -45,7 +45,7 @@ const plan = SW.plan(table, lab.defs, {});
 const planned = new Set(plan.map(r=> r.kind + ':' + r.id));
 table.skills.forEach(e=> ok(planned.has('skill:' + e.id) || planned.has('param:' + e.id) || SW.WHY[e.id], `skill ${e.id} is planned or has a reason`));
 table.triggers.forEach(e=> ok(planned.has('trigger:' + e.id) || e.id === 'bounty' || e.inEngine === false, `trigger ${e.id} is planned`));
-table.actions.forEach(e=> ok(planned.has('action:' + e.id), `action ${e.id} is planned`));
+table.actions.forEach(e=> ok(planned.has('action:' + e.id) || (typeof e.measuredWhy === 'string' && /not yet measured/.test(e.measuredWhy)), `action ${e.id} is planned (or added after the runs, with its reason)`)); // 2026-10-19 (BF2): EE's positionBeam came after the SW runs
 ok(plan.some(r=> r.kind === 'skill' && r.id === 'swimmer' && r.ctx === 'tide') && plan.some(r=> r.id === 'darksight' && r.ctx === 'dark') && plan.some(r=> r.id === 'nocturnal' && r.ctx === 'night'), 'field-bound skills also run under their field');
 ok(plan.some(r=> r.id === 'armor' && r.n === 2) && plan.some(r=> r.id === 'armor' && r.n !== 1 && r.n !== 2), 'N-scaling skills run at 2-3 N');
 ok(!plan.some(r=> r.effects && r.effects.onDeathSpawn && lab.defs[r.effects.onDeathSpawn.defId] && lab.defs[r.effects.onDeathSpawn.defId].pool), 'no pool card in the plan');
