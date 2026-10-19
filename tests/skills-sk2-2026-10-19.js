@@ -177,7 +177,7 @@ ok(/function isStructureCard\(c\)\{[^\n]*d\.cardType === 'structure'/.test(eng),
 // ---- 10. The app: the skill registry (Codex skill book, keyword registry), card lines, icons, chips, the log / looks / chips hooks
 const src = R('arena_app.js');
 const SK2_KEYS = ['harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'];
-const blkA = src.slice(src.indexOf('// ---- Package SK2 (2026-10-19, owner 21:36)'), src.indexOf('PASSIVE_DEFS.push(') + 4000);
+const sk2At = src.indexOf('// ---- Package SK2 (2026-10-19, owner 21:36)'); const blkA = src.slice(sk2At, src.indexOf('PASSIVE_DEFS.push(', sk2At) + 4000); // 2026-10-19 (SK3 merge): SK3's own push comes earlier in the file
 const icoLine = (src.match(/^Object\.assign\(SKILL_ICON, \{harvest:[^\n]*/m) || [''])[0];
 const icons = [...icoLine.matchAll(/(\w+):'([^']+)'/g)].map(m=> m[2]);
 SK2_KEYS.forEach(k=>{
