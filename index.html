@@ -41589,7 +41589,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '09a519262371', BUILD_CARD_HASH = 'e1e4155fec807f28e0bb4fb6b208ef89815479beebd697265de1f1e4268ced4f';
+const BUILD_ID = '94cf4de5f4df', BUILD_CARD_HASH = 'e1e4155fec807f28e0bb4fb6b208ef89815479beebd697265de1f1e4268ced4f';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -79147,6 +79147,10 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
   .board-card .eq-under.is-equipping{animation:eqEquip 0.9s ease-in-out infinite alternate;}
   @keyframes eqEquip{from{opacity:.45;} to{opacity:1;}}
   @media (prefers-reduced-motion: reduce){ .eq-floor-lava, .board-card .eq-under.is-equipping{animation:none;} }
+  .board-card[data-uid] > .eq-floor{left:-5px; right:auto; top:auto; bottom:-9px; height:auto; padding:2px 5px; z-index:5; border:1px solid rgba(255,255,255,.35); align-items:center;}
+  .board-card.slot-target:has(> .eq-floor, > .eq-lone){opacity:1;}
+  body:not(.bw-holding) .board-card.slot-target:has(> .eq-floor, > .eq-lone){border-color:transparent; background:none;}
+  body:not(.bw-holding) .board-card.slot-target:has(> .eq-floor, > .eq-lone) .slot-target-plus{opacity:0;}
   .board-card .eq-hz-drop{display:none;}
   body.eq-hz-holding .board-card .eq-hz-drop{display:block; position:absolute; inset:0; z-index:8; visibility:visible; border:2px dashed rgba(255,205,100,.9); border-radius:8px; background:rgba(255,205,100,.1); cursor:copy; pointer-events:auto;}
   body.eq-hz-holding .board-card .eq-hz-drop.is-over{background:rgba(255,205,100,.35);}`;
