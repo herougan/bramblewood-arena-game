@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RW3: raid reward cards show as cards)
+- **Owner (22:14, 22:32):** "What is 'honeybrew'? it was a reward upon completion of the raid" … "The raid just showed Honeybrew, not a card image."
+- **What it was:** the card **Honeyjoe Brewer**, an Uncommon pack card. A won raid fight drops one pack card (package RC). The results showed it only as a small "🃏 Honeyjoe Brewer" pill, with no art, no rarity and nothing saying it was a card. No name builder, drink, item or currency called "Honeybrew" exists.
+- **Raid fight results:** the pill is gone. The dropped card sits under "Cards won" as the card itself: its tile (art), full name, rarity and "Pack card" (or "Raid card" for one of the raid's own). It flips in on the reward reveal like any victory's card, and a tap opens its details.
+- **Raid claim screen:** each card reward shows the tile, the full name, the rarity and "Pack card" / "Faction card". Once the screen has settled, a tap opens the card's details over it, and Esc closes the details, not the screen. The tile's stat glyphs no longer blow up to 32px (the reward-icon rule had reached into the tile).
+- New text: "Tap to see the card" (TX `results.rw3-card-open`, 12 packs). Test: `tests/raid-reward-card-2026-10-19.js`. Screens: `docs/screens/rw3/`.
+
 ## 2026-10-19 (package UX: the tutorial summary, the Forge's copies sheet, count badges and centre stage, the Codex's types and base level)
 - **Owner (21:36, UI notes 7, 8a–c, 9, 11).**
 - **Tutorial summary (7):** the map panel of T-0 and T-1 now reads like a skirmish's.
