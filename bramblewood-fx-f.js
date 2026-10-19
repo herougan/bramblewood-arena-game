@@ -1773,7 +1773,7 @@ M.raidClaimScreen = function(spec, opts){
   const sound = (name, ...a)=>{ try{ if(opts.sound) return opts.sound(name, ...a); const k = typeof SoundKit !== 'undefined' ? SoundKit : null; if(k && typeof k[name] === 'function') k[name](...a); }catch(e){} };
   const beat = w=> (RCS_BEAT[w] || RCS_BEAT[1]).forEach((n, i)=>{ const [nm, arg] = n.split(':'); later(()=> sound(nm, arg ? true : undefined), i*90); });
   const kind = spec.kind === 'compensation' ? 'compensation' : 'kill', tier = RCS_TIER[spec.tier] ? spec.tier : 'participant';
-  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=> Math.round(n).toLocaleString();
+  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=>{ try{ return Math.round(n).toLocaleString(opts.locale || undefined); }catch(e){ return Math.round(n).toLocaleString(); } }; // opts.locale: the game's language (2026-10-19, package RB)
   // the rewards in rising order of weight (stable), so the rarest comes last
   const list = (spec.rewards || []).map((r, i)=> Object.assign({}, r, {weight:Math.max(1, Math.min(5, r.weight|0 || 1)), _i:i})).sort((a, b)=> a.weight - b.weight || a._i - b._i);
   const boss = spec.boss || {};

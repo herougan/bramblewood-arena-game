@@ -1967,5 +1967,9 @@
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Não foi possível contactar o servidor. Os teus baralhos estão seguros neste dispositivo e vão sincronizar quando voltares a estar online.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "O baralho «{name}» foi apagado noutro dispositivo, por isso também desaparece daqui.",
  "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 O mundo se abre: toque na 🧭 para ver todos os mapas ao seu alcance.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "À medida que a Vida de uma parte desce, o chefe enfraquece: as suas cartas batem mais fraco e caem mais cedo.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "Cada combate dura {turns} turnos, ou até o teu silvado cair. O dano que o teu lado causa ao silvado da parte conta como dano de raide.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "Um aliado da CPU. Só joga na sua própria fila, uma carta na sua vez, e as suas unidades ficam nessa fila.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "Vencer um combate conta como {n} de dano de raide, mais com uma classificação mais alta.",
  "{speed}×: Clear Map {n}": "{speed}×: Vence o Mapa {n}"
 }

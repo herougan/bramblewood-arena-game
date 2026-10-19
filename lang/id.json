@@ -1967,5 +1967,9 @@
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Server tidak bisa dihubungi. Dek-dekmu aman di perangkat ini dan akan tersinkron saat kamu online lagi.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "Dek “{name}” dihapus di perangkat lain, jadi di sini juga sudah tidak ada.",
  "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Dunia terbuka: ketuk 🧭 untuk melihat semua peta yang bisa kamu capai.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "Saat Nyawa sebuah bagian turun, bos melemah: kartunya memukul lebih lemah dan lebih cepat tumbang.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "Setiap pertarungan berlangsung {turns} giliran, atau sampai semakmu tumbang. Damage yang diberikan pihakmu ke semak bagian itu dihitung sebagai kerusakan raid.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "Sekutu CPU. Ia hanya bermain di barisnya sendiri, satu kartu pada gilirannya, dan unitnya tetap di baris itu.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "Memenangkan pertarungan dihitung sebagai {n} kerusakan raid, lebih banyak dengan peringkat lebih tinggi.",
  "{speed}×: Clear Map {n}": "{speed}×: Selesaikan Peta {n}"
 }

@@ -80,10 +80,11 @@ ok(/reserve-row enemy\$\{m\.raidFull \? ' raid-rows' : ''\}/.test(src) && /reser
 // ======================= 4. the HP-scaled elders: 100 Health fresh, down to their basic Health =======================
 { const fresh = RaidM.raidState(goliath, [], 0, {cycle:0});
   const f = RaidM.bossHpBonus(goliath, fresh, 18), near = RaidM.bossHpBonus(goliath, {total:1000, remaining:1}, 18), dead = RaidM.bossHpBonus(goliath, {total:1000, remaining:0}, 18), half = RaidM.bossHpBonus(goliath, {total:100, remaining:50}, 18);
-  ok(f.health === 100 && f.bonus === 82, `fresh: 18 basic + 82 = 100 (${JSON.stringify(f)})`);
+  // 2026-10-19 (package RB, owner 12:23: "Elder should be rebalanced to start at 50 HP at max."): the ceiling is 50 now
+  ok(f.health === 50 && f.bonus === 32, `fresh: 18 basic + 32 = 50 (${JSON.stringify(f)})`);
   ok(near.health === 18 && dead.health === 18 && dead.bonus === 0, `nearly dead: its basic Health (${near.health}, ${dead.health})`);
-  ok(half.health === 18 + 41, `half the raid left: 18 + (100 - 18) x 0.5 = 59 (${half.health})`);
-  ok(RaidM.bossHpBonus(goliath, fresh, 120).bonus === 0 && RaidM.bossHpBonus(goliath, fresh, 120).health === 120, 'basic Health at or above 100: its basic, no bonus'); }
+  ok(half.health === 18 + 16, `half the raid left: 18 + (50 - 18) x 0.5 = 34 (${half.health})`);
+  ok(RaidM.bossHpBonus(goliath, fresh, 120).bonus === 0 && RaidM.bossHpBonus(goliath, fresh, 120).health === 120 && RaidM.bossHpBonus(goliath, fresh, 50).health === 50, 'basic Health at or above 50: its basic, no bonus'); }
 const sim = require('../tools/raid_full_sim.js'), A = sim.A;
 function build(st, opts){ st = st || RaidM.raidState(goliath, [], 0, {cycle:0}); const f = RaidM.fightFor(goliath, st, 'left', {});
   const allies = [0, 1].map(i=> A.raidAllyOf({name:'Ally ' + i, deck: goliath.allyDecks[i].deck, level:0}, i));
@@ -91,9 +92,9 @@ function build(st, opts){ st = st || RaidM.raidState(goliath, [], 0, {cycle:0});
   const m = {raidDef: goliath, raidFull:true, round:1, players: b.players, engine: b.engine, sideOf: b.sideOf, stats: b.stats, raidAllies: allies, raidBossUnitId: b.bossUnitId, raidBossHpBonus: b.bossHpBonus, raidBossRowDecks: b.rowDecks, raidCommonPool: b.commonPool};
   return {b, m, f, allies}; }
 { const {b, m} = build(), u = b.overlay[b.bossUnitId];
-  ok(u && u.health < 100 && u.health + b.bossHpBonus === 100, `a fresh raid's boss unit: ${u && u.health} + ${b.bossHpBonus} = 100 Health`);
+  ok(u && u.health < 50 && u.health + b.bossHpBonus === 50, `a fresh raid's boss unit: ${u && u.health} + ${b.bossHpBonus} = 50 Health`);
   Object.assign(B.CARD_DEFS_BASELINE, b.overlay); m.round = 3; const ev = []; A.raidBossUnit(m, ev);
-  const c = b.engine.allBoardCards(b.players[2]).find(x=> x.bossUnit); ok(c && c.hp === 100 && c.maxHp === 100, `it comes in at 100/100 (${c && c.hp}/${c && c.maxHp})`); }
+  const c = b.engine.allBoardCards(b.players[2]).find(x=> x.bossUnit); ok(c && c.hp === 50 && c.maxHp === 50, `it comes in at 50/50 (${c && c.hp}/${c && c.maxHp})`); }
 ok(/RaidM\.bossHpBonus\(def, st, defs\[bossUnitId\]\.health\)\.bonus/.test(src), 'the fight build passes the unit\'s basic Health');
 ok(/Boss unit Health, fresh raid<input id="reBossHpBonus"/.test(src), 'the raid editor names the field for what it is now');
 
@@ -131,9 +132,11 @@ ok(texts.TX('ui.raid-ally-plays', {name:'Captain Swiftpaw', card:'Otter Guard'})
 // ======================= 7. the raid fight's rank multiplies its damage; a win shows it emblemed =======================
 { const part = goliath.parts.find(p=> p.id === 'left');
   const c = (d, rank, ow)=> RaidM.contributionFor(goliath, d, !!ow, part, rank);
-  ok(c(100) === 1500 && c(100, 'C') === 1500 && c(100, 'B') === 1515 && c(100, 'A') === 1650 && c(100, 'S') === 1800 && c(100, 'SS') === 2250 && c(100, 'SSS') === 3000, `B ×1.01, A ×1.1, S ×1.2, SS ×1.5, SSS ×2; below B ×1 (${['C', 'B', 'A', 'S', 'SS', 'SSS'].map(r=> c(100, r)).join(', ')})`);
-  ok(c(400) === 5000 && c(400, 'SSS') === 10000 && c(2000, 'SSS') === 10000, 'on top of the cap, never past the overwhelm\'s 10,000');
-  ok(c(10, 'SSS', true) === 10000 && c(10, null, true) === 10000, 'a win counts 10,000 whatever the rank'); }
+  // 2026-10-19 (package RB, owner 12:23: "do not multiply the bramble damage by 15" / "deal 1,000 instead of 10,000, counting in the
+  // bonus damage"): raid damage = bramble damage x the rank; a win = 1,000 x the rank
+  ok(c(130) === 130 && c(130, 'C') === 130 && c(130, 'B') === 131 && c(100, 'A') === 110 && c(100, 'S') === 120 && c(100, 'SS') === 150 && c(100, 'SSS') === 200, `B ×1.01, A ×1.1, S ×1.2, SS ×1.5, SSS ×2; below B ×1 (${['C', 'B', 'A', 'S', 'SS', 'SSS'].map(r=> c(100, r)).join(', ')})`);
+  ok(c(5000) === 1000 && c(5000, 'SSS') === 2000, 'the bramble damage is capped at 1,000 before the rank');
+  ok(c(10, 'SSS', true) === 2000 && c(10, null, true) === 1000 && c(10, 'B', true) === 1010, 'a win counts 1,000 x the rank'); }
 { const body = [B.grab('RANK_ORDER'), B.grab('rankForHqFraction'), B.grab('raidFightRank'), 'return raidFightRank;'].join('\n'), R = new Function(body)();
   const mm = (hp, max, deaths, extra)=> Object.assign({players:{1:{hq:{hp, maxHp:max}}}, stats: deaths ? {x:{side:'A', deaths}} : {}}, extra || {});
   ok(R(mm(100, 100, 0)) === 'SSS' && R(mm(100, 100, 2)) === 'SS' && R(mm(95, 100)) === 'S' && R(mm(75, 100)) === 'A' && R(mm(55, 100)) === 'B' && R(mm(35, 100)) === 'C', 'the rank: SSS / SS / S / A / B / C on your bramble\'s Health left');
@@ -147,14 +150,15 @@ ok(/rank: raidBestRankOf\(def, c, g\)/.test(src) && /rewards, rank: rk,/.test(sr
 // ======================= 8. taking part, Competent (10,000), Leading (50,000) =======================
 { const st = (fights, dmg)=> ({contributors:{p: dmg}, fightsBy:{p: fights}});
   const pv = (f, d)=> RaidM.participationOf(goliath, st(f, d), 'p');
-  ok(pv(3, 1000).participant && !pv(3, 1000).strong && pv(4, 9999).level === 'participant', 'taking part: 3+ fights, 1,000+ damage; 9,999 is not yet Competent');
-  ok(pv(4, 10000).level === 'competent' && pv(4, 10000).strong && !pv(4, 10000).leading && pv(3, 20000).level === 'participant', 'Competent participant: 4+ fights and 10,000+ damage (was 5,000)');
-  ok(pv(4, 50000).level === 'leading' && pv(4, 50000).leading && pv(4, 50000).strong && pv(4, 49999).level === 'competent', 'Leading participant: 4+ fights and 50,000+ damage');
+  // 2026-10-19 (package RB): the tiers rescaled off the x15 scale: 500 / 2,000 / 12,500 (were 1,000 / 10,000 / 50,000)
+  ok(pv(3, 500).participant && !pv(3, 500).strong && pv(3, 499).level === null && pv(4, 1999).level === 'participant', 'taking part: 3+ fights, 500+ damage; 1,999 is not yet Competent');
+  ok(pv(4, 2000).level === 'competent' && pv(4, 2000).strong && !pv(4, 2000).leading && pv(3, 20000).level === 'participant', 'Competent participant: 4+ fights and 2,000+ damage');
+  ok(pv(4, 12500).level === 'leading' && pv(4, 12500).leading && pv(4, 12500).strong && pv(4, 12499).level === 'competent', 'Leading participant: 4+ fights and 12,500+ damage');
   const killState = (dmg)=> Object.assign(st(4, dmg), {defeated:true, fraction:0, contributors:{p: dmg, q: 1}});
   const lead = RaidM.raidReward(goliath, killState(60000), 'p', {}), comp = RaidM.raidReward(goliath, killState(12000), 'p', {});
   ok(comp.boost === 1.2 && comp.cardChance === 0.2 && lead.boost === 1.4 && lead.cardChance === 0 && lead.cards === comp.cards + 1 && lead.leading && lead.level === 'leading', `a fall: Competent +20% and a 20% card chance; Leading +40% and an extra card for certain (${comp.boost}/${comp.cards}, ${lead.boost}/${lead.cards})`); }
 ok(/TX\(c\.reward\.leading \? 'ui\.raid-leading' : 'ui\.raid-strong'\)/.test(src) && /rw\.leading \? ' · ' \+ TX\('results\.raid-leading'\)/.test(src) && /if\(p\.leading\) return TX\('ui\.raid-leading'\);/.test(src), 'the hub, the raid screen and the claim screen name the tier');
-ok(/id="reLDmg"/.test(src) && /leadDamage: n\('reLDmg', 50000, 1e8\)/.test(src) && /Competent: damage<input id="reSDmg"/.test(src), 'the raid editor edits both tiers');
+ok(/id="reLDmg"/.test(src) && /leadDamage: n\('reLDmg', PD\.leadDamage, 1e8\)/.test(src) && /Competent: damage<input id="reSDmg"/.test(src), 'the raid editor edits both tiers (defaults: RaidM.PARTICIPATION_DEFAULTS, 2026-10-19 RB)');
 ok(texts.TEXT['ui.raid-strong'] === '★ Competent participant' && texts.TEXT['results.raid-strong'] === 'Competent participant' && texts.TEXT['ui.raid-leading'] === '👑 Leading participant', 'the tier names');
 
 // ======================= 9. TX keys used, and in the 12 packs =======================

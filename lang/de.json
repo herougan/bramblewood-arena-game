@@ -1967,5 +1967,9 @@
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Der Server ist nicht erreichbar. Deine Decks sind auf diesem Gerät sicher und werden synchronisiert, sobald du wieder online bist.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "Das Deck „{name}“ wurde auf einem anderen Gerät gelöscht und ist deshalb auch hier weg.",
  "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Die Welt öffnet sich: Tippe auf den 🧭, um jede Karte zu sehen, die du erreichen kannst.",
+ "As a part's Health falls, the boss weakens: its cards hit softer and fall sooner.": "Je mehr Gesundheit ein Teil verliert, desto schwächer wird der Boss: Seine Karten treffen sanfter und fallen schneller.",
+ "Each fight lasts {turns} turns, or until your bramble falls. The damage your side deals to the part's bramble counts as raid damage.": "Jeder Kampf dauert {turns} Züge oder bis deine Dornenhecke fällt. Der Schaden, den deine Seite der Dornenhecke des Teils zufügt, zählt als Raid-Schaden.",
+ "A CPU ally. It plays only into its own row, one card on its turn, and its units stay in that row.": "Ein CPU-Verbündeter. Er spielt nur in seine eigene Reihe, eine Karte in seinem Zug, und seine Einheiten bleiben in dieser Reihe.",
+ "Winning a fight counts as {n} raid damage, more at a higher rank.": "Ein gewonnener Kampf zählt als {n} Raid-Schaden, mit höherem Rang mehr.",
  "{speed}×: Clear Map {n}": "{speed}×: Schließe Karte {n} ab"
 }
