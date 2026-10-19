@@ -320,6 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -1239,6 +1240,39 @@ function giHunterParts(v, e){ const vs = e && e.hunter ? e.hunterVs : (Array.isA
   return {vs: GI_HUNTER_VS.includes(vs) ? vs : 'poison', n}; }
 function giHunterText(v, e){ const h = giHunterParts(v, e); return GI_HUNTER_TX[h.vs](h.n); }
 function giHunterHead(p, e){ const h = giHunterParts(null, e); return `${p.label} ${h.n} (${GI_HUNTER_WORD[h.vs]()})`; }
+// ---- Package SK2 (2026-10-19, owner 21:36): the economy and structure skills (rules: the SK2 block in bramblewood-engine.js). Their
+// numbers come from the engine's SK2_DEFAULTS (the fallbacks below are the same values, for a page or sandbox without the engine).
+// On no card yet. The Skills chapter of the Codex book and the keyword registry read PASSIVE_DEFS, so they list them too.
+const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, salvageN:1, salvageEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
+  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
+const sk2Num = (v, k)=> numOr(v, SK2_UI[k]);
+const sk2ScavengeEvery = e=> (e && Number(e.scavengeEvery) >= 1) ? Math.round(Number(e.scavengeEvery)) : SK2_UI.scavengeEvery;
+const sk2SalvageEvery = e=> (e && Number(e.salvageEvery) >= 1) ? Math.round(Number(e.salvageEvery)) : SK2_UI.salvageEvery;
+const sk2RepairBramble = n=> Math.max(1, Math.floor(n * SK2_UI.repairBrambleRate));
+const SK2_LINE = {
+  harvest: v=> TX('ui.sk2-harvest', {n: sk2Num(v, 'harvestLumber')}),
+  scavenge: (v, n, e)=> TX('ui.sk2-scavenge', {n: sk2Num(v, 'scavengeN'), m: sk2ScavengeEvery(e)}),
+  salvage: (v, n, e)=> TX('ui.sk2-salvage', {n: sk2Num(v, 'salvageN'), m: sk2SalvageEvery(e)}),
+  repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
+  foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
+  milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
+  pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
+  sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
+  arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
+  fortification: ()=> TX('ui.sk2-fortification', {a: SK2_UI.fortifyAtk, h: SK2_UI.fortifyHp}),
+};
+PASSIVE_DEFS.push(
+  {key:'harvest', category:'passive', label:TX('ui.sk2n-harvest'), kind:'boolean', desc:v=> SK2_LINE.harvest(v), codexNote:TX('ui.sk2-harvest-codex')},
+  {key:'scavenge', category:'passive', label:TX('ui.sk2n-scavenge'), kind:'number', min:1, defaultValue:SK2_UI.scavengeN, desc:(v, n, e)=> SK2_LINE.scavenge(v, n, e), codexNote:TX('ui.sk2-scavenge-codex'), get:e=> e.scavenge ? sk2Num(e.scavenge, 'scavengeN') : undefined},
+  {key:'salvage', category:'passive', label:TX('ui.sk2n-salvage'), kind:'number', min:1, defaultValue:SK2_UI.salvageN, desc:(v, n, e)=> SK2_LINE.salvage(v, n, e), codexNote:TX('ui.sk2-salvage-codex'), get:e=> e.salvage ? sk2Num(e.salvage, 'salvageN') : undefined},
+  {key:'repair', category:'passive', label:TX('ui.sk2n-repair'), kind:'number', min:1, defaultValue:SK2_UI.repairN, desc:v=> SK2_LINE.repair(v), codexNote:TX('ui.sk2-repair-codex'), get:e=> e.repair ? sk2Num(e.repair, 'repairN') : undefined},
+  {key:'foraging', category:'passive', label:TX('ui.sk2n-foraging'), kind:'number', min:1, defaultValue:SK2_UI.foragingN, desc:v=> SK2_LINE.foraging(v), codexNote:TX('ui.sk2-foraging-codex'), get:e=> e.foraging ? sk2Num(e.foraging, 'foragingN') : undefined},
+  {key:'milling', category:'passive', label:TX('ui.sk2n-milling'), kind:'number', min:1, defaultValue:SK2_UI.millingN, desc:v=> SK2_LINE.milling(v), codexNote:TX('ui.sk2-milling-codex'), get:e=> e.milling ? sk2Num(e.milling, 'millingN') : undefined},
+  {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
+  {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
+  {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
+  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'boolean', desc:()=> SK2_LINE.fortification(), codexNote:TX('ui.sk2-fortification-codex')},
+);
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
@@ -2048,6 +2082,7 @@ function speciesLine(def){
 }
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
+  if(sp.do==='hazard' && d.hazard) return eqHazardText(d); // a slot hazard (2026-10-19, package EQ)
   if(sp.do==='hasten') return `Each of your units on the field loses ${n} Wait.`;
   if(sp.do==='tailwind') return TX('ui.spell-tailwind', {n}); // 2026-10-18 (package D): terse
   if(sp.do==='mend') return `Heals each of your units by ${n}.`;
@@ -2118,6 +2153,7 @@ const KEYWORD_TERMS = [
   {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
 ];
+KEYWORD_TERMS.push({name:'Berry', re:'berr(?:y|ies)', cs:true, text:TX('ui.sk2-term-berry')}); // Foraging's token (2026-10-19, package SK2)
 const KEYWORD_RESOURCES = [
   {name:'Lumber', re:'lumber', c:'#a0662f'}, {name:'Stone', re:'stone', c:'#7d8590', cs:true}, {name:'Metal', re:'metal', c:'#6f8fae', cs:true},
   {name:'Grace', re:'grace', c:'#c39a1e', cs:true}, {name:'Prayer', re:'prayer', c:'#b8892a', cs:true}, {name:'Darkness', re:'darkness|dark points?', c:'#8b3fbf'},
@@ -2446,6 +2482,14 @@ Object.assign(SKILL_TEXT, {
   prayerWard: v=> TX('ui.sk-prayer-ward', {n: numOr(v, 1)}),
   fieldBreaker: v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}),
 });
+// Package EQ (2026-10-19, owner 21:36): Weapon Master N and Pry N (rules in bramblewood-engine.js, the Package EQ block), and the On Enter Slot trigger.
+PASSIVE_DEFS.push(
+  {key:'weaponMaster', category:'passive', label:TX('ui.skn-weapon-master'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), codexNote:TX('ui.sk-weapon-master-codex', {n: 1}), get:e=> e.weaponMaster ? numOr(e.weaponMaster, 1) : undefined},
+  {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
+Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
+Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
+TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
+Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
 // Amore's state on a live unit (2026-10-16): 'love' (paired), 'broken' (partner gone) or 'single'.
@@ -2527,10 +2571,11 @@ function describeEffects(def, liveCard){
     lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''}`); lines.push(TX('ui.de-field-replaces')); // 2026-10-18 (package D): two short lines
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
-  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines
+  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(def.hazard ? TX('ui.eq-hz-how') : TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines; a slot hazard says where it goes (EQ, 2026-10-19)
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
+  { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
   else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
@@ -2897,7 +2942,8 @@ function getCardDefs(){
   const res = getCardDefs0();
   try{ const dd = matchState && matchState.engine && matchState.engine.derivedDefs; if(dd) for(const k in dd){ if(res[k] !== dd[k]) res[k] = dd[k];
     // Relic (2026-10-19, package E): the engine names the ghost "<Card> Relic" in English; the shown name comes from the text table.
-    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } } } }catch(e){}
+    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } }
+    if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name'); r._sk2Named = true; } } }catch(e){} // Fortification's Palisade (2026-10-19, package SK2)
   return res;
 }
 function getCardDefs0(){
@@ -3139,7 +3185,7 @@ function cardSourceOf(d){
 // yet: cardObtainableFrom says no, unlockCardForPlayer refuses them from every source but an admin's grant, and the givers (packs,
 // drops, skirmish rewards, raids, the reward tracks, the Forge's fuse, the Nest's hatchlings in the engine) leave them out of their
 // pools. The Codex shows one you haven't seen as a masked "???" tile (easterEggMasked); the hub's card list masks it too.
-const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda'];
+const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda', 'bucketknee-wolf']; // + the Bucketknee Wolf (2026-10-19, package EQ)
 const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant']);
 function isEasterEgg(d){ return !!(d && (d.easterEgg || EASTER_EGG_IDS.includes(d.derivedFrom || d.id) || (d.source && d.source.kind === 'easteregg'))); }
 function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id]||[]).length || seenCardIds().has(id)); }catch(e){ return false; } }
@@ -7391,6 +7437,7 @@ function triggerBadges(d, live){
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
+CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -30667,7 +30714,7 @@ function renderBoard(opts){
     const hazardMap = (()=>{ try{ return m.engine.getHazards ? m.engine.getHazards() : {}; }catch(e){ return {}; } })(); // Trap / Slash & Burn (2026-10-16)
     for(let sl=-slotRange; sl<=slotRange; sl++){
       const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
-      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]); // + traps and burning ground (2026-10-16)
+      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
       if(c){ let h = boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: (c.gladiatorLeader ? 'is-gladiator-leader' : '') + (cur ? ' is-cursed' : '')});
         if(mark){ const k = h.lastIndexOf('</div>'); if(k >= 0) h = h.slice(0, k) + mark + h.slice(k); }
         html += h; continue; }
@@ -33136,7 +33183,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   if(matchPlayRows(m) === 'own' && popts && popts.reserve) return false; // 2026-10-19 (package RX): "Your row only" (a tag-team dungeon's playRows)
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}) : undefined); // + a hazard's row (EQ, 2026-10-19)
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -34905,6 +34952,7 @@ async function resolveRoundCore(opts){
       });
     });
   });
+  [1,2].forEach(pid=> ['left','center','right'].forEach(side=> m.players[pid].row[side].forEach(c=>{ const rc = m.replayCards[c.uid]; if(rc){ rc.sk2Berries = c.sk2Berries||0; rc.sk2Scavenge = c.sk2Scavenge||0; rc.sk2Salvage = c.sk2Salvage||0; } }))); // Package SK2 (2026-10-19): the chips' counts
   // The middle and back rows replay too (2026-10-19, package RV2, owner 08:42: "if the first row's interaction changes the board state
   // somehow, the next row reacts to that board state"): their units join replayCards (a shallow copy each, so their Health steps down
   // hit by hit), and m.replayReserve keeps who stands where as the round starts, losing a unit only when its death plays. Before, each
@@ -38193,7 +38241,9 @@ function logText(ev){
   if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
+  { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
+  { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
@@ -40339,6 +40389,7 @@ function ninthPassVfx(ev){
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
+  try{ sk2StatusBadges(c, badges); }catch(e){} // Berries, scavenge and salvage points (2026-10-19, package SK2)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
@@ -40355,6 +40406,109 @@ function w2HazardMark(h){
   if(h.scorch > 0) out.push(`<span class="w2-hazard-mark scorch" title="Burning ground: the next card played here takes ${h.scorch} fire damage">🔥 ${h.scorch}</span>`);
   return out.join('');
 }
+// ==== Package EQ (2026-10-19, owner 21:36): the board side of equipment on the slots and the slot hazards (rules in bramblewood-engine.js,
+// the Package EQ block). eqSlotMarks draws, in each slot cell: the floor (an overlay with its icon and rounds left), a lone piece lying
+// there, the piece tucked under a unit (pulsing while it is equipping), and a hidden drop target (data-hzcell) that shows on both rows
+// while a hazard card is held (body.eq-hz-holding): drop or tap one to lay the hazard there.
+const EQ_FLOOR_ICON = {ice:'🧊', lava:'🌋', poison:'🫧', gas:'☁️', rubble:'🪨'};
+const EQ_KIND_NAME = {ice:()=> TX('ui.eq-kind-ice'), lava:()=> TX('ui.eq-kind-lava'), poison:()=> TX('ui.eq-kind-poison'), gas:()=> TX('ui.eq-kind-gas'), rubble:()=> TX('ui.eq-kind-rubble')};
+const EQ_FLOOR_TIP = {ice:f=> TX('ui.eq-floor-ice', {r:f.rounds}), lava:f=> TX('ui.eq-floor-lava', {r:f.rounds, n:f.n}), poison:f=> TX('ui.eq-floor-poison', {r:f.rounds, n:f.n}),
+  gas:f=> TX('ui.eq-floor-gas', {r:f.rounds, n:f.n}), rubble:f=> TX('ui.eq-floor-rubble', {r:f.rounds})};
+const EQ_HZ_TEXT = {ice:h=> TX('ui.eq-hz-ice', {r:h.rounds}), lava:h=> TX('ui.eq-hz-lava', {r:h.rounds, n:h.n}), poison:h=> TX('ui.eq-hz-poison', {r:h.rounds, n:h.n}),
+  gas:h=> TX('ui.eq-hz-gas', {r:h.rounds, n:h.n}), rubble:h=> TX('ui.eq-hz-rubble', {r:h.rounds})};
+function eqIsHazardDef(d){ return !!(d && d.cardType === 'spell' && d.hazard); }
+function eqHazardText(d){ const h = d.hazard || {}, k = EQ_HZ_TEXT[h.kind] ? h.kind : 'rubble'; return EQ_HZ_TEXT[k]({rounds: h.rounds || 3, n: h.n || 1}); }
+function eqLiveUnit(m, uid){ if(!m || uid == null) return null; for(const pid of [1,2]){ const pl = m.players && m.players[pid]; if(!pl || !pl.row) continue; const c = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x && x.uid === uid); if(c) return c; } return null; }
+function eqGrantText(grant){ return grant ? Object.entries(grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key === k); return (pd ? pd.label : k) + valSuffix(v); }).join(', ') : ''; }
+function eqSlotMarks(pid, sl, c){
+  const m = matchState; if(!m || !m.engine || !m.engine.floorAt) return '';
+  const defs = getCardDefs(), pl = m.players[pid]; let out = '';
+  const f = m.engine.floorAt(pid, sl);
+  if(f) out += `<span class="eq-floor eq-floor-${f.kind}" title="${escapeAttr((EQ_FLOOR_TIP[f.kind] || EQ_FLOOR_TIP.rubble)(f))}">${EQ_FLOOR_ICON[f.kind] || '⚠️'}<small>${f.rounds}</small></span>`;
+  const lone = m.engine.loneEquipAt ? m.engine.loneEquipAt(pl, sl) : null;
+  if(lone){ const d = defs[lone.defId] || {}; out += `<span class="eq-lone" title="${escapeAttr(TX('ui.eq-lone-tip', {name: d.name || lone.defId}))}">${d.icon || '⚒️'}</span>`; }
+  const u = c ? eqLiveUnit(m, c.uid) : null;
+  if(u && u.equipment){ const d = defs[u.equipment] || {};
+    const tip = u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: eqGrantText((d.equip || {}).grant) ? ', ' + eqGrantText((d.equip || {}).grant) : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
+    out += `<span class="eq-under${u.equipOn ? '' : ' is-equipping'}" title="${escapeAttr(tip)}">${d.icon || '⚒️'}</span>`; }
+  out += `<span class="eq-hz-drop" data-hzcell="${pid}:${sl}" aria-hidden="true"></span>`;
+  return out;
+}
+// the card detail of a unit on the board: what it carries
+function eqDetailLine(liveCard){
+  const m = matchState, u = liveCard ? (eqLiveUnit(m, liveCard.uid) || liveCard) : null; if(!u || !u.equipment) return null;
+  const d = getCardDefs()[u.equipment] || {}, g = eqGrantText((d.equip || {}).grant);
+  return u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: g ? ', ' + g : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
+}
+function eqLogText(ev, nm){
+  switch(ev.type){
+    case 'equip': return ev.pending ? {cls:'gold', text: TX('ui.eq-log-equip-pending', {unit: nm(ev.defId), item: nm(ev.equipDefId)})} : null;
+    case 'equipReady': return {cls:'gold', text: TX('ui.eq-log-equip-ready', {unit: nm(ev.defId), item: nm(ev.equipDefId), a: ev.attack, h: ev.health})};
+    case 'equipLaid': return {cls:'', text: TX('ui.eq-log-laid', {side: sideLabel(ev.side), item: nm(ev.equipDefId)})};
+    case 'equipDrop': return {cls:'', text: TX('ui.eq-log-drop', {item: nm(ev.equipDefId), unit: nm(ev.fromDefId)})};
+    case 'floorSet': return {cls:'', text: TX('ui.eq-log-floor-set', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', side: sideLabel(ev.side), kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)(), r: ev.rounds})};
+    case 'floorTick': return ev.dmg != null ? {cls:'', text: TX('ui.eq-log-tick-dmg', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', unit: nm(ev.defId), n: ev.dmg, kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})}
+      : {cls:'poison', text: TX('ui.eq-log-tick-poison', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', unit: nm(ev.defId), n: ev.poison || ev.bleed || 0, kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})};
+    case 'floorSlide': return {cls:'', text: TX('ui.eq-log-slide', {unit: nm(ev.defId)})};
+    case 'floorEnd': return {cls:'', text: TX('ui.eq-log-end', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})};
+  }
+  return null;
+}
+function eqVfx(ev){
+  if(ev.type === 'equipReady'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `⚒️ +${ev.attack}/+${ev.health}`, 'buff'); }
+  else if(ev.type === 'floorTick' && ev.dmg > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} -${ev.dmg}`, 'dmg'); }
+  else if(ev.type === 'floorTick' && ev.poison > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} ☠${ev.poison}`, 'poison'); }
+  else if(ev.type === 'floorSlide'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⛸️', 'buff'); }
+}
+// Holding a hazard card (pressed, dragged or tapped to arm): every cell of both rows becomes a drop target.
+function eqHeldHazardUid(){
+  const m = matchState; if(!m || m.over || m.resolving) return null; const pl = m.players && m.players[viewerHandPid(m)]; if(!pl) return null; const defs = getCardDefs();
+  const pick = uid=>{ const hc = uid != null && pl.hand.find(h=> h.uid === uid); return hc && eqIsHazardDef(defs[hc.defId]) ? hc.uid : null; };
+  const el = document.querySelector('#handStrip .card-tile.dragging') || (bwPressedCard && bwPressedCard.isConnected ? bwPressedCard : null);
+  const fromEl = el ? pick(Number(el.getAttribute('data-handuid'))) : null; return fromEl != null ? fromEl : pick(m.selectedUid);
+}
+let eqHoldQueued = false;
+function eqSyncHolding(){ if(eqHoldQueued) return; eqHoldQueued = true; requestAnimationFrame(()=>{ eqHoldQueued = false; document.body.classList.toggle('eq-hz-holding', eqHeldHazardUid() != null); }); }
+['dragstart','dragend','drop','click','pointerdown','pointerup','pointercancel','touchend','keyup'].forEach(t=> document.addEventListener(t, eqSyncHolding, true));
+function eqPlayHazardAt(uid, cell, dropPoint){
+  const m = matchState; if(!m || uid == null || !cell) return false;
+  const [tp, sl] = String(cell.getAttribute('data-hzcell')).split(':').map(Number);
+  const ok = (m.engine.hazardTargets(m.players, activePlayerId(m), (m.players[activePlayerId(m)].hand.find(h=> h.uid === uid) || {}).defId) || []).some(t=> t.pid === tp && t.slot === sl);
+  if(!ok){ showToast(TX('toast.eq-hz-no'), 'warn'); return true; }
+  playCardByUid(uid, sl, dropPoint, {hazardPid: tp}); return true;
+}
+document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(t && document.body.classList.contains('eq-hz-holding')){ e.preventDefault(); e.stopPropagation();
+  document.querySelectorAll('.eq-hz-drop.is-over').forEach(x=>{ if(x !== t) x.classList.remove('is-over'); }); t.classList.add('is-over'); } }, true);
+document.addEventListener('drop', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(!t || !document.body.classList.contains('eq-hz-holding')) return;
+  const uid = Number(e.dataTransfer && e.dataTransfer.getData('text/plain')); const m = matchState, pl = m && m.players[viewerHandPid(m)], hc = pl && pl.hand.find(h=> h.uid === uid);
+  if(!hc || !eqIsHazardDef(getCardDefs()[hc.defId])) return;
+  e.preventDefault(); e.stopImmediatePropagation(); t.classList.remove('is-over'); eqPlayHazardAt(uid, t, {x:e.clientX, y:e.clientY}); }, true);
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(!t || !document.body.classList.contains('eq-hz-holding')) return;
+  const m = matchState; if(!m || m.selectedUid == null) return; const uid = eqHeldHazardUid(); if(uid == null) return;
+  e.preventDefault(); e.stopImmediatePropagation(); eqPlayHazardAt(uid, t); }, true);
+(function eqStyles(){ if(typeof document === 'undefined' || document.getElementById('eqStyles')) return; const st = document.createElement('style'); st.id = 'eqStyles';
+  st.textContent = `.board-card .eq-floor{position:absolute; left:4%; right:4%; bottom:3%; height:26%; border-radius:8px; display:flex; align-items:flex-end; justify-content:center; gap:2px; font-size:13px; line-height:1; padding-bottom:2px; visibility:visible; z-index:1; pointer-events:auto; box-shadow:inset 0 0 10px rgba(0,0,0,.25);}
+  .board-card .eq-floor small{font-size:10px; font-weight:700; color:#fff; text-shadow:0 1px 2px #000;}
+  .eq-floor-ice{background:linear-gradient(180deg, rgba(190,235,255,.15), rgba(150,215,255,.6));}
+  .eq-floor-lava{background:linear-gradient(180deg, rgba(255,150,40,.1), rgba(255,90,20,.65)); animation:eqLava 1.6s ease-in-out infinite alternate;}
+  .eq-floor-poison{background:linear-gradient(180deg, rgba(110,210,90,.1), rgba(80,170,60,.6));}
+  .board-card .eq-floor-gas{top:6%; height:auto; background:radial-gradient(ellipse at 50% 60%, rgba(210,225,100,.45), rgba(170,190,70,.12) 70%, transparent); align-items:flex-start; padding-top:3px;}
+  .eq-floor-rubble{background:linear-gradient(180deg, rgba(150,130,105,.25), rgba(110,92,70,.8));}
+  @keyframes eqLava{from{filter:brightness(.9);} to{filter:brightness(1.25);}}
+  .board-card .eq-lone{position:absolute; left:50%; bottom:30%; transform:translateX(-50%); font-size:20px; visibility:visible; z-index:2; filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));}
+  .board-card .eq-under{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font-size:13px; line-height:16px; padding:0 4px; border-radius:8px; background:rgba(45,32,20,.88); border:1px solid rgba(255,214,140,.6); visibility:visible; z-index:4;}
+  .board-card .eq-under.is-equipping{animation:eqEquip 0.9s ease-in-out infinite alternate;}
+  @keyframes eqEquip{from{opacity:.45;} to{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .eq-floor-lava, .board-card .eq-under.is-equipping{animation:none;} }
+  .board-card[data-uid] > .eq-floor{left:-5px; right:auto; top:auto; bottom:-9px; height:auto; padding:2px 5px; z-index:5; border:1px solid rgba(255,255,255,.35); align-items:center;}
+  .board-card.slot-target:has(> .eq-floor, > .eq-lone){opacity:1;}
+  body:not(.bw-holding) .board-card.slot-target:has(> .eq-floor, > .eq-lone){border-color:transparent; background:none;}
+  body:not(.bw-holding) .board-card.slot-target:has(> .eq-floor, > .eq-lone) .slot-target-plus{opacity:0;}
+  .board-card .eq-hz-drop{display:none;}
+  body.eq-hz-holding .board-card .eq-hz-drop{display:block; position:absolute; inset:0; z-index:8; visibility:visible; border:2px dashed rgba(255,205,100,.9); border-radius:8px; background:rgba(255,205,100,.1); cursor:copy; pointer-events:auto;}
+  body.eq-hz-holding .board-card .eq-hz-drop.is-over{background:rgba(255,205,100,.35);}`;
+  try{ document.head.appendChild(st); }catch(e){} })();
+// ==== end Package EQ (board) ===================================================================================================
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
@@ -40500,6 +40654,63 @@ function giStatusBadges(c, badges){
   if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🫙${c.brittle}</span>`);
   const e = ((getCardDefs()[c.defId] || {}).effects) || {};
   if(e.prayerWard && (c.prayerTokens||0) > 0) badges.push(`<span class="abadge prayer-ward" title="${escapeAttr(TX('ui.prayer-ward-tip', {n: numOr(e.prayerWard, 1)}))}">🧿${numOr(e.prayerWard, 1)}</span>`);
+}
+// ==== Package SK2 (2026-10-19): the board's side of the economy and structure skills (rules: the SK2 block in bramblewood-engine.js):
+// the Berry / scavenge / salvage chips, battle-log lines and floats. Every string is a TX key. A replay card (replayCardLike) carries no
+// SK2 field, so the chips read the round's replay snapshot (m.replayCards, seeded in resolveRoundCore) when the card has none.
+function sk2Val(c, k){ if(!c) return 0; if(k in c) return Number(c[k]) || 0; const rc = matchState && matchState.replayCards && matchState.replayCards[c.uid]; return rc ? (Number(rc[k]) || 0) : 0; }
+function sk2StatusBadges(c, badges){
+  const e = ((getCardDefs()[c.defId] || {}).effects) || {};
+  const b = sk2Val(c, 'sk2Berries'), sc = sk2Val(c, 'sk2Scavenge'), sv = sk2Val(c, 'sk2Salvage');
+  if(b > 0) badges.push(`<span class="abadge sk2-berries" title="${escapeAttr(TX('ui.sk2-berries-tip', {n: b, b: SK2_UI.foragingBerries}))}">🫐${b}</span>`);
+  if(sc > 0) badges.push(`<span class="abadge sk2-scavenge" title="${escapeAttr(TX('ui.sk2-scavenge-tip', {n: sc, m: sk2ScavengeEvery(e)}))}">🦝${sc}</span>`);
+  if(sv > 0) badges.push(`<span class="abadge sk2-salvage" title="${escapeAttr(TX('ui.sk2-salvage-tip', {n: sv, m: sk2SalvageEvery(e)}))}">🏚️${sv}</span>`);
+}
+const SK2_RES_TX = {lumber: n=> TX('ui.sk2-res-lumber', {n}), stone: n=> TX('ui.sk2-res-stone', {n}), metal: n=> TX('ui.sk2-res-metal', {n}), uranium: n=> TX('ui.sk2-res-uranium', {n})};
+const sk2ResList = list=> (list || []).map(t=> (SK2_RES_TX[t.res] || SK2_RES_TX.lumber)(t.n)).join(', ');
+function sk2LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'sk2'){ const name = nm(ev.defId);
+    if(ev.kind === 'harvest') return {cls:'gold', text: ev.forced ? TX('ui.sk2-log-harvest-forced', {name, n: ev.amount}) : TX('ui.sk2-log-harvest', {name, n: ev.amount})};
+    if(ev.kind === 'pickpocket') return {cls:'', text:TX('ui.sk2-log-pickpocket', {name, n: ev.amount, target: nm(ev.targetDefId)})};
+    if(ev.kind === 'pickpocketRes') return {cls:'gold', text:TX('ui.sk2-log-pickpocket-res', {name, list: sk2ResList(ev.taken)})};
+    if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
+    if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
+    if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
+    return null; }
+  if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage')){ const name = nm(ev.attDefId), stone = ev.kind === 'sk2Salvage';
+    if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
+    return {cls:'', text: stone ? TX('ui.sk2-log-salvage', {name, total: ev.total}) : TX('ui.sk2-log-scavenge', {name, total: ev.total})}; }
+  if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
+  if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
+  if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'heal' && ev.cause === 'forage') return {cls:'heal', text:TX('ui.sk2-log-forage', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'rebuild' && ev.repair) return {cls:'heal', text:TX('ui.sk2-log-repair-bramble', {name: nm(ev.defId), n: ev.amount})};
+  if(ev.type === 'skipTurn' && ev.reason === 'milling') return {cls:'', text:TX('ui.sk2-log-mill-holds', {name: nm(ev.defId)})};
+  return null;
+}
+function sk2Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage' || ev.kind === 'sk2Berry' || ev.kind === 'sk2BerryEat')){
+    const fld = ev.kind === 'sk2Scavenge' ? 'sk2Scavenge' : ev.kind === 'sk2Salvage' ? 'sk2Salvage' : 'sk2Berries', u = ev.attUid, rc = rcOf(u); if(rc) rc[fld] = ev.total || 0;
+    const el = boardCardEl(u);
+    if(ev.kind === 'sk2BerryEat') fl(el, '🫐 → 💚', 'heal');
+    else if(ev.gain > 0){ fl(el, `+${ev.gain}${ev.res === 'stone' ? '🪨' : '🪵'}`, 'gold'); snd('coin'); }
+    else fl(el, `${ev.kind === 'sk2Berry' ? '🫐' : ev.kind === 'sk2Salvage' ? '🏚️' : '🦝'} +${ev.amount || 1}`, 'buff');
+    refresh(u); return; }
+  if(ev.type !== 'sk2') return;
+  const el = boardCardEl(ev.uid);
+  if(ev.kind === 'harvest'){ fl(el, `🌽 +${ev.amount}🪵`, 'gold'); snd('coin'); return; }
+  if(ev.kind === 'pickpocket'){ const tr = rcOf(ev.targetUid), me = rcOf(ev.uid); (ev.taken || []).forEach(t=>{ if(tr) tr[t.key] = t.left; if(me) me[t.key] = t.total; });
+    fl(el, `👛 +${ev.amount}`, 'gold'); refresh(ev.uid); refresh(ev.targetUid); snd('coin'); return; }
+  if(ev.kind === 'pickpocketRes'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪵'); }catch(e){} } fl(el, `👛 +${ev.amount}`, 'gold'); snd('coin'); return; }
+  if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪛 −${ev.amount}`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'fortify'){ fl(el, '🏯', 'quick'); return; }
 }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
@@ -40819,6 +41030,8 @@ function renderVfxForEvent(ev){
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
+  try{ eqVfx(ev); }catch(e){} // package EQ (2026-10-19)
+  try{ sk2Vfx(ev); }catch(e){} // Package SK2 (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)

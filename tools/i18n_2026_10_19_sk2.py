@@ -1,0 +1,402 @@
+#!/usr/bin/env python3
+"""Game texts added on 2026-10-19 by package SK2 (economy and structure skills, owner 21:36 and 21:56): the skill names, card lines,
+Codex notes, battle-log lines, chip tips and the Palisade's name for Harvest, Scavenge, Salvage, Repair, Foraging, Milling,
+Pickpocket, Sabotage, Arson and Fortification (the TX keys ui.sk2*), plus the Petrified Tree card's name (lang/cards) and flavour
+(lang/ui). Keys are the English as the page translator sees it; every {placeholder} is kept. The resource / status words follow the
+packs (Bois / Holz / 木材 for Lumber, Roncier / Dornenhecke for the bramble ...). Same caveats as i18n_core.py (Tagalog, Tamil,
+Japanese and Korean deserve a native read).
+
+    python3 tools/i18n_2026_10_19_sk2.py && python3 tools/i18n_refresh.py
+"""
+import json, os, re
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']
+T = {
+"Harvest": ["Récolte", "Ernte", "Cosecha", "Raccolto", "Colheita", "Ani", "அறுவடை", "Panen", "收获", "收穫", "収穫", "수확"],
+"Scavenge": ["Glanage", "Aufsammeln", "Rapiña", "Spigolatura", "Rapina", "Pulot", "பொறுக்குதல்", "Memulung", "拾荒", "拾荒", "拾い集め", "줍기"],
+"Salvage": ["Récupération", "Bergung", "Recuperación", "Recupero", "Recuperação", "Pagsalba", "மீட்பு", "Penyelamatan", "回收", "回收", "サルベージ", "회수"],
+"Repair": ["Réparation", "Reparatur", "Reparación", "Riparazione", "Reparo", "Kumpuni", "பழுதுபார்ப்பு", "Perbaikan", "修理", "修理", "修理", "수리"],
+"Foraging": ["Cueillette", "Sammeln", "Recolección", "Foraggiamento", "Coleta", "Pangangalap", "உணவுதேடல்", "Mencari Makan", "觅食", "覓食", "採集", "채집"],
+"Milling": ["Scierie", "Sägewerk", "Aserradero", "Segheria", "Serraria", "Lagarian", "அறுவை ஆலை", "Penggergajian", "锯木", "鋸木", "製材", "제재"],
+"Pickpocket": ["Pickpocket", "Taschendieb", "Carterista", "Borseggio", "Batedor", "Mandurukot", "பை திருடன்", "Copet", "扒窃", "扒竊", "スリ", "소매치기"],
+"Sabotage": ["Sabotage", "Sabotage", "Sabotaje", "Sabotaggio", "Sabotagem", "Sabotahe", "நாசவேலை", "Sabotase", "破坏", "破壞", "破壊工作", "사보타주"],
+"Arson": ["Incendie", "Brandstiftung", "Incendio", "Incendio", "Incêndio", "Panununog", "தீவைப்பு", "Pembakaran", "纵火", "縱火", "放火", "방화"],
+"Fortification": ["Fortification", "Befestigung", "Fortificación", "Fortificazione", "Fortificação", "Kuta", "கோட்டை அரண்", "Benteng", "筑垒", "築壘", "築城", "축성"],
+"Palisade": ["Palissade", "Palisade", "Empalizada", "Palizzata", "Paliçada", "Bakod-kahoy", "வேலி அரண்", "Pagar Kayu", "木栅", "木柵", "柵", "목책"],
+"Half its swings harvest {n} Lumber instead. With nothing opposite, it always harvests.": [
+  "La moitié de ses attaques récoltent {n} Bois à la place. Sans rien en face, elle récolte toujours.",
+  "Die Hälfte seiner Schläge erntet stattdessen {n} Holz. Steht ihm nichts gegenüber, erntet es immer.",
+  "La mitad de sus golpes cosechan {n} de Madera en su lugar. Sin nada enfrente, siempre cosecha.",
+  "Metà dei suoi colpi raccolgono invece {n} Legno. Senza nulla di fronte, raccoglie sempre.",
+  "Metade dos seus golpes colhem {n} de Madeira em vez disso. Sem nada à frente, colhe sempre.",
+  "Kalahati ng mga hampas nito ay umaani ng {n} Kahoy sa halip. Kung walang kaharap, laging umaani.",
+  "அதன் தாக்குதல்களில் பாதி பதிலாக {n} மரம் அறுவடை செய்யும். எதிரே எதுவும் இல்லையெனில், எப்போதும் அறுவடை செய்யும்.",
+  "Separuh serangannya memanen {n} Kayu sebagai gantinya. Tanpa lawan di depan, selalu memanen.",
+  "一半的攻击改为收获 {n} 木材。对面没有单位时，总是收获。",
+  "一半的攻擊改為收穫 {n} 木材。對面沒有單位時，總是收穫。",
+  "攻撃の半分は代わりに木材{n}を収穫する。正面に誰もいなければ、必ず収穫する。",
+  "공격의 절반은 대신 목재 {n}을(를) 수확합니다. 맞은편에 아무도 없으면 항상 수확합니다."],
+"When a unit dies within 1 of it, +{n} scavenge points. Every {m} points: 1 Lumber.": [
+  "Quand une unité meurt à 1 case ou moins, +{n} points de glanage. Tous les {m} points : 1 Bois.",
+  "Stirbt eine Einheit im Umkreis von 1, +{n} Sammelpunkte. Je {m} Punkte: 1 Holz.",
+  "Cuando una unidad muere a 1 o menos, +{n} puntos de rapiña. Cada {m} puntos: 1 de Madera.",
+  "Quando un'unità muore entro 1, +{n} punti di spigolatura. Ogni {m} punti: 1 Legno.",
+  "Quando uma unidade morre a 1 ou menos, +{n} pontos de rapina. A cada {m} pontos: 1 de Madeira.",
+  "Kapag may unit na namatay sa loob ng 1 nito, +{n} puntos ng pulot. Bawat {m} puntos: 1 Kahoy.",
+  "அதிலிருந்து 1 தொலைவுக்குள் ஓர் அலகு இறந்தால், +{n} பொறுக்கு புள்ளிகள். ஒவ்வொரு {m} புள்ளிகளுக்கும்: 1 மரம்.",
+  "Saat unit mati dalam jarak 1 darinya, +{n} poin pulung. Setiap {m} poin: 1 Kayu.",
+  "距离它 1 格内有单位阵亡时，+{n} 拾荒点数。每 {m} 点：1 木材。",
+  "距離它 1 格內有單位陣亡時，+{n} 拾荒點數。每 {m} 點：1 木材。",
+  "距離1以内でユニットが倒れると拾い集めポイント+{n}。{m}ポイントごとに木材1。",
+  "1칸 이내에서 유닛이 죽으면 줍기 점수 +{n}. {m}점마다 목재 1."],
+"When a structure dies within 1 of it, +{n} salvage points. Every {m} points: 1 Stone.": [
+  "Quand une structure est détruite à 1 case ou moins, +{n} points de récupération. Tous les {m} points : 1 Pierre.",
+  "Wird ein Bauwerk im Umkreis von 1 zerstört, +{n} Bergungspunkte. Je {m} Punkte: 1 Stein.",
+  "Cuando una estructura cae a 1 o menos, +{n} puntos de recuperación. Cada {m} puntos: 1 de Piedra.",
+  "Quando una struttura cade entro 1, +{n} punti di recupero. Ogni {m} punti: 1 Pietra.",
+  "Quando uma estrutura cai a 1 ou menos, +{n} pontos de recuperação. A cada {m} pontos: 1 de Pedra.",
+  "Kapag may istrukturang nawasak sa loob ng 1 nito, +{n} puntos ng pagsalba. Bawat {m} puntos: 1 Bato.",
+  "அதிலிருந்து 1 தொலைவுக்குள் ஒரு கட்டமைப்பு அழிந்தால், +{n} மீட்பு புள்ளிகள். ஒவ்வொரு {m} புள்ளிகளுக்கும்: 1 கல்.",
+  "Saat bangunan hancur dalam jarak 1 darinya, +{n} poin penyelamatan. Setiap {m} poin: 1 Batu.",
+  "距离它 1 格内有建筑被摧毁时，+{n} 回收点数。每 {m} 点：1 岩石。",
+  "距離它 1 格內有建築被摧毀時，+{n} 回收點數。每 {m} 點：1 岩石。",
+  "距離1以内で建造物が壊れるとサルベージポイント+{n}。{m}ポイントごとに石1。",
+  "1칸 이내에서 건축물이 부서지면 회수 점수 +{n}. {m}점마다 돌 1."],
+"Each turn, repairs the most damaged nearby structure for {n}; with none, your bramble for {h}.": [
+  "Chaque tour, répare de {n} la structure proche la plus abîmée ; sinon, ton Roncier de {h}.",
+  "Jeden Zug repariert es das am stärksten beschädigte Bauwerk in der Nähe um {n}; sonst deine Dornenhecke um {h}.",
+  "Cada turno, repara {n} la estructura cercana más dañada; si no hay, tu Zarzal {h}.",
+  "Ogni turno ripara di {n} la struttura vicina più danneggiata; se non c'è, il tuo Rovo di {h}.",
+  "A cada turno, repara {n} na estrutura próxima mais danificada; se não houver, o teu Silvado em {h}.",
+  "Bawat turn, kinukumpuni nang {n} ang pinakasirang istruktura sa malapit; kung wala, ang dawag mo nang {h}.",
+  "ஒவ்வொரு முறையும், அருகில் மிகவும் சேதமான கட்டமைப்பை {n} பழுதுபார்க்கும்; இல்லையெனில், உங்கள் முட்புதரை {h}.",
+  "Tiap giliran, memperbaiki bangunan terdekat yang paling rusak sebanyak {n}; jika tak ada, Semakmu sebanyak {h}.",
+  "每回合修理附近受损最重的建筑 {n}；没有时，修理你的荆棘丛 {h}。",
+  "每回合修理附近受損最重的建築 {n}；沒有時，修理你的荊棘叢 {h}。",
+  "毎ターン、近くで最も傷んだ建造物を{n}修理する。なければ自分のいばらを{h}。",
+  "매 턴, 근처에서 가장 손상된 건축물을 {n} 수리합니다. 없으면 내 덤불을 {h}."],
+"Gathers a Berry each turn. At {b} Berries, heals your most damaged other ally for {n}.": [
+  "Cueille une Baie à chaque tour. À {b} Baies, soigne de {n} ton autre allié le plus blessé.",
+  "Sammelt jeden Zug eine Beere. Bei {b} Beeren heilt es deinen am schwersten verletzten anderen Verbündeten um {n}.",
+  "Recoge una Baya cada turno. Con {b} Bayas, cura {n} a tu otro aliado más herido.",
+  "Raccoglie una Bacca ogni turno. A {b} Bacche, cura di {n} il tuo altro alleato più ferito.",
+  "Colhe uma Baga a cada turno. Com {b} Bagas, cura {n} o teu outro aliado mais ferido.",
+  "Nangangalap ng isang Berry bawat turn. Sa {b} Berry, pinagagaling nang {n} ang pinakasugatan mong ibang kakampi.",
+  "ஒவ்வொரு முறையும் ஒரு பெர்ரி சேகரிக்கும். {b} பெர்ரிகளில், உங்கள் மிகவும் காயமடைந்த மற்ற கூட்டாளியை {n} குணப்படுத்தும்.",
+  "Mengumpulkan satu Beri tiap giliran. Pada {b} Beri, memulihkan sekutu lain yang paling terluka sebanyak {n}.",
+  "每回合采集 1 颗浆果。集满 {b} 颗时，为你受伤最重的其他友军治疗 {n}。",
+  "每回合採集 1 顆漿果。集滿 {b} 顆時，為你受傷最重的其他友軍治療 {n}。",
+  "毎ターンベリーを1つ集める。{b}つで、最も傷ついたほかの味方を{n}回復する。",
+  "매 턴 베리를 1개 모읍니다. {b}개가 되면 가장 다친 다른 아군을 {n} 치유합니다."],
+"Each turn while Ready, you gain {n} Lumber. It still attacks.": [
+  "Chaque tour où elle est Prête, tu gagnes {n} Bois. Elle attaque quand même.",
+  "Jeden Zug, in dem es Bereit ist, erhältst du {n} Holz. Es greift trotzdem an.",
+  "Cada turno que esté Lista, ganas {n} de Madera. Aun así ataca.",
+  "Ogni turno in cui è Pronta, ottieni {n} Legno. Attacca comunque.",
+  "A cada turno em que esteja Pronta, ganhas {n} de Madeira. Ataca na mesma.",
+  "Bawat turn habang Handa, makakakuha ka ng {n} Kahoy. Umaatake pa rin ito.",
+  "தயாராக இருக்கும் ஒவ்வொரு முறையும், நீங்கள் {n} மரம் பெறுவீர்கள். அது இன்னும் தாக்கும்.",
+  "Tiap giliran saat Siap, kamu mendapat {n} Kayu. Ia tetap menyerang.",
+  "可进行时每回合，你获得 {n} 木材。它照样攻击。",
+  "可進行時每回合，你獲得 {n} 木材。它照樣攻擊。",
+  "準備OKの間、毎ターン木材{n}を得る。攻撃もする。",
+  "가능 상태인 동안 매 턴 목재 {n}을(를) 얻습니다. 공격도 합니다."],
+"Its hits steal {n} tokens from a unit; on the bramble, {n} of the lowest-ranked resource.": [
+  "Ses coups volent {n} jetons à une unité ; sur le Roncier, {n} de la ressource de plus bas rang.",
+  "Seine Treffer stehlen einer Einheit {n} Marken; an der Dornenhecke {n} der niedrigsten Ressource.",
+  "Sus golpes roban {n} fichas a una unidad; en el Zarzal, {n} del recurso de menor rango.",
+  "I suoi colpi rubano {n} segnalini a un'unità; sul Rovo, {n} della risorsa di grado più basso.",
+  "Os seus golpes roubam {n} fichas a uma unidade; no Silvado, {n} do recurso de menor grau.",
+  "Ang mga tama nito ay nagnanakaw ng {n} token sa unit; sa dawag, {n} ng pinakamababang resource.",
+  "அதன் தாக்குதல்கள் ஓர் அலகிடமிருந்து {n} டோக்கன்களைத் திருடும்; முட்புதரில், மிகக் குறைந்த நிலை வளத்தில் {n}.",
+  "Serangannya mencuri {n} token dari unit; pada Semak, {n} sumber daya peringkat terendah.",
+  "它的命中从单位身上偷走 {n} 个标记；打到荆棘丛时，偷走 {n} 个最低级资源。",
+  "它的命中從單位身上偷走 {n} 個標記；打到荊棘叢時，偷走 {n} 個最低級資源。",
+  "命中するとユニットからトークンを{n}盗む。いばらなら最も低ランクの資源を{n}。",
+  "적중 시 유닛에게서 토큰 {n}개를 훔칩니다. 덤불이면 가장 낮은 등급 자원 {n}."],
+"Its hits destroy {n} of the opponent's resources, lowest rank first.": [
+  "Ses coups détruisent {n} ressources de l'adversaire, du plus bas rang au plus haut.",
+  "Seine Treffer zerstören {n} Ressourcen des Gegners, die niedrigsten zuerst.",
+  "Sus golpes destruyen {n} recursos del rival, los de menor rango primero.",
+  "I suoi colpi distruggono {n} risorse dell'avversario, dal grado più basso.",
+  "Os seus golpes destroem {n} recursos do adversário, os de menor grau primeiro.",
+  "Ang mga tama nito ay sumisira ng {n} resource ng kalaban, mula sa pinakamababa.",
+  "அதன் தாக்குதல்கள் எதிரியின் {n} வளங்களை அழிக்கும், குறைந்த நிலை முதலில்.",
+  "Serangannya menghancurkan {n} sumber daya lawan, peringkat terendah dulu.",
+  "它的命中摧毁对手 {n} 个资源，从最低级开始。",
+  "它的命中摧毀對手 {n} 個資源，從最低級開始。",
+  "命中すると相手の資源を{n}破壊する（低ランクから）。",
+  "적중 시 상대 자원 {n}을(를) 파괴합니다. 낮은 등급부터."],
+"Its hits burn {n} of the opponent's Lumber.": [
+  "Ses coups brûlent {n} Bois de l'adversaire.", "Seine Treffer verbrennen {n} Holz des Gegners.", "Sus golpes queman {n} de Madera del rival.",
+  "I suoi colpi bruciano {n} Legno dell'avversario.", "Os seus golpes queimam {n} de Madeira do adversário.", "Ang mga tama nito ay sumusunog ng {n} Kahoy ng kalaban.",
+  "அதன் தாக்குதல்கள் எதிரியின் {n} மரத்தை எரிக்கும்.", "Serangannya membakar {n} Kayu lawan.", "它的命中烧掉对手 {n} 木材。", "它的命中燒掉對手 {n} 木材。",
+  "命中すると相手の木材を{n}燃やす。", "적중 시 상대 목재 {n}을(를) 태웁니다."],
+"On play, builds a {a}/{h} Palisade, a Structure, in an empty slot beside it.": [
+  "En jeu, bâtit une Palissade {a}/{h}, une Structure, dans une case vide à côté.",
+  "Beim Ausspielen baut es eine {a}/{h}-Palisade, ein Bauwerk, auf einem freien Platz daneben.",
+  "Al jugarse, construye una Empalizada {a}/{h}, una Estructura, en una casilla vacía a su lado.",
+  "Quando giocata, costruisce una Palizzata {a}/{h}, una Struttura, in uno spazio vuoto accanto.",
+  "Ao ser jogada, constrói uma Paliçada {a}/{h}, uma Estrutura, num espaço vazio ao lado.",
+  "Kapag nilaro, nagtatayo ng {a}/{h} na Bakod-kahoy, isang Istruktura, sa bakanteng puwesto sa tabi nito.",
+  "விளையாடும்போது, அருகிலுள்ள காலி இடத்தில் {a}/{h} வேலி அரணை, ஒரு கட்டமைப்பைக் கட்டும்.",
+  "Saat dimainkan, membangun Pagar Kayu {a}/{h}, sebuah Bangunan, di slot kosong di sebelahnya.",
+  "打出时，在旁边的空位建造一座 {a}/{h} 木栅（建筑）。",
+  "打出時，在旁邊的空位建造一座 {a}/{h} 木柵（建築）。",
+  "プレイ時、隣の空きマスに{a}/{h}の柵（建造物）を建てる。",
+  "낼 때 옆 빈칸에 {a}/{h} 목책(건축물)을 세웁니다."],
+"The coin is the fight's seeded roll. A harvest is its action: no swing, no On Attack. Lumberjack adds to it.": [
+  "La pièce est le tirage du combat. Une récolte est son action : pas d'attaque, pas d'À l’attaque. Bûcheronne s'y ajoute.",
+  "Der Münzwurf ist der Zufall des Kampfes. Eine Ernte ist seine Aktion: kein Schlag, kein Beim Angriff. Holzfäller zählt dazu.",
+  "La moneda es la tirada del combate. Cosechar es su acción: sin golpe, sin Al atacar. Leñadora se suma.",
+  "La moneta è il tiro del combattimento. Raccogliere è la sua azione: niente colpo, niente All'attacco. Taglialegna si somma.",
+  "A moeda é o lance do combate. Colher é a sua ação: sem golpe, sem Ao atacar. Lenhadora soma-se.",
+  "Ang barya ay ang roll ng laban. Ang pag-ani ay aksiyon nito: walang hampas, walang On Attack. Nadadagdag ang Lumberjack.",
+  "நாணயம் சண்டையின் சீரற்ற வீச்சு. அறுவடை அதன் செயல்: தாக்குதல் இல்லை, On Attack இல்லை. Lumberjack சேரும்.",
+  "Koinnya lemparan acak pertarungan. Panen adalah aksinya: tanpa serangan, tanpa On Attack. Lumberjack menambah.",
+  "硬币是战斗的随机掷骰。收获就是它的行动：不攻击，不触发攻击时。伐木工会加成。",
+  "硬幣是戰鬥的隨機擲骰。收穫就是它的行動：不攻擊，不觸發攻擊時。伐木工會加成。",
+  "コインは戦闘の乱数。収穫はその行動：攻撃せず、攻撃時も起きない。木こりが上乗せされる。",
+  "동전은 전투의 무작위 판정입니다. 수확이 그 행동입니다: 공격 없음, 공격 시 없음. 벌목꾼이 더해집니다."],
+"Within 1: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": [
+  "À 1 case : les cases voisines, les trois en face, et la rangée suivante d'un raid. Les morts des deux camps comptent, pas la sienne.",
+  "Im Umkreis von 1: die Plätze daneben, die drei gegenüber und in einem Raid die nächste Reihe. Tode beider Seiten zählen, nicht der eigene.",
+  "A 1: las casillas de al lado, las tres de enfrente y la fila siguiente de una incursión. Cuentan las muertes de ambos bandos, no la suya.",
+  "Entro 1: gli spazi accanto, i tre di fronte e la fila successiva di un raid. Contano le morti di entrambi i lati, non la sua.",
+  "A 1: os espaços ao lado, os três em frente e a fila seguinte de uma incursão. Contam as mortes dos dois lados, não a sua.",
+  "Sa loob ng 1: ang mga puwesto sa tabi, ang tatlo sa tapat, at ang susunod na hanay ng raid. Bilang ang pagkamatay ng magkabilang panig, hindi ang sarili.",
+  "1 தொலைவுக்குள்: அருகிலுள்ள இடங்கள், எதிரே உள்ள மூன்று, ரெய்டின் அடுத்த வரிசை. இரு தரப்பு இறப்புகளும் கணக்கு, அதன் சொந்தம் அல்ல.",
+  "Dalam 1: slot di sebelahnya, tiga di seberangnya, dan baris berikut dalam raid. Kematian kedua pihak dihitung, bukan dirinya.",
+  "1 格内：旁边的格子、对面的三个，以及突袭中的下一排。双方的阵亡都算，自己的不算。",
+  "1 格內：旁邊的格子、對面的三個，以及突襲中的下一排。雙方的陣亡都算，自己的不算。",
+  "距離1以内：隣のマス、向かいの3つ、レイドでは次の列。両陣営の死亡が数えられ、自分自身は含まない。",
+  "1칸 이내: 옆 칸, 맞은편 세 칸, 레이드의 다음 줄. 양쪽의 죽음이 모두 세어지며, 자신은 제외."],
+"Like Scavenge, but only Structures count, on either side, and the points become Stone. Heavy Metal adds to it.": [
+  "Comme Glanage, mais seules les Structures comptent, des deux camps, et les points deviennent de la Pierre. Métal lourd s'y ajoute.",
+  "Wie Aufsammeln, aber nur Bauwerke zählen, auf beiden Seiten, und die Punkte werden zu Stein. Schwermetall zählt dazu.",
+  "Como Rapiña, pero solo cuentan las Estructuras, de ambos bandos, y los puntos se vuelven Piedra. Metal pesado se suma.",
+  "Come Spigolatura, ma contano solo le Strutture, di entrambi i lati, e i punti diventano Pietra. Metallo pesante si somma.",
+  "Como Rapina, mas só contam as Estruturas, dos dois lados, e os pontos tornam-se Pedra. Metal pesado soma-se.",
+  "Tulad ng Pulot, pero Istruktura lang ang bilang, sa magkabilang panig, at nagiging Bato ang puntos. Nadadagdag ang Heavy Metal.",
+  "பொறுக்குதல் போல, ஆனால் கட்டமைப்புகள் மட்டுமே கணக்கு, இரு தரப்பிலும், புள்ளிகள் கல்லாகும். Heavy Metal சேரும்.",
+  "Seperti Memulung, tetapi hanya Bangunan yang dihitung, di kedua pihak, dan poinnya menjadi Batu. Heavy Metal menambah.",
+  "类似拾荒，但只计算双方的建筑，点数变成岩石。重金属会加成。",
+  "類似拾荒，但只計算雙方的建築，點數變成岩石。重金屬會加成。",
+  "拾い集めと同じだが、数えるのは両陣営の建造物だけで、ポイントは石になる。ヘビーメタルが上乗せされる。",
+  "줍기와 같지만 양쪽의 건축물만 세며, 점수는 돌이 됩니다. 헤비메탈이 더해집니다."],
+"Within 1 column; never itself. The bramble takes half, rounded down, at least 1. Waiting, Stunned, Frozen or Asleep: no repair.": [
+  "À 1 colonne ; jamais elle-même. Le Roncier reçoit la moitié, arrondie à l'inférieur, au moins 1. En Attente, Étourdie, Gelée ou Endormie : pas de réparation.",
+  "Im Umkreis von 1 Spalte; nie sich selbst. Die Dornenhecke erhält die Hälfte, abgerundet, mindestens 1. Wartend, Betäubt, Gefroren oder Schlafend: keine Reparatur.",
+  "A 1 columna; nunca a sí misma. El Zarzal recibe la mitad, redondeada hacia abajo, al menos 1. En Espera, Aturdida, Congelada o Dormida: no repara.",
+  "Entro 1 colonna; mai sé stessa. Il Rovo riceve metà, arrotondata per difetto, almeno 1. In Attesa, Stordita, Congelata o Addormentata: nessuna riparazione.",
+  "A 1 coluna; nunca a si mesma. O Silvado recebe metade, arredondada para baixo, pelo menos 1. Em Espera, Atordoada, Congelada ou Adormecida: não repara.",
+  "Sa loob ng 1 hanay; hindi kailanman ang sarili. Kalahati ang dawag, bilugan pababa, hindi bababa sa 1. Naghihintay, Stunned, Nagyelo o Tulog: walang kumpuni.",
+  "1 நிரலுக்குள்; ஒருபோதும் தன்னை அல்ல. முட்புதருக்கு பாதி, கீழ்நோக்கி முழுமையாக்கி, குறைந்தது 1. காத்திருப்பு, மயக்கம், உறைவு அல்லது தூக்கம்: பழுதுபார்ப்பு இல்லை.",
+  "Dalam 1 kolom; tak pernah dirinya sendiri. Semak mendapat separuh, dibulatkan ke bawah, minimal 1. Menunggu, Pingsan, Beku atau Tertidur: tak ada perbaikan.",
+  "1 列以内；从不修理自己。荆棘丛只得一半（向下取整，至少 1）。等待、眩晕、冰冻或睡眠时：不修理。",
+  "1 列以內；從不修理自己。荊棘叢只得一半（向下取整，至少 1）。等待、眩暈、冰凍或睡眠時：不修理。",
+  "1列以内。自分自身は直さない。いばらは半分（切り捨て、最低1）。待機・スタン・凍結・睡眠中は修理しない。",
+  "1열 이내; 자신은 절대 아님. 덤불은 절반(내림, 최소 1). 대기, 기절, 빙결, 수면 중에는 수리하지 않습니다."],
+"It holds at most a full basket. With nobody hurt it waits. The heal stanches Bleed first. A Pickpocket can steal Berries.": [
+  "Elle garde au plus un panier plein. Si personne n'est blessé, elle attend. Le soin arrête d'abord le Saignement. Un Pickpocket peut voler des Baies.",
+  "Es hält höchstens einen vollen Korb. Ist niemand verletzt, wartet es. Die Heilung stillt zuerst Blutung. Ein Taschendieb kann Beeren stehlen.",
+  "Guarda como mucho una cesta llena. Si nadie está herido, espera. La curación detiene primero el Sangrado. Un Carterista puede robar Bayas.",
+  "Tiene al massimo un cesto pieno. Se nessuno è ferito, aspetta. La cura ferma prima il Sanguinamento. Un Borseggio può rubare Bacche.",
+  "Guarda no máximo um cesto cheio. Se ninguém está ferido, espera. A cura estanca primeiro o Sangramento. Um Batedor pode roubar Bagas.",
+  "Pinakamarami nitong hawak ang isang punong basket. Kung walang sugatan, naghihintay ito. Unang pinahihinto ng paggaling ang Bleed. Kayang magnakaw ng Mandurukot ng Berry.",
+  "அது அதிகபட்சம் ஒரு நிறைந்த கூடையை வைத்திருக்கும். யாரும் காயமடையவில்லையெனில், காத்திருக்கும். குணமாக்கல் முதலில் இரத்தப்போக்கை நிறுத்தும். பை திருடன் பெர்ரிகளைத் திருடலாம்.",
+  "Ia memegang paling banyak satu keranjang penuh. Jika tak ada yang terluka, ia menunggu. Penyembuhan menghentikan Pendarahan dulu. Copet bisa mencuri Beri.",
+  "最多存一满篮。没人受伤时就等待。治疗先止住流血。扒窃可以偷走浆果。",
+  "最多存一滿籃。沒人受傷時就等待。治療先止住流血。扒竊可以偷走漿果。",
+  "持てるのは満杯のかご1つまで。誰も傷ついていなければ待つ。回復はまず出血を止める。スリはベリーを盗める。",
+  "최대 바구니 하나 가득만 가집니다. 다친 아군이 없으면 기다립니다. 치유는 먼저 출혈을 멎게 합니다. 소매치기가 베리를 훔칠 수 있습니다."],
+"An On Turn Start trigger: every turn it is Ready, from its first. Steady, unlike Harvest's coin. Lumberjack adds to it.": [
+  "Un déclencheur Au début du tour : chaque tour où elle est Prête, dès le premier. Régulier, contrairement à la pièce de Récolte. Bûcheronne s'y ajoute.",
+  "Ein Bei-Zugbeginn-Auslöser: jeden Zug, in dem es Bereit ist, ab dem ersten. Verlässlich, anders als der Münzwurf der Ernte. Holzfäller zählt dazu.",
+  "Un disparador Al inicio del turno: cada turno que esté Lista, desde el primero. Constante, a diferencia de la moneda de Cosecha. Leñadora se suma.",
+  "Un innesco All'inizio del turno: ogni turno in cui è Pronta, dal primo. Costante, a differenza della moneta di Raccolto. Taglialegna si somma.",
+  "Um gatilho Ao início do turno: cada turno em que esteja Pronta, desde o primeiro. Constante, ao contrário da moeda de Colheita. Lenhadora soma-se.",
+  "Isang trigger sa simula ng turn: bawat turn na Handa ito, mula sa una. Tuloy-tuloy, hindi tulad ng barya ng Ani. Nadadagdag ang Lumberjack.",
+  "ஒரு முறை தொடக்கத் தூண்டி: தயாராக இருக்கும் ஒவ்வொரு முறையும், முதலிலிருந்தே. அறுவடையின் நாணயம் போலல்லாமல் நிலையானது. Lumberjack சேரும்.",
+  "Pemicu awal giliran: tiap giliran saat Siap, sejak yang pertama. Stabil, tak seperti koin Panen. Lumberjack menambah.",
+  "一个回合开始时触发：从它第一次可进行起，每回合都会。稳定，不像收获靠硬币。伐木工会加成。",
+  "一個回合開始時觸發：從它第一次可進行起，每回合都會。穩定，不像收穫靠硬幣。伐木工會加成。",
+  "ターン開始時の誘発：準備OKになった最初のターンから毎ターン。収穫のコインと違い安定。木こりが上乗せされる。",
+  "턴 시작 시 발동: 가능 상태가 된 첫 턴부터 매 턴. 수확의 동전과 달리 꾸준합니다. 벌목꾼이 더해집니다."],
+"Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": [
+  "Jetons : jetons de Prière, Baies, points de glanage, Créativité ; jamais un affaiblissement. Ils passent sur le voleur. Ressources : Bois, Pierre, Métal, Uranium.",
+  "Marken: Gebetsmarken, Beeren, Sammelpunkte, Kreativität; nie eine Schwächung. Sie wandern auf den Dieb. Ressourcen: Holz, Stein, Metall, Uran.",
+  "Fichas: fichas de Oración, Bayas, puntos de rapiña, Creatividad; nunca un perjuicio. Pasan al ladrón. Recursos: Madera, Piedra, Metal, Uranio.",
+  "Segnalini: segnalini Preghiera, Bacche, punti di spigolatura, Creatività; mai un malus. Passano al ladro. Risorse: Legno, Pietra, Metallo, Uranio.",
+  "Fichas: fichas de Oração, Bagas, pontos de rapina, Criatividade; nunca um prejuízo. Passam para o ladrão. Recursos: Madeira, Pedra, Metal, Urânio.",
+  "Mga token: Prayer token, Berry, puntos ng pulot, Creativity; hindi kailanman debuff. Lumilipat ang mga ito sa magnanakaw. Mga resource: Kahoy, Bato, Metal, Uranium.",
+  "டோக்கன்கள்: பிரார்த்தனை டோக்கன்கள், பெர்ரிகள், பொறுக்கு புள்ளிகள், படைப்பாற்றல்; ஒருபோதும் பலவீனம் அல்ல. அவை திருடனிடம் போகும். வளங்கள்: மரம், கல், உலோகம், யுரேனியம்.",
+  "Token: token Doa, Beri, poin pulung, Kreativitas; tak pernah debuff. Pindah ke si pencuri. Sumber daya: Kayu, Batu, Logam, Uranium.",
+  "标记：祈祷标记、浆果、拾荒点数、创造力；从不偷减益。它们移到小偷身上。资源顺序：木材、岩石、金属、铀。",
+  "標記：祈禱標記、漿果、拾荒點數、創造力；從不偷減益。它們移到小偷身上。資源順序：木材、岩石、金屬、鈾。",
+  "トークン：祈りトークン、ベリー、拾い集めポイント、創造力。弱体は盗まない。盗んだ分は盗人に移る。資源は木材、石、金属、ウランの順。",
+  "토큰: 기도 토큰, 베리, 줍기 점수, 창의력; 약화 효과는 절대 아님. 도둑에게 옮겨집니다. 자원 순서: 목재, 돌, 금속, 우라늄."],
+"Lumber first, then Stone, Metal and Uranium. A missed or dodged swing destroys nothing.": [
+  "D'abord le Bois, puis la Pierre, le Métal et l'Uranium. Une attaque ratée ou esquivée ne détruit rien.",
+  "Zuerst Holz, dann Stein, Metall und Uran. Ein verfehlter oder ausgewichener Schlag zerstört nichts.",
+  "Primero Madera, luego Piedra, Metal y Uranio. Un golpe fallado o esquivado no destruye nada.",
+  "Prima il Legno, poi Pietra, Metallo e Uranio. Un colpo mancato o schivato non distrugge nulla.",
+  "Primeiro Madeira, depois Pedra, Metal e Urânio. Um golpe falhado ou esquivado não destrói nada.",
+  "Kahoy muna, saka Bato, Metal at Uranium. Walang nasisira ang hampas na sumablay o naiwasan.",
+  "முதலில் மரம், பின்னர் கல், உலோகம், யுரேனியம். தவறிய அல்லது தவிர்க்கப்பட்ட தாக்குதல் எதையும் அழிக்காது.",
+  "Kayu dulu, lalu Batu, Logam, dan Uranium. Serangan yang meleset atau dihindari tak menghancurkan apa pun.",
+  "先木材，再岩石、金属和铀。未命中或被闪避的攻击什么也不摧毁。",
+  "先木材，再岩石、金屬和鈾。未命中或被閃避的攻擊什麼也不摧毀。",
+  "まず木材、次に石、金属、ウラン。外れた・回避された攻撃は何も壊さない。",
+  "목재부터, 그다음 돌, 금속, 우라늄. 빗나가거나 회피된 공격은 아무것도 파괴하지 않습니다."],
+"Only Lumber burns. A missed or dodged swing burns nothing.": [
+  "Seul le Bois brûle. Une attaque ratée ou esquivée ne brûle rien.", "Nur Holz brennt. Ein verfehlter oder ausgewichener Schlag verbrennt nichts.",
+  "Solo arde la Madera. Un golpe fallado o esquivado no quema nada.", "Brucia solo il Legno. Un colpo mancato o schivato non brucia nulla.",
+  "Só a Madeira arde. Um golpe falhado ou esquivado não queima nada.", "Kahoy lang ang nasusunog. Walang nasusunog ang hampas na sumablay o naiwasan.",
+  "மரம் மட்டுமே எரியும். தவறிய அல்லது தவிர்க்கப்பட்ட தாக்குதல் எதையும் எரிக்காது.", "Hanya Kayu yang terbakar. Serangan yang meleset atau dihindari tak membakar apa pun.",
+  "只烧木材。未命中或被闪避的攻击什么也不烧。", "只燒木材。未命中或被閃避的攻擊什麼也不燒。", "燃えるのは木材だけ。外れた・回避された攻撃は何も燃やさない。", "목재만 탑니다. 빗나가거나 회피된 공격은 아무것도 태우지 않습니다."],
+"The Palisade has no skills: it blocks its column, takes no Poison, and Repair mends it. No free slot beside it: nothing is built.": [
+  "La Palissade n'a aucune compétence : elle bloque sa colonne, ne prend pas de Poison, et Réparation la répare. Pas de case libre à côté : rien n'est bâti.",
+  "Die Palisade hat keine Fähigkeiten: Sie blockiert ihre Spalte, nimmt kein Gift, und Reparatur flickt sie. Kein freier Platz daneben: Es wird nichts gebaut.",
+  "La Empalizada no tiene habilidades: bloquea su columna, no recibe Veneno y Reparación la arregla. Sin casilla libre al lado: no se construye nada.",
+  "La Palizzata non ha abilità: blocca la sua colonna, non prende Veleno e Riparazione la ripara. Nessuno spazio libero accanto: non si costruisce nulla.",
+  "A Paliçada não tem habilidades: bloqueia a sua coluna, não sofre Veneno e Reparo conserta-a. Sem espaço livre ao lado: nada é construído.",
+  "Walang skill ang Bakod-kahoy: hinaharangan nito ang hanay nito, hindi nalalason, at kinukumpuni ito ng Kumpuni. Walang bakanteng puwesto sa tabi: walang naitatayo.",
+  "வேலி அரணுக்கு திறன்கள் இல்லை: அது தன் நிரலைத் தடுக்கும், நஞ்சு பெறாது, பழுதுபார்ப்பு அதைச் சரிசெய்யும். அருகில் காலி இடம் இல்லையெனில்: எதுவும் கட்டப்படாது.",
+  "Pagar Kayu tak punya skill: ia menghalangi kolomnya, kebal Racun, dan Perbaikan memperbaikinya. Tak ada slot kosong di sebelah: tak ada yang dibangun.",
+  "木栅没有技能：它挡住所在列，不会中毒，修理可以修好它。旁边没有空位时：什么也不建。",
+  "木柵沒有技能：它擋住所在列，不會中毒，修理可以修好它。旁邊沒有空位時：什麼也不建。",
+  "柵にスキルはない：その列をふさぎ、毒を受けず、修理で直せる。隣に空きマスがなければ何も建たない。",
+  "목책에는 스킬이 없습니다: 자기 열을 막고, 중독되지 않으며, 수리로 고칠 수 있습니다. 옆에 빈칸이 없으면 아무것도 세우지 않습니다."],
+"{name} harvests instead of attacking: +{n} Lumber.": [
+  "{name} récolte au lieu d'attaquer : +{n} Bois.", "{name} erntet, statt anzugreifen: +{n} Holz.", "{name} cosecha en vez de atacar: +{n} de Madera.",
+  "{name} raccoglie invece di attaccare: +{n} Legno.", "{name} colhe em vez de atacar: +{n} de Madeira.", "Umaani si {name} sa halip na umatake: +{n} Kahoy.",
+  "{name} தாக்குவதற்குப் பதிலாக அறுவடை செய்கிறது: +{n} மரம்.", "{name} memanen alih-alih menyerang: +{n} Kayu.", "{name} 没有攻击，而是收获：+{n} 木材。",
+  "{name} 沒有攻擊，而是收穫：+{n} 木材。", "{name}は攻撃せず収穫する：木材+{n}。", "{name}이(가) 공격 대신 수확합니다: 목재 +{n}."],
+"Nothing faces {name}, so it harvests: +{n} Lumber.": [
+  "Rien ne fait face à {name}, alors elle récolte : +{n} Bois.", "Nichts steht {name} gegenüber, also erntet es: +{n} Holz.", "Nada se enfrenta a {name}, así que cosecha: +{n} de Madera.",
+  "Niente fronteggia {name}, quindi raccoglie: +{n} Legno.", "Nada enfrenta {name}, por isso colhe: +{n} de Madeira.", "Walang kaharap si {name}, kaya umaani ito: +{n} Kahoy.",
+  "{name} முன் எதுவும் இல்லை, எனவே அறுவடை செய்கிறது: +{n} மரம்.", "Tak ada yang menghadapi {name}, jadi ia memanen: +{n} Kayu.", "{name} 面前空无一物，于是收获：+{n} 木材。",
+  "{name} 面前空無一物，於是收穫：+{n} 木材。", "{name}の正面には誰もいないので収穫する：木材+{n}。", "{name} 맞은편에 아무도 없어 수확합니다: 목재 +{n}."],
+"{name} scavenges ({total} points).": [
+  "{name} glane ({total} points).", "{name} sammelt auf ({total} Punkte).", "{name} rapiña ({total} puntos).", "{name} spigola ({total} punti).", "{name} rapina ({total} pontos).",
+  "Namumulot si {name} ({total} puntos).", "{name} பொறுக்குகிறது ({total} புள்ளிகள்).", "{name} memulung ({total} poin).", "{name} 拾荒（{total} 点）。", "{name} 拾荒（{total} 點）。",
+  "{name}が拾い集める（{total}ポイント）。", "{name}이(가) 줍습니다 ({total}점)."],
+"{name} turns its scavenge points into +{n} Lumber.": [
+  "{name} transforme ses points de glanage en +{n} Bois.", "{name} macht aus seinen Sammelpunkten +{n} Holz.", "{name} convierte sus puntos de rapiña en +{n} de Madera.",
+  "{name} trasforma i suoi punti di spigolatura in +{n} Legno.", "{name} transforma os seus pontos de rapina em +{n} de Madeira.", "Ginagawang +{n} Kahoy ni {name} ang mga puntos ng pulot nito.",
+  "{name} தன் பொறுக்கு புள்ளிகளை +{n} மரமாக மாற்றுகிறது.", "{name} mengubah poin pulungnya menjadi +{n} Kayu.", "{name} 把拾荒点数换成 +{n} 木材。",
+  "{name} 把拾荒點數換成 +{n} 木材。", "{name}が拾い集めポイントを木材+{n}に変える。", "{name}이(가) 줍기 점수를 목재 +{n}(으)로 바꿉니다."],
+"{name} salvages ({total} points).": [
+  "{name} récupère ({total} points).", "{name} birgt ({total} Punkte).", "{name} recupera ({total} puntos).", "{name} recupera ({total} punti).", "{name} recupera ({total} pontos).",
+  "Sumasalba si {name} ({total} puntos).", "{name} மீட்கிறது ({total} புள்ளிகள்).", "{name} menyelamatkan puing ({total} poin).", "{name} 回收（{total} 点）。", "{name} 回收（{total} 點）。",
+  "{name}がサルベージする（{total}ポイント）。", "{name}이(가) 회수합니다 ({total}점)."],
+"{name} turns its salvage points into +{n} Stone.": [
+  "{name} transforme ses points de récupération en +{n} Pierre.", "{name} macht aus seinen Bergungspunkten +{n} Stein.", "{name} convierte sus puntos de recuperación en +{n} de Piedra.",
+  "{name} trasforma i suoi punti di recupero in +{n} Pietra.", "{name} transforma os seus pontos de recuperação em +{n} de Pedra.", "Ginagawang +{n} Bato ni {name} ang mga puntos ng pagsalba nito.",
+  "{name} தன் மீட்பு புள்ளிகளை +{n} கல்லாக மாற்றுகிறது.", "{name} mengubah poin penyelamatannya menjadi +{n} Batu.", "{name} 把回收点数换成 +{n} 岩石。",
+  "{name} 把回收點數換成 +{n} 岩石。", "{name}がサルベージポイントを石+{n}に変える。", "{name}이(가) 회수 점수를 돌 +{n}(으)로 바꿉니다."],
+"{name} repairs {target} for {n}.": [
+  "{name} répare {target} de {n}.", "{name} repariert {target} um {n}.", "{name} repara {n} a {target}.", "{name} ripara {target} di {n}.", "{name} repara {target} em {n}.",
+  "Kinukumpuni ni {name} si {target} nang {n}.", "{name} {target} ஐ {n} பழுதுபார்க்கிறது.", "{name} memperbaiki {target} sebanyak {n}.", "{name} 修理 {target} {n} 点。", "{name} 修理 {target} {n} 點。",
+  "{name}が{target}を{n}修理する。", "{name}이(가) {target}을(를) {n} 수리합니다."],
+"{name} repairs the bramble for {n}.": [
+  "{name} répare le Roncier de {n}.", "{name} repariert die Dornenhecke um {n}.", "{name} repara {n} el Zarzal.", "{name} ripara il Rovo di {n}.", "{name} repara o Silvado em {n}.",
+  "Kinukumpuni ni {name} ang dawag nang {n}.", "{name} முட்புதரை {n} பழுதுபார்க்கிறது.", "{name} memperbaiki Semak sebanyak {n}.", "{name} 修理荆棘丛 {n} 点。", "{name} 修理荊棘叢 {n} 點。",
+  "{name}がいばらを{n}修理する。", "{name}이(가) 덤불을 {n} 수리합니다."],
+"{name} gathers a Berry ({total}).": [
+  "{name} cueille une Baie ({total}).", "{name} sammelt eine Beere ({total}).", "{name} recoge una Baya ({total}).", "{name} raccoglie una Bacca ({total}).", "{name} colhe uma Baga ({total}).",
+  "Nangangalap si {name} ng isang Berry ({total}).", "{name} ஒரு பெர்ரி சேகரிக்கிறது ({total}).", "{name} mengumpulkan satu Beri ({total}).", "{name} 采到一颗浆果（{total}）。", "{name} 採到一顆漿果（{total}）。",
+  "{name}がベリーを1つ集める（{total}）。", "{name}이(가) 베리를 1개 모읍니다 ({total})."],
+"{name} shares its Berries: {target} heals {n}.": [
+  "{name} partage ses Baies : {target} récupère {n}.", "{name} teilt seine Beeren: {target} heilt {n}.", "{name} comparte sus Bayas: {target} se cura {n}.",
+  "{name} condivide le sue Bacche: {target} guarisce di {n}.", "{name} partilha as suas Bagas: {target} cura {n}.", "Ibinabahagi ni {name} ang mga Berry nito: gumagaling si {target} nang {n}.",
+  "{name} தன் பெர்ரிகளைப் பகிர்கிறது: {target} {n} குணமடைகிறது.", "{name} berbagi Beri: {target} pulih {n}.", "{name} 分享浆果：{target} 恢复 {n}。", "{name} 分享漿果：{target} 恢復 {n}。",
+  "{name}がベリーを分ける：{target}が{n}回復。", "{name}이(가) 베리를 나눕니다: {target}이(가) {n} 회복."],
+"{name} keeps milling and doesn't attack.": [
+  "{name} continue de scier et n'attaque pas.", "{name} sägt weiter und greift nicht an.", "{name} sigue aserrando y no ataca.", "{name} continua a segare e non attacca.", "{name} continua a serrar e não ataca.",
+  "Patuloy na naglalagari si {name} at hindi umaatake.", "{name} அறுத்துக்கொண்டே இருக்கிறது, தாக்காது.", "{name} terus menggergaji dan tidak menyerang.", "{name} 继续锯木，不攻击。", "{name} 繼續鋸木，不攻擊。",
+  "{name}は製材を続け、攻撃しない。", "{name}이(가) 제재를 계속하며 공격하지 않습니다."],
+"{name} picks {n} tokens off {target}.": [
+  "{name} subtilise {n} jetons à {target}.", "{name} stibitzt {target} {n} Marken.", "{name} le quita {n} fichas a {target}.", "{name} sottrae {n} segnalini a {target}.", "{name} tira {n} fichas a {target}.",
+  "Dinukutan ni {name} si {target} ng {n} token.", "{name} {target} இடமிருந்து {n} டோக்கன்களைத் திருடுகிறது.", "{name} mencopet {n} token dari {target}.", "{name} 从 {target} 身上扒走 {n} 个标记。", "{name} 從 {target} 身上扒走 {n} 個標記。",
+  "{name}が{target}からトークンを{n}すり取る。", "{name}이(가) {target}에게서 토큰 {n}개를 훔칩니다."],
+"{name} steals {list} from the bramble.": [
+  "{name} vole {list} au Roncier.", "{name} stiehlt {list} aus der Dornenhecke.", "{name} roba {list} del Zarzal.", "{name} ruba {list} dal Rovo.", "{name} rouba {list} ao Silvado.",
+  "Nagnakaw si {name} ng {list} mula sa dawag.", "{name} முட்புதரிலிருந்து {list} திருடுகிறது.", "{name} mencuri {list} dari Semak.", "{name} 从荆棘丛偷走 {list}。", "{name} 從荊棘叢偷走 {list}。",
+  "{name}がいばらから{list}を盗む。", "{name}이(가) 덤불에서 {list}을(를) 훔칩니다."],
+"{name} sabotages {list}.": [
+  "{name} sabote {list}.", "{name} sabotiert {list}.", "{name} sabotea {list}.", "{name} sabota {list}.", "{name} sabota {list}.",
+  "Sinasabotahe ni {name} ang {list}.", "{name} {list} ஐ நாசமாக்குகிறது.", "{name} menyabotase {list}.", "{name} 破坏了 {list}。", "{name} 破壞了 {list}。",
+  "{name}が{list}を破壊する。", "{name}이(가) {list}을(를) 파괴합니다."],
+"{name} burns {n} of the opponent's Lumber.": [
+  "{name} brûle {n} Bois de l'adversaire.", "{name} verbrennt {n} Holz des Gegners.", "{name} quema {n} de Madera del rival.", "{name} brucia {n} Legno dell'avversario.", "{name} queima {n} de Madeira do adversário.",
+  "Sinusunog ni {name} ang {n} Kahoy ng kalaban.", "{name} எதிரியின் {n} மரத்தை எரிக்கிறது.", "{name} membakar {n} Kayu lawan.", "{name} 烧掉对手 {n} 木材。", "{name} 燒掉對手 {n} 木材。",
+  "{name}が相手の木材を{n}燃やす。", "{name}이(가) 상대 목재 {n}을(를) 태웁니다."],
+"{name} builds a Palisade beside it.": [
+  "{name} bâtit une Palissade à côté.", "{name} baut daneben eine Palisade.", "{name} construye una Empalizada a su lado.", "{name} costruisce una Palizzata accanto.", "{name} constrói uma Paliçada ao lado.",
+  "Nagtatayo si {name} ng Bakod-kahoy sa tabi nito.", "{name} அருகில் ஒரு வேலி அரணைக் கட்டுகிறது.", "{name} membangun Pagar Kayu di sebelahnya.", "{name} 在旁边建起一座木栅。", "{name} 在旁邊建起一座木柵。",
+  "{name}が隣に柵を建てる。", "{name}이(가) 옆에 목책을 세웁니다."],
+"{n} Lumber": ["{n} Bois", "{n} Holz", "{n} de Madera", "{n} Legno", "{n} de Madeira", "{n} Kahoy", "{n} மரம்", "{n} Kayu", "{n} 木材", "{n} 木材", "木材{n}", "목재 {n}"],
+"{n} Stone": ["{n} Pierre", "{n} Stein", "{n} de Piedra", "{n} Pietra", "{n} de Pedra", "{n} Bato", "{n} கல்", "{n} Batu", "{n} 岩石", "{n} 岩石", "石{n}", "돌 {n}"],
+"{n} Metal": ["{n} Métal", "{n} Metall", "{n} de Metal", "{n} Metallo", "{n} de Metal", "{n} Metal", "{n} உலோகம்", "{n} Logam", "{n} 金属", "{n} 金屬", "金属{n}", "금속 {n}"],
+"{n} Uranium": ["{n} Uranium", "{n} Uran", "{n} de Uranio", "{n} Uranio", "{n} de Urânio", "{n} Uranium", "{n} யுரேனியம்", "{n} Uranium", "{n} 铀", "{n} 鈾", "ウラン{n}", "우라늄 {n}"],
+"{n} of {b} Berries: a full basket heals your most damaged other ally.": [
+  "{n} Baies sur {b} : un panier plein soigne ton autre allié le plus blessé.", "{n} von {b} Beeren: Ein voller Korb heilt deinen am schwersten verletzten anderen Verbündeten.",
+  "{n} de {b} Bayas: una cesta llena cura a tu otro aliado más herido.", "{n} Bacche su {b}: un cesto pieno cura il tuo altro alleato più ferito.",
+  "{n} de {b} Bagas: um cesto cheio cura o teu outro aliado mais ferido.", "{n} sa {b} Berry: ang punong basket ay nagpapagaling sa pinakasugatan mong ibang kakampi.",
+  "{b} இல் {n} பெர்ரிகள்: நிறைந்த கூடை உங்கள் மிகவும் காயமடைந்த மற்ற கூட்டாளியைக் குணப்படுத்தும்.", "{n} dari {b} Beri: keranjang penuh memulihkan sekutu lain yang paling terluka.",
+  "浆果 {n}/{b}：装满一篮就治疗你受伤最重的其他友军。", "漿果 {n}/{b}：裝滿一籃就治療你受傷最重的其他友軍。", "ベリー{n}/{b}：満杯になると最も傷ついたほかの味方を回復する。", "베리 {n}/{b}: 바구니가 차면 가장 다친 다른 아군을 치유합니다."],
+"{n} scavenge points: every {m} become 1 Lumber.": [
+  "{n} points de glanage : tous les {m}, 1 Bois.", "{n} Sammelpunkte: je {m} werden zu 1 Holz.", "{n} puntos de rapiña: cada {m} se vuelven 1 de Madera.", "{n} punti di spigolatura: ogni {m} diventano 1 Legno.",
+  "{n} pontos de rapina: cada {m} tornam-se 1 de Madeira.", "{n} puntos ng pulot: bawat {m} ay nagiging 1 Kahoy.", "{n} பொறுக்கு புள்ளிகள்: ஒவ்வொரு {m} உம் 1 மரமாகும்.", "{n} poin pulung: tiap {m} menjadi 1 Kayu.",
+  "拾荒点数 {n}：每 {m} 点变成 1 木材。", "拾荒點數 {n}：每 {m} 點變成 1 木材。", "拾い集めポイント{n}：{m}ごとに木材1になる。", "줍기 점수 {n}: {m}점마다 목재 1이 됩니다."],
+"{n} salvage points: every {m} become 1 Stone.": [
+  "{n} points de récupération : tous les {m}, 1 Pierre.", "{n} Bergungspunkte: je {m} werden zu 1 Stein.", "{n} puntos de recuperación: cada {m} se vuelven 1 de Piedra.", "{n} punti di recupero: ogni {m} diventano 1 Pietra.",
+  "{n} pontos de recuperação: cada {m} tornam-se 1 de Pedra.", "{n} puntos ng pagsalba: bawat {m} ay nagiging 1 Bato.", "{n} மீட்பு புள்ளிகள்: ஒவ்வொரு {m} உம் 1 கல்லாகும்.", "{n} poin penyelamatan: tiap {m} menjadi 1 Batu.",
+  "回收点数 {n}：每 {m} 点变成 1 岩石。", "回收點數 {n}：每 {m} 點變成 1 岩石。", "サルベージポイント{n}：{m}ごとに石1になる。", "회수 점수 {n}: {m}점마다 돌 1이 됩니다."],
+"a Foraging unit's token; a full basket heals an ally.": [
+  "le jeton d'une unité à Cueillette ; un panier plein soigne un allié.", "die Marke einer Sammeln-Einheit; ein voller Korb heilt einen Verbündeten.", "la ficha de una unidad con Recolección; una cesta llena cura a un aliado.",
+  "il segnalino di un'unità con Foraggiamento; un cesto pieno cura un alleato.", "a ficha de uma unidade com Coleta; um cesto cheio cura um aliado.", "token ng unit na may Pangangalap; ang punong basket ay nagpapagaling ng kakampi.",
+  "உணவுதேடல் அலகின் டோக்கன்; நிறைந்த கூடை ஒரு கூட்டாளியைக் குணப்படுத்தும்.", "token unit Mencari Makan; keranjang penuh memulihkan sekutu.", "觅食单位的标记；装满一篮就治疗一名友军。", "覓食單位的標記；裝滿一籃就治療一名友軍。",
+  "採集ユニットのトークン。満杯のかごで味方を回復する。", "채집 유닛의 토큰; 바구니가 차면 아군을 치유합니다."],
+}
+CARD_NAMES = {"Petrified Tree": ["Arbre pétrifié", "Versteinerter Baum", "Árbol petrificado", "Albero pietrificato", "Árvore petrificada", "Nabatong Puno", "கல்லான மரம்", "Pohon Membatu", "石化树", "石化樹", "石化樹", "석화 나무"]}
+FLAVOR = {"An oak that stood so long it forgot to stop. Every season it sheds a little more of itself as stone.": [
+  "Un chêne resté debout si longtemps qu'il a oublié de s'arrêter. Chaque saison, il perd un peu plus de lui-même en pierre.",
+  "Eine Eiche, die so lange stand, dass sie vergaß aufzuhören. Jede Jahreszeit wirft sie ein wenig mehr von sich als Stein ab.",
+  "Un roble que se mantuvo en pie tanto tiempo que olvidó parar. Cada estación suelta un poco más de sí mismo en piedra.",
+  "Una quercia rimasta in piedi così a lungo da dimenticare di fermarsi. Ogni stagione perde un po' più di sé in pietra.",
+  "Um carvalho que esteve de pé tanto tempo que se esqueceu de parar. Cada estação larga mais um pouco de si em pedra.",
+  "Isang punong oak na tumayo nang napakatagal kaya nakalimutan nitong huminto. Bawat panahon, mas marami pa sa sarili nito ang nalalaglag bilang bato.",
+  "இவ்வளவு காலம் நின்றதால் நிறுத்த மறந்த ஒரு கருவாலி மரம். ஒவ்வொரு பருவத்திலும் அது தன்னில் இன்னும் கொஞ்சத்தைக் கல்லாக உதிர்க்கிறது.",
+  "Pohon ek yang berdiri begitu lama hingga lupa berhenti. Tiap musim ia meluruhkan sedikit lagi dirinya menjadi batu.",
+  "一棵站得太久、忘了停下的橡树。每个季节，它都会把自己再多一点化作石头剥落。",
+  "一棵站得太久、忘了停下的橡樹。每個季節，它都會把自己再多一點化作石頭剝落。",
+  "立ち続けるうちに止まり方を忘れた樫の木。季節ごとに、自分の少しずつを石として落としていく。",
+  "너무 오래 서 있어 멈추는 법을 잊은 참나무. 계절마다 자신을 조금씩 돌로 떨궈 냅니다."]}
+
+PLURAL = re.compile(r'^\{(s\d?|plural_\w+)\}$')
+ph = lambda s: sorted(set(p for p in re.findall(r'\{\w+\}', s) if not PLURAL.match(p)))
+def write_pack(path, rows, i):
+    pack = json.load(open(path, encoding='utf-8')) if os.path.exists(path) else {}
+    items = [kv for kv in pack.items() if kv[0] not in rows]
+    for en, row in rows.items():
+        at = next((j for j, (k, _) in enumerate(items) if k.lower() > en.lower()), len(items))
+        items.insert(at, (en, row[i]))
+    with open(path, 'w', encoding='utf-8') as fh:
+        json.dump(dict(items), fh, ensure_ascii=False, indent=1); fh.write('\n')
+
+if __name__ == '__main__':
+    for d in (T, CARD_NAMES, FLAVOR):
+        for en, row in d.items(): assert len(row) == len(CODES), en; assert all(ph(en) == ph(t) for t in row), (en, row)
+    # every ui.sk2* text of the TX table has a row
+    src = open(os.path.join(ROOT, 'bramblewood-texts.js'), encoding='utf-8').read()
+    table = json.loads(src[src.index('/*TEXT-TABLE-START*/') + 20:src.index('/*TEXT-TABLE-END*/')])
+    miss = [k for k, v in table.items() if k.startswith('ui.sk2') and v not in T]
+    assert not miss, miss
+    for i, code in enumerate(CODES):
+        write_pack(os.path.join(ROOT, 'lang', code + '.json'), T, i)
+        write_pack(os.path.join(ROOT, 'lang', 'cards', code + '.json'), CARD_NAMES, i)
+        write_pack(os.path.join(ROOT, 'lang', 'ui', code + '.json'), FLAVOR, i)
+    print('packs:', len(CODES), 'x', len(T), 'texts,', len(CARD_NAMES), 'name,', len(FLAVOR), 'flavour line')
