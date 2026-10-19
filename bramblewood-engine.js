@@ -1526,8 +1526,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(n > 0 && round > 1 && !volcanoOn()) erupt(n, true);
     }
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allLive(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return;
-        const order = physicalRowOrder(pl), i = order.indexOf(src), hits = [];
+      liveRowsOf(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows, their own row's neighbours (2026-10-19, RR)
+        const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
         [order[i-1], order[i+1]].forEach(c=>{ if(c && c.hp > 0) hits.push([pid, c]); });
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && opp.card.hp > 0) hits.push([otherId(pid), opp.card]);
         hits.forEach(([tp, c])=>{ if(heatProof(c)) return; damageCardFlat(c, k, 'heat'); burnt = true;
@@ -1536,8 +1536,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // N Irradiation tokens to the enemy facing it and to the units beside it (yours too), and 1 to itself. A 'radiation' Resist
     // halves the tokens a unit gets; Immunity stops them.
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allLive(pl).forEach(src=>{ const k = Number(effectsOf(src).irradiated)||0; if(!(k > 0) || !(src.hp > 0)) return;
-        const order = physicalRowOrder(pl), i = order.indexOf(src), hits = [];
+      liveRowsOf(pl).forEach(src=>{ const k = Number(effectsOf(src).irradiated)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows (2026-10-19, RR)
+        const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
         [order[i-1], order[i+1]].forEach(c=>{ if(c && !c.gap && c.hp > 0) hits.push([pid, c, k]); });
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && !opp.card.gap && opp.card.hp > 0) hits.push([otherId(pid), opp.card, k]);
         hits.push([pid, src, 1]);
@@ -1850,7 +1850,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // ---- 2026-10-12 skills (the 22:40 list) ----------------------------------------------------------------------
   // Lumberjack: whenever you gain Lumber, +1 more per Lumberjack on your board. Heavy Metal: the same for Stone and Metal.
-  function countEff(pl, key){ return pl ? allBoardCards(pl).filter(c=> c && c.hp>0 && !c.cageOf && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects[key]).length : 0; }
+  function countEff(pl, key){ return pl ? upkeepUnitsOf(pl).filter( /* + a raid's middle / back rows (2026-10-19, RR) */c=> c && c.hp>0 && !c.cageOf && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects[key]).length : 0; }
   function addLumber(pl, n){ n = Number(n)||0; if(!pl || n <= 0) return n; const got = n + countEff(pl, 'lumberjack'); pl.lumber = (pl.lumber||0) + got; return got; }
   function addOre(pl, kind, n){ n = Number(n)||0; if(!pl || n <= 0) return n; const got = n + countEff(pl, 'heavyMetal'); pl[kind] = (pl[kind]||0) + got; return got; }
   function ownerPidOfCard(card){ if(!curPlayers) return 1; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && rowsUnitsOf(pl).includes(card)) return pid; } return 1; } // + the middle / back rows (2026-10-19, TS)
@@ -2093,7 +2093,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function irradiationTick(players, sideOf, events){
     let died = false;
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allLive(pl).forEach(c=>{
+      liveRowsOf(pl).forEach(c=>{ // + a raid's middle / back rows (2026-10-19, RR)
         const n = c.irradiation|0; if(n <= 0) return;
         const points = [];
         for(let k = 0; k < n && c.hp > 0; k++){
@@ -2536,7 +2536,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // The trigger's subject (2026-10-19, package GI; owner's 10-19 question "should a trigger be able to target the played card?": yes):
     // sub:'subject' is that unit itself (on the side `who` names), sub:'subjectFacing' the unit facing it. None alive: no target.
     if(sub === 'subject' || sub === 'subjectFacing'){ const sj = trigSubject; if(!sj || sj.gap || !(sj.hp > 0)) return null;
-      const sPid = allBoardCards(pl).includes(sj) ? playerId : (allBoardCards(enemy).includes(sj) ? otherId(playerId) : 0); if(!sPid) return null;
+      const sPid = rowsUnitsOf(pl).includes(sj) ? playerId : (rowsUnitsOf(enemy).includes(sj) ? otherId(playerId) : 0); if(!sPid) return null; // + the middle / back rows (2026-10-19, RR)
       if(sub === 'subject') return (who === 'ally') === (sPid === playerId) ? {pl: players[sPid], card: sj} : null;
       const opp = opposingCardOf(players, sPid, sj); if(!opp || !(opp.card.hp > 0) || (who === 'ally') !== (otherId(sPid) === playerId)) return null;
       { const sh = opp.pl === enemy ? shieldCall(enemy, opp.card) : null; if(sh) return {pl:enemy, card:sh}; }
@@ -2544,15 +2544,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(who==='self') return {pl, card:boardCard};
     const isAlly = who==='ally';
     const sidePl = isAlly ? pl : enemy;
-    const order = physicalRowOrder(sidePl).filter(c=>c.hp>0);
+    // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) your allies stand in every row, so an ally-targeted action (Heal, Buff, Shield ...)
+    // can pick one in the middle or back row too, from whatever row its unit stands in. (The enemy pool is unchanged: the front row.)
+    const order = (isAlly && RESERVE_ACTS ? rowsUnitsOf(sidePl).filter(c=> c && !c.gap) : physicalRowOrder(sidePl)).filter(c=>c.hp>0);
     const pool = (isAlly ? order.filter(c=>c.uid!==boardCard.uid && kinOk(boardCard, c)) : order).filter(c=> !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
     if(!pool.length) return null;
     if(sub==='furthest'){
       if(isAlly){
-        const fullOrder = physicalRowOrder(sidePl);
+        const fullOrder = rowOrderOf(sidePl, boardCard); // a middle / back-row unit: its own row (2026-10-19, RR)
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
         let best=null, bestDist=-1;
-        pool.forEach(c=>{ const i2 = fullOrder.findIndex(x=>x.uid===c.uid); const d=Math.abs(i2-idx); if(d>bestDist){ bestDist=d; best=c; } });
+        pool.forEach(c=>{ const i2 = fullOrder.findIndex(x=>x.uid===c.uid); if(i2 < 0) return; /* its own row (2026-10-19, RR) */ const d=Math.abs(i2-idx); if(d>bestDist){ bestDist=d; best=c; } });
         return best ? {pl:sidePl, card:best} : null;
       }
       const mySide = findCardSide(pl, boardCard.uid) || 'center';
@@ -2565,9 +2567,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(sub==='adjacent'){
       if(isAlly){
-        const fullOrder = physicalRowOrder(sidePl);
+        const fullOrder = rowOrderOf(sidePl, boardCard); // a middle / back-row unit: the allies beside it in its own row (2026-10-19, RR; was the front row's, from index -1)
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
-        const cands = [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
+        const cands = idx < 0 ? [] : [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
         if(!cands.length) return null;
         return {pl:sidePl, card: cands[Math.floor(rnd()*cands.length)]};
       }
@@ -2603,6 +2605,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const gated = c=>{ if(who==='self' || sub==='killer' || dodgeCheck(c)) apply(c); else dodge(c); }; // the killer ate it: no dodging
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
+      if(who==='ally' && RESERVE_ACTS){ rowsUnitsOf(sidePl).forEach(c=>{ if(c && !c.gap && c.hp>0 && kinOk(boardCard, c)) apply(c); }); return; } // a raid: your allies in every row (2026-10-19, RR)
       ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0 && kinOk(boardCard, c)) apply(c); })); // area effect: Evade only dodges single-target; Kin: only your Kin (2026-10-18)
       return;
     }
@@ -2642,6 +2645,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     return [...pl.row.left].reverse().concat(pl.row.center, pl.row.right);
   }
+  // The row a unit stands in, in physical order (2026-10-19, package RR): physicalRowOrder for a front-row unit; for a unit in a middle or
+  // back row (open boards), that row's units by slot with gaps as hp-0 placeholders, so "beside it" means beside it in its own row.
+  function rowOrderOf(pl, card){
+    const r = slotMode ? reserveRowOf(pl, card) : 0; if(!r) return physicalRowOrder(pl);
+    const rw = pl.reserve[r - 1], keys = Object.keys(rw).map(Number); if(!keys.length) return [];
+    const lo = Math.min(...keys), hi = Math.max(...keys), out = []; for(let sl = lo; sl <= hi; sl++) out.push(rw[sl] || GAP); return out;
+  }
+  // The live units of a side whose skills act each round (2026-10-19, package RR): in a raid (RESERVE_ACTS) every row, front first.
+  function liveRowsOf(pl){ return pl ? (RESERVE_ACTS ? rowsUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0) : allLive(pl)) : []; }
   // Guardian: a card adjacent (one slot either way, physical row order) to the original
   // target takes the hit instead, if it's alive and carries effects.guardian.
   // Only ever redirects damage — spatial mechanics (sweep continuation, swipe's
@@ -3889,7 +3901,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // The side a live unit is on (curPlayers: the current fight), or 0.
   function pidOfLive(c){ if(!curPlayers || !c) return 0; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).includes(c)) return pid; } return 0; }
   // The sum of one aura skill's N over a side's live units (Venom Master, Fletcher, Herbalist).
-  function auraN(pl, k){ if(!pl) return 0; let n = 0; allBoardCards(pl).forEach(c=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c)[k]) n += s17N(c, k); }); return n; }
+  function auraN(pl, k){ if(!pl) return 0; let n = 0; upkeepUnitsOf(pl).forEach( /* + a raid's middle / back rows (2026-10-19, RR) */c=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c)[k]) n += s17N(c, k); }); return n; }
   // Hoard N (2026-10-17, user: "Do damage based on number of lumber"): +1 Attack for every N Lumber its side holds (live, effAtk).
   function hoardBonus(card){ const e = effectsOf(card); if(!e.hoard) return 0; const pid = pidOfLive(card); if(!pid) return 0;
     const n = Math.max(1, s17N(card, 'hoard')); return Math.floor(Math.max(0, curPlayers[pid].lumber || 0) / n); }
@@ -3937,10 +3949,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // random unit beside them (its own side). The carrier keeps its Poison. Nothing poison-proof catches it.
   function proliferateTick(players, sideOf, events){
     [1,2].forEach(pid=>{ const me = players[pid], foe = players[otherId(pid)]; if(!me || !foe) return;
-      allLive(me).filter(c=> !c.cageOf && effectsOf(c).proliferate).forEach(src=>{
+      liveRowsOf(me).filter(c=> !c.cageOf && effectsOf(c).proliferate).forEach(src=>{ // + a raid's middle / back rows (2026-10-19, RR)
         let pool = liveUnits(foe).filter(c=> c.poison > 0), n = numN(effectsOf(src).proliferate, 1);
         while(n-- > 0 && pool.length){ const carrier = pool.splice(Math.floor(rnd()*pool.length), 1)[0];
-          const order = physicalRowOrder(foe), i = order.indexOf(carrier), nb = [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !poisonProof(c));
+          const order = rowOrderOf(foe, carrier), i = order.indexOf(carrier), nb = [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !poisonProof(c));
           if(!nb.length) continue; const t = nb.length > 1 ? nb[Math.floor(rnd()*nb.length)] : nb[0]; addPoison(t, 1);
           if(recordEvents && events) events.push({type:'statusFx', kind:'proliferate', side:sideOf(pid), attDefId:src.defId, attUid:src.uid, fromUid:carrier.uid, fromDefId:carrier.defId, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:1, total:t.poison}); } }); });
   }
@@ -4195,7 +4207,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // has two) each take N magic damage. Armor doesn't stop it (it is not a melee hit), and it strikes even if the target just fell.
   function dragonLightningStrike(players, sideOf, pid, att, target, n, stats, events, killCredit){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
-    const order = physicalRowOrder(pl), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf);
+    const order = rowOrderOf(pl, target), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf); // a middle / back-row target: its own row (2026-10-19, RR)
     const struck = [target].concat(side.length ? [side[Math.floor(rnd()*side.length)]] : []).filter(c=> c.hp > 0);
     if(recordEvents && events) events.push({type:'dragonLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:struck.map(c=> c.uid), n});
     struck.forEach((c, i)=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
@@ -4261,7 +4273,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // The enemy units in the columns directly beside a unit (open boards: the slot either side; slotless rows: the row neighbours).
   function besideOf(pl, t){
     if(!pl || !t) return [];
-    if(slotMode && Number.isInteger(t.slot)) return liveFoesOf(pl).filter(c=> c !== t && Number.isInteger(c.slot) && Math.abs(c.slot - t.slot) === 1);
+    if(slotMode && Number.isInteger(t.slot)){ const r = reserveRowOf(pl, t); // a middle / back-row unit: the units beside it in its own row (2026-10-19, RR)
+      if(r) return [pl.reserve[r - 1][t.slot - 1], pl.reserve[r - 1][t.slot + 1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
+      return liveFoesOf(pl).filter(c=> c !== t && Number.isInteger(c.slot) && Math.abs(c.slot - t.slot) === 1); }
     const order = physicalRowOrder(pl), i = order.indexOf(t); if(i < 0) return [];
     return [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
   }
@@ -4604,7 +4618,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function fireDynamite(players, sideOf, ownerId, card, stats, events){
     const pl = players[ownerId], enemy = players[otherId(ownerId)], dmg = Number(((CARD_DEFS[card.defId]||{}).effects||{}).dynamiteDmg) || 5;
     let mine = [], theirs = [];
-    if(slotMode){ const s0 = card.slot; mine = allBoardCards(pl).filter(c=> c !== card && c.hp > 0 && Number.isInteger(c.slot) && Math.abs(c.slot - s0) <= 1); theirs = allBoardCards(enemy).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && Math.abs(-c.slot - s0) <= 1); }
+    if(slotMode){ const s0 = card.slot, myRow = reserveRowOf(pl, card); mine = (myRow ? Object.values(pl.reserve[myRow - 1]) : allBoardCards(pl)).filter(c=> c !== card && c.hp > 0 && Number.isInteger(c.slot) && Math.abs(c.slot - s0) <= 1); /* a middle / back-row dynamiter: its own row's neighbours (2026-10-19, RR) */ theirs = allBoardCards(enemy).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && Math.abs(-c.slot - s0) <= 1); }
     else { const order = physicalRowOrder(pl), i = order.indexOf(card); mine = [order[i-1], order[i+1]].filter(c=> c && c.hp > 0);
       const opp = opposingCardOf(players, ownerId, card); if(opp){ const eo = physicalRowOrder(enemy), j = eo.indexOf(opp.card); theirs = [eo[j-1], opp.card, eo[j+1]].filter(c=> c && c.hp > 0); } }
     if(recordEvents && events) events.push({type:'dynamite', side:sideOf(ownerId), defId:card.defId, uid:card.uid, amount:dmg, hits: mine.length + theirs.length});
