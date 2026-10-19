@@ -9,6 +9,6 @@ Scope: Home button / conquest top strip; pre-battle VS screen; raid-complete emb
 - [x] tests (tests/nv-2026-10-19.js 121/121), mobile-nav + raid-rv2 updated and passing; i18n-templates + game-texts pass
 - [x] screenshots in docs/screens/nv/ reviewed
 - [x] keyify/export, CHANGELOG, lang translations (12 packs)
-- [ ] merge main, rebuild, final commit
+- [x] merge main (MB2, SY), rebuild, final commit; nv 121/121, mobile-nav, raid-rv2, raid-br, i18n-templates, game-texts pass
 ## Notes
 - scratch scripts: /tmp/claude-0/-home-claude/37fc5715-ea38-5d46-be56-06a8c754a559/scratchpad/nv/ (shots.js, spec-nv.js)
