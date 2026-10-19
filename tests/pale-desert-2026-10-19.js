@@ -142,14 +142,18 @@ NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
 
 // --- 5. win rates
 let stored = null; try{ stored = JSON.parse(fs.readFileSync(STORE, 'utf8')); }catch(e){}
+const PD_GAPS = (()=>{ try{ return new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'road-gaps-2026-10-19.json'), 'utf8')).gaps.list.map(g=> g.map + ':' + g.code)); }catch(e){ return new Set(); } })(); // BF3
 ok(stored && stored.fights && stored.fights.length === 9, '5. the stored measure is there (node tests/pale-desert-2026-10-19.js --measure)');
 const nonBoss = map.nodes.filter(n=> n.kind !== 'boss');
 (stored ? stored.fights : []).forEach(f=>{ const n = map.nodes.find(x=> x.key === f.key); if(!n) return ok(false, '5. stored ' + f.key + ' is not a fight');
   const t = target(n, nonBoss.indexOf(n), nonBoss.length), [lo, hi] = band(n, t);
   ok(f.sig === sigOf(n), `5. ${f.key}: the stored measure is current (re-run with --measure after changing the fight, its cards or the reference deck)`);
-  ok(Math.abs(f.target - t) < 0.001 && f.win >= lo - 1e-9 && f.win <= hi + 1e-9, `5. ${f.key} (${n.kind}): ${(f.win * 100).toFixed(1)}% over 120 games, target ${(t * 100).toFixed(0)}% (${(lo * 100).toFixed(0)}-${(hi * 100).toFixed(0)})`);
-  ok(f.fresh >= lo - 0.04 && f.fresh <= hi + 0.04, `5. ${f.key}: ${(f.fresh * 100).toFixed(1)}% on fresh seeds, near the band`); });
-if(stored) ok(stored.fights.slice(0, 8).every((f, i, a)=> i === 0 || f.win <= a[i - 1].win + 0.05), '5. the curve falls along the trail (no fight more than 5 points easier than the one before)');
+  // 2026-10-19 (BF3, owner 16:22): honest levers only; a fight off its band must be a listed gap (docs/balance/road-gaps-2026-10-19.json)
+  const gap = PD_GAPS.has('mpd:' + f.key);
+  ok(Math.abs(f.target - t) < 0.001 && (gap || f.win >= lo - 1e-9 && f.win <= hi + 1e-9), `5. ${f.key} (${n.kind}): ${(f.win * 100).toFixed(1)}% over 120 games, target ${(t * 100).toFixed(0)}% (${(lo * 100).toFixed(0)}-${(hi * 100).toFixed(0)})${gap ? ', a listed honest gap' : ''}`);
+  ok(gap || f.fresh >= lo - 0.04 && f.fresh <= hi + 0.04, `5. ${f.key}: ${(f.fresh * 100).toFixed(1)}% on fresh seeds, near the band${gap ? ' (a listed gap)' : ''}`); });
+if(stored){ const trail = stored.fights.slice(0, 8).filter(f=> !PD_GAPS.has('mpd:' + f.key));
+  ok(trail.every((f, i, a)=> i === 0 || f.win <= a[i - 1].win + 0.05), '5. the curve falls along the trail (no fight more than 5 points easier than the one before; listed gaps aside)'); }
 // a quick live run: the first and last fights, 30 games each, land near the stored numbers
 [map.nodes[0], boss].forEach(n=>{ const s = stored && stored.fights.find(f=> f.key === n.key); const r = G.simulateReferenceFight('mpd', n, 30);
   ok(s && Math.abs(r.win - s.win) <= 0.2, `5. ${n.key} live (30 games): ${(r.win * 100).toFixed(0)}% vs stored ${s && (s.win * 100).toFixed(0)}%`);

@@ -97,16 +97,19 @@ ok(MAPS.every(m=> m.id === 'mu' || m.id === 'mk' || m.id === 'm7' || m.nodes.eve
 // 2026-10-19 (package CB): the card pass changed card stats, rebuilt the reference decks and retuned the curve after TH, so the latest
 // road-curve measure is the card pass's (TH's own final is docs/balance/skirmish-pass-th-after.jsonl)
 // 2026-10-19 (package LV): the level curve rebuilt the reference decks and retuned every fight after CB, so the latest is LV's
-const rows = read('docs/balance/skirmish-pass-lv-after.jsonl').split('\n').filter(Boolean).map(l=> JSON.parse(l));
+// 2026-10-19 (package BF3): the card retune and the honest-lever road retune rebuilt the decks again, so the latest is BF3's; a fight off its
+// band is a listed gap (docs/balance/road-gaps-2026-10-19.json, owner 16:22: "LEAVE it and list the gap")
+const rows = read('docs/balance/skirmish-pass-bf-after.jsonl').split('\n').filter(Boolean).map(l=> JSON.parse(l));
+const GAPS = new Set(JSON.parse(read('docs/balance/road-gaps-2026-10-19.json')).gaps.list.map(g=> g.map + ':' + g.code));
 const mainFights = []; mains.forEach(m=>{ if(m.id === 'mtut') return; m.nodes.forEach(x=>{ if(x.deck && Object.keys(x.deck).length && x.kind !== 'tutorial' && !/raidboss/.test(x.kind || '')) mainFights.push([m.id, x]); }); });
 ok(mainFights.length >= 179, `6. the main maps' fights (${mainFights.length})`);
 const miss = [], off = [], stale = [];
 mainFights.forEach(([mid, x])=>{ const r = rows.find(y=> y.map === mid && y.key === x.key); if(!r){ miss.push(x.key); return; }
-  if(r.green !== 'green') off.push(`${x.key} ${r.win}% (${r.lo}–${r.hi})`);
+  if(r.green !== 'green' && !GAPS.has(mid + ':' + r.code)) off.push(`${x.key} ${r.win}% (${r.lo}–${r.hi})`);
   if(r.deck && JSON.stringify(r.deck) !== JSON.stringify(x.deck)) stale.push(x.key);
   if(r.role === 'boss') ok(r.lo === 30 && r.hi === 49, `6. ${x.key}: the boss band is 30–49%`); });
 ok(!miss.length, '6. every main fight measured: ' + miss.slice(0, 8));
-ok(!off.length, '6. every main fight on its green band (120 games, the measure seeds): ' + off.slice(0, 8).join('; '));
+ok(!off.length, '6. every main fight on its green band or a listed honest gap (120 games, the measure seeds): ' + off.slice(0, 8).join('; '));
 ok(!stale.length, '6. the measure played the decks the game has now: ' + stale.slice(0, 8));
 ok(rows.every(r=> r.games === 120), '6. 120 games a fight');
 
@@ -115,7 +118,7 @@ const md = read('docs/thematic-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'thematic-pass-2026-10-19.xlsx')), '7. the spreadsheet');
 ok(REC.every(p=> md.includes(p.name)) && left.every(id=> md.includes(defs[id].name)), '7. the doc lists every placed card and the ones left in the pool');
 ok(/^# /.test(md) && md.includes('Badger Berserker') && md.includes('Pelican Diver'), '7. the doc names the drift it fixed');
-ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('package TH'), '7. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
+ok(read('docs/CHANGELOG.md').slice(0, 120000).includes('package TH'), '7. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
 
 console.log(fail ? `thematic-2026-10-19: ${fail} of ${n} failed` : `thematic-2026-10-19: all ${n} checks passed`);
 process.exit(fail ? 1 : 0);

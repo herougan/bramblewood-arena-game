@@ -117,9 +117,11 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
     ok(G.skirmishTargetBand('m1', B.byKey('m1', '0-4')).t === .45, 'Map 0\'s Frost Vanguard keeps a gentler 45%');
     ok(G.skirmishTargetBand('m11', B.byKey('m11', '20-9')).t === .5 && G.skirmishTargetBand('m11', B.byKey('m11', '20-9')).role === 'miniboss', 'a boss before the map\'s last fight (20-9) is a mini-boss at 50%');
     ok(!G.skirmishTargetBand('mtut', B.byKey('mtut', 'T-3')).curve, 'the Tutorial\'s come-back-later fights keep their older targets');
+    // 2026-10-19 (BF2): a side map's targets sit ROAD_CURVE_SIDE_DR (0.19 logits) a map ahead under its parent's: a first skirmish's 90% is 88.2%
+    const SIDE90 = 1 / (1 + Math.exp(-(Math.log(.9 / .1) - G.ROAD_CURVE_SIDE_DR)));
     // 2026-10-19 (package LV): the Old Bramble and the Eye of the Volcano are on the curve (the Eye's boss fight is its Heart of the Mountain)
-    ok(G.skirmishTargetBand('mo', B.byKey('mo', '0-B-4')).role === 'boss' && G.skirmishTargetBand('me', B.byKey('me', '20-A-4')).role === 'boss' && G.skirmishTargetBand('me', B.byKey('me', '20-A-1')).t === .9, 'the Old Bramble and the Eye of the Volcano are on the curve');
-    ok(G.skirmishTargetBand('mq', B.byKey('mq', '1-A-1')).t === .9 && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', 'side maps follow the same curve');
+    ok(G.skirmishTargetBand('mo', B.byKey('mo', '0-B-4')).role === 'boss' && G.skirmishTargetBand('me', B.byKey('me', '20-A-4')).role === 'boss' && Math.abs(G.skirmishTargetBand('me', B.byKey('me', '20-A-1')).t - SIDE90) < 0.002, 'the Old Bramble and the Eye of the Volcano are on the curve');
+    ok(Math.abs(G.skirmishTargetBand('mq', B.byKey('mq', '1-A-1')).t - SIDE90) < 0.002 && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', 'side maps follow the same curve (a map ahead: 90% becomes 88.2%)');
     const n1 = B.byKey('mc', '3-1'), nB = B.byKey('mc', '3-7'), cls = (mid, n, v)=>{ G.skirmishCurveCache[mid + ':' + n.key] = v; const h = G.skirmishCurveChipHTML(mid, n, ''); return (/se-curve-chip (\w*)/.exec(h) || [])[1]; };
     ok(cls('mc', n1, .90) === 'ok' && cls('mc', n1, .83) === 'ok' && cls('mc', n1, .80) === 'hard' && cls('mc', n1, .99) === 'easy', 'the first fight: 82-98% green, under red, over blue');
     ok(cls('mc', nB, .45) === 'ok' && cls('mc', nB, .30) === 'ok' && cls('mc', nB, .55) === 'easy' && cls('mc', nB, .25) === 'hard', 'the boss: 30-49% green, 50%+ blue, under 30% red');

@@ -25,7 +25,8 @@ const mains = MAPS.filter(m=> !m.sub && !m.reserved);
 const numOf = m=> mains.indexOf(m.sub ? MAPS.find(x=> x.id === m.parent) : m);
 
 // 1. the caps themselves
-ok(RR.roadRarityCap(15, 'skirmish') === 'rare' && RR.roadRarityCap(16, 'skirmish') === 'veryrare', '1. Very Rare in skirmishes from Map 16');
+// 2026-10-19 (BF3, owner 16:22: "In Map 10+, there will be lvl 2+. and rarity >rare"): Very Rare from Map 10 (was 16)
+ok(RR.roadRarityCap(9, 'skirmish') === 'rare' && RR.roadRarityCap(10, 'skirmish') === 'veryrare' && RR.roadRarityCap(16, 'skirmish') === 'veryrare', '1. Very Rare in skirmishes from Map 10 (BF3; was 16)');
 ok(RR.roadRarityCap(20, 'skirmish') === 'veryrare' && RR.roadRarityCap(21, 'skirmish') === 'superrare', '1. Super Rare from Map 21');
 ok(RR.roadRarityCap(35, 'skirmish') === 'superrare' && RR.roadRarityCap(36, 'skirmish') === 'epic', '1. the first Epic in a skirmish on Map 36');
 ok(RR.roadRarityCap(40, 'skirmish') === 'epic' && RR.roadRarityCap(41, 'skirmish') === 'heroic', '1. the first Heroic on Map 41');

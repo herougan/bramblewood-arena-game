@@ -72,14 +72,22 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
   const main = after.filter(r=> !r.side && !r.endless);
   ok(main.length === 179, `4. the final measure has all 179 main-map fights (${main.length})`);
   const off = main.filter(r=> r.green !== 'green');
-  // 2026-10-19 (BF): 16-6 Reaver's Hollow stays a few points easy at its 2x Shield cap (no deck move closes it; an owner call)
-  ok(off.every(r=> r.code === '16-6') && main.every(r=> r.games >= 120), '4. every main-map fight but 16-6 is green on the measure seeds (120 games): ' + off.map(r=> `${r.code} ${r.win}`).join(', '));
+  // 2026-10-19 (BF3, owner 16:22: "Where honest levers can't reach the target, LEAVE it and list the gap"): the road was retuned with the
+  // enemy's decks only (levels on the owner's schedule, no new Shield, no lower Health, no field buff); a fight still off its band is a
+  // listed gap in docs/balance/road-gaps-2026-10-19.json (easy: a future "cheat" field; hard: the deck is at its weakest honest build)
+  const gaps = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'road-gaps-2026-10-19.json'), 'utf8')); }catch(e){ return null; } })();
+  const listed = new Set(gaps ? gaps.gaps.list.map(g=> g.map + ':' + g.code) : []), unlisted = off.filter(r=> !listed.has(r.map + ':' + r.code));
+  ok(gaps && !unlisted.length && gaps.gaps.list.filter(g=> g.group === 'main').length === off.length && main.every(r=> r.games >= 120),
+    `4. every main-map fight off its band is a listed honest gap (${off.length}; unlisted: ${unlisted.map(r=> `${r.code} ${r.win}`).join(', ')})`);
+  ok(main.length - off.length >= 145, `4. main-map fights green on the measure seeds: ${main.length - off.length}/${main.length} (at least 145, BF3 honest levers)`);
+  { let cur = true; try{ require('child_process').execFileSync(process.execPath, [path.join(ROOT, 'tools', 'road_gaps_2026_10_19.js'), '--check'], {stdio: 'pipe'}); }catch(e){ cur = false; }
+    ok(cur, '4. the gaps list is what the measures say (node tools/road_gaps_2026_10_19.js --check)'); }
   const now = main.filter(r=>{ const nd = B.byKey(r.map, r.key); return nd && JSON.stringify(nd.deck) === JSON.stringify(r.deck); });
   ok(now.length === main.length, `4. it measured the decks the game has now (${now.length}/${main.length})`);
   const fm = fresh.filter(r=> !r.side && !r.endless), fg = fm.filter(r=> r.green === 'green').length;
-  ok(fm.length === 179 && fg >= 150, `4. fresh seeds: ${fg}/${fm.length} green (at least 150)`);
+  ok(fm.length === 179 && fg >= 125, `4. fresh seeds: ${fg}/${fm.length} green (at least 125; BF3 honest levers, was 150 with Shield moves)`);
   const sideCurve = after.filter(r=> r.side && r.curve), sg = sideCurve.filter(r=> r.green === 'green').length;
-  ok(sideCurve.length >= 70 && sg >= sideCurve.length - 6, `4. side maps on the curve: ${sg}/${sideCurve.length} green`);
+  ok(sideCurve.length >= 70 && sideCurve.filter(r=> r.green !== 'green').every(r=> listed.has(r.map + ':' + r.code)) && sg >= 60, `4. side maps on the curve: ${sg}/${sideCurve.length} green (at least 60), the rest listed gaps`);
   // two fights replayed live: the same result as the file
   for(const code of ['5-3', '17-4']){ const r = main.find(x=> x.code === code); if(!r){ ok(false, '4. no row ' + code); continue; } const nd = B.byKey(r.map, r.key); G.NODE_MAP_HINT.set(nd, r.map);
     const live = G.simulateReferenceFight(r.map, nd, 120, {seed0: 9100}); ok(Math.abs(live.win * 100 - r.win) < 0.05, `4. ${code} replayed: ${(live.win * 100).toFixed(1)}% (file ${r.win}%)`); } }
