@@ -27,7 +27,10 @@ for(const m of subs){
     // the same fight on its parent map (a copy hinted to the parent)
     const twin = Object.assign({}, nd, {key: '__bf_twin'}); delete twin.shieldMap; G.NODE_MAP_HINT.set(twin, m.parent);
     const lv = G.roadEnemyLevelExact(nd), lvP = G.roadEnemyLevelExact(twin), sh = G.ruleShieldOf(nd), shP = G.ruleShieldOf(twin);
-    if(lv < lvP - 0.15 /* a little under: the old steps' whole Lv 2 (Map 8) had no gain, and the enemy keeps that ratio (enemyLevelKeepingPace) */ || sh < shP || (sh === shP && shP > 0 && G.shieldRuleMult(nd.kind) > 0 && G.nodeMapNumber(nd) === parentNo && !nd.floor)) bad2.push(`${m.id} ${nd.key}: Lv ${lv} vs ${lvP}, Shield ${sh} vs ${shP}`);
+    const Lold = G.legacyLevelForGain(Math.max(0, (road || 0) - G.ROAD_LEVEL_CURVE.enemyFrom) * G.ROAD_LEVEL_CURVE.enemyGainPerMap), gap = Math.abs(Lold - Math.round(Lold)) < 1e-6 && [2, 4, 5, 7, 8].includes(Math.round(Lold));
+    // 2026-10-19 (BF2): where the fight counts as a map the old steps put on a whole non-step level (Maps 8, 16, 18: Lv 2 / 4 / 5 had the
+    // stats of the step below), the enemy keeps that old gap (enemyLevelKeepingPace), so only its Shield and its map number are checked
+    if((!gap && lv < lvP - 0.15) /* a little under: the old steps' whole Lv 2 (Map 8) had no gain, and the enemy keeps that ratio (enemyLevelKeepingPace) */ || sh < shP || (sh === shP && shP > 0 && G.shieldRuleMult(nd.kind) > 0 && G.nodeMapNumber(nd) === parentNo && !nd.floor)) bad2.push(`${m.id} ${nd.key}: Lv ${lv} vs ${lvP}, Shield ${sh} vs ${shP}`);
     const t = G.roadCurveTarget(m.id, nd);
     if(t){ const ahead = G.fightMapNumber(nd) - G.nodeMapNumber(nd);
       // the main-map target at the same place, from the same rule
