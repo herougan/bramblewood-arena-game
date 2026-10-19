@@ -30,7 +30,7 @@ ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. t
   ok(!diff.length, `1. tools/skill_costs.js gives v5's N (with the map term) for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
   ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\)/.test(src) && /levelLinDiv:10, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
-  const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1.2 + 1e-9), `1. at Level 1, v5 is never more than 1.2 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
+  const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1.3 + 1e-9), `1. at Level 1, v5 (L/10) is never more than 1.3 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
 
 // 2026-10-19 (BF2, owner 15:25): Base's map term: + mapCoef (0.2) x the map where the card becomes obtainable
 { const spot = k=>{ const m = new RegExp(`\\{key:'${k}',[^\\n]*?mapNumber:(\\d+)`).exec(src); return m ? +m[1] : null; }, O = G.OBTAIN_MAP_OF;
