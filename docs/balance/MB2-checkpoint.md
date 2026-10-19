@@ -10,4 +10,4 @@ Scope: battle board layout only (CSS + battle layout code in arena_app.js). NV o
 5. tests/e2e/mobile_layout_2026_10_19.py; screenshots in docs/screens/mb2/.
 
 ## Status
-- [ ] 1  - [ ] 2  - [ ] 3  - [ ] 4  - [ ] 5
+- [x] 1  - [x] 2  - [x] 3  - [x] 4  - [x] 5 (tests/e2e/mobile_layout_2026_10_19.py passes; merged main; done)
