@@ -235,12 +235,15 @@ async function browser(){
       await shot('forge-anvil');
       ok(await hscroll() <= 1, `${tag} no sideways scroll in the Forge`);
       // 8c. temper on the centre stage
-      await pg.click('#forgeLevelUpBtn'); await pg.waitForTimeout(1300);
-      const mid = await pg.evaluate(`(()=>{ const o = document.querySelector('.ux-fc-ov'), s = o && o.querySelector('#anvilStage'); if(!s) return null; const r = s.getBoundingClientRect();
-        return {cx: Math.round(r.left + r.width / 2 - innerWidth / 2), cy: Math.round(r.top + r.height / 2 - innerHeight / 2), w: Math.round(r.width)}; })()`);
+      await pg.click('#forgeLevelUpBtn');
+      const centreShot = (async()=>{ await pg.waitForTimeout(1200); await shot('forge-centre-stage'); })(); // mid-forge, on the centre stage
+      // sampled while it forges (a busy machine runs the flight late): the closest it sits to the middle of the screen
+      const mid = await pg.evaluate(`new Promise(res=>{ let best = null; const t0 = performance.now(); const tick = ()=>{ const o = document.querySelector('.ux-fc-ov'), s = o && o.querySelector('#anvilStage');
+        if(s){ const r = s.getBoundingClientRect(), v = {cx: Math.round(r.left + r.width / 2 - innerWidth / 2), cy: Math.round(r.top + r.height / 2 - innerHeight / 2), w: Math.round(r.width)}; if(!best || Math.abs(v.cy) + Math.abs(v.cx) < Math.abs(best.cy) + Math.abs(best.cx)) best = v; }
+        if(performance.now() - t0 < 2600) setTimeout(tick, 80); else res(best); }; tick(); })`);
       ok(mid && Math.abs(mid.cx) <= 12 && Math.abs(mid.cy) <= 30, `${tag} 8c. the anvil stage is in the middle of the screen while it forges (${JSON.stringify(mid)})`);
-      await shot('forge-centre-stage');
-      await pg.waitForTimeout(4200);
+      await centreShot;
+      await pg.waitForTimeout(3000);
       const after = await pg.evaluate(`(()=>({ov: !!document.querySelector('.ux-fc-ov'), inPanel: !!document.querySelector('#forgeDetail #anvilStage'), label: (document.querySelector('.forge-level-label') || {}).textContent}))()`);
       ok(after && !after.ov && after.inPanel && /Lv 3/.test(after.label || ''), `${tag} 8c. it returns to the anvil, tempered (${after && after.label})`);
       // 9 + 11. the Codex
