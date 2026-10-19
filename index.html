@@ -36110,7 +36110,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=268b89910b", "es": "assets/lang/es.js?v=e282d452a3", "fr": "assets/lang/fr.js?v=2cd3ffb7f2", "id": "assets/lang/id.js?v=652a92458c", "it": "assets/lang/it.js?v=a2a3f90c62", "ja": "assets/lang/ja.js?v=f8c8645fd4", "ko": "assets/lang/ko.js?v=d278d595c2", "pt": "assets/lang/pt.js?v=36b41fae85", "ta": "assets/lang/ta.js?v=ab6e0f31c6", "tl": "assets/lang/tl.js?v=830fbfb8bc", "zh-Hans": "assets/lang/zh-Hans.js?v=2e1f2b50e7", "zh-Hant": "assets/lang/zh-Hant.js?v=ec41a6b491"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=26e3fa3a6c", "es": "assets/lang/es.js?v=367af17500", "fr": "assets/lang/fr.js?v=d426c36a91", "id": "assets/lang/id.js?v=8a22a51d9a", "it": "assets/lang/it.js?v=761420285c", "ja": "assets/lang/ja.js?v=36e24ebbb1", "ko": "assets/lang/ko.js?v=0bf07b689b", "pt": "assets/lang/pt.js?v=8d5254aef3", "ta": "assets/lang/ta.js?v=d04192f805", "tl": "assets/lang/tl.js?v=a4f61bee13", "zh-Hans": "assets/lang/zh-Hans.js?v=ceec4e1908", "zh-Hant": "assets/lang/zh-Hant.js?v=0303831956"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -40450,7 +40450,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'cc4a15b051aa', BUILD_CARD_HASH = '0332c78f18ad4854bf6cfb8e73d5e87c391f9870a1ebf7229efabd36a508a21d';
+const BUILD_ID = 'ee41fad6b3fd', BUILD_CARD_HASH = '0332c78f18ad4854bf6cfb8e73d5e87c391f9870a1ebf7229efabd36a508a21d';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56211,7 +56211,8 @@ const CONQUEST_MAPS = [
   { id:"mq", sub:true, parent:"mf", entry:{x:36, y:26, after:"1-1", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
     nodes: [
       { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":3,"pigeon-peon":2,"field-crow":1,"clover-butterfly":2,"ash-cloud-condor":2}, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
-      { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":1,"bee-forager":3,"bee-sentry":2,"paper-wasp":2,"creeper":2,"stag-beetle":2,"harvest-mouse":3}, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
+      // 2026-10-19 (EE merge): Creeper became an ungettable Easter egg (3/12, explodes), so Bee Lines swaps its 2 for Honey Bees
+      { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":3,"bee-forager":3,"bee-sentry":2,"paper-wasp":2,"stag-beetle":2,"harvest-mouse":3}, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
       { key:"1-A-3", kind:"skirmish", name:"Puddle Hop", icon:"🐸", shieldOverride:0, deck:{"meadow-frog":3,"puddle-hopper":3,"burrow-rabbit":2,"ash-cloud-condor":2}, flavor:"Last night's rain left a puddle for every frog.", requires:["1-A-1"] },
       { key:"1-A-4", kind:"skirmish", name:"Harvest Mice", icon:"🐭", deck:{"harvest-mouse":1,"field-mouse":2,"chipmunk-forager":1,"house-cat":1,"farm-dog":1,"village-miller":2,"burrow-rabbit":4,"ash-cloud-condor":4}, flavor:"They are bringing in the harvest. Yours, mostly.", requires:["1-A-2","1-A-3"] },
       { key:"1-A-5", kind:"boss", name:"The Old Hare", icon:"🐇", deck:{"buck-brawler":1,"cottontail":3,"burrow-rabbit":4,"lucky-hopper":1,"ash-cloud-condor":4,"beetle-battering-ram":2}, flavor:"The oldest hare in the meadow, and still the fastest.", characterId:"plains-terrace", requires:["1-A-4"] },

@@ -14,6 +14,7 @@ const R = require(path.join(ROOT, 'bramblewood-raid.js'));
 const {TEXT, TX} = require(path.join(ROOT, 'bramblewood-texts.js'));
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const raidSrc = fs.readFileSync(path.join(ROOT, 'bramblewood-raid.js'), 'utf8');
+const EGG_SRC = (src.match(/\nconst EASTER_EGG_IDS = [^\n]*/) || [''])[0] + '\n';   // 2026-10-19 (EE merge): raidCardIds leaves Easter eggs out
 const goliath = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'raids.json'), 'utf8'))[0];
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const fnSrc = name=>{ const i = src.indexOf(`\nfunction ${name}(`); if(i < 0) return '';
@@ -59,7 +60,7 @@ const LEVELS = [[3, 2000], [4, 12000], [5, 60000]];
   const ctx = {RaidM: R, Math: Object.assign(Object.create(Math), {random: ()=> rnd()}), Object, String, Number, getCardDefs: ()=> defs,
     legendaryHeldBack: ()=> false, PACK_RARITY_WEIGHT: W, factionTrackPool: ()=> pools.faction, packCardPool: ()=> pools.pack.slice(),
     cardDropRarity: ()=> ctx.Math.random() < 0.3 ? 'uncommon' : 'common', unlockCardForPlayer: (id, s)=>{ got.push([id, s]); return true; }};
-  vm.createContext(ctx); vm.runInContext(['raidCardIds', 'raidRewardPools', 'raidFightCardDrop'].map(fnSrc).join('\n') + '\nthis.drop = raidFightCardDrop;', ctx);
+  vm.createContext(ctx); vm.runInContext(EGG_SRC + ['isEasterEgg', 'raidCardIds', 'raidRewardPools', 'raidFightCardDrop'].map(fnSrc).join('\n') + '\nthis.drop = raidFightCardDrop;', ctx);
   let raid = 0; for(let i = 0; i < 2000; i++){ const id = ctx.drop(goliath); if(id && defs[id].source.kind === 'raid') raid++; }
   console.log(`  raid fights with a raid card: ${raid}/2000`); ok(got.length === 2000 && raid / 2000 < 0.03, `1. seeded: ${raid} of 2,000 won raid fights dropped a raid card (${(raid / 20).toFixed(2)}%); the rest a pack card`);
   ok(got.filter(g=> defs[g[0]].source.kind === 'pack').every(g=> g[1] === 'raidReward'), '1. a pack card from a raid fight is a raid reward (not a card drop)'); }
@@ -105,7 +106,7 @@ function forgeCtx(o){
     unlockCardForPlayer: (id, s, opts)=>{ (copies[id] = copies[id] || []).push({uid: 'u' + Math.random(), level: 1, shiny: !!(opts && opts.shiny), src: s}); return true; },
     copyLevel: (id, c)=> c.level, copyBaseLevelOf: ()=> 1, saved, logs};
   vm.createContext(ctx);
-  vm.runInContext(['raidCardIds', 'raidCardRevealed', 'raidRecipeOf', 'raidRecipeReady', 'craftRaidCard'].map(fnSrc).join('\n') + '\nthis.craft = craftRaidCard; this.ready = raidRecipeReady;', ctx);
+  vm.runInContext(EGG_SRC + ['isEasterEgg', 'raidCardIds', 'raidCardRevealed', 'raidRecipeOf', 'raidRecipeReady', 'craftRaidCard'].map(fnSrc).join('\n') + '\nthis.craft = craftRaidCard; this.ready = raidRecipeReady;', ctx);
   return ctx;
 }
 { const ctx = forgeCtx({seen: ['glass-octopus']}), cost = R.raidRecipeFor(goliath, 'glass-octopus', 'rare'), w0 = JSON.parse(JSON.stringify(ctx.myCurrencies));
