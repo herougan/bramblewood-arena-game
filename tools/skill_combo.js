@@ -213,8 +213,10 @@ function mixedMeasure(lab, run, n, perPoint){
     const sw = Math.sqrt(Math.max(0.05, wr * (1 - wr)) / n);
     per[o] = {wr: r3(wr), D: r2(x.d), S: r2(x.d * perPoint), clamp: x.clamp || null, se: r2(sw / sl * perPoint)}; });
   delete lab.defs[id];
-  const list = Object.values(per), ok = list.filter(p=> !p.clamp), use = ok.length ? ok : list;
-  return {S: mean(use.map(p=> p.S)), D: mean(use.map(p=> p.D)), se: Math.sqrt(mean(use.map(p=> p.se * p.se))) / Math.sqrt(use.length), per, clamp: ok.length ? null : (list[0].clamp || null),
+  // The number is the calibrated mix's (2026-10-19): the mirror's ladder is near-deterministic (identical decks: 0.65 at Damage 3,
+  // 0.92 at Damage 4, 0.98 by 16), so inverting a win rate in its saturated top gives any D; it is kept in `per` for reference.
+  const p = per.mixed;
+  return {S: p.S, D: p.D, se: p.se, per, clamp: p.clamp,
     ladder: Object.fromEntries(Object.entries(mc.curves).map(([o, c])=> [o, c.map(p=> [p.d, r3(p.wr)])]))};
 }
 const MIX_G = 800;
@@ -330,8 +332,11 @@ function pairPlan(table, o){
   const legendary = ids2=> ids2.some(x=> (table.skills.find(e=> e.id === x) || {}).legendary) ? 'legendary' : undefined;
   Object.values(singles).forEach(s=> runs.push({key:['single', s.ids[0], s.ctx, 'b2'].join('|'), kind:'single', ids:s.ids, ctx:s.ctx, b:'b2', effects: effectsOf(cards, s.ids), rarity: legendary(s.ids)}));
   Object.values(pairs).forEach(p=> runs.push({key:['pair', p.ids.join('+'), p.ctx, 'b2'].join('|'), kind:'pair', ids:p.ids, ctx:p.ctx, b:'b2', effects: effectsOf(cards, p.ids), rarity: legendary(p.ids), source:p.source, cards:p.cards}));
-  // a field's runs together, singles first
-  runs.sort((a, b)=> (a.ctx === 'plain' ? 0 : 1) - (b.ctx === 'plain' ? 0 : 1) || a.ctx.localeCompare(b.ctx) || (a.kind === 'single' ? 0 : 1) - (b.kind === 'single' ? 0 : 1) || a.key.localeCompare(b.key));
+  // the order (2026-10-19, resumed: ~25 games a second on this box, the plan is ~1M games, so a cut-off run should hold the pairs
+  // that matter most): every single first, then the pairs live cards print together and the targeted ones, then the top-40 pairs
+  // by the two skills' rank (the most printed first)
+  const rank = id=>{ const i = top.indexOf(id); return i < 0 ? top.length : i; }, prio = r=> r.kind === 'single' ? 0 : r.source.some(s=> s !== 'top40') ? 1 : 2;
+  runs.sort((a, b)=> prio(a) - prio(b) || (prio(a) === 2 ? Math.max(...a.ids.map(rank)) - Math.max(...b.ids.map(rank)) || Math.min(...a.ids.map(rank)) - Math.min(...b.ids.map(rank)) : 0) || (a.ctx === 'plain' ? 0 : 1) - (b.ctx === 'plain' ? 0 : 1) || a.ctx.localeCompare(b.ctx) || a.key.localeCompare(b.key));
   return {top, left, pairs, skipped, runs, counts: cnt, trigCounts: tcnt, together, swAgg: agg ? true : false};
 }
 

@@ -61,7 +61,7 @@
     host.innerHTML = `<div class="dec-head"><h2>Skill costs</h2><p>Every number behind S, the skill part of the stat budget. A trigger costs <b>how often × how strong</b>: its weight here × its action's value (On Death = 1, so an On Death "deal 2 damage" costs 2; On Any Played = 5 with a value-2 action costs 10). Keyword skills keep the costs they had. Change a number and every card's S, N and both rules (2A+H+S &lt; N, A·H+S &lt; (N/3)²) update below.</p></div>
       <div class="sc-status" id="scStatus" role="status"></div>
       <div class="sc-grid"><section class="sc-ed" aria-label="Cost table">
-        <div class="dec-seg sc-kinds" role="group" aria-label="Kind" id="scKinds">${KINDS.map(([k, , l])=> `<button type="button" data-k="${k}" aria-pressed="${k === st.kind}">${l} <b>${LIST[k].length}</b></button>`).join('')}</div>
+        <div class="dec-seg sc-kinds" role="group" aria-label="Kind" id="scKinds">${KINDS.map(([k, , l])=> `<button type="button" data-k="${k}" aria-pressed="${k === st.kind}">${l} <b>${LIST[k].length}</b></button>`).join('')}${COMBOS ? `<button type="button" data-k="combo" aria-pressed="false">Combos <b>${COMBOS.pairs}</b></button>` : ''}</div>
         <p class="sc-hint" id="scHint"></p>
         <div class="sc-bar"><input type="search" id="scQ" placeholder="Filter by name or id…" aria-label="Filter entries"><label class="cd-chk"><input type="checkbox" id="scOnly"> edited only</label><label class="cd-chk"><input type="checkbox" id="scGap"> biggest gap to measured first</label></div>
         <div class="sc-rows" id="scRows"></div></section>
@@ -166,7 +166,24 @@
     if(kind === 'trigger') return e.inEngine === false ? 'not in the engine yet' : 'weight';
     return '';
   }
+  // ---------- combos (2026-10-19, package DC, owner 08:10: "duo-skill combos, 1,000-2,000 times") ----------
+  // Read-only: the skill pairs tools/skill_combo.js measured on one unit (docs/skill-combos-2026-10-19.md), the strongest synergies
+  // (the pair is worth more than its two skills apart) and anti-synergies (less), at medium or high confidence, and the per-family
+  // multiplier a card with two skills could be costed with.
+  const COMBOS = typeof SC_COMBOS !== 'undefined' && SC_COMBOS && (SC_COMBOS.syn || []).length + (SC_COMBOS.anti || []).length ? SC_COMBOS : null;
+  function renderCombos(){
+    $('scHint').textContent = `Skill pairs on one unit (b2, 4/14 Wait 2): ${COMBOS.pairs} pairs, ${COMBOS.G} games a point, ${COMBOS.games} games in all (docs/skill-combos-2026-10-19.md). Interaction = S(pair) − S(A) − S(B); medium and high confidence only. Read-only.`;
+    const hit = r=> !st.q || (r.pair + ' ' + (r.ctx || '')).toLowerCase().includes(st.q), sg = v=> (v > 0 ? '+' : '') + v;
+    const row = r=> `<div class="sc-row sc-cb"><div class="sc-lb"><b>${esc(r.pair)}</b><small>${r.ctx && r.ctx !== 'plain' ? esc(r.ctx) + ' · ' : ''}S ${r.S} vs ${r.sumSingles} apart (${r.Sa} + ${r.Sb})${r.cards ? ' · on ' + r.cards + ' card' + (r.cards === 1 ? '' : 's') : ''}</small></div>`
+      + `<div class="sc-ms c-${esc(r.confidence)}"><span class="sc-mv"><small>interaction</small><b>${sg(r.interaction)}</b><small>±${r.se} · ${esc(r.confidence)}</small></span></div></div>`;
+    const syn = COMBOS.syn.filter(hit), anti = COMBOS.anti.filter(hit), m = COMBOS.model || {};
+    const fam = (m.families || []).map(f=> `<span class="chip">${esc(f.fam)} <b>×${f.m}</b> <small>(${f.pairs})</small></span>`).join(' ');
+    $('scRows').innerHTML = `<h3 class="sc-cbh">Synergies <small>(${syn.length})</small></h3>` + (syn.map(row).join('') || '<p class="dec-empty">Nothing matches.</p>')
+      + `<h3 class="sc-cbh">Anti-synergies <small>(${anti.length})</small></h3>` + (anti.map(row).join('') || '<p class="dec-empty">Nothing matches.</p>')
+      + (fam ? `<h3 class="sc-cbh">Family multipliers <small>S(A+B) ≈ m × (S(A) + S(B)); one global m = ${m.global}</small></h3><p class="sc-cbf">${fam}</p>` : '');
+  }
   function renderRows(){
+    if(st.kind === 'combo' && COMBOS){ renderCombos(); return; }
     const kd = KINDS.find(k=> k[0] === st.kind); $('scHint').textContent = kd[3] + ' · "measured": what tools/skill_worth.js measured on 2026-10-19 (docs/skill-worth-2026-10-19.md); Apply copies it into the value.';
     const list = LIST[st.kind].filter(e=>{ const key = st.kind + ':' + e.id; if(st.onlyEdited && !(key in edits)) return false;
       return !st.q || (e.id + ' ' + label(st.kind, e) + ' ' + (e.note || '')).toLowerCase().includes(st.q); });
