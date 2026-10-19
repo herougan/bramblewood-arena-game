@@ -23,5 +23,10 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
   budget panel through TX with Base; decision B8; road retune on v5 + BU (bf2-curve-fixes; bf-after 178/179, 76/77; fresh 151/179);
   docs/balance/level-curve-2026-10-19c.md; SW positionBeam reason; stale lang/ui rows (RB, U3) out
 
+- BF2 map term (15:25): committed (WIP 'Base's map term'), canonical/card-obtain-maps.json, B9 + docs/balance/limit-break-waves.md
+- BF3 A (15:48): levelLinDiv 10 committed
+- BF3 C: full card retune applied (tools/card_retune_2026_10_19.js; 418 cards; Caldera Wyrm owner call); golden card matrix updated;
+  card-pass / d tests accept the retune; Pale Desert invariants restored (rule bramble, one Queen), tuner guarded
+
 ## Next
-- Map term (15:25): Base + 0.2 x Map (own commit), then the limit-break waves note and decision.
+- D: bf4-mid measure (running) -> curve tune (bf4-curve-fixes) -> apply -> bf-after + bf-fresh; pale-desert --measure; docs; CHANGELOG; commit "Package BF3"

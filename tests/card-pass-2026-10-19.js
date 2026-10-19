@@ -35,14 +35,17 @@ const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers
 const PREV = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(SCT);
 ['raven-harbinger', 'bone-diviner', 'magnate-duck'].forEach(id=> ok(PREV.budget(defs[id]).ok && (P.SC.budget(defs[id]).ok || QUEUE.has(id)), `1. ${id} (newly over on 10-19) fits under prevValue, and fits now or is queued`));
 // 2026-10-19 (BF2): the pass was made under budget v3's N; v5's is a little lower at Level 1 for some cards (Colony, Great Gate are queued)
-const fitsPrev = live.filter(c=> !OVER_OK.has(c.id) && !PREV.budget(c, {N: PREV.budgetV3N(c)}).ok).map(c=> c.id);
+const RETUNED = c=> /2026-10-19 retune \(v5 L\/10\)/.test(c.creatorNote || ''); // BF3: the full card retune came after the pass
+const fitsPrev = live.filter(c=> !OVER_OK.has(c.id) && !RETUNED(c) && !PREV.budget(c, {N: PREV.budgetV3N(c)}).ok).map(c=> c.id);
 ok(!fitsPrev.length, '1. under the pre-application costs every live card but the owner-call list fits (the pass as made): ' + fitsPrev.slice(0, 8).join(', '));
 
 // ---- 2. the bands
 const ST = Object.entries(PLAN.stats || {});
 ok(ST.length >= 20, `2. the pass changed cards' stats (${ST.length})`);
 ST.forEach(([id, x])=>{ const c = defs[id], [lo, hi] = P.bandOf((PLAN.rarity && PLAN.rarity[id] && PLAN.rarity[id].to) || c.rarity).map(v=> v * 100);
-  ok(c && c.attack === x.attack && c.health === x.health && (x.cost == null || c.cost === x.cost), `2. ${id}: carries its recorded stats ${x.attack}/${x.health}`);
+  // 2026-10-19 (BF3): or the full card retune moved it from those stats, which its creatorNote records ("2026-10-19 retune (v5 L/10): was A/H")
+  const retuned = c && new RegExp(`2026-10-19 retune \\(v5 L/10\\): was ${x.attack}/${x.health} `).test(c.creatorNote || '');
+  ok(c && ((c.attack === x.attack && c.health === x.health) || retuned) && (x.cost == null || c.cost === x.cost), `2. ${id}: carries its recorded stats ${x.attack}/${x.health} (or the 10-19 retune from them)`);
   if(x.fit) return; // a budget fit (no win-rate aim)
   const inBand = x.wrAfter >= lo && x.wrAfter <= hi, nearer = Math.abs(P.outside(x.wrAfter / 100, c.rarity)) <= Math.abs(P.outside(x.wrBefore / 100, c.rarity)) - 5;
   ok(inBand || (x.nearest && nearer), `2. ${id}: ${x.wrBefore}% -> ${x.wrAfter}% (band ${lo}-${hi})`); });
@@ -50,7 +53,10 @@ ST.forEach(([id, x])=>{ const c = defs[id], [lo, hi] = P.bandOf((PLAN.rarity && 
 // 2026-10-19 (BF follow-up): within 3 points, not to the game. The record was made on the 10-19 morning engine; package BU's centre-column
 // rule (slot 0 always legal when empty, the CPU fills it first) moves every simulated game a little (39.5 -> 39.3, 60 -> 59.3, 70.5 ->
 // 68.5). 3 points is about 1.2 standard errors at 400 games: a real stat or record mix-up still shows, an engine rule's nudge doesn't.
-ST.filter(([, x])=> !x.fit).slice(0, 3).forEach(([id, x])=>{ const wr = Math.round(P.winRate(id, null, 400) * 1000) / 10; ok(Math.abs(wr - x.wrAfter) <= 3, `2. ${id} re-measures ${wr}% (recorded ${x.wrAfter}%, within 3 points)`); });
+// 2026-10-19 (BF3): the full card retune moved the yardstick's filler cards too, so the records can't replay after it; skipped then
+const fillerRetuned = P.FILLER.some(id=> RETUNED(defs[id] || {}));
+if(!fillerRetuned) ST.filter(([, x])=> !x.fit).slice(0, 3).forEach(([id, x])=>{ const wr = Math.round(P.winRate(id, null, 400) * 1000) / 10; ok(Math.abs(wr - x.wrAfter) <= 3, `2. ${id} re-measures ${wr}% (recorded ${x.wrAfter}%, within 3 points)`); });
+else console.log('  note: the 10-19 retune changed the yardstick\'s filler cards (' + P.FILLER.filter(id=> RETUNED(defs[id] || {})).join(', ') + '), so the card pass\'s records are not replayed');
 Object.entries(PLAN.rarity || {}).forEach(([id, x])=> ok(defs[id] && defs[id].rarity === x.to, `2. ${id}: rarity ${x.to}`));
 
 // ---- 3. sources
