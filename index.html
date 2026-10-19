@@ -438,6 +438,16 @@
   .account-chip.signed-in{border-style:solid; border-color:#4caf50;}
   .account-chip.signed-in .account-chip-ico::after{content:'';}
   .account-chip:hover{filter:brightness(1.08);}
+  /* 2026-10-19 (package SY): the deck sync indicator next to the account chip (Synced ✓ / Syncing… / Offline); a dot alone on a phone */
+  .sync-ind{display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; color:var(--ink-soft, var(--ink)); opacity:.78; white-space:nowrap; cursor:default; flex-shrink:0;}
+  .sync-ind[hidden]{display:none;}
+  .sync-ind-dot{width:7px; height:7px; border-radius:50%; background:#4caf50; flex-shrink:0;}
+  .sync-ind[data-state="syncing"] .sync-ind-dot{background:#e0a030; animation:syncIndPulse 1s ease-in-out infinite;}
+  .sync-ind[data-state="offline"] .sync-ind-dot{background:#9e9e9e;}
+  .sync-ind[data-state="offline"]{opacity:.9;}
+  @keyframes syncIndPulse{50%{opacity:.35;}}
+  @media (prefers-reduced-motion: reduce){ .sync-ind[data-state="syncing"] .sync-ind-dot{animation:none;} }
+  @media (max-width: 600px){ .sync-ind .sync-ind-txt{display:none;} }
   .account-identity{display:flex; align-items:center; gap:10px; margin:6px 0 4px; padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid #4caf50;}
   .account-identity-ico{font-size:18px;}
   .auth-gate-later{display:block; margin:12px auto 0;}
@@ -36110,7 +36120,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=56c694e68f", "es": "assets/lang/es.js?v=0732ec5810", "fr": "assets/lang/fr.js?v=c9e28dc764", "id": "assets/lang/id.js?v=09d25f2886", "it": "assets/lang/it.js?v=a47eb3090d", "ja": "assets/lang/ja.js?v=97f8445ebb", "ko": "assets/lang/ko.js?v=dfe2886272", "pt": "assets/lang/pt.js?v=1ad4580757", "ta": "assets/lang/ta.js?v=e83a89b3b7", "tl": "assets/lang/tl.js?v=803512aaa3", "zh-Hans": "assets/lang/zh-Hans.js?v=674623e1ef", "zh-Hant": "assets/lang/zh-Hant.js?v=27ec794a53"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=06ab76f6ef", "es": "assets/lang/es.js?v=93766cc758", "fr": "assets/lang/fr.js?v=ef276362c3", "id": "assets/lang/id.js?v=42a25b2366", "it": "assets/lang/it.js?v=f617c60846", "ja": "assets/lang/ja.js?v=5cb26412d3", "ko": "assets/lang/ko.js?v=bec067f020", "pt": "assets/lang/pt.js?v=649f26f1fa", "ta": "assets/lang/ta.js?v=de87bfdcef", "tl": "assets/lang/tl.js?v=2e0a5db33a", "zh-Hans": "assets/lang/zh-Hans.js?v=ab8bbb6496", "zh-Hant": "assets/lang/zh-Hant.js?v=828406b47c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -37347,7 +37357,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.float-brittle": "🫙 Brittle",
   "ui.float-field-break": "🧹 Field broken",
   "ui.brittle-tip": "Brittle for {n}: Shatter treats it as Frozen",
-  "ui.prayer-ward-tip": "Prayer Ward: Armor {n} while it holds Prayer tokens"
+  "ui.prayer-ward-tip": "Prayer Ward: Armor {n} while it holds Prayer tokens",
+  "ui.sy-synced": "Synced ✓",
+  "ui.sy-syncing": "Syncing…",
+  "ui.sy-offline": "Offline",
+  "ui.sy-synced-tip": "Your decks are saved to your account and show on every device you sign in on.",
+  "ui.sy-syncing-tip": "Saving your decks to your account…",
+  "ui.sy-offline-tip": "Can't reach the server. Your decks are safe on this device and will sync when you're back online.",
+  "toast.sy-deck-deleted-elsewhere": "The deck “{name}” was deleted on another device, so it's gone from here too."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -40471,7 +40488,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7fc80dc84a0e', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = '68433d4fbae3', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -48027,6 +48044,7 @@ function setCloudPill(ok, label){ refreshAccountUI(); }
 // entrance screen's account line / Sign-in button.
 function refreshAccountUI(){
   const signedIn = isSignedIn();
+  try{ renderDeckSyncInd(); }catch(e){} // 2026-10-19 (package SY): Synced ✓ / Syncing… / Offline next to the chip
   if(signedIn) hideSignInBanner();
   const chip = document.getElementById('accountChip');
   if(chip){
@@ -48089,7 +48107,7 @@ async function applySessionIdentity(user){
     // device. Only actually pushes anything once isSignedIn() is true (see cloudPush* below) — a
     // brand-new ANONYMOUS session correctly seeds nothing yet, matching "data saved locally."
     await sbClient.from('profiles').upsert({ id: cloudUserId, display_name: (myProfile && myProfile.name) || 'Woodland Warrior' }); // 2026-10-16: no rating here: anti-cheat tier 1 (S2) makes rating server-only, and an upsert naming it would be refused whole
-    if(isSignedIn()) await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks()]);
+    if(isSignedIn()) await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]);
   } else {
     // Existing cloud account (returning session, an email/Google-linked account signed in fresh,
     // or a plain returning anonymous session): the server is now the source of truth for this
@@ -48269,12 +48287,10 @@ async function cloudPullState(){
       try{ copyModelSyncAll(); cloudApplyCopyLevels(unlocks); }catch(e){}
       saveUnlockedCardIds(true); saveCardLevels(true);
     }
-    const { data: decks } = await sbClient.from('player_decks').select('*').eq('profile_id', cloudUserId);
-    if(decks && decks.length){
-      myDecks = decks.map(d=>({id:d.id, name:d.name, characterId:d.character_id, leaderId:d.leader_id, counts: d.counts||{}}));
-      saveMyDecks(true);
-    }
+    // 2026-10-19 (package SY, owner: "same account in mobile AND web. They don't see each other's decks!"): the decks merge deck by
+    // deck (the newest edit wins, nothing is dropped without a word) instead of the cloud list replacing this device's; see deckSyncPull
   } catch(e){ /* offline/RLS hiccup — local state stays authoritative for this session */ }
+  try{ await deckSyncPull('load'); }catch(e){}
 }
 // Called from the existing save*() functions right after they write to localStorage.
 // Fire-and-forget (never blocks the UI/awaited by callers) and silently no-ops with no cloud
@@ -48328,11 +48344,248 @@ function cloudPushCardLevels(){
 }
 var cloudCopiesColumn = null; // null: not known yet; false: the server has no player_card_unlocks.copies column (not applied yet)
 function cloudCopiesColumnMissing(error){ return !!error && (/copies/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
-function cloudPushDecks(){
+// 2026-10-19 (package SY): decks never reached the cloud. player_decks.id is a uuid, the game's deck ids were 'deck-xxxxxxx', so every
+// upsert was refused (22P02) and the refusal was dropped (supabase-js resolves with {error}; it doesn't reject). The table held no deck
+// for anyone. Deck ids are uuids now (old ones are moved once, deckSyncPrepareLocal), and the push is debounced and checked (deckSyncFlush).
+// now: send at once (sign-in / account creation await it); otherwise the push waits DECK_SYNC_DEBOUNCE_MS for more edits.
+function cloudPushDecks(now){
   if(!sbClient || !isSignedIn()) return;
-  const rows = (myDecks||[]).map(d=>({ id: d.id, profile_id: cloudUserId, name: d.name, character_id: d.characterId||null, leader_id: d.leaderId||null, counts: d.counts||{} }));
-  if(!rows.length) return;
-  return sbClient.from('player_decks').upsert(rows).then(()=>{}, ()=>{});
+  deckSyncDirty = true; setDeckSyncState('syncing');
+  if(deckSyncTimer){ clearTimeout(deckSyncTimer); deckSyncTimer = null; }
+  if(now) return deckSyncFlush();
+  deckSyncTimer = setTimeout(()=>{ deckSyncTimer = null; deckSyncFlush(); }, DECK_SYNC_DEBOUNCE_MS);
+}
+// DECK_SYNC_SY:BEGIN (tests/deck-sync-2026-10-19.js evaluates this block)
+// Cross-device decks (2026-10-19, package SY). Each deck carries updatedAt (ms, bumped by deckSyncTouch whenever saveMyDecks sees its
+// content change). The cloud row keeps it in updated_at (written by the client: the table has no trigger). A pull merges deck by deck:
+//   - on both sides: the newer updatedAt wins; the loser is overwritten, not dropped;
+//   - only here: pushed, unless the cloud had it before (seen) and it hasn't been edited here since: then another device deleted it.
+//     It leaves the list with a toast and is kept in DECK_SYNC_REMOVED_KEY (the last 20), never dropped silently;
+//   - only in the cloud: added here;
+//   - deleted here (a tombstone): deleted in the cloud too, unless the cloud copy was edited after the delete (then it comes back).
+// With the proposed columns (supabase/proposed/20261019_deck_sync.sql) a delete is a deleted_at mark rather than a row delete, so a
+// device that was offline hears about it, and the deck's looks (which copies are Shiny or wear a skin) ride along. Without them the
+// client says so once (PGRST204 / 42703) and works without them.
+const DECK_SYNC_TOMBS_KEY = 'bramblewood_deck_tombstones_v1'; // {deckId: deletedAt}: decks deleted on this device, until the cloud has it
+const DECK_SYNC_SEEN_KEY = 'bramblewood_deck_cloud_seen_v1';  // {deckId: updatedAt}: the version the cloud last had (pushed or pulled)
+const DECK_SYNC_REMOVED_KEY = 'bramblewood_deck_removed_v1';  // decks another device deleted, kept here in case (newest last, 20 at most)
+const DECK_SYNC_DEBOUNCE_MS = 1200, DECK_SYNC_WAKE_MS = 10000, DECK_SYNC_RETRY_MS = 30000;
+const DECK_UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+var deckSyncHashes = {}, deckSyncMerging = false, deckSyncNeedPull = false, deckSyncTimer = null, deckSyncInFlight = null, deckSyncDirty = false, deckSyncPulling = null, deckSyncLastWake = 0, deckSyncRetryTimer = null;
+var deckSyncState = 'idle'; // 'synced' | 'syncing' | 'offline' | 'idle' (no account: the indicator is hidden)
+var cloudDeckCols = {looks: null, deleted_at: null}; // null: not known yet; false: the server has no such column (proposed SQL not applied)
+// The tombstones and the seen map are per account (another account's seen decks must never look deleted here).
+function deckSyncKey(base){ return base + ':' + (cloudUserId || 'guest'); }
+function deckSyncRead(key){ try{ const v = JSON.parse(localStorage.getItem(key) || 'null'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }catch(e){ return {}; } }
+function deckSyncWrite(key, v){ try{ localStorage.setItem(key, JSON.stringify(v)); }catch(e){} }
+// A key-sorted JSON, so the same deck always hashes the same however its objects were built.
+function deckStable(v){ if(Array.isArray(v)) return '[' + v.map(deckStable).join(',') + ']'; if(v && typeof v === 'object') return '{' + Object.keys(v).sort().map(k=> JSON.stringify(k) + ':' + deckStable(v[k])).join(',') + '}'; return JSON.stringify(v === undefined ? null : v); }
+function deckContentHash(d){ return deckStable({n: (d && d.name) || '', c: (d && d.characterId) || null, l: (d && d.leaderId) || null, k: (d && d.counts) || {}, x: (d && d.looks) || null}); }
+// Once per save at load: old 'deck-xxxx' ids become uuids (remap: old → new, for the active and main deck keys), every deck gets an
+// updatedAt, a doubled id gets a new one. The hashes start from what was loaded, so loading never counts as an edit.
+function deckSyncPrepareLocal(decks, now){
+  const remap = {}, used = new Set(); now = now || Date.now();
+  (decks || []).forEach(d=>{ if(!d || typeof d !== 'object') return;
+    if(!DECK_UUID_RE.test(String(d.id || '')) || used.has(d.id)){ const nid = genUUID(); if(d.id && !remap[d.id]) remap[d.id] = nid; d.id = nid; }
+    used.add(d.id);
+    if(!Number.isFinite(d.updatedAt)) d.updatedAt = now; });
+  deckSyncSeed(decks);
+  return remap;
+}
+function deckSyncSeed(decks){ deckSyncHashes = {}; (decks || []).forEach(d=>{ if(d && d.id) deckSyncHashes[d.id] = deckContentHash(d); }); }
+// Called by saveMyDecks before it writes: a deck whose content changed (or that is new) gets a fresh updatedAt. Returns how many.
+function deckSyncTouch(decks, now){
+  now = now || Date.now(); let n = 0; const next = {};
+  (decks || []).forEach(d=>{ if(!d || !d.id) return; const h = deckContentHash(d);
+    if(deckSyncHashes[d.id] !== h){ d.updatedAt = Math.max(now, (Number(d.updatedAt) || 0) + 1); n++; }
+    next[d.id] = h; });
+  deckSyncHashes = next; return n;
+}
+// deleteDeck's note: the deck goes from the cloud too on the next push.
+function deckSyncTomb(id, now){ if(!id) return; const t = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)); t[id] = now || Date.now(); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), t); }
+function deckFromRow(r){
+  const d = {id: r.id, name: r.name || 'Deck', characterId: r.character_id || null, leaderId: r.leader_id || null,
+    counts: (r.counts && typeof r.counts === 'object' && !Array.isArray(r.counts)) ? r.counts : {}, updatedAt: Date.parse(r.updated_at) || 0};
+  if(r.looks && typeof r.looks === 'object') d.looks = r.looks;
+  if(r.deleted_at) d.deletedAt = Date.parse(r.deleted_at) || 1;
+  return d;
+}
+function deckToRow(d, uid, cols){
+  const row = {id: d.id, profile_id: uid, name: String(d.name || 'Deck').slice(0, 40), character_id: d.characterId || null, leader_id: d.leaderId || null,
+    counts: d.counts || {}, updated_at: new Date(Number(d.updatedAt) || Date.now()).toISOString()};
+  if(cols && cols.looks !== false) row.looks = d.looks || null;
+  if(cols && cols.deleted_at !== false) row.deleted_at = null;
+  return row;
+}
+// The merge (pure). local: this device's decks; rows: the account's player_decks rows; o: {tombs, seen}. Returns the deck list to keep,
+// the decks another device deleted (removed), the ids to delete in the cloud (deleteRemote), the tombstones that are settled (dropTombs)
+// and the new seen map. The order: this device's decks first, as they were, then new ones from the cloud, oldest first.
+function deckSyncMerge(local, rows, o){
+  o = o || {}; const tombs = o.tombs || {}, seen = o.seen || {}, nextSeen = Object.assign({}, seen);
+  const L = new Map(), C = new Map(); (local || []).forEach(d=>{ if(d && d.id) L.set(d.id, d); });
+  (rows || []).forEach(r=>{ if(r && r.id) C.set(r.id, deckFromRow(r)); });
+  const keep = new Map(), removed = [], deleteRemote = [], dropTombs = [];
+  const ids = Array.from(new Set([].concat(Array.from(L.keys()), Array.from(C.keys()), Object.keys(tombs))));
+  ids.forEach(id=>{
+    const l = L.get(id), c = C.get(id), t = Number(tombs[id]) || 0;
+    if(c && c.deletedAt){ // a delete mark in the cloud (the deleted_at column)
+      if(l && (Number(l.updatedAt) || 0) > c.deletedAt) keep.set(id, l); // edited here after it was deleted: it comes back
+      else if(l) removed.push(l);
+      if(t) dropTombs.push(id); delete nextSeen[id]; return; }
+    if(t && !l){ // deleted here
+      if(c && c.updatedAt > t){ keep.set(id, c); dropTombs.push(id); nextSeen[id] = c.updatedAt; } // edited elsewhere after the delete
+      else if(c) deleteRemote.push(id);
+      else { dropTombs.push(id); delete nextSeen[id]; }
+      return; }
+    if(t && l) dropTombs.push(id); // a stale tombstone (the deck is here again)
+    if(l && c){
+      const lu = Number(l.updatedAt) || 0;
+      if(c.updatedAt > lu){ const w = Object.assign({}, c); if(w.looks === undefined && l.looks) w.looks = l.looks; keep.set(id, w); }
+      else keep.set(id, l);
+      nextSeen[id] = c.updatedAt; return; }
+    if(l){
+      if(seen[id] != null && (Number(l.updatedAt) || 0) <= Number(seen[id])){ removed.push(l); delete nextSeen[id]; } // deleted on another device
+      else keep.set(id, l);
+      return; }
+    if(c){ keep.set(id, c); nextSeen[id] = c.updatedAt; }
+  });
+  let decks = (local || []).filter(d=> d && keep.has(d.id)).map(d=> keep.get(d.id));
+  const fresh = Array.from(keep.values()).filter(d=> !L.has(d.id)).sort((a, b)=> (a.updatedAt || 0) - (b.updatedAt || 0));
+  decks = decks.concat(fresh).map(d=>{ const x = Object.assign({}, d); delete x.deletedAt; return x; });
+  if(!decks.length && removed.length){ decks = removed.splice(0).map(d=> Object.assign({}, d)); } // never leave the player with no deck
+  return {decks, removed, deleteRemote, dropTombs, seen: nextSeen};
+}
+// The decks that need sending: changed since the cloud last had them (or never sent).
+function deckSyncPending(decks, seen){ return (decks || []).filter(d=> d && DECK_UUID_RE.test(String(d.id || '')) && Number(seen[d.id]) !== Number(d.updatedAt)); }
+function deckSyncColMissing(error){ if(!error) return null; const m = String(error.message || '');
+  if(error.code === 'PGRST204' || error.code === '42703' || /column/i.test(m)){ if(/deleted_at/i.test(m)) return 'deleted_at'; if(/looks/i.test(m)) return 'looks'; }
+  return null; }
+function deckSyncNetError(error){ return !error || error.name === 'TypeError' || /fetch|network|timeout|offline|Load failed/i.test(String(error.message || error)) || error.status === 0; }
+// DECK_SYNC_SY:END
+// The push: the changed decks in one upsert, then the deletes. One at a time; an edit made while one is out goes in the next.
+function deckSyncFlush(){
+  if(deckSyncTimer){ clearTimeout(deckSyncTimer); deckSyncTimer = null; }
+  if(!sbClient || !isSignedIn()){ setDeckSyncState('idle'); return Promise.resolve(); }
+  if(deckSyncInFlight){ deckSyncDirty = true; return deckSyncInFlight; }
+  if(deckSyncMerging){ deckSyncDirty = true; return Promise.resolve(); } // a pull is merging: it sends what's waiting when it's done
+  deckSyncDirty = false; setDeckSyncState('syncing');
+  const uid = cloudUserId;
+  deckSyncInFlight = (async ()=>{
+    let ok = true;
+    try{
+      const seen = deckSyncRead(deckSyncKey(DECK_SYNC_SEEN_KEY)), tombs = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY));
+      let send = deckSyncPending(myDecks, seen);
+      // A deck the cloud holds a newer edit of is not sent (an older edit made offline must not overwrite it): the pull after this merges it.
+      if(send.length){
+        const { data: have, error: haveErr } = await sbClient.from('player_decks').select('id, updated_at').eq('profile_id', uid);
+        if(haveErr){ ok = false; send = []; }
+        else { const at = {}; (have || []).forEach(r=>{ at[r.id] = Date.parse(r.updated_at) || 0; });
+          const n0 = send.length; send = send.filter(d=> !(at[d.id] > (Number(d.updatedAt) || 0))); if(send.length < n0) deckSyncNeedPull = true; }
+      }
+      for(let tries = 0; send.length && tries < 3; tries++){
+        const rows = send.map(d=> deckToRow(d, uid, cloudDeckCols));
+        const { error } = await sbClient.from('player_decks').upsert(rows);
+        const col = deckSyncColMissing(error);
+        if(error && col && cloudDeckCols[col] !== false){ cloudDeckCols[col] = false; continue; }
+        if(error){ ok = false; if(!deckSyncNetError(error)) console.warn('[Bramblewood] deck sync refused:', error.code || '', error.message || error); break; }
+        if(rows.some(r=> 'looks' in r)) cloudDeckCols.looks = true;
+        send.forEach(d=>{ seen[d.id] = d.updatedAt; });
+        break;
+      }
+      for(const id of Object.keys(tombs)){
+        if(!DECK_UUID_RE.test(id)){ delete tombs[id]; continue; }
+        let error = null, done = false;
+        if(cloudDeckCols.deleted_at !== false){ // a delete mark, so a device that was offline hears of it
+          const at = new Date(Number(tombs[id]) || Date.now()).toISOString();
+          ({ error } = await sbClient.from('player_decks').update({deleted_at: at, updated_at: at}).eq('id', id).eq('profile_id', uid));
+          if(!error){ cloudDeckCols.deleted_at = true; done = true; }
+          else if(deckSyncColMissing(error) === 'deleted_at'){ cloudDeckCols.deleted_at = false; error = null; }
+        }
+        if(!done && !error){ ({ error } = await sbClient.from('player_decks').delete().eq('id', id).eq('profile_id', uid)); done = !error; }
+        if(done){ delete tombs[id]; delete seen[id]; } else ok = false;
+      }
+      deckSyncWrite(deckSyncKey(DECK_SYNC_SEEN_KEY), seen); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), tombs);
+    }catch(e){ ok = false; }
+    return ok;
+  })().then(ok=>{
+    deckSyncInFlight = null;
+    if(deckSyncDirty && isSignedIn()) return deckSyncFlush();
+    setDeckSyncState(ok ? 'synced' : 'offline');
+    if(!ok) deckSyncRetrySoon();
+    else if(deckSyncNeedPull && !deckSyncPulling){ deckSyncNeedPull = false; return deckSyncPull('newer-in-cloud'); }
+  });
+  return deckSyncInFlight;
+}
+function deckSyncRetrySoon(){ if(deckSyncRetryTimer) return; deckSyncRetryTimer = setTimeout(()=>{ deckSyncRetryTimer = null; if(isSignedIn()) deckSyncPull('retry'); }, DECK_SYNC_RETRY_MS); }
+// The pull: on load and sign-in (cloudPullState), when the tab comes back (visibility / focus, at most every DECK_SYNC_WAKE_MS) and
+// when the browser is back online. Sends what's still waiting first, so this device's edits are in the cloud before the merge.
+function deckSyncPull(reason){
+  if(!sbClient || !isSignedIn()){ setDeckSyncState('idle'); return Promise.resolve(false); }
+  if(deckSyncPulling) return deckSyncPulling;
+  setDeckSyncState('syncing');
+  deckSyncPulling = (async ()=>{
+    try{
+      if(deckSyncInFlight) await deckSyncInFlight;
+      deckSyncMerging = true; // no push while the cloud list is read and merged (the seen map would race)
+      const uid = cloudUserId;
+      const { data, error } = await sbClient.from('player_decks').select('*').eq('profile_id', uid);
+      if(error || !Array.isArray(data) || uid !== cloudUserId){ setDeckSyncState('offline'); deckSyncRetrySoon(); return false; }
+      if(data.length){ const r0 = data[0]; if(!('looks' in r0)) cloudDeckCols.looks = false; if(!('deleted_at' in r0)) cloudDeckCols.deleted_at = false; }
+      const before = getActiveDeck(), beforeHash = before ? deckContentHash(before) : '';
+      const m = deckSyncMerge(myDecks, data, {tombs: deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)), seen: deckSyncRead(deckSyncKey(DECK_SYNC_SEEN_KEY))});
+      const tombs = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)); m.dropTombs.forEach(id=> delete tombs[id]); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), tombs);
+      deckSyncWrite(deckSyncKey(DECK_SYNC_SEEN_KEY), m.seen);
+      if(m.removed.length){ const kept = (()=>{ try{ const a = JSON.parse(localStorage.getItem(DECK_SYNC_REMOVED_KEY) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } })();
+        deckSyncWrite(DECK_SYNC_REMOVED_KEY, kept.concat(m.removed.map(d=> Object.assign({}, d, {removedAt: Date.now()}))).slice(-20)); }
+      const changed = deckStable((myDecks || []).map(d=> [d.id, d.updatedAt])) !== deckStable(m.decks.map(d=> [d.id, d.updatedAt]));
+      if(changed){
+        myDecks = m.decks; deckSyncSeed(myDecks);
+        if(!myDecks.find(d=> d.id === mainDeckId)) setMainDeck(myDecks[0].id);
+        if(!myDecks.find(d=> d.id === activeDeckId)){ activeDeckId = mainDeckId || myDecks[0].id; saveActiveDeckId(); }
+        saveMyDecks(true);
+        const now = getActiveDeck();
+        // The working copy follows the active deck when it changed, unless the builder holds unsaved edits (they win when saved: newer).
+        if(now && (!before || now.id !== before.id || deckContentHash(now) !== beforeHash) && !deckDirty){
+          const draft = deckDraftOn; deckDraftOn = false;
+          try{ switchActiveDeck(now.id); } finally { deckDraftOn = draft; }
+        }
+        if(deckEditingId && !myDecks.find(d=> d.id === deckEditingId)){ deckEditingId = null; deckDraftOn = false; deckDirty = false; }
+        try{ if(!matchState && typeof currentTab !== 'undefined' && currentTab === 'deck' && !deckDirty) renderDeckSection(); }catch(e){}
+      }
+      m.removed.forEach(d=>{ try{ showToast(TX('toast.sy-deck-deleted-elsewhere', {name: d.name || 'Deck'}), 'info'); }catch(e){} });
+      deckSyncMerging = false;
+      if(deckSyncDirty || m.deleteRemote.length || deckSyncPending(myDecks, m.seen).length){ deckSyncDirty = true; await deckSyncFlush(); }
+      else setDeckSyncState('synced');
+      return true;
+    }catch(e){ setDeckSyncState('offline'); deckSyncRetrySoon(); return false; }
+    finally{ deckSyncMerging = false; }
+  })().finally(()=>{ deckSyncPulling = null; if(deckSyncDirty && isSignedIn() && !deckSyncInFlight) deckSyncFlush(); });
+  return deckSyncPulling;
+}
+function deckSyncOnWake(){
+  if(!isSignedIn() || (typeof document !== 'undefined' && document.hidden)) return;
+  const t = Date.now(); if(t - deckSyncLastWake < DECK_SYNC_WAKE_MS) return; deckSyncLastWake = t;
+  deckSyncPull('wake');
+}
+if(typeof document !== 'undefined' && document.addEventListener){
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden){ if(deckSyncTimer && isSignedIn()) deckSyncFlush(); } else deckSyncOnWake(); }); // leaving: send what's waiting
+  window.addEventListener('focus', deckSyncOnWake);
+  window.addEventListener('online', ()=>{ deckSyncLastWake = 0; deckSyncOnWake(); });
+  window.addEventListener('offline', ()=>{ if(isSignedIn()) setDeckSyncState('offline'); });
+}
+// The indicator (#deckSyncInd, next to the account chip): Synced ✓ / Syncing… / Offline, hidden for a guest.
+function setDeckSyncState(s){ deckSyncState = s; renderDeckSyncInd(); }
+function renderDeckSyncInd(){
+  if(typeof document === 'undefined') return;
+  const chip = document.getElementById('accountChip'); if(!chip || !chip.parentNode) return;
+  let el = document.getElementById('deckSyncInd');
+  if(!el){ el = document.createElement('span'); el.id = 'deckSyncInd'; el.className = 'sync-ind'; el.setAttribute('role', 'status'); el.setAttribute('aria-live', 'polite');
+    el.innerHTML = '<span class="sync-ind-dot" aria-hidden="true"></span><span class="sync-ind-txt"></span>'; chip.insertAdjacentElement('afterend', el); }
+  const s = isSignedIn() ? (deckSyncState === 'idle' ? 'synced' : deckSyncState) : 'idle';
+  el.hidden = s === 'idle'; el.dataset.state = s;
+  if(s === 'idle') return;
+  el.querySelector('.sync-ind-txt').textContent = s === 'synced' ? TX('ui.sy-synced') : s === 'syncing' ? TX('ui.sy-syncing') : TX('ui.sy-offline');
+  el.title = s === 'synced' ? TX('ui.sy-synced-tip') : s === 'syncing' ? TX('ui.sy-syncing-tip') : TX('ui.sy-offline-tip');
 }
 function cloudPushRating(){
   if(!sbClient || !isSignedIn()) return;
@@ -48362,7 +48615,7 @@ async function cloudLinkEmail(email, password){
   // The account/session itself is already real and saved at this point — a hiccup pushing local
   // state up (a network blip, or any of these four throwing) must never turn into "your account
   // wasn't created," which is what an uncaught rejection here would otherwise report to the UI.
-  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(), cloudPushRating()]); }catch(e){}
+  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true), cloudPushRating()]); }catch(e){}
   cloudReady = true;
   setCloudPill(true, 'Cloud sync active');
   return data;
@@ -50576,7 +50829,7 @@ function deckSizeBadgeHTML(counts){
 // you'd actually play a match with), kept in sync by syncActiveDeckFromGlobals()/
 // switchActiveDeck() below. Every existing call site that reads/writes those three globals
 // (renderPlayerSubTab, startMatch, etc.) keeps working completely unchanged.
-function genDeckId(){ return 'deck-' + Math.random().toString(36).slice(2,9); }
+function genDeckId(){ return genUUID(); } // 2026-10-19 (package SY): a uuid, as player_decks.id is (the old 'deck-xxxxxxx' ids were refused by the cloud)
 function loadMyDecks(){
   try{
     const raw = localStorage.getItem('bramblewood_arena_decks');
@@ -50587,11 +50840,16 @@ function loadMyDecks(){
   }catch(e){}
   return null; // signals "never migrated yet" to initMyDecks()
 }
-function saveMyDecks(skipCloudPush){ try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); }catch(e){} if(!skipCloudPush) cloudPushDecks(); }
+function saveMyDecks(skipCloudPush){ try{ deckSyncTouch(myDecks); }catch(e){} /* 2026-10-19 (package SY): an edited deck gets a new updatedAt */ try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); }catch(e){} if(!skipCloudPush) cloudPushDecks(); }
 function loadActiveDeckId(){ try{ return localStorage.getItem('bramblewood_arena_active_deck') || null; }catch(e){ return null; } }
 function saveActiveDeckId(){ try{ localStorage.setItem('bramblewood_arena_active_deck', activeDeckId); }catch(e){} }
 let myDecks = loadMyDecks();
 let activeDeckId = loadActiveDeckId();
+// 2026-10-19 (package SY): old deck ids become uuids once (the cloud only takes uuids), with the active and main deck keys following
+if(myDecks){ try{ const remap = deckSyncPrepareLocal(myDecks);
+  if(Object.keys(remap).length){ if(remap[activeDeckId]) activeDeckId = remap[activeDeckId];
+    try{ const mk = localStorage.getItem('bramblewood_arena_main_deck'); if(mk && remap[mk]) localStorage.setItem('bramblewood_arena_main_deck', remap[mk]); }catch(e){}
+    try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); saveActiveDeckId(); }catch(e){} } }catch(e){} }
 if(!myDecks){
   // First run under the multi-deck system: fold the pre-existing single deck (already loaded
   // into myDeckCounts/myCharacterId/myLeaderId above) into deck #1 so nobody's existing
@@ -50649,6 +50907,7 @@ function deleteDeck(id){
   const idx = myDecks.findIndex(x=>x.id===id);
   if(idx<0) return false;
   myDecks.splice(idx,1);
+  try{ deckSyncTomb(id); }catch(e){} // 2026-10-19 (package SY): deleted from the cloud too, on the next push
   saveMyDecks();
   if(mainDeckId===id) setMainDeck(myDecks[0].id);
   if(activeDeckId===id) switchActiveDeck(mainDeckId || myDecks[0].id);

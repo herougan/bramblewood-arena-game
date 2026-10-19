@@ -11,9 +11,10 @@
 - Owner's email account: last session refresh 2026-10-13; the only account active since 10-14 is a different one.
 
 ## Plan / status
-- [ ] UUID deck ids + one-time remap of old ids (active/main deck keys too)
-- [ ] per-deck updatedAt, tombstones, cloud-seen map; pure merge in DECK_SYNC_SY block
-- [ ] debounced push, pull on load/sign-in/focus/visibility/online
-- [ ] indicator (TX keys sync.*)
-- [ ] supabase/proposed/20261019_deck_sync.sql (looks, deleted_at) + client fallback
-- [ ] tests/deck-sync-2026-10-19.js, run-all.sh, CHANGELOG, build, commit
+- [x] UUID deck ids + one-time remap of old ids (active/main deck keys too)
+- [x] per-deck updatedAt, tombstones, cloud-seen map; pure merge in DECK_SYNC_SY block
+- [x] debounced push, pull on load/sign-in/focus/visibility/online
+- [x] indicator (TX keys sync.*)
+- [x] supabase/proposed/20261019_deck_sync.sql (looks, deleted_at) + client fallback
+- [x] tests/deck-sync-2026-10-19.js, run-all.sh, CHANGELOG, build, commit
+- Smoke (headless, Supabase blocked): old ids moved, keys follow, no page errors, indicator renders. DONE.
