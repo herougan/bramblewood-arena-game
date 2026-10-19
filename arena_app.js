@@ -6236,14 +6236,14 @@ function renderCodex(){
         <option value="event" ${codexFilter.groupBy==='event'?'selected':''}>View by: Events</option>
         ${adminModeEnabled ? `<option value="unassigned" ${codexFilter.groupBy==='unassigned'?'selected':''}>View by: Unassigned</option>` : ''}
       </select>
-      ${adminModeEnabled ? `<label class="cx-test-toggle" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
-      <label class="cx-test-toggle" title="One list of every card, by card number, 40 a page (no sections)"><input type="checkbox" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
+      ${adminModeEnabled ? `<label class="cx-test-toggle u4-switch ${codexShowUnseen ? 'is-on' : ''}" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" role="switch" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
+      <label class="cx-test-toggle u4-switch ${codexFlatById ? 'is-on' : ''}" title="One list of every card, by card number, 40 a page (no sections)"><input type="checkbox" role="switch" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
       <select id="cxViewMode" title="Grid display density">
         <option value="album" ${codexViewMode==='album'?'selected':''}>${escapeHtml(TX('ui.codex-view-album'))}</option>
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
       </select>
-      ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
+      ${devModeEnabled ? `<label class="cx-test-toggle u4-switch ${codexFilter.showTest ? 'is-on' : ''}" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" role="switch" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
     ${codexKindRowHTML() /* 2026-10-19 (package UX): card types + the Base level / My best toggle */}
     <div class="cx-skill-active" id="cxSkillActive" hidden></div>
@@ -6257,6 +6257,7 @@ function renderCodex(){
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
   { const su = document.getElementById('cxShowUnseen'); if(su) su.addEventListener('change', ()=>{ codexShowUnseen = su.checked; renderCodexGrid(); }); }
   { const fb = document.getElementById('cxFlatById'); if(fb) fb.addEventListener('change', ()=>{ codexFlatById = fb.checked; try{ localStorage.setItem('bramblewood_codex_flat_v1', codexFlatById ? '1' : '0'); }catch(e){} codexPage = 0; renderCodexGrid(); }); }
+  u4WireToggles(document.getElementById('codexToolbar')); // 2026-10-19 (package U4): the switches' and filters' on state
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
   { const ph = document.getElementById('cxPhylum'); if(ph) ph.addEventListener('change', e=>{ codexFilter.phylum = e.target.value; renderCodexGrid(); }); }
@@ -6490,6 +6491,20 @@ function codexShownDef(id, d){
 }
 // CODEX_UX:END
 // The chip row's HTML (counts are filled in by renderCodexGrid, codexKindRowUpdate) and the level toggle at its end.
+// Visible on / off (2026-10-19, package U4, owner 23:20: "The show unseen and all by ID, -> should show a tick or not if enabled or not -
+// can't tell."): the Codex toolbar's text-field rule (.codex-toolbar input) stretched those checkboxes into empty 160 px pills, so
+// on and off looked the same. They are switches now (role="switch", .u4-switch): a box with a ✓ when on, an empty box when off, and
+// the whole pill in gold while on (u4Styles). A filter select that is set to anything but its "All …" first option gets the same
+// gold ring (.u4-set), so a narrowed list is visible at a glance (Codex: types, animals, phyla, rarities, archetypes; Brambles:
+// effects, Owned / Not owned). Single-choice chips (card types, Base level / My best, Brambles' origins, the Forge's filters) carry
+// a ✓ while chosen (CSS only).
+const U4_FILTER_SELECTS = ['cxArch', 'cxAnimal', 'cxPhylum', 'cxRarity', 'cxMechLine', 'brFx', 'brOwn'];
+function u4MarkSelect(sel){ if(sel && sel.options && sel.options.length) sel.classList.toggle('u4-set', sel.selectedIndex > 0); }
+function u4WireToggles(root){
+  if(!root) return;
+  root.querySelectorAll('.u4-switch input[type=checkbox]').forEach(i=>{ const sync = ()=>{ const l = i.closest('.u4-switch'); if(l) l.classList.toggle('is-on', i.checked); }; sync(); i.addEventListener('change', sync); });
+  U4_FILTER_SELECTS.forEach(id=>{ const s = root.querySelector('#' + id); if(s){ u4MarkSelect(s); s.addEventListener('change', ()=> u4MarkSelect(s)); } });
+}
 function codexKindRowHTML(){
   const k = codexFilter.kind || '', lv = codexLevelMode();
   const chip = (key, icon, label)=> `<button type="button" class="ux-kind ${k === key ? 'on' : ''}" data-cxkind="${key}" aria-pressed="${k === key}">${icon} ${escapeHtml(label)} <b class="ux-kind-n" data-kn="${key || 'all'}"></b></button>`;
@@ -13582,6 +13597,7 @@ function wireBramblesTab(body){
   [['brFx', 'fx'], ['brOwn', 'own'], ['brSort', 'sort']].forEach(([id, k])=>{ const el = body.querySelector('#' + id); if(el) el.addEventListener('change', ()=>{ brambleFilter[k] = el.value; save(); }); });
   body.querySelectorAll('[data-brorigin]').forEach(b=> b.addEventListener('click', ()=>{ brambleFilter.origin = b.dataset.brorigin;
     body.querySelectorAll('[data-brorigin]').forEach(x=>{ const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); save(); }));
+  u4WireToggles(body.querySelector('.ux2-br-bar')); // 2026-10-19 (package U4): Owned / Not owned and the effect filter show when set
   renderBrambleGrid();
 }
 var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null; // 2026-10-16: per-copy looks (see deckLooksAll)
@@ -14361,7 +14377,10 @@ function renderPlay(){
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
-          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="Back to the Arena">← Arena</button>` : ''}
+          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-back'))}" aria-label="${escapeAttr(TX('ui.u4-arena-back'))}">← ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}
+          ${'' /* 2026-10-19 (package U4, owner 23:34: "there should be a forge shortcut in the top right corner of the screen, together with
+               arena and home. Home of course comes first."): Home, Arena, then the Forge (its own 🔨, as in the page bar's shortcuts), once
+               the Forge is open. Same trip as PAGE_SHORTCUTS' Forge: the Codex view on its Forge page (switchTab remembers where you came from). */}${tabOpen('forge') ? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.place-forge'))}" aria-label="${escapeAttr(TX('ui.place-forge'))}"><span class="tab-emoji" aria-hidden="true">🔨</span> ${escapeHtml(TX('ui.u4-forge'))}</button>` : ''}
           ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
@@ -14408,6 +14427,8 @@ function renderPlay(){
     if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
+    const forgeBtn = document.getElementById('forgeNavBtnPlay'); // 2026-10-19 (package U4): the cluster's Forge
+    if(forgeBtn) forgeBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); });
     wireSettingsButton('PlaySub');
     refreshEnergyHud(); // paints the new Play-tab Energy pill immediately instead of waiting for its first 1s tick
     // Item #4 (2026-09-18): "The Conquest explanation can be removed. Only when hovering over
@@ -17380,18 +17401,30 @@ function openSkirmishGallery(o){
 // this Skirmish and therefore have this skirmish's name" + "This edit method should be available in the Skirmish editor
 // also"): the deck as card stacks at the top (click one to take a copy out), every card below as stacks to add from,
 // with search and the same sorts as the Armoury. `counts` is edited in place; `unlimited` skips ownership limits.
+// The deck popup's "Sort: Advancement" (2026-10-19, package U4): the order a player meets the cards (advancementKey: Base, then each
+// map's fights along the road, side maps after their parent, packs, events), cost then name inside one source.
+function dbpAdvanceSortFn(){
+  const defs = getCardDefs(), key = {}, k = id=> key[id] != null ? key[id] : (key[id] = (()=>{ try{ return advancementKey(defs[id]); }catch(e){ return '9'; } })());
+  return (a, b)=>{ const A = defs[a], B = defs[b]; if(!A || !B) return 0; const ka = k(a), kb = k(b);
+    return (ka < kb ? -1 : ka > kb ? 1 : 0) || (A.cost||0) - (B.cost||0) || (A.name||'').localeCompare(B.name||''); };
+}
 function openDeckBuilderPopup(o){
-  const counts = o.counts; let q = '', sort = 'cost', rarityCap = !o.unlimited;
+  // 2026-10-19 (package U4, owner 23:44: "skirmish editor - sort by advancement option as well."): "Sort: Advancement" (the Codex's order:
+  // Base, Map 1, Map 2 … by fight along the road, side maps after their parent, then packs and events; advancementKey), and the choice
+  // is kept on this device (bramblewood_dbp_sort_v1).
+  const DBP_SORTS = ['cost', 'attack', 'health', 'wait', 'rarity', 'name', 'advance'];
+  const counts = o.counts; let q = '', sort = (()=>{ try{ const v = localStorage.getItem('bramblewood_dbp_sort_v1'); return DBP_SORTS.includes(v) ? v : 'cost'; }catch(e){ return 'cost'; } })(), rarityCap = !o.unlimited;
   const ov = document.createElement('div'); ov.className = 'modal-overlay deck-popup-overlay'; document.body.appendChild(ov);
-  const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q))).sort(deckSortFn(sort)); };
+  const sortFn = ()=> sort === 'advance' ? dbpAdvanceSortFn() : deckSortFn(sort);
+  const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q))).sort(sortFn()); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
-  const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(deckSortFn(sort));
+  const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(sortFn());
     return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
   const poolHTML = ()=>{ const defs = getCardDefs(); return all().slice(0, 400).map(id=> `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`).join(''); };
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
-    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
+    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort">${[['cost', 'Sort: Cost'], ['attack', 'Sort: Attack'], ['health', 'Sort: Health'], ['wait', 'Sort: Wait'], ['rarity', 'Sort: Rarity'], ['name', 'Sort: Name'], ['advance', TX('ui.u4-sort-advance')]].map(([k, l])=> `<option value="${k}" ${sort === k ? 'selected' : ''}>${escapeHtml(l)}</option>`).join('')}</select></div>
     <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
   </div>`;
   const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
@@ -17407,7 +17440,7 @@ function openDeckBuilderPopup(o){
     else if(r){ const id = r.dataset.rm; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} refresh(); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
-  ov.querySelector('#dbpSort').addEventListener('change', e=>{ sort = e.target.value; refresh(); });
+  ov.querySelector('#dbpSort').addEventListener('change', e=>{ sort = DBP_SORTS.includes(e.target.value) ? e.target.value : 'cost'; try{ localStorage.setItem('bramblewood_dbp_sort_v1', sort); }catch(_){} refresh(); });
   setTimeout(()=> ov.querySelector('#dbpSearch').focus(), 30);
 }
 // Edit skirmish's field effects (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc."):
