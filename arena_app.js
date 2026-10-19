@@ -23423,6 +23423,38 @@ function raidRankBadgeHTML(rank, won){
   const tip = won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip');
   return `<span class="conquest-rank-badge rank-${escapeAttr(rank)} raid-rank${won ? ' is-emblem' : ''}" title="${escapeAttr(tip)}">${won ? '<i class="raid-rank-crest" aria-hidden="true">✦</i>' : ''}${escapeHtml(TX('results.raid-rank', {rank}))}</span>`;
 }
+// The raid's rank emblem (2026-10-19, package NV, owner 10:55: "Raid complete: Still use our victory emblems - S, A, B etc. Im just
+// requesting it to be abit more special looking. But it should be based on our old emblems."): the victory screens' hexagon (.rank-hex,
+// gloryBadgesHTML) inside an abyssal ring with crimson tentacle curls and a glow, stamped in (S, SS and SSS hit harder, with a shockwave;
+// none of it moves under prefers-reduced-motion). won (the bramble fell): a gold crest on top. size: 'lg' (results) or 'md' (claim screen).
+function raidRankEmblemHTML(rank, won, size){
+  if(!rank) return '';
+  const tip = won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip'), big = ['S', 'SS', 'SSS'].includes(rank);
+  const curls = [0, 45, 90, 135, 180, 225, 270, 315].map(a=> `<path transform="rotate(${a} 60 60)" d="M60 3 C67 7 68 15 62 19 C58 21 55 17 58 14"/>`).join('');
+  return `${size === 'md' ? '' : '<div class="re-row">'}<span class="raid-emblem rank-${escapeAttr(rank)} re-${size === 'md' ? 'md' : 'lg'}${won ? ' is-won' : ''}${big ? ' is-high' : ''}" role="img" title="${escapeAttr(tip)}" aria-label="${escapeAttr(TX('results.raid-rank', {rank}))}">
+    <i class="re-glow" aria-hidden="true"></i>${big ? '<i class="re-shock" aria-hidden="true"></i>' : ''}
+    <svg class="re-ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="re-ring-outer" cx="60" cy="60" r="50"/><circle class="re-ring-inner" cx="60" cy="60" r="43"/><circle class="re-ring-dots" cx="60" cy="60" r="46.5"/><g class="re-curls">${curls}</g></svg>
+    <span class="rank-hex re-hex rank-${escapeAttr(rank)}" aria-hidden="true"><i></i><b>${escapeHtml(rank)}</b></span>
+    ${won ? '<i class="re-crest" aria-hidden="true">👑</i>' : ''}
+  </span>${size === 'md' ? '' : '</div>'}`;
+}
+window.bwRaidRankEmblemHTML = raidRankEmblemHTML; // the raid claim screen (bramblewood-fx-f) shows the same emblem
+// The raid results' breakdown (2026-10-19, package NV, owner: "424 damage dealt" beside "12 dealt" and "Full reward from 40 damage" read as
+// three different damages): the raid scores only the boss's bramble (castle) damage, times the raid's rate (scoring.perInFightHp) and the
+// rank's bonus (RaidM.raidRankMult), capped per fight; a fallen bramble scores the overwhelm figure. Fields: settleRaidPartAfterMatch.
+function raidDamageCalcHTML(m){
+  if(!m || m.raidBrambleDealt == null) return '';
+  const n = Number(m.raidDamageDealt) || 0, fmt = v=> Math.round(Number(v) || 0).toLocaleString();
+  let t;
+  if(m.raidOverwhelmed) t = TX('results.nv-raid-calc-win', {n: fmt(n)});
+  else {
+    const mult = m.raidRankMult || 1, raw = Math.round(Math.round(m.raidBrambleDealt * m.raidPerHp) * mult);
+    t = mult !== 1 ? TX('results.nv-raid-calc-rank', {dealt: fmt(m.raidBrambleDealt), per: fmt(m.raidPerHp), mult: String(mult), rank: m.raidRank, n: fmt(n)})
+      : TX('results.nv-raid-calc', {dealt: fmt(m.raidBrambleDealt), per: fmt(m.raidPerHp), n: fmt(n)});
+    if(raw > n) t += ' ' + TX('results.nv-raid-capped', {cap: fmt(n)});
+  }
+  return `<span class="nv-raid-calc" title="${escapeAttr(TX('results.nv-raid-calc-tip'))}">${escapeHtml(t)}</span>`;
+}
 // Your best raid rank in one life of a raid (this device's attempts carry it): {rank, won} or null.
 function raidBestRankOf(def, cycle, g){
   let best = null, won = false; const me = myGhostOwnerId();
@@ -23430,11 +23462,29 @@ function raidBestRankOf(def, cycle, g){
     if(a.overwhelmed) won = true; if(a.rank && (!best || RANK_ORDER.indexOf(a.rank) > RANK_ORDER.indexOf(best))) best = a.rank; });
   return best ? {rank: best, won} : null;
 }
+// 2026-10-19 (package NV): "Play again" on a raid's results: a function that starts a fresh fight on the same part, or null (no part: an
+// Online Raid boss). The raid's def is looked up again (an edit or a new stage since), and startRaidPartMatch builds everything anew:
+// the boss's rows and their decks, new allies, a new castle, its tickets / Energy paid like the part's own button.
+function raidReplayPart(m){
+  if(!m || m.mode !== 'raidOffline' || !m.raidDef || m.raidPart == null) return null;
+  const id = m.raidDef.id, part = m.raidPart, old = m.raidDef;
+  return ()=>{ let def = null; try{ def = liveRaidDefs().find(d=> d.id === id) || null; }catch(e){} startRaidPartMatch(def || old, part); };
+}
 function settleRaidPartAfterMatch(m){
   const def = m.raidDef;
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
   const overwhelmed = m.players[2].hq.hp <= 0 && m.endReason!=='forfeit';
   m.raidRank = m.raidFull ? raidFightRank(m) : null; // 2026-10-19 (RV2): the full raid's fights are ranked; the rank multiplies their damage
+  // 2026-10-19 (package NV): how the raid damage was worked out, for the results' breakdown line (raidDamageCalcHTML): the bramble damage
+  // (the boss's castle Health this fight took), the raid's damage per Health, and the rank's multiplier; a destroyed bramble scores the
+  // overwhelm figure instead.
+  { const part = (def.parts||[]).find(p=> p.id===m.raidPart), sc = Object.assign({}, def.scoring || {}, (part && part.scoring) || {});
+    m.raidBrambleDealt = dealt; m.raidPerHp = sc.perInFightHp || 50; m.raidCap = sc.cap || 5000; m.raidRankMult = (RaidM.raidRankMult ? RaidM.raidRankMult(m.raidRank) : 1); }
+  // 2026-10-19 (package NV, the owner's turn-1 "Rank SSS, Overwhelm! 10,000" with 0 dealt): that fight was won with the Admin 👑 Win
+  // button (adminAutoWin empties the boss's bramble on turn 1), and it was scored as a real overwhelm: 10,000 raid damage saved, pushed to
+  // the shared raid and paid. An admin win now shows its results but is not recorded, pushed or paid (m.raidAdminTest).
+  if(m.adminWin){ m.raidAdminTest = true; m.raidDamageDealt = RaidM.contributionFor(def, dealt, overwhelmed, (def.parts||[]).find(p=> p.id===m.raidPart), m.raidRank); m.raidOverwhelmed = overwhelmed;
+    try{ m.raidRemainingAfter = Math.round((currentRaidStateFor(def).byId[m.raidPart]||{remaining:0}).remaining); }catch(e){ m.raidRemainingAfter = 0; } return; }
   const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed, m.raidRank);
   m.raidRewardEarned = {gold:r.gold, dust:r.dust}; m.raidInk = r.ink; m.raidBelow = r.below; m.raidMinDamage = r.minDamage;
   if(m.winner === 1){ try{ const cd = raidFightCardDrop(def); if(cd) m.raidCardDrop = cd; }catch(e){} } // 2026-10-19 (package RC): a pack card; the raid's own only at RAID_CARD_DROP_CHANCE (was a card of the boss's deck every win)
@@ -28974,6 +29024,10 @@ function renderMatchUI(){
       // 2026-10-05 (user: "Play Again seems to make me fight the old deck instead of the Skirmish I
       // just fought"): a Conquest fight replays the same node, not a generic AI match.
       if(mode==='conquest' && m.conquestNode){ const cn = m.conquestNode, bm = m.battleMode; endMatch(); holdPacksForReplay(); if(!startConquestMatch(cn.mapId, cn.nodeId, bm ? {battleMode: bm} : undefined)) packHoldForReplay = 0; return; }
+      // 2026-10-19 (package NV, owner's raid screenshots): a raid's Play again fell through to startMatch('raidOffline'), which builds a
+      // plain Quick Battle against the default deck. It now builds a fresh fight on the same raid part (raidReplayPart: the raid's current
+      // def and state, new allies, its tickets / Energy paid as the part's own button pays them); an Online Raid boss goes back to its tab.
+      if(mode==='raidOffline'){ const again = raidReplayPart(m); playSubTab = 'raid'; endMatch(); if(again){ holdPacksForReplay(); again(); } return; }
       endMatch(); holdPacksForReplay(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
@@ -32427,6 +32481,7 @@ async function adminAutoWin(){
   const m = matchState; if(!m || m.over || !adminModeEnabled) return;
   if(m.resolving){ setTimeout(adminAutoWin, 300); return; }
   m.players[2].hq.shield = 0; m.players[2].hq.hp = 0; m.forcedWinner = 1; m.endReason = null; // counts like a real win (progress and rewards)
+  m.adminWin = true; // 2026-10-19 (package NV): a raid doesn't score an admin win (settleRaidPartAfterMatch)
   if(m.dungeon) m.dungeon.wave = m.dungeon.waves.length - 1;
   await resolveRound({manual:true, run: ()=> true});
 }
@@ -36441,7 +36496,7 @@ function delayForEvent(ev, prevKind){
   const mult = (matchState && matchState.speedMult) || 1;
   return Math.max(18, Math.round(base / mult));
 }
-function pushLog(ev){ if(typeof fxLib!=='undefined' && fxLib && fxLib.cap && matchState && matchState.fxLib) fxLib.cap.push(ev); /* 🔬 Effects library's Log box (2026-10-14) */ if(!matchState || ev.type==='triggerFired') return; if(ev && ev._round == null) ev._round = matchState.round || 0; /* 2026-10-17: round stamp for the Best hit total */ matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
+function pushLog(ev){ if(typeof fxLib!=='undefined' && fxLib && fxLib.cap && matchState && matchState.fxLib) fxLib.cap.push(ev); /* 🔬 Effects library's Log box (2026-10-14) */ if(!matchState || ev.type==='triggerFired') return; if(ev && ev._round == null) ev._round = matchState.round || 0; /* 2026-10-17: round stamp for the Best hit total */ try{ tallyMatchStat(matchState, ev); }catch(e){} /* 2026-10-19 (NV): the results' totals outlive the 200-line cap */ matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
 function sideLabel(side){
   const isPc = matchState && matchState.mode==='pc';
   if(isPc) return side==='A' ? 'Player 1' : 'Player 2';
@@ -36457,10 +36512,26 @@ function sideLabel(side){
 // on a very long match — a real limitation for `biggestHit` specifically on an extremely long
 // grind (an early massive hit could in theory age out), but 200 events comfortably covers the
 // vast majority of matches, and `dealt`/`taken` would only undercount in that same rare case too.
+// 2026-10-19 (package NV, the owner's raid results: "424 damage dealt" next to "12 dealt"): the log keeps its last 200 lines, so a long
+// fight (a 20-turn raid with three rows a side) lost most of its hits and the results' "dealt / taken / best hit" undercounted. pushLog
+// now adds every hit to a running tally on the match (m.statTally, seeded from the log on its first hit, so a resumed fight keeps what
+// its saved log had); computeMatchStats reads it when it is there.
+function tallyMatchStat(m, ev){
+  if(!m || !ev || (ev.type!=='hit' && ev.type!=='hitHQ')) return;
+  if(!m.statTally){ const t = computeMatchStatsFromLog(m.log); m.statTally = {totals: t.totals, perUnitRound: t.perUnitRound}; }
+  addMatchStatHit(m.statTally.totals, m.statTally.perUnitRound, ev);
+}
 function computeMatchStats(m){
+  if(m && m.statTally) return JSON.parse(JSON.stringify(m.statTally.totals));
+  return computeMatchStatsFromLog(m && m.log).totals;
+}
+function computeMatchStatsFromLog(log){
   const totals = {A:{dealt:0, taken:0, biggestHit:0}, B:{dealt:0, taken:0, biggestHit:0}}, perUnitRound = {};
-  (m.log||[]).forEach(ev=>{
-    if(ev.type!=='hit' && ev.type!=='hitHQ') return;
+  (log||[]).forEach(ev=>{ if(ev && (ev.type==='hit' || ev.type==='hitHQ')) addMatchStatHit(totals, perUnitRound, ev); });
+  return {totals, perUnitRound};
+}
+function addMatchStatHit(totals, perUnitRound, ev){
+  {
     const side = ev.side, other = side==='A' ? 'B' : 'A';
     if(!totals[side]) return;
     const dmg = ev.dmg||0;
@@ -36473,8 +36544,7 @@ function computeMatchStats(m){
     const k = who != null ? side + ':' + who + ':' + (ev._round != null ? ev._round : '?') : null;
     const tot = k ? (perUnitRound[k] = (perUnitRound[k] || 0) + dmg) : dmg;
     if(tot > totals[side].biggestHit) totals[side].biggestHit = tot;
-  });
-  return totals;
+  }
 }
 /* ============================================================
    Results-screen rewards panel (2026-10-03, per explicit request: "the rewards portion should be
@@ -36895,9 +36965,10 @@ function matchStatsHTML(m){
     </div>` : '';
   const orReward = m.raidRewardEarned;
   const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards raid-results">
-      ${raidRankBadgeHTML(m.raidRank, m.raidOverwhelmed) /* 2026-10-19 (RV2): the fight's rank, emblemed for a win */}<span class="conquest-rank-badge raid-dmg-pill">${TX('results.damage-dealt-to', {v1: m.raidOverwhelmed ? '💥 Overwhelm! ' : '⚔️ ', v2: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
+      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${TX(m.raidOverwhelmed ? 'results.nv-raid-overwhelm' : 'results.nv-raid-damage', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
+      ${raidDamageCalcHTML(m) /* 2026-10-19 (NV): how that number was made */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: m.raidRemainingAfter, v2: m.raidRemainingAfter<=0?' — defeated!':''})}</span>
-      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.deal-at-least-damage-for-the', {raidMinDamage: m.raidMinDamage}))}">${TX('results.full-reward-from-damage', {raidMinDamage: m.raidMinDamage})}</span>` : ''}
+      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">${TX('results.dust', {v1: rewardCountSpan(orReward.dust)})}</span>` : ''}
     </div>` : '';
@@ -36939,7 +37010,7 @@ function matchStatsHTML(m){
   return `<div class="winloss-stats">
     ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${pvpHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}${newAchievementsChipHTML(m)}
     <div class="wls-compact" aria-label="${escapeAttr(TX('results.fight-stats'))}">
-      <span title="${escapeAttr(TX('results.damage-you-dealt-enemy', {dealt: totals.B.dealt}))}">${TX('results.dealt', {dealt: totals.A.dealt})}</span>
+      <span title="${escapeAttr(m.mode==='raidOffline' ? TX('results.nv-dealt-side-tip', {dealt: totals.B.dealt}) : TX('results.damage-you-dealt-enemy', {dealt: totals.B.dealt}))}">${TX('results.dealt', {dealt: totals.A.dealt})}</span>${m.mode==='raidOffline' && m.raidBrambleDealt != null ? `<span title="${escapeAttr(TX('results.nv-bramble-dealt-tip'))}">${TX('results.nv-bramble-dealt', {n: m.raidBrambleDealt})}</span>` : '' /* 2026-10-19 (NV): the part of it the raid scores */}
       <span title="${escapeAttr(TX('results.damage-you-took-enemy-took', {taken: totals.B.taken}))}">${TX('results.taken', {taken: totals.A.taken})}</span>
       <span title="${escapeAttr(TX('results.your-biggest-single-hit-enemy', {biggestHit: totals.B.biggestHit}))}">${TX('results.best-hit', {biggestHit: totals.A.biggestHit})}</span>
     </div>

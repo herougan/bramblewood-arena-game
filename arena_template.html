@@ -11570,6 +11570,8 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .vs2 .vs2-sb-row{display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:12px; background:rgba(255,255,255,.06);}
 .vs2 .vs2-sb-row.is-you{background:rgba(140,220,120,.14); box-shadow:inset 3px 0 0 #86e27f;}
 .vs2 .vs2-sb-av{flex:0 0 auto;}
+.vs2 .vs2-sb-av .bw-avatar{width:36px !important; height:36px !important; font-size:21px !important; border-width:2px !important;} /* not the 84px every .vs-side avatar takes on phones */
+.vs2.is-raid .vs2-portrait .bw-avatar{width:92px !important; height:92px !important; font-size:52px !important;}
 .vs2 .vs2-sb-txt{display:flex; flex-direction:column; min-width:0; flex:1 1 auto; line-height:1.25;}
 .vs2 .vs2-sb-txt b{font-size:14px; overflow-wrap:anywhere;}
 .vs2 .vs2-sb-txt small{font-size:11.5px; opacity:.85; white-space:normal; overflow-wrap:anywhere;}
@@ -11598,7 +11600,18 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   .vs2 .vs2-card{width:100%; max-width:420px; padding:12px 14px; gap:8px;}
   .vs2 .vs-left .vs2-card{flex-direction:row; text-align:left; align-items:center;}
   .vs2 .vs-left .vs2-id{align-items:flex-start;}
-  .vs2 .vs-left .vs2-portrait .bw-avatar{width:64px !important; height:64px !important; font-size:36px !important;}
+  .vs2 .vs-left .vs2-portrait .bw-avatar{width:60px !important; height:60px !important; font-size:34px !important;}
+  .vs2.is-raid .vs2-card{padding:10px 12px;}
+  .vs2.is-raid .vs-left .vs2-id{gap:4px;}
+  .vs2.is-raid .vs-left .vs2-id .vs-name{font-size:20px;}
+  .vs2.is-raid .vs2-you{flex-direction:row; align-items:center; gap:8px; padding:5px 10px; margin-top:2px;}
+  .vs2.is-raid .vs2-you b{font-size:20px;}
+  .vs2.is-raid .vs2-sidebr{padding:10px 12px 8px;}
+  .vs2.is-raid .vs2-sb-list{gap:4px;}
+  .vs2.is-raid .vs2-sb-row{padding:4px 8px;}
+  .vs2.is-raid .vs2-sb-total{margin-top:6px; padding-top:6px;} .vs2.is-raid .vs2-sb-total b{font-size:24px;}
+  .vs2.is-raid .vs2-boss-frame .vs-boss-art{width:92px; height:92px;}
+  .vs2.is-raid .vs-word{font-size:44px;}
   .vs2:not(.is-raid) .vs2-portrait .bw-avatar{width:84px !important; height:84px !important; font-size:46px !important;}
   .vs2 .vs-name{font-size:22px;}
   .vs2 .vs2-sidebr{width:100%; max-width:420px;}
@@ -11612,6 +11625,42 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   .vs2:not(.is-raid) .vs2-card{flex-direction:column !important; text-align:center !important;}
   .vs2:not(.is-raid) .vs2-id{align-items:center !important;}
 }
+/* 3. The raid's rank emblem (raidRankEmblemHTML): the victory hexagon (.rank-hex, as gloryBadgesHTML draws it) in an abyssal ring with
+   crimson tentacle curls, a glow in the rank's colour, stamped in; S / SS / SSS stamp harder with a shockwave and a pulsing glow. */
+.raid-results .re-row{flex:0 0 100%; display:flex; justify-content:center; margin:2px 0 4px;}
+.raid-emblem{--re-size:128px; --re-glow:rgba(190,210,235,.42); --re-curl:#a3173a; position:relative; display:grid; place-items:center; width:var(--re-size); height:var(--re-size); flex:0 0 auto; isolation:isolate;
+  animation:reStamp .6s cubic-bezier(.2,.9,.3,1.25) .12s both;}
+.raid-emblem.re-md{--re-size:88px;}
+.raid-emblem.rank-A{--re-glow:rgba(255,210,90,.5);}
+.raid-emblem.rank-S{--re-glow:rgba(255,90,210,.6); --re-curl:#b0186a;}
+.raid-emblem.rank-SS{--re-glow:rgba(255,170,60,.66); --re-curl:#b3261c;}
+.raid-emblem.rank-SSS{--re-glow:rgba(255,80,60,.78); --re-curl:#c4142e;}
+.raid-emblem .re-glow{position:absolute; inset:-16%; z-index:-1; border-radius:50%; pointer-events:none; background:radial-gradient(circle, var(--re-glow) 0 32%, transparent 68%);}
+.raid-emblem.is-high .re-glow{animation:reGlow 1.8s ease-in-out .8s infinite;}
+.raid-emblem .re-ring{position:absolute; inset:0; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));}
+.raid-emblem .re-ring-outer{fill:rgba(12,10,32,.72); stroke:#7d1230; stroke-width:4;}
+.raid-emblem .re-ring-inner{fill:none; stroke:#2fb3c4; stroke-width:1.6; opacity:.85;}
+.raid-emblem .re-ring-dots{fill:none; stroke:#ffd98a; stroke-width:1.4; stroke-dasharray:1.2 5.3; stroke-linecap:round; opacity:.9;}
+.raid-emblem .re-curls path{fill:none; stroke:var(--re-curl); stroke-width:3.4; stroke-linecap:round; stroke-linejoin:round;}
+.raid-emblem .re-curls{transform-origin:60px 60px; animation:reSpin 30s linear infinite;}
+.raid-emblem .rank-hex.re-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; margin:0; transform:scale(1.22); pointer-events:none;}
+.raid-emblem.re-md .rank-hex.re-hex{transform:scale(.84);}
+.raid-emblem .re-crest{position:absolute; top:-12%; left:50%; transform:translateX(-50%); font-style:normal; font-size:24px; line-height:1; filter:drop-shadow(0 0 6px rgba(255,210,100,.95)) drop-shadow(0 2px 0 rgba(90,40,0,.6)); z-index:2;}
+.raid-emblem.re-md .re-crest{font-size:17px;}
+.raid-emblem .re-shock{position:absolute; inset:4%; border-radius:50%; border:3px solid rgba(255,232,170,.95); box-shadow:0 0 18px rgba(255,200,110,.8); opacity:0; pointer-events:none; animation:reShock .8s ease-out .5s both;}
+.raid-emblem.rank-SSS .re-shock{border-color:rgba(255,150,120,.95); animation-iteration-count:2;}
+@keyframes reStamp{0%{transform:scale(2.5) rotate(-16deg); opacity:0;} 55%{transform:scale(.88) rotate(3deg); opacity:1;} 78%{transform:scale(1.05) rotate(-1deg);} 100%{transform:none; opacity:1;}}
+@keyframes reSpin{to{transform:rotate(360deg);}}
+@keyframes reGlow{50%{transform:scale(1.12); opacity:.7;}}
+@keyframes reShock{0%{transform:scale(.7); opacity:.95;} 100%{transform:scale(1.75); opacity:0;}}
+.raid-emblem.is-high{animation-duration:.75s;}
+:where(html[data-fx="none"]) .raid-emblem, :where(html[data-fx="none"]) .raid-emblem *{animation:none !important;}
+@media (prefers-reduced-motion: reduce){ .raid-emblem, .raid-emblem *{animation:none !important;} .raid-emblem .re-shock{display:none;} }
+/* the claim screen's copy (bramblewood-fx-f) */
+.fxf-rcs-emblem{display:inline-flex; align-items:center; justify-content:center; margin:6px 4px 0;}
+/* 4. The raid results' breakdown line, under the raid damage */
+.raid-results .nv-raid-calc{flex:0 0 100%; text-align:center; font-size:13px; line-height:1.35; opacity:.92; margin:-2px 0 2px;}
+.raid-results .nv-admin-test{background:rgba(255,120,120,.18); border:1px dashed rgba(255,140,140,.7);}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
