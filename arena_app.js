@@ -13510,6 +13510,10 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
+        ${'' /* 2026-10-19 (package NV, owner on an iPhone: "There should be a home button somewhere on mobile ... add the bramble acorn symbol
+             OR home symbol in the map/arena"): a 🌰 Home at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones
+             and desktop. It sits outside the tab strip, so it never scrolls away with the tabs, and the top-right 🏠 steps aside while it shows
+             (CSS). Same path as every other Home: switchTab('home'). */}<button type="button" class="play-home-tab" id="playHomeTabBtn" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="pht-nut" aria-hidden="true">🌰</span><span class="pht-label">${escapeHtml(TX('ui.nv-home'))}</span></button>
         <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
           ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
@@ -13583,6 +13587,7 @@ function renderPlay(){
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
     const backBtn = document.getElementById('homeNavBtnPlay');
     if(backBtn) backBtn.addEventListener('click', ()=> switchTab('home'));
+    { const ph = document.getElementById('playHomeTabBtn'); if(ph) ph.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); } // 2026-10-19 (package NV): the tab bar's 🌰 Home
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
     wireSettingsButton('PlaySub');
@@ -22931,7 +22936,8 @@ function startRaidFullBattle(def, partId, f, st){
   const m0 = matchState;
   // 2026-10-19 (package BR, owner 08:18): both sides' raid BR (raidBossBR / raidSideBR); each ally's chip shows its own real BR
   let bossBR = null, sideBR = null; try{ bossBR = raidBossBR(def, f, b); sideBR = raidSideBR(mainDeckLevel(myDeckCounts, matchLeaderId()), allies); allies.forEach((a, i)=>{ a.level = sideBR.allies[i]; });
-    m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')}); }catch(e){}
+    m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')});
+    me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)},
     bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
@@ -35994,14 +36000,40 @@ function randomOpponentAvatar(rnd){
 function showVsScreen(left, right){
   return new Promise(resolve=>{
     const el = document.createElement('div');
-    el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
+    // 2026-10-19 (package NV, owner 10:55 on an iPhone: "Improve the pre-battle A v B screen for mobile, especially raid. Or in general, even
+    // for PC. I want to know how i contribute, then our total BR."): each side is a card. In a raid your card says what you bring (your
+    // BR, your row) first, then your side's total with its parts (you + each ally, leaders 2x, raidSideBR), against the boss's card (its
+    // art, name and BR). Names and rows wrap instead of being cut off, and the start is a real button under the art (it used to be a
+    // "Tap to start" line over the boss's picture). A tap anywhere still starts; a raid waits longer before it starts by itself.
+    const raid = !!(left.allies && left.allies.length), bossy = raid || !!right.art;
+    el.className = 'vs-screen vs2' + (raid ? ' is-raid' : '') + (bossy ? ' is-boss' : ''); el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
+    const rowName = r=> TX(r === 2 ? 'ui.nv-vs-row-back' : r === 1 ? 'ui.nv-vs-row-middle' : 'ui.nv-vs-row-front');
+    const sideBR = left.raidSide || null, br = n=> `⚔ ${Math.max(0, Math.round(Number(n) || 0)).toLocaleString()}`;
     // 2026-10-17 (user: "In the pre-battle against a raid, I get to see my allies on the left side!"): a raid's two CPU allies stand on
     // your side, each with a portrait, the row it holds, its battle rating, its leader and its best cards; you hold the front row.
-    const allyHTML = a=>{ const defs = getCardDefs(), ld = a.leaderId && defs[a.leaderId], av = randomOpponentAvatar(seededRng(hashStr('ally:' + (a.name || ''))));
+    const allyHTML = (a, i)=>{ const defs = getCardDefs(), ld = a.leaderId && defs[a.leaderId], av = randomOpponentAvatar(seededRng(hashStr('ally:' + (a.name || ''))));
       const top = [...new Set(a.deck || [])].filter(id=> defs[id]).sort((x, y)=> ((defs[y].attack||0) + (defs[y].health||0)) - ((defs[x].attack||0) + (defs[x].health||0))).slice(0, 3);
-      return `<div class="vs-ally2"><span class="vs-ally-av">${avatarHTML(av, 46)}</span><span class="vs-ally-txt"><b>${escapeHtml(a.name)}</b><small class="vs-ally-row">${a.row === 2 ? 'Back row' : 'Middle row'} · ⚔ ${a.level || '?'}</small><small>${ld ? `👑 ${escapeHtml(ld.name)}` : ''}${ld && top.length ? ' · ' : ''}${top.map(id=> defs[id].icon || '').join('')}</small><small>🏰 ${escapeHtml((a.castle || {}).name || '')}</small></span></div>`; };
-    const side = (p, cls)=> `<div class="vs-side ${cls}">${p.art ? `<img class="vs-boss-art" src="${escapeAttr(p.art)}" alt="">` : avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-row-tag">Front row · you</div><div class="vs-allies2"><small>Your allies</small>${p.allies.map(allyHTML).join('')}</div>` : ''}</div>`;
-    el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
+      const n = sideBR && sideBR.allies ? sideBR.allies[i] : a.level;
+      return `<li class="vs2-sb-row"><span class="vs2-sb-av">${avatarHTML(av, 38)}</span><span class="vs2-sb-txt"><b>${escapeHtml(a.name)}</b><small class="vs-ally-row">${escapeHtml(rowName(a.row))}${top.length ? ' · ' + top.map(id=> defs[id].icon || '').join('') : ''}</small>${ld ? `<small>${escapeHtml(TX('ui.nv-vs-ally-leader', {name: ld.name}))}</small>` : ''}<small>${escapeHtml(TX('ui.nv-vs-ally-bramble', {name: (a.castle || {}).name || ''}))}</small></span><b class="vs2-sb-br">${br(n)}</b></li>`; };
+    const sidePanel = ()=>{ if(!raid) return '';
+      const mine = sideBR ? sideBR.mine : null, parts = [mine].concat(left.allies.map((a, i)=> sideBR && sideBR.allies ? sideBR.allies[i] : a.level)).map(v=> Math.max(0, Number(v) || 0));
+      const total = sideBR ? sideBR.total : parts.reduce((t, v)=> t + v, 0), sum = parts.reduce((t, v)=> t + v, 0) || 1;
+      return `<div class="vs2-sidebr" title="${escapeAttr(TX('ui.raid-br-side-tip'))}">
+        <div class="vs2-sb-head">${escapeHtml(TX('ui.nv-vs-side'))}</div>
+        <div class="vs2-sb-bar" aria-hidden="true">${parts.map((v, i)=> `<i class="${i ? 'is-ally' : 'is-you'}" style="flex:${Math.max(0.02, v / sum).toFixed(3)}"></i>`).join('')}</div>
+        <ul class="vs2-sb-list">
+          <li class="vs2-sb-row is-you"><span class="vs2-sb-av">${avatarHTML(left.avatar, 38)}</span><span class="vs2-sb-txt"><b>${escapeHtml(TX('ui.nv-vs-you'))}</b><small class="vs-ally-row">${escapeHtml(rowName(0))}</small></span><b class="vs2-sb-br">${br(mine)}</b></li>
+          ${left.allies.map(allyHTML).join('')}
+        </ul>
+        <div class="vs2-sb-total"><span>${escapeHtml(TX('ui.nv-vs-side-total'))}</span><b>${br(total)}</b></div>
+        <small class="vs2-sb-note">${escapeHtml(TX('ui.nv-vs-leaders-x2'))}</small>
+      </div>`; };
+    const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
+        ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(TX(raid ? 'ui.nv-vs-raid-boss' : 'ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>
+      </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
+    const waitMs = raid ? 9000 : 2800;
+    el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;
     // Deck levels (2026-10-10, user: "Show your deck level during the pre-combat screen of A vs B"): both sides, theirs
     // coloured by the same gap scale as the skirmish card.
     try{
@@ -36013,19 +36045,26 @@ function showVsScreen(left, right){
       // 2026-10-19 (package BR): a raid's chips say whose BR it is ("Your side's BR" / "Boss BR", p.brLabel / p.brTip)
       const chip = (n, cls, who, p)=> p.brLabel ? `<div class="vs-lvl ${cls}" title="${escapeAttr(p.brTip || '')}"><small>${escapeHtml(p.brLabel)}</small><b>⚔ ${typeof n === 'number' ? n.toLocaleString() : n}</b></div>`
         : `<div class="vs-lvl ${cls}" title="${who} battle rating"><small>${who} BR</small><b>⚔ ${n}</b></div>`;
-      el.querySelector('.vs-left .vs-deck').insertAdjacentHTML('afterend', chip(mine || '?', 'is-mine', 'Your', left));
-      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their', right));
+      // NV: in a raid your own card shows YOUR BR and row (what you bring); the side's total is the panel under it
+      const myChip = raid && sideBR ? `<div class="vs-lvl is-mine vs2-you" title="${escapeAttr(TX('ui.nv-vs-you-tip'))}"><small>${escapeHtml(TX('ui.nv-vs-your-br'))}</small><b>${br(sideBR.mine)}</b><span class="vs-row-tag">${escapeHtml(rowName(0))} · ${escapeHtml(TX('ui.nv-vs-you'))}</span></div>` : chip(mine || '?', 'is-mine', 'Your', left);
+      el.querySelector('.vs-left .vs2-id').insertAdjacentHTML('beforeend', myChip);
+      if(theirs) el.querySelector('.vs-right .vs2-id').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their', right));
     }catch(e){}
     document.body.appendChild(el);
-    let done = false;
-    const finish = ()=>{ if(done) return; done = true; el.classList.add('vs-out'); setTimeout(()=>{ el.remove(); resolve(); }, 320); };
+    // the green / red split (and its gold seam) sits behind the VS word, wherever the stacked phone layout puts it
+    const placeSeam = ()=>{ try{ const w = el.querySelector('.vs-word'); if(!w) return; const r = w.getBoundingClientRect(), b = el.getBoundingClientRect(); el.style.setProperty('--vs-split', Math.round(r.top - b.top + el.scrollTop + r.height / 2) + 'px'); }catch(e){} };
+    placeSeam(); requestAnimationFrame(placeSeam);
+    let done = false, timer = null;
+    const finish = ()=>{ if(done) return; done = true; clearTimeout(timer); el.classList.add('vs-out'); setTimeout(()=>{ el.remove(); resolve(); }, 320); };
     el.addEventListener('click', finish);
+    // a raid's screen waits while you read it: scrolling it holds the clock (the bar on the button restarts)
+    if(raid) el.addEventListener('scroll', ()=>{ if(done) return; clearTimeout(timer); timer = setTimeout(finish, waitMs); const f = el.querySelector('.vs-start-fill'); if(f){ f.style.animation = 'none'; void f.offsetWidth; f.style.animation = ''; } }, {passive:true});
     if(hasGsap()){
       gsap.from(el.querySelector('.vs-left'), {x:-260, opacity:0, duration:.5, ease:'power3.out'});
       gsap.from(el.querySelector('.vs-right'), {x:260, opacity:0, duration:.5, ease:'power3.out'});
       gsap.from(el.querySelector('.vs-word'), {scale:3, opacity:0, rotation:-12, duration:.45, delay:.35, ease:'back.out(2)'});
     }
-    setTimeout(finish, 2800);
+    timer = setTimeout(finish, waitMs);
   });
 }
 /* ---- Card Workshop (2026-10-03, per explicit request: "a (dead button for now) custom card page

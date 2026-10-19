@@ -11563,6 +11563,102 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .raid-editor .re-restart{display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
 @media (max-width:600px){ .raid-hub .rh-art{width:64px; height:64px; font-size:36px;} }
 </style>
+<style id="nvStyles">
+/* ===== Package NV (2026-10-19, owner on an iPhone 10:55): Home on the map and the Arena, no map strip on phones, the pre-battle
+   A-vs-B screen, the raid's rank emblem. ===== */
+/* 1. The 🌰 Home at the left end of the floating tab bar. The tab strip scrolls inside the bar, not the bar itself: a fixed child (the
+   🏟️ / ⚙️ / Energy cluster lives in this row) of a scrolling row is clipped on iOS Safari, which is how the 🏠 went missing there. */
+.play-home-tab{display:none;}
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play .play-home-tab{display:inline-flex; align-items:center; justify-content:center; gap:6px; flex:0 0 auto; height:38px; min-width:44px; padding:0 14px 0 9px; margin-right:4px;
+  border-radius:999px; border:1.5px solid rgba(255,226,160,.6); background:linear-gradient(180deg,#7a5426,#47300f); color:#fff4dc; font:800 14px/1 'Baloo 2',system-ui,sans-serif; cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2), 0 2px 6px rgba(0,0,0,.3);}
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play .play-home-tab:hover,
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play .play-home-tab:focus-visible{filter:brightness(1.15);}
+.play-home-tab .pht-nut{font-size:20px; line-height:1; display:inline-block; transition:transform .15s ease;}
+.play-home-tab:hover .pht-nut{transform:rotate(-12deg) scale(1.08);}
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play .play-subtabs-actions #homeNavBtnPlay{display:none !important;} /* the bar has the Home now */
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{overflow:visible !important; display:flex; align-items:center; flex-wrap:nowrap; gap:0; bottom:calc(14px + env(safe-area-inset-bottom, 0px));}
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs{min-width:0; flex:0 1 auto; overflow-x:auto; scrollbar-width:none; flex-wrap:nowrap;}
+body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row .play-subtabs::-webkit-scrollbar{display:none;}
+@media (max-width:640px){ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play .play-home-tab{padding:0 9px;} .play-home-tab .pht-label{display:none;} }
+/* 1b. No map strip on phones (owner: "The top bar of the conquest screen is not used - remove this"). Maps change on the 🧭 World
+   atlas (the button on the map) and at the map's edges; the 🧭 / ⛶ row sits under the 🏟️ / ⚙️ / Energy row as it did when the
+   strip was hidden before the world opened. Desktop keeps its side list. */
+@media (max-width:820px){
+  body.conquest-full #conquestMapList{display:none !important;}
+  body.conquest-full:not(.conquest-immersive) .conquest-world-btn{top:58px;}
+  body.conquest-full:not(.conquest-immersive) .conquest-fs-btn{top:58px;}
+  body.conquest-full:not(.conquest-immersive) .conquest-admin-btn{top:104px;}
+  body.conquest-full:not(.conquest-immersive) #appWrap.cq-hud:not(.in-match) .conquest-headline{margin-top:100px;}
+}
+/* 2. The pre-battle A-vs-B screen (showVsScreen): a card a side, the raid's side panel, a real start button. The sunburst, the split
+   and the gold seam stay; on phones the split follows the VS word (--vs-split, set by showVsScreen). */
+.vs-screen.vs2{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; align-items:center; padding:24px clamp(16px, 4vw, 64px) 0; overflow-y:auto; overscroll-behavior:contain;}
+.vs2 .vs-side{gap:12px; padding:12px 0; min-width:0;}
+.vs2 .vs2-card{display:flex; flex-direction:column; align-items:center; gap:10px; width:min(100%, 360px); padding:18px 18px 16px; border-radius:20px; text-align:center;
+  background:linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.16)); border:1px solid rgba(255,236,190,.26); box-shadow:0 10px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);}
+.vs2 .vs2-id{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; max-width:100%;}
+.vs2 .vs-name{white-space:normal; overflow:visible; text-overflow:clip; overflow-wrap:anywhere; line-height:1.08;}
+.vs2 .vs-deck{white-space:normal; overflow-wrap:anywhere; max-width:100%; font-size:13.5px; line-height:1.3;}
+.vs2 .vs-lvl{margin-top:4px;}
+.vs2 .vs2-you{gap:4px; padding:8px 18px 9px; background:rgba(140,220,120,.16); border-color:rgba(170,240,150,.55);}
+.vs2 .vs2-you .vs-row-tag{margin-top:2px; font-size:11px; background:rgba(0,0,0,.25);}
+.vs2 .vs2-kicker{font:800 11px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#ffb3a0; opacity:.95;}
+.vs2 .vs2-boss-frame{position:relative; display:block; padding:5px; border-radius:22px; background:conic-gradient(from 210deg, #c9a24a, #fff0b8, #8a5a1c, #e8c56a, #c9a24a); box-shadow:0 0 26px rgba(255,90,60,.45), 0 10px 22px rgba(0,0,0,.5);}
+.vs2 .vs2-boss-frame .vs-boss-art{display:block; width:clamp(120px, 16vw, 190px); height:clamp(120px, 16vw, 190px); border-radius:17px; border:0; box-shadow:none;}
+.vs2 .vs-right .vs2-card{background:linear-gradient(180deg, rgba(40,0,0,.34), rgba(0,0,0,.2)); border-color:rgba(255,170,140,.3);}
+/* the raid's side panel: you, each ally, the total */
+.vs2 .vs2-sidebr{width:min(100%, 360px); padding:12px 14px 10px; border-radius:16px; background:rgba(0,0,0,.30); border:1px solid rgba(255,236,190,.22); text-align:left;}
+.vs2 .vs2-sb-head{font:800 12px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.12em; text-transform:uppercase; opacity:.85; margin-bottom:8px;}
+.vs2 .vs2-sb-bar{display:flex; gap:2px; height:7px; border-radius:999px; overflow:hidden; margin-bottom:8px; background:rgba(255,255,255,.08);}
+.vs2 .vs2-sb-bar i{display:block; min-width:4px; background:#9fd8ff;} .vs2 .vs2-sb-bar i.is-you{background:#86e27f;} .vs2 .vs2-sb-bar i.is-ally:nth-child(3){background:#ffd27a;}
+.vs2 .vs2-sb-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+.vs2 .vs2-sb-row{display:flex; align-items:center; gap:10px; padding:6px 8px; border-radius:12px; background:rgba(255,255,255,.06);}
+.vs2 .vs2-sb-row.is-you{background:rgba(140,220,120,.14); box-shadow:inset 3px 0 0 #86e27f;}
+.vs2 .vs2-sb-av{flex:0 0 auto;}
+.vs2 .vs2-sb-txt{display:flex; flex-direction:column; min-width:0; flex:1 1 auto; line-height:1.25;}
+.vs2 .vs2-sb-txt b{font-size:14px; overflow-wrap:anywhere;}
+.vs2 .vs2-sb-txt small{font-size:11.5px; opacity:.85; white-space:normal; overflow-wrap:anywhere;}
+.vs2 .vs2-sb-txt small.vs-ally-row{opacity:1;}
+.vs2 .vs2-sb-br{flex:0 0 auto; font:800 17px/1 'Baloo 2',system-ui,sans-serif; color:#fff3d0; white-space:nowrap;}
+.vs2 .vs2-sb-total{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,236,190,.35);}
+.vs2 .vs2-sb-total span{font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.08em;}
+.vs2 .vs2-sb-total b{font:900 26px/1 'Baloo 2',system-ui,sans-serif; color:#ffd76a; text-shadow:0 2px 0 rgba(90,50,0,.6);}
+.vs2 .vs2-sb-note{display:block; margin-top:4px; font-size:11px; opacity:.7;}
+/* the start button: in its own row, under both cards, never over the art; its bar runs down to the automatic start */
+.vs2 .vs-start{grid-column:1 / -1; justify-self:center; position:relative; overflow:hidden; margin:6px 0 calc(22px + env(safe-area-inset-bottom, 0px)); min-width:min(320px, 86vw); padding:13px 28px; border-radius:999px; cursor:pointer;
+  font:800 18px/1 'Baloo 2',system-ui,sans-serif; color:#3a1c00; background:linear-gradient(180deg, #ffe48f, #f2b33d); border:2px solid #fff3c4; box-shadow:0 6px 0 #9a5d12, 0 10px 24px rgba(0,0,0,.45);}
+.vs2 .vs-start:hover, .vs2 .vs-start:focus-visible{filter:brightness(1.07);}
+.vs2 .vs-start-txt{position:relative;}
+.vs2 .vs-start-fill{position:absolute; left:0; top:0; bottom:0; width:100%; background:rgba(255,255,255,.45); transform-origin:left center; animation:vsStartFill linear forwards; pointer-events:none;}
+@keyframes vsStartFill{from{transform:scaleX(0);} to{transform:scaleX(1);}}
+@media (prefers-reduced-motion: reduce){ .vs2 .vs-start-fill{animation:none; display:none;} }
+/* phones: stacked; the split and its seam sit at the VS word */
+@media (max-width:600px){
+  .vs-screen.vs2{display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:4px; padding:max(14px, env(safe-area-inset-top, 0px)) 16px 0;
+    background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.22), transparent 70%), repeating-linear-gradient(105deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px),
+      linear-gradient(180deg, #2c3a27 0 var(--vs-split, 50%), #5a2b22 var(--vs-split, 50%) 100%); background-attachment:local;}
+  .vs-screen.vs2::before{position:fixed;}
+  .vs-screen.vs2::after{top:var(--vs-split, 50%);}
+  .vs2 .vs-side{width:100%; padding:4px 0; align-items:center;}
+  .vs2 .vs2-card{width:100%; max-width:420px; padding:12px 14px; gap:8px;}
+  .vs2 .vs-left .vs2-card{flex-direction:row; text-align:left; align-items:center;}
+  .vs2 .vs-left .vs2-id{align-items:flex-start;}
+  .vs2 .vs-left .vs2-portrait .bw-avatar{width:64px !important; height:64px !important; font-size:36px !important;}
+  .vs2:not(.is-raid) .vs2-portrait .bw-avatar{width:84px !important; height:84px !important; font-size:46px !important;}
+  .vs2 .vs-name{font-size:22px;}
+  .vs2 .vs2-sidebr{width:100%; max-width:420px;}
+  .vs2 .vs-mid{padding:2px 0;} .vs2 .vs-word{font-size:52px; padding:0;}
+  .vs2 .vs2-boss-frame .vs-boss-art{width:112px; height:112px;}
+  .vs2 .vs-right .vs2-card{flex-direction:row; text-align:left;}
+  .vs2 .vs-right .vs2-id{align-items:flex-start;}
+  .vs2 .vs-lvl{padding:6px 12px;} .vs2 .vs-lvl b{font-size:22px;}
+  .vs2 .vs-start{margin-top:auto; margin-bottom:calc(16px + env(safe-area-inset-bottom, 0px)); flex:0 0 auto;}
+  .vs2:not(.is-raid){justify-content:space-evenly;}
+  .vs2:not(.is-raid) .vs2-card{flex-direction:column !important; text-align:center !important;}
+  .vs2:not(.is-raid) .vs2-id{align-items:center !important;}
+}
+</style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
      at the top of the screen so i can 'change accounts'... an account that is perpetually in
@@ -37264,6 +37360,21 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.wind-head-wing": "Flying – Headwind: its skills and triggers go off twice",
   "ui.wind-tail-quick": "Tailwind: a quick extra turn before combat",
   "ui.back-to-home": "Back to Home",
+  "ui.nv-home": "Home",
+  "ui.nv-vs-start": "Start the fight",
+  "ui.nv-vs-you": "You",
+  "ui.nv-vs-your-br": "Your BR",
+  "ui.nv-vs-you-tip": "What you bring: your deck's battle rating, your leader counted twice. You hold the front row.",
+  "ui.nv-vs-side": "Your side",
+  "ui.nv-vs-side-total": "Side total",
+  "ui.nv-vs-leaders-x2": "Each leader counts twice.",
+  "ui.nv-vs-row-front": "Front row",
+  "ui.nv-vs-row-middle": "Middle row",
+  "ui.nv-vs-row-back": "Back row",
+  "ui.nv-vs-ally-leader": "👑 Leader: {name}",
+  "ui.nv-vs-ally-bramble": "🏰 {name}",
+  "ui.nv-vs-raid-boss": "Raid boss",
+  "ui.nv-vs-boss": "Boss",
   "toast.nf-copies-own-level": "Each copy of a card now has its own level: the Forge raises only the copy you pick. Your copies kept the level they had.",
   "ui.nf-fuse-blurb": "Every copy beyond what a deck can hold feeds your best copy of its card (the highest level, then the finest foil, then the oldest): it becomes Forge credit on that copy, spent before your wallet the next time you temper it. Foil, Shiny and skinned copies are kept.",
   "ui.nf-fuse-tip": "Feeds every copy beyond what a deck can hold into your best copy of that card: the highest level first, then the finest foil. Foil, Shiny and skinned copies are kept.",
@@ -40471,7 +40582,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7fc80dc84a0e', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = '23d3c3dbbf4e', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -51204,6 +51315,10 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
+        ${'' /* 2026-10-19 (package NV, owner on an iPhone: "There should be a home button somewhere on mobile ... add the bramble acorn symbol
+             OR home symbol in the map/arena"): a 🌰 Home at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones
+             and desktop. It sits outside the tab strip, so it never scrolls away with the tabs, and the top-right 🏠 steps aside while it shows
+             (CSS). Same path as every other Home: switchTab('home'). */}<button type="button" class="play-home-tab" id="playHomeTabBtn" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="pht-nut" aria-hidden="true">🌰</span><span class="pht-label">${escapeHtml(TX('ui.nv-home'))}</span></button>
         <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
           ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
@@ -51277,6 +51392,7 @@ function renderPlay(){
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
     const backBtn = document.getElementById('homeNavBtnPlay');
     if(backBtn) backBtn.addEventListener('click', ()=> switchTab('home'));
+    { const ph = document.getElementById('playHomeTabBtn'); if(ph) ph.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); } // 2026-10-19 (package NV): the tab bar's 🌰 Home
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
     wireSettingsButton('PlaySub');
@@ -60625,7 +60741,8 @@ function startRaidFullBattle(def, partId, f, st){
   const m0 = matchState;
   // 2026-10-19 (package BR, owner 08:18): both sides' raid BR (raidBossBR / raidSideBR); each ally's chip shows its own real BR
   let bossBR = null, sideBR = null; try{ bossBR = raidBossBR(def, f, b); sideBR = raidSideBR(mainDeckLevel(myDeckCounts, matchLeaderId()), allies); allies.forEach((a, i)=>{ a.level = sideBR.allies[i]; });
-    m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')}); }catch(e){}
+    m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')});
+    me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)},
     bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
@@ -73688,14 +73805,40 @@ function randomOpponentAvatar(rnd){
 function showVsScreen(left, right){
   return new Promise(resolve=>{
     const el = document.createElement('div');
-    el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
+    // 2026-10-19 (package NV, owner 10:55 on an iPhone: "Improve the pre-battle A v B screen for mobile, especially raid. Or in general, even
+    // for PC. I want to know how i contribute, then our total BR."): each side is a card. In a raid your card says what you bring (your
+    // BR, your row) first, then your side's total with its parts (you + each ally, leaders 2x, raidSideBR), against the boss's card (its
+    // art, name and BR). Names and rows wrap instead of being cut off, and the start is a real button under the art (it used to be a
+    // "Tap to start" line over the boss's picture). A tap anywhere still starts; a raid waits longer before it starts by itself.
+    const raid = !!(left.allies && left.allies.length), bossy = raid || !!right.art;
+    el.className = 'vs-screen vs2' + (raid ? ' is-raid' : '') + (bossy ? ' is-boss' : ''); el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
+    const rowName = r=> TX(r === 2 ? 'ui.nv-vs-row-back' : r === 1 ? 'ui.nv-vs-row-middle' : 'ui.nv-vs-row-front');
+    const sideBR = left.raidSide || null, br = n=> `⚔ ${Math.max(0, Math.round(Number(n) || 0)).toLocaleString()}`;
     // 2026-10-17 (user: "In the pre-battle against a raid, I get to see my allies on the left side!"): a raid's two CPU allies stand on
     // your side, each with a portrait, the row it holds, its battle rating, its leader and its best cards; you hold the front row.
-    const allyHTML = a=>{ const defs = getCardDefs(), ld = a.leaderId && defs[a.leaderId], av = randomOpponentAvatar(seededRng(hashStr('ally:' + (a.name || ''))));
+    const allyHTML = (a, i)=>{ const defs = getCardDefs(), ld = a.leaderId && defs[a.leaderId], av = randomOpponentAvatar(seededRng(hashStr('ally:' + (a.name || ''))));
       const top = [...new Set(a.deck || [])].filter(id=> defs[id]).sort((x, y)=> ((defs[y].attack||0) + (defs[y].health||0)) - ((defs[x].attack||0) + (defs[x].health||0))).slice(0, 3);
-      return `<div class="vs-ally2"><span class="vs-ally-av">${avatarHTML(av, 46)}</span><span class="vs-ally-txt"><b>${escapeHtml(a.name)}</b><small class="vs-ally-row">${a.row === 2 ? 'Back row' : 'Middle row'} · ⚔ ${a.level || '?'}</small><small>${ld ? `👑 ${escapeHtml(ld.name)}` : ''}${ld && top.length ? ' · ' : ''}${top.map(id=> defs[id].icon || '').join('')}</small><small>🏰 ${escapeHtml((a.castle || {}).name || '')}</small></span></div>`; };
-    const side = (p, cls)=> `<div class="vs-side ${cls}">${p.art ? `<img class="vs-boss-art" src="${escapeAttr(p.art)}" alt="">` : avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-row-tag">Front row · you</div><div class="vs-allies2"><small>Your allies</small>${p.allies.map(allyHTML).join('')}</div>` : ''}</div>`;
-    el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
+      const n = sideBR && sideBR.allies ? sideBR.allies[i] : a.level;
+      return `<li class="vs2-sb-row"><span class="vs2-sb-av">${avatarHTML(av, 38)}</span><span class="vs2-sb-txt"><b>${escapeHtml(a.name)}</b><small class="vs-ally-row">${escapeHtml(rowName(a.row))}${top.length ? ' · ' + top.map(id=> defs[id].icon || '').join('') : ''}</small>${ld ? `<small>${escapeHtml(TX('ui.nv-vs-ally-leader', {name: ld.name}))}</small>` : ''}<small>${escapeHtml(TX('ui.nv-vs-ally-bramble', {name: (a.castle || {}).name || ''}))}</small></span><b class="vs2-sb-br">${br(n)}</b></li>`; };
+    const sidePanel = ()=>{ if(!raid) return '';
+      const mine = sideBR ? sideBR.mine : null, parts = [mine].concat(left.allies.map((a, i)=> sideBR && sideBR.allies ? sideBR.allies[i] : a.level)).map(v=> Math.max(0, Number(v) || 0));
+      const total = sideBR ? sideBR.total : parts.reduce((t, v)=> t + v, 0), sum = parts.reduce((t, v)=> t + v, 0) || 1;
+      return `<div class="vs2-sidebr" title="${escapeAttr(TX('ui.raid-br-side-tip'))}">
+        <div class="vs2-sb-head">${escapeHtml(TX('ui.nv-vs-side'))}</div>
+        <div class="vs2-sb-bar" aria-hidden="true">${parts.map((v, i)=> `<i class="${i ? 'is-ally' : 'is-you'}" style="flex:${Math.max(0.02, v / sum).toFixed(3)}"></i>`).join('')}</div>
+        <ul class="vs2-sb-list">
+          <li class="vs2-sb-row is-you"><span class="vs2-sb-av">${avatarHTML(left.avatar, 38)}</span><span class="vs2-sb-txt"><b>${escapeHtml(TX('ui.nv-vs-you'))}</b><small class="vs-ally-row">${escapeHtml(rowName(0))}</small></span><b class="vs2-sb-br">${br(mine)}</b></li>
+          ${left.allies.map(allyHTML).join('')}
+        </ul>
+        <div class="vs2-sb-total"><span>${escapeHtml(TX('ui.nv-vs-side-total'))}</span><b>${br(total)}</b></div>
+        <small class="vs2-sb-note">${escapeHtml(TX('ui.nv-vs-leaders-x2'))}</small>
+      </div>`; };
+    const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
+        ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(TX(raid ? 'ui.nv-vs-raid-boss' : 'ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>
+      </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
+    const waitMs = raid ? 9000 : 2800;
+    el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;
     // Deck levels (2026-10-10, user: "Show your deck level during the pre-combat screen of A vs B"): both sides, theirs
     // coloured by the same gap scale as the skirmish card.
     try{
@@ -73707,19 +73850,26 @@ function showVsScreen(left, right){
       // 2026-10-19 (package BR): a raid's chips say whose BR it is ("Your side's BR" / "Boss BR", p.brLabel / p.brTip)
       const chip = (n, cls, who, p)=> p.brLabel ? `<div class="vs-lvl ${cls}" title="${escapeAttr(p.brTip || '')}"><small>${escapeHtml(p.brLabel)}</small><b>⚔ ${typeof n === 'number' ? n.toLocaleString() : n}</b></div>`
         : `<div class="vs-lvl ${cls}" title="${who} battle rating"><small>${who} BR</small><b>⚔ ${n}</b></div>`;
-      el.querySelector('.vs-left .vs-deck').insertAdjacentHTML('afterend', chip(mine || '?', 'is-mine', 'Your', left));
-      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their', right));
+      // NV: in a raid your own card shows YOUR BR and row (what you bring); the side's total is the panel under it
+      const myChip = raid && sideBR ? `<div class="vs-lvl is-mine vs2-you" title="${escapeAttr(TX('ui.nv-vs-you-tip'))}"><small>${escapeHtml(TX('ui.nv-vs-your-br'))}</small><b>${br(sideBR.mine)}</b><span class="vs-row-tag">${escapeHtml(rowName(0))} · ${escapeHtml(TX('ui.nv-vs-you'))}</span></div>` : chip(mine || '?', 'is-mine', 'Your', left);
+      el.querySelector('.vs-left .vs2-id').insertAdjacentHTML('beforeend', myChip);
+      if(theirs) el.querySelector('.vs-right .vs2-id').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their', right));
     }catch(e){}
     document.body.appendChild(el);
-    let done = false;
-    const finish = ()=>{ if(done) return; done = true; el.classList.add('vs-out'); setTimeout(()=>{ el.remove(); resolve(); }, 320); };
+    // the green / red split (and its gold seam) sits behind the VS word, wherever the stacked phone layout puts it
+    const placeSeam = ()=>{ try{ const w = el.querySelector('.vs-word'); if(!w) return; const r = w.getBoundingClientRect(), b = el.getBoundingClientRect(); el.style.setProperty('--vs-split', Math.round(r.top - b.top + el.scrollTop + r.height / 2) + 'px'); }catch(e){} };
+    placeSeam(); requestAnimationFrame(placeSeam);
+    let done = false, timer = null;
+    const finish = ()=>{ if(done) return; done = true; clearTimeout(timer); el.classList.add('vs-out'); setTimeout(()=>{ el.remove(); resolve(); }, 320); };
     el.addEventListener('click', finish);
+    // a raid's screen waits while you read it: scrolling it holds the clock (the bar on the button restarts)
+    if(raid) el.addEventListener('scroll', ()=>{ if(done) return; clearTimeout(timer); timer = setTimeout(finish, waitMs); const f = el.querySelector('.vs-start-fill'); if(f){ f.style.animation = 'none'; void f.offsetWidth; f.style.animation = ''; } }, {passive:true});
     if(hasGsap()){
       gsap.from(el.querySelector('.vs-left'), {x:-260, opacity:0, duration:.5, ease:'power3.out'});
       gsap.from(el.querySelector('.vs-right'), {x:260, opacity:0, duration:.5, ease:'power3.out'});
       gsap.from(el.querySelector('.vs-word'), {scale:3, opacity:0, rotation:-12, duration:.45, delay:.35, ease:'back.out(2)'});
     }
-    setTimeout(finish, 2800);
+    timer = setTimeout(finish, waitMs);
   });
 }
 /* ---- Card Workshop (2026-10-03, per explicit request: "a (dead button for now) custom card page
