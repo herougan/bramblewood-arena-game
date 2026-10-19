@@ -129,8 +129,9 @@ const quiet = (ev, what)=> ev.filter(x=> x.type === 'quiet' && (!what || x.what 
     ok(500 - W.hp === want, `2. Rage below half Health hits ${want} ${rules.quietContemplation ? 'under QC' : ''} (${500 - W.hp})`); } }
 { for(const [rules, want] of [[{}, 20], [QC, 10]]){ const {e, P} = mk({rules}); const T = put(e, P, 1, 'qc-mighty', 0); const W = put(e, P, 2, 'rv-wall', 0); e.debugAttack(P, so, T.uid, {}, []);
     ok(500 - W.hp === want, `2. Mighty hits ${want} ${rules.quietContemplation ? 'under QC' : ''} (${500 - W.hp})`); } }
-{ for(const [rules, want] of [[{}, 20], [QC, 10]]){ const {e, P} = mk({rules}); const T = put(e, P, 1, 'qc-hitter', 0); const W = put(e, P, 2, 'rv-wall', 0); W.exposed = 2; e.debugAttack(P, so, T.uid, {}, []);
-    ok(500 - W.hp === want && W.exposed === 1, `2. a hit on an Exposed unit deals ${want} ${rules.quietContemplation ? 'under QC (the counter still used up)' : ''} (${500 - W.hp}, ${W.exposed} left)`); } }
+// 2026-10-19 (package SK1): the Expose crit counters became Exploit tokens (+1 a hit, not a crit), so Quiet Contemplation leaves them be.
+{ for(const [rules, want] of [[{}, 11], [QC, 11]]){ const {e, P} = mk({rules}); const T = put(e, P, 1, 'qc-hitter', 0); const W = put(e, P, 2, 'rv-wall', 0); W.exploit = 2; e.debugAttack(P, so, T.uid, {}, []);
+    ok(500 - W.hp === want && W.exploit === 1, `2. a hit on a unit with Exploit tokens deals ${want} ${rules.quietContemplation ? 'under QC too (not a doubling)' : ''} (${500 - W.hp}, ${W.exploit} left)`); } }
 { for(const [rules, want] of [[{}, 2], [QC, 1]]){ const {e, P} = mk({rules}); const T = put(e, P, 1, 'qc-twinshot', 0); put(e, P, 2, 'rv-wall', 0); put(e, P, 2, 'rv-wall', 1); const ev = []; e.debugAttack(P, so, T.uid, {}, ev);
     const shots = ev.filter(x=> (x.type === 'hit' || x.type === 'evaded') && x.attUid === T.uid).length;
     ok(shots === want, `2. Twin Shot fires ${want} arrow(s) ${rules.quietContemplation ? 'under QC' : ''} (${shots})`); } }

@@ -83,7 +83,7 @@ lone('kt-bleed', null, (c, kin)=> kin ? c.bleed === 1 : !c.bleed, 'Bleed a Kin u
   ok(good === 12, `Expose a Kin unit (${good}/12)`); }
 lone('kt-stun', null, (c, kin)=> kin ? !!c.stunned : !c.stunned, 'Stun a Kin unit');
 lone('kt-wait', null, (c, kin)=> kin ? c.wait === 2 : !c.wait, 'Increase the Wait of a Kin unit');
-lone('kt-clean', c=>{ c.poison = 3; }, (c, kin)=> kin ? !c.poison : c.poison === 3, 'Cleanse a Kin unit');
+lone('kt-clean', c=>{ c.scar = 3; }, (c, kin)=> kin ? !c.scar : c.scar === 3, 'Cleanse a Kin unit'); // 2026-10-19 (package SK1): Cleanse takes the physical debuffs (Scar), not Poison (Cure's)
 lone('kt-exile', null, (c, kin)=> kin ? c.hp === 0 && c.forceExileZone : c.hp === 20, 'Exile a Kin unit');
 // ---- 5. A Charge action with Kin (the charge runs on a stand-in def: the Kin still come from the unit's own card)
 { const {e, P} = mk(); const S = put(e, P, 1, 'kt-charge'); const K = put(e, P, 1, 'kt-kin', 'right'); const O = put(e, P, 1, 'kt-other');
