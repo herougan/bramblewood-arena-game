@@ -48,7 +48,9 @@ ST.forEach(([id, x])=>{ const c = defs[id], [lo, hi] = P.bandOf((PLAN.rarity && 
   // 2026-10-19 (BF4): or the live server's override of the card was folded in and retuned from the server's stats (the live game showed those,
   // not the pass's; docs/balance/server-overrides-fold-2026-10-19.md)
   const folded = c && /2026-10-19 retune \(server override folded\): was \d+\/\d+ /.test(c.creatorNote || '');
-  ok(c && ((c.attack === x.attack && c.health === x.health) || retuned || folded) && (x.cost == null || c.cost === x.cost), `2. ${id}: carries its recorded stats ${x.attack}/${x.health} (or the 10-19 retune from them, or the BF4 fold)`);
+  // 2026-10-19 (BF5, owner 21:36: N halved): every card re-derived again, its note records the stats it came from ("2026-10-19 halve (BF5): was A/H")
+  const halved = c && /2026-10-19 halve \(BF5\): was \d+\/\d+/.test(c.creatorNote || '');
+  ok(c && ((c.attack === x.attack && c.health === x.health) || retuned || folded || halved) && (x.cost == null || c.cost === x.cost), `2. ${id}: carries its recorded stats ${x.attack}/${x.health} (or the 10-19 retune from them, the BF4 fold, or the BF5 halving)`);
   if(x.fit) return; // a budget fit (no win-rate aim)
   const inBand = x.wrAfter >= lo && x.wrAfter <= hi, nearer = Math.abs(P.outside(x.wrAfter / 100, c.rarity)) <= Math.abs(P.outside(x.wrBefore / 100, c.rarity)) - 5;
   ok(inBand || (x.nearest && nearer), `2. ${id}: ${x.wrBefore}% -> ${x.wrAfter}% (band ${lo}-${hi})`); });

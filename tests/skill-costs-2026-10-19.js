@@ -32,7 +32,7 @@ const SKI = ids('skills'), TRI = ids('triggers'), ACT = new Set(table.actions.ma
 // the owner's seeds (19:54)
 const tv = id=> (table.triggers.find(t=> t.id === id) || {}).value;
 ok(tv('onDeath') === 1, 'On Death = 1 (owner)'); ok(tv('onAllyPlayed') === 2.5, 'On Ally Played = 2.5 (owner: OnPlay(Ally))');
-ok(tv('onAnyPlayed') === 5, 'On Any Played = 5 (owner: OnPlay(Any))'); ok(tv('bounty') === 0.5, 'Bounty = 0.5 (owner)');
+ok(tv('onAnyPlayed') === 5, 'On Any Played = 5 (owner: OnPlay(Any))'); ok(tv('bounty') === 1, 'Bounty = 1 (owner 21:36, BF5: "Let bounty N = N * 2"; was 0.5)');
 
 // 2. coverage
 const cards = JSON.parse(rd('canonical/cards.json'));
@@ -71,7 +71,7 @@ ok(sCost({on:'onAttack', do:'stun', once:true}) === r2(Math.min(tv('onAttack'), 
 ok(sCost({on:'onAttacked', do:'stun', once:true}) === r2(Math.min(tv('onAttacked'), capV) * av('stun')), 'once caps On Attacked too (Sea Cucumber)');
 ['onSpawn', 'onDeath', 'onReady'].forEach(on=> ok(sCost({on, do:'damage', amount:2, once:true}) === sCost({on, do:'damage', amount:2}), `once on ${on} (fires once anyway) costs the same as without`));
 ok(sCost({on:'onSpawn', do:'damage', amount:'attack'}) === 3 * av('damage'), "damage 'attack' uses the card's Attack");
-ok(T.cardS({bounty:1}).S === 0.5 && T.cardS({bounty:2}).S === 1, 'Bounty N = 0.5 × Gain × N');
+ok(T.cardS({bounty:1}).S === 1 && T.cardS({bounty:2}).S === 2, 'Bounty N = 1 × Gain × N (BF5)');
 // a changed weight moves S (what the hub tab relies on)
 const t3 = JSON.parse(JSON.stringify(table)); t3.triggers.find(t=> t.id === 'onAttack').value = 10;
 if(ant) ok(SC.make(t3).cardS(ant.effects, ant).S - T.cardS(ant.effects, ant).S === (10 - tv('onAttack')) * av('drawCard'), 'editing a weight changes S by Δweight × value');
@@ -85,7 +85,7 @@ function oldBudget(d){ const e = d.effects || {}, k = d.rarity || 'common', rank
   const L = (d.faction || d.id==='wandering-traveller') ? 1 : ((d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1);
   const W = +d.wait||0, C = +d.cost||0, rit = e.ritual && typeof e.ritual === 'object' ? Object.values(e.ritual).reduce((a, b)=> a + (+b||0), 0) : 0;
   // 2026-10-19 (package BF2): N is budget v5, (Base + L/5) x (1 + L/30), Level 0 Base - 1; Base = v3's N without its 2L
-  const base = 20 + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit + 0.2 * T.obtainMapOf(d) /* + the map term (BF2, 15:25) */, N = Math.round((L ? (base + L / 10) * (1 + L / 30) : base - 1) * 100) / 100; // L/10 since 15:48
+  const base = 20 + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit + 0.2 * T.obtainMapOf(d) /* + the map term (BF2, 15:25) */, kS = table.budget.scale /* BF5: the whole N halved (on Base rounded to 0.01, as the helper) */, bR = Math.round(base * 100) / 100, N = Math.round((L ? kS * (bR + L / 10) * (1 + L / 30) : kS * (bR - 1)) * 100) / 100; // L/10 since 15:48
   let S = 0; Object.entries(e).forEach(([key, v])=>{ if(key === 'triggers' || key === 'bounty') return; // the two the new model prices differently
     if(APPLIED.has(key)) return; // applied measured worth (2026-10-19): not the frozen value any more
     const rule = OLD[key], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
@@ -108,7 +108,7 @@ applied.forEach(([k, e])=> ok(typeof e.prevValue === 'number' && typeof e.applie
   `${k} ${e.id}: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (${e.prevValue} -> ${e.value}, measured ${e.measuredS}, ${e.measuredConf})`));
 ok(!all.some(([, e])=> !e.appliedAt && e.prevValue != null), 'only applied entries carry prevValue');
 const ent = (k, id)=> table[k].find(e=> e.id === id) || {};
-[['triggers', 'onDeath', 1], ['triggers', 'onAllyPlayed', 2.5], ['triggers', 'bounty', 0.5], ['triggers', 'onAnyPlayed', 5], ['skills', 'supreme', 1], ['skills', 'supremeTide', 1], ['skills', 'trueStrike', 2]]
+[['triggers', 'onDeath', 1], ['triggers', 'onAllyPlayed', 2.5], ['triggers', 'bounty', 1 /* owner 21:36 (BF5): doubled from 0.5 */], ['triggers', 'onAnyPlayed', 5], ['skills', 'supreme', 1], ['skills', 'supremeTide', 1], ['skills', 'trueStrike', 2]]
   .forEach(([k, id, v])=> ok(ent(k, id).value === v && !ent(k, id).appliedAt, `owner-set ${id} = ${v}, not replaced by the measured worth (${ent(k, id).value})`));
 ok(table.shorthands.bounty && table.shorthands.bounty.trigger === 'bounty' && table.shorthands.bounty.action === 'gain' && !table.shorthands.bounty.appliedAt, 'Bounty shorthand kept (owner)');
 const Q = JSON.parse(rd('docs/balance/post-balance-queue.json')), QB = require(path.join(ROOT, 'tools', 'post_balance_queue.js')).build();

@@ -19,7 +19,8 @@ const rows = DUMP.filter(r=> !r.id.startsWith('__cfg:'));
 ok(rows.length === 72 && P.rows.length === 72, `1. 72 card rows in the dump and the plan (${rows.length}, ${P.rows.length})`);
 rows.forEach(r=>{ const c = by[r.id], pr = P.rows.find(x=> x.id === r.id);
   ok(c && /2026-10-19 retune \(server override folded\): was \d+\/\d+ \w+/.test(c.creatorNote || ''), `1. ${r.id} is folded (creatorNote)`);
-  ok(c && pr && c.attack === pr.now[0] && c.health === pr.now[1], `1. ${r.id} carries the plan's stats ${pr && pr.now.join('/')}`);
+  // (BF5) or the halving re-derived them from the fold's stats (its note: "2026-10-19 halve (BF5): was A/H")
+  ok(c && pr && ((c.attack === pr.now[0] && c.health === pr.now[1]) || new RegExp(`2026-10-19 halve \\(BF5\\): was ${pr.now[0]}/${pr.now[1]}[ .(]`).test(c.creatorNote || '')), `1. ${r.id} carries the plan's stats ${pr && pr.now.join('/')} (or BF5's halving of them)`);
   const rc = pr && pr.conflicts.find(x=> x.field === 'rarity');
   ok(c && (c.rarity === r.data.rarity || (rc && c.rarity === rc.file)), `1. ${r.id}: the server's rarity ${r.data.rarity} (or a listed newer file change)`); });
 ok(by['green-dragon'].rarity === 'mythic' && by['red-dragon'].rarity === 'mythic' && by['white-dragon'].rarity === 'divine' && by['black-dragon'].rarity === 'ancient',
@@ -35,7 +36,8 @@ ok(BB.rankOf('legendary') === 9 && BB.rankOf('mythic') === 10 && BB.rankOf('anci
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(rd('canonical/skill-costs.json')));
 const OWNER = new Set(P.rows.filter(r=> r.verdict === 'owner').map(r=> r.id));
 ok([...OWNER].join() === 'cave-bat-swarm', `2. one owner call: the Cave Bat Swarm (its server skills need a cut past half) (${[...OWNER]})`);
-rows.forEach(r=>{ if(OWNER.has(r.id)) return; const b = T.budget(by[r.id], {level: 1}); ok(b.ok, `2. ${r.id} passes v5 at Level 1 (2A+H+S ${b.x1} <= N ${b.N}, A·H+S ${b.x2} <= ${b.N2})`); });
+const HALVE = JSON.parse(rd('docs/balance/halve-plan-2026-10-19.json')), OWNER5 = new Set(HALVE.rows.filter(x=> x.verdict === 'owner').map(x=> x.id)); // BF5's owner calls (skills over the halved N)
+rows.forEach(r=>{ if(OWNER.has(r.id) || OWNER5.has(r.id)) return; const b = T.budget(by[r.id], {level: 1}); ok(b.ok, `2. ${r.id} passes v5 at Level 1 (2A+H+S ${b.x1} <= N ${b.N}, A·H+S ${b.x2} <= ${b.N2})`); });
 ok(P.overBefore.length === 7 && P.overAfter.length === 1, `2. over budget: 7 before (the live versions), 1 after (${P.overBefore.length}, ${P.overAfter.length})`);
 
 // 3.
