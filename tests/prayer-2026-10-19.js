@@ -174,7 +174,9 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   const over = ecc.filter(c=> !SC.budget(c).ok);
   ok(ecc.length >= 14 && !over.length, `6. every Ecclesia card fits budget v3 (over: ${over.map(c=> c.id).join(', ') || 'none'})`);
   const rel = table.skills.find(x=> x.id === 'relic');
-  ok(rel && rel.scale === 'fixed' && rel.value === 2 && SC.cardS({relic:true}, {}).S === 2 && /relic:2 \/\* 2026-10-19/.test(fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8')), '6. Relic costs 2 (canonical/skill-costs.json and the Test Lab default)');
+  // 2026-10-19 (package TC): canonical/skill-costs.json may carry the applied measured worth (prevValue 2); the Test Lab default stays 2
+  const relV = rel && (rel.appliedAt && rel.prevValue === 2 ? Math.max(0, rel.measuredS) : 2);
+  ok(rel && rel.scale === 'fixed' && rel.value === relV && SC.cardS({relic:true}, {}).S === relV && /relic:2 \/\* 2026-10-19/.test(fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8')), `6. Relic costs 2, or its applied measured worth (${rel && rel.value}), in canonical/skill-costs.json; 2 in the Test Lab default`);
   const eagle = cards.find(c=> c.id === 'cathedral-eagle'); ok(eagle.attack === 4 && eagle.health === 12 && eagle.prayerReq === 4, '6. Cathedral Eagle 4/12, Prayer 4');
   ok(ecc.filter(c=> c.prayerReq).every(c=> c.prayerReq >= 1 && c.prayerReq <= 5), '6. every Prayer need is 1..5');
   const req = id=> (cards.find(c=> c.id === id) || {}).prayerReq;

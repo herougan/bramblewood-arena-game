@@ -5,7 +5,11 @@
 //   1. canonical/skill-costs.json loads, every entry has an id and a number, no id twice in a kind;
 //   2. every trigger, action and skill any card uses (and every engine trigger hook / editor action) has an entry;
 //   3. a triggered skill's S = trigger weight × action value (Worker Ant, the owner's own examples, Bounty);
-//   4. keyword skills cost what they did before (the 2026-10-18 SB_SKILLS code, copied here) and N is unchanged, card by card;
+//   4. keyword skills cost what they did before (the 2026-10-18 SB_SKILLS code, copied here) and N is unchanged, card by card —
+//      except the entries the owner applied the measured worth to (appliedAt, 2026-10-19), which are skipped and reported;
+//   4b. (2026-10-19, package TC) the applied entries: each has prevValue, appliedAt, measuredConf high and value = measuredS; the
+//      owner-set values (On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike) are unchanged; the post-balance
+//      queue (docs/balance/post-balance-queue.json) is exactly the cards the current table puts over budget;
 //   5. tools/card_balance.js reads the table through tools/skill_costs.js, and the lib also runs as a plain browser script;
 //   6. the hub has the 🧮 Skill costs tab: db collection "skillCosts", no localStorage for the edits, Copy JSON fallback.
 'use strict';
@@ -60,7 +64,12 @@ ok(SC.make(t2).cardS({triggers:[{on:'onAnyPlayed', do:'stun', who:'enemy', sub:'
 ok(sCost({on:'onSpawn', do:'buff', who:'self', amount:2, amount2:4}) === tv('onSpawn') * (av('buff') * 2 + av('buff.amount2') * 4), 'Buff counts +Attack and +Health');
 ok(sCost({on:'onSpawn', do:'buff', who:'self', amount2:2}) === av('buff.amount2') * 2, 'a Buff with only +Health costs only its Health part');
 ok(sCost({on:'onSpawn', do:'damage', amount:2, who:'enemy', sub:'all'}) === av('damage') * 2 * table.modifiers.find(m=> m.id === 'subAll').value, 'sub All × subAll');
-ok(sCost({on:'onAttack', do:'stun', once:true}) === Math.min(tv('onAttack'), table.modifiers.find(m=> m.id === 'onceCap').value) * av('stun'), 'once caps the weight');
+// 2026-10-19 (package TC): cardS rounds each trigger to 2 places (r2), so compare rounded — with onceCap 0.66 (applied) the product
+// 0.66 × stun is 3.696 unrounded and 3.7 as costed; and `once` on a trigger that fires once anyway leaves its weight alone.
+const r2 = v=> Math.round(v * 100) / 100, capV = table.modifiers.find(m=> m.id === 'onceCap').value;
+ok(sCost({on:'onAttack', do:'stun', once:true}) === r2(Math.min(tv('onAttack'), capV) * av('stun')), `once caps the weight (${sCost({on:'onAttack', do:'stun', once:true})} = min(${tv('onAttack')}, ${capV}) × ${av('stun')})`);
+ok(sCost({on:'onAttacked', do:'stun', once:true}) === r2(Math.min(tv('onAttacked'), capV) * av('stun')), 'once caps On Attacked too (Sea Cucumber)');
+['onSpawn', 'onDeath', 'onReady'].forEach(on=> ok(sCost({on, do:'damage', amount:2, once:true}) === sCost({on, do:'damage', amount:2}), `once on ${on} (fires once anyway) costs the same as without`));
 ok(sCost({on:'onSpawn', do:'damage', amount:'attack'}) === 3 * av('damage'), "damage 'attack' uses the card's Attack");
 ok(T.cardS({bounty:1}).S === 0.5 && T.cardS({bounty:2}).S === 1, 'Bounty N = 0.5 × Gain × N');
 // a changed weight moves S (what the hub tab relies on)
@@ -77,14 +86,33 @@ function oldBudget(d){ const e = d.effects || {}, k = d.rarity || 'common', rank
   const W = +d.wait||0, C = +d.cost||0, rit = e.ritual && typeof e.ritual === 'object' ? Object.values(e.ritual).reduce((a, b)=> a + (+b||0), 0) : 0;
   const N = Math.round((20 + 2*L + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit) * 100) / 100;
   let S = 0; Object.entries(e).forEach(([key, v])=>{ if(key === 'triggers' || key === 'bounty') return; // the two the new model prices differently
+    if(APPLIED.has(key)) return; // applied measured worth (2026-10-19): not the frozen value any more
     const rule = OLD[key], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
     if(rule === 'v') S += Math.max(1, num); else if(rule === '-v') S -= Math.max(1, v === true ? (OPAY[key] || 1) : num); else if(typeof rule === 'number') S += rule; else S += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
   return {N, S}; }
+const APPLIED = new Set(table.skills.filter(e=> e.appliedAt).map(e=> e.id)), skipped = {}; // 2026-10-19 (package TC): measured worth applied
 let same = 0, diff = [];
-cards.filter(c=> SC.measured(c) && !c.pool /* 2026-10-19 (package GI): an unplaced pool card may carry a skill newer than this frozen model */ && !['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker'].some(k=> (c.effects || {})[k] != null) /* 2026-10-19 (package TH): nor a placed GI example */).forEach(c=>{ const o = oldBudget(c), b = T.budget(c), passive = b.parts.filter(p=> p[0] === 'skill').reduce((a, p)=> a + p[2], 0);
+cards.filter(c=> SC.measured(c) && !c.pool /* 2026-10-19 (package GI): an unplaced pool card may carry a skill newer than this frozen model */ && !['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker'].some(k=> (c.effects || {})[k] != null) /* 2026-10-19 (package TH): nor a placed GI example */).forEach(c=>{ const o = oldBudget(c), b = T.budget(c), passive = b.parts.filter(p=> p[0] === 'skill' && !APPLIED.has(p[1])).reduce((a, p)=> a + p[2], 0);
+  b.parts.forEach(p=>{ if(p[0] === 'skill' && APPLIED.has(p[1])) skipped[p[1]] = (skipped[p[1]] || 0) + 1; });
   if(Math.abs(passive - o.S) < 1e-9 && b.N === o.N) same++; else diff.push(`${c.id} S ${o.S}→${passive} N ${o.N}→${b.N}`); });
 ok(!diff.length, 'keyword S and N unchanged for every measured card: ' + diff.slice(0, 8).join('; '));
 ok(same > 500, `compared ${same} cards`);
+console.log(`  note: the frozen keyword comparison skips ${Object.keys(skipped).length} applied skills (measured worth, appliedAt) on ${Object.values(skipped).reduce((a, b)=> a + b, 0)} card uses: ${Object.entries(skipped).sort((a, b)=> b[1] - a[1]).slice(0, 12).map(([k, n])=> k + ' ' + n).join(', ')}, …`);
+
+// 4b. the applied measured worth (2026-10-19, package TC)
+const all = KINDS.flatMap(k=> table[k].map(e=> [k, e])), applied = all.filter(([, e])=> e.appliedAt);
+ok(applied.length >= 150, `the measured worth is applied (${applied.length} entries with appliedAt)`);
+// the application floored a negative measured worth at 0 (58 entries, the payments Penance / Blood Tithe among them)
+applied.forEach(([k, e])=> ok(typeof e.prevValue === 'number' && typeof e.appliedAt === 'string' && e.measuredConf === 'high' && e.value === Math.max(0, e.measuredS),
+  `${k} ${e.id}: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (${e.prevValue} -> ${e.value}, measured ${e.measuredS}, ${e.measuredConf})`));
+ok(!all.some(([, e])=> !e.appliedAt && e.prevValue != null), 'only applied entries carry prevValue');
+const ent = (k, id)=> table[k].find(e=> e.id === id) || {};
+[['triggers', 'onDeath', 1], ['triggers', 'onAllyPlayed', 2.5], ['triggers', 'bounty', 0.5], ['triggers', 'onAnyPlayed', 5], ['skills', 'supreme', 1], ['skills', 'supremeTide', 1], ['skills', 'trueStrike', 2]]
+  .forEach(([k, id, v])=> ok(ent(k, id).value === v && !ent(k, id).appliedAt, `owner-set ${id} = ${v}, not replaced by the measured worth (${ent(k, id).value})`));
+ok(table.shorthands.bounty && table.shorthands.bounty.trigger === 'bounty' && table.shorthands.bounty.action === 'gain' && !table.shorthands.bounty.appliedAt, 'Bounty shorthand kept (owner)');
+const Q = JSON.parse(rd('docs/balance/post-balance-queue.json')), QB = require(path.join(ROOT, 'tools', 'post_balance_queue.js')).build();
+ok(JSON.stringify(Q.cards.map(c=> c.id).sort()) === JSON.stringify(QB.cards.map(c=> c.id).sort()) && Q.count === Q.cards.length, `the post-balance queue is current (${Q.count} in the file, ${QB.count} from the table): run node tools/post_balance_queue.js`);
+ok(Q.cards.every(c=> c.sAfter > c.sBefore && c.passedBefore && (c.overBy.x1 >= 0 || c.overBy.x2 >= 0)), 'every queued card passed under prevValue and is over now by its recorded margin');
 
 // 5. the balance tool and the browser build
 const cb = rd('tools/card_balance.js');

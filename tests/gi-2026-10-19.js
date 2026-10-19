@@ -158,12 +158,21 @@ ok((eng.match(/aiBonusVs\(d, f\)/g) || []).length >= 4, 'every CPU slot choice (
 const SC = require('../tools/skill_costs.js'), table = JSON.parse(R('canonical/skill-costs.json')), T = SC.make(table);
 const sk = id=> table.skills.find(x=> x.id === id);
 [['hunter', 'half', 1], ['hunterVs', 'fixed', 0], ['executioner', 'half', 1], ['detonate', 'fixed', 1], ['proliferate', 'n', 2], ['brittle', 'half', 0.5], ['prayerWard', 'n', 0.75], ['fieldBreaker', 'half', 1]]
-  .forEach(([id, sc, v])=> ok(sk(id) && sk(id).scale === sc && sk(id).value === v, `skill-costs: ${id} ${sc} ${v}`));
+  // 2026-10-19 (package TC): the owner applied the measured worth — an applied entry keeps the GI value as prevValue (value = max(0, measuredS))
+  .forEach(([id, sc, v])=> ok(sk(id) && sk(id).scale === sc && (sk(id).value === v || (sk(id).appliedAt && sk(id).prevValue === v && sk(id).value === Math.max(0, sk(id).measuredS))),
+    `skill-costs: ${id} ${sc} ${v} (or its applied measured worth: ${sk(id) && sk(id).value})`));
 ok(table.shorthands.kinRally && table.shorthands.kinRally.trigger === 'onAllyPlayed' && table.shorthands.kinRally.action === 'buff' && table.shorthands.kinRally.both, 'Kin Rally is a shorthand: On Ally Played × Buff (+N/+N)');
 ok(table.shorthands.packHowl && table.shorthands.packHowl.trigger === 'onAllyPlayed' && table.shorthands.packHowl.action === 'bleed', 'Pack Howl is a shorthand: On Ally Played × Bleed');
-ok(T.cardS({kinRally:1}).S === 3.75 && T.cardS({kinRally:2}).S === 7.5, `Kin Rally 1 = 2.5 × (1 + 0.5) = 3.75 (${T.cardS({kinRally:1}).S})`);
-ok(T.cardS({packHowl:1}).S === 2.5 && T.cardS({packHowl:2}).S === 5, 'Pack Howl N = 2.5 × N');
-ok(T.cardS({hunter:2, hunterVs:'wet'}).S === 2 && T.cardS({executioner:3}).S === 2 && T.cardS({detonate:true}).S === 1 && T.cardS({proliferate:1}).S === 2 && T.cardS({prayerWard:2}).S === 1.5 && T.cardS({fieldBreaker:2}).S === 2 && T.cardS({brittle:2}).S === 1, 'the keyword costs');
+// 2026-10-19 (package TC): the shorthand math from the current table (Buff's values are applied measured worth; On Ally Played stays the owner's 2.5)
+const r2 = v=> Math.round(v * 100) / 100, tw = id=> table.triggers.find(x=> x.id === id).value, avl = id=> table.actions.find(x=> x.id === id).value;
+ok(tw('onAllyPlayed') === 2.5, 'On Ally Played = 2.5 (owner-set, kept)');
+const kin = N=> r2(tw('onAllyPlayed') * (avl('buff') * N + avl('buff.amount2') * N));
+ok(T.cardS({kinRally:1}).S === kin(1) && T.cardS({kinRally:2}).S === kin(2), `Kin Rally N = On Ally Played × (Buff × N + Buff Health × N) = ${tw('onAllyPlayed')} × (${avl('buff')} + ${avl('buff.amount2')}) = ${kin(1)} (${T.cardS({kinRally:1}).S})`);
+ok(T.cardS({packHowl:1}).S === r2(tw('onAllyPlayed') * avl('bleed')) && T.cardS({packHowl:2}).S === r2(tw('onAllyPlayed') * avl('bleed') * 2), `Pack Howl N = ${tw('onAllyPlayed')} × Bleed ${avl('bleed')} × N`);
+const kw = (id, N)=>{ const e = sk(id), n = N === true ? 1 : N; return e.scale === 'n' ? e.value * Math.max(1, n) : e.scale === 'half' ? e.value * (1 + (n > 1 ? Math.floor(n / 2) : 0)) : e.value; };
+[[{hunter:2, hunterVs:'wet'}, kw('hunter', 2) + kw('hunterVs', 0)], [{executioner:3}, kw('executioner', 3)], [{detonate:true}, kw('detonate', true)], [{proliferate:1}, kw('proliferate', 1)],
+ [{prayerWard:2}, kw('prayerWard', 2)], [{fieldBreaker:2}, kw('fieldBreaker', 2)], [{brittle:2}, kw('brittle', 2)]]
+  .forEach(([e, want])=> ok(Math.abs(T.cardS(e).S - r2(want)) < 1e-9, `the keyword cost of ${JSON.stringify(e)} = ${r2(want)} by its entry's scale (${T.cardS(e).S})`));
 // ---- 16. The example POOL cards
 // 2026-10-19 (package TH, the thematic pass): the ten examples are placed now (live, with a source; docs/balance/thematic-placed-2026-10-19.json
 // keeps their pool numbers 9501-9510 and maps). Unmeasured, they won 88-100% on card_balance.js's yardstick, so TH stepped each one into

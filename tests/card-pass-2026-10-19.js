@@ -2,7 +2,8 @@
 // 2026-10-19 (package CB, the card pass; owner 00:19: "balance the cards themselves (L1) + balance rarity, choose where the cards come
 // from"). docs/card-pass-2026-10-19.md. Checks, against the real data:
 //   1. budget v3 (tools/skill_costs.js, the owner's current values) passes for every live card but the owner-call list (the five Dragons
-//      and the Caldera Wyrm, over on purpose by the creature-ranks rule);
+//      and the Caldera Wyrm, over on purpose by the creature-ranks rule) and the post-balance queue (2026-10-19, package TC: cards the
+//      applied measured skill worth puts over, refit in the post-balance step); under the pre-application costs (prevValue) all fit;
 //   2. the bands: every card the pass changed is in its rarity band at its recorded 400-game win rate (or, where no step landed it,
 //      at least 5 points nearer), its card carries the recorded stats, and three of them re-measure to the very same number (the
 //      yardstick is deterministic: card_balance.js's seeds);
@@ -24,9 +25,17 @@ const live = cards.filter(c=> !c.token && !c.test && !c.hallOfFame && !c.baseId 
 
 // ---- 1. budget v3
 const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm']);
-const over = live.filter(c=> !OVER_OK.has(c.id) && !P.SC.budget(c).ok).map(c=> `${c.id} ${c.attack}/${c.health}`);
-ok(!over.length, '1. budget v3 passes for every live card but the Dragons / Caldera Wyrm: ' + over.slice(0, 8).join('; '));
-['raven-harbinger', 'bone-diviner', 'magnate-duck'].forEach(id=> ok(P.SC.budget(defs[id]).ok, `1. ${id} (newly over on 10-19) fits now`));
+// 2026-10-19 (package TC): the owner applied the measured skill worth (canonical/skill-costs.json, appliedAt / prevValue); the cards it
+// puts over budget are queued for the post-balance step (docs/balance/post-balance-queue.json, owner 08:49: no refit now).
+const QUEUE = new Set(readJSON('docs/balance/post-balance-queue.json').cards.map(c=> c.id));
+const over = live.filter(c=> !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !P.SC.budget(c).ok).map(c=> `${c.id} ${c.attack}/${c.health}`);
+ok(!over.length, '1. budget v3 passes for every live card but the Dragons / Caldera Wyrm and the post-balance queue: ' + over.slice(0, 8).join('; '));
+// the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
+const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));
+const PREV = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(SCT);
+['raven-harbinger', 'bone-diviner', 'magnate-duck'].forEach(id=> ok(PREV.budget(defs[id]).ok && (P.SC.budget(defs[id]).ok || QUEUE.has(id)), `1. ${id} (newly over on 10-19) fits under prevValue, and fits now or is queued`));
+const fitsPrev = live.filter(c=> !OVER_OK.has(c.id) && !PREV.budget(c).ok).map(c=> c.id);
+ok(!fitsPrev.length, '1. under the pre-application costs every live card but the owner-call list fits (the pass as made): ' + fitsPrev.slice(0, 8).join(', '));
 
 // ---- 2. the bands
 const ST = Object.entries(PLAN.stats || {});

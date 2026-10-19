@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package TC: the tests follow the applied skill costs)
+- **The owner applied the measured skill worth** to `canonical/skill-costs.json`: 199 entries use their high-confidence `measuredS` (a negative one floored at 0), and each keeps `prevValue` and `appliedAt`. His own values stay: On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike. Owner 08:49: separate the units by theme, he picks the units for each map, then a post-balance step sets skills and stats. **No card was refit.**
+- **Post-balance queue: 29 cards** that fitted budget v3 before the new costs and are over it now. Each fails only 2A+H+S < N, by +0.01 (Bone Diviner) to +9.5 (Marshal of Rivergate). The list is in `docs/balance/post-balance-queue.json` (built by `node tools/post_balance_queue.js`, `--check` for staleness) and `docs/post-balance-queue-2026-10-19.md`.
+- **Tests now check the current table instead of the old hard-coded costs:** skill-costs, card-pass, gi, card-pool, d and prayer. They accept a queued card as known-over-budget and fail if the queue goes stale. They still check that the owner-set values are unchanged, that every applied entry has prevValue, appliedAt, measuredConf high and value = max(0, measuredS), and that under the pre-application costs every live card fits.
+- **`once` fix** (`tools/skill_costs.js`): onceCap is 0.66 now, lower than On Spawn's 1. A `once` on On Spawn, On Death or On Ready (triggers that fire once anyway) no longer makes a card cheaper. Only repeating triggers are capped. No live card changes: the only `once` cards are Nest and Sea Cucumber, on repeating triggers. The old "once caps the weight" failure was a test bug: it compared an unrounded product against the rounded cost.
+- The hub was rebuilt: its Skill costs tab shows the applied values.
+
 ## 2026-10-19 (package LV: the level curve)
 - **Owner (00:19, the plan's last step): "balance level to balance with the overall linear increase in difficulty over time."** The road curve had been held up by 96 hand-set Shields (47 over 2× the rule, up to 33× / 252). Level curves carry it now.
 - **The enemy's level is a straight line:** its cards are 1.25% stronger every map after Map 4: Lv 3 at Map 12, Lv 6 at Map 20, Lv 9 at Map 28. Bosses fight two maps on, and the Map 20 world boss is levelled too (it fought at its printed level). A fractional level is a per-copy mix of its two stat steps.

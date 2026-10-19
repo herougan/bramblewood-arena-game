@@ -8,7 +8,7 @@
 //   keyword skill   scale fixed: value; scale n: value × max(1, its number) (a payment saved as true counts payDefault);
 //                   scale half: value × (1 + floor(N/2) for N > 1) — the old default rule for skills with no set cost.
 //   trigger entry   {on, do, ...} in effects.triggers: trigger weight × action value. Weight: the trigger's value, × turnOfOne
-//                   for an On Turn Start limited to one side's turns, at most onceCap with `once`. Action value: Σ over the
+//                   for an On Turn Start limited to one side's turns, at most onceCap with `once` (not for On Spawn / Death / Ready, which fire once anyway). Action value: Σ over the
 //                   action's entries (damage, buff + buff.amount2, …) of value × its `per` field (missing: 1, or 0 when a sibling
 //                   field is set), × min(8, targets), × subAll for sub 'all'. Exile on Self = Exile self.
 //   shorthand       a keyword that is a trigger and an action: Bounty N = Bounty weight × Gain × N.
@@ -20,6 +20,7 @@
   const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
   const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
   const r2 = v=> Math.round(v * 100) / 100;
+  const ONE_SHOT = ['onSpawn', 'onDeath', 'onReady']; // 2026-10-19 (package TC): triggers that fire at most once anyway; `once` changes nothing
   const numOf = v=> typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
   // The level the budget uses (card_balance.js since 2026-10-18): rewards 1, Base / Starter / tutorial / quest cards 0.
   function levelOf(d){ const k = d.source && d.source.kind, qs = k === 'quest' || k === 'errand' || k === 'base';
@@ -57,7 +58,9 @@
       const e = TR[t.on]; if(!e) return {w:1, missing:'trigger:' + t.on};
       let w = +e.value || 0;
       if(t.on === 'perTurn' && t.turnOf && t.turnOf !== 'both') w *= mod('turnOfOne', 0.5);
-      if(t.once) w = Math.min(w, mod('onceCap', 1));
+      // 2026-10-19 (package TC): onceCap is 0.66 since the measured worth was applied (below On Spawn's 1), so `once` on a trigger
+      // that fires once anyway (On Spawn, On Death, On Ready) would have made the same card cheaper; it only caps repeating triggers.
+      if(t.once && !ONE_SHOT.includes(t.on)) w = Math.min(w, mod('onceCap', 1));
       return {w, missing:null};
     }
     function triggerCost(t, card){ const a = triggerWeight(t), b = actionValue(t, card);

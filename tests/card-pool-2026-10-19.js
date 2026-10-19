@@ -62,10 +62,13 @@ ok(new Set(cards.map(c=> c.numericId)).size === cards.length && new Set(cards.ma
 
 // ---- 2. budget, skills, rarity cap, win rate
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(readJSON('canonical/skill-costs.json'));
+// 2026-10-19 (package TC): the cards the applied measured skill worth puts over budget wait for the post-balance step (owner 08:49)
+const QUEUE = new Set(readJSON('docs/balance/post-balance-queue.json').cards.map(c=> c.id));
 const BANDS = {common:[35, 60], uncommon:[45, 68], rare:[52, 75], veryrare:[56, 80], superrare:[60, 84], epic:[62, 87]};
 pool.forEach(c=>{
   const b = T.budget(c);
-  ok(b.ok, `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2})`);
+  ok(b.ok || QUEUE.has(c.id), `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);
+  if(QUEUE.has(c.id)) ok(!b.ok, `2. ${c.id}: queued for the post-balance step and still over (the queue is current)`);
   ok(!b.missing.length, `2. ${c.id}: every skill has a cost entry (${b.missing})`);
   ok(RR.roadRarityOk(c.rarity, numOf(c.poolMap), 'skirmish'), `2. ${c.id}: ${c.rarity} within the Map ${numOf(c.poolMap)} skirmish cap (${RR.roadRarityCap(numOf(c.poolMap), 'skirmish')})`);
   const note = c.creatorNote || '', wr = /Measured ([\d.]+)% over (\d+) games/.exec(note), band = BANDS[c.rarity];
