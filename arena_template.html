@@ -7169,6 +7169,20 @@
      dark 12.9:1), and the counting number with them. */
   .winloss-card.is-raid .raid-results .hud-pill{color:var(--ink); background:var(--surface); border-color:var(--surface-border);}
   .winloss-card.is-raid .raid-results .hud-pill .reward-count{color:inherit;}
+  /* 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a won raid fight's card is the card: its
+     tile, full name, rarity and "Pack card", a button to the card's details (was a "🃏 name" pill). */
+  .raid-results .rw3-drop{flex:0 0 100%; display:flex; flex-direction:column; align-items:center; gap:6px; margin:4px 0 2px;}
+  .raid-results .rw3-drop .rw-head{color:#fbf1dc; font-weight:800;}
+  .rw3-card{all:unset; box-sizing:border-box; display:flex; align-items:center; gap:12px; max-width:min(100%, 340px); padding:8px 14px 8px 8px; border-radius:14px; cursor:pointer;
+    color:var(--ink); background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 14px rgba(0,0,0,.25); text-align:left;}
+  .rw3-card:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.32);} .rw3-card:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+  .rw3-card .rw3-tile{flex:0 0 auto;} .rw3-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
+  .rw3-card .rw3-txt{display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .rw3-card .rw3-name{font-size:17px; line-height:1.15; overflow-wrap:anywhere;}
+  .rw3-card .rw3-rarity{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700;}
+  .rw3-card .rw3-rarity i{width:10px; height:10px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(0,0,0,.25);}
+  .rw3-card .rw3-from{font-size:13px; opacity:.85;}
+  #cardDetailOverlay.rw3-over{z-index:9600;} /* a reward card's details over the raid claim screen (z-index 9500) */
   /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
   .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}

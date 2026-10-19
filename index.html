@@ -7215,6 +7215,20 @@
      dark 12.9:1), and the counting number with them. */
   .winloss-card.is-raid .raid-results .hud-pill{color:var(--ink); background:var(--surface); border-color:var(--surface-border);}
   .winloss-card.is-raid .raid-results .hud-pill .reward-count{color:inherit;}
+  /* 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a won raid fight's card is the card: its
+     tile, full name, rarity and "Pack card", a button to the card's details (was a "🃏 name" pill). */
+  .raid-results .rw3-drop{flex:0 0 100%; display:flex; flex-direction:column; align-items:center; gap:6px; margin:4px 0 2px;}
+  .raid-results .rw3-drop .rw-head{color:#fbf1dc; font-weight:800;}
+  .rw3-card{all:unset; box-sizing:border-box; display:flex; align-items:center; gap:12px; max-width:min(100%, 340px); padding:8px 14px 8px 8px; border-radius:14px; cursor:pointer;
+    color:var(--ink); background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 14px rgba(0,0,0,.25); text-align:left;}
+  .rw3-card:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.32);} .rw3-card:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+  .rw3-card .rw3-tile{flex:0 0 auto;} .rw3-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
+  .rw3-card .rw3-txt{display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .rw3-card .rw3-name{font-size:17px; line-height:1.15; overflow-wrap:anywhere;}
+  .rw3-card .rw3-rarity{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700;}
+  .rw3-card .rw3-rarity i{width:10px; height:10px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(0,0,0,.25);}
+  .rw3-card .rw3-from{font-size:13px; opacity:.85;}
+  #cardDetailOverlay.rw3-over{z-index:9600;} /* a reward card's details over the raid claim screen (z-index 9500) */
   /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
   .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
@@ -35208,7 +35222,7 @@ css('rcs', `
 .fxf-rcs-rw{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px; min-width:92px; max-width:150px; padding:10px 10px 8px; border-radius:14px; box-sizing:border-box;
   background:rgba(140,220,255,.10); border:1px solid rgba(140,220,255,.38);}
 .fxf-rcs-rw .ico{display:flex; align-items:center; justify-content:center; min-height:36px; font-size:30px; line-height:1; font-family:${EMOJI};}
-.fxf-rcs-rw .ico svg, .fxf-rcs-rw .ico img{width:32px; height:32px;}
+.fxf-rcs-rw:not(.is-card) .ico > svg, .fxf-rcs-rw:not(.is-card) .ico > img{width:32px; height:32px;} /* 2026-10-19 (package RW3): only the reward's own icon (it blew up a card tile's stat glyphs and emoji to 32px) */
 .fxf-rcs-rw .amt{font:900 20px/1.05 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
 .fxf-rcs-rw .lbl{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#c3e6f4; overflow-wrap:anywhere;}
 .fxf-rcs-rw.w-3{border-color:rgba(120,240,200,.6); background:rgba(90,220,180,.12);}
@@ -35217,6 +35231,15 @@ css('rcs', `
 .fxf-rcs-rw.w-5 .lbl{color:#ffe7b0;}
 .fxf-rcs-rw.is-card .ico{min-height:0; padding:6px 0 10px;} /* room for the tile's own badges above and below it */ .fxf-rcs-rw.is-card .ico .card-tile{width:84px !important; height:105px !important; margin:0; font-size:9px;}
 .fxf-rcs-rw.is-title .amt{font-size:17px; color:#ffe39a;}
+/* 2026-10-19 (package RW3): a card reward is the card (tile, full name, rarity, Pack card), a button to its details */
+.fxf-rcs-rw.has-open{padding:0; max-width:170px;}
+.fxf-rcs-open{all:unset; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; gap:3px; width:100%; padding:10px 10px 8px; border-radius:14px; cursor:pointer; text-align:center;}
+.fxf-rcs.is-done .fxf-rcs-open:hover{background:rgba(255,255,255,.07);} .fxf-rcs-open:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+.fxf-rcs-open .ico{font-family:inherit;}
+.fxf-rcs-rw .ico .card-tile{font-family:'Baloo 2',system-ui,sans-serif;}
+.fxf-rcs-open .nm{font:900 15px/1.12 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
+.fxf-rcs-open .rar{display:inline-flex; align-items:center; gap:5px; font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#eaf6ff;}
+.fxf-rcs-open .rar i{width:9px; height:9px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(255,255,255,.75), 0 0 6px currentColor;}
 .fxf-rcs-go{min-width:200px;}
 .fxf-rcs-hint{position:absolute; left:0; right:0; bottom:max(12px, env(safe-area-inset-bottom)); z-index:3; text-align:center; font:700 13px/1 'Baloo 2',system-ui,sans-serif; color:#d6f2fd; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 .fxf-rcs.is-done .fxf-rcs-hint{visibility:hidden;}
@@ -35230,6 +35253,15 @@ css('rcs', `
 // Beat sounds by weight (SoundKit cues, layered): 1 a bubble, 2 coins, 3 a chime, 4 a rare rise, 5 the legendary rise and a fanfare.
 const RCS_BEAT = {1:['bubble'], 2:['gold', 'bubble'], 3:['unlockChime', 'splash'], 4:['rareRise', 'unlockChime'], 5:['rareRise:1', 'leaderFanfare', 'boom']};
 const RCS_COLS = {1:['#bff0ff', '#e8fbff', '#7fd8ff'], 2:['#ffe08a', '#fff3c4', '#7fd8ff'], 3:['#7dffd0', '#c9fff0', '#45d6ff'], 4:['#c9a2ff', '#f0e2ff', '#7fd8ff'], 5:['#ffd56e', '#fff3c4', '#ff9f5a', '#ffffff']};
+// 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a card reward ({kind:'card', open:id, name,
+// rarity, rarityColor, label, tip}) is a button: the card's tile, its full name, its rarity and where it came from ("Pack card"); once the
+// screen has settled a tap (or Enter) opens the card's details through opts.openCard(id).
+function rcsCardRewardHTML(r, F){
+  const aria = [r.name, r.rarity, r.label].filter(Boolean).join(' · ') + (r.tip ? '. ' + r.tip : '');
+  return `<li class="fxf-rcs-rw w-${r.weight} is-card has-open${F}"><button type="button" class="fxf-rcs-open" data-open-card="${esc(r.open)}" aria-label="${esc(aria)}"${r.tip ? ` title="${esc(r.tip)}"` : ''}>`
+    + `<span class="ico" aria-hidden="true">${r.icon || ''}</span><span class="nm">${esc(r.name || '')}</span>`
+    + `${r.rarity ? `<span class="rar"><i style="background:${esc(r.rarityColor || '#9fb3c8')}" aria-hidden="true"></i>${esc(r.rarity)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></button></li>`;
+}
 M.raidClaimScreen = function(spec, opts){
   spec = spec || {}; opts = opts || {};
   const g = G(), calm = !!opts.calm || !g || RM();
@@ -35259,7 +35291,7 @@ M.raidClaimScreen = function(spec, opts){
           : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
-      <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
+      <ul class="fxf-rcs-list">${list.map(r=> r.open ? rcsCardRewardHTML(r, F) : `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
       <button type="button" class="btn primary big fxf-rcs-go${F}">${esc(T.collect)}</button>
     </div>
     <div class="fxf-rcs-hint">${esc(T.skip)}</div><div class="fxf-rcs-flash" aria-hidden="true"></div>`;
@@ -35285,12 +35317,16 @@ M.raidClaimScreen = function(spec, opts){
       const end = ()=>{ if(sway) sway.kill(); st.remove(); try{ before && before.focus && before.isConnected && before.focus({preventScroll:true}); }catch(e){} call(opts.onDone); res(); };
       st.style.pointerEvents = 'none'; st.style.transition = 'opacity .25s'; st.style.opacity = '0'; setTimeout(end, 260); }; // a CSS fade on a timer, so a slow frame can't keep it up
     const onKey = e=>{ if(closed) return;
-      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ go.focus(); }catch(_){} return; }
+      if(opts.covered && opts.covered()) return; // 2026-10-19 (package RW3): a card's details are open over the screen: their keys
+      // 2026-10-19 (package RW3): Tab cycles the reward cards and Collect once the screen has settled
+      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ const f = qa('.fxf-rcs-open').concat([go]), i = f.indexOf(document.activeElement); f[(i + (e.shiftKey ? f.length - 1 : 1) + (i < 0 ? f.length : 0)) % f.length].focus(); }catch(_){} return; }
       if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); done ? close() : skip(); return; }
       if(!done && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')){ e.preventDefault(); e.stopPropagation(); skip(); } };
     document.addEventListener('keydown', onKey, true);
     st.addEventListener('pointerdown', e=>{ if(e.target.closest && e.target.closest('.fxf-rcs-go')) return; if(!done) skip(e.timeStamp); });
     go.addEventListener('click', e=>{ e.stopPropagation(); if(e.timeStamp - skippedAt < 300) return; if(!done) skip(e.timeStamp); close(); }); // a double tap doesn't skip and close at once
+    // 2026-10-19 (package RW3): a reward card opens its details (the tap that skipped to the end doesn't also open it)
+    qa('.fxf-rcs-open').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(!done || e.timeStamp - skippedAt < 300){ if(!done) skip(e.timeStamp); return; } try{ opts.openCard && opts.openCard(b.getAttribute('data-open-card')); }catch(_){} }));
     if(calm){ // fades only: the scene, the card, then each line, then each reward
       const fades = qa('.fxf-rcs-fade'); let t = 30;
       fades.forEach(e=>{ calmTimers.push(setTimeout(()=> e.classList.add('is-in'), t)); t += e.classList.contains('fxf-rcs-rw') ? 260 : 140; });
@@ -36795,7 +36831,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=977e2f6e40", "es": "assets/lang/es.js?v=773cb8f56e", "fr": "assets/lang/fr.js?v=39e6a193c1", "id": "assets/lang/id.js?v=38d65cc770", "it": "assets/lang/it.js?v=31f91c9deb", "ja": "assets/lang/ja.js?v=4b5218908b", "ko": "assets/lang/ko.js?v=4153b01940", "pt": "assets/lang/pt.js?v=2e4d2b5390", "ta": "assets/lang/ta.js?v=c931d0d22b", "tl": "assets/lang/tl.js?v=c793adf843", "zh-Hans": "assets/lang/zh-Hans.js?v=6e0147ded0", "zh-Hant": "assets/lang/zh-Hant.js?v=b3d63ad32a"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=a534e98822", "es": "assets/lang/es.js?v=bb4c489d94", "fr": "assets/lang/fr.js?v=b1098d5bb3", "id": "assets/lang/id.js?v=90d6475693", "it": "assets/lang/it.js?v=103a5a3149", "ja": "assets/lang/ja.js?v=a21b644316", "ko": "assets/lang/ko.js?v=937f180fc0", "pt": "assets/lang/pt.js?v=647cbaa4d7", "ta": "assets/lang/ta.js?v=dafdeaaebb", "tl": "assets/lang/tl.js?v=20797d782b", "zh-Hans": "assets/lang/zh-Hans.js?v=e985565949", "zh-Hant": "assets/lang/zh-Hant.js?v=06849c989c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -37172,6 +37208,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rc-shards-plus": "+{n} {icon} {name}",
   "results.rc-claim-pack-card": "Pack card",
   "results.rc-claim-faction-card": "Faction card",
+  "results.rw3-card-open": "Tap to see the card",
   "ui.rc-rw-participant-what": "{n} pack card{s} (now and then a faction card) and {shards} {icon} trophy shards",
   "ui.rc-rw-tier-extra": "one more pack card and +{shards} {icon}",
   "ui.rc-rw-tier-shards": "+{shards} {icon}",
@@ -41383,7 +41420,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9302504f48b2', BUILD_CARD_HASH = '009c78b2e40dae54eb1f214fb9c2e26718fc426fdfa9c71d2024732949780e6a';
+const BUILD_ID = '856fc3b40a5a', BUILD_CARD_HASH = '009c78b2e40dae54eb1f214fb9c2e26718fc426fdfa9c71d2024732949780e6a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -61379,8 +61416,10 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
     rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(raidLocale()), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
   if(shards > 0) rewards.push({kind:'currency', id:'raidShards', icon: raidShardIcon(def), amount:'+' + shards.toLocaleString(raidLocale()), label: raidShardName(def), weight:3}); // 2026-10-19 (package RC)
   // 2026-10-19 (package RC): a card is {id, from: 'pack' | 'faction' | 'raid'} (a bare id is a raid card, the older shape)
+  // 2026-10-19 (package RW3): + the card's full name, its rarity and a tap to its details (open), see raidRewardCardInfo
   (cardsGot || []).forEach(c=>{ const id = typeof c === 'string' ? c : c.id, from = typeof c === 'string' ? 'raid' : c.from, d = defs[id]; if(!d) return;
-    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+    const ci = raidRewardCardInfo(id, from) || {};
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: raidRewardFromLabel(from), name: ci.name || d.name || id, rarity: ci.rarity || '', rarityColor: ci.color || '', open: id, tip: ci.tip || '', weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
   if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
@@ -61392,8 +61431,39 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
 function showRaidClaimScreen(spec){
   if(!raidClaimScreenReady()) return Promise.resolve();
   const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
-  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), openCard: openRaidRewardCard, covered: raidRewardCardOpen /* 2026-10-19 (package RW3) */, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
+// ---- Raid reward cards, shown as cards (2026-10-19, package RW3, owner 22:14 / 22:32: "What is 'honeybrew'? it was a reward upon
+// completion of the raid" … "The raid just showed Honeybrew, not a card image."): "Honeybrew" was no item, drink or currency: it was the
+// card Honeyjoe Brewer (an Uncommon pack card) that the won raid fight dropped (raidFightCardDrop), shown on the results only as a small
+// "🃏 Honeyjoe Brewer" pill with no art, no rarity and nothing saying it was a card. A raid's card reward now always shows the card: its
+// tile (the art, as in the victory screens' Cards won), its full name, its rarity and where it came from (Pack card / Faction card /
+// Raid card), and a tap opens the card's details. Used by the raid fight's results (raidOfflineHTML) and the claim screen (FX.F).
+function raidRewardFromLabel(from){ return from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'); }
+function raidRewardCardInfo(id, from){
+  const d = getCardDefs()[id]; if(!d) return null;
+  const r = rarityDef(d.rarity || 'common') || {}, name = d.name || id, rarity = r.label || d.rarity || '', fromLabel = raidRewardFromLabel(from);
+  return {d, name, rarity, color: r.color || '', fromLabel, aria: [name, rarity, fromLabel].filter(Boolean).join(' · '), tip: TX('results.rw3-card-open')};
+}
+// A won raid fight's card: 'raid' when it is one of the raid's own cards, else a pack card (raidFightCardDrop draws only those two)
+function raidDropFrom(m, id){ try{ return m && m.raidDef && raidCardIds(m.raidDef).includes(id) ? 'raid' : 'pack'; }catch(e){ return 'pack'; } }
+function raidRewardCardHTML(id, from){
+  const c = raidRewardCardInfo(id, from); if(!c) return '';
+  return `<button type="button" class="rw3-card" data-rw3-card="${escapeAttr(id)}" aria-label="${escapeAttr(c.aria + '. ' + c.tip)}" title="${escapeAttr(c.tip)}">`
+    + `<span class="rw3-tile">${cardTileHTML(c.d, {inPlay:true})}</span>`
+    + `<span class="rw3-txt"><b class="rw3-name">${escapeHtml(c.name)}</b><span class="rw3-rarity"><i style="background:${escapeAttr(c.color)}" aria-hidden="true"></i>${escapeHtml(c.rarity)}</span><span class="rw3-from">🃏 ${escapeHtml(c.fromLabel)}</span></span></button>`;
+}
+// A tap on a reward card opens its details; over the claim screen (z-index 9500) the details sit on top until they close.
+function openRaidRewardCard(id){
+  if(!id || !getCardDefs()[id]) return;
+  try{ openCardDetail(id); }catch(e){ return; }
+  const ov = document.getElementById('cardDetailOverlay'); if(!ov || ov.hidden || !document.querySelector('.fxf-rcs')) return;
+  ov.classList.add('rw3-over');
+  const mo = new MutationObserver(()=>{ if(ov.hidden){ ov.classList.remove('rw3-over'); mo.disconnect(); } }); mo.observe(ov, {attributes:true, attributeFilter:['hidden']});
+}
+// the details opened over the claim screen are up (the screen leaves its keys to them: Esc closes the details, not the screen)
+function raidRewardCardOpen(){ const ov = typeof document !== 'undefined' && document.getElementById('cardDetailOverlay'); return !!(ov && !ov.hidden && ov.classList.contains('rw3-over')); }
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('[data-rw3-card]'); if(!b || b.closest('.fxf-rcs')) return; openRaidRewardCard(b.getAttribute('data-rw3-card')); });
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
 // then three panels: how a raid fight's rows work (you in front, an ally in each row behind, the boss calling in Commons), the raid's
@@ -75847,7 +75917,7 @@ function victoryParade(rowId, upOverride){
 // board with a very slight shake. A click, tap or key skips straight to the results.
 function playRewardReveal(m){
   const defs = getCardDefs();
-  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || [])].filter(id=> defs[id]);
+  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || (m.raidCardDrop ? [m.raidCardDrop] : []) /* + a won raid fight's card (2026-10-19, package RW3) */)].filter(id=> defs[id]);
   const unlocks = [...(m.unlockedFights||[]).map(f=> ({icon:(f.node && f.node.icon) || '⚔️', label: _t('New fight: {name}', {name:(f.node && f.node.name) || ''})})),
                    ...(m.unlockedActivities||[]).map(a=> ({icon:a.icon || '✨', label:a.label || ''}))];
   if(!cards.length && !unlocks.length) return Promise.resolve();
@@ -76625,9 +76695,10 @@ function matchStatsHTML(m){
       ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)})}</span>
       ${adminModeEnabled ? raidDamageCalcHTML(m) : '' /* 2026-10-19 (NV): how that number was made; (package RB, owner 12:23: "Do not show the damage formula to players.") admins only */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: raidNum(m.raidRemainingAfter), v2: m.raidRemainingAfter<=0?' — defeated!':''}) /* 2026-10-19 (package RB): 1,234 */}</span>
-      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
+      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${'' /* 2026-10-19 (package RW3): the dropped card is no longer a name pill (the owner's "Honeybrew"): it shows as the card, below */}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">${TX('results.dust', {v1: rewardCountSpan(orReward.dust)})}</span>` : ''}
+      ${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<div class="rw3-drop" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}"><div class="rw-head">${TX('results.cards-won')}</div>${raidRewardCardHTML(m.raidCardDrop, raidDropFrom(m, m.raidCardDrop))}</div>` : '' /* 2026-10-19 (package RW3): the card won, as a card (art, name, rarity, Pack card), a tap to its details */}
     </div>` : '';
   const gReward = m.gauntletRewardEarned;
   const gauntletHTML = (m.mode==='gauntlet' && m.gauntletStreakAfter!=null) ? `<div class="winloss-conquest-rewards">

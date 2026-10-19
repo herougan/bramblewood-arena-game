@@ -251,6 +251,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rc-shards-plus": "+{n} {icon} {name}",
   "results.rc-claim-pack-card": "Pack card",
   "results.rc-claim-faction-card": "Faction card",
+  "results.rw3-card-open": "Tap to see the card",
   "ui.rc-rw-participant-what": "{n} pack card{s} (now and then a faction card) and {shards} {icon} trophy shards",
   "ui.rc-rw-tier-extra": "one more pack card and +{shards} {icon}",
   "ui.rc-rw-tier-shards": "+{shards} {icon}",
