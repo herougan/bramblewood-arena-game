@@ -32,11 +32,13 @@ const gaps = after.filter(r=> r.curve && r.green !== 'green').map(r=> ({map: r.m
 const byCode = Object.fromEntries(after.map(r=> [r.map + ':' + r.key, r]));
 const dropov = drop.map(r=>{ const a = byCode[r.map + ':' + r.key] || {}; return {map: r.map, code: r.code, kind: r.kind, shieldWith: a.shield, shieldRule: r.shield,
   winWith: a.win, winRule: r.win, target: r1(r.target), lo: r1(r.lo), hi: r1(r.hi), greenWith: a.green, greenRule: r.green}; })
+  .filter(d=> d.shieldWith > d.shieldRule) // only an override above the rule (the measured Shield with it, over the measured rule's)
   .sort((a, b)=> a.code.localeCompare(b.code, 'en', {numeric: true}));
 const out = {generated: '2026-10-19', tool: 'tools/road_gaps_2026_10_19.js', from: 'docs/balance/skirmish-pass-bf-after.jsonl (120 games, measure seeds 9100)',
   levers: 'honest only (owner 16:22): enemy decks built for synergy inside the map theme and the rarity cap (Very Rare from Map 10); enemy levels on the owner\'s schedule (Maps 1-4 Lv 1, Maps 5-9 Lv 1-2, Map 10+ Lv 2 rising 0.2 a map); no new Shield overrides, no lower Health, no field buffs',
   counts, freshCounts, gaps: {total: gaps.length, easy: gaps.filter(g=> g.way === 'easy').length, hard: gaps.filter(g=> g.way === 'hard').length, list: gaps},
-  dropov: {fights: dropov.length, note: 'Shield overrides above the rule (an owner call: kept). winRule = the same fight with its override dropped (Shield on the rule, hqHp kept)', list: dropov}};
+  dropov: {fights: dropov.length, greenWith: dropov.filter(d=> d.greenWith === 'green').length, greenRule: dropov.filter(d=> d.greenRule === 'green').length,
+    mainGreenIfDropped: (counts.main ? counts.main.green : 0) + dropov.filter(d=> !/-[A-Z]-/.test(d.code) && d.code[0] !== 'T').reduce((t, d)=> t + (d.greenRule === 'green') - (d.greenWith === 'green'), 0), note: 'Shield overrides above the rule (an owner call: kept). winRule = the same fight with its override dropped (Shield on the rule, hqHp kept)', list: dropov}};
 const text = JSON.stringify(out, null, 1) + '\n';
 if(process.argv.includes('--check')){ let cur = ''; try{ cur = fs.readFileSync(OUT, 'utf8'); }catch(e){}
   const strip = s=> s.replace(/"generated": "[^"]*",?/, ''); if(strip(cur) !== strip(text)){ console.error('road-gaps-2026-10-19.json is stale: re-run node tools/road_gaps_2026_10_19.js'); process.exit(1); }
@@ -45,4 +47,4 @@ fs.writeFileSync(OUT, text);
 console.log('counts', JSON.stringify(counts), '\nfresh', JSON.stringify(freshCounts));
 console.log('gaps', gaps.length, '(easy', out.gaps.easy + ', hard', out.gaps.hard + ')');
 gaps.forEach(g=> console.log(' ', g.group.padEnd(5), g.code.padEnd(8), g.kind.padEnd(9), `${g.win}% target ${g.target} (${g.lo}-${g.hi})`, g.way, '+' + g.out));
-if(dropov.length){ console.log('Shield overrides above the rule:', dropov.length); dropov.forEach(d=> console.log(' ', d.code.padEnd(8), `Shield ${d.shieldWith} -> rule ${d.shieldRule}: ${d.winWith}% -> ${d.winRule}% (target ${d.target}; ${d.greenWith} -> ${d.greenRule})`)); }
+if(dropov.length){ console.log('Shield overrides above the rule:', dropov.length, 'green with', out.dropov.greenWith, 'on the rule', out.dropov.greenRule, '; main green if dropped', out.dropov.mainGreenIfDropped); dropov.forEach(d=> console.log(' ', d.code.padEnd(8), `Shield ${d.shieldWith} -> rule ${d.shieldRule}: ${d.winWith}% -> ${d.winRule}% (target ${d.target}; ${d.greenWith} -> ${d.greenRule})`)); }

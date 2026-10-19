@@ -401,8 +401,8 @@ if(CMD === 'list'){
   // 2026-10-19 (BF3, owner 16:22: "measure what removing them would do"): --drop-above-rule drops only a Shield override above the rule
   // (hqHp, which only lowers Health, and an override below the rule stay)
   const DROP_ABOVE = argv.includes('--drop-above-rule'), sumOv = v=> Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : (+v || 0);
-  const aboveRule = n=>{ if(n.shieldOverride == null || n.shieldOverride === '') return false; const c = Object.assign({}, n); delete c.shieldOverride; return sumOv(n.shieldOverride) > G.ruleShieldOf(c); };
-  if(DROP_ABOVE) mine = mine.filter(f=> aboveRule(f.n));
+  const aboveRule = f=>{ const n = f.n; if(n.shieldOverride == null || n.shieldOverride === '') return false; const c = Object.assign({}, n); delete c.shieldOverride; G.NODE_MAP_HINT.set(c, f.map); return sumOv(n.shieldOverride) > G.ruleShieldOf(c); }; // the copy keeps its map (its rule)
+  if(DROP_ABOVE) mine = mine.filter(f=> aboveRule(f));
   for(const f of mine){ const t = Date.now(), nn = NO_OV || DROP_ABOVE ? Object.assign({}, f.n) : null; if(nn){ delete nn.shieldOverride; if(NO_OV) delete nn.hqHp; }
     const r = measure(f, nn, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}, bandOf(f, r.win), {deck: f.n.deck /* 2026-10-19 (TH): which deck was measured */}))) + '\n'); }
   console.log('done');
