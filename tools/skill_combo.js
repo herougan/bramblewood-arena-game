@@ -242,13 +242,15 @@ function runScenario(lab, r, n, opts){
   return Object.assign({key:r.key, kind:r.kind, id:r.id, tag:r.tag, n:r.n, b:r.b, ctx:r.ctx || 'plain', value:r.value, per:r.per, effects:r.effects || r.test, enabler:r.enabler}, out, {games: lab.stats().games - g0, ms: Date.now() - t});
 }
 // From scenario runs to measured entries (in each entry's own units).
-function scenarioEntries(table, scen){
+function scenarioEntries(table, scen, seFloor){
+  // seFloor: the replicate noise of one S (see replicateStats); each solve's own error is floored at it
+  const fl = v=> v == null ? null : Math.max(v, seFloor || 0);
   const out = {}, by = (kind, id)=> scen.filter(r=> r.kind === kind && r.id === id && !r.error);
   const confOf = (v, se, clamp)=> clamp ? 'low' : se == null ? 'low' : se <= Math.max(0.15, Math.abs(v) * 0.25) ? 'high' : se <= Math.max(0.4, Math.abs(v) * 0.5) ? 'medium' : 'low';
   Object.entries(TRIGGER_SCEN).forEach(([id, sc])=>{ let list = by('trigger', id); if(sc.charge) list = list.filter(r=> r.n === 2);
     const ws = list.map(r=> r.w).filter(x=> x != null); if(!ws.length){ out['trigger:' + id] = {why:'the scenario did not move the win rate enough to divide by On Spawn'}; return; }
     // the weight's standard error from both solves (a ratio)
-    const ses = list.filter(r=> r.w != null && r.se != null && r.refSe != null).map(r=> Math.abs(r.w) * Math.sqrt(Math.pow(r.se / Math.max(0.3, Math.abs(r.S)), 2) + Math.pow(r.refSe / Math.max(0.3, Math.abs(r.refS)), 2)));
+    const ses = list.filter(r=> r.w != null && r.se != null && r.refSe != null).map(r=> Math.abs(r.w) * Math.sqrt(Math.pow(fl(r.se) / Math.max(0.3, Math.abs(r.S)), 2) + Math.pow(fl(r.refSe) / Math.max(0.3, Math.abs(r.refS)), 2)));
     // ... and the spread across the baselines (2026-10-19: a weight moves more with the baseline than with the seeds; the
     // standard error of the mean of the three is the honest one)
     const w = mean(ws), sd = ws.length > 1 ? Math.sqrt(ws.reduce((t, x)=> t + (x - w) * (x - w), 0) / (ws.length - 1)) / Math.sqrt(ws.length) : null;
@@ -266,7 +268,7 @@ function scenarioEntries(table, scen){
     const all = list.every(r=> r.clamp), some = list.some(r=> r.clamp);
     out[key] = {measuredS: r2(v), se: r2(se), conf: 'low', off: all ? list[0].clamp : null, how: `damage-equivalent in a mixed deck: ${MIX_K} copies among 20 vanilla, inverted on ${MIX_K} copies of On Spawn: Damage D (D 0-48) vs SW's calibrated mix, ${MIX_G} games a point; S = D × the damage action's measuredS per point (low confidence: the bridge puts this scale at 0.15-2.6x SW's)${all ? '; beyond the ladder on every baseline: more than Damage 48 (a kill a play), so only a bound' : some ? '; beyond the ladder on ' + list.filter(r=> r.clamp).map(r=> r.b).join(', ') + ' (a bound there)' : ''}`, D: r2(mean(list.map(r=> r.D))), at: list.map(r=> ({b:r.b, n:r.value, D:r.D, S:r.S, se:r.se, clamp:r.clamp}))}; });
   ['crepuscular', 'crepuscularHp'].forEach(id=>{ const r = scen.find(x=> x.kind === 'skill' && x.id === id && !x.error); if(!r) return;
-    out['skill:' + id] = {measuredS: r2(r.S), se: r.se, conf: confOf(r.S, r.se, r.clamp), how: id === 'crepuscular' ? 'SW\'s measure in a fixed twilight ({"phase":"twilight"}), b2' : 'S(Crepuscular + Crepuscular Hp 1) − S(Crepuscular) in a fixed twilight, b2', field:'twilight'}; });
+    out['skill:' + id] = {measuredS: r2(r.S), se: r2(fl(r.se)), conf: confOf(r.S, fl(r.se), r.clamp), how: id === 'crepuscular' ? 'SW\'s measure in a fixed twilight ({"phase":"twilight"}), b2' : 'S(Crepuscular + Crepuscular Hp 1) − S(Crepuscular) in a fixed twilight, b2', field:'twilight'}; });
   return out;
 }
 
@@ -372,13 +374,28 @@ function swSingle(sw, id, ctx){
 // ---------------------------------------------------------------------------------------------------------------------------
 // The report.
 // ---------------------------------------------------------------------------------------------------------------------------
-function pairRows(plan, results, sw){
+// The empirical noise (2026-10-19): 20 pairs and their singles again on other seeds (--replicate=20). The solve's own standard error
+// (a win rate's binomial noise over the local slope) came out ~10x too small: S moves ±0.5 between seed sets, an interaction ±0.7.
+// The report floors every standard error at these, so "high" means |interaction| ≥ 3 x the replicate noise.
+function replicateStats(main, rep){
+  const ds = [], di = [], rows = [];
+  Object.values(rep).forEach(r=>{ if(r.error) return; const k = r.key.replace(/\|rep$/, ''), m = main[k]; if(!m || m.error) return;
+    if(r.kind === 'single'){ ds.push(r.S.all - m.S.all); return; }
+    const s = (o, sfx)=> r.ids.map(id=> o[['single', id, r.ctx, r.b].join('|') + sfx]), a = s(rep, '|rep'), b = s(main, '');
+    if(a.some(x=> !x || x.error) || b.some(x=> !x || x.error)) return;
+    const Ir = r.S.all - a[0].S.all - a[1].S.all, Im = m.S.all - b[0].S.all - b[1].S.all; di.push(Ir - Im);
+    rows.push({pair: r.ids.join(' + '), S: m.S.all, Srep: r.S.all, I: r2(Im), Irep: r2(Ir)}); });
+  const rms = xs=> xs.length ? Math.sqrt(xs.reduce((t, x)=> t + x * x, 0) / xs.length) : null;
+  return {singles: ds.length, pairs: di.length, seS: ds.length ? r2(rms(ds) / Math.SQRT2) : null, seI: di.length ? r2(rms(di) / Math.SQRT2) : null, rows};
+}
+function pairRows(plan, results, sw, seFloor){
+  seFloor = seFloor || 0;
   const S = {}; results.filter(r=> r.kind === 'single' && !r.error).forEach(r=> S[r.ids[0] + '@' + r.ctx] = r);
   const rows = [];
   results.filter(r=> r.kind === 'pair' && !r.error).forEach(r=>{
     const [a, b] = r.ids, sa = S[a + '@' + r.ctx], sb = S[b + '@' + r.ctx]; if(!sa || !sb) return;
     const sum = sa.S.all + sb.S.all, I = r.S.all - sum, ses = [r.S.se, sa.S.se, sb.S.se];
-    const se = ses.every(x=> x != null) ? Math.sqrt(ses.reduce((t, x)=> t + x * x, 0)) : null;
+    const se0 = ses.every(x=> x != null) ? Math.sqrt(ses.reduce((t, x)=> t + x * x, 0)) : null, se = se0 == null ? null : Math.max(se0, seFloor);
     const clamp = !!(r.h2h.clamp || sa.h2h.clamp || sb.h2h.clamp);
     const z = se ? Math.abs(I) / se : 0, conf = clamp ? 'low' : z >= 3 ? 'high' : z >= 2 ? 'medium' : 'low';
     const swA = swSingle(sw, a, r.ctx), swB = swSingle(sw, b, r.ctx), swSum = swA != null && swB != null ? r2(swA + swB) : null;
@@ -453,15 +470,18 @@ function writeReport(o){
   const nm = cov.filter(r=> r.status.startsWith('not measured') || r.status.startsWith('off the scale'));
   L.push('**Still open** (honest gaps):', '');
   nm.forEach(r=> L.push(`- ${r.kind} \`${r.id}\`: ${r.status}${r.why ? ' — ' + r.why : ''}`));
+  L.push('- The damage-equivalents (Exile, Mind Control, Tsunami, Acid Bolt, Meteor, Gain, Bounty) are all **low confidence**: the bridge above puts that scale at 0.15–2.6× SW\'s 20-copy S depending on the kind of skill, so they rank these entries and bound the removals (5 copies of Exile, Mind Control or Tsunami beat 5 copies of Damage 48, a sure kill a play) but do not price them. Pricing a removal needs a removal yardstick (e.g. "Destroy a random enemy" as its own rung), not damage.');
+  L.push('- On Discard (Rebuild only: weight 0.96 at b2, too small to divide on b1 and b3) and On Chain Break (0.27, one baseline off its range; and run with Chained breaking on the foe\'s play, because the live "breaks on damage" version never broke often enough to measure) stay low confidence.');
   L.push('- Cross-field pairs (two skills bound to different fields, e.g. Darksight + Tide on 2 cards) were not run: each needs a merged field and its own calibrated pool. Listed in the JSON (`skipped`).');
   L.push('- Pairs are measured on one baseline (b2, 4/14 Wait 2) at the value live cards print most; a pair\'s interaction on a 2/8 or a 6/22 can differ (SW\'s single-skill tables show how much a skill moves with the baseline).', '');
   // method
   L.push('## Method (pairs)', '',
     `- **Which pairs**: all pairs among the ${plan.top.length} skills live cards print most (${plan.top.join(', ')}), every pair live cards print together on 2+ cards, and targeted pairs (the owner's examples: Poison + Proliferate, Flying + Arrow, Taunt + Thorns, and on-hit × multi-hit, Freeze + Frostbite, Remember + On Death: Exile, three null checks). Left out of the 40 (no effect alone and nothing on the same unit can switch them on): ${plan.left.map(x=> `${x.id} (${x.cards} cards: ${x.why})`).join('; ')}.`,
     '- **The unit**: b2 (4/14 Wait 2, Lumber 1, Common; Legendary when a skill is) + both skills at the value live cards print most, in the field a field-bound skill needs (Tide on a perma-tide, Nocturnal at night, Darksight in the dark, Dry in a heatwave, Mountain Climber in the frost).',
-    `- **Games**: SW's measure — 20 copies against 20 vanilla units (head-to-head: bisection on the opponent's added Health and Attack until 50%) and against SW's calibrated reference pool (glass cannons, tanks, flyers, a 0-cost swarm, the mix, + swimmers on the tide), inverted on SW's vanilla curves; S = (ΔHealth + 2 ΔAttack) / 2, the mean of head-to-head and pool. ${data.G} games per point; every pair and both its singles play the same seeds against the same opponents (common random numbers).`,
-    '- **Interaction** = S(A + B) − S(A) − S(B), all three measured here. Its standard error is the three runs\' errors added in quadrature (conservative: the shared seeds make the real error smaller). Confidence: high at |I| ≥ 3 SE, medium at ≥ 2 SE, low otherwise or when a solve ran off its range (a pair worth more than 5× the baseline\'s stats).',
-    '- **The comparison asked for** (sum of single-skill measuredS): the "Σ SW" column adds SW\'s own single-skill runs (b2, same field, 40 games a point). The singles re-measured here at the pair\'s games per point are the fair yardstick (same seeds, same game count); the two agree within noise for most skills (see the sheet).', '');
+    `- **Games**: a deck of 20 copies against SW's calibrated mix (5 glass cannons, 5 tanks, 5 flyers, 5 of the 0-cost swarm, the opponent vanilla wins about half against) with Health, then Attack, added to every foe until the deck wins half (bisection on whole points, then a 1/20 step: m of the 20 foes one point higher); less the vanilla unit's own crossing; S = (ΔHealth + 2 ΔAttack) / 2 (Budget-v3 units). Why not SW's vanilla mirror: 20 copies against 20 copies of one unit play near-deterministic games and Health counts only in whole hits, so small skills all read "one breakpoint"; the mix's four bodies smear the breakpoints. The win rates against the mirror and SW's reference pool are recorded too (the sheet), not averaged in. ${data.G} games per point; every pair and both its singles play the same seeds against the same opponents (common random numbers).`,
+    `- **Games per pair**: the pair's own run played ${data.gamesPair.median} games (median; ${data.gamesPair.min}–${data.gamesPair.max}); its interaction also rests on its two singles' runs (${data.gamesSingle.median} games each, median), so ~${data.gamesPair.median + 2 * data.gamesSingle.median} games behind each interaction. The first ${data.gamesPair.cold} pairs searched their crossings from 0 (median ${data.gamesPair.coldMedian} games); the other ${data.gamesPair.warm} started from the sum of their singles' crossings (median ${data.gamesPair.warmMedian} games): every batch is the same seeds whichever order it is asked in, so the crossing is the same one (checked on two pairs: identical S, 1,520 → 1,280 and 1,160 → 760 games), only fewer batches are played.`,
+    `- **Interaction** = S(A + B) − S(A) − S(B), all three measured here. **Noise, measured**: ${data.replicate.pairs} pairs and ${data.replicate.singles} singles were run again on other seeds; one S moves ±${data.replicate.seS} and one interaction ±${data.replicate.seI} between seed sets (the solve's own error formula said ~0.05, far too small). Every interaction's standard error is floored at ±${data.replicate.seI}. Confidence: high at |I| ≥ 3 SE (≥ ${r2(3 * data.replicate.seI)}), medium at ≥ 2 SE, low otherwise or when a solve ran off its range (a pair worth more than 8× the baseline's Health).`,
+    `- **The comparison asked for** (the sum of single-skill measuredS): the sheet's "Sum SW" column adds SW's own single-skill runs (b2, same field, 40 games a point) and "Interaction vs SW" is the pair against that sum. The singles re-measured here are the fair yardstick (same seeds, same opponent, same solver), so the headline uses them. The two yardsticks differ: over the ${data.vsSW.n} singles with a SW number the median gap is ${data.vsSW.medAbs} (mean here − SW ${sg(data.vsSW.mean)}, root-mean-square ${data.vsSW.rms})${data.vsSW.big.length ? ', and a few skills differ a lot (' + data.vsSW.big.map(x=> `${x.id} ${x.here} here vs ${x.sw} SW`).join(', ') + ')' : ''}. SW's S averages a head-to-head against the vanilla mirror with the reference pool, while this one solves against the calibrated mix only (one opponent, so the pair and its singles see the same games); a skill that crushes the mirror (Supreme) reads far higher in SW's. So "Interaction vs SW" mixes two yardsticks and is for reference; the synergy flags use the same-yardstick interaction.`, '');
   // headline
   L.push('## Top synergies (pair worth ≫ the sum of its singles)', '', '| # | Pair | Field | S pair | S(A) | S(B) | Sum | Interaction | ×Sum | SE | Conf | Cards |', '|---|---|---|---|---|---|---|---|---|---|---|---|');
   syn.slice(0, 20).forEach((r, i)=> L.push(`| ${i + 1} | ${r.pair} | ${r.ctx} | ${r.S} | ${r.Sa} | ${r.Sb} | ${r.sum} | **${sg(r.I)}** | ${r.ratio != null ? r.ratio : '–'} | ${r.se} | ${r.conf} | ${r.cards || ''} |`));
@@ -478,8 +498,8 @@ function writeReport(o){
     fsyn.forEach(f=> L.push(`| \`${f.id}\` | ${f.plain} | ${f.rain} | ${f.tide} | ${sg(f.dRain)} | ${sg(f.dTide)} |`)); }
   L.push('');
   // model
-  L.push('## Interaction model', '', `Fitted on the ${model.n} pairs whose solves stayed in range. Error of a pair's predicted worth (RMSE, in S):`, '',
-    '| Model | RMSE |', '|---|---|', `| additive (S(A) + S(B)) | ${model.rmse.additive} |`, `| one global multiplier (× ${model.global}) | ${model.rmse.global} |`, `| a multiplier per family pair (below; the global one where a family pair has < 3 pairs) | ${model.rmse.family} |`, `| family multiplier + the per-pair adjustment table | ${model.rmse.table} |`, '',
+  L.push('## Interaction model', '', `Fitted on the ${model.n} pairs whose solves stayed in range (${rows.length - model.n} clamped pairs left out). Error of a pair's predicted worth (RMSE, in S; the replicate noise of one S is ±${data.replicate.seS}, so ~${r2(Math.sqrt(3) * data.replicate.seS)} of any RMSE here is noise):`, '',
+    '| Model | RMSE |', '|---|---|', `| additive (S(A) + S(B)) | ${model.rmse.additive} |`, `| one global multiplier (× ${model.global}) | ${model.rmse.global} |`, `| a multiplier per family pair (below; the global one where a family pair has < 3 pairs) | ${model.rmse.family} |`, `| family multiplier + the per-pair adjustment table (in-sample: the table is these pairs, shrunk by their noise) | ${model.rmse.table} |`, '',
     `**How the budget could use it**: S(card with skills A and B) = m(fam A, fam B) × (S(A) + S(B)), and for a pair in the adjustment table use S(A) + S(B) + adj instead. Families: ${Object.entries(FAMILY).map(([f, l])=> `${f} (${l.slice(0, 6).join(', ')}${l.length > 6 ? '…' : ''})`).join('; ')}; anything else is "other".`, '',
     '| Family pair | Pairs | Multiplier m | Mean interaction |', '|---|---|---|---|');
   model.families.filter(f=> f.pairs >= 3).forEach(f=> L.push(`| ${f.fam} | ${f.pairs} | ${f.m != null ? f.m : '–'} | ${sg(f.meanI)} |`));
@@ -487,7 +507,7 @@ function writeReport(o){
   model.table.slice(0, 30).forEach(t=> L.push(`| ${t.pair} | ${t.ctx} | ${sg(t.adj)} | ${sg(t.I)} | ${t.se} |`));
   L.push('', '## Reading it', '',
     '- An interaction is a property of these decks (20 copies of the pair unit against vanilla and the reference pool); a synergy that needs company (tribes, Prayer cards) still reads as additive here.',
-    '- Saturation: when a pair wins (nearly) every pool game, the pool side is clamped and the pair leans on its head-to-head; a pair worth more than 5× the baseline is only a bound (marked low).',
+    '- Resolution: with 40 games a point a crossing moves in steps, so pairs where one skill decides the games read the same number (several Ambush pairs at 2.87, Freeze + Armor = Freeze + Scare = 7.12, Freeze + Daunt = Freeze alone). A solve that hit its range (8x the baseline\'s Health or Attack: Freeze + Fork, Taunt, Stealth) is a bound and its interaction is marked low.',
     '- Large negative interactions often mean overlap rather than conflict: two answers to the same problem (two evasions, two ranged openers) are not worth both prices.',
     '- Nothing in the game changed: `value` and every card\'s S stay as they were; the scenario numbers are `measuredS` the owner applies in the hub.', '');
   fs.writeFileSync(OUT_MD, L.join('\n'));
@@ -546,7 +566,7 @@ if(require.main === module){
     const sw = swData(), p = pairPlan(table), done = readJsonl(CK_PAIRS), scenDone = readJsonl(CK_SCEN);
     const results = p.runs.map(r=> done[r.key]).filter(Boolean), scen = scenarioPlan().map(r=> scenDone[r.key]).filter(Boolean);
     const missing = p.runs.filter(r=> !done[r.key]).length; if(missing) console.log(`warning: ${missing} planned runs have no result yet`);
-    const rows = pairRows(p, results, sw), model = interactionModel(rows), scenEnt = scenarioEntries(table, scen);
+    const rep = replicateStats(done, readJsonl(CK_REP)), rows = pairRows(p, results, sw, rep.seI || 0), model = interactionModel(rows), scenEnt = scenarioEntries(table, scen, rep.seS || 0);
     const single = id=> ctx=>{ const r = results.find(x=> x.kind === 'single' && x.ids[0] === id && x.ctx === ctx && !x.error); return r ? r.S.all : null; };
     const fieldSyn = FIELD_SYN.skills.map(id=>{ const s = single(id), pl = s('plain'), rn = s('rain'), td = s('tide'); return {id, plain: pl, rain: rn, tide: td, dRain: pl != null && rn != null ? r2(rn - pl) : null, dTide: pl != null && td != null ? r2(td - pl) : null}; });
     const applied = args.includes('--apply') ? applyScenario(JSON.parse(JSON.stringify(table)), scenEnt) : table;
@@ -555,7 +575,12 @@ if(require.main === module){
       singles: results.filter(r=> r.kind === 'single').length, baseline: 'b2', top: p.top, leftOut: p.left, skipped: p.skipped, mixK: MIX_K, families: FAMILY,
       pairs: rows.map(r=> ({pair:r.pair, a:r.a, b:r.b, ctx:r.ctx, source:r.source, cards:r.cards, games:r.gamesPair, S:r.S, Sa:r.Sa, Sb:r.Sb, sumSingles:r.sum, interaction:r.I, ratio:r.ratio, se:r.se, z:r.z, confidence:r.conf, clamped:r.clamp, sumSW:r.swSum, interactionVsSW:r.Isw, wr:r.wr})),
       singlesRuns: results.filter(r=> r.kind === 'single').map(r=> ({id:r.ids[0], ctx:r.ctx, S:r.S.all, se:r.S.se, sw: swSingle(sw, r.ids[0], r.ctx), games:r.games})),
-      fieldSyn, model, scenarios: scen, scenarioEntries: scenEnt, coverage: cov, results};
+      fieldSyn, model, scenarios: scen, scenarioEntries: scenEnt, coverage: cov, replicate: rep, results};
+    const med = xs=> xs.length ? xs.slice().sort((a, b)=> a - b)[Math.floor(xs.length / 2)] : 0, pr = results.filter(r=> r.kind === 'pair'), sr = results.filter(r=> r.kind === 'single');
+    data.gamesPair = {median: med(pr.map(r=> r.games)), min: Math.min(...pr.map(r=> r.games)), max: Math.max(...pr.map(r=> r.games)), warm: pr.filter(r=> r.warm).length, cold: pr.filter(r=> !r.warm).length, warmMedian: med(pr.filter(r=> r.warm).map(r=> r.games)), coldMedian: med(pr.filter(r=> !r.warm).map(r=> r.games))};
+    data.gamesSingle = {median: med(sr.map(r=> r.games))};
+    const vs = data.singlesRuns.filter(r=> r.sw != null && r.S != null), dd = vs.map(r=> r.S - r.sw);
+    data.vsSW = {n: vs.length, medAbs: r2(med(dd.map(Math.abs))), mean: r2(mean(dd) || 0), rms: r2(Math.sqrt(mean(dd.map(x=> x * x)) || 0)), big: vs.map(r=> ({id: r.id + (r.ctx !== 'plain' ? '@' + r.ctx : ''), here: r.S, sw: r.sw, d: Math.abs(r.S - r.sw)})).sort((a, b)=> b.d - a.d).slice(0, 4).map(x=> ({id:x.id, here:x.here, sw:x.sw}))};
     fs.writeFileSync(OUT_JSON, JSON.stringify(data) + '\n');
     writeReport({table, plan:p, rows, model, scen, scenEnt, cov, sw, data});
     const sf = OUT_JSON.replace(/\.json$/, '.sheet.json'); fs.writeFileSync(sf, JSON.stringify(sheet({rows, model, scen, scenEnt, cov})));

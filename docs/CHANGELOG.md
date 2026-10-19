@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package DC: duo-skill combos and the coverage gaps)
+- **Owner (08:10): "Have you tested & costed all skills yet? We can do a sample testing with duo-skill combos, 1,000–2,000 times."** Nothing in the game changed: `value` and every card's S stay as they were.
+- **828 skill pairs measured** with `node tools/skill_combo.js` (on SW's lab, the live engine). They are every pair among the 40 skills live cards print most, every pair live cards print together, and the owner's examples. Each pair is put on one unit (b2, 4/14 Wait 2) and compared with its two singles, on the same seeds. That took 1.16M games: about 880 for the pair's own run (median) plus about 920 for each single, so ~2,700 games behind each interaction. A replicate run on other seeds puts the noise at ±0.5 for one S and ±0.7 for one interaction.
+  - **187 interactions are flagged** at medium or high confidence: 138 synergies and 49 anti-synergies.
+  - **Biggest synergies:** Freeze + Rage (+28.9), Evasive + On Ready: Gold (+14.6), Evasive + Freeze, Supreme + On Ready: Gold, Flying + On Ready: Gold. Freeze stacks with anything that hits hard or often.
+  - **Biggest anti-synergies:** Backstab + Fork (−5.9), Guardian + Rage, Guardian + Fork, Darksight + Keen Sense, Armor + Freeze.
+  - **The owner's examples:** Poison + Proliferate +4.9, Flying + Arrow +4.0. Taunt + Thorns reads as additive within noise, and Guardian + Thorns as −1.7.
+- **Interaction model** for the budget. A card with skills A and B costs m(family A, family B) × (S(A) + S(B)), with 70+ family-pair multipliers. Examples: control × offense 1.29, dot × evade 1.35, economy × evade 1.84, control × control 0.72. A per-pair adjustment table (263 pairs, shrunk by their noise) covers the measured pairs. One global multiplier is 1.12. Prediction error (RMSE) is 2.32 additive, 1.79 with the family multipliers and 0.64 with the table (in-sample).
+- **Coverage:**
+  - **The 9 triggers that never fired on plain decks now have scenario decks** (an enabler on the test unit and on its control deck). The weights below are as measured, against today's values in brackets: On Ally Spawn 1.38 (1), On Enemy Spawn 2.26 (0.5), On Move 1.7 (0.5), On Heal 2.73 (2), On Exile 1.14 (0.25), On Charge 1.62 at N 2 (1; 3.05 at N 1, 1.11 at N 3), On Sacrifice 0.29 (0.5). On Discard (0.96) and On Chain Break (0.27) are low confidence.
+  - **Crepuscular** is now measured in a fixed twilight: 3.72.
+  - **Exile, Mind Control, Tsunami, Acid Bolt, Meteor, Gain and Bounty** are measured as damage-equivalents in a mixed deck (5 copies among 20 vanilla). These are low confidence (a bridge shows the scale is 0.15–2.6× SW's). Exile, Mind Control and Tsunami stay bounds: more than a sure kill a play.
+  - Still open: Prayer, Leader, Weakness, Hunter's status parameter, On Any Played (no engine hook), cross-field pairs.
+- These are written as measured fields (`measuredS`, `measuredConf`, `measuredSE`, `measuredHow`) in `canonical/skill-costs.json`.
+- **Outputs:** `docs/skill-combos-2026-10-19.md`, `.xlsx` and `docs/balance/skill-combos-2026-10-19.json`, plus the checkpoints in `docs/balance/skill-combos-*`.
+- **The hub's 🧮 Skill costs tab has a Combos view** with the top 40 synergies and anti-synergies and the family multipliers. New test `tests/skill-combos-2026-10-19.js` (in run-all).
+
 ## 2026-10-19 (package TC: the tests follow the applied skill costs)
 - **The owner applied the measured skill worth** to `canonical/skill-costs.json`: 199 entries use their high-confidence `measuredS` (a negative one floored at 0), and each keeps `prevValue` and `appliedAt`. His own values stay: On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike. Owner 08:49: separate the units by theme, he picks the units for each map, then a post-balance step sets skills and stats. **No card was refit.**
 - **Post-balance queue: 29 cards** that fitted budget v3 before the new costs and are over it now. Each fails only 2A+H+S < N, by +0.01 (Bone Diviner) to +9.5 (Marshal of Rivergate). The list is in `docs/balance/post-balance-queue.json` (built by `node tools/post_balance_queue.js`, `--check` for staleness) and `docs/post-balance-queue-2026-10-19.md`.

@@ -172,7 +172,7 @@
   // multiplier a card with two skills could be costed with.
   const COMBOS = typeof SC_COMBOS !== 'undefined' && SC_COMBOS && (SC_COMBOS.syn || []).length + (SC_COMBOS.anti || []).length ? SC_COMBOS : null;
   function renderCombos(){
-    $('scHint').textContent = `Skill pairs on one unit (b2, 4/14 Wait 2): ${COMBOS.pairs} pairs, ${COMBOS.G} games a point, ${COMBOS.games} games in all (docs/skill-combos-2026-10-19.md). Interaction = S(pair) − S(A) − S(B); medium and high confidence only. Read-only.`;
+    $('scHint').textContent = `Skill pairs on one unit (b2, 4/14 Wait 2): ${COMBOS.pairs} pairs, ${COMBOS.G} games a point, ${Number(COMBOS.games).toLocaleString('en')} games in all (docs/skill-combos-2026-10-19.md). Interaction = S(pair) − S(A) − S(B); medium and high confidence only. Read-only.`;
     const hit = r=> !st.q || (r.pair + ' ' + (r.ctx || '')).toLowerCase().includes(st.q), sg = v=> (v > 0 ? '+' : '') + v;
     const row = r=> `<div class="sc-row sc-cb"><div class="sc-lb"><b>${esc(r.pair)}</b><small>${r.ctx && r.ctx !== 'plain' ? esc(r.ctx) + ' · ' : ''}S ${r.S} vs ${r.sumSingles} apart (${r.Sa} + ${r.Sb})${r.cards ? ' · on ' + r.cards + ' card' + (r.cards === 1 ? '' : 's') : ''}</small></div>`
       + `<div class="sc-ms c-${esc(r.confidence)}"><span class="sc-mv"><small>interaction</small><b>${sg(r.interaction)}</b><small>±${r.se} · ${esc(r.confidence)}</small></span></div></div>`;
