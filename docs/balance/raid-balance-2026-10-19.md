@@ -230,3 +230,25 @@ Tiers, shipped (any participant-life): Participant 76.5%, Competent 37.9%, Leadi
     node tools/raid_completion_model.js measure --n 40 --castle 420 --out FILE          # --castle / --core-castle / --elders / --stage-atk try values without editing raids.json
     node tools/raid_completion_model.js measure --n 40                                 # the shipped brambles and elders (~10 min)
     node tools/raid_completion_model.js cycle --cycles 200 --players 10,20,30,40,50,75,100,150,200,250
+
+## Package MX: the raid Shield 50 (2026-10-19, owner 22:47)
+
+The boss's bramble in each raid fight now opens with a Shield of 50 × the part's remaining share (`RaidM.raidShield`): 50 fresh, 25 at half, 0 at the end. The Shield soaks hits before Health, and only Health lost counts as raid damage. Measured on today's code (after the RR merge) with the same seeds at Shield 0 and Shield 50, n 20 a cell. Files: `raid-balance-2026-10-19-fights-mx-shield0.json` / `-shield50.json`.
+
+| Deck (reference) | Damage a fight, avg (0 → 50) | Fresh arm/tail | Half-down arm/tail | Fresh Core | Wins |
+|---|---|---|---|---|---|
+| Map 10 | 216 → 197 | 203 → 159 | 226 → 206 | 121 → 103 | 26% → 23% |
+| **Map 13** | **252 → 235 (−7%)** | **248 → 209 (−16%)** | 268 → 252 | 148 → 131 | 37% → 32% |
+| Map 16 | 298 → 289 | 310 → 288 | 314 → 305 | 168 → 154 | 68% → 62% |
+| Map 20 | 304 → 295 | 317 → 295 | 317 → 307 | 184 → 174 | 74% → 68% |
+
+**Completion** (200 weeks a row, the model's deck mix, 60% of tickets, the raid's stand-ins at 12%/day):
+
+| Participants | 30 | 40 | 50 |
+|---|---|---|---|
+| Shield 0 | 100% (day 6.53) | 100% (day 6.21) | 100% (day 5.94) |
+| **Shield 50** | **100% (day 6.57)** | **100% (day 6.27)** | **100% (day 6.02)** |
+
+Raid damage a fight across the mix falls from 788 to 736 (−7%). The fall comes about 0.05–0.08 days later. With no stand-ins, neither version falls with 30–50 players: their median raid damage a life is 6,000 → 4,840 (−19%), so at that size the stand-ins carry the kill either way. Nothing else was retuned (the owner chose 50).
+
+    node tools/raid_completion_model.js measure --n 20 --decks 13 --shield 0 --out FILE    # --shield N tries another raid Shield (0 = off)
