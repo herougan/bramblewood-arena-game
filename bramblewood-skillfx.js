@@ -728,25 +728,67 @@ function evasiveDodgeHit(target, o){
       burst(c.x - s*c.w*0.1, c.y, s > 0 ? 180 : 0, 'wood', 5); }, '<')
     .to(t, {x:0, y:0, rotation:0, skewX:0, scaleX:1, scaleY:1, duration:.38, ease:'elastic.out(1, .55)', clearProps:'transform'});
 }
-// Cleave (Sweep): one wide glowing arc swept across the target row; each card is hit as the blade passes.
+// The Cleave crescent (2026-10-19, package BU, owner on an iPhone: "Cleave doesn't look so nice on mobile. Also, it is not centered."):
+// was a quadratic stroke 16 px wide under a 4 px blur that bowed at least 34-40 px off the row, a big glowing loop on 40-75 px cards.
+// Now a filled, tapered crescent (a blade's edge: white core, gold rim, a thin dark edge) laid across the three slot centres of ONE
+// row, its bow and thickness scaled to the card (bow about a quarter of a card's height, at most a sixth of its width thick), revealed by
+// its tip as it sweeps, with a short trail (about one column long) that follows the tip and fades, then a quick fade. Fixed overlay,
+// screen pixels from getBoundingClientRect, so the board's camera can't move it off its cards.
+//   pts: the slot centres {x, y, w, h} in sweep order; away: +1 bows down the screen, -1 up (away from the attacker).
+//   tipAt(k): when (s) the tip passes pts[k]. Returns the timeline's end time (s).
+const CRESCENT_CSS = `.sfx-crescent{overflow:visible;} .sfx-crescent .cr-glow{fill:rgba(255,214,120,.55);} .sfx-crescent .cr-blade{stroke:rgba(122,74,12,.85); stroke-linejoin:round;}
+.sfx-crescent .cr-spark{fill:#fffbe8;}`;
+function crescentCss(){ if(document.getElementById('sfx-crescent-css')) return; const s = document.createElement('style'); s.id = 'sfx-crescent-css'; s.textContent = CRESCENT_CSS; (document.head || document.body).appendChild(s); }
+function crescentSlash(pts, away, t0, tipEnd, o){
+  o = o || {}; crescentCss();
+  const g = G(), P = pts.filter(Boolean), first = P[0], last = P[P.length - 1], mid = P[Math.floor(P.length/2)];
+  const cw = Math.max(24, Math.min(...P.map(p=> p.w || 60))), ch = Math.max(30, mid.h || cw*1.25);
+  const dirX = Math.sign(last.x - first.x) || 1, pitch = Math.abs(last.x - first.x)/Math.max(1, P.length - 1) || cw + 8;
+  const lead = pitch*0.42, y0 = mid.y + away*ch*0.08;                    // just past the cards' middle, on the side away from the attacker
+  const A = {x:first.x - dirX*lead, y:y0 - away*ch*0.1}, B = {x:last.x + dirX*lead, y:y0 - away*ch*0.1};
+  const bow = Math.max(8, Math.min(30, ch*0.24)), thick = Math.max(4, Math.min(14, cw*0.18));
+  const mx = (A.x + B.x)/2, outer = {x:mx, y:y0 + away*bow*2}, inner = {x:mx, y:y0 + away*(bow*2 - thick*2)};
+  const d = `M${A.x.toFixed(1)},${A.y.toFixed(1)} Q${outer.x.toFixed(1)},${outer.y.toFixed(1)} ${B.x.toFixed(1)},${B.y.toFixed(1)} Q${inner.x.toFixed(1)},${inner.y.toFixed(1)} ${A.x.toFixed(1)},${A.y.toFixed(1)}Z`;
+  const sv = svgLayer('sfx-crescent'), NS = 'http://www.w3.org/2000/svg', n = ++crescentSlash.n, id = 'sfxCrClip' + n, gid = 'sfxCrGrad' + n;
+  sv.innerHTML = `<defs><linearGradient id="${gid}" x1="0" y1="${away > 0 ? 1 : 0}" x2="0" y2="${away > 0 ? 0 : 1}"><stop offset="0" stop-color="#fffef6"/><stop offset=".55" stop-color="#ffe9a8"/><stop offset="1" stop-color="#f2b443"/></linearGradient>`
+    + `<clipPath id="${id}" clipPathUnits="userSpaceOnUse"><rect class="cr-win" x="${A.x}" y="${Math.min(A.y, outer.y) - 40}" width="0" height="${Math.abs(outer.y - A.y) + 80}"/></clipPath></defs>`
+    + `<g clip-path="url(#${id})"><path class="cr-glow" d="${d}" style="filter:blur(${Math.max(1.5, thick*0.35).toFixed(1)}px)"/><path class="cr-blade" d="${d}" fill="url(#${gid})" stroke-width="${Math.max(.8, thick*0.12).toFixed(2)}"/></g>`;
+  const win = sv.querySelector('.cr-win'), spark = document.createElementNS(NS, 'circle');
+  spark.setAttribute('class', 'cr-spark'); spark.setAttribute('r', String(Math.max(2, thick*0.45))); spark.style.opacity = '0'; sv.appendChild(spark);
+  const span = Math.abs(B.x - A.x) || 1, trail = Math.min(span, pitch*1.15);
+  const st = {p:0}, total = Math.max(.05, tipEnd - t0), tTrail = total*(trail/span);
+  // the window between the trail's end and the tip, in the blade's own travel (0..span from A); one column-long trail behind the tip
+  const sync = ()=>{ const h = Math.max(0, Math.min(span, st.p)), lo = Math.max(0, Math.min(h, st.p - trail));
+    win.setAttribute('x', (dirX > 0 ? A.x + lo : A.x - h).toFixed(1)); win.setAttribute('width', Math.max(0, h - lo).toFixed(1));
+    // the spark rides the tip along the outer edge
+    const u = h/span, q = 1 - u; spark.setAttribute('cx', (q*q*A.x + 2*q*u*outer.x + u*u*B.x).toFixed(1)); spark.setAttribute('cy', (q*q*A.y + 2*q*u*outer.y + u*u*B.y - away*thick*0.4).toFixed(1)); };
+  sync();
+  g.timeline({onComplete:()=> sv.remove()})
+    .set(spark, {opacity:1}, t0)
+    .to(st, {p:span + trail, duration:total + tTrail, ease:'none', onUpdate:sync}, t0)
+    .to(spark, {opacity:0, duration:.08}, t0 + total)
+    .to(sv, {opacity:0, duration:Math.max(.1, tTrail*0.8), ease:'power1.in'}, t0 + total + tTrail*0.2);
+  return {A, B};
+}
+crescentSlash.n = 0;
+// Cleave (Sweep), the lone swing (a Cleave the game couldn't group, and the Lab's quick demo): the same crescent across the struck cards'
+// row (only the cards in the middle one's row; 2026-10-19, BU), each card hit as the tip passes it.
 function cleave(attacker, targets, o){
   o = o || {}; const list = (targets||[]).filter(Boolean); if(!list.length) return;
   if(!ready() || !attacker){ list.forEach((el, i)=> call(o.onEachImpact, el, i)); return; }
-  const g = G(), a = centre(attacker), items = list.map(el=> ({el, c:centre(el)})).sort((p, q)=> p.c.x - q.c.x), cs = items.map(it=> it.c);
-  const first = cs[0], last = cs[cs.length - 1], mid = {x:(first.x + last.x)/2, y:(first.y + last.y)/2};
-  const away = Math.sign(mid.y - a.y) || -1;   // the arc bows away from the attacker
-  const P0 = {x:first.x - first.w*0.75, y:first.y + away*first.h*0.15}, P2 = {x:last.x + last.w*0.75, y:last.y + away*last.h*0.15};
-  const M = {x:mid.x, y:mid.y + away*Math.max(40, (P2.x - P0.x)*0.22)};
-  const sv = svgLayer('sfx-arc'), d = `M${P0.x},${P0.y} Q${M.x},${M.y} ${P2.x},${P2.y}`;
-  const gl = drawPath(sv, d, 'glow'), co = drawPath(sv, d, 'core'), sweep = .26;
-  const tt = g.timeline({onComplete:()=> sv.remove()});
-  tt.to(tileOf(attacker), {rotation:-8, y:away*-4, duration:.1, ease:'power2.out'}, 0).to(tileOf(attacker), {rotation:6, y:away*6, duration:sweep, ease:'power2.in'}, .1)
-    .to(tileOf(attacker), {rotation:0, y:0, duration:.3, ease:'elastic.out(1, .5)', clearProps:'transform'}, .1 + sweep)
-    .to([gl, co], {strokeDashoffset:0, duration:sweep, ease:'power2.in'}, .1)
-    .to(sv, {opacity:0, duration:.3}, .1 + sweep + .08);
-  // each card is struck when the blade's tip passes its x (solving for t along the arc is close enough linearly)
-  items.forEach(({el, c}, i)=>{ const f = (c.x - P0.x)/(P2.x - P0.x || 1);
-    later(()=>{ knock(el, f < .5 ? 160 : 20, 1); burst(c.x, c.y, f < .5 ? 0 : 180, 'wood', 6); if(o.light) call(o.light, c.x, c.y, [1, .9, .6], false); call(o.onEachImpact, el, i); }, (0.1 + sweep*Math.sqrt(Math.max(0, f)))*1000); });
+  const g = G(), a = centre(attacker), all = list.map(el=> ({el, c:centre(el)})).sort((p, q)=> p.c.x - q.c.x);
+  const m0 = all[Math.floor(all.length/2)].c, items = all.filter(it=> Math.abs(it.c.y - m0.y) < m0.h*0.5);
+  const cs = items.map(it=> it.c), away = Math.sign(m0.y - a.y) || -1, step = .1, t0 = .1;
+  const pts = cs.length >= 2 ? cs : [{x:m0.x - (m0.w + 8), y:m0.y, w:m0.w, h:m0.h}, m0, {x:m0.x + (m0.w + 8), y:m0.y, w:m0.w, h:m0.h}];
+  const first = pts[0], last = pts[pts.length - 1], pitch = Math.abs(last.x - first.x)/Math.max(1, pts.length - 1) || m0.w + 8;
+  const lead = pitch*0.42, perPx = step/pitch, tipEnd = t0 + (Math.abs(last.x - first.x) + 2*lead)*perPx;
+  crescentSlash(pts, away, t0, tipEnd);
+  const t = tileOf(attacker);
+  g.timeline().to(t, {rotation:-8, y:away*-4, duration:.1, ease:'power2.out'}).to(t, {rotation:6, y:away*6, duration:tipEnd - t0, ease:'power2.in'})
+    .to(t, {rotation:0, y:0, duration:.3, ease:'elastic.out(1, .5)', clearProps:'transform'});
+  // each card is struck when the blade's tip passes its x
+  all.forEach(({el, c}, i)=>{ const at = t0 + (lead + Math.abs(c.x - first.x))*perPx;
+    later(()=>{ knock(el, c.x < m0.x ? 160 : 20, 1); burst(c.x, c.y, c.x < m0.x ? 0 : 180, 'wood', 6); if(o.light) call(o.light, c.x, c.y, [1, .9, .6], false); call(o.onEachImpact, el, i); }, at*1000); });
 }
 // Cleave swing (2026-10-15, user: "The cleave effect should show a arc slash (like you have done) from the left to right. But do this
 // straight away, don't have to attack a empty slot before continuing with an arc slash. 2ndly, the unit cleaving should look like
@@ -758,22 +800,17 @@ function cleave(attacker, targets, o){
 function cleaveSwing(attacker, pts, o){
   o = o || {}; const W = (o.windup || 390)/1000, S = (o.step || 200)/1000;
   if(!ready() || !attacker || !pts || pts.length < 2) return;
-  const g = G(), a = centre(attacker), t = tileOf(attacker), P = pts.filter(Boolean);
+  const g = G(), a = centre(attacker), t = tileOf(attacker);
+  // 2026-10-19 (package BU): only the points in the target's row (the middle one's); a stray point elsewhere is put back in line
+  const P0s = pts.filter(Boolean), m0 = P0s[Math.floor(P0s.length/2)], P = P0s.map(p=> Math.abs(p.y - m0.y) < (m0.h || a.h)*0.5 ? p : Object.assign({}, p, {y:m0.y}));
   const first = P[0], last = P[P.length - 1], mid = P[Math.floor(P.length/2)];
   const away = Math.sign(mid.y - a.y) || -1;                    // toward the enemy row
   const dirX = Math.sign(last.x - first.x) || 1;                 // the way the blade travels
   const pitch = Math.abs(last.x - first.x) / Math.max(1, P.length - 1) || a.w;
-  // the crescent: from a little before slot 1 to a little past slot 3, bowing away from the attacker
-  const lead = pitch*0.42, P0 = {x:first.x - dirX*lead, y:first.y - away*a.h*0.08}, P2 = {x:last.x + dirX*lead, y:last.y - away*a.h*0.08};
-  const C = {x:(P0.x + P2.x)/2, y:mid.y + away*Math.max(34, Math.abs(P2.x - P0.x)*0.16)};
-  const sv = svgLayer('sfx-arc'), d = `M${P0.x},${P0.y} Q${C.x},${C.y} ${P2.x},${P2.y}`;
-  const gl = drawPath(sv, d, 'glow'), co = drawPath(sv, d, 'core');
-  const span = Math.abs(P2.x - P0.x) || 1, total = S*(P.length - 1)*span/(Math.abs(last.x - first.x) || pitch*(P.length - 1)); // tip speed: one pitch per step
-  const t0 = Math.max(0, W - total*(lead/span));                 // so the tip reaches slot 1 exactly at W
-  g.set(sv, {opacity:1});
-  g.timeline({onComplete:()=> sv.remove()})
-    .to([gl, co], {strokeDashoffset:0, duration:total, ease:'none'}, t0)
-    .to(sv, {opacity:0, duration:.22, ease:'power1.in'}, t0 + total + .04);
+  // the crescent (crescentSlash, 2026-10-19 BU): from a little before slot 1 to a little past slot 3, its tip at one pitch per step
+  const lead = pitch*0.42, span = Math.abs(last.x - first.x) + 2*lead, total = S*span/pitch;
+  const t0 = Math.max(0, W - S*(lead/pitch));                    // so the tip reaches slot 1 exactly at W
+  crescentSlash(P.map(p=> Object.assign({w:a.w, h:a.h}, p)), away, t0, t0 + total);
   // the attacker: wind up leaning back toward slot 1, then a small arc through the swing (side, forward, other side), then home
   const sw = Math.min(a.w*0.22, 22), fw = Math.min(a.h*0.12, 16);
   g.killTweensOf(t, 'x,y,rotation,scale');

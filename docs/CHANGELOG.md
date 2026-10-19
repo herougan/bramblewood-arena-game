@@ -19,6 +19,193 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Outputs:** `docs/skill-combos-2026-10-19.md`, `.xlsx` and `docs/balance/skill-combos-2026-10-19.json`, plus the checkpoints in `docs/balance/skill-combos-*`.
 - **The hub's 🧮 Skill costs tab has a Combos view** with the top 40 synergies and anti-synergies and the family multipliers. New test `tests/skill-combos-2026-10-19.js` (in run-all).
 
+## 2026-10-19 (package TS: Thorns in the raid's rows, status chips on the top edge; owner 13:35 / 13:37)
+- **Raids: the middle and back rows fight for real, Thorns included.** Root cause: a middle- or back-row unit's strike (engine `reserveStrike`) was `damageCard` alone, so none of a swing's hooks ran: no Thorns back at it, no Spiteful, Counterattack, Ichor or On Attacked from the unit it hit, no Poison / Bleed / Freeze / Sap / Expose on that unit, no Crit or On Attack, and no kill credit. It is now the unit's own swing in the round's main order (`rowSwing` in `resolveCombat`), at the closest row's unit in its column (else the bramble), for half its swing rounded up, as before. Reactions checked both ways (it strikes / it is struck), both sides, every row pair: Thorns, Spiteful, Counterattack (it answers the closest enemy in its column, any row), Poison, Bleed, Freeze, Sap, Armor, Evasive, Guardian (a neighbour in the struck unit's own row), Cleave (the neighbours in the struck unit's own row, also for a front-row swing into a middle / back unit).
+- **The kill from (or in) a back row counts.** The killer lookups (`noteKiller`, `killerCreditOf`, On Kill, Crown of Thorns, On Death's who:'killer') only searched the front row. In a raid a middle- or back-row unit now dies a full death: Bounty, its On Death, On Ally Die / Berserk, Amore, Carrion, the graveyard. What would take its slot (Revive, On Death: Spawn, Relic, Crystallise, Meiosis) still doesn't happen in those rows.
+- **The rows' upkeep.** A Frozen or Asleep middle / back-row unit stayed that way for good, and Poison there never ticked. Their statuses (Poison, Bleed, Toxin, Freeze, Sleep, Stun, Reload, Shell...) now tick and wear off like the front row's. Their Wait still counts down on their own action.
+- **A raid stage's extra volley** (`reserveVolley`) runs the same swing, one unit at a time.
+- **Status chips sit on the card's top edge, at every size.** Owner: "In small mode, the status icon is wrongly sized and not fitting the contents! When in mini mode, should poison and status symbols be on the top boundary instead?" Yes. A board card's live statuses are now small round chips (icon and number) straddling the top edge, the way the skill strip straddles the bottom. They used to be tinted pills over the art, which covered the art and the Health on small cards. The strip starts at the top-left corner and stops short of the Wait clock. Chip size follows the card. A small card (raid rows, a crowded phone row) holds 2 chips, a phone or desktop card 3, a big one 4. Past that, the last chip is "+N". A frozen card's ice frame leaves the strip clear. The status icons over the art (💤, ⚡, 👁...) now scale with the card too. This applies at every size, normal cards included: the same strip read better everywhere.
+- Tests: `tests/raid-thorns-rows-2026-10-19.js` (290 checks; 173 fail on the old engine), `tests/ts-status-chips-2026-10-19.js` (Playwright, 390×844 raid + fight, 1366×768). Before / after shots are in `docs/screens/ts/`.
+
+## 2026-10-19 (package BU: battle UI fixes from the owner's iPhone, 12:23)
+- **You can always play in the centre column.** Root cause: the engine's `legalSlots` only offered a slot beside one of your live units, so a row thinned or pushed to one side (units at 2..4) could not play the empty centre. The centre (slot 0) is now legal whenever it is empty; every other slot still needs a neighbour. The CPU follows the same rule, so it fills an empty centre first too (`tests/golden/card-matrix.json` re-accepted: 22 open-mode matches changed, all from this rule).
+- **The centre column is always on screen, in the middle when it's cheap.** MB2b's phone window framed only the units' span plus one (units at 2..4 framed 1..5, so the centre was off the frame). The window now always holds column 0, and it is centred on column 0 whenever that costs at most one more column (`MB2_CENTRE_SLACK`, -4..3 becomes -4..4). A row far off to one side keeps its tighter, off-centre window, so the cards stay bigger.
+- **Castle damage numbers sit in the middle of the HP bar they hit.** They used to pop where the bar's fill ends, at the far right of a healthy bar on a phone. They now use the bar's on-screen rect (`getBoundingClientRect`), so the board's camera can't skew them, and they don't drift sideways.
+- **Cleave is a crisp crescent on the target's row.**
+  - In the owner's screenshot the arc started at our row's empty left slot and ended on an enemy card. One side point had been read from an element in the other row, which drew a huge loop from the bottom-left corner. Side points now come only from the target's own row.
+  - The old stroke was 16 px wide, blurred, and bowed at least 34 px off the row. It is now a filled, tapered blade sized to the card, with a short trail behind its tip.
+  - The Effects Lab has a new variant F, "a stray point in the other row".
+- **Fast forward: 3× opens at Map 20, 4× at Map 40, 5× at Map 60.** These were Maps 2, 15 and 30. A locked speed is skipped in the cycle, and the button's tooltip lists the locks ("3×: Clear Map 20", TX `ui.speed-locked`, in all 12 packs) for maps that exist on the road. Admin Mode has every speed.
+- **The raid's Tentacle Smack, redrawn.** Owner: "I still can't see the tentacle strike".
+  - It is one drawn tentacle (inline SVG, no art file): a tapered violet limb with a pale rim and halo, so it reads on the Abyss's dark ground. It has a pink underside with suckers and a coiled tip, about one card wide.
+  - It slams down onto the column in 220 ms (a row smack lies across the row), squashes, shakes the struck cards and puffs smoke. Then it pulls back up and out while fading, in 350 ms.
+  - It is never clipped by the board frame. It shows from Low effects up, and with reduced motion it is a plain flash.
+  - It is in the Effects Lab (the row smack now has an inventory entry).
+- Tests: `tests/bu-2026-10-19.js` (speed gates, the centre rule, the framing window, static checks) and `tests/e2e/battle_ui_2026_10_19.py` (430 and 390 phones and 1366 desktop: the centre target, centred castle numbers, the Cleave box over the target, the speed cycle, tentacle frames). Before and after pictures are in `docs/screens/bu/`.
+## 2026-10-19 (package BF: budget v4, the budget Forge curve, side maps a map ahead)
+- **Owner (09:52):** "(Base-1 + L) * (1+L/20)", "majors to 4, 7, 10, minor to 2 ... divvy out strength updates at all levels", "No Forge is fine. The player has to deck build to win.", "Submap's difficulty floor varies. But at least 1 map ahead of difficulty."
+- **Budget v4.** N = (Base − 1 + L) × (1 + L/20), where Base is v3's N without its 2L.
+  - It lives in one shared file, `bramblewood-budget.js`. The page inlines it (Test Lab, card editor, Forge), `tools/skill_costs.js` reads it (so every balance tool does), and the hub inlines it.
+  - At Level 1 it is 1.05 × Base, against v3's Base + 2: −0.95 at Base 21, the same at 40, +6.65 for the Dragons.
+  - Of 744 measured cards, 2 move into budget (Bone Diviner, the Dragon-Turtle) and 1 moves out (Barnacle Fortress). The post-balance queue is 28 cards (was 29). No card's stats changed.
+  - The report is in `docs/balance/budget-v4-2026-10-19.json`.
+- **The Forge curve follows N(L).** Each level banks its budget gain in 2A+H points:
+  - the majors (4, 7, 10) and the limit break spend all of it, always at least 1;
+  - the minor (2) spends its smaller bank;
+  - every other level spends a third, often 0.
+
+  Attack grows where that keeps the card's shape, the rest goes to Health, and walls only grow Health. No level loses a stat, and every level stays inside N(L).
+  - This is much stronger than the old +10% steps. The mean card gains +65% at Lv 4 and +228% at Lv 10 (was +10% / +35%).
+  - The anvil shows it: **📈 What each level gives** (TX keys, 12 packs).
+  - Test: `tests/forge-curve-2026-10-19.js`.
+- **The Forge stays at Map 11** (decision B7). Before Map 11 the reference player is at Lv 0.
+- **The enemy keeps pace.** The road's enemy level (`enemyLevelKeepingPace`) keeps the strength ratio each fight had to your reference deck under the old steps, deck by deck, so the late maps aren't handed to the player.
+- **Side maps count at least a map past their parent** (`fightMapNumber`) for the enemy's level and the Shield, while your deck stays the parent's. Their road-curve targets sit one map's step lower: 88% → 55%, boss 26–44%. Test: `tests/side-maps-2026-10-19.js`.
+- **Retune, measured at 120 games on the measure seeds:**
+  - Before: 179 of 179 main-map fights and 76 of 77 side fights green. With the new curve and no retune: 144 main.
+  - Three rounds of `skirmish_pass.js curve` changed 54 fights, mostly with 1–2 copy moves. After: 178 of 179 main fights and 76 of 77 side fights green; on fresh seeds, 154 of 179 main.
+  - 16-6 Reaver's Hollow stays easy at its 2× Shield cap. 20-A-4 (the four-wave dungeon) was not retuned.
+  - The tables are in `docs/balance/level-curve-2026-10-19b.md`.
+
+## 2026-10-19 (package RB: raid balance: no ×15, a win 1,000, 200k ×3 + 500k, the boss weakens, allies keep their rows, 250 an instance)
+- **Allies keep their rows.** An ally's play always went into its own row, but the unit then stepped up into your front row, or the back ally's into the middle row, whenever the slot ahead was clear. Ally units and ally leaders now hold their row for the whole fight (`holdRow`; the engine's `advanceReserves` skips them). New test `tests/raid-ally-rows-2026-10-19.js`: 200+ seeded ally plays in the page's raid fight, none outside the ally's row.
+- **Raid damage = bramble damage × the rank** (B 1.01 … SSS 2.0), with no ×15 (the Core's ×140 is gone too). The bramble damage is capped at 1,000 per fight. **A win counts 1,000 × the rank** (was 10,000).
+- **Health:** 200,000 for each arm and the tail (4 × 50,000) and 500,000 for the Core (5 × 100,000), 1,100,000 in all.
+- **The elders** start at 50 Health at most: basic + (50 − basic) × the raid's share (was 100).
+- **The boss weakens as it falls.** All its cards scale to `RaidM.bossWeakening`: 100% fresh, 80% at half, 60% at the end. The share is the part's or, when lower, the raid's. The weakening applies after the stage's +Attack. Its floor is `tuning.weakenFloor`, editable as "Boss weakest %".
+- **Completion model** (`tools/raid_completion_model.js`, `docs/balance/raid-balance-2026-10-19.md`):
+  - A normal deck at the Raid Banner's map deals about 217 bramble damage a fight on the arms and the tail, and 97 to 170 on the Core.
+  - With stand-ins at 14% a day (was 12%) and the Core's stumps at 14 Health (was 20), the raid falls in 100% of weeks with 30+ participants and 83% with 20.
+- **Instances of 250** (was 100). The server default is a proposal, not applied: `supabase/proposed/20261019_raid_cap_250.sql`. Republishing the raid from the editor does the same.
+- **Tiers rescaled** so the same share of raiders reaches each: Participant 1,000 → 500, Competent 10,000 → 2,000, Leading 50,000 → 12,500.
+  - Weekly quest: 20,000 → 4,000 raid damage. Medals: /5.
+  - Pay for each fight: ×5.25 per raid damage, so a fight pays what it did.
+- **Saved edits:** a raid edit saved on the old scale, local or published, is brought onto the new one on load (`RaidM.migrateRaidScale`). The editor stamps `scaleV: 2`, and its defaults follow the new scale.
+- **Raid numbers** (Health left, damage, tiers, the claim screen) use thousands separators in the game's language (`raidLocale` / `raidNum`).
+- **No damage formula for players:** NV's breakdown line ("28 bramble damage × 15 × 1.01 = 424") shows to admins only. The raid tab's "scores up to 5,000" line now reads "the damage your side deals to the part's bramble counts as raid damage". The rules add "the boss weakens", and "a win counts 1,000, more at a higher rank".
+- **The raid's rows from the server** are read a page of 1,000 at a time (up to 20,000), for your instance only. A life now takes thousands of rows, and one request returned at most 1,000.
+- New test `tests/raid-rb-2026-10-19.js`. 4 TX keys (new or changed), translated in the 12 packs.
+
+## 2026-10-19 (package MB2b: the field as big as the hand, the raid framed to its columns in use)
+- **The field is bigger, not the hand smaller** (follow-up to MB2: the field's cards were about 48 px against the hand's 75).
+  - The camera frames the columns in use, plus one empty column on each side. That is at least 3 columns in a normal fight and 5 in a raid. Every unit counts, on both sides and in every row.
+  - The cards are sized for that window (`mb2SpanWindow`, `mb2FitPhoneBoard`, `mb2FitRaidCards`). The empty columns outside it sit off the frame.
+  - On a phone, a normal fight's cards are the hand's size (75 px) for as long as the window fits at that size. Past that they shrink to fit the window, never below.
+- **Re-framing, a deliberate exception to the raid's 2026-10-18 note "the raid shouldn't keep zooming in and out when I place a card":**
+  - The camera re-frames only when the column span changes: a unit lands on the window's edge column or past it.
+  - It happens once, in one 300 ms step (`mb2FlipReframe`), never every turn or continuously.
+  - The window only widens during a fight. A re-frame also happens when the window or the frame changes size.
+- **The raid uses the screen's height too.** The spare height is shared out between the six rows. The enemy's row (castle, deck, Environment cards) is a quarter smaller (`--mb2-th`). So are your castle, deck and Graveyard on a phone; on a computer they share the hand's row, so they stay the hand's size.
+- **The raid hand** is at least the field's card size and never smaller than it was before MB2 (65 px wide on a phone, 92 px tall on a computer).
+  - The "thin sliver" in an MB2 screenshot was a card caught mid-deal by the screenshot (the deal-in transform). It was not an overlap bug.
+- **Raid fight controls on a phone** sit in a 4-wide grid of two short lines inside the top row. They no longer take a line of their own.
+- **The Codex** no longer opens on the Easter eggs' masked "???" slots when no card has been seen yet. The masked slots join once a real card is seen, and they stay last.
+- **Card widths now:**
+
+  | Screen | Normal fight | Raid, 5 columns | Raid, 6 columns | Raid, 7 columns | Raid hand |
+  |---|---|---|---|---|---|
+  | 390×844 | 75 px (up to 4 framed columns), 69 (5), 57 (6) | 67 px | 58 px | about 49 px (MB2 was 49, before MB2 44) | 67 px |
+  | 430×932 | 75 px | 75 px | | | 75 px |
+  | 1366×768 | 97 px (unchanged) | | | 61 px (height-bound) | 74 px |
+
+- `tests/e2e/mobile_layout_2026_10_19.py` (about 1.5 min, not in run-all) adds checks for the board cards against the hand and the framed columns, the raid hand's size, the top row being one line, the re-frame when a unit lands on the edge column, and a fresh Codex. Screenshots, including the new `after-raid-reframed-390.png` and `after-*-430.png`: `docs/screens/mb2/`.
+
+## 2026-10-19 (NV: Home on the map and the Arena, the pre-battle screen, the raid's rank emblem, the raid results)
+- **Owner (10:55, iPhone):** *"There should be a home button somewhere on mobile. The top bar of the conquest screen is not used - remove this."* / *"Improve the pre-battle A v B screen ... I want to know how i contribute, then our total BR."* / *"Raid complete: Still use our victory emblems ... abit more special looking."*
+- **🌰 Home** at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones and desktop; the top-right 🏠 steps aside. Why it was missing on the iPhone: the 🏠 / ⚙️ / Energy cluster is a fixed child of the tab bar, and the bar itself scrolled sideways; iOS Safari clips a fixed child of a scrolling box. The tab strip now scrolls inside the bar.
+- **No map strip on phones.** Maps change on the 🧭 World atlas (the button on the map) and at the map's edges; desktop keeps its side list.
+- **Pre-battle screen v2** (`showVsScreen`): a card a side and a real Start button under the art (a tap anywhere still starts). A raid shows your part first (your BR, your row), then **your side**: you + each ally (leaders 2x) = the side's total, against the boss's framed portrait, name and BR. Names and rows wrap instead of being cut off. Normal fights: you vs them, both BRs.
+- **Raid rank emblem** (`raidRankEmblemHTML`): the victory screens' hexagon in an abyssal ring with crimson tentacle curls and a glow, stamped in (S / SS / SSS harder, with a shockwave; still under reduced motion). On the raid results for every rank (a crest for a win) and on the raid claim screen.
+- **The turn-1 "Rank SSS, Overwhelm! 10,000" with 0 dealt** was the Admin 👑 Win button: it empties the boss's bramble, and the raid scored that as a real overwhelm (10,000 raid damage, saved, pushed to the shared raid, paid). A raid no longer scores an admin win (the results say so). **Play again** after a raid built a plain Quick Battle (`startMatch('raidOffline')`); it now builds a fresh fight on the same raid part.
+- **Raid results say what each number counts**: "424 raid damage" + "28 bramble damage × 15 × 1.01 for Rank B = 424 raid damage"; "Full reward from 40 bramble damage (this fight: 28)"; the stats row adds "🏰 28 to the bramble". "Dealt / taken / best hit" no longer lose hits to the 200-line log (a running tally).
+- Tests: `tests/nv-2026-10-19.js`; `tests/mobile-nav-2026-10-19.js` and `tests/raid-rv2-2026-10-19.js` know the new Home and emblem. Screens: `docs/screens/nv/`.
+
+## 2026-10-19 (package MB2: the battle fills a phone screen, bigger raid board, hand = field size, touch-and-hold)
+- **Owner (10:55, iPhone):** *"The raid battle btw is too small! we can afford to use all the vertical and horizontal space"*, *"the battle arena should be centered"*, *"our cards in hand/deck/etc. should be as large as the cards in the field"*, *"i can't touch and hold to see the card detail"*.
+- **A fight on a phone is one screen tall.** The match is a `100svh` column: the height with Safari's bars showing, plus the safe-area insets. The hand no longer ends up behind the toolbar. The battlefield takes the height that the rows above and below leave, and the board sits in its middle.
+- **The raid board fills its frame, on a phone and on a computer.** Its cards are sized from the frame (`mb2FitRaidCards`): seven columns across, six rows down, the same gap in every row so the columns line up, and the spare height shared between the rows. These are real CSS sizes, not a zoom, so the attack lines, floats and FX follow. The page no longer scrolls in a raid (it did by about 400 px on a computer).
+  - 390×844: cards 44 → 49 px wide (a 430 px iPhone gets about 55). 1366×768: 48 px on screen (with the page scrolled) → 60 px, the whole board visible.
+  - The raid keeps its fixed camera. It is framed again only when the window or the frame's size changes.
+- **Hand, deck, castle and Graveyard are the board's card size on a phone:** 75×93 (was 65×81 against the field's 75×93), or 62×78 on a short phone. In a raid they follow the raid's card size, never under 65 px tall on a phone or 92 px on a computer. A crowded hand overlaps to fit, and still scrolls past that. A crowded normal board still shrinks its own cards to fit its columns.
+- **Touch-and-hold opens a card's details everywhere:** the Codex, the deck builder, the Nest, deck previews, the skirmish strip, the hand and the board. It takes 450 ms outside a fight; a fight keeps the owner's 0.25 s from 10-12. Moving more than 10 px cancels it. The details stay up after the lift; tapping them opens the card's full page.
+  - The lift never plays, arms, adds or removes the card. The click after it is dropped, even after a long hold (before, a hold longer than about 1.2 s played the card). Android's long-press context menu and iOS's own drag are dropped too.
+  - Cards get no iOS callout and no text selection.
+- New `tests/e2e/mobile_layout_2026_10_19.py` (Playwright, about a minute, not in run-all). It covers 390×844 touch and 1366×768, a normal fight and a raid: no sideways scroll, one screen tall, the hand on screen and board-sized, the raid cards bigger and inside the frame, the board centred, and touch-and-hold in the hand and the Codex. `MB2_SHOTS=docs/screens/mb2` saves the screenshots. Before and after: `docs/screens/mb2/`.
+
+## 2026-10-19 (package SY: decks sync across devices)
+- **Owner (10:55):** *"im using the same account in mobile AND web. They don't see each other's decks!"*
+- **Root cause:** deck ids were `deck-xxxxxxx`, but the cloud table's `player_decks.id` is a uuid. Every deck upload was refused (22P02), and the client ignored the error. The table holds no deck for any player (read-only check). Pulls also ran only at load, and the cloud list replaced the device's list whole.
+- **Fix (client only, works with the table as it is):**
+  - Deck ids are uuids. Old ids are moved once at load, and the active and main deck keys follow them.
+  - Each deck has an `updatedAt`. A change uploads after a 1.2 s pause, and edits made in a burst go up together. Errors are checked now.
+  - The game pulls on load and sign-in, when the tab comes back (focus or visibility, at most every 10 s) and when the browser is back online.
+  - The merge goes deck by deck, and the newest edit wins. An older offline edit never overwrites a newer one: the upload checks the cloud's time first.
+  - A deck deleted on one device leaves the other devices with a toast, and a copy is kept locally. A deck edited after its last sync is kept and sent back. Decks are never deleted silently.
+- **Sync indicator:** "Synced ✓ / Syncing… / Offline" next to the account chip, only when signed in. On phones it is just a coloured dot. It uses TX keys, in 12 languages (`tools/i18n_2026_10_19_sy.py`).
+- **Proposed, NOT applied (optional):** `supabase/proposed/20261019_deck_sync.sql`. It adds `looks` (the deck's Shiny and skin picks) and `deleted_at` (delete marks), JSON shape checks, and a trigger that keeps the newer row when a stale write arrives. Until it is applied, the client falls back to working without it.
+- **Test:** `tests/deck-sync-2026-10-19.js` runs two devices against a fake cloud (104 checks).
+
+## 2026-10-19 (package UT: animal tags, Base cards, variants balanced by N, raid elder art brief, art reuse map)
+- **Owner (09:52):** *"tag an animal to the card. For ghosts and spirits and elementals - they have an animal embodiment, see. But subtype ghost or elemental etc."*
+- **Every creature card has an `animal`** (724 tagged here, 349 animals in 140 kinds). Package EE's 7 Easter-egg creatures keep their own tags, reported as an owner call. It names what the card is, or the animal its body takes. 96 beings also have a `subtype` from a fixed list of 15: ghost, spirit, elemental, undead, construct, structure, fiend, conjured, plant, fungus, mythic, changeling, were, mutant, glitch.
+  - The tags come from the name, the type, the emoji, and a hand-checked table of art and flavor reads. Examples: the Magma Wraith is a wolf of flame, the Tide Spirit a seahorse wave, the Guardian Shield a pangolin.
+  - 30 beings show no animal in their art (the Ent, golems, the storm cloud…). Their animal is a proposal for the owner.
+  - `species` is unchanged. 11 places where it disagrees with the animal are listed (the Moray's species is Cnidarian, the moles are Rodent…).
+  - Tool: `python3 tools/animal_tags.py`, which writes `cards.json` in place and the report `canonical/animal-tags.json`.
+  - Two non-creature cards have an animal too: the River Bundle egg (otter) and the Red Dragon Egg (dragon).
+- **The Codex:**
+  - The card detail shows 🐾 the animal, the subtype and a 🌰 **Base** chip.
+  - A new 🐾 animal filter groups by kind: every spider together.
+  - The Codex search also matches the animal.
+  - All new text uses TX keys, in 12 languages (`tools/i18n_2026_10_19_ut.py`). The build inlines the animal kinds (`__ANIMAL_GROUPS__`).
+- **Base cards (owner: "The starter cards are not Otters. Just considered as 'Base'."):**
+  - The 27 cards with faction `otters` are faction `base` now. They are Base cards: earned from skirmish rewards, not card packs. Their Codex "where to get" line says so.
+  - Levels and budgets are unchanged: a Base card still starts at Level 1.
+  - The Otters / Hummingbirds side pick and `basicSet` are left alone.
+  - **The Hummingbirds stay a faction:** 12 cards, all hummingbirds.
+- **The tutorial's copies are Level 0** ("The tutorial base cards come as Level 0 is the special thing"):
+  - This covers the starting deck, the tutorial rewards and the "both" bonus.
+  - A card that starts at Level 1 gets the Nest's hatchling marks (`hatch:1`, plus `tut:1`) and shows Level 0 until the Nest trains it or a Level 1 copy arrives.
+  - Base cards won later from skirmishes start at their normal level.
+- **Dire / Elder balanced by N (owner: "we can't do 1.4x, 1.5x etc. They should balance based on N"):**
+  - The 109 proposed later versions are player units now. Each body comes from the budget N of its rarity, Lumber and Wait, through the shared helper `tools/skill_costs.js`. 2A+H takes 80% of N in the base's shape. The old ×1.4 / ×1.8 draft is kept beside it (`variant.multDraft`).
+  - "Dire" / "Elder" stay internal ids. Each version has a thematic name proposal, for example Peakroot Olm, Scarred Reef Shark and Venom Patriarch (`nameProposal: true`).
+  - Non-player units keep multipliers. These are the raid's boss units (the Leviathan Elder and the Kraken Brute) and the 13 raid bosses, listed under `nonPlayer` in `canonical/unit-themes.json`.
+  - Units are grouped by animal as well as theme.
+  - The hub's Units by theme tab is updated but not rebuilt or published. It gets an animal filter, groups by animal and subtype, N-based variant lines and a 👹 Non-player view.
+- **Art:**
+  - `docs/art/raid-elder-art-brief.md` has prompts for the Leviathan Elder (built on `art/cards/humpback-elder.png`) and the Kraken Brute. No art was generated.
+  - `docs/art/art-reuse-map.md` (`python3 tools/art_reuse_map.py`) covers 840 units. 806 (96.0%) keep existing art: their own, their base's, or a same-animal stand-in. 34 have no usable match and are flagged: 30 have only a loose stand-in, and 4 are Easter eggs with no art yet.
+- New test `tests/animal-tags-2026-10-19.js` (in run-all). `tests/unit-themes-2026-10-19.js` follows the N-based variants, the names, `nonPlayer` and the animals.
+
+## 2026-10-19 (package EE: Easter eggs, the Condor's beam, Evomax)
+- **Owner (09:52): "Easter eggs: Special category, ungettable atm."** This adds a new card category: source `{kind:'easteregg'}` plus `easterEgg: true`, with one list, `EASTER_EGG_IDS` in `arena_app.js`.
+  - No source gives one out yet: packs, drops, skirmish rewards, raids, the reward tracks, the Forge, the Nest's hatch.
+  - `unlockCardForPlayer` refuses them from every source except an admin's grant.
+  - The Codex shows an unseen one as a "???" tile in its own 🥚 Easter eggs section. The hub's card list masks it too.
+  - Test: `tests/easter-eggs-2026-10-19.js`. Internal notes and inspirations: `docs/easter-eggs.md`.
+- **The eight Easter eggs**, all within budget v3. They use emoji placeholders; the NightCafe prompts are in `docs/art/easter-egg-art-briefs.md` (nothing was generated).
+  - Creeper (now Very Rare, an exploding creeping beetle).
+  - Terraumbra (Unique Evomax equipment).
+  - Exo-podas (Very Rare).
+  - Galactic Condor (Epic).
+  - Pink Maus (Unique).
+  - Nyoogle (Super Rare).
+  - Habanero Drakon (id `tobasco-drakon`, Rare).
+  - Kegfuse Panda (id `demo-panda`, Super Rare).
+- **New action: Position Beam**, used by the Galactic Condor's Charge 2.
+  - From the exact centre it hits the unit across and the bramble.
+  - From a side it angles inward across the units diagonally across.
+  - From the edge (5 out) it hits the whole row inward of the unit opposite.
+  - It reuses the lightning bolt with a prismatic glow. Test: `tests/position-beam-2026-10-19.js`.
+- **The Evolution archetype is called Evomax** wherever a player sees it: the Codex filter and pie, the corner mark, the editor and the card detail. The detail had been showing such cards as Devilry. The internal id `evolution` is unchanged.
+
+## 2026-10-19 (package RC: raid cards are crafted)
+- **Raids almost never give their own cards now** (owner 09:53). A fall's claim gives reward cards from the normal pack pools instead: 1 for taking part (+1 for the top 1% / 10%), with a 10–25% chance that each one is a faction card. Competent participants get a 20% chance of one more and Leading participants get one more for certain. The pack cards have a rarity floor: Competent get Uncommon or better, Leading get Rare or better. A raid's own card comes only at `RAID_CARD_DROP_CHANCE` (1.5%, `bramblewood-raid.js`): once per fall's claim and once per won raid fight. A won raid fight used to drop a boss-deck card every time; it now gives a pack card.
+- **Trophy shards:** each raid has its own crafting material ("Goliath trophy shards" 🏆). A fall pays 6 for taking part, 9 for Competent and 13 for Leading, before the top 1% / 10% / 50% bonus (+4 / +2 / +1). A raid that holds pays a share based on how much Health it lost.
+- **Forge → 🐙 Raid tab:** lists each raid's cards with a recipe (shards + Magic Dust + Maple Leaves, by rarity: Common 8/40/80 up to Legendary 160/960/1920). A card you haven't met yet shows face-down as "?" with its cost. A craft gives one plain Level-1 copy.
+- Shards are saved with the currencies. Cloud sync waits on `supabase/proposed/20261019_raid_shards.sql` (**not applied**); until then they stay in the browser. The reward screen, raid rules and Codex source line no longer promise raid cards. 24 new TX keys + 4 changed, translated in 12 packs. Tests: `tests/rc-2026-10-19.js`.
+
 ## 2026-10-19 (package TC: the tests follow the applied skill costs)
 - **The owner applied the measured skill worth** to `canonical/skill-costs.json`: 199 entries use their high-confidence `measuredS` (a negative one floored at 0), and each keeps `prevValue` and `appliedAt`. His own values stay: On Death, On Ally Played, Bounty, Supreme, Supreme Tide, True Strike. Owner 08:49: separate the units by theme, he picks the units for each map, then a post-balance step sets skills and stats. **No card was refit.**
 - **Post-balance queue: 29 cards** that fitted budget v3 before the new costs and are over it now. Each fails only 2A+H+S < N, by +0.01 (Bone Diviner) to +9.5 (Marshal of Rivergate). The list is in `docs/balance/post-balance-queue.json` (built by `node tools/post_balance_queue.js`, `--check` for staleness) and `docs/post-balance-queue-2026-10-19.md`.

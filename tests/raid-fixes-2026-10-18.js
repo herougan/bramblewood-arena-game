@@ -98,11 +98,12 @@ ok(/extra time as each round starts/.test(R.describeStage({name:'Enraged', rules
   ok(g.fightRounds === 20 && g.parts.every(p=> !(p.fight && p.fight.rounds) || p.fight.rounds === 20), 'the Goliath: 20 turns a fight');
   ok(R.FIGHT_ROUNDS_DEFAULT === 20 && R.fightRounds({}) === 20 && R.fightRounds({fightRounds:8}) === 8 && R.fightRounds({}, {fight:{rounds:5}}) === 5, "fightRounds: 20 by default, the raid's or the part's own when set");
   const now = 2900 * R.CYCLE_MS, fresh = R.raidState(g0, [], now, {cycle:2900});
-  ok(g.bossHpBonusMax === 100 && R.bossHpBonus(g, fresh).bonus === 100 && R.bossHpBonus(g, fresh).fraction === 1, `a fresh raid: +100 (${JSON.stringify(R.bossHpBonus(g, fresh))})`);
+  // 2026-10-19 (package RB, owner 12:23: "Elder should be rebalanced to start at 50 HP at max."): the ceiling is 50 now (was 100)
+  ok(g.bossHpBonusMax === 50 && R.bossHpBonus(g, fresh).bonus === 50 && R.bossHpBonus(g, fresh).fraction === 1, `a fresh raid: +50 (${JSON.stringify(R.bossHpBonus(g, fresh))})`);
   const hit = Math.round(fresh.total * 0.15), half = R.raidState(g0, [{raidId:g.id, part:'left', cycle:2900, owner:'a', contribution: hit}], now, {cycle:2900});
-  const want = Math.round(100 * half.remaining / half.total);
-  ok(R.bossHpBonus(g, half).bonus === want && want < 100 && want > 70, `a raid down to ${Math.round(half.fraction * 100)}%: +${R.bossHpBonus(g, half).bonus}`);
-  ok(R.bossHpBonus(g, {total:100, remaining:1}).bonus === 1 && R.bossHpBonus(g, {total:100, remaining:0}).bonus === 0 && R.bossHpBonus(g, {total:100, remaining:500}).bonus === 100, 'nearly dead: about +0; never below 0 or above the max');
+  const want = Math.round(50 * half.remaining / half.total);
+  ok(R.bossHpBonus(g, half).bonus === want && want < 50 && want > 35, `a raid down to ${Math.round(half.fraction * 100)}%: +${R.bossHpBonus(g, half).bonus}`);
+  ok(R.bossHpBonus(g, {total:100, remaining:2}).bonus === 1 && R.bossHpBonus(g, {total:100, remaining:0}).bonus === 0 && R.bossHpBonus(g, {total:100, remaining:500}).bonus === 50, 'nearly dead: about +0; never below 0 or above the max');
   ok(R.bossHpBonus({}, fresh).bonus === 0 && R.bossHpBonus({bossHpBonusMax:5000}, fresh).bonus === 1000 && R.bossHpBonus({bossHpBonusMax:-5}, fresh).bonus === 0, 'no bossHpBonusMax: no bonus; clamped to 0–1000'); }
 // 2026-10-19 (package RV2): the bonus takes the unit's basic Health now (100 fresh, down to basic), see tests/raid-rv2-2026-10-19.js
 ok(/const bossHpBonus = \(bossUnitId && RaidM\.bossHpBonus\) \? RaidM\.bossHpBonus\(def, st, defs\[bossUnitId\]\.health\)\.bonus : 0;/.test(src) && /raidBossHpBonus: bossHpBonus/.test(src), 'the fight is built with the bonus from the raid state (cloud, or this device offline)');
@@ -110,7 +111,7 @@ ok(/const bonus = Math\.max\(0, m\.raidBossHpBonus \| 0\); if\(bonus\)\{ c\.hp \
 ok(/!irr && !lc\.bossHpBonus\) return/.test(src), 'the card details show the bonus as a bonus (base + N)');
 ok(/TX\('ui\.raid-might', \{name: def\.name \|\| 'The boss', hp: bh\.max, pct: Math\.ceil\(bh\.fraction \* 100\)\}\)/.test(src), "the raid tab names the elders' fresh Health and the raid's share (2026-10-19, RV2: a TX line)");
 ok(/RAID_BOSS_UNIT_ROUNDS = new Set\(\[3, 7, 11, 15, 19\]\)/.test(src), 'boss units on rounds 3, 7, 11, 15 and 19');
-ok(/raidRoundCap: f\.rounds \|\| cfg\.rounds/.test(src) && /lasts \$\{RaidM\.fightRounds\(def\)\} turns \(or until your bramble falls\)/.test(src), 'the fight and the raid tab take the 20-turn clock from the data');
+ok(/raidRoundCap: f\.rounds \|\| cfg\.rounds/.test(src) && /TX\('ui\.rb-fight-note', \{turns: RaidM\.fightRounds\(def\)\}\)/.test(src) /* 2026-10-19 (package RB): a TX line */, 'the fight and the raid tab take the 20-turn clock from the data');
 ok(/m\.round >= SUDDEN_DEATH_ROUND && !\(m\.raidRoundCap && m\.raidRoundCap <= SUDDEN_DEATH_ROUND\)/.test(src), 'a raid that ends by turn 20 never goes into sudden death');
 { const i = src.indexOf('const RAID_NEW_KEYS'), j = src.indexOf('\n', src.indexOf('function allRaidDefs('));
   const all = (base, edits)=> new Function('RAID_DEFS_BASE', 'raidDefEdits', src.slice(i, j) + '\nreturn allRaidDefs();')(base, edits);

@@ -315,7 +315,7 @@ CANON = json.load(open(os.path.join(ROOT, 'canonical', 'cards.json'), encoding='
 _canon_art = {c['id']: c.get('art') for c in CANON}
 _assets = {os.path.splitext(f)[0]: f for f in os.listdir(os.path.join(ROOT, 'assets', 'cards'))}
 THUMB = 96
-_thumb_ids = [c['id'] for c in HC['cards'] if c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image')]
+_thumb_ids = [c['id'] for c in HC['cards'] if not c.get('egg') and (c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image'))]  # 2026-10-19 (package EE): no thumbnail for a masked Easter egg
 if _thumb_ids:
     import base64, io
     cols = math.ceil(math.sqrt(len(_thumb_ids)))
@@ -421,7 +421,9 @@ def _sc_combos():
     m = d.get('model') or {}
     return {'generated': d.get('generated'), 'games': d.get('games'), 'pairs': len(d.get('pairs', [])), 'G': d.get('G'), 'syn': [keep(r) for r in syn], 'anti': [keep(r) for r in anti],
             'model': {'global': m.get('global'), 'rmse': m.get('rmse'), 'families': [f for f in (m.get('families') or []) if f.get('pairs', 0) >= 3]}}
-SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\nconst SC_COMBOS = {_js(_sc_combos())};\n{SC_LIB}\n{SC_TAB}'
+# 2026-10-19 (package BF): budget v4's N lives in bramblewood-budget.js (window.BramblewoodBudget), which tools/skill_costs.js reads
+BB_LIB = open(os.path.join(ROOT, 'bramblewood-budget.js'), encoding='utf-8').read()
+SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\nconst SC_COMBOS = {_js(_sc_combos())};\n{BB_LIB}\n{SC_LIB}\n{SC_TAB}'
 # 2026-10-19 (package UC, owner 08:49: "let's separate the units thematically? Then we pick and choose, then do post-balancing"): the
 # 🗂 Units by theme tab. canonical/unit-themes.json (node tools/unit_themes.js) and the tab's script and styles, inlined. Picks live in
 # the artifact's db (collection unitPicks), so the hub is published with capabilities {db: {}}; tools/hub/pull_unit_picks.md.

@@ -53,7 +53,7 @@ Object.entries(PLAN.rarity || {}).forEach(([id, x])=> ok(defs[id] && defs[id].ra
 const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G, MAPS = B.MAPS;
 const obtainable = c=>{ const s = G.cardSourceOf(c); if(['pack', 'base', 'raid', 'nest', 'smith', 'secret', 'quest'].includes(s.kind)) return true;
   if(s.kind !== 'map' || !s.node) return false; const m = MAPS.find(x=> x.id === s.id); return !!(m && (m.nodes || []).some(x=> x.key === s.node)); };
-const none = live.filter(c=> c.cardType !== 'materia' && !obtainable(c) && !P.SOURCELESS[c.id]).map(c=> c.id);
+const none = live.filter(c=> c.cardType !== 'materia' && !c.easterEgg && !obtainable(c) && !P.SOURCELESS[c.id]).map(c=> c.id);   // 2026-10-19 (EE): Easter eggs are ungettable on purpose
 ok(!none.length, '3. every live card has a source or is on the allowed sourceless list: ' + none.slice(0, 10).join(', '));
 Object.keys(P.SOURCELESS).forEach(id=> ok(defs[id] && !obtainable(defs[id]) && P.SOURCELESS[id].length > 10, `3. ${id} stays sourceless, with its reason`));
 (PLAN.sources || []).forEach(s=> ok(defs[s.id] && JSON.stringify(defs[s.id].source) === JSON.stringify(s.source) && /package CB/.test(defs[s.id].creatorNote || ''), `3. ${s.id}: sourced as planned (${s.where})`));
@@ -80,7 +80,7 @@ const md = read('docs/card-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'card-pass-2026-10-19.xlsx')), '5. the spreadsheet');
 ok(ST.every(([id])=> md.includes(defs[id].name)), '5. the doc lists every changed card');
 ok(Object.keys(P.SOURCELESS).every(id=> md.includes(defs[id].name)), '5. the doc lists the cards that stay sourceless');
-ok(read('docs/CHANGELOG.md').slice(0, 20000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
+ok(read('docs/CHANGELOG.md').slice(0, 60000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it (BF: 60,000 characters)
 
 console.log(fail ? `card-pass-2026-10-19: ${fail} of ${n} failed` : `card-pass-2026-10-19: all ${n} passed`);
 process.exit(fail ? 1 : 0);

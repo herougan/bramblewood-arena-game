@@ -194,7 +194,7 @@ ok(fnSrc('guildScaledBramble') && fnSrc('guildSkillsPanelHTML') && fnSrc('loadGu
     const lines = [];
     ['left', 'core'].forEach(pid=>{ const a = batch(pid, 0), b = batch(pid, 20); lines.push(`${pid}: ${a.avg} → ${b.avg} avg, ${a.ow}% → ${b.ow}% overwhelm`);
       ok(b.avg >= a.avg * 0.9, `${pid}: a stronger wall never costs much damage (${a.avg} → ${b.avg})`);
-      if(pid === 'core') ok(b.ow <= 5, `core at +20%: still ~never overwhelmed (${b.ow}%)`); });
+      if(pid === 'core') ok(b.ow <= 10, `core at +20%: still rarely overwhelmed (${b.ow}%; 10% since 2026-10-19, package RB: the stumps have 14 Health, was 20)`); });
     console.log('  trench, Rooted Walls 5 (+20% wall): ' + lines.join(' · '));
   }
 

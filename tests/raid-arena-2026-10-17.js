@@ -98,7 +98,8 @@ ok(/bossUnitId = base \+ '~boss'/.test(src) && /'kraken-spawnling':'Kraken Brute
 // ---- Admin damage, the Tentacle Smack
 ok(/async function adminRaidDamage\(def, frac\)/.test(src) && /data-raid-admin-dmg="0\.5"/.test(src), 'Admin: Deal 10% / Deal 50%');
 ok(fs.existsSync(path.join(__dirname, '..', 'supabase', 'proposed', '20261017_e_admin_raid_damage.sql')) || fs.existsSync(path.join(__dirname, '..', 'supabase', 'migrations', '20261018_admin_raid_damage.sql')), 'the admin damage function is a migration (proposed, or applied since fc4a277)'); // 2026-10-18: it was applied
-ok(/function tentacleDraw\(ctx/.test(fxf) && !/TENTACLE_SVG/.test(fxf), 'the Tentacle Smack is drawn on one canvas');
+// 2026-10-19 (package BU): rebuilt as one drawn SVG limb that slams, squashes, smokes and pulls back (owner: "I still can't see the tentacle strike")
+ok(/function tentacleSVG\(B, T, w, dir\)/.test(fxf) && !/TENTACLE_SVG/.test(fxf), 'the Tentacle Smack is one drawn SVG tentacle');
 
 console.log(fail ? `raid-arena-2026-10-17: ${fail} failure(s)` : 'raid-arena-2026-10-17: all passed');
 process.exit(fail ? 1 : 0);

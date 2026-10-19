@@ -16,6 +16,9 @@ ghosts_src += "\n" + open(SCRATCH + "bramblewood-texts.js", encoding="utf-8").re
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-a11y.js", encoding="utf-8").read()
 # 2026-10-19 (package G, guild skills): the skill list, costs and the Rooted Walls bramble Health math (BramblewoodGuild), DOM-free.
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-guild.js", encoding="utf-8").read()
+# 2026-10-19 (package BF): the stat budget N(L) = (Base - 1 + L) x (1 + L/20) and the Forge level curve (BramblewoodBudget), DOM-free;
+# the same file tools/skill_costs.js and the master hub use.
+ghosts_src += "\n" + open(SCRATCH + "bramblewood-budget.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
@@ -339,6 +342,8 @@ raid_bosses_literal = json.dumps(_with_path_art(json.load(open(SCRATCH + "canoni
 app_src = _re.sub(r"art:'(art/(?:npc|fields|backings|frames)/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
+# 2026-10-19 (package UT): each animal's kind, for the Codex's animal filter (canonical/animal-tags.json, python3 tools/animal_tags.py)
+app_src = sub_once(app_src, "__ANIMAL_GROUPS__", json.dumps({r["animal"]: r["group"] for r in json.load(open(SCRATCH + "canonical/animal-tags.json", encoding="utf-8"))["cards"] if r.get("animal")}, ensure_ascii=False, sort_keys=True))
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --
 # GSAP must load and register its plugin BEFORE arena_app.js runs (it calls gsap.Flip.from()
 # and gsap.timeline() at module-eval-adjacent times, e.g. inside renderBoard()).

@@ -3,9 +3,10 @@
 // the page (global `BramblewoodRaid`) and require()'d by tests/raid.js.
 //
 // A raid definition has several PARTS (e.g. three tentacles and a core), each with stacked HP bars
-// (bars × barHp, e.g. 8 × 80,000). Every attempt fights ONE part with today's engine (the trench
+// (bars × barHp, e.g. 4 × 50,000). Every attempt fights ONE part with today's engine (the trench
 // board is P2) and converts in-fight castle damage into raid damage:
-//   contribution = overwhelmed ? scoring.overwhelmCap : min(scoring.cap, dealt × scoring.perInFightHp)
+//   contribution = (overwhelmed ? scoring.overwhelmCap : min(scoring.cap, dealt × scoring.perInFightHp)) × the rank multiplier
+// (2026-10-19, package RB: perInFightHp 1, cap 1,000, a win 1,000; see contributionFor)
 // "Overwhelmed" = you destroyed that part's fight castle within the fight's turn limit. A part with `lockedUntil` can't be fought
 // until those parts' global pools are empty (the core waits for the tentacles). The whole raid
 // moves through STAGES as total HP falls (e.g. "Exposed" below 1%: enemy cards lose their abilities).
@@ -22,12 +23,65 @@ function partTotal(p){ return Math.max(1, (p.bars|0) * (p.barHp|0)); }
 // `part` (optional) may carry its own scoring overrides, e.g. the Core's stumps are worth more per HP.
 // 2026-10-19 (package RV2): `rank` (optional, the fight's B..SSS) multiplies a fight that didn't overwhelm by raidRankMult (below), on
 // top of the cap, never past the overwhelm's 10,000; a win counts the overwhelm cap whatever the rank.
+// 2026-10-19 (package RB, owner 12:23: "do not multiply the bramble damage by 15. If 130 * 1.01 (B) = 131 is ample damage" and "deal
+// 1,000 instead of 10,000, counting in the bonus damage"): raid damage = the bramble damage (x scoring.perInFightHp, 1 now, was 15) x
+// the rank multiplier, the bramble damage capped at scoring.cap (1,000) first; a win (the boss's bramble fell) counts scoring.overwhelmCap
+// (1,000) x the rank multiplier too (a win at SSS: 2,000). The defaults are the new scale (a raid without scoring: x1, cap 1,000, win 1,000).
+const SCORING_DEFAULTS = {perInFightHp: 1, cap: 1000, overwhelmCap: 1000};
 function contributionFor(def, dealt, overwhelmed, part, rank){
-  const sc = Object.assign({}, def.scoring || {}, (part && part.scoring) || {});
-  if(overwhelmed) return sc.overwhelmCap || 10000;
-  const base = Math.max(0, Math.min(sc.cap || 5000, Math.round((dealt||0) * (sc.perInFightHp || 50))));
-  const mult = raidRankMult(rank); if(mult === 1) return base;
-  return Math.max(0, Math.min(sc.overwhelmCap || 10000, Math.round(base * mult)));
+  const sc = Object.assign({}, SCORING_DEFAULTS, def.scoring || {}, (part && part.scoring) || {}), mult = raidRankMult(rank);
+  if(overwhelmed) return Math.max(0, Math.round((Number(sc.overwhelmCap) || SCORING_DEFAULTS.overwhelmCap) * mult));
+  const base = Math.max(0, Math.min(Number(sc.cap) || SCORING_DEFAULTS.cap, Math.round((dealt||0) * (Number(sc.perInFightHp) || 1))));
+  return Math.max(0, Math.round(base * mult));
+}
+// ---- The boss's weakening (2026-10-19, package RB, owner 12:23: "+ the boss gets weaker as it goes down in health, allowing for possible
+// 'wins'."). THE curve, in this one place: every boss card of a part (its deck, its rows' decks, the Commons it calls in, its guards and
+// its boss unit) fights at
+//     weaken = floor + (1 - floor) x share
+// of its stats (Attack and Health: its raid stats after bossAtkPct / bossHpPct AND a stage's +Attack / +Health), where
+//     share = the lower of the part's remaining Health / its total and the whole raid's remaining / its total (weakenShare)
+// (an outer part: its own share, 1 fresh to 0 down; the Core, which opens with the raid at 45%: the raid's) and floor = the raid's
+// tuning.weakenFloor (WEAKEN_FLOOR_DEFAULT, 0.6): 100% fresh, 80% at half, 60% as it falls. weakenCard applies it (Attack never
+// below 1 when it had any, Health never below 1). The elders' Health (bossHpBonus) falls on its own line, with the raid's share.
+const WEAKEN_FLOOR_DEFAULT = 0.6;
+function weakenFloor(def){ const v = def && def.tuning && def.tuning.weakenFloor; return (typeof v === 'number' && isFinite(v)) ? Math.max(0.1, Math.min(1, v)) : WEAKEN_FLOOR_DEFAULT; }
+function bossWeakening(def, share){ const f = weakenFloor(def), s = Math.max(0, Math.min(1, share == null || !isFinite(Number(share)) ? 1 : Number(share))); return f + (1 - f) * s; }
+function weakenShare(state, partId){
+  if(!state) return 1; const ps = state.byId && state.byId[partId], sh = (a, b)=> b > 0 ? Math.max(0, Math.min(1, a / b)) : 1;
+  return Math.min(ps ? sh(ps.remaining, ps.total) : 1, state.total ? sh(state.remaining, state.total) : 1);
+}
+function weakenCard(d, w){
+  if(!d || !(w > 0) || w >= 1) return d; const a = Number(d.attack) || 0;
+  return Object.assign({}, d, {attack: a > 0 ? Math.max(1, Math.round(a * w)) : 0, health: Math.max(1, Math.round((Number(d.health) || 1) * w))});
+}
+// The participation tiers' raid damage (2026-10-19, package RB): 1,000 / 10,000 / 50,000 on the x15 scale -> 500 / 2,000 / 12,500, so the
+// same share of the lives with the tier's fights reaches each (completion model: 98% / 62% / 0.1%; tools/raid_completion_model.js).
+const RB_TIER_DAMAGE = {participant: 500, competent: 2000, leading: 12500};
+// ---- The new scale for saved raid edits (2026-10-19, package RB). A raid edit (this browser's, or the published one an admin saved in
+// the raid editor, card_overrides '__cfg:raid:<id>') replaces the shipped def whole, so an edit saved before RB still carried the x15
+// scale (scoring 15 / 5,000 / 10,000, the Goliath's 80,000 bars, its elders at 100, 100 players an instance, the 1,000 / 10,000 / 50,000
+// tiers). migrateRaidScale(edit, shipped) brings such an edit (no scaleV >= 2; the editor stamps it now) onto the new scale and keeps
+// everything else it set: the shipped raid's scoring, bossHpBonusMax, instanceCap and participation, and each part it shares with the
+// shipped raid takes its bars / barHp (its own scoring override goes when the shipped part has none). A raid with no shipped twin (made
+// in the editor) is scaled the way the Goliath was: scoring onto SCORING_DEFAULTS, every part's Health x RAID_SCALE_HP (1,100,000 /
+// 1,360,000, rounded to 10,000s), the tiers onto the defaults, and its elders' ceiling halved. Returns a new def (or the edit itself).
+const RAID_SCALE_V = 2, RAID_SCALE_HP = 1100000 / 1360000;
+function migrateRaidScale(e, shipped){
+  if(!e || typeof e !== 'object' || Number(e.scaleV) >= RAID_SCALE_V) return e;
+  const out = JSON.parse(JSON.stringify(e)); out.scaleV = RAID_SCALE_V;
+  if(shipped){
+    ['scoring', 'bossHpBonusMax', 'instanceCap', 'participation'].forEach(k=>{ if(k in shipped) out[k] = JSON.parse(JSON.stringify(shipped[k])); else delete out[k]; });
+    (out.parts || []).forEach(p=>{ const sp = (shipped.parts || []).find(x=> x.id === p.id); if(!sp) return; p.bars = sp.bars; p.barHp = sp.barHp;
+      if(p.scoring && !sp.scoring){ delete p.scoring.perInFightHp; if(!Object.keys(p.scoring).length) delete p.scoring; } });
+  } else {
+    out.scoring = Object.assign({}, out.scoring || {}, SCORING_DEFAULTS);
+    (out.parts || []).forEach(p=>{ const tot = Math.max(1, (p.bars | 0) * (p.barHp | 0)), want = Math.max(10000, Math.round(tot * RAID_SCALE_HP / 10000) * 10000), bars = Math.max(1, p.bars | 0);
+      p.barHp = Math.max(1000, Math.round(want / bars)); if(p.scoring){ delete p.scoring.perInFightHp; if(!Object.keys(p.scoring).length) delete p.scoring; } });
+    if(out.participation) out.participation = Object.assign({}, out.participation, {damage: PARTICIPATION_DEFAULTS.damage, strongDamage: PARTICIPATION_DEFAULTS.strongDamage, leadDamage: PARTICIPATION_DEFAULTS.leadDamage});
+    if(out.bossHpBonusMax) out.bossHpBonusMax = Math.round(out.bossHpBonusMax / 2);
+    if(out.instanceCap === 100) out.instanceCap = INSTANCE_CAP_DEFAULT;
+  }
+  return out;
 }
 // attempts: [{raidId, part, cycle, owner, contribution, at}]
 function raidState(def, attempts, now, opts){
@@ -192,6 +246,8 @@ function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.round
 // the basic HP.)"): with the unit's `basic` Health given, bossHpBonusMax (100) is the unit's whole Health on a fresh raid, not a bonus
 // on top: Health = basic + (100 − basic) × the raid's remaining share, so 100 fresh, its basic Health when the raid is nearly dead,
 // never below basic (basic ≥ 100: basic, no bonus). `bonus` is what it adds to basic. Called without `basic`, the old +100 × share.
+// 2026-10-19 (package RB, owner 12:23: "Elder should be rebalanced to start at 50 HP at max."): the ceiling is the raid's bossHpBonusMax,
+// 50 on the Goliath now (was 100): Health = basic + (50 − basic) × the raid's remaining share, never below basic; basic ≥ 50: basic.
 function bossHpBonus(def, state, basic){
   const max = Math.max(0, Math.min(1000, Math.round(Number(def && def.bossHpBonusMax) || 0)));
   const fraction = state && state.total > 0 ? Math.max(0, Math.min(1, (Number(state.remaining) || 0) / state.total)) : 1;
@@ -288,7 +344,9 @@ function generationState(def, attempts, g, cycle, now){
 // 50,000+ damage (leadFights 4+ fights): +leadPct (40%) of everything and leadCards (1) extra raid card for certain (a proposal: the
 // owner may retune it). The damage is the raid damage counted for you, rank multiplier in (contributionFor). `strong` stays true for a
 // leader, so every reader of the old flag still sees the better tier.
-const PARTICIPATION_DEFAULTS = {fights:3, damage:1000, strongFights:4, strongDamage:10000, strongPct:20, leadFights:4, leadDamage:50000, leadPct:40, leadCards:1};
+// 2026-10-19 (package RB, owner 12:23): the damage bars were set for the x15 scale (1,000 / 10,000 / 50,000); without the x15 and with a
+// win at 1,000 they are rescaled so about the same share of raiders reaches each tier (docs/balance/raid-balance-2026-10-19.md).
+const PARTICIPATION_DEFAULTS = {fights:3, damage:RB_TIER_DAMAGE.participant, strongFights:4, strongDamage:RB_TIER_DAMAGE.competent, strongPct:20, leadFights:4, leadDamage:RB_TIER_DAMAGE.leading, leadPct:40, leadCards:1};
 function participationRules(def){
   const p = (def && def.participation) || {}, D = PARTICIPATION_DEFAULTS;
   const n = (v, d, lo, hi)=>{ const x = Number(v); return (v !== '' && v != null && isFinite(x)) ? Math.max(lo, Math.min(hi, Math.round(x))) : d; };
@@ -326,8 +384,76 @@ function raidReward(def, state, owner, opts){
   const cardsBase = Math.max(0, Math.round(rw.cards != null ? Number(rw.cards) : 1)) + (/^top(1|10)$/.test(tier) ? 1 : 0);
   // cards: a kill gives them all (a strong contributor: strongPct% chance of one more); a survival only a chance at one, 0..10%
   // 2026-10-19 (RV2): a Leading participant's kill brings leadCards (1) more for certain, and no chance roll on top
+  // 2026-10-19 (package RC, owner 09:53): these are REWARD cards now, from the normal pack pools (or, at factionChance, a faction
+  // card), never the raid's own; its own cards come only at RAID_CARD_DROP_CHANCE (raidCardChance) and from the Forge's Raid tab.
   const cards = kill ? cardsBase + (p.leading ? p.rules.leadCards : 0) : 0, cardChance = kill ? (p.leading ? 0 : p.strong ? p.rules.strongPct / 100 : 0) : Math.min(1, specMult * boost * cardsBase);
-  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, leading: !!p.leading, level: p.level, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost};
+  const row = RAID_REWARD_TABLE[p.level] || RAID_REWARD_TABLE.participant;
+  const fullShards = Math.round((rw.shards != null && isFinite(Number(rw.shards)) ? Math.max(0, Number(rw.shards)) : row.shards) * boost) + row.extraShards + (RAID_TIER_SHARDS[tier] || 0);
+  const shards = kill ? fullShards : Math.floor(fullShards * genMult * taken); // a held raid: its share (failPct) by how much Health went
+  return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, leading: !!p.leading, level: p.level, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost,
+    packFloor: row.packFloor, factionChance: row.factionChance, shards, raidCardChance: kill ? RAID_CARD_DROP_CHANCE : 0};
+}
+// ---- Raid rewards v3 (2026-10-19, package RC, owner 09:53: "Raids almost never give raid cards. only maybe pack cards or faction
+// cards (maybe), raid cards must be crafted in the Forge. Under a special tab."). A claim pays its reward cards from the normal pack
+// pools at the participation level's rarity floor, each one a faction card at factionChance instead, plus the raid's trophy shards
+// (its crafting material: the Forge's Raid tab turns them, with Magic Dust and Maple Leaves, into the raid's own cards).
+// RAID_CARD_DROP_CHANCE is the ONE place the raid-card chance lives (the owner wants "almost never"): a fall's claim rolls it once,
+// and so does a won raid fight (the page's raidFightCardDrop). A held raid's claim never rolls it.
+const RAID_CARD_DROP_CHANCE = 0.015;
+// shards: trophy shards on a fall before the boost (Competent x1.2, Leading x1.4; a raid's rewards.shards replaces it); extraShards
+// on top for the level; RAID_TIER_SHARDS on top for the standing (top 1% / 10% / 50%). Owner may retune every number here.
+const RAID_REWARD_TABLE = {
+  participant: {packFloor:'common',   factionChance:0.10, shards:6, extraShards:0},
+  competent:   {packFloor:'uncommon', factionChance:0.15, shards:6, extraShards:2},
+  leading:     {packFloor:'rare',     factionChance:0.25, shards:6, extraShards:5},
+};
+const RAID_TIER_SHARDS = {top1:4, top10:2, top50:1, participant:0};
+const RAID_RARITY_ORDER = ['starter', 'common', 'uncommon', 'quest', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient'];
+const RAID_CARD_WEIGHT = {common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6}; // which of a raid's own cards, when one does come (was grantRaidCards')
+function raidRarityRank(r){ const i = RAID_RARITY_ORDER.indexOf(r || 'common'); return i < 0 ? 1 : i; }
+// pools: {pack:[ids], faction:[ids], raid:[ids], rarityOf(id), weight(id) (a pack card's weight; default 1)}. rnd: a seeded random.
+// Returns {pack:[ids], faction:[ids], raid:[ids]}: what this claim's cards are. Pure, so tests can run it seeded.
+function rollRaidRewardCards(reward, pools, rnd){
+  rnd = rnd || Math.random; pools = pools || {}; const out = {pack:[], faction:[], raid:[]}; if(!reward) return out;
+  const rar = id=> (pools.rarityOf ? pools.rarityOf(id) : 'common') || 'common';
+  const pick = (list, w)=>{ if(!list.length) return null; const tot = list.reduce((t, id)=> t + Math.max(0, w(id)), 0); if(!(tot > 0)) return list[Math.floor(rnd() * list.length)];
+    let r = rnd() * tot; for(const id of list){ r -= Math.max(0, w(id)); if(r <= 0) return id; } return list[list.length - 1]; };
+  const floor = raidRarityRank(reward.packFloor || 'common'), atFloor = list=>{ const f = (list || []).filter(id=> raidRarityRank(rar(id)) >= floor); return f.length ? f : (list || []); };
+  const packW = id=> pools.weight ? pools.weight(id) : 1;
+  let n = Math.max(0, reward.cards | 0); if(reward.cardChance > 0 && rnd() < reward.cardChance) n++;
+  for(let i = 0; i < n; i++){
+    const fac = (pools.faction || []).length > 0 && rnd() < (reward.factionChance || 0);
+    const id = pick(atFloor(fac ? pools.faction : pools.pack), packW); if(id) out[fac ? 'faction' : 'pack'].push(id);
+  }
+  if(reward.raidCardChance > 0 && (pools.raid || []).length && rnd() < reward.raidCardChance){ const id = pick(pools.raid, id=> RAID_CARD_WEIGHT[rar(id)] || 1); if(id) out.raid.push(id); }
+  return out;
+}
+// ---- Raid recipes (2026-10-19, package RC): what crafting one of a raid's own cards costs in the Forge's Raid tab, by rarity: that
+// raid's trophy shards + Magic Dust + Maple Leaves. A raid's recipeCost {rarity: {shards, dust, gold}} or recipes {cardId: {...}}
+// overrides. Proposal numbers (a participant's fall pays 6 shards, a Leading participant's 13): a Common ~2 falls, a Legendary ~27
+// (~12 leading).
+const RAID_RECIPE_COST = {
+  starter:{shards:8, dust:40, gold:80}, common:{shards:8, dust:40, gold:80}, uncommon:{shards:16, dust:90, gold:180}, quest:{shards:16, dust:90, gold:180},
+  rare:{shards:30, dust:180, gold:360}, veryrare:{shards:45, dust:270, gold:540}, superrare:{shards:60, dust:360, gold:720}, epic:{shards:80, dust:480, gold:960},
+  heroic:{shards:110, dust:640, gold:1280}, unique:{shards:130, dust:760, gold:1520}, questunique:{shards:130, dust:760, gold:1520}, legendary:{shards:160, dust:960, gold:1920},
+  mythic:{shards:220, dust:1300, gold:2600}, ancient:{shards:300, dust:1800, gold:3600},
+};
+function raidRecipeFor(raid, cardId, rarity){
+  const r = raid || {}, own = (r.recipes || {})[cardId], byR = (r.recipeCost || {})[rarity || 'common'], base = RAID_RECIPE_COST[rarity] || RAID_RECIPE_COST.common;
+  const src = Object.assign({}, base, byR || {}, own || {}), n = v=> Math.max(0, Math.round(Number(v) || 0));
+  return {shards: n(src.shards), dust: n(src.dust), gold: n(src.gold)};
+}
+// wallet: {gold, dust, raidShards:{raidId: n}} (the page's myCurrencies). What's missing, by kind (empty: affordable).
+function raidRecipeShort(wallet, raidId, cost){
+  const w = wallet || {}, have = {shards: Number(((w.raidShards || {})[raidId])) || 0, dust: Number(w.dust) || 0, gold: Number(w.gold) || 0};
+  return ['shards', 'dust', 'gold'].filter(k=> (cost[k] || 0) > have[k]).map(k=> ({kind:k, need:cost[k], have:have[k]}));
+}
+// Pays a recipe out of the wallet (mutates it). false (and nothing taken) when it can't be paid.
+function payRaidRecipe(wallet, raidId, cost){
+  if(!wallet || !raidId || raidRecipeShort(wallet, raidId, cost).length) return false;
+  wallet.raidShards = Object.assign({}, wallet.raidShards || {}); wallet.raidShards[raidId] = (Number(wallet.raidShards[raidId]) || 0) - (cost.shards || 0);
+  wallet.dust = (Number(wallet.dust) || 0) - (cost.dust || 0); wallet.gold = (Number(wallet.gold) || 0) - (cost.gold || 0);
+  return true;
 }
 
 // ---- Raid tickets (owner 00:22: "10 tickets per week to do raids, regenerate 1 per day"): at most `cap` (10); +1 every regenMs (a
@@ -366,13 +492,14 @@ function attemptCost(def, partId, stage){
 function autoUnlocked(done, raidId){ return !!(done && raidId && done[raidId]); }
 
 // ---- Instances (owner 00:22: "When there are too many players, each raid can have multiple instances"): each cycle a raid has
-// instances 1..N of instanceCap (100) players, each with its own Health, lives and rewards. A player is placed on their first fight
+// instances 1..N of instanceCap (250; 100 before 2026-10-19, package RB, owner 12:23: "cap the amount of participants to 250 players") players, each with its own Health, lives and rewards. A player is placed on their first fight
 // of the cycle: in a guild-mate's instance that has room, else the lowest instance with room, else a new one (join order). The
 // server does it (join_raid_instance, supabase/proposed/20261019_raid_ops.sql); until that is applied everyone is in instance 1.
 // Attempts carry the instance in boss_id: "raid:part" is instance 1 (as before), "raid:part@2" instance 2.
-function instanceCap(def){ const n = Math.round(Number(def && def.instanceCap) || 100); return Math.max(10, Math.min(1000, n)); }
+const INSTANCE_CAP_DEFAULT = 250; // 2026-10-19 (package RB): was 100; the server's join_raid_instance default: supabase/proposed/20261019_raid_cap_250.sql
+function instanceCap(def){ const n = Math.round(Number(def && def.instanceCap) || INSTANCE_CAP_DEFAULT); return Math.max(10, Math.min(1000, n)); }
 function assignInstance(members, owner, opts){
-  opts = opts || {}; const cap = Math.max(1, Math.round(opts.cap || 100)), list = (members || []).filter(Boolean);
+  opts = opts || {}; const cap = Math.max(1, Math.round(opts.cap || INSTANCE_CAP_DEFAULT)), list = (members || []).filter(Boolean);
   const mine = list.find(m=> m.owner === owner); if(mine) return Math.max(1, mine.instance | 0);
   const count = {}; list.forEach(m=>{ count[m.instance | 0] = (count[m.instance | 0] || 0) + 1; });
   const room = i=> (count[i] || 0) < cap;
@@ -429,8 +556,10 @@ function bossReinforce(E, pl, pool, rnd, opts){
 }
 
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
+  RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+   fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

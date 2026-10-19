@@ -7,14 +7,46 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Area | Item | Question |
 |---|---|---|
 | Workflow | Units by theme (hub) | Pick units per map; then I run the post-balance step from your picks |
-| Balance | Post-balance queue | 29 cards over budget under the measured costs (docs/post-balance-queue-2026-10-19.md); refit in post-balance |
+| Balance | Post-balance queue | 28 cards over budget v4 under the measured costs (docs/balance/post-balance-queue.json; 10-19 BF: Bone Diviner and the Dragon-Turtle left, Barnacle Fortress joined); refit in post-balance |
 | Balance | Map bumps | Maps 8, 13, 20 sit off the linear climb (reference decks). Build decks against neighbours, move a strong reward later, or accept |
-| Balance | Forge opens Map 11 | Maps 1–10 only get harder through rewards. Open the Forge sooner? |
+| Balance | Forge opens Map 11 | ANSWERED 10-19: keep it; players deck-build to win |
 | Balance | Starters | Burrow Rabbit 85%, Crimson Wing Recruit 79% (band 20–48) |
 | Balance | Sacrifice imps | Ash/Cinder Imp 94–97%, Puppeteer Imp 99% whatever stats: rethink Sacrifice |
 | Balance | 27 cards out of band | Mostly 2+ Lumber (Lumber cut overshoots) |
 | Balance | Dragons / Caldera Wyrm | Over budget, untouched |
 | Balance | Arrow | Petal Fletcher 87.5% at 1/1: needs the cost change (now applied: re-measure in post-balance) |
+| Raid | Raid cards crafted (RC) | 1.5% own-card drop per claim / won fight; faction-card chance 10/15/25%; rarity floors C/U/R |
+| Raid | Trophy shards (RC) | 6/9/13 per claim (+4/+2/+1 by standing; half if it survives); recipe table in CHANGELOG; unseen cards can't be crafted |
+| Server | raid_shards column | supabase/proposed/20261019_raid_shards.sql (cap +200 a save): apply? |
+| Units | Variant names (UT) | 109 thematic names proposed (nameProposal in unit-themes); many Kelp Mangroves start with "Kelp" |
+| Units | Proposed animals (UT) | 30 beings with no animal in the art (Ent owl, golems gorilla, Great Gate duck…); MissingNo bird vs cat art |
+| Units | species vs animal | 11 cards disagree (Moray "Cnidarian", moles "Rodent", Tardigrade "Insect"): fix species? |
+| Units | Tutorial Level 0 | Hummingbird side's tutorial cards also Level 0 (fairness): OK? |
+| Easter eggs | Names | Tobasco shown as "Habanero Drakon" (trademark); panda "Kegfuse Panda"; keep "Nyoogle"? |
+| Easter eggs | Codex teaser | 8 "???" tiles visible from the start and counted, or hidden until seen? |
+| Easter eggs | Condor "+5" | Taken literally (5 columns out): the edge beam needs a very wide row |
+| Easter eggs | Rarities | Drakon Rare, Panda Super Rare; Nyoogle tagged cat/mythic |
+| Server | Deck sync migration (SY) | supabase/proposed/20261019_deck_sync.sql: looks + deleted_at columns, checks, stale-write guard. Optional: apply? |
+| Server | Device-only data (SY) | Per-copy foil/Shiny/skins and Kibble, Food, Beer, Kroon, Laurels still don't sync. Sync next? |
+| Server | Currency guard (SY) | guard_currency_write rejects a whole upload when one currency jumps past its limit: a device far ahead never syncs |
+| Raid | Admin wins (NV) | An admin 👑 Win in a raid no longer counts (test only). Earlier admin wins pushed ~20,019 to the live Goliath pool: remove those rows? (needs your OK) |
+| Raid | VS countdown (NV) | Raid VS screen waits 9 s before auto-start (normal fights 2.8 s): right length? |
+| UI | Conquest fight opener (NV) | Separate screen, not redesigned yet |
+| UI | Hold timing (MB2) | Touch-and-hold is 0.25 s in fights, 0.45 s elsewhere: same everywhere? |
+| Raid | Small instances (RB) | 30-player floor relies on stand-ins (14%/day, my pick) and Core stumps 14 HP. Scale HP by participants instead? (needs last week's count) |
+| Raid | Tier thresholds (RB) | Participant 1,000→500, Competent 10,000→2,000, Leading 50,000→12,500 (0.1% reach it; 7,500 gives ~5%) |
+| Raid | Instance cap 250 (RB) | Republish the Goliath from the raid editor, or apply supabase/proposed/20261019_raid_cap_250.sql |
+| Balance | Forge curve size (BF) | Gains are absolute budget points: small cards grow most (Otter Centurion 3/5 → 11/18 at Lv 10, mean +228%). Alternative: scale by budget use (~+90% at Lv 10 for all) |
+| Balance | "Base" in N (BF) | Read as v3 N without the level term. If you meant v3's L1 N, every card's N rises ~2.1 |
+| Balance | Nest Lv 0 → 1 (BF) | Most Base cards gain nothing at Lv 1 (gain arrives at Lv 2). Make Lv 1 a minor step? |
+| Balance | 16-6 Reaver's Hollow (BF) | 74% vs 52–68% band at the 2× Shield cap: raise the cap or accept |
+| Balance | Side maps ahead (BF) | aheadMaps = 1 on every side map; set 2 for Volcano Lair, the Eye? |
+| UI | Centre slack (BU) | Keeping the centre column centred costs card size sometimes (75 → 69.5 px at 390) |
+| UI | CPU fills centre (BU) | CPU now fills an empty centre first (follows the always-legal centre rule) |
+| Raid | Mid/back-row refills (TS) | Units falling in middle/back rows die fully, but Revive / On Death: Spawn / Relic / Crystallise / Meiosis don't refill those slots. Should they? |
+| Raid | Back-row attacker hooks (TS) | Mid/back rows now fire On Attack, Crit, Recoil, Reload, Twin Strike, Frenzy (same as normal attacks): small buff |
+| Raid | Start-of-round in back rows (TS) | Regeneration, Renewal, On Round Start still front row only |
+| UI | Small-card chips (TS) | Small cards show 2 chips then "+N" ("☠3 +2"); shrink to fit 3? "NEW!" tag covers chips for 4.5 s |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |

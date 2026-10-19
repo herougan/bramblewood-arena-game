@@ -9,6 +9,8 @@
 // (RaidM.contributionFor's rank); the rank shares are printed per row.
 //   node tools/raid_full_sim.js [--n 40] [--parts left,right,tail,core] [--stages fresh,Enraged,Thrashing] [--decks starter,6,10,15,20]
 //     [--raids canonical/raids.json] [--leader <cardId>]
+// 2026-10-19 (package RB): --stages also takes s<share> (s1, s0.5, s0.05: the part at that share of its Health, the raid around it as
+// it stands then), and tools/raid_completion_model.js builds the completion model on playOne (docs/balance/raid-balance-2026-10-19.md).
 // Prints, per deck x part x stage: average damage dealt to the part's bramble, the share of attempts reaching the raid's minDamage
 // (the first paying tier; below it an attempt pays a pittance), the overwhelm share, and the average turns your bramble survived.
 'use strict';
@@ -36,7 +38,17 @@ const A = new Function('E', 'G', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', 'RaidM'
 
 function seeded(seed){ return A.seededRng(seed >>> 0); }
 // The raid's state for a stage: fresh (no stage, the whole raid standing) or the named stage at its threshold.
-function stateFor(def, stageName){
+// 2026-10-19 (package RB): or "s<share>" (s1, s0.5, s0.05): the part at that share of its Health, the raid around it as it stands then
+// (fighting an outer part: all three outer parts at that share, the Core whole; the Core: the outer parts down), so the stage, the
+// elders' Health and the boss's weakening (RaidM.bossWeakening) are what a raider meets at that point of the raid.
+function stateAtShare(def, partId, share){
+  const core = (def.parts || []).find(p=> p.id === partId && (p.lockedUntil || []).length), atts = [];
+  (def.parts || []).forEach(p=>{ const outer = !(p.lockedUntil || []).length, gone = core ? (outer ? 1 : 1 - share) : (outer ? 1 - share : 0);
+    const n = Math.round(RaidM.partTotal(p) * Math.max(0, Math.min(1, gone))); if(n > 0) atts.push({raidId: def.id, part: p.id, cycle: 0, owner: 'sim', contribution: n, at: 0}); });
+  return RaidM.raidState(def, atts, 0, {cycle: 0});
+}
+function stateFor(def, stageName, partId){
+  if(/^s[\d.]+$/.test(String(stageName || ''))) return stateAtShare(def, partId, Number(String(stageName).slice(1)));
   const st = RaidM.raidState(def, [], 0, {cycle:0});
   if(stageName && stageName !== 'fresh'){ const sg = (def.stages || []).find(s=> s.name === stageName); if(sg){ st.stage = sg; const f = sg.at - 0.01; st.remaining = Math.round(st.total * f); st.parts.forEach(ps=>{ ps.remaining = Math.round(ps.total * f); }); } }
   return st;
@@ -52,7 +64,7 @@ function playOne(def, partId, stageName, deckKey, g){
   const rng = seeded(0x5A1D + g * 977 + partId.length * 31), saveRandom = Math.random; Math.random = seeded(0xA11E5 + g * 131);
   try{
     const playerOverlay = {}, me = myDeckFor(deckKey, playerOverlay);
-    const st = stateFor(def, stageName), f = RaidM.fightFor(def, st, partId, {});
+    const st = stateFor(def, stageName, partId), f = RaidM.fightFor(def, st, partId, {});
     const decks = (def.allyDecks || []).filter(d=> d.deck && Object.keys(d.deck).every(id=> CARD_DEFS_BASELINE[id]));
     const allies = [0, 1].map(i=>{ const d = decks[(g + i * 7 + i) % decks.length]; return A.raidAllyOf({name: d.name, deck: d.deck, level: 0}, i); });
     // the reference deck's level copies are base defs for this fight (getCardDefs folds the overlay in)

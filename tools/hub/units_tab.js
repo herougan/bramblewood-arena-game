@@ -33,11 +33,11 @@
   const skillText = s=> s[0] === 'trigger' ? '⚡ ' + s[1] : ((SKL[s[0]] && SKL[s[0]].icon ? SKL[s[0]].icon + ' ' : '') + (SKL[s[0]] ? SKL[s[0]].label : s[0]) + (s[1] != null && s[1] !== '' ? ' ' + s[1] : ''));
   const onMap = (u, m)=> (u.maps.home || []).includes(m) || !!(u.maps.fights || {})[m];
   const mainMap = u=> (u.maps.home || [])[0] || Object.entries(u.maps.fights || {}).sort((a, b)=> b[1] - a[1])[0]?.[0] || '';
-  UNITS.forEach(u=>{ u._hay = [u.name, u.id, u.family, u.sub, u.faction, (u.types || []).join(' '), u.biomes.map(b=> BIO[b] ? BIO[b].label : b).join(' '), FAC[u.faction] ? FAC[u.faction].label : '',
+  UNITS.forEach(u=>{ u._hay = [u.name, u.id, u.internalName || '', u.animal || '', u.subtype || '', u.base ? 'base' : '', u.family, u.sub, u.faction, (u.types || []).join(' '), u.biomes.map(b=> BIO[b] ? BIO[b].label : b).join(' '), FAC[u.faction] ? FAC[u.faction].label : '',
     u.skills.map(skillText).join(' '), u.variant ? (u.variant.tier + ' ' + (u.variant.of || '')) : ''].join(' ').toLowerCase(); });
 
   // ---------- state ----------
-  const st = {q:'', biome:'*', fam:'*', fac:'*', map:'*', r:'*', status:'*', group:'biome', pickMap:'', only:false, view:'cat', ready:false, shown:120};
+  const st = {q:'', biome:'*', fam:'*', fac:'*', ani:'*', map:'*', r:'*', status:'*', group:'biome', pickMap:'', only:false, view:'cat', ready:false, shown:120};
   const PAGE = 120;
   const picks = {}; // "<map>:<unit>" -> true (only picked ones are kept here)
   const timers = {}, chains = {}, busy = {};
@@ -50,7 +50,7 @@
   // What still needs assigning for a unit picked for map m (the post-balance step); [] = ready as it is.
   function needs(u, m){
     const out = [];
-    if(u.status === 'proposed') out.push('a proposed ' + (TIER[u.variant.tier] ? TIER[u.variant.tier].prefix : u.variant.tier) + ' version: the body is a draft (' + (u.variant.of ? 'from ' + (BYID[u.variant.of] || {}).name : '') + '), no skills yet, not in cards.json');
+    if(u.status === 'proposed') out.push('a proposed ' + (TIER[u.variant.tier] ? TIER[u.variant.tier].prefix : u.variant.tier) + ' version (internal) named "' + u.name + '" (a name proposal): the body is from N (' + (u.variant.of ? 'shape of ' + (BYID[u.variant.of] || {}).name : '') + '), no skills yet, not in cards.json');
     else if(u.status === 'pool') out.push('a pool card: place it (a source on this map) and measure it');
     if(u.status !== 'proposed' && !onMap(u, m)) out.push('new to ' + mapShort(m) + ': re-fit its stats for this stage' + (u.firstMap != null ? ' (it lives on Map ' + u.firstMap + ' now)' : ' (not on the road yet)'));
     if(u.status !== 'proposed' && !u.skills.length) out.push('no skills yet');
@@ -62,34 +62,37 @@
     if(build.done) return; build.done = true;
     const host = $('utHost'); if(!host) return;
     const C = D.counts;
-    host.innerHTML = `<div class="dec-head"><h2>Units by theme</h2><p>Every creature card, sorted by where it lives (biome), what it is (family) and who it runs with (faction): ${C.live} live, ${C.pool} in the pool and ${C.proposed} proposed later versions ("Dire" / "Elder"). Each tile shows its <b>base body</b>, the stats before skills, apart from its current skills: <b>skills are applied later</b>, in the post-balance step. Pick units for a map; the queue lists what still needs stats or skills.</p></div>
+    host.innerHTML = `<div class="dec-head"><h2>Units by theme</h2><p>Every creature card, sorted by where it lives (biome), what it is (family) and who it runs with (faction): ${C.live} live, ${C.pool} in the pool and ${C.proposed} proposed later versions. Each tile shows its <b>base body</b>, the stats before skills, apart from its current skills: <b>skills are applied later</b>, in the post-balance step. Pick units for a map; the queue lists what still needs stats or skills.</p>
+        <p>2026-10-19: every unit carries its <b>animal</b> (and a subtype for ghosts, spirits, elementals and the like): filter or group by it. A proposed version is a <b>player</b> unit: its body comes from the budget <b>N</b> of its rarity, Lumber and Wait (the old ×1.4 / ×1.8 draft is shown beside it), and its name is a thematic <b>proposal</b> ("Dire" / "Elder" are internal ids). The raid's boss units and raid bosses are <b>non-player</b> and keep their multipliers: see 👹 Non-player.</p></div>
       <div class="sc-status" id="utStatus" role="status"></div>
-      <div class="ut-bar" role="group" aria-label="View"><div class="dec-seg" id="utView"><button type="button" data-v="cat" aria-pressed="true">🗂 Catalogue</button><button type="button" data-v="queue" aria-pressed="false">🧰 Post-balance queue <b id="utQn"></b></button></div>
+      <div class="ut-bar" role="group" aria-label="View"><div class="dec-seg" id="utView"><button type="button" data-v="cat" aria-pressed="true">🗂 Catalogue</button><button type="button" data-v="queue" aria-pressed="false">🧰 Post-balance queue <b id="utQn"></b></button><button type="button" data-v="np" aria-pressed="false">👹 Non-player <b>${(D.nonPlayer || []).length}</b></button></div>
         <label class="ut-pick">Picking for <select id="utPick" aria-label="The map you are picking units for"></select></label></div>
       <div class="ut-maps" id="utMaps" role="group" aria-label="Picked per map"></div>
       <div id="utCat"><div class="cd-bar ut-filters">
         <input type="search" id="utQ" placeholder="Name, type, skill…" aria-label="Search units" autocomplete="off">
-        <select id="utB" aria-label="Biome"></select><select id="utF" aria-label="Family"></select><select id="utC" aria-label="Faction"></select>
+        <select id="utB" aria-label="Biome"></select><select id="utF" aria-label="Family"></select><select id="utA" aria-label="Animal"></select><select id="utC" aria-label="Faction"></select>
         <select id="utM" aria-label="Map (earned or fights there)"></select><select id="utR" aria-label="Rarity"></select><select id="utG" aria-label="Group by"></select>
         <div class="dec-seg" id="utS" role="group" aria-label="Status"></div>
         <label class="cd-chk"><input type="checkbox" id="utOnly"> picked for this map only</label></div>
         <p class="cd-count" id="utN" aria-live="polite"></p><div id="utGrid"></div><p class="ut-more"><button type="button" class="btn" id="utMore" hidden>Show more</button></p></div>
-      <div id="utQueue" hidden></div>`;
+      <div id="utQueue" hidden></div><div id="utNp" hidden></div>`;
     const counts = f=>{ const n = {}; UNITS.forEach(u=> [].concat(f(u)).forEach(v=>{ if(v != null && v !== '') n[v] = (n[v] || 0) + 1; })); return n; };
+    const na = counts(u=> u.animalGroup);
     const nb = counts(u=> u.biomes[0]), nf = counts(u=> u.family), nc = counts(u=> u.faction), nm = counts(u=> Object.keys(u.maps.fights || {}).concat(u.maps.home || []).filter((v, i, a)=> a.indexOf(v) === i)), nr = counts(u=> u.rarity || 'none');
     const opt = (v, l)=> `<option value="${esc(v)}">${esc(l)}</option>`;
     $('utB').innerHTML = opt('*', 'Any biome') + V.biomes.filter(b=> nb[b.id]).map(b=> opt(b.id, `${b.icon} ${b.label} (${nb[b.id]})`)).join('');
     $('utF').innerHTML = opt('*', 'Any family') + V.families.filter(f=> nf[f.id]).map(f=> opt(f.id, `${f.icon} ${f.label} (${nf[f.id]})`)).join('');
+    $('utA').innerHTML = opt('*', 'Any animal') + Object.keys(na).sort().map(a=> opt(a, `${a} (${na[a]})`)).join(''); // 2026-10-19 (package UT): by animal
     $('utC').innerHTML = opt('*', 'Any faction') + V.factions.filter(f=> nc[f.id]).map(f=> opt(f.id, `${f.icon} ${f.label} (${nc[f.id]})`)).join('') + V.factions.filter(f=> !nc[f.id]).map(f=> opt(f.id, `${f.icon} ${f.label} (none yet)`)).join('');
     $('utM').innerHTML = opt('*', 'Any map') + PICK_MAPS.filter(m=> nm[m.id]).map(m=> opt(m.id, `${mapLabel(m.id)} (${nm[m.id]})`)).join('') + opt('-', 'On no map');
     $('utR').innerHTML = opt('*', 'Any rarity') + LADDER.concat(['none']).filter(r=> nr[r]).map(r=> opt(r, `${r === 'none' ? 'No rarity' : rarName(r)} (${nr[r]})`)).join('');
-    $('utG').innerHTML = [['biome', 'Group: biome'], ['family', 'Group: family'], ['faction', 'Group: faction'], ['map', 'Group: map'], ['rarity', 'Group: rarity'], ['stage', 'Group: road stage'], ['none', 'No groups']].map(([v, l])=> opt(v, l)).join('');
+    $('utG').innerHTML = [['biome', 'Group: biome'], ['family', 'Group: family'], ['animal', 'Group: animal'], ['subtype', 'Group: subtype'], ['faction', 'Group: faction'], ['map', 'Group: map'], ['rarity', 'Group: rarity'], ['stage', 'Group: road stage'], ['none', 'No groups']].map(([v, l])=> opt(v, l)).join('');
     const ns = counts(u=> u.status);
     $('utS').innerHTML = [['*', 'All', UNITS.length], ['live', 'Live', ns.live], ['pool', 'Pool', ns.pool], ['proposed', 'Proposed', ns.proposed]].map(([v, l, n])=> `<button type="button" data-s="${v}" aria-pressed="${v === st.status}">${l} <b>${n || 0}</b></button>`).join('');
     $('utPick').innerHTML = PICK_MAPS.map(m=> opt(m.id, mapLabel(m.id))).join('');
     st.pickMap = PICK_MAPS[0] ? PICK_MAPS[0].id : '';
     const bind = (id, key, ev)=> $(id).addEventListener(ev || 'change', e=>{ st[key] = e.target.type === 'checkbox' ? e.target.checked : e.target.value; if(key === 'q') st.q = st.q.trim().toLowerCase(); st.shown = PAGE; render(); });
-    bind('utQ', 'q', 'input'); bind('utB', 'biome'); bind('utF', 'fam'); bind('utC', 'fac'); bind('utM', 'map'); bind('utR', 'r'); bind('utG', 'group'); bind('utOnly', 'only');
+    bind('utQ', 'q', 'input'); bind('utB', 'biome'); bind('utF', 'fam'); bind('utA', 'ani'); bind('utC', 'fac'); bind('utM', 'map'); bind('utR', 'r'); bind('utG', 'group'); bind('utOnly', 'only');
     $('utS').addEventListener('click', e=>{ const b = e.target.closest('button[data-s]'); if(!b) return; st.status = b.dataset.s; $('utS').querySelectorAll('button').forEach(x=> x.setAttribute('aria-pressed', String(x === b))); st.shown = PAGE; render(); });
     $('utView').addEventListener('click', e=>{ const b = e.target.closest('button[data-v]'); if(!b) return; st.view = b.dataset.v; $('utView').querySelectorAll('button').forEach(x=> x.setAttribute('aria-pressed', String(x === b))); renderView(); });
     $('utPick').addEventListener('change', e=>{ setPickMap(e.target.value); });
@@ -178,7 +181,7 @@
   function filtered(){
     const terms = st.q.split(/\s+/).filter(Boolean);
     return UNITS.filter(u=> (st.status === '*' || u.status === st.status) && (st.biome === '*' || u.biomes.includes(st.biome)) && (st.fam === '*' || u.family === st.fam)
-      && (st.fac === '*' || u.faction === st.fac) && (st.r === '*' || (u.rarity || 'none') === st.r)
+      && (st.fac === '*' || u.faction === st.fac) && (st.ani === '*' || u.animalGroup === st.ani) && (st.r === '*' || (u.rarity || 'none') === st.r)
       && (st.map === '*' || (st.map === '-' ? !(u.maps.home || []).length && !Object.keys(u.maps.fights || {}).length : onMap(u, st.map)))
       && (!st.only || isPicked(st.pickMap, u.id)) && terms.every(t=> u._hay.includes(t)));
   }
@@ -187,12 +190,15 @@
       case 'biome': { const b = BIO[u.biomes[0]]; return b ? [V.biomes.indexOf(b), b.icon + ' ' + b.label] : [99, 'No biome']; }
       case 'family': { const f = FAM[u.family]; return f ? [V.families.indexOf(f), f.icon + ' ' + f.label] : [99, 'No family']; }
       case 'faction': { const f = FAC[u.faction]; return f ? [V.factions.indexOf(f), f.icon + ' ' + f.label] : [99, 'No faction']; }
+      case 'animal': { const a = u.animalGroup; return a ? [AGI[a] || 0, '🐾 ' + a] : [9999, 'No animal']; }
+      case 'subtype': { const t = u.subtype; return t ? [STI[t] || 0, t] : [9999, 'Animals (no subtype)']; }
       case 'map': { const m = mainMap(u); return m && MAP[m] ? [PICK_MAPS.findIndex(x=> x.id === m) + 1 || 98, mapLabel(m)] : [999, 'On no map yet']; }
       case 'rarity': { const i = LADDER.indexOf(u.rarity); return [i < 0 ? 99 : i, rarName(u.rarity)]; }
       case 'stage': return u.stage ? [u.stage, 'Stage ' + u.stage + ' · ' + STG[u.stage].label + ' (Maps ' + STG[u.stage].maps.join('–') + ')'] : [9, 'Not on the road yet'];
       default: return [0, ''];
     }
   }
+  const AGI = {}; (V.animalGroups || []).forEach((a, i)=> AGI[a] = i + 1); const STI = {}; (V.subtypes || []).forEach((t, i)=> STI[t.id] = i + 1);
   const sortKey = u=> [u.stage || 9, LADDER.indexOf(u.rarity), u.status === 'proposed' ? 1 : 0];
   function render(){
     if(st.view !== 'cat') return;
@@ -219,10 +225,12 @@
     const b = u.body, picked = isPicked(st.pickMap, u.id), v = u.variant;
     const badge = u.status === 'proposed' ? '<span class="ut-st s-proposed">Proposed</span>' : u.status === 'pool' ? '<span class="ut-st s-pool">Pool</span>' : '<span class="ut-st s-live">Live</span>';
     const extra = (u.token ? ' <span class="chip">token</span>' : '') + (u.enemyOnly ? ' <span class="chip" title="Unattainable: only enemies field it for now">enemy only</span>' : '') + (u.hidden ? ' <span class="chip">hidden</span>' : '')
+      + (u.base ? ' <span class="chip" title="A Base card: earned from skirmish rewards, not card packs">Base</span>' : '')
       + (u.structure ? ' <span class="chip">structure</span>' : '') + (u.manual ? ` <span class="chip ut-hand" title="${esc('Hand-tagged: ' + u.manual.join(', ') + (u.why.manual ? ' · ' + u.why.manual : ''))}">✋ checked</span>` : '');
     const bios = u.biomes.map((x, i)=> BIO[x] ? `<span class="ut-tag${i ? '' : ' is-main'}" title="${esc(i ? 'Also: ' : 'Main biome: ')}${esc(BIO[x].label)}">${BIO[x].icon} ${esc(BIO[x].label)}</span>` : '').join('');
     const fam = FAM[u.family], fac = FAC[u.faction];
-    const tags = bios + (fam ? `<span class="ut-tag" title="Family${u.sub ? ': ' + esc(u.sub) : ''}">${fam.icon} ${esc(fam.label)}${u.sub && u.sub.toLowerCase() !== fam.label.toLowerCase() ? ' <small>' + esc(u.sub) + '</small>' : ''}</span>` : '')
+    const ani = u.animal ? `<span class="ut-tag" title="Animal${u.subtype ? ' (its ' + esc(u.subtype) + ' body)' : ''}">🐾 ${esc(u.animal)}${u.subtype ? ' <small>' + esc(u.subtype) + '</small>' : ''}</span>` : '';
+    const tags = bios + ani + (fam ? `<span class="ut-tag" title="Family${u.sub ? ': ' + esc(u.sub) : ''}">${fam.icon} ${esc(fam.label)}${u.sub && u.sub.toLowerCase() !== fam.label.toLowerCase() ? ' <small>' + esc(u.sub) + '</small>' : ''}</span>` : '')
       + (fac ? `<span class="ut-tag" title="Faction / society">${fac.icon} ${esc(fac.label.split(' (')[0])}</span>` : '')
       + `<span class="ut-tag" title="Size">${esc(u.size)}</span>` + (u.stage ? `<span class="ut-tag" title="Road stage: where it first lives">${esc(STG[u.stage].label)} · Map ${u.firstMap}</span>` : '<span class="ut-tag">not on the road</span>');
     const body = `<div class="ut-body" title="Base body: its stats before any skill"><small>Base body</small><span>🪵${b.cost}</span><span>⏳${b.wait}</span><span>⚔${b.attack}</span><span>❤${b.health}</span>`
@@ -232,8 +240,9 @@
     else skills = `<div class="ut-sk${u.skills.length ? '' : ' is-todo'}"><small>Skills · applied later</small>${u.skills.length ? esc(u.skills.map(skillText).join(' · ')) : 'none yet'}</div>`;
     let vline = '';
     if(v && v.kind === 'proposed'){ const base = BYID[v.of];
-      vline = `<p class="ut-var">${esc(TIER[v.tier].prefix)} version of <b>${esc(base ? base.name : v.of)}</b> for ${esc(mapLabel(v.map))}: Atk ×${v.mult.attack}, HP ×${v.mult.health}, Lumber +${v.lumber}, Wait +${v.wait}, rarity +${v.rarityStep}${v.fitted ? ', fitted under budget v3' : ''} (N ${v.N}; 2A+H ${v.x1}).</p>`; }
-    else if(v && v.kind === 'existing'){ const base = v.of && BYID[v.of]; vline = `<p class="ut-var">Already a${v.tier === 'elder' || v.tier === 'ancient' ? 'n' : ''} ${esc(TIER[v.tier] ? TIER[v.tier].id : v.tier)} version${base ? ' of <b>' + esc(base.name) + '</b>' : ' (no earlier card yet)'}.</p>`; }
+      const md = v.multDraft || {};
+      vline = `<p class="ut-var">Player unit · internal <code>${esc(u.internalName || v.tier)}</code>, name <b>proposed</b>. A later version of <b>${esc(base ? base.name : v.of)}</b> for ${esc(mapLabel(v.map))}: Lumber +${v.lumber}, Wait +${v.wait}, rarity +${v.rarityStep}; <b>body from N ${v.N}</b> (2A+H ${v.x1}, ${Math.round((v.fit || 0.8) * 100)}% of N; the rest is room for skills) in its base's shape${v.belowBase ? ', <b>still under its base</b>' : ''}. Was (×${md.mult ? md.mult.attack : '?'} / ×${md.mult ? md.mult.health : '?'}): ⚔${md.attack} ❤${md.health}.</p>`; }
+    else if(v && v.kind === 'existing'){ const base = v.of && BYID[v.of]; vline = `<p class="ut-var">Already a${v.tier === 'elder' || v.tier === 'ancient' ? 'n' : ''} ${esc(TIER[v.tier] ? TIER[v.tier].id : v.tier)} version${base ? ' of <b>' + esc(base.name) + '</b>' : ' (no earlier card yet)'} · ${v.audience === 'enemy-only' ? 'enemy only for now' : 'a player card'}.</p>`; }
     const home = (u.maps.home || []).map(mapShort), fights = Object.keys(u.maps.fights || {}).filter(m=> MAP[m]);
     const where = `<p class="ut-where">${home.length ? (u.status === 'proposed' ? 'Proposed for ' : u.status === 'pool' ? 'Made for ' : 'Earned on ') + esc(home.join(', ')) : u.source ? esc(({pack:'From packs', base:'A base card', raid:'A raid drop', nest:'From the Nest', secret:'A secret find'})[u.source] || u.source) : 'No source yet'}`
       + (fights.length ? ` · fights on ${fights.length > 4 ? fights.length + ' maps' : esc(fights.map(mapShort).join(', '))}` : '') + '</p>';
@@ -267,6 +276,16 @@
     if(!rows.length && total) html += '<p class="dec-empty">Every pick is ready as it is.</p>';
     el.innerHTML = html;
   }
-  function renderView(){ $('utCat').hidden = st.view !== 'cat'; $('utQueue').hidden = st.view !== 'queue'; if(st.view === 'cat') render(); else renderQueue(); }
+  // ---------- non-player units (2026-10-19, package UT): the raid's boss units and raid bosses keep their multipliers ----------
+  function renderNp(){
+    const el = $('utNp'); if(!el) return; const list = D.nonPlayer || [];
+    el.innerHTML = `<p>Non-player units are not balanced by N: only enemies field them, so they keep their multipliers. The player variants (the proposed later versions) take their stats from N.</p>`
+      + `<div class="bal-wrap"><table class="bal-t ut-qt"><thead><tr><th>Unit</th><th>Kind</th><th>From</th><th>Stats</th><th>Art</th></tr></thead><tbody>`
+      + list.map(n=> `<tr><td><b>${esc(n.name)}</b> <small>${esc(n.id)}${n.animal ? ' · 🐾 ' + esc(n.animal) : ''}</small></td><td>${esc(n.kind === 'raid-boss-unit' ? 'raid boss unit (' + n.raid + ': ' + (n.parts || []).join(', ') + ')' : 'raid boss')}</td>`
+        + `<td>${n.of ? esc((BYID[n.of] || {}).name || n.of) : esc(Object.keys(n.deck || {}).join(', '))}</td>`
+        + `<td>${n.mult ? esc('Attack ' + n.mult.attack + ', Health ' + n.mult.health + ', ' + n.mult.rarity + (n.body ? ` (⚔${n.body.attack}, ❤${n.body.health.fresh} fresh … ${n.body.health.nearlyDown})` : '')) : esc(n.statsFrom || '')}</td>`
+        + `<td>${n.art && n.art.ownArt ? 'own art' : '<b>no art of its own</b> (uses ' + esc(n.art && n.art.uses || '?') + ')'}</td></tr>`).join('') + '</tbody></table></div>';
+  }
+  function renderView(){ $('utCat').hidden = st.view !== 'cat'; $('utQueue').hidden = st.view !== 'queue'; $('utNp').hidden = st.view !== 'np'; if(st.view === 'cat') render(); else if(st.view === 'np') renderNp(); else renderQueue(); }
   hub.onShow.units = build;
 })();

@@ -27,7 +27,8 @@ const lineOf = start=>{ const i = src.indexOf(start); if(i < 0) return ''; retur
 // ---- 1. the claim flow (static)
 const claimFn = fnSrc('claimRaidReward');
 ok(/const screen = raidClaimScreenReady\(\);/.test(claimFn) && /if\(screen\) showRaidClaimScreen\(spec\);/.test(claimFn), '1. claimRaidReward opens the claim screen');
-ok(/grantRaidCards\(def, [^;]*, screen\)/.test(claimFn) && /function grantRaidCards\(def, n, quiet\)/.test(src) && /if\(got\.length && !quiet\)/.test(src), '1. the raid-card toast is quiet when the screen shows the cards');
+// 2026-10-19 (package RC): the claim's cards are pack / faction cards now (grantRaidRewardCards); their toast is still only for no screen
+ok(/grantRaidRewardCards\(def, rwc\)/.test(claimFn) && /if\(!screen && cardsGot\.length\)/.test(claimFn) && !/function grantRaidCards\(/.test(src), '1. the reward-card toast is quiet when the screen shows the cards');
 ok(/if\(!screen\) showToast\(/.test(claimFn), '1. the old toast is only the fallback');
 ok(claimFn.indexOf('showRaidClaimScreen(spec)') < claimFn.indexOf('awardXp(xp'), '1. the screen opens before the XP, so a level-up waits for it');
 ok(/out\.push\(\{key, cycle:c, reward: rw, mine: st\.contributors\[me\] \|\| 0\}\)/.test(fnSrc('raidClaimsFor')), '1. a claim carries your contribution');
@@ -36,7 +37,7 @@ ok(/calm = reducedMotion\(\) \|\| !fxAtLeast\('med'\) \|\| !hasGsap\(\)/.test(fn
     getCardDefs: ()=> ({c1:{id:'c1', name:'Ink Squid', rarity:'common'}, c2:{id:'c2', name:'Broodmother', rarity:'legendary'}}), cardTileHTML: d=> `<div class="card-tile">${d.name}</div>`,
     raidBossArt: ()=> 'art/raids/goliath.png'};
   vm.createContext(ctx);
-  vm.runInContext([lineOf('const RAID_CLAIM_CUR_WEIGHT'), lineOf('const RAID_CLAIM_CARD_WEIGHT'), fnSrc('raidClaimTierLabel'), fnSrc('raidClaimScreenSpec')].join('\n') + '\nthis.S = raidClaimScreenSpec;', ctx);
+  vm.runInContext([lineOf('const RAID_CLAIM_CUR_WEIGHT'), lineOf('const RAID_CLAIM_CARD_WEIGHT'), fnSrc('raidClaimTierLabel'), fnSrc('raidClaimScreenSpec'), fnSrc('raidLocale') /* 2026-10-19 (package RB): raid numbers in the game's language */].join('\n') + '\nthis.S = raidClaimScreenSpec;', ctx);
   const def = {id:'goliath', name:'The Goliath', icon:'🐙'};
   const claim = {key:'goliath:1', cycle:1, mine:48250, reward:{kind:'kill', tier:'top1', base:{gold:400, dust:60, metal:3}, extra:{metal:3, title:'Goliath-Slayer'}}};
   const sp = ctx.S(def, claim, {gold:400, dust:60, metal:6}, ['c1', 'c2'], 500);

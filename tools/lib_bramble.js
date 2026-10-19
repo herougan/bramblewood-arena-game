@@ -10,6 +10,7 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const E = require(path.join(ROOT, 'bramblewood-engine.js'));
+const BramblewoodBudget = require(path.join(ROOT, 'bramblewood-budget.js')); // 2026-10-19 (BF): N(L) and the Forge curve (statsAtLevel)
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const cardsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8'));
 const charsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/characters.json'), 'utf8'));
@@ -38,6 +39,7 @@ function grab(name){
   throw new Error('arena_app.js: no declaration ' + name);
 }
 const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', 'ROAD_RARITY_ALIAS', 'roadRarityStep', 'roadSkirmishCap', 'roadBossCap', 'roadRarityCap', 'roadRarityOk',
+  /* 2026-10-19 (EE): no source gives an Easter egg */ 'EASTER_EGG_IDS', 'isEasterEgg',
   'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
   'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
   'CPU_AI_MAX', 'cpuAiAutoLevel', 'cpuAiLevelForNode', 'MAP_CASTLE', 'KIND_CASTLE_LEVEL', 'NODE_MAP_HINT', 'mapOfNode', 'nodeCastleId', 'nodeCastleLevel', 'SHIELD_RULE_MULT',
@@ -48,7 +50,8 @@ const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', '
   // 2026-10-19 (W2): the map win-rate panel's reference player, so the tools play exactly what the skirmish editor's panel plays
   'seededRng', 'sleep', 'CONQUEST_DEFAULT_MODE', 'levelGateMap', 'WINRATE_REF_DECKS', 'referencePlayerLevel', 'referenceDeckFor', 'referenceBaseDefs', 'referencePlayerDeck',
   'referenceFightSetup', 'playReferenceGame', 'simulateReferenceFight', 'skirmishTargetWinRate', /* 2026-10-19 (R2): the road curve */ 'ROAD_CURVE_TOL', /* + _SKIP, _ENDER: one declaration */ 'ROAD_CURVE_BOSSY', 'roadCurveFights', 'roadCurveTarget', 'skirmishTargetBand', 'skirmishCurveCache', 'skirmishCurveNote', 'skirmishCurveChipHTML', 'SKIRMISH_CURVE_SIMS', 'skirmishCurveSimCache', 'SKIRMISH_CURVE_GAME_MS', /* + _FIGHT_MS, _BUDGET_MS: one declaration */ 'roadEnderKind', 'applyRoadKinds',
-  'skirmishCurveSig', 'skirmishCurveErrText', 'checkSkirmishCurve'];
+  'skirmishCurveSig', 'skirmishCurveErrText', 'checkSkirmishCurve',
+  /* 2026-10-19 (BF): the budget Forge curve, its gain tables, side maps a map ahead */ 'FORGE_CURVE_CACHE', 'forgeCurveOf', 'FORGE_MEAN_GAIN', 'LEGACY_LEVEL_GAIN', 'gainTableAt', 'gainOfLevel', 'legacyGainOfLevel', 'forgeGainShift', 'ENEMY_PACE_CACHE', 'LEGACY_STEP', 'legacyCardGain', 'legacyStatsAt', 'deckStatGain', 'legacyLevelForGain', 'enemyLevelKeepingPace', 'SIDE_MAP_AHEAD', 'sideMapAhead', 'fightMapNumber', 'ROAD_CURVE_SIDE_DR'];
 const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) + 3;
 const dg = src.indexOf('function endlessDungeon(cfg){'), dgEnd = src.indexOf('\nconst TOWER_LEVEL_CAP', dg); // the endless dungeons; the Tower is left out
 // 2026-10-19 (package AN): pool cards ("pool": true) are candidates, not live cards, so the deck tools never pick them (as in the game)
@@ -70,9 +73,10 @@ const body = [
   '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
   '  roadEnderKind, WINRATE_REF_DECKS, referencePlayerLevel, referenceDeckFor, referenceFightSetup, playReferenceGame, simulateReferenceFight, skirmishTargetWinRate, roadCurveTarget, skirmishTargetBand, skirmishCurveChipHTML, skirmishCurveCache, skirmishCurveNote, checkSkirmishCurve, skirmishCurveSimCache, SKIRMISH_CURVE_SIMS,',
   '  ROAD_LEVEL_CURVE, ENDLESS_FLOOR_CURVE, levelForGain, levelMix, levelMixDeck, roadEnemyLevelExact, roadMapOfFight, shieldMapOf,',
+  '  deckStatGain, enemyLevelKeepingPace, legacyLevelForGain, shieldRuleMult, forgeCurveOf, gainOfLevel, legacyGainOfLevel, forgeGainShift, FORGE_MEAN_GAIN, sideMapAhead, fightMapNumber, ROAD_CURVE_SIDE_DR, curveStatsAtLevel: typeof curveStatsAtLevel === "function" ? curveStatsAtLevel : null, cardMaxLevel, mapOfNode,',
   '  overlay: ()=> matchDefsOverlay, resetOverlay: ()=>{ matchDefsOverlay = {}; matchLeaderGrantMap = null; }, setGrantMap: m=>{ matchLeaderGrantMap = m; }, getCardDefs};',
 ].join('\n');
-const G = new Function('E', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', body)(E, CARD_DEFS_BASELINE, CHARACTER_DEFS);
+const G = new Function('E', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', 'BramblewoodBudget', body)(E, CARD_DEFS_BASELINE, CHARACTER_DEFS, BramblewoodBudget);
 const byKey = (mapId, key)=>{ const m = G.CONQUEST_MAPS.find(x=> x.id === mapId); return m && m.nodes.find(n=> n.key === key); };
 // The bramble as the game builds it for a node from another tool's own eval of CONQUEST_MAPS (matched by map id and key, with that
 // tool's edits to the deck / hqHp / shieldOverride carried over).

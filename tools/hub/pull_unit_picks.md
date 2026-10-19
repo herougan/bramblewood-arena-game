@@ -48,8 +48,8 @@ tab uses the same database. Without it, the tab says "Picks can't be saved here"
    - **skills**: a live card with no skills.
    - **ready**: nothing to do but put it in the map's decks or rewards.
 
-3. **Work each map in road order.** Budget v3 is the rule for every stat line:
-   - N = 20 + 2L + rarity + 6W + 0.5W² + 4·Lumber + 0.4·Lumber²
+3. **Work each map in road order.** The stat budget (v4 since 2026-10-19) is the rule for every stat line:
+   - N = (Base − 1 + L) × (1 + L/20), Base = 20 + rarity + 6W + 0.5W² + 4·Lumber + 0.4·Lumber² + Ritual points (`bramblewood-budget.js`)
    - 2A + H + S < N
    - A·H + S < (N/3)²
    - S is a card's skill cost, from `tools/skill_costs.js` and `canonical/skill-costs.json`.
@@ -68,7 +68,12 @@ tab uses the same database. Without it, the tab says "Picks can't be saved here"
        did.
      - Then add its name and flavour to all 12 language packs (`lang/cards`, `lang/ui`), check its emoji is in the three emoji sets,
        and write a `creatorNote` (date, owner quote, N, S, both rules, the win rate).
-     - The variant convention is in `unit-themes.json` → `vocab.variantTiers`. Keep the prefix.
+     - The variant convention is in `unit-themes.json` → `vocab.variantTiers`. The id keeps the internal prefix (`dire-…`,
+       `elder-…`); the card's `name` is the row's thematic `name` (a proposal: ask the owner if `nameProposal` is still true), never
+       "Dire X" / "Elder X" (2026-10-19, owner: "Dire and Elder are internal naming").
+     - A player variant's body comes from N (its rarity, Lumber and Wait: `bodyFromN` in `tools/unit_themes.js`), not from
+       multipliers; only non-player units (`nonPlayer`: the raid's boss units, raid bosses) keep multipliers.
+     - Give it the base's `animal` (and `subtype`), then run `python3 tools/animal_tags.py`.
    - **place (a pool card)**
      - Place it the way package TH did: drop `pool` / `poolMap` / `poolSlot`, give it the next live number, and set
        `source: {kind:'map', id, node}` on the picked map.

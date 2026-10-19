@@ -1093,120 +1093,130 @@ M.bossRoar = function(host, opts){
 // 2026-10-15: clip a fixed overlay to a host's box (the battlefield), so arms and tails don't spill over the page around it.
 function clipTo(h, hr){ if(!h || !hr || !hr.width) return; Object.assign(h.style, {width:VW() + 'px', height:VH() + 'px',
   clipPath:`inset(${Math.max(0, hr.top)}px ${Math.max(0, VW() - hr.right)}px ${Math.max(0, VH() - hr.bottom)}px ${Math.max(0, hr.left)}px)`}); }
-// Tentacle Smack (a whole column), redrawn (2026-10-17, user: "the raid's tentacles look like grass haha. make it look more tentaclely and
-// last longer on screen. It also lags alot"). The old arm was one SVG stretched (preserveAspectRatio none) into a thin column, under a CSS
-// drop-shadow filter, with the whole battlefield shaken: a purple blade of grass that came and went in 1.25 s and repainted the board
-// every frame. Now: ONE canvas the size of the column strip, measured once, drawn each frame from a spine of 30 segments (a thick tapered
-// limb, dark purple-red with a pale underside and a row of suckers, curling at the tip). It rises from the back of the board (the boss's
-// edge), sways and coils back, slams down the column, holds there writhing, then sinks back out smoothly: about 3.4 s, 2.7x as long.
-// No filters, no layout reads per frame, and only the struck cards shake (a transform), not the board.
-const TENT_MS = {rise:600, coil:450, slam:170, hold:1350, back:850};
-function tentacleDraw(ctx, W, H, o){
-  // o: {x0 (base x), y0 (base y), len, w (base width), t (s), curl (0..1 how tightly the tip curls), sway (amplitude, radians), dir (+1/-1)}
-  const N = 30, seg = o.len / N, pts = [], ang = [];
-  let x = o.x0, y = o.y0;
-  for(let i = 0; i <= N; i++){
-    const s = i / N;
-    const a = Math.PI / 2 + o.sway * Math.sin(s * 3.2 - o.t * 2.6) * (0.25 + s) + o.dir * o.curl * Math.pow(Math.max(0, s - 0.62) / 0.38, 1.6) * 2.9;
-    pts.push([x, y]); ang.push(a); x += Math.cos(a) * seg; y += Math.sin(a) * seg;
-  }
-  const wid = s=> Math.max(1.2, o.w * (1 - 0.88 * s) * (s < 0.05 ? 0.92 + s * 1.6 : 1));
-  const L = [], R = [];
-  for(let i = 0; i <= N; i++){ const s = i / N, a = ang[i], w = wid(s) / 2, nx = -Math.sin(a), ny = Math.cos(a); L.push([pts[i][0] + nx * w, pts[i][1] + ny * w]); R.push([pts[i][0] - nx * w, pts[i][1] - ny * w]); }
-  // body: dark purple-red, shaded across its width
-  const g = ctx.createLinearGradient(o.x0 - o.w, 0, o.x0 + o.w, 0);
-  g.addColorStop(0, '#2a0a1e'); g.addColorStop(0.35, '#6e1f45'); g.addColorStop(0.6, '#8a2e52'); g.addColorStop(1, '#3a0f27');
-  ctx.beginPath(); ctx.moveTo(L[0][0], L[0][1]);
-  for(let i = 1; i <= N; i++) ctx.lineTo(L[i][0], L[i][1]);
-  for(let i = N; i >= 0; i--) ctx.lineTo(R[i][0], R[i][1]);
-  ctx.closePath(); ctx.fillStyle = g; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#1a0512'; ctx.stroke();
-  // the pale underside: a band along the inner (curling) side
-  const side = o.dir > 0 ? R : L;
-  ctx.beginPath();
-  for(let i = 2; i <= N; i++){ const s = i / N, k = 0.45; const px = pts[i][0] + (side[i][0] - pts[i][0]) * k, py = pts[i][1] + (side[i][1] - pts[i][1]) * k; if(i === 2) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
-  ctx.lineWidth = Math.max(2, o.w * 0.22); ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(236,170,186,.55)'; ctx.stroke();
-  // suckers along the underside, smaller toward the tip
-  for(let i = 4; i < N - 1; i += 2){ const s = i / N, r = Math.max(1.4, wid(s) * 0.17), k = 0.55;
-    const px = pts[i][0] + (side[i][0] - pts[i][0]) * k, py = pts[i][1] + (side[i][1] - pts[i][1]) * k;
-    ctx.beginPath(); ctx.ellipse(px, py, r * 1.15, r, ang[i], 0, Math.PI * 2); ctx.fillStyle = '#f4cdd6'; ctx.fill(); ctx.lineWidth = 1.2; ctx.strokeStyle = '#8a3352'; ctx.stroke();
-    ctx.beginPath(); ctx.arc(px, py, r * 0.42, 0, Math.PI * 2); ctx.fillStyle = '#b8586f'; ctx.fill(); }
-  // a sheen along the top side
-  const top = o.dir > 0 ? L : R; ctx.beginPath();
-  for(let i = 1; i < N * 0.8; i++){ const px = pts[i][0] + (top[i][0] - pts[i][0]) * 0.55, py = pts[i][1] + (top[i][1] - pts[i][1]) * 0.55; if(i === 1) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
-  ctx.lineWidth = Math.max(1.5, o.w * 0.08); ctx.strokeStyle = 'rgba(255,190,220,.22)'; ctx.stroke();
+// Tentacle Smack, rebuilt (2026-10-19, package BU, owner on an iPhone, 12:23: "I still can't see the tentacle strike - we may need art
+// for this. It just slams down, then it goes back out while fading. Smoke comes out just as it hits."). The 10-17 canvas arm (dark
+// purple-red, #2a0a1e..#8a2e52) all but vanished on the Goliath's dark Abyss ground, and it spent a second rising and coiling inside the
+// board's clip before it struck: on a phone only its shadow and the impact burst read. Now one drawn tentacle, inline SVG (no art file,
+// no credits): a tapered limb in the Goliath's violets with a pale rim and a soft halo so it reads on the dark ground, a pink underside
+// with a row of suckers, the tip curled; about one card wide at the base (sized from the struck card, so it follows MB2's framing).
+// The motion: (1) it slams down from above onto the struck column (a row smack: it lies across the row) in 220 ms, ease-in; (2) at
+// impact a short squash and the struck cards shake; (3) a smoke puff bursts out where it hits; (4) it pulls back up and out while
+// fading, 350 ms. Fixed to the window above the board, never clipped by the board's frame (its base fades in from nothing instead).
+// Reduced motion: a plain flash on the struck cards (no movement). Rects are read once at the start; the cards it shakes are found
+// again at impact (the round's redraw may have replaced them).
+const TENT = {slam:220, squash:110, back:350};
+css('tentacle', `.fxf .fxf-tentacle{position:fixed; left:0; top:0; overflow:visible; pointer-events:none;}
+.fxf .fxf-tentacle .tb-halo{fill:none; stroke:rgba(214,170,255,.45); stroke-linejoin:round;}
+.fxf .fxf-tentacle .tb-skin{stroke:#1c0a2b; stroke-linejoin:round;}
+.fxf .fxf-tentacle .tb-belly{fill:none; stroke:rgba(247,192,228,.85); stroke-linecap:round; stroke-linejoin:round;}
+.fxf .fxf-tentacle .tb-sk{fill:#f7d2e8; stroke:#8a3a78;} .fxf .fxf-tentacle .tb-sk-in{fill:#b44f8c;}
+.fxf .fxf-tentacle .tb-shine{fill:none; stroke:rgba(255,236,255,.55); stroke-linecap:round; stroke-linejoin:round;}
+.fxf .fxf-smoke{position:absolute; left:0; top:0; border-radius:50%; will-change:transform,opacity;
+  background:radial-gradient(circle at 45% 40%, rgba(226,216,236,.95), rgba(158,140,178,.72) 45%, rgba(110,90,130,0) 72%);}
+.fxf .fxf-tflash{position:absolute; border-radius:10px; background:rgba(255,226,242,.8); box-shadow:0 0 16px rgba(214,120,200,.75); opacity:0;}`);
+let tentN = 0;
+// The limb from base B to tip T, w wide at the base, its tip curling toward side `dir` (+1/-1 of the B->T normal). Screen px.
+function tentacleSVG(B, T, w, dir){
+  const dx = T.x - B.x, dy = T.y - B.y, L = Math.hypot(dx, dy) || 1, ux = dx/L, uy = dy/L, nx = -uy, ny = ux, N = 48;
+  // the spine, walked by its heading in a unit frame (a gentle S, then the tip coiling 2.7 rad over its last stretch, about 1.4 base
+  // widths long whatever the reach), then turned and scaled so the base sits on B and the coil's start lands on T: the coil hangs
+  // just past the struck card, about a card wide.
+  const f = Math.max(.1, Math.min(.24, 1.4*w/L)), K = Math.round(N*(1 - f*.8));
+  const Q = [[0, 0]]; let qx = 0, qy = 0;
+  for(let i = 1; i <= N; i++){ const s = i/N, k = Math.max(0, (s - (1 - f))/f);
+    const a = .2*Math.sin(s*Math.PI*1.3 + .4)*(1 - s) + dir*2.7*Math.pow(k, 1.6); qx += Math.cos(a)/N; qy += Math.sin(a)/N; Q.push([qx, qy]); }
+  const vk = Q[K], sc = L/(Math.hypot(vk[0], vk[1]) || 1), rot = Math.atan2(dy, dx) - Math.atan2(vk[1], vk[0]), cr = Math.cos(rot)*sc, sr = Math.sin(rot)*sc;
+  const P = Q.map(([x, y])=> [B.x + x*cr - y*sr, B.y + x*sr + y*cr]);
+  const hw = s=> Math.max(1.2, w*.5*(1 - .9*s)*(s < .04 ? .9 + s*2.5 : 1));
+  const nrm = i=>{ const a = P[Math.max(0, i - 1)], b = P[Math.min(N, i + 1)], tx = b[0] - a[0], ty = b[1] - a[1], l = Math.hypot(tx, ty) || 1; return [-ty/l, tx/l]; };
+  const side = (k, f)=> P.map((p, i)=>{ const n = nrm(i), h = hw(i/N)*f*k; return [p[0] + n[0]*h, p[1] + n[1]*h]; });
+  const smooth = (pts, move)=>{ let d = (move ? 'M' : 'L') + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+    for(let i = 1; i < pts.length - 1; i++){ const m = [(pts[i][0] + pts[i + 1][0])/2, (pts[i][1] + pts[i + 1][1])/2]; d += `Q${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)} ${m[0].toFixed(1)},${m[1].toFixed(1)}`; }
+    const z = pts[pts.length - 1]; return d + `L${z[0].toFixed(1)},${z[1].toFixed(1)}`; };
+  const Lp = side(1, 1), Rp = side(-1, 1).reverse();
+  const skin = smooth(Lp, true) + smooth(Rp, false) + 'Z'; // the two sides meet in a fine point at the curled tip
+  const under = side(dir, .5).slice(3, N - 1), top = side(-dir, .5).slice(2, Math.round(N*.8));
+  let suck = '';
+  for(let i = 5; i < N - 2; i += 2){ const n = nrm(i), h = hw(i/N), r = Math.max(1.2, h*.36), c = [P[i][0] + n[0]*h*.52*dir, P[i][1] + n[1]*h*.52*dir];
+    const ang = Math.atan2(P[i + 1][1] - P[i - 1][1], P[i + 1][0] - P[i - 1][0])*180/Math.PI;
+    suck += `<ellipse class="tb-sk" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" rx="${(r*1.2).toFixed(1)}" ry="${r.toFixed(1)}" transform="rotate(${ang.toFixed(0)} ${c[0].toFixed(1)} ${c[1].toFixed(1)})" stroke-width="${Math.max(.6, r*.22).toFixed(2)}"/>`
+      + `<circle class="tb-sk-in" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="${(r*.42).toFixed(1)}"/>`; }
+  const id = 'fxfT' + (++tentN), gx1 = B.x + nx*w*.6, gy1 = B.y + ny*w*.6, gx2 = B.x - nx*w*.6, gy2 = B.y - ny*w*.6;
+  return `<defs><linearGradient id="${id}g" gradientUnits="userSpaceOnUse" x1="${gx1.toFixed(1)}" y1="${gy1.toFixed(1)}" x2="${gx2.toFixed(1)}" y2="${gy2.toFixed(1)}">`
+    + `<stop offset="0" stop-color="#2c103f"/><stop offset=".35" stop-color="#6a2f8e"/><stop offset=".62" stop-color="#9a58bf"/><stop offset="1" stop-color="#3a1652"/></linearGradient>`
+    + `<linearGradient id="${id}m" gradientUnits="userSpaceOnUse" x1="${B.x.toFixed(1)}" y1="${B.y.toFixed(1)}" x2="${T.x.toFixed(1)}" y2="${T.y.toFixed(1)}"><stop offset="0" stop-color="#000"/><stop offset=".2" stop-color="#fff"/></linearGradient>`
+    + `<mask id="${id}k" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="30000" height="30000"><rect x="-10000" y="-10000" width="30000" height="30000" fill="url(#${id}m)"/></mask></defs>`
+    + `<g class="tb-body"><g mask="url(#${id}k)"><path class="tb-halo" d="${skin}" stroke-width="${Math.max(3, w*.12).toFixed(1)}"/>`
+    + `<path class="tb-skin" d="${skin}" fill="url(#${id}g)" stroke-width="${Math.max(1, w*.035).toFixed(2)}"/>`
+    + `<path class="tb-belly" d="${smooth(under, true)}" stroke-width="${Math.max(2, w*.2).toFixed(1)}"/>${suck}`
+    + `<path class="tb-shine" d="${smooth(top, true)}" stroke-width="${Math.max(1, w*.06).toFixed(1)}"/></g></g>`;
 }
+// A smoke puff: soft grey-violet blobs bursting out of a point and rising as they fade.
+function smokePuff(x, y, size, o){
+  o = o || {}; const g = G(); if(!g) return Promise.resolve();
+  const host = lay('fxf-smokeh', '', 3000), n = o.n || 8;
+  return new Promise(res=>{ const t = g.timeline({onComplete:()=>{ host.remove(); res(); }});
+    for(let i = 0; i < n; i++){ const p = document.createElement('i'); p.className = 'fxf-smoke'; const s = size*rnd(.55, 1); p.style.width = p.style.height = s + 'px'; host.appendChild(p);
+      const a = (o.angle != null ? o.angle : -Math.PI/2) + rnd(-.5, .5)*(o.spread || Math.PI*1.6), d = size*rnd(.5, 1.1);
+      g.set(p, {x:x - s/2, y:y - s/2, scale:.35, opacity:.95});
+      t.to(p, {x:x - s/2 + Math.cos(a)*d, y:y - s/2 + Math.sin(a)*d - size*.35, scale:rnd(1.3, 1.8), duration:rnd(.55, .75), ease:'power2.out'}, rnd(0, .05))
+       .to(p, {opacity:0, duration:.4, ease:'power1.in'}, '<+.2'); } });
+}
+// cells: the struck .board-card cells (a column: front to back; a row: left to right), or rects. opts: host (the battlefield, for the
+// base's edge), horizontal (a row smack), from 'left'|'right' (a row smack's side), onImpact, onDone.
 M.tentacleSmack = function(cells, opts){
   opts = opts || {};
   cells = (Array.isArray(cells) ? cells : [cells]).filter(Boolean);
-  // every rect measured once, here; nothing is read from the layout while it plays
-  const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e), ref = rs[0] || {left:VW()/2 - 40, width:80, top:VH()/2, bottom:VH()/2 + 100};
-  const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
-  const dpr = Math.min(2, root.devicePixelRatio || 1);
-  const h = lay('fxf-tent', '<i class="sh"></i><canvas class="tc"></canvas>', 8000), sh = h.children[0], cv = h.children[1];
-  if(hr) clipTo(h, hr);
-  const shadow = {position:'absolute', height:'28px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(25,0,20,.55), transparent 70%)', opacity:'0', transform:'scale(.3)', willChange:'transform, opacity'};
-  // The limb is drawn in its own frame: x across the strip (0..stripW), y along its reach (0..H). A column smack (the default) maps that
-  // straight onto a strip down the column, from the boss's edge. A row smack (opts.horizontal, 2026-10-18, owner 15:56: row and column
-  // smacks) turns the same frame on its side, so the arm whips in from the left or right edge of the board and sweeps along the row,
-  // knocking each card as its tip passes (knock[]), instead of slamming down.
-  const horiz = !!opts.horizontal;
-  let w, stripW, H, reach, hitX, hitY, knock = null;
-  if(!horiz){
-    const top0 = hr ? Math.max(0, hr.top) : 0, botLim = hr ? Math.min(VH(), hr.bottom) : VH();
-    const bottom = Math.min(botLim - 4, Math.max(...rs.map(r=> r.bottom))), cx = ref.left + ref.width / 2;
-    w = Math.max(58, Math.min(124, ref.width * 1.05)); stripW = Math.round(w * 4.2); H = Math.max(80, Math.round(botLim - top0));
-    reach = bottom - top0 + 6; hitX = cx; hitY = bottom - 18;
-    Object.assign(sh.style, shadow, {left:(cx - w*1.1) + 'px', top:(bottom - 22) + 'px', width:(w*2.2) + 'px'});
-    Object.assign(cv.style, {position:'absolute', left:Math.round(cx - stripW / 2) + 'px', top:top0 + 'px', width:stripW + 'px', height:H + 'px'});
-    cv.width = Math.round(stripW * dpr); cv.height = Math.round(H * dpr);
-  } else {
-    const left0 = hr ? Math.max(0, hr.left) : 0, rightLim = hr ? Math.min(VW(), hr.right) : VW();
-    const cy = rs.length ? rs.reduce((t, r)=> t + r.top + r.height / 2, 0) / rs.length : VH() / 2, rh = ref.height || 100;
-    const lo = rs.length ? Math.min(...rs.map(r=> r.left)) : left0 + 40, hi = rs.length ? Math.max(...rs.map(r=> r.right)) : rightLim - 40;
-    const fromLeft = opts.from ? opts.from === 'left' : Math.random() < 0.5, along = x=> fromLeft ? x - left0 : rightLim - x;
-    w = Math.max(58, Math.min(124, rh * 0.8)); stripW = Math.round(w * 4.2); H = Math.max(80, Math.round(rightLim - left0));
-    reach = Math.max(80, along(fromLeft ? hi : lo) + 6); hitX = fromLeft ? Math.min(rightLim - 8, hi) : Math.max(left0 + 8, lo); hitY = cy;
-    knock = rs.map((r, k)=> ({el: cells[k], at: along(r.left + r.width / 2), x: r.left + r.width / 2, y: r.top + r.height / 2, done: false}));
-    Object.assign(sh.style, shadow, {left:(lo - 10) + 'px', top:(cy + rh / 2 - 16) + 'px', width:(hi - lo + 20) + 'px'});
-    Object.assign(cv.style, {position:'absolute', left:left0 + 'px', top:Math.round(cy - stripW / 2) + 'px', width:H + 'px', height:stripW + 'px'});
-    cv.width = Math.round(H * dpr); cv.height = Math.round(stripW * dpr);
-    cv.dataset.from = fromLeft ? 'left' : 'right';
+  const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e).filter(r=> r && r.width > 0);
+  const relive = e=>{ if(!e || !e.getBoundingClientRect) return null; if(e.isConnected) return e; const d = e.dataset || {};
+    return (d.uid && document.querySelector(`.board-card[data-uid="${d.uid}"]`)) || (d.w2cell && document.querySelector(`[data-w2cell="${d.w2cell}"]`)) || null; };
+  const g = G();
+  if(!rs.length){ call(opts.onImpact); return Promise.resolve(finish(opts)); }
+  if(!g || RM()){ // reduced motion (or no GSAP): a plain flash on the struck cards
+    const host = lay('fxf-tflashh', '', 1200);
+    rs.forEach(r=>{ const f = document.createElement('i'); f.className = 'fxf-tflash'; Object.assign(f.style, {left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px'}); host.appendChild(f);
+      try{ f.animate([{opacity:0}, {opacity:.85, offset:.25}, {opacity:0}], {duration:420, easing:'ease-out'}); }catch(e){} });
+    call(opts.onImpact);
+    return new Promise(res=> setTimeout(()=>{ host.remove(); finish(opts, res); }, 450));
   }
-  const ctx = cv.getContext('2d'); if(!ctx){ h.remove(); return Promise.resolve(); }
-  if(!horiz) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  else if(cv.dataset.from === 'left') ctx.setTransform(0, dpr, dpr, 0, 0, 0); // (x, y) -> (y, x): the reach runs left to right
-  else ctx.setTransform(0, dpr, -dpr, 0, H * dpr, 0);                          // (x, y) -> (H - y, x): right to left
-  const dir = Math.random() < 0.5 ? 1 : -1, x0 = stripW / 2 - dir * w * 0.35;
-  const T = horiz ? Object.assign({}, TENT_MS, {slam:340}) : TENT_MS, t1 = T.rise, t2 = t1 + T.coil, t3 = t2 + T.slam, t4 = t3 + T.hold, t5 = t4 + T.back;
-  const ease = u=> u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u), easeIn = u=> Math.min(1, Math.max(0, u)) ** 3;
-  let impacted = false, raf = 0, t0 = 0;
+  const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
+  const horiz = !!opts.horizontal, ref = rs[0], cw = Math.min(...rs.map(r=> r.width)), chh = Math.min(...rs.map(r=> r.height));
+  const w = Math.max(30, Math.min(110, cw*.95));     // the base about one card wide
+  let B, T, hits, slamY, dir, fromLeft = false;
+  if(!horiz){
+    const cx = ref.left + ref.width/2, bottom = Math.max(...rs.map(r=> r.bottom)), top0 = hr ? hr.top : 0;
+    dir = Math.random() < .5 ? 1 : -1;
+    T = {x:cx, y:bottom - chh*.18}; B = {x:cx + dir*w*.35, y:Math.min(top0, ref.top - chh*.6) - w*.3};
+    hits = [{x:cx, y:bottom - chh*.1}, {x:cx, y:ref.top + chh*.15}];
+    slamY = -(T.y - B.y)*.85;
+  } else {
+    const lo = Math.min(...rs.map(r=> r.left)), hi = Math.max(...rs.map(r=> r.right)), cy = rs.reduce((t, r)=> t + r.top + r.height/2, 0)/rs.length;
+    const left0 = hr ? hr.left : 0, right0 = hr ? hr.right : VW();
+    fromLeft = opts.from ? opts.from === 'left' : Math.random() < .5;
+    B = {x:fromLeft ? left0 - w*.2 : right0 + w*.2, y:cy + chh*.05}; T = {x:fromLeft ? hi - cw*.15 : lo + cw*.15, y:cy + chh*.05};
+    dir = fromLeft ? -1 : 1; // the tip curls up, away from the row
+    hits = rs.map(r=> ({x:r.left + r.width/2, y:r.top + r.height*.75}));
+    slamY = -(cy - (hr ? hr.top : 0) + chh*1.2);
+  }
+  const h = lay('fxf-tenth', '', 4000), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
+  sv.setAttribute('class', 'fxf-tentacle'); sv.setAttribute('width', VW()); sv.setAttribute('height', VH()); sv.style.width = VW() + 'px'; sv.style.height = VH() + 'px';
+  sv.innerHTML = tentacleSVG(B, T, w, dir); h.appendChild(sv);
+  const body = sv.querySelector('.tb-body'), origin = horiz ? `${((B.x + T.x)/2).toFixed(1)} ${T.y.toFixed(1)}` : `${T.x.toFixed(1)} ${T.y.toFixed(1)}`;
+  const squash = horiz ? {scaleX:1.02, scaleY:.78} : {scaleX:1.12, scaleY:.9};
   return new Promise(res=>{
-    const done = ()=>{ cancelAnimationFrame(raf); if(h.isConnected) h.remove(); finish(opts, res); };
-    const frame = now=>{
-      if(!h.isConnected){ finish(opts, res); return; }
-      if(!t0) t0 = now; const t = now - t0;
-      let len, curl, sway, baseY = -10;
-      if(t < t1){ const u = ease(t / t1); len = reach * (0.18 + 0.32 * u); curl = 0.9; sway = 0.32; baseY = -10 - (1 - u) * reach * 0.5; }
-      else if(t < t2){ const u = ease((t - t1) / T.coil); len = reach * (0.5 - 0.12 * u); curl = 0.9 + 0.35 * u; sway = 0.32 + 0.1 * u; }
-      else if(t < t3){ const u = easeIn((t - t2) / T.slam); len = reach * (0.38 + 0.62 * u); curl = 1.25 * (1 - u) + 0.1; sway = 0.42 * (1 - u) + 0.05; }
-      else if(t < t4){ const u = (t - t3) / T.hold; len = reach * (1 - 0.04 * Math.sin(u * Math.PI)); curl = 0.1 + 0.55 * ease(u * 1.4); sway = 0.05 + 0.07 * Math.sin(u * Math.PI); }
-      else if(t < t5){ const u = ease((t - t4) / T.back); len = reach * (0.96 - 0.5 * u); curl = 0.65 + 0.5 * u; sway = 0.12 + 0.2 * u; baseY = -10 - u * reach * 0.85; }
-      else { done(); return; }
-      // a row smack knocks each card as the tip sweeps past it (its tip runs about baseY + len along the reach)
-      if(knock && t >= t2) knock.forEach(k=>{ if(k.done || (t < t3 && k.at > baseY + len)) return; k.done = true;
-        burst(k.x, k.y, {n:6, colors:['#e7a3c0', '#d9f2ff', '#fff'], dist:[12, 40], spread:1.2, angle:-Math.PI / 2, dur:.45, size:5, gravity:18});
-        if(k.el && k.el.getBoundingClientRect && k.el.isConnected) shake(k.el, {amp:5, n:4, y:2}); });
-      if(!impacted && t >= t3){ impacted = true;
-        ring(hitX, hitY, {color:'#e7a3c0', size:w * 2.4, width:4, dur:.55, glow:false});
-        burst(hitX, hitY, {n:10, colors:['#9fd6f5', '#d9f2ff', '#e7a3c0'], dist:[30, 90], spread:Math.PI * 1.2, angle:-Math.PI / 2, dur:.6, size:6, gravity:30});
-        if(!knock) cells.forEach(e=>{ if(e.getBoundingClientRect && e.isConnected) shake(e, {amp:4, n:4, y:3}); }); call(opts.onImpact); }
-      const shU = t < t3 ? ease(t / t3) : t < t4 ? 1 : 1 - ease((t - t4) / T.back);
-      sh.style.opacity = String(0.95 * shU); sh.style.transform = `scale(${0.3 + 0.7 * shU})`;
-      ctx.clearRect(0, 0, stripW, H);
-      tentacleDraw(ctx, stripW, H, {x0, y0: baseY, len, w, t: t / 1000, curl, sway, dir});
-      raf = requestAnimationFrame(frame);
-    };
-    raf = requestAnimationFrame(frame);
+    const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
+    g.set(body, {y:slamY, opacity:0, svgOrigin:origin});
+    g.timeline({onComplete:done})
+      .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
+      .to(body, {y:0, duration:TENT.slam/1000, ease:'power3.in'}, 0)
+      .add(()=>{
+        cells.map(relive).filter(Boolean).forEach(e=> shake(e, {amp:Math.max(3, cw*.07), n:5, y:2}));
+        hits.forEach((p, k)=> smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (k ? 5 : 9), spread:Math.PI*1.7}));
+        ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
+        call(opts.onImpact); })
+      .to(body, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
+      .to(body, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
+      .to(body, {y:slamY*.9, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
   });
 };
 // Tail Sweep (every front-row card): a scaly tail sweeps across the row; each card is knocked as it passes.
@@ -1505,6 +1515,9 @@ const cardsOn = (side, env)=> $$(':scope > .board-card[data-defid]', rowOf(side,
 const PASSIVE_ON = {lumber:['lumberjack', 'timber'], stone:['rockSolid', 'heavyMetal'], metal:['ironWill', 'heavyMetal']};
 const lastEcho = {};
 M.onEvent = function(ev, env){
+  // 2026-10-19 (package BU): the boss's smacks are the raid's big telegraphed blows, so they show from Low effects up (the tentacle
+  // flashes the struck cards instead under reduced motion; fxBatchVfx lets this one event through then).
+  if(ev && env && ev.type === 'raidSmack' && !env.fxAtLeast('med') && (env.reduced || env.fxAtLeast('low'))){ raidSmackFx(ev, env); return; }
   if(!ev || !env || !env.fxAtLeast('med')) return;
   const t = ev.type;
   if(t === 'grace' || t === 'devilry' || t === 'stone' || t === 'metal' || t === 'uranium'){
@@ -1531,8 +1544,13 @@ M.onEvent = function(ev, env){
     if(w){ const now = Date.now(), k = mine ? 'm' : 'e'; const dx = (now - (lastEcho[k] || 0) < 400) ? 18 : 0; lastEcho[k] = now; M.echoGain(w, {dx}); }
   }
   if(t === 'raidBossUnit' && env.once('fxfRoar')) M.bossRoar(env.battlefield);
-  if(t === 'raidSmack'){
+  if(t === 'raidSmack') raidSmackFx(ev, env);
+};
+// The boss's smack on your side (2026-10-19, BU: its own function, so Low effects and reduced motion reach it too).
+function raidSmackFx(ev, env){
+  {
     const row = rowOf('A', env); if(!row) return;
+    if(ev.front && env.reduced){ M.tentacleSmack(cardsOn('A', env), {horizontal:true}); return; } // a flash, no motion
     if(ev.front){ M.tailSweep(cardsOn('A', env).filter(e=> e.querySelector('.card-tile')), {host:env.battlefield}); return; }
     // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
     // 1 middle / 2 back) is the tentacle on its side, sweeping along that row; a column smack slams down the column through every row.
@@ -1545,7 +1563,7 @@ M.onEvent = function(ev, env){
     const i = Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)));
     M.tentacleSmack([all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean), {host:env.battlefield});
   }
-};
+}
 
 // Non-battle moments: each is one fxHook('name', ...) line in arena_app.js.
 const H = M.hooks;
@@ -1755,7 +1773,7 @@ M.raidClaimScreen = function(spec, opts){
   const sound = (name, ...a)=>{ try{ if(opts.sound) return opts.sound(name, ...a); const k = typeof SoundKit !== 'undefined' ? SoundKit : null; if(k && typeof k[name] === 'function') k[name](...a); }catch(e){} };
   const beat = w=> (RCS_BEAT[w] || RCS_BEAT[1]).forEach((n, i)=>{ const [nm, arg] = n.split(':'); later(()=> sound(nm, arg ? true : undefined), i*90); });
   const kind = spec.kind === 'compensation' ? 'compensation' : 'kill', tier = RCS_TIER[spec.tier] ? spec.tier : 'participant';
-  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=> Math.round(n).toLocaleString();
+  const total = Math.max(0, Math.round(Number(spec.contribution) || 0)), fmt = n=>{ try{ return Math.round(n).toLocaleString(opts.locale || undefined); }catch(e){ return Math.round(n).toLocaleString(); } }; // opts.locale: the game's language (2026-10-19, package RB)
   // the rewards in rising order of weight (stable), so the rarest comes last
   const list = (spec.rewards || []).map((r, i)=> Object.assign({}, r, {weight:Math.max(1, Math.min(5, r.weight|0 || 1)), _i:i})).sort((a, b)=> a.weight - b.weight || a._i - b._i);
   const boss = spec.boss || {};
@@ -1773,7 +1791,8 @@ M.raidClaimScreen = function(spec, opts){
       <h2 class="fxf-rcs-title${F}">${esc(T.title)}</h2>
       ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
       <div class="fxf-rcs-row">
-        ${spec.rank && spec.rank.letter ? `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>` : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
+        ${spec.rank && spec.rank.letter ? (typeof window.bwRaidRankEmblemHTML === 'function' ? `<span class="fxf-rcs-emblem${F}">${window.bwRaidRankEmblemHTML(spec.rank.letter, !!spec.rank.emblem, 'md')}</span>` /* 2026-10-19 (package NV): the raid's rank emblem, as on the raid results */
+          : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
       <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>

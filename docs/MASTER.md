@@ -345,7 +345,7 @@ _Last updated: 2026-10-11 (evening): day and night are now a per-fight setting (
 
 ## Design (not built yet)
 - **Archetypes** 📝 ([sheet](archetypes-design-2026-10-09.md), also in the hub's 📐 Design tab):
-  - **Yours:** Ecclesia, Devilry, Scrapper, Evolution, Spawn/Hatchery, Mechanica.
+  - **Yours:** Ecclesia, Devilry, Scrapper, Evomax (was Evolution, 2026-10-19), Spawn/Hatchery, Mechanica.
   - **Proposed:** Swarm, Tide, Pack Bond, Trickster.
   - **The trio:** Elder Ones (sleep, then Awaken), Outer Ones (breach in from a Void pile), Forgotten Ones (return from Exile). They feed each other in a ring; all three on the board unlock a Convergence card.
   - Suggested first build: an active Exile zone, which Ecclesia, the Forgotten Ones and Scrapper all need.
