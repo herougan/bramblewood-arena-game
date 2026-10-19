@@ -29,7 +29,7 @@ const WANT = {creeper:'veryrare', terraumbra:'unique', 'exo-podas':'veryrare', '
 Object.entries(WANT).forEach(([id, r])=> ok(byId[id] && byId[id].rarity === r, `${id} is ${r} (got ${byId[id] && byId[id].rarity})`));
 LIST.forEach(id=>{ const c = byId[id]; if(!c) return ok(false, id + ' exists');
   ok(c.easterEgg === true && c.source && c.source.kind === 'easteregg', `${id}: easterEgg flag and source easteregg`);
-  ok(typeof c.animal === 'string' && c.animal, `${id}: has an animal field`);
+  ok((typeof c.animal === 'string' && c.animal) || c.cardType === 'equipment', `${id}: has an animal field (an item: none needed, UT's rule)`);   // 2026-10-19 (UT merge)
   ok(c.icon && !c.art, `${id}: a placeholder emoji, no art yet`);
   ok(/package EE/.test(c.creatorNote || '') && /N = [\d.]+; S = /.test(c.creatorNote), `${id}: creatorNote shows the budget`);
   ok(c.locked === true, `${id}: locked`); });
