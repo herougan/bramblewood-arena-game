@@ -28,5 +28,14 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
 - BF3 C: full card retune applied (tools/card_retune_2026_10_19.js; 418 cards; Caldera Wyrm owner call); golden card matrix updated;
   card-pass / d tests accept the retune; Pale Desert invariants restored (rule bramble, one Queen), tuner guarded
 
+- BF3 owner 16:22: inclusive rules (committed); B10 printed = obtained (committed); Thorns re-measured 3.23 (applied);
+  retune re-run (412 cards; Wyrm kept); FORGE_MEAN_GAIN re-derived; step C committed f53eebb; merged main RB2 (44d83d2), unit-themes
+  test checks each raid part's elder against the game's own pick (tail = Orca Warlord after the retune)
+- D (honest levers): owner's enemy schedule (Lv1 Maps 1-4, 1->2 Maps 5-9, 2 + 0.2/map from 10), Very Rare from Map 10, tuner --decks-only;
+  bf4-curve-fixes (with shields) set aside unapplied (scratchpad/bf4-curve-fixes.unapplied.jsonl)
+- Shield overrides above the rule: 26 fights (19 below, 171 hqHp); scratchpad/count_ov.js; measure --drop-above-rule added
+
 ## Next
-- D: bf4-mid measure (running) -> curve tune (bf4-curve-fixes) -> apply -> bf-after + bf-fresh; pale-desert --measure; docs; CHANGELOG; commit "Package BF3"
+- D: bf5-mid measure (running, 120 games, 2 shards) -> tune4.sh 60 bf5-mid bf5-curve-fixes --decks-only -> apply -> bf-after + bf-fresh (--seed=5100);
+  measure --drop-above-rule --tag=bf5-dropov on the final road; gaps list; pale-desert --measure; LV / side tests section 4 allow the gaps;
+  docs (level-curve-2026-10-19c BF3 sections), CHANGELOG BF3; merge main; commit "Package BF3: L/10, Map term, full card retune, road retune"
