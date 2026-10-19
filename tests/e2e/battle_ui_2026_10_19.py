@@ -145,16 +145,16 @@ async def tentacle(pg, tag):
     await pg.evaluate("document.querySelector('[data-raid-part=left]').click()"); await pg.wait_for_timeout(1500)
     await pg.evaluate("(()=>{ const v = document.querySelector('.vs-screen'); if(v) v.click(); return 1; })()"); await pg.wait_for_timeout(5000)
     if not check(await pg.evaluate("!!(matchState && matchState.raidFull)"), f'{tag}: the raid did not open'): return
-    # a strike on our column 0 (the FX the boss's column attack plays), slowed for the camera
-    # GSAP's clock at a quarter speed so the frames can be caught (the before build's canvas arm runs on its own clock)
+    # a strike on our column 0 (the FX the boss's column attack plays). GSAP's clock is paused for each picture (at impact, then
+    # half way through the pull-back) and resumed; the before build's canvas arm runs on its own clock (no pause there).
     res = await pg.evaluate("""(()=>{ const all = [...document.querySelectorAll('#rowMine > .board-card')], el = all[Math.floor(all.length/2)]; if(!el) return null; window.__tentEl = el; // column 0, as FX.F's raidSmack picks it
       window.__tent = {phase:null}; const F = window.FX && FX.F && FX.F.tentacleSmack; if(!F) return 'none';
-      try{ gsap.globalTimeline.timeScale(.25); }catch(e){}
-      F([el], {host: document.getElementById('battlefieldEl'), onImpact: ()=>{ window.__tent.phase = 'impact'; }}); return 'ok'; })()""")
+      F([el], {host: document.getElementById('battlefieldEl'), onImpact: ()=>{ window.__tent.phase = 'impact'; try{ gsap.globalTimeline.pause(); }catch(e){} }}); return 'ok'; })()""")
     if not check(res == 'ok', f'{tag}: FX.F.tentacleSmack missing ({res})'): return
     for _ in range(200):
         if await pg.evaluate("window.__tent.phase") == 'impact': break
-        await pg.wait_for_timeout(20)
+        await pg.wait_for_timeout(10)
+    await pg.wait_for_timeout(60)
     r = await pg.evaluate("""(()=>{ const t = document.querySelector('.fxf-tentacle .tb-body') || document.querySelector('.fxf-tent canvas'); if(!t) return null; const b = t.getBoundingClientRect();
       const el = window.__tentEl.getBoundingClientRect();
       return {t:[b.left, b.top, b.right, b.bottom], c:[el.left, el.top, el.right, el.bottom], vw: innerWidth, vh: innerHeight}; })()""")
@@ -167,41 +167,47 @@ async def tentacle(pg, tag):
         check(t[2] - t[0] <= (c[2] - c[0])*2.2, f'{tag}: the tentacle should be sized to the card ({t[2]-t[0]:.0f}px vs {c[2]-c[0]:.0f}px)')
         check(t[0] >= -2 and t[2] <= r['vw'] + 2 and t[1] >= -2, f'{tag}: the tentacle should be on screen {t}')
     # mid pull-back: the limb on its way up and out, half faded
-    for _ in range(200):
-        op = await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); return b ? +getComputedStyle(b).opacity : -1; })()")
-        if op < 0 or op < .75: break
-        await pg.wait_for_timeout(15)
+    # squash (.11 s) + a beat (.04 s) + about 45% of the 0.35 s pull-back, on GSAP's own clock
+    await pg.evaluate("try{ gsap.delayedCall(.31, ()=> gsap.globalTimeline.pause()); gsap.globalTimeline.resume(); }catch(e){} 1")
+    await pg.wait_for_timeout(700)
+    op = await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); return b ? +getComputedStyle(b).opacity : -1; })()")
+    print(f"  {tag}: retract frame at opacity {op:.2f}")
     await shot(pg, f'tentacle-retract-{tag}')
-    await pg.wait_for_timeout(2500)
-    await pg.evaluate("try{ gsap.globalTimeline.timeScale(1); }catch(e){} 1")
+    await pg.evaluate("try{ gsap.globalTimeline.resume(); }catch(e){} 1")
+    await pg.wait_for_timeout(1500)
     check(not await pg.evaluate("!!document.querySelector('.fxf-tentacle')"), f'{tag}: the tentacle layer should be removed afterwards')
     if not STRICT: return
     # the game's own path: a column smack event through fxBatchVfx reaches down the whole column (front, middle and back rows)
     await pg.evaluate("fxBatchVfx({type:'raidSmack', kind:'column', name:'Smack', col:0, row:null, dmg:3, hits:2}); 1")
-    await pg.wait_for_timeout(330)
+    for _ in range(200):
+        if await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return false; if(Math.abs(gsap.getProperty(b, 'y')) < 1 && +getComputedStyle(b).opacity > .9){ gsap.globalTimeline.pause(); return true; } return false; })()"): break
+        await pg.wait_for_timeout(5)
     r = await pg.evaluate("""(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return null; const t = b.getBoundingClientRect();
       const all = [...document.querySelectorAll('#rowMine > .board-card')], i = Math.floor(all.length/2);
       const cells = [all[i]].concat([...document.querySelectorAll('#battlefieldInner .reserve-row.mine')].map(r=> r.querySelectorAll(':scope > .board-card')[i])).filter(Boolean).map(e=> e.getBoundingClientRect());
       return {t:[t.left, t.top, t.right, t.bottom], low: Math.max(...cells.map(c=> c.top)), n: cells.length}; })()""")
     await shot(pg, f'tentacle-column-{tag}')
+    await pg.evaluate("try{ gsap.globalTimeline.resume(); }catch(e){} 1")
     if check(r is not None, f'{tag}: a raidSmack event should draw the tentacle'):
-        check(r['t'][3] >= r['low'], f'{tag}: the column smack should reach the column\\'s last row ({r["t"][3]:.0f} vs {r["low"]:.0f}, {r["n"]} rows)')
+        check(r['t'][3] >= r['low'], f'{tag}: the column smack should reach the last row of the column ({r["t"][3]:.0f} vs {r["low"]:.0f}, {r["n"]} rows)')
     await pg.wait_for_timeout(1200)
 
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path=EXE)
+        only = os.environ.get('BU_ONLY')  # 'raid' or 'battle': one half only
         for (w, h, phone) in [(430, 932, True), (390, 844, True), (1366, 768, False)]:
             tag = f'{w}'
-            ctx, pg, errs = await open_page(b, w, h, phone)
-            await pg.evaluate(BATTLE); await pg.wait_for_timeout(2500)
-            await centre_column(pg, tag, phone)
-            await hp_float(pg, tag)
-            await cleave(pg, tag)
-            if w == 430: await speed(pg, tag)
-            check(not errs, f'battle@{w}: page errors {errs[:3]}')
-            await ctx.close()
-            if w == 390:
+            if only != 'raid':
+                ctx, pg, errs = await open_page(b, w, h, phone)
+                await pg.evaluate(BATTLE); await pg.wait_for_timeout(2500)
+                await centre_column(pg, tag, phone)
+                await hp_float(pg, tag)
+                await cleave(pg, tag)
+                if w == 430: await speed(pg, tag)
+                check(not errs, f'battle@{w}: page errors {errs[:3]}')
+                await ctx.close()
+            if w == 390 and only != 'battle':
                 ctx, pg, errs = await open_page(b, w, h, phone)
                 await tentacle(pg, f'raid{w}')
                 check(not errs, f'raid@{w}: page errors {errs[:3]}')
