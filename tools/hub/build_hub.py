@@ -408,7 +408,9 @@ _sc_cards = [_sc_card(d) for d in CANON if not (d.get('token') or d.get('test') 
 _js = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 SC_LIB = re.sub(r'^#!.*\n', '', open(os.path.join(ROOT, 'tools', 'skill_costs.js'), encoding='utf-8').read())
 SC_TAB = open(os.path.join(ROOT, 'tools', 'hub', 'skill_costs_tab.js'), encoding='utf-8').read()
-SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\n{SC_LIB}\n{SC_TAB}'
+# 2026-10-19 (package BF): budget v4's N lives in bramblewood-budget.js (window.BramblewoodBudget), which tools/skill_costs.js reads
+BB_LIB = open(os.path.join(ROOT, 'bramblewood-budget.js'), encoding='utf-8').read()
+SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\n{BB_LIB}\n{SC_LIB}\n{SC_TAB}'
 # 2026-10-19 (package UC, owner 08:49: "let's separate the units thematically? Then we pick and choose, then do post-balancing"): the
 # 🗂 Units by theme tab. canonical/unit-themes.json (node tools/unit_themes.js) and the tab's script and styles, inlined. Picks live in
 # the artifact's db (collection unitPicks), so the hub is published with capabilities {db: {}}; tools/hub/pull_unit_picks.md.

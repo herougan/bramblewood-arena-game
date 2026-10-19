@@ -110,10 +110,10 @@ ok(/\nconst DECK_PROMPT_FLOORS = \[/.test(src) && /level = collectionStats\(\)\.
   const KW = new Set([...src.matchAll(/\{key:'(\w+)', category:/g)].map(m=> m[1]));
   ok(d && Object.keys(d.effects).every(k=> KW.has(k)), '8. existing skills only (' + (d ? Object.keys(d.effects).join(', ') : '') + ')');
   ok(d && cards.filter(c=> c.numericId === d.numericId).length === 1 && cards.filter(c=> c.uuid === d.uuid).length === 1, '8. its numericId and uuid are unique');
-  // budget v3 at the level a reward starts at (1): N = 20 + 2L + Rarity + 6W + 0.5W² + 4·Lumber + 0.4·Lumber²
-  const RANK = {starter:0, common:1, uncommon:2, rare:3, veryrare:4}, W = d.wait, C = d.cost, L = 1;
-  const N = 20 + 2*L + RANK[d.rarity] + 6*W + 0.5*W*W + 4*C + 0.4*C*C, S = 1 /* Dry */ + d.effects.regen /* Regeneration: its value */;
-  ok(2*d.attack + d.health + S < N && d.attack*d.health + S < (N/3)*(N/3), `8. budget v3: 2A+H+S = ${2*d.attack + d.health + S} < N = ${N.toFixed(1)}, A·H+S = ${d.attack*d.health + S} < (N/3)² = ${((N/3)*(N/3)).toFixed(1)}`);
+  // the budget at the level a reward starts at (1); 2026-10-19 (package BF): v4, N = (Base - 1 + L) x (1 + L/20), from bramblewood-budget.js
+  const BB = require(require('path').join(__dirname, '..', 'bramblewood-budget.js')), L = 1;
+  const N = BB.nOf(d, L), S = 1 /* Dry */ + d.effects.regen /* Regeneration: its value */;
+  ok(2*d.attack + d.health + S < N && d.attack*d.health + S < (N/3)*(N/3), `8. budget v4: 2A+H+S = ${2*d.attack + d.health + S} < N = ${N.toFixed(1)}, A·H+S = ${d.attack*d.health + S} < (N/3)² = ${((N/3)*(N/3)).toFixed(1)}`);
   ok(/regen:'v'/.test(constLine('SB_DEFAULT_SKILLS')) && !/\bdry:/.test(constLine('SB_DEFAULT_SKILLS')), "8. (the Test Lab prices Regeneration at its value and Dry at the default 1, as above)");
   const md = CONQUEST_MAPS.find(m=> m.id === 'md');
   ok(mains.indexOf(md) === 18 && d.source && d.source.kind === 'map' && d.source.id === 'md' && md.nodes.some(n=> n.key === d.source.node && n.kind === 'skirmish'), `8. a card reward on Map 18, The Glass Dunes (${d.source && d.source.node})`);

@@ -1,0 +1,83 @@
+{
+ "_about": "Budget v4 (2026-10-19, package BF: N = (Base - 1 + L) x (1 + L/20)) against v3 (N = Base + 2L) for every measured card (tools/forge_curve_2026_10_19.js budget). \"in\" = passes v4 but not v3, \"out\" = passes v3 but not v4. At L1 every card is checked at Level 1; at start, at the level it starts at (Base / quest cards 0, rewards 1), which is what the tests and the post-balance queue use.",
+ "generated": "2026-10-19",
+ "cards": 737,
+ "atL1": {
+  "passV3": 702,
+  "passV4": 703,
+  "in": [
+   {
+    "id": "bone-diviner",
+    "name": "Bone Diviner",
+    "rarity": "uncommon",
+    "start": 1,
+    "base": 45.6,
+    "S": 2.74,
+    "N3": 47.6,
+    "N4": 47.88,
+    "x1": 47.61,
+    "x2": 146.61
+   },
+   {
+    "id": "grovebearer-dragon-turtle",
+    "name": "Grovebearer Dragon-Turtle",
+    "rarity": "legendary",
+    "start": 1,
+    "base": 93.9,
+    "S": 36.37,
+    "N3": 95.9,
+    "N4": 98.6,
+    "x1": 96.37,
+    "x2": 324.37
+   }
+  ],
+  "out": [
+   {
+    "id": "barnacle-fortress",
+    "name": "Barnacle Fortress",
+    "rarity": "common",
+    "start": 1,
+    "base": 31.9,
+    "S": 13.7,
+    "N3": 33.9,
+    "N4": 33.49,
+    "x1": 33.7,
+    "x2": 13.7
+   }
+  ],
+  "dN": {
+   "min": -1,
+   "max": 6.65
+  }
+ },
+ "atStart": {
+  "passV3": 702,
+  "passV4": 703,
+  "in": [
+   {
+    "id": "bone-diviner",
+    "name": "Bone Diviner",
+    "start": 1,
+    "N3": 47.6,
+    "N4": 47.88
+   },
+   {
+    "id": "grovebearer-dragon-turtle",
+    "name": "Grovebearer Dragon-Turtle",
+    "start": 1,
+    "N3": 95.9,
+    "N4": 98.6
+   }
+  ],
+  "out": [
+   {
+    "id": "barnacle-fortress",
+    "name": "Barnacle Fortress",
+    "start": 1,
+    "N3": 33.9,
+    "N4": 33.49
+   }
+  ],
+  "startsAt0": 15
+ }
+}

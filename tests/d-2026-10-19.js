@@ -101,7 +101,7 @@ ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its num
   ok(cd.scale === 'fixed' && (cd.value === 2 || (cd.appliedAt && cd.prevValue === 2 && cd.value === Math.max(0, cd.measuredS))) && ts.scale === 'fixed' && ts.value === 2 && !ts.appliedAt,
     `canonical/skill-costs.json (the balance tools and the hub): Cast Darkness 2 or its applied measured worth (${cd.value}), True Strike 2`);
   const rank = {starter:0, common:1, uncommon:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, legendary:9};
-  const N = (d, L)=> 20 + 2 * L + rank[d.rarity] + 6 * d.wait + 0.5 * d.wait * d.wait + 4 * d.cost + 0.4 * d.cost * d.cost;
+  const N = (d, L)=> require(require('path').join(__dirname, '..', 'bramblewood-budget.js')).nOf(d, L); // 2026-10-19 (package BF): budget v4, the shared helper
   const S = d=> Object.keys(d.effects).reduce((t, k)=> t + (typeof costs[k] === 'number' ? costs[k] : 1), 0);
   const nP = N(pw, 1), sP = S(pw);
   ok(2 * pw.attack + pw.health + sP < nP && pw.attack * pw.health + sP < (nP / 3) * (nP / 3), `the Pall Wraith fits budget v3 (2A+H+S ${2 * pw.attack + pw.health + sP} < N ${nP})`);
