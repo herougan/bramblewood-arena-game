@@ -5,68 +5,250 @@
  "atL1": {
   "passV3": 709,
   "passV4": 710,
-  "passV5": 708,
+  "passV5": 718,
   "vsV3": {
    "in": [
+    {
+     "id": "great-horned-owl",
+     "name": "Great Horned Owl",
+     "rarity": "common",
+     "start": 1,
+     "base": 56.1,
+     "S": 5.54,
+     "N3": 55.1,
+     "N4": 55.76,
+     "N5": 58.07,
+     "x1": 57.81,
+     "x2": 197.31
+    },
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "rarity": "common",
+     "start": 1,
+     "base": 72.6,
+     "S": 10.46,
+     "N3": 70.6,
+     "N4": 72.03,
+     "N5": 75.12,
+     "x1": 73.46,
+     "x2": 415.46
+    },
+    {
+     "id": "cave-warlord",
+     "name": "Cave Warlord",
+     "rarity": "common",
+     "start": 1,
+     "base": 89.9,
+     "S": 9.44,
+     "N3": 87.9,
+     "N4": 90.2,
+     "N5": 93,
+     "x1": 91.44,
+     "x2": 705.44
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "rarity": "common",
+     "start": 1,
+     "base": 60.1,
+     "S": 12.06,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 62.21,
+     "x1": 62.06,
+     "x2": 284.06
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "rarity": "common",
+     "start": 1,
+     "base": 63.5,
+     "S": 11.76,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 65.72,
+     "x1": 63.76,
+     "x2": 317.76
+    },
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "rarity": "epic",
+     "start": 1,
+     "base": 45.9,
+     "S": 10.85,
+     "N3": 44.1,
+     "N4": 44.21,
+     "N5": 47.53,
+     "x1": 46.85,
+     "x2": 164.85
+    },
+    {
+     "id": "sea-cucumber",
+     "name": "Sea Cucumber",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.9,
+     "S": 17.52,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 36.17,
+     "x1": 35.52,
+     "x2": 45.52
+    },
     {
      "id": "grovebearer-dragon-turtle",
      "name": "Grovebearer Dragon-Turtle",
      "rarity": "legendary",
      "start": 1,
-     "base": 93.9,
+     "base": 98.5,
      "S": 36.37,
      "N3": 95.9,
      "N4": 98.6,
-     "N5": 97.24,
+     "N5": 101.89,
      "x1": 96.37,
      "x2": 324.37
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "rarity": "rare",
+     "start": 1,
+     "base": 43,
+     "S": 19.47,
+     "N3": 43.4,
+     "N4": 43.47,
+     "N5": 44.54,
+     "x1": 43.47,
+     "x2": 91.47
     }
    ],
-   "out": [
+   "out": []
+  },
+  "vsV4": {
+   "in": [
     {
-     "id": "sand-widow",
-     "name": "Sand Widow",
+     "id": "great-horned-owl",
+     "name": "Great Horned Owl",
      "rarity": "common",
      "start": 1,
-     "base": 44.6,
-     "S": 12.51,
-     "N3": 46.6,
-     "N4": 46.83,
-     "N5": 46.29,
-     "x1": 46.51,
-     "x2": 144.51
+     "base": 56.1,
+     "S": 5.54,
+     "N3": 55.1,
+     "N4": 55.76,
+     "N5": 58.07,
+     "x1": 57.81,
+     "x2": 197.31
+    },
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "rarity": "common",
+     "start": 1,
+     "base": 72.6,
+     "S": 10.46,
+     "N3": 70.6,
+     "N4": 72.03,
+     "N5": 75.12,
+     "x1": 73.46,
+     "x2": 415.46
+    },
+    {
+     "id": "cave-warlord",
+     "name": "Cave Warlord",
+     "rarity": "common",
+     "start": 1,
+     "base": 89.9,
+     "S": 9.44,
+     "N3": 87.9,
+     "N4": 90.2,
+     "N5": 93,
+     "x1": 91.44,
+     "x2": 705.44
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "rarity": "common",
+     "start": 1,
+     "base": 60.1,
+     "S": 12.06,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 62.21,
+     "x1": 62.06,
+     "x2": 284.06
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "rarity": "common",
+     "start": 1,
+     "base": 63.5,
+     "S": 11.76,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 65.72,
+     "x1": 63.76,
+     "x2": 317.76
     },
     {
      "id": "barnacle-fortress",
      "name": "Barnacle Fortress",
      "rarity": "common",
      "start": 1,
-     "base": 31.9,
+     "base": 33.7,
      "S": 13.7,
      "N3": 33.9,
      "N4": 33.49,
-     "N5": 33.17,
+     "N5": 34.93,
      "x1": 33.7,
      "x2": 13.7
-    }
-   ]
-  },
-  "vsV4": {
-   "in": [],
-   "out": [
-    {
-     "id": "sand-widow",
-     "name": "Sand Widow",
-     "rarity": "common",
-     "start": 1,
-     "base": 44.6,
-     "S": 12.51,
-     "N3": 46.6,
-     "N4": 46.83,
-     "N5": 46.29,
-     "x1": 46.51,
-     "x2": 144.51
     },
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "rarity": "epic",
+     "start": 1,
+     "base": 45.9,
+     "S": 10.85,
+     "N3": 44.1,
+     "N4": 44.21,
+     "N5": 47.53,
+     "x1": 46.85,
+     "x2": 164.85
+    },
+    {
+     "id": "sea-cucumber",
+     "name": "Sea Cucumber",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.9,
+     "S": 17.52,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 36.17,
+     "x1": 35.52,
+     "x2": 45.52
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "rarity": "rare",
+     "start": 1,
+     "base": 43,
+     "S": 19.47,
+     "N3": 43.4,
+     "N4": 43.47,
+     "N5": 44.54,
+     "x1": 43.47,
+     "x2": 91.47
+    }
+   ],
+   "out": [
     {
      "id": "bone-diviner",
      "name": "Bone Diviner",
@@ -76,86 +258,268 @@
      "S": 2.74,
      "N3": 47.6,
      "N4": 47.88,
-     "N5": 47.33,
+     "N5": 47.22,
      "x1": 47.61,
      "x2": 146.61
     }
    ]
   },
   "dN5minus3": {
-   "min": -1.13,
-   "max": 3.97
+   "min": -1.23,
+   "max": 5.99
   },
   "dN5minus4": {
-   "min": -2.68,
-   "max": -0.13
+   "min": -2.78,
+   "max": 4.71
   }
  },
  "atStart": {
   "passV3": 709,
   "passV4": 710,
-  "passV5": 708,
+  "passV5": 718,
   "vsV3": {
    "in": [
+    {
+     "id": "great-horned-owl",
+     "name": "Great Horned Owl",
+     "rarity": "common",
+     "start": 1,
+     "base": 56.1,
+     "S": 5.54,
+     "N3": 55.1,
+     "N4": 55.76,
+     "N5": 58.07,
+     "x1": 57.81,
+     "x2": 197.31
+    },
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "rarity": "common",
+     "start": 1,
+     "base": 72.6,
+     "S": 10.46,
+     "N3": 70.6,
+     "N4": 72.03,
+     "N5": 75.12,
+     "x1": 73.46,
+     "x2": 415.46
+    },
+    {
+     "id": "cave-warlord",
+     "name": "Cave Warlord",
+     "rarity": "common",
+     "start": 1,
+     "base": 89.9,
+     "S": 9.44,
+     "N3": 87.9,
+     "N4": 90.2,
+     "N5": 93,
+     "x1": 91.44,
+     "x2": 705.44
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "rarity": "common",
+     "start": 1,
+     "base": 60.1,
+     "S": 12.06,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 62.21,
+     "x1": 62.06,
+     "x2": 284.06
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "rarity": "common",
+     "start": 1,
+     "base": 63.5,
+     "S": 11.76,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 65.72,
+     "x1": 63.76,
+     "x2": 317.76
+    },
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "rarity": "epic",
+     "start": 1,
+     "base": 45.9,
+     "S": 10.85,
+     "N3": 44.1,
+     "N4": 44.21,
+     "N5": 47.53,
+     "x1": 46.85,
+     "x2": 164.85
+    },
+    {
+     "id": "sea-cucumber",
+     "name": "Sea Cucumber",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.9,
+     "S": 17.52,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 36.17,
+     "x1": 35.52,
+     "x2": 45.52
+    },
     {
      "id": "grovebearer-dragon-turtle",
      "name": "Grovebearer Dragon-Turtle",
      "rarity": "legendary",
      "start": 1,
-     "base": 93.9,
+     "base": 98.5,
      "S": 36.37,
      "N3": 95.9,
      "N4": 98.6,
-     "N5": 97.24,
+     "N5": 101.89,
      "x1": 96.37,
      "x2": 324.37
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "rarity": "rare",
+     "start": 1,
+     "base": 43,
+     "S": 19.47,
+     "N3": 43.4,
+     "N4": 43.47,
+     "N5": 44.54,
+     "x1": 43.47,
+     "x2": 91.47
     }
    ],
-   "out": [
+   "out": []
+  },
+  "vsV4": {
+   "in": [
     {
-     "id": "sand-widow",
-     "name": "Sand Widow",
+     "id": "great-horned-owl",
+     "name": "Great Horned Owl",
      "rarity": "common",
      "start": 1,
-     "base": 44.6,
-     "S": 12.51,
-     "N3": 46.6,
-     "N4": 46.83,
-     "N5": 46.29,
-     "x1": 46.51,
-     "x2": 144.51
+     "base": 56.1,
+     "S": 5.54,
+     "N3": 55.1,
+     "N4": 55.76,
+     "N5": 58.07,
+     "x1": 57.81,
+     "x2": 197.31
+    },
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "rarity": "common",
+     "start": 1,
+     "base": 72.6,
+     "S": 10.46,
+     "N3": 70.6,
+     "N4": 72.03,
+     "N5": 75.12,
+     "x1": 73.46,
+     "x2": 415.46
+    },
+    {
+     "id": "cave-warlord",
+     "name": "Cave Warlord",
+     "rarity": "common",
+     "start": 1,
+     "base": 89.9,
+     "S": 9.44,
+     "N3": 87.9,
+     "N4": 90.2,
+     "N5": 93,
+     "x1": 91.44,
+     "x2": 705.44
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "rarity": "common",
+     "start": 1,
+     "base": 60.1,
+     "S": 12.06,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 62.21,
+     "x1": 62.06,
+     "x2": 284.06
+    },
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "rarity": "common",
+     "start": 1,
+     "base": 63.5,
+     "S": 11.76,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 65.72,
+     "x1": 63.76,
+     "x2": 317.76
     },
     {
      "id": "barnacle-fortress",
      "name": "Barnacle Fortress",
      "rarity": "common",
      "start": 1,
-     "base": 31.9,
+     "base": 33.7,
      "S": 13.7,
      "N3": 33.9,
      "N4": 33.49,
-     "N5": 33.17,
+     "N5": 34.93,
      "x1": 33.7,
      "x2": 13.7
-    }
-   ]
-  },
-  "vsV4": {
-   "in": [],
-   "out": [
-    {
-     "id": "sand-widow",
-     "name": "Sand Widow",
-     "rarity": "common",
-     "start": 1,
-     "base": 44.6,
-     "S": 12.51,
-     "N3": 46.6,
-     "N4": 46.83,
-     "N5": 46.29,
-     "x1": 46.51,
-     "x2": 144.51
     },
+    {
+     "id": "ember-revenant",
+     "name": "Ember Revenant",
+     "rarity": "epic",
+     "start": 1,
+     "base": 45.9,
+     "S": 10.85,
+     "N3": 44.1,
+     "N4": 44.21,
+     "N5": 47.53,
+     "x1": 46.85,
+     "x2": 164.85
+    },
+    {
+     "id": "sea-cucumber",
+     "name": "Sea Cucumber",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.9,
+     "S": 17.52,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 36.17,
+     "x1": 35.52,
+     "x2": 45.52
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "rarity": "rare",
+     "start": 1,
+     "base": 43,
+     "S": 19.47,
+     "N3": 43.4,
+     "N4": 43.47,
+     "N5": 44.54,
+     "x1": 43.47,
+     "x2": 91.47
+    }
+   ],
+   "out": [
     {
      "id": "bone-diviner",
      "name": "Bone Diviner",
@@ -165,19 +529,19 @@
      "S": 2.74,
      "N3": 47.6,
      "N4": 47.88,
-     "N5": 47.33,
+     "N5": 47.22,
      "x1": 47.61,
      "x2": 146.61
     }
    ]
   },
   "dN5minus3": {
-   "min": -1.13,
-   "max": 2.61
+   "min": -1.23,
+   "max": 5.99
   },
   "dN5minus4": {
-   "min": -1.99,
-   "max": 0
+   "min": -1.48,
+   "max": 4.71
   }
  }
 }

@@ -16699,7 +16699,7 @@ const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, pl
 const LEVEL_STAT_STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 // The mean 2A+H gain over Lv 1 of the live cards with stats at each level (tools/forge_curve_2026_10_19.js gain; the test checks it
 // against the cards), the BF curve; and the old +10% / +5% steps' (LEGACY_LEVEL_GAIN: 0.10 at Lv 3, 0.20 at 6, 0.30 at 9 ...).
-const FORGE_MEAN_GAIN = [[0, 1], [0.062, 2], [0.065, 3], [0.29, 4], [0.294, 5], [0.328, 6], [0.634, 7], [0.637, 8], [0.678, 9], [0.993, 10], [1.118, 11]]; // 2026-10-19 (BF2): budget v5 with the map term
+const FORGE_MEAN_GAIN = [[0, 1], [0.056, 2], [0.058, 3], [0.261, 4], [0.264, 5], [0.291, 6], [0.574, 7], [0.577, 8], [0.603, 9], [0.883, 10], [0.999, 11]]; // 2026-10-19 (BF3): budget v5, L/10, with the map term
 const LEGACY_LEVEL_GAIN = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
 function gainTableAt(pts, L){ L = Number(L) || 0; if(L <= pts[0][1]) return 0;
   for(let i = 1; i < pts.length; i++) if(L <= pts[i][1]) return pts[i-1][0] + (L - pts[i-1][1]) / (pts[i][1] - pts[i-1][1]) * (pts[i][0] - pts[i-1][0]);
@@ -25788,12 +25788,12 @@ const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, s
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 // Stat budget v5 (2026-10-19 13:52, package BF2, replacing 09:52's v4; owner: "(Base + L/3) * (1 + L/30) ... Level 0 gives an additional
-// minus 1"; 13:54: "change it to L/4 or L/5" if L/3 favours weak cards, which it does, so L/5):
+// minus 1"; 13:54: "change it to L/4 or L/5" if L/3 favours weak cards; 15:48: "let's try L/10"):
 //   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual points (v3's N without its 2×Level)
-//   N = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 5, levelDiv 30; Level 0: Base − zeroPenalty (1).
+//   N = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 10 (15:48: "let's try L/10"), levelDiv 30; Level 0: Base − zeroPenalty (1).
 //   The formula lives in bramblewood-budget.js (BramblewoodBudget.nAt), shared with tools/skill_costs.js and the hub; perLevel is v3's,
 //   no longer read.
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, missMult:1.5, levelLinDiv:5, levelDiv:30, zeroPenalty:1}; // + mapCoef (BF2, 15:25)
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, missMult:1.5, levelLinDiv:10, levelDiv:30, zeroPenalty:1}; // + mapCoef (BF2, 15:25)
 // 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
 // its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
 function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }

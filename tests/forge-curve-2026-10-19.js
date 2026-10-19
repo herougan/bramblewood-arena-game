@@ -21,14 +21,14 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-6);
 
 // ---- 1. the formula
 // 2026-10-19 (package BF2): budget v5, N(L) = (Base + L/5)(1 + L/30), Level 0 Base - 1 (owner 13:52, L/3; L/5 after the 13:54 check)
-ok(near(BB.nAt(30, 5), (30 + 1) * (1 + 5 / 30), 0.006) && near(BB.nAt(30, 1), 30.2 * (31 / 30), 0.006) && near(BB.nAt(30, 0), 29) && BB.DEFAULTS.levelLinDiv === 5 && BB.DEFAULTS.levelDiv === 30,
-  '1. N(L) = (Base + L/5)(1 + L/30), Level 0 Base - 1: Base 30 -> 29 at Lv 0, 31.21 at Lv 1, 36.17 at Lv 5');
+ok(near(BB.nAt(30, 5), (30 + 0.5) * (1 + 5 / 30), 0.006) && near(BB.nAt(30, 1), 30.1 * (31 / 30), 0.006) && near(BB.nAt(30, 0), 29) && BB.DEFAULTS.levelLinDiv === 10 && BB.DEFAULTS.levelDiv === 30,
+  '1. N(L) = (Base + L/10)(1 + L/30) (owner 15:48: L/10), Level 0 Base - 1: Base 30 -> 29 at Lv 0, 31.1 at Lv 1, 35.58 at Lv 5');
 ok(near(BB.nAt(14, 1, {levelLinDiv: 3}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3}), 23.11), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
 ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. the helper\'s numbers (levelLinDiv, levelDiv, zeroPenalty too) are canonical/skill-costs.json\'s budget');
 { const live = cards.filter(SC.measured); let same = 0; const diff = [];
   live.forEach(c=>{ const L = SC.levelOf(c), want = BB.nAt(BB.baseOf(Object.assign({}, c, {obtainMap: T.obtainMapOf(c)})), L) /* + Base's map term (BF2, 15:25) */; if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
   ok(!diff.length, `1. tools/skill_costs.js gives v5's N (with the map term) for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
-  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\)/.test(src) && /levelLinDiv:5, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
+  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\)/.test(src) && /levelLinDiv:10, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
   const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1.2 + 1e-9), `1. at Level 1, v5 is never more than 1.2 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
 

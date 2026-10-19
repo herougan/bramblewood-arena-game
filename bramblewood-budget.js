@@ -8,9 +8,10 @@
 // x (1+1/30) = 14.8 and at level 10, N = (14+10/3) x (1+10/30) = 23.1"; 13:54: "if you think it favours weak cards too much ... change it
 // to L/4 or L/5"):
 //   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + 1×Ritual points   (v3's N without its 2×Level term)
-//   N(L) = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 5 (the owner offered 3, 4 or 5; 5 favours weak cards least), levelDiv 30;
+//   N(L) = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 10 (owner 15:48: "let's try L/10"; was 5, the closest of the 3 / 4 / 5
+//   he offered at 13:54), levelDiv 30;
 //   N(0) = Base − zeroPenalty (1)
-//   v4 (09:52) was (Base − 1 + L) × (1 + L/20), v3 Base + 2L. At Level 1 v5 is Base × 31/30 + 0.21 (Base 21: 21.91; v3 23, v4 22.05).
+//   v4 (09:52) was (Base − 1 + L) × (1 + L/20), v3 Base + 2L. At Level 1 v5 (L/10) is Base × 31/30 + 0.10 (Base 21: 21.80; v3 23, v4 22.05).
 //   The rules are v3's: 2A+H+S < N and A·H+S < (N/3)², both ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind: about half
 //   the attacks at the card miss, so its stats count half again).
 //
@@ -29,7 +30,7 @@
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
 'use strict';
 // canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
-const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, levelLinDiv:5, levelDiv:30, zeroPenalty:1, missMult:1.5}; // v5 (2026-10-19 13:52); levelLinDiv 5, not the owner's 3: the 13:54 check (docs/balance/level-curve-2026-10-19c.md)
+const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5}; // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];

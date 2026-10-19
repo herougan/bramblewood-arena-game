@@ -197,8 +197,8 @@ function tune(card){
 function note(sp, card, wr){
   const b = T.budget(card), L = SC.levelOf(card), R = SC.rankOf(card), W = card.wait, C = card.cost, band = BANDS[card.rarity].map(x=> x * 100);
   const parts = b.parts.map(p=> `${p[1]} ${p[2]}`).join(', ');
-  // 2026-10-19 (package BF2): budget v5, N = (Base + L/5) x (1 + L/30), Level 0 Base - 1
-  const nTerms = `${L ? `(Base ${T.budgetBase(card)} + ${L}/5) x (1 + ${L}/30)` : `Base ${T.budgetBase(card)} - 1`}, Base = 20 + ${R} + ${6 * W} + ${0.5 * W * W} + ${4 * C} + ${Math.round(0.4 * C * C * 100) / 100}`;
+  // 2026-10-19 (package BF2): budget v5, N = (Base + L/10) x (1 + L/30), Level 0 Base - 1
+  const nTerms = `${L ? `(Base ${T.budgetBase(card)} + ${L}/10) x (1 + ${L}/30)` : `Base ${T.budgetBase(card)} - 1`}, Base = 20 + ${R} + ${6 * W} + ${0.5 * W * W} + ${4 * C} + ${Math.round(0.4 * C * C * 100) / 100}`;
   const m = b.m !== 1 ? ` (x${b.m} half-miss)` : '';
   return `2026-10-19 (package AN, owner 23:04: "More thematic animals ... I'll pick and choose when balancing for a map"): POOL candidate for ${sp.poolMap} (${sp.poolSlot === 'pack' ? 'a pack card' : 'a skirmish-only reward'}), not live until placed from Admin's Pool cards filter. ${sp.idea}`
     + ` Budget v5 at Level ${L}, ${RNAME[card.rarity]}, Wait ${W}, Lumber ${C}: N = ${nTerms} = ${b.N}; S = ${b.S} (${parts}); 2A+H+S = ${2 * card.attack} + ${card.health} + ${b.S}${m} = ${b.x1} < ${b.N} and A*H+S = ${card.attack * card.health} + ${b.S}${m} = ${b.x2} < (N/3)^2 = ${b.N2}.`
