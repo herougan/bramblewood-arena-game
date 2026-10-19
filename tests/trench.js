@@ -65,8 +65,11 @@ const out = {};
 ['left','right','tail','core'].forEach(pid=>{ out[pid] = batch(pid); });
 out.exposed = batch('core', EXPOSED);
 console.log('  ' + Object.entries(out).map(([k,v])=> `${k}: ${Math.round(v.avg)} avg, ${Math.round(v.ow*100)}% overwhelm`).join(' · '));
-['left','right','tail'].forEach(pid=>{ check(out[pid].avg >= 3000 && out[pid].avg <= 6500, `${pid}: average ${Math.round(out[pid].avg)} outside 3000–6500`); check(out[pid].ow <= 0.3, `${pid}: overwhelmed too often (${Math.round(out[pid].ow*100)}%)`); });
-check(out.core.avg >= 1000 && out.core.avg <= 4000, `core: average ${Math.round(out.core.avg)} outside 1000–4000`);
+// 2026-10-19 (package RB): raid damage is bramble damage x1 now (was x15; the Core x140), capped at 1,000, so the bands are on the new
+// scale: outer parts 500-1,000 a fight (they hit the cap often in the trench's 1,250-Health fight), the Core 20-400. (The trench is benched:
+// admins only.)
+['left','right','tail'].forEach(pid=>{ check(out[pid].avg >= 500 && out[pid].avg <= 1000, `${pid}: average ${Math.round(out[pid].avg)} outside 500–1000`); check(out[pid].ow <= 0.3, `${pid}: overwhelmed too often (${Math.round(out[pid].ow*100)}%)`); });
+check(out.core.avg >= 20 && out.core.avg <= 400, `core: average ${Math.round(out.core.avg)} outside 20–400`);
 check(out.core.ow <= 0.05, `core: overwhelmed ${Math.round(out.core.ow*100)}% — should be near-impossible`);
 check(out.exposed.avg > out.core.avg, 'Exposed core should be easier than the normal core');
 

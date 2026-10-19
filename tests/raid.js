@@ -38,9 +38,9 @@ check(st.stage && st.stage.name==='Thrashing', `stage after the outer parts fall
 const nearly = Object.assign(kill('core'), {contribution: R.partTotal(raid.parts[3]) - 1000});
 st = R.raidState(noStand, [kill('left'), kill('right'), kill('tail'), nearly], start + DAY, {cycle});
 check(st.stage && st.stage.name==='Exposed' && R.fightFor(raid, st, 'core').stripAbilities, 'below 1% the raid should be Exposed and strip abilities');
-// stand-ins: 12%/day on open parts, never touching locked ones, never exceeding the pool
+// stand-ins: 14%/day on open parts (2026-10-19, RB), never touching locked ones, never exceeding the pool
 st = R.raidState(raid, [], start + 3*DAY, {cycle});
-check(st.byId.left.standIn === Math.floor(st.byId.left.total*0.36) && st.byId.core.standIn===0, 'stand-ins should wear open parts 12%/day and leave the locked core alone');
+check(st.byId.left.standIn === Math.floor(st.byId.left.total*0.03*raid.standIns.perDayPct) && raid.standIns.perDayPct === 14 && st.byId.core.standIn===0, 'stand-ins should wear open parts 14%/day (12% before 2026-10-19, package RB) and leave the locked core alone');
 st = R.raidState(raid, [], start + 7*DAY - 1, {cycle});
 check(st.parts.every(p=> p.remaining >= 0), 'pool went negative');
 // other raids / cycles don't count
