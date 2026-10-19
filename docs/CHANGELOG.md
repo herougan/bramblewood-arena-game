@@ -11,6 +11,15 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Evomax units:** the normal walnut frame with a pearl inlay, shell-rib ticks on the top band and plate, and a spiral shell on each side band, in place of the pink nacre frame. No Evomax unit exists yet; the sheet uses a stand-in.
 - CSS only (pixel-grid SVG ornaments on a new `.cframe-orn` layer, so the inlay's tint filter doesn't touch them). No new raster art. Structures keep their `s-<key>` boards; Ecclesia, Scrappers and the other archetypes are unchanged.
 - Comparison sheets (before / after, hand and detail size, 390 and 1366): `docs/screens/cf/`, rendered by `node tools/card_frame_sheet.js <tag>`.
+## 2026-10-19 (package TF: the raid's Tentacle Smack on desktop Chrome)
+- **Owner (22:09):** "in raids, i saw the tentacle slam in mobile, but not in chrome. The tentacle can slam vertical or horizontal."
+- **Root cause:** Chrome on a desktop follows the OS's "reduce motion" / "animation effects off" setting (`prefers-reduced-motion`). Under it, the smack drew **no tentacle at all**, only a 420 ms pink flash on the struck cards. There was a second cause: during a fight, GSAP's lag smoothing is off. A slow frame as the round opened could skip the whole 0.7 s slam, so its impact fired with the limb never painted. This was reproduced in headless Chromium at 1920×1080 and 1440×900.
+- **Reduced motion:** the tentacle now lies still along the struck column or row. It fades in, holds for about 600 ms and fades out, with the flash on the cards. The Tail Sweep keeps its plain flash.
+- **Frame-capped clock:** the tentacle advances at most 1/30 s per frame, so a long frame holds it instead of skipping it. It still follows hit-stop and the Lab's slow motion.
+- **Vertical (column):** it comes down its column. It grows out of the bramble when the bramble is above the column (phones). On a wide desktop board it comes out of the board's top edge above the column, leaning at most 16° toward the bramble. Before, it was one long diagonal from the corner tile.
+- **Horizontal (row):** unchanged. It lies along the row from the board's edge on the bramble's side.
+- **Mask region:** the base's fade mask now covers the limb's own box, not a 30000 px square.
+- **Test:** `tests/e2e/tentacle_fx_2026_10_19.py` (run with `--e2e`). It runs at 1366×768 (desktop) and 390×844 (phone), with reduced motion off and on, through the game's event path and a real round. At impact, it checks that the tentacle element is visible, inside the viewport, at opacity > 0.3 and painting pixels, and that it spans the right axis. Screenshots are in `docs/screens/tf/`, including 1920×1080 and 1440×900.
 
 ## 2026-10-19 (package SK3: skills batch 3, triggers × actions)
 - **Owner (21:56):** "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the required trigger or action." Most new skills are keywords that expand into ordinary triggers (Waiting, the layer cap, Confused and Exhaust all apply).
