@@ -43,6 +43,10 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Balance | Side maps ahead (BF) | aheadMaps = 1 on every side map; set 2 for Volcano Lair, the Eye? |
 | UI | Centre slack (BU) | Keeping the centre column centred costs card size sometimes (75 → 69.5 px at 390) |
 | UI | CPU fills centre (BU) | CPU now fills an empty centre first (follows the always-legal centre rule) |
+| Raid | Mid/back-row refills (TS) | Units falling in middle/back rows die fully, but Revive / On Death: Spawn / Relic / Crystallise / Meiosis don't refill those slots. Should they? |
+| Raid | Back-row attacker hooks (TS) | Mid/back rows now fire On Attack, Crit, Recoil, Reload, Twin Strike, Frenzy (same as normal attacks): small buff |
+| Raid | Start-of-round in back rows (TS) | Regeneration, Renewal, On Round Start still front row only |
+| UI | Small-card chips (TS) | Small cards show 2 chips then "+N" ("☠3 +2"); shrink to fit 3? "NEW!" tag covers chips for 4.5 s |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |
