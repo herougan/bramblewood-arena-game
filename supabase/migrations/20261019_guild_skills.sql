@@ -1,3 +1,4 @@
+-- APPLIED 2026-10-19 08:12 (owner "apply it"), via the Supabase SQL editor.
 -- PROPOSED, NOT APPLIED (2026-10-19, package G: guild skills). Apply only on the owner's "apply it".
 -- Owner (2026-10-18 20:45): "Guild skills. Starting with +raid HP to your bramble."
 --

@@ -1,3 +1,4 @@
+-- APPLIED 2026-10-19 08:12 (owner "apply it"), via the Supabase SQL editor.
 -- PROPOSED, NOT APPLIED (2026-10-19, package NF: every card copy has its own level). Apply only on the owner's "apply it".
 -- Owner (2026-10-18 23:37): "Each card is unique. Forging one card doesn't mean all copies become stronger!"
 --

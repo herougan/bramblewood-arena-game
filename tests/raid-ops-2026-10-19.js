@@ -13,7 +13,7 @@ const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
 const TXmod = require(path.join(ROOT, 'bramblewood-texts.js'));
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8');
-const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261019_raid_ops.sql'), 'utf8');
+const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'migrations', '20261019_raid_ops.sql'), 'utf8');
 const goliath = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'raids.json'), 'utf8'))[0];
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const H = 3600 * 1000, DAY = 24 * H, C = 2900, S = C * R.CYCLE_MS;

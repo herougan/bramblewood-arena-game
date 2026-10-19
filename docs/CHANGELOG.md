@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 08:10 — SQL applied (owner "apply it")
+
+- Applied in the Supabase SQL editor (project xjctfwobcsyiztecutrb), each in one transaction, then verified with a read-only query: `20261018_guild_rename.sql` blocks A (rename_guild) and B (the join-as-owner hole closed; block C, server-side tickets, not applied), `20261019_guild_skills.sql` (Guild Seeds, Rooted Walls, upgrade_guild_skill, the Seeds trigger), `20261019_raid_ops.sql` (admin_restart_raid, raid instances, the own-instance trigger) and `20261019_card_copy_levels.sql` (player_card_unlocks.copies + its check; `card_copies_ok` now pins `search_path`). All four moved from supabase/proposed to supabase/migrations; their tests now check the applied files.
+
 ## 2026-10-19 (package CB: the card pass)
 - **Owner (00:19): "balance the cards themselves (L1) + balance rarity, choose where the cards come from".** Every live card measured at Level 1 on card_balance.js's yardstick: 733 at 100 games, the 133 more than 3 points out again at 400.
 - **61 cards changed** (47 now in their band, 11 toward it, 3 budget fits), all within budget v3 at today's `value` S. Toned down: the Bounty fighters at 89–95% (Badger Berserker 5/12 → 3/12, War Hound, Squire's Mount, Woodland Brawler 4/12 → 3/12, Bramblewood Lynx 6/9 → 6/6, Boar Rampager 4/14 → 4/9 …), Pall Wraith 5/15 → 3/13, Lurking Dread 4/9 → 3/8, Bramblewood Macaque 2/10 → 2/4 (100% → 75.5%). Lifted: Tunnel Ant 5/5 → 5/7 (23.5% → 73%), Beaver Builder / Chipmunk Stockpiler / Cinder Stoker 1/9 → 1/13, The Sixfold 8/20 → 9/22, Sunspire Choirmother 5/10 at 2 Lumber → 2/6 at 1. Fitted: Raven Harbinger 5/18, Bone Diviner 5/19, The Magnate Duck 6/59. In band (measured cards): 400 → 444; more than 8 points out: 77 → 27.
