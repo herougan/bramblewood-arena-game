@@ -3195,6 +3195,40 @@ function cardWhereToGetText(d){
 // first map is Map 1. Fights are numbered 1, 2, 3… along the map's trail (the tutorial is X-0, a raid boss X-R). A sub-map's
 // fights carry its parent's number and the sub-map's first letter, e.g. 2-G1 for Smugglers' Grotto under Map 2.
 // Display only: save data keeps the original node keys.
+// The phone map strip (2026-10-19, package U3, owner 13:42: "In the mobile version, the map tab on the top is okay. Just that there was
+// a empty margin above for no reason."): NV hid the strip on phones; it is back, on the top-right cluster's own line (the cluster is
+// fixed at top 12 px on the right), so nothing sits empty above it. The strip stops 8 px short of the cluster (--u3-strip-w on the
+// body, read from the cluster's on-screen left edge); on a wide screen (the desktop side list) the variable is cleared.
+function u3FitMapStrip(){
+  const b = document.body; if(!b) return;
+  const phone = !!(window.matchMedia && matchMedia('(max-width:820px)').matches);
+  const cl = document.querySelector('#view-play .play-subtabs-actions');
+  if(!phone || !b.classList.contains('conquest-full') || !cl || !cl.getClientRects().length){ b.style.removeProperty('--u3-strip-w'); return; }
+  const r = cl.getBoundingClientRect(); if(!(r.width > 0)) { b.style.removeProperty('--u3-strip-w'); return; }
+  b.style.setProperty('--u3-strip-w', Math.max(120, Math.floor(r.left - 6)) + 'px');
+}
+try{ window.addEventListener('resize', ()=>{ try{ u3FitMapStrip(); }catch(e){} }, {passive:true}); }catch(e){}
+// Touch-and-hold on a phone chip shows its name and progress (the chip itself is just the number and emoji): 450 ms, cancelled by a
+// move of more than 10 px (the strip scrolls sideways); the click after a hold is dropped, so a hold never changes the map.
+function u3WireChipPeek(listEl){
+  if(!listEl || listEl.dataset.u3Peek) return; listEl.dataset.u3Peek = '1';
+  let t = 0, x0 = 0, y0 = 0, peek = null, held = false;
+  const clear = ()=>{ clearTimeout(t); t = 0; };
+  const hide = ()=>{ if(peek){ const p = peek; peek = null; setTimeout(()=> p.remove(), 900); } };
+  listEl.addEventListener('pointerdown', e=>{
+    if(e.pointerType !== 'touch') return; const chip = e.target.closest('.conquest-map-item'); if(!chip) return;
+    held = false; x0 = e.clientX; y0 = e.clientY; clear();
+    t = setTimeout(()=>{ t = 0; held = true; document.querySelectorAll('.u3-chip-peek').forEach(p=> p.remove());
+      const tip = chip.getAttribute('aria-label') || chip.getAttribute('title') || ''; if(!tip) return;
+      const r = chip.getBoundingClientRect(); peek = document.createElement('div'); peek.className = 'u3-chip-peek'; peek.setAttribute('role', 'tooltip'); peek.textContent = tip;
+      peek.style.left = Math.max(70, Math.min(innerWidth - 70, r.left + r.width/2)) + 'px'; peek.style.top = (r.bottom + 8) + 'px'; document.body.appendChild(peek);
+      try{ navigator.vibrate && navigator.vibrate(8); }catch(_){} }, 450);
+  }, {passive:true});
+  listEl.addEventListener('pointermove', e=>{ if(t && Math.hypot(e.clientX - x0, e.clientY - y0) > 10) clear(); }, {passive:true});
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(k=> listEl.addEventListener(k, ()=>{ clear(); hide(); }, {passive:true}));
+  listEl.addEventListener('click', e=>{ if(held){ held = false; e.stopPropagation(); e.preventDefault(); } }, true);
+  listEl.addEventListener('contextmenu', e=>{ if(e.target.closest('.conquest-map-item')) e.preventDefault(); });
+}
 function mapNumberOf(mapId){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
   const main = mainConquestMaps(); const i = main.indexOf(m.sub ? all.find(x=> x.id===m.parent) : m);
@@ -13791,11 +13825,10 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
-        ${'' /* 2026-10-19 (package NV, owner on an iPhone: "There should be a home button somewhere on mobile ... add the bramble acorn symbol
-             OR home symbol in the map/arena"): a 🌰 Home at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones
-             and desktop. It sits outside the tab strip, so it never scrolls away with the tabs, and the top-right 🏠 steps aside while it shows
-             (CSS). Same path as every other Home: switchTab('home'). */}<button type="button" class="play-home-tab" id="playHomeTabBtn" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="pht-nut" aria-hidden="true">🌰</span><span class="pht-label">${escapeHtml(TX('ui.nv-home'))}</span></button>
-        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
+        ${'' /* 2026-10-19 (package U3, owner 13:41: "I think the home button shouldnt be on the btm bar but as an icon beside the fullscreen
+             button and arena button."): NV's 🌰 Home left the floating tab bar; it is the first icon of the top-right cluster again
+             (#homeNavBtnPlay below), as an acorn, sized like the 🏟️ / ⚙️ beside it. NV's iOS fix stays: only the tab strip scrolls, never
+             the row that holds the cluster. */}<div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
           ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
                Codex"): deck-building now lives in its own top-level Deck section (see
@@ -13822,7 +13855,7 @@ function renderPlay(){
                costing 1-5⚡ by kind (ENERGY_COST). A second copy of the same pill, mirrored by
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
-          <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="Home"><span class="tab-emoji">🏠</span> Home</button>
+          <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
           ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="Back to the Arena">← Arena</button>` : ''}
           ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
           <div class="settings-wrap">
@@ -13867,8 +13900,7 @@ function renderPlay(){
     root.querySelectorAll('[data-playtab]').forEach(b=> b.addEventListener('click', ()=>{ playSubTab = b.getAttribute('data-playtab'); playerStatsOpen = false; if(playSubTab!=='conquest') exitConquestImmersive(); renderPlay(); }));
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
     const backBtn = document.getElementById('homeNavBtnPlay');
-    if(backBtn) backBtn.addEventListener('click', ()=> switchTab('home'));
-    { const ph = document.getElementById('playHomeTabBtn'); if(ph) ph.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); } // 2026-10-19 (package NV): the tab bar's 🌰 Home
+    if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
     wireSettingsButton('PlaySub');
@@ -21553,7 +21585,7 @@ function renderConquestSubTab(body){
   // The world is hidden at first (2026-10-12, user: "When you defeat the 2nd map for the first time, you also see the world
   // expand, then you get to see the world map... (otherwise its hidden till then)"): no map list, no world map button.
   const worldOpen = worldRevealed();
-  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(window.matchMedia && matchMedia('(max-width: 820px)').matches ? TX('toast.the-world-opens-up-phone') : TX('toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (NV merge): phones have no map list on the left */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
+  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(window.matchMedia && matchMedia('(max-width: 820px)').matches ? TX('toast.the-world-opens-up-phone') : TX('toast.the-world-opens-up-every-map'), 'ok'); /* 2026-10-19 (package U3): phones have the map strip again, along the top (desktop: the list on the left) */ SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
   // 2026-10-17 (user: "Tutorial only: You see the tutorials placed left and right (T1  T2), not anymore"): on the Tutorial map itself
   // T-0 and T-1 show as they always will (their own spots, the trail between them); only the Outskirts keep the opening look.
@@ -21574,21 +21606,27 @@ function renderConquestSubTab(body){
     const fightable = map.nodes.filter(n=> n.kind!=='raidboss' && n.kind!=='tutorial');
     const doneN = fightable.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
     const cleared = doneN===fightable.length;
-    return `<div class="conquest-map-item ${map.id===selMain?'selected':''}" data-mapid="${map.id}" role="button" tabindex="0" style="${mapBandStyle(mapNumberOf(map.id))}">
-      <div class="cmi-ico">${map.icon}</div>
+    // 2026-10-19 (package U3, owner 13:42: "the map tab however, can be just number + emoji. No need for name."): on a phone a chip is
+    // its number (.cmi-num) and emoji, and a small ✓ (.cmi-tick) once cleared (CSS hides the name block there); the name and progress
+    // are in its title / aria-label, and a touch-and-hold shows them (u3ChipPeek). Desktop's side list keeps the full chip.
+    const num = mapNumberOf(map.id), tip = TX(cleared ? 'ui.u3-map-chip-tip-cleared' : 'ui.u3-map-chip-tip', {n: num, name: map.name, done: doneN, total: fightable.length});
+    return `<div class="conquest-map-item ${map.id===selMain?'selected':''}${cleared ? ' is-cleared' : ''}" data-mapid="${map.id}" role="button" tabindex="0" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" style="${mapBandStyle(num)}">
+      <div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">${map.icon}</div>${cleared ? '<i class="cmi-tick" aria-hidden="true">✓</i>' : ''}
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
-  }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
+  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name});
+    return `<div class="conquest-map-item locked next-locked" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>`; })() : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   // 2026-10-15 (user: "The world - all maps design doesn't look like the other map tabs. It should also have the side shine thing,
   // but maybe its blue"): the same banded tab as the maps, in a sky blue.
-  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once" style="--band:#4f9fe0; --band-mix:30%;"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
+  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once" aria-label="${escapeAttr(TX('ui.u3-map-chip-world'))}" style="--band:#4f9fe0; --band-mix:30%;"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
   // 2026-10-10 (user: "Remove the Home Map from the conquest page"): Home is the top-right mini icon, or the chestnut on the World map.
   { const wc = document.getElementById('conquestWorldChip'); const go = ()=> openConquestWorld(body);
     wc.addEventListener('click', go); wc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
   if(conquestWorldView) listEl.querySelectorAll('.conquest-map-item.selected:not(.world-chip)').forEach(el=> el.classList.remove('selected'));
   // 2026-10-12 (user: "Moving to the next map shouldn't reset your map y-scroll on the left"): the list keeps its scroll across re-renders.
-  if(window.__cqListScroll){ listEl.scrollTop = window.__cqListScroll.top; } listEl.addEventListener('scroll', ()=>{ window.__cqListScroll = {top: listEl.scrollTop}; }, {passive:true});
+  if(window.__cqListScroll){ listEl.scrollTop = window.__cqListScroll.top; if(window.__cqListScroll.left) listEl.scrollLeft = window.__cqListScroll.left; } listEl.addEventListener('scroll', ()=>{ window.__cqListScroll = {top: listEl.scrollTop, left: listEl.scrollLeft}; }, {passive:true});
+  try{ u3FitMapStrip(); u3WireChipPeek(listEl); requestAnimationFrame(u3FitMapStrip); }catch(e){} // 2026-10-19 (package U3): the phone strip shares the cluster's line; touch-and-hold shows a chip's name
   listEl.querySelectorAll('[data-mapid]').forEach(el=>{
     const go = ()=>{ if(conquestWorldView){ conquestWorldView = false; conquestSelectedMap = el.getAttribute('data-mapid'); conquestSelectedNodeKey = null; renderConquestSubTab(body); return; } conquestPanTo(el.getAttribute('data-mapid'), body, progress); };
     el.addEventListener('click', go);
@@ -23279,7 +23317,7 @@ function startRaidFullBattle(def, partId, f, st){
     m0.raidBossBR = bossBR; m0.raidSideBR = sideBR; Object.assign(me, {level: sideBR.total, brLabel: TX('ui.raid-br-side'), brTip: TX('ui.raid-br-side-tip')});
     me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)},
-    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+    bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 900); }); // + Turn 1's tick (2026-10-19, U3)
 }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
 // plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
@@ -28760,8 +28798,38 @@ function hpRibbonHTML(m, side, label){
 // The raid's clock (2026-10-18, user: "Why did my raid randomly end although my bramble's hp was not 0?"): a raid attempt lasts
 // m.raidRoundCap turns (the part's fight.rounds, else the raid's fightRounds, 20 from 2026-10-18), then the part sinks back and you score what you dealt. It used to end with
 // no warning; the turn and the limit now sit on the boss's HP ribbon all fight, and the last turn is marked (and announced).
+// 2026-10-19 (package U3, owner 13:43: "The turn metre ... should be faded out. It only fades in to tick on your turn, then it fades
+// out. It shouldn't say 2/20, but just Turn 2."): it reads "Turn 2" (TX ui.u3-turn), and it stays on the ribbon faded out, taking no
+// clicks (CSS); u3TurnFlash shows it as your turn starts.
 function raidClockPillHTML(m){ const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)), last = n >= cap;
-  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" title="${last ? 'The last turn: the raid ends after this one, whatever the brambles’ Health' : `The raid ends after turn ${cap}, whatever the brambles’ Health`}">${last ? '🌊 Last turn' : `🌊 Turn ${n} / ${cap}`}</span>`; }
+  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" aria-hidden="true">${escapeHtml(TX('ui.u3-turn', {n}))}</span>`; }
+// The turn's tick (2026-10-19, package U3): at the start of your turn the faded pill's copy fades in over it, rolls from the old turn to
+// the new (the old slides up and out, the new pops in), holds about 1.2 s and fades out. A page-level copy, so the board's redraws
+// can't cut it short. Owner call (the last-turns warning): in the raid's last 3 turns a second line says "3 turns left", "2 turns
+// left", then "Last turn!" (the 10-18 last-turn banner still plays too). Reduced motion: a plain fade, no roll or pop. Once a turn.
+const U3_TURN_HOLD_MS = 1200;
+function u3TurnFlash(m){
+  if(!m || m.over || !m.raidRoundCap || matchState !== m) return;
+  const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)); if(m._u3TurnSeen === n) return;
+  const from = m._u3TurnSeen; m._u3TurnSeen = n;
+  const pill = document.querySelector('.battlefield .bf-hp[data-hpribbon="B"] .bf-turn-pill.raid-clock'); if(!pill || !pill.getClientRects().length) return;
+  const r = pill.getBoundingClientRect();
+  document.querySelectorAll('.u3-turn-flash').forEach(e=> e.remove());
+  const left = cap - n + 1, warn = left <= 3 ? TX(left <= 1 ? 'ui.u3-last-turn' : 'ui.u3-turns-left', {n: left}) : '';
+  const roll = from != null && from !== n && !reducedMotion();
+  const el = document.createElement('div'); el.className = 'u3-turn-flash' + (left <= 1 ? ' is-last' : ''); el.setAttribute('role', 'status');
+  el.innerHTML = `<span class="u3tf-pill"><span class="u3tf-roll">${roll ? `<span class="u3tf-old">${escapeHtml(TX('ui.u3-turn', {n: from}))}</span>` : ''}<span class="u3tf-new">${escapeHtml(TX('ui.u3-turn', {n}))}</span></span></span>${warn ? `<span class="u3tf-warn">${escapeHtml(warn)}</span>` : ''}`;
+  el.style.left = (r.left + r.width/2).toFixed(1) + 'px'; el.style.top = (r.top + r.height/2 - 11).toFixed(1) + 'px';
+  document.body.appendChild(el);
+  const total = 260 + 420 + U3_TURN_HOLD_MS + 380;
+  if(!el.animate){ el.style.opacity = '1'; setTimeout(()=> el.remove(), total); return; }
+  const fade = el.animate([{opacity:0}, {opacity:1, offset:260/total}, {opacity:1, offset:(total - 380)/total}, {opacity:0}], {duration:total, easing:'linear', fill:'forwards'});
+  fade.onfinish = ()=> el.remove();
+  if(roll){ const o = el.querySelector('.u3tf-old'), nw = el.querySelector('.u3tf-new'), pl = el.querySelector('.u3tf-pill');
+    o.animate([{transform:'translateY(0)', opacity:1}, {transform:'translateY(0)', opacity:1, offset:.45}, {transform:'translateY(-110%)', opacity:0}], {duration:620, easing:'ease-in', fill:'forwards'});
+    nw.animate([{transform:'translateY(110%)', opacity:0}, {transform:'translateY(110%)', opacity:0, offset:.45}, {transform:'translateY(0)', opacity:1}], {duration:620, easing:'cubic-bezier(.2,1.4,.4,1)', fill:'forwards'});
+    pl.animate([{transform:'scale(1)'}, {transform:'scale(1)', offset:.55}, {transform:'scale(1.16)', offset:.75}, {transform:'scale(1)'}], {duration:820, easing:'ease-out'}); }
+}
 // 2026-10-15 (user: "When the match is over, and I view the post-battlefield, I want to see the turn#. It shows up as a pill on the
 // opponent's HP bar in the centre."): the turn the fight ended on, centred on the top HP ribbon once it's over.
 function finalTurnPillHTML(m){ const n = Math.max(1, m.round || 1); return `<span class="bf-turn-pill" title="The fight ended on turn ${n}">Turn ${n}</span>`; }
@@ -33436,17 +33504,41 @@ function updateCastleCracks(el, hp, maxHp){
 // opposing HP Bar."): the number pops at the horizontal centre of the bar it hits (its track's screen rect), not where the fill ends
 // (on a phone a healthy bar's fill ends at the far right). Read from getBoundingClientRect, so the board's camera can't skew it;
 // floatText keeps an hq-big number on that centre (no sideways jitter).
+// 2026-10-19 (package U3, owner 13:45, partly reversing BU: "Oh I get the raid health bar damage number now. Okay, I kinda like it. It
+// comes out at where the health bar% is currently at. We could do that for all games."): the number pops where the bar's fill ends
+// now, the Health % the castle is at, in every mode (normal fights, raids, the Tower, dungeons). Still read from the bar's on-screen
+// rect (getBoundingClientRect), so MB2's camera can't skew it; the fill's end comes from its width % (the target, not a width still
+// sliding), mirrored if the fill runs from the right. floatText clamps the number so it stays fully on screen at very low or very
+// full Health (u3ClampOnBar), and keeps it from drifting sideways.
 function hqRibbonFloatAnchor(side){
   const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`);
   if(!rib || !rib.getClientRects().length) return null;
   const r = rib.getBoundingClientRect(); if(!r.width) return null;
   const track = rib.querySelector('.bf-hp-track'), tr = track && track.getClientRects().length ? track.getBoundingClientRect() : null;
   const bar = tr && tr.width > 0 ? tr : r;
-  const x = bar.left + bar.width/2, y = bar.top + bar.height/2;
+  const x = hqFillEndX(rib, bar), y = bar.top + bar.height/2;
   const a = document.createElement('div'); a.className = 'hq-float-anchor'; a.setAttribute('aria-hidden', 'true');
   a.style.cssText = `position:fixed; width:0; height:0; z-index:1100; pointer-events:none; left:${x.toFixed(1)}px; top:${y.toFixed(1)}px;`;
   document.body.appendChild(a); setTimeout(()=> a.remove(), 2200);
   return a;
+}
+// Where a castle's HP fill ends on screen (2026-10-19, package U3): the bar's left edge plus its fill % (its style width, the Health
+// it is at now), or from the right when the fill is drawn from the right edge.
+function hqFillEndX(rib, bar){
+  const fill = rib && rib.querySelector('.bf-hp-fill');
+  let pct = fill ? parseFloat(fill.style.width) : NaN;
+  if(!Number.isFinite(pct) && fill && fill.getClientRects().length) pct = fill.getBoundingClientRect().width / Math.max(1, bar.width) * 100;
+  if(!Number.isFinite(pct)) return bar.left + bar.width/2;
+  pct = Math.max(0, Math.min(100, pct)) / 100;
+  let fromRight = false;
+  try{ if(fill && fill.getClientRects().length){ const fr = fill.getBoundingClientRect(); fromRight = fr.width > 1 && Math.abs(fr.right - bar.right) < 1.5 && Math.abs(fr.left - bar.left) > 1.5; } }catch(e){}
+  return fromRight ? bar.right - bar.width*pct : bar.left + bar.width*pct;
+}
+// A number on a castle's HP bar stays fully on screen (2026-10-19, package U3): at the fill's end at 2% or 100% Health its centre would
+// put half of it past the screen's edge. Measured at its biggest (the burst scale), with a 6 px margin; returns the px to shift it by.
+function u3ClampOnBar(anchor, f, big){
+  try{ const ax = anchor.getBoundingClientRect().left, half = (f.offsetWidth || 0) * (big || 1) / 2 + 6, W = document.documentElement.clientWidth || innerWidth;
+    const lo = half - ax, hi = W - half - ax; return Math.round(lo > hi ? lo : Math.min(hi, Math.max(lo, 0))); }catch(e){ return 0; }
 }
 function displayHqDamage(mm, side, dmg){
   if(!mm || !mm.displayHqHp){ updateHqHpDisplay(side); return; }
@@ -35261,6 +35353,7 @@ async function resolveRoundCore(opts){
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
+  if(!m.over && m.raidRoundCap) try{ u3TurnFlash(m); }catch(e){} // 2026-10-19 (package U3): the turn meter ticks as your turn starts
   if(!m.over && document.querySelector('.bounty-bubble')) bountyPeek(); // bounty bubbles show for 3s as your turn starts
   syncBountyHolding();
 }
@@ -38623,12 +38716,13 @@ function floatText(el, text, cls){
   const travel = 0.9 + Math.random()*0.2;
   const big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
+  const barShift = onBar ? u3ClampOnBar(el, f, big) : 0; // 2026-10-19 (package U3): a number at the HP fill's end stays on screen
   if(hasGsap()){
     // 2026-10-03: GSAP owns the motion (the old CSS bounce read as a second number).
     // 2026-10-08: burst out big, recoil back to size together with the burst, then rise and fade.
     f.style.animation = 'none';
     const b = f.querySelector('.df-burst');
-    gsap.set(f, {position:'absolute', left:'50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
+    gsap.set(f, {position:'absolute', left: barShift ? `calc(50% + ${barShift}px)` : '50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:big, y:-8*travel, x:dx*0.3, duration:.09, ease:'power3.out'})
       .to(f, {scale:1, duration:.26, ease:'back.out(3)'})
@@ -38637,6 +38731,7 @@ function floatText(el, text, cls){
     if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
   } else {
     f.style.top = enemyRow ? (top0 + dy0*0.5)+'%' : (-6+dy0)+'px'; // no-GSAP fallback: CSS bounce from here
+    if(barShift) f.style.marginLeft = barShift + 'px';
     f.style.setProperty('--dx', dx.toFixed(1)+'px');
     setTimeout(()=> f.remove(), 1150);
   }
