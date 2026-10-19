@@ -10605,10 +10605,40 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* ---- Codex: card album, skills book, collection score (2026-10-18, package C, owner: "codex: skills - look like pages in a book.
    bestiary - look like a card album. overall collection score listed at the btm and in profile w/ achievements") ----
    Parchment and leather from the game's own tokens (--surface*, --ink*, --accent), so light and dark both follow the theme. */
-.pg-nav{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; margin:12px 0 4px;}
-.pg-nav .pg-btn{min-width:44px; min-height:40px; font-size:20px; line-height:1; padding:0 12px;}
-.pg-nav .pg-of{font:700 13px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink); min-width:9em; text-align:center; font-variant-numeric:tabular-nums; padding:8px 12px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
-.pg-nav .pg-jump{max-width:min(320px, 100%); height:40px; padding:0 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:inherit; font-size:13px;}
+/* 2026-10-19 (package CX, owner 14:07: "<< and >> for to first and to last page"; "The goto previous or next page buttons should be
+   on the books themselves"): no turn bar under the book any more. Above it, the page count and "Go to section"; on it, tabs on the
+   cover's outer edges: ‹ with « under it on the left, › with » on the right. They are page-coloured, like bookmark tabs sticking out
+   of the book, and sticky, so on a page taller than the screen they stay in reach while you scroll. */
+.pg-info{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; margin:0 0 10px;}
+.pg-info .pg-of{font:700 13px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink); min-width:9em; text-align:center; font-variant-numeric:tabular-nums; padding:8px 12px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
+.pg-info .pg-jump{max-width:min(320px, 100%); height:40px; padding:0 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:inherit; font-size:13px;}
+.pg-book{--pg-edge:34px; position:relative; padding-left:calc(var(--pg-edge) + 8px) !important; padding-right:calc(var(--pg-edge) + 8px) !important;}
+.pg-edge{position:absolute; top:12px; bottom:12px; width:var(--pg-edge); z-index:9; display:flex; flex-direction:column; justify-content:center; pointer-events:none;}
+.pg-edge-l{left:4px;} .pg-edge-r{right:4px;}
+.pg-edge-in{position:sticky; top:calc(50vh - 60px); bottom:14px; display:flex; flex-direction:column; gap:10px; pointer-events:auto;}
+.pg-tab{display:grid; place-items:center; width:100%; height:66px; margin:0; padding:0; border:0; cursor:pointer; color:var(--ink); font:800 28px/1 'Baloo 2',system-ui,sans-serif;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--surface) 88%, var(--surface-border)), var(--surface) 45%, color-mix(in srgb, var(--surface) 88%, var(--surface-border)));
+  box-shadow:0 3px 8px rgba(0,0,0,.35), inset 0 0 0 1px color-mix(in srgb, var(--surface-border) 85%, transparent); transition:transform .12s ease, filter .12s ease;
+  -webkit-tap-highlight-color:transparent; touch-action:manipulation;}
+.pg-tab > span{transform:translateY(-1px);}
+.pg-edge-l .pg-tab{border-radius:14px 4px 4px 14px;} .pg-edge-r .pg-tab{border-radius:4px 14px 14px 4px;}
+.pg-tab.pg-first, .pg-tab.pg-last{height:44px; font-size:21px; color:var(--accent-strong); background:linear-gradient(90deg, color-mix(in srgb, var(--surface-2) 90%, var(--surface-border)), var(--surface-2));}
+.pg-edge-l .pg-tab:hover:not(:disabled){transform:translateX(-3px); filter:brightness(1.05);} .pg-edge-r .pg-tab:hover:not(:disabled){transform:translateX(3px); filter:brightness(1.05);}
+.pg-tab:active:not(:disabled){filter:brightness(.94);}
+.pg-tab:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+.pg-tab:disabled{opacity:.38; cursor:default; box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--surface-border) 85%, transparent);}
+/* On a phone the cards need the width, so the tabs fold into the page's top corners instead (« ‹ on the left, › » on the right,
+   either side of the page's heading); a swipe turns as well. The album also reaches into the content's side padding. */
+@media (max-width:559px){ .pg-book{padding-left:6px !important; padding-right:6px !important;}
+  .al-album.pg-book{margin-left:-8px; margin-right:-8px;}
+  .pg-edge{top:10px; bottom:auto; width:auto; flex-direction:row;} .pg-edge-l{left:12px;} .pg-edge-r{right:12px;}
+  .pg-edge-in{position:static; flex-direction:row; gap:4px;} .pg-edge-l .pg-edge-in{flex-direction:row-reverse;}
+  .pg-tab, .pg-tab.pg-first, .pg-tab.pg-last{width:36px; height:32px; font-size:22px; box-shadow:0 2px 4px rgba(0,0,0,.28), inset 0 0 0 1px color-mix(in srgb, var(--surface-border) 85%, transparent);}
+  .pg-tab.pg-first, .pg-tab.pg-last{font-size:17px;}
+  .pg-edge-l .pg-tab.pg-first{border-radius:10px 3px 3px 3px;} .pg-edge-l .pg-tab.pg-prev{border-radius:3px;}
+  .pg-edge-r .pg-tab.pg-last{border-radius:3px 10px 3px 3px;} .pg-edge-r .pg-tab.pg-next{border-radius:3px;}
+  .pg-edge-l .pg-tab:hover:not(:disabled), .pg-edge-r .pg-tab:hover:not(:disabled){transform:none;}
+  .pg-book .al-head, .pg-book .bk-run{padding-left:72px; padding-right:72px; min-height:32px;} .pg-book .al-head{justify-content:center; text-align:center;} .pg-book .al-head .al-sec{flex:0 1 auto;} }
 /* the turning leaf: a copy of the page you leave, lifting off at the spine */
 .pg-leaf{position:absolute; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
   animation:pgLeafFwd 460ms cubic-bezier(.45,.05,.35,1) forwards;}
@@ -10639,7 +10669,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .bk-page.is-blank{background:color-mix(in srgb, var(--surface) 82%, var(--surface-border));}
 .bk-spine{flex:0 0 6px; background:linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 50%, rgba(0,0,0,.35));}
 .bk-run{min-height:18px; font:400 13px/1.3 'MedievalSharp','Baloo 2',serif; letter-spacing:.04em; color:var(--ink-soft); text-align:center; border-bottom:1px solid color-mix(in srgb, var(--surface-border) 70%, transparent); padding-bottom:4px; margin-bottom:10px;}
-.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin;}
+.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin; touch-action:pan-y; /* 2026-10-19 (package CX): a page that scrolls inside used to take a sideways swipe as its own pan (pointercancel), so the swipe didn't turn */}
 .bk-measure{position:absolute; visibility:hidden; pointer-events:none; left:0; top:0; height:auto; overflow:visible; flex:none;}
 .bk-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px; min-height:20px;}
 .bk-title{margin:4px 0 6px; font:400 30px/1.1 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink);}
@@ -10664,7 +10694,6 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .bk-ch-sub{margin:4px 0 0; font-size:13px; color:var(--ink-muted);}
 .bk-entry.is-hint .bk-ico{font-weight:900; color:var(--ink-soft); filter:grayscale(1); opacity:.75;}
 .bk-entry.is-hint h4, .bk-entry.is-hint p{color:var(--ink-soft); font-style:italic;}
-.bk-book .pg-nav{margin-top:12px;}
 @media (max-width:899px){ .bk-spread{padding:6px;} .bk-page{height:clamp(400px, calc(100vh - 250px), 720px); padding:12px 14px 8px;} }
 
 /* the card album */
@@ -10691,7 +10720,9 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 #codexGrid.al-host .al-sleeve .cx-tile-wrap .cx-lock{top:-4px; left:-4px; font-size:12px; padding:2px 3px;}
 #codexGrid.al-host .card-tile.cx-editable{cursor:pointer;}
 .al-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px;}
-@media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 8px 6px;} .al-grid{gap:8px;} }
+@media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 6px 6px;} .al-grid{gap:5px;}
+  /* 2026-10-19 (package CX, owner 14:07: "Show 16 cards on each page"): 4 × 4 on a phone too, in thinner sleeves */
+  .al-sleeve{padding:3px 3px 7px; border-radius:6px;} .al-head .al-sec{font-size:15px;} }
 
 /* the skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") */
 #codexToolbar > .cx-skill-panel{flex:1 1 100%; order:99; padding:10px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink); box-shadow:0 6px 18px rgba(0,0,0,.18);}
@@ -11813,6 +11844,67 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   font:800 11.5px/1.1 'Baloo 2', system-ui, sans-serif; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.4);}
 .u3-turn-flash.is-last .u3tf-pill{background:linear-gradient(180deg, #ffe3d6, #f5b49a); color:#5a1b08; border-color:#c4502a;}
 @media (max-width:699px){ .u3-turn-flash .u3tf-pill{height:20px; font-size:11.5px; padding:0 10px;} }
+</style>
+<style id="tsStyles">
+/* ===== Package TS (2026-10-19, owner 13:37: "In small mode, the status icon is wrongly sized and not fitting the contents! When in
+   mini mode, should poison and status symbols be on the top boundary instead?" Yes, and at every card size). A board card's live
+   statuses (Poison, Bleed, Sleep, Paralyze...) are small round chips, icon + number, in a strip straddling the card's TOP edge, the
+   way the skill strip straddles the bottom edge. They used to be tinted pills over the art (in the middle of a tiny card, at the
+   bottom of a big one), sized by a font rule that didn't follow the card, so on a raid's small cards a pale pill with an oversized
+   icon covered the art and the Health. The strip starts at the top-left corner and stops short of the Wait clock (top-right); chip
+   size follows the card (--sc-h); past what fits, the last chip is "+N" (statusChipsHTML: oK on the strip = more than K statuses,
+   data-mK = the +N at K slots; K is 2 on a small card, 3 on a phone or desktop card, 4 on a big one). The old class badges-bottom
+   stays on the strip for the effects code (FX.D); the rules below take its old placement over. ===== */
+.board-card .card-tile .badges-bottom.status-chips{--sc-h:clamp(11px, calc(var(--cw, 120px) * .15), 18px);
+  top:0 !important; bottom:auto !important; left:-3px !important; right:auto !important; transform:translateY(-50%) !important;
+  display:flex; flex-wrap:nowrap; justify-content:flex-start; align-items:center; gap:2px; width:max-content;
+  max-width:calc(100% + 3px - 4px) !important; overflow:visible; z-index:6; pointer-events:none;}
+/* with the Wait clock in the top-right corner, the strip stops short of it */
+.board-card .card-tile:has(.waitbadge) .badges-bottom.status-chips{max-width:calc(100% + 3px - max(16px, 22cqw) - 4px) !important;}
+.board-card .card-tile .status-chips > .abadge, .board-card .card-tile .status-chips > .sc-more{
+  display:inline-flex; align-items:center; justify-content:center; gap:1px; flex:none; box-sizing:border-box;
+  height:var(--sc-h); min-width:var(--sc-h); padding:0 calc(var(--sc-h) * .2) !important; border-radius:999px !important;
+  font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:calc(var(--sc-h) * .7) !important; line-height:1 !important;
+  color:#fff; background:linear-gradient(180deg, rgba(48,36,24,.96), rgba(22,16,10,.96)) !important;
+  box-shadow:0 0 0 1px var(--sc-ring, rgba(201,162,90,.85)), 0 1px 3px rgba(0,0,0,.55) !important; filter:none !important;
+  text-shadow:0 1px 0 rgba(0,0,0,.7); white-space:nowrap; letter-spacing:0;}
+.board-card .card-tile .status-chips > .abadge img.tw-emoji{width:1.05em !important; height:1.05em !important; margin:0 !important; vertical-align:0 !important;}
+/* each status keeps its colour as the chip's ring and number */
+.board-card .card-tile .status-chips > .abadge.poison{--sc-ring:var(--poison, #7ac943); color:#c9f59a;}
+.board-card .card-tile .status-chips > .abadge.toxin{--sc-ring:#9bd64a; color:#d8ff9a;}
+.board-card .card-tile .status-chips > .abadge.bleed{--sc-ring:#e0413a; color:#ffb3ad;}
+.board-card .card-tile .status-chips > .abadge.sleep{--sc-ring:#9a8cff; color:#ddd6ff;}
+.board-card .card-tile .status-chips > .abadge.paralyze, .board-card .card-tile .status-chips > .abadge.shock{--sc-ring:#f2c94c; color:#ffeaa0;}
+.board-card .card-tile .status-chips > .abadge.blind, .board-card .card-tile .status-chips > .abadge.smoke{--sc-ring:#a9b0bb; color:#eef1f5;}
+.board-card .card-tile .status-chips > .abadge.exposed, .board-card .card-tile .status-chips > .abadge.scar{--sc-ring:#e0663f; color:#ffc2ae;}
+.board-card .card-tile .status-chips > .abadge.corrode, .board-card .card-tile .status-chips > .abadge.irradiation{--sc-ring:#8fd14f; color:#d9ffa8;}
+.board-card .card-tile .status-chips > .abadge.unit-shield, .board-card .card-tile .status-chips > .abadge.freeze{--sc-ring:#5ab0ff; color:#cfe8ff;}
+.board-card .card-tile .status-chips > .abadge.prayer, .board-card .card-tile .status-chips > .abadge.prayer-ward{--sc-ring:#e3c26a; color:#fff0c2;}
+/* A frozen card's ice frame (.board-card.is-frozen::after, laid over the whole tile) leaves the strip's band clear, as it leaves the
+   Wait clock's corner clear: its top-left crystal used to bury the first chip. */
+.board-card.is-frozen:has(.status-chips)::after, .board-card.is-frozen:has(.status-chips) > .fly-body::after{
+  -webkit-mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px), linear-gradient(180deg, transparent 0 10px, #000 10px); -webkit-mask-composite:source-in;
+  mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px), linear-gradient(180deg, transparent 0 10px, #000 10px); mask-composite:intersect;}
+/* "+N": hidden unless the strip has more statuses than the card's slots */
+.board-card .card-tile .status-chips > .sc-more{display:none; color:#f3e6cc;}
+.board-card .card-tile .status-chips > .sc-more::after{content:attr(data-m3);}
+@container (max-width: 47px){ /* a small card (under ~63 px: a raid's rows, a crowded phone row): 2 slots */
+  .board-card .card-tile .status-chips.o2 > .abadge:nth-child(n+2){display:none !important;}
+  .board-card .card-tile .status-chips.o2 > .sc-more{display:inline-flex;}
+  .board-card .card-tile .status-chips > .sc-more::after{content:attr(data-m2);}
+}
+@container (min-width: 48px) and (max-width: 133px){ /* a phone or desktop card: 3 slots */
+  .board-card .card-tile .status-chips.o3 > .abadge:nth-child(n+3){display:none !important;}
+  .board-card .card-tile .status-chips.o3 > .sc-more{display:inline-flex;}
+}
+@container (min-width: 134px){ /* a big card: 4 slots */
+  .board-card .card-tile .status-chips.o4 > .abadge:nth-child(n+4){display:none !important;}
+  .board-card .card-tile .status-chips.o4 > .sc-more{display:inline-flex;}
+  .board-card .card-tile .status-chips > .sc-more::after{content:attr(data-m4);}
+}
+/* The status icons over the art (Sleep's 💤, Paralyze's ⚡, Blind's 👁, Shock, Stagger, Chained) follow the card's size too: a fixed
+   22 px icon was a third of a small card. */
+.board-card .card-tile .status-overlay:not(.stun-overlay):not(.smoke-overlay){font-size:clamp(11px, calc(var(--cw, 120px) * .2), 22px) !important;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
