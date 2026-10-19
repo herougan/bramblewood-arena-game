@@ -142,7 +142,8 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
     ok(keys.every(k=> pack[peel(TXT.TEXT[k])]), `the ${code} pack translates them`); });
   const fxf = fs.readFileSync(path.join(ROOT, 'bramblewood-fx-f.js'), 'utf8');
   ok(/if\(ev\.kind === 'row'\)\{/.test(fxf) && /horizontal:true\}\); return;/.test(fxf), 'a row smack plays the tentacle sweeping along the row');
-  ok(/const horiz = !!opts\.horizontal;/.test(fxf) && /ctx\.setTransform\(0, dpr, dpr, 0, 0, 0\)/.test(fxf), 'the tentacle VFX turns on its side for a row');
+  // 2026-10-19 (package BU): the tentacle is a drawn SVG limb now; for a row it lies along the row, from the board's edge, and slams down on it
+  ok(/const horiz = !!opts\.horizontal,/.test(fxf) && /B = \{x:fromLeft \? left0 - w\*\.2 : right0 \+ w\*\.2,/.test(fxf), 'the tentacle VFX turns on its side for a row');
   ok(/M\.tentacleSmack\(\[all\[i\]\]\.concat\(resRows\.map/.test(fxf), 'a column smack slams down the column through every row'); }
 
 // ---- 15: the Babel Spire plays at the highest CPU level

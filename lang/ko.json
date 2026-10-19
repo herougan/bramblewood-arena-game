@@ -1967,5 +1967,6 @@
  "Saving your decks to your account…": "덱을 계정에 저장하는 중…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "서버에 연결할 수 없어요. 덱은 이 기기에 안전하게 있고, 다시 온라인이 되면 동기화돼요.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "덱 “{name}”이(가) 다른 기기에서 삭제되어 여기서도 사라졌어요.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 세상이 열립니다: 🧭 를 누르면 갈 수 있는 모든 지도를 볼 수 있어요."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 세상이 열립니다: 🧭 를 누르면 갈 수 있는 모든 지도를 볼 수 있어요.",
+ "{speed}×: Clear Map {n}": "{speed}×: 맵 {n} 클리어"
 }

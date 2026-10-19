@@ -1966,5 +1966,6 @@
  "Saving your decks to your account…": "A guardar os teus baralhos na tua conta…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Não foi possível contactar o servidor. Os teus baralhos estão seguros neste dispositivo e vão sincronizar quando voltares a estar online.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "O baralho «{name}» foi apagado noutro dispositivo, por isso também desaparece daqui.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 O mundo se abre: toque na 🧭 para ver todos os mapas ao seu alcance."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 O mundo se abre: toque na 🧭 para ver todos os mapas ao seu alcance.",
+ "{speed}×: Clear Map {n}": "{speed}×: Vence o Mapa {n}"
 }

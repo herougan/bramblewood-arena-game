@@ -1967,5 +1967,6 @@
  "Saving your decks to your account…": "デッキをアカウントに保存しています…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "サーバーに接続できません。デッキはこの端末に安全に保存されていて、オンラインに戻ると同期されます。",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "デッキ「{name}」は別の端末で削除されたため、ここからもなくなりました。",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界が開けた：🧭 をタップすると、行けるマップがすべて見られます。"
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界が開けた：🧭 をタップすると、行けるマップがすべて見られます。",
+ "{speed}×: Clear Map {n}": "{speed}×：マップ{n}をクリア"
 }

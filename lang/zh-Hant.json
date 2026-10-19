@@ -1967,5 +1967,6 @@
  "Saving your decks to your account…": "正在把你的牌組儲存到帳號…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "無法連線到伺服器。你的牌組在這台裝置上很安全，恢復連線後會自動同步。",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "牌組「{name}」已在另一台裝置上刪除，所以這裡也沒有了。",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界展開了：點擊 🧭 查看你能到達的所有地圖。"
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 世界展開了：點擊 🧭 查看你能到達的所有地圖。",
+ "{speed}×: Clear Map {n}": "{speed}×：通關地圖 {n}"
 }

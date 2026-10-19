@@ -1966,5 +1966,6 @@
  "Saving your decks to your account…": "Salvataggio dei tuoi mazzi nel tuo account…",
  "Can't reach the server. Your decks are safe on this device and will sync when you're back online.": "Impossibile raggiungere il server. I tuoi mazzi sono al sicuro su questo dispositivo e si sincronizzeranno quando tornerai online.",
  "The deck “{name}” was deleted on another device, so it's gone from here too.": "Il mazzo «{name}» è stato eliminato su un altro dispositivo, quindi sparisce anche da qui.",
- "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Il mondo si apre: tocca la 🧭 per vedere tutte le mappe che puoi raggiungere."
+ "🧭 The world opens up: tap the 🧭 to see every map you can reach.": "🧭 Il mondo si apre: tocca la 🧭 per vedere tutte le mappe che puoi raggiungere.",
+ "{speed}×: Clear Map {n}": "{speed}×: Supera la Mappa {n}"
 }
