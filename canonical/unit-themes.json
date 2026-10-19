@@ -2393,7 +2393,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "ml": 6
+     "ml": 8
     }
    },
    "source": "pack",
@@ -2762,7 +2762,7 @@
     "fights": {
      "mu": 4,
      "md": 5,
-     "mz": 9
+     "mz": 11
     }
    },
    "source": "map",
@@ -3478,7 +3478,7 @@
      "mk"
     ],
     "fights": {
-     "m9": 8,
+     "m9": 9,
      "mx": 6
     }
    },
@@ -3910,7 +3910,7 @@
      "mh"
     ],
     "fights": {
-     "mh": 10
+     "mh": 12
     }
    },
    "source": "map",
@@ -3973,8 +3973,8 @@
      "md"
     ],
     "fights": {
-     "md": 9,
-     "mpd": 4
+     "md": 11,
+     "mpd": 6
     }
    },
    "source": "map",
@@ -4218,7 +4218,7 @@
     "fights": {
      "mf": 4,
      "mu": 4,
-     "m23": 18,
+     "m23": 17,
      "mq": 2,
      "m9": 10,
      "mz": 3
@@ -4382,7 +4382,7 @@
      "mt"
     ],
     "fights": {
-     "mt": 6
+     "mt": 4
     }
    },
    "source": "map",
@@ -4725,7 +4725,7 @@
     ],
     "fights": {
      "mk": 8,
-     "m7": 7
+     "m7": 6
     }
    },
    "source": "map",
@@ -5124,7 +5124,7 @@
      "mr"
     ],
     "fights": {
-     "mh": 6,
+     "mh": 4,
      "mr": 8,
      "m23": 4,
      "mlb": 100
@@ -5230,7 +5230,7 @@
      "m11"
     ],
     "fights": {
-     "mr": 7,
+     "mr": 5,
      "m11": 9
     }
    },
@@ -5463,7 +5463,7 @@
      "mr"
     ],
     "fights": {
-     "mr": 6
+     "mr": 5
     }
    },
    "source": "map",
@@ -6354,7 +6354,7 @@
     ],
     "fights": {
      "m4": 5,
-     "mn": 9
+     "mn": 7
     }
    },
    "source": "map",
@@ -6580,7 +6580,7 @@
     ],
     "fights": {
      "mf": 2,
-     "m23": 18
+     "m23": 24
     }
    },
    "source": "map",
@@ -6697,9 +6697,9 @@
      "ml"
     ],
     "fights": {
-     "ml": 7,
+     "ml": 9,
      "m11": 7,
-     "m23": 3
+     "m23": 2
     }
    },
    "source": "map",
@@ -7202,7 +7202,6 @@
      "mh"
     ],
     "fights": {
-     "mh": 2,
      "mq": 1
     }
    },
@@ -7311,7 +7310,7 @@
     ],
     "fights": {
      "m11": 3,
-     "my": 6
+     "my": 4
     }
    },
    "source": "map",
@@ -7489,7 +7488,7 @@
      "mi"
     ],
     "fights": {
-     "m6": 18,
+     "m6": 19,
      "m22": 1,
      "mi": 7
     }
@@ -7562,7 +7561,7 @@
     ],
     "fights": {
      "md": 1,
-     "mpd": 14
+     "mpd": 12
     }
    },
    "source": "map",
@@ -8221,7 +8220,7 @@
      "m11"
     ],
     "fights": {
-     "m11": 20,
+     "m11": 18,
      "me": 5
     }
    },
@@ -8843,7 +8842,8 @@
    "maps": {
     "home": [],
     "fights": {
-     "m5": 17
+     "m5": 15,
+     "my": 2
     }
    },
    "source": "pack",
@@ -8897,7 +8897,7 @@
     ],
     "fights": {
      "m5": 14,
-     "md": 21,
+     "md": 19,
      "mpd": 18
     }
    },
@@ -8952,7 +8952,7 @@
      "m5"
     ],
     "fights": {
-     "m5": 16,
+     "m5": 22,
      "my": 11
     }
    },
@@ -9065,8 +9065,8 @@
      "m21"
     ],
     "fights": {
-     "m21": 10,
-     "m22": 7
+     "m21": 11,
+     "m22": 5
     }
    },
    "source": "map",
@@ -9171,7 +9171,7 @@
     "home": [],
     "fights": {
      "mt": 7,
-     "m6": 11,
+     "m6": 13,
      "mi": 7
     }
    },
@@ -9190,8 +9190,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "tundra-ice",
-    "volcanic-ash"
+    "tundra-ice"
    ],
    "family": "mammal",
    "sub": "Megafauna",
@@ -9233,14 +9232,14 @@
      "m22"
     ],
     "fights": {
-     "m6": 2,
+     "m6": 4,
      "m22": 4
     }
    },
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m22; fights mostly on volcanic-ash",
+    "biome": "home map m22",
     "family": "species Megafauna",
     "faction": "default"
    }
@@ -9284,7 +9283,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m6": 4,
+     "m6": 2,
      "m22": 3,
      "mi": 1
     }
@@ -9643,9 +9642,9 @@
     "fights": {
      "mc": 18,
      "m10": 15,
-     "m21": 13,
+     "m21": 11,
      "m22": 3,
-     "mv": 6
+     "mv": 8
     }
    },
    "source": "map",
@@ -9763,8 +9762,8 @@
      "mc"
     ],
     "fights": {
-     "m10": 6,
-     "m21": 3,
+     "m10": 5,
+     "m21": 2,
      "mv": 3
     }
    },
@@ -9819,7 +9818,7 @@
     ],
     "fights": {
      "mc": 14,
-     "m10": 14,
+     "m10": 12,
      "m21": 8,
      "mtut": 4,
      "mv": 5
@@ -9880,7 +9879,6 @@
     ],
     "fights": {
      "m10": 6,
-     "m21": 2,
      "mv": 5
     }
    },
@@ -10381,7 +10379,7 @@
     "home": [],
     "fights": {
      "m4": 26,
-     "mn": 2
+     "mn": 4
     }
    },
    "source": "pack",
@@ -10499,7 +10497,7 @@
     ],
     "fights": {
      "m3": 2,
-     "m11": 4,
+     "m11": 6,
      "m22": 8,
      "m9": 5,
      "me": 3,
@@ -10564,7 +10562,7 @@
      "m21": 2,
      "m22": 2,
      "mtut": 1,
-     "mq": 12,
+     "mq": 13,
      "me": 4
     }
    },
@@ -10963,7 +10961,7 @@
     "home": [],
     "fights": {
      "mt": 12,
-     "m21": 6
+     "m21": 8
     }
    },
    "source": "pack",
@@ -11074,7 +11072,7 @@
      "mb": 5,
      "mc": 2,
      "mk": 7,
-     "mj": 2,
+     "mj": 4,
      "mg": 6
     }
    },
@@ -11648,7 +11646,7 @@
      "mv"
     ],
     "fights": {
-     "m10": 8,
+     "m10": 11,
      "mv": 4
     }
    },
@@ -11875,9 +11873,9 @@
      "m6"
     ],
     "fights": {
-     "mt": 7,
+     "mt": 9,
      "m6": 11,
-     "mi": 4
+     "mi": 5
     }
    },
    "source": "map",
@@ -12514,7 +12512,6 @@
     ],
     "fights": {
      "m1": 3,
-     "m22": 2,
      "mo": 5
     }
    },
@@ -12683,7 +12680,7 @@
      "ml": 8,
      "mtut": 2,
      "mg": 6,
-     "mo": 7
+     "mo": 5
     }
    },
    "source": "pack",
@@ -12739,7 +12736,7 @@
      "ml"
     ],
     "fights": {
-     "ml": 1
+     "ml": 2
     }
    },
    "source": "map",
@@ -13859,8 +13856,8 @@
      "m9"
     ],
     "fights": {
-     "m22": 14,
-     "m9": 6,
+     "m22": 18,
+     "m9": 5,
      "mx": 3,
      "mlb": 5
     }
@@ -14381,7 +14378,7 @@
      "m21"
     ],
     "fights": {
-     "m21": 11
+     "m21": 16
     }
    },
    "source": "map",
@@ -14443,8 +14440,7 @@
      "mz"
     ],
     "fights": {
-     "mu": 4,
-     "mz": 2
+     "mu": 4
     }
    },
    "source": "map",
@@ -15103,9 +15099,7 @@
     "home": [
      "md"
     ],
-    "fights": {
-     "md": 2
-    }
+    "fights": {}
    },
    "source": "map",
    "why": {
@@ -15362,7 +15356,7 @@
     "fights": {
      "m1": 7,
      "mtut": 1,
-     "mo": 5
+     "mo": 8
     }
    },
    "source": null,
@@ -16217,8 +16211,8 @@
     "fights": {
      "mf": 13,
      "mtut": 6,
-     "mq": 10,
-     "mo": 8
+     "mq": 14,
+     "mo": 7
     }
    },
    "source": null,
@@ -17608,7 +17602,8 @@
    "status": "live",
    "rarity": "starter",
    "biomes": [
-    "meadow-forest"
+    "meadow-forest",
+    "maze-briar"
    ],
    "family": "mammal",
    "sub": "Rodent",
@@ -17636,13 +17631,13 @@
     "home": [],
     "fights": {
      "mf": 4,
-     "mh": 6,
-     "mq": 4
+     "mh": 8,
+     "mq": 1
     }
    },
    "source": null,
    "why": {
-    "biome": "type Mouse",
+    "biome": "type Mouse; fights mostly on maze-briar",
     "family": "species Rodent",
     "faction": "mouse / rat / raccoon"
    }
@@ -17688,7 +17683,7 @@
     "home": [],
     "fights": {
      "mu": 12,
-     "mz": 10
+     "mz": 12
     }
    },
    "source": null,
@@ -18586,8 +18581,8 @@
     "fights": {
      "m3": 16,
      "m11": 19,
-     "m9": 16,
-     "me": 4,
+     "m9": 18,
+     "me": 6,
      "mx": 2
     }
    },
@@ -20341,7 +20336,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "ml": 21
+     "ml": 17
     }
    },
    "source": "pack",
@@ -22643,7 +22638,7 @@
     ],
     "fights": {
      "m3": 8,
-     "m11": 14,
+     "m11": 16,
      "m9": 6,
      "me": 12,
      "mx": 6
@@ -22700,7 +22695,7 @@
     ],
     "fights": {
      "m11": 12,
-     "m23": 8,
+     "m23": 6,
      "me": 8,
      "mx": 6
     }
@@ -24570,7 +24565,7 @@
     ],
     "fights": {
      "m5": 3,
-     "m23": 17,
+     "m23": 15,
      "my": 2
     }
    },
@@ -24849,7 +24844,7 @@
      "m22"
     ],
     "fights": {
-     "m21": 7,
+     "m21": 5,
      "m22": 8,
      "mlb": 50
     }
@@ -25678,7 +25673,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m7": 12,
+     "m7": 13,
      "mj": 5
     }
    },
@@ -26067,8 +26062,8 @@
      "md"
     ],
     "fights": {
-     "md": 2,
-     "mpd": 7
+     "md": 3,
+     "mpd": 5
     }
    },
    "source": "map",
@@ -26284,7 +26279,7 @@
      "m3"
     ],
     "fights": {
-     "m21": 11,
+     "m21": 10,
      "m22": 1,
      "mtut": 2
     }
@@ -27545,7 +27540,7 @@
      "mx"
     ],
     "fights": {
-     "m22": 3,
+     "m22": 1,
      "mx": 2
     }
    },
@@ -27725,8 +27720,7 @@
      "mn"
     ],
     "fights": {
-     "m4": 2,
-     "mn": 2
+     "m4": 2
     }
    },
    "source": "map",
@@ -27851,7 +27845,8 @@
    "rarity": "uncommon",
    "biomes": [
     "pale-desert",
-    "savanna"
+    "savanna",
+    "desert-glass"
    ],
    "family": "mammal",
    "sub": "Canid",
@@ -27890,13 +27885,13 @@
      "mpd"
     ],
     "fights": {
-     "md": 1,
+     "md": 3,
      "mpd": 3
     }
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Savanna",
+    "biome": "home map mpd; type Savanna; fights mostly on desert-glass",
     "family": "species Canid",
     "faction": "hunter type / name"
    }
@@ -29929,9 +29924,7 @@
     "home": [
      "m21"
     ],
-    "fights": {
-     "m21": 2
-    }
+    "fights": {}
    },
    "source": "map",
    "why": {
@@ -30966,7 +30959,7 @@
      "mr"
     ],
     "fights": {
-     "mr": 12
+     "mr": 15
     }
    },
    "source": "map",
@@ -31600,9 +31593,7 @@
     "home": [
      "m5"
     ],
-    "fights": {
-     "m5": 2
-    }
+    "fights": {}
    },
    "source": "map",
    "why": {
@@ -33346,7 +33337,6 @@
      "md"
     ],
     "fights": {
-     "md": 1,
      "mpd": 5
     }
    },
@@ -33861,9 +33851,7 @@
     "home": [
      "m5"
     ],
-    "fights": {
-     "m5": 2
-    }
+    "fights": {}
    },
    "source": "map",
    "why": {
@@ -34716,7 +34704,7 @@
      "m24"
     ],
     "fights": {
-     "m24": 10
+     "m24": 9
     }
    },
    "source": "map",
@@ -34772,7 +34760,7 @@
      "m24"
     ],
     "fights": {
-     "m24": 8
+     "m24": 10
     }
    },
    "source": "map",
@@ -34894,7 +34882,7 @@
     ],
     "fights": {
      "m23": 2,
-     "m24": 2
+     "m24": 3
     }
    },
    "source": "map",
@@ -35266,7 +35254,7 @@
     ],
     "fights": {
      "m10": 22,
-     "mv": 4
+     "mv": 6
     }
    },
    "source": "map",
@@ -35948,8 +35936,8 @@
      "mpd"
     ],
     "fights": {
-     "md": 4,
-     "mpd": 1
+     "md": 6,
+     "mpd": 3
     }
    },
    "source": "map",
@@ -40480,8 +40468,8 @@
    "maps": {
     "home": [],
     "fights": {
-     "m6": 9,
-     "mi": 4
+     "m6": 8,
+     "mi": 6
     }
    },
    "source": "pack",
@@ -40724,8 +40712,8 @@
    "maps": {
     "home": [],
     "fights": {
-     "m6": 10,
-     "mi": 5
+     "m6": 8,
+     "mi": 6
     }
    },
    "source": "pack",
@@ -44067,105 +44055,9 @@
    }
   },
   {
-   "id": "dire-nightshade-moth",
-   "name": "Gloamshade Moth",
-   "internalName": "Dire Nightshade Moth",
-   "nameProposal": true,
-   "icon": "🦋",
-   "status": "proposed",
-   "rarity": "uncommon",
-   "biomes": [
-    "fungal",
-    "swamp",
-    "caves"
-   ],
-   "family": "insect",
-   "sub": "Insect",
-   "animal": "moth",
-   "animalGroup": "moth",
-   "subtype": null,
-   "faction": "wild",
-   "size": "medium",
-   "stage": 2,
-   "firstMap": 8,
-   "body": {
-    "cost": 3,
-    "wait": 0,
-    "attack": 7,
-    "health": 17,
-    "dmg": "poison",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Insect",
-    "Swamp",
-    "Insect"
-   ],
-   "maps": {
-    "home": [
-     "m4"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "nightshade-moth",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 2.33,
-     "health": 2.43
-    },
-    "N": 39.48,
-    "N2": 173.19,
-    "x1": 31,
-    "x2": 119,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 3,
-     "wait": 0,
-     "attack": 4,
-     "health": 11
-    },
-    "baseSkills": [
-     [
-      "sleep",
-      "chance 50, duration 2"
-     ],
-     [
-      "flying",
-      null
-     ],
-     [
-      "nocturnal",
-      null
-     ]
-    ],
-    "map": "m4",
-    "mapName": "Caves & Alcoves",
-    "mapNo": 8
-   },
-   "why": {
-    "biome": "Nightshade Moth's ground, later on Caves & Alcoves (Map 8)",
-    "family": "from Nightshade Moth",
-    "faction": "from Nightshade Moth"
-   }
-  },
-  {
-   "id": "elder-monarch-wingblade",
-   "name": "Old Monarch Bladewing",
-   "internalName": "Elder Monarch Wingblade",
+   "id": "dire-monarch-wingblade",
+   "name": "Caves Monarch Wingblade",
+   "internalName": "Dire Monarch Wingblade",
    "nameProposal": true,
    "icon": "🦋",
    "status": "proposed",
@@ -44180,14 +44072,14 @@
    "animalGroup": "butterfly",
    "subtype": null,
    "faction": "wild",
-   "size": "large",
+   "size": "medium",
    "stage": 2,
    "firstMap": 8,
    "body": {
     "cost": 2,
-    "wait": 2,
-    "attack": 7,
-    "health": 25,
+    "wait": 1,
+    "attack": 6,
+    "health": 20,
     "dmg": "physical",
     "resist": [
      "poison"
@@ -44206,33 +44098,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "elder",
+    "tier": "dire",
     "of": "monarch-wingblade",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
+    "wait": 0,
+    "rarityStep": 1,
     "eff": {
-     "attack": 3.5,
-     "health": 4.17
+     "attack": 3,
+     "health": 3.33
     },
-    "N": 48.93,
-    "N2": 266.02,
-    "x1": 39,
-    "x2": 175,
+    "N": 41.06,
+    "N2": 187.32,
+    "x1": 32,
+    "x2": 120,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.8,
-      "health": 2
+      "attack": 1.4,
+      "health": 1.5
      },
      "cost": 2,
-     "wait": 2,
-     "attack": 4,
-     "health": 12
+     "wait": 1,
+     "attack": 3,
+     "health": 9
     },
     "baseSkills": [
      [
@@ -44256,6 +44148,102 @@
     "biome": "Monarch Wingblade's ground, later on Caves & Alcoves (Map 8)",
     "family": "from Monarch Wingblade",
     "faction": "from Monarch Wingblade"
+   }
+  },
+  {
+   "id": "elder-nightshade-moth",
+   "name": "Caves Nightshade Moth",
+   "internalName": "Elder Nightshade Moth",
+   "nameProposal": true,
+   "icon": "🦋",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "fungal",
+    "swamp",
+    "caves"
+   ],
+   "family": "insect",
+   "sub": "Insect",
+   "animal": "moth",
+   "animalGroup": "moth",
+   "subtype": null,
+   "faction": "wild",
+   "size": "large",
+   "stage": 2,
+   "firstMap": 8,
+   "body": {
+    "cost": 3,
+    "wait": 1,
+    "attack": 8,
+    "health": 21,
+    "dmg": "poison",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Insect",
+    "Swamp",
+    "Insect"
+   ],
+   "maps": {
+    "home": [
+     "m4"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "elder",
+    "of": "nightshade-moth",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 1,
+    "rarityStep": 2,
+    "eff": {
+     "attack": 2.67,
+     "health": 3
+    },
+    "N": 47.36,
+    "N2": 249.22,
+    "x1": 37,
+    "x2": 168,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.8,
+      "health": 2
+     },
+     "cost": 3,
+     "wait": 1,
+     "attack": 5,
+     "health": 14
+    },
+    "baseSkills": [
+     [
+      "sleep",
+      "chance 50, duration 2"
+     ],
+     [
+      "flying",
+      null
+     ],
+     [
+      "nocturnal",
+      null
+     ]
+    ],
+    "map": "m4",
+    "mapName": "Caves & Alcoves",
+    "mapNo": 8
+   },
+   "why": {
+    "biome": "Nightshade Moth's ground, later on Caves & Alcoves (Map 8)",
+    "family": "from Nightshade Moth",
+    "faction": "from Nightshade Moth"
    }
   },
   {
@@ -51149,13 +51137,13 @@
     "rarity": "epic",
     "fresh": "bossHpBonusMax Health on a fresh raid (RaidM.bossHpBonus)"
    },
-   "bossHpBonusMax": 100,
+   "bossHpBonusMax": 50,
    "body": {
     "cost": 3,
     "wait": 2,
     "attack": 10,
     "health": {
-     "fresh": 100,
+     "fresh": 93,
      "nearlyDown": 47
     }
    },
@@ -51184,7 +51172,7 @@
     "rarity": "epic",
     "fresh": "bossHpBonusMax Health on a fresh raid (RaidM.bossHpBonus)"
    },
-   "bossHpBonusMax": 100,
+   "bossHpBonusMax": 50,
    "body": {
     "cost": 3,
     "wait": 3,
