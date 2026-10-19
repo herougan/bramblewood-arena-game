@@ -30960,7 +30960,9 @@ function setBoardLean(lean, scale, panMax){
 // The raid's camera is fixed (2026-10-18, user: "the raid shouldnt keep zooming in and out when i place a card"): the three-row board is
 // framed once and keeps that scale for the whole fight; it is framed again only when the window changes size (or the board grows past
 // its seven columns). raidFrameKey is what a framing was made for.
-function raidFrameKey(m){ return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0); }
+// 2026-10-19 (package MB2): + the frame's own size (to 4 px), so the raid is framed again when the rows around it change height
+// (the hand, the leader, the top row wrapping): its cards are sized from that frame now.
+function raidFrameKey(m){ const bf = document.getElementById('battlefieldEl'); return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0) + (bf ? ':' + Math.round(bf.clientWidth/4) + 'x' + Math.round(bf.clientHeight/4) : ''); }
 // 2026-10-19 (package MB2): a phone's normal fight re-frames on a resize too (rotation, the browser bar), as the raid does.
 if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && !matchState.over && (matchState.raidFull || mb2IsPhone())) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
 // ---- Package MB2 (2026-10-19): the battle board fills the screen ----
@@ -30997,7 +30999,7 @@ function mb2FitRaidCards(m, battlefield, inner){
     app.style.setProperty('--mb2-ch', ch.toFixed(2) + 'px');
   };
   // A few passes: on a phone the hand and piles follow the board's size, which gives the board back some height.
-  for(let pass = 0; pass < 6; pass++){
+  for(let pass = 0; pass < 5; pass++){
     write();
     const cs = getComputedStyle(battlefield);
     const availH = battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0);
@@ -31010,13 +31012,21 @@ function mb2FitRaidCards(m, battlefield, inner){
     nbh = Math.floor(nbh*2)/2;
     const spare = Math.max(0, availH - fixedH - rowsA*nbh);
     const nrgap = Math.min(spare/12, nbh*0.22); // six rows, a little above and below each
-    const nch = Math.max(MB2_RAID.chromeMinH[k], nbh);
+    const last = pass >= 4; // the last pass keeps the hand's size, so the board is sized for the frame it really has
+    const nch = last ? ch : Math.max(MB2_RAID.chromeMinH[k], nbh);
     const done = Math.abs(nbh - bh) < 0.6 && Math.abs(nch - ch) < 0.6 && Math.abs(nrgap - rgap) < 0.6;
     // the hand follows halfway each pass so a height-bound board settles instead of see-sawing
-    bh = nbh; rgap = nrgap; ch = pass < 4 ? (ch + nch)/2 : nch;
-    if(done) break;
+    bh = nbh; rgap = nrgap; ch = last ? ch : pass < 3 ? (ch + nch)/2 : nch;
+    if(done || last) break;
   }
   write();
+}
+// Fill mode: the frame's size changes without a board render (a hand drawn or played, the window, the browser bar), so it is
+// watched and the board framed again (a raid only when its frame key changed, see raidFrameKey).
+function mb2WatchFrame(bf){
+  if(!bf || typeof ResizeObserver === 'undefined' || mb2WatchFrame._el === bf) return;
+  if(!mb2WatchFrame._ro) mb2WatchFrame._ro = new ResizeObserver(()=>{ clearTimeout(mb2WatchFrame._t); mb2WatchFrame._t = setTimeout(()=>{ try{ if(matchState && !matchState.over && mb2FillMode(matchState) && document.getElementById('battlefieldEl') === mb2WatchFrame._el) fitBattlefieldZoom(); }catch(e){} }, 120); });
+  try{ mb2WatchFrame._ro.disconnect(); mb2WatchFrame._ro.observe(bf); mb2WatchFrame._el = bf; }catch(e){}
 }
 // Fill mode's height check: the board's own height against the frame's inside (the frame no longer grows with the board).
 function mb2FrameInnerHeight(battlefield){
@@ -31157,6 +31167,7 @@ function fitBattlefieldZoomNow(instant){
   // layout while a reflow could be mid-flight.
   // 2026-10-19 (package MB2): fill mode (a phone, or a raid): the raid's cards are sized to the frame first (mb2FitRaidCards).
   const mb2Fill = mb2FillMode(matchState);
+  if(mb2Fill) mb2WatchFrame(battlefield);
   if(matchState && matchState.raidFull) mb2FitRaidCards(matchState, battlefield, inner);
   const cardEl = rowMine.querySelector('.board-card') || rowEnemy.querySelector('.board-card');
   if(!cardEl){
