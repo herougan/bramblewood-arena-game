@@ -50,3 +50,5 @@
 .hb-det .hb-rst{align-self:flex-start;}
 .hb-mt td code, .hb-det code{font:600 11px ui-monospace,Menlo,monospace; overflow-wrap:anywhere;}
 @media (max-width:600px){ .hb-views button{font-size:12.5px; padding:6px 8px;} .hb-num{width:48px;} .hb .sc-in{grid-template-columns:70px 0;} .hb .sc-in input{width:70px;} }
+.hb .hb-ed{position:static; max-height:none; display:block;} .hb .hb-ed .sc-rows{overflow:visible; max-height:none;}
+.hb-rar .chip b{display:inline; font-size:inherit;}

@@ -150,9 +150,9 @@
     host.innerHTML = `<div class="dec-head"><h2>Budget &amp; stats</h2><p>The stat budget's numbers, every live card's Attack and Health, and the special monsters, all editable. Every change recomputes here at once: each card's Base, N, score (2A+H+S), A·H+S and whether it is <b>over</b>, <b>in band</b> or <b>well under</b>. Edits save to this hub; Claude applies them to the files (bramblewood-budget.js, canonical/skill-costs.json, canonical/cards.json, the raid files). The files are not changed until then.</p>
       <p class="hb-xlink">Skill costs (S of every skill, trigger and action, the measured S and its confidence, the Combos view): <a href="#costs" data-tab="costs">🧮 Skill costs tab →</a> · Win rates: <a href="#balance" data-tab="balance">⚖️ Balance →</a></p></div>
       <div class="sc-status" id="hbStatus" role="status"></div>
-      <nav class="dec-seg hb-views" role="group" aria-label="View" id="hbViews">${[['budget', '📐 Budget'], ['cards', '🎴 Cards'], ['monsters', '👹 Monsters']].map(([v, l])=> `<button type="button" data-view="${v}" aria-pressed="${v === st.view}">${l} <b id="hbVn-${v}"></b></button>`).join('')}<button type="button" data-go="costs">🧮 Skills ↗</button></nav>
+      <nav class="dec-seg hb-views" role="group" aria-label="View" id="hbViews">${[['budget', '📐 Budget'], ['cards', '🎴 Cards'], ['monsters', '👹 Monsters']].map(([v, l])=> `<button type="button" data-view="${v}" aria-pressed="${v === st.view}">${l} <b id="hbVn-${v}"></b></button>`).join('')}<button type="button" data-hbgo="costs">🧮 Skills ↗</button></nav>
       <div id="hbBody"></div>`;
-    $('hbViews').addEventListener('click', e=>{ const g = e.target.closest('button[data-go]'); if(g){ hub.show(g.dataset.go); return; }
+    $('hbViews').addEventListener('click', e=>{ const g = e.target.closest('button[data-hbgo]'); if(g){ hub.show(g.dataset.hbgo); return; }
       const b = e.target.closest('button[data-view]'); if(!b) return; show(b.dataset.view); });
     $('hbStatus').addEventListener('click', e=>{ const b = e.target.closest('button[data-copy]'); if(b) copyJSON(); });
     const bodyEl = $('hbBody');
