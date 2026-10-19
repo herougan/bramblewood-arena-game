@@ -120,6 +120,18 @@
 // ============================================================================
 const CARD_DEFS_GLOBAL = (typeof __CARD_DEFS__ !== 'undefined') ? __CARD_DEFS__ : null;
 
+// Package SK2 (2026-10-19, owner 21:36; the rules are in makeSimEngine's SK2 block): every number of the economy and structure skills,
+// one table (top level, so the app's card lines read the same defaults). A fight overrides any of them with opts.sk2.
+const SK2_DEFAULTS = Object.freeze({
+  harvestChance: 0.5, harvestLumber: 1,                                  // Harvest: the odds a swing harvests instead; Lumber a harvest pays
+  scavengeN: 1, scavengeEvery: 3, scavengeLumber: 1, scavengeRange: 1,   // Scavenge N, M: points a death; M points -> Lumber; within 1 column
+  salvageN: 1, salvageEvery: 3, salvageStone: 1, salvageRange: 1,        // Salvage N, M (owner 21:56): Scavenge for Structures' deaths; M points -> Stone
+  repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
+  foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
+  millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks
+  pickpocketN: 1, sabotageN: 1, arsonN: 1,                               // what a plain (true) Pickpocket / Sabotage / Arson takes
+  fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {}, // the Palisade 0/6; every K turns (0: on play only); its look
+});
 function otherId(id){ return id===1?2:1; }
 function mulberry32(seed){
   return function(){
@@ -197,10 +209,13 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   'onSacrifice',
   // On Pitch (2026-10-16, user: "A new skill: Whenever you pitch a card, this card does {}"): fires on every unit of yours on the
   // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
-  'onPitch'];
+  'onPitch',
+  // On Enter Slot (2026-10-19, package EQ): fires on a unit each time it comes into a slot: played, spawned or moved in (open boards;
+  // slotEntries / floorScan). The slot hazards use it too (hazard.triggers).
+  'onEnterSlot'];
+const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge','onEnterSlot' /* EQ, 2026-10-19 */]); // fire even while Waiting
 // Package SK1 (2026-10-19): On Enemy Enters (Facing), On Hit, On Kill (Creature); the last two fire on its own blow, so even while Waiting.
 TRIGGER_KEYS.push('onEnemyEnter', 'onHit', 'onKillCreature');
-const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
 ALWAYS_ON_HOOKS.add('onHit'); ALWAYS_ON_HOOKS.add('onKillCreature'); // SK1 (2026-10-19)
 // 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
 // triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
@@ -325,11 +340,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const occ = occupiedSlots(pl);
     // A cage (Caged Fight) takes its slot but isn't one of your cards: it doesn't open the slots beside it.
     const own = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0 && !c.cageOf) own.add(c.slot); });
-    if(own.size===0) return occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0];
+    if(own.size===0) return (occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0]).filter(sl=> !eqRubbleBlocks(pl, sl)); // + Rubble (EQ, 2026-10-19)
     const out = new Set();
     own.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
     if(!occ.has(0)) out.add(0); // the centre is always open (2026-10-19, BU)
-    return [...out].sort((a,b)=>a-b);
+    return [...out].filter(sl=> !eqRubbleBlocks(pl, sl)).sort((a,b)=>a-b); // Rubble: the foe's hazard closes the slot to your plays (EQ, 2026-10-19)
   }
   // Resolves a placement request to a concrete slot: a number is taken as-is if legal; a
   // 'left'/'right'/'center' string (L/R buttons, AI, leader summon) picks the legal slot on that
@@ -354,6 +369,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!pl || !pl.reserve || !pl.reserve[r-1] || pl.reserve[r-1][slot]) return null;
     const c = makeBoardCard(defId); c.slot = slot; pl.reserve[r-1][slot] = c; return c;
   }
+  // Arriving in a middle or back row (2026-10-19, package RR, owner 22:10: "all the skills should work as if they were at the front"): in a
+  // raid (RESERVE_ACTS) those rows fight, and a raid ally's unit never steps up (holdRow), so its On Play / arrival skills (Pounce,
+  // Brood, Bounty, Lightning, Shield, On Spawn ...) and its allies' / foes' On Ally / Enemy Played never came. Now every unit put into
+  // a middle or back row (fillReserve, a reserve play) arrives there at the start of the next combat, before anyone acts; it doesn't
+  // arrive again when it steps up (advanceReserves). Tokens a row unit spawns are spawned there (rowPut), as at the front.
+  function rowArrivals(players, sideOf, stats, events){
+    let any = false;
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !pl.reserve) return;
+      reserveUnitsOf(pl).forEach(c=>{ if(!c || c._rowArrived || !(c.hp > 0) || c.cageOf) return; c._rowArrived = true; any = true;
+        applyOnSpawnEffects(players, sideOf, pid, c, stats, events); fireSpawnFamilyTriggers(players, sideOf, pid, c, stats, events, 'played'); }); });
+    if(any && [1,2].some(pid=> players[pid] && rowsUnitsOf(players[pid]).some(c=> c && !c.gap && c.hp <= 0))) removeDeadCards(players, sideOf, {}, stats || {}, events);
+  }
   function advanceReserves(players, sideOf, stats, events){
     [1,2].forEach(pid=>{
       const pl = players[pid]; if(!pl || !pl.reserve) return;
@@ -366,8 +393,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             delete pl.reserve[0][sl];
             putInSlot(pl, c, sl);
             if(recordEvents && events) events.push({type:'advance', side:sideOf(pid), uid:c.uid, defId:c.defId, slot:sl, from:1, to:0});
-            applyOnSpawnEffects(players, sideOf, pid, c, stats, events);
-            fireSpawnFamilyTriggers(players, sideOf, pid, c, stats, events, 'played');
+            if(!c._rowArrived){ applyOnSpawnEffects(players, sideOf, pid, c, stats, events); fireSpawnFamilyTriggers(players, sideOf, pid, c, stats, events, 'played'); } // already arrived in its row (a raid, rowArrivals): not twice (2026-10-19, RR)
           } else {
             if(pl.reserve[r-1][sl]) return;
             delete pl.reserve[r][sl]; pl.reserve[r-1][sl] = c;
@@ -407,8 +433,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function rowsUnitsOf(pl){ return pl ? allBoardCards(pl).concat(reserveUnitsOf(pl)) : []; } // the front row, then the middle, then the back
   function reserveRowOf(pl, card){ if(!pl || !pl.reserve || !card) return 0; for(let r = 0; r < pl.reserve.length; r++) if(pl.reserve[r][card.slot] === card) return r + 1; return 0; }
   // One row's units as a column map (combatColumnsOf's shape, keyed by slot): row 0 is the front row.
+  // 2026-10-19 (package RR): each entry names its row (reserveRow), so a swing shape that picks its target from a row's map (Fork's
+  // lines, Crab claws, Tipsy, Taunt, Backstab) carries the row on to the hit, its Cleave and its events.
   function rowColsOf(pl, r){ if(!r) return combatColumnsOf(pl); const map = {}, rw = pl && pl.reserve && pl.reserve[r - 1];
-    if(rw) Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c) map[Number(sl)] = {kind:'card', card:c, dir:0}; }); return map; }
+    if(rw) Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c) map[Number(sl)] = {kind:'card', card:c, dir:0, reserveRow:r}; }); return map; }
+  // The share of its swing a middle- or back-row unit lands (2026-10-19, package RR): one constant, rounded up. 0.5 since the 2026-10-17
+  // back-row volley (the owner asked only that "all 3 rows are active at hitting the enemy"; the half was Claude's call then, never an
+  // owner rule). The owner's 2026-10-19 22:10 call ("all the skills should work as if they were at the front") may mean 1 (full):
+  // asked in the RR report, left at 0.5 until the owner says. A row unit's prong / lash hits, and its Boomerang's return, take it too.
+  const ROW_SWING_SHARE = 0.5;
+  function rowShareOf(n){ return n > 0 ? Math.ceil(n * ROW_SWING_SHARE) : n; }
+  // The free slot nearest s0 in a middle / back row (2026-10-19, package RR: a token, a Revive, a Relic or a split in that row),
+  // s0 itself first when allowed; ties at random, as spawnBeside's. null when none within 15 columns.
+  function rowFreeSlotNear(pl, r, s0, selfOk){ const rw = pl && pl.reserve && pl.reserve[r - 1]; if(!rw) return null; s0 = Number.isInteger(s0) ? s0 : 0;
+    const free = sl=> !rw[sl]; // (a body still there holds its slot until its death sweep)
+    if(selfOk && free(s0)) return s0;
+    for(let d = 1; d < 16; d++){ const a = free(s0 - d), b = free(s0 + d); if(a && b) return rnd() < .5 ? s0 - d : s0 + d; if(a) return s0 - d; if(b) return s0 + d; }
+    return null; }
+  // Put a new unit into a middle / back row (2026-10-19, package RR): beside src (or into s0), keeping its row like src does (holdRow).
+  function rowPut(pl, r, sl, nc, src){ const rw = pl.reserve[r - 1]; nc.slot = sl; rw[sl] = nc; if(src && src.holdRow){ nc.holdRow = true; if(src.allyOf){ nc.allyOf = src.allyOf; nc.allyRow = src.allyRow; } } nc._rowArrived = true; return nc; }
   // The units the round's upkeep ticks (Poison, Bleed, Freeze, Sleep, Stun, Reload...): in a raid (RESERVE_ACTS) the middle and back
   // rows fight, so their statuses wear off and tick like the front row's (2026-10-19, TS: a Frozen back-row unit used to stay Frozen,
   // and its Poison never ticked).
@@ -912,7 +955,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (effects.nocturnal = N, effects.nocturnalHp = M; the old `true` means +1/+0). syncPhaseStats applies and removes it
   // as the phase turns, reporting phaseGrow / phaseFade so the board can show it.
   function twilightOn(players){ if(rules.twilight) return true; if(!players) return false;
-    return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); })); }
+    return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...rowsUnitsOf(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); }) /* + the middle / back rows (2026-10-19, RR) */); }
   function phaseActive(){ return !!((turnNo && !phaseOff) || phaseFixed); }
   function phaseStatsOf(e, ph){
     const pick0 = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
@@ -941,6 +984,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
+        { const [wa, wh] = eqSituational(c, pid, players); a += wa; h += wh; } // Weapon Master's +1/+1 on equipped units (EQ, 2026-10-19)
         { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
           const key = grant ? JSON.stringify(grant) : '';
           if((c._condKey||'') !== key){ if(c._condBase){ c.defId = c._condBase; c._condBase = null; } if(key){ c._condBase = c.defId; deriveDef(c, grant); } c._condKey = key; } }
@@ -1009,7 +1053,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let fullMoonWas = false;
   function isFullMoon(){ return !!((field && field.id === 'moon') || (phaseActive() && getPhase() === 'night' && lunar === 4)); }
   function moonFullness(){ const p = moonPhase(); return [0, 0.25, 0.5, 0.75, 1, 0.75, 0.5, 0.25][p]; }
-  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && (d.effects.moonborn || d.effects.fullMoon || d.effects.fullMoonGrant)); })); } // + Full Moon (2026-10-15)
+  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...rowsUnitsOf(players[pid]).map(c=> c.defId)] /* + the middle / back rows (2026-10-19, RR) */.some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && (d.effects.moonborn || d.effects.fullMoon || d.effects.fullMoonGrant)); })); } // + Full Moon (2026-10-15)
   // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
   // hit +1 (Wash, which pushed the enemy facing it back, was retired 2026-10-14); on Ebb, Tide units take
@@ -1146,7 +1190,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
     // allies."): while a unit with Illuminate (Lantern's new name; an old `lantern` reads the same) stands on your side, none of your
     // units miss for the dark: Darkness, Pitch Black and Absolute darkness alike (Lantern used to leave Absolute at 1 in 2).
-    const lit = ()=> !!(pl && allBoardCards(pl).some(c=> c.hp > 0 && illuminates(CARD_DEFS[c.defId])));
+    const lit = ()=> !!(pl && upkeepUnitsOf(pl).some(c=> c.hp > 0 && illuminates(CARD_DEFS[c.defId]))); /* + a raid's middle / back rows (2026-10-19, RR) */
     let miss = 0; const dk = darkRule(); // + a Cast Darkness unit (2026-10-18)
     const ph = phaseActive() ? getPhase() : null;
     // 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit
@@ -1202,10 +1246,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || pl.hq.hp <= 0) return; castleRoundActions(players, pid, round, sideOf, stats, events); });
     if(round > 1){ const blasts = []; // Dynamite fuses burn down at the start of each round (see fireDynamite)
-      [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; allBoardCards(pl).forEach(c=>{ if(c.fuse > 0 && c.hp > 0){ c.fuse -= 1; if(recordEvents && events) events.push({type:'fuse', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.fuse}); if(c.fuse === 0) blasts.push([pid, c]); } }); });
+      [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; upkeepUnitsOf(pl).forEach(c=>{ if(c.fuse > 0 && c.hp > 0){ /* + a raid's middle / back rows (2026-10-19, RR) */ c.fuse -= 1; if(recordEvents && events) events.push({type:'fuse', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.fuse}); if(c.fuse === 0) blasts.push([pid, c]); } }); });
       blasts.forEach(([pid, c])=>{ if(c.hp > 0) fireDynamite(players, sideOf, pid, c, stats, events); });
       if(blasts.length) removeDeadCards(players, sideOf, {}, stats, events); }
     restlessMoves(players, sideOf, stats, events); // Restless (2026-10-14)
+    eqRoundStart(players, round, sideOf, stats, events); // EQ (2026-10-19): equipping takes hold, the slot hazards tick and wear off
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
@@ -1502,8 +1547,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(n > 0 && round > 1 && !volcanoOn()) erupt(n, true);
     }
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allLive(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return;
-        const order = physicalRowOrder(pl), i = order.indexOf(src), hits = [];
+      liveRowsOf(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows, their own row's neighbours (2026-10-19, RR)
+        const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
         [order[i-1], order[i+1]].forEach(c=>{ if(c && c.hp > 0) hits.push([pid, c]); });
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && opp.card.hp > 0) hits.push([otherId(pid), opp.card]);
         hits.forEach(([tp, c])=>{ if(heatProof(c)) return; damageCardFlat(c, k, 'heat'); burnt = true;
@@ -1512,8 +1557,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // N Irradiation tokens to the enemy facing it and to the units beside it (yours too), and 1 to itself. A 'radiation' Resist
     // halves the tokens a unit gets; Immunity stops them.
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allLive(pl).forEach(src=>{ const k = Number(effectsOf(src).irradiated)||0; if(!(k > 0) || !(src.hp > 0)) return;
-        const order = physicalRowOrder(pl), i = order.indexOf(src), hits = [];
+      liveRowsOf(pl).forEach(src=>{ const k = Number(effectsOf(src).irradiated)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows (2026-10-19, RR)
+        const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
         [order[i-1], order[i+1]].forEach(c=>{ if(c && !c.gap && c.hp > 0) hits.push([pid, c, k]); });
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && !opp.card.gap && opp.card.hp > 0) hits.push([otherId(pid), opp.card, k]);
         hits.push([pid, src, 1]);
@@ -1641,16 +1686,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1)); ev.n = n;
     let crashInto = null;
     const live = c=> !!(c && c.hp > 0 && !c.gap);
+    // 2026-10-19 (package RR): a unit in a middle or back row rides along its own row (the same rules; its row's units are the ones in
+    // the way, and the board's edge is the outermost column any unit stands in, any row, either side). Was: Wave left those rows alone.
+    const tRow = slotMode ? reserveRowOf(pl, t) : 0, rowMap = tRow ? pl.reserve[tRow - 1] : null;
     if(slotMode){
       syncSlots(players[1]); syncSlots(players[2]);
-      const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? allBoardCards(players[pid]).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
-      const s0 = t.slot, occ = new Map(allBoardCards(pl).filter(c=> c !== t && live(c)).map(c=> [c.slot, c]));
+      const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? (tRow ? rowsUnitsOf(players[pid]) : allBoardCards(players[pid])).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
+      const s0 = t.slot, occ = new Map((tRow ? Object.values(rowMap).filter(c=> c && !c.gap) /* a body not yet swept still holds its slot */ : allBoardCards(pl).filter(live)).filter(c=> c !== t).map(c=> [c.slot, c]));
       const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
       const first = dir || washDir(s0, 0); let way = first, r = ride(way);
       if(!dir && r.to === s0 && !r.hit){ way = -first; r = ride(way); if(r.to !== s0 || r.hit) ev.bounced = true; else way = first; }
       ev.dir = way < 0 ? 'left' : 'right';
       if(r.hit){ crashInto = r.hit; ev.crashUid = r.hit.uid; }
-      if(r.to !== s0){ t.slot = r.to; ev.moves.push({uid:t.uid, from:s0, to:r.to}); ev.cols = Math.abs(r.to - s0); relayoutRow(pl); }
+      if(r.to !== s0){ t.slot = r.to; ev.moves.push({uid:t.uid, from:s0, to:r.to}); ev.cols = Math.abs(r.to - s0); if(tRow){ delete rowMap[s0]; rowMap[r.to] = t; ev.row = tRow; } else relayoutRow(pl); }
       else if(crashInto) ev.cols = 0; // rammed the unit right beside it: no columns ridden
       else { ev.blocked = true; if(!dir){ ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); } }
     } else {
@@ -1713,26 +1761,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return true;
   }
   // Equipment (2026-10-11, user: "a blacksmith portion for crafting weapons ... These weapons are just cards ... equipment
-  // can't block attacks"). An equipment card never takes a slot on the board: you drag it from your hand onto one of your
-  // units, pay its Lumber, and that unit gains its Attack/Health and any skills it grants (equip.grant). One piece per
-  // unit. Equipping uses your play for the turn. When the unit dies, the equipment goes to the graveyard with it.
+  // can't block attacks"). Drag it from your hand onto one of your units (or onto its slot), pay its Lumber: it goes under the unit.
+  // One piece per unit; it uses your play for the turn. 2026-10-19 (package EQ, owner 21:36: "When an equip card and creature unit
+  // card meets, they take 1 turn to take the benefits"): the unit is equipping for a round (equip.turns), then it gains the piece's
+  // Attack/Health and skills (equip.grant); when it dies the piece stays in the slot (see the Package EQ block). A piece can also lie
+  // alone in an empty slot (placeEquipment). Structures and cages carry nothing.
   function canEquip(pl, handUid, targetUid){
     if(!pl || pl.playedThisTurn || (pl.skipTurns||0) > 0) return false;
     const h = pl.hand.find(x=> x.uid===handUid); const eq = h && CARD_DEFS[h.defId]; if(!eq || eq.cardType !== 'equipment') return false;
-    const tgt = allLive(pl).find(c=> c.uid===targetUid); if(!tgt || tgt.equipment || tgt.defId==='__cage') return false;
+    const tgt = allLive(pl).find(c=> c.uid===targetUid); if(!eqCarrier(tgt)) return false; // EQ (2026-10-19): no Structure either
     return costOfCard(h.defId) <= pl.lumber;
   }
   function equip(players, sideOf, pid, targetUid, handUid, stats, events){
     const pl = players[pid]; if(!canEquip(pl, handUid, targetUid)) return false;
-    const idx = pl.hand.findIndex(h=> h.uid===handUid); const [h] = pl.hand.splice(idx, 1); const eq = CARD_DEFS[h.defId];
+    const idx = pl.hand.findIndex(h=> h.uid===handUid); const [h] = pl.hand.splice(idx, 1);
     const tgt = allLive(pl).find(c=> c.uid===targetUid);
-    pl.lumber -= costOfCard(h.defId); markPlayed(pl);
-    const a = eq.attack||0, hp = eq.health||0;
-    tgt.atk += a; tgt.baseAtk += a; tgt.hp += hp; tgt.maxHp += hp; tgt.equipment = h.defId;
-    const grant = eq.equip && eq.equip.grant;
-    if(grant && typeof grant==='object' && Object.keys(grant).length) deriveDef(tgt, grant);
+    pl.lumber -= costOfCard(h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
+    eqMeet(players, sideOf, pid, tgt, h.defId, events, 'onto'); // EQ (2026-10-19): equipping for a round, then +stats and skills
     ensureStat(stats, sideOf(pid), h.defId).played++;
-    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:tgt.uid, defId:tgt.defId, equipDefId:h.defId, attack:a, health:hp, grant: grant || null});
     return true;
   }
   // Sacrifice N sits on the fodder: play a Dark Summon card onto that unit and the unit dies; the new card costs N less
@@ -1797,7 +1843,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): +N per ally; a number on its own means
     // "any shared type, N each"; with a type list, swarmN sets N.
     const per = typeof def.effects.swarm === 'number' ? Math.max(0, def.effects.swarm) : Math.max(1, Number(def.effects.swarmN) || 1);
-    const mine = picked || new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic && !(curPlayers && [1,2].some(pid=> curPlayers[pid] && allBoardCards(curPlayers[pid]).some(c=> c!==card && c.hp>0 && ((CARD_DEFS[c.defId]||{}).effects||{}).growth)))) return 0;
+    const mine = picked || new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic && !(curPlayers && [1,2].some(pid=> curPlayers[pid] && upkeepUnitsOf(curPlayers[pid]).some(c=> c!==card && c.hp>0 && ((CARD_DEFS[c.defId]||{}).effects||{}).growth)))) return 0;
     // Growth (2026-10-14, user: "Growth unit tokens - 1/3. Very strong - empowered by Swarm"): a Growth token counts for every Swarm.
     const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || (d.archetypes||[]).some(a=> mine.has(a)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -1813,7 +1859,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const types = new Set(Array.isArray(dv) ? dv : String(dv).split(',').map(x=> x.trim()).filter(Boolean)); if(!types.size) return 0;
     const per = Math.max(1, Number(def.effects.defianceN) || 1);
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue;
-      if(allBoardCards(pl).includes(card)){ const foe = curPlayers[otherId(pid)]; if(!foe) return 0;
+      if(rowsUnitsOf(pl).includes(card)){ const foe = curPlayers[otherId(pid)]; if(!foe) return 0; /* + a raid's middle / back rows (2026-10-19, RR) */
         return allBoardCards(foe).filter(c=> c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(t=> types.has(t))).length * per; } }
     return 0;
   }
@@ -1823,7 +1869,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // ---- 2026-10-12 skills (the 22:40 list) ----------------------------------------------------------------------
   // Lumberjack: whenever you gain Lumber, +1 more per Lumberjack on your board. Heavy Metal: the same for Stone and Metal.
-  function countEff(pl, key){ return pl ? allBoardCards(pl).filter(c=> c && c.hp>0 && !c.cageOf && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects[key]).length : 0; }
+  function countEff(pl, key){ return pl ? upkeepUnitsOf(pl).filter( /* + a raid's middle / back rows (2026-10-19, RR) */c=> c && c.hp>0 && !c.cageOf && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects[key]).length : 0; }
   function addLumber(pl, n){ n = Number(n)||0; if(!pl || n <= 0) return n; const got = n + countEff(pl, 'lumberjack'); pl.lumber = (pl.lumber||0) + got; return got; }
   function addOre(pl, kind, n){ n = Number(n)||0; if(!pl || n <= 0) return n; const got = n + countEff(pl, 'heavyMetal'); pl[kind] = (pl[kind]||0) + got; return got; }
   function ownerPidOfCard(card){ if(!curPlayers) return 1; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && rowsUnitsOf(pl).includes(card)) return pid; } return 1; } // + the middle / back rows (2026-10-19, TS)
@@ -1873,7 +1919,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // syncPhaseStats, which runs at every round start and after every arrival). c.speed is the live value (for the board's badge).
   function computeSpeeds(players){
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
-      const cards = allBoardCards(pl), add = new Map();
+      const cards = upkeepUnitsOf(pl), add = new Map(); /* + a raid's middle / back rows (2026-10-19, RR) */
       if(cards.some(c=> c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).haste)){
         const order = physicalRowOrder(pl);
         order.forEach((c, i)=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || !effectsOf(c).haste) return;
@@ -1904,7 +1950,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function shelledByCower(c){ return !!c && c.cowerRound === combatNo && cowerMode(c) === 'shell'; }
   function startCower(players, sideOf, events){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allBoardCards(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const m = cowerMode(c);
+      upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const m = cowerMode(c); /* + a raid's middle / back rows (2026-10-19, RR) */
         if(!m || c.lastHitRound !== combatNo - 1) return;
         c.cowerRound = combatNo; let healed = 0;
         if(m === 'flee') healed = applyHeal(c, 2, sideOf(pid), events);
@@ -1963,7 +2009,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function bountyOf(def){ const e = (def && def.effects) || {}; const n = Math.max(0, Number(e.bounty)||0); return n > 0 && canopyMode() === 'canopy' ? n + 1 : n; } // High Canopy (2026-10-16): Bounty +1
   // Poison immunity (2026-10-15, user: "Units not ready can be poisoned. Structures are immune to poison."): a Structure, or a unit
   // Immune to poison, never takes Poison stacks. (A unit still under Wait can be poisoned like any other.)
-  function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && Array.isArray(d.archetypes) && d.archetypes.includes('Structure')); }
+  // 2026-10-19 (package SK2): the one structure test (Repair, Siege, Bloodlust, poison immunity ...): the Structure type, as the app's
+  // isStructure reads it (archetypes, or a legacy type 'Structure'), or cardType 'structure'.
+  function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && ((Array.isArray(d.archetypes) && d.archetypes.includes('Structure')) || d.type === 'Structure' || d.cardType === 'structure')); }
   function poisonProof(c){ return !c || isStructureCard(c) || resistFactor(c.defId, 'poison') === 0; }
   function addPoison(c, n){ if(!(n > 0) || poisonProof(c)) return 0; c.poison = (c.poison||0) + n; return n; }
   // Toxin (planned, 2026-10-14, user: "Toxin: More dangerous poison - not yet defined."): not built; no behaviour yet.
@@ -2066,7 +2114,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function irradiationTick(players, sideOf, events){
     let died = false;
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-      allLive(pl).forEach(c=>{
+      liveRowsOf(pl).forEach(c=>{ // + a raid's middle / back rows (2026-10-19, RR)
         const n = c.irradiation|0; if(n <= 0) return;
         const points = [];
         for(let k = 0; k < n && c.hp > 0; k++){
@@ -2107,7 +2155,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const add = (v, g)=>{ const [x, y] = pairOf(v); a += x; h += y; if(g && typeof g === 'object') grant = Object.assign(grant || {}, g); };
     const addGrant = g=>{ const [x, y, r] = grantStats(g); a += x; h += y; if(r) grant = Object.assign(grant || {}, r); };
     { const ph = phaseActive() ? getPhase() : null; // Diurnal – {…} / Nocturnal – {…} (2026-10-15)
-      const lit = ph === 'night' && pl && allBoardCards(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
+      const lit = ph === 'night' && pl && upkeepUnitsOf(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); /* + a raid's middle / back rows (2026-10-19, RR) */ // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
       if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight' || (lit && !(e.nocturnal || e.nocturnalHp)))) addGrant(e.diurnalGrant);
       if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant); }
     if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
@@ -2437,7 +2485,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let shieldEvents = null, shieldSideOf = null; // set by the skill resolvers for the event log
   function shieldCall(ownerPl, card){
     if(!ownerPl || !card || card.hp<=0 || card.defId===SHIELD_TOKEN || !CARD_DEFS[SHIELD_TOKEN] || sk1Anchored(card)) return null; // + an Anchor unit doesn't step aside (2026-10-19, package SK1)
-    const dog = allBoardCards(ownerPl).find(c=> c.hp>0 && !c.shieldCallUsed && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.shieldCall);
+    const dog = upkeepUnitsOf(ownerPl).find(c=> c.hp>0 && !c.shieldCallUsed /* + a raid's middle / back-row Shield Call unit (2026-10-19, RR) */ && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.shieldCall);
     if(!dog) return null;
     dog.shieldCallUsed = true;
     const shield = makeBoardCard(SHIELD_TOKEN);
@@ -2515,7 +2563,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // The trigger's subject (2026-10-19, package GI; owner's 10-19 question "should a trigger be able to target the played card?": yes):
     // sub:'subject' is that unit itself (on the side `who` names), sub:'subjectFacing' the unit facing it. None alive: no target.
     if(sub === 'subject' || sub === 'subjectFacing'){ const sj = trigSubject; if(!sj || sj.gap || !(sj.hp > 0)) return null;
-      const sPid = allBoardCards(pl).includes(sj) ? playerId : (allBoardCards(enemy).includes(sj) ? otherId(playerId) : 0); if(!sPid) return null;
+      const sPid = rowsUnitsOf(pl).includes(sj) ? playerId : (rowsUnitsOf(enemy).includes(sj) ? otherId(playerId) : 0); if(!sPid) return null; // + the middle / back rows (2026-10-19, RR)
       if(sub === 'subject') return (who === 'ally') === (sPid === playerId) ? {pl: players[sPid], card: sj} : null;
       const opp = opposingCardOf(players, sPid, sj); if(!opp || !(opp.card.hp > 0) || (who === 'ally') !== (otherId(sPid) === playerId)) return null;
       { const sh = opp.pl === enemy ? shieldCall(enemy, opp.card) : null; if(sh) return {pl:enemy, card:sh}; }
@@ -2523,15 +2571,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(who==='self') return {pl, card:boardCard};
     const isAlly = who==='ally';
     const sidePl = isAlly ? pl : enemy;
-    const order = physicalRowOrder(sidePl).filter(c=>c.hp>0);
+    // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) your allies stand in every row, so an ally-targeted action (Heal, Buff, Shield ...)
+    // can pick one in the middle or back row too, from whatever row its unit stands in. (The enemy pool is unchanged: the front row.)
+    const order = (isAlly && RESERVE_ACTS ? rowsUnitsOf(sidePl).filter(c=> c && !c.gap) : physicalRowOrder(sidePl)).filter(c=>c.hp>0);
     const pool = (isAlly ? order.filter(c=>c.uid!==boardCard.uid && kinOk(boardCard, c)) : order).filter(c=> !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
     if(!pool.length) return null;
     if(sub==='furthest'){
       if(isAlly){
-        const fullOrder = physicalRowOrder(sidePl);
+        const fullOrder = rowOrderOf(sidePl, boardCard); // a middle / back-row unit: its own row (2026-10-19, RR)
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
         let best=null, bestDist=-1;
-        pool.forEach(c=>{ const i2 = fullOrder.findIndex(x=>x.uid===c.uid); const d=Math.abs(i2-idx); if(d>bestDist){ bestDist=d; best=c; } });
+        pool.forEach(c=>{ const i2 = fullOrder.findIndex(x=>x.uid===c.uid); if(i2 < 0) return; /* its own row (2026-10-19, RR) */ const d=Math.abs(i2-idx); if(d>bestDist){ bestDist=d; best=c; } });
         return best ? {pl:sidePl, card:best} : null;
       }
       const mySide = findCardSide(pl, boardCard.uid) || 'center';
@@ -2544,9 +2594,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(sub==='adjacent'){
       if(isAlly){
-        const fullOrder = physicalRowOrder(sidePl);
+        const fullOrder = rowOrderOf(sidePl, boardCard); // a middle / back-row unit: the allies beside it in its own row (2026-10-19, RR; was the front row's, from index -1)
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
-        const cands = [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
+        const cands = idx < 0 ? [] : [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
         if(!cands.length) return null;
         return {pl:sidePl, card: cands[Math.floor(rnd()*cands.length)]};
       }
@@ -2582,6 +2632,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const gated = c=>{ if(who==='self' || sub==='killer' || sk1OnHitNow || dodgeCheck(c)) apply(c); else dodge(c); }; // the killer ate it: no dodging; + an On Hit status: the hit landed already (SK1)
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
+      if(who==='ally' && RESERVE_ACTS){ rowsUnitsOf(sidePl).forEach(c=>{ if(c && !c.gap && c.hp>0 && kinOk(boardCard, c)) apply(c); }); return; } // a raid: your allies in every row (2026-10-19, RR)
       ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0 && kinOk(boardCard, c)) apply(c); })); // area effect: Evade only dodges single-target; Kin: only your Kin (2026-10-18)
       return;
     }
@@ -2621,6 +2672,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     return [...pl.row.left].reverse().concat(pl.row.center, pl.row.right);
   }
+  // The row a unit stands in, in physical order (2026-10-19, package RR): physicalRowOrder for a front-row unit; for a unit in a middle or
+  // back row (open boards), that row's units by slot with gaps as hp-0 placeholders, so "beside it" means beside it in its own row.
+  function rowOrderOf(pl, card){
+    const r = slotMode ? reserveRowOf(pl, card) : 0; if(!r) return physicalRowOrder(pl);
+    const rw = pl.reserve[r - 1], keys = Object.keys(rw).map(Number); if(!keys.length) return [];
+    const lo = Math.min(...keys), hi = Math.max(...keys), out = []; for(let sl = lo; sl <= hi; sl++) out.push(rw[sl] || GAP); return out;
+  }
+  // The live units of a side whose skills act each round (2026-10-19, package RR): in a raid (RESERVE_ACTS) every row, front first.
+  function liveRowsOf(pl){ return pl ? (RESERVE_ACTS ? rowsUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0) : allLive(pl)) : []; }
   // Guardian: a card adjacent (one slot either way, physical row order) to the original
   // target takes the hit instead, if it's alive and carries effects.guardian.
   // Only ever redirects damage — spatial mechanics (sweep continuation, swipe's
@@ -2730,33 +2790,37 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Rally card itself, matching "all your units."
   function computeRallyBonuses(players){
     [players[1], players[2]].forEach(pl=>{
+      // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) the middle and back rows are on the field too: their Rally, Nature's Force,
+      // Kinship and Worship count and reach every row (upkeepUnitsOf), and Lone Wolf / Sociable count the slots of the unit's own row.
+      const units = upkeepUnitsOf(pl);
       let total = 0;
-      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+      units.forEach(c=>{
         if(c.hp<=0) return;
         const d = CARD_DEFS[c.defId];
         if(d.effects && d.effects.rally) total += d.effects.rally;
-      }));
-      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ c.rallyBonus = total; }));
+      });
+      units.forEach(c=>{ c.rallyBonus = total; });
       // Nature's Force N (2026-10-12, user: "All elementals on the field gain +N/+N. (Stacks!)"): every live source on your side adds
       // N to each of your Elementals (the source too, if it is one). Attack is live (natureBonus, read by effAtk); Health is
       // applied as a difference so it rises and falls with the sources without healing past it or killing anything.
-      let nf = 0; ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId]; if(d && d.effects && d.effects.natureForce) nf += (d.effects.natureForce === true ? 1 : Number(d.effects.natureForce)||0); }));
-      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
+      let nf = 0; units.forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId]; if(d && d.effects && d.effects.natureForce) nf += (d.effects.natureForce === true ? 1 : Number(d.effects.natureForce)||0); });
+      units.forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
         const elem = (d.species||[]).includes('Elemental') || (d.archetypes||[]).includes('Elemental'); const want = elem ? nf : 0;
-        c.natureBonus = want; const had = c.natureHp || 0, delta = want - had; if(delta){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + delta); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + delta)); c.natureHp = want; } }));
+        c.natureBonus = want; const had = c.natureHp || 0, delta = want - had; if(delta){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + delta); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + delta)); c.natureHp = want; } });
       // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"): every live
       // source on your side gives +X/+Y to each of your units of that Type (itself too, if it is one). Stacks. Health moves as a
       // difference, like Nature's Force.
-      { const kin = {}; ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const k = ((CARD_DEFS[c.defId]||{}).effects||{}).kinship;
-          if(k && k.type){ const t = kin[k.type] || (kin[k.type] = [0,0]); t[0] += Number(k.atk)||0; t[1] += Number(k.hp)||0; } }));
-        ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
+      { const kin = {}; units.forEach(c=>{ if(c.hp<=0) return; const k = ((CARD_DEFS[c.defId]||{}).effects||{}).kinship;
+          if(k && k.type){ const t = kin[k.type] || (kin[k.type] = [0,0]); t[0] += Number(k.atk)||0; t[1] += Number(k.hp)||0; } });
+        units.forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
           let a = 0, h = 0; Object.keys(kin).forEach(t=>{ if((d.archetypes||[]).includes(t) || (d.species||[]).includes(t)){ a += kin[t][0]; h += kin[t][1]; } });
-          c.kinBonus = a; const had = c.kinHp || 0, dl = h - had; if(dl){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dl); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dl)); c.kinHp = h; } })); }
+          c.kinBonus = a; const had = c.kinHp || 0, dl = h - had; if(dl){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dl); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dl)); c.kinHp = h; } }); }
       // Lone Wolf X/Y and Sociable X/Y (2026-10-13, user: "Sociable likes being crowded (up to 4, 2 on each side) While Lone Wolf
       // likes being alone, separated by 2 squares on each side ... +X/+Y per slot freed up or not. If all 4 freed up, ANOTHER
       // +X/+Y"): counts the 4 slots within 2 of it. Lone Wolf: +X/+Y per empty one (+1 more step when all 4 are); Sociable: per
       // filled one (+1 more when all 4 are). Off the edge of the board counts as empty. Health moves as a difference, like Nature's Force.
-      { const live = ['left','center','right'].flatMap(side=> pl.row[side]).filter(c=> c && c.hp > 0 && !c.gap);
+      const rowGroups = [['left','center','right'].flatMap(side=> pl.row[side])].concat(RESERVE_ACTS && slotMode && pl.reserve ? pl.reserve.map(rw=> Object.values(rw)) : []);
+      rowGroups.forEach(group=>{ const live = group.filter(c=> c && c.hp > 0 && !c.gap);
         let posOf;
         if(slotMode){ syncSlots(pl); posOf = c=> c.slot; } else { const order = physicalRowOrder(pl); posOf = c=> order.indexOf(c); }
         const taken = new Set(live.map(posOf));
@@ -2765,10 +2829,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           let a = 0, h = 0; const p = posOf(c), near = [p-2, p-1, p+1, p+2];
           if(e.loneWolf){ const [x, y] = pv(e.loneWolf); const n = near.filter(q=> !taken.has(q)).length, steps = n + (n === 4 ? 1 : 0); a += x*steps; h += y*steps; }
           if(e.sociable){ const [x, y] = pv(e.sociable); const n = near.filter(q=> taken.has(q)).length, steps = n + (n === 4 ? 1 : 0); a += x*steps; h += y*steps; }
-          c.packBonus = a; const had = c.packHp || 0, d = h - had; if(d){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + d); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + d)); c.packHp = h; } }); }
+          c.packBonus = a; const had = c.packHp || 0, d = h - had; if(d){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + d); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + d)); c.packHp = h; } }); });
       // Worship (Ecclesia, 2026-10-10): +1 Attack for every 3 Prayer its owner has, recomputed every round.
       const pr = prayerOf(pl);
-      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const d = CARD_DEFS[c.defId]; c.worshipBonus = (d && d.effects && d.effects.worship) ? Math.floor(pr / 3) : 0; }));
+      units.forEach(c=>{ const d = CARD_DEFS[c.defId]; c.worshipBonus = (d && d.effects && d.effects.worship) ? Math.floor(pr / 3) : 0; });
     });
   }
   // Effective Attack: base Attack (already includes any permanent buffs, Render debuffs, etc.)
@@ -2846,7 +2910,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // with effects.festering is on either side, Bleed and Poison stacks don't wear down.
   function statusDecayHeld(){
     const P = curPlayers; if(!P) return false;
-    return [1,2].some(pid=> P[pid] && P[pid].row && [...P[pid].row.left, ...P[pid].row.center, ...P[pid].row.right].some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.festering));
+    return [1,2].some(pid=> P[pid] && P[pid].row && upkeepUnitsOf(P[pid]).some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.festering)); // + a raid's middle / back rows (2026-10-19, RR)
   }
   // Elemental status effects (2026-09-16) — Frozen (cold), Asleep (poison, "Sleeping" flavor),
   // Paralyzed (acid), and a passive chance-based Stun (heat), one per non-physical DMG_TYPE.
@@ -3081,11 +3145,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const front = directFrontOf(myCols, enemyCols, myCol);
     const colOf = c=>{ for(const k of Object.keys(enemyCols)){ const e = enemyCols[k]; if(e.kind==='card' && e.card===c){ e.col = Number(k); return e; } } return null; };
     if(front){ const e = colOf(front); if(e) return {entry:e, direct:true}; }
-    const enemyId = otherId(myId), me = liveSharedPos(players[myId], card.uid);
-    if(me===null) return null;
+    // Open (slot) battles: the column numbers are the shared line, so a middle- / back-row unit and a row's map work too (2026-10-19, RR).
+    const enemyId = otherId(myId), me = slotMode ? myCol : liveSharedPos(players[myId], card.uid);
+    if(me===null || me===undefined) return null;
     let best = [], bestD = Infinity;
     Object.keys(enemyCols).forEach(k=>{ const e = enemyCols[k]; if(e.kind!=='card' || e.card.hp<=0) return;
-      const p = liveSharedPos(players[enemyId], e.card.uid); if(p===null) return; const d = Math.abs(p - me);
+      const p = slotMode ? Number(k) : liveSharedPos(players[enemyId], e.card.uid); if(p===null) return; const d = Math.abs(p - me);
       if(d < bestD - 1e-9){ bestD = d; best = [k]; } else if(Math.abs(d - bestD) < 1e-9) best.push(k); });
     if(!best.length) return null;
     const k = best[Math.floor(rnd()*best.length)], e = enemyCols[k]; e.col = Number(k);
@@ -3251,7 +3316,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function prayerOf(pl){
     if(!pl) return 0;
     let n = Number(pl.prayerTokens)||0; // the player's own tokens (offerings)
-    allBoardCards(pl).forEach(c=>{ n += prayerTokensOf(c); });
+    upkeepUnitsOf(pl).forEach(c=>{ n += prayerTokensOf(c); }); /* + a raid's middle / back rows (2026-10-19, RR) */
     return n;
   }
   // Remove n Prayer tokens (2026-10-19, owner: the player's token "is always spent last"): units' tokens first, the fewest-held unit
@@ -3259,18 +3324,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // rules spends Prayer yet (thresholds are never spent); this is the one way to do it when something does.
   function removePrayerTokens(pl, n){
     if(!pl) return 0; let left = Math.max(0, Math.floor(Number(n)||0)); const want = left;
-    allBoardCards(pl).filter(c=> prayerTokensOf(c) > 0).sort((a, b)=> a.prayerTokens - b.prayerTokens || a.uid - b.uid).forEach(c=>{
+    upkeepUnitsOf(pl).filter(c=> prayerTokensOf(c) > 0).sort((a, b)=> a.prayerTokens - b.prayerTokens || a.uid - b.uid).forEach(c=>{
       const k = Math.min(left, c.prayerTokens); c.prayerTokens -= k; left -= k; });
     if(left > 0){ const k = Math.min(left, Number(pl.prayerTokens)||0); pl.prayerTokens = (Number(pl.prayerTokens)||0) - k; left -= k; }
     return want - left;
   }
   function prayerNOf(c){ const v = effectsOf(c).prayer; return v === true ? 1 : Math.max(0, Math.floor(Number(v)||0)); }
   // The tokens a side gains at its next upkeep (the HUD's "+N a turn").
-  function prayerRateOf(pl){ return pl ? allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).reduce((t, c)=> t + prayerNOf(c), 0) : 0; }
+  function prayerRateOf(pl){ return pl ? upkeepUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).reduce((t, c)=> t + prayerNOf(c), 0) : 0; }
   // Prayer tokens (2026-10-19, package E): every living unit with Prayer N on a side in upkeep gains N tokens.
   // Event: statusFx kind 'prayer' {targetUid, amount, total} (the board's 📿 badge follows it).
   function prayerTick(players, sideOf, events){
-    [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=> allBoardCards(pl).forEach(c=>{
+    [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ /* + a raid's middle / back rows (2026-10-19, RR) */
       if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const n = prayerNOf(c); if(!(n > 0)) return;
       c.prayerTokens = (Number(c.prayerTokens)||0) + n;
       if(recordEvents && events) events.push({type:'statusFx', kind:'prayer', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c.prayerTokens}); }));
@@ -3310,7 +3375,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function payOreCosts(pl, defId){ const od = CARD_DEFS[defId] || {}; pl.stone = (pl.stone||0) - (od.stoneCost||0); pl.metal = (pl.metal||0) - (od.metalCost||0); pl.uranium = (pl.uranium||0) - (od.uraniumCost||0); }
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
-    { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'equipment' || ct === 'materia') return false; } // 2026-10-11: equipment is equipped onto a unit; materia is a crafting material
+    { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'materia') return false; // 2026-10-11: materia is a crafting material
+      if(ct === 'equipment' && !eqHasTarget(pl)) return false; if(isHazardDef(CARD_DEFS[defId]) && !slotMode) return false; } // EQ (2026-10-19): equipment and hazards are played (a unit or a slot to go to)
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
     if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
     if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
@@ -3335,6 +3401,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const discount = (popts && popts.discount) || 0;
     const offerUid = (popts && popts.prayerOffer != null && popts.prayerOffer !== uid && canOfferPrayer(pl, hc.defId, popts.prayerOffer)) ? popts.prayerOffer : null;
     if(!canPlay(pl, hc.defId, uid, discount, offerUid != null ? 1 : 0)) return false;
+    { const ed = CARD_DEFS[hc.defId]; if(isEquipDef(ed)) return placeEquipment(players, sideOf, playerId, uid, side, stats, events); // EQ (2026-10-19): a slot, or under your unit there
+      if(isHazardDef(ed)) return placeHazard(players, sideOf, playerId, uid, popts && popts.hazardPid != null ? popts.hazardPid : null, side, stats, events); } // EQ: a slot on either side (popts.hazardPid)
     const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
     const fdef = CARD_DEFS[hc.defId];
     const firstCardEver = !pl.cardsPlayedEver; // Vanguard (2026-10-17): the first card this player plays this game (any card)
@@ -3473,12 +3541,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function spawnBeside(players, sideOf, pid, src, defId, stats, events, kind){
     const pl = players[pid]; if(!pl || !CARD_DEFS[defId]) return null;
     const nc = makeBoardCard(defId); let lane;
-    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)); const s0 = Number.isInteger(src.slot) ? src.slot : 0; let sl = null;
+    const srcRow = slotMode ? reserveRowOf(pl, src) : 0; // 2026-10-19 (package RR): a middle / back-row unit's Brood, Twin or Sprout comes up beside it in its own row
+    if(srcRow){ const sl = rowFreeSlotNear(pl, srcRow, src.slot, false); if(sl === null) return null; rowPut(pl, srcRow, sl, nc, src); lane = null; }
+    else if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)); const s0 = Number.isInteger(src.slot) ? src.slot : 0; let sl = null;
       for(let d = 1; d < 16 && sl === null; d++){ const a = !used.has(s0 - d), b = !used.has(s0 + d); if(a && b) sl = rnd() < .5 ? s0 - d : s0 + d; else if(a) sl = s0 - d; else if(b) sl = s0 + d; }
       if(sl === null) return null; lane = putInSlot(pl, nc, sl); }
     else { lane = flankOrShorter(pl, findCardSide(pl, src.uid) || 'left'); pl.row[lane].push(nc); }
     ensureStat(stats, sideOf(pid), src.defId).spawnedTokens = (ensureStat(stats, sideOf(pid), src.defId).spawnedTokens||0) + 1;
-    if(recordEvents && events) events.push({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid});
+    if(recordEvents && events) events.push(Object.assign({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid}, srcRow ? {row:srcRow, slot:nc.slot} : {}));
     fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned');
     return nc;
   }
@@ -3501,6 +3571,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'restless', side:sideOf(pid), uid:c.uid, defId:c.defId, from:s0, to:d, swapUid: other ? other.uid : null});
         runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
         if(other && other.hp > 0) runCustomTriggers(players, sideOf, pid, other, CARD_DEFS[other.defId], 'onMove', stats || {}, events, {movedCard: c}); }); });
+    // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) a Restless unit in a middle or back row walks along its own row: one column toward
+    // the nearest enemy unit (any row), swapping with an ally of its row standing there; it stays put with an enemy in its column (any
+    // row: the one its swing would strike), or the way held by a pinned / Webbed unit.
+    if(RESERVE_ACTS) [1,2].forEach(pid=>{ const pl = players[pid], foe = players[otherId(pid)]; if(!pl || !foe || !pl.reserve) return;
+      pl.reserve.forEach((rw, i)=> Object.values(rw).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !stuckFast(c) && effectsOf(c).restless).forEach(c=>{
+        if(rw[c.slot] !== c || rowTargetAt(foe, c.slot)) return;
+        const foes = rowsUnitsOf(foe).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf && Number.isInteger(x.slot)); if(!foes.length) return;
+        const s0 = c.slot, best = Math.min(...foes.map(x=> Math.abs(x.slot - s0))), near = foes.filter(x=> Math.abs(x.slot - s0) === best);
+        const dirs = [...new Set(near.map(x=> Math.sign(x.slot - s0)))]; const dir = dirs.length > 1 ? (rnd() < .5 ? -1 : 1) : dirs[0];
+        const d = s0 + dir, other = rw[d] || null;
+        if(other && other.hp > 0 && (stuckFast(other) || other.cageOf)) return;
+        delete rw[s0]; c.slot = d; rw[d] = c; if(other){ other.slot = s0; rw[s0] = other; }
+        if(recordEvents && events) events.push({type:'restless', side:sideOf(pid), uid:c.uid, defId:c.defId, from:s0, to:d, swapUid: other ? other.uid : null, row:i + 1});
+        runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
+        if(other && other.hp > 0) runCustomTriggers(players, sideOf, pid, other, CARD_DEFS[other.defId], 'onMove', stats || {}, events, {movedCard: c}); })); });
   }
   // Meiosis N (2026-10-14, user: "Meiosis N (Default 1): Simple units only - this Passive skill means that the creature breaks into
   // 2 smaller parts when it dies, with half the stats, and skill numbers. Their Meiosis count drops by 1."): effects.meiosis N
@@ -3518,7 +3603,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return id; }
   function meiosisSplit(players, sideOf, sp, stats, events){
     const pl = sp.pl, hid = meiosisDefOf(sp.card.defId), made = [];
-    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)); const s0 = Number.isInteger(sp.slot) ? sp.slot : 0;
+    if(sp.res && slotMode && pl.reserve){ // a middle / back-row split (2026-10-19, RR): both halves in that row, the first in its slot
+      for(let i = 0; i < 2; i++){ const sl = rowFreeSlotNear(pl, sp.res, sp.slot, i === 0); if(sl === null) break; made.push(rowPut(pl, sp.res, sl, makeBoardCard(hid), sp.card)); }
+    } else if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)); const s0 = Number.isInteger(sp.slot) ? sp.slot : 0;
       const free = []; if(!used.has(s0)) free.push(s0);
       for(let d = 1; d < 16 && free.length < 2; d++){ const a = !used.has(s0 - d), b = !used.has(s0 + d);
         if(a && b) free.push(...(rnd() < .5 ? [s0 - d, s0 + d] : [s0 + d, s0 - d])); else if(a) free.push(s0 - d); else if(b) free.push(s0 + d); }
@@ -3696,6 +3783,230 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'hazardSprung', kind, side:sideOf(pid), pid, slot:card.slot, uid:card.uid, defId:card.defId, dmg}); });
     if(!(card.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events);
   }
+  // ==== Package EQ (2026-10-19, owner 21:36): equipment on the slots, Weapon Master, Pry, and slot hazards (floors) ==========
+  // Every number is a parameter with a default (EQ_DEF; a card's own field wins), so a global halving only touches this table.
+  //   Equipment (owner: "Same slot placement rules except you can play over creature units as well. The equip goes under the creature.
+  //   You can also play creature units over an equip card. When an equip card and creature unit card meets, they take 1 turn to take the
+  //   benefits."): an equipment card goes into any slot that is legal for a unit (it then lies there alone: no body, no block, the swing
+  //   facing it goes past to the bramble as if the slot were empty, and it doesn't open the slots beside it) or onto a slot holding one of
+  //   your units with no equipment (it goes under the unit). A unit played, spawned or moved onto a slot with a lone piece picks it up.
+  //   When they meet the unit is "equipping" for equip.turns rounds (EQ_DEF.equipTurns, 1): at the start of the next round it gains the
+  //   piece's Attack, Health and skills (equip.grant). When the unit dies the piece stays in its slot for the next unit (equip.breaks:
+  //   true sends it to the graveyard with the unit instead; a slot that already holds a lone piece sends the second one there too).
+  //   Equipped pieces move with their unit. pl.eqSlots {slot: {defId}} holds the lone pieces (player data, so a saved fight keeps them).
+  //   Weapon Master N: while it is on the field, its side's arrows (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deal N more and each
+  //   of its side's equipped (not still equipping) units gets +EQ_DEF.weaponMasterStats/+EQ_DEF.weaponMasterStats (situational, like the
+  //   day and night bonus: it goes when the last Weapon Master does). Pry N: every landed melee hit strips N Armor from the target for
+  //   good (Perforate's armorLoss, without the rest of Perforate).
+  //   Slot hazards (owner 21:36: "cards that create slot hazards ... Ice Floor (slippery), Lava Floor, Poison Floor, Toxic Gas (affects
+  //   flying as well), and Rubble - blocks the opponent from playing cards there"): a hazard card (a spell, cardType 'spell', with card.hazard =
+  //   {kind, n, rounds}) is played onto a slot on either side and lies there for `rounds` rounds (one hazard per slot, a new one replaces
+  //   it), occupied or not. Keyed like the traps: floors[pid + ':s' + slot].
+  //     ice     a unit entering it slides one slot on in the way it was moving (a placed or spawned unit: a random way, the other if
+  //             that is blocked); it stops at a unit of its own side or past EQ_DEF.iceEdge. Flyers, Mountain Climbers, Webbed and
+  //             pinned units don't slide.
+  //     lava    N fire (heat) damage at the start of every round to the unit on it. Flyers and Mountain Climbers are immune.
+  //     poison  Poison N on the unit entering it, and at the start of every round to the unit on it. Flyers and Mountain Climbers
+  //             are immune.
+  //     gas     Poison N at the start of every round to the unit on it, flyers included.
+  //     rubble  the side whose row it lies on can't play a card into that slot (legalSlots). Units may still move or be pushed in.
+  //   Entering is seen by slotEntries (the shared "a unit entered a slot" scan, below): every live unit remembers the slot it stood in
+  //   at its key's last look; no memory = it was placed or spawned there, a different slot = it moved there. watchScan (Ambush,
+  //   Sentry) runs floorScan first, so a unit that slid is seen where it stopped.
+  const EQ_DEF = {equipTurns:1, weaponMaster:1, weaponMasterStats:1, pry:1, hazardRounds:3, ice:1, lava:2, poison:1, gas:1, rubble:1, iceEdge:6, iceChain:6};
+  const EQ_KINDS = ['ice', 'lava', 'poison', 'gas', 'rubble'];
+  const eqN = (v, d)=> v === true || v == null ? d : Math.max(0, Number(v) || 0);
+  const floors = {};
+  function getFloors(){ const o = {}; Object.keys(floors).forEach(k=> o[k] = Object.assign({}, floors[k])); return o; }
+  function floorAt(pid, slot){ return floors[pid + ':s' + slot] || null; }
+  function isEquipDef(d){ return !!(d && d.cardType === 'equipment'); }
+  function isHazardDef(d){ return !!(d && (d.cardType === 'hazard' || (d.cardType === 'spell' && d.hazard))); } // a hazard card is a spell with a hazard (owner: 'spell' if spells exist)
+  // A hazard's effect is written as triggers and actions (owner 21:56: "if you can and it makes sense, feel free to use triggers and
+  // actions. if they dont suffice, add the required trigger or action"): hazard.triggers [{on:'onEnterSlot'|'onRoundStart', do:'damage'|
+  // 'poison'|'bleed', amount, dmgType}] act on the unit standing in the slot (who 'self'); with none given, the kind's own (EQ_HZ_TRIGS,
+  // amount = hazard.n). Sliding (Ice) and closing the slot (Rubble) are what the floor itself does: no action moves a unit on, or closes a
+  // slot. hazard.flyers: true when flyers are hit too (Toxic Gas); otherwise flyers and Mountain Climbers are above it.
+  function hazardOf(d){ const h = (d && d.hazard) || {}, kind = EQ_KINDS.includes(h.kind) ? h.kind : 'rubble', n = eqN(h.n, EQ_DEF[kind]);
+    const trigs = Array.isArray(h.triggers) ? h.triggers.filter(t=> t && t.on && t.do).map(t=> Object.assign({who:'self'}, t, {amount: eqN(t.amount, n)})) : (EQ_HZ_TRIGS[kind] || []).map(t=> Object.assign({who:'self', amount:n}, t));
+    return {kind, n, rounds: Math.max(1, Math.round(eqN(h.rounds, EQ_DEF.hazardRounds)) || 1), target: h.target || (kind === 'rubble' ? 'enemyEmpty' : 'any'), triggers: trigs, flyers: h.flyers != null ? !!h.flyers : kind === 'gas'}; }
+  const EQ_HZ_TRIGS = {lava:[{on:'onRoundStart', do:'damage', dmgType:'heat'}], poison:[{on:'onEnterSlot', do:'poison'}, {on:'onRoundStart', do:'poison'}], gas:[{on:'onRoundStart', do:'poison'}]};
+  function equipTurnsOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(eqN(e.turns, EQ_DEF.equipTurns))); }
+  function eqSlotsOf(pl){ return pl ? (pl.eqSlots || (pl.eqSlots = {})) : {}; }
+  function loneEquipAt(pl, slot){ return (pl && pl.eqSlots && pl.eqSlots[slot]) || null; }
+  function eqRubbleBlocks(pl, slot){ const f = pl && floorAt(pl.id, slot); return !!(f && f.kind === 'rubble'); }
+  // who can carry a piece: a live unit with none, not a cage or a Structure
+  function eqCarrier(c){ return !!(c && !c.gap && c.hp > 0 && !c.equipment && !c.cageOf && c.defId !== '__cage' && !isStructureCard(c)); }
+  function eqHasTarget(pl){ if(!pl) return false; if(allLive(pl).some(eqCarrier)) return true; return slotMode && eqFreeSlots(pl).length > 0; }
+  // the empty slots an equipment card may lie in: a unit's legal slots without a lone piece already
+  function eqFreeSlots(pl){ return legalSlots(pl).filter(sl=> !loneEquipAt(pl, sl)); }
+  // every slot an equipment card from this hand may go to (the board's "+" targets for it): the free slots, and the slots of your carriers
+  function equipSlotsFor(pl){ if(!slotMode || !pl) return []; syncSlots(pl); const out = new Set(eqFreeSlots(pl)); allLive(pl).forEach(c=>{ if(eqCarrier(c) && Number.isInteger(c.slot)) out.add(c.slot); }); return [...out].sort((a, b)=> a - b); }
+  // the stats and skills a piece gives when it takes hold (once its equipping turn is over)
+  function eqApply(players, sideOf, pid, c, events){
+    const eq = CARD_DEFS[c.equipment]; if(!eq || c.equipOn) return;
+    const a = eq.attack || 0, hp = eq.health || 0;
+    c.atk += a; c.baseAtk = (c.baseAtk || 0) + a; c.hp += hp; c.maxHp += hp; c.equipping = 0; c.equipOn = true;
+    const grant = eq.equip && eq.equip.grant;
+    if(grant && typeof grant === 'object' && Object.keys(grant).length) deriveDef(c, grant);
+    if(recordEvents && events) events.push({type:'equipReady', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId:eq.id, attack:a, health:hp, grant: grant || null});
+  }
+  // a unit and a piece meet (played onto it, or the unit came onto a lone piece): it starts equipping
+  function eqMeet(players, sideOf, pid, c, equipDefId, events, how){
+    c.equipment = equipDefId; c.equipOn = false; c.equipping = equipTurnsOf(CARD_DEFS[equipDefId]);
+    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId, slot:c.slot, pending: c.equipping > 0, turns:c.equipping, how: how || 'onto',
+      attack:(CARD_DEFS[equipDefId] || {}).attack || 0, health:(CARD_DEFS[equipDefId] || {}).health || 0, grant:((CARD_DEFS[equipDefId] || {}).equip || {}).grant || null});
+    if(!(c.equipping > 0)) eqApply(players, sideOf, pid, c, events);
+  }
+  // an equipment card from the hand onto a slot: under your unit there, or lying alone in a free legal slot
+  function placeEquipment(players, sideOf, pid, handUid, slot, stats, events){
+    const pl = players[pid]; if(!pl || !slotMode) return false;
+    const h = pl.hand.find(x=> x.uid === handUid), d = h && CARD_DEFS[h.defId]; if(!isEquipDef(d) || !canPlay(pl, h.defId, handUid)) return false;
+    syncSlots(pl);
+    const sl = typeof slot === 'number' ? slot : resolvePlacementSlot(pl, slot);
+    const unit = Number.isInteger(sl) ? allLive(pl).find(c=> c.slot === sl) : null;
+    if(unit) return eqCarrier(unit) ? equip(players, sideOf, pid, unit.uid, handUid, stats, events) : false;
+    if(!Number.isInteger(sl) || !eqFreeSlots(pl).includes(sl)) return false;
+    pl.hand.splice(pl.hand.findIndex(x=> x.uid === handUid), 1);
+    pl.lumber -= costOfCard(h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1;
+    eqSlotsOf(pl)[sl] = {defId: h.defId};
+    ensureStat(stats, sideOf(pid), h.defId).played++;
+    if(recordEvents && events) events.push({type:'equipLaid', side:sideOf(pid), pid, slot:sl, equipDefId:h.defId});
+    return true;
+  }
+  // its unit died: the piece stays in the slot (or goes with it, equip.breaks)
+  function eqDrop(pl, card, sideOf, events){
+    if(!card || !card.equipment) return;
+    const eqId = card.equipment, d = CARD_DEFS[eqId] || {}; card.equipment = null; card.equipOn = false; card.equipping = 0;
+    if(!slotMode || !Number.isInteger(card.slot) || (d.equip && d.equip.breaks) || loneEquipAt(pl, card.slot)){ pl.graveyard.push({defId:eqId}); return; }
+    eqSlotsOf(pl)[card.slot] = {defId:eqId};
+    if(recordEvents && events) events.push({type:'equipDrop', side:sideOf(pl.id), pid:pl.id, slot:card.slot, equipDefId:eqId, fromUid:card.uid, fromDefId:card.defId});
+  }
+  // The shared "a unit entered a slot" scan (2026-10-19, package EQ; open boards). Each caller keeps its own memory key on the unit, so
+  // two systems (the floors here; a Sentry-style watcher) never use up each other's sightings. Returns [{pid, card, from, to, fresh}]
+  // (fresh: no memory, so placed or spawned; from null then) and remembers where every live front-row unit stands now. A board no one
+  // has looked at yet (a loaded save, a staged set-up with 2+ units) is just remembered.
+  function slotEntries(players, key){
+    if(!slotMode || !players || !players[1] || !players[2]) return [];
+    syncSlots(players[1]); syncSlots(players[2]);
+    const out = []; let total = 0, unseen = 0;
+    for(const pid of [1,2]) for(const c of allBoardCards(players[pid])){ if(!c || c.gap || !(c.hp > 0) || !Number.isInteger(c.slot)) continue; total++;
+      const m = c[key];
+      if(m === undefined || m === null){ unseen++; out.push({pid, card:c, from:null, to:c.slot, fresh:true}); }
+      else if(m !== c.slot) out.push({pid, card:c, from:m, to:c.slot, fresh:false});
+      c[key] = c.slot; }
+    if(total > 1 && unseen === total) return [];
+    return out;
+  }
+  const floorImmune = (c, f)=> f && f.flyers ? false : (isFlyingCard(c) || climbs(c));
+  // a floor's triggers for one moment (hook 'onEnterSlot' or 'onRoundStart') on the unit in the slot: the actions damage, poison, bleed
+  function floorTrigs(players, sideOf, pid, f, c, hook, stats, events){
+    if(!f || !c || !(c.hp > 0) || floorImmune(c, f)) return;
+    (f.triggers || []).filter(t=> t.on === hook).forEach(t=>{ if(!(c.hp > 0)) return; const n = eqN(t.amount, f.n); if(!(n > 0)) return;
+      const ev = {type:'floorTick', kind:f.kind, hook, side:sideOf(pid), pid, slot:c.slot, uid:c.uid, defId:c.defId, action:t.do};
+      if(t.do === 'damage'){ ev.dmg = damageCardFlat(c, n, t.dmgType || 'physical'); ensureStat(stats, sideOf(pid), c.defId).taken += ev.dmg; }
+      else if(t.do === 'poison'){ ev.poison = addPoison(c, n); if(!(ev.poison > 0)) return; }
+      else if(t.do === 'bleed'){ if(isGhost(c)) return; c.bleed = (c.bleed || 0) + n; ev.bleed = n; }
+      else return;
+      if(recordEvents && events) events.push(ev); });
+  }
+  // a unit came onto a slot: pick up a lone piece, take the poison, slip on the ice (and then the slot it slid to counts as entered)
+  function floorScan(players, sideOf, stats, events){
+    let list = slotEntries(players, '_eqAt');
+    for(let pass = 0; pass < EQ_DEF.iceChain && list.length; pass++){
+      const next = [];
+      for(const en of list){ const c = en.card, pl = players[en.pid]; if(!(c.hp > 0) || c.slot !== en.to) continue;
+        runCustomTriggers(players, sideOf, en.pid, c, CARD_DEFS[c.defId], 'onEnterSlot', stats || {}, events, {movedCard: c, enteredSlot: en.to, fresh: en.fresh}); // On Enter Slot (EQ): played, spawned or moved in
+        const lone = loneEquipAt(pl, en.to);
+        if(lone && eqCarrier(c)){ delete pl.eqSlots[en.to]; eqMeet(players, sideOf, en.pid, c, lone.defId, events, 'pickup'); }
+        const f = floorAt(en.pid, en.to); if(!f) continue;
+        floorTrigs(players, sideOf, en.pid, f, c, 'onEnterSlot', stats, events);
+        if(f.kind === 'ice' && c.hp > 0 && !floorImmune(c, f) && !stuckFast(c) && !c.cageOf){
+          const live = new Set(allBoardCards(pl).filter(x=> x && x !== c && !x.gap && x.hp > 0).map(x=> x.slot));
+          const free = d=> Math.abs(en.to + d) <= EQ_DEF.iceEdge && !live.has(en.to + d);
+          let dir = en.fresh || en.from === en.to ? (rnd() < .5 ? -1 : 1) : Math.sign(en.to - en.from);
+          if(!free(dir) && (en.fresh || en.from === en.to)) dir = -dir;
+          if(free(dir)){ const s0 = c.slot; c.slot = s0 + dir; c._eqAt = c.slot; relayoutRow(pl);
+            if(recordEvents && events) events.push({type:'floorSlide', side:sideOf(en.pid), pid:en.pid, uid:c.uid, defId:c.defId, from:s0, to:c.slot});
+            runCustomTriggers(players, sideOf, en.pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
+            next.push({pid:en.pid, card:c, from:s0, to:c.slot, fresh:false}); } } }
+      list = next;
+    }
+  }
+  // the start of a round: equipping counts down (the piece takes hold at 0), then the floors tick and wear off
+  function eqRoundStart(players, round, sideOf, stats, events){
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+      allLive(pl).forEach(c=>{ if(c.equipment && !c.equipOn){ c.equipping = Math.max(0, (c.equipping || 0) - 1); if(!(c.equipping > 0)) eqApply(players, sideOf, pid, c, events); } }); });
+    if(!slotMode) return;
+    let hurt = false;
+    Object.keys(floors).forEach(k=>{ const f = floors[k], pid = Number(k.split(':')[0]), slot = Number(k.split(':s')[1]), pl = players[pid]; if(!pl) return;
+      const c = allLive(pl).find(x=> x.slot === slot);
+      if(c){ floorTrigs(players, sideOf, pid, f, c, 'onRoundStart', stats, events); hurt = hurt || !(c.hp > 0); }
+      f.rounds -= 1;
+      if(f.rounds <= 0){ delete floors[k]; if(recordEvents && events) events.push({type:'floorEnd', kind:f.kind, side:sideOf(pid), pid, slot}); } });
+    if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // where a hazard card may go: [{pid, slot}] over the board's columns (both sides; Rubble only the foe's empty legal-or-not slots)
+  function hazardTargets(players, pid, defId){
+    if(!slotMode || !players || !players[1] || !players[2]) return [];
+    const hz = hazardOf(CARD_DEFS[defId]); syncSlots(players[1]); syncSlots(players[2]);
+    const edge = Math.max(1, ...[1,2].flatMap(p=> allBoardCards(players[p]).filter(c=> c && !c.gap && c.hp > 0 && Number.isInteger(c.slot)).map(c=> Math.abs(c.slot))), ...[1,2].flatMap(p=> legalSlots(players[p]).map(Math.abs))) + (hz.kind === 'rubble' ? 1 : 0);
+    const out = [];
+    [1,2].forEach(tp=>{ if(hz.target === 'enemyEmpty' && tp === pid) return;
+      for(let s = -edge; s <= edge; s++){ const occ = allLive(players[tp]).some(c=> c.slot === s);
+        if((hz.target === 'empty' || hz.target === 'enemyEmpty') && occ) continue; out.push({pid:tp, slot:s}); } });
+    return out;
+  }
+  function placeHazard(players, sideOf, pid, handUid, tpid, slot, stats, events){
+    const pl = players[pid]; if(!pl || !slotMode) return false;
+    const h = pl.hand.find(x=> x.uid === handUid), d = h && CARD_DEFS[h.defId]; if(!isHazardDef(d) || !canPlay(pl, h.defId, handUid)) return false;
+    if(tpid == null || typeof slot !== 'number'){ const pick = aiHazardPick(players, pid, h.defId); if(!pick) return false; tpid = pick.pid; slot = pick.slot; }
+    if(!hazardTargets(players, pid, h.defId).some(t=> t.pid === tpid && t.slot === slot)) return false;
+    const hz = hazardOf(d);
+    pl.hand.splice(pl.hand.findIndex(x=> x.uid === handUid), 1);
+    pl.lumber -= costOfCard(h.defId); payOreCosts(pl, h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1;
+    pl.graveyard.push({defId:h.defId}); ensureStat(stats, sideOf(pid), h.defId).played++;
+    floors[tpid + ':s' + slot] = {kind:hz.kind, n:hz.n, rounds:hz.rounds, by:pid, defId:h.defId, triggers:hz.triggers, flyers:hz.flyers};
+    if(recordEvents && events) events.push({type:'floorSet', kind:hz.kind, n:hz.n, rounds:hz.rounds, side:sideOf(pid), targetSide:sideOf(tpid), pid:tpid, slot, defId:h.defId});
+    return true;
+  }
+  // Weapon Master N: the arrows' bonus, and the equipped units' +1/+1 (read by syncPhaseStats with the day and night bonus)
+  function eqArrowBonus(pl){ if(!pl) return 0; let n = 0; allLive(pl).forEach(c=>{ const e = effectsOf(c); if(e.weaponMaster && !c.cageOf) n += eqN(e.weaponMaster, EQ_DEF.weaponMaster); }); return n; }
+  function eqSituational(c, pid, players){ if(!c || !c.equipOn || !players || !players[pid]) return [0, 0];
+    const wm = allLive(players[pid]).some(x=> effectsOf(x).weaponMaster && !x.cageOf); const k = wm ? EQ_DEF.weaponMasterStats : 0; return [k, k]; }
+  // Pry N: a landed melee hit strips N Armor for good (the Perforate bookkeeping: armorLoss, up to the printed Armor)
+  function eqPryHit(attDef, att, defCard, mySide, targetSide, events){
+    const e = (attDef && attDef.effects) || {}; if(!e.pry || !defCard || !(defCard.hp > 0)) return;
+    const n = eqN(e.pry, EQ_DEF.pry), d0 = CARD_DEFS[defCard.defId], base = (d0 && d0.effects && Number(d0.effects.armor)) || 0;
+    if(!(n > 0) || !(base - (defCard.armorLoss || 0) > 0)) return;
+    const was = defCard.armorLoss || 0; defCard.armorLoss = Math.min(base, was + n);
+    if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', pry:true, side:mySide, attDefId:att.defId, attUid:att.uid, targetSide, targetDefId:defCard.defId, targetUid:defCard.uid, amount:defCard.armorLoss - was});
+  }
+  // The CPU (2026-10-19, EQ). Equipment: worth its stats and skills when it has a unit to go under (it goes under the strongest).
+  function aiEquipWorth(ai, defId){ const d = CARD_DEFS[defId] || {}; if(!allLive(ai).some(eqCarrier)) return -99;
+    return 2 + (d.attack || 0) * 1.2 + (d.health || 0) * 0.5 + Object.keys((d.equip || {}).grant || {}).length * 1.5; }
+  function aiEquipPlay(players, sideOf, aiId, hc, stats, events){ const ai = players[aiId];
+    const tgt = allLive(ai).filter(eqCarrier).sort((a, b)=> (effAtk(b) + b.hp) - (effAtk(a) + a.hp))[0]; if(!tgt) return false;
+    return equip(players, sideOf, aiId, tgt.uid, hc.uid, stats, events); }
+  // Hazards: Lava / Poison / Gas under the strongest enemy unit they can hurt (not one already standing in the same hazard); Ice on the
+  // enemy's own best open slot (where its next card would go); Rubble on the open enemy slot facing the CPU's strongest unit (so nothing
+  // can be played to block it), else the enemy's open slot nearest the centre. {pid, slot, score} or null.
+  function aiHazardPick(players, aiId, defId){
+    const hz = hazardOf(CARD_DEFS[defId]), foeId = otherId(aiId), foe = players[foeId], ai = players[aiId]; if(!foe || !ai || !slotMode) return null;
+    const ok = hazardTargets(players, aiId, defId), can = (p, s)=> ok.some(t=> t.pid === p && t.slot === s);
+    if(hz.kind === 'lava' || hz.kind === 'poison' || hz.kind === 'gas'){
+      const pick = allLive(foe).filter(c=> !floorImmune(c, hz) && !(hz.kind !== 'lava' && poisonProof(c)) && can(foeId, c.slot) && !((floorAt(foeId, c.slot) || {}).kind === hz.kind))
+        .sort((a, b)=> (effAtk(b) + b.hp * 0.5) - (effAtk(a) + a.hp * 0.5))[0];
+      if(!pick) return null; const per = hz.kind === 'lava' ? 1 : 0.8;
+      return {pid:foeId, slot:pick.slot, score: 1 + hz.n * Math.min(hz.rounds, Math.ceil(pick.hp / Math.max(1, hz.n))) * per + effAtk(pick) * 0.2}; }
+    const open = legalSlots(foe).filter(s=> can(foeId, s) && !floorAt(foeId, s)).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b);
+    if(!open.length) return null;
+    if(hz.kind === 'rubble'){ const best = allLive(ai).sort((a, b)=> effAtk(b) - effAtk(a))[0]; const sl = best && open.includes(best.slot) ? best.slot : open[0];
+      return {pid:foeId, slot:sl, score: 3 + (best && sl === best.slot ? effAtk(best) * 0.3 : 0)}; }
+    return {pid:foeId, slot:open[0], score: 2.5};
+  }
+  function aiHazardWorth(players, aiId, defId){ const p = aiHazardPick(players, aiId, defId); return p ? p.score : -99; }
+  const EQ_API = {getFloors, floorAt, equipSlotsFor, placeEquipment, hazardTargets, placeHazard, hazardOf, slotEntries, floorScan, eqArrowBonus, aiHazardPick, EQ_DEF, loneEquipAt};
+  // ==== end Package EQ ==========================================================================================================
   // Ambush N (2026-10-16, user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of
   // the Crit)"): when the enemy plays a card into the slot facing an Ambush unit (opposingCardOf: the unit in its column on open
   // boards, the matching lane on row boards), the ambusher strikes it for N as it arrives (N = 3 for an old Ambush saved as true).
@@ -3728,6 +4039,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function watchScan(players, sideOf, stats, events){
     if(!players || !players[1] || !players[2]) return;
+    floorScan(players, sideOf, stats, events); // EQ (2026-10-19): lone equipment picked up, poison floors, ice slides, before Ambush / Sentry look
     const live = pid=> allBoardCards(players[pid]).filter(c=> c && !c.gap && c.hp > 0);
     if(slotMode){ syncSlots(players[1]); syncSlots(players[2]); }
     const posOf = c=> slotMode ? c.slot : 0;
@@ -3741,7 +4053,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(const pid of [1,2]){ const foeId = otherId(pid);
       for(const x of entered[pid]){
         if(!(x.hp > 0) || isInvisible(x) || x.cageOf) continue;
-        for(const a of allBoardCards(players[foeId])){
+        for(const a of upkeepUnitsOf(players[foeId])){ // + a raid's middle / back-row Ambush / Sentry, watching the slots of its column as at the front (2026-10-19, RR)
           if(!(x.hp > 0)) break;
           if(!a || a.gap || !(a.hp > 0) || a.cageOf || moved.has(a)) continue;
           const e = effectsOf(a);
@@ -3955,6 +4267,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!slotMode || !c || !(c.hp > 0) || c.cageOf || stuckFast(c) || !effectsOf(c).bloodlust) return false;
     const me = players[pid], foe = players[otherId(pid)]; if(!me || !foe) return false;
     syncSlots(me); syncSlots(foe);
+    // 2026-10-19 (package RR): a middle- or back-row unit leaps along its own row: to face (in its column, any row: the rule its swing
+    // aims by, rowTargetAt) the nearest enemy creature whose column is free in its row. Nothing left in its column is the trigger.
+    const myRow = reserveRowOf(me, c);
+    if(myRow){ if(rowTargetAt(foe, c.slot)) return false; const rw = me.reserve[myRow - 1];
+      const prey = rowsUnitsOf(foe).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf && !isStructureCard(x) && !isInvisible(x) && Number.isInteger(x.slot) && !(rw[x.slot] && rw[x.slot] !== c));
+      if(!prey.length) return false;
+      const s0 = c.slot, best = Math.min(...prey.map(x=> Math.abs(x.slot - s0))), near = prey.filter(x=> Math.abs(x.slot - s0) === best);
+      const t = near.length > 1 ? near[Math.floor(rnd()*near.length)] : near[0];
+      delete rw[s0]; c.slot = t.slot; rw[c.slot] = c;
+      if(recordEvents && events) events.push({type:'bloodlustLeap', side:sideOf(pid), uid:c.uid, defId:c.defId, from:s0, to:c.slot, row:myRow, targetSide:sideOf(otherId(pid)), targetUid:t.uid, targetDefId:t.defId});
+      runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
+      return true; }
     if(allBoardCards(foe).some(x=> x && !x.gap && x.hp > 0 && x.slot === c.slot)) return false; // something stepped in front of it already
     const mine = new Set(allBoardCards(me).filter(x=> x && !x.gap && x.hp > 0 && x !== c).map(x=> x.slot));
     const prey = allBoardCards(foe).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf && !isStructureCard(x) && !isInvisible(x) && Number.isInteger(x.slot) && !mine.has(x.slot));
@@ -3971,14 +4295,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // it heals N. Called from removeDeadCardsPass for each death.
   function carrionFeed(players, sideOf, dead, events){
     for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
-      for(const c of allBoardCards(pl)){ if(!c || c.gap || c === dead || !(c.hp > 0) || c.cageOf || !effectsOf(c).carrion) continue;
+      for(const c of upkeepUnitsOf(pl)){ if(!c || c.gap || c === dead || !(c.hp > 0) || c.cageOf || !effectsOf(c).carrion) continue; /* + a raid's middle / back rows (2026-10-19, RR) */
         const healed = applyHeal(c, s17N(c, 'carrion'), sideOf(pid), events);
         if(healed > 0 && recordEvents && events) events.push({type:'statusFx', kind:'carrion', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:healed, fromUid:dead.uid}); } }
+    sk2ScavengeFeed(players, sideOf, dead, events); // Package SK2 (2026-10-19): Scavenge counts the same deaths
   }
   // The side a live unit is on (curPlayers: the current fight), or 0.
-  function pidOfLive(c){ if(!curPlayers || !c) return 0; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).includes(c)) return pid; } return 0; }
+  function pidOfLive(c){ if(!curPlayers || !c) return 0; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && rowsUnitsOf(pl).includes(c)) return pid; } return 0; } // + the middle / back rows (2026-10-19, RR)
   // The sum of one aura skill's N over a side's live units (Venom Master, Fletcher, Herbalist).
-  function auraN(pl, k){ if(!pl) return 0; let n = 0; allBoardCards(pl).forEach(c=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c)[k]) n += s17N(c, k); }); return n; }
+  function auraN(pl, k){ if(!pl) return 0; let n = 0; upkeepUnitsOf(pl).forEach( /* + a raid's middle / back rows (2026-10-19, RR) */c=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c)[k]) n += s17N(c, k); }); return n; }
   // Hoard N (2026-10-17, user: "Do damage based on number of lumber"): +1 Attack for every N Lumber its side holds (live, effAtk).
   function hoardBonus(card){ const e = effectsOf(card); if(!e.hoard) return 0; const pid = pidOfLive(card); if(!pid) return 0;
     const n = Math.max(1, s17N(card, 'hoard')); return Math.floor(Math.max(0, curPlayers[pid].lumber || 0) / n); }
@@ -4026,10 +4351,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // random unit beside them (its own side). The carrier keeps its Poison. Nothing poison-proof catches it.
   function proliferateTick(players, sideOf, events){
     [1,2].forEach(pid=>{ const me = players[pid], foe = players[otherId(pid)]; if(!me || !foe) return;
-      allLive(me).filter(c=> !c.cageOf && effectsOf(c).proliferate).forEach(src=>{
+      liveRowsOf(me).filter(c=> !c.cageOf && effectsOf(c).proliferate).forEach(src=>{ // + a raid's middle / back rows (2026-10-19, RR)
         let pool = liveUnits(foe).filter(c=> c.poison > 0), n = numN(effectsOf(src).proliferate, 1);
         while(n-- > 0 && pool.length){ const carrier = pool.splice(Math.floor(rnd()*pool.length), 1)[0];
-          const order = physicalRowOrder(foe), i = order.indexOf(carrier), nb = [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !poisonProof(c));
+          const order = rowOrderOf(foe, carrier), i = order.indexOf(carrier), nb = [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !poisonProof(c));
           if(!nb.length) continue; const t = nb.length > 1 ? nb[Math.floor(rnd()*nb.length)] : nb[0]; addPoison(t, 1);
           if(recordEvents && events) events.push({type:'statusFx', kind:'proliferate', side:sideOf(pid), attDefId:src.defId, attUid:src.uid, fromUid:carrier.uid, fromDefId:carrier.defId, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:1, total:t.poison}); } }); });
   }
@@ -4046,12 +4371,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const giTrigMemo = new WeakMap();
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
-    if(!e.kinRally && !e.packHowl) return sk1Trigs(e, base); // + the SK1 keyword shorthands (2026-10-19)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl) return sk1Trigs(e, m.list);
+    if(!e.kinRally && !e.packHowl && !e.milling) return sk1Trigs(e, base); // + Milling (2026-10-19, package SK2); + the SK1 keyword shorthands
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling) return sk1Trigs(e, m.list);
     const list = base.slice();
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, list}); return sk1Trigs(e, list);
+    if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, list}); return sk1Trigs(e, list);
   }
   let trigSubject = null; // the unit a trigger is about (the ally played, the one that died ...), for sub:'subject'
   // Vanguard N (2026-10-17, user: "This card draws itself into its hand at the start of the game, and you discard a random card. (If
@@ -4086,7 +4412,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const types = amoreTypes(card); if(!types.length) return;
     const pl = players[pid]; if(!pl) return;
     const pos = c=> Number.isInteger(c.slot) ? c.slot : 0;
-    const cands = allBoardCards(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && amoreTypes(o).some(t=> types.includes(t)))
+    const cands = upkeepUnitsOf(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && amoreTypes(o).some(t=> types.includes(t)))
       .sort((a, b)=> Math.abs(pos(a) - pos(card)) - Math.abs(pos(b) - pos(card)) || a.uid - b.uid);
     const mate = cands[0]; if(!mate) return;
     [[card, mate], [mate, card]].forEach(([c, o])=>{ c.amoreUsed = true; c.amoreWith = o.uid; c.amoreRegen = AMORE_REGEN; c.maxHp += AMORE_HP; c.hp += AMORE_HP; });
@@ -4096,13 +4422,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function amoreBreak(players, sideOf, dead, events){
     if(!dead || dead.amoreWith == null) return;
     for(const pid of [1, 2]){ const pl = players[pid]; if(!pl) continue;
-      const mate = allBoardCards(pl).find(o=> o && o.uid === dead.amoreWith && o.hp > 0 && o.amoreWith === dead.uid);
+      const mate = upkeepUnitsOf(pl).find(o=> o && o.uid === dead.amoreWith && o.hp > 0 && o.amoreWith === dead.uid);
       if(mate && !mate.amoreBroken){ mate.amoreBroken = true; mate.amoreRegen = 0;
         if(recordEvents && events) events.push({type:'amoreBroken', side:sideOf(pid), uid:mate.uid, defId:mate.defId, deadUid:dead.uid, deadDefId:dead.defId}); } }
   }
   // Fire on hit N (2026-10-16, see the 'fireHit' action): the swing's extra fire damage, on the unit it hit (if it still stands) or on
   // the castle. Spent here, once per swing.
   function fireHitLands(att, target, side, tSide, foe, aStat, stats, events){
+    if(att) sk2SwingHit = {att, target: target || 'hq'}; // Package SK2 (2026-10-19): what the swing landed on, for Pickpocket / Sabotage / Arson
     const n = att ? (att._fireHit||0) : 0; if(!(n > 0)) return; att._fireHit = 0;
     if(target){ if(!(target.hp > 0)) return; const d = damageCardFlat(target, n, 'heat', att.defId, att.uid); if(aStat) aStat.dealt += d; ensureStat(stats, tSide, target.defId).taken += d;
       if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, targetUid:target.uid, targetDefId:target.defId, dmg:d, n}); return; }
@@ -4115,7 +4442,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function firePitchTriggers(players, sideOf, pid, pitchedDefId, stats, events){
     const pl = players && players[pid]; if(!pl) return;
     curPlayers = curPlayers || players;
-    allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).forEach(c=>{ const d = CARD_DEFS[c.defId];
+    upkeepUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).forEach(c=>{ const d = CARD_DEFS[c.defId]; /* + a raid's middle / back rows (2026-10-19, RR) */
       if(d && d.effects && Array.isArray(d.effects.triggers) && d.effects.triggers.some(t=> t && t.on === 'onPitch')) runCustomTriggers(players, sideOf, pid, c, d, 'onPitch', stats || {}, events, {pitchedDefId}); });
     removeDeadCards(players, sideOf, {}, stats || {}, events);
   }
@@ -4171,7 +4498,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.penance){ const n = numN(e.penance, PAY_DEF.penance), paid = payFromCastle(pl, n);
       if(recordEvents && events) events.push({type:'penance', side, uid:card.uid, defId:card.defId, amount:n, dmg:paid}); }
     if(e.bloodTithe){ const n = numN(e.bloodTithe, PAY_DEF.bloodTithe);
-      const pool = allBoardCards(pl).filter(c=> c && c !== card && !c.gap && c.hp > 0 && !c.cageOf);
+      const pool = upkeepUnitsOf(pl).filter(c=> c && c !== card && !c.gap && c.hp > 0 && !c.cageOf); /* + a raid's middle / back rows (2026-10-19, RR) */
       if(!pool.length){ const paid = payFromCastle(pl, n); if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, castle:true, dmg:paid}); }
       else { const t = pool[Math.floor(rnd() * pool.length)], dmg = damageCardFlat(t, n, 'curse');
         ensureStat(stats, side, t.defId).taken += dmg;
@@ -4284,7 +4611,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // has two) each take N magic damage. Armor doesn't stop it (it is not a melee hit), and it strikes even if the target just fell.
   function dragonLightningStrike(players, sideOf, pid, att, target, n, stats, events, killCredit){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
-    const order = physicalRowOrder(pl), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf);
+    const order = rowOrderOf(pl, target), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf); // a middle / back-row target: its own row (2026-10-19, RR)
     const struck = [target].concat(side.length ? [side[Math.floor(rnd()*side.length)]] : []).filter(c=> c.hp > 0);
     if(recordEvents && events) events.push({type:'dragonLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:struck.map(c=> c.uid), n});
     struck.forEach((c, i)=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
@@ -4302,7 +4629,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function applyWitherTicks(players, sideOf, stats, events){
     let any = false;
-    [players[1], players[2]].filter(inUpkeep).forEach(pl=> allBoardCards(pl).forEach(c=>{
+    [players[1], players[2]].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ // + a raid's middle / back rows (2026-10-19, RR)
       if(!(c.wither > 0) || !(c.hp > 0)) return; any = true; const n = c.wither;
       c.maxHp = Math.max(0, (c.maxHp||0) - n); c.hp = Math.max(0, Math.min(c.maxHp, c.hp - n));
       c.witherLeft = Math.max(0, (c.witherLeft||1) - 1); if(!c.witherLeft) c.wither = 0;
@@ -4350,7 +4677,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // The enemy units in the columns directly beside a unit (open boards: the slot either side; slotless rows: the row neighbours).
   function besideOf(pl, t){
     if(!pl || !t) return [];
-    if(slotMode && Number.isInteger(t.slot)) return liveFoesOf(pl).filter(c=> c !== t && Number.isInteger(c.slot) && Math.abs(c.slot - t.slot) === 1);
+    if(slotMode && Number.isInteger(t.slot)){ const r = reserveRowOf(pl, t); // a middle / back-row unit: the units beside it in its own row (2026-10-19, RR)
+      if(r) return [pl.reserve[r - 1][t.slot - 1], pl.reserve[r - 1][t.slot + 1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
+      return liveFoesOf(pl).filter(c=> c !== t && Number.isInteger(c.slot) && Math.abs(c.slot - t.slot) === 1); }
     const order = physicalRowOrder(pl), i = order.indexOf(t); if(i < 0) return [];
     return [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
   }
@@ -4543,6 +4872,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.tsunami) tsunamiStrike(players, sideOf, playerId, boardCard, numN(def.effects.tsunami, 1), stats, events); // Tsunami N (2026-10-14)
     if(def.effects.fieldBreaker) fieldBreak(sideOf, playerId, boardCard, Math.max(1, numN(def.effects.fieldBreaker, 2)), events); // Field Breaker N (2026-10-19, package GI)
     if(def.effects.rainmaker){ const rr = Math.max(1, Number(def.effects.rainmaker)||3); setField('rain', rr, mySide); if(recordEvents && events) events.push({type:'fieldSet', side:mySide, defId:boardCard.defId, field:'rain', rounds:rr, rainmaker:true}); }
+    if(def.effects.fortification) sk2Fortify(players, sideOf, playerId, boardCard, stats, events); // Package SK2 (2026-10-19): a Palisade beside it
     // Bounty N (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty. Bounty means - I give lumber to my owner on
     // play, but also to the enemy on kill."): on play its owner gains N Lumber; when it dies, the other side gains N (removeDeadCards).
     // (An old Worthy N on a saved or published card is turned into Bounty N when the app loads it, 2026-10-16.)
@@ -4693,7 +5023,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function fireDynamite(players, sideOf, ownerId, card, stats, events){
     const pl = players[ownerId], enemy = players[otherId(ownerId)], dmg = Number(((CARD_DEFS[card.defId]||{}).effects||{}).dynamiteDmg) || 5;
     let mine = [], theirs = [];
-    if(slotMode){ const s0 = card.slot; mine = allBoardCards(pl).filter(c=> c !== card && c.hp > 0 && Number.isInteger(c.slot) && Math.abs(c.slot - s0) <= 1); theirs = allBoardCards(enemy).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && Math.abs(-c.slot - s0) <= 1); }
+    if(slotMode){ const s0 = card.slot, myRow = reserveRowOf(pl, card); mine = (myRow ? Object.values(pl.reserve[myRow - 1]) : allBoardCards(pl)).filter(c=> c !== card && c.hp > 0 && Number.isInteger(c.slot) && Math.abs(c.slot - s0) <= 1); /* a middle / back-row dynamiter: its own row's neighbours (2026-10-19, RR) */ theirs = allBoardCards(enemy).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && Math.abs(-c.slot - s0) <= 1); }
     else { const order = physicalRowOrder(pl), i = order.indexOf(card); mine = [order[i-1], order[i+1]].filter(c=> c && c.hp > 0);
       const opp = opposingCardOf(players, ownerId, card); if(opp){ const eo = physicalRowOrder(enemy), j = eo.indexOf(opp.card); theirs = [eo[j-1], opp.card, eo[j+1]].filter(c=> c && c.hp > 0); } }
     if(recordEvents && events) events.push({type:'dynamite', side:sideOf(ownerId), defId:card.defId, uid:card.uid, amount:dmg, hits: mine.length + theirs.length});
@@ -4823,7 +5153,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
-        const fl17 = auraN(pl, 'fletcher'); // Fletcher N (2026-10-17): every arrow of your side deals N more
+        const fl17 = auraN(pl, 'fletcher') + eqArrowBonus(pl); // Fletcher N (2026-10-17): every arrow of your side deals N more; + Weapon Master N (EQ, 2026-10-19)
         // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
         // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
         // each aimed on its own (the second one goes on to the nearest if the first killed the target). The card reads "Arrow 2" twice.
@@ -4895,6 +5225,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function arrowTargetOf(players, ownerId, boardCard){
     const myCols = combatColumnsOf(players[ownerId]), enemyCols = combatColumnsOf(players[otherId(ownerId)]);
     let myCol = null; Object.keys(myCols).forEach(k=>{ const e = myCols[k]; if(e.kind==='card' && e.card.uid===boardCard.uid) myCol = Number(k); });
+    if(myCol === null && slotMode && Number.isInteger(boardCard.slot) && reserveRowOf(players[ownerId], boardCard)) myCol = boardCard.slot; // a middle / back-row shooter aims from its column, as at the front (2026-10-19, RR)
     if(myCol === null) return null;
     const r = nearestEnemyCard(players, ownerId, boardCard, myCols, enemyCols, myCol);
     return r && r.entry ? r.entry.card : null;
@@ -5290,8 +5621,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const newUids = [];
           const newCards = [];
           const echoN = (pl.perks && pl.perks.echo && !quietStills(boardCard, mySide, events, 'echo')) ? (pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood": the first token comes with a copy (not under Quiet Contemplation, 2026-10-19: the perk waits)
-          for(let i=0;i<(t.count||1)+echoN;i++){ const nc = makeBoardCard(t.defId); pl.row[side].push(nc); newUids.push(nc.uid); newCards.push(nc); }
-          if(recordEvents && events && newUids.length) events.push({type:'spawn', side:mySide, defId:t.defId, count:newUids.length, cause:'triggerSpawn', uids:newUids, lane:side, nearUid:boardCard.uid});
+          // 2026-10-19 (package RR): a spawner in a middle / back row (a raid) spawns into its own row, the nearest free slots beside it.
+          const spRow = slotMode ? reserveRowOf(pl, boardCard) : 0;
+          if(spRow){ for(let i=0;i<(t.count||1)+echoN;i++){ const sl = rowFreeSlotNear(pl, spRow, boardCard.slot, false); if(sl === null) break; const nc = rowPut(pl, spRow, sl, makeBoardCard(t.defId), boardCard); newUids.push(nc.uid); newCards.push(nc); } }
+          else for(let i=0;i<(t.count||1)+echoN;i++){ const nc = makeBoardCard(t.defId); pl.row[side].push(nc); newUids.push(nc.uid); newCards.push(nc); }
+          if(recordEvents && events && newUids.length) events.push(Object.assign({type:'spawn', side:mySide, defId:t.defId, count:newUids.length, cause:'triggerSpawn', uids:newUids, lane: spRow ? null : side, nearUid:boardCard.uid}, spRow ? {row:spRow} : {}));
           // On Ally/Enemy Spawn (2026-09-27, "Spawn triggers now refer to those spawned from
           // units"): THIS is the genuine "spawned from a unit" case — a card's own ability
           // (this Spawn action) put a new card on the board, as opposed to it being played
@@ -5395,7 +5729,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // and who:'any' picks an ally or an opponent at random each time.
       // who:'killer' (2026-10-14): aim the action at the unit that killed it (On Death only); no killer, no action.
       if(t.who === 'killer'){ const k = extra && extra.killerCard; if(!k || !(k.hp > 0)) return;
-        const kpid = allBoardCards(pl).includes(k) ? playerId : otherId(playerId);
+        const kpid = rowsUnitsOf(pl).includes(k) ? playerId : otherId(playerId); /* + a raid's middle / back rows (2026-10-19, RR) */
         forcedTarget = k; try{ runAction(Object.assign({}, t, {who: kpid === playerId ? 'ally' : 'enemy', sub:'killer', targets:1})); } finally{ forcedTarget = null; }
         healNoop(); return; }
       const reps = (t.who && t.who!=='self' && t.sub!=='all' && (t.targets|0) > 1) ? Math.min(8, t.targets|0) : 1;
@@ -5440,12 +5774,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'statusFx', kind:'esprit', side:sideOf(playerId), attDefId:src.defId, attUid:src.uid, amount:ea, hp:eh});
     return true;
   }
-  function espritForArrival(players, sideOf, playerId, newCard, events){ const pl = players[playerId]; if(!pl) return; allBoardCards(pl).forEach(src=> espritFrom(sideOf, playerId, src, newCard, events)); }
+  function espritForArrival(players, sideOf, playerId, newCard, events){ const pl = players[playerId]; if(!pl) return; upkeepUnitsOf(pl).forEach(src=> espritFrom(sideOf, playerId, src, newCard, events)); } /* + a raid's middle / back rows (2026-10-19, RR) */
   function fireSpawnFamilyTriggers(players, sideOf, playerId, newlyPlacedCard, stats, events, kind){
     const allyHook = kind==='spawned' ? 'onAllySpawn' : 'onAllyPlayed';
     const enemyHook = kind==='spawned' ? 'onEnemySpawn' : 'onEnemyPlayed';
     const pl = players[playerId];
-    const sources = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=>c.uid!==newlyPlacedCard.uid);
+    const sources = upkeepUnitsOf(pl).filter(c=>c.uid!==newlyPlacedCard.uid); // + a raid's middle / back rows (2026-10-19, RR)
     if(pl.castle) sources.push(pl.castle);
     const newDef = CARD_DEFS[newlyPlacedCard.defId];
     const newArchetypes = (newDef && newDef.archetypes) || [];
@@ -5464,7 +5798,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // defensively to what the enemy is doing ("whenever the enemy plays/spawns a unit, ...").
     const enemy = players[otherId(playerId)];
     if(enemy){
-      const enemySources = [...enemy.row.left, ...enemy.row.center, ...enemy.row.right];
+      const enemySources = upkeepUnitsOf(enemy); // + a raid's middle / back rows (2026-10-19, RR)
       enemySources.forEach(src=>{
         runCustomTriggers(players, sideOf, otherId(playerId), src, CARD_DEFS[src.defId], enemyHook, stats, events, {spawnedCard:newlyPlacedCard});
       });
@@ -5797,6 +6131,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
             : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
           v = gain > 0 ? gain : -99; }
+        if(isEquipDef(d)) v = aiEquipWorth(ai, id); else if(isHazardDef(d)) v = aiHazardWorth(players, aiId, id); // EQ (2026-10-19): a piece under its strongest unit; a hazard where it bites
         // Focus (2026-10-18, the smartest CPU): a Ready unit that can kill one of your units this round from a slot it may take is
         // worth more (the better the victim, the more), and its pick is steadier (less noise).
         if(aiSmartest() && !d.cardType){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; }
@@ -5805,7 +6140,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
       const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
       // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
-      if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
+      if(best[1] > -50 && isEquipDef(CARD_DEFS[best[0].defId])) aiEquipPlay(players, sideOf, aiId, best[0], stats, events); // EQ (2026-10-19)
+      else if(best[1] > -50 && isHazardDef(CARD_DEFS[best[0].defId])) placeHazard(players, sideOf, aiId, best[0].uid, null, null, stats, events); // EQ: aiHazardPick's slot
+      else if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
         { const aim = aiChooseSlot(players, aiId, best[0].defId); if(aim != null) side = aim; } // its own slot choice (2026-10-16)
         { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
         placeCard(players, sideOf, aiId, best[0].uid, side, stats, events); }
@@ -5913,8 +6250,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     removeDeadCards(players, sideOf, {}, stats, events);
   }
   function fireRoundStartTriggers(players, sideOf, stats, events){
+    // 2026-10-19 (package RR, owner 22:10: "all the skills should work as if they were at the front"): in a raid (RESERVE_ACTS) every row's
+    // units (front, then middle, then back: upkeepUnitsOf) get their round start: Renewal, Regeneration, Bloom, Nursing, Healing, Cure,
+    // Satiety, On Round Start and Per Turn; and the allies those heal are found in every row. (Was: the front row only.)
     [players[1], players[2]].filter(inUpkeep).forEach(pl=>{
-      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+      const each = fn=> RESERVE_ACTS ? upkeepUnitsOf(pl).forEach(fn) : ['left','center','right'].forEach(side=> pl.row[side].forEach(fn)); // (live rows outside a raid, as before)
+      each(c=>{
         const def = CARD_DEFS[c.defId];
         // Renewal (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Cleanse"/Gwent's
         // "Purify"): a passive keyword shorthand for the most common use of the 'cleanse'
@@ -5944,7 +6285,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // itself, it heals a random OTHER damaged ally on the same board, every round it's on
         // the field. No-op if every other ally is already at full HP (or there are none).
         if(c.hp>0 && def.effects && def.effects.bloom && !c.stunned){ // a stunned unit skips its upkeep actions
-          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && o.hp<o.maxHp); // 2026-10-18: Poison no longer counts (heals don't remove it); 2026-10-19 (SK1): nor Bleed
+          const others = upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.uid!==c.uid && o.hp<o.maxHp); // 2026-10-18: Poison no longer counts (heals don't remove it); 2026-10-19 (SK1): nor Bleed
           if(others.length){
             const bloomTarget = others[Math.floor(rnd()*others.length)];
             const bloomHealed = applyHeal(bloomTarget, def.effects.bloom + ((pl.perks && pl.perks.pollen) || 0), sideOf(pl.id), events); // + Wildpath "Pollen Drift"
@@ -5955,20 +6296,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // weakest wounded ally (the lowest Health right now, not itself; ties at random) for N. A stunned nurse skips it.
         if(c.hp>0 && def.effects && def.effects.nursing && !c.stunned){
           const n = def.effects.nursing === true ? 2 : (Number(def.effects.nursing)||0);
-          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && o.hp<o.maxHp); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
+          const hurt = upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && o.hp<o.maxHp); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
           if(n > 0 && hurt.length){ const lo = Math.min(...hurt.map(o=> o.hp)), pool = hurt.filter(o=> o.hp === lo), tgt = pool[Math.floor(rnd()*pool.length)];
             const h = applyHeal(tgt, n, sideOf(pl.id), events);
             if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:tgt.uid, targetDefId:tgt.defId, amount:h, cause:'nursing'}); fireHealTriggers(players, sideOf, pl.id, c, tgt, h, stats, events); } }
         }
         // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
         if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
-          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.hp<o.maxHp).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
+          const hurt = upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.hp<o.maxHp).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
           if(hurt.length){ const h = applyHeal(hurt[0], def.effects.healing, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
         }
         // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most poisoned unit (itself included) of up to N Poison.
         // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
-          const sick = allBoardCards(pl).filter(o=> o && !o.gap && o.hp>0 && (o.poison||0) > 0).sort((a,b)=> (b.poison||0) - (a.poison||0));
+          const sick = upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && (o.poison||0) > 0).sort((a,b)=> (b.poison||0) - (a.poison||0));
           if(sick.length){ const t = sick[0]; const p0 = Math.min(w2N(def, 'cure'), t.poison||0); t.poison -= p0;
             if(p0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0, poison:p0, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
         }
@@ -5989,7 +6330,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(c.wait===0 && !c.stunned && !(c.frozen>0) && !(c.asleep>0) && !(c.paralyzed>0)){
           runCustomTriggers(players, sideOf, pl.id, c, def, 'perTurn', stats, events);
         }
-      }));
+      });
     });
   }
   // Healing triggers (2026-09-16): On Heal (this card healed something, itself included), On
@@ -6002,7 +6343,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     runCustomTriggers(players, sideOf, ownerId, healerCard, CARD_DEFS[healerCard.defId], 'onHeal', stats, events, {healedCard:targetCard, amount});
     runCustomTriggers(players, sideOf, ownerId, targetCard, CARD_DEFS[targetCard.defId], 'onHealed', stats, events, {healerCard, amount});
     const pl = players[ownerId];
-    const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=>c.hp>0 && c.uid!==targetCard.uid);
+    const others = upkeepUnitsOf(pl).filter(c=>c.hp>0 && c.uid!==targetCard.uid); // + a raid's middle / back rows (2026-10-19, RR)
     others.forEach(oc=> runCustomTriggers(players, sideOf, ownerId, oc, CARD_DEFS[oc.defId], 'onAllyHealed', stats, events, {healedCard:targetCard, healerCard, amount}));
   }
   // Status wear-offs (2026-10-15, effects pass: "every status ending ... should have an effect"): the engine never said when a
@@ -6053,6 +6394,167 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'rebuild', side:sideOf(pid), defId: src ? src.defId : null, uid: src ? src.uid : null, amount:h, n:Math.floor(Number(n)||0), trigger: how === 'trigger', hp:pl.hq.hp, maxHp:pl.hq.maxHp});
     return h;
   }
+  // ==== Package SK2 (2026-10-19, owner 21:36: economy and structure skills) [SK2 BEGIN] ====
+  // The resource model these skills work on: a card costs Lumber to play (pl.lumber), and some cards also cost Stone, Metal or
+  // Uranium (pl.stone / pl.metal / pl.uranium). Lumber comes from pitching a card (1 a turn), Bounty, onSpawnGold / onReadyGold,
+  // the castle's and the field's Lumber rules, Leylines and Lumberjack (+1 on every gain, addLumber). There is no automatic per-turn
+  // income. The resources rank as the raid's leader cost cap counts them (Lumber 1, Stone 2, Metal 3; Uranium 4 after them):
+  // "the lowest-ranked resource" is the first of SK2_RES_RANK the player holds any of. Grace, Darkness (devilry), Prayer and
+  // Elemental Energy are not ranked: no SK2 skill takes them. The bramble is the castle (pl.hq). A structure is a unit whose card
+  // is a Structure (isStructureCard: the Structure type, or a legacy type / cardType 'structure'); Repair and Siege read it.
+  // Every number is a parameter (SK2_DEFAULTS); a fight may override any of them with opts.sk2, so a global halving is one edit here.
+  //   Harvest         on its swing, 1 in 2 it harvests instead: its owner gains 1 Lumber (Harvest N: N). Nothing opposite it (its swing
+  //                   would reach the bramble): it always harvests. Seeded RNG (rnd).
+  //   Scavenge N      whenever a unit dies within 1 of it (same row or the row across, diagonals included; a raid's rows too), it gains N
+  //                   scavenge points (c.sk2Scavenge, a chip); every M points (effects.scavengeEvery, 3) become 1 Lumber for its owner.
+  //   Repair N        each turn while Ready, it restores N Health to the most damaged allied structure within 1 column (not itself); with
+  //                   none, N/2 (rounded down, at least 1) to its own bramble (rebuildCastle, so a full bramble takes nothing).
+  //   Foraging N      each turn while Ready, it gathers 1 Berry (c.sk2Berries, holds 3); at 3 it eats them to heal the most damaged OTHER
+  //                   ally for N (3). With nobody hurt it keeps the 3 Berries.
+  //   Milling N       the trigger layer's On Turn Start × Gain N Lumber (trigsOf): each turn while Ready, its owner gains N Lumber
+  //                   (Confused / Slippery can fumble it, as any trigger). It still attacks (SK2.millingAttacks false: it skips its swing).
+  //   Salvage N, M    (owner 21:56: "like Scavenge but for structures. but gives Stone!") a Structure dying within 1 gives N salvage points
+  //                   (c.sk2Salvage, a chip); every M (effects.salvageEvery, 3) become 1 Stone.
+  //   Pickpocket N    its landed swing on a unit moves up to N counters (SK2_STEALABLE: Prayer tokens, Berries, scavenge points,
+  //                   Creativity; never a debuff) from that unit onto itself; on the bramble it steals N resources, lowest rank first.
+  //   Sabotage N      its landed swing (a unit or the bramble) destroys N of the opponent's resources, lowest rank first.
+  //   Arson N         its landed swing destroys N of the opponent's Lumber.
+  //   Fortification   on play it builds a 0/6 Palisade (a Structure token, no skills; the Thornwood Palisade's look) in an empty slot
+  //                   beside it (a coin flip when both are free; none free: nothing). SK2.fortifyEvery K > 0: also every K turns while Ready.
+  // A Waiting, Stunned, Frozen or Asleep unit doesn't Repair, Forage or Mill that turn (upkeep actions; Milling, a trigger, is off then too).
+  const SK2 = Object.assign({}, SK2_DEFAULTS, (opts && opts.sk2) || {});
+  const SK2_RES_RANK = ['lumber', 'stone', 'metal', 'uranium']; // lowest rank first
+  const SK2_STEALABLE = ['prayerTokens', 'sk2Berries', 'sk2Scavenge', 'sk2Salvage', 'creativity']; // counters Pickpocket takes, in this order (append new token kinds)
+  let sk2SwingHit = null; // {att, target: the unit or 'hq'}: what the current swing landed on (fireHitLands notes it)
+  const sk2N = (c, k, d)=> numN(effectsOf(c)[k], d);
+  // A unit's place on one grid for "within 1": x = its column (the shared position on a packed row), y = its row (side A's front 0,
+  // its middle -1, back -2; side B's front 1, middle 2, back 3), so the two front rows are one row apart.
+  function sk2PosOf(players, c){
+    for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl || !c) continue;
+      if(allBoardCards(pl).includes(c)){ const x = slotMode ? c.slot : liveSharedPos(pl, c.uid); return x == null ? null : {pid, y: pid === 1 ? 0 : 1, x}; }
+      if(pl.reserve) for(let i = 0; i < pl.reserve.length; i++){ const rw = pl.reserve[i]; for(const sl of Object.keys(rw)) if(rw[sl] === c) return {pid, y: pid === 1 ? -(i + 1) : 2 + i, x: Number(sl)}; } }
+    return null;
+  }
+  const sk2Near = (a, b, r)=> !!(a && b && Math.abs(a.y - b.y) <= 1 && Math.abs(a.x - b.x) <= r);
+  // Takes up to n of a player's ranked resources, lowest rank first: [{res, n}].
+  function sk2TakeRes(pl, n){
+    const out = []; let left = Math.max(0, Math.floor(Number(n)||0)); if(!pl) return out;
+    for(const r of SK2_RES_RANK){ if(left <= 0) break; const have = Math.max(0, Math.floor(Number(pl[r])||0)), k = Math.min(have, left);
+      if(k > 0){ pl[r] = have - k; left -= k; out.push({res:r, n:k}); } }
+    return out;
+  }
+  // Would this swing reach a unit? (The column it faces, as resolveLiveTarget and RX's rows see it, without a coin flip.)
+  function sk2HasOpposing(players, a){
+    const e = effectsOf(a.att), foe = players[a.enemyId]; if(!foe) return false;
+    if(e.stealth || (e.rainrunner && field && field.id === 'rain')) return false;
+    if(a.reserve) return rowSwingTarget(foe, a.slot).kind === 'card';
+    const me = liveColOf(players[a.attId], a.att.uid); if(!me) return false;
+    const ec = combatColumnsOf(foe), live = en=> !!(en && en.kind === 'card' && en.card && en.card.hp > 0);
+    if(slotMode){ if(live(ec[me.col])) return true; }
+    else { const mk = Object.keys(combatColumnsOf(players[a.attId])).map(Number).sort((x, y)=> x - y), ek = Object.keys(ec).map(Number).sort((x, y)=> x - y);
+      const i = mk.indexOf(me.col) + 1, jf = i + (ek.length - mk.length) / 2, at = j=> j >= 1 && j <= ek.length && live(ec[ek[j - 1]]);
+      if(i > 0 && (Number.isInteger(jf) ? at(jf) : (at(Math.floor(jf)) || at(Math.ceil(jf))))) return true; }
+    if(RESERVE_ACTS){ const rt = rowTargetAt(foe, me.col); if(rt && rt.row > 0) return true; }
+    return false;
+  }
+  // Before a swing (resolveCombat): Harvest may take its place; a mill that doesn't attack (SK2.millingAttacks false) holds. True = no swing.
+  function sk2SwingReplaced(players, sideOf, a, stats, events){
+    sk2SwingHit = null;
+    const e = effectsOf(a.att), side = sideOf(a.attId);
+    if(e.milling && SK2.millingAttacks === false){ if(recordEvents && events) events.push({type:'skipTurn', reason:'milling', side, defId:a.att.defId, uid:a.att.uid}); return true; }
+    if(!e.harvest) return false;
+    const forced = !sk2HasOpposing(players, a);
+    if(!forced && !(rnd() < SK2.harvestChance)) return false;
+    const got = addLumber(players[a.attId], numN(e.harvest, SK2.harvestLumber));
+    ensureStat(stats || {}, side, a.att.defId).lumberGenerated += got;
+    if(recordEvents && events) events.push({type:'sk2', kind:'harvest', side, uid:a.att.uid, defId:a.att.defId, amount:got, forced: forced || undefined});
+    return true;
+  }
+  // After a swing: Pickpocket, Sabotage, Arson on what the swing landed on.
+  function sk2AfterSwing(players, sideOf, a, stats, events){
+    const hit = sk2SwingHit; sk2SwingHit = null; if(!hit || hit.att !== a.att) return;
+    const e = effectsOf(a.att); if(!(e.pickpocket || e.sabotage || e.arson)) return;
+    const me = players[a.attId], foe = players[a.enemyId], side = sideOf(a.attId), tSide = sideOf(a.enemyId), ev = recordEvents && events;
+    const base = {type:'sk2', side, uid:a.att.uid, defId:a.att.defId, targetSide:tSide};
+    if(e.pickpocket){ const n = sk2N(a.att, 'pickpocket', SK2.pickpocketN);
+      if(hit.target === 'hq'){ const took = sk2TakeRes(foe, n); took.forEach(t=>{ me[t.res] = (Number(me[t.res])||0) + t.n; });
+        if(took.length && ev) events.push(Object.assign({}, base, {kind:'pickpocketRes', taken:took, amount:took.reduce((s, t)=> s + t.n, 0)})); }
+      else { const t = hit.target; let left = n; const taken = [];
+        SK2_STEALABLE.forEach(k=>{ if(left <= 0 || !t) return; const have = Math.max(0, Math.floor(Number(t[k])||0)), k2 = Math.min(have, left); if(!(k2 > 0)) return;
+          t[k] = have - k2; a.att[k] = (Number(a.att[k])||0) + k2; left -= k2; taken.push({key:k, n:k2, left:t[k], total:a.att[k]}); });
+        if(taken.length && ev) events.push(Object.assign({}, base, {kind:'pickpocket', targetUid:t.uid, targetDefId:t.defId, taken, amount:n - left})); } }
+    if(e.sabotage){ const lost = sk2TakeRes(foe, sk2N(a.att, 'sabotage', SK2.sabotageN));
+      if(lost.length && ev) events.push(Object.assign({}, base, {kind:'sabotage', lost, amount:lost.reduce((s, t)=> s + t.n, 0)})); }
+    if(e.arson){ const have = Math.max(0, Math.floor(Number(foe.lumber)||0)), k = Math.min(have, sk2N(a.att, 'arson', SK2.arsonN));
+      if(k > 0){ foe.lumber = have - k; if(ev) events.push(Object.assign({}, base, {kind:'arson', amount:k})); } }
+  }
+  // Scavenge / Salvage (from carrionFeed, for every death): the scavengers within 1 of the dead unit gain their points. Salvage counts only
+  // a Structure's death and its points become Stone (addOre: Heavy Metal adds to it).
+  const SK2_SCAV = [{k:'scavenge', fld:'sk2Scavenge', N:'scavengeN', M:'scavengeEvery', pay:'scavengeLumber', range:'scavengeRange', res:'lumber', fx:'sk2Scavenge'},
+    {k:'salvage', fld:'sk2Salvage', N:'salvageN', M:'salvageEvery', pay:'salvageStone', range:'salvageRange', res:'stone', fx:'sk2Salvage', structuresOnly:true}];
+  function sk2ScavengeFeed(players, sideOf, dead, events){
+    if(!dead || !players) return; let dp = null; const deadStruct = isStructureCard(dead);
+    for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
+      for(const c of rowsUnitsOf(pl)){ if(!c || c === dead || c.gap || !(c.hp > 0) || c.cageOf) continue; const e = effectsOf(c);
+        for(const K of SK2_SCAV){ if(!e[K.k] || (K.structuresOnly && !deadStruct)) continue;
+          if(!dp){ dp = sk2PosOf(players, dead); if(!dp) return; }
+          if(!sk2Near(sk2PosOf(players, c), dp, SK2[K.range])) continue;
+          const n = sk2N(c, K.k, SK2[K.N]), mv = Number(e[K.M]), m = mv >= 1 ? Math.round(mv) : Math.max(1, Math.round(SK2[K.M])); if(!(n > 0)) continue;
+          c[K.fld] = (c[K.fld]||0) + n; let got = 0;
+          while(c[K.fld] >= m){ c[K.fld] -= m; got += K.res === 'lumber' ? addLumber(pl, SK2[K.pay]) : addOre(pl, K.res, SK2[K.pay]); }
+          if(recordEvents && events) events.push({type:'statusFx', kind:K.fx, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c[K.fld], gain:got || undefined, res:K.res, lumber:(K.res === 'lumber' && got) || undefined, fromUid:dead.uid}); } } }
+  }
+  // Repair N: the most damaged allied structure within range (not itself), else the bramble at the bramble rate.
+  function sk2Repair(players, sideOf, pl, c, n, stats, events){
+    if(!(n > 0)) return 0; const me = sk2PosOf(players, c);
+    const hurt = rowsUnitsOf(pl).filter(s=> s && s !== c && !s.gap && s.hp > 0 && !s.cageOf && s.hp < s.maxHp && isStructureCard(s) && sk2Near(sk2PosOf(players, s), me, SK2.repairRange));
+    if(hurt.length){ hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
+      const t = hurt[0], h = Math.min(Math.floor(n), t.maxHp - t.hp); if(!(h > 0)) return 0; t.hp += h; healWork++;
+      if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetDefId:t.defId, targetUid:t.uid, amount:h, cause:'repair'});
+      return h; }
+    const i0 = events ? events.length : 0, got = rebuildCastle(players, sideOf, pl.id, c, Math.max(1, Math.floor(n * SK2.repairBrambleRate)), stats, events, 'repair');
+    if(got > 0 && events && events[i0] && events[i0].type === 'rebuild') events[i0].repair = true;
+    return got;
+  }
+  // Foraging N: a Berry a turn; a full basket heals the most damaged other ally.
+  function sk2Forage(players, sideOf, pl, c, stats, events){
+    const side = sideOf(pl.id), need = Math.max(1, Math.round(SK2.foragingBerries)), n = sk2N(c, 'foraging', SK2.foragingN), b0 = c.sk2Berries || 0;
+    c.sk2Berries = Math.min(need, b0 + Math.max(0, Math.round(SK2.foragingGather)));
+    if(c.sk2Berries > b0 && recordEvents && events) events.push({type:'statusFx', kind:'sk2Berry', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:c.defId, targetUid:c.uid, amount:c.sk2Berries - b0, total:c.sk2Berries});
+    if(c.sk2Berries < need || !(n > 0)) return;
+    const hurt = rowsUnitsOf(pl).filter(o=> o && o !== c && !o.gap && o.hp > 0 && !o.cageOf && (o.hp < o.maxHp || o.bleed > 0)); if(!hurt.length) return;
+    hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
+    const t = hurt[0]; c.sk2Berries -= need;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'sk2BerryEat', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:t.defId, targetUid:t.uid, amount:need, total:c.sk2Berries});
+    const h = applyHeal(t, n, side, events);
+    if(h > 0){ const i0 = events ? events.length : 0; fireHealTriggers(players, sideOf, pl.id, c, t, h, stats, events); if(events && events[i0] && events[i0].type === 'heal') events[i0].cause = 'forage'; }
+  }
+  // Fortification: the Palisade token (one derived card per size), built in an empty slot beside its builder.
+  function sk2PalisadeDefOf(){
+    const atk = Math.max(0, Math.round(Number(SK2.fortifyAtk)||0)), hp = Math.max(1, Math.round(Number(SK2.fortifyHp)||1)), id = 'sk2-palisade~' + atk + 'x' + hp;
+    if(!CARD_DEFS[id]){ const look = CARD_DEFS[SK2.fortifyFrom] || {};
+      CARD_DEFS[id] = derivedDefs[id] = {id, name:'Palisade' /* the app shows TX('ui.sk2-palisade-name') */, icon: look.icon || '🪵', art: look.art, attack:atk, health:hp, wait:0, cost:0,
+        rarity:'common', token:true, sk2Palisade:true, archetypes:['Structure'], species:[], effects: Object.assign({}, SK2.fortifyEffects || {})}; }
+    return id;
+  }
+  function sk2Fortify(players, sideOf, pid, src, stats, events){
+    const pl = players && players[pid]; if(!pl || !src || !(src.hp > 0) || !allBoardCards(pl).includes(src)) return null;
+    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(x=> x.slot)), s0 = Number.isInteger(src.slot) ? src.slot : 0;
+      if(used.has(s0 - 1) && used.has(s0 + 1)) return null; } // only right beside it
+    const tok = spawnBeside(players, sideOf, pid, src, sk2PalisadeDefOf(), stats, events, 'sk2Fortify');
+    if(tok && recordEvents && events) events.push({type:'sk2', kind:'fortify', side:sideOf(pid), uid:src.uid, defId:src.defId, tokenUid:tok.uid, tokenDefId:tok.defId, slot:tok.slot});
+    return tok;
+  }
+  // The upkeep actions, every turn while Ready (endOfRoundUpkeep's Ready pass, beside onReadyGold and Rebuild). Milling is a trigger (trigsOf).
+  function sk2ReadyUpkeep(players, sideOf, pl, c, stats, events){
+    const e = effectsOf(c); if(!(e.repair || e.foraging || (e.fortification && SK2.fortifyEvery > 0))) return;
+    if(!c || c.gap || !(c.hp > 0) || c.cageOf || c.wait > 0 || c.stunned || c.frozen > 0 || c.asleep > 0) return;
+    const side = sideOf(pl.id);
+    if(e.repair) sk2Repair(players, sideOf, pl, c, sk2N(c, 'repair', SK2.repairN), stats, events);
+    if(e.foraging) sk2Forage(players, sideOf, pl, c, stats, events);
+    if(e.fortification && SK2.fortifyEvery > 0){ c.sk2FortAge = (c.sk2FortAge||0) + 1; if(c.sk2FortAge % Math.round(SK2.fortifyEvery) === 0) sk2Fortify(players, sideOf, pl.id, c, stats, events); }
+  }
+  // ==== [SK2 END] ====
   function endOfRoundUpkeep(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     sk1PunishTick(players, sideOf, stats, events); // Punish N (2026-10-19, package SK1, flagged): the round's hitters pay first
@@ -6081,7 +6583,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // kill — shares the same bookkeeping object as the onReady damage pass and removeDeadCards.
     const killCredit = {};
     // Explode: a lit fuse, ticking down every round independent of Wait/Stun/Reload.
-    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) a middle- or back-row fuse burns too, and blows at what its swing would find in
+    // its column (the closest row's unit there, else the castle: rowTargetAt), as a front-row one blows at the unit facing it.
+    const eachRow = (pl, fn)=> RESERVE_ACTS ? upkeepUnitsOf(pl).forEach(fn) : ['left','center','right'].forEach(side=> pl.row[side].forEach(fn));
+    [p1,p2].filter(inUpkeep).forEach(pl=> eachRow(pl, c=>{
       if(c.hp<=0 || c.explodeFired || c.explodeRemaining===undefined) return;
       const def = CARD_DEFS[c.defId];
       if(!def.effects || !def.effects.explode) return;
@@ -6089,13 +6594,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.explodeRemaining<=0){
         c.explodeFired = true;
         const dmg = def.effects.explode.damage;
-        const opp = opposingCardOf(players, pl.id, c);
+        const opp = resUnits.has(c) ? (rt=> rt ? {card:rt.card} : null)(rowTargetAt(players[otherId(pl.id)], c.slot)) : opposingCardOf(players, pl.id, c);
         const target = opp ? {kind:'card', card:opp.card} : {kind:'hq'};
         if(recordEvents && events) events.push({type:'explode', side:sideOf(pl.id), defId:c.defId, uid:c.uid,
           targetSide:sideOf(otherId(pl.id)), targetDefId: opp?opp.card.defId:null, targetUid: opp?opp.card.uid:null, dmg});
         fireDamageAction(players, sideOf, pl.id, c.defId, dmg, 'physical', target, stats, events, killCredit, c.uid);
       }
-    })));
+    }));
     const readyNow = [];
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ // + a raid's middle / back rows (2026-10-19, TS; resUnits)
       if(c.reloadRemaining>0){ if(c._reloadJustSet){ c._reloadJustSet = false; } else { c.reloadRemaining -= 1; } } // don't tick down the same round it was set
@@ -6161,7 +6666,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'statusFx', kind:'thaw', side:sideOf(pl.id), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pl.id), targetUid:c.uid, targetDefId:c.defId, left:c.frozen});
         return; } // a freeze counter melts instead of the Wait ticking
       if(c.asleep>0) return; // Asleep: also skip the wait decrement while active, same as Stun
-      if(resUnits.has(c)) return; // a middle / back-row unit's Wait counts down on its action (2026-10-19, TS)
+      if(resUnits.has(c)){ if(c._rowReadyNow){ c._rowReadyNow = false; if(c.wait === 0 && c.hp > 0) readyNow.push({pl, card:c}); } return; } // a middle / back-row unit's Wait counts down on its action (2026-10-19, TS); the one that ran out on it this round is Ready now (2026-10-19, RR)
       // Chronos wait-countdown (2026-09-17, per explicit request): every ordinary decrement
       // that DOESN'T reach 0 pushes its own 'waitTick' event (used purely for the UI's
       // per-round tick pulse + sound on the ring badge) — reaching exactly 0 still only
@@ -6205,16 +6710,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // controls (Ally) and on the opponent's cards (Enemy) the moment THIS card's own Wait
       // reaches 0, same played/spawned-agnostic "reactivity" shape as On Ally/Enemy Spawn.
       const readyEnemy = players[otherId(pl.id)];
-      [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=>c.uid!==card.uid).forEach(src=>{
+      upkeepUnitsOf(pl).filter(c=>c.uid!==card.uid).forEach(src=>{ // + a raid's middle / back rows (2026-10-19, RR)
         runCustomTriggers(players, sideOf, pl.id, src, CARD_DEFS[src.defId], 'onAllyReady', stats, events, {readyCard:card});
       });
       if(readyEnemy){
-        [...readyEnemy.row.left, ...readyEnemy.row.center, ...readyEnemy.row.right].forEach(src=>{
+        upkeepUnitsOf(readyEnemy).forEach(src=>{
           runCustomTriggers(players, sideOf, otherId(pl.id), src, CARD_DEFS[src.defId], 'onEnemyReady', stats, events, {readyCard:card});
         });
       }
     }
-    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    [p1,p2].filter(inUpkeep).forEach(pl=> eachRow(pl, c=>{ // + a raid's middle / back rows: Lumber, Rebuild, Creative, Grace, Darkness while Ready (2026-10-19, RR)
       if(c.wait===0){
         const def = CARD_DEFS[c.defId];
         if(def.effects && def.effects.onReadyGold){
@@ -6225,11 +6730,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
         if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');
+        sk2ReadyUpkeep(players, sideOf, pl, c, stats, events); // Package SK2 (2026-10-19): Milling, Repair, Foraging (and Fortification every K)
         // Creative N (2026-10-18, package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to
         // cards somehow"): every upkeep while Ready, like Rebuild, N Creativity counters go on one random other living unit on its side.
         // c.creativity does nothing else yet (reserved). Event: statusFx kind 'creativity' {attUid, targetUid, amount, total}.
         if(def.effects && def.effects.creative && c.hp > 0 && !c.cageOf){
-          const mates = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(x=> x && x.uid !== c.uid && x.hp > 0 && !x.gap && !x.cageOf && !isStructureCard(x)); // 2026-10-18 (audit 4): not a cage or a structure
+          const mates = upkeepUnitsOf(pl).filter(x=> x && x.uid !== c.uid && x.hp > 0 && !x.gap && !x.cageOf && !isStructureCard(x)); // 2026-10-18 (audit 4): not a cage or a structure; + a raid's middle / back rows (2026-10-19, RR)
           if(mates.length){ const t = mates[Math.floor(rnd()*mates.length)], n = numN(def.effects.creative, 1); t.creativity = (t.creativity||0) + n;
             if(recordEvents && events) events.push({type:'statusFx', kind:'creativity', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:n, total:t.creativity}); }
         }
@@ -6254,7 +6760,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'devilry', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:def.effects.inherentDarkness});
         }
       }
-    })));
+    }));
     chargeTick(players, sideOf, stats, events, inUpkeep);
     removeDeadCards(players, sideOf, killCredit, stats, events);
     prayerTick(players, sideOf, events); // Prayer tokens (2026-10-19, package E): the survivors pray, ready for their owner's next turn
@@ -6267,7 +6773,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function chargeOf(d){ const c = d && d.effects && d.effects.charge; if(!c || typeof c !== 'object') return null; const n = Math.max(1, Math.floor(Number(c.n)||1)); const act = c.do && typeof c.do === 'object' ? c.do : c; return act && act.do ? {n, act} : null; }
   function chargeTick(players, sideOf, stats, events, inUp){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || (inUp && !inUp(pl))) return;
-      allBoardCards(pl).slice().forEach(c=>{ const def = CARD_DEFS[c.defId], ch = chargeOf(def); if(!ch || !(c.hp > 0) || c.cageOf) return;
+      upkeepUnitsOf(pl).slice().forEach(c=>{ const def = CARD_DEFS[c.defId], ch = chargeOf(def); if(!ch || !(c.hp > 0) || c.cageOf) return; // + a raid's middle / back rows (2026-10-19, RR)
         if(c.wait > 0 || c.frozen > 0) return;
         if(c.chargeLeft == null){ c.chargeLeft = ch.n; if(recordEvents && events) events.push({type:'charge', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.chargeLeft, start:true}); return; }
         if(c.stunned || c.asleep > 0) return;
@@ -6370,8 +6876,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-19 (package TS, owner 13:35 "... Fix this and related."): in a raid (RESERVE_ACTS) the middle and back rows fight, so a
     // unit that falls there dies like a front-row one: the deaths stat, its Bounty, the kill credit (Crown of Thorns, Midas, the
     // killer's On Kill), its own On Death triggers, Amore, Carrion, Landslide, Nova, its allies' On Ally Die / Berserk / Divine
-    // Retribution, Hive Mind, the graveyard or the Removal Zone. What would take its slot stays out (no Revive, On Death: Spawn token,
-    // Relic, Crystallise crystal or Meiosis split in a middle / back row: owner call), as RX had it. res = its row (1 middle, 2 back).
+    // Retribution, Hive Mind, the graveyard or the Removal Zone. res = its row (1 middle, 2 back).
+    // 2026-10-19 (package RR, owner 22:10: "all the skills should work as if they were at the front"): and what takes its slot comes too,
+    // into that same row: Revive (it comes back in its row's slot), the On Death: Spawn tokens, a Crystallise crystal, a Relic and the
+    // Meiosis halves (the first into its slot, the rest the nearest free slots of its row: rowFreeSlotNear). (Was TS/RX: none of them.)
     if(RESERVE_ACTS) [p1,p2].forEach(pl=>{ if(pl && pl.reserve) pl.reserve.forEach((rw, i)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp <= 0) deadEntries.push({pl, side:null, card:c, res:i + 1}); })); });
     if(!deadEntries.length) return;
     const deadCards = new Set(deadEntries.map(d=> d.card)); // 2026-10-19: see the row filter below
@@ -6409,7 +6917,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // revive that sets off a death that sets off a revive... stops at layer 5 like any chain. Rescue (a unit taken out of harm
       // before it would die) is NOT a death: nothing above happens (no engine effect rescues yet; see docs/decisions.json).
       // (Was 2026-10-18: no death bookkeeping at all, only the killer's On Kill.)
-      const reviving = !!(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified && !res); // a Nullify kill: no Revive (2026-10-14); not in a middle / back row (2026-10-19, TS)
+      const reviving = !!(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified); // a Nullify kill: no Revive (2026-10-14); a middle / back-row unit revives in its row's slot too (2026-10-19, RR; TS had it off)
       const rv = reviving ? {pl, side, card, slot: card.slot, entry: null} : null; if(rv) revives.push(rv);
       ensureStat(stats, mySide, card.defId).deaths += 1;
       // Devilry (2026-10-10): every unit that perishes counts toward Rituals, and gives its owner 1 Darkness.
@@ -6450,8 +6958,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // uid (2026-09-16, item #3): the dying card's own uid, so the UI can drop the "item drop" VFX from where its tile still is.
         if(recordEvents && events) events.push({type:'bounty', side:side2, amount:bounty, fromDefId:card.defId, uid:card.uid});
       }
-      if(cdef.effects && cdef.effects.onDeathSpawn && !nulled && !res){
-        spawns.push({pl, side, slot: rv ? null : card.slot, beside: !!rv /* a reviving unit keeps its slot: the tokens go to a flank (2026-10-19) */, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
+      if(cdef.effects && cdef.effects.onDeathSpawn && !nulled){ // + a middle / back row: into that row (res, 2026-10-19 RR)
+        spawns.push({pl, side, res, src:card, slot: rv ? null : card.slot, near: card.slot, beside: !!rv /* a reviving unit keeps its slot: the tokens go to a flank (2026-10-19) */, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
         ensureStat(stats, mySide, card.defId).spawnedTokens += (cdef.effects.onDeathSpawn.count||1);
       }
       // move to graveyard (unless a custom onDeath trigger exiles it instead, OR this card
@@ -6470,19 +6978,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       } else {
         pl.graveyard.push(zoneEntry);
       }
-      if(card.equipment && !rv) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11); a reviving unit keeps it (2026-10-19)
+      if(card.equipment && !rv) eqDrop(pl, card, sideOf, events); // its equipment stays in the slot (EQ, 2026-10-19; was: falls with it, 2026-10-11); a reviving unit keeps it (2026-10-19)
       if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
       // Nova N and Crystallise N (2026-10-16): a burst of magic at every enemy unit; a 0/N crystal left in its slot.
       if(cdef.effects && cdef.effects.nova && !nulled) novaBurst(players, sideOf, pl.id, card, w2N(cdef, 'nova'), stats, events);
-      if(cdef.effects && cdef.effects.crystallise && !nulled && !card.cageOf && !rv && !res){ const cn = w2N(cdef, 'crystallise'); if(cn > 0) spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:crystalDefOf(card.defId, cn), count:1, kind:'crystal'}); } // not on a Revive death (2026-10-19)
+      if(cdef.effects && cdef.effects.crystallise && !nulled && !card.cageOf && !rv){ const cn = w2N(cdef, 'crystallise'); if(cn > 0) spawns.push({pl, side, res, src:card, slot:card.slot, near:card.slot, fromUid:card.uid, defId:crystalDefOf(card.defId, cn), count:1, kind:'crystal'}); } // + a middle / back row (2026-10-19, RR) // not on a Revive death (2026-10-19)
       // Relic (2026-10-19, package E): an Ecclesia card leaves its 1/1 ghost in its slot (relicDefOf). Its Prayer tokens are not passed on.
-      if(cdef.effects && cdef.effects.relic && !nulled && !card.cageOf && !card.sacrificed && !rv && !res) relics.push({pl, side, slot:card.slot, fromUid:card.uid, defId:relicDefOf(card.defId)});
+      if(cdef.effects && cdef.effects.relic && !nulled && !card.cageOf && !card.sacrificed && !rv) relics.push({pl, side, res, src:card, slot:card.slot, fromUid:card.uid, defId:relicDefOf(card.defId)}); // + a middle / back row (2026-10-19, RR)
       // who:'killer' (2026-10-14, user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the unit whose hit
       // killed it, if it still stands; nothing when it died some other way (poison, bleed, the weather...).
       const killerCard = card.killedBy != null ? [p1, p2].map(p=> rowsUnitsOf(p).find(x=> x.uid === card.killedBy && x.hp > 0)).find(Boolean) || null : null; // + the middle / back rows (2026-10-19, TS)
       if(!nulled) runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events, {killerCard});
       // Meiosis N (2026-10-14): it splits in two once the board has cleared its dead (see the splits pass below)
-      if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf && !rv && !res) splits.push({pl, side, slot:card.slot, card});
+      if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf && !rv) splits.push({pl, side, slot:card.slot, card, res}); // + a middle / back row (2026-10-19, RR)
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
       // effect. Evaluated against the board as it stands right now in this same dead-cards
@@ -6541,6 +7049,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // other token, and is no spawn: no On Ally / Enemy Spawn, no Ambush, Sentry or trap (it is marked as already seen by watchScan),
     // no Echoing Wood copy. The event is a 'spawn' (kind 'relic') only so the board's replay draws it appearing where its unit fell.
     relics.forEach(r=>{ const tok = makeBoardCard(r.defId); tok.relicLeftover = true;
+      if(r.res){ const sl = rowFreeSlotNear(r.pl, r.res, r.slot, true); if(sl === null) return; rowPut(r.pl, r.res, sl, tok, r.src); tok._seenAt = sl; // its middle / back row (2026-10-19, RR)
+        if(recordEvents && events) events.push({type:'spawn', side:sideOf(r.pl.id), defId:r.defId, count:1, cause:'onDeathSpawn', kind:'relic', relic:true, placements:[{uid:tok.uid, lane:null, row:r.res, slot:sl}], fromUid:r.fromUid}); return; }
       let lane = r.side; if(slotMode && Number.isInteger(r.slot) && !allBoardCards(r.pl).some(c=> c.slot === r.slot)) tok.slot = r.slot; else if(slotMode) lane = flankOrShorter(r.pl, r.side);
       r.pl.row[lane].push(tok); syncSlots(r.pl); tok._seenAt = slotMode ? tok.slot : 0;
       if(recordEvents && events) events.push({type:'spawn', side:sideOf(r.pl.id), defId:r.defId, count:1, cause:'onDeathSpawn' /* the board's replay draws it like a death token */, kind:'relic', relic:true, placements:[{uid:tok.uid, lane: findCardSide(r.pl, tok.uid) || lane}], fromUid:r.fromUid}); });
@@ -6561,6 +7071,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const placements = [];
       const spawnedTokens = [];
       const echoN = (!s.kind && s.pl.perks && s.pl.perks.echo && !quietStills(null, sideOf(s.pl.id), events, 'echo')) ? (s.pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood" (not for a crystal, 2026-10-16; not under Quiet Contemplation, 2026-10-19)
+      if(s.res){ // a middle / back-row death (2026-10-19, RR): the tokens go into that row, the first into its slot (a Revive's: beside it)
+        for(let i=0;i<s.count+echoN;i++){ const sl = rowFreeSlotNear(s.pl, s.res, s.near, i === 0 && !s.beside); if(sl === null) break;
+          const tok = rowPut(s.pl, s.res, sl, makeBoardCard(s.defId), s.src); placements.push({uid:tok.uid, lane:null, row:s.res, slot:sl}); spawnedTokens.push(tok); }
+        if(recordEvents && events && spawnedTokens.length) events.push(Object.assign({type:'spawn', side:sideOf(s.pl.id), defId:s.defId, count:spawnedTokens.length, cause:'onDeathSpawn', placements, fromUid:s.fromUid, row:s.res}, s.kind ? {kind:s.kind} : {}));
+        spawnedTokens.forEach(tok=> fireSpawnFamilyTriggers(players, sideOf, s.pl.id, tok, stats, events, 'spawned'));
+        return; }
       for(let i=0;i<s.count+echoN;i++){
         const side = (i===0 && !s.beside) ? s.side : flankOrShorter(s.pl, s.side);
         const tok = makeBoardCard(s.defId);
@@ -6613,11 +7129,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Quiet Contemplation (2026-10-19, package RV): no extra turns. Every waiting Fast Forward counter (Fast Forward N, the Tailwind
     // spell) is spent with nothing done, one 'quiet' line per unit.
     if(quietOn()){ for(const pid of order){ const pl = players[pid]; if(!pl) continue;
-        allBoardCards(pl).forEach(c=>{ if(!c || !(c.ffCounters > 0)) return; if(c.hp > 0) quietStills(c, sideOf(pid), events, 'fastForward'); c.ffCounters = 0; }); }
+        upkeepUnitsOf(pl).forEach(c=>{ if(!c || !(c.ffCounters > 0)) return; if(c.hp > 0) quietStills(c, sideOf(pid), events, 'fastForward'); c.ffCounters = 0; }); }
       return false; }
     for(const pid of order){
       const pl = players[pid]; if(!pl) continue;
-      for(const c of allBoardCards(pl).slice()){
+      for(const c of upkeepUnitsOf(pl).slice()){ // + a raid's middle / back rows: an extra turn is its row swing (resolveCombat's onlyUid pass), 2026-10-19 RR
         if(!c || c.hp <= 0 || !(c.ffCounters > 0)) continue;
         if(c.stunned || c.frozen > 0 || c.asleep > 0 || c.cageOf){ c.ffCounters = 0; continue; }
         if(recordEvents && events) events.push({type:'fastForward', side:sideOf(pid), defId:c.defId, uid:c.uid, n:c.ffCounters});
@@ -6667,23 +7183,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(const pid of [first, otherId(first)]){
       const pl = players[pid]; if(!pl || !Array.isArray(pl.boomerangs) || !pl.boomerangs.length) continue;
       const keep = [];
-      pl.boomerangs.forEach(b=>{ const thrower = allBoardCards(pl).find(c=> c && c.uid === b.uid && c.hp > 0); const spd = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0));
+      pl.boomerangs.forEach(b=>{ const thrower = rowsUnitsOf(pl).find(c=> c && c.uid === b.uid && c.hp > 0); const spd = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0)); // + a middle / back-row thrower (2026-10-19, RR)
         if(minSpeed == null || spd > minSpeed) go.push({pid, b, spd}); else keep.push(b); });
       pl.boomerangs = keep;
     }
     go.sort((x, y)=> y.spd - x.spd); // stable: on a tie the side with initiative goes first
     for(const {pid, b} of go){
       const pl = players[pid], foeId = otherId(pid), foe = players[foeId]; if(!foe) continue;
-      const thrower = allBoardCards(pl).find(c=> c && c.uid === b.uid && c.hp > 0) || null;
-      const dmg = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0)), dmgType = b.dmgType || 'physical';
-      let lane = b.col; if(thrower){ const lc = liveColOf(pl, thrower.uid); if(lc) lane = lc.col; }
+      // 2026-10-19 (package RR): a boomerang thrown from a middle or back row (b.row) flies home the same way: the thrower found in its row,
+      // the far end's target in any row, its return at that row's share (ROW_SWING_SHARE, like the throw), and home is its own row's lane.
+      const thrower = rowsUnitsOf(pl).find(c=> c && c.uid === b.uid && c.hp > 0) || null;
+      const dmg0 = Math.max(0, thrower ? (thrower.atk||0) : (b.dmg||0)), dmg = b.row ? rowShareOf(dmg0) : dmg0, dmgType = b.dmgType || 'physical';
+      let lane = b.col; if(thrower){ const lc = liveColOf(pl, thrower.uid); if(lc) lane = lc.col; else if(b.row && Number.isInteger(thrower.slot)) lane = thrower.slot; }
       if(recordEvents && events) events.push({type:'boomerangReturn', side:sideOf(pid), defId:b.defId, uid:b.uid, thrownBy: thrower ? thrower.uid : null, speed: dmg});
       // the far end: the same target again
       if(b.hitCastle){
         const d = damageHQ(foe, dmg);
         if(recordEvents && events) events.push({type:'hitHQ', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), dmg:d, boomerang:true});
       } else {
-        const tgt = b.targetUid != null ? allBoardCards(foe).find(c=> c && c.uid === b.targetUid && c.hp > 0) : null;
+        const tgt = b.targetUid != null ? rowsUnitsOf(foe).find(c=> c && c.uid === b.targetUid && c.hp > 0) : null; // + the middle / back rows (2026-10-19, RR)
         if(tgt){
           const r = damageCard(tgt, dmg, dmgType, null);
           ensureStat(stats, sideOf(foeId), tgt.defId).taken += r.dmg; ensureStat(stats, sideOf(pid), b.defId).dealt += r.dmg;
@@ -6693,7 +7211,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       removeDeadCards(players, sideOf, {}, stats, events);
       if(foe.hq.hp <= 0) return true;
       // home
-      const stillThere = thrower && thrower.hp > 0 && allBoardCards(pl).includes(thrower);
+      const stillThere = thrower && thrower.hp > 0 && rowsUnitsOf(pl).includes(thrower);
       if(stillThere){
         thrower._boomerangCombat = combatNo; thrower.boomerangOut = false; // catching it is its attack this round
         if(recordEvents && events) events.push({type:'boomerangCaught', side:sideOf(pid), uid:thrower.uid, defId:thrower.defId});
@@ -6704,7 +7222,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'banana', action:'eat', bananarang:true, side:sideOf(pid), uid:thrower.uid, defId:thrower.defId, amount:healed, n:numN(br, 3)});
           if(healed > 0) fireHealTriggers(players, sideOf, pid, thrower, thrower, healed, stats, events); }
       } else {
-        const myCols = combatColumnsOf(pl), home = myCols[lane] && myCols[lane].kind === 'card' ? myCols[lane].card : null;
+        const myCols = b.row ? rowColsOf(pl, b.row) : combatColumnsOf(pl), home = myCols[lane] && myCols[lane].kind === 'card' ? myCols[lane].card : null; // its own row's lane (2026-10-19, RR)
         if(home && home.hp > 0){
           if(isBoomerangDef(CARD_DEFS[home.defId])){ if(recordEvents && events) events.push({type:'boomerangCaught', side:sideOf(pid), uid:home.uid, defId:home.defId}); }
           else {
@@ -6727,10 +7245,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     curPlayers = players;
     if(events){ shieldEvents = events; shieldSideOf = sideOf; }
     if(!pass){ combatNo++;
+      if(RESERVE_ACTS) rowArrivals(players, sideOf, stats, events); // a raid's middle / back-row arrivals (2026-10-19, RR)
       startCower(players, sideOf, events); // Cower (2026-10-14): hit last round -> cower this round, before anyone acts
       const hasBoom = ()=> [1,2].some(pid=> players[pid] && Array.isArray(players[pid].boomerangs) && players[pid].boomerangs.length);
       if(hasBoom()){ // faster than the quickest Fast Forward unit: before it (see boomerangReturnPass)
-        let ffMax = 0; for(const pid of [1,2]){ const pl = players[pid]; if(pl) allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && (c.ffCounters||0) > ffMax) ffMax = c.ffCounters; }); }
+        let ffMax = 0; for(const pid of [1,2]){ const pl = players[pid]; if(pl) upkeepUnitsOf(pl).forEach(c=>{ if(c && c.hp > 0 && (c.ffCounters||0) > ffMax) ffMax = c.ffCounters; }); }
         if(boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide, ffMax)) return true; }
       curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
     // Swimmer and Tailwind (2026-10-12, user: "Tide should power up swimmers with +1 speed (attack faster, like Fast
@@ -6739,12 +7258,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!pass) firstBloodTaken = false; // a new round: first blood is up for grabs again
     if(!pass){ const flow = tideRising(), wind = isWindy(); // strong wind: the Flyers on the Tailwind side get the extra turn (2026-10-13)
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
-        for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
+        for(const c of upkeepUnitsOf(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {}; // + a raid's middle / back rows (2026-10-19, RR)
           const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying && !ashyNow() && windSideOf(pid) === 'tail') ? 'tailwind' : null; if(!why) continue; // no Tailwind while Ashy (2026-10-17)
           if(quietStills(c, sideOf(pid), events, why)){ c._speedCombat = combatNo; continue; } // Quiet Contemplation (2026-10-19): no extra turn
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
-    if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
+    if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && upkeepUnitsOf(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; } // + a raid's middle / back rows (2026-10-19, RR)
       if(anyFF && fastForwardPass(players, sideOf, stats, events, firstAttackerSide)) return true;
       if([1,2].some(pid=> players[pid] && Array.isArray(players[pid].boomerangs) && players[pid].boomerangs.length) && boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide)) return true; // the slower ones
       curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
@@ -6782,7 +7301,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // one volley before it. Units that arrive or turn Ready later this round shoot from next round, as before.
     const shotPool = new Map(); // uid -> {att, attId}
     [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
-      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); }); });
+      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); });
+      // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) a middle- or back-row shooter shoots too, as at the front (its shot aims from its
+      // column: opposingCardOf / arrowTargetOf), at its column's place in the order, after that column's front row.
+      if(RESERVE_ACTS && pl.reserve) pl.reserve.forEach((rw, i)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId, row:i + 1}); })); });
     // The reserve rows' actions (2026-10-18, RESERVE_ACTS): every reserve unit on the board as the round starts gets one, in the main order.
     const reservePool = new Map(); // uid -> {att, attId, row, slot}
     // 2026-10-19 (package TS): or the one reserve unit a single-unit pass names (reserveVolley's strikes, onlyUid), raid or not.
@@ -6906,7 +7428,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.stunned){ skipTurn('stunned', c, ownId); return false; }
       if(c.frozen>0){ if(!frozeNoted.has(c.uid)){ frozeNoted.add(c.uid); skipTurn('frozen', c, ownId); } c._frozenJustSet = false; return false; }
       if(c.asleep>0){ skipTurn('asleep', c, ownId); return false; }
-      if(c.wait > 0){ c.wait -= 1; return false; }
+      // 2026-10-19 (package RR): the Wait that runs out on its action makes it Ready as at the front: the round's upkeep gives it its
+      // 'ready' and its On Ready skills (endOfRoundUpkeep's readyNow, _rowReadyNow); a Boomerang it caught this round was its action.
+      if(c.wait > 0){ c.wait -= 1; if(c.wait === 0) c._rowReadyNow = true; return false; }
+      if(c._boomerangCombat === combatNo && !passOnlyUid) return false;
       if(c.reloadRemaining>0){ skipTurn('reload', c, ownId); return false; }
       if(c.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', c, ownId); return false; }
       if(c.chained){ skipTurn('chained', c, ownId); return false; }
@@ -6935,8 +7460,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
       shotPool.forEach((meta, uid)=>{ // 2026-10-17: the Speed 1 shot actions (see shotPool above)
         if(!(meta.att.hp > 0)){ shotPool.delete(uid); return; }
-        const pos = liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; }
-        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: SHOT_SPEED, shot:true});
+        const pos = meta.row ? (reserveRowOf(players[meta.attId], meta.att) === meta.row ? meta.att.slot : null) : liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; } // a row shooter: its column (2026-10-19, RR)
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: SHOT_SPEED, shot:true, shotRow: meta.row || 0});
       });
       reservePool.forEach((meta, uid)=>{ // 2026-10-18: a reserve unit acts at its own column, after that column's front row (resRow below)
         const rw = players[meta.attId].reserve[meta.row - 1]; if(!rw || rw[meta.slot] !== meta.att || !(meta.att.hp > 0)){ reservePool.delete(uid); return; }
@@ -6954,7 +7479,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const ra = speedRank(a), rb = speedRank(b);
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
-        if((a.reserve||0) !== (b.reserve||0)) return (a.reserve||0) - (b.reserve||0); // one column: the front row, then the middle, then the back (2026-10-18)
+        if((a.reserve||a.shotRow||0) !== (b.reserve||b.shotRow||0)) return (a.reserve||a.shotRow||0) - (b.reserve||b.shotRow||0); // one column: the front row, then the middle, then the back (2026-10-18; + a row's shots, 2026-10-19 RR)
         if(a.uid===b.uid) return a.shot ? -1 : 1; // one unit at Speed 1 both ways: it shoots, then swings
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
@@ -7020,10 +7545,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Kill, Crown of Thorns or Midas). Now it is this loop's own swing (rowSwing below): it may act when a front-row unit could
       // (rowSwingReady: Stunned, Frozen, Asleep, Paralyzed, Reload... skip it; Waiting, it counts its Wait down instead, as before), and
       // its swing runs every hook below, at the unit RX's rule picks (the closest row's unit in its column, else the bramble), for half
-      // its swing rounded up (rowHalf). Swing shapes that read the front row's geometry stay off for it (Taunt, Backstab, Crab Claws,
-      // Fork / Trident / Pitchfork, Octolash, Tipsy's drift, Wave, Bloodlust's leap, a Boomerang throw, Rook / Bishop lane bonuses);
-      // Cleave (Sweep) strikes the neighbours in the struck unit's own row. Its events stay volleyHit / volleyCastle (the page's
-      // raid strike replay, raidStrikeVfx).
+      // its swing rounded up (rowHalf). (TS left the swing shapes that read the front row's geometry off for it; since 2026-10-19,
+      // package RR, every one of them works on the row it aims at: see rowAim below.) Cleave (Sweep) strikes the neighbours in the
+      // struck unit's own row. Its swing proper's events stay volleyHit / volleyCastle (the page's raid strike replay, raidStrikeVfx);
+      // its prongs, lashes and Cleave side hits are ordinary 'hit' events, as at the front.
       if(a.reserve && !rowSwingReady(a.att, a.attId)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // Snapshot taken BEFORE this iteration can credit any new kills, so reflowAfterKills()
       // can tell "died just now, this turn" apart from "was already dead/credited earlier
@@ -7031,6 +7556,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Confused (2026-10-19, package FZ, owner 23:32): its swing is an action, so 1 in 2 it fumbles: no swing, no On Attack, no
       // on-hit skill, no Bleed tick from swinging (Confuse had no other effect on the swing, so this is the whole rule for it).
       if(confusedFumbles(a.att, sideOf(a.attId), events, 'attack')){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
+      if(sk2SwingReplaced(players, sideOf, a, stats, events)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package SK2 (2026-10-19): Harvest instead of the swing
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
       currentAttacker = a.att;
       const attDef = sk1Unhide(a.att, CARD_DEFS[a.att.defId]); // an Exposed Stealth unit swings as anyone does (2026-10-19, package SK1)
@@ -7078,7 +7604,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // If an earlier attacker's kill this same round already caused this card to fall toward
       // center (or its flank to close up), it now swings from wherever it actually stands.
       const rowSwing = a.reserve || 0; // its row (1 middle, 2 back), 0 for the front row (2026-10-19, TS)
-      const rowHalf = n=> rowSwing ? Math.ceil(n / 2) : n; // a middle / back-row swing lands for half, rounded up (as its strike did since 2026-10-17)
+      const rowHalf = n=> rowSwing ? rowShareOf(n) : n; // a middle / back-row swing lands for ROW_SWING_SHARE (half), rounded up (as its strike did since 2026-10-17; one constant since 2026-10-19, RR)
       // Its events keep the shape the page's raid replay reads (2026-10-17): a hit is a volleyHit, a castle hit a volleyCastle, a dodge
       // an evaded with volley / row / targetRow. A front-row swing's events are unchanged.
       const rowEv = o=>{ if(!rowSwing || !o) return o;
@@ -7090,7 +7616,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const liveSelf = rowSwing ? {col:a.slot, dir:0} : liveColOf(players[a.attId], a.att.uid);
       if(!liveSelf){ pending = pickNextAttacker(); continue; } // shouldn't happen (hp>0 just checked), but nothing to attack from
       const liveOwnCols = rowSwing ? rowColsOf(players[a.attId], rowSwing) : combatColumnsOf(players[a.attId]); // its own row (Inspiring / Friction's neighbours)
-      const liveEnemyCols = combatColumnsOf(players[a.enemyId]);
+      // 2026-10-19 (package RR, owner 22:10: "Raid: Back units cleave the same way as the front units. And all the skills should work as
+      // if they were at the front okay!"): a middle- or back-row swing aims at a row: the closest enemy row holding a unit in its column
+      // (rowTargetAt, the row it strikes), else the front row (nothing in its column anywhere: it faces the front row, as a front-row
+      // unit with an empty column does). Every swing shape is worked out on that row's map exactly as a front-row swing's is on the
+      // enemy front row: Fork / Trident / Pitchfork lines (its column ±1 / ±2 in that row), Crab claws (L / R in that row), Tipsy's
+      // drift, Octolash's 8 nearest (in that row), Rook / Bishop lane bonuses, Taunt (a Taunt unit in that row, within a column, draws
+      // it), Backstab (the nearest unit in that row; none there: the closest other row's nearest). (Was TS: all of these off.)
+      let rowAim = 0; if(rowSwing){ const rt0 = rowTargetAt(players[a.enemyId], a.slot); rowAim = rt0 ? rt0.row : 0; }
+      let liveEnemyCols = rowAim ? rowColsOf(players[a.enemyId], rowAim) : combatColumnsOf(players[a.enemyId]);
       // Stealth: ignores normal targeting entirely and always hits the enemy HQ directly.
       let target = (attDef.effects && (attDef.effects.stealth || (attDef.effects.rainrunner && field && field.id === 'rain'))) ? {kind:'hq'} : rowSwing ? rowSwingTarget(players[a.enemyId], a.slot) : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col); // Rainrunner: unblockable in the rain (2026-10-12)
       // Trident / Pitchfork / Octolash (2026-10-12, user: "Maybe Pitchfork is Trident + Pierce. Trident is Sweep ... When a unit
@@ -7098,14 +7632,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Octolash - hit 8 nearest opposing units in front of this unit"). Trident strikes the unit in front and both columns
       // beside it with its full Attack; an empty side column takes that prong to the castle. Pitchfork is a Trident whose
       // prongs ignore Armour. Octolash lashes the 8 enemy units nearest it (front first), full Attack each, never the castle.
-      const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth && !rowSwing);
+      const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth); // + a middle / back-row swing, on its row (2026-10-19, RR)
       // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
       // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
       // one), never the castle (no enemy units: it holds its swing), and hits for N more when that unit isn't the one
       // directly in front of it.
       let backstabBonus = 0;
-      if(attDef.effects && Number(attDef.effects.backstab) > 0 && !attDef.effects.stealth && !rowSwing){
-        const near = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, liveEnemyCols, liveSelf.col);
+      if(attDef.effects && Number(attDef.effects.backstab) > 0 && !attDef.effects.stealth){ // + a middle / back-row swing (2026-10-19, RR)
+        let near = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, liveEnemyCols, liveSelf.col);
+        // In a raid (RESERVE_ACTS) a row with no unit at all is passed over for the closest row that has one (2026-10-19, RR: "never
+        // the castle" held a raid Backstab's swing whenever the enemy front row was empty, whatever stood behind it).
+        if(!near && RESERVE_ACTS && slotMode) for(let r = 0; r <= RESERVE_ROWS && !near; r++){ if(r === rowAim) continue; const cols = rowColsOf(players[a.enemyId], r);
+          const nr = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, cols, liveSelf.col); if(nr){ near = nr; liveEnemyCols = cols; rowAim = r; } }
         target = near ? near.entry : null;
         if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
       }
@@ -7115,7 +7653,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // fitting."): each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one).
       // Neither side has a unit: it attacks straight ahead as normal (the unit in front, or the castle). (Was: alternating
       // left/right, and a wasted pinch with a unit in front.)
-      if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0) && !rowSwing){
+      if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0)){ // + a middle / back-row swing, its row's L / R (2026-10-19, RR)
         const lanesC = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
         const has = col=>{ const en = col != null ? liveEnemyCols[col] : null; return !!(en && en.kind==='card' && en.card && en.card.hp > 0); };
         // 2026-10-17 (user: "Crab claws effect is: normal attacks always attack L or R, 50%, random."): a coin flip picks the side; if that side
@@ -7132,7 +7670,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Taunt (2026-10-16, user: "Add a sheep card (basic) - it has taunt."): an enemy Taunt unit facing it or one column beside it
       // draws the swing, even one that was going to the castle. Stealth slips past it; Octolash lashes its usual 8.
       let tauntDrew = null; // the Taunt unit that drew this swing (Fork keeps it among its lines, 2026-10-17)
-      if(target && !(attDef.effects && attDef.effects.stealth) && !octoAtk && !rowSwing){
+      if(target && !(attDef.effects && attDef.effects.stealth) && !octoAtk){ // + a middle / back-row swing: a Taunt unit in the row it aims at (2026-10-19, RR)
         const tt = tauntTargetOf(liveOwnCols, liveEnemyCols, liveSelf.col);
         if(tt && !(target.kind === 'card' && target.card && target.card.uid === tt.card.uid)){ target = tt; tauntDrew = tt;
           if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); }
@@ -7159,7 +7697,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // prongs (forkStrike), never the castle. Interlocked ranks (Collapse mode): Fork's L / R are the two enemies it stands between;
       // Trident / Pitchfork count their lines from the unit its swing picks. (Was 2026-10-15: the 2 / 3 / 4 nearest units within 1 / 1 / 2
       // columns, every one at full damage.) An empty line is a thrust at thin air. The forkSwing event lists every line for the picture.
-      const prongSpec = (target && !rowSwing && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
+      const prongSpec = (target && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
       let prongCols = [], forkPlan = null;
       const halfAtk = n=> n > 0 ? Math.max(1, Math.floor(n / 2)) : 0;
       if(prongSpec){
@@ -7193,7 +7731,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Tipsy (2026-10-11, user: "Tipsy means attacks L, Centre or R, randomly"): the swing drifts one column left, stays,
       // or drifts right at random. A drift onto an empty column misses (the castle is never hit by a stumble).
       let tipsyMiss = false;
-      if(target && a.att.tipsy>0 && !prongSpec && !rowSwing && !(attDef.effects && attDef.effects.stealth)){ // Fork / Trident / Pitchfork prongs don't stumble (2026-10-12; all three 2026-10-15)
+      if(target && a.att.tipsy>0 && !prongSpec && !(attDef.effects && attDef.effects.stealth)){ // + a middle / back-row swing, drifting along its row (2026-10-19, RR) // Fork / Trident / Pitchfork prongs don't stumble (2026-10-12; all three 2026-10-15)
         const d = [-1, 0, 1][Math.floor(rnd()*3)];
         if(d){ const baseCol = (target.kind==='card' && target.col!=null) ? target.col : liveSelf.col, col = baseCol + d, e = liveEnemyCols[col];
           if(e && e.kind==='card' && e.card.hp>0){ e.col = col; target = e; } else tipsyMiss = true;
@@ -7203,11 +7741,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // first. Only if nothing, does it hit the opposing bramble."): in a raid (RESERVE_ACTS), a front-row swing with nothing to hit in
       // the enemy's front row in its column goes on to the middle row's unit there, then the back row's (rowTargetAt), and reaches the
       // bramble only when no row holds one. Stealth / Rainrunner (unblockable) and Crab claws (never straight ahead) keep their castle.
-      // A Sweep's side hits and a Wave's push only work on a front-row target (resTarget turns them off).
+      // (A Sweep's side hits go along the struck unit's row (sweepCols); a Wave pushes it along that row (washPush, 2026-10-19 RR).)
       let resTarget = !!(target && target.reserveRow); // a row swing's target in the middle / back row (2026-10-19, TS)
       if(RESERVE_ACTS && target && target.kind === 'hq' && !tipsyMiss && !(attDef.effects && (attDef.effects.stealth || attDef.effects.crabClaws || (attDef.effects.rainrunner && field && field.id === 'rain')))){
         const rt = rowTargetAt(players[a.enemyId], liveSelf.col);
-        if(rt && rt.row > 0){ target = {kind:'card', card:rt.card, col:liveSelf.col, reserveRow:rt.row}; resTarget = true; }
+        if(rt && rt.row > 0){ target = {kind:'card', card:rt.card, col:liveSelf.col, reserveRow:rt.row}; resTarget = true;
+          // 2026-10-19 (package RR): "Taunt: units in any row with Taunt draw attacks aimed at their row": the swing now goes at that row,
+          // so a Taunt unit there, within a column of it, draws it (as a front-row Taunt unit draws a swing at the front row).
+          if(!octoAtk && !tauntDrew){ const tc = rowColsOf(players[a.enemyId], rt.row), tt = tauntTargetOf(liveOwnCols, tc, liveSelf.col);
+            if(tt && tt.card.uid !== rt.card.uid){ target = {kind:'card', card:tt.card, col:tt.col, reserveRow:rt.row}; tauntDrew = tt;
+              if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); } } }
       }
       if(!target || tipsyMiss){ pending = pickNextAttacker(); continue; }
       if(a.att.invisible > 0){ a.att.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(a.attId), uid:a.att.uid, defId:a.att.defId, attacked:true}); } // Invisible (2026-10-16): attacking gives it away
@@ -7273,7 +7816,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // line (2026-10-17): a Fork / Trident / Pitchfork line {off, half}: a half line strikes for half the Attack; its events name the swing.
       const forkStrike = (flankCol, castleOk, prong, line)=>{ if(castleOk === undefined) castleOk = false;
             const lineTag = o=> (line && forkPlan) ? Object.assign(o, {forkSwing:forkPlan.id, forkLine:line.off, half: line.half || undefined}) : o;
-            const strikeAtk = (line && line.half) ? halfAtk(atkThisRound) : atkThisRound;
+            const strikeAtk = (line && line.half) ? halfAtk(atkThisRound) : atkThisRound; // (a middle / back-row swing's prong: its row share, rowHalf below, 2026-10-19 RR)
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
@@ -7283,8 +7826,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
               const c2GuardianRedirect = c2.uid !== c2raw.uid;
-              const r3 = damageCard(c2, strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
-              aStat.dealt += r3.dmg;
+              const r3 = damageCard(c2, rowHalf(strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol)), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
+              aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
               if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
@@ -7353,7 +7896,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
-        const laneBonus = rowSwing ? 0 : laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col);
+        const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col); // + a middle / back-row swing, on the row it aims at (2026-10-19, RR)
         const swingAmt0 = ((mainHalf ? halfAtk(atkThisRound) : atkThisRound) + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1); // a half line (2026-10-17)
         const swingAmt = rowHalf(bloodlustHalves(a.att, defCard) ? Math.ceil(swingAmt0 / 2) : swingAmt0); // Bloodlust (2026-10-17): half on Structures; a row swing: half (2026-10-19, TS)
         const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, swingAmt, dmgType, a.att);
@@ -7427,6 +7970,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
           if(base - (defCard.armorLoss||0) > 0){ defCard.armorLoss = Math.min(base, (defCard.armorLoss||0) + attDef.effects.perforate); if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.perforate}); } }
+        eqPryHit(attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // Pry N (EQ, 2026-10-19): strips N Armor for good
         // Corrode (status, 2026-09-17): stacks like Poison/Bleed, but saps effective Attack
         // instead of dealing damage — see effAtk/endOfRoundUpkeep for the read/decay sides.
         // Unlike Poison/Bleed (silent on application, only their periodic tick is logged),
@@ -7458,7 +8002,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
         if(attDef.effects && attDef.effects.brittle && defCard.hp > 0) brittleUnit(a.att, defCard, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
         if(!nullHit) wiltOnHit(defCard, sideOf(a.enemyId), events); // Wilting (2026-10-16): the unit that was hit
-        if(attDef.effects && attDef.effects.wave && defCard.hp>0 && !resTarget && !rowSwing) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
+        if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
         if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
@@ -7492,7 +8036,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(defCard.hp<=0){
           if(!killCredit[defCard.uid]) killCredit[defCard.uid] = new Set();
           killCredit[defCard.uid].add(statKey(mySide, a.att.defId));
-          if(attDef.effects && attDef.effects.bloodlust && slotMode && !rowSwing && !resTarget && defCard.slot === a.att.slot) a.att._bloodlustKill = true; // Bloodlust (2026-10-17): it killed the unit facing it; it leaps after its turn
+          if(attDef.effects && attDef.effects.bloodlust && slotMode && (rowSwing || !resTarget) && defCard.slot === a.att.slot) a.att._bloodlustKill = true; // + a middle / back-row swing (2026-10-19, RR: it leaps along its own row, see bloodlustLeap) // Bloodlust (2026-10-17): it killed the unit facing it; it leaps after its turn
           if(attDef.effects && attDef.effects.slashBurn) layHazard(a.enemyId, defCard.slot, 'scorch', w2N(attDef, 'slashBurn'), a.att, sideOf, events); // Slash & Burn (2026-10-16)
           // Overwhelm (2026-09-17): whatever damage this killing blow had left over after
           // defCard's HP hit 0 carries through to the enemy castle — a cleave-through reward
@@ -7627,12 +8171,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           forkStrike(c, false, prongSpec.kind, ln); swingLanded = true;
         });
       }
-      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow && !rowSwing){ // thrown: it flies on even if the thrower falls
+      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // + a middle / back-row thrower: b.row (2026-10-19, RR) // thrown: it flies on even if the thrower falls
         const pl = players[a.attId]; if(!Array.isArray(pl.boomerangs)) pl.boomerangs = [];
-        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null});
+        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null, row: rowSwing || undefined});
         a.att.boomerangOut = true;
       }
       a.att.inspired = 0; // Inspiring's bonus is spent on this swing
+      sk2AfterSwing(players, sideOf, a, stats, events); // Package SK2 (2026-10-19): Pickpocket, Sabotage, Arson on what the swing hit
       // Recoil N (2026-10-12, user: "New passive skill: Recoil N: On attack, deal N damage to itself").
       if(attDef.effects && Number(attDef.effects.recoil) > 0 && a.att.hp > 0){
         const rd = damageCardFlat(a.att, Number(attDef.effects.recoil), 'recoil');
@@ -7680,7 +8225,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       reflowAfterKills(killCreditKeysAtTurnStart);
       // Bloodlust (2026-10-17 rework): it killed the unit facing it, so it leaps to face the next creature; then whoever entered a
       // watched slot this turn (a token, a push, the leap) meets any Ambush or Sentry (watchScan).
-      if(a.att._bloodlustKill){ a.att._bloodlustKill = false; if(a.att.hp > 0) bloodlustLeap(players, sideOf, a.attId, a.att, stats, events); }
+      if(a.att._bloodlustKill){ a.att._bloodlustKill = false; if(a.att.hp > 0) bloodlustLeap(players, sideOf, a.attId, a.att, stats, events); if(a.reserve) a.slot = a.att.slot; } // a row unit's leap moves its column (2026-10-19, RR)
       watchScan(players, sideOf, stats, events);
       // Frenzy keeps `pending` pointed at this SAME candidate (see this block's own comment,
       // above pickNextAttacker's declaration) rather than pulling a fresh one from the pool —
@@ -7745,7 +8290,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */ };
 }
 
@@ -7811,3 +8356,4 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 if(typeof module !== 'undefined' && module.exports){
   module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
+if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS; // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
