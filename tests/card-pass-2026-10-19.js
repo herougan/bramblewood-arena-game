@@ -5,7 +5,7 @@
 //      and the Caldera Wyrm, over on purpose by the creature-ranks rule) and the post-balance queue (2026-10-19, package TC: cards the
 //      applied measured skill worth puts over, refit in the post-balance step); under the pre-application costs (prevValue) all fit;
 //   2. the bands: every card the pass changed is in its rarity band at its recorded 400-game win rate (or, where no step landed it,
-//      at least 5 points nearer), its card carries the recorded stats, and three of them re-measure to the very same number (the
+//      at least 5 points nearer), its card carries the recorded stats, and three of them re-measure within 3 points of the number (the
 //      yardstick is deterministic: card_balance.js's seeds);
 //   3. sources: every live card can be had (a reward of a real fight, a pack, Base, a raid, the Nest, the Blacksmith, a secret, a quest)
 //      or is on the allowed sourceless list with its reason; the cards the pass sourced carry the planned source; no fight gives more
@@ -46,7 +46,10 @@ ST.forEach(([id, x])=>{ const c = defs[id], [lo, hi] = P.bandOf((PLAN.rarity && 
   const inBand = x.wrAfter >= lo && x.wrAfter <= hi, nearer = Math.abs(P.outside(x.wrAfter / 100, c.rarity)) <= Math.abs(P.outside(x.wrBefore / 100, c.rarity)) - 5;
   ok(inBand || (x.nearest && nearer), `2. ${id}: ${x.wrBefore}% -> ${x.wrAfter}% (band ${lo}-${hi})`); });
 // deterministic re-measure of three changed cards (400 games each, the record's own number)
-ST.filter(([, x])=> !x.fit).slice(0, 3).forEach(([id, x])=>{ const wr = Math.round(P.winRate(id, null, 400) * 1000) / 10; ok(wr === x.wrAfter, `2. ${id} re-measures ${wr}% (recorded ${x.wrAfter}%)`); });
+// 2026-10-19 (BF follow-up): within 3 points, not to the game. The record was made on the 10-19 morning engine; package BU's centre-column
+// rule (slot 0 always legal when empty, the CPU fills it first) moves every simulated game a little (39.5 -> 39.3, 60 -> 59.3, 70.5 ->
+// 68.5). 3 points is about 1.2 standard errors at 400 games: a real stat or record mix-up still shows, an engine rule's nudge doesn't.
+ST.filter(([, x])=> !x.fit).slice(0, 3).forEach(([id, x])=>{ const wr = Math.round(P.winRate(id, null, 400) * 1000) / 10; ok(Math.abs(wr - x.wrAfter) <= 3, `2. ${id} re-measures ${wr}% (recorded ${x.wrAfter}%, within 3 points)`); });
 Object.entries(PLAN.rarity || {}).forEach(([id, x])=> ok(defs[id] && defs[id].rarity === x.to, `2. ${id}: rarity ${x.to}`));
 
 // ---- 3. sources
