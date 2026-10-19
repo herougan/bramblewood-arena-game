@@ -136,7 +136,7 @@
    "name": "Ent",
    "animal": "owl",
    "subtype": "plant",
-   "why": "no art yet; \"a walking watchtower of oak\": proposed: an owl"
+   "why": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
   },
   {
    "id": "bramble-sprout",
@@ -408,7 +408,7 @@
    "group": "owl",
    "subtype": "plant",
    "how": "proposed",
-   "note": "no art yet; \"a walking watchtower of oak\": proposed: an owl"
+   "note": "art is a walking oak giant, no animal; \"a walking watchtower of oak\": proposed: an owl"
   },
   {
    "id": "dolphin-knight",

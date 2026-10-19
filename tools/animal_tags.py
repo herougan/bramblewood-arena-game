@@ -95,7 +95,7 @@ MANUAL = {
   'ashmantle-fiend': ('bat', 'fiend', 'art', 'a bat-winged fire fiend'), 'brimstone-hound': ('dog', 'fiend', 'art', 'a black hellhound (Devil type)'),
   'frog-imp': ('frog', 'conjured', 'name', 'the plague of frogs'), 'fly-imp': ('fly', 'conjured', 'name', 'the plague of flies'),
   # plants and fungi
-  'ent': ('owl', 'plant', 'proposed', 'no art yet; "a walking watchtower of oak": proposed: an owl'),
+  'ent': ('owl', 'plant', 'proposed', 'art is a walking oak giant, no animal; "a walking watchtower of oak": proposed: an owl'),
   'bramble-sprout': ('hedgehog', 'plant', 'proposed', 'art is a seedling; proposed: a hedgehog ("barely a seedling, somehow already armed")'),
   'thornvine-lasher': ('lizard', 'plant', 'art', 'a lizard-shaped tangle of thorny vine'),
   'elder-willow': ('heron', 'plant', 'proposed', 'art is a willow with a face; proposed: a heron (the willow by the water)'),

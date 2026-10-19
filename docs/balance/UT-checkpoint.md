@@ -8,9 +8,13 @@ Owner directions 09:52: animal tags, Base cards, Dire/Elder balanced by N, raid 
 - Tutorial copies: granted at level 0 via copy flag hatch:1 + tut:1.
 
 ## Steps
-- [ ] 1 animal tags (tools/animal_tags.js -> cards.json animal/subtype, canonical/animal-tags.json)
-- [ ] 2 base cards (faction otters -> base; UI labels/filters; tutorial level 0)
-- [ ] 3 variants by N (unit_themes.js, units_tab.js)
-- [ ] 4 raid elder art brief
-- [ ] 5 art reuse map
+- [x] 1 animal tags (tools/animal_tags.js -> cards.json animal/subtype, canonical/animal-tags.json)
+- [x] 2 base cards (faction otters -> base; UI labels/filters; tutorial level 0)
+- [x] 3 variants by N (unit_themes.js, units_tab.js)
+- [x] 4 raid elder art brief
+- [x] 5 art reuse map
 - [ ] Codex detail + filter, TX keys, test, CHANGELOG, build, merge main, commit
+
+## Status (WIP)
+- Done: tools/animal_tags.py, tools/art_reuse_map.py, tools/i18n_2026_10_19_ut.py, tests/animal-tags-2026-10-19.js, unit_themes.js (N bodies, names, nonPlayer), units_tab.js, Codex chips/filter, tutorial Level 0.
+- Left: CHANGELOG, hub rebuild (local only), merge main, final build, commit.
