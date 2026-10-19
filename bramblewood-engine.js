@@ -3300,7 +3300,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function payOreCosts(pl, defId){ const od = CARD_DEFS[defId] || {}; pl.stone = (pl.stone||0) - (od.stoneCost||0); pl.metal = (pl.metal||0) - (od.metalCost||0); pl.uranium = (pl.uranium||0) - (od.uraniumCost||0); }
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
     { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'materia') return false; // 2026-10-11: materia is a crafting material
-      if(ct === 'equipment' && !eqHasTarget(pl)) return false; if(ct === 'hazard' && !slotMode) return false; } // EQ (2026-10-19): equipment and hazards are played (a unit or a slot to go to)
+      if(ct === 'equipment' && !eqHasTarget(pl)) return false; if(isHazardDef(CARD_DEFS[defId]) && !slotMode) return false; } // EQ (2026-10-19): equipment and hazards are played (a unit or a slot to go to)
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
     if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
     if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
@@ -3704,7 +3704,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   day and night bonus: it goes when the last Weapon Master does). Pry N: every landed melee hit strips N Armor from the target for
   //   good (Perforate's armorLoss, without the rest of Perforate).
   //   Slot hazards (owner 21:36: "cards that create slot hazards ... Ice Floor (slippery), Lava Floor, Poison Floor, Toxic Gas (affects
-  //   flying as well), and Rubble - blocks the opponent from playing cards there"): a hazard card (cardType 'hazard', card.hazard =
+  //   flying as well), and Rubble - blocks the opponent from playing cards there"): a hazard card (a spell, cardType 'spell', with card.hazard =
   //   {kind, n, rounds}) is played onto a slot on either side and lies there for `rounds` rounds (one hazard per slot, a new one replaces
   //   it), occupied or not. Keyed like the traps: floors[pid + ':s' + slot].
   //     ice     a unit entering it slides one slot on in the way it was moving (a placed or spawned unit: a random way, the other if
@@ -3725,7 +3725,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function getFloors(){ const o = {}; Object.keys(floors).forEach(k=> o[k] = Object.assign({}, floors[k])); return o; }
   function floorAt(pid, slot){ return floors[pid + ':s' + slot] || null; }
   function isEquipDef(d){ return !!(d && d.cardType === 'equipment'); }
-  function isHazardDef(d){ return !!(d && d.cardType === 'hazard'); }
+  function isHazardDef(d){ return !!(d && (d.cardType === 'hazard' || (d.cardType === 'spell' && d.hazard))); } // a hazard card is a spell with a hazard (owner: 'spell' if spells exist)
   function hazardOf(d){ const h = (d && d.hazard) || {}, kind = EQ_KINDS.includes(h.kind) ? h.kind : 'rubble';
     return {kind, n: eqN(h.n, EQ_DEF[kind]), rounds: Math.max(1, Math.round(eqN(h.rounds, EQ_DEF.hazardRounds)) || 1), target: h.target || (kind === 'rubble' ? 'enemyEmpty' : 'any')}; }
   function equipTurnsOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(eqN(e.turns, EQ_DEF.equipTurns))); }

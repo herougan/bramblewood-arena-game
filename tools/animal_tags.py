@@ -43,6 +43,7 @@ SUBTYPES = OrderedDict([
 
 # ---------- hand-checked: id -> (animal, subtype or None, how, note). how: art / flavor / name / icon / proposed ----------
 MANUAL = {
+  'armory': ('beaver', 'structure', 'flavor', 'a beaver-built lodge of racks and pegs'), # 2026-10-19 (package EQ)
   # elementals, spirits, ghosts: their art shows the animal they take
   'tide-spirit': ('seahorse', 'elemental', 'art', 'a wave curled into a seahorse head'),
   'gale-sprite': ('swift', 'elemental', 'art', 'a white swift in a whirl of wind'),

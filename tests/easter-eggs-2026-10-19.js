@@ -25,18 +25,20 @@ const LIST = listM ? JSON.parse(listM[1].replace(/'/g, '"')) : [];
 const flagged = cards.filter(c=> c.easterEgg || (c.source && c.source.kind === 'easteregg')).map(c=> c.id);
 ok(LIST.length >= 8 && LIST.every(id=> flagged.includes(id)) && flagged.every(id=> LIST.includes(id)), `the list and the flagged cards agree (list ${LIST.join(', ')}; flagged ${flagged.join(', ')})`);
 const byId = Object.fromEntries(cards.map(c=> [c.id, c]));
-const WANT = {creeper:'veryrare', terraumbra:'unique', 'exo-podas':'veryrare', 'galactic-condor':'epic', 'pink-maus':'unique', nyoogle:'superrare'};
+const WANT = {creeper:'veryrare', terraumbra:'unique', 'exo-podas':'veryrare', 'galactic-condor':'epic', 'pink-maus':'unique', nyoogle:'superrare', 'bucketknee-wolf':'veryrare'};
 Object.entries(WANT).forEach(([id, r])=> ok(byId[id] && byId[id].rarity === r, `${id} is ${r} (got ${byId[id] && byId[id].rarity})`));
 LIST.forEach(id=>{ const c = byId[id]; if(!c) return ok(false, id + ' exists');
   ok(c.easterEgg === true && c.source && c.source.kind === 'easteregg', `${id}: easterEgg flag and source easteregg`);
   ok((typeof c.animal === 'string' && c.animal) || c.cardType === 'equipment', `${id}: has an animal field (an item: none needed, UT's rule)`);   // 2026-10-19 (UT merge)
-  ok(c.icon && !c.art, `${id}: a placeholder emoji, no art yet`);
+  ok(c.icon && (id === 'creeper' ? /^data:image\/png;base64,/.test(c.art || '') : !c.art), id === 'creeper' ? 'creeper: its old art is back (2026-10-19, package EQ, owner: "We can use the existing creeper art.")' : `${id}: a placeholder emoji, no art yet`);
   ok(/package EE/.test(c.creatorNote || '') && /N = [\d.]+; S = /.test(c.creatorNote), `${id}: creatorNote shows the budget`);
   ok(c.locked === true, `${id}: locked`); });
 ok(byId.terraumbra && byId.terraumbra.mechanicLine === 'evolution' && byId.terraumbra.cardType === 'equipment', 'Terraumbra: an Evomax (evolution) equipment card');
 ok(byId['galactic-condor'] && byId['galactic-condor'].effects.charge.do.do === 'positionBeam', 'the Galactic Condor charges a positionBeam');
 // the last cards of the file are the new ones (they go at the end)
-ok(cards.slice(-7).every(c=> LIST.includes(c.id)), 'the seven new Easter eggs sit at the end of cards.json');
+{ const EE7 = ['terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda'], at = cards.findIndex(c=> c.id === EE7[0]); // 2026-10-19 (package EQ): later packages' cards go after them
+  ok(at > 0 && EE7.every((id, i)=> cards[at + i] && cards[at + i].id === id) && cards.slice(at).every(c=> !c.pool), 'the seven new Easter eggs sit together, after every older card'); }
+ok(cards.some(c=> c.id === 'bucketknee-wolf' && c.easterEgg && cards.indexOf(c) > cards.findIndex(x=> x.id === 'demo-panda')), 'the Bucketknee Wolf (package EQ) comes after them');
 // names: no source-game names (the internal ids may carry the owner's names)
 const BANNED = /terraprisma|colossus|protoss|thor\b|moogle|tonberry|pink bean|tabasco|demoman|minecraft|terraria|starcraft|final fantasy|maplestory|team fortress/i;
 ok(LIST.every(id=> !BANNED.test(byId[id].name + ' ' + byId[id].flavor)), 'names and flavour are original (no source game or character named)');

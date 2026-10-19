@@ -65,12 +65,12 @@
   }
  ],
  "counts": {
-  "cards": 819,
-  "creatures": 731,
-  "tagged": 733,
+  "cards": 827,
+  "creatures": 733,
+  "tagged": 735,
   "animals": 351,
   "groups": 142,
-  "withSubtype": 100,
+  "withSubtype": 101,
   "proposed": 30,
   "subtype": {
    "changeling": 3,
@@ -85,14 +85,14 @@
    "mythic": 15,
    "plant": 11,
    "spirit": 7,
-   "structure": 13,
+   "structure": 14,
    "undead": 5,
    "were": 2
   },
   "how": {
    "art": 60,
-   "ee": 7,
-   "flavor": 14,
+   "ee": 8,
+   "flavor": 15,
    "icon": 30,
    "name": 536,
    "proposed": 30,
@@ -108,8 +108,8 @@
    "bat": 16,
    "salamander": 16,
    "lizard": 15,
+   "wolf": 15,
    "duck": 15,
-   "wolf": 14,
    "turtle": 14,
    "frog": 14,
    "rabbit": 14,
@@ -8737,6 +8737,88 @@
    "subtype": null,
    "how": "ee",
    "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "crowbar",
+   "name": "Crowbar",
+   "icon": "🔧",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "bucketknee-wolf",
+   "name": "Bucketknee Wolf",
+   "icon": "🐺",
+   "creature": true,
+   "animal": "wolf",
+   "group": "wolf",
+   "subtype": null,
+   "how": "ee",
+   "note": "package EE's tags, aligned with this vocabulary"
+  },
+  {
+   "id": "armory",
+   "name": "Armory",
+   "icon": "⚔️",
+   "creature": true,
+   "animal": "beaver",
+   "group": "beaver",
+   "subtype": "structure",
+   "how": "flavor",
+   "note": "a beaver-built lodge of racks and pegs"
+  },
+  {
+   "id": "frost-slick",
+   "name": "Frost Slick",
+   "icon": "❄️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "magma-vent",
+   "name": "Magma Vent",
+   "icon": "🌋",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "bog-seep",
+   "name": "Bog Seep",
+   "icon": "🫧",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "miasma",
+   "name": "Miasma",
+   "icon": "☁️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "rockfall",
+   "name": "Rockfall",
+   "icon": "🪨",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
   }
  ]
 }

@@ -31,13 +31,13 @@ Owner, 09:52: "Easter eggs: Special category, ungettable atm."
   - The hub's card list (`tools/hub/export_decks.py`) shows it as "???" with no thumbnail.
 - **Turning one on later:** take it off the list, remove the flag and give it a real source.
 
-## The eight cards
+## The cards (eight from package EE, one from EQ)
 
 The budget is v3 at Level 1, from `tools/skill_costs.js`. The numbers are in each card's creatorNote.
 
 | id | Name | Rarity | Cost / Wait | Stats | Skills | Inspiration (internal) |
 |---|---|---|---|---|---|---|
-| `creeper` | Creeper | Very Rare (was Common, a pack card) | 1 / 1 | 3/12 | Restless (creeps one column a round toward the nearest enemy), Explode 2 rounds → 8 to the enemy facing it | a famous green exploding block-game mob. It is now an original creeping beetle (copper and amber), not a green pixel copy. Its old smiling green-bee art was taken off. |
+| `creeper` | Creeper | Very Rare (was Common, a pack card) | 1 / 1 | 3/12 | Restless (creeps one column a round toward the nearest enemy), Explode 2 rounds → 8 to the enemy facing it | a famous green exploding block-game mob. It is now an original creeping beetle (copper and amber), not a green pixel copy. Its old smiling green-bee art was taken off; 2026-10-19 (package EQ, owner 21:36: "We can use the existing creeper art.") it is back on the card (art/cards/creeper.png). |
 | `terraumbra` | Terraumbra | Unique, **Evomax**, equipment | 2 / 0 | +3/+3 to its bearer | grants Shedding 2 (+1/+1 for good every 2 rounds, cleanses) and Cleave 2 | a prismatic summoned-blade weapon from a 2D sandbox game. It is a swarm of rainbow light shards that grows as it evolves. |
 | `exo-podas` | Exo-podas | Very Rare | 2 / 2 | 6/20 | Armor 1, Trident (stomps three lanes), Mountain Climber | a six-legged walker unit from a sci-fi RTS |
 | `galactic-condor` | Galactic Condor | Epic | 2 / 2 | 4/12 | Flying; Charge 2 → Position Beam 5 | a space-condor gunship and its charged beam |
@@ -45,6 +45,7 @@ The budget is v3 at Level 1, from `tools/skill_costs.js`. The numbers are in eac
 | `nyoogle` | Nyoogle | Super Rare | 1 / 1 | 4/11 | Illuminate (its lantern), Restless (creeps closer), Invisible 2, Backstab 2 | pom-pom winged mascots plus a lantern-carrying stalker, both from a long-running JRPG series. The look is changed: a moss-hooded critter with a pom-pom stalk and no wings. |
 | `tobasco-drakon` | Habanero Drakon | Rare (my pick: a "little drake") | 1 / 1 | 4/13, resists Fire | Chilli 2 (on Ready, fire attacks and +2 Attack, 1 self-damage a round), Fire Bolt 2 | a fiery hot-sauce dragon. The display name is not "Tobasco" because that is a near-copy of a hot-sauce trademark. |
 | `demo-panda` | Kegfuse Panda | Super Rare (my pick) | 1 / 1 | 4/14 | Make Tipsy 50% for 2 rounds (the suspicious jar), Nova 3 (when it dies, every enemy unit takes 3 magic damage: the fizzing keg) | a team-shooter demolitions man. The text says only "a fizzing keg" and "a suspicious jar". |
+| `bucketknee-wolf` | Bucketknee Wolf (package EQ, 2026-10-19) | Very Rare | 1 / 2 | 6/14 | Armor 1 and Helmet (the bucket: half the arrows glance off), Wait 2 (the old wound in its knee), no Pounce | the retired adventurer who took an arrow to the knee, from a famous open-world fantasy game. The flavour only says it "took one to the knee". Owner 21:36: "Wolf with a bucket on its head and an arrow in its knee." |
 
 ### Galactic Condor: Position Beam
 
