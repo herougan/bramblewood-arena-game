@@ -3,9 +3,9 @@
  "generated": "2026-10-19",
  "cards": 744,
  "atL1": {
-  "passV3": 709,
-  "passV4": 710,
-  "passV5": 718,
+  "passV3": 722,
+  "passV4": 727,
+  "passV5": 743,
   "vsV3": {
    "in": [
     {
@@ -35,6 +35,19 @@
      "x2": 415.46
     },
     {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "rarity": "common",
+     "start": 1,
+     "base": 61.3,
+     "S": 6.15,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 63.45,
+     "x1": 63.22,
+     "x2": 240.23
+    },
+    {
      "id": "cave-warlord",
      "name": "Cave Warlord",
      "rarity": "common",
@@ -61,6 +74,19 @@
      "x2": 284.06
     },
     {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "rarity": "common",
+     "start": 1,
+     "base": 61.1,
+     "S": 14.37,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 63.24,
+     "x1": 62.37,
+     "x2": 270.37
+    },
+    {
      "id": "permafrost-mammoth",
      "name": "Permafrost Mammoth",
      "rarity": "common",
@@ -74,6 +100,110 @@
      "x2": 317.76
     },
     {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "rarity": "rare",
+     "start": 1,
+     "base": 30.8,
+     "S": 19.98,
+     "N3": 29.4,
+     "N4": 28.77,
+     "N5": 31.93,
+     "x1": 30.98,
+     "x2": 28.98
+    },
+    {
+     "id": "narwhal-lancer",
+     "name": "Narwhal Lancer",
+     "rarity": "common",
+     "start": 1,
+     "base": 38.1,
+     "S": 6.43,
+     "N3": 39.1,
+     "N4": 38.96,
+     "N5": 39.47,
+     "x1": 39.43,
+     "x2": 139.43
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "rarity": "common",
+     "start": 1,
+     "base": 52.6,
+     "S": 7.14,
+     "N3": 52.6,
+     "N4": 53.13,
+     "N5": 54.46,
+     "x1": 54.14,
+     "x2": 268.14
+    },
+    {
+     "id": "red-dragon",
+     "name": "Red Dragon",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 7.54,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.13,
+     "x1": 96.81,
+     "x2": 537.81
+    },
+    {
+     "id": "blue-dragon",
+     "name": "Blue Dragon",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 7.3,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.13,
+     "x1": 96.45,
+     "x2": 537.45
+    },
+    {
+     "id": "black-dragon",
+     "name": "Black Dragon",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 8.62,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.13,
+     "x1": 96.93,
+     "x2": 492.93
+    },
+    {
+     "id": "marshal-of-rivergate",
+     "name": "Marshal of Rivergate",
+     "rarity": "epic",
+     "start": 1,
+     "base": 50.6,
+     "S": 19.1,
+     "N3": 51.6,
+     "N4": 52.08,
+     "N5": 52.39,
+     "x1": 52.1,
+     "x2": 145.1
+    },
+    {
+     "id": "malachite-golem",
+     "name": "Malachite Golem",
+     "rarity": "rare",
+     "start": 1,
+     "base": 56.1,
+     "S": 13.19,
+     "N3": 57.1,
+     "N4": 57.86,
+     "N5": 58.07,
+     "x1": 57.19,
+     "x2": 223.19
+    },
+    {
      "id": "ember-revenant",
      "name": "Ember Revenant",
      "rarity": "epic",
@@ -85,6 +215,32 @@
      "N5": 47.53,
      "x1": 46.85,
      "x2": 164.85
+    },
+    {
+     "id": "subterraneaner",
+     "name": "Subterraneaner",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.5,
+     "S": 12.43,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 35.75,
+     "x1": 35.43,
+     "x2": 75.43
+    },
+    {
+     "id": "magnate-duck",
+     "name": "The Magnate Duck",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 83.4,
+     "S": 18.04,
+     "N3": 85.4,
+     "N4": 87.57,
+     "N5": 86.28,
+     "x1": 86.04,
+     "x2": 354.04
     },
     {
      "id": "sea-cucumber",
@@ -157,6 +313,19 @@
      "x2": 415.46
     },
     {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "rarity": "common",
+     "start": 1,
+     "base": 61.3,
+     "S": 6.15,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 63.45,
+     "x1": 63.22,
+     "x2": 240.23
+    },
+    {
      "id": "cave-warlord",
      "name": "Cave Warlord",
      "rarity": "common",
@@ -170,17 +339,17 @@
      "x2": 705.44
     },
     {
-     "id": "venomlord-serpent",
-     "name": "Venomlord Serpent",
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
      "rarity": "common",
      "start": 1,
-     "base": 60.1,
-     "S": 12.06,
+     "base": 61.1,
+     "S": 14.37,
      "N3": 61.1,
      "N4": 62.06,
-     "N5": 62.21,
-     "x1": 62.06,
-     "x2": 284.06
+     "N5": 63.24,
+     "x1": 62.37,
+     "x2": 270.37
     },
     {
      "id": "permafrost-mammoth",
@@ -196,6 +365,19 @@
      "x2": 317.76
     },
     {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "rarity": "common",
+     "start": 1,
+     "base": 22.6,
+     "S": 7.91,
+     "N3": 23,
+     "N4": 22.05,
+     "N5": 23.46,
+     "x1": 22.37,
+     "x2": 19.37
+    },
+    {
      "id": "barnacle-fortress",
      "name": "Barnacle Fortress",
      "rarity": "common",
@@ -207,6 +389,71 @@
      "N5": 34.93,
      "x1": 33.7,
      "x2": 13.7
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "rarity": "rare",
+     "start": 1,
+     "base": 30.8,
+     "S": 19.98,
+     "N3": 29.4,
+     "N4": 28.77,
+     "N5": 31.93,
+     "x1": 30.98,
+     "x2": 28.98
+    },
+    {
+     "id": "narwhal-lancer",
+     "name": "Narwhal Lancer",
+     "rarity": "common",
+     "start": 1,
+     "base": 38.1,
+     "S": 6.43,
+     "N3": 39.1,
+     "N4": 38.96,
+     "N5": 39.47,
+     "x1": 39.43,
+     "x2": 139.43
+    },
+    {
+     "id": "dune-jackal",
+     "name": "Dune Jackal",
+     "rarity": "common",
+     "start": 1,
+     "base": 26.4,
+     "S": 13.3,
+     "N3": 27.4,
+     "N4": 26.67,
+     "N5": 27.38,
+     "x1": 27.3,
+     "x2": 33.3
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "rarity": "common",
+     "start": 1,
+     "base": 52.6,
+     "S": 7.14,
+     "N3": 52.6,
+     "N4": 53.13,
+     "N5": 54.46,
+     "x1": 54.14,
+     "x2": 268.14
+    },
+    {
+     "id": "marshal-of-rivergate",
+     "name": "Marshal of Rivergate",
+     "rarity": "epic",
+     "start": 1,
+     "base": 50.6,
+     "S": 19.1,
+     "N3": 51.6,
+     "N4": 52.08,
+     "N5": 52.39,
+     "x1": 52.1,
+     "x2": 145.1
     },
     {
      "id": "ember-revenant",
@@ -222,6 +469,19 @@
      "x2": 164.85
     },
     {
+     "id": "subterraneaner",
+     "name": "Subterraneaner",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.5,
+     "S": 12.43,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 35.75,
+     "x1": 35.43,
+     "x2": 75.43
+    },
+    {
      "id": "sea-cucumber",
      "name": "Sea Cucumber",
      "rarity": "uncommon",
@@ -233,36 +493,9 @@
      "N5": 36.17,
      "x1": 35.52,
      "x2": 45.52
-    },
-    {
-     "id": "giant-cave-huntsman",
-     "name": "Giant Cave Huntsman",
-     "rarity": "rare",
-     "start": 1,
-     "base": 43,
-     "S": 19.47,
-     "N3": 43.4,
-     "N4": 43.47,
-     "N5": 44.54,
-     "x1": 43.47,
-     "x2": 91.47
     }
    ],
-   "out": [
-    {
-     "id": "bone-diviner",
-     "name": "Bone Diviner",
-     "rarity": "uncommon",
-     "start": 1,
-     "base": 45.6,
-     "S": 2.74,
-     "N3": 47.6,
-     "N4": 47.88,
-     "N5": 47.22,
-     "x1": 47.61,
-     "x2": 146.61
-    }
-   ]
+   "out": []
   },
   "dN5minus3": {
    "min": -1.23,
@@ -274,9 +507,9 @@
   }
  },
  "atStart": {
-  "passV3": 709,
-  "passV4": 710,
-  "passV5": 718,
+  "passV3": 722,
+  "passV4": 727,
+  "passV5": 743,
   "vsV3": {
    "in": [
     {
@@ -306,6 +539,19 @@
      "x2": 415.46
     },
     {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "rarity": "common",
+     "start": 1,
+     "base": 61.3,
+     "S": 6.15,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 63.45,
+     "x1": 63.22,
+     "x2": 240.23
+    },
+    {
      "id": "cave-warlord",
      "name": "Cave Warlord",
      "rarity": "common",
@@ -332,6 +578,19 @@
      "x2": 284.06
     },
     {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "rarity": "common",
+     "start": 1,
+     "base": 61.1,
+     "S": 14.37,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 63.24,
+     "x1": 62.37,
+     "x2": 270.37
+    },
+    {
      "id": "permafrost-mammoth",
      "name": "Permafrost Mammoth",
      "rarity": "common",
@@ -345,6 +604,110 @@
      "x2": 317.76
     },
     {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "rarity": "rare",
+     "start": 1,
+     "base": 30.8,
+     "S": 19.98,
+     "N3": 29.4,
+     "N4": 28.77,
+     "N5": 31.93,
+     "x1": 30.98,
+     "x2": 28.98
+    },
+    {
+     "id": "narwhal-lancer",
+     "name": "Narwhal Lancer",
+     "rarity": "common",
+     "start": 1,
+     "base": 38.1,
+     "S": 6.43,
+     "N3": 39.1,
+     "N4": 38.96,
+     "N5": 39.47,
+     "x1": 39.43,
+     "x2": 139.43
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "rarity": "common",
+     "start": 1,
+     "base": 52.6,
+     "S": 7.14,
+     "N3": 52.6,
+     "N4": 53.13,
+     "N5": 54.46,
+     "x1": 54.14,
+     "x2": 268.14
+    },
+    {
+     "id": "red-dragon",
+     "name": "Red Dragon",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 7.54,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.13,
+     "x1": 96.81,
+     "x2": 537.81
+    },
+    {
+     "id": "blue-dragon",
+     "name": "Blue Dragon",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 7.3,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.13,
+     "x1": 96.45,
+     "x2": 537.45
+    },
+    {
+     "id": "black-dragon",
+     "name": "Black Dragon",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 93.9,
+     "S": 8.62,
+     "N3": 95.9,
+     "N4": 98.6,
+     "N5": 97.13,
+     "x1": 96.93,
+     "x2": 492.93
+    },
+    {
+     "id": "marshal-of-rivergate",
+     "name": "Marshal of Rivergate",
+     "rarity": "epic",
+     "start": 1,
+     "base": 50.6,
+     "S": 19.1,
+     "N3": 51.6,
+     "N4": 52.08,
+     "N5": 52.39,
+     "x1": 52.1,
+     "x2": 145.1
+    },
+    {
+     "id": "malachite-golem",
+     "name": "Malachite Golem",
+     "rarity": "rare",
+     "start": 1,
+     "base": 56.1,
+     "S": 13.19,
+     "N3": 57.1,
+     "N4": 57.86,
+     "N5": 58.07,
+     "x1": 57.19,
+     "x2": 223.19
+    },
+    {
      "id": "ember-revenant",
      "name": "Ember Revenant",
      "rarity": "epic",
@@ -356,6 +719,32 @@
      "N5": 47.53,
      "x1": 46.85,
      "x2": 164.85
+    },
+    {
+     "id": "subterraneaner",
+     "name": "Subterraneaner",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.5,
+     "S": 12.43,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 35.75,
+     "x1": 35.43,
+     "x2": 75.43
+    },
+    {
+     "id": "magnate-duck",
+     "name": "The Magnate Duck",
+     "rarity": "legendary",
+     "start": 1,
+     "base": 83.4,
+     "S": 18.04,
+     "N3": 85.4,
+     "N4": 87.57,
+     "N5": 86.28,
+     "x1": 86.04,
+     "x2": 354.04
     },
     {
      "id": "sea-cucumber",
@@ -428,6 +817,19 @@
      "x2": 415.46
     },
     {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "rarity": "common",
+     "start": 1,
+     "base": 61.3,
+     "S": 6.15,
+     "N3": 61.1,
+     "N4": 62.06,
+     "N5": 63.45,
+     "x1": 63.22,
+     "x2": 240.23
+    },
+    {
      "id": "cave-warlord",
      "name": "Cave Warlord",
      "rarity": "common",
@@ -441,17 +843,17 @@
      "x2": 705.44
     },
     {
-     "id": "venomlord-serpent",
-     "name": "Venomlord Serpent",
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
      "rarity": "common",
      "start": 1,
-     "base": 60.1,
-     "S": 12.06,
+     "base": 61.1,
+     "S": 14.37,
      "N3": 61.1,
      "N4": 62.06,
-     "N5": 62.21,
-     "x1": 62.06,
-     "x2": 284.06
+     "N5": 63.24,
+     "x1": 62.37,
+     "x2": 270.37
     },
     {
      "id": "permafrost-mammoth",
@@ -467,6 +869,19 @@
      "x2": 317.76
     },
     {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "rarity": "common",
+     "start": 1,
+     "base": 22.6,
+     "S": 7.91,
+     "N3": 23,
+     "N4": 22.05,
+     "N5": 23.46,
+     "x1": 22.37,
+     "x2": 19.37
+    },
+    {
      "id": "barnacle-fortress",
      "name": "Barnacle Fortress",
      "rarity": "common",
@@ -478,6 +893,71 @@
      "N5": 34.93,
      "x1": 33.7,
      "x2": 13.7
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "rarity": "rare",
+     "start": 1,
+     "base": 30.8,
+     "S": 19.98,
+     "N3": 29.4,
+     "N4": 28.77,
+     "N5": 31.93,
+     "x1": 30.98,
+     "x2": 28.98
+    },
+    {
+     "id": "narwhal-lancer",
+     "name": "Narwhal Lancer",
+     "rarity": "common",
+     "start": 1,
+     "base": 38.1,
+     "S": 6.43,
+     "N3": 39.1,
+     "N4": 38.96,
+     "N5": 39.47,
+     "x1": 39.43,
+     "x2": 139.43
+    },
+    {
+     "id": "dune-jackal",
+     "name": "Dune Jackal",
+     "rarity": "common",
+     "start": 1,
+     "base": 26.4,
+     "S": 13.3,
+     "N3": 27.4,
+     "N4": 26.67,
+     "N5": 27.38,
+     "x1": 27.3,
+     "x2": 33.3
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "rarity": "common",
+     "start": 1,
+     "base": 52.6,
+     "S": 7.14,
+     "N3": 52.6,
+     "N4": 53.13,
+     "N5": 54.46,
+     "x1": 54.14,
+     "x2": 268.14
+    },
+    {
+     "id": "marshal-of-rivergate",
+     "name": "Marshal of Rivergate",
+     "rarity": "epic",
+     "start": 1,
+     "base": 50.6,
+     "S": 19.1,
+     "N3": 51.6,
+     "N4": 52.08,
+     "N5": 52.39,
+     "x1": 52.1,
+     "x2": 145.1
     },
     {
      "id": "ember-revenant",
@@ -493,6 +973,19 @@
      "x2": 164.85
     },
     {
+     "id": "subterraneaner",
+     "name": "Subterraneaner",
+     "rarity": "uncommon",
+     "start": 1,
+     "base": 34.5,
+     "S": 12.43,
+     "N3": 34.9,
+     "N4": 34.55,
+     "N5": 35.75,
+     "x1": 35.43,
+     "x2": 75.43
+    },
+    {
      "id": "sea-cucumber",
      "name": "Sea Cucumber",
      "rarity": "uncommon",
@@ -504,36 +997,9 @@
      "N5": 36.17,
      "x1": 35.52,
      "x2": 45.52
-    },
-    {
-     "id": "giant-cave-huntsman",
-     "name": "Giant Cave Huntsman",
-     "rarity": "rare",
-     "start": 1,
-     "base": 43,
-     "S": 19.47,
-     "N3": 43.4,
-     "N4": 43.47,
-     "N5": 44.54,
-     "x1": 43.47,
-     "x2": 91.47
     }
    ],
-   "out": [
-    {
-     "id": "bone-diviner",
-     "name": "Bone Diviner",
-     "rarity": "uncommon",
-     "start": 1,
-     "base": 45.6,
-     "S": 2.74,
-     "N3": 47.6,
-     "N4": 47.88,
-     "N5": 47.22,
-     "x1": 47.61,
-     "x2": 146.61
-    }
-   ]
+   "out": []
   },
   "dN5minus3": {
    "min": -1.23,
