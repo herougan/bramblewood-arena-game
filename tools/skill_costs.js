@@ -90,8 +90,8 @@
     function budgetBase(d){ return BB.baseOf(withMap(d), B); }
     function budgetN(d, lv){ return BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B); }
     // v3 / v4 comparisons use the Base they had (no map term)
-    function budgetV3N(d, lv){ return r2(BB.baseOf(d, Object.assign({}, B, {mapCoef: 0})) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
-    function budgetV4N(d, lv){ return BB.nV4(BB.baseOf(d, Object.assign({}, B, {mapCoef: 0})), lv == null ? levelOf(d) : lv); }
+    function budgetV3N(d, lv){ return r2(BB.baseOf(d, Object.assign({}, B, {perMap: 0})) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
+    function budgetV4N(d, lv){ return BB.nV4(BB.baseOf(d, Object.assign({}, B, {perMap: 0})), lv == null ? levelOf(d) : lv); }
     function obtainMapOf(d){ const x = withMap(d); return +(x && x.obtainMap) || 0; }
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){

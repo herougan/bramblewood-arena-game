@@ -10825,7 +10825,11 @@ function deckSyncRead(key){ try{ const v = JSON.parse(localStorage.getItem(key) 
 function deckSyncWrite(key, v){ try{ localStorage.setItem(key, JSON.stringify(v)); }catch(e){} }
 // A key-sorted JSON, so the same deck always hashes the same however its objects were built.
 function deckStable(v){ if(Array.isArray(v)) return '[' + v.map(deckStable).join(',') + ']'; if(v && typeof v === 'object') return '{' + Object.keys(v).sort().map(k=> JSON.stringify(k) + ':' + deckStable(v[k])).join(',') + '}'; return JSON.stringify(v === undefined ? null : v); }
-function deckContentHash(d){ return deckStable({n: (d && d.name) || '', c: (d && d.characterId) || null, l: (d && d.leaderId) || null, k: (d && d.counts) || {}, x: (d && d.looks) || null}); }
+// 2026-10-19 (package SY2): empty looks hash as no looks, so a deck that gains {} when opened isn't counted as an edit
+function deckContentHash(d){ return deckStable({n: (d && d.name) || '', c: (d && d.characterId) || null, l: (d && d.leaderId) || null, k: (d && d.counts) || {}, x: (d && d.looks && Object.keys(d.looks).length) ? d.looks : null}); }
+// 2026-10-19 (package SY2): without the proposed looks column, the deck's looks ride inside the counts JSON under this key (no
+// migration needed); deckFromRow takes them out again, so a deck's counts in memory only ever hold card counts.
+const DECK_META_KEY = '__deck';
 // Once per save at load: old 'deck-xxxx' ids become uuids (remap: old → new, for the active and main deck keys), every deck gets an
 // updatedAt, a doubled id gets a new one. The hashes start from what was loaded, so loading never counts as an edit.
 function deckSyncPrepareLocal(decks, now){
@@ -10849,15 +10853,21 @@ function deckSyncTouch(decks, now){
 // deleteDeck's note: the deck goes from the cloud too on the next push.
 function deckSyncTomb(id, now){ if(!id) return; const t = deckSyncRead(deckSyncKey(DECK_SYNC_TOMBS_KEY)); t[id] = now || Date.now(); deckSyncWrite(deckSyncKey(DECK_SYNC_TOMBS_KEY), t); }
 function deckFromRow(r){
+  const raw = (r.counts && typeof r.counts === 'object' && !Array.isArray(r.counts)) ? r.counts : {}, counts = {};
+  Object.keys(raw).forEach(k=>{ if(k !== DECK_META_KEY && typeof raw[k] === 'number') counts[k] = raw[k]; }); // 2026-10-19 (package SY2): card counts only
+  const meta = raw[DECK_META_KEY] && typeof raw[DECK_META_KEY] === 'object' ? raw[DECK_META_KEY] : null;
   const d = {id: r.id, name: r.name || 'Deck', characterId: r.character_id || null, leaderId: r.leader_id || null,
-    counts: (r.counts && typeof r.counts === 'object' && !Array.isArray(r.counts)) ? r.counts : {}, updatedAt: Date.parse(r.updated_at) || 0};
+    counts, updatedAt: Date.parse(r.updated_at) || 0};
   if(r.looks && typeof r.looks === 'object') d.looks = r.looks;
+  else if(meta && meta.looks && typeof meta.looks === 'object' && !Array.isArray(meta.looks)) d.looks = meta.looks; // SY2: the column-less fallback
   if(r.deleted_at) d.deletedAt = Date.parse(r.deleted_at) || 1;
   return d;
 }
 function deckToRow(d, uid, cols){
   const row = {id: d.id, profile_id: uid, name: String(d.name || 'Deck').slice(0, 40), character_id: d.characterId || null, leader_id: d.leaderId || null,
     counts: d.counts || {}, updated_at: new Date(Number(d.updatedAt) || Date.now()).toISOString()};
+  // 2026-10-19 (package SY2): no looks column on the server: the looks go inside counts (DECK_META_KEY) instead of staying behind
+  if(cols && cols.looks === false && d.looks && Object.keys(d.looks).length) row.counts = Object.assign({}, row.counts, {[DECK_META_KEY]: {looks: d.looks}});
   if(cols && cols.looks !== false) row.looks = d.looks || null;
   if(cols && cols.deleted_at !== false) row.deleted_at = null;
   return row;
@@ -10989,12 +10999,15 @@ function deckSyncPull(reason){
         if(!myDecks.find(d=> d.id === activeDeckId)){ activeDeckId = mainDeckId || myDecks[0].id; saveActiveDeckId(); }
         saveMyDecks(true);
         const now = getActiveDeck();
+        // 2026-10-19 (package SY2): a builder open on a deck another device deleted lets go first, so its unsaved edits (that deck's
+        // castle and leader) can't be saved into the deck that takes its place
+        if(deckEditingId && !myDecks.find(d=> d.id === deckEditingId)){ deckEditingId = null; deckDraftOn = false; deckDirty = false; }
         // The working copy follows the active deck when it changed, unless the builder holds unsaved edits (they win when saved: newer).
-        if(now && (!before || now.id !== before.id || deckContentHash(now) !== beforeHash) && !deckDirty){
+        // SY2: a different active deck is always loaded (the globals must never hold another deck's leader)
+        if(now && (!before || now.id !== before.id || (deckContentHash(now) !== beforeHash && !deckDirty))){
           const draft = deckDraftOn; deckDraftOn = false;
           try{ switchActiveDeck(now.id); } finally { deckDraftOn = draft; }
         }
-        if(deckEditingId && !myDecks.find(d=> d.id === deckEditingId)){ deckEditingId = null; deckDraftOn = false; deckDirty = false; }
         try{ if(!matchState && typeof currentTab !== 'undefined' && currentTab === 'deck' && !deckDirty) renderDeckSection(); }catch(e){}
       }
       m.removed.forEach(d=>{ try{ showToast(TX('toast.sy-deck-deleted-elsewhere', {name: d.name || 'Deck'}), 'info'); }catch(e){} });
@@ -13223,7 +13236,7 @@ function loadMyDeck(){
   return {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
 }
 function saveMyDeck(){ if(deckDraftActive()) return markDeckDirty(); try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} try{ saveDeckLooks(); }catch(e){} /* 2026-10-16: which copies are Shiny / alt art */ if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
-function deckTotal(counts){ return Object.values(counts).reduce((a,b)=>a+b,0); }
+function deckTotal(counts){ return Object.values(counts||{}).reduce((a,b)=> a + (typeof b === 'number' ? b : 0), 0); } // 2026-10-19 (package SY2): numbers only (a cloud row's counts may carry the deck's meta object)
 // Valid deck size (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not allow
 // a deck with <20 or >20 cards."). Enforced at the point a deck is actually USED (starting a
 // match, running the simulator) rather than hard-blocking every add/remove click mid-build —
@@ -13302,6 +13315,34 @@ function loadMyDecks(){
 function saveMyDecks(skipCloudPush){ try{ deckSyncTouch(myDecks); }catch(e){} /* 2026-10-19 (package SY): an edited deck gets a new updatedAt */ try{ localStorage.setItem('bramblewood_arena_decks', JSON.stringify(myDecks)); }catch(e){} if(!skipCloudPush) cloudPushDecks(); }
 function loadActiveDeckId(){ try{ return localStorage.getItem('bramblewood_arena_active_deck') || null; }catch(e){ return null; } }
 function saveActiveDeckId(){ try{ localStorage.setItem('bramblewood_arena_active_deck', activeDeckId); }catch(e){} }
+// DECK_LEADER_SY2:BEGIN (tests/deck-sync-2026-10-19.js evaluates this block)
+// 2026-10-19 (package SY2): a deck's leader and castle live on the deck (deck.leaderId / deck.characterId, sent as player_decks.leader_id /
+// character_id, columns the table already has). The bramblewood_arena_leader / _character keys only mirror the active deck on this
+// device. Once per device, its current leader and castle are attached to its active deck (a deck opened before this fix may carry
+// another deck's, see switchActiveDeck), with a new updatedAt so the next push uploads them. On every load after that the deck is the
+// source: the mirrors are set from the active deck, so a deck a pull changed while this device was away is played as it is now.
+var DECK_LEADER_ATTACH_KEY = 'bramblewood_deck_leader_attached_v1';
+var DECK_DEFAULT_LEADER_ID = 'wandering-traveller'; // as loadMyLeader: with no leader chosen, the Wandering Traveller leads
+var deckGlobalsLoading = false; // true while switchActiveDeck / deckGlobalsFromActive load the globals from the deck (no write back)
+function deckAttachDeviceLeaderOnce(){
+  let done = false; try{ done = localStorage.getItem(DECK_LEADER_ATTACH_KEY) === '1'; }catch(e){}
+  if(done) return false;
+  const d = getActiveDeck(); let changed = false;
+  if(d){
+    if(myLeaderId && (d.leaderId || null) !== myLeaderId){ d.leaderId = myLeaderId; changed = true; }
+    if(myCharacterId && (d.characterId || null) !== myCharacterId){ d.characterId = myCharacterId; changed = true; }
+  }
+  try{ localStorage.setItem(DECK_LEADER_ATTACH_KEY, '1'); }catch(e){}
+  if(changed){ try{ saveMyDecks(); }catch(e){} } // a new updatedAt: sent with the first push once signed in (the load pull sends pending decks)
+  return changed;
+}
+function deckGlobalsFromActive(){
+  const d = getActiveDeck(); if(!d) return;
+  myCharacterId = d.characterId || 'castle';
+  myLeaderId = d.leaderId || DECK_DEFAULT_LEADER_ID;
+  try{ localStorage.setItem('bramblewood_arena_character', myCharacterId); localStorage.setItem('bramblewood_arena_leader', myLeaderId); }catch(e){}
+}
+// DECK_LEADER_SY2:END
 let myDecks = loadMyDecks();
 let activeDeckId = loadActiveDeckId();
 // 2026-10-19 (package SY): old deck ids become uuids once (the cloud only takes uuids), with the active and main deck keys following
@@ -13320,6 +13361,7 @@ if(!myDecks){
 } else if(!activeDeckId || !myDecks.find(d=>d.id===activeDeckId)){
   activeDeckId = myDecks[0].id; saveActiveDeckId();
 }
+try{ deckAttachDeviceLeaderOnce(); deckGlobalsFromActive(); }catch(e){} // 2026-10-19 (package SY2): the leader travels with its deck
 function getActiveDeck(){ return myDecks.find(d=>d.id===activeDeckId) || myDecks[0]; }
 // Main deck (2026-10-08, user: "deck editor ... with main deck selection"): the deck you PLAY with.
 // The editor still loads whichever deck you are editing into the working globals (every builder
@@ -13333,6 +13375,7 @@ function restoreMainDeck(){ if(mainDeckId && activeDeckId !== mainDeckId && myDe
 // saveMyLeader) run, so an edit made through the existing deck-builder UI (which only ever
 // touches the bare globals) is reflected back into myDecks immediately.
 function syncActiveDeckFromGlobals(){
+  if(deckGlobalsLoading) return; // 2026-10-19 (package SY2): the globals are being loaded FROM the deck (switchActiveDeck), not edited
   const d = getActiveDeck();
   if(!d) return;
   d.counts = Object.assign({}, myDeckCounts);
@@ -13341,13 +13384,21 @@ function syncActiveDeckFromGlobals(){
   d.leaderId = myLeaderId;
   saveMyDecks();
 }
+// 2026-10-19 (package SY2, owner 15:48: "the leader: It's not synced across decks across devices. So I can see my laptop's deck, but
+// it's a different leader."): the three globals are all set from the deck first, then written to their keys with the deck left alone.
+// Before, saveMyDeck() ran syncActiveDeckFromGlobals() while myCharacterId / myLeaderId still held the PREVIOUS deck's, so opening a
+// deck wrote the old deck's castle and leader into it, then read them back; the save gave it a new updatedAt and the push sent it
+// up as the newest edit. A deck pulled from the laptop got the phone's leader the moment it was opened, and the laptop then pulled
+// that back. A deck with no leader leads with the Wandering Traveller, as it does after a reload (loadMyLeader).
 function switchActiveDeck(id){
   const d = myDecks.find(x=>x.id===id);
   if(!d) return;
   activeDeckId = id; saveActiveDeckId();
-  myDeckCounts = Object.assign({}, d.counts||{}); myDeckLooks = d.looks ? JSON.parse(JSON.stringify(d.looks)) : legacyDeckLooks(myDeckCounts); saveMyDeck(); // 2026-10-16: the deck's own looks
-  myCharacterId = d.characterId || 'castle'; saveMyCharacter();
-  myLeaderId = d.leaderId || null; saveMyLeader();
+  myDeckCounts = Object.assign({}, d.counts||{}); myDeckLooks = d.looks ? JSON.parse(JSON.stringify(d.looks)) : legacyDeckLooks(myDeckCounts); // 2026-10-16: the deck's own looks
+  myCharacterId = d.characterId || 'castle';
+  myLeaderId = d.leaderId || DECK_DEFAULT_LEADER_ID;
+  deckGlobalsLoading = true;
+  try{ saveMyDeck(); saveMyCharacter(); saveMyLeader(); } finally { deckGlobalsLoading = false; }
 }
 function createNewDeck(){
   const n = myDecks.length + 1;
@@ -25793,7 +25844,7 @@ const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts 
 //   N = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 10 (15:48: "let's try L/10"), levelDiv 30; Level 0: Base − zeroPenalty (1).
 //   The formula lives in bramblewood-budget.js (BramblewoodBudget.nAt), shared with tools/skill_costs.js and the hub; perLevel is v3's,
 //   no longer read.
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, missMult:1.5, levelLinDiv:10, levelDiv:30, zeroPenalty:1}; // + mapCoef (BF2, 15:25)
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, missMult:1.5, levelLinDiv:10, levelDiv:30, zeroPenalty:1}; // + perMap (BF2, 15:25)
 // 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
 // its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
 function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }
@@ -25815,7 +25866,7 @@ function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r
 // N for a card at a level (v3, 2026-10-17).
 function sbBudgetAt(d, cfg, lv){
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], L = Math.max(0, Number(lv)||0), c = {};
-  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'mapCoef', 'levelLinDiv', 'levelDiv', 'zeroPenalty'].forEach(k=> c[k] = g(k));
+  ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap', 'levelLinDiv', 'levelDiv', 'zeroPenalty'].forEach(k=> c[k] = g(k));
   let om = 0; try{ om = cardObtainMap(d); }catch(e){} // 2026-10-19 (BF2, 15:25): + 0.2 × the map where it becomes obtainable
   return BramblewoodBudget.nAt(BramblewoodBudget.baseOf(Object.assign({}, d, {obtainMap: om}), c), L, c); // 2026-10-19 (BF2): budget v5, the shared helper (was Base + 2×Level)
 }
@@ -25831,7 +25882,7 @@ function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 // 2026-10-19 (BF2): the formula line, from the numbers in use (the helper's v5 unless the Test Lab changed them), in words through TX
 function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
-  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), mc: g('mapCoef')}); }
+  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), mc: g('perMap')}); }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
 // before; both checks shown, coloured green within both, red over either, pink well under on the first.
@@ -25844,7 +25895,7 @@ function ceBudgetHTML(d){
   const W = Number(d.wait)||0, C = Number(d.cost)||0, f1 = v=> Math.round(v * 10) / 10, m = M !== 1 ? ` × ${f1(M)}` : '', mark = ok=> ok ? '✓' : '✗', op = ok=> ok ? '&lt;' : '≥';
   const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
   // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
-  const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'mapCoef'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
+  const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
   let om = 0; try{ om = cardObtainMap(d); }catch(e){}
   const bp = BramblewoodBudget.baseParts(Object.assign({}, d, {obtainMap: om}), bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : q.k === 'map' ? TX('ui.budget-part-map', {map: q.map, coef: q.coef, v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
   const head = !c.ok ? TX('ui.budget-head-over', {n: f1(N), base: f1(bp.total)}) : c.wellUnder ? TX('ui.budget-head-under', {n: f1(N), base: f1(bp.total)}) : TX('ui.budget-head-ok', {n: f1(N), base: f1(bp.total)});

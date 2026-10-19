@@ -251,7 +251,7 @@ Each run is 120 games a fight. The targets are unchanged: 90% → 60% before the
 
 **Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual + 0.2 × Map.** This was committed on its own, after the v5 retune.
 
-**Map** is the map where the card becomes obtainable (`cardObtainMap` in `arena_app.js`, the shared `mapCoef` 0.2):
+**Map** is the map where the card becomes obtainable (`cardObtainMap` in `arena_app.js`, the shared `perMap` 0.2):
 
 | Source | Map |
 |---|---|

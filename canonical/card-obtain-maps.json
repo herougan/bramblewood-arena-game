@@ -1,4 +1,4 @@
-{"_about": "The map where each card becomes obtainable (arena_app.js cardObtainMap; node tools/forge_curve_2026_10_19.js maps). Budget Base + mapCoef x this (bramblewood-budget.js). Cards not listed are 0 (Base, tutorial, quest, Easter eggs, unsorted).",
+{"_about": "The map where each card becomes obtainable (arena_app.js cardObtainMap; node tools/forge_curve_2026_10_19.js maps). Budget Base + perMap x this (bramblewood-budget.js). Cards not listed are 0 (Base, tutorial, quest, Easter eggs, unsorted).",
  "maps": {
   "dolphin-knight": 5,
   "caustic-scorpion": 18,

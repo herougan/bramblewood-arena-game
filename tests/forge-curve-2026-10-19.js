@@ -32,9 +32,9 @@ ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. t
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
   const v3 = live.map(c=> T.budgetV3N(c, 1) - T.budgetN(c, 1)); ok(v3.every(d=> d <= 1.3 + 1e-9), `1. at Level 1, v5 (L/10) is never more than 1.3 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
 
-// 2026-10-19 (BF2, owner 15:25): Base's map term: + mapCoef (0.2) x the map where the card becomes obtainable
+// 2026-10-19 (BF2, owner 15:25): Base's map term: + perMap (0.2) x the map where the card becomes obtainable
 { const spot = k=>{ const m = new RegExp(`\\{key:'${k}',[^\\n]*?mapNumber:(\\d+)`).exec(src); return m ? +m[1] : null; }, O = G.OBTAIN_MAP_OF;
-  ok(BB.DEFAULTS.mapCoef === 0.2 && near(BB.baseOf({rarity: 'common', obtainMap: 12}) - BB.baseOf({rarity: 'common'}), 2.4), '1. Base + 0.2 x Map (a Map 12 card: +2.4)');
+  ok(BB.DEFAULTS.perMap === 0.2 && near(BB.baseOf({rarity: 'common', obtainMap: 12}) - BB.baseOf({rarity: 'common'}), 2.4), '1. Base + 0.2 x Map (a Map 12 card: +2.4)');
   ok(O.pack === spot('shop') && O.mystery === spot('wanderer') && O.raid === spot('raid') && O.nest === spot('nest') && O.smith === spot('forge'), `1. the obtain maps follow FEATURE_SPOTS (packs ${O.pack}, the Mystery Booster ${O.mystery}, raids ${O.raid}, the Nest ${O.nest}, the Forge ${O.smith})`);
   const om = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'card-obtain-maps.json'), 'utf8')).maps, stale = cards.filter(c=> (om[c.id] || 0) !== G.cardObtainMap(c)).map(c=> c.id);
   ok(!stale.length, '1. canonical/card-obtain-maps.json is current (node tools/forge_curve_2026_10_19.js maps): ' + stale.slice(0, 5).join(', '));

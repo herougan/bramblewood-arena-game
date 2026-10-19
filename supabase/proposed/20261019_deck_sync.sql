@@ -8,6 +8,10 @@
 -- 1. Two columns:
 --   looks       jsonb, null    which copies in the deck are Shiny or wear an alternate-art skin ({cardId: {"shiny": 1, "skin:x": 1}}).
 --                              Without it, each device keeps its own looks for a deck (the cards and counts still sync).
+--                              2026-10-19 (package SY2): without it the client now puts the looks inside counts instead
+--                              (counts.__deck.looks, taken out again on pull), so looks sync with no migration; once this column
+--                              exists the client writes the column and leaves counts plain. The leader and castle need nothing here:
+--                              they already have their own columns (leader_id, character_id, checked 2026-10-19).
 --   deleted_at  timestamptz    a delete mark. With it, deleting a deck marks the row instead of removing it, so a device that was
 --                              offline (or edited the deck before it heard) can tell "deleted elsewhere" from "never sent". Without
 --                              it the client deletes the row and uses its own per-account "seen in the cloud" list to tell the two

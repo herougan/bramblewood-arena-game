@@ -30,7 +30,7 @@
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
 'use strict';
 // canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
-const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, mapCoef:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5}; // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
+const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5}; // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
@@ -42,11 +42,11 @@ const num = (cfg, k)=>{ const v = cfg && cfg[k]; return v == null || v === '' ||
 function rankOf(rarity){ const k = rarity || 'common'; return Math.max(0, LADDER.indexOf(AS[k] || k)); }
 function ritualPts(effects){ const r = effects && effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (+b || 0), 0) : 0; }
 // The level-independent part of N for a card ({rarity, wait, cost, effects, obtainMap}). 2026-10-19 (BF2, owner 15:25: "note that there is
-// a Map * 0.2 number there"): + mapCoef (0.2) × the map number where the card becomes obtainable (d.obtainMap: a map reward its map, a
+// a Map * 0.2 number there"): + perMap (0.2) × the map number where the card becomes obtainable (d.obtainMap: a map reward its map, a
 // pack card where its pack goes on sale, a raid card where raids open; Base, tutorial and unobtainable cards 0; the game's cardObtainMap,
 // canonical/card-obtain-maps.json for the tools and the hub).
-function baseOf(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 0, M = +d.obtainMap || 0;
-  return r2(num(cfg, 'base') + num(cfg, 'perRarity') * rankOf(d.rarity) + num(cfg, 'perWait') * W + num(cfg, 'perWait2') * W * W + num(cfg, 'perLumber') * C + num(cfg, 'perLumber2') * C * C + num(cfg, 'perRitual') * ritualPts(d.effects) + num(cfg, 'mapCoef') * M); }
+function baseOf(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 0, M = +(d.obtainMap != null ? d.obtainMap : (typeof d.map === 'number' ? d.map : 0)) || 0; // .map: tools/special_monsters.js (RJ) passes the map that way
+  return r2(num(cfg, 'base') + num(cfg, 'perRarity') * rankOf(d.rarity) + num(cfg, 'perWait') * W + num(cfg, 'perWait2') * W * W + num(cfg, 'perLumber') * C + num(cfg, 'perLumber2') * C * C + num(cfg, 'perRitual') * ritualPts(d.effects) + num(cfg, 'perMap') * M); }
 // N at level L for a Base: (Base − 1 + L) × (1 + L/20).
 // Base in its parts (2026-10-19, BF2; owner 14:07: "There should be a Base = ..."): {total, parts: [{k: 'base'|'rarity'|'wait'|'lumber'|'ritual', v}]},
 // zero parts left out but the starting number; the parts add up to total (each rounded to 0.01, as baseOf).
@@ -54,7 +54,7 @@ function baseParts(d, cfg){ d = d || {}; const W = +d.wait || 0, C = +d.cost || 
   const add = (k, v)=>{ v = r2(v); if(v) parts.push({k, v}); };
   add('rarity', num(cfg, 'perRarity') * rankOf(d.rarity)); add('wait', num(cfg, 'perWait') * W + num(cfg, 'perWait2') * W * W);
   add('lumber', num(cfg, 'perLumber') * C + num(cfg, 'perLumber2') * C * C); add('ritual', num(cfg, 'perRitual') * ritualPts(d.effects));
-  const M = +d.obtainMap || 0; if(M && num(cfg, 'mapCoef')) parts.push({k: 'map', v: r2(num(cfg, 'mapCoef') * M), map: M, coef: num(cfg, 'mapCoef')});
+  const M = +(d.obtainMap != null ? d.obtainMap : (typeof d.map === 'number' ? d.map : 0)) || 0; if(M && num(cfg, 'perMap')) parts.push({k: 'map', v: r2(num(cfg, 'perMap') * M), map: M, coef: num(cfg, 'perMap')});
   return {total: baseOf(d, cfg), parts}; }
 // N at level L for a Base (v5): (Base + L/levelLinDiv) × (1 + L/levelDiv); Level 0 is Base − zeroPenalty.
 function nAt(base, L, cfg){ L = Math.max(0, Number(L) || 0); if(L <= 0) return r2(base - num(cfg, 'zeroPenalty')); return r2((base + L / num(cfg, 'levelLinDiv')) * (1 + L / num(cfg, 'levelDiv'))); }
@@ -63,7 +63,7 @@ function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L)
 // The formula as text, from the numbers in use (the card editor, the Test Lab, the hub): {n, base}.
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
   return {n: `N = (Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: Base − ${g('zeroPenalty')}`,
-    base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('mapCoef')}×Map`}; }
+    base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
 function nOf(d, L, cfg){ return nAt(baseOf(d, cfg), L, cfg); }
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
 function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }

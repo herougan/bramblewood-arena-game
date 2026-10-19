@@ -81,13 +81,13 @@ if(cmd === 'budget'){
   // for Base's map term in tools/skill_costs.js and the hub. --check: exit 1 when it is stale.
   const G = require('./lib_bramble.js').G, maps = {};
   CARDS.forEach(c=>{ const m = G.cardObtainMap(c); if(m) maps[c.id] = m; });
-  const text = '{"_about": "The map where each card becomes obtainable (arena_app.js cardObtainMap; node tools/forge_curve_2026_10_19.js maps). Budget Base + mapCoef x this (bramblewood-budget.js). Cards not listed are 0 (Base, tutorial, quest, Easter eggs, unsorted).",\n "maps": {\n' + Object.entries(maps).map(([k, v])=> '  ' + JSON.stringify(k) + ': ' + v).join(',\n') + '\n }\n}\n';
+  const text = '{"_about": "The map where each card becomes obtainable (arena_app.js cardObtainMap; node tools/forge_curve_2026_10_19.js maps). Budget Base + perMap x this (bramblewood-budget.js). Cards not listed are 0 (Base, tutorial, quest, Easter eggs, unsorted).",\n "maps": {\n' + Object.entries(maps).map(([k, v])=> '  ' + JSON.stringify(k) + ': ' + v).join(',\n') + '\n }\n}\n';
   const OUTF = path.join(ROOT, 'canonical', 'card-obtain-maps.json');
   if(process.argv.includes('--check')){ const cur = fs.existsSync(OUTF) ? fs.readFileSync(OUTF, 'utf8') : ''; if(cur !== text){ console.log('canonical/card-obtain-maps.json is stale: node tools/forge_curve_2026_10_19.js maps'); process.exit(1); } console.log('card-obtain-maps.json is current'); }
   else { fs.writeFileSync(OUTF, text); console.log(Object.keys(maps).length, 'cards with a map'); }
 } else if(cmd === 'mapterm'){
   // 2026-10-19 (BF2, owner 15:25): v5 with and without Base's map term, at Level 1 and at each card's start level
-  const T0 = SC.make(Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), {budget: Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).budget, {mapCoef: 0})}));
+  const T0 = SC.make(Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), {budget: Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).budget, {perMap: 0})}));
   const rows = CARDS.filter(SC.measured).map(c=>{ const lv = SC.levelOf(c), a = T0.budget(c, {level: lv}), b = T.budget(c, {level: lv}), a1 = T0.budget(c, {level: 1}), b1 = T.budget(c, {level: 1});
     return {id: c.id, name: c.name, map: T.obtainMapOf(c), N0: a.N, N: b.N, ok0: a.ok, ok: b.ok, ok01: a1.ok, ok1: b1.ok, x1: b.x1}; });
   const inn = k=> rows.filter(r=> r[k === 'L1' ? 'ok1' : 'ok'] && !r[k === 'L1' ? 'ok01' : 'ok0']), out = k=> rows.filter(r=> !r[k === 'L1' ? 'ok1' : 'ok'] && r[k === 'L1' ? 'ok01' : 'ok0']);

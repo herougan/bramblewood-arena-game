@@ -11,9 +11,30 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - Blacksmith equipment: 11;
   - Base, tutorial, quest and Easter-egg cards: 0.
 
-  The shared constant is `mapCoef`, the tools read `canonical/card-obtain-maps.json`, and the budget panel's Base line shows "Map 12 × 0.2 = 2.4".
+  The shared constant is `perMap`, the tools read `canonical/card-obtain-maps.json`, and the budget panel's Base line shows "Map 12 × 0.2 = 2.4".
 - **At Level 1:** 708 → 718 cards pass, with 10 moving in and none out (Great Horned Owl, Gorge Wyrm, Cave Warlord, Venomlord Serpent, Sand Widow, Permafrost Mammoth, Barnacle Fortress, Ember Revenant, Sea Cucumber, Giant Cave Huntsman). The post-balance queue drops from 30 to 20 cards. No card's stats changed.
 - **Limit break comes in waves** (decision B9, design only): `docs/balance/limit-break-waves.md`.
+
+## 2026-10-19 (package RJ: special monsters against the budget, and their BR)
+- **Owner (15:48):** "Justify special monster stats like Raid monster stats. What would that card's BR be then?" This is an analysis only: no stats changed.
+- **`docs/balance/special-monsters-2026-10-19.md`** has one table per group: the Goliath's brambles, the elders (boss units) through the raid's life, the boss's row-deck copies, its Commons, the Core's stumps, the async raid bosses, the conquest bosses' signature units, and the Tower and dungeon specials. Each row gives the stats the fight really builds, the skills, the score (2A+H+S and A·H+S), the N needed, the equivalent player card ("a Level 4 Epic with Wait 2, Lumber 3", or "exceeds any player budget by Y×"), the BR as a player card and as the boss, and a one-line justification.
+- **`tools/special_monsters.js`** regenerates the doc and `canonical/special-monsters.json`. It reads the game's own fight builds (`buildRaidFullFight` at 100% / 50% / 5% of each part, `levelledEnemyDeck`, `towerFloorDeck`) and N from `bramblewood-budget.js` with the table's numbers (v5). It also previews v6: (Base + L/10)(1 + L/30), with 0.2 × Map added to Base until the helper has the Map term.
+- **Findings:**
+  - A fresh Kraken Brute (3/50) is 1.1× an Epic's N, the size of a Level 4 Epic (BR 21). The raid's BR counts each one at 37.
+  - The row copies at 20% / 15% all fit a Level 1 Common, yet they count at their printed rarity: a Broodmother copy at 5/4 adds 21.
+  - The brambles (420 a fight) are the over-budget part, which is fine because they share 200,000 raid Health among 250 raiders.
+  - **Flagged:** the Caldera Wyrm, 1.82× its N as printed. It has no source. Two options are proposed, neither applied: trim its Health onto the fight's bramble, or list it as non-player.
+  - 13 player cards are over their own budget as printed. They are listed for the card pass.
+  - `canonical/unit-themes.json`'s elder bodies are stale (⚔10 ❤93 against the built 3/50).
+- **Hub, not published:** the Units tab's 👹 Non-player view has columns for score vs N, the equivalent card and BR as player / as boss, plus a table of the other special monsters (`SM_DATA`, inlined by `build_hub.py`).
+
+## 2026-10-19 (package SY2: deck leaders sync)
+- **The leader and castle now travel with their deck** (owner 15:48: *"the leader: It's not synced across decks across devices. So I can see my laptop's deck, but it's a different leader."*).
+  - **Cause:** each deck already held its leader and castle, and they already went to the cloud (`player_decks.leader_id` / `character_id`). But opening a deck (`switchActiveDeck`) saved its cards first. That save copied the leader and castle still loaded, which were the previous deck's, into the deck it was opening. Then it read them back. The save counted as a fresh edit, so the next push sent the wrong leader to the cloud as the newest version, and the laptop pulled it back. SY's test stubbed `switchActiveDeck`, so it never ran this path.
+  - **Fix:** opening a deck sets its cards, looks, castle and leader first, then writes them to this device's keys and leaves the deck unchanged. A leader pick saves to the deck with a new `updatedAt` and is pushed. In the open builder it waits for Save, as before. On a pull, the deck's leader comes with it. When the active deck changes, the leader it plays with changes too. A deck with no leader yet leads with the Wandering Traveller, as it already did after a reload.
+  - **Once per device:** its current leader and castle are attached to its active deck and uploaded on the next sync (`deckAttachDeviceLeaderOnce`). From then on the active deck sets the leader at load, not the separate `bramblewood_arena_leader` key.
+  - **Card looks (Shiny / alt-art copies) sync without a migration.** With no `looks` column on the server, they ride inside the counts JSON (`counts.__deck.looks`) and are taken out on pull. The deck name already synced. Decks have no per-deck cover, sleeve or card back to sync (card backs are per card kind).
+- No migration needed. `tests/deck-sync-2026-10-19.js` has 141 checks, 30 of them new: two devices, the leader set on A and seen on B, merging by timestamp, the attach-once step and looks in counts.
 
 ## 2026-10-19 (package BF2: budget v5, a softer Forge curve, the budget panel with Base)
 - **Owner (13:52):** "That's too much. ... (Base + L/3) * (1 + L/30) ... Level 0 gives an additional minus 1." **Budget v5:** N = (Base + L/5) × (1 + L/30) from Level 1, and Base − 1 at Level 0, in `bramblewood-budget.js` and `canonical/skill-costs.json`. The owner's example with L/3 checks out: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10.
