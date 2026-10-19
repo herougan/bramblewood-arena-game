@@ -1026,6 +1026,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.wind-head-wing": "Flying – Headwind: its skills and triggers go off twice",
   "ui.wind-tail-quick": "Tailwind: a quick extra turn before combat",
   "ui.back-to-home": "Back to Home",
+  "ui.speed-locked": "{speed}×: Clear Map {n}",
   "ui.nv-home": "Home",
   "ui.nv-vs-start": "Start the fight",
   "ui.nv-vs-you": "You",

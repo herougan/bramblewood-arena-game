@@ -29829,23 +29829,42 @@ function updateControlsDisabled(){
 // map1), 3x after map2. After map5, if you set the speed to be at 3x, it stays at 3x. After map15, you unlock speed 4x. After
 // map30, you unlock 5x").
 const SPEED_KEEP_KEY = 'bramblewood_speed_keep_v1';
-function speedSteps(){
+// 2026-10-19 (package BU, owner: "Fast forward - 3x, 4x, 5x should only be unlocked at Map 20, 40, and 60."): 3× opens when Map 20
+// is cleared, 4× at Map 40 and 5× at Map 60 (were Maps 2, 15 and 30). Map numbers are play order (mainConquestMaps, Map 0 first),
+// as the Forge's Map 11. A locked speed is left out of the cycle; Admin Mode has them all. 1.5× and 2× keep their gates.
+const SPEED_GATES = [{speed:3, map:20}, {speed:4, map:40}, {speed:5, map:60}];
+// The cycle for a player's progress (pure, unit-tested: tests/bu-2026-10-19.js). p: {admin, firstWin, firstElite, cleared(n)}.
+function speedStepsFor(p){
   // 2026-10-14 (user: "it always goes to 5x, then 1x. Include the 0.5x."): Admin Mode returned early with every fast speed and
   // skipped the 0.5× added below, so an admin's cycle wrapped from 5× straight back to 1×.
-  if(adminModeEnabled) return [1, 1.5, 2, 3, 4, 5, 0.5];
+  if(p && p.admin) return [1, 1.5, 2, 3, 4, 5, 0.5];
   const out = [1];
   try{
-    const done = (loadConquestProgress().completed || []).filter(id=> !/:tutorial2?$/.test(id));
-    const mains = mainConquestMaps(), cleared = n=> mains[n] && conquestMapCleared(mains[n].id);
-    const kindOf = id=>{ const [mapId, key] = id.split(':'); const f = findConquestNode(mapId, key); return f && f.node && f.node.kind; };
-    if(done.length) out.push(1.5);
-    if(done.some(id=> /elite|boss|champion/.test(kindOf(id) || ''))) out.push(2);
-    if(cleared(2)) out.push(3);
-    if(cleared(15)) out.push(4);
-    if(cleared(30)) out.push(5);
+    if(p && p.firstWin) out.push(1.5);
+    if(p && p.firstElite) out.push(2);
+    SPEED_GATES.forEach(g=>{ if(p && p.cleared && p.cleared(g.map)) out.push(g.speed); });
   }catch(e){}
   out.push(0.5); // 2026-10-14 (user: "We need a 0.5x mode."): slow motion is always there, last in the cycle before normal
   return out;
+}
+function speedSteps(){
+  let p = {admin: !!adminModeEnabled};
+  try{
+    const done = (loadConquestProgress().completed || []).filter(id=> !/:tutorial2?$/.test(id));
+    const mains = mainConquestMaps();
+    const kindOf = id=>{ const [mapId, key] = id.split(':'); const f = findConquestNode(mapId, key); return f && f.node && f.node.kind; };
+    p.firstWin = done.length > 0;
+    p.firstElite = done.some(id=> /elite|boss|champion/.test(kindOf(id) || ''));
+    p.cleared = n=> !!(mains[n] && conquestMapCleared(mains[n].id));
+  }catch(e){}
+  return speedStepsFor(p);
+}
+// The fast speeds still locked, for the button's tooltip ("4×: Clear Map 40"); only maps that exist on the road are named (WP4).
+function speedLockedHints(){
+  if(adminModeEnabled) return [];
+  const have = speedSteps();
+  return SPEED_GATES.filter(g=> !have.includes(g.speed) && (typeof mapIsCharted !== 'function' || mapIsCharted(g.map)))
+    .map(g=> TX('ui.speed-locked', {speed: g.speed, n: g.map}));
 }
 // Slow motion (2026-10-14): at 0.5× the delays double (they divide by speedMult everywhere) and, while a round plays out, GSAP's
 // own tweens run at half speed too. Back to normal the moment the round hands control back.
@@ -29862,7 +29881,8 @@ function keptSpeed(){ if(!speedKeeps()) return 0; try{ return +localStorage.getI
 function ffBtnLabel(mult){ if(mult > 0 && mult < 1) return `<span class="ff-arrows">▷</span> ${mult}×`; const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
 // 2026-10-14: the tooltip names the whole cycle and how to go back (Shift-click, or a long press on a touch screen).
 function ffBtnTitle(mult){ const st = speedSteps(), now = (mult > 0 && mult < 1) ? `${mult}x (slow motion)` : (!mult || mult <= 1) ? 'normal' : `${mult}x`;
-  return `Playback speed: ${now}. Click: faster (${st.map(x=> x + 'x').join(' → ')} → 1x). Shift-click (or press and hold): slower${speedKeeps() ? '. Your choice carries over to the next fight' : ''}`; }
+  const locks = speedLockedHints(); // 2026-10-19 (package BU): the locked fast speeds and the map that opens each
+  return `Playback speed: ${now}. Click: faster (${st.map(x=> x + 'x').join(' → ')} → 1x). Shift-click (or press and hold): slower${speedKeeps() ? '. Your choice carries over to the next fight' : ''}${locks.length ? '. 🔒 ' + locks.join(' · ') : ''}`; }
 // 2026-09-21 ("Spawning and the movement of the card sometimes collides and messes up. Spawn
 // first, then collapse once the animation is complete"): the per-card entrance ("fall in") tween
 // duration, factored out of renderBoard's own local `dur` so any OTHER code that needs to know
@@ -31304,15 +31324,19 @@ function mb2OccupiedSlots(m){
     (pl.reserve || []).forEach(row=>{ if(row) Object.keys(row).forEach(sl=>{ if(row[sl]) see(sl); }); }); });
   return lo <= hi ? [lo, hi] : null;
 }
+// 2026-10-19 (package BU, owner on an iPhone: "You should always be able to play a card in the centre column", and the row sat
+// off-centre): the window is symmetric about the centre column (slot 0), so column 0 is always in the frame and in its middle (the
+// camera's pan is 0). An offset row (units at 2..4) used to frame 1..5, which left the centre, a legal play, off the screen, and
+// a window with an even number of columns (-4..3) put column 0 half a column off the middle. Costs a column on the far side.
 function mb2SpanWindow(m){
   const R = Math.max(1, (m && m._slotRange)|0), minV = Math.min(2*R + 1, m && m.raidFull ? 5 : 3);
   const occ = mb2OccupiedSlots(m) || [0, 0], cur = m && m._mb2Win;
-  const roomy = w=> w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
+  const roomy = w=> w.lo === -w.hi && w.lo >= -R && w.hi <= R && w.hi - w.lo + 1 >= minV && (occ[0] > w.lo || w.lo === -R) && (occ[1] < w.hi || w.hi === R);
   if(cur && roomy(cur)) return cur;
-  let lo = Math.max(-R, occ[0] - 1), hi = Math.min(R, occ[1] + 1);
-  if(cur){ lo = Math.min(lo, Math.max(-R, cur.lo)); hi = Math.max(hi, Math.min(R, cur.hi)); } // it only widens
-  while(hi - lo + 1 < minV){ if(lo + hi <= 0 && hi < R) hi++; else if(lo > -R) lo--; else hi++; }
-  return {lo, hi};
+  let k = Math.min(R, Math.max(-occ[0] + 1, occ[1] + 1, 0));
+  if(cur) k = Math.max(k, Math.min(R, Math.max(-cur.lo, cur.hi))); // it only widens
+  while(2*k + 1 < minV && k < R) k++;
+  return {lo: -k, hi: k};
 }
 const MB2_RAID = {frontRows:2, reserveScale:.966, reserveRows:4, minH:{phone:58, pc:64}, maxH:{phone:150, pc:200},
   handMinH:{phone:81 /* 65 px wide: the size it was before MB2 */, pc:92}, topScale:.75, topMinH:{phone:56, pc:80}};
@@ -33261,13 +33285,17 @@ function updateCastleCracks(el, hp, maxHp){
 // 2026-10-16 (user: "The damage number effect to the castle should happen at the Opposing or Ally HP Bar, not the centre of the
 // field."): the number now pops right on that side's HP bar, where its fill ends (the health it just lost), instead of the middle of
 // the ribbon pushed into the field. Fixed to the page, so the field's edge can't clip it as it rises.
+// 2026-10-19 (package BU, owner on an iPhone: "The damage numbers in mobile appear on the right. They should be in the centre of the
+// opposing HP Bar."): the number pops at the horizontal centre of the bar it hits (its track's screen rect), not where the fill ends
+// (on a phone a healthy bar's fill ends at the far right). Read from getBoundingClientRect, so the board's camera can't skew it;
+// floatText keeps an hq-big number on that centre (no sideways jitter).
 function hqRibbonFloatAnchor(side){
   const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`);
   if(!rib || !rib.getClientRects().length) return null;
   const r = rib.getBoundingClientRect(); if(!r.width) return null;
-  const fill = rib.querySelector('.bf-hp-fill'), fr = fill && fill.getClientRects().length ? fill.getBoundingClientRect() : null;
-  const edge = fr && fr.width > 0 ? fr.right : r.left + r.width/2;
-  const x = Math.max(r.left + 34, Math.min(r.right - 34, edge)), y = r.top + r.height/2;
+  const track = rib.querySelector('.bf-hp-track'), tr = track && track.getClientRects().length ? track.getBoundingClientRect() : null;
+  const bar = tr && tr.width > 0 ? tr : r;
+  const x = bar.left + bar.width/2, y = bar.top + bar.height/2;
   const a = document.createElement('div'); a.className = 'hq-float-anchor'; a.setAttribute('aria-hidden', 'true');
   a.style.cssText = `position:fixed; width:0; height:0; z-index:1100; pointer-events:none; left:${x.toFixed(1)}px; top:${y.toFixed(1)}px;`;
   document.body.appendChild(a); setTimeout(()=> a.remove(), 2200);
@@ -38440,7 +38468,9 @@ function floatText(el, text, cls){
   // out 15% wider. Small random y and travel jitter keep simultaneous numbers from stacking.
   const enemyRow = !!el.closest('#rowEnemy, [data-row="enemy"]'), mineRow = !!el.closest('#rowMine, [data-row="mine"]');
   const spread = mineRow ? 13.8 : 12;
-  const dx = Math.random()*spread*2 - spread;
+  // 2026-10-19 (package BU): a castle number on its HP bar stays on the bar's centre (hqRibbonFloatAnchor), no sideways drift
+  const onBar = !!(el.classList && el.classList.contains('hq-float-anchor'));
+  const dx = onBar ? 0 : Math.random()*spread*2 - spread;
   const dy0 = Math.random()*10-5;
   const top0 = enemyRow ? 12 : 40;
   const travel = 0.9 + Math.random()*0.2;

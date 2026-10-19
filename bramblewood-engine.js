@@ -313,6 +313,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function occupiedSlots(pl){ syncSlots(pl); const set = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0) set.add(c.slot); }); return set; }
   // Legal placement slots in open/gladiator: any empty slot next to one of your live cards, or the
   // centre when you have nothing on the field.
+  // 2026-10-19 (package BU, owner on an iPhone: "You should always be able to play a card in the centre column."): the centre
+  // column (slot 0) is legal whenever it is empty, even when none of your units stands beside it (a row pushed or thinned to one
+  // side, e.g. units at 2..4 after the ones at 0 and 1 died). Every other slot still needs a live unit of yours beside it.
   function legalSlots(pl){
     if(!slotMode) return [];
     const occ = occupiedSlots(pl);
@@ -321,6 +324,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(own.size===0) return occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0];
     const out = new Set();
     own.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
+    if(!occ.has(0)) out.add(0); // the centre is always open (2026-10-19, BU)
     return [...out].sort((a,b)=>a-b);
   }
   // Resolves a placement request to a concrete slot: a number is taken as-is if legal; a
