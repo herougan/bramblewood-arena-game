@@ -1468,6 +1468,49 @@ function CHAIN_BREAK_OPTIONS(){
     {value:'enemySpawn', label:'Opponent plays any new card'},
   ];
 }
+// ==== Package SK1 (2026-10-19, owner 21:36: new combat skills; rules in bramblewood-engine.js, the Package SK1 block) ==============
+// The registry side: new skills join PASSIVE_DEFS (the editor's "+ Add Skill" list and the Skills chapter of the Codex book), the
+// reworked ones (Sentry N, Expose N, Siege N, Cure, Healing; Demolisher folded into Siege) are patched in place, and the new triggers
+// and actions join the trigger builder. Every string is a TX key. (Statuses, short lines, log and looks: the second SK1 block below.)
+// Owner 21:56 ("feel free to use triggers and actions"): Sentry, Expose, Exploit, Venom Pulse and Spoils are trigger × action shorthands.
+const SK1_DEFAULTS = {sentry:2, formation:1, expose:2, exploit:2, punish:2, siege:2, spoils:2, venomPulse:1}; // = the engine's SK1_DEF
+function sk1Patch(list, key, patch){ const p = list.find(x=> x.key === key); if(p) Object.assign(p, patch); else list.push(Object.assign({key}, patch)); }
+sk1Patch(PASSIVE_DEFS, 'sentry', {category:'passive', label:TX('ui.skn-sentry'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-sentry', {n: numOr(v, 2)}), codexNote:TX('ui.sk-sentry-codex'), get:e=> e.sentry ? numOr(e.sentry, 2) : undefined});
+sk1Patch(PASSIVE_DEFS, 'expose', {category:'evergreen', label:TX('ui.skn-expose'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-expose', {n: numOr(v, 2)}), codexNote:TX('ui.sk-expose-codex'), get:e=> e.expose ? numOr(e.expose, 2) : undefined});
+sk1Patch(PASSIVE_DEFS, 'siege', {category:'passive', label:TX('ui.skn-siege'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)}), codexNote:TX('ui.sk-siege-codex'), get:e=> (e.siege || e.demolisher) ? Math.max(e.siege ? numOr(e.siege, 2) : 0, e.demolisher ? numOr(e.demolisher, 2) : 0) : undefined});
+sk1Patch(PASSIVE_DEFS, 'demolisher', {hidden:true, retired:true, label:TX('ui.skn-siege'), desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)})}); // an old save's key: read as Siege
+sk1Patch(PASSIVE_DEFS, 'cure', {desc:v=> TX('ui.sk-cure', {n: numOr(v, 2)})});
+sk1Patch(PASSIVE_DEFS, 'healing', {desc:v=> TX('ui.sk-healing', {n: numOr(v, 1)})});
+PASSIVE_DEFS.push(
+  {key:'formation', category:'passive', label:TX('ui.skn-formation'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-formation', {n: numOr(v, 1)}), codexNote:TX('ui.sk-formation-codex'), get:e=> e.formation ? numOr(e.formation, 1) : undefined},
+  {key:'isolation', category:'passive', label:TX('ui.skn-isolation'), kind:'boolean', desc:()=> TX('ui.sk-isolation'), codexNote:TX('ui.sk-isolation-codex')},
+  {key:'anchor', category:'passive', label:TX('ui.skn-anchor'), kind:'boolean', desc:()=> TX('ui.sk-anchor'), codexNote:TX('ui.sk-anchor-codex')},
+  {key:'exploit', category:'evergreen', label:TX('ui.skn-exploit'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-exploit', {n: numOr(v, 2)}), codexNote:TX('ui.sk-exploit-codex'), get:e=> e.exploit ? numOr(e.exploit, 2) : undefined},
+  {key:'spoils', category:'passive', label:TX('ui.skn-spoils'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-spoils', {n: numOr(v, 2)}), codexNote:TX('ui.sk-spoils-codex'), get:e=> e.spoils ? numOr(e.spoils, 2) : undefined},
+  {key:'venomPulse', category:'passive', label:TX('ui.skn-venom-pulse'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-venom-pulse') : TX('ui.sk-venom-pulse-n', {n: numOr(v, 1)}), codexNote:TX('ui.sk-venom-pulse-codex'), get:e=> e.venomPulse ? numOr(e.venomPulse, 1) : undefined},
+  // Punish N: behind a flag (engine opts.flags.punish / rules.punishSkill), on no card; hidden from the editor until the owner picks a design.
+  {key:'punish', category:'passive', hidden:true, reserved:true, label:TX('ui.skn-punish'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-punish', {n: numOr(v, 2)}), codexNote:TX('ui.sk-punish-codex'), get:e=> e.punish ? numOr(e.punish, 2) : undefined},
+);
+TRIGGER_DEFS.push(
+  {key:'onEnemyEnter', label:TX('ui.trg-on-enemy-enter'), desc:TX('ui.trg-on-enemy-enter-desc')},
+  {key:'onHit', label:TX('ui.trg-on-hit'), desc:TX('ui.trg-on-hit-desc')},
+  {key:'onKillCreature', label:TX('ui.trg-on-kill-creature'), desc:TX('ui.trg-on-kill-creature-desc')},
+);
+ACTION_DEFS.push(
+  {key:'exploit', label:TX('ui.act-exploit'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-exploit-desc')},
+  {key:'poisonTick', label:TX('ui.act-poison-tick'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-poison-tick-desc')},
+);
+sk1Patch(ACTION_DEFS, 'expose', {desc:TX('ui.act-expose-desc')});
+sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
+sk1Patch(ACTION_DEFS, 'cleanse', {desc:TX('ui.act-cleanse-desc')});
+Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', exploit:'🩻', spoils:'🍖', venomPulse:'💉', punish:'⚖️', demolisher:'🏰'}); // Package SK1 (2026-10-19)
+// An old save's or a server override's Demolisher N reads as Siege N (the higher of the two when a card had both; the engine reads either).
+function sk1MigrateSiege(c){
+  const e = c && c.effects; if(!e || e.demolisher == null) return c;
+  const ne = Object.assign({}, e), d = numOr(e.demolisher, 2), s = e.siege ? numOr(e.siege, 2) : 0; delete ne.demolisher; if(d > 0 || s > 0) ne.siege = Math.max(d, s);
+  return Object.assign({}, c, {effects: ne});
+}
+// ==== end of Package SK1 (registry) ================================================================================================
 // SKILL_DEFS: the unified "+ Add Skill" registry for the card editor's Passive Abilities
 // section — every PASSIVE_DEFS keyword, Explode (a two-field passive), and the former
 // "Active preset" one-shots (Arrow/Render/Revive) all live here now as one flat list of
@@ -2917,6 +2960,7 @@ function buildCardDefs(){
   Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && !lc.art && b.art) lc.art = b.art; });
   // 2026-10-16 (user: "All Worthy cards become Bounty."): the safety net for any way an old Worthy got into the overlay (a save, a restore).
   Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
+  Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -5373,6 +5417,65 @@ const LIVE_STATUS_ROWS = [
 ];
 // Rounds left, for the statuses that count down in rounds (shown as "(2 rounds)" after the name).
 const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 'paralyzed', 'bound', 'webbed', 'blind', 'tipsy', 'confused', 'smoke', 'invisible']);
+// ==== Package SK1 (2026-10-19): statuses, short card lines, the battle log, the looks and the badges (registry: the first SK1 block) ==
+// Exposed counts rounds now (its hiding stripped); Exploit tokens are the old Expose counters' damage (+1 a hit); Formation and
+// Isolation show as a chip with the bonus (c.sk1Atk; the Health part is real max Health). Every string is a TX key.
+LIVE_STATUS_ROUNDS.add('exposed');
+{ const ex = LIVE_STATUS_ROWS.find(r=> r[0] === 'exposed'); if(ex){ ex[3] = n=> TX('ui.ls-exposed', {n, s: n === 1 ? '' : 's'}); ex[4] = false; }
+  LIVE_STATUS_ROWS.splice(LIVE_STATUS_ROWS.indexOf(ex) + 1, 0, ['exploit', 'exploit', TX('ui.skn-exploit'), n=> TX('ui.ls-exploit', {n, s: n === 1 ? '' : 's'}), true]); }
+STATUS_KEYWORDS.push({k:'exploit', re:/\b(exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')});
+Object.assign(SKILL_TEXT, {
+  sentry: v=> TX('ui.sk-sentry', {n: numOr(v, SK1_DEFAULTS.sentry)}),
+  expose: v=> TX('ui.sk-expose', {n: numOr(v, SK1_DEFAULTS.expose)}),
+  exploit: v=> TX('ui.sk-exploit', {n: numOr(v, SK1_DEFAULTS.exploit)}),
+  siege: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
+  demolisher: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
+  formation: v=> TX('ui.sk-formation', {n: numOr(v, SK1_DEFAULTS.formation)}),
+  isolation: ()=> TX('ui.sk-isolation'),
+  anchor: ()=> TX('ui.sk-anchor'),
+  spoils: v=> TX('ui.sk-spoils', {n: numOr(v, SK1_DEFAULTS.spoils)}),
+  venomPulse: v=> numOr(v, 1) === 1 ? TX('ui.sk-venom-pulse') : TX('ui.sk-venom-pulse-n', {n: numOr(v, 1)}),
+  punish: v=> TX('ui.sk-punish', {n: numOr(v, SK1_DEFAULTS.punish)}),
+  cure: v=> TX('ui.sk-cure', {n: numOr(v, 2)}),
+  healing: v=> TX('ui.sk-healing', {n: numOr(v, 1)}),
+});
+function sk1LogText(ev, nm){
+  if(!ev || ev.type !== 'statusFx') return null;
+  const s = n=> n === 1 ? '' : 's';
+  if(ev.kind === 'expose') return {cls:'', text:TX('ui.log-expose-rounds', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
+  if(ev.kind === 'exploit') return {cls:'', text:TX('ui.log-exploit', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
+  if(ev.kind === 'exploitHit') return {cls:'', text:TX('ui.log-exploit-hit', {name: nm(ev.targetDefId), b: ev.bonus||1, n: ev.amount||0})};
+  if(ev.kind === 'exploitFade') return {cls:'', text:TX('ui.log-exploit-fade', {name: nm(ev.targetDefId)})};
+  if(ev.kind === 'poisonPulse') return {cls:'poison', text:TX('ui.log-poison-pulse', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
+  if(ev.kind === 'punish') return {cls:'', text:TX('ui.log-punish', {att: nm(ev.attDefId), name: nm(ev.targetDefId), dmg: ev.dmg||0})};
+  if(ev.kind === 'sk1Aura'){ if(ev.atk > 0) return {cls:'', text:TX('ui.log-formation', {name: nm(ev.targetDefId), n: ev.atk})};
+    if(ev.atk < 0) return {cls:'', text:TX('ui.log-isolation', {name: nm(ev.targetDefId), n: -ev.atk})}; return {cls:'', text:TX('ui.log-aura-off', {name: nm(ev.targetDefId)})}; }
+  return null;
+}
+function sk1Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'triggerFired' && ev.hook === 'onEnemyEnter'){ fl(boardCardEl(ev.uid), TX('ui.float-sentry'), 'quick'); snd('ambushTone'); return; }
+  if(ev.type !== 'statusFx') return;
+  const rc = rcOf(ev.targetUid), el = boardCardEl(ev.targetUid);
+  if(ev.kind === 'exploit'){ if(rc) rc.exploit = (rc.exploit||0) + (ev.amount||1); fl(el, TX('ui.float-exploit'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
+  if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
+  if(ev.kind === 'sk1Aura'){ if(rc){ rc.sk1Atk = ev.atk||0; if(ev.maxHpNow != null){ rc.maxHp = ev.maxHpNow; rc.hp = ev.hpNow; } }
+    if(ev.dAtk) fl(el, ev.dAtk > 0 ? `${ev.atk > 0 ? '🔗' : '🏝️'} +${ev.dAtk}/+${ev.dHp}` : `${ev.atk >= 0 && !ev.isolation ? '🔗' : '🏝️'} ${ev.dAtk}/${ev.dHp}`, ev.dAtk > 0 ? 'buff' : 'debuff');
+    refresh(ev.targetUid); return; }
+}
+// The Exploit tokens chip and the Formation / Isolation chip (the bonus it has right now).
+function sk1StatusBadges(c, badges){
+  if(c.exploit > 0) badges.push(`<span class="abadge exploit" title="${escapeAttr(TX('ui.exploit-tip', {n: c.exploit, s: c.exploit === 1 ? '' : 's'}))}">🩻${c.exploit}</span>`);
+  const a = c.sk1Atk || 0; if(a > 0) badges.push(`<span class="abadge formation" title="${escapeAttr(TX('ui.aura-formation-tip', {n: a}))}">🔗+${a}</span>`);
+  else if(a < 0) badges.push(`<span class="abadge isolation" title="${escapeAttr(TX('ui.aura-isolation-tip', {n: -a}))}">🏝️${a}</span>`);
+}
+// ==== end of Package SK1 (statuses and board) ======================================================================================
 function liveStatusGlossHTML(c){
   if(!c) return '';
   const rows = [];
@@ -5403,7 +5506,7 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
   // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
   const liveC = liveCard ? (currentCardByUid(liveCard.uid) || liveCard) : null;
-  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0)) : d.attack;
+  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0) + (liveC.sk1Atk||0) /* Formation / Isolation (SK1) */) : d.attack;
   const baseAtk = Number(d.attack)||0, atkBonus = effAtk - baseAtk;
   // 2026-10-11 (user): "⚔ 5 (2 + 3)" — total and base in red, the bonus in blue.
   // 2026-10-14 (user: "In the card details tooltip - it shows 5 (6+1 (blue) - 2(green)) for example"): the stat as it stands, then
@@ -30491,7 +30594,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -30627,7 +30730,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -32366,7 +32469,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-12 (user: "Crabs that benefit from the tide must show their modified attack"; Rage doubles): the board's Attack
   // includes Flow's +1, Inspired, and Rage's doubling.
   const tideNow = (isTideDefApp(d) && !((d.effects||{}).tideGrant && !(d.effects||{}).supremeTide) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
-  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
+  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.sk1Atk||0) /* Formation / Isolation (SK1) */ + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
   if(raging) effAtk *= 2;
   const atkLabel = atkLabelHTML(effAtk, d.attack, d);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
@@ -34787,7 +34890,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
       });
     });
   });
@@ -38080,6 +38183,7 @@ function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
+  { const k = sk1LogText(ev, nm); if(k) return k; } // package SK1 skills (2026-10-19)
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
@@ -40225,6 +40329,7 @@ function ninthPassVfx(ev){
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
+  try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
@@ -40705,6 +40810,7 @@ function renderVfxForEvent(ev){
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
+  try{ sk1Vfx(ev); }catch(e){} // package SK1 skills (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
@@ -41138,7 +41244,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
     else if(ev.kind==='creativity'){ if(el) floatText(el, `🎨 +${ev.amount||1}`, 'buff'); if(rc){ rc.creativity = ev.total != null ? ev.total : (rc.creativity||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Creative N (2026-10-18)
     else if(ev.kind==='prayer'){ if(el) floatText(el, `📿 +${ev.amount||1}`, 'buff'); if(rc){ rc.prayerTokens = ev.total != null ? ev.total : (rc.prayerTokens||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Prayer tokens (2026-10-19, package E)
-    else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = (rc.exposed||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15)
+    else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = Math.max(rc.exposed||0, ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15); N rounds, not stacking counters (2026-10-19, SK1)
     else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
     // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off."):
     // the badge goes, and FX.D.statusLook fades the crosshair out (it never just blinks off now).
@@ -41159,7 +41265,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff'); }
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
-    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; rc.exposed=0; } }
+    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.bleed=0; rc.scar=0; rc.exposed=0; rc.exploit=0; rc.shocked=0; rc.corrode=0; rc.brittle=0; rc.staggered=0; rc.armorLoss=0; } /* the physical debuffs only (2026-10-19, SK1) */ }
     else if(ev.kind==='stanch'){ try{ SoundKit.cleanseTone(); }catch(e){} if(el){ floatText(el, `🩹 -${ev.amount} 🩸`, 'heal'); cleanseVfx(el); } if(rc) rc.bleed = Math.max(0, (rc.bleed||0) - (ev.amount||0)); }
     else if(ev.kind==='grit'){ SoundKit.gritUp(); if(el) floatText(el, '+'+ev.amount+'⚔', 'gold'); }
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),

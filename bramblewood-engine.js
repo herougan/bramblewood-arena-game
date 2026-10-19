@@ -198,13 +198,17 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // On Pitch (2026-10-16, user: "A new skill: Whenever you pitch a card, this card does {}"): fires on every unit of yours on the
   // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
   'onPitch'];
+// Package SK1 (2026-10-19): On Enemy Enters (Facing), On Hit, On Kill (Creature); the last two fire on its own blow, so even while Waiting.
+TRIGGER_KEYS.push('onEnemyEnter', 'onHit', 'onKillCreature');
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
+ALWAYS_ON_HOOKS.add('onHit'); ALWAYS_ON_HOOKS.add('onKillCreature'); // SK1 (2026-10-19)
 // 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
 // triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
 // 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
 // removeDeadCards (each pass of a death sweep is one layer deeper).
 const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
+ACTION_KEYS.push('exploit', 'poisonTick'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -2565,17 +2569,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // carried onto the pushed statusFx event (Stun has none).
   function applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, amount, stats, events, mySide, statusKind, mutateFn){
     const pl = players[playerId], enemy = players[otherId(playerId)];
-    bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+    if(!sk1OnHitNow) bleedTick(sideOf, playerId, boardCard, stats, events, 'skill'); // an On Hit status rides on the swing (SK1, 2026-10-19)
     const targetPid = who==='enemy' ? otherId(playerId) : playerId;
     const apply = c=>{
       mutateFn(c);
       const ev = {type:'statusFx', kind:statusKind, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid};
       if(amount!=null) ev.amount = amount;
       if(recordEvents && events) events.push(ev);
-      if(who!=='self' && c.hp>0){ bleedTick(sideOf, targetPid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, targetPid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
+      if(who!=='self' && c.hp>0 && !sk1OnHitNow){ bleedTick(sideOf, targetPid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, targetPid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     };
     const dodge = c=>{ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid}); };
-    const gated = c=>{ if(who==='self' || sub==='killer' || dodgeCheck(c)) apply(c); else dodge(c); }; // the killer ate it: no dodging
+    const gated = c=>{ if(who==='self' || sub==='killer' || sk1OnHitNow || dodgeCheck(c)) apply(c); else dodge(c); }; // the killer ate it: no dodging; + an On Hit status: the hit landed already (SK1)
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
       ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0 && kinOk(boardCard, c)) apply(c); })); // area effect: Evade only dodges single-target; Kin: only your Kin (2026-10-18)
@@ -3714,7 +3718,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (placeCard, debugSpawnCard, summonLeader), before melee and after every attacker's turn. springAmbush keeps its old name.
   //   Ambush N   the enemy unit that enters the slot facing it takes N (Ready or Waiting; can't be dodged, no Guardian).
   //   Sentry N   (2026-10-19, package SK1 rework) an enemy unit that enters one of the 3 slots facing it (the one in front and the two
-  //              beside that) takes N, Ready or Waiting, each time (sk1SentryStrike). Was: once a round, while Ready, its Attack.
+  //              beside that) takes N each time: On Enemy Enters (Facing): Damage N (sk1Trigs). Was: once a round, while Ready, its Attack.
   function springAmbush(players, sideOf, pid, card, stats, events){ watchScan(players, sideOf, stats, events); }
   function sentryCanAct(a){ return !!(a && a.hp > 0 && !(a.wait > 0) && !a.stunned && !(a.frozen > 0) && !(a.asleep > 0) && !(a.bound > 0) && !a.chained && !a.petrified && a._sentryRound !== turnNo); }
   function sentryWatches(players, pid, a, x){
@@ -3750,7 +3754,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(recordEvents && events) events.push({type:'hit', side:sideOf(foeId), attDefId:a.defId, attUid:a.uid, targetSide:sideOf(pid), targetDefId:x.defId, targetUid:x.uid, dmg, dmgType:'physical', ambush:true, ranged:false});
               if(x.hp > 0){ bleedTick(sideOf, pid, x, stats, events, 'defend'); runCustomTriggers(players, sideOf, pid, x, CARD_DEFS[x.defId], 'onAttacked', stats, events); wiltOnHit(x, sideOf(pid), events); } } }
           // Sentry N (2026-10-19, package SK1 rework; was once a round, its Attack, while Ready): N to each unit that comes into its watch.
-          if(e.sentry && x.hp > 0 && sk1SentryAwake(a) && sentryWatches(players, foeId, a, x) && sk1SentryStrike(players, sideOf, foeId, a, pid, x, !fresh.has(x), stats, events)) anyHit = true;
+          // + On Enemy Enters (Facing) (2026-10-19, package SK1): any trigger on it, Sentry N's keyword trigger too.
+          if(x.hp > 0 && sentryWatches(players, foeId, a, x) && sk1EnemyEnters(players, sideOf, foeId, a, x, !fresh.has(x), stats, events)) anyHit = true;
         } } }
     if(anyHit && [1,2].some(pid=> allBoardCards(players[pid]).some(c=> c && !c.gap && c.hp <= 0))) removeDeadCards(players, sideOf, {}, stats, events);
     sk1SyncAuras(players, sideOf, events); // Formation / Isolation (2026-10-19, package SK1): the board just changed
@@ -3760,10 +3765,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // damage, as tokens), Punish N (behind a flag), Siege N (Demolisher folded in), Spoils N, Venom Pulse N, and the Cure / Heal / Cleanse
   // split. Every number is a parameter: SK1_DEF holds the defaults, a card's own N overrides them (true = the default), and
   // makeSimEngine(defs, rnd, {sk1:{...}}) overrides the defaults for a whole engine (the owner may halve all numbers: one object).
-  //   Sentry N      when an enemy unit enters one of the 3 slots facing it (the opposing L/C/R: played, spawned, a reserve stepping up,
-  //                 or, on open boards, moved there or between them: Restless, a Wave / the field's Wave, Tornado, a swap, a Bloodlust
-  //                 leap), it takes N. Ready or Waiting (not while Stunned, Frozen, Asleep, Bound, Chained or Petrified); once per unit
-  //                 per look (watchScan), no dodge and no Guardian, like Ambush. (Was: once a round, its Attack.) An old `true` = N.
+  // 2026-10-19 (owner 21:56: "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the
+  // required trigger or action."): Sentry, Expose, Exploit, Venom Pulse and Spoils are keyword shorthands for a trigger x action
+  // (sk1Trigs, read by trigsOf, as Kin Rally is), so they follow the trigger rules (off while Waiting, Stunned, Frozen or Asleep for a
+  // reactive trigger; Confused and Slippery fumble them; Headwind doubles them). New triggers: On Enemy Enters (Facing) 'onEnemyEnter',
+  // On Hit 'onHit' (its melee hit landed; the subject is the unit hit), On Kill (Creature) 'onKillCreature' (its blow killed an enemy
+  // creature; the subject is the dead). New actions: 'exploit' (N Exploit tokens) and 'poisonTick' (the target's Poison ticks N times).
+  //   Sentry N      = On Enemy Enters (Facing): Damage N to that unit. An enemy unit enters one of the 3 slots facing it (the opposing
+  //                 L/C/R: played, spawned, a reserve stepping up, or, on open boards, moved there or between them: Restless, a Wave /
+  //                 the field's Wave, Tornado, a swap, a Bloodlust leap). Once per unit per look (watchScan). A skill's damage: Evasion
+  //                 can dodge it, a Guardian can step in. (Was: once a round, its Attack.) An old `true` = the default N.
   //   Formation (N) +N/+N for each ally aligned with it, up to SK1_DEF.formationMax (2): the units right beside it in its row, and in a
   //                 raid the ones right behind / in front of it in its column. Worked out afresh on every board change (watchScan).
   //   Isolation     a drawback: counts its allies within SK1_DEF.isolationRange (2) columns (any row, in a raid); with 0, 1, 2, 3, 4+
@@ -3772,17 +3783,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Anchor        nothing moves it: pushes and Waves (it can still be crashed into), Tornado, Restless (its own, and a Restless ally's
   //                 swap with it), Bloodlust, a Swap, Converge (it holds its board still, like a Gladiator leader), Mind Control, and
   //                 Shield Call's step aside. A packed row's close-up after a death and a raid's reserve stepping up are rules, not effects.
-  //   Expose N      its hits leave the target Exposed for N rounds: its hiding is stripped. Invisible can be found and hit; Evasive (and
+  //   Expose N      = On Hit: Expose N. Its hits leave the target Exposed for N rounds: its hiding is stripped. Invisible can be found and hit; Evasive (and
   //                 Prey's, the Tide's and the canopy's evade), Smoke and Shadow don't dodge; a Stealth unit's swing is blocked as
   //                 anyone's; Camouflage / Hidden (none yet) join through SK1_HIDING. Flying, Swift, Illusory and the fields still count.
-  //   Exploit N     its hits put N Exploit tokens on the target. Each later hit on it (melee, a shot, a bolt; not a Poison / Bleed
+  //   Exploit N     = On Hit: Exploit N. Its hits put N Exploit tokens on the target. Each later hit on it (melee, a shot, a bolt; not a Poison / Bleed
   //                 tick) deals +SK1_DEF.exploitBonus (1) and uses one token (before Armor, so Armor still soaks it).
   //   Punish N      (SK1_PUNISH_ON: engine opts.flags.punish or rules.punishSkill; off by default, on no card): at the end of the
   //                 round, each enemy unit that hit it that round takes N (once each, whatever the hits), if both still stand.
   //   Siege N       its hits deal N more to Structures (the old Demolisher) and its swings at the bramble N more (the old Siege). An
   //                 old card's `demolisher` reads as Siege (the higher of the two when both are there).
-  //   Spoils N      when it kills an enemy creature (not a Structure, a cage or the bramble) it gains +0/+N (max and current Health).
-  //   Venom Pulse N its melee hits make the target's Poison tick N more times at once (its whole current stack each; the stack doesn't
+  //   Spoils N      = On Kill (Creature): Buff itself +0/+N. When it kills an enemy creature (not a Structure, a cage or the bramble) it gains +0/+N (max and current Health).
+  //   Venom Pulse N = On Hit: Poison Tick N. Its melee hits make the target's Poison tick N more times at once (its whole current stack each; the stack doesn't
   //                 wear down), after the hit's own Poison lands. Structures and the poison-proof have none to pulse.
   const SK1_DEF = Object.assign({sentry:2, formation:1, formationMax:2, isolationRange:2, isolationTable:[4, 3, 2, 1, 0], expose:2, exploit:2,
     exploitBonus:1, punish:2, siege:2, spoils:2, venomPulse:1}, (opts && opts.sk1) || {});
@@ -3801,11 +3812,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let d = sk1UnhideCache.get(def); if(!d){ const e = Object.assign({}, def.effects); SK1_HIDING.forEach(k=>{ delete e[k]; }); d = Object.assign({}, def, {effects:e}); sk1UnhideCache.set(def, d); }
     return d;
   }
-  function sk1ExposeUnit(att, t, rounds, side, tSide, events){
-    if(!t || !(t.hp > 0) || !(rounds > 0)) return;
-    t.exposed = Math.max(t.exposed||0, rounds); t._exposedJustSet = true;
-    sk1Ev(events, {type:'statusFx', kind:'expose', side, attDefId: att ? att.defId : null, attUid: att ? att.uid : null, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, amount:rounds, total:t.exposed, rounds:true});
-  }
   function sk1UpkeepTick(c){ if(c && c.exposed > 0){ if(c._exposedJustSet) c._exposedJustSet = false; else c.exposed -= 1; } }
   // Exploit: a hit on a unit with tokens uses one and comes back with the bonus (0 when it has none).
   function sk1ExploitUse(card){
@@ -3814,31 +3820,43 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind:'exploitHit', side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:card.exploit, bonus:SK1_DEF.exploitBonus}); }
     return Math.max(0, Number(SK1_DEF.exploitBonus) || 0);
   }
-  // A landed melee hit's SK1 passives (Expose, Exploit, Venom Pulse), after the hit's own Poison.
-  function sk1OnHit(players, sideOf, attPid, att, attDef, t, stats, events){
-    const e = (attDef && attDef.effects) || {}; if(!t || !(t.hp > 0)) return;
-    const side = sideOf(attPid), tPid = otherId(attPid), tSide = sideOf(tPid);
-    if(e.expose) sk1ExposeUnit(att, t, sk1N(attDef, 'expose'), side, tSide, events);
-    if(e.exploit){ const n = sk1N(attDef, 'exploit'); if(n > 0){ t.exploit = (t.exploit||0) + n;
-      sk1Ev(events, {type:'statusFx', kind:'exploit', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, amount:n, total:t.exploit}); } }
-    if(e.venomPulse && t.poison > 0 && !isStructureCard(t)){
-      for(let i = 0, n = sk1N(attDef, 'venomPulse'); i < n && t.hp > 0 && t.poison > 0; i++){
-        const hp0 = t.hp, dmg = damageCardFlat(t, t.poison, 'poison');
-        if(hp0 > 0 && t.hp <= 0) noteKiller(t, att.uid, att.defId);
-        ensureStat(stats, side, att.defId).dealt += dmg; ensureStat(stats, tSide, t.defId).taken += dmg;
-        sk1Ev(events, {type:'poisonTick', side:tSide, defId:t.defId, uid:t.uid, dmg, decay:false, pulse:true, attUid:att.uid, attDefId:att.defId});
-      } }
+  // The keyword shorthands (trigsOf appends them to a card's own triggers; memoised per effects object, like Kin Rally's).
+  const sk1TrigMemo = new WeakMap();
+  function sk1Trigs(e, list){
+    if(!e || !(e.sentry || e.expose || e.exploit || e.venomPulse || e.spoils)) return list;
+    const m = sk1TrigMemo.get(e), key = [e.sentry, e.expose, e.exploit, e.venomPulse, e.spoils].join('|');
+    if(m && m.src === list && m.key === key) return m.out;
+    const out = list.slice(), N = k=> numN(e[k], SK1_DEF[k]);
+    if(e.sentry) out.push({on:'onEnemyEnter', do:'damage', who:'enemy', sub:'subject', amount:N('sentry'), keyword:'sentry'});
+    if(e.expose) out.push({on:'onHit', do:'expose', who:'enemy', sub:'subject', amount:N('expose'), keyword:'expose'});
+    if(e.exploit) out.push({on:'onHit', do:'exploit', who:'enemy', sub:'subject', amount:N('exploit'), keyword:'exploit'});
+    if(e.venomPulse) out.push({on:'onHit', do:'poisonTick', who:'enemy', sub:'subject', amount:N('venomPulse'), keyword:'venomPulse'});
+    if(e.spoils) out.push({on:'onKillCreature', do:'buff', who:'self', amount2:N('spoils'), keyword:'spoils'});
+    sk1TrigMemo.set(e, {src:list, key, out}); return out;
   }
-  // Sentry N: one strike at the unit x that came into its watch (watchScan decides that).
-  function sk1SentryAwake(a){ return !!(a && a.hp > 0 && !a.stunned && !(a.frozen > 0) && !(a.asleep > 0) && !(a.bound > 0) && !a.chained && !a.petrified); }
-  function sk1SentryStrike(players, sideOf, foeId, a, pid, x, moved, stats, events){
-    const n = sk1N(a, 'sentry'); if(!(n > 0) || !(x.hp > 0)) return false;
-    if(confusedFumbles(a, sideOf(foeId), events, 'sentry')) return false; // Confused (2026-10-19, package FZ): 1 in 2 it fumbles
-    sk1Ev(events, {type:'sentry', side:sideOf(foeId), uid:a.uid, defId:a.defId, targetSide:sideOf(pid), targetUid:x.uid, targetDefId:x.defId, amount:n, moved: moved || undefined});
-    const dmg = damageCardFlat(x, n, 'physical', a.defId, a.uid);
-    ensureStat(stats, sideOf(foeId), a.defId).dealt += dmg; ensureStat(stats, sideOf(pid), x.defId).taken += dmg;
-    sk1Ev(events, {type:'hit', side:sideOf(foeId), attDefId:a.defId, attUid:a.uid, targetSide:sideOf(pid), targetDefId:x.defId, targetUid:x.uid, dmg, dmgType:'physical', sentry:true, ranged:false});
-    if(x.hp > 0){ bleedTick(sideOf, pid, x, stats, events, 'defend'); runCustomTriggers(players, sideOf, pid, x, CARD_DEFS[x.defId], 'onAttacked', stats, events); wiltOnHit(x, sideOf(pid), events); }
+  const sk1HasHook = (c, hook)=> !!(c && trigsOf(CARD_DEFS[c.defId]).some(t=> t.on === hook));
+  // On Hit: a landed melee hit, after its own Poison (the old Expose passive's place). While these run, the hit has already landed:
+  // the status skips its own dodge roll, the caster's skill Bleed tick and the target's On Attacked (the hit gave those already).
+  let sk1OnHitNow = false;
+  function sk1OnHit(players, sideOf, attPid, att, attDef, t, stats, events){
+    if(!t || !(t.hp > 0) || !att || !sk1HasHook(att, 'onHit')) return;
+    const was = sk1OnHitNow; sk1OnHitNow = true;
+    try{ runCustomTriggers(players, sideOf, attPid, att, CARD_DEFS[att.defId], 'onHit', stats, events, {subjectCard:t}); } finally{ sk1OnHitNow = was; }
+  }
+  // The Poison Tick action: the target's Poison deals its whole current stack n times now, and the stack doesn't wear down.
+  function sk1PoisonPulse(att, t, n, side, tSide, stats, events){
+    if(!t || !(t.hp > 0) || !(t.poison > 0) || isStructureCard(t)) return 0; let total = 0;
+    for(let i = 0; i < n && t.hp > 0 && t.poison > 0; i++){
+      const hp0 = t.hp, dmg = damageCardFlat(t, t.poison, 'poison'); total += dmg;
+      if(hp0 > 0 && t.hp <= 0 && att) noteKiller(t, att.uid, att.defId);
+      if(att) ensureStat(stats, side, att.defId).dealt += dmg; ensureStat(stats, tSide, t.defId).taken += dmg;
+      sk1Ev(events, {type:'poisonTick', side:tSide, defId:t.defId, uid:t.uid, dmg, decay:false, pulse:true, attUid: att ? att.uid : null, attDefId: att ? att.defId : null}); }
+    return total;
+  }
+  // On Enemy Enters (Facing): watchScan calls this for each watcher a of the unit x that came into its watch.
+  function sk1EnemyEnters(players, sideOf, foeId, a, x, moved, stats, events){
+    if(!sk1HasHook(a, 'onEnemyEnter') || !(x.hp > 0)) return false;
+    runCustomTriggers(players, sideOf, foeId, a, CARD_DEFS[a.defId], 'onEnemyEnter', stats, events, {subjectCard:x, moved: !!moved});
     return true;
   }
   // Formation and Isolation, worked out for every unit (front row and, in a raid, the middle and back rows). Attack rides on c.sk1Atk
@@ -3863,13 +3881,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Siege N: the larger of a card's Siege and its old Demolisher (true = the default).
   function sk1SiegeN(def){ const e = (def && def.effects) || {}; const s = e.siege ? numN(e.siege, SK1_DEF.siege) : 0, d = e.demolisher ? numN(e.demolisher, SK1_DEF.siege) : 0; return Math.max(s, d); }
-  // Spoils N: called for every death (removeDeadCardsPass, beside Carrion).
-  function sk1Spoils(players, sideOf, dead, events){
+  // On Kill (Creature): called for every death (removeDeadCardsPass, beside Carrion): the unit whose blow killed an enemy creature
+  // (not a Structure, a cage, a Shield token or the bramble) fires it, the dead as its subject. Spoils N is its keyword.
+  function sk1KillCreature(players, sideOf, dead, stats, events){
     if(!dead || dead.killedBy == null || dead.cageOf || dead.defId === SHIELD_TOKEN || isStructureCard(dead)) return;
     for(const pid of [1, 2]){ const pl = players[pid]; if(!pl) continue; const k = rowsUnitsOf(pl).find(x=> x && x.uid === dead.killedBy); if(!k) continue;
-      if(!(k.hp > 0) || rowsUnitsOf(pl).includes(dead) || !effectsOf(k).spoils) return;
-      const n = sk1N(k, 'spoils'); if(!(n > 0)) return; k.maxHp += n; k.hp += n;
-      sk1Ev(events, {type:'statusFx', kind:'spoils', side:sideOf(pid), attDefId:k.defId, attUid:k.uid, targetSide:sideOf(pid), targetDefId:k.defId, targetUid:k.uid, amount:n, fromUid:dead.uid, fromDefId:dead.defId}); return; }
+      if(!(k.hp > 0) || rowsUnitsOf(pl).includes(dead) || !sk1HasHook(k, 'onKillCreature')) return;
+      runCustomTriggers(players, sideOf, pid, k, CARD_DEFS[k.defId], 'onKillCreature', stats || {}, events, {subjectCard:dead}); return; }
   }
   // Punish N (behind SK1_PUNISH_ON): hits on it are noted (damageCard / damageCardFlat), and the round's end strikes back.
   function sk1NotePunish(card, attUid){ if(!SK1_PUNISH_ON || attUid == null || !card || !effectsOf(card).punish) return; (card._punishBy || (card._punishBy = new Set())).add(attUid); }
@@ -4028,12 +4046,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const giTrigMemo = new WeakMap();
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
-    if(!e.kinRally && !e.packHowl) return base;
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl) return m.list;
+    if(!e.kinRally && !e.packHowl) return sk1Trigs(e, base); // + the SK1 keyword shorthands (2026-10-19)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl) return sk1Trigs(e, m.list);
     const list = base.slice();
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, list}); return list;
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, list}); return sk1Trigs(e, list);
   }
   let trigSubject = null; // the unit a trigger is about (the ally played, the one that died ...), for sub:'subject'
   // Vanguard N (2026-10-17, user: "This card draws itself into its hand at the start of the game, and you discard a random card. (If
@@ -4939,7 +4957,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events && trigs.some(t=> t.on === hook)) events.push({type:'triggerCapped', side:sideOf(playerId), defId:boardCard ? boardCard.defId : null, uid:boardCard ? boardCard.uid : null, hook, layer:trigLayer + 1});
       return;
     }
-    trigLayer++; const subj0 = trigSubject; trigSubject = extra ? (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard || null) : null; // sub:'subject' (2026-10-19, GI)
+    trigLayer++; const subj0 = trigSubject; trigSubject = extra ? (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard || extra.subjectCard || null) : null; // sub:'subject' (2026-10-19, GI); + subjectCard (SK1's new triggers)
     try{ runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra); } finally{ trigLayer--; trigSubject = subj0; }
   }
   function runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
@@ -4980,7 +4998,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // hooks. On any other hook (onAttack, onKill, ...) a set filter simply never matches
       // (nothing in `extra` to check), so the editor only offers it where it's meaningful.
       if(t.filterArchetype){
-        const subject = extra && (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard);
+        const subject = extra && (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard || extra.subjectCard); // + SK1 (2026-10-19)
         const subjDef = subject ? CARD_DEFS[subject.defId] : null;
         const subjArchetypes = (subjDef && subjDef.archetypes) || [];
         if(!subjArchetypes.includes(t.filterArchetype) && !(subjDef && subjDef.effects && subjDef.effects.changeling)) return; // a Changeling passes for any type
@@ -5196,6 +5214,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         case 'expose': {
           const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent');
           applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, t.amount||0, stats, events, mySide, 'expose', c=>{ c.exposed = Math.max(c.exposed||0, t.amount||0); c._exposedJustSet = true; }); // 2026-10-19 (package SK1): Exposed for N rounds (was N crit counters)
+          break;
+        }
+        // Exploit N and Poison Tick N (2026-10-19, package SK1): N Exploit tokens on the target; the target's Poison ticks N times now.
+        case 'exploit': {
+          const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), xn = numN(t.amount, SK1_DEF.exploit);
+          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, xn, stats, events, mySide, 'exploit', c=>{ c.exploit = (c.exploit||0) + xn; });
+          break;
+        }
+        case 'poisonTick': {
+          const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), pn = numN(t.amount, SK1_DEF.venomPulse);
+          const tpid = who==='enemy' ? otherId(playerId) : playerId;
+          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, pn, stats, events, mySide, 'poisonPulse', c=>{ sk1PoisonPulse(boardCard, c, pn, mySide, sideOf(tpid), stats, events); });
           break;
         }
         case 'stun': {
@@ -6394,7 +6424,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push(deathEv);
       amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
       carrionFeed(players, sideOf, card, events); // Carrion N (2026-10-17): the scavengers on the field eat
-      sk1Spoils(players, sideOf, card, events); // Spoils N (2026-10-19, package SK1): its killer gains +0/+N
+      sk1KillCreature(players, sideOf, card, stats, events); // On Kill (Creature) / Spoils N (2026-10-19, package SK1)
       if(credit){
         const sidesCredited = new Set();
         credit.forEach(key=>{
