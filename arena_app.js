@@ -5595,9 +5595,10 @@ function castleHoverHTML(hqSide){
   // 2026-10-19 (MB2): the swallow window now counts from the lift (a long hold used to outlast it and play the card), and a tap on
   // details a hold opened opens that card's full detail page.
   document.addEventListener('click', e=>{
+    // first the lift's own click (the details may have opened right under the finger), then a real tap on the details
+    if(Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 250){ swallowClickUntil = 0; holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; }
     if(stripHeld && !pop.hidden && pop.contains(e.target)){ e.preventDefault(); e.stopPropagation(); const id = pop.dataset.heldDefid; pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; popSrc = null;
       if(id && getCardDefs()[id]) try{ openCardDetail(id); }catch(_){} return; }
-    if(Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 250){ swallowClickUntil = 0; holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; }
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; }, true);
   function positionPop(el){
     const r = el.getBoundingClientRect();

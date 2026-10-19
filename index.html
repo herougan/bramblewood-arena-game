@@ -5928,7 +5928,7 @@
     #appWrap.in-match .bottom-play-row{margin-bottom:0;}
     /* the hand: one line of board-sized cards that overlap when there are too many to sit side by side (it still scrolls
        sideways past that); the card you touch or arm comes to the front */
-    #appWrap.in-match .bottom-play-row .hand-strip{gap:0 !important; justify-content:center;}
+    #appWrap.in-match .bottom-play-row .hand-strip{gap:0 !important; justify-content:center; padding-bottom:12px; margin-bottom:0;} /* the room under the cards for their skill badges is inside the screen now */
     #appWrap.in-match .bottom-play-row .hand-strip > .card-tile + .card-tile{margin-left:clamp(calc(var(--match-card-w) * -.62), calc((100% - var(--hand-n, 1) * var(--match-card-w)) / max(1, var(--hand-n, 1) - 1)), 6px);}
     #appWrap.in-match .bottom-play-row .hand-strip > .card-tile.armed, #appWrap.in-match .bottom-play-row .hand-strip > .card-tile:active{z-index:5;}
   }
@@ -5959,7 +5959,7 @@
   @media (max-width:700px){
     #appWrap.in-match.mb2-raid #view-play > .battlefield{padding:4px;}
     #appWrap.in-match.mb2-raid > .content-wrap{padding-left:4px; padding-right:4px;}
-    #appWrap.in-match .bottom-play-row .graveyard-pile{font-size:min(10.5px, calc(var(--match-card-w) * .17));} /* "Graveyard" fits a small pile */
+    #appWrap.in-match .bottom-play-row .graveyard-pile{font-size:min(10.5px, calc(var(--match-card-w) * .15));} /* "Graveyard" fits a small pile */
   }
   /* ===== Card sizes that scale (2026-10-03, explicit: "There should be several card sizes, and they
      need to scale sensibly... text just needs to stay legible at all sizes"). Every .card-tile is its
@@ -40532,7 +40532,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c79eb7728d3a', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = 'e41e1a9109ad', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -43350,9 +43350,10 @@ function castleHoverHTML(hqSide){
   // 2026-10-19 (MB2): the swallow window now counts from the lift (a long hold used to outlast it and play the card), and a tap on
   // details a hold opened opens that card's full detail page.
   document.addEventListener('click', e=>{
+    // first the lift's own click (the details may have opened right under the finger), then a real tap on the details
+    if(Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 250){ swallowClickUntil = 0; holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; }
     if(stripHeld && !pop.hidden && pop.contains(e.target)){ e.preventDefault(); e.stopPropagation(); const id = pop.dataset.heldDefid; pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; popSrc = null;
       if(id && getCardDefs()[id]) try{ openCardDetail(id); }catch(_){} return; }
-    if(Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 250){ swallowClickUntil = 0; holdOpenedAt = 0; e.preventDefault(); e.stopPropagation(); return; }
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; pop.classList.remove('is-held'); stripHeld = false; }, true);
   function positionPop(el){
     const r = el.getBoundingClientRect();
