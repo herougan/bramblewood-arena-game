@@ -6205,6 +6205,9 @@
   .dungeon-key-btn[hidden]{display:none !important;}
   .dungeon-key-btn .dk-n{position:absolute; right:-4px; bottom:-4px; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:8px; background:#e9c46a; color:#2b1d08; font:800 10.5px/16px 'Baloo 2', system-ui, sans-serif; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,.45); pointer-events:none;}
   .dungeon-key-btn.is-here{box-shadow:0 0 0 2px var(--accent);}
+  /* 2026-10-19 (package MX): out of keys: the key greys, the badge still says 0 (an empty, outlined badge) */
+  .dungeon-key-btn.is-empty .tab-emoji{filter:grayscale(1) opacity(.55);}
+  .dungeon-key-btn.is-empty .dk-n{background:#3a3f47; color:#e8e2d6; box-shadow:0 0 0 1.5px #9aa3ad inset, 0 1px 3px rgba(0,0,0,.45);}
   .topbar .dungeon-key-btn{padding:7px 10px;}
   #appWrap.in-match .dungeon-key-btn{display:none !important;}
   /* The Dungeons tab in Play (2026-10-15, user: "Maybe, it's its own, just another tab in 'Play'."). */

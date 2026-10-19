@@ -50,6 +50,20 @@ function weakenShare(state, partId){
   if(!state) return 1; const ps = state.byId && state.byId[partId], sh = (a, b)=> b > 0 ? Math.max(0, Math.min(1, a / b)) : 1;
   return Math.min(ps ? sh(ps.remaining, ps.total) : 1, state.total ? sh(state.remaining, state.total) : 1);
 }
+// The raid bramble's Shield (2026-10-19, package MX, owner 22:47: "Add a shield value of 50 to the Raid. As the HP% goes down, this 50
+// goes down proportionally."): the boss's bramble in a raid fight opens with a Shield (the Shield rule's armour layer: it soaks hits
+// before Health) of round(max x weakenShare), the same remaining share the boss's weakening uses: 50 fresh, 25 at half, 0 as it falls.
+// max = the part's `shield`, else the raid's `shield`, else RAID_SHIELD_DEFAULT (50), so a saved raid edit without it gets 50; 0 = off.
+const RAID_SHIELD_DEFAULT = 50;
+function raidShieldMax(def, partId){
+  const p = ((def && def.parts) || []).find(x=> x.id === partId), ok = v=> v != null && v !== '' && isFinite(Number(v));
+  const v = p && ok(p.shield) ? Number(p.shield) : (def && ok(def.shield) ? Number(def.shield) : RAID_SHIELD_DEFAULT);
+  return Math.max(0, Math.min(999, Math.round(v)));
+}
+function raidShield(def, state, partId){
+  const max = raidShieldMax(def, partId), share = weakenShare(state, partId);
+  return {max, share, shield: Math.max(0, Math.round(max * share))};
+}
 function weakenCard(d, w){
   if(!d || !(w > 0) || w >= 1) return d; const a = Number(d.attack) || 0;
   return Object.assign({}, d, {attack: a > 0 ? Math.max(1, Math.round(a * w)) : 0, health: Math.max(1, Math.round((Number(d.health) || 1) * w))});
@@ -573,7 +587,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
   RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RAID_SHIELD_DEFAULT, raidShieldMax, raidShield, /* 2026-10-19 (package MX) */ RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
    fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;

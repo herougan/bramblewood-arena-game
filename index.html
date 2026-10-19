@@ -20577,6 +20577,20 @@ function weakenShare(state, partId){
   if(!state) return 1; const ps = state.byId && state.byId[partId], sh = (a, b)=> b > 0 ? Math.max(0, Math.min(1, a / b)) : 1;
   return Math.min(ps ? sh(ps.remaining, ps.total) : 1, state.total ? sh(state.remaining, state.total) : 1);
 }
+// The raid bramble's Shield (2026-10-19, package MX, owner 22:47: "Add a shield value of 50 to the Raid. As the HP% goes down, this 50
+// goes down proportionally."): the boss's bramble in a raid fight opens with a Shield (the Shield rule's armour layer: it soaks hits
+// before Health) of round(max x weakenShare), the same remaining share the boss's weakening uses: 50 fresh, 25 at half, 0 as it falls.
+// max = the part's `shield`, else the raid's `shield`, else RAID_SHIELD_DEFAULT (50), so a saved raid edit without it gets 50; 0 = off.
+const RAID_SHIELD_DEFAULT = 50;
+function raidShieldMax(def, partId){
+  const p = ((def && def.parts) || []).find(x=> x.id === partId), ok = v=> v != null && v !== '' && isFinite(Number(v));
+  const v = p && ok(p.shield) ? Number(p.shield) : (def && ok(def.shield) ? Number(def.shield) : RAID_SHIELD_DEFAULT);
+  return Math.max(0, Math.min(999, Math.round(v)));
+}
+function raidShield(def, state, partId){
+  const max = raidShieldMax(def, partId), share = weakenShare(state, partId);
+  return {max, share, shield: Math.max(0, Math.round(max * share))};
+}
 function weakenCard(d, w){
   if(!d || !(w > 0) || w >= 1) return d; const a = Number(d.attack) || 0;
   return Object.assign({}, d, {attack: a > 0 ? Math.max(1, Math.round(a * w)) : 0, health: Math.max(1, Math.round((Number(d.health) || 1) * w))});
@@ -21100,7 +21114,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
   RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RAID_SHIELD_DEFAULT, raidShieldMax, raidShield, /* 2026-10-19 (package MX) */ RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
    fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
@@ -41383,7 +41397,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9302504f48b2', BUILD_CARD_HASH = '009c78b2e40dae54eb1f214fb9c2e26718fc426fdfa9c71d2024732949780e6a';
+const BUILD_ID = 'b94c2e983a5f', BUILD_CARD_HASH = '009c78b2e40dae54eb1f214fb9c2e26718fc426fdfa9c71d2024732949780e6a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -61694,6 +61708,7 @@ function openRaidEditor(raidId){
       <div class="se-grid">
         <label title="Raid tickets one fight takes. Players hold up to ${RAID_POINTS_MAX}, +1 a day, topped up to ${RAID_POINTS_MAX} each week.">Tickets per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints != null ? draft.cost.raidPoints : 1}"></label>
         <label title="Energy a fight takes on a part with no Energy of its own (1-6); each part and stage can change it below">Energy per fight (default)<input id="reCostEn" type="number" min="1" max="6" value="${draft.cost.energy||4}"></label>
+        <label title="The boss bramble's Shield on a fresh raid (soaks hits before Health); it falls with the part's remaining Health, as the boss's weakening: 50 fresh, 25 at half. 0 = off; each part can change it below (2026-10-19, package MX)">Shield<input id="reShield" type="number" min="0" max="999" value="${RaidM.raidShieldMax ? RaidM.raidShieldMax(Object.assign({}, draft, {parts: []}), null) : 50}"></label>
         <label title="Hours after a kill until the raid comes back at full Health, as a new life with its own rewards (1-168; the week's end still starts a new cycle)">Respawn after a kill (hours)<input id="reRespawn" type="number" min="1" max="168" value="${draft.respawnHours||RaidM.RESPAWN_HOURS_DEFAULT}"></label>
         <label title="Players in one instance before the next opens, each with its own Health and rewards (10-1000; 250 by default since 2026-10-19). The server reads the published value.">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
         ${adminModeEnabled ? `<div class="se-wide re-restart"><button type="button" class="btn small" id="reRestart">${escapeHtml(TX('ui.raid-restart'))}</button><small class="panel-sub">Every instance starts a fresh life now, at full Health (live once the raid-ops SQL is applied; this browser only until then).</small></div>` : ''}
@@ -61730,6 +61745,7 @@ function openRaidEditor(raidId){
         <label>Fight bramble HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
         <label title="Energy a fight on this part takes (1-6; blank = the raid's)">Energy per fight (blank = raid)<input data-pf="energy" type="number" min="1" max="6" value="${(P.cost||{}).energy||''}"></label>
+        <label title="This part's bramble Shield on a fresh raid (0-999; 0 = off; blank = the raid's), falling with its remaining Health (2026-10-19, package MX)">Shield (blank = raid)<input data-pf="shield" type="number" min="0" max="999" value="${P.shield != null && P.shield !== '' ? P.shield : ''}"></label>
         <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
         <label>Raid damage per HP (blank = raid)<input data-pf="perHp" type="number" min="1" value="${(P.scoring||{}).perInFightHp||''}"></label>
       </div>
@@ -61823,6 +61839,7 @@ function openRaidEditor(raidId){
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
     draft.cost.raidPoints = Math.max(0, Math.min(5, Math.round(num(v('reCostRp'), 1)))); draft.cost.energy = Math.max(1, Math.min(6, Math.round(num(v('reCostEn'), 4)))); // 1-6 Energy (2026-10-19)
+    if(overlay.querySelector('#reShield')) draft.shield = Math.max(0, Math.min(999, Math.round(num(v('reShield'), 50)))); // 2026-10-19 (package MX): the raid bramble's Shield (0 = off)
     // 2026-10-19 (package RO): respawn, instances, art, participation and the new reward knobs, the ally decks
     if(overlay.querySelector('#reRespawn')) draft.respawnHours = Math.max(1, Math.min(168, Math.round(num(v('reRespawn'), 24))));
     if(overlay.querySelector('#reInstCap')) draft.instanceCap = Math.max(10, Math.min(1000, Math.round(num(v('reInstCap'), RaidM.INSTANCE_CAP_DEFAULT || 250))));
@@ -61852,6 +61869,7 @@ function openRaidEditor(raidId){
       overlay.querySelectorAll('[data-pf]').forEach(el=>{ const k = el.dataset.pf;
         if(k==='name' || k==='icon') P[k] = el.value; else if(k==='castleHp') P.fight.castleHp = Math.max(10, num(el.value, 200));
         else if(k==='perHp') return; // read below
+        else if(k==='shield'){ if(el.value==='') delete P.shield; else P.shield = Math.max(0, Math.min(999, Math.round(num(el.value, 50)))); } // 2026-10-19 (package MX)
         else if(k==='energy'){ if(el.value===''){ if(P.cost){ delete P.cost.energy; if(!Object.keys(P.cost).length) delete P.cost; } } else P.cost = Object.assign({}, P.cost||{}, {energy: Math.max(1, Math.min(6, Math.round(num(el.value, 4))))}); } // 2026-10-19
         else if(k==='rounds'){ if(el.value==='') delete P.fight.rounds; else P.fight.rounds = Math.max(3, Math.min(40, Math.round(num(el.value, 12)))); } else P[k] = Math.max(1, Math.round(num(el.value, 1))); });
       const ph = overlay.querySelector('[data-pf="perHp"]');
@@ -62140,6 +62158,7 @@ function startRaidPartMatch(def, partId){
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = guildScaledBramble(myCharacter.health || 30, f.castleHpPct); // + the guild's Rooted Walls (2026-10-19)
   const players = {1: engine.newPlayer(1, myFightDeck, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
+  { const r = (RaidM && RaidM.raidShield) ? RaidM.raidShield(def, st, partId) : null; if(r){ const q = players[2].hq; q.shield = r.shield; q.maxShield = r.shield; q.shieldLayers = r.shield > 0 ? [r.shield] : []; } } // 2026-10-19 (package MX): the raid bramble's Shield (RaidM.raidShield), here too
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
@@ -62249,6 +62268,10 @@ function buildRaidFullFight(def, partId, f, st, opts){
   const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, Object.assign({id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}},
     bramble ? {name: bramble.name, icon: bramble.icon, art: bramble.art || undefined, raidBramble: true, partName: f.part.name} : {}))};
   players[2].loopCards = [];
+  // 2026-10-19 (package MX, owner 22:47: "Add a shield value of 50 to the Raid"): the boss's bramble opens with the raid's Shield
+  // (RaidM.raidShield: 50 x the part's remaining share, as the weakening), shown and spent as any bramble's Shield (one layer)
+  const raidShield = (RaidM && RaidM.raidShield) ? RaidM.raidShield(def, st, partId) : {max:0, share:1, shield:0};
+  { const q = players[2].hq; q.shield = raidShield.shield; q.maxShield = raidShield.shield; q.shieldLayers = raidShield.shield > 0 ? [raidShield.shield] : []; }
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
   entIds.forEach((id, i)=> engine.debugSpawnCard(players, sideOf, 2, id, order[i], stats, []));
@@ -62278,7 +62301,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
     allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.allyRow = a.row; c.holdRow = true; c.isLeader = true; a.leaderId = id; } }); }catch(e){} // + holdRow (2026-10-19, package RB): its own row, always
   const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
-  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks, weaken, partShare};
+  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks, weaken, partShare, raidShield};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
