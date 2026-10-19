@@ -1,6 +1,43 @@
 # Action items
 
-## 10-18 evening: your calls
+## 10-19 morning: open calls (consolidated)
+
+Done overnight and this morning: road curve, theme pass (96 pool cards placed), card pass, level curves, skill-worth measured and applied (owner-set values kept), the 4 SQL files applied, raid hub / respawn / instances / tickets / rewards / battle rating, Units by theme picker. Full test run: green.
+
+| Area | Item | Question |
+|---|---|---|
+| Workflow | Units by theme (hub) | Pick units per map; then I run the post-balance step from your picks |
+| Balance | Post-balance queue | 29 cards over budget under the measured costs (docs/post-balance-queue-2026-10-19.md); refit in post-balance |
+| Balance | Map bumps | Maps 8, 13, 20 sit off the linear climb (reference decks). Build decks against neighbours, move a strong reward later, or accept |
+| Balance | Forge opens Map 11 | Maps 1–10 only get harder through rewards. Open the Forge sooner? |
+| Balance | Starters | Burrow Rabbit 85%, Crimson Wing Recruit 79% (band 20–48) |
+| Balance | Sacrifice imps | Ash/Cinder Imp 94–97%, Puppeteer Imp 99% whatever stats: rethink Sacrifice |
+| Balance | 27 cards out of band | Mostly 2+ Lumber (Lumber cut overshoots) |
+| Balance | Dragons / Caldera Wyrm | Over budget, untouched |
+| Balance | Arrow | Petal Fletcher 87.5% at 1/1: needs the cost change (now applied: re-measure in post-balance) |
+| Rules | Pounce open lane | Hit the bramble when nothing faces it? |
+| Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
+| Rules | Field Breaker | Everything that ticks each round, or weather only? |
+| Rules | Frenzy + Freeze | Frozen mid-Frenzy loses the bonus attack: OK? |
+| Rules | Quiet Contemplation | Is Expose exempt? Confirm what it leaves alone |
+| Rules | Regeneration | Stop Bleed at full Health like other heals? |
+| Raids | BR | Boss HP bonus dominates the boss BR (elders now 100→basic HP, BR follows) |
+| Raids | Restart | A standing raid's restart pays the "survived" share: keep? |
+| Raids | Auto | Unlock for raids completed before 10-19? |
+| Raids | Leading participant | Proposed +40% everything + a guaranteed extra raid card |
+| Dungeons | Keys | ~3–5 floors a day now; loss resets to floor 1. Keep, drop the reset, or more keys? |
+| Economy | Strange Materia | Only 7 exist; Key ring competes with Forge tiers. New source? |
+| Units | Variants | Dire / Elder / Ancient multipliers are a first draft (109 proposals in the hub) |
+| Units | Thin sub-factions | The Gnawed has no cards; the Tidefolk has 3 |
+| Art | NightCafe | Pall Wraith, Sandfish, Pale Oryx, Quicksand Queen, The Last Oasis, Giant Cave Huntsman (prompt in its notes), placed pool cards, GI example cards |
+| Text | Translations | Tagalog, Tamil, Japanese, Korean want a native read |
+| Server | Trust | Raid rows / tickets / Seeds are client-written; server rewards (supabase/proposed/20261017_*) still pending |
+| Test Lab | Costs | The in-game Test Lab still uses the old skill costs: switch to the table? |
+| Platform | Steam / Apple | Not yet |
+
+## 10-18 evening: (superseded by the table above)
+
+
 
 Answered and built today: everything in the 10-18 daytime and overnight tables below (your 15:05, 15:37, 15:56 and 17:28 answers). Still open:
 
