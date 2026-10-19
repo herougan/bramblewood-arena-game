@@ -1042,6 +1042,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.nv-vs-boss": "Boss",
   "results.nv-raid-damage": "⚔️ {n} raid damage to {name}",
   "results.nv-raid-overwhelm": "💥 Overwhelm! {n} raid damage to {name}",
+  "results.nv-raid-admin-damage": "🧪 Test: {n} raid damage to {name}, not counted",
   "results.nv-raid-calc": "{dealt} bramble damage × {per} = {n} raid damage",
   "results.nv-raid-calc-rank": "{dealt} bramble damage × {per} × {mult} for Rank {rank} = {n} raid damage",
   "results.nv-raid-calc-win": "The boss's bramble fell: a win scores {n} raid damage",

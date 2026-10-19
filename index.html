@@ -36256,7 +36256,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=56c694e68f", "es": "assets/lang/es.js?v=0732ec5810", "fr": "assets/lang/fr.js?v=c9e28dc764", "id": "assets/lang/id.js?v=09d25f2886", "it": "assets/lang/it.js?v=a47eb3090d", "ja": "assets/lang/ja.js?v=97f8445ebb", "ko": "assets/lang/ko.js?v=dfe2886272", "pt": "assets/lang/pt.js?v=1ad4580757", "ta": "assets/lang/ta.js?v=e83a89b3b7", "tl": "assets/lang/tl.js?v=803512aaa3", "zh-Hans": "assets/lang/zh-Hans.js?v=674623e1ef", "zh-Hant": "assets/lang/zh-Hant.js?v=27ec794a53"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=257f2790d5", "es": "assets/lang/es.js?v=05e242c369", "fr": "assets/lang/fr.js?v=cda4efb244", "id": "assets/lang/id.js?v=597cda27e0", "it": "assets/lang/it.js?v=6ec8bd1493", "ja": "assets/lang/ja.js?v=3bb8bb044e", "ko": "assets/lang/ko.js?v=b18ad40996", "pt": "assets/lang/pt.js?v=c3910e8b6d", "ta": "assets/lang/ta.js?v=4ded5a57b5", "tl": "assets/lang/tl.js?v=ced0a1231a", "zh-Hans": "assets/lang/zh-Hans.js?v=904a2b6d99", "zh-Hant": "assets/lang/zh-Hant.js?v=51ee01f427"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -37424,6 +37424,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.nv-vs-boss": "Boss",
   "results.nv-raid-damage": "⚔️ {n} raid damage to {name}",
   "results.nv-raid-overwhelm": "💥 Overwhelm! {n} raid damage to {name}",
+  "results.nv-raid-admin-damage": "🧪 Test: {n} raid damage to {name}, not counted",
   "results.nv-raid-calc": "{dealt} bramble damage × {per} = {n} raid damage",
   "results.nv-raid-calc-rank": "{dealt} bramble damage × {per} × {mult} for Rank {rank} = {n} raid damage",
   "results.nv-raid-calc-win": "The boss's bramble fell: a win scores {n} raid damage",
@@ -40642,7 +40643,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '4142c9c6ceb0', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
+const BUILD_ID = 'fc1826b9f602', BUILD_CARD_HASH = 'b6fb88a74bc9c8400582e254055f70283dd3c50dc154107d1d6605c1b1b891ab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -61300,7 +61301,7 @@ function raidRankEmblemHTML(rank, won, size){
     <i class="re-glow" aria-hidden="true"></i>${big ? '<i class="re-shock" aria-hidden="true"></i>' : ''}
     <svg class="re-ring" viewBox="0 0 120 120" aria-hidden="true"><circle class="re-ring-outer" cx="60" cy="60" r="50"/><circle class="re-ring-inner" cx="60" cy="60" r="43"/><circle class="re-ring-dots" cx="60" cy="60" r="46.5"/><g class="re-curls">${curls}</g></svg>
     <span class="rank-hex re-hex rank-${escapeAttr(rank)}" aria-hidden="true"><i></i><b>${escapeHtml(rank)}</b></span>
-    ${won ? '<i class="re-crest" aria-hidden="true">👑</i>' : ''}
+    ${won ? '<i class="re-crest" aria-hidden="true">✦</i>' : ''}
   </span>${size === 'md' ? '' : '</div>'}`;
 }
 window.bwRaidRankEmblemHTML = raidRankEmblemHTML; // the raid claim screen (bramblewood-fx-f) shows the same emblem
@@ -61310,15 +61311,15 @@ window.bwRaidRankEmblemHTML = raidRankEmblemHTML; // the raid claim screen (bram
 function raidDamageCalcHTML(m){
   if(!m || m.raidBrambleDealt == null) return '';
   const n = Number(m.raidDamageDealt) || 0, fmt = v=> Math.round(Number(v) || 0).toLocaleString();
-  let t;
+  let t, cap = '';
   if(m.raidOverwhelmed) t = TX('results.nv-raid-calc-win', {n: fmt(n)});
   else {
     const mult = m.raidRankMult || 1, raw = Math.round(Math.round(m.raidBrambleDealt * m.raidPerHp) * mult);
     t = mult !== 1 ? TX('results.nv-raid-calc-rank', {dealt: fmt(m.raidBrambleDealt), per: fmt(m.raidPerHp), mult: String(mult), rank: m.raidRank, n: fmt(n)})
       : TX('results.nv-raid-calc', {dealt: fmt(m.raidBrambleDealt), per: fmt(m.raidPerHp), n: fmt(n)});
-    if(raw > n) t += ' ' + TX('results.nv-raid-capped', {cap: fmt(n)});
+    if(raw > n) cap = TX('results.nv-raid-capped', {cap: fmt(n)}); // its own text node, so each part translates on its own
   }
-  return `<span class="nv-raid-calc" title="${escapeAttr(TX('results.nv-raid-calc-tip'))}">${escapeHtml(t)}</span>`;
+  return `<span class="nv-raid-calc" title="${escapeAttr(TX('results.nv-raid-calc-tip'))}">${escapeHtml(t)}${cap ? ` <small class="nv-raid-cap">${escapeHtml(cap)}</small>` : ''}</span>`;
 }
 // Your best raid rank in one life of a raid (this device's attempts carry it): {rank, won} or null.
 function raidBestRankOf(def, cycle, g){
@@ -73927,7 +73928,7 @@ function showVsScreen(left, right){
     // "Tap to start" line over the boss's picture). A tap anywhere still starts; a raid waits longer before it starts by itself.
     const raid = !!(left.allies && left.allies.length), bossy = raid || !!right.art;
     el.className = 'vs-screen vs2' + (raid ? ' is-raid' : '') + (bossy ? ' is-boss' : ''); el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
-    const rowName = r=> TX(r === 2 ? 'ui.nv-vs-row-back' : r === 1 ? 'ui.nv-vs-row-middle' : 'ui.nv-vs-row-front');
+    const rowName = r=> r === 2 ? TX('ui.nv-vs-row-back') : r === 1 ? TX('ui.nv-vs-row-middle') : TX('ui.nv-vs-row-front');
     const sideBR = left.raidSide || null, br = n=> `⚔ ${Math.max(0, Math.round(Number(n) || 0)).toLocaleString()}`;
     // 2026-10-17 (user: "In the pre-battle against a raid, I get to see my allies on the left side!"): a raid's two CPU allies stand on
     // your side, each with a portrait, the row it holds, its battle rating, its leader and its best cards; you hold the front row.
@@ -73950,7 +73951,7 @@ function showVsScreen(left, right){
       </div>`; };
     const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(TX(raid ? 'ui.nv-vs-raid-boss' : 'ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;
@@ -74830,7 +74831,7 @@ function matchStatsHTML(m){
     </div>` : '';
   const orReward = m.raidRewardEarned;
   const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards raid-results">
-      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${TX(m.raidOverwhelmed ? 'results.nv-raid-overwhelm' : 'results.nv-raid-damage', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
+      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: Number(m.raidDamageDealt).toLocaleString(), name: escapeHtml(m.raidBoss.name)})}</span>
       ${raidDamageCalcHTML(m) /* 2026-10-19 (NV): how that number was made */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: m.raidRemainingAfter, v2: m.raidRemainingAfter<=0?' — defeated!':''})}</span>
       ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}

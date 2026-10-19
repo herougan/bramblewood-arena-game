@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (NV: Home on the map and the Arena, the pre-battle screen, the raid's rank emblem, the raid results)
+- **Owner (10:55, iPhone):** *"There should be a home button somewhere on mobile. The top bar of the conquest screen is not used - remove this."* / *"Improve the pre-battle A v B screen ... I want to know how i contribute, then our total BR."* / *"Raid complete: Still use our victory emblems ... abit more special looking."*
+- **🌰 Home** at the left end of the floating tab bar (Conquest, Arena, Raid, Dungeons), on phones and desktop; the top-right 🏠 steps aside. Why it was missing on the iPhone: the 🏠 / ⚙️ / Energy cluster is a fixed child of the tab bar, and the bar itself scrolled sideways; iOS Safari clips a fixed child of a scrolling box. The tab strip now scrolls inside the bar.
+- **No map strip on phones.** Maps change on the 🧭 World atlas (the button on the map) and at the map's edges; desktop keeps its side list.
+- **Pre-battle screen v2** (`showVsScreen`): a card a side and a real Start button under the art (a tap anywhere still starts). A raid shows your part first (your BR, your row), then **your side**: you + each ally (leaders 2x) = the side's total, against the boss's framed portrait, name and BR. Names and rows wrap instead of being cut off. Normal fights: you vs them, both BRs.
+- **Raid rank emblem** (`raidRankEmblemHTML`): the victory screens' hexagon in an abyssal ring with crimson tentacle curls and a glow, stamped in (S / SS / SSS harder, with a shockwave; still under reduced motion). On the raid results for every rank (a crest for a win) and on the raid claim screen.
+- **The turn-1 "Rank SSS, Overwhelm! 10,000" with 0 dealt** was the Admin 👑 Win button: it empties the boss's bramble, and the raid scored that as a real overwhelm (10,000 raid damage, saved, pushed to the shared raid, paid). A raid no longer scores an admin win (the results say so). **Play again** after a raid built a plain Quick Battle (`startMatch('raidOffline')`); it now builds a fresh fight on the same raid part.
+- **Raid results say what each number counts**: "424 raid damage" + "28 bramble damage × 15 × 1.01 for Rank B = 424 raid damage"; "Full reward from 40 bramble damage (this fight: 28)"; the stats row adds "🏰 28 to the bramble". "Dealt / taken / best hit" no longer lose hits to the 200-line log (a running tally).
+- Tests: `tests/nv-2026-10-19.js`; `tests/mobile-nav-2026-10-19.js` and `tests/raid-rv2-2026-10-19.js` know the new Home and emblem. Screens: `docs/screens/nv/`.
+
 ## 2026-10-19 (package UT: animal tags, Base cards, variants balanced by N, raid elder art brief, art reuse map)
 - **Owner (09:52):** *"tag an animal to the card. For ghosts and spirits and elementals - they have an animal embodiment, see. But subtype ghost or elemental etc."*
 - **Every creature card has an `animal`** (724 tagged here, 349 animals in 140 kinds). Package EE's 7 Easter-egg creatures keep their own tags, reported as an owner call. It names what the card is, or the animal its body takes. 96 beings also have a `subtype` from a fixed list of 15: ghost, spirit, elemental, undead, construct, structure, fiend, conjured, plant, fungus, mythic, changeling, were, mutant, glitch.
