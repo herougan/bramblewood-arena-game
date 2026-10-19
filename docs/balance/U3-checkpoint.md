@@ -1,13 +1,13 @@
 # U3 checkpoint (2026-10-19)
-Owner UI notes 13:41-13:43 + item 6 (13:45). Status:
-1. Home -> top-right cluster (#homeNavBtnPlay, 🌰), tab-bar Home removed. DONE (code, CSS nvStyles/u3Styles).
-2. Phone map strip back, compact chips (cmi-num, cmi-tick), u3FitMapStrip, u3WireChipPeek, toast text. DONE.
-3. Raid bramble: RAID_BRAMBLES / raidBrambleOf ("Kraken's Reef"), art/raids/krakens-reef.svg (tools/make_raid_bramble_art.py),
-   castleHoverHTML, VS card, raid rules, FX.F tentacleSmack origin. DONE. Art brief doc: TODO.
-4. Raid rows CSS (u3Styles 4), bottom-aligned. DONE. Sizes: 390 68x86, 430 77x96, 1366 64x80.
-5. Turn pill faded + u3TurnFlash. DONE.
-6. Castle float at fill end (hqFillEndX, u3ClampOnBar). DONE.
-Tests: tests/e2e/u3_2026_10_19.py passes (map, raid, float). TODO: update tests/bu-2026-10-19.js, tests/e2e/battle_ui_2026_10_19.py,
-tests/nv-2026-10-19.js, tests/mobile-nav-2026-10-19.js; new tests/u3-2026-10-19.js static; i18n (tools/i18n_2026_10_19_u3.py);
-keyify/export_texts; CHANGELOG; art brief; merge main; final commit.
-Scratch tooling: CSS source kept at scratchpad u3css.css, inserted by inscss.py (the template is canonical now).
+Owner UI notes 13:41-13:43 + item 6 (13:45). All done and committed ("Package U3: ...").
+1. Home -> the top-right cluster (#homeNavBtnPlay, 🌰); the tab-bar Home is gone; the full-screen map's Home is an acorn too.
+2. The phone map strip is back on the cluster's line (u3FitMapStrip; its own line under the cluster when under 110 px is left),
+   with compact chips (.cmi-num, .cmi-tick), a touch-and-hold peek (u3WireChipPeek) and the toast wording.
+3. The raid bramble "Kraken's Reef" (RAID_BRAMBLES / raidBrambleOf), art/raids/krakens-reef.svg (tools/make_raid_bramble_art.py),
+   its info panel, VS card and raid rules, and the tentacle from its tile (FX.F tentacleSmack origin). The brief is
+   docs/art/raid-bramble-art-brief.md.
+4. Raid rows (u3Styles 4), bottom-aligned. Board cards: 390 68x86, 430 77x96, 1366 64x80 (were 67x84, 75x94, 61x77).
+5. The turn pill is faded out and reads "Turn N"; u3TurnFlash plays the tick, plus the last-3-turns line.
+6. Castle numbers at the HP fill's end (hqFillEndX, u3ClampOnBar).
+Tests: tests/u3-2026-10-19.js (in run-all), tests/e2e/u3_2026_10_19.py; nv, mobile-nav, bu and the battle_ui e2e test are updated.
+Screens: docs/screens/u3/.
