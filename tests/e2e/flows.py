@@ -140,7 +140,8 @@ async def main():
     # 1e. raid trench leave
     pg, errs = await fresh(b)
     # the trench minigame is benched since 2026-10-12 (raids are a full three-row match); Admin can still open it
-    await pg.evaluate("adminModeEnabled=true; localStorage.setItem('bramblewood_classic_trench','1'); playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(600)
+    # 2026-10-21 (package TT2): the Raid tab opens on the raids hub since package RO (2026-10-19), so the flow picks the raid first (raidView 'raid')
+    await pg.evaluate("adminModeEnabled=true; localStorage.setItem('bramblewood_classic_trench','1'); raidView='raid'; playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(600)
     await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(300)
     await pg.click('[data-row="0"]'); await pg.wait_for_timeout(500)
     leave = await pg.query_selector('#trClose')

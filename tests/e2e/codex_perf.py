@@ -10,7 +10,7 @@ catches a big step back (a whole page drawn at once again, the stats worked out 
 Also checks the Codex still shows what it did: the first chunk of a page is drawn at once, the rest follows by itself (the
 .cx-more marker goes), a search narrows the list, a click opens the card's detail, the stats box is closed until asked.
 2026-10-18 (package C): the Codex opens on the card album now. The timed actions run on the album ('next page' turns it); the
-album draws only its open spread (at most 18 sleeves), builds the next spread's tiles while idle, and its search, turn and
+album draws only its open spread (at most 18 sleeves; 32 since package CX's 4 x 4 pages), builds the next spread's tiles while idle, and its search, turn and
 detail still work. The grid checks above run on the Compressed view.
 Exit code 1 on any failure.
 """
@@ -25,6 +25,9 @@ INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStora
         "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek']));")
 HELP = """
 window.__lt = []; try{ new PerformanceObserver(l=> l.getEntries().forEach(e=> window.__lt.push(e.duration))).observe({entryTypes:['longtask']}); }catch(e){}
+// 2026-10-21 (package TT2): the Codex search matches the card's name or its animal since package UT (2026-10-19: "spider" finds the
+// Webspire Sentinel), so "otter" also finds the Rivergate otters. A hit is a tile whose card has "otter" in its name or animal.
+window.__hit = t=>{ const d = getCardDefs()[t.dataset.defid] || {}; return (d.name || '').toLowerCase().includes('otter') || (d.animal || '').includes('otter'); };
 window.__settle = ()=> new Promise(r=> requestAnimationFrame(()=> requestAnimationFrame(()=> setTimeout(r, 0))));
 window.__time = async (fn, wait)=>{ window.__lt.length = 0; const t0 = performance.now(); await fn(); await window.__settle(); const t1 = performance.now();
   if(wait) await new Promise(r=> setTimeout(r, wait)); await window.__settle(); const t2 = performance.now();
@@ -83,15 +86,16 @@ async def run(b, rate):
           const keyBack = codexPage === 0;
           const el = document.getElementById('cxSearch'); el.value = 'otter'; el.dispatchEvent(new Event('input'));
           await new Promise(r=> setTimeout(r, 600));
-          const found = [...document.querySelectorAll('#codexGrid .al-page:not(.pg-leaf) .al-sleeve .card-tile .nm')].map(n=> n.textContent.toLowerCase());
+          const found = [...document.querySelectorAll('#codexGrid .al-page:not(.pg-leaf) .al-sleeve .card-tile')].map(__hit);
           el.value = ''; el.dispatchEvent(new Event('input')); await new Promise(r=> setTimeout(r, 400));
           document.querySelector('#codexGrid .al-sleeve .card-tile').click(); await new Promise(r=> setTimeout(r, 200));
           const detail = !document.getElementById('cardDetailOverlay').hidden;
           document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape', bubbles:true})); await new Promise(r=> setTimeout(r, 200));
-          return {sleeves, pages, total, ahead, turned, keyBack, found: found.length, allMatch: found.every(n=> n.includes('otter')), detail, score: !!document.querySelector('#codexScore .cx-score')};
+          return {sleeves, pages, total, ahead, turned, keyBack, found: found.length, allMatch: found.every(Boolean), detail, score: !!document.querySelector('#codexScore .cx-score')};
         })()""")
         print('  album:', json.dumps(al))
-        check(al['pages'] == 2 and 0 < al['sleeves'] <= 18 and al['total'] > 10, f"the album draws only its open spread: {al}")
+        # 2026-10-21 (package TT2): package CX (2026-10-19, owner: "Show 16 cards on each page") made the pages 4 x 4, so a wide spread is 32 sleeves
+        check(al['pages'] == 2 and 0 < al['sleeves'] <= 32 and al['total'] > 10, f"the album draws only its open spread: {al}")
         check(al['ahead'], f"the next spread's tiles are built while idle: {al}")
         check(al['turned'] and al['keyBack'], f"the album turns with its button and the arrow keys: {al}")
         check(al['found'] > 0 and al['allMatch'], f"a search narrows the album: {al}")
@@ -108,11 +112,11 @@ async def run(b, rate):
           toggleCodexStats(); const statsOpen = !!document.querySelector('#codexStatsBox .pie-one'); toggleCodexStats();
           const el = document.getElementById('cxSearch'); el.value = 'otter'; el.dispatchEvent(new Event('input'));
           await new Promise(r=> setTimeout(r, 600));
-          const found = [...document.querySelectorAll('#codexGrid .card-tile .nm')].map(n=> n.textContent.toLowerCase());
+          const found = [...document.querySelectorAll('#codexGrid .card-tile')].map(__hit);
           el.value = ''; el.dispatchEvent(new Event('input')); await new Promise(r=> setTimeout(r, 400));
           document.querySelector('#codexGrid .card-tile').click(); await new Promise(r=> setTimeout(r, 200));
           const detail = !document.getElementById('cardDetailOverlay').hidden;
-          return {first, marker, all, done, pagerLast, statsClosed, statsOpen, found: found.length, allMatch: found.every(n=> n.includes('otter')), detail};
+          return {first, marker, all, done, pagerLast, statsClosed, statsOpen, found: found.length, allMatch: found.every(Boolean), detail};
         })()""")
         print('  shows:', json.dumps(st))
         check(0 < st['first'] < st['all'] and st['marker'], f"the first chunk should be part of the page: {st}")

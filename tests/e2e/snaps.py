@@ -17,6 +17,9 @@ WATCH="""(()=>{ window.__jumps=[]; window.__lastRender=null;
   const origR=window.renderHand; if(origR) window.renderHand=function(){ window.__lastHand=Math.round(performance.now()); return origR.apply(this, arguments); }; const last=new WeakMap(); let lastInner=null;
   const busy = el => el.classList.contains('is-entering') || el.style.position==='absolute' || (window.gsap && gsap.isTweening(el)) || (el.getAnimations && el.getAnimations().some(a=>a.playState==='running'));
   function tick(){
+    // 2026-10-21 (package TT2): stop watching once the result is decided. BF5's halved brambles let these random matches end inside the
+    // turn budget, and the end of a match moves things on purpose (the castle crumbles, the units dance and scatter, the sign's reflow).
+    const M=(typeof matchState!=='undefined')?matchState:null; if(M && (M.over || M.resultLogged || M._crumbling)){ requestAnimationFrame(tick); return; }
     const inner=document.getElementById('battlefieldInner'); const ir=inner?inner.getBoundingClientRect():null;
     const camMoved = lastInner && ir && (Math.abs(ir.left-lastInner.left)>0.5 || Math.abs(ir.top-lastInner.top)>0.5 || Math.abs(ir.width-lastInner.width)>0.5);
     lastInner = ir;

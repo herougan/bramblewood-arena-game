@@ -139,7 +139,9 @@ function autoDraft(run, greedy){
   const cover = []; for(let s=0;s<=10;s++){ const pl = A.opponentPool(defs, characters, s, recorded, NOW); cover.push(`${s}:${pl.real}+${pl.seeded}`); }
   console.log(`  population: ${RUNS} runs, ${fights} fights in ${secs.toFixed(1)}s (${(fights/secs).toFixed(0)}/s) — reached 10 wins: ${perfect}, out early: ${endedEarly}`);
   console.log(`  stage pools (real+seeded): ${cover.join('  ')}`);
-  check(fights/secs > 9, `fights are too slow (${(fights/secs).toFixed(1)}/s)`); // 2026-10-12: 20 was flaky on this box (17.9-21/s with the code before and after tonight), so 15; then 12 (14-15/s on a busy 2-core box, ~75% of the time is the draft pool, not the engine) 2026-10-13: 9 (the unchanged code measured 11/s on this box)
+  // 2026-10-21 (package TT2): 6. Alone on this 2-core box the batch measures 8.5-8.7/s and the released main (a87439a7) 8.6/s, the same
+  // code speed, so 9 had no margin left; under the runner's two-at-a-time load it reads 6.3/s. 6 still catches a real slowdown (~30%).
+  check(fights/secs > 6, `fights are too slow (${(fights/secs).toFixed(1)}/s)`); // 2026-10-12: 20 was flaky on this box (17.9-21/s with the code before and after tonight), so 15; then 12 (14-15/s on a busy 2-core box, ~75% of the time is the draft pool, not the engine) 2026-10-13: 9 (the unchanged code measured 11/s on this box)
 }
 
 check(JSON.stringify(defs)===defsBefore, 'real card definitions were mutated during the run');
