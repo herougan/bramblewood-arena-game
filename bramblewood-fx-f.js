@@ -1894,7 +1894,7 @@ M.raidClaimScreen = function(spec, opts){
       ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
       <div class="fxf-rcs-row">
         ${spec.rank && spec.rank.letter ? (typeof window.bwRaidRankEmblemHTML === 'function' ? `<span class="fxf-rcs-emblem${F}">${window.bwRaidRankEmblemHTML(spec.rank.letter, !!spec.rank.emblem, 'md')}</span>` /* 2026-10-19 (package NV): the raid's rank emblem, as on the raid results */
-          : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
+          : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}${spec.totalRankHTML ? `<span class="fxf-rcs-total${F}">${spec.totalRankHTML}</span>` : '' /* 2026-10-21 (package RK): the total raid rank (the page's raidTotalRankBadgeHTML) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
       <ul class="fxf-rcs-list">${list.map(r=> r.open ? rcsCardRewardHTML(r, F) : `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
@@ -1984,6 +1984,9 @@ M.raidClaimScreen = function(spec, opts){
       .to(q('.fxf-rcs-dmg'), {opacity:1, y:0, duration:.3}, 2.55)
       .to(count, {v:total, duration:Math.min(1.25, .5 + Math.log10(total + 1)*.16), ease:'power2.out', onUpdate:()=>{ num.textContent = fmt(count.v); const k = Math.floor(count.v / Math.max(1, total) * 12); if(k !== lastTick){ lastTick = k; sound('bubble'); } }}, 2.65)
       .add(()=>{ sound('coinRegister'); const c = at(num); ring(c.x, c.y, {color:'#7fd8ff', size:Math.max(90, c.w*1.4), dur:.5}); g.fromTo(num, {scale:1.3}, {scale:1, duration:.4, ease:'back.out(3)'}); }, '>');
+    // 2026-10-21 (package RK): the total raid rank stamps in once the damage has counted up (a U rings violet)
+    { const tot = q('.fxf-rcs-total'); if(tot){ g.set(tot, {opacity:0, scale:2.2});
+      tl.to(tot, {opacity:1, scale:1, duration:.26, ease:'power4.in'}, '>').add(()=>{ sound('clang'); const c = at(tot), u = !!tot.querySelector('.is-u'); ring(c.x, c.y, {color: u ? '#c9a2ff' : '#ffd56e', size:Math.max(80, c.w*1.3), width:3, dur:.5}); if(u) burst(c.x, c.y, {n:16, shape:'star', colors:['#c9a2ff', '#7fe9ff', '#ffffff'], glow:true, dist:[30, 110], dur:.7, size:8}); }, '>'); } }
     // the rewards, one by one, each beat bigger; a held breath before the top one
     let t = tl.duration() + .2;
     items.forEach((el, i)=>{ const w = list[i].weight, top = i === items.length - 1 && (items.length > 1 || w >= 3);

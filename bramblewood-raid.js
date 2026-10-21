@@ -396,6 +396,23 @@ function participationOf(def, state, owner){
 // (scoring.cap; a win is overwhelmCap, 10,000, whatever the rank). Below B: ×1. The numbers are not shown to players.
 const RAID_RANK_MULT = {B:1.01, A:1.1, S:1.2, SS:1.5, SSS:2.0};
 function raidRankMult(rank){ return RAID_RANK_MULT[rank] || 1; }
+// ---- The total raid rank (2026-10-21, package RK, owner 18:35: "How is your TOTAL rank for a raid calculated? I think let it go to rank
+// U. So S, SS, SSS, U. In the future, we will introduce U, UU, UUU. Maybe it's total contribution."): a player's rank for one life of a
+// raid comes from their total contribution in it (the summed raid damage, state.contributors[owner], the number the tiers rank). THE
+// ladder, lowest first, each rank's minimum total; below the first (800) there is no rank. UU and UUU go on the end when they come.
+// It doesn't change the rewards' tiers (contributionTier: Top 1/10/50%); a fall's claim at RAID_TICKET_GRANT_RANK or better also pays
+// RAID_TICKET_GRANT Raid Tickets (the page's claimRaidReward).
+const RAID_TOTAL_RANKS = [
+  {rank:'F', min:800}, {rank:'E', min:1500}, {rank:'D', min:3000}, {rank:'C', min:5000}, {rank:'B', min:7000}, {rank:'A', min:9000},
+  {rank:'S', min:15000}, {rank:'SS', min:20000}, {rank:'SSS', min:25000}, {rank:'U', min:30000},
+];
+const RAID_TICKET_GRANT_RANK = 'A', RAID_TICKET_GRANT = 1;
+// total -> the rank's letter, or null below the first rung
+function raidTotalRank(total){ const t = Number(total) || 0; let out = null; RAID_TOTAL_RANKS.forEach(r=>{ if(t >= r.min) out = r.rank; }); return out; }
+// the next rung above total: {rank, min, need} (need: the damage still to deal), or null at the top
+function raidTotalRankNext(total){ const t = Number(total) || 0, r = RAID_TOTAL_RANKS.find(x=> t < x.min); return r ? {rank: r.rank, min: r.min, need: r.min - Math.max(0, Math.round(t))} : null; }
+// is rank a at least rank b on the ladder (null is below every rung)
+function raidTotalRankAtLeast(a, b){ const i = RAID_TOTAL_RANKS.findIndex(x=> x.rank === a), j = RAID_TOTAL_RANKS.findIndex(x=> x.rank === b); return i >= 0 && j >= 0 && i >= j; }
 // opts.over: that life of the raid has ended (it fell, was restarted, or the cycle ended). Returns null when there is nothing to claim.
 function raidReward(def, state, owner, opts){
   opts = opts || {};
@@ -596,6 +613,7 @@ const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations,
   RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_SHARDS_PER_FIGHT, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
   CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RAID_SHIELD_DEFAULT, raidShieldMax, raidShield, /* 2026-10-19 (package MX) */ RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+   RAID_TOTAL_RANKS, RAID_TICKET_GRANT_RANK, RAID_TICKET_GRANT, raidTotalRank, raidTotalRankNext, raidTotalRankAtLeast, // 2026-10-21 (package RK)
    fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
