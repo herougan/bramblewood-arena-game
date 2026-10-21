@@ -88,7 +88,11 @@
     // are the old ones, for comparisons.
     const withMap = d=> d && d.obtainMap == null && OBTAIN && OBTAIN[d.id] != null ? Object.assign({}, d, {obtainMap: OBTAIN[d.id]}) : d;
     function budgetBase(d){ return BB.baseOf(withMap(d), B); }
-    function budgetN(d, lv){ return BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B); }
+    // 2026-10-21 (BF5): x the card's N multiplier (no abilities x plainBonus, only light ones x lightBonus, Fragile x fragileMult; the
+    // parameters of other skills are the table's "a parameter of another skill" entries)
+    const PARAMS = (table.skills || []).filter(s=> /parameter of another skill/.test(s.note || '')).map(s=> s.id);
+    function budgetMult(d){ return BB.nMultOf ? BB.nMultOf((d && d.effects) || {}, B, PARAMS.length ? PARAMS : null) : 1; }
+    function budgetN(d, lv){ return r2(BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B) * budgetMult(d)); }
     // v3 / v4 comparisons use the Base they had (no map term)
     function budgetV3N(d, lv){ return r2(BB.baseOf(d, Object.assign({}, B, {perMap: 0})) + g('perLevel', 2) * (lv == null ? levelOf(d) : lv)); }
     function budgetV4N(d, lv){ return BB.nV4(BB.baseOf(d, Object.assign({}, B, {perMap: 0})), lv == null ? levelOf(d) : lv); }
@@ -100,7 +104,7 @@
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2
       return {N, S:s.S, x1, x2, N2, ok: x1 <= N && x2 <= N2, wellUnder: x1 <= N && x2 <= N2 && x1 <= N * 0.6, m, parts:s.parts, missing:s.missing};
     }
-    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetV3N, budgetV4N, obtainMapOf, budget};
+    return {skillCost, actionValue, triggerWeight, triggerCost, cardS, budgetBase, budgetN, budgetMult, budgetV3N, budgetV4N, obtainMapOf, budget};
   }
   // Frozen copy of the 2026-10-18 model (SB_SKILLS in card_balance.js before this change; the Test Lab's SB_DEFAULT_SKILLS), for
   // comparisons only: every trigger list costs 1 in all, Bounty 0, a skill with no set cost 1 + floor(N/2).

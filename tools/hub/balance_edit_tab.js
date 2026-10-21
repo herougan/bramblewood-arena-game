@@ -32,6 +32,8 @@
     ['perRitual', 'Ritual', '× Ritual points', 0.5],
     ['perMap', 'Map', '× the map where the card becomes obtainable', 0.05],
     ['scale', 'N × (scale)', 'BF5 (owner 21:36): the whole N times this; 0.5 halves it', 0.05],
+    ['plainBonus', 'N × (no abilities)', 'BF5 (10-21): a card with no abilities at all', 0.01], ['lightBonus', 'N × (only light abilities)', 'BF5 (10-21): only Flying, Tide, Diurnal / Nocturnal / Crepuscular', 0.01],
+    ['fragileMult', 'N × (Fragile)', 'BF5 (10-21): Fragile, a negative value', 0.05],
     ['levelLinDiv', 'Level ÷ (in Base)', 'N = (Base + L ÷ this) × …', 1],
     ['levelDiv', 'Level ÷ (growth)', '… × (1 + L ÷ this)', 1],
     ['zeroPenalty', 'Level 0 penalty', 'N at Level 0 = Base − this', 0.5],

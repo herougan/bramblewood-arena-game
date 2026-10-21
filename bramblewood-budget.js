@@ -30,12 +30,26 @@
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
 'use strict';
 // canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
-const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5, scale:0.5};
+const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5, scale:0.5, plainBonus:1.05, lightBonus:1.02, fragileMult:0.75};
+// N multipliers by what a card can do (2026-10-21, BF5; owner): plainBonus (N x 1.05) for a card with no abilities at all; lightBonus
+// (x 1.02) for a card whose only abilities are the light ones (LIGHT: Flying, Tide, and the time-of-day ones, Diurnal / Nocturnal /
+// Crepuscular, Sunshy / Nightblind); fragileMult (x 0.75) for Fragile ("a negative value"). An ability is an effects key that is not a
+// parameter of another skill (PARAMS: swarmN, espritHp, ...), and each trigger. nMultOf(effects) is their product, on N at every level.
 // scale (2026-10-19, BF5; owner 21:36: "I think numbers are way too big. Can we HALF everything?" ... "Straight up, the total N value"):
 // the whole N (Base, the Level terms, the Map term) times this, so N_BF5(L) = 0.5 × N_v5(L); the A·H rule is (N/3)² of that N. Skill costs stay. // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
+const LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
+const PARAMS = ['crepuscularHp', 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness'];
+// a card's abilities: its effects keys with a value (not a parameter of another skill), each trigger as 'trigger:<on>'
+function abilitiesOf(effects, params){ const e = effects || {}, P = params || PARAMS, out = [];
+  Object.keys(e).forEach(k=>{ const v = e[k]; if(v == null || v === false || v === 0 || v === '' || (Array.isArray(v) && !v.length) || P.includes(k)) return;
+    if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=> out.push('trigger:' + ((t && t.on) || '?'))); return; } out.push(k); });
+  return out; }
+function nMultOf(effects, cfg, params){ const a = abilitiesOf(effects, params || (cfg && cfg.params)); let k = 1;
+  if(!a.length) k *= num(cfg, 'plainBonus'); else if(a.every(x=> LIGHT.includes(x))) k *= num(cfg, 'lightBonus');
+  if(a.includes('fragile')) k *= num(cfg, 'fragileMult'); return k; }
 const MAJOR = [4, 7, 10], MINOR = [2], LIMIT = 11;
 const SHARE = {major: 1, limit: 1, minor: 1, other: 1 / 3};
 const r2 = v=> Math.round(v * 100) / 100;
@@ -65,9 +79,9 @@ function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L)
 // The formula as text, from the numbers in use (the card editor, the Test Lab, the hub): {n, base}.
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
   const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
-  return {n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k,
+  return {n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileMult'),
     base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
-function nOf(d, L, cfg){ return nAt(baseOf(d, cfg), L, cfg); }
+function nOf(d, L, cfg){ return r2(nAt(baseOf(d, cfg), L, cfg) * nMultOf(d && d.effects, cfg)); } // BF5: x the card's N multiplier
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
 function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }
 function missMultOf(effects, cfg){ const e = effects || {}, m = num(cfg, 'missMult'); let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
@@ -78,14 +92,14 @@ function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (
 // printed stats. Stats that are null (a spell) stay null.
 function forgeCurve(d, from, top, cfg){
   d = d || {}; from = Math.max(0, from | 0); top = Math.max(from, top | 0);
-  const base = baseOf(d, cfg), m = missMultOf(d.effects, cfg), A0 = d.attack, H0 = d.health;
-  const rows = {}; rows[from] = {attack: A0, health: H0, points: 0, kind: 'base', N: nAt(base, from, cfg)};
-  if(A0 == null && H0 == null){ for(let L = from + 1; L <= top; L++) rows[L] = {attack: A0, health: H0, points: 0, kind: levelKind(L), N: nAt(base, L, cfg)}; return {base, from, top, m, rows}; }
-  const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), room0 = Math.pow(nAt(base, from, cfg) / 3, 2) - m * a0 * h0;
+  const base = baseOf(d, cfg), m = missMultOf(d.effects, cfg), A0 = d.attack, H0 = d.health, km = nMultOf(d.effects, cfg), NL = L=> r2(nAt(base, L, cfg) * km); // BF5: x the card's N multiplier
+  const rows = {}; rows[from] = {attack: A0, health: H0, points: 0, kind: 'base', N: NL(from)};
+  if(A0 == null && H0 == null){ for(let L = from + 1; L <= top; L++) rows[L] = {attack: A0, health: H0, points: 0, kind: levelKind(L), N: NL(L)}; return {base, from, top, m, rows}; }
+  const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), room0 = Math.pow(NL(from) / 3, 2) - m * a0 * h0;
   let A = a0, H = h0, P = 0, bank = 0;
   for(let L = from + 1; L <= top; L++){
-    const N = nAt(base, L, cfg), kind = levelKind(L), room = h=> (N / 3) * (N / 3) - m * h.a * h.h;
-    bank = r2(bank + (N - nAt(base, L - 1, cfg)) / m);
+    const N = NL(L), kind = levelKind(L), room = h=> (N / 3) * (N / 3) - m * h.a * h.h;
+    bank = r2(bank + (N - NL(L - 1)) / m);
     let p = Math.floor(bank * SHARE[kind] + 1e-9); if(kind === 'major' || kind === 'limit') p = Math.max(1, p);
     // split p points: Attack toward the shape (never more than p/2), the rest Health; Attack only when there is no Health stat
     const split = (pp, prefer)=>{
@@ -107,5 +121,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {DEFAULTS, LADDER, AS, HALF_MISS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, levelKind, forgeCurve};
+return {DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, levelKind, forgeCurve, abilitiesOf, nMultOf};
 });
