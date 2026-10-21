@@ -2401,7 +2401,6 @@
  "Tide and water": "Marea y agua",
  "Cards and hand": "Cartas y mano",
  "Archer": "Arquero",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Nunca ataca. En su lugar, en cada uno de sus turnos dispara una flecha de {n} de daño al enemigo de enfrente (si no hay, al enemigo más cercano; al zarzal si el tablero está vacío).",
  "Archer look": "Estilo de arquero",
  "Bow: it shoots an arrow": "Arco: dispara una flecha",
  "Drop: it flies over the target, drops a stone and flies back": "Soltar: vuela sobre el objetivo, suelta una piedra y vuelve",
@@ -2500,5 +2499,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "Tu Héroe está a salvo. Vuelve a intentarlo o regresa en un momento.",
  "No skills yet. Your first pick comes at Level {n}.": "Aún no hay habilidades. Tu primera elección llega en el nivel {n}.",
  "No crystals yet. Craft your first one below.": "Aún no hay cristales. Fabrica el primero aquí abajo.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "Donde entrenan los héroes. Sube de nivel al tuyo, gasta sus puntos y elige sus habilidades."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "Donde entrenan los héroes. Sube de nivel al tuyo, gasta sus puntos y elige sus habilidades.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Nunca ataca: cada turno dispara una flecha de {n} de daño al enemigo de enfrente o al más cercano.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "Recompensas de facción: se ganan con el progreso en escaramuzas y los logros, nunca en sobres",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Una recompensa de facción: se gana con el progreso en escaramuzas (élites, jefes, cada pocas victorias) y algunos logros, nunca en sobres",
+ "Faction cards +{n}": "Cartas de facción +{n}",
+ "Faction reward: {names}": "Recompensa de facción: {names}"
 }

@@ -2402,7 +2402,6 @@
  "Tide and water": "அலையும் நீரும்",
  "Cards and hand": "அட்டைகளும் கையும்",
  "Archer": "வில்லாளி",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "இது ஒருபோதும் தாக்காது. அதற்குப் பதிலாக, தன் ஒவ்வொரு முறையிலும் எதிரே உள்ள எதிரி மீது {n} சேதம் தரும் அம்பை எய்கிறது (அங்கு யாரும் இல்லையெனில் அருகிலுள்ள எதிரி; களம் காலியெனில் முட்புதர்).",
  "Archer look": "வில்லாளி தோற்றம்",
  "Bow: it shoots an arrow": "வில்: அம்பு எய்கிறது",
  "Drop: it flies over the target, drops a stone and flies back": "போடுதல்: இலக்கின் மேல் பறந்து, கல்லைப் போட்டு, திரும்பி வருகிறது",
@@ -2501,5 +2500,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "உங்கள் நாயகன் பாதுகாப்பாக இருக்கிறான். மீண்டும் முயலுங்கள், அல்லது சற்று நேரம் கழித்து வாருங்கள்.",
  "No skills yet. Your first pick comes at Level {n}.": "இன்னும் திறன்கள் இல்லை. முதல் தேர்வு நிலை {n}-இல் வரும்.",
  "No crystals yet. Craft your first one below.": "இன்னும் படிகங்கள் இல்லை. முதலாவதைக் கீழே உருவாக்குங்கள்.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "நாயகர்கள் பயிற்சி பெறும் இடம். உன்னுடையதை நிலை உயர்த்து, அதன் புள்ளிகளைச் செலவிடு, அதன் திறன்களைத் தேர்ந்தெடு."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "நாயகர்கள் பயிற்சி பெறும் இடம். உன்னுடையதை நிலை உயர்த்து, அதன் புள்ளிகளைச் செலவிடு, அதன் திறன்களைத் தேர்ந்தெடு.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "தாக்காது: ஒவ்வொரு முறையும் முன்னுள்ள எதிரிக்கு (இல்லையெனில் அருகிலுள்ளதற்கு) {n} சேதம் அம்பு எய்யும்.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "பிரிவு வெகுமதிகள்: சண்டை முன்னேற்றம் மற்றும் சாதனைகள் மூலம் பெறப்படும், பொதிகளில் வராது",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "ஒரு பிரிவு வெகுமதி: சண்டை முன்னேற்றம் (சிறப்பு வீரர்கள், தலைவர்கள், சில வெற்றிகளுக்கு ஒருமுறை) மற்றும் சில சாதனைகள் மூலம் பெறப்படும், பொதிகளில் வராது",
+ "Faction cards +{n}": "பிரிவு அட்டைகள் +{n}",
+ "Faction reward: {names}": "பிரிவு வெகுமதி: {names}"
 }

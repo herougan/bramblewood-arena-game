@@ -2401,7 +2401,6 @@
  "Tide and water": "Marea e acqua",
  "Cards and hand": "Carte e mano",
  "Archer": "Arciere",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Non attacca mai. Invece, a ogni suo turno scocca una freccia da {n} danni al nemico di fronte (se non c'è, al nemico più vicino; al roveto se il campo è vuoto).",
  "Archer look": "Stile da arciere",
  "Bow: it shoots an arrow": "Arco: scocca una freccia",
  "Drop: it flies over the target, drops a stone and flies back": "Sgancio: vola sopra il bersaglio, lascia cadere un sasso e torna indietro",
@@ -2500,5 +2499,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "Il tuo Eroe è al sicuro. Riprova, o torna tra un momento.",
  "No skills yet. Your first pick comes at Level {n}.": "Ancora nessuna abilità. La prima scelta arriva al livello {n}.",
  "No crystals yet. Craft your first one below.": "Ancora nessun cristallo. Crea il primo qui sotto.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "Dove si allenano gli eroi. Fai salire di livello il tuo, spendi i suoi punti e scegli le sue abilità."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "Dove si allenano gli eroi. Fai salire di livello il tuo, spendi i suoi punti e scegli le sue abilità.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Non attacca mai: ogni turno scocca una freccia da {n} danni al nemico di fronte o al più vicino.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "Ricompense di fazione: si ottengono con i progressi negli scontri e con gli obiettivi, mai dai pacchetti",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Una ricompensa di fazione: si ottiene con i progressi negli scontri (élite, boss, ogni poche vittorie) e alcuni obiettivi, mai dai pacchetti",
+ "Faction cards +{n}": "Carte di fazione +{n}",
+ "Faction reward: {names}": "Ricompensa di fazione: {names}"
 }

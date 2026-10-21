@@ -2402,7 +2402,6 @@
  "Tide and water": "조수와 물",
  "Cards and hand": "카드와 손패",
  "Archer": "궁수",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "공격하지 않는다. 대신 자기 차례마다 정면의 적에게 피해 {n}의 화살을 쏜다 (정면에 없으면 가장 가까운 적, 전장이 비었으면 가시덤불).",
  "Archer look": "궁수 연출",
  "Bow: it shoots an arrow": "활: 화살을 쏜다",
  "Drop: it flies over the target, drops a stone and flies back": "투하: 대상 위로 날아가 돌을 떨어뜨리고 돌아온다",
@@ -2501,5 +2500,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "영웅은 무사해요. 다시 시도하거나 잠시 후에 다시 오세요.",
  "No skills yet. Your first pick comes at Level {n}.": "아직 스킬이 없어요. 첫 선택은 레벨 {n}에서 해요.",
  "No crystals yet. Craft your first one below.": "아직 수정이 없어요. 아래에서 첫 수정을 만들어 보세요.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "영웅이 훈련하는 곳. 내 영웅의 레벨을 올리고, 포인트를 쓰고, 스킬을 골라요."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "영웅이 훈련하는 곳. 내 영웅의 레벨을 올리고, 포인트를 쓰고, 스킬을 골라요.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "공격하지 않음: 매 턴 앞의 적(없으면 가장 가까운 적)에게 {n} 피해의 화살을 쏩니다.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "세력 보상: 전투 진행과 업적으로 얻으며, 팩에서는 나오지 않습니다",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "세력 보상: 전투 진행(엘리트, 보스, 몇 번의 승리마다)과 일부 업적으로 얻으며, 팩에서는 나오지 않습니다",
+ "Faction cards +{n}": "세력 카드 +{n}",
+ "Faction reward: {names}": "세력 보상: {names}"
 }

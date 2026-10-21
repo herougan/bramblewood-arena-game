@@ -38529,7 +38529,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=e92df2b48b", "es": "assets/lang/es.js?v=7c26451f9b", "fr": "assets/lang/fr.js?v=adb8ae0c20", "id": "assets/lang/id.js?v=48273c8754", "it": "assets/lang/it.js?v=d6ea2a61c0", "ja": "assets/lang/ja.js?v=3489cad1ff", "ko": "assets/lang/ko.js?v=0f988388bf", "pt": "assets/lang/pt.js?v=7fabd06e91", "ta": "assets/lang/ta.js?v=7971860bda", "tl": "assets/lang/tl.js?v=3161d5b3e3", "zh-Hans": "assets/lang/zh-Hans.js?v=c60195c87e", "zh-Hant": "assets/lang/zh-Hant.js?v=5ed4e4ad1e"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=d77074f515", "es": "assets/lang/es.js?v=5710715ef3", "fr": "assets/lang/fr.js?v=a4cbb3a47f", "id": "assets/lang/id.js?v=33d31b3696", "it": "assets/lang/it.js?v=7f4bc6747b", "ja": "assets/lang/ja.js?v=0b2fd509c7", "ko": "assets/lang/ko.js?v=8bc50090ba", "pt": "assets/lang/pt.js?v=7467fa0613", "ta": "assets/lang/ta.js?v=3f825b7e45", "tl": "assets/lang/tl.js?v=fe93e77a0e", "zh-Hans": "assets/lang/zh-Hans.js?v=8befa64487", "zh-Hant": "assets/lang/zh-Hant.js?v=0b6952a6c2"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -40337,7 +40337,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.ed-saving": "Saving your rewards…",
   "toast.ed-result-saving": "Hold on: this fight’s result is being saved.",
   "ui.skn-archer": "Archer",
-  "ui.sk-archer": "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).",
+  "ui.sk-archer": "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.",
   "ui.skn-archer-style": "Archer look",
   "ui.archer-style-bow": "Bow: it shoots an arrow",
   "ui.archer-style-drop": "Drop: it flies over the target, drops a stone and flies back",
@@ -43803,7 +43803,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a121be73bef5', BUILD_CARD_HASH = '2ed2f3fde13e242cf60a526e157e7bd5674a2e94963576f0e038bffd2a597b78';
+const BUILD_ID = '457998e98031', BUILD_CARD_HASH = '2ed2f3fde13e242cf60a526e157e7bd5674a2e94963576f0e038bffd2a597b78';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

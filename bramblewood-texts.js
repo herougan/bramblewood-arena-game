@@ -1682,7 +1682,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.ed-saving": "Saving your rewards…",
   "toast.ed-result-saving": "Hold on: this fight’s result is being saved.",
   "ui.skn-archer": "Archer",
-  "ui.sk-archer": "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).",
+  "ui.sk-archer": "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.",
   "ui.skn-archer-style": "Archer look",
   "ui.archer-style-bow": "Bow: it shoots an arrow",
   "ui.archer-style-drop": "Drop: it flies over the target, drops a stone and flies back",

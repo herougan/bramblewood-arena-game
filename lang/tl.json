@@ -2400,7 +2400,6 @@
  "Tide and water": "Alon at tubig",
  "Cards and hand": "Mga card at kamay",
  "Archer": "Mamamana",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Hindi ito umaatake kailanman. Sa halip, sa bawat turn nito ay pumapana ito ng palasong may {n} pinsala sa kalabang nasa harap (kung wala, sa pinakamalapit na kalaban; sa tinikan kung walang laman ang larangan).",
  "Archer look": "Istilo ng mamamana",
  "Bow: it shoots an arrow": "Pana: pumapana ng palaso",
  "Drop: it flies over the target, drops a stone and flies back": "Hulog: lumilipad sa ibabaw ng target, naghuhulog ng bato, at bumabalik",
@@ -2499,5 +2498,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "Ligtas ang iyong Bayani. Subukan ulit, o bumalik mamaya.",
  "No skills yet. Your first pick comes at Level {n}.": "Wala pang kakayahan. Darating ang unang pili mo sa Level {n}.",
  "No crystals yet. Craft your first one below.": "Wala pang kristal. Gawin ang una mo sa ibaba.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "Kung saan nagsasanay ang mga bayani. I-level up ang sa iyo, gastusin ang mga punto nito at piliin ang mga skill nito."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "Kung saan nagsasanay ang mga bayani. I-level up ang sa iyo, gastusin ang mga punto nito at piliin ang mga skill nito.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Hindi umaatake: bawat turn, pumapana ng {n} pinsala sa kalaban sa harap, o sa pinakamalapit.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "Gantimpala ng paksiyon: nakukuha sa pag-usad sa labanan at mga tagumpay, hindi kailanman sa pack",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Gantimpala ng paksiyon: nakukuha sa pag-usad sa labanan (elite, boss, bawat ilang panalo) at ilang tagumpay, hindi kailanman sa pack",
+ "Faction cards +{n}": "Mga card ng paksiyon +{n}",
+ "Faction reward: {names}": "Gantimpala ng paksiyon: {names}"
 }

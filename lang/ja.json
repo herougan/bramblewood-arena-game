@@ -2402,7 +2402,6 @@
  "Tide and water": "潮と水",
  "Cards and hand": "カードと手札",
  "Archer": "射手",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "攻撃しない。代わりに自分の番ごとに、正面の敵へ{n}ダメージの矢を放つ（正面にいなければ最も近い敵へ、盤面が空ならイバラへ）。",
  "Archer look": "射手の演出",
  "Bow: it shoots an arrow": "弓：矢を放つ",
  "Drop: it flies over the target, drops a stone and flies back": "落下：標的の上へ飛び、石を落として戻る",
@@ -2501,5 +2500,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "ヒーローは無事です。もう一度試すか、少ししてから来てください。",
  "No skills yet. Your first pick comes at Level {n}.": "スキルはまだありません。最初の選択はレベル{n}で。",
  "No crystals yet. Craft your first one below.": "クリスタルはまだありません。下で最初のひとつを作ろう。",
- "Where heroes train. Level yours, spend its points and pick its skills.": "ヒーローが鍛える場所。レベルを上げ、ポイントを振り、スキルを選ぼう。"
+ "Where heroes train. Level yours, spend its points and pick its skills.": "ヒーローが鍛える場所。レベルを上げ、ポイントを振り、スキルを選ぼう。",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "攻撃しない。毎ターン、正面の敵（いなければ最も近い敵）に{n}ダメージの矢を放つ。",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "勢力報酬：小競り合いの進行と実績で手に入り、パックからは出ません",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "勢力報酬：小競り合いの進行（エリート、ボス、数勝ごと）と一部の実績で手に入り、パックからは出ません",
+ "Faction cards +{n}": "勢力カード +{n}",
+ "Faction reward: {names}": "勢力報酬：{names}"
 }

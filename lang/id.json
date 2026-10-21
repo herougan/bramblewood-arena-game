@@ -2401,7 +2401,6 @@
  "Tide and water": "Pasang dan air",
  "Cards and hand": "Kartu dan tangan",
  "Archer": "Pemanah",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Tidak pernah menyerang. Sebagai gantinya, di setiap gilirannya ia melepaskan panah sebesar {n} kerusakan ke musuh di depannya (jika tidak ada, musuh terdekat; semak duri jika papan kosong).",
  "Archer look": "Gaya pemanah",
  "Bow: it shoots an arrow": "Busur: menembakkan panah",
  "Drop: it flies over the target, drops a stone and flies back": "Jatuhkan: terbang di atas sasaran, menjatuhkan batu, lalu terbang kembali",
@@ -2500,5 +2499,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "Pahlawanmu aman. Coba lagi, atau kembali sebentar lagi.",
  "No skills yet. Your first pick comes at Level {n}.": "Belum ada keahlian. Pilihan pertamamu datang di Level {n}.",
  "No crystals yet. Craft your first one below.": "Belum ada kristal. Buat yang pertama di bawah.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "Tempat para pahlawan berlatih. Naikkan level pahlawanmu, pakai poinnya, dan pilih kemampuannya."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "Tempat para pahlawan berlatih. Naikkan level pahlawanmu, pakai poinnya, dan pilih kemampuannya.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Tak pernah menyerang: tiap giliran menembakkan panah {n} kerusakan ke musuh di depan, atau yang terdekat.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "Hadiah faksi: didapat dari kemajuan pertempuran dan pencapaian, tak pernah dari paket",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Hadiah faksi: didapat dari kemajuan pertempuran (elite, bos, setiap beberapa kemenangan) dan beberapa pencapaian, tak pernah dari paket",
+ "Faction cards +{n}": "Kartu faksi +{n}",
+ "Faction reward: {names}": "Hadiah faksi: {names}"
 }

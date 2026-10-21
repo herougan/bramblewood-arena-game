@@ -2401,7 +2401,6 @@
  "Tide and water": "Gezeiten und Wasser",
  "Cards and hand": "Karten und Hand",
  "Archer": "Bogenschütze",
- "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Greift nie an. Stattdessen schießt es in jedem seiner Züge einen Pfeil für {n} Schaden auf den Gegner gegenüber (ist dort keiner, auf den nächsten Gegner; auf das Dornengestrüpp, wenn das Feld leer ist).",
  "Archer look": "Bogenschützen-Stil",
  "Bow: it shoots an arrow": "Bogen: es schießt einen Pfeil",
  "Drop: it flies over the target, drops a stone and flies back": "Abwurf: es fliegt über das Ziel, lässt einen Stein fallen und fliegt zurück",
@@ -2500,5 +2499,10 @@
  "Your Hero is safe. Try again, or come back in a moment.": "Deinem Helden ist nichts passiert. Versuch es nochmal oder komm gleich wieder.",
  "No skills yet. Your first pick comes at Level {n}.": "Noch keine Fähigkeiten. Deine erste Wahl kommt auf Stufe {n}.",
  "No crystals yet. Craft your first one below.": "Noch keine Kristalle. Stell unten deinen ersten her.",
- "Where heroes train. Level yours, spend its points and pick its skills.": "Wo Helden trainieren. Steig mit deinem Stufen auf, verteil seine Punkte und wähle seine Fähigkeiten."
+ "Where heroes train. Level yours, spend its points and pick its skills.": "Wo Helden trainieren. Steig mit deinem Stufen auf, verteil seine Punkte und wähle seine Fähigkeiten.",
+ "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.": "Greift nie an: Jede Runde schießt es einen Pfeil für {n} Schaden auf den Gegner davor oder den nächsten.",
+ "Faction rewards: earned through skirmish progress and achievements, never from packs": "Fraktionsbelohnungen: durch Gefechtsfortschritt und Erfolge verdient, nie aus Packs",
+ "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Eine Fraktionsbelohnung: durch Gefechtsfortschritt (Elite, Bosse, alle paar Siege) und einige Erfolge verdient, nie aus Packs",
+ "Faction cards +{n}": "Fraktionskarten +{n}",
+ "Faction reward: {names}": "Fraktionsbelohnung: {names}"
 }
