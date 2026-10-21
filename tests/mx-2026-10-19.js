@@ -123,6 +123,29 @@ const card = (id, a, h, x)=> Object.assign({id, attack: a, health: h, cost: 0, w
   ok(/deckIds\.some\(o=> swapOutAllowed\(o, k\) && swapClearlyBetter\(defs\[k\], defs\[o\]\)\)/.test(f), 'the right column only lists cards that beat a deck card');
   ok(/swapOutAllowed\(k, inId\) && swapClearlyBetter\(defs\[inId\], defs\[k\], o2\)\)/.test(f), 'the left column only lists deck cards the chosen card beats');
   ok(/better = from0\.filter\(id=> weakestDeckCard\(id\)\)/.test(B.grab('teachingCardPick')), 'the Map 0-1 teaching card is picked among those that beat a deck card, when any do (so the lesson still shows)'); }
+// ---- 4. the Tentacle Smack's target (owner: "The raids tentacles should be hitting a random column or row and not my row everytime
+// btw!"): a row smack picks the front, middle or back row 1 in 3 each (it was the front, your own row, 2 times in 3); a column smack
+// any column with your units (weighted by them: on a full board, evenly). 200 seeded rolls each, over fights (seeds) and over rounds.
+{ const seedSrc = src.slice(src.indexOf('function seededRng(seed){'), src.indexOf('let currentMatchSeed'));
+  const F = new Function(seedSrc + ['raidSmackRoll', 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget'].map(B.grab).join('\n') + '; return {raidSmackTarget, raidSmackRow, raidPickColumn, raidSmackKind};')();
+  const COLS = [-2, -1, 0, 1, 2], unit = sl=> ({slot: sl, hp: 5});
+  const row = ()=> Object.fromEntries(COLS.map(c=> [c, unit(c)]));
+  const m = seed=> ({raidSeed: seed, players: {1: {reserve: [row(), row()]}}, engine: {allBoardCards: ()=> COLS.map(unit)}});
+  const a = {pattern: 'column', every: 3};
+  const tally = (pick)=>{ const rows = [0, 0, 0], cols = {}; for(let k = 0; k < 200; k++){ const r = pick(k); rows[r.row]++; cols[r.col] = (cols[r.col] || 0) + 1; } return {rows, cols}; };
+  // over 200 fights (seeds), the round-6 row smack and the round-3 column smack
+  const rng = (s=> ()=>{ s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s; })(0xA5A5);
+  const seeds = Array.from({length: 200}, ()=> rng());
+  ok(F.raidSmackKind(3, a) === 'column' && F.raidSmackKind(6, a) === 'row', 'every 3 turns: a column smack, then a row smack');
+  const byFight = tally(k=> ({row: F.raidSmackTarget(m(seeds[k]), 6, 0, a).row, col: F.raidSmackTarget(m(seeds[k]), 3, 0, a).col}));
+  const byRound = tally(k=> ({row: F.raidSmackRow(m(seeds[0]), 2 + 2 * k, 0), col: F.raidPickColumn(m(seeds[0]), 1 + 2 * k, 0)}));
+  for(const [what, t] of [['200 fights', byFight], ['200 rounds of one fight', byRound]]){
+    console.log(`  (Tentacle Smack, ${what}: rows front/middle/back ${t.rows.join(' / ')}; columns ${COLS.map(c=> t.cols[c] || 0).join(' / ')})`);
+    ok(t.rows.every(n=> n >= 45 && n <= 90), `${what}: row smacks spread over the front / middle / back rows (${t.rows.join(' / ')}; about 67 each)`);
+    ok(t.rows[0] <= 90, `${what}: the front row (yours) is not hit every time (${t.rows[0]} of 200)`);
+    ok(COLS.every(c=> (t.cols[c] || 0) >= 22 && (t.cols[c] || 0) <= 60), `${what}: column smacks spread over the five columns (${COLS.map(c=> t.cols[c] || 0).join(' / ')}; about 40 each)`); }
+  ok(/const RAID_SMACK_BACK_CHANCE = 2\/3;/.test(src), 'the row smack leaves the front row 2 times in 3 (each row 1 in 3)'); }
+
 ok(/^## 2026-10-19 \(package MX/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), 'CHANGELOG entry');
 
 async function browser(){ if(process.env.MX_NO_BROWSER) return;
@@ -164,7 +187,9 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       // 1. a raid fight: the VS card's line, then the boss bramble's 🔷 50 on the board
       await pg.evaluate("(()=>{ const def = liveRaidDefs().find(d=> d.id === 'goliath') || allRaidDefs()[0]; window.__mxDef = def; startRaidPartMatch(def, 'left'); return 1; })()");
       await pg.waitForTimeout(1800);
-      const vs = await pg.evaluate("(()=>{ const l = document.querySelector('.mx-raid-shield'); if(l) l.scrollIntoView({block: 'center'}); return l ? l.textContent.trim() : null; })()");
+      const vs = await pg.evaluate("(()=>{ const l = document.querySelector('.mx-raid-shield'); if(!l) return null; l.scrollIntoView({block: 'center'}); let sc = null; for(let e = l.parentElement; e; e = e.parentElement){ const o = getComputedStyle(e).overflowY; if(e.scrollHeight > e.clientHeight + 4 && /auto|scroll/.test(o)){ sc = e; break; } } if(sc){ const r = l.getBoundingClientRect(); sc.scrollTop += r.top - innerHeight / 2; } window.__mxVsScroll = sc ? sc.className : 'none'; return l.textContent.trim(); })()");
+      const vsSeen = await pg.evaluate("(()=>{ const l = document.querySelector('.mx-raid-shield'), r = l && l.getBoundingClientRect(); return r ? {top: Math.round(r.top), bottom: Math.round(r.bottom), h: innerHeight, sc: window.__mxVsScroll} : null; })()");
+      ok(vsSeen && vsSeen.top >= 0 && vsSeen.bottom <= vsSeen.h, `${tag} 1. the VS card's Shield line can be scrolled into view (${JSON.stringify(vsSeen)})`);
       await pg.waitForTimeout(250);
       ok(vs && /Shield 50/.test(vs), `${tag} 1. the VS boss card: "${vs}"`);
       await shot('raid-shield-vs');

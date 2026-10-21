@@ -24435,13 +24435,14 @@ function raidAllyPlays(m, a, events){
 // weight columns by number of units in that column."). An attack with pattern 'column' alternates: its 1st, 3rd, 5th... smack is a
 // COLUMN smack, every unit of yours in one column (front, middle and back), the column picked at random weighted by how many of your
 // units stand in it (an empty column never; no units at all, your bramble); its 2nd, 4th, 6th... is a ROW smack, every unit in one
-// of your rows: the front row, or 1 time in 3 (raidSmackBack, the owner's 15:37 rule) the middle or back row. Every roll is seeded by
-// the match's seed, the round and the attack (raidSmackRoll), so the same fight smacks the same.
+// of your rows: any of the three at even odds (2026-10-19, package MX, owner: "The raids tentacles should be hitting a random column or
+// row and not my row everytime btw!": it was the front row, your own, 2 times in 3, and the middle or back only 1 time in 3 (the 15:37
+// rule)). Every roll is seeded by the match's seed, the round and the attack (raidSmackRoll), so the same fight smacks the same.
 function raidSmackRoll(m, round, i, salt){
   const s = ((Number(m && m.raidSeed) >>> 0) ^ Math.imul((round|0) + 1, 0x9E3779B1) ^ Math.imul((i|0) + 1, 0x85EBCA77) ^ Math.imul(salt|0, 0xC2B2AE3D)) >>> 0;
   return seededRng(s)();
 }
-const RAID_SMACK_BACK_CHANCE = 1/3;
+const RAID_SMACK_BACK_CHANCE = 2/3; // the chance a row smack misses your front row: 2/3, so front / middle / back are 1 in 3 each (2026-10-19, MX; was 1/3)
 function raidSmackBack(m, round, i){ return raidSmackRoll(m, round, i, 0) < RAID_SMACK_BACK_CHANCE; }
 // Which kind the attack's smack on this round is: they alternate, a column smack first.
 function raidSmackKind(round, a){ const n = Math.floor((round|0) / Math.max(1, (a && a.every)|0 || 1)); return n % 2 === 1 ? 'column' : 'row'; }
@@ -24456,7 +24457,7 @@ function raidPickColumn(m, round, i){
   const cols = [...w.keys()].sort((x, y)=> x - y), tot = cols.reduce((t, c)=> t + w.get(c), 0); if(!tot) return null;
   let u = raidSmackRoll(m, round, i, 1) * tot; for(const c of cols){ u -= w.get(c); if(u < 0) return c; } return cols[cols.length - 1];
 }
-// The row a row smack aims at: the front, or 1 time in 3 the middle or the back row (even odds).
+// The row a row smack aims at: the front, middle or back row, 1 in 3 each (raidSmackBack, then even odds between the middle and back).
 function raidSmackRow(m, round, i){ return raidSmackBack(m, round, i) ? (raidSmackRoll(m, round, i, 2) < 0.5 ? 1 : 2) : 0; }
 // What the attack's smack on this round will hit, chosen when it is telegraphed (the round before) and kept.
 function raidSmackTarget(m, round, i, a){ return raidSmackKind(round, a) === 'column' ? {kind:'column', col: raidPickColumn(m, round, i)} : {kind:'row', row: raidSmackRow(m, round, i)}; }
