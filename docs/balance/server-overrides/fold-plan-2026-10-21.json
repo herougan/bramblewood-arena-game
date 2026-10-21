@@ -1,0 +1,1279 @@
+{
+ "_about": "BF5 (2026-10-21): the owner's later live edits (card_overrides after BF4's clear) folded into the file; the cards' stats are re-derived by tools/halve_2026_10_19.js",
+ "generated": "2026-10-21",
+ "cards": 13,
+ "rows": [
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "upd": "2026-10-19T15:23:30.045+00:00",
+   "server": [
+    2,
+    11
+   ],
+   "filePre": [
+    2,
+    11
+   ],
+   "fileNow": [
+    1,
+    4
+   ],
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "effects": {
+    "esprit": 1,
+    "flying": true,
+    "brood": 1
+   },
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "art",
+     "server": "(its own built asset)",
+     "file": "(a newer portrait)",
+     "kept": "file",
+     "fileAt": "2026-10-21T09:48:02+08:00"
+    }
+   ],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "upd": "2026-10-19T15:46:58.553+00:00",
+   "server": [
+    4,
+    11
+   ],
+   "filePre": [
+    3,
+    3
+   ],
+   "fileNow": [
+    1,
+    1
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "quick": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "upd": "2026-10-20T15:49:16.47+00:00",
+   "server": [
+    7,
+    9
+   ],
+   "filePre": [
+    4,
+    7
+   ],
+   "fileNow": [
+    2,
+    3
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "flying": true,
+    "fragile": true
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "fragile": true
+     },
+     "to": {
+      "flying": true,
+      "fragile": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "upd": "2026-10-20T16:08:35.169+00:00",
+   "server": [
+    3,
+    7
+   ],
+   "filePre": [
+    1,
+    6
+   ],
+   "fileNow": [
+    1,
+    2
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "gain",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ],
+    "flying": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "upd": "2026-10-20T16:09:02.682+00:00",
+   "server": [
+    2,
+    15
+   ],
+   "filePre": [
+    2,
+    6
+   ],
+   "fileNow": [
+    1,
+    1
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "armor": 1,
+    "tide": true,
+    "molting": 1,
+    "crabClaws": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "upd": "2026-10-20T16:09:28.18+00:00",
+   "server": [
+    5,
+    10
+   ],
+   "filePre": [
+    5,
+    5
+   ],
+   "fileNow": [
+    3,
+    3
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {},
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "upd": "2026-10-20T16:09:40.281+00:00",
+   "server": [
+    4,
+    13
+   ],
+   "filePre": [
+    4,
+    5
+   ],
+   "fileNow": [
+    1,
+    2
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "tide": true,
+    "crabClaws": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "upd": "2026-10-20T16:09:56.564+00:00",
+   "server": [
+    4,
+    10
+   ],
+   "filePre": [
+    1,
+    4
+   ],
+   "fileNow": [
+    1,
+    2
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "armor": 1,
+    "tide": true,
+    "molting": 1,
+    "wave": "left"
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "upd": "2026-10-20T16:11:47.793+00:00",
+   "server": [
+    0,
+    50
+   ],
+   "filePre": [
+    5,
+    30
+   ],
+   "fileNow": [
+    2,
+    15
+   ],
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "effects": {
+    "triggers": [
+     {
+      "do": "spawnCard",
+      "on": "perTurn",
+      "count": 1,
+      "defId": "ant-scout",
+      "turnOf": "self"
+     }
+    ]
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "onReadyGold": 1,
+      "bounty": 1
+     },
+     "to": {
+      "triggers": [
+       {
+        "do": "spawnCard",
+        "on": "perTurn",
+        "count": 1,
+        "defId": "ant-scout",
+        "turnOf": "self"
+       }
+      ]
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "notes": [
+    "ant-scout~cp4 -> ant-scout (the editor's copy id: a card in a collection at a level, not a card id)"
+   ]
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "upd": "2026-10-20T16:12:04.643+00:00",
+   "server": [
+    2,
+    16
+   ],
+   "filePre": [
+    2,
+    9
+   ],
+   "fileNow": [
+    1,
+    4
+   ],
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "triggers": [
+     {
+      "do": "heal",
+      "on": "onAttack",
+      "who": "self",
+      "amount": 1
+     }
+    ]
+   },
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "triggers": [
+       {
+        "do": "heal",
+        "on": "onAttack",
+        "amount": 1
+       }
+      ]
+     },
+     "to": {
+      "triggers": [
+       {
+        "do": "heal",
+        "on": "onAttack",
+        "who": "self",
+        "amount": 1
+       }
+      ]
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "upd": "2026-10-20T16:12:16.108+00:00",
+   "server": [
+    4,
+    11
+   ],
+   "filePre": [
+    4,
+    7
+   ],
+   "fileNow": [
+    2,
+    3
+   ],
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "effects": {
+    "swarm": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "upd": "2026-10-20T16:12:25.959+00:00",
+   "server": [
+    5,
+    18
+   ],
+   "filePre": [
+    5,
+    11
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "effects": {
+    "swarm": true
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "upd": "2026-10-20T16:12:36.009+00:00",
+   "server": [
+    6,
+    20
+   ],
+   "filePre": [
+    6,
+    11
+   ],
+   "fileNow": [
+    3,
+    5
+   ],
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "effects": {
+    "swarm": true,
+    "swarmN": 2
+   },
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "notes": []
+  }
+ ],
+ "nodes": [
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-1",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "patch": {
+    "deck": {
+     "duckling": 3,
+     "honey-bee": 4,
+     "pond-duck": 3,
+     "crossed-eyes": 3,
+     "garden-snail": 4,
+     "silver-minnow": 3
+    }
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-2",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "patch": {
+    "deck": {
+     "ant-scout": 3,
+     "bee-sentry": 3,
+     "river-carp": 4,
+     "bee-forager": 3,
+     "forager-ant": 3,
+     "duck-paddler": 4
+    },
+    "showcase": "ant-scout"
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-3",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "patch": {
+    "deck": {
+     "house-cat": 3,
+     "cottontail": 3,
+     "feral-tomcat": 4,
+     "meadow-rabbit": 4,
+     "chipmunk-forager": 3,
+     "chipmunk-skirmisher": 3
+    }
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:m1",
+   "map": "m1",
+   "key": "0-4",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "patch": {
+    "deck": {
+     "fox-kit": 4,
+     "otter-kit": 2,
+     "beetle-grunt": 4,
+     "duck-paddler": 4,
+     "feral-tomcat": 4,
+     "cobalt-talon-fledgling": 2
+    }
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mf",
+   "map": "mf",
+   "key": "1-1",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "patch": {
+    "deck": {
+     "sheep": 3,
+     "meadow-frog": 4,
+     "beetle-grunt": 3,
+     "courier-pigeon": 3,
+     "cricket-drummer": 3,
+     "robin-redbreast": 4
+    }
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mf",
+   "map": "mf",
+   "key": "1-2",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "patch": {
+    "deck": {
+     "farm-dog": 4,
+     "meadow-frog": 3,
+     "beetle-grunt": 3,
+     "ladybird-guard": 4,
+     "cricket-drummer": 3,
+     "robin-redbreast": 3
+    },
+    "showcase": "ladybird-guard"
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mf",
+   "map": "mf",
+   "key": "1-3",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "patch": {
+    "deck": {
+     "fox-kit": 3,
+     "quarry-mole": 3,
+     "feral-tomcat": 3,
+     "burrow-rabbit": 3,
+     "meadow-rabbit": 3,
+     "acorn-chipmunk": 3
+    }
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mf",
+   "map": "mf",
+   "key": "1-4",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "patch": {
+    "deck": {
+     "field-vole": 3,
+     "field-mouse": 3,
+     "quarry-mole": 4,
+     "puddle-hopper": 3,
+     "hedgehog-scout": 3,
+     "star-nosed-mole": 4
+    },
+    "showcase": "quarry-mole"
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mf",
+   "map": "mf",
+   "key": "1-5",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "patch": {
+    "deck": {
+     "fox-kit": 3,
+     "field-vole": 4,
+     "fleetfootd": 3,
+     "meadow-rabbit": 3,
+     "hedgehog-scout": 3,
+     "robin-redbreast": 4
+    },
+    "kind": "elite",
+    "ender": true,
+    "showcase": "fleetfootd"
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mb",
+   "map": "mb",
+   "key": "2-1",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "patch": {
+    "deck": {
+     "gull-thief": 4,
+     "meadow-frog": 4,
+     "tide-pool-crab": 4,
+     "fiddler-crab-swarm": 4,
+     "open-ocean-hermit-crab": 4
+    },
+    "showcase": "open-ocean-hermit-crab"
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mb",
+   "map": "mb",
+   "key": "2-2",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "patch": {
+    "deck": {
+     "gull-thief": 4,
+     "shallows-fry": 3,
+     "mayfly-dancer": 2,
+     "tide-pool-crab": 3,
+     "fiddler-crab-swarm": 4,
+     "open-ocean-hermit-crab": 4
+    }
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mb",
+   "map": "mb",
+   "key": "2-3",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "patch": {
+    "deck": {
+     "conch-herald": 3,
+     "conch-crawler": 3,
+     "pelican-diver": 3,
+     "tide-pool-crab": 3,
+     "tidepool-trapper-crab": 3,
+     "open-ocean-hermit-crab": 3
+    },
+    "requires": [
+     "2-2"
+    ]
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mb",
+   "map": "mb",
+   "key": "2-4",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "patch": {
+    "requires": [
+     "2-3"
+    ]
+   }
+  },
+  {
+   "row": "__cfg:map-nodes:mb",
+   "map": "mb",
+   "key": "2-5",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "patch": {
+    "deck": {
+     "shallows-fry": 4,
+     "mayfly-dancer": 2,
+     "otter-riverguard": 2,
+     "sulfur-vent-crab": 4,
+     "fiddler-crab-swarm": 4,
+     "open-ocean-hermit-crab": 4
+    },
+    "kind": "elite",
+    "ender": true
+   }
+  }
+ ],
+ "nodesDone": [
+  {
+   "map": "m1",
+   "key": "0-1",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "honey-bee": 2,
+      "pond-duck": 2,
+      "cottontail": 2,
+      "pond-trout": 2,
+      "meadow-frog": 2,
+      "crossed-eyes": 2,
+      "garden-snail": 2,
+      "meadow-rabbit": 2,
+      "acorn-chipmunk": 2,
+      "chipmunk-forager": 2
+     },
+     "to": {
+      "duckling": 3,
+      "honey-bee": 4,
+      "pond-duck": 3,
+      "crossed-eyes": 3,
+      "garden-snail": 4,
+      "silver-minnow": 3
+     }
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "m1",
+   "key": "0-2",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "ant-scout": 2,
+      "honey-bee": 2,
+      "pond-duck": 2,
+      "bee-sentry": 2,
+      "cottontail": 1,
+      "pond-trout": 2,
+      "worker-ant": 2,
+      "bee-forager": 2,
+      "forager-ant": 2,
+      "acorn-chipmunk": 1,
+      "bee-knight": 2
+     },
+     "to": {
+      "ant-scout": 3,
+      "bee-sentry": 3,
+      "river-carp": 4,
+      "bee-forager": 3,
+      "forager-ant": 3,
+      "duck-paddler": 4
+     }
+    },
+    {
+     "field": "showcase",
+     "from": null,
+     "to": "ant-scout"
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "m1",
+   "key": "0-3",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "pond-duck": 2,
+      "cottontail": 2,
+      "fleetfootd": 2,
+      "pond-trout": 2,
+      "crossed-eyes": 1,
+      "meadow-rabbit": 2,
+      "chipmunk-skirmisher": 1,
+      "trash-panda-trickster": 3
+     },
+     "to": {
+      "house-cat": 3,
+      "cottontail": 3,
+      "feral-tomcat": 4,
+      "meadow-rabbit": 4,
+      "chipmunk-forager": 3,
+      "chipmunk-skirmisher": 3
+     }
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "m1",
+   "key": "0-4",
+   "upd": "2026-10-20T04:51:22.939+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "fox-kit": 2,
+      "pond-duck": 3,
+      "bee-sentry": 1,
+      "beetle-grunt": 2,
+      "crossed-eyes": 2,
+      "acorn-chipmunk": 1,
+      "chipmunk-forager": 1,
+      "chipmunk-skirmisher": 1,
+      "trash-panda-trickster": 2
+     },
+     "to": {
+      "fox-kit": 4,
+      "otter-kit": 2,
+      "beetle-grunt": 4,
+      "duck-paddler": 4,
+      "feral-tomcat": 4,
+      "cobalt-talon-fledgling": 2
+     }
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mf",
+   "key": "1-1",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "cricket-drummer": 3,
+      "beetle-grunt": 1,
+      "dormouse": 2,
+      "robin-redbreast": 4,
+      "puddle-hopper": 2,
+      "thornwood-palisade": 2,
+      "harvest-mouse": 2
+     },
+     "to": {
+      "sheep": 3,
+      "meadow-frog": 4,
+      "beetle-grunt": 3,
+      "courier-pigeon": 3,
+      "cricket-drummer": 3,
+      "robin-redbreast": 4
+     }
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mf",
+   "key": "1-2",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "cricket-drummer": 4,
+      "meadow-frog": 3,
+      "ladybird-guard": 2,
+      "burrow-rabbit": 1,
+      "chipmunk-forager": 2,
+      "harvest-mouse": 4
+     },
+     "to": {
+      "farm-dog": 4,
+      "meadow-frog": 3,
+      "beetle-grunt": 3,
+      "ladybird-guard": 4,
+      "cricket-drummer": 3,
+      "robin-redbreast": 3
+     }
+    },
+    {
+     "field": "showcase",
+     "from": null,
+     "to": "ladybird-guard"
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mf",
+   "key": "1-3",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "quarry-mole": 2,
+      "harvest-mouse": 4,
+      "beetle-battering-ram": 2,
+      "burrow-rabbit": 2,
+      "tunnel-ant": 2,
+      "chipmunk-forager": 2,
+      "fox-kit": 2,
+      "village-miller": 2
+     },
+     "to": {
+      "fox-kit": 3,
+      "quarry-mole": 3,
+      "feral-tomcat": 3,
+      "burrow-rabbit": 3,
+      "meadow-rabbit": 3,
+      "acorn-chipmunk": 3
+     }
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mf",
+   "key": "1-4",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "burrow-rabbit": 4,
+      "hedgehog-scout": 1,
+      "beetle-battering-ram": 1,
+      "gatling-hog": 1,
+      "field-vole": 1,
+      "thornwood-palisade": 2,
+      "puddle-hopper": 2,
+      "tunnel-ant": 2,
+      "field-mouse": 2
+     },
+     "to": {
+      "field-vole": 3,
+      "field-mouse": 3,
+      "quarry-mole": 4,
+      "puddle-hopper": 3,
+      "hedgehog-scout": 3,
+      "star-nosed-mole": 4
+     }
+    },
+    {
+     "field": "showcase",
+     "from": null,
+     "to": "quarry-mole"
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mf",
+   "key": "1-5",
+   "upd": "2026-10-20T04:56:46.372+00:00",
+   "diff": [
+    {
+     "field": "kind",
+     "from": "boss",
+     "to": "elite"
+    },
+    {
+     "field": "deck",
+     "from": {
+      "beetle-battering-ram": 1,
+      "beetle-grunt": 1,
+      "fox-kit": 1,
+      "field-mouse": 1,
+      "stag-beetle": 2,
+      "thornwood-palisade": 2,
+      "bee-drone": 2,
+      "hedgehog-scout": 2,
+      "village-miller": 2,
+      "field-vole": 2,
+      "meadow-frog": 2,
+      "meadow-rabbit": 2
+     },
+     "to": {
+      "fox-kit": 3,
+      "field-vole": 4,
+      "fleetfootd": 3,
+      "meadow-rabbit": 3,
+      "hedgehog-scout": 3,
+      "robin-redbreast": 4
+     }
+    },
+    {
+     "field": "ender",
+     "from": null,
+     "to": true
+    },
+    {
+     "field": "showcase",
+     "from": null,
+     "to": "fleetfootd"
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mb",
+   "key": "2-1",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "tide-pool-crab": 2,
+      "open-ocean-hermit-crab": 3,
+      "gull-thief": 1,
+      "otter-riverguard": 2,
+      "pincushion-urchin": 2,
+      "fiddler-crab-swarm": 2
+     },
+     "to": {
+      "gull-thief": 4,
+      "meadow-frog": 4,
+      "tide-pool-crab": 4,
+      "fiddler-crab-swarm": 4,
+      "open-ocean-hermit-crab": 4
+     }
+    },
+    {
+     "field": "showcase",
+     "from": null,
+     "to": "open-ocean-hermit-crab"
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mb",
+   "key": "2-2",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "gull-thief": 3,
+      "fiddler-crab-swarm": 2,
+      "pelican-diver": 1,
+      "open-ocean-hermit-crab": 2,
+      "sea-turtle-elder": 2,
+      "tide-pool-crab": 2,
+      "mayfly-dancer": 2,
+      "shallows-fry": 2
+     },
+     "to": {
+      "gull-thief": 4,
+      "shallows-fry": 3,
+      "mayfly-dancer": 2,
+      "tide-pool-crab": 3,
+      "fiddler-crab-swarm": 4,
+      "open-ocean-hermit-crab": 4
+     }
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mb",
+   "key": "2-3",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "diff": [
+    {
+     "field": "deck",
+     "from": {
+      "tide-pool-crab": 1,
+      "sulfur-vent-crab": 4,
+      "pelican-diver": 3,
+      "tidepool-trapper-crab": 2,
+      "open-ocean-hermit-crab": 2,
+      "shallows-fry": 2,
+      "fiddler-crab-swarm": 2,
+      "minnow-skitter": 2
+     },
+     "to": {
+      "conch-herald": 3,
+      "conch-crawler": 3,
+      "pelican-diver": 3,
+      "tide-pool-crab": 3,
+      "tidepool-trapper-crab": 3,
+      "open-ocean-hermit-crab": 3
+     }
+    },
+    {
+     "field": "requires",
+     "from": [
+      "2-1"
+     ],
+     "to": [
+      "2-2"
+     ]
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mb",
+   "key": "2-4",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "diff": [
+    {
+     "field": "requires",
+     "from": [
+      "2-2",
+      "2-3"
+     ],
+     "to": [
+      "2-3"
+     ]
+    }
+   ],
+   "ignored": []
+  },
+  {
+   "map": "mb",
+   "key": "2-5",
+   "upd": "2026-10-20T16:25:06.42+00:00",
+   "diff": [
+    {
+     "field": "kind",
+     "from": "boss",
+     "to": "elite"
+    },
+    {
+     "field": "deck",
+     "from": {
+      "pelican-diver": 2,
+      "otter-riverguard": 1,
+      "open-ocean-hermit-crab": 4,
+      "grey-seal-bull": 2,
+      "sulfur-vent-crab": 2,
+      "fiddler-crab-swarm": 2,
+      "shallows-fry": 2,
+      "mayfly-dancer": 2
+     },
+     "to": {
+      "shallows-fry": 4,
+      "mayfly-dancer": 2,
+      "otter-riverguard": 2,
+      "sulfur-vent-crab": 4,
+      "fiddler-crab-swarm": 4,
+      "open-ocean-hermit-crab": 4
+     }
+    },
+    {
+     "field": "ender",
+     "from": null,
+     "to": true
+    }
+   ],
+   "ignored": []
+  }
+ ],
+ "tutorial": [
+  {
+   "field": "myDeck",
+   "from": null,
+   "to": {
+    "duckling": 1,
+    "pond-duck": 1,
+    "cottontail": 1,
+    "pond-trout": 1,
+    "silver-minnow": 1,
+    "acorn-chipmunk": 1,
+    "chipmunk-forager": 1
+   }
+  },
+  {
+   "field": "myDeck2",
+   "from": null,
+   "to": {
+    "duckling": 1,
+    "honey-bee": 1,
+    "pond-duck": 2,
+    "cottontail": 2,
+    "pond-trout": 3,
+    "silver-minnow": 1,
+    "acorn-chipmunk": 3,
+    "chipmunk-forager": 2
+   }
+  },
+  {
+   "field": "rewards",
+   "from": [
+    "rabbit-kit"
+   ],
+   "to": [
+    "quarry-mole"
+   ]
+  },
+  {
+   "field": "rivalHp",
+   "from": 6,
+   "to": 7
+  },
+  {
+   "field": "rivalDeck",
+   "from": null,
+   "to": {
+    "duckling": 2,
+    "earthworm": 2,
+    "harvest-mouse": 2,
+    "silver-minnow": 2
+   }
+  },
+  {
+   "field": "highlight1",
+   "from": null,
+   "to": "pond-duck"
+  },
+  {
+   "field": "highlight2",
+   "from": null,
+   "to": "wandering-traveller"
+  },
+  {
+   "field": "rivalDeck2",
+   "from": null,
+   "to": {
+    "duckling": 3,
+    "earthworm": 3,
+    "honey-bee": 3,
+    "otter-kit": 1,
+    "pond-duck": 1,
+    "pond-trout": 1,
+    "crossed-eyes": 1,
+    "meadow-rabbit": 1,
+    "silver-minnow": 3,
+    "chipmunk-forager": 1
+   }
+  },
+  {
+   "field": "starterBoth",
+   "from": {
+    "otter-centurion": 1,
+    "crimson-wing-recruit": 1,
+    "fleetfootd": 1
+   },
+   "to": {
+    "dormouse": 1,
+    "otter-kit": 2,
+    "otter-paddler": 2
+   }
+  },
+  {
+   "field": "starterOtters",
+   "from": {
+    "otter-kit": 1,
+    "otter-centurion": 1,
+    "fleetfootd": 1
+   },
+   "to": {
+    "otter-kit": 2,
+    "fleetfootd": 1,
+    "otter-centurion": 2
+   }
+  },
+  {
+   "field": "starterShared",
+   "from": {
+    "duck-paddler": 2,
+    "pond-trout": 2,
+    "meadow-frog": 1
+   },
+   "to": {
+    "pond-trout": 3,
+    "meadow-frog": 2,
+    "crossed-eyes": 1,
+    "duck-paddler": 2
+   }
+  },
+  {
+   "field": "starterHummingbirds",
+   "from": {
+    "crimson-wing-recruit": 2,
+    "mosswing-laborer": 1
+   },
+   "to": {
+    "mosswing-laborer": 1,
+    "crimson-wing-recruit": 2,
+    "cobalt-talon-fledgling": 2
+   }
+  }
+ ],
+ "raid": [
+  {
+   "field": "rewards.shards",
+   "from": null,
+   "to": 6
+  }
+ ]
+}

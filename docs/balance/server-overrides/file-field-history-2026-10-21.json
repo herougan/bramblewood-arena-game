@@ -1,0 +1,118 @@
+{
+ "swarm-matriarch|source": {
+  "commit": "7bb6697",
+  "at": "2026-10-19T05:47:56+08:00"
+ },
+ "swarm-matriarch|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "ant-hill|source": {
+  "commit": "7bb6697",
+  "at": "2026-10-19T05:47:56+08:00"
+ },
+ "tunnel-ant|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "ant-scout|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "tunnel-ant|faction": {
+  "commit": "b8170e8",
+  "at": "2026-10-19T10:45:39+08:00"
+ },
+ "swarm-matriarch|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "mayfly-dancer|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "mayfly-dancer|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "open-ocean-hermit-crab|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "open-ocean-hermit-crab|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "meadow-frog|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "meadow-frog|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "fiddler-crab-swarm|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "fiddler-crab-swarm|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "forager-ant|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "forager-ant|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "ant-scout|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "ant-scout|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "soldier-ant|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "soldier-ant|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "tunnel-ant|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "feral-tomcat|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "feral-tomcat|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "gull-thief|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "tide-pool-crab|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "ant-hill|attack": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "ant-hill|health": {
+  "commit": "ad55224",
+  "at": "2026-10-19T21:47:41+08:00"
+ },
+ "swarm-matriarch|art": {
+  "commit": "417f22d",
+  "at": "2026-10-21T09:48:02+08:00"
+ }
+}

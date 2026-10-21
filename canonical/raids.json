@@ -258,7 +258,8 @@
       "failPct": 50,
       "failSpecialMaxPct": 10,
       "xp": 500,
-      "cards": 1
+      "cards": 1,
+      "shards": 6
     },
     "fightRounds": 20,
     "bossHpBonusMax": 55,
