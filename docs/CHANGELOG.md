@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package TS2: skirmish decks by biome, and 16 themed PvP / Async Arena decks)
+- **Owner:** "Recommended cards in each biome to have been assigned to the skirmish. (thematicism is the key, we can change skills and stats later and even images later)"; "More PVP decks maybe, I like PVP to experience some of the cards we made."
+- **Skirmish decks:** 132 fights on Maps 1-24 and their side maps (114 main, 18 side) took the cards `docs/map-recommendations-2026-10-21.md` recommends for their map, in place of off-biome cards of similar rarity, wait and cost: beach creatures on the beach, cave creatures in caves. Deck sizes, fight kinds, boss cards and showcase cards are unchanged; Map 0, the tutorials and the raid / dungeon fights are untouched. Maps 1-4 lost their deep-sea cards (Kraken Spawnling, Humpback Elder, Reef Manta Glider); no Shark before Map 8. No card stat, skill or reward changed.
+- **PvP and Async Arena:** 16 hand-built seeded decks (beach tide, ants, otters, hummingbirds, bees, caves, desert, swamp, thorns, raptors, frost wolves, ocean, volcano, redwood, duck knights, a whimsy deck) in `THEMED_GHOSTS` (`bramblewood-ghosts.js`), spread over win stages 0-6 and used ahead of the generated seeded decks. Only cards a player can own. The Raid's stand-in raiders are unchanged.
+- **Not done:** 26 recommended ideas are not cards yet (table in `docs/skirmish-theme-pass-2026-10-21.md`); Maps 25-28 have no fights yet. Per the owner ("No need for checks or testing, to save tokens"), no tests were run: `node --check` and the build only.
+
 ## 2026-10-21 (package HC: the hub's Chips & FX tab; no game change)
 - **Owner:** "Status chips: in Master Hub, let me know all the status chips and context chips (e.g. flying) available and context fx (like blind) available. Maybe we can drop some of them."
 - **New hub tab 🏷️ Chips & FX:** every status chip (the pills on a board unit, the live-status lines, the coloured keyword words), every context chip (the skill marks on a card face and the trigger chips) and every context FX (tint classes, overlays, plates, wings, light, battlefield darkness / wind / rain). Each row has its icon, a one-line meaning, where it shows (hand, board, raid, Codex), how many cards can cause it, and the code that draws it. Filter by kind, mark and "near-duplicates only", search, sort by name or card count.

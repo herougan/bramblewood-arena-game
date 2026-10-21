@@ -92,12 +92,65 @@ function ghostIdentity(seed){
   return {name: GHOST_NAMES[Math.floor(r()*GHOST_NAMES.length)] + ' ' + String.fromCharCode(65 + Math.floor(r()*26)) + '.',
           avatar: {character: AVATAR_CHARS[Math.floor(r()*AVATAR_CHARS.length)], color: AVATAR_COLORS[Math.floor(r()*AVATAR_COLORS.length)], title: 'newcomer'}};
 }
+// ---------------- Themed seeded decks (2026-10-21, package TS2) ----------------
+// Owner (Oct 21): "More PVP decks maybe, I like PVP to experience some of the cards we made." Hand-built decks, one per theme, that
+// showcase newer and thematic cards. They join the SEEDED pools of the Async Arena (buildStagePool) and PvP strangers
+// (seedPvpStrangers) at the win stage given here, ahead of the generated decks; the offline Raid's stand-in raiders stay generated.
+// Every card is one a player can own (a pack, a map reward or Base: not awaitingSource, not raid-only, not an Easter egg), each deck
+// is 20 cards inside the rarity copy limits, and the stage was set from a quick headless run against the generated ghosts of each
+// stage (docs/skirmish-theme-pass-2026-10-21.md lists them). A deck whose cards are missing from `defs` is skipped, never half-built.
+const THEMED_GHOSTS = [
+  {id:'beach-tide', name:"Brine the Beachcomber", stage:0, avatar:{character:'mouse', color:'river', title:'newcomer'}, theme:"Beach tide: gulls, crabs, seals and snails of the shingle",
+   deck:{"garden-snail":3,"gull-thief":3,"tide-pool-crab":3,"fiddler-crab-swarm":3,"shallows-fry":2,"harbor-seal":2,"puffin-diver":2,"conch-crawler":2}},
+  {id:'whimsy', name:"Fizz the Prankster", stage:0, avatar:{character:'mouse', color:'blossom', title:'newcomer'}, theme:"Whimsy parade: the strangest, silliest creatures in the game",
+   deck:{"crossed-eyes":3,"trash-panda-trickster":3,"fleetfootd":3,"sheep":2,"wrong-way-salmon":2,"teatime-toad":2,"inside-out-hedgehog":2,"ferry-toll-frog":3}},
+  {id:'cave-dwellers', name:"Echo Sedge", stage:1, avatar:{character:'mouse', color:'night', title:'newcomer'}, theme:"Cave dwellers: bats, moles and things that never see the sun",
+   deck:{"cave-bat-swarm":3,"baby-bat":3,"cave-cricket":2,"cave-pseudoscorpion":3,"cave-flitter":2,"star-nosed-mole":3,"echo-screecher":2,"cave-swiftlet":2}},
+  {id:'dune-raiders', name:"Dune Teasel", stage:1, avatar:{character:'mouse', color:'sun', title:'newcomer'}, theme:"Desert: jackals, scorpions and glass-dune hunters",
+   deck:{"rabid-jackal":3,"dust-hyena":3,"hoopoe-herald":3,"glasswing-moth":2,"sandfish":2,"antlion-pit":2,"horned-lizard":2,"pale-oryx":3}},
+  {id:'gatorback-choir', name:"Fen Nettle", stage:1, avatar:{character:'otter', color:'moss', title:'newcomer'}, theme:"Swamp: gators, vipers and frogs of the bog",
+   deck:{"caiman-hatchling":3,"snapper-hatchling":3,"grass-viper":3,"swamp-alligator":3,"mangrove-mudskipper":2,"booming-bittern":2,"lotus-frog":2,"constrictor-coil":2}},
+  {id:'hummingbird-flyers', name:"Ruby Wren", stage:2, avatar:{character:'hummingbird', color:'berry', title:'newcomer'}, theme:"Hummingbird flyers: the nectar squadron",
+   deck:{"crimson-wing-recruit":3,"cobalt-talon-fledgling":3,"nectar-sipper":3,"violet-vane-fletcher":3,"sunfeather-scout":2,"gold-throated-acolyte":2,"petal-fletcher":2,"hummingbird-needler":2}},
+  {id:'otter-faction', name:"Rivergate Rowan", stage:2, avatar:{character:'otter', color:'river', title:'newcomer'}, theme:"Otter faction: the Rivergate guard and its river folk",
+   deck:{"otter-kit":3,"otter-paddler":3,"otter-netmender":3,"otter-ferryman":2,"shellwright-apprentice":2,"otter-flag-bearer":2,"otter-angler":2,"beaver-builder":3}},
+  {id:'talon-wing', name:"Kestrel Hollis", stage:3, avatar:{character:'hummingbird', color:'sun', title:'newcomer'}, theme:"Raptors: hawks, eagles and kestrels",
+   deck:{"field-crow":3,"raven-scout":3,"echo-keeper":2,"night-watchman":2,"owl-fletcher":2,"red-billed-chough":2,"peregrine-stooper":2,"hawk-arrowkeeper":2,"golden-eagle-diver":2}},
+  {id:'thorn-hedge', name:"Bramble Quill", stage:3, avatar:{character:'mouse', color:'moss', title:'newcomer'}, theme:"Thornbound hedge: hedgehogs, porcupines and the briar maze",
+   deck:{"hedgehog-scout":3,"bramble-hoglet":3,"porcupine-roller":3,"inside-out-hedgehog":2,"quillguard":2,"thorn-shrike":2,"seed-cache-squirrel":2,"mouse-sapper":3}},
+  {id:'ashfall-legion', name:"Cinder Marlow", stage:4, avatar:{character:'mouse', color:'berry', title:'newcomer'}, theme:"Volcano: salamanders, wyrms and ember hunters",
+   deck:{"cinder-stoker":3,"cinder-gecko":3,"ashbone-ghoul":2,"fire-salamander":3,"magma-salamander":3,"ember-jackal":2,"rimefire-salamander":1,"pyroclast-wyrm":1,"phoenix-fledgling":1,"fire-hawk":1}},
+  {id:'deep-tide', name:"Abyssal Aster", stage:4, avatar:{character:'otter', color:'violet', title:'newcomer'}, theme:"Ocean: cephalopods, jellies and the deep reef",
+   deck:{"sea-hare":3,"krill-swarm":3,"tide-spirit":2,"cuttlefish-illusionist":2,"lions-mane-jelly":2,"blue-ringed-octopus":3,"octopus-tactician":2,"nautilus-drifter":2,"colossal-squid":1}},
+  {id:'frost-pack', name:"Frostbite Fern", stage:5, avatar:{character:'otter', color:'frost', title:'newcomer'}, theme:"Frost pack: wolves, foxes and ermine of the tundra",
+   deck:{"snow-ermine":3,"frost-hare-sprinter":2,"lemming-swarm":2,"snowshoe-hare":2,"mountain-hare":2,"timber-wolf-pack":2,"wolf-pack-runner":2,"arctic-fox-raider":2,"alpha-howler":1,"lone-grey-wolf":1,"frostmoon-howler":1}},
+  {id:'redwood-charge', name:"Redwood Rook", stage:5, avatar:{character:'otter', color:'acorn', title:'newcomer'}, theme:"Redwood charge: bears, boars and stags",
+   deck:{"bear-cub":3,"fox-kit":3,"tusked-vanguard":3,"fawn-scout":2,"grizzly-vanguard":2,"stag-knight":2,"berserker-boar":2,"bramblewood-lynx":2,"elderhorn-monarch":1}},
+  {id:'ant-colony', name:"Marching Mags", stage:6, avatar:{character:'mouse', color:'acorn', title:'newcomer'}, theme:"Ants swarm: workers, scouts and soldiers in numbers",
+   deck:{"worker-ant":3,"ant-scout":3,"forager-ant":3,"soldier-ant":2,"ant-warrior":2,"fire-ant-raft":2,"tunnel-ant":3,"leafcutter-gardener":2}},
+  {id:'goldfeather-guard', name:"Gilded Juniper", stage:6, avatar:{character:'hummingbird', color:'sun', title:'newcomer'}, theme:"Goldfeather guard: the Magnate's duck knights",
+   deck:{"pond-duck":2,"duckling":3,"duckling-squadron":2,"pond-paddler":2,"tax-collector-teal":2,"goose-sentry":2,"mallard-halberdier":2,"mallard-marauder":1,"gilded-swan-knight":1,"iron-warden":1,"werebadger":2}},
+  {id:'hive-swarm', name:"Honeycomb Hazel", stage:6, avatar:{character:'hummingbird', color:'sun', title:'newcomer'}, theme:"Hive swarm: bees, wasps and butterflies",
+   deck:{"honey-bee":3,"bee-sentry":3,"bee-forager":3,"paper-wasp":3,"bee-knight":3,"glasswing-butterfly":2,"tarantula-hawk":2,"apollo-butterfly":1}}
+];
+function themedGhostsFor(defs, stage, epoch){
+  const list = THEMED_GHOSTS.filter(g=> g.stage === stage && !validateDeck(defs, g.deck).length);
+  if(list.length < 2) return list;
+  const off = hashStr('themed:'+epoch+':'+stage) % list.length; // a weekly rotation, used only when fewer slots than decks are asked for
+  return list.slice(off).concat(list.slice(0, off));
+}
+
 function deckPower(defs, deck){ let s = 0, n = 0; Object.keys(deck).forEach(id=>{ if(defs[id]){ s += cardPower(defs[id])*deck[id]; n += deck[id]; } }); return n ? s/n : 0; }
 
 // Seeded ghosts for one stage. `epoch` rotates them (e.g. weekly) so the pool doesn't go stale.
-function seedGhosts(defs, stage, count, epoch){
+// opts.themed (2026-10-21, package TS2): put the hand-built themed decks for this stage first, then fill with generated ones.
+function seedGhosts(defs, stage, count, epoch, opts){
   const out = [];
-  for(let i=0;i<count;i++){
+  const themed = (opts && opts.themed) ? themedGhostsFor(defs, stage, epoch||0).slice(0, count) : [];
+  themed.forEach(g=>{
+    out.push({id:`themed:${g.id}`, owner:`themed-${g.id}`, name: g.name, avatar: Object.assign({}, g.avatar), deck: Object.assign({}, g.deck), stage, source:'seed', theme: g.theme});
+  });
+  for(let i=0;out.length<count;i++){
     const seed = hashStr(`ghost:${epoch||0}:${stage}:${i}`);
     const who = ghostIdentity(seed);
     out.push({id:`seed:${epoch||0}:${stage}:${i}`, owner:`seed-${stage}-${i}`, name: who.name, avatar: who.avatar, deck: generateGhostDeck(defs, stage, seed), stage, source:'seed'});
@@ -117,7 +170,7 @@ function buildStagePool(defs, stage, recorded, now, opts){
   });
   const real = Object.values(latest).map(g=> Object.assign({source:'player'}, g));
   const epoch = Math.floor(now / (7*DAY));
-  const seeded = real.length >= min ? [] : seedGhosts(defs, stage, min - real.length, epoch);
+  const seeded = real.length >= min ? [] : seedGhosts(defs, stage, min - real.length, epoch, {themed:true});
   const decks = real.concat(seeded);
   return {stage, decks, real: real.length, seeded: seeded.length, active: decks.length};
 }
@@ -236,9 +289,9 @@ function eloUpdate(myRating, oppRating, won, draw){
 // Seeded strangers for a tier (so every tier always has a pool): stage follows the tier.
 function seedPvpStrangers(defs, tier, count, epoch){
   const stage = Math.round(tier * (ASYNC.MAX_WINS-1) / PVP.Z_EDGES.length);
-  return seedGhosts(defs, stage, count, 'pvp:'+tier+':'+(epoch||0)).map((g,i)=> Object.assign(g, {owner:`pvpseed-${tier}-${i}`, rating: tierMidRating(tier) + ((i*37)%120) - 60, deckLevel: simpleDeckLevel(defs, g.deck)}));
+  return seedGhosts(defs, stage, count, 'pvp:'+tier+':'+(epoch||0), {themed:true}).map((g,i)=> Object.assign(g, {owner:`pvpseed-${tier}-${i}`, rating: tierMidRating(tier) + ((i*37)%120) - 60, deckLevel: simpleDeckLevel(defs, g.deck)}));
 }
-const api = {PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
+const api = {THEMED_GHOSTS, themedGhostsFor, PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
   buildStagePool, pickOpponent, newAsyncRun, asyncRunOver, recordAsyncGhost, raidCycle, featuredRaidBoss, raidPoolMax, simulateRaidFight, raidState, recordRaidAttempt};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodGhosts = api;
