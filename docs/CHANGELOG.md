@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package HC: the hub's Chips & FX tab; no game change)
+- **Owner:** "Status chips: in Master Hub, let me know all the status chips and context chips (e.g. flying) available and context fx (like blind) available. Maybe we can drop some of them."
+- **New hub tab 🏷️ Chips & FX:** every status chip (the pills on a board unit, the live-status lines, the coloured keyword words), every context chip (the skill marks on a card face and the trigger chips) and every context FX (tint classes, overlays, plates, wings, light, battlefield darkness / wind / rain). Each row has its icon, a one-line meaning, where it shows (hand, board, raid, Codex), how many cards can cause it, and the code that draws it. Filter by kind, mark and "near-duplicates only", search, sort by name or card count.
+- **Near-duplicates are grouped:** the same picture on different things (`≈ same icon`), nearly the same meaning (`≈ same meaning`), and the same word as status + skill + look (`pair`).
+- **Keep / Drop / Merge and a note on every row,** saved to the hub's database (collection `chipReview`); `tools/hub/pull_chip_review.md` says how Claude reads them back. Nothing in the game changes until the owner decides.
+- **Generated, never typed:** `node tools/hub/chips_inventory.js` writes `docs/chips-inventory.json` from `arena_app.js` (the game's own tables run in a sandbox, the chip code read with a scanner), `arena_template.html` and `canonical/cards.json`; `--check` says when it is out of date. `tools/hub/build_hub.py` inlines it.
+
 ## 2026-10-21 (package BF5: N halved, every card re-derived, road and raid re-measured)
 - **Owner (10-19 21:36):** "I think numbers are way too big. Can we HALF everything?" ("Straight up, the total N value"). Then the 10-21 rulings: fold the owner's later live edits and halve them too; N multipliers; two skills at most; re-derive everything; re-measure with honest levers only.
 - **N is halved:** one constant, `scale: 0.5` in `bramblewood-budget.js` (also in `canonical/skill-costs.json`'s budget line, the Test Lab and the hub). Base, the Level terms and the Map × 0.2 term all halve; the A·H rule is (N/3)² of the halved N. Skill costs (S) stay. **Bounty 0.5 → 1** a point.

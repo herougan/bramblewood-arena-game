@@ -16,6 +16,7 @@ URL: https://claude.ai/artifact/45sGJuWwy9T6ocC1D4K99J
 
 ## Steps
 1. If game CSS or effects changed, rebuild the game first (`bramblewood-ship`), then `python3 .fxcat/build.py && cp .fxcat/build.py .fxcat/effects-lab.js tools/effects-lab/`.
+1b. If the game's chips, statuses or card looks changed, run `node tools/hub/chips_inventory.js` (writes `docs/chips-inventory.json` for the 🏷️ Chips & FX tab; `--check` says if it is stale). Owner marks: `tools/hub/pull_chip_review.md`.
 2. `HUB_URL=https://claude.ai/artifact/45sGJuWwy9T6ocC1D4K99J python3 tools/hub/build_hub.py`. It prints the file count, which must stay ≤ 495 (the artifact cap is 511). It prunes near-duplicate screenshots to fit.
 3. Spot-check with Playwright over `http://127.0.0.1:8765/.hub/index.html#<tab>`. Route `**/gsap.min.js` to the repo's local `gsap.min.js`, because the CDN is blocked here.
 4. Publish `.hub/index.html` with `root: ".hub"` and `files` as a list of `{path}`. Each publish takes at most 255 files, so send only what changed. Usually that is `index.html` plus `effects.html`, `effects-lab.js` or `library.html`, plus new `img/*.webp`. Files left out are kept.
