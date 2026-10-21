@@ -90,7 +90,7 @@
     function budgetBase(d){ return BB.baseOf(withMap(d), B); }
     // 2026-10-21 (BF5): x the card's N multiplier (no abilities x plainBonus, only light ones x lightBonus, Fragile x fragileMult; the
     // parameters of other skills are the table's "a parameter of another skill" entries)
-    const PARAMS = (table.skills || []).filter(s=> /parameter of another skill/.test(s.note || '')).map(s=> s.id);
+    const PARAMS = [...new Set((table.skills || []).filter(s=> /parameter of/.test((s.note || '') + ' ' + (s.measuredWhy || ''))).map(s=> s.id).concat(BB.PARAMS || []))];
     function budgetMult(d){ return BB.nMultOf ? BB.nMultOf((d && d.effects) || {}, B, PARAMS.length ? PARAMS : null) : 1; }
     function budgetN(d, lv){ return r2(BB.nAt(budgetBase(d), lv == null ? levelOf(d) : lv, B) * budgetMult(d)); }
     // v3 / v4 comparisons use the Base they had (no map term)

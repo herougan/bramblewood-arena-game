@@ -1,0 +1,2208 @@
+{
+ "_about": "BF5 (2026-10-21): two skills at most (owner); special / thematic cards (Epic and up, Supreme, hidden, Easter eggs, tokens) keep theirs",
+ "generated": "2026-10-21",
+ "cut": 99,
+ "special": 17,
+ "added": 2,
+ "rows": [
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "was": [
+    "poison",
+    "bounty",
+    "dry",
+    "thorns"
+   ],
+   "keep": [
+    "poison",
+    "thorns"
+   ],
+   "dropped": [
+    "bounty",
+    "dry"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "uncommon",
+   "was": [
+    "swarm"
+   ],
+   "keep": [
+    "swarm",
+    "formation"
+   ],
+   "dropped": [],
+   "added": [
+    "formation"
+   ],
+   "why": "the owner's ants: a distinct second skill"
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "arrow",
+    "nocturnal"
+   ],
+   "keep": [
+    "flying",
+    "arrow"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "rarity": "common",
+   "was": [
+    "bounty",
+    "flying",
+    "nocturnal",
+    "keenEye"
+   ],
+   "keep": [
+    "flying",
+    "keenEye"
+   ],
+   "dropped": [
+    "bounty",
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "rarity": "common",
+   "was": [
+    "onReadyDamage",
+    "bounty",
+    "flying",
+    "nocturnal"
+   ],
+   "keep": [
+    "onReadyDamage",
+    "flying"
+   ],
+   "dropped": [
+    "bounty",
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": "common",
+   "was": [
+    "sweep",
+    "bounty",
+    "earthquake"
+   ],
+   "keep": [
+    "sweep",
+    "earthquake"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "was": [
+    "poison",
+    "flying",
+    "brood"
+   ],
+   "keep": [
+    "poison",
+    "brood"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "was": [
+    "poison",
+    "bounty",
+    "flying"
+   ],
+   "keep": [
+    "poison",
+    "flying"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "stormcaller",
+   "name": "Stormcaller",
+   "rarity": "common",
+   "was": [
+    "bounty",
+    "trigger:onReady",
+    "trigger:onSpawn"
+   ],
+   "keep": [
+    "trigger:onReady",
+    "trigger:onSpawn"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "was": [
+    "sweep",
+    "bounty",
+    "tide"
+   ],
+   "keep": [
+    "sweep",
+    "tide"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": "common",
+   "was": [
+    "poison",
+    "bounty",
+    "gash"
+   ],
+   "keep": [
+    "poison",
+    "gash"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "beetle-battering-ram",
+   "name": "Beetle Battering-Ram",
+   "rarity": "rare",
+   "was": [
+    "sweep",
+    "bounty",
+    "nocturnal",
+    "siege"
+   ],
+   "keep": [
+    "sweep",
+    "siege"
+   ],
+   "dropped": [
+    "bounty",
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "eagle-diver",
+   "name": "Eagle Diver",
+   "rarity": "rare",
+   "was": [
+    "bounty",
+    "flying",
+    "diurnal",
+    "pounce"
+   ],
+   "keep": [
+    "flying",
+    "pounce"
+   ],
+   "dropped": [
+    "bounty",
+    "diurnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "rare",
+   "was": [
+    "sweep",
+    "bounty",
+    "tide"
+   ],
+   "keep": [
+    "sweep",
+    "tide"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "alpha-howler",
+   "name": "Alpha Howler",
+   "rarity": "common",
+   "was": [
+    "sweep",
+    "bounty",
+    "nocturnal"
+   ],
+   "keep": [
+    "sweep",
+    "nocturnal"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "was": [
+    "onReadyDamage",
+    "bounty",
+    "flying",
+    "daunt"
+   ],
+   "keep": [
+    "flying",
+    "onReadyDamage"
+   ],
+   "dropped": [
+    "bounty",
+    "daunt"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "rarity": "common",
+   "was": [
+    "poison",
+    "bounty",
+    "flying"
+   ],
+   "keep": [
+    "poison",
+    "flying"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "was": [
+    "onReadyDamage",
+    "bounty",
+    "daunt"
+   ],
+   "keep": [
+    "onReadyDamage",
+    "daunt"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "was": [
+    "poison",
+    "bounty",
+    "ambush"
+   ],
+   "keep": [
+    "poison",
+    "ambush"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "darksight",
+    "nocturnal"
+   ],
+   "keep": [
+    "flying",
+    "darksight"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "was": [
+    "onReadyDamage",
+    "flying",
+    "nocturnal"
+   ],
+   "keep": [
+    "onReadyDamage",
+    "flying"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "rarity": "common",
+   "was": [
+    "onDeathSpawn",
+    "bounty",
+    "nocturnal"
+   ],
+   "keep": [
+    "onDeathSpawn",
+    "nocturnal"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Cataphract Destrier",
+   "rarity": "common",
+   "was": [
+    "bounty",
+    "pounce",
+    "overwhelm"
+   ],
+   "keep": [
+    "pounce",
+    "overwhelm"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth",
+   "rarity": "common",
+   "was": [
+    "bounty",
+    "nocturnal",
+    "regen"
+   ],
+   "keep": [
+    "nocturnal",
+    "regen"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "rarity": "common",
+   "was": [
+    "poison",
+    "bounty",
+    "dry"
+   ],
+   "keep": [
+    "poison",
+    "dry"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "rarity": "common",
+   "was": [
+    "sweep",
+    "bounty",
+    "momentum",
+    "tide"
+   ],
+   "keep": [
+    "sweep",
+    "momentum"
+   ],
+   "dropped": [
+    "bounty",
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": "common",
+   "was": [
+    "flying",
+    "diurnal",
+    "arrow"
+   ],
+   "keep": [
+    "flying",
+    "arrow"
+   ],
+   "dropped": [
+    "diurnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "rarity": "common",
+   "was": [
+    "flying",
+    "diurnal",
+    "pounce"
+   ],
+   "keep": [
+    "flying",
+    "pounce"
+   ],
+   "dropped": [
+    "diurnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "rarity": "superrare",
+   "was": [
+    "expose",
+    "flying",
+    "nocturnal"
+   ],
+   "keep": [
+    "expose",
+    "flying"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "rarity": "common",
+   "was": [
+    "sweep",
+    "nocturnal",
+    "frostbite"
+   ],
+   "keep": [
+    "sweep",
+    "frostbite"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "rarity": "common",
+   "was": [
+    "stealth",
+    "tide",
+    "wave"
+   ],
+   "keep": [
+    "stealth",
+    "wave"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "rarity": "common",
+   "was": [
+    "armor",
+    "revive",
+    "tide"
+   ],
+   "keep": [
+    "armor",
+    "revive"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "diurnal",
+    "pounce"
+   ],
+   "keep": [
+    "flying",
+    "pounce"
+   ],
+   "dropped": [
+    "diurnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "cave-bat-swarm",
+   "name": "Cave Bat Swarm",
+   "rarity": "rare",
+   "was": [
+    "fork",
+    "flying",
+    "darksight",
+    "nocturnal"
+   ],
+   "keep": [
+    "fork",
+    "flying"
+   ],
+   "dropped": [
+    "darksight",
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": "common",
+   "was": [
+    "evasive",
+    "darksight",
+    "tide"
+   ],
+   "keep": [
+    "evasive",
+    "tide"
+   ],
+   "dropped": [
+    "darksight"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "rarity": "common",
+   "was": [
+    "rage",
+    "siege",
+    "darksight"
+   ],
+   "keep": [
+    "rage",
+    "siege"
+   ],
+   "dropped": [
+    "darksight"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "was": [
+    "thorns",
+    "tide",
+    "molting",
+    "crabClaws"
+   ],
+   "keep": [
+    "thorns",
+    "crabClaws"
+   ],
+   "dropped": [
+    "tide",
+    "molting"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "rarity": "common",
+   "was": [
+    "armor",
+    "tide",
+    "molting",
+    "wave"
+   ],
+   "keep": [
+    "tide",
+    "wave"
+   ],
+   "dropped": [
+    "armor",
+    "molting"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "was": [
+    "esprit",
+    "flying",
+    "brood"
+   ],
+   "keep": [
+    "esprit",
+    "brood"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "rarity": "common",
+   "was": [
+    "armor",
+    "tide",
+    "molting",
+    "crabClaws"
+   ],
+   "keep": [
+    "armor",
+    "crabClaws"
+   ],
+   "dropped": [
+    "tide",
+    "molting"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "reef-manta-glider",
+   "name": "Reef Manta Glider",
+   "rarity": "common",
+   "was": [
+    "evasive",
+    "tide",
+    "wave"
+   ],
+   "keep": [
+    "evasive",
+    "wave"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "was": [
+    "thorns",
+    "inspiring",
+    "tide"
+   ],
+   "keep": [
+    "thorns",
+    "inspiring"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "was": [
+    "flying",
+    "stealth",
+    "nocturnal"
+   ],
+   "keep": [
+    "flying",
+    "stealth"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": "common",
+   "was": [
+    "renewal",
+    "cure",
+    "flying"
+   ],
+   "keep": [
+    "renewal",
+    "cure"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "darksight",
+    "nocturnal"
+   ],
+   "keep": [
+    "flying",
+    "darksight"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "rarity": "common",
+   "was": [
+    "flying",
+    "trigger:onDeath",
+    "nocturnal",
+    "illuminate"
+   ],
+   "keep": [
+    "illuminate",
+    "trigger:onDeath"
+   ],
+   "dropped": [
+    "flying",
+    "nocturnal"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "was": [
+    "sleep",
+    "flying",
+    "nocturnal"
+   ],
+   "keep": [
+    "sleep",
+    "flying"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "rarity": "rare",
+   "was": [
+    "trigger:onSpawn",
+    "shock",
+    "tide",
+    "chainLightning"
+   ],
+   "keep": [
+    "shock",
+    "chainLightning"
+   ],
+   "dropped": [
+    "trigger:onSpawn",
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "rarity": "common",
+   "was": [
+    "regen",
+    "trigger:onSpawn",
+    "tide"
+   ],
+   "keep": [
+    "regen",
+    "trigger:onSpawn"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "was": [
+    "swarm",
+    "flying",
+    "trigger:onAttack"
+   ],
+   "keep": [
+    "swarm",
+    "trigger:onAttack"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "rare",
+   "was": [
+    "swarm"
+   ],
+   "keep": [
+    "swarm",
+    "ambush"
+   ],
+   "dropped": [],
+   "added": [
+    "ambush"
+   ],
+   "why": "the owner's ants: a distinct second skill"
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "rarity": "mythic",
+   "was": [
+    "flying",
+    "bounty",
+    "stunOnHit",
+    "fireArrow",
+    "supreme"
+   ],
+   "keep": [
+    "flying",
+    "bounty",
+    "stunOnHit",
+    "fireArrow",
+    "supreme"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "rarity": "divine",
+   "was": [
+    "scare",
+    "bounty",
+    "flying",
+    "freeze",
+    "supreme",
+    "trueStrike"
+   ],
+   "keep": [
+    "scare",
+    "bounty",
+    "flying",
+    "freeze",
+    "supreme",
+    "trueStrike"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "rarity": "legendary",
+   "was": [
+    "flying",
+    "bounty",
+    "paralyze",
+    "lightning",
+    "supreme",
+    "supremeTide"
+   ],
+   "keep": [
+    "flying",
+    "bounty",
+    "paralyze",
+    "lightning",
+    "supreme",
+    "supremeTide"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "rarity": "mythic",
+   "was": [
+    "bounty",
+    "flying",
+    "poison",
+    "supreme",
+    "overwhelm"
+   ],
+   "keep": [
+    "bounty",
+    "flying",
+    "poison",
+    "supreme",
+    "overwhelm"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "rarity": "ancient",
+   "was": [
+    "flying",
+    "bounty",
+    "corrode",
+    "darksight",
+    "supreme"
+   ],
+   "keep": [
+    "flying",
+    "bounty",
+    "corrode",
+    "darksight",
+    "supreme"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "was": [
+    "armor",
+    "nocturnal",
+    "bounty"
+   ],
+   "keep": [
+    "armor",
+    "nocturnal"
+   ],
+   "dropped": [
+    "bounty"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "the-unremembered",
+   "name": "The Unremembered",
+   "rarity": "rare",
+   "was": [
+    "remember",
+    "trigger:onSpawn",
+    "trigger:onDeath"
+   ],
+   "keep": [
+    "remember",
+    "trigger:onDeath"
+   ],
+   "dropped": [
+    "trigger:onSpawn"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "lurking-dread",
+   "name": "Lurking Dread",
+   "rarity": "rare",
+   "was": [
+    "beware",
+    "scare",
+    "trigger:onDeath"
+   ],
+   "keep": [
+    "beware",
+    "scare"
+   ],
+   "dropped": [
+    "trigger:onDeath"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "was": [
+    "retribution",
+    "nocturnal",
+    "relic"
+   ],
+   "keep": [
+    "retribution",
+    "relic"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "cathedral-eagle",
+   "name": "Cathedral Eagle",
+   "rarity": "legendary",
+   "was": [
+    "worship",
+    "flying",
+    "prayer",
+    "relic"
+   ],
+   "keep": [
+    "worship",
+    "flying",
+    "prayer",
+    "relic"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "rarity": "epic",
+   "was": [
+    "bleed",
+    "armor",
+    "fork"
+   ],
+   "keep": [
+    "bleed",
+    "armor",
+    "fork"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "mirror-moth",
+   "name": "Mirror Moth",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "evasive",
+    "reflect"
+   ],
+   "keep": [
+    "evasive",
+    "reflect"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "talon-archer",
+   "name": "Talon Archer",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "arrow",
+    "diurnal"
+   ],
+   "keep": [
+    "flying",
+    "arrow"
+   ],
+   "dropped": [
+    "diurnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "echo-matriarch",
+   "name": "Echo Matriarch",
+   "rarity": "heroic",
+   "was": [
+    "flying",
+    "nocturnal",
+    "onReadyDamage"
+   ],
+   "keep": [
+    "flying",
+    "nocturnal",
+    "onReadyDamage"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "quick",
+    "pierce",
+    "evasive"
+   ],
+   "keep": [
+    "quick",
+    "pierce"
+   ],
+   "dropped": [
+    "flying",
+    "evasive"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "rarity": "veryrare",
+   "was": [
+    "esprit",
+    "flying",
+    "diurnal"
+   ],
+   "keep": [
+    "esprit",
+    "flying"
+   ],
+   "dropped": [
+    "diurnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "willow-o-wisp",
+   "name": "Willow-o'-Wisp",
+   "rarity": "uncommon",
+   "was": [
+    "nocturnal",
+    "trigger:onAllyDie",
+    "trigger:onDeath"
+   ],
+   "keep": [
+    "trigger:onAllyDie",
+    "trigger:onDeath"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "ore-smelter-mole",
+   "name": "Ore-Smelter Mole",
+   "rarity": "uncommon",
+   "was": [
+    "heavyMetal",
+    "trigger:onReady",
+    "darksight",
+    "keenSense"
+   ],
+   "keep": [
+    "heavyMetal",
+    "trigger:onReady"
+   ],
+   "dropped": [
+    "darksight",
+    "keenSense"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "daunt",
+    "nocturnal"
+   ],
+   "keep": [
+    "flying",
+    "daunt"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "legendary",
+   "was": [
+    "armor",
+    "trigger:onDeath",
+    "pounce"
+   ],
+   "keep": [
+    "armor",
+    "trigger:onDeath",
+    "pounce"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "rarity": "unique",
+   "was": [
+    "bleed",
+    "rage",
+    "regen"
+   ],
+   "keep": [
+    "bleed",
+    "rage",
+    "regen"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "rarity": "epic",
+   "was": [
+    "revive",
+    "armor",
+    "pierce"
+   ],
+   "keep": [
+    "revive",
+    "armor",
+    "pierce"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "subterraneaner",
+   "name": "Subterraneaner",
+   "rarity": "uncommon",
+   "was": [
+    "stealth",
+    "ambush",
+    "darksight",
+    "keenSense"
+   ],
+   "keep": [
+    "stealth",
+    "ambush"
+   ],
+   "dropped": [
+    "darksight",
+    "keenSense"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "pierce",
+    "bleed"
+   ],
+   "keep": [
+    "flying",
+    "pierce"
+   ],
+   "dropped": [
+    "bleed"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "cave-centipede",
+   "name": "Cave Centipede",
+   "rarity": "common",
+   "was": [
+    "quick",
+    "poison",
+    "darksight"
+   ],
+   "keep": [
+    "quick",
+    "poison"
+   ],
+   "dropped": [
+    "darksight"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "rarity": "uncommon",
+   "was": [
+    "armor",
+    "onDeathSpawn",
+    "darksight"
+   ],
+   "keep": [
+    "armor",
+    "onDeathSpawn"
+   ],
+   "dropped": [
+    "darksight"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "rarity": "rare",
+   "was": [
+    "quick",
+    "fencing",
+    "dry"
+   ],
+   "keep": [
+    "quick",
+    "fencing"
+   ],
+   "dropped": [
+    "dry"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "was": [
+    "tide",
+    "poison",
+    "moonpull"
+   ],
+   "keep": [
+    "tide",
+    "poison"
+   ],
+   "dropped": [
+    "moonpull"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "nocturnal",
+    "sap"
+   ],
+   "keep": [
+    "flying",
+    "sap"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "wandering-mage",
+   "name": "Wandering Mage",
+   "rarity": "rare",
+   "was": [
+    "leader",
+    "magic",
+    "trigger:onSpawn"
+   ],
+   "keep": [
+    "leader",
+    "magic"
+   ],
+   "dropped": [
+    "trigger:onSpawn"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "coffee",
+    "kinship"
+   ],
+   "keep": [
+    "coffee",
+    "kinship"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "voltwing-bat",
+   "name": "Voltwing Bat",
+   "rarity": "common",
+   "was": [
+    "flying",
+    "nocturnal",
+    "electricity"
+   ],
+   "keep": [
+    "flying",
+    "electricity"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "nocturnal",
+    "electricity"
+   ],
+   "keep": [
+    "flying",
+    "electricity"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "nocturnal",
+    "electricity"
+   ],
+   "keep": [
+    "flying",
+    "electricity"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "rare",
+   "was": [
+    "tide",
+    "fork",
+    "gash"
+   ],
+   "keep": [
+    "fork",
+    "gash"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "was": [
+    "mountainClimber",
+    "dry",
+    "pounce"
+   ],
+   "keep": [
+    "mountainClimber",
+    "pounce"
+   ],
+   "dropped": [
+    "dry"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "rarity": "superrare",
+   "was": [
+    "mountainClimber",
+    "pounce",
+    "bleed",
+    "ambush",
+    "bloodlust"
+   ],
+   "keep": [
+    "pounce",
+    "ambush"
+   ],
+   "dropped": [
+    "mountainClimber",
+    "bleed",
+    "bloodlust"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "rarity": "epic",
+   "was": [
+    "immolation",
+    "freeze",
+    "armor",
+    "frostbite"
+   ],
+   "keep": [
+    "immolation",
+    "freeze",
+    "armor",
+    "frostbite"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "rarity": "superrare",
+   "was": [
+    "armor",
+    "arrow",
+    "vanguard"
+   ],
+   "keep": [
+    "armor",
+    "arrow"
+   ],
+   "dropped": [
+    "vanguard"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "testudo-tortoise",
+   "name": "Testudo Tortoise",
+   "rarity": "rare",
+   "was": [
+    "armor",
+    "guardian",
+    "helmet",
+    "vanguard"
+   ],
+   "keep": [
+    "armor",
+    "guardian"
+   ],
+   "dropped": [
+    "helmet",
+    "vanguard"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "rarity": "epic",
+   "was": [
+    "armor",
+    "overwhelm",
+    "inspiring",
+    "arrow",
+    "vanguard"
+   ],
+   "keep": [
+    "armor",
+    "overwhelm",
+    "inspiring",
+    "arrow",
+    "vanguard"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry",
+   "rarity": "rare",
+   "was": [
+    "guardian",
+    "taunt",
+    "sentry"
+   ],
+   "keep": [
+    "taunt",
+    "sentry"
+   ],
+   "dropped": [
+    "guardian"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "rarity": "uncommon",
+   "was": [
+    "flying",
+    "swipe",
+    "hoard"
+   ],
+   "keep": [
+    "swipe",
+    "hoard"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "rarity": "rare",
+   "was": [
+    "arrow",
+    "reach",
+    "sentry"
+   ],
+   "keep": [
+    "arrow",
+    "sentry"
+   ],
+   "dropped": [
+    "reach"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "gilded-swan-knight",
+   "name": "Gilded Swan Knight",
+   "rarity": "superrare",
+   "was": [
+    "armor",
+    "bounty",
+    "inspiring",
+    "reflect"
+   ],
+   "keep": [
+    "armor",
+    "inspiring"
+   ],
+   "dropped": [
+    "bounty",
+    "reflect"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "rarity": "legendary",
+   "was": [
+    "armor",
+    "midas",
+    "bounty",
+    "swipe",
+    "shieldCall",
+    "inspiring",
+    "hoard"
+   ],
+   "keep": [
+    "armor",
+    "midas",
+    "bounty",
+    "swipe",
+    "shieldCall",
+    "inspiring",
+    "hoard"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "arrow",
+    "fletcher"
+   ],
+   "keep": [
+    "arrow",
+    "fletcher"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "was": [
+    "freeze",
+    "shatter",
+    "armor"
+   ],
+   "keep": [
+    "freeze",
+    "shatter"
+   ],
+   "dropped": [
+    "armor"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "sea-cucumber",
+   "name": "Sea Cucumber",
+   "rarity": "uncommon",
+   "was": [
+    "tide",
+    "regen",
+    "trigger:onAttacked",
+    "trigger:onDeath"
+   ],
+   "keep": [
+    "regen",
+    "trigger:onAttacked"
+   ],
+   "dropped": [
+    "tide",
+    "trigger:onDeath"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "rarity": "legendary",
+   "was": [
+    "supreme",
+    "tide",
+    "tsunami",
+    "wave",
+    "bounty"
+   ],
+   "keep": [
+    "supreme",
+    "tide",
+    "tsunami",
+    "wave",
+    "bounty"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "rarity": "legendary",
+   "was": [
+    "sturdy",
+    "regen",
+    "guardian",
+    "sprout",
+    "tide"
+   ],
+   "keep": [
+    "sturdy",
+    "regen",
+    "guardian",
+    "sprout",
+    "tide"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "rarity": "unique",
+   "was": [
+    "immolation",
+    "shade",
+    "scare"
+   ],
+   "keep": [
+    "immolation",
+    "shade",
+    "scare"
+   ],
+   "dropped": [],
+   "why": "special / thematic: keeps them"
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "rarity": "rare",
+   "was": [
+    "armor",
+    "crabClaws",
+    "darksight",
+    "brood"
+   ],
+   "keep": [
+    "brood",
+    "crabClaws"
+   ],
+   "dropped": [
+    "armor",
+    "darksight"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "was": [
+    "dry",
+    "trap",
+    "tangle"
+   ],
+   "keep": [
+    "trap",
+    "tangle"
+   ],
+   "dropped": [
+    "dry"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "rare",
+   "was": [
+    "flying",
+    "quick",
+    "pounce"
+   ],
+   "keep": [
+    "quick",
+    "pounce"
+   ],
+   "dropped": [
+    "flying"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "was": [
+    "tide",
+    "armor",
+    "bleed"
+   ],
+   "keep": [
+    "armor",
+    "bleed"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "was": [
+    "tide",
+    "poison",
+    "swarm"
+   ],
+   "keep": [
+    "swarm",
+    "poison"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "rarity": "uncommon",
+   "was": [
+    "darksight",
+    "armor",
+    "regen"
+   ],
+   "keep": [
+    "armor",
+    "regen"
+   ],
+   "dropped": [
+    "darksight"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "was": [
+    "poison",
+    "pounce",
+    "darksight",
+    "daunt"
+   ],
+   "keep": [
+    "pounce",
+    "daunt"
+   ],
+   "dropped": [
+    "poison",
+    "darksight"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "was": [
+    "tide",
+    "venomous",
+    "nocturnal"
+   ],
+   "keep": [
+    "tide",
+    "venomous"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "rarity": "rare",
+   "was": [
+    "tide",
+    "regen",
+    "guardian"
+   ],
+   "keep": [
+    "regen",
+    "guardian"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "rarity": "uncommon",
+   "was": [
+    "thorns",
+    "poison",
+    "tide"
+   ],
+   "keep": [
+    "thorns",
+    "poison"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "was": [
+    "shell",
+    "regen",
+    "tide"
+   ],
+   "keep": [
+    "shell",
+    "regen"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "rarity": "rare",
+   "was": [
+    "tide",
+    "armor",
+    "scare"
+   ],
+   "keep": [
+    "armor",
+    "scare"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "garden-tiger-moth",
+   "name": "Garden Tiger Moth",
+   "rarity": "common",
+   "was": [
+    "flying",
+    "nocturnal",
+    "thorns"
+   ],
+   "keep": [
+    "flying",
+    "thorns"
+   ],
+   "dropped": [
+    "nocturnal"
+   ],
+   "why": "in order: Bounty, then a time-of-day skill, then Darksight"
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "was": [
+    "tide",
+    "sonar",
+    "inspiring"
+   ],
+   "keep": [
+    "sonar",
+    "inspiring"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "rarity": "rare",
+   "was": [
+    "tide",
+    "carrion",
+    "armor"
+   ],
+   "keep": [
+    "carrion",
+    "armor"
+   ],
+   "dropped": [
+    "tide"
+   ],
+   "why": "the two its name and flavour carry"
+  }
+ ]
+}
