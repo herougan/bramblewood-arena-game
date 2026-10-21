@@ -1,9 +1,9 @@
 {
  "_about": "BF6 (2026-10-21): every card re-derived with the halved world's skill worth (its shape and its share of N kept, in the band for live cards and Easter eggs)",
  "generated": "2026-10-21",
- "cards": 750,
- "moved": 9,
- "band": 636,
+ "cards": 751,
+ "moved": 13,
+ "band": 637,
  "under": 7,
  "own": 28,
  "bucket": 79,
@@ -1383,7 +1383,9 @@
    "rarity": "common",
    "wait": 0,
    "cost": 1,
-   "skills": [],
+   "skills": [
+    "evolute"
+   ],
    "was": [
     2,
     10
@@ -1392,20 +1394,20 @@
     5,
     8
    ],
-   "S0": 0,
-   "S": 0,
-   "N": 14.4,
-   "N2": 23.04,
+   "S0": 1,
+   "S": 3,
+   "N": 13.71,
+   "N2": 20.88,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.97,
+   "use0": 1.14,
+   "useNowStats": 1.24,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    10
+    1,
+    8
    ],
-   "use": 0.97
+   "use": 0.95
   },
   {
    "id": "stormcaller",
@@ -1415,7 +1417,8 @@
    "wait": 4,
    "cost": 3,
    "skills": [
-    "triggers"
+    "triggers",
+    "evoluteAlpha"
    ],
    "was": [
     6,
@@ -1425,18 +1428,18 @@
     9,
     26
    ],
-   "S0": 6.35,
-   "S": 6.35,
+   "S0": 7.35,
+   "S": 10.35,
    "N": 36.03,
    "N2": 144.24,
    "m": 1,
-   "use0": 1,
-   "useNowStats": 0.98,
+   "use0": 1.02,
+   "useNowStats": 1.09,
    "want": 1,
    "verdict": "band",
    "now": [
-    6,
-    17
+    1,
+    23
    ],
    "use": 0.98
   },
@@ -2319,8 +2322,8 @@
    "wait": 2,
    "cost": 2,
    "skills": [
-    "poison",
-    "flying"
+    "flying",
+    "evolute"
    ],
    "was": [
     1,
@@ -2330,20 +2333,20 @@
     4,
     16
    ],
-   "S0": 6.26,
-   "S": 6.26,
+   "S0": 1,
+   "S": 3,
    "N": 23.63,
    "N2": 62.04,
    "m": 1.5,
-   "use0": 0.67,
-   "useNowStats": 0.65,
+   "use0": 0.32,
+   "useNowStats": 0.44,
    "want": 1,
    "verdict": "band",
    "now": [
-    1,
-    2
+    2,
+    8
    ],
-   "use": 0.65
+   "use": 0.95
   },
   {
    "id": "bear-cub",
@@ -3548,7 +3551,8 @@
    "wait": 4,
    "cost": 1,
    "skills": [
-    "bounty"
+    "bounty",
+    "evoluteAlpha"
    ],
    "was": [
     3,
@@ -3558,18 +3562,18 @@
     4,
     33
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 2,
+   "S": 5,
    "N": 30.24,
    "N2": 101.61,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 1.04,
+   "useNowStats": 1.12,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    23
+    2,
+    21
    ],
    "use": 0.99
   },
@@ -3955,7 +3959,7 @@
    "cost": 1,
    "skills": [
     "render",
-    "flying"
+    "evoluteAlpha"
    ],
    "was": [
     1,
@@ -3965,20 +3969,20 @@
     2,
     10
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 2,
+   "S": 5,
    "N": 17.07,
    "N2": 32.38,
-   "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.97,
+   "m": 1,
+   "use0": 0.73,
+   "useNowStats": 0.88,
    "want": 1,
    "verdict": "band",
    "now": [
     1,
-    8
+    7
    ],
-   "use": 0.97
+   "use": 0.82
   },
   {
    "id": "eagle-sharpshooter",
@@ -4185,7 +4189,7 @@
    "cost": 2,
    "skills": [
     "triggers",
-    "flying"
+    "evoluteOmega"
    ],
    "was": [
     2,
@@ -4195,20 +4199,20 @@
     5,
     18
    ],
-   "S0": 2.74,
-   "S": 2.74,
+   "S0": 3.74,
+   "S": 7.74,
    "N": 24.66,
    "N2": 67.57,
-   "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.96,
+   "m": 1,
+   "use0": 0.71,
+   "useNowStats": 0.84,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    9
+    1,
+    7
    ],
-   "use": 0.96
+   "use": 0.68
   },
   {
    "id": "insect-swarmling",
@@ -7070,7 +7074,9 @@
    "wait": 1,
    "cost": 0,
    "skills": [
-    "armor"
+    "armor",
+    "stem",
+    "stemGrant"
    ],
    "was": [
     1,
@@ -7080,23 +7086,23 @@
     2,
     12
    ],
-   "S0": 5.48,
-   "S": 5.48,
+   "S0": 6.58,
+   "S": 6.58,
    "N": 14.79,
    "N2": 24.3,
    "m": 1,
-   "use0": 0.59,
-   "useNowStats": 0.57,
+   "use0": 0.67,
+   "useNowStats": 0.65,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.57,
-   "why": "its one skill is the card",
+   "use": 0.65,
+   "why": "no skill can go without thematic loss",
    "bucket": true,
-   "fit": "no stats fit: S 5.48 against N 14.79 (cap 2: S·|S| 30.03 vs (N/3)² 24.3)"
+   "fit": "no stats fit: S 6.58 against N 14.79 (cap 2: S·|S| 43.3 vs (N/3)² 24.3)"
   },
   {
    "id": "canopy-sloth-guardian",
@@ -7106,7 +7112,8 @@
    "wait": 2,
    "cost": 2,
    "skills": [
-    "guardian"
+    "guardian",
+    "evolute"
    ],
    "was": [
     2,
@@ -7116,18 +7123,18 @@
     3,
     30
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 2,
+   "S": 4,
    "N": 23.63,
    "N2": 62.04,
    "m": 1,
-   "use0": 1,
-   "useNowStats": 0.97,
+   "use0": 1.04,
+   "useNowStats": 1.1,
    "want": 1,
    "verdict": "band",
    "now": [
     2,
-    18
+    15
    ],
    "use": 0.97
   },
@@ -13839,7 +13846,7 @@
    ],
    "was": [
     3,
-    12
+    11
    ],
    "shape": [
     4,
@@ -13850,8 +13857,8 @@
    "N": 18.62,
    "N2": 38.52,
    "m": 1,
-   "use0": 1.09,
-   "useNowStats": 1.03,
+   "use0": 1.03,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -16834,7 +16841,9 @@
    "rarity": "uncommon",
    "wait": 8,
    "cost": 0,
-   "skills": [],
+   "skills": [
+    "stem"
+   ],
    "was": [
     0,
     2
@@ -16843,20 +16852,20 @@
     0,
     3
    ],
-   "S0": 0,
-   "S": 0,
-   "N": 56.82,
-   "N2": 358.72,
+   "S0": 1,
+   "S": 1.6,
+   "N": 54.11,
+   "N2": 325.32,
    "m": 1,
-   "use0": 0.04,
-   "useNowStats": 0.04,
-   "want": 0.04,
+   "use0": 0.06,
+   "useNowStats": 0.07,
+   "want": 0.06,
    "verdict": "own",
    "now": [
     0,
-    2
+    1
    ],
-   "use": 0.04
+   "use": 0.05
   },
   {
    "id": "egg-otter",
@@ -16927,7 +16936,9 @@
    "rarity": "uncommon",
    "wait": 5,
    "cost": 0,
-   "skills": [],
+   "skills": [
+    "chrysalis"
+   ],
    "was": [
     0,
     2
@@ -16936,20 +16947,20 @@
     0,
     3
    ],
-   "S0": 0,
-   "S": 0,
-   "N": 36.48,
-   "N2": 147.87,
+   "S0": 1,
+   "S": 1.6,
+   "N": 34.74,
+   "N2": 134.1,
    "m": 1,
-   "use0": 0.06,
-   "useNowStats": 0.05,
-   "want": 0.06,
+   "use0": 0.09,
+   "useNowStats": 0.1,
+   "want": 0.09,
    "verdict": "own",
    "now": [
     0,
-    2
+    1
    ],
-   "use": 0.05
+   "use": 0.07
   },
   {
    "id": "egg-water",
@@ -17868,7 +17879,7 @@
     "diurnal"
    ],
    "was": [
-    2,
+    4,
     10
    ],
    "shape": [
@@ -17880,8 +17891,8 @@
    "N": 19.41,
    "N2": 41.86,
    "m": 1,
-   "use0": 0.83,
-   "useNowStats": 0.79,
+   "use0": 1.05,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -17903,7 +17914,7 @@
    ],
    "was": [
     4,
-    6
+    7
    ],
    "shape": [
     6,
@@ -17914,8 +17925,8 @@
    "N": 18.46,
    "N2": 37.86,
    "m": 1,
-   "use0": 0.95,
-   "useNowStats": 0.89,
+   "use0": 1.01,
+   "useNowStats": 0.95,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -17936,8 +17947,8 @@
     "tide"
    ],
    "was": [
-    3,
-    9
+    2,
+    10
    ],
    "shape": [
     5,
@@ -17948,8 +17959,8 @@
    "N": 19.41,
    "N2": 41.86,
    "m": 1,
-   "use0": 1.07,
-   "useNowStats": 1.01,
+   "use0": 1.01,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -18005,8 +18016,8 @@
     "transform"
    ],
    "was": [
-    5,
-    18
+    4,
+    15
    ],
    "shape": [
     8,
@@ -18017,8 +18028,8 @@
    "N": 28.07,
    "N2": 87.55,
    "m": 1,
-   "use0": 1.25,
-   "useNowStats": 1.18,
+   "use0": 1.06,
+   "useNowStats": 1,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -25277,6 +25288,41 @@
     5
    ],
    "use": 0.99
+  },
+  {
+   "id": "swordbill-challenger",
+   "name": "Swordbill Challenger",
+   "kind": "band",
+   "rarity": "veryrare",
+   "wait": 1,
+   "cost": 0,
+   "skills": [
+    "flying",
+    "taunt",
+    "counterattack"
+   ],
+   "was": [
+    3,
+    5
+   ],
+   "shape": [
+    3,
+    5
+   ],
+   "S0": 1,
+   "S": 1,
+   "N": 18.41,
+   "N2": 37.66,
+   "m": 1.5,
+   "use0": 1.1,
+   "useNowStats": 0.98,
+   "want": 1,
+   "verdict": "band",
+   "now": [
+    3,
+    5
+   ],
+   "use": 0.98
   }
  ]
 }

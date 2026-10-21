@@ -511,6 +511,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(credit) credit.forEach(key=>{ if(kills) kills.add(key); const parts = key.split('|'); ensureStat(stats, parts[0], parts[1]).kills += 1; });
         delete killCredit[card.uid];
         if(!card.token && pl.graveyard) pl.graveyard.push({defId:card.defId});
+        if(card.evoStack && pl.graveyard) evoStackToZone(pl, card, pl.graveyard); // Package EV (2026-10-21): its stack goes with it
       })); });
   }
   // (reserveStrike, a middle- / back-row unit's strike as damageCard alone, is gone since 2026-10-19, package TS: that strike is now
@@ -3455,6 +3456,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
     { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'materia') return false; // 2026-10-11: materia is a crafting material
       if(ct === 'equipment' && !eqHasTarget(pl)) return false; if(isHazardDef(CARD_DEFS[defId]) && !slotMode) return false; } // EQ (2026-10-19): equipment and hazards are played (a unit or a slot to go to)
+    if(isEvoluteDef(defId) && !evoBasesFor(pl, defId).length) return false; // Package EV (2026-10-21): an evolute needs a legal base on your field
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
     if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
     if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
@@ -3481,7 +3483,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!canPlay(pl, hc.defId, uid, discount, offerUid != null ? 1 : 0)) return false;
     { const ed = CARD_DEFS[hc.defId]; if(isEquipDef(ed)) return placeEquipment(players, sideOf, playerId, uid, side, stats, events); // EQ (2026-10-19): a slot, or under your unit there
       if(isHazardDef(ed)) return placeHazard(players, sideOf, playerId, uid, popts && popts.hazardPid != null ? popts.hazardPid : null, side, stats, events); } // EQ: a slot on either side (popts.hazardPid)
-    const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
+    // Package EV (2026-10-21): an evolute goes onto a legal base of yours (popts.onto: its uid; or a number `side`: the slot it stands in),
+    // never into an empty slot or onto anything else ("Wrong evolutions are banned"). A reserve row is no place for one.
+    let evoBase = null;
+    if(isEvoluteDef(hc.defId)){
+      const ontoUid = popts && popts.onto != null ? popts.onto : null;
+      evoBase = ontoUid != null ? (allLive(pl).find(c=> c.uid === ontoUid) || null) : (typeof side === 'number' ? frontCardAt(pl, side) : null);
+      if(!evoBase || (popts && popts.reserve) || !evoLegalBase(pl, hc.defId, evoBase)) return false;
+    }
+    const targetSlot = slotMode && !evoBase ? resolvePlacementSlot(pl, side) : null;
     const fdef = CARD_DEFS[hc.defId];
     const firstCardEver = !pl.cardsPlayedEver; // Vanguard (2026-10-17): the first card this player plays this game (any card)
     if(fdef && fdef.field && FIELDS[fdef.field.id]){ pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
@@ -3508,7 +3518,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     const resRow = (popts && popts.reserve) ? (popts.reserve|0) : 0;
     if(resRow){ if(!pl.reserve || typeof side !== 'number' || !legalReserveSlots(pl, resRow).includes(side)) return false; }
-    else if(slotMode && targetSlot===null) return false;
+    else if(slotMode && targetSlot===null && !evoBase) return false; // + an evolute needs no free slot (EV, 2026-10-21)
     if(offerUid != null){ // the prayer offering: the chosen hand card goes to the Removal Zone first
       const oi = pl.hand.findIndex(h=> h.uid===offerUid), off = pl.hand.splice(oi, 1)[0];
       pl.exile.push({defId: off.defId}); pl.echoes = (pl.echoes||0) + 1; pl.prayerOfferTurn = turnNo;
@@ -3543,6 +3553,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       boardCard.baseAtk += pl.firstUnitAtkBonus;
       pl.firstUnitBonusUsed = true;
     }
+    if(evoBase) return evoluteMerge(players, sideOf, playerId, boardCard, evoBase, stats, events); // Package EV (2026-10-21): onto its base, as one stack
     // Center slot (2026-09-16, per explicit request: "the first card should be placed on
     // the centre, not the L or R"): whenever the center is empty — the very first card
     // played, or any later card played after the centered card has died — it always lands
@@ -3750,6 +3761,129 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'mimic', side:sideOf(playerId), uid:boardCard.uid, defId:id, fromDefId:base.id, allyUid:ally.uid, allyDefId:ally.defId,
       atk:boardCard.atk, hp:boardCard.hp, maxHp:boardCard.maxHp});
   }
+
+  // ==== Package EV (2026-10-21, owner 17:42 and 17:49; docs/evolute-design-2026-10-21.md): Evolute, the Evomax archetype ================
+  // effects.evolute / evoluteAlpha / evoluteOmega (true): the card is played ONTO one of your units on the field, never into a slot.
+  //   Evolute        over a unit that shares any type with it and is no evolute itself (evoShares: anywhere in the bramblewood-taxonomy.js
+  //                  hierarchy, or the same phylum: both birds, both river creatures; a Changeling shares with all);
+  //   Evolute Alpha  over a shared-type unit that has Evolute, or a Chrysalis;  Evolute Omega  over a shared-type unit that has Alpha.
+  //   Owner 17:49: "Wrong evolutions are banned": nothing else is legal. canPlay is false while no legal base stands; placeCard refuses any other
+  //   target (popts.onto, the base's uid, or the base's slot as `side`). A base is a live, front-row creature of yours: no Structure, cage or
+  //   pinned (Gladiator) leader (Claude's call, EV-3).
+  // The evolute takes the base's place in it (evoluteMerge): the SAME board unit, its printed stats added to the base's current ones (owner:
+  // "a 2/2 evolutes over a unit at 5/8 (printed 4/20). It becomes 7/10", max Health 22: the damage stays), every counter and status the base
+  // carried (poison, bleed, buffs, shields, Prayer tokens, its equipment ...) and the skills the base had been granted for good (its derived
+  // card's extras: a Stem's braces, an equipment's grant, Bark Skin ...). Its own Wait and Lumber work as usual: it waits its own Wait.
+  // The base does not die (no On Death, Bounty, Darkness, Ritual count or grave): its card stays under the evolute (c.evoStack, the printed
+  // card ids, bottom first) and the stack moves as one. When the evolute goes to the graveyard (or the Removal Zone) the whole stack goes
+  // with it, and the cards under it fire nothing (Claude's default, EV-2). Its arrival is a play: On Play skills, On Ally / Enemy Played,
+  // an enemy Ambush, chains breaking.
+  // Stem (effects.stem, braces effects.stemGrant {...}): an evolute placed over it gains the braces' skills (and any +A/+H in them), or +1/+2
+  // when it has none. Chrysalis (effects.chrysalis, same braces): a Stem an Evolute Alpha may ride directly, skipping the Evolute stage.
+  const EVO_STAGES = ['evolute', 'evoluteAlpha', 'evoluteOmega'];
+  function evoStageOf(d){ const e = (d && d.effects) || {}; return e.evoluteOmega ? 3 : e.evoluteAlpha ? 2 : e.evolute ? 1 : 0; }
+  function isEvoluteDef(defId){ return evoStageOf(CARD_DEFS[defId]) > 0; }
+  function isStemDef(d){ const e = (d && d.effects) || {}; return !!(e.stem || e.chrysalis || (e.stemGrant && typeof e.stemGrant === 'object')); }
+  function evoShares(a, b){
+    if(!a || !b) return false;
+    if(TAXONOMY){ if(TAXONOMY.isChangeling(a) || TAXONOMY.isChangeling(b)) return true;
+      const sa = TAXONOMY.typeSet(a), sb = TAXONOMY.typeSet(b); for(const t of sa) if(sb.has(t)) return true;
+      const pa = TAXONOMY.phylaOf(a), pb = new Set(TAXONOMY.phylaOf(b)); return pa.some(p=> pb.has(p)); }
+    return txShares(a, b);
+  }
+  // The base unit's card as the rules read it: its own card under any day / night or leader grant riding on it (syncPhaseStats' _condBase).
+  function evoBaseDef(c){ return CARD_DEFS[c._condBase || c.defId] || {}; }
+  function evoLegalBase(pl, defId, c){
+    const d = CARD_DEFS[defId], st = evoStageOf(d); if(!st || !c || c.gap || !(c.hp > 0) || c.cageOf || c.defId === '__cage' || c.pinned || c.gladiatorLeader) return false;
+    if(isStructureCard(c)) return false;
+    const bd = evoBaseDef(c), bs = evoStageOf(bd), be = bd.effects || {};
+    if(st === 1 && bs > 0) return false; // Evolute: over a plain creature (a Stem or Chrysalis is fine), not over an evolute
+    if(st === 2 && !(bs === 1 || be.chrysalis)) return false;
+    if(st === 3 && bs !== 2) return false;
+    return evoShares(d, bd);
+  }
+  function evoBasesFor(pl, defId){ if(!pl || !isEvoluteDef(defId)) return []; return allLive(pl).filter(c=> evoLegalBase(pl, defId, c)); }
+  // The stack's entry for a card leaving play under an evolute: the printed card (a token keeps its own id, and never reaches a zone).
+  function evoStackId(defId){ const d = CARD_DEFS[defId] || {}; return d.token ? d.id : (d.derivedFrom || d.id || defId); }
+  // The whole stack goes where the evolute goes (EV-2: the cards under it fire nothing).
+  function evoStackToZone(pl, card, zone){ (card && card.evoStack || []).forEach(id=>{ const d = CARD_DEFS[id]; if(d && !d.token && zone) zone.push({defId:id, evoStacked:true}); }); }
+  // The skills the base had been granted for good: what its derived card has beyond its printed card (a new skill, a bigger number, extra triggers).
+  function evoGrantedOf(c){
+    const cur = evoBaseDef(c), root = CARD_DEFS[cur.derivedFrom || cur.id] || cur; if(cur === root) return {};
+    const ce = cur.effects || {}, re = root.effects || {}, out = {};
+    Object.keys(ce).forEach(k=>{ const v = ce[k], r = re[k];
+      if(k === 'triggers'){ const have = new Set((Array.isArray(r) ? r : []).map(t=> JSON.stringify(t))); const extra = (Array.isArray(v) ? v : []).filter(t=> !have.has(JSON.stringify(t))); if(extra.length) out.triggers = extra; return; }
+      if(r == null || r === false){ if(v != null && v !== false) out[k] = v; return; }
+      if(typeof v === 'number' && typeof r === 'number' && v > r) out[k] = v - r; });
+    return out;
+  }
+  // Skills merged onto the evolute's card: a number adds to a number (Armor 2 + Armor 1 = Armor 3), triggers append, anything else is set.
+  function evoMergeEffects(base, add){
+    const out = Object.assign({}, base || {});
+    Object.keys(add || {}).forEach(k=>{ const v = add[k], o = out[k];
+      if(k === 'triggers'){ out.triggers = (Array.isArray(o) ? o : []).concat(Array.isArray(v) ? v : []); return; }
+      if(typeof v === 'number' && (typeof o === 'number' || o === true)) out[k] = (o === true ? 1 : o) + v;
+      else if(o == null || o === false) out[k] = v; });
+    return out;
+  }
+  // The stack's card: the evolute's printed card with the inherited and Stem-given skills (made once per evolve, as Twin makes its own).
+  function evoDefOf(defId, add){
+    const base = CARD_DEFS[defId], root = base.derivedFrom || base.id;
+    if(!add || !Object.keys(add).length) return defId;
+    const id = root + '~evo' + (++derivedSeq);
+    CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: root, effects: evoMergeEffects(base.effects, add)});
+    return id;
+  }
+  // fresh: the evolute's own unit as placeCard built it (its printed stats with the arrival bonuses: Vanguard, castle passives, perks ...).
+  function evoluteMerge(players, sideOf, playerId, fresh, base, stats, events){
+    const pl = players[playerId];
+    if(base._condBase){ base.defId = base._condBase; base._condBase = null; base._condKey = ''; } // the grant riding on it is the base's; syncPhaseStats re-reads the new card
+    const fromDefId = base.defId, bd = CARD_DEFS[fromDefId] || {}, be = bd.effects || {};
+    const add = evoGrantedOf(base); let sa = 0, sh = 0, stem = null;
+    if(isStemDef(bd)){ // Stem: its braces, else +1/+2
+      if(be.stemGrant && typeof be.stemGrant === 'object'){ const [x, y, rest] = grantStats(be.stemGrant); sa = x; sh = y; stem = rest || {}; Object.assign(add, evoMergeEffects(add, rest || {})); }
+      else { sa = 1; sh = 2; stem = {}; } }
+    const newId = evoDefOf(fresh.defId, add);
+    base.evoStack = (base.evoStack || []).concat([evoStackId(fromDefId)]);
+    base.defId = newId;
+    base.atk += fresh.atk + sa; base.baseAtk += fresh.baseAtk + sa; base.maxHp += fresh.maxHp + sh; base.hp += fresh.hp + sh;
+    base.wait = fresh.wait; base.firedOnce = {}; base.critUsed = 0; base.ambushUsed = false;
+    base.fuse = fresh.fuse; base.ffCounters = fresh.ffCounters; base.explodeRemaining = fresh.explodeRemaining; base.explodeFired = fresh.explodeFired;
+    base.chargeLeft = fresh.chargeLeft; base.chained = !!fresh.chained;
+    base.invincible = (base.invincible || 0) + (fresh.invincible || 0); base.invisible = (base.invisible || 0) + (fresh.invisible || 0);
+    ['mimicked', 'transformed', 'fullMoonRisen', 'devoured', 'revivedOnce', 'hasRemovalCounter'].forEach(k=>{ if(base[k]) base[k] = false; }); // a new card: its once-a-unit skills are fresh
+    if(fresh.vanguardUp) base.vanguardUp = fresh.vanguardUp;
+    if(fresh.consterned) base.consterned = (base.consterned || 0) + fresh.consterned;
+    base.evolvedTurn = turnNo;
+    selfInflict(base);
+    ensureStat(stats, sideOf(playerId), CARD_DEFS[newId].derivedFrom || newId).played++;
+    const slot = base.slot, lane = findCardSide(pl, base.uid);
+    if(recordEvents && events) events.push({type:'evolve', side:sideOf(playerId), uid:base.uid, defId:newId, cardId: evoStackId(newId), fromDefId, stage: evoStageOf(CARD_DEFS[newId]),
+      stack: base.evoStack.slice(), atk:base.atk, hp:base.hp, maxHp:base.maxHp, wait:base.wait, slot, boardSide: lane, stem: stem ? {attack:sa, health:sh, skills:Object.keys(stem)} : null});
+    applyOnSpawnEffects(players, sideOf, playerId, base, stats, events);
+    fireSpawnFamilyTriggers(players, sideOf, playerId, base, stats, events, 'played');
+    const opponent = players[otherId(playerId)];
+    ['left','center','right'].forEach(s=> opponent.row[s].forEach(c=>{ if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'}); }));
+    springAmbush(players, sideOf, playerId, base, stats, events);
+    settleArrivalDeaths(players, sideOf, stats, events);
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){}
+    return true;
+  }
+  // The CPU's base for an evolute (owner: it must use them legally and sensibly): the legal base with the most current stats (Attack counts
+  // double, the rest of the stack under it a little more), less what its statuses will take (poison, bleed, toxin, chilli, a strangle); a base the
+  // stack could not outlive is never chosen (owner: "never waste one on a dying unit unless it saves value": the evolute's own Health keeps the
+  // stack alive, then it is worth it). Ready bases lose a little (the evolute waits again). null: nothing worth evolving now.
+  function aiEvoluteBase(pl, defId){
+    const d = CARD_DEFS[defId] || {}, own = (d.health | 0), wait = (d.wait | 0); let best = null, bestV = -Infinity;
+    evoBasesFor(pl, defId).forEach(c=>{
+      const doom = (c.poison | 0) + (c.bleed | 0) + (c.toxin | 0) + (c.chilli > 0 ? 1 : 0) + (c.bound > 0 ? (c.boundDmg | 0) : 0);
+      const hp = (c.hp | 0) + own + (isStemDef(evoBaseDef(c)) ? 2 : 0);
+      if(hp - doom <= 1) return; // the stack would die to its own statuses: a waste
+      const v = 2 * Math.max(0, c.atk | 0) + Math.max(0, c.hp | 0) - doom * 1.5 + (c.evoStack ? c.evoStack.length : 0) + (isStemDef(evoBaseDef(c)) ? 2 : 0) - (!(c.wait > 0) ? wait * 0.75 : 0);
+      if(v > bestV){ bestV = v; best = c; } });
+    return best ? {card: best, value: bestV} : null;
+  }
+  // ==== end of Package EV (rules) ===========================================================================================================
 
   // Leader summon (2026-09-18, Epic A — "clicking it attempts to summon it into a random open
   // slot at its normal summon cost"): deliberately a near-copy of placeCard above rather than a
@@ -6541,6 +6675,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
           v = gain > 0 ? gain : -99; }
         if(isEquipDef(d)) v = aiEquipWorth(ai, id); else if(isHazardDef(d)) v = aiHazardWorth(players, aiId, id); // EQ (2026-10-19): a piece under its strongest unit; a hazard where it bites
+        if(isEvoluteDef(id)){ const pick = aiEvoluteBase(ai, id); v = pick ? v + pick.value * 0.6 : -99; } // Package EV (2026-10-21): worth its best base; none worth it: hold it
         // Focus (2026-10-18, the smartest CPU): a Ready unit that can kill one of your units this round from a slot it may take is
         // worth more (the better the victim, the more), and its pick is steadier (less noise).
         if(aiSmartest() && !d.cardType){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; }
@@ -6551,6 +6686,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
       if(best[1] > -50 && isEquipDef(CARD_DEFS[best[0].defId])) aiEquipPlay(players, sideOf, aiId, best[0], stats, events); // EQ (2026-10-19)
       else if(best[1] > -50 && isHazardDef(CARD_DEFS[best[0].defId])) placeHazard(players, sideOf, aiId, best[0].uid, null, null, stats, events); // EQ: aiHazardPick's slot
+      else if(best[1] > -50 && isEvoluteDef(best[0].defId)){ const pick = aiEvoluteBase(ai, best[0].defId); // Package EV (2026-10-21): onto its best legal base
+        if(pick) placeCard(players, sideOf, aiId, best[0].uid, Number.isInteger(pick.card.slot) ? pick.card.slot : 'left', stats, events, {onto: pick.card.uid}); }
       else if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
         { const aim = aiChooseSlot(players, aiId, best[0].defId); if(aim != null) side = aim; } // its own slot choice (2026-10-16)
         { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
@@ -7502,7 +7639,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // card.forceExileZone (2026-09-30): set by the new instant "Exile [ally/enemy]" action just
       // above — a live removal tagged to land in the Removal Zone instead of the graveyard, same
       // decision this card's own On-Death-exile would make, just triggered by someone else's turn.
-      const zoneEntry = {defId:card.defId}; if(rv) rv.entry = zoneEntry; // Revive (2026-10-19): the entry it is taken back out of
+      const zoneEntry = {defId: card.evoStack ? evoStackId(card.defId) : card.defId}; if(rv) rv.entry = zoneEntry; /* + an evolute goes as its printed card (EV, 2026-10-21) */ // Revive (2026-10-19): the entry it is taken back out of
       if(hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone){
         pl.exile.push(zoneEntry); pl.echoes = (pl.echoes||0) + 1;
         if(!rv) deathEv.exiled = true; // 2026-10-15 (log only): it goes to the Removal Zone, not the graveyard
@@ -7511,6 +7648,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       } else {
         pl.graveyard.push(zoneEntry);
       }
+      if(card.evoStack && !rv) evoStackToZone(pl, card, (hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone) ? pl.exile : pl.graveyard); // Package EV (2026-10-21): the whole stack goes with it (a reviving one keeps it)
       if(card.equipment && !rv) eqDrop(pl, card, sideOf, events); // its equipment stays in the slot (EQ, 2026-10-19; was: falls with it, 2026-10-11); a reviving unit keeps it (2026-10-19)
       if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
       // Nova N and Crystallise N (2026-10-16): a burst of magic at every enemy unit; a 0/N crystal left in its slot.
@@ -8828,7 +8966,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

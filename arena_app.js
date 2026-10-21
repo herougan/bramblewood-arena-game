@@ -1667,6 +1667,18 @@ Object.assign(SKILL_ICON, {injured:'🩹'});
 // random ally (its skills, the higher of each stat). The rule is in bramblewood-engine.js (mimicOnArrive); its S is 5 (owner-set).
 sk1Patch(PASSIVE_DEFS, 'mimic', {category:'passive', label:TX('ui.skn-mimic'), kind:'boolean', desc:()=> TX('ui.sk-mimic')});
 Object.assign(SKILL_ICON, {mimic:'🪞'});
+// Package EV (2026-10-21, owner 17:42 / 17:49; docs/evolute-design-2026-10-21.md): Evolute, Evolute Alpha, Evolute Omega (the Evomax
+// archetype's own, so the editor offers them on Evomax cards: mechLineGate), Stem (+1/+2, or Stem – {…}: the braces it hands the evolute
+// placed over it) and Chrysalis (a Stem an Evolute Alpha may ride directly). The rules: bramblewood-engine.js, the Package EV block; the
+// costs are theoretical (canonical/skill-costs.json: 3 / 4 / 5; a Stem or Chrysalis 1.6, or 0.4 × its braces' S).
+sk1Patch(PASSIVE_DEFS, 'evolute', {category:'passive', label:TX('ui.skn-evolute'), kind:'boolean', mechLineGate:'evolution', desc:()=> TX('ui.sk-evolute')});
+sk1Patch(PASSIVE_DEFS, 'evoluteAlpha', {category:'passive', label:TX('ui.skn-evolute-alpha'), kind:'boolean', mechLineGate:'evolution', desc:()=> TX('ui.sk-evolute-alpha')});
+sk1Patch(PASSIVE_DEFS, 'evoluteOmega', {category:'passive', label:TX('ui.skn-evolute-omega'), kind:'boolean', mechLineGate:'evolution', desc:()=> TX('ui.sk-evolute-omega')});
+sk1Patch(PASSIVE_DEFS, 'stem', {category:'passive', label:TX('ui.skn-stem'), kind:'boolean', desc:()=> TX('ui.sk-stem'), get:e=> (e.stem && !(e.stemGrant && typeof e.stemGrant === 'object')) ? true : undefined});
+sk1Patch(PASSIVE_DEFS, 'stemGrant', {category:'passive', label:TX('ui.skn-stem'), kind:'grant', placeholder:'armor 1', desc:v=> TX('ui.sk-stem-grant', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
+  get:e=> e.stemGrant && typeof e.stemGrant === 'object' ? grantToText(e.stemGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.stemGrant = g; if(!e.chrysalis) e.stem = true; } }});
+sk1Patch(PASSIVE_DEFS, 'chrysalis', {category:'passive', label:TX('ui.skn-chrysalis'), kind:'boolean', desc:(v, n, e)=> e && e.stemGrant && typeof e.stemGrant === 'object' ? TX('ui.sk-chrysalis-grant', {skills: grantText(e.stemGrant) || TX('ui.cx-nothing')}) : TX('ui.sk-chrysalis')});
+Object.assign(SKILL_ICON, {evolute:'🧬', evoluteAlpha:'🧬α', evoluteOmega:'🧬Ω', stem:'🌱', stemGrant:'🌱', chrysalis:'🐛'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
 // back in the editor as the temporary one (the engine's rallyUp); the passive Attack aura is War Banner's (its text below, SK3's block).
 sk1Patch(PASSIVE_DEFS, 'rally', {category:'passive', label:TX('ui.skn-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rally', {n: numOr(v, 1)}), get:e=> e.rally ? numOr(e.rally, 1) : undefined});
@@ -2730,6 +2742,10 @@ PASSIVE_DEFS.push(
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
+// Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
+Object.assign(SKILL_TEXT, {evolute: ()=> TX('ui.sk-evolute'), evoluteAlpha: ()=> TX('ui.sk-evolute-alpha'), evoluteOmega: ()=> TX('ui.sk-evolute-omega'), stem: ()=> TX('ui.sk-stem'),
+  stemGrant: v=> TX('ui.sk-stem-grant', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
+  chrysalis: (v, n, e)=> e && e.stemGrant && typeof e.stemGrant === 'object' ? TX('ui.sk-chrysalis-grant', {skills: grantText(e.stemGrant) || TX('ui.cx-nothing')}) : TX('ui.sk-chrysalis')});
 Object.assign(SKILL_TEXT, {injured: v=> TX('ui.sk-injured', {n: numOr(v, 1)}), rally: v=> TX('ui.sk-rally', {n: numOr(v, 1)})}); // Package BF6 (2026-10-21): Injured N's and Rally N's card lines
 TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
 Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
@@ -2861,6 +2877,7 @@ function describeEffects(def, liveCard){
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if((p.key==='loyalGrant' && e.loyal) || (p.key==='usurperGrant' && e.usurper)) return; // CX2: the stat line already says "and {skills}"
+    if(p.key==='stemGrant' && e.chrysalis) return; // EV (2026-10-21): the Chrysalis line already says what its braces hand over
     // CX2 (2026-10-21): Ritual's conditions at the corners of a shape; Transform's "Lycanthropy: under {Full Moon}, gain {…}"; Crepuscular's two parts
     if(p.key==='ritual'){ const r = e.ritual || {}, cs = RITUAL_CONDS.filter(c=> r[c.k]);
       lines.push(`<span class="ritual-line">${ic('ritual')}Ritual — ${escapeHtml(TX('ui.cx-ritual-short'))}${ritualShapeHTML(cs.map(c=> ({html: `${c.ico}<b>${r[c.k]}</b>`})), {w: 124, h: 100, r: 40, cls: 'rs-card', label: TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})})}</span>`); return; }
@@ -7988,6 +8005,7 @@ const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardia
 CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter', 'disarm', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (🪞)
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
+CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -10128,8 +10146,8 @@ function defaultSkillValue(key){
 }
 // A Zeitgeber's two forms (2026-10-16): the plain stat bonus and the skill list ("Diurnal" + Gives: Stat bonus / Skills).
 // 2026-10-21 (package CX2): + Crepuscular {day}{night}, Rainrunner {…}, Loyal {…}, Usurper {…}; Full Moon {…} left for Transform's Lycanthropy.
-const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant'};
-const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper'};
+const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */};
+const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem'};
 // The kinds whose row is a context skill (braces): no "+ at a later level" button on them (CX2, owner 17:42: "+ skill inside each phase,
 // plus the normal add-skill, already cover it").
 const CONTEXT_ROW_KINDS = new Set(['grant', 'grant2', 'transform', 'ritual']);
@@ -15426,7 +15444,7 @@ async function replayLiveIntent(intent){
   if(activePlayerId(m) !== intent.fromSeat){ broadcastLiveState(); return; } // stale/out-of-turn intent (e.g. a race with a state broadcast already in flight) — drop it silently rather than risk misattributing an action
   m.liveReplaying = true;
   try{
-    if(intent.type==='playCard') await playCardByUid(intent.uid, intent.side, intent.dropPoint);
+    if(intent.type==='playCard') await playCardByUid(intent.uid, intent.side, intent.dropPoint, intent.onto != null ? {onto: intent.onto} : undefined); // + an evolute's base (EV, 2026-10-21)
     else if(intent.type==='discardCard') await discardCardByUid(intent.uid);
     else if(intent.type==='skipTurn') await skipTurn();
     else if(intent.type==='summonLeader') await attemptSummonLeader(intent.preferredLane);
@@ -27125,7 +27143,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh; 2026-10-21 (BF6): so do the halved coefficients (v6)
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 // Stat budget v5 (2026-10-19 13:52, package BF2, replacing 09:52's v4; owner: "(Base + L/3) * (1 + L/30) ... Level 0 gives an additional
@@ -31386,6 +31404,7 @@ function wireDropZones(){
         if(!uid) return;
         // Devilry (2026-10-10): dropped on one of your own units — feed a Devourer, or sacrifice a Sacrifice unit for a Dark Summon.
         { const onto = e.target && e.target.closest && e.target.closest('.board-card[data-uid]');
+          if(evolvePlayOnto(uid, onto ? Number(onto.getAttribute('data-uid')) : null, {x:e.clientX, y:e.clientY})) return; // Package EV (2026-10-21): an evolute, onto a lit base only
           if(onto && devilryDropOnto(Number(onto.getAttribute('data-uid')), uid)) return; }
         // 2026-09-21 ("fly from where you let go of the card") — the real drop point, straight off
         // this same drop event, dropping directly on the battlefield being the most common play style.
@@ -31411,6 +31430,7 @@ function wireDropZones(){
         const rect = ownRow.getBoundingClientRect();
         let side = gravitySideAt(ownRow, e.clientX);
         if(isSlotMatch(m)){ const t = nearestSlotTarget(ownRow, e.clientX); if(t) side = Number(t.getAttribute('data-slot')); }
+        { const onto = e.target && e.target.closest && e.target.closest('.board-card[data-uid]'); if(evolvePlayOnto(m.selectedUid, onto ? Number(onto.getAttribute('data-uid')) : null)) return; } // Package EV (2026-10-21)
         playCardByUid(m.selectedUid, side);
       });
     }
@@ -31927,7 +31947,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -32737,6 +32757,7 @@ function renderBoard(opts){
   // (or a test) that waits only for `resolving===false` can observe that render's brand-new
   // cards still mid-drop, not yet settled. Reporting whether THIS render introduced any new
   // entrants lets resolveRound() give that final render the same courtesy pause.
+  try{ evoSyncTargets(); }catch(e){} // Package EV (2026-10-21): the legal bases of a held evolute stay lit across a re-render
   return { hadNewEntrants };
 }
 // Battlefield "zoom out to fit" (2026-09-17, per explicit request: "When the field is full,
@@ -33750,8 +33771,8 @@ function boardCardHTML(c, defs, opts){
   const angelic = winged && isAngelDef(d);
   const wingHTML = !winged ? '' : angelic ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>'
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
-  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+    ${evoStackHTML(c, defs)}${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
@@ -33866,7 +33887,7 @@ document.addEventListener('pointerdown', e=>{ bwPressedCard = (e.target && e.tar
 let bountySyncQueued = false;
 function syncBountyHolding(){
   if(bountySyncQueued) return; bountySyncQueued = true;
-  requestAnimationFrame(()=>{ bountySyncQueued = false; document.body.classList.toggle('bw-holding', bountyHoldingNow()); });
+  requestAnimationFrame(()=>{ bountySyncQueued = false; document.body.classList.toggle('bw-holding', bountyHoldingNow()); try{ evoSyncTargets(); }catch(e){} }); // + a held evolute's legal bases (EV, 2026-10-21)
 }
 ['dragstart','dragend','drop','click','pointerdown','pointerup','pointercancel','touchend','keyup'].forEach(t=> document.addEventListener(t, syncBountyHolding, true));
 let bountyPeekTimer = null;
@@ -33878,6 +33899,47 @@ function bountyPeek(){
 // UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
 // card in your hand you can't play right now.
 function myPidInMatch(m){ return m.mode==='pc' ? (m.active||1) : (m.mode==='liveRanked' ? (m.liveMySeat||1) : 1); }
+// ==== Package EV (2026-10-21, owner 17:49: "I also don't want accidental wrong evolutions"; docs/evolute-design-2026-10-21.md) =========
+// Holding an evolute (pressed, dragged or tap-armed in your hand) lights only its legal bases (.board-card.evo-target) and hides the
+// empty-slot "+" targets (body.bw-evo-holding, arena_template.html). A drop or tap on a lit unit plays it there (playCardByUid with
+// popts.onto: the engine's placeCard checks it again); anywhere else nothing is played and a hint says where it can go. A unit with cards
+// under it shows their edges and a ×N badge (evoStackHTML), its tooltip naming the stack bottom first. The evolve plays FX.A's prismatic
+// sparkle (renderVfxForEvent, 'evolve') and its log line.
+function isEvoluteCardApp(d){ const e = (d && d.effects) || {}; return !!(e.evolute || e.evoluteAlpha || e.evoluteOmega); }
+function evoHeldHandUid(){
+  const m = matchState; if(!m || m.over || m.resolving) return null;
+  if(m.selectedUid != null) return m.selectedUid;
+  const t = (bwPressedCard && bwPressedCard.isConnected) ? bwPressedCard : document.querySelector('#handStrip .card-tile.dragging');
+  const u = t && t.getAttribute('data-handuid'); return u != null && u !== '' ? Number(u) : null;
+}
+function evoHandCard(m, uid){ const pl = m && m.players[viewerHandPid(m)]; return pl && uid != null ? (pl.hand.find(x=> x.uid === uid) || null) : null; }
+function evoLegalBaseUids(m, defId){ try{ const pl = m.players[viewerHandPid(m)]; return (m.engine.evoBasesFor ? m.engine.evoBasesFor(pl, defId) : []).map(c=> c.uid); }catch(e){ return []; } }
+function evoSyncTargets(){
+  const m = matchState, h = m ? evoHandCard(m, evoHeldHandUid()) : null, d = h && getCardDefs()[h.defId];
+  const on = !!(d && isEvoluteCardApp(d) && !m.awaitingPass); document.body.classList.toggle('bw-evo-holding', on);
+  const want = new Set(on ? evoLegalBaseUids(m, h.defId).map(String) : []);
+  document.querySelectorAll('.board-card.evo-target').forEach(el=>{ if(!want.has(el.getAttribute('data-uid'))) el.classList.remove('evo-target'); });
+  want.forEach(u=>{ const el = boardCardEl(Number(u)); if(el) el.classList.add('evo-target'); });
+}
+// An evolute dropped or tapped onto one of your units. true: the gesture was an evolute's (played, or refused with a hint); false: not one.
+function evolvePlayOnto(handUid, targetUid, dropPoint){
+  const m = matchState; if(!m || m.over || m.resolving) return false;
+  const h = evoHandCard(m, handUid), d = h && getCardDefs()[h.defId]; if(!d || !isEvoluteCardApp(d)) return false;
+  if(targetUid == null || !evoLegalBaseUids(m, h.defId).includes(targetUid)){
+    denyShake(document.querySelector(`.card-tile[data-handuid="${handUid}"]`));
+    if(Date.now() - (m._evoHintAt||0) > 1500){ m._evoHintAt = Date.now(); showToast(TX('ui.evo-pick-base', {name: d.name}), 'warn'); }
+    return true; }
+  const tgt = allCardsOnBoard(m.players[viewerHandPid(m)]).find(c=> c.uid === targetUid);
+  playCardByUid(handUid, tgt && Number.isInteger(tgt.slot) ? tgt.slot : 'center', dropPoint, {onto: targetUid});
+  return true;
+}
+function evoStackHTML(c, defs){
+  const st = c && c.evoStack; if(!st || !st.length) return '';
+  const nm = id=> (defs[id] || {}).name || id, names = st.map(nm).concat([nm(c.defId)]);
+  const tip = TX('ui.evo-stack', {n: names.length, cards: names.join(' → ')});
+  return `<span class="evo-stack" aria-hidden="true">${'<i></i>'.repeat(Math.min(3, st.length))}</span><span class="evo-stack-badge" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">×${names.length}</span>`;
+}
+// ==== end of Package EV (UI) ==========================================================================================================
 // Devilry drops (2026-10-10). Returns true when the drop was used.
 function devilryDropOnto(targetUid, handUid){
   const m = matchState; if(!m || m.over || m.resolving || m.mode==='liveRanked') return false; // live ranked: not synced yet
@@ -33944,6 +34006,7 @@ function unplayableReason(pl, d){
   short(d.metalCost, pl.metal, '🔩', 'Metal');
   short(d.uraniumCost, pl.uranium, '☢️', 'Uranium');
   if(need.length) return `Need ${need.join(' + ')}`;
+  if(isEvoluteCardApp(d)) return '🧬 ' + TX('ui.evo-no-base'); // Package EV (2026-10-21): no legal base on your field
   return 'Can’t play this right now';
 }
 // Draw flip (2026-10-06, effects "Coming next"): a card that has just come into your hand flies
@@ -34266,6 +34329,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
       showPrayerOfferPicker(pl0, uid, off=> playCardByUid(uid, side, dropPoint, {prayerOffer: off})); return; } }
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return; // hand is hidden behind the pass-the-device overlay right now
+  if(!(popts && popts.onto != null) && evolvePlayOnto(uid, null)) return; // Package EV (2026-10-21): an evolute goes only onto a lit base (never a slot)
   // 2026-10-16: nothing goes in while the turn is being committed (the cards landing before the round) or during the upkeep
   if(m._committing || m._upkeep){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`)); return; }
   recordFightAction(m, {a:'play', uid, side: side||null});
@@ -34277,7 +34341,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
       // entrance animation anyway — the peer's play only ever reaches the host as a state cut,
       // per the module header's limitation #3). The host's own playCardByUid falls back to its
       // normal no-drop-point origin handling when this is absent.
-      sendLiveIntent({type:'playCard', fromSeat:m.liveMySeat, uid, side});
+      sendLiveIntent(Object.assign({type:'playCard', fromSeat:m.liveMySeat, uid, side}, popts && popts.onto != null ? {onto: popts.onto} : {})); // + an evolute's base (EV, 2026-10-21)
       return;
     }
     if(!m.liveReplaying && activePlayerId(m)!==m.liveMySeat) return; // host acting out of its own turn
@@ -34322,7 +34386,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   if(matchPlayRows(m) === 'own' && popts && popts.reserve) return false; // 2026-10-19 (package RX): "Your row only" (a tag-team dungeon's playRows)
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}) : undefined); // + a hazard's row (EQ, 2026-10-19)
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null || popts.onto!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}, popts.onto!=null ? {onto: popts.onto} : {}) : undefined); // + a hazard's row (EQ, 2026-10-19); + an evolute's base (EV, 2026-10-21)
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -34346,7 +34410,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const isFieldPlay = events.some(ev=> ev.type==='fieldSet');
   // 2026-10-17 (user: "When I play a shiny card, it should still look shiny on the board!"): the board unit's uid is new, so the copy's
   // look moves from the hand uid to it before anything renders it (carryCardLook).
-  if(activePid === localPid(m)) try{ const pe = events.find(ev=> ev.type==='play' && !ev.leader); if(pe) carryCardLook(m, uid, pe.uid, pe.defId); }catch(e){}
+  if(activePid === localPid(m)) try{ const pe = events.find(ev=> (ev.type==='play' && !ev.leader) || ev.type==='evolve' /* EV (2026-10-21): the evolute's look rides on the stack */); if(pe) carryCardLook(m, uid, pe.uid, pe.defId); }catch(e){}
   if(!isFieldPlay && m.players[activePid] && m.players[activePid].playedThisTurn){ m._needsCommit = true; m._needsCommitAt = performance.now(); }
   fightSafe(()=> SoundKit.play());
   if(m.selectedUid===uid) m.selectedUid = null;
@@ -39437,7 +39501,8 @@ function logText(ev){
   { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
   { const k = sk1LogText(ev, nm); if(k) return k; }
-  if(ev.type === 'mimic') return {cls:'', text:TX('ui.log-mimic', {name: nm(ev.fromDefId || ev.defId), ally: nm(ev.allyDefId), atk: ev.atk, hp: ev.maxHp})}; // Package MT (2026-10-21) // package SK1 skills (2026-10-19)
+  if(ev.type === 'mimic') return {cls:'', text:TX('ui.log-mimic', {name: nm(ev.fromDefId || ev.defId), ally: nm(ev.allyDefId), atk: ev.atk, hp: ev.maxHp})}; // Package MT (2026-10-21)
+  if(ev.type === 'evolve') return {cls:'gold', text:TX('ui.log-evolve', {name: nm(ev.defId), base: nm(ev.fromDefId), atk: ev.atk, hp: ev.hp})}; // Package EV (2026-10-21) // package SK1 skills (2026-10-19)
   { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
@@ -41375,6 +41440,19 @@ function fifthPassVfx(ev){
   if(ev.type==='witherTick'){ const rc = matchState.replayCards && matchState.replayCards[ev.uid]; if(rc){ rc.maxHp = Math.max(0, (rc.maxHp||0) - ev.n); rc.hp = Math.max(0, Math.min(rc.maxHp, (rc.hp||0) - ev.n)); }
     try{ updateCardHpDisplay(ev.uid); }catch(e){} const el = boardCardEl(ev.uid); if(el){ try{ floatText(el, '💀 −' + ev.n, 'debuff'); }catch(e){} witherSmokeVfx(el); } }
   // Mimic (2026-10-21, package MT): the unit takes its copy's card and stats; the look is Twin's mirror sheen (bramblewood-fx-c.js, 'mimic').
+  // Package EV (2026-10-21): an evolute lands on its base: the unit takes the stack's card and stats, a short pop and FX.A's prismatic sparkle.
+  if(ev.type==='evolve'){
+    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc){ rc.defId = ev.defId; rc.atk = ev.atk; rc.hp = ev.hp; rc.maxHp = ev.maxHp; rc.wait = ev.wait; rc.evoStack = (ev.stack || []).slice(); }
+    try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
+    const el = boardCardEl(ev.uid);
+    if(el){ const nmKey = ev.stage === 3 ? 'ui.skn-evolute-omega' : ev.stage === 2 ? 'ui.skn-evolute-alpha' : 'ui.skn-evolute';
+      try{ floatText(el, '🧬 ' + TX(nmKey), 'quick'); }catch(e){}
+      el.classList.add('evo-evolved'); setTimeout(()=> el.classList.remove('evo-evolved'), 900);
+      try{ if(window.FX && window.FX.A && window.FX.A.supremeSparkle && !reducedMotion() && fxAtLeast('low')) window.FX.A.supremeSparkle(el); }catch(e){}
+      if(hasGsap() && !reducedMotion()) gsap.fromTo(el, {scale:1.14}, {scale:1, duration:.45, ease:'back.out(2)', clearProps:'transform'}); }
+    try{ sfx('unlockChime'); }catch(e){}
+  }
   if(ev.type==='mimic'){
     const rc = matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.defId = ev.defId; rc.atk = ev.atk; rc.hp = ev.hp; rc.maxHp = ev.maxHp; }

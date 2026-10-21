@@ -53,7 +53,7 @@ const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epi
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
-const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */];
+const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */];
 // Context skills (2026-10-21, package CX2; owner 17:42: "Regarding context-skills like Diurnal - {} or Tide - {} etc. The costing is wrong.
 // Tide - {} should be 0.5x the skills contained within ... Since Tide is not guaranteed, I think the coefficient should be reduced to 0.4x
 // instead."): a skill whose braces hold other skills costs CONTEXT_MULT × the S of everything in its braces, across all its phases (Tide:
@@ -69,9 +69,10 @@ const CONTEXT = {
   diurnalGrant: v=> [obj(v)], nocturnalGrant: v=> [obj(v)], fullMoonGrant: v=> [obj(v)], rainrunnerGrant: v=> [obj(v)],
   loyalGrant: v=> [obj(v)], usurperGrant: v=> [obj(v)], swimmerGrant: v=> [obj(v)],
   transform: v=> [obj(v && v.gain)],
+  stemGrant: v=> [obj(v)], // Stem / Chrysalis – {…} (2026-10-21, package EV): what it hands the evolute placed over it, at 0.4 × its S
   bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null // only Bloom's braces form; the plain +2/+2 keeps its measured worth
 };
-const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant'};
+const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */};
 // S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;

@@ -16,7 +16,7 @@ const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), B = require(path.join(ROOT, 'bramblewood-budget.js')), R = require('./card_retune_2026_10_19.js');
 const CARDS_FILE = path.join(ROOT, 'canonical', 'cards.json'), OUT = path.join(ROOT, 'docs', 'balance', 'two-skills-2026-10-21.json');
 const PARAM_OF = {crepuscularHp: 'crepuscular', diurnalHp: 'diurnal', diurnalGrant: 'diurnal', nocturnalHp: 'nocturnal', nocturnalGrant: 'nocturnal', espritHp: 'esprit', swarmN: 'swarm',
-  arrowCount: 'arrow', hunterVs: 'hunter', defianceN: 'defiance', fullMoonGrant: 'fullMoon', loyalGrant: 'loyal', swimmerGrant: 'swimmer', tideGrant: 'tide'};
+  arrowCount: 'arrow', hunterVs: 'hunter', defianceN: 'defiance', fullMoonGrant: 'fullMoon', loyalGrant: 'loyal', swimmerGrant: 'swimmer', tideGrant: 'tide', stemGrant: 'stem' /* 2026-10-21 (EV): a Stem's braces */};
 const PARAMS = B.PARAMS.concat(['arrowCount', 'hunterVs']);
 const SPECIAL = new Set(['epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']);
 const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'));

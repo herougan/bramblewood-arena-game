@@ -2,6 +2,42 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package EV: Evolute, the Evomax archetype)
+- **Owner (17:42, 17:49):** "Evolute ... the evolute adds the base unit's remaining stat lines to its own, and inherits every counter";
+  "Wrong evolutions are banned"; "I also don't want accidental wrong evolutions". Spec and what was built: `docs/evolute-design-2026-10-21.md`.
+- **Evolute / Evolute Alpha / Evolute Omega.** The card is played onto one of your units, never into a slot.
+  - **Evolute** goes over a creature that shares any type with it, anywhere in the taxonomy or the same phylum. **Alpha** goes over an
+    Evolute or a Chrysalis. **Omega** goes over an Alpha.
+  - **No other placement is legal.** The card is greyed without a base, and the engine refuses any other target.
+  - **The stack.** The evolute adds its printed stats to the base's current ones: a 2/2 over a 5/8 (printed 4/20) is 7/10. It keeps
+    every status and counter, and the skills the base was granted. It pays its Lumber and waits its own Wait.
+  - **The base never dies.** It stays under the evolute as a card stack (no On Death, Bounty or grave). The stack goes to the graveyard
+    together when the evolute dies.
+- **Stem and Chrysalis.**
+  - An evolute played onto a **Stem** gains the Stem's {skills}, or +1/+2.
+  - A **Chrysalis** is a Stem that an Alpha may ride directly.
+- **The CPU** evolves only onto legal bases. It picks the base with the most current stats and never one the stack could not outlive.
+- **UI.**
+  - Holding an evolute lights only its legal bases (a violet ring and 🧬), dims your other units and hides the empty-slot "+" targets. A
+    drop or tap anywhere else plays nothing and shows a hint.
+  - A stack shows its cards' edges and a ×N badge whose tooltip lists the stack.
+  - The evolve plays a pop, the prismatic sparkle and a log line.
+  - Skill chips 🧬 / 🧬α / 🧬Ω / 🌱 / 🐛 are in the registry, "+ Add Skill" and the Codex. Texts are in the 12 packs
+    (`tools/i18n_2026_10_21_ev.py`). Screens are in `docs/screens/ev/`.
+- **Costs** (`canonical/skill-costs.json`, theoretical, not owner-set). Evolute 3, Alpha 4, Omega 5. Stem / Chrysalis cost 1.6, or 0.4 ×
+  their braces' S (`stemGrant` joins CX2's context rule in `bramblewood-budget.js`).
+- **Cards.** No Evomax unit existed, so cards no player can get yet became the lines (owner call EV-1). Re-fit by formula with
+  `--only`:
+  - **Sloth:** Slowpoke Sentinel (Stem – {Armor 1}, 1/1) → Canopy Sloth Guardian (Evolute, 2/18 → 2/15) → Hanging Loafer (Alpha,
+    3/23 → 2/21).
+  - **Raven mystics:** Raven Harbinger (Evolute, Poison cut, 1/2 → 2/8) → Raven Hexcaller (Alpha, Flying cut, 1/8 → 1/7) → Bone
+    Diviner (Omega, Flying cut, 2/9 → 1/7).
+  - **Storm:** Gale Sprite (Evolute, 2/10 → 1/8) → Stormcaller (Alpha, 6/17 → 1/23).
+  - **Fodder:** the Nest's Speckled Egg is a Stem and the Cocoon a Chrysalis. Each got a species (Bird, Insect), 0/2 → 0/1.
+  - The missing stages are listed as cards to make in the doc.
+- Owner calls EV-1 to EV-7 are in `docs/decisions.json`. Per the owner ("no test runs"), only `node --check`, the build and a headless
+  run in scratch were done. The run covered the owner's example, the bans, Stem / Chrysalis, the CPU's choice and 30 AI matches.
+
 ## 2026-10-21 (package HB2: the Swordbill Challenger)
 - **Owner (Oct 21):** "A new cool hummingbird character with a needle rapier in its mouth and a shielded rapier on one of its feet. It welcomes fights."
 - **New card: Swordbill Challenger** (`swordbill-challenger`, #9086), a Very Rare Hummingbird faction reward (source tribes, tier 11; the track opens Very Rare after 50 received and Map 25). The real sword-billed hummingbird, whose bill is longer than its body, as a courteous duelist. **3/5, Wait 1; Flying, Taunt (it welcomes fights), Counterattack (the guarded foot-fencer answers each hit).** By formula: N 18.41 (Very Rare, Wait 1, Map 5), S 1 (Counterattack 1, Taunt 0, Flying 0 but x1.5 half-miss), 2A+H+S x1.5 = 18 (98% of N), A·H+S·|S| x1.5 = 24 of (N/3)² 37.66. Other names offered: Ensifer, the Swordbill; Mosswing Swordbill.

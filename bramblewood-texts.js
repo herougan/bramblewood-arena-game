@@ -1740,7 +1740,23 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.cx-rarity-flag-quest": "A quest card: given by a quest, never in packs.",
   "ui.cx-rarity-flag-event": "An event card: given by an event.",
   "ui.cx-rarity-flag-dev": "A developer card.",
-  "ui.cx-rarity-flag-special": "A special card, outside the usual ways to get cards."
+  "ui.cx-rarity-flag-special": "A special card, outside the usual ways to get cards.",
+  "ui.skn-evolute": "Evolute",
+  "ui.sk-evolute": "Play it onto your unit of a shared type: it adds that unit's stats and keeps its statuses.",
+  "ui.skn-evolute-alpha": "Evolute Alpha",
+  "ui.sk-evolute-alpha": "Play it onto your Evolute unit, or a Chrysalis, of a shared type. It adds that unit's stats.",
+  "ui.skn-evolute-omega": "Evolute Omega",
+  "ui.sk-evolute-omega": "Play it onto your Evolute Alpha unit of a shared type. It adds that unit's stats.",
+  "ui.skn-stem": "Stem",
+  "ui.sk-stem": "An evolute played onto it gains +1/+2.",
+  "ui.sk-stem-grant": "An evolute played onto it gains {skills}.",
+  "ui.skn-chrysalis": "Chrysalis",
+  "ui.sk-chrysalis": "A Stem an Evolute Alpha can be played straight onto. The evolute gains +1/+2.",
+  "ui.sk-chrysalis-grant": "A Stem an Evolute Alpha can be played straight onto. The evolute gains {skills}.",
+  "ui.evo-stack": "Stack of {n}: {cards}",
+  "ui.log-evolve": "🧬 {name} evolves over {base}: now {atk}/{hp}.",
+  "ui.evo-pick-base": "Play {name} onto one of your lit units.",
+  "ui.evo-no-base": "Needs a unit of yours it can evolve over"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
