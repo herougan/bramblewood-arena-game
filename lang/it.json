@@ -2667,5 +2667,10 @@
  "The Vault Warden": "Il Guardiano delle Volte",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "Volte sotto la sabbia dell’Arena. Ogni tre piani le porte si aprono su un’altra terra.",
  "The next door grinds open.": "La porta successiva si apre stridendo.",
- "Every tenth floor the warden of the vaults comes down to meet you.": "Ogni dieci piani il guardiano delle volte scende a incontrarti."
+ "Every tenth floor the warden of the vaults comes down to meet you.": "Ogni dieci piani il guardiano delle volte scende a incontrarti.",
+ "Deck limit: {n} Legendaries": "Limite del mazzo: {n} Leggendarie",
+ "Deck limit: {n} Mythics": "Limite del mazzo: {n} Mitiche",
+ "Deck limit: {n} {rank}": "Limite del mazzo: {n} {rank}",
+ "Over the {rank} limit: {n}/{cap}": "Oltre il limite di {rank}: {n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "Il tuo mazzo supera il limite di {rank} ({n}/{cap}). Toglierne {out} per giocare."
 }

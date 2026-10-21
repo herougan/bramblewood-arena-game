@@ -2667,5 +2667,10 @@
  "The Vault Warden": "El Guardián de la Bóveda",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "Bóvedas bajo la arena de la Arena. Cada tres pisos, las puertas se abren a otra tierra.",
  "The next door grinds open.": "La siguiente puerta se abre chirriando.",
- "Every tenth floor the warden of the vaults comes down to meet you.": "Cada diez pisos, el guardián de las bóvedas baja a tu encuentro."
+ "Every tenth floor the warden of the vaults comes down to meet you.": "Cada diez pisos, el guardián de las bóvedas baja a tu encuentro.",
+ "Deck limit: {n} Legendaries": "Límite del mazo: {n} Legendarias",
+ "Deck limit: {n} Mythics": "Límite del mazo: {n} Míticos",
+ "Deck limit: {n} {rank}": "Límite del mazo: {n} {rank}",
+ "Over the {rank} limit: {n}/{cap}": "Por encima del límite de {rank}: {n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "Tu mazo supera el límite de {rank} ({n}/{cap}). Saca {out} para poder jugar."
 }
