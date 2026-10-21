@@ -385,6 +385,23 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Printed = obtained
 - **Outcome:** Owner 16:22: "the cards as seen should be the cards when you get them. no change. The Wyrm is only stronger cause the field effect gives it fiery skills." Printed card = obtained card; enemy strength comes from levels, decks / synergy and fields, not altered stats. The Caldera Wyrm stays as printed. On the road the enemy's levels follow the owner's schedule (Maps 1-4 Lv 1, 5-9 Lv 1-2, 10+ Lv 2 and rising) and rarity above Rare is allowed from Map 10; no new Shield overrides and no field buffs for difficulty ("Let them be strong full stop for now. In the future we will make them challenging by cheating."). Still altering enemy stats outside level and fields, flagged and left as they are: the endless dungeons' floorPct perk (+x% stats a floor, set to 0 since LV, the mechanism remains), the raid's staged decks (cards scaled by the raid's attack / health factors) and its boss units (+1 Attack, Health x1.5-3, the Health bonus): raid boss mechanics, unchanged. Shield overrides above the rule are bramble, not card, changes: counted and measured in docs/balance/level-curve-2026-10-19c.md as an owner call.
 
+## Stated rules · 2026-10-21
+
+The owner's directions (Oct 21) on rewards, sources, the road's eras and its bosses, recorded by package RP (docs/balance/rewards-pass-2026-10-21.md, docs/map-recommendations-2026-10-21.md). Pinned by `tests/rewards-pass-2026-10-21.js`.
+
+- **Skirmish rewards are never pack cards; faction rewards are their own category** ("Be strict on what is a Skirmish reward (these CANNOT be pack rewards) and which are faction rewards"): every card is exactly one of a skirmish reward (source map), a pack card, a faction reward (the Factions pool, tier 11, in no pack), or a raid / smith / nest / base / quest / secret / Easter egg / materia card, or awaitingSource.
+- **Most Otters and Hummingbirds are faction rewards, given with skirmish progress and some achievements**: a main map's last fight, every 8th first clear, Map 0's 0-2 faction pack, the 3-2 ambush and the listed achievements hand them out (FACTION_REWARD_TRACK).
+- **Faction rewards give the lowest rarity first, until a critical mass of faction cards received (duplicates count)**: Uncommon after 25, Rare after 15 more and not before Map 14, Very Rare after 10 more and much later (Map 25 proposed); the later steps (Super Rare 60 / Map 30, Epic 70 / 35, Heroic 80 / 40, Unique+ 90 / 50) are proposals. The thresholds are constants (FACTION_RARITY_GATES).
+- **Only plain cards (no skills) as rewards at the start** (Maps 0-1), with **Lumber introduced on Map 1** by one Lumber card (the Badger Lumberjack on 1-4).
+- **Devilry is found on Map 66, Ecclesia on Map 77, Evomax from Map 30**: no card of those lines is obtainable before (they wait as awaitingSource).
+- **The eras: 20-40 is stronger, more advanced versions of the 0-20 animals, and maybe some extinct animals that resemble today's; 40+ has legit dinosaurs; 50+ is magic.**
+- **Submaps: one unique card each, the rest built from cards the player already has, and unlocked quite late** (Smugglers' Grotto after Map 7; every side map off Maps 0-19 opens at least four maps after its parent, its fights counting as that map).
+- **Skill introduction is gentle and strict: two new skills a map at most; Maps 21-40 are about using the skills already learnt** (new skills again past Map 40).
+- **5 world bosses and 1 super world boss for Maps 0-100.**
+- **Bosses from Map 5 onwards, so at least 95 bosses and 100+ elites, not counting the submaps.**
+- **Limit break always balances a card to the next series's standard.**
+- **Map x 0.2 in N gives importance to new cards balanced in the late game** (the stat budget's map term; package BF5 builds it, with vanilla cards x1.05).
+
 ## Stated rules · 2026-10-18
 
 The owner's notes (23:05) on a far-future map and the Legendary ability tier. Pinned by `tests/legendary-2026-10-19.js`.
