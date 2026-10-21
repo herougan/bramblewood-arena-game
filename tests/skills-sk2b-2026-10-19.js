@@ -69,6 +69,61 @@ const eng = R('bramblewood-engine.js');
 ok(/if\(t\.pay && !sk2PayFor\(pl, boardCard, t, mySide, events\)\)/.test(eng) && eng.indexOf('if(t.pay && !sk2PayFor(') > eng.indexOf('if(sk3TrigGate(boardCard, hook, t, i, mySide, events)) return;'), 'the price is paid after every gate (SK3 included), right before the trigger goes off');
 ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'stone', amount:numN\(e\.quarry, SK2\.quarryN\), pay:\{lumber:SK2\.quarryLumber\}, keyword:'quarry'\}\)/.test(eng), 'Quarry is On Turn Start × Gain Stone with a price, in trigsOf');
 
+// ---- 4b. The weapons (owner, Oct 21): the smith (Forge Weapon with a Stone price) and the weapon thief (Disarm)
+Object.assign(defs, {
+  'k2b-unit': U('k2b-unit', {}, {attack:2, health:20}), 'k2b-restless': U('k2b-restless', {restless:true}, {attack:2, health:20}),
+  'k2b-thief': U('k2b-thief', {disarm:true}, {attack:1, health:20}),
+  'k2b-sword': {id:'k2b-sword', name:'K2b Sword', cardType:'equipment', attack:3, health:2, wait:0, cost:1, effects:{}, equip:{grant:{reach:true}}},
+});
+let HU = 70000; const give = (pl, defId)=>{ const uid = ++HU; pl.hand.push({uid, defId}); return uid; };
+const freshT = pl=>{ pl.playedThisTurn = false; pl.playsTurn = -99; pl.lumber = 9; pl.discardUsedThisTurn = false; };
+const at = (pl, sl)=> all(pl).find(c=> c.hp > 0 && c.slot === sl);
+const smithDef = defs['anvilwhisker-otter'], thiefCard = defs['glintsnatch-magpie'];
+ok(smithDef && thiefCard, 'the two new cards are in the defs (Anvilwhisker Otter, Glintsnatch Magpie)');
+{ const {e, P} = mk(); put(e, P, 1, 'anvilwhisker-otter', 0).wait = 0; P[1].stone = 1; const ev = round(e, P); const lone = P[1].eqSlots && P[1].eqSlots[-1];
+  ok(P[1].stone === 0 && lone && /^sk2-forged~1x0$/.test(lone.defId) && ev.some(x=> x.type === 'equipLaid' && x.forged && x.slot === -1), `the smith pays 1 Stone and lays a +1/+0 Forged Blade in its nearest free slot (${JSON.stringify(P[1].eqSlots)})`);
+  const d = e.derivedDefs[lone.defId]; ok(d && d.cardType === 'equipment' && d.attack === 1 && d.health === 0 && d.token, 'the Forged Blade is an equipment token, +1/+0');
+  round(e, P); ok(!(P[1].stone > 0) && Object.keys(P[1].eqSlots).length === 1, 'no Stone: no second blade'); }
+{ const {e, P} = mk(); put(e, P, 1, 'anvilwhisker-otter', 0).wait = 0; put(e, P, 1, 'k2b-wall', -1); put(e, P, 1, 'k2b-wall', 1); P[1].eqSlots = {'-2': {defId:'k2b-sword'}, 2: {defId:'k2b-sword'}}; P[1].stone = 3;
+  const ev = round(e, P); ok(P[1].stone === 3 && kind(ev, 'noRoom').length === 1, 'no free slot (every legal slot taken or holding a piece): nothing is laid, and the Stone is not paid'); }
+{ const {e, P} = mk(); put(e, P, 1, 'anvilwhisker-otter', 0).wait = 0; P[1].stone = 1; round(e, P); freshT(P[1]);
+  const u = e.debugSpawnCard(P, so, 1, 'k2b-unit', -1, {}, []); const c = at(P[1], -1); e.floorScan(P, so, {}, []);
+  ok(u && c && /^sk2-forged/.test(c.equipment) && c.equipping === 1 && c.atk === 2, 'a unit played onto the blade picks it up and is equipping (no bonus yet)');
+  e.roundStart(P, 2, so, {}, []); ok(c.atk === 3 && c.equipOn, `a round later it is +1/+0 (${c.atk})`); }
+// Disarm: on hit, the hit unit's piece (equipped: its stats and skills come off); on play, the foe's nearest lone piece; not if it carries one
+const equipUnder = (e, P, pid, c)=>{ freshT(P[pid]); const h = give(P[pid], 'k2b-sword'); ok(e.placeEquipment(P, so, pid, h, c.slot, {}, []), 'equipped for the test'); e.roundStart(P, 2, so, {}, []); };
+{ const {e, P} = mk(); const T = put(e, P, 1, 'k2b-thief', 0), V = put(e, P, 2, 'k2b-unit', 0); equipUnder(e, P, 2, V);
+  ok(V.equipOn && V.atk === 5 && V.maxHp === 22 && (defs[V.defId] || e.derivedDefs[V.defId]).effects.reach, `the target is equipped (+3/+2, Reach): ${V.atk}/${V.maxHp}`);
+  const ev = []; e.debugAttack(P, so, T.uid, {}, ev); const dv = (defs[V.defId] || e.derivedDefs[V.defId]);
+  ok(!V.equipment && V.atk === 2 && V.maxHp === 20 && !(dv.effects || {}).reach, `Disarm on hit: the piece comes off with its stats and skill (${V.atk}/${V.maxHp})`);
+  ok(T.equipment === 'k2b-sword' && T.equipping === 1 && T.atk === 1 && kind(ev, 'disarm').length === 1, 'the thief starts equipping the stolen piece (EQ\'s round)');
+  e.roundStart(P, 3, so, {}, []); ok(T.atk === 4 && T.equipOn, `... and has its bonus a round later (${T.atk})`); }
+{ const {e, P} = mk(); const T = put(e, P, 1, 'k2b-thief', 0), V = put(e, P, 2, 'k2b-unit', 0), W = put(e, P, 2, 'k2b-unit', 1); equipUnder(e, P, 2, V); freshT(P[2]); const h = give(P[2], 'k2b-sword'); e.placeEquipment(P, so, 2, h, 1, {}, []);
+  T.equipment = 'k2b-sword'; T.equipping = 1; const ev = []; e.debugAttack(P, so, T.uid, {}, ev);
+  ok(V.equipment === 'k2b-sword' && kind(ev, 'disarmFull').length === 1, 'a thief that already carries a piece takes nothing'); }
+{ const {e, P} = mk(); P[2].eqSlots = {2: {defId:'k2b-sword'}, '-1': {defId:'k2b-sword'}}; put(e, P, 2, 'k2b-unit', 0); const ev = []; e.debugSpawnCard(P, so, 1, 'k2b-thief', 0, {}, ev); const T = at(P[1], 0);
+  ok(T && T.equipment === 'k2b-sword' && !P[2].eqSlots[-1] && P[2].eqSlots[2] && kind(ev, 'disarm').some(x=> x.lone && x.slot === -1), 'Disarm on play: the foe\'s nearest lone piece (slot -1, not 2) comes to it'); }
+{ const {e, P} = mk(); put(e, P, 2, 'k2b-unit', 0); const ev = []; e.debugSpawnCard(P, so, 1, 'glintsnatch-magpie', 0, {}, ev); const T = at(P[1], 0);
+  ok(T && !T.equipment && !kind(ev, 'disarm').length, 'no piece to take: nothing happens (the real card, Glintsnatch Magpie)'); }
+
+// ---- 4c. The equipment rules (owner item 17): what EQ's tests left open
+{ const {e, P} = mk(); const R0 = put(e, P, 1, 'k2b-restless', 0); put(e, P, 2, 'k2b-wall', 2); equipUnder(e, P, 1, R0); const a0 = R0.atk;
+  e.roundStart(P, 3, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
+  ok(R0.slot !== 0 && R0.equipment === 'k2b-sword' && R0.equipOn && R0.atk >= a0 && !(P[1].eqSlots || {})[0], `a piece moves with its unit (Restless walked ${0} -> ${R0.slot}, still equipped, nothing left behind)`); }
+{ const {e, P} = mk(); const R0 = put(e, P, 1, 'k2b-restless', 0); put(e, P, 2, 'k2b-wall', 2); P[1].eqSlots = {1: {defId:'k2b-sword'}}; e.floorScan(P, so, {}, []);
+  e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
+  ok(R0.slot === 1 && R0.equipment === 'k2b-sword' && !(P[1].eqSlots || {})[1], `a unit that moves onto a lone piece picks it up (slot ${R0.slot})`); }
+{ const {e, P} = mk(); const R0 = put(e, P, 1, 'k2b-restless', 0); put(e, P, 2, 'k2b-wall', 2); R0.equipment = 'k2b-sword'; R0.equipOn = true; P[1].eqSlots = {1: {defId:'k2b-sword'}}; e.floorScan(P, so, {}, []);
+  e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
+  ok(R0.slot === 1 && (P[1].eqSlots || {})[1], 'a unit already carrying a piece walks over a lone one and leaves it lying'); }
+{ const {e, P} = mk(); const tok = e.makeBoardCard('k2b-unit'); P[1].eqSlots = {0: {defId:'k2b-sword'}}; const ok1 = e.debugSpawnCard(P, so, 1, 'k2b-unit', 0, {}, []); const c = at(P[1], 0);
+  ok(ok1 && c && c.equipment === 'k2b-sword' && c.equipping === 1 && c.atk === 2, 'a unit spawned onto a lone piece picks it up, and waits its round for the bonus'); void tok; }
+{ const {e, P} = mk(); const V = put(e, P, 1, 'k2b-unit', 0); equipUnder(e, P, 1, V); e.debugDamage(P, so, V.uid, 999, {}, []);
+  ok(P[1].eqSlots && P[1].eqSlots[0] && P[1].eqSlots[0].defId === 'k2b-sword' && !P[1].graveyard.some(g=> g.defId === 'k2b-sword'), 'an equipped unit dies: its piece stays in the slot (not the graveyard)'); }
+{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, battleMode:'gravity'}); const P = {1:e.newPlayer(1, {}), 2:e.newPlayer(2, {})}; e.debugSpawnCard(P, so, 1, 'k2b-unit', 'left', {}, []);
+  const V = all(P[1])[0]; freshT(P[1]); const h = give(P[1], 'k2b-sword'); ok(e.equip(P, so, 1, V.uid, h, {}, []), 'gravity board: equip onto a unit'); e.debugDamage(P, so, V.uid, 999, {}, []);
+  ok(P[1].graveyard.some(g=> g.defId === 'k2b-sword') && !Object.keys(P[1].eqSlots || {}).length, 'a packed (gravity) row has no slots: the piece goes to the graveyard with its unit'); }
+
 // ---- 5. App, texts, costs, the note and the decision
 const src = R('arena_app.js'), TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
 ['quarry', 'smelter'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:TX\\('ui\\.sk2n-${k}'\\)`).test(src), `${k}: in PASSIVE_DEFS (the Codex skill book)`));
