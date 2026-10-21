@@ -7729,7 +7729,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
   m21:'map-m21', // The Quiet Summit -- snow and dawn
-  tw:'map-tw', mlb:'map-mlb', // 2026-10-18: the Babel Spire and the Long Burrow fight on their own (derived) backdrops
+  tw:'map-tw', mlb:'map-mlb', muc:'map-muc' /* 2026-10-21 (package AR): the Undercroft */, // 2026-10-18: the Babel Spire and the Long Burrow fight on their own (derived) backdrops
   m22:'map-m22', m23:'map-m23', m24:'map-m24', // 2026-10-17: the Rimefire Caldera (snow over a glowing crater), the Goldfeather Siege, Goldfeather Keep
   mf:'map-mf',   // Thistlewood -- wet forest, stream and pond (the Outskirts' old art since 2026-10-15)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
@@ -16459,7 +16459,7 @@ function activateSpot(spot){
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
 // 2026-10-18: + the Babel Spire ("tw") and the Long Burrow ("mlb"), which drew only a gradient.
-const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw","mpd"]); // + "mpd", the Pale Desert (2026-10-18, package PD: tools/make_map_backgrounds.py mpd)
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw","mpd","muc"]); // + "mpd", the Pale Desert (2026-10-18, package PD: tools/make_map_backgrounds.py mpd)
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -19837,116 +19837,143 @@ function resumeAbandonedMatchNow(){
     return true;
   }catch(e){ console.error('[Bramblewood] resume failed', e); clearResumeSnapshot(); matchState = null; return false; }
 }
-function renderArenaSubTab(body){
-  const resumable = !!loadAsyncMatchState();
-  const dungeonRun = loadDungeonRun();
-  const dungeonStageLabel = dungeonRun ? dungeonRun.stage : 1;
-  const dungeonNodesHTML = [1,2,3].map(n=>{
-    const cls = n<dungeonStageLabel ? 'cleared' : (n===dungeonStageLabel ? 'current' : 'locked');
-    const connector = n<3 ? `<span class="dungeon-node-connector ${n<dungeonStageLabel?'cleared':''}"></span>` : '';
-    return `<span class="dungeon-node ${cls}">${n}</span>${connector}`;
+// 2026-10-21 (package AR, owner 22:41 on the Arena page: "Background."; "PVP should be top, split into two PVP buttons - Collection PVP
+// or Standard."; "Dungeon games don't belong there"; "Showcase the field effects more centre and prominently, using hover to see the
+// effect. Limit the text on the screen as much as possible."; "recent opponents can be moved to profile"): the Arena is a place now,
+// like the Stomping Grounds (package SG): the tourney ground (map art "marena") under a veil, bunting, a hanging plank sign, dust off the
+// sand. Top to bottom: your rank chips; the two PvP buttons (Collection = your own cards, the old PvP; Standard = every card at Level 1,
+// the existing Standard format, with its deck button); today's field as big Environment cards whose words show on hover, focus or a
+// long press; then the other modes as small tiles whose details sit in their tooltips. The Dungeon moved to the Conquest Map (the
+// Undercroft, a daily dungeon under Map 11) and the recent opponents to the Profile's match log. Kept ids: continueAsyncBtn, startPvpBtn,
+// stdDeckBtn, startVsAiBtn, startVsPcBtn, startGauntletBtn, cagedPanel, startCagedAiBtn, startCagedPcBtn, openAutobattleBtn,
+// startLiveRankedBtn, liveQueueStatus, cancelLiveQueueBtn, arenaAchvBtn and [data-arena-format]. Gone: dungeonPanel, startDungeonBtn,
+// abandonDungeonBtn and [data-ro-view] (now on the Profile).
+let arenaLoadTries = 0;
+function arenaDataReady(){ try{ return typeof CARD_DEFS_BASELINE !== 'undefined' && Object.keys(CARD_DEFS_BASELINE).length > 0 && typeof todaysArenaRuleset === 'function'; }catch(e){ return false; } }
+function arenaStateHTML(kind){
+  if(kind === 'loading') return `<section class="ar3-panel ar3-state is-loading" role="status" aria-live="polite"><div class="ar3-skel" aria-hidden="true"><span></span><span></span></div><div class="ar3-skel-cards" aria-hidden="true"><i></i><i></i><i></i></div><p class="ar3-state-msg">${escapeHtml(TX('ui.ar-loading'))}</p></section>`;
+  return `<section class="ar3-panel ar3-state is-error" role="alert"><span class="ar3-state-ico" aria-hidden="true">🏟️</span><h3>${escapeHtml(TX('ui.ar-error'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.ar-error-hint'))}</p><button type="button" class="btn primary" id="arenaRetryBtn">↻ ${escapeHtml(TX('ui.stomp-retry'))}</button></section>`;
+}
+// Today's field, centre stage: one big Environment card per rule, its words in a bubble on hover, focus or a long press (phones).
+function arenaFieldShowcaseHTML(rs){
+  const rows = arenaAllRows(rs);
+  if(!rows.length) return `<p class="ar3-classic">${escapeHtml(TX('ui.ar-classic'))}</p>`;
+  return rows.map((row, i)=>{
+    const artKey = row.art || fieldArtKeyOfRow(row, (rs && rs.rules) || {});
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: fieldArtOf(artKey), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: row.text}};
+    const card = matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(String(row.key).replace(/^field:/, ''))}`, `aria-hidden="true" style="--i:${i}"`, `<div class="env-line">${escapeHtml(row.short || '')}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`);
+    return `<div class="ar3-field" tabindex="0" role="button" aria-expanded="false" data-ar3-field aria-label="${escapeAttr(row.name + ': ' + row.text)}" style="--i:${i}">
+      ${card}
+      <span class="ar3-tip" role="tooltip"><b>${row.icon} ${escapeHtml(row.name)}</b><span class="ar3-tip-t">${keywordizeHTML(escapeHtml(row.text))}</span></span></div>`;
   }).join('');
-  const dungeonStatusHTML = dungeonRun ? `<div class="dungeon-status-line">Stage ${dungeonRun.stage}/${DUNGEON_STAGE_COUNT} · Bramble: ${dungeonRun.castleHp!=null?Math.max(0,dungeonRun.castleHp):'Full'} HP · ${dungeonDeckCount(dungeonRun)} cards left in deck</div>` : '';
-  // The Arena, redrawn (2026-10-17, user: "Improve the Arena UI UX and look and feel. Is there a thematic background and other elements we
-  // can also use."): a tourney-ground banner (the same pixel ground the Arena's fights stand on, bunting and pennants) with your rank,
-  // rating, Laurels and deck; today's rules as Environment cards (arenaRuleCardsHTML); the format switch; then every mode as a tile
-  // that says what it is and what a win pays (ARENA_WIN_LINES). Element ids are unchanged, so the wiring below and the tests still fit.
-  const rs = todaysArenaRuleset(), rk = rankForRating(myRating), G = CURRENCY_META.gold.glyph;
+}
+// Long press (or a tap) opens a field card's bubble on a touch screen; a tap elsewhere closes it. Mouse and keyboard use :hover / :focus.
+function wireArenaFieldShowcase(root){
+  const items = root.querySelectorAll('[data-ar3-field]'); if(!items.length) return;
+  const close = keep=> items.forEach(el=>{ if(el !== keep){ el.classList.remove('is-open'); el.setAttribute('aria-expanded', 'false'); } });
+  const open = el=>{ close(el); el.classList.add('is-open'); el.setAttribute('aria-expanded', 'true'); };
+  items.forEach(el=>{
+    let timer = null, longed = false;
+    el.addEventListener('pointerdown', e=>{ if(e.pointerType === 'mouse') return; longed = false; clearTimeout(timer); timer = setTimeout(()=>{ longed = true; open(el); try{ navigator.vibrate && navigator.vibrate(8); }catch(_){} }, 380); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(t=> el.addEventListener(t, ()=> clearTimeout(timer)));
+    el.addEventListener('contextmenu', e=>{ if(longed) e.preventDefault(); });
+    el.addEventListener('click', ()=>{ if(longed){ longed = false; return; } if(el.classList.contains('is-open')) close(); else open(el); });
+    el.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ close(); el.blur(); } else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(el.classList.contains('is-open')) close(); else open(el); } });
+  });
+  if(!root._ar3Outside){ root._ar3Outside = true; document.addEventListener('pointerdown', e=>{ if(!root.isConnected) return; if(!(e.target.closest && e.target.closest('[data-ar3-field]'))) root.querySelectorAll('[data-ar3-field].is-open').forEach(el=>{ el.classList.remove('is-open'); el.setAttribute('aria-expanded', 'false'); }); }, true); }
+}
+function arenaPvpPairHTML(){
+  const left = pvpTicketsLeft(), nx = msUntilNextPvpTicket(), rk = rankForRating(myRating), sd = loadStandardDeck(), sdN = deckTotal(sd);
+  const tk = `<span class="ar3-tk" title="${escapeAttr(TX('ui.ar-tickets-tip', {cap: PVP_TICKETS_PER_DAY}))}"><b>${left}/${PVP_TICKETS_PER_DAY}</b> 🎟️${nx == null ? '' : ` <small>+1 ${clockText(nx)}</small>`}</span>`;
+  return `<section class="ar3-pvp" aria-label="PvP">
+    <div class="ar3-pvp-row">
+      <button type="button" class="btn primary big ar3-pvp-btn is-collection" id="startPvpBtn" ${left ? '' : 'disabled'} title="${escapeAttr(TX('ui.ar-pvp-collection-tip'))}">
+        <span class="ar3-pvp-ico" aria-hidden="true">📚</span><span class="ar3-pvp-lbl">${escapeHtml(TX('ui.ar-pvp-collection'))}</span><span class="ar3-pvp-sub">${escapeHtml(TX('ui.ar-pvp-collection-sub'))}</span></button>
+      <button type="button" class="btn primary big ar3-pvp-btn is-standard" id="startPvpStdBtn" ${left ? '' : 'disabled'} title="${escapeAttr(TX('ui.ar-pvp-standard-tip'))}">
+        <span class="ar3-pvp-ico" aria-hidden="true">🃏</span><span class="ar3-pvp-lbl">${escapeHtml(TX('ui.ar-pvp-standard'))}</span><span class="ar3-pvp-sub">${escapeHtml(TX('ui.ar-pvp-standard-sub'))}</span></button>
+    </div>
+    <div class="ar3-pvp-foot">${tk}<span class="ar3-chip" title="Your Arena rank (from your PvP rating)">🏅 <b>${escapeHtml(rk.label)}</b> <small>${Math.round(myRating)}</small></span>
+      <button type="button" class="btn small ghost ar3-std-deck ${sdN === DECK_SIZE ? '' : 'is-short'}" id="stdDeckBtn" title="${escapeAttr(TX('ui.ar-std-deck-tip'))}">🃏 ${escapeHtml(TX('ui.ar-std-deck', {n: sdN, size: DECK_SIZE}))}</button></div>
+  </section>`;
+}
+function renderArenaSubTab(body){
+  if(!body) return;
+  const title = TX('ui.ar-title');
+  if(!arenaDataReady()){
+    body.innerHTML = `<div class="ar3-scene map-theme-marena" data-sign="${escapeAttr('🏟️ ' + (window.i18 ? i18(title) : title))}"><i class="ar2-bunting" aria-hidden="true"></i>${arenaStateHTML(arenaLoadTries < 20 ? 'loading' : 'error')}</div>`;
+    if(arenaLoadTries++ < 20) setTimeout(()=> renderArenaSubTabIfOpen(), 250);
+    else { const rb = document.getElementById('arenaRetryBtn'); if(rb) rb.onclick = ()=>{ arenaLoadTries = 0; renderArenaSubTab(body); }; }
+    return;
+  }
+  arenaLoadTries = 0;
+  try{ renderArenaSubTabInner(body, title); }
+  catch(e){
+    try{ console.error('[Bramblewood] the Arena failed to draw:', e); }catch(_){}
+    body.innerHTML = `<div class="ar3-scene map-theme-marena" data-sign="${escapeAttr('🏟️ ' + (window.i18 ? i18(title) : title))}"><i class="ar2-bunting" aria-hidden="true"></i>${arenaStateHTML('error')}</div>`;
+    const rb = document.getElementById('arenaRetryBtn'); if(rb) rb.onclick = ()=> renderArenaSubTab(body);
+  }
+}
+function renderArenaSubTabInner(body, title){
+  const resumable = !!loadAsyncMatchState();
+  const rs = todaysArenaRuleset();
   const msDay = 86400000 - ((Date.now() - new Date().getTimezoneOffset()*60000) % 86400000), hrsLeft = Math.max(1, Math.round(msDay / 3600000));
   let tomorrow = null; try{ tomorrow = dailyPortent(arenaDayNumber() + 1); }catch(e){}
-  const streak = loadGauntletStreak(), win = (txt)=> `<span class="amb-win"><span aria-hidden="true">🏆</span> ${txt}</span>`;
+  const streak = loadGauntletStreak();
+  const std = standardFormatOn();
+  const head = rs.portent && rs.portent.holiday ? rs.portent.holidayIcon + ' ' + rs.portent.holiday : rs.portent && rs.portent.strange ? '✷ ' + TX('ui.ar-strange-day') : TX('ui.ar-today');
+  // a mode tile: icon and name only; what it is and what it pays are in its tooltip
+  const tile = (id, ico, lbl, tip, extra, cls)=> `<button type="button" class="ar3-mode ${cls || ''}" id="${id}" title="${escapeAttr(tip)}"><span class="ar3-mode-ico" aria-hidden="true">${ico}</span><span class="ar3-mode-lbl">${lbl}</span>${extra || ''}</button>`;
   body.innerHTML = `
-    <div class="panel arena2 map-theme-marena">
-      <header class="ar2-hero">
-        <i class="ar2-bunting" aria-hidden="true"></i>
-        <div class="ar2-hero-row">
-          <div class="ar2-title"><span class="ar2-crest" aria-hidden="true">🏟️</span><div><h2>The Arena</h2><p>Bramblewood's tourney ground. New rules every day.</p></div></div>
-          <div class="ar2-stats">
-            <span class="ar2-stat ar2-rank" title="Your Arena rank (from your PvP rating)"><span aria-hidden="true">🏅</span><b>${escapeHtml(rk.label)}</b><small>rating ${Math.round(myRating)}</small></span>
-            <span class="ar2-stat" title="${escapeAttr(CURRENCY_META.laurels.label + ': the Arena’s own reward')}"><span aria-hidden="true">${CURRENCY_META.laurels.glyph}</span><b>${Number((myCurrencies && myCurrencies.laurels) || 0)}</b><small>Laurels</small></span>
-            <span class="ar2-stat ar2-deckstat">${deckSizeBadgeHTML(myDeckCounts)}<small>${escapeHtml((CHARACTER_DEFS[myCharacterId]||{}).name||'')}</small></span>
-          </div>
-        </div>
-      </header>
-      ${resumable ? `<div class="arena-group"><div class="arena-mode-grid"><button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
-          <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span><span class="amb-sub">Your saved match</span></button></div></div>` : ''}
-      <section class="ar2-today" aria-label="Today's Arena rules">
-        <div class="ar2-today-head"><h3>${rs.portent && rs.portent.holiday ? escapeHtml(rs.portent.holidayIcon + ' ' + rs.portent.holiday) : rs.portent && rs.portent.strange ? '✷ A strange day' : "Today's rules"}</h3>
-          <span class="ar2-today-sub">Every Arena fight today plays under these. New rules in ${hrsLeft}h${tomorrow ? ` <span class="ar2-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">· next ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''} · Ranked Live plays Standard.</span></div>
-        <div class="ar2-fields">${arenaRuleCardsHTML(rs)}</div>
+    <div class="ar3-scene map-theme-marena" data-sign="${escapeAttr('🏟️ ' + (window.i18 ? i18(title) : title))}">
+      <i class="ar2-bunting" aria-hidden="true"></i>
+      <div class="ar3-motes" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*41)%92 + 4}%; animation-delay:${-((k*1.7)%8).toFixed(1)}s; animation-duration:${8 + (k*0.7)%5}s"></i>`).join('')}</div>
+      <h2 class="sr-only">🏟️ ${escapeHtml(title)}</h2>
+      <div class="ar3-chips">
+        <span class="ar3-chip" title="${escapeAttr(CURRENCY_META.laurels.label + ': the Arena’s own reward')}"><span aria-hidden="true">${CURRENCY_META.laurels.glyph}</span> <b>${Number((myCurrencies && myCurrencies.laurels) || 0)}</b></span>
+        <span class="ar3-chip ar3-deckchip">${deckSizeBadgeHTML(myDeckCounts)}</span>
+        <button type="button" class="ar3-chip ar3-chip-btn" id="arenaAchvBtn" title="Achievements" aria-label="Achievements">🏆</button>
+      </div>
+      ${resumable ? `<button type="button" class="btn primary ar3-continue" id="continueAsyncBtn"><span aria-hidden="true">▶️</span> Continue <small>Your saved match</small></button>` : ''}
+      ${arenaPvpPairHTML()}
+      <section class="ar3-panel ar3-today" aria-label="${escapeAttr(head)}">
+        <div class="ar3-today-head"><h3>${escapeHtml(head)}</h3>
+          <span class="ar3-today-when" title="${escapeAttr(TX('ui.ar-rules-tip'))}">⏳ ${escapeHtml(TX('ui.ar-new-in', {h: hrsLeft}))}${tomorrow ? ` <span class="ar3-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">→ ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''}</span></div>
+        <div class="ar3-fields">${arenaFieldShowcaseHTML(rs)}</div>
       </section>
-      <div class="arena-format" role="radiogroup" aria-label="Deck format"><span class="arena-format-k">Format</span>
-        <button type="button" class="tk-speed-btn ${standardFormatOn()?'':'is-on'}" role="radio" aria-checked="${!standardFormatOn()}" data-arena-format="collection">📚 Collection</button>
-        <button type="button" class="tk-speed-btn ${standardFormatOn()?'is-on':''}" role="radio" aria-checked="${standardFormatOn()}" data-arena-format="standard">🃏 Standard</button>
-        ${standardFormatOn() ? `<button type="button" class="btn small" id="stdDeckBtn">Edit Standard deck (${deckTotal(loadStandardDeck())}/${DECK_SIZE})</button>` : ''}
-        <span class="arena-format-sub">${standardFormatOn() ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass &amp; Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.'}</span></div>
-      <div class="arena-group"><h3 class="arena-group-h">Practice</h3><div class="arena-mode-grid arena-practice-grid">
-        <button class="btn primary big arena-mode-btn arena-hero" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer, under today's rules · costs no Energy</span>${win('Practice: no prizes, but quests count')}</button>
-        <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span>${win('Bragging rights')}</button>
-      </div></div>
-      <div class="arena-group"><h3 class="arena-group-h">Challenges</h3><div class="arena-mode-grid">
-${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
-          <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span><span class="amb-sub">Win ${GAUNTLET_GOAL} in a row; one loss starts you over</span>
-          <span class="gauntlet-streak-line">🔥 ${streak} / ${GAUNTLET_GOAL} · best ${loadGauntletBest()}</span>
-          ${win(`Next win ${15 + (streak + 1)*5} ${G} ${3 + streak + 1} ✨ · ${GAUNTLET_GOAL} in a row +100 ${G} 2 🔩`)}
-        </button>` : ''}
-        <div class="arena-mode-btn caged-panel" id="cagedPanel">
-          <span class="amb-ico">⛓️</span><span class="amb-lbl">Caged Fight</span>
-          <span class="amb-sub">Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.</span>
-          ${win('Practice: quests count')}
-          <div class="dungeon-panel-actions"><button class="btn primary" id="startCagedAiBtn">vs Computer</button><button class="btn ghost" id="startCagedPcBtn" title="Both leaders caged">Pass &amp; Play</button></div>
+      <section class="ar3-panel ar3-modes-panel" aria-label="${escapeAttr(TX('ui.ar-modes'))}">
+        <div class="ar3-modes-head"><h3>${escapeHtml(TX('ui.ar-modes'))}</h3>
+          <div class="arena-format ar3-format" role="radiogroup" aria-label="Deck format" title="${escapeAttr(std ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass & Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.')}">
+            <button type="button" class="tk-speed-btn ${std?'':'is-on'}" role="radio" aria-checked="${!std}" data-arena-format="collection">📚 Collection</button>
+            <button type="button" class="tk-speed-btn ${std?'is-on':''}" role="radio" aria-checked="${std}" data-arena-format="standard">🃏 Standard</button></div></div>
+        <div class="ar3-modes">
+          ${tile('startVsAiBtn', '🤖', 'Quick Battle', "You vs the computer, under today's rules · costs no Energy", '', 'is-hero')}
+          ${tile('startVsPcBtn', '👥', 'Pass &amp; Play', 'Two players, one device')}
+          ${tabOpen('gauntlet') ? tile('startGauntletBtn', '🏅', 'Gauntlet', `Win ${GAUNTLET_GOAL} in a row; one loss starts you over`, `<span class="ar3-mode-line">🔥 ${streak}/${GAUNTLET_GOAL}</span>`) : ''}
+          <div class="ar3-mode is-caged" id="cagedPanel" title="Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.">
+            <span class="ar3-mode-ico" aria-hidden="true">⛓️</span><span class="ar3-mode-lbl">Caged Fight</span>
+            <span class="ar3-mode-acts"><button type="button" class="btn small primary" id="startCagedAiBtn">vs Computer</button><button type="button" class="btn small ghost" id="startCagedPcBtn" title="Both leaders caged">Pass &amp; Play</button></span></div>
+          ${tabOpen('autobattle') ? tile('openAutobattleBtn', '🧩', 'Autobattler', 'Draft a team, then watch it fight') : ''}
+          ${liveQueueing ? `<div class="ar3-mode live-queue-status" id="liveQueueStatus"><span class="ar3-mode-ico" aria-hidden="true">🔎</span><span class="ar3-mode-lbl">Searching…</span><span class="ar3-mode-line">Matching by rating</span><button type="button" class="btn small ghost" id="cancelLiveQueueBtn">Cancel</button></div>`
+            : tile('startLiveRankedBtn', '⚡', 'Ranked Live', 'Real players, real time · classic rules')}
         </div>
-        <div class="arena-mode-btn dungeon-panel" id="dungeonPanel">
-          <span class="amb-ico">🗝️</span><span class="amb-lbl">Dungeon</span>
-          <span class="amb-sub">3 fights; your losses carry over</span>
-          <div class="dungeon-node-row">${dungeonNodesHTML}</div>
-          ${dungeonStatusHTML}
-          ${win(`Clear all 3: 150 ${G} 30 ✨ 2 🔩`)}
-          <div class="dungeon-panel-actions">
-            <button class="btn primary" id="startDungeonBtn">${dungeonRun?'Continue Run':'Enter Dungeon'}</button>
-            ${dungeonRun?`<button class="btn ghost" id="abandonDungeonBtn">Abandon Run</button>`:''}
-          </div>
-        </div>
-      </div></div>
-      ${tabOpen('autobattle') ? `<div class="arena-group"><h3 class="arena-group-h">Whisper’s Game</h3><div class="arena-mode-grid">
-        <button class="btn primary big arena-mode-btn" id="openAutobattleBtn"><span class="amb-ico">🧩</span><span class="amb-lbl">Autobattler</span><span class="amb-sub">Draft a team, then watch it fight</span></button>
-      </div></div>` : ''}
-      <div class="arena-group"><h3 class="arena-group-h">Online <button type="button" class="btn small ghost arena-achv-btn" id="arenaAchvBtn" title="Achievements">🏆 Achievements</button></h3><div class="arena-mode-grid">
-        ${pvpTileHTML()}
-        ${liveQueueing ? `
-        <div class="arena-mode-btn live-queue-status" id="liveQueueStatus">
-          <span class="amb-ico">🔎</span><span class="amb-lbl">Searching…</span>
-          <span class="amb-sub">Matching by rating</span>
-          <button class="btn ghost" id="cancelLiveQueueBtn" style="margin-top:8px;">Cancel</button>
-        </div>` : `
-        <button class="btn primary big arena-mode-btn live-ranked-mode-btn" id="startLiveRankedBtn">
-          <span class="amb-ico">⚡</span><span class="amb-lbl">Ranked Live</span><span class="amb-sub">Real players, real time · classic rules</span>${win('Rating: climb from Sprout to Starwood')}
-        </button>`}
-      </div></div>
-      ${recentOpponentsPlayerHTML()}
+      </section>
     </div>`;
-  { const ab = document.getElementById('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
+  const $ = id=> document.getElementById(id);
+  { const ab = $('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
   body.querySelectorAll('[data-arena-format]').forEach(b=> b.addEventListener('click', ()=>{ setStandardFormat(b.dataset.arenaFormat==='standard'); renderArenaSubTab(body); }));
-  { const sb = document.getElementById('stdDeckBtn'); if(sb) sb.addEventListener('click', ()=> openStandardDeckBuilder(()=> renderArenaSubTab(body))); }
-  document.getElementById('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
-  const abBtn = document.getElementById('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); });
-  document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
-  const pvpBtn = document.getElementById('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp'));
-  { const gb = document.getElementById('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
-  { const a = document.getElementById('startCagedAiBtn'); if(a) a.addEventListener('click', ()=> startMatch('ai', {caged:true}));
-    const b = document.getElementById('startCagedPcBtn'); if(b) b.addEventListener('click', ()=> startMatch('pc', {caged:true})); }
-  document.getElementById('startDungeonBtn').addEventListener('click', startDungeonFight);
-  const abandonDungeonBtn = document.getElementById('abandonDungeonBtn');
-  if(abandonDungeonBtn) abandonDungeonBtn.addEventListener('click', ()=>{
-    if(confirm(TX('dialog.abandon-this-dungeon-run-your-progress'))){
-      clearDungeonRun();
-      renderArenaSubTab(body);
-    }
-  });
-  if(resumable) document.getElementById('continueAsyncBtn').addEventListener('click', resumeAsyncMatch);
-  const liveBtn = document.getElementById('startLiveRankedBtn'); if(liveBtn) liveBtn.addEventListener('click', findLiveRankedMatch);
-  body.querySelectorAll('[data-ro-view]').forEach(b=> b.addEventListener('click', ()=> openRecentOpponentDeck(+b.dataset.roView)));
-  const cancelLiveBtn = document.getElementById('cancelLiveQueueBtn'); if(cancelLiveBtn) cancelLiveBtn.addEventListener('click', cancelLiveRankedQueue);
+  { const sb = $('stdDeckBtn'); if(sb) sb.addEventListener('click', ()=> openStandardDeckBuilder(()=> renderArenaSubTab(body))); }
+  $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
+  { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
+  $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
+  { const pvpBtn = $('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp', {standard:false})); }
+  { const sp = $('startPvpStdBtn'); if(sp) sp.addEventListener('click', ()=> startMatch('pvp', {standard:true})); }
+  { const gb = $('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
+  { const a = $('startCagedAiBtn'); if(a) a.addEventListener('click', ()=> startMatch('ai', {caged:true}));
+    const b = $('startCagedPcBtn'); if(b) b.addEventListener('click', ()=> startMatch('pc', {caged:true})); }
+  if(resumable) $('continueAsyncBtn').addEventListener('click', resumeAsyncMatch);
+  { const liveBtn = $('startLiveRankedBtn'); if(liveBtn) liveBtn.addEventListener('click', findLiveRankedMatch); }
+  { const c = $('cancelLiveQueueBtn'); if(c) c.addEventListener('click', cancelLiveRankedQueue); }
+  wireArenaFieldShowcase(body);
 }
 
 // ==== Conquest / Raid (2026-09-16, per explicit request) ====================================
@@ -20529,9 +20556,13 @@ applyPaleDesertTexts();
 function endlessDungeon(cfg){
   const n = cfg.floors || 50, nodes = [], fk = f=> `${cfg.mapNumber}-${cfg.code}-${f}`;
   for(let f = 1; f <= n; f++){
-    const boss = f % 10 === 0, deck = Object.assign({}, cfg.deck, boss ? cfg.bossAdds : {});
-    nodes.push({key:fk(f), kind: boss ? 'miniboss' : 'skirmish', name: boss ? `${cfg.bossName}, floor ${f}` : `${cfg.name}, floor ${f}`,
-      icon: boss ? cfg.bossIcon : cfg.icon, deck, hqHp: Math.round((cfg.baseHq||40) + f*3 + (boss ? 20 : 0)), floor: f, code: `${cfg.mapNumber}-${cfg.code}-${f}`,
+    // 2026-10-21 (package AR): cfg.themeOf(f), when given, picks each floor's deck, rules, name and icon (the Undercroft's lands)
+    const th = cfg.themeOf ? cfg.themeOf(f) : null;
+    const boss = f % 10 === 0, deck = th ? Object.assign({}, (boss && th.bossDeck) || th.deck) : Object.assign({}, cfg.deck, boss ? cfg.bossAdds : {});
+    const thRules = th ? ((boss && th.bossRules) || th.rules) : null;
+    nodes.push({key:fk(f), kind: boss ? 'miniboss' : 'skirmish', name: boss ? `${cfg.bossName}, floor ${f}` : `${th ? th.name : cfg.name}, floor ${f}`,
+      icon: boss ? cfg.bossIcon : (th ? th.icon : cfg.icon), deck, hqHp: Math.round((cfg.baseHq||40) + f*3 + (boss ? 20 : 0)), floor: f, code: `${cfg.mapNumber}-${cfg.code}-${f}`,
+      ...(th ? {theme: th.key} : {}), ...(thRules ? {rules: Object.assign({}, thRules)} : {}),
       flavor: boss ? cfg.bossFlavor : cfg.flavor, requires: f === 1 ? [] : [fk(f-1)],
       rewards:{first:{gold: 15 + f*3 + (boss ? 40 : 0), dust: 4 + f + (boss ? 20 : 0)}},
       // axis 'x' (2026-10-16, user: "It's like Murgle, but left to right"): floor 1 on the left, running right
@@ -20562,6 +20593,32 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m2
   // 2026-10-19 (LV): the setts' diggers were 100% on every floor for a Map 22 deck (floor 50 too, at +196%); the Caldera's badger
   // warband now (its Badger Berserkers, boars and the Ür-Elk of 22-3), so floor 1 is ~85% and the floors climb from there
   deck:{'badger-berserker':4, 'basalt-boar':2, 'grindstone-boar':2, 'ur-elk':1, 'honey-badger-fury':3, 'ore-smelter-mole':3, 'badger-sapper':2}, bossAdds:{'magma-titan':1, 'ur-elk':1}}));
+// ---- The Undercroft (2026-10-21, package AR, owner 22:41: "Dungeon games don't belong there [the Arena]. They belong in the Conquest
+// Map. They are like Skirmishes but harder." / "would assume it takes the daily dungeon tix, and keeps increasing in difficulty. But
+// because I want this to be fun, not grindy, it changes theme every 3 dungeons."): the Arena's Dungeon (three fights against random
+// decks, startDungeonFight, kept for old saves but no longer offered) moved to the map as a daily dungeon in the vaults under Map 11,
+// the Arena's own map. Built like Murgle Mayhem (endlessDungeon): each floor takes a 🗝️ dungeon key (the daily dungeon keys), floor f
+// fights half a map further on per floor (ENDLESS_FLOOR_CURVE) with 3 more bramble Health, every 10th floor is a mini-boss, a lost floor
+// sends the climb back to floor 1, and it sits in the Daily Dungeons tab and on the World map. Its twist: every 3 floors the vault opens
+// onto another land, UNDERCROFT_THEMES in order, then round again: that map's first elite deck and its field rules; a mini-boss floor
+// fights that map's boss deck. The 15 lands are in the order of their elite deck's battle rating (enemyDeckLevel at floor 1, 2026-10-21:
+// Savanna 47, Cliffs 47, Caves 49, Ashen Spurn 49, Redwood 50, Sunken Hollow 54, Morel 55, Coral 56, Briar 60, Eyrie 63, Kelp 66, Taiga 71,
+// Glass Dunes 81, Long Grass 83, Tundra 106), so a new land is never easier than the last one; only floors 46-50 go round to the first.
+// Defaults for the owner to change: the lands and their order, 50 floors, open from Map 11's arrival.
+const UNDERCROFT_THEMES = ['m5', 'mc', 'm4', 'm3', 'mr', 'm2', 'mu', 'm7', 'mh', 'm10', 'mk', 'mt', 'md', 'ml', 'm6'];
+function undercroftTheme(f){
+  const id = UNDERCROFT_THEMES[Math.floor((f - 1) / 3) % UNDERCROFT_THEMES.length], map = CONQUEST_MAPS.find(m=> m.id === id);
+  if(!map || !map.nodes.length) return null;
+  const elites = map.nodes.filter(n=> n.kind === 'elite'), boss = map.nodes.find(n=> n.kind === 'boss') || elites[elites.length - 1] || null;
+  const el = elites[0] || boss || map.nodes[map.nodes.length - 1];
+  return {key: map.id, name: map.name, icon: map.icon, deck: el.deck, rules: el.rules || null, bossDeck: boss ? boss.deck : null, bossRules: boss ? (boss.rules || null) : null};
+}
+{ const T = (k, en)=> (typeof TX === 'function' ? TX(k) : en);
+  CONQUEST_MAPS.push(endlessDungeon({id:'muc', code:'UC', mapNumber:11, parent:'m10', entry:{x:84, y:72, label: T('map.uc-entry', 'The Undercroft')},
+    name: T('map.uc-name', 'The Undercroft'), icon:'🏛️', bossName: T('map.uc-boss', 'The Vault Warden'), bossIcon:'👑', floors:50, baseHq:50,
+    blurb: T('map.uc-blurb', 'Vaults under the Arena’s sand. Every three floors the doors open onto another land.'),
+    flavor: T('map.uc-flavor', 'The next door grinds open.'), bossFlavor: T('map.uc-boss-flavor', 'Every tenth floor the warden of the vaults comes down to meet you.'),
+    themeOf: undercroftTheme})); }
 // ---- The Tower (2026-10-16, user: "Can you prepare like a tower of babylon like tower? The enemies there can scale past lvl 10. Limit
 // breaking to whatever lvl like 20. (Any stats undefined by us = assume a random +1 stat in att or def). It starts super difficult
 // already, at BR=555. Every skirmish jumps in 25 BR.") ----
@@ -22261,6 +22318,7 @@ function compassDiamondSVG(mapId, locked){
 //   - the cap is 3, raised to 4 and then 5 by the Forge's 🗝️ Key ring (Strange Materia + Maple Leaves + Magic Dust).
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
+  {mapId:'muc', mapNumber:11, icon:'🏛️'}, // 2026-10-21 (package AR): the Undercroft, the Arena's old Dungeon, under Map 11
   {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡', goldLeavesEveryClear:true}, // 2026-10-16: 🍂 20 + N Gold Leaves on every clear of floor N // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
   {slot:3, mapNumber:40, icon:'🗿'}, // 2026-10-18: no dungeon and no Map 40 yet; the slot reads "Unlocks beyond the charted maps" (mapIsCharted)
 ];
@@ -22449,6 +22507,13 @@ function openDungeonsFromKey(){
   if(currentTab !== 'play') switchTab('play'); else renderPlay();
 }
 document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('.dungeon-key-btn'); if(b){ e.preventDefault(); openDungeonsFromKey(); } });
+// The group dungeon (2026-10-21, package AR, owner 22:41: "There are group dungeons, which is fun, you play with live players. These are
+// recorded in the Daily Dungeon section."): its slot in the Daily Dungeons list. The co-op dungeon is a design (D49,
+// docs/coop-dungeon-design-2026-10-13.md) with no game code yet, so the slot says it is coming; its runs will be listed here.
+function groupDungeonCardHTML(){
+  return `<div class="dg-card is-soon dg-group"><div class="dg-diamond map-theme-marena">${compassDiamondSVG('dg-group', true)}<span class="wd-ico">👥</span></div>
+    <div class="dg-body"><b class="dg-name">${escapeHtml(TX('ui.ar-group-name'))}</b><p class="dg-sub">${escapeHtml(TX('ui.ar-group-sub'))}</p><p class="dg-sub">🚧 ${escapeHtml(TX('ui.ar-group-soon'))}</p></div></div>`;
+}
 function renderDungeonsSubTab(body){
   const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
   const cards = DAILY_DUNGEONS.map(dd=>{
@@ -22472,7 +22537,7 @@ function renderDungeonsSubTab(body){
     <div class="dg-tickets" title="${escapeAttr(dungeonKeyRuleText())}">
       <span class="dg-tix">${Array.from({length: Math.max(dungeonKeyCap(), s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
       <span>${escapeHtml(TX('ui.dungeon-keys-row', {n: s.n, cap: dungeonKeyCap(), h}))}</span></div>
-    <div class="dg-list">${cards}</div>
+    <div class="dg-list">${cards}${groupDungeonCardHTML()}</div>
     ${towerCardHTML(progress)}
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
@@ -24068,6 +24133,7 @@ function raidHubHTML(){
     <p class="panel-sub">${escapeHtml(TX('ui.raid-hub-sub', {cap: RAID_POINTS_MAX}))}</p>
     ${tickets <= 0 ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())}</p>` : ''}
     ${raidTicketItems() ? `<p class="r3-hint rk-use-row">${raidTicketUseBtnHTML()}</p>` : '' /* 2026-10-21 (package RK): Raid Tickets, past the cap too */}
+    ${adminModeEnabled ? adminRaidTicketsHTML('hub') : '' /* 2026-10-21 (package AR): admin raid tickets */}
     ${claims.map(x=> `<div class="rh-claims"><b>${escapeHtml(x.def.name || x.def.id)}</b>${x.list.map((c, i)=> raidClaimRowHTML(c, i, x.def.id)).join('')}</div>`).join('')}
     <div class="rh-list">${live.map(raidHubCardHTML).join('')}</div>
   </div>`;
@@ -29092,6 +29158,7 @@ function renderAdmin(){
     <div class="panel admin-subpanel"><h3>💰 My currencies</h3><p class="panel-sub">Set your own balances (admins only). Saved to this browser and, where the cloud has a column for it, to your account.</p>
       <div class="admin-cur-row">${Object.keys(CURRENCY_META).map(k=> `<label>${CURRENCY_META[k].glyph} ${escapeHtml(CURRENCY_META[k].label)}<input type="number" min="0" step="1" data-admin-cur="${k}" value="${Math.floor(myCurrencies[k]||0)}"></label>`).join('')}</div>
       <button type="button" class="btn small primary" id="adminCurSave">💾 Set balances</button></div>
+    <div class="panel admin-subpanel"><h3>🎫 ${escapeHtml(TX('ui.raid-tickets'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.ar-admin-rt-sub', {cap: RAID_POINTS_MAX}))}</p>${adminRaidTicketsHTML('admin') /* 2026-10-21 (package AR) */}</div>
     <div class="panel admin-subpanel"><h3>📣 World call-out</h3><p class="panel-sub">Everyone online sees it within 3 minutes, and anyone who logs in within a day. GM messages show 📣, events 🌍.</p>
       <div class="admin-cur-row"><select id="adminWeKind"><option value="gm">📣 GM message</option><option value="event">🌍 Event</option></select><input type="text" id="adminWeTitle" maxlength="140" placeholder="Headline"><input type="text" id="adminWeBody" maxlength="600" placeholder="Details (optional)"><label>Hours <input type="number" id="adminWeHours" min="0" value="24" class="w-60"></label></div>
       <button type="button" class="btn small primary" id="adminWeSend">Send call-out</button></div>
@@ -29918,11 +29985,13 @@ function startMatchInner(mode, opts, standardDeck){
   let asyncGhost = null, asyncStage = null;
   if(mode==='pvp'){
     if(!Ghosts) return;
-    if(!usePvpTicket()){ showToast(TX('toast.no-pvp-tickets-left-one-comes', {PVP_TICKETS_PER_DAY}), 'warn'); return; }
+    if(!usePvpTicket()){ if(standardDeck){ standardMatchActive = false; _stdDefsCache = null; } showToast(TX('toast.no-pvp-tickets-left-one-comes', {PVP_TICKETS_PER_DAY}), 'warn'); return; } // 2026-10-21 (package AR): a refused Standard PvP leaves the format off
     asyncStage = pvpStageForRating(myRating);
     try{ fxHook('pvpTicketUsed'); }catch(e){} // 2026-10-15 batch F: the ticket tears
     asyncGhost = pickPvpStranger(currentMatchSeed).opponent;
-    recordMyPvpDeck();
+    // 2026-10-21 (package AR): Standard PvP (the Arena's 🃏 button) meets the same strangers, every card at Level 1. Your Standard deck
+    // holds cards you may not own, so it isn't recorded as a stranger for Collection PvP.
+    if(!standardDeck) recordMyPvpDeck();
   }
   if(mode==='async' && Ghosts){
     const run = loadAsyncRun() || Ghosts.newAsyncRun(Date.now());
@@ -36950,7 +37019,7 @@ async function resolveRoundCore(opts){
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner, m.mode);
     try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay && !m.rewardDuplicate) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
-      try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
+      try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw'), standard: !!m.standard || undefined, myDeck: m.standard ? 'Standard deck' : ((getActiveDeck() || {}).name || undefined)}); }catch(e){} // 2026-10-21 (package AR): + your deck's name and the format, for the Profile's match log
     }
     if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay && !m.rewardDuplicate){ // 2026-10-18 (package Z): not on a free Spire replay; 2026-10-21 (ED): nor twice
       awardXp(3);
@@ -43792,9 +43861,9 @@ function recordRecentOpponent(entry){
   if(!entry || !entry.deck || !Object.keys(entry.deck).length) return;
   const list = loadRecentOpponents();
   list.unshift(Object.assign({at: Date.now()}, entry));
-  try{ localStorage.setItem(RECENT_OPP_KEY, JSON.stringify(list.slice(0, 20))); }catch(e){}
+  try{ localStorage.setItem(RECENT_OPP_KEY, JSON.stringify(list.slice(0, 40))); }catch(e){} // 40 (was 20) since 2026-10-21 (package AR): the Profile's two-tab match log
 }
-const RECENT_OPP_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', conquest:'Conquest', gauntlet:'Gauntlet', dungeon:'Dungeon', raidOffline:'Raid', raidOnline:'Online Raid', async:'Async', autobattle:'Autobattler', liveRanked:'Ranked'};
+const RECENT_OPP_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', conquest:'Conquest', gauntlet:'Gauntlet', dungeon:'Dungeon', raidOffline:'Raid', raidOnline:'Online Raid', async:'Async', autobattle:'Autobattler', liveRanked:'Ranked', pc:'Pass & Play'};
 function recentOpponentsPanelHTML(){
   const list = loadRecentOpponents(), defs = getCardDefs();
   return `<div class="panel recent-opps"><h2>🕑 Decks you've fought recently</h2>
@@ -43807,13 +43876,41 @@ function recentOpponentsPanelHTML(){
       : `<div class="empty-hint">No fights yet — play a match and the opponent's deck shows up here.</div>`}
   </div>`;
 }
-function recentOpponentsPlayerHTML(){
-  const list = loadRecentOpponents().slice(0, 8), defs = getCardDefs();
-  if(!list.length) return '';
-  return `<div class="arena-group"><h3 class="arena-group-h">🕑 Recent opponents</h3><div class="ro-list ro-compact">${list.map((o,i)=>{
-    const top = Object.keys(o.deck).sort((a,b)=> o.deck[b]-o.deck[a]).slice(0,5).map(id=> defs[id] ? defs[id].icon : '').join('');
-    return `<button type="button" class="ro-row ro-btn" data-ro-view="${i}"><span class="ro-res ${o.result||''}">${o.result==='win'?'W':o.result==='loss'?'L':'D'}</span>
-      <span class="ro-name"><b>${escapeHtml(o.name||'Opponent')}</b><span class="ro-meta">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${top}</span></span></button>`; }).join('')}</div></div>`;
+// The match log (2026-10-21, package AR, owner 22:41: "I think recent opponents can be moved to profile instead. With PVP and PVE log."):
+// the Arena's "Recent opponents" strip is the Profile's match log now, in two tabs. It lists what this device records of every fight
+// (recordRecentOpponent: the opponent, the mode, the result, when, the deck you faced; since today also your deck's name and whether it
+// was Standard), newest first; a row opens the opponent's deck ([data-ro-view], as on the Arena before). PvP: PvP, the Async Arena and
+// Pass & Play; PvE: everything else. It opens on the tab of your latest fight. The signed-in Match History (battle logs) stays below it.
+const MATCH_LOG_PVP_MODES = new Set(['pvp', 'async', 'liveRanked', 'pc']);
+let matchLogTab = null;
+function matchLogKind(o){ return MATCH_LOG_PVP_MODES.has(o && o.mode) ? 'pvp' : 'pve'; }
+function matchLogPanelHTML(){
+  const list = loadRecentOpponents(), defs = getCardDefs();
+  const tab = matchLogTab || (list.length ? matchLogKind(list[0]) : 'pvp');
+  const rows = kind=> list.map((o, i)=> Object.assign({i}, o)).filter(o=> matchLogKind(o) === kind);
+  const when = t=>{ const d = new Date(t || 0); return isNaN(d) || !t ? '' : d.toLocaleDateString(undefined, {month:'short', day:'numeric'}); };
+  const row = o=>{
+    const top = Object.keys(o.deck || {}).sort((a, b)=> o.deck[b] - o.deck[a]).slice(0, 5).map(id=> defs[id] ? defs[id].icon : '').join('');
+    const mode = (RECENT_OPP_MODE_LABEL[o.mode] || o.mode || '') + (o.standard ? ' · Standard' : '');
+    return `<button type="button" class="ro-row ro-btn ml-row" data-ro-view="${o.i}" title="${escapeAttr(TX('ui.ar-log-open'))}"><span class="ro-res ${o.result || ''}">${o.result==='win' ? 'W' : o.result==='loss' ? 'L' : 'D'}</span>
+      <span class="ro-name"><b>${escapeHtml(o.name || 'Opponent')}</b><span class="ro-meta">${escapeHtml(mode)}${o.myDeck && !o.standard ? ` · 🃏 ${escapeHtml(o.myDeck)}` : ''} · <span aria-hidden="true">${top}</span></span></span>
+      <span class="ml-date">${escapeHtml(when(o.at))}</span></button>`;
+  };
+  const pane = kind=>{ const r = rows(kind);
+    return `<div class="ro-list ro-compact ml-list" id="matchLog-${kind}" data-ml-list="${kind}" role="tabpanel" aria-labelledby="matchLogTab-${kind}" ${kind === tab ? '' : 'hidden'}>${r.length ? r.map(row).join('') : `<p class="empty-hint ml-empty">${escapeHtml(TX(kind === 'pvp' ? 'ui.ar-log-empty-pvp' : 'ui.ar-log-empty-pve'))}</p>`}</div>`; };
+  const tabBtn = (kind, label)=> `<button type="button" class="tk-speed-btn ${kind === tab ? 'is-on' : ''}" role="tab" id="matchLogTab-${kind}" aria-selected="${kind === tab}" aria-controls="matchLog-${kind}" data-ml-tab="${kind}">${label} <small>${rows(kind).length}</small></button>`;
+  return `<div class="panel pf-matchlog" id="matchLogPanel"><div class="ml-head"><h3>📜 ${escapeHtml(TX('ui.ar-log-title'))}</h3>
+      <div class="ml-tabs" role="tablist" aria-label="${escapeAttr(TX('ui.ar-log-title'))}">${tabBtn('pvp', '⚔️ PvP')}${tabBtn('pve', '🗺️ ' + escapeHtml(TX('ui.ar-log-pve')))}</div></div>
+    ${pane('pvp')}${pane('pve')}</div>`;
+}
+function wireMatchLogPanel(root){
+  const box = (root || document).querySelector('#matchLogPanel'); if(!box) return;
+  box.querySelectorAll('[data-ml-tab]').forEach(b=> b.addEventListener('click', ()=>{
+    matchLogTab = b.dataset.mlTab;
+    box.querySelectorAll('[data-ml-tab]').forEach(t=>{ const on = t.dataset.mlTab === matchLogTab; t.classList.toggle('is-on', on); t.setAttribute('aria-selected', String(on)); });
+    box.querySelectorAll('[data-ml-list]').forEach(l=>{ l.hidden = l.dataset.mlList !== matchLogTab; });
+  }));
+  box.querySelectorAll('[data-ro-view]').forEach(b=> b.addEventListener('click', ()=> openRecentOpponentDeck(+b.dataset.roView)));
 }
 function openMatchDeckView(pid){
   const m = matchState; if(!m) return;
@@ -46019,6 +46116,41 @@ function useRaidTicketItem(){
   saveCurrencies();
   return true;
 }
+// Admin: more raid tickets (2026-10-21, package AR, owner 22:41: "give me a way to get more raid tickets as admin."): +1, +5 or a set
+// number, in Admin and on the raid hub in Admin Mode. It writes myCurrencies.raidPoints the way useRaidTicketItem does (past the
+// RAID_POINTS_MAX cap too, which settleRaidPoints keeps), and saveCurrencies pushes raid_points / raid_points_updated_at to the
+// account like any spend. A stack at or over the cap rests its clock (as settleRaidPoints does); below it the day's clock keeps running.
+function adminSetRaidTickets(n){
+  if(!adminAllowed()) return null;
+  settleRaidPoints();
+  const before = Number(myCurrencies.raidPoints) || 0, after = Math.max(0, Math.min(999, Math.round(Number(n) || 0)));
+  myCurrencies.raidPoints = after;
+  if(after >= RAID_POINTS_MAX || !myCurrencies.raidPointsUpdatedAt) myCurrencies.raidPointsUpdatedAt = new Date().toISOString();
+  saveCurrencies();
+  try{ logTxn({action:'adminRaidTickets', source:'Admin', before, after}); }catch(e){}
+  return after;
+}
+function adminRaidTicketsHTML(where){
+  if(!adminAllowed()) return '';
+  const n = currentRaidPoints();
+  return `<div class="admin-rt ${where === 'hub' ? 'is-hub' : ''}" role="group" aria-label="${escapeAttr(TX('ui.raid-tickets'))}">
+    <span class="admin-rt-k">🛠️ ${escapeHtml(TX('ui.raid-tickets'))}: <b data-admin-rt-now>${n}</b></span>
+    <button type="button" class="btn small" data-admin-rt="1">+1</button><button type="button" class="btn small" data-admin-rt="5">+5</button>
+    <label class="admin-rt-set"><span class="sr-only">${escapeHtml(TX('ui.ar-admin-rt-set'))}</span><input type="number" min="0" max="999" step="1" value="${n}" data-admin-rt-n aria-label="${escapeAttr(TX('ui.ar-admin-rt-set'))}"></label>
+    <button type="button" class="btn small primary" data-admin-rt="set">${escapeHtml(TX('ui.ar-admin-rt-set'))}</button></div>`;
+}
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{
+  const b = e.target && e.target.closest && e.target.closest('[data-admin-rt]'); if(!b) return;
+  if(!adminAllowed()){ showToast(TX('toast.admins-only'), 'warn'); return; }
+  const box = b.closest('.admin-rt'), inp = box && box.querySelector('[data-admin-rt-n]');
+  const now = currentRaidPoints(), v = b.dataset.adminRt === 'set' ? Number(inp && inp.value) : now + Number(b.dataset.adminRt);
+  const after = adminSetRaidTickets(v); if(after == null) return;
+  try{ SoundKit.gold && SoundKit.gold(); }catch(_){}
+  showToast(TX('toast.ar-admin-rt', {n: after}), 'ok');
+  box.querySelectorAll('[data-admin-rt-now]').forEach(x=> x.textContent = String(after)); if(inp) inp.value = String(after);
+  const body = document.getElementById('playSubBody');
+  if(b.closest('.raid-hub') && body && playSubTab === 'raid' && !matchState) renderRaidSubTab(body);
+});
 // "Use a Raid Ticket (2 left)", where the raid's tickets are short and on the Inventory's shelf; '' when you hold none
 function raidTicketUseBtnHTML(cls){
   const n = raidTicketItems(); if(!n) return '';
@@ -49978,8 +50110,10 @@ function renderProfile(){
         ${adminProfileToolsHTML()}
       </div>
     </div>
+    ${matchLogPanelHTML() /* 2026-10-21 (package AR): the match log, moved here from the Arena */}
     ${matchHistoryPanelHTML()}
   </div>`;
+  wireMatchLogPanel(root);
   document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
   document.getElementById('pfAchvBtn').onclick = ()=> switchTab('achievements');
   { const sb = document.getElementById('pfScoreBtn'); if(sb) sb.onclick = ()=>{ let open = true; try{ open = tabOpen('codex'); }catch(e){} if(!open) return; codexSubTab = 'browse'; switchTab('codex'); }; } // 2026-10-18 (package C)
