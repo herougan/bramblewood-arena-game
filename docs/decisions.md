@@ -4,6 +4,13 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**HB2-1. Swordbill Challenger keeps three skills as a thematic exception** · Decide · Cards · asked 2026-10-21
+- Package HB2's new Very Rare Hummingbird (3/5, Wait 1, Flying + Taunt + Counterattack, 98% of N) has three skills. The two-skill rule's tests only exempt Epic and up, Supreme, hidden, Easter-egg and token cards, so the card is named in a THEMATIC set in tests/bf5-2026-10-21.js and tools/two_skills_2026_10_21.js. Alternatives: drop Flying (a Hummingbird that walks) or fold Counterattack into Taunt.
+  - Keep three skills as a named exception
+  - Cut to two (Taunt + Counterattack, no Flying)
+  - Cut to two (Flying + Taunt)
+- **Default:** Keep three skills as a named exception
+
 **RP1. Faction rewards' map term in the stat budget** · Decide · Rewards · asked 2026-10-21
 - A faction Rare can't be had before Map 14 and a Very Rare before Map 25 (the faction reward track), but cardObtainMap still counts every faction reward as a pack card (Map 5) for N's Map x 0.2. Changing it moves N for the 42 faction cards (package BF5's stats).
   - Follow the gate (Common 0, Uncommon ~7, Rare 14, Very Rare 25 ...)
@@ -226,19 +233,37 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Pause archetypes
 - **Default:** Ecclesia next (D23)
 
-**B14. Cap 2 (A·H + S·|S|) leaves 84 cards at 1/1 with their skills** · Decide · Balance · asked 2026-10-21
-- Under the owner's cap 2 (15:15) a Common's (N/3)² is about 16, so a skill set worth S 4 or more leaves no A·H at all (Quick alone 7.55 -> 57). BF6's formula pass put 176 cards in the bucket and squeezed 11 more under the band; 100 took one skill off without thematic loss, 84 keep their skills at the floor of their shape (1/1) and are flagged (Jaguar Stalker, Savanna Cheetah, Tomcat, Poison Dart Frog, Barnacle Fortress, Worker Ant, Courier Pigeon ...). Most skills' worths are the 10-19 full-size measures (the owner's method skipped them). List: docs/balance/bf6-2026-10-21.md (Cards that still can't fit).
-  - Accept: the flagged cards stay 1/1 until their skills are reworked
-  - Soften cap 2 (e.g. S·|S|/2, or S² only above a share of N), then re-fit
-  - Re-measure the big skills in the halved world first (Quick, Sweep, Armor, Pounce, Poison, Thorns ...; about 2.5 h of runs, a quarter done in docs/balance/skill-worth-bf6-partial.jsonl), then re-fit
-- **Default:** Re-measure the big skills in the halved world first
+**CX1. Nocturnal "at night ONLY": Twilight too?** · Decide · Rules · asked 2026-10-21
+- Package CX2 checked the engine: plain Nocturnal is +1 Attack at night and nothing else, as asked. Two things add to it today: Twilight counts as both day and night (your 2026-10-13 rule), so Nocturnal and Diurnal also apply in Twilight; and the Leylines I map rule turns the plain +1 into +3/+3. Both were left as they are.
+  - Keep: Twilight counts as night, Leylines I still boosts
+  - Nocturnal at night only, not in Twilight (Diurnal likewise by day only)
+  - Also drop Leylines I's boost for the plain forms
+- **Default:** Keep: Twilight counts as night, Leylines I still boosts
 
-**B15. Twin: no constant prices a full copy of the card** · Decide · Balance · asked 2026-10-21
-- Twin puts a full copy of the card beside it. Measured in the halved world it is off the scale (S 20+ a copy on a 2/7, 36 on a 3/11), so its cost (1) means nothing. Its two cards are held at their stats: Puddle Changeling 2/2, Mirrorhide Mutant 3/5.
-  - Price Twin as the card's own body (S = 2A + H, so its stats halve), then re-fit the two
-  - Make the twin a smaller token (e.g. half stats)
-  - Keep both as they are
-- **Default:** Price Twin as the card's own body
+**CX2. Plain Crepuscular is much stronger now; its S is still 1** · Decide · Balance · asked 2026-10-21
+- Crepuscular went from +1 Attack in Twilight only to +1 Attack by day and +1 at night (both in Twilight, and a deck with one still adds the Twilight phase). Its cost in canonical/skill-costs.json is still 1 (measured 3.72 when it was Twilight-only). Nightjar Drifter 3/6 and Woodcock Lookout 3/8 were not re-fitted (no braces).
+  - Price plain Crepuscular like its braces: 0.4 × (2 + 2) = 1.6 for +1/+0, then re-fit the two cards
+  - Re-measure it with tools/skill_worth.js
+  - Keep 1
+- **Default:** Price plain Crepuscular like its braces (1.6), re-fit the two cards
+
+**CX3. Half-miss skills inside braces cost 0** · Decide · Balance · asked 2026-10-21
+- Evasive, Flying, Shadow, Swift and Blind cost 0 in the table because the ×1.5 rule on the whole card prices them. Inside braces (Tide {+2/+2, Evasive}) that rule does not reach them, so 0.4 × their table value is 0. Mudflat Godwit's Flood {+2/+2, Evasive} counts only its +2/+2.
+  - Count a half-miss skill in braces as 0.5 × the card's 2A + H, then × 0.4
+  - Keep 0
+- **Default:** Count it as 0.5 × the card's 2A + H, × 0.4
+
+**CX4. Rarity flags: one at a time?** · Decide · Editor · asked 2026-10-21
+- The editor's four toggles (Quest, Event, Dev, Special) are exclusive: turning one on turns the others off, so every card is a rank plus at most one flag and keeps a single stored string (quest, devlegendary, or a derived one like questrare). Two flags at once (an Event card that is also Dev) would need a longer string or a separate field.
+  - Keep one flag at a time
+  - Allow several flags (a separate rarityFlags field on the card)
+- **Default:** Keep one flag at a time
+
+**CX5. The card editor's budget panel uses the old skill costs** · Decide · Editor · asked 2026-10-21
+- The editor's budget line (and the Test Lab's Stat budget) still sums S with the 2026-10-17 in-page table (SB_DEFAULT_SKILLS: Regen = its number, Evasive 0), not canonical/skill-costs.json, which tools/skill_costs.js, the re-fits and the hub use. Package CX2 gave both the same 0.4 context rule, but their inner costs differ: Kinkajou Lurker's Nocturnal {Evasive, Regen 2} is 0.8 in the editor and 2.48 in the canonical table.
+  - Make the editor read canonical/skill-costs.json (built into the page)
+  - Keep the in-page table
+- **Default:** Make the editor read canonical/skill-costs.json
 
 ## Decided
 
@@ -455,6 +480,22 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Apply it with the BF5 release
   - Hold
 - **Default:** Apply it with the BF5 release
+
+**B14. Cap 2 (A·H + S·|S|) leaves 84 cards at 1/1 with their skills** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
+- Under the owner's cap 2 (15:15) a Common's (N/3)² is about 16, so a skill set worth S 4 or more leaves no A·H at all (Quick alone 7.55 -> 57). BF6's formula pass put 176 cards in the bucket and squeezed 11 more under the band; 100 took one skill off without thematic loss, 84 keep their skills at the floor of their shape (1/1) and are flagged (Jaguar Stalker, Savanna Cheetah, Tomcat, Poison Dart Frog, Barnacle Fortress, Worker Ant, Courier Pigeon ...). Most skills' worths are the 10-19 full-size measures (the owner's method skipped them). List: docs/balance/bf6-2026-10-21.md (Cards that still can't fit).
+  - Accept: the flagged cards stay 1/1 until their skills are reworked
+  - Soften cap 2 (e.g. S·|S|/2, or S² only above a share of N), then re-fit
+  - Re-measure the big skills in the halved world first (Quick, Sweep, Armor, Pounce, Poison, Thorns ...; about 2.5 h of runs, a quarter done in docs/balance/skill-worth-bf6-partial.jsonl), then re-fit
+- **Default:** Re-measure the big skills in the halved world first
+- **Outcome:** Owner 16:42: "Dont need the skill term being weighted down. Listen, it's because Base and N are reduced. So S and A and H all now, unchanged, play a bigger part by default. Halving S or A or H would change nothing actually, cause now you can have more attack and health for the same N. We want numbers to be smaller." Cap 2 stays A·H + S·|S| ≤ (N/3)²; the flagged cards keep their floor stats on purpose. No other change.
+
+**B15. Twin: no constant prices a full copy of the card** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
+- Twin puts a full copy of the card beside it. Measured in the halved world it is off the scale (S 20+ a copy on a 2/7, 36 on a 3/11), so its cost (1) means nothing. Its two cards are held at their stats: Puddle Changeling 2/2, Mirrorhide Mutant 3/5.
+  - Price Twin as the card's own body (S = 2A + H, so its stats halve), then re-fit the two
+  - Make the twin a smaller token (e.g. half stats)
+  - Keep both as they are
+- **Default:** Price Twin as the card's own body
+- **Outcome:** Owner 16:33: "B15: Only a theoretical pricing is possible since this depends on the skill of the player. I would say creating a copy of a random ally card — probably 20+. Becoming a copy of a random ally card probably 5+. I think for mirrorhide mutant, they should copy the skills of the card, but their stats = the highest stat of both cards. E.g. 2/3 copying a 4/2 => 4/3." Built (package MT): Twin is priced 20 (owner-set); Mirrorhide Mutant has the new Mimic (5, owner-set) instead of Twin; both re-fitted by formula: Puddle Changeling 1/1 (Twin overflows a Common's N; floor, skills kept), Mirrorhide Mutant 2/11.
 
 ## Stated rules · 2026-10-21
 
