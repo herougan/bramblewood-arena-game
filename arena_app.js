@@ -732,7 +732,7 @@ const PASSIVE_DEFS = [
   {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. The catch: its light also reaches the enemy unit directly facing it, which doesn't miss for the dark either (nor for Night-blindness).`}, // 2026-10-16; 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate.")
   {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the bramble. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
-  {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
+  {key:'shieldCall', category:'passive', hidden:true, retired:true /* 2026-10-21 (BF6, owner 15:15: "Shield call -> Armor"): no card has it now; the engine's rule stays so an old save or a server override with it still works */, label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
   {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
@@ -1604,6 +1604,15 @@ sk1Patch(PASSIVE_DEFS, 'archerStyle', {category:'passive', label:TX('ui.skn-arch
 TRIGGER_DEFS.push({key:'onAction', label:TX('ui.trg-on-action'), desc:TX('ui.trg-on-action-desc')});
 ACTION_DEFS.push({key:'arrow', label:TX('ui.act-arrow'), fields:['amount'], desc:TX('ui.act-arrow-desc')});
 Object.assign(SKILL_ICON, {archer:'🏹'});
+// ==== Package BF6 (2026-10-21): Injured N (owner: "comes in with damage already on it (can be healed). This counts as −N × 0.99."). The
+// rule is in bramblewood-engine.js (makeBoardCard); its S is −0.99 a point in canonical/skill-costs.json (a drawback: more room for stats).
+// Here before SKILL_DEFS is built, so the card editor's "+ Add Skill" lists it; its card line is set beside the EQ block's.
+sk1Patch(PASSIVE_DEFS, 'injured', {category:'passive', label:TX('ui.skn-injured'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-injured', {n: numOr(v, 1)}), get:e=> e.injured ? numOr(e.injured, 1) : undefined});
+Object.assign(SKILL_ICON, {injured:'🩹'});
+// BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
+// back in the editor as the temporary one (the engine's rallyUp); the passive Attack aura is War Banner's (its text below, SK3's block).
+sk1Patch(PASSIVE_DEFS, 'rally', {category:'passive', label:TX('ui.skn-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rally', {n: numOr(v, 1)}), get:e=> e.rally ? numOr(e.rally, 1) : undefined});
+Object.assign(SKILL_ICON, {rally:'📣'});
 // An old save's or a server override's Demolisher N reads as Siege N (the higher of the two when a card had both; the engine reads either).
 function sk1MigrateSiege(c){
   const e = c && c.effects; if(!e || e.demolisher == null) return c;
@@ -2650,6 +2659,7 @@ PASSIVE_DEFS.push(
   {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
+Object.assign(SKILL_TEXT, {injured: v=> TX('ui.sk-injured', {n: numOr(v, 1)}), rally: v=> TX('ui.sk-rally', {n: numOr(v, 1)})}); // Package BF6 (2026-10-21): Injured N's and Rally N's card lines
 TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
 Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
@@ -27015,7 +27025,7 @@ function runCardCheck(host){
 //   Pass = BOTH (strictly under): 2×Attack + Health + Skills < N  and  Attack × Health + Skills < (N/3)².
 //   Skill costs (SB_DEFAULT_SKILLS) and the ×1.5 per half-miss skill on both scores are kept from v2 (those skills cost 0 themselves).
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
-const SB_KEY = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh
+const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh; 2026-10-21 (BF6): so do the halved coefficients (v6)
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
@@ -27026,14 +27036,14 @@ const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts 
 //   N = (Base + L/levelLinDiv) × (1 + L/levelDiv), levelLinDiv 10 (15:48: "let's try L/10"), levelDiv 30; Level 0: Base − zeroPenalty (1).
 //   The formula lives in bramblewood-budget.js (BramblewoodBudget.nAt), shared with tools/skill_costs.js and the hub; perLevel is v3's,
 //   no longer read.
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, missMult:1.5, levelLinDiv:10, levelDiv:30, zeroPenalty:1, scale:0.5, plainBonus:1.05, lightBonus:1.02, fragileMult:0.75}; // + scale (BF5, owner 21:36: halve N) // + perMap (BF2, 15:25)
+const SB_V3_DEFAULTS = Object.assign({perLevel:2}, typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.DEFAULTS || {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.1, missMult:1.5, levelLinDiv:15, levelDiv:30, zeroPenalty:1, scale:1, plainBonus:1.05, lightBonus:1.02, fragileMult:0.75}); // 2026-10-21 (BF6, owner 15:09: the coefficients halved, Rarity kept, L/15, scale 1): the helper's numbers, one copy (was a copy of v5's here, BF5 scale 0.5)
 // 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
 // its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
 function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }
 // The v3 numbers start fresh (a v2 save's N numbers would be wrong for v3); the skill costs a browser saved under v2 carry over.
 function sbLoad(){ const def = Object.assign({}, SB_V3_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
   let saved = null; try{ saved = JSON.parse(localStorage.getItem(SB_KEY)||'null'); }catch(e){}
-  if(!saved){ for(const k of [SB_KEY_V3, SB_KEY_V2]){ try{ const old = JSON.parse(localStorage.getItem(k)||'null'); if(old){ saved = {}; if(old.skills) saved.skills = old.skills; if(old.halfMiss) saved.halfMiss = old.halfMiss; break; } }catch(e){} } }
+  if(!saved){ for(const k of [SB_KEY_V5, SB_KEY_V3, SB_KEY_V2]){ try{ const old = JSON.parse(localStorage.getItem(k)||'null'); if(old){ saved = {}; if(old.skills) saved.skills = old.skills; if(old.halfMiss) saved.halfMiss = old.halfMiss; break; } }catch(e){} } }
   return Object.assign(def, saved && typeof saved === 'object' ? saved : {}); }
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
@@ -27056,7 +27066,7 @@ function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 // v3 check (2026-10-17): x1 = added score (2×Attack + Health + Skills) < N; x2 = multiplied score (Attack × Health + Skills)
 // < N2 = (N/3)². Both must pass. "Well under" (pink) = passes with x1 at or below SB_WELL_UNDER of N.
 const SB_WELL_UNDER = 0.6;
-function sbCheck(A, D, S, N, M){ M = M || 1; const r2d = v=> Math.round(v * 100) / 100, x1 = r2d((2*A + D + S) * M), x2 = r2d((A*D + S) * M), N2 = r2d((N/3) * (N/3));
+function sbCheck(A, D, S, N, M){ M = M || 1; const r2d = v=> Math.round(v * 100) / 100, x1 = r2d((2*A + D + S) * M), x2 = r2d((A*D + S*Math.abs(S)) * M), N2 = r2d((N/3) * (N/3)); // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
   const r1 = x1 <= N, r2 = x2 <= N2, ok = r1 && r2; return {r1, r2, x1, x2, N2, ok, wellUnder: ok && x1 <= N * SB_WELL_UNDER}; } // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): inclusive
 // "Fit" lowers Attack, then Health, until both rules pass.
 function sbFit(d, S, N, M){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, M).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
@@ -27064,7 +27074,7 @@ function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 // 2026-10-19 (BF2): the formula line, from the numbers in use (the helper's v5 unless the Test Lab changed them), in words through TX
 function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
-  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), mc: g('perMap')}) + (Number(g('scale')) !== 1 ? ' ' + TX('ui.budget-scale', {scale: g('scale')}) : ''); }
+  return TX('ui.budget-formula', {lin: g('levelLinDiv'), div: g('levelDiv'), zero: g('zeroPenalty'), base: g('base'), w: g('perWait'), w2: g('perWait2'), l: g('perLumber'), l2: g('perLumber2'), rt: g('perRitual') /* BF6: Ritual is 0.5 a point now */, mc: g('perMap')}) + (Number(g('scale')) !== 1 ? ' ' + TX('ui.budget-scale', {scale: g('scale')}) : ''); }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
 // before; both checks shown, coloured green within both, red over either, pink well under on the first.
@@ -27114,7 +27124,7 @@ function renderStatBudget(host){
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
     <details><summary>Skill costs (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
     <p class="panel-sub">${fails.length} of ${rows.length} cards over budget · ${rows.length - fails.length - pinks.length} within · ${pinks.length} well under.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
-    <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>Lv</th><th>Wait/Lumber</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m &lt; N</th><th>(A×H+S)×m &lt; (N/3)²</th><th>Budget</th><th>Fits as</th><th></th></tr></thead><tbody>
+    <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>Lv</th><th>Wait/Lumber</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m &lt; N</th><th>(A×H+S×|S|)×m ≤ (N/3)²</th><th>Budget</th><th>Fits as</th><th></th></tr></thead><tbody>
     ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };

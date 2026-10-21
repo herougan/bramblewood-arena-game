@@ -703,6 +703,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     board.bound = 0; board._boundJustSet = false; board.boundDmg = 0; board.toxin = 0;
     if(def.effects && def.effects.invincible) board.invincible = w2N(def, 'invincible');
     if(def.effects && def.effects.invisible) board.invisible = w2N(def, 'invisible');
+    // Injured N (2026-10-21, package BF6; owner: "comes in with damage already on it (can be healed). This counts as −N × 0.99."): it
+    // enters play with N damage already taken, its Health max − N but never below 1; its max stays, so any heal brings it back up.
+    // Every way into play makes its unit here, so a played, spawned or revived copy is injured alike; later arrival bonuses add to both.
+    { const inj = def.effects && def.effects.injured, n = inj === true ? 1 : Math.max(0, Math.floor(Number(inj) || 0));
+      if(n > 0){ board.hp = Math.max(1, board.maxHp - n); board.injured = n; } }
     selfInflict(board);
     return board;
   }
@@ -1455,8 +1460,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // It takes a free slot right beside the unit; with both taken (or on a packed row with no room) no illusion appears.
     if(rules.mirage){ const pool = [1,2].flatMap(pid=> liveUnits(players[pid]).filter(c=> !(CARD_DEFS[c.defId]||{}).illusionOf).map(c=> [pid, c]));
       if(pool.length){ const [pid, src] = pool[Math.floor(rnd()*pool.length)], pl = players[pid], iid = illusionDefOf(src.defId); let nc = null;
-        if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).filter(c=> c.hp > 0).map(c=> c.slot)); const free = [src.slot - 1, src.slot + 1].filter(s=> Number.isInteger(s) && !used.has(s));
-          if(free.length){ nc = makeBoardCard(iid); putInSlot(pl, nc, free.length > 1 ? free[Math.floor(rnd()*2)] : free[0]); } }
+        if(slotMode){ const sl = nearestFreeSlot(pl, src.slot, false); // BF6 (owner 15:21): the nearest free slot, not only the two beside it
+          if(sl !== null){ nc = makeBoardCard(iid); putInSlot(pl, nc, sl); } }
         else { nc = makeBoardCard(iid); pl.row[flankOrShorter(pl, findCardSide(pl, src.uid) || 'left')].push(nc); }
         ev({type:'fieldTick', field:'mirage', side:sideOf(pid), uid:src.uid, defId:src.defId, illusionUid: nc ? nc.uid : null, none: !nc || undefined});
         if(nc){ ev({type:'spawn', side:sideOf(pid), defId:iid, count:1, cause:'triggerSpawn', kind:'mirage', uids:[nc.uid], lane: findCardSide(pl, nc.uid), nearUid:src.uid});
@@ -2830,18 +2835,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // pre-existing quirk where the generic buffAttack action mutates .atk without touching
   // .baseAtk. Multiple Rally sources stack (sum of every live source's N); it also boosts the
   // Rally card itself, matching "all your units."
+  // Rally's grants on a unit (BF6): [{n, until}], live while combatNo <= until (until = the next round's combat, as Shell's "until the end
+  // of the next round"); the upkeep after that combat drops them (rallyTick, beside Shell's).
+  function rallyNow(c){ const g = c && c.rallyGrants; if(!g || !g.length) return 0; let t = 0; for(const x of g) if(combatNo <= x.until) t += x.n; return t; }
+  function rallyUp(players, pid, src, n){ const pl = players[pid]; if(!pl || !(n > 0)) return [];
+    const until = combatNo + (combatDepth > 0 ? 1 : 2), got = []; // entering before combat r (combatNo r-1) or during it (r): through combat r+1
+    upkeepUnitsOf(pl).forEach(c=>{ if(!c || !(c.hp > 0) || c.gap) return; (c.rallyGrants || (c.rallyGrants = [])).push({n, until}); c.rallyBonus = rallyNow(c); got.push(c.uid); });
+    return got; }
+  function rallyTick(c){ if(c && c.rallyGrants && c.rallyGrants.length){ c.rallyGrants = c.rallyGrants.filter(x=> combatNo < x.until); c.rallyBonus = rallyNow(c); } }
   function computeRallyBonuses(players){
     [players[1], players[2]].forEach(pl=>{
       // 2026-10-19 (package RR): in a raid (RESERVE_ACTS) the middle and back rows are on the field too: their Rally, Nature's Force,
       // Kinship and Worship count and reach every row (upkeepUnitsOf), and Lone Wolf / Sociable count the slots of the unit's own row.
       const units = upkeepUnitsOf(pl);
-      let total = 0;
-      units.forEach(c=>{
-        if(c.hp<=0) return;
-        const d = CARD_DEFS[c.defId];
-        if(d.effects && d.effects.rally) total += d.effects.rally;
-      });
-      units.forEach(c=>{ c.rallyBonus = total; });
+      // 2026-10-21 (package BF6, owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit
+      // is present."): Rally N is no longer an aura (that is War Banner's now, sk3Sync). When a Rally card enters play, each of your units
+      // then on the field (itself too) gains +N Attack until the end of the next round (rallyUp, below); rallyBonus is the sum of the
+      // live grants on the unit, so it ends on time whether or not the Rally card is still there.
+      units.forEach(c=>{ c.rallyBonus = rallyNow(c); });
       // Nature's Force N (2026-10-12, user: "All elementals on the field gain +N/+N. (Stacks!)"): every live source on your side adds
       // N to each of your Elementals (the source too, if it is one). Attack is live (natureBonus, read by effAtk); Health is
       // applied as a difference so it rises and falls with the sources without healing past it or killing anything.
@@ -3582,14 +3593,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Spawning a token beside a card (2026-10-14, Twin and Sprout): the nearest free slot to it (open boards; a tie is a coin flip),
   // or the shorter flank on a slotless row. Logged like a trigger spawn, so the board shows it jumping out of the card.
   const GROWTH_TOKEN = 'growth-sprout';
+  // The free front-row slot nearest s0 on an open board (2026-10-21, package BF6; owner 15:21: "Spawning Algo: Not always spawn left or
+  // right. Spawn closest slot to the spawner! 50% if tie."): by distance from the spawner's slot, a tie a coin flip on the fight's
+  // seeded rnd (so a fight replays the same), s0 itself first when selfOk and free. A body not yet swept still holds its slot.
+  // null when nothing is free within 15 columns. Every unit an ability puts on an open board's front row comes through here (Spawn,
+  // Spawner, Brood, Twin, Sprout, Duplicate, a death's tokens, On Attacked spawns, Mirage, a Relic); a raid's middle / back rows keep
+  // rowFreeSlotNear, the same rule within that row.
+  function nearestFreeSlot(pl, s0, selfOk){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)), free = sl=> !used.has(sl); s0 = Number.isInteger(s0) ? s0 : 0;
+    if(selfOk && free(s0)) return s0;
+    for(let d = 1; d < 16; d++){ const a = free(s0 - d), b = free(s0 + d); if(a && b) return rnd() < .5 ? s0 - d : s0 + d; if(a) return s0 - d; if(b) return s0 + d; }
+    return null; }
   function spawnBeside(players, sideOf, pid, src, defId, stats, events, kind){
     const pl = players[pid]; if(!pl || !CARD_DEFS[defId]) return null;
     const nc = makeBoardCard(defId); let lane;
     const srcRow = slotMode ? reserveRowOf(pl, src) : 0; // 2026-10-19 (package RR): a middle / back-row unit's Brood, Twin or Sprout comes up beside it in its own row
     if(srcRow){ const sl = rowFreeSlotNear(pl, srcRow, src.slot, false); if(sl === null) return null; rowPut(pl, srcRow, sl, nc, src); lane = null; }
-    else if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)); const s0 = Number.isInteger(src.slot) ? src.slot : 0; let sl = null;
-      for(let d = 1; d < 16 && sl === null; d++){ const a = !used.has(s0 - d), b = !used.has(s0 + d); if(a && b) sl = rnd() < .5 ? s0 - d : s0 + d; else if(a) sl = s0 - d; else if(b) sl = s0 + d; }
-      if(sl === null) return null; lane = putInSlot(pl, nc, sl); }
+    else if(slotMode){ const sl = nearestFreeSlot(pl, src.slot, false); if(sl === null) return null; lane = putInSlot(pl, nc, sl); } // BF6: the shared nearest-slot rule
     else { lane = flankOrShorter(pl, findCardSide(pl, src.uid) || 'left'); pl.row[lane].push(nc); }
     ensureStat(stats, sideOf(pid), src.defId).spawnedTokens = (ensureStat(stats, sideOf(pid), src.defId).spawnedTokens||0) + 1;
     if(recordEvents && events) events.push(Object.assign({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid}, srcRow ? {row:srcRow, slot:nc.slot} : {}));
@@ -4435,7 +4454,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Spawner <unit>      On Turn Start (Ready) -> spawn that unit into a free slot right beside it (none free: nothing).
   //   Duplicate (action)  the target gets an Illusion copy beside it: its Attack and skills, Health 1, Illusory (the raid bosses'
   //                       dodge, 2 in 3; not Legendary), a token. The copy never carries a Duplicate trigger, so it can't loop.
-  //   War Banner N        aura: your other units have +N/+N while it lives (an anthem, the go-wide tool the audit found missing).
+  //   War Banner N        aura: your other units have +N Attack while it lives (an anthem, the go-wide tool the audit found missing;
+  //                       BF6 2026-10-21, owner 15:15: Attack only, the old passive Rally folded in; was +N/+N).
   //   Warcry N            On Play -> your other units get +N/+N for good (action buffAll).
   //   Shieldwall N        aura: the allies right beside it have +N Armor while it lives (Guardian's alternative; "Bulwark" is the
   //                       bramble skill already, so this one is named Shieldwall: owner call).
@@ -4543,10 +4563,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let bannerSum = 0; live.forEach(c=>{ if(fx(c).banner) bannerSum += sk3N(fx(c), 'banner'); });
       const amp = new Map(); live.forEach(c=>{ const e = fx(c); if(!e.amplifier) return; const n = sk3N(sk3BaseFx(c), 'amplifier'); sk3Beside(pl, c).forEach(x=> amp.set(x, (amp.get(x)||0) + n)); });
       live.forEach(c=>{ const want = Math.min(SK3_DEF.ampCap, amp.get(c) || 0); if((c._sk3Amp||0) !== want){ c._sk3Amp = want; sk3Apply(c); } });
-      live.forEach(c=>{ const e = fx(c); let b = bannerSum - (e.banner ? sk3N(e, 'banner') : 0);
-        if(c.isLeader || c.gladiatorLeader || e.leader) live.forEach(h=>{ if(h !== c && fx(h).herald) b += sk3N(fx(h), 'herald'); });
+      // 2026-10-21 (package BF6, owner 15:15: "War Banner: passive increase in attack while this unit is present"): War Banner is Attack
+      // only now (+N/+0, the old passive Rally's aura); Herald keeps +N/+N.
+      live.forEach(c=>{ const e = fx(c); const ban = bannerSum - (e.banner ? sk3N(e, 'banner') : 0); let her = 0;
+        if(c.isLeader || c.gladiatorLeader || e.leader) live.forEach(h=>{ if(h !== c && fx(h).herald) her += sk3N(fx(h), 'herald'); });
+        const b = ban + her;
         const da = b - (c._sk3Atk || 0); if(da){ c.atk = Math.max(0, (c.atk||0) + da); c.baseAtk = Math.max(0, (c.baseAtk||0) + da); c._sk3Atk = b; }
-        const dh = b - (c._sk3Hp || 0); if(dh){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dh); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dh)); c._sk3Hp = b; } });
+        const dh = her - (c._sk3Hp || 0); if(dh){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dh); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dh)); c._sk3Hp = her; } });
       // a unit that left an aura's reach above keeps nothing: the dead are skipped, and the next sync of a live one evens it out
     });
   }
@@ -4606,8 +4629,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // A unit put into play by an ability, in the free slot right beside src (open boards; packed rows: the shorter flank).
   function sk3SpawnAdjacent(players, sideOf, pid, src, defId, stats, events, kind, prep){
     const pl = players[pid]; if(!pl || !CARD_DEFS[defId]) return null; let lane, sl = null;
-    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0).map(c=> c.slot)); const s0 = Number.isInteger(src.slot) ? src.slot : 0;
-      const free = [s0 - 1, s0 + 1].filter(s=> !used.has(s) && legalSlots(pl).includes(s)); if(!free.length) return null; sl = free.length > 1 ? free[Math.floor(rnd()*2)] : free[0]; }
+    if(slotMode){ sl = nearestFreeSlot(pl, src.slot, false); if(sl === null) return null; } // BF6 (owner 15:21): the nearest free slot (was: only the two beside it, else none)
     const nc = makeBoardCard(defId); if(prep) prep(nc);
     if(slotMode) lane = putInSlot(pl, nc, sl); else { lane = flankOrShorter(pl, findCardSide(pl, src.uid) || 'left'); pl.row[lane].push(nc); }
     { const st = ensureStat(stats, sideOf(pid), src.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
@@ -5242,7 +5264,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // beat to react to (previously this had NO event at all -- completely silent) without
     // touching the every-round recompute itself.
     if(def.effects.rally){
-      if(recordEvents && events) events.push({type:'rally', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.rally});
+      // 2026-10-21 (BF6, owner 15:15: "Rally: temporary increase in attack"): the grant itself, +N Attack to each of your units on the
+      // field now (itself too) until the end of the next round (rallyUp); the event names who got it.
+      const rn = def.effects.rally === true ? 1 : Math.max(0, Number(def.effects.rally) || 0), got = rallyUp(players, playerId, boardCard, rn);
+      if(recordEvents && events) events.push({type:'rally', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:rn, uids:got});
     }
     // Earthquake (2026-09-21, task #304, per explicit request: "I want a few AOE skills too,
     // like Earthquake - do damage to all non flying units. I think it makes sense as a
@@ -5947,6 +5972,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // 2026-10-19 (package RR): a spawner in a middle / back row (a raid) spawns into its own row, the nearest free slots beside it.
           const spRow = slotMode ? reserveRowOf(pl, boardCard) : 0;
           if(spRow){ for(let i=0;i<(t.count||1)+echoN;i++){ const sl = rowFreeSlotNear(pl, spRow, boardCard.slot, false); if(sl === null) break; const nc = rowPut(pl, spRow, sl, makeBoardCard(t.defId), boardCard); newUids.push(nc.uid); newCards.push(nc); } }
+          else if(slotMode){ for(let i=0;i<(t.count||1)+echoN;i++){ const sl = nearestFreeSlot(pl, boardCard.slot, false); if(sl === null) break; const nc = makeBoardCard(t.defId); putInSlot(pl, nc, sl); newUids.push(nc.uid); newCards.push(nc); } } // BF6 (owner 15:21): nearest the spawner, not the flank's far end
           else for(let i=0;i<(t.count||1)+echoN;i++){ const nc = makeBoardCard(t.defId); pl.row[side].push(nc); newUids.push(nc.uid); newCards.push(nc); }
           if(recordEvents && events && newUids.length) events.push(Object.assign({type:'spawn', side:mySide, defId:t.defId, count:newUids.length, cause:'triggerSpawn', uids:newUids, lane: spRow ? null : side, nearUid:boardCard.uid}, spRow ? {row:spRow} : {}));
           // On Ally/Enemy Spawn (2026-09-27, "Spawn triggers now refer to those spawned from
@@ -7013,6 +7039,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // active starting NEXT round.
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{
       if(c.shellSkip){ c.shellSkip = false; } c.shellNext = 0; // (the old queued shell; retired 2026-10-12)
+      rallyTick(c); // Rally's grants (BF6): spent after the next round's combat
       if(c.shellUntil != null && combatNo >= c.shellUntil){ c.shellArmor = 0; c.tempHp = 0; c.shellUntil = null; if(recordEvents && events) events.push({type:'statusFx', kind:'shellDown', side:sideOf(pl.id), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId}); }
     }));
     // Crit (2026-09-14): a capped "once per round" proc — reset the round's usage counter
@@ -7500,8 +7527,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     relics.forEach(r=>{ const tok = makeBoardCard(r.defId); tok.relicLeftover = true;
       if(r.res){ const sl = rowFreeSlotNear(r.pl, r.res, r.slot, true); if(sl === null) return; rowPut(r.pl, r.res, sl, tok, r.src); tok._seenAt = sl; // its middle / back row (2026-10-19, RR)
         if(recordEvents && events) events.push({type:'spawn', side:sideOf(r.pl.id), defId:r.defId, count:1, cause:'onDeathSpawn', kind:'relic', relic:true, placements:[{uid:tok.uid, lane:null, row:r.res, slot:sl}], fromUid:r.fromUid}); return; }
-      let lane = r.side; if(slotMode && Number.isInteger(r.slot) && !allBoardCards(r.pl).some(c=> c.slot === r.slot)) tok.slot = r.slot; else if(slotMode) lane = flankOrShorter(r.pl, r.side);
-      r.pl.row[lane].push(tok); syncSlots(r.pl); tok._seenAt = slotMode ? tok.slot : 0;
+      let lane = r.side; if(slotMode){ const sl = nearestFreeSlot(r.pl, r.slot, true); if(sl === null) return; lane = putInSlot(r.pl, tok, sl); } // BF6: its own slot, else the nearest
+      else r.pl.row[lane].push(tok); syncSlots(r.pl); tok._seenAt = slotMode ? tok.slot : 0;
       if(recordEvents && events) events.push({type:'spawn', side:sideOf(r.pl.id), defId:r.defId, count:1, cause:'onDeathSpawn' /* the board's replay draws it like a death token */, kind:'relic', relic:true, placements:[{uid:tok.uid, lane: findCardSide(r.pl, tok.uid) || lane}], fromUid:r.fromUid}); });
     spawns.forEach(s=>{
       // The dying card's own slot was just vacated by the filter pass above, so an
@@ -7527,10 +7554,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         spawnedTokens.forEach(tok=> fireSpawnFamilyTriggers(players, sideOf, s.pl.id, tok, stats, events, 'spawned'));
         return; }
       for(let i=0;i<s.count+echoN;i++){
-        const side = (i===0 && !s.beside) ? s.side : flankOrShorter(s.pl, s.side);
+        let side = (i===0 && !s.beside) ? s.side : flankOrShorter(s.pl, s.side);
         const tok = makeBoardCard(s.defId);
-        if(slotMode && i===0 && Number.isInteger(s.slot)) tok.slot = s.slot; // first token takes the fallen card's slot
-        s.pl.row[side].push(tok);
+        if(slotMode){ const sl = nearestFreeSlot(s.pl, s.slot, i === 0 && !s.beside); if(sl === null) break; side = putInSlot(s.pl, tok, sl); } // BF6 (owner 15:21): the first takes the fallen card's slot, the rest the nearest free ones
+        else s.pl.row[side].push(tok);
         syncSlots(s.pl);
         placements.push({uid:tok.uid, lane:side});
         spawnedTokens.push(tok);
@@ -8544,7 +8571,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               const droneIdx = side===side0 ? laneArr.indexOf(defCard) : -1;
               const insertAt = droneIdx===-1 ? laneArr.length : droneIdx+1;
               const newUids = [];
-              for(let i=0;i<count;i++){ const tok = makeBoardCard(spawnId); laneArr.splice(insertAt+i, 0, tok); newUids.push(tok.uid); }
+              for(let i=0;i<count;i++){ const tok = makeBoardCard(spawnId);
+                if(slotMode){ const sl = nearestFreeSlot(players[a.enemyId], defCard.slot, false); if(sl === null) break; putInSlot(players[a.enemyId], tok, sl); } // BF6 (owner 15:21): the nearest free slot
+                else laneArr.splice(insertAt+i, 0, tok); newUids.push(tok.uid); }
               ensureStat(stats, sideOf(a.enemyId), defCard.defId).spawnedTokens += count;
               if(recordEvents && events) events.push({type:'spawn', side:sideOf(a.enemyId), defId:spawnId, count, cause:'onAttackedSpawn', uids:newUids, lane:side, nearUid:defCard.uid});
               newUids.forEach(u=>{ const tok = laneArr.find(c=> c.uid === u); if(tok) espritForArrival(players, sideOf, a.enemyId, tok, events); }); // Esprit counts spawns (2026-10-14)
