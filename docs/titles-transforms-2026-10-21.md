@@ -31,3 +31,11 @@ Not now: Worthy ("IDK"), Ascended / Descended / Corrupted ("no comment for now")
 
 ## Parasite (note only: do not build)
 "Hooks onto enemy units? Not just leech-attacking from our side. So you place onto an enemy such that their column would be in reach. (In reach is defined as the columns you could have placed your units on anyway, cause you had a creature nearby.)"
+
+## CX1–CX5 (owner 18:23: "Seems okay"): the defaults, applied in package TR
+- **CX1:** keep both: Diurnal and Nocturnal still apply in Twilight, and the Leylines I map rule still turns the plain +1 into +3/+3.
+- **CX2:** price plain Crepuscular at 1.6. Re-fit Nightjar Drifter and Woodcock Lookout by formula (`--only=`).
+- **CX3:** keep as is: half-miss skills inside braces cost 0.
+- **CX4:** keep the rarity toggles one at a time.
+- **CX5:** switch the editor's budget panel and the Test Lab to price skills from canonical/skill-costs.json, not the in-page SB_DEFAULT_SKILLS.
+- Mark CX1–CX5 and HB2-1 DONE in docs/decisions.json, one line each, without reformatting.
