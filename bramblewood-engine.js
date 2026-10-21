@@ -129,6 +129,9 @@ const SK2_DEFAULTS = Object.freeze({
   repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
   foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
   millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks
+  quarryN: 1, quarryLumber: 1,                                           // Quarry N (SK2b, owner 23:43): pay 1 Lumber, gain N Stone, each turn while Ready
+  smelterN: 1, smelterLumber: 2, smelterStone: 2, smelterMetal: 1,       // Smelter N (SK2b): 2 Lumber + 2 Stone -> 1 Metal, up to N times a turn while Ready
+  forgeAtk: 1, forgeHp: 0,                                               // Forge Weapon (SK2b, owner Oct 21): the Forged Blade a smith lays (+1/+0; the action's amount wins)
   pickpocketN: 1, sabotageN: 1, arsonN: 1,                               // what a plain (true) Pickpocket / Sabotage / Arson takes
   fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {}, // the Palisade 0/6; every K turns (0: on play only); its look
 });
@@ -230,6 +233,7 @@ TRIGGER_KEYS.push('onAction'); ALWAYS_ON_HOOKS.add('onAction');
 // removeDeadCards (each pass of a death sweep is one layer deeper).
 const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam','duplicate','devourGrave','buffAll','stench','silence','stymie','exhaust','petrify','vulnerable','barrage','smokeScreen','magnet']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
+ACTION_KEYS.push('forgeWeapon', 'disarm'); // Package SK2b (2026-10-19 / owner Oct 21): a smith lays a weapon; Disarm takes one
 ACTION_KEYS.push('exploit', 'poisonTick'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N
 ACTION_KEYS.push('arrow'); // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
@@ -4398,13 +4402,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !s3) return bxTrigs(e, sk1Trigs(e, base)); // + Milling (2026-10-19, package SK2); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.s3 === s3) return bxTrigs(e, sk1Trigs(e, m.list));
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.disarm && !s3) return bxTrigs(e, sk1Trigs(e, base)); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.dz === e.disarm && m.s3 === s3) return bxTrigs(e, sk1Trigs(e, m.list));
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, s3, list}); return bxTrigs(e, sk1Trigs(e, list));
+    sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, dz:e.disarm, s3, list}); return bxTrigs(e, sk1Trigs(e, list));
   }
   // ==== Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. Owner principle: "if you can and it makes sense, feel
   // free to use triggers and actions. if they dont suffice, add the required trigger or action." So most of these are keywords that
@@ -5638,6 +5643,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
       if(sk3TrigGate(boardCard, hook, t, i, mySide, events)) return; // Package SK3 (2026-10-19): Petrified sleeps, a per-round cap (Harbinger), Exhaust fizzles
+      if(t.pay && !sk2PayFor(pl, boardCard, t, mySide, events)){ if(t.once && boardCard && boardCard.firedOnce) delete boardCard.firedOnce['once:'+hook+':'+i]; return; } // a price (SK2b, 2026-10-19): can't pay, nothing happens
       const tfEv = {type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do};
       if(recordEvents && events) events.push(tfEv);
       // 2026-10-19 (package HN, owner: "if there's nothing to heal, it doesn't occur"): a Heal or Rebuild trigger that finds nothing
@@ -6026,7 +6032,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           break;
         }
         case 'arrow': bxArrowShot(players, sideOf, playerId, boardCard, numN(t.amount, 1), stats, events, t.keyword === 'archer' ? 'archer' : 'action'); break; // Package BX (2026-10-21)
-        default: sk3RunAction(players, sideOf, playerId, boardCard, t, stats, events, extra); break; // Package SK3 (2026-10-19): Duplicate, Silence, Stymie ...
+        default: if(!sk3RunAction(players, sideOf, playerId, boardCard, t, stats, events, extra)) sk2RunAction(players, sideOf, playerId, boardCard, t, stats, events); break; // + SK2b: Forge Weapon, Disarm // Package SK3 (2026-10-19): Duplicate, Silence, Stymie ...
       } };
       // Targets (2026-10-12, 23:12 list): an action with a who/sub picker can hit several distinct targets (t.targets),
       // and who:'any' picks an ally or an opponent at random each time.
@@ -6900,6 +6906,83 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.repair) sk2Repair(players, sideOf, pl, c, sk2N(c, 'repair', SK2.repairN), stats, events);
     if(e.foraging) sk2Forage(players, sideOf, pl, c, stats, events);
     if(e.fortification && SK2.fortifyEvery > 0){ c.sk2FortAge = (c.sk2FortAge||0) + 1; if(c.sk2FortAge % Math.round(SK2.fortifyEvery) === 0) sk2Fortify(players, sideOf, pl.id, c, stats, events); }
+  }
+  // ---- SK2b (2026-10-19, owner 23:43: "do we have 3 simple skills -> to generate lumber every turn, stone every turn, and metal every
+  // turn? Maybe for metal, it's 2 lumber + 2 stone = 1 metal. For stone, it's possible to harvest it, but it usually takes lumber ... I
+  // want to make resources really a strategic move"). The three tiers, all On Turn Start × Gain in the trigger layer (trigsOf):
+  //   Milling N   (Lumber)  +N Lumber, free.
+  //   Quarry N    (Stone)   pay 1 Lumber, gain N Stone.
+  //   Smelter N   (Metal)   pay 2 Lumber + 2 Stone, gain 1 Metal; Smelter N is N such conversions (each paid whole, or not at all).
+  // The price is a new trigger condition, t.pay = {lumber, stone, metal, uranium}: a trigger with a price goes off only if its player
+  // holds all of it, and pays it as it goes off (after every other gate: Waiting, Confused, Slippery, the filters, SK3's gates), so a
+  // fizzle never costs anything. No price, no change. Units act in the upkeep's order (each side's row: the left flank from the centre
+  // out, the centre, the right flank), so a Quarry that acts first can feed a Smelter. (The older t.cost 'burnLumber' is untouched.)
+  function sk2EconomyTrigs(e, list){
+    if(e.quarry) list.push({on:'perTurn', do:'gain', resource:'stone', amount:numN(e.quarry, SK2.quarryN), pay:{lumber:SK2.quarryLumber}, keyword:'quarry'});
+    if(e.smelter){ const n = Math.max(1, Math.min(8, Math.round(numN(e.smelter, SK2.smelterN))));
+      for(let k = 0; k < n; k++) list.push({on:'perTurn', do:'gain', resource:'metal', amount:SK2.smelterMetal, pay:{lumber:SK2.smelterLumber, stone:SK2.smelterStone}, keyword:'smelter'}); }
+    if(e.disarm){ list.push({on:'onSpawn', do:'disarm', lone:true, keyword:'disarm'}); list.push({on:'onHit', do:'disarm', who:'enemy', sub:'subject', keyword:'disarm'}); } // Disarm = On Play / On Hit × Disarm
+  }
+  function sk2Price(pay){ return SK2_RES_RANK.map(r=> ({res:r, n:Math.max(0, Math.floor(Number(pay && pay[r])||0))})).filter(x=> x.n > 0); }
+  function sk2PayFor(pl, c, t, side, events){
+    const price = sk2Price(t.pay), base = {type:'sk2', side, uid: c ? c.uid : null, defId: c ? c.defId : null, price, action:t.do, keyword:t.keyword};
+    if(t.do === 'forgeWeapon' && sk2ForgeSlot(pl, c) == null){ if(recordEvents && events) events.push(Object.assign(base, {kind:'noRoom'})); return false; } // nowhere to lay it: nothing is paid
+    if(!pl || price.some(x=> (Number(pl[x.res])||0) < x.n)){ if(recordEvents && events) events.push(Object.assign(base, {kind:'cantPay'})); return false; }
+    price.forEach(x=>{ pl[x.res] = (Number(pl[x.res])||0) - x.n; });
+    if(recordEvents && events && price.length) events.push(Object.assign(base, {kind:'pay'}));
+    return true;
+  }
+  // ---- SK2b, the weapons (owner, Oct 21): "Otter Smith ... Turns stone into weapons. Lays weapons across the battlefield. (Generator of
+  // weapons)" and "Weapon stealer ... Steals weapon onto its own slot (unless it already has one)". Two actions, on package EQ's rules
+  // (a lone piece in a slot is picked up by a unit played, spawned or moved there; it takes hold after its equipping round):
+  //   forgeWeapon N  lays a Forged Blade (+N/+0 equipment token, SK2.forgeAtk) in your free slot nearest the unit (a unit's legal empty slot
+  //                  with no piece already; a tie: the one nearer the centre). With no free slot nothing happens, and a price isn't paid.
+  //                  The Anvilwhisker Otter is On Turn Start: pay 1 Stone × Forge Weapon 1.
+  //   disarm         takes a piece onto this unit, unless it already carries one. On Hit (its subject): the hit unit's piece (equipped or
+  //                  still equipping; an equipped piece's stats and skills come off it). lone:true (On Play): the foe's lone piece in the slot
+  //                  facing it, else the nearest one. The thief starts equipping it (EQ's round). Disarm (keyword) = both.
+  function sk2ForgedDefOf(atk, hp){
+    atk = Math.max(0, Math.round(Number(atk)||0)); hp = Math.max(0, Math.round(Number(hp)||0)); const id = 'sk2-forged~' + atk + 'x' + hp;
+    if(!CARD_DEFS[id]){ const look = CARD_DEFS['quill-spear'] || {};
+      CARD_DEFS[id] = derivedDefs[id] = {id, name:'Forged Blade' /* the app shows TX('ui.sk2-forged-name') */, icon:'🗡️', art: look.art, cardType:'equipment', attack:atk, health:hp, cost:0,
+        rarity:'common', token:true, sk2Forged:true, archetypes:[], species:[], effects:{}, equip:{grant:{}}}; }
+    return id;
+  }
+  function sk2ForgeSlot(pl, c){
+    if(!slotMode || !pl || !c) return null; syncSlots(pl); const s0 = Number.isInteger(c.slot) ? c.slot : 0;
+    const free = eqFreeSlots(pl).filter(sl=> !allBoardCards(pl).some(x=> x && x.hp > 0 && x.slot === sl)).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || Math.abs(a) - Math.abs(b) || a - b);
+    return free.length ? free[0] : null;
+  }
+  // a unit's piece comes off: an equipped piece's Attack, Health and granted skills go with it (Health never below 1)
+  function sk2Unequip(c){
+    const eqId = c && c.equipment; if(!eqId) return null; const eq = CARD_DEFS[eqId] || {};
+    if(c.equipOn){ const a = eq.attack || 0, hp = eq.health || 0;
+      c.atk = Math.max(0, c.atk - a); c.baseAtk = Math.max(0, (c.baseAtk || 0) - a); c.maxHp = Math.max(1, c.maxHp - hp); c.hp = Math.max(1, Math.min(c.hp, c.maxHp));
+      const keys = Object.keys((eq.equip && eq.equip.grant) || {});
+      if(keys.length){ const cur = CARD_DEFS[c.defId], root = CARD_DEFS[(cur && cur.derivedFrom) || c.defId] || cur, eff = Object.assign({}, (cur && cur.effects) || {});
+        keys.forEach(k=>{ if(root && root.effects && k in root.effects) eff[k] = root.effects[k]; else delete eff[k]; });
+        deriveDef(c, {}); CARD_DEFS[c.defId].effects = eff; } }
+    c.equipment = null; c.equipOn = false; c.equipping = 0; return eqId;
+  }
+  function sk2RunAction(players, sideOf, pid, src, t, stats, events){
+    const pl = players && players[pid], side = sideOf(pid); if(!pl || !src) return false;
+    if(t.do === 'forgeWeapon'){ const sl = sk2ForgeSlot(pl, src); if(sl == null) return true;
+      const did = sk2ForgedDefOf(t.amount != null ? t.amount : SK2.forgeAtk, SK2.forgeHp); eqSlotsOf(pl)[sl] = {defId:did};
+      if(recordEvents && events) events.push({type:'equipLaid', side, pid, slot:sl, equipDefId:did, forged:true, byUid:src.uid, byDefId:src.defId});
+      floorScan(players, sideOf, stats, events); return true; } // (nothing stands there, so nothing picks it up now)
+    if(t.do === 'disarm'){
+      if(!eqCarrier(src)){ if(recordEvents && events) events.push({type:'sk2', kind:'disarmFull', side, uid:src.uid, defId:src.defId}); return true; }
+      const foeId = otherId(pid), foe = players[foeId];
+      if(t.lone){ if(!slotMode || !foe || !foe.eqSlots) return true; const s0 = Number.isInteger(src.slot) ? src.slot : 0;
+        const sl = Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x]).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || Math.abs(a) - Math.abs(b) || a - b)[0];
+        if(sl == null) return true; const got = foe.eqSlots[sl].defId; delete foe.eqSlots[sl];
+        if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), slot:sl, equipDefId:got, lone:true});
+        eqMeet(players, sideOf, pid, src, got, events, 'disarm'); return true; }
+      const v = trigSubject; if(!v || !v.equipment || v === src) return true;
+      const was = v.equipOn, got = sk2Unequip(v);
+      if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), targetUid:v.uid, targetDefId:v.defId, equipDefId:got, wasOn:was, atk:v.atk, hp:v.hp, maxHp:v.maxHp});
+      eqMeet(players, sideOf, pid, src, got, events, 'disarm'); return true; }
+    return false;
   }
   // ==== [SK2 END] ====
   function endOfRoundUpkeep(players, sideOf, stats, events){

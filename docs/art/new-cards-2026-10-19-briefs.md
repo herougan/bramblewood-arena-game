@@ -13,6 +13,8 @@ Rules for these prompts (as in `docs/art/easter-egg-art-briefs.md`):
 | Card (id) | Placeholder | Prompt |
 |---|---|---|
 | Petrified Tree (`petrified-tree`) | 🪨 | "An ancient oak tree turned half to grey stone, its lower trunk and roots smooth speckled granite with veins of pale quartz, its upper branches still bearing a few warm amber leaves, small chunks of stone crumbling from the bark into a neat pile at its base, moss and tiny ferns between the stone roots, a quiet forest clearing with soft afternoon light and distant hills in the background, detailed pixel art, full background" |
+| Anvilwhisker Otter (`anvilwhisker-otter`, SK2b; the owner's "Otter Smith") | 🦦 | "A sturdy river otter blacksmith with soot-dark whiskers and a leather apron, hammering a small glowing blade on a flat river-stone anvil, sparks flying, a few finished little reed-length blades lying in the grass around it, a tiny clay furnace with a warm orange glow beside it, a riverbank with reeds and a wooden footbridge at dusk in the background, detailed pixel art, full background" |
+| Glintsnatch Magpie (`glintsnatch-magpie`, SK2b) | 🐦‍⬛ | "A sleek black-and-white magpie with an iridescent blue-green sheen on its wings, swooping low with a small shining blade clutched in its talons, a glint of light flashing off the metal, a few scattered trinkets below on a mossy stone wall, a bright overcast meadow with a lone hawthorn tree in the background, dynamic, detailed pixel art, full background" |
 
 ## Package EQ (equipment, slot hazards, the Bucketknee Wolf)
 

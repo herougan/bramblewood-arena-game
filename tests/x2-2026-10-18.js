@@ -79,7 +79,7 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
 { const seedSrc = src.slice(src.indexOf('function seededRng(seed){'), src.indexOf('let currentMatchSeed'));
   const body = src.slice(src.indexOf('function raidSmackRoll('), src.indexOf('// The raid\'s last turn'));
   const F = new Function(seedSrc + body + '; return {raidSpecials, raidSmackBack, raidSmackKind, raidSmackTarget, raidPickColumn, raidTelegraph, RAID_SMACK_BACK_CHANCE};')();
-  ok(F.RAID_SMACK_BACK_CHANCE === 1/3, 'the row smack leaves the front row 1 time in 3');
+  ok(F.RAID_SMACK_BACK_CHANCE === 2/3, 'the row smack leaves the front row 2 times in 3: every row 1 in 3 (2026-10-19, package MX; was 1/3)');
   ok(['column', 'row', 'column', 'row'].every((k, j)=> F.raidSmackKind(3 * (j + 1), {every:3}) === k), 'every 3 rounds: column, row, column, row');
   ok(F.raidSmackKind(1, {every:1}) === 'column' && F.raidSmackKind(2, {every:1}) === 'row', 'every round: they alternate too');
   const at = (e, P, sl)=>{ e.debugSpawnCard(P, so, 1, 'x2-land', sl, {}, []); return all(P[1]).filter(x=> x.defId === 'x2-land').reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null); };
@@ -103,8 +103,7 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
     if(run(4242, r, L).ev.row !== b.ev.row) det = false; }
   const N = rows[0] + rows[1] + rows[2];
   ok(rowOk, 'a row smack hits every unit in its row and nothing else');
-  ok(rows[0] / N > .58 && rows[0] / N < .75, `about 2 in 3 row smacks hit the front row (${rows.join(' / ')})`);
-  ok(rows[1] > N * .1 && rows[2] > N * .1, `the other third is split between the middle and back rows (${rows[1]} / ${rows[2]})`);
+  ok(rows.every(n=> n / N > .24 && n / N < .43), `the front, middle and back rows each take about a third of the row smacks (${rows.join(' / ')}; 2026-10-19, package MX)`);
   ok(det, 'seeded: the same fight and round always pick the same row');
   // column smacks (odd rounds): column -1 holds 3 units, column 0 holds 2, column 1 none
   const cols = {}; let colOk = true, cdet = true;
