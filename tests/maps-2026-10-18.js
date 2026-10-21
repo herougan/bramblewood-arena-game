@@ -73,7 +73,8 @@ ok(/data-submap="mp"/.test(open) && !/is-locked/.test(open) && /Lilypad Reach â€
 // the other entrances keep their old "clear X to find a way in" text
 progress = {completed: [], clearedAt: {}};
 const grotto = (entrances(mb, progress).match(/<button[^>]*data-lkey="~sub:mg"[\s\S]*?<\/button>/) || [''])[0];
-ok(/to find a way in/.test(grotto), "Smugglers' Grotto's locked text is unchanged");
+// 2026-10-21 (package RP, owner Oct 21: "Maybe like smuggler's groto after Map 7"): the Grotto waits on Map 7 now, like Lilypad Reach on Map 6
+ok(/Clear The Morel Hollow \(Map 7\) to open/.test(grotto), "Smugglers' Grotto reads \"Clear The Morel Hollow (Map 7) to open\" (package RP)");
 
 // --- 3. the darkness
 const D = new Function([fn('setCaveMask'), fn('caveScreenHole')].join('\n') + '\nreturn {setCaveMask, caveScreenHole};')();

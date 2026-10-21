@@ -28,7 +28,8 @@ const writeCards = cards=> fs.writeFileSync(CARDS, JSON.stringify(cards, null, 2
 const THEMES = {
   m1:  {name: 'Bramblewood Outskirts: the Otter river bank, meadow and hedge', tags: ['River', 'Otter', 'Rabbit', 'Mouse', 'Duck', 'Fish', 'Ants', 'Worm', 'Raccoon', 'Field', 'Pond', 'Frog', 'Fox', 'Mustelid', 'Rodent'], fight: {'0-4': ['Frost']}, ban: ['badger-berserker']},
   mf:  {name: 'Thistlewood: hedgerow and woodland floor (beetles, mice, hedgehogs, foxes)', tags: ['Insect', 'Mouse', 'Rabbit', 'Hedgehog', 'Fox', 'Frog', 'Chipmunk', 'Beetle', 'Forest', 'Field', 'Flora', 'Bee', 'Otter', 'River', 'Rodent'], allow: ['quarry-mole'], ban: ['badger-berserker', 'duckling']},
-  mb:  {name: 'Pebble Beach: shingle, rock pools and gulls', tags: ['Coastal', 'Ocean', 'Mangrove', 'Coral Reef', 'Otter', 'Turtle'], ban: ['mallard-marauder']},
+  // 2026-10-21 (package RP): Lilypad Reach's and Smugglers' Grotto's old rewards (moved off the side maps, one unique reward each) still fight on the beach
+  mb:  {name: 'Pebble Beach: shingle, rock pools and gulls', tags: ['Coastal', 'Ocean', 'Mangrove', 'Coral Reef', 'Otter', 'Turtle'], allow: ['mayfly-dancer', 'shallows-fry', 'minnow-skitter', 'beaver-builder', 'sulfur-vent-crab'], ban: ['mallard-marauder']},
   mc:  {name: 'Gannet Cliffs: sea cliffs (seabirds, goats, raptors)', tags: ['Mountain', 'Eagle', 'Vulture', 'Bird', 'Coastal'], cap: {'pelican-diver': [2, 2]}, ban: ['duck-paddler']},
   m2:  {name: 'Sunken Hollow: the flooded lowland (river and lake life, and what the flood brought in)', tags: ['River', 'Fish', 'Turtle', 'Beaver', 'Pond', 'Ocean', 'Cetacean', 'Cephalopod', 'Frog']},
   mw:  {name: 'Gatorback Swamp: gators, snakes, toads, Swamp Fever and Poison', tags: ['Swamp', 'Snake', 'Frog', 'Turtle', 'Reptile', 'Mangrove', 'Insect'], ban: ['open-ocean-hermit-crab', 'mallard-marauder', 'beaver-builder']},
@@ -46,7 +47,7 @@ const THEMES = {
   m6:  {name: 'Wolfsbane Tundra: wolves, the cold, seals and the ice', tags: ['Tundra', 'Frost', 'Taiga', 'Wolf'], ban: ['beaver-builder', 'chipmunk-hoarder', 'chipmunk-forager', 'buzzed-chipmunk', 'porcupine-roller', 'harvest-mouse', 'dynamite-packrat', 'star-nosed-mole', 'war-hound', 'golden-eagle-diver']},
   md:  {name: 'The Glass Dunes: sand, glass, scorpions and lizards', tags: ['Desert', 'Savanna', 'Reptile', 'Arachnid', 'Volcanic'], ban: ['snapper-hatchling', 'grass-viper']},
   m3:  {name: 'Ashen Spurn: the badger and porcupine bastions, yetis and the ash', tags: ['Badger', 'Porcupine', 'Frost', 'Volcanic', 'Imp', 'Devil', 'Ape'], allow: ['echidna-quillshot', 'scraper-of-skies'], ban: ['beaver-builder', 'chipmunk-stockpiler']},
-  m11: {name: 'The Sundered Peak: the Cave Warlord\'s bears and cavalry, the shrine and the volcano', tags: ['Bear', 'Ape', 'Volcanic', 'Horse', 'Imp', 'Mountain', 'Ecclesia', 'Rainforest'], allow: ['blessed-avatar', 'shrine-acolyte', 'fire-hawk', 'ancient-sloth-titan'], ban: ['beaver-lumberjack']},
+  m11: {name: 'The Sundered Peak: the Cave Warlord\'s bears and cavalry, the shrine and the volcano', tags: ['Bear', 'Ape', 'Volcanic', 'Horse', 'Imp', 'Mountain', 'Ecclesia', 'Rainforest'], allow: ['blessed-avatar', 'shrine-acolyte', 'fire-hawk', 'ancient-sloth-titan', 'gorge-wyrm' /* 2026-10-21 (RP): the Volcano Lair's worm, now a Map 22 reward */], ban: ['beaver-lumberjack']},
   m21: {name: 'The Quiet Summit: goats, eagles, owls and the chapel, after the storm', tags: ['Mountain', 'Eagle', 'Owl', 'Bird', 'Ecclesia', 'Tundra', 'Taiga', 'Turtle'], allow: ['ash-cloud-condor'], ban: ['badger-berserker']},
   // the Long Burrow (the badgers' endless sett) is the Caldera's side map and opens here: its badgers belong
   m22: {name: 'The Rimefire Caldera: snow on black glass (frost and fire), and the Long Burrow\'s badgers', tags: ['Mountain', 'Volcanic', 'Frost', 'Tundra', 'Newt', 'Elemental', 'Deer', 'Bird', 'Badger']},
@@ -55,7 +56,7 @@ const THEMES = {
   // side maps
   mq:  {name: 'Clovermead: a meadow of bees, mice and rabbits', tags: ['Rabbit', 'Mouse', 'Bee', 'Insect', 'Frog', 'Duck', 'Bird', 'Village', 'Field', 'Chipmunk', 'Cat', 'Dog', 'Flora'], ban: ['badger-berserker']},
   mp:  {name: 'Lilypad Reach: the river pond (frogs, ducks, beavers, pike)', tags: ['River', 'Pond', 'Frog', 'Duck', 'Fish', 'Beaver', 'Otter', 'Newt', 'Insect', 'Turtle', 'Bird'], ban: ['quill-volley']},
-  mg:  {name: 'Smugglers\' Grotto: a sea cave of crabs and smugglers', tags: ['Coastal', 'Ocean', 'Cave', 'Raccoon', 'Otter', 'Volcanic', 'Cephalopod', 'Duck'], ban: ['quill-volley']},
+  mg:  {name: 'Smugglers\' Grotto: a sea cave of crabs and smugglers', tags: ['Coastal', 'Ocean', 'Cave', 'Raccoon', 'Otter', 'Volcanic', 'Cephalopod', 'Duck'], allow: ['mayfly-dancer', 'shallows-fry', 'beaver-builder' /* 2026-10-21 (RP): Pebble Beach's family's old rewards */], ban: ['quill-volley']},
   ms:  {name: 'The Sunken Grove: drowned swamp woods', tags: ['Swamp', 'Snake', 'Frog', 'Turtle', 'Reptile', 'Mangrove', 'Newt', 'Hedgehog', 'Mammal'], ban: ['open-ocean-hermit-crab', 'mallard-marauder']},
   mz:  {name: 'The Mycelium Deep: under the Morel Hollow', tags: ['Insect', 'Worm', 'Flora', 'Arachnid', 'Ants', 'Beetle', 'Snail', 'Swamp']},
   mn:  {name: 'The Glimmer Depths: the shining cave', tags: ['Cave', 'Bat', 'Arachnid', 'Insect', 'Fish', 'Bird']},
@@ -64,7 +65,7 @@ const THEMES = {
   my:  {name: 'The Canopy: the jungle above the savanna', tags: ['Rainforest', 'Ape', 'Sloth', 'Frog', 'Flora', 'Savanna', 'Insect', 'Bird']},
   mi:  {name: 'The Ice Hollow: under the tundra ice', tags: ['Tundra', 'Frost', 'Taiga', 'Wolf', 'Ape'], ban: ['chipmunk-hoarder', 'porcupine-roller', 'golden-eagle-diver', 'harvest-mouse', 'beaver-builder', 'dynamite-packrat', 'quill-volley']},
   m9:  {name: 'The Basalt Foundry: fire, forge and slag', tags: ['Volcanic', 'Imp', 'Devil', 'Insect', 'Beetle', 'Arachnid', 'Newt', 'Reptile', 'Structure', 'Boar', 'Elemental'], allow: ['beaver-lumberjack', 'chained-binturong', 'fruit-bat-familiar', 'flagellant-vulture', 'vampire-finch', 'tide-spirit', 'carrion-fly-swarm'], ban: ['echo-keeper', 'trapdoor-spider']},
-  me:  {name: 'The Eye of the Volcano: the ossuary and the vents', tags: ['Volcanic', 'Imp', 'Devil', 'Shadow'], allow: ['blessed-avatar', 'cinder-skeleton', 'ossuary-lammergeier', 'pall-wraith', 'magma-wraith'], ban: ['echo-keeper', 'fungal-colossus']},
+  me:  {name: 'The Eye of the Volcano: the ossuary and the vents', tags: ['Volcanic', 'Imp', 'Devil', 'Shadow'], allow: ['blessed-avatar', 'cinder-skeleton', 'ossuary-lammergeier', 'pall-wraith', 'magma-wraith', 'gorge-wyrm' /* 2026-10-21 (RP) */], ban: ['echo-keeper', 'fungal-colossus']},
   mx:  {name: 'The Volcano Lair: the Caldera Wyrm\'s den', tags: ['Volcanic', 'Dragon', 'Reptile', 'Boar', 'Arachnid', 'Elemental', 'Imp'], allow: ['blessed-avatar', 'gorge-wyrm', 'ember-jackal']},
   // The Old Bramble is a come-back fight for after Map 17 (nodeMapNumber): the tundra's Glacier Wolf Packs that came south are its story
   mo:  {name: 'The Old Bramble: the first forest and its Ent, and the wolves that came south', tags: ['Otter', 'Rabbit', 'Duck', 'Fish', 'Raccoon', 'Ants', 'Flora', 'Forest', 'Structure', 'Frost']},

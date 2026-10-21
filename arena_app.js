@@ -3399,7 +3399,7 @@ function cardWhereToGetText(d){
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
   if(src.kind==='pack' && d.faction === 'base') return TX('ui.codex-base-tip'); // 2026-10-19 (package UT, owner: "Base cards just mean they come from Skirmish rewards, not Card Packs")
-  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Hedgerow Pouch, Tidemire Chest or Highcrest Case' : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
+  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? TX('ui.rp-where-faction') /* 2026-10-21 (package RP): faction rewards are in no pack since 2026-10-13 (BASIC_PACK_POOLS); this said "Any basic pack" */ : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   if(src.kind==='smith') return 'The Blacksmith: craft it at the Forge'; // 2026-10-18: smith / secret / quest are obtainable now (cardObtainableFrom)
@@ -8885,7 +8885,7 @@ function rawCardDef(id){ return JSON.parse(JSON.stringify(liveCards[id] || CARD_
 function packPoolOptionsHTML(sel){
   const packs = getShopPacks(), pools = [...new Set(packs.map(p=> p.pool||1).concat([11, sel]))].sort((a,b)=> a-b);
   const next = Math.max(...pools) + 1;
-  return pools.map(n=>{ const names = n === 11 ? ['Factions pool, in every basic pack'] : packs.filter(p=> (p.pool||1)===n).map(p=> p.name); return `<option value="${n}" ${n===sel?'selected':''}>Pool ${n}${names.length ? ': ' + escapeHtml(names.join(', ')) : ' (no pack uses it yet)'}</option>`; }).join('') + `<option value="${next}">Pool ${next} (new)</option>`;
+  return pools.map(n=>{ const names = n === 11 ? ['Factions pool: faction rewards, in no pack'] /* 2026-10-21 (package RP) */ : packs.filter(p=> (p.pool||1)===n).map(p=> p.name); return `<option value="${n}" ${n===sel?'selected':''}>Pool ${n}${names.length ? ': ' + escapeHtml(names.join(', ')) : ' (no pack uses it yet)'}</option>`; }).join('') + `<option value="${next}">Pool ${next} (new)</option>`;
 }
 function codexPlacementHTML(d){
   const raw = rawCardDef(d.id) || d;
@@ -10739,16 +10739,20 @@ function claimAchievement(id){
   const {complete, claimed} = achievementStatus(def, ctx);
   if(!complete || claimed) return false;
   Object.keys(def.reward).forEach(kind=> grantCurrency(kind, def.reward[kind]));
+  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.rp-achv-faction-cards', {names: got.map(x=> (getCardDefs()[x]||{}).name || x).join(', ')}), 'ok'); }catch(e){} }, 600); } }catch(e){} // 2026-10-21 (package RP)
   myClaimedAchievements.add(id);
   saveClaimedAchievements();
   return true;
 }
-function achievementRewardChipsHTML(reward){
+function achievementRewardChipsHTML(reward, achvId){
   return Object.keys(reward).map(kind=>{
     const meta = CURRENCY_META[kind]; if(!meta) return '';
     return `<span class="hud-pill forge-cur-${kind}">${meta.glyph} +${reward[kind]}</span>`;
-  }).join('');
+  }).join('') + achievementFactionChipHTML(achvId); // 2026-10-21 (package RP): the faction cards an achievement drops
 }
+// 2026-10-21 (package RP, owner Oct 21: "Certain achievements also drop faction rewards"): FACTION_REWARD_TRACK.achievements
+function achievementFactionCards(achvId){ try{ return (FACTION_REWARD_TRACK.achievements || {})[achvId] | 0; }catch(e){ return 0; } }
+function achievementFactionChipHTML(achvId){ const n = achievementFactionCards(achvId); return n ? `<span class="hud-pill achv-faction-chip">${escapeHtml(TX('ui.rp-achv-faction-chip', {n}))}</span>` : ''; }
 const ACHV_CATS = [['battle','⚔️','Battles'], ['road','🗺️','The road'], ['boss','👑','Bosses and raids'], ['collection','🗂️','Collection'], ['forge','🔨','The Forge']];
 const ACHV_TIER = {1:'Bronze', 2:'Silver', 3:'Gold', 4:'Dragon'};
 let achvFilter = 'all';
@@ -10764,7 +10768,7 @@ function achievementsPanelHTML(){
       <div class="achv-medal" title="${ACHV_TIER[tier] || ''} medal"><span>${def.icon}</span>${st.claimed ? '<i class="achv-stamp" aria-hidden="true">✓</i>' : ''}</div>
       <div class="achv-body"><b class="achv-title">${escapeHtml(def.title)}</b><p class="achv-desc">${escapeHtml(def.desc)}</p>
         ${st.claimed ? '' : `<div class="achv-meter"><div class="achv-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${def.target}" aria-valuenow="${st.current}"><i style="width:${p}%"></i></div><small class="achv-progress">${st.current} / ${def.target}</small></div>`}
-        <div class="achv-foot"><div class="achv-reward-preview">${achievementRewardChipsHTML(def.reward)}</div>${st.claimed ? `<span class="achv-claimed-badge">Claimed</span>` : st.claimable ? `<button class="btn primary small achv-claim-btn" data-achv="${def.id}">🎁 Claim</button>` : ''}</div></div>
+        <div class="achv-foot"><div class="achv-reward-preview">${achievementRewardChipsHTML(def.reward, def.id)}</div>${st.claimed ? `<span class="achv-claimed-badge">Claimed</span>` : st.claimable ? `<button class="btn primary small achv-claim-btn" data-achv="${def.id}">🎁 Claim</button>` : ''}</div></div>
     </article>`; };
   const groups = ACHV_CATS.map(([k, ico, name])=>{ const rs = rows.filter(r=> (r.def.cat || 'battle') === k), vis = rs.filter(show); if(!vis.length) return '';
     return `<section class="achv-group"><h3>${ico} ${escapeHtml(name)} <small>${rs.filter(r=> r.st.claimed).length}/${rs.length}</small></h3><div class="achv-grid">${vis.map(tile).join('')}</div></section>`; }).join('');
@@ -19876,7 +19880,8 @@ const CONQUEST_MAPS = [
       { key:"T-3", code:"T-3", kind:"skirmish", lesson:"rank", name:"Ranks and Challenges", icon:"🏅", deck:{"otter-kit":1,"otter-paddler":3,"meadow-rabbit":1,"pond-trout":3,"worker-ant":3,"badger-berserker":2,"thornwood-palisade":3,"burrow-rabbit":2}, flavor:"Win without a scratch. The cleaner the win, the better the rank.", requires:["T-2"], fixedPos:{x:68, y:38} },
       { key:"T-4", code:"T-4", kind:"elite", name:"The Final Exam", icon:"🎓", shieldOverride:53, deck:{"rockslide-ram":2,"scree-goat":2,"eagle-sharpshooter":2,"ash-cloud-condor":1,"golden-eagle-diver":2,"burrow-rabbit":4,"badger-berserker":2,"trash-panda-trickster":2,"dynamite-packrat":1,"toucan-courier":2}, flavor:"Nobody passes this one by accident.", requires:["T-3"], fixedPos:{"x":86,"y":58} },
     ]},
-  { id:"mq", sub:true, parent:"mf", entry:{x:36, y:26, after:"1-1", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 5 is cleared (afterMapCleared "mw"); its fights count as Map 5 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mq", sub:true, parent:"mf", shieldMap:5, entry:{x:36, y:26, after:"1-1", afterMapCleared:"mw", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
     nodes: [
       { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":1,"pigeon-peon":2,"field-crow":1,"clover-butterfly":2,"ash-cloud-condor":2,"harvest-mouse":2}, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
       // 2026-10-19 (EE merge): Creeper became an ungettable Easter egg (3/12, explodes), so Bee Lines swaps its 2 for Honey Bees
@@ -19902,7 +19907,8 @@ const CONQUEST_MAPS = [
       { key:"2-A-7", kind:"boss", name:"The Lodge Matriarch", icon:"🦫", deck:{"riverworks-bastion":1,"lodge-engineer":2,"pike-lancer":2,"beaver-builder":2,"silver-minnow":2,"elder-tortoise":1,"blind-cave-fish":2}, rules:{"tide":true}, flavor:"She built half the pond. She would like it back.", requires:["2-A-5","2-A-6"] },
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse m9 in").
-  { id:"m9", sub:true, parent:"m3", entry:{x:60, y:16, after:"19-1", label:"The foundry gate"}, name:"Basalt Foundry", icon:"🪨", blurb:"A furnace of cracked black stone — everything here glows from the inside.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 23 is cleared (afterMapCleared "m23"); its fights count as Map 23 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"m9", sub:true, parent:"m3", shieldMap:23, entry:{x:60, y:16, after:"19-1", afterMapCleared:"m23", label:"The foundry gate"}, name:"Basalt Foundry", icon:"🪨", blurb:"A furnace of cracked black stone — everything here glows from the inside.", sequential:true,
     nodes: [
       { key:"19-A-1", kind:"skirmish", name:"Cinder Swarm", icon:"🐝", deck:{"ember-jackal":2,"beaver-lumberjack":2,"phoenix-fledgling":2,"chained-binturong":4,"sulfur-vent-crab":2}, hqHp:120, flavor:"The smoke arrives well before the swarm does.", requires:[] },
       { key:"19-A-2", kind:"skirmish", name:"Salamander Vents", icon:"🦎", deck:{"magma-salamander":2,"obsidian-scorpion":4,"hellbender":2,"chained-binturong":4}, hqHp:44, flavor:"Every vent has something living just beneath the heat shimmer.", requires:["19-A-1"] },
@@ -19928,7 +19934,8 @@ const CONQUEST_MAPS = [
   // deeper and faster ... Like sunken boat (from the otters, probably). Unlocked after defeating the boss of that map"): an otter
   // ferry that went down past the reef wall. Darker (night all through) and faster (First Blood: the first Quick unit to swing
   // each round hits +2). Electric eels and the Goliath's brood live in the wreck.
-  { id:"mj", sub:true, parent:"m7", entry:{x:78, y:74, after:"10-9", label:"A mast below the reef"}, name:"The Sunken Depths", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 14 is cleared (afterMapCleared "m5"); its fights count as Map 14 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mj", sub:true, parent:"m7", shieldMap:14, entry:{x:78, y:74, after:"10-9", afterMapCleared:"m5", label:"A mast below the reef"}, name:"The Sunken Depths", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
     nodes: [
       { key:"10-A-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", shieldOverride:8, deck:{"clownfish-scout":2,"orca-vanguard":1,"kraken-spawnling":2,"silver-minnow":4,"glass-octopus":1}, rules:{"crushingDepths":true}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
       { key:"10-A-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"tide-pool-crab":2,"minnow-skitter":2,"silver-minnow":4,"nautilus-drifter":2}, rules:{"crushingDepths":true}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
@@ -19936,7 +19943,8 @@ const CONQUEST_MAPS = [
       { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", shieldOverride:9, deck:{"voltaic-eel":1,"abyss-lantern-squid":2,"riptide-eel":1,"silver-minnow":4,"glass-octopus":4}, rules:{"highTide":true,"crushingDepths":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] },
       { key:"10-A-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"kraken-spawnling":1,"coral-reef-shark":2,"orca-vanguard":2,"blue-ringed-octopus":1,"silver-minnow":4,"tide-pool-crab":2}, rules:{"highTide":true,"crushingDepths":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] },
     ]},
-  { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"2-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 7 is cleared (afterMapCleared "mu"); its fights count as Map 7 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mg", sub:true, parent:"mb", shieldMap:7, entry:{x:86, y:24, after:"2-2", afterMapCleared:"mu", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
       { key:"2-B-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":2,"blind-cave-fish":1,"mallard-marauder":4,"trash-panda-trickster":2,"fiddler-crab-swarm":2}, hqHp:48, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
       { key:"2-B-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1,"mallard-marauder":2,"pelican-diver":4}, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["2-B-1"] },
@@ -19945,7 +19953,8 @@ const CONQUEST_MAPS = [
     ]},
   // 14A, The Mycelium Deep (2026-10-12, D41 — my recommendation, built to try: "14A–D one at a time, two days apart, after
   // Map 14's boss"): a side dungeon under The Morel Hollow that turns up two days after the Morel Monarch is first beaten.
-  { id:"mz", sub:true, parent:"mu", entry:{x:84, y:70, after:"7-6", afterDays:2, label:"A crack in the roots"}, name:"The Mycelium Deep", icon:"🍄", blurb:"Under the Morel Hollow, the roots go down a long way, and every root is listening.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 11 is cleared (afterMapCleared "m10"); its fights count as Map 11 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mz", sub:true, parent:"mu", shieldMap:11, entry:{x:84, y:70, after:"7-6", afterDays:2, afterMapCleared:"m10", label:"A crack in the roots"}, name:"The Mycelium Deep", icon:"🍄", blurb:"Under the Morel Hollow, the roots go down a long way, and every root is listening.", sequential:true,
     nodes: [
       { key:"7-A-1", kind:"skirmish", name:"Root Cellar", icon:"🪱", deck:{"compost-grub":3,"worker-ant":2,"gorge-wyrm":1,"planarian-splitter":4,"garden-snail":4}, flavor:"The roots here are hollow. Something has been eating them from the inside.", rewards:{"first":{"gold":90,"dust":10}}, requires:[] },
       { key:"7-A-2", kind:"skirmish", name:"Glowcap Grotto", icon:"🍄", deck:{"fungal-colossus":2,"honey-bee":4,"compost-grub":2,"trapdoor-spider":2,"garden-snail":4}, flavor:"The caps give off just enough light to see what's watching.", rewards:{first:{gold:100, dust:12}}, requires:["7-A-1"] },
@@ -19954,7 +19963,8 @@ const CONQUEST_MAPS = [
       { key:"7-A-5", kind:"boss", name:"The Mycelium Mind", icon:"👑", deck:{"fungal-colossus":3,"hollow-oath-keeper":2,"trapdoor-spider":4,"gorge-wyrm":2,"garden-snail":2,"dung-beetle":4}, flavor:"Every mushroom in the Hollow is one of its thoughts.", characterId:"plains-terrace", rewards:{first:{gold:180, dust:25}}, requires:["7-A-4"] },
     ]},
   // The Canopy (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"my", sub:true, parent:"m5", entry:{x:12, y:76, after:"14-2", label:"Into the rainforest"}, name:"The Canopy", icon:"🐆", blurb:"Up in the rainforest roof past the savanna's edge — frogs, sloths, drums and a jaguar's path.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 18 is cleared (afterMapCleared "md"); its fights count as Map 18 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"my", sub:true, parent:"m5", shieldMap:18, entry:{x:12, y:76, after:"14-2", afterMapCleared:"md", label:"Into the rainforest"}, name:"The Canopy", icon:"🐆", blurb:"Up in the rainforest roof past the savanna's edge — frogs, sloths, drums and a jaguar's path.", sequential:true,
     nodes: [
       { key:"14-A-1", kind:"skirmish", name:"Dart Frogs", icon:"🐸", deck:{"puddle-hopper":2,"toucan-courier":2,"slowpoke-sentinel":2,"velvet-worm":2,"termite-mound":4,"marula-elephant":2}, flavor:"The brighter the frog, the worse the idea.", requires:[] },
       { key:"14-A-2", kind:"skirmish", name:"Strangler Arch", icon:"🌿", deck:{"toucan-courier":2,"slowpoke-sentinel":2,"ancient-sloth-titan":1,"jaguar-stalker":2,"aye-aye-prowler":2,"bramblewood-macaque":1,"termite-mound":2}, flavor:"The vines hold the arch together. They would like to hold you too.", requires:["14-A-1"] },
@@ -19992,7 +20002,8 @@ const CONQUEST_MAPS = [
       { key:"20-B-4", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":2,"magma-titan":2,"pyroclast-wyrm":2,"magma-salamander":2,"ember-jackal":2,"obsidian-scorpion":2,"cinder-stoker":2}, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:240, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
-  { id:"ms", sub:true, parent:"mw", entry:{x:70, y:76, after:"5-7", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 9 is cleared (afterMapCleared "mk"); its fights count as Map 9 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"ms", sub:true, parent:"mw", shieldMap:9, entry:{x:70, y:76, after:"5-7", afterMapCleared:"mk", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
     nodes: [
       { key:"5-A-1", kind:"skirmish", name:"Rotting Roots", icon:"🌳", shieldOverride:8, deck:{"puddle-hopper":2,"grass-viper":3,"mosquito-cloud":2,"swamp-rabbit":1,"snapper-hatchling":4}, rewards:{"first":{"gold":80,"dust":10}}, requires:[], rules:{"swampFever":25} },
       { key:"5-A-2", kind:"skirmish", name:"Gator Hollow", icon:"🌳", deck:{"mangrove-mudskipper":4,"constrictor-coil":2,"snapper-hatchling":4,"baby-horned-capybara":2,"bog-behemoth":2}, rewards:{"first":{"gold":100,"dust":13}}, requires:["5-A-1"], rules:{"swampFever":25} },
@@ -20000,7 +20011,8 @@ const CONQUEST_MAPS = [
       { key:"5-A-4", kind:"boss", name:"The Grove Warden", icon:"👑", shieldOverride:34, deck:{"bog-leech":2,"hedgehog-herbalist":2,"constrictor-coil":2,"alligator-gar":2,"snapper-hatchling":2,"echo-keeper":2,"puddle-hopper":2,"grass-viper":2,"mangrove-mudskipper":2}, rewards:{"first":{"gold":200,"dust":30}}, requires:["5-A-3"], rules:{"swampFever":25} },
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from m4's own cards; tune in the editor.
-  { id:"mn", sub:true, parent:"m4", entry:{x:31, y:81, after:"8-8", label:"The Glimmer Depths"}, name:"The Glimmer Depths", icon:"💎", blurb:"Below the alcoves the walls start to shine, and things that like shiny things start to gather.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 12 is cleared (afterMapCleared "mh"); its fights count as Map 12 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mn", sub:true, parent:"m4", shieldMap:12, entry:{x:31, y:81, after:"8-8", afterMapCleared:"mh", label:"The Glimmer Depths"}, name:"The Glimmer Depths", icon:"💎", blurb:"Below the alcoves the walls start to shine, and things that like shiny things start to gather.", sequential:true,
     nodes: [
       { key:"8-A-1", kind:"skirmish", name:"Crystal Stair", icon:"💎", deck:{"blind-cave-fish":3,"bat-swarmling":3,"sulfur-cinder-moth":2,"glowworm-cluster":4}, hqHp:46, rewards:{"first":{"gold":80,"dust":10}}, requires:[] },
       { key:"8-A-2", kind:"skirmish", name:"The Echo Pool", icon:"💎", deck:{"bat-swarmling":4,"vampire-roost":1,"echo-screecher":3,"barrow-leech-bat":2,"oilbird":2,"swarm-matriarch":4}, hqHp:56, rewards:{"first":{"gold":100,"dust":13}}, requires:["8-A-1"] },
@@ -20008,7 +20020,8 @@ const CONQUEST_MAPS = [
       { key:"8-A-4", kind:"boss", name:"The Gem Hoarder", icon:"👑", deck:{"beetle-grunt":2,"cave-flitter":2,"cave-bat-swarm":4,"glowworm-cluster":2,"lantern-spark-fly":2,"monarch-wingblade":2,"tunnel-ant":2}, rewards:{"first":{"gold":200,"dust":30}}, requires:["8-A-3"] },
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from m10's own cards; tune in the editor.
-  { id:"mv", sub:true, parent:"m10", entry:{x:15, y:61, after:"11-10", label:"The Aerie Vault"}, name:"The Aerie Vault", icon:"🪺", blurb:"The oldest nests on the mountain, built on top of each other for a thousand springs.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 15 is cleared (afterMapCleared "ml"); its fights count as Map 15 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mv", sub:true, parent:"m10", shieldMap:15, entry:{x:15, y:61, after:"11-10", afterMapCleared:"ml", label:"The Aerie Vault"}, name:"The Aerie Vault", icon:"🪺", blurb:"The oldest nests on the mountain, built on top of each other for a thousand springs.", sequential:true,
     nodes: [
       { key:"11-A-1", kind:"skirmish", name:"Cliff Ledge", icon:"🪺", deck:{"rockslide-ram":4,"peak-condor":4,"eyrie-warden":3,"chipmunk-hoarder":2,"eagle-owl-quartermaster":2}, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"11-A-2", kind:"skirmish", name:"Feather Drifts", icon:"🪺", deck:{"golden-eagle-diver":3,"eyrie-warden":4,"alpine-avalanche":3,"eagle-owl-quartermaster":4}, hqHp:69, rewards:{first:{gold:100, dust:13}}, requires:["11-A-1"] },
@@ -20016,7 +20029,8 @@ const CONQUEST_MAPS = [
       { key:"11-A-4", kind:"boss", name:"The Roost Mother", icon:"👑", deck:{"wound-reaver":4,"chipmunk-hoarder":2,"mountain-goat-climber":4,"chipmunk-stockpiler":2,"eyrie-warden":2,"eagle-owl-quartermaster":2}, rewards:{first:{gold:200, dust:30}}, requires:["11-A-3"] },
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from m6's own cards; tune in the editor.
-  { id:"mi", sub:true, parent:"m6", entry:{x:20, y:74, after:"17-8", label:"The Ice Hollow"}, name:"The Ice Hollow", icon:"🧊", blurb:"A cave of blue ice under the tundra. The cold in here has teeth.", sequential:true,
+  // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 21 is cleared (afterMapCleared "m21"); its fights count as Map 21 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
+  { id:"mi", sub:true, parent:"m6", shieldMap:21, entry:{x:20, y:74, after:"17-8", afterMapCleared:"m21", label:"The Ice Hollow"}, name:"The Ice Hollow", icon:"🧊", blurb:"A cave of blue ice under the tundra. The cold in here has teeth.", sequential:true,
     nodes: [
       { key:"17-A-1", kind:"skirmish", name:"Frost Tunnel", icon:"🧊", deck:{"glacial-ape-king":4,"taiga-lynx":2,"ringed-seal":2,"lemming-swarm":2,"snow-ermine":2,"arctic-fox-raider":2}, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"17-A-2", kind:"skirmish", name:"Glacier Gut", icon:"🧊", deck:{"glacial-ape-king":4,"arctic-fox-raider":1,"harp-seal-pup":2,"krill-swarm":2,"frostmoon-howler":2,"alpha-howler":2,"snow-ermine":2,"frost-hare-sprinter":2,"lemming-swarm":1,"permafrost-mammoth":2}, rewards:{"first":{"gold":100,"dust":13}}, requires:["17-A-1"], rules:{"slippery":30} },
@@ -22309,6 +22323,9 @@ const TEACH_KEYS = ['flying', 'swimmer', 'diurnal'];
 const TEACH_SAY = {flying:'It flies: ground units miss it half the time.', swimmer:'It swims: in the river\'s Flood rounds it gets stronger.', diurnal:'It loves the day: it gets stronger in sunlight.'};
 function teachingKeyOf(id){ const d = getCardDefs()[id] || {}; return TEACH_KEYS.find(k=> d.effects && d.effects[k] != null) || null; }
 function teachingCardPick(){
+  // 2026-10-21 (package RP, owner Oct 21: "Let's only give plain cards as rewards at the start."): the keyword-teaching cards (Flying,
+  // Swimmer, Diurnal) were extra rewards on Maps 0-1 wins, the only place this is asked; while plain rewards run to Map 1 it gives none.
+  if(typeof PLAIN_REWARDS_UPTO_MAP === 'number' && PLAIN_REWARDS_UPTO_MAP >= 1) return null;
   const f = loadDialogueFlags(), defs = getCardDefs(), fac = loadFactionChoice(), arch = fac === 'hummingbirds' ? 'Hummingbird' : fac === 'otters' ? 'Otter' : null;
   for(const k of TEACH_KEYS){
     if(f['teach:' + k]) continue;
@@ -47343,6 +47360,7 @@ function grantFactionPack(id, n, opts){ if(!FACTION_PACKS[id]) return []; const 
 function creditFactionPack(id){
   const fp = FACTION_PACKS[id]; if(!fp || !factionPackPool(fp, 'own').length) return null;
   const roll = rollFactionPackCards(fp); if(!roll.pulls.length) return null;
+  if(fp.kind === 'faction') try{ noteFactionReceived(roll.pulls.filter(p=> p.from === 'own').length); }catch(e){} // 2026-10-21 (package RP): the faction reward track's count
   const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:0.04, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
   const foils = rollPackFoils(pack, roll.pulls.length);
   const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
@@ -47439,16 +47457,19 @@ function factionPackPool(fp, which){
   // source.side ('tribes' = hummingbird side, 'shared' = Riverbank, none = otter side) still picks a faction pack's own cards.
   if(fp.kind === 'faction'){ const want = fp.faction === 'hummingbirds' ? 'tribes' : ''; return packCardPool(defs, 11, true).filter(id=> ((cardSourceOf(defs[id]).side)||'') === want); }
   const ofPeople = id=>{ try{ const ps = peopleOfCard(defs[id]); return fp.people === 'folk' ? (ps.size === 0 || ps.has('folk')) : ps.has(fp.people); }catch(e){ return false; } }; // folk = everyone without another people (villagers, farm animals)
-  let pool = packCardPool(defs, 1).filter(ofPeople);
-  if(pool.length < 6){ const extra = Object.keys(defs).filter(id=>{ const d = defs[id]; const src = cardSourceOf(d); return src.kind==='map' && !d.token && !d.test && !isEquipmentDef(d) && ['common','uncommon'].includes(d.rarity||'common') && ofPeople(id); }); pool = [...new Set(pool.concat(extra))]; }
-  return pool;
+  // 2026-10-21 (package RP, owner Oct 21: skirmish rewards "CANNOT be pack rewards"): a people's bundle no longer tops itself up with
+  // that people's map rewards when the packs hold fewer than six of them; it draws from the basic pack pool only.
+  return packCardPool(defs, 1).filter(ofPeople);
 }
 function rollFactionPackCards(fp, rnd){
   rnd = rnd || Math.random;
   const defs = getCardDefs(), w = id=> legendaryHeldBack(defs[id]) ? 0 : Math.max(0, +(PACK_RARITY_WEIGHT[defs[id].rarity||'common'] ?? 4)||0); // 2026-10-16: no Legendary before Map 21
   const pick = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); if(!list.length || tot <= 0) return list[0] || null; let r = rnd()*tot; for(const id of list){ r -= w(id); if(r <= 0) return id; } return list[list.length-1]; };
   const out = [], own = factionPackPool(fp, 'own'), gen = factionPackPool(fp, 'general');
-  for(let i = 0; i < FACTION_PACK_OWN; i++){ const id = pick(own); if(id) out.push({id, from:'own'}); }
+  // 2026-10-21 (package RP): a faction pack's own cards are faction rewards, so they follow the faction reward track (rarity gates,
+  // lowest first, plain first on Maps 0-1); a people's bundle keeps the pack weights
+  const ownPick = fp.kind === 'faction' ? (list=>{ const got = []; return ()=>{ const id = factionTrackPick(list, rnd, {received: factionReceived() + got.length}); if(id) got.push(id); return id; }; })(own) : ()=> pick(own);
+  for(let i = 0; i < FACTION_PACK_OWN; i++){ const id = ownPick(); if(id) out.push({id, from:'own'}); }
   for(let i = 0; i < FACTION_PACK_GENERAL; i++){ const id = pick(gen); if(id) out.push({id, from:'general'}); }
   return {pulls: out, bonus: null};
 }
@@ -47517,8 +47538,87 @@ function grantTrackCards(why, extraPool){
    one card off the growth list. */
 const FACTION_POOL_KEY = 'bramblewood_faction_pool_v2';
 const FACTION_POOL_COPIES = {common:5, uncommon:4, rare:3, veryrare:2, superrare:2};
+// 2026-10-21 (package RP): FACTION_TIER_AT / FACTION_TIER_ODDS (tiers at 10 / 20 / 30 / 40 cards collected) are replaced by the faction
+// reward track's rarity gates below (FACTION_RARITY_GATES); kept only so an old save's numbers still read.
 const FACTION_TIER_AT = [10, 20, 30, 40];
 const FACTION_TIER_ODDS = [ {common:80, uncommon:20}, {common:60, uncommon:30, rare:10}, {common:50, uncommon:30, rare:20}, {common:40, uncommon:30, rare:20, high:10}, {common:30, uncommon:30, rare:25, high:15} ];
+// FACTION_REWARD_TRACK:BEGIN
+/* The faction reward track (2026-10-21, package RP; owner Oct 21: "Be strict on what is a Skirmish reward (these CANNOT be pack
+   rewards) and which are faction rewards (preference is most otters and hummingbirds are faction rewards) - given throughout
+   skirmishes as progress as well. Certain achievements also drop faction rewards." and "Faction rewards give the lowest rarity
+   first, almost always. Until a certain critical mass is achieved. e.g. 25 commons (duplicates included), then uncommons can be
+   gotten. 15 later, rares can be gotten. 10 later, very rares can be gotten. etc. Pace this out, as the rare should only come in
+   Map 14+. And the very rare much later."). docs/balance/rewards-pass-2026-10-21.md.
+   - A faction reward is a card of the Factions pool (source {kind:'pack', tier:11, side}: '' Otter side, 'tribes' Hummingbird side,
+     'shared' both). No pack sells them (BASIC_PACK_POOLS is [1]); they come only from the hand-outs below.
+   - A rarity opens once you have RECEIVED `at` faction cards (every copy counts, duplicates included) and reached Map `map`
+     (FACTION_RARITY_GATES). Received = every faction card a hand-out gave you (factionReceived; an older save starts from the copies it holds).
+   - Among the open rarities the lowest is almost always the one picked (FACTION_RARITY_WEIGHT), and inside a rarity a card you
+     don't own yet comes first (x FACTION_NEW_CARD_WEIGHT).
+   - On Maps 0-1 (PLAIN_REWARDS_UPTO_MAP) a plain card (no skills) is picked first where your side has one (owner Oct 21: "Let's only
+     give plain cards as rewards at the start").
+   - The hand-outs (FACTION_REWARD_TRACK): Map 0's 0-2 faction pack (2 of your side + 1 basic-pack card); each main map's last fight,
+     first clear (the milestone; was every elite and boss since 2026-10-13); every `everyWins`-th first clear of any fight (1); the
+     3-2 ambush's Faction Growth; the
+     achievements listed in `achievements` (their reward's factionCards). tools/faction_track_sim_2026_10_21.js walks the road with
+     these and prints when each rarity opens; `everyWins` is tuned so the count passes the Rare gate around Map 14. */
+const FACTION_RARITY_GATES = {
+  common:   {at:0,  map:0},
+  uncommon: {at:25, map:0},   // owner: "25 commons (duplicates included), then uncommons"
+  rare:     {at:40, map:14},  // "15 later, rares ... the rare should only come in Map 14+"
+  veryrare: {at:50, map:25},  // "10 later, very rares ... much later" (Claude's proposal: Map 25, World 2's second stretch)
+  superrare:{at:60, map:30},  // "etc. Pace this out" (proposals, owner to confirm)
+  epic:     {at:70, map:35},
+  heroic:   {at:80, map:40},
+  high:     {at:90, map:50},  // Unique and up (the Old Willow of the Ford); was held back only until Map 21 (legendaryHeldBack)
+};
+const FACTION_RARITY_WEIGHT = {common:100, uncommon:30, rare:10, veryrare:4, superrare:3, epic:2, heroic:1.5, high:1};
+const FACTION_NEW_CARD_WEIGHT = 3;
+const PLAIN_REWARDS_UPTO_MAP = 1;
+const FACTION_REWARD_TRACK = {
+  everyWins: 8,          // 1 faction reward on every 8th first clear of any fight (tuned with the sim: 40 received in Map 13, so the Rare gate at Map 14 lands on time)
+  milestone: 1,          // a main map's last fight (its ender), first clear: was every elite and boss (2026-10-13), far too fast for the gates
+  openingPack: 2,        // Map 0's 0-2 faction pack: 2 cards of your side
+  ambushGrowth: 1,       // the 3-2 ambush's Faction Growth
+  achievements: {first_win:1, conquest_5:1, conquest_map:1, conquest_maps_5:2, wins_50:2, collector_100:1, conquest_road:3, world_boss:3},
+};
+function factionRarityKey(r){ r = r || 'common'; if(r === 'starter') return 'common'; if(FACTION_RARITY_GATES[r] && r !== 'high') return r; return roadRarityStep(r) >= roadRarityStep('unique') ? 'high' : (FACTION_RARITY_GATES[ROAD_RARITY_ALIAS[r]] ? ROAD_RARITY_ALIAS[r] : 'common'); }
+function factionReceived(st){ st = st || loadFactionPool(); return Math.max(0, +st.received || 0); }
+// Is this rarity open on the track (received cards and map reached)? `ctx` ({received, map}) lets the sim and the tests ask without a save.
+function factionRarityOpen(rarity, ctx){
+  const g = FACTION_RARITY_GATES[factionRarityKey(rarity)]; if(!g) return false;
+  const received = ctx && ctx.received != null ? ctx.received : factionReceived(), map = ctx && ctx.map != null ? ctx.map : trackMapReached();
+  return received >= g.at && map >= g.map;
+}
+function factionOpenRarities(ctx){ return Object.keys(FACTION_RARITY_GATES).filter(k=> factionRarityOpen(k, ctx)); }
+function isPlainCard(d){ return !!d && !Object.keys(d.effects || {}).length; }
+// The pick: lowest open rarity almost always, a card you don't own first, a plain one first on Maps 0-1. ids: candidate ids; weightOf(id):
+// an extra weight (copies left in the pool), default 1.
+function factionTrackPick(ids, rnd, ctx, weightOf){
+  rnd = rnd || Math.random; const defs = getCardDefs();
+  let pool = ids.filter(id=> defs[id] && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]) && factionRarityOpen(defs[id].rarity, ctx));
+  if(!pool.length) return null;
+  const map = ctx && ctx.map != null ? ctx.map : trackMapReached();
+  if(map <= PLAIN_REWARDS_UPTO_MAP){ const plain = pool.filter(id=> isPlainCard(defs[id])); if(plain.length) pool = plain; }
+  const own = id=> ctx && ctx.owned ? (ctx.owned[id] || 0) : copiesOwned(id);
+  const w = id=> (FACTION_RARITY_WEIGHT[factionRarityKey(defs[id].rarity)] || 1) * (own(id) ? 1 : FACTION_NEW_CARD_WEIGHT) * Math.max(0, weightOf ? +weightOf(id) || 0 : 1);
+  const tot = pool.reduce((t, id)=> t + w(id), 0); if(!(tot > 0)) return null;
+  let r = rnd() * tot; for(const id of pool){ r -= w(id); if(r <= 0) return id; } return pool[pool.length - 1];
+}
+// Count faction cards received (every copy) on the track's state.
+function noteFactionReceived(n, st){ const own = !st; st = st || loadFactionPool(); st.received = factionReceived(st) + Math.max(0, n|0); if(own) saveFactionPool(st); return st.received; }
+// Every first clear moves the track: each FACTION_REWARD_TRACK.everyWins-th one gives a faction reward. Returns the ids granted.
+function factionTrackOnWin(node, isFirstClear){
+  if(!isFirstClear || !node || node.kind === 'tutorial' || node.ambush) return [];
+  const st = loadFactionPool(); st.wins = (st.wins|0) + 1; saveFactionPool(st);
+  const k = Math.max(1, FACTION_REWARD_TRACK.everyWins|0); if(st.wins % k) return [];
+  const id = factionReward(); return id ? [id] : [];
+}
+// The map milestone: a main map's last fight (applyRoadKinds marks it `ender`).
+function factionMilestone(node){ return !!(node && node.ender && (FACTION_REWARD_TRACK.milestone | 0) > 0); }
+// n faction rewards at once (an achievement's factionCards). Returns the ids granted.
+function grantFactionRewardCards(n){ const out = []; for(let i = 0; i < (n|0); i++){ const id = factionReward(); if(id) out.push(id); } return out; }
+// FACTION_REWARD_TRACK:END
 function factionCardsOfMine(){
   const defs = getCardDefs(), fp = FACTION_PACKS[myFactionPackId()]; if(!fp) return [];
   const want = fp.faction === 'hummingbirds' ? 'tribes' : '';
@@ -47529,30 +47629,29 @@ function loadFactionPool(){
   st = st && typeof st === 'object' ? st : {left:{}, collected:0, growth:[], seen:{}}; st.left = st.left || {}; st.growth = st.growth || []; st.seen = st.seen || {};
   const defs = getCardDefs();
   factionCardsOfMine().forEach(id=>{ if(st.seen[id]) return; st.seen[id] = 1; st.left[id] = FACTION_POOL_COPIES[defs[id].rarity||'common'] || 1; st.growth.push(id); });
+  // 2026-10-21 (package RP): the track's count of faction cards received; a save from before it starts from the faction copies it holds
+  if(typeof st.received !== 'number'){ try{ st.received = Object.keys(st.seen).reduce((t, id)=> t + copiesOwned(id), 0); }catch(e){ st.received = 0; } }
   return st;
 }
 function saveFactionPool(st){ try{ localStorage.setItem(FACTION_POOL_KEY, JSON.stringify(st)); }catch(e){} }
 function factionTier(st){ st = st || loadFactionPool(); let t = 0; FACTION_TIER_AT.forEach(n=>{ if(st.collected >= n) t++; }); return t; }
 function rarityClass(r){ r = r || 'common'; return (r === 'common' || r === 'uncommon' || r === 'rare') ? r : (r === 'starter' ? 'common' : 'high'); }
 function grantOne(id, why){ const before = copiesOwned(id); unlockCardForPlayer(id, why); return copiesOwned(id) > before || (loadPitchHeld()||[]).some(h=> h.id === id); }
+// 2026-10-21 (package RP): a Faction Reward picks through the faction reward track (factionTrackPick: the rarity gates, lowest first,
+// plain first on Maps 0-1), weighted by the copies left in your pool; was FACTION_TIER_ODDS by cards collected. Counts as received.
 function factionReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
   const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id])); if(!live.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-17: no equipment
-  const odds = FACTION_TIER_ODDS[factionTier(st)], have = {}; live.forEach(id=> have[rarityClass(defs[id].rarity)] = true);
-  let classes = Object.keys(odds).filter(k=> have[k]); if(!classes.length) classes = Object.keys(have);
-  const tot = classes.reduce((t,k)=> t + (odds[k]||1), 0); let r = rnd()*tot, cls = classes[classes.length-1];
-  for(const k of classes){ r -= (odds[k]||1); if(r <= 0){ cls = k; break; } }
-  const pool = live.filter(id=> rarityClass(defs[id].rarity) === cls), w = pool.reduce((t,id)=> t + st.left[id], 0);
-  let q = rnd()*w, pick = pool[pool.length-1]; for(const id of pool){ q -= st.left[id]; if(q <= 0){ pick = id; break; } }
-  st.left[pick] -= 1; st.collected += 1; saveFactionPool(st);
+  const pick = factionTrackPick(live, rnd, {received: factionReceived(st)}, id=> st.left[id]); if(!pick) return null;
+  st.left[pick] -= 1; st.collected += 1; noteFactionReceived(1, st); saveFactionPool(st);
   return grantOne(pick, 'factionReward') ? pick : null;
 }
 function factionGrowth(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
-  const left = st.growth.filter(id=> defs[id] && !legendaryHeldBack(defs[id])); if(!left.length) return null; // 2026-10-16: no Legendary before Map 21
+  const left = st.growth.filter(id=> defs[id] && !legendaryHeldBack(defs[id]) && factionRarityOpen(defs[id].rarity, {received: factionReceived(st)})); if(!left.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-21 (RP): only open rarities
   const rank = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity || 'common');
   const low = Math.min(...left.map(rank)), cands = left.filter(id=> rank(id) === low), pick = cands[Math.floor(rnd()*cands.length)];
-  st.growth = st.growth.filter(id=> id !== pick); saveFactionPool(st);
+  st.growth = st.growth.filter(id=> id !== pick); noteFactionReceived(1, st); saveFactionPool(st);
   return grantOne(pick, 'factionGrowth') ? pick : null;
 }
 // Reward placeholders on a fight (node.rewardTokens): 'factionReward' and 'factionGrowth', set in ✏️ Edit rewards.
@@ -47612,7 +47711,12 @@ function rollConquestPackDrops(node, isFirstClear){
   // 2026-10-13: an elite or boss, first clear, now hands out one faction-track card and one base-track card straight away
   // (no pack to open). Subfaction bundles retired: subfactions come from Journeys (Maps 15–20).
   if(isFirstClear && node.rewardTokens && node.rewardTokens.length) out.cards = grantRewardTokens(node); // the editor's placeholders win
-  else if(bigFight && isFirstClear){ out.cards = []; const f = factionReward(); if(f) out.cards.push(f); const b = trackPick(baseTrackPool()); if(b && grantOne(b, 'progressTrack')) out.cards.push(b); }
+  // 2026-10-21 (package RP, owner Oct 21: faction rewards "given throughout skirmishes as progress", paced so the Rare lands around Map 14):
+  // the faction card comes on a main map's last fight (its ender, the map milestone) instead of every elite and boss; the base-track card
+  // still comes with every elite and boss first clear. Every FACTION_REWARD_TRACK.everyWins-th first clear adds one (factionTrackOnWin).
+  else if(bigFight && isFirstClear){ out.cards = []; const f = factionMilestone(node) ? factionReward() : null; if(f) out.cards.push(f); const b = trackPick(baseTrackPool()); if(b && grantOne(b, 'progressTrack')) out.cards.push(b); }
+  else if(isFirstClear && factionMilestone(node)){ out.cards = []; const f = factionReward(); if(f) out.cards.push(f); } // Map 0's ender is a skirmish
+  try{ const fx = factionTrackOnWin(node, isFirstClear); if(fx.length) out.cards = (out.cards || []).concat(fx); }catch(e){} // 2026-10-21 (package RP): every 3rd first clear, a faction reward
   return out;
 }
 // Free packs on the road (2026-10-12, the user's map table: "Map 3 Free Pack A, 7 Free Pack B, 10 Free Mystery Pack A,

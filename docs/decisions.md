@@ -4,6 +4,42 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**RP1. Faction rewards' map term in the stat budget** · Decide · Rewards · asked 2026-10-21
+- A faction Rare can't be had before Map 14 and a Very Rare before Map 25 (the faction reward track), but cardObtainMap still counts every faction reward as a pack card (Map 5) for N's Map x 0.2. Changing it moves N for the 42 faction cards (package BF5's stats).
+  - Follow the gate (Common 0, Uncommon ~7, Rare 14, Very Rare 25 ...)
+  - Keep Map 5 for all faction cards
+- **Default:** Keep Map 5 until BF5 lands
+
+**RP2. The later faction gates** · Decide · Rewards · asked 2026-10-21
+- Proposed: Very Rare at 50 received and Map 25; Super Rare 60 / Map 30; Epic 70 / 35; Heroic 80 / 40; Unique and up 90 / 50 (FACTION_RARITY_GATES). The sim puts about 76 received by Map 25 and 111 by Map 40.
+  - Keep the proposal
+  - Other numbers
+- **Default:** Keep the proposal
+
+**RP3. Quarry Mole out of Base** · Decide · Rewards · asked 2026-10-21
+- The Quarry Mole (Darksight, Keen Sense, 1 Lumber) is a Base card everyone owns. Proposal: make it a Caves & Alcoves (Map 8, 8-1) reward; the Badger Lumberjack on 1-4 is the Lumber introduction now, and the plain Harvest Mouse is already Base.
+  - Move the mole to 8-1
+  - Keep it in Base
+- **Default:** Move the mole to 8-1
+
+**RP4. Plain start for Hummingbirds, the 0-2 pack and the tutorial rewards** · Decide · Rewards · asked 2026-10-21
+- Every Hummingbird faction card flies (no plain one), the 0-2 faction pack's third card is any basic-pack card, and the tutorial's reward cards (Rabbit Kit, River Warden, Sunspire Envoy, Riverwing Envoy) have skills. The pass made skirmish rewards and the faction picks plain on Maps 0-1 only.
+  - Add a plain Hummingbird common and plain tutorial rewards
+  - Leave as is
+- **Default:** Leave as is
+
+**RP5. Held cards: the Canopy's rainforest animals, the Thistle Baron, Eyrie Heights' theme** · Decide · Rewards · asked 2026-10-21
+- 15 Canopy animals are held for a Map 25 rainforest (the Savanna Reaches has room for 10 now); the Thistle Baron (Map 1's leader, Thorns) is held for Map 21+; Eyrie Heights' chapel birds are Ecclesia (Map 77), so Map 11 still fields cards nobody can collect; the Basalt Foundry's fights are Devilry (Map 66).
+  - Keep them held and re-theme Map 11 and the Foundry
+  - Put the Canopy animals on Map 14 now
+- **Default:** Keep them held
+
+**RP6. The last side-map gates** · Decide · Maps · asked 2026-10-21
+- Gated now (after Map N cleared, fights count as Map N): Clovermead 5, Lilypad Reach 6, Smugglers' Grotto 7, Sunken Grove 9, Mycelium Deep 11, Glimmer Depths 12, Sunken Depths 14, Aerie Vault 15, Canopy 18, Ice Hollow 21, Basalt Foundry 23. Kept: the Pale Desert (after Map 18), the Eye of the Volcano and the Volcano Lair (after 20-10), the Old Bramble (after the Ice Hollow, still counting as Map 17).
+  - Pale Desert after Map 22, the Eye and the Lair after Map 24, the Old Bramble as Map 21
+  - Keep these four as they are
+- **Default:** Keep these four as they are
+
 **T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03
 - The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied.
   - Say "apply it" and I run supabase/migrations/20261003_fight_sessions.sql
@@ -384,6 +420,23 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
   - Allow per-fight stat changes on enemy copies
 - **Default:** Printed = obtained
 - **Outcome:** Owner 16:22: "the cards as seen should be the cards when you get them. no change. The Wyrm is only stronger cause the field effect gives it fiery skills." Printed card = obtained card; enemy strength comes from levels, decks / synergy and fields, not altered stats. The Caldera Wyrm stays as printed. On the road the enemy's levels follow the owner's schedule (Maps 1-4 Lv 1, 5-9 Lv 1-2, 10+ Lv 2 and rising) and rarity above Rare is allowed from Map 10; no new Shield overrides and no field buffs for difficulty ("Let them be strong full stop for now. In the future we will make them challenging by cheating."). Still altering enemy stats outside level and fields, flagged and left as they are: the endless dungeons' floorPct perk (+x% stats a floor, set to 0 since LV, the mechanism remains), the raid's staged decks (cards scaled by the raid's attack / health factors) and its boss units (+1 Attack, Health x1.5-3, the Health bonus): raid boss mechanics, unchanged. Shield overrides above the rule are bramble, not card, changes: counted and measured in docs/balance/level-curve-2026-10-19c.md as an owner call.
+
+## Stated rules · 2026-10-21
+
+The owner's directions (Oct 21) on rewards, sources, the road's eras and its bosses, recorded by package RP (docs/balance/rewards-pass-2026-10-21.md, docs/map-recommendations-2026-10-21.md). Pinned by `tests/rewards-pass-2026-10-21.js`.
+
+- **Skirmish rewards are never pack cards; faction rewards are their own category** ("Be strict on what is a Skirmish reward (these CANNOT be pack rewards) and which are faction rewards"): every card is exactly one of a skirmish reward (source map), a pack card, a faction reward (the Factions pool, tier 11, in no pack), or a raid / smith / nest / base / quest / secret / Easter egg / materia card, or awaitingSource.
+- **Most Otters and Hummingbirds are faction rewards, given with skirmish progress and some achievements**: a main map's last fight, every 8th first clear, Map 0's 0-2 faction pack, the 3-2 ambush and the listed achievements hand them out (FACTION_REWARD_TRACK).
+- **Faction rewards give the lowest rarity first, until a critical mass of faction cards received (duplicates count)**: Uncommon after 25, Rare after 15 more and not before Map 14, Very Rare after 10 more and much later (Map 25 proposed); the later steps (Super Rare 60 / Map 30, Epic 70 / 35, Heroic 80 / 40, Unique+ 90 / 50) are proposals. The thresholds are constants (FACTION_RARITY_GATES).
+- **Only plain cards (no skills) as rewards at the start** (Maps 0-1), with **Lumber introduced on Map 1** by one Lumber card (the Badger Lumberjack on 1-4).
+- **Devilry is found on Map 66, Ecclesia on Map 77, Evomax from Map 30**: no card of those lines is obtainable before (they wait as awaitingSource).
+- **The eras: 20-40 is stronger, more advanced versions of the 0-20 animals, and maybe some extinct animals that resemble today's; 40+ has legit dinosaurs; 50+ is magic.**
+- **Submaps: one unique card each, the rest built from cards the player already has, and unlocked quite late** (Smugglers' Grotto after Map 7; every side map off Maps 0-19 opens at least four maps after its parent, its fights counting as that map).
+- **Skill introduction is gentle and strict: two new skills a map at most; Maps 21-40 are about using the skills already learnt** (new skills again past Map 40).
+- **5 world bosses and 1 super world boss for Maps 0-100.**
+- **Bosses from Map 5 onwards, so at least 95 bosses and 100+ elites, not counting the submaps.**
+- **Limit break always balances a card to the next series's standard.**
+- **Map x 0.2 in N gives importance to new cards balanced in the late game** (the stat budget's map term; package BF5 builds it, with vanilla cards x1.05).
 
 ## Stated rules · 2026-10-18
 

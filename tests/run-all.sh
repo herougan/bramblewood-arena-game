@@ -167,6 +167,7 @@ run node tests/ed-2026-10-21.js   # 2026-10-21 (package ED): one result per matc
 run node tests/mx-2026-10-19.js   # 2026-10-19 (package MX): the raid Shield 50 falling with the raid (fight, editor, lines), the 🗝️ badge at 0, swaps only for clearly better cards (weaker / equal / stronger)
 run node tests/bx-2026-10-21.js   # 2026-10-21 (package BX): Swarm at the bramble, Wave into the frontier, Archer N (On Action x Arrow N) and the drop look, the frame layers' host, fire attacks, Greyplume Fledgling, Dive's Sprinter tag
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)
+run node tests/rewards-pass-2026-10-21.js   # 2026-10-21 (package RP): one category a card, no map reward in a pack pool, the faction reward track's rarity gates and pacing, plain Maps 0-1 rewards, the Devilry / Ecclesia / Evomax gates, side maps' one unique card and gates
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; run python3 tests/e2e/codex_perf.py; run python3 tests/e2e/emoji_perf.py; run python3 tests/e2e/filters_2026_10_19.py; run python3 tests/e2e/codex_cx_2026_10_19.py; run python3 tests/e2e/tentacle_fx_2026_10_19.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

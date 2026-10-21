@@ -23,6 +23,11 @@ const read = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8'), readJSON = rel
 const src = read('arena_app.js');
 const cards = readJSON('canonical/cards.json');
 const allPool = cards.filter(c=> c.pool), live = cards.filter(c=> !c.pool);
+// 2026-10-21 (package RP, the rewards and sources pass): it moved some of these cards on (docs/balance/rewards-pass-2026-10-21.json:
+// one unique reward a side map, plain rewards on Maps 0-1, the Devilry / Ecclesia gates, Otters and Hummingbirds to the faction
+// rewards). A card it moved is checked against its new source there.
+const RP_MOVES = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rewards-pass-2026-10-21.json'), 'utf8')).moves.map(m=> [m.id, m])); }catch(e){ return {}; } })();
+const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to); };
 // 2026-10-19 (package GI): the checks of this pool's own make-up (counts per map, polar set, measured win rates) read package AN's cards;
 // the pool-wide rules (out of the game, the build, the Admin list) read every pool card, GI's skill examples too.
 const PLACED = (()=>{ try{ return readJSON('docs/balance/thematic-placed-2026-10-19.json').placed; }catch(e){ return []; } })();
@@ -82,7 +87,7 @@ pool.forEach(c=>{
 
 // ---- 3. out of the live game
 ok(stillPool.every(c=> !c.source && c.locked === true && !c.basic && !c.hidden), '3. no source (no pack, reward or base card), locked');
-ok(pool.filter(c=> !c.pool).every(c=> c.source && (c.source.kind === 'pack' ? c.poolSlot === 'pack' : c.source.kind === 'map' && c.poolSlot === 'skirmish') && !('poolMap' in cards.find(x=> x.id === c.id))), '3. (TH) each placed card has a source matching its slot and no pool fields');
+ok(pool.filter(c=> !c.pool).every(c=> (rpMoved(cards.find(x=> x.id === c.id)) || (c.source && (c.source.kind === 'pack' ? c.poolSlot === 'pack' : c.source.kind === 'map' && c.poolSlot === 'skirmish'))) && !('poolMap' in cards.find(x=> x.id === c.id))), '3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields');
 const deckIds = new Set(); MAPS.forEach(m=> (m.nodes || []).forEach(nd=>{ Object.keys(nd.deck || {}).forEach(id=> deckIds.add(id)); (nd.leaders || []).forEach(id=> deckIds.add(id));
   ((nd.dungeon && nd.dungeon.waveDecks) || []).forEach(w=> w && Object.keys(w).forEach(id=> deckIds.add(id))); }));
 ok(stillPool.every(c=> !deckIds.has(c.id)), '3. in no map deck');

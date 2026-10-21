@@ -23,6 +23,13 @@ let fail = 0, checks = 0; const ok = (c, m)=>{ checks++; if(!c){ fail++; console
 const fn = name=>{ const i = src.indexOf(`function ${name}(`); if(i < 0) return ''; let d = 0, j = src.indexOf('{', i); for(; j < src.length; j++){ if(src[j] === '{') d++; else if(src[j] === '}' && --d === 0) break; } return src.slice(i, j + 1); };
 const constLine = name=>{ const m = src.match(new RegExp(`^const ${name} = [^\\n]*$`, 'm')); return m ? m[0] : ''; };
 const NEW = ['sandfish', 'pale-oryx', 'quicksand-queen'];
+// 2026-10-21 (package RP, the rewards and sources pass): it moved some of these cards on (docs/balance/rewards-pass-2026-10-21.json:
+// one unique reward a side map, plain rewards on Maps 0-1, the Devilry / Ecclesia gates, Otters and Hummingbirds to the faction
+// rewards). A card it moved is checked against its new source there.
+const RP_MOVES = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rewards-pass-2026-10-21.json'), 'utf8')).moves.map(m=> [m.id, m])); }catch(e){ return {}; } })();
+const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to); };
+// a held (awaitingSource) card keeps the obtain map it had for the budget's map term until it is placed again
+const rpBudgetCard = d=> d && RP_MOVES[d.id] && RP_MOVES[d.id].to === 'awaitingSource' ? Object.assign({}, d, {obtainMap: RP_MOVES[d.id].obtainBefore}) : d;
 const KEYS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i=> '18-A-' + i);
 // The owner's curve (2026-10-18): the skirmishes in trail order from 90% down to 60%, the elite on that line, the boss ~40%; green = +-8.
 // (2026-10-19, BF: a map's step lower, as a side map; below)
@@ -108,7 +115,10 @@ map.nodes.forEach(n=>{
   ok(!ids.some(id=> /obsidian|glass/.test(id)), `3. ${n.key}: no glass or obsidian (the Glass Dunes' identity)`);
   ok(n.rules && Object.keys(n.rules).every(k=> FIELD_KEYS.has(k)) && (!n.rules.field || n.rules.field === 'heatwave'), `3. ${n.key}: only the existing desert field rules (Scorching, Sandstorm, Mirage): ${JSON.stringify(n.rules)}`);
   const rw = G.nodeRewardCardIds('mpd', n.key);
-  ok(rw.length >= 1 && rw.every(id=> RR.roadRarityOk(defs[id].rarity, 18, n.kind)), `3. ${n.key}: a card reward inside the cap (${rw})`);
+  // 2026-10-21 (package RP, owner Oct 21: "1 unique card only per submap"): only the boss gives a card (the Quicksand Queen); the other
+  // eight fights' cards moved to the Glass Dunes, the Savanna Reaches or were held (docs/balance/rewards-pass-2026-10-21.json)
+  if(/boss/.test(n.kind || '')) ok(rw.length === 1 && rw.every(id=> RR.roadRarityOk(defs[id].rarity, 18, n.kind)), `3. ${n.key}: the side map's one unique card reward, inside the cap (${rw})`);
+  else ok(!rw.length, `3. ${n.key}: no card reward (one unique a side map, on its boss) (${rw})`);
   ok(n.rewards && n.rewards.first && n.rewards.first.gold > 0 && n.rewards.first.dust > 0, `3. ${n.key}: first-clear Gold and Dust`);
   ok(!n.shieldOverride && !n.hqHp, `3. ${n.key}: the bramble by rule (Shield = Map 18 x kind, its own Health)`);
 });
@@ -122,7 +132,7 @@ ok(new Set(map.nodes.map(n=> n.icon)).size >= 8 && map.nodes.every(n=> n.flavor 
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
 NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
   ok(d && b.ok && !b.missing.length, `4. ${id} fits the stat budget (2A+H+S ${b && b.x1} < N ${b && b.N}, A*H+S ${b && b.x2} < ${b && b.N2})`);
-  ok(d && d.locked && d.source && d.source.kind === 'map' && d.source.id === 'mpd' && KEYS.includes(d.source.node), `4. ${id} is a Pale Desert reward (${JSON.stringify(d && d.source)})`);
+  ok(d && d.locked && ((d.source && d.source.kind === 'map' && d.source.id === 'mpd' && KEYS.includes(d.source.node)) || rpMoved(d)), `4. ${id} is a Pale Desert reward, or package RP moved it on (${JSON.stringify(d && d.source)})`);
   ok(d && JSON.stringify(d.revealAfter) === JSON.stringify({map: 'md'}), `4. ${id}'s skills stay "?" until Map 18 is cleared`);
   ok(d && d.icon && d.flavor && (d.archetypes || []).includes('Desert') && /NightCafe/.test(d.creatorNote || ''), `4. ${id}: emoji, flavour, Desert, and the art brief in its note`);
   ok(d && map.nodes.some(n=> n.deck[id]), `4. ${id} turns up in a Pale Desert fight`);
@@ -138,7 +148,7 @@ NEW.forEach(id=>{ const d = defs[id], b = d && T.budget(d);
   cleared.add('md'); ok(ctx.R.maskHiddenSkills(q) === q, '4. Map 18 cleared: she reads in full');
 }
 ['rabid-jackal', 'dust-devil-kestrel', 'meerkat-burrower', 'stonedrop-vulture', 'glowing-gecko', 'dust-hyena'].forEach(id=>
-  ok(defs[id].source && defs[id].source.id === 'mpd' && T.budget(defs[id]).ok, `4. ${id} (it had no source) is a Pale Desert reward now, within budget`));
+  ok(((defs[id].source && defs[id].source.id === 'mpd') || rpMoved(defs[id])) && T.budget(rpBudgetCard(defs[id])).ok, `4. ${id} (it had no source) is a Pale Desert reward now (or package RP moved it on), within budget`));
 
 // --- 5. win rates
 let stored = null; try{ stored = JSON.parse(fs.readFileSync(STORE, 'utf8')); }catch(e){}
