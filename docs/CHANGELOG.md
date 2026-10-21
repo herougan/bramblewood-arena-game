@@ -41,6 +41,37 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Texts:** 102 TX keys in 12 packs (`tools/i18n_2026_10_19_sk3.py`). The Codex skills book, the status chips, log lines and the trigger builder all have them.
 - **Docs:** `docs/strategies-2026-10-19.md` (the owner's question 18: the archetypes, the go-wide audit and 8 new directions).
 - **Tests:** `tests/skills-sk3-2026-10-19.js`. The GI test follows the Executioner, Hunter and status-list changes.
+## 2026-10-19 (package SK1: new combat skills; the Cure / Heal / Cleanse split)
+- **Owner (21:36, 21:56):** new combat skills, Expose about hiding, Exploit about damage, Demolition renamed Siege, the Cure / Heal / Cleanse split; "if you can and it makes sense, feel free to use triggers and actions".
+- **Triggers × actions:** these five skills are now shorthands built from triggers and actions:
+  - Sentry N = On Enemy Enters (Facing): Damage N.
+  - Expose N / Exploit N / Venom Pulse N = On Hit: Expose / Exploit / Poison Tick N.
+  - Spoils N = On Kill (Creature): Buff itself +0/+N.
+  - The three triggers and the Exploit and Poison Tick actions are new. They are in the trigger builder too.
+- **New skills (on no card yet):**
+  - Formation (+1/+1 for each aligned ally, up to 2).
+  - Isolation (a drawback: −4..0 by allies within 2 columns).
+  - Anchor (can't be moved).
+  - Exploit N (tokens, +1 a hit).
+  - Spoils N (+0/+N on killing a creature).
+  - Venom Pulse N (the target's Poison ticks again).
+  - Punish N, behind a flag (`rules.punishSkill`), with three designs in `docs/skills-punish-proposal.md`.
+- **Reworked skills:**
+  - Sentry N deals N to each enemy unit entering its 3 facing slots, by play, spawn, move or swap. Before, it hit with its Attack once a round.
+  - Expose N strips hiding for N rounds: Invisible, Evasive, Smoke, Shadow and Stealth. Flying and Swift still dodge.
+  - Siege N is the old Demolisher plus the old Siege: +N on Structures and on the bramble. The five Demolisher cards and an equipment grant were renamed. `demolisher` is still an alias for old saves and server overrides.
+- **Cure / Heal / Cleanse:**
+  - Cure removes Poison only.
+  - Heal restores Health only, with no more Bleed stanch.
+  - Cleanse and Renewal remove the physical debuffs only: Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, Daunt and shredded Armor. They no longer remove Poison, Freeze or Stun.
+  - Phoenix Fledgling keeps its intent with Renewal + Cure 2.
+- **Numbers:** every number is a parameter. The defaults are in the engine's SK1_DEF, and one `{sk1:{...}}` object changes them all.
+- **Costs:** the new S estimates are in `canonical/skill-costs.json`, marked `measuredHow: "estimate SK1"` with low confidence. The reworked entries carry an `sk1Note` (re-measure).
+- **Texts and tests:**
+  - 63 new TX keys in the 12 packs (`tools/i18n_2026_10_19_sk1.py`), and the decisions in `docs/decisions.json`.
+  - The new test is `tests/skills-sk1-2026-10-19.js`.
+  - The Expose, Heal, Cleanse and Sentry checks in older tests were updated.
+
 ## 2026-10-19 (package UX2: the Brambles page's filters)
 - **Owner (22:16):** "There's no filter in brambles search."
 - **The Codex's Brambles page has a filter bar like the card Codex's:**
@@ -168,7 +199,6 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Test:** `tests/ux-2026-10-19.js` covers the base-level default, the storage fallback, the type rules and counts against `canonical/cards.json`, the copy groups and the wiring.
   - With Playwright it also plays all of it at 390×844 (touch) and 1366×768.
   - With `UX_SHOTS=1`, the screenshots go to `docs/screens/ux/`.
-
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
 - **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.
