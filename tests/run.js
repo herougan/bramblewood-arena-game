@@ -50,8 +50,10 @@ function parseRuns(text) {
 const lines = runAll.split('\n');
 const e2eLine = lines.find(l => l.includes('--e2e') && l.includes('then')) || '';
 const unitRuns = parseRuns(lines.filter(l => l !== e2eLine).join('\n'));
-const e2eRuns = flag('--e2e') ? parseRuns(e2eLine) : [];
-let tests = unitRuns.concat(e2eRuns).map(r => Object.assign(r, { name: path.basename(r.file).replace(/\.(js|py)$/, '') + (r.extra ? ' ' + r.extra : '') }));
+// browser tests (tests/e2e/*) only run with --e2e, wherever run-all.sh lists them
+const isE2E = r => r.file.startsWith('tests/e2e/');
+const e2eRuns = flag('--e2e') ? parseRuns(e2eLine).concat(unitRuns.filter(isE2E)) : [];
+let tests = unitRuns.filter(r => !isE2E(r)).concat(e2eRuns).map(r => Object.assign(r, { name: path.basename(r.file).replace(/\.(js|py)$/, '') + (r.extra ? ' ' + r.extra : '') }));
 if (MODE === 'smoke') tests = tests.filter(t => SMOKE.includes(path.basename(t.file).replace(/\.js$/, '')) && !t.extra);
 if (ONLY) { const re = new RegExp(ONLY); tests = tests.filter(t => re.test(t.file)); }
 
