@@ -2486,6 +2486,11 @@
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
   :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
   .board-card.is-low-hp .stats .hp{color:#ff8a7a; text-shadow:0 0 6px rgba(255,60,40,.7);}
+  /* 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield. Becomes green again when shield is gone (or pink if low)"): wins over the green and the low-Health pink while a Shield stands; when it is gone the two rules above apply again */
+  /* 2026-10-21 (package UI3, owner 18:52: "things with 0 attack should probably not display their attack anyway!"): no Attack plate on a card whose Attack is 0 (structures); the Health plate stays in its corner. A buff above 0 clears the class (updateCardAtkDisplay). */
+  .card-tile .stats .atk.is-atk-zero{display:none !important;}
+  .board-card.has-shield .stats .hp{color:#6cc4ff; text-shadow:0 0 6px rgba(70,160,255,.75);}
+  .board-card.has-shield .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(108,196,255,.6);}
   @keyframes lowHpTremble{0%,78%,100%{translate:0 0;} 81%{translate:-1.5px 0;} 84%{translate:1.5px .5px;} 87%{translate:-1px 0;} 90%{translate:1px 0;} 93%{translate:0 0;}}
   @keyframes idleBreathe{0%,100%{translate:0 0;} 50%{translate:0 -1.5px;}}
   /* Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): IdleGlance in
@@ -8970,6 +8975,18 @@
       radial-gradient(circle at 0 0, #000 calc(var(--r) - .5px), transparent var(--r)) right bottom / var(--r) var(--r) no-repeat,
       linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;}
   .battlefield > .bf-hp .bf-hp-num small{font-size:9px !important;}
+  /* 2026-10-21 (package UI3, owner: "The bramble shield ... needs to be displayed on the opposing/ally battlefield full length health bars. L1 over
+     normal, L2 over L1 ..."): the Shield's layers are full-length overlays on the bar's track, each a little see-through (3% to 12%, uneven);
+     the fill animation and the break effect come from ribbonShieldSync / ribShieldBreakVfx in arena_app.js. */
+  .bf-hp-track{position:relative;}
+  .bf-sh-stack{position:absolute; inset:0; pointer-events:none;}
+  .bf-sh{position:absolute; left:0; top:0; bottom:0; width:0; opacity:var(--sh-alpha, .95); background:linear-gradient(180deg, var(--sh-a, #9fd0ff), var(--sh-b, #3d8bea));
+    box-shadow:inset -1px 0 0 rgba(255,255,255,.75), inset 0 1px 0 rgba(255,255,255,.4); transition:width .3s ease;}
+  .bf-sh-break{position:absolute; top:50%; width:0; height:0; z-index:5; pointer-events:none;}
+  .bf-sh-break .bsb-crack{position:absolute; left:-12px; top:-12px; overflow:visible; filter:drop-shadow(0 0 3px var(--sh-a, #9fd0ff)) drop-shadow(0 0 1px rgba(0,0,0,.6));}
+  .bf-sh-break .bsb-shard{position:absolute; left:0; top:0; width:7px; height:7px; transform:translate(-50%,-50%); background:linear-gradient(135deg, #fff, var(--sh-a, #9fd0ff) 45%, var(--sh-b, #3d8bea));
+    clip-path:polygon(50% 0, 100% 32%, 84% 100%, 14% 88%, 0 26%); filter:drop-shadow(0 0 2px rgba(0,0,0,.5));}
+  @media (prefers-reduced-motion: reduce){ .bf-sh{transition:none;} .bf-sh-break{display:none;} }
 
   /* Results window fits a laptop screen (2026-10-05, user: "make the reward window fit within the
      normal Chrome page (MacBook) maximised window"). Wide, two columns when there are rewards:
@@ -9634,6 +9651,13 @@
   .atk-buffed{color:#8fd0ff; text-shadow:0 0 6px rgba(80,170,255,.6);}
   .atk-bonus{color:#2f74c8; font-weight:800;} .atk-bonus.is-neg{color:#b5372a;}
   #cardPop .atk-bonus{color:#1f5fae;} #cardPop .atk-total{color:var(--pn-ink-soft); font-weight:700;}
+  /* 2026-10-21 (package UI3, owner: "The card can be larger, but not at expense of the window but instead, the top of the card expands to
+     hover over the top of the window's boundary"): the card is bigger and lifted out of the frame, its top standing above the sheet's
+     top edge, so the sheet doesn't grow (it is shorter than before). positionPop() keeps the lifted part on screen. */
+  #cardPop{overflow:visible;}
+  #cardPop .card-pop-visual{position:relative; z-index:2; margin:calc(-1 * var(--pop-lift, 84px)) 0 24px;}
+  #cardPop .card-pop-visual-tile{width:204px; filter:drop-shadow(0 10px 12px rgba(20,12,4,.45));}
+  #cardPop .statrow.statrow-live{font-size:13px; padding:0 0 5px; margin-bottom:6px;}
 
   /* 2026-10-10 (user: "Effect symbols can be closer. If same type, they should overlap significantly"):
      the ability row tightens up, repeated shields overlap more, and two-glyph badges tuck the second glyph in. */
@@ -12148,6 +12172,12 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.45);}
 .ed-edit-card:hover, .ed-edit-card:focus-visible{background:#4a3824; outline:2px solid #ffd27a; outline-offset:1px;}
 @media (pointer:coarse){ .ed-edit-card{width:30px; height:30px; font-size:14px;} }
+/* 2026-10-21 (package UI3, owner 18:43): admin card editing from more places: a skirmish's reward cards, the pack opening's review, and a fight's Edit mode */
+.cnp-rw-card.is-ed-clickable{cursor:pointer;}
+.po2-sum-card .po-ed-edit{left:auto; right:-6px; top:-6px;}
+.admin-edit-btn.is-on{background:#ffd27a; color:#2b1a05; box-shadow:0 0 0 2px #b8791a;}
+body.bw-battle-edit #handStrip .card-tile, body.bw-battle-edit .battlefield .board-card, body.bw-battle-edit .battlefield .card-tile{cursor:copy !important;}
+body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-edit #handStrip .card-tile:hover{outline:2px dashed #ffd27a; outline-offset:2px;}
 .card-tile .ed-art-badge{position:absolute; bottom:-6px; left:-6px; z-index:4; width:18px; height:18px; border-radius:50%; background:#5a0d0d; border:2px solid #ff8a8a; color:#fff;
   font-size:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 2px rgba(0,0,0,.35);}
 .ed-kind-chip{display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font:800 13px/1.1 'Baloo 2', system-ui, sans-serif; vertical-align:middle;

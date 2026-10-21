@@ -2486,6 +2486,11 @@
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
   :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
   .board-card.is-low-hp .stats .hp{color:#ff8a7a; text-shadow:0 0 6px rgba(255,60,40,.7);}
+  /* 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield. Becomes green again when shield is gone (or pink if low)"): wins over the green and the low-Health pink while a Shield stands; when it is gone the two rules above apply again */
+  /* 2026-10-21 (package UI3, owner 18:52: "things with 0 attack should probably not display their attack anyway!"): no Attack plate on a card whose Attack is 0 (structures); the Health plate stays in its corner. A buff above 0 clears the class (updateCardAtkDisplay). */
+  .card-tile .stats .atk.is-atk-zero{display:none !important;}
+  .board-card.has-shield .stats .hp{color:#6cc4ff; text-shadow:0 0 6px rgba(70,160,255,.75);}
+  .board-card.has-shield .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(108,196,255,.6);}
   @keyframes lowHpTremble{0%,78%,100%{translate:0 0;} 81%{translate:-1.5px 0;} 84%{translate:1.5px .5px;} 87%{translate:-1px 0;} 90%{translate:1px 0;} 93%{translate:0 0;}}
   @keyframes idleBreathe{0%,100%{translate:0 0;} 50%{translate:0 -1.5px;}}
   /* Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): IdleGlance in
@@ -9016,6 +9021,18 @@
       radial-gradient(circle at 0 0, #000 calc(var(--r) - .5px), transparent var(--r)) right bottom / var(--r) var(--r) no-repeat,
       linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;}
   .battlefield > .bf-hp .bf-hp-num small{font-size:9px !important;}
+  /* 2026-10-21 (package UI3, owner: "The bramble shield ... needs to be displayed on the opposing/ally battlefield full length health bars. L1 over
+     normal, L2 over L1 ..."): the Shield's layers are full-length overlays on the bar's track, each a little see-through (3% to 12%, uneven);
+     the fill animation and the break effect come from ribbonShieldSync / ribShieldBreakVfx in arena_app.js. */
+  .bf-hp-track{position:relative;}
+  .bf-sh-stack{position:absolute; inset:0; pointer-events:none;}
+  .bf-sh{position:absolute; left:0; top:0; bottom:0; width:0; opacity:var(--sh-alpha, .95); background:linear-gradient(180deg, var(--sh-a, #9fd0ff), var(--sh-b, #3d8bea));
+    box-shadow:inset -1px 0 0 rgba(255,255,255,.75), inset 0 1px 0 rgba(255,255,255,.4); transition:width .3s ease;}
+  .bf-sh-break{position:absolute; top:50%; width:0; height:0; z-index:5; pointer-events:none;}
+  .bf-sh-break .bsb-crack{position:absolute; left:-12px; top:-12px; overflow:visible; filter:drop-shadow(0 0 3px var(--sh-a, #9fd0ff)) drop-shadow(0 0 1px rgba(0,0,0,.6));}
+  .bf-sh-break .bsb-shard{position:absolute; left:0; top:0; width:7px; height:7px; transform:translate(-50%,-50%); background:linear-gradient(135deg, #fff, var(--sh-a, #9fd0ff) 45%, var(--sh-b, #3d8bea));
+    clip-path:polygon(50% 0, 100% 32%, 84% 100%, 14% 88%, 0 26%); filter:drop-shadow(0 0 2px rgba(0,0,0,.5));}
+  @media (prefers-reduced-motion: reduce){ .bf-sh{transition:none;} .bf-sh-break{display:none;} }
 
   /* Results window fits a laptop screen (2026-10-05, user: "make the reward window fit within the
      normal Chrome page (MacBook) maximised window"). Wide, two columns when there are rewards:
@@ -9680,6 +9697,13 @@
   .atk-buffed{color:#8fd0ff; text-shadow:0 0 6px rgba(80,170,255,.6);}
   .atk-bonus{color:#2f74c8; font-weight:800;} .atk-bonus.is-neg{color:#b5372a;}
   #cardPop .atk-bonus{color:#1f5fae;} #cardPop .atk-total{color:var(--pn-ink-soft); font-weight:700;}
+  /* 2026-10-21 (package UI3, owner: "The card can be larger, but not at expense of the window but instead, the top of the card expands to
+     hover over the top of the window's boundary"): the card is bigger and lifted out of the frame, its top standing above the sheet's
+     top edge, so the sheet doesn't grow (it is shorter than before). positionPop() keeps the lifted part on screen. */
+  #cardPop{overflow:visible;}
+  #cardPop .card-pop-visual{position:relative; z-index:2; margin:calc(-1 * var(--pop-lift, 84px)) 0 24px;}
+  #cardPop .card-pop-visual-tile{width:204px; filter:drop-shadow(0 10px 12px rgba(20,12,4,.45));}
+  #cardPop .statrow.statrow-live{font-size:13px; padding:0 0 5px; margin-bottom:6px;}
 
   /* 2026-10-10 (user: "Effect symbols can be closer. If same type, they should overlap significantly"):
      the ability row tightens up, repeated shields overlap more, and two-glyph badges tuck the second glyph in. */
@@ -12194,6 +12218,12 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.45);}
 .ed-edit-card:hover, .ed-edit-card:focus-visible{background:#4a3824; outline:2px solid #ffd27a; outline-offset:1px;}
 @media (pointer:coarse){ .ed-edit-card{width:30px; height:30px; font-size:14px;} }
+/* 2026-10-21 (package UI3, owner 18:43): admin card editing from more places: a skirmish's reward cards, the pack opening's review, and a fight's Edit mode */
+.cnp-rw-card.is-ed-clickable{cursor:pointer;}
+.po2-sum-card .po-ed-edit{left:auto; right:-6px; top:-6px;}
+.admin-edit-btn.is-on{background:#ffd27a; color:#2b1a05; box-shadow:0 0 0 2px #b8791a;}
+body.bw-battle-edit #handStrip .card-tile, body.bw-battle-edit .battlefield .board-card, body.bw-battle-edit .battlefield .card-tile{cursor:copy !important;}
+body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-edit #handStrip .card-tile:hover{outline:2px dashed #ffd27a; outline-offset:2px;}
 .card-tile .ed-art-badge{position:absolute; bottom:-6px; left:-6px; z-index:4; width:18px; height:18px; border-radius:50%; background:#5a0d0d; border:2px solid #ff8a8a; color:#fff;
   font-size:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 2px rgba(0,0,0,.35);}
 .ed-kind-chip{display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font:800 13px/1.1 'Baloo 2', system-ui, sans-serif; vertical-align:middle;
@@ -38903,7 +38933,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=05cfda76a6", "es": "assets/lang/es.js?v=54eefe1802", "fr": "assets/lang/fr.js?v=120cff4cea", "id": "assets/lang/id.js?v=df5355e273", "it": "assets/lang/it.js?v=7f57f8d168", "ja": "assets/lang/ja.js?v=9e67d4ec60", "ko": "assets/lang/ko.js?v=dac6563bf5", "pt": "assets/lang/pt.js?v=750a6279ae", "ta": "assets/lang/ta.js?v=2b5ff76556", "tl": "assets/lang/tl.js?v=a6f16a4ea8", "zh-Hans": "assets/lang/zh-Hans.js?v=fd1d7874af", "zh-Hant": "assets/lang/zh-Hant.js?v=fe201f7354"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=c29a76d25f", "es": "assets/lang/es.js?v=0e9e139c16", "fr": "assets/lang/fr.js?v=ed5de9bdd0", "id": "assets/lang/id.js?v=32a167fea7", "it": "assets/lang/it.js?v=5fcf6936e8", "ja": "assets/lang/ja.js?v=46b2fa48d5", "ko": "assets/lang/ko.js?v=9487cbd0c6", "pt": "assets/lang/pt.js?v=b3c2cc18fb", "ta": "assets/lang/ta.js?v=bb4c714781", "tl": "assets/lang/tl.js?v=314eff0ac4", "zh-Hans": "assets/lang/zh-Hans.js?v=1c06edb9aa", "zh-Hant": "assets/lang/zh-Hant.js?v=83c655541f"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -40803,7 +40833,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.evo-stack": "Stack of {n}: {cards}",
   "ui.log-evolve": "🧬 {name} evolves over {base}: now {atk}/{hp}.",
   "ui.evo-pick-base": "Play {name} onto one of your lit units.",
-  "ui.evo-no-base": "Needs a unit of yours it can evolve over"
+  "ui.evo-no-base": "Needs a unit of yours it can evolve over",
+  "ui.ui3-rib-shield": "Shield {n}",
+  "ui.ui3-edit-mode": "Edit mode",
+  "ui.ui3-edit-mode-tip": "Admin: while on, clicking any card opens it in the card editor instead of playing it",
+  "ui.ui3-edit-mode-on": "Edit mode on: click a card to edit it",
+  "ui.ui3-edit-mode-off": "Edit mode off",
+  "ui.ui3-edit-mode-none": "That card can't be edited"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -44315,10 +44351,14 @@ function maskHiddenSkills(d){
   return Object.assign({}, d, {effects: e, _hiddenSkills: hid.length}); }
 function skillQChipHTML(){ return `<span class="skill-q" title="${escapeAttr(SKILL_Q_TIP)}" aria-label="${escapeAttr(SKILL_Q_TIP)}">?</span>`; }
 /* [SKILL_REVEAL_END] */
-function describeEffects(def, liveCard){
+// 2026-10-21 (package UI3, owner: "Simplify the card details ... No need to say Primate and Beast phylas. No need for the 'Wait-6' flavourtext ...
+// Since it deals COLD damage, just the icon change is sufficient"): opt.terse leaves out the species line, the Wait line and the
+// "Its attacks deal X damage" line (the card's chips, its Wait badge and its attack plate's element icon already say them).
+function describeEffects(def, liveCard, opt){
   def = maskHiddenSkills(def); // 2026-10-15: skills not met yet read as "?" (SKILL_REVEAL)
+  const terse = !!(opt && opt.terse);
   const lines = [];
-  { const sl = speciesLine(def); if(sl) lines.push(sl); }
+  if(!terse){ const sl = speciesLine(def); if(sl) lines.push(sl); }
   const e = def.effects || {};
   // 2026-10-10 (user): no "Costs N lumber to play" line; the cost badge on the card already says it.
   if(def.field){ // Field cards (2026-10-09)
@@ -44343,7 +44383,7 @@ function describeEffects(def, liveCard){
     lines.push(`Devour — ${g ? TX('ui.de-devour-grant', {a: e.devour.attack||0, h: e.devour.health||0, grant: g}) : TX('ui.de-devour', {a: e.devour.attack||0, h: e.devour.health||0})}`); } // 2026-10-18 (package D): terse
   // Ritual: its line comes from its PASSIVE_DEFS row now, with the conditions drawn as a shape (CX2, 2026-10-21)
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
-  if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
+  if(def.wait && !terse) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
   { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // 2026-10-15
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): no "(Timer, Damage)" in the
   // name; the short line says it.
@@ -44455,7 +44495,7 @@ function describeEffects(def, liveCard){
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
     lines.push(t.on === 'onSacrifice' ? `🦷 Sacrifice - ${detail}` : t.on === 'onPitch' ? `♻️ Scavenge - ${detail}` : `${tDef.label}: ${detail}`); // + Scavenge - {} (On Pitch, 2026-10-16) // Sacrifice - {} (2026-10-14, user: "it's framed as Sacrifice - { }")
   });
-  if(def.dmgType && def.dmgType!=='physical') lines.push(`Its attacks deal ${dmgWord(def.dmgType)}damage.`);
+  if(def.dmgType && def.dmgType!=='physical' && !terse) lines.push(`Its attacks deal ${dmgWord(def.dmgType)}damage.`);
   // Resist can live in the legacy top-level array or the new effects.resist box (see
   // resistFactor in the engine) — merge both for display. Weakness only ever lives in
   // effects.weakness (it's new as of 2026-09-16, no legacy field to merge in).
@@ -44587,7 +44627,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '19238481bfe4', BUILD_CARD_HASH = '99265e6892821811d9035c3fed1718bb48760192404c0f6db94aa2e499451768';
+const BUILD_ID = 'bf9892242245', BUILD_CARD_HASH = '99265e6892821811d9035c3fed1718bb48760192404c0f6db94aa2e499451768';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -47268,7 +47308,7 @@ function fullCardHTML(defId, liveCard, opts){
   opts = opts || {};
   const d = opts.shownLevel != null && isFinite(opts.shownLevel) ? defAtShownLevel(defId, opts.shownLevel) : getCardDefs()[defId]; // 2026-10-21 (package ED): an enemy card at its fight's level
   if(!d) return '';
-  const lines = describeEffects(d, liveCard);
+  const lines = describeEffects(d, liveCard, {terse:true}); // 2026-10-21 (package UI3): no species / Wait / damage-type lines
   const [rA, rB] = rarityStops(d.rarity||'common');
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
@@ -47327,19 +47367,17 @@ function fullCardHTML(defId, liveCard, opts){
   // "🪙0" or "⏱0" chip in this stat row, and any Grace/Devilry cost is folded in here too
   // (costBadgeParts) instead of only ever showing gold.
   const statCostParts = costBadgeParts(d);
-  return `${visualHTML}<h4>${d.icon} ${d.name}</h4>
+  // 2026-10-21 (package UI3, owner: "No need for name again, no need for cost, wait, stats"): the card art already says the name, cost,
+  // Wait, Attack and Health, so the heading and the stat row are gone. Only a live unit whose numbers differ from the print keeps a short
+  // row (Attack = base + bonus in blue, Irradiation in green, a boss's bonus Health), since the card can't say that.
+  const liveDiffRow = (()=>{ if(!liveC) return '';
+    const parts = [];
+    if(atkPlus || atkMinus) parts.push(`<span class="atk" style="color:var(--attack)">${atkDisplay}</span>`);
+    if(liveC.irrHp || liveC.bossHpBonus) parts.push(`<span class="hp" style="color:var(--health)">${hpDisplay}</span>`);
+    return parts.length ? `<div class="statrow statrow-live">${parts.join('')}</div>` : ''; })();
+  return `${visualHTML}
     <div class="tagrow"><span class="tag" style="background:linear-gradient(135deg, ${rA}, ${rB}); color:#1a1a1a;">${rarityDef(d.rarity||'common').label}</span>${displayTypesOf(d).map(a=>`<span class="tag">${ARCHETYPE_ICON[a]||'🌰'} ${a}</span>`).join('')}${(d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-    ${(()=>{
-      // 2026-09-21 ("The card also doesn't say it's wait timer when looking at it"): this used to
-      // gate purely on the DEFINITION's base d.wait, which never reflects a live board card's
-      // actual remaining count — a card hovered mid-match after its Wait had already ticked down
-      // (or reached 0 and become Ready) still showed its original starting number, or the badge
-      // stayed even once the card could already act. liveCard.wait (when a live instance exists)
-      // is now the source of truth; a hand/Codex/deck-pool hover (no liveCard) still shows the
-      // definition's starting Wait, which is genuinely what it will begin at.
-      const liveWait = liveCard ? liveCard.wait : d.wait;
-      return `<div class="statrow">${statCostParts.length?`<span>${statCostParts.join('/')}</span>`:''}${liveWait>0?`<span>⏱${liveWait}</span>`:''}<span class="atk" style="color:var(--attack)">${atkDisplay}</span><span class="hp" style="color:var(--health)">${hpDisplay}</span></div>`;
-    })()}
+    ${liveDiffRow}
     ${abilityHTML}${liveStatusGlossHTML(liveC)}${irrSkillsHTML}
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
@@ -47598,6 +47636,11 @@ function castleHoverHTML(hqSide){
     let top = r.top;
     const ph = pop.offsetHeight || 220;
     if(top + ph > window.innerHeight - 8) top = Math.max(8, window.innerHeight - ph - 8);
+    // 2026-10-21 (package UI3): the card stands out above the sheet's top edge; keep that lifted part inside the window, on both axes
+    { const pv = pop.querySelector('.card-pop-visual'); const lift = pv ? Math.max(0, pop.getBoundingClientRect().top - pv.getBoundingClientRect().top) : 0;
+      const minTop = 8 + lift; if(top < minTop) top = minTop;
+      const maxTop = window.innerHeight - ph - 8; if(maxTop >= minTop && top > maxTop) top = maxTop; // short windows: the lift wins over the bottom edge
+      const pwReal = pop.offsetWidth || pw; if(left + pwReal > window.innerWidth - 8) left = Math.max(8, window.innerWidth - pwReal - 8); }
     pop.style.left = left+'px'; pop.style.top = top+'px';
   }
 })();
@@ -49332,7 +49375,8 @@ function cardTileHTML(d, opts){
   const hpBadgeText = hasLiveHp ? Math.max(0,opts.liveHp) : d.health;
   // Castle cracks (2026-10-06): the castle tile cracks in three stages as it loses HP — see crackStage().
   const crackCls = hasLiveHp ? (' crack-'+crackStage(opts.liveHp, d.health)) : '';
-  const hpBarHTML = hasLiveHp ? `<div class="castle-hp-bar-oncard"><div class="castle-hp-bar-oncard-fill" style="width:${Math.max(0,(opts.liveHp/d.health)*100)}%"></div></div>` : '';
+  // 2026-10-21 (package UI3, owner: "retire the healthbars on the bramble themselves and only use the battlefield one"): no small bar on the tile
+  const hpBarHTML = '';
   // One card face everywhere (2026-10-08, user: "As much as possible, we want to reuse code"): the
   // battlefield card (opts.live: live attack/HP/Wait, status overlays and stacks) and the hand card
   // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
@@ -49347,7 +49391,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
-      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${atkPlateCls(d)}">${atkElementOf(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${live.atkZero ? ' is-atk-zero' : ''}${atkPlateCls(d)}">${atkElementOf(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
@@ -49368,7 +49412,7 @@ function cardTileHTML(d, opts){
     <div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -50061,7 +50105,7 @@ function deletedTileHTML(t){
   return `<div class="card-tile" style="cursor:default;">
     <div class="ico">${d.icon||'❔'}</div>
     <div class="nm">${escapeHtml(d.name||t.id)}</div>
-    <div class="stats"><span class="atk">⚔${d.attack||0}</span><span class="hp">❤${d.health||1}</span></div>
+    <div class="stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔${d.attack||0}</span><span class="hp">❤${d.health||1}</span></div>
     <div style="font-size:10px; color:var(--ink-muted); text-align:center; margin-top:4px;">${when}</div>
     <button class="btn small primary" style="width:100%; margin-top:6px;" data-restore="${t.id}">♻ Restore</button>
   </div>`;
@@ -50444,7 +50488,7 @@ function openCardDetail(defId, opts){
   if(!d || !overlay) return;
   cardDetailOpenId = defId;
   const ownsFoil = (typeof myCardCopies !== 'undefined') && (myCardCopies[defId] || []).some(c=>c && c.foil);
-  const lines = describeEffects(d);
+  const lines = describeEffects(d, null, {terse:true}); // 2026-10-21 (package UI3): no species / Wait / damage-type lines
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
@@ -64889,6 +64933,8 @@ function renderConquestSubTab(body){
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
     wireRewardZoom(panelEl);
+    // 2026-10-21 (package UI3, owner 18:43): admins click a reward card of the skirmish's details to open it in the card editor (the same flow as the ✏️ on the deck strip: closing the editor brings the map back)
+    if(adminModeEnabled) panelEl.querySelectorAll('.cnp-rw-card[data-zoom]').forEach(el=>{ el.classList.add('is-ed-clickable'); el.addEventListener('click', e=>{ e.stopPropagation(); edOpenCardEditor(el.dataset.zoom, null, ()=>{ if(currentTab === 'play' && !matchState) renderPlay(); }); }); });
     panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef, {shownLevel: +b.dataset.shownLevel}))); // 2026-10-21 (package ED): at the enemy's level
     panelEl.querySelectorAll('[data-ed-edit]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); edOpenCardEditor(b.dataset.edEdit, null, ()=>{ if(currentTab === 'play' && !matchState) renderPlay(); }); })); // 2026-10-21 (package ED, #14)
     const fb = document.getElementById('cnpFightBtn');
@@ -71844,12 +71890,27 @@ function castleCharOf(m, pid){
 // Castle HP ribbons (2026-10-03, D16 battle fixes: "Castle HP is the score, so it should be the
 // biggest number on screen"): a full-width bar along the top edge of the battlefield for the top
 // castle and along the bottom edge for yours. Kept in sync by updateHqHpDisplay.
+// 2026-10-21 (package UI3, owner: "The bramble shield needs to be displayed on the opposing/ally battlefield full length health bars. L1 over
+// normal, L2 over L1, L3 over L2 and so on. And they have the filling up animation. Breaking a shield has a small vfx over the battlefield
+// healthbar. I think we can retire the healthbars on the bramble themselves and only use the battlefield one."): each Shield layer (the
+// raid's Shield 50, a skirmish's Armour layers, a wave's Shield) is a full-length overlay on the bar's track, layer 1 over the Health, layer 2
+// over layer 1; the top layer is spent first (armourLayerNow). ribbonShieldSync below keeps them current, fills them in, and breaks them.
+const RIB_SH_ALPHA = [.97, .91, .94, .88]; // uneven, 3% to 12% see-through (owner 10-21: "uneven transparency up to a maximum of 12%"); higher layers are the more see-through
+function ribLayersOf(hq){ const mx = Math.max(0, Math.round((hq && hq.maxShield) || 0)); if(!(mx > 0)) return [];
+  const L = ((hq.shieldLayers || []).map(n=> Math.max(0, Math.round(Number(n) || 0))).filter(n=> n > 0));
+  return L.length && L.reduce((a, b)=> a + b, 0) === mx ? L : [mx]; } // a wave that reset the Shield without layers: one layer of its size
+function ribLayerFractions(L, sh){ let below = 0; return L.map(n=>{ const rem = Math.max(0, Math.min(n, sh - below)); below += n; return n > 0 ? rem / n : 0; }); }
+function ribShieldStackHTML(hq){
+  const L = ribLayersOf(hq), f = ribLayerFractions(L, Math.max(0, (hq && hq.shield) || 0)); if(!L.length) return '';
+  return `<span class="bf-sh-stack" aria-hidden="true">${L.map((n, k)=>{ const col = ARMOUR_LAYER_COLOURS[Math.min(ARMOUR_LAYER_COLOURS.length - 1, k)];
+    return `<span class="bf-sh bf-sh-${k + 1}" data-k="${k}" style="width:${(f[k] * 100).toFixed(2)}%; --sh-a:${col[0]}; --sh-b:${col[1]}; --sh-alpha:${RIB_SH_ALPHA[k % RIB_SH_ALPHA.length]}"></span>`; }).join('')}</span>`;
+}
 function hpRibbonHTML(m, side, label){
   const pid = side==='A' ? 1 : 2; const hq = m.players[pid].hq;
   const hp = Math.max(0, hq.hp), pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
-  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Bramble')+': '+hp+' of '+hq.maxHp+' health')}">
+  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Bramble')+': '+hp+' of '+hq.maxHp+' health' + (hq.shield > 0 ? ' · ' + TX('ui.ui3-rib-shield', {n: hq.shield}) : ''))}">
     <span class="bf-hp-label">🏰 ${escapeHtml(label||'Bramble')}</span>
-    <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span></span>
+    <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span>${ribShieldStackHTML(hq)}</span>
     <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : side === 'B' && m.raidRoundCap && !m.over ? raidClockPillHTML(m) : ''}</div>`;
 }
 // The raid's clock (2026-10-18, user: "Why did my raid randomly end although my bramble's hp was not 0?"): a raid attempt lasts
@@ -72243,7 +72304,7 @@ function renderMatchUI(){
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
-        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
+        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${adminModeEnabled && !m.fxLib && m.mode!=='sandbox' ? `<button type="button" class="btn small admin-edit-btn${m._editMode ? ' is-on' : ''}" id="adminEditModeBtn" role="switch" aria-checked="${!!m._editMode}" title="${escapeAttr(TX('ui.ui3-edit-mode-tip'))}">✏️<span class="trc-lbl"> ${escapeHtml(TX('ui.ui3-edit-mode'))}</span></button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
         <button class="btn small" id="quitMatchBtn" aria-label="${isAsync?'Save & Exit':'Quit'}" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':`title="${isAsync?'Save & Exit':'Quit'}"`}><span class="trc-ico" aria-hidden="true">${isAsync?'💾':'🚪'}</span><span class="trc-lbl">${isAsync?'Save & Exit':'Quit'}</span></button>
       </div>
       ${'' /* 2026-10-15 (user: "On the opposite side of the field in the same position, I should see the enemy's currencies."): the
@@ -72363,6 +72424,11 @@ function renderMatchUI(){
   const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : (RESUMABLE_MODES.has(m.mode) && !m.over ? leaveMatchResumable : endMatch)));
   const forfeitBtn = document.getElementById('forfeitMatchBtn'); if(forfeitBtn) forfeitBtn.addEventListener('click', forfeitMatch);
   { const aw = document.getElementById('adminWinBtn'); if(aw) aw.addEventListener('click', adminAutoWin); }
+  // 2026-10-21 (package UI3, owner 18:43): Admin's ✏️ Edit mode switch. While it is on, a click on any card (hand, board, the enemy's) opens the card editor (battleEditGuard below).
+  { const eb = document.getElementById('adminEditModeBtn'); if(eb) eb.addEventListener('click', ()=>{ const m2 = matchState; if(!m2) return; m2._editMode = !m2._editMode;
+      eb.classList.toggle('is-on', m2._editMode); eb.setAttribute('aria-checked', String(m2._editMode)); document.body.classList.toggle('bw-battle-edit', m2._editMode);
+      showToast(m2._editMode ? TX('ui.ui3-edit-mode-on') : TX('ui.ui3-edit-mode-off'), 'ok'); }); }
+  document.body.classList.toggle('bw-battle-edit', !!(m._editMode && adminModeEnabled));
   if(showWinModal) lockResultButtonsUntilRecorded(m); // 2026-10-21 (package ED, owner #9): the results' buttons wait for the rewards
   { const ap = document.getElementById('autoplayBtn'); if(ap) ap.addEventListener('click', ()=>{ const m2 = matchState; if(!m2) return; m2.autoplay = !m2.autoplay;
       ap.classList.toggle('is-on', m2.autoplay); ap.setAttribute('aria-pressed', String(m2.autoplay)); ap.textContent = m2.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'; if(m2.autoplay) autoplayStep(); }); }
@@ -73050,7 +73116,7 @@ function showPlacementPreview(row, side){
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
     <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
-    <div class="stats"><span class="atk${atkPlateCls(d)}">${atkGlyphOf(d)}${d.attack}</span><span class="hp">❤${d.health}</span></div>
+    <div class="stats"><span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">${atkGlyphOf(d)}${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
   if(actualSide==='center'){
     const centerSlot = row.querySelector('.center-slot-empty');
@@ -75203,6 +75269,7 @@ function boardCardHTML(c, defs, opts){
     d.relicOf ? 'is-relic' : '', // Relic (2026-10-19, package E): the dead card's art, faded and ghostly
     c.bound>0 ? 'is-bound' : '', c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
+    c.shield > 0 ? 'has-shield' : '', // 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
@@ -75221,6 +75288,8 @@ function boardCardHTML(c, defs, opts){
   const atkLabel = atkLabelHTML(effAtk, d.attack, d);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
   const printedAtk = Number(d.attack)||0, atkLow = printedAtk > 1 && (effAtk <= 0 || effAtk < printedAtk*0.25);
+  // 2026-10-21 (package UI3, owner 18:52: "things with 0 attack should probably not display their attack anyway!"): no plate while its Attack is 0 and was printed 0 (a buff above 0 brings it back; an Attack cut to 0 still shows its pink 0)
+  const atkZero = printedAtk <= 0 && effAtk <= 0;
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
   const badges = [];
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
@@ -75302,7 +75371,7 @@ function boardCardHTML(c, defs, opts){
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${evoStackHTML(c, defs)}${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
@@ -76701,22 +76770,74 @@ function updateHqHpDisplay(side, hpOverride){
   castleShieldSync(side, hpOverride!==undefined && m.displayHqShield ? m.displayHqShield[side] : undefined);
 }
 // Skirmish Armour on the castle tile (2026-10-08): a blue bar over the Health bar and a 🔷 number while any is left.
+// 2026-10-21 (package UI3, owner: "retire the healthbars on the bramble themselves and only use the battlefield one"): the tile keeps its 🔷
+// number (the Shield's own VFX, tests and the coach tip read it); both bars (Health and Shield) are gone from the tile, and the layers are
+// drawn on the battlefield's full-length bar (ribbonShieldSync).
 function castleShieldSync(side, shOverride){
   const m = matchState; if(!m) return;
+  try{ ribbonShieldSync(side, shOverride); }catch(e){}
   const hq = m.players[side==='A' ? 1 : 2].hq, el = hqTileEl(side); if(!el || !hq) return;
   const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
   if(shOverride==null && m.resolving && m.displayHqShield && m.displayHqShield[side] != null) shOverride = m.displayHqShield[side];
-  const sh = Math.max(0, shOverride!=null ? shOverride : (hq.shield||0)), max = Math.max(1, hq.maxShield||0);
-  let badge = tile.querySelector(':scope > .castle-shield'), bar = tile.querySelector('.castle-hp-bar-oncard-shield');
-  if(!(hq.maxShield > 0)){ if(badge) badge.remove(); if(bar) bar.remove(); return; }
+  const sh = Math.max(0, shOverride!=null ? shOverride : (hq.shield||0));
+  let badge = tile.querySelector(':scope > .castle-shield');
+  if(!(hq.maxShield > 0)){ if(badge) badge.remove(); return; }
   if(!badge){ badge = document.createElement('div'); badge.className = 'castle-shield'; tile.appendChild(badge); }
   const lay = armourLayerNow(hq.shieldLayers, sh), col = ARMOUR_LAYER_COLOURS[Math.min(ARMOUR_LAYER_COLOURS.length - 1, lay.k)];
   badge.textContent = '🔷' + sh + ((hq.shieldLayers||[]).length > 1 && sh > 0 ? ` ·L${lay.k + 1}` : ''); badge.classList.toggle('is-broken', sh <= 0);
   badge.style.setProperty('--sh-a', col[0]); badge.style.setProperty('--sh-b', col[1]);
   badge.title = sh > 0 ? `Skirmish Armour: ${sh} — soaks hits before the bramble's Health` : 'Skirmish Armour broken';
-  const track = tile.querySelector('.castle-hp-bar-oncard');
-  if(track && !bar){ bar = document.createElement('div'); bar.className = 'castle-hp-bar-oncard-shield'; track.appendChild(bar); }
-  if(bar){ const multi = (hq.shieldLayers||[]).length > 1; bar.style.width = (multi ? (lay.inLayer/Math.max(1, lay.size)) : (sh/max)) * 100 + '%'; bar.style.background = `linear-gradient(180deg, ${col[0]}, ${col[1]})`; }
+}
+// The Shield layers on a battlefield bar (2026-10-21, package UI3). Per layer: a width (how much of that layer is left); the first time the
+// Shield shows, or when it grows (a dungeon's next wave), the layers fill in, the lowest first, slowly, ease in and out; when it is half full
+// the next one starts over it; a smaller layer fills faster (its time follows its size). A layer that reaches 0 breaks with a crack and shards
+// on the bar. The fill is a Web Animation from a recorded start time, so a board redraw in the middle picks it up where it was.
+// Reduced motion: the layers are simply shown, no fill and no break effect.
+function ribbonShieldSync(side, shOverride){
+  const m = matchState; if(!m) return;
+  const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`), track = rib && rib.querySelector('.bf-hp-track'); if(!track) return;
+  const hq = m.players[side==='A' ? 1 : 2].hq;
+  if(shOverride==null && m.resolving && m.displayHqShield && m.displayHqShield[side] != null) shOverride = m.displayHqShield[side];
+  const sh = Math.max(0, shOverride!=null ? shOverride : (hq.shield || 0)), L = ribLayersOf(hq);
+  m._ribSh = m._ribSh || {}; const st = m._ribSh[side] = m._ribSh[side] || {f:null, key:'', anim:null};
+  let stack = track.querySelector(':scope > .bf-sh-stack');
+  if(!L.length){ if(stack) stack.remove(); rib.classList.remove('has-shield'); st.f = null; st.key = ''; st.anim = null; return; }
+  const key = L.join('+'), f = ribLayerFractions(L, sh);
+  if(!stack || stack.children.length !== L.length){ if(stack) stack.remove(); const tmp = document.createElement('div'); tmp.innerHTML = ribShieldStackHTML(hq); stack = tmp.firstElementChild; track.appendChild(stack); }
+  const els = [...stack.children];
+  els.forEach((e, k)=>{ e.style.width = (f[k] * 100).toFixed(2) + '%'; });
+  rib.classList.toggle('has-shield', sh > 0);
+  const prev = st.key === key && st.f ? st.f : null, motion = !reducedMotion() && !!els[0].animate;
+  // breaks: a layer that had some and now has none
+  if(prev && motion) f.forEach((v, k)=>{ if(v <= 0 && prev[k] > 0) ribShieldBreakVfx(rib, track, k, prev[k]); });
+  if(prev) f.forEach((v, k)=>{ if(v < prev[k]) els[k].getAnimations().forEach(a=> a.cancel()); }); // damage cuts a fill that is still running
+  // fills: every layer that grew (all of them, the first time)
+  if(motion){
+    const grown = []; f.forEach((v, k)=>{ const from = prev ? prev[k] : 0; if(v > from + .001) grown.push({k, from, to: v}); });
+    if(grown.length){ const maxL = Math.max(...L); let at = 0;
+      grown.forEach((g, i)=>{ g.dur = Math.round(Math.max(420, Math.min(1700, 420 + 1280 * (L[g.k] / maxL)))); g.delay = at; at += g.dur / 2; });
+      st.anim = {t0: performance.now(), items: grown}; }
+    if(st.anim){ const el0 = performance.now() - st.anim.t0, end = Math.max(...st.anim.items.map(g=> g.delay + g.dur));
+      if(el0 >= end) st.anim = null;
+      else st.anim.items.forEach(g=>{ const e = els[g.k]; if(!e || el0 >= g.delay + g.dur || e.getAnimations().length) return;
+        e.animate([{width:(g.from * 100).toFixed(2) + '%'}, {width:(g.to * 100).toFixed(2) + '%'}], {duration: g.dur, delay: g.delay - el0, easing:'ease-in-out', fill:'backwards'}); }); }
+  } else st.anim = null;
+  st.f = f; st.key = key;
+}
+// A Shield layer breaks (2026-10-21, package UI3): a jagged crack across the bar where that layer's edge was, a flash, and a few
+// shards in the layer's colour thrown up and away (the look of the dome's hex shards, castleShield in bramblewood-fx-c.js, small enough for a bar).
+function ribShieldBreakVfx(rib, track, k, atFrac){
+  const col = ARMOUR_LAYER_COLOURS[Math.min(ARMOUR_LAYER_COLOURS.length - 1, k)], x = Math.max(4, Math.min(96, atFrac * 100));
+  const v = document.createElement('span'); v.className = 'bf-sh-break'; v.setAttribute('aria-hidden', 'true'); v.style.left = x.toFixed(1) + '%'; v.style.setProperty('--sh-a', col[0]); v.style.setProperty('--sh-b', col[1]);
+  const dir = rib.classList.contains('bf-hp-mine') ? -1 : 1; // shards go away from the bar: up for yours (at the bottom), down for theirs
+  v.innerHTML = `<svg class="bsb-crack" viewBox="0 0 24 24" width="24" height="24"><path d="M12 0 L9 6 L14 9 L8 14 L13 17 L10 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>` +
+    Array.from({length: 9}, (_, i)=> `<i class="bsb-shard" style="--dx:${Math.round((Math.random() * 2 - 1) * 34)}px; --dy:${dir * -Math.round(10 + Math.random() * 26)}px; --rot:${Math.round(Math.random() * 360)}deg; --s:${(.6 + Math.random() * .7).toFixed(2)}"></i>`).join('');
+  rib.appendChild(v);
+  if(v.animate){
+    v.querySelector('.bsb-crack').animate([{opacity:0, transform:'scale(.6)'}, {opacity:1, transform:'scale(1)', offset:.18}, {opacity:1, offset:.6}, {opacity:0}], {duration:520, easing:'ease-out'});
+    v.querySelectorAll('.bsb-shard').forEach(sh=> sh.animate([{opacity:1, transform:'translate(-50%,-50%) scale(var(--s)) rotate(0)'}, {opacity:0, transform:'translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0) rotate(var(--rot))'}], {duration:520 + Math.random() * 220, easing:'cubic-bezier(.2,.7,.4,1)', fill:'forwards'}));
+  }
+  setTimeout(()=> v.remove(), 900);
 }
 // Status badges/overlays (poison ☠, bleed 🩸, stun 💫) now refresh on the specific board
 // card the instant a hit applies them (2026-09-16, per explicit request: "poison... should
@@ -76738,6 +76859,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
+  el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3): its Health number is blue while the Shield stands
   el.classList.toggle('is-corroded', c.corrode>0);
   el.classList.toggle('is-staggered', c.staggered>0);
   el.classList.toggle('is-bound', c.bound>0); el.classList.toggle('is-invisible', c.invisible>0); el.classList.toggle('is-invincible', c.invincible>0); el.classList.toggle('is-toxic', c.toxin>0); // W2 (2026-10-16)
@@ -76883,6 +77005,7 @@ function updateCardAtkDisplay(uid){
   if(isTideDefApp(d) && matchState && matchState.engine && matchState.engine.getTide && matchState.engine.getTide()==='flow' && matchHasTide(matchState)) tot += 1;
   if((d.effects||{}).rage && c.maxHp > 0 && c.hp / c.maxHp < 0.5) tot *= 2;
   a.innerHTML = atkLabelHTML(tot, d.attack, d);
+  a.classList.toggle('is-atk-zero', (Number(d.attack)||0) <= 0 && tot <= 0); // 2026-10-21 (package UI3): back when a buff lifts it above 0
 }
 function updateCardHpDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
@@ -76890,6 +77013,7 @@ function updateCardHpDisplay(uid){
   const hpSpan = el.querySelector('.stats .hp');
   if(hpSpan) hpSpan.innerHTML = '<i class="sg">❤</i>'+Math.max(0,c.hp);
   el.classList.toggle('is-low-hp', isLowHp(c));
+  el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3)
 }
 // Chronos wait-countdown, ordinary tick (2026-09-17): redraws the ring to the new remaining
 // fraction (CSS transitions the stroke-dashoffset smoothly — see .wait-ring-fg) and gives the
@@ -79751,6 +79875,26 @@ let tutorialLock = null;
   if(t && t.closest && tutorialLock.allow.some(sel=> t.closest(sel))) return;
   e.stopPropagation(); e.preventDefault();
   if(type==='click' || type==='keydown'){ const b = tutorialLock.tip; if(b){ b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); } }
+}, true));
+// 2026-10-21 (package UI3, owner 18:43: "During battle, an admin toggle ... While it is on, clicking any card (hand, board, enemy) opens the card editor for
+// that card instead of playing or inspecting it. Turning it off restores normal clicks."): the same kind of capture-phase lock as tutorialLock above. Every
+// pointer, drag and click on a card in the fight is swallowed while matchState._editMode is on, and the click opens the editor over the fight. The fight
+// does not reload: the engine keeps the card list it started with; the edit shows in the Codex and the next fight.
+function battleEditCardId(el){
+  const defs = getCardDefs(); let id = el && el.getAttribute('data-defid'); if(!id) return null;
+  if(!defs[id]){ const ov = (typeof matchDefsOverlay !== 'undefined' && matchDefsOverlay && matchDefsOverlay[id]) || null; id = (ov && ov.derivedFrom) || String(id).split('~')[0]; } // a granted copy ("id~grant") edits its own card
+  return defs[id] ? id : null;
+}
+['pointerdown','mousedown','touchstart','dragstart','click','keydown'].forEach(type=> document.addEventListener(type, e=>{
+  const m = typeof matchState !== 'undefined' ? matchState : null;
+  if(!m || !m._editMode || !adminModeEnabled){ if(document.body.classList.contains('bw-battle-edit') && !(m && m._editMode)) document.body.classList.remove('bw-battle-edit'); return; }
+  const t = e.target; if(!t || !t.closest) return;
+  if(t.closest('.modal, #editorOverlay, #cardPop, [role="dialog"], #adminEditModeBtn')) return;
+  const el = t.closest('#handStrip [data-defid], .battlefield [data-defid], #leaderWidget [data-defid], .bottom-play-row [data-defid]'); if(!el) return;
+  if(type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+  e.stopImmediatePropagation(); if(type !== 'touchstart' && type !== 'pointerdown') e.preventDefault();
+  if(type === 'click' || type === 'keydown'){ const id = battleEditCardId(el);
+    if(id){ try{ window.hideCardPop && window.hideCardPop(); }catch(_){} edOpenCardEditor(id, null, null); } else showToast(TX('ui.ui3-edit-mode-none'), 'warn'); }
 }, true));
 let coachPhantom = null;
 // `opts.to` aims the phantom somewhere other than your row; `opts.always` shows it without a held card (the pitching lesson
@@ -89970,7 +90114,7 @@ function openPackAnimation(pack, opened, opts){
   overlay.setAttribute('role','dialog'); overlay.setAttribute('aria-modal','true'); overlay.setAttribute('aria-label', 'Opening ' + pack.name);
   overlay.hidden = false;
   document.documentElement.classList.add('po2-open');
-  const unInert = bwInertOthers(overlay);
+  let unInert = bwInertOthers(overlay); // 2026-10-21 (package UI3): let, so the admin's ✏️ can lift it while the card editor is open
   const art = packCoverArt(pack);
   let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null;
   const later = (fn, ms)=> timers.push(setTimeout(fn, reduce ? Math.min(ms, 60) : ms));
@@ -90188,6 +90332,16 @@ function openPackAnimation(pack, opened, opts){
   // 2026-10-17 (user: "When I click on a foil card and they show the big version, it should load the same treatment as the card. If I'm
   // not admin, it should not let me change treatments to view."): the big view opens in the pulled copy's own finish (and Shiny);
   // the finish picker stays admin-only (openCardInspector).
+  // 2026-10-21 (package UI3, owner 18:43): an admin's ✏️ on each card of the review opens the card editor; the opener hides while it is open and comes back
+  // when it closes, with the edited card redrawn in place.
+  const poEditBtn = id=> adminModeEnabled ? `<button type="button" class="ed-edit-card po-ed-edit" data-po-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>` : '';
+  const wireEdit = ()=> overlay.querySelectorAll('[data-po-edit]').forEach(b=>{
+    b.addEventListener('click', e=>{ e.stopPropagation(); e.preventDefault(); const id = b.dataset.poEdit;
+      try{ unInert(); }catch(_){}
+      edOpenCardEditor(id, overlay, ()=>{
+        unInert = bwInertOthers(overlay);
+        const nd = getCardDefs()[id]; if(nd) overlay.querySelectorAll(`[data-poview="${CSS.escape(id)}"] .card-tile`).forEach(t=>{ const w = document.createElement('div'); w.innerHTML = cardTileHTML(Object.assign({}, nd, {locked:false}), {editable:false, extraClass: [...t.classList].filter(c=> /^(is-shiny|holo|foil|has-skin|skin-)/.test(c)).join(' ')}); if(w.firstElementChild) t.replaceWith(w.firstElementChild); });
+      }); }); });
   const wireView = ()=> overlay.querySelectorAll('[data-poview]').forEach(c=>{
     const go = ()=> openCardInspector(c.dataset.poview, {returnFocus: c, pull: {foil: c.dataset.pofoil === '1', finish: c.dataset.pofinish || null, shiny: c.dataset.poshiny === '1'}});
     c.addEventListener('click', go); c.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
@@ -90197,10 +90351,10 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
-    wireTop(); wireFoot(); wireView(); wireTilt();
+    wireTop(); wireFoot(); wireView(); wireEdit(); wireTilt();
   };
   // ---- Open all (sets only): everything left, grouped ----
   const showAll = ()=>{
@@ -90215,10 +90369,10 @@ function openPackAnimation(pack, opened, opts){
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon) bits.push(`👑 +${kroon} Krooni`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
     </div>`;
-    wireFoot(); wireView(); wireTilt();
+    wireFoot(); wireView(); wireEdit(); wireTilt();
     sfx('gold');
   };
   // Summary cards lean toward the pointer (2026-10-08).

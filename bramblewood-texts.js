@@ -1774,7 +1774,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.evo-stack": "Stack of {n}: {cards}",
   "ui.log-evolve": "🧬 {name} evolves over {base}: now {atk}/{hp}.",
   "ui.evo-pick-base": "Play {name} onto one of your lit units.",
-  "ui.evo-no-base": "Needs a unit of yours it can evolve over"
+  "ui.evo-no-base": "Needs a unit of yours it can evolve over",
+  "ui.ui3-rib-shield": "Shield {n}",
+  "ui.ui3-edit-mode": "Edit mode",
+  "ui.ui3-edit-mode-tip": "Admin: while on, clicking any card opens it in the card editor instead of playing it",
+  "ui.ui3-edit-mode-on": "Edit mode on: click a card to edit it",
+  "ui.ui3-edit-mode-off": "Edit mode off",
+  "ui.ui3-edit-mode-none": "That card can't be edited"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
