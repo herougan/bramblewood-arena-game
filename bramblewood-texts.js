@@ -1614,7 +1614,31 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.act-poison-tick-desc": "The chosen target's Poison ticks N times now, its whole stack each; the stack doesn't wear down.",
   "ui.act-expose-desc": "Expose a chosen target for N rounds: its hiding is stripped (Invisible, Evasive, Smoke, Shadow, Stealth).",
   "ui.act-heal-desc": "Restore a chosen target's Health (this card by default), never above its max. Heal only heals: Cleanse takes Bleed, Cure takes Poison.",
-  "ui.act-cleanse-desc": "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun."
+  "ui.act-cleanse-desc": "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.",
+  "ui.ed-art-rejected": "Art rejected",
+  "ui.ed-art-rejected-tip": "Admin: art rejected: {reason}",
+  "ui.ed-art-saved": "Art review saved for {name}.",
+  "ui.ed-art-review": "Art review",
+  "ui.ed-art-change": "Change the reason",
+  "ui.ed-art-reject-btn": "Reject the art",
+  "ui.ed-art-clear-btn": "Clear the rejection",
+  "ui.ed-art-reason-body": "Say what is wrong with this card’s art. The card keeps the mark until you clear it.",
+  "ui.ed-art-reason-ph": "What is wrong with the art?",
+  "ui.ed-art-reason": "Reason",
+  "ui.ed-art-rejected-on": "Rejected on {date}",
+  "ui.ed-art-filter": "Art rejected only ({n})",
+  "ui.ed-art-filter-none": "No card has its art rejected.",
+  "ui.ed-edit-card": "Edit card",
+  "ui.ed-edit-card-tip": "Admin: open this card in the card editor",
+  "ui.ed-create-card": "Create card",
+  "ui.ed-create-card-tip": "Admin: make a brand-new card",
+  "ui.ed-kind-label": "Fight type",
+  "ui.ed-enemy-level": "Enemy level",
+  "ui.ed-enemy-level-tip": "The level this fight’s enemy cards fight at, for every player. Blank: the road curve (Lv {n}). A card level set below wins.",
+  "ui.ed-enemy-level-set": "Set here: Lv {n}",
+  "ui.ed-enemy-level-curve": "Road curve: Lv {n}",
+  "results.ed-saving": "Saving your rewards…",
+  "toast.ed-result-saving": "Hold on: this fight’s result is being saved."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

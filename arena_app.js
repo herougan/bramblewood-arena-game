@@ -5644,7 +5644,7 @@ function liveStatusGlossHTML(c){
 }
 function fullCardHTML(defId, liveCard, opts){
   opts = opts || {};
-  const d = getCardDefs()[defId];
+  const d = opts.shownLevel != null && isFinite(opts.shownLevel) ? defAtShownLevel(defId, opts.shownLevel) : getCardDefs()[defId]; // 2026-10-21 (package ED): an enemy card at its fight's level
   if(!d) return '';
   const lines = describeEffects(d, liveCard);
   const [rA, rB] = rarityStops(d.rarity||'common');
@@ -5924,7 +5924,7 @@ function castleHoverHTML(hqSide){
       let lookClass = '';
       if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
         if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
-      const html = /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass});
+      const html = /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -6390,6 +6390,7 @@ function renderCodex(){
   { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; codexFilterBadge(); renderCodexGrid(); }); }
   wireCodexSkillFilter();
   wireCodexKindRow(); // 2026-10-19 (package UX)
+  edCodexCreateBtn(body); // 2026-10-21 (package ED, owner #26): the admin's Create card, back on the Codex
   const cxShowTest = document.getElementById('cxShowTest');
   if(cxShowTest) cxShowTest.addEventListener('change', e=>{ codexFilter.showTest = e.target.checked; renderCodexGrid(); });
   renderCodexGrid();
@@ -7533,7 +7534,7 @@ function cardTileHTML(d, opts){
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): no "🔁 Spawn" corner pill on tokens */}
-    ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
+    ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}${hand ? '' : artReviewBadgeHTML(d) /* 2026-10-21 (package ED): admins see a rejected art */}
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle
@@ -8610,7 +8611,8 @@ let cardDetailOpenId = null;
 // of a paragraph telling you to go find one).
 function openCardDetail(defId, opts){
   // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
-  const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), d = fromCodex ? codexShownDef(defId, d0) : d0;
+  const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), shownLv = opts && opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : null;
+  const d = shownLv != null ? defAtShownLevel(defId, shownLv) /* 2026-10-21 (package ED): an enemy card at its fight's level */ : fromCodex ? codexShownDef(defId, d0) : d0;
   const overlay = document.getElementById('cardDetailOverlay');
   if(!d || !overlay) return;
   cardDetailOpenId = defId;
@@ -8662,7 +8664,7 @@ function openCardDetail(defId, opts){
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
       ${cardRecordHTML(defId)}
-      ${adminModeEnabled ? codexPlacementHTML(d) : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
+      ${adminModeEnabled ? codexPlacementHTML(d) + artReviewDetailHTML(d0 || d) /* 2026-10-21 (package ED, #14): Art rejected */ : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
       </div>
       ${spawnHTML}
       </div>
@@ -8688,6 +8690,7 @@ function openCardDetail(defId, opts){
   const bigTile = overlay.querySelector('.card-pop-visual-tile');
   if(bigTile){ bigTile.style.cursor = 'zoom-in'; bigTile.addEventListener('click', inspect); }
   if(adminModeEnabled) wireCodexPlacement(defId);
+  if(adminModeEnabled) wireArtReviewDetail(defId, ()=>{ if(cardDetailOpenId === defId && !overlay.hidden) openCardDetail(defId, opts); }); // 2026-10-21 (package ED)
   const signInBtn = document.getElementById('cdSignInStatsBtn');
   if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId, opts)));
   { const lc = document.getElementById('uxCdLevel'); if(lc) lc.addEventListener('click', ()=>{ setCodexLevelMode(codexLevelMode() === 'base' ? 'best' : 'base'); // 2026-10-19 (package UX)
@@ -9159,6 +9162,7 @@ function mountEditorSide(modal){
       <div class="ce-art-row"><span class="ce-art-thumb" id="ceArtThumb"></span><div><b>Art</b><small id="ceArtNote"></small></div></div>
       <input type="text" id="ceArtUrl" placeholder="Image path or URL" aria-label="Art image path or URL" value="${escapeAttr(c.art && !String(c.art).startsWith('data:') ? c.art : '')}">
       <div class="ce-art-btns"><label class="btn small ghost ce-upload">⬆ Upload<input type="file" id="ceArtFile" accept="image/png,image/webp,image/jpeg,image/gif" hidden></label><button type="button" class="btn small ghost" id="ceArtRemove">Remove art</button></div>
+      ${artReviewEditorHTML(c) /* 2026-10-21 (package ED, #14): Art rejected + its reason, saved with the card */}
     </div>
     ${isBuiltIn && changed ? '<button type="button" class="btn small ghost ce-revert" id="ceRevert" title="Drop every edit and go back to the card as it shipped">↺ Revert to original</button>' : ''}
     <div class="ce-mode">${cloudCardAdmin ? '☁️ Saving publishes live for every player' : '💾 Saves in this browser only'}</div>
@@ -9231,6 +9235,7 @@ function mountEditorSide(modal){
     const r = new FileReader(); r.onload = ()=>{ editingCard.art = r.result; url.value = ''; refresh(); }; r.readAsDataURL(f);
   });
   document.getElementById('ceArtRemove').addEventListener('click', ()=>{ delete editingCard.art; url.value = ''; refresh(); });
+  wireArtReviewEditor(); // 2026-10-21 (package ED)
   const rv = document.getElementById('ceRevert');
   if(rv) rv.addEventListener('click', async ()=>{
     if(!confirm(`Revert ${c.name} to the original card? Every edit to it is dropped${cloudCardAdmin ? ' for every player' : ' in this browser'}.`)) return;
@@ -14277,7 +14282,7 @@ function enemyDeckLevel(node){
   // leaders counted like a player's leader. No more curve or typed-in rating.
   if(!node || !node.deck) return 0;
   const defs = getCardDefs(); let road = 0;
-  try{ const real = CONQUEST_MAPS.flatMap(m=> m.nodes||[]).find(n=> n === node) || CONQUEST_MAPS.flatMap(m=> m.nodes||[]).find(n=> n.key === node.key); road = roadEnemyLevel(real || node); }catch(e){}
+  try{ road = roadEnemyLevel(edRealNode(node)); }catch(e){} // 2026-10-21 (package ED): the editor's draft as it stands (its Enemy level), else the map's node
   const lv = id=>{ const set = node.cardLevels && node.cardLevels[id]; const b = cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]); return set != null && set !== '' ? Number(set) : Math.max(b, road || b); };
   // Enemy decks are smaller than a player's 20; scale to 20 cards so the two ratings compare like for like.
   const n = Object.values(node.deck).reduce((a, b)=> a + (b||0), 0) || 1;
@@ -16646,6 +16651,7 @@ function baseBrambleHp(node){
 function nodeShowcaseId(node){
   const defs = getCardDefs(), deck = (node && node.deck) || {};
   if(node && node.showcase && deck[node.showcase] && defs[node.showcase]) return node.showcase;
+  if(node && node.tutShowcase && defs[node.tutShowcase]) return node.tutShowcase; // 2026-10-21 (package ED): Tutorial II's lesson card
   const ids = Object.keys(deck).filter(id=> defs[id]);
   ids.sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || (((defs[b].attack||0) + (defs[b].health||0)*0.5) - ((defs[a].attack||0) + (defs[a].health||0)*0.5)));
   return ids[0] || null;
@@ -17515,6 +17521,198 @@ async function runSkirmishCurveCheck(mapId, draft){
   }
 }
 let pendingSkirmishReopen = null; // a Test fight returns you to the editor with your unsaved draft (2026-10-07 audit)
+// ---- Package ED (2026-10-21): editor tools and fixes. The owner's Oct 21 list: card editing from the skirmish editor and the deck
+// previews, "Art rejected" marks (#14), the Codex's Create card (#26), the enemy's level on a skirmish's preview (#7), the node kind in
+// the skirmish editor (#28), the deck editors' count-only updates (#10), the auto-win / quit / Continue loop (#9), Tutorial II's
+// showcase (#5). The helpers live here; their call sites say "2026-10-21 (package ED)".
+// -- Art review (#14: "Also let me mark it in game with 'art rejected' with reason"): card.artReview = {status:'rejected', reason, at}
+// rides on the card itself and is saved by saveCard, the card editor's own save (a card_overrides row for a cloud admin, this browser
+// otherwise). Admins see a 🚫 corner on the card's tile; Admin's Manage Cards lists them (its Art rejected filter).
+function artReviewOf(d){ const r = d && d.artReview; return r && r.status === 'rejected' ? r : null; }
+function applyArtReview(card, rejected, reason, at){
+  if(!card) return card;
+  if(rejected) card.artReview = {status:'rejected', reason: String(reason || '').trim().slice(0, 300), at: at || new Date().toISOString()};
+  else delete card.artReview;
+  return card;
+}
+function artReviewBadgeHTML(d){
+  const r = (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) ? artReviewOf(d) : null; if(!r) return '';
+  return `<div class="ed-art-badge" title="${escapeAttr(TX('ui.ed-art-rejected-tip', {reason: r.reason || '-'}))}" aria-label="${escapeAttr(TX('ui.ed-art-rejected'))}">🚫</div>`;
+}
+async function saveArtReview(defId, rejected, reason){
+  const raw = rawCardDef(defId); if(!raw) return false;
+  applyArtReview(raw, rejected, reason);
+  // the card editor's own copy follows, so its next Save doesn't put the old review back (as codexPlacement does for the source)
+  try{ if(typeof editingCard !== 'undefined' && editingCard && editingCard.id === defId) applyArtReview(editingCard, rejected, reason, raw.artReview && raw.artReview.at); }catch(e){}
+  await saveCard(raw);
+  try{ showToast(TX('ui.ed-art-saved', {name: raw.name || defId}), 'ok'); }catch(e){}
+  return true;
+}
+// The card detail's admin buttons: 🚫 Art rejected… (a reason, then saved) and, on a rejected card, Clear.
+function artReviewDetailHTML(d){
+  const r = artReviewOf(d);
+  return `<div class="cd-where ed-art-review"><span class="cd-where-k">${escapeHtml(TX('ui.ed-art-review'))}</span>${r ? `<span class="ed-art-reason">🚫 ${escapeHtml(TX('ui.ed-art-rejected'))}: ${escapeHtml(r.reason || '-')}</span>` : ''}
+    <button type="button" class="btn small ghost" id="edArtReject">🚫 ${escapeHtml(r ? TX('ui.ed-art-change') : TX('ui.ed-art-reject-btn'))}</button>${r ? `<button type="button" class="btn small ghost" id="edArtClear">${escapeHtml(TX('ui.ed-art-clear-btn'))}</button>` : ''}</div>`;
+}
+function wireArtReviewDetail(defId, reopen){
+  const rj = document.getElementById('edArtReject'), cl = document.getElementById('edArtClear');
+  if(rj) rj.addEventListener('click', async ()=>{ const cur = artReviewOf(getCardDefs()[defId]);
+    const reason = await bwTextDialog({title: TX('ui.ed-art-rejected'), body: TX('ui.ed-art-reason-body'), value: cur ? cur.reason : '', placeholder: TX('ui.ed-art-reason-ph'), okLabel: TX('ui.ed-art-reject-btn')});
+    if(reason == null) return; await saveArtReview(defId, true, reason); if(reopen) reopen(); });
+  if(cl) cl.addEventListener('click', async ()=>{ await saveArtReview(defId, false); if(reopen) reopen(); });
+}
+// The card editor's side panel: the same mark, kept on editingCard and saved with the rest of the card by the editor's Save.
+function artReviewEditorHTML(c){
+  const r = artReviewOf(c);
+  return `<div class="ce-art-review"><label class="ce-chk"><input type="checkbox" id="edArtRejectedChk" ${r ? 'checked' : ''}> 🚫 ${escapeHtml(TX('ui.ed-art-rejected'))}</label>
+    <input type="text" id="edArtReason" maxlength="300" placeholder="${escapeAttr(TX('ui.ed-art-reason-ph'))}" aria-label="${escapeAttr(TX('ui.ed-art-reason'))}" value="${escapeAttr(r ? r.reason || '' : '')}" ${r ? '' : 'hidden'}>
+    ${r && r.at ? `<small class="ce-art-review-at">${escapeHtml(TX('ui.ed-art-rejected-on', {date: new Date(r.at).toLocaleDateString()}))}</small>` : ''}</div>`;
+}
+function wireArtReviewEditor(){
+  const chk = document.getElementById('edArtRejectedChk'), rs = document.getElementById('edArtReason'); if(!chk || !rs) return;
+  const sync = ()=>{ if(!editingCard) return; rs.hidden = !chk.checked; const was = artReviewOf(editingCard); applyArtReview(editingCard, chk.checked, rs.value, was && was.at); };
+  chk.addEventListener('change', ()=>{ sync(); if(chk.checked) rs.focus(); }); rs.addEventListener('input', sync);
+}
+// Admin's Manage Cards: the Art rejected filter lists every card marked so, its reason under it.
+let adminArtRejectedOnly = false;
+function artRejectedIds(){ const defs = getCardDefs(); return Object.keys(defs).filter(id=> artReviewOf(defs[id])).sort((a, b)=> String(defs[a].name).localeCompare(String(defs[b].name))); }
+function adminArtRejectedGridHTML(){
+  const defs = getCardDefs(), ids = artRejectedIds(); if(!ids.length) return `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`;
+  return `<div class="grid-view admin-manage-grid">${ids.map(id=> `<div class="ed-art-wrap">${cardTileHTML(defs[id], {extraClass:'admin-manage-tile'})}<small class="ed-art-why">🚫 ${escapeHtml(artReviewOf(defs[id]).reason || '-')}</small></div>`).join('')}</div>`;
+}
+// -- Card editing from the editors (#14: "Let me edit a card in the skirmish editor or deck preview itself"): a ✏️ on each card of the
+// skirmish editor's deck list and of a skirmish's deck preview opens the card editor itself; closing it brings the editor or the map back.
+function edEditCardBtnHTML(id){ return `<button type="button" class="ed-edit-card" data-ed-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`; }
+function edOpenCardEditor(id, hideEl, after){
+  if(!id || typeof openCardEditor !== 'function') return;
+  if(hideEl) hideEl.hidden = true;
+  cardEditorHooks = {closed: ()=>{ if(hideEl) hideEl.hidden = false; try{ invalidateCardDefs(); }catch(e){} if(after) after(); }}; // no `saved`: that one is the New card's "put a copy in the deck"
+  openCardEditor(id);
+}
+// -- The Codex's Create card (#26: "There's no more create card button in the codex"): the Admin card list's Create a Card, on the
+// Codex's card browser for admins, above the toolbar (outside it, so the toolbar's filters stay as they are).
+function edCodexCreateBtn(body){
+  if(!body || !adminModeEnabled || body.querySelector('#edCodexCreateCard')) return;
+  body.insertAdjacentHTML('afterbegin', `<div class="ed-cx-admin"><button type="button" class="btn primary small" id="edCodexCreateCard" title="${escapeAttr(TX('ui.ed-create-card-tip'))}">🆕 ${escapeHtml(TX('ui.ed-create-card'))}</button></div>`);
+  body.querySelector('#edCodexCreateCard').addEventListener('click', ()=>{ cardEditorHooks = {closed: ()=>{ try{ if(currentTab === 'codex') renderCodexGrid(true); }catch(e){} }}; openCardEditor(null); });
+}
+// -- The enemy's level (#7: "Skirmish preview of cards use my forge stats as display... the levels is predetermined to that skirmish only.
+// (Should be editable) and not tied to the player"). node.enemyLevel (set in the skirmish editor; blank = the road curve) is the level
+// the whole enemy deck fights at (roadEnemyLevelExact reads it, so levelledEnemyDeck and the fight use it); a card's own level in the
+// editor's Card levels still wins. The preview shows each enemy card at that level from the shared card (defAtShownLevel), never at
+// the player's Forge level: the tile, its hover card and its details.
+function nodeEnemyLevelOverride(node){
+  const v = node && node.enemyLevel; if(v === '' || v == null || !isFinite(Number(v))) return null;
+  return Math.max(0, Math.min((node && node.levelCap) || 20, Math.round(Number(v) * 100) / 100));
+}
+// the node as the road reads it: itself when its map is known (a map's node, or the skirmish editor's draft through NODE_MAP_HINT, so an
+// unsaved Enemy level shows at once), else the map's node with its key (a copy such as the tutorial's summary)
+function edRealNode(node){ if(!node) return node; try{ if(mapOfNode(node)) return node; }catch(e){} try{ return CONQUEST_MAPS.flatMap(m=> m.nodes || []).find(n=> n.key === node.key) || node; }catch(e){ return node; } }
+function edShownLevel(node, id){
+  const b = CARD_DEFS_BASELINE[id] || (typeof liveCards !== 'undefined' && liveCards[id]) || getCardDefs()[id], base = b ? cardBaseLevel(b) : 0;
+  const set = node && node.cardLevels && node.cardLevels[id]; if(set != null && set !== '' && isFinite(Number(set))) return Math.max(0, Math.round(Number(set)));
+  let road = 0; try{ road = roadEnemyLevel(edRealNode(node)); }catch(e){}
+  return Math.max(base, road || base);
+}
+function defAtShownLevel(id, L){
+  const shown = getCardDefs()[id], b0 = (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id];
+  if(!b0 || !shown || L == null || !isFinite(Number(L))) return shown;
+  const base = cardBaseLevel(b0), lvl = Math.max(base, Math.min(20, Math.round(Number(L))));
+  const out = Object.assign({}, b0, {art: b0.art || (CARD_DEFS_BASELINE[id] || {}).art || shown.art, level: lvl, baseLevel: base, locked: false, edShownLevel: lvl});
+  if(b0.attack == null && b0.health == null) return out;
+  const st = statsBeyondLevel(b0, lvl); out.attack = st.attack; out.health = st.health;
+  if(b0.levelSkills){ const fx = Object.assign({}, b0.effects || {}); Object.keys(b0.levelSkills).map(Number).filter(x=> x <= lvl).sort((x, y)=> x - y).forEach(x=> Object.assign(fx, b0.levelSkills[x])); out.effects = fx; }
+  return out;
+}
+function edEnemyShownDef(node, id){ return defAtShownLevel(id, edShownLevel(node, id)); }
+// -- The node kind (#28: "show me what type this is, elite normal or boss, etc."): a chip in the skirmish editor's header.
+function edNodeKindChipHTML(node){
+  const k = (node && node.kind) || 'skirmish', t = nodeTreatmentKind(node) || (baseKind(k) === 'skirmish' ? 'normal' : baseKind(k));
+  return `<span class="ed-kind-chip ed-kind-${escapeAttr(t)}" title="${escapeAttr(TX('ui.ed-kind-label'))}">${escapeHtml(KIND_LABEL[k] || k)}</span>`;
+}
+// -- The deck editors' counts (#10: "It hangs when I add or remove cards in the deck editor (for skirmish and tent). Don't redraw, just
+// change the number count. Unless it is 0->1 or 1->0."): a +1 / −1 that keeps a card in the deck (or out of it) only rewrites that
+// card's count badge, its stack depth and the totals; only a card arriving (0 -> 1) or leaving (1 -> 0) redraws, and in the skirmish
+// popup only the deck row then. Measured with Playwright at 1366 (docs/CHANGELOG.md has the numbers).
+function edSetStackCount(stackEl, depth, badge){
+  if(!stackEl) return; const ps = stackEl.classList.contains('pool-stack') ? stackEl : stackEl.querySelector('.pool-stack'); if(!ps) return;
+  const d = Math.max(1, Math.min(3, depth|0)); ps.classList.remove('depth-1', 'depth-2', 'depth-3'); ps.classList.add('depth-' + d);
+  let b = ps.querySelector(':scope > .ps-count');
+  if(badge){ if(!b){ b = document.createElement('b'); b.className = 'ps-count'; ps.appendChild(b); } b.textContent = badge; } else if(b) b.remove();
+}
+function edPopupCount(ov, id, n){
+  const sel = v=> (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(v) : v;
+  ov.querySelectorAll(`#dbpDeck [data-rm="${sel(id)}"]`).forEach(el=> edSetStackCount(el, n, '×' + n));
+  ov.querySelectorAll(`#dbpPool [data-add="${sel(id)}"]`).forEach(el=> edSetStackCount(el, n ? Math.min(3, n + 1) : 1, n ? 'in deck ×' + n : ''));
+}
+// The Camp (tent): true when the change was written in place; false = the caller redraws (0 <-> 1, or a card with Shiny / alt-art
+// copies or finishes, whose stacks are split by copy).
+function tentQuickCount(id, prev){
+  const n = myDeckCounts[id] | 0; if((prev > 0) !== (n > 0)) return false;
+  try{ if(Object.keys(deckLooksFor(id)).length) return false; const st = lookStock(id); if(st.shiny || Object.keys(st.skins || {}).length) return false;
+    if(!deckStackTreatments && ownedCopiesOf(id) !== Infinity){ const g = copyGroupsOf(id); if(g && g.length > 1) return false; } }catch(e){ return false; }
+  const sel = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(id) : id;
+  const chips = document.querySelectorAll(`#myDeckList .dchip[data-defid="${sel}"]:not([data-look])`); if(chips.length !== 1) return false;
+  const tile = document.querySelector(`#myDeckPool .card-tile[data-defid="${sel}"]`), stack = tile && tile.closest('.pool-stack');
+  const name = (getCardDefs()[id] || {}).name || id;
+  edSetStackCount(chips[0], n, '×' + n); chips[0].title = `${name} ×${n}: click to add one, Shift+click to take one out`;
+  if(stack){ const owned = ownedCopiesOf(id); if(owned !== Infinity){ const left = Math.max(0, owned - n); edSetStackCount(stack, owned, `${left}/${owned}`); stack.classList.toggle('is-spent', left <= 0); } }
+  const badgeEl = document.getElementById('myDeckSizeBadge'); if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
+  // the deck's banner (its battle rating, its stats: ~100 ms to draw) follows once the clicking stops, not on every click
+  clearTimeout(tentQuickCount._t); tentQuickCount._t = setTimeout(()=>{ try{ refreshDeckHeroBanner(); }catch(e){} }, 250);
+  return true;
+}
+// -- One result per match (#9: "If you autowin and quit right after, you get the reward, but then you can press continue - it brings
+// you back and you can click autowin and quit right after again. Will a similar loop be possible for non-admins? Stop it."). The loop:
+// the reward was paid by the round that was still playing out after Quit (resolveRound kept going on the match it held), while Quit kept
+// the resume save from before that round, so Continue put you back before the win, ready to win again. Non-admins had the same loop
+// with a real last blow (quit during the end sign, Continue, win the same round again), and Quit / Continue during any winning round.
+// Now each match has an id (m.matchUid, carried in the resume save); the moment its result is decided it is written down
+// (RESOLVED_MATCH_KEY, the last 60) and its resume save is dropped, a resume save of a decided match is never offered or loaded, the
+// rewards of a match already decided are never paid twice, and Quit / Forfeit / Auto-win and the results' buttons wait (locked) until
+// the result's rewards are recorded (m.rewardRecorded, and the server's share settled when there is one).
+const RESOLVED_MATCH_KEY = 'bramblewood_resolved_matches_v1';
+function matchUidOf(m){ if(!m) return null; if(!m.matchUid) m.matchUid = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); return m.matchUid; }
+function resolvedMatchIds(){ try{ const a = JSON.parse(localStorage.getItem(RESOLVED_MATCH_KEY) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } }
+function matchAlreadyResolved(uid){ return !!uid && resolvedMatchIds().includes(uid); }
+// Returns false when this match's result had been decided already (a stale copy of it): its rewards must not be paid again.
+function noteMatchResultDecided(m){
+  if(!m) return true; if(m.resultDecided) return !m.rewardDuplicate;
+  const uid = matchUidOf(m), was = matchAlreadyResolved(uid);
+  m.resultDecided = true; m.rewardDuplicate = was;
+  if(!was){ try{ const a = resolvedMatchIds().filter(x=> x !== uid); a.push(uid); localStorage.setItem(RESOLVED_MATCH_KEY, JSON.stringify(a.slice(-60))); }catch(e){} }
+  // its resume save (the one from before this round) goes: Continue can't bring the decided match back. Another match's save stays.
+  try{ const snap = JSON.parse(localStorage.getItem(RESUME_KEY) || 'null'); if(snap && (!snap.matchUid || snap.matchUid === uid)) clearResumeSnapshot(); }catch(e){}
+  if(m.mode === 'async') try{ clearAsyncMatchState(); }catch(e){} // the Async Arena's own save (Save & Exit) of this match
+  return !was;
+}
+function matchRewardSettled(m){ return !m || !m.resultDecided || (!!m.rewardRecorded && !(m.fightReward && !m.fightReward.settled)); }
+// The results' buttons (and the corner ✕ / 👀) stay locked, "Saving…", until the rewards are recorded; then they open by themselves.
+function lockResultButtonsUntilRecorded(m){
+  if(matchRewardSettled(m)) return;
+  const btns = [...document.querySelectorAll('.winloss-card .winloss-actions button, .winloss-card .wl-corner-btn')]; if(!btns.length) return;
+  btns.forEach(b=>{ if(b.dataset.edLocked) return; b.dataset.edLocked = '1'; b.disabled = true; b.setAttribute('aria-busy', 'true'); });
+  const card = document.querySelector('.winloss-card'); if(card && !card.querySelector('.ed-saving')) card.querySelector('.winloss-actions') && card.querySelector('.winloss-actions').insertAdjacentHTML('beforebegin', `<p class="ed-saving" role="status">${escapeHtml(TX('results.ed-saving'))}</p>`);
+  // a click on a locked button never gets through (refreshEnergyButtons may clear `disabled` on Play again while we wait)
+  const guard = e=>{ const t = e.target && e.target.closest && e.target.closest('[data-ed-locked]'); if(t){ e.stopImmediatePropagation(); e.preventDefault(); } };
+  if(card) card.addEventListener('click', guard, true);
+  const t0 = Date.now(), tick = ()=>{ if(matchState !== m){ if(card) card.removeEventListener('click', guard, true); return; }
+    if(matchRewardSettled(m) || Date.now() - t0 > 15000){ btns.forEach(b=>{ if(!b.isConnected) return; b.disabled = false; b.removeAttribute('aria-busy'); delete b.dataset.edLocked; }); if(card) card.removeEventListener('click', guard, true); const s = document.querySelector('.winloss-card .ed-saving'); if(s) s.remove(); try{ refreshEnergyButtons(); }catch(e){} return; }
+    btns.forEach(b=>{ if(b.isConnected && b.dataset.edLocked) b.disabled = true; }); // held while we wait
+    setTimeout(tick, 150); };
+  setTimeout(tick, 150);
+}
+// Quit / Forfeit / Auto-win while a decided result is still being recorded: wait, say so.
+function matchResultPending(m){ return !!(m && m.resultDecided && !matchRewardSettled(m)); }
+// -- Tutorial II's showcase (#5: "Showcase card for T2 should be a different card"): Tutorial II deals the same rival deck as part 1
+// unless the tutorial editor gives part 2 its own, so its panel showed part 1's card. Part 2's lesson is your leader joining the fight
+// (its flavour: "Your leader joins you"; tutorialHighlightId(2): the Wandering Traveller, the card the lesson lights up and has you
+// summon), so that is its showcase; the tutorial editor's part 2 highlight, when set, wins. A showcase picked in the skirmish editor wins.
+function tutorialShowcaseId(node){
+  if(!node || node.kind !== 'tutorial' || node.stage !== 2) return null;
+  let id = null; try{ id = tutorialHighlightId(2, loadFactionChoice() || 'both'); }catch(e){}
+  return id && getCardDefs()[id] ? id : null;
+}
 /* Skirmish gallery picker (2026-10-10, user: "Open a similar UI as the deck editor UI. For me to pick cards from a
    gallery. Clicking on Leader and Clicking on Castle too."). One overlay, three uses:
    - kind 'deck': tap a card to add a copy, the − chip removes one; Done closes.
@@ -17610,10 +17808,15 @@ function openDeckBuilderPopup(o){
   ov.addEventListener('click', e=>{
     if(e.target === ov || e.target.closest('[data-close]')) return close();
     const a = e.target.closest('[data-add]'), r = e.target.closest('[data-rm]');
-    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } counts[id] = (counts[id]||0) + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} refresh(); }
+    // 2026-10-21 (package ED, owner #10: "It hangs when I add or remove cards ... just change the number count. Unless it is 0->1 or 1->0"):
+    // every click redrew the deck row and up to 400 pool stacks (~1-2.6 s a click at 1366). Now a click rewrites the card's counts and the
+    // total (edPopupCount); only a card arriving or leaving redraws, and only the deck row.
+    const quick = (id, before)=>{ const n = counts[id] || 0; if((before > 0) !== (n > 0)){ const dk = ov.querySelector('#dbpDeck'); dk.innerHTML = deckHTML(); }
+      edPopupCount(ov, id, n); ov.querySelector('#dbpTotal').textContent = total(); };
+    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
     // 2026-10-13 (user: "In the mini deck editor of the skirmish editor, click means +, shift+click means -").
-    else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } counts[id] = (counts[id]||0) + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} refresh(); }
-    else if(r){ const id = r.dataset.rm; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} refresh(); }
+    else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
+    else if(r){ const id = r.dataset.rm, before = counts[id]||0; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} quick(id, before); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
   ov.querySelector('#dbpSort').addEventListener('change', e=>{ sort = DBP_SORTS.includes(e.target.value) ? e.target.value : 'cost'; try{ localStorage.setItem('bramblewood_dbp_sort_v1', sort); }catch(_){} refresh(); });
@@ -17714,7 +17917,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const keepScroll = (overlay.querySelector('.se-body')||{}).scrollTop || 0;
     requestAnimationFrame(()=>{ const sb = overlay.querySelector('.se-body'); if(sb) sb.scrollTop = keepScroll; });
     overlay.innerHTML = `<div class="modal skirmish-editor" role="dialog" aria-label="Skirmish editor">
-      <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
+      <div class="modal-head-row"><h2>🛠️ ${edNodeKindChipHTML(draft) /* 2026-10-21 (package ED, owner #28): the fight's kind, up front */} ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
       <div class="se-body">
       <p class="se-mode ${cloudCardAdmin ? 'is-live' : ''}">${cloudCardAdmin ? '☁️ Save publishes this skirmish live for every player.' : '💾 Edits save in this browser only. Sign in with an admin account to publish them for everyone.'}</p>
       <div class="se-grid">
@@ -17725,6 +17928,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
+        ${draft.kind === 'tutorial' ? '' : (()=>{ // 2026-10-21 (package ED, owner #7): this fight's enemy level (blank: the road curve), the level its preview and its fight use
+          const bare = Object.assign({}, draft, {enemyLevel: null}); NODE_MAP_HINT.set(bare, mapId); const curve = roadEnemyLevelExact(bare), ovr = nodeEnemyLevelOverride(draft);
+          return `<label class="ed-enemy-level" title="${escapeAttr(TX('ui.ed-enemy-level-tip', {n: curve}))}">${escapeHtml(TX('ui.ed-enemy-level'))}<input id="seEnemyLevel" type="number" min="0" max="${draft.levelCap || 20}" step="0.05" placeholder="${escapeAttr(String(curve))}" value="${ovr != null ? escapeAttr(String(ovr)) : ''}"><small class="ed-enemy-level-note">${escapeHtml(ovr != null ? TX('ui.ed-enemy-level-set', {n: ovr}) : TX('ui.ed-enemy-level-curve', {n: curve}))}</small></label>`; })()}
         ${(()=>{ // 2026-10-14 (user: "Let me choose the showcase card (based on cards in the opponent's deck)"): a picker of the
           // enemy deck's own cards, drawn as cards, under the dropdown (kept: read() saves from it). Auto = the strongest card.
           const sdefs = getCardDefs(), ids = Object.keys(draft.deck||{}).filter(id=> draft.deck[id] > 0 && sdefs[id]);
@@ -17732,7 +17938,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           const autoId = nodeShowcaseId(Object.assign({}, draft, {showcase:null}));
           return `<fieldset class="se-wide se-showcase"><legend>Showcase card <small>shown big on this fight's panel · pick one of the enemy deck's cards</small></legend>
             <select id="seShowcase" aria-label="Showcase card"><option value="">Auto (strongest${autoId && sdefs[autoId] ? ': ' + escapeHtml(sdefs[autoId].name) : ''})</option>${ids.map(id=> opt(id, pick, sdefs[id].name)).join('')}</select>
-            <div class="se-sc-row" aria-label="Enemy deck cards">${ids.length ? ids.map(id=> `<button type="button" class="se-sc-pick ${id === pick ? 'is-on' : ''} ${!pick && id === autoId ? 'is-auto' : ''}" data-sc="${escapeAttr(id)}" aria-pressed="${id === pick}" title="${escapeAttr(sdefs[id].name)}${!pick && id === autoId ? ' (the automatic pick)' : ''}">${cardTileHTML(sdefs[id], {inPlay:true})}</button>`).join('') : '<span class="panel-sub">Add cards to the deck first.</span>'}</div></fieldset>`; })()}
+            <div class="se-sc-row" aria-label="Enemy deck cards">${ids.length ? ids.map(id=> `<button type="button" class="se-sc-pick ${id === pick ? 'is-on' : ''} ${!pick && id === autoId ? 'is-auto' : ''}" data-sc="${escapeAttr(id)}" aria-pressed="${id === pick}" title="${escapeAttr(sdefs[id].name)}${!pick && id === autoId ? ' (the automatic pick)' : ''}">${cardTileHTML(edEnemyShownDef(draft, id), {inPlay:true}) /* 2026-10-21 (package ED) */}</button>`).join('') : '<span class="panel-sub">Add cards to the deck first.</span>'}</div></fieldset>`; })()}
         ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
@@ -17786,7 +17992,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       </div>
       ${draft.kind === 'tutorial' ? tutorialNodeDecksHTML(draft) : ''}
       <div class="se-h-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
-      <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), draft.deck[id], '×' + draft.deck[id])}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
+      <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(draft, id)}">${stackHTML(cardTileHTML(edEnemyShownDef(draft, id), {inPlay:true}) /* 2026-10-21 (package ED): at the enemy's level */, draft.deck[id], '×' + draft.deck[id])}${edEditCardBtnHTML(id)}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
       ${deckIds.length ? `<details class="se-levels" ${draft.cardLevels && Object.keys(draft.cardLevels).length ? 'open' : ''}><summary>Card levels <small>every copy of a card shares its level; blank = its usual level</small></summary><div class="se-levels-grid">${deckIds.filter(id=> defs[id]).map(id=> `<label class="se-lv"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><input type="number" min="0" max="11" data-cardlv="${escapeAttr(id)}" placeholder="${cardBaseLevel(defs[id])}" value="${draft.cardLevels && draft.cardLevels[id] != null ? escapeAttr(draft.cardLevels[id]) : ''}"></label>`).join('')}</div></details>` : ''}
       <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input data-text-filter autocomplete="off" type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
@@ -17825,6 +18031,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       // Tutorial castle health (2026-10-13, user: "For Tutorials, let me set the HP, beside the Castle choice").
       if(draft.kind === 'tutorial'){ const th = v('seTutHp'); if(th === '' || th == null) delete draft.tutHp; else draft.tutHp = Math.max(1, Math.min(500, Math.round(Number(th)||1))); }
       { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
+      { const el = document.getElementById('seEnemyLevel'); if(el){ const x = el.value; if(x === '' || !isFinite(Number(x))) delete draft.enemyLevel; else draft.enemyLevel = Math.max(0, Math.min(draft.levelCap || 20, Math.round(Number(x) * 100) / 100)); } } // 2026-10-21 (package ED)
       { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
       if(document.getElementById('seDgRounds')){
         const dg = {}; const num = (id, key, min, max)=>{ const x = v(id); if(x !== '' && x != null && isFinite(Number(x))) dg[key] = Math.max(min, Math.min(max, Math.round(Number(x)))); };
@@ -17849,7 +18056,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         if(Object.keys(r).length) draft.rewards = r; else delete draft.rewards;
       }
     };
-    overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); if(el.id === 'seKind' || /^seDg/.test(el.id)){ clearTimeout(overlay._dgT); overlay._dgT = setTimeout(()=>{ if(!overlay.hidden) render(); }, 0); } }); });
+    overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); if(el.id === 'seKind' || el.id === 'seEnemyLevel' /* 2026-10-21 (package ED) */ || /^seDg/.test(el.id)){ clearTimeout(overlay._dgT); overlay._dgT = setTimeout(()=>{ if(!overlay.hidden) render(); }, 0); } }); });
     document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
     overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.inc]++; dirty = true; render(); });
     // Leaders, castle and deck open the gallery picker (2026-10-10). Leader slots: 0–5; empty slots are dropped on save.
@@ -17875,7 +18082,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
     { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
         openSkirmishGallery({kind:'deck', counts: draft.deck, pick: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
-    overlay.querySelectorAll('.se-deck > .se-stack[data-defid]').forEach(b=>{ b.title = 'Click: +1 · Shift+click: −1'; b.style.cursor = 'pointer'; b.onclick = e=>{ read(); const id = b.dataset.defid; if(e.shiftKey){ if(--draft.deck[id] <= 0) delete draft.deck[id]; } else draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; render(); }; });
+    overlay.querySelectorAll('.se-deck > .se-stack[data-defid]').forEach(b=>{ b.title = 'Click: +1 · Shift+click: −1'; b.style.cursor = 'pointer'; b.onclick = e=>{ if(e.target.closest('[data-ed-edit]')) return; read(); const id = b.dataset.defid; if(e.shiftKey){ if(--draft.deck[id] <= 0) delete draft.deck[id]; } else draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; render(); }; });
+    // 2026-10-21 (package ED, owner #14): ✏️ on a deck card opens the card editor over this one; closing it brings the editor back
+    overlay.querySelectorAll('.se-deck [data-ed-edit]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); read(); edOpenCardEditor(b.dataset.edEdit, overlay, ()=>{ if(overlay.innerHTML) render(); }); });
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
     overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
     // 2026-10-08 (user: "in the add cards section, can I also create a new card - it loads the same UI. When I click
@@ -17934,7 +18143,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
         const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
         const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED)
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -19115,7 +19324,7 @@ function settlePvpAfterMatch(m){
 // cross-device real-time multiplayer.
 const ASYNC_MATCH_KEY = 'bramblewood_async_match_v1';
 function saveAsyncMatchState(){
-  if(!matchState || matchState.mode!=='async' || matchState.over) return;
+  if(!matchState || matchState.mode!=='async' || matchState.over || matchState.resultDecided) return; // 2026-10-21 (package ED): nor a decided one
   try{
     localStorage.setItem(ASYNC_MATCH_KEY, JSON.stringify({
       players: matchState.players, stats: matchState.stats, log: matchState.log, round: matchState.round,
@@ -19141,7 +19350,7 @@ function resumeAsyncMatch(){
     asyncGhost: snap.asyncGhost||null, asyncStage: snap.asyncStage, opponentName: snap.opponentName};
   renderPlay();
 }
-function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); matchState = null; renderPlay(); }
+function saveAndExitAsyncMatch(){ if(matchResultPending(matchState)){ showToast(TX('toast.ed-result-saving')); return; } if(matchState && matchState.resultDecided && !matchState.over){ endMatch(); return; } /* 2026-10-21 (package ED): a decided result waits, then leaves */ SoundKit.stopAll(); saveAsyncMatchState(); matchState = null; renderPlay(); }
 /* ---- Abandoned-match resume (2026-10-03, per explicit request: "If there was a previously
    abandoned game, continue with that game"). Any vs-AI-style match (Test Battle, Conquest,
    Gauntlet, Tutorial) snapshots itself after every render while it's in progress; closing the tab
@@ -19149,16 +19358,18 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z)
+const RESUME_FIELDS = ['matchUid' /* 2026-10-21 (package ED): which match the save is */, 'aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z)
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
-  if(m.over){ clearResumeSnapshot(); return; }
+  if(m.over || m.resultDecided){ clearResumeSnapshot(); return; } // 2026-10-21 (package ED): a decided match is never saved to come back to
+  matchUidOf(m);
   try{ const snap = {savedAt: Date.now(), log: (m.log||[]).slice(-60)}; RESUME_FIELDS.forEach(k=>{ if(m[k]!==undefined) snap[k] = m[k]; }); localStorage.setItem(RESUME_KEY, JSON.stringify(snap)); }catch(e){}
 }
 function clearResumeSnapshot(){ try{ localStorage.removeItem(RESUME_KEY); }catch(e){} }
 function loadResumeSnapshot(){
   try{ const snap = JSON.parse(localStorage.getItem(RESUME_KEY)||'null'); if(!snap || !snap.players || !RESUMABLE_MODES.has(snap.mode)) return null;
+    if(matchAlreadyResolved(snap.matchUid)){ clearResumeSnapshot(); return null; } // 2026-10-21 (package ED, owner #9): no Continue into a decided match
     if(Date.now() - (snap.savedAt||0) > 3*24*3600*1000){ clearResumeSnapshot(); return null; } return snap; }catch(e){ return null; }
 }
 // Story pass 2026-10-03 (US-07): an unfinished fight is OFFERED, not forced — Home opens with a
@@ -22742,7 +22953,10 @@ function renderConquestSubTab(body){
       // 2026-10-15 (user: "The skirmish detail shows the deck preview. Those cards should have tooltips on 1.0s hover or 0.5s mobile
       // hold"): each strip card carries data-defid, so the shared card popover opens after a 1 s hover (initPopover) or a 0.5 s hold
       // on touch; no native title, which would pop up on top of it.
-      .map(([id,n])=> `<button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(defs[id], {inPlay:true})}<b class="cnp-sq-n">×${n}</b></button>`).join('');
+      // 2026-10-21 (package ED, owner #7): each card at the level the enemy fights it at (edShownLevel: the node's Enemy level or the road
+      // curve, a card level set in the editor), not at your Forge level; the hover card and the details read data-shown-level too.
+      // Admins get a ✏️ to open the card editor right here (#14).
+      .map(([id,n])=> `<span class="cnp-sq-wrap"><button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(sumNode, id)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(edEnemyShownDef(sumNode, id), {inPlay:true})}<b class="cnp-sq-n">×${n}</b></button>${adminModeEnabled ? edEditCardBtnHTML(id) : ''}</span>`).join('');
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
@@ -22765,7 +22979,7 @@ function renderConquestSubTab(body){
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
-      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
@@ -22783,7 +22997,8 @@ function renderConquestSubTab(body){
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
     wireRewardZoom(panelEl);
-    panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef)));
+    panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef, {shownLevel: +b.dataset.shownLevel}))); // 2026-10-21 (package ED): at the enemy's level
+    panelEl.querySelectorAll('[data-ed-edit]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); edOpenCardEditor(b.dataset.edEdit, null, ()=>{ if(currentTab === 'play' && !matchState) renderPlay(); }); })); // 2026-10-21 (package ED, #14)
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); if(so.dataset.locked) return dungeonSweepLocked(so); openSweepMenu(so, map, selectedNode, energyCost, body, isDailyDungeonMap(map) ? {noIdle:true} : undefined); }); } // 2026-10-18 (package Z): a locked dungeon Sweep says why
@@ -25378,7 +25593,9 @@ function tutorialSummaryNode(node){
   let rival = {}; try{ rival = tutorialDecksFor(st, loadFactionChoice() || 'both').rival || {}; }catch(e){ rival = {}; }
   // the rival bramble's Health as startTutorialMatch sets it (the node's tutHp, else the tutorial editor's), not the map's hqHp
   let hp = Number(node.tutHp) || 0; try{ if(!hp && tutorialCfg && tutorialCfg.rivalHp) hp = tutorialCfg.rivalHp + (st >= 2 ? 2 : 0); }catch(e){}
-  return Object.assign({}, node, {deck: rival}, hp > 0 ? {hqHp: hp} : {});
+  // 2026-10-21 (package ED, owner #5): part 2 shows its own lesson's card (tutorialShowcaseId), not part 1's rival card
+  const sc = !node.showcase ? tutorialShowcaseId(node) : null;
+  return Object.assign({}, node, {deck: rival}, hp > 0 ? {hqHp: hp} : {}, sc ? {tutShowcase: sc} : {});
 }
 function tutorialDeckPreviewHTML(deck){
   const defs = getCardDefs(), ids = Object.keys(deck||{}).filter(id=> deck[id] > 0 && defs[id]);
@@ -26075,6 +26292,7 @@ function roadMapOfFight(node){
 function roadEnemyScheduleLevel(no){ const S = ROAD_LEVEL_CURVE.enemySchedule; if(no == null || no < S.firstMap) return 0;
   if(no <= S.lv1To) return 1; if(no < 10) return Math.min(2, 1 + (no - (S.lv1To + 1)) / Math.max(1, S.lv2At - (S.lv1To + 1))); return S.from10 + (no - 10) * S.risePerMap; }
 function roadEnemyLevelExact(node){
+  { const ov = nodeEnemyLevelOverride(node); if(ov != null) return ov; } // 2026-10-21 (package ED, owner #7): the skirmish editor's Enemy level for this fight
   const no = roadMapOfFight(node), C = ROAD_LEVEL_CURVE;
   if(C.enemySchedule && !C.enemyKeepsPace){ if(no == null) return 0; const cap = node.floor > 1 && !node.tower ? ENDLESS_FLOOR_CURVE.levelCap : 10;
     return Math.min(cap, Math.round(roadEnemyScheduleLevel(no) * 100) / 100); }
@@ -28157,6 +28375,7 @@ function adminManageCardsGridHTML(){
   const defs = getCardDefs();
   const q = adminCardSearch.trim().toLowerCase();
   if(adminPoolOnly) return adminPoolGridHTML();
+  if(adminArtRejectedOnly) return adminArtRejectedGridHTML(); // 2026-10-21 (package ED, #14)
   if(!q) return '<p class="panel-sub">Type a card name above to find it, or use Create a Card.</p>';
   const matches = Object.keys(defs).filter(id=>defs[id].name.toLowerCase().includes(q)).sort((a,b)=>defs[a].name.localeCompare(defs[b].name)).slice(0,60);
   if(!matches.length) return '<p class="panel-sub">No cards match that search.</p>';
@@ -28175,6 +28394,7 @@ function adminManageCardsHTML(){
       <button class="btn primary small" id="adminNewCardBtn" type="button">🆕 Create a Card</button>
       <div style="margin-top:10px;"><input data-text-filter autocomplete="off" type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
       <label class="admin-toggle-label admin-pool-filter" title="${escapeAttr(TX('ui.admin-pool-hint'))}"><input type="checkbox" id="adminPoolOnlyChk" ${adminPoolOnly ? 'checked' : ''}> ${escapeHtml(TX('ui.admin-pool-filter', {n: Object.keys(POOL_CARD_DEFS).length}))}</label>
+      <label class="admin-toggle-label ed-art-filter"><input type="checkbox" id="edArtRejectedOnly" ${adminArtRejectedOnly ? 'checked' : ''}> 🚫 ${escapeHtml(TX('ui.ed-art-filter', {n: artRejectedIds().length}))}</label>
       <div id="adminManageGrid">${adminManageCardsGridHTML()}</div>
     </div>`;
 }
@@ -28189,6 +28409,7 @@ function wireAdminManageCards(){
   });
   const poolChk = document.getElementById('adminPoolOnlyChk'); // 2026-10-19 (package AN): the Pool cards filter
   if(poolChk) poolChk.addEventListener('change', e=>{ adminPoolOnly = e.target.checked; const grid = document.getElementById('adminManageGrid'); if(grid){ grid.innerHTML = adminManageCardsGridHTML(); wireAdminManageGrid(); } });
+  { const ar = document.getElementById('edArtRejectedOnly'); if(ar) ar.addEventListener('change', e=>{ adminArtRejectedOnly = e.target.checked; const grid = document.getElementById('adminManageGrid'); if(grid){ grid.innerHTML = adminManageCardsGridHTML(); wireAdminManageGrid(); } }); } // 2026-10-21 (package ED)
   wireAdminManageGrid();
 }
 // Roll Table editor (2026-09-24, per explicit request: "do the pack animation and table for
@@ -28869,6 +29090,8 @@ function renderMyDeckPanels(){
         return `<div class="look-stack" data-look="${escapeAttr(key)}" data-lookid="${escapeAttr(id)}" style="${lookStyle(id, key)}" title="${escapeAttr(defs[id].name + ': ' + lookLabel(id, key) + (key === 'shiny' ? '' : ' (dresses one plain copy)'))}">${stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: lookTileClass(id, key)}), have, `${leftK}/${have}`, leftK <= 0 ? 'is-spent' : '')}<span class="look-tag">${escapeHtml(lookLabel(id, key))}</span></div>`; }).join('');
     }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
   { const after = ()=>{ saveMyDeck(); renderMyDeckPanels(); };
+    // 2026-10-21 (package ED, owner #10): a plain +1 / −1 rewrites the counts in place (tentQuickCount); 0 <-> 1 and split copies redraw
+    const fast = id=>{ const prev = myDeckCounts[id] | 0; return ()=>{ saveMyDeck(); if(!tentQuickCount(id, prev)) renderMyDeckPanels(); }; };
     // 2026-10-16: a click on a look (a Shiny / alt-art chip or pool stack) adds or takes out that copy; plain ones work as before.
     const lookClick = (e, id, look)=>{
       const remove = !!e.shiftKey, cur = deckLooksFor(id);
@@ -28879,13 +29102,13 @@ function renderMyDeckPanels(){
       deckCardClick({}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ setDeckLook(id, look, +1); after(); }, true);
     };
     document.querySelectorAll('#myDeckList .dchip').forEach(el=>{ const id = el.getAttribute('data-defid'), look = el.getAttribute('data-look');
-      el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); return; } if(look) lookClick(e, id, look); else deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); });
-      el.addEventListener('contextmenu', e=>{ e.preventDefault(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); });
+      el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); return; } if(look) lookClick(e, id, look); else deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); });
+      el.addEventListener('contextmenu', e=>{ e.preventDefault(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); });
     document.querySelectorAll('#myDeckPool .look-stack').forEach(el=>{ const id = el.dataset.lookid, look = el.dataset.look; const t = el.querySelector('.card-tile'); if(t) t.classList.add('is-look-tile');
       el.addEventListener('click', e=>{ e.stopPropagation(); lookClick(e, id, look); }, true);
       el.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); lookClick({shiftKey:true}, id, look); }, true); });
     document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=>{ el.title = (el.title ? el.title + ' · ' : '') + 'Click: add one · Shift+click: take one out';
-      el.addEventListener('contextmenu', e=>{ const id = el.getAttribute('data-defid'); if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); }); }
+      el.addEventListener('contextmenu', e=>{ const id = el.getAttribute('data-defid'); if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); }); }
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
   // enforcement -- see deckCardClick's own comment. The Sandbox tool's identical-looking listeners
@@ -28893,7 +29116,7 @@ function renderMyDeckPanels(){
   document.querySelectorAll('#myDeckPool .card-tile:not(.locked):not(.is-look-tile)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid');
     // 2026-10-16: a plain tile takes a plain copy. When every plain copy is in (only a Shiny / alt-art look is left), say so.
     if(!e.shiftKey){ const st = lookStock(id); if(st.plain !== Infinity && (st.shiny || Object.keys(st.skins).length)){ const lk = deckLooksFor(id), plainUsed = (myDeckCounts[id]|0) - deckLookCount(lk) + Object.keys(lk).filter(k=> k.startsWith('skin:')).length; if(plainUsed >= st.plain){ denyShake(el); floatText(el, _t('Every plain copy is in'), 'debuff'); return; } } }
-    deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
+    deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); })); // 2026-10-21 (package ED): count-only
   // Item #10: both the pool tiles and the deck-list chips can be dragged (2026-10-18: onto #myDeckList; the leader slot they were
   // also dropped on is gone, the leader is picked in openLoadoutPicker) — a locked pool
   // tile is deliberately excluded, matching the same "not usable yet" rule the click-to-add
@@ -29228,6 +29451,8 @@ function startMatchInner(mode, opts, standardDeck){
 // ▶ Rejoin until you go back in, or start something else. Forfeit and finishing still clear it.
 function leaveMatchResumable(){
   const m = matchState;
+  // 2026-10-21 (package ED, owner #9): once the result is decided there is nothing to come back to: Quit waits for the rewards, then leaves
+  if(m && m.resultDecided){ if(matchResultPending(m)){ showToast(TX('toast.ed-result-saving')); return; } endMatch(); return; }
   // Mid-round, the board is half-resolved (combat applied, round/draws not yet), so keep the
   // snapshot saved before the round began instead of saving now (2026-10-08 review).
   if(m && !m.over && !m.resolving) saveResumeSnapshot();
@@ -30184,6 +30409,7 @@ function renderMatchUI(){
   const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : (RESUMABLE_MODES.has(m.mode) && !m.over ? leaveMatchResumable : endMatch)));
   const forfeitBtn = document.getElementById('forfeitMatchBtn'); if(forfeitBtn) forfeitBtn.addEventListener('click', forfeitMatch);
   { const aw = document.getElementById('adminWinBtn'); if(aw) aw.addEventListener('click', adminAutoWin); }
+  if(showWinModal) lockResultButtonsUntilRecorded(m); // 2026-10-21 (package ED, owner #9): the results' buttons wait for the rewards
   { const ap = document.getElementById('autoplayBtn'); if(ap) ap.addEventListener('click', ()=>{ const m2 = matchState; if(!m2) return; m2.autoplay = !m2.autoplay;
       ap.classList.toggle('is-on', m2.autoplay); ap.setAttribute('aria-pressed', String(m2.autoplay)); ap.textContent = m2.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'; if(m2.autoplay) autoplayStep(); }); }
   wireLeaderWidget();
@@ -34054,7 +34280,7 @@ async function discardCardByUid(uid){
 }
 // Admin (2026-10-12, user: "An auto-win battle button at the top"): the enemy castle falls and the match ends as a win.
 async function adminAutoWin(){
-  const m = matchState; if(!m || m.over || !adminModeEnabled) return;
+  const m = matchState; if(!m || m.over || m.resultDecided || !adminModeEnabled) return; // + decided (2026-10-21, package ED): one result a match
   if(m.resolving){ setTimeout(adminAutoWin, 300); return; }
   m.players[2].hq.shield = 0; m.players[2].hq.hp = 0; m.forcedWinner = 1; m.endReason = null; // counts like a real win (progress and rewards)
   m.adminWin = true; // 2026-10-19 (package NV): a raid doesn't score an admin win (settleRaidPartAfterMatch)
@@ -35843,6 +36069,7 @@ async function resolveRoundCore(opts){
     if(!over && m.raidRoundCap && m.round >= m.raidRoundCap){ m.forcedWinner = 0; m.endReason = 'raidTime'; over = true; }
   }
   if(over){
+    noteMatchResultDecided(m); // 2026-10-21 (package ED, owner #9): written down at once; its resume save goes; a stale copy pays nothing (m.rewardDuplicate)
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
     if(m.xpBefore == null) m.xpBefore = loadXp().xp; // 2026-10-18 (package RW follow-up): the results' XP bar fills from here
@@ -35869,11 +36096,11 @@ async function resolveRoundCore(opts){
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner, m.mode);
-    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
+    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay && !m.rewardDuplicate) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
     }
-    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay){ // 2026-10-18 (package Z): not on a free Spire replay
+    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay && !m.rewardDuplicate){ // 2026-10-18 (package Z): not on a free Spire replay; 2026-10-21 (ED): nor twice
       awardXp(3);
       bumpQuestCounter('wins', 1);
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
@@ -35914,7 +36141,7 @@ async function resolveRoundCore(opts){
       if(isDailyDungeonMap(dm)){ const reached = dungeonFloorProgress(dm).done + 1; dungeonRunLost(dm.id); m.dungeonOutcome = {lost:true, keyLost: !!m.dungeonKeyStaked, floor: reached, best: dungeonBestFloor(dm.id)}; try{ refreshTopbarDungeonKey(currentTab); }catch(e){} } }catch(e){} }
     // The Babel Spire (2026-10-18, package Z: "Towers just take energy to do, refunding if you fail"): a new floor lost, forfeited
     // or drawn gives its Energy back.
-    if(m.mode==='conquest' && m.winner!==1 && m.towerEnergyPaid > 0 && !m.towerRefunded){ m.towerRefunded = m.towerEnergyPaid;
+    if(m.mode==='conquest' && m.winner!==1 && m.towerEnergyPaid > 0 && !m.towerRefunded && !m.rewardDuplicate){ m.towerRefunded = m.towerEnergyPaid; // 2026-10-21 (ED): one refund a match
       try{ const st = settleEnergy(); st.current += m.towerEnergyPaid; saveEnergyState(st); refreshEnergyHud(); }catch(e){} }
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
@@ -35925,7 +36152,8 @@ async function resolveRoundCore(opts){
       try{ const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); completeConquestNode(m.conquestNode, rank); m.conquestRankEarned = rank; }catch(e){}
       m.unlockedFights = []; m.unlockedActivities = []; m.nextBattle = null;
     }
-    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && !m.towerReplay){
+    if(m.rewardDuplicate){ /* 2026-10-21 (package ED, owner #9): this match's result was decided before (a stale copy of it): nothing is paid again */ }
+    else if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && !m.towerReplay){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
       // would look like a repeat.
@@ -36198,6 +36426,7 @@ async function resolveRoundCore(opts){
         }).then(({error})=>{ if(error) console.warn('report_live_match_result failed', error); });
       }
     }
+    m.rewardRecorded = true; // 2026-10-21 (package ED): the result's rewards are in (the results' buttons and Quit wait for this)
   } else if(!(opts && opts.manual)){
     m.players[1].playedThisTurn=false; m.players[1].discardUsedThisTurn=false;
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
@@ -37058,7 +37287,7 @@ async function acceptDrawOffer(){
 }
 const FORFEIT_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','raidOffline','raidOnline','pvp']);
 async function forfeitMatch(){
-  const m = matchState; if(!m || m.over || m.resolving || !FORFEIT_MODES.has(m.mode)) return;
+  const m = matchState; if(!m || m.over || m.resolving || m.resultDecided || !FORFEIT_MODES.has(m.mode)) return; // + decided (2026-10-21, package ED)
   // 2026-10-08 playtest: an in-game dialog (not the browser's), and Forfeit is the cancel-focused choice
   // 2026-10-15 (user: "I want to change 'Quit instead keeps the fight so you can continue later.' to 'This counts as a loss. If you
   // Quit instead, you can continue from where you left off'"): the wording lives in bramblewood-texts.js (dialog.forfeit-body),
