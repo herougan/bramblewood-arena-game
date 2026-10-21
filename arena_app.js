@@ -579,7 +579,8 @@ try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); docu
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
 // (species Crustacean or Crab, or "Crab" in its name) Fork shows a crab claw 🦞; everywhere else it stays ⇔.
 function isCrabDef(d){ return !!d && ((d.species||[]).some(s=> /^(Crustacean|Crab)$/i.test(s)) || /crab/i.test(d.name||'')); }
-function skillIconFor(k, d){ return (k === 'fork' && isCrabDef(d)) ? '🦞' : (SKILL_ICON[k] || ''); }
+function skillIconFor(k, d){ if(k === 'transform'){ const tf = d && d.effects && d.effects.transform; if(tf && TRANSFORM_ICON[tf.name]) return TRANSFORM_ICON[tf.name]; } // a named Transform's own icon (TR, 2026-10-21)
+  return (k === 'fork' && isCrabDef(d)) ? '🦞' : (SKILL_ICON[k] || ''); }
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
 const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost', fullmoon:'Full Moon', rain:'Rain'}; // + Full Moon, Rain (CX2, 2026-10-21)
@@ -590,16 +591,25 @@ function bloomLabel(bw){ bw = bw || {}; const w = (Array.isArray(bw.when) ? bw.w
 }
 // Transform (2026-10-21, package CX2): "When {Night} → gain {…}", a named preset "Lycanthropy: under {Full Moon}, gain {…}". The engine's
 // TRANSFORM_PRESETS has the same presets (name → its condition).
-const TRANSFORM_PRESETS_APP = {lycanthropy: 'fullmoon'};
-function transformPresetName(k){ return k === 'lycanthropy' ? TX('ui.tf-lycanthropy') : (k || ''); }
+// Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): + Gilded, Championed, Veteran, Enraged and Matured, each with its
+// own condition (the unit's own: TRANSFORM_UNIT_COND_KEYS) and default braces (TRANSFORM_GAIN_APP = the engine's TRANSFORM_GAIN; a card's own
+// gain replaces them; Enraged has none). Matured's braces are Stem stats: the evolute played onto it gains them, the unit itself nothing.
+const TRANSFORM_PRESETS_APP = {lycanthropy: 'fullmoon', gilded: 'rich', championed: 'duel', veteran: 'rounds3', enraged: 'rage', matured: 'rounds'};
+const TRANSFORM_GAIN_APP = {gilded: {attack: 5, health: 10}, championed: {attack: 3, health: 3}, veteran: {attack: 2, health: 4}, matured: {attack: 2, health: 4}};
+const TRANSFORM_UNIT_COND_KEYS = ['rich', 'duel', 'rounds3', 'rage', 'rounds'];
+const TRANSFORM_ICON = {lycanthropy: '🐺', gilded: '🪙', championed: '🏆', veteran: '⭐', enraged: '💢', matured: '🌾'};
+function transformPresetName(k){ return k === 'lycanthropy' ? TX('ui.tf-lycanthropy') : ((TRANSFORM_GAIN_APP[k] || k === 'enraged') ? TX('ui.tf-' + k) : (k || '')); }
+function transformCondName(k, tf){ return TRANSFORM_UNIT_COND_KEYS.includes(k) ? TX('ui.tfc-' + k, {n: Math.max(1, Math.round(Number(tf && tf.rounds) || 2))}) : (BLOOM_COND_NAMES[k] || k); }
+function transformGainOfApp(tf){ const g = tf && tf.gain; return (g && typeof g === 'object' && Object.keys(g).length) ? g : ((tf && TRANSFORM_GAIN_APP[tf.name]) || {}); }
 function transformCondsOf(tf){ const w = tf && (tf.when != null ? tf.when : TRANSFORM_PRESETS_APP[tf.name]); return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
-function transformWhenText(tf){ const w = transformCondsOf(tf).map(k=> BLOOM_COND_NAMES[k] || k); return w.join(tf && tf.mode === 'or' ? ' or ' : ' & ') || '?'; }
-function transformFromVals(v){ if(v && typeof v === 'object' && !Array.isArray(v)) return v.gain ? v : null;
-  const [name, cond, g] = Array.isArray(v) ? v : ['', '', v], gain = parseGrantText(g); if(!Object.keys(gain).length) return null;
+function transformWhenText(tf){ const w = transformCondsOf(tf).map(k=> transformCondName(k, tf)); return w.join(tf && tf.mode === 'or' ? ' or ' : ' & ') || '?'; }
+function transformFromVals(v){ if(v && typeof v === 'object' && !Array.isArray(v)) return (v.gain || TRANSFORM_GAIN_APP[v.name]) ? v : null;
+  const [name, cond, g] = Array.isArray(v) ? v : ['', '', v], gain = parseGrantText(g); if(!Object.keys(gain).length && !TRANSFORM_GAIN_APP[name]) return null; // TR: a preset with default braces may leave them empty
   const nm = TRANSFORM_PRESETS_APP[name] ? name : '', c = String(cond || '').toLowerCase().replace(/\s+/g, '') || (nm ? TRANSFORM_PRESETS_APP[nm] : 'night');
-  const out = {when: [c], gain}; if(nm) out.name = nm; return out; }
-// The card line's head: "Lycanthropy: under {Full Moon}, gain {Regen 2, Thorns 2}" / "When {Night} → gain {…}".
-function transformHead(tf){ const when = '{' + transformWhenText(tf) + '}', gain = grantBraceText((tf && tf.gain) || {});
+  const out = {when: [c]}; if(Object.keys(gain).length) out.gain = gain; if(nm) out.name = nm; return out; }
+// The card line's head: "Lycanthropy: under {Full Moon}, gain {Regen 2, Thorns 2}" / "When {Night} → gain {…}"; Matured: "an evolute played onto it gains {…}" (TR).
+function transformHead(tf){ const when = '{' + transformWhenText(tf) + '}', gain = grantBraceText(transformGainOfApp(tf));
+  if(tf && tf.name === 'matured') return TX('ui.tf-head-stem', {name: transformPresetName(tf.name), when, gain});
   return tf && tf.name ? TX('ui.tf-head-named', {name: transformPresetName(tf.name), when, gain}) : TX('ui.tf-head', {when, gain}); }
 // Ritual (2026-10-21, package CX2, owner 17:42: "the conditions are splayed out in a triangle (or symmetric shape like a square or pentagon
 // depending on #conditions)"): its conditions drawn at the corners of a regular polygon (3 a triangle, 4 a square, 5 a pentagon; 2 a line,
@@ -866,7 +876,8 @@ const PASSIVE_DEFS = [
   // the condition is a 'named' thing like 'Lycanthropy' - Under {Full moon} - gain {...}. (This change is 'permanent' until the end of the
   // current game.)"): effects.transform = {name?, when:[condition], gain:{…}}. The row: a preset (none, Lycanthropy), the condition, the braces.
   {key:'transform', category:'passive', label:TX('ui.skn-transform'), kind:'transform', grantPlaceholders:['regen 2, thorns 2'],
-    desc:(v, n, e)=>{ const tf = (e && e.transform) || transformFromVals(v); return TX('ui.sk-transform', {when: transformWhenText(tf), gain: grantText((tf && tf.gain) || {}) || TX('ui.cx-nothing')}); },
+    desc:(v, n, e)=>{ const tf = (e && e.transform) || transformFromVals(v); return TX('ui.sk-transform', {when: transformWhenText(tf), gain: grantText(transformGainOfApp(tf)) || TX('ui.cx-nothing')}); }, // + a preset's default braces (TR)
+    codexNote:TX('ui.tf-presets-codex'), // TR (2026-10-21): the six presets
     get:e=> e.transform && typeof e.transform === 'object' ? [e.transform.name || '', transformCondsOf(e.transform)[0] || '', grantToText(e.transform.gain)] : undefined,
     apply:(e, vals)=>{ const tf = transformFromVals(vals); if(tf) e.transform = tf; }},
   // Ritual (2026-10-21, package CX2): a row in the editor at last (a save used to drop it), its conditions drawn as the corners of a shape.
@@ -1679,6 +1690,19 @@ sk1Patch(PASSIVE_DEFS, 'stemGrant', {category:'passive', label:TX('ui.skn-stem')
   get:e=> e.stemGrant && typeof e.stemGrant === 'object' ? grantToText(e.stemGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.stemGrant = g; if(!e.chrysalis) e.stem = true; } }});
 sk1Patch(PASSIVE_DEFS, 'chrysalis', {category:'passive', label:TX('ui.skn-chrysalis'), kind:'boolean', desc:(v, n, e)=> e && e.stemGrant && typeof e.stemGrant === 'object' ? TX('ui.sk-chrysalis-grant', {skills: grantText(e.stemGrant) || TX('ui.cx-nothing')}) : TX('ui.sk-chrysalis')});
 Object.assign(SKILL_ICON, {evolute:'🧬', evoluteAlpha:'🧬α', evoluteOmega:'🧬Ω', stem:'🌱', stemGrant:'🌱', chrysalis:'🐛'});
+// Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): King (the first King in play takes the Crown and, while it
+// holds it, has Kingly – {…}: Tribute 1, Armor 2 unless its card names other braces, kinglyGrant), Tribute N (N Gold each turn while Ready),
+// Usurper's theft of the Crown and King Slayer against Royalty, Kings and the crowned unit. The rules: bramblewood-engine.js, Package TR.
+const KINGLY_DEFAULT_APP = {tribute: 1, armor: 2};
+function kinglyOfApp(e){ const g = e && e.kinglyGrant; return g && typeof g === 'object' && Object.keys(g).length ? g : KINGLY_DEFAULT_APP; }
+sk1Patch(PASSIVE_DEFS, 'king', {category:'passive', label:TX('ui.skn-king'), kind:'boolean', desc:(v, n, e)=> TX('ui.sk-king', {skills: grantText(kinglyOfApp(e))}), codexNote:TX('ui.sk-king-codex'),
+  get:e=> (e.king && !(e.kinglyGrant && typeof e.kinglyGrant === 'object')) ? true : undefined});
+sk1Patch(PASSIVE_DEFS, 'kinglyGrant', {category:'passive', label:TX('ui.skn-king'), kind:'grant', placeholder:'tribute 1, armor 2', desc:v=> TX('ui.sk-king', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
+  get:e=> e.kinglyGrant && typeof e.kinglyGrant === 'object' ? grantToText(e.kinglyGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.kinglyGrant = g; e.king = true; } }});
+sk1Patch(PASSIVE_DEFS, 'tribute', {category:'passive', label:TX('ui.skn-tribute'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-tribute', {n: numOr(v, 1)}), get:e=> e.tribute ? numOr(e.tribute, 1) : undefined});
+sk1Patch(PASSIVE_DEFS, 'kingSlayer', {desc:v=> TX('ui.sk-king-slayer', {n: numOr(v, 1)})});
+{ const u = PASSIVE_DEFS.find(x=> x.key === 'usurper'); if(u && u.desc){ const d0 = u.desc; u.desc = (v, n, e)=> d0(v, n, e) + ' ' + TX('ui.sk-usurper-crown'); } }
+Object.assign(SKILL_ICON, {king:'👑', kinglyGrant:'👑', tribute:'🪙'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
 // back in the editor as the temporary one (the engine's rallyUp); the passive Attack aura is War Banner's (its text below, SK3's block).
 sk1Patch(PASSIVE_DEFS, 'rally', {category:'passive', label:TX('ui.skn-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rally', {n: numOr(v, 1)}), get:e=> e.rally ? numOr(e.rally, 1) : undefined});
@@ -2753,6 +2777,10 @@ Object.assign(SKILL_TEXT, {evolute: ()=> TX('ui.sk-evolute'), evoluteAlpha: ()=>
   stemGrant: v=> TX('ui.sk-stem-grant', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
   chrysalis: (v, n, e)=> e && e.stemGrant && typeof e.stemGrant === 'object' ? TX('ui.sk-chrysalis-grant', {skills: grantText(e.stemGrant) || TX('ui.cx-nothing')}) : TX('ui.sk-chrysalis')});
 Object.assign(SKILL_TEXT, {injured: v=> TX('ui.sk-injured', {n: numOr(v, 1)}), rally: v=> TX('ui.sk-rally', {n: numOr(v, 1)})}); // Package BF6 (2026-10-21): Injured N's and Rally N's card lines
+// Package TR (2026-10-21): King, Kingly – {…}, Tribute N; King Slayer reaches Royalty and the crowned unit; Usurper steals the Crown
+Object.assign(SKILL_TEXT, {king: (v, n, e)=> TX('ui.sk-king', {skills: grantText(kinglyOfApp(e))}), kinglyGrant: v=> TX('ui.sk-king', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
+  tribute: v=> TX('ui.sk-tribute', {n: numOr(v, 1)}), kingSlayer: v=> TX('ui.sk-king-slayer', {n: numOr(v, 1)})});
+{ const u0 = SKILL_TEXT.usurper; if(u0) SKILL_TEXT.usurper = (v, n, e)=> u0(v, n, e) + ' ' + TX('ui.sk-usurper-crown'); }
 TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
 Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
@@ -8021,6 +8049,7 @@ CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter',
 CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (🪞)
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
+CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -10161,8 +10190,8 @@ function defaultSkillValue(key){
 }
 // A Zeitgeber's two forms (2026-10-16): the plain stat bonus and the skill list ("Diurnal" + Gives: Stat bonus / Skills).
 // 2026-10-21 (package CX2): + Crepuscular {day}{night}, Rainrunner {…}, Loyal {…}, Usurper {…}; Full Moon {…} left for Transform's Lycanthropy.
-const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */};
-const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem'};
+const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */, king:'kinglyGrant' /* TR (2026-10-21): the default Kingly or King – {…} */};
+const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem', kinglyGrant:'king'};
 // The kinds whose row is a context skill (braces): no "+ at a later level" button on them (CX2, owner 17:42: "+ skill inside each phase,
 // plus the normal add-skill, already cover it").
 const CONTEXT_ROW_KINDS = new Set(['grant', 'grant2', 'transform', 'ritual']);
@@ -10198,7 +10227,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // Transform (CX2, 2026-10-21): [preset] under [condition] → gain { … }; Lycanthropy brings Full Moon.
   else if(s.kind==='transform'){ const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key), cond = String(vals[1] || 'night').toLowerCase();
     valueHtml = `<select data-sk="val0" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-preset'))}" title="${escapeAttr(TX('ui.cx-preset'))}" onchange="if(TRANSFORM_PRESETS_APP[this.value]){ const c = this.closest('.skill-row').querySelector('[data-sk=&quot;val1&quot;]'); if(c) c.value = TRANSFORM_PRESETS_APP[this.value]; }"><option value="">${escapeHtml(TX('ui.cx-custom'))}</option>${Object.keys(TRANSFORM_PRESETS_APP).map(k=> `<option value="${k}" ${vals[0] === k ? 'selected' : ''}>${escapeHtml(transformPresetName(k))}</option>`).join('')}</select>` +
-      `<span class="cx-kw">${escapeHtml(TX('ui.cx-under'))}</span><select data-sk="val1" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-condition'))}">${Object.keys(BLOOM_COND_NAMES).map(k=> `<option value="${k}" ${cond === k ? 'selected' : ''}>${escapeHtml(BLOOM_COND_NAMES[k])}</option>`).join('')}</select>` +
+      `<span class="cx-kw">${escapeHtml(TX('ui.cx-under'))}</span><select data-sk="val1" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-condition'))}">${Object.keys(BLOOM_COND_NAMES).concat(TRANSFORM_UNIT_COND_KEYS /* TR (2026-10-21): the unit's own conditions */).map(k=> `<option value="${k}" ${cond === k ? 'selected' : ''}>${escapeHtml(transformCondName(k))}</option>`).join('')}</select>` +
       `<span class="cx-kw">${escapeHtml(TX('ui.cx-gain'))}</span>${grantPickerHTML(i, 'val2', vals[2] || '', (s.grantPlaceholders || [])[0])}`; }
   // Ritual (CX2, 2026-10-21): its three conditions at the corners of a triangle.
   else if(s.kind==='ritual'){ const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key), tips = [TX('ui.cx-ritual-perished'), TX('ui.cx-ritual-drawn'), TX('ui.cx-ritual-bramble')];
@@ -10261,7 +10290,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   return `<div class="skill-row" title="${escapeAttr(s.desc(descArg, row.n))}">
     <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${twinOf ? (()=>{ const plain = ZEIT_TWIN[row.key] ? row.key : twinOf, adv = ZEIT_TWIN[plain];
-      return `<label class="sk-twin">Gives <select data-sk="twin" data-i="${i}" aria-label="What it gives"><option value="${plain}" ${row.key===plain?'selected':''}>${plain === 'tide' ? 'Tide bonus' : 'Stat bonus'}</option><option value="${adv}" ${row.key===adv?'selected':''}>Skills</option></select></label>`; })() : ''}
+      return `<label class="sk-twin">Gives <select data-sk="twin" data-i="${i}" aria-label="What it gives"><option value="${plain}" ${row.key===plain?'selected':''}>${plain === 'tide' ? 'Tide bonus' : plain === 'king' ? escapeHtml(TX('ui.kingly-default-opt')) /* TR */ : 'Stat bonus'}</option><option value="${adv}" ${row.key===adv?'selected':''}>Skills</option></select></label>`; })() : ''}
     ${oneOffTagHTML(s)}${valueHtml}
     ${liveReadout}
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
@@ -27269,7 +27298,9 @@ function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : 
 function sbNMultLine(d){ const B = BramblewoodBudget, cfg = Object.assign({}, SB_V3_DEFAULTS, (typeof sbLoad === 'function' ? sbLoad() : {})), e = (d && d.effects) || {}, a = B.abilitiesOf(e), g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], out = [];
   if(!a.length) out.push(TX('ui.budget-nmult-plain', {k: g('plainBonus')})); else if(a.every(x=> B.LIGHT.includes(x))) out.push(TX('ui.budget-nmult-light', {k: g('lightBonus')}));
   if(a.includes('fragile')) out.push(TX('ui.budget-nmult-fragile', {k: g('fragileMult')}));
-  return out.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(out.join(' '))}</small>` : ''; }
+  // 2026-10-21 (package TR, owner HB2-1): the two-skill rule's count, where it is over two (plain Flying, Tide, Diurnal, Nocturnal don't count; several count 1)
+  const n2 = B.skillCountOf ? B.skillCountOf(e) : a.length, warn = n2 > 2 ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-two-skills', {n: n2}))}</small>` : '';
+  return (out.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(out.join(' '))}</small>` : '') + warn; }
 // 2026-10-21 (package CX2): the context-skill rule in the budget panel, CONTEXT_MULT × the skills in the braces, and this card's own
 // context skills worked out ("Tide: 0.4 × 11.5 = 4.6").
 function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects) || {}, f1 = v=> Math.round(v * 10) / 10;
@@ -33758,6 +33789,7 @@ function boardCardHTML(c, defs, opts){
     d.relicOf ? 'is-relic' : '', // Relic (2026-10-19, package E): the dead card's art, faded and ghostly
     c.bound>0 ? 'is-bound' : '', c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
+    c.crowned ? 'is-crowned' : '', (c.transformed && trTfName(d)) ? ('tf-on tf-' + trTfName(d)) : '', // Package TR (2026-10-21): the Crown's holder; a named Transform's look
     c.shield > 0 ? 'has-shield' : '', // 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
@@ -33859,7 +33891,7 @@ function boardCardHTML(c, defs, opts){
   const wingHTML = !winged ? '' : angelic ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>'
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${evoStackHTML(c, defs)}${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+    ${evoStackHTML(c, defs)}${trCrownHTML(c, d)}${(c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
@@ -34027,6 +34059,67 @@ function evoStackHTML(c, defs){
   return `<span class="evo-stack" aria-hidden="true">${'<i></i>'.repeat(Math.min(3, st.length))}</span><span class="evo-stack-badge" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">×${names.length}</span>`;
 }
 // ==== end of Package EV (UI) ==========================================================================================================
+// ==== Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): the Crown, Gold and the named Transforms on the board ====
+// A crowned unit wears a 👑 (trCrownHTML; .crown-badge in arena_template.html). The engine's {type:'crown'} events move it: 'take' / 'pickup' /
+// 'liege' / 'steal' fly a crown to the new holder (from the fallen King when there is one), 'drop' lets it fall off the dead King to the ground,
+// 'fade' dims it away and pays +1 Gold on the side's 🪙 pill. A named Transform (Gilded, Championed ...) keeps a look on the unit (.tf-<name>),
+// with a burst when it happens (trTransformVfx). Gold (pl.gold) has its own pill, shown once a side has some.
+const TR_SHEEN = '<span class="tf-sheen" aria-hidden="true"></span>'; // Gilded's moving gold sheen over the card
+function trTfName(d){ const tf = d && d.effects && d.effects.transform; return tf && tf.name && TRANSFORM_ICON[tf.name] && tf.name !== 'lycanthropy' ? tf.name : null; }
+function trCrownHTML(c, d){ if(!c || !c.crowned) return '';
+  const tip = TX('ui.crown-badge', {skills: grantText(kinglyOfApp((d && d.effects) || {}))});
+  return `<span class="crown-badge" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">👑</span>`; }
+function trSideMine(side){ try{ return !!matchState && side === matchState.sideOf(viewerHandPid(matchState)); }catch(e){ return true; } }
+function trGoldPillId(side){ return 'hudGoldPill' + (trSideMine(side) ? '' : 'Enemy'); }
+function trSetCrown(uid, on){ const m = matchState, rc = m && m.replayCards && m.replayCards[uid]; if(rc) rc.crowned = !!on;
+  const el = boardCardEl(uid); if(!el) return null; el.classList.toggle('is-crowned', !!on);
+  const old = el.querySelector(':scope > .crown-badge'); if(!on){ if(old) old.remove(); return el; }
+  if(!old){ const d = getCardDefs()[(rc && rc.defId) || el.getAttribute('data-defid')] || {}; el.insertAdjacentHTML('beforeend', trCrownHTML({crowned: true}, d)); }
+  return el; }
+// A loose crown on the page (fixed), from one rect to another (or falling to the ground under one).
+function trCrownSprite(r){ const sp = document.createElement('div'); sp.className = 'crown-fly'; sp.textContent = '👑'; sp.setAttribute('aria-hidden', 'true');
+  sp.style.left = (r.left + r.width / 2) + 'px'; sp.style.top = (r.top + 2) + 'px'; document.body.appendChild(sp); return sp; }
+function trCrownVfx(ev){
+  const calm = reducedMotion() || !fxAtLeast('low'), fromEl = ev.fromUid != null ? boardCardEl(ev.fromUid) : null, toEl = ev.uid != null ? boardCardEl(ev.uid) : null;
+  if(ev.kind === 'drop'){ // the Crown falls off the dead King, bounces on the ground and lies there a moment
+    const src = toEl || fromEl; if(src) trSetCrown(Number(src.getAttribute('data-uid')), false);
+    try{ SoundKit.itemDrop(); }catch(e){}
+    if(!src || calm) return; const r = src.getBoundingClientRect(), sp = trCrownSprite(r); sp.classList.add('is-dropping');
+    if(hasGsap()) gsap.timeline({onComplete:()=> sp.remove()}).to(sp, {y: r.height * 0.55, rotation: 70, duration: .38, ease: 'power2.in'}).to(sp, {y: r.height * 0.42, rotation: 95, duration: .14, ease: 'power1.out'})
+      .to(sp, {y: r.height * 0.55, rotation: 100, duration: .16, ease: 'bounce.out'}).to(sp, {opacity: 0, duration: .45, delay: .5});
+    else setTimeout(()=> sp.remove(), 1400);
+    return; }
+  if(ev.kind === 'fade'){ if(fromEl) trSetCrown(ev.fromUid, false);
+    const pill = document.getElementById(trGoldPillId(ev.side)), at = fromEl || pill;
+    if(at && !calm){ const r = at.getBoundingClientRect(), sp = trCrownSprite(r); sp.classList.add('is-fading');
+      if(hasGsap()) gsap.to(sp, {y: -24, scale: 1.4, opacity: 0, filter: 'blur(3px)', duration: .9, ease: 'power1.out', onComplete:()=> sp.remove()}); else setTimeout(()=> sp.remove(), 900); }
+    if(ev.gold > 0) setTimeout(()=>{ const p = document.getElementById(trGoldPillId(ev.side)); if(p){ p.classList.remove('bing'); void p.offsetWidth; p.classList.add('bing'); setTimeout(()=> p.classList.remove('bing'), 400); floatText(p, `+${ev.gold}`, 'gold'); } else if(at) floatText(at, `+${ev.gold} 🪙`, 'gold'); }, 420);
+    try{ SoundKit.gold(); }catch(e){}
+    return; }
+  // take / pickup / liege / steal: a crown settles on the new holder (flying from the fallen King when there is one)
+  if(fromEl && fromEl !== toEl) trSetCrown(ev.fromUid, false);
+  const land = ()=>{ const el = trSetCrown(ev.uid, true); if(!el) return; const b = el.querySelector(':scope > .crown-badge');
+    if(b && !calm && hasGsap()) gsap.fromTo(b, {scale: 2.2, y: -18, opacity: 0}, {scale: 1, y: 0, opacity: 1, duration: .5, ease: 'back.out(2.4)'});
+    if(b){ b.classList.remove('crown-shine'); void b.offsetWidth; b.classList.add('crown-shine'); }
+    try{ floatText(el, ev.kind === 'steal' ? TX('ui.crown-stolen') : TX('ui.crown-crowned'), 'gold'); }catch(e){} };
+  try{ SoundKit.unlockChime(); }catch(e){}
+  if(fromEl && toEl && fromEl !== toEl && !calm && hasGsap()){ const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect(), sp = trCrownSprite(a);
+    gsap.timeline({onComplete:()=>{ sp.remove(); land(); }}).to(sp, {y: -30, scale: 1.3, duration: .22, ease: 'power2.out'})
+      .to(sp, {x: (b.left + b.width / 2) - (a.left + a.width / 2), y: b.top - a.top - 6, scale: 1, duration: .55, ease: 'power2.inOut'}); }
+  else land();
+}
+// A named Transform happens: its look comes on with a burst and a float ("🪙 Gilded"). Gilded rains a little gold leaf.
+function trTransformVfx(ev){
+  const m = matchState, rc = m && m.replayCards && m.replayCards[ev.attUid]; if(rc) rc.transformed = true;
+  const el = boardCardEl(ev.attUid), nm = ev.name; if(!el || !nm || !TRANSFORM_ICON[nm] || nm === 'lycanthropy') return;
+  el.classList.add('tf-on', 'tf-' + nm); if(nm === 'gilded' && !el.querySelector(':scope > .tf-sheen')) el.insertAdjacentHTML('beforeend', TR_SHEEN); el.classList.remove('tf-burst'); void el.offsetWidth; el.classList.add('tf-burst'); setTimeout(()=> el.classList.remove('tf-burst'), 1300);
+  setTimeout(()=>{ try{ const e2 = boardCardEl(ev.attUid); if(e2) floatText(e2, TRANSFORM_ICON[nm] + ' ' + transformPresetName(nm), 'quick'); }catch(e){} }, 650); // after the +A/+H numbers, not on them
+  try{ SoundKit.growthSwell(); }catch(e){}
+  if(nm === 'gilded' && !reducedMotion() && fxAtLeast('low') && hasGsap()){ const r = el.getBoundingClientRect();
+    for(let i = 0; i < 9; i++){ const f = document.createElement('div'); f.className = 'gild-leaf'; f.setAttribute('aria-hidden', 'true'); f.style.left = (r.left + r.width * (0.15 + 0.7 * Math.random())) + 'px'; f.style.top = (r.top - 6) + 'px'; document.body.appendChild(f);
+      gsap.to(f, {y: r.height * (0.5 + 0.5 * Math.random()), x: (Math.random() - .5) * 30, rotation: (Math.random() - .5) * 540, opacity: 0, duration: 1 + Math.random() * .6, delay: i * .05, ease: 'power1.in', onComplete:()=> f.remove()}); } }
+}
+// ==== end of Package TR (UI) ==========================================================================================================
 // Devilry drops (2026-10-10). Returns true when the drop was used.
 function devilryDropOnto(targetUid, handUid){
   const m = matchState; if(!m || m.over || m.resolving || m.mode==='liveRanked') return false; // live ranked: not synced yet
@@ -35037,6 +35130,7 @@ function sideResourcePillsHTML(m, p, mine){
   const out = [];
   if((p.lumber||0) > 0) out.push(pill('lumber', 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `${iconHTML('lumber', '🪵')} ${p.lumber}`));
   if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `${iconHTML('stone', '🪨')} ${p.stone}`));
+  if((p.gold||0) > 0) out.push(pill('gold', 'hudGoldPill', TX('ui.gold-tip'), `🪙 ${p.gold}`)); // Package TR (2026-10-21): in-fight Gold (Tribute, the Crown's fade)
   if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `${iconHTML('metal', '🔩')} ${p.metal}`));
   if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `${iconHTML('uranium', '☢️')} ${p.uranium}`));
   if((p.grace||0) > 0) out.push(pill('grace', 'hudGracePill', RESOURCE_TOOLTIP.grace, `${iconHTML('grace', '🕊️')} ${p.grace}`));
@@ -36303,7 +36397,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
       });
     });
   });
@@ -42176,7 +42270,16 @@ function sk2LogText(ev, nm){
     if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
     return {cls:'', text: stone ? TX('ui.sk2-log-salvage', {name, total: ev.total}) : TX('ui.sk2-log-scavenge', {name, total: ev.total})}; }
   if(ev.type === 'equipLaid' && ev.forged) return {cls:'', text:TX('ui.sk2-log-forge', {name: nm(ev.byDefId), item: nm(ev.equipDefId)})}; // SK2b
-  if(ev.type === 'statusFx' && ev.kind === 'transform') return {cls:'gold', text:TX('ui.log-transform', {name: nm(ev.attDefId)})}; // CX2 (2026-10-21): Transform's first time
+  if(ev.type === 'statusFx' && ev.kind === 'transform') return {cls:'gold', text: ev.name && ev.name !== 'lycanthropy' && TRANSFORM_ICON[ev.name] ? TX('ui.log-tf-named', {name: nm(ev.attDefId), title: transformPresetName(ev.name)}) : TX('ui.log-transform', {name: nm(ev.attDefId)})}; // CX2 (2026-10-21): Transform's first time; a named preset says which (TR)
+  if(ev.type === 'crown'){ const who = ev.defId ? nm(ev.defId) : '', from = ev.fromDefId ? nm(ev.fromDefId) : ''; // Package TR (2026-10-21): the Crown
+    if(ev.kind === 'take') return {cls:'gold', text:TX('ui.log-crown-take', {name: who})};
+    if(ev.kind === 'drop') return {cls:'', text: who ? TX('ui.log-crown-drop', {name: who}) : TX('ui.log-crown-drop-gone')};
+    if(ev.kind === 'pickup') return {cls:'gold', text:TX('ui.log-crown-pickup', {name: who})};
+    if(ev.kind === 'liege') return {cls:'gold', text:TX('ui.log-crown-liege', {name: who})};
+    if(ev.kind === 'steal') return {cls:'gold', text:TX('ui.log-crown-steal', {name: who, from})};
+    if(ev.kind === 'fade') return {cls:'gold', text:TX('ui.log-crown-fade', {n: ev.gold || 0})};
+    return null; }
+  if(ev.type === 'gold') return ev.why === 'tribute' ? {cls:'gold', text:TX('ui.log-tribute', {name: nm(ev.defId), n: ev.amount})} : null;
   if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
   if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
   if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
@@ -43340,6 +43443,10 @@ function renderVfxForEvent(ev){
   // longer ever emits it (gainGold/onSpawnGold/onReadyGold all push type:'lumber' now, see
   // bramblewood-engine.js's newPlayer() comment for the full context), so there's no dead branch
   // left dangling here for it.
+  // Package TR (2026-10-21): Gold is back in the fight (Tribute N, the Crown's fade), on its own 🪙 pill; the Crown moves; a named Transform's look
+  if(ev.type==='gold') floatResourceGain(ev, '🪙', trGoldPillId(ev.side), SoundKit.gold);
+  if(ev.type==='crown'){ try{ trCrownVfx(ev); }catch(e){} }
+  if(ev.type==='statusFx' && ev.kind==='transform'){ try{ trTransformVfx(ev); }catch(e){} }
   if(ev.type==='grace') floatResourceGain(ev, '🕊️', 'hudGracePill', SoundKit.grace);
   if(ev.type==='devilry') floatResourceGain(ev, '★', 'hudDevilryPill', SoundKit.devilryTone);
   if(ev.type==='stone') floatResourceGain(ev, '🪨', 'hudStonePill', SoundKit.gold);

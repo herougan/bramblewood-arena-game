@@ -592,7 +592,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // itself is kept as a field (always 0) purely so any stray external read of pl.acorns finds
       // a safe number instead of undefined; nothing writes to it anymore. A character's
       // `startGold` effect now seeds starting Lumber instead of starting Gold, same amount.
-      id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, grace:0, devilry:0, stone:0, metal:0, uranium:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
+      id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, gold:0 /* TR (2026-10-21): in-fight Gold again (Tribute, the Crown) */, grace:0, devilry:0, stone:0, metal:0, uranium:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
       deck:buildDeckIdsFrom(cardCounts, rnd), hand:[], row:{left:[], center:[], right:[]},
       graveyard:[], exile:[], echoes:0, castle:null, // castle: a boardCard-like fixture, set via setCastle(); not yet wired into targeting/combat (see game-design.md)
       playedThisTurn:false, discardUsedThisTurn:false, prayerTokens:0 /* 2026-10-19: the player's own Prayer tokens (offerings) */,
@@ -1016,8 +1016,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const e = (CARD_DEFS[c._condBase || c.defId] && CARD_DEFS[c._condBase || c.defId].effects) || {};
         // Full Moon (2026-10-15): the first full moon over it (night with a full moon, or the Full Moon field) marks it for good.
         // Transform (2026-10-21, package CX2): the first time its condition holds, it changes for the rest of the fight (c.transformed).
-        if(e.transform && typeof e.transform === 'object' && !c.transformed && transformOn(e.transform)){ c.transformed = true; const tf = e.transform, moon = transformConds(tf).includes('fullmoon');
-          if(recordEvents && events) events.push({type:'statusFx', kind: moon ? 'fullMoon' : 'transform', name: tf.name || null, side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:0, grant: Object.keys(tf.gain || {})}); }
+        if(e.transform && typeof e.transform === 'object' && !c.transformed && transformOn(e.transform, c, pid, players)){ c.transformed = true; const tf = e.transform, moon = transformConds(tf).includes('fullmoon'), gn = transformGainOf(tf); // + the unit's own conditions and the presets' braces (TR)
+          if(recordEvents && events) events.push({type:'statusFx', kind: moon ? 'fullMoon' : 'transform', name: tf.name || null, side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:0, grant: Object.keys(gn).filter(k=> k !== 'attack' && k !== 'health'), atk: Number(gn.attack)||0, hp: Number(gn.health)||0, stem: isMaturedTf(tf) || undefined}); }
         if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((ph === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
@@ -1308,6 +1308,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         draw(players[1], 1, sideOf(1), stats, events); draw(players[2], 1, sideOf(2), stats, events);
       }
     }
+    // Veteran / Matured (TR, 2026-10-21): every unit on the field when a new round starts has survived one more round
+    if(round > 1) [1,2].forEach(pid=> players[pid] && rowsUnitsOf(players[pid]).forEach(c=>{ if(c && !c.gap && c.hp > 0) c.roundsSurvived = (c.roundsSurvived||0) + 1; }));
     syncPhaseStats(players, sideOf, events);
     // The active Exile zone (2026-10-09, D19 next step; archetypes-design-2026-10-09.md, the Forgotten Ones):
     // every card that goes to a player's Exile gives them 1 Echo 🕯️. A card with Remember N waiting in Exile
@@ -2117,8 +2119,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -2215,7 +2217,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
       if(t === 'flow' || t === 'high') addGrant(e.tideGrant.flood); if(t === 'ebb' || t === 'high') addGrant(e.tideGrant.ebb); }
     if(c.fullMoonRisen){ if(e.fullMoonGrant && typeof e.fullMoonGrant === 'object') addGrant(e.fullMoonGrant); else if(e.fullMoon){ const n = (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0); a += n; h += n; } } // Full Moon (2026-10-15); Leylines I +2/+2 (2026-10-16)
-    if(c.transformed && e.transform && typeof e.transform === 'object') addGrant(e.transform.gain); // Transform (2026-10-21, CX2): for good
+    if(c.transformed && e.transform && typeof e.transform === 'object' && !isMaturedTf(e.transform)) addGrant(transformGainOf(e.transform)); // Transform (2026-10-21, CX2): for good; a preset's default braces, and Matured's go to the evolute over it (TR)
+    // The Crown (TR, 2026-10-21): its holder has Kingly – {…} (Tribute 1, Armor 2 by default); a number adds to the card's own (Armor 1 + 2 = 3).
+    if(c.crowned){ const [x, y, r] = grantStats(kinglyOf(e)); a += x; h += y;
+      if(r){ grant = grant || {}; Object.keys(r).forEach(k=>{ const v = r[k], base = grant[k] != null ? grant[k] : e[k];
+        grant[k] = (typeof v === 'number' && (typeof base === 'number' || base === true)) ? (base === true ? 1 : base) + v : v; }); } }
     // CX2 (2026-10-21): Loyal – {…} / Usurper – {…} read their braces like the other context skills (a +A/+H in them is stats, not a skill)
     if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)){ add(e.loyal || 0); addGrant(e.loyalGrant); }
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)){ add(e.usurper || 0); addGrant(e.usurperGrant); }
@@ -2267,9 +2273,32 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // current game.)"): effects.transform = {when:[conditions], mode:'and'|'or', gain:{skills, attack?, health?}, name?:'lycanthropy'}. The
   // conditions are Bloom's (BLOOM_CONDS). The first time they hold (checked as the phases turn, in syncPhaseStats) the unit is marked
   // c.transformed and has the skills in gain for the rest of the fight. A named preset (TRANSFORM_PRESETS) brings its own condition.
-  const TRANSFORM_PRESETS = {lycanthropy: ['fullmoon']};
+  // Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): five more named presets, each with its own condition and
+  // default braces (TRANSFORM_GAIN, the numbers of bramblewood-budget.js; a card's own gain replaces them). Their conditions read the unit
+  // itself (TRANSFORM_UNIT_CONDS), so transformOn takes the unit:
+  //   Gilded      'rich'     your resources are worth more than 25 (Lumber 1, Stone 2, Metal 3, Gold 5 each)        +5/+10
+  //   Championed  'duel'     it won a duel: its own attack killed the enemy it was fighting (c.duelWon)             +3/+3
+  //   Veteran     'rounds3'  it survived 3 rounds (c.roundsSurvived, counted at each round's start)                 +2/+4
+  //   Enraged     'rage'     its Rage is on (Rage, below half Health)                                              none: the card sets it
+  //   Matured     'rounds'   it survived N rounds (tf.rounds, 2 by default)                                         +2/+4 Stem stats: the
+  //               unit itself gains nothing; an evolute placed over it later inherits them (evoluteMerge), as a Stem's braces.
+  const TRANSFORM_PRESETS = {lycanthropy: ['fullmoon'], gilded: ['rich'], championed: ['duel'], veteran: ['rounds3'], enraged: ['rage'], matured: ['rounds']};
+  const TRANSFORM_GAIN = {gilded: {attack: 5, health: 10}, championed: {attack: 3, health: 3}, veteran: {attack: 2, health: 4}, matured: {attack: 2, health: 4}};
+  const TRANSFORM_UNIT_CONDS = ['rich', 'duel', 'rounds3', 'rage', 'rounds'];
+  const GILDED_OVER = 25, VETERAN_ROUNDS = 3, MATURED_ROUNDS = 2;
+  function transformGainOf(tf){ const g = tf && tf.gain; return (g && typeof g === 'object' && Object.keys(g).length) ? g : ((tf && TRANSFORM_GAIN[tf.name]) || {}); }
+  function isMaturedTf(tf){ return !!tf && tf.name === 'matured'; } // a custom "under {Survived N rounds}" gains its braces itself
+  function resourceWorthOf(pl){ return pl ? (pl.lumber||0) + 2 * (pl.stone||0) + 3 * (pl.metal||0) + 5 * (pl.gold||0) : 0; }
+  function unitCond(k, c, pid, players, tf){ if(!c) return false;
+    switch(k){
+      case 'rich': return resourceWorthOf(players && players[pid]) > GILDED_OVER;
+      case 'duel': return !!c.duelWon;
+      case 'rounds3': return (c.roundsSurvived||0) >= VETERAN_ROUNDS;
+      case 'rounds': return (c.roundsSurvived||0) >= Math.max(1, Math.round(Number(tf && tf.rounds) || MATURED_ROUNDS));
+      case 'rage': return isRaging(c);
+    } return false; }
   function transformConds(tf){ const w = tf && (tf.when != null ? tf.when : TRANSFORM_PRESETS[tf.name]); return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
-  function transformOn(tf){ const w = transformConds(tf); return w.length > 0 && (tf.mode === 'or' ? w.some(bloomCond) : w.every(bloomCond)); }
+  function transformOn(tf, c, pid, players){ const w = transformConds(tf), one = k=> TRANSFORM_UNIT_CONDS.includes(k) ? unitCond(k, c, pid, players, tf) : bloomCond(k); return w.length > 0 && (tf.mode === 'or' ? w.some(one) : w.every(one)); }
   function bloomStateOf(bw){
     const when = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean);
     const or = bw.mode === 'or', on = when.length > 0 && (or ? when.some(bloomCond) : when.every(bloomCond));
@@ -2295,7 +2324,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let kingSlayerBonus = 0;
     if(attDef && attDef.effects && attDef.effects.kingSlayer){
       const tdefKS = CARD_DEFS[targetCard.defId];
-      if(tdefKS && txIsA(tdefKS, 'King')){ // 2026-10-21 (package TX)
+      if(tdefKS && isRoyalTarget(targetCard, tdefKS)){ // 2026-10-21 (package TX); + Royalty, a King and the crowned unit (package TR)
         kingSlayerBonus = attDef.effects.kingSlayer;
         amt += kingSlayerBonus;
       }
@@ -2466,7 +2495,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // this depth) — silent here, same treatment Expose gets in this function.
     if(attDef && attDef.effects && attDef.effects.kingSlayer){
       const tdefKS = CARD_DEFS[card.defId];
-      if(tdefKS && txIsA(tdefKS, 'King')){ // 2026-10-21 (package TX)
+      if(tdefKS && isRoyalTarget(card, tdefKS)){ // 2026-10-21 (package TX); + Royalty, a King and the crowned unit (package TR)
         amount += attDef.effects.kingSlayer;
       }
     }
@@ -3285,6 +3314,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, counter:true});
       events.push({type:'statusFx', kind:'counter', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, amount:r.dmg}); }
     if(opp.card.hp <= 0 && killCredit){ killCredit[opp.card.uid] = killCredit[opp.card.uid] || new Set(); killCredit[opp.card.uid].add(statKey(sideOf(ownerId), card.defId)); }
+    if(opp.card.hp <= 0 && !card.duelWon){ card.duelWon = true; trDirty = true; } // Championed (TR, 2026-10-21): a counter that kills its attacker wins the duel too
   }
   function opposingCardOf(players, ownerId, boardCard){
     if(slotMode){
@@ -3843,6 +3873,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isStemDef(bd)){ // Stem: its braces, else +1/+2
       if(be.stemGrant && typeof be.stemGrant === 'object'){ const [x, y, rest] = grantStats(be.stemGrant); sa = x; sh = y; stem = rest || {}; Object.assign(add, evoMergeEffects(add, rest || {})); }
       else { sa = 1; sh = 2; stem = {}; } }
+    // Matured (TR, 2026-10-21): a base that matured hands its Stem stats (+2/+4 by default, or its braces) to the evolute, beside any Stem's
+    if(base.transformed && be.transform && isMaturedTf(be.transform)){ const [x, y, rest] = grantStats(transformGainOf(be.transform)); sa += x; sh += y;
+      stem = Object.assign(stem || {}, rest || {}); if(rest) Object.assign(add, evoMergeEffects(add, rest)); }
     const newId = evoDefOf(fresh.defId, add);
     base.evoStack = (base.evoStack || []).concat([evoStackId(fromDefId)]);
     base.defId = newId;
@@ -3884,6 +3917,72 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return best ? {card: best, value: bestV} : null;
   }
   // ==== end of Package EV (rules) ===========================================================================================================
+  // ==== Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): Gold, Tribute and the Crown ===========================
+  // Gold (in the fight): pl.gold, 0 at the start. Tribute N pays it (every upkeep while Ready, as On Ready Gold pays Lumber); the Crown fades
+  // into 1. Nothing spends it yet: it counts 5 toward Gilded ('rich', resourceWorthOf). Event {type:'gold', side, uid?, defId?, amount, why}.
+  let trDirty = false; // a Crown moved or a duel was won: removeDeadCards re-reads the board's grants (Kingly, Championed) at once
+  function addGold(pl, n){ n = Math.max(0, Math.round(Number(n)||0)); if(!pl || !n) return 0; pl.gold = (pl.gold||0) + n; return n; }
+  // The Crown. One on the whole battlefield. effects.king (King): the first King to come into play takes it (c.crowned) and, while it holds it,
+  // has Kingly – {…} (effects.kinglyGrant, else Tribute 1 + Armor 2; condStatsOf adds it). A King played while another King holds the Crown
+  // is a King, uncrowned. When the holder dies:
+  //   - with no source unit (poison, a spell, the bramble, its own side): the Crown drops to the ground; a random King of that side takes it,
+  //     else it fades into +1 Gold for that side;
+  //   - killed by an enemy unit: a Usurper that struck the blow takes it (it steals the Crown: it is no King, so nothing else ever hands it
+  //     one); else the liege grants it to a random King on the killer's side (the killer too, if it is one); else it is taken and fades into
+  //     +1 Gold for the killer's side.
+  // A Crown that faded is gone for the fight (pl.crownGone on both sides: a later King is uncrowned; Claude's call, TR-2). A holder that
+  // leaves play without dying (bounced, exiled) drops it as a death with no source would (crownSweep).
+  // Events {type:'crown', kind:'take'|'drop'|'pickup'|'liege'|'steal'|'fade', side, uid, defId, fromUid, fromDefId, gold}.
+  function isKingDef(d){ return !!(d && d.effects && d.effects.king); }
+  // King Slayer's targets (TR): Royalty, Kings (the King type tag or the King skill) and whoever holds the Crown
+  function isRoyalTarget(c, d){ return !!((c && c.crowned) || isKingDef(d) || txIsA(d, 'King') || txIsA(d, 'Royalty')); }
+  function isKingUnit(c){ return !!c && !c.gap && c.hp > 0 && !c.cageOf && isKingDef(CARD_DEFS[c._condBase || c.defId]); }
+  function kinglyOf(e){ return (e && e.kinglyGrant && typeof e.kinglyGrant === 'object' && Object.keys(e.kinglyGrant).length) ? e.kinglyGrant : {tribute: 1, armor: 2}; }
+  function crownGoneOf(players){ return !!(players && ((players[1] && players[1].crownGone) || (players[2] && players[2].crownGone))); }
+  function crownHolderOf(players){ for(const pid of [1,2]){ const c = players && players[pid] && rowsUnitsOf(players[pid]).find(x=> x && x.crowned && x.hp > 0); if(c) return {card: c, pid}; } return null; }
+  function liveKingsOf(pl, except){ return pl ? rowsUnitsOf(pl).filter(c=> c && c !== except && isKingUnit(c)) : []; }
+  // A Usurper steals the Crown by killing the crowned King (TR, owner: "Check the existing Usurper skill first, and extend it if it fits").
+  function canStealCrown(c){ const e = (CARD_DEFS[c._condBase || c.defId] || {}).effects || {}; return !!(e.usurper || e.usurperGrant) && !isKingDef(CARD_DEFS[c._condBase || c.defId]); }
+  function crownEv(sideOf, pid, kind, c, from, extra){ return Object.assign({type:'crown', kind, side: sideOf ? sideOf(pid) : (pid === 1 ? 'A' : 'B'), uid: c ? c.uid : null, defId: c ? c.defId : null,
+    fromUid: from ? from.uid : null, fromDefId: from ? from.defId : null}, extra || {}); }
+  function crownTake(players, sideOf, pid, c, kind, from, events){
+    [1,2].forEach(q=> players[q] && rowsUnitsOf(players[q]).forEach(x=>{ if(x && x !== c) x.crowned = false; }));
+    c.crowned = true; [1,2].forEach(q=>{ if(players[q]) players[q].crownPid = q === pid ? pid : null; }); trDirty = true; if(recordEvents && events) events.push(crownEv(sideOf, pid, kind, c, from)); }
+  function crownFade(players, sideOf, pid, from, events){
+    [1,2].forEach(q=>{ if(players[q]){ players[q].crownGone = true; players[q].crownPid = null; } }); trDirty = true;
+    const g = addGold(players[pid], 1); if(recordEvents && events) events.push(crownEv(sideOf, pid, 'fade', null, from, {gold: g})); }
+  // A King comes into play (applyOnSpawnEffects: a play, a spawn, a summoned leader, an evolve): the first one takes the Crown.
+  function crownOnArrive(players, sideOf, pid, c, events){
+    if(!players || !isKingUnit(c) || c.crowned || crownGoneOf(players) || crownHolderOf(players)) return;
+    crownTake(players, sideOf, pid, c, 'take', null, events); }
+  // The holder died (removeDeadCardsPass): who struck the blow decides where the Crown goes.
+  function crownOnDeath(players, sideOf, pid, card, killCredit, events){
+    if(!card || !card.crowned) return; card.crowned = false;
+    let kpid = null, killer = null;
+    if(card.killedBy != null) for(const q of [1,2]){ const k = players[q] && rowsUnitsOf(players[q]).find(x=> x && x.uid === card.killedBy); if(k){ kpid = q; killer = k; break; } }
+    if(kpid == null && card.killedByPid) kpid = card.killedByPid;
+    if(kpid == null && killCredit && killCredit[card.uid] && sideOf){ for(const key of killCredit[card.uid]){ const sd = String(key).split('|')[0], q = [1,2].find(p=> sideOf(p) === sd); if(q && q !== pid){ kpid = q; break; } } }
+    if(kpid != null && kpid !== pid){
+      if(killer && killer.hp > 0 && canStealCrown(killer)) return crownTake(players, sideOf, kpid, killer, 'steal', card, events);
+      const ks = liveKingsOf(players[kpid], card); if(ks.length) return crownTake(players, sideOf, kpid, ks[Math.floor(rnd() * ks.length)], 'liege', card, events);
+      return crownFade(players, sideOf, kpid, card, events); }
+    if(recordEvents && events) events.push(crownEv(sideOf, pid, 'drop', card, null));
+    const ks = liveKingsOf(players[pid], card); if(ks.length) return crownTake(players, sideOf, pid, ks[Math.floor(rnd() * ks.length)], 'pickup', card, events);
+    crownFade(players, sideOf, pid, card, events); }
+  // A holder gone from the board without a death (bounced to the hand, exiled, swapped out): the Crown drops as with no source. Its side is
+  // the one that held it last (pl.crownPid).
+  function crownSweep(players, sideOf, events){
+    if(!players || crownGoneOf(players) || crownHolderOf(players)) return;
+    const pid = [1,2].find(q=> players[q] && players[q].crownPid === q); if(!pid) return;
+    players[pid].crownPid = null; if(recordEvents && events) events.push(crownEv(sideOf, pid, 'drop', null, null));
+    const ks = liveKingsOf(players[pid]); if(ks.length) return crownTake(players, sideOf, pid, ks[Math.floor(rnd() * ks.length)], 'pickup', null, events);
+    crownFade(players, sideOf, pid, null, events); }
+  // Tribute N (TR): every upkeep while Ready, N Gold (the Ready pass of endOfRoundUpkeep, beside On Ready Gold).
+  function tributeTick(players, sideOf, pl, c, stats, events){
+    const n = Math.max(0, Math.round(Number(effectsOf(c).tribute) || 0)); if(!n || !(c.hp > 0) || c.cageOf) return;
+    const g = addGold(pl, n); const st = ensureStat(stats, sideOf(pl.id), c.defId); st.goldGenerated = (st.goldGenerated || 0) + g;
+    if(recordEvents && events) events.push({type:'gold', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:g, why:'tribute'}); }
+  // ==== end of Package TR (rules) ===========================================================================================================
 
   // Leader summon (2026-09-18, Epic A — "clicking it attempts to summon it into a random open
   // slot at its normal summon cost"): deliberately a near-copy of placeCard above rather than a
@@ -5374,6 +5473,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // 2026-10-15: a Pounce on an Exposed unit reports its exposedHit into this play's events
     { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
     { const mdef = CARD_DEFS[boardCard.defId]; if(mdef && mdef.effects && mdef.effects.mimic && !boardCard.mimicked) mimicOnArrive(players, sideOf, playerId, boardCard, events); } // Mimic (2026-10-21, package MT): first, so the rest reads the copy
+    crownOnArrive(players, sideOf, playerId, boardCard, events); // The Crown (TR, 2026-10-21): the first King in play takes it
     const def = CARD_DEFS[boardCard.defId];
     if(def && def.effects && def.effects.castDarkness) noteDarkCast(players, sideOf, events, boardCard, playerId); // Cast Darkness (2026-10-18): the dark falls as it arrives
     // Freezing (2026-10-15): on a Freezing field every unit arrives frozen (one freeze counter), unless it resists cold.
@@ -7397,6 +7497,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           ensureStat(stats, sideOf(pl.id), c.defId).lumberGenerated += def.effects.onReadyGold;
           if(recordEvents && events) events.push({type:'lumber', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:def.effects.onReadyGold});
         }
+        tributeTick(players, sideOf, pl, c, stats, events); // Tribute N (TR, 2026-10-21): Gold while Ready (a crowned King's Kingly has Tribute 1)
         // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
         if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');
         sk2ReadyUpkeep(players, sideOf, pl, c, stats, events); // Package SK2 (2026-10-19): Milling, Repair, Foraging (and Fortification every K)
@@ -7505,6 +7606,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
     noteDarkCast(players, sideOf, events); // Cast Darkness (2026-10-18): the last caster just fell, so the dark it cast lifts
     if(kills.size) fireOnKillTriggers(players, sideOf, kills, stats, events);
+    crownSweep(players, sideOf, events); // TR (2026-10-21): a holder gone without a death drops the Crown
+    if(trDirty){ trDirty = false; try{ syncPhaseStats(players, sideOf, events); }catch(e){} } // Kingly moved, or a duel was won (Championed)
     return kills;
   }
   // On Kill: every live card whose side|defId is among the keys just credited (the old reflowAfterKills loop, unchanged).
@@ -7570,6 +7673,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const mySide = sideOf(pl.id);
       if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
       const cdef = CARD_DEFS[card.defId];
+      if(card.crowned) crownOnDeath(players, sideOf, pl.id, card, killCredit, events); // The Crown (TR, 2026-10-21): it drops, or goes to the killer's side
       // Revive (once) — a "named skill" preset (2026-09-14): the FIRST time this card dies, it comes back — restored to 1 HP,
       // every status cleared — tagged with a Removal Counter (card.hasRemovalCounter): the NEXT time it dies, it skips the
       // graveyard and goes straight to the Removal Zone — a real, final death.
@@ -8709,6 +8813,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(defCard.hp<=0){
           if(!killCredit[defCard.uid]) killCredit[defCard.uid] = new Set();
           killCredit[defCard.uid].add(statKey(mySide, a.att.defId));
+          if(!a.att.duelWon){ a.att.duelWon = true; trDirty = true; } // Championed (TR, 2026-10-21): its own attack killed the enemy it was fighting
           if(attDef.effects && attDef.effects.bloodlust && slotMode && (rowSwing || !resTarget) && defCard.slot === a.att.slot) a.att._bloodlustKill = true; // + a middle / back-row swing (2026-10-19, RR: it leaps along its own row, see bloodlustLeap) // Bloodlust (2026-10-17): it killed the unit facing it; it leaps after its turn
           if(attDef.effects && attDef.effects.slashBurn) layHazard(a.enemyId, defCard.slot, 'scorch', w2N(attDef, 'slashBurn'), a.att, sideOf, events); // Slash & Burn (2026-10-16)
           // Overwhelm (2026-09-17): whatever damage this killing blow had left over after
@@ -8966,7 +9071,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

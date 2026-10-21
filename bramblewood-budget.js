@@ -53,7 +53,7 @@ const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epi
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
-const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */];
+const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */, 'kinglyGrant' /* 2026-10-21 (TR): King's braces */];
 // Context skills (2026-10-21, package CX2; owner 17:42: "Regarding context-skills like Diurnal - {} or Tide - {} etc. The costing is wrong.
 // Tide - {} should be 0.5x the skills contained within ... Since Tide is not guaranteed, I think the coefficient should be reduced to 0.4x
 // instead."): a skill whose braces hold other skills costs CONTEXT_MULT × the S of everything in its braces, across all its phases (Tide:
@@ -64,15 +64,24 @@ const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */
 const CONTEXT_MULT = 0.4;
 const r2 = v=> Math.round(v * 100) / 100;
 const obj = x=> x && typeof x === 'object' && !Array.isArray(x) ? x : null;
+// Package TR (2026-10-21, owner 18:23, docs/titles-transforms-2026-10-21.md): the named transforms' default braces, used when a card's
+// transform names one and lists no gain of its own (the engine's TRANSFORM_GAIN holds the same numbers). Enraged has none: the card sets it.
+// Matured's +2/+4 are Stem stats (what an evolute placed over it inherits), priced the same way, 0.4 x (2A + H).
+const TRANSFORM_GAIN = {gilded: {attack: 5, health: 10}, championed: {attack: 3, health: 3}, veteran: {attack: 2, health: 4}, matured: {attack: 2, health: 4}};
+const nonEmpty = x=> obj(x) && Object.keys(x).length ? x : null;
+function transformGainOf(v){ return nonEmpty(v && v.gain) || (v && TRANSFORM_GAIN[v.name]) || null; }
+// The Crown's grant (TR): a crowned King has Kingly – {Tribute 1, Armor 2} unless its card names other braces (effects.kinglyGrant).
+const KINGLY_DEFAULT = {tribute: 1, armor: 2};
 const CONTEXT = {
   tideGrant: v=> [obj(v && v.flood), obj(v && v.ebb)], crepuscularGrant: v=> [obj(v && v.day), obj(v && v.night)],
   diurnalGrant: v=> [obj(v)], nocturnalGrant: v=> [obj(v)], fullMoonGrant: v=> [obj(v)], rainrunnerGrant: v=> [obj(v)],
   loyalGrant: v=> [obj(v)], usurperGrant: v=> [obj(v)], swimmerGrant: v=> [obj(v)],
-  transform: v=> [obj(v && v.gain)],
+  transform: v=> [transformGainOf(v)], // + the named presets' default braces (TR, 2026-10-21)
+  kinglyGrant: v=> [obj(v)], // King – Kingly {…} (TR, 2026-10-21): 0.4 x the S of what the Crown gives it (the plain King's price is the default's)
   stemGrant: v=> [obj(v)], // Stem / Chrysalis – {…} (2026-10-21, package EV): what it hands the evolute placed over it, at 0.4 × its S
   bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null // only Bloom's braces form; the plain +2/+2 keeps its measured worth
 };
-const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */};
+const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */, king: 'kinglyGrant' /* TR (2026-10-21) */};
 // S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
@@ -86,6 +95,14 @@ function abilitiesOf(effects, params){ const e = effects || {}, P = params || PA
   Object.keys(e).forEach(k=>{ const v = e[k]; if(v == null || v === false || v === 0 || v === '' || (Array.isArray(v) && !v.length) || P.includes(k)) return;
     if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=> out.push('trigger:' + ((t && t.on) || '?'))); return; } out.push(k); });
   return out; }
+// The two-skill rule's count (2026-10-21, package TR; owner, decision HB2-1, 18:23: "Flying, Tide (plain), Diurnal (plain) and Nocturnal
+// (plain) do not count as skills for the two-skill limit. Having several of them counts as 1."): skillCountOf(effects) is the number of
+// abilities (abilitiesOf) with the plain forms of these four left out, plus 1 when a card has two or more of them. "Plain" means without
+// braces: Tide beside its tideGrant, Diurnal / Nocturnal beside their Grant count like any skill (their numbered +A/+H is still plain).
+const TWO_SKILL_FREE = ['flying', 'tide', 'diurnal', 'nocturnal'];
+function twoSkillFree(k, e){ return TWO_SKILL_FREE.includes(k) && !(e && e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object'); }
+function skillCountOf(effects, params){ const e = effects || {}, a = abilitiesOf(e, params), free = a.filter(k=> twoSkillFree(k, e)).length;
+  return a.length - free + (free >= 2 ? 1 : 0); }
 function nMultOf(effects, cfg, params){ const a = abilitiesOf(effects, params || (cfg && cfg.params)); let k = 1;
   if(!a.length) k *= num(cfg, 'plainBonus'); else if(a.every(x=> LIGHT.includes(x))) k *= num(cfg, 'lightBonus');
   if(a.includes('fragile')) k *= num(cfg, 'fragileMult'); return k; }
@@ -174,5 +191,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {CONTEXT_MULT, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf};
+return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

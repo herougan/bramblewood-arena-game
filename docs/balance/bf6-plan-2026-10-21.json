@@ -2,15 +2,15 @@
  "_about": "BF6 (2026-10-21): every card re-derived with the halved world's skill worth (its shape and its share of N kept, in the band for live cards and Easter eggs)",
  "generated": "2026-10-21",
  "cards": 751,
- "moved": 14,
- "band": 634,
+ "moved": 77,
+ "band": 609,
  "under": 7,
  "own": 28,
- "bucket": 82,
- "dropped": 2,
- "flag": 82,
+ "bucket": 107,
+ "dropped": 1,
+ "flag": 107,
  "squeezed": 7,
- "squeezedFlag": 5,
+ "squeezedFlag": 6,
  "rows": [
   {
    "id": "otter-centurion",
@@ -526,7 +526,8 @@
    "cost": 0,
    "skills": [
     "flying",
-    "arrow"
+    "arrow",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -536,20 +537,20 @@
     2,
     7
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 3.68,
+   "S": 3.68,
    "N": 17.38,
    "N2": 33.56,
    "m": 1.5,
-   "use0": 1.04,
-   "useNowStats": 0.95,
+   "use0": 1.3,
+   "useNowStats": 1.18,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    6
+    1,
+    5
    ],
-   "use": 0.95
+   "use": 0.92
   },
   {
    "id": "owl-sentinel",
@@ -560,7 +561,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "keenEye"
+    "keenEye",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -570,20 +572,20 @@
     2,
     10
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 2.68,
+   "S": 2.68,
    "N": 21.46,
    "N2": 51.17,
    "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.98,
+   "use0": 1.2,
+   "useNowStats": 1.17,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    10
+    1,
+    9
    ],
-   "use": 0.98
+   "use": 0.96
   },
   {
    "id": "great-horned-owl",
@@ -594,7 +596,8 @@
    "cost": 2,
    "skills": [
     "onReadyDamage",
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     3,
@@ -604,20 +607,20 @@
     6,
     21
    ],
-   "S0": 2.36,
-   "S": 2.36,
+   "S0": 5.04,
+   "S": 5.04,
    "N": 29.57,
    "N2": 97.15,
    "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.98,
+   "use0": 1.14,
+   "useNowStats": 1.12,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    11
+    2,
+    10
    ],
-   "use": 0.98
+   "use": 0.97
   },
   {
    "id": "terrier-pup",
@@ -1088,7 +1091,8 @@
    "wait": 1,
    "cost": 0,
    "skills": [
-    "brood"
+    "brood",
+    "flying"
    ],
    "was": [
     3,
@@ -1102,16 +1106,16 @@
    "S": 3.21,
    "N": 17.69,
    "N2": 34.77,
-   "m": 1,
-   "use0": 1.07,
-   "useNowStats": 0.97,
+   "m": 1.5,
+   "use0": 1.6,
+   "useNowStats": 1.46,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    8
+    2,
+    4
    ],
-   "use": 0.97
+   "use": 0.95
   },
   {
    "id": "monarch-wingblade",
@@ -1122,7 +1126,8 @@
    "cost": 1,
    "skills": [
     "poison",
-    "flying"
+    "flying",
+    "bounty"
    ],
    "was": [
     2,
@@ -1132,18 +1137,18 @@
     3,
     8
    ],
-   "S0": 3.13,
-   "S": 3.13,
+   "S0": 4.13,
+   "S": 4.13,
    "N": 19.86,
    "N2": 43.82,
    "m": 1.5,
-   "use0": 1.08,
-   "useNowStats": 0.99,
+   "use0": 1.16,
+   "useNowStats": 1.07,
    "want": 1,
    "verdict": "band",
    "now": [
     2,
-    6
+    5
    ],
    "use": 0.99
   },
@@ -1551,7 +1556,8 @@
    "wait": 3,
    "cost": 2,
    "skills": [
-    "tide"
+    "tide",
+    "bounty"
    ],
    "was": [
     5,
@@ -1561,20 +1567,20 @@
     8,
     22
    ],
-   "S0": 2.79,
-   "S": 2.79,
-   "N": 29.53,
-   "N2": 96.89,
+   "S0": 3.79,
+   "S": 3.79,
+   "N": 28.95,
+   "N2": 93.12,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.97,
+   "use0": 1.05,
+   "useNowStats": 1.03,
    "want": 1,
    "verdict": "band",
    "now": [
     5,
-    16
+    15
    ],
-   "use": 0.97
+   "use": 0.99
   },
   {
    "id": "quillguard",
@@ -1752,7 +1758,8 @@
    "wait": 2,
    "cost": 1,
    "skills": [
-    "siege"
+    "siege",
+    "nocturnal"
    ],
    "was": [
     5,
@@ -1762,20 +1769,20 @@
     4,
     9
    ],
-   "S0": 0.72,
-   "S": 0.72,
+   "S0": 3.4,
+   "S": 3.4,
    "N": 25.39,
    "N2": 71.63,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 0.97,
+   "use0": 1.15,
+   "useNowStats": 1.08,
    "want": 1,
    "verdict": "band",
    "now": [
     5,
-    14
+    11
    ],
-   "use": 0.97
+   "use": 0.96
   },
   {
    "id": "crocodile-ambusher",
@@ -1987,7 +1994,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "pounce"
+    "pounce",
+    "diurnal"
    ],
    "was": [
     1,
@@ -1997,20 +2005,23 @@
     2,
     5
    ],
-   "S0": 4.8,
-   "S": 4.8,
+   "S0": 8.23,
+   "S": 8.23,
    "N": 19.44,
    "N2": 41.99,
    "m": 1.5,
-   "use0": 0.91,
-   "useNowStats": 0.83,
+   "use0": 1.19,
+   "useNowStats": 1.1,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    4
+    1
    ],
-   "use": 0.83
+   "use": 0.87,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 8.23 (x1.5) against N 19.44 (cap 2: S·|S| 67.73 vs (N/3)² 41.99)"
   },
   {
    "id": "octopus-tactician",
@@ -2021,7 +2032,8 @@
    "cost": 2,
    "skills": [
     "sweep",
-    "tide"
+    "tide",
+    "bounty"
    ],
    "was": [
     1,
@@ -2031,23 +2043,23 @@
     6,
     22
    ],
-   "S0": 11.87,
-   "S": 11.87,
+   "S0": 12.87,
+   "S": 12.87,
    "N": 25.9,
    "N2": 74.53,
    "m": 1,
-   "use0": 0.61,
-   "useNowStats": 0.57,
+   "use0": 0.65,
+   "useNowStats": 0.61,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.57,
+   "use": 0.61,
    "why": "eight arms (Sweep) and the sea (Tide) are the card; Tide off does not make room",
    "bucket": true,
-   "fit": "no stats fit: S 11.87 against N 25.9 (cap 2: S·|S| 140.9 vs (N/3)² 74.53)"
+   "fit": "no stats fit: S 12.87 against N 25.9 (cap 2: S·|S| 165.64 vs (N/3)² 74.53)"
   },
   {
    "id": "nautilus-drifter",
@@ -2091,7 +2103,8 @@
    "wait": 3,
    "cost": 2,
    "skills": [
-    "sweep"
+    "sweep",
+    "bounty"
    ],
    "was": [
     1,
@@ -2101,20 +2114,22 @@
     7,
     24
    ],
-   "S0": 9.08,
-   "S": 9.08,
+   "S0": 10.08,
+   "S": 10.08,
    "N": 29.67,
    "N2": 97.81,
    "m": 1,
-   "use0": 0.89,
-   "useNowStats": 0.88,
+   "use0": 0.93,
+   "useNowStats": 0.91,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    15
+    1
    ],
-   "use": 0.88
+   "use": 0.44,
+   "why": "taking nocturnal off still leaves no room; no stats fit: S 10.08 against N 29.67 (cap 2: S·|S| 101.61 vs (N/3)² 97.81)",
+   "bucket": true
   },
   {
    "id": "tusked-vanguard",
@@ -2255,7 +2270,8 @@
    "cost": 3,
    "skills": [
     "onReadyDamage",
-    "flying"
+    "flying",
+    "daunt"
    ],
    "was": [
     4,
@@ -2265,20 +2281,20 @@
     7,
     22
    ],
-   "S0": 2.36,
-   "S": 2.36,
+   "S0": 5.65,
+   "S": 4.93,
    "N": 32.26,
    "N2": 115.63,
    "m": 1.5,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 1.17,
+   "useNowStats": 1.11,
    "want": 1,
    "verdict": "band",
    "now": [
-    4,
-    11
+    3,
+    10
    ],
-   "use": 0.99
+   "use": 0.97
   },
   {
    "id": "badger-sapper",
@@ -2327,8 +2343,8 @@
     "poison"
    ],
    "was": [
-    2,
-    8
+    1,
+    1
    ],
    "shape": [
     4,
@@ -2339,8 +2355,8 @@
    "N": 23.63,
    "N2": 62.04,
    "m": 1.5,
-   "use0": 1.25,
-   "useNowStats": 1.35,
+   "use0": 0.67,
+   "useNowStats": 0.78,
    "want": 1,
    "verdict": "flag",
    "now": [
@@ -2988,7 +3004,8 @@
    "wait": 0,
    "cost": 0,
    "skills": [
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -2998,20 +3015,20 @@
     2,
     2
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 2.68,
+   "S": 2.68,
    "N": 13.25,
    "N2": 19.51,
    "m": 1.5,
-   "use0": 0.99,
-   "useNowStats": 0.91,
+   "use0": 1.32,
+   "useNowStats": 1.21,
    "want": 1,
    "verdict": "band",
    "now": [
     2,
-    4
+    2
    ],
-   "use": 0.91
+   "use": 0.98
   },
   {
    "id": "echo-screecher",
@@ -3022,7 +3039,8 @@
    "cost": 1,
    "skills": [
     "onReadyDamage",
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -3032,20 +3050,20 @@
     3,
     6
    ],
-   "S0": 2.36,
-   "S": 2.36,
+   "S0": 5.04,
+   "S": 5.04,
    "N": 19.96,
    "N2": 44.27,
    "m": 1.5,
-   "use0": 1.01,
-   "useNowStats": 0.93,
+   "use0": 1.23,
+   "useNowStats": 1.13,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    6
+    1,
+    4
    ],
-   "use": 0.93
+   "use": 0.83
   },
   {
    "id": "bat-swarmling",
@@ -3089,7 +3107,8 @@
    "cost": 2,
    "skills": [
     "onDeathSpawn",
-    "nocturnal"
+    "nocturnal",
+    "bounty"
    ],
    "was": [
     0,
@@ -3099,18 +3118,18 @@
     6,
     21
    ],
-   "S0": 3.68,
-   "S": 3.68,
+   "S0": 4.68,
+   "S": 4.68,
    "N": 28.85,
    "N2": 92.48,
    "m": 1,
-   "use0": 0.73,
-   "useNowStats": 0.72,
+   "use0": 0.77,
+   "useNowStats": 0.75,
    "want": 1,
    "verdict": "band",
    "now": [
     0,
-    25
+    24
    ],
    "use": 0.99
   },
@@ -3189,7 +3208,7 @@
    "cost": 2,
    "skills": [
     "onReadyGold",
-    "bounty"
+    "king"
    ],
    "was": [
     4,
@@ -3200,19 +3219,19 @@
     19
    ],
    "S0": 2,
-   "S": 2,
+   "S": 3.39,
    "N": 25.9,
    "N2": 74.53,
    "m": 1,
    "use0": 1.01,
-   "useNowStats": 0.97,
+   "useNowStats": 1.02,
    "want": 1,
    "verdict": "band",
    "now": [
     4,
-    15
+    14
    ],
-   "use": 0.97
+   "use": 0.98
   },
   {
    "id": "stable-colt",
@@ -3423,7 +3442,8 @@
    "wait": 4,
    "cost": 3,
    "skills": [
-    "regen"
+    "regen",
+    "bounty"
    ],
    "was": [
     2,
@@ -3433,18 +3453,18 @@
     7,
     38
    ],
-   "S0": 9.3,
-   "S": 9.3,
+   "S0": 10.3,
+   "S": 10.3,
    "N": 36.55,
    "N2": 148.43,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 1.04,
+   "useNowStats": 1.02,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    23
+    1,
+    24
    ],
    "use": 0.99
   },
@@ -3690,8 +3710,8 @@
    "wait": 6,
    "cost": 4,
    "skills": [
-    "bounty",
-    "earthquake"
+    "earthquake",
+    "king"
    ],
    "was": [
     7,
@@ -3702,19 +3722,19 @@
     62
    ],
    "S0": 2.32,
-   "S": 2.32,
+   "S": 3.71,
    "N": 52.67,
    "N2": 308.24,
    "m": 1,
    "use0": 1,
-   "useNowStats": 0.99,
+   "useNowStats": 1.02,
    "want": 1,
    "verdict": "band",
    "now": [
     7,
-    36
+    34
    ],
-   "use": 0.99
+   "use": 0.98
   },
   {
    "id": "sand-widow",
@@ -3757,7 +3777,8 @@
    "wait": 3,
    "cost": 3,
    "skills": [
-    "sweep"
+    "sweep",
+    "tide"
    ],
    "was": [
     1,
@@ -3767,20 +3788,22 @@
     8,
     32
    ],
-   "S0": 9.08,
-   "S": 9.08,
+   "S0": 11.87,
+   "S": 11.87,
    "N": 32.15,
    "N2": 114.85,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 1,
+   "use0": 1.1,
+   "useNowStats": 1.08,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    21
+    1
    ],
-   "use": 1
+   "use": 0.46,
+   "why": "taking momentum off still leaves no room; no stats fit: S 11.87 against N 32.15 (cap 2: S·|S| 140.9 vs (N/3)² 114.85)",
+   "bucket": true
   },
   {
    "id": "quill-volley",
@@ -3968,7 +3991,7 @@
    ],
    "was": [
     1,
-    7
+    1
    ],
    "shape": [
     2,
@@ -3979,8 +4002,8 @@
    "N": 17.07,
    "N2": 32.38,
    "m": 1.5,
-   "use0": 1,
-   "useNowStats": 1.23,
+   "use0": 0.45,
+   "useNowStats": 0.7,
    "want": 1,
    "verdict": "flag",
    "now": [
@@ -4001,7 +4024,8 @@
    "cost": 2,
    "skills": [
     "flying",
-    "arrow"
+    "arrow",
+    "diurnal"
    ],
    "was": [
     2,
@@ -4011,20 +4035,20 @@
     3,
     14
    ],
-   "S0": 2,
-   "S": 2,
+   "S0": 5.43,
+   "S": 5.43,
    "N": 21.92,
    "N2": 53.39,
    "m": 1.5,
-   "use0": 0.98,
-   "useNowStats": 0.96,
+   "use0": 1.22,
+   "useNowStats": 1.19,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    8
+    1,
+    6
    ],
-   "use": 0.96
+   "use": 0.92
   },
   {
    "id": "hawk-arrowkeeper",
@@ -4034,7 +4058,8 @@
    "wait": 1,
    "cost": 1,
    "skills": [
-    "flying"
+    "flying",
+    "diurnal"
    ],
    "was": [
     1,
@@ -4044,20 +4069,20 @@
     1,
     8
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 3.43,
+   "S": 3.43,
    "N": 17.73,
    "N2": 34.93,
    "m": 1.5,
-   "use0": 0.96,
-   "useNowStats": 0.93,
+   "use0": 1.26,
+   "useNowStats": 1.22,
    "want": 1,
    "verdict": "band",
    "now": [
     1,
-    9
+    6
    ],
-   "use": 0.93
+   "use": 0.97
   },
   {
    "id": "shrine-acolyte",
@@ -4202,7 +4227,7 @@
    ],
    "was": [
     1,
-    7
+    1
    ],
    "shape": [
     5,
@@ -4213,8 +4238,8 @@
    "N": 24.66,
    "N2": 67.57,
    "m": 1.5,
-   "use0": 0.81,
-   "useNowStats": 1.02,
+   "use0": 0.43,
+   "useNowStats": 0.65,
    "want": 1,
    "verdict": "flag",
    "now": [
@@ -4674,7 +4699,8 @@
    "cost": 1,
    "skills": [
     "expose",
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -4684,20 +4710,23 @@
     3,
     9
    ],
-   "S0": 3.64,
-   "S": 3.64,
+   "S0": 6.32,
+   "S": 6.32,
    "N": 23.37,
    "N2": 60.68,
    "m": 1.5,
-   "use0": 1.06,
-   "useNowStats": 0.94,
+   "use0": 1.25,
+   "useNowStats": 1.11,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    7
+    1,
+    1
    ],
-   "use": 0.94
+   "use": 0.6,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 6.32 (x1.5) against N 23.37 (cap 2: S·|S| 39.94 vs (N/3)² 60.68)"
   },
   {
    "id": "tundra-musk-ox",
@@ -4774,7 +4803,8 @@
    "cost": 3,
    "skills": [
     "sweep",
-    "frostbite"
+    "frostbite",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -4784,20 +4814,23 @@
     9,
     34
    ],
-   "S0": 9.08,
-   "S": 9.08,
+   "S0": 11.76,
+   "S": 11.76,
    "N": 33.39,
    "N2": 123.88,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 1.09,
+   "useNowStats": 1.07,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    20
+    1,
+    1
    ],
-   "use": 0.99
+   "use": 0.44,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 11.76 against N 33.39 (cap 2: S·|S| 138.3 vs (N/3)² 123.88)"
   },
   {
    "id": "ice-crevasse-wolf",
@@ -4907,7 +4940,8 @@
    "cost": 1,
    "skills": [
     "stealth",
-    "wave"
+    "wave",
+    "tide"
    ],
    "was": [
     2,
@@ -4917,20 +4951,23 @@
     8,
     14
    ],
-   "S0": 5.11,
-   "S": 5.11,
+   "S0": 7.9,
+   "S": 7.9,
    "N": 21.46,
    "N2": 51.17,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.98,
+   "use0": 1.14,
+   "useNowStats": 1.11,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    12
+    1,
+    1
    ],
-   "use": 0.98
+   "use": 0.51,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 7.9 against N 21.46 (cap 2: S·|S| 62.41 vs (N/3)² 51.17)"
   },
   {
    "id": "sea-turtle-elder",
@@ -4941,7 +4978,8 @@
    "cost": 2,
    "skills": [
     "armor",
-    "revive"
+    "revive",
+    "tide"
    ],
    "was": [
     1,
@@ -4951,23 +4989,23 @@
     2,
     30
    ],
-   "S0": 16.33,
-   "S": 15.15,
+   "S0": 19.12,
+   "S": 17.94,
    "N": 28.23,
    "N2": 88.55,
    "m": 1,
-   "use0": 0.7,
-   "useNowStats": 0.64,
+   "use0": 0.8,
+   "useNowStats": 0.74,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.64,
+   "use": 0.74,
    "why": "a turtle is its shell (Armor); Revive off does not make room",
    "bucket": true,
-   "fit": "no stats fit: S 15.15 against N 28.23 (cap 2: S·|S| 229.52 vs (N/3)² 88.55)"
+   "fit": "no stats fit: S 17.94 against N 28.23 (cap 2: S·|S| 321.84 vs (N/3)² 88.55)"
   },
   {
    "id": "coral-polyp-colony",
@@ -5045,7 +5083,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "pounce"
+    "pounce",
+    "diurnal"
    ],
    "was": [
     1,
@@ -5055,23 +5094,23 @@
     2,
     4
    ],
-   "S0": 4.8,
-   "S": 4.8,
+   "S0": 8.23,
+   "S": 8.23,
    "N": 16.09,
    "N2": 28.77,
    "m": 1.5,
-   "use0": 0.81,
-   "useNowStats": 0.73,
+   "use0": 1.16,
+   "useNowStats": 1.05,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.73,
+   "use": 1.05,
    "why": "\"Diver\": the dive (Pounce) and Flying are the card",
    "bucket": true,
-   "fit": "no stats fit: S 4.8 (x1.5) against N 16.09 (cap 2: S·|S| 23.04 vs (N/3)² 28.77)"
+   "fit": "no stats fit: S 8.23 (x1.5) against N 16.09 (cap 2: S·|S| 67.73 vs (N/3)² 28.77)"
   },
   {
    "id": "alpine-avalanche",
@@ -5350,7 +5389,8 @@
    "wait": 0,
    "cost": 0,
    "skills": [
-    "flying"
+    "flying",
+    "darksight"
    ],
    "was": [
     2,
@@ -5360,20 +5400,22 @@
     2,
     3
    ],
-   "S0": 0,
-   "S": 0,
-   "N": 14.3,
-   "N2": 22.72,
+   "S0": 5.12,
+   "S": 3.99,
+   "N": 14.02,
+   "N2": 21.84,
    "m": 1.5,
-   "use0": 1.06,
-   "useNowStats": 0.94,
+   "use0": 1.7,
+   "useNowStats": 1.39,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    5
+    1,
+    1
    ],
-   "use": 0.94
+   "use": 0.75,
+   "why": "taking fork off still leaves no room; no stats fit: S 3.99 (x1.5) against N 14.02 (cap 2: S·|S| 15.92 vs (N/3)² 21.84)",
+   "bucket": true
   },
   {
    "id": "blind-cave-fish",
@@ -5384,7 +5426,8 @@
    "cost": 0,
    "skills": [
     "evasive",
-    "tide"
+    "tide",
+    "darksight"
    ],
    "was": [
     1,
@@ -5394,20 +5437,23 @@
     1,
     5
    ],
-   "S0": 2.79,
-   "S": 2.79,
+   "S0": 7.91,
+   "S": 6.78,
    "N": 12.26,
    "N2": 16.7,
    "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.95,
+   "use0": 1.65,
+   "useNowStats": 1.44,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    3
+    1
    ],
-   "use": 0.95
+   "use": 1.2,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 6.78 (x1.5) against N 12.26 (cap 2: S·|S| 45.97 vs (N/3)² 16.7)"
   },
   {
    "id": "stalactite-golem",
@@ -5623,7 +5669,8 @@
    "cost": 0,
    "skills": [
     "thorns",
-    "crabClaws"
+    "crabClaws",
+    "tide"
    ],
    "was": [
     2,
@@ -5633,20 +5680,23 @@
     2,
     11
    ],
-   "S0": 3.23,
-   "S": 3.23,
+   "S0": 6.02,
+   "S": 6.02,
    "N": 16.86,
    "N2": 31.58,
    "m": 1,
-   "use0": 1.03,
-   "useNowStats": 0.96,
+   "use0": 1.2,
+   "useNowStats": 1.13,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    9
+    1,
+    1
    ],
-   "use": 0.96
+   "use": 0.53,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 6.02 against N 16.86 (cap 2: S·|S| 36.24 vs (N/3)² 31.58)"
   },
   {
    "id": "fire-drake-hatchling",
@@ -5855,7 +5905,8 @@
    "wait": 0,
    "cost": 0,
    "skills": [
-    "tide"
+    "tide",
+    "armor"
    ],
    "was": [
     1,
@@ -5865,21 +5916,23 @@
     4,
     10
    ],
-   "S0": 2.79,
-   "S": 2.79,
-   "N": 12.19,
-   "N2": 16.51,
+   "S0": 5.53,
+   "S": 5.53,
+   "N": 11.95,
+   "N2": 15.87,
    "m": 1,
-   "use0": 0.67,
-   "useNowStats": 0.64,
-   "want": 0.67,
+   "use0": 0.92,
+   "useNowStats": 0.88,
+   "want": 0.92,
    "owner13": true,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    3
+    1
    ],
-   "use": 0.64
+   "use": 0.71,
+   "why": "taking wave off still leaves no room; no stats fit: S 5.53 against N 11.95 (cap 2: S·|S| 30.58 vs (N/3)² 15.87)",
+   "bucket": true
   },
   {
    "id": "gull-thief",
@@ -6268,7 +6321,8 @@
    "cost": 1,
    "skills": [
     "esprit",
-    "brood"
+    "brood",
+    "flying"
    ],
    "was": [
     2,
@@ -6282,17 +6336,17 @@
    "S": 3.21,
    "N": 19.13,
    "N2": 40.66,
-   "m": 1,
-   "use0": 0.87,
-   "useNowStats": 0.8,
-   "want": 0.87,
+   "m": 1.5,
+   "use0": 1.3,
+   "useNowStats": 1.19,
+   "want": 1,
    "owner13": true,
    "verdict": "band",
    "now": [
-    2,
-    9
+    1,
+    7
    ],
-   "use": 0.85
+   "use": 0.96
   },
   {
    "id": "feral-tuskboar",
@@ -6472,7 +6526,8 @@
    "cost": 0,
    "skills": [
     "armor",
-    "crabClaws"
+    "crabClaws",
+    "tide"
    ],
    "was": [
     1,
@@ -6482,21 +6537,24 @@
     2,
     15
    ],
-   "S0": 2.74,
-   "S": 2.74,
+   "S0": 5.53,
+   "S": 5.53,
    "N": 11.95,
    "N2": 15.87,
    "m": 1,
-   "use0": 0.94,
-   "useNowStats": 0.9,
-   "want": 0.94,
+   "use0": 1.18,
+   "useNowStats": 1.13,
+   "want": 1,
    "owner13": true,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    6
+    1
    ],
-   "use": 0.9
+   "use": 0.71,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 5.53 against N 11.95 (cap 2: S·|S| 30.58 vs (N/3)² 15.87)"
   },
   {
    "id": "reef-manta-glider",
@@ -6507,7 +6565,8 @@
    "cost": 2,
    "skills": [
     "evasive",
-    "wave"
+    "wave",
+    "tide"
    ],
    "was": [
     1,
@@ -6517,20 +6576,23 @@
     3,
     13
    ],
-   "S0": 4.11,
-   "S": 4.11,
+   "S0": 6.9,
+   "S": 6.9,
    "N": 20.17,
    "N2": 45.2,
    "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.98,
+   "use0": 1.21,
+   "useNowStats": 1.18,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    7
+    1
    ],
-   "use": 0.98
+   "use": 0.74,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 6.9 (x1.5) against N 20.17 (cap 2: S·|S| 47.61 vs (N/3)² 45.2)"
   },
   {
    "id": "narwhal-lancer",
@@ -6574,7 +6636,8 @@
    "wait": 3,
    "cost": 3,
    "skills": [
-    "inspiring"
+    "inspiring",
+    "tide"
    ],
    "was": [
     4,
@@ -6584,18 +6647,18 @@
     6,
     32
    ],
-   "S0": 4.32,
-   "S": 4.32,
+   "S0": 7.11,
+   "S": 7.11,
    "N": 31.53,
    "N2": 110.46,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 1.1,
+   "useNowStats": 1.08,
    "want": 1,
    "verdict": "band",
    "now": [
-    4,
-    19
+    3,
+    18
    ],
    "use": 0.99
   },
@@ -7258,7 +7321,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "stealth"
+    "stealth",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -7268,20 +7332,20 @@
     2,
     7
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 3.68,
+   "S": 3.68,
    "N": 17.79,
    "N2": 35.16,
    "m": 1.5,
-   "use0": 0.96,
-   "useNowStats": 0.93,
+   "use0": 1.19,
+   "useNowStats": 1.15,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
+    1,
     6
    ],
-   "use": 0.93
+   "use": 0.98
   },
   {
    "id": "shepherds-bark",
@@ -7602,7 +7666,8 @@
    "cost": 2,
    "skills": [
     "renewal",
-    "cure"
+    "cure",
+    "flying"
    ],
    "was": [
     3,
@@ -7616,14 +7681,14 @@
    "S": 0,
    "N": 21.72,
    "N2": 52.42,
-   "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.97,
+   "m": 1.5,
+   "use0": 1.49,
+   "useNowStats": 1.45,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    15
+    2,
+    10
    ],
    "use": 0.97
   },
@@ -7702,7 +7767,8 @@
    "wait": 0,
    "cost": 1,
    "skills": [
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -7712,20 +7778,20 @@
     2,
     7
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 2.68,
+   "S": 2.68,
    "N": 16.62,
    "N2": 30.69,
    "m": 1.5,
-   "use0": 1.1,
-   "useNowStats": 0.99,
+   "use0": 1.37,
+   "useNowStats": 1.23,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    7
+    1,
+    6
    ],
-   "use": 0.99
+   "use": 0.96
   },
   {
    "id": "coral-current-eel",
@@ -7839,7 +7905,8 @@
    "cost": 1,
    "skills": [
     "illuminate",
-    "triggers"
+    "triggers",
+    "flying"
    ],
    "was": [
     2,
@@ -7853,16 +7920,16 @@
    "S": 2.54,
    "N": 14.54,
    "N2": 23.49,
-   "m": 1,
-   "use0": 1.04,
-   "useNowStats": 1,
+   "m": 1.5,
+   "use0": 1.56,
+   "useNowStats": 1.5,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    8
+    1,
+    5
    ],
-   "use": 1
+   "use": 0.98
   },
   {
    "id": "glacier-yak",
@@ -7907,7 +7974,8 @@
    "cost": 2,
    "skills": [
     "sleep",
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -7917,20 +7985,23 @@
     3,
     7
    ],
-   "S0": 5.16,
-   "S": 4.02,
+   "S0": 7.84,
+   "S": 6.7,
    "N": 17.22,
    "N2": 32.95,
    "m": 1.5,
-   "use0": 1.09,
-   "useNowStats": 0.96,
+   "use0": 1.33,
+   "useNowStats": 1.19,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    5
+    1
    ],
-   "use": 0.96
+   "use": 0.84,
+   "why": "\"Nightshade\": Sleep is the name, and a moth flies",
+   "bucket": true,
+   "fit": "no stats fit: S 6.7 (x1.5) against N 17.22 (cap 2: S·|S| 44.89 vs (N/3)² 32.95)"
   },
   {
    "id": "voltaic-eel",
@@ -7941,7 +8012,8 @@
    "cost": 2,
    "skills": [
     "shock",
-    "chainLightning"
+    "chainLightning",
+    "tide"
    ],
    "was": [
     3,
@@ -7951,20 +8023,20 @@
     3,
     10
    ],
-   "S0": 3,
-   "S": 3,
+   "S0": 5.79,
+   "S": 5.79,
    "N": 19.29,
    "N2": 41.34,
    "m": 1,
-   "use0": 1.07,
-   "useNowStats": 0.98,
+   "use0": 1.23,
+   "useNowStats": 1.13,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    10
+    1,
+    7
    ],
-   "use": 0.98
+   "use": 0.77
   },
   {
    "id": "cinder-hornet",
@@ -8008,7 +8080,8 @@
    "wait": 1,
    "cost": 3,
    "skills": [
-    "triggers"
+    "triggers",
+    "tide"
    ],
    "was": [
     1,
@@ -8018,20 +8091,22 @@
     1,
     18
    ],
-   "S0": 5.6,
-   "S": 5.6,
+   "S0": 8.39,
+   "S": 8.39,
    "N": 23.47,
    "N2": 61.2,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.96,
+   "use0": 1.11,
+   "useNowStats": 1.08,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    15
+    1
    ],
-   "use": 0.96
+   "use": 0.49,
+   "why": "taking regen off still leaves no room; no stats fit: S 8.39 against N 23.47 (cap 2: S·|S| 70.39 vs (N/3)² 61.2)",
+   "bucket": true
   },
   {
    "id": "maggot-swarmling",
@@ -8609,7 +8684,8 @@
    "cost": 0,
    "skills": [
     "swarm",
-    "triggers"
+    "triggers",
+    "flying"
    ],
    "was": [
     0,
@@ -8623,16 +8699,16 @@
    "S": 1.5,
    "N": 10.4,
    "N2": 12.02,
-   "m": 1,
-   "use0": 0.91,
-   "useNowStats": 0.91,
+   "m": 1.5,
+   "use0": 1.37,
+   "useNowStats": 1.37,
    "want": 1,
    "verdict": "band",
    "now": [
     0,
-    8
+    5
    ],
-   "use": 0.91
+   "use": 0.94
   },
   {
    "id": "bee-sentry",
@@ -10268,7 +10344,8 @@
    "wait": 0,
    "cost": 0,
    "skills": [
-    "armor"
+    "armor",
+    "bounty"
    ],
    "was": [
     1,
@@ -10278,20 +10355,20 @@
     3,
     5
    ],
-   "S0": 2.74,
-   "S": 2.74,
+   "S0": 3.74,
+   "S": 3.74,
    "N": 12.88,
    "N2": 18.43,
    "m": 1,
-   "use0": 1.08,
-   "useNowStats": 0.99,
+   "use0": 1.16,
+   "useNowStats": 1.07,
    "want": 1,
    "verdict": "band",
    "now": [
     1,
-    8
+    4
    ],
-   "use": 0.99
+   "use": 0.76
   },
   {
    "id": "beaver-lumberjack",
@@ -11147,7 +11224,8 @@
    "wait": 1,
    "cost": 0,
    "skills": [
-    "relic"
+    "relic",
+    "nocturnal"
    ],
    "was": [
     2,
@@ -11157,20 +11235,22 @@
     3,
     9
    ],
-   "S0": 3.23,
-   "S": 3.23,
+   "S0": 5.91,
+   "S": 5.91,
    "N": 16.86,
    "N2": 31.58,
    "m": 1,
-   "use0": 1.06,
-   "useNowStats": 0.96,
+   "use0": 1.24,
+   "useNowStats": 1.12,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    9
+    1,
+    1
    ],
-   "use": 0.96
+   "use": 0.53,
+   "why": "taking retribution off still leaves no room; no stats fit: S 5.91 against N 16.86 (cap 2: S·|S| 34.93 vs (N/3)² 31.58)",
+   "bucket": true
   },
   {
    "id": "cathedral-eagle",
@@ -11799,7 +11879,8 @@
    "cost": 1,
    "skills": [
     "evasive",
-    "reflect"
+    "reflect",
+    "flying"
    ],
    "was": [
     3,
@@ -11813,16 +11894,16 @@
    "S": 0,
    "N": 20.48,
    "N2": 46.6,
-   "m": 1.5,
-   "use0": 1.03,
-   "useNowStats": 0.95,
+   "m": 2.25,
+   "use0": 1.55,
+   "useNowStats": 1.43,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    7
+    2,
+    5
    ],
-   "use": 0.95
+   "use": 0.99
   },
   {
    "id": "snail-mail",
@@ -11967,7 +12048,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "arrow"
+    "arrow",
+    "diurnal"
    ],
    "was": [
     2,
@@ -11977,20 +12059,20 @@
     2,
     8
    ],
-   "S0": 2,
-   "S": 2,
+   "S0": 5.43,
+   "S": 5.43,
    "N": 20.68,
    "N2": 47.52,
    "m": 1.5,
-   "use0": 1.02,
-   "useNowStats": 0.94,
+   "use0": 1.29,
+   "useNowStats": 1.19,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    7
+    1,
+    2
    ],
-   "use": 0.94
+   "use": 0.68
   },
   {
    "id": "sergeant-bramblefox",
@@ -12131,7 +12213,8 @@
    "wait": 3,
    "cost": 1,
    "skills": [
-    "rage"
+    "rage",
+    "king"
    ],
    "was": [
     5,
@@ -12141,20 +12224,20 @@
     6,
     24
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 2,
+   "S": 3.39,
    "N": 33.5,
    "N2": 124.69,
    "m": 1,
-   "use0": 1.11,
-   "useNowStats": 0.99,
+   "use0": 1.14,
+   "useNowStats": 1.06,
    "want": 1,
    "verdict": "band",
    "now": [
     5,
-    22
+    20
    ],
-   "use": 0.99
+   "use": 1
   },
   {
    "id": "echo-matriarch",
@@ -12739,7 +12822,8 @@
    "cost": 0,
    "skills": [
     "quick",
-    "pierce"
+    "pierce",
+    "flying"
    ],
    "was": [
     1,
@@ -12753,19 +12837,19 @@
    "S": 5.89,
    "N": 17.38,
    "N2": 33.56,
-   "m": 1,
-   "use0": 0.67,
-   "useNowStats": 0.51,
+   "m": 1.5,
+   "use0": 1,
+   "useNowStats": 0.77,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.51,
+   "use": 0.77,
    "why": "a duelist is its Quick; Pierce (S 0) off does not make room",
    "bucket": true,
-   "fit": "no stats fit: S 5.89 against N 17.38 (cap 2: S·|S| 34.69 vs (N/3)² 33.56)"
+   "fit": "no stats fit: S 5.89 (x1.5) against N 17.38 (cap 2: S·|S| 34.69 vs (N/3)² 33.56)"
   },
   {
    "id": "sunspire-choirmother",
@@ -12777,7 +12861,9 @@
    "skills": [
     "esprit",
     "flying",
-    "espritHp"
+    "espritHp",
+    "diurnal",
+    "diurnalHp"
    ],
    "was": [
     4,
@@ -12787,20 +12873,20 @@
     5,
     10
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 4.37,
+   "S": 4.37,
    "N": 24.56,
    "N2": 67.02,
    "m": 1.5,
-   "use0": 1.07,
-   "useNowStats": 0.98,
+   "use0": 1.36,
+   "useNowStats": 1.24,
    "want": 1,
    "verdict": "band",
    "now": [
-    4,
-    8
+    3,
+    6
    ],
-   "use": 0.98
+   "use": 1
   },
   {
    "id": "ferry-toll-frog",
@@ -13284,7 +13370,8 @@
    "wait": 1,
    "cost": 1,
    "skills": [
-    "triggers"
+    "triggers",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -13294,20 +13381,23 @@
     3,
     8
    ],
-   "S0": 4.71,
-   "S": 4.71,
+   "S0": 7.39,
+   "S": 7.39,
    "N": 18.72,
    "N2": 38.94,
    "m": 1,
-   "use0": 1.06,
-   "useNowStats": 1,
+   "use0": 1.21,
+   "useNowStats": 1.14,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    12
+    1
    ],
-   "use": 1
+   "use": 0.56,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 7.39 against N 18.72 (cap 2: S·|S| 54.61 vs (N/3)² 38.94)"
   },
   {
    "id": "cinder-stoker",
@@ -14126,7 +14216,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "daunt"
+    "daunt",
+    "nocturnal"
    ],
    "was": [
     3,
@@ -14136,20 +14227,23 @@
     3,
     4
    ],
-   "S0": 3.29,
-   "S": 2.57,
+   "S0": 5.97,
+   "S": 5.25,
    "N": 18.72,
    "N2": 38.94,
    "m": 1.5,
-   "use0": 1.04,
-   "useNowStats": 0.93,
+   "use0": 1.27,
+   "useNowStats": 1.14,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    3,
-    3
+    1,
+    1
    ],
-   "use": 0.93
+   "use": 0.66,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 5.25 (x1.5) against N 18.72 (cap 2: S·|S| 27.56 vs (N/3)² 38.94)"
   },
   {
    "id": "caldera-wyrm",
@@ -15040,7 +15134,8 @@
    "cost": 0,
    "skills": [
     "flying",
-    "pierce"
+    "pierce",
+    "bleed"
    ],
    "was": [
     2,
@@ -15050,20 +15145,20 @@
     2,
     3
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 2.7,
+   "S": 2.7,
    "N": 12.99,
    "N2": 18.75,
    "m": 1.5,
-   "use0": 1.01,
-   "useNowStats": 0.92,
+   "use0": 1.34,
+   "useNowStats": 1.24,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    4
+    1,
+    3
    ],
-   "use": 0.92
+   "use": 0.89
   },
   {
    "id": "riverwing-envoy",
@@ -16080,7 +16175,8 @@
    "cost": 2,
    "skills": [
     "flying",
-    "pounce"
+    "pounce",
+    "king"
    ],
    "was": [
     3,
@@ -16090,20 +16186,20 @@
     4,
     14
    ],
-   "S0": 4.8,
-   "S": 4.8,
+   "S0": 5.8,
+   "S": 7.19,
    "N": 30.14,
    "N2": 100.94,
    "m": 1.5,
-   "use0": 1.12,
-   "useNowStats": 0.99,
+   "use0": 1.18,
+   "useNowStats": 1.1,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    9
+    1,
+    10
    ],
-   "use": 0.99
+   "use": 0.96
   },
   {
    "id": "old-snapjaw",
@@ -16214,7 +16310,8 @@
    "cost": 0,
    "skills": [
     "tide",
-    "moonpull"
+    "moonpull",
+    "poison"
    ],
    "was": [
     2,
@@ -16224,20 +16321,23 @@
     2,
     11
    ],
-   "S0": 2.79,
-   "S": 2.79,
+   "S0": 5.92,
+   "S": 5.92,
    "N": 14.79,
    "N2": 24.3,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 1,
+   "use0": 1.26,
+   "useNowStats": 1.21,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    8
+    1,
+    1
    ],
-   "use": 1
+   "use": 0.6,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 5.92 against N 14.79 (cap 2: S·|S| 35.05 vs (N/3)² 24.3)"
   },
   {
    "id": "lions-mane-jelly",
@@ -16756,7 +16856,8 @@
    "cost": 0,
    "skills": [
     "flying",
-    "sap"
+    "sap",
+    "nocturnal"
    ],
    "was": [
     3,
@@ -16766,20 +16867,20 @@
     3,
     5
    ],
-   "S0": 1,
-   "S": 1,
+   "S0": 3.68,
+   "S": 3.68,
    "N": 16.65,
    "N2": 30.8,
    "m": 1.5,
-   "use0": 1.06,
-   "useNowStats": 0.99,
+   "use0": 1.32,
+   "useNowStats": 1.23,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    4
+    2,
+    3
    ],
-   "use": 0.99
+   "use": 0.96
   },
   {
    "id": "wandering-mage",
@@ -17149,7 +17250,8 @@
    "cost": 0,
    "skills": [
     "coffee",
-    "kinship"
+    "kinship",
+    "flying"
    ],
    "was": [
     3,
@@ -17163,16 +17265,16 @@
    "S": 1.22,
    "N": 12.99,
    "N2": 18.75,
-   "m": 1,
-   "use0": 1.02,
-   "useNowStats": 0.94,
+   "m": 1.5,
+   "use0": 1.54,
+   "useNowStats": 1.41,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    5
+    2,
+    3
    ],
-   "use": 0.94
+   "use": 0.95
   },
   {
    "id": "voltwing-bat",
@@ -17183,7 +17285,8 @@
    "cost": 0,
    "skills": [
     "flying",
-    "electricity"
+    "electricity",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -17193,20 +17296,23 @@
     1,
     4
    ],
-   "S0": 3.6,
-   "S": 3.6,
+   "S0": 6.28,
+   "S": 6.28,
    "N": 15.31,
    "N2": 26.04,
    "m": 1.5,
-   "use0": 0.97,
-   "useNowStats": 0.94,
+   "use0": 1.25,
+   "useNowStats": 1.2,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    4
+    1
    ],
-   "use": 0.94
+   "use": 0.91,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 6.28 (x1.5) against N 15.31 (cap 2: S·|S| 39.44 vs (N/3)² 26.04)"
   },
   {
    "id": "static-bat",
@@ -17217,7 +17323,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "electricity"
+    "electricity",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -17227,20 +17334,23 @@
     2,
     6
    ],
-   "S0": 3.6,
-   "S": 3.6,
+   "S0": 6.28,
+   "S": 6.28,
    "N": 18.62,
    "N2": 38.52,
    "m": 1.5,
-   "use0": 0.99,
-   "useNowStats": 0.93,
+   "use0": 1.22,
+   "useNowStats": 1.15,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    6
+    1
    ],
-   "use": 0.93
+   "use": 0.75,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 6.28 (x1.5) against N 18.62 (cap 2: S·|S| 39.44 vs (N/3)² 38.52)"
   },
   {
    "id": "arc-bat",
@@ -17251,7 +17361,8 @@
    "cost": 1,
    "skills": [
     "flying",
-    "electricity"
+    "electricity",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -17261,23 +17372,23 @@
     3,
     7
    ],
-   "S0": 7.2,
-   "S": 7.2,
+   "S0": 9.88,
+   "S": 9.88,
    "N": 23.53,
    "N2": 61.52,
    "m": 1.5,
-   "use0": 0.7,
-   "useNowStats": 0.65,
+   "use0": 0.88,
+   "useNowStats": 0.82,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.65,
+   "use": 0.82,
    "why": "\"Arc\": Electricity is the name, and a bat flies",
    "bucket": true,
-   "fit": "no stats fit: S 7.2 (x1.5) against N 23.53 (cap 2: S·|S| 51.84 vs (N/3)² 61.52)"
+   "fit": "no stats fit: S 9.88 (x1.5) against N 23.53 (cap 2: S·|S| 97.61 vs (N/3)² 61.52)"
   },
   {
    "id": "hammerhead-shark",
@@ -17423,7 +17534,8 @@
    "cost": 4,
    "skills": [
     "fork",
-    "gash"
+    "gash",
+    "tide"
    ],
    "was": [
     7,
@@ -17433,18 +17545,18 @@
     9,
     21
    ],
-   "S0": 7.14,
-   "S": 6.01,
+   "S0": 9.93,
+   "S": 8.8,
    "N": 37.73,
    "N2": 158.17,
    "m": 1,
-   "use0": 1.05,
-   "useNowStats": 0.98,
+   "use0": 1.13,
+   "useNowStats": 1.05,
    "want": 1,
    "verdict": "band",
    "now": [
-    7,
-    17
+    4,
+    20
    ],
    "use": 0.98
   },
@@ -17799,19 +17911,19 @@
     7
    ],
    "S0": 2,
-   "S": 2,
+   "S": 2.6,
    "N": 14.72,
    "N2": 24.08,
    "m": 1,
    "use0": 0.99,
-   "useNowStats": 0.95,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    6
+    2,
+    8
    ],
-   "use": 0.95
+   "use": 0.99
   },
   {
    "id": "aye-aye-prowler",
@@ -21231,7 +21343,8 @@
    "cost": 0,
    "skills": [
     "swipe",
-    "hoard"
+    "hoard",
+    "flying"
    ],
    "was": [
     3,
@@ -21245,16 +21358,16 @@
    "S": 1,
    "N": 14.95,
    "N2": 24.83,
-   "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.94,
+   "m": 1.5,
+   "use0": 1.51,
+   "useNowStats": 1.4,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    7
+    2,
+    4
    ],
-   "use": 0.94
+   "use": 0.9
   },
   {
    "id": "battlement-heron",
@@ -21471,7 +21584,8 @@
    "cost": 1,
    "skills": [
     "arrow",
-    "fletcher"
+    "fletcher",
+    "flying"
    ],
    "was": [
     2,
@@ -21485,16 +21599,16 @@
    "S": 1,
    "N": 20.27,
    "N2": 45.65,
-   "m": 1,
-   "use0": 1.07,
-   "useNowStats": 0.99,
+   "m": 1.5,
+   "use0": 1.6,
+   "useNowStats": 1.48,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    15
+    1,
+    10
    ],
-   "use": 0.99
+   "use": 0.96
   },
   {
    "id": "ossuary-lammergeier",
@@ -21572,7 +21686,8 @@
    "wait": 1,
    "cost": 1,
    "skills": [
-    "triggers"
+    "triggers",
+    "tide"
    ],
    "was": [
     2,
@@ -21582,20 +21697,22 @@
     2,
     14
    ],
-   "S0": 3.7,
-   "S": 3.7,
+   "S0": 6.49,
+   "S": 6.49,
    "N": 19.13,
    "N2": 40.66,
    "m": 1,
-   "use0": 1.03,
-   "useNowStats": 0.98,
+   "use0": 1.19,
+   "useNowStats": 1.12,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    11
+    1,
+    1
    ],
-   "use": 0.98
+   "use": 0.5,
+   "why": "taking regen off still leaves no room; no stats fit: S 6.49 against N 19.13 (cap 2: S·|S| 42.12 vs (N/3)² 40.66)",
+   "bucket": true
   },
   {
    "id": "fathom-leviathan",
@@ -22032,19 +22149,19 @@
     12
    ],
    "S0": 1,
-   "S": 1,
+   "S": 1.6,
    "N": 15.31,
    "N2": 26.04,
    "m": 1,
    "use0": 1.01,
-   "useNowStats": 0.98,
+   "useNowStats": 1.02,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    8
+    2,
+    9
    ],
-   "use": 0.98
+   "use": 0.95
   },
   {
    "id": "grass-snake",
@@ -22571,7 +22688,8 @@
    "wait": 1,
    "cost": 1,
    "skills": [
-    "pounce"
+    "pounce",
+    "flying"
    ],
    "was": [
     1,
@@ -22585,16 +22703,16 @@
    "S": 4.8,
    "N": 19.44,
    "N2": 41.99,
-   "m": 1,
-   "use0": 1.05,
-   "useNowStats": 0.97,
+   "m": 1.5,
+   "use0": 1.58,
+   "useNowStats": 1.45,
    "want": 1,
    "verdict": "band",
    "now": [
     1,
-    12
+    4
    ],
-   "use": 0.97
+   "use": 0.83
   },
   {
    "id": "fulmar-spitter",
@@ -22877,7 +22995,8 @@
    "cost": 1,
    "skills": [
     "armor",
-    "bleed"
+    "bleed",
+    "tide"
    ],
    "was": [
     2,
@@ -22887,20 +23006,23 @@
     4,
     12
    ],
-   "S0": 5.44,
-   "S": 5.44,
+   "S0": 8.23,
+   "S": 8.23,
    "N": 23.53,
    "N2": 61.52,
    "m": 1,
-   "use0": 1.07,
-   "useNowStats": 1,
+   "use0": 1.19,
+   "useNowStats": 1.11,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    14
+    1,
+    1
    ],
-   "use": 1
+   "use": 0.48,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 8.23 against N 23.53 (cap 2: S·|S| 67.73 vs (N/3)² 61.52)"
   },
   {
    "id": "swamp-rabbit",
@@ -22979,7 +23101,8 @@
    "cost": 1,
    "skills": [
     "poison",
-    "swarm"
+    "swarm",
+    "tide"
    ],
    "was": [
     2,
@@ -22989,20 +23112,23 @@
     3,
     12
    ],
-   "S0": 3.13,
-   "S": 3.13,
+   "S0": 5.92,
+   "S": 5.92,
    "N": 18.62,
    "N2": 38.52,
    "m": 1,
-   "use0": 1.03,
-   "useNowStats": 0.97,
+   "use0": 1.19,
+   "useNowStats": 1.12,
    "want": 1,
-   "verdict": "band",
+   "verdict": "under",
    "now": [
-    2,
-    11
+    1,
+    3
    ],
-   "use": 0.97
+   "use": 0.59,
+   "squeezed": true,
+   "flag": true,
+   "why": "no skill can go without thematic loss"
   },
   {
    "id": "anhinga-spearbird",
@@ -23663,7 +23789,8 @@
    "wait": 1,
    "cost": 1,
    "skills": [
-    "venomous"
+    "venomous",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -23673,27 +23800,22 @@
     3,
     8
    ],
-   "S0": 6.26,
-   "S": 6.26,
+   "S0": 8.94,
+   "S": 8.94,
    "N": 19.03,
    "N2": 40.24,
    "m": 1,
-   "use0": 0.52,
-   "useNowStats": 0.49,
+   "use0": 0.66,
+   "useNowStats": 0.63,
    "want": 1,
-   "verdict": "under",
+   "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.49,
-   "bucket": false,
-   "squeezed": true,
-   "dropped": "tide",
-   "dropWhy": "a krait is its venom",
-   "effectsNow": {
-    "venomous": 2
-   }
+   "use": 0.63,
+   "why": "taking tide off still leaves no room; no stats fit: S 8.94 against N 19.03 (cap 2: S·|S| 79.92 vs (N/3)² 40.24)",
+   "bucket": true
   },
   {
    "id": "fishing-cat",
@@ -23837,7 +23959,8 @@
    "cost": 1,
    "skills": [
     "regen",
-    "guardian"
+    "guardian",
+    "tide"
    ],
    "was": [
     2,
@@ -23847,20 +23970,23 @@
     3,
     28
    ],
-   "S0": 7.2,
-   "S": 7.2,
+   "S0": 9.99,
+   "S": 9.99,
    "N": 28.33,
    "N2": 89.18,
    "m": 1,
-   "use0": 1.05,
-   "useNowStats": 1,
+   "use0": 1.16,
+   "useNowStats": 1.09,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    17
+    1,
+    1
    ],
-   "use": 1
+   "use": 0.46,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 9.99 against N 28.33 (cap 2: S·|S| 99.8 vs (N/3)² 89.18)"
   },
   {
    "id": "yellow-bellied-sea-snake",
@@ -23908,7 +24034,8 @@
    "cost": 1,
    "skills": [
     "thorns",
-    "poison"
+    "poison",
+    "tide"
    ],
    "was": [
     1,
@@ -23918,23 +24045,23 @@
     2,
     10
    ],
-   "S0": 9.59,
-   "S": 9.59,
+   "S0": 12.38,
+   "S": 12.38,
    "N": 19.13,
    "N2": 40.66,
    "m": 1,
-   "use0": 0.7,
-   "useNowStats": 0.66,
+   "use0": 0.85,
+   "useNowStats": 0.8,
    "want": 1,
    "verdict": "flag",
    "now": [
     1,
     1
    ],
-   "use": 0.66,
+   "use": 0.8,
    "why": "\"Crown-of-thorns\": Thorns is the name; Poison off does not make room",
    "bucket": true,
-   "fit": "no stats fit: S 9.59 against N 19.13 (cap 2: S·|S| 91.97 vs (N/3)² 40.66)"
+   "fit": "no stats fit: S 12.38 against N 19.13 (cap 2: S·|S| 153.26 vs (N/3)² 40.66)"
   },
   {
    "id": "parrotfish",
@@ -24015,7 +24142,8 @@
    "wait": 2,
    "cost": 1,
    "skills": [
-    "shell"
+    "shell",
+    "tide"
    ],
    "was": [
     1,
@@ -24025,20 +24153,22 @@
     2,
     23
    ],
-   "S0": 5.38,
-   "S": 5.38,
+   "S0": 8.17,
+   "S": 8.17,
    "N": 21.46,
    "N2": 51.17,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 1,
+   "use0": 1.15,
+   "useNowStats": 1.13,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    14
+    1
    ],
-   "use": 1
+   "use": 0.52,
+   "why": "taking regen off still leaves no room; no stats fit: S 8.17 against N 21.46 (cap 2: S·|S| 66.75 vs (N/3)² 51.17)",
+   "bucket": true
   },
   {
    "id": "great-barracuda",
@@ -24086,7 +24216,8 @@
    "cost": 1,
    "skills": [
     "armor",
-    "scare"
+    "scare",
+    "tide"
    ],
    "was": [
     2,
@@ -24096,20 +24227,20 @@
     3,
     28
    ],
-   "S0": 5.48,
-   "S": 4.88,
+   "S0": 8.27,
+   "S": 7.67,
    "N": 28.43,
    "N2": 89.81,
    "m": 1,
-   "use0": 1.06,
-   "useNowStats": 0.98,
+   "use0": 1.16,
+   "useNowStats": 1.08,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    19
+    1,
+    18
    ],
-   "use": 0.98
+   "use": 0.97
   },
   {
    "id": "chamois-leaper",
@@ -24458,7 +24589,8 @@
    "wait": 0,
    "cost": 0,
    "skills": [
-    "flying"
+    "flying",
+    "nocturnal"
    ],
    "was": [
     1,
@@ -24468,20 +24600,20 @@
     1,
     4
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 2.68,
+   "S": 2.68,
    "N": 12.19,
    "N2": 16.51,
    "m": 1.5,
-   "use0": 1.03,
-   "useNowStats": 0.98,
+   "use0": 1.38,
+   "useNowStats": 1.31,
    "want": 1,
    "verdict": "band",
    "now": [
     1,
-    6
+    3
    ],
-   "use": 0.98
+   "use": 0.95
   },
   {
    "id": "polar-bear",
@@ -24558,7 +24690,8 @@
    "cost": 1,
    "skills": [
     "sonar",
-    "inspiring"
+    "inspiring",
+    "tide"
    ],
    "was": [
     3,
@@ -24568,20 +24701,20 @@
     3,
     18
    ],
-   "S0": 2.16,
-   "S": 2.16,
+   "S0": 4.95,
+   "S": 4.95,
    "N": 24.77,
    "N2": 68.17,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 0.98,
+   "use0": 1.16,
+   "useNowStats": 1.09,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    16
+    2,
+    15
    ],
-   "use": 0.98
+   "use": 0.97
   },
   {
    "id": "arctic-tern",
@@ -24694,7 +24827,8 @@
    "cost": 1,
    "skills": [
     "carrion",
-    "armor"
+    "armor",
+    "tide"
    ],
    "was": [
     3,
@@ -24704,20 +24838,20 @@
     4,
     26
    ],
-   "S0": 5.52,
-   "S": 5.52,
+   "S0": 8.31,
+   "S": 8.31,
    "N": 29.16,
    "N2": 94.48,
    "m": 1,
-   "use0": 1.03,
-   "useNowStats": 0.98,
+   "use0": 1.13,
+   "useNowStats": 1.07,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    17
+    1,
+    18
    ],
-   "use": 0.98
+   "use": 0.97
   },
   {
    "id": "ringed-seal",

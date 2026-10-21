@@ -31,12 +31,12 @@ ok(/function sbNMultLine\(d\)/.test(src) && /ui\.budget-lab-nmult/.test(src), '2
 const TS = JSON.parse(read('docs/balance/two-skills-2026-10-21.json'));
 const SPECIAL = new Set(['epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']);
 const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'));
-const THEMATIC = new Set(['swordbill-challenger']); // 2026-10-21 (HB2): a named thematic exception to the two-skill rule (Flying, Taunt, Counterattack: decision HB2-1)
+const THEMATIC = new Set([]); // 2026-10-21 (HB2): named thematic exceptions to the two-skill rule; empty since TR (HB2-1's count: the Swordbill Challenger counts two)
 const special = c=> SPECIAL.has(c.rarity) || isEgg(c) || c.token || !!(c.effects && c.effects.supreme) || !!c.hidden || THEMATIC.has(c.id);
 const R = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')), PARAMS = BB.PARAMS.concat(['arrowCount', 'hunterVs']);
-const over = cards.filter(c=> R.live(c) && !special(c) && BB.abilitiesOf(c.effects, PARAMS).length > 2);
+const over = cards.filter(c=> R.live(c) && !special(c) && BB.skillCountOf(c.effects, PARAMS) > 2); // 2026-10-21 (TR, owner HB2-1): plain Flying / Tide / Diurnal / Nocturnal don't count; several count 1
 ok(!over.length, '3. no live, non-special card has more than two skills: ' + over.slice(0, 6).map(c=> c.id + ' ' + BB.abilitiesOf(c.effects, PARAMS).join('+')).join('; '));
-ok(TS.cut >= 90 && TS.rows.filter(r=> r.dropped.length).every(r=> byId[r.id] && r.dropped.every(k=> !k.startsWith('trigger:') && (byId[r.id].effects || {})[k] == null || k.startsWith('trigger:'))), `3. the record's ${TS.cut} cuts are in the cards`);
+ok(TS.cut >= 90 && TS.rows.filter(r=> r.dropped.length).every(r=> byId[r.id] && r.dropped.every(k=> !k.startsWith('trigger:') && ((byId[r.id].effects || {})[k] == null || /TR, owner HB2-1/.test(byId[r.id].creatorNote || '')) || k.startsWith('trigger:'))), `3. the record's ${TS.cut} cuts are in the cards (or given back by TR, HB2-1)`);
 const sc = byId['ant-scout'], so = byId['soldier-ant'], tu = byId['tunnel-ant'];
 ok(sc && JSON.stringify(Object.keys(sc.effects)) === '["swarm"]' && (sc.wait || 0) === 0 && (sc.cost || 0) === 0, '3. Ant Scout: Swarm alone, cheap (Wait 0, Lumber 0)');
 ok(so && so.effects.swarm && so.effects.formation === 1 && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: Swarm + Formation 1, Wait 1');

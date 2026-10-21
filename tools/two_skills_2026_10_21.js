@@ -11,16 +11,21 @@
 //     Soldier takes 1 wait while ant tunneler takes 1 wait 1 lumber"): Ant Scout keeps Swarm alone; Soldier Ant gets Formation 1 beside
 //     Swarm (soldiers hold the line); Tunnel Ant gets Ambush 2 beside Swarm (it comes out of the tunnel at the enemy that enters).
 //   node tools/two_skills_2026_10_21.js plan|apply     -> docs/balance/two-skills-2026-10-21.json (+ canonical/cards.json on apply)
+// 2026-10-21 (package TR, owner HB2-1, 18:23: "Flying, Tide (plain), Diurnal (plain) and Nocturnal (plain) do not count as skills for the
+// two-skill limit. Having several of them counts as 1."): the count is bramblewood-budget.js skillCountOf, not the number of abilities. A
+// time of day goes in the order only when taking it off lowers that count. The skills BF5 cut only because one of these counted are back
+// (tools/tr_cards_2026_10_21.js); the JSON above is BF5's record and was not re-planned. The Swordbill Challenger (Flying + Taunt +
+// Counterattack) counts two now, so it is no longer a named exception.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..'), B = require(path.join(ROOT, 'bramblewood-budget.js')), R = require('./card_retune_2026_10_19.js');
 const CARDS_FILE = path.join(ROOT, 'canonical', 'cards.json'), OUT = path.join(ROOT, 'docs', 'balance', 'two-skills-2026-10-21.json');
 const PARAM_OF = {crepuscularHp: 'crepuscular', diurnalHp: 'diurnal', diurnalGrant: 'diurnal', nocturnalHp: 'nocturnal', nocturnalGrant: 'nocturnal', espritHp: 'esprit', swarmN: 'swarm',
-  arrowCount: 'arrow', hunterVs: 'hunter', defianceN: 'defiance', fullMoonGrant: 'fullMoon', loyalGrant: 'loyal', swimmerGrant: 'swimmer', tideGrant: 'tide', stemGrant: 'stem' /* 2026-10-21 (EV): a Stem's braces */};
+  arrowCount: 'arrow', hunterVs: 'hunter', defianceN: 'defiance', fullMoonGrant: 'fullMoon', loyalGrant: 'loyal', swimmerGrant: 'swimmer', tideGrant: 'tide', stemGrant: 'stem' /* 2026-10-21 (EV): a Stem's braces */, kinglyGrant: 'king' /* 2026-10-21 (TR): King's braces */};
 const PARAMS = B.PARAMS.concat(['arrowCount', 'hunterVs']);
 const SPECIAL = new Set(['epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']);
 const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'));
-const THEMATIC = new Set(['swordbill-challenger']); // 2026-10-21 (HB2): a named thematic exception (Flying, Taunt, Counterattack; decision HB2-1)
+const THEMATIC = new Set([]); // 2026-10-21 (HB2): named thematic exceptions; the Swordbill Challenger left it with HB2-1's count (TR)
 const special = c=> SPECIAL.has(c.rarity) || isEgg(c) || c.token || !!(c.effects && c.effects.supreme) || !!c.hidden || THEMATIC.has(c.id);
 const TOD = ['nocturnal', 'diurnal', 'crepuscular'];
 // the two kept, where the order above still leaves three (from the card's name and flavour)
@@ -48,11 +53,12 @@ function plan(){
   const cards = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')), rows = [];
   cards.forEach(c=>{
     if(ADD[c.id]){ rows.push({id: c.id, name: c.name, rarity: c.rarity, was: B.abilitiesOf(c.effects, PARAMS), keep: B.abilitiesOf(Object.assign({}, c.effects, ADD[c.id]), PARAMS), dropped: [], added: Object.keys(ADD[c.id]), why: 'the owner\'s ants: a distinct second skill'}); return; }
-    if(!R.live(c)) return; const a = B.abilitiesOf(c.effects, PARAMS); if(a.length <= 2) return;
+    if(!R.live(c)) return; const a = B.abilitiesOf(c.effects, PARAMS), e0 = c.effects || {}, cnt = ks=> B.skillCountOf(Object.fromEntries(Object.entries(e0).filter(([k])=> ks.includes(k) || ks.includes(PARAM_OF[k]) || (k === 'triggers'))), PARAMS) - (e0.triggers || []).filter(t=> !ks.includes('trigger:' + ((t && t.on) || '?'))).length; // TR: HB2-1's count
+    if(cnt(a) <= 2) return;
     if(special(c)){ rows.push({id: c.id, name: c.name, rarity: c.rarity, was: a, keep: a, dropped: [], why: 'special / thematic: keeps them'}); return; }
-    let k = a.slice(); const rm = x=>{ if(k.length > 2 && k.includes(x)) k = k.filter(y=> y !== x); };
+    let k = a.slice(); const rm = x=>{ if(cnt(k) > 2 && k.includes(x)){ const k2 = k.filter(y=> y !== x); if(cnt(k2) < cnt(k)) k = k2; } }; // TR: only when it lowers the count
     rm('bounty'); TOD.forEach(rm); rm('darksight');
-    if(k.length > 2){ if(!KEEP[c.id]) throw new Error('no KEEP for ' + c.id + ' (' + k.join('+') + ')'); k = KEEP[c.id]; }
+    if(cnt(k) > 2){ if(!KEEP[c.id]) throw new Error('no KEEP for ' + c.id + ' (' + k.join('+') + ')'); k = KEEP[c.id]; }
     k.forEach(x=>{ if(!a.includes(x)) throw new Error(c.id + ' keeps ' + x + ' it does not have'); });
     rows.push({id: c.id, name: c.name, rarity: c.rarity, was: a, keep: k, dropped: a.filter(x=> !k.includes(x)), why: KEEP[c.id] && a.length - (a.includes('bounty') ? 1 : 0) > 2 ? 'the two its name and flavour carry' : 'in order: Bounty, then a time-of-day skill, then Darksight'}); });
   const out = {_about: 'BF5 (2026-10-21): two skills at most (owner); special / thematic cards (Epic and up, Supreme, hidden, Easter eggs, tokens) keep theirs', generated: '2026-10-21',

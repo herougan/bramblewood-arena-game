@@ -2,6 +2,46 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package TR: titles, transforms and the Crown; HB2-1's two-skill count; CX1–CX4; the structures re-fitted)
+- **Owner (18:23, 18:24):** spec and what was built: `docs/titles-transforms-2026-10-21.md`.
+- **The Crown.** One on the battlefield.
+  - **King** (👑): the first King in play takes the Crown. While it holds it, it has **Kingly**: Tribute 1 and +2 Armor by default, or the
+    card's own King – {…}. A King played while another holds the Crown is uncrowned. The holder wears a 👑.
+  - **Its holder dies with no source unit** (poison, a spell, the bramble): the Crown falls to the ground. An allied King picks it up, or
+    it fades into +1 Gold for that side.
+  - **An enemy unit kills it:** a **Usurper** that struck the blow steals the Crown (Usurper is extended; no new skill). Otherwise the liege
+    grants it to a random King on the killer's side, or it fades into +1 Gold for the killer's side.
+  - A faded Crown is gone for the fight. A holder that leaves play without dying drops it.
+  - **King Slayer** now hits Royalty, Kings (the type or the skill) and the crowned unit.
+  - Look: a crown flies to the new holder, falls and bounces off a dead King, or fades into the Gold pill. Log lines for each.
+- **Gold is back in the fight** (pl.gold, its own 🪙 pill). **Tribute N** (new) pays N Gold each turn while Ready. Nothing spends Gold yet;
+  it counts toward Gilded.
+- **Transforms** (CX2's format, for the rest of the fight): five new presets.
+  - **Gilded:** your resources are worth over 25 (Lumber 1, Stone 2, Metal 3, Gold 5): +5/+10.
+  - **Championed:** its own attack (or Counterattack) kills the enemy it fights: +3/+3.
+  - **Veteran:** it survives 3 rounds: +2/+4.
+  - **Enraged:** its Rage is on: the card's braces.
+  - **Matured:** it survives N rounds (2): an evolute played onto it gains +2/+4 Stem stats.
+  - Each has its icon, a look on the unit (Gilded's gold sheen and falling leaf) and a log line. Editor: the presets and the unit's
+    conditions are in the Transform row; empty braces take the preset's default. No card has one yet.
+- **Two skills (HB2-1):** plain Flying, Tide, Diurnal and Nocturnal don't count; several count as 1 (`bramblewood-budget.js`
+  `skillCountOf`, `tools/two_skills_2026_10_21.js`, a warning line in the editor's budget panel). The Swordbill Challenger is within the rule.
+- **Costs** (`canonical/skill-costs.json`, theoretical, not owner-set): King 2.39, Kingly 5.98, Tribute 0.5 a point, Gilded 8,
+  Championed 3.6, Veteran 3.2, Matured 3.2, Enraged 0.4 × its braces, plain Crepuscular 1 → 1.6 (CX2).
+- **Cards** (all re-fit by formula with `bf6_rederive --only`; the tool's drift on Tunnel Ant, Dragonscale Mail and Caldera Wyrm not applied):
+  - **69 cards got back the skill BF5 cut only because a free skill counted** (`tools/tr_cards_2026_10_21.js`). 45 still fit: e.g.
+    Colossal Squid 7/17 → 4/20 (+Tide), Voltaic Eel 3/10 → 1/7 (+Tide), the owls +Nocturnal, the eagles +Diurnal. **24 drop to their
+    1/1 floor** (owner call TR-1), e.g. Permafrost Mammoth 2/20, Orca Vanguard 1/21, Mangrove Manatee 2/17. Bounty is back on 7 (TR-2).
+  - **King:** Rodent King 4/15 → 4/14 and Glacial Ape-King 7/36 → 7/34 (Bounty off), Yeti Chieftain 5/22 → 5/20, The Gannet Queen
+    3/9 → 1/10 (TR-4).
+  - **CX2:** Nightjar Drifter 3/6 → 2/8, Woodcock Lookout 3/8 → 2/9.
+  - **The structures at Attack 0 (N21-12):** Webspire Sentinel 0/10 → 0/19, Elder Willow 0/29 → 0/39, Riverworks Bastion 0/25 → 0/29,
+    Vampire Roost 0/17 → 0/24 (+Bounty), Thornwood Palisade 0/14 → 0/16, Iron Warden 0/22 → 0/32, War Elephant 0/24 → 0/28.
+- **Decisions:** CX1–CX4 and HB2-1 are DONE (CX5 already was). New owner calls TR-1 to TR-6.
+- Texts: TX keys in the 12 packs (`tools/i18n_2026_10_21_tr.py`). Screens: `docs/screens/tr/`. Test pins updated for the restored skills
+  (bf5, lightning, keywords); the card-matrix golden will show the changed cards. Per the owner ("no test runs"), only `node --check`,
+  the build and a headless run in scratch: the Crown's rules, the five transforms, Matured under an evolute and 30 AI matches.
+
 ## 2026-10-21 (package EV: Evolute, the Evomax archetype)
 - **Owner (17:42, 17:49):** "Evolute ... the evolute adds the base unit's remaining stat lines to its own, and inherits every counter";
   "Wrong evolutions are banned"; "I also don't want accidental wrong evolutions". Spec and what was built: `docs/evolute-design-2026-10-21.md`.
