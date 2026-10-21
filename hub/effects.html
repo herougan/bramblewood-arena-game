@@ -2479,6 +2479,11 @@
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
   :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
   .board-card.is-low-hp .stats .hp{color:#ff8a7a; text-shadow:0 0 6px rgba(255,60,40,.7);}
+  /* 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield. Becomes green again when shield is gone (or pink if low)"): wins over the green and the low-Health pink while a Shield stands; when it is gone the two rules above apply again */
+  /* 2026-10-21 (package UI3, owner 18:52: "things with 0 attack should probably not display their attack anyway!"): no Attack plate on a card whose Attack is 0 (structures); the Health plate stays in its corner. A buff above 0 clears the class (updateCardAtkDisplay). */
+  .card-tile .stats .atk.is-atk-zero{display:none !important;}
+  .board-card.has-shield .stats .hp{color:#6cc4ff; text-shadow:0 0 6px rgba(70,160,255,.75);}
+  .board-card.has-shield .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(108,196,255,.6);}
   @keyframes lowHpTremble{0%,78%,100%{translate:0 0;} 81%{translate:-1.5px 0;} 84%{translate:1.5px .5px;} 87%{translate:-1px 0;} 90%{translate:1px 0;} 93%{translate:0 0;}}
   @keyframes idleBreathe{0%,100%{translate:0 0;} 50%{translate:0 -1.5px;}}
   /* Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): IdleGlance in
@@ -9009,6 +9014,18 @@
       radial-gradient(circle at 0 0, #000 calc(var(--r) - .5px), transparent var(--r)) right bottom / var(--r) var(--r) no-repeat,
       linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;}
   .battlefield > .bf-hp .bf-hp-num small{font-size:9px !important;}
+  /* 2026-10-21 (package UI3, owner: "The bramble shield ... needs to be displayed on the opposing/ally battlefield full length health bars. L1 over
+     normal, L2 over L1 ..."): the Shield's layers are full-length overlays on the bar's track, each a little see-through (3% to 12%, uneven);
+     the fill animation and the break effect come from ribbonShieldSync / ribShieldBreakVfx in arena_app.js. */
+  .bf-hp-track{position:relative;}
+  .bf-sh-stack{position:absolute; inset:0; pointer-events:none;}
+  .bf-sh{position:absolute; left:0; top:0; bottom:0; width:0; opacity:var(--sh-alpha, .95); background:linear-gradient(180deg, var(--sh-a, #9fd0ff), var(--sh-b, #3d8bea));
+    box-shadow:inset -1px 0 0 rgba(255,255,255,.75), inset 0 1px 0 rgba(255,255,255,.4); transition:width .3s ease;}
+  .bf-sh-break{position:absolute; top:50%; width:0; height:0; z-index:5; pointer-events:none;}
+  .bf-sh-break .bsb-crack{position:absolute; left:-12px; top:-12px; overflow:visible; filter:drop-shadow(0 0 3px var(--sh-a, #9fd0ff)) drop-shadow(0 0 1px rgba(0,0,0,.6));}
+  .bf-sh-break .bsb-shard{position:absolute; left:0; top:0; width:7px; height:7px; transform:translate(-50%,-50%); background:linear-gradient(135deg, #fff, var(--sh-a, #9fd0ff) 45%, var(--sh-b, #3d8bea));
+    clip-path:polygon(50% 0, 100% 32%, 84% 100%, 14% 88%, 0 26%); filter:drop-shadow(0 0 2px rgba(0,0,0,.5));}
+  @media (prefers-reduced-motion: reduce){ .bf-sh{transition:none;} .bf-sh-break{display:none;} }
 
   /* Results window fits a laptop screen (2026-10-05, user: "make the reward window fit within the
      normal Chrome page (MacBook) maximised window"). Wide, two columns when there are rewards:
@@ -9662,6 +9679,13 @@
   .atk-buffed{color:#8fd0ff; text-shadow:0 0 6px rgba(80,170,255,.6);}
   .atk-bonus{color:#2f74c8; font-weight:800;} .atk-bonus.is-neg{color:#b5372a;}
   #cardPop .atk-bonus{color:#1f5fae;} #cardPop .atk-total{color:var(--pn-ink-soft); font-weight:700;}
+  /* 2026-10-21 (package UI3, owner: "The card can be larger, but not at expense of the window but instead, the top of the card expands to
+     hover over the top of the window's boundary"): the card is bigger and lifted out of the frame, its top standing above the sheet's
+     top edge, so the sheet doesn't grow (it is shorter than before). positionPop() keeps the lifted part on screen. */
+  #cardPop{overflow:visible;}
+  #cardPop .card-pop-visual{position:relative; z-index:2; margin:calc(-1 * var(--pop-lift, 84px)) 0 24px;}
+  #cardPop .card-pop-visual-tile{width:204px; filter:drop-shadow(0 10px 12px rgba(20,12,4,.45));}
+  #cardPop .statrow.statrow-live{font-size:13px; padding:0 0 5px; margin-bottom:6px;}
 
   /* 2026-10-10 (user: "Effect symbols can be closer. If same type, they should overlap significantly"):
      the ability row tightens up, repeated shields overlap more, and two-glyph badges tuck the second glyph in. */
@@ -11250,6 +11274,49 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
      centre slot is the ✦ placeholder, shown whether or not a card is held (it is also the "+" target then). */
   .board-card.slot-target.is-centre-target{opacity:1; border:0; background:none;}
   .board-card.slot-target.is-centre-target:hover .center-slot-inner, .board-card.slot-target.is-centre-target.slot-hover .center-slot-inner{border-color:#6fbf4a; background:rgba(111,191,74,.16); opacity:1;}
+  /* Package EV (2026-10-21, owner 17:49: "I also don't want accidental wrong evolutions. The UI only highlights legal bases."): while an
+     evolute is held, the empty-slot "+" targets are hidden and only its legal bases light up, with a pulsing violet ring and a 🧬 mark. */
+  body.bw-evo-holding .board-card.slot-target{opacity:0 !important; pointer-events:none !important;}
+  body.bw-evo-holding .board-card.slot-target.is-centre-target{opacity:.25 !important;}
+  body.bw-evo-holding .board-card.evo-target{cursor:pointer;}
+  body.bw-evo-holding .board-card.evo-target > .card-tile, body.bw-evo-holding .board-card.evo-target .fly-body > .card-tile{outline:3px solid #e2b3ff; outline-offset:2px; border-radius:12px; animation:evoTargetPulse 1.1s ease-in-out infinite;}
+  body.bw-evo-holding .board-card.evo-target::before{content:'🧬'; position:absolute; top:-14px; left:50%; transform:translateX(-50%); font-size:17px; line-height:1; z-index:40; filter:drop-shadow(0 0 5px #c48aff); pointer-events:none;}
+  body.bw-evo-holding #rowMine .board-card[data-uid]:not(.evo-target):not(.slot-target):not(.empty-slot):not(.center-slot-empty){filter:saturate(.55) brightness(.8);}
+  @keyframes evoTargetPulse{0%,100%{box-shadow:0 0 10px 2px rgba(206,132,255,.55);} 50%{box-shadow:0 0 22px 7px rgba(206,132,255,.95);}}
+  @media (prefers-reduced-motion: reduce){ body.bw-evo-holding .board-card.evo-target > .card-tile{animation:none; box-shadow:0 0 16px 5px rgba(206,132,255,.8);} }
+  /* The stack (EV): the cards under an evolute peek out past its top-left corner (one edge a card, at most three), and a ×N badge
+     names the stack in its tooltip. isolation keeps the edges behind this card only. */
+  .board-card.has-evo-stack{isolation:isolate;}
+  .board-card .evo-stack{position:absolute; inset:0; pointer-events:none; z-index:-1;}
+  .board-card .evo-stack i{position:absolute; inset:0; border-radius:10px; background:linear-gradient(160deg, #8a6aa8, #3a2b49); border:2px solid #e2b3ff; box-shadow:0 1px 4px rgba(0,0,0,.45);}
+  .board-card .evo-stack i:nth-child(1){transform:translate(-6px, -6px);}
+  .board-card .evo-stack i:nth-child(2){transform:translate(-11px, -11px); opacity:.8;}
+  .board-card .evo-stack i:nth-child(3){transform:translate(-16px, -16px); opacity:.6;}
+  .board-card .evo-stack-badge{position:absolute; top:-10px; right:-10px; z-index:35; padding:1px 5px; border-radius:999px; font:800 11px/1.35 system-ui, sans-serif; color:#fff; background:linear-gradient(135deg, #9b5fd6, #5a2f86); border:1px solid #e2b3ff; box-shadow:0 1px 4px rgba(0,0,0,.45); white-space:nowrap; cursor:help;}
+  .board-card.evo-evolved > .card-tile, .board-card.evo-evolved .fly-body > .card-tile{box-shadow:0 0 26px 8px rgba(226,179,255,.95); transition:box-shadow .5s ease;}
+  /* Package TR (2026-10-21, owner 18:23: "A crowned unit shows a 👑"; "the Crown visibly drops to the ground"): the Crown on its holder
+     (.crown-badge, over the card's top edge), a loose crown flying or falling between units (.crown-fly), Gold's pill, and the looks of the
+     named Transforms (.tf-gilded gold leaf, .tf-championed, .tf-veteran, .tf-enraged, .tf-matured), with a burst when they happen. */
+  .board-card .crown-badge{position:absolute; top:-17px; left:50%; transform:translateX(-50%); z-index:36; font-size:20px; line-height:1; pointer-events:auto; cursor:help; filter:drop-shadow(0 1px 1px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,214,90,.85));}
+  .board-card .crown-badge.crown-shine{animation:crownShine 1.1s ease-out;}
+  @keyframes crownShine{0%{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 16px #ffd75a) brightness(1.6);} 100%{filter:drop-shadow(0 1px 1px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(255,214,90,.85));}}
+  .board-card.is-crowned > .card-tile, .board-card.is-crowned .fly-body > .card-tile{box-shadow:0 0 0 2px rgba(255,214,90,.9), 0 0 12px 2px rgba(255,200,60,.55);}
+  .crown-fly{position:fixed; z-index:9000; font-size:24px; line-height:1; transform:translate(-50%, -50%); pointer-events:none; filter:drop-shadow(0 2px 2px rgba(0,0,0,.55)) drop-shadow(0 0 6px rgba(255,214,90,.9));}
+  .crown-fly.is-fading{filter:drop-shadow(0 0 10px rgba(255,236,150,.95));}
+  .hud-pill.gold{color:#ffd75a;}
+  .board-card.tf-on.tf-gilded > .card-tile, .board-card.tf-on.tf-gilded .fly-body > .card-tile{box-shadow:0 0 0 2px #f2c94c, 0 0 16px 4px rgba(242,182,50,.75) !important;}
+  .board-card .tf-sheen{position:absolute; inset:0; z-index:5; border-radius:10px; pointer-events:none; mix-blend-mode:screen; background-image:linear-gradient(115deg, rgba(255,233,140,0) 30%, rgba(255,233,140,.35) 45%, rgba(255,250,215,.55) 50%, rgba(255,233,140,.35) 55%, rgba(255,233,140,0) 70%); background-size:250% 100%; animation:gildSheen 3.2s linear infinite;}
+  @keyframes gildSheen{0%{background-position:120% 0;} 100%{background-position:-120% 0;}}
+  .board-card.tf-on.tf-championed > .card-tile, .board-card.tf-on.tf-championed .fly-body > .card-tile{box-shadow:0 0 0 2px #e8b04a, 0 0 14px 3px rgba(214,70,60,.6) !important;}
+  .board-card.tf-on.tf-veteran > .card-tile, .board-card.tf-on.tf-veteran .fly-body > .card-tile{box-shadow:0 0 0 2px #cfd8e3, 0 0 12px 3px rgba(190,205,225,.65) !important;}
+  .board-card.tf-on.tf-enraged > .card-tile, .board-card.tf-on.tf-enraged .fly-body > .card-tile{box-shadow:0 0 0 2px #ff5a4a, 0 0 16px 4px rgba(255,60,40,.6) !important;}
+  .board-card.tf-on.tf-matured > .card-tile, .board-card.tf-on.tf-matured .fly-body > .card-tile{box-shadow:0 0 0 2px #c9b25a, 0 0 12px 3px rgba(150,190,80,.6) !important;}
+  .board-card.tf-on.phase-aura > .card-tile, .board-card.tf-on.phase-aura .fly-body > .card-tile{animation:none !important;} /* the transform's ring, not the phase aura's green pulse */
+  .board-card.tf-on.tf-burst > .card-tile, .board-card.tf-on.tf-burst .fly-body > .card-tile{animation:tfBurst 1.2s ease-out !important;}
+  @keyframes tfBurst{0%{filter:brightness(2.2) saturate(1.4);} 100%{filter:none;}}
+  .gild-leaf{position:fixed; z-index:9000; width:7px; height:9px; border-radius:2px 5px 2px 5px; background:linear-gradient(135deg, #fff1a8, #e8a92a); box-shadow:0 0 4px rgba(255,214,90,.8); pointer-events:none;}
+  @media (prefers-reduced-motion: reduce){ .board-card .tf-sheen, .board-card .crown-badge.crown-shine, .board-card.tf-burst > .card-tile{animation:none;} }
+  html[data-fx="none"] .board-card .tf-sheen{animation:none;}
   /* Stats by level (card editor) */
   .lvs-box{margin:6px 0 12px; border:1px solid var(--surface-border); border-radius:10px; padding:6px 10px; background:var(--surface-2, rgba(0,0,0,.03));}
   .lvs-box summary{cursor:pointer; font-weight:800;} .lvs-box summary small{font-weight:600; opacity:.7; margin-left:6px;}
@@ -11911,6 +11978,24 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .raid-hub .rh-hp{flex:1 1 auto; max-width:160px; height:8px; border-radius:5px; background:rgba(0,0,0,.35); overflow:hidden;}
 .raid-hub .rh-hp > span{display:block; height:100%; background:linear-gradient(90deg, #8e1b1b, #d8432c 60%, #f08a4b);}
 .raid-hub .rh-me{font-size:12.5px;} .raid-hub .rh-me small{color:var(--ink-muted); font-weight:700;}
+/* 2026-10-21 (package RK): the total raid rank (raidTotalRankBadgeHTML), in the raid rank badge's style; F isn't the losses' red, and
+   U (later UU, UUU: .is-u) is a deep violet with a moving cyan sheen and a glow. Raid Tickets: the item's icon, its Use button, a stack
+   above the cap. */
+.conquest-rank-badge.raid-total-rank{margin:0 4px; white-space:nowrap; vertical-align:middle;}
+.conquest-rank-badge.raid-total-rank.rank-F{background:#a8906f; color:#2a1e12;}
+.conquest-rank-badge.raid-total-rank.is-none{background:var(--surface-2); color:var(--ink-muted); border:1px dashed var(--surface-border); font-weight:700;}
+.conquest-rank-badge.raid-total-rank.is-u{background:linear-gradient(115deg,#1a0838 0%,#4b1f8f 34%,#38d6ff 50%,#4b1f8f 66%,#1a0838 100%); background-size:260% 100%; color:#fff;
+  text-shadow:0 1px 0 rgba(0,0,0,.6), 0 0 8px rgba(170,130,255,.9); box-shadow:0 0 0 1px rgba(201,162,255,.95), 0 0 14px rgba(140,90,255,.75); animation:rkUShine 3.2s linear infinite;}
+@keyframes rkUShine{from{background-position:100% 0;} to{background-position:-160% 0;}}
+:where(html[data-fx="none"], html[data-fx="low"]) .conquest-rank-badge.raid-total-rank.is-u{animation:none;}
+@media (prefers-reduced-motion: reduce){ .conquest-rank-badge.raid-total-rank.is-u{animation:none;} }
+.raid-hub .rh-rank{display:flex; align-items:center; flex-wrap:wrap; gap:4px 6px; font-size:12px;} .raid-hub .rh-rank .raid-total-rank{margin:0;} .raid-hub .rh-rank small{color:var(--ink-muted);}
+.r3-chip.rk-chip .raid-total-rank{align-self:flex-start; margin:3px 0 0; font-size:13px;}
+.r3-tickets.is-over b{color:#2f8fd8; text-shadow:0 0 6px rgba(120,200,255,.6);}
+.raid-results .raid-total-rank{font-size:14px; padding:4px 12px;}
+.fxf-rcs-total{display:inline-flex; align-items:center;} .fxf-rcs-total .raid-total-rank{font-size:16px; padding:5px 14px; margin:0;}
+.rk-tk-ico{position:relative; display:inline-block; line-height:1;} .rk-tk-ico i{position:absolute; right:-.38em; bottom:-.28em; font-size:.55em; font-style:normal;}
+.inv-sec .rk-inv-use{margin-top:10px;} .raid-hub .rk-use-row{margin:6px 0;}
 .raid-hub .rh-tags{display:flex; flex-wrap:wrap; gap:4px;} .raid-hub .rh-tags:empty{display:none;}
 .raid-hub .rh-tag{font-size:11.5px; font-weight:800; padding:1px 8px; border-radius:999px; border:1px solid var(--surface-border);}
 .raid-hub .rh-tag.is-auto{border-color:var(--accent);}
@@ -12138,6 +12223,12 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.45);}
 .ed-edit-card:hover, .ed-edit-card:focus-visible{background:#4a3824; outline:2px solid #ffd27a; outline-offset:1px;}
 @media (pointer:coarse){ .ed-edit-card{width:30px; height:30px; font-size:14px;} }
+/* 2026-10-21 (package UI3, owner 18:43): admin card editing from more places: a skirmish's reward cards, the pack opening's review, and a fight's Edit mode */
+.cnp-rw-card.is-ed-clickable{cursor:pointer;}
+.po2-sum-card .po-ed-edit{left:auto; right:-6px; top:-6px;}
+.admin-edit-btn.is-on{background:#ffd27a; color:#2b1a05; box-shadow:0 0 0 2px #b8791a;}
+body.bw-battle-edit #handStrip .card-tile, body.bw-battle-edit .battlefield .board-card, body.bw-battle-edit .battlefield .card-tile{cursor:copy !important;}
+body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-edit #handStrip .card-tile:hover{outline:2px dashed #ffd27a; outline-offset:2px;}
 .card-tile .ed-art-badge{position:absolute; bottom:-6px; left:-6px; z-index:4; width:18px; height:18px; border-radius:50%; background:#5a0d0d; border:2px solid #ff8a8a; color:#fff;
   font-size:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 2px rgba(0,0,0,.35);}
 .ed-kind-chip{display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font:800 13px/1.1 'Baloo 2', system-ui, sans-serif; vertical-align:middle;
@@ -23390,6 +23481,17 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.raid-tickets": "Raid tickets",
   "ui.raid-tickets-tip": "Raid tickets: one a fight. You hold up to {cap}; +1 a day, and each week starts full.",
   "ui.raid-ticket-next": "+1 in {span}",
+  "ui.raid-total-rank": "Raid rank {raidRank}",
+  "ui.raid-total-rank-label": "Raid rank",
+  "ui.raid-total-rank-none": "No raid rank yet",
+  "ui.raid-total-rank-tip": "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.",
+  "ui.raid-total-rank-next": "{n} more for rank {nextRank}.",
+  "ui.raid-total-rank-top": "This is the top raid rank.",
+  "ui.raid-ticket-item-name": "Raid Ticket",
+  "ui.raid-ticket-item-desc": "Use one for an extra raid fight, even past {cap} tickets.",
+  "ui.raid-ticket-shop-line": "🎫 One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.",
+  "ui.raid-ticket-use": "Use a Raid Ticket ({n} left)",
+  "ui.raid-ticket-inv-note": "use one for an extra raid fight",
   "ui.raid-fight-costs": "A fight costs",
   "ui.raid-taking-part": "Taking part",
   "ui.raid-in": "✓ Taking part",
@@ -23415,6 +23517,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.raid-restarted-live": "🔄 {name} restarted for everyone.",
   "toast.raid-restarted-local": "🔄 {name} restarted in this browser only: the server side isn't switched on yet.",
   "toast.raid-no-tickets": "🎫 No raid tickets left. The next one comes in {span}.",
+  "toast.raid-ticket-used": "🎫 Raid Ticket used: you have {n} raid tickets now.",
+  "toast.raid-ticket-none": "🎫 You have no Raid Tickets.",
+  "toast.raid-ticket-bought": "🎫 Raid Ticket bought. You have {n}.",
+  "toast.raid-ticket-found": "🎫 You found a Raid Ticket! Use it for an extra raid fight.",
+  "toast.raid-ticket-granted": "🎫 Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.",
+  "results.raid-ticket-grant": "Raid Ticket (rank {raidRank})",
   "toast.raid-auto-unlocked": "🤖 You completed {name}: Auto is open for its fights from now on.",
   "results.raid-strong": "Competent participant",
   "ui.play-rows-own": "Your row only",
@@ -24853,6 +24961,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.bx-log-drop-bramble": "{name} flies over the bramble and drops a stone 🪨",
   "ui.budget-context": "Context skills (Tide, Diurnal, Transform …): {k} × the skills in their braces.",
   "ui.budget-context-card": "{skill}: {k} × {inner} = {s}",
+  "ui.budget-price-missing": "No price in the skill-cost table for {skills}: a stand-in cost is used.",
   "ui.sk-crepuscular": "By day: +{a}/+{h}. At night: +{a}/+{h}. Twilight brings both.",
   "ui.sk-crepuscular-grant": "By day it has {day}; at night, {night}; in Twilight, both.",
   "ui.cx-day": "Day",
@@ -24886,7 +24995,63 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.cx-rarity-flag-quest": "A quest card: given by a quest, never in packs.",
   "ui.cx-rarity-flag-event": "An event card: given by an event.",
   "ui.cx-rarity-flag-dev": "A developer card.",
-  "ui.cx-rarity-flag-special": "A special card, outside the usual ways to get cards."
+  "ui.cx-rarity-flag-special": "A special card, outside the usual ways to get cards.",
+  "ui.skn-evolute": "Evolute",
+  "ui.sk-evolute": "Play it onto your unit of a shared type: it adds that unit's stats and keeps its statuses.",
+  "ui.skn-evolute-alpha": "Evolute Alpha",
+  "ui.sk-evolute-alpha": "Play it onto your Evolute unit, or a Chrysalis, of a shared type. It adds that unit's stats.",
+  "ui.skn-evolute-omega": "Evolute Omega",
+  "ui.sk-evolute-omega": "Play it onto your Evolute Alpha unit of a shared type. It adds that unit's stats.",
+  "ui.skn-stem": "Stem",
+  "ui.sk-stem": "An evolute played onto it gains +1/+2.",
+  "ui.sk-stem-grant": "An evolute played onto it gains {skills}.",
+  "ui.skn-chrysalis": "Chrysalis",
+  "ui.sk-chrysalis": "A Stem an Evolute Alpha can be played straight onto. The evolute gains +1/+2.",
+  "ui.sk-chrysalis-grant": "A Stem an Evolute Alpha can be played straight onto. The evolute gains {skills}.",
+  "ui.evo-stack": "Stack of {n}: {cards}",
+  "ui.log-evolve": "🧬 {name} evolves over {base}: now {atk}/{hp}.",
+  "ui.evo-pick-base": "Play {name} onto one of your lit units.",
+  "ui.evo-no-base": "Needs a unit of yours it can evolve over",
+  "ui.ui3-rib-shield": "Shield {n}",
+  "ui.ui3-edit-mode": "Edit mode",
+  "ui.ui3-edit-mode-tip": "Admin: while on, clicking any card opens it in the card editor instead of playing it",
+  "ui.ui3-edit-mode-on": "Edit mode on: click a card to edit it",
+  "ui.ui3-edit-mode-off": "Edit mode off",
+  "ui.ui3-edit-mode-none": "That card can't be edited",
+  "ui.skn-king": "King",
+  "ui.sk-king": "The first King in play takes the Crown. While it holds it: {skills}.",
+  "ui.sk-king-codex": "One Crown in play. When its holder falls, it passes to a King, or fades into +1 Gold.",
+  "ui.kingly-default-opt": "Kingly (Tribute 1, Armor 2)",
+  "ui.skn-tribute": "Tribute",
+  "ui.sk-tribute": "Gains {n} Gold each turn while Ready.",
+  "ui.sk-usurper-crown": "If it kills the crowned King, it steals the Crown.",
+  "ui.sk-king-slayer": "Deals {n} bonus damage on every hit against Royalty, a King or the crowned unit.",
+  "ui.tf-gilded": "Gilded",
+  "ui.tf-championed": "Championed",
+  "ui.tf-veteran": "Veteran",
+  "ui.tf-enraged": "Enraged",
+  "ui.tf-matured": "Matured",
+  "ui.tfc-rich": "your resources worth over 25",
+  "ui.tfc-duel": "it wins a duel",
+  "ui.tfc-rounds3": "it survives 3 rounds",
+  "ui.tfc-rage": "its Rage is on",
+  "ui.tfc-rounds": "it survives {n} rounds",
+  "ui.tf-head-stem": "{name}: under {when}, an evolute played onto it gains {gain}",
+  "ui.tf-presets-codex": "Presets: Lycanthropy, Gilded (Lumber 1, Stone 2, Metal 3, Gold 5 each), Championed, Veteran, Enraged, Matured.",
+  "ui.crown-badge": "The Crown: {skills} while it holds it",
+  "ui.crown-crowned": "Crowned",
+  "ui.crown-stolen": "Crown stolen",
+  "ui.log-crown-take": "👑 {name} takes the Crown.",
+  "ui.log-crown-drop": "👑 The Crown falls from {name}.",
+  "ui.log-crown-drop-gone": "👑 The Crown falls to the ground.",
+  "ui.log-crown-pickup": "👑 {name} picks up the Crown.",
+  "ui.log-crown-liege": "👑 The liege grants the Crown to {name}.",
+  "ui.log-crown-steal": "👑 {name} steals the Crown from {from}.",
+  "ui.log-crown-fade": "👑 The Crown fades away: +{n} Gold.",
+  "ui.log-tribute": "🪙 {name} pays Tribute: +{n} Gold.",
+  "ui.log-tf-named": "✨ {name} is {title} now.",
+  "ui.gold-tip": "Gold: Tribute and the Crown pay it. It counts 5 toward Gilded.",
+  "ui.budget-two-skills": "{n} skills count: two at most. Plain Flying, Tide, Diurnal, Nocturnal don't count; several count as one."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -38196,7 +38361,7 @@ M.raidClaimScreen = function(spec, opts){
       ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
       <div class="fxf-rcs-row">
         ${spec.rank && spec.rank.letter ? (typeof window.bwRaidRankEmblemHTML === 'function' ? `<span class="fxf-rcs-emblem${F}">${window.bwRaidRankEmblemHTML(spec.rank.letter, !!spec.rank.emblem, 'md')}</span>` /* 2026-10-19 (package NV): the raid's rank emblem, as on the raid results */
-          : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
+          : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}${spec.totalRankHTML ? `<span class="fxf-rcs-total${F}">${spec.totalRankHTML}</span>` : '' /* 2026-10-21 (package RK): the total raid rank (the page's raidTotalRankBadgeHTML) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
       <ul class="fxf-rcs-list">${list.map(r=> r.open ? rcsCardRewardHTML(r, F) : `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
@@ -38286,6 +38451,9 @@ M.raidClaimScreen = function(spec, opts){
       .to(q('.fxf-rcs-dmg'), {opacity:1, y:0, duration:.3}, 2.55)
       .to(count, {v:total, duration:Math.min(1.25, .5 + Math.log10(total + 1)*.16), ease:'power2.out', onUpdate:()=>{ num.textContent = fmt(count.v); const k = Math.floor(count.v / Math.max(1, total) * 12); if(k !== lastTick){ lastTick = k; sound('bubble'); } }}, 2.65)
       .add(()=>{ sound('coinRegister'); const c = at(num); ring(c.x, c.y, {color:'#7fd8ff', size:Math.max(90, c.w*1.4), dur:.5}); g.fromTo(num, {scale:1.3}, {scale:1, duration:.4, ease:'back.out(3)'}); }, '>');
+    // 2026-10-21 (package RK): the total raid rank stamps in once the damage has counted up (a U rings violet)
+    { const tot = q('.fxf-rcs-total'); if(tot){ g.set(tot, {opacity:0, scale:2.2});
+      tl.to(tot, {opacity:1, scale:1, duration:.26, ease:'power4.in'}, '>').add(()=>{ sound('clang'); const c = at(tot), u = !!tot.querySelector('.is-u'); ring(c.x, c.y, {color: u ? '#c9a2ff' : '#ffd56e', size:Math.max(80, c.w*1.3), width:3, dur:.5}); if(u) burst(c.x, c.y, {n:16, shape:'star', colors:['#c9a2ff', '#7fe9ff', '#ffffff'], glow:true, dist:[30, 110], dur:.7, size:8}); }, '>'); } }
     // the rewards, one by one, each beat bigger; a held breath before the top one
     let t = tl.duration() + .2;
     items.forEach((el, i)=>{ const w = list[i].weight, top = i === items.length - 1 && (items.length > 1 || w >= 3);

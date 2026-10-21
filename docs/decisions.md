@@ -4,12 +4,128 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**HB2-1. Swordbill Challenger keeps three skills as a thematic exception** · Decide · Cards · asked 2026-10-21
-- Package HB2's new Very Rare Hummingbird (3/5, Wait 1, Flying + Taunt + Counterattack, 98% of N) has three skills. The two-skill rule's tests only exempt Epic and up, Supreme, hidden, Easter-egg and token cards, so the card is named in a THEMATIC set in tests/bf5-2026-10-21.js and tools/two_skills_2026_10_21.js. Alternatives: drop Flying (a Hummingbird that walks) or fold Counterattack into Taunt.
-  - Keep three skills as a named exception
-  - Cut to two (Taunt + Counterattack, no Flying)
-  - Cut to two (Flying + Taunt)
-- **Default:** Keep three skills as a named exception
+**TR-1. 24 cards fall to their 1/1 floor with their cut skill back** · Decide · Balance · asked 2026-10-21
+- HB2-1 gave 69 cards back the skill BF5 cut only because Flying, Tide, Diurnal or Nocturnal counted, and the formula re-fitted them (--only). 45 still fit. 24 have no room under cap 2 and drop to 1/1 (skills kept, flagged like B14): Eagle Diver 1/4, Alpha Howler 1/15, Orca Vanguard 1/21, Snow Owl Sentinel 2/7, Permafrost Mammoth 2/20, Moray Ambusher 2/12, Cave Bat Swarm 2/5, Blind Cave Fish 1/3, Sulfur Vent Crab 2/9, Tide Pool Crab 1/3, Open-Ocean Hermit Crab 1/6, Reef Manta Glider 1/7, Nightshade Moth 1/5, Elder Tortoise 1/15, Vigil Owl 2/9, Willow-o'-Wisp 1/12, Skull Vulture 3/3, Moon Jelly 2/8, Voltwing Bat 1/4, Static Bat 1/6, Sea Cucumber 2/11, Alligator Gar 2/14, Mangrove Manatee 2/17, Giant Clam 1/14 (all now 1/1). 7 more were 1/1 already. The free skills still cost S (Tide 2.79, a time of day about 2.5).
+  - Keep: every skill back, 1/1 where the formula says so
+  - Take the restored skill off again on these 24 (back to their stats before TR)
+  - Price plain Flying / Tide / Diurnal / Nocturnal lower in the budget too
+- **Default:** Keep: every skill back, 1/1 where the formula says so
+
+**TR-2. Bounty came back on 7 cards** · Decide · Balance · asked 2026-10-21
+- BF5 cut Bounty first (your 21:36: "Bounty is way too strong") wherever a card had three skills. On 7 of them the third skill was a free one under HB2-1, so the cut is undone: Monarch Wingblade, Reef Shark, Octopus Tactician, Alpha Howler, Vampire Roost, Bog Behemoth, Tiny Cave Dweller. Bounty is priced at 1 a point (your BF5 value), so the formula took it out of their stats.
+  - Keep Bounty on them
+  - Keep it cut (Bounty is never restored)
+- **Default:** Keep Bounty on them
+
+**TR-3. The Crown's open cases (built as defaults)** · Decide · Rules · asked 2026-10-21
+- Package TR built your Crown rules. Calls taken: (a) once the Crown fades it is gone for the fight: a later King stays uncrowned; (b) the crowned King killed by an enemy unit while no King is left anywhere: +1 Gold for the killer's side (your kill rule), not the dead King's; (c) friendly fire counts as no source unit (the Crown drops); (d) the King that picks up a dropped Crown, or the liege's pick, is random among that side's Kings (the fight's seeded random); (e) a holder that leaves play without dying (bounced, exiled) drops it as with no source; (f) a crowned unit that an evolute goes over keeps the Crown (it is the same unit).
+  - Keep these
+  - Let a later King take a fresh Crown after it fades
+  - Change (b): +1 Gold for the dead King's side
+- **Default:** Keep these
+
+**TR-4. Which cards are Kings** · Decide · Cards · asked 2026-10-21
+- King given to: Rodent King (Bounty off for the two-skill rule; 4/15 -> 4/14), Glacial Ape-King (Bounty off; 7/36 -> 7/34), Yeti Chieftain (5/22 -> 5/20), The Gannet Queen (3/9 -> 1/10). Not given: the Pride Queen (with King's 2.39 her Quick leaves no room: 2/14 -> 1/1) and the Magnate Duck (King type already; 1/22 -> 1/1); the Quicksand Queen is a trap, not a ruler. Usurper was extended to steal the Crown (the Crown Pretender is the card for it); no new skill was needed.
+  - Keep these four
+  - Also the Pride Queen and the Magnate Duck at 1/1
+  - Name others
+- **Default:** Keep these four
+
+**TR-5. Prices for King, Kingly, Tribute and the five transforms (theoretical)** · Decide · Balance · asked 2026-10-21
+- canonical/skill-costs.json, ownerSet false, B15-style. Tribute 0.5 a point (half of a Lumber income: Gold buys nothing in a fight yet). Kingly 5.98 = Tribute 1 + Armor 2 (2 x 2.74), never printed. King 2.39 = 0.4 x Kingly, as a context skill (the Crown is not certain); with its own braces 0.4 x them. Transforms at CONTEXT_MULT 0.4 x the gain: Gilded {+5/+10} 8, Championed {+3/+3} 3.6, Veteran {+2/+4} 3.2, Matured {+2/+4 Stem stats} 3.2, Enraged 0.4 x its braces. Plain Crepuscular 1.6 (CX2).
+  - Keep these prices
+  - Raise or lower some (name them)
+  - Measure them with tools/skill_worth.js
+- **Default:** Keep these prices
+
+**TR-6. Transform conditions, as read by package TR** · Decide · Rules · asked 2026-10-21
+- Enraged: "It has Rage" is read as its Rage being on (Rage, below half Health); having the skill would trigger it at once. Matured: N rounds, 2 by default (tf.rounds; the editor doesn't set N yet). Veteran and Matured count rounds survived on the field, at each round's start. Championed: a kill by its own swing or its Counterattack against the unit it fights (a Guardian that takes the hit is the one it fights); kills by Arrow, Pounce or other skills don't count. Gilded: Lumber 1, Stone 2, Metal 3, Gold 5 each, more than 25, checked as the board updates. No card has a transform preset yet.
+  - Keep these readings
+  - Enraged = it has the Rage skill
+  - Championed also by skill kills
+- **Default:** Keep these readings
+
+**EV-1. Which cards are the Evomax lines (there was no Evomax unit)** · Decide · Cards · asked 2026-10-21
+- No Evomax unit existed (Terraumbra, an equipment Easter egg, was the line's only card). Package EV made lines from cards no player can get yet, so the Map 30 gate holds and no reward moved: Slowpoke Sentinel (Stem) -> Canopy Sloth Guardian (Evolute) -> Hanging Loafer (Alpha); Raven Harbinger (Evolute) -> Raven Hexcaller (Alpha) -> Bone Diviner (Omega); Gale Sprite (Evolute) -> Stormcaller (Alpha). They are mechanicLine evolution now. Missing stages are listed as cards to make in docs/evolute-design-2026-10-21.md (a sloth Omega, a storm Omega, an insect Evolute and Alpha for the Cocoon, beetle, frog and dragon lines).
+  - Keep these three lines
+  - Pick other cards (name them)
+  - Make new Evomax cards instead and revert these
+- **Default:** Keep these three lines
+
+**EV-2. When an evolute dies, do the cards under it fire their On Death?** · Decide · Rules · asked 2026-10-21
+- Built: no. The whole stack goes to the graveyard (or the Removal Zone, wherever the evolute goes) and only the top card's own death effects happen (its On Death, Bounty, Relic ...). The cards under it fire nothing, matching "a unit leaving play this way triggers no On Death, Bounty or grave effects".
+  - No: only the top card's death effects
+  - Yes: each card in the stack fires its own On Death (top first)
+- **Default:** No: only the top card's death effects
+
+**EV-3. Evolute bases: shared type at every stage, creatures only** · Decide · Rules · asked 2026-10-21
+- Built: Alpha and Omega also need a shared type with their base (the rule named it for Evolute only). A plain Evolute cannot go over a unit that is already an evolute (no sideways or downward evolving). Structures, cages and a Gladiator leader are never bases, and only front-row units are (a raid's middle and back rows are not). The editor offers Evolute / Alpha / Omega on Evomax cards only.
+  - Keep all of these
+  - Alpha and Omega need no shared type
+  - Allow an Evolute over an evolute
+- **Default:** Keep all of these
+
+**EV-4. An evolute waits its own Wait again** · Decide · Rules · asked 2026-10-21
+- Built ("Wait and Lumber costs work as usual"): the stack waits the evolute's printed Wait, even over a Ready base. The CPU counts that against Ready bases. Alternatives: keep the base's remaining Wait, or the higher of the two.
+  - Its own Wait (as usual)
+  - The base's remaining Wait
+  - The higher of the two
+- **Default:** Its own Wait (as usual)
+
+**EV-5. Evolute prices (theoretical)** · Decide · Balance · asked 2026-10-21
+- canonical/skill-costs.json, ownerSet false: Evolute 3, Alpha 4, Omega 5 (your suggestion). Stem and Chrysalis 1.6 (0.4 x (2*1 + 2), the +1/+2 they hand over), or 0.4 x their braces' S. The evolutes' printed stats are fitted to their own N; on the board a stack is the sum, so a Stormcaller fitted to 1/23 lands on a base and becomes far bigger. No run can measure this (it rides on the player).
+  - Keep these prices
+  - Raise them (name the numbers)
+  - Price an evolute against its line's summed N instead
+- **Default:** Keep these prices
+
+**EV-6. The Nest eggs as fodder, with a species** · Decide · Cards · asked 2026-10-21
+- The Speckled Egg is a Stem and the Cocoon a Chrysalis. Each got a species (Bird, Insect) so an evolute can share a type with it: eggs had none, so Kin and type skills now count them too. Re-fit by formula: 0/2 -> 0/1. An egg ridden by an evolute never hatches.
+  - Keep
+  - Keep the skills, no species (then no evolute can use them)
+  - Revert the eggs
+- **Default:** Keep
+
+**EV-7. The raven evolutes sit at their 1/1 floor** · Decide · Balance · asked 2026-10-21
+- Following your HB2-1 answer (Flying does not count toward two skills), the ravens keep every skill: Raven Harbinger Flying + Poison 2 + Evolute, Raven Hexcaller Flying + Render + Evolute Alpha, Bone Diviner Flying + On Kill +2 Lumber + Evolute Omega. With Flying's x1.5 the formula puts all three at 1/1 (flagged, skills kept). In a stack they add to the base's stats, so the stack is still big. Without Flying, the Hexcaller and the Bone Diviner were 1/7.
+  - Keep: every skill, 1/1
+  - Cut Flying on the Hexcaller and the Bone Diviner (back to 1/7)
+  - Lower the stage costs for these three
+- **Default:** Keep: every skill, 1/1
+
+**RK1. Raid Ticket price in the Shop** · Decide · Raid · asked 2026-10-21
+- Package RK sells the Raid Ticket (one extra raid fight, past the cap of 10) for 300 Maple Leaves, beside the Rename Ticket (250 Maple Leaves); a fight also pays about 16 Maple Leaves and 12 Dust back. Gold Leaves would make it scarcer.
+  - 300 Maple Leaves
+  - 250 Maple Leaves (as the Rename Ticket)
+  - 500 Maple Leaves
+  - 30 Gold Leaves
+- **Default:** 300 Maple Leaves
+
+**RK2. A limit on buying Raid Tickets** · Decide · Raid · asked 2026-10-21
+- Buying stops only while you hold 9; you can buy, use and buy again. Free tickets give at most about 16 fights a raid (10 + 1 a day), so an average player (751 raid damage a fight) tops out near rank A; S needs about 4 bought tickets, U about 24 (7,200 Maple Leaves). Rank is buyable with Maple Leaves unless a weekly limit is added.
+  - No limit (hold at most 9)
+  - At most 3 bought a week
+  - At most 5 bought a week
+- **Default:** No limit (hold at most 9)
+
+**RK3. The A-rank Raid Ticket only when the raid falls** · Decide · Raid · asked 2026-10-21
+- Owner: 'completing a raid (with at least A rank) should give you 1x ticket'. Built as: a fall's claim at total raid rank A or better pays 1 Raid Ticket; a raid that ends standing (held) pays none, whatever the rank.
+  - Falls only
+  - Falls and held raids
+- **Default:** Falls only
+
+**RK4. Where Raid Tickets drop** · Decide · Raid · asked 2026-10-21
+- Built: an S notice 30%, SS 60%, SSS 100% (about 0.7 a week at six notices a day), and a raidTicket reward token (a fight's first clear) that is on no fight yet. Chests have no drop table to add it to.
+  - Keep (notices only; token unused)
+  - Also put the token on a few boss fights
+  - Also one per finished weekly tier
+- **Default:** Keep (notices only; token unused)
+
+**RK5. The total rank ladder against the ticket budget** · Decide · Raid · asked 2026-10-21
+- Kept as given (F 800 .. A 9,000, S 15,000 .. U 30,000). At 751 raid damage a fight (BF5's model) the ranks take 2 / 2 / 4 / 7 / 10 / 12 / 20 / 27 / 34 / 40 fights; free tickets allow about 16 a raid (12 when it falls on day 3), so S and up need bought tickets or wins at high fight ranks (a win at SSS counts 2,000, so U in 15). Fine as an aspiration, or scale the top?
+  - Keep the ladder
+  - Scale S..U down (e.g. 12k / 14k / 16k / 18k)
+- **Default:** Keep the ladder
 
 **RP1. Faction rewards' map term in the stat budget** · Decide · Rewards · asked 2026-10-21
 - A faction Rare can't be had before Map 14 and a Very Rare before Map 25 (the faction reward track), but cardObtainMap still counts every faction reward as a pack card (Map 5) for N's Map x 0.2. Changing it moves N for the 42 faction cards (package BF5's stats).
@@ -233,39 +349,15 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Pause archetypes
 - **Default:** Ecclesia next (D23)
 
-**CX1. Nocturnal "at night ONLY": Twilight too?** · Decide · Rules · asked 2026-10-21
-- Package CX2 checked the engine: plain Nocturnal is +1 Attack at night and nothing else, as asked. Two things add to it today: Twilight counts as both day and night (your 2026-10-13 rule), so Nocturnal and Diurnal also apply in Twilight; and the Leylines I map rule turns the plain +1 into +3/+3. Both were left as they are.
-  - Keep: Twilight counts as night, Leylines I still boosts
-  - Nocturnal at night only, not in Twilight (Diurnal likewise by day only)
-  - Also drop Leylines I's boost for the plain forms
-- **Default:** Keep: Twilight counts as night, Leylines I still boosts
-
-**CX2. Plain Crepuscular is much stronger now; its S is still 1** · Decide · Balance · asked 2026-10-21
-- Crepuscular went from +1 Attack in Twilight only to +1 Attack by day and +1 at night (both in Twilight, and a deck with one still adds the Twilight phase). Its cost in canonical/skill-costs.json is still 1 (measured 3.72 when it was Twilight-only). Nightjar Drifter 3/6 and Woodcock Lookout 3/8 were not re-fitted (no braces).
-  - Price plain Crepuscular like its braces: 0.4 × (2 + 2) = 1.6 for +1/+0, then re-fit the two cards
-  - Re-measure it with tools/skill_worth.js
-  - Keep 1
-- **Default:** Price plain Crepuscular like its braces (1.6), re-fit the two cards
-
-**CX3. Half-miss skills inside braces cost 0** · Decide · Balance · asked 2026-10-21
-- Evasive, Flying, Shadow, Swift and Blind cost 0 in the table because the ×1.5 rule on the whole card prices them. Inside braces (Tide {+2/+2, Evasive}) that rule does not reach them, so 0.4 × their table value is 0. Mudflat Godwit's Flood {+2/+2, Evasive} counts only its +2/+2.
-  - Count a half-miss skill in braces as 0.5 × the card's 2A + H, then × 0.4
-  - Keep 0
-- **Default:** Count it as 0.5 × the card's 2A + H, × 0.4
-
-**CX4. Rarity flags: one at a time?** · Decide · Editor · asked 2026-10-21
-- The editor's four toggles (Quest, Event, Dev, Special) are exclusive: turning one on turns the others off, so every card is a rank plus at most one flag and keeps a single stored string (quest, devlegendary, or a derived one like questrare). Two flags at once (an Event card that is also Dev) would need a longer string or a separate field.
-  - Keep one flag at a time
-  - Allow several flags (a separate rarityFlags field on the card)
-- **Default:** Keep one flag at a time
-
-**CX5. The card editor's budget panel uses the old skill costs** · Decide · Editor · asked 2026-10-21
-- The editor's budget line (and the Test Lab's Stat budget) still sums S with the 2026-10-17 in-page table (SB_DEFAULT_SKILLS: Regen = its number, Evasive 0), not canonical/skill-costs.json, which tools/skill_costs.js, the re-fits and the hub use. Package CX2 gave both the same 0.4 context rule, but their inner costs differ: Kinkajou Lurker's Nocturnal {Evasive, Regen 2} is 0.8 in the editor and 2.48 in the canonical table.
-  - Make the editor read canonical/skill-costs.json (built into the page)
-  - Keep the in-page table
-- **Default:** Make the editor read canonical/skill-costs.json
-
 ## Decided
+
+**HB2-1. Swordbill Challenger keeps three skills as a thematic exception** · Decide · Cards · asked 2026-10-21 · decided 2026-10-21
+- Package HB2's new Very Rare Hummingbird (3/5, Wait 1, Flying + Taunt + Counterattack, 98% of N) has three skills. The two-skill rule's tests only exempt Epic and up, Supreme, hidden, Easter-egg and token cards, so the card is named in a THEMATIC set in tests/bf5-2026-10-21.js and tools/two_skills_2026_10_21.js. Alternatives: drop Flying (a Hummingbird that walks) or fold Counterattack into Taunt.
+  - Keep three skills as a named exception
+  - Cut to two (Taunt + Counterattack, no Flying)
+  - Cut to two (Flying + Taunt)
+- **Default:** Keep three skills as a named exception
+- **Outcome:** Owner 18:23: plain Flying, Tide, Diurnal and Nocturnal don't count toward the two-skill limit; several of them count as 1. Built by package TR (bramblewood-budget.js skillCountOf, the two-skill tool, the editor's budget panel). The Swordbill Challenger is within the rule; 69 cards got back the skill BF5 cut only because one of these counted.
 
 **E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Hue shift, not a foil: the art is recoloured by a fixed per-card hue (90–270°), soft white glow, twinkling ✦. Prism stays a foil treatment.
@@ -488,6 +580,43 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Re-measure the big skills in the halved world first (Quick, Sweep, Armor, Pounce, Poison, Thorns ...; about 2.5 h of runs, a quarter done in docs/balance/skill-worth-bf6-partial.jsonl), then re-fit
 - **Default:** Re-measure the big skills in the halved world first
 - **Outcome:** Owner 16:42: "Dont need the skill term being weighted down. Listen, it's because Base and N are reduced. So S and A and H all now, unchanged, play a bigger part by default. Halving S or A or H would change nothing actually, cause now you can have more attack and health for the same N. We want numbers to be smaller." Cap 2 stays A·H + S·|S| ≤ (N/3)²; the flagged cards keep their floor stats on purpose. No other change.
+
+**CX1. Nocturnal "at night ONLY": Twilight too?** · Decide · Rules · asked 2026-10-21 · decided 2026-10-21
+- Package CX2 checked the engine: plain Nocturnal is +1 Attack at night and nothing else, as asked. Two things add to it today: Twilight counts as both day and night (your 2026-10-13 rule), so Nocturnal and Diurnal also apply in Twilight; and the Leylines I map rule turns the plain +1 into +3/+3. Both were left as they are.
+  - Keep: Twilight counts as night, Leylines I still boosts
+  - Nocturnal at night only, not in Twilight (Diurnal likewise by day only)
+  - Also drop Leylines I's boost for the plain forms
+- **Default:** Keep: Twilight counts as night, Leylines I still boosts
+- **Outcome:** Owner 18:23 ("Seems okay"): the default. Twilight still counts as night (and day), and Leylines I still turns the plain +1 into +3/+3. No change.
+
+**CX2. Plain Crepuscular is much stronger now; its S is still 1** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
+- Crepuscular went from +1 Attack in Twilight only to +1 Attack by day and +1 at night (both in Twilight, and a deck with one still adds the Twilight phase). Its cost in canonical/skill-costs.json is still 1 (measured 3.72 when it was Twilight-only). Nightjar Drifter 3/6 and Woodcock Lookout 3/8 were not re-fitted (no braces).
+  - Price plain Crepuscular like its braces: 0.4 × (2 + 2) = 1.6 for +1/+0, then re-fit the two cards
+  - Re-measure it with tools/skill_worth.js
+  - Keep 1
+- **Default:** Price plain Crepuscular like its braces (1.6), re-fit the two cards
+- **Outcome:** Owner 18:23: the default, built by package TR. Plain Crepuscular costs 1.6 (0.4 x (2 + 2)); Nightjar Drifter 3/6 -> 2/8 and Woodcock Lookout 3/8 -> 2/9 by formula (--only).
+
+**CX3. Half-miss skills inside braces cost 0** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
+- Evasive, Flying, Shadow, Swift and Blind cost 0 in the table because the ×1.5 rule on the whole card prices them. Inside braces (Tide {+2/+2, Evasive}) that rule does not reach them, so 0.4 × their table value is 0. Mudflat Godwit's Flood {+2/+2, Evasive} counts only its +2/+2.
+  - Count a half-miss skill in braces as 0.5 × the card's 2A + H, then × 0.4
+  - Keep 0
+- **Default:** Count it as 0.5 × the card's 2A + H, × 0.4
+- **Outcome:** Owner 18:23 (titles-transforms spec): keep as is. Half-miss skills inside braces cost 0. No change.
+
+**CX4. Rarity flags: one at a time?** · Decide · Editor · asked 2026-10-21 · decided 2026-10-21
+- The editor's four toggles (Quest, Event, Dev, Special) are exclusive: turning one on turns the others off, so every card is a rank plus at most one flag and keeps a single stored string (quest, devlegendary, or a derived one like questrare). Two flags at once (an Event card that is also Dev) would need a longer string or a separate field.
+  - Keep one flag at a time
+  - Allow several flags (a separate rarityFlags field on the card)
+- **Default:** Keep one flag at a time
+- **Outcome:** Owner 18:23: the default. The editor's rarity toggles stay one at a time. No change.
+
+**CX5. The card editor's budget panel uses the old skill costs** · Decide · Editor · asked 2026-10-21 · decided 2026-10-21
+- The editor's budget line (and the Test Lab's Stat budget) still sums S with the 2026-10-17 in-page table (SB_DEFAULT_SKILLS: Regen = its number, Evasive 0), not canonical/skill-costs.json, which tools/skill_costs.js, the re-fits and the hub use. Package CX2 gave both the same 0.4 context rule, but their inner costs differ: Kinkajou Lurker's Nocturnal {Evasive, Regen 2} is 0.8 in the editor and 2.48 in the canonical table.
+  - Make the editor read canonical/skill-costs.json (built into the page)
+  - Keep the in-page table
+- **Default:** Make the editor read canonical/skill-costs.json
+- **Outcome:** Built (package CX5): the editor's budget panel and the Test Lab price S from canonical/skill-costs.json (built into the page) with tools/skill_costs.js itself; the in-page table only prices a skill the table lacks, and the panel says so.
 
 **B15. Twin: no constant prices a full copy of the card** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
 - Twin puts a full copy of the card beside it. Measured in the halved world it is off the scale (S 20+ a copy on a 2/7, 36 on a 3/11), so its cost (1) means nothing. Its two cards are held at their stats: Puddle Changeling 2/2, Mirrorhide Mutant 3/5.
