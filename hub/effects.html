@@ -5649,6 +5649,25 @@
   @media (prefers-reduced-motion: reduce){ .ambush-pop, .ambush-pop-card, .wl-raid-coins i{animation:none !important;} .wl-raid-coins{display:none;} }
   /* the Zeitgeber braces picker in the card editor (2026-10-15) */
   .grant-box{display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap; font-weight:700;} .grant-box .grant-pick{max-width:120px;}
+  /* 2026-10-21 (package CX2, owner 17:42: "The main pathway should be through the +skill option"): the braces and their text muted, still editable; "+ skill" stands out */
+  .grant-box .grant-brace{color:var(--ink-muted); font-weight:600;}
+  .grant-box .grant-in{color:var(--ink-muted); font-weight:500; background:color-mix(in srgb, var(--surface, #fff) 70%, transparent); border-style:dashed;}
+  .grant-box .grant-in:focus{color:var(--ink);}
+  .grant-box .grant-pick{font-weight:800; border-color:var(--accent, #b0602a);}
+  .cx-kw{font-size:12px; font-weight:700; color:var(--ink-muted);}
+  /* CX2: the rarity rank and its four flags */
+  .rarity-flags{display:flex; flex-wrap:wrap; gap:4px; margin-top:4px;}
+  .field label.rarity-flag{display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:1px 7px; border-radius:999px; border:1px solid var(--surface-border); cursor:pointer; text-transform:none; letter-spacing:0; color:var(--ink-muted);}
+  .field label.rarity-flag:has(input:checked){background:var(--accent, #b0602a); color:#fff; border-color:transparent;}
+  .field label.rarity-flag input{position:absolute; opacity:0; width:1px; height:1px; margin:0; pointer-events:none;}
+  .field label.rarity-flag:focus-within{outline:2px solid var(--accent, #b0602a); outline-offset:1px;}
+  /* CX2: a Ritual's conditions at the corners of a regular polygon (card view and editor) */
+  .ritual-shape{position:relative; display:inline-block; vertical-align:middle; flex-shrink:0;}
+  .ritual-shape svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .ritual-shape svg polygon, .ritual-shape svg line{fill:rgba(155,28,56,.10); stroke:#9b1c38; stroke-width:1.5; stroke-linejoin:round;}
+  .ritual-shape .rs-pt{position:absolute; transform:translate(-50%, -50%); display:inline-flex; align-items:center; gap:2px; white-space:nowrap; font-weight:800; font-size:12px; padding:1px 5px; border-radius:999px; background:var(--surface, #fff8ee); border:1px solid #9b1c38;}
+  .ritual-shape.rs-editor .rs-pt{padding:2px 4px;} .ritual-shape.rs-editor input{width:46px;}
+  .ritual-line{display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap;} .ritual-line .ritual-shape{margin:4px 0;}
   .grant-facet{display:inline-flex; align-items:center; gap:4px; margin-right:8px;} .grant-facet > b{font-size:12px; color:var(--ink-muted);}
   .abadge.exposed{background:color-mix(in srgb, #e0412f 24%, var(--surface-2)); color:#c62f1f;} /* Exposed (2026-10-15) */
   .abadge.prayer{background:color-mix(in srgb, #e3c26a 34%, var(--surface-2)); color:#7a5a10;} /* Prayer tokens (2026-10-19, package E) */
@@ -8816,6 +8835,23 @@
   /* Fire attacks (2026-10-21, package BX): a swing that deals fire damage (dmgType heat) shows a flame on the attack label, on an ember plate */
   .card-tile .atk.atk-fire{color:#ffb070; background:linear-gradient(180deg,rgba(92,26,8,.9),rgba(44,10,4,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,140,60,.7), 0 0 6px rgba(255,110,30,.45);}
   .card-tile .atk.atk-fire .atk-buffed{color:#ffd0a0;}
+  /* Element attack plates (2026-10-21, package EL): every non-physical swing shows its element's symbol on a tinted plate, like the BX ember plate */
+  .card-tile .atk.atk-cold{color:#c4ecff; background:linear-gradient(180deg,rgba(12,48,72,.9),rgba(5,22,38,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,210,255,.7), 0 0 6px rgba(90,190,255,.4);}
+  .card-tile .atk.atk-cold .atk-buffed{color:#e6f8ff;}
+  .card-tile .atk.atk-acid{color:#d4f76a; background:linear-gradient(180deg,rgba(38,64,8,.9),rgba(16,30,4,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(170,220,60,.7), 0 0 6px rgba(150,220,40,.4);}
+  .card-tile .atk.atk-acid .atk-buffed{color:#eaffa8;}
+  .card-tile .atk.atk-poison{color:#dcaaff; background:linear-gradient(180deg,rgba(52,24,76,.9),rgba(24,10,40,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,130,240,.7), 0 0 6px rgba(170,100,230,.4);}
+  .card-tile .atk.atk-poison .atk-buffed{color:#f0d4ff;}
+  .card-tile .atk.atk-decay{color:#d9b27a; background:linear-gradient(180deg,rgba(62,44,20,.9),rgba(30,20,8,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,150,90,.7), 0 0 6px rgba(170,120,60,.4);}
+  .card-tile .atk.atk-decay .atk-buffed{color:#f0d6ae;}
+  .card-tile .atk.atk-water{color:#8fe6f0; background:linear-gradient(180deg,rgba(8,58,70,.9),rgba(4,26,34,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(80,200,220,.7), 0 0 6px rgba(60,190,220,.4);}
+  .card-tile .atk.atk-water .atk-buffed{color:#c4f4fa;}
+  .card-tile .atk.atk-stone{color:#ddd4c0; background:linear-gradient(180deg,rgba(66,58,46,.9),rgba(32,28,22,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,176,150,.7), 0 0 6px rgba(170,156,130,.4);}
+  .card-tile .atk.atk-stone .atk-buffed{color:#f2ecdc;}
+  .card-tile .atk.atk-metal{color:#d3dae3; background:linear-gradient(180deg,rgba(52,60,72,.9),rgba(24,28,36,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(170,184,204,.7), 0 0 6px rgba(150,170,200,.4);}
+  .card-tile .atk.atk-metal .atk-buffed{color:#eef2f7;}
+  .card-tile .atk.atk-shock{color:#ffe873; background:linear-gradient(180deg,rgba(72,60,6,.9),rgba(36,28,2,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,222,70,.7), 0 0 6px rgba(255,210,40,.4);}
+  .card-tile .atk.atk-shock .atk-buffed{color:#fff5b0;}
   /* Archer's drop look (2026-10-21, package BX): the stone it lets fall (bxDropStone) */
   .bx-stone{position:fixed; left:0; top:0; z-index:9000; pointer-events:none; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.5));}
   .board-card.bx-dropping{pointer-events:none;}
@@ -17293,6 +17329,8 @@ M.onEvent = function(ev, env){
       const d = defOf(env, ev.defId); if(d.effects && d.effects.skyfall && root.SkillFX && SkillFX.skyDrop) at(60, ()=>{ const es = uids.map(u=> el(u)).filter(Boolean); if(es.length) SkillFX.skyDrop(es, {fall:420}); });
       break; }
     case 'mindControl': at(560, ()=>{ const e = el(ev.targetUid); if(e) M.mindArrive(e, o); }); break;
+    // Mimic (2026-10-21, package MT): Twin's mirror sheen, reused: the sheen sweeps the ally it copies and a see-through copy peels off onto it
+    case 'mimic': at(320, ()=>{ const s = el(ev.allyUid), t = el(ev.uid); if(s && t) M.twinPeel(s, t, o); }); break;
     case 'remember': if(ev.uid != null) at(80, ()=>{ const e = el(ev.uid); if(e) M.rememberRise(e, o); }); break;
   }
 };
@@ -24798,6 +24836,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-rally": "When it enters play, your units on the field gain +{n} Attack until the end of the next round.",
   "ui.skn-injured": "Injured",
   "ui.sk-injured": "Comes into play with {n} damage already on it (at least 1 Health left). It can be healed.",
+  "ui.skn-mimic": "Mimic",
+  "ui.sk-mimic": "When it enters play, it copies a random ally: its skills, and the higher of each stat.",
+  "ui.mimic-copying": "Copying {name}",
+  "ui.log-mimic": "🪞 {name} mimics {ally}: now {atk}/{hp}, with its skills.",
   "ui.skn-archer": "Archer",
   "ui.sk-archer": "Never attacks: each turn it shoots an arrow for {n} damage at the enemy in front, or the nearest.",
   "ui.skn-archer-style": "Archer look",
@@ -24808,7 +24850,43 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.act-arrow": "Arrow",
   "ui.act-arrow-desc": "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).",
   "ui.bx-log-drop": "{name} flies over {target} and drops a stone 🪨",
-  "ui.bx-log-drop-bramble": "{name} flies over the bramble and drops a stone 🪨"
+  "ui.bx-log-drop-bramble": "{name} flies over the bramble and drops a stone 🪨",
+  "ui.budget-context": "Context skills (Tide, Diurnal, Transform …): {k} × the skills in their braces.",
+  "ui.budget-context-card": "{skill}: {k} × {inner} = {s}",
+  "ui.sk-crepuscular": "By day: +{a}/+{h}. At night: +{a}/+{h}. Twilight brings both.",
+  "ui.sk-crepuscular-grant": "By day it has {day}; at night, {night}; in Twilight, both.",
+  "ui.cx-day": "Day",
+  "ui.cx-night": "Night",
+  "ui.cx-nothing": "nothing",
+  "ui.sk-rainrunner-grant": "While it rains it has {skills}, and it can't be blocked.",
+  "ui.sk-loyal-grant": "While one of your leaders is on the battlefield, it has {skills}.",
+  "ui.sk-usurper-grant": "While the opposing leader is on the battlefield, it has {skills}.",
+  "ui.skn-transform": "Transform",
+  "ui.sk-transform": "The first time {when} holds, it gains {gain} for the rest of the fight.",
+  "ui.sk-transform-short": "Once it happens, it keeps them for the rest of the fight.",
+  "ui.tf-head": "When {when} → gain {gain}",
+  "ui.tf-head-named": "{name}: under {when}, gain {gain}",
+  "ui.tf-lycanthropy": "Lycanthropy",
+  "ui.tf-done": "Transformed.",
+  "ui.log-transform": "{name} transforms.",
+  "ui.cx-preset": "Preset",
+  "ui.cx-custom": "Custom",
+  "ui.cx-under": "under",
+  "ui.cx-gain": "→ gain",
+  "ui.cx-condition": "Condition",
+  "ui.cx-ritual-short": "It can't act until every corner is met.",
+  "ui.cx-ritual-perished": "Units perished (either side)",
+  "ui.cx-ritual-drawn": "Cards you draw",
+  "ui.cx-ritual-bramble": "Bramble damage you deal",
+  "ui.cx-rarity-flags": "Rarity flags",
+  "ui.cx-flag-quest": "Quest",
+  "ui.cx-flag-event": "Event",
+  "ui.cx-flag-dev": "Dev",
+  "ui.cx-flag-special": "Special",
+  "ui.cx-rarity-flag-quest": "A quest card: given by a quest, never in packs.",
+  "ui.cx-rarity-flag-event": "An event card: given by an event.",
+  "ui.cx-rarity-flag-dev": "A developer card.",
+  "ui.cx-rarity-flag-special": "A special card, outside the usual ways to get cards."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -32697,6 +32775,8 @@ M.onEvent = function(ev, env){
       const d = defOf(env, ev.defId); if(d.effects && d.effects.skyfall && root.SkillFX && SkillFX.skyDrop) at(60, ()=>{ const es = uids.map(u=> el(u)).filter(Boolean); if(es.length) SkillFX.skyDrop(es, {fall:420}); });
       break; }
     case 'mindControl': at(560, ()=>{ const e = el(ev.targetUid); if(e) M.mindArrive(e, o); }); break;
+    // Mimic (2026-10-21, package MT): Twin's mirror sheen, reused: the sheen sweeps the ally it copies and a see-through copy peels off onto it
+    case 'mimic': at(320, ()=>{ const s = el(ev.allyUid), t = el(ev.uid); if(s && t) M.twinPeel(s, t, o); }); break;
     case 'remember': if(ev.uid != null) at(80, ()=>{ const e = el(ev.uid); if(e) M.rememberRise(e, o); }); break;
   }
 };
