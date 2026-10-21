@@ -153,6 +153,35 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Texts:** 36 new TX keys, in the 12 language packs with the new card names and flavour (`tools/i18n_2026_10_19_eq.py`).
 - **Merged with SK2:** the Petrified Tree had no animal, so `tools/animal_tags.py` stopped. It now has a proposed owl, like the Ent (an owner call). SK2's test now finds the tree by id, because the EQ cards come after it. Pry wears 🪝, since 🔧 is SK2's Repair.
 - **Tests:** `tests/equipment-hazards-2026-10-19.js` (new, 119 checks). `tests/equipment.js` and `tests/easter-eggs-2026-10-19.js` were updated. There is also a browser smoke test, `tests/e2e/eq_2026_10_19.py`.
+## 2026-10-19 (package SK2b: Quarry, Smelter, the economy note)
+- **Owner (23:43):** "I want to make resources really a strategic move. Not a simple - just put. Strong creatures can be low costed - and their power is that they are low costed."
+- **Three tiers**, each paid with the one below. All are On Turn Start × Gain in the trigger layer, every turn while Ready:
+  - **Milling N:** N Lumber, free.
+  - **Quarry N (new):** pay 1 Lumber, gain N Stone.
+  - **Smelter N (new):** pay 2 Lumber + 2 Stone, gain 1 Metal, up to N times.
+  - The ratios are in `SK2_DEFAULTS`. No card has Quarry or Smelter yet.
+- **New trigger condition: a price (`t.pay`).** A trigger goes off only if its player holds the whole price, and pays it after every other gate, so a fizzle costs nothing.
+  - If it can't pay, nothing happens, and the log says so.
+  - Units pay in the upkeep's order, so a Quarry acting first can feed a Smelter the same turn.
+- **Docs:**
+  - `docs/economy-resources-2026-10-19.md`: what makes each resource today, the tiers, the owner's principle, and budget recommendations. Nothing in the budget was changed.
+  - The principle is recorded in `docs/decisions.json` / `decisions.md`.
+- **Texts:** TX keys in the 12 packs.
+- **Skill costs:** estimates for Quarry (n 2.5) and Smelter (n 1.5).
+- **Weapons (owner, Oct 21):**
+  - New action **Forge Weapon N**: lay a +N/+0 Forged Blade (an equipment token) in your free slot nearest the unit. With no room, nothing happens and nothing is paid.
+  - New skill **Disarm**, built from triggers: On Play takes the foe's nearest lone piece; On Hit takes the hit unit's piece, with its stats and skills. It takes nothing if it already carries one.
+  - New cards, at the end of `cards.json` with `awaitingSource`: **Anvilwhisker Otter** (the owner's "Otter Smith": On Turn Start, pay 1 Stone, Forge Weapon 1) and **Glintsnatch Magpie** (Disarm, Flying).
+  - Art prompts added to `docs/art/new-cards-2026-10-19-briefs.md`.
+- **Equipment rules checked (owner item 17):**
+  - The piece goes under a unit.
+  - A unit played, spawned or moved onto a lone piece picks it up. One already carrying a piece leaves it lying.
+  - The bonus comes after one round.
+  - The piece stays in the slot when its unit dies; on a gravity row it goes to the graveyard.
+  - It moves with its unit.
+- **Map 1 Lumber:** the economy note recommends Milling on Village Miller (a 1-3 reward), Harvest on Harvest Mouse, and Land Tiller re-keyed as Milling, all in Thistlewood. Recommendations only.
+- **Tests:** `tests/skills-sk2b-2026-10-19.js` (86 checks).
+
 ## 2026-10-19 (package SK2: economy and structure skills)
 - **Owner (21:36, 21:56):** economy and structure skills, plus Salvage and a Stone-making Petrified Tree. Use triggers and actions where they fit.
 - **Ten new skills, on no existing card yet** (engine: the `[SK2 BEGIN]` block in `bramblewood-engine.js`):
