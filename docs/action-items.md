@@ -16,6 +16,7 @@
 | T21-2 | Balance (BF5) | Pale Desert 18-A-5 wins 80% (band 61–77%) since BX made the Stonedrop Vulture an Archer 3. Trench core and guild-skills baselines drifted (43% overwhelmed). |
 | T21-3 | Docs | decisions.json's 10-18 rule still places the Pall Wraith in the Eye of the Volcano; RP moved it to 20-5. Confirm RP's move. |
 | T21-4 | Tests | tests/card-pass-2026-10-19.js check 1 still pins the v3 budget and the pre-BF6 owner-call list; it now fails on the BF6-flagged cards (B14). Update it to read docs/balance/bf6-bucket-2026-10-21.json once B14 is decided. tests/shield-call.js is stale since Shield Call was retired. |
+| N21-10 | Engine (package EV, after CX2) | Evolute archetype for Evomax: Evolute / Alpha / Omega, fodder (name open), ride-over fodders. Spec and open questions: docs/evolute-design-2026-10-21.md |
 | N21-9 | Workflow | Workflow audit: CLAUDE.md, docs/workflows/, tests/run.js, tools/merge/, tools/shot.py, docs/code-map.md (done 10-21, not pushed yet). |
 
 ## 10-19 morning: open calls (consolidated)
