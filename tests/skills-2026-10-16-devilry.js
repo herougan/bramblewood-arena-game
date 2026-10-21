@@ -74,22 +74,23 @@ function put(e, P, pid, id, slot){ const pl = P[pid]; e.debugSpawnCard(P, so, pi
     e.debugAttack(P, so, A.uid, {}, ev); if(W.hp !== 497 || ev.some(x=> x.type === 'hit' && x.crit)) crit++; }
   ok(crit === 0, `Ambush no longer makes its first attack crit (${crit}/10)`); }
 
-// ---- 10. Expose N: counters; each later hit is a crit and uses one
+// ---- 10. Expose N: 2026-10-19 (package SK1, owner 21:36): Expose N leaves the target Exposed for N rounds (its hiding stripped); the old
+// counters' extra damage is Exploit N's tokens: +1 a hit (not a crit), one used each hit, before Armor.
 { const {e, P} = mk(); const W = put(e, P, 2, 'dv-wall', 0); const X = put(e, P, 1, 'dv-expose', 0);
-  e.debugAttack(P, so, X.uid, {}, []); ok(W.hp === 497 && W.exposed === 2, `the first hit: 3, then 2 counters (${W.hp}, ${W.exposed})`); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'dv-wall', 0); W.exposed = 2; const A = put(e, P, 1, 'dv-hit', 0);
-  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 494 && W.exposed === 1, `hit 1 on Exposed 2: a crit (6), 1 left (${W.hp}, ${W.exposed})`);
-  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 488 && W.exposed === 0, `hit 2: a crit (6), none left (${W.hp}, ${W.exposed})`);
-  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 485, `hit 3: back to 3 (${W.hp})`); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'dv-armor', 0); W.exposed = 1; const A = put(e, P, 1, 'dv-hit', 0);
-  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 496, `the crit comes before Armor: 3 × 2 − 2 = 4 (${W.hp})`); }
-{ // a swing that rolled its own Crit is not doubled again (the counter is still used)
-  let checked = 0, bad = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk(null, s); const W = put(e, P, 2, 'dv-wall', 0); W.exposed = 1; const A = put(e, P, 1, 'dv-crit', 0); const ev = [];
+  e.debugAttack(P, so, X.uid, {}, []); ok(W.hp === 497 && W.exposed === 2, `the first hit: 3, then Exposed for 2 rounds (${W.hp}, ${W.exposed})`); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'dv-wall', 0); W.exploit = 2; const A = put(e, P, 1, 'dv-hit', 0);
+  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 496 && W.exploit === 1, `hit 1 on Exploit 2: 3 + 1, 1 left (${W.hp}, ${W.exploit})`);
+  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 492 && W.exploit === 0, `hit 2: 3 + 1, none left (${W.hp}, ${W.exploit})`);
+  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 489, `hit 3: back to 3 (${W.hp})`); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'dv-armor', 0); W.exploit = 1; const A = put(e, P, 1, 'dv-hit', 0);
+  e.debugAttack(P, so, A.uid, {}, []); ok(W.hp === 498, `the token's +1 comes before Armor: 3 + 1 − 2 = 2 (${W.hp})`); }
+{ // a swing that rolled its own Crit: crit (×2), then the token's +1
+  let checked = 0, bad = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk(null, s); const W = put(e, P, 2, 'dv-wall', 0); W.exploit = 1; const A = put(e, P, 1, 'dv-crit', 0); const ev = [];
     e.debugAttack(P, so, A.uid, {}, ev); const h = ev.find(x=> x.type === 'hit' && x.attUid === A.uid); if(!h) continue; checked++;
-    if(W.hp !== 494 || W.exposed !== 0) bad++; const xh = ev.find(x=> x.type === 'statusFx' && x.kind === 'exposedHit'); if(!xh) bad++; }
-  ok(checked > 10 && bad === 0, `Crit + Exposed: always 6, never 12 (${checked} swings, ${bad} wrong)`); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'dv-wall', 0); W.exposed = 1; const ev = []; e.debugDamage(P, so, W.uid, 4, {}, ev);
-  ok(W.exposed === 0 && W.hp === 492, `a skill / flat hit crits too (4 × 2) (${W.hp}, ${W.exposed})`); }
+    if(W.hp !== (h.crit ? 493 : 496) || W.exploit !== 0) bad++; const xh = ev.find(x=> x.type === 'statusFx' && x.kind === 'exploitHit'); if(!xh) bad++; }
+  ok(checked > 10 && bad === 0, `Crit + Exploit: 3 × 2 + 1 = 7, or 3 + 1 = 4 (${checked} swings, ${bad} wrong)`); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'dv-wall', 0); W.exploit = 1; const ev = []; e.debugDamage(P, so, W.uid, 4, {}, ev);
+  ok(W.exploit === 0 && W.hp === 495, `a skill / flat hit uses a token too (4 + 1) (${W.hp}, ${W.exploit})`); }
 
 // ---- the app side
 const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
@@ -105,7 +106,7 @@ ok(/function devilPayVfx\(ev\)/.test(src) && /function devilPulse\(el\)/.test(sr
 ok(/\{key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3,/.test(src) && /get:e=> e\.ambush \? numOr\(e\.ambush, 3\) : undefined/.test(src), 'Ambush N: an old Ambush (true) reads as Ambush 3');
 ok(/ambush: v=> `When an enemy unit enters the slot facing it \(played, spawned or moved in\), deal \$\{numOr\(v, 3\)\} damage to it\.`/.test(src), 'Ambush card text (2026-10-17: any enemy unit entering, not only a card played)');
 ok(!/Its first attack always crits/.test(src), 'the old Ambush text is gone');
-ok(/expose: v=> `Its hits put \$\{numOr\(v, 1\)\} Expose counter/.test(src) && /name:'Exposed', c:'#e07b39', text:TX\('ui\.st-exposed'\)/.test(src) && /each hit on it crits/.test(TEXT_D['ui.st-exposed']), 'Expose card text and the Exposed gloss (2026-10-18, package D: terse)');
+ok(/expose: v=> `Its hits put \$\{numOr\(v, 1\)\} Expose counter/.test(src) && /name:'Exposed', c:'#e07b39', text:TX\('ui\.st-exposed'\)/.test(src) && /hiding is stripped/.test(TEXT_D['ui.st-exposed']), 'Expose card text and the Exposed gloss (2026-10-18, package D: terse; 2026-10-19, SK1: hiding)');
 ok(/opts\.crit \? '🎯 Crit!'/.test(fxb) && /M\.exposeCash\(t, \{crit:true\}\)/.test(fxb), 'the Exposed hit chip says Crit!');
 ok(/"Always Flooded\. Tide effects can't change it\."/.test(src) && /r\.rapids \? 'Always Flood' : 'Always Flooded'/.test(src), 'Perma-tide says "Always Flooded"');
 ok(/function liveStatusGlossHTML\(c\)/.test(src) && /\$\{abilityHTML\}\$\{liveStatusGlossHTML\(liveC\)\}/.test(src), 'a unit in play lists its statuses under its skills');
@@ -114,7 +115,7 @@ ok(/function liveStatusGlossHTML\(c\)/.test(src) && /\$\{abilityHTML\}\$\{liveSt
   const code = grab(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROWS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROUNDS = [^\n]*/) + '\n' + grab(/function liveStatusGlossHTML\(c\)\{[\s\S]*?\n\}/);
   const ctx = {escapeHtml: s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'), TX: TX_D /* + TX (2026-10-18, package D) */}; vm.createContext(ctx); vm.runInContext(code + '\nthis.f = liveStatusGlossHTML;', ctx);
   const h = ctx.f({poison:3, exposed:2, stunned:true, frozen:1, hp:5});
-  ok(/Poison 3<\/b>: takes 3 damage at upkeep/.test(h) && /Exposed 2<\/b>: its next 2 hits crit/.test(h) && /Stunned<\/b>: skips its next attack/.test(h) && /Frozen<\/b> <small>\(1 round\)<\/small>/.test(h), `the live lines (${h.slice(0, 300)})`);
+  ok(/Poison 3<\/b>: takes 3 damage at upkeep/.test(h) && /Exposed 2<\/b>: no hiding for 2 more round/.test(h) /* 2026-10-19 (SK1) */ && /Stunned<\/b>: skips its next attack/.test(h) && /Frozen<\/b> <small>\(1 round\)<\/small>/.test(h), `the live lines (${h.slice(0, 300)})`);
   ok(/--kw:#3fa535/.test(h) && /class="kw-gloss live-status-gloss"/.test(h), 'in the status colours and the kw-gloss look');
   ok(ctx.f({hp:5, poison:0}) === '' && ctx.f(null) === '', 'nothing when it has no statuses'); }
 console.log(`skills-2026-10-16-devilry: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);
