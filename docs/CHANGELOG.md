@@ -15,6 +15,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   (`bramblewood-fx-ideas.js`, `window.IdeasFX`; not in the game bundle). Listed in `docs/effects-catalogue.md`.
 - Checks run: `node --check` on the changed scripts, the Lab build, a script-syntax pass over the built page, every entry of both tabs played at
   390 and 1366 px with no console errors, screenshots viewed. No test suites were run.
+
 ## 2026-10-21 (package AR: the Arena as a place; two PvP buttons; dungeons to the map; the match log; admin raid tickets)
 - **Owner (22:41), on the Arena page:** "Background."; "PVP should be top, split into two PVP buttons - Collection PVP or Standard."; "Dungeon games don't belong there. They belong in the Conquest Map."; "Showcase the field effects more centre and prominently, using hover to see the effect. Limit the text on the screen as much as possible."; "recent opponents can be moved to profile instead. With PVP and PVE log."; "give me a way to get more raid tickets as admin."
 - **The Arena is a place, like the Stomping Grounds:** the tourney ground (map art `marena`) under a darkening veil, bunting, a hanging plank sign ("🏟️ The Arena"), dust off the sand (off under reduced motion). Laurels, deck and 🏆 as small chips under the sign. Loading (a skeleton) and error ("Try again") states.
