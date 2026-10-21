@@ -1855,7 +1855,13 @@ const SKILL_DEFS = [
     apply:(e,vals)=>{ const defId=(vals&&vals[0])||''; const count=Math.max(1, Number(vals&&vals[1])||1); if(defId) e.onDeathSpawn = {defId, count}; },
   },
 ];
-const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','water']; // + magic and water (2026-10-14)
+// 2026-10-21 (package EL, owner: Fire, Ice, Acid, Poison, Decay, Magic, Water, Stone, Metal, Lightning on the attack label): + stone, metal and 'shock'
+// (the engine's existing lightning key: Thunderstorm, Sky Bolt, Wet's +1 and the Electricity skills already use it; it was missing from this list).
+const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','water','stone','metal','shock']; // + magic and water (2026-10-14)
+// 2026-10-21 (owner 18:24: "Can I use Fire? In that dropdown list - add emojis."): editor labels for the Element dropdowns. The stored
+// value stays the engine's key (heat is fire); only the label changes.
+const DMG_TYPE_LABEL = {physical:'💢 Physical', cold:'❄️ Cold (ice)', heat:'🔥 Fire (heat)', acid:'🧪 Acid', poison:'☠️ Poison', decay:'🍂 Decay', magic:'🪄 Magic', water:'💧 Water', stone:'🪨 Stone', metal:'⚙️ Metal', shock:'⚡ Lightning'};
+const dmgTypeOptLabel = dt=> DMG_TYPE_LABEL[dt] || dt;
 // Elemental Damage Types -> signature status (2026-09-24, task #109, "one status effect per
 // elemental damage type"): a card's own dmgType field only ever drove Resist/Weakness math (see
 // resistFactor/weaknessFactor in bramblewood-engine.js) -- it never had anything to do with which
@@ -1985,7 +1991,7 @@ function resistOptionsList(){
 // pass through unchanged; damage types and ability keys get Title Cased / de-camelCased here so
 // every pill and dropdown option reads as "Cold" / "Stun On Hit" rather than a raw key.
 // Damage type names players see (2026-10-12, user: "Deal 5 fire damage"): Heat reads as Fire everywhere; the data key stays 'heat'.
-const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Poison', decay:'Decay', magic:'Magic', water:'Water', radiation:'Radiation'};
+const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Poison', decay:'Decay', magic:'Magic', water:'Water', stone:'Stone', metal:'Metal', shock:'Lightning', radiation:'Radiation'}; // + stone, metal, lightning (EL, 2026-10-21)
 function dmgWord(t){ return t && t !== 'physical' ? (DMG_LABEL[t] || t).toLowerCase() + ' ' : ''; }
 function resistOptionLabel(v){
   if(!v) return '…';
@@ -5806,7 +5812,8 @@ function fullCardHTML(defId, liveCard, opts){
   const splitHTML = (total, base, plus, minus, cls)=> `<span class="${cls}">${total}</span> <span class="atk-split">(<span class="${cls}">${base}</span>${plus ? ` + <span class="atk-bonus" title="Bonus from skills and auras">${plus}</span>` : ''}${minus ? ` − <span class="stat-irr" title="Taken by Irradiation">${minus}</span>` : ''})</span>`;
   const atkIrr = liveC ? (liveC.irrAtk||0) : 0;
   let atkPlus = atkBonus + atkIrr, atkMinus = atkIrr; if(atkPlus < 0){ atkMinus -= atkPlus; atkPlus = 0; }
-  const atkDisplay = (liveC && (atkPlus || atkMinus)) ? (atkIrr ? `⚔ ${splitHTML(effAtk, baseAtk, atkPlus, atkMinus, 'atk-red')}` : `⚔ <span class="atk-red">${effAtk}</span> <span class="atk-split">(<span class="atk-red">${baseAtk}</span> ${atkBonus > 0 ? '+' : '−'} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${Math.abs(atkBonus)}</span>)</span>`) : `⚔${effAtk}`;
+  const atkG = atkGlyphOf(d); // EL (2026-10-21): the element's symbol, or the sword
+  const atkDisplay = (liveC && (atkPlus || atkMinus)) ? (atkIrr ? `${atkG} ${splitHTML(effAtk, baseAtk, atkPlus, atkMinus, 'atk-red')}` : `${atkG} <span class="atk-red">${effAtk}</span> <span class="atk-split">(<span class="atk-red">${baseAtk}</span> ${atkBonus > 0 ? '+' : '−'} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${Math.abs(atkBonus)}</span>)</span>`) : `${atkG}${effAtk}`;
   const hpDisplay = (()=>{ if(!liveCard) return `❤${d.health}`; const lc = liveC || liveCard, irr = lc.irrHp||0, base = Number(d.health)||0, mx = liveCard.maxHp;
     if(!irr && !lc.bossHpBonus) return `❤${Math.max(0,liveCard.hp)}/${mx}`; // a raid boss unit's bonus Health shows as a bonus (2026-10-18)
     let plus = mx - base + irr, minus = irr; if(plus < 0){ minus -= plus; plus = 0; }
@@ -7865,7 +7872,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
-      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : isFireDef(d) ? ' atk-fire' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : isFireDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🔥</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${atkPlateCls(d)}">${atkElementOf(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
@@ -7886,7 +7893,7 @@ function cardTileHTML(d, opts){
     <div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(isMagicDef(d) ? '<span class="atk atk-magic" title="Magic attack"><i class="sg">🪄</i>' : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -9687,7 +9694,7 @@ function renderEditorInner(){
            default for every other card, unchanged. -->
       <div class="field" title="This card's basic attack's damage type. Poison/Decay convert the attack's own damage into that element's signature effect instead of ordinary HP loss (see the Reference tab); every other value only affects Resist/Weakness matching, same as before.">
         <label>Element</label>
-        <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option ${((c.dmgType||'physical')===dt)?'selected':''}>${dt}</option>`).join('')}</select>
+        <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${((c.dmgType||'physical')===dt)?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>
       </div>
     </div>
     ${levelStatsEditorHTML(c)}
@@ -10474,7 +10481,7 @@ function actionFieldsHTML(t,i){
   if(aDef.fields.includes('nameMatch')) html += `<input type="text" placeholder="card name" class="w-110" data-t="nameMatch" data-i="${i}" value="${escapeAttr(t.nameMatch||'')}">`;
   if(aDef.fields.includes('matchMode')) html += `<select data-t="matchMode" data-i="${i}"><option value="exact" ${t.matchMode==='exact'?'selected':''}>exact name</option><option value="contains" ${t.matchMode!=='exact'?'selected':''}>name contains…</option></select>`;
   if(aDef.fields.includes('count')) html += `<input type="number" placeholder="count" class="w-56" data-t="count" data-i="${i}" value="${t.count||1}">`;
-  if(aDef.fields.includes('dmgType')) html += `<select data-t="dmgType" data-i="${i}">${[...DMG_TYPES].sort().map(dt=>`<option ${(t.dmgType===dt||(!t.dmgType&&dt==='physical'))?'selected':''}>${dt}</option>`).join('')}</select>`;
+  if(aDef.fields.includes('dmgType')) html += `<select data-t="dmgType" data-i="${i}">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${(t.dmgType===dt||(!t.dmgType&&dt==='physical'))?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>`;
   // Gain's resource picker (2026-09-30, new — see the 'gain' ACTION_DEFS entry's own comment).
   if(aDef.fields.includes('resource')){
     const opts = [
@@ -18851,6 +18858,9 @@ const QUEST_SHOWN_RANKS = new Set(['A','S','SS','SSS']);
 // notice or better gives items, and each finished weekly tier gives a few. Random kinds, capped as usual; only once the
 // traveller's kit is open.
 const QUEST_KIT_ITEMS = {daily:{A:1, S:1, SS:2, SSS:3}, weekly:[3, 2, 1]};
+// A Raid Ticket from a rare notice (2026-10-21, package RK, owner 18:35: "a usable item you can buy or encounter"): an S notice or better
+// (4.5% of notices) brings one at this chance, once the Raid is open: about 0.1 a day at six notices, a little under one a week.
+const QUEST_RAID_TICKET_CHANCE = {S:0.3, SS:0.6, SSS:1};
 function grantKitItems(n){
   if(!n || !featureUnlockedSafe('fieldkit')) return [];
   const o = loadItems(), ids = Object.keys(ITEM_DEFS), got = [];
@@ -18956,6 +18966,7 @@ function claimQuest(kind, id){
     Object.entries(rw).forEach(([k,v])=>{ if(k !== 'xp') grantCurrency(k, v); });
     awardXp(rw.xp || 20, 'quest');
     { const n = QUEST_KIT_ITEMS.daily[x.rank] || 0; if(n) grantKitItems(n); }
+    try{ const c = QUEST_RAID_TICKET_CHANCE[x.rank] || 0; if(c > 0 && featureUnlockedSafe('raid') && Math.random() < c) grantRaidTicketItems(1); }catch(e){} // 2026-10-21 (package RK)
     refreshQuestBadge(); return {title: QUEST_SHOWN_RANKS.has(x.rank) ? 'Rank ' + x.rank + ' notice!' : 'Quest complete!', reward: Object.fromEntries(Object.entries(rw).filter(([k])=> k !== 'xp')), xp: rw.xp || 20};
   }
   const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
@@ -23875,6 +23886,12 @@ function claimRaidReward(def, claim){
   if(autoNew) setTimeout(()=>{ try{ showToast(TX('toast.raid-auto-unlocked', {name: def.name || ''}), 'ok'); }catch(e){} }, screen ? 600 : 2800);
   const xp = rw.xp != null ? Math.max(0, Math.round(rw.xp)) : (kill ? 500 : 150);
   const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp, shardsGot);
+  // 2026-10-21 (package RK, owner 18:35: "completing a raid (with at least A rank) should give you 1x ticket as well"): a fall's claim at
+  // total raid rank A or better (RaidM.RAID_TICKET_GRANT_RANK) pays RAID_TICKET_GRANT Raid Tickets, shown on the claim screen
+  const tRank = RaidM.raidTotalRank ? RaidM.raidTotalRank(claim.mine || 0) : null;
+  const tGrant = kill && tRank && RaidM.raidTotalRankAtLeast(tRank, RaidM.RAID_TICKET_GRANT_RANK) ? (RaidM.RAID_TICKET_GRANT || 1) : 0;
+  if(tGrant){ addRaidTicketItems(tGrant); spec.rewards.push({kind:'item', id:'raidTicket', icon: raidTicketItemIcon(), amount:'+' + tGrant, label: TX('results.raid-ticket-grant', {raidRank: tRank}), weight:4});
+    if(!screen) setTimeout(()=>{ try{ showToast(TX('toast.raid-ticket-granted', {raidRank: tRank}), 'ok'); }catch(e){} }, 2000); }
   if(xpBarReady()){ const x0 = loadXp().xp; spec.xp = xpBarSpec(x0, x0 + xp); } // 2026-10-18 (RW follow-up): the claim screen's XP bar
   // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
   if(screen) showRaidClaimScreen(spec);
@@ -23906,6 +23923,8 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
   return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards, rank: rk,
+    totalRankHTML: raidTotalRankBadgeHTML(claim.mine || 0), // 2026-10-21 (package RK): the total raid rank, beside the standing
+
     text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
       sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier: raidClaimTierLabel(rw.tier) + (rw.leading ? ' · ' + TX('results.raid-leading') : rw.strong ? ' · ' + TX('results.raid-strong') : ''), damage:TX('results.raid-claim-damage'), // + strong contributor (2026-10-19); + the Leading participant (RV2)
       collect:TX('results.raid-claim-collect'), skip:TX('results.tap-to-skip')}};
@@ -23964,7 +23983,7 @@ function raidFieldCardsHTML(rules){
 // opens that raid's screen (raidPanelHTML), whose "All raids" button comes back. With one raid the hub still shows: it is where the
 // tickets and a raid's status are read at a glance, and where a claim waits.
 function raidTicketChipHTML(tickets, nextMs){
-  return `<span class="r3-chip r3-tickets${tickets <= 0 ? ' is-empty' : ''}" title="${escapeAttr(TX('ui.raid-tickets-tip', {cap: RAID_POINTS_MAX}))}"><small>${escapeHtml(TX('ui.raid-tickets'))}</small><b>${tickets}/${RAID_POINTS_MAX} 🎫</b>${nextMs != null ? `<small class="r3-next">${escapeHtml(TX('ui.raid-ticket-next', {span: raidSpanText(nextMs)}))}</small>` : ''}</span>`;
+  return `<span class="r3-chip r3-tickets${tickets <= 0 ? ' is-empty' : ''}${tickets > RAID_POINTS_MAX ? ' is-over' /* 2026-10-21 (package RK): Raid Tickets past the cap */ : ''}" title="${escapeAttr(TX('ui.raid-tickets-tip', {cap: RAID_POINTS_MAX}))}"><small>${escapeHtml(TX('ui.raid-tickets'))}</small><b>${tickets}/${RAID_POINTS_MAX} 🎫</b>${nextMs != null ? `<small class="r3-next">${escapeHtml(TX('ui.raid-ticket-next', {span: raidSpanText(nextMs)}))}</small>` : ''}</span>`;
 }
 // "★ Strong contributor" / "✓ Taking part" / "2/3 fights · 640/1,000 damage"
 function raidParticipationText(p){
@@ -23975,7 +23994,7 @@ function raidParticipationText(p){
 }
 function raidClaimRowHTML(c, i, raidId){
   const kill = c.reward.kind === 'kill';
-  return `<div class="r2-claim">🎁 ${escapeHtml(kill ? TX('ui.raid-claim-kill') : TX('ui.raid-claim-held'))}${c.reward.strong ? ` <span class="r2-strong">${escapeHtml(TX(c.reward.leading ? 'ui.raid-leading' : 'ui.raid-strong'))}</span>` : ''}${c.rank ? ' ' + raidRankBadgeHTML(c.rank.rank, c.rank.won) : ''} <button type="button" class="btn small primary" data-raid-claim="${i}"${raidId ? ` data-raid-id="${escapeAttr(raidId)}"` : ''}>${escapeHtml(TX('ui.raid-claim'))}</button></div>`;
+  return `<div class="r2-claim">🎁 ${escapeHtml(kill ? TX('ui.raid-claim-kill') : TX('ui.raid-claim-held'))}${c.reward.strong ? ` <span class="r2-strong">${escapeHtml(TX(c.reward.leading ? 'ui.raid-leading' : 'ui.raid-strong'))}</span>` : ''}${c.rank ? ' ' + raidRankBadgeHTML(c.rank.rank, c.rank.won) : ''}${raidTotalRankBadgeHTML(c.mine) ? ' ' + raidTotalRankBadgeHTML(c.mine) : '' /* 2026-10-21 (package RK) */} <button type="button" class="btn small primary" data-raid-claim="${i}"${raidId ? ` data-raid-id="${escapeAttr(raidId)}"` : ''}>${escapeHtml(TX('ui.raid-claim'))}</button></div>`;
 }
 function raidHubCardHTML(def){
   const st = currentRaidStateFor(def), me = myGhostOwnerId(), p = RaidM.participationOf(def, st, me);
@@ -23989,6 +24008,7 @@ function raidHubCardHTML(def){
       <span class="rh-name"><b>${escapeHtml(def.name || def.id)}</b>${st.stage && !st.defeated ? ` <span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</span>
       ${status}
       <span class="rh-me"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small> ${escapeHtml(mine)}</span>
+      ${p.fights ? `<span class="rh-rank">${raidTotalRankBadgeHTML(p.damage, {none: true})}${(()=>{ const nx = RaidM.raidTotalRankNext(p.damage); return nx ? ` <small>${escapeHtml(TX('ui.raid-total-rank-next', {n: Math.round(nx.need).toLocaleString(raidLocale()), nextRank: nx.rank}))}</small>` : ''; })()}</span>` : '' /* 2026-10-21 (package RK): your total raid rank, live */}
       <span class="rh-tags">${st.instance > 1 ? `<span class="rh-tag">${escapeHtml(TX('ui.raid-instance', {n: st.instance}))}</span>` : ''}${raidAutoOpen(def) ? `<span class="rh-tag is-auto">🤖 ${escapeHtml(TX('ui.raid-auto-open'))}</span>` : ''}</span>
     </span>
     <span class="rh-go" aria-hidden="true">›</span></button>`;
@@ -24001,6 +24021,7 @@ function raidHubHTML(){
     <div class="rh-head"><h2>🐙 ${escapeHtml(TX('ui.raid-hub-title'))}</h2>${raidTicketChipHTML(tickets, next)}</div>
     <p class="panel-sub">${escapeHtml(TX('ui.raid-hub-sub', {cap: RAID_POINTS_MAX}))}</p>
     ${tickets <= 0 ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())}</p>` : ''}
+    ${raidTicketItems() ? `<p class="r3-hint rk-use-row">${raidTicketUseBtnHTML()}</p>` : '' /* 2026-10-21 (package RK): Raid Tickets, past the cap too */}
     ${claims.map(x=> `<div class="rh-claims"><b>${escapeHtml(x.def.name || x.def.id)}</b>${x.list.map((c, i)=> raidClaimRowHTML(c, i, x.def.id)).join('')}</div>`).join('')}
     <div class="rh-list">${live.map(raidHubCardHTML).join('')}</div>
   </div>`;
@@ -24051,6 +24072,7 @@ function raidPanelHTML(){
     <div class="r3-me" role="group" aria-label="Your raid this week">
       <span class="r3-chip"><small>Your damage</small><b>${mine.toLocaleString(raidLocale())}</b></span>
       <span class="r3-chip"><small>Standing</small><b>${tierLabel || '—'}</b></span>
+      ${tierLabel ? `<span class="r3-chip rk-chip"><small>${escapeHtml(TX('ui.raid-total-rank-label'))}</small>${raidTotalRankBadgeHTML(mine, {none: true})}</span>` : '' /* 2026-10-21 (package RK): the total raid rank beside the standing */}
       <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
       ${raidTicketChipHTML(tickets, tkNext)}
       <span class="r3-chip"><small>${escapeHtml(TX('ui.raid-fight-costs'))}</small><b>${tkCost} 🎫 + ${enLo === enHi ? enLo : enLo + '–' + enHi} ⚡</b></span>
@@ -24064,7 +24086,7 @@ function raidPanelHTML(){
       return `<p class="r3-hint r3-leader-cap${lc.ok ? '' : ' is-over'}">${TX('ui.raid-leader-cap', {cap})} ${d ? (lc.ok ? TX('ui.raid-leader-cost-ok', {name: escapeHtml(d.name), cost: lc.cost, cap}) : `<b>${escapeHtml(lc.text)}</b>`) : ''} <button type="button" class="btn small" data-raid-leader>${TX('ui.raid-change-leader')}</button></p>`; })()}
     ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
     ${raidAutoOpen(def) ? '' : `<p class="r3-hint r3-auto-hint">${escapeHtml(TX('ui.raid-auto-locked'))}</p>`}
-    ${noTickets ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())}</p>` : ''}
+    ${noTickets ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())} ${raidTicketUseBtnHTML() /* 2026-10-21 (package RK) */}</p>` : ''}
     <h3 class="r3-h">Pick a part to fight</h3>
     <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
       const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
@@ -25276,6 +25298,18 @@ function raidRankBadgeHTML(rank, won){
   const tip = won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip');
   return `<span class="conquest-rank-badge rank-${escapeAttr(rank)} raid-rank${won ? ' is-emblem' : ''}" title="${escapeAttr(tip)}">${won ? '<i class="raid-rank-crest" aria-hidden="true">✦</i>' : ''}${escapeHtml(TX('results.raid-rank', {rank}))}</span>`;
 }
+// The total raid rank's badge (2026-10-21, package RK): "Raid rank A", from your total raid damage in that life of the raid
+// (RaidM.raidTotalRank, the RAID_TOTAL_RANKS ladder F 800 .. U 30,000), in raidRankBadgeHTML's style (.raid-total-rank; U has its own
+// look). Its tip: the total so far and what the next rank needs. opts.none: below F, show "No raid rank yet" (else nothing).
+function raidTotalRankBadgeHTML(total, opts){
+  opts = opts || {}; if(!RaidM || !RaidM.raidTotalRank) return '';
+  const t = Math.max(0, Math.round(Number(total) || 0)), rank = RaidM.raidTotalRank(t), next = RaidM.raidTotalRankNext(t);
+  if(!rank && !opts.none) return '';
+  const fmt = n=> Math.round(n).toLocaleString(raidLocale());
+  const tip = TX('ui.raid-total-rank-tip', {n: fmt(t), next: next ? TX('ui.raid-total-rank-next', {n: fmt(next.need), nextRank: next.rank}) : TX('ui.raid-total-rank-top')});
+  const cls = rank ? 'rank-' + rank + (/^U+$/.test(rank) ? ' is-u' : '') : 'is-none';
+  return `<span class="conquest-rank-badge raid-total-rank ${escapeAttr(cls)}" title="${escapeAttr(tip)}">${escapeHtml(rank ? TX('ui.raid-total-rank', {raidRank: rank}) : TX('ui.raid-total-rank-none'))}</span>`;
+}
 // The raid's rank emblem (2026-10-19, package NV, owner 10:55: "Raid complete: Still use our victory emblems - S, A, B etc. Im just
 // requesting it to be abit more special looking. But it should be based on our old emblems."): the victory screens' hexagon (.rank-hex,
 // gloryBadgesHTML) inside an abyssal ring with crimson tentacle curls and a glow, stamped in (S, SS and SSS hit harder, with a shockwave;
@@ -25344,6 +25378,7 @@ function settleRaidPartAfterMatch(m){
   if(m.winner === 1){ try{ const egg = rollEggDrop({kind:'raidWin', deck: (m.raidBoss||{}).deck || {}}, null, true); if(egg) m.raidEggDrop = egg; }catch(e){} }
   m.raidDamageDealt = r.contribution; m.raidOverwhelmed = overwhelmed;
   m.raidRemainingAfter = r.remainingAfter;
+  m.raidTotalAfter = r.myTotal; // 2026-10-21 (package RK): the results show your total raid rank after this fight
 }
 // Shared by the single-row fight and the trench: scores an attempt, stores it locally, pushes it
 // live, bumps quests and pays the small per-attempt reward.
@@ -25371,7 +25406,8 @@ function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
   const ink = below ? 1 : 1 + Math.min(4, Math.floor(dealt / (minDamage * 2))); for(let i = 0; i < ink; i++) try{ unlockCardForPlayer('abyssal-ink', 'materia'); }catch(e){}
   const after = currentRaidStateFor(def);
-  return {contribution, gold:g, dust:d, ink, below, minDamage, remainingAfter: Math.round((after.byId[partId]||{remaining:0}).remaining)};
+  return {contribution, gold:g, dust:d, ink, below, minDamage, remainingAfter: Math.round((after.byId[partId]||{remaining:0}).remaining),
+    myTotal: Math.round((after.contributors || {})[myGhostOwnerId()] || 0)}; // 2026-10-21 (package RK): your total in this life, for the total raid rank
 }
 function renderRaidSubTab(body){
   // Shares the Conquest map's full-width treatment (see renderConquestSubTab's own comment) —
@@ -27146,6 +27182,21 @@ const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budge
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
+// 2026-10-21 (package CX5, owner call CX5): the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (built
+// in as SKILL_COSTS_TABLE) with SkillCosts, i.e. tools/skill_costs.js inlined by the build: the one implementation the balance tools, the
+// re-fits and the hub use (scales n / half / fixed, triggers x actions and modifiers, aliases, shorthands, context skills at CONTEXT_MULT,
+// the owner-set values). The half-miss list is the table's. SB_DEFAULT_SKILLS (or the Test Lab's saved costs) only prices a keyword skill
+// the table has no entry for, and the panel names it ("no price"). Was: sbSkillCost over SB_DEFAULT_SKILLS (Pounce 2 = 2, the table's
+// 2.4 x (1 + 1) = 4.8). sbSkillCost itself is unchanged: the deck-swap suggestions (swapStrength) still score with it.
+const SKILL_COSTS_TABLE = __SKILL_COSTS__;
+let SB_SC = null, sbFbSkills = null;
+function sbCanon(){ if(SB_SC == null){ try{ SB_SC = typeof SkillCosts !== 'undefined' && SkillCosts.make ? SkillCosts.make(SKILL_COSTS_TABLE, {fallback: (k, v)=> sbSkillCost({[k]: v}, {skills: sbFbSkills || SB_DEFAULT_SKILLS})}) : false; }catch(e){ SB_SC = false; } } return SB_SC || null; }
+// S of a card: {S, missing: ['skill:id' | 'trigger:id' | 'action:id' with no entry in the table]}
+function sbPriceS(d, cfg){ const T = sbCanon(), e = (d && d.effects) || {};
+  if(!T) return {S: sbSkillCost(e, cfg), missing: []};
+  sbFbSkills = (cfg && cfg.skills) || null; let r; try{ r = T.cardS(e, d || {}); }finally{ sbFbSkills = null; }
+  return {S: r.S, missing: [...new Set(r.missing)]}; }
+function sbMissingNames(missing){ return missing.map(m=>{ const [kind, id] = m.split(':'), sd = kind === 'skill' && (SKILL_DEFS.find(x=> x.key === id) || PASSIVE_DEFS.find(x=> x.key === id)); return sd && sd.label ? sd.label : id; }); }
 // Stat budget v5 (2026-10-19 13:52, package BF2, replacing 09:52's v4; owner: "(Base + L/3) * (1 + L/30) ... Level 0 gives an additional
 // minus 1"; 13:54: "change it to L/4 or L/5" if L/3 favours weak cards; 15:48: "let's try L/10"):
 //   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + Ritual points (v3's N without its 2×Level)
@@ -27160,7 +27211,9 @@ function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r 
 function sbLoad(){ const def = Object.assign({}, SB_V3_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
   let saved = null; try{ saved = JSON.parse(localStorage.getItem(SB_KEY)||'null'); }catch(e){}
   if(!saved){ for(const k of [SB_KEY_V5, SB_KEY_V3, SB_KEY_V2]){ try{ const old = JSON.parse(localStorage.getItem(k)||'null'); if(old){ saved = {}; if(old.skills) saved.skills = old.skills; if(old.halfMiss) saved.halfMiss = old.halfMiss; break; } }catch(e){} } }
-  return Object.assign(def, saved && typeof saved === 'object' ? saved : {}); }
+  const out = Object.assign(def, saved && typeof saved === 'object' ? saved : {});
+  if(Array.isArray(SKILL_COSTS_TABLE.halfMiss)) out.halfMiss = SKILL_COSTS_TABLE.halfMiss.slice(); // 2026-10-21 (CX5): the table's list, not a saved copy
+  return out; }
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
   let t = 0; Object.entries(effects||{}).forEach(([k, v])=>{
@@ -27210,11 +27263,11 @@ function sbNMultLine(d){ const B = BramblewoodBudget, cfg = Object.assign({}, SB
 // 2026-10-21 (package CX2): the context-skill rule in the budget panel, CONTEXT_MULT × the skills in the braces, and this card's own
 // context skills worked out ("Tide: 0.4 × 11.5 = 4.6").
 function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects) || {}, f1 = v=> Math.round(v * 10) / 10;
-  const own = Object.keys(e).map(k=>{ const cx = B.contextS && B.contextS(k, e[k], inner=> sbSkillCost(inner, cfg)); if(!cx) return ''; const sd = SKILL_DEFS.find(x=> x.key === k);
+  const own = Object.keys(e).map(k=>{ const cx = B.contextS && B.contextS(k, e[k], inner=> sbPriceS({effects: inner, attack: d && d.attack}, cfg).S /* CX5: the canonical table */); if(!cx) return ''; const sd = SKILL_DEFS.find(x=> x.key === k);
     return TX('ui.budget-context-card', {skill: sd ? sd.label : k, k: cx.mult, inner: f1(cx.inner), s: f1(cx.S)}); }).filter(Boolean);
   return `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-context', {k: B.CONTEXT_MULT}))}${own.length ? ' ' + escapeHtml(own.join(' · ')) : ''}</small>`; }
 function ceBudgetHTML(d){
-  const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M);
+  const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M); // CX5 (10-21): S from canonical/skill-costs.json
   const rar = (d.rarity || 'common'), rd = RARITY_DEFS.find(r=> r.key === rar), rarLabel = rd ? rd.label : rar[0].toUpperCase() + rar.slice(1);
   const W = Number(d.wait)||0, C = Number(d.cost)||0, f1 = v=> Math.round(v * 10) / 10, m = M !== 1 ? ` × ${f1(M)}` : '', mark = ok=> ok ? '✓' : '✗', op = ok=> ok ? '≤' : '&gt;'; // inclusive (BF3, 16:22)
   const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
@@ -27227,6 +27280,7 @@ function ceBudgetHTML(d){
     <div style="font-size:12px; margin:2px 0">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</div>
     <div style="font-size:12.5px">${TX('ui.budget-stats', {a: A, h: D, s: f1(S), m, x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)})}</div>
     <div style="font-size:12.5px">${TX('ui.budget-product', {a: A, h: D, s: f1(S), m, x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)})}</div>
+    ${price.missing.length ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-price-missing', {skills: sbMissingNames(price.missing).join(', ')}))}</small>` : '' /* CX5 (10-21) */}
     ${miss.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-miss', {m: f1(M), skills: miss.join(', ')}))}</small>` : ''}
     <small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-base-line', {parts: bp.parts.map(part).join(' + '), base: f1(bp.total)}))}</small>${sbNMultLine(d)} <!-- BF5 (10-21): the card's N multiplier -->
     ${sbContextLine(d, cfg)}
@@ -27241,19 +27295,19 @@ function ceBudgetRefresh(d){
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
-  const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M); return {id, d, S, lv, N, A, D, M, c, fit: c.ok ? null : sbFit(d, S, N, M)}; });
+  const rows = ids.map(id=>{ const d = defs[id], pr = sbPriceS(d, cfg) /* CX5 (10-21): canonical/skill-costs.json */, S = pr.S, lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M); return {id, d, S, miss: pr.missing, lv, N, A, D, M, c, fit: c.ok ? null : sbFit(d, S, N, M)}; });
   const fails = rows.filter(r=> !r.c.ok), pinks = rows.filter(r=> r.c.wellUnder), shown = sbState.onlyFail ? fails : rows;
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">${escapeHtml(TX('ui.budget-lab-intro'))} ${escapeHtml(sbFormulaText(cfg))}. ${escapeHtml(TX('ui.budget-lab-miss', {m: g('missMult'), skills: (cfg.halfMiss || SB_HALF_MISS).join(', ')}))} ${escapeHtml(TX('ui.budget-lab-nmult', {plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileMult')}))} <!-- 2026-10-19 (BF2): v5, through TX --> Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Bounty costs 0. <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
+    <p class="panel-sub">${escapeHtml(TX('ui.budget-lab-intro'))} ${escapeHtml(sbFormulaText(cfg))}. ${escapeHtml(TX('ui.budget-lab-miss', {m: g('missMult'), skills: (cfg.halfMiss || SB_HALF_MISS).join(', ')}))} ${escapeHtml(TX('ui.budget-lab-nmult', {plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileMult')}))} <!-- 2026-10-19 (BF2): v5, through TX --> Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Skill costs (S) come from canonical/skill-costs.json, the table the balance tools and the hub use (CX5, 2026-10-21). <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
     <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label title="BF5 (owner 21:36): the whole N times this; 0.5 halves it">N × ${inp('sbScale', 'scale', '0.05')}</label><label title="N = (Base + Level / this) × (1 + Level / growth)">Level ÷ ${inp('sbLevelLin', 'levelLinDiv')}</label><label title="N = (Base + Level / ÷) × (1 + Level / this)">Level growth ÷ ${inp('sbLevelDiv', 'levelDiv')}</label><label title="Level 0: Base − this">Level 0 − ${inp('sbZero', 'zeroPenalty', '0.5')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
       <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label title="Ritual points = the sum of the Ritual's counts">Per Ritual point ${inp('sbRitual', 'perRitual', '0.1')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
       <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v5 numbers">Reset to v5</button>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
-    <details><summary>Skill costs (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
+    <details><summary>Stand-in skill costs, only for a skill missing from canonical/skill-costs.json (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
     <p class="panel-sub">${fails.length} of ${rows.length} cards over budget · ${rows.length - fails.length - pinks.length} within · ${pinks.length} well under.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
     <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>Lv</th><th>Wait/Lumber</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m &lt; N</th><th>(A×H+S×|S|)×m ≤ (N/3)²</th><th>Budget</th><th>Fits as</th><th></th></tr></thead><tbody>
-    ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
+    ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}${r.miss.length ? ` <small style="color:#c0392b" title="${escapeAttr('No price in canonical/skill-costs.json: ' + sbMissingNames(r.miss).join(', '))}">price missing</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
   num('#sbBase', 'base'); num('#sbScale', 'scale'); num('#sbLevelLin', 'levelLinDiv'); num('#sbLevelDiv', 'levelDiv'); num('#sbZero', 'zeroPenalty'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbRitual', 'perRitual'); num('#sbMissMult', 'missMult');
@@ -29267,7 +29321,7 @@ function startRaidMatch(bossId){
   if(!spendEnergy(ENERGY_COST.onlineRaid)){
     energyShortToast(ENERGY_COST.onlineRaid);
     // Refund the Raid Point already spent above — the attempt never actually started.
-    myCurrencies.raidPoints = Math.min(RAID_POINTS_MAX, (myCurrencies.raidPoints||0) + RAID_POINTS_COST);
+    myCurrencies.raidPoints = (myCurrencies.raidPoints||0) + RAID_POINTS_COST; // 2026-10-21 (package RK): no cap here, a stack above it (Raid Tickets) gets back what it paid
     saveCurrencies();
     return;
   }
@@ -31521,7 +31575,7 @@ function showPlacementPreview(row, side){
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
     <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
-    <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
+    <div class="stats"><span class="atk${atkPlateCls(d)}">${atkGlyphOf(d)}${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
   if(actualSide==='center'){
     const centerSlot = row.querySelector('.center-slot-empty');
@@ -35334,12 +35388,19 @@ function atkAmpTier(eff, base){
 function liveSwarmBonus(c){ try{ const m = matchState; return (m && m.engine && m.engine.swarmBonusOf) ? m.engine.swarmBonusOf(m.players, c) : 0; }catch(e){ return 0; } }
 // 2026-10-12 (user: "At super-minimised forms, remove the emojis from the attack and health labels"): the glyphs sit in their
 // own <i class="sg"> so the tiny-card rule can hide them.
-function atkLabelHTML(eff, base, d){ const g = isMagicDef(d) ? '🪄' : isFireDef(d) ? '🔥' : '⚔', /* + fire (BX, 2026-10-21) */ t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
+function atkLabelHTML(eff, base, d){ const g = atkGlyphOf(d), /* every element (EL, 2026-10-21) */ t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
 // Magic attackers (2026-10-14, user: "some units have a wand instead of a sword symbol on their bottom left, blue in colour").
 function isMagicDef(d){ return !!(d && ((d.effects && d.effects.magic) || d.dmgType === 'magic')); }
 // 2026-10-21 (package BX, owner: "we shall introduce 1 or 2 cards with fire damage in the attack label"): a unit whose swing deals fire
 // damage (dmgType 'heat', the engine's fire; 'fire' is read the same) shows a flame on its attack label, as magic shows the wand.
 function isFireDef(d){ return !!(d && !isMagicDef(d) && (d.dmgType === 'heat' || d.dmgType === 'fire')); }
+// 2026-10-21 (package EL, owner 18:29: "If it does Fire, Ice, Acid, Poison, Decay, Magic, Water, Stone, Metal, Lightning damage, the attack label on the card
+// should use those symbols instead."): the BX flame generalised. A swing that deals one of these shows its element's symbol in place of the sword, on a
+// tinted plate (class atk-<element>; heat keeps BX's atk-fire, magic its atk-magic). Physical keeps the sword. dmgType 'shock' is the engine's lightning.
+const ATK_ELEM_GLYPH = {heat:'🔥', cold:'❄️', acid:'🧪', poison:'☠️', decay:'🍂', magic:'🪄', water:'💧', stone:'🪨', metal:'⚙️', shock:'⚡'};
+function atkElementOf(d){ if(!d) return null; if(isMagicDef(d)) return 'magic'; const t = d.dmgType === 'fire' ? 'heat' : d.dmgType; return t && ATK_ELEM_GLYPH[t] ? t : null; }
+function atkGlyphOf(d){ const k = atkElementOf(d); return k ? ATK_ELEM_GLYPH[k] : '⚔'; }
+function atkPlateCls(d){ const k = atkElementOf(d); return k ? ' atk-' + (k === 'heat' ? 'fire' : k) : ''; }
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
@@ -39274,7 +39335,7 @@ function matchStatsHTML(m){
     </div>` : '';
   const orReward = m.raidRewardEarned;
   const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards raid-results">
-      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)})}</span>
+      ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)})}</span>${m.raidTotalAfter != null ? raidTotalRankBadgeHTML(m.raidTotalAfter, {none: true}) : '' /* 2026-10-21 (package RK): your total raid rank after this fight */}
       ${adminModeEnabled ? raidDamageCalcHTML(m) : '' /* 2026-10-19 (NV): how that number was made; (package RB, owner 12:23: "Do not show the damage formula to players.") admins only */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: raidNum(m.raidRemainingAfter), v2: m.raidRemainingAfter<=0?' — defeated!':''}) /* 2026-10-19 (package RB): 1,234 */}</span>
       ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${'' /* 2026-10-19 (package RW3): the dropped card is no longer a name pill (the owner's "Honeybrew"): it shows as the card, below */}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
@@ -40466,6 +40527,8 @@ function dmgGlyph(dmgType){
     case 'magic': return '🪄';
     case 'water': return '💧';
     case 'shock': return '⚡'; // 2026-10-16
+    case 'stone': return '🪨'; // 2026-10-21 (package EL)
+    case 'metal': return '⚙️'; // 2026-10-21 (package EL)
     default: return '➶';
   }
 }
@@ -40946,12 +41009,12 @@ const DangerPulse = (()=>{
 })();
 setTimeout(()=> DangerPulse.start(), 2000);
 // Damage-type icons beside the number (2026-10-06).
-const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed'], shock:['⚡','shock']}; // + shock: lightning (Electricity's arc, Dragon Lightning) has its own ⚡ number, 2026-10-16
+const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed'], shock:['⚡','shock'], stone:['🪨','stone'], metal:['⚙️','metal']}; // + stone, metal (EL, 2026-10-21) // + shock: lightning (Electricity's arc, Dragon Lightning) has its own ⚡ number, 2026-10-16
 // 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): every element has its emoji here, not only once
 // FX.A has run (it added magic 🪄 / water 💧 / acid / decay colours): the same icons, so the numbers and the battle log agree. Psychic
 // keeps the 💭 its own number already had. DMG_NAME: the word the battle log uses after the number.
 Object.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});
-const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', psychic:'psychic'};
+const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', stone:'stone', metal:'metal', psychic:'psychic'};
 // "for 3 ⚡ lightning damage" (an elemental hit) or "for 3" (physical), for the battle log (2026-10-17).
 function dmgLogText(dmg, dmgType){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType]; return di && w ? `${dmg} ${di[0]} ${w} damage` : String(dmg); }
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
@@ -45574,6 +45637,71 @@ function shopTicketCounter(el){
     showToast(TX('toast.rename-ticket-bought', {n: renameTickets()}), 'ok');
     renderShop(); };
 }
+// ---- Raid Ticket (2026-10-21, package RK, owner 18:35: "there is a usable item you can buy or encounter that lets you go for the raid one
+// more time. I think completing a raid (with at least A rank) should give you 1x ticket as well."): a 🎫 item in the Inventory. Using one
+// adds 1 to the raid's tickets (myCurrencies.raidPoints), past the RAID_POINTS_MAX (10) cap too: BramblewoodRaid.settleTickets keeps a
+// stack above the cap as it is (the weekly top-up only lifts a stack below it, and the day's +1 waits while it is full), and the server
+// has no rule on player_currencies.raid_points or on how many raid_week_attempts a player writes (read-only check, 2026-10-21), so the
+// extra fight syncs and records like any other. Where it comes from: the Shop (RAID_TICKET_ITEM_PRICE Maple Leaves, the Rename Ticket's
+// shelf and currency; not while you carry RAID_TICKET_ITEM_CAP), an S notice or better now and then (QUEST_RAID_TICKET_CHANCE), the
+// 'raidTicket' reward token on a fight, and a fallen raid's claim at raid rank A or better (claimRaidReward). Gifts and drops are never
+// cut by the cap; only buying stops there. The count travels in the progress blob like the Rename Ticket's.
+const RAID_TICKET_ITEM_KEY = 'bramblewood_raid_ticket_items_v1';
+const RAID_TICKET_ITEM_PRICE = 300, RAID_TICKET_ITEM_CAP = 9;
+PROGRESS_KEYS.push(RAID_TICKET_ITEM_KEY);
+function raidTicketItemName(){ return TX('ui.raid-ticket-item-name'); }
+// the item's icon: the raid's 🎫 with a small 🐙, so it isn't taken for the Rename Ticket beside it
+function raidTicketItemIcon(){ return '<span class="rk-tk-ico">🎫<i aria-hidden="true">🐙</i></span>'; }
+function raidTicketItems(){ try{ return Math.max(0, Math.floor(Number(localStorage.getItem(RAID_TICKET_ITEM_KEY)) || 0)); }catch(e){ return 0; } }
+function addRaidTicketItems(n){ const v = Math.max(0, raidTicketItems() + Math.round(Number(n) || 0)); try{ localStorage.setItem(RAID_TICKET_ITEM_KEY, String(v)); }catch(e){} return v; }
+// a drop or a gift: +n, with the toast (why: 'found' or a raid rank for the A-rank grant)
+function grantRaidTicketItems(n, rank){
+  if(!(n > 0)) return 0; addRaidTicketItems(n);
+  setTimeout(()=>{ try{ showToast(rank ? TX('toast.raid-ticket-granted', {raidRank: rank}) : TX('toast.raid-ticket-found'), 'ok'); }catch(e){} }, 1400);
+  return n;
+}
+// Spends one item for one raid ticket. The regen clock is left as it ran (a stack that reaches the cap rests it, as settleRaidPoints does).
+function useRaidTicketItem(){
+  if(raidTicketItems() < 1) return false;
+  settleRaidPoints(); addRaidTicketItems(-1);
+  myCurrencies.raidPoints = (Number(myCurrencies.raidPoints) || 0) + 1;
+  if(myCurrencies.raidPoints >= RAID_POINTS_MAX) myCurrencies.raidPointsUpdatedAt = new Date().toISOString();
+  saveCurrencies();
+  return true;
+}
+// "Use a Raid Ticket (2 left)", where the raid's tickets are short and on the Inventory's shelf; '' when you hold none
+function raidTicketUseBtnHTML(cls){
+  const n = raidTicketItems(); if(!n) return '';
+  return `<button type="button" class="btn small ${cls || ''}" data-raid-use-ticket>${raidTicketItemIcon()} ${escapeHtml(TX('ui.raid-ticket-use', {n}))}</button>`;
+}
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{
+  const b = e.target && e.target.closest && e.target.closest('[data-raid-use-ticket]'); if(!b) return;
+  if(!useRaidTicketItem()){ denyShake(b); showToast(TX('toast.raid-ticket-none'), 'error'); return; }
+  try{ SoundKit.gold && SoundKit.gold(); }catch(_){}
+  showToast(TX('toast.raid-ticket-used', {n: currentRaidPoints()}), 'ok');
+  if(b.closest('#view-inventory')) renderInventory();
+  else { const body = document.getElementById('playSubBody'); if(body && playSubTab === 'raid' && !matchState) renderRaidSubTab(body); }
+});
+// On the Shop's shelf once the Raid tab is open; one a buy, buying stops at RAID_TICKET_ITEM_CAP held.
+function shopRaidTicketOnShelf(){ return adminModeEnabled || tabOpen('raid'); }
+function shopRaidTicketFull(){ return raidTicketItems() >= RAID_TICKET_ITEM_CAP; }
+function shopRaidTicketShelfHTML(i, selected){
+  const k = 'raidticket:1', full = shopRaidTicketFull(), tilt = ((i*37) % 7) - 3, name = raidTicketItemName();
+  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(name)}</span><span class="shelf-tag">${full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span></button>`;
+}
+function shopRaidTicketDetailHTML(){
+  return `<b class="sd-name">${raidTicketItemIcon()} ${escapeHtml(raidTicketItemName())}</b><span class="sd-line">${escapeHtml(TX('ui.raid-ticket-shop-line', {cap: RAID_POINTS_MAX}))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: raidTicketItems(), cap: RAID_TICKET_ITEM_CAP}))}</span><span class="sd-price">${shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span>${shopRaidTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RAID_TICKET_ITEM_CAP}))}</span>` : ''}`;
+}
+function shopRaidTicketCounter(el){
+  const full = shopRaidTicketFull(), afford = (myCurrencies.gold||0) >= RAID_TICKET_ITEM_PRICE;
+  el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span></div><div class="counter-info">${shopRaidTicketDetailHTML()}</div><div class="counter-act">${full ? '' : `<button class="btn primary" id="shopBuyRaidTicket" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${RAID_TICKET_ITEM_PRICE - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
+  const b = el.querySelector('#shopBuyRaidTicket'); if(b) b.onclick = ()=>{
+    if(shopRaidTicketFull() || (myCurrencies.gold||0) < RAID_TICKET_ITEM_PRICE){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
+    myCurrencies.gold -= RAID_TICKET_ITEM_PRICE; saveCurrencies(); addRaidTicketItems(1);
+    try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
+    showToast(TX('toast.raid-ticket-bought', {n: raidTicketItems()}), 'ok');
+    renderShop(); };
+}
 function itemsUsableIn(m){ return !!m && !m.over && ITEM_PVE_MODES.has(m.mode) && !m.testKit && featureUnlockedSafe('fieldkit'); }
 // Two items a fight (2026-10-18, package Z, owner 17:28: "Item bag limit: use two item(s) per map only. then it's grayed then faded
 // out. Some bosses grant an item! In those circumstances, you can use +1 item. - players would only use these item(s) if they were
@@ -45790,7 +45918,10 @@ function renderInventory(){
       <p class="panel-sub inv-kit-note">${escapeHtml(TX('ui.kit-inv-note', {max: KIT_USES_PER_FIGHT}))}</p>
       <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
-    ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc}], 'tk'); return tk.length ? `<section class="panel inv-sec"><h3>🎫 Tickets <small>${escapeHtml(TX('ui.rename-ticket-inv-note'))}</small></h3><div class="inv-slots">${slots(tk, '')}</div></section>` : ''; })()}
+    ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc},
+      {key:'raid', icon:raidTicketItemIcon(), count:raidTicketItems(), name:raidTicketItemName(), sub:TX('ui.raid-ticket-item-desc', {cap: RAID_POINTS_MAX})}], 'tk'); // 2026-10-21 (package RK): + the Raid Ticket, with its Use button
+      const notes = [tk.some(t=> t.key === 'tk:rename') ? TX('ui.rename-ticket-inv-note') : '', tk.some(t=> t.key === 'tk:raid') ? TX('ui.raid-ticket-inv-note') : ''].filter(Boolean).join(' · ');
+      return tk.length ? `<section class="panel inv-sec"><h3>🎫 Tickets <small>${escapeHtml(notes)}</small></h3><div class="inv-slots">${slots(tk, '')}</div>${raidTicketUseBtnHTML('rk-inv-use')}</section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">🪺 Nest</button>' /* 2026-10-17 (user): "🪺 Nest", like "⚒️ Blacksmith" */ : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
     <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">💎 Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
@@ -46697,7 +46828,7 @@ function shelfRows(){
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
   const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
   return [
-    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, ...(shopRaidTicketOnShelf() ? [{raidTicket:true, qty:1}] : []) /* 2026-10-21 (package RK): 🎫 Raid Ticket */, {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
     ...(onSale.length === 1 ? [
       ...chunk(onSale.flatMap(p=> [10, 25].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
       ...chunk(onSale.flatMap(p=> [50, 100].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped'])] : []),
@@ -46730,11 +46861,12 @@ function shelfDetailHTML(p, qty){
 }
 function renderShopShelves(grid, signedIn){
   const rows = shelfRows(), all = rows.flatMap(r=> r.items);
-  const keyOf = it=> it.bread ? 'bread:1' : it.ticket ? 'ticket:1' : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
+  const keyOf = it=> it.bread ? 'bread:1' : it.ticket ? 'ticket:1' : it.raidTicket ? 'raidticket:1' /* 2026-10-21 (package RK) */ : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
   if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> it.pack && packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
   let propN = 0; const prop = ()=> `<span class="shelf-prop" aria-hidden="true">${SHELF_PROPS[(propN++ * 5 + rows.length) % SHELF_PROPS.length]}</span>`;
   const itemHTML = (it, i)=>{
     if(it.ticket) return shopTicketShelfHTML(i, shopSelected); // 2026-10-18 (guild rename)
+    if(it.raidTicket) return shopRaidTicketShelfHTML(i, shopSelected); // 2026-10-21 (package RK)
     if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), k = 'kit:' + K.id, tilt = ((i*37) % 7) - 3; // field-kit stock (2026-10-17)
       return `<button type="button" class="shelf-item is-kit ${sold||full?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(K.def.name + (sold ? ', sold out' : ''))}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span><span class="sk-today">Today</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(K.def.name)}</span><span class="shelf-tag">${sold ? 'Sold out' : full ? 'Pack full' : shelfPriceHTML({gold:K.price, gems:0})}</span></button>`; }
     if(it.bread){ const sold = shopBreadSold(), k = 'bread:1', tilt = ((i*37) % 7) - 3;
@@ -46765,7 +46897,7 @@ function renderShopShelves(grid, signedIn){
   const breadHTML = ()=> `<b class="sd-name">Bread</b><span class="sd-line">A warm loaf from the baker next door. It does nothing at all.</span><span class="sd-price">${shelfPriceHTML({gold:1, gems:0})}</span>${shopBreadSold() ? '<span class="sd-why">Sold out. The baker only makes one.</span>' : ''}`;
   const showHover = btn=>{
     const it = find(btn.dataset.shelfitem); if(!it) return;
-    hover.innerHTML = it.bread ? breadHTML() : it.ticket ? shopTicketDetailHTML() : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
+    hover.innerHTML = it.bread ? breadHTML() : it.ticket ? shopTicketDetailHTML() : it.raidTicket ? shopRaidTicketDetailHTML() /* 2026-10-21 (package RK) */ : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
     const wr = wall.getBoundingClientRect(), br = btn.getBoundingClientRect();
     const x = Math.max(8, Math.min(wr.width - hover.offsetWidth - 8, br.left - wr.left + br.width/2 - hover.offsetWidth/2));
     const above = br.top - wr.top + wall.scrollTop - hover.offsetHeight - 10;
@@ -46777,6 +46909,7 @@ function renderShopShelves(grid, signedIn){
     const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
     if(!el || !it) return;
     if(it.ticket){ shopTicketCounter(el); return; } // 2026-10-18 (guild rename)
+    if(it.raidTicket){ shopRaidTicketCounter(el); return; } // 2026-10-21 (package RK)
     if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), afford = (myCurrencies.gold||0) >= K.price;
       el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span></span></div><div class="counter-info">${kitHTML(K)}</div><div class="counter-act">${sold || full ? '' : `<button class="btn primary" id="shopBuyKit" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${K.price - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
       const kb = el.querySelector('#shopBuyKit'); if(kb) kb.onclick = ()=>{
@@ -48122,7 +48255,8 @@ function factionGrowth(rnd){
   return grantOne(pick, 'factionGrowth') ? pick : null;
 }
 // Reward placeholders on a fight (node.rewardTokens): 'factionReward' and 'factionGrowth', set in ✏️ Edit rewards.
-const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', run:()=>{ addEnergyCapsules(1); return null; }}};
+const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', run:()=>{ addEnergyCapsules(1); return null; }},
+  raidTicket:{icon:'🎫', label:'Raid Ticket', run:()=>{ grantRaidTicketItems(1); return null; }} /* 2026-10-21 (package RK): a Raid Ticket on a fight, set in ✏️ Edit rewards */};
 function grantRewardTokens(node){ const out = []; ((node && node.rewardTokens) || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(T){ const id = T.run(); if(id) out.push(id); } }); return out; }
 function saveNodeField(mapId, nodeKey, field, value){
   const e = nodePatchFor(mapId);

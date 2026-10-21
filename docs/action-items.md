@@ -17,6 +17,8 @@
 | T21-3 | Docs | decisions.json's 10-18 rule still places the Pall Wraith in the Eye of the Volcano; RP moved it to 20-5. Confirm RP's move. |
 | T21-4 | Tests | tests/card-pass-2026-10-19.js check 1 still pins the v3 budget and the pre-BF6 owner-call list; it now fails on the BF6-flagged cards (B14). Update it to read docs/balance/bf6-bucket-2026-10-21.json once B14 is decided. tests/shield-call.js is stale since Shield Call was retired. |
 | N21-10 | Engine (package EV) | Evolute archetype for Evomax: built 10-21 (not pushed yet): Evolute / Alpha / Omega, Stem, Chrysalis, the stack, the CPU, legal-base highlighting, three lines. Owner calls EV-1 to EV-7; cards to make in docs/evolute-design-2026-10-21.md. |
+| N21-11 | Engine (package TR, after EV) | Titles and transforms: Gilded, Championed, Veteran, Enraged, Matured; the Crown (King, Kingly, Tribute, steal the Crown, King Slayer vs royalty); two-skill rule HB2-1 (Flying/Tide/Diurnal/Nocturnal don't count) with the cut skills restored. Spec: docs/titles-transforms-2026-10-21.md. Parasite noted, not built. |
+| N21-12 | Balance | Structures have no attack (owner 18:52): 7 structures set to Attack 0 (Webspire Sentinel, Elder Willow, Riverworks Bastion, Vampire Roost, Thornwood Palisade, Iron Warden, War Elephant). Their Health isn't re-fitted to the freed budget yet; do it by formula in the next balance batch. |
 | N21-9 | Workflow | Workflow audit: CLAUDE.md, docs/workflows/, tests/run.js, tools/merge/, tools/shot.py, docs/code-map.md (done 10-21, not pushed yet). |
 
 ## 10-19 morning: open calls (consolidated)

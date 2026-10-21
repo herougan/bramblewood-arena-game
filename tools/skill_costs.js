@@ -20,6 +20,10 @@
 // 2026-10-19 (BF2, owner 15:25): Base's map term needs the map where each card becomes obtainable: canonical/card-obtain-maps.json
 // (node tools/forge_curve_2026_10_19.js maps, from the game's cardObtainMap); the hub inlines it as SC_OBTAIN_MAPS. A card's own
 // obtainMap field wins.
+// 2026-10-21 (package CX5): the game's card editor budget panel and Test Lab call this file too (assemble_arena.py inlines it after
+// bramblewood-budget.js, and canonical/skill-costs.json as SKILL_COSTS_TABLE), so the game prices S with this one implementation.
+// make(table, opts): opts.fallback(id, value) may price a keyword skill missing from the table (the game's SB_DEFAULT_SKILLS); a
+// number it returns replaces the 1 + floor(N/2) default. The missing list now also carries what is missing inside a context skill's braces.
 (function(root, factory){ if(typeof module === 'object' && module.exports){ let om = {}; try{ om = require('../canonical/card-obtain-maps.json').maps || {}; }catch(e){} module.exports = factory(require('../bramblewood-budget.js'), om); }
   else root.SkillCosts = factory(root.BramblewoodBudget, typeof SC_OBTAIN_MAPS !== 'undefined' ? SC_OBTAIN_MAPS : (root.SC_OBTAIN_MAPS || {})); })(typeof self !== 'undefined' ? self : this, function(BB, OBTAIN){
   'use strict';
@@ -33,7 +37,7 @@
   function rankOf(d){ return BB.rankOf(d && d.rarity); }
   const ritualPts = BB.ritualPts;
 
-  function make(table){
+  function make(table, opts){
     const by = kind=>{ const m = {}; (table[kind] || []).forEach(x=> m[x.id] = x); return m; };
     const SK = by('skills'), TR = by('triggers'), AC = by('actions'), MO = by('modifiers');
     const ALIAS = table.aliases || {}, SH = table.shorthands || {}, B = table.budget || {}, HALF = table.halfMiss || [];
@@ -78,11 +82,11 @@
         // Context skills (2026-10-21, package CX2): CONTEXT_MULT (0.4) x the S of the skills in their braces, across all their phases
         // (bramblewood-budget.js contextS); the plain flag beside the braces (tide next to tideGrant ...) costs nothing then.
         if(BB.contextFlagCovered && BB.contextFlagCovered(k, effects)){ parts.push(['skill', k, 0, 'its braces carry the cost']); return; }
-        { const cx = BB.contextS ? BB.contextS(k, v, inner=> cardS(inner, card).S) : null;
+        { const cx = BB.contextS ? BB.contextS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null; // CX5: inner misses reported
           if(cx){ S += cx.S; parts.push(['context', k, cx.S, cx.mult + ' × ' + cx.inner]); return; } }
         if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : sh.field ? {do:sh.action, [sh.field]:N} : {do:sh.action, amount:N}, card) /* field (2026-10-19, SK1): Spoils is Health only */, c = r2(w.w * a.value); // both (2026-10-19, package GI): +N/+N, Kin Rally
           if(w.missing) missing.push(w.missing); if(a.missing) missing.push(a.missing); S += c; parts.push(['shorthand', k, c, w.w + ' × ' + r2(a.value)]); return; }
-        let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); c = 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); }
+        let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         S += c; parts.push(['skill', k, c, '']);
       });
       return {S:r2(S), parts, missing};

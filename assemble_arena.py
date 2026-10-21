@@ -22,6 +22,11 @@ ghosts_src += "\n" + open(SCRATCH + "bramblewood-guild.js", encoding="utf-8").re
 # 2026-10-19 (package BF): the stat budget N(L) = (Base - 1 + L) x (1 + L/20) and the Forge level curve (BramblewoodBudget), DOM-free;
 # the same file tools/skill_costs.js and the master hub use.
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-budget.js", encoding="utf-8").read()
+# 2026-10-21 (package CX5): the skill-cost pricing (SkillCosts, tools/skill_costs.js, the balance tools' and the hub's one copy) after the
+# helper it reads, so the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (__SKILL_COSTS__ below).
+# Its "#!" line is dropped; its command-line part only runs under node.
+_sc_src = open(SCRATCH + "tools/skill_costs.js", encoding="utf-8").read()
+ghosts_src += "\n" + (_sc_src.split("\n", 1)[1] if _sc_src.startswith("#!") else _sc_src)
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
@@ -350,6 +355,8 @@ def _path_art_any(rel):
     return asset_url(rel[len("art/"):], open(fp, "rb").read(), "image/svg+xml" if rel.endswith(".svg") else "image/png")
 app_src = _re.sub(r"art:'(art/raids/[a-z0-9_-]+\.(?:svg|png))'", lambda m: "art:'%s'" % _path_art_any(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
+# 2026-10-21 (package CX5): the canonical skill-cost table the hub folds into (tools/hub/apply_skill_costs.js), read by SkillCosts.make
+app_src = sub_once(app_src, "__SKILL_COSTS__", json.dumps(json.load(open(SCRATCH + "canonical/skill-costs.json", encoding="utf-8")), ensure_ascii=False))
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # 2026-10-19 (package UT): each animal's kind, for the Codex's animal filter (canonical/animal-tags.json, python3 tools/animal_tags.py)
 app_src = sub_once(app_src, "__ANIMAL_GROUPS__", json.dumps({r["animal"]: r["group"] for r in json.load(open(SCRATCH + "canonical/animal-tags.json", encoding="utf-8"))["cards"] if r.get("animal")}, ensure_ascii=False, sort_keys=True))

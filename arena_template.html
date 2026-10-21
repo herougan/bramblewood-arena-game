@@ -8796,6 +8796,23 @@
   /* Fire attacks (2026-10-21, package BX): a swing that deals fire damage (dmgType heat) shows a flame on the attack label, on an ember plate */
   .card-tile .atk.atk-fire{color:#ffb070; background:linear-gradient(180deg,rgba(92,26,8,.9),rgba(44,10,4,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,140,60,.7), 0 0 6px rgba(255,110,30,.45);}
   .card-tile .atk.atk-fire .atk-buffed{color:#ffd0a0;}
+  /* Element attack plates (2026-10-21, package EL): every non-physical swing shows its element's symbol on a tinted plate, like the BX ember plate */
+  .card-tile .atk.atk-cold{color:#c4ecff; background:linear-gradient(180deg,rgba(12,48,72,.9),rgba(5,22,38,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,210,255,.7), 0 0 6px rgba(90,190,255,.4);}
+  .card-tile .atk.atk-cold .atk-buffed{color:#e6f8ff;}
+  .card-tile .atk.atk-acid{color:#d4f76a; background:linear-gradient(180deg,rgba(38,64,8,.9),rgba(16,30,4,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(170,220,60,.7), 0 0 6px rgba(150,220,40,.4);}
+  .card-tile .atk.atk-acid .atk-buffed{color:#eaffa8;}
+  .card-tile .atk.atk-poison{color:#dcaaff; background:linear-gradient(180deg,rgba(52,24,76,.9),rgba(24,10,40,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,130,240,.7), 0 0 6px rgba(170,100,230,.4);}
+  .card-tile .atk.atk-poison .atk-buffed{color:#f0d4ff;}
+  .card-tile .atk.atk-decay{color:#d9b27a; background:linear-gradient(180deg,rgba(62,44,20,.9),rgba(30,20,8,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,150,90,.7), 0 0 6px rgba(170,120,60,.4);}
+  .card-tile .atk.atk-decay .atk-buffed{color:#f0d6ae;}
+  .card-tile .atk.atk-water{color:#8fe6f0; background:linear-gradient(180deg,rgba(8,58,70,.9),rgba(4,26,34,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(80,200,220,.7), 0 0 6px rgba(60,190,220,.4);}
+  .card-tile .atk.atk-water .atk-buffed{color:#c4f4fa;}
+  .card-tile .atk.atk-stone{color:#ddd4c0; background:linear-gradient(180deg,rgba(66,58,46,.9),rgba(32,28,22,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(190,176,150,.7), 0 0 6px rgba(170,156,130,.4);}
+  .card-tile .atk.atk-stone .atk-buffed{color:#f2ecdc;}
+  .card-tile .atk.atk-metal{color:#d3dae3; background:linear-gradient(180deg,rgba(52,60,72,.9),rgba(24,28,36,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(170,184,204,.7), 0 0 6px rgba(150,170,200,.4);}
+  .card-tile .atk.atk-metal .atk-buffed{color:#eef2f7;}
+  .card-tile .atk.atk-shock{color:#ffe873; background:linear-gradient(180deg,rgba(72,60,6,.9),rgba(36,28,2,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,222,70,.7), 0 0 6px rgba(255,210,40,.4);}
+  .card-tile .atk.atk-shock .atk-buffed{color:#fff5b0;}
   /* Archer's drop look (2026-10-21, package BX): the stone it lets fall (bxDropStone) */
   .bx-stone{position:fixed; left:0; top:0; z-index:9000; pointer-events:none; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.5));}
   .board-card.bx-dropping{pointer-events:none;}
@@ -11886,6 +11903,24 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .raid-hub .rh-hp{flex:1 1 auto; max-width:160px; height:8px; border-radius:5px; background:rgba(0,0,0,.35); overflow:hidden;}
 .raid-hub .rh-hp > span{display:block; height:100%; background:linear-gradient(90deg, #8e1b1b, #d8432c 60%, #f08a4b);}
 .raid-hub .rh-me{font-size:12.5px;} .raid-hub .rh-me small{color:var(--ink-muted); font-weight:700;}
+/* 2026-10-21 (package RK): the total raid rank (raidTotalRankBadgeHTML), in the raid rank badge's style; F isn't the losses' red, and
+   U (later UU, UUU: .is-u) is a deep violet with a moving cyan sheen and a glow. Raid Tickets: the item's icon, its Use button, a stack
+   above the cap. */
+.conquest-rank-badge.raid-total-rank{margin:0 4px; white-space:nowrap; vertical-align:middle;}
+.conquest-rank-badge.raid-total-rank.rank-F{background:#a8906f; color:#2a1e12;}
+.conquest-rank-badge.raid-total-rank.is-none{background:var(--surface-2); color:var(--ink-muted); border:1px dashed var(--surface-border); font-weight:700;}
+.conquest-rank-badge.raid-total-rank.is-u{background:linear-gradient(115deg,#1a0838 0%,#4b1f8f 34%,#38d6ff 50%,#4b1f8f 66%,#1a0838 100%); background-size:260% 100%; color:#fff;
+  text-shadow:0 1px 0 rgba(0,0,0,.6), 0 0 8px rgba(170,130,255,.9); box-shadow:0 0 0 1px rgba(201,162,255,.95), 0 0 14px rgba(140,90,255,.75); animation:rkUShine 3.2s linear infinite;}
+@keyframes rkUShine{from{background-position:100% 0;} to{background-position:-160% 0;}}
+:where(html[data-fx="none"], html[data-fx="low"]) .conquest-rank-badge.raid-total-rank.is-u{animation:none;}
+@media (prefers-reduced-motion: reduce){ .conquest-rank-badge.raid-total-rank.is-u{animation:none;} }
+.raid-hub .rh-rank{display:flex; align-items:center; flex-wrap:wrap; gap:4px 6px; font-size:12px;} .raid-hub .rh-rank .raid-total-rank{margin:0;} .raid-hub .rh-rank small{color:var(--ink-muted);}
+.r3-chip.rk-chip .raid-total-rank{align-self:flex-start; margin:3px 0 0; font-size:13px;}
+.r3-tickets.is-over b{color:#2f8fd8; text-shadow:0 0 6px rgba(120,200,255,.6);}
+.raid-results .raid-total-rank{font-size:14px; padding:4px 12px;}
+.fxf-rcs-total{display:inline-flex; align-items:center;} .fxf-rcs-total .raid-total-rank{font-size:16px; padding:5px 14px; margin:0;}
+.rk-tk-ico{position:relative; display:inline-block; line-height:1;} .rk-tk-ico i{position:absolute; right:-.38em; bottom:-.28em; font-size:.55em; font-style:normal;}
+.inv-sec .rk-inv-use{margin-top:10px;} .raid-hub .rk-use-row{margin:6px 0;}
 .raid-hub .rh-tags{display:flex; flex-wrap:wrap; gap:4px;} .raid-hub .rh-tags:empty{display:none;}
 .raid-hub .rh-tag{font-size:11.5px; font-weight:800; padding:1px 8px; border-radius:999px; border:1px solid var(--surface-border);}
 .raid-hub .rh-tag.is-auto{border-color:var(--accent);}
