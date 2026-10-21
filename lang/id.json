@@ -176,6 +176,7 @@
  "It can't act until every corner is met.": "Ia tidak bisa bertindak sampai setiap sudut terpenuhi.",
  "Lycanthropy": "Likantropi",
  "Mimic": "Peniru",
+ "No price in the skill-cost table for {skills}: a stand-in cost is used.": "Tidak ada harga di tabel biaya kemampuan untuk {skills}: biaya pengganti dipakai.",
  "nothing": "tidak ada",
  "Once it happens, it keeps them for the rest of the fight.": "Begitu terjadi, ia menyimpannya sampai akhir pertarungan.",
  "Preset": "Prasetel",

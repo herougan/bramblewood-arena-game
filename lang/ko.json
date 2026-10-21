@@ -176,6 +176,7 @@
  "It can't act until every corner is met.": "모든 꼭짓점을 채우기 전에는 행동할 수 없다.",
  "Lycanthropy": "늑대인간화",
  "Mimic": "의태",
+ "No price in the skill-cost table for {skills}: a stand-in cost is used.": "스킬 비용 표에 {skills}의 가격이 없습니다: 임시 비용을 씁니다.",
  "nothing": "없음",
  "Once it happens, it keeps them for the rest of the fight.": "한 번 일어나면 전투가 끝날 때까지 유지한다.",
  "Preset": "프리셋",

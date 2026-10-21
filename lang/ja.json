@@ -176,6 +176,7 @@
  "It can't act until every corner is met.": "すべての角を満たすまで行動できない。",
  "Lycanthropy": "人狼化",
  "Mimic": "擬態",
+ "No price in the skill-cost table for {skills}: a stand-in cost is used.": "スキルコスト表に {skills} の価格がありません：仮のコストを使います。",
  "nothing": "なし",
  "Once it happens, it keeps them for the rest of the fight.": "一度起きれば、戦闘の終わりまで保つ。",
  "Preset": "プリセット",

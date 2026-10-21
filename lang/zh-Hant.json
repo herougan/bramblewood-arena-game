@@ -176,6 +176,7 @@
  "It can't act until every corner is met.": "每個角都達成前無法行動。",
  "Lycanthropy": "狼化症",
  "Mimic": "擬態",
+ "No price in the skill-cost table for {skills}: a stand-in cost is used.": "技能費用表中沒有 {skills} 的價格：使用暫定費用。",
  "nothing": "無",
  "Once it happens, it keeps them for the rest of the fight.": "一旦發生，本場戰鬥餘下時間都保留。",
  "Preset": "預設",
