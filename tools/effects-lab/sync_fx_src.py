@@ -14,8 +14,12 @@ def block_end(src, i):
     """Index just past the declaration starting at i: its first '{' matched, plus a trailing
     `)();` or `;` for const IIFEs/objects. Skips strings, template literals (with nested ${}) and comments."""
     nl = src.find('\n', i)
-    if '{' not in src[i:nl]: return nl  # one-line declaration (e.g. const f = ()=> expr;)
-    k = src.index('{', i); stack = []  # 'b' = brace, 't' = inside template-literal text
+    # 2026-10-21 (package LAB2): a table opened with [ on its first line (const HATCH_CRACKS = [ ... ];) is matched on its brackets
+    op, cl = '{', '}'
+    if '{' not in src[i:nl]:
+        if src[i:nl].rstrip().endswith('['): op, cl = '[', ']'
+        else: return nl  # one-line declaration (e.g. const f = ()=> expr;)
+    k = src.index(op, i); stack = []  # 'b' = brace, 't' = inside template-literal text
     while k < len(src):
         c = src[k]
         if stack and stack[-1] == 't':
@@ -29,8 +33,8 @@ def block_end(src, i):
         elif c == '`': stack.append('t')
         elif src.startswith('//', k): k = src.index('\n', k)
         elif src.startswith('/*', k): k = src.index('*/', k) + 1
-        elif c == '{': stack.append('b')
-        elif c == '}':
+        elif c == op: stack.append('b')
+        elif c == cl:
             stack.pop()
             if not stack:
                 e = k + 1
@@ -57,7 +61,7 @@ for m in list(decl.finditer(fx))[::-1]:
 # --add name1,name2: append game functions the lab doesn't have yet.
 if '--add' in sys.argv:
     for name in sys.argv[sys.argv.index('--add') + 1].split(','):
-        if re.search(r'^(?:function\s+' + name + r'\s*\(|const\s+' + name + r'\s*=)', fx, re.M): continue
+        if re.search(r'^(?:async\s+)?(?:function\s+' + name + r'\s*\(|const\s+' + name + r'\s*=)', fx, re.M): continue  # 2026-10-21 (package LAB2): + async (forgeCentreStage was appended again on every build)
         am = re.search(r'^(?:async\s+)?(?:function\s+' + name + r'\s*\(|const\s+' + name + r'\s*=)', app, re.M)
         if not am: print('not found:', name); continue
         fx += '\n' + app[am.start():block_end(app, am.start())] + '\n'; changed.append('+' + name)

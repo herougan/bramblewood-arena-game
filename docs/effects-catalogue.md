@@ -798,3 +798,88 @@ unused `FX.A.rallyStandard`; Caltrops and the Smoke column have no twin.
 **How to keep this honest:** when an effect from this list is wired, change its row to "In game: <where>" here and in
 `NEW` in `tools/effects-lab/fxlab-war.js`. The Catalogue tab's badges come from `docs/effects-inventory-2026-10-15.json`
 (`python3 tools/effects-lab/refresh_inventory.py`); the Smoke & war tab's from its own two lists.
+
+## Effects Lab, 2026-10-21 (package LAB2): the pinned field, the "Built 10-21" tab, the "Ideas 10-21" tab
+
+Owner: "Update the effects lab with all the new effects. (I also like a lot of the existing effects. I don't mind spending some time here to
+add more effects for me to judge.)" and "For all tabs of the effects lab, please make the 'field' sticky to the top! So I can always see the
+field when clicking on a skill."
+
+**The field is pinned on every tab that has one.** `tools/effects-lab/fxlab-lab2.js` (`LAB2.initSticky`): Skills, Battlefield and Damage
+numbers pin the field itself; Procedural FX, Card ideas, Cards, Combat and Screens lift the stage of the tile you press into a pinned bar
+(press in another tile, or "Put back", to send it home); Card displays and Foils pin the card picker and toggles; the Catalogue's stage dock
+is a strip under the tab bar on a phone (no longer a sheet at the bottom). The new tabs have the pinned field in the right column (desktop)
+or a strip at the top (phone). At 390 px wide the pinned field is 21% to 31% of the screen (Built and Ideas 28-29%). Sound, Music,
+Ambience, Coming next and Full list have no field to pin.
+
+**Built 10-21** (`tools/effects-lab/fxlab-built.js`): every visual effect built today that the Lab did not show, played with the game's own
+code (functions copied from `arena_app.js` by `sync_fx_src.py`; the evolve and hatch entries make the same calls as the inline handlers in
+`renderVfxForEvent`, with a tile swap standing in for `renderBoard`). Every entry carries its "In game: <where>" badge. 21 entries, 48 looks.
+Packages ED, HC, TS2, CX2, CX5 and HB2 added no effect of their own (rules, editor and data), and Lycanthropy has no look in the game.
+
+| Package | Effect | Where it is called | In game |
+|---|---|---|---|
+| EV | Evolute lands on its base (3 looks) | engine event `evolve`, `renderVfxForEvent` | yes |
+| EV | Evolute stack edges and ×N (3) | `evoStackHTML`, drawn by `renderBoard` | yes |
+| MT | Mimic copies an ally (2) | engine event `mimic`: `FX.C.twinPeel`, then a floating "Mimic" | yes |
+| TR | Crown settles on a unit (3) | engine event `crown` take / pickup, `trCrownVfx` | yes |
+| TR | Crown flies between units (2) | `crown` liege / steal, `trCrownVfx` | yes |
+| TR | Crown falls off a dead King | `crown` drop, `trCrownVfx` | yes |
+| TR | Crown fades into Gold | `crown` fade (pays +1 Gold) | yes |
+| TR | Gilded (2) | `statusFx` transform gilded, `trTransformVfx` | yes |
+| TR | Championed, Veteran, Enraged, Matured (5 rings) | `statusFx` transform, `trTransformVfx` | yes |
+| UI3 | Shield layers fill the Health bar (3) | `ribbonShieldSync` (a raid's Shield 50, Skirmish Armour, a dungeon wave) | yes |
+| UI3 | A Shield layer breaks (3) | `ribbonShieldSync`, `ribShieldBreakVfx` | yes |
+| UI3 | Shielded Health is blue (2) | `.board-card.has-shield`, `updateCardHpDisplay` | yes |
+| EL | Element attack plates (3 galleries) | `cardTileHTML` / `updateCardAtkDisplay`: `atkPlateCls`, `atkGlyphOf` | yes |
+| RK | Total raid rank badge (3) | `raidTotalRankBadgeHTML` on the Raid hub, result and claim screen | yes |
+| RK | Rank stamps in on the claim screen (2) | `FX.F` `raidClaimScreen` | yes |
+| BX | Archer drops a stone (2) | `effects.archerStyle "drop"`, `bxDropStone` (Stonedrop Vulture) | yes |
+| FG | Fuse: spares fly into the card (2) | `forgeFuse`: `forgeCentreStage` + `fuseStageAnimation` | yes |
+| FG | Reinforce: stones drop onto the Bramble | `forgeReinforce`: `reinforceStageAnimation` | yes |
+| FG | Raid Craft: shards stream into the card | `forgeRaidCraft`: `raidCraftAnimation` | yes |
+| FG | Hatching: the egg opens in close-up (3 rarities) | `hatchRevealVfx` | yes |
+| FG | An egg hatches on the board | engine event `hatch`, `renderVfxForEvent` | yes |
+
+**Ideas 10-21** (`tools/effects-lab/fxlab-ideas.js`, effects in `bramblewood-fx-ideas.js` as `window.IdeasFX`): 29 candidates for the owner
+to judge, each with two or three looks, all **Lab only (not used yet)**. Not wired: `IdeasFX` is loaded by the Lab only, and
+`assemble_arena.py` is untouched. Rules for all of them: GSAP only, transform and opacity, no CSS filter, no blend layer, no full-screen
+layer (sky effects cover the field's own box), 40 nodes at most, the idle aura 7 motes at 30 fps, and one still glyph under reduced motion.
+Every function takes a DOM node (or the field box) and `{v, ...}`, and returns a Promise (the aura returns a handle).
+
+| Name | Call | What it looks like | In game |
+|---|---|---|---|
+| Fire hit | `IdeasFX.hitFire(t, {v:0..2})` | flames lick up the card, an ember shower, or a fireball pop | Lab only (not used yet) |
+| Ice hit | `IdeasFX.hitIce(t, {v})` | ice shards and a snowflake, frost that covers the card, or icicles dropping | Lab only (not used yet) |
+| Acid hit | `IdeasFX.hitAcid(t, {v})` | a green splat, sizzling bubbles, or slime dripping down | Lab only (not used yet) |
+| Poison hit | `IdeasFX.hitPoison(t, {v})` | a skull puff, purple bubbles, or a toxic cloud | Lab only (not used yet) |
+| Decay hit | `IdeasFX.hitDecay(t, {v})` | brown leaves fall, crumbs fall, or it wilts and puffs spores | Lab only (not used yet) |
+| Magic hit | `IdeasFX.hitMagic(t, {v, from})` | a star burst, a spinning rune circle, or stars flying in from a wand unit | Lab only (not used yet) |
+| Water hit | `IdeasFX.hitWater(t, {v})` | a splash and ground ring, rising bubbles, or a wave washing across | Lab only (not used yet) |
+| Stone hit | `IdeasFX.hitStone(t, {v})` | rock chips and dust, a boulder dropping, or pebbles | Lab only (not used yet) |
+| Metal hit | `IdeasFX.hitMetal(t, {v})` | clang sparks and a star, spinning gears, or a glint sweeping across | Lab only (not used yet) |
+| Lightning hit | `IdeasFX.hitLightning(t, {v, chain})` | a bolt from above, arcs jumping to neighbours, or crackles round the edge | Lab only (not used yet) |
+| Attacks-with-an-element aura | `IdeasFX.elementAura(t, {element, ms})` | up to 7 slow motes for each of ten elements (embers, snow glints, bubbles, leaves, runes, drops, pebbles, a glint, sparks) | Lab only (not used yet) |
+| Crowning | `IdeasFX.crowning(t, {v})` | the Crown drops and bounces, lowers in a spotlight, or lands with a coin shower | Lab only (not used yet) |
+| Gilding | `IdeasFX.gilding(t, {v})` | a gold wipe, gold dust that settles, or a spinning coin | Lab only (not used yet) |
+| Veteran stripes | `IdeasFX.veteranStripes(t, {v})` | three chevrons stamp in, a medal drops, or three star pips pop | Lab only (not used yet) |
+| Champion's laurel | `IdeasFX.championLaurel(t, {v})` | a laurel wreath grows, a trophy and confetti, or a banner unfurls | Lab only (not used yet) |
+| Evolve: cocoon burst | `IdeasFX.cocoonBurst(t)` | a silk cocoon wobbles and bursts into silk bits and stars | Lab only (not used yet) |
+| Evolve: helix swirl | `IdeasFX.helixSwirl(t)` | two strands of glowing dots spiral up and close with a flash | Lab only (not used yet) |
+| Evolve: molt shed | `IdeasFX.moltShed(t)` | a pale copy of the old skin slips off and flakes away | Lab only (not used yet) |
+| Dawn break | `IdeasFX.dawnBreak(fieldBox)` | warm light rises, a sun climbs, soft rays turn | Lab only (not used yet) |
+| Dusk glow | `IdeasFX.duskGlow(fieldBox)` | orange and violet, the sun sinks, stars come out | Lab only (not used yet) |
+| Moonrise | `IdeasFX.moonrise(fieldBox)` | a cool tint, a haloed moon climbs in an arc, stars twinkle | Lab only (not used yet) |
+| Rain starts | `IdeasFX.rainStart(fieldBox)` | a cloud slides in, drops fall and get heavier, rings on the ground | Lab only (not used yet) |
+| Snowfall | `IdeasFX.snowfall(fieldBox, {cards})` | flakes sway down, little white caps on the cards, then it melts | Lab only (not used yet) |
+| Stench status | `IdeasFX.stenchStatus(t, {mode})` | apply: green wavy lines and two flies; expire: a breeze blows it away | Lab only (not used yet) |
+| Brittle status | `IdeasFX.brittleStatus(t, {mode})` | apply: hairline cracks and glass chips; expire: the cracks seal with a shimmer | Lab only (not used yet) |
+| Exposed status | `IdeasFX.exposedStatus(t, {mode})` | apply: a red reticle zooms in and locks on; expire: it spins smaller and fades | Lab only (not used yet) |
+| Shield 50 cracks | `IdeasFX.shieldCrack(castle, {v})` | a blue dome gets one crack, or breaks into hexagon shards | Lab only (not used yet) |
+| Tentacle slam warning | `IdeasFX.slamWarning(t, {v})` | a red danger spot and a bouncing "!", then a purple tentacle slams down | Lab only (not used yet) |
+| The raid falls | `IdeasFX.raidFalls(fieldBox, {boss})` | the boss shakes and sinks under bubbles, then confetti and a trophy | Lab only (not used yet) |
+
+Statuses: Stench and Brittle have no look in the game's code today. Exposed has `SkillFX.targetMark` on apply and `FX.B.exposeCash` per hit, but nothing when it expires; the idea's apply is an alternative to compare, its expire is new.
+
+**How to keep this honest:** when one of the ideas is wired, change its row to "In game: <where>" here and its `add(...)` entry in
+`fxlab-ideas.js` (the badge is `Lab only` for every entry in that tab until then).

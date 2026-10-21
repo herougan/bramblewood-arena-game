@@ -33,6 +33,14 @@ fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').re
 # 2026-10-21 (package FX-WAR): + bramblewood-fx-war.js (window.WarFX, smoke and war). The lab loads it from here; the game's bundle does not include it until the owner picks effects to wire.
 fxbatches += '\n' + open(f'{ROOT}/bramblewood-fx-war.js', encoding='utf-8').read()
 fxwar = open(f'{LAB}/fxlab-war.js', encoding='utf-8').read()  # the "Smoke and war" tab and the in-game badges on the older tabs
+# 2026-10-21 (package LAB2): + bramblewood-fx-ideas.js (window.IdeasFX, the candidates of the "Ideas 10-21" tab: Lab only, not in the game bundle),
+# bramblewood-raid.js (the raid module the total-rank badge reads), and the shared tab engine with the sticky field (fxlab-lab2.js), the
+# "Built 10-21" tab (fxlab-built.js) and the "Ideas 10-21" tab (fxlab-ideas.js).
+fxbatches += '\n' + open(f'{ROOT}/bramblewood-fx-ideas.js', encoding='utf-8').read()
+raidjs = open(f'{ROOT}/bramblewood-raid.js', encoding='utf-8').read()
+fxlab2 = open(f'{LAB}/fxlab-lab2.js', encoding='utf-8').read()
+fxbuilt = open(f'{LAB}/fxlab-built.js', encoding='utf-8').read()
+fxideas = open(f'{LAB}/fxlab-ideas.js', encoding='utf-8').read()
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
 _INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch', 'status', 'retired', 'added', 'updated', 'inGameHook']  # + status / retired / added / updated (2026-10-17); + inGameHook (2026-10-21: the catalogue's "In game: <where>" badge)
 inventory_js = json.dumps([{k: e.get(k) for k in _INV_KEYS} for e in _inv], ensure_ascii=False, separators=(',', ':'))
@@ -44,7 +52,7 @@ _mdir = f'{LAB}/manifest'
 _scr = lambda s: s.replace('</script', '<\\/script')
 # one <script> per manifest, so a syntax error in one batch's file can't take the others down
 manifests = '\n'.join(f'<script>// ---- manifest/{f} ----\n' + _scr(open(os.path.join(_mdir, f), encoding='utf-8').read()) + '\n</script>' for f in sorted(os.listdir(_mdir)) if f.endswith('.js'))
-inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar = map(_scr, [inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar])
+inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar, raidjs, fxlab2, fxbuilt, fxideas = map(_scr, [inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx, fxwar, raidjs, fxlab2, fxbuilt, fxideas])
 C=lambda k,v='plain': cards[k][v]
 page_css = r'''
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
@@ -227,6 +235,62 @@ html{overflow-x:hidden;} body{overflow-x:clip !important; overflow-y:visible !im
 .fxl-screen-cap{position:absolute; left:10px; top:8px; font:800 11px 'Baloo 2',system-ui,sans-serif; color:#e8dfc2; opacity:.7; text-transform:uppercase; letter-spacing:.08em;}
 .fxl-layer{position:absolute; inset:0; pointer-events:none; z-index:20;}
 
+
+/* ---- Sticky field on every tab, the Built 10-21 and Ideas 10-21 tabs (2026-10-21, package LAB2) ----
+   Owner: "For all tabs of the effects lab, please make the 'field' sticky to the top! So I can always see the field when clicking on a skill." */
+.lab2-bar{position:sticky; top:var(--lab2-top, 58px); z-index:35; background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:6px 8px 8px; margin:0 0 12px; box-shadow:0 8px 18px rgba(0,0,0,.2);}
+.lab2-bar[hidden]{display:none !important;}
+.lab2-barhead{display:flex; align-items:center; gap:8px; min-height:22px; margin:0 0 4px; font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.lab2-barhead b{color:var(--ink);} .lab2-putback{margin-left:auto; cursor:pointer; font:800 11.5px 'Baloo 2',system-ui,sans-serif; padding:2px 10px; border-radius:99px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink);}
+.lab2-hold{display:flex; justify-content:center; max-height:min(340px, 40vh); overflow:auto; border-radius:12px;}
+.lab2-hold > .stage, .lab2-hold > .num-stage{width:min(100%, 520px); margin:0 auto; flex:none;}
+.lab2-ph{display:grid; place-items:center; border:2px dashed var(--surface-border); border-radius:12px; color:var(--ink-muted); font:700 12px 'Baloo 2',system-ui,sans-serif; text-align:center;}
+.lab2-bar-fixed > .skill-arena{margin:0 auto; max-width:620px;} .lab2-bar-fixed > .bf-lab{max-width:760px; margin:0 auto;}
+.lab2-bar-fixed > .fx-grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px;}
+.lab2-bar-fixed .num-stage{min-height:150px;}
+/* 2026-10-21: on a desktop the pinned Skills arena was 374 px of an 800 px screen (47%); smaller cards and a tighter gap keep it near a third */
+@media (min-width:901px){ .lab2-bar-fixed > .skill-arena{gap:40px; padding:12px;} .lab2-bar-fixed .skill-arena .sk-row .card-tile{width:78px !important; height:98px !important;} }
+.lab2-ctl{position:sticky; top:var(--lab2-top, 58px); z-index:35; background:var(--surface); border:1px solid var(--surface-border); border-radius:12px; padding:8px 10px; box-shadow:0 8px 18px rgba(0,0,0,.18);}
+.lab2-shown{margin-left:auto; font-size:12px; color:var(--ink-muted);}
+.lab2-dock .fxl-speed .lab2-again{margin-left:auto;}
+.lab2-arena.lab2-bars{padding:26px 8px 26px; position:relative; border:0; overflow:visible;}
+.lab2-arena.lab2-bars > .bf-hp{height:14px !important;}
+.lab2-arena .bf-hp-track{background:rgba(0,0,0,.5);}
+.fxl-speed button.is-playing{outline:2px solid #ffd56e;}
+.lab2-note{font-size:12px; color:var(--ink-muted); margin:6px 0 0;}
+.lab2-plates{display:flex; flex-wrap:wrap; gap:6px 10px; justify-content:center;}
+/* the Built tab's own pieces: the raid rank rows, the stamp ring and stars, the Forge stage holder */
+.lab2-arena{--match-card-w:92px; --match-card-h:115px;} /* the card wrapper is the tile's size, so a row of five fits the stage */
+.lab2-arena.lab2-gal{--match-card-w:68px; --match-card-h:85px;}
+.lab2-arena.lab2-gal .sk-row{gap:8px;} .lab2-arena.lab2-gal .sk-row .card-tile{width:68px !important; height:85px !important;}.lab2-rank{display:flex; flex-wrap:wrap; gap:8px 10px; justify-content:center; align-items:center; padding:12px 6px; width:100%;}
+.lab2-rank-cell{display:flex; flex-direction:column; align-items:center; gap:2px;} .lab2-rank-cell small{font:600 10.5px ui-monospace,Menlo,monospace; color:#cfd6c0;}
+.lab2-rank-one{min-height:90px;} .lab2-rank-one .raid-total-rank{font-size:18px; padding:6px 16px;}
+.lab2-ring{position:fixed; z-index:9000; width:72px; height:72px; margin:-36px 0 0 -36px; border:3px solid #ffd56e; border-radius:50%; pointer-events:none;}
+.lab2-star{position:fixed; z-index:9000; margin:-8px 0 0 -8px; color:#c9a2ff; font-size:16px; pointer-events:none;}
+.lab2-forge{width:100%; display:flex; justify-content:center; padding:4px 0;} .lab2-forge .anvil-stage, .lab2-forge .fg-rf-stage{max-width:300px;}
+.lab2-forge .fg-rv{width:min(100%, 220px); min-height:170px;}
+.war-tag.is-idea{background:#7a3fb0;} .war-tag.is-game{background:#2f7d3a;} .war-tag.is-elem{background:#c2602c;} .war-tag.is-sky{background:#3d6ea8;} .war-tag.is-raid{background:#8a2f5c;} .war-tag.is-status{background:#5a7f2c;} .war-tag.is-evo{background:#6b4fb0;} .war-tag.is-forge{background:#8a6a2c;}
+@media (max-width:900px){
+  .lab2-layout{grid-template-columns:minmax(0,1fr);}
+  .lab2-dock{grid-column:1; grid-row:1; padding:6px; top:var(--lab2-top, 58px);} .lab2-layout .war-left{grid-column:1; grid-row:2;}
+  .lab2-dock .war-now{min-height:0; font-size:12.5px;}
+}
+@media (max-width:560px){
+  /* a third of the screen at most: the field shrinks to small cards, the caption goes */
+  .lab2-barhead span:first-child{font-size:11px;}
+  .lab2-bar{padding:4px 6px 6px; margin-bottom:8px;}
+  .lab2-bar-fixed > .lab2-barhead{display:none;}
+  .lab2-bar-fixed > .skill-arena{gap:20px; padding:8px 6px;} .lab2-bar-fixed .skill-arena .sk-row{gap:8px;}
+  .lab2-bar-fixed .skill-arena .sk-row .card-tile{width:56px !important; height:70px !important;}
+  .lab2-bar-fixed > .bf-lab{height:min(210px, 30vh) !important;} .lab2-bar-fixed > .bf-lab .bf-cards .card-tile{width:56px !important; height:70px !important;}
+  .lab2-bar-fixed .num-stage{min-height:110px;} .lab2-bar-fixed .stage .card-tile{width:64px !important; height:80px !important;}
+  .lab2-hold{max-height:26vh;} .lab2-hold .stage{min-height:110px;} .lab2-hold .stage .card-tile{width:64px !important; height:80px !important;}
+  .lab2-arena.lab2-bars{padding:20px 6px;}
+  .lab2-arena, .lab2-arena.lab2-gal{--match-card-w:52px; --match-card-h:65px;}
+  .lab2-arena{padding:6px 4px !important; gap:14px !important;} .lab2-arena .sk-row{gap:8px !important;} .lab2-arena .sk-row .card-tile, .lab2-arena.lab2-gal .sk-row .card-tile{width:52px !important; height:65px !important;}
+  .lab2-dock .fxl-speed{font-size:11px; gap:4px;} .lab2-dock .fxl-speed button{padding:1px 8px;}
+}
+
 /* ---- Smoke and war tab and the in-game badges (2026-10-21, package FX-WAR) ---- */
 .ig{display:inline-flex; flex-wrap:wrap; align-items:baseline; gap:0 4px; font:600 11.5px/1.3 'Baloo 2',system-ui,sans-serif; padding:2px 9px; border-radius:10px; max-width:100%; overflow-wrap:anywhere; border:1px solid transparent; vertical-align:middle; text-align:left;}
 .ig b{font-weight:800;}
@@ -262,13 +326,18 @@ html{overflow-x:hidden;} body{overflow-x:clip !important; overflow-y:visible !im
   .fxl-layout{grid-template-columns:minmax(0,1fr);}
   /* 2026-10-16 (user: sticky stage; on phone "keep it usable"): a docked mini stage at the bottom, about a third of the screen,
      with ▾ to shrink it to its title bar; the tab bar is one row you swipe, so the list keeps most of the screen. */
-  .fxl-dock{position:fixed; left:0; right:0; bottom:0; top:auto; z-index:900; border-radius:16px 16px 0 0; max-height:none; transform:translateY(105%); transition:transform .25s ease; box-shadow:0 -10px 30px rgba(0,0,0,.35); border-bottom:0; padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); gap:6px;}
-  .fxl-dock.is-open{transform:none;}
-  .fxl-frame{max-height:36vh; min-height:150px;}
+  /* 2026-10-21 (package LAB2, owner: "make the 'field' sticky to the top"): on a phone the dock is a pinned strip at the TOP now (under the tab bar),
+     shown once an effect has been played, no longer a sheet at the bottom. */
+  .fxl-layout > .fxl-dock{display:none; position:sticky; top:var(--fxl-top, 58px); grid-column:1; grid-row:1; z-index:40; border-radius:14px; max-height:none; box-shadow:0 8px 18px rgba(0,0,0,.25); padding:6px 8px; gap:6px; transform:none;}
+  .fxl-layout > .fxl-dock.is-open{display:flex;}
+  .fxl-layout > .fxl-left{grid-column:1; grid-row:2;}
   .fxl-dock.is-mini .fxl-frame, .fxl-dock.is-mini .fxl-speed{display:none;}
+  /* 2026-10-21 (LAB2): the pinned strip is a third of the screen at most (the board stage showed 90%); the board crops to its battlefield, other stages zoom to fit */
+  .fxl-frame{max-height:22vh; min-height:0;}
+  .fxl-now{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;} .fxl-now span{display:none;}
+  .fxl-layout > .fxl-dock{gap:4px; padding:5px 8px;} .fxl-x{width:28px; height:28px;}
   .fxl-now{min-height:0; font-size:12.5px;}
   .fxl-x{display:block; flex:none;}
-  body.fxl-dock-open .lab{padding-bottom:calc(36vh + 120px);}
   .lab nav.toc{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding:6px 0;} .lab nav.toc::-webkit-scrollbar{display:none;} .lab nav.toc button{flex:none;}
   .fxl-row{grid-template-columns:minmax(0,1fr) 58px; padding:7px 8px;}
   .fxl-tools select{flex:1 1 140px;}
@@ -337,7 +406,7 @@ html = f'''<!doctype html>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet. Every effect also carries a badge (2026-10-21): <span class="ig is-game"><b>In game:</b> where</span> the game calls it today, or <span class="ig is-lab"><b>Lab only</b> (not used yet)</span> nothing calls it.</p>
 </header>
 <nav class="toc" role="tablist" aria-label="Effects">
-  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="war">💨 Smoke &amp; war</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="war">💨 Smoke &amp; war</button><button type="button" role="tab" data-tab="built">🆕 Built 10-21</button><button type="button" role="tab" data-tab="ideas">💡 Ideas 10-21</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
 </nav>
 
 <section id="catalogue"><h2>Effects catalogue</h2>
@@ -386,6 +455,10 @@ html = f'''<!doctype html>
     <div id="warList"></div>
   </div>
 </div></section>
+
+<section id="built"></section>
+
+<section id="ideas"></section>
 
 <section id="skills"><h2>Combat skills <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Choreographed skill effects. Arrow and Fire Arrow are now live in the game with this exact animation: the archer draws (leans back while the arrow is pulled along the line of fire), releases with a snap-forward recoil and a bowstring ring, the arrow arcs and accelerates, then sticks and quivers as the target is knocked back. The rest are new prototypes for skills we have, ready to wire in.</p>
 <div class="skill-arena" id="skillArena">
@@ -661,6 +734,7 @@ var matchState = null;
 {shaders}
 {skillfx}
 {procfx}
+{raidjs}
 SkillFX.setImages('assets/fx/arrow.png', 'assets/fx/fire_arrow.png');
 </script>
 <script>
@@ -689,6 +763,19 @@ window.FXLAB_FIXTURES = {fixtures_js};
 <script>
 // 2026-10-21 (package FX-WAR): the Smoke and war tab, and the "In game" / "Lab only" badges on the older tabs' cards
 {fxwar}
+</script>
+<script>
+// 2026-10-21 (package LAB2): the shared tab engine and the sticky field, then the "Built 10-21" and "Ideas 10-21" tabs
+{fxlab2}
+</script>
+<script>
+{fxbuilt}
+</script>
+<script>
+{fxideas}
+</script>
+<script>
+if(window.LAB2) LAB2.initSticky();
 </script>
 '''
 rep={'{W_F1}':C('bee'),'{W_CASTLE}':C('castle'),'{W_F3}':C('ant'),'{W_M1}':C('rare'),'{W_M2}':C('epic'),'{W_M3}':C('fire'),'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_JSON}':TREAT_JSON,'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),

@@ -52,7 +52,7 @@ CLEAN_JS = r"""(sel)=>{ const src = document.querySelector(sel); if(!src) return
   return {cls: src.className, style: src.getAttribute('style') || '', html: c.innerHTML.replace(/\s{2,}/g, ' ')}; }"""
 
 async def main():
-    out = {'captured': '2026-10-17'}  # re-captured 2026-10-17: card front frames, card backs, enemy hand count, Pass beside the Graveyard
+    out = {'captured': '2026-10-21'}  # re-captured 2026-10-21 (package LAB2: UI3's battlefield bars, EL's attack plates, BX's frame layer); 2026-10-17: card front frames, card backs, enemy hand count, Pass beside the Graveyard
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path=EXE)
         pg = await b.new_page(viewport={'width': 1280, 'height': 900})

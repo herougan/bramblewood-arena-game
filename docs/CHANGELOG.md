@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package LAB2: the Effects Lab catches up with today, and its field stays in view)
+- **Owner:** "Update the effects lab with all the new effects" and "make the 'field' sticky to the top". Nothing in the game changed; this is
+  the Lab only (`tools/effects-lab/`, rebuilt with `python3 tools/effects-lab/build.py`, hub not republished).
+- **The field is pinned on every tab that has one**, on a phone too (a third of the screen at most): Skills, Battlefield and Damage numbers
+  pin the field; Procedural FX, Card ideas, Cards, Combat and Screens lift the pressed tile's stage into a pinned bar; Card displays and Foils
+  pin their controls; the Catalogue's stage is a strip under the tab bar on a phone, showing the battlefield only.
+- **New tab "Built 10-21":** 21 entries, 48 looks, of what was built today and the Lab did not show (EV, MT, TR, UI3, EL, RK, BX, FG),
+  played with the game's own code, each with "In game: where". (ED, HC, TS2, CX2, CX5 and HB2 added no effect of their own.)
+- **New tab "Ideas 10-21":** 29 candidate effects with two to ten looks each, all "Lab only (not used yet)", filter chips: ten element hits,
+  an element aura, four title moments, three evolve looks, five weather and time-of-day looks, three status looks, three raid moments
+  (`bramblewood-fx-ideas.js`, `window.IdeasFX`; not in the game bundle). Listed in `docs/effects-catalogue.md`.
+- Checks run: `node --check` on the changed scripts, the Lab build, a script-syntax pass over the built page, every entry of both tabs played at
+  390 and 1366 px with no console errors, screenshots viewed. No test suites were run.
+
 ## 2026-10-21 (package TR: titles, transforms and the Crown; HB2-1's two-skill count; CX1–CX4; the structures re-fitted)
 - **Owner (18:23, 18:24):** spec and what was built: `docs/titles-transforms-2026-10-21.md`.
 - **The Crown.** One on the battlefield.

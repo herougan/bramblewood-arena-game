@@ -65,3 +65,61 @@ tideSceneSet
 syncTideScene
 TIDE_EBB_OFFSET
 tideSceneY
+# 2026-10-21 (package LAB2): the day's visual effects, so the Lab's "Built 10-21" tab plays the game's own code.
+# TR: the Crown (take / drop / liege / steal / fade sprites, the 👑 badge) and the named Transforms (Gilded's sheen and falling leaf, the rings)
+TRANSFORM_ICON
+TRANSFORM_GAIN_APP
+transformPresetName
+TR_SHEEN
+trTfName
+trCrownHTML
+trSideMine
+trGoldPillId
+trSetCrown
+trCrownSprite
+trCrownVfx
+trTransformVfx
+grantText
+KINGLY_DEFAULT_APP
+kinglyOfApp
+# EL: the ten element attack plates (BX's ember plate is one of them)
+ATK_ELEM_GLYPH
+isMagicDef
+isFireDef
+atkElementOf
+atkGlyphOf
+atkPlateCls
+atkAmpTier
+atkLabelHTML
+# UI3: the Shield layers on the battlefield bars (fill and break) and the ribbon markup
+RIB_SH_ALPHA
+ARMOUR_LAYER_COLOURS
+armourLayerNow
+ribLayersOf
+ribLayerFractions
+ribShieldStackHTML
+hpRibbonHTML
+ribbonShieldSync
+ribShieldBreakVfx
+# RK: the raid's total rank badge (RaidM is bramblewood-raid.js, loaded by the Lab)
+raidLocale
+raidTotalRankBadgeHTML
+raidRankBadgeHTML
+# BX: the Archer's stone drop
+bxDropStone
+# FG: the Forge's centre stage, Fuse, Reinforce and Craft; the Nest's hatch
+forgeCentreStage
+fuseStageAnimation
+reinforceStageAnimation
+raidShardIcon
+raidCraftAnimation
+metaFx
+HATCH_CRACKS
+hatchCrackSvg
+hatchRevealVfx
+isHatchling
+# EV: the stack edges and ×N badge
+evoStackHTML
+# the Crown badge's tooltip (grantText) reads the skill icons
+SKILL_ICON
+valSuffix

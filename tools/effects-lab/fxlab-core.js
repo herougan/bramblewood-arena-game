@@ -128,12 +128,13 @@ let frame = null, playToken = 0, baseline = null, speed = 1;
 function setFrame(el){ frame = el; }
 const vw = ()=> Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 // Fit a natural-size layout into the frame with CSS zoom (rects stay right for overlays positioned from getBoundingClientRect).
-function fit(el, W, H){
+function fit(el, W, H, widthOnly){
   el.style.width = W + 'px'; if(H) el.style.height = H + 'px';
   const fw = frame.clientWidth || W; let z = Math.min(1, fw / W);
   // 2026-10-16: and to the frame's height cap (the sticky dock on desktop, the mini stage on a phone), centred.
+  // 2026-10-21 (LAB2): widthOnly = fit the width and let the frame crop the height (the phone's board strip, cropped to the battlefield).
   const mh = parseFloat(getComputedStyle(frame).maxHeight), nh = H || el.scrollHeight;
-  if(mh > 0 && nh*z > mh){ z = Math.max(.2, (mh - 4) / nh); el.style.marginLeft = el.style.marginRight = 'auto'; }
+  if(!widthOnly && mh > 0 && nh*z > mh){ z = Math.max(.2, (mh - 4) / nh); el.style.marginLeft = el.style.marginRight = 'auto'; }
   el.style.zoom = z.toFixed(4);
   return z;
 }
@@ -156,7 +157,12 @@ function build(stage){
     const app = document.createElement('div'); app.id = 'appWrap'; app.className = 'wrap in-match fxl-app';
     app.innerHTML = `<div class="content-wrap"><div id="view-play" class="fxl-view">${BOARD_HTML}</div></div>`;
     root.appendChild(app);
-    fit(app, vw() >= 760 ? 940 : 400); // 2026-10-17: 940 (was 880): the re-captured bottom row (castle, Deck, leader, hand, Graveyard, Pass) needs the room
+    const phone = vw() < 760; // 2026-10-21 (LAB2, owner: sticky field, a third of the screen at most): on a phone the strip shows the battlefield only, at a readable size
+    const zb = fit(app, phone ? 470 : 940, 0, phone); // 2026-10-17: 940 (was 880): the re-captured bottom row (castle, Deck, leader, hand, Graveyard, Pass) needs the room
+    if(phone){ // the dock may still be hidden (no layout) right now, so the crop is measured again over the next frames
+      const crop = ()=>{ try{ const bf = app.querySelector('#battlefieldEl'); if(!bf || !frame.clientWidth) return; app.style.setProperty('margin-top', '0px', 'important'); const z = parseFloat(app.style.zoom) || zb || 1; const d = bf.getBoundingClientRect().top - app.getBoundingClientRect().top; app.style.setProperty('margin-top', (-(d - 2) / z).toFixed(1) + 'px', 'important'); }catch(e){} }; // (.fxl-app has margin:0 !important)
+      crop(); requestAnimationFrame(()=>{ crop(); requestAnimationFrame(crop); }); setTimeout(crop, 300);
+    }
     const q = s=> app.querySelector(s), qa = s=> [...app.querySelectorAll(s)];
     const units = sel=> qa(sel + ' .board-card').filter(b=> b.querySelector('.card-tile'));
     parts.board = {el:q('#battlefieldEl'), rowMine:q('#rowMine'), rowFoe:q('#rowEnemy'), mine:units('#rowMine'), foe:units('#rowEnemy'),
