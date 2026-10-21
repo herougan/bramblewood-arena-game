@@ -263,6 +263,7 @@
     },
     "fightRounds": 20,
     "bossHpBonusMax": 55,
+    "shield": 50,
     "trench": {
       "rows": 3,
       "wallHp": 45

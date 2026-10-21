@@ -1,8 +1,8 @@
 {
  "_about": "BF5 (2026-10-19, owner 21:36): N halved (scale 0.5), Bounty 1 a point; every live card re-derived at Level 1 keeping its share of N inside the band; the cards outside the band halved in proportion",
  "generated": "2026-10-19",
- "cards": 719,
- "band": 702,
+ "cards": 721,
+ "band": 704,
  "under": 0,
  "target": 0,
  "owner": 17,
@@ -16562,6 +16562,52 @@
     1
    ],
    "use": 0.93
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    1,
+    14
+   ],
+   "S": 4.5,
+   "N": 19.74,
+   "N0": 39.47,
+   "use0": 0.52,
+   "m": 1,
+   "want": 0.61,
+   "verdict": "band",
+   "now": [
+    1,
+    6
+   ],
+   "use": 0.63
+  },
+  {
+   "id": "glintsnatch-magpie",
+   "name": "Glintsnatch Magpie",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    3,
+    7
+   ],
+   "S": 2,
+   "N": 13.69,
+   "N0": 27.38,
+   "use0": 0.82,
+   "m": 1.5,
+   "want": 0.82,
+   "verdict": "band",
+   "now": [
+    1,
+    3
+   ],
+   "use": 0.77
   }
  ],
  "prop": [
