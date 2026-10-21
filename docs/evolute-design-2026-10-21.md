@@ -121,8 +121,10 @@ and the cards follow them ("Built by package EV"). Owner calls EV-1 to EV-7 are 
 - **EV-5, the prices** above.
 - **EV-6, the eggs as fodder.** The Speckled Egg became a Stem and the Cocoon a Chrysalis. Each egg got a species (Bird, Insect) so it
   shares a type with an evolute: an egg had no type at all. By formula both went 0/2 → 0/1.
-- **EV-7, the two-skill rule.** Each evolute keeps the skill its flavour names: Harbinger Flying, Hexcaller Render, Bone Diviner its On
-  Kill Lumber. The ravens' other skills were cut: Harbinger's Poison 2, and the Flying of the Hexcaller and the Bone Diviner.
+- **EV-7, the ravens at their floor.** The owner's HB2-1 answer (18:23, merged from main mid-package) says Flying does not count toward
+  the two-skill rule. So the ravens keep every skill: Harbinger Flying + Poison 2, Hexcaller Flying + Render, Bone Diviner Flying + On
+  Kill Lumber, each beside its stage skill. With Flying's ×1.5 the formula puts all three at their 1/1 floor (flagged). In a stack they
+  add to the base's stats anyway. The alternative is cutting Flying on the Hexcaller and the Bone Diviner (they were 1/7).
 
 ### The lines and the cards changed
 | Line | Stage | Card | Skills now | Stats (was → now, by formula) |
@@ -130,9 +132,9 @@ and the cards follow them ("Built by package EV"). Owner calls EV-1 to EV-7 are 
 | Sloth | Stem | Slowpoke Sentinel | Armor 2, Stem – {Armor 1} | 1/1 → 1/1 (at its floor, flagged as before) |
 | Sloth | Evolute | Canopy Sloth Guardian | Guardian, Evolute | 2/18 → 2/15 |
 | Sloth | Alpha | Hanging Loafer | Bounty 1, Evolute Alpha | 3/23 → 2/21 |
-| Raven mystics | Evolute (over any bird) | Raven Harbinger | Flying, Evolute (Poison 2 cut) | 1/2 → 2/8 |
-| Raven mystics | Alpha | Raven Hexcaller | Render, Evolute Alpha (Flying cut) | 1/8 → 1/7 |
-| Raven mystics | Omega | Bone Diviner | On Kill +2 Lumber, Evolute Omega (Flying cut); its graveyard cost kept | 2/9 → 1/7 |
+| Raven mystics | Evolute (over any bird) | Raven Harbinger | Flying, Poison 2, Evolute | 1/2 → 1/1 (floor, flagged) |
+| Raven mystics | Alpha | Raven Hexcaller | Flying, Render, Evolute Alpha | 1/8 → 1/1 (floor, flagged) |
+| Raven mystics | Omega | Bone Diviner | Flying, On Kill +2 Lumber, Evolute Omega; its graveyard cost kept | 2/9 → 1/1 (floor, flagged) |
 | Storm | Evolute (over any Elemental) | Gale Sprite | Evolute | 2/10 → 1/8 |
 | Storm | Alpha | Stormcaller | On Ready 5 damage, Evolute Alpha | 6/17 → 1/23 (cap 2: S² leaves little room for A·H) |
 | fodder (birds) | Stem | Speckled Egg (egg-bird) | Stem; species Bird | 0/2 → 0/1 |

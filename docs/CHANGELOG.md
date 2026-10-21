@@ -30,8 +30,8 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   `--only`:
   - **Sloth:** Slowpoke Sentinel (Stem – {Armor 1}, 1/1) → Canopy Sloth Guardian (Evolute, 2/18 → 2/15) → Hanging Loafer (Alpha,
     3/23 → 2/21).
-  - **Raven mystics:** Raven Harbinger (Evolute, Poison cut, 1/2 → 2/8) → Raven Hexcaller (Alpha, Flying cut, 1/8 → 1/7) → Bone
-    Diviner (Omega, Flying cut, 2/9 → 1/7).
+  - **Raven mystics:** Raven Harbinger (Evolute) → Raven Hexcaller (Alpha) → Bone Diviner (Omega). All three keep every skill,
+    since Flying no longer counts (HB2-1). With Flying's ×1.5 the formula puts them at their 1/1 floor (flagged, EV-7).
   - **Storm:** Gale Sprite (Evolute, 2/10 → 1/8) → Stormcaller (Alpha, 6/17 → 1/23).
   - **Fodder:** the Nest's Speckled Egg is a Stem and the Cocoon a Chrysalis. Each got a species (Bird, Insect), 0/2 → 0/1.
   - The missing stages are listed as cards to make in the doc.

@@ -2,13 +2,13 @@
  "_about": "BF6 (2026-10-21): every card re-derived with the halved world's skill worth (its shape and its share of N kept, in the band for live cards and Easter eggs)",
  "generated": "2026-10-21",
  "cards": 751,
- "moved": 13,
- "band": 637,
+ "moved": 14,
+ "band": 634,
  "under": 7,
  "own": 28,
- "bucket": 79,
+ "bucket": 82,
  "dropped": 2,
- "flag": 79,
+ "flag": 82,
  "squeezed": 7,
  "squeezedFlag": 5,
  "rows": [
@@ -929,7 +929,7 @@
     "sweep"
    ],
    "was": [
-    1,
+    0,
     10
    ],
    "shape": [
@@ -941,15 +941,15 @@
    "N": 28.85,
    "N2": 92.48,
    "m": 1,
-   "use0": 0.74,
-   "useNowStats": 0.73,
+   "use0": 0.67,
+   "useNowStats": 0.66,
    "want": 1,
    "verdict": "band",
    "now": [
-    1,
-    10
+    0,
+    19
    ],
-   "use": 0.73
+   "use": 0.97
   },
   {
    "id": "compost-grub",
@@ -1255,7 +1255,7 @@
     "bounty"
    ],
    "was": [
-    5,
+    0,
     29
    ],
    "shape": [
@@ -1267,13 +1267,13 @@
    "N": 42.8,
    "N2": 203.54,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.98,
+   "use0": 0.76,
+   "useNowStats": 0.75,
    "want": 1,
    "verdict": "band",
    "now": [
-    5,
-    29
+    0,
+    39
    ],
    "use": 0.98
   },
@@ -1387,8 +1387,8 @@
     "evolute"
    ],
    "was": [
-    2,
-    10
+    1,
+    8
    ],
    "shape": [
     5,
@@ -1399,8 +1399,8 @@
    "N": 13.71,
    "N2": 20.88,
    "m": 1,
-   "use0": 1.14,
-   "useNowStats": 1.24,
+   "use0": 0.83,
+   "useNowStats": 0.95,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -1421,8 +1421,8 @@
     "evoluteAlpha"
    ],
    "was": [
-    6,
-    17
+    1,
+    23
    ],
    "shape": [
     9,
@@ -1433,8 +1433,8 @@
    "N": 36.03,
    "N2": 144.24,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 1.09,
+   "use0": 0.91,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -2323,30 +2323,34 @@
    "cost": 2,
    "skills": [
     "flying",
-    "evolute"
+    "evolute",
+    "poison"
    ],
    "was": [
-    1,
-    2
+    2,
+    8
    ],
    "shape": [
     4,
     16
    ],
-   "S0": 1,
-   "S": 3,
+   "S0": 7.26,
+   "S": 9.26,
    "N": 23.63,
    "N2": 62.04,
    "m": 1.5,
-   "use0": 0.32,
-   "useNowStats": 0.44,
+   "use0": 1.25,
+   "useNowStats": 1.35,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
-    2,
-    8
+    1,
+    1
    ],
-   "use": 0.95
+   "use": 0.78,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 9.26 (x1.5) against N 23.63 (cap 2: S·|S| 85.75 vs (N/3)² 62.04)"
   },
   {
    "id": "bear-cub",
@@ -2822,7 +2826,7 @@
     "bounty"
    ],
    "was": [
-    2,
+    0,
     25
    ],
    "shape": [
@@ -2834,13 +2838,13 @@
    "N": 31.33,
    "N2": 109.06,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 0.88,
+   "useNowStats": 0.86,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    25
+    0,
+    29
    ],
    "use": 0.99
   },
@@ -3088,7 +3092,7 @@
     "nocturnal"
    ],
    "was": [
-    4,
+    0,
     17
    ],
    "shape": [
@@ -3100,13 +3104,13 @@
    "N": 28.85,
    "N2": 92.48,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.99,
+   "use0": 0.73,
+   "useNowStats": 0.72,
    "want": 1,
    "verdict": "band",
    "now": [
-    4,
-    17
+    0,
+    25
    ],
    "use": 0.99
   },
@@ -3555,8 +3559,8 @@
     "evoluteAlpha"
    ],
    "was": [
-    3,
-    23
+    2,
+    21
    ],
    "shape": [
     4,
@@ -3567,8 +3571,8 @@
    "N": 30.24,
    "N2": 101.61,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 1.12,
+   "use0": 0.91,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -3959,11 +3963,12 @@
    "cost": 1,
    "skills": [
     "render",
-    "evoluteAlpha"
+    "evoluteAlpha",
+    "flying"
    ],
    "was": [
     1,
-    8
+    7
    ],
    "shape": [
     2,
@@ -3973,16 +3978,19 @@
    "S": 5,
    "N": 17.07,
    "N2": 32.38,
-   "m": 1,
-   "use0": 0.73,
-   "useNowStats": 0.88,
+   "m": 1.5,
+   "use0": 1,
+   "useNowStats": 1.23,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    7
+    1
    ],
-   "use": 0.82
+   "use": 0.7,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 5 (x1.5) against N 17.07 (cap 2: S·|S| 25 vs (N/3)² 32.38)"
   },
   {
    "id": "eagle-sharpshooter",
@@ -4189,11 +4197,12 @@
    "cost": 2,
    "skills": [
     "triggers",
-    "evoluteOmega"
+    "evoluteOmega",
+    "flying"
    ],
    "was": [
-    2,
-    9
+    1,
+    7
    ],
    "shape": [
     5,
@@ -4203,16 +4212,19 @@
    "S": 7.74,
    "N": 24.66,
    "N2": 67.57,
-   "m": 1,
-   "use0": 0.71,
-   "useNowStats": 0.84,
+   "m": 1.5,
+   "use0": 0.81,
+   "useNowStats": 1.02,
    "want": 1,
-   "verdict": "band",
+   "verdict": "flag",
    "now": [
     1,
-    7
+    1
    ],
-   "use": 0.68
+   "use": 0.65,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 7.74 (x1.5) against N 24.66 (cap 2: S·|S| 59.91 vs (N/3)² 67.57)"
   },
   {
    "id": "insect-swarmling",
@@ -7117,7 +7129,7 @@
    ],
    "was": [
     2,
-    18
+    15
    ],
    "shape": [
     3,
@@ -7128,8 +7140,8 @@
    "N": 23.63,
    "N2": 62.04,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 1.1,
+   "use0": 0.91,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -13408,7 +13420,7 @@
     "spiteful"
    ],
    "was": [
-    1,
+    0,
     14
    ],
    "shape": [
@@ -13420,13 +13432,13 @@
    "N": 19.65,
    "N2": 42.9,
    "m": 1,
-   "use0": 1.05,
-   "useNowStats": 0.97,
+   "use0": 0.94,
+   "useNowStats": 0.87,
    "want": 1,
    "verdict": "band",
    "now": [
-    1,
-    14
+    0,
+    16
    ],
    "use": 0.97
   },
@@ -13744,7 +13756,7 @@
     "ironWill"
    ],
    "was": [
-    5,
+    0,
     22
    ],
    "shape": [
@@ -13756,13 +13768,13 @@
    "N": 32.98,
    "N2": 120.85,
    "m": 1,
-   "use0": 1.07,
-   "useNowStats": 0.97,
+   "use0": 0.74,
+   "useNowStats": 0.67,
    "want": 1,
    "verdict": "band",
    "now": [
-    5,
-    22
+    0,
+    32
    ],
    "use": 0.97
   },
@@ -16846,7 +16858,7 @@
    ],
    "was": [
     0,
-    2
+    1
    ],
    "shape": [
     0,
@@ -16857,9 +16869,9 @@
    "N": 54.11,
    "N2": 325.32,
    "m": 1,
-   "use0": 0.06,
-   "useNowStats": 0.07,
-   "want": 0.06,
+   "use0": 0.04,
+   "useNowStats": 0.05,
+   "want": 0.04,
    "verdict": "own",
    "now": [
     0,
@@ -16941,7 +16953,7 @@
    ],
    "was": [
     0,
-    2
+    1
    ],
    "shape": [
     0,
@@ -16952,9 +16964,9 @@
    "N": 34.74,
    "N2": 134.1,
    "m": 1,
-   "use0": 0.09,
-   "useNowStats": 0.1,
-   "want": 0.09,
+   "use0": 0.06,
+   "useNowStats": 0.07,
+   "want": 0.06,
    "verdict": "own",
    "now": [
     0,
@@ -20947,7 +20959,7 @@
     "arrowCount"
    ],
    "was": [
-    2,
+    0,
     24
    ],
    "shape": [
@@ -20959,13 +20971,13 @@
    "N": 37.63,
    "N2": 157.34,
    "m": 1,
-   "use0": 1.07,
-   "useNowStats": 1,
+   "use0": 0.96,
+   "useNowStats": 0.89,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
-    24
+    0,
+    28
    ],
    "use": 1
   },
