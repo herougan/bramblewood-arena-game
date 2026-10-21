@@ -4,6 +4,42 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**RP1. Faction rewards' map term in the stat budget** · Decide · Rewards · asked 2026-10-21
+- A faction Rare can't be had before Map 14 and a Very Rare before Map 25 (the faction reward track), but cardObtainMap still counts every faction reward as a pack card (Map 5) for N's Map x 0.2. Changing it moves N for the 42 faction cards (package BF5's stats).
+  - Follow the gate (Common 0, Uncommon ~7, Rare 14, Very Rare 25 ...)
+  - Keep Map 5 for all faction cards
+- **Default:** Keep Map 5 until BF5 lands
+
+**RP2. The later faction gates** · Decide · Rewards · asked 2026-10-21
+- Proposed: Very Rare at 50 received and Map 25; Super Rare 60 / Map 30; Epic 70 / 35; Heroic 80 / 40; Unique and up 90 / 50 (FACTION_RARITY_GATES). The sim puts about 76 received by Map 25 and 111 by Map 40.
+  - Keep the proposal
+  - Other numbers
+- **Default:** Keep the proposal
+
+**RP3. Quarry Mole out of Base** · Decide · Rewards · asked 2026-10-21
+- The Quarry Mole (Darksight, Keen Sense, 1 Lumber) is a Base card everyone owns. Proposal: make it a Caves & Alcoves (Map 8, 8-1) reward; the Badger Lumberjack on 1-4 is the Lumber introduction now, and the plain Harvest Mouse is already Base.
+  - Move the mole to 8-1
+  - Keep it in Base
+- **Default:** Move the mole to 8-1
+
+**RP4. Plain start for Hummingbirds, the 0-2 pack and the tutorial rewards** · Decide · Rewards · asked 2026-10-21
+- Every Hummingbird faction card flies (no plain one), the 0-2 faction pack's third card is any basic-pack card, and the tutorial's reward cards (Rabbit Kit, River Warden, Sunspire Envoy, Riverwing Envoy) have skills. The pass made skirmish rewards and the faction picks plain on Maps 0-1 only.
+  - Add a plain Hummingbird common and plain tutorial rewards
+  - Leave as is
+- **Default:** Leave as is
+
+**RP5. Held cards: the Canopy's rainforest animals, the Thistle Baron, Eyrie Heights' theme** · Decide · Rewards · asked 2026-10-21
+- 15 Canopy animals are held for a Map 25 rainforest (the Savanna Reaches has room for 10 now); the Thistle Baron (Map 1's leader, Thorns) is held for Map 21+; Eyrie Heights' chapel birds are Ecclesia (Map 77), so Map 11 still fields cards nobody can collect; the Basalt Foundry's fights are Devilry (Map 66).
+  - Keep them held and re-theme Map 11 and the Foundry
+  - Put the Canopy animals on Map 14 now
+- **Default:** Keep them held
+
+**RP6. The last side-map gates** · Decide · Maps · asked 2026-10-21
+- Gated now (after Map N cleared, fights count as Map N): Clovermead 5, Lilypad Reach 6, Smugglers' Grotto 7, Sunken Grove 9, Mycelium Deep 11, Glimmer Depths 12, Sunken Depths 14, Aerie Vault 15, Canopy 18, Ice Hollow 21, Basalt Foundry 23. Kept: the Pale Desert (after Map 18), the Eye of the Volcano and the Volcano Lair (after 20-10), the Old Bramble (after the Ice Hollow, still counting as Map 17).
+  - Pale Desert after Map 22, the Eye and the Lair after Map 24, the Old Bramble as Map 21
+  - Keep these four as they are
+- **Default:** Keep these four as they are
+
 **T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03
 - The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied.
   - Say "apply it" and I run supabase/migrations/20261003_fight_sessions.sql
@@ -494,3 +530,12 @@ Package SK1 (owner 21:36, new combat skills; 21:56: "if you can and it makes sen
 - **Isolation is a drawback** (owner 21:36: "(4, 3, 2, 1, or 0) - range = 2"): allies within 2 columns, 0/1/2/3/4+ give −4/−3/−2/−1/0 Attack and Health (flat, Claude's call over −50%), a table parameter; its S is negative, like the payments.
 - **Punish N is held behind a flag** (owner: an advanced skill for Map 40+, design open): the recommended design (docs/skills-punish-proposal.md) is built behind `rules.punishSkill` / engine `flags.punish` and is on no card.
 - **Every SK1 number is a parameter** (owner: the numbers may be halved): the engine's SK1_DEF defaults, a card's own N, and `makeSimEngine(..., {sk1:{...}})` to change the defaults in one place.
+
+## Stated rules · 2026-10-19
+
+Package SK2b (owner 23:43: "I want to make resources really a strategic move. Not a simple - just put."): the three-tier economy and the cost principle. Details: docs/economy-resources-2026-10-19.md. Pinned by `tests/skills-sk2b-2026-10-19.js`.
+
+- **Strong creatures can be low costed - and their power is that they are low costed** (the owner, 23:43). A cheap strong card is a design tool, not a balance error: its strength is tempo. Costly cards are strong because they need an economy, and the economy is what the opponent can attack. The budget is not bent for such cards; they are a deliberate, marked class (recommendation, not applied).
+- **Three tiers, each paid with the one below** (all On Turn Start × Gain, while Ready): Milling N gives N Lumber free; Quarry N pays 1 Lumber for N Stone; Smelter N pays 2 Lumber + 2 Stone for 1 Metal, up to N times. The ratios are parameters (SK2_DEFAULTS). The Petrified Tree stays the expensive no-input Stone source.
+- **A trigger can have a price** (t.pay, Lumber / Stone / Metal / Uranium): it goes off only if its player holds all of it, and pays after every other gate, so a fizzle costs nothing. A conversion is paid whole or not at all; can't pay, nothing happens. Units pay in the upkeep's order, so a Quarry acting first can feed a Smelter the same turn.
+- **Smelter, not Forge-works** (Claude's call): the Forge is already the card-upgrade screen.

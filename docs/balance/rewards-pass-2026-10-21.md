@@ -30,11 +30,11 @@ Categories, before → after (all 831 cards):
 
 | Category | Before | After |
 |---|---|---|
-| Skirmish reward (`{kind:'map', id, node}`) | 454 | 383 |
+| Skirmish reward (`{kind:'map', id, node}`) | 454 | 382 |
 | Pack card (basic pool 1, Mystery Booster 99) | 130 | 145 |
 | Faction reward (`{kind:'pack', tier:11, side}`) | 37 | 42 |
-| Base (basic, starter, unlocked, tutorial rewards) | 50 | 50 |
-| awaitingSource | 11 | 63 |
+| Base (basic, starter, unlocked, tutorial rewards) | 50 | 51 |
+| awaitingSource | 11 | 63 (65 with package SK2b's two new cards, merged after) |
 | Raid / Smith / Nest / Quest / Secret / Materia / Easter egg | 7 / 6 / 7 / 1 / 1 / 7 / 9 | unchanged |
 | Sourceless on the card pass's documented list (the Dragons, enemy-only bosses, parked Elementals and the like) | 37 | 37 |
 | Two at once (overlaps) | 2: Meadow Frog (Base and 1-1's reward), MissingNo. (a map with no fight) | 0 |
@@ -449,3 +449,7 @@ see the owner calls.
 11. **Glowing Gecko** (Irradiated) is held for World 3 (Map 33, the Glowing Waste); the Irradiated Couatl (Epic, uranium cost) is still in
     the basic packs.
 12. Fight 18-5 gives 4 reward cards (one over the usual 3); left as it was.
+13. **Anvilwhisker Otter** (package SK2b, merged after this pass, awaitingSource for you to place): by the Oct 21 rule it belongs with the
+    faction rewards (Otter side, Uncommon). Glintsnatch Magpie (SK2b) is a magpie, not a Hummingbird.
+
+The open calls are also in `docs/decisions.json` (RP1-RP6).

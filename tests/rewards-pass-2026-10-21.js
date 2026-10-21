@@ -60,7 +60,9 @@ ok(!/factionPackPool[\s\S]{0,1400}src\.kind==='map'/.test(grab('factionPackPool'
 const themes = readJSON('canonical/unit-themes.json'), tag = Object.fromEntries(themes.units.map(u=> [u.id, u.faction]));
 const sideCards = live.filter(c=> (c.archetypes || []).includes('Otter') || (c.archetypes || []).includes('Hummingbird') || ['otters', 'hummingbirds'].includes(tag[c.id]));
 const OK_ELSE = {'riverwing-envoy': 'the both-sides tutorial reward (Base)', 'egg-otter': 'the Nest\'s otter egg', 'sunfeather-plume': 'Blacksmith equipment'};
-const notFac = sideCards.filter(c=>{ const k = R.category(c); return k !== 'faction' && k !== 'base' && !OK_ELSE[c.id]; }).map(c=> `${c.id} (${R.category(c)})`);
+// a new card still waiting for the owner to place it (awaitingSource, not one this pass held: e.g. SK2b's Anvilwhisker Otter) is left to the owner
+const waiting = c=> R.category(c) === 'awaitingSource' && !REC.moves.some(m=> m.id === c.id);
+const notFac = sideCards.filter(c=>{ const k = R.category(c); return k !== 'faction' && k !== 'base' && !OK_ELSE[c.id] && !waiting(c); }).map(c=> `${c.id} (${R.category(c)})`);
 ok(sideCards.length >= 50 && !notFac.length, `1/3. the ${sideCards.length} Otter and Hummingbird cards are faction rewards, Base (starter) or a listed exception: ` + notFac.join(', '));
 const fac = live.filter(c=> R.category(c) === 'faction');
 ok(fac.every(c=>{ const s = c.source.side || ''; const hb = (c.archetypes || []).includes('Hummingbird') || tag[c.id] === 'hummingbirds'; return s === 'shared' || (hb ? s === 'tribes' : s === ''); }), '3. each faction reward is on its side (a Hummingbird on "tribes", an Otter on the Otter side, or "shared")');
