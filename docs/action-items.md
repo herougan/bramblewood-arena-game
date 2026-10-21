@@ -50,9 +50,9 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Units | Proposed animals (UT) | 30 beings with no animal in the art (Ent owl, golems gorilla, Great Gate duck…); MissingNo bird vs cat art |
 | Units | species vs animal | 11 cards disagree (Moray "Cnidarian", moles "Rodent", Tardigrade "Insect"): fix species? |
 | Units | Tutorial Level 0 | Hummingbird side's tutorial cards also Level 0 (fairness): OK? |
-| Easter eggs | Names | Tobasco shown as "Habanero Drakon" (trademark); panda "Kegfuse Panda"; keep "Nyoogle"? |
+| Easter eggs | Names | ANSWERED 10-22 07:42: names okay (Habanero Drakon, Kegfuse Panda, Nyoogle) |
 | Easter eggs | Codex teaser | 8 "???" tiles visible from the start and counted, or hidden until seen? |
-| Easter eggs | Condor "+5" | Taken literally (5 columns out): the edge beam needs a very wide row |
+| Easter eggs | Condor "+5" | ANSWERED 10-22 07:42: okay, and it must animate turning and manoeuvring to fire the beam (package CB) |
 | Easter eggs | Rarities | Drakon Rare, Panda Super Rare; Nyoogle tagged cat/mythic |
 | Server | Deck sync migration (SY) | supabase/proposed/20261019_deck_sync.sql: looks + deleted_at columns, checks, stale-write guard. Optional: apply? |
 | Server | Device-only data (SY) | Per-copy foil/Shiny/skins and Kibble, Food, Beer, Kroon, Laurels still don't sync. Sync next? |
