@@ -5528,7 +5528,7 @@
      "mr"
     ],
     "fights": {
-     "m24": 9
+     "m24": 14
     }
    },
    "source": "map",
@@ -6489,8 +6489,7 @@
    "rarity": "uncommon",
    "biomes": [
     "maze-briar",
-    "meadow-forest",
-    "village-keep"
+    "meadow-forest"
    ],
    "family": "mammal",
    "sub": "Rodent",
@@ -6530,13 +6529,13 @@
     ],
     "fights": {
      "mh": 1,
-     "m24": 3
+     "m24": 1
     }
    },
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mh; type Mouse; fights mostly on village-keep",
+    "biome": "home map mh; type Mouse",
     "family": "species Rodent",
     "faction": "fox / mouse / raccoon of the Briar Maze or Redwood",
     "manual": "the lore bible: the rat road-gang boss, \"king of the road\""
@@ -6588,7 +6587,7 @@
     ],
     "fights": {
      "ml": 10,
-     "m11": 7,
+     "m11": 9,
      "m23": 15
     }
    },
@@ -7365,7 +7364,7 @@
     ],
     "fights": {
      "m6": 6,
-     "mi": 2
+     "mi": 10
     }
    },
    "source": "map",
@@ -8071,7 +8070,7 @@
     "home": [],
     "fights": {
      "m11": 22,
-     "me": 14
+     "me": 15
     }
    },
    "source": null,
@@ -9009,7 +9008,7 @@
     "fights": {
      "mt": 6,
      "m6": 9,
-     "mi": 7
+     "mi": 6
     }
    },
    "source": "pack",
@@ -10656,7 +10655,8 @@
      "mt"
     ],
     "fights": {
-     "m6": 1
+     "m6": 1,
+     "mi": 1
     }
    },
    "source": "map",
@@ -11545,8 +11545,8 @@
    "maps": {
     "home": [],
     "fights": {
-     "mu": 20,
-     "mz": 12,
+     "mu": 19,
+     "mz": 10,
      "mn": 10
     }
    },
@@ -11659,7 +11659,7 @@
     "fights": {
      "mt": 8,
      "m6": 15,
-     "mi": 6
+     "mi": 4
     }
    },
    "source": "map",
@@ -13544,7 +13544,7 @@
      "m22"
     ],
     "fights": {
-     "m9": 8,
+     "m9": 7,
      "mx": 4
     }
    },
@@ -13607,7 +13607,7 @@
      "m3"
     ],
     "fights": {
-     "m22": 11,
+     "m22": 15,
      "mx": 3,
      "mlb": 5
     }
@@ -15404,7 +15404,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "mu": 3,
+     "mu": 1,
      "mtut": 3,
      "mz": 2
     }
@@ -17435,8 +17435,8 @@
     "home": [],
     "fights": {
      "m1": 4,
-     "mu": 7,
-     "mz": 6
+     "mu": 10,
+     "mz": 8
     }
    },
    "source": null,
@@ -19124,7 +19124,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m24": 8
+     "m24": 11
     }
    },
    "source": null,
@@ -22302,7 +22302,7 @@
      "m3": 5,
      "m11": 12,
      "m9": 6,
-     "me": 11,
+     "me": 10,
      "mx": 6
     }
    },
@@ -24492,7 +24492,7 @@
     ],
     "fights": {
      "m21": 17,
-     "m22": 19,
+     "m22": 17,
      "mlb": 50
     }
    },
@@ -25800,8 +25800,8 @@
     ],
     "fights": {
      "mt": 15,
-     "m6": 11,
-     "mi": 7
+     "m6": 13,
+     "mi": 5
     }
    },
    "source": "map",
@@ -26704,7 +26704,7 @@
     "fights": {
      "m10": 23,
      "m21": 7,
-     "m22": 5,
+     "m22": 3,
      "mv": 4
     }
    },
@@ -27091,7 +27091,7 @@
     ],
     "fights": {
      "m6": 4,
-     "mi": 8
+     "mi": 6
     }
    },
    "source": "map",
@@ -33495,7 +33495,7 @@
     "home": [],
     "fights": {
      "m3": 4,
-     "m9": 10
+     "m9": 11
     }
    },
    "source": null,
@@ -34324,7 +34324,7 @@
      "m24"
     ],
     "fights": {
-     "m24": 12
+     "m24": 10
     }
    },
    "source": "map",
@@ -34438,7 +34438,7 @@
      "m24"
     ],
     "fights": {
-     "m24": 9
+     "m24": 5
     }
    },
    "source": "map",
@@ -40058,8 +40058,8 @@
    "maps": {
     "home": [],
     "fights": {
-     "m6": 12,
-     "mi": 8
+     "m6": 10,
+     "mi": 6
     }
    },
    "source": "pack",

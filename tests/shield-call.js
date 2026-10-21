@@ -29,7 +29,8 @@ for(const mode of ['open', 'classic']){
   const r = run(mode, 0);
   ok(r.shield, `[${mode}] a shield is summoned`);
   if(r.shield){
-    ok(r.shield.hp === 7 && r.shield.maxHp === 10, `[${mode}] the shield took the 3 damage (hp ${r.shield.hp}/${r.shield.maxHp})`);
+    // 2026-10-21 (BF5): the shield token is halved with the rest (0/10 -> 0/5)
+    ok(r.shield.hp === 2 && r.shield.maxHp === 5, `[${mode}] the shield took the 3 damage (hp ${r.shield.hp}/${r.shield.maxHp})`);
     ok(r.cards.filter(c=> c.defId!=='summoned-shield').every(c=> c.hp === c.maxHp), `[${mode}] the real units are untouched`);
     ok(r.ev.some(x=> x.type==='spawn' && x.cause==='shieldCall'), `[${mode}] a shieldCall spawn event is logged`);
     ok(r.ev.some(x=> x.type==='statusFx' && x.kind==='shieldCall'), `[${mode}] a shieldCall statusFx is logged`);
@@ -37,9 +38,10 @@ for(const mode of ['open', 'classic']){
   }
   // Once only: a second zap hits a real unit.
   const ev2 = []; r.e.debugSpawnCard(r.P, r.so, 1, 'sc-zap', 'left', {}, ev2);
-  ok(r.e.allBoardCards(r.P[2]).filter(c=> c.defId==='summoned-shield').length === 1, `[${mode}] only one shield per hound`);
+  // (BF5) the halved shield can fall to the second zap; either way the hound never calls a second one
+  ok(r.e.allBoardCards(r.P[2]).filter(c=> c.defId==='summoned-shield').length <= 1 && !ev2.some(x=> x.type==='spawn' && x.cause==='shieldCall'), `[${mode}] only one shield per hound`);
 }
 const lv = run('open', 3);
-ok(lv.shield && lv.shield.maxHp === 13, `a level-3-above-base hound calls a 0/13 shield (got ${lv.shield && lv.shield.maxHp})`);
+ok(lv.shield && lv.shield.maxHp === 8, `a level-3-above-base hound calls a 0/8 shield (BF5: 0/5 + 3; got ${lv.shield && lv.shield.maxHp})`);
 console.log(`shield-call: ${fail} failure(s)`);
 process.exit(fail ? 1 : 0);

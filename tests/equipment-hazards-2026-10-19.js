@@ -96,7 +96,7 @@ const spawn = (e, P, pid, id, sl)=>{ const ok1 = e.debugSpawnCard(P, so, pid, id
 // ---- 3. Pry N (the Crowbar)
 { const {e, P} = mk(6); const c = spawn(e, P, 1, 'tq-unit', 0); fresh(P[1]); const cb = give(P[1], 'crowbar');
   ok(e.placeCard(P, so, 1, cb, 0, {}, []), '3. the Crowbar goes under a unit'); e.roundStart(P, 2, so, {}, []);
-  ok(c.atk === 4 && (defs[c.defId].effects || {}).pry === 1, `3. +2/+0 and Pry 1 once equipped (${c.atk})`);
+  ok(c.atk === 3 && (defs[c.defId].effects || {}).pry === 1, `3. +1/+0 (BF5: the Crowbar halved, was +2/+0) and Pry 1 once equipped (${c.atk})`);
   const t = spawn(e, P, 2, 'tq-armored', 0); const ev = []; e.resolveCombat(P, so, {}, ev, 1);
   ok(t.armorLoss === 1 && ev.some(x=> x.kind === 'armorShred' && x.pry), `3. a landed hit strips 1 Armor for good (armorLoss ${t.armorLoss})`); }
 
@@ -167,7 +167,7 @@ const hz = (e, P, pid, id, tpid, sl)=>{ fresh(P[pid]); const u = give(P[pid], id
   const NEW = ['crowbar', 'bucketknee-wolf', 'armory', 'frost-slick', 'magma-vent', 'bog-seep', 'miasma', 'rockfall'];
   { const at = cards.findIndex(c=> c.id === NEW[0]); ok(at >= 0 && JSON.stringify(cards.slice(at, at + NEW.length).map(c=> c.id)) === JSON.stringify(NEW), '8. the new cards sit together, appended after the older cards'); } // 2026-10-19 (merge): later packages append after them
   NEW.forEach(id=> ok(/package EQ/.test(by[id].creatorNote || '') && /N = [\d.]+/.test(by[id].creatorNote), `8. ${id}: its creatorNote shows the budget`));
-  ok(by.crowbar.cardType === 'equipment' && by.crowbar.attack === 2 && by.crowbar.health === 0 && by.crowbar.equip.grant.pry === 1 && by.crowbar.rarity === 'rare', '8. Crowbar: equipment +2/+0, Pry 1, Rare');
+  ok(by.crowbar.cardType === 'equipment' && by.crowbar.attack === 1 && by.crowbar.health === 0 && by.crowbar.equip.grant.pry === 1 && by.crowbar.rarity === 'rare', '8. Crowbar: equipment +1/+0 (BF5 halved; was +2/+0), Pry 1, Rare');
   ok(!by.crowbar.source && !/half-life|gordon|freeman|headcrab/i.test(by.crowbar.name + ' ' + by.crowbar.flavor), '8. Crowbar: no source yet, a generic name and flavour');
   ok(by['bucketknee-wolf'].easterEgg && by['bucketknee-wolf'].source.kind === 'easteregg' && by['bucketknee-wolf'].rarity === 'veryrare' && !by['bucketknee-wolf'].effects.pounce, '8. the Bucketknee Wolf: a Very Rare Easter egg, no Pounce');
   ok(!/skyrim|arrow in the knee|adventurer like you/i.test(by['bucketknee-wolf'].flavor), '8. its flavour winks without quoting');

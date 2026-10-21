@@ -136,7 +136,8 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
   ok(T.hp === 49 && N.hp === 47, `wet (Swimmers): +1 on the arc, no extra zap on the target (${T.hp}, ${N.hp})`); }
 { const {e, P} = mk(4); const T = put(e, P, 2, 'kf-wall', 0); const X = put(e, P, 1, 'kf-elec', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev); ok(T.hp === 49 && ev.find(x=> x.type === 'electricity').arcUid === null, 'nobody beside it: no arc'); }
 { const vb = ['voltwing-bat','static-bat','arc-bat'].map(id=> base[id]);
-  ok(vb.every(d=> d && d.effects.flying && d.effects.nocturnal && d.effects.electricity >= 1 && (d.species||[]).includes('Bat') && (d.archetypes||[]).includes('Cave') && !d.art), 'three new cave bats with Electricity (no art yet)');
+  // 2026-10-21 (BF5, two skills at most): the bats keep Flying + Electricity (Nocturnal cut, docs/balance/two-skills-2026-10-21.json)
+  ok(vb.every(d=> d && d.effects.flying && d.effects.electricity >= 1 && (d.species||[]).includes('Bat') && (d.archetypes||[]).includes('Cave') && !d.art), 'three new cave bats with Electricity (no art yet)');
   ok(vb.map(d=> d.rarity).join() === 'common,uncommon,rare' && base['arc-bat'].effects.electricity === 2, 'common, uncommon, rare; Arc Bat has Electricity 2');
   ok(base['voltaic-eel'].effects.chainLightning === 2 && !base['voltaic-eel'].effects.electricity && base['voltaic-eel'].effects.shock, 'Voltaic Eel: Chain Lightning instead of Electricity since 2026-10-17 (and keeps its Shock)'); }
 
@@ -149,7 +150,8 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
   ok(miss('kf-keen', 'kf-wall', {field:'fog'}).m === 0, 'it finds grounded units through Thick Fog'); }
 { const {e, P} = mk(2); const K = put(e, P, 1, 'kf-keen', 0); const B = put(e, P, 2, 'kf-blinder', 0); for(let i = 0; i < 5; i++) e.debugAttack(P, so, B.uid, {}, []);
   ok(!(K.blind > 0), 'nothing can Blind it'); }
-{ const moles = ['quarry-mole','ore-smelter-mole','subterraneaner']; ok(moles.every(id=> base[id].effects.keenSense === true), 'the moles have Keen Sense'); }
+// (BF5, two skills at most) the Ore-Smelter Mole and the Subterraneaner lost Keen Sense to the cut; the Quarry Mole keeps it
+{ const moles = ['quarry-mole']; ok(moles.every(id=> base[id].effects.keenSense === true), 'the moles have Keen Sense (the Quarry Mole; BF5 cut the other two)'); }
 
 // ---- 10. New cards from the list
 { const h = base['hammerhead-shark'], g = base['ironback-gorilla'];

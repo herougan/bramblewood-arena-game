@@ -115,7 +115,8 @@ ok(fs.existsSync(path.join(__dirname, '..', 'tools', 'effects-lab', 'manifest', 
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
   const sw = cards.filter(c=> c.effects && (c.effects.swimmer || c.effects.swimmerGrant)).map(c=> c.id);
   ok(!sw.length, `11. no card carries Swimmer (${sw})`);
-  ok(['dolphin-knight', 'reef-shark', 'colossal-squid', 'otter-angler'].every(id=>{ const c = cards.find(x=> x.id === id); return c && c.effects.tide === true; }), '11. the former Swimmers carry plain Tide'); }
+  // 2026-10-21 (BF5, two skills at most): the Colossal Squid keeps Fork + Gash (Tide cut)
+  ok(['dolphin-knight', 'reef-shark', 'otter-angler'].every(id=>{ const c = cards.find(x=> x.id === id); return c && c.effects.tide === true; }), '11. the former Swimmers carry plain Tide'); }
 ok(/\{key:'swimmer', category:'passive', hidden:true, retired:true,/.test(src) && /\{key:'swimmerGrant', category:'passive', hidden:true, retired:true,/.test(src), '11. Swimmer is out of the editor and the lists (the engine keeps it)');
 ['diurnalGrant', 'nocturnalGrant', 'fullMoonGrant'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'(Diurnal|Nocturnal|Full Moon)', kind:'grant'`).test(src), `11. ${k}: an editor row with a skill picker (a plain name since 2026-10-16)`));
 ok(/\{key:'tideGrant', category:'passive', label:'Tide', kind:'grant2', placeholders:\['Flood', 'Ebb'\]/.test(src), '11. Tide (Gives: Skills): two facets in the editor (plain name since 2026-10-16)');

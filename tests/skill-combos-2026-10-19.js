@@ -81,7 +81,7 @@ NEVER.forEach(id=> ok(C.TRIGGER_SCEN[id], `a scenario deck for ${id}`));
 if(data){ const ent = data.scenarioEntries || {};
   NEVER.forEach(id=> ok(ent['trigger:' + id] && (typeof ent['trigger:' + id].measuredS === 'number' || ent['trigger:' + id].why), `trigger ${id}: a result or a reason`));
   ['action:exile', 'action:mindControl', 'skill:tsunami', 'skill:acidBolt', 'skill:meteor', 'action:gain', 'shorthand:bounty', 'skill:crepuscular'].forEach(k=> ok(ent[k] && typeof ent[k].measuredS === 'number', `${k}: measured`));
-  const sk1New = e=> e.measuredHow === 'estimate SK1'; // 2026-10-19 (package SK1): entries added after the runs, with an estimate
+  const sk1New = e=> /^estimate /.test(e.measuredHow || ''); // 2026-10-19 (package SK1): entries added after the runs, with an estimate (2026-10-21, BF5: any later package's estimate: SK2b, BX, BF5)
   ok(data.coverage.length >= table.skills.filter(e=> !sk1New(e)).length + table.triggers.filter(e=> !sk1New(e)).length + table.actions.filter(e=> !sk1New(e)).length, 'the coverage list has every entry (the SK1 estimates aside)');
   ok(!data.coverage.some(r=> r.status === 'no entry'), 'every engine trigger and action has an entry');
   data.coverage.forEach(r=> ok(r.status && (r.status !== 'not measured' || r.why), `${r.kind} ${r.id}: a status, and a reason when not measured`));
