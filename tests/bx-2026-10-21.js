@@ -94,5 +94,44 @@ const castleHit = (id, allies)=>{ const {e, P} = mk(); const s = put(e, P, 1, id
   ok(v && v.effects.archer > 0 && v.effects.archerStyle === 'drop' && !v.effects.skyfall && v.effects.flying, `Stonedrop Vulture: Archer ${v && v.effects.archer}, the drop look, Skyfall gone, still Flying`);
   ok(v && typeof v.creatorNote === 'string' && /Archer/.test(v.creatorNote), 'with a creatorNote'); }
 
+// ---- 3. the frame layers hang off .cframe-fx (the card's own box), not the rarity band (400% of a band that isn't a quarter)
+{ const fxd = fs.readFileSync(path.join(ROOT, 'bramblewood-fx-d.js'), 'utf8'), app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
+  ok(!/rarity-band::/.test(fxd), 'no frame layer is a pseudo-element of .rarity-band any more');
+  ok(/const FRAME_BAND = `content:''; position:absolute; inset:0;/.test(fxd) && !/height:400%/.test(fxd) && !/calc\(400%/.test(fxd), 'FRAME_BAND covers the card (inset 0), no 400% height');
+  ok(/\.card-tile > \.cframe-fx\{position:absolute; inset:0;/.test(fxd), '.cframe-fx: the card\'s own box, no z-index of its own');
+  ok(/const CARD_FRAME_HTML = '<i class="cframe-fx" aria-hidden="true"><\/i><i class="cframe"/.test(app), 'every framed card face carries .cframe-fx (before the frame art)'); }
+
+// ---- 5. fire attacks: the flame on the attack label; no magic chip (the wand on the attack label says it)
+{ const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
+  const m = app.match(/function isFireDef\(d\)\{[^\n]*\}/), isMagicDef = d=> !!(d && ((d.effects && d.effects.magic) || d.dmgType === 'magic'));
+  const isFireDef = m ? new Function('isMagicDef', m[0] + '\nreturn isFireDef;')(isMagicDef) : null;
+  ok(isFireDef && isFireDef({dmgType:'heat'}) && isFireDef({dmgType:'fire'}) && !isFireDef({dmgType:'physical'}) && !isFireDef({dmgType:'heat', effects:{magic:true}}), 'isFireDef: heat or fire, not magic');
+  ok(/isFireDef\(d\) \? String\(live\.atkLabel\)\.replace\('<i class="sg">⚔<\/i>', '<i class="sg">🔥<\/i>'\)/.test(app) && /const g = isMagicDef\(d\) \? '🪄' : isFireDef\(d\) \? '🔥' : '⚔'/.test(app), 'the attack label shows 🔥 for a fire swing (card face and the live label)');
+  ok(/if\(k === 'magic'\) return;/.test(app), 'the magic chip is gone from the skill strip');
+  ['cinder-stoker', 'cinder-imp'].forEach(id=>{ const c = cards.find(x=> x.id === id); ok(c && c.dmgType === 'heat', `${id}: fire damage (dmgType heat)`); });
+  const E2 = mk(); const T = put(E2.e, E2.P, 2, 'bx-wall', 0); const S = put(E2.e, E2.P, 1, 'cinder-stoker', 0); const ev = []; E2.e.debugAttack(E2.P, so, S.uid, {}, ev);
+  const h = ev.find(x=> x.type === 'hit' && x.attUid === S.uid); ok(h && h.dmgType === 'heat', `Cinder Stoker's swing is fire damage (${h && h.dmgType})`); }
+
+// ---- 6. the young hummingbird warrior; 7. Dive's eligibility (Flying, Tide or the Sprinter tag)
+{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), kit = cards.find(c=> c.id === 'otter-kit'), g = cards.find(c=> c.id === 'greyplume-fledgling');
+  ok(g && cards[cards.length - 1] === g && g.awaitingSource === true, 'Greyplume Fledgling: the last card, awaiting a source');
+  ok(g && g.rarity === kit.rarity && g.wait === kit.wait && g.cost === kit.cost && g.basic && g.basicSet === 'hummingbirds' && g.effects.flying && g.archetypes.includes('Hummingbird'), 'Otter Kit\'s mirror: Starter, Wait 0, free, a Hummingbird basic that flies');
+  const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), M = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
+  const bk = M.budget(kit), bg = M.budget(g), bv = M.budget(cards.find(c=> c.id === 'stonedrop-vulture'));
+  ok(bg.ok && Math.abs(bg.x1 / bg.N - bk.x1 / bk.N) < 0.05, `the budget helper: ${(100 * bg.x1 / bg.N).toFixed(1)}% of N, Otter Kit ${(100 * bk.x1 / bk.N).toFixed(1)}%`);
+  ok(bv.ok && !bv.missing.length, `Stonedrop Vulture within budget (Archer's Attack left out): ${(100 * bv.x1 / bv.N).toFixed(1)}%`);
+  for(const c of ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-Hans', 'zh-Hant']){ const pk = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'cards', c + '.json'), 'utf8'));
+    ok(typeof pk['Greyplume Fledgling'] === 'string' && pk['Greyplume Fledgling'].length > 0, `lang/cards/${c}.json names Greyplume Fledgling`); }
+  const brief = fs.readFileSync(path.join(ROOT, 'docs', 'art', 'new-cards-2026-10-21-briefs.md'), 'utf8'), prompt = (brief.match(/```\n([^`]+)```/) || [])[1] || '';
+  ok(prompt.length > 80 && /background/i.test(prompt) && !/no clothes|sword|spear|blade|weapon|spiked|studded|monitor|sperm|corpse/i.test(prompt), 'the NightCafe prompt: a background, none of the banned words');
+  const {e} = mk();
+  ok(e.diveEligible(cards.find(c=> c.id === 'pronghorn-racer')) && e.diveEligible({effects:{flying:true}}) && e.diveEligible({effects:{tide:true}}) && !e.diveEligible(kit), 'Dive: Flying, Tide or Sprinter; Otter Kit is none');
+  ['pronghorn-racer', 'savanna-cheetah', 'jackrabbit-sprinter', 'springbok-pronker'].forEach(id=> ok((cards.find(c=> c.id === id).tags || []).includes('Sprinter'), `${id} is a Sprinter`)); }
+{ const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
+  const keys = ['ui.skn-archer', 'ui.sk-archer', 'ui.skn-archer-style', 'ui.archer-style-bow', 'ui.archer-style-drop', 'ui.trg-on-action', 'ui.trg-on-action-desc', 'ui.act-arrow', 'ui.act-arrow-desc', 'ui.bx-log-drop', 'ui.bx-log-drop-bramble'];
+  ok(keys.every(k=> typeof TEXT[k] === 'string'), 'the BX texts are TX keys');
+  for(const c of ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-Hans', 'zh-Hant']){ const pk = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
+    ok(keys.every(k=> typeof pk[TEXT[k]] === 'string'), `lang/${c}.json translates them`); } }
+
 console.log(fail ? `bx-2026-10-21: ${fail} of ${n} failed` : `bx-2026-10-21: all ${n} passed`);
 process.exit(fail ? 1 : 0);
