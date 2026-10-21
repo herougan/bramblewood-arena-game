@@ -46776,8 +46776,9 @@ const FACTION_TIER_ODDS = [ {common:80, uncommon:20}, {common:60, uncommon:30, r
      don't own yet comes first (x FACTION_NEW_CARD_WEIGHT).
    - On Maps 0-1 (PLAIN_REWARDS_UPTO_MAP) a plain card (no skills) is picked first where your side has one (owner Oct 21: "Let's only
      give plain cards as rewards at the start").
-   - The hand-outs (FACTION_REWARD_TRACK): Map 0's 0-2 faction pack (2 of your side + 1 basic-pack card); every elite and boss first
-     clear (1, as since 2026-10-13); every `everyWins`-th first clear of any fight (1); the 3-2 ambush's Faction Growth; the
+   - The hand-outs (FACTION_REWARD_TRACK): Map 0's 0-2 faction pack (2 of your side + 1 basic-pack card); each main map's last fight,
+     first clear (the milestone; was every elite and boss since 2026-10-13); every `everyWins`-th first clear of any fight (1); the
+     3-2 ambush's Faction Growth; the
      achievements listed in `achievements` (their reward's factionCards). tools/faction_track_sim_2026_10_21.js walks the road with
      these and prints when each rarity opens; `everyWins` is tuned so the count passes the Rare gate around Map 14. */
 const FACTION_RARITY_GATES = {
@@ -46794,8 +46795,8 @@ const FACTION_RARITY_WEIGHT = {common:100, uncommon:30, rare:10, veryrare:4, sup
 const FACTION_NEW_CARD_WEIGHT = 3;
 const PLAIN_REWARDS_UPTO_MAP = 1;
 const FACTION_REWARD_TRACK = {
-  everyWins: 3,          // 1 faction reward on every 3rd first clear of any fight (tuned with the sim: ~40 received by Map 14)
-  bigFirstClear: 1,      // every elite / boss first clear (rollConquestPackDrops, since 2026-10-13)
+  everyWins: 8,          // 1 faction reward on every 8th first clear of any fight (tuned with the sim: 40 received in Map 13, so the Rare gate at Map 14 lands on time)
+  milestone: 1,          // a main map's last fight (its ender), first clear: was every elite and boss (2026-10-13), far too fast for the gates
   openingPack: 2,        // Map 0's 0-2 faction pack: 2 cards of your side
   ambushGrowth: 1,       // the 3-2 ambush's Faction Growth
   achievements: {first_win:1, conquest_5:1, conquest_map:1, conquest_maps_5:2, wins_50:2, collector_100:1, conquest_road:3, world_boss:3},
@@ -46832,6 +46833,8 @@ function factionTrackOnWin(node, isFirstClear){
   const k = Math.max(1, FACTION_REWARD_TRACK.everyWins|0); if(st.wins % k) return [];
   const id = factionReward(); return id ? [id] : [];
 }
+// The map milestone: a main map's last fight (applyRoadKinds marks it `ender`).
+function factionMilestone(node){ return !!(node && node.ender && (FACTION_REWARD_TRACK.milestone | 0) > 0); }
 // n faction rewards at once (an achievement's factionCards). Returns the ids granted.
 function grantFactionRewardCards(n){ const out = []; for(let i = 0; i < (n|0); i++){ const id = factionReward(); if(id) out.push(id); } return out; }
 // FACTION_REWARD_TRACK:END
@@ -46927,7 +46930,11 @@ function rollConquestPackDrops(node, isFirstClear){
   // 2026-10-13: an elite or boss, first clear, now hands out one faction-track card and one base-track card straight away
   // (no pack to open). Subfaction bundles retired: subfactions come from Journeys (Maps 15–20).
   if(isFirstClear && node.rewardTokens && node.rewardTokens.length) out.cards = grantRewardTokens(node); // the editor's placeholders win
-  else if(bigFight && isFirstClear){ out.cards = []; const f = factionReward(); if(f) out.cards.push(f); const b = trackPick(baseTrackPool()); if(b && grantOne(b, 'progressTrack')) out.cards.push(b); }
+  // 2026-10-21 (package RP, owner Oct 21: faction rewards "given throughout skirmishes as progress", paced so the Rare lands around Map 14):
+  // the faction card comes on a main map's last fight (its ender, the map milestone) instead of every elite and boss; the base-track card
+  // still comes with every elite and boss first clear. Every FACTION_REWARD_TRACK.everyWins-th first clear adds one (factionTrackOnWin).
+  else if(bigFight && isFirstClear){ out.cards = []; const f = factionMilestone(node) ? factionReward() : null; if(f) out.cards.push(f); const b = trackPick(baseTrackPool()); if(b && grantOne(b, 'progressTrack')) out.cards.push(b); }
+  else if(isFirstClear && factionMilestone(node)){ out.cards = []; const f = factionReward(); if(f) out.cards.push(f); } // Map 0's ender is a skirmish
   try{ const fx = factionTrackOnWin(node, isFirstClear); if(fx.length) out.cards = (out.cards || []).concat(fx); }catch(e){} // 2026-10-21 (package RP): every 3rd first clear, a faction reward
   return out;
 }
