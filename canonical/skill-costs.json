@@ -82,7 +82,9 @@
   {"id":"smokeScreen","label":"Smoke Screen","value":2,"per":"amount","note":"per round your units are in Smoke","measuredHow":"estimate SK3 (2026-10-19): about one dodged hit a round over your board"},
   {"id":"magnet","label":"Magnet","value":1.5,"per":"amount","note":"per round enemy flyers are Grounded","measuredHow":"estimate SK3 (2026-10-19): the Flying dodge (half of ~1.5 flyers' hits) a round"},
   {"id":"exploit","measuredWhy":"not yet measured: added by package SK1 after the runs (2026-10-19), with an estimate","label":"Exploit","value":0.9,"per":"amount","note":"2026-10-19 (package SK1): per token (+1 on one later hit)","measuredS":0.9,"measuredConf":"low","measuredHow":"estimate SK1"},
-  {"id":"poisonTick","measuredWhy":"not yet measured: added by package SK1 after the runs (2026-10-19), with an estimate","label":"Poison Tick","value":1,"per":"amount","note":"2026-10-19 (package SK1): per tick of the target's whole Poison stack (only when it is Poisoned)","measuredS":1,"measuredConf":"low","measuredHow":"estimate SK1"}
+  {"id":"poisonTick","measuredWhy":"not yet measured: added by package SK1 after the runs (2026-10-19), with an estimate","label":"Poison Tick","value":1,"per":"amount","note":"2026-10-19 (package SK1): per tick of the target's whole Poison stack (only when it is Poisoned)","measuredS":1,"measuredConf":"low","measuredHow":"estimate SK1"},
+  {"id":"forgeWeapon","label":"Forge Weapon","value":1.5,"per":"amount","note":"2026-10-19 (package SK2b, owner Oct 21): per +1 Attack of the Forged Blade it lays in a free slot; a unit has to come onto it and equip for a round, so about half of Buff's 3.33","measuredS":1.5,"measuredConf":"low","measuredHow":"estimate SK2b"},
+  {"id":"disarm","label":"Disarm","value":1.5,"note":"2026-10-19 (package SK2b): takes a piece (the subject's, or a lone enemy one) onto this unit, if it carries none; worth what the foe loses plus what it gains, when there is a piece","measuredS":1.5,"measuredConf":"low","measuredHow":"estimate SK2b"}
  ],
  "modifiers": [
   {"id":"subAll","label":"Targets all (sub: All)","value":2,"note":"× the action value","measuredS":4.89,"measuredConf":"low","measuredSE":5.35},
@@ -146,6 +148,7 @@
   {"id":"decay","scale":"half","value":1,"measuredS":3.92,"measuredConf":"low"},
   {"id":"defiance","scale":"half","value":0,"measuredS":-0.04,"measuredConf":"high","measuredSE":0.17,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"defianceN","scale":"half","value":0,"note":"a parameter of another skill; costed like a skill today","measuredS":0,"measuredConf":"high","measuredSE":0.23,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
+  {"id":"disarm","scale":"fixed","value":2,"note":"2026-10-19 (package SK2b, owner Oct 21: \"Weapon stealer\"): Disarm = On Play × Disarm (a lone enemy piece) + On Hit × Disarm (the hit unit's piece), unless it carries one; only worth something against equipment decks","measuredS":2,"measuredConf":"low","measuredHow":"estimate SK2b: On Play 1 × Disarm 1.5 (a lone piece seldom lies there) + On Hit 2.5 × Disarm 1.5 × about a third of hits on a carrier"},
   {"sk1Note":"2026-10-19 (package SK1): an alias: reads as Siege N","id":"demolisher","scale":"half","value":0,"measuredS":0,"measuredConf":"high","measuredSE":0.17,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"desecrate","scale":"half","value":9.41,"measuredS":9.41,"measuredConf":"high","measuredSE":1.78,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"detonate","scale":"fixed","value":0,"note":"2026-10-19 (package GI): On Attack 3 × the target's Poison cashed in now, less the ticks it removes; about 1","measuredS":-1.16,"measuredConf":"high","measuredSE":0.55,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
@@ -271,6 +274,7 @@
   {"id":"psychic","scale":"half","value":2.04,"measuredS":2.04,"measuredConf":"high","measuredSE":0.39,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"puncture","scale":"half","value":0.74,"measuredS":0.74,"measuredConf":"high","measuredSE":0.14,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"purblind","scale":"half","value":0,"measuredS":-7.17,"measuredConf":"high","measuredSE":0.13,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
+  {"id":"quarry","scale":"n","value":2.5,"note":"2026-10-19 (package SK2b): Quarry N: On Turn Start × Gain N Stone with a price of 1 Lumber. Stone ranks 2 (the leader cap), so N Stone for 1 Lumber nets about 2N - 1 Lumber-points a Ready turn when it can pay; the cost table's Gain is 1 a point whatever the resource and can't see the price, so this is a keyword estimate, not a shorthand","measuredS":2.5,"measuredConf":"low","measuredHow":"estimate SK2b (2026-10-19): keyword estimate (see note)"},
   {"id":"quick","scale":"fixed","value":7.55,"measuredS":7.55,"measuredConf":"high","measuredSE":1.59,"prevValue":2,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"rabid","scale":"half","value":6.23,"measuredS":6.23,"measuredConf":"high","measuredSE":0.99,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"rage","scale":"half","value":1,"measuredS":16.04,"measuredConf":"low","measuredSE":4.51},
@@ -320,6 +324,7 @@
   {"id":"skyfall","scale":"half","value":1.29,"measuredS":1.29,"measuredConf":"high","measuredSE":0.26,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"slashBurn","scale":"half","value":0.45,"measuredS":0.45,"measuredConf":"high","measuredSE":0.25,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"sleep","scale":"half","value":5.16,"measuredS":5.16,"measuredConf":"high","measuredSE":0.77,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
+  {"id":"smelter","scale":"n","value":1.5,"note":"2026-10-19 (package SK2b): Smelter N: up to N conversions a Ready turn of 2 Lumber + 2 Stone (6 rank-points) into 1 Metal (3): a points loss, paid for access to Metal-cost cards (only Caldera Wyrm today). Worth little until Metal cards exist","measuredS":1.5,"measuredConf":"low","measuredHow":"estimate SK2b (2026-10-19): keyword estimate (see note)"},
   {"id":"smokeBomb","scale":"half","value":2.2,"measuredS":2.2,"measuredConf":"high","measuredSE":0.15,"prevValue":1,"appliedAt":"2026-10-19 (owner: apply measured worth)"},
   {"id":"snipe","scale":"n","value":1,"measuredS":1.13,"measuredConf":"high","measuredSE":0.21},
   {"id":"sociable","scale":"half","value":1,"measuredS":7.2,"measuredConf":"low","measuredSE":2.88},

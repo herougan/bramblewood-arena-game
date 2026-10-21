@@ -12,6 +12,29 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Tutorial II's showcase (owner #5)** is the Wandering Traveller: part 2's lesson is your leader joining the fight (its flavour, the card the lesson lights up, `tutorialHighlightId(2)`); part 1 showed the same rival card on both. The tutorial editor's part-2 highlight, or a showcase picked in the skirmish editor, still wins.
 - 24 new TX keys (`ui.ed-*`, `results.ed-saving`, `toast.ed-result-saving`) in all 12 packs. Test: `tests/ed-2026-10-21.js` (VM + Playwright at 1366 / 390; screenshots in `docs/screens/ed/`).
 
+## 2026-10-19 (package U4: visible toggle states, a Forge shortcut, the deck popup's Advancement sort)
+- **Owner (23:20):** "The show unseen and all by ID, -> should show a tick or not if enabled or not - can't tell."
+  - **Cause:** the Codex toolbar's text-field rule (`.codex-toolbar input`) stretched those checkboxes into empty 160 px pills, so on and off looked the same.
+  - **Show unseen, All by ID and Test cards** are switches now (`role="switch"`): an empty box when off, a gold box with a ✓ when on, and the whole pill turns light gold with a ring while on.
+  - **The audit:** any Codex or Brambles filter select set to anything but its "All …" option wears a gold ring. That covers types, animals, phyla, rarities, archetypes, effects, and Owned / Not owned. The chosen chip carries a ✓ as well as its fill: card types, Base level / My best, Brambles' origins, the Forge's All / Ready / Levelled / Max, and the skill filter's picks.
+- **Owner (23:34):** "a forge shortcut in the top right corner of the screen, together with arena and home. Home of course comes first."
+  - The Play cluster (Conquest, Arena, Raid, Dungeons) is now 🌰 Home, 🏟️ Arena (where it already showed), 🔨 Forge (once the Forge is open), then the key, ⚙️ and Energy.
+  - The Forge button goes to the Forge the way the page bar's shortcut does. The Arena button's texts are TX keys too, translated into the 12 packs.
+  - It fits on one line at 360, 390 and 1366 px, with no sideways scroller. At 360 px the map strip takes its own line under the cluster (U3's fallback).
+- **Owner (23:44):** "skirmish editor - sort by advancement option as well."
+  - The skirmish editor's deck popup has **Sort: Advancement**. It uses the Codex's order: Base, then each map's fights along the road with side maps after their parent, then packs and events. The choice is kept on the device.
+- **Tests:** `tests/u4-2026-10-19.js` (static), and `tests/e2e/u4_2026_10_19.py` (Playwright, 360 / 390 / 1366). `tests/mobile-nav-2026-10-19.js` now counts the Forge button in its overlap check. Screenshots are in `docs/screens/u4/`.
+
+## 2026-10-19 (package MX: raid Shield 50, trophy shards per fight, random Tentacle Smack rows, the key badge at 0, swaps only for better cards)
+- **Raid Shield (owner 22:47: "Add a shield value of 50 to the Raid. As the HP% goes down, this 50 goes down proportionally."):** the boss's bramble in a raid fight opens with a Shield of 50 × the part's remaining Health share (the same share the boss's weakening uses): 50 fresh, 25 at half, 0 at the end. It soaks hits before Health and shows as 🔷 on the bramble, like any Shield. The raid screen and the VS boss card say "Shield 50 (falls as the raid weakens)" (TX keys, 12 packs).
+- **Raid editor:** a "Shield" field beside "Energy" for the raid (default 50; 0 turns it off) and for each part (blank = the raid's). A saved raid edit without one gets 50. `canonical/raids.json`: the Goliath's `shield: 50`. `tools/raid_completion_model.js measure --shield N`.
+- **Daily Dungeon key (owner 22:47):** the top-right 🗝️ always shows its count. At 0 keys the key greys out, the badge becomes an empty "0", and its tip says when the keys refill. Checked: the Energy pill (0/20) and the raid tickets chip (0/10) already show 0.
+- **Swaps (owner 22:47: "Don't recommend cards that are lousier than what i have in my deck."):** the swap window (the Map 0-1 teaching swaps, the Lumber lesson and the later offers) only suggests a swap when the new card is clearly better than the deck card going out. Clearly better means a higher budget score (2A+H+S × the half-miss multiplier), the same Lumber bracket or a cheaper one, and no more Wait. The new card also has to dominate the deck card or beat its score by 10% (at least 1 point). If nothing in the deck is weaker, no window opens. Both columns of the window follow the same rule. The Map 0-1 teaching card is now picked from the keyword cards that beat a deck card, so the lesson still shows. Test: `tests/mx-2026-10-19.js`.
+- **Raid trophy shards (owner 23:43: "minimum 1 per game you played ... Maybe 2x and 5x rewards"):** a fall pays 1 shard for each fight you played in that life, or the flat base (6) if that is more. Competent participants get ×2 and Leading ones ×5 (these were ×1.2 / ×1.4 plus +2 / +5). The standing bonuses (top 1% / 10% / 50%) and the held-raid share are unchanged. 40 fights give 40 / 80 / 200. The ticket budget allows about 16 fights a week, so in the model a Leading raider gets 60–80 a fall and a Competent one 14–24. The raid screen, Forge and rules texts are updated in all 12 packs, and `tests/rc-2026-10-19.js` covers the new rule. Recipe costs are unchanged.
+- **Measured:** a Map 13 deck deals 252 → 235 damage a fight (−7%; −16% on a fresh arm or tail), and wins 37% → 32% of its fights. Completion at 30 / 40 / 50 players stays 100% (the fall is about 0.05 days later). See `docs/balance/raid-balance-2026-10-19.md`.
+- **Tentacle Smack (owner: "The raids tentacles should be hitting a random column or row and not my row everytime btw!"):** a row smack used to hit the front row (yours) 2 times in 3. It now picks the front, middle or back row at even odds. Column smacks still pick among the columns that have units, weighted by how many units each holds. Seeded as before. A test checks that 200 rolls (over fights and over rounds) spread evenly across the rows and columns.
+- **Fix:** on small bramble tiles (the fight HUD at phone width) the 🔷 Shield badge covered a 3-digit Health. It now sits just above the Health row.
+
 ## 2026-10-19 (package CF: card frames for equipment, Devilry and Evomax)
 - **Owner (22:32):** "Equipment & devilry card frame - can it be improved? ... too pink ... I don't want to stray too far from [the normal frame]. Just abit different."
 - **Before:** there was no equipment frame. Equipment wore whatever its archetype gave it: Quill Spear and the other plain equipment the normal walnut frame, Terraumbra (an Evomax equipment Easter egg) the pink nacre Evomax frame (`a-evolution.png`). Devilry units wore their own dark-iron frame with blood drips and pentagram studs.
@@ -140,6 +163,35 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Texts:** 36 new TX keys, in the 12 language packs with the new card names and flavour (`tools/i18n_2026_10_19_eq.py`).
 - **Merged with SK2:** the Petrified Tree had no animal, so `tools/animal_tags.py` stopped. It now has a proposed owl, like the Ent (an owner call). SK2's test now finds the tree by id, because the EQ cards come after it. Pry wears 🪝, since 🔧 is SK2's Repair.
 - **Tests:** `tests/equipment-hazards-2026-10-19.js` (new, 119 checks). `tests/equipment.js` and `tests/easter-eggs-2026-10-19.js` were updated. There is also a browser smoke test, `tests/e2e/eq_2026_10_19.py`.
+## 2026-10-19 (package SK2b: Quarry, Smelter, the economy note)
+- **Owner (23:43):** "I want to make resources really a strategic move. Not a simple - just put. Strong creatures can be low costed - and their power is that they are low costed."
+- **Three tiers**, each paid with the one below. All are On Turn Start × Gain in the trigger layer, every turn while Ready:
+  - **Milling N:** N Lumber, free.
+  - **Quarry N (new):** pay 1 Lumber, gain N Stone.
+  - **Smelter N (new):** pay 2 Lumber + 2 Stone, gain 1 Metal, up to N times.
+  - The ratios are in `SK2_DEFAULTS`. No card has Quarry or Smelter yet.
+- **New trigger condition: a price (`t.pay`).** A trigger goes off only if its player holds the whole price, and pays it after every other gate, so a fizzle costs nothing.
+  - If it can't pay, nothing happens, and the log says so.
+  - Units pay in the upkeep's order, so a Quarry acting first can feed a Smelter the same turn.
+- **Docs:**
+  - `docs/economy-resources-2026-10-19.md`: what makes each resource today, the tiers, the owner's principle, and budget recommendations. Nothing in the budget was changed.
+  - The principle is recorded in `docs/decisions.json` / `decisions.md`.
+- **Texts:** TX keys in the 12 packs.
+- **Skill costs:** estimates for Quarry (n 2.5) and Smelter (n 1.5).
+- **Weapons (owner, Oct 21):**
+  - New action **Forge Weapon N**: lay a +N/+0 Forged Blade (an equipment token) in your free slot nearest the unit. With no room, nothing happens and nothing is paid.
+  - New skill **Disarm**, built from triggers: On Play takes the foe's nearest lone piece; On Hit takes the hit unit's piece, with its stats and skills. It takes nothing if it already carries one.
+  - New cards, at the end of `cards.json` with `awaitingSource`: **Anvilwhisker Otter** (the owner's "Otter Smith": On Turn Start, pay 1 Stone, Forge Weapon 1) and **Glintsnatch Magpie** (Disarm, Flying).
+  - Art prompts added to `docs/art/new-cards-2026-10-19-briefs.md`.
+- **Equipment rules checked (owner item 17):**
+  - The piece goes under a unit.
+  - A unit played, spawned or moved onto a lone piece picks it up. One already carrying a piece leaves it lying.
+  - The bonus comes after one round.
+  - The piece stays in the slot when its unit dies; on a gravity row it goes to the graveyard.
+  - It moves with its unit.
+- **Map 1 Lumber:** the economy note recommends Milling on Village Miller (a 1-3 reward), Harvest on Harvest Mouse, and Land Tiller re-keyed as Milling, all in Thistlewood. Recommendations only.
+- **Tests:** `tests/skills-sk2b-2026-10-19.js` (86 checks).
+
 ## 2026-10-19 (package SK2: economy and structure skills)
 - **Owner (21:36, 21:56):** economy and structure skills, plus Salvage and a Stone-making Petrified Tree. Use triggers and actions where they fit.
 - **Ten new skills, on no existing card yet** (engine: the `[SK2 BEGIN]` block in `bramblewood-engine.js`):
