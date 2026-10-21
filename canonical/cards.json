@@ -32317,5 +32317,75 @@
     "uuid": "b096e71a-c3ad-50a0-8738-6b8a98ee6476",
     "creatorNote": "2026-10-19 (package SK3, owner 21:56 / 21:59): a new spell, no source yet (placement is the owner's call). Cost from the budget: S (estimate SK3) / perLumber 4 = Lumber, rounded; a spell has no Attack or Health, so 2A+H+S = S < N at any Level. S ~ 5: the enemy flyers lose Flying for 2 rounds (no dodge from the ground, no flight); narrow, so 1 Lumber, Rare.",
     "awaitingSource": true
+  },
+  {
+    "id": "anvilwhisker-otter",
+    "name": "Anvilwhisker Otter",
+    "icon": "\ud83e\udda6",
+    "cost": 2,
+    "wait": 1,
+    "attack": 1,
+    "health": 14,
+    "rarity": "uncommon",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Otter"
+    ],
+    "animal": "otter",
+    "effects": {
+      "triggers": [
+        {
+          "on": "perTurn",
+          "do": "forgeWeapon",
+          "amount": 1,
+          "pay": {
+            "stone": 1
+          }
+        }
+      ]
+    },
+    "flavor": "It hammers river stone into blades no longer than a reed, and leaves them lying about for whoever wanders by.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 9076,
+    "uuid": "1dc4cc7c-d23f-5843-ad7c-0f10cad06d92",
+    "creatorNote": "2026-10-19 (package SK2b): the owner's \"Otter Smith\" (Oct 21: \"Turns stone into weapons. Lays weapons across the battlefield. (Generator of weapons)\"; cool names only, so Anvilwhisker Otter): On Turn Start (once Ready), pay 1 Stone: lay a +1/+0 Forged Blade in your free slot nearest it (package EQ's lone equipment: a unit played or moving there picks it up). It needs a Stone engine (Quarry, Petrified Tree). No source yet. Budget v5 at Level 1, Uncommon, Wait 1, Lumber 2: N = 39.47; S = 4.5; 2A+H+S = 20.5 < 39.47 (52%) and A*H+S = 18.5 < (N/3)^2 = 173.1.",
+    "awaitingSource": true
+  },
+  {
+    "id": "glintsnatch-magpie",
+    "name": "Glintsnatch Magpie",
+    "icon": "\ud83d\udc26\u200d\u2b1b",
+    "cost": 1,
+    "wait": 0,
+    "attack": 3,
+    "health": 7,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird"
+    ],
+    "animal": "magpie",
+    "effects": {
+      "disarm": true,
+      "flying": true
+    },
+    "flavor": "If it shines, it is hers. If you are holding it, that only makes it shinier.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "numericId": 9077,
+    "uuid": "99e28cb9-53fc-5a61-813b-344f7747fdbb",
+    "creatorNote": "2026-10-19 (package SK2b): the owner's \"Weapon stealer\" (Oct 21: \"Steals weapon onto its own slot (unless it already has one)\"): Disarm, On Play takes the foe's lone piece facing it (or the nearest), On Hit the hit unit's piece, unless it already carries one. No source yet. Budget v5 at Level 1, Uncommon, Wait 0, Lumber 1: N = 27.38; S = 2; 2A+H+S = 22.5 < 27.38 (82%) and A*H+S = 34.5 < (N/3)^2 = 83.3.",
+    "awaitingSource": true
   }
 ]

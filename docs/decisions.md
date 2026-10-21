@@ -477,3 +477,12 @@ Package SK1 (owner 21:36, new combat skills; 21:56: "if you can and it makes sen
 - **Isolation is a drawback** (owner 21:36: "(4, 3, 2, 1, or 0) - range = 2"): allies within 2 columns, 0/1/2/3/4+ give −4/−3/−2/−1/0 Attack and Health (flat, Claude's call over −50%), a table parameter; its S is negative, like the payments.
 - **Punish N is held behind a flag** (owner: an advanced skill for Map 40+, design open): the recommended design (docs/skills-punish-proposal.md) is built behind `rules.punishSkill` / engine `flags.punish` and is on no card.
 - **Every SK1 number is a parameter** (owner: the numbers may be halved): the engine's SK1_DEF defaults, a card's own N, and `makeSimEngine(..., {sk1:{...}})` to change the defaults in one place.
+
+## Stated rules · 2026-10-19
+
+Package SK2b (owner 23:43: "I want to make resources really a strategic move. Not a simple - just put."): the three-tier economy and the cost principle. Details: docs/economy-resources-2026-10-19.md. Pinned by `tests/skills-sk2b-2026-10-19.js`.
+
+- **Strong creatures can be low costed - and their power is that they are low costed** (the owner, 23:43). A cheap strong card is a design tool, not a balance error: its strength is tempo. Costly cards are strong because they need an economy, and the economy is what the opponent can attack. The budget is not bent for such cards; they are a deliberate, marked class (recommendation, not applied).
+- **Three tiers, each paid with the one below** (all On Turn Start × Gain, while Ready): Milling N gives N Lumber free; Quarry N pays 1 Lumber for N Stone; Smelter N pays 2 Lumber + 2 Stone for 1 Metal, up to N times. The ratios are parameters (SK2_DEFAULTS). The Petrified Tree stays the expensive no-input Stone source.
+- **A trigger can have a price** (t.pay, Lumber / Stone / Metal / Uranium): it goes off only if its player holds all of it, and pays after every other gate, so a fizzle costs nothing. A conversion is paid whole or not at all; can't pay, nothing happens. Units pay in the upkeep's order, so a Quarry acting first can feed a Smelter the same turn.
+- **Smelter, not Forge-works** (Claude's call): the Forge is already the card-upgrade screen.

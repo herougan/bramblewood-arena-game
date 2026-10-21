@@ -150,7 +150,7 @@ ok(R.cfMatch(eagle, Object.assign(R.cfDefaults(), {archetype:'Bird'})) && !R.cfM
   const hi = ['a', 'b', 'c'].sort(R.cfSortFn('attack', 'desc', d)).join(''), lo = ['a', 'b', 'c'].sort(R.cfSortFn('attack', 'asc', d)).join('');
   ok(hi === 'acb' && lo === 'bca', `4. Attack high to low (${hi}) and low to high (${lo})`); }
 for(const f of ['cfBarHTML', 'skillPickerChipsHTML']){ const s = fnSrc(f); ok(s && !/>[A-Za-z][a-z]+ [a-z]+</.test(s), `4. ${f}: no inline English (TX keys)`); }
-ok(/cfBarHTML\(deckCfState, 'dk', defs\)/.test(app) && /cfBarHTML\(cf, 'dbp'\)/.test(app) && /cfBarHTML\(cf, 'sg', defs\)/.test(app), '4. the bar is in the deck editor (Play / Camp), the skirmish deck popup and the skirmish gallery');
+ok(/cfBarHTML\(deckCfState, 'dk', defs\)/.test(app) && /cfBarHTML\(cf, 'dbp', null, \[\['advance', /.test(app) && /cfBarHTML\(cf, 'sg', defs\)/.test(app), '4. the bar is in the deck editor (Play / Camp), the skirmish deck popup and the skirmish gallery');
 
 // 7. the reveal map
 { const a = app.indexOf('[SKILL_REVEAL_BEGIN]'), b = app.indexOf('/* [SKILL_REVEAL_END] */'); const blk = app.slice(app.lastIndexOf('/*', a), b);

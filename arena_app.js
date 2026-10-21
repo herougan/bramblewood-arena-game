@@ -320,7 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
-Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', quarry:'🪓🪨', smelter:'🏭', disarm:'🫴', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -1274,7 +1274,7 @@ PASSIVE_DEFS.push(
 // numbers come from the engine's SK2_DEFAULTS (the fallbacks below are the same values, for a page or sandbox without the engine).
 // On no card yet. The Skills chapter of the Codex book and the keyword registry read PASSIVE_DEFS, so they list them too.
 const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, salvageN:1, salvageEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
-  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
+  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6, quarryN:1, quarryLumber:1, smelterN:1, smelterLumber:2, smelterStone:2, smelterMetal:1}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
 const sk2Num = (v, k)=> numOr(v, SK2_UI[k]);
 const sk2ScavengeEvery = e=> (e && Number(e.scavengeEvery) >= 1) ? Math.round(Number(e.scavengeEvery)) : SK2_UI.scavengeEvery;
 const sk2SalvageEvery = e=> (e && Number(e.salvageEvery) >= 1) ? Math.round(Number(e.salvageEvery)) : SK2_UI.salvageEvery;
@@ -1286,6 +1286,9 @@ const SK2_LINE = {
   repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
   foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
   milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
+  quarry: v=> TX('ui.sk2-quarry', {n: sk2Num(v, 'quarryN'), l: SK2_UI.quarryLumber}),
+  smelter: v=>{ const n = sk2Num(v, 'smelterN'); return n === 1 ? TX('ui.sk2-smelter-1', {l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}) : TX('ui.sk2-smelter', {n, l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}); },
+  disarm: ()=> TX('ui.sk2-disarm'),
   pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
   sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
   arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
@@ -1298,6 +1301,9 @@ PASSIVE_DEFS.push(
   {key:'repair', category:'passive', label:TX('ui.sk2n-repair'), kind:'number', min:1, defaultValue:SK2_UI.repairN, desc:v=> SK2_LINE.repair(v), codexNote:TX('ui.sk2-repair-codex'), get:e=> e.repair ? sk2Num(e.repair, 'repairN') : undefined},
   {key:'foraging', category:'passive', label:TX('ui.sk2n-foraging'), kind:'number', min:1, defaultValue:SK2_UI.foragingN, desc:v=> SK2_LINE.foraging(v), codexNote:TX('ui.sk2-foraging-codex'), get:e=> e.foraging ? sk2Num(e.foraging, 'foragingN') : undefined},
   {key:'milling', category:'passive', label:TX('ui.sk2n-milling'), kind:'number', min:1, defaultValue:SK2_UI.millingN, desc:v=> SK2_LINE.milling(v), codexNote:TX('ui.sk2-milling-codex'), get:e=> e.milling ? sk2Num(e.milling, 'millingN') : undefined},
+  {key:'quarry', category:'passive', label:TX('ui.sk2n-quarry'), kind:'number', min:1, defaultValue:SK2_UI.quarryN, desc:v=> SK2_LINE.quarry(v), codexNote:TX('ui.sk2-quarry-codex'), get:e=> e.quarry ? sk2Num(e.quarry, 'quarryN') : undefined}, // SK2b (2026-10-19, owner 23:43): the Stone tier
+  {key:'smelter', category:'passive', label:TX('ui.sk2n-smelter'), kind:'number', min:1, defaultValue:SK2_UI.smelterN, desc:v=> SK2_LINE.smelter(v), codexNote:TX('ui.sk2-smelter-codex'), get:e=> e.smelter ? sk2Num(e.smelter, 'smelterN') : undefined}, // SK2b: the Metal tier
+  {key:'disarm', category:'passive', label:TX('ui.sk2n-disarm'), kind:'boolean', desc:()=> SK2_LINE.disarm(), codexNote:TX('ui.sk2-disarm-codex')}, // SK2b (owner, Oct 21): "Weapon stealer"
   {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
   {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
   {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
@@ -1536,6 +1542,10 @@ ACTION_DEFS.push(
   {key:'barrage', get label(){ return TX('ui.act3-barrage'); }, fields:['amount','dmgType'], get desc(){ return TX('ui.act3-barrage-desc'); }},
   {key:'smokeScreen', get label(){ return TX('ui.act3-smoke-screen'); }, fields:['amount'], get desc(){ return TX('ui.act3-smoke-screen-desc'); }},
   {key:'magnet', get label(){ return TX('ui.act3-magnet'); }, fields:['amount'], get desc(){ return TX('ui.act3-magnet-desc'); }},
+);
+ACTION_DEFS.push( // Package SK2b (2026-10-19 / owner Oct 21): the smith's and the weapon thief's actions; a trigger's price is t.pay (the engine)
+  {key:'forgeWeapon', get label(){ return TX('ui.sk2-act-forge'); }, fields:['amount'], get desc(){ return TX('ui.sk2-act-forge-desc'); }},
+  {key:'disarm', get label(){ return TX('ui.sk2n-disarm'); }, fields:[], get desc(){ return TX('ui.sk2-act-disarm-desc'); }},
 );
 TRIGGER_DEFS.push({key:'onAnyDeath', get label(){ return TX('ui.trig3-any-death'); }, get desc(){ return TX('ui.trig3-any-death-desc'); }});
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
@@ -3099,7 +3109,8 @@ function getCardDefs(){
   try{ const dd = matchState && matchState.engine && matchState.engine.derivedDefs; if(dd) for(const k in dd){ if(res[k] !== dd[k]) res[k] = dd[k];
     // Relic (2026-10-19, package E): the engine names the ghost "<Card> Relic" in English; the shown name comes from the text table.
     const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } }
-    if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name'); r._sk2Named = true; } } }catch(e){} // Fortification's Palisade (2026-10-19, package SK2)
+    if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name'); r._sk2Named = true; }
+    if(r && r.sk2Forged && !r._sk2Named){ r.name = TX('ui.sk2-forged-name'); r._sk2Named = true; } } }catch(e){} // + the smith's Forged Blade (SK2b) // Fortification's Palisade (2026-10-19, package SK2)
   return res;
 }
 function getCardDefs0(){
@@ -6363,14 +6374,14 @@ function renderCodex(){
         <option value="event" ${codexFilter.groupBy==='event'?'selected':''}>View by: Events</option>
         ${adminModeEnabled ? `<option value="unassigned" ${codexFilter.groupBy==='unassigned'?'selected':''}>View by: Unassigned</option>` : ''}
       </select>
-      ${adminModeEnabled ? `<label class="cx-test-toggle" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
-      <label class="cx-test-toggle" title="One list of every card, by card number, 40 a page (no sections)"><input type="checkbox" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
+      ${adminModeEnabled ? `<label class="cx-test-toggle u4-switch ${codexShowUnseen ? 'is-on' : ''}" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" role="switch" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
+      <label class="cx-test-toggle u4-switch ${codexFlatById ? 'is-on' : ''}" title="One list of every card, by card number, 40 a page (no sections)"><input type="checkbox" role="switch" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
       <select id="cxViewMode" title="Grid display density">
         <option value="album" ${codexViewMode==='album'?'selected':''}>${escapeHtml(TX('ui.codex-view-album'))}</option>
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
       </select>
-      ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
+      ${devModeEnabled ? `<label class="cx-test-toggle u4-switch ${codexFilter.showTest ? 'is-on' : ''}" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" role="switch" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
     ${codexKindRowHTML() /* 2026-10-19 (package UX): card types + the Base level / My best toggle */}
     <div class="cx-skill-active" id="cxSkillActive" hidden></div>
@@ -6384,6 +6395,7 @@ function renderCodex(){
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
   { const su = document.getElementById('cxShowUnseen'); if(su) su.addEventListener('change', ()=>{ codexShowUnseen = su.checked; renderCodexGrid(); }); }
   { const fb = document.getElementById('cxFlatById'); if(fb) fb.addEventListener('change', ()=>{ codexFlatById = fb.checked; try{ localStorage.setItem('bramblewood_codex_flat_v1', codexFlatById ? '1' : '0'); }catch(e){} codexPage = 0; renderCodexGrid(); }); }
+  u4WireToggles(document.getElementById('codexToolbar')); // 2026-10-19 (package U4): the switches' and filters' on state
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
   { const ph = document.getElementById('cxPhylum'); if(ph) ph.addEventListener('change', e=>{ codexFilter.phylum = e.target.value; renderCodexGrid(); }); }
@@ -6617,6 +6629,20 @@ function codexShownDef(id, d){
 }
 // CODEX_UX:END
 // The chip row's HTML (counts are filled in by renderCodexGrid, codexKindRowUpdate) and the level toggle at its end.
+// Visible on / off (2026-10-19, package U4, owner 23:20: "The show unseen and all by ID, -> should show a tick or not if enabled or not -
+// can't tell."): the Codex toolbar's text-field rule (.codex-toolbar input) stretched those checkboxes into empty 160 px pills, so
+// on and off looked the same. They are switches now (role="switch", .u4-switch): a box with a ✓ when on, an empty box when off, and
+// the whole pill in gold while on (u4Styles). A filter select that is set to anything but its "All …" first option gets the same
+// gold ring (.u4-set), so a narrowed list is visible at a glance (Codex: types, animals, phyla, rarities, archetypes; Brambles:
+// effects, Owned / Not owned). Single-choice chips (card types, Base level / My best, Brambles' origins, the Forge's filters) carry
+// a ✓ while chosen (CSS only).
+const U4_FILTER_SELECTS = ['cxArch', 'cxAnimal', 'cxPhylum', 'cxRarity', 'cxMechLine', 'brFx', 'brOwn'];
+function u4MarkSelect(sel){ if(sel && sel.options && sel.options.length) sel.classList.toggle('u4-set', sel.selectedIndex > 0); }
+function u4WireToggles(root){
+  if(!root) return;
+  root.querySelectorAll('.u4-switch input[type=checkbox]').forEach(i=>{ const sync = ()=>{ const l = i.closest('.u4-switch'); if(l) l.classList.toggle('is-on', i.checked); }; sync(); i.addEventListener('change', sync); });
+  U4_FILTER_SELECTS.forEach(id=>{ const s = root.querySelector('#' + id); if(s){ u4MarkSelect(s); s.addEventListener('change', ()=> u4MarkSelect(s)); } });
+}
 function codexKindRowHTML(){
   const k = codexFilter.kind || '', lv = codexLevelMode();
   const chip = (key, icon, label)=> `<button type="button" class="ux-kind ${k === key ? 'on' : ''}" data-cxkind="${key}" aria-pressed="${k === key}">${icon} ${escapeHtml(label)} <b class="ux-kind-n" data-kn="${key || 'all'}"></b></button>`;
@@ -7090,14 +7116,14 @@ function cfMatch(d, f){
   return true;
 }
 function cfApply(ids, defs, f){ return ids.filter(id=> cfMatch(defs[id], f)); }
-function cfBarHTML(f, P, defs){
+function cfBarHTML(f, P, defs, extraSorts){
   defs = defs || getCardDefs(); const n = cfActiveCount(f), ns = (f.skills || []).length;
   const rar = (()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${f.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })();
   const animals = (()=>{ const c = {}; Object.values(defs).forEach(d=>{ if(!d || d.test || !d.animal) return; const g = animalGroupOf(d.animal); c[g] = (c[g] || 0) + 1; });
     return Object.keys(c).sort().map(g=> `<option value="${escapeAttr(g)}" ${f.animal===g?'selected':''}>${escapeHtml(animalCap(g))} (${c[g]})</option>`).join(''); })();
   return `<div class="cf-bar" data-cf="${P}">
     <button type="button" class="btn small cf-toggle" id="${P}FiltersBtn" aria-expanded="false" aria-controls="${P}Panel">⚙️ ${escapeHtml(TX('ui.tx-filters'))}<b class="cx-fcount" ${n ? '' : 'hidden'}>${n}</b></button>
-    <select id="${P}Sort" aria-label="${escapeAttr(TX('ui.tx-sort'))}">${cfSortOptionsHTML(f.sort)}</select>
+    <select id="${P}Sort" aria-label="${escapeAttr(TX('ui.tx-sort'))}">${cfSortOptionsHTML(f.sort, extraSorts)}</select>
     <button type="button" class="btn small" id="${P}SortDir">${escapeHtml(cfDirLabel(f.dir))}</button>
     <div class="cf-panel" id="${P}Panel" hidden>
       <select id="${P}Arch" aria-label="${escapeAttr(TX('ui.tx-type'))}">${txTypeOptionsHTML(defs, f.archetype)}</select>
@@ -7857,7 +7883,7 @@ function triggerBadges(d, live){
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
-CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
+CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter', 'disarm', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -10267,6 +10293,7 @@ function triggerPreviewText(t){
     default: doText = aDef.label.toLowerCase();
   }
   if(t.cost === 'burnLumber') doText = `burn 1 Lumber (if you have it), then ${doText}`; // the cost step (2026-10-16)
+  try{ doText = sk2TriggerText(t, doText); }catch(e){} // SK2b (2026-10-19): Forge Weapon's line, a price (t.pay)
   return `${trigLabel}, ${doText}.`;
 }
 function actionFieldsHTML(t,i){
@@ -13908,6 +13935,7 @@ function wireBramblesTab(body){
   [['brFx', 'fx'], ['brOwn', 'own'], ['brSort', 'sort']].forEach(([id, k])=>{ const el = body.querySelector('#' + id); if(el) el.addEventListener('change', ()=>{ brambleFilter[k] = el.value; save(); }); });
   body.querySelectorAll('[data-brorigin]').forEach(b=> b.addEventListener('click', ()=>{ brambleFilter.origin = b.dataset.brorigin;
     body.querySelectorAll('[data-brorigin]').forEach(x=>{ const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); save(); }));
+  u4WireToggles(body.querySelector('.ux2-br-bar')); // 2026-10-19 (package U4): Owned / Not owned and the effect filter show when set
   renderBrambleGrid();
 }
 var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null; // 2026-10-16: per-copy looks (see deckLooksAll)
@@ -14687,7 +14715,10 @@ function renderPlay(){
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.back-to-home'))}" aria-label="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span> ${escapeHtml(TX('ui.nv-home'))}</button>${'' /* 2026-10-19 (package U3): the acorn Home, first in the cluster on Conquest, Arena, Raid and Dungeons */}
-          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="Back to the Arena">← Arena</button>` : ''}
+          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-tip'))}" aria-label="${escapeAttr(TX('ui.u4-arena-tip'))}"><span class="tab-emoji" aria-hidden="true">🏟️</span> ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="${escapeAttr(TX('ui.u4-arena-back'))}" aria-label="${escapeAttr(TX('ui.u4-arena-back'))}">← ${escapeHtml(TX('ui.u4-arena'))}</button>` : ''}
+          ${'' /* 2026-10-19 (package U4, owner 23:34: "there should be a forge shortcut in the top right corner of the screen, together with
+               arena and home. Home of course comes first."): Home, Arena, then the Forge (its own 🔨, as in the page bar's shortcuts), once
+               the Forge is open. Same trip as PAGE_SHORTCUTS' Forge: the Codex view on its Forge page (switchTab remembers where you came from). */}${tabOpen('forge') ? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.place-forge'))}" aria-label="${escapeAttr(TX('ui.place-forge'))}"><span class="tab-emoji" aria-hidden="true">🔨</span> ${escapeHtml(TX('ui.u4-forge'))}</button>` : ''}
           ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
@@ -14734,6 +14765,8 @@ function renderPlay(){
     if(backBtn) backBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }); // 2026-10-19 (package U3): the cluster's 🌰 Home (was NV's tab-bar button)
     const arenaBtn = document.getElementById('arenaNavBtnPlay');
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
+    const forgeBtn = document.getElementById('forgeNavBtnPlay'); // 2026-10-19 (package U4): the cluster's Forge
+    if(forgeBtn) forgeBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); });
     wireSettingsButton('PlaySub');
     refreshEnergyHud(); // paints the new Play-tab Energy pill immediately instead of waiting for its first 1s tick
     // Item #4 (2026-09-18): "The Conquest explanation can be removed. Only when hovering over
@@ -17709,10 +17742,21 @@ function openSkirmishGallery(o){
 // this Skirmish and therefore have this skirmish's name" + "This edit method should be available in the Skirmish editor
 // also"): the deck as card stacks at the top (click one to take a copy out), every card below as stacks to add from,
 // with search and the same sorts as the Armoury. `counts` is edited in place; `unlimited` skips ownership limits.
+// The deck popup's "Sort: Advancement" (2026-10-19, package U4): the order a player meets the cards (advancementKey: Base, then each
+// map's fights along the road, side maps after their parent, packs, events), cost then name inside one source.
+function dbpAdvanceSortFn(){
+  const defs = getCardDefs(), key = {}, k = id=> key[id] != null ? key[id] : (key[id] = (()=>{ try{ return advancementKey(defs[id]); }catch(e){ return '9'; } })());
+  return (a, b)=>{ const A = defs[a], B = defs[b]; if(!A || !B) return 0; const ka = k(a), kb = k(b);
+    return (ka < kb ? -1 : ka > kb ? 1 : 0) || (A.cost||0) - (B.cost||0) || (A.name||'').localeCompare(B.name||''); };
+}
 function openDeckBuilderPopup(o){
   const counts = o.counts; let q = '', rarityCap = !o.unlimited;
   // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar; its choices are kept between popups
-  const cf = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('dbpTx'); }catch(e){ return {}; } })()), sortBy = ()=> cfSortFn(cf.sort, cf.dir, getCardDefs());
+  // + package U4's "Sort: Advancement" (dbpAdvanceSortFn: earliest first, low to high; latest first, high to low), still kept per device
+  // in bramblewood_dbp_sort_v1
+  const cf = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('dbpTx'); }catch(e){ return {}; } })());
+  try{ const v = localStorage.getItem('bramblewood_dbp_sort_v1'); if(v === 'advance' || CF_SORTS.some(x=> x[0] === v)) cf.sort = v; }catch(e){}
+  const sortBy = ()=>{ if(cf.sort !== 'advance') return cfSortFn(cf.sort, cf.dir, getCardDefs()); const f = dbpAdvanceSortFn(); return cf.dir === 'desc' ? (a, b)=> f(b, a) : f; };
   const ov = document.createElement('div'); ov.className = 'modal-overlay deck-popup-overlay'; document.body.appendChild(ov);
   const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q)) && cfMatch(defs[id], cf)).sort(sortBy()); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
@@ -17722,7 +17766,7 @@ function openDeckBuilderPopup(o){
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
-    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards">${cfBarHTML(cf, 'dbp')}</div>
+    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards">${cfBarHTML(cf, 'dbp', null, [['advance', ()=> TX('ui.u4-sort-advance')]])}</div>
     <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
   </div>`;
   const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
@@ -17738,7 +17782,7 @@ function openDeckBuilderPopup(o){
     else if(r){ const id = r.dataset.rm; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} refresh(); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
-  cfWire(ov, cf, 'dbp', ()=>{ try{ uiStickySave('dbpTx', cf); }catch(e){} refresh(); }); // 2026-10-21 (package TX)
+  cfWire(ov, cf, 'dbp', ()=>{ try{ uiStickySave('dbpTx', cf); localStorage.setItem('bramblewood_dbp_sort_v1', cf.sort); }catch(e){} refresh(); }); // 2026-10-21 (package TX)
   setTimeout(()=> ov.querySelector('#dbpSearch').focus(), 30);
 }
 // Edit skirmish's field effects (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc."):
@@ -21876,16 +21920,23 @@ function dungeonsTabOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyD
 // The 🗝️ key beside Home and Arena (2026-10-16, user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top
 // right hand corner of Conquest Map UI. (same throughout)"): a small round button with today's ticket count, in the Play screens'
 // top-right group and in the topbar of the other screens. Only once a daily dungeon is open (or in Admin Mode); it opens the tab.
+// 2026-10-19 (package MX, owner 22:47: "If Daily dungeon has 0 keys, the shortcut symbol on the top right will not display the '0'"):
+// the badge always shows the count, and at 0 the button takes .is-empty (a greyed key and an empty, outlined "0" badge) with the
+// refill time in its tip (dungeonKeyBadge), so an empty ring reads as "out", not as a missing number.
+function dungeonKeyBadge(n){
+  n = Math.max(0, Math.round(Number(n) || 0));
+  return {n, text: String(n), empty: n <= 0, tip: `${dungeonTabLabel()} · ${n > 0 ? TX('ui.dungeon-keys-count', {n, cap: dungeonKeyCap()}) : dungeonNoKeysText()}`}; // translated texts (was inline English)
+}
 function dungeonKeyBtnHTML(id){
   if(!dungeonsTabOpen()) return '';
-  const n = dungeonTicketsLeft(), label = dungeonTabLabel(), tip = `${label}: ${n} Dungeon key${n === 1 ? '' : 's'}`;
-  return `<button class="home-nav-btn dungeon-key-btn ${typeof playSubTab !== 'undefined' && playSubTab === 'dungeons' && currentTab === 'play' ? 'is-here' : ''}" id="${id}" type="button" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">${n}</span></button>`;
+  const k = dungeonKeyBadge(dungeonTicketsLeft());
+  return `<button class="home-nav-btn dungeon-key-btn ${typeof playSubTab !== 'undefined' && playSubTab === 'dungeons' && currentTab === 'play' ? 'is-here' : ''}${k.empty ? ' is-empty' : ''}" id="${id}" type="button" title="${escapeAttr(k.tip)}" aria-label="${escapeAttr(k.tip)}"><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">${k.text}</span></button>`;
 }
 function refreshTopbarDungeonKey(tab){
   const b = document.getElementById('dungeonKeyBtnTop'); if(!b) return;
   const show = tab !== 'home' && tab !== 'play' && dungeonsTabOpen(); b.hidden = !show; if(!show) return;
-  const n = dungeonTicketsLeft(), tip = `${dungeonTabLabel()}: ${n} Dungeon key${n === 1 ? '' : 's'}`;
-  b.title = tip; b.setAttribute('aria-label', tip); const c = b.querySelector('.dk-n'); if(c) c.textContent = String(n);
+  const k = dungeonKeyBadge(dungeonTicketsLeft());
+  b.title = k.tip; b.setAttribute('aria-label', k.tip); b.classList.toggle('is-empty', k.empty); const c = b.querySelector('.dk-n'); if(c) c.textContent = k.text;
 }
 function openDungeonsFromKey(){
   if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
@@ -22205,7 +22256,11 @@ function teachingCardPick(){
     const ok = id=>{ const d = defs[id]; return d && d.effects && d.effects[k] != null && !d.token && !d.test && !isEquipmentDef(d) && !d.hidden && !d.tutorial && !(d.cost > 0) && !isUnattainable(d) && ['common','starter','basic'].includes(d.rarity || 'common') && (d.attack||0) + (d.health||0) <= 9 && !(myDeckCounts[id] > 0); };
     const pool = Object.keys(defs).filter(ok); if(!pool.length) continue;
     const mine = arch ? pool.filter(id=> (defs[id].archetypes||[]).includes(arch)) : [];
-    const from = mine.length ? mine : pool; return from[Math.floor(Math.random() * from.length)];
+    const from0 = mine.length ? mine : pool;
+    // 2026-10-19 (package MX): a teaching card that is clearly better than a card in your deck where there is one, so its swap window
+    // (which now only opens for a better card: swapClearlyBetter) still comes up and teaches the keyword
+    let better = []; try{ better = from0.filter(id=> weakestDeckCard(id)); }catch(e){}
+    const from = better.length ? better : from0; return from[Math.floor(Math.random() * from.length)];
   }
   return null;
 }
@@ -22225,8 +22280,11 @@ function swapOutAllowed(outId, newId){
   return starterDeckCardIds().has(outId) || (o.attack||0) + (o.health||0) <= 3 || o.rarity === 'starter' || o.rarity === 'basic' || !!o.tutorial;
 }
 // The weakest card in the deck: a 1-Attack or 1-Health card first, then the smallest total (only cards swapOutAllowed lets go).
-function weakestDeckCard(exceptId){
-  const defs = getCardDefs(), ids = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== exceptId && !defs[k].isLeader && (!exceptId || swapOutAllowed(k, exceptId)));
+// 2026-10-19 (package MX, owner 22:47: "Swap: For Map 0-1, there are some card swap popups. Don't recommend cards that are lousier
+// than what i have in my deck."): with a card coming in (exceptId), only deck cards it is clearly better than (swapClearlyBetter);
+// none: null, and the swap window doesn't open. opts: {anyCost} (swapClearlyBetter).
+function weakestDeckCard(exceptId, opts){
+  const defs = getCardDefs(), ids = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== exceptId && !defs[k].isLeader && (!exceptId || (swapOutAllowed(k, exceptId) && swapClearlyBetter(defs[exceptId], defs[k], opts))));
   const one = d=> (d.attack||0) <= 1 || (d.health||0) <= 1 ? 0 : 1;
   return ids.sort((a, b)=> one(defs[a]) - one(defs[b]) || ((defs[a].attack||0) + (defs[a].health||0)) - ((defs[b].attack||0) + (defs[b].health||0)) || (defs[a].cost||0) - (defs[b].cost||0))[0] || null;
 }
@@ -22250,11 +22308,34 @@ function strictlyDominates(d, o){
   if(c(d) > c(o) || w(d) > w(o) || a(d) < a(o) || h(d) < h(o) || cardSkillCount(d) < cardSkillCount(o)) return false;
   return c(d) < c(o) || w(d) < w(o) || a(d) > a(o) || h(d) > h(o);
 }
+// SWAP_STRENGTH (2026-10-19, package MX, owner 22:47: "Don't recommend cards that are lousier than what i have in my deck."): a swap is
+// offered only when the card coming in is clearly better than the deck card going out, as the stat budget scores them: its budget
+// score (2A + H + S) x the half-miss multiplier (sbSkillCost / sbMissMult with the shipped skill costs, the same score the budget's
+// first rule checks against N), both at the levels getCardDefs shows them (your best copy: the conservative side for the card going
+// out), in the same cost bracket or a cheaper one (Lumber points: Stone 2, Metal 3; brackets 0 | 1-2 | 3-4 | 5+) and with no more Wait.
+// Clearly better = it strictly dominates the deck card (strictlyDominates) and scores higher, or it scores at least SWAP_CLEAR_MARGIN
+// (10%, and at least 1 point) higher. Equal or weaker: never. opts.anyCost drops the bracket (the Lumber lesson's swap, whose whole point
+// is a card that costs Lumber); the score and the Wait still apply.
+const SWAP_CLEAR_MARGIN = 0.1;
+function swapStrength(d){
+  if(!d) return 0; const cfg = {skills: SB_DEFAULT_SKILLS, halfMiss: SB_HALF_MISS, missMult: 1.5};
+  return Math.round((2 * (+d.attack || 0) + (+d.health || 0) + sbSkillCost(d.effects, cfg)) * sbMissMult(d, cfg) * 100) / 100;
+}
+function swapCostBracket(d){ const c = (+(d && d.cost) || 0) + 2 * (+(d && d.stoneCost) || 0) + 3 * (+(d && d.metalCost) || 0); return c <= 0 ? 0 : c <= 2 ? 1 : c <= 4 ? 2 : 3; }
+function swapClearlyBetter(d, o, opts){
+  if(!d || !o || d.id === o.id || typeof d.attack !== 'number' || typeof o.attack !== 'number') return false;
+  if(!(opts && opts.anyCost) && swapCostBracket(d) > swapCostBracket(o)) return false;
+  if((+d.wait || 0) > (+o.wait || 0)) return false;
+  const a = swapStrength(d), b = swapStrength(o); if(!(a > b)) return false;
+  return strictlyDominates(d, o) || a - b >= Math.max(1, b * SWAP_CLEAR_MARGIN);
+}
+function swapOptsFor(item){ return item && item.teach === 'lumber' ? {anyCost: true} : null; }
+// SWAP_STRENGTH:END
 function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d.isLeader && !isEggRewardCard(d) /* 2026-10-18: eggs hatch in the Nest, never a swap */ && (!d.cardType || d.cardType === 'unit') && d.id !== 'wandering-traveller' && typeof d.attack === 'number' && (d.health || 0) > 0); }
 // The weakest card in your main deck that `id` strictly dominates, or null.
 function dominatedDeckCard(id){
   const defs = getCardDefs(), d = defs[id]; if(!swapEligibleDef(d)) return null;
-  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && strictlyDominates(d, defs[k]));
+  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && strictlyDominates(d, defs[k]) && swapClearlyBetter(d, defs[k])); // + a higher score (2026-10-19, package MX: a dominating card with cheaper skills could score lower)
   const pw = x=> (x.attack||0) + (x.health||0);
   return ids.sort((a, b)=> pw(defs[a]) - pw(defs[b]) || (defs[b].cost||0) - (defs[a].cost||0) || a.localeCompare(b))[0] || null;
 }
@@ -22289,7 +22370,8 @@ function maybeOfferDeckSwap(){
   if((myDeckCounts[id]||0) > 0 && (myDeckCounts[id]||0) >= Math.min(maxCopiesForRarity(d.rarity), copiesOwned(id))){ setTimeout(maybeOfferDeckSwap, 50); return; }
   // 2026-10-15: a forced (teaching) swap trades out the weakest card; any other offer needs a deck card it strictly dominates,
   // after the tutorial swap, and no more than SWAP_OFFERS_MAX of them ever (see strictlyDominates).
-  const out = item.forced ? weakestDeckCard(id) : dominatedDeckCard(id); if(!out){ setTimeout(maybeOfferDeckSwap, 50); return; }
+  const sOpts = swapOptsFor(item); // 2026-10-19 (package MX): only deck cards it is clearly better than; none: no window
+  const out = item.forced ? weakestDeckCard(id, sOpts) : dominatedDeckCard(id); if(!out){ setTimeout(maybeOfferDeckSwap, 50); return; }
   const od = defs[out];
   if(!item.forced){
     if(swapOffersShown() >= SWAP_OFFERS_MAX || !swapTutorialDone() || (d.cost||0) > 0 && !pitchingUnlocked()){ setTimeout(maybeOfferDeckSwap, 50); return; }
@@ -22303,10 +22385,10 @@ function maybeOfferDeckSwap(){
   const pw = k=> (defs[k].attack||0) + (defs[k].health||0);
   const pitchOk = k=> !((defs[k].cost||0) > 0 && !pitchingUnlocked());
   const deckIds = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && swapEligibleDef(defs[k]));
-  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && deckIds.some(o=> swapOutAllowed(o, k)))
+  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && deckIds.some(o=> swapOutAllowed(o, k) && swapClearlyBetter(defs[k], defs[o])))
     .sort((a, b)=> pw(b) - pw(a) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b)).slice(0, 2));
-  const outListFor = inId=>{ const rec = inId === id ? out : (dominatedDeckCard(inId) || weakestDeckCard(inId));
-    const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId)).sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
+  const outListFor = inId=>{ const o2 = inId === id ? sOpts : null, rec = inId === id ? out : (dominatedDeckCard(inId) || weakestDeckCard(inId, o2));
+    const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId) && swapClearlyBetter(defs[inId], defs[k], o2)) // 2026-10-19 (package MX): never a stronger deck card.sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
     return (rec ? [rec] : []).concat(rest).slice(0, 3); };
   let inSel = id, outList = outListFor(id), outSel = out;
   const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (item.teach === 'lumber' ? TX('ui.swap-teach-lumber') : (TEACH_SAY[item.teach] || '')) : item.forced ? `${dIn.attack||0}/${dIn.health||0} in place of ${dOut.attack||0}/${dOut.health||0}.`
@@ -23555,6 +23637,7 @@ function raidPanelHTML(){
             : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
         ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
+        ${raidShieldLineHTML(def, st) /* 2026-10-19 (package MX): the boss bramble's Shield, 50 falling with the raid */}
         ${(()=>{ const br = raidBrambleOf(def); if(!br) return ''; // 2026-10-19 (package U3): the boss's bramble and its attacks, with the parts that use each
           const seen = new Map(); (def.parts || []).forEach(p=>{ let atks = []; try{ atks = TrenchM.trenchConfig(def, p, st.stage).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
             atks.forEach(a=>{ const k = (a.name || '') + '|' + a.pattern + '|' + a.every + '|' + a.dmg; if(!seen.has(k)) seen.set(k, {a, parts: []}); seen.get(k).parts.push(p.name); }); });
@@ -23709,6 +23792,7 @@ function openRaidEditor(raidId){
       <div class="se-grid">
         <label title="Raid tickets one fight takes. Players hold up to ${RAID_POINTS_MAX}, +1 a day, topped up to ${RAID_POINTS_MAX} each week.">Tickets per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints != null ? draft.cost.raidPoints : 1}"></label>
         <label title="Energy a fight takes on a part with no Energy of its own (1-6); each part and stage can change it below">Energy per fight (default)<input id="reCostEn" type="number" min="1" max="6" value="${draft.cost.energy||4}"></label>
+        <label title="The boss bramble's Shield on a fresh raid (soaks hits before Health); it falls with the part's remaining Health, as the boss's weakening: 50 fresh, 25 at half. 0 = off; each part can change it below (2026-10-19, package MX)">Shield<input id="reShield" type="number" min="0" max="999" value="${RaidM.raidShieldMax ? RaidM.raidShieldMax(Object.assign({}, draft, {parts: []}), null) : 50}"></label>
         <label title="Hours after a kill until the raid comes back at full Health, as a new life with its own rewards (1-168; the week's end still starts a new cycle)">Respawn after a kill (hours)<input id="reRespawn" type="number" min="1" max="168" value="${draft.respawnHours||RaidM.RESPAWN_HOURS_DEFAULT}"></label>
         <label title="Players in one instance before the next opens, each with its own Health and rewards (10-1000; 250 by default since 2026-10-19). The server reads the published value.">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
         ${adminModeEnabled ? `<div class="se-wide re-restart"><button type="button" class="btn small" id="reRestart">${escapeHtml(TX('ui.raid-restart'))}</button><small class="panel-sub">Every instance starts a fresh life now, at full Health (live once the raid-ops SQL is applied; this browser only until then).</small></div>` : ''}
@@ -23745,6 +23829,7 @@ function openRaidEditor(raidId){
         <label>Fight bramble HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
         <label title="Energy a fight on this part takes (1-6; blank = the raid's)">Energy per fight (blank = raid)<input data-pf="energy" type="number" min="1" max="6" value="${(P.cost||{}).energy||''}"></label>
+        <label title="This part's bramble Shield on a fresh raid (0-999; 0 = off; blank = the raid's), falling with its remaining Health (2026-10-19, package MX)">Shield (blank = raid)<input data-pf="shield" type="number" min="0" max="999" value="${P.shield != null && P.shield !== '' ? P.shield : ''}"></label>
         <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
         <label>Raid damage per HP (blank = raid)<input data-pf="perHp" type="number" min="1" value="${(P.scoring||{}).perInFightHp||''}"></label>
       </div>
@@ -23801,7 +23886,7 @@ function openRaidEditor(raidId){
         <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
         <label>Kill: XP<input id="reKXp" type="number" min="0" max="5000" value="${rw.xp != null ? rw.xp : 500}"></label>
         <label title="Reward cards (from the pack pools, now and then a faction card) a participant gets when it falls (the top 10% one more). 2026-10-19 (package RC): never the raid's own cards">Kill: reward cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
-        <label title="2026-10-19 (package RC): the raid's trophy shards a participant gets when it falls, before the Competent / Leading boost and their extras (the Forge's Raid tab crafts its cards from them)">Kill: trophy shards<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
+        <label title="2026-10-19 (package RC): the raid's trophy shards a participant gets at least when it falls (package MX: 1 a fight played when that is more; x2 Competent, x5 Leading; the Forge's Raid tab crafts its cards from them)">Kill: trophy shards (at least)<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
         <label title="If it survives: this % of the general rewards (Gold, Dust, Metal, XP)">Held: general %<input id="reComp" type="number" min="0" max="100" value="${rw.failPct != null ? rw.failPct : 50}"></label>
         <label title="If it survives: the raid's own rewards (cards, tier extras) at most this %, scaled by how much of its Health went">Held: raid rewards max %<input id="reFailSpec" type="number" min="0" max="100" value="${rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}"></label>
         ${['top1','top10','top50','participant'].map(tierRow).join('')}
@@ -23838,6 +23923,7 @@ function openRaidEditor(raidId){
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
     draft.cost.raidPoints = Math.max(0, Math.min(5, Math.round(num(v('reCostRp'), 1)))); draft.cost.energy = Math.max(1, Math.min(6, Math.round(num(v('reCostEn'), 4)))); // 1-6 Energy (2026-10-19)
+    if(overlay.querySelector('#reShield')) draft.shield = Math.max(0, Math.min(999, Math.round(num(v('reShield'), 50)))); // 2026-10-19 (package MX): the raid bramble's Shield (0 = off)
     // 2026-10-19 (package RO): respawn, instances, art, participation and the new reward knobs, the ally decks
     if(overlay.querySelector('#reRespawn')) draft.respawnHours = Math.max(1, Math.min(168, Math.round(num(v('reRespawn'), 24))));
     if(overlay.querySelector('#reInstCap')) draft.instanceCap = Math.max(10, Math.min(1000, Math.round(num(v('reInstCap'), RaidM.INSTANCE_CAP_DEFAULT || 250))));
@@ -23867,6 +23953,7 @@ function openRaidEditor(raidId){
       overlay.querySelectorAll('[data-pf]').forEach(el=>{ const k = el.dataset.pf;
         if(k==='name' || k==='icon') P[k] = el.value; else if(k==='castleHp') P.fight.castleHp = Math.max(10, num(el.value, 200));
         else if(k==='perHp') return; // read below
+        else if(k==='shield'){ if(el.value==='') delete P.shield; else P.shield = Math.max(0, Math.min(999, Math.round(num(el.value, 50)))); } // 2026-10-19 (package MX)
         else if(k==='energy'){ if(el.value===''){ if(P.cost){ delete P.cost.energy; if(!Object.keys(P.cost).length) delete P.cost; } } else P.cost = Object.assign({}, P.cost||{}, {energy: Math.max(1, Math.min(6, Math.round(num(el.value, 4))))}); } // 2026-10-19
         else if(k==='rounds'){ if(el.value==='') delete P.fight.rounds; else P.fight.rounds = Math.max(3, Math.min(40, Math.round(num(el.value, 12)))); } else P[k] = Math.max(1, Math.round(num(el.value, 1))); });
       const ph = overlay.querySelector('[data-pf="perHp"]');
@@ -24155,6 +24242,7 @@ function startRaidPartMatch(def, partId){
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = guildScaledBramble(myCharacter.health || 30, f.castleHpPct); // + the guild's Rooted Walls (2026-10-19)
   const players = {1: engine.newPlayer(1, myFightDeck, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
+  { const r = (RaidM && RaidM.raidShield) ? RaidM.raidShield(def, st, partId) : null; if(r){ const q = players[2].hq; q.shield = r.shield; q.maxShield = r.shield; q.shieldLayers = r.shield > 0 ? [r.shield] : []; } } // 2026-10-19 (package MX): the raid bramble's Shield (RaidM.raidShield), here too
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
@@ -24199,9 +24287,15 @@ function startRaidFullBattle(def, partId, f, st){
     me.raidSide = sideBR; }catch(e){} // 2026-10-19 (package NV): the VS screen shows your part, then the side's total with each ally's
   const vsBramble = raidBrambleOf(def, f.part && f.part.id); // 2026-10-19 (package U3): the boss card names its bramble and lists its smacks
   showVsScreen(me, Object.assign({name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def),
-    bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks)} : null},
+    bramble: vsBramble ? {name: vsBramble.name, icon: vsBramble.icon, lines: raidBrambleAbilityLines(cfg.attacks), shield: b.raidShield && b.raidShield.shield > 0 ? TX('ui.mx-raid-shield', {n: b.raidShield.shield}) : '', shieldTip: TX('ui.mx-raid-shield-tip')} : null}, // + its Shield (2026-10-19, package MX)
     bossBR ? {level: bossBR.total, brLabel: TX('ui.raid-br-boss'), brTip: TX('ui.raid-br-boss-tip')} : {})).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); setTimeout(()=>{ try{ u3TurnFlash(m0); }catch(e){} }, 600); }); // + Turn 1's tick (2026-10-19, U3)
 }
+// The raid bramble's Shield line (2026-10-19, package MX, owner 22:47): "Shield N (falls as the raid weakens)" on the raid screen, N the
+// most any open part's bramble opens with now (RaidM.raidShield: 50 on a fresh raid); nothing when the raid's Shield is off.
+function raidShieldNow(def, st){ if(!RaidM || !RaidM.raidShield || !def) return 0; let n = 0;
+  ((st && st.parts) || []).forEach(ps=>{ if(ps.locked || ps.defeated) return; n = Math.max(n, RaidM.raidShield(def, st, ps.id).shield); }); return n; }
+function raidShieldLineHTML(def, st){ const n = raidShieldNow(def, st); if(!(n > 0)) return '';
+  return `<p class="r3-note mx-raid-shield" title="${escapeAttr(TX('ui.mx-raid-shield-tip'))}"><span aria-hidden="true">🔷</span> ${escapeHtml(TX('ui.mx-raid-shield', {n}))}</p>`; }
 // The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
 // plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
 // draws; Math.random)}. Returns {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay (the run-only defs), raidRules,
@@ -24264,6 +24358,10 @@ function buildRaidFullFight(def, partId, f, st, opts){
   const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, Object.assign({id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}},
     bramble ? {name: bramble.name, icon: bramble.icon, art: bramble.art || undefined, raidBramble: true, partName: f.part.name} : {}))};
   players[2].loopCards = [];
+  // 2026-10-19 (package MX, owner 22:47: "Add a shield value of 50 to the Raid"): the boss's bramble opens with the raid's Shield
+  // (RaidM.raidShield: 50 x the part's remaining share, as the weakening), shown and spent as any bramble's Shield (one layer)
+  const raidShield = (RaidM && RaidM.raidShield) ? RaidM.raidShield(def, st, partId) : {max:0, share:1, shield:0};
+  { const q = players[2].hq; q.shield = raidShield.shield; q.maxShield = raidShield.shield; q.shieldLayers = raidShield.shield > 0 ? [raidShield.shield] : []; }
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
   entIds.forEach((id, i)=> engine.debugSpawnCard(players, sideOf, 2, id, order[i], stats, []));
@@ -24293,7 +24391,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
     allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.allyRow = a.row; c.holdRow = true; c.isLeader = true; a.leaderId = id; } }); }catch(e){} // + holdRow (2026-10-19, package RB): its own row, always
   const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
-  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks, weaken, partShare};
+  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks, weaken, partShare, raidShield};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -24609,13 +24707,14 @@ function raidAllyPlays(m, a, events){
 // weight columns by number of units in that column."). An attack with pattern 'column' alternates: its 1st, 3rd, 5th... smack is a
 // COLUMN smack, every unit of yours in one column (front, middle and back), the column picked at random weighted by how many of your
 // units stand in it (an empty column never; no units at all, your bramble); its 2nd, 4th, 6th... is a ROW smack, every unit in one
-// of your rows: the front row, or 1 time in 3 (raidSmackBack, the owner's 15:37 rule) the middle or back row. Every roll is seeded by
-// the match's seed, the round and the attack (raidSmackRoll), so the same fight smacks the same.
+// of your rows: any of the three at even odds (2026-10-19, package MX, owner: "The raids tentacles should be hitting a random column or
+// row and not my row everytime btw!": it was the front row, your own, 2 times in 3, and the middle or back only 1 time in 3 (the 15:37
+// rule)). Every roll is seeded by the match's seed, the round and the attack (raidSmackRoll), so the same fight smacks the same.
 function raidSmackRoll(m, round, i, salt){
   const s = ((Number(m && m.raidSeed) >>> 0) ^ Math.imul((round|0) + 1, 0x9E3779B1) ^ Math.imul((i|0) + 1, 0x85EBCA77) ^ Math.imul(salt|0, 0xC2B2AE3D)) >>> 0;
   return seededRng(s)();
 }
-const RAID_SMACK_BACK_CHANCE = 1/3;
+const RAID_SMACK_BACK_CHANCE = 2/3; // the chance a row smack misses your front row: 2/3, so front / middle / back are 1 in 3 each (2026-10-19, MX; was 1/3)
 function raidSmackBack(m, round, i){ return raidSmackRoll(m, round, i, 0) < RAID_SMACK_BACK_CHANCE; }
 // Which kind the attack's smack on this round is: they alternate, a column smack first.
 function raidSmackKind(round, a){ const n = Math.floor((round|0) / Math.max(1, (a && a.every)|0 || 1)); return n % 2 === 1 ? 'column' : 'row'; }
@@ -24630,7 +24729,7 @@ function raidPickColumn(m, round, i){
   const cols = [...w.keys()].sort((x, y)=> x - y), tot = cols.reduce((t, c)=> t + w.get(c), 0); if(!tot) return null;
   let u = raidSmackRoll(m, round, i, 1) * tot; for(const c of cols){ u -= w.get(c); if(u < 0) return c; } return cols[cols.length - 1];
 }
-// The row a row smack aims at: the front, or 1 time in 3 the middle or the back row (even odds).
+// The row a row smack aims at: the front, middle or back row, 1 in 3 each (raidSmackBack, then even odds between the middle and back).
 function raidSmackRow(m, round, i){ return raidSmackBack(m, round, i) ? (raidSmackRoll(m, round, i, 2) < 0.5 ? 1 : 2) : 0; }
 // What the attack's smack on this round will hit, chosen when it is telegraphed (the round before) and kept.
 function raidSmackTarget(m, round, i, a){ return raidSmackKind(round, a) === 'column' ? {kind:'column', col: raidPickColumn(m, round, i)} : {kind:'row', row: raidSmackRow(m, round, i)}; }
@@ -37755,7 +37854,7 @@ function showVsScreen(left, right){
       </div>`; };
     const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}` : '' /* 2026-10-19 (package U3) */}</div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}${p.bramble.shield ? `<div class="u3-bramble-line mx-raid-shield" title="${escapeAttr(p.bramble.shieldTip || '')}"><span aria-hidden="true">🔷</span> ${escapeHtml(p.bramble.shield)}</div>` : '' /* 2026-10-19 (package MX) */}` : '' /* 2026-10-19 (package U3) */}</div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;
@@ -41289,6 +41388,12 @@ function sk2StatusBadges(c, badges){
 }
 const SK2_RES_TX = {lumber: n=> TX('ui.sk2-res-lumber', {n}), stone: n=> TX('ui.sk2-res-stone', {n}), metal: n=> TX('ui.sk2-res-metal', {n}), uranium: n=> TX('ui.sk2-res-uranium', {n})};
 const sk2ResList = list=> (list || []).map(t=> (SK2_RES_TX[t.res] || SK2_RES_TX.lumber)(t.n)).join(', ');
+// A trigger's line in the card text: Forge Weapon's own words, and a price first (t.pay).
+function sk2TriggerText(t, doText){
+  let s = doText; if(t && t.do === 'forgeWeapon') s = TX('ui.sk2-act-forge-text', {n: t.amount != null ? t.amount : 1});
+  if(t && t.pay && typeof t.pay === 'object'){ const list = sk2ResList(['lumber', 'stone', 'metal', 'uranium'].map(r=> ({res:r, n: Math.max(0, Math.floor(Number(t.pay[r])||0))})).filter(x=> x.n > 0)); if(list) s = TX('ui.sk2-act-pay-then', {list, what: s}); }
+  return s;
+}
 function sk2LogText(ev, nm){
   if(!ev) return null;
   if(ev.type === 'sk2'){ const name = nm(ev.defId);
@@ -41298,10 +41403,16 @@ function sk2LogText(ev, nm){
     if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
     if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
     if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
+    if(ev.kind === 'noRoom') return {cls:'', text:TX('ui.sk2-log-no-room', {name})};
+    if(ev.kind === 'disarmFull') return {cls:'', text:TX('ui.sk2-log-disarm-full', {name})};
+    if(ev.kind === 'disarm') return {cls:'gold', text: ev.lone ? TX('ui.sk2-log-disarm', {name, item: nm(ev.equipDefId)}) : TX('ui.sk2-log-disarm-from', {name, item: nm(ev.equipDefId), target: nm(ev.targetDefId)})};
+    if(ev.kind === 'pay') return {cls:'', text:TX('ui.sk2-log-pay', {name, list: sk2ResList(ev.price)})}; // a price paid (SK2b: Quarry, Smelter)
+    if(ev.kind === 'cantPay') return {cls:'', text:TX('ui.sk2-log-cant-pay', {name, list: sk2ResList(ev.price)})};
     return null; }
   if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage')){ const name = nm(ev.attDefId), stone = ev.kind === 'sk2Salvage';
     if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
     return {cls:'', text: stone ? TX('ui.sk2-log-salvage', {name, total: ev.total}) : TX('ui.sk2-log-scavenge', {name, total: ev.total})}; }
+  if(ev.type === 'equipLaid' && ev.forged) return {cls:'', text:TX('ui.sk2-log-forge', {name: nm(ev.byDefId), item: nm(ev.equipDefId)})}; // SK2b
   if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
   if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
   if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
@@ -41332,6 +41443,10 @@ function sk2Vfx(ev){
   if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪛 −${ev.amount}`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'fortify'){ fl(el, '🏯', 'quick'); return; }
+  if(ev.kind === 'pay'){ fl(el, '−' + (ev.price || []).map(x=> x.n + (x.res === 'stone' ? '🪨' : x.res === 'metal' ? '🔩' : '🪵')).join(' '), 'debuff'); return; } // SK2b
+  if(ev.kind === 'cantPay' || ev.kind === 'noRoom' || ev.kind === 'disarmFull'){ fl(el, '🚫', 'quick'); return; }
+  if(ev.kind === 'disarm'){ fl(el, '🫴 ' + ((getCardDefs()[ev.equipDefId] || {}).icon || '⚒️'), 'gold'); snd('swipeTone');
+    const rc = rcOf(ev.targetUid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipping = 0; if(ev.atk != null) rc.atk = ev.atk; if(ev.hp != null) rc.hp = ev.hp; if(ev.maxHp != null) rc.maxHp = ev.maxHp; try{ updateCardAtkDisplay(ev.targetUid); updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); } return; }
 }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
@@ -44007,7 +44122,7 @@ function forgeRaidHTML(){
   const order = id=> RARITY_TIER_BANDS.indexOf((defs[id] || {}).rarity || 'common');
   return `<div class="panel forge-raid">${raids.map(raid=>{
     const ids = raidCardIds(raid).sort((a, b)=> order(a) - order(b) || String(defs[a].name).localeCompare(String(defs[b].name)));
-    const tb = RaidM.RAID_REWARD_TABLE || {}, p = (tb.participant || {}).shards || 0, l = Math.round(p * 1.4) + ((tb.leading || {}).extraShards || 0);
+    const tb = RaidM.RAID_REWARD_TABLE || {}, p = ((raid.rewards || {}).shards != null ? Number(raid.rewards.shards) : (tb.participant || {}).shards) || 0, l = p * ((tb.leading || {}).shardMult || 1); // 2026-10-19 (package MX): 1 a fight, at least the base; x2 / x5
     return `<section class="fr-raid" aria-label="${escapeAttr(raid.name || raid.id)}">
       <div class="fr-head"><h3>${escapeHtml(raid.icon || '🐙')} ${escapeHtml(raid.name || raid.id)}</h3>
         <span class="forge-coin fr-shards" title="${escapeAttr(raidShardName(raid))}">${escapeHtml(TX('ui.rc-shards-count', {icon: raidShardIcon(raid), n: raidShardsOf(raid.id), name: raidShardName(raid)}))}</span></div>
