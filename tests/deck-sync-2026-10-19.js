@@ -255,8 +255,9 @@ ok(/try\{ await deckSyncPull\('load'\); \}catch\(e\)\{\}/.test(fnSrc('cloudPullS
   ok(devB.C.cloudApplyCopyLevels([row]) === 1, "5. B applies it: one of B's copies changes");
   const bx = devB.myCardCopies.x;
   ok(bx.map(c=> c.uid).join(',') === 'cB1,cB2,cB3', "5. B keeps its own uids (A's uids are not B's copies)");
-  ok(devB.C.deckCopyLevels('x', 2).join(',') === '5,1', "5. B's strongest copy takes A's level 5 (the next keeps its own): a synced deck with 2 x fights at 5 and 1");
-  ok(bx.filter(c=> c.level === 5).length === 1 && bx.find(c=> c.level === 5).free === 5, '5. the level that came from the cloud is marked inherited (no double melt refund)');
+  // 2026-10-21 (package FG, owner: "forge forges ALL cards of a particular suite"): the level is the card's, so A's Lv 5 lifts every copy on B
+  ok(devB.C.deckCopyLevels('x', 3).join(',') === '5,5,5', "5. (FG) A's level 5 lifts every one of B's copies: a synced deck with 3 x fights at 5, 5 and 5");
+  ok(bx.every(c=> c.level === 5 && !c.free), '5. (FG) no copy is marked inherited (levels are the card\'s; melting refunds them once)');
   ok(devA.C.cloudApplyCopyLevels([row]) === 0, '5. A pulling its own row back changes nothing (same uids match)');
   const lower = {card_id: 'x', level: 2, copies: [{u: 'zz', l: 2}]};
   ok(devB.C.cloudApplyCopyLevels([lower]) === 0 && devB.C.deckCopyLevels('x', 1)[0] === 5, '5. a lower cloud level never lowers a copy'); }

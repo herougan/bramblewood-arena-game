@@ -13236,13 +13236,13 @@ function openForgeBulk(kind, btn){
   const fuse = kind === 'fuse', plan = fuse ? fuseAllPlan() : disenchantSummary(), defs = getCardDefs();
   if(!plan.copies){ if(btn) denyShake(btn); try{ SoundKit.deny && SoundKit.deny(); }catch(e){}
     showToast(fuse ? TX('toast.nothing-to-fuse-no-card-has')
-                   : TX('toast.fg-nothing-to-disenchant', extrasLimitVars()), 'warn'); return; } // 2026-10-19 (package FG): extras = beyond the deck limit
+                   : TX('toast.fg-nothing-to-disenchant', {c: maxCopiesForRarity('common'), u: maxCopiesForRarity('uncommon'), r: maxCopiesForRarity('rare')}), 'warn'); return; } // 2026-10-19 (package FG): extras = beyond the deck limit
   const per = plan.per.slice().sort((a, b)=> b.n - a.n), SHOW = 24, more = per.length - SHOW;
   const valHTML = (dust, gold)=> `${dust ? `<span>✨${dust}</span>` : ''}${gold ? ` <span>${mapleLeafIconHTML()}${gold}</span>` : ''}`;
   const title = fuse ? '🧩 Fuse all extras' : '♻️ Disenchant extras';
   // 2026-10-18 (package NF): the spares feed the card's best copy (the highest level, then the finest foil), which each tile names
   // 2026-10-21 (package FG): the spares become credit on their card (levels are the card's again)
-  const blurb = escapeHtml(fuse ? TX('ui.fg-fuse-sheet-blurb') : TX('ui.fg-dis-tip', extrasLimitVars()));
+  const blurb = escapeHtml(fuse ? TX('ui.fg-fuse-sheet-blurb') : TX('ui.fg-dis-tip', {c: maxCopiesForRarity('common'), u: maxCopiesForRarity('uncommon'), r: maxCopiesForRarity('rare')}));
   const ov = document.createElement('div'); ov.className = 'modal-overlay bw-centre-dialog fbulk-ov';
   ov.innerHTML = `<div class="modal fbulk is-${kind}" role="dialog" aria-modal="true" aria-label="${escapeAttr(title.replace(/^\S+\s/, ''))}">
     <div class="modal-head-row"><h2>${title}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
@@ -43312,7 +43312,7 @@ function renderForge(){
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
           ${forgeMode==='fuse' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'aria-disabled="true"'} title="${escapeAttr(TX('ui.fg-fuse-all-tip'))}">🧩 ${escapeHtml(TX('ui.fg-fuse-all-btn'))}${n ? ` (${n})` : ''}</button>`; })() : '' /* 2026-10-19 (package FG): Fuse all extras lives on the Fuse tab */}
-          ${forgeMode==='upgrade' ? (()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'aria-disabled="true"'} title="${escapeAttr(TX('ui.fg-dis-tip', extrasLimitVars()))}">♻️ ${escapeHtml(TX('ui.fg-dis-btn'))}${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })() : ''}
+          ${forgeMode==='upgrade' ? (()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'aria-disabled="true"'} title="${escapeAttr(TX('ui.fg-dis-tip', {c: maxCopiesForRarity('common'), u: maxCopiesForRarity('uncommon'), r: maxCopiesForRarity('rare')}))}">♻️ ${escapeHtml(TX('ui.fg-dis-btn'))}${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })() : ''}
           <select id="forgeDeckScope" class="forge-sort forge-deck-scope ${forgeDeckScope !== 'all' ? 'is-on' : ''}" aria-label="Show cards from">${FORGE_DECK_SCOPES.map(([k, l])=> `<option value="${k}" ${forgeDeckScope===k?'selected':''}>${k === 'all' ? '🗂️' : k === 'main' ? '⭐' : '🃏'} ${l}</option>`).join('')}</select>
           <select id="forgeSort" class="forge-sort" aria-label="Sort cards">${FORGE_SORTS.map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>Sort: ${l}</option>`).join('')}</select>
         </div>
@@ -43949,8 +43949,6 @@ function fuseCopies(id, n){
   for(let k = 0; k < (n | 0); k++){ const v = feedDuplicate(id, null); if(!v) break; fed++; dust += v.dust; gold += v.gold; }
   return fed ? {n: fed, dust, gold} : null;
 }
-// The deck limits the extras texts quote (Common, Uncommon, Rare).
-function extrasLimitVars(){ return {c: maxCopiesForRarity('common'), u: maxCopiesForRarity('uncommon'), r: maxCopiesForRarity('rare')}; }
 function fuseCreditText(c){ return `✨${c.dust} · 🍁${c.gold}`; }
 function fuseReachText(p){
   if(p.level >= 10) return TX('ui.fg-fuse-lb');
@@ -44063,13 +44061,13 @@ function forgeReinforceHTML(){
   </div>`;
 }
 // Stones drop onto the bramble's edges, dust puffs, the tile settles at its new level. Reduced motion: the new tile, at once.
-function reinforceStageAnimation(afterHTML){
+function reinforceStageAnimation(afterHTML, lvText){
   return new Promise(resolve=>{
     const st = document.getElementById('rfStage'), big = st && st.querySelector('.fg-rf-big');
-    const swap = ()=>{ if(big && afterHTML){ big.innerHTML = afterHTML; } };
+    const swap = ()=>{ if(big && afterHTML){ big.innerHTML = afterHTML; } const lv = st && st.querySelector('.fg-rf-lv'); if(lv && lvText) lv.textContent = lvText; };
     if(!st || !big || reducedMotion() || !big.animate){ swap(); resolve(); return; }
     const w = big.offsetWidth, h = big.offsetHeight;
-    const spots = [[-.08, .1], [1.0, .18], [-.06, .55], [1.02, .62], [.18, 1.0], [.7, 1.02]];
+    const spots = [[.12, .05], [.88, .08], [.05, .48], [.95, .55], [.3, .96], [.72, .96]]; // on the tile's edges, a course of new stones
     spots.forEach(([fx, fy], k)=> setTimeout(()=>{
       const b = document.createElement('i'); b.className = 'fg-rf-stone'; b.style.left = (fx * w) + 'px'; b.style.top = (fy * h) + 'px'; big.appendChild(b);
       b.animate([{transform:'translate(-50%, -220%) rotate(-25deg)', opacity:0}, {transform:'translate(-50%, -50%) rotate(4deg)', opacity:1, offset:.7}, {transform:'translate(-50%, -50%) rotate(0deg)', opacity:1}], {duration: 300, easing:'cubic-bezier(.5,0,.8,.4)', fill:'forwards'})
@@ -44089,7 +44087,7 @@ async function forgeReinforce(btn){
   forgeBusy = true; btn.disabled = true;
   const L = castleLevelOf(id), after = cardTileHTML(Object.assign({}, castleLeveled(ch, L), {icon: ch.icon || '🏰'}), {isCastle:true, inPlay:true, extraClass:'fg-rf-tile'});
   let centred = false;
-  try{ centred = await forgeCentreStage(()=> reinforceStageAnimation(after), {el: document.getElementById('rfStage'), burst: {kind: 'levelUp', text: TX('ui.fg-rf-burst', {n: L})}, hold: 800}); }catch(e){}
+  try{ centred = await forgeCentreStage(()=> reinforceStageAnimation(after, TX('ui.nf-copy-level', {n: L})), {el: document.getElementById('rfStage'), burst: {kind: 'levelUp', text: TX('ui.fg-rf-burst', {n: L})}, hold: 800}); }catch(e){}
   forgeBusy = false; renderForge(); try{ refreshDeckHeroBanner(); }catch(e){}
   if(!centred) metaFx('levelUp', '#rfStage .card-tile', {text: TX('ui.fg-rf-burst', {n: L})});
   showToast(TX('toast.fg-reinforced', {name: ch.name, n: L, hp: castleLeveled(ch, L).health}), 'ok');
@@ -44147,7 +44145,7 @@ function forgeRaidHTML(){
         <div class="fg-recipe" role="table" aria-label="${escapeAttr(TX('ui.fg-recipe'))}"><div class="fg-rc-head" role="row"><b role="columnheader">${escapeHtml(TX('ui.fg-recipe'))}</b></div>
           ${raidRecipeRows(raid, id).map(r=>{ const ok = r.have >= r.need; return `<div class="fg-rc-row ${ok ? 'is-ok' : 'is-short'}" role="row"><span class="ic" role="cell" aria-hidden="true">${r.html ? r.icon : escapeHtml(r.icon)}</span><span class="nm" role="cell">${escapeHtml(r.name)}</span><b class="need" role="cell">${r.need}</b><small class="have" role="cell">${escapeHtml(TX('ui.fg-recipe-have', {n: r.have}))}</small><i class="mk" role="cell" aria-hidden="true">${ok ? '✓' : '✗'}</i></div>`; }).join('')}</div>
         <button type="button" class="btn ${ready ? 'primary' : ''} forge-act fg-raid-craft" data-rc-craft="${escapeAttr(id)}" data-rc-raid="${escapeAttr(raid.id)}" ${ready ? '' : 'aria-disabled="true"'}>🔨 ${escapeHtml(TX('ui.rc-forge-craft'))}${forgeRaidCostHTML(raid, cost)}</button>
-        <div class="fg-owned"><b>${escapeHtml(owned ? TX('ui.fg-owned-copies', {n: owned}) : TX('ui.fg-owned-none'))}</b>${groups.length ? `<div class="fg-owned-list">${groups.map(g=> `<span class="fg-chip">${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))} · ${escapeHtml(g.label)}${g.uids.length > 1 ? ` ×${g.uids.length}` : ''}</span>`).join('')}</div>` : ''}</div>
+        <div class="fg-owned"><b>${escapeHtml(owned ? TX('ui.rc-forge-owned', {n: owned}) : TX('ui.fg-owned-none'))}</b>${groups.length ? `<div class="fg-owned-list">${groups.map(g=> `<span class="fg-chip">${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))} · ${escapeHtml(g.label)}${g.uids.length > 1 ? ` ×${g.uids.length}` : ''}</span>`).join('')}</div>` : ''}</div>
       </div>
     </div>
   </div>`;

@@ -37881,7 +37881,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=80eef0e85b", "es": "assets/lang/es.js?v=c66cb3239e", "fr": "assets/lang/fr.js?v=7cbeeaa127", "id": "assets/lang/id.js?v=c905c3710e", "it": "assets/lang/it.js?v=f0250f7cbc", "ja": "assets/lang/ja.js?v=3e59182404", "ko": "assets/lang/ko.js?v=d1b76faa5b", "pt": "assets/lang/pt.js?v=1e58aadde1", "ta": "assets/lang/ta.js?v=ec4f1eec2a", "tl": "assets/lang/tl.js?v=f43aa537e6", "zh-Hans": "assets/lang/zh-Hans.js?v=2aa99569b8", "zh-Hant": "assets/lang/zh-Hant.js?v=4029604b05"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=f8bb3de22b", "es": "assets/lang/es.js?v=69f4aa6647", "fr": "assets/lang/fr.js?v=eeea5acaeb", "id": "assets/lang/id.js?v=4d2409ffed", "it": "assets/lang/it.js?v=5d84722a34", "ja": "assets/lang/ja.js?v=262727655a", "ko": "assets/lang/ko.js?v=d613c47c35", "pt": "assets/lang/pt.js?v=aa904d6459", "ta": "assets/lang/ta.js?v=d5c9a50dca", "tl": "assets/lang/tl.js?v=87cdcf326b", "zh-Hans": "assets/lang/zh-Hans.js?v=b92898fd46", "zh-Hant": "assets/lang/zh-Hant.js?v=5cdd33cee5"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -39493,7 +39493,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fg-go-fuse": "Fuse spare copies ({n})",
   "ui.fg-lb-cost": "It costs {n}× what the whole road to level 10 cost.",
   "ui.fg-leaves": "Maple Leaves",
-  "ui.fg-owned-copies": "You own {n}",
   "ui.fg-owned-none": "You don't own it yet.",
   "ui.fg-raid-burst": "Crafted!",
   "ui.fg-raid-pick-raid": "Raid",
@@ -42888,7 +42887,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '4eb8de8667b5', BUILD_CARD_HASH = 'c8715ee851e1e9c5196edd68e3307776aa47b81df5c590af18a5c3fddddfec99';
+const BUILD_ID = 'f41d9a58fb16', BUILD_CARD_HASH = 'c8715ee851e1e9c5196edd68e3307776aa47b81df5c590af18a5c3fddddfec99';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -84039,10 +84038,10 @@ function forgeReinforceHTML(){
   </div>`;
 }
 // Stones drop onto the bramble's edges, dust puffs, the tile settles at its new level. Reduced motion: the new tile, at once.
-function reinforceStageAnimation(afterHTML){
+function reinforceStageAnimation(afterHTML, lvText){
   return new Promise(resolve=>{
     const st = document.getElementById('rfStage'), big = st && st.querySelector('.fg-rf-big');
-    const swap = ()=>{ if(big && afterHTML){ big.innerHTML = afterHTML; } };
+    const swap = ()=>{ if(big && afterHTML){ big.innerHTML = afterHTML; } const lv = st && st.querySelector('.fg-rf-lv'); if(lv && lvText) lv.textContent = lvText; };
     if(!st || !big || reducedMotion() || !big.animate){ swap(); resolve(); return; }
     const w = big.offsetWidth, h = big.offsetHeight;
     const spots = [[-.08, .1], [1.0, .18], [-.06, .55], [1.02, .62], [.18, 1.0], [.7, 1.02]];
@@ -84065,7 +84064,7 @@ async function forgeReinforce(btn){
   forgeBusy = true; btn.disabled = true;
   const L = castleLevelOf(id), after = cardTileHTML(Object.assign({}, castleLeveled(ch, L), {icon: ch.icon || '🏰'}), {isCastle:true, inPlay:true, extraClass:'fg-rf-tile'});
   let centred = false;
-  try{ centred = await forgeCentreStage(()=> reinforceStageAnimation(after), {el: document.getElementById('rfStage'), burst: {kind: 'levelUp', text: TX('ui.fg-rf-burst', {n: L})}, hold: 800}); }catch(e){}
+  try{ centred = await forgeCentreStage(()=> reinforceStageAnimation(after, TX('ui.nf-copy-level', {n: L})), {el: document.getElementById('rfStage'), burst: {kind: 'levelUp', text: TX('ui.fg-rf-burst', {n: L})}, hold: 800}); }catch(e){}
   forgeBusy = false; renderForge(); try{ refreshDeckHeroBanner(); }catch(e){}
   if(!centred) metaFx('levelUp', '#rfStage .card-tile', {text: TX('ui.fg-rf-burst', {n: L})});
   showToast(TX('toast.fg-reinforced', {name: ch.name, n: L, hp: castleLeveled(ch, L).health}), 'ok');
@@ -84123,7 +84122,7 @@ function forgeRaidHTML(){
         <div class="fg-recipe" role="table" aria-label="${escapeAttr(TX('ui.fg-recipe'))}"><div class="fg-rc-head" role="row"><b role="columnheader">${escapeHtml(TX('ui.fg-recipe'))}</b></div>
           ${raidRecipeRows(raid, id).map(r=>{ const ok = r.have >= r.need; return `<div class="fg-rc-row ${ok ? 'is-ok' : 'is-short'}" role="row"><span class="ic" role="cell" aria-hidden="true">${r.html ? r.icon : escapeHtml(r.icon)}</span><span class="nm" role="cell">${escapeHtml(r.name)}</span><b class="need" role="cell">${r.need}</b><small class="have" role="cell">${escapeHtml(TX('ui.fg-recipe-have', {n: r.have}))}</small><i class="mk" role="cell" aria-hidden="true">${ok ? '✓' : '✗'}</i></div>`; }).join('')}</div>
         <button type="button" class="btn ${ready ? 'primary' : ''} forge-act fg-raid-craft" data-rc-craft="${escapeAttr(id)}" data-rc-raid="${escapeAttr(raid.id)}" ${ready ? '' : 'aria-disabled="true"'}>🔨 ${escapeHtml(TX('ui.rc-forge-craft'))}${forgeRaidCostHTML(raid, cost)}</button>
-        <div class="fg-owned"><b>${escapeHtml(owned ? TX('ui.fg-owned-copies', {n: owned}) : TX('ui.fg-owned-none'))}</b>${groups.length ? `<div class="fg-owned-list">${groups.map(g=> `<span class="fg-chip">${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))} · ${escapeHtml(g.label)}${g.uids.length > 1 ? ` ×${g.uids.length}` : ''}</span>`).join('')}</div>` : ''}</div>
+        <div class="fg-owned"><b>${escapeHtml(owned ? TX('ui.rc-forge-owned', {n: owned}) : TX('ui.fg-owned-none'))}</b>${groups.length ? `<div class="fg-owned-list">${groups.map(g=> `<span class="fg-chip">${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))} · ${escapeHtml(g.label)}${g.uids.length > 1 ? ` ×${g.uids.length}` : ''}</span>`).join('')}</div>` : ''}</div>
       </div>
     </div>
   </div>`;

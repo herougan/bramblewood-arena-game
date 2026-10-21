@@ -1486,7 +1486,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fg-go-fuse": "Fuse spare copies ({n})",
   "ui.fg-lb-cost": "It costs {n}× what the whole road to level 10 cost.",
   "ui.fg-leaves": "Maple Leaves",
-  "ui.fg-owned-copies": "You own {n}",
   "ui.fg-owned-none": "You don't own it yet.",
   "ui.fg-raid-burst": "Crafted!",
   "ui.fg-raid-pick-raid": "Raid",
