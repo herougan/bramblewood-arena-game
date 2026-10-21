@@ -10,7 +10,7 @@
 //      drawn from the spread; each fight draws a measured result for that deck, part and share; the stand-ins (standIns.perDayPct)
 //      wear the open parts down as raidState does; a fallen raid returns 24 h later (respawnHours). Completion = the first life
 //      falls inside the week. Also: each participant-life's raid damage on the new scale and on the old x15 scale (for the tiers).
-//   node tools/raid_completion_model.js measure [--n 20] [--decks 10,13,16,20] [--parts core] [--out FILE] [--set '{"weakenFloor":0.6}']
+//   node tools/raid_completion_model.js measure [--n 20] [--decks 10,13,16,20] [--parts core] [--out FILE] [--set '{"weakenFloor":0.6}'] [--shield 50]
 //   node tools/raid_completion_model.js cycle [--in FILE[,FILE2]] [--cycles 200] [--players 30,50,100,150,200,250] [--scale 0|1]
 //     [--floor 30] [--standins 12] [--rate 0.35,0.85] [--bars 1000,10000,50000] [--target 0.5,0.2,0.01] [--target-elig 0.98,0.6,0.01] [--json]
 'use strict';
@@ -39,6 +39,8 @@ function measure(){
   // RB2 (owner 16:28: "make the raid very slightly harder"): --elders N tries another bossHpBonusMax (the elders' starting Health cap),
   // --stage-atk a,b another +Attack for the stages that have one (Enraged, Thrashing), in order
   if(arg('elders', null) != null) def.bossHpBonusMax = Number(arg('elders'));
+  // 2026-10-19 (package MX, owner 22:47: "Add a shield value of 50 to the Raid"): --shield N tries another raid Shield (RaidM.raidShield; 0 = off)
+  if(arg('shield', null) != null) def.shield = Number(arg('shield'));
   if(arg('stage-atk', null) != null){ const v = String(arg('stage-atk')).split(',').map(Number); let i = 0;
     (def.stages || []).forEach(s=> (s.rules || []).forEach(r=>{ if(r.bossAtk != null && i < v.length) r.bossAtk = v[i++]; })); }
   const castles = {}; def.parts.forEach(p=>{ castles[p.id] = (p.fight || {}).castleHp || 200; });
@@ -57,8 +59,8 @@ function measure(){
   const prev = fs.existsSync(out) ? JSON.parse(fs.readFileSync(out, 'utf8')) : null;
   const stageAtk = (def.stages || []).map(s=> (s.rules || []).reduce((t, r)=> t + (r.bossAtk || 0), 0));
   const same = prev && JSON.stringify(prev.meta.tuning) === JSON.stringify(def.tuning || {}) && JSON.stringify(prev.meta.castleHp || null) === JSON.stringify(castles)
-    && prev.meta.bossHpBonusMax === def.bossHpBonusMax && JSON.stringify(prev.meta.stageAtk || null) === JSON.stringify(stageAtk); // RB2: and the same brambles, elders and stages
-  const merged = {meta: {date: '2026-10-19', n: N, tuning: def.tuning || {}, scoring: def.scoring, bossHpBonusMax: def.bossHpBonusMax, castleHp: castles, stageAtk}, cells: Object.assign({}, same ? prev.cells : {}, cells)};
+    && prev.meta.bossHpBonusMax === def.bossHpBonusMax && JSON.stringify(prev.meta.stageAtk || null) === JSON.stringify(stageAtk) && (prev.meta.shield || 0) === RaidM.raidShieldMax(def); // RB2: and the same brambles, elders and stages (MX: and the same Shield; a file from before MX had none)
+  const merged = {meta: {date: '2026-10-19', n: N, tuning: def.tuning || {}, scoring: def.scoring, bossHpBonusMax: def.bossHpBonusMax, castleHp: castles, stageAtk, shield: RaidM.raidShieldMax(def)}, cells: Object.assign({}, same ? prev.cells : {}, cells)};
   fs.writeFileSync(out, JSON.stringify(merged));
   console.log('wrote', path.relative(ROOT, out), Object.keys(merged.cells).length, 'cells');
 }
