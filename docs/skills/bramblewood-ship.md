@@ -17,12 +17,13 @@ python3 assemble_arena.py && mv bramblewood-arena.html index.html
 ```
 Never edit `index.html` by hand; it is generated.
 
-## Test (all must pass before committing)
+## Test (2026-10-21: tiered; see `docs/workflows/release.md`)
 ```bash
-bash tests/run-all.sh                     # unit suites + card-data integrity
-for t in ui_smoke flows snaps; do python3 tests/e2e/$t.py | tail -2; done
+node tests/run.js --smoke              # first, about a minute
+node tests/run.js --only '<area>'      # the package's own tests
+node tests/run.js --full --e2e         # release only, once per batch
 ```
-Also run `hero.py` or `i18n.py` when touching those areas.
+Deploy (push) once per finished batch, not per change.
 
 ## Look at it
 - Serve over http, not file:// (fonts need it): `setsid nohup python3 -m http.server 8765 >/dev/null 2>&1 &` in the repo.

@@ -1,5 +1,7 @@
 # Bramblewood Arena — Master Doc
 
+> **RETIRED (last updated 2026-10-11).** Kept as history. Current status and backlog: [`action-items.md`](action-items.md). Owner calls: [`decisions.json`](decisions.json). Working rules and sources of truth: [`/CLAUDE.md`](../CLAUDE.md).
+
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
 > ➡️ **Waiting on you: 33 items.** They now live in the hub's **🗳️ Decisions** tab (search, filters, Yet / Done), generated from [`decisions.json`](decisions.json); [`decisions.md`](decisions.md) is the same list as text. The biggest: **S1** "apply it" for the admin player list, **S2** anti-cheat tier 1 ([`security-review-2026-10-08.md`](security-review-2026-10-08.md)), **B1** Open-mode difficulty tweaks ([`difficulty-open-mode-2026-10-08.md`](difficulty-open-mode-2026-10-08.md)), **A1–A3** the AI art pipeline ([`asset-pipeline-action-items.md`](asset-pipeline-action-items.md)), **F3** Enchant/Refine numbers, **G2** siding.

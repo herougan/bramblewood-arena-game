@@ -1,5 +1,19 @@
 # Action items
 
+## 10-21 owner notes: queued (run as batches after the workflow audit)
+
+| ID | Batch | Item |
+|---|---|---|
+| N21-1 | Content | Diegesis pass, starting with the beach: it should feel like a beach (about 30% is the art). Add a Starfish. |
+| N21-2 | Content + balance | Maps 0–5 enemies start very cute; Map 5 begins slightly more imposing creatures. The Shark is too strong for its current spot: move it later. |
+| N21-3 | UI | The view-type button (Album, Compressed, Full art) stays visible whatever the filter toggle shows. |
+| N21-4 | UI | Album is the default view. |
+| N21-5 | Engine | Diving "exposes" a flier: no 50% miss advantage while diving. Dive itself still needs a definition (BX: eligibility only; options in `docs/ramming-proposal-2026-10-21.md`). |
+| N21-6 | UI + engine | Shield bars: each shield rank fills in turn with ease-in-out; the next rank starts when the one below is half full. Smaller ranks fill faster and are slightly more transparent, with uneven transparency up to 12%. Applies to the raid and to monsters with shields. |
+| N21-7 | Engine + UI | Bonus HP and temp HP for monsters, each in its own bar colour. Example: Crepuscular gives +1 attack by day and +2 temp HP at night. |
+| N21-8 | UI | Skill codex: lay skills out more freely (left and right, not one column), and show which skills counter each skill. |
+| N21-9 | Workflow | Workflow audit: CLAUDE.md, docs/workflows/, tests/run.js, tools/merge/, tools/shot.py, docs/code-map.md (done 10-21, not pushed yet). |
+
 ## 10-19 morning: open calls (consolidated)
 
 Done overnight and this morning: road curve, theme pass (96 pool cards placed), card pass, level curves, skill-worth measured and applied (owner-set values kept), the 4 SQL files applied, raid hub / respawn / instances / tickets / rewards / battle rating, Units by theme picker. Full test run: green.
