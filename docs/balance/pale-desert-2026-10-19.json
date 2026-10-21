@@ -11,7 +11,7 @@
    "fresh": 1,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 6.6,
+   "avgRounds": 6.4,
    "sig": "[\"18-A-1\",\"skirmish\",{\"sandfish\":3,\"caustic-scorpion\":3,\"thorny-devil\":3,\"meerkat-sentry\":1,\"roadrunner-courier\":2,\"dune-jackal-scout\":1,\"sand-widow\":1,\"dust-hyena\":2},{\"field\":\"heatwave\",\"heatLevel\":1},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"dune-jackal-scout\",1,0,1,1,{\"armor\":1,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"meerkat-sentry\",1,1,1,2,{\"sociable\":[1,1],\"dry\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"sandfish\",1,1,1,2,{\"dry\":true,\"invisible\":2}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"thorny-devil\",1,2,1,1,{\"thorns\":2,\"dry\":true}]],18,3.54]"
   },
   {
@@ -23,7 +23,7 @@
    "fresh": 1,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 6.7,
+   "avgRounds": 6.4,
    "sig": "[\"18-A-2\",\"skirmish\",{\"dune-jackal\":3,\"dune-jackal-scout\":2,\"rabid-jackal\":2,\"sandfish\":1,\"fennec-fox\":2,\"moon-jerboa\":2,\"caustic-scorpion\":1,\"dust-hyena\":2,\"roadrunner-courier\":2},{\"field\":\"heatwave\",\"heatLevel\":1,\"mirage\":true},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"dune-jackal\",1,0,1,5,{\"quick\":true,\"dry\":true}],[\"dune-jackal-scout\",1,0,1,1,{\"armor\":1,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"fennec-fox\",1,1,1,1,{\"dry\":true,\"darksight\":true}],[\"moon-jerboa\",1,1,1,2,{\"fullMoon\":3}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"rabid-jackal\",0,0,1,1,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sandfish\",1,1,1,2,{\"dry\":true,\"invisible\":2}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null]],18,3.54]"
   },
   {
@@ -31,11 +31,11 @@
    "kind": "skirmish",
    "name": "Dust Devils",
    "target": 0.784,
-   "win": 0.9916666666666667,
+   "win": 1,
    "fresh": 1,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 6.5,
+   "avgRounds": 6.3,
    "sig": "[\"18-A-3\",\"skirmish\",{\"dust-devil-kestrel\":1,\"sandstorm-roc\":2,\"roadrunner-courier\":2,\"horned-lizard\":2,\"caustic-scorpion\":4,\"armadillo-guard\":2,\"sand-widow\":1,\"dust-hyena\":2},{\"field\":\"heatwave\",\"heatLevel\":1,\"sandstorm\":true},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"armadillo-guard\",1,0,2,4,{\"shield\":3}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-devil-kestrel\",1,2,4,6,{\"tornado\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"horned-lizard\",1,1,3,3,{\"blind\":{\"chance\":50,\"duration\":2}}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"sandstorm-roc\",2,2,2,5,{\"fork\":true,\"dry\":true}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null]],18,3.54]"
   },
   {
@@ -47,7 +47,7 @@
    "fresh": 1,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 6,
+   "avgRounds": 5.8,
    "sig": "[\"18-A-4\",\"skirmish\",{\"meerkat-burrower\":4,\"meerkat-sentry\":3,\"fennec-fox\":3,\"caustic-scorpion\":2,\"sand-widow\":2,\"dust-hyena\":2},{\"sandstorm\":true,\"field\":\"heatwave\",\"heatLevel\":1},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"fennec-fox\",1,1,1,1,{\"dry\":true,\"darksight\":true}],[\"meerkat-burrower\",1,1,1,1,{\"dry\":true,\"darksight\":true}],[\"meerkat-sentry\",1,1,1,2,{\"sociable\":[1,1],\"dry\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null]],18,3.54]"
   },
   {
@@ -55,12 +55,12 @@
    "kind": "skirmish",
    "name": "Vulture Road",
    "target": 0.69,
-   "win": 0.9333333333333333,
-   "fresh": 0.95,
+   "win": 0.9916666666666667,
+   "fresh": 0.9916666666666667,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 9.8,
-   "sig": "[\"18-A-5\",\"skirmish\",{\"stonedrop-vulture\":2,\"skull-vulture\":2,\"dust-hyena\":4,\"rabid-jackal\":1,\"caustic-scorpion\":2,\"sand-widow\":1,\"roadrunner-courier\":2,\"cinder-gecko\":2},{\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"cinder-gecko\",0,0,1,2,{\"evasive\":true,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"rabid-jackal\",0,0,1,1,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"skull-vulture\",1,1,1,2,{\"flying\":true,\"daunt\":1}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"stonedrop-vulture\",1,1,2,3,{\"flying\":true,\"skyfall\":3}],[\"thornvine-lasher\",0,1,3,6,null]],18,3.54]"
+   "avgRounds": 8.3,
+   "sig": "[\"18-A-5\",\"skirmish\",{\"stonedrop-vulture\":2,\"skull-vulture\":2,\"dust-hyena\":4,\"rabid-jackal\":1,\"caustic-scorpion\":2,\"sand-widow\":1,\"roadrunner-courier\":2,\"cinder-gecko\":2},{\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"cinder-gecko\",0,0,1,1,{\"evasive\":true,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"rabid-jackal\",0,0,1,1,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"skull-vulture\",1,1,1,2,{\"flying\":true,\"daunt\":1}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"stonedrop-vulture\",1,1,1,1,{\"flying\":true,\"archer\":3,\"archerStyle\":\"drop\"}],[\"thornvine-lasher\",0,1,3,6,null]],18,3.54]"
   },
   {
    "key": "18-A-6",
@@ -71,7 +71,7 @@
    "fresh": 1,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 7.6,
+   "avgRounds": 7.3,
    "sig": "[\"18-A-6\",\"skirmish\",{\"sandfish\":3,\"caustic-scorpion\":3,\"thorny-devil\":3,\"sand-widow\":1,\"rabid-jackal\":2,\"dust-hyena\":4,\"fennec-fox\":2},{\"field\":\"heatwave\",\"heatLevel\":2,\"mirage\":true},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"fennec-fox\",1,1,1,1,{\"dry\":true,\"darksight\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"rabid-jackal\",0,0,1,1,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"sandfish\",1,1,1,2,{\"dry\":true,\"invisible\":2}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"thorny-devil\",1,2,1,1,{\"thorns\":2,\"dry\":true}]],18,3.54]"
   },
   {
@@ -79,36 +79,36 @@
    "kind": "skirmish",
    "name": "Oryx Crossing",
    "target": 0.598,
-   "win": 0.8666666666666667,
-   "fresh": 0.8333333333333334,
+   "win": 0.925,
+   "fresh": 0.875,
    "shield": 10,
    "hp": 15,
-   "avgRounds": 11.2,
-   "sig": "[\"18-A-7\",\"skirmish\",{\"pale-oryx\":1,\"dromedary\":2,\"dune-jackal-scout\":1,\"meerkat-sentry\":2,\"caustic-scorpion\":1,\"dust-hyena\":4,\"quicksand-queen\":1,\"cinder-gecko\":2,\"trapdoor-spider\":2},{\"sandstorm\":true,\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"cinder-gecko\",0,0,1,2,{\"evasive\":true,\"dry\":true}],[\"dromedary\",1,2,1,9,{\"dry\":true,\"regen\":1}],[\"dune-jackal-scout\",1,0,1,1,{\"armor\":1,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"meerkat-sentry\",1,1,1,2,{\"sociable\":[1,1],\"dry\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"pale-oryx\",1,1,1,6,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,2,14,{\"trap\":6,\"tangle\":1}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"trapdoor-spider\",0,1,2,3,{\"poison\":1}]],18,3.54]"
+   "avgRounds": 10.1,
+   "sig": "[\"18-A-7\",\"skirmish\",{\"pale-oryx\":1,\"dromedary\":2,\"dune-jackal-scout\":1,\"meerkat-sentry\":2,\"caustic-scorpion\":1,\"dust-hyena\":4,\"quicksand-queen\":1,\"cinder-gecko\":2,\"trapdoor-spider\":2},{\"sandstorm\":true,\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"cinder-gecko\",0,0,1,1,{\"evasive\":true,\"dry\":true}],[\"dromedary\",1,2,1,9,{\"dry\":true,\"regen\":1}],[\"dune-jackal-scout\",1,0,1,1,{\"armor\":1,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"meerkat-sentry\",1,1,1,2,{\"sociable\":[1,1],\"dry\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"pale-oryx\",1,1,1,6,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,2,14,{\"trap\":6,\"tangle\":1}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"trapdoor-spider\",0,1,2,3,{\"poison\":1}]],18,3.54]"
   },
   {
    "key": "18-A-8",
    "kind": "elite",
    "name": "The Dry Well",
    "target": 0.554,
-   "win": 0.8666666666666667,
-   "fresh": 0.8583333333333333,
+   "win": 0.9,
+   "fresh": 0.8916666666666667,
    "shield": 15,
    "hp": 15,
-   "avgRounds": 11,
-   "sig": "[\"18-A-8\",\"elite\",{\"dust-hyena\":4,\"sand-widow\":2,\"pale-oryx\":2,\"dust-devil-kestrel\":1,\"fennec-fox\":2,\"cinder-gecko\":2,\"quicksand-queen\":3,\"trapdoor-spider\":1,\"roadrunner-courier\":2},{\"field\":\"heatwave\",\"heatLevel\":2,\"sandstorm\":true},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"cinder-gecko\",0,0,1,2,{\"evasive\":true,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-devil-kestrel\",1,2,4,6,{\"tornado\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"fennec-fox\",1,1,1,1,{\"dry\":true,\"darksight\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"pale-oryx\",1,1,1,6,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,2,14,{\"trap\":6,\"tangle\":1}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"trapdoor-spider\",0,1,2,3,{\"poison\":1}]],18,3.54]"
+   "avgRounds": 10.3,
+   "sig": "[\"18-A-8\",\"elite\",{\"dust-hyena\":4,\"sand-widow\":2,\"pale-oryx\":2,\"dust-devil-kestrel\":1,\"fennec-fox\":2,\"cinder-gecko\":2,\"quicksand-queen\":3,\"trapdoor-spider\":1,\"roadrunner-courier\":2},{\"field\":\"heatwave\",\"heatLevel\":2,\"sandstorm\":true},null,null,null,[[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"cinder-gecko\",0,0,1,1,{\"evasive\":true,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-devil-kestrel\",1,2,4,6,{\"tornado\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"fennec-fox\",1,1,1,1,{\"dry\":true,\"darksight\":true}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"pale-oryx\",1,1,1,6,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,2,14,{\"trap\":6,\"tangle\":1}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,2,7,{\"poison\":2,\"dry\":true}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"trapdoor-spider\",0,1,2,3,{\"poison\":1}]],18,3.54]"
   },
   {
    "key": "18-A-9",
    "kind": "boss",
    "name": "The Quicksand Queen",
    "target": 0.355,
-   "win": 0.7916666666666666,
-   "fresh": 0.9083333333333333,
+   "win": 0.8333333333333334,
+   "fresh": 0.9166666666666666,
    "shield": 29,
    "hp": 15,
-   "avgRounds": 12.5,
-   "sig": "[\"18-A-9\",\"boss\",{\"quicksand-queen\":1,\"antlion-pit\":3,\"caustic-scorpion\":2,\"pale-oryx\":1,\"sandfish\":2,\"cinder-gecko\":2,\"dust-hyena\":4,\"trapdoor-spider\":3,\"roadrunner-courier\":2},{\"mirage\":true,\"field\":\"heatwave\",\"heatLevel\":2},null,null,\"last-oasis\",[[\"antlion-pit\",1,1,2,6,{\"trap\":5}],[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"cinder-gecko\",0,0,1,2,{\"evasive\":true,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"pale-oryx\",1,1,1,6,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,2,14,{\"trap\":6,\"tangle\":1}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sandfish\",1,1,1,2,{\"dry\":true,\"invisible\":2}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"trapdoor-spider\",0,1,2,3,{\"poison\":1}]],18,3.54]"
+   "avgRounds": 11.3,
+   "sig": "[\"18-A-9\",\"boss\",{\"quicksand-queen\":1,\"antlion-pit\":3,\"caustic-scorpion\":2,\"pale-oryx\":1,\"sandfish\":2,\"cinder-gecko\":2,\"dust-hyena\":4,\"trapdoor-spider\":3,\"roadrunner-courier\":2},{\"mirage\":true,\"field\":\"heatwave\",\"heatLevel\":2},null,null,\"last-oasis\",[[\"antlion-pit\",1,1,2,6,{\"trap\":5}],[\"archerfish\",1,1,2,6,{\"acidBolt\":2}],[\"caustic-scorpion\",1,2,1,4,{\"poison\":2,\"thorns\":1}],[\"cinder-gecko\",0,0,1,1,{\"evasive\":true,\"dry\":true}],[\"dung-beetle\",0,0,1,5,{\"decay\":1}],[\"dust-hyena\",0,0,1,5,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"otter-centurion\",0,1,3,5,{\"boomerang\":true}],[\"pale-oryx\",1,1,1,6,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,2,14,{\"trap\":6,\"tangle\":1}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sandfish\",1,1,1,2,{\"dry\":true,\"invisible\":2}],[\"soldier-ant\",0,1,2,7,{\"swarm\":true,\"formation\":1}],[\"thornvine-lasher\",0,1,3,6,null],[\"trapdoor-spider\",0,1,2,3,{\"poison\":1}]],18,3.54]"
   }
  ]
 }

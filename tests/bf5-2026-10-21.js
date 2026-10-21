@@ -51,7 +51,7 @@ cards.filter(R.live).forEach(c=>{ const b = T.budget(c, {level: 1}); if(!(b.ok &
 ok(!bad.length, '4. every live card fits the halved budget at Level 1, or is a listed owner call: ' + bad.slice(0, 6).join('; '));
 const under = cards.filter(R.live).filter(c=>{ const b = T.budget(c, {level: 1}); return b.ok && b.x1 / b.N <= 0.6 && !ownerIds.has(c.id) && !P.prop.some(r=> r.id === c.id) && P.rows.some(r=> r.id === c.id && r.verdict === 'band'); });
 ok(!under.length, '4. the re-derived cards sit over 60% of N: ' + under.slice(0, 6).map(c=> c.id).join(', '));
-ok(P.owner === 17 && P.skillsFillN.length === 2, `4. the plan lists 17 owner calls, 2 of them skills that alone fill N (${P.owner}, ${P.skillsFillN})`);
+ok(P.owner === 16 && P.skillsFillN.length === 2, `4. the plan lists 16 owner calls (17 before main's obtain maps moved the Cinder Gecko into the band), 2 of them skills that alone fill N (${P.owner}, ${P.skillsFillN})`);
 ok(byId['cave-bat-swarm'].attack === 1 && byId['cave-bat-swarm'].health === 2, '4. the Cave Bat Swarm is 1/2 (owner 21:36)');
 ok(byId.terraumbra.attack === 1 && byId.terraumbra.health === 1, '4. Terraumbra (an equipment Easter egg, measured with its grant) is 1/1');
 

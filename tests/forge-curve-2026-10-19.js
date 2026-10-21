@@ -49,7 +49,9 @@ let mono = [], majors = [], budget = [], walls = [], game = [], checked = 0;
 for(const c of withStats){
   const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c)}), from, top), b0 = T.budget(c, {level: from}); checked++;
   // (BF5 10-21) each level's N is the curve's own (cv.rows[L].N: x the card's N multiplier)
-  const room1 = L=> cv.rows[L].N - (2 * (cv.rows[L].attack || 0) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(cv.rows[L].N / 3, 2) - ((cv.rows[L].attack || 0) * (cv.rows[L].health || 0) + b0.S) * cv.m;
+  // (BF5 10-21, merge of BX) an Archer never swings: its Attack is not part of its strength (tools/skill_costs.js budget)
+  const atk = L=> (c.effects && c.effects.archer && !(Number(c.effects.archer) < 0)) ? 0 : (cv.rows[L].attack || 0);
+  const room1 = L=> cv.rows[L].N - (2 * atk(L) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(cv.rows[L].N / 3, 2) - (atk(L) * (cv.rows[L].health || 0) + b0.S) * cv.m;
   for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
     if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
     if([4, 7, 10].includes(L) && !(r.points > 0)) majors.push(`${c.id} Lv ${L}`);
