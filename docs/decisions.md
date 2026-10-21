@@ -4,6 +4,34 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**AR-1. Standard PvP shares the PvP tickets and the rating** · Decide · Arena · asked 2026-10-21
+- Package AR split the Arena's PvP into two buttons. Standard PvP is the existing Standard format (every card at Level 1, no foils, a Standard deck built from any card) against the same strangers as Collection PvP, their decks also at Level 1. It uses the same 10 PvP tickets, moves the same rating and pays the same rewards. Your Standard deck is not recorded as a stranger, since it can hold cards you don't own.
+  - Keep it shared
+  - A separate rating for Standard
+  - Separate tickets for Standard
+- **Default:** Keep it shared
+
+**AR-2. The Undercroft: the Arena's Dungeon as a daily dungeon on Map 11** · Decide · Dungeons · asked 2026-10-21
+- The Arena's Dungeon (3 fights against random decks, losses carried over) is gone from the Arena; an unfinished run in an old save is no longer offered. In its place the Undercroft opens on Map 11 (the Arena's map) as a daily dungeon: each floor takes a Dungeon key, 50 floors, each harder (half a map further on per floor, +3 bramble Health), a mini-boss every 10th floor, a loss sends you back to floor 1. Every 3 floors the land changes: 15 maps' first elite deck and field rules, in order of their battle rating (Savanna 47 up to Wolfsbane Tundra 106); only floors 46-50 go round to the first. Like Murgle Mayhem, each floor's first clear gives 10 Gold Leaves (500 in all).
+  - Keep these defaults
+  - Different lands or order
+  - Fewer floors
+  - No Gold Leaves from the Undercroft
+- **Default:** Keep these defaults
+
+**AR-3. The group dungeon is a Coming soon slot** · Decide · Dungeons · asked 2026-10-21
+- You asked for group dungeons with live players, recorded in the Daily Dungeon section. There is no co-op dungeon in the game yet (only the D49 design, docs/coop-dungeon-design-2026-10-13.md), so the Daily Dungeons tab now ends with a Group Dungeon slot marked Coming soon. Building it means the netcode in that doc (the Ranked Live host, extended to 2-4 players).
+  - Build the co-op dungeon next
+  - Keep the slot for now
+  - Remove the slot
+- **Default:** Keep the slot for now
+
+**AR-4. The match log is this device's last 40 fights** · Decide · Profile · asked 2026-10-21
+- Recent opponents moved from the Arena to the Profile as a match log with PvP and PvE tabs (opponent, mode, result, date, the deck you faced, and from now on your deck's name). It is what this device records: the last 40 fights (was 20), not Ranked Live, which stays in the signed-in Match History below it. Syncing the log to the account would need a new column or table (SQL for your apply).
+  - Keep it on the device
+  - Sync it to the account
+- **Default:** Keep it on the device
+
 **TR-1. 24 cards fall to their 1/1 floor with their cut skill back** · Decide · Balance · asked 2026-10-21
 - HB2-1 gave 69 cards back the skill BF5 cut only because Flying, Tide, Diurnal or Nocturnal counted, and the formula re-fitted them (--only). 45 still fit. 24 have no room under cap 2 and drop to 1/1 (skills kept, flagged like B14): Eagle Diver 1/4, Alpha Howler 1/15, Orca Vanguard 1/21, Snow Owl Sentinel 2/7, Permafrost Mammoth 2/20, Moray Ambusher 2/12, Cave Bat Swarm 2/5, Blind Cave Fish 1/3, Sulfur Vent Crab 2/9, Tide Pool Crab 1/3, Open-Ocean Hermit Crab 1/6, Reef Manta Glider 1/7, Nightshade Moth 1/5, Elder Tortoise 1/15, Vigil Owl 2/9, Willow-o'-Wisp 1/12, Skull Vulture 3/3, Moon Jelly 2/8, Voltwing Bat 1/4, Static Bat 1/6, Sea Cucumber 2/11, Alligator Gar 2/14, Mangrove Manatee 2/17, Giant Clam 1/14 (all now 1/1). 7 more were 1/1 already. The free skills still cost S (Tide 2.79, a time of day about 2.5).
   - Keep: every skill back, 1/1 where the formula says so
@@ -348,6 +376,24 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Evolution next
   - Pause archetypes
 - **Default:** Ecclesia next (D23)
+
+**FOG1. Fog of War is information only: the CPU still sees your whole board** · Decide · Battle UI · asked 2026-10-21
+- Package FOG hides the far enemy columns from the player's view only. Combat, targeting and the CPU play exactly as before, and the enemy's view of your units is not fogged. Raids, Pass & Play and the Collapse rows are left out.
+  - Keep it as a view-only rule
+  - Also make the CPU unable to target units it cannot reach (an engine change)
+- **Default:** Keep it as a view-only rule
+
+**FOG2. Fog reach is the unit's column and the ones beside it; revealers add only permanence** · Decide · Battle UI · asked 2026-10-21
+- Reach follows your Parasite note (a live unit in the column or beside it; the centre is always open, as for placement). Illuminate has no radius, so Darksight, Keen Eye and Illuminate cover the same three columns, but what they cover stays revealed for the rest of the fight.
+  - Keep: same reach, revealers make it permanent
+  - Give revealers a wider reach (2 columns each side)
+- **Default:** Keep: same reach, revealers make it permanent
+
+**FOG3. Fog of War uses the Mist scene as its card art for now** · Decide · Battle UI · asked 2026-10-21
+- The Environment card borrows art/fields/misty.png. A new scene needs generating under the art workflow.
+  - Generate a Fog of War scene
+  - Keep the Mist scene
+- **Default:** Keep the Mist scene
 
 ## Decided
 
