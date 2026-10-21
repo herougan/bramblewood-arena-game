@@ -1675,6 +1675,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   is crashed into: it stops beside it and both take N (ev.crashUid, then a washCrash event; ev.cols 0 when it was right beside it).
   //   The board's edge (the outermost column any unit on either side stands in) stops it; with no fixed way, an edge right beside it
   //   turns it the other way instead (ev.bounced). A fixed way at the edge is blocked (ev.blocked). Nothing swaps any more.
+  //   2026-10-21 (package BX): the edge is one column further out now, the frontier (see ride below), so a unit standing at the
+  //   outermost column is pushed out into the frontier instead of being blocked.
   //   Packed (slotless) rows have no free columns: it crashes into its neighbour that way (no fixed way: the other way at the end of
   //   the row); alone, it bobs (ev.blocked, ev.bob, ev.touchUids).
   // The word "Awashed" is reserved for a future mechanic (the user, 2026-10-18), so the internal keys (rules.awash, ev.awash, the
@@ -1698,7 +1700,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       syncSlots(players[1]); syncSlots(players[2]);
       const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? (tRow ? rowsUnitsOf(players[pid]) : allBoardCards(players[pid])).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
       const s0 = t.slot, occ = new Map((tRow ? Object.values(rowMap).filter(c=> c && !c.gap) /* a body not yet swept still holds its slot */ : allBoardCards(pl).filter(live)).filter(c=> c !== t).map(c=> [c.slot, c]));
-      const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
+      // 2026-10-21 (package BX, owner: "the enemy pushed my units to the left. It failed as there were no more units in that direction,
+      // it was the 'frontier'. This shouldn't be the case, the unit should be pushed by Wave 1."): the board's edge no longer stops a
+      // push; the frontier, the one column just past the outermost unit (the slot a card could be played into beside it), is open, so a
+      // unit at the edge rides out into it. It goes no further than that one column (frontier = edge + 1).
+      const frontier = edge + 1;
+      const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > frontier) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
       const first = dir || washDir(s0, 0); let way = first, r = ride(way);
       if(!dir && r.to === s0 && !r.hit){ way = -first; r = ride(way); if(r.to !== s0 || r.hit) ev.bounced = true; else way = first; }
       ev.dir = way < 0 ? 'left' : 'right';
@@ -1882,7 +1889,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
   // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
-  function castleSwingAmt(att, base){ let n = Math.max(0, base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
+  // 2026-10-21 (package BX, owner: "Swarm: Doesn't seem to be doing the bonus damage to the bramble. It should do so."): a castle
+  // swing left out Swarm (and its mirror, Defiance), which a hit on a unit gets in damageCard; both count at the bramble now.
+  function castleSwingAmt(att, base){ let n = Math.max(0, base + swarmBonus(att) + defianceBonus(att) + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
   // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
   // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
   // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
