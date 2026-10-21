@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package FX-WAR: smoke and war effects in the Effects Lab, with "in game" badges)
+- **Owner:** "add smoke effects if we haven't yet, and others related to war, that we can pick and choose and use. Flag the effect used if it's already used in game, so we know in the future."
+- **Audit:** the game already had smoke (Smoke Bomb, evade in smoke and fog, the poison gas cloud, the stampede dust) and war looks (Dynamite, Fireball, fire arrow, Volley rain, Siege ram, Ballista, Rocket, Rally, Shockwave, Scorch, crater, burning ground, the blown-up death, Friction and crit sparks). Three are built but nothing calls them: Rally standard, Wildfire front and Fog banks.
+- **16 new effects** in `bramblewood-fx-war.js` (`window.WarFX`): Puff, Smoke bomb burst, Smoke screen, Drifting battlefield smoke, Smoke column, Battle dust, Cannon blast, Catapult lob, Explosion, Flaming arrow volley, Burning ground, Sword clash, War horn, Siege ram slam, Caltrops, Signal flare. Bubbly and cute, no blood; transform and opacity only (no CSS filter, no blend layer); still glyph in reduced motion.
+- **Not wired:** nothing in the game calls `WarFX`, `arena_app.js` and `assemble_arena.py` are unchanged. They are Lab only until you pick some.
+- **Effects Lab:** a new **Smoke & war** tab with a sticky stage, filters (smoke and dust, war, lab only, in game) and variants per effect, plus the 23 existing looks to compare. Every card shows **In game: <where>** (green) or **Lab only (not used yet)** (brown). The Catalogue tab's rows got the same badge, and an "In game or not" filter with a count.
+- **Docs:** `docs/effects-catalogue.md`, "Smoke and war (2026-10-21)": the audit and the new list, each with an in-game column. Screenshots in `docs/screens/fxwar/`.
+
 ## 2026-10-19 (package U4: visible toggle states, a Forge shortcut, the deck popup's Advancement sort)
 - **Owner (23:20):** "The show unseen and all by ID, -> should show a tick or not if enabled or not - can't tell."
   - **Cause:** the Codex toolbar's text-field rule (`.codex-toolbar input`) stretched those checkboxes into empty 160 px pills, so on and off looked the same.
