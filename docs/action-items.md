@@ -12,6 +12,9 @@
 | N21-6 | UI + engine | Shield bars: each shield rank fills in turn with ease-in-out; the next rank starts when the one below is half full. Smaller ranks fill faster and are slightly more transparent, with uneven transparency up to 12%. Applies to the raid and to monsters with shields. |
 | N21-7 | Engine + UI | Bonus HP and temp HP for monsters, each in its own bar colour. Example: Crepuscular gives +1 attack by day and +2 temp HP at night. |
 | N21-8 | UI | Skill codex: lay skills out more freely (left and right, not one column), and show which skills counter each skill. |
+| T21-1 | UI (owner call) | Phone raid VS screen (390×844): the sticky Start button covers the bottom of the boss art since MX's Shield line. Options: tighten the VS layout, or move the Shield line (tests/nv-2026-10-19.js B2 fails until then). |
+| T21-2 | Balance (BF5) | Pale Desert 18-A-5 wins 80% (band 61–77%) since BX made the Stonedrop Vulture an Archer 3. Trench core and guild-skills baselines drifted (43% overwhelmed). |
+| T21-3 | Docs | decisions.json's 10-18 rule still places the Pall Wraith in the Eye of the Volcano; RP moved it to 20-5. Confirm RP's move. |
 | N21-9 | Workflow | Workflow audit: CLAUDE.md, docs/workflows/, tests/run.js, tools/merge/, tools/shot.py, docs/code-map.md (done 10-21, not pushed yet). |
 
 ## 10-19 morning: open calls (consolidated)
