@@ -19,3 +19,15 @@ A young hummingbird recruit hovering proudly, her feathers plain soft dove-grey 
 ```
 
 Names offered: **Greyplume Fledgling** (used), Unpainted Wingling, Dawngrey Squire.
+
+## Package HB2 (the Swordbill Challenger)
+
+#### Swordbill Challenger (`swordbill-challenger`), placeholder 🐦
+
+The owner (2026-10-21): "A new cool hummingbird character with a needle rapier in its mouth and a shielded rapier on one of its feet. It welcomes fights." It is the sword-billed hummingbird (Ensifera ensifera), the real species whose bill is longer than its whole body, drawn as a courteous duelist: the "needle rapier in its mouth" is the extremely long bill itself, and the "shielded rapier on one foot" is a tiny fencing foil with a round guard, held in a foot. It hovers face-on, ready, a little proud. One bright accent: the violet throat. Wording notes: "rapier", "sword" and "blade" are left out of the prompt (weapon words); the owner's "fencing foil with a round guard" is used for the foot item. If NightCafe's filter still rejects "foil", swap it for "a tiny ornate fencing pin with a round guard".
+
+```
+A proud hummingbird duelist hovering face-on with wings blurred, an extremely long needle-like bill longer than its whole body pointing straight ahead, glossy dark emerald and bronze feathers with a bright violet throat patch, one foot holding a tiny ornate fencing foil with a round polished guard, a small gold sash across its chest, a sunlit cloud-forest in the background with orchids, bromeliads and red trumpet flowers, soft mist and warm golden light between mossy branches, detailed pixel art, full background
+```
+
+Names offered: **Swordbill Challenger** (used: the Hummingbird "Duelist" naming, "Challenger" for Taunt), Ensifer, the Swordbill (a titled name; no card name carries a comma, so not used), Mosswing Swordbill.

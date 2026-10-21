@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package HB2: the Swordbill Challenger)
+- **Owner (Oct 21):** "A new cool hummingbird character with a needle rapier in its mouth and a shielded rapier on one of its feet. It welcomes fights."
+- **New card: Swordbill Challenger** (`swordbill-challenger`, #9086), a Very Rare Hummingbird faction reward (source tribes, tier 11; the track opens Very Rare after 50 received and Map 25). The real sword-billed hummingbird, whose bill is longer than its body, as a courteous duelist. **3/5, Wait 1; Flying, Taunt (it welcomes fights), Counterattack (the guarded foot-fencer answers each hit).** By formula: N 18.41 (Very Rare, Wait 1, Map 5), S 1 (Counterattack 1, Taunt 0, Flying 0 but x1.5 half-miss), 2A+H+S x1.5 = 18 (98% of N), A·H+S·|S| x1.5 = 24 of (N/3)² 37.66. Other names offered: Ensifer, the Swordbill; Mosswing Swordbill.
+- **Three skills** are a thematic exception to the two-skill rule: the card is named in a `THEMATIC` set in `tests/bf5-2026-10-21.js` and `tools/two_skills_2026_10_21.js`. Owner call HB2-1 in `docs/decisions.json`.
+- **No art yet** (the emoji placeholder shows); NightCafe prompt in `docs/art/new-cards-2026-10-21-briefs.md`. Name and flavour translated into the 12 packs (`tools/i18n_2026_10_21_hb2.py`). `canonical/animal-tags.json` and `canonical/card-obtain-maps.json` regenerated; `canonical/unit-themes.json` was already stale before this package and is left for the merge tool.
+- Per the owner ("no test runs"), only JSON validation, `node --check` and the build were run.
+
 ## 2026-10-21 (package MT: Twin priced 20, the new Mimic skill, B14 / B15 answered, the standard skill test)
 - **Owner (B15, 16:33):** "creating a copy of a random ally card — probably 20+. Becoming a copy of a random ally card probably 5+. I think for mirrorhide mutant, they should copy the skills of the card, but their stats = the highest stat of both cards. E.g. 2/3 copying a 4/2 => 4/3."
 - **Mimic (new, Mirrorhide Mutant's in place of Twin):** when it enters play it becomes a copy of a random ally unit on your field (the fight's seeded RNG; never itself; no ally: nothing). It takes the ally card's skills and the higher of each printed stat (Attack, Health and max Health), keeps its own name, art and rarity, and shows "Copying <name>" on its card view and a log line. The copied arrival skills (Pounce, Twin, Rally ...) then fire. Engine: `mimicOnArrive` / `mimicDefOf` (a derived card, as Twin builds its own). The look is Twin's mirror sheen, reused. Texts in the 12 packs (`tools/i18n_2026_10_21_mt.py`).

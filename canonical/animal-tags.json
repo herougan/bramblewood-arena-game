@@ -65,9 +65,9 @@
   }
  ],
  "counts": {
-  "cards": 834,
-  "creatures": 737,
-  "tagged": 739,
+  "cards": 835,
+  "creatures": 738,
+  "tagged": 740,
   "animals": 351,
   "groups": 142,
   "withSubtype": 102,
@@ -96,11 +96,11 @@
    "icon": 30,
    "name": 538,
    "proposed": 31,
-   "type": 55
+   "type": 56
   },
   "topGroups": {
    "otter": 28,
-   "hummingbird": 26,
+   "hummingbird": 27,
    "fish": 24,
    "beetle": 19,
    "fox": 17,
@@ -8886,6 +8886,16 @@
   {
    "id": "greyplume-fledgling",
    "name": "Greyplume Fledgling",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "swordbill-challenger",
+   "name": "Swordbill Challenger",
    "icon": "🐦",
    "creature": true,
    "animal": "hummingbird",

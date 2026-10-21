@@ -20,7 +20,8 @@ const PARAM_OF = {crepuscularHp: 'crepuscular', diurnalHp: 'diurnal', diurnalGra
 const PARAMS = B.PARAMS.concat(['arrowCount', 'hunterVs']);
 const SPECIAL = new Set(['epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']);
 const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'));
-const special = c=> SPECIAL.has(c.rarity) || isEgg(c) || c.token || !!(c.effects && c.effects.supreme) || !!c.hidden;
+const THEMATIC = new Set(['swordbill-challenger']); // 2026-10-21 (HB2): a named thematic exception (Flying, Taunt, Counterattack; decision HB2-1)
+const special = c=> SPECIAL.has(c.rarity) || isEgg(c) || c.token || !!(c.effects && c.effects.supreme) || !!c.hidden || THEMATIC.has(c.id);
 const TOD = ['nocturnal', 'diurnal', 'crepuscular'];
 // the two kept, where the order above still leaves three (from the card's name and flavour)
 const KEEP = {
