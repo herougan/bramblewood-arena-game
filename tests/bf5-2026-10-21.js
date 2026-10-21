@@ -11,9 +11,9 @@ const table = JSON.parse(read('canonical/skill-costs.json')), cards = JSON.parse
 const src = read('arena_app.js');
 
 // 1. N halved, one constant; S unchanged; Bounty 1
-ok(BB.DEFAULTS.scale === 0.5 && table.budget.scale === 0.5, '1. N x 0.5: bramblewood-budget.js DEFAULTS.scale and the skill-costs budget line');
-ok(Math.abs(BB.nAt(20, 1) - 0.5 * (20.1) * (1 + 1 / 30)) < 0.011, `1. nAt(20, 1) is half of v5 (${BB.nAt(20, 1)})`);
-ok(Math.abs(BB.nAt(20, 0) - 0.5 * 19) < 0.011, '1. Level 0 is 0.5 x (Base - 1)');
+ok(BB.DEFAULTS.scale === 1 && table.budget.scale === 1 && BB.DEFAULTS.base === 10 && table.budget.base === 10, '1. BF6 (owner 15:09): the coefficients halved instead of N x 0.5 (scale 1, base 10) in bramblewood-budget.js DEFAULTS and the skill-costs budget line');
+ok(Math.abs(BB.nAt(11, 1) - (11 + 1 / 15) * (1 + 1 / 30)) < 0.011, `1. BF6: nAt(11, 1) = (Base + 1/15)(1 + 1/30) (${BB.nAt(11, 1)})`);
+ok(Math.abs(BB.nAt(11, 0) - 10) < 0.011, '1. BF6: Level 0 is Base - 1');
 const bounty = [].concat(table.skills || [], table.triggers || []).find(s=> s.id === 'bounty');
 ok(bounty && bounty.value === 1, `1. Bounty 1 a point (owner 21:36: "Let bounty N = N * 2"; got ${bounty && bounty.value})`);
 
@@ -58,7 +58,7 @@ ok(byId.terraumbra.attack === 1 && byId.terraumbra.health === 1, '4. Terraumbra 
 // 5. the brambles halved when a fight is built; the stored numbers stay full-size
 ok(/const BRAMBLE_SCALE = 0\.5;/.test(src) && /function brambleHp\(v\)/.test(src), '5. BRAMBLE_SCALE 0.5 and brambleHp');
 const raids = JSON.parse(read('canonical/raids.json')), g = raids.find(r=> r.id === 'goliath') || raids[0];
-ok(g.bossHpBonusMax === 55 && g.shield === 50 && g.parts.some(p=> p.fight && p.fight.castleHp === 350), '5. raids.json keeps 350 / 55 / Shield 50 (full-size)');
+ok(g.bossHpBonusMax === 55 && g.shield === 50 && g.parts.some(p=> p.fight && p.fight.castleHp === 410), '5. raids.json keeps 410 (B12, BF6) / 55 / Shield 50 (full-size)');
 ok(/function raidDefScaled\(def\)[\s\S]{0,600}shield: sh\(/.test(src), '5. raidDefScaled halves the raid bramble\'s Shield too (MX, merged in BF5)');
 ok((src.match(/RaidM\.raidShield\(raidDefScaled\(def\), st, (partId|ps\.id)\)/g) || []).length === 3, '5. every raid Shield the game builds or shows goes through raidDefScaled');
 

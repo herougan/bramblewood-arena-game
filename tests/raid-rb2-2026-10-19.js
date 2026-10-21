@@ -14,11 +14,11 @@ let pass = 0, fail = 0; const ok = (c, m)=>{ if(c) pass++; else { fail++; consol
 const part = id=> goliath.parts.find(p=> p.id === id);
 
 // ---- the brambles and the elders
-ok(['left', 'right', 'tail'].every(id=> part(id).fight.castleHp === 350), 'the arms and the tail: a 350 bramble a fight (was 420)');
+ok(['left', 'right', 'tail'].every(id=> part(id).fight.castleHp === 410), 'the arms and the tail: a 410 bramble a fight (B12, BF6 2026-10-21; was 350, RB2 420)');
 ok(part('core').fight.castleHp === 200, 'the Core keeps its 200 behind its stumps');
 ok(goliath.bossHpBonusMax === 55, 'the elders start at up to 55 Health (was 50): the raid a touch harder');
 { const st = R.raidState(goliath, [], 0, {cycle: 0}), f = R.fightFor(goliath, st, 'left', {});
-  ok(f.castleHp === 350, `fightFor hands the fight the part's 350 (${f.castleHp})`);
+  ok(f.castleHp === 410, `fightFor hands the fight the part's 410 (${f.castleHp})`);
   const A = require(path.join(ROOT, 'tools', 'raid_full_sim.js')).A;
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false});
   // 2026-10-21 (BF5): the fight is built at BRAMBLE_SCALE 0.5 (raids.json keeps the full 350 / 55)

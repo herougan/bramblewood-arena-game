@@ -38,7 +38,7 @@
     ['levelDiv', 'Level ÷ (growth)', '… × (1 + L ÷ this)', 1],
     ['zeroPenalty', 'Level 0 penalty', 'N at Level 0 = Base − this', 0.5],
     ['missMult', 'Half-miss ×', 'both scores × this per Evasive, Swift, Flying, Shadow, Blind', 0.05],
-    ['bandLow', 'Band: well under at', 'a card is well under when 2A+H+S ≤ this × N; over when 2A+H+S > N or A·H+S > (N/3)²', 0.05]];
+    ['bandLow', 'Band: well under at', 'a card is well under when 2A+H+S ≤ this × N; over when 2A+H+S > N or A·H+S·|S| > (N/3)² (BF6, owner 15:15)', 0.05]];
   const FALLBACK = {perMap: 0, bandLow: 0.6};
   const SEEDB = {}; CONST.forEach(([k])=> SEEDB[k] = FILEB[k] != null ? +FILEB[k] : DEF[k] != null ? +DEF[k] : FALLBACK[k]);
   const NOTFILE = k=> FILEB[k] == null && DEF[k] == null; // shown, but neither file has it yet
@@ -67,7 +67,7 @@
   const levelFor = c=> st.level === 'start' ? SC.levelOf(c) : 1;
   function statusOf(x1, x2, N, cfg){ const N2 = r2((N / 3) * (N / 3)); if(x1 > N + EPS || x2 > N2 + EPS) return 'over'; if(x1 <= (+cfg.bandLow) * N + EPS) return 'under'; return 'in'; }
   function evalCard(c, cfg, s){ const A = +s.attack || 0, H = +s.health || 0, sc = sOf(c, A), m = Math.pow(+cfg.missMult, c.halves), L = levelFor(c);
-    const base = baseOf(c, cfg, c.mapN), N = BB.nAt(base, L, cfg), N2 = r2((N / 3) * (N / 3)), x1 = r2((2 * A + H + sc.S) * m), x2 = r2((A * H + sc.S) * m);
+    const base = baseOf(c, cfg, c.mapN), N = BB.nAt(base, L, cfg), N2 = r2((N / 3) * (N / 3)), x1 = r2((2 * A + H + sc.S) * m), x2 = r2((A * H + sc.S * Math.abs(sc.S)) * m) /* 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A·H + S·|S| */;
     return {base, L, N, N2, S: sc.S, parts: sc.parts, missing: sc.missing, m, x1, x2, status: statusOf(x1, x2, N, cfg), share: x1 / N}; }
   let FILE = {}, NOW = {};
   function recomputeFile(){ const cfg = cfgOf(null); FILE = {}; cards.forEach(c=> FILE[c.id] = evalCard(c, cfg, c)); }
@@ -82,7 +82,7 @@
   const mStats = r=>{ const e = mEd[r.key], s = r.st || {}; return {attack: e && e.attack != null ? e.attack : s.attack, health: e && e.health != null ? e.health : s.health}; };
   function evalMon(r, cfg, s){
     const A = +s.attack || 0, H = +s.health || 0, m = Math.pow(+cfg.missMult, r.halves), S = +r.S || 0, d = {rarity: r.st.rarity, wait: r.st.wait || 0, cost: r.st.cost || 0, effects: {}};
-    const x1 = r2((2 * A + H + S) * m), x2 = r2((A * H + S) * m), need = r2(Math.max(x1, 3 * Math.sqrt(Math.max(0, x2))));
+    const x1 = r2((2 * A + H + S) * m), x2 = r2((A * H + S * Math.abs(S)) * m) /* BF6: cap 2 A·H + S·|S| */, need = r2(Math.max(x1, 3 * Math.sqrt(Math.max(0, x2))));
     const nAt = (dd, L)=> BB.nAt(baseOf(dd, cfg, r.map), L, cfg), holds = N=> x1 <= N + EPS && x2 <= (N / 3) * (N / 3) + EPS;
     const N = nAt(d, r.lv); let eq = null;
     for(let k = Math.min(LEG, BB.rankOf(d.rarity)); k <= LEG && !eq; k++){ const dd = Object.assign({}, d, {rarity: BB.LADDER[k]}); for(let L = 1; L <= 11; L++) if(holds(nAt(dd, L))){ eq = {rarity: BB.LADDER[k], level: L, past: false}; break; } }
@@ -150,7 +150,7 @@
     if(build.done) return; build.done = true;
     const host = $('hbHost'); if(!host) return;
     recomputeFile(); recompute(); recomputeMons();
-    host.innerHTML = `<div class="dec-head"><h2>Budget &amp; stats</h2><p>The stat budget's numbers, every live card's Attack and Health, and the special monsters, all editable. Every change recomputes here at once: each card's Base, N, score (2A+H+S), A·H+S and whether it is <b>over</b>, <b>in band</b> or <b>well under</b>. Edits save to this hub; Claude applies them to the files (bramblewood-budget.js, canonical/skill-costs.json, canonical/cards.json, the raid files). The files are not changed until then.</p>
+    host.innerHTML = `<div class="dec-head"><h2>Budget &amp; stats</h2><p>The stat budget's numbers, every live card's Attack and Health, and the special monsters, all editable. Every change recomputes here at once: each card's Base, N, score (2A+H+S), A·H+S·|S| and whether it is <b>over</b>, <b>in band</b> or <b>well under</b>. Edits save to this hub; Claude applies them to the files (bramblewood-budget.js, canonical/skill-costs.json, canonical/cards.json, the raid files). The files are not changed until then.</p>
       <p class="hb-xlink">Skill costs (S of every skill, trigger and action, the measured S and its confidence, the Combos view): <a href="#costs" data-tab="costs">🧮 Skill costs tab →</a> · Win rates: <a href="#balance" data-tab="balance">⚖️ Balance →</a></p></div>
       <div class="sc-status" id="hbStatus" role="status"></div>
       <nav class="dec-seg hb-views" role="group" aria-label="View" id="hbViews">${[['budget', '📐 Budget'], ['cards', '🎴 Cards'], ['monsters', '👹 Monsters']].map(([v, l])=> `<button type="button" data-view="${v}" aria-pressed="${v === st.view}">${l} <b id="hbVn-${v}"></b></button>`).join('')}<button type="button" data-hbgo="costs">🧮 Skills ↗</button></nav>
@@ -270,7 +270,7 @@
         <select id="hbLv" aria-label="Level for N">${opt([['1', 'N at Level 1'], ['start', 'N at each card\'s start level']], st.level)}</select></div>
       <div class="sc-bar"><div class="dec-seg" role="group" aria-label="Show" id="hbSv"></div></div>
       <p class="note" id="hbCsum"></p>
-      <div class="bal-wrap hb-wrap"><table class="bal-t sc-t hb-ct"><thead><tr>${[['name', 'Card'], ['rarity', 'Rarity'], ['wait', 'W'], ['cost', '🪵'], ['map', 'Map'], ['attack', 'A'], ['health', 'H'], ['skills', 'Skills (S each)'], ['S', 'S'], ['base', 'Base'], ['N', 'N'], ['x1', '2A+H+S'], ['x2', 'A·H+S vs (N/3)²'], ['status', 'Band']].map(([k, l])=> `<th data-k="${k}">${l}</th>`).join('')}</tr></thead><tbody id="hbCbody"></tbody></table></div>
+      <div class="bal-wrap hb-wrap"><table class="bal-t sc-t hb-ct"><thead><tr>${[['name', 'Card'], ['rarity', 'Rarity'], ['wait', 'W'], ['cost', '🪵'], ['map', 'Map'], ['attack', 'A'], ['health', 'H'], ['skills', 'Skills (S each)'], ['S', 'S'], ['base', 'Base'], ['N', 'N'], ['x1', '2A+H+S'], ['x2', 'A·H+S·|S| vs (N/3)²'], ['status', 'Band']].map(([k, l])=> `<th data-k="${k}">${l}</th>`).join('')}</tr></thead><tbody id="hbCbody"></tbody></table></div>
       <p class="note sc-foot" id="hbCfoot"></p>`;
     renderCardBody();
   }
@@ -333,7 +333,7 @@
     $('hbBody').innerHTML = mons.length ? `<p class="note">The special monsters from canonical/special-monsters.json (package RJ, ${esc(HB_DATA.monstersGenerated || '')}): raid parts' brambles, the raid's elders, row-deck copies, Commons and guards, the async raid bosses, the Conquest bosses' signature units and the Tower specials. Score, N and the equivalent card recompute here with your stat and budget edits; BR as boss is RJ's number. Edits to a bramble or an async boss go to its file (raids.json castleHp, raid-bosses.json hqHp); the rest are computed from card stats, so they become an override list for Claude.</p>
       <div class="sc-bar"><input type="search" id="hbMq" value="${esc(st.mq)}" placeholder="Monster, id, where…" aria-label="Search monsters"><select id="hbMg" aria-label="Group"><option value="*">All groups (${mons.length})</option>${groups.map(([g, t])=> `<option value="${esc(g)}"${st.mg === g ? ' selected' : ''}>${esc(t)} (${n[g]})</option>`).join('')}</select></div>
       <div class="sc-bar"><div class="dec-seg" role="group" aria-label="Show" id="hbMsv"></div></div><p class="note" id="hbMsum"></p>
-      <div class="bal-wrap hb-wrap"><table class="bal-t sc-t hb-mt"><thead><tr>${[['name', 'Monster'], ['g', 'Group'], ['lv', 'Lv'], ['rar', 'Rarity · W · 🪵'], ['attack', 'A'], ['health', 'H'], ['sk', 'Skills'], ['S', 'S'], ['x1', 'Score 2A+H+S'], ['x2', 'A·H+S'], ['need', 'N needed'], ['N', 'N at its Lv'], ['over', 'Band'], ['eq', 'Equivalent card'], ['brP', 'BR as player'], ['brB', 'BR as boss'], ['src', 'Stats live in']].map(([k, l])=> `<th data-k="${k}">${l}</th>`).join('')}</tr></thead><tbody id="hbMbody"></tbody></table></div>
+      <div class="bal-wrap hb-wrap"><table class="bal-t sc-t hb-mt"><thead><tr>${[['name', 'Monster'], ['g', 'Group'], ['lv', 'Lv'], ['rar', 'Rarity · W · 🪵'], ['attack', 'A'], ['health', 'H'], ['sk', 'Skills'], ['S', 'S'], ['x1', 'Score 2A+H+S'], ['x2', 'A·H+S·|S|'], ['need', 'N needed'], ['N', 'N at its Lv'], ['over', 'Band'], ['eq', 'Equivalent card'], ['brP', 'BR as player'], ['brB', 'BR as boss'], ['src', 'Stats live in']].map(([k, l])=> `<th data-k="${k}">${l}</th>`).join('')}</tr></thead><tbody id="hbMbody"></tbody></table></div>
       <p class="note sc-foot" id="hbMfoot"></p>` : '<p class="dec-empty">Run node tools/special_monsters.js, then rebuild the hub.</p>';
     renderMonBody();
   }
@@ -375,7 +375,7 @@
     const list = monFilter().sort((a, b)=>{ const x = monVal(a, st.mkey), y = monVal(b, st.mkey); return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y))) * st.mdir || a.name.localeCompare(b.name); });
     document.querySelectorAll('.hb-mt th').forEach(th=> th.dataset.k === st.mkey ? th.setAttribute('aria-sort', st.mdir > 0 ? 'ascending' : 'descending') : th.removeAttribute('aria-sort'));
     $('hbMbody').innerHTML = list.map(monRow).join('') || '<tr><td colspan="17" class="dec-empty">Nothing matches.</td></tr>';
-    $('hbMfoot').textContent = `${list.length} row${list.length === 1 ? '' : 's'}. N needed = max(2A+H+S, 3·√(A·H+S)); in band when both rules hold at the level it fights at. Equivalent card: the lowest rarity from its own, then the lowest level up to 11, whose N holds it (its own Wait and Lumber); past Level 11 it is a Legendary on the N line. BR as player = the rarity's weight × (1 + 0.31 × (Level − 1)). Tap a name for RJ's reasoning, a note and Reset to file.`;
+    $('hbMfoot').textContent = `${list.length} row${list.length === 1 ? '' : 's'}. N needed = max(2A+H+S, 3·√(A·H+S·|S|)); in band when both rules hold at the level it fights at. Equivalent card: the lowest rarity from its own, then the lowest level up to 11, whose N holds it (its own Wait and Lumber); past Level 11 it is a Legendary on the N line. BR as player = the rarity's weight × (1 + 0.31 × (Level − 1)). Tap a name for RJ's reasoning, a note and Reset to file.`;
   }
 
   hub.onShow.budget = build;

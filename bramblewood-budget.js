@@ -12,8 +12,13 @@
 //   he offered at 13:54), levelDiv 30;
 //   N(0) = Base − zeroPenalty (1)
 //   v4 (09:52) was (Base − 1 + L) × (1 + L/20), v3 Base + 2L. At Level 1 v5 (L/10) is Base × 31/30 + 0.10 (Base 21: 21.80; v3 23, v4 22.05).
-//   The rules: 2A+H+S ≤ N and A·H+S ≤ (N/3)² (inclusive since 16:22, "it's fine to be = to budget"), both ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind: about half
+//   The rules: 2A+H+S ≤ N and A·H+S·|S| ≤ (N/3)² (inclusive since 16:22, "it's fine to be = to budget"), both ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind: about half
 //   the attacks at the card miss, so its stats count half again).
+//   Cap 2 (2026-10-21, package BF6; owner 15:15: "for the cap-2, it should be AxH+SxS instead, so A and H are penalised for being too
+//   equal, and S is penalised at more equal weight to A and H"; was A·H+S): productScore(A, H, S) = A·H + S·|S|, S·|S| rather than S² so
+//   a negative skill (Injured, Fragile, passive Vulnerable) still frees room instead of costing it. Every cap-2 check calls productScore.
+//   N (BF6, owner 15:09): Base = 10 + Rarity + 3×Wait + 0.25×Wait² + 2×Lumber + 0.2×Lumber² + 0.5×Ritual + 0.1×Map, N(L) = (Base + L/15)
+//   × (1 + L/30), N(0) = Base − 1 (the numbers in DEFAULTS below).
 //
 // The Forge curve (owner 09:52: "change majors to 4, 7, 10, minor to 2. Then divvy out strength updates at all levels. If there is no
 // space for minor, then all are minor OR potentially still 0, then majors expect SOME improvement."):
@@ -30,13 +35,20 @@
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.BramblewoodBudget = factory(); })(typeof self !== 'undefined' ? self : this, function(){
 'use strict';
 // canonical/skill-costs.json "budget" holds the same numbers (tests/forge-curve-2026-10-19.js checks they agree)
-const DEFAULTS = {base:20, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, perMap:0.2, levelLinDiv:10, levelDiv:30, zeroPenalty:1, missMult:1.5, scale:0.5, plainBonus:1.05, lightBonus:1.02, fragileMult:0.75};
+// 2026-10-21 (package BF6; owner 15:09, correcting BF5's scale 0.5 on the whole N: "The N is the half N that we discussed though! meaning all
+// coefficients in calculating our caps are halved. So Base=10+Rarity*1+3*Wait... (I kept rarity at *1 not *0.5) and N=(Base + Level/15)x
+// (1+Level/30). Base at lvl 0 is still Base(0) - 1."): every Base coefficient halved except Rarity's (base 10, perWait 3, perWait2 0.25,
+// perLumber 2, perLumber2 0.2, perRitual 0.5, perMap 0.1), the Level term L/15, Level 0 Base − 1, and no scale on the whole N (scale 1;
+// kept as a parameter). N(L) = (Base + L/15) × (1 + L/30). A Common Wait 0 Lumber 0 Map 0: BF5 10 / 10.9 / 14.67 at Lv 0 / 1 / 10,
+// now 10 / 11.44 / 15.56 (before its multiplier). Rarity weighs twice what it did under BF5 (a Legendary +4.5 over BF5). BF5's multipliers stay.
+const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.1, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, scale:1, plainBonus:1.05, lightBonus:1.02, fragileMult:0.75};
 // N multipliers by what a card can do (2026-10-21, BF5; owner): plainBonus (N x 1.05) for a card with no abilities at all; lightBonus
 // (x 1.02) for a card whose only abilities are the light ones (LIGHT: Flying, Tide, and the time-of-day ones, Diurnal / Nocturnal /
 // Crepuscular, Sunshy / Nightblind); fragileMult (x 0.75) for Fragile ("a negative value"). An ability is an effects key that is not a
 // parameter of another skill (PARAMS: swarmN, espritHp, ...), and each trigger. nMultOf(effects) is their product, on N at every level.
 // scale (2026-10-19, BF5; owner 21:36: "I think numbers are way too big. Can we HALF everything?" ... "Straight up, the total N value"):
-// the whole N (Base, the Level terms, the Map term) times this, so N_BF5(L) = 0.5 × N_v5(L); the A·H rule is (N/3)² of that N. Skill costs stay. // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
+// the whole N (Base, the Level terms, the Map term) times this, so N_BF5(L) = 0.5 × N_v5(L); the A·H rule is (N/3)² of that N. Skill costs stay.
+// (BF6, owner 15:09: scale is 1 again; the halving is in the coefficients above.) // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
@@ -79,11 +91,13 @@ function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L)
 // The formula as text, from the numbers in use (the card editor, the Test Lab, the hub): {n, base}.
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
   const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
-  return {n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileMult'),
+  return {cap1: '2A + H + S ≤ N', cap2: 'A·H + S·|S| ≤ (N/3)²' /* BF6 (owner 15:15) */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileMult'),
     base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
 function nOf(d, L, cfg){ return r2(nAt(baseOf(d, cfg), L, cfg) * nMultOf(d && d.effects, cfg)); } // BF5: x the card's N multiplier
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
 function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }
+// Cap 2's score before the half-miss multiplier (BF6, owner 15:15): A·H + S·|S|.
+function productScore(A, H, S){ A = +A || 0; H = +H || 0; S = +S || 0; return A * H + S * Math.abs(S); }
 function missMultOf(effects, cfg){ const e = effects || {}, m = num(cfg, 'missMult'); let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
 function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (L > 10 && L % 3 === 1)) return 'major'; if(MINOR.includes(L)) return 'minor'; return 'other'; }
 
@@ -121,5 +135,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, levelKind, forgeCurve, abilitiesOf, nMultOf};
+return {DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf};
 });

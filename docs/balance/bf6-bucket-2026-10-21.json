@@ -1,0 +1,8730 @@
+{
+ "_about": "BF6 (2026-10-21): the bucket (no stats fit under 2A+H+S <= N and A·H+S·|S| <= (N/3)²) and each skill taken off in turn",
+ "cards": [
+  {
+   "id": "dolphin-knight",
+   "verdict": "bucket",
+   "name": "Dolphin Knight",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 17.38,
+   "N2": 33.56,
+   "S": 6.9,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "wave",
+     4.11
+    ]
+   ],
+   "flavor": "Rides the moat like open water. Lance first, questions never.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      11
+     ],
+     "use": 0.98,
+     "S": 4.11
+    },
+    {
+     "drop": "wave",
+     "fits": true,
+     "now": [
+      4,
+      6
+     ],
+     "use": 0.95,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "bee-drone",
+   "verdict": "bucket",
+   "name": "Bee Drone",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    0,
+    1
+   ],
+   "N": 13.5,
+   "N2": 20.25,
+   "S": 4.94,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "onAttacked → spawnCard",
+     4.94
+    ]
+   ],
+   "flavor": "Struck once, and a swarmling boils out immediately to keep the line held.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      0,
+      1
+     ],
+     "use": 0.44,
+     "S": 4.94
+    },
+    {
+     "drop": "trigger:0 {\"do\":\"spawnCard\",\"on\":\"onAttacked\",\"count\":1,\"defId\":\"bee-swarmling\"}",
+     "fits": true,
+     "now": [
+      0,
+      9
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "caustic-scorpion",
+   "verdict": "bucket",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 23.84,
+   "N2": 63.15,
+   "S": 9.49,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "thorns",
+     3.23
+    ]
+   ],
+   "flavor": "Wooden tank tread bolted to a scorpion’s tail. The sting lingers long after the tread stops.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      2,
+      16
+     ],
+     "use": 0.97,
+     "S": 3.23
+    },
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      1,
+      15
+     ],
+     "use": 0.98,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "bramblewood-macaque",
+   "verdict": "bucket",
+   "name": "Bramblewood Macaque",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 17.38,
+   "N2": 33.56,
+   "S": 14.58,
+   "m": 1,
+   "parts": [
+    [
+     "banana",
+     14.58
+    ]
+   ],
+   "flavor": "Steals rations, steals weapons, occasionally wins the fight anyway.",
+   "opts": [
+    {
+     "drop": "banana",
+     "fits": true,
+     "now": [
+      3,
+      12
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "silverback-brawler",
+   "verdict": "bucket",
+   "name": "Silverback Brawler",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    3,
+    11
+   ],
+   "N": 30.09,
+   "N2": 100.6,
+   "S": 10.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "Doesn’t so much fight a line as flatten the whole thing at once.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      5,
+      19
+     ],
+     "use": 1,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": true,
+     "now": [
+      1,
+      18
+     ],
+     "use": 0.97,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "webspire-sentinel",
+   "verdict": "bucket",
+   "name": "Webspire Sentinel",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    2,
+    8
+   ],
+   "N": 28.85,
+   "N2": 92.48,
+   "S": 10.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "A watchtower spun from silver silk. Nothing crosses its threads unnoticed — or alone.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      19
+     ],
+     "use": 0.97,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.73,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "verdict": "bucket",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 17.69,
+   "N2": 34.77,
+   "S": 6.34,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     3.13
+    ],
+    [
+     "brood",
+     3.21
+    ]
+   ],
+   "flavor": "Small, numerous, and deeply unpleasant to be surrounded by.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      3,
+      8
+     ],
+     "use": 0.97,
+     "S": 3.21
+    },
+    {
+     "drop": "brood",
+     "fits": true,
+     "now": [
+      3,
+      8
+     ],
+     "use": 0.97,
+     "S": 3.13
+    }
+   ]
+  },
+  {
+   "id": "stormcaller",
+   "verdict": "under",
+   "name": "Stormcaller",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    3,
+    10
+   ],
+   "N": 36.03,
+   "N2": 144.24,
+   "S": 11.95,
+   "m": 1,
+   "parts": [
+    [
+     "onReady → damage",
+     6.35
+    ],
+    [
+     "onSpawn → addWait",
+     5.6
+    ]
+   ],
+   "flavor": "Calls down exactly one bolt the moment it wakes. It is never a wasted one.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":5,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"}",
+     "fits": true,
+     "now": [
+      6,
+      18
+     ],
+     "use": 0.99,
+     "S": 5.6
+    },
+    {
+     "drop": "trigger:1 {\"on\":\"onSpawn\",\"do\":\"addWait\",\"amount\":1,\"who\":\"enemy\",\"sub\":\"all\"}",
+     "fits": true,
+     "now": [
+      6,
+      17
+     ],
+     "use": 0.98,
+     "S": 6.35
+    }
+   ]
+  },
+  {
+   "id": "reef-shark",
+   "verdict": "bucket",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    3,
+    7
+   ],
+   "N": 28.95,
+   "N2": 93.12,
+   "S": 11.87,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Circles the battlefield once, then bites through however much line is in the way.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      5,
+      16
+     ],
+     "use": 0.97,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.73,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "beetle-battering-ram",
+   "verdict": "bucket",
+   "name": "Beetle Battering-Ram",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 25.39,
+   "N2": 71.63,
+   "S": 9.8,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "siege",
+     0.72
+    ]
+   ],
+   "flavor": "A shell like a shield wall, lowered and driven straight through the middle of one.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      5,
+      14
+     ],
+     "use": 0.97,
+     "S": 0.72
+    },
+    {
+     "drop": "siege",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.48,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "raven-scout",
+   "verdict": "bucket",
+   "name": "Raven Scout",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 14.12,
+   "N2": 22.15,
+   "S": 4.8,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Circles once, marks a target, and dives before anyone finishes reading the omen.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.55,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      2,
+      5
+     ],
+     "use": 0.94,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "boar-rampager",
+   "verdict": "bucket",
+   "name": "Boar Rampager",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 24.35,
+   "N2": 65.88,
+   "S": 10.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "Does not so much choose a target as choose a direction.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      15
+     ],
+     "use": 0.99,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.5,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "octopus-tactician",
+   "verdict": "bucket",
+   "name": "Octopus Tactician",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    7
+   ],
+   "N": 25.9,
+   "N2": 74.53,
+   "S": 11.87,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Eight arms, eight opinions on how this fight should go. Usually gets its way.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      15
+     ],
+     "use": 0.98,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.47,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "alpha-howler",
+   "verdict": "bucket",
+   "name": "Alpha Howler",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    2,
+    9
+   ],
+   "N": 29.67,
+   "N2": 97.81,
+   "S": 11.76,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "nocturnal",
+     2.68
+    ]
+   ],
+   "flavor": "One howl and the whole tree line answers. It rarely fights alone, and it rarely needs to.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      5,
+      17
+     ],
+     "use": 0.98,
+     "S": 2.68
+    },
+    {
+     "drop": "nocturnal",
+     "fits": true,
+     "now": [
+      1,
+      15
+     ],
+     "use": 0.88,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "grizzly-vanguard",
+   "verdict": "bucket",
+   "name": "Grizzly Vanguard",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    3,
+    11
+   ],
+   "N": 29.36,
+   "N2": 95.78,
+   "S": 10.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "One swipe was always going to hit more than one target. Nobody told the line to stand so close together.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      20
+     ],
+     "use": 0.99,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": true,
+     "now": [
+      1,
+      13
+     ],
+     "use": 0.82,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "firetail-trickster",
+   "verdict": "bucket",
+   "name": "Firetail Trickster",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 17.12,
+   "N2": 32.57,
+   "S": 5.8,
+   "m": 1,
+   "parts": [
+    [
+     "bounty",
+     1
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Nine tales, one of them true, and a tail that's genuinely on fire. Ask it which is which.",
+   "opts": [
+    {
+     "drop": "bounty",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.92,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 0.99,
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "fox-warchief",
+   "verdict": "bucket",
+   "name": "Fox Warchief",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    6
+   ],
+   "N": 24.97,
+   "N2": 69.28,
+   "S": 10.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "Never fights the fight in front of it — always the two or three fights just past that one.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      15
+     ],
+     "use": 0.96,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.48,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "grass-viper",
+   "verdict": "bucket",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 12.99,
+   "N2": 18.75,
+   "S": 9.13,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     3.13
+    ],
+    [
+     "shedding",
+     6
+    ]
+   ],
+   "flavor": "You won't see it in the grass. You'll just start feeling it a moment later.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.69,
+     "S": 6
+    },
+    {
+     "drop": "shedding",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.93,
+     "S": 3.13
+    }
+   ]
+  },
+  {
+   "id": "adder-ambusher",
+   "verdict": "bucket",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.75,
+   "N2": 43.34,
+   "S": 12.26,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "shedding",
+     6
+    ]
+   ],
+   "flavor": "Coiled and patient right up until it very much isn't.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.76,
+     "S": 6
+    },
+    {
+     "drop": "shedding",
+     "fits": true,
+     "now": [
+      1,
+      4
+     ],
+     "use": 0.62,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "constrictor-coil",
+   "verdict": "bucket",
+   "name": "Constrictor Coil",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    8
+   ],
+   "N": 24.15,
+   "N2": 64.8,
+   "S": 10.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "Doesn't so much attack a line as wrap around the whole thing at once.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      15
+     ],
+     "use": 0.99,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.5,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "venomlord-serpent",
+   "verdict": "bucket",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    3,
+    13
+   ],
+   "N": 31.64,
+   "N2": 111.23,
+   "S": 11.56,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     9.39
+    ],
+    [
+     "ambush",
+     2.17
+    ]
+   ],
+   "flavor": "Immune to its own venom, which is the only mercy anyone's ever found in it.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      5,
+      19
+     ],
+     "use": 0.99,
+     "S": 2.17
+    },
+    {
+     "drop": "ambush",
+     "fits": true,
+     "now": [
+      1,
+      20
+     ],
+     "use": 0.99,
+     "S": 9.39
+    }
+   ]
+  },
+  {
+   "id": "cave-flitter",
+   "verdict": "bucket",
+   "name": "Cave Flitter",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 12.99,
+   "N2": 18.75,
+   "S": 5.12,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "Impossible to hit in a straight line, mostly because it refuses to fly in one.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.63,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      2,
+      4
+     ],
+     "use": 0.91,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "poison-dart-croaker",
+   "verdict": "bucket",
+   "name": "Poison Dart Croaker",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 17.69,
+   "N2": 34.77,
+   "S": 9.05,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Small, brilliantly colored, and a genuinely terrible idea to touch.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      3,
+      9
+     ],
+     "use": 0.99,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.52,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "bog-behemoth",
+   "verdict": "under",
+   "name": "Bog Behemoth",
+   "rarity": "common",
+   "wait": 4,
+   "cost": 3,
+   "was": [
+    3,
+    14
+   ],
+   "N": 36.55,
+   "N2": 148.43,
+   "S": 11.98,
+   "m": 1,
+   "parts": [
+    [
+     "nocturnal",
+     2.68
+    ],
+    [
+     "regen",
+     9.3
+    ]
+   ],
+   "flavor": "Older than the castle, wider than the moat, and in absolutely no hurry to leave the mud.",
+   "opts": [
+    {
+     "drop": "nocturnal",
+     "fits": true,
+     "now": [
+      2,
+      23
+     ],
+     "use": 0.99,
+     "S": 9.3
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      4,
+      26
+     ],
+     "use": 0.98,
+     "S": 2.68
+    }
+   ]
+  },
+  {
+   "id": "sand-widow",
+   "verdict": "bucket",
+   "name": "Sand Widow",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    7
+   ],
+   "N": 25.49,
+   "N2": 72.19,
+   "S": 12.01,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Weaves its web between two dunes and waits exactly as long as the desert does.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.97,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      2,
+      15
+     ],
+     "use": 0.99,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "orca-vanguard",
+   "verdict": "bucket",
+   "name": "Orca Vanguard",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    3,
+    14
+   ],
+   "N": 32.15,
+   "N2": 114.85,
+   "S": 11.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ],
+    [
+     "momentum",
+     2
+    ]
+   ],
+   "flavor": "Hunts in a pack that never needs to be told the plan twice.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      5,
+      20
+     ],
+     "use": 1,
+     "S": 2
+    },
+    {
+     "drop": "momentum",
+     "fits": true,
+     "now": [
+      1,
+      21
+     ],
+     "use": 1,
+     "S": 9.08
+    }
+   ]
+  },
+  {
+   "id": "quill-volley",
+   "verdict": "under",
+   "name": "Quill Volley",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 17.74,
+   "N2": 34.97,
+   "S": 5.8,
+   "m": 1,
+   "parts": [
+    [
+     "bounty",
+     1
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Doesn't wait to be grabbed. Fires first and rolls into a ball to think it over later.",
+   "opts": [
+    {
+     "drop": "bounty",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.95,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 0.96,
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "stone-turtle-warden",
+   "verdict": "bucket",
+   "name": "Stone Turtle Warden",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    1,
+    7
+   ],
+   "N": 24.04,
+   "N2": 64.21,
+   "S": 13.75,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     10.96
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Nothing wrong with a slow answer, so long as it's the same answer every time: no.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      17
+     ],
+     "use": 0.97,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.58,
+     "S": 10.96
+    }
+   ]
+  },
+  {
+   "id": "quill-thorn-boar",
+   "verdict": "bucket",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 20.37,
+   "N2": 46.1,
+   "S": 9.69,
+   "m": 1,
+   "parts": [
+    [
+     "thorns",
+     9.69
+    ]
+   ],
+   "flavor": "It never learned to dodge. It never had to.",
+   "opts": [
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      1,
+      19
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "verdict": "bucket",
+   "name": "Hawk Arrowkeeper",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 17.38,
+   "N2": 33.56,
+   "S": 4.8,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Two arrows, always. One for the target, one for anyone thinking of helping.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.97,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.93,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "jaguar-stalker",
+   "verdict": "bucket",
+   "name": "Jaguar Stalker",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 20.58,
+   "N2": 47.06,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "The canopy does not rustle. Then it is already too late.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      3,
+      15
+     ],
+     "use": 0.97,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "toucan-courier",
+   "verdict": "bucket",
+   "name": "Toucan Courier",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.44,
+   "N2": 14.54,
+   "S": 4.43,
+   "m": 1,
+   "parts": [
+    [
+     "diurnal",
+     3.43
+    ],
+    [
+     "bounty",
+     1
+    ]
+   ],
+   "flavor": "Trades gossip and acorns at a very favorable exchange rate.",
+   "opts": [
+    {
+     "drop": "diurnal",
+     "fits": true,
+     "now": [
+      1,
+      8
+     ],
+     "use": 0.96,
+     "S": 1
+    },
+    {
+     "drop": "bounty",
+     "fits": true,
+     "now": [
+      1,
+      3
+     ],
+     "use": 0.72,
+     "S": 3.43
+    }
+   ]
+  },
+  {
+   "id": "poison-dart-frog",
+   "verdict": "bucket",
+   "name": "Poison Dart Frog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 13.71,
+   "N2": 20.88,
+   "S": 9.39,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     9.39
+    ]
+   ],
+   "flavor": "Small, bright, and a genuinely terrible idea to lick.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      1,
+      12
+     ],
+     "use": 0.97,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "savanna-cheetah",
+   "verdict": "bucket",
+   "name": "Savanna Cheetah",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 16.29,
+   "N2": 29.48,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Already at the bramble by the time the wait timer means anything.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      13
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "termite-mound",
+   "verdict": "bucket",
+   "name": "Termite Mound",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    0,
+    7
+   ],
+   "N": 18.51,
+   "N2": 38.07,
+   "S": 8.22,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ]
+   ],
+   "flavor": "Looks like scenery. Fights like a fortress.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      0,
+      19
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "clownfish-scout",
+   "verdict": "under",
+   "name": "Clownfish Scout",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 3.79,
+   "m": 1,
+   "parts": [
+    [
+     "guardian",
+     1
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Small, orange, and somehow always exactly where the hit was headed.",
+   "opts": [
+    {
+     "drop": "guardian",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.97,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      6
+     ],
+     "use": 0.92,
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "coral-reef-shark",
+   "verdict": "bucket",
+   "name": "Coral Reef Shark",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    2,
+    5
+   ],
+   "N": 21.82,
+   "N2": 52.9,
+   "S": 8.8,
+   "m": 1,
+   "parts": [
+    [
+     "crit",
+     6.01
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Circles once out of professional courtesy. Then does not.",
+   "opts": [
+    {
+     "drop": "crit",
+     "fits": true,
+     "now": [
+      5,
+      9
+     ],
+     "use": 0.98,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      13
+     ],
+     "use": 0.96,
+     "S": 6.01
+    }
+   ]
+  },
+  {
+   "id": "sea-turtle-elder",
+   "verdict": "bucket",
+   "name": "Sea Turtle Elder",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    1,
+    8
+   ],
+   "N": 28.23,
+   "N2": 88.55,
+   "S": 16.33,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     10.96
+    ],
+    [
+     "revive",
+     5.37
+    ]
+   ],
+   "flavor": "Has outlived several reefs. Intends to outlive this fight too.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      1,
+      20
+     ],
+     "use": 0.97,
+     "S": 5.37
+    },
+    {
+     "drop": "revive",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.49,
+     "S": 10.96
+    }
+   ]
+  },
+  {
+   "id": "golden-eagle-diver",
+   "verdict": "bucket",
+   "name": "Golden Eagle Diver",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 16.09,
+   "N2": 28.77,
+   "S": 4.8,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Stoops from a height that makes the math feel unfair.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      5
+     ],
+     "use": 0.73,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      2,
+      6
+     ],
+     "use": 0.91,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "rockslide-ram",
+   "verdict": "bucket",
+   "name": "Rockslide Ram",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.41,
+   "N2": 37.66,
+   "S": 9.99,
+   "m": 1,
+   "parts": [
+    [
+     "onAttack → buff",
+     9.99
+    ]
+   ],
+   "flavor": "Charges downhill. Somehow charges harder every time.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onAttack\",\"do\":\"buff\",\"amount\":1,\"who\":\"self\"}",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "cave-bat-swarm",
+   "verdict": "bucket",
+   "name": "Cave Bat Swarm",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 14.02,
+   "N2": 21.84,
+   "S": 5.14,
+   "m": 1.5,
+   "parts": [
+    [
+     "fork",
+     5.14
+    ],
+    [
+     "flying",
+     0
+    ]
+   ],
+   "flavor": "One bat is a nuisance. This is never just one bat.",
+   "opts": [
+    {
+     "drop": "fork",
+     "fits": true,
+     "now": [
+      2,
+      5
+     ],
+     "use": 0.94,
+     "S": 0
+    },
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.58,
+     "S": 5.14
+    }
+   ]
+  },
+  {
+   "id": "obsidian-scorpion",
+   "verdict": "bucket",
+   "name": "Obsidian Scorpion",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 20.99,
+   "N2": 48.95,
+   "S": 11.74,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "poison",
+     6.26
+    ]
+   ],
+   "flavor": "Glass-edged and doubly unkind about it.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.82,
+     "S": 6.26
+    },
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      1,
+      13
+     ],
+     "use": 0.98,
+     "S": 5.48
+    }
+   ]
+  },
+  {
+   "id": "boreal-elk",
+   "verdict": "bucket",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    2,
+    5
+   ],
+   "N": 21.41,
+   "N2": 50.93,
+   "S": 9.08,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     9.08
+    ]
+   ],
+   "flavor": "Antlers wide enough to clear a path through anything in the lane.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      14
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "tide-pool-crab",
+   "verdict": "bucket",
+   "name": "Tide Pool Crab",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 6.9,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "wave",
+     4.11
+    ]
+   ],
+   "flavor": "Small, sideways, and surprisingly hard to actually pinch out of a fight.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.59,
+     "S": 4.11
+    },
+    {
+     "drop": "wave",
+     "fits": true,
+     "now": [
+      1,
+      3
+     ],
+     "use": 0.64,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "barnacle-fortress",
+   "verdict": "bucket",
+   "name": "Barnacle Fortress",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    0,
+    3
+   ],
+   "N": 18,
+   "N2": 36,
+   "S": 13.7,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     13.7
+    ]
+   ],
+   "flavor": "Technically alive. Technically a wall. Extremely thorough about the second part.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      0,
+      18
+     ],
+     "use": 0.95,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "verdict": "bucket",
+   "name": "Mangrove Mudskipper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 12.37,
+   "N2": 17,
+   "S": 10.34,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Neither fully a land animal nor a water one. Fully unbothered by the distinction.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.93,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.85,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "gangrenous-leech",
+   "verdict": "under",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 19.03,
+   "N2": 40.24,
+   "S": 6.26,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "fester",
+     0
+    ]
+   ],
+   "flavor": "Fester: the longer its own poison sits in its veins, the harder the next bite lands.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      2,
+      15
+     ],
+     "use": 1,
+     "S": 0
+    },
+    {
+     "drop": "fester",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.49,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "ravenous-wolverine",
+   "verdict": "bucket",
+   "name": "Ravenous Wolverine",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    5
+   ],
+   "N": 17.53,
+   "N2": 34.14,
+   "S": 19.98,
+   "m": 1,
+   "parts": [
+    [
+     "onAttack → buff",
+     19.98
+    ]
+   ],
+   "flavor": "Bloodlust 2: it does not slow down once it starts swinging. It speeds up.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onAttack\",\"do\":\"buff\",\"amount\":2,\"who\":\"self\"}",
+     "fits": true,
+     "now": [
+      2,
+      14
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "humpback-elder",
+   "verdict": "bucket",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 3,
+   "was": [
+    2,
+    12
+   ],
+   "N": 31.53,
+   "N2": 110.46,
+   "S": 14.01,
+   "m": 1,
+   "parts": [
+    [
+     "thorns",
+     9.69
+    ],
+    [
+     "inspiring",
+     4.32
+    ]
+   ],
+   "flavor": "Old enough to remember when this reef was someone else's territory.",
+   "opts": [
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      4,
+      19
+     ],
+     "use": 0.99,
+     "S": 4.32
+    },
+    {
+     "drop": "inspiring",
+     "fits": true,
+     "now": [
+      1,
+      16
+     ],
+     "use": 0.88,
+     "S": 9.69
+    }
+   ]
+  },
+  {
+   "id": "dune-jackal",
+   "verdict": "bucket",
+   "name": "Dune Jackal",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    5
+   ],
+   "N": 14.23,
+   "N2": 22.5,
+   "S": 13.3,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Crosses open sand faster than the heat has time to punish it for.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.74,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "sandstorm-roc",
+   "verdict": "bucket",
+   "name": "Sandstorm Roc",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    5
+   ],
+   "N": 25.49,
+   "N2": 72.19,
+   "S": 10.89,
+   "m": 1,
+   "parts": [
+    [
+     "fork",
+     5.14
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Arrives as weather. Leaves as a body count.",
+   "opts": [
+    {
+     "drop": "fork",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.97,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      3,
+      14
+     ],
+     "use": 0.99,
+     "S": 5.14
+    }
+   ]
+  },
+  {
+   "id": "porcupine-roller",
+   "verdict": "bucket",
+   "name": "Porcupine Roller",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 6.46,
+   "m": 1,
+   "parts": [
+    [
+     "thorns",
+     6.46
+    ]
+   ],
+   "flavor": "Curls into a ball. The ball has opinions about being kicked.",
+   "opts": [
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "quillback-elder",
+   "verdict": "under",
+   "name": "Quillback Elder",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    1,
+    10
+   ],
+   "N": 24.87,
+   "N2": 68.72,
+   "S": 8.22,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ]
+   ],
+   "flavor": "Decades of bad decisions, made by other people, against this exact hide.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      3,
+      20
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "verdict": "bucket",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 14.23,
+   "N2": 22.5,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Small, fast, and inexplicably first into every fight anyway.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      3,
+      8
+     ],
+     "use": 0.94,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "verdict": "bucket",
+   "name": "Slowpoke Sentinel",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 14.79,
+   "N2": 24.3,
+   "S": 5.48,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     5.48
+    ]
+   ],
+   "flavor": "Has not moved in three rounds. Has also not taken meaningful damage in three rounds.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      11
+     ],
+     "use": 0.97,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "duckling-squadron",
+   "verdict": "bucket",
+   "name": "Duckling Squadron",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 13.92,
+   "N2": 21.53,
+   "S": 5.14,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "fork",
+     5.14
+    ]
+   ],
+   "flavor": "In a row. Always in a row. Somehow that is the scary part.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.58,
+     "S": 5.14
+    },
+    {
+     "drop": "fork",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.95,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "feral-tomcat",
+   "verdict": "bucket",
+   "name": "Tomcat",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Territorial, uninvited, and somehow already attacking before the round starts.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      4
+     ],
+     "use": 0.64,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "rootworm-colony",
+   "verdict": "bucket",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 17.79,
+   "N2": 35.16,
+   "S": 6.26,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ]
+   ],
+   "flavor": "Quietly ruins the soil, the roots, and eventually your whole strategy.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      2,
+      14
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "verdict": "bucket",
+   "name": "Jackrabbit Sprinter",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.26,
+   "N2": 25.87,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Across the field and back before the wait timer even means anything.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "barrow-leech-bat",
+   "verdict": "bucket",
+   "name": "Barrow Leech",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 16.29,
+   "N2": 29.48,
+   "S": 5.12,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "Drinks first. Asks questions never.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      3
+     ],
+     "use": 0.62,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      2,
+      7
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "coral-current-eel",
+   "verdict": "bucket",
+   "name": "Coral Current Eel",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 16.29,
+   "N2": 29.48,
+   "S": 9.05,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "A small bite. A slow, patient problem.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      3,
+      7
+     ],
+     "use": 0.95,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.57,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "dune-jackal-scout",
+   "verdict": "bucket",
+   "name": "Dune Jackal Scout",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.57,
+   "N2": 26.94,
+   "S": 8.49,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     2.74
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Doesn't outrun the sun. Just outlasts it.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.56,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      3,
+      6
+     ],
+     "use": 0.95,
+     "S": 2.74
+    }
+   ]
+  },
+  {
+   "id": "nightshade-moth",
+   "verdict": "bucket",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    1,
+    3
+   ],
+   "N": 17.22,
+   "N2": 32.95,
+   "S": 5.16,
+   "m": 1.5,
+   "parts": [
+    [
+     "sleep",
+     5.16
+    ],
+    [
+     "flying",
+     0
+    ]
+   ],
+   "flavor": "The powder from its wings doesn't sting. It just asks, very persuasively, that you lie down.",
+   "opts": [
+    {
+     "drop": "sleep",
+     "fits": true,
+     "now": [
+      2,
+      7
+     ],
+     "use": 0.94,
+     "S": 0
+    },
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.76,
+     "S": 5.16
+    }
+   ]
+  },
+  {
+   "id": "elder-tortoise",
+   "verdict": "bucket",
+   "name": "Elder Tortoise",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 3,
+   "was": [
+    1,
+    2
+   ],
+   "N": 23.47,
+   "N2": 61.2,
+   "S": 14.9,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     9.3
+    ],
+    [
+     "onSpawn → addWait",
+     5.6
+    ]
+   ],
+   "flavor": "Its shell has outlasted three generations of otters who swore they'd finally crack it.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      1,
+      15
+     ],
+     "use": 0.96,
+     "S": 5.6
+    },
+    {
+     "drop": "trigger:0 {\"on\":\"onSpawn\",\"do\":\"addWait\",\"amount\":2,\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.52,
+     "S": 9.3
+    }
+   ]
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "verdict": "bucket",
+   "name": "Plague Gnat Cloud",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 10.68,
+   "m": 1,
+   "parts": [
+    [
+     "proliferate",
+     10.68
+    ]
+   ],
+   "flavor": "One bite is nothing. The cloud makes sure there is never just one.",
+   "opts": [
+    {
+     "drop": "proliferate",
+     "fits": true,
+     "now": [
+      1,
+      14
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "rivergate-drummer",
+   "verdict": "bucket",
+   "name": "Rivergate Drummer",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 16.34,
+   "N2": 29.67,
+   "S": 9.57,
+   "m": 1,
+   "parts": [
+    [
+     "kinRally",
+     9.57
+    ]
+   ],
+   "flavor": "One beat for every otter that wades in. The river has never been this loud.",
+   "opts": [
+    {
+     "drop": "kinRally",
+     "fits": true,
+     "now": [
+      2,
+      13
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "worker-ant",
+   "verdict": "bucket",
+   "name": "Worker Ant",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 10.4,
+   "N2": 12.02,
+   "S": 15.36,
+   "m": 1,
+   "parts": [
+    [
+     "onAttack → drawCard",
+     15.36
+    ]
+   ],
+   "flavor": "Carries, digs, hauls. Never once complains.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"do\":\"drawCard\",\"on\":\"onAttack\",\"count\":1}",
+     "fits": true,
+     "now": [
+      2,
+      6
+     ],
+     "use": 0.92,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "verdict": "bucket",
+   "name": "Cobalt Fledgling",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 10.61,
+   "N2": 12.51,
+   "S": 3.43,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "diurnal",
+     3.43
+    ]
+   ],
+   "flavor": "Not cleared for border patrol yet. Practices anyway.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 3.43
+    },
+    {
+     "drop": "diurnal",
+     "fits": true,
+     "now": [
+      2,
+      3
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "verdict": "bucket",
+   "name": "Crimson Recruit",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 10.61,
+   "N2": 12.51,
+   "S": 3.43,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "diurnal",
+     3.43
+    ]
+   ],
+   "flavor": "Feather-red is earned, not born. This one's still earning it.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 3.43
+    },
+    {
+     "drop": "diurnal",
+     "fits": true,
+     "now": [
+      3,
+      1
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "verdict": "bucket",
+   "name": "Violet Vane Fletcher",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 10.4,
+   "N2": 12.02,
+   "S": 4.54,
+   "m": 1.5,
+   "parts": [
+    [
+     "sweep",
+     4.54
+    ],
+    [
+     "flying",
+     0
+    ]
+   ],
+   "flavor": "Trims feathers for flight, not for fashion — mostly.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      1,
+      5
+     ],
+     "use": 0.99,
+     "S": 0
+    },
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.73,
+     "S": 4.54
+    }
+   ]
+  },
+  {
+   "id": "quarry-mole",
+   "verdict": "bucket",
+   "name": "Quarry Mole",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 17.07,
+   "N2": 32.38,
+   "S": 9.26,
+   "m": 1,
+   "parts": [
+    [
+     "darksight",
+     5.12
+    ],
+    [
+     "keenSense",
+     4.14
+    ]
+   ],
+   "flavor": "Waits on a resource nobody can spend yet. When Stone finally counts for something, this one will already know how.",
+   "opts": [
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.89,
+     "S": 4.14
+    },
+    {
+     "drop": "keenSense",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.48,
+     "S": 5.12
+    }
+   ]
+  },
+  {
+   "id": "sparrow-chick",
+   "verdict": "bucket",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 10.4,
+   "N2": 12.02,
+   "S": 2.7,
+   "m": 1.5,
+   "parts": [
+    [
+     "bleed",
+     2.7
+    ],
+    [
+     "flying",
+     0
+    ]
+   ],
+   "flavor": "Hungry, loud, and surprisingly brave.",
+   "opts": [
+    {
+     "drop": "bleed",
+     "fits": true,
+     "now": [
+      2,
+      2
+     ],
+     "use": 0.85,
+     "S": 0
+    },
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.55,
+     "S": 2.7
+    }
+   ]
+  },
+  {
+   "id": "guppy",
+   "verdict": "under",
+   "name": "Guppy",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 10.61,
+   "N2": 12.51,
+   "S": 2.79,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Bright, tiny, and absolutely sure it is a shark.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.82,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "verdict": "bucket",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 12.88,
+   "N2": 18.43,
+   "S": 5.42,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     2.74
+    ],
+    [
+     "nocturnal",
+     2.68
+    ]
+   ],
+   "flavor": "Clutches a chipped little shell of gold. Will not explain where it got it.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      3,
+      4
+     ],
+     "use": 0.96,
+     "S": 2.68
+    },
+    {
+     "drop": "nocturnal",
+     "fits": true,
+     "now": [
+      1,
+      8
+     ],
+     "use": 0.99,
+     "S": 2.74
+    }
+   ]
+  },
+  {
+   "id": "courier-pigeon",
+   "verdict": "bucket",
+   "name": "Courier Pigeon",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.44,
+   "N2": 14.54,
+   "S": 5.12,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "onSpawn → drawCard",
+     5.12
+    ]
+   ],
+   "flavor": "Brings a letter. Sometimes it even brings the right one.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.71,
+     "S": 5.12
+    },
+    {
+     "drop": "trigger:0 {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":1}",
+     "fits": true,
+     "now": [
+      2,
+      3
+     ],
+     "use": 0.9,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "blackmass-acolyte",
+   "verdict": "bucket",
+   "name": "Blackmass Acolyte",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.83,
+   "N2": 27.84,
+   "S": 9.41,
+   "m": 1,
+   "parts": [
+    [
+     "desecrate",
+     9.41
+    ]
+   ],
+   "flavor": "Every step it takes leaves the ground a little less holy.",
+   "opts": [
+    {
+     "drop": "desecrate",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "puppeteer-imp",
+   "verdict": "bucket",
+   "name": "Puppeteer Imp",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 16.86,
+   "N2": 31.58,
+   "S": 6,
+   "m": 1,
+   "parts": [
+    [
+     "onSpawn → mindControl",
+     6
+    ]
+   ],
+   "flavor": "It never fights. It just finds someone on the other side who will.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onSpawn\",\"do\":\"mindControl\",\"sub\":\"random\"}",
+     "fits": true,
+     "now": [
+      3,
+      11
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "fleetfootd",
+   "verdict": "bucket",
+   "name": "Fleetfoot'd",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 12.47,
+   "N2": 17.28,
+   "S": 10.34,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Already halfway down the riverbank before anyone said go.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.85,
+     "S": 7.55
+    },
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      5
+     ],
+     "use": 0.93,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "abbey-goose",
+   "verdict": "bucket",
+   "name": "Abbey Goose",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.83,
+   "N2": 27.84,
+   "S": 11.28,
+   "m": 1,
+   "parts": [
+    [
+     "healing",
+     11.28
+    ]
+   ],
+   "flavor": "Tends the infirmary. Hisses at the patients anyway.",
+   "opts": [
+    {
+     "drop": "healing",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "friar-badger",
+   "verdict": "bucket",
+   "name": "Friar Badger",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 15.83,
+   "N2": 27.84,
+   "S": 5.21,
+   "m": 1,
+   "parts": [
+    [
+     "satiety",
+     1.98
+    ],
+    [
+     "relic",
+     3.23
+    ]
+   ],
+   "flavor": "Never misses a meal, and never once missed a prayer.",
+   "opts": [
+    {
+     "drop": "satiety",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.96,
+     "S": 3.23
+    },
+    {
+     "drop": "relic",
+     "fits": true,
+     "now": [
+      2,
+      9
+     ],
+     "use": 0.95,
+     "S": 1.98
+    }
+   ]
+  },
+  {
+   "id": "vigil-owl",
+   "verdict": "bucket",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 16.86,
+   "N2": 31.58,
+   "S": 9.95,
+   "m": 1,
+   "parts": [
+    [
+     "retribution",
+     6.72
+    ],
+    [
+     "relic",
+     3.23
+    ]
+   ],
+   "flavor": "Watches over the fallen, and remembers who felled them.",
+   "opts": [
+    {
+     "drop": "retribution",
+     "fits": true,
+     "now": [
+      2,
+      9
+     ],
+     "use": 0.96,
+     "S": 3.23
+    },
+    {
+     "drop": "relic",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.58,
+     "S": 6.72
+    }
+   ]
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "verdict": "bucket",
+   "name": "Ironmaw Warwolf",
+   "rarity": "epic",
+   "wait": 2,
+   "cost": 3,
+   "was": [
+    2,
+    7
+   ],
+   "N": 32.41,
+   "N2": 116.71,
+   "S": 16.02,
+   "m": 1,
+   "parts": [
+    [
+     "bleed",
+     5.4
+    ],
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "fork",
+     5.14
+    ]
+   ],
+   "flavor": "Twice the height of a cart, with blades bolted to its flanks and brow and steel on every claw and tooth. The monkey on its back, Kip, does t",
+   "opts": [
+    {
+     "drop": "bleed",
+     "fits": false,
+     "now": [
+      1,
+      3
+     ],
+     "use": 0.48,
+     "S": 10.62
+    },
+    {
+     "drop": "armor",
+     "fits": false,
+     "now": [
+      1,
+      5
+     ],
+     "use": 0.54,
+     "S": 10.54
+    },
+    {
+     "drop": "fork",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.43,
+     "S": 10.88
+    }
+   ]
+  },
+  {
+   "id": "nectar-vintner",
+   "verdict": "bucket",
+   "name": "Nectar Vintner",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 4.24,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "bloom",
+     4.24
+    ]
+   ],
+   "flavor": "Ferments the morning's blossoms into something the whole roost regrets by evening.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 4.24
+    },
+    {
+     "drop": "bloom",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "dawn-bellringer",
+   "verdict": "bucket",
+   "name": "Dawn Bellringer",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.57,
+   "N2": 26.94,
+   "S": 4.37,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "diurnal",
+     3.43
+    ],
+    [
+     "diurnalHp",
+     0.94
+    ]
+   ],
+   "flavor": "A hummingbird with a bell three times its size and no sense of the hour.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.86,
+     "S": 4.37
+    },
+    {
+     "drop": "diurnal",
+     "fits": true,
+     "now": [
+      3,
+      4
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "teatime-toad",
+   "verdict": "bucket",
+   "name": "Teatime Toad",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 17.17,
+   "N2": 32.76,
+   "S": 6.2,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     6.2
+    ]
+   ],
+   "flavor": "Never in a hurry. There is always time for one more cup.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      1,
+      16
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "snail-mail",
+   "verdict": "bucket",
+   "name": "Snail Mail",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 0,
+   "was": [
+    0,
+    1
+   ],
+   "N": 21.05,
+   "N2": 49.23,
+   "S": 12.98,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     2.74
+    ],
+    [
+     "onSpawn → drawCard",
+     10.24
+    ]
+   ],
+   "flavor": "Your letters arrive. Eventually. All at once.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": false,
+     "now": [
+      0,
+      1
+     ],
+     "use": 0.53,
+     "S": 10.24
+    },
+    {
+     "drop": "trigger:0 {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":2}",
+     "fits": true,
+     "now": [
+      0,
+      18
+     ],
+     "use": 0.99,
+     "S": 2.74
+    }
+   ]
+  },
+  {
+   "id": "wrong-way-salmon",
+   "verdict": "bucket",
+   "name": "Wrong-Way Salmon",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 13.81,
+   "N2": 21.19,
+   "S": 6.37,
+   "m": 1,
+   "parts": [
+    [
+     "backstab",
+     3.58
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Swims downstream on purpose. Nobody ever sees it coming.",
+   "opts": [
+    {
+     "drop": "backstab",
+     "fits": true,
+     "now": [
+      2,
+      7
+     ],
+     "use": 0.98,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      8
+     ],
+     "use": 0.98,
+     "S": 3.58
+    }
+   ]
+  },
+  {
+   "id": "inside-out-hedgehog",
+   "verdict": "bucket",
+   "name": "Inside-Out Hedgehog",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 13.81,
+   "N2": 21.19,
+   "S": 8.71,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "thorns",
+     3.23
+    ]
+   ],
+   "flavor": "Soft on the outside, prickly on the inside, which is somehow worse.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      1,
+      8
+     ],
+     "use": 0.96,
+     "S": 3.23
+    },
+    {
+     "drop": "thorns",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 5.48
+    }
+   ]
+  },
+  {
+   "id": "old-shell",
+   "verdict": "bucket",
+   "name": "The Old Shell",
+   "rarity": "heroic",
+   "wait": 3,
+   "cost": 1,
+   "was": [
+    1,
+    10
+   ],
+   "N": 31.74,
+   "N2": 111.94,
+   "S": 11.01,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "It came up the beach before the castle was built.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      25
+     ],
+     "use": 0.98,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      19
+     ],
+     "use": 0.98,
+     "S": 8.22
+    }
+   ]
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "verdict": "bucket",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    1,
+    5
+   ],
+   "N": 29.31,
+   "N2": 95.45,
+   "S": 19.1,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "sweep",
+     13.62
+    ]
+   ],
+   "flavor": "Twenty winters on the river wall. The wall is newer than she is.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.57,
+     "S": 13.62
+    },
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      15
+     ],
+     "use": 0.97,
+     "S": 5.48
+    }
+   ]
+  },
+  {
+   "id": "daily-post",
+   "verdict": "bucket",
+   "name": "Daily Post",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 5.12,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "onSpawn → drawCard",
+     5.12
+    ]
+   ],
+   "flavor": "Rain, wind or war: the mail gets through by noon.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.68,
+     "S": 5.12
+    },
+    {
+     "drop": "trigger:0 {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":1}",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "nectar-sipper",
+   "verdict": "bucket",
+   "name": "Nectar Sipper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 3.1,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "regen",
+     3.1
+    ]
+   ],
+   "flavor": "Never more than a wingbeat from the next flower.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.93,
+     "S": 3.1
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      4
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "verdict": "bucket",
+   "name": "Ruby-Throat Duelist",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    4
+   ],
+   "N": 17.38,
+   "N2": 33.56,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "pierce",
+     0
+    ]
+   ],
+   "flavor": "Strikes first, bows second, never apologises.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      13
+     ],
+     "use": 0.98,
+     "S": 0
+    },
+    {
+     "drop": "pierce",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "ferry-toll-frog",
+   "verdict": "bucket",
+   "name": "Ferry Toll-Frog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 4.16,
+   "m": 1,
+   "parts": [
+    [
+     "onKill → gain",
+     1.37
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "One acorn to cross. Two if you look at it funny.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.97,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      6
+     ],
+     "use": 0.95,
+     "S": 1.37
+    }
+   ]
+  },
+  {
+   "id": "ford-kingfisher",
+   "verdict": "bucket",
+   "name": "Ford Kingfisher",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.26,
+   "N2": 25.87,
+   "S": 4.8,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Belongs to neither side, and dives on both.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      2
+     ],
+     "use": 0.58,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      3,
+      4
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "conch-crawler",
+   "verdict": "bucket",
+   "name": "Conch Crawler",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 8.17,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "shell",
+     5.38
+    ]
+   ],
+   "flavor": "Most of it is shell. The rest of it is opinions about the shell.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.55,
+     "S": 5.38
+    },
+    {
+     "drop": "shell",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.95,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "malachite-golem",
+   "verdict": "bucket",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    2,
+    11
+   ],
+   "N": 30.6,
+   "N2": 104.04,
+   "S": 13.19,
+   "m": 1,
+   "parts": [
+    [
+     "shell",
+     8.07
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "Green stone, banded like old water. It curls up the moment anything touches it, and it does not uncurl quickly.",
+   "opts": [
+    {
+     "drop": "shell",
+     "fits": true,
+     "now": [
+      4,
+      17
+     ],
+     "use": 0.98,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      2,
+      18
+     ],
+     "use": 0.98,
+     "S": 8.07
+    }
+   ]
+  },
+  {
+   "id": "moonlit-hare",
+   "verdict": "bucket",
+   "name": "Moonlit Hare",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 16.34,
+   "N2": 29.67,
+   "S": 8,
+   "m": 1,
+   "parts": [
+    [
+     "moonborn",
+     8
+    ]
+   ],
+   "flavor": "It counts the nights by the shape of the moon.",
+   "opts": [
+    {
+     "drop": "moonborn",
+     "fits": true,
+     "now": [
+      2,
+      13
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "lunar-howler",
+   "verdict": "bucket",
+   "name": "Lunar Howler",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 23.53,
+   "N2": 61.52,
+   "S": 12,
+   "m": 1,
+   "parts": [
+    [
+     "moonborn",
+     12
+    ]
+   ],
+   "flavor": "At the full moon the whole valley hears it. At the new moon, nobody does.",
+   "opts": [
+    {
+     "drop": "moonborn",
+     "fits": true,
+     "now": [
+      4,
+      16
+     ],
+     "use": 0.97,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "the-contradiction",
+   "verdict": "bucket",
+   "name": "The Contradiction",
+   "rarity": "unique",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    2,
+    4
+   ],
+   "N": 30.24,
+   "N2": 101.61,
+   "S": 12.6,
+   "m": 1,
+   "parts": [
+    [
+     "bleed",
+     5.4
+    ],
+    [
+     "rage",
+     1
+    ],
+    [
+     "regen",
+     6.2
+    ]
+   ],
+   "flavor": "A snow bear that came down into the fire and did not melt. Its heart glows red, and so do its fangs.",
+   "opts": [
+    {
+     "drop": "bleed",
+     "fits": true,
+     "now": [
+      2,
+      19
+     ],
+     "use": 1,
+     "S": 7.2
+    },
+    {
+     "drop": "rage",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.48,
+     "S": 11.6
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      4,
+      15
+     ],
+     "use": 0.97,
+     "S": 6.4
+    }
+   ]
+  },
+  {
+   "id": "cinder-skeleton",
+   "verdict": "bucket",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 15.78,
+   "N2": 27.67,
+   "S": 5.37,
+   "m": 1,
+   "parts": [
+    [
+     "revive",
+     5.37
+    ]
+   ],
+   "flavor": "Knock it down once and it rattles. Knock it down twice and it finally takes the hint.",
+   "opts": [
+    {
+     "drop": "revive",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.97,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "obsidian-lich",
+   "verdict": "bucket",
+   "name": "Obsidian Lich",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 25.08,
+   "N2": 69.89,
+   "S": 11.68,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     6.2
+    ],
+    [
+     "armor",
+     5.48
+    ]
+   ],
+   "flavor": "It cut its own heart out of black glass, so nothing could ever break it again.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      15
+     ],
+     "use": 0.98,
+     "S": 5.48
+    },
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      14
+     ],
+     "use": 0.96,
+     "S": 6.2
+    }
+   ]
+  },
+  {
+   "id": "ember-revenant",
+   "verdict": "bucket",
+   "name": "Ember Revenant",
+   "rarity": "epic",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    2,
+    8
+   ],
+   "N": 26.88,
+   "N2": 80.28,
+   "S": 10.85,
+   "m": 1,
+   "parts": [
+    [
+     "revive",
+     5.37
+    ],
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "pierce",
+     0
+    ]
+   ],
+   "flavor": "Once the mountain's sworn guard. The oath outlived the guard.",
+   "opts": [
+    {
+     "drop": "revive",
+     "fits": true,
+     "now": [
+      3,
+      15
+     ],
+     "use": 0.99,
+     "S": 5.48
+    },
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      3,
+      15
+     ],
+     "use": 0.98,
+     "S": 5.37
+    },
+    {
+     "drop": "pierce",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.52,
+     "S": 10.85
+    }
+   ]
+  },
+  {
+   "id": "stonedrop-vulture",
+   "verdict": "bucket",
+   "name": "Stonedrop Vulture",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.96,
+   "N2": 44.27,
+   "S": 11.43,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "archer",
+     11.43
+    ],
+    [
+     "archerStyle",
+     0
+    ]
+   ],
+   "flavor": "Egyptian vultures crack eggs by dropping stones on them. This one has moved on to bigger eggs.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.62,
+     "S": 11.43
+    },
+    {
+     "drop": "archer",
+     "fits": true,
+     "now": [
+      3,
+      7
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "newt-doctor",
+   "verdict": "bucket",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 16.45,
+   "N2": 30.07,
+   "S": 5.64,
+   "m": 1,
+   "parts": [
+    [
+     "healing",
+     5.64
+    ]
+   ],
+   "flavor": "Grows back its own tail, so it has no patience for your complaints about a scratch.",
+   "opts": [
+    {
+     "drop": "healing",
+     "fits": true,
+     "now": [
+      2,
+      13
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "vampire-squid",
+   "verdict": "bucket",
+   "name": "Vampire Squid",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    2,
+    5
+   ],
+   "N": 27.04,
+   "N2": 81.24,
+   "S": 11.6,
+   "m": 1,
+   "parts": [
+    [
+     "bleed",
+     5.4
+    ],
+    [
+     "regen",
+     6.2
+    ]
+   ],
+   "flavor": "It folds its cloak over its head and waits. The river mouth has learned to wait too.",
+   "opts": [
+    {
+     "drop": "bleed",
+     "fits": true,
+     "now": [
+      3,
+      14
+     ],
+     "use": 0.97,
+     "S": 6.2
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      4,
+      13
+     ],
+     "use": 0.98,
+     "S": 5.4
+    }
+   ]
+  },
+  {
+   "id": "goliath-tentacle",
+   "verdict": "bucket",
+   "name": "Goliath Tentacle",
+   "rarity": "epic",
+   "wait": 3,
+   "cost": 2,
+   "was": [
+    2,
+    8
+   ],
+   "N": 34.53,
+   "N2": 132.48,
+   "S": 16.41,
+   "m": 1,
+   "parts": [
+    [
+     "sweep",
+     13.62
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "One arm of eight. The boat it came up under is still somewhere above it.",
+   "opts": [
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      6,
+      20
+     ],
+     "use": 0.99,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.48,
+     "S": 13.62
+    }
+   ]
+  },
+  {
+   "id": "cave-centipede",
+   "verdict": "bucket",
+   "name": "Cave Centipede",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.62,
+   "N2": 27.11,
+   "S": 10.68,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "poison",
+     3.13
+    ]
+   ],
+   "flavor": "A hundred legs, and every one of them is already moving toward you.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.97,
+     "S": 3.13
+    },
+    {
+     "drop": "poison",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.68,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "thorny-devil",
+   "verdict": "bucket",
+   "name": "Thorny Devil",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 22.8,
+   "N2": 57.76,
+   "S": 12.21,
+   "m": 1,
+   "parts": [
+    [
+     "thorns",
+     6.46
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Every inch of it says no.",
+   "opts": [
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      1,
+      15
+     ],
+     "use": 1,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      1,
+      14
+     ],
+     "use": 0.99,
+     "S": 6.46
+    }
+   ]
+  },
+  {
+   "id": "fennec-fox",
+   "verdict": "bucket",
+   "name": "Fennec Fox",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.96,
+   "N2": 44.27,
+   "S": 10.87,
+   "m": 1,
+   "parts": [
+    [
+     "dry",
+     5.75
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "Hears your plan before you finish thinking it.",
+   "opts": [
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      1,
+      12
+     ],
+     "use": 0.96,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      1,
+      11
+     ],
+     "use": 0.94,
+     "S": 5.75
+    }
+   ]
+  },
+  {
+   "id": "meerkat-sentry",
+   "verdict": "bucket",
+   "name": "Meerkat Sentry",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 18.93,
+   "N2": 39.82,
+   "S": 7.75,
+   "m": 1,
+   "parts": [
+    [
+     "sociable",
+     2
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "One stands watch. Twelve more are right behind it.",
+   "opts": [
+    {
+     "drop": "sociable",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.73,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.95,
+     "S": 2
+    }
+   ]
+  },
+  {
+   "id": "monitor-rambler",
+   "verdict": "bucket",
+   "name": "Monitor Rambler",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 23.42,
+   "N2": 60.94,
+   "S": 8.71,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "thorns",
+     3.23
+    ]
+   ],
+   "flavor": "Low, slow and plated. Kicking it is a lesson.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      16
+     ],
+     "use": 0.99,
+     "S": 3.23
+    },
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      2,
+      13
+     ],
+     "use": 0.96,
+     "S": 5.48
+    }
+   ]
+  },
+  {
+   "id": "clover-butterfly",
+   "verdict": "bucket",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 12.19,
+   "N2": 16.51,
+   "S": 3.43,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "diurnal",
+     3.43
+    ]
+   ],
+   "flavor": "Only comes out when the sun does. So does everyone, really, but she makes a fuss of it.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      4
+     ],
+     "use": 0.77,
+     "S": 3.43
+    },
+    {
+     "drop": "diurnal",
+     "fits": true,
+     "now": [
+      2,
+      4
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "meerkat-burrower",
+   "verdict": "bucket",
+   "name": "Meerkat Burrower",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.51,
+   "N2": 38.07,
+   "S": 10.87,
+   "m": 1,
+   "parts": [
+    [
+     "dry",
+     5.75
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "Digs the tunnel, then digs another tunnel in case the first one gets ideas.",
+   "opts": [
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      1,
+      11
+     ],
+     "use": 0.98,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      1,
+      5
+     ],
+     "use": 0.69,
+     "S": 5.75
+    }
+   ]
+  },
+  {
+   "id": "lions-mane-jelly",
+   "verdict": "bucket",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 23.01,
+   "N2": 58.83,
+   "S": 9.05,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "poison",
+     6.26
+    ]
+   ],
+   "flavor": "Its tail is longer than a ferry. Nobody has ever found the end of it on purpose.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      14
+     ],
+     "use": 0.97,
+     "S": 6.26
+    },
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      4,
+      12
+     ],
+     "use": 0.97,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "caiman-hatchling",
+   "verdict": "bucket",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Small, fast and absolutely certain it is the biggest thing in the swamp.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "mudpuppy",
+   "verdict": "bucket",
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 15.72,
+   "N2": 27.46,
+   "S": 5.89,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     3.1
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Feathery gills, a permanent smile, and mud everywhere.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      9
+     ],
+     "use": 0.99,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.96,
+     "S": 3.1
+    }
+   ]
+  },
+  {
+   "id": "ember-centipede",
+   "verdict": "bucket",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 17.07,
+   "N2": 32.38,
+   "S": 13.3,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Its legs glow orange from walking on warm stone. It has never once been cold.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.51,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.62,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "cinder-gecko",
+   "verdict": "bucket",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 13.71,
+   "N2": 20.88,
+   "S": 5.75,
+   "m": 1.5,
+   "parts": [
+    [
+     "evasive",
+     0
+    ],
+    [
+     "dry",
+     5.75
+    ]
+   ],
+   "flavor": "Sticks to any wall, even the hot ones. Especially the hot ones.",
+   "opts": [
+    {
+     "drop": "evasive",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.64,
+     "S": 5.75
+    },
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      2,
+      5
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "cave-olm",
+   "verdict": "bucket",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.62,
+   "N2": 27.11,
+   "S": 8.22,
+   "m": 1,
+   "parts": [
+    [
+     "darksight",
+     5.12
+    ],
+    [
+     "regen",
+     3.1
+    ]
+   ],
+   "flavor": "Has lived in the dark so long it forgot it had eyes. It does not miss them.",
+   "opts": [
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.97,
+     "S": 3.1
+    },
+    {
+     "drop": "regen",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.52,
+     "S": 5.12
+    }
+   ]
+  },
+  {
+   "id": "glimmer-spider",
+   "verdict": "bucket",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 18.62,
+   "N2": 38.52,
+   "S": 8.25,
+   "m": 1,
+   "parts": [
+    [
+     "darksight",
+     5.12
+    ],
+    [
+     "poison",
+     3.13
+    ]
+   ],
+   "flavor": "Spins its web out of the shiny bits. Things that like shiny things come to look.",
+   "opts": [
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      3,
+      9
+     ],
+     "use": 0.97,
+     "S": 3.13
+    },
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      1,
+      11
+     ],
+     "use": 0.97,
+     "S": 5.12
+    }
+   ]
+  },
+  {
+   "id": "rabid-jackal",
+   "verdict": "bucket",
+   "name": "Rabid Jackal",
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 13.92,
+   "N2": 21.53,
+   "S": 7.23,
+   "m": 1,
+   "parts": [
+    [
+     "rabid",
+     6.23
+    ],
+    [
+     "weakness",
+     1
+    ]
+   ],
+   "flavor": "Foam at the mouth, fear of the river. Keep it away from both.",
+   "opts": [
+    {
+     "drop": "rabid",
+     "fits": true,
+     "now": [
+      2,
+      10
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "rafflesia",
+   "verdict": "bucket",
+   "name": "Rafflesia",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 16.29,
+   "N2": 29.48,
+   "S": 8.88,
+   "m": 1,
+   "parts": [
+    [
+     "onRoundStart → debuff",
+     8.88
+    ]
+   ],
+   "flavor": "The biggest flower in the forest, and it smells like a week-old carcass. Whatever stands across from it slowly loses the will to fight.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onRoundStart\",\"do\":\"debuff\",\"amount\":1,\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+     "fits": true,
+     "now": [
+      1,
+      15
+     ],
+     "use": 0.99,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "arc-bat",
+   "verdict": "bucket",
+   "name": "Arc Bat",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 23.53,
+   "N2": 61.52,
+   "S": 7.2,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "electricity",
+     7.2
+    ]
+   ],
+   "flavor": "Hangs from the iron veins deep underground and drinks the lightning that runs through them.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.77,
+     "S": 7.2
+    },
+    {
+     "drop": "electricity",
+     "fits": true,
+     "now": [
+      4,
+      8
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "hammerhead-shark",
+   "verdict": "bucket",
+   "name": "Hammerhead Shark",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    1,
+    2
+   ],
+   "N": 24.15,
+   "N2": 64.8,
+   "S": 11.87,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "sweep",
+     9.08
+    ]
+   ],
+   "flavor": "Swings that wide flat head through the shoal like a mallet, and senses who is hiding in the sand.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.5,
+     "S": 9.08
+    },
+    {
+     "drop": "sweep",
+     "fits": true,
+     "now": [
+      4,
+      13
+     ],
+     "use": 0.97,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "blister-beetle",
+   "verdict": "bucket",
+   "name": "Blister Beetle",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 8.05,
+   "m": 1,
+   "parts": [
+    [
+     "onDeath → poison",
+     8.05
+    ]
+   ],
+   "flavor": "Eat it and regret it. The birds that try it once never try it twice.",
+   "opts": [
+    {
+     "drop": "trigger:0 {\"on\":\"onDeath\",\"do\":\"poison\",\"amount\":5,\"who\":\"killer\"}",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "moon-jerboa",
+   "verdict": "bucket",
+   "name": "Moon Jerboa",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 19.96,
+   "N2": 44.27,
+   "S": 8,
+   "m": 1,
+   "parts": [
+    [
+     "fullMoon",
+     8
+    ]
+   ],
+   "flavor": "On the full moon it hops higher than the dunes, and lands a little bigger.",
+   "opts": [
+    {
+     "drop": "fullMoon",
+     "fits": true,
+     "now": [
+      4,
+      12
+     ],
+     "use": 0.95,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "verdict": "bucket",
+   "name": "Vampire Bat Nurse",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.93,
+   "N2": 39.82,
+   "S": 10.06,
+   "m": 1,
+   "parts": [
+    [
+     "nursing",
+     10.06
+    ]
+   ],
+   "flavor": "Strange how gently it tends the ones that bleed.",
+   "opts": [
+    {
+     "drop": "nursing",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "swift-fox",
+   "verdict": "bucket",
+   "name": "Swift Fox",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.05,
+   "N2": 25.17,
+   "S": 7.17,
+   "m": 1,
+   "parts": [
+    [
+     "fastForward",
+     7.17
+    ]
+   ],
+   "flavor": "It was named before anyone saw the other foxes.",
+   "opts": [
+    {
+     "drop": "fastForward",
+     "fits": true,
+     "now": [
+      3,
+      9
+     ],
+     "use": 0.95,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "pangolin-roller",
+   "verdict": "bucket",
+   "name": "Pangolin Roller",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    2,
+    4
+   ],
+   "N": 19.55,
+   "N2": 42.47,
+   "S": 16.9,
+   "m": 1,
+   "parts": [
+    [
+     "sturdy",
+     16.9
+    ]
+   ],
+   "flavor": "Scales like a pinecone, and as hard to argue with.",
+   "opts": [
+    {
+     "drop": "sturdy",
+     "fits": true,
+     "now": [
+      3,
+      14
+     ],
+     "use": 0.97,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "woodpecker-sapper",
+   "verdict": "bucket",
+   "name": "Woodpecker Sapper",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 19.44,
+   "N2": 41.99,
+   "S": 7.44,
+   "m": 1,
+   "parts": [
+    [
+     "perforate",
+     7.44
+    ]
+   ],
+   "flavor": "Bark, armour, shield: it is all just wood to a woodpecker.",
+   "opts": [
+    {
+     "drop": "perforate",
+     "fits": true,
+     "now": [
+      3,
+      14
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "platypus-spur",
+   "verdict": "bucket",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 18.51,
+   "N2": 38.07,
+   "S": 6.26,
+   "m": 1,
+   "parts": [
+    [
+     "venomous",
+     6.26
+    ]
+   ],
+   "flavor": "Duck bill, otter fur, and a spur nobody warned you about.",
+   "opts": [
+    {
+     "drop": "venomous",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "cone-snail",
+   "verdict": "under",
+   "name": "Cone Snail",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 19.13,
+   "N2": 40.66,
+   "S": 6.21,
+   "m": 1,
+   "parts": [
+    [
+     "toxin",
+     6.21
+    ]
+   ],
+   "flavor": "A pretty shell, a slow crawl, and a harpoon full of something that never wears off.",
+   "opts": [
+    {
+     "drop": "toxin",
+     "fits": true,
+     "now": [
+      3,
+      14
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "dromedary",
+   "verdict": "bucket",
+   "name": "Dromedary",
+   "rarity": "uncommon",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    9
+   ],
+   "N": 23.84,
+   "N2": 63.15,
+   "S": 8.85,
+   "m": 1,
+   "parts": [
+    [
+     "dry",
+     5.75
+    ],
+    [
+     "regen",
+     3.1
+    ]
+   ],
+   "flavor": "It packed water for a week and patience for a month, and the desert has yet to outlast either.",
+   "opts": [
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      2,
+      16
+     ],
+     "use": 0.97,
+     "S": 3.1
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      14
+     ],
+     "use": 1,
+     "S": 5.75
+    }
+   ]
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "verdict": "bucket",
+   "name": "Ashwing Ptarmigan",
+   "rarity": "rare",
+   "wait": 0,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.05,
+   "N2": 36.2,
+   "S": 5.12,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "White in winter, brown in summer, and grey since the crater started coughing.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.89,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      3,
+      6
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "verdict": "bucket",
+   "name": "Caldera Snow Leopard",
+   "rarity": "superrare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 23.47,
+   "N2": 61.2,
+   "S": 9.14,
+   "m": 1,
+   "parts": [
+    [
+     "pounce",
+     4.8
+    ],
+    [
+     "ambush",
+     4.34
+    ]
+   ],
+   "flavor": "It hunts the crater rim in the steam, where nothing can see it coming and nothing can hear it over the vents.",
+   "opts": [
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.99,
+     "S": 4.34
+    },
+    {
+     "drop": "ambush",
+     "fits": true,
+     "now": [
+      3,
+      12
+     ],
+     "use": 0.97,
+     "S": 4.8
+    }
+   ]
+  },
+  {
+   "id": "howdah-archers",
+   "verdict": "bucket",
+   "name": "Howdah Archers",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 21.51,
+   "N2": 51.41,
+   "S": 9.55,
+   "m": 1,
+   "parts": [
+    [
+     "arrow",
+     2
+    ],
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Two langurs, one bow each, and a running argument about whose turn it is to duck.",
+   "opts": [
+    {
+     "drop": "arrow",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.49,
+     "S": 7.55
+    },
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.98,
+     "S": 2
+    }
+   ]
+  },
+  {
+   "id": "testudo-tortoise",
+   "verdict": "under",
+   "name": "Testudo Tortoise",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 2,
+   "was": [
+    1,
+    6
+   ],
+   "N": 28.07,
+   "N2": 87.55,
+   "S": 9.22,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ],
+    [
+     "guardian",
+     1
+    ]
+   ],
+   "flavor": "Shell up, head in, and let the arrows rain. It has been rained on before.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      3,
+      21
+     ],
+     "use": 1,
+     "S": 1
+    },
+    {
+     "drop": "guardian",
+     "fits": true,
+     "now": [
+      1,
+      17
+     ],
+     "use": 0.97,
+     "S": 8.22
+    }
+   ]
+  },
+  {
+   "id": "marshal-tuskwell",
+   "verdict": "bucket",
+   "name": "Marshal Tuskwell",
+   "rarity": "epic",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    3,
+    18
+   ],
+   "N": 44.71,
+   "N2": 222.11,
+   "S": 15.82,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ],
+    [
+     "overwhelm",
+     0.28
+    ],
+    [
+     "inspiring",
+     4.32
+    ],
+    [
+     "arrow",
+     2
+    ],
+    [
+     "vanguard",
+     1
+    ]
+   ],
+   "flavor": "Forty sieges, forty wins, and a howdah with a little flag on it for each.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      5,
+      27
+     ],
+     "use": 1,
+     "S": 7.6
+    },
+    {
+     "drop": "overwhelm",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.41,
+     "S": 15.54
+    },
+    {
+     "drop": "inspiring",
+     "fits": true,
+     "now": [
+      3,
+      27
+     ],
+     "use": 1,
+     "S": 11.5
+    },
+    {
+     "drop": "arrow",
+     "fits": true,
+     "now": [
+      1,
+      28
+     ],
+     "use": 0.98,
+     "S": 13.82
+    },
+    {
+     "drop": "vanguard",
+     "fits": false,
+     "now": [
+      1,
+      2
+     ],
+     "use": 0.42,
+     "S": 14.82
+    }
+   ]
+  },
+  {
+   "id": "great-gate",
+   "verdict": "bucket",
+   "name": "Great Gate",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    0,
+    6
+   ],
+   "N": 16.4,
+   "N2": 29.88,
+   "S": 9.22,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ],
+    [
+     "guardian",
+     1
+    ]
+   ],
+   "flavor": "Oak, iron, gold leaf, and a doorbell nobody has ever dared ring.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      0,
+      15
+     ],
+     "use": 0.98,
+     "S": 1
+    },
+    {
+     "drop": "guardian",
+     "fits": false,
+     "now": [
+      0,
+      1
+     ],
+     "use": 0.56,
+     "S": 8.22
+    }
+   ]
+  },
+  {
+   "id": "magnate-duck",
+   "verdict": "bucket",
+   "name": "The Magnate Duck",
+   "rarity": "legendary",
+   "wait": 4,
+   "cost": 4,
+   "was": [
+    2,
+    19
+   ],
+   "N": 47.81,
+   "N2": 253.98,
+   "S": 19.54,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     8.22
+    ],
+    [
+     "midas",
+     2
+    ],
+    [
+     "bounty",
+     3
+    ],
+    [
+     "swipe",
+     2
+    ],
+    [
+     "inspiring",
+     4.32
+    ],
+    [
+     "hoard",
+     0
+    ]
+   ],
+   "flavor": "He owns the keep, the valley and the road you came in on. Every hit he lands, he invoices.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      3,
+      30
+     ],
+     "use": 0.99,
+     "S": 11.32
+    },
+    {
+     "drop": "midas",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.43,
+     "S": 17.54
+    },
+    {
+     "drop": "bounty",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.41,
+     "S": 16.54
+    },
+    {
+     "drop": "swipe",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.43,
+     "S": 17.54
+    },
+    {
+     "drop": "inspiring",
+     "fits": true,
+     "now": [
+      1,
+      22
+     ],
+     "use": 0.82,
+     "S": 15.22
+    },
+    {
+     "drop": "hoard",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.47,
+     "S": 19.54
+    }
+   ]
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "verdict": "bucket",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.65,
+   "N2": 42.9,
+   "S": 8.48,
+   "m": 1,
+   "parts": [
+    [
+     "bloom",
+     8.48
+    ],
+    [
+     "herbalist",
+     0
+    ]
+   ],
+   "flavor": "Pockets full of moss, mint and something nobody should eat raw.",
+   "opts": [
+    {
+     "drop": "bloom",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 0.97,
+     "S": 0
+    },
+    {
+     "drop": "herbalist",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.58,
+     "S": 8.48
+    }
+   ]
+  },
+  {
+   "id": "sea-cucumber",
+   "verdict": "bucket",
+   "name": "Sea Cucumber",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    6
+   ],
+   "N": 19.13,
+   "N2": 40.66,
+   "S": 9.9,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     6.2
+    ],
+    [
+     "onAttacked → stun",
+     3.7
+    ]
+   ],
+   "flavor": "Poke it and it throws its insides at you, sticky threads and all. A week later it has grown a new set and is back on the reef, chewing sand.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      11
+     ],
+     "use": 0.98,
+     "S": 3.7
+    },
+    {
+     "drop": "trigger:0 {\"on\":\"onAttacked\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\",\"count\":1,\"once\":true}",
+     "fits": false,
+     "now": [
+      1,
+      2
+     ],
+     "use": 0.53,
+     "S": 6.2
+    }
+   ]
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "verdict": "bucket",
+   "name": "Grovebearer Dragon-Turtle",
+   "rarity": "legendary",
+   "wait": 5,
+   "cost": 4,
+   "was": [
+    1,
+    9
+   ],
+   "N": 55.61,
+   "N2": 343.61,
+   "S": 36.37,
+   "m": 1,
+   "parts": [
+    [
+     "sturdy",
+     16.9
+    ],
+    [
+     "regen",
+     9.3
+    ],
+    [
+     "guardian",
+     1
+    ],
+    [
+     "sprout",
+     6.38
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "There is a whole wood on its back, with a stream, two badger setts and a shrine. Nobody up there has noticed it walking.",
+   "opts": [
+    {
+     "drop": "sturdy",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.4,
+     "S": 19.47
+    },
+    {
+     "drop": "regen",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.54,
+     "S": 27.07
+    },
+    {
+     "drop": "guardian",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.69,
+     "S": 35.37
+    },
+    {
+     "drop": "sprout",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.59,
+     "S": 29.99
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.66,
+     "S": 33.58
+    }
+   ]
+  },
+  {
+   "id": "sandfish",
+   "verdict": "bucket",
+   "name": "Sandfish",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 18.93,
+   "N2": 39.82,
+   "S": 8.25,
+   "m": 1,
+   "parts": [
+    [
+     "dry",
+     5.75
+    ],
+    [
+     "invisible",
+     2.5
+    ]
+   ],
+   "flavor": "It swims through the dunes the way a fish swims through water, and only comes up to bite.",
+   "opts": [
+    {
+     "drop": "dry",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.98,
+     "S": 2.5
+    },
+    {
+     "drop": "invisible",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.73,
+     "S": 5.75
+    }
+   ]
+  },
+  {
+   "id": "river-mink",
+   "verdict": "bucket",
+   "name": "River Mink",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.51,
+   "N2": 38.07,
+   "S": 7.59,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Swims like an otter, bites like a stoat, and answers to neither.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      11
+     ],
+     "use": 0.96,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 1,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "pine-marten",
+   "verdict": "bucket",
+   "name": "Pine Marten",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.86,
+   "N2": 43.82,
+   "S": 12.35,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Down the trunk headfirst, and the squirrel never hears it coming.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      1,
+      13
+     ],
+     "use": 1,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.53,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "grass-snake",
+   "verdict": "bucket",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.62,
+   "N2": 38.52,
+   "S": 8.16,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "revive",
+     5.37
+    ]
+   ],
+   "flavor": "Corner it and it rolls over, tongue out, and plays dead. Very convincingly.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      9
+     ],
+     "use": 0.88,
+     "S": 5.37
+    },
+    {
+     "drop": "revive",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.99,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "hedgerow-shrew",
+   "verdict": "bucket",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 7.55,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "It must eat every few hours or starve, so it is always, always in a hurry.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "slow-worm",
+   "verdict": "bucket",
+   "name": "Slow-worm",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 5.37,
+   "m": 1,
+   "parts": [
+    [
+     "revive",
+     5.37
+    ]
+   ],
+   "flavor": "Not a worm, not slow, and not finished just because you grabbed its tail.",
+   "opts": [
+    {
+     "drop": "revive",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "pincushion-urchin",
+   "verdict": "bucket",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15,
+   "N2": 25,
+   "S": 9.25,
+   "m": 1,
+   "parts": [
+    [
+     "thorns",
+     6.46
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "The rock pool's pin cushion. Step on it once and you will always know where it lives.",
+   "opts": [
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.97,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.63,
+     "S": 6.46
+    }
+   ]
+  },
+  {
+   "id": "rock-pool-starfish",
+   "verdict": "bucket",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 8.99,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     6.2
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Pull off an arm and it simply grows another. It has five to spare.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.95,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.6,
+     "S": 6.2
+    }
+   ]
+  },
+  {
+   "id": "limpet-clinger",
+   "verdict": "bucket",
+   "name": "Limpet Clinger",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 8.17,
+   "m": 1,
+   "parts": [
+    [
+     "shell",
+     5.38
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "When the tide goes out it clamps down. Nothing short of a chisel shifts it.",
+   "opts": [
+    {
+     "drop": "shell",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.97,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.7,
+     "S": 5.38
+    }
+   ]
+  },
+  {
+   "id": "peregrine-stooper",
+   "verdict": "bucket",
+   "name": "Peregrine Stooper",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 19.44,
+   "N2": 41.99,
+   "S": 12.35,
+   "m": 1,
+   "parts": [
+    [
+     "quick",
+     7.55
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "The fastest thing alive, falling on purpose.",
+   "opts": [
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      1,
+      12
+     ],
+     "use": 0.97,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.54,
+     "S": 7.55
+    }
+   ]
+  },
+  {
+   "id": "fulmar-spitter",
+   "verdict": "bucket",
+   "name": "Fulmar Spitter",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.41,
+   "N2": 37.66,
+   "S": 6.46,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "thorns",
+     6.46
+    ]
+   ],
+   "flavor": "Get too close to its nest and it spits stinking oil all over your feathers.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.51,
+     "S": 6.46
+    },
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "water-shrew",
+   "verdict": "bucket",
+   "name": "Water Shrew",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 5.92,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "venomous",
+     3.13
+    ]
+   ],
+   "flavor": "Silver with bubbles as it dives, and its bite carries venom.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.93,
+     "S": 3.13
+    },
+    {
+     "drop": "venomous",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.97,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "pyrenean-desman",
+   "verdict": "bucket",
+   "name": "Pyrenean Desman",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 16.24,
+   "N2": 29.3,
+   "S": 6.93,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "keenSense",
+     4.14
+    ]
+   ],
+   "flavor": "A trunked, near-blind swimmer that finds its supper by the touch of its whiskers.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.99,
+     "S": 4.14
+    },
+    {
+     "drop": "keenSense",
+     "fits": true,
+     "now": [
+      2,
+      9
+     ],
+     "use": 0.95,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "diving-bell-spider",
+   "verdict": "bucket",
+   "name": "Diving Bell Spider",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 18.62,
+   "N2": 38.52,
+   "S": 7.13,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "ambush",
+     4.34
+    ]
+   ],
+   "flavor": "It lives underwater in a bubble of silk and air, and waits there for you.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      12
+     ],
+     "use": 0.98,
+     "S": 4.34
+    },
+    {
+     "drop": "ambush",
+     "fits": true,
+     "now": [
+      4,
+      8
+     ],
+     "use": 0.99,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "anhinga-spearbird",
+   "verdict": "bucket",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.62,
+   "N2": 38.52,
+   "S": 7.59,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Swims with only its neck above water, then spears whatever swims past.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      11
+     ],
+     "use": 0.96,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      4,
+      8
+     ],
+     "use": 0.99,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "giant-water-bug",
+   "verdict": "bucket",
+   "name": "Giant Water Bug",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.72,
+   "N2": 38.94,
+   "S": 9.05,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "venomous",
+     6.26
+    ]
+   ],
+   "flavor": "The toe-biter. It waits on the bottom with its arms wide open.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.49,
+     "S": 6.26
+    },
+    {
+     "drop": "venomous",
+     "fits": true,
+     "now": [
+      4,
+      8
+     ],
+     "use": 0.98,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "greater-siren",
+   "verdict": "bucket",
+   "name": "Greater Siren",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    4
+   ],
+   "N": 23.63,
+   "N2": 62.04,
+   "S": 12.09,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "regen",
+     9.3
+    ]
+   ],
+   "flavor": "When the swamp dries it seals itself in mud and waits, for years if it must.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.52,
+     "S": 9.3
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      3,
+      15
+     ],
+     "use": 0.99,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "raft-spider",
+   "verdict": "bucket",
+   "name": "Raft Spider",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 17.58,
+   "N2": 34.34,
+   "S": 7.91,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "darksight",
+     5.12
+    ]
+   ],
+   "flavor": "Rests its feet on the water and feels for ripples in the dark.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      8
+     ],
+     "use": 0.86,
+     "S": 5.12
+    },
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      3,
+      9
+     ],
+     "use": 0.99,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "leopard-slug",
+   "verdict": "bucket",
+   "name": "Leopard Slug",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 5.78,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     3.1
+    ],
+    [
+     "nocturnal",
+     2.68
+    ]
+   ],
+   "flavor": "Spotted like a big cat, slow as a slug, and very fond of mushrooms.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.94,
+     "S": 2.68
+    },
+    {
+     "drop": "nocturnal",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.99,
+     "S": 3.1
+    }
+   ]
+  },
+  {
+   "id": "wolf-spider-mother",
+   "verdict": "bucket",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.86,
+   "N2": 43.82,
+   "S": 11.22,
+   "m": 1,
+   "parts": [
+    [
+     "brood",
+     6.42
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "She carries her spiderlings on her back, and still runs you down.",
+   "opts": [
+    {
+     "drop": "brood",
+     "fits": true,
+     "now": [
+      1,
+      13
+     ],
+     "use": 1,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": false,
+     "now": [
+      1,
+      2
+     ],
+     "use": 0.52,
+     "S": 6.42
+    }
+   ]
+  },
+  {
+   "id": "springtail-hopper",
+   "verdict": "bucket",
+   "name": "Springtail Hopper",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 7.55,
+   "m": 1.5,
+   "parts": [
+    [
+     "evasive",
+     0
+    ],
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "Smaller than a seed, with a spring folded under its belly. Blink and it is gone.",
+   "opts": [
+    {
+     "drop": "evasive",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.88,
+     "S": 7.55
+    },
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      1,
+      5
+     ],
+     "use": 0.88,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "red-backed-salamander",
+   "verdict": "bucket",
+   "name": "Red-backed Salamander",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 6.2,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     6.2
+    ]
+   ],
+   "flavor": "Breathes through its damp skin and lives under the same log for years.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 1,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "cave-cricket",
+   "verdict": "bucket",
+   "name": "Cave Cricket",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 5.12,
+   "m": 1.5,
+   "parts": [
+    [
+     "darksight",
+     5.12
+    ],
+    [
+     "evasive",
+     0
+    ]
+   ],
+   "flavor": "Legs twice as long as its body, and every one of them listening.",
+   "opts": [
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      2,
+      3
+     ],
+     "use": 0.88,
+     "S": 0
+    },
+    {
+     "drop": "evasive",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.68,
+     "S": 5.12
+    }
+   ]
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "verdict": "bucket",
+   "name": "Cave Pseudoscorpion",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 8.25,
+   "m": 1,
+   "parts": [
+    [
+     "darksight",
+     5.12
+    ],
+    [
+     "poison",
+     3.13
+    ]
+   ],
+   "flavor": "A scorpion with no tail and no sting, just two venom-tipped claws the size of grains.",
+   "opts": [
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.93,
+     "S": 3.13
+    },
+    {
+     "drop": "poison",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.68,
+     "S": 5.12
+    }
+   ]
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "verdict": "bucket",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    3,
+    5
+   ],
+   "N": 23.84,
+   "N2": 63.15,
+   "S": 11.06,
+   "m": 1,
+   "parts": [
+    [
+     "poison",
+     6.26
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "Wider than your face, faster than your scream, and it has already seen you.",
+   "opts": [
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      3,
+      13
+     ],
+     "use": 1,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      1,
+      15
+     ],
+     "use": 0.98,
+     "S": 6.26
+    }
+   ]
+  },
+  {
+   "id": "guano-beetle",
+   "verdict": "bucket",
+   "name": "Guano Beetle",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 7.9,
+   "m": 1,
+   "parts": [
+    [
+     "darksight",
+     5.12
+    ],
+    [
+     "carrion",
+     2.78
+    ]
+   ],
+   "flavor": "Under every bat roost there is a heap, and under every heap, a thousand of these.",
+   "opts": [
+    {
+     "drop": "darksight",
+     "fits": true,
+     "now": [
+      1,
+      10
+     ],
+     "use": 0.97,
+     "S": 2.78
+    },
+    {
+     "drop": "carrion",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.53,
+     "S": 5.12
+    }
+   ]
+  },
+  {
+   "id": "banded-sea-krait",
+   "verdict": "bucket",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 19.03,
+   "N2": 40.24,
+   "S": 9.05,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "venomous",
+     6.26
+    ]
+   ],
+   "flavor": "Hunts eels in the roots by night, then crawls ashore to lay its eggs.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.49,
+     "S": 6.26
+    },
+    {
+     "drop": "venomous",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.97,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "fishing-cat",
+   "verdict": "bucket",
+   "name": "Fishing Cat",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    2
+   ],
+   "N": 20.06,
+   "N2": 44.71,
+   "S": 7.59,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "pounce",
+     4.8
+    ]
+   ],
+   "flavor": "A cat that loves the water: it taps the surface like a lure, then dives.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      13
+     ],
+     "use": 0.99,
+     "S": 4.8
+    },
+    {
+     "drop": "pounce",
+     "fits": true,
+     "now": [
+      3,
+      11
+     ],
+     "use": 0.97,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "horseshoe-crab",
+   "verdict": "bucket",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 17.58,
+   "N2": 34.34,
+   "S": 8.27,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     5.48
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "Not a crab at all, but older than the dinosaurs, with blue blood to prove it.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      11
+     ],
+     "use": 0.99,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      1,
+      4
+     ],
+     "use": 0.65,
+     "S": 5.48
+    }
+   ]
+  },
+  {
+   "id": "sea-hare",
+   "verdict": "under",
+   "name": "Sea Hare",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    3
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 4.99,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "smokeBomb",
+     2.2
+    ]
+   ],
+   "flavor": "A sea slug with rabbit ears that hides behind a cloud of purple ink.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      9
+     ],
+     "use": 0.99,
+     "S": 2.2
+    },
+    {
+     "drop": "smokeBomb",
+     "fits": true,
+     "now": [
+      2,
+      8
+     ],
+     "use": 0.95,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "verdict": "bucket",
+   "name": "Yellow-bellied Sea Snake",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 20.17,
+   "N2": 45.2,
+   "S": 12.18,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "poison",
+     9.39
+    ]
+   ],
+   "flavor": "It drifts with the slicks in the open ocean and never comes ashore at all.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.61,
+     "S": 9.39
+    },
+    {
+     "drop": "poison",
+     "fits": true,
+     "now": [
+      4,
+      9
+     ],
+     "use": 0.96,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "verdict": "bucket",
+   "name": "Crown-of-thorns Star",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 19.13,
+   "N2": 40.66,
+   "S": 9.59,
+   "m": 1,
+   "parts": [
+    [
+     "thorns",
+     6.46
+    ],
+    [
+     "poison",
+     3.13
+    ]
+   ],
+   "flavor": "It eats the reef from the top down, and every one of its spines is venomous.",
+   "opts": [
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      2,
+      12
+     ],
+     "use": 1,
+     "S": 3.13
+    },
+    {
+     "drop": "poison",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.49,
+     "S": 6.46
+    }
+   ]
+  },
+  {
+   "id": "lionfish",
+   "verdict": "bucket",
+   "name": "Lionfish",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 18.62,
+   "N2": 38.52,
+   "S": 9.25,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "thorns",
+     6.46
+    ]
+   ],
+   "flavor": "Its fins spread like a fan of feathers. Every feather is a venomous spine.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.51,
+     "S": 6.46
+    },
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      3,
+      10
+     ],
+     "use": 0.99,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "giant-clam",
+   "verdict": "bucket",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    8
+   ],
+   "N": 21.46,
+   "N2": 51.17,
+   "S": 8.48,
+   "m": 1,
+   "parts": [
+    [
+     "shell",
+     5.38
+    ],
+    [
+     "regen",
+     3.1
+    ]
+   ],
+   "flavor": "It farms algae in its own lips, and closes like a door.",
+   "opts": [
+    {
+     "drop": "shell",
+     "fits": true,
+     "now": [
+      1,
+      16
+     ],
+     "use": 0.98,
+     "S": 3.1
+    },
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      1,
+      14
+     ],
+     "use": 1,
+     "S": 5.38
+    }
+   ]
+  },
+  {
+   "id": "great-barracuda",
+   "verdict": "bucket",
+   "name": "Great Barracuda",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    1
+   ],
+   "N": 20.17,
+   "N2": 45.2,
+   "S": 10.34,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "It hangs in the current like a silver blade. Then it is not there any more.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.52,
+     "S": 7.55
+    },
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      5,
+      7
+     ],
+     "use": 0.96,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "alpine-swift",
+   "verdict": "bucket",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 15.31,
+   "N2": 26.04,
+   "S": 7.55,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "quick",
+     7.55
+    ]
+   ],
+   "flavor": "It eats, drinks and sleeps on the wing, and may not land for half a year.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.69,
+     "S": 7.55
+    },
+    {
+     "drop": "quick",
+     "fits": true,
+     "now": [
+      3,
+      4
+     ],
+     "use": 0.96,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "alpine-salamander",
+   "verdict": "bucket",
+   "name": "Alpine Salamander",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 17.58,
+   "N2": 34.34,
+   "S": 5.84,
+   "m": 1,
+   "parts": [
+    [
+     "regen",
+     3.1
+    ],
+    [
+     "scare",
+     2.74
+    ]
+   ],
+   "flavor": "Jet black, born live after two years inside its mother, and very hard to impress.",
+   "opts": [
+    {
+     "drop": "regen",
+     "fits": true,
+     "now": [
+      2,
+      10
+     ],
+     "use": 0.95,
+     "S": 2.74
+    },
+    {
+     "drop": "scare",
+     "fits": true,
+     "now": [
+      2,
+      10
+     ],
+     "use": 0.97,
+     "S": 3.1
+    }
+   ]
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "verdict": "bucket",
+   "name": "Hawthorn Shieldbug",
+   "rarity": "common",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 17.58,
+   "N2": 34.34,
+   "S": 6.03,
+   "m": 1,
+   "parts": [
+    [
+     "armor",
+     2.74
+    ],
+    [
+     "daunt",
+     3.29
+    ]
+   ],
+   "flavor": "A green shield with red trim, and a smell that clears the hedge.",
+   "opts": [
+    {
+     "drop": "armor",
+     "fits": true,
+     "now": [
+      2,
+      10
+     ],
+     "use": 0.98,
+     "S": 3.29
+    },
+    {
+     "drop": "daunt",
+     "fits": true,
+     "now": [
+      2,
+      10
+     ],
+     "use": 0.95,
+     "S": 2.74
+    }
+   ]
+  },
+  {
+   "id": "garden-tiger-moth",
+   "verdict": "bucket",
+   "name": "Garden Tiger Moth",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    1
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 3.23,
+   "m": 1.5,
+   "parts": [
+    [
+     "flying",
+     0
+    ],
+    [
+     "thorns",
+     3.23
+    ]
+   ],
+   "flavor": "Its woolly-bear caterpillar is all bristles, and the moth tastes even worse.",
+   "opts": [
+    {
+     "drop": "flying",
+     "fits": true,
+     "now": [
+      1,
+      5
+     ],
+     "use": 0.86,
+     "S": 3.23
+    },
+    {
+     "drop": "thorns",
+     "fits": true,
+     "now": [
+      1,
+      6
+     ],
+     "use": 0.98,
+     "S": 0
+    }
+   ]
+  },
+  {
+   "id": "polar-bear",
+   "verdict": "bucket",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "wait": 2,
+   "cost": 1,
+   "was": [
+    1,
+    3
+   ],
+   "N": 25.8,
+   "N2": 73.96,
+   "S": 9.3,
+   "m": 1,
+   "parts": [
+    [
+     "ambush",
+     6.51
+    ],
+    [
+     "tide",
+     2.79
+    ]
+   ],
+   "flavor": "It waits at the breathing hole for hours. The seal only has to come up once.",
+   "opts": [
+    {
+     "drop": "ambush",
+     "fits": true,
+     "now": [
+      6,
+      11
+     ],
+     "use": 0.98,
+     "S": 2.79
+    },
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      15
+     ],
+     "use": 0.99,
+     "S": 6.51
+    }
+   ]
+  },
+  {
+   "id": "harp-seal-pup",
+   "verdict": "under",
+   "name": "Harp Seal Pup",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    1,
+    2
+   ],
+   "N": 11.95,
+   "N2": 15.87,
+   "S": 3.79,
+   "m": 1,
+   "parts": [
+    [
+     "tide",
+     2.79
+    ],
+    [
+     "molting",
+     1
+    ]
+   ],
+   "flavor": "A white bundle on the pack ice, drinking the richest milk in the sea.",
+   "opts": [
+    {
+     "drop": "tide",
+     "fits": true,
+     "now": [
+      2,
+      6
+     ],
+     "use": 0.92,
+     "S": 1
+    },
+    {
+     "drop": "molting",
+     "fits": true,
+     "now": [
+      1,
+      7
+     ],
+     "use": 0.97,
+     "S": 2.79
+    }
+   ]
+  },
+  {
+   "id": "terraumbra",
+   "verdict": "bucket",
+   "name": "Terraumbra",
+   "rarity": "unique",
+   "wait": 0,
+   "cost": 2,
+   "was": [
+    1,
+    1
+   ],
+   "N": 23.63,
+   "N2": 62.04,
+   "S": 15.08,
+   "m": 1,
+   "parts": [],
+   "flavor": "Seven slivers of rainbow light circle whoever holds them. Every few rounds they spin faster, and shine a little brighter.",
+   "opts": []
+  },
+  {
+   "id": "pink-maus",
+   "verdict": "bucket",
+   "name": "Pink Maus",
+   "rarity": "unique",
+   "wait": 1,
+   "cost": 2,
+   "was": [
+    1,
+    3
+   ],
+   "N": 26.99,
+   "N2": 80.94,
+   "S": 16.9,
+   "m": 1,
+   "parts": [
+    [
+     "sturdy",
+     16.9
+    ],
+    [
+     "taunt",
+     0
+    ]
+   ],
+   "flavor": "Round, pink and about the size of a plum. Nothing has ever hurt it, and it has never noticed anyone trying.",
+   "opts": [
+    {
+     "drop": "sturdy",
+     "fits": true,
+     "now": [
+      2,
+      22
+     ],
+     "use": 0.96,
+     "S": 0
+    },
+    {
+     "drop": "taunt",
+     "fits": false,
+     "now": [
+      1,
+      1
+     ],
+     "use": 0.74,
+     "S": 16.9
+    }
+   ]
+  }
+ ]
+}

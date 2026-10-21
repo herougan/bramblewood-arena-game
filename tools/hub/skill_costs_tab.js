@@ -58,7 +58,7 @@
   function build(){
     if(build.done) return; build.done = true;
     const host = $('scHost'); if(!host) return;
-    host.innerHTML = `<div class="dec-head"><h2>Skill costs</h2><p>Every number behind S, the skill part of the stat budget. A trigger costs <b>how often × how strong</b>: its weight here × its action's value (On Death = 1, so an On Death "deal 2 damage" costs 2; On Any Played = 5 with a value-2 action costs 10). Keyword skills keep the costs they had. Change a number and every card's S, N and both rules (2A+H+S ≤ N, A·H+S ≤ (N/3)²) update below.</p><p class="sc-formula">${(()=>{ const f = window.BramblewoodBudget && BramblewoodBudget.formulaParts((SC_SEED && SC_SEED.budget) || {}); return f ? `${f.n}; ${f.zero}. ${f.base}. Both scores ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind).` : ''; })()}</p></div>
+    host.innerHTML = `<div class="dec-head"><h2>Skill costs</h2><p>Every number behind S, the skill part of the stat budget. A trigger costs <b>how often × how strong</b>: its weight here × its action's value (On Death = 1, so an On Death "deal 2 damage" costs 2; On Any Played = 5 with a value-2 action costs 10). Keyword skills keep the costs they had. Change a number and every card's S, N and both rules (2A+H+S ≤ N, A·H+S·|S| ≤ (N/3)²) update below.</p><p class="sc-formula">${(()=>{ const f = window.BramblewoodBudget && BramblewoodBudget.formulaParts((SC_SEED && SC_SEED.budget) || {}); return f ? `${f.n}; ${f.zero}. ${f.base}. Both scores ×1.5 per half-miss skill (Evasive, Swift, Flying, Shadow, Blind).` : ''; })()}</p></div>
       <div class="sc-status" id="scStatus" role="status"></div>
       <div class="sc-grid"><section class="sc-ed" aria-label="Cost table">
         <div class="dec-seg sc-kinds" role="group" aria-label="Kind" id="scKinds">${KINDS.map(([k, , l])=> `<button type="button" data-k="${k}" aria-pressed="${k === st.kind}">${l} <b>${LIST[k].length}</b></button>`).join('')}${COMBOS ? `<button type="button" data-k="combo" aria-pressed="false">Combos <b>${COMBOS.pairs}</b></button>` : ''}</div>
@@ -69,7 +69,7 @@
         <div class="sc-sum" id="scSum"></div>
         <div class="sc-bar"><div class="dec-seg" role="group" aria-label="Show" id="scV">${[['over', 'Over'], ['under', 'Well under'], ['changed', 'S changed'], ['flip', 'Flipped'], ['all', 'All']].map(([v, l])=> `<button type="button" data-v="${v}" aria-pressed="${v === st.v}">${l} <b id="scVn-${v}"></b></button>`).join('')}</div></div>
         <div class="sc-bar"><select id="scMap" aria-label="Map"></select><select id="scR" aria-label="Rarity"></select><input type="search" id="scCq" placeholder="Card or skill…" aria-label="Search cards"></div>
-        <div class="bal-wrap"><table class="bal-t sc-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="map">Map</th><th data-k="S">S</th><th data-k="N">N</th><th data-k="x1">2A+H+S</th><th data-k="x2">A·H+S</th><th data-k="gap">Margin</th></tr></thead><tbody id="scBody"></tbody></table></div>
+        <div class="bal-wrap"><table class="bal-t sc-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="map">Map</th><th data-k="S">S</th><th data-k="N">N</th><th data-k="x1">2A+H+S</th><th data-k="x2">A·H+S·|S|</th><th data-k="gap">Margin</th></tr></thead><tbody id="scBody"></tbody></table></div>
         <p class="note sc-foot" id="scFoot"></p></section></div>`;
     // filters
     const present = f=>{ const n = {}; cards.forEach(c=>{ const v = f(c); if(v) n[v] = (n[v] || 0) + 1; }); return n; };

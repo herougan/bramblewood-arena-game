@@ -22,14 +22,15 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-6);
 // ---- 1. the formula
 // 2026-10-19 (package BF2): budget v5, N(L) = (Base + L/5)(1 + L/30), Level 0 Base - 1 (owner 13:52, L/3; L/5 after the 13:54 check)
 // 2026-10-19 (BF5, owner 21:36: "HALF everything" / "Straight up, the total N value"): the whole N × scale 0.5
-ok(near(BB.nAt(30, 5), 0.5 * (30 + 0.5) * (1 + 5 / 30), 0.006) && near(BB.nAt(30, 1), 0.5 * 30.1 * (31 / 30), 0.006) && near(BB.nAt(30, 0), 14.5) && BB.DEFAULTS.levelLinDiv === 10 && BB.DEFAULTS.levelDiv === 30 && BB.DEFAULTS.scale === 0.5,
-  '1. N(L) = 0.5 × (Base + L/10)(1 + L/30) (owner 15:48: L/10; 21:36: halved), Level 0 0.5 × (Base - 1): Base 30 -> 14.5 at Lv 0, 15.55 at Lv 1, 17.79 at Lv 5');
-ok(near(BB.nAt(14, 1, {levelLinDiv: 3, scale: 1}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3, scale: 1}), 23.11) && near(BB.nAt(14, 1, {levelLinDiv: 3}), 7.41), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
+// 2026-10-21 (BF6, owner 15:09: the coefficients halved instead, Rarity kept, L/15, Level 0 Base − 1, no scale on the whole N)
+ok(near(BB.nAt(15, 5), (15 + 5 / 15) * (1 + 5 / 30), 0.006) && near(BB.nAt(15, 1), (15 + 1 / 15) * (31 / 30), 0.006) && near(BB.nAt(15, 0), 14) && BB.DEFAULTS.levelLinDiv === 15 && BB.DEFAULTS.levelDiv === 30 && BB.DEFAULTS.scale === 1 && BB.DEFAULTS.base === 10 && BB.DEFAULTS.perWait === 3 && BB.DEFAULTS.perRarity === 1,
+  '1. N(L) = (Base + L/15)(1 + L/30) (BF6, owner 15:09), Level 0 Base - 1: Base 15 -> 14 at Lv 0, 15.57 at Lv 1, 17.89 at Lv 5');
+ok(near(BB.nAt(14, 1, {levelLinDiv: 3, scale: 1}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3, scale: 1}), 23.11) && near(BB.nAt(14, 1, {levelLinDiv: 3, scale: 0.5}), 7.41), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
 ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. the helper\'s numbers (levelLinDiv, levelDiv, zeroPenalty too) are canonical/skill-costs.json\'s budget');
 { const live = cards.filter(SC.measured); let same = 0; const diff = [];
   live.forEach(c=>{ const L = SC.levelOf(c), want = Math.round(BB.nAt(BB.baseOf(Object.assign({}, c, {obtainMap: T.obtainMapOf(c)})), L) * T.budgetMult(c) * 100) / 100 /* + Base's map term (BF2, 15:25); BF5 10-21: x the card's N multiplier */; if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
   ok(!diff.length, `1. tools/skill_costs.js gives v5's N (with the map term) for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
-  ok(/return Math\.round\(BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\) \* BramblewoodBudget\.nMultOf\(/.test(src) /* BF5 10-21: x the card's N multiplier */ && /levelLinDiv:10, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
+  ok(/return Math\.round\(BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\) \* BramblewoodBudget\.nMultOf\(/.test(src) /* BF5 10-21: x the card's N multiplier */ && /levelLinDiv:15, levelDiv:30, zeroPenalty:1/.test(src) /* BF6 */, '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
   // (BF5) the v3 comparison is v5 before the halving: scale 1
   const v3 = live.map(c=> T.budgetV3N(c, 1) - BB.nAt(T.budgetBase(c), 1, Object.assign({}, table.budget, {scale: 1}))); ok(v3.every(d=> d <= 1.3 + 1e-9), `1. at Level 1, v5 (L/10, before the BF5 halving) is never more than 1.3 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }

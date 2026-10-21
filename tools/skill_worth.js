@@ -37,12 +37,23 @@ const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const E = require(path.join(ROOT, 'bramblewood-engine.js'));
 const SkillCosts = require(path.join(__dirname, 'skill_costs.js'));
-const DAY = '2026-10-19';
+// 2026-10-21 (package BF6; owner: "B11: a blanket halve [of skill numbers] might not balance it appropriately" and "Measure the worth of
+// new skills. Remember that skills can be negative."): --world=half measures in the world BF5 made (N, the cards and the brambles halved,
+// the skills' own numbers not): the baselines' stats halved (1/4 W1, 2/7 W2, 3/11 W3: the share of the halved N that 2/8, 4/14 and
+// 6/22 had of v5's) and both brambles halved (50, the engine's 100 at BRAMBLE_SCALE 0.5). Its outputs are dated 2026-10-21; the
+// 2026-10-19 run's files stay as they were.
+const WORLD = ((typeof process !== 'undefined' && process.argv || []).find(a=> a.startsWith('--world=')) || '').slice(8) === 'half' ? 'half' : 'full';
+const DAY = WORLD === 'half' ? '2026-10-21' : '2026-10-19';
 const OUT_JSON = path.join(ROOT, 'docs', 'balance', `skill-worth-${DAY}.json`);
 const OUT_MD = path.join(ROOT, 'docs', `skill-worth-${DAY}.md`);
 const COSTS = path.join(ROOT, 'canonical', 'skill-costs.json');
+const HQ = WORLD === 'half' ? {id:'sw-hq', health:50, effects:{}} : undefined;
 
-const BASELINES = [
+const BASELINES = WORLD === 'half' ? [
+  {id:'b1', attack:1, health:4, wait:1, cost:1},
+  {id:'b2', attack:2, health:7, wait:2, cost:1},
+  {id:'b3', attack:3, health:11, wait:3, cost:1},
+] : [
   {id:'b1', attack:2, health:8, wait:1, cost:1},
   {id:'b2', attack:4, health:14, wait:2, cost:1},
   {id:'b3', attack:6, health:22, wait:3, cost:1},
@@ -58,7 +69,9 @@ const FIELD_OF = {nocturnal:'night', nocturnalHp:'night', nocturnalGrant:'night'
 const FIELDS_OF = {fieldBreaker:['thunder', 'spore', 'roots', 'heat']};
 // Package GI (2026-10-19) skills sit only on pool cards, so their typical value is set here; the ones that need company get an
 // enabler on the test unit and on its control (S = S(skill + enabler) − S(enabler)); Kin Rally / Pack Howl get a tribe deck.
-const TYPICAL = {hunter:2, executioner:2, brittle:2, proliferate:1, prayerWard:1, fieldBreaker:2, detonate:true};
+const TYPICAL = {hunter:2, executioner:2, brittle:2, proliferate:1, prayerWard:1, fieldBreaker:2, detonate:true,
+  // 2026-10-21 (BF6): skills no live card prints yet, at the engine's own default (SK3_DEF, EQ) or the owner's example (Injured)
+  injured:2, vulnerable:2, banner:1, rally:1, herald:2, shieldwall:1, broodkeeper:1, amplifier:1, pry:1, hazardIce:1, hazardRubble:1, spotter:true};
 const SKILL_ENABLER = {hunter:{poison:2}, detonate:{poison:2}, proliferate:{poison:2}, brittle:{shatter:2}, prayerWard:{prayer:1}};
 const HUNTER_VS = [['bleed', {bleed:2}, 'plain'], ['exposed', {expose:1}, 'plain'], ['wet', {}, 'rain']];
 // Skills that are a parameter of another (measured as the difference: parent + parameter − parent, on b2 in the parent's field).
@@ -72,6 +85,10 @@ const WHY = {
   weakness:'Weakness (a damage type) needs a foe that deals that type; the plain decks deal physical damage only',
   hunterVs:'a parameter of Hunter (which status, no cost of its own); Hunter runs once per status (Poisoned, Bleeding, Exposed, Wet)',
   onAnyPlayed:'On Any Played has no engine hook yet (a reference value)',
+  // 2026-10-21 (BF6)
+  archerStyle:'a look only (bow or a dropped stone); no effect on play',
+  vulnerable:'passive Vulnerable has no engine hook (the engine has the Vulnerable action only) and no card prints it: there is nothing to play; the owner\'s estimate stays',
+  herald:'Herald only pays with a Leader on the board (a skirmish leader card), which a played test deck has none of',
 };
 // Triggers measured with "deal 2 damage to a random enemy"; actions under a reference trigger with the parameters live cards use most.
 const REF_DAMAGE = {do:'damage', amount:2, dmgType:'physical', who:'enemy', sub:'random'};
@@ -85,7 +102,17 @@ const ACTION_REF = {
   mindControl:{on:'onSpawn', t:{sub:'random'}}, swapPositions:{on:'onSpawn', t:{}}, drawCard:{on:'onSpawn', t:{count:1}}, spawnCard:{on:'onSpawn', t:{defId:'bee-swarmling', count:1}},
   exileGrave:{on:'onSpawn', t:{count:2}}, exile:{on:'onSpawn', t:{who:'enemy', sub:'random'}}, exileSelf:{on:'onDeath', t:{}}, gain:{on:'onSpawn', t:{amount:1, resource:'lumber'}},
   refine:{on:'perTurn', t:{amount:1}},
+  // 2026-10-21 (BF6): package SK3's actions and EE's beam, which no live card prints as a trigger yet, at the parameters their keywords
+  // use (the engine's sk3Trigs: Silence / Stymie / Exhaust / Petrify On Attack on the enemy facing it, Stench On Play on the area,
+  // Corpsefeeder's devourGrave On Turn Start, Warcry's buffAll On Play) or the SK3 spells' (Smoke Screen 2, Magnet 2)
+  duplicate:{on:'onSpawn', t:{who:'self'}}, devourGrave:{on:'perTurn', t:{amount:1}}, 'devourGrave.amount2':{on:'perTurn', t:{amount2:2}},
+  buffAll:{on:'onSpawn', t:{who:'ally', amount:1}}, 'buffAll.amount2':{on:'onSpawn', t:{who:'ally', amount2:2}}, stench:{on:'onSpawn', t:{who:'enemy', sub:'area', amount:1}},
+  silence:{on:'onAttack', t:{who:'enemy', sub:'adjacent', amount:2}}, stymie:{on:'onAttack', t:{who:'enemy', sub:'adjacent', amount:2}}, exhaust:{on:'onAttack', t:{who:'enemy', sub:'adjacent', amount:2}},
+  petrify:{on:'onAttack', t:{who:'enemy', sub:'adjacent', amount:1}}, vulnerable:{on:'onSpawn', t:{who:'enemy', amount:2}}, barrage:{on:'onSpawn', t:{amount:1}},
+  smokeScreen:{on:'onSpawn', t:{amount:2}}, magnet:{on:'onSpawn', t:{amount:2}}, positionBeam:{on:'onSpawn', t:{amount:2, dmgType:'physical'}},
 };
+// 2026-10-21 (BF6): a shorthand whose number is not its value (Spawner names the card it makes): its value at N
+const SHORT_VAL = {spawner: n=> ({defId:'bee-swarmling', count:n})};
 // A trigger that needs something else on the unit to fire at all: the enabler goes on both the test unit and its control.
 const ENABLER = {onHealed:{regen:1}, onAllyHealed:{regen:1}};
 // Engine keywords with no entry in the table (reported, not added).
@@ -114,7 +141,7 @@ function makeLab(o){
   function play(deckA, deckB, rules, seed, rec){
     const engine = E.makeSimEngine(defs, E.mulberry32(seed >>> 0), {recordEvents: !!rec, battleMode:'open', rules: rules || {}, aiAim:true, aiLevel:1});
     const sideOf = id=> id === 1 ? 'A' : 'B', stats = {}, ev = rec ? [] : null;
-    const P = {1: engine.newPlayer(1, deckA), 2: engine.newPlayer(2, deckB)};
+    const P = {1: engine.newPlayer(1, deckA, HQ), 2: engine.newPlayer(2, deckB, HQ)}; // BF6: HQ is the halved bramble under --world=half
     engine.draw(P[1], 3, 'A', stats, ev); engine.draw(P[2], 3, 'B', stats, ev);
     let r = 1, over = false, last = null, st = 0;
     for(; r <= E.DRAW_ROUND_CAP && !over; r++){
@@ -356,7 +383,7 @@ function plan(table, defs, o){
   add({kind:'modifier', id:'turnOfOne', value:{on:'perTurn', turnOf:'self'}, effects:{triggers:[Object.assign({on:'perTurn', turnOf:'self'}, REF_DAMAGE)]}, ctx:'plain'});
   add({kind:'modifier', id:'onceCap', value:{on:'onAttack', once:true}, effects:{triggers:[Object.assign({on:'onAttack', once:true}, REF_DAMAGE)]}, ctx:'plain'});
   // shorthand: Bounty N
-  Object.keys(table.shorthands || {}).forEach(k=>{ [1, 2].forEach(n=> add({kind:'shorthand', id:k, value:n, n, effects:{[k]:n}, archetypes: TRIBE[k], ctx:'plain', tag:'n' + n}, n === 1 ? bs : [mid]));
+  Object.keys(table.shorthands || {}).forEach(k=>{ [1, 2].forEach(n=> add({kind:'shorthand', id:k, value:n, n, effects:{[k]: SHORT_VAL[k] ? SHORT_VAL[k](n) : n}, archetypes: TRIBE[k], ctx:'plain', tag:'n' + n}, n === 1 ? bs : [mid]));
     // the tribe deck's own control (same type, no skill), so the skill's S is the skill's and not the type's
     if(TRIBE[k]) add({kind:'shorthand', id:k, tag:'enabler', value:TRIBE[k], effects:{}, archetypes:TRIBE[k], ctx:'plain'}); });
   // the trigger entries live cards use most (trigger × action as printed), b2
