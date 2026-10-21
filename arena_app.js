@@ -2144,6 +2144,20 @@ function editionCapReached(counts, id, defs){
   if(together >= maxCopiesForRarity(base.rarity)) return true;
   return (counts[id]||0) >= maxCopiesForRarity(d.rarity);
 }
+// Top-rank deck caps (2026-10-22, package DR; owner: "For Legendary onwards, only 3 Legendaries can exist in a deck (including leader), Mythic takes
+// this to 2, then beyond only 1."): per deck, the leader included, Legendary 3, Mythic 2 and 1 of each rank above (each rank has its own cap). The
+// numbers and the counting live in BramblewoodBudget (deckRankCapOf / deckRankUsage / deckRankOver / deckRankBlock); these are the game's wrappers.
+// deckRankBlockFor: null, or {rank, n, cap} when one more copy of `id` would break its rank's cap. `leaders` = the ids that also count.
+function deckRankBlockFor(counts, id, defs, leaders){ try{ return BramblewoodBudget.deckRankBlock(counts, id, defs, leaders); }catch(e){ return null; } }
+function deckRankLabel(rank){ const rd = typeof RARITY_DEFS !== 'undefined' && RARITY_DEFS.find(r=> r.key === rank); return rd ? rd.label : rank; }
+// The short reason chip: "Deck limit: 3 Legendaries" (b = a block or an over entry from BramblewoodBudget).
+function deckRankLimitText(b){ return b.rank === 'legendary' ? TX('ui.dr-limit-legendary', {n: b.cap}) : b.rank === 'mythic' ? TX('ui.dr-limit-mythic', {n: b.cap}) : TX('ui.dr-limit-rank', {n: b.cap, rank: _t(deckRankLabel(b.rank))}); }
+// The leader(s) of the deck being edited or played (they count toward the caps).
+function deckLeaderIds(){ try{ const l = matchLeaderId(); return l ? [l] : []; }catch(e){ return []; } }
+// '' when the deck is inside every top-rank cap, else the sentence for the "can't play" toast.
+function deckRankProblemText(counts, leaders){ let over = []; try{ over = BramblewoodBudget.deckRankOver(counts, getCardDefs(), leaders); }catch(e){}
+  if(!over.length) return ''; const o = over[0]; return TX('toast.dr-deck-over-cap', {rank: _t(deckRankLabel(o.rank)), n: o.n, cap: o.cap, out: o.n - o.cap}); }
+function deckRankOkOrWarn(counts, leaders){ const t = deckRankProblemText(counts, leaders); if(!t) return true; showToast(t, 'warn'); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return false; }
 // Splash Effect (2026-09-19, open-items #107 — "canonical/cards.json still stores 'foil' as a
 // rarity value... splitting it into its own field is a schema change"): Foil used to be a
 // RARITY_DEFS entry that a card's `rarity` field pointed to INSTEAD OF a real power tier — so a
@@ -3234,9 +3248,10 @@ function openStandardDeckBuilder(onDone){
   let ov = document.getElementById('stdDeckOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'stdDeckOverlay'; ov.className = 'modal-overlay std-deck-overlay'; document.body.appendChild(ov); }
   const cap = id=> maxCopiesForRarity(defs[id].rarity);
-  const row = id=>{ const d = defs[id], n = counts[id]||0;
+  const rankBlock = id=> deckRankBlockFor(counts, id, defs, deckLeaderIds()); // 2026-10-22 (package DR): Legendary 3 / Mythic 2 / higher 1, the leader counted
+  const row = id=>{ const d = defs[id], n = counts[id]||0, rb = rankBlock(id);
     return `<div class="std-row ${n?'is-in':''}"><span class="std-name">${escapeHtml(d.name||id)}</span><span class="std-meta">${escapeHtml(d.rarity||'common')} · ${d.attack!=null?d.attack:'–'}/${d.health!=null?d.health:'–'} · ⏳${d.wait!=null?d.wait:'?'}${d.cost?` · 🪵${d.cost}`:''}</span>
-      <span class="std-ctl"><button type="button" class="btn small" data-std-dec="${id}" ${n?'':'disabled'} aria-label="Remove one">−</button><b>${n}</b><button type="button" class="btn small" data-std-inc="${id}" ${n>=cap(id)?'disabled':''} aria-label="Add one">+</button></span></div>`; };
+      <span class="std-ctl"><button type="button" class="btn small" data-std-dec="${id}" ${n?'':'disabled'} aria-label="Remove one">−</button><b>${n}</b><button type="button" class="btn small" data-std-inc="${id}" ${n>=cap(id) || rb?'disabled':''} ${rb ? `title="${escapeAttr(deckRankLimitText(rb))}"` : ''} aria-label="Add one">+</button>${rb && n < cap(id) ? `<small class="std-limit">${escapeHtml(deckRankLimitText(rb))}</small>` : ''}</span></div>`; };
   const draw = ()=>{
     const tot = deckTotal(counts), list = pool.filter(id=> !q || (defs[id].name||id).toLowerCase().includes(q));
     const inDeck = pool.filter(id=> counts[id]);
@@ -3251,7 +3266,7 @@ function openStandardDeckBuilder(onDone){
     const close = ()=>{ saveStandardDeck(counts); ov.hidden = true; ov.innerHTML = ''; if(onDone) onDone(); };
     ov.querySelector('#stdClose').onclick = close; ov.querySelector('#stdDone').onclick = close;
     ov.querySelector('#stdCopy').onclick = ()=>{ counts = {}; Object.keys(myDeckCounts||{}).forEach(id=>{ if(id!==HERO_ID && defs[id]) counts[id] = myDeckCounts[id]; }); draw(); };
-    ov.querySelectorAll('[data-std-inc]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.stdInc; if(deckTotal(counts)>=DECK_SIZE){ showToast(TX('toast.a-deck-is-exactly-cards', {DECK_SIZE}), 'warn'); return; } counts[id] = Math.min(cap(id), (counts[id]||0)+1); draw(); });
+    ov.querySelectorAll('[data-std-inc]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.stdInc; if(deckTotal(counts)>=DECK_SIZE){ showToast(TX('toast.a-deck-is-exactly-cards', {DECK_SIZE}), 'warn'); return; } { const rb = rankBlock(id); if(rb){ showToast(deckRankLimitText(rb), 'warn'); return; } } counts[id] = Math.min(cap(id), (counts[id]||0)+1); draw(); });
     ov.querySelectorAll('[data-std-dec]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.stdDec; counts[id] = (counts[id]||0)-1; if(counts[id]<=0) delete counts[id]; draw(); });
     const se = ov.querySelector('#stdSearch'); se.oninput = ()=>{ q = se.value.trim().toLowerCase(); const pos = se.selectionStart; draw(); const s2 = ov.querySelector('#stdSearch'); s2.focus(); try{ s2.setSelectionRange(pos,pos); }catch(e){} };
   };
@@ -14003,7 +14018,8 @@ function openLoadoutPicker(kind, popts){
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
       <p class="lp-temper"><button type="button" class="btn small" data-lp-reinforce>🏰 ${escapeHtml(TX('ui.fg-rf-go-forge'))}</button></p>` /* 2026-10-19 (package FG): Reinforce */
     : `<div class="lp-grid">${'' /* 2026-10-15 (user: "There is no need for the 'Remove' pill on the chosen leader."): no "✕ No leader / Clear the slot" tile; the chosen leader is just marked */}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
-        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : !capOf(id).ok ? `<button type="button" class="lp-item is-used is-too-costly" disabled aria-disabled="true" title="${escapeAttr(capOf(id).text)}">
+        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : (id !== myLeaderId && deckRankBlockFor(myDeckCounts, id, defs, [])) ? `<button type="button" class="lp-item is-used is-too-costly" disabled aria-disabled="true" title="${escapeAttr(deckRankLimitText(deckRankBlockFor(myDeckCounts, id, defs, [])))}">
+        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>${escapeHtml(deckRankLimitText(deckRankBlockFor(myDeckCounts, id, defs, [])))}</small></button>` /* 2026-10-22 (package DR): the deck already holds the most of this rank a deck may; the leader counts */ : !capOf(id).ok ? `<button type="button" class="lp-item is-used is-too-costly" disabled aria-disabled="true" title="${escapeAttr(capOf(id).text)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>${escapeHtml(capOf(id).text)}</small></button>` : `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your bramble' : 'Choose your leader'}">
@@ -14239,8 +14255,13 @@ function randomAiDeck(){
   while(total < DECK_SIZE && guard++ < 2000){
     const id = chosen[Math.floor(Math.random()*chosen.length)];
     if(counts[id] >= perCardCap) continue;
+    if(counts[id] >= maxCopiesForRarity(defs[id].rarity) || deckRankBlockFor(counts, id, defs, [])) continue; // 2026-10-22 (package DR): the copy limit and the top-rank deck caps (Legendary 3 / Mythic 2 / higher 1) hold for the CPU's deck too
     counts[id]++; total++;
   }
+  // top up (2026-10-22, package DR): the caps can leave the 5-9 chosen cards short of 20; the rest of the pool fills in, still inside both limits
+  for(let i = 0; total < DECK_SIZE && i < shuffled.length * 4; i++){ const id = shuffled[i % shuffled.length];
+    if((counts[id]||0) >= Math.min(perCardCap, maxCopiesForRarity(defs[id].rarity)) || deckRankBlockFor(counts, id, defs, [])) continue; counts[id] = (counts[id]||0) + 1; total++; }
+  Object.keys(counts).forEach(id=>{ if(!counts[id]) delete counts[id]; });
   return counts;
 }
 // Small "X/20 cards" readout — used anywhere a deck's card count is shown so the 20-card
@@ -14257,7 +14278,10 @@ function deckSizeBadgeHTML(counts){
   const diff = total - DECK_SIZE;
   const warnPillHTML = ok ? ` <span class="deck-size-ok-pill">✓ ${_t('ready to play')}</span>`
     : ` <span class="deck-size-warn-pill">${diff > 0 ? _t('{n} over · take {n} out to play', {n:diff}) : _t('{n} more to play', {n:-diff})}</span>`;
-  return `${countHTML}${warnPillHTML}`;
+  // 2026-10-22 (package DR): the working deck is over a top-rank cap (it came in before the rule, or a leader change tipped it): say which rank
+  let rankPill = ''; if(counts === myDeckCounts){ try{ const o = BramblewoodBudget.deckRankOver(counts, getCardDefs(), deckLeaderIds())[0];
+    if(o) rankPill = ` <span class="deck-size-warn-pill">${escapeHtml(TX('ui.dr-over-pill', {rank: _t(deckRankLabel(o.rank)), n: o.n, cap: o.cap}))}</span>`; }catch(e){} }
+  return `${countHTML}${warnPillHTML}${rankPill}`;
 }
 
 // ---- Multiple decks (2026-09-20, per explicit request: "Deck Menu: Similar to the 'Player'
@@ -15145,6 +15169,8 @@ function wireDeckListDrop(){
       try{ fxHook('deckFull', listEl); }catch(e){} // 2026-10-15 batch F
       return;
     }
+    { const rb = deckRankBlockFor(myDeckCounts, defId, defs, deckLeaderIds()); // 2026-10-22 (package DR): the top-rank deck caps
+      if(rb){ denyShake(listEl); floatText(listEl, deckRankLimitText(rb), 'debuff'); try{ fxHook('deckFull', listEl); }catch(e){} return; } }
     myDeckCounts[defId] = (myDeckCounts[defId]||0) + 1;
     saveMyDeck();
     renderMyDeckPanels();
@@ -15285,6 +15311,7 @@ function startDungeonFight(){
       showToast(TX('toast.your-main-deck-has-cards-it', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
       return;
     }
+    if(!deckRankOkOrWarn(myDeckCounts, deckLeaderIds())) return; // 2026-10-22 (package DR)
     run = {stage:1, deckCounts:{...myDeckCounts}, castleHp:null};
     saveDungeonRun(run);
   }
@@ -15378,6 +15405,7 @@ async function findLiveRankedMatch(){
     showToast(TX('toast.your-main-deck-has-cards-it-2', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
     return;
   }
+  if(!deckRankOkOrWarn(myDeckCounts, deckLeaderIds())) return; // 2026-10-22 (package DR)
   liveQueueing = true; pollLiveQueue.fails = 0;
   renderArenaSubTabIfOpen();
   pollLiveQueue();
@@ -15580,7 +15608,7 @@ function settleAsyncRunAfterMatch(m){
   const stage = (m.asyncStage!=null) ? m.asyncStage : run.wins;
   if(won){
     run.wins++;
-    saveAsyncGhosts(Ghosts.recordAsyncGhost(loadAsyncGhosts(), {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage, at: Date.now(), source:'player'}));
+    saveAsyncGhosts(Ghosts.recordAsyncGhost(loadAsyncGhosts(), {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), leaders: deckLeaderIds(), stage, at: Date.now(), source:'player'}));
     const g = 12 + stage*6, d = 2 + stage;
     grantCurrency('gold', g); grantCurrency('dust', d);
     m.asyncRewardEarned = {gold:g, dust:d};
@@ -17159,7 +17187,7 @@ function expectedPlayerDeck(mapId, nodeKey){
   earlier.forEach(([m, k])=> nodeRewardCardIds(m, k).forEach(id=> owned.add(id)));
   const ids = [...owned].sort((a,b)=> skirmishCardScore(defs[b]) - skirmishCardScore(defs[a]) || (a<b?-1:1));
   const deck = {}; let n = 0;
-  for(const id of ids){ const k = Math.min(4, maxCopiesForRarity(defs[id].rarity), DECK_SIZE - n); if(k<=0) break; deck[id] = k; n += k; }
+  for(const id of ids){ const k = Math.min(4, maxCopiesForRarity(defs[id].rarity), DECK_SIZE - n); if(k<=0) break; if(typeof deckRankBlockFor === 'function' && deckRankBlockFor(deck, id, defs, [])) continue; /* 2026-10-22 (package DR): the top-rank deck caps */ deck[id] = k; n += k; }
   return deck;
 }
 // The win rate a node should give that expected deck: the first skirmish of a map ~85%, falling to
@@ -18294,11 +18322,13 @@ function openDeckBuilderPopup(o){
       if(pm && e.target.closest('[data-mp-open]')){ openMapCardsEditor(pm.mapId, {onClose: ()=>{ refresh(); }}); return; }
       if(pm && e.target.closest('#dbpAny')){ pm.any = !pm.any; pm.shown = 96; const b = ov.querySelector('#dbpAny'); b.textContent = pm.any ? '← ' + TX('ui.mp-back-pool') : TX('ui.mp-load-any'); b.classList.toggle('primary', pm.any);
         note(pm.any ? TX('ui.mp-loading-any', {map: mapName()}) : ''); refresh('pool'); return; } }
-    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){}
+    // 2026-10-22 (package DR): the top-rank deck caps (Legendary 3 / Mythic 2 / higher 1, o.leaders counted) apply here too, even though the popup is `unlimited`
+    const rankStop = (el, id)=>{ const rb = deckRankBlockFor(counts, id, getCardDefs(), typeof o.leaders === 'function' ? o.leaders() : o.leaders); if(!rb) return false; denyShake(el); floatText(el, deckRankLimitText(rb), 'debuff'); return true; };
+    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } if(rankStop(a, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){}
       if(pm && pm.any && !mapPoolHas(pm.mapId, id)){ mapPoolAdd(pm.mapId, 'special', id); note(TX('ui.mp-added-special', {name: (getCardDefs()[id] || {}).name || id, map: mapName()})); } // 2026-10-22 (package MP): the card joins the map's Special tier
       quick(id, before); }
     // 2026-10-13 (user: "In the mini deck editor of the skirmish editor, click means +, shift+click means -").
-    else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
+    else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } if(rankStop(r, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
     else if(r){ const id = r.dataset.rm, before = counts[id]||0; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} quick(id, before); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
@@ -18618,6 +18648,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
   NODE_MAP_HINT.set(draft, mapId);
   let q = '', simText = '', dirty = !!draftOverride, leaderSlots = Math.min(5, (draft.leaders||[]).length);
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && !matchState) renderPlay(); };
+  // 2026-10-22 (package DR): the top-rank deck caps (Legendary 3 / Mythic 2 / higher 1, the enemy leaders counted) hold in the editor too: true (with a chip) when one more copy is refused
+  const rankAddBlock = id=>{ const rb = deckRankBlockFor(draft.deck || {}, id, getCardDefs(), draft.leaders || []); if(!rb) return false; showToast(deckRankLimitText(rb), 'warn'); return true; };
   const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${String(cur||'')===String(v)?'selected':''}>${escapeHtml(label)}</option>`;
   const render = ()=>{
     const defs = getCardDefs();
@@ -18771,7 +18803,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     };
     overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); if(el.id === 'seKind' || el.id === 'seEnemyLevel' /* 2026-10-21 (package ED) */ || /^seDg/.test(el.id)){ clearTimeout(overlay._dgT); overlay._dgT = setTimeout(()=>{ if(!overlay.hidden) render(); }, 0); } }); });
     document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
-    overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.inc]++; dirty = true; render(); });
+    overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); if(rankAddBlock(b.dataset.inc)) return; draft.deck[b.dataset.inc]++; dirty = true; render(); });
     // Leaders, castle and deck open the gallery picker (2026-10-10). Leader slots: 0–5; empty slots are dropped on save.
     const setLeaders = arr=>{ const a = arr.filter(Boolean); if(a.length) draft.leaders = a; else delete draft.leaders; };
     { const lc = document.getElementById('seLeaderCount'); if(lc) lc.onchange = ()=>{ read(); leaderSlots = Math.max(0, Math.min(5, +lc.value||0)); setLeaders((draft.leaders||[]).slice(0, leaderSlots)); dirty = true; render(); }; }
@@ -18789,24 +18821,24 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('[data-fx-restore]').forEach(b=> b.onclick = ()=>{ read(); removeSkirmishFx(mapId, draft, b.dataset.fxRestore, true); dirty = true; render(); });
     overlay.querySelectorAll('[data-wave-deck]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveDeck; draft.dungeon = draft.dungeon || {}; const wd = draft.dungeon.waveDecks = (draft.dungeon.waveDecks||[]).slice();
       while(wd.length <= k) wd.push(null); if(!wd[k]) wd[k] = {};
-      openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · bramble ${k + 1}`, counts: wd[k], unlimited: true, pool: mapId /* 2026-10-22 (package MP) */, onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
+      openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · bramble ${k + 1}`, counts: wd[k], unlimited: true, leaders: ()=> draft.leaders || [], pool: mapId /* 2026-10-22 (package MP) */, onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
     overlay.querySelectorAll('[data-wave-clear]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveClear; if(draft.dungeon && draft.dungeon.waveDecks){ draft.dungeon.waveDecks[k] = null; if(!draft.dungeon.waveDecks.some(Boolean)) delete draft.dungeon.waveDecks; } dirty = true; render(); });
     { const dp = document.getElementById('seDeckPopup'); if(dp) dp.onclick = ()=>{ read();
-        openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, pool: mapId /* 2026-10-22 (package MP) */, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
+        openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, leaders: ()=> draft.leaders || [], pool: mapId /* 2026-10-22 (package MP) */, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
     // 2026-10-22 (package MP): Map cards from here; the ⚠ chips' one-click Add to Special
     { const mc = document.getElementById('seMapCards'); if(mc) mc.onclick = ()=>{ read(); openMapCardsEditor(mapId, {onClose: ()=>{ if(overlay.innerHTML) render(); }}); }; }
     overlay.querySelectorAll('#seMpWarn [data-mp-special], #seMpWarn [data-mp-special-all]').forEach(b=> b.onclick = ()=>{ read(); mpAddOffPool(mapId, draft.deck, b.dataset.mpSpecial || null); render(); });
     { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
-        openSkirmishGallery({kind:'deck', counts: draft.deck, pool: mapId /* 2026-10-22 (package MP) */, pick: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
-    overlay.querySelectorAll('.se-deck > .se-stack[data-defid]').forEach(b=>{ b.title = 'Click: +1 · Shift+click: −1'; b.style.cursor = 'pointer'; b.onclick = e=>{ if(e.target.closest('[data-ed-edit]')) return; read(); const id = b.dataset.defid; if(e.shiftKey){ if(--draft.deck[id] <= 0) delete draft.deck[id]; } else draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; render(); }; });
+        openSkirmishGallery({kind:'deck', counts: draft.deck, pool: mapId /* 2026-10-22 (package MP) */, pick: id=>{ if(rankAddBlock(id)) return; draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
+    overlay.querySelectorAll('.se-deck > .se-stack[data-defid]').forEach(b=>{ b.title = 'Click: +1 · Shift+click: −1'; b.style.cursor = 'pointer'; b.onclick = e=>{ if(e.target.closest('[data-ed-edit]')) return; read(); const id = b.dataset.defid; if(e.shiftKey){ if(--draft.deck[id] <= 0) delete draft.deck[id]; } else if(rankAddBlock(id)) return; else draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; render(); }; });
     // 2026-10-21 (package ED, owner #14): ✏️ on a deck card opens the card editor over this one; closing it brings the editor back
     overlay.querySelectorAll('.se-deck [data-ed-edit]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); read(); edOpenCardEditor(b.dataset.edEdit, overlay, ()=>{ if(overlay.innerHTML) render(); }); });
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
-    overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
+    overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); if(rankAddBlock(b.dataset.add)) return; draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
     // 2026-10-08 (user: "in the add cards section, can I also create a new card - it loads the same UI. When I click
     // save, it immediately puts one of them in the deck"): the card editor opens on top; Save adds a copy here.
     { const nc = document.getElementById('seNewCard'); if(nc) nc.onclick = ()=>{ read(); overlay.hidden = true;
-        cardEditorHooks = {saved: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, closed: ()=>{ overlay.hidden = false; render(); }};
+        cardEditorHooks = {saved: id=>{ if(rankAddBlock(id)) return; draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, closed: ()=>{ overlay.hidden = false; render(); }};
         openCardEditor(null); }; }
     const search = document.getElementById('seSearch');
     search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('seSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
@@ -19783,7 +19815,7 @@ function renderAutobattleSubTab(body){
       <div class="ab-offers">${run.pendingBoons.map((bn,i)=>{ const d = abDisplayDef(run, bn.card);
         return `<button type="button" class="ab-offer ab-boon" data-boon="${i}"><div class="ab-boon-label">${bn.type==='dup'?'📑':bn.type==='buff'?'💪':'🔮'} ${escapeHtml(bn.label)}</div>${d?cardTileHTML(d, {inPlay:true}):''}</button>`; }).join('')}</div>
       ${abDeckSummaryHTML(run)}</div>`;
-    body.querySelectorAll('[data-boon]').forEach(b=> b.onclick = ()=>{ AutoB.applyBoon(run, run.pendingBoons[+b.dataset.boon]); run.phase = 'prep'; saveAbRun(run); rerender(); });
+    body.querySelectorAll('[data-boon]').forEach(b=> b.onclick = ()=>{ AutoB.applyBoon(run, run.pendingBoons[+b.dataset.boon], defs); run.phase = 'prep'; saveAbRun(run); rerender(); });
     return;
   }
   if(run.phase==='goal'){
@@ -19846,7 +19878,7 @@ function abDeckSummaryHTML(run){
 }
 function wireAbDeckMoves(body, run){
   body.querySelectorAll('[data-move-bench]').forEach(b=> b.onclick = ()=>{ AutoB.moveToBench(run, b.dataset.moveBench); saveAbRun(run); renderAutobattleSubTab(body); });
-  body.querySelectorAll('[data-move-deck]').forEach(b=> b.onclick = ()=>{ AutoB.moveToDeck(run, b.dataset.moveDeck); saveAbRun(run); renderAutobattleSubTab(body); });
+  body.querySelectorAll('[data-move-deck]').forEach(b=> b.onclick = ()=>{ if(!AutoB.moveToDeck(run, b.dataset.moveDeck, getCardDefs())){ const df = getCardDefs(), rb = deckRankBlockFor(Object.assign({}, run.deck), AutoB.baseId(b.dataset.moveDeck), df, [run.leader, run.subLeader].filter(Boolean)); if(rb) showToast(deckRankLimitText(rb), 'warn'); } saveAbRun(run); renderAutobattleSubTab(body); });
 }
 function abFight(body, run){
   const pool = abPool(run.wins);
@@ -19994,7 +20026,7 @@ function pvpCandidates(){
   const defs = getCardDefs(), mine = myGhostOwnerId();
   liveRefreshGhosts('pvp');
   const fill = g=> Object.assign({}, g, {rating: g.rating!=null ? g.rating : Ghosts.tierMidRating(Math.min(5, Math.round((g.stage||0)*5/6))), deckLevel: g.deckLevel!=null ? g.deckLevel : Ghosts.simpleDeckLevel(defs, g.deck)});
-  const real = LiveData.ghosts.pvp.concat(loadPvpDecks()).filter(g=> g.owner!==mine && g.owner!==cloudUserId && g.deck && !Ghosts.validateDeck(defs, g.deck).length).map(fill);
+  const real = LiveData.ghosts.pvp.concat(loadPvpDecks()).filter(g=> g.owner!==mine && g.owner!==cloudUserId && g.deck && !Ghosts.validateDeck(defs, g.deck, g.leaders).length).map(fill); // + leaders (2026-10-22, package DR)
   const epoch = Math.floor(Date.now()/(7*24*3600*1000));
   const seeds = []; for(let t=0; t<=5; t++) seeds.push(...Ghosts.seedPvpStrangers(defs, t, 8, epoch));
   return real.concat(seeds);
@@ -20009,7 +20041,7 @@ function pvpOpponentPool(){ return {decks: pvpCandidates()}; } // kept for older
 function recordMyPvpDeck(){
   if(!Ghosts) return;
   const tier = Ghosts.tierIndexForRating(myRating);
-  const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage: tier, rating: Math.round(myRating), deckLevel: myPvpDeckLevel(), at: Date.now(), source:'player'};
+  const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), leaders: deckLeaderIds(), stage: tier, rating: Math.round(myRating), deckLevel: myPvpDeckLevel(), at: Date.now(), source:'player'};
   try{ localStorage.setItem(PVP_DECKS_KEY, JSON.stringify(Ghosts.recordAsyncGhost(loadPvpDecks(), entry, 200))); }catch(e){}
   livePushGhost('pvp', tier, {deck: entry.deck, rating: entry.rating, deckLevel: entry.deckLevel});
 }
@@ -23126,6 +23158,7 @@ function starterDeckCardIds(){
 function swapOutAllowed(outId, newId){
   const defs = getCardDefs(), o = defs[outId], d = defs[newId]; if(!o || !d || outId === newId || o.isLeader || o.hero) return false;
   if(swapRarityIndex(o.rarity) > swapRarityIndex(d.rarity)) return false; // never a rarer card out for a commoner one
+  { const after = Object.assign({}, myDeckCounts); after[outId] = (after[outId]||0) - 1; if(deckRankBlockFor(after, newId, defs, deckLeaderIds())) return false; } // 2026-10-22 (package DR): never a swap past the Legendary / Mythic / higher deck caps
   return starterDeckCardIds().has(outId) || (o.attack||0) + (o.health||0) <= 3 || o.rarity === 'starter' || o.rarity === 'basic' || !!o.tutorial;
 }
 // The weakest card in the deck: a 1-Attack or 1-Health card first, then the smallest total (only cards swapOutAllowed lets go).
@@ -27055,7 +27088,7 @@ function advanceDungeonWave(m, carry){
   P2.hq.maxHp = w.hp + (carry||0); P2.hq.hp = P2.hq.maxHp; P2.hq.shield = w.shield || 0; P2.hq.maxShield = P2.hq.shield;
   // Per-round decks (2026-10-12, user: "Dungeon editor - edit each round's deck"): a castle with its own deck swaps the
   // enemy's draw pile and hand for it; the old hand goes to the Graveyard.
-  { const wd = (d.cfg.waveDecks||[])[d.wave]; const ids = []; if(wd) Object.entries(wd).forEach(([id, n])=>{ if(getCardDefs()[id]) for(let i = 0; i < (n|0); i++) ids.push(id); });
+  { const wd = fitEnemyDeckRankCaps(null, (d.cfg.waveDecks||[])[d.wave]); const ids = []; // + the top-rank deck caps (2026-10-22, package DR) if(wd) Object.entries(wd).forEach(([id, n])=>{ if(getCardDefs()[id]) for(let i = 0; i < (n|0); i++) ids.push(id); });
     if(ids.length){ for(let i = ids.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i + 1)); [ids[i], ids[j]] = [ids[j], ids[i]]; }
       P2.graveyard = (P2.graveyard||[]).concat(P2.hand.map(h=> ({defId: h.defId}))); P2.hand = []; P2.deck = ids; } }
   const plan = planWaveSummons(P2, d.cfg.setupTurns, d.cfg.pitches, ()=> E.draw(P2, 1, 'B', m.stats, []));
@@ -27191,8 +27224,20 @@ function enemyLevelKeepingPace(node, g, cap){
   return out;
 }
 function roadEnemyLevel(node){ return Math.round(roadEnemyLevelExact(node)); }
+// Enemy decks and the top-rank deck caps (2026-10-22, package DR; owner: "only 3 Legendaries ... Mythic 2, then beyond only 1", leader included).
+// A deck over a cap is fitted before the fight: the weakest excess copies of that rank are swapped for the highest-ranked card below the caps that
+// shares their theme (BramblewoodGhosts.fitDeckToRankCaps), the node's leaders counted. A deck inside the caps is returned as it is. The authored
+// data is never changed; DV's rewrite should leave nothing here to do (tests/ and the report list any hand-made deck that still would).
+function fitEnemyDeckRankCaps(node, deck){
+  if(!deck || typeof Ghosts === 'undefined' || !Ghosts || !Ghosts.fitDeckToRankCaps) return deck;
+  try{ const defs = Object.assign({}, CARD_DEFS_BASELINE, liveCards), leaders = ((node && node.leaders) || []).filter(Boolean);
+    if(!BramblewoodBudget.deckRankOver(deck, defs, leaders).length) return deck;
+    return Ghosts.fitDeckToRankCaps(defs, deck, leaders).deck;
+  }catch(e){ return deck; }
+}
 function levelledEnemyDeck(node, deck){
-  const road = roadEnemyLevelExact(node), set = (node && node.cardLevels) || {};
+  if(typeof fitEnemyDeckRankCaps === 'function') deck = fitEnemyDeckRankCaps(node, deck); // 2026-10-22 (package DR)
+  const road =roadEnemyLevelExact(node), set = (node && node.cardLevels) || {};
   const lv = Object.assign({}, road ? Object.fromEntries(Object.keys(deck||{}).map(id=> [id, road])) : {}, set);
   if(!Object.keys(lv).length || !deck) return deck;
   const out = {}, base = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
@@ -30040,7 +30085,7 @@ function wireCardTileFlourish(root){
 // to skip it, so a 21-card deck could start a Conquest fight — found in the 2026-10-03 story pass).
 function deckSizeOkOrWarn(){
   if(typeof restoreMainDeck==='function' && currentTab!=='deck') restoreMainDeck();
-  if(deckTotal(myDeckCounts)===DECK_SIZE) return true;
+  if(deckTotal(myDeckCounts)===DECK_SIZE) return deckRankOkOrWarn(myDeckCounts, deckLeaderIds()); // + the Legendary / Mythic / higher deck caps (2026-10-22, package DR)
   showToast(TX('toast.your-main-deck-has-cards-it-3', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
   return false;
 }
@@ -30245,6 +30290,7 @@ function startMatchInner(mode, opts, standardDeck){
     showToast(TX('toast.your-main-deck-has-cards-it-3', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
     return;
   }
+  if(!deckRankOkOrWarn(myDeckCounts, deckLeaderIds())) return; // 2026-10-22 (package DR): Legendary 3 / Mythic 2 / higher 1, the leader counted
   const arenaRuleset = todaysArenaRuleset();
   const arenaMode = opts.caged ? 'open' : (arenaRuleset.battleMode || 'open'); // Caged Fight needs fixed slots
   const myFightDeck = standardDeck ? myDeckCounts : ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
@@ -41487,6 +41533,8 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
       try{ fxHook('deckFull', el); }catch(e){} // 2026-10-15 batch F
       return;
     }
+    { const rb = deckRankBlockFor(counts, id, getCardDefs(), deckLeaderIds()); // 2026-10-22 (package DR): Legendary 3 / Mythic 2 / higher 1 per deck, the leader counted
+      if(rb){ const el = poolTileEl || chipEl; denyShake(el); if(el) floatText(el, deckRankLimitText(rb), 'debuff'); try{ fxHook('deckFull', el); }catch(e){} return; } }
   }
   const fromRect = (remove ? chipEl : poolTileEl) ? (remove ? chipEl : poolTileEl).getBoundingClientRect() : null;
   const toRectFallback = remove ? (poolTileEl && poolTileEl.getBoundingClientRect()) : ((chipEl||deckListEl) && (chipEl||deckListEl).getBoundingClientRect());
@@ -50722,14 +50770,15 @@ function openInviteModal(friendId){
   const modes = liveBattleModes();
   if(!inviteSettings.battleMode || !modes.some(m=>m.id===inviteSettings.battleMode)) inviteSettings.battleMode = modes[0] ? modes[0].id : Registry.defaultBattleMode();
   const std = standardFormatOn(), inviteDeck = std ? loadStandardDeck() : myDeckCounts;
-  const deckOk = deckTotal(inviteDeck)===DECK_SIZE;
+  const rankProblem = deckTotal(inviteDeck)===DECK_SIZE ? deckRankProblemText(inviteDeck, deckLeaderIds()) : ''; // 2026-10-22 (package DR)
+  const deckOk = deckTotal(inviteDeck)===DECK_SIZE && !rankProblem;
   const modeHTML = ()=> modes.map(m=> `<button type="button" class="tk-speed-btn ${m.id===inviteSettings.battleMode?'is-on':''}" role="radio" aria-checked="${m.id===inviteSettings.battleMode}" data-inv-mode="${m.id}">${m.icon} ${escapeHtml(m.label)}</button>`).join('');
   overlay.innerHTML = `<div class="modal invite-modal" role="dialog" aria-labelledby="invTitle">
     <div class="modal-head-row"><h2 id="invTitle">⚔️ Invite ${escapeHtml(p.display_name||'friend')}</h2><button class="modal-close-btn" id="invClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">A private, friendly match — no rating change.</p>
     <div class="inv-field"><div class="inv-label">Arena type</div><div class="tk-seg inv-modes" role="radiogroup" aria-label="Arena type">${modeHTML()}</div>
       <p class="inv-blurb" id="invBlurb">${escapeHtml((Registry.battleMode(inviteSettings.battleMode)||{}).blurb||'')}</p></div>
-    <div class="inv-field"><div class="inv-label">Your deck</div><div class="inv-deck ${deckOk?'':'is-bad'}">${deckOk ? `✅ ${std?'🃏 Standard deck (all Level 1)':'Active deck'} · ${DECK_SIZE} cards` : `⚠️ Your ${std?'Standard ':''}deck has ${deckTotal(inviteDeck)} cards — it needs exactly ${DECK_SIZE}. Fix it in Deck first.`}</div></div>
+    <div class="inv-field"><div class="inv-label">Your deck</div><div class="inv-deck ${deckOk?'':'is-bad'}">${deckOk ? `✅ ${std?'🃏 Standard deck (all Level 1)':'Active deck'} · ${DECK_SIZE} cards` : rankProblem ? `⚠️ ${escapeHtml(rankProblem)}` : `⚠️ Your ${std?'Standard ':''}deck has ${deckTotal(inviteDeck)} cards — it needs exactly ${DECK_SIZE}. Fix it in Deck first.`}</div></div>
     <div class="auth-actions"><button type="button" class="btn" id="invCancel">Cancel</button><button type="button" class="btn primary" id="invSend" ${deckOk?'':'disabled'}>Send invite</button></div>
   </div>`;
   overlay.hidden = false;
@@ -50817,6 +50866,7 @@ function showInviteBanner(){
   document.getElementById('ibAccept').onclick = async ()=>{
     const invStd = (inv.settings||{}).format==='standard', accDeck = invStd ? loadStandardDeck() : myDeckCounts;
     if(deckTotal(accDeck)!==DECK_SIZE){ showToast(TX('toast.your-deck-needs-exactly-cards-to', {v1: invStd?'Standard ':'', DECK_SIZE}), 'error'); if(invStd) openStandardDeckBuilder(); return; }
+    if(!deckRankOkOrWarn(accDeck, deckLeaderIds())){ if(invStd) openStandardDeckBuilder(); return; } // 2026-10-22 (package DR)
     const b = document.getElementById('ibAccept'); b.disabled = true;
     try{
       const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: publicDeck(accDeck), p_character: myCharacterId, p_leader: matchLeaderId() || null});

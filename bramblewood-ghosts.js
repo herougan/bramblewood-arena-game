@@ -22,7 +22,7 @@ const ASYNC = {MAX_WINS:7, MAX_LOSSES:3, MIN_ACTIVE_PER_STAGE:12, ACTIVE_DAYS:14
 const RAID = {CYCLE_DAYS:7, POOL_MULT:8, MIN_RAIDERS:8, MAX_RAIDERS:16, SEED_SHARE:0.5};
 const DAY = 24*3600*1000;
 // Same per-rarity copy limits as the deck builder (arena_app.js RARITY_MAX_COPIES).
-const RARITY_MAX_COPIES = {common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2, unique:1, legendary:1, mythic:1, ancient:1, starter:10, quest:5, questunique:1, special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4};
+const RARITY_MAX_COPIES = {common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2, unique:1, legendary:1, mythic:1, ancient:1, divine:1, void:1, daemonic:1, starter:10, quest:5, questunique:1, special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4};
 const DECK_SIZE = 20;
 const GHOST_NAMES = ['Moss','Briony','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Teasel','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
 const AVATAR_CHARS = ['otter','hummingbird','mouse'];
@@ -30,7 +30,15 @@ const AVATAR_COLORS = ['acorn','berry','river','moss','violet','sun','blossom','
 
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
 function hashStr(s){ let h = 2166136261; for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h>>>0; }
-function capOf(d){ return RARITY_MAX_COPIES[(d && d.rarity) || 'common'] || 10; }
+// 2026-10-22 (package DR): the budget helper (the ladder and the rank caps live there) is read when it is called: in the page it is a global
+// loaded after this file, under Node it is required. A flagged rarity ('devepic', 'questrare' ...) takes its rank's copy limit like the deck builder.
+function Bud(){ return root && root.BramblewoodBudget || (typeof require === 'function' ? require('./bramblewood-budget.js') : null); }
+function capOf(d){ const r = (d && d.rarity) || 'common'; if(RARITY_MAX_COPIES[r] != null) return RARITY_MAX_COPIES[r];
+  const B = Bud(); return (B && RARITY_MAX_COPIES[B.LADDER[B.rankOf(r)]]) || 10; }
+// Top-rank deck caps (2026-10-22, package DR): Legendary 3, Mythic 2, each rank above 1, the leaders counted (BramblewoodBudget.deckRank*).
+function rankOverErrors(defs, deck, leaders){ const B = Bud(); if(!B) return [];
+  return B.deckRankOver(deck, defs, leaders).map(o=> `${o.n} ${o.rank} cards, the deck limit is ${o.cap}`); }
+function rankBlocks(defs, deck, id, leaders){ const B = Bud(); return B ? B.deckRankBlock(deck, id, defs, leaders) : null; }
 function fieldable(defs){ return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && !(defs[id].hallOfFame) && !defs[id].pool).sort(); } // + !pool (2026-10-19, package AN: unplaced candidates)
 
 // Rough stand-alone strength of one card — only used to pick stage-appropriate ghost decks.
@@ -39,7 +47,7 @@ function cardPower(d){
   return ((d.attack||0) + (d.health||0)*0.45 + fx*1.5) / (1 + 0.3*(d.wait||0)) - 0.6*(d.cost||0);
 }
 
-function validateDeck(defs, deck){
+function validateDeck(defs, deck, leaders){ // + leaders (2026-10-22, package DR): they count toward the top-rank caps
   const errs = [];
   let total = 0;
   Object.keys(deck||{}).forEach(id=>{
@@ -50,6 +58,7 @@ function validateDeck(defs, deck){
     if(n > capOf(d)) errs.push(`${id} ×${n} is over its ${d.rarity||'common'} limit of ${capOf(d)}`);
   });
   if(total !== DECK_SIZE) errs.push(`deck has ${total} cards, needs ${DECK_SIZE}`);
+  rankOverErrors(defs, deck, leaders).forEach(e=> errs.push(e));
   return errs;
 }
 
@@ -65,7 +74,7 @@ function generateGhostDeck(defs, stage, seed, maxStage){
   const band = ids.slice(lo, hi);
   const cheap = band.filter(id=> !(defs[id].cost>0));
   const deck = {}; let total = 0, guard = 0;
-  const add = id=>{ if((deck[id]||0) >= Math.min(3, capOf(defs[id]))) return false; deck[id] = (deck[id]||0)+1; total++; return true; };
+  const add = id=>{ if((deck[id]||0) >= Math.min(3, capOf(defs[id]))) return false; if(rankBlocks(defs, deck, id)) return false; /* DR: Legendary 3 / Mythic 2 / higher 1 */ deck[id] = (deck[id]||0)+1; total++; return true; };
   // a core of 4–6 distinct cards, 2–3 copies each, so ghosts have a recognisable plan
   const core = 4 + Math.floor(r()*3);
   for(let i=0; i<core && total<DECK_SIZE && guard++<500; i++){
@@ -86,6 +95,42 @@ function generateGhostDeck(defs, stage, seed, maxStage){
     for(let pass=0; pass<3 && total<DECK_SIZE; pass++) for(const id of near){ if(total >= DECK_SIZE) break; add(id); }
   }
   return deck;
+}
+// Fit a deck to the top-rank caps (2026-10-22, package DR; owner: "only 3 Legendaries ... Mythic 2, then beyond only 1"). For each rank over its cap
+// the weakest copies (cardPower) go, and each is swapped for the highest-ranked card BELOW the capped ranks that shares its theme (animal, an
+// archetype or a species; same card type; room left under its copy limit, at most 3 in a ghost-style deck), the most overlap then the strongest
+// breaking a tie. With no themed match the swap is the highest-ranked uncapped card with room (the filler), so the deck keeps its size.
+// `leaders` count toward the caps and are never removed. Returns {deck, swaps:[{from, to}]}: `deck` is a new object, the input is unchanged.
+// Deterministic (no randomness).
+function themeOf(d){ const t = new Set(); if(d.animal) t.add('a:' + d.animal); (d.archetypes||[]).forEach(x=> t.add('t:' + x)); (d.species||[]).forEach(x=> t.add('s:' + x)); return t; }
+function fitDeckToRankCaps(defs, deck, leaders){
+  const B = Bud(), out = Object.assign({}, deck), swaps = [];
+  if(!B) return {deck: out, swaps};
+  const over = B.deckRankOver(out, defs, leaders);
+  if(!over.length) return {deck: out, swaps};
+  const legendaryAt = B.LADDER.indexOf('legendary'), rk = id=> B.rankOf(defs[id].rarity);
+  const pool = fieldable(defs).filter(id=> { const d = defs[id]; return !d.hero && !d.easterEgg && !d.raid && !d.hidden && !d.awaitingSource && !d.darkSummon && rk(id) < legendaryAt; })
+    .sort((a, b)=> rk(b) - rk(a) || cardPower(defs[b]) - cardPower(defs[a]) || (a < b ? -1 : 1));
+  over.forEach(o=>{
+    let extra = o.n - o.cap;
+    const mine = Object.keys(out).filter(id=> defs[id] && !defs[id].token && (B.deckRankCapOf(defs[id].rarity)||{}).rank === o.rank)
+      .sort((a, b)=> cardPower(defs[a]) - cardPower(defs[b]) || (a < b ? -1 : 1)); // the weakest go first, the strongest stay
+    for(const id of mine){
+      while(extra > 0 && (out[id]||0) > 0){
+        const th = themeOf(defs[id]), type = defs[id].cardType || '';
+        const fits = pool.filter(c=> c !== id && (defs[c].cardType || '') === type && (out[c]||0) < Math.min(3, capOf(defs[c])));
+        let best = null, bestOv = 0;
+        for(const c of fits){ let ov = 0; themeOf(defs[c]).forEach(x=> { if(th.has(x)) ov++; });
+          if(ov > 0 && (!best || rk(c) > rk(best) || (rk(c) === rk(best) && ov > bestOv))){ best = c; bestOv = ov; } }
+        if(!best) best = fits[0] || null; // no themed match: the filler, the highest uncapped card with room
+        out[id]--; if(out[id] <= 0) delete out[id]; extra--;
+        if(best) out[best] = (out[best]||0) + 1;
+        swaps.push({from: id, to: best});
+      }
+      if(extra <= 0) break;
+    }
+  });
+  return {deck: out, swaps};
 }
 function ghostIdentity(seed){
   const r = mulberry32(seed ^ 0x9e3779b9);
@@ -165,7 +210,7 @@ function buildStagePool(defs, stage, recorded, now, opts){
   const cutoff = now - ASYNC.ACTIVE_DAYS*DAY;
   const latest = {};
   (recorded||[]).forEach(g=>{
-    if(!g || g.stage!==stage || !(g.at>=cutoff) || validateDeck(defs, g.deck).length) return;
+    if(!g || g.stage!==stage || !(g.at>=cutoff) || validateDeck(defs, g.deck, g.leaders).length) return; // + leaders (2026-10-22, package DR)
     if(!latest[g.owner] || latest[g.owner].at < g.at) latest[g.owner] = g;
   });
   const real = Object.values(latest).map(g=> Object.assign({source:'player'}, g));
@@ -291,7 +336,7 @@ function seedPvpStrangers(defs, tier, count, epoch){
   const stage = Math.round(tier * (ASYNC.MAX_WINS-1) / PVP.Z_EDGES.length);
   return seedGhosts(defs, stage, count, 'pvp:'+tier+':'+(epoch||0), {themed:true}).map((g,i)=> Object.assign(g, {owner:`pvpseed-${tier}-${i}`, rating: tierMidRating(tier) + ((i*37)%120) - 60, deckLevel: simpleDeckLevel(defs, g.deck)}));
 }
-const api = {THEMED_GHOSTS, themedGhostsFor, PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
+const api = {THEMED_GHOSTS, themedGhostsFor, PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, fitDeckToRankCaps, rankBlocks, capOf, fieldable, generateGhostDeck, ghostIdentity, seedGhosts,
   buildStagePool, pickOpponent, newAsyncRun, asyncRunOver, recordAsyncGhost, raidCycle, featuredRaidBoss, raidPoolMax, simulateRaidFight, raidState, recordRaidAttempt};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodGhosts = api;
