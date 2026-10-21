@@ -122,7 +122,7 @@ ok(/"ui\.swap-teach-lumber": "It costs 🪵 Lumber: pitch a card you don't need 
   ok(unl.length === 1 && unl[0][0] === 'quarry-mole' && q.length === 1 && q[0].id === 'quarry-mole' && q[0].forced && q[0].teach === 'lumber' && !toasts.length, 'Quarry Mole: unlocked, queued for the swap window, no toast');
   f(); ok(unl.length === 1 && q.length === 1, 'nothing more once the held list is empty');
 }
-{ const ld = fnSrc('maybeOfferDeckSwap'); ok(/const out = item\.forced \? weakestDeckCard\(id\)/.test(ld) && /if\(item\.forced\) setDialogueFlag/.test(ld) && /dsCancel/.test(ld), 'a forced swap trades the weakest card and can be cancelled'); }
+{ const ld = fnSrc('maybeOfferDeckSwap'); ok(/const out = item\.forced \? weakestDeckCard\(id\b/.test(ld) && /if\(item\.forced\) setDialogueFlag/.test(ld) && /dsCancel/.test(ld), 'a forced swap trades the weakest card and can be cancelled'); }
 
 // --- 4. a bramble won is a card
 const rp = fnSrc('rewardsPanelHTML'), rc = fnSrc('rewardCastleCardHTML');

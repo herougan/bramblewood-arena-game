@@ -50,6 +50,20 @@ function weakenShare(state, partId){
   if(!state) return 1; const ps = state.byId && state.byId[partId], sh = (a, b)=> b > 0 ? Math.max(0, Math.min(1, a / b)) : 1;
   return Math.min(ps ? sh(ps.remaining, ps.total) : 1, state.total ? sh(state.remaining, state.total) : 1);
 }
+// The raid bramble's Shield (2026-10-19, package MX, owner 22:47: "Add a shield value of 50 to the Raid. As the HP% goes down, this 50
+// goes down proportionally."): the boss's bramble in a raid fight opens with a Shield (the Shield rule's armour layer: it soaks hits
+// before Health) of round(max x weakenShare), the same remaining share the boss's weakening uses: 50 fresh, 25 at half, 0 as it falls.
+// max = the part's `shield`, else the raid's `shield`, else RAID_SHIELD_DEFAULT (50), so a saved raid edit without it gets 50; 0 = off.
+const RAID_SHIELD_DEFAULT = 50;
+function raidShieldMax(def, partId){
+  const p = ((def && def.parts) || []).find(x=> x.id === partId), ok = v=> v != null && v !== '' && isFinite(Number(v));
+  const v = p && ok(p.shield) ? Number(p.shield) : (def && ok(def.shield) ? Number(def.shield) : RAID_SHIELD_DEFAULT);
+  return Math.max(0, Math.min(999, Math.round(v)));
+}
+function raidShield(def, state, partId){
+  const max = raidShieldMax(def, partId), share = weakenShare(state, partId);
+  return {max, share, shield: Math.max(0, Math.round(max * share))};
+}
 function weakenCard(d, w){
   if(!d || !(w > 0) || w >= 1) return d; const a = Number(d.attack) || 0;
   return Object.assign({}, d, {attack: a > 0 ? Math.max(1, Math.round(a * w)) : 0, health: Math.max(1, Math.round((Number(d.health) || 1) * w))});
@@ -403,7 +417,13 @@ function raidReward(def, state, owner, opts){
   // card), never the raid's own; its own cards come only at RAID_CARD_DROP_CHANCE (raidCardChance) and from the Forge's Raid tab.
   const cards = kill ? cardsBase + (p.leading ? p.rules.leadCards : 0) : 0, cardChance = kill ? (p.leading ? 0 : p.strong ? p.rules.strongPct / 100 : 0) : Math.min(1, specMult * boost * cardsBase);
   const row = RAID_REWARD_TABLE[p.level] || RAID_REWARD_TABLE.participant;
-  const fullShards = Math.round((rw.shards != null && isFinite(Number(rw.shards)) ? Math.max(0, Number(rw.shards)) : row.shards) * boost) + row.extraShards + (RAID_TIER_SHARDS[tier] || 0);
+  // 2026-10-19 (package MX, owner 23:43: "main participators should definitely get more - maybe as a start, minimum 1 per game you
+  // played ... Then the better you do, more than 20% and 40% rewards. Maybe 2x and 5x rewards. So 100+ for those who do very well."):
+  // RAID_SHARDS_PER_FIGHT (1) a fight you played in that life, or the raid's flat base (rewards.shards, else the table's 6) when that is
+  // more, times the level's shardMult (Participant 1, Competent 2, Leading 5; was x1.2 / x1.4 and +2 / +5), then the standing's
+  // RAID_TIER_SHARDS on top; a held raid still pays its share below. 40 fights: 40 / 80 / 200.
+  const shardBase = rw.shards != null && isFinite(Number(rw.shards)) ? Math.max(0, Number(rw.shards)) : row.shards;
+  const fullShards = Math.round(Math.max(shardBase, (p.fights || 0) * RAID_SHARDS_PER_FIGHT) * (row.shardMult || 1)) + (RAID_TIER_SHARDS[tier] || 0);
   const shards = kill ? fullShards : Math.floor(fullShards * genMult * taken); // a held raid: its share (failPct) by how much Health went
   return {kind: kill ? 'kill' : 'compensation', tier, strong: p.strong, leading: !!p.leading, level: p.level, participation: p, base, extra, xp, cards, cardChance, taken, genMult, specMult, boost,
     packFloor: row.packFloor, factionChance: row.factionChance, shards, raidCardChance: kill ? RAID_CARD_DROP_CHANCE : 0};
@@ -415,12 +435,14 @@ function raidReward(def, state, owner, opts){
 // RAID_CARD_DROP_CHANCE is the ONE place the raid-card chance lives (the owner wants "almost never"): a fall's claim rolls it once,
 // and so does a won raid fight (the page's raidFightCardDrop). A held raid's claim never rolls it.
 const RAID_CARD_DROP_CHANCE = 0.015;
-// shards: trophy shards on a fall before the boost (Competent x1.2, Leading x1.4; a raid's rewards.shards replaces it); extraShards
-// on top for the level; RAID_TIER_SHARDS on top for the standing (top 1% / 10% / 50%). Owner may retune every number here.
+// shards: the flat base of trophy shards on a fall (a raid's rewards.shards replaces it) when that is more than RAID_SHARDS_PER_FIGHT x
+// your fights; shardMult for the level (2026-10-19, package MX: x1 / x2 / x5, was x1.2 / x1.4 with +2 / +5 extraShards); RAID_TIER_SHARDS
+// on top for the standing (top 1% / 10% / 50%). Owner may retune every number here.
+const RAID_SHARDS_PER_FIGHT = 1;
 const RAID_REWARD_TABLE = {
-  participant: {packFloor:'common',   factionChance:0.10, shards:6, extraShards:0},
-  competent:   {packFloor:'uncommon', factionChance:0.15, shards:6, extraShards:2},
-  leading:     {packFloor:'rare',     factionChance:0.25, shards:6, extraShards:5},
+  participant: {packFloor:'common',   factionChance:0.10, shards:6, shardMult:1},
+  competent:   {packFloor:'uncommon', factionChance:0.15, shards:6, shardMult:2},
+  leading:     {packFloor:'rare',     factionChance:0.25, shards:6, shardMult:5},
 };
 const RAID_TIER_SHARDS = {top1:4, top10:2, top50:1, participant:0};
 const RAID_RARITY_ORDER = ['starter', 'common', 'uncommon', 'quest', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient'];
@@ -571,9 +593,9 @@ function bossReinforce(E, pl, pool, rnd, opts){
 }
 
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
-  RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
+  RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_SHARDS_PER_FIGHT, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
-  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
+  CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RAID_SHIELD_DEFAULT, raidShieldMax, raidShield, /* 2026-10-19 (package MX) */ RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
    fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, RAID_RANK_MULT, raidRankMult, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
