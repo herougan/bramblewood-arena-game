@@ -43055,7 +43055,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '25333893a8e9', BUILD_CARD_HASH = '50b642cd2599188abf50e6372cfe0ee402db0a02e79e336ff30193a72d1ee653';
+const BUILD_ID = 'b62f0e3e9dd4', BUILD_CARD_HASH = '50b642cd2599188abf50e6372cfe0ee402db0a02e79e336ff30193a72d1ee653';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57664,7 +57664,8 @@ function tentQuickCount(id, prev){
   edSetStackCount(chips[0], n, '×' + n); chips[0].title = `${name} ×${n}: click to add one, Shift+click to take one out`;
   if(stack){ const owned = ownedCopiesOf(id); if(owned !== Infinity){ const left = Math.max(0, owned - n); edSetStackCount(stack, owned, `${left}/${owned}`); stack.classList.toggle('is-spent', left <= 0); } }
   const badgeEl = document.getElementById('myDeckSizeBadge'); if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
-  try{ refreshDeckHeroBanner(); }catch(e){}
+  // the deck's banner (its battle rating, its stats: ~100 ms to draw) follows once the clicking stops, not on every click
+  clearTimeout(tentQuickCount._t); tentQuickCount._t = setTimeout(()=>{ try{ refreshDeckHeroBanner(); }catch(e){} }, 250);
   return true;
 }
 // -- One result per match (#9: "If you autowin and quit right after, you get the reward, but then you can press continue - it brings
@@ -57698,8 +57699,12 @@ function lockResultButtonsUntilRecorded(m){
   const btns = [...document.querySelectorAll('.winloss-card .winloss-actions button, .winloss-card .wl-corner-btn')]; if(!btns.length) return;
   btns.forEach(b=>{ if(b.dataset.edLocked) return; b.dataset.edLocked = '1'; b.disabled = true; b.setAttribute('aria-busy', 'true'); });
   const card = document.querySelector('.winloss-card'); if(card && !card.querySelector('.ed-saving')) card.querySelector('.winloss-actions') && card.querySelector('.winloss-actions').insertAdjacentHTML('beforebegin', `<p class="ed-saving" role="status">${escapeHtml(TX('results.ed-saving'))}</p>`);
-  const t0 = Date.now(), tick = ()=>{ if(matchState !== m) return;
-    if(matchRewardSettled(m) || Date.now() - t0 > 15000){ btns.forEach(b=>{ if(!b.isConnected) return; b.disabled = false; b.removeAttribute('aria-busy'); delete b.dataset.edLocked; }); const s = document.querySelector('.winloss-card .ed-saving'); if(s) s.remove(); return; }
+  // a click on a locked button never gets through (refreshEnergyButtons may clear `disabled` on Play again while we wait)
+  const guard = e=>{ const t = e.target && e.target.closest && e.target.closest('[data-ed-locked]'); if(t){ e.stopImmediatePropagation(); e.preventDefault(); } };
+  if(card) card.addEventListener('click', guard, true);
+  const t0 = Date.now(), tick = ()=>{ if(matchState !== m){ if(card) card.removeEventListener('click', guard, true); return; }
+    if(matchRewardSettled(m) || Date.now() - t0 > 15000){ btns.forEach(b=>{ if(!b.isConnected) return; b.disabled = false; b.removeAttribute('aria-busy'); delete b.dataset.edLocked; }); if(card) card.removeEventListener('click', guard, true); const s = document.querySelector('.winloss-card .ed-saving'); if(s) s.remove(); try{ refreshEnergyButtons(); }catch(e){} return; }
+    btns.forEach(b=>{ if(b.isConnected && b.dataset.edLocked) b.disabled = true; }); // held while we wait
     setTimeout(tick, 150); };
   setTimeout(tick, 150);
 }
@@ -57918,7 +57923,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
         ${draft.kind === 'tutorial' ? '' : (()=>{ // 2026-10-21 (package ED, owner #7): this fight's enemy level (blank: the road curve), the level its preview and its fight use
-          const curve = roadEnemyLevelExact(Object.assign({}, draft, {enemyLevel: null})), ovr = nodeEnemyLevelOverride(draft);
+          const bare = Object.assign({}, draft, {enemyLevel: null}); NODE_MAP_HINT.set(bare, mapId); const curve = roadEnemyLevelExact(bare), ovr = nodeEnemyLevelOverride(draft);
           return `<label class="ed-enemy-level" title="${escapeAttr(TX('ui.ed-enemy-level-tip', {n: curve}))}">${escapeHtml(TX('ui.ed-enemy-level'))}<input id="seEnemyLevel" type="number" min="0" max="${draft.levelCap || 20}" step="0.05" placeholder="${escapeAttr(String(curve))}" value="${ovr != null ? escapeAttr(String(ovr)) : ''}"><small class="ed-enemy-level-note">${escapeHtml(ovr != null ? TX('ui.ed-enemy-level-set', {n: ovr}) : TX('ui.ed-enemy-level-curve', {n: curve}))}</small></label>`; })()}
         ${(()=>{ // 2026-10-14 (user: "Let me choose the showcase card (based on cards in the opponent's deck)"): a picker of the
           // enemy deck's own cards, drawn as cards, under the dropdown (kept: read() saves from it). Auto = the strongest card.
