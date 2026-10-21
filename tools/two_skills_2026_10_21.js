@@ -27,10 +27,10 @@ const KEEP = {
   'alligator-gar': ['armor', 'bleed'], 'battlement-heron': ['arrow', 'sentry'], 'bee-forager': ['swarm', 'trigger:onAttack'], beluga: ['sonar', 'inspiring'],
   'caldera-snow-leopard': ['pounce', 'ambush'], 'carrion-fly-swarm': ['poison', 'brood'], 'caustic-scorpion': ['poison', 'thorns'], 'colossal-squid': ['fork', 'gash'],
   'crown-of-thorns-star': ['thorns', 'poison'], 'eagle-owl-quartermaster': ['arrow', 'fletcher'], 'elder-tortoise': ['regen', 'trigger:onSpawn'], 'eyrie-warden': ['flying', 'onReadyDamage'],
-  'fire-ant-raft': ['swarm', 'poison'], 'frillneck-duelist': ['quick', 'fencing'], 'fumarole-ibex': ['mountainClimber', 'pounce'], 'giant-cave-huntsman': ['pounce', 'daunt'],
+  'fire-ant-raft': ['swarm', 'poison'], 'frillneck-duelist': ['quick', 'fencing'], 'fumarole-ibex': ['mountainClimber', 'pounce'], 'giant-cave-huntsman': ['poison', 'pounce'] /* the owner's scary spider (10-18 23:32: Poison, Pounce) */,
   'giant-clam': ['shell', 'regen'], 'gilded-swan-knight': ['armor', 'inspiring'], 'goose-sentry': ['taunt', 'sentry'], 'greenland-shark': ['carrion', 'armor'],
   'grotto-lobster': ['brood', 'crabClaws'], 'honeyjoe-brewer': ['coffee', 'kinship'], 'hummingbird-needler': ['flying', 'pierce'], 'humpback-elder': ['thorns', 'inspiring'],
-  'lurking-dread': ['beware', 'scare'], 'mangrove-manatee': ['regen', 'guardian'], 'mirror-moth': ['evasive', 'reflect'], 'moon-jelly': ['tide', 'poison'],
+  'lurking-dread': ['beware', 'scare'], 'mangrove-manatee': ['regen', 'guardian'], 'mirror-moth': ['evasive', 'reflect'], 'moon-jelly': ['tide', 'moonpull'] /* Moonpull's own card */,
   'moray-ambusher': ['stealth', 'wave'], 'open-ocean-hermit-crab': ['armor', 'crabClaws'], 'orca-vanguard': ['sweep', 'momentum'], 'ore-smelter-mole': ['heavyMetal', 'trigger:onReady'],
   'peregrine-stooper': ['quick', 'pounce'], 'phoenix-fledgling': ['renewal', 'cure'], 'quicksand-queen': ['trap', 'tangle'], 'reef-manta-glider': ['evasive', 'wave'],
   'ruby-throat-duelist': ['quick', 'pierce'], 'sea-cucumber': ['regen', 'trigger:onAttacked'], 'sea-turtle-elder': ['armor', 'revive'], subterraneaner: ['stealth', 'ambush'],
@@ -57,7 +57,7 @@ function plan(){
   const out = {_about: 'BF5 (2026-10-21): two skills at most (owner); special / thematic cards (Epic and up, Supreme, hidden, Easter eggs, tokens) keep theirs', generated: '2026-10-21',
     cut: rows.filter(r=> r.dropped.length).length, special: rows.filter(r=> !r.dropped.length && !r.added).length, added: rows.filter(r=> r.added).length, rows};
   fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n'); return out; }
-const P = plan(); console.log(P.cut, 'cards cut to two,', P.special, 'special cards keep more,', P.added, 'ants given a second skill');
+const P = process.argv[2] === 'apply' || process.argv[2] === 'plan' ? plan() : JSON.parse(fs.readFileSync(OUT, 'utf8')); console.log(P.cut, 'cards cut to two,', P.special, 'special cards keep more,', P.added, 'ants given a second skill');
 if(process.argv[2] === 'apply'){
   const cards = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')), by = {}; cards.forEach(c=> by[c.id] = c);
   P.rows.forEach(r=>{ const c = by[r.id];

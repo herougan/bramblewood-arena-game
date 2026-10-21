@@ -65,7 +65,7 @@
   }
  ],
  "counts": {
-  "cards": 828,
+  "cards": 831,
   "creatures": 734,
   "tagged": 736,
   "animals": 351,
@@ -8832,6 +8832,36 @@
    "id": "rockfall",
    "name": "Rockfall",
    "icon": "🪨",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "grave-call",
+   "name": "Grave Call",
+   "icon": "🪦",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "smoke-screen",
+   "name": "Smoke Screen",
+   "icon": "🌫️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "magnet",
+   "name": "Magnet",
+   "icon": "🧲",
    "creature": false,
    "animal": null,
    "group": null,

@@ -1465,12 +1465,12 @@
    ],
    "keep": [
     "tide",
-    "poison"
-   ],
-   "dropped": [
     "moonpull"
    ],
-   "why": "the two its name and flavour carry"
+   "dropped": [
+    "poison"
+   ],
+   "why": "the two its name and flavour carry (Moonpull's own card)"
   },
   {
    "id": "vampire-bat",
@@ -2051,14 +2051,14 @@
     "daunt"
    ],
    "keep": [
-    "pounce",
-    "daunt"
+    "poison",
+    "pounce"
    ],
    "dropped": [
-    "poison",
-    "darksight"
+    "darksight",
+    "daunt"
    ],
-   "why": "the two its name and flavour carry"
+   "why": "the two its name and flavour carry (the owner's scary spider: Poison, Pounce)"
   },
   {
    "id": "banded-sea-krait",

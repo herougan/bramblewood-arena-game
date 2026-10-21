@@ -32,6 +32,7 @@ const OLD = JSON.parse(JSON.stringify(TABLE)); Object.assign(OLD.budget, {scale:
 const REF = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'halve-ref-2026-10-21.json'), 'utf8')).cards; }catch(e){ return {}; } })();
 const T0 = SC.make(OLD);
 const BAND_LO = 0.6, BAND_HI = 1, cmd = process.argv[2] || 'plan';
+const ONLY = ((process.argv.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean); // re-derive just these (their stats back from the note first)
 const TARGET = {'cave-bat-swarm': [1, 2]}; // owner 21:36
 const PROPORTION = {'caldera-wyrm': 'outside the band (decision B10: printed = obtained, its power at 20-B-4 is the field\'s); halved in proportion'};
 const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'));
@@ -61,7 +62,7 @@ function planCard(c){
 function planAll(){
   const cards = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')), rows = [], prop = [];
   cards.forEach(c=>{
-    if(c.attack == null && c.health == null) return;
+    if(c.attack == null && c.health == null) return; if(ONLY.length && !ONLY.includes(c.id)) return;
     if(PROPORTION[c.id] || (c.token && SC.measured(Object.assign({}, c, {token: false}))) || isEgg(c) || c.cardType === 'equipment' || (c.hatchInto && !c.pool)){
       const now = half(c.attack, c.health), kind = PROPORTION[c.id] ? 'wyrm' : c.token ? 'token' : isEgg(c) ? 'easter egg' : c.cardType === 'equipment' ? 'equipment' : 'nest egg';
       if(now[0] !== c.attack || now[1] !== c.health) prop.push({id: c.id, name: c.name, kind, was: [c.attack, c.health], now, why: PROPORTION[c.id] || 'halved in proportion (no budget band of its own)'});

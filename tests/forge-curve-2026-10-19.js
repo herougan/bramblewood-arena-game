@@ -27,9 +27,9 @@ ok(near(BB.nAt(30, 5), 0.5 * (30 + 0.5) * (1 + 5 / 30), 0.006) && near(BB.nAt(30
 ok(near(BB.nAt(14, 1, {levelLinDiv: 3, scale: 1}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3, scale: 1}), 23.11) && near(BB.nAt(14, 1, {levelLinDiv: 3}), 7.41), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
 ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. the helper\'s numbers (levelLinDiv, levelDiv, zeroPenalty too) are canonical/skill-costs.json\'s budget');
 { const live = cards.filter(SC.measured); let same = 0; const diff = [];
-  live.forEach(c=>{ const L = SC.levelOf(c), want = BB.nAt(BB.baseOf(Object.assign({}, c, {obtainMap: T.obtainMapOf(c)})), L) /* + Base's map term (BF2, 15:25) */; if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
+  live.forEach(c=>{ const L = SC.levelOf(c), want = Math.round(BB.nAt(BB.baseOf(Object.assign({}, c, {obtainMap: T.obtainMapOf(c)})), L) * T.budgetMult(c) * 100) / 100 /* + Base's map term (BF2, 15:25); BF5 10-21: x the card's N multiplier */; if(near(T.budgetN(c), want, 1e-9) && near(T.budget(c).N, want, 1e-9)) same++; else diff.push(c.id); });
   ok(!diff.length, `1. tools/skill_costs.js gives v5's N (with the map term) for every measured card (${same}): ${diff.slice(0, 5).join(', ')}`);
-  ok(/return BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\)/.test(src) && /levelLinDiv:10, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
+  ok(/return Math\.round\(BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\) \* BramblewoodBudget\.nMultOf\(/.test(src) /* BF5 10-21: x the card's N multiplier */ && /levelLinDiv:10, levelDiv:30, zeroPenalty:1/.test(src), '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
   // (BF5) the v3 comparison is v5 before the halving: scale 1
   const v3 = live.map(c=> T.budgetV3N(c, 1) - BB.nAt(T.budgetBase(c), 1, Object.assign({}, table.budget, {scale: 1}))); ok(v3.every(d=> d <= 1.3 + 1e-9), `1. at Level 1, v5 (L/10, before the BF5 halving) is never more than 1.3 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
@@ -48,13 +48,15 @@ const withStats = cards.filter(c=> SC.measured(c) && !c.pool && (c.attack != nul
 let mono = [], majors = [], budget = [], walls = [], game = [], checked = 0;
 for(const c of withStats){
   const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c)}), from, top), b0 = T.budget(c, {level: from}); checked++;
-  const room1 = L=> BB.nAt(cv.base, L) - (2 * (cv.rows[L].attack || 0) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(BB.nAt(cv.base, L) / 3, 2) - ((cv.rows[L].attack || 0) * (cv.rows[L].health || 0) + b0.S) * cv.m;
+  // (BF5 10-21) each level's N is the curve's own (cv.rows[L].N: x the card's N multiplier)
+  const room1 = L=> cv.rows[L].N - (2 * (cv.rows[L].attack || 0) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(cv.rows[L].N / 3, 2) - ((cv.rows[L].attack || 0) * (cv.rows[L].health || 0) + b0.S) * cv.m;
   for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
     if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
     if([4, 7, 10].includes(L) && !(r.points > 0)) majors.push(`${c.id} Lv ${L}`);
     // (BF5) with N halved, a major's forced point ("the majors always add something") can run one point past N on the smallest cards
     const forced = cv.m * Math.max(1, [4, 7, 10, 11].filter(k=> k > from && k <= L && cv.rows[k].points === 1).length); // a point each major / limit forced so far
-    const inside = b0.ok ? room1(L) >= ([4, 7, 10, 11].includes(L) && r.points === 1 ? -forced : 0) - 1e-9 && room2(L) >= ([4, 7, 10, 11].includes(L) && r.points === 1 ? -cv.m * Math.max(r.attack || 0, r.health || 0) : 0) - 1e-9 /* inclusive (16:22); BF5: or the forced point's A·H */ : room1(L) >= room1(from) - forced - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
+    const nForced = [4, 7, 10, 11].filter(k=> k > from && k <= L && cv.rows[k].points === 1).length; // (BF5 10-21) a forced point's overrun stays until the bank catches up
+    const inside = b0.ok ? room1(L) >= -cv.m * nForced - 0.05 && room2(L) >= (nForced ? -cv.m * Math.max(r.attack || 0, r.health || 0) * nForced : 0) - 0.05 /* inclusive (16:22); BF5: or the forced point's A·H */ : room1(L) >= room1(from) - forced - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
     if(!inside) budget.push(`${c.id} Lv ${L} (2A+H+S ${(2 * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
     if(!c.levelStats){ const st = G.statsAtLevel(c, L); if(st.attack !== r.attack || st.health !== r.health) game.push(`${c.id} Lv ${L}`); } }
   if(c.attack === 0 && Object.values(cv.rows).some(r=> r.attack !== 0)) walls.push(c.id);

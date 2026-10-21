@@ -85,7 +85,7 @@ function oldBudget(d){ const e = d.effects || {}, k = d.rarity || 'common', rank
   const L = (d.faction || d.id==='wandering-traveller') ? 1 : ((d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1);
   const W = +d.wait||0, C = +d.cost||0, rit = e.ritual && typeof e.ritual === 'object' ? Object.values(e.ritual).reduce((a, b)=> a + (+b||0), 0) : 0;
   // 2026-10-19 (package BF2): N is budget v5, (Base + L/5) x (1 + L/30), Level 0 Base - 1; Base = v3's N without its 2L
-  const base = 20 + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit + 0.2 * T.obtainMapOf(d) /* + the map term (BF2, 15:25) */, kS = table.budget.scale /* BF5: the whole N halved (on Base rounded to 0.01, as the helper) */, bR = Math.round(base * 100) / 100, N = Math.round((L ? kS * (bR + L / 10) * (1 + L / 30) : kS * (bR - 1)) * 100) / 100; // L/10 since 15:48
+  const base = 20 + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit + 0.2 * T.obtainMapOf(d) /* + the map term (BF2, 15:25) */, kS = table.budget.scale /* BF5: the whole N halved (on Base rounded to 0.01, as the helper) */, bR = Math.round(base * 100) / 100, N = Math.round(Math.round((L ? kS * (bR + L / 10) * (1 + L / 30) : kS * (bR - 1)) * 100) / 100 * T.budgetMult(d) * 100) / 100; // L/10 since 15:48; BF5 10-21: x the card's N multiplier
   let S = 0; Object.entries(e).forEach(([key, v])=>{ if(key === 'triggers' || key === 'bounty') return; // the two the new model prices differently
     if(APPLIED.has(key)) return; // applied measured worth (2026-10-19): not the frozen value any more
     const rule = OLD[key], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
@@ -93,7 +93,7 @@ function oldBudget(d){ const e = d.effects || {}, k = d.rarity || 'common', rank
   return {N, S}; }
 const APPLIED = new Set(table.skills.filter(e=> e.appliedAt).map(e=> e.id)), skipped = {}; // 2026-10-19 (package TC): measured worth applied
 let same = 0, diff = [];
-cards.filter(c=> SC.measured(c) && !c.pool /* 2026-10-19 (package GI): an unplaced pool card may carry a skill newer than this frozen model */ && !['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker', 'weaponMaster', 'pry' /* + package EQ (2026-10-19) */].some(k=> (c.effects || {})[k] != null) /* 2026-10-19 (package TH): nor a placed GI example */).forEach(c=>{ const o = oldBudget(c), b = T.budget(c), passive = b.parts.filter(p=> p[0] === 'skill' && !APPLIED.has(p[1])).reduce((a, p)=> a + p[2], 0);
+cards.filter(c=> SC.measured(c) && !c.pool /* 2026-10-19 (package GI): an unplaced pool card may carry a skill newer than this frozen model */ && !['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker', 'weaponMaster', 'pry', 'formation' /* SK1's, on the BF5 Soldier Ant */ /* + package EQ (2026-10-19) */].some(k=> (c.effects || {})[k] != null) /* 2026-10-19 (package TH): nor a placed GI example */).forEach(c=>{ const o = oldBudget(c), b = T.budget(c), passive = b.parts.filter(p=> p[0] === 'skill' && !APPLIED.has(p[1])).reduce((a, p)=> a + p[2], 0);
   b.parts.forEach(p=>{ if(p[0] === 'skill' && APPLIED.has(p[1])) skipped[p[1]] = (skipped[p[1]] || 0) + 1; });
   if(Math.abs(passive - o.S) < 1e-9 && b.N === o.N) same++; else diff.push(`${c.id} S ${o.S}→${passive} N ${o.N}→${b.N}`); });
 ok(!diff.length, 'keyword S and N unchanged for every measured card: ' + diff.slice(0, 8).join('; '));

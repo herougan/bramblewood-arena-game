@@ -165,7 +165,8 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   ok(pc && pc.effects.twin, 'Puddle Changeling has Twin');
   ok(mm && mm.rarity === 'rare' && mm.effects.twin, 'Mirrorhide Mutant: rare Twin (stats/art/placement have moved on since 10-14)'); }
 { const {e, P} = mk(); const ev = []; e.debugSpawnCard(P, so, 1, 'kb-sprout', 'left', {}, ev); const sp = all(P[1]).filter(c=> c.defId==='growth-sprout');
-  ok(sp.length === 2 && sp.every(c=> c.atk === 1 && c.maxHp === 3), `Sprout 2: two 1/3 Growth Sprouts sprout beside it (${sp.length})`);
+  // 2026-10-21 (BF5): the Growth Sprout token is halved with the rest (1/3 -> 1/2)
+  ok(sp.length === 2 && sp.every(c=> c.atk === 1 && c.maxHp === 2), `Sprout 2: two 1/2 Growth Sprouts sprout beside it (${sp.length})`);
   ok(base['growth-sprout'] && base['growth-sprout'].token && base['growth-sprout'].effects.growth, 'Growth Sprout is a token with Growth'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'kb-swarm', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'kb-sprout', 'right', {}, []); e.debugSpawnCard(P, so, 2, 'kb-wall', 'left', {}, []);
   const S = byDef(P[1], 'kb-swarm'); ok(e.swarmBonusOf(P, S) === 2, `a Swarm Ant counts both Growth Sprouts but not the Bird (${e.swarmBonusOf(P, S)})`); }

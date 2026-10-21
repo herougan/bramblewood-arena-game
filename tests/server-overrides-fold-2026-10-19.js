@@ -20,7 +20,8 @@ ok(rows.length === 72 && P.rows.length === 72, `1. 72 card rows in the dump and 
 rows.forEach(r=>{ const c = by[r.id], pr = P.rows.find(x=> x.id === r.id);
   ok(c && /2026-10-19 retune \(server override folded\): was \d+\/\d+ \w+/.test(c.creatorNote || ''), `1. ${r.id} is folded (creatorNote)`);
   // (BF5) or the halving re-derived them from the fold's stats (its note: "2026-10-19 halve (BF5): was A/H")
-  ok(c && pr && ((c.attack === pr.now[0] && c.health === pr.now[1]) || new RegExp(`2026-10-19 halve \\(BF5\\): was ${pr.now[0]}/${pr.now[1]}[ .(]`).test(c.creatorNote || '')), `1. ${r.id} carries the plan's stats ${pr && pr.now.join('/')} (or BF5's halving of them)`);
+  // (BF5 10-21) or the owner's later live edit replaced them (tools/fold_server_overrides_2026_10_21.js), then the halving
+  ok(c && pr && ((c.attack === pr.now[0] && c.health === pr.now[1]) || new RegExp(`2026-10-19 halve \\(BF5\\): was ${pr.now[0]}/${pr.now[1]}[ .(]`).test(c.creatorNote || '') || /2026-10-21 \(BF5\): the owner's live edit of/.test(c.creatorNote || '')), `1. ${r.id} carries the plan's stats ${pr && pr.now.join('/')} (or BF5's halving of them, or the owner's later edit)`);
   const rc = pr && pr.conflicts.find(x=> x.field === 'rarity');
   ok(c && (c.rarity === r.data.rarity || (rc && c.rarity === rc.file)), `1. ${r.id}: the server's rarity ${r.data.rarity} (or a listed newer file change)`); });
 ok(by['green-dragon'].rarity === 'mythic' && by['red-dragon'].rarity === 'mythic' && by['white-dragon'].rarity === 'divine' && by['black-dragon'].rarity === 'ancient',
@@ -44,7 +45,9 @@ ok(P.overBefore.length === 7 && P.overAfter.length === 1, `2. over budget: 7 bef
 const src = rd('arena_app.js'), node = key=>{ const m = new RegExp(`\\{ ?key:"${key}",[^\\n]*\\}`).exec(src); return m ? new Function('return (' + m[0] + ');')() : null; };
 const m1 = DUMP.find(r=> r.id === '__cfg:map-nodes:m1').data.edits.patches, mt = DUMP.find(r=> r.id === '__cfg:map-nodes:mtut').data.edits.patches;
 const ren = d=> { const o = {}; Object.entries(d).forEach(([k, v])=> o[k === 'bee-knight-classic' ? 'bee-knight' : k] = v); return o; };
-['0-1', '0-2', '0-3', '0-4'].forEach(k=>{ const nd = node(k), p = m1[k];
+// (BF5 10-21) the owner's later node edit of Map 0 (10-20) laid its decks over these: compare with the latest
+const m1b = (JSON.parse(rd('docs/balance/server-overrides/card-overrides-dump-2026-10-21.json')).rows.find(r=> r.id === '__cfg:map-nodes:m1') || {data: {edits: {patches: {}}}}).data.edits.patches;
+['0-1', '0-2', '0-3', '0-4'].forEach(k=>{ const nd = node(k), p = Object.assign({}, m1[k], m1b[k] || {});
   ok(nd && JSON.stringify(nd.deck) === JSON.stringify(ren(p.deck)) && nd.hqHp === p.hqHp && (!p.name || nd.name === p.name) && (!p.requires || JSON.stringify(nd.requires) === JSON.stringify(p.requires)), `3. ${k} is the owner's node edit (deck, Health, name, links)`); });
 ['tutorial', 'tutorial2'].forEach(k=>{ const nd = node(k), p = mt[k]; ok(nd && nd.hqHp === p.hqHp && nd.tutHp === p.tutHp, `3. ${k}: hqHp ${p.hqHp}, tutHp ${p.tutHp}`); });
 
