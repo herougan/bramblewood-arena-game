@@ -519,8 +519,6 @@
  "At the start of every round, every unit takes 1 damage (heat-resistant units are spared).": "毎ラウンド開始時、すべてのユニットが1ダメージを受ける（熱耐性のあるユニットは無事）。",
  "At the start of every round, one random card on each side gets +1 Wait.": "毎ラウンド開始時、両陣営のランダムなカード1枚の待機が+1される。",
  "At the start of the game it moves from your deck into your opening hand, and a random other card from that hand is discarded. Only once a game: with two Vanguards in the deck only one comes, and none if one is already in your hand. If it is the first card you play this game: +{v1}/+{v2}.": "試合開始時、デッキから初期手札に移り、その手札の他のランダムなカード1枚が捨てられる。1試合に1回だけ：デッキに先鋒が2枚あっても来るのは1枚、すでに手札にあれば来ない。この試合で最初にプレイしたカードなら：+{v1}/+{v2}。",
- "At Twilight: +{v1}/+{v2}. With it in your deck, every fifth phase is Twilight.": "薄明のとき：+{v1}/+{v2}。デッキに入っていると、5フェーズごとに薄明になる。",
- "At Twilight: gain +{v1}/+{v2}. (A deck with one turns the day into Day, Night, Day, Night, Twilight.)": "薄明のとき：+{v1}/+{v2}を得る。（これを入れたデッキでは、一日が昼・夜・昼・夜・薄明になる。）",
  "at upkeep, takes {v1} damage and loses {v2} Attack.": "アップキープ時に{v1}ダメージを受け、攻撃が{v2}下がる。",
  "At {v1}, {v2}.": "{v1}で{v2}。",
  "ate a chilli: +{v1}⚔, and its attacks burn now 🌶️🔥": "トウガラシを食べた：+{v1}⚔、攻撃が燃えるようになった 🌶️🔥",

@@ -325,6 +325,7 @@ Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', q
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
 Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
+Object.assign(SKILL_ICON, {crepuscularGrant:'🌆', rainrunnerGrant:'🌦️', loyalGrant:'🎖️', usurperGrant:'🗡️👑', transform:'🐺', ritual:'⛧'}); // CX2 (2026-10-21): the new context-skill rows
 Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'});
 SKILL_ICON.amore = '💕'; // Amore (2026-10-16): 💕 waiting, ❤️ paired, 🤎 heartbroken (amoreChip) // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
 Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
@@ -581,16 +582,41 @@ function isCrabDef(d){ return !!d && ((d.species||[]).some(s=> /^(Crustacean|Cra
 function skillIconFor(k, d){ return (k === 'fork' && isCrabDef(d)) ? '🦞' : (SKILL_ICON[k] || ''); }
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
-const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost'};
-function bloomLabel(bw){ bw = bw || {}; const w = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean).map(k=> ({tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost'})[k] || k);
-  const a = bw.atk != null ? Number(bw.atk)||0 : 2, h = bw.hp != null ? Number(bw.hp)||0 : 2;
-  return `Bloom (${w.join(bw.mode === 'or' ? ' or ' : ' & ') || '?'}): +${a}/+${h}`;
+const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost', fullmoon:'Full Moon', rain:'Rain'}; // + Full Moon, Rain (CX2, 2026-10-21)
+// 2026-10-21 (package CX2): Bloom (…) – {…}: a bloomWhen.grant lists skills it has while in bloom (no +2/+2 then unless it says so).
+function bloomLabel(bw){ bw = bw || {}; const w = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean).map(k=> BLOOM_COND_NAMES[k] || k), gr = bw.grant && typeof bw.grant === 'object' && Object.keys(bw.grant).length ? bw.grant : null;
+  const a = bw.atk != null ? Number(bw.atk)||0 : (gr ? 0 : 2), h = bw.hp != null ? Number(bw.hp)||0 : (gr ? 0 : 2);
+  return `Bloom (${w.join(bw.mode === 'or' ? ' or ' : ' & ') || '?'})${a || h || !gr ? `: +${a}/+${h}` : ''}${gr ? ' ' + grantBraceText(gr) : ''}`;
 }
+// Transform (2026-10-21, package CX2): "When {Night} → gain {…}", a named preset "Lycanthropy: under {Full Moon}, gain {…}". The engine's
+// TRANSFORM_PRESETS has the same presets (name → its condition).
+const TRANSFORM_PRESETS_APP = {lycanthropy: 'fullmoon'};
+function transformPresetName(k){ return k === 'lycanthropy' ? TX('ui.tf-lycanthropy') : (k || ''); }
+function transformCondsOf(tf){ const w = tf && (tf.when != null ? tf.when : TRANSFORM_PRESETS_APP[tf.name]); return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
+function transformWhenText(tf){ const w = transformCondsOf(tf).map(k=> BLOOM_COND_NAMES[k] || k); return w.join(tf && tf.mode === 'or' ? ' or ' : ' & ') || '?'; }
+function transformFromVals(v){ if(v && typeof v === 'object' && !Array.isArray(v)) return v.gain ? v : null;
+  const [name, cond, g] = Array.isArray(v) ? v : ['', '', v], gain = parseGrantText(g); if(!Object.keys(gain).length) return null;
+  const nm = TRANSFORM_PRESETS_APP[name] ? name : '', c = String(cond || '').toLowerCase().replace(/\s+/g, '') || (nm ? TRANSFORM_PRESETS_APP[nm] : 'night');
+  const out = {when: [c], gain}; if(nm) out.name = nm; return out; }
+// The card line's head: "Lycanthropy: under {Full Moon}, gain {Regen 2, Thorns 2}" / "When {Night} → gain {…}".
+function transformHead(tf){ const when = '{' + transformWhenText(tf) + '}', gain = grantBraceText((tf && tf.gain) || {});
+  return tf && tf.name ? TX('ui.tf-head-named', {name: transformPresetName(tf.name), when, gain}) : TX('ui.tf-head', {when, gain}); }
+// Ritual (2026-10-21, package CX2, owner 17:42: "the conditions are splayed out in a triangle (or symmetric shape like a square or pentagon
+// depending on #conditions)"): its conditions drawn at the corners of a regular polygon (3 a triangle, 4 a square, 5 a pentagon; 2 a line,
+// 1 a dot), first corner at the top. corners: [{html}] (an editor input or a "☠ 6" label). The rule itself is unchanged.
+const RITUAL_CONDS = [{k:'perished', ico:'☠'}, {k:'drawn', ico:'🂠'}, {k:'castleDamage', ico:'🏰'}];
+function ritualFromVals(v){ const a = Array.isArray(v) ? v : [v, v, v], out = {}; RITUAL_CONDS.forEach((c, i)=>{ const n = Math.max(0, Math.round(Number(a[i])||0)); if(n) out[c.k] = n; }); return Object.keys(out).length ? out : null; }
+function ritualShapeHTML(corners, opts){ opts = opts || {}; const n = corners.length, W = opts.w || 120, H = opts.h || 104, cx = W / 2, R = opts.r || Math.min(W, H) * 0.36, cy = n === 3 ? H * 0.58 : H / 2;
+  const pts = corners.map((_, i)=>{ const t = -Math.PI / 2 + i * 2 * Math.PI / Math.max(1, n); return [cx + (n === 2 ? (i ? 1 : -1) * R : R * Math.cos(t)), n === 2 ? cy : cy + R * Math.sin(t)]; });
+  const shape = n >= 3 ? `<polygon points="${pts.map(p=> p.map(x=> x.toFixed(1)).join(',')).join(' ')}"/>` : n === 2 ? `<line x1="${pts[0][0]}" y1="${cy}" x2="${pts[1][0]}" y2="${cy}"/>` : '';
+  return `<span class="ritual-shape${opts.cls ? ' ' + opts.cls : ''}" style="width:${W}px; height:${H}px" role="group" aria-label="${escapeAttr(opts.label || 'Ritual')}"><svg viewBox="0 0 ${W} ${H}" aria-hidden="true">${shape}</svg>${corners.map((c, i)=> `<span class="rs-pt" style="left:${pts[i][0].toFixed(1)}px; top:${pts[i][1].toFixed(1)}px">${c.html}</span>`).join('')}</span>`; }
 function currentCardByUidSafe(u){ try{ return typeof currentCardByUid === 'function' ? currentCardByUid(u) : null; }catch(e){ return null; } }
 function bloomToText(bw){ return bloomLabel(bw).replace(/^Bloom \(|\)/g, '').replace(':', ''); }
-function parseBloomText(v){ const t = String(v||'').toLowerCase(); const m = t.match(/\+?(-?\d+)\s*\/\s*\+?(-?\d+)/);
+function parseBloomText(v){ const raw = String(v||''), br = raw.match(/\{([^}]*)\}/), grant = br ? parseGrantText(br[1]) : null; // + "Tide & Night {Evasive}" (CX2, 2026-10-21)
+  const t = raw.replace(/\{[^}]*\}/g, ' ').toLowerCase().replace(/full moon/g, 'fullmoon'); const m = t.match(/\+?(-?\d+)\s*\/\s*\+?(-?\d+)/);
   const when = Object.keys(BLOOM_COND_NAMES).filter(k=> new RegExp('\\b' + k + '\\b').test(t.replace(m ? m[0] : '', '')));
-  if(!when.length) return null; const out = {when, mode: /\bor\b/.test(t) ? 'or' : 'and'}; if(m){ out.atk = Math.max(0, Number(m[1])||0); out.hp = Math.max(0, Number(m[2])||0); } else { out.atk = 2; out.hp = 2; } return out; }
+  if(!when.length) return null; const out = {when, mode: /\bor\b/.test(t) ? 'or' : 'and'}; const hasGrant = !!(grant && Object.keys(grant).length); if(hasGrant) out.grant = grant;
+  if(m){ out.atk = Math.max(0, Number(m[1])||0); out.hp = Math.max(0, Number(m[2])||0); } else if(!hasGrant){ out.atk = 2; out.hp = 2; } return out; }
 // "Poison 1" reads "Poison" (2026-10-12, 23:12, user: "This omission of N if its default should be standardised everywhere" + "If
 // its just Poison 1 or Bleed 1 or ETC, just omit the number"): a skill value of 1 (or true) is shown without its number.
 function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) ? '' : ' ' + v; }
@@ -684,8 +710,9 @@ const PASSIVE_DEFS = [
   // 2026-10-10 (user): "Nocturnal - Gain +2/+2". Two numbers like Esprit: Attack and Health gained while it's night
   // (day for Diurnal), lost when the phase turns. The old on/off form reads as +1/+0.
   // 2026-10-13 (10:57 list): Crepuscular (Twilight only), Sun-shy (blind by day), Night-blind (blind at night).
-  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At Twilight: gain +${a}/+${h}. (A deck with one turns the day into Day, Night, Day, Night, Twilight.)`; },
-    get:e=> (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
+  // 2026-10-21 (package CX2, owner 17:42: "Crepuscular: +1 attack in day, +1 attack at night"): a day part and a night part, like Tide.
+  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); },
+    get:e=> e.crepuscularGrant ? undefined : (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
   {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (an Illuminate unit on your side lights it, and so does an enemy Illuminate unit directly facing it).`}, // + facing (2026-10-16)
@@ -709,8 +736,15 @@ const PASSIVE_DEFS = [
     desc:v=>{ const [a, b] = Array.isArray(v) ? v : ['', '']; return `On Flood it has ${grantText(parseGrantText(a)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both. (In place of Flood's +1 Attack and Ebb's +1 Armor.)`; },
     get:e=> e.tideGrant ? [grantToText(e.tideGrant.flood), grantToText(e.tideGrant.ebb)] : undefined,
     apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.tideGrant = {flood:a, ebb:b}; e.tide = true; } }},
+  // Crepuscular – {day}{night} (2026-10-21, package CX2): the day part by day, the night part at night, both in Twilight.
+  {key:'crepuscularGrant', category:'passive', label:'Crepuscular', kind:'grant2', placeholders:[TX('ui.cx-day'), TX('ui.cx-night')], grantPlaceholders:['evasive', 'regen 2'],
+    desc:v=>{ const [a, b] = Array.isArray(v) ? v : ['', '']; return TX('ui.sk-crepuscular-grant', {day: grantText(parseGrantText(a)) || TX('ui.cx-nothing'), night: grantText(parseGrantText(b)) || TX('ui.cx-nothing')}); },
+    get:e=> e.crepuscularGrant ? [grantToText(e.crepuscularGrant.day), grantToText(e.crepuscularGrant.night)] : undefined,
+    apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.crepuscularGrant = {day:a, night:b}; if(!e.crepuscular) e.crepuscular = true; } }},
   {key:'fullMoon', category:'passive', label:'Full Moon', kind:'number', min:1, defaultValue:3, desc:v=>`The first time a full moon rises over it, it gains +${v||3}/+${v||3} for the rest of the fight.`},
-  {key:'fullMoonGrant', category:'passive', label:'Full Moon', kind:'grant', placeholder:'regen 2, frenzy', desc:v=>`The first time a full moon rises over it, it gains ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`,
+  // 2026-10-21 (package CX2): Full Moon – {…} is Transform's Lycanthropy preset now (Lycanthropy: under {Full Moon}, gain {…}); hidden from
+  // "+ Add Skill", the engine still runs an old card's fullMoonGrant.
+  {key:'fullMoonGrant', category:'passive', label:'Full Moon', kind:'grant', hidden:true, retired:true, placeholder:'regen 2, frenzy', desc:v=>`The first time a full moon rises over it, it gains ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`,
     get:e=> e.fullMoonGrant ? grantToText(e.fullMoonGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.fullMoonGrant = g; }},
   // Tide (2026-10-09; a keyword family, not an archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
@@ -823,7 +857,22 @@ const PASSIVE_DEFS = [
   {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
   // 2026-10-12 skills (the 22:40 list).
   {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:1, defaultValue:3, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
-  {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the bramble).`},
+  {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the bramble).`,
+    get:e=> e.rainrunnerGrant ? undefined : e.rainrunner}, // CX2 (2026-10-21): Rainrunner – {…} has its own row
+  // Rainrunner – {…} (2026-10-21, package CX2): while it rains, the skills in its braces instead of +N/+N; it still can't be blocked.
+  {key:'rainrunnerGrant', category:'passive', label:'Rainrunner', kind:'grant', placeholder:'evasive, regen 2', desc:v=> TX('ui.sk-rainrunner-grant', {skills: grantText(parseGrantText(v)) || TX('ui.cx-nothing')}),
+    get:e=> e.rainrunnerGrant ? grantToText(e.rainrunnerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.rainrunnerGrant = g; if(!e.rainrunner) e.rainrunner = 1; } }},
+  // Transform (2026-10-21, package CX2, owner 17:42: "Those that 'transform' under some condition, should have a {conditions} -> {...}. If
+  // the condition is a 'named' thing like 'Lycanthropy' - Under {Full moon} - gain {...}. (This change is 'permanent' until the end of the
+  // current game.)"): effects.transform = {name?, when:[condition], gain:{…}}. The row: a preset (none, Lycanthropy), the condition, the braces.
+  {key:'transform', category:'passive', label:TX('ui.skn-transform'), kind:'transform', grantPlaceholders:['regen 2, thorns 2'],
+    desc:(v, n, e)=>{ const tf = (e && e.transform) || transformFromVals(v); return TX('ui.sk-transform', {when: transformWhenText(tf), gain: grantText((tf && tf.gain) || {}) || TX('ui.cx-nothing')}); },
+    get:e=> e.transform && typeof e.transform === 'object' ? [e.transform.name || '', transformCondsOf(e.transform)[0] || '', grantToText(e.transform.gain)] : undefined,
+    apply:(e, vals)=>{ const tf = transformFromVals(vals); if(tf) e.transform = tf; }},
+  // Ritual (2026-10-21, package CX2): a row in the editor at last (a save used to drop it), its conditions drawn as the corners of a shape.
+  {key:'ritual', category:'passive', label:'Ritual', kind:'ritual', desc:(v, n, e)=>{ const r = (e && e.ritual) || ritualFromVals(v) || {}; return TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0}); },
+    get:e=> e.ritual && typeof e.ritual === 'object' ? [e.ritual.perished||0, e.ritual.drawn||0, e.ritual.castleDamage||0] : undefined,
+    apply:(e, vals)=>{ const r = ritualFromVals(vals); if(r) e.ritual = r; }},
   {key:'moonborn', category:'passive', label:'Moonborn', kind:'number', min:0, desc:v=>`At night: up to +${v}/+${v}, as full as the moon is (new moon nothing, half moon half, full moon all of it). The moon moves one phase every night.`},
   {key:'frostbite', category:'passive', label:'Frostbite', kind:'number', min:0, desc:v=>`Each time the frost chills it, it gains +${v}/+${v} for good.`},
   // Swimmer (2026-10-12, 09:48: "Swimmer is too strong. Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick
@@ -858,10 +907,15 @@ const PASSIVE_DEFS = [
   {key:'timber', category:'passive', label:'Timber', kind:'boolean', desc:()=>`+1/+1 for every Lumber you hold.`},
   {key:'rockSolid', category:'passive', label:'Rock-solid', kind:'boolean', desc:()=>`+2/+2 for every Stone you hold.`},
   {key:'ironWill', category:'passive', label:'Iron-will', kind:'boolean', desc:()=>`+3/+3 for every Metal you hold.`},
+  // 2026-10-21 (package CX2): Loyal – {…} / Usurper – {…} have rows of their own (a save used to drop the braces), twins of the stat form.
   {key:'loyal', category:'passive', label:'Loyal', kind:'twoNumber', placeholders:['Attack','Health'], desc:(v, n, e)=>{ const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the battlefield: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
-    get:e=> (e.loyal || e.loyalGrant) ? phaseVals(e.loyal || 0) : undefined, apply:(e, vals)=>{ const a = Number(vals && vals[0])||0, h = Number(vals && vals[1])||0; if(a || h) e.loyal = [a, h]; }},
+    get:e=> e.loyal ? phaseVals(e.loyal) : undefined, apply:(e, vals)=>{ const a = Number(vals && vals[0])||0, h = Number(vals && vals[1])||0; if(a || h) e.loyal = [a, h]; }},
+  {key:'loyalGrant', category:'passive', label:'Loyal', kind:'grant', placeholder:'armor 1', desc:v=> TX('ui.sk-loyal-grant', {skills: grantText(parseGrantText(v)) || TX('ui.cx-nothing')}),
+    get:e=> e.loyalGrant ? grantToText(e.loyalGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.loyalGrant = g; }},
   {key:'usurper', category:'passive', label:'Usurper', kind:'twoNumber', placeholders:['Attack','Health'], desc:(v, n, e)=>{ const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the opposing leader is on the battlefield: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
-    get:e=> (e.usurper || e.usurperGrant) ? phaseVals(e.usurper || 0) : undefined, apply:(e, vals)=>{ const a = Number(vals && vals[0])||0, h = Number(vals && vals[1])||0; if(a || h) e.usurper = [a, h]; }},
+    get:e=> e.usurper ? phaseVals(e.usurper) : undefined, apply:(e, vals)=>{ const a = Number(vals && vals[0])||0, h = Number(vals && vals[1])||0; if(a || h) e.usurper = [a, h]; }},
+  {key:'usurperGrant', category:'passive', label:'Usurper', kind:'grant', placeholder:'frenzy', desc:v=> TX('ui.sk-usurper-grant', {skills: grantText(parseGrantText(v)) || TX('ui.cx-nothing')}),
+    get:e=> e.usurperGrant ? grantToText(e.usurperGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.usurperGrant = g; }},
   {key:'sacrifice', category:'passive', label:'Sacrifice', kind:'number', min:0, desc:v=>`Play a Dark Summon card onto this unit: this unit perishes, and the new card costs ${v} less (Darkness first, then Lumber).`},
   {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=>`Anything attacking this card hits for ${v} less.`},
   // Ecclesia (2026-10-10, D23). Prayer value = Prayer N on your board + cards in your Removal Zone.
@@ -1977,7 +2031,19 @@ const RARITY_DEFS = [
   {key:'eventrare', label:'Event-Rare', color:'#2f6fe0', special:true, as:'rare'},
 ];
 function rarityDef(key){ return RARITY_DEFS.find(r=>r.key===key) || RARITY_DEFS[1]; }
-// Deck-build rarity limits (2026-09-30, carried-forward backlog item: "deck-build max-count-per-
+// Rarity = a rank (Common → Daemonic) + one of four flags: Quest, Event, Dev, Special (2026-10-21, package CX2; owner 17:42: "Too simplify
+// to just quest, event, and dev toggles (and also 'special'). The common->Daemonic are the normal rank progression."). The stored strings
+// stay (BramblewoodBudget.rarityParts / rarityCompose: quest = Quest + Uncommon, special = Special + Rare, devlegendary = Dev + Legendary …);
+// a pair with no stored string is the flag then the rank ('questrare', 'devepic' …), and gets a RARITY_DEFS entry here (derived: true, the
+// rank's colour, `as` the rank) so every table that falls back on `as` reads it as its rank. Lists of rarities leave the derived ones out.
+const RARITY_FLAG_LABEL = {quest:'Quest', event:'Event', dev:'Dev', special:'Special'};
+const RARITY_FLAG_TEXT = {quest:[()=> TX('ui.cx-flag-quest'), ()=> TX('ui.cx-rarity-flag-quest')], event:[()=> TX('ui.cx-flag-event'), ()=> TX('ui.cx-rarity-flag-event')],
+  dev:[()=> TX('ui.cx-flag-dev'), ()=> TX('ui.cx-rarity-flag-dev')], special:[()=> TX('ui.cx-flag-special'), ()=> TX('ui.cx-rarity-flag-special')]}; // the editor's toggles: name, tip (CX2)
+function rarityPartsOf(r){ return typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.rarityParts ? BramblewoodBudget.rarityParts(r) : {flag:null, rank:r || 'common'}; }
+function rarityComposeOf(rank, flag){ const k = typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.rarityCompose ? BramblewoodBudget.rarityCompose(rank, flag) : rank;
+  if(!RARITY_DEFS.some(r=> r.key === k)){ const rd = RARITY_DEFS.find(r=> r.key === rank) || RARITY_DEFS[1]; RARITY_DEFS.push({key:k, label:`${RARITY_FLAG_LABEL[flag] || flag}-${rd.label}`, color:rd.color, special:true, as:rd.key, derived:true}); }
+  return k; }
+Object.keys(RARITY_FLAG_LABEL).forEach(f=> ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic'].forEach(r=> rarityComposeOf(r, f)));// Deck-build rarity limits (2026-09-30, carried-forward backlog item: "deck-build max-count-per-
 // rarity enforcement"). Until now Rarity was purely cosmetic (see referenceHTML's own old copy,
 // updated alongside this) -- a real deck could run 20 copies of a single Legendary if you had
 // them unlocked. This gives each tier a real per-card copy cap in a 20-card deck, common cards
@@ -1990,7 +2056,7 @@ const RARITY_MAX_COPIES = {
   starter:10, quest:5, questunique:1,
   special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4,
 };
-function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] || 10; }
+function maxCopiesForRarity(rarity){ const k = rarity||'common'; if(RARITY_MAX_COPIES[k] != null) return RARITY_MAX_COPIES[k]; const d = typeof RARITY_DEFS !== 'undefined' && RARITY_DEFS.find(x=> x.key === k); return (d && d.as && RARITY_MAX_COPIES[d.as]) || 10; } // + a derived flag × rank pair counts as its rank (CX2)
 // Rarity on the road (2026-10-16, placement and rarity; user: "For maps, we can have slightly more rarity pushed in normal
 // skirmishes. Maybe in Map 16 onwards, very rare can appear. Map 21 onwards, 1 super rare here and there. For bosses ... for Map
 // 1-19, Heroics shouldn't appear in bosses. However, the dragon lair 'extra-boss' will be Legendary. (the first, and only for Map
@@ -2565,7 +2631,7 @@ Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
   defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
   swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it.`,
-  crepuscular: v=> { const [a, h] = phaseVals(v); return `At Twilight: +${a}/+${h}. With it in your deck, every fifth phase is Twilight.`; },
+  crepuscular: v=> { const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); }, // CX2 (2026-10-21): by day and at night, both in Twilight
   sunshy: ()=> `Blind by day.`,
   nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side (or faces it).`, // 2026-10-17
   nocturnal: v=> { const [a, h] = phaseVals(v); return `At night: +${a}/+${h}.`; },
@@ -2696,7 +2762,7 @@ function skillText(p, v, e){ const f = SKILL_TEXT[p.key], n = p.numberKey ? (e||
 const SKILL_REVEAL_MAP = {
   diurnal:     {from:1, tutorials:true, parts:['diurnalHp', 'diurnalGrant']}, // "?" on Map 0, outside the tutorials
   nocturnal:   {from:1, parts:['nocturnalHp', 'nocturnalGrant']},
-  crepuscular: {from:1, parts:['crepuscularHp']},
+  crepuscular: {from:1, parts:['crepuscularHp', 'crepuscularGrant']}, // + its braces (CX2, 2026-10-21)
   tide:        {from:2, parts:['tideGrant']}, // Map 2+ (the Meadow Frog's Tide on Map 1 is a "?")
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
@@ -2778,7 +2844,7 @@ function describeEffects(def, liveCard){
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
   if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`Devour — ${g ? TX('ui.de-devour-grant', {a: e.devour.attack||0, h: e.devour.health||0, grant: g}) : TX('ui.de-devour', {a: e.devour.attack||0, h: e.devour.health||0})}`); } // 2026-10-18 (package D): terse
-  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — ${TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})}`); } // 2026-10-18 (package D): terse; the Codex adds the rest
+  // Ritual: its line comes from its PASSIVE_DEFS row now, with the conditions drawn as a shape (CX2, 2026-10-21)
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
   { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // 2026-10-15
@@ -2794,6 +2860,13 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
+    if((p.key==='loyalGrant' && e.loyal) || (p.key==='usurperGrant' && e.usurper)) return; // CX2: the stat line already says "and {skills}"
+    // CX2 (2026-10-21): Ritual's conditions at the corners of a shape; Transform's "Lycanthropy: under {Full Moon}, gain {…}"; Crepuscular's two parts
+    if(p.key==='ritual'){ const r = e.ritual || {}, cs = RITUAL_CONDS.filter(c=> r[c.k]);
+      lines.push(`<span class="ritual-line">${ic('ritual')}Ritual — ${escapeHtml(TX('ui.cx-ritual-short'))}${ritualShapeHTML(cs.map(c=> ({html: `${c.ico}<b>${r[c.k]}</b>`})), {w: 124, h: 100, r: 40, cls: 'rs-card', label: TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})})}</span>`); return; }
+    if(p.key==='transform'){ const tf = e.transform, lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null;
+      lines.push(`${ic('transform')}<span class="cx-head">${escapeHtml(transformHead(tf))}</span> — ${escapeHtml(TX('ui.sk-transform-short'))}${lc && lc.transformed ? ` <span class="atk-bonus">${escapeHtml(TX('ui.tf-done'))}</span>` : ''}`); return; }
+    if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}Crepuscular — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
     if(p.key==='arrowCount') return; // 2026-10-17: read on the Arrow line, which repeats
     if(p.key==='arrow' && Number(e.arrowCount) > 1){ const nA = Math.min(4, Math.round(Number(e.arrowCount))); for(let k = 0; k < nA; k++) lines.push(`${ic('arrow')}${p.label}${valSuffix(v)} — ${k ? 'A second bow on the same back: another arrow, aimed on its own.' : skillText(p, v, e)}`); return; } // "2x Arrow 2" (2026-10-17)
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
@@ -8419,7 +8492,7 @@ function referenceHTML(){
        Quest-Unique are called out as aliasing their base tier's limit rather than getting their
        own row, matching how maxCopiesForRarity treats them. -->
   <div class="panel"><h3 class="ref-heading">Rarity</h3><p class="panel-sub">Sets the ring color around a card's tile everywhere it's shown (Codex, hand, board), AND caps how many copies of that card can go in one built deck — shown below each tier. Starter aliases Common's cap, Quest aliases Uncommon's, Quest-Unique aliases Unique's.</p>
-    <div class="ref-grid">${RARITY_DEFS.map(r=>{ const [a,b]=rarityStops(r.key); const cap=maxCopiesForRarity(r.key); return `<div class="ref-card" style="display:flex; align-items:center; gap:10px;"><span style="flex-shrink:0; width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg, ${a}, ${b}); border:1px solid var(--surface-border);"></span><b style="margin:0; flex:1;">${r.label}</b><span class="panel-sub" style="margin:0;">max ${cap}/deck</span></div>`; }).join('')}
+    <div class="ref-grid">${RARITY_DEFS.filter(r=> !r.derived /* CX2 */).map(r=>{ const [a,b]=rarityStops(r.key); const cap=maxCopiesForRarity(r.key); return `<div class="ref-card" style="display:flex; align-items:center; gap:10px;"><span style="flex-shrink:0; width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg, ${a}, ${b}); border:1px solid var(--surface-border);"></span><b style="margin:0; flex:1;">${r.label}</b><span class="panel-sub" style="margin:0;">max ${cap}/deck</span></div>`; }).join('')}
   </div></div>
   <!-- Splash Effect (2026-09-19, open-items #107): its own reference panel now that it's an
        independent field from Rarity rather than a slot inside it — see the SPLASH_EFFECT_DEFS/
@@ -9528,7 +9601,9 @@ function renderEditorInner(){
            Structure is now just a Type Tags pill below, so this row had a free slot regardless.
            Rarity is deliberately NOT alphabetized in the dropdown itself (2026-09-17, "make all
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
-      <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
+      <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label>${(()=>{ /* 2026-10-21 (package CX2): the rank ladder (Common → Daemonic; Starter only on a Starter card) and four toggles, Quest, Event, Dev, Special (one at a time) */
+        const rp = rarityPartsOf(c.rarity || 'common'), ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && (r.key !== 'starter' || rp.rank === 'starter'));
+        return `<select id="fRarity" aria-label="Rank">${ladder.map(r=>`<option value="${r.key}" ${rp.rank===r.key?'selected':''}>${r.label}</option>`).join('')}</select><span class="rarity-flags" role="group" aria-label="${escapeAttr(TX('ui.cx-rarity-flags'))}">${Object.keys(RARITY_FLAG_LABEL).map(f=> `<label class="rarity-flag" title="${escapeAttr(RARITY_FLAG_TEXT[f][1]())}"><input type="checkbox" data-rflag="${f}" ${rp.flag===f?'checked':''}>${escapeHtml(RARITY_FLAG_TEXT[f][0]())}</label>`).join('')}</span>`; })()}</div>
       <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
@@ -9803,10 +9878,10 @@ function renderEditorInner(){
   document.getElementById('btnCancel').addEventListener('click', closeCardEditor);
   document.getElementById('editorXBtn').addEventListener('click', closeCardEditor);
   { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; }); }
-  document.getElementById('fRarity').addEventListener('change', e=>{
-    const [a,b] = rarityStops(e.target.value);
-    document.getElementById('fRaritySwatch').style.background = `linear-gradient(135deg, ${a}, ${b})`;
-  });
+  const rarityNow = ()=>{ const f = document.querySelector('#editorOverlay [data-rflag]:checked'); return rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); }; // CX2
+  const raritySwatch = ()=>{ const [a,b] = rarityStops(rarityNow()); document.getElementById('fRaritySwatch').style.background = `linear-gradient(135deg, ${a}, ${b})`; };
+  document.getElementById('fRarity').addEventListener('change', raritySwatch);
+  document.querySelectorAll('#editorOverlay [data-rflag]').forEach(cb=> cb.addEventListener('change', ()=>{ if(cb.checked) document.querySelectorAll('#editorOverlay [data-rflag]').forEach(o=>{ if(o !== cb) o.checked = false; }); raritySwatch(); })); // one flag at a time
   // Task #102 (2026-09-16): Type pills — add/remove directly mutate editingCard.archetypes
   // and re-render, same pattern as skill/trigger rows below.
   if(!Array.isArray(c.archetypes)) c.archetypes = c.archetype ? [c.archetype] : [];
@@ -10027,7 +10102,9 @@ function deriveSkillRows(c){
 // The skill-list picker for a Zeitgeber's braces (2026-10-15): "{ [evasive, thorns 1] [+ skill ▾] }". Picking a skill appends it.
 function grantPickerHTML(i, sk, v, ph){
   const opts = PASSIVE_DEFS.filter(p=> !p.retired && !p.hidden && ['boolean', 'number'].includes(p.kind) && p.label).sort((a, b)=> a.label.localeCompare(b.label));
-  return `<span class="grant-box">{ <input type="text" class="w-160 grant-in" data-sk="${sk}" data-i="${i}" placeholder="${escapeAttr(ph || 'evasive, thorns 1')}" value="${escapeAttr(v || '')}" title="Skills, comma separated; +A/+H for stats (e.g. +5/+5, evasive)"> }<select class="grant-pick" aria-label="Add a skill to the braces" onchange="grantPickAdd(this)"><option value="">＋ skill</option><option value="+1/+1">+A/+H (stats)</option>${opts.map(p=> `<option value="${escapeAttr(p.label + (p.kind === 'number' ? ' 1' : ''))}">${escapeHtml((SKILL_ICON[p.key] ? SKILL_ICON[p.key] + ' ' : '') + p.label)}</option>`).join('')}</select></span>`;
+  // 2026-10-21 (package CX2, owner 17:42: "The main pathway should be through the +skill option"): the text in the braces is muted but
+  // still editable; "+ skill" is the way in.
+  return `<span class="grant-box"><span class="grant-brace">{</span><input type="text" class="w-160 grant-in" data-sk="${sk}" data-i="${i}" placeholder="${escapeAttr(ph || 'evasive, thorns 1')}" value="${escapeAttr(v || '')}" title="Skills, comma separated; +A/+H for stats (e.g. +5/+5, evasive)"><span class="grant-brace">}</span><select class="grant-pick" aria-label="Add a skill to the braces" onchange="grantPickAdd(this)"><option value="">＋ skill</option><option value="+1/+1">+A/+H (stats)</option>${opts.map(p=> `<option value="${escapeAttr(p.label + (p.kind === 'number' ? ' 1' : ''))}">${escapeHtml((SKILL_ICON[p.key] ? SKILL_ICON[p.key] + ' ' : '') + p.label)}</option>`).join('')}</select></span>`;
 }
 function grantPickAdd(sel){ const box = sel.closest('.grant-box'), inp = box && box.querySelector('.grant-in'); if(!inp || !sel.value) return;
   inp.value = inp.value.trim() ? inp.value.replace(/[,\s]+$/, '') + ', ' + sel.value : sel.value; sel.value = ''; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.focus(); }
@@ -10038,6 +10115,8 @@ function defaultSkillValue(key){
   if(s.kind==='twoNumber') return s.key==='dynamite' ? [3, 5] : FXL_CHANCE_TWO.has(s.key) ? [50, 1] : [1,1]; // 2026-10-16 skill audit: Dynamite 3/5, a status 50% for 1 round
   if(s.kind==='text' || s.kind==='grant') return '';
   if(s.kind==='grant2') return ['', '']; // Tide – {Flood}, {Ebb} (2026-10-15)
+  if(s.kind==='transform') return ['', 'night', '']; // CX2 (2026-10-21): no preset, Night, empty braces
+  if(s.kind==='ritual') return [3, 3, 3]; // CX2 (2026-10-21)
   if(s.kind==='select') return s.selectOptions ? s.selectOptions()[0].value : resistOptionsList()[0];
   if(s.kind==='selectNumber'){ const opts = s.selectOptions ? s.selectOptions() : []; return [opts[0]?opts[0].value:'', 1]; }
   if(s.kind==='typeTwoNumber') return ['', 1, 1];
@@ -10048,8 +10127,12 @@ function defaultSkillValue(key){
   return true;
 }
 // A Zeitgeber's two forms (2026-10-16): the plain stat bonus and the skill list ("Diurnal" + Gives: Stat bonus / Skills).
-const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', fullMoon:'fullMoonGrant', tide:'tideGrant'};
-const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', fullMoonGrant:'fullMoon', tideGrant:'tide'};
+// 2026-10-21 (package CX2): + Crepuscular {day}{night}, Rainrunner {…}, Loyal {…}, Usurper {…}; Full Moon {…} left for Transform's Lycanthropy.
+const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant'};
+const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper'};
+// The kinds whose row is a context skill (braces): no "+ at a later level" button on them (CX2, owner 17:42: "+ skill inside each phase,
+// plus the normal add-skill, already cover it").
+const CONTEXT_ROW_KINDS = new Set(['grant', 'grant2', 'transform', 'ritual']);
 function skillRowHTML(row,i,categoryFilter,mechLine){
   const s = SKILL_DEFS.find(x=>x.key===row.key) || SKILL_DEFS[0];
   // categoryFilter (2026-09-27, "On Death [Spawn] is not a passive ability... clean up the
@@ -10079,6 +10162,14 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   else if(s.kind==='grant') valueHtml = grantPickerHTML(i, 'val', typeof row.value === 'string' ? row.value : '', s.placeholder);
   else if(s.kind==='grant2'){ const vals = Array.isArray(row.value) ? row.value : ['', ''], ph = s.placeholders || ['Flood', 'Ebb'], gp = s.grantPlaceholders || ['', ''];
     valueHtml = `<span class="grant-facet"><b>${escapeHtml(ph[0])}</b>${grantPickerHTML(i, 'val0', vals[0] || '', gp[0])}</span><span class="grant-facet"><b>${escapeHtml(ph[1])}</b>${grantPickerHTML(i, 'val1', vals[1] || '', gp[1])}</span>`; }
+  // Transform (CX2, 2026-10-21): [preset] under [condition] → gain { … }; Lycanthropy brings Full Moon.
+  else if(s.kind==='transform'){ const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key), cond = String(vals[1] || 'night').toLowerCase();
+    valueHtml = `<select data-sk="val0" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-preset'))}" title="${escapeAttr(TX('ui.cx-preset'))}" onchange="if(TRANSFORM_PRESETS_APP[this.value]){ const c = this.closest('.skill-row').querySelector('[data-sk=&quot;val1&quot;]'); if(c) c.value = TRANSFORM_PRESETS_APP[this.value]; }"><option value="">${escapeHtml(TX('ui.cx-custom'))}</option>${Object.keys(TRANSFORM_PRESETS_APP).map(k=> `<option value="${k}" ${vals[0] === k ? 'selected' : ''}>${escapeHtml(transformPresetName(k))}</option>`).join('')}</select>` +
+      `<span class="cx-kw">${escapeHtml(TX('ui.cx-under'))}</span><select data-sk="val1" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-condition'))}">${Object.keys(BLOOM_COND_NAMES).map(k=> `<option value="${k}" ${cond === k ? 'selected' : ''}>${escapeHtml(BLOOM_COND_NAMES[k])}</option>`).join('')}</select>` +
+      `<span class="cx-kw">${escapeHtml(TX('ui.cx-gain'))}</span>${grantPickerHTML(i, 'val2', vals[2] || '', (s.grantPlaceholders || [])[0])}`; }
+  // Ritual (CX2, 2026-10-21): its three conditions at the corners of a triangle.
+  else if(s.kind==='ritual'){ const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key), tips = [TX('ui.cx-ritual-perished'), TX('ui.cx-ritual-drawn'), TX('ui.cx-ritual-bramble')];
+    valueHtml = ritualShapeHTML(RITUAL_CONDS.map((c, j)=> ({html: `<label class="rs-in" title="${escapeAttr(tips[j])}">${c.ico}<input type="number" min="0" class="w-52" aria-label="${escapeAttr(tips[j])}" data-sk="val${j}" data-i="${i}" value="${Number(vals[j])||0}"></label>`})), {w: 250, h: 170, r: 72, cls: 'rs-editor', label: 'Ritual'}); }
   else if(s.kind==='twoNumber'){
     const vals = Array.isArray(row.value)?row.value:[1,1];
     const ph = s.placeholders || ['Timer','Damage'];
@@ -10142,7 +10233,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     ${liveReadout}
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
     ${row.lv ? `<label class="sk-lv" title="This skill arrives at this level">Lv <select data-sk="lv" data-i="${i}">${Array.from({length:11}, (_, k)=> k + 1).map(L=> `<option value="${L}" ${row.lv===L?'selected':''}>${L}</option>`).join('')}</select></label>` : ''}
-    <button class="btn small ghost sk-add-lv" data-addskillrow="${i}" title="Add a row for this skill at a later level">＋</button>
+    ${CONTEXT_ROW_KINDS.has(s.kind) ? '' : `<button class="btn small ghost sk-add-lv" data-addskillrow="${i}" title="Add a row for this skill at a later level">＋</button>`}
     <button class="btn small danger rm" data-rmskill="${i}" aria-label="Remove this skill" title="Remove this skill">✕</button>
   </div>`;
 }
@@ -10425,7 +10516,7 @@ function readEditorFormIntoCard(){
   // saved with the field hidden.
   const fTestEl = document.getElementById('fTest');
   c.test = fTestEl ? fTestEl.checked : !!c.test;
-  c.rarity = document.getElementById('fRarity').value;
+  { const f = document.querySelector('#editorOverlay [data-rflag]:checked'); c.rarity = rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); } // CX2 (2026-10-21): rank + flag -> the stored string
   { const fk = document.getElementById('fCardKind'); if(fk){ const kind = fk.value; // 2026-10-11: Unit / Spell / Equipment
       if(kind === 'spell'){ c.cardType = 'spell'; c.spell = {do: document.getElementById('fSpellDo').value, amount: Math.max(0, Number(document.getElementById('fSpellAmt').value)||0)}; delete c.equip; if(!(c.archetypes||[]).includes('Spell')) c.archetypes = ['Spell'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
       else if(kind === 'equipment'){ c.cardType = 'equipment'; delete c.spell; const gk = document.getElementById('fEquipGrant').value, pd = PASSIVE_DEFS.find(p=> p.key===gk);
@@ -10501,7 +10592,7 @@ function readEditorFormIntoCard(){
     const lvEl = row.querySelector('[data-sk="lv"]'), L = lvEl ? Number(lvEl.value) : 0;
     const fx = L > 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
     if(sdef.kind==='typeTwoNumber'){ sdef.apply(fx, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
-    else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount' || sdef.kind==='grant2'){ // + Tide – {…}, {…} (2026-10-15)
+    else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount' || sdef.kind==='grant2' || sdef.kind==='transform' || sdef.kind==='ritual'){ // + Tide – {…}, {…} (2026-10-15); + Transform, Ritual (CX2, 2026-10-21)
       const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value, v2El = row.querySelector('[data-sk="val2"]');
       sdef.apply(fx, v2El ? [v0, v1, v2El.value] : [v0,v1]); // + a target picker's value (Esprit Kin / Any, 2026-10-18)
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text' || sdef.kind==='grant'){ // + the Zeitgeber braces (2026-10-15)
@@ -26314,7 +26405,7 @@ const Registry = {
   skills(){ return SKILL_DEFS.slice(); },
   skill(key){ return SKILL_DEFS.find(s=>s.key===key) || null; },
   damageTypes(){ return DMG_TYPES.slice(); },
-  rarities(){ return RARITY_DEFS.slice(); },
+  rarities(){ return RARITY_DEFS.filter(r=> !r.derived); }, // CX2 (2026-10-21): not the derived flag × rank pairs
   // Conquest maps and every fightable node across them, in progression order.
   maps(){ return CONQUEST_MAPS.slice(); },
   skirmishes(f){ f = f || {}; return flattenConquestNodes().filter(n=> !f.kind || n.kind===f.kind); },
@@ -27055,6 +27146,11 @@ function sbLoad(){ const def = Object.assign({}, SB_V3_DEFAULTS, {skills:SB_DEFA
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
   let t = 0; Object.entries(effects||{}).forEach(([k, v])=>{
+    // 2026-10-21 (package CX2): a context skill (Tide {…}{…}, Diurnal {…}, Transform …) costs CONTEXT_MULT (0.4) × the skills in its
+    // braces (BramblewoodBudget.contextS, the same rule as tools/skill_costs.js); its plain flag beside the braces costs nothing then.
+    const BB = typeof BramblewoodBudget !== 'undefined' ? BramblewoodBudget : null;
+    if(BB && BB.contextFlagCovered && BB.contextFlagCovered(k, effects)) return;
+    { const cx = BB && BB.contextS ? BB.contextS(k, v, inner=> sbSkillCost(inner, cfg)) : null; if(cx){ t += cx.S; return; } }
     const rule = cfg.skills[k] !== undefined ? cfg.skills[k] : SB_DEFAULT_SKILLS[k], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b||0), 0) : 0); // a skill new since the costs were saved: its default
     if(rule === 'v') t += Math.max(1, num); else if(rule === '-v') t -= Math.max(1, v === true ? (SB_PAY_DEF[k] || 1) : num); /* a payment (2026-10-16) */ else if(typeof rule === 'number') t += rule; else t += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
   return t;
@@ -27093,6 +27189,12 @@ function sbNMultLine(d){ const B = BramblewoodBudget, cfg = Object.assign({}, SB
   if(!a.length) out.push(TX('ui.budget-nmult-plain', {k: g('plainBonus')})); else if(a.every(x=> B.LIGHT.includes(x))) out.push(TX('ui.budget-nmult-light', {k: g('lightBonus')}));
   if(a.includes('fragile')) out.push(TX('ui.budget-nmult-fragile', {k: g('fragileMult')}));
   return out.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(out.join(' '))}</small>` : ''; }
+// 2026-10-21 (package CX2): the context-skill rule in the budget panel, CONTEXT_MULT × the skills in the braces, and this card's own
+// context skills worked out ("Tide: 0.4 × 11.5 = 4.6").
+function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects) || {}, f1 = v=> Math.round(v * 10) / 10;
+  const own = Object.keys(e).map(k=>{ const cx = B.contextS && B.contextS(k, e[k], inner=> sbSkillCost(inner, cfg)); if(!cx) return ''; const sd = SKILL_DEFS.find(x=> x.key === k);
+    return TX('ui.budget-context-card', {skill: sd ? sd.label : k, k: cx.mult, inner: f1(cx.inner), s: f1(cx.S)}); }).filter(Boolean);
+  return `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-context', {k: B.CONTEXT_MULT}))}${own.length ? ' ' + escapeHtml(own.join(' · ')) : ''}</small>`; }
 function ceBudgetHTML(d){
   const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M);
   const rar = (d.rarity || 'common'), rd = RARITY_DEFS.find(r=> r.key === rar), rarLabel = rd ? rd.label : rar[0].toUpperCase() + rar.slice(1);
@@ -27109,6 +27211,7 @@ function ceBudgetHTML(d){
     <div style="font-size:12.5px">${TX('ui.budget-product', {a: A, h: D, s: f1(S), m, x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)})}</div>
     ${miss.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-miss', {m: f1(M), skills: miss.join(', ')}))}</small>` : ''}
     <small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-base-line', {parts: bp.parts.map(part).join(' + '), base: f1(bp.total)}))}</small>${sbNMultLine(d)} <!-- BF5 (10-21): the card's N multiplier -->
+    ${sbContextLine(d, cfg)}
     <small style="color:var(--ink-muted); display:block">${escapeHtml(sbFormulaText(cfg))} <span title="${escapeAttr(TX('ui.budget-pink-tip', {pct: Math.round(SB_WELL_UNDER*100)}))}">${escapeHtml(TX('ui.budget-pink', {pct: Math.round(SB_WELL_UNDER*100)}))}</span></small>`;
 }
 function ceBudgetRefresh(d){
@@ -28219,7 +28322,7 @@ function fxlEntries(){
 // The value a real card gives this skill (the commonest one), with the effect keys it writes; else null.
 function fxlRealSkillValue(sd){
   const defs = getCardDefs(), seen = {};
-  const probe = {}; try{ sd.apply(probe, sd.kind === 'boolean' ? true : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'types' ? ['X'] : sd.kind === 'grant' ? 'evasive' : sd.kind === 'grant2' ? ['evasive', 'armor 2'] : 2, 2); }catch(e){}
+  const probe = {}; try{ sd.apply(probe, sd.kind === 'boolean' ? true : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'types' ? ['X'] : sd.kind === 'grant' ? 'evasive' : sd.kind === 'grant2' ? ['evasive', 'armor 2'] : sd.kind === 'transform' ? ['', 'night', 'regen 2'] : sd.kind === 'ritual' ? [1, 1, 1] : 2, 2); }catch(e){}
   const keys = [...new Set([sd.key, ...Object.keys(probe), sd.numberKey].filter(Boolean))];
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || !d.effects || String(id).startsWith('__')) return; let v; try{ v = sd.get(d.effects); }catch(e){} if(v === undefined || v === false || v === 0) return;
     const raw = {}; keys.forEach(k=>{ if(d.effects[k] !== undefined) raw[k] = d.effects[k]; }); const sig = JSON.stringify(raw); seen[sig] = seen[sig] || {raw, n:0, from:d.name}; seen[sig].n++; });
@@ -28240,7 +28343,7 @@ function fxlSkillEffects(sd){
   else {
     const opts = (()=>{ try{ const o = typeof sd.selectOptions === 'function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }catch(_){ return []; } })();
     const v = sd.kind === 'boolean' ? true : sd.kind === 'number' ? (chance ? 100 : (FXL_NUMBER_DEFAULTS[sd.key] || 3)) : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'select' ? ((opts[0] && opts[0].value) || true)
-      : sd.kind === 'grant' ? (sd.key === 'diurnalGrant' ? 'evasive, thorns 1' : sd.key === 'nocturnalGrant' ? 'evasive, regen 2' : 'regen 2, thorns 2') : sd.kind === 'grant2' ? ['+2/+2, evasive', 'armor 2'] // 2026-10-15
+      : sd.kind === 'grant' ? (sd.key === 'diurnalGrant' ? 'evasive, thorns 1' : sd.key === 'nocturnalGrant' ? 'evasive, regen 2' : 'regen 2, thorns 2') : sd.kind === 'grant2' ? ['+2/+2, evasive', 'armor 2'] /* 2026-10-15 */ : sd.kind === 'transform' ? ['', 'night', 'regen 2, thorns 2'] : sd.kind === 'ritual' ? [1, 1, 1] /* CX2 */
       : sd.kind === 'selectNumber' ? [(opts[0] && opts[0].value) || 'damage', 3] : sd.kind === 'text' ? (()=>{ const pd = PASSIVE_DEFS.find(p=> p.key === sd.key); return pd && pd.placeholder ? String(pd.placeholder).split('·')[0].trim() : undefined; })() : sd.kind === 'types' ? [sd.key === 'defiance' ? FXL_FOE_TYPE : FXL_MY_TYPE] : sd.kind === 'cardCount' ? {defId: FXL_IDS.ally2, count: 1} : undefined;
     if(v === undefined) return {e, from, unsupported:`No card uses it yet and its value (${sd.kind}) can't be guessed.`};
     try{ sd.apply(e, v, 2); }catch(err){ return {e, from, unsupported:'Its value could not be applied.'}; }
@@ -36916,8 +37019,8 @@ function matchHasDefWhere(m, key, test){
 // 2026-10-14: day and night now come from the map, so where the sun rises and sets (Dawn draws both sides a card) the board shows it
 // whether or not a deck cares; a fixed Day or Night still shows only when a card cares.
 function matchPhaseMatters(m){ try{ const pm = m && m.engine && m.engine.getPhaseMode ? m.engine.getPhaseMode() : null; if(pm === 'cycle' || pm === 'nightFirst') return true; }catch(e){} return matchHasPhaseCards(m); }
-function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.diurnalGrant || e.nocturnalGrant || e.moonborn || e.fullMoon || e.fullMoonGrant || e.lantern || e.illuminate); }
-function matchHasMoonCards(m){ return matchHasDefWhere(m, '_hasMoon', e=> e.moonborn || e.fullMoon || e.fullMoonGrant); } // + Full Moon (2026-10-15)
+function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.diurnalGrant || e.nocturnalGrant || e.crepuscular || e.crepuscularHp || e.crepuscularGrant /* CX2 */ || e.moonborn || e.fullMoon || e.fullMoonGrant || e.transform || e.lantern || e.illuminate); }
+function matchHasMoonCards(m){ return matchHasDefWhere(m, '_hasMoon', e=> e.moonborn || e.fullMoon || e.fullMoonGrant || (e.transform && transformCondsOf(e.transform).includes('fullmoon'))); } // + Full Moon (2026-10-15); + Lycanthropy (CX2)
 const MOON_PHASES = [['🌑','New moon'],['🌒','Waxing crescent'],['🌓','First quarter'],['🌔','Waxing gibbous'],['🌕','Full moon'],['🌖','Waning gibbous'],['🌗','Last quarter'],['🌘','Waning crescent']];
 // (moonPillHTML went 2026-10-15: the moon's phase is the Night pill's icon now, see phasePillHTML.)
 // Night creeps in (2026-10-12, user: "When night happens, cause darkness to creep into the field. As fast as night enters,
@@ -41824,6 +41927,7 @@ function sk2LogText(ev, nm){
     if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
     return {cls:'', text: stone ? TX('ui.sk2-log-salvage', {name, total: ev.total}) : TX('ui.sk2-log-scavenge', {name, total: ev.total})}; }
   if(ev.type === 'equipLaid' && ev.forged) return {cls:'', text:TX('ui.sk2-log-forge', {name: nm(ev.byDefId), item: nm(ev.equipDefId)})}; // SK2b
+  if(ev.type === 'statusFx' && ev.kind === 'transform') return {cls:'gold', text:TX('ui.log-transform', {name: nm(ev.attDefId)})}; // CX2 (2026-10-21): Transform's first time
   if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
   if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
   if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
@@ -47289,7 +47393,7 @@ function openCardWorkbench(startId){
     <div class="cb-layout"><div class="cb-controls">
       <label>Card<select id="cbCard">${ids.map(id=> opt(id, st.id, defs[id].name + (defs[id].art ? '' : ' (no art)'))).join('')}</select></label>
       <label>Art<select id="cbArt">${opt('', '', 'Its own art')}${artIds.map(id=> opt(id, '', defs[id].name)).join('')}</select></label>
-      <label>Rarity colour<select id="cbRarity">${opt('', '', 'Its own rarity')}${RARITY_DEFS.map(r=> opt(r.key, '', r.label + (r.color ? ' ' + r.color : r.gradient ? ' ' + r.gradient.join(' → ') : ''))).join('')}</select></label>
+      <label>Rarity colour<select id="cbRarity">${opt('', '', 'Its own rarity')}${RARITY_DEFS.filter(r=> !r.derived /* CX2 */).map(r=> opt(r.key, '', r.label + (r.color ? ' ' + r.color : r.gradient ? ' ' + r.gradient.join(' → ') : ''))).join('')}</select></label>
       <label>Foil<select id="cbFoil">${WB_FOILS.map(([v, l])=> opt(v, '', l)).join('')}</select></label>
       <label class="cb-inline"><input type="checkbox" id="cbStar"> ✨ Starlight sparkle on top</label>
       <label>Foil strength <output id="cbStrengthOut">${st.strength}%</output><input type="range" id="cbStrength" min="0" max="100" value="${st.strength}"></label>
@@ -47560,6 +47664,11 @@ function rollPackGlow(results, defs){
 // Very Rare 2%, Super Rare 1%, then Epic 0.5%, Heroic 0.25%, Unique 0.125% and halving on up.
 const BONUS_COPY_LADDER = ['common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const BONUS_COPY_ALIAS = {starter:'common', special:'common', quest:'uncommon', eventrare:'rare', questunique:'unique', devlegendary:'legendary', eventlegendary:'legendary', devancient:'ancient'};
+// 2026-10-21 (package CX2): a derived flag × rank rarity ('questrare', 'devepic' …, see rarityComposeOf) reads as its rank in every
+// per-rarity table that has no row for it; never a pack card (a flagged card is a quest, event, dev or special card).
+RARITY_DEFS.filter(r=> r.derived).forEach(r=>{ const k = r.key, as = r.as;
+  [LIMIT_BREAK_DUPS, SPARK_STEP, RATING_WEIGHT, LEVEL_COST_MULT, CC_BANDS, RARITY_MAX_COPIES].forEach(T=>{ if(T && T[k] == null && T[as] != null) T[k] = T[as]; });
+  if(PACK_RARITY_WEIGHT[k] == null) PACK_RARITY_WEIGHT[k] = 0; if(BONUS_COPY_ALIAS[k] == null) BONUS_COPY_ALIAS[k] = as; if(ROAD_RARITY_ALIAS[k] == null) ROAD_RARITY_ALIAS[k] = as; });
 function bonusCopyChance(rarity){
   let i = BONUS_COPY_LADDER.indexOf(BONUS_COPY_ALIAS[rarity] || rarity || 'common'); if(i < 0) i = BONUS_COPY_LADDER.indexOf('legendary');
   return i <= 4 ? (5 - i) / 100 : 0.01 * Math.pow(0.5, i - 4);

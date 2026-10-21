@@ -331,7 +331,9 @@ else if(cmd === 'plan' || cmd === 'apply'){
       if(r.dropped){ c.effects = r.effectsNow; }
       if(r.now[0] === r.was[0] && r.now[1] === r.was[1] && !r.dropped) return;
       if(c.attack != null || r.now[0]) c.attack = r.now[0]; if(c.health != null || r.now[1]) c.health = r.now[1];
-      c.creatorNote = ((c.creatorNote || '') + ' ' + NOTE(r.was, r.verdict === 'flag', r.dropped && (r.dropped + ': ' + r.dropWhy))).trim(); n++; });
+      // --note="<package text>" (2026-10-21, package CX2): the creatorNote line names that package instead of BF6 ("was A/H" follows it)
+      const noteArg = process.argv.find(a=> a.startsWith('--note=')), note = noteArg ? `${noteArg.slice(7)}: was ${r.was.map(v=> v == null ? '-' : v).join('/')}${r.verdict === 'flag' ? ' (flag: its skills leave no room; at the floor of its shape, skills kept)' : ''}.` : null;
+      c.creatorNote = ((c.creatorNote || '') + ' ' + (note || NOTE(r.was, r.verdict === 'flag', r.dropped && (r.dropped + ': ' + r.dropWhy)))).trim(); n++; });
     fs.writeFileSync(CARDS_FILE, JSON.stringify(cards, null, 2).replace(/[\u0080-￿]/g, ch=> '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')) + '\n');
     console.log('applied', n, 'cards');
   }

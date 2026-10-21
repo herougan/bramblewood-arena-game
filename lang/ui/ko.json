@@ -291,7 +291,6 @@
  "At the start of every round, every unit heals 2.": "매 라운드 시작 시 모든 유닛이 2 회복해요.",
  "At the start of every round, every unit takes 1 damage (heat-resistant units are spared).": "매 라운드 시작 시 모든 유닛이 1 피해를 받아요(열 저항 유닛은 제외).",
  "At the start of every round, one random card on each side gets +1 Wait.": "매 라운드 시작 시 양쪽에서 무작위 카드 한 장이 대기 +1을 받아요.",
- "At Twilight: +{v1}/+{v2}. With it in your deck, every fifth phase is Twilight.": "황혼에: +{v1}/+{v2}. 덱에 있으면 다섯 번째 단계마다 황혼이 돼요.",
  "at upkeep, takes {v1} damage and loses {v2} Attack.": "유지 단계에 {v1} 피해를 받고 공격이 {v2} 줄어요.",
  "At {v1}, {v2}.": "{v1}에 {v2}.",
  "Attack / Health Ratio": "공격 / 체력 비율",

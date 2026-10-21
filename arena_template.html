@@ -5610,6 +5610,25 @@
   @media (prefers-reduced-motion: reduce){ .ambush-pop, .ambush-pop-card, .wl-raid-coins i{animation:none !important;} .wl-raid-coins{display:none;} }
   /* the Zeitgeber braces picker in the card editor (2026-10-15) */
   .grant-box{display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap; font-weight:700;} .grant-box .grant-pick{max-width:120px;}
+  /* 2026-10-21 (package CX2, owner 17:42: "The main pathway should be through the +skill option"): the braces and their text muted, still editable; "+ skill" stands out */
+  .grant-box .grant-brace{color:var(--ink-muted); font-weight:600;}
+  .grant-box .grant-in{color:var(--ink-muted); font-weight:500; background:color-mix(in srgb, var(--surface, #fff) 70%, transparent); border-style:dashed;}
+  .grant-box .grant-in:focus{color:var(--ink);}
+  .grant-box .grant-pick{font-weight:800; border-color:var(--accent, #b0602a);}
+  .cx-kw{font-size:12px; font-weight:700; color:var(--ink-muted);}
+  /* CX2: the rarity rank and its four flags */
+  .rarity-flags{display:flex; flex-wrap:wrap; gap:4px; margin-top:4px;}
+  .field label.rarity-flag{display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; padding:1px 7px; border-radius:999px; border:1px solid var(--surface-border); cursor:pointer; text-transform:none; letter-spacing:0; color:var(--ink-muted);}
+  .field label.rarity-flag:has(input:checked){background:var(--accent, #b0602a); color:#fff; border-color:transparent;}
+  .field label.rarity-flag input{position:absolute; opacity:0; width:1px; height:1px; margin:0; pointer-events:none;}
+  .field label.rarity-flag:focus-within{outline:2px solid var(--accent, #b0602a); outline-offset:1px;}
+  /* CX2: a Ritual's conditions at the corners of a regular polygon (card view and editor) */
+  .ritual-shape{position:relative; display:inline-block; vertical-align:middle; flex-shrink:0;}
+  .ritual-shape svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .ritual-shape svg polygon, .ritual-shape svg line{fill:rgba(155,28,56,.10); stroke:#9b1c38; stroke-width:1.5; stroke-linejoin:round;}
+  .ritual-shape .rs-pt{position:absolute; transform:translate(-50%, -50%); display:inline-flex; align-items:center; gap:2px; white-space:nowrap; font-weight:800; font-size:12px; padding:1px 5px; border-radius:999px; background:var(--surface, #fff8ee); border:1px solid #9b1c38;}
+  .ritual-shape.rs-editor .rs-pt{padding:2px 4px;} .ritual-shape.rs-editor input{width:46px;}
+  .ritual-line{display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap;} .ritual-line .ritual-shape{margin:4px 0;}
   .grant-facet{display:inline-flex; align-items:center; gap:4px; margin-right:8px;} .grant-facet > b{font-size:12px; color:var(--ink-muted);}
   .abadge.exposed{background:color-mix(in srgb, #e0412f 24%, var(--surface-2)); color:#c62f1f;} /* Exposed (2026-10-15) */
   .abadge.prayer{background:color-mix(in srgb, #e3c26a 34%, var(--surface-2)); color:#7a5a10;} /* Prayer tokens (2026-10-19, package E) */
