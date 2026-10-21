@@ -252,3 +252,7 @@ The boss's bramble in each raid fight now opens with a Shield of 50 × the part'
 Raid damage a fight across the mix falls from 788 to 736 (−7%). The fall comes about 0.05–0.08 days later. With no stand-ins, neither version falls with 30–50 players: their median raid damage a life is 6,000 → 4,840 (−19%), so at that size the stand-ins carry the kill either way. Nothing else was retuned (the owner chose 50).
 
     node tools/raid_completion_model.js measure --n 20 --decks 13 --shield 0 --out FILE    # --shield N tries another raid Shield (0 = off)
+
+After the Tentacle Smack fix (row smacks now hit the front, middle or back row at even odds; the front was 2 in 3), Map 13 at Shield 50 was re-measured with the same seeds. The fight averages barely move: the arms are within about ±10 a cell, the tail is unchanged (it has no smack) and the Core moves by +1 to +4.
+
+**Trophy shards (MX, owner 23:43)**: a fall now pays max(6, fights) × 1 / 2 / 5 (Participant / Competent / Leading), plus the standing bonus. The model's lives, one fall a week: Participant about 6, Competent 14–24 (median 16–18), Leading 60–80 (median 60–65). The tickets cap a week at about 16 fights, so the owner's "40 fights → 200" needs more fights than a week allows. A Legendary recipe (160) takes a Leading raider 2–3 falls and a Competent one about 7–10. A Common (8) is one Competent fall.
