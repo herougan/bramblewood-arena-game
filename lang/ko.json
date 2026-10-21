@@ -2626,5 +2626,16 @@
  "Play {name} onto one of your lit units.": "{name}을(를) 빛나는 내 유닛 중 하나 위에 내세요.",
  "Stack of {n}: {cards}": "{n}장 스택: {cards}",
  "Stem": "줄기",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name}이(가) {base} 위에서 진화: 이제 {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name}이(가) {base} 위에서 진화: 이제 {atk}/{hp}.",
+ "Fog of War": "전장의 안개",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "사거리 밖의 적은 그림만 보인다. 마주 서거나 어둠 시야, 예리한 눈, 조명으로 드러난다.",
+ "Far enemies read ?": "먼 적은 ?로 표시",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "사거리는 내 유닛이 있는 열과 그 옆 열이다. 어둠 시야, 예리한 눈, 조명 유닛은 가리는 범위를 전투가 끝날 때까지 드러낸다. 보이는 것만 달라지며, 전투와 CPU는 평소대로 진행된다.",
+ "Fog of War (advanced)": "전장의 안개 (고급)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "전장의 안개, 고급: 숨은 적의 절반쯤이 세부 정보 하나를 보여 준다.",
+ "Far enemies read ?, some peek through": "먼 적은 ?로 표시, 일부는 엿보임",
+ "Hidden in the fog": "안개에 가려짐",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "유닛을 옆에 두거나 어둠 시야, 예리한 눈, 조명을 사용하자.",
+ "A glimpse through the fog": "안개 사이로 얼핏 보임",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "유닛 사거리 밖의 적 줄은 안개에 싸여 있다. 두더지의 어둠 시야가 그 범위의 안개를 걷어 낸다."
 }

@@ -1814,7 +1814,22 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.log-tribute": "🪙 {name} pays Tribute: +{n} Gold.",
   "ui.log-tf-named": "✨ {name} is {title} now.",
   "ui.gold-tip": "Gold: Tribute and the Crown pay it. It counts 5 toward Gilded.",
-  "ui.budget-two-skills": "{n} skills count: two at most. Plain Flying, Tide, Diurnal, Nocturnal don't count; several count as one."
+  "ui.budget-two-skills": "{n} skills count: two at most. Plain Flying, Tide, Diurnal, Nocturnal don't count; several count as one.",
+  "ui.fx-name-fog-of-war": "Fog of War",
+  "ui.fx-fog-of-war": "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.",
+  "ui.fx-fog-of-war-short": "Far enemies read ?",
+  "ui.fxx-fog-of-war": "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.",
+  "ui.fx-name-fog-peek": "Fog of War (advanced)",
+  "ui.fx-fog-peek": "Fog of War, advanced: about half the hidden enemies let one detail show through.",
+  "ui.fx-fog-peek-short": "Far enemies read ?, some peek through",
+  "ui.fog-hidden": "Hidden in the fog",
+  "ui.fog-hidden-tip": "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.",
+  "ui.fog-glimpse": "A glimpse through the fog",
+  "ui.fog-row-atk": "Attack",
+  "ui.fog-row-hp": "Health",
+  "ui.fog-row-wait": "Wait",
+  "ui.fog-row-skills": "Skills",
+  "ui.fxl-fog-note": "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

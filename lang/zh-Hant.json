@@ -2626,5 +2626,16 @@
  "Play {name} onto one of your lit units.": "把{name}打在你一個發光的單位上。",
  "Stack of {n}: {cards}": "{n}張疊放：{cards}",
  "Stem": "幼苗",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name}在{base}之上進化：現在為{atk}/{hp}。"
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name}在{base}之上進化：現在為{atk}/{hp}。",
+ "Fog of War": "戰爭迷霧",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "你觸及範圍之外的敵人只顯示畫面。正對著它、暗視、銳眼或照明可以揭開它。",
+ "Far enemies read ?": "遠處的敵人顯示「？」",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "你的觸及範圍是有你單位的每一列及其相鄰列。擁有暗視、銳眼或照明的單位會在戰鬥餘下的時間裡揭示它覆蓋的敵人。只有你看到的內容會變；戰鬥和電腦照常進行。",
+ "Fog of War (advanced)": "戰爭迷霧（進階）",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "戰爭迷霧（進階）：約一半被隱藏的敵人會透出一項細節。",
+ "Far enemies read ?, some peek through": "遠處的敵人顯示「？」，有些會露出一角",
+ "Hidden in the fog": "隱沒在迷霧中",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "讓一個單位靠近它，或使用暗視、銳眼或照明。",
+ "A glimpse through the fog": "迷霧中的驚鴻一瞥",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "你的單位觸及範圍之外的敵方行籠罩在迷霧中。鼴鼠的暗視會驅散它覆蓋的迷霧。"
 }

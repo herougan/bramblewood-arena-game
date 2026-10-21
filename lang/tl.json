@@ -2624,5 +2624,16 @@
  "Play {name} onto one of your lit units.": "Ilaro si {name} sa isa sa mga yunit mong may ilaw.",
  "Stack of {n}: {cards}": "Patong ng {n}: {cards}",
  "Stem": "Tangkay",
- "{name} evolves over {base}: now {atk}/{hp}.": "Nag-evolve si {name} sa ibabaw ni {base}: {atk}/{hp} na ngayon."
+ "{name} evolves over {base}: now {atk}/{hp}.": "Nag-evolve si {name} sa ibabaw ni {base}: {atk}/{hp} na ngayon.",
+ "Fog of War": "Hamog ng Digmaan",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "Ang mga kaaway na lampas sa abot mo ay larawan lang ang ipinapakita. Ang pagharap, Paningin sa Dilim, Matalas na Mata o Pagliwanag ay naglalantad sa kanila.",
+ "Far enemies read ?": "Ang malalayong kaaway ay ?",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "Ang abot mo ay bawat hanay na may unit mo at ang mga katabi nito. Ang unit na may Paningin sa Dilim, Matalas na Mata o Pagliwanag ay naglalantad ng sakop nito hanggang matapos ang laban. Ang nakikita mo lang ang nagbabago; normal ang laban at ang CPU.",
+ "Fog of War (advanced)": "Hamog ng Digmaan (advanced)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "Hamog ng Digmaan, advanced: halos kalahati ng mga nakatagong kaaway ay nagpapakita ng isang detalye.",
+ "Far enemies read ?, some peek through": "Ang malalayong kaaway ay ?, may sumisilip",
+ "Hidden in the fog": "Nakatago sa hamog",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "Ilapit ang isang unit, o gamitin ang Paningin sa Dilim, Matalas na Mata o Pagliwanag.",
+ "A glimpse through the fog": "Sulyap sa hamog",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "Ang hanay ng kaaway na lampas sa abot ng mga unit mo ay nababalot ng hamog. Nililinaw ng Paningin sa Dilim ng Nunal mo ang sakop nito."
 }

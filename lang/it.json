@@ -2625,5 +2625,16 @@
  "Play {name} onto one of your lit units.": "Gioca {name} su una delle tue unità evidenziate.",
  "Stack of {n}: {cards}": "Pila di {n}: {cards}",
  "Stem": "Stelo",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name} evolve su {base}: ora {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name} evolve su {base}: ora {atk}/{hp}.",
+ "Fog of War": "Nebbia di guerra",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "I nemici fuori portata mostrano solo la loro illustrazione. Averne uno di fronte, Scurovisione, Occhio acuto o Illuminare lo rivela.",
+ "Far enemies read ?": "I nemici lontani mostrano ?",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "La tua portata è ogni colonna con una tua unità e quelle accanto. Un’unità con Scurovisione, Occhio acuto o Illuminare rivela ciò che copre per il resto dello scontro. Cambia solo ciò che vedi; combattimento e CPU giocano normalmente.",
+ "Fog of War (advanced)": "Nebbia di guerra (avanzata)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "Nebbia di guerra, avanzata: circa metà dei nemici nascosti lascia intravedere un dettaglio.",
+ "Far enemies read ?, some peek through": "I nemici lontani mostrano ?, alcuni si intravedono",
+ "Hidden in the fog": "Nascosto nella nebbia",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "Porta un’unità accanto, oppure usa Scurovisione, Occhio acuto o Illuminare.",
+ "A glimpse through the fog": "Uno sguardo tra la nebbia",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "La fila nemica oltre la portata delle tue unità è nella nebbia. La Scurovisione della tua Talpa dirada ciò che copre."
 }

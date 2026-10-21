@@ -2625,5 +2625,16 @@
  "Play {name} onto one of your lit units.": "Mainkan {name} ke salah satu unitmu yang menyala.",
  "Stack of {n}: {cards}": "Tumpukan {n}: {cards}",
  "Stem": "Batang",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name} berevolusi di atas {base}: kini {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name} berevolusi di atas {base}: kini {atk}/{hp}.",
+ "Fog of War": "Kabut Perang",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "Musuh di luar jangkauanmu hanya menampilkan gambarnya. Berhadapan, Penglihatan Gelap, Mata Tajam, atau Menerangi akan mengungkapnya.",
+ "Far enemies read ?": "Musuh jauh tampil ?",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "Jangkauanmu adalah setiap kolom berisi unitmu dan kolom di sebelahnya. Unit dengan Penglihatan Gelap, Mata Tajam, atau Menerangi mengungkap yang dicakupnya sampai pertarungan selesai. Hanya pandanganmu yang berubah; pertarungan dan CPU berjalan normal.",
+ "Fog of War (advanced)": "Kabut Perang (lanjutan)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "Kabut Perang, lanjutan: sekitar separuh musuh tersembunyi membiarkan satu detail terlihat.",
+ "Far enemies read ?, some peek through": "Musuh jauh tampil ?, sebagian mengintip",
+ "Hidden in the fog": "Tersembunyi di dalam kabut",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "Dekatkan sebuah unit, atau gunakan Penglihatan Gelap, Mata Tajam, atau Menerangi.",
+ "A glimpse through the fog": "Sekilas dari balik kabut",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "Barisan musuh di luar jangkauan unitmu diselimuti kabut. Penglihatan Gelap Tikus Tanahmu membersihkan yang dicakupnya."
 }

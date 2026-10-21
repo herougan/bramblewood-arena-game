@@ -6082,7 +6082,7 @@ function castleHoverHTML(hqSide){
     holdX = e.clientX; holdY = e.clientY;
     document.body.classList.add('bw-holding'); // no text selection or iOS callout while the finger rests (CSS)
     holdT = setTimeout(()=>{ holdT = null; if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } openPopFor(el); holdOpenedAt = Date.now(); holdFired = true;
-      stripHeld = !pop.hidden; if(stripHeld){ pop.classList.add('is-held'); pop.dataset.heldDefid = el.getAttribute('data-defid') || ''; }
+      stripHeld = !pop.hidden; if(stripHeld){ pop.classList.add('is-held'); pop.dataset.heldDefid = pop.querySelector('.fog-pop-visual') ? '' : (el.getAttribute('data-defid') || ''); } // a fogged unit has no detail sheet (2026-10-21, package FOG)
       try{ if(navigator.vibrate) navigator.vibrate(8); }catch(_){} }, matchState ? TOUCH_HOLD_MS : STRIP_HOLD_MS);
   }, true);
   document.addEventListener('pointermove', e=>{ if(holdT && Math.hypot(e.clientX - holdX, e.clientY - holdY) > HOLD_SLOP_PX) cancelHold(); }, {passive:true, capture:true});
@@ -6102,7 +6102,8 @@ function castleHoverHTML(hqSide){
       let lookClass = '';
       if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
         if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
-      const html = /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */});
+      const fogEl = matchState && el.closest ? el.closest('.board-card.is-fogged') : null; // 2026-10-21 (package FOG): a fogged unit's tooltip is "Hidden in the fog"
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -7902,14 +7903,14 @@ function cardTileHTML(d, opts){
     return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}${archMarkHTML(d, !!live.waitHTML, true)}
       ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): the 🔁 spawn-only corner pill is gone; a token still has its dashed frame outside fights and its popover line */}
-      ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
+      ${d.level > (d.baseLevel||0) && !opts.fog ?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
-      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${live.atkZero ? ' is-atk-zero' : ''}${atkPlateCls(d)}">${atkElementOf(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
+      <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -17419,7 +17420,7 @@ function fieldRowHidden(key){ return fieldRowState(key) === 'unknown' && !(typeo
 function fieldRowGated(key){ try{ const f = FIELD2[key]; return !!(f && f.revealAfter && !revealAfterMet(f.revealAfter)); }catch(e){ return false; } }
 function fieldRowState(key){ if(fieldRowGated(key)) return 'unknown'; const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['quietContemplation' /* 2026-10-19 (package RV): in force all fight */, 'lumberEvery', 'midsummer', 'dusk', 'restless', 'firstBlood', 'actions', 'collapse', 'terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
+const FIELD_ROWS_AT_START = new Set(['quietContemplation' /* 2026-10-19 (package RV): in force all fight */, 'lumberEvery', 'midsummer', 'dusk', 'restless', 'firstBlood', 'actions', 'collapse', 'terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow', 'fogOfWar' /* 2026-10-21 (package FOG): in force all fight */]); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -17490,6 +17491,9 @@ Object.assign(FIELD2, {
   sporeCloud:   {icon:'🍄', name:TX('ui.fx-name-spore-cloud'), editor:'sporecloud', short:TX('ui.fx-spore-cloud-short'), text:TX('ui.fx-spore-cloud'), codex:TX('ui.fxx-spore-cloud')},
   thunderstorm: {icon:'🌩️', name:TX('ui.fx-name-thunderstorm'), editor:'thunderstorm', short:TX('ui.fx-thunderstorm-short', {n: 2}), text:TX('ui.fx-thunderstorm', {n: 2}), codex:TX('ui.fxx-thunderstorm')},
   tangledRoots: {icon:'🪢', name:TX('ui.fx-name-tangled-roots'), editor:'tangledroots', short:TX('ui.fx-tangled-roots-short'), text:TX('ui.fx-tangled-roots'), codex:TX('ui.fxx-tangled-roots')},
+  // 2026-10-21 (package FOG, owner: "a fog of war effect"): rules.fogOfWar (+ rules.fogPeek for the advanced peek). INFORMATION ONLY: it hides the
+  // far enemy columns from the player's view (fogGet and boardCardHTML); combat, targeting and the CPU never read it. Not offered in raids.
+  fogOfWar:     {icon:'🌫️', name:TX('ui.fx-name-fog-of-war'), editor:'fogofwar', short:TX('ui.fx-fog-of-war-short'), text:TX('ui.fx-fog-of-war'), codex:TX('ui.fxx-fog-of-war')},
 });
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
@@ -17539,6 +17543,7 @@ function fieldConditionRows(r){
   // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
   Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k];
     // 2026-10-17: a number on Crushing Depths or Hail is its damage (the raid's Crushing Depths is 2), so the card says that number.
+    if(k === 'fogOfWar' && r.fogPeek){ add(k, f.icon, TX('ui.fx-name-fog-peek'), TX('ui.fx-fog-peek'), '', TX('ui.fx-fog-peek-short'), f.codex); return; } // 2026-10-21 (package FOG): the advanced peek
     const n = Number(r[k]), dflt = {crushingDepths:5, hail:3}[k];
     if(dflt && n > 0 && n !== dflt){ add(k, f.icon, f.name, f.text.replace(dflt + ' water damage', n + ' water damage').replace(dflt + ' ice damage', n + ' ice damage'), '', f.short.replace(String(dflt), String(n)), f.codex); return; }
     add(k, f.icon, f.name, f.text, '', f.short, f.codex); });
@@ -18292,6 +18297,7 @@ function skirmishFieldChips(mapId, draft){
   // chip from its first rules key, so an effect added here shows and can be switched off (the 2026-10-15 ones had no chip).
   FIELD_EFFECTS.forEach(f=>{ if(!f.rules || f.arenaOnly || f.group === 'field' || f.group === 'phase' || f.group === 'lumber') return; const k = Object.keys(f.rules)[0];
     if(!k || !eff[k] || out.some(c=> c.key === k)) return; add(k, true, f.icon, f.name + (f.oneOff ? ' (one-off)' : ''), f.text); });
+  { const fg = out.find(c=> c.key === 'fogOfWar'); if(fg && eff.fogPeek){ fg.name = TX('ui.fx-name-fog-peek'); fg.text = TX('ui.fx-fog-peek'); } } // 2026-10-21 (package FOG): the advanced peek is the same chip, renamed
   if(eff.frostWait || eff.frostCount || eff.frostbite || (eff.frostResist||[]).length) add('frosttune', true, '🧊', 'Frost tuning', [(eff.frostWait || eff.frostCount) ? `level ${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} (${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} a side, +1 Wait)` : '', eff.frostbite ? `enemy Frostbite ${eff.frostbite}` : '', (eff.frostResist||[]).length ? `${eff.frostResist.join(', ')} resist` : ''].filter(Boolean).join(' · '));
   const g = draft.leaderGrant || exp.leaderGrant || {};
   Object.keys(g).forEach(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key === k); out.push({key:'gift:' + k, on:true, icon:'👑', name:`Leader gift: ${pd ? pd.label : k}${g[k] === true ? '' : ' ' + g[k]}`, text:'Light blue on the enemy leaders.', src:'set'}); });
@@ -18322,6 +18328,7 @@ function removeSkirmishFx(mapId, draft, key, restore){
   if(key.startsWith('gift:')){ const k = key.slice(5); const g = Object.assign({}, draft.leaderGrant || {}); delete g[k]; if(Object.keys(g).length) draft.leaderGrant = g; else delete draft.leaderGrant; }
   else if(key === 'frosttune'){ ['frostWait', 'frostCount', 'frostbite', 'frostResist'].forEach(k=> delete r[k]); }
   else if(key === 'phase'){ delete r.phase; delete r.phaseLen; }
+  else if(key === 'fogOfWar'){ delete r.fogOfWar; delete r.fogPeek; } // 2026-10-21 (package FOG): the peek goes with the fog
   else if(key === 'volcano'){ ['volcano', 'lavaTideChance', 'petrifyChance', 'eruptionChance'].forEach(k=> delete r[k]); }
   else if(restore) delete r[key];
   else if(key in SE_FX_OFF && auto[key] && auto[key] !== 'none') r[key] = SE_FX_OFF[key];
@@ -24333,7 +24340,7 @@ function openRaidEditor(raidId){
         const rows = fieldConditionRows(draft.fieldRules || {}), pool = (draft.commonPool || []).join(', ');
         return `<h3 class="se-h">Field effects <small>every part fights under these; they show as Environment cards</small></h3>
         <div class="se-fx-list re-fx">${rows.map(r=> `<span class="se-fx-chip"><span aria-hidden="true">${r.icon}</span> <b>${escapeHtml(r.name)}</b> <small>${escapeHtml(r.short||'')}</small><button type="button" class="se-fx-x" data-rfx-del="${escapeAttr(r.key)}" aria-label="Remove ${escapeAttr(r.name)}">✕</button></span>`).join('') || '<i class="panel-sub">None</i>'}
-          <select id="reFxAdd" aria-label="Add a field effect"><option value="">＋ Add a field effect…</option>${FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift').map(f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></div>
+          <select id="reFxAdd" aria-label="Add a field effect"><option value="">＋ Add a field effect…</option>${FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift' && f.group !== 'fogOfWar' /* 2026-10-21 (package FOG): not in raids */).map(f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></div>
         <label class="se-wide re-pool">Commons the boss calls in (card ids, comma-separated; blank = from its decks' types)<input id="reCommonPool" value="${escapeAttr(pool)}" placeholder="${escapeAttr((RaidM.raidCommonPool ? RaidM.raidCommonPool(Object.assign({}, draft, {commonPool:null}), draft.parts[0], getCardDefs()) : []).slice(0, 6).join(', '))}"></label>`; })()}
       <h3 class="se-h">Parts · ${st.total.toLocaleString(raidLocale())} HP in all</h3>
       <div class="re-parts">${draft.parts.map(p=> `<button type="button" class="re-part-tab ${p.id===openPart?'on':''}" data-open-part="${escapeAttr(p.id)}">${escapeHtml(p.icon||'🎯')} ${escapeHtml(p.name||p.id)}<small>${p.bars}×${(p.barHp||0).toLocaleString(raidLocale())}${(p.lockedUntil||[]).length?' 🔒':''}</small></button>`).join('')}<button type="button" class="btn small" id="reAddPart">＋ Part</button></div>
@@ -24369,7 +24376,7 @@ function openRaidEditor(raidId){
       <h3 class="se-h">Stages (as total HP falls)</h3>
       <div class="re-stages">${draft.stages.map((s,i)=>{ const sr = RaidM.stageRules(s), raw = Object.assign({}, ...[].concat(s.rules || []).filter(r=> r && typeof r === 'object')), fv = raw.field;
         // 2026-10-18 (R3-WP2): each stage's rules as simple inputs (RaidM.setStageRules writes them back); a field the list can't show (a rules object) is kept as it is.
-        const fx = FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift'), keep = fv && (typeof fv !== 'string' || !fx.some(f=> f.id === fv));
+        const fx = FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift' && f.group !== 'fogOfWar' /* 2026-10-21 (package FOG): not in raids */), keep = fv && (typeof fv !== 'string' || !fx.some(f=> f.id === fv));
         return `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${sr.stripAbilities?'checked':''}> strips enemy abilities</label>
           <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
           <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
@@ -28224,6 +28231,8 @@ const FXL_FIELDS = [
     ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
     ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides a Wave 1–3 columns; crashing into a unit hurts both for that many.'}], // the Wave field (rules.awash), 2026-10-18
     // 2026-10-19 (package RV): a Twin Strike unit swings once and a Fast Forward unit takes no extra turn (no note: the field's own text says it)
+    // 2026-10-21 (package FOG): a Mole (Darksight) on the left; the foe in the far column stays fogged until the board changes.
+    ['fogOfWar', {fogOfWar:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Mole', icon:'🐀', effects:{darksight:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:3}]}, note:TX('ui.fxl-fog-note')}],
     ['quietContemplation', {quietContemplation:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Alley Cat', icon:'🐈', effects:{twinStrike:true}}}, {role:'ally', slot:-1, def:{name:'Swift Fox', icon:'🦊', effects:{fastForward:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round']}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
@@ -29743,6 +29752,7 @@ const FIELD_EFFECTS = [
   ...Object.keys(FIELD2).map(k=>{ const f = FIELD2[k], rules = {}; rules[k] = true;
     if(k === 'undergrowth') rules.canopy = false; if(k === 'canopy') rules.undergrowth = false; // the two canopy strengths replace each other
     return {id:f.editor, group:k, icon:f.icon, name:f.name, weird: /^(slippery|consternation|mirage|leylines3)$/.test(k) ? 4 : 3, cost:1, rules, text:f.text, editorOnly:true, oneOff: k === 'glassStorm' || undefined}; }),
+  {id:'fogofwarpeek', group:'fogOfWar', icon:'🌫️', name:TX('ui.fx-name-fog-peek'), weird:3, cost:1, rules:{fogOfWar:true, fogPeek:true}, text:TX('ui.fx-fog-peek'), editorOnly:true}, // 2026-10-21 (package FOG): the sub-option; it replaces plain Fog of War (same group)
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
   {id:'gift-immolation', group:'gift', icon:'🔥', name:'Leader gift: Immolation 2', weird:3, cost:1, leaderGrant:{immolation:2}, text:'The enemy leaders deal 2 fire damage to adjacent units every upkeep.', editorOnly:true},
@@ -31979,6 +31989,7 @@ function renderBoard(opts){
     slotRange = Math.max(1, slotRange, m._slotRange || 0, m.raidFull ? 3 : 0);
     m._slotRange = slotRange;
   }
+  try{ fogCompute(m, p1Rows, p2Rows, defs, slotView); }catch(e){ m._fog = null; } // 2026-10-21 (package FOG): who the player can see (information only)
   function slotRowHTML(pl, rows, dance, scatter, nextDanceStyle){
     const bySlot = new Map();
     [...rows.left, ...rows.center, ...rows.right].forEach(c=>{ if(Number.isInteger(c.slot)) bySlot.set(c.slot, c); });
@@ -32071,7 +32082,7 @@ function renderBoard(opts){
     const slotSig = slotView ? `K${curseSig}S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
     return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
-  const sig2 = rowSignature(p2Rows, dancingSide===2);
+  const sig2 = rowSignature(p2Rows, dancingSide===2) + (m._fog ? m._fog.key : ''); // + who is fogged (2026-10-21, package FOG)
   const sig1 = rowSignature(p1Rows, dancingSide===1);
   const touchedUidsThisRender = new Set([
     ...attackingUids, ...enteringUids, ...shovedUids,
@@ -32092,6 +32103,7 @@ function renderBoard(opts){
     // reflow dance entirely rather than replaying it as an inert no-op. Both rows are left
     // completely untouched: same DOM nodes, same on-screen position, zero flicker.
     fitBattlefieldZoom();
+    try{ fogSyncLayer(m); }catch(e){} // 2026-10-21 (package FOG)
     return { hadNewEntrants:false };
   }
   const rowIds = [];
@@ -32873,6 +32885,7 @@ function renderBoard(opts){
   // cards still mid-drop, not yet settled. Reporting whether THIS render introduced any new
   // entrants lets resolveRound() give that final render the same courtesy pause.
   try{ evoSyncTargets(); }catch(e){} // Package EV (2026-10-21): the legal bases of a held evolute stay lit across a re-render
+  try{ fogSyncLayer(m); }catch(e){} // 2026-10-21 (package FOG): the drifting mist over the out-of-reach enemy columns
   return { hadNewEntrants };
 }
 // Battlefield "zoom out to fit" (2026-09-17, per explicit request: "When the field is full,
@@ -33714,6 +33727,124 @@ function noteShinySpawn(m, ev){
   m.shinyUids = m.shinyUids || new Set();
   (ev.uids || (ev.placements||[]).map(p=> p.uid)).forEach(u=> m.shinyUids.add(u));
 }
+// ============================================================================
+// Fog of War (2026-10-21, package FOG; owner: "a fog of war effect ... Enemy cards outside the columns your units reach are fogged, and
+// they are revealed when one of your units faces them, or by Darksight, Keen Eye or Illuminate"). rules.fogOfWar switches it on for a
+// fight (the Environment card, Edit skirmish, a map node's rules); rules.fogPeek is the "advanced" sub-option. INFORMATION ONLY: this
+// changes what the player SEES; combat, targeting and the CPU never read it (the engine has no fog rule, only the pure helpers
+// fogOfWarView / fogPeekRoll at the end of bramblewood-engine.js). The enemy's view of your units isn't fogged in single player.
+//   Reach, reveal and the peek rule: see fogOfWarView. Facing a unit puts it in reach (same column), so facing is covered.
+//   The look: a mist veil on each fogged card (no filter), plus ONE drifting layer for the enemy side (#battlefieldInner > .fog-layer)
+//   with a bank per out-of-reach column; reduced motion / low effects keep the mist still; hidden pages pause it.
+const FOG_CLEAR_MS = 900;
+function fogOn(m){ try{
+  if(!m || m.over || m.mode === 'pc' /* pass & play: both players share the screen */ || m.raidFull || m.mode === 'tutorial') return false;
+  if(!isSlotMatch(m)) return false; // the fixed-column modes (Open, Gladiator) are the normal fights; Collapse's sliding rows have no stable columns
+  const r = matchFieldRules(m); return !!(r && r.fogOfWar);
+}catch(e){ return false; } }
+function fogCompute(m, p1Rows, p2Rows, defs, slotView){
+  const prevOn = !!m._fog; m._fog = null;
+  if(!slotView || !fogOn(m)){ if(prevOn || m._fogWas){ m._fogWas = null; m._fogClear = {}; m._fogEnter = {}; } return; }
+  const me = localPid(m), foe = me === 1 ? 2 : 1;
+  const rowsOf = pid=> pid === 1 ? p1Rows : p2Rows;
+  const flat = rows=> [...rows.left, ...rows.center, ...rows.right].filter(c=> c && Number.isInteger(c.slot)).map(c=> ({uid:c.uid, slot:c.slot, defId:c.defId, hp:c.hp, cageOf:c.cageOf}));
+  const mine = flat(rowsOf(me)), foes = flat(rowsOf(foe)).filter(f=> !f.cageOf);
+  let openSlots = []; try{ if(m.engine && m.engine.legalSlots) openSlots = m.engine.legalSlots(m.players[me]) || []; }catch(e){}
+  if(!m._fogSeen) m._fogSeen = new Set();
+  const view = fogOfWarView(mine, foes, defs, m._fogSeen, {openSlots});
+  const was = m._fogWas || new Map(), now = performance.now(); if(!m._fogClear) m._fogClear = {}; if(!m._fogEnter) m._fogEnter = {};
+  foes.forEach(f=>{ const was_ = was.get(f.uid), is_ = view.fogged.has(f.uid);
+    if(was_ === true && !is_) m._fogClear[f.uid] = now; if(was_ === false && is_) m._fogEnter[f.uid] = now; was.set(f.uid, is_); });
+  m._fogWas = was;
+  const peekOn = !!((matchFieldRules(m) || {}).fogPeek);
+  const slotOf = new Map(foes.map(f=> [f.uid, f.slot]));
+  m._fog = {fogged: view.fogged, reach: view.reach, seen: m._fogSeen, me, foe, peekOn, slotOf,
+    key: '|F' + [...view.fogged].sort().join(',') + (peekOn ? 'p' : '')};
+}
+// A foe card's fog state for the renderer: null (plain), or {hidden, clearing, entering, peek, uid}.
+function fogCardState(m, c, d, pid){
+  const F = m && m._fog; if(!F || !c || pid !== F.foe) return null;
+  const now = performance.now(), hidden = F.fogged.has(c.uid);
+  const clr = m._fogClear && m._fogClear[c.uid], ent = m._fogEnter && m._fogEnter[c.uid];
+  const clearing = !hidden && clr != null && now - clr < FOG_CLEAR_MS ? now - clr : null;
+  const entering = hidden && ent != null && now - ent < FOG_CLEAR_MS ? now - ent : null;
+  if(!hidden && clearing == null) return null;
+  return {hidden, clearing, entering, peek: hidden && F.peekOn ? fogPeekGet(m, c, d) : null, uid: c.uid};
+}
+// The peek is decided once per unit (m._fogPeek), from the fight's seed on a stream of its own: it never touches the engine's RNG.
+function fogPeekGet(m, c, d){
+  if(!m._fogPeek) m._fogPeek = new Map();
+  if(m._fogPeek.has(c.uid)) return m._fogPeek.get(c.uid);
+  const eff = {}; Object.keys((d && d.effects) || {}).forEach(k=>{ if(d.effects[k] && PASSIVE_DEFS.some(p=> p.key === k)) eff[k] = d.effects[k]; }); // only skills a chip and a name exist for
+  let roll = null; try{ roll = fogPeekRoll(currentMatchSeed || 1, c.uid, {effects: eff}); }catch(e){}
+  m._fogPeek.set(c.uid, roll); return roll;
+}
+function fogWrapClasses(f){ const k = f.peek && f.peek.kind; return 'is-fogged' + (k === 'atk' ? ' fog-show-atk' : '') + (k === 'hp' ? ' fog-show-hp' : '') + (k === 'skill' ? ' fog-show-skill' : ''); }
+function fogTileOpts(f){ const k = f.peek && f.peek.kind; return {atk: k === 'atk', hp: k === 'hp', skill: k === 'skill' ? f.peek.skill : null}; }
+function fogVeilHTML(f){
+  const cls = f.hidden ? (f.entering != null ? ' is-entering' : '') : ' is-clearing', t = f.hidden ? f.entering : f.clearing;
+  return `<span class="fog-veil${cls}"${t != null ? ` style="animation-delay:-${Math.round(t)}ms"` : ''} aria-hidden="true"></span>`;
+}
+// The skill strip of a fogged unit: one "?" chip (so the number of skills isn't given away), plus the one chip a peek lets through.
+function fogChipsHTML(d, skillKey){
+  const q = `<span class="abadge"><span class="skill-q fog-q" title="${escapeAttr(TX('ui.fog-hidden'))}">?</span></span>`;
+  let one = '';
+  if(skillKey){ const v = ((d && d.effects) || {})[skillKey]; one = `<span class="abadge fog-peek-chip"><span class="ab-sk" data-sk="${escapeAttr(skillKey)}">${iconHTML(skillKey, SKILL_ICON[skillKey] || '✦')}${typeof v === 'number' && v > 1 ? v : ''}</span></span>`; }
+  return `<div class="badges badge-slots fog-chips">${one}${q}</div>`;
+}
+// Tooltip / hold sheet: the card's art and frame, "Hidden in the fog", every detail "?" (a peek's one detail is the exception).
+function fogPopHTML(boardEl){
+  const m = matchState, d0 = getCardDefs()[boardEl.getAttribute('data-defid')], uid = Number(boardEl.getAttribute('data-uid'));
+  if(!d0) return '';
+  const c = liveCardFromHoverEl(boardEl), peek = m && m._fogPeek && m._fogPeek.get(uid);
+  const numOf = sel=>{ const t = String(((boardEl.querySelector(sel) || {}).textContent) || '').replace(/[^\d]/g, ''); return t === '' ? '?' : t; }; // the number the card itself shows (bonuses included)
+  const shownAtk = numOf('.stats .atk'), shownHp = numOf('.stats .hp');
+  const showAtk = peek && peek.kind === 'atk', showHp = peek && peek.kind === 'hp', skillName = peek && peek.kind === 'skill' ? ((PASSIVE_DEFS.find(p=> p.key === peek.skill) || {}).label || peek.skill) : '';
+  const vis = Object.assign({}, d0, {locked:false, field:null, effects:{}, _hiddenSkills:1, _revealGated:true, wait:0,
+    attack: showAtk ? shownAtk : '?', health: showHp ? shownHp : '?'});
+  const row = (k, v)=> `<li><b>${escapeHtml(TX(k))}</b> <span>${escapeHtml(v)}</span></li>`;
+  return `<div class="card-pop-visual fog-pop-visual">${cardTileHTML(vis, {extraClass:'card-pop-visual-tile fog-pop-tile'})}</div>
+    <div class="tagrow"><span class="tag fog-tag">🌫️ ${escapeHtml(TX('ui.fog-hidden'))}</span></div>
+    <ul class="fog-pop-rows">${row('ui.fog-row-atk', showAtk ? shownAtk : '?')}${row('ui.fog-row-hp', showHp ? shownHp : '?')}${row('ui.fog-row-wait', '?')}${row('ui.fog-row-skills', skillName ? skillName + ', ?' : '?')}</ul>
+    <div class="flavor">${escapeHtml(peek ? TX('ui.fog-glimpse') : TX('ui.fog-hidden-tip'))}</div>`;
+}
+// A live status patch must not light up a fogged card: take the status classes off again.
+function fogScrubCard(el){
+  [...el.classList].forEach(k=>{ if(/^(is-(poisoned|bled|stunned|chained|frozen|asleep|paralyzed|blind|tipsy|confused|shocked|corroded|staggered|bound|invisible|invincible|toxic|petrified|low-hp)|has-shield)$/.test(k)) el.classList.remove(k); });
+}
+// The drifting layer: one for the enemy side, a bank per out-of-reach column (positions read from the row's own cells).
+let fogVisHooked = false;
+function fogSyncLayer(m){
+  const inner = document.getElementById('battlefieldInner'); if(!inner) return;
+  let layer = inner.querySelector(':scope > .fog-layer');
+  const F = m && m._fog;
+  if(!F){ if(layer) layer.remove(); inner.classList.remove('has-fog'); return; }
+  const row = document.getElementById('rowEnemy'); if(!row) return;
+  const range = m._slotRange || 0, cells = row.children;
+  if(cells.length !== range * 2 + 1) return; // mid-rebuild: the next render syncs
+  inner.classList.add('has-fog');
+  if(!layer){ layer = document.createElement('div'); layer.className = 'fog-layer'; layer.setAttribute('aria-hidden', 'true'); row.insertAdjacentElement('afterend', layer); }
+  if(!fogVisHooked){ fogVisHooked = true; document.addEventListener('visibilitychange', ()=>{ const l = document.querySelector('.fog-layer'); if(l) l.classList.toggle('is-paused', document.hidden); }); }
+  layer.classList.toggle('is-paused', document.hidden);
+  layer.style.left = row.offsetLeft + 'px'; layer.style.top = row.offsetTop + 'px'; layer.style.width = row.offsetWidth + 'px'; layer.style.height = row.offsetHeight + 'px';
+  const want = new Map();
+  for(let i = 0; i < cells.length; i++){ const slot = i - range; if(F.reach.has(slot)) continue;
+    const cell = cells[i], uid = cell.getAttribute && cell.getAttribute('data-uid');
+    const seenHere = uid != null && !F.fogged.has(Number(uid)); // a revealed card out of reach keeps its column clear
+    want.set(slot, {left: cell.offsetLeft, width: cell.offsetWidth, clear: !!seenHere}); }
+  const have = new Map([...layer.children].map(b=> [Number(b.dataset.slot), b]));
+  have.forEach((b, slot)=>{ if(!want.has(slot)){ b.classList.add('is-clear'); if(!b._rm) b._rm = setTimeout(()=>{ if(b.classList.contains('is-clear')) b.remove(); }, 950); } });
+  want.forEach((w, slot)=>{
+    let b = have.get(slot);
+    if(!b){ b = document.createElement('i'); b.className = 'fog-bank'; b.dataset.slot = String(slot); layer.appendChild(b); }
+    else if(b._rm){ clearTimeout(b._rm); b._rm = 0; }
+    const pad = Math.round(w.width * 0.28);
+    b.style.left = (w.left - pad) + 'px'; b.style.width = (w.width + pad * 2) + 'px';
+    b.classList.toggle('is-clear', w.clear);
+  });
+  // a clearing veil that has run its course goes (the CSS animation ends at opacity 0)
+  row.querySelectorAll('.fog-veil.is-clearing').forEach(v=>{ if(!v._t){ v._t = setTimeout(()=>{ try{ v.remove(); }catch(e){} }, FOG_CLEAR_MS + 80); } });
+}
 // Changeling disguise (2026-10-11, user: "mimics that slip in anywhere, detection is possible"): to the player across the
 // table, an enemy Changeling shows as an ordinary Common critter (with its real numbers) until it's hit or one of the
 // viewer's Keen Eye units is on the board. The engine is untouched; this is what the viewer sees.
@@ -33756,6 +33887,8 @@ function boardCardHTML(c, defs, opts){
   const caged = !!c.cageOf; const cagedDef = caged ? (defs[c.cageOf]||{}) : null;
   const d = caged ? Object.assign({}, cagedDef, {id: c.cageOf, name: (cagedDef.name||'Leader'), effects:{}, wait:0}) : (defs[c.defId]||{}); const raging = (d.effects&&d.effects.rage) && (c.hp/c.maxHp)<0.5;
   const [rA, rB] = rarityStops(d.rarity||'common');
+  // 2026-10-21 (package FOG): an enemy unit out of the player's reach shows its art and frame; its details are "?" (information only).
+  const fogC = caged ? null : fogCardState(matchState, c, d, opts.pid), fog = fogC && fogC.hidden ? fogC : null;
   // Status VFX (item #13): poisoned/bled/stunned each get their own tint + overlay icon on the
   // card frame, not just a badge number — see .board-card.is-* in arena_template.html.
   const statusClasses = [
@@ -33851,10 +33984,10 @@ function boardCardHTML(c, defs, opts){
   // never changes after the card is first rendered).
   const abilityBadgeHTML = abilityBadges(d, {live: c}); // (unused by the tile itself: cardTileHTML builds the strip from live.wait)
   // Flyers (2026-10-08, user): lifted off the ground with a shadow beneath, gently soaring.
-  const flies = !!((d.effects||{}).flying);
+  const flies = !!((d.effects||{}).flying) && !fog;
   // 2026-10-14 (user: "All swimmers and Tide units float"): Tide units and Swimmers bob gently on the board (flyers keep their flight).
   // The bob rides on the same .fly-body wrapper flyers use, so GSAP's lunges and recoils still add up with it.
-  const floats = !flies && isTideDefApp(d) && !caged;
+  const floats = !flies && isTideDefApp(d) && !caged && !fog;
   // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
   if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
@@ -33875,14 +34008,14 @@ function boardCardHTML(c, defs, opts){
   // Guardian plates and Revivification wings (2026-10-11, user: "Guardianship is a strong effect. There should be a guard
   // effect around it, maybe metal like barricade/armor/sheets extending from the left and right. Revivification needs to
   // have angel wings effect on the card (after it enters the battlefield)"). The wings fold away once the revive is spent.
-  const guards = !!((d.effects||{}).guardian), winged = !!((d.effects||{}).revive) && !c.revivedOnce;
+  const guards = !!((d.effects||{}).guardian) && !fog, winged = !!((d.effects||{}).revive) && !c.revivedOnce && !fog;
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
   // Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
   // brighter ... maybe immolation is one?"): a faint warm pool under a leader, a brighter one under a Light Aura unit (Illuminate or
   // Immolation). It only shows at night and in the dark (.battlefield.is-dark-scene); in Pitch Black and Absolute darkness the same
   // units also open a hole in the darkness overlay (syncUnitLightPools).
   const lightKind = unitLightKindOf(c, d);
-  const lightHTML = lightKind ? `<span class="unit-light ul-${lightKind}" aria-hidden="true"></span>` : '';
+  const lightHTML = lightKind && !fog ? `<span class="unit-light ul-${lightKind}" aria-hidden="true"></span>` : '';
   // 2026-10-17 (user: "Revive is off-centered ... Make the wings smaller - make this and the halo more transparent ... I also think revive
   // skills should look different ... the angel wings should be reserved for units with the subtype angel."): an Angel keeps the (smaller,
   // fainter, now centred) wings and halo; every other Revive unit gets a phoenix mark: a faint ember ring round the card and a small
@@ -33890,12 +34023,13 @@ function boardCardHTML(c, defs, opts){
   const angelic = winged && isAngelDef(d);
   const wingHTML = !winged ? '' : angelic ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>'
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
-  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${evoStackHTML(c, defs)}${trCrownHTML(c, d)}${(c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+  const statusClassesShown = fog ? statusClasses.split(' ').filter(k=> /^(is-dancing|is-scattering|is-leader)$/.test(k)).join(' ') : statusClasses; // a fogged unit shows none of its statuses (FOG)
+  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+    ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
-      overlaysHTML,
-      bottomHTML: statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
-    }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
+      overlaysHTML: fog ? '' : overlaysHTML,
+      bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
+    }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
   </div>`);
 }
 // Owner edge inside the tile (2026-10-12, user: "Make the red auras on the top of enemies less large and less opaque! then make
@@ -35432,6 +35566,7 @@ function ribShieldBreakVfx(rib, track, k, atFrac){
 function updateCardStatusDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
+  if(el.classList.contains('is-fogged')){ fogScrubCard(el); return; } // 2026-10-21 (package FOG): a fogged unit shows none of its statuses
   const tile = el.querySelector('.card-tile'); if(!tile) return;
   el.classList.toggle('is-poisoned', c.poison>0);
   el.classList.toggle('is-bled', c.bleed>0);
@@ -37716,7 +37851,7 @@ const FIELD_ART = {
   // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
   // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
   // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
-  psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
+  fogofwar:{art:'art/fields/misty.png'} /* 2026-10-21 (package FOG): borrows the Mist scene until it has its own */, psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
   dusk:{art:'art/fields/dusk.png'}, restless:{art:'art/fields/restless.png'}, firstblood:{art:'art/fields/firstblood.png'}, doubletime:{art:'art/fields/doubletime.png'}, collapse:{art:'art/fields/collapse.png'},
 };
 function fieldArtKeyOfRow(row, fr){

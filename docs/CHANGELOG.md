@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package FOG: Fog of War, a per-fight field setting)
+- **Owner:** "a fog of war effect": enemy cards in far columns show only their art; details are "?".
+- **Switch it on:** the new **Fog of War** field effect, in Edit skirmish ("Add a field effect") or a map node's `rules: {fogOfWar: true}`. Off by default. **Fog of War (advanced)** adds `fogPeek`. It shows as an Environment card (Mist art for now). Not offered in raids.
+- **Reach:** a column is in reach if a live unit of yours is in it or beside it (the centre is always open, as for placement). An enemy outside it is fogged.
+- **A fogged enemy** keeps its art, name and frame. Attack, Health, Wait, the element plate, the skill chips (one "?" chip) and statuses read "?". The tooltip and hold sheet say "Hidden in the fog" and have no detail page.
+- **Revealed** while in reach (so while faced). A unit of yours with **Darksight, Keen Eye or Illuminate** reveals what its column and the two beside it hold for the rest of the fight. A unit that leaves reach unrevealed fogs again. Reveals fade the mist off the card.
+- **Advanced peek:** each fogged enemy has a 50% chance, decided once per unit from the fight's seed (a separate stream; the engine's RNG is untouched), that one detail shows: Attack, Health or one skill chip.
+- **Information only:** combat, targeting and the CPU never read it, and the CPU's view of you isn't fogged. Single-player and live fights on the Open/Gladiator boards; not Pass & Play, raids, Collapse or the tutorial.
+- **The look:** a mist veil on each fogged card (no filter) and one drifting layer over the enemy row with a bank per out-of-reach column, at 30 fps, paused when the page is hidden, still under reduced motion or low effects. The Effects Lab's Fog banks stay Lab-only (a one-shot, not a standing layer).
+- Code: `fogOfWarView` and `fogPeekRoll` (pure, end of `bramblewood-engine.js`); the fog block before the Changeling disguise in `arena_app.js`; the CSS block at the end of `arena_template.html`. 11 new TX keys, in the 12 packs.
+- Checked: `node --check`, the build, a headless run of the reveal rule (16 checks, plus a seeded sim identical with the rule on) and shots at 390 and 1366. No test suite run (owner's request).
+
 ## 2026-10-21 (package TR: titles, transforms and the Crown; HB2-1's two-skill count; CX1–CX4; the structures re-fitted)
 - **Owner (18:23, 18:24):** spec and what was built: `docs/titles-transforms-2026-10-21.md`.
 - **The Crown.** One on the battlefield.

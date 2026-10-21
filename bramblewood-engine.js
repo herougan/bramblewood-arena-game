@@ -9133,7 +9133,50 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
   return {winner, rounds:round, stats, players, events};
 }
 
+// ============================================================================
+// Fog of War (2026-10-21, package FOG; owner: "a fog of war effect ... enemy cards outside the columns your units reach are fogged").
+// INFORMATION ONLY: the rules.fogOfWar field changes what the PLAYER sees, never combat, targeting or the CPU (nothing in
+// makeSimEngine reads it). These helpers are pure and DOM-free so a headless run can check them; arena_app.js draws the result.
+//   Reach: a column is in reach if one of your live units stands in it or in a column next to it (the owner's Parasite note: "the
+//   columns you could have placed your units on anyway, cause you had a creature nearby"); `openSlots` adds the placement helper's
+//   own list (legalSlots: the centre is always open) so the two definitions can't drift apart.
+//   Revealed: an enemy in reach is plain to see (a unit that FACES it is in reach, so facing is covered). A unit of yours with
+//   Darksight, Keen Eye or Illuminate (or an old Lantern) that covers it (its column or the ones beside it) reveals it for the rest
+//   of the fight: `seen` keeps those uids. A unit that leaves your reach and was never revealed that way fogs again.
+//   mine / foes: [{uid, slot, defId, hp, cageOf?}]; defs: id -> def; seen: Set of uids (mutated); returns {fogged:Set, reach:Set, newlySeen:[]}.
+const FOG_REVEAL_KEYS = ['darksight', 'keenEye', 'illuminate', 'lantern']; // illuminate is just true (no radius), so every revealer covers its column and the ones beside it
+const FOG_REVEAL_RADIUS = 1;
+function fogRevealerOf(def){ const e = (def && def.effects) || {}; return FOG_REVEAL_KEYS.some(k=> !!e[k]); }
+function fogOfWarView(mine, foes, defs, seen, opts){
+  opts = opts || {}; seen = seen || new Set();
+  const live = (mine || []).filter(c=> c && !c.gap && !c.cageOf && (c.hp == null || c.hp > 0) && Number.isInteger(c.slot));
+  const reach = new Set(Array.isArray(opts.openSlots) ? opts.openSlots : []);
+  live.forEach(c=>{ for(let d = -1; d <= 1; d++) reach.add(c.slot + d); });
+  const cover = new Set();
+  live.forEach(c=>{ if(fogRevealerOf(defs && defs[c.defId])) for(let d = -FOG_REVEAL_RADIUS; d <= FOG_REVEAL_RADIUS; d++) cover.add(c.slot + d); });
+  const fogged = new Set(), newlySeen = [];
+  (foes || []).forEach(f=>{
+    if(!f || f.gap || !(f.hp == null || f.hp > 0) || !Number.isInteger(f.slot)) return;
+    if(cover.has(f.slot) && !seen.has(f.uid)){ seen.add(f.uid); newlySeen.push(f.uid); }
+    if(!seen.has(f.uid) && !reach.has(f.slot)) fogged.add(f.uid);
+  });
+  return {fogged, reach, newlySeen};
+}
+// The "advanced" peek (rules.fogPeek): each fogged enemy has a 50% chance that ONE detail shows through, decided once per unit from the
+// fight's seed (a separate stream: it never touches the engine's own RNG). Returns null, or {kind:'atk'|'hp'|'skill', skill?: key}.
+const FOG_PEEK_SKIP = ['leader', 'token', 'supreme', 'derivedFrom', 'triggers']; // markers and lists, not skills a player reads off one chip
+function hashFogUid(uid){ let h = 2166136261; const s = 'fog:' + String(uid); for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function fogPeekRoll(seed, uid, def){
+  const rnd = mulberry32((((Number(seed) || 1) >>> 0) ^ hashFogUid(uid)) >>> 0);
+  if(rnd() >= 0.5) return null;
+  const e = (def && def.effects) || {};
+  const keys = Object.keys(e).filter(k=> e[k] && FOG_PEEK_SKIP.indexOf(k) < 0);
+  const kinds = keys.length ? ['atk', 'hp', 'skill'] : ['atk', 'hp'], kind = kinds[Math.floor(rnd() * kinds.length)]; // one third each: Attack, Health, or one skill chip
+  return kind === 'skill' ? {kind, skill: keys[Math.floor(rnd() * keys.length)]} : {kind};
+}
+
 if(typeof module !== 'undefined' && module.exports){
   module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
+if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {fogOfWarView, fogPeekRoll, FOG_REVEAL_KEYS}); // Package FOG (2026-10-21): the fog of war's pure helpers
 if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS; // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests

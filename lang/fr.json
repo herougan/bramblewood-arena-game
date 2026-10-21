@@ -2626,5 +2626,16 @@
  "Play {name} onto one of your lit units.": "Jouez {name} sur une de vos unités en surbrillance.",
  "Stack of {n}: {cards}": "Pile de {n} : {cards}",
  "Stem": "Souche",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name} évolue sur {base} : désormais {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name} évolue sur {base} : désormais {atk}/{hp}.",
+ "Fog of War": "Brouillard de guerre",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "Les ennemis hors de portée n’affichent que leur illustration. Leur faire face, Vision nocturne, Œil vif ou Illumination les révèle.",
+ "Far enemies read ?": "Les ennemis lointains affichent ?",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "Votre portée, ce sont les colonnes occupées par vos unités et celles à côté. Une unité avec Vision nocturne, Œil vif ou Illumination révèle ce qu’elle couvre jusqu’à la fin du combat. Seule votre vue change ; le combat et l’IA jouent normalement.",
+ "Fog of War (advanced)": "Brouillard de guerre (avancé)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "Brouillard de guerre, avancé : environ la moitié des ennemis cachés laissent voir un détail.",
+ "Far enemies read ?, some peek through": "Les ennemis lointains affichent ?, certains percent",
+ "Hidden in the fog": "Caché dans le brouillard",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "Placez une unité à côté, ou utilisez Vision nocturne, Œil vif ou Illumination.",
+ "A glimpse through the fog": "Un aperçu dans le brouillard",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "La rangée ennemie hors de portée de vos unités est dans le brouillard. La Vision nocturne de votre Taupe dissipe ce qu’elle couvre."
 }

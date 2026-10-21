@@ -9405,6 +9405,45 @@
   .map-trail-svg .trail-pop{animation:trailPopIn .9s ease-out 1.3s both;}
   @keyframes trailPopIn{from{opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .map-trail-svg .trail-pop{animation:none;} }
+  /* Fog of War (2026-10-21, package FOG; owner: "a fog of war effect"): rules.fogOfWar hides the enemy units out of the player's reach (information
+     only). A fogged card keeps its art and frame; Attack, Health, Wait, the skill chips, the element plate and the statuses read "?" (CSS here, so a
+     live number patch can't undo it; the skill strip is built as one "?" chip in JS). One mist layer sits over the enemy side (.fog-layer, a bank per
+     out-of-reach column, no per-card filter); its two mist sheets drift at 30 fps (steps) and stand still under reduced motion / low effects. */
+  .board-card.is-fogged:not(.fog-show-atk) .stats .atk, .board-card.is-fogged:not(.fog-show-hp) .stats .hp{color:transparent !important; text-shadow:none !important; background:none !important; box-shadow:none !important; animation:none !important;}
+  .board-card.is-fogged:not(.fog-show-atk) .stats .atk > *, .board-card.is-fogged:not(.fog-show-hp) .stats .hp > *{visibility:hidden;}
+  .board-card.is-fogged:not(.fog-show-atk) .stats .atk::after{content:'?'; position:absolute; left:0; top:0; color:var(--card-atk-color); text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;}
+  .board-card.is-fogged:not(.fog-show-hp) .stats .hp::after{content:'?'; position:absolute; right:0; top:0; color:var(--card-hp-color); text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;}
+  .board-card.is-fogged .card-tile .waitbadge > *, .board-card.is-fogged .card-tile .chargebadge > *{visibility:hidden;}
+  .board-card.is-fogged .card-tile .waitbadge::after, .board-card.is-fogged .card-tile .chargebadge::after{content:'?'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font:inherit;}
+  .board-card.is-fogged :is(.badges-bottom, .status-overlay, .rage-shield, .shell-up, .heat-haze, .cage-bars, .fuse-badge, .levelbadge, .seen-new){display:none !important;}
+  .board-card.is-fogged .card-tile{animation:none !important;}
+  .board-card.is-fogged .fog-chips .fog-q{background:rgba(214,224,236,.55); color:#2d3a4a;}
+  .board-card.is-fogged .fog-peek-chip{outline:1.5px solid rgba(255,238,170,.85); outline-offset:1px; border-radius:999px;}
+  .board-card.is-fogged.fog-show-atk .stats .atk, .board-card.is-fogged.fog-show-hp .stats .hp{filter:drop-shadow(0 0 5px rgba(255,238,170,.9));}
+  .board-card .fog-veil{position:absolute; inset:-1px; z-index:7; pointer-events:none; border-radius:10px; background:linear-gradient(180deg, rgba(228,236,246,.5), rgba(196,210,226,.34) 55%, rgba(206,218,232,.2)); box-shadow:inset 0 0 14px 4px rgba(226,234,244,.35);}
+  .board-card .fog-veil.is-clearing{animation:fogClear .9s ease-out forwards;}
+  .board-card .fog-veil.is-entering{animation:fogEnter .8s ease-in both;}
+  @keyframes fogClear{from{opacity:1;} to{opacity:0;}}
+  @keyframes fogEnter{from{opacity:0;} to{opacity:1;}}
+  .battlefield-inner.has-fog{position:relative;}
+  .fog-layer{position:absolute; z-index:4; pointer-events:none; contain:layout style;}
+  .fog-bank{position:absolute; top:-8px; bottom:-8px; display:block; overflow:hidden; opacity:1; transition:opacity .9s ease; animation:fogBankIn .9s ease;
+    -webkit-mask-image:radial-gradient(ellipse 64% 58% at 50% 50%, #000 36%, transparent 100%); mask-image:radial-gradient(ellipse 64% 58% at 50% 50%, #000 36%, transparent 100%);}
+  .fog-bank.is-clear{opacity:0;}
+  @keyframes fogBankIn{from{opacity:0;} to{opacity:1;}}
+  .fog-bank::before, .fog-bank::after{content:''; position:absolute; inset:-6% -40%; will-change:transform;}
+  .fog-bank::before{background:radial-gradient(ellipse 22% 30% at 20% 36%, rgba(232,238,246,.7), transparent 72%), radial-gradient(ellipse 20% 28% at 62% 62%, rgba(214,224,236,.62), transparent 72%), radial-gradient(ellipse 18% 24% at 84% 30%, rgba(240,244,250,.55), transparent 74%); animation:fogDriftA 70s steps(2100) infinite alternate;}
+  .fog-bank::after{background:radial-gradient(ellipse 24% 26% at 38% 70%, rgba(222,231,242,.6), transparent 72%), radial-gradient(ellipse 18% 30% at 74% 40%, rgba(236,242,250,.58), transparent 72%), radial-gradient(ellipse 16% 22% at 8% 62%, rgba(208,220,234,.5), transparent 74%); animation:fogDriftB 95s steps(2850) infinite alternate-reverse;}
+  @keyframes fogDriftA{from{transform:translate3d(-10%,0,0);} to{transform:translate3d(10%,3%,0);}}
+  @keyframes fogDriftB{from{transform:translate3d(8%,2%,0);} to{transform:translate3d(-8%,-3%,0);}}
+  .fog-layer.is-paused .fog-bank::before, .fog-layer.is-paused .fog-bank::after{animation-play-state:paused;}
+  @media (prefers-reduced-motion: reduce){ .fog-bank::before, .fog-bank::after, .fog-bank{animation:none;} .board-card .fog-veil.is-clearing, .board-card .fog-veil.is-entering{animation:none;} .board-card .fog-veil.is-clearing{opacity:0;} }
+  html[data-fx="low"] .fog-bank::before, html[data-fx="low"] .fog-bank::after, html[data-fx="none"] .fog-bank::before, html[data-fx="none"] .fog-bank::after{animation:none;}
+  #cardPop .fog-pop-tile .costbadge, #cardPop .fog-pop-tile .waitbadge, #cardPop .fog-pop-tile .pitchbadge{display:none;}
+  #cardPop .fog-tag{background:rgba(196,210,226,.55); color:#1d2a3a;}
+  #cardPop .fog-pop-rows{list-style:none; margin:6px 0 4px; padding:0; display:grid; gap:2px; font-size:12px;}
+  #cardPop .fog-pop-rows li{display:flex; justify-content:space-between; gap:10px; opacity:.9;}
+  #cardPop .fog-pop-rows li b{font-weight:700;}
 </style>
 </head>
 <body>

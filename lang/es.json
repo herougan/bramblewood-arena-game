@@ -2625,5 +2625,16 @@
  "Play {name} onto one of your lit units.": "Juega {name} sobre una de tus unidades iluminadas.",
  "Stack of {n}: {cards}": "Pila de {n}: {cards}",
  "Stem": "Tallo",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name} evoluciona sobre {base}: ahora {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name} evoluciona sobre {base}: ahora {atk}/{hp}.",
+ "Fog of War": "Niebla de guerra",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "Los enemigos fuera de tu alcance solo muestran su ilustración. Tener uno enfrente, Visión oscura, Ojo avizor o Iluminar lo revela.",
+ "Far enemies read ?": "Los enemigos lejanos muestran ?",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "Tu alcance es cada columna con una unidad tuya y las contiguas. Una unidad con Visión oscura, Ojo avizor o Iluminar revela lo que cubre el resto del combate. Solo cambia lo que ves; el combate y la CPU juegan como siempre.",
+ "Fog of War (advanced)": "Niebla de guerra (avanzada)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "Niebla de guerra, avanzada: la mitad de los enemigos ocultos deja ver un detalle.",
+ "Far enemies read ?, some peek through": "Los enemigos lejanos muestran ?, algunos se asoman",
+ "Hidden in the fog": "Oculto en la niebla",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "Acerca una unidad, o usa Visión oscura, Ojo avizor o Iluminar.",
+ "A glimpse through the fog": "Un vistazo entre la niebla",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "La fila enemiga fuera del alcance de tus unidades está envuelta en niebla. La Visión oscura de tu Topo despeja lo que cubre."
 }

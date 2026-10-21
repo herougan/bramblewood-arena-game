@@ -2626,5 +2626,16 @@
  "Play {name} onto one of your lit units.": "{name} ஐ ஒளிரும் உங்கள் அலகுகளில் ஒன்றின் மீது ஆடுங்கள்.",
  "Stack of {n}: {cards}": "{n} அட்டைகளின் அடுக்கு: {cards}",
  "Stem": "தண்டு",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name} {base} மீது பரிணமிக்கிறது: இப்போது {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name} {base} மீது பரிணமிக்கிறது: இப்போது {atk}/{hp}.",
+ "Fog of War": "போர்ப் பனி",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "உங்கள் எட்டுக்கு வெளியே உள்ள எதிரிகள் படத்தை மட்டும் காட்டும். நேருக்கு நேர் நிற்பது, இருள்பார்வை, கூர்மையான கண் அல்லது ஒளியூட்டு அவர்களை வெளிப்படுத்தும்.",
+ "Far enemies read ?": "தொலைவிலுள்ள எதிரிகள் ? எனக் காட்டும்",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "உங்கள் எட்டு என்பது உங்கள் அலகு உள்ள ஒவ்வொரு நெடுவரிசையும் அதன் அருகிலுள்ளவையும். இருள்பார்வை, கூர்மையான கண் அல்லது ஒளியூட்டு அலகு தான் மூடுவதைச் சண்டை முடியும்வரை வெளிப்படுத்தும். நீங்கள் காண்பது மட்டுமே மாறும்; சண்டையும் CPU-வும் வழக்கம்போல நடக்கும்.",
+ "Fog of War (advanced)": "போர்ப் பனி (மேம்பட்டது)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "போர்ப் பனி, மேம்பட்டது: மறைந்த எதிரிகளில் ஏறக்குறைய பாதி ஒரு விவரத்தைக் காட்டும்.",
+ "Far enemies read ?, some peek through": "தொலைவிலுள்ள எதிரிகள் ? எனக் காட்டும், சிலர் எட்டிப்பார்ப்பர்",
+ "Hidden in the fog": "பனியில் மறைந்துள்ளது",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "ஓர் அலகை அருகில் கொண்டு வாருங்கள், அல்லது இருள்பார்வை, கூர்மையான கண், ஒளியூட்டு பயன்படுத்துங்கள்.",
+ "A glimpse through the fog": "பனி வழியே ஒரு பார்வை",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "உங்கள் அலகுகளின் எட்டுக்கு வெளியே உள்ள எதிரி வரிசை பனியில் மூழ்கியுள்ளது. உங்கள் மோலின் இருள்பார்வை அது மூடுவதைத் தெளிவாக்கும்."
 }

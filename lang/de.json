@@ -2625,5 +2625,16 @@
  "Play {name} onto one of your lit units.": "Spiele {name} auf eine deiner hervorgehobenen Einheiten.",
  "Stack of {n}: {cards}": "Stapel aus {n}: {cards}",
  "Stem": "Stamm",
- "{name} evolves over {base}: now {atk}/{hp}.": "{name} entwickelt sich über {base}: jetzt {atk}/{hp}."
+ "{name} evolves over {base}: now {atk}/{hp}.": "{name} entwickelt sich über {base}: jetzt {atk}/{hp}.",
+ "Fog of War": "Nebel des Krieges",
+ "Enemies beyond your reach show only their art. Facing one, Darksight, Keen Eye or Illuminate reveals it.": "Feinde außerhalb deiner Reichweite zeigen nur ihr Bild. Ein Gegenüber, Dunkelsicht, Scharfes Auge oder Erleuchten enthüllt sie.",
+ "Far enemies read ?": "Ferne Feinde zeigen ?",
+ "Your reach is every column holding one of your units, and the ones beside it. A Darksight, Keen Eye or Illuminate unit reveals what it covers for the rest of the fight. Only what you see changes; combat and the CPU play as normal.": "Deine Reichweite ist jede Spalte mit einer deiner Einheiten und die Spalten daneben. Eine Einheit mit Dunkelsicht, Scharfem Auge oder Erleuchten enthüllt für den Rest des Kampfes, was sie abdeckt. Nur deine Sicht ändert sich; Kampf und CPU laufen normal.",
+ "Fog of War (advanced)": "Nebel des Krieges (erweitert)",
+ "Fog of War, advanced: about half the hidden enemies let one detail show through.": "Nebel des Krieges, erweitert: etwa die Hälfte der verborgenen Feinde lässt eine Einzelheit durchscheinen.",
+ "Far enemies read ?, some peek through": "Ferne Feinde zeigen ?, manche blitzen durch",
+ "Hidden in the fog": "Im Nebel verborgen",
+ "Bring a unit beside it, or use Darksight, Keen Eye or Illuminate.": "Bring eine Einheit daneben, oder nutze Dunkelsicht, Scharfes Auge oder Erleuchten.",
+ "A glimpse through the fog": "Ein Blick durch den Nebel",
+ "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.": "Die feindliche Reihe außerhalb der Reichweite deiner Einheiten liegt im Nebel. Die Dunkelsicht deines Maulwurfs lichtet, was sie abdeckt."
 }
