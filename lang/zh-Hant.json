@@ -2552,5 +2552,22 @@
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "陣營獎勵：透過遭遇戰進度和成就獲得，從不出自卡包",
  "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "陣營獎勵：透過遭遇戰進度（精英、首領、每隔幾場勝利）和部分成就獲得，從不出自卡包",
  "Faction cards +{n}": "陣營卡牌 +{n}",
- "Faction reward: {names}": "陣營獎勵：{names}"
+ "Faction reward: {names}": "陣營獎勵：{names}",
+ "Raid rank {raidRank}": "團戰評級 {raidRank}",
+ "Raid rank": "團戰評級",
+ "No raid rank yet": "尚無團戰評級",
+ "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.": "團戰評級取決於你在本次團戰中造成的團戰傷害總和：目前為 {n}。{next} 團戰首領倒下時，評級 A 或以上可獲得一張免費團戰券。",
+ "{n} more for rank {nextRank}.": "再造成 {n} 達到評級 {nextRank}。",
+ "This is the top raid rank.": "這是最高的團戰評級。",
+ "Raid Ticket": "團戰券",
+ "Use one for an extra raid fight, even past {cap} tickets.": "使用後可多打一場團戰，即使超過 {cap} 張也可以。",
+ "One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.": "多打一場團戰。可在背包或團戰畫面使用，即使你已持有 {cap} 張團戰券。",
+ "Use a Raid Ticket ({n} left)": "使用團戰券（剩餘 {n}）",
+ "use one for an extra raid fight": "使用後可多打一場團戰",
+ "Raid Ticket used: you have {n} raid tickets now.": "已使用團戰券：你現在有 {n} 張團戰券。",
+ "You have no Raid Tickets.": "你沒有團戰券。",
+ "Raid Ticket bought. You have {n}.": "已購買團戰券。你有 {n} 張。",
+ "You found a Raid Ticket! Use it for an extra raid fight.": "你找到了一張團戰券！使用後可多打一場團戰。",
+ "Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.": "團戰評級 {raidRank}：一張免費團戰券，可多打一場團戰。",
+ "Raid Ticket (rank {raidRank})": "團戰券（評級 {raidRank}）"
 }

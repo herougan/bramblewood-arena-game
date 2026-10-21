@@ -2551,5 +2551,22 @@
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Ricompense di fazione: si ottengono con i progressi negli scontri e con gli obiettivi, mai dai pacchetti",
  "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Una ricompensa di fazione: si ottiene con i progressi negli scontri (élite, boss, ogni poche vittorie) e alcuni obiettivi, mai dai pacchetti",
  "Faction cards +{n}": "Carte di fazione +{n}",
- "Faction reward: {names}": "Ricompensa di fazione: {names}"
+ "Faction reward: {names}": "Ricompensa di fazione: {names}",
+ "Raid rank {raidRank}": "Grado del raid {raidRank}",
+ "Raid rank": "Grado del raid",
+ "No raid rank yet": "Ancora nessun grado del raid",
+ "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.": "Il tuo grado del raid viene da tutti i danni da raid che hai inflitto in questo raid: {n} finora. {next} Quando il raid cade, il grado A o superiore dà un Biglietto del raid gratis.",
+ "{n} more for rank {nextRank}.": "Ancora {n} per il grado {nextRank}.",
+ "This is the top raid rank.": "Questo è il grado del raid più alto.",
+ "Raid Ticket": "Biglietto del raid",
+ "Use one for an extra raid fight, even past {cap} tickets.": "Usalo per uno scontro del raid in più, anche oltre {cap} biglietti.",
+ "One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.": "Uno scontro del raid in più. Usalo dall’Inventario o dalla schermata del Raid, anche se hai già {cap} biglietti.",
+ "Use a Raid Ticket ({n} left)": "Usa un Biglietto del raid (ne restano {n})",
+ "use one for an extra raid fight": "usane uno per uno scontro del raid in più",
+ "Raid Ticket used: you have {n} raid tickets now.": "Biglietto del raid usato: ora hai {n} biglietti del raid.",
+ "You have no Raid Tickets.": "Non hai Biglietti del raid.",
+ "Raid Ticket bought. You have {n}.": "Biglietto del raid comprato. Ne hai {n}.",
+ "You found a Raid Ticket! Use it for an extra raid fight.": "Hai trovato un Biglietto del raid! Usalo per uno scontro del raid in più.",
+ "Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.": "Grado del raid {raidRank}: un Biglietto del raid gratis per uno scontro in più.",
+ "Raid Ticket (rank {raidRank})": "Biglietto del raid (grado {raidRank})"
 }

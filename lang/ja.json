@@ -2552,5 +2552,22 @@
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "勢力報酬：小競り合いの進行と実績で手に入り、パックからは出ません",
  "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "勢力報酬：小競り合いの進行（エリート、ボス、数勝ごと）と一部の実績で手に入り、パックからは出ません",
  "Faction cards +{n}": "勢力カード +{n}",
- "Faction reward: {names}": "勢力報酬：{names}"
+ "Faction reward: {names}": "勢力報酬：{names}",
+ "Raid rank {raidRank}": "レイドランク {raidRank}",
+ "Raid rank": "レイドランク",
+ "No raid rank yet": "レイドランクなし",
+ "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.": "レイドランクは、このレイドで与えたレイドダメージの合計で決まります（現在 {n}）。{next} レイドが倒れたとき、ランクA以上なら無料のレイドチケットがもらえます。",
+ "{n} more for rank {nextRank}.": "ランク{nextRank}まであと{n}。",
+ "This is the top raid rank.": "これが最高のレイドランクです。",
+ "Raid Ticket": "レイドチケット",
+ "Use one for an extra raid fight, even past {cap} tickets.": "使うとレイドの戦いが1回増えます。{cap}枚を超えても使えます。",
+ "One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.": "レイドの戦いが1回増えます。インベントリかレイド画面で使えます。すでに{cap}枚持っていても使えます。",
+ "Use a Raid Ticket ({n} left)": "レイドチケットを使う（残り{n}）",
+ "use one for an extra raid fight": "使うとレイドの戦いが1回増えます",
+ "Raid Ticket used: you have {n} raid tickets now.": "レイドチケットを使いました。レイドチケットは{n}枚です。",
+ "You have no Raid Tickets.": "レイドチケットを持っていません。",
+ "Raid Ticket bought. You have {n}.": "レイドチケットを購入しました。所持数：{n}。",
+ "You found a Raid Ticket! Use it for an extra raid fight.": "レイドチケットを見つけました！使うとレイドの戦いが1回増えます。",
+ "Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.": "レイドランク{raidRank}：レイドの戦いが1回増える無料のレイドチケット。",
+ "Raid Ticket (rank {raidRank})": "レイドチケット（ランク{raidRank}）"
 }

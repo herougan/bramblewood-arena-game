@@ -2550,5 +2550,22 @@
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Gantimpala ng paksiyon: nakukuha sa pag-usad sa labanan at mga tagumpay, hindi kailanman sa pack",
  "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Gantimpala ng paksiyon: nakukuha sa pag-usad sa labanan (elite, boss, bawat ilang panalo) at ilang tagumpay, hindi kailanman sa pack",
  "Faction cards +{n}": "Mga card ng paksiyon +{n}",
- "Faction reward: {names}": "Gantimpala ng paksiyon: {names}"
+ "Faction reward: {names}": "Gantimpala ng paksiyon: {names}",
+ "Raid rank {raidRank}": "Ranggo sa raid {raidRank}",
+ "Raid rank": "Ranggo sa raid",
+ "No raid rank yet": "Wala pang ranggo sa raid",
+ "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.": "Ang ranggo mo sa raid ay mula sa kabuuang raid damage na naibigay mo sa raid na ito: {n} sa ngayon. {next} Kapag bumagsak ang raid, ang ranggong A o mas mataas ay may libreng Raid Ticket.",
+ "{n} more for rank {nextRank}.": "{n} pa para sa ranggong {nextRank}.",
+ "This is the top raid rank.": "Ito ang pinakamataas na ranggo sa raid.",
+ "Raid Ticket": "Raid Ticket",
+ "Use one for an extra raid fight, even past {cap} tickets.": "Gamitin para sa isa pang laban sa raid, kahit lampas sa {cap} ticket.",
+ "One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.": "Isa pang laban sa raid. Gamitin sa Inventory o sa screen ng Raid, kahit may hawak ka nang {cap} ticket.",
+ "Use a Raid Ticket ({n} left)": "Gumamit ng Raid Ticket ({n} natitira)",
+ "use one for an extra raid fight": "gamitin para sa isa pang laban sa raid",
+ "Raid Ticket used: you have {n} raid tickets now.": "Nagamit ang Raid Ticket: {n} raid ticket mo na ngayon.",
+ "You have no Raid Tickets.": "Wala kang Raid Ticket.",
+ "Raid Ticket bought. You have {n}.": "Nabili ang Raid Ticket. Mayroon kang {n}.",
+ "You found a Raid Ticket! Use it for an extra raid fight.": "May nahanap kang Raid Ticket! Gamitin para sa isa pang laban sa raid.",
+ "Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.": "Ranggo sa raid {raidRank}: libreng Raid Ticket para sa isa pang laban sa raid.",
+ "Raid Ticket (rank {raidRank})": "Raid Ticket (ranggong {raidRank})"
 }

@@ -2551,5 +2551,22 @@
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Recompensas de facção: obtidas com o progresso nas escaramuças e com conquistas, nunca em pacotes",
  "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Uma recompensa de facção: obtida com o progresso nas escaramuças (elites, chefes, a cada poucas vitórias) e algumas conquistas, nunca em pacotes",
  "Faction cards +{n}": "Cartas de facção +{n}",
- "Faction reward: {names}": "Recompensa de facção: {names}"
+ "Faction reward: {names}": "Recompensa de facção: {names}",
+ "Raid rank {raidRank}": "Patente de raide {raidRank}",
+ "Raid rank": "Patente de raide",
+ "No raid rank yet": "Ainda sem patente de raide",
+ "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.": "Sua patente de raide vem de todo o dano de raide que você causou neste raide: {n} até agora. {next} Quando o raide cai, a patente A ou melhor dá um Bilhete de raide grátis.",
+ "{n} more for rank {nextRank}.": "Faltam {n} para a patente {nextRank}.",
+ "This is the top raid rank.": "Esta é a maior patente de raide.",
+ "Raid Ticket": "Bilhete de raide",
+ "Use one for an extra raid fight, even past {cap} tickets.": "Use para uma luta de raide a mais, mesmo acima de {cap} bilhetes.",
+ "One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.": "Uma luta de raide a mais. Use pelo Inventário ou pela tela do Raide, mesmo que já tenha {cap} bilhetes.",
+ "Use a Raid Ticket ({n} left)": "Usar um Bilhete de raide (restam {n})",
+ "use one for an extra raid fight": "use um para uma luta de raide a mais",
+ "Raid Ticket used: you have {n} raid tickets now.": "Bilhete de raide usado: agora você tem {n} bilhetes de raide.",
+ "You have no Raid Tickets.": "Você não tem Bilhetes de raide.",
+ "Raid Ticket bought. You have {n}.": "Bilhete de raide comprado. Você tem {n}.",
+ "You found a Raid Ticket! Use it for an extra raid fight.": "Você encontrou um Bilhete de raide! Use para uma luta de raide a mais.",
+ "Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.": "Patente de raide {raidRank}: um Bilhete de raide grátis para uma luta a mais.",
+ "Raid Ticket (rank {raidRank})": "Bilhete de raide (patente {raidRank})"
 }

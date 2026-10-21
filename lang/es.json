@@ -2551,5 +2551,22 @@
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Recompensas de facción: se ganan con el progreso en escaramuzas y los logros, nunca en sobres",
  "A faction reward: earned through skirmish progress (elites, bosses, every few wins) and some achievements, never from packs": "Una recompensa de facción: se gana con el progreso en escaramuzas (élites, jefes, cada pocas victorias) y algunos logros, nunca en sobres",
  "Faction cards +{n}": "Cartas de facción +{n}",
- "Faction reward: {names}": "Recompensa de facción: {names}"
+ "Faction reward: {names}": "Recompensa de facción: {names}",
+ "Raid rank {raidRank}": "Rango de incursión {raidRank}",
+ "Raid rank": "Rango de incursión",
+ "No raid rank yet": "Aún sin rango de incursión",
+ "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.": "Tu rango de incursión sale de todo el daño de incursión que has hecho en esta incursión: {n} hasta ahora. {next} Cuando la incursión cae, el rango A o mejor da un Billete de incursión gratis.",
+ "{n} more for rank {nextRank}.": "{n} más para el rango {nextRank}.",
+ "This is the top raid rank.": "Este es el rango de incursión más alto.",
+ "Raid Ticket": "Billete de incursión",
+ "Use one for an extra raid fight, even past {cap} tickets.": "Úsalo para un combate de incursión extra, incluso por encima de {cap} billetes.",
+ "One extra raid fight. Use it from the Inventory or the Raid screen, even when you already hold {cap} tickets.": "Un combate de incursión extra. Úsalo desde el Inventario o la pantalla de Incursión, aunque ya tengas {cap} billetes.",
+ "Use a Raid Ticket ({n} left)": "Usar un Billete de incursión (quedan {n})",
+ "use one for an extra raid fight": "úsalo para un combate de incursión extra",
+ "Raid Ticket used: you have {n} raid tickets now.": "Billete de incursión usado: ahora tienes {n} billetes de incursión.",
+ "You have no Raid Tickets.": "No tienes Billetes de incursión.",
+ "Raid Ticket bought. You have {n}.": "Billete de incursión comprado. Tienes {n}.",
+ "You found a Raid Ticket! Use it for an extra raid fight.": "¡Has encontrado un Billete de incursión! Úsalo para un combate de incursión extra.",
+ "Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.": "Rango de incursión {raidRank}: un Billete de incursión gratis para un combate extra.",
+ "Raid Ticket (rank {raidRank})": "Billete de incursión (rango {raidRank})"
 }
