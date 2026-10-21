@@ -43,15 +43,15 @@ ok(R.RAID_SHIELD_DEFAULT === 50 && goliath.shield === 50, 'the Goliath\'s Shield
 { const A = require(path.join(ROOT, 'tools', 'raid_full_sim.js')).A;
   for(const s of [1, 0.5]){ const st = stateAt(goliath, s), f = R.fightFor(goliath, st, 'left', {});
     const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false}), q = b.players[2].hq;
-    const want = Math.round(50 * s);
+    const want = Math.round(25 * s); // 2026-10-21 (BF5): the raid's Shield at BRAMBLE_SCALE 0.5 (raids.json keeps 50)
     ok(q.shield === want && q.maxShield === want && JSON.stringify(q.shieldLayers) === JSON.stringify([want]) && b.raidShield.shield === want, `the built fight's boss bramble at ${s * 100}%: Shield ${q.shield}/${q.maxShield} (want ${want})`);
-    ok(q.hp === 350, 'its Health is untouched (350)'); }
+    ok(q.hp === 175, 'its Health is untouched (350, at BRAMBLE_SCALE 175)'); }
   // the Shield soaks hits first, as on any bramble
   const st = stateAt(goliath, 1), f = R.fightFor(goliath, st, 'left', {});
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false});
   ok(/pl\.hq\.shield > 0 && toHp > 0\)\{ const soak = Math\.min\(pl\.hq\.shield, toHp\)/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'the engine spends a bramble\'s Shield before its Health');
-  ok(b.players[2].hq.hp === 350 && b.players[2].hq.shield === 50, 'fresh: 350 Health behind 50 Shield'); }
-ok(/\{ const r = \(RaidM && RaidM\.raidShield\) \? RaidM\.raidShield\(def, st, partId\) : null; if\(r\)\{ const q = players\[2\]\.hq; q\.shield = r\.shield;/.test(src), 'the one-row raid fight (startRaidPartMatch) gets the Shield too');
+  ok(b.players[2].hq.hp === 175 && b.players[2].hq.shield === 25, 'fresh: 350 Health behind 50 Shield (BF5: halved, 175 behind 25)'); }
+ok(/\{ const r = \(RaidM && RaidM\.raidShield\) \? RaidM\.raidShield\(raidDefScaled\(def\), st, partId\) : null; if\(r\)\{ const q = players\[2\]\.hq; q\.shield = r\.shield;/.test(src), 'the one-row raid fight (startRaidPartMatch) gets the Shield too');
 // the editor: "Shield" beside "Energy", raid and part, saved
 ok(/value="\$\{draft\.cost\.energy\|\|4\}"><\/label>\n\s*<label title="[^"]*">Shield<input id="reShield" type="number" min="0" max="999"/.test(src), 'the raid editor: a Shield field right after "Energy per fight"');
 ok(/value="\$\{\(P\.cost\|\|\{\}\)\.energy\|\|''\}"><\/label>\n\s*<label title="[^"]*">Shield \(blank = raid\)<input data-pf="shield"/.test(src), 'each part: a Shield field right after its Energy');
@@ -177,12 +177,12 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       await shot('key-badge-0-topbar');
       // 1. the raid screen's line. Offline, the stand-ins wear the raid down through the week (standIns.perDayPct), so the Shield the page
       // shows is 50 x what is left; first that, then the raid frozen fresh (no stand-ins) for the pictures: 50.
-      const live = await pg.evaluate("(()=>{ const def = liveRaidDefs().find(d=> d.id === 'goliath'), st = currentRaidStateFor(def); return {want: raidShieldNow(def, st), left: RaidM.raidShield(def, st, 'left').shield, share: RaidM.weakenShare(st, 'left')}; })()");
-      ok(live && live.want === live.left && live.want === Math.round(50 * live.share), `${tag} 1. the page's raid as it stands: Shield ${live && live.want} = 50 x ${live && live.share.toFixed(2)}`);
+      const live = await pg.evaluate("(()=>{ const def = liveRaidDefs().find(d=> d.id === 'goliath'), st = currentRaidStateFor(def); return {want: raidShieldNow(def, st), left: RaidM.raidShield(raidDefScaled(def), st, 'left').shield, share: RaidM.weakenShare(st, 'left')}; })()");
+      ok(live && live.want === live.left && live.want === Math.round(25 * live.share), `${tag} 1. the page's raid as it stands: Shield ${live && live.want} = 25 (BF5: 50 halved) x ${live && live.share.toFixed(2)}`);
       await pg.evaluate("(()=>{ const orig = currentRaidStateFor; currentRaidStateFor = (def, now, opts)=> orig(Object.assign({}, def, {standIns: {perDayPct: 0}}), now, opts); return 1; })()");
       await pg.evaluate("(()=>{ playSubTab = 'raid'; raidView = 'raid'; switchTab('play'); try{ renderPlay(); }catch(e){} return 1; })()"); await pg.waitForTimeout(1500);
       const line = await pg.evaluate("(()=>{ const p = document.querySelector('.mx-raid-shield'); if(!p) return null; const d = p.closest('details'); if(d) d.open = true; p.scrollIntoView({block: 'center'}); return p.textContent.trim(); })()");
-      ok(line && /Shield 50 \(falls as the raid weakens\)/.test(line), `${tag} 1. the raid screen: "${line}"`);
+      ok(line && /Shield 25 \(falls as the raid weakens\)/.test(line) /* BF5: halved */, `${tag} 1. the raid screen: "${line}"`);
       await pg.waitForTimeout(300); await shot('raid-shield-line');
       // 1. a raid fight: the VS card's line, then the boss bramble's 🔷 50 on the board
       await pg.evaluate("(()=>{ const def = liveRaidDefs().find(d=> d.id === 'goliath') || allRaidDefs()[0]; window.__mxDef = def; startRaidPartMatch(def, 'left'); return 1; })()");
@@ -191,15 +191,15 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       const vsSeen = await pg.evaluate("(()=>{ const l = document.querySelector('.vs-screen .mx-raid-shield'), r = l && l.getBoundingClientRect(); return r ? {top: Math.round(r.top), bottom: Math.round(r.bottom), h: innerHeight, sc: window.__mxVsScroll} : null; })()");
       ok(vsSeen && vsSeen.top >= 0 && vsSeen.bottom <= vsSeen.h, `${tag} 1. the VS card's Shield line can be scrolled into view (${JSON.stringify(vsSeen)})`);
       await pg.waitForTimeout(250);
-      ok(vs && /Shield 50/.test(vs), `${tag} 1. the VS boss card: "${vs}"`);
+      ok(vs && /Shield 25/.test(vs) /* BF5 */, `${tag} 1. the VS boss card: "${vs}"`);
       await shot('raid-shield-vs');
       await pg.waitForFunction("typeof matchState !== 'undefined' && matchState && matchState.raidFull && document.querySelector('#appWrap.in-match')", null, {timeout: 20000}).catch(()=>{});
       await pg.waitForTimeout(2500);
-      const hq = await pg.evaluate("(()=>{ const m = matchState; if(!m) return null; const badges = [...document.querySelectorAll('.castle-shield')].filter(e=> /^\\D*50$/.test(e.textContent.trim()) && e.getBoundingClientRect().width > 0).map(e=> e.className + ':' + e.textContent.trim()); return {shield: m.players[2].hq.shield, max: m.players[2].hq.maxShield, hp: m.players[2].hq.hp, badges}; })()");
-      ok(hq && hq.shield === 50 && hq.max === 50 && hq.hp === 350, `${tag} 1. in the fight: the boss bramble 350 Health + 50 Shield (${JSON.stringify(hq && {shield: hq.shield, max: hq.max, hp: hq.hp})})`);
-      ok(hq && hq.badges.length > 0, `${tag} 1. the board shows 🔷50 on the boss bramble (${hq && hq.badges.join(' | ')})`);
+      const hq = await pg.evaluate("(()=>{ const m = matchState; if(!m) return null; const badges = [...document.querySelectorAll('.castle-shield')].filter(e=> /^\\D*25$/.test(e.textContent.trim()) && e.getBoundingClientRect().width > 0).map(e=> e.className + ':' + e.textContent.trim()); return {shield: m.players[2].hq.shield, max: m.players[2].hq.maxShield, hp: m.players[2].hq.hp, badges}; })()");
+      ok(hq && hq.shield === 25 && hq.max === 25 && hq.hp === 175, `${tag} 1. in the fight: the boss bramble 175 Health + 25 Shield (BF5: 350 + 50 halved) (${JSON.stringify(hq && {shield: hq.shield, max: hq.max, hp: hq.hp})})`);
+      ok(hq && hq.badges.length > 0, `${tag} 1. the board shows 🔷25 on the boss bramble (${hq && hq.badges.join(' | ')})`);
       // the Shield badge and the Health number both readable on the boss's bramble tile (they overlapped on phones at 🔷50 / 350)
-      const lap = await pg.evaluate("(()=>{ const s = [...document.querySelectorAll('.castle-shield')].find(e=> e.getBoundingClientRect().width > 0 && /50$/.test(e.textContent.trim())); if(!s) return null; const t = s.closest('.card-tile'), hp = t && t.querySelector('.hp'); if(!hp) return {noHp: true}; const a = s.getBoundingClientRect(), b = hp.getBoundingClientRect(); return {tile: Math.round(t.getBoundingClientRect().width), overlap: !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top), hp: hp.textContent.trim()}; })()");
+      const lap = await pg.evaluate("(()=>{ const s = [...document.querySelectorAll('.castle-shield')].find(e=> e.getBoundingClientRect().width > 0 && /25$/.test(e.textContent.trim())); /* BF5 */ if(!s) return null; const t = s.closest('.card-tile'), hp = t && t.querySelector('.hp'); if(!hp) return {noHp: true}; const a = s.getBoundingClientRect(), b = hp.getBoundingClientRect(); return {tile: Math.round(t.getBoundingClientRect().width), overlap: !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top), hp: hp.textContent.trim()}; })()");
       ok(lap && !lap.overlap, `${tag} 1. the 🔷 badge and the Health (${lap && lap.hp}) don't overlap (${JSON.stringify(lap)})`);
       await shot('raid-shield-board');
       await ctx.close();
