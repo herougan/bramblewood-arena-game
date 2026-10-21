@@ -1,6 +1,6 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-10). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-21). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
@@ -189,6 +189,25 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
   - Evolution next
   - Pause archetypes
 - **Default:** Ecclesia next (D23)
+
+**B11. Halve the skills' fixed numbers too (BF5 halved N and the cards, not the skills)** · Decide · Balance · asked 2026-10-21
+- Package BF5 halved N, every card's stats and the brambles; skill costs (S) and the skills' own numbers stayed (owner: halve the total N). A live card is now a median 2/5, against Meteor 20, Fireball 15, Trap 6, Pounce up to 6, Sweep up to 5 and Armor up to 5 on 47 cards. 17 cards' skills no longer fit the halved N at all (Worker Ant, Ravenous Wolverine, Grass Viper, Bramblewood Macaque, the half-miss flyers ...), and the Tomcat's Quick (S 7.55) leaves it 1/1. In the raid the decks now break the halved bramble about half the time. List: docs/balance/halve-2026-10-19.md (Owner calls; Skill numbers that now look big).
+  - Halve the fixed amounts (damage, Poison, Thorns, Trap, Pounce, Sweep, On Ready damage, Meteor 20 -> 10, Fireball 15 -> 8; at least 1), cap or halve Armor, then re-measure the skill worth and re-derive
+  - Keep the skills as they are; fix the 17 cards one by one (a skill, its cost, or the card's Wait / Lumber)
+- **Default:** Halve the fixed amounts, then re-measure
+
+**B12. The raid's brambles after the halving: keep 350 (175 in the fight) or raise to 410 (205)** · Decide · Balance · asked 2026-10-21
+- Completion is unchanged by BF5 (100% for 30-250 participants, day 6.54 with 30; MX 6.57), but every reference deck now breaks the arms' and tail's halved bramble in about half its fights (a normal deck broke it 4% of the time before), and the four decks deal nearly the same. A stored 410 (205 in the fight, under RB2's 'less than 420') brings the breaks to 30-39%; completion stays 100% for 30+. docs/balance/halve-2026-10-19.md (The raid, re-measured).
+  - Keep 350 (175 in the fight)
+  - Raise the arms' and tail's bramble to 410 (205 in the fight)
+  - Decide after B11 (halving the skills' numbers changes it again)
+- **Default:** Decide after B11
+
+**B13. Clear the owner's folded live edits on the server (10-19 / 10-20)** · Apply · Balance · asked 2026-10-21
+- The 13 card edits, the Map 0 / Hedgerow / Shallows node edits, the tutorial and the Goliath's shards are folded into the files (BF5) and halved there. Until the rows are cleared, the server's full-size values (the Tomcat 4/11, the Ant Hill 0/50 ...) override the halved file in the live game. Prepared, not applied: supabase/proposed/20261021_clear_folded_overrides_2.sql (keeps a backup table).
+  - Apply it with the BF5 release
+  - Hold
+- **Default:** Apply it with the BF5 release
 
 ## Decided
 
