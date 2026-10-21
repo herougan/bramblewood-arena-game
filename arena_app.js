@@ -6978,7 +6978,7 @@ let txTypeMemo = null;
 function txTypeOptionsHTML(defs, sel){
   const sig = Object.keys(defs || {}).length + '|' + (adminModeEnabled ? 'A' : '-');
   if(!txTypeMemo || txTypeMemo.sig !== sig) txTypeMemo = {sig, g: txTypeGroups(defs)};
-  const g = txTypeMemo.g, opt = o=> `<option value="${escapeAttr(o.name)}" ${sel===o.name?'selected':''}>${ARCHETYPE_ICON[o.name] || (TAXO && TAXO.isHabitat(o.name) ? '🗺️' : '🌰')} ${escapeHtml(o.name)} (${o.n})</option>`;
+  const g = txTypeMemo.g, opt = o=> `<option value="${escapeAttr(o.name)}" ${sel===o.name?'selected':''}>${ARCHETYPE_ICON[o.name] || PHYLUM_ICON[o.name] || (TAXO && TAXO.isHabitat(o.name) ? '🗺️' : '🌰')} ${escapeHtml(o.name)} (${o.n})</option>`;
   return `<option value="">${escapeHtml(TX('ui.tx-all-types'))}</option>`
     + [['habitats', ()=> TX('ui.tx-type-habitats')], ['animals', ()=> TX('ui.tx-type-animals')], ['other', ()=> TX('ui.tx-type-other')]].map(([k, key])=> g[k].length ? `<optgroup label="${escapeAttr(key())}">${g[k].map(opt).join('')}</optgroup>` : '').join('');
 }
@@ -6989,7 +6989,8 @@ function skillFamilies(){
   if(skillFamMemo) return skillFamMemo;
   const all = PASSIVE_DEFS.concat(SKILL_DEFS.filter(s=> !PASSIVE_DEFS.some(p=> p.key === s.key))), byKey = new Map(), byLabel = new Map(), fam = new Map();
   all.forEach(p=>{ if(!p || !p.key) return;
-    const base = /^(.+?)Grant$/.exec(p.key), lab = skillBareLabel(p.label);
+    // a parameter row of another skill: Diurnal {…} (diurnalGrant), Bloom (Tide & Night) (bloomWhen), Arrow's count (arrowCount)
+    const base = /^(.+?)(Grant|When|Count|Hp|N|Who)$/.exec(p.key), lab = skillBareLabel(p.label);
     let id = base && all.some(x=> x.key === base[1]) ? base[1] : (lab && byLabel.has(lab) ? byLabel.get(lab) : p.key);
     if(byKey.has(id)) id = byKey.get(id);
     byKey.set(p.key, id); if(lab && !byLabel.has(lab)) byLabel.set(lab, id);
@@ -7003,16 +7004,16 @@ const SKILL_AGGREGATES = [
   {id:'lumber', icon:'🪵', label:()=> TX('ui.tx-agg-lumber'), re:/\blumber\b/i},
   {id:'stone', icon:'🪨', label:()=> TX('ui.tx-agg-stone'), re:/\bstone\b/i},
   {id:'metal', icon:'⚙️', label:()=> TX('ui.tx-agg-metal'), re:/\b(metal|ore)\b/i},
-  {id:'resources', icon:'💰', label:()=> TX('ui.tx-agg-resources'), re:/\b(lumber|stone|metal|grace|prayer|darkness|dark points?|echo(es)?|elemental energy|uranium|gold|berr(y|ies)|resource)\b/i},
+  {id:'resources', icon:'💰', label:()=> TX('ui.tx-agg-resources'), re:/\b(lumber|stone|metal|grace|prayer|dark points?|echo(es)?|elemental energy|uranium|gold|berr(y|ies)|resources?)\b/i},
   {id:'damage', icon:'💥', label:()=> TX('ui.tx-agg-damage'), re:/\b(deals?|dealt|deal damage|damage to|bonus damage|extra damage|more damage|double damage|damage back|strikes?|attacks? twice|pierc\w*|missile|barrage|arrows?)\b/i},
-  {id:'heal', icon:'💚', label:()=> TX('ui.tx-agg-heal'), re:/\b(heal\w*|regenerat\w*|regen|mend\w*|lifesteal|leech\w*|restor\w*|cure)\b/i},
+  {id:'heal', icon:'💚', label:()=> TX('ui.tx-agg-heal'), re:/\b(heal|heals|healed|healing|regenerat\w*|regen|mend\w*|lifesteal|leech\w*|restor\w*|cure[sd]?)\b/i},
   {id:'status', icon:'🌀', label:()=> TX('ui.tx-agg-status'), re:/\b(poison\w*|bleed\w*|bled|decay\w*|corrode\w*|freez\w*|frozen|sleep|asleep|paraly\w*|stun\w*|blind\w*|tipsy|confuse\w*|shock\w*|stagger\w*|expose\w*|bound|bind|web\w*|toxin|scar\w*|irradiat\w*|wet|brittle|silence\w*|exhaust\w*|petrif\w*|vulnerable|stench)\b/i},
-  {id:'movement', icon:'↔️', label:()=> TX('ui.tx-agg-movement'), re:/\b(move[sd]?|moving|swap\w*|push\w*|pull\w*|jump\w*|leap\w*|slides?|switch\w*|closes? its gaps|gaps|charge\w*|ride\w*|converge)\b/i},
-  {id:'summon', icon:'🥚', label:()=> TX('ui.tx-agg-summon'), re:/\b(summon\w*|spawn\w*|tokens?|hatch\w*|duplicate\w*|copies|copy of|calls? up)\b/i},
+  {id:'movement', icon:'↔️', label:()=> TX('ui.tx-agg-movement'), re:/\b(move[sd]?|moving|swap\w*|jump\w*|leap\w*|slides?|switch(es)? places|closes? its gaps|rides?|converge|teleport\w*|knock\w* back|pushe[sd]?(?! back)|pull(s|ed)? (it|them|the|an?|every|each))\b/i},
+  {id:'summon', icon:'🥚', label:()=> TX('ui.tx-agg-summon'), re:/\b(summon\w*|spawn\w*|hatch\w*|duplicate\w*|sprouts?|calls? up)\b/i},
   {id:'defense', icon:'🛡️', label:()=> TX('ui.tx-agg-defense'), re:/\b(armou?r|shield\w*|guardian|evasive|evade\w*|dodge\w*|less damage|half damage|taunt|block\w*|immune|invincible|shell|bulwark|reflect\w*|protect\w*)\b/i},
   {id:'daynight', icon:'🌗', label:()=> TX('ui.tx-agg-daynight'), re:/\b(day|by day|night|twilight|dusk|dawn|moon|sun|diurnal|nocturnal|crepuscular)\b/i},
   {id:'tide', icon:'🌊', label:()=> TX('ui.tx-agg-tide'), re:/\b(tide|flood|ebb|wet|water|swim\w*|wave)\b/i},
-  {id:'cards', icon:'🃏', label:()=> TX('ui.tx-agg-cards'), re:/\b(draws?|hand|discard\w*|pitch\w*|graveyard|deck|exile\w*)\b/i},
+  {id:'cards', icon:'🃏', label:()=> TX('ui.tx-agg-cards'), re:/\b(draws?|in (your|their) hand|from (your|their) hand|discard\w*|pitch(es|ed|ing)?|graveyard|exile[sd]?)\b/i},
 ];
 let skillAggMemo = null;
 // Which skill keys and trigger actions are in each group (from the registry's own names and texts; worked out once).
