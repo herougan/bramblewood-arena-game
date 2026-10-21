@@ -1000,17 +1000,21 @@
    "plain": true
   },
   {
-   "id": "harvest-mouse",
-   "name": "Harvest Mouse",
-   "rarity": "starter",
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "rarity": "common",
    "group": "plain-start",
-   "from": null,
+   "from": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-1"
+   },
    "to": {
     "kind": "map",
     "id": "mf",
     "node": "1-3"
    },
-   "obtainBefore": 0,
+   "obtainBefore": 7,
    "obtainAfter": 1,
    "plain": true
   },
@@ -1216,7 +1220,7 @@
    "to": {
     "kind": "map",
     "id": "mu",
-    "node": "7-3"
+    "node": "7-1"
    },
    "obtainBefore": 0,
    "obtainAfter": 7,
@@ -1520,7 +1524,7 @@
    "to": {
     "kind": "map",
     "id": "mu",
-    "node": "7-4"
+    "node": "7-3"
    },
    "obtainBefore": 2,
    "obtainAfter": 7,
@@ -1748,7 +1752,7 @@
    "to": {
     "kind": "map",
     "id": "mu",
-    "node": "7-5"
+    "node": "7-4"
    },
    "obtainBefore": 7,
    "obtainAfter": 7,

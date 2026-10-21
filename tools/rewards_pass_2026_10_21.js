@@ -18,6 +18,10 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
 const themes = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'unit-themes.json'), 'utf8')); }catch(e){ return {units: []}; } })();
 const factionTag = Object.fromEntries((themes.units || []).map(u=> [u.id, u.faction]));
 const byId = Object.fromEntries(cards.map(c=> [c.id, c]));
+// The plan is made from the sources as they were before the pass: once applied, `plan` first puts back (in memory) every source the
+// last record moved, so running it again gives the same moves.
+if(process.argv[2] === 'plan' && fs.existsSync(OUT)){ try{ JSON.parse(fs.readFileSync(OUT, 'utf8')).moves.forEach(m=>{ const c = byId[m.id]; if(!c) return;
+  delete c.awaitingSource; if(m.from) c.source = m.from; else delete c.source; }); }catch(e){} }
 const mains = MAPS.filter(m=> !m.sub && !m.reserved);
 const mapNo = id=>{ const m = MAPS.find(x=> x.id === id); if(!m) return null; return mains.indexOf(m.sub ? MAPS.find(x=> x.id === m.parent) : m); };
 
@@ -62,7 +66,7 @@ const TO_FACTION = {'otter-angler': '', 'otter-riverguard': '', 'rivergate-drumm
 // Maps 0-1 (owner: "Let's only give plain cards as rewards at the start." and "I want lumber to be naturally introduced in Map 1"):
 // the fight each plain card goes to, and the one Lumber card
 const TO_NODE = {'chipmunk-skirmisher': ['m1', '0-1'], 'house-cat': ['m1', '0-2'], 'farm-dog': ['m1', '0-3'], 'terrier-pup': ['m1', '0-4'],
-  'dormouse': ['mf', '1-2'], 'harvest-mouse': ['mf', '1-3'], 'badger-lumberjack': ['mf', '1-4'], 'bramble-sprout': ['mf', '1-5'],
+  'dormouse': ['mf', '1-2'], 'compost-grub': ['mf', '1-3'] /* a grub for the Burrow Line; the Harvest Mouse stays Base (a starter card everyone has) */, 'badger-lumberjack': ['mf', '1-4'], 'bramble-sprout': ['mf', '1-5'],
   'sandfish': ['md', '18-7'], 'pale-oryx': ['md', '18-7'], 'dust-devil-kestrel': ['md', '18-7'], 'stonedrop-vulture': ['md', '18-2']};
 const PLAIN_LUMBER_OK = new Set(['badger-lumberjack']); // Map 1's one Lumber card (its only skill is Lumberjack)
 // A main map for the rest (the fight with the most room under the cap), by theme
