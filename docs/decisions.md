@@ -226,24 +226,19 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Pause archetypes
 - **Default:** Ecclesia next (D23)
 
-**B11. Halve the skills' fixed numbers too (BF5 halved N and the cards, not the skills)** · Decide · Balance · asked 2026-10-21
-- Package BF5 halved N, every card's stats and the brambles; skill costs (S) and the skills' own numbers stayed (owner: halve the total N). A live card is now a median 2/5, against Meteor 20, Fireball 15, Trap 6, Pounce up to 6, Sweep up to 5 and Armor up to 5 on 47 cards. 16 cards' skills no longer fit the halved N at all (Worker Ant, Ravenous Wolverine, Grass Viper, Bramblewood Macaque, the half-miss flyers ...), and the Tomcat's Quick (S 7.55) leaves it 1/1. In the raid the decks now break the halved bramble about half the time. List: docs/balance/halve-2026-10-19.md (Owner calls; Skill numbers that now look big).
-  - Halve the fixed amounts (damage, Poison, Thorns, Trap, Pounce, Sweep, On Ready damage, Meteor 20 -> 10, Fireball 15 -> 8; at least 1), cap or halve Armor, then re-measure the skill worth and re-derive
-  - Keep the skills as they are; fix the 16 cards one by one (a skill, its cost, or the card's Wait / Lumber)
-- **Default:** Halve the fixed amounts, then re-measure
+**B14. Cap 2 (A·H + S·|S|) leaves 84 cards at 1/1 with their skills** · Decide · Balance · asked 2026-10-21
+- Under the owner's cap 2 (15:15) a Common's (N/3)² is about 16, so a skill set worth S 4 or more leaves no A·H at all (Quick alone 7.55 -> 57). BF6's formula pass put 176 cards in the bucket and squeezed 11 more under the band; 100 took one skill off without thematic loss, 84 keep their skills at the floor of their shape (1/1) and are flagged (Jaguar Stalker, Savanna Cheetah, Tomcat, Poison Dart Frog, Barnacle Fortress, Worker Ant, Courier Pigeon ...). Most skills' worths are the 10-19 full-size measures (the owner's method skipped them). List: docs/balance/bf6-2026-10-21.md (Cards that still can't fit).
+  - Accept: the flagged cards stay 1/1 until their skills are reworked
+  - Soften cap 2 (e.g. S·|S|/2, or S² only above a share of N), then re-fit
+  - Re-measure the big skills in the halved world first (Quick, Sweep, Armor, Pounce, Poison, Thorns ...; about 2.5 h of runs, a quarter done in docs/balance/skill-worth-bf6-partial.jsonl), then re-fit
+- **Default:** Re-measure the big skills in the halved world first
 
-**B12. The raid's brambles after the halving: keep 350 (175 in the fight) or raise to 410 (205)** · Decide · Balance · asked 2026-10-21
-- Completion is unchanged by BF5 (100% for 30-250 participants, day 6.53 with 30; MX 6.57), but every reference deck now breaks the arms' and tail's halved bramble in about half its fights (a normal deck broke it 4% of the time before), and the four decks deal nearly the same. A stored 410 (205 in the fight, under RB2's 'less than 420') brings the breaks to 30-39%; completion stays 100% for 30+. docs/balance/halve-2026-10-19.md (The raid, re-measured).
-  - Keep 350 (175 in the fight)
-  - Raise the arms' and tail's bramble to 410 (205 in the fight)
-  - Decide after B11 (halving the skills' numbers changes it again)
-- **Default:** Decide after B11
-
-**B13. Clear the owner's folded live edits on the server (10-19 / 10-20)** · Apply · Balance · asked 2026-10-21
-- The 13 card edits, the Map 0 / Hedgerow / Shallows node edits, the tutorial and the Goliath's shards are folded into the files (BF5) and halved there. Until the rows are cleared, the server's full-size values (the Tomcat 4/11, the Ant Hill 0/50 ...) override the halved file in the live game. Prepared, not applied: supabase/proposed/20261021_clear_folded_overrides_2.sql (keeps a backup table).
-  - Apply it with the BF5 release
-  - Hold
-- **Default:** Apply it with the BF5 release
+**B15. Twin: no constant prices a full copy of the card** · Decide · Balance · asked 2026-10-21
+- Twin puts a full copy of the card beside it. Measured in the halved world it is off the scale (S 20+ a copy on a 2/7, 36 on a 3/11), so its cost (1) means nothing. Its two cards are held at their stats: Puddle Changeling 2/2, Mirrorhide Mutant 3/5.
+  - Price Twin as the card's own body (S = 2A + H, so its stats halve), then re-fit the two
+  - Make the twin a smaller token (e.g. half stats)
+  - Keep both as they are
+- **Default:** Price Twin as the card's own body
 
 ## Decided
 
@@ -439,6 +434,27 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Allow per-fight stat changes on enemy copies
 - **Default:** Printed = obtained
 - **Outcome:** Owner 16:22: "the cards as seen should be the cards when you get them. no change. The Wyrm is only stronger cause the field effect gives it fiery skills." Printed card = obtained card; enemy strength comes from levels, decks / synergy and fields, not altered stats. The Caldera Wyrm stays as printed. On the road the enemy's levels follow the owner's schedule (Maps 1-4 Lv 1, 5-9 Lv 1-2, 10+ Lv 2 and rising) and rarity above Rare is allowed from Map 10; no new Shield overrides and no field buffs for difficulty ("Let them be strong full stop for now. In the future we will make them challenging by cheating."). Still altering enemy stats outside level and fields, flagged and left as they are: the endless dungeons' floorPct perk (+x% stats a floor, set to 0 since LV, the mechanism remains), the raid's staged decks (cards scaled by the raid's attack / health factors) and its boss units (+1 Attack, Health x1.5-3, the Health bonus): raid boss mechanics, unchanged. Shield overrides above the rule are bramble, not card, changes: counted and measured in docs/balance/level-curve-2026-10-19c.md as an owner call.
+
+**B11. Halve the skills' fixed numbers too (BF5 halved N and the cards, not the skills)** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
+- Package BF5 halved N, every card's stats and the brambles; skill costs (S) and the skills' own numbers stayed (owner: halve the total N). A live card is now a median 2/5, against Meteor 20, Fireball 15, Trap 6, Pounce up to 6, Sweep up to 5 and Armor up to 5 on 47 cards. 16 cards' skills no longer fit the halved N at all (Worker Ant, Ravenous Wolverine, Grass Viper, Bramblewood Macaque, the half-miss flyers ...), and the Tomcat's Quick (S 7.55) leaves it 1/1. In the raid the decks now break the halved bramble about half the time. List: docs/balance/halve-2026-10-19.md (Owner calls; Skill numbers that now look big).
+  - Halve the fixed amounts (damage, Poison, Thorns, Trap, Pounce, Sweep, On Ready damage, Meteor 20 -> 10, Fireball 15 -> 8; at least 1), cap or halve Armor, then re-measure the skill worth and re-derive
+  - Keep the skills as they are; fix the 16 cards one by one (a skill, its cost, or the card's Wait / Lumber)
+- **Default:** Halve the fixed amounts, then re-measure
+- **Outcome:** Owner (BF6): "a blanket halve might not balance it appropriately. I assume the N value takes into account the Map value." No blanket halving. Then 15:09: N is the halved coefficients (Base = 10 + Rarity + 3W + 0.25W² + 2L + 0.2L² + 0.5 Ritual + 0.1 Map, N = (Base + L/15)(1 + L/30), Level 0 Base − 1); 15:22: simulate only the skills with no measured worth (165 halved-world runs, 19 values moved), then every card re-fitted by formula. docs/balance/bf6-2026-10-21.md.
+
+**B12. The raid's brambles after the halving: keep 350 (175 in the fight) or raise to 410 (205)** · Decide · Balance · asked 2026-10-21 · decided 2026-10-21
+- Completion is unchanged by BF5 (100% for 30-250 participants, day 6.53 with 30; MX 6.57), but every reference deck now breaks the arms' and tail's halved bramble in about half its fights (a normal deck broke it 4% of the time before), and the four decks deal nearly the same. A stored 410 (205 in the fight, under RB2's 'less than 420') brings the breaks to 30-39%; completion stays 100% for 30+. docs/balance/halve-2026-10-19.md (The raid, re-measured).
+  - Keep 350 (175 in the fight)
+  - Raise the arms' and tail's bramble to 410 (205 in the fight)
+  - Decide after B11 (halving the skills' numbers changes it again)
+- **Default:** Decide after B11
+- **Outcome:** Owner (BF6): "Okay whichever." The arms' and tail's stored bramble is 410 in canonical/raids.json (205 in the fight); BF5's probe: breaks 30-39%, completion 100% for 30+. Not re-run (no raid simulations in BF6).
+
+**B13. Clear the owner's folded live edits on the server (10-19 / 10-20)** · Apply · Balance · asked 2026-10-21
+- The 13 card edits, the Map 0 / Hedgerow / Shallows node edits, the tutorial and the Goliath's shards are folded into the files (BF5) and halved there. Until the rows are cleared, the server's full-size values (the Tomcat 4/11, the Ant Hill 0/50 ...) override the halved file in the live game. Prepared, not applied: supabase/proposed/20261021_clear_folded_overrides_2.sql (keeps a backup table).
+  - Apply it with the BF5 release
+  - Hold
+- **Default:** Apply it with the BF5 release
 
 ## Stated rules · 2026-10-21
 
