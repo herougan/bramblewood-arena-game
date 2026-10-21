@@ -2166,16 +2166,24 @@ const FIELD_TEXT = {
 // this phylum contains canids, bovines, felids, mustelids, etc."). Every card carries `species` (one, or two for a
 // hybrid); the phylum groups them. See docs/card-types-2026-10-10.md for the audit.
 // Each phylum's own emblem (2026-10-13, user: the phyla filter "should show the phyla's representative icon").
-const PHYLUM_ICON = {Beast:'🐾', Bird:'🪶', Arthropod:'🐜', Scaled:'🦎', Aquatic:'🐟', Crawler:'🐌', Elemental:'🔥'};
-const SPECIES_PHYLUM = {
+// 2026-10-21 (package TX, owner: "Aquatic Phyla should be broken up. Fish is its own Phyla." + "Aquatic is the geo type (not phyla). The
+// octopi and etc need their own types like cephalopod or cnidaria."): the phyla and the type hierarchy live in bramblewood-taxonomy.js
+// (TAXO, the engine's own copy). Aquatic is a habitat now; Fish, Cephalopod, Cnidaria and Echinoderm are phyla of their own, and the
+// other molluscs (snails, slugs, clams) are Crawlers. The table below is only the fallback for a page without the taxonomy.
+const TAXO = (typeof BramblewoodTaxonomy !== 'undefined' && BramblewoodTaxonomy) || null;
+const PHYLUM_ICON = (TAXO && TAXO.PHYLUM_ICON) || {Beast:'🐾', Bird:'🪶', Arthropod:'🐜', Scaled:'🦎', Fish:'🐟', Cephalopod:'🐙', Cnidaria:'🪼', Echinoderm:'⭐', Crawler:'🐌', Elemental:'🔥'};
+const SPECIES_PHYLUM = (TAXO && TAXO.SPECIES_PHYLUM) || {
   Canid:'Beast', Felid:'Beast', Bovine:'Beast', Mustelid:'Beast', Ursid:'Beast', Rodent:'Beast', Lagomorph:'Beast', Cervid:'Beast', Suid:'Beast',
-  Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Herpestid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast',
+  Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Herpestid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast', Mammal:'Beast',
   Bird:'Bird', Insect:'Arthropod', Arachnid:'Arthropod', Crustacean:'Arthropod', Reptile:'Scaled', Dragon:'Scaled', Amphibian:'Scaled',
-  Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Echinoderm:'Aquatic' /* 2026-10-17: the Sea Cucumber */, Annelid:'Crawler', Myriapod:'Arthropod', Elemental:'Elemental'};
+  Fish:'Fish', Cephalopod:'Cephalopod', Cnidaria:'Cnidaria', Echinoderm:'Echinoderm', Mollusc:'Crawler', Annelid:'Crawler', Myriapod:'Arthropod', Elemental:'Elemental'};
+const speciesPhylum = x=> TAXO ? TAXO.phylumOf(x) : (SPECIES_PHYLUM[x] || x);
 function speciesLine(def){
   const sp = (def && def.species) || []; if(!sp.length) return '';
-  const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))];
-  return `🧬 ${sp.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}`;
+  const ph = [...new Set(sp.map(speciesPhylum))];
+  // 2026-10-21 (package TX): a water animal shows its habitat, Aquatic (it was the phylum's name)
+  const aq = TAXO && sp.some(x=> TAXO.ancestors(x).has('aquatic')) ? ' · 🌊 Aquatic' : '';
+  return `🧬 ${sp.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}${aq}`;
 }
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
@@ -2642,9 +2650,23 @@ function skillText(p, v, e){ const f = SKILL_TEXT[p.key], n = p.numberKey ? (e||
    or cleared a fight on a map that far along (so a player whose progress came from another device is not set back). Once a skill
    is revealed it is remembered (SKILL_REVEAL_KEY) and never hides again. The engine still applies the skill as before, and
    Admin Mode shows everything. To hide another skill, add it here (and any companion effect keys to SKILL_REVEAL_PARTS). */
-const SKILL_REVEAL = {diurnal:1, nocturnal:1, crepuscular:1, tide:2}; // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
+// The reveal map (2026-10-21, package TX, owner Oct 21: "Meadow Frog's Tide should be ? until Map 2+. Diurnal, if seen in Map 0 (not
+// Tutorials), should be ?."): one entry per gated skill, "revealed from Map N":
+//   from       the map number that reveals it (entering that map, or a cleared fight on it or further on);
+//   tutorials  true: shown as itself in a tutorial fight even before then (the tutorial teaches it; that sight is not remembered);
+//   parts      the other effect keys that belong to it (its second number, its braces): hidden with it.
+// To gate another skill, add a row. SKILL_REVEAL and SKILL_REVEAL_PARTS below are read from it (the older name stays for its readers).
+const SKILL_REVEAL_MAP = {
+  diurnal:     {from:1, tutorials:true, parts:['diurnalHp', 'diurnalGrant']}, // "?" on Map 0, outside the tutorials
+  nocturnal:   {from:1, parts:['nocturnalHp', 'nocturnalGrant']},
+  crepuscular: {from:1, parts:['crepuscularHp']},
+  tide:        {from:2, parts:['tideGrant']}, // Map 2+ (the Meadow Frog's Tide on Map 1 is a "?")
+};
+const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
-const SKILL_REVEAL_PARTS = {diurnal:['diurnalHp', 'diurnalGrant'], nocturnal:['nocturnalHp', 'nocturnalGrant'], crepuscular:['crepuscularHp'], tide:['tideGrant'], swimmer:['swimmerGrant']}; // + the advanced forms' braces (2026-10-15)
+const SKILL_REVEAL_PARTS = Object.assign({swimmer:['swimmerGrant']}, Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, (r.parts || []).slice()]))); // + the advanced forms' braces (2026-10-15)
+// In a tutorial fight now? (a skill with tutorials:true reads as itself there)
+function revealInTutorial(){ try{ return typeof matchState !== 'undefined' && !!matchState && matchState.mode === 'tutorial' && !matchState.over; }catch(e){ return false; } }
 const SKILL_REVEAL_KEY = 'bramblewood_skill_revealed_v1';
 const SKILL_Q_TIP = "Something about this card you'll learn soon.";
 let skillRevealMemo = null;
@@ -2658,11 +2680,13 @@ function noteMapEnteredForReveal(mapId){ let n = null; try{ n = mapNumberOf(mapI
   Object.keys(SKILL_REVEAL).forEach(k=>{ if(SKILL_REVEAL[k] <= n && !st.keys.includes(k)){ st.keys.push(k); try{ fxHook('skillReveal', k); }catch(e){} } }); skillRevealSave(st); } // fxHook: 2026-10-15 batch F
 function hiddenSkillSet(){
   if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return new Set();
-  const now = Date.now(); if(skillRevealMemo && now - skillRevealMemo.at < 500) return skillRevealMemo.set;
+  const now = Date.now(), tut = revealInTutorial(); if(skillRevealMemo && now - skillRevealMemo.at < 500 && skillRevealMemo.tut === tut) return skillRevealMemo.set;
   const st = skillRevealState(), far = furthestMapReached(), set = new Set(); let grew = false;
-  Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k]){ st.keys.push(k); grew = true; return; } set.add(k); });
+  Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k]){ st.keys.push(k); grew = true; return; }
+    if(tut && SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].tutorials) return; // 2026-10-21 (package TX): the tutorial shows it, unremembered
+    set.add(k); });
   if(grew) skillRevealSave(st);
-  skillRevealMemo = {at: now, set}; return set;
+  skillRevealMemo = {at: now, set, tut}; return set;
 }
 function skillHiddenNow(key){ return hiddenSkillSet().has(key); }
 const skillValOn = v=> v != null && v !== false && v !== 0 && v !== '';
@@ -3547,9 +3571,9 @@ let codexSeparate = (()=>{ try{ return localStorage.getItem('bramblewood_codex_s
 // Species as the card's one type (2026-10-13, user: "only include the lowest type, otherwise just a generic 2nd level like Bird or
 // Insect ... In the card detail, it shows this 2nd level type only ... If you type something unique - it becomes a new phyla"):
 // a species not in the table is its own phylum, with a 🧬 mark.
-function speciesIcon(sp){ return PHYLUM_ICON[SPECIES_PHYLUM[sp] || sp] || '🧬'; }
+function speciesIcon(sp){ return PHYLUM_ICON[speciesPhylum(sp)] || '🧬'; } // 2026-10-21 (package TX): the taxonomy's phyla
 function allSpeciesNames(){ const out = new Set(Object.keys(SPECIES_PHYLUM)); try{ Object.values(getCardDefs()).forEach(d=> (d.species||[]).forEach(x=> x && out.add(x))); }catch(e){} return [...out].sort(); }
-function phylumOf(d){ const sp = (d && d.species) || []; const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))]; return ph.join(' & ') || ''; }
+function phylumOf(d){ const sp = (d && d.species) || []; const ph = [...new Set(sp.map(speciesPhylum))]; return ph.join(' & ') || ''; } // 2026-10-21 (package TX)
 function phylaUnlocked(){
   if(adminModeEnabled) return true;
   try{ const sp = FEATURE_SPOTS.find(x=> x.key==='codex'), n = sp ? mapNumberOf(sp.map) : null; return n != null && playerMapReach() >= n + 5; }catch(e){ return false; }
@@ -6321,15 +6345,15 @@ function renderCodex(){
     <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
       <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = codexFilterCount(); return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
-      <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
+      <select id="cxArch" aria-label="${escapeAttr(TX('ui.tx-type'))}">${txTypeOptionsHTML(defs, codexFilter.archetype) /* 2026-10-21 (package TX): own types + the wider ones, through the taxonomy */}</select>
       <select id="cxAnimal" aria-label="${escapeAttr(TX('ui.codex-animal-filter'))}"><option value="">🐾 ${escapeHtml(TX('ui.codex-all-animals'))}</option>${codexAnimalOptionsHTML(defs)}</select>${'' /* 2026-10-19 (package UT): the animal filter */}
-      ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
+      ${phylaUnlocked() ? `<select id="cxPhylum" aria-label="${escapeAttr(TX('ui.tx-phylum'))}"><option value="">🧬 ${escapeHtml(TX('ui.tx-all-phyla'))}</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxRarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${(()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${codexFilter.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })()}</select>${'' /* 2026-10-18 (package C): the album's rarity filter */}
       <button type="button" class="btn small cx-skill-btn" id="cxSkillBtn" aria-expanded="false" aria-controls="cxSkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${codexSkillsChosen().length ? '' : 'hidden'}>${codexSkillsChosen().length}</b></button>
       <div class="cx-skill-panel" id="cxSkillPanel" hidden></div>${'' /* 2026-10-18 (package C, owner 23:21): the skill filter */}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
-      <select id="cxSort" aria-label="Sort cards">${'' /* 2026-10-15: Cost, Wait, Attack, Health first, the same list the Forge sorts by */}<option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="wait" ${codexFilter.sort==='wait'?'selected':''}>Sort: Wait</option><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
-      <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
+      <select id="cxSort" aria-label="${escapeAttr(TX('ui.tx-sort'))}">${cfSortOptionsHTML(codexFilter.sort, (phylaUnlocked() ? [['phylum', ()=> TX('ui.tx-sort-phylum')]] : []).concat([['advance', ()=> TX('ui.tx-sort-advance')]])) /* 2026-10-21 (package TX): + Level and BR; the deck editors' list */}</select>
+      <button type="button" class="btn small" id="cxSortDir">${escapeHtml(cfDirLabel(codexFilter.dir))}</button>
       ${!adminModeEnabled ? (codexSeparateAllowed() ? `<button type="button" class="btn small ${codexSeparate ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexSeparate}" title="Split the Codex by where cards come from">${codexSeparate ? '🗂️ Separated' : '🗂️ All together'}</button>` : '') : ''}
       <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled ? '' : 'hidden'}>
         <option value="advance" ${(codexFilter.groupBy||'advance')==='advance'?'selected':''}>View by: Advancement</option>
@@ -6367,7 +6391,7 @@ function renderCodex(){
   document.getElementById('cxSort').addEventListener('change', e=>{ codexFilter.sort = e.target.value; renderCodexGrid(); });
   document.getElementById('cxSortDir').addEventListener('click', (e)=>{
     codexFilter.dir = codexFilter.dir==='desc'?'asc':'desc';
-    e.currentTarget.textContent = codexFilter.dir==='desc' ? '↓ High to low' : '↑ Low to high';
+    e.currentTarget.textContent = cfDirLabel(codexFilter.dir); // 2026-10-21 (package TX)
     renderCodexGrid();
   });
   document.getElementById('cxViewMode').addEventListener('change', e=>{
@@ -6630,12 +6654,12 @@ function renderCodexGrid(keepPage){
   // the real roster rather than cluttering it.
   ids = ids.filter(id=> !!defs[id].test === !!codexFilter.showTest);
   if(codexFilter.q){ const q = codexFilter.q.toLowerCase(); ids = ids.filter(id=> defs[id].name.toLowerCase().includes(q) || (defs[id].animal || '').includes(q)); } // 2026-10-18: lowercased once, not once per card; 2026-10-19 (package UT): the animal too ("spider" finds the Webspire Sentinel)
-  if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
+  if(codexFilter.archetype) ids = ids.filter(id=> taxIsA(defs[id], codexFilter.archetype)); // 2026-10-21 (package TX): an eagle is a Bird; Aquatic takes the water
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
   if(codexFilter.animal) ids = ids.filter(id=> animalGroupOf(defs[id].animal) === codexFilter.animal); // 2026-10-19 (package UT): the animal filter
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
-  { const want = codexSkillsChosen(); if(want.length){ const ps = want.map(skillDefOf); ids = ids.filter(id=> ps.every((p, i)=> cardHasSkill(defs[id], want[i], p))); } } // 2026-10-18 (package C): every skill picked
+  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=>{ const d = maskHiddenSkills(defs[id]); return want.every(k=> cardMatchesSkillPick(d, k)); }); } } // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -6643,20 +6667,16 @@ function renderCodexGrid(keepPage){
   // 2026-10-18 (Codex perf): the sort keys that take work (advancement, phylum) are worked out once per card per draw, not on
   // every comparison of the sort.
   const keyMemo = new Map(), memoKey = (kind, id, f)=>{ const k = kind + id; let v = keyMemo.get(k); if(v === undefined){ v = f(defs[id]); keyMemo.set(k, v); } return v; };
+  const numCmp = cfSortFn(codexFilter.sort, codexFilter.dir === 'asc' ? 'asc' : 'desc', defs);
   function cmp(a,b){
     const A=defs[a], B=defs[b];
     let base;
     if(codexFilter.sort==='name') base = A.name.localeCompare(B.name);
     else if(codexFilter.sort==='phylum') base = (memoKey('p', a, phylumOf)||'~').localeCompare(memoKey('p', b, phylumOf)||'~') || ((A.species||[])[0]||'').localeCompare((B.species||[])[0]||'') || A.name.localeCompare(B.name);
     else if(codexFilter.sort==='advance') base = memoKey('a', b, advancementKey).localeCompare(memoKey('a', a, advancementKey)) || B.name.localeCompare(A.name); // desc = earliest first (flip for latest first)
-    else if(codexFilter.sort==='attack') base = B.attack-A.attack;
-    else if(codexFilter.sort==='health') base = B.health-A.health;
-    else if(codexFilter.sort==='wait') base = ((A.wait||0)-(B.wait||0)) || (A.cost-B.cost) || A.name.localeCompare(B.name); // like Cost: quickest first (2026-10-15)
-    else if(codexFilter.sort==='rarity'){
-      const ra = RARITY_TIER_BANDS.indexOf(A.rarity||'common'), rb = RARITY_TIER_BANDS.indexOf(B.rarity||'common');
-      base = (rb-ra) || (RARITY_DEFS.findIndex(r=>r.key===(A.rarity||'common')) - RARITY_DEFS.findIndex(r=>r.key===(B.rarity||'common'))) || A.name.localeCompare(B.name);
-    }
-    else base = (A.cost-B.cost) || A.name.localeCompare(B.name);
+    // 2026-10-21 (package TX, owner: "High-low options as well"): the numbers (Cost, Wait, Attack, Health, Rarity, Level, BR) sort
+    // with the deck editors' comparator; ↓ High to low is high first for every one of them now, ↑ Low to high the reverse.
+    else return numCmp(a, b);
     return codexFilter.dir==='asc' ? -base : base;
   }
   // 2026-10-02: Hidden cards the player hasn't discovered don't exist as far as they know (admin
@@ -6884,12 +6904,13 @@ function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
 }
-function codexSkillChoices(){ try{ return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:e.key, icon:e.icon, name:e.name})); }catch(e){ return []; } }
+// 2026-10-21 (package TX, owner: "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest."): one chip per skill family.
+function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name:e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
 function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
 function codexSkillPanelHTML(){
   const list = codexSkillChoices(), on = new Set(codexSkillsChosen());
   return `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small><button type="button" class="btn small ghost" data-cxskillclear ${on.size ? '' : 'disabled'}>${escapeHtml(TX('ui.codex-skill-clear'))}</button></div>`
-    + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
+    + skillPickerChipsHTML(list, on); // 2026-10-21 (package TX): the skill groups first, then one chip per family
 }
 // The button's count, the chips under the toolbar, the Filters badge: after any change of the picks.
 function codexSkillUI(){
@@ -6897,7 +6918,7 @@ function codexSkillUI(){
   if(btn){ const b = btn.querySelector('.cx-fcount'); if(b){ b.textContent = want.length; b.hidden = !want.length; } btn.classList.toggle('primary', !!want.length); }
   if(panel && panel.dataset.built){ const on = new Set(want); panel.querySelectorAll('[data-cxskill]').forEach(c=> c.setAttribute('aria-pressed', on.has(c.dataset.cxskill))); const cl = panel.querySelector('[data-cxskillclear]'); if(cl) cl.disabled = !want.length; }
   if(act){ act.hidden = !want.length;
-    act.innerHTML = want.length ? `<span>${escapeHtml(TX('ui.codex-skill-active'))}</span>${want.map(k=> `<button type="button" class="cx-sk-chip is-on" data-cxskilloff="${escapeAttr(k)}" aria-label="${escapeAttr(TX('ui.codex-skill-remove'))}: ${escapeAttr(codexSkillName(k))}">${SKILL_ICON[k] || '✨'} ${escapeHtml(codexSkillName(k))} <i aria-hidden="true">✕</i></button>`).join('')}<button type="button" class="btn small ghost" data-cxskillclear>${escapeHtml(TX('ui.codex-skill-clear'))}</button>` : ''; }
+    act.innerHTML = want.length ? `<span>${escapeHtml(TX('ui.codex-skill-active'))}</span>${want.map(k=> `<button type="button" class="cx-sk-chip is-on" data-cxskilloff="${escapeAttr(k)}" aria-label="${escapeAttr(TX('ui.codex-skill-remove'))}: ${escapeAttr(skillPickName(k))}">${skillPickIcon(k)} ${escapeHtml(skillPickName(k))} <i aria-hidden="true">✕</i></button>`).join('')}<button type="button" class="btn small ghost" data-cxskillclear>${escapeHtml(TX('ui.codex-skill-clear'))}</button>` : ''; }
   codexFilterBadge();
 }
 function codexSetSkills(list){ codexFilter.skills = [...new Set(list)]; codexSkillUI(); renderCodexGrid(); }
@@ -6920,6 +6941,207 @@ function codexShowCardsWithSkill(key){
   try{ saveCodexFilters(); }catch(e){}
   codexSubTab = 'browse'; renderCodex(); try{ codexPageTurn('back'); }catch(e){}
 }
+/* ---- Package TX (2026-10-21): types, taxonomy and filters [TX_FILTERS_BEGIN] ----
+   Owner, Oct 21: "Specific animals are their greater animal type too. Eagles are birds. They should count so in the game, and in the
+   filters." + "Enhanced filter in codex (and every filter power in codex to be in the deck editors (skirmish included always!) High-low
+   options as well." + "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest." + "In the skill filters, add
+   additional aggregate filter like lumber-related, stone-related, metal-related, damage-related, heal-related, status-related etc."
+   - Types: the type filter asks the taxonomy (bramblewood-taxonomy.js, the engine's own rule): picking Bird shows the eagles and owls,
+     picking Aquatic (a habitat now) shows the River, Ocean and Pond cards and the water animals. Its list is the cards' own types plus
+     the wider ones (Mammal, Raptor, Arthropod, Aquatic …), grouped Habitats / Animals / Other.
+   - Skill families: a skill and its parameterised form are one filter choice (Diurnal and Diurnal {…}, Nocturnal, Tide, Full Moon,
+     Swimmer, and any two skills with the same name): skillFamilyId / skillFamilyKeys.
+   - Skill groups: Lumber, Stone, Metal, Resources, Damage, Heal, Status, Movement, Summon, Defense, Day / Night, Tide, Cards. Each is
+     built from the skill registry (PASSIVE_DEFS + SKILL_DEFS, every category) and the trigger actions (ACTION_DEFS): a skill or action
+     whose name or text matches the group's words is in it. A card is in a group when it has any of its skills, or a trigger whose
+     action is (a Gain trigger by the resource it gains).
+   - Sorts: Cost, Wait, Attack, Health, Rarity, Level, BR, Name (+ Phylum, Advancement in the Codex), each high to low or low to high.
+   - The filter bar (cfBarHTML / cfWire / cfApply / cfSortFn): the Codex's filters as one component, in the deck editor (Play and the
+     Camp), the skirmish / tutorial deck builder popup and the skirmish gallery. */
+function taxIsA(d, T){ if(!d || !T) return false; if(TAXO) return TAXO.isA(d, T); return archetypesOf(d).includes(T) || (d.species||[]).includes(T); }
+// The type filter's options: {habitats, animals, other}, each [{name, n}] (cards that count as it).
+function txTypeGroups(defs){
+  const list = Object.values(defs || {}).filter(d=> d && !d.test && !d.hallOfFame);
+  const own = new Set(list.flatMap(d=> archetypesOf(d)));
+  const names = new Set(own);
+  if(TAXO){ const groups = new Set(Object.values(ANIMAL_GROUPS).map(g=> TAXO.key(g)));
+    TAXO.parentNodes().forEach(n=>{ if(!groups.has(TAXO.key(n))) names.add(n); });
+    list.forEach(d=> (d.species||[]).forEach(s=> names.add(TAXO.name(s)))); }
+  const out = {habitats:[], animals:[], other:[]};
+  [...names].filter(n=> n && n !== 'Misc').sort((a, b)=> a.localeCompare(b)).forEach(n=>{
+    const k = list.filter(d=> taxIsA(d, n)).length; if(!k) return;
+    const isNode = TAXO && (TAXO.PARENTS[TAXO.key(n)] || TAXO.parentNodes().includes(n));
+    (TAXO && TAXO.isHabitat(n) ? out.habitats : isNode ? out.animals : out.other).push({name:n, n:k}); });
+  return out;
+}
+let txTypeMemo = null;
+function txTypeOptionsHTML(defs, sel){
+  const sig = Object.keys(defs || {}).length + '|' + (adminModeEnabled ? 'A' : '-');
+  if(!txTypeMemo || txTypeMemo.sig !== sig) txTypeMemo = {sig, g: txTypeGroups(defs)};
+  const g = txTypeMemo.g, opt = o=> `<option value="${escapeAttr(o.name)}" ${sel===o.name?'selected':''}>${ARCHETYPE_ICON[o.name] || (TAXO && TAXO.isHabitat(o.name) ? '🗺️' : '🌰')} ${escapeHtml(o.name)} (${o.n})</option>`;
+  return `<option value="">${escapeHtml(TX('ui.tx-all-types'))}</option>`
+    + [['habitats', ()=> TX('ui.tx-type-habitats')], ['animals', ()=> TX('ui.tx-type-animals')], ['other', ()=> TX('ui.tx-type-other')]].map(([k, key])=> g[k].length ? `<optgroup label="${escapeAttr(key())}">${g[k].map(opt).join('')}</optgroup>` : '').join('');
+}
+// ---- skill families (item 5) ----
+const skillBareLabel = l=> String(l || '').replace(/\s*(\{.*|\(.*|\s[–—-]\s.*)$/, '').trim().toLowerCase();
+let skillFamMemo = null;
+function skillFamilies(){
+  if(skillFamMemo) return skillFamMemo;
+  const all = PASSIVE_DEFS.concat(SKILL_DEFS.filter(s=> !PASSIVE_DEFS.some(p=> p.key === s.key))), byKey = new Map(), byLabel = new Map(), fam = new Map();
+  all.forEach(p=>{ if(!p || !p.key) return;
+    const base = /^(.+?)Grant$/.exec(p.key), lab = skillBareLabel(p.label);
+    let id = base && all.some(x=> x.key === base[1]) ? base[1] : (lab && byLabel.has(lab) ? byLabel.get(lab) : p.key);
+    if(byKey.has(id)) id = byKey.get(id);
+    byKey.set(p.key, id); if(lab && !byLabel.has(lab)) byLabel.set(lab, id);
+    if(!fam.has(id)) fam.set(id, []); fam.get(id).push(p.key); });
+  skillFamMemo = {byKey, fam}; return skillFamMemo;
+}
+function skillFamilyId(key){ return skillFamilies().byKey.get(key) || key; }
+function skillFamilyKeys(key){ const id = skillFamilyId(key); return skillFamilies().fam.get(id) || [id]; }
+// ---- skill groups (item 6) ----
+const SKILL_AGGREGATES = [
+  {id:'lumber', icon:'🪵', label:()=> TX('ui.tx-agg-lumber'), re:/\blumber\b/i},
+  {id:'stone', icon:'🪨', label:()=> TX('ui.tx-agg-stone'), re:/\bstone\b/i},
+  {id:'metal', icon:'⚙️', label:()=> TX('ui.tx-agg-metal'), re:/\b(metal|ore)\b/i},
+  {id:'resources', icon:'💰', label:()=> TX('ui.tx-agg-resources'), re:/\b(lumber|stone|metal|grace|prayer|darkness|dark points?|echo(es)?|elemental energy|uranium|gold|berr(y|ies)|resource)\b/i},
+  {id:'damage', icon:'💥', label:()=> TX('ui.tx-agg-damage'), re:/\b(deals?|dealt|deal damage|damage to|bonus damage|extra damage|more damage|double damage|damage back|strikes?|attacks? twice|pierc\w*|missile|barrage|arrows?)\b/i},
+  {id:'heal', icon:'💚', label:()=> TX('ui.tx-agg-heal'), re:/\b(heal\w*|regenerat\w*|regen|mend\w*|lifesteal|leech\w*|restor\w*|cure)\b/i},
+  {id:'status', icon:'🌀', label:()=> TX('ui.tx-agg-status'), re:/\b(poison\w*|bleed\w*|bled|decay\w*|corrode\w*|freez\w*|frozen|sleep|asleep|paraly\w*|stun\w*|blind\w*|tipsy|confuse\w*|shock\w*|stagger\w*|expose\w*|bound|bind|web\w*|toxin|scar\w*|irradiat\w*|wet|brittle|silence\w*|exhaust\w*|petrif\w*|vulnerable|stench)\b/i},
+  {id:'movement', icon:'↔️', label:()=> TX('ui.tx-agg-movement'), re:/\b(move[sd]?|moving|swap\w*|push\w*|pull\w*|jump\w*|leap\w*|slides?|switch\w*|closes? its gaps|gaps|charge\w*|ride\w*|converge)\b/i},
+  {id:'summon', icon:'🥚', label:()=> TX('ui.tx-agg-summon'), re:/\b(summon\w*|spawn\w*|tokens?|hatch\w*|duplicate\w*|copies|copy of|calls? up)\b/i},
+  {id:'defense', icon:'🛡️', label:()=> TX('ui.tx-agg-defense'), re:/\b(armou?r|shield\w*|guardian|evasive|evade\w*|dodge\w*|less damage|half damage|taunt|block\w*|immune|invincible|shell|bulwark|reflect\w*|protect\w*)\b/i},
+  {id:'daynight', icon:'🌗', label:()=> TX('ui.tx-agg-daynight'), re:/\b(day|by day|night|twilight|dusk|dawn|moon|sun|diurnal|nocturnal|crepuscular)\b/i},
+  {id:'tide', icon:'🌊', label:()=> TX('ui.tx-agg-tide'), re:/\b(tide|flood|ebb|wet|water|swim\w*|wave)\b/i},
+  {id:'cards', icon:'🃏', label:()=> TX('ui.tx-agg-cards'), re:/\b(draws?|hand|discard\w*|pitch\w*|graveyard|deck|exile\w*)\b/i},
+];
+let skillAggMemo = null;
+// Which skill keys and trigger actions are in each group (from the registry's own names and texts; worked out once).
+function skillAggregateMembers(){
+  if(skillAggMemo) return skillAggMemo;
+  const text = p=>{ let t = (p.label || '') + ' ' + p.key.replace(/([A-Z])/g, ' $1'); try{ t += ' ' + skillText(p, p.kind === 'number' ? 1 : p.kind === 'twoNumber' ? [1, 1] : true, {}); }catch(e){ try{ t += ' ' + p.desc(1); }catch(_){} } return t.replace(/<[^>]*>/g, ' '); };
+  const all = PASSIVE_DEFS.concat(SKILL_DEFS.filter(s=> !PASSIVE_DEFS.some(p=> p.key === s.key))).filter(p=> p && p.key && p.label && !p.reserved);
+  const out = {}; SKILL_AGGREGATES.forEach(a=> out[a.id] = {skills:new Set(), actions:new Set()});
+  all.forEach(p=>{ const t = text(p); SKILL_AGGREGATES.forEach(a=>{ if(a.re.test(t)) out[a.id].skills.add(p.key); }); });
+  (typeof ACTION_DEFS !== 'undefined' ? ACTION_DEFS : []).forEach(x=>{ if(!x || !x.key || x.key === 'gain') return; const t = (x.label || '') + ' ' + x.key + ' ' + (typeof x.desc === 'string' ? x.desc : '');
+    SKILL_AGGREGATES.forEach(a=>{ if(a.re.test(t)) out[a.id].actions.add(x.key); }); });
+  skillAggMemo = out; return out;
+}
+function skillAggregateOf(id){ return SKILL_AGGREGATES.find(a=> a.id === id) || null; }
+const cardAggMemo = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+function cardInSkillAggregate(d, id){
+  const a = skillAggregateOf(id); if(!a || !d) return false;
+  let m = cardAggMemo && cardAggMemo.get(d); if(m && id in m) return m[id];
+  const M = skillAggregateMembers()[id], e = d.effects || {};
+  let hit = [...M.skills].some(k=> cardHasSkill(d, k));
+  if(!hit) hit = (Array.isArray(e.triggers) ? e.triggers : []).some(t=> t && (M.actions.has(t.do) || (t.do === 'gain' && a.re.test(String(t.resource || '') + ' gain'))));
+  if(cardAggMemo){ if(!m){ m = {}; cardAggMemo.set(d, m); } m[id] = hit; }
+  return hit;
+}
+// A pick of the skill filter: 'agg:<group>' or a skill (any skill of its family counts).
+function cardMatchesSkillPick(d, pick){
+  if(typeof pick !== 'string' || !d) return false;
+  if(pick.startsWith('agg:')) return cardInSkillAggregate(d, pick.slice(4));
+  return skillFamilyKeys(pick).some(k=> cardHasSkill(d, k));
+}
+function skillPickName(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
+function skillPickIcon(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
+// The skill picker's body: the groups, then the skills you have seen (one chip per family). `on` is the Set of picks.
+function skillPickerChipsHTML(list, on){
+  return `<div class="cx-skill-groups"><b>${escapeHtml(TX('ui.tx-skill-groups'))}</b><small>${escapeHtml(TX('ui.tx-skill-groups-hint'))}</small></div>`
+    + `<div class="cx-skill-chips is-groups">${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
+    + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
+}
+// ---- sorts ----
+const CF_SORTS = [['cost', ()=> TX('ui.tx-sort-cost')], ['wait', ()=> TX('ui.tx-sort-wait')], ['attack', ()=> TX('ui.tx-sort-attack')], ['health', ()=> TX('ui.tx-sort-health')], ['rarity', ()=> TX('ui.tx-sort-rarity')],
+  ['level', ()=> TX('ui.tx-sort-level')], ['br', ()=> TX('ui.tx-sort-br')], ['name', ()=> TX('ui.tx-sort-name')]];
+function cardBR(id, d){ try{ return Math.round(ratingWeightOf(d) * ratingLevelFactor(getCardLevel(id)) * 10) / 10; }catch(e){ return 0; } }
+function cardLevelForSort(id){ try{ return Number(getCardLevel(id)) || 0; }catch(e){ return 0; } }
+// The number a sort reads (high = more); rarity by its band.
+function cfSortValue(key, id, d){
+  if(key === 'cost') return Number(d.cost) || 0; if(key === 'wait') return Number(d.wait) || 0; if(key === 'attack') return Number(d.attack) || 0;
+  if(key === 'health') return Number(d.health) || 0; if(key === 'rarity') return RARITY_TIER_BANDS.indexOf(d.rarity || 'common');
+  if(key === 'level') return cardLevelForSort(id); if(key === 'br') return cardBR(id, d); return 0;
+}
+// A comparator for card ids: dir 'desc' = high to low (Z to A for Name), 'asc' = low to high (A to Z).
+function cfSortFn(sort, dir, defs){
+  defs = defs || getCardDefs(); const sgn = dir === 'asc' ? 1 : -1, memo = new Map();
+  const val = id=>{ let v = memo.get(id); if(v === undefined){ v = cfSortValue(sort, id, defs[id] || {}); memo.set(id, v); } return v; };
+  return (a, b)=>{ const A = defs[a], B = defs[b]; if(!A || !B) return 0;
+    if(sort === 'name') return -sgn * (A.name || '').localeCompare(B.name || '') || 0;
+    return sgn * (val(a) - val(b)) || ((A.cost||0) - (B.cost||0)) || (A.name || '').localeCompare(B.name || ''); };
+}
+function cfSortOptionsHTML(sel, extra){
+  return CF_SORTS.concat(extra || []).map(([k, key])=> `<option value="${k}" ${sel===k?'selected':''}>${escapeHtml(key())}</option>`).join('');
+}
+function cfDirLabel(dir){ return dir === 'asc' ? '↑ ' + TX('ui.tx-low-high') : '↓ ' + TX('ui.tx-high-low'); }
+// ---- the filter bar for the deck editors ----
+function cfDefaults(){ return {archetype:'', animal:'', phylum:'', rarity:'', mechLine:'', skills:[], sort:'cost', dir:'asc'}; }
+function cfActiveCount(f){ return [f.archetype, f.animal, f.phylum, f.rarity, f.mechLine, (f.skills||[]).length ? 1 : ''].filter(Boolean).length; }
+// Does the card pass the bar's filters (types through the taxonomy, every skill pick)?
+function cfMatch(d, f){
+  if(!d || !f) return true;
+  if(f.archetype && !taxIsA(d, f.archetype)) return false;
+  if(f.animal && animalGroupOf(d.animal) !== f.animal) return false;
+  if(f.phylum && !phylumOf(d).split(' & ').includes(f.phylum)) return false;
+  if(f.rarity && (d.rarity || 'common') !== f.rarity) return false;
+  if(f.mechLine && inferMechanicLine(d) !== f.mechLine) return false;
+  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> cardMatchesSkillPick(maskHiddenSkills(d), k)))) return false;
+  return true;
+}
+function cfApply(ids, defs, f){ return ids.filter(id=> cfMatch(defs[id], f)); }
+function cfBarHTML(f, P, defs){
+  defs = defs || getCardDefs(); const n = cfActiveCount(f), ns = (f.skills || []).length;
+  const rar = (()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${f.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })();
+  const animals = (()=>{ const c = {}; Object.values(defs).forEach(d=>{ if(!d || d.test || !d.animal) return; const g = animalGroupOf(d.animal); c[g] = (c[g] || 0) + 1; });
+    return Object.keys(c).sort().map(g=> `<option value="${escapeAttr(g)}" ${f.animal===g?'selected':''}>${escapeHtml(animalCap(g))} (${c[g]})</option>`).join(''); })();
+  return `<div class="cf-bar" data-cf="${P}">
+    <button type="button" class="btn small cf-toggle" id="${P}FiltersBtn" aria-expanded="false" aria-controls="${P}Panel">⚙️ ${escapeHtml(TX('ui.tx-filters'))}<b class="cx-fcount" ${n ? '' : 'hidden'}>${n}</b></button>
+    <select id="${P}Sort" aria-label="${escapeAttr(TX('ui.tx-sort'))}">${cfSortOptionsHTML(f.sort)}</select>
+    <button type="button" class="btn small" id="${P}SortDir">${escapeHtml(cfDirLabel(f.dir))}</button>
+    <div class="cf-panel" id="${P}Panel" hidden>
+      <select id="${P}Arch" aria-label="${escapeAttr(TX('ui.tx-type'))}">${txTypeOptionsHTML(defs, f.archetype)}</select>
+      <select id="${P}Animal" aria-label="${escapeAttr(TX('ui.codex-animal-filter'))}"><option value="">🐾 ${escapeHtml(TX('ui.codex-all-animals'))}</option>${animals}</select>
+      ${phylaUnlocked() ? `<select id="${P}Phylum" aria-label="${escapeAttr(TX('ui.tx-phylum'))}"><option value="">🧬 ${escapeHtml(TX('ui.tx-all-phyla'))}</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${escapeAttr(ph)}" ${f.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${escapeHtml(ph)}</option>`).join('')}</select>` : ''}
+      <select id="${P}Rarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${rar}</select>
+      <select id="${P}MechLine" aria-label="${escapeAttr(TX('ui.tx-archetype'))}"><option value="">${escapeHtml(TX('ui.tx-all-archetypes'))}</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=> k !== 'none').map(([k, label])=> `<option value="${k}" ${f.mechLine===k?'selected':''}>${escapeHtml(label)}</option>`).join('')}</select>
+      <button type="button" class="btn small cx-skill-btn ${ns ? 'primary' : ''}" id="${P}SkillBtn" aria-expanded="false" aria-controls="${P}SkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${ns ? '' : 'hidden'}>${ns}</b></button>
+      <button type="button" class="btn small ghost" id="${P}Clear" ${n ? '' : 'disabled'}>${escapeHtml(TX('ui.tx-clear-filters'))}</button>
+      <div class="cx-skill-panel" id="${P}SkillPanel" hidden></div>
+    </div>
+    <div class="cx-skill-active" id="${P}SkillActive" hidden></div>
+  </div>`;
+}
+// Wires a bar drawn by cfBarHTML inside `root`; onChange() redraws the list (f is changed in place).
+function cfWire(root, f, P, onChange, keep){
+  const $ = id=> root.querySelector('#' + P + id); if(!$('Sort')) return;
+  const changed = ()=>{ ui(); onChange && onChange(); };
+  const ui = ()=>{ const n = cfActiveCount(f), b = $('FiltersBtn'), c = b && b.querySelector('.cx-fcount'); if(c){ c.textContent = n; c.hidden = !n; }
+    const cl = $('Clear'); if(cl) cl.disabled = !n;
+    const sb = $('SkillBtn'), ns = (f.skills || []).length; if(sb){ const k = sb.querySelector('.cx-fcount'); if(k){ k.textContent = ns; k.hidden = !ns; } sb.classList.toggle('primary', !!ns); }
+    const pn = $('SkillPanel'); if(pn && pn.dataset.built){ const on = new Set(f.skills || []); pn.querySelectorAll('[data-cxskill]').forEach(x=> x.setAttribute('aria-pressed', on.has(x.dataset.cxskill))); }
+    const act = $('SkillActive'); if(act){ act.hidden = !ns; act.innerHTML = ns ? `<span>${escapeHtml(TX('ui.codex-skill-active'))}</span>${f.skills.map(k=> `<button type="button" class="cx-sk-chip is-on" data-cxskilloff="${escapeAttr(k)}" aria-label="${escapeAttr(TX('ui.codex-skill-remove'))}: ${escapeAttr(skillPickName(k))}">${skillPickIcon(k)} ${escapeHtml(skillPickName(k))} <i aria-hidden="true">✕</i></button>`).join('')}` : ''; } };
+  const tog = $('FiltersBtn'), panel = $('Panel');
+  if(tog && panel) tog.addEventListener('click', ()=>{ panel.hidden = !panel.hidden; tog.setAttribute('aria-expanded', !panel.hidden); if(keep) keep.panel = !panel.hidden; });
+  [['Arch', 'archetype'], ['Animal', 'animal'], ['Phylum', 'phylum'], ['Rarity', 'rarity'], ['MechLine', 'mechLine']].forEach(([id, k])=>{ const el = $(id); if(el) el.addEventListener('change', ()=>{ f[k] = el.value; changed(); }); });
+  $('Sort').addEventListener('change', e=>{ f.sort = e.target.value; changed(); });
+  { const d = $('SortDir'); if(d) d.addEventListener('click', ()=>{ f.dir = f.dir === 'asc' ? 'desc' : 'asc'; d.textContent = cfDirLabel(f.dir); changed(); }); }
+  { const cl = $('Clear'); if(cl) cl.addEventListener('click', ()=>{ Object.assign(f, {archetype:'', animal:'', phylum:'', rarity:'', mechLine:'', skills:[]}); ['Arch', 'Animal', 'Phylum', 'Rarity', 'MechLine'].forEach(id=>{ const el = $(id); if(el) el.value = ''; }); changed(); }); }
+  const sb = $('SkillBtn'), sp = $('SkillPanel');
+  if(sb && sp) sb.addEventListener('click', ()=>{ if(!sp.dataset.built){ sp.innerHTML = `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small></div>` + skillPickerChipsHTML(codexSkillChoices(), new Set(f.skills || [])); sp.dataset.built = '1'; }
+    sp.hidden = !sp.hidden; sb.setAttribute('aria-expanded', !sp.hidden); if(keep) keep.skills = !sp.hidden; });
+  if(keep && keep.panel && tog && panel){ panel.hidden = false; tog.setAttribute('aria-expanded', true); }
+  if(keep && keep.skills && sb && sp){ keep.skills = false; sb.click(); }
+  const onPick = e=>{ const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+    const chip = t.closest('[data-cxskill]'), off = t.closest('[data-cxskilloff]'); const cur = (f.skills || []).slice();
+    if(chip){ const k = chip.dataset.cxskill; f.skills = cur.includes(k) ? cur.filter(x=> x !== k) : cur.concat(k); changed(); }
+    else if(off){ f.skills = cur.filter(x=> x !== off.dataset.cxskilloff); changed(); } };
+  if(sp) sp.addEventListener('click', onPick); { const act = $('SkillActive'); if(act) act.addEventListener('click', onPick); }
+  ui();
+}
+// The deck editor's bar state (Play and the Camp share it; sticky like the Codex's filters, never the text box).
+let deckCfState = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('deckTx'); }catch(e){ return {}; } })());
+function deckCfSave(){ try{ uiStickySave('deckTx', deckCfState); }catch(e){} }
+/* [TX_FILTERS_END] */
 // ---- The card album (2026-10-18, package C, owner 20:31: "bestiary - look like a card album"; 20:36: "cards dont show up if you
 // havent seen them before") ----
 // The Codex's Browse tab as a binder: album pages of card sleeves, 3 × 3 a page, two pages side by side on a wide screen and one
@@ -14577,10 +14799,9 @@ function renderPlayerSubTab(body){
       <div class="deck-list-mini" id="myDeckList"></div>
       <div class="codex-toolbar deck-toolbar">
         <input data-text-filter autocomplete="off" id="deckSearch" type="text" placeholder="🔍 Search card name…">
-        <select id="playArchFilter" title="Type Tags (biome/animal) filter"><option value="">All types</option>${archetypes.map(a=>`<option>${a}</option>`).join('')}</select>
+        ${cfBarHTML(deckCfState, 'dk', defs) /* 2026-10-21 (package TX, owner: "every filter power in codex to be in the deck editors"): types (with the hierarchy), animal, phylum, rarity, archetype, skills and groups, sorts both ways */}
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
         <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
-        <select id="deckSort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select>
         <button type="button" class="btn small ghost deck-stackfx-btn" id="deckStackFx" aria-pressed="${deckStackTreatments}" title="Stack foil and other finishes together, or show each finish as its own stack">${deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'}</button>
       </div>
       <div class="pool-grid" id="myDeckPool"></div>
@@ -14588,7 +14809,7 @@ function renderPlayerSubTab(body){
     <div class="panel player-stats-cta" style="text-align:center;">
       <button class="btn primary" id="openPlayerStatsBtn">📊 Stats</button>
     </div>`;
-  stickyControls('camp', ['deckSearch', 'playArchFilter', 'deckKindFilter', 'deckLevelFilter', 'deckSort']); // 2026-10-16: the pool's filters are as you left them
+  stickyControls('camp', ['deckSearch', 'deckKindFilter', 'deckLevelFilter']); // 2026-10-16: the pool's filters are as you left them (2026-10-21, package TX: the bar keeps its own, deckCfState)
   renderMyDeckPanels();
   wireCardTileFlourish(body); // the Bramble/castle picker tiles above (myDeckPool's own pool tiles are already wired inside renderMyDeckPanels)
   body.querySelectorAll('.char-card').forEach(el=> el.addEventListener('click', ()=>{
@@ -14596,14 +14817,13 @@ function renderPlayerSubTab(body){
     refreshDeckHeroBanner();
     body.querySelectorAll('.char-card').forEach(c=> c.classList.toggle('selected', c.getAttribute('data-charid')===myCharacterId));
   }));
-  document.getElementById('playArchFilter').addEventListener('change', renderMyDeckPanels);
+  cfWire(body, deckCfState, 'dk', ()=>{ deckCfSave(); renderMyDeckPanels(); }); // 2026-10-21 (package TX)
   // Item #12 (2026-09-18): "add the All archetypes and other filters into the deck searcher" —
   // the deck pool now gets the same search/type-tags/kind/sort toolbar the Codex Browse tab has,
   // instead of just the lone type-tags dropdown it had before.
   document.getElementById('deckSearch').addEventListener('input', renderMyDeckPanels);
   document.getElementById('deckKindFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
-  document.getElementById('deckSort').addEventListener('change', renderMyDeckPanels);
   { const sb = document.getElementById('deckStackFx'); if(sb) sb.addEventListener('click', ()=>{ deckStackTreatments = !deckStackTreatments; try{ localStorage.setItem('bramblewood_deck_stackfx', deckStackTreatments ? 'stacked' : 'apart'); }catch(e){} sb.textContent = deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'; sb.setAttribute('aria-pressed', deckStackTreatments); renderMyDeckPanels(); }); }
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
   wireDeckTop();
@@ -17433,6 +17653,8 @@ function openSkirmishGallery(o){
   el.className = 'modal-overlay se-gallery-overlay';
   document.body.appendChild(el);
   let q = '', only = 'all';
+  // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar here too (deck and leader picks)
+  const cf = Object.assign(cfDefaults(), {sort:'rarity', dir:'asc'}, (()=>{ try{ return uiSticky('sgTx'); }catch(e){ return {}; } })()), cfKeep = {}; // rarity, low to high: the old order
   const RAR = ['starter','common','uncommon','rare','epic','legendary','unique'];
   const rarIdx = d=> { const i = RAR.indexOf(d.rarity||'common'); return i < 0 ? 1 : i; };
   const pool = o.kind === 'castle' ? [] : Object.values(defs).filter(d=> d && !d.test && !d.hallOfFame && !d.baseId && (o.kind !== 'leader' || !d.token))
@@ -17449,7 +17671,8 @@ function openSkirmishGallery(o){
       const list = [plain, ...Object.values(CHARACTER_DEFS).filter(c=> c.id !== 'castle' || o.current === 'castle')].filter(c=> !ql || (c.name||'').toLowerCase().includes(ql));
       body = list.map(c=> `<button type="button" class="sg-item${(o.current||'') === c.id ? ' is-picked' : ''}" data-pick="${escapeAttr(c.id)}" title="${escapeAttr(c.name)} (${c.health} HP)">${matchCastleTileHTML(c.id ? c : null, c.health, c.health, 'preview', '')}<span class="sg-name">${escapeHtml(c.name)} · ${c.health} HP</span></button>`).join('');
     } else {
-      const list = pool.filter(d=> (!ql || (d.name||'').toLowerCase().includes(ql)) && (only !== 'in' || (o.counts && o.counts[d.id])));
+      let list = pool.filter(d=> (!ql || (d.name||'').toLowerCase().includes(ql)) && (only !== 'in' || (o.counts && o.counts[d.id])) && cfMatch(d, cf));
+      { const by = cfSortFn(cf.sort, cf.dir, defs); list = list.slice().sort((a, b)=> by(a.id, b.id)); }
       body = list.map(d=>{
         const n = o.kind === 'deck' ? (o.counts[d.id]||0) : 0;
         const picked = o.kind === 'leader' && (o.current||[]).includes(d.id);
@@ -17460,7 +17683,8 @@ function openSkirmishGallery(o){
       <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-sg-close aria-label="Close">✕</button></div>
       <div class="sg-tools"><input data-text-filter autocomplete="off" type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}">
         ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
-        ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}</div>
+        ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}
+        ${o.kind !== 'castle' ? cfBarHTML(cf, 'sg', defs) : ''}</div>
       <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}</p>
       <div class="sg-grid${o.kind === 'castle' ? ' is-castles' : ''}">${body}</div>
     </div>`;
@@ -17469,6 +17693,7 @@ function openSkirmishGallery(o){
     const s = el.querySelector('.sg-search');
     s.oninput = ()=>{ q = s.value; const pos = s.selectionStart; render(); const s2 = el.querySelector('.sg-search'); s2.focus(); s2.setSelectionRange(pos, pos); };
     el.querySelectorAll('[data-only]').forEach(b=> b.onclick = ()=>{ only = b.dataset.only; render(); });
+    if(o.kind !== 'castle') cfWire(el, cf, 'sg', ()=>{ try{ uiStickySave('sgTx', cf); }catch(e){} render(); }, cfKeep); // 2026-10-21 (package TX)
     el.querySelectorAll('[data-minus]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); o.minus(b.dataset.minus); render(); });
     el.querySelectorAll('[data-pick]').forEach(b=>{
       const go = ()=>{ o.pick(b.dataset.pick); if(o.kind === 'deck') render(); else close(); };
@@ -17484,17 +17709,19 @@ function openSkirmishGallery(o){
 // also"): the deck as card stacks at the top (click one to take a copy out), every card below as stacks to add from,
 // with search and the same sorts as the Armoury. `counts` is edited in place; `unlimited` skips ownership limits.
 function openDeckBuilderPopup(o){
-  const counts = o.counts; let q = '', sort = 'cost', rarityCap = !o.unlimited;
+  const counts = o.counts; let q = '', rarityCap = !o.unlimited;
+  // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar; its choices are kept between popups
+  const cf = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('dbpTx'); }catch(e){ return {}; } })()), sortBy = ()=> cfSortFn(cf.sort, cf.dir, getCardDefs());
   const ov = document.createElement('div'); ov.className = 'modal-overlay deck-popup-overlay'; document.body.appendChild(ov);
-  const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q))).sort(deckSortFn(sort)); };
+  const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q)) && cfMatch(defs[id], cf)).sort(sortBy()); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
-  const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(deckSortFn(sort));
+  const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(sortBy());
     return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
   const poolHTML = ()=>{ const defs = getCardDefs(); return all().slice(0, 400).map(id=> `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`).join(''); };
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
-    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
+    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards">${cfBarHTML(cf, 'dbp')}</div>
     <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
   </div>`;
   const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
@@ -17510,7 +17737,7 @@ function openDeckBuilderPopup(o){
     else if(r){ const id = r.dataset.rm; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} refresh(); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
-  ov.querySelector('#dbpSort').addEventListener('change', e=>{ sort = e.target.value; refresh(); });
+  cfWire(ov, cf, 'dbp', ()=>{ try{ uiStickySave('dbpTx', cf); }catch(e){} refresh(); }); // 2026-10-21 (package TX)
   setTimeout(()=> ov.querySelector('#dbpSearch').focus(), 30);
 }
 // Edit skirmish's field effects (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc."):
@@ -28647,8 +28874,6 @@ function stackHTML(tile, depth, badge, extra){
 }
 function renderMyDeckPanels(){
   const defs = getCardDefs();
-  const filterEl = document.getElementById('playArchFilter');
-  const arch = filterEl ? filterEl.value : '';
   // Item #12: the rest of the deck-searcher toolbar (search box, Structure/Unit kind filter,
   // sort) — each optional; a missing element (e.g. a stale test harness) just no-ops that filter
   // rather than throwing, same defensive style the pre-existing `arch` read above already used.
@@ -28656,8 +28881,7 @@ function renderMyDeckPanels(){
   const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
   const kindEl = document.getElementById('deckKindFilter');
   const kind = kindEl ? kindEl.value : '';
-  const sortEl = document.getElementById('deckSort');
-  const sortMode = sortEl ? sortEl.value : 'cost';
+  const cfSort = cfSortFn(deckCfState.sort, deckCfState.dir, defs); // 2026-10-21 (package TX): the bar's sort, high to low or low to high
   // Card levels (2026-10-03, explicit: "really ugly to display card levels ANYWHERE except for your
   // collection or when crafting... Also filterable for when building your deck"): hidden in the pool
   // unless this filter is on; then the pool shows level badges and keeps only cards at that level+.
@@ -28672,17 +28896,17 @@ function renderMyDeckPanels(){
   if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
   try{ refreshDeckHeroBanner(); }catch(e){}
   const listEl = document.getElementById('myDeckList'); listEl.classList.add('is-stacks');
-  listEl.innerHTML = Object.keys(myDeckCounts).filter(id=> myDeckCounts[id]>0 && defs[id]).sort(deckSortFn(sortMode)).map(id=>{ const n = myDeckCounts[id];
+  listEl.innerHTML = Object.keys(myDeckCounts).filter(id=> myDeckCounts[id]>0 && defs[id]).sort(cfSort).map(id=>{ const n = myDeckCounts[id];
     // 2026-10-15 (user: "In the main deck editor - click = +, shift click = -"): a deck card adds a copy on click and takes one out on
     // Shift+click (or right-click); the small − corner does it with a tap on touch screens.
     // 2026-10-16: a card's Shiny / alt-art copies in the deck are their own chips (data-look), after its plain ones.
     const looks = deckLooksFor(id), plainN = n - deckLookCount(looks);
     const chip = (look, k)=> `<span class="dchip deck-stack ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}" style="${lookStyle(id, look)}"` : ''} title="${escapeAttr(defs[id].name + (look ? ' (' + lookLabel(id, look) + ')' : ''))} ×${k}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, extraClass: lookTileClass(id, look)}), k, '×' + k)}${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '✦' : '🎨'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`;
     return (plainN > 0 ? chip('', plainN) : '') + Object.keys(looks).map(k=> chip(k, looks[k])).join(''); }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
-  const baseSort = deckSortFn(sortMode);
+  const baseSort = cfSort;
   const sortFn = (a,b)=>{ if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; } return baseSort(a, b); };
   const allIds = (defs[HERO_ID] ? [HERO_ID] : []).concat(getDraftableIds())
-    .filter(id=> !arch || archetypesOf(defs[id]).includes(arch))
+    .filter(id=> cfMatch(defs[id], deckCfState)) // 2026-10-21 (package TX): the bar's filters (an eagle is a Bird)
     .filter(id=> !kind || defs[id].type===kind)
     .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
     .filter(id=> !minLvl || (myCardLevels[id]||0) >= minLvl);
