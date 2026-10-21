@@ -157,9 +157,11 @@ ok(byId['piranha-shoal'].effects.bloodlust === true, 'cards: Piranha Shoal is Bl
 
 // ---- Sentry
 { const {e, P} = mk(); const S = put(e, P, 1, 's7-sentry', 0); put(e, P, 2, 's7-wall', 0); const ev = []; const X = play(e, P, 2, 's7-wall', 'right', ev);
-  ok(X.slot === 1 && X.hp === 496, `Sentry: an enemy played into a slot beside the one facing it is attacked (${X.slot}: ${X.hp})`);
-  ok(ev.some(x=> x.type === 'sentry' && x.uid === S.uid) && ev.some(x=> x.type === 'hit' && x.sentry && x.attUid === S.uid), 'a sentry event and its hit');
-  const Y = play(e, P, 2, 's7-wall', 'left'); ok(Y.slot === -1 && Y.hp === 500, `once a round (${Y.hp})`);
+  // 2026-10-19 (package SK1, owner 21:36): Sentry N = On Enemy Enters (Facing): Damage N (true = 2), for every unit that comes in (was: its
+  // Attack, once a round). tests/skills-sk1-2026-10-19.js has the rest (moves, swaps, the trigger rules).
+  ok(X.slot === 1 && X.hp === 498, `Sentry: an enemy played into a slot beside the one facing it takes 2 (${X.slot}: ${X.hp})`);
+  ok(ev.some(x=> x.type === 'triggerFired' && x.uid === S.uid && x.hook === 'onEnemyEnter') && ev.some(x=> x.type === 'hit' && x.attUid === S.uid && x.targetUid === X.uid), 'its On Enemy Enters (Facing) trigger and the hit');
+  const Y = play(e, P, 2, 's7-wall', 'left'); ok(Y.slot === -1 && Y.hp === 498, `each unit that enters, not once a round (${Y.hp})`);
   e.roundStart(P, 2, so, {}, []); const Z = play(e, P, 2, 's7-wall', 'right'); ok(Z.slot === 2 && Z.hp === 500, `out of its 3 slots: left alone (${Z.slot})`); }
 { const {e, P} = mk(); const S = put(e, P, 1, 's7-sentry-wait', 0); S.wait = 2; const X = play(e, P, 2, 's7-wall', 0); ok(X.hp === 500, 'a Waiting Sentry does nothing'); }
 

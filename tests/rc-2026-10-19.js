@@ -79,11 +79,20 @@ ok(/grantRaidRewardCards\(def, rwc\)/.test(claim) && /grantRaidShards\(def\.id, 
   const T = R.RAID_REWARD_TABLE;
   // a lone raider is the top 1%: +RAID_TIER_SHARDS.top1 on top
   const solo = R.raidReward(goliath, {defeated: true, fraction: 0, fightsBy: {me: 3}, contributors: Object.assign({me: 9e6}, Object.fromEntries(Array.from({length: 199}, (_, i)=> ['o' + i, 1000 + i])))}, 'me', {});
-  ok(solo.tier === 'top1' && solo.shards === Math.round(T.participant.shards * 1) + T.participant.extraShards + R.RAID_TIER_SHARDS.top1, `2. the top 1% get ${R.RAID_TIER_SHARDS.top1} more (${solo.shards})`);
+  ok(solo.tier === 'top1' && solo.shards === Math.max(T.participant.shards, 3) * T.participant.shardMult + R.RAID_TIER_SHARDS.top1, `2. the top 1% get ${R.RAID_TIER_SHARDS.top1} more (${solo.shards})`);
   const low = R.raidReward(goliath, {defeated: true, fraction: 0, fightsBy: {me: 3, a: 5, b: 5}, contributors: {me: 1500, a: 9e4, b: 8e4}}, 'me', {});
   ok(low.tier === 'participant' && low.shards === T.participant.shards, `2. a plain participant at the bottom: ${low.shards}`);
   const lowLead = R.raidReward(goliath, {defeated: true, fraction: 0, fightsBy: {me: 5, a: 5, b: 5}, contributors: {me: 50000, a: 9e4, b: 8e4}}, 'me', {});
-  ok(lowLead.shards === Math.round(T.leading.shards * 1.4) + T.leading.extraShards, `2. a Leading participant at the bottom: ${lowLead.shards}`);
+  ok(lowLead.shards === Math.max(T.leading.shards, 5) * 5, `2. a Leading participant at the bottom: 5x the base (${lowLead.shards})`);
+  // 2026-10-19 (package MX, owner 23:43): 1 shard a fight played (the base when that is more), x2 Competent, x5 Leading, the standing on top
+  ok(R.RAID_SHARDS_PER_FIGHT === 1 && T.participant.shardMult === 1 && T.competent.shardMult === 2 && T.leading.shardMult === 5, 'MX. 1 a fight; x1 / x2 / x5');
+  { const at40 = (dmg)=> R.raidReward(goliath, {defeated: true, fraction: 0, fightsBy: {me: 40, a: 40, b: 40}, contributors: {me: dmg, a: 9e5, b: 8e5}}, 'me', {});
+    const [q, c40, l40] = [600, 3000, 20000].map(at40); // RB's tiers: 500 / 2,000 / 12,500 damage
+    ok(q.level === 'participant' && q.shards === 40 && c40.level === 'competent' && c40.shards === 80 && l40.level === 'leading' && l40.shards === 200, `MX. 40 fights at the bottom: ${q.shards} / ${c40.shards} / ${l40.shards} (want 40 / 80 / 200)`);
+    const top = R.raidReward(goliath, {defeated: true, fraction: 0, fightsBy: {me: 40}, contributors: Object.assign({me: 9e6}, Object.fromEntries(Array.from({length: 199}, (_, i)=> ['o' + i, 1000 + i])))}, 'me', {});
+    ok(top.level === 'leading' && top.tier === 'top1' && top.shards === 200 + R.RAID_TIER_SHARDS.top1, `MX. a top-1% Leading raider with 40 fights: ${top.shards} (100+)`);
+    const held40 = R.raidReward(goliath, {defeated: false, fraction: 0.4, fightsBy: {me: 40, a: 40, b: 40}, contributors: {me: 600, a: 9e5, b: 8e5}}, 'me', {over: true});
+    ok(held40.kind === 'compensation' && held40.shards === Math.floor(40 * 0.5 * 0.6), `MX. a held raid still pays its share: half of what Health went (${held40.shards} of 40)`); }
   const held = R.raidReward(goliath, st(3, 2000, {defeated: false, fraction: 0.4}), 'me', {over: true}), held0 = R.raidReward(goliath, st(3, 2000, {defeated: false, fraction: 1}), 'me', {over: true});
   ok(held.kind === 'compensation' && held.shards === Math.floor(p.shards * 0.5 * 0.6) && held.shards < p.shards && held0.shards === 0, `2. a held raid: its share by Health taken (${held.shards} of ${p.shards}; nothing taken: ${held0.shards})`);
   const tuned = R.raidReward(Object.assign({}, goliath, {rewards: Object.assign({}, goliath.rewards, {shards: 10})}), {defeated: true, fraction: 0, fightsBy: {me: 3, a: 5, b: 5}, contributors: {me: 1500, a: 9e4, b: 8e4}}, 'me', {});
