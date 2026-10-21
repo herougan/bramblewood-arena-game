@@ -4121,6 +4121,8 @@ function persistMapLayouts(){ try{ localStorage.setItem(MAP_LAYOUT_KEY, JSON.str
 function applyCloudCfgRow(r){
   const mn = /^__cfg:map-nodes:(.+)$/.exec(r.id);
   if(mn){ applyCloudNodeEdits(mn[1], r); return; }
+  const mpm = /^__cfg:map-pools:(.+)$/.exec(r.id); // 2026-10-22 (package MP): a map's card pools
+  if(mpm){ applyCloudMapPools(mpm[1], r); return; }
   const mr = /^__cfg:raid:(.+)$/.exec(r.id);
   if(mr){ applyCloudRaidDef(mr[1], r); return; }
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
@@ -18212,6 +18214,8 @@ function openSkirmishGallery(o){
   el.className = 'modal-overlay se-gallery-overlay';
   document.body.appendChild(el);
   let q = '', only = 'all';
+  // 2026-10-22 (package MP): o.pool = the fight's map id (deck picks): the map's pool under its tier headings, + Load any card (see openDeckBuilderPopup)
+  const pm = o.kind === 'deck' && o.pool ? {mapId: o.pool, any: false, shown: 96, note: ''} : null;
   // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar here too (deck and leader picks)
   const cf = Object.assign(cfDefaults(), {sort:'rarity', dir:'asc'}, (()=>{ try{ return uiSticky('sgTx'); }catch(e){ return {}; } })()), cfKeep = {}; // rarity, low to high: the old order
   const RAR = ['starter','common','uncommon','rare','epic','legendary','unique'];
@@ -18230,22 +18234,31 @@ function openSkirmishGallery(o){
       const list = [plain, ...Object.values(CHARACTER_DEFS).filter(c=> c.id !== 'castle' || o.current === 'castle')].filter(c=> !ql || (c.name||'').toLowerCase().includes(ql));
       body = list.map(c=> `<button type="button" class="sg-item${(o.current||'') === c.id ? ' is-picked' : ''}" data-pick="${escapeAttr(c.id)}" title="${escapeAttr(c.name)} (${c.health} HP)">${matchCastleTileHTML(c.id ? c : null, c.health, c.health, 'preview', '')}<span class="sg-name">${escapeHtml(c.name)} · ${c.health} HP</span></button>`).join('');
     } else {
-      let list = pool.filter(d=> (!ql || (d.name||'').toLowerCase().includes(ql)) && (only !== 'in' || (o.counts && o.counts[d.id])) && cfMatch(d, cf));
-      { const by = cfSortFn(cf.sort, cf.dir, defs); list = list.slice().sort((a, b)=> by(a.id, b.id)); }
-      body = list.map(d=>{
+      const pass = d=> (!ql || (d.name||'').toLowerCase().includes(ql)) && (only !== 'in' || (o.counts && o.counts[d.id])) && cfMatch(d, cf);
+      const by = cfSortFn(cf.sort, cf.dir, defs);
+      const item = d=>{
         const n = o.kind === 'deck' ? (o.counts[d.id]||0) : 0;
         const picked = o.kind === 'leader' && (o.current||[]).includes(d.id);
         return `<div class="sg-item${n ? ' is-in' : ''}${picked ? ' is-picked' : ''}" data-pick="${escapeAttr(d.id)}" role="button" tabindex="0" title="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${n ? `<span class="sg-count">×${n}</span><button type="button" class="sg-minus" data-minus="${escapeAttr(d.id)}" aria-label="Remove one ${escapeAttr(d.name)}">−</button>` : ''}${picked ? '<span class="sg-count">👑</span>' : ''}</div>`;
-      }).join('') || '<p class="panel-sub">No cards match.</p>';
+      };
+      if(pm && !pm.any){ // 2026-10-22 (package MP): the map's pool, tier by tier
+        body = mpPoolGroupsHTML(pm.mapId, pass, (a, b)=> by(a, b), id=> item(defs[id])) || mpPoolEmptyHTML(pm.mapId);
+      } else {
+        let list = pool.filter(pass);
+        list = list.slice().sort((a, b)=> by(a.id, b.id));
+        const cap = pm ? pm.shown : list.length;
+        body = list.slice(0, cap).map(item).join('') + (list.length > cap ? `<button type="button" class="btn small mp-more" data-mp-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - cap})</button>` : '') || '<p class="panel-sub">No cards match.</p>';
+      }
     }
     el.innerHTML = `<div class="modal se-gallery" role="dialog" aria-label="${escapeAttr(title)}">
       <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-sg-close aria-label="Close">✕</button></div>
       <div class="sg-tools"><input data-text-filter autocomplete="off" type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}">
         ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
+        ${pm ? `<button type="button" class="btn small${pm.any ? ' primary' : ''}" data-mp-any>${escapeHtml(pm.any ? '← ' + TX('ui.mp-back-pool') : TX('ui.mp-load-any'))}</button>` : ''}
         ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}
         ${o.kind !== 'castle' ? cfBarHTML(cf, 'sg', defs) : ''}</div>
-      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}</p>
-      <div class="sg-grid${o.kind === 'castle' ? ' is-castles' : ''}">${body}</div>
+      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}${pm && (pm.any || pm.note) ? ' ' + escapeHtml(pm.note || TX('ui.mp-loading-any', {map: (mpMapById(pm.mapId) || {name: pm.mapId}).name})) : ''}</p>
+      <div class="sg-grid${o.kind === 'castle' ? ' is-castles' : ''}${pm ? ' is-pooled' : ''}">${body}</div>
     </div>`;
     el.querySelectorAll('[data-sg-close]').forEach(b=> b.onclick = close);
     el.onclick = e=>{ if(e.target === el) close(); };
@@ -18254,8 +18267,14 @@ function openSkirmishGallery(o){
     el.querySelectorAll('[data-only]').forEach(b=> b.onclick = ()=>{ only = b.dataset.only; render(); });
     if(o.kind !== 'castle') cfWire(el, cf, 'sg', ()=>{ try{ uiStickySave('sgTx', cf); }catch(e){} render(); }, cfKeep); // 2026-10-21 (package TX)
     el.querySelectorAll('[data-minus]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); o.minus(b.dataset.minus); render(); });
+    // 2026-10-22 (package MP): + Load any card, Show more, Open Map cards
+    { const any = el.querySelector('[data-mp-any]'); if(any) any.onclick = ()=>{ pm.any = !pm.any; pm.shown = 96; pm.note = ''; render(); }; }
+    { const more = el.querySelector('[data-mp-more]'); if(more) more.onclick = ()=>{ pm.shown += 96; render(); }; }
+    { const op = el.querySelector('[data-mp-open]'); if(op) op.onclick = ()=> openMapCardsEditor(pm.mapId, {onClose: render}); }
     el.querySelectorAll('[data-pick]').forEach(b=>{
-      const go = ()=>{ o.pick(b.dataset.pick); if(o.kind === 'deck') render(); else close(); };
+      const go = ()=>{ const id = b.dataset.pick; o.pick(id);
+        if(pm && pm.any && !mapPoolHas(pm.mapId, id)){ mapPoolAdd(pm.mapId, 'special', id); pm.note = TX('ui.mp-added-special', {name: (defs[id] || {}).name || id, map: (mpMapById(pm.mapId) || {name: pm.mapId}).name}); } // the card joins the map's Special tier
+        if(o.kind === 'deck') render(); else close(); };
       b.addEventListener('click', go);
       b.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(); } });
     });
@@ -18276,6 +18295,10 @@ function dbpAdvanceSortFn(){
 }
 function openDeckBuilderPopup(o){
   const counts = o.counts; let q = '', rarityCap = !o.unlimited;
+  // 2026-10-22 (package MP, owner 00:51: "when editing the deck of the skirmishes, they only show cards from this set. I have to press a special button
+  // if I want to load in a new card"): o.pool = the fight's map id. The picker then offers that map's pool under its tier headings, in large cards;
+  // "+ Load any card" opens the whole catalogue, and a card picked there joins the deck AND the map's Special tier.
+  const pm = o.pool ? {mapId: o.pool, any: false, shown: 96} : null;
   // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar; its choices are kept between popups
   // + package U4's "Sort: Advancement" (dbpAdvanceSortFn: earliest first, low to high; latest first, high to low), still kept per device
   // in bramblewood_dbp_sort_v1
@@ -18286,16 +18309,30 @@ function openDeckBuilderPopup(o){
   const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q)) && cfMatch(defs[id], cf)).sort(sortBy()); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
   const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(sortBy());
-    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
-  const poolHTML = ()=>{ const defs = getCardDefs(); return all().slice(0, 400).map(id=> `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`).join(''); };
+    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
+  const poolItem = id=> { const defs = getCardDefs(); return `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`; };
+  const poolHTML = ()=>{
+    if(pm && !pm.any){ // 2026-10-22 (package MP): the map's pool, tier by tier
+      const ql = q.trim().toLowerCase();
+      return mpPoolGroupsHTML(pm.mapId, (d, id)=> !d.test && id !== HERO_ID && (!ql || d.name.toLowerCase().includes(ql)) && cfMatch(d, cf), sortBy(), poolItem) || mpPoolEmptyHTML(pm.mapId);
+    }
+    const list = all(), cap = pm ? pm.shown : 400;
+    return list.slice(0, cap).map(poolItem).join('') + (pm && list.length > cap ? `<button type="button" class="btn small mp-more" data-mp-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - cap})</button>` : '');
+  };
+  const warnHTML = ()=> pm ? mpWarnHTML(pm.mapId, counts) : '';
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
-    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards">${cfBarHTML(cf, 'dbp', null, [['advance', ()=> TX('ui.u4-sort-advance')]])}</div>
-    <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
+    <div id="dbpWarn">${warnHTML()}</div>
+    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards">${pm ? `<button type="button" class="btn small" id="dbpAny">${escapeHtml(TX('ui.mp-load-any'))}</button>` : ''}${cfBarHTML(cf, 'dbp', null, [['advance', ()=> TX('ui.u4-sort-advance')]])}</div>
+    ${pm ? '<p class="panel-sub mp-note" id="dbpNote" hidden></p>' : ''}
+    <div class="dbp-pool${pm ? ' is-pooled' : ''}" id="dbpPool">${poolHTML()}</div>
   </div>`;
   const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
-    if(which !== 'pool') dk.innerHTML = deckHTML(); if(which !== 'deck'){ pl.innerHTML = poolHTML(); pl.scrollTop = st; } ov.querySelector('#dbpTotal').textContent = total(); };
+    if(which !== 'pool') dk.innerHTML = deckHTML(); if(which !== 'deck'){ pl.innerHTML = poolHTML(); pl.scrollTop = st; } ov.querySelector('#dbpTotal').textContent = total(); warnRefresh(); };
+  const warnRefresh = ()=>{ const w = ov.querySelector('#dbpWarn'); if(w && pm) w.innerHTML = warnHTML(); };
+  const note = text=>{ const n = ov.querySelector('#dbpNote'); if(n){ n.textContent = text || ''; n.hidden = !text; } };
+  const mapName = ()=> { const m = mpMapById(pm.mapId); return m ? m.name : pm.mapId; };
   const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); o.onClose && o.onClose(); };
   const onKey = e=>{ if(e.key === 'Escape') close(); }; document.addEventListener('keydown', onKey);
   ov.addEventListener('click', e=>{
@@ -18304,11 +18341,20 @@ function openDeckBuilderPopup(o){
     // 2026-10-21 (package ED, owner #10: "It hangs when I add or remove cards ... just change the number count. Unless it is 0->1 or 1->0"):
     // every click redrew the deck row and up to 400 pool stacks (~1-2.6 s a click at 1366). Now a click rewrites the card's counts and the
     // total (edPopupCount); only a card arriving or leaving redraws, and only the deck row.
-    const quick = (id, before)=>{ const n = counts[id] || 0; if((before > 0) !== (n > 0)){ const dk = ov.querySelector('#dbpDeck'); dk.innerHTML = deckHTML(); }
+    const quick = (id, before)=>{ const n = counts[id] || 0; if((before > 0) !== (n > 0)){ const dk = ov.querySelector('#dbpDeck'); dk.innerHTML = deckHTML(); warnRefresh(); }
       edPopupCount(ov, id, n); ov.querySelector('#dbpTotal').textContent = total(); };
+    // 2026-10-22 (package MP): ⚠ chips (Add to Special), + Load any card, the pool's Show more and Open Map cards
+    { const sp = e.target.closest('[data-mp-special]'), all2 = e.target.closest('[data-mp-special-all]');
+      if(pm && (sp || all2)){ mpAddOffPool(pm.mapId, counts, sp ? sp.dataset.mpSpecial : null); refresh(); note(TX('ui.mp-added-special-n', {map: mapName()})); return; }
+      if(pm && e.target.closest('[data-mp-more]')){ pm.shown += 96; refresh('pool'); return; }
+      if(pm && e.target.closest('[data-mp-open]')){ openMapCardsEditor(pm.mapId, {onClose: ()=>{ refresh(); }}); return; }
+      if(pm && e.target.closest('#dbpAny')){ pm.any = !pm.any; pm.shown = 96; const b = ov.querySelector('#dbpAny'); b.textContent = pm.any ? '← ' + TX('ui.mp-back-pool') : TX('ui.mp-load-any'); b.classList.toggle('primary', pm.any);
+        note(pm.any ? TX('ui.mp-loading-any', {map: mapName()}) : ''); refresh('pool'); return; } }
     // 2026-10-22 (package DR): the top-rank deck caps (Legendary 3 / Mythic 2 / higher 1, o.leaders counted) apply here too, even though the popup is `unlimited`
     const rankStop = (el, id)=>{ const rb = deckRankBlockFor(counts, id, getCardDefs(), typeof o.leaders === 'function' ? o.leaders() : o.leaders); if(!rb) return false; denyShake(el); floatText(el, deckRankLimitText(rb), 'debuff'); return true; };
-    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } if(rankStop(a, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
+    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } if(rankStop(a, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){}
+      if(pm && pm.any && !mapPoolHas(pm.mapId, id)){ mapPoolAdd(pm.mapId, 'special', id); note(TX('ui.mp-added-special', {name: (getCardDefs()[id] || {}).name || id, map: mapName()})); } // 2026-10-22 (package MP): the card joins the map's Special tier
+      quick(id, before); }
     // 2026-10-13 (user: "In the mini deck editor of the skirmish editor, click means +, shift+click means -").
     else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } if(rankStop(r, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
     else if(r){ const id = r.dataset.rm, before = counts[id]||0; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} quick(id, before); }
@@ -18316,6 +18362,233 @@ function openDeckBuilderPopup(o){
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
   cfWire(ov, cf, 'dbp', ()=>{ try{ uiStickySave('dbpTx', cf); localStorage.setItem('bramblewood_dbp_sort_v1', cf.sort); }catch(e){} refresh(); }); // 2026-10-21 (package TX)
   setTimeout(()=> ov.querySelector('#dbpSearch').focus(), 30);
+}
+// ---- Package MP (2026-10-22, owner 00:51 / 00:57): the map card pools -------------------------------------------------------------
+// "Introduce a map editor for cards. It lets me select cards relevant to this map ONLY. Submaps have a similar mechanic ... when editing
+// the deck of the skirmishes, they only show cards from this set. I have to press a special button if I want to load in a new card (it
+// goes into the map's 2nd tier called special cards)."  A pool is per MAIN map: {cards, special, submaps:{<id>:{cards, special}}}.
+// Source of truth: canonical/map-pools.json (inlined at build). The admin's live edits ride the card_overrides table as
+// `__cfg:map-pools:<mapId>` rows (one per main map, written through cloudWriteCardOverride like `__cfg:map-nodes:<id>`), win over the
+// file at load, and are folded back by tools/fold_map_pools.js. A fight on a main map draws from its Cards + Special; a fight on a
+// submap from the parent's Cards + the submap's Cards + the submap's Special.
+const MAP_POOLS_BASE = __MAP_POOLS__;
+const MAP_POOLS_KEY = 'bramblewood_map_pools_v1';
+let mapPoolEdits = {}; // {mainMapId: {pool:{cards, special, submaps}, localAt}}
+try{ mapPoolEdits = JSON.parse(localStorage.getItem(MAP_POOLS_KEY) || '{}') || {}; }catch(e){ mapPoolEdits = {}; }
+function persistMapPools(){ try{ localStorage.setItem(MAP_POOLS_KEY, JSON.stringify(mapPoolEdits)); }catch(e){} }
+const mpListeners = new Set();
+function mpChanged(kind){ mpListeners.forEach(fn=>{ try{ fn(kind); }catch(e){} }); } // kind 'status': only the publish state changed
+let mpStatus = null; // {ok, at}: the last publish
+function mpStatusText(){ return !mpStatus ? '' : mpStatus.ok ? '☁️ ' + TX('ui.mp-saved-cloud') : '💾 ' + TX('ui.mp-saved-local'); }
+function mpMapById(id){ return CONQUEST_MAPS.find(m=> m.id === id) || null; }
+function mpTopOf(mapId){ const m = mpMapById(mapId); return m && m.sub ? m.parent : mapId; }
+function mpIsSub(mapId){ const m = mpMapById(mapId); return !!(m && m.sub); }
+function mpClean(p){
+  const arr = a=> [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))], o = {cards: arr(p && p.cards), special: arr(p && p.special), submaps: {}};
+  Object.keys((p && p.submaps) || {}).forEach(k=>{ const s = p.submaps[k] || {}; o.submaps[k] = {cards: arr(s.cards), special: arr(s.special)}; });
+  return o;
+}
+// the main map's entry as the game reads it: a live edit wins over the file
+function mpEntry(top){ const e = mapPoolEdits[top]; return mpClean(e && e.pool ? e.pool : ((MAP_POOLS_BASE || {}).maps || {})[top]); }
+function mapPoolScope(mapId){
+  const sub = mpIsSub(mapId), top = mpTopOf(mapId), ent = mpEntry(top), own = sub ? (ent.submaps[mapId] || {cards: [], special: []}) : ent;
+  return {mapId, top, sub, cards: own.cards, special: own.special, parentCards: sub ? ent.cards : []};
+}
+// tiers in the order a fight reads them: parent Cards (read only), Cards, Special
+function mapPoolTiers(mapId){
+  const sc = mapPoolScope(mapId), out = [];
+  if(sc.sub){ const p = mpMapById(sc.top); out.push({key: 'parent', ro: true, ids: sc.parentCards, label: TX('ui.mp-t-parent', {name: p ? p.name : sc.top})}); }
+  out.push({key: 'cards', ids: sc.cards, label: TX(sc.sub ? 'ui.mp-t-subcards' : 'ui.mp-t-cards')});
+  out.push({key: 'special', ids: sc.special, label: TX(sc.sub ? 'ui.mp-t-subspecial' : 'ui.mp-t-special')});
+  return out;
+}
+function mapPoolIds(mapId){ return [...new Set(mapPoolTiers(mapId).flatMap(t=> t.ids))]; }
+function mapPoolTierOf(mapId, id){ const t = mapPoolTiers(mapId).find(x=> x.ids.includes(id)); return t ? t.key : ''; }
+function mapPoolHas(mapId, id){ return !!mapPoolTierOf(mapId, id); }
+function mpMutate(mapId, fn){
+  const top = mpTopOf(mapId), ent = mpEntry(top), own = mpIsSub(mapId) ? (ent.submaps[mapId] = ent.submaps[mapId] || {cards: [], special: []}) : ent;
+  fn(own); mapPoolEdits[top] = {pool: mpClean(ent), localAt: Date.now()};
+  persistMapPools(); mpScheduleSave(top); mpChanged();
+}
+// adding a card that is in the other tier moves it
+function mapPoolAdd(mapId, tier, id){ mpMutate(mapId, own=>{ own.cards = own.cards.filter(x=> x !== id); own.special = own.special.filter(x=> x !== id); own[tier === 'special' ? 'special' : 'cards'].push(id); }); }
+function mapPoolRemove(mapId, id){ mpMutate(mapId, own=>{ own.cards = own.cards.filter(x=> x !== id); own.special = own.special.filter(x=> x !== id); }); }
+function mapPoolReset(mapId){ const top = mpTopOf(mapId); delete mapPoolEdits[top]; persistMapPools(); mpScheduleSave(top); mpChanged(); }
+const mpTimers = {};
+function mpScheduleSave(top){ clearTimeout(mpTimers[top]); mpTimers[top] = setTimeout(()=> publishMapPools(top), 700); }
+async function publishMapPools(top){
+  persistMapPools();
+  const e = mapPoolEdits[top], row = e ? {data: {kind: 'map-pools', mapId: top, pool: e.pool}, deleted: false, deleted_snapshot: null} : {data: null, deleted: true, deleted_snapshot: null};
+  const ok = await cloudWriteCardOverride(`__cfg:map-pools:${top}`, row);
+  mpStatus = {ok, at: Date.now()}; mpChanged('status');
+  return ok;
+}
+// a `__cfg:map-pools:<id>` row from the server (load or poll): the newer of this browser's unpublished edit and the row wins, as map-nodes
+function applyCloudMapPools(top, r){
+  const localAt = (mapPoolEdits[top] && mapPoolEdits[top].localAt) || 0, cloudAt = Date.parse(r.updated_at || '') || 0;
+  if(localAt && localAt > cloudAt){ setTimeout(()=>{ if(cloudCardAdmin) publishMapPools(top); }, 4000); return; }
+  if(r.deleted || !r.data || !r.data.pool) delete mapPoolEdits[top]; else mapPoolEdits[top] = {pool: mpClean(r.data.pool), localAt: 0};
+  persistMapPools(); mpChanged();
+}
+// -- how often each card is used in the fight decks, from the live map data (the owner's edits are in CONQUEST_MAPS): copies in this map's
+// fights, in its submaps' fights, in every other map's (submaps included). Normal, elite and boss decks and a dungeon's wave decks;
+// the tutorial's fixed decks are left out. {cardId: [thisMap, itsSubmaps, otherMaps]}
+function mpUsage(mapId){
+  const subs = new Set(CONQUEST_MAPS.filter(m=> m.sub && m.parent === mapId).map(m=> m.id)), u = {};
+  CONQUEST_MAPS.forEach(m=>{
+    const slot = m.id === mapId ? 0 : subs.has(m.id) ? 1 : 2;
+    (m.nodes || []).forEach(n=>{
+      if(!n || n.kind === 'tutorial') return;
+      const add = d=> Object.keys(d || {}).forEach(id=>{ const k = Number(d[id]) || 0; if(k > 0) (u[id] = u[id] || [0, 0, 0])[slot] += k; });
+      add(n.deck); ((n.dungeon && n.dungeon.waveDecks) || []).forEach(add);
+    });
+  });
+  return u;
+}
+function mpUsedHTML(v){
+  v = v || [0, 0, 0];
+  return `<span class="mp-used" title="${escapeAttr(TX('ui.mp-used-tip', {a: v[0], b: v[1], c: v[2]}))}">${v.map(n=> `<i class="${n ? '' : 'is-zero'}">${n}</i>`).join('<s>·</s>')}</span>`;
+}
+function mpMapList(){
+  const all = CONQUEST_MAPS.filter(m=> !m.reserved), out = [];
+  all.filter(m=> !m.sub).forEach(m=>{ out.push(m); all.filter(s=> s.sub && s.parent === m.id).forEach(s=> out.push(s)); });
+  return out;
+}
+function mpCatalogIds(){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const d = defs[id]; return d && !d.test && !d.hallOfFame && !d.baseId && id !== HERO_ID; }); }
+// the picker's pool: the tiers as headings, each card once (the first tier that has it)
+function mpPoolGroupsHTML(mapId, pass, by, item){
+  const defs = getCardDefs(), seen = new Set(); let html = '';
+  mapPoolTiers(mapId).forEach(t=>{
+    const ids = t.ids.filter(id=> defs[id] && !seen.has(id) && pass(defs[id], id)); ids.forEach(id=> seen.add(id)); if(!ids.length) return;
+    html += `<h4 class="mp-tier-h">${escapeHtml(t.label)} <small>${ids.length}</small></h4>` + ids.sort(by).map(item).join('');
+  });
+  return html;
+}
+function mpPoolEmptyHTML(mapId){
+  return mapPoolIds(mapId).length ? `<p class="panel-sub mp-empty">${escapeHtml(TX('ui.mp-none-match'))}</p>`
+    : `<div class="mp-empty"><p class="panel-sub">${escapeHtml(TX('ui.mp-pool-empty'))}</p><button type="button" class="btn small" data-mp-open>🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>`;
+}
+// cards of a deck that no tier of this fight's map has: a ⚠ chip each, with a one-click Add to Special
+function mpOffPoolIds(mapId, deck){ return Object.keys(deck || {}).filter(id=> (deck[id] | 0) > 0 && getCardDefs()[id] && !mapPoolHas(mapId, id)); }
+function mpWarnHTML(mapId, deck){
+  const off = mpOffPoolIds(mapId, deck), defs = getCardDefs(); if(!off.length) return '';
+  return `<div class="mp-warn" role="status"><span class="mp-warn-h">⚠ ${escapeHtml(TX('ui.mp-offpool'))}</span>`
+    + off.map(id=> `<span class="mp-chip" title="${escapeAttr(TX('ui.mp-offpool'))}">${escapeHtml(defs[id].name)}<button type="button" data-mp-special="${escapeAttr(id)}">${escapeHtml(TX('ui.mp-add-special'))}</button></span>`).join('')
+    + (off.length > 1 ? `<button type="button" class="btn small ghost" data-mp-special-all>${escapeHtml(TX('ui.mp-add-all-special'))}</button>` : '') + '</div>';
+}
+function mpAddOffPool(mapId, deck, id){ (id ? [id] : mpOffPoolIds(mapId, deck)).forEach(x=> mapPoolAdd(mapId, 'special', x)); }
+function mpOpenDetail(id){
+  openCardDetail(id);
+  const ov = document.getElementById('cardDetailOverlay'); if(!ov) return;
+  ov.classList.add('mp-over');
+  const mo = new MutationObserver(()=>{ if(ov.hidden){ ov.classList.remove('mp-over'); mo.disconnect(); } }); mo.observe(ov, {attributes: true, attributeFilter: ['hidden']});
+}
+// the balance summary: how many of each rarity, and the spread of Lumber cost and Wait
+function mpSummaryHTML(ids, defs){
+  const rc = {}, lum = [0, 0, 0, 0, 0, 0], wt = [0, 0, 0, 0];
+  ids.forEach(id=>{ const d = defs[id]; const r = d.rarity || 'common'; rc[r] = (rc[r] || 0) + 1; lum[Math.min(5, Math.max(0, d.cost | 0))]++; wt[Math.min(3, Math.max(0, d.wait | 0))]++; });
+  const rar = RARITY_DEFS.filter(r=> rc[r.key]).map(r=> `<span class="mc-chip" style="--rc:${r.color}"><i></i>${escapeHtml(r.label)} <b>${rc[r.key]}</b></span>`).join('')
+    + Object.keys(rc).filter(k=> !RARITY_DEFS.some(r=> r.key === k)).map(k=> `<span class="mc-chip"><i></i>${escapeHtml(k)} <b>${rc[k]}</b></span>`).join('');
+  const hist = (title, arr, lab)=>{ const mx = Math.max(1, ...arr); return `<div class="mc-hist"><b>${escapeHtml(title)}</b><div class="mc-bars">${arr.map((n, i)=> `<span class="${n ? '' : 'is-zero'}" title="${escapeAttr(lab[i] + ': ' + n)}"><em>${n}</em><u style="--h:${Math.round(n / mx * 100)}%"></u><small>${lab[i]}</small></span>`).join('')}</div></div>`; };
+  return `<div class="mc-sum"><div class="mc-sum-row"><b>${escapeHtml(TX('ui.mp-summary', {n: ids.length}))}</b>${rar}</div>`
+    + `<div class="mc-sum-row">${hist('🪵 ' + TX('ui.mp-lumber'), lum, ['0', '1', '2', '3', '4', '5+'])}${hist('⏳ ' + TX('ui.mp-wait'), wt, ['0', '1', '2', '3+'])}</div></div>`;
+}
+// -- the Map cards editor: pick a map or a submap; its tiers in full, large cards; an Add cards panel with the Codex's whole filter bar
+const MC_UI_KEY = 'bramblewood_mapcards_ui_v1';
+function openMapCardsEditor(mapId0, o){
+  o = o || {};
+  const old = document.getElementById('mapCardsOverlay'); if(old) old.remove();
+  const maps = mpMapList(); if(!maps.length) return;
+  let mapId = maps.some(m=> m.id === mapId0) ? mapId0 : maps[0].id;
+  const ui = Object.assign({density: 'large', target: 'cards', sort: 'cost', shown: 48, parentOpen: false}, (()=>{ try{ return JSON.parse(localStorage.getItem(MC_UI_KEY) || '{}') || {}; }catch(e){ return {}; } })());
+  ui.shown = 48;
+  const saveUi = ()=>{ try{ localStorage.setItem(MC_UI_KEY, JSON.stringify({density: ui.density, target: ui.target, sort: ui.sort, parentOpen: ui.parentOpen})); }catch(e){} };
+  const cf = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('mcTx'); }catch(e){ return {}; } })()), cfKeep = {};
+  let q = '', usage = mpUsage(mapId), resetArmed = 0;
+  const ov = document.createElement('div'); ov.id = 'mapCardsOverlay'; ov.className = 'modal-overlay mc-overlay'; document.body.appendChild(ov);
+  const $ = sel=> ov.querySelector(sel);
+  const mapLabel = m=> (m.sub ? '↳ ' : '') + (m.icon || '') + ' ' + m.name;
+  ov.innerHTML = `<div class="modal mc-modal" role="dialog" aria-label="${escapeAttr(TX('ui.mp-title'))}" data-density="${ui.density}" data-view="pool">
+    <div class="modal-head-row"><h2>🃏 ${escapeHtml(TX('ui.mp-title'))}</h2><span class="mc-status" id="mcStatus">${escapeHtml(mpStatusText())}</span><button type="button" class="modal-close-btn" data-mc-close aria-label="Close">✕</button></div>
+    <div class="mc-top">
+      <select id="mcMap" aria-label="${escapeAttr(TX('ui.mp-map'))}">${maps.map(m=> `<option value="${escapeAttr(m.id)}" ${m.id === mapId ? 'selected' : ''}>${escapeHtml(mapLabel(m))}</option>`).join('')}</select>
+      <div class="mc-seg" role="group" aria-label="${escapeAttr(TX('ui.mp-size'))}">${['large', 'medium'].map(k=> `<button type="button" data-mc-density="${k}" class="${ui.density === k ? 'on' : ''}">${escapeHtml(TX('ui.mp-size-' + k))}</button>`).join('')}</div>
+      <select id="mcPoolSort" aria-label="${escapeAttr(TX('ui.tx-sort'))}">${cfSortOptionsHTML(ui.sort)}</select>
+      <button type="button" class="btn small ghost" id="mcReset"></button>
+    </div>
+    <div class="mc-tabs" role="tablist"><button type="button" data-mc-view="pool" class="on">${escapeHtml(TX('ui.mp-pane-pool'))}</button><button type="button" data-mc-view="add">${escapeHtml(TX('ui.mp-add'))}</button></div>
+    <div class="mc-body">
+      <section class="mc-pane" id="mcPool" aria-label="${escapeAttr(TX('ui.mp-pane-pool'))}"></section>
+      <section class="mc-pane mc-add-pane" id="mcAdd" aria-label="${escapeAttr(TX('ui.mp-add'))}">
+        <div class="mc-add-head"><h3>➕ ${escapeHtml(TX('ui.mp-add'))}</h3>
+          <div class="mc-seg" id="mcTarget" role="group" aria-label="${escapeAttr(TX('ui.mp-add-to'))}"></div></div>
+        <div class="mc-add-tools"><input data-text-filter autocomplete="off" type="search" id="mcSearch" placeholder="${escapeAttr(TX('ui.mp-search'))}" aria-label="${escapeAttr(TX('ui.mp-search'))}">
+          ${cfBarHTML(cf, 'mc', null, [['used', ()=> TX('ui.mp-sort-used')]])}</div>
+        <div class="mc-res" id="mcRes"></div>
+      </section>
+    </div>
+  </div>`;
+  const modal = $('.mc-modal');
+  const sortFn = (key, dir)=>{ const defs = getCardDefs();
+    if(key === 'used'){ const sg = dir === 'asc' ? 1 : -1; return (a, b)=> sg * (((usage[a] || [0, 0, 0])[2]) - ((usage[b] || [0, 0, 0])[2])) || (defs[a].name || '').localeCompare(defs[b].name || ''); }
+    return cfSortFn(key, dir, defs); };
+  const tierLabel = k=> mapPoolTiers(mapId).find(t=> t.key === k).label;
+  const renderTarget = ()=>{ $('#mcTarget').innerHTML = ['cards', 'special'].map(k=> `<button type="button" data-mc-target="${k}" class="${ui.target === k ? 'on' : ''}">${escapeHtml(tierLabel(k))}</button>`).join(''); };
+  const renderReset = ()=>{ const b = $('#mcReset'), has = !!mapPoolEdits[mpTopOf(mapId)]; b.disabled = !has; b.textContent = '↺ ' + (resetArmed ? TX('ui.mp-reset-confirm') : TX('ui.mp-reset')); b.classList.toggle('danger', !!resetArmed); };
+  // the pool pane: the balance summary, then each tier
+  const cardCell = (id, t)=>{ const defs = getCardDefs();
+    return `<div class="mc-card" data-id="${escapeAttr(id)}"><button type="button" class="mc-face" data-mc-detail="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}">${cardTileHTML(defs[id], {inPlay: true})}</button>
+      <div class="mc-bar">${mpUsedHTML(usage[id])}${t.ro ? '' : `<span class="mc-acts"><button type="button" data-mc-move="${escapeAttr(id)}" title="${escapeAttr(TX(t.key === 'cards' ? 'ui.mp-move-special' : 'ui.mp-move-cards'))}" aria-label="${escapeAttr(TX(t.key === 'cards' ? 'ui.mp-move-special' : 'ui.mp-move-cards'))}">⇄</button><button type="button" data-mc-remove="${escapeAttr(id)}" title="${escapeAttr(TX('ui.mp-remove'))}" aria-label="${escapeAttr(TX('ui.mp-remove'))}">✕</button></span>`}</div></div>`; };
+  const renderPool = ()=>{
+    const defs = getCardDefs(), tiers = mapPoolTiers(mapId), by = sortFn(ui.sort, 'asc'), eff = mapPoolIds(mapId).filter(id=> defs[id]);
+    const order = tiers.filter(t=> !t.ro).concat(tiers.filter(t=> t.ro));
+    const sec = t=>{ const ids = t.ids.filter(id=> defs[id]).sort(by), grid = ids.length ? `<div class="mc-grid">${ids.map(id=> cardCell(id, t)).join('')}</div>` : `<p class="panel-sub mc-none">${escapeHtml(TX('ui.mp-empty'))}</p>`;
+      const tip = t.key === 'special' ? `<small class="mc-tip">${escapeHtml(TX('ui.mp-special-tip'))}</small>` : t.ro ? `<small class="mc-tip">${escapeHtml(TX('ui.mp-parent-note'))}</small>` : '';
+      return t.ro ? `<details class="mc-tier is-ro" data-tier="${t.key}" ${ui.parentOpen ? 'open' : ''}><summary><h3>${escapeHtml(t.label)} <span class="mc-n">${ids.length}</span></h3></summary>${tip}${grid}</details>`
+        : `<section class="mc-tier" data-tier="${t.key}"><div class="mc-tier-h"><h3>${escapeHtml(t.label)} <span class="mc-n">${ids.length}</span></h3>${tip}</div>${grid}</section>`; };
+    const pane = $('#mcPool'), st = pane.scrollTop;
+    pane.innerHTML = mpSummaryHTML(eff, defs) + order.map(sec).join('');
+    pane.scrollTop = st;
+  };
+  // the results: the whole catalogue through the filter bar; cards already in this fight's pool are marked
+  const renderRes = ()=>{
+    const defs = getCardDefs(), ql = q.trim().toLowerCase(), by = sortFn(cf.sort, cf.dir);
+    const list = mpCatalogIds().filter(id=> (!ql || defs[id].name.toLowerCase().includes(ql) || (defs[id].animal || '').toLowerCase().includes(ql)) && cfMatch(defs[id], cf)).sort(by);
+    const res = $('#mcRes');
+    res.innerHTML = list.length ? `<div class="mc-grid">${list.slice(0, ui.shown).map(id=>
+      `<div class="mc-card mc-res-item" data-id="${escapeAttr(id)}"><button type="button" class="mc-face" data-mc-add="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}">${cardTileHTML(defs[id], {inPlay: true})}</button>
+        <div class="mc-bar">${mpUsedHTML(usage[id])}<span class="mc-in" data-mc-in></span><button type="button" class="mc-info" data-mc-detail="${escapeAttr(id)}" title="${escapeAttr(TX('ui.mp-details'))}" aria-label="${escapeAttr(TX('ui.mp-details'))}">🔍</button></div></div>`).join('')}</div>`
+      + (list.length > ui.shown ? `<button type="button" class="btn small mc-more" data-mc-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - ui.shown})</button>` : '') : `<p class="panel-sub">${escapeHtml(TX('ui.mp-none-match'))}</p>`;
+    mark();
+  };
+  const mark = ()=>{ const tiers = mapPoolTiers(mapId);
+    ov.querySelectorAll('.mc-res-item').forEach(el=>{ const t = tiers.find(x=> x.ids.includes(el.dataset.id)), c = el.querySelector('[data-mc-in]');
+      el.classList.toggle('is-in', !!t); if(c) c.textContent = t ? '✓ ' + t.label : ''; }); };
+  const renderStatus = ()=>{ const s = $('#mcStatus'); if(s) s.textContent = mpStatusText(); };
+  const changed = kind=>{ if(!ov.isConnected) return; if(kind === 'status') return renderStatus(); renderPool(); mark(); renderTarget(); renderReset(); renderStatus(); };
+  mpListeners.add(changed);
+  const close = ()=>{ mpListeners.delete(changed); document.removeEventListener('keydown', onKey, true); ov.remove(); o.onClose && o.onClose(); };
+  const onKey = e=>{ if(e.key !== 'Escape') return; const d = document.getElementById('cardDetailOverlay'); if(d && !d.hidden) return; e.stopPropagation(); close(); };
+  document.addEventListener('keydown', onKey, true);
+  ov.addEventListener('click', e=>{
+    const t = e.target; if(t === ov || t.closest('[data-mc-close]')) return close();
+    let b;
+    if((b = t.closest('[data-mc-detail]'))) return mpOpenDetail(b.dataset.mcDetail);
+    if((b = t.closest('[data-mc-add]'))){ const id = b.dataset.mcAdd; if(!mapPoolHas(mapId, id)) mapPoolAdd(mapId, ui.target, id); return; }
+    if((b = t.closest('[data-mc-remove]'))) return mapPoolRemove(mapId, b.dataset.mcRemove);
+    if((b = t.closest('[data-mc-move]'))){ const id = b.dataset.mcMove; return mapPoolAdd(mapId, mapPoolTierOf(mapId, id) === 'cards' ? 'special' : 'cards', id); }
+    if((b = t.closest('[data-mc-density]'))){ ui.density = b.dataset.mcDensity; modal.dataset.density = ui.density; ov.querySelectorAll('[data-mc-density]').forEach(x=> x.classList.toggle('on', x === b)); return saveUi(); }
+    if((b = t.closest('[data-mc-target]'))){ ui.target = b.dataset.mcTarget; renderTarget(); return saveUi(); }
+    if((b = t.closest('[data-mc-view]'))){ modal.dataset.view = b.dataset.mcView; ov.querySelectorAll('[data-mc-view]').forEach(x=> x.classList.toggle('on', x === b)); return; }
+    if(t.closest('[data-mc-more]')){ ui.shown += 48; const r = $('#mcAdd'), st = r.scrollTop; renderRes(); r.scrollTop = st; return; }
+    if(t.closest('#mcReset')){ if(!resetArmed){ resetArmed = 1; renderReset(); setTimeout(()=>{ resetArmed = 0; if(ov.isConnected) renderReset(); }, 3000); return; } resetArmed = 0; return mapPoolReset(mapId); }
+  });
+  ov.addEventListener('toggle', e=>{ if(e.target.matches && e.target.matches('details.mc-tier')){ ui.parentOpen = e.target.open; saveUi(); } }, true);
+  $('#mcMap').addEventListener('change', e=>{ mapId = e.target.value; usage = mpUsage(mapId); resetArmed = 0; ui.shown = 48; renderPool(); renderTarget(); renderReset(); renderRes(); $('#mcPool').scrollTop = 0; });
+  $('#mcPoolSort').addEventListener('change', e=>{ ui.sort = e.target.value; saveUi(); renderPool(); });
+  $('#mcSearch').addEventListener('input', e=>{ q = e.target.value; ui.shown = 48; clearTimeout(ov._t); ov._t = setTimeout(renderRes, 120); });
+  cfWire(ov, cf, 'mc', ()=>{ try{ uiStickySave('mcTx', cf); }catch(e){} ui.shown = 48; renderRes(); }, cfKeep);
+  renderPool(); renderTarget(); renderReset(); renderRes();
 }
 // Edit skirmish's field effects (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc."):
 // every effect this fight runs with, whether the map gives it or it was set here, with ✕ (switch it off) and ↺ (back to the
@@ -18490,8 +18763,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
       ${draft.kind === 'tutorial' ? tutorialNodeDecksHTML(draft) : ''}
-      <div class="se-h-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
-      <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(draft, id)}">${stackHTML(cardTileHTML(edEnemyShownDef(draft, id), {inPlay:true}) /* 2026-10-21 (package ED): at the enemy's level */, draft.deck[id], '×' + draft.deck[id])}${edEditCardBtnHTML(id)}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
+      <div class="se-h-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button><button type="button" class="btn small ghost" id="seMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button></div>
+      <div class="se-mp-warn" id="seMpWarn">${draft.kind === 'tutorial' ? '' : mpWarnHTML(mapId, draft.deck) /* 2026-10-22 (package MP): cards that no tier of this map has */}</div>
+      <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack${mapPoolHas(mapId, id) ? '' : ' is-offpool'}" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(draft, id)}">${stackHTML(cardTileHTML(edEnemyShownDef(draft, id), {inPlay:true}) /* 2026-10-21 (package ED): at the enemy's level */, draft.deck[id], '×' + draft.deck[id])}${edEditCardBtnHTML(id)}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
       ${deckIds.length ? `<details class="se-levels" ${draft.cardLevels && Object.keys(draft.cardLevels).length ? 'open' : ''}><summary>Card levels <small>every copy of a card shares its level; blank = its usual level</small></summary><div class="se-levels-grid">${deckIds.filter(id=> defs[id]).map(id=> `<label class="se-lv"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><input type="number" min="0" max="11" data-cardlv="${escapeAttr(id)}" placeholder="${cardBaseLevel(defs[id])}" value="${draft.cardLevels && draft.cardLevels[id] != null ? escapeAttr(draft.cardLevels[id]) : ''}"></label>`).join('')}</div></details>` : ''}
       <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input data-text-filter autocomplete="off" type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
@@ -18575,12 +18849,15 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('[data-fx-restore]').forEach(b=> b.onclick = ()=>{ read(); removeSkirmishFx(mapId, draft, b.dataset.fxRestore, true); dirty = true; render(); });
     overlay.querySelectorAll('[data-wave-deck]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveDeck; draft.dungeon = draft.dungeon || {}; const wd = draft.dungeon.waveDecks = (draft.dungeon.waveDecks||[]).slice();
       while(wd.length <= k) wd.push(null); if(!wd[k]) wd[k] = {};
-      openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · bramble ${k + 1}`, counts: wd[k], unlimited: true, leaders: ()=> draft.leaders || [], onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
+      openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · bramble ${k + 1}`, counts: wd[k], unlimited: true, leaders: ()=> draft.leaders || [], pool: mapId /* 2026-10-22 (package MP) */, onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
     overlay.querySelectorAll('[data-wave-clear]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveClear; if(draft.dungeon && draft.dungeon.waveDecks){ draft.dungeon.waveDecks[k] = null; if(!draft.dungeon.waveDecks.some(Boolean)) delete draft.dungeon.waveDecks; } dirty = true; render(); });
     { const dp = document.getElementById('seDeckPopup'); if(dp) dp.onclick = ()=>{ read();
-        openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, leaders: ()=> draft.leaders || [], onChange: ()=>{ dirty = true; }, onClose: render}); }; }
+        openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, leaders: ()=> draft.leaders || [], pool: mapId /* 2026-10-22 (package MP) */, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
+    // 2026-10-22 (package MP): Map cards from here; the ⚠ chips' one-click Add to Special
+    { const mc = document.getElementById('seMapCards'); if(mc) mc.onclick = ()=>{ read(); openMapCardsEditor(mapId, {onClose: ()=>{ if(overlay.innerHTML) render(); }}); }; }
+    overlay.querySelectorAll('#seMpWarn [data-mp-special], #seMpWarn [data-mp-special-all]').forEach(b=> b.onclick = ()=>{ read(); mpAddOffPool(mapId, draft.deck, b.dataset.mpSpecial || null); render(); });
     { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
-        openSkirmishGallery({kind:'deck', counts: draft.deck, pick: id=>{ if(rankAddBlock(id)) return; draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
+        openSkirmishGallery({kind:'deck', counts: draft.deck, pool: mapId /* 2026-10-22 (package MP) */, pick: id=>{ if(rankAddBlock(id)) return; draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
     overlay.querySelectorAll('.se-deck > .se-stack[data-defid]').forEach(b=>{ b.title = 'Click: +1 · Shift+click: −1'; b.style.cursor = 'pointer'; b.onclick = e=>{ if(e.target.closest('[data-ed-edit]')) return; read(); const id = b.dataset.defid; if(e.shiftKey){ if(--draft.deck[id] <= 0) delete draft.deck[id]; } else if(rankAddBlock(id)) return; else draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; render(); }; });
     // 2026-10-21 (package ED, owner #14): ✏️ on a deck card opens the card editor over this one; closing it brings the editor back
     overlay.querySelectorAll('.se-deck [data-ed-edit]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); read(); edOpenCardEditor(b.dataset.edEdit, overlay, ()=>{ if(overlay.innerHTML) render(); }); });
@@ -21800,7 +22077,7 @@ function mapLayoutToolbarHTML(map){
     <span class="ml-group"><button type="button" class="btn small primary" id="mlLinksDone">Done</button></span></div>`;
   if(!conquestLayoutEdit){
     const nEdits = mapEditList(map).length;
-    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button>
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button>
       ${nEdits ? `<button type="button" class="btn small" id="mlEdits" title="Every change to this map, with Revert">📝 Edits (${nEdits})</button>` : ''}
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
@@ -21879,6 +22156,7 @@ function wireMapLayoutEditor(map, body){
   const rerender = ()=> renderConquestSubTab(body);
   const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
   on('mlNewSkirmish', ()=> addSkirmishToMap(map.id));
+  on('mlMapCards', ()=> openMapCardsEditor(map.id)); // 2026-10-22 (package MP)
   on('mlClearMap', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); rerender(); }); // 2026-10-17: every first-clear and clear-again reward
   on('mlUnclearMap', ()=>{ adminUnclearMap(map.id); rerender(); });
   on('mlEdits', ()=> openMapEditsList(map.id));
@@ -29276,6 +29554,8 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
+    ${adminModeEnabled ? `<div class="panel admin-subpanel"><h3>🃏 ${escapeHtml(TX('ui.mp-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.mp-admin-sub'))}</p>
+      <button type="button" class="btn small" id="adminMapCardsBtn">🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>` : '' /* 2026-10-22 (package MP) */}
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
       <code class="admin-hash" id="adminCardHash" title="${escapeAttr(currentCardDataHash())}">${escapeHtml(currentCardDataHash().slice(0,16))}…</code> <span class="panel-sub">${Object.keys(effectiveCardDefsForHash()).length} cards · baseline build ${escapeHtml(BASELINE_CARD_HASH.slice(0,12))}</span></div>
     ${(RaidM && allRaidDefs().length) ? `<div class="panel admin-subpanel"><h3>🐙 Raids</h3><p class="panel-sub">Parts, HP bars, lock order, stages, scoring and rewards. Publishes live.</p>${allRaidDefs().map(d=> `<button type="button" class="btn small" data-admin-raid="${escapeAttr(d.id)}">✏️ ${escapeHtml(d.icon||'')} ${escapeHtml(d.name)}${d.live===false?' (off)':''}</button>`).join(' ')}</div>` : ''}
@@ -29374,6 +29654,7 @@ function renderAdmin(){
   const fxOpen = document.getElementById('adminFxLibBtn'); if(fxOpen) fxOpen.onclick = ()=> openEffectsLibrary();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
   const fbBtn = document.getElementById('adminFeedbackBtn'); if(fbBtn) fbBtn.onclick = ()=> Feedback.loadAdmin(document.getElementById('adminFeedback'));
+  { const mcb = document.getElementById('adminMapCardsBtn'); if(mcb) mcb.onclick = ()=> openMapCardsEditor(); } // 2026-10-22 (package MP)
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
   if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
   wireRollTableAdmin();
