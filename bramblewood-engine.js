@@ -992,9 +992,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Leylines I (2026-10-16, user: "Diurnal default becomes +3/+3 not +1/+1"): the plain bonus (Diurnal with no number) is +3/+3, and a
     // numbered one gets +2/+2 more. A Diurnal – {skills} card has no stat bonus to strengthen.
     const pick = k=>{ const r = pick0(k); if(!leyZeit || (e[k+'Grant'] && typeof e[k+'Grant'] === 'object') || !(e[k] || e[k+'Hp'])) return r; return e[k] === true && !e[k+'Hp'] ? [3, 3] : [r[0] + 2, r[1] + 2]; };
-    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0], c = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0]; return [n[0] + d[0] + c[0], n[1] + d[1] + c[1]]; } // 2026-10-13: both are active in Twilight, and Crepuscular only then
-    if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
-    if(ph==='day' && (e.diurnal || e.diurnalHp)) return dimSun() ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal'); // Cloudy (2026-10-16): clouds over the sun halve the day bonus; Ash Rain too (2026-10-17)
+    // 2026-10-21 (package CX2, owner 17:42: "Crepuscular: +1 attack in day, +1 attack at night"): Crepuscular has a day part and a night
+    // part, like Tide's two facets (was: Twilight only). The plain form gives its +A/+H by day and again at night; Twilight, which counts
+    // as both, brings both parts. A deck with one still adds the Twilight phase (twilightOn).
+    const cr = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0];
+    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0]; return [n[0] + d[0] + 2 * cr[0], n[1] + d[1] + 2 * cr[1]]; } // 2026-10-13: both are active in Twilight
+    if(ph==='night'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0]; return [n[0] + cr[0], n[1] + cr[1]]; }
+    if(ph==='day'){ const d = (e.diurnal || e.diurnalHp) ? (dimSun() ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal')) : [0,0]; return [d[0] + cr[0], d[1] + cr[1]]; } // Cloudy (2026-10-16): clouds over the sun halve the day bonus; Ash Rain too (2026-10-17)
     return [0, 0];
   }
   function syncPhaseStats(players, sideOf, events){
@@ -1010,6 +1014,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         { const pk = packs.get(c); c.packChain = pk ? pk.n : 0; c.packChainBonus = pk ? pk.bonus : 0; }
         const e = (CARD_DEFS[c._condBase || c.defId] && CARD_DEFS[c._condBase || c.defId].effects) || {};
         // Full Moon (2026-10-15): the first full moon over it (night with a full moon, or the Full Moon field) marks it for good.
+        // Transform (2026-10-21, package CX2): the first time its condition holds, it changes for the rest of the fight (c.transformed).
+        if(e.transform && typeof e.transform === 'object' && !c.transformed && transformOn(e.transform)){ c.transformed = true; const tf = e.transform, moon = transformConds(tf).includes('fullmoon');
+          if(recordEvents && events) events.push({type:'statusFx', kind: moon ? 'fullMoon' : 'transform', name: tf.name || null, side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:0, grant: Object.keys(tf.gain || {})}); }
         if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((ph === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
@@ -1656,7 +1663,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // good, and the thing it breaks can be any of its skills, not only a defence: Armor, Flying, Swimmer and Burrow as before, or any other
   // skill it has (Thorns, Poison, a trigger...), each as likely as the others. A skill's companion numbers go with it (Diurnal's Health,
   // a Tide's braces); map traits (Tide, the day/night skills) are left alone, as before.
-  const BLUDGEON_KEEP = new Set(['tide', 'tideGrant', 'diurnal', 'nocturnal', 'crepuscular', 'leader', 'token', 'structure', 'growth', 'ghost', 'supreme']);
+  const BLUDGEON_KEEP = new Set(['tide', 'tideGrant', 'diurnal', 'nocturnal', 'crepuscular', 'crepuscularGrant' /* CX2 */, 'leader', 'token', 'structure', 'growth', 'ghost', 'supreme']);
   function bludgeonHit(att, c, side, targetSide, events){
     const e = (CARD_DEFS[c.defId] || {}).effects || {};
     const lost = Math.min(1, Math.max(0, c.atk||0)); if(lost){ c.atk -= lost; c.baseAtk = Math.max(0, (c.baseAtk||0) - lost); }
@@ -2109,8 +2116,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp'], esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -2201,12 +2208,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     { const ph = phaseActive() ? getPhase() : null; // Diurnal – {…} / Nocturnal – {…} (2026-10-15)
       const lit = ph === 'night' && pl && upkeepUnitsOf(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); /* + a raid's middle / back rows (2026-10-19, RR) */ // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
       if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight' || (lit && !(e.nocturnal || e.nocturnalHp)))) addGrant(e.diurnalGrant);
-      if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant); }
+      if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant);
+      // Crepuscular – {day}{night} (2026-10-21, package CX2): the day part by day, the night part at night, both in Twilight
+      if(e.crepuscularGrant && typeof e.crepuscularGrant === 'object'){ if(ph === 'day' || ph === 'twilight') addGrant(e.crepuscularGrant.day); if(ph === 'night' || ph === 'twilight') addGrant(e.crepuscularGrant.night); } }
     if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
       if(t === 'flow' || t === 'high') addGrant(e.tideGrant.flood); if(t === 'ebb' || t === 'high') addGrant(e.tideGrant.ebb); }
     if(c.fullMoonRisen){ if(e.fullMoonGrant && typeof e.fullMoonGrant === 'object') addGrant(e.fullMoonGrant); else if(e.fullMoon){ const n = (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0); a += n; h += n; } } // Full Moon (2026-10-15); Leylines I +2/+2 (2026-10-16)
-    if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)) add(e.loyal || 0, e.loyalGrant);
-    if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
+    if(c.transformed && e.transform && typeof e.transform === 'object') addGrant(e.transform.gain); // Transform (2026-10-21, CX2): for good
+    // CX2 (2026-10-21): Loyal – {…} / Usurper – {…} read their braces like the other context skills (a +A/+H in them is stats, not a skill)
+    if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)){ add(e.loyal || 0); addGrant(e.loyalGrant); }
+    if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)){ add(e.usurper || 0); addGrant(e.usurperGrant); }
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
     // Swimmer's Flow list (2026-10-12): the skills it gets while the tide is in Flow.
     // Swimmer (reworked 2026-10-12, 09:48: "Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick Attack} or
@@ -2215,7 +2226,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(sw === 'extraAttack') a += 1; else if(sw === 'evade') add(0, {evasive:true}); }
     if(e.swimmerGrant && typeof e.swimmerGrant === 'object' && tideRising()) add(0, e.swimmerGrant);
     // Rainrunner N (2026-10-12): +N/+N while it rains (and it slips past blockers, see the targeting).
-    if(e.rainrunner && field && field.id === 'rain'){ const n = Number(e.rainrunner)||1; a += n; h += n; }
+    // Rainrunner – {…} (2026-10-21, package CX2): while it rains, the skills in its braces instead of +N/+N (it still slips past blockers)
+    if(e.rainrunner && field && field.id === 'rain'){ if(e.rainrunnerGrant && typeof e.rainrunnerGrant === 'object') addGrant(e.rainrunnerGrant); else { const n = Number(e.rainrunner)||1; a += n; h += n; } }
     // Moonborn N (2026-10-12, user: "Add lunar cycles - only matters when there's a card that cares about it"): at night,
     // +N/+N scaled by how full the moon is (new 0, crescent ¼, quarter ½, gibbous ¾, full all of it).
     if(e.moonborn && getPhase() === 'night'){ const n = Math.round(((Number(e.moonborn)||1) + (leyZeit ? 2 : 0)) * moonFullness()); a += n; h += n; } // Leylines I (2026-10-16): Moonborn +2 before the moon scales it
@@ -2225,12 +2237,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // mode:'and'|'or', atk, hp} (+2/+2 and 'and' by default). While its conditions hold the unit is in bloom (c.inBloom) and has
     // +atk/+hp, gained and lost with the bloom like a Nocturnal bonus. (Kept apart from the old Bloom N heal, effects.bloom.)
     c.inBloom = false;
-    if(e.bloomWhen && typeof e.bloomWhen === 'object'){ const b = bloomStateOf(e.bloomWhen); if(b.on){ c.inBloom = true; a += b.atk; h += b.hp; } }
+    if(e.bloomWhen && typeof e.bloomWhen === 'object'){ const b = bloomStateOf(e.bloomWhen); if(b.on){ c.inBloom = true; a += b.atk; h += b.hp; if(b.grant) addGrant(b.grant); } } // + Bloom (…) – {…} (CX2, 2026-10-21)
     return [a, h, grant];
   }
   // One Bloom condition, as it stands right now. 'night' and 'day' both hold in Twilight (like Nocturnal and Diurnal); 'wet' is
   // rain, or the Tide in, or a wet map (rules.wet: the beach, river and sea maps); 'dark' is a dark map or night.
-  const BLOOM_CONDS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost'];
+  const BLOOM_CONDS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost', 'fullmoon', 'rain']; // + Full Moon, Rain (CX2, 2026-10-21: Transform's conditions)
   function bloomCond(k){
     const ph = phaseActive() ? getPhase() : null, f = field && field.id;
     switch(String(k||'').toLowerCase()){
@@ -2244,13 +2256,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       case 'dark': return !!darkRule() || ph === 'night'; // + Cast Darkness (2026-10-18)
       case 'heat': return f === 'heatwave';
       case 'frost': return f === 'frozen';
+      case 'fullmoon': case 'full moon': return isFullMoon(); // CX2 (2026-10-21)
+      case 'rain': return f === 'rain';
     }
     return false;
   }
+  // Transform (2026-10-21, package CX2, owner 17:42: "Those that 'transform' under some condition, should have a {conditions} -> {...}. If
+  // the condition is a 'named' thing like 'Lycanthropy' - Under {Full moon} - gain {...}. (This change is 'permanent' until the end of the
+  // current game.)"): effects.transform = {when:[conditions], mode:'and'|'or', gain:{skills, attack?, health?}, name?:'lycanthropy'}. The
+  // conditions are Bloom's (BLOOM_CONDS). The first time they hold (checked as the phases turn, in syncPhaseStats) the unit is marked
+  // c.transformed and has the skills in gain for the rest of the fight. A named preset (TRANSFORM_PRESETS) brings its own condition.
+  const TRANSFORM_PRESETS = {lycanthropy: ['fullmoon']};
+  function transformConds(tf){ const w = tf && (tf.when != null ? tf.when : TRANSFORM_PRESETS[tf.name]); return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
+  function transformOn(tf){ const w = transformConds(tf); return w.length > 0 && (tf.mode === 'or' ? w.some(bloomCond) : w.every(bloomCond)); }
   function bloomStateOf(bw){
     const when = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean);
     const or = bw.mode === 'or', on = when.length > 0 && (or ? when.some(bloomCond) : when.every(bloomCond));
-    return {on, atk: bw.atk != null ? Number(bw.atk)||0 : 2, hp: bw.hp != null ? Number(bw.hp)||0 : 2};
+    const grant = bw.grant && typeof bw.grant === 'object' && Object.keys(bw.grant).length ? bw.grant : null; // CX2: with braces, no +2/+2 unless it says so
+    return {on, atk: bw.atk != null ? Number(bw.atk)||0 : (grant ? 0 : 2), hp: bw.hp != null ? Number(bw.hp)||0 : (grant ? 0 : 2), grant};
   }
   // Full melee-style damage pipeline: attacker rage bonus -> target resist
   // -> target rage reduction -> target armor (flat, floors at 0, last so
@@ -8805,7 +8828,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

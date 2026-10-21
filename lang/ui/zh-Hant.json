@@ -519,8 +519,6 @@
  "At the start of every round, every unit takes 1 damage (heat-resistant units are spared).": "每輪開始時，每個單位受到 1 點傷害（耐熱單位除外）。",
  "At the start of every round, one random card on each side gets +1 Wait.": "每輪開始時，雙方各有一張隨機卡牌 +1 等待。",
  "At the start of the game it moves from your deck into your opening hand, and a random other card from that hand is discarded. Only once a game: with two Vanguards in the deck only one comes, and none if one is already in your hand. If it is the first card you play this game: +{v1}/+{v2}.": "對局開始時，它從你的牌組移到你的起手牌中，並隨機棄掉那手牌中的另一張。每局只有一次：牌組裡有兩張先鋒也只來一張，若手裡已有一張則一張都不來。若它是你本局打出的第一張卡：+{v1}/+{v2}。",
- "At Twilight: +{v1}/+{v2}. With it in your deck, every fifth phase is Twilight.": "黃昏時：+{v1}/+{v2}。它在你的牌組裡時，每五個階段就有一個是黃昏。",
- "At Twilight: gain +{v1}/+{v2}. (A deck with one turns the day into Day, Night, Day, Night, Twilight.)": "黃昏時：獲得 +{v1}/+{v2}。（牌組裡有這樣一張卡時，一天會變成白天、夜晚、白天、夜晚、黃昏。）",
  "at upkeep, takes {v1} damage and loses {v2} Attack.": "在維持階段受到 {v1} 點傷害並失去 {v2} 點攻擊。",
  "At {v1}, {v2}.": "在{v1}，{v2}。",
  "ate a chilli: +{v1}⚔, and its attacks burn now 🌶️🔥": "吃了一根辣椒：+{v1}⚔，現在它的攻擊會燃燒 🌶️🔥",

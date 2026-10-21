@@ -519,8 +519,6 @@
  "At the start of every round, every unit takes 1 damage (heat-resistant units are spared).": "Au début de chaque tour, chaque unité subit 1 dégât (les unités résistantes à la chaleur sont épargnées).",
  "At the start of every round, one random card on each side gets +1 Wait.": "Au début de chaque tour, une carte au hasard de chaque camp reçoit +1 Attente.",
  "At the start of the game it moves from your deck into your opening hand, and a random other card from that hand is discarded. Only once a game: with two Vanguards in the deck only one comes, and none if one is already in your hand. If it is the first card you play this game: +{v1}/+{v2}.": "Au début de la partie, elle passe de votre deck à votre main de départ, et une autre carte au hasard de cette main est défaussée. Une seule fois par partie : avec deux Avant-gardes dans le deck, une seule vient, et aucune s’il y en a déjà une en main. Si c’est la première carte que vous jouez : +{v1}/+{v2}.",
- "At Twilight: +{v1}/+{v2}. With it in your deck, every fifth phase is Twilight.": "Au crépuscule : +{v1}/+{v2}. Avec elle dans votre deck, une phase sur cinq est un Crépuscule.",
- "At Twilight: gain +{v1}/+{v2}. (A deck with one turns the day into Day, Night, Day, Night, Twilight.)": "Au crépuscule : gagne +{v1}/+{v2}. (Un deck qui en contient une transforme la journée en Jour, Nuit, Jour, Nuit, Crépuscule.)",
  "at upkeep, takes {v1} damage and loses {v2} Attack.": "à l’entretien, subit {v1} dégâts et perd {v2} Attaque.",
  "At {v1}, {v2}.": "À {v1}, {v2}.",
  "ate a chilli: +{v1}⚔, and its attacks burn now 🌶️🔥": "a mangé un piment : +{v1}⚔, et ses attaques brûlent maintenant 🌶️🔥",

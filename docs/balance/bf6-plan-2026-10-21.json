@@ -2,7 +2,7 @@
  "_about": "BF6 (2026-10-21): every card re-derived with the halved world's skill worth (its shape and its share of N kept, in the band for live cards and Easter eggs)",
  "generated": "2026-10-21",
  "cards": 750,
- "moved": 6,
+ "moved": 9,
  "band": 636,
  "under": 7,
  "own": 28,
@@ -13164,8 +13164,8 @@
     "twin"
    ],
    "was": [
-    2,
-    2
+    1,
+    1
    ],
    "shape": [
     4,
@@ -13176,8 +13176,8 @@
    "N": 11.95,
    "N2": 15.87,
    "m": 1,
-   "use0": 0.61,
-   "useNowStats": 2.18,
+   "use0": 0.35,
+   "useNowStats": 1.92,
    "want": 1,
    "verdict": "flag",
    "now": [
@@ -13845,18 +13845,18 @@
     4,
     15
    ],
-   "S0": 0,
-   "S": 0,
+   "S0": 1.1,
+   "S": 1.1,
    "N": 18.62,
    "N2": 38.52,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 0.97,
+   "use0": 1.09,
+   "useNowStats": 1.03,
    "want": 1,
    "verdict": "band",
    "now": [
     3,
-    12
+    11
    ],
    "use": 0.97
   },
@@ -16640,8 +16640,8 @@
     "mimic"
    ],
    "was": [
-    3,
-    5
+    2,
+    11
    ],
    "shape": [
     6,
@@ -16652,8 +16652,8 @@
    "N": 20.74,
    "N2": 47.79,
    "m": 1,
-   "use0": 0.63,
-   "useNowStats": 0.77,
+   "use0": 0.83,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -17875,20 +17875,20 @@
     5,
     11
    ],
-   "S0": 4.43,
-   "S": 4.43,
+   "S0": 1.29,
+   "S": 1.29,
    "N": 19.41,
    "N2": 41.86,
    "m": 1,
-   "use0": 1,
-   "useNowStats": 0.95,
+   "use0": 0.83,
+   "useNowStats": 0.79,
    "want": 1,
    "verdict": "band",
    "now": [
-    2,
+    4,
     10
    ],
-   "use": 0.95
+   "use": 0.99
   },
   {
    "id": "kinkajou-lurker",
@@ -17909,20 +17909,20 @@
     6,
     10
    ],
-   "S0": 3.68,
-   "S": 3.68,
+   "S0": 2.48,
+   "S": 2.48,
    "N": 18.46,
    "N2": 37.86,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 0.96,
+   "use0": 0.95,
+   "useNowStats": 0.89,
    "want": 1,
    "verdict": "band",
    "now": [
     4,
-    6
+    7
    ],
-   "use": 0.96
+   "use": 0.95
   },
   {
    "id": "mudflat-godwit",
@@ -17943,20 +17943,20 @@
     5,
     10
    ],
-   "S0": 3.79,
-   "S": 3.79,
+   "S0": 4.59,
+   "S": 4.59,
    "N": 19.41,
    "N2": 41.86,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 0.97,
+   "use0": 1.07,
+   "useNowStats": 1.01,
    "want": 1,
    "verdict": "band",
    "now": [
-    3,
-    9
+    2,
+    10
    ],
-   "use": 0.97
+   "use": 0.96
   },
   {
    "id": "moon-jerboa",
@@ -18002,7 +18002,7 @@
    "wait": 2,
    "cost": 2,
    "skills": [
-    "fullMoonGrant"
+    "transform"
    ],
    "was": [
     5,
@@ -18012,20 +18012,20 @@
     8,
     20
    ],
-   "S0": 1,
-   "S": 1,
-   "N": 29.47,
-   "N2": 96.5,
+   "S0": 5.06,
+   "S": 5.06,
+   "N": 28.07,
+   "N2": 87.55,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 0.98,
+   "use0": 1.25,
+   "useNowStats": 1.18,
    "want": 1,
    "verdict": "band",
    "now": [
-    5,
-    18
+    4,
+    15
    ],
-   "use": 0.98
+   "use": 1
   },
   {
    "id": "carrion-beetle",

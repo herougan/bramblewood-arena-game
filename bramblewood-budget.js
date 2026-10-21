@@ -53,7 +53,33 @@ const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epi
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
-const PARAMS = ['crepuscularHp', 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */];
+const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */];
+// Context skills (2026-10-21, package CX2; owner 17:42: "Regarding context-skills like Diurnal - {} or Tide - {} etc. The costing is wrong.
+// Tide - {} should be 0.5x the skills contained within ... Since Tide is not guaranteed, I think the coefficient should be reduced to 0.4x
+// instead."): a skill whose braces hold other skills costs CONTEXT_MULT × the S of everything in its braces, across all its phases (Tide:
+// Flood's + Ebb's; Crepuscular: day's + night's). Stats in braces count as on the card: +A/+H is 2A + H. The plain flag beside the braces
+// (effects.tide next to tideGrant, diurnal next to diurnalGrant ...) costs nothing then: the braces are the skill. Transform (When {…} →
+// gain {…}, Lycanthropy) is priced the same way, since its condition is not near-certain either. CONTEXT[k](v) lists a context skill's
+// brace sets; CONTEXT_FLAG[k] is the plain flag its braces replace.
+const CONTEXT_MULT = 0.4;
+const r2 = v=> Math.round(v * 100) / 100;
+const obj = x=> x && typeof x === 'object' && !Array.isArray(x) ? x : null;
+const CONTEXT = {
+  tideGrant: v=> [obj(v && v.flood), obj(v && v.ebb)], crepuscularGrant: v=> [obj(v && v.day), obj(v && v.night)],
+  diurnalGrant: v=> [obj(v)], nocturnalGrant: v=> [obj(v)], fullMoonGrant: v=> [obj(v)], rainrunnerGrant: v=> [obj(v)],
+  loyalGrant: v=> [obj(v)], usurperGrant: v=> [obj(v)], swimmerGrant: v=> [obj(v)],
+  transform: v=> [obj(v && v.gain)],
+  bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null // only Bloom's braces form; the plain +2/+2 keeps its measured worth
+};
+const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant'};
+// S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
+// skills (no stats in it); the stats in the braces are added here as 2A + H.
+function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
+  sets.forEach(g=>{ if(!g) return; const rest = Object.assign({}, g), A = +rest.attack || 0, H = +rest.health || 0; delete rest.attack; delete rest.health;
+    inner += 2 * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); });
+  const m = mult == null ? CONTEXT_MULT : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; }
+// true when effects.k is a plain flag whose braces sit beside it (it costs nothing on its own then)
+function contextFlagCovered(k, e){ const g = CONTEXT_FLAG[k]; return !!(g && e && e[g] && typeof e[g] === 'object'); }
 // a card's abilities: its effects keys with a value (not a parameter of another skill), each trigger as 'trigger:<on>'
 function abilitiesOf(effects, params){ const e = effects || {}, P = params || PARAMS, out = [];
   Object.keys(e).forEach(k=>{ const v = e[k]; if(v == null || v === false || v === 0 || v === '' || (Array.isArray(v) && !v.length) || P.includes(k)) return;
@@ -64,10 +90,21 @@ function nMultOf(effects, cfg, params){ const a = abilitiesOf(effects, params ||
   if(a.includes('fragile')) k *= num(cfg, 'fragileMult'); return k; }
 const MAJOR = [4, 7, 10], MINOR = [2], LIMIT = 11;
 const SHARE = {major: 1, limit: 1, minor: 1, other: 1 / 3};
-const r2 = v=> Math.round(v * 100) / 100;
 const cfgOf = cfg=> Object.assign({}, DEFAULTS, cfg || {});
 const num = (cfg, k)=>{ const v = cfg && cfg[k]; return v == null || v === '' || !Number.isFinite(Number(v)) ? DEFAULTS[k] : Number(v); };
-function rankOf(rarity){ const k = rarity || 'common'; return Math.max(0, LADDER.indexOf(AS[k] || k)); }
+// Rarity = a rank on the ladder + at most one flag (2026-10-21, package CX2; owner 17:42: "Too simplify to just quest, event, and dev toggles
+// (and also 'special'). The common->Daemonic are the normal rank progression."). The stored strings stay as they are (no cards.json
+// migration): quest = Quest + Uncommon, questunique = Quest + Unique, special = Special + Rare, devlegendary / devancient = Dev + Legendary /
+// Ancient, eventlegendary / eventrare = Event + Legendary / Rare. Any other pair is the flag then the rank, in the same style
+// ('questrare', 'devepic', 'eventheroic', 'specialepic' ...); rankOf reads those too.
+const RARITY_FLAGS = ['quest', 'event', 'dev', 'special'];
+const RARITY_STORED = {quest: ['quest', 'uncommon'], questunique: ['quest', 'unique'], special: ['special', 'rare'], devlegendary: ['dev', 'legendary'], devancient: ['dev', 'ancient'], eventlegendary: ['event', 'legendary'], eventrare: ['event', 'rare']};
+function rarityParts(r){ const k = String(r || 'common'); if(RARITY_STORED[k]) return {flag: RARITY_STORED[k][0], rank: RARITY_STORED[k][1]};
+  for(const f of RARITY_FLAGS){ if(k.startsWith(f) && LADDER.includes(k.slice(f.length))) return {flag: f, rank: k.slice(f.length)}; }
+  return {flag: null, rank: LADDER.includes(k) ? k : 'common'}; }
+function rarityCompose(rank, flag){ rank = LADDER.includes(rank) ? rank : 'common'; if(!flag || !RARITY_FLAGS.includes(flag)) return rank;
+  const hit = Object.keys(RARITY_STORED).find(k=> RARITY_STORED[k][0] === flag && RARITY_STORED[k][1] === rank); return hit || (flag + rank); }
+function rankOf(rarity){ const k = rarity || 'common'; return Math.max(0, LADDER.indexOf(AS[k] || rarityParts(k).rank)); }
 function ritualPts(effects){ const r = effects && effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (+b || 0), 0) : 0; }
 // The level-independent part of N for a card ({rarity, wait, cost, effects, obtainMap}). 2026-10-19 (BF2, owner 15:25: "note that there is
 // a Map * 0.2 number there"): + perMap (0.2) × the map number where the card becomes obtainable (d.obtainMap: a map reward its map, a
@@ -92,6 +129,7 @@ function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L)
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
   const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
   return {cap1: '2A + H + S ≤ N', cap2: 'A·H + S·|S| ≤ (N/3)²' /* BF6 (owner 15:15) */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileMult'),
+    context: `Context skills ({…}): ${CONTEXT_MULT} × S of the skills in their braces` /* CX2 */,
     base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
 function nOf(d, L, cfg){ return r2(nAt(baseOf(d, cfg), L, cfg) * nMultOf(d && d.effects, cfg)); } // BF5: x the card's N multiplier
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
@@ -135,5 +173,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf};
+return {CONTEXT_MULT, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf};
 });

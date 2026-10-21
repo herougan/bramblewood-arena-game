@@ -519,8 +519,6 @@
  "At the start of every round, every unit takes 1 damage (heat-resistant units are spared).": "Zu Beginn jeder Runde erleidet jede Einheit 1 Schaden (hitzeresistente Einheiten bleiben verschont).",
  "At the start of every round, one random card on each side gets +1 Wait.": "Zu Beginn jeder Runde bekommt auf jeder Seite eine zufällige Karte +1 Warten.",
  "At the start of the game it moves from your deck into your opening hand, and a random other card from that hand is discarded. Only once a game: with two Vanguards in the deck only one comes, and none if one is already in your hand. If it is the first card you play this game: +{v1}/+{v2}.": "Zu Spielbeginn wandert sie aus deinem Deck in deine Starthand, und eine zufällige andere Karte aus dieser Hand wird abgeworfen. Nur einmal pro Spiel: Mit zwei Vorhuten im Deck kommt nur eine, und keine, wenn schon eine auf deiner Hand ist. Ist sie die erste Karte, die du in diesem Spiel spielst: +{v1}/+{v2}.",
- "At Twilight: +{v1}/+{v2}. With it in your deck, every fifth phase is Twilight.": "In der Dämmerung: +{v1}/+{v2}. Mit ihr im Deck ist jede fünfte Phase Dämmerung.",
- "At Twilight: gain +{v1}/+{v2}. (A deck with one turns the day into Day, Night, Day, Night, Twilight.)": "In der Dämmerung: erhält +{v1}/+{v2}. (Ein Deck mit einer solchen Karte macht aus dem Tag: Tag, Nacht, Tag, Nacht, Dämmerung.)",
  "at upkeep, takes {v1} damage and loses {v2} Attack.": "erleidet in der Unterhaltsphase {v1} Schaden und verliert {v2} Angriff.",
  "At {v1}, {v2}.": "Um {v1}, {v2}.",
  "ate a chilli: +{v1}⚔, and its attacks burn now 🌶️🔥": "aß eine Chili: +{v1}⚔, und ihre Angriffe brennen jetzt 🌶️🔥",

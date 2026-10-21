@@ -119,6 +119,6 @@ ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', n
 // ---- 4. clean names: no braces, no "one-off", no notes in brackets in the skill / trigger / action names
 { const bad = [...src.matchAll(/\{key:'(\w+)', (?:category:'\w+', )?(?:hidden:true, )?(?:retired:true, )?(?:mechLineGate:'\w+', )?label:'([^']*)'/g)].filter(m=> /[{}()–]|one-off/i.test(m[2])).map(m=> m[1] + ': ' + m[2]);
   ok(!bad.length, `skill, trigger and action names are plain (${bad.join('; ')})`);
-  ok(/const ZEIT_TWIN = \{diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', fullMoon:'fullMoonGrant', tide:'tideGrant'\};/.test(src) && /<label class="sk-twin">Gives <select data-sk="twin"/.test(src), 'Diurnal / Nocturnal / Full Moon / Tide: one name, a "Gives" field for the stat bonus or the skill list');
+  ok(/const ZEIT_TWIN = \{diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant'\};/.test(src) /* CX2 (2026-10-21): Full Moon {…} went to Transform's Lycanthropy; + Crepuscular, Rainrunner, Loyal, Usurper */ && /<label class="sk-twin">Gives <select data-sk="twin"/.test(src), 'Diurnal / Nocturnal / Full Moon / Tide: one name, a "Gives" field for the stat bonus or the skill list');
   ok(!/x\.oneOff \? ' · one-off'/.test(src), 'one-off is a tag beside the row, not part of the name'); }
 console.log(`skills2-2026-10-16: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);

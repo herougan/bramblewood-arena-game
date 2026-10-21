@@ -124,7 +124,7 @@ ok(/\{key:'fullMoon', category:'passive', label:'Full Moon', kind:'number', min:
 // 2026-10-21 (package TT): since package TX the parts sit in SKILL_REVEAL_MAP's rows and SKILL_REVEAL_PARTS is read from it; the same parts
 { const decl = nm=>{ const m = src.match(new RegExp(`^const ${nm} = [\\s\\S]*?;(?= *(//[^\\n]*)?\\n)`, 'm')); return m ? m[0] : ''; };
   let parts = null; try{ parts = new Function(decl('SKILL_REVEAL_MAP') + '\n' + decl('SKILL_REVEAL_PARTS') + '\nreturn SKILL_REVEAL_PARTS;')(); }catch(e){}
-  ok(parts && JSON.stringify(parts) === JSON.stringify({swimmer:['swimmerGrant'], diurnal:['diurnalHp', 'diurnalGrant'], nocturnal:['nocturnalHp', 'nocturnalGrant'], crepuscular:['crepuscularHp'], tide:['tideGrant']}),
+  ok(parts && JSON.stringify(parts) === JSON.stringify({swimmer:['swimmerGrant'], diurnal:['diurnalHp', 'diurnalGrant'], nocturnal:['nocturnalHp', 'nocturnalGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], tide:['tideGrant']}),
     `11. the braces hide with their skill while it is "?" (SKILL_REVEAL_PARTS: ${JSON.stringify(parts)})`); }
 // the brace text helpers, run on their own
 { const pick = name=>{ const i = src.indexOf(`function ${name}(`); let d = 0, j = src.indexOf('{', i); for(; j < src.length; j++){ if(src[j] === '{') d++; else if(src[j] === '}' && --d === 0) break; } return src.slice(i, j + 1); };
