@@ -145,7 +145,19 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - The principle is recorded in `docs/decisions.json` / `decisions.md`.
 - **Texts:** TX keys in the 12 packs.
 - **Skill costs:** estimates for Quarry (n 2.5) and Smelter (n 1.5).
-- **Tests:** `tests/skills-sk2b-2026-10-19.js` (52 checks).
+- **Weapons (owner, Oct 21):**
+  - New action **Forge Weapon N**: lay a +N/+0 Forged Blade (an equipment token) in your free slot nearest the unit. With no room, nothing happens and nothing is paid.
+  - New skill **Disarm**, built from triggers: On Play takes the foe's nearest lone piece; On Hit takes the hit unit's piece, with its stats and skills. It takes nothing if it already carries one.
+  - New cards, at the end of `cards.json` with `awaitingSource`: **Anvilwhisker Otter** (the owner's "Otter Smith": On Turn Start, pay 1 Stone, Forge Weapon 1) and **Glintsnatch Magpie** (Disarm, Flying).
+  - Art prompts added to `docs/art/new-cards-2026-10-19-briefs.md`.
+- **Equipment rules checked (owner item 17):**
+  - The piece goes under a unit.
+  - A unit played, spawned or moved onto a lone piece picks it up. One already carrying a piece leaves it lying.
+  - The bonus comes after one round.
+  - The piece stays in the slot when its unit dies; on a gravity row it goes to the graveyard.
+  - It moves with its unit.
+- **Map 1 Lumber:** the economy note recommends Milling on Village Miller (a 1-3 reward), Harvest on Harvest Mouse, and Land Tiller re-keyed as Milling, all in Thistlewood. Recommendations only.
+- **Tests:** `tests/skills-sk2b-2026-10-19.js` (86 checks).
 
 ## 2026-10-19 (package SK2: economy and structure skills)
 - **Owner (21:36, 21:56):** economy and structure skills, plus Salvage and a Stone-making Petrified Tree. Use triggers and actions where they fit.

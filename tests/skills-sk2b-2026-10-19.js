@@ -135,6 +135,14 @@ const SC = JSON.parse(R('canonical/skill-costs.json'));
 ['quarry', 'smelter'].forEach(id=>{ const e = SC.skills.find(x=> x.id === id); ok(e && e.scale === 'n' && e.measuredConf === 'low' && /^estimate SK2b/.test(e.measuredHow || ''), `skill-costs: ${id} has an estimate`); });
 const note = R('docs/economy-resources-2026-10-19.md');
 ok(/Strong creatures can be low costed - and their power is that they are low costed/.test(note) && /Quarry/.test(note) && /Smelter/.test(note) && /Lumber term/i.test(note), 'docs/economy-resources-2026-10-19.md: the tiers, the principle, the budget recommendation');
+ok(/Thistlewood/.test(note) && /Village Miller/.test(note) && /Anvilwhisker Otter/.test(note) && /Glintsnatch Magpie/.test(note), 'the note: Lumber in Map 1 (Thistlewood), the smith and the weapon thief');
+['disarm'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:TX\\('ui\\.sk2n-${k}'\\)`).test(src), `${k}: in PASSIVE_DEFS`));
+ok(/\{key:'forgeWeapon', get label\(\)\{ return TX\('ui\.sk2-act-forge'\); \}/.test(src) && /\{key:'disarm', get label\(\)\{ return TX\('ui\.sk2n-disarm'\); \}/.test(src), 'the trigger builder offers Forge Weapon and Disarm');
+ok(src.includes('try{ doText = sk2TriggerText(t, doText); }catch(e){}'), "a trigger's price shows in the card text");
+['forgeWeapon', 'disarm'].forEach(id=> ok(SC.actions.find(x=> x.id === id && /^estimate SK2b/.test(x.measuredHow || '')), `skill-costs: the ${id} action has an estimate`));
+ok(SC.skills.find(x=> x.id === 'disarm' && /^estimate SK2b/.test(x.measuredHow || '')), 'skill-costs: Disarm has an estimate');
+{ const cards = JSON.parse(R('canonical/cards.json')), Tb = require('../tools/skill_costs.js').make(SC);
+  ['anvilwhisker-otter', 'glintsnatch-magpie'].forEach(id=>{ const c = cards.find(x=> x.id === id), b = c && Tb.budget(c); ok(c && c.awaitingSource && !c.source && b.ok && !b.missing.length && cards.indexOf(c) >= cards.length - 5, `${id}: at the end of cards.json, awaitingSource, inside its budget`); }); }
 const dec = JSON.parse(R('docs/decisions.json')), rule = (dec.rules || []).find(r=> /SK2b/.test(r.intro || ''));
 ok(rule && rule.items.some(x=> /low costed/.test(x)), 'docs/decisions.json records the principle');
 ok(R('docs/decisions.md').includes('Strong creatures can be low costed'), 'decisions.md regenerated with it');

@@ -52,6 +52,35 @@ Rules of the price:
 - **Lumber stays the common currency.** Pitching gives everyone 1 a turn. Milling and Bounty speed it up. Only decks that build for it reach Stone and Metal.
 - **Costly cards need an economy.** A card costing 2 Stone + 1 Metal is out of reach for a deck without the engine. That is its real price, more than any stat line.
 
+### Weapons from Stone (owner, Oct 21)
+
+A fourth use for the tiers is equipment.
+
+- **Anvilwhisker Otter** is the owner's "Otter Smith". The owner asked for cool names only, so I named it; "Otter Smith" works as its title if he prefers. It is On Turn Start (once Ready) with a price: pay 1 Stone, then **Forge Weapon 1**. That lays a +1/+0 Forged Blade, an equipment token, in your free slot nearest it. Package EQ's rules then apply: a unit played, spawned or moved onto the blade picks it up and gets the bonus a round later. With no free slot, nothing is laid and no Stone is paid. Without a Stone source (a Quarry or a Petrified Tree) the smith does nothing.
+- **Disarm** ("weapon stealer") is On Play × Disarm plus On Hit × Disarm.
+  - On play, it takes the foe's lone piece in the slot facing it, else the nearest one.
+  - On a hit, it takes the hit unit's piece, with that piece's Attack, Health and skills.
+  - It takes nothing if it already carries a piece, and it equips the stolen piece for a round, as with any piece.
+  - The card is **Glintsnatch Magpie**.
+- Both cards are at the end of `canonical/cards.json` with `awaitingSource`.
+
+**Equipment checks (owner item 17)**, run in `tests/skills-sk2b-2026-10-19.js` on top of EQ's own tests:
+- Equipment goes under a unit.
+- A unit played, spawned or moved onto a lone piece picks it up. A unit that already carries a piece walks over it and leaves it.
+- The bonus comes after one round.
+- When its unit dies, the piece stays in the slot. On a packed (gravity) row, which has no slots, it goes to the graveyard.
+- A piece moves with its unit (Restless).
+
+All of these hold.
+
+## Lumber from the first maps (owner, Oct 21: "I want lumber to be naturally introduced in Map 1")
+
+Maps count from 0, so Map 1 is **Thistlewood** (`mf`). Recommendations only; rewards belong to another package.
+- **Village Miller** is already in Thistlewood's Burrow Line deck (1-3) and is a pack tier-1 card. It is literally a miller, so give it **Milling 1**. Because Milling costs S 3, lower it from 4/7 to about 2/7 to stay in budget. Make it the reward for winning 1-3, so the player meets a free Lumber source on the map where the CPU shows it off.
+- **Harvest Mouse** is a starter card in the 1-1, 1-2 and 1-3 decks. Give it **Harvest**: half its swings become Lumber, and a mouse in an empty lane always harvests. That teaches the choice between "hit, or bank Lumber" in the first fights.
+- **Land Tiller** has `onReadyGold 1`, which is the same rule as Milling in an older form. Re-key it as Milling 1, so the Codex shows one skill instead of two names for one rule.
+- **Later, not Map 1:** Badger Lumberjack (+1 on every gain, pack tier 1, Map 5) as the "speed it up" step. Quarry Mole is a Base card that is already in Thistlewood's 1-3 deck; give it **Quarry** when Stone cards start to matter (around Map 5–10), so the second tier arrives with the cards that need it.
+
 ## The owner's principle: cheap strong cards
 
 > "Strong creatures can be low costed - and their power is that they are low costed."
