@@ -1843,10 +1843,12 @@ const SKILL_DEFS = [
     apply:(e,vals)=>{ const defId=(vals&&vals[0])||''; const count=Math.max(1, Number(vals&&vals[1])||1); if(defId) e.onDeathSpawn = {defId, count}; },
   },
 ];
-const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','water']; // + magic and water (2026-10-14)
+// 2026-10-21 (package EL, owner: Fire, Ice, Acid, Poison, Decay, Magic, Water, Stone, Metal, Lightning on the attack label): + stone, metal and 'shock'
+// (the engine's existing lightning key: Thunderstorm, Sky Bolt, Wet's +1 and the Electricity skills already use it; it was missing from this list).
+const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','water','stone','metal','shock']; // + magic and water (2026-10-14)
 // 2026-10-21 (owner 18:24: "Can I use Fire? In that dropdown list - add emojis."): editor labels for the Element dropdowns. The stored
 // value stays the engine's key (heat is fire); only the label changes.
-const DMG_TYPE_LABEL = {physical:'💢 Physical', cold:'❄️ Cold (ice)', heat:'🔥 Fire (heat)', acid:'🧪 Acid', poison:'☠️ Poison', decay:'🍂 Decay', magic:'🪄 Magic', water:'💧 Water'};
+const DMG_TYPE_LABEL = {physical:'💢 Physical', cold:'❄️ Cold (ice)', heat:'🔥 Fire (heat)', acid:'🧪 Acid', poison:'☠️ Poison', decay:'🍂 Decay', magic:'🪄 Magic', water:'💧 Water', stone:'🪨 Stone', metal:'⚙️ Metal', shock:'⚡ Lightning'};
 const dmgTypeOptLabel = dt=> DMG_TYPE_LABEL[dt] || dt;
 // Elemental Damage Types -> signature status (2026-09-24, task #109, "one status effect per
 // elemental damage type"): a card's own dmgType field only ever drove Resist/Weakness math (see
@@ -1977,7 +1979,7 @@ function resistOptionsList(){
 // pass through unchanged; damage types and ability keys get Title Cased / de-camelCased here so
 // every pill and dropdown option reads as "Cold" / "Stun On Hit" rather than a raw key.
 // Damage type names players see (2026-10-12, user: "Deal 5 fire damage"): Heat reads as Fire everywhere; the data key stays 'heat'.
-const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Poison', decay:'Decay', magic:'Magic', water:'Water', radiation:'Radiation'};
+const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Poison', decay:'Decay', magic:'Magic', water:'Water', stone:'Stone', metal:'Metal', shock:'Lightning', radiation:'Radiation'}; // + stone, metal, lightning (EL, 2026-10-21)
 function dmgWord(t){ return t && t !== 'physical' ? (DMG_LABEL[t] || t).toLowerCase() + ' ' : ''; }
 function resistOptionLabel(v){
   if(!v) return '…';
@@ -5793,7 +5795,8 @@ function fullCardHTML(defId, liveCard, opts){
   const splitHTML = (total, base, plus, minus, cls)=> `<span class="${cls}">${total}</span> <span class="atk-split">(<span class="${cls}">${base}</span>${plus ? ` + <span class="atk-bonus" title="Bonus from skills and auras">${plus}</span>` : ''}${minus ? ` − <span class="stat-irr" title="Taken by Irradiation">${minus}</span>` : ''})</span>`;
   const atkIrr = liveC ? (liveC.irrAtk||0) : 0;
   let atkPlus = atkBonus + atkIrr, atkMinus = atkIrr; if(atkPlus < 0){ atkMinus -= atkPlus; atkPlus = 0; }
-  const atkDisplay = (liveC && (atkPlus || atkMinus)) ? (atkIrr ? `⚔ ${splitHTML(effAtk, baseAtk, atkPlus, atkMinus, 'atk-red')}` : `⚔ <span class="atk-red">${effAtk}</span> <span class="atk-split">(<span class="atk-red">${baseAtk}</span> ${atkBonus > 0 ? '+' : '−'} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${Math.abs(atkBonus)}</span>)</span>`) : `⚔${effAtk}`;
+  const atkG = atkGlyphOf(d); // EL (2026-10-21): the element's symbol, or the sword
+  const atkDisplay = (liveC && (atkPlus || atkMinus)) ? (atkIrr ? `${atkG} ${splitHTML(effAtk, baseAtk, atkPlus, atkMinus, 'atk-red')}` : `${atkG} <span class="atk-red">${effAtk}</span> <span class="atk-split">(<span class="atk-red">${baseAtk}</span> ${atkBonus > 0 ? '+' : '−'} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${Math.abs(atkBonus)}</span>)</span>`) : `${atkG}${effAtk}`;
   const hpDisplay = (()=>{ if(!liveCard) return `❤${d.health}`; const lc = liveC || liveCard, irr = lc.irrHp||0, base = Number(d.health)||0, mx = liveCard.maxHp;
     if(!irr && !lc.bossHpBonus) return `❤${Math.max(0,liveCard.hp)}/${mx}`; // a raid boss unit's bonus Health shows as a bonus (2026-10-18)
     let plus = mx - base + irr, minus = irr; if(plus < 0){ minus -= plus; plus = 0; }
@@ -7852,7 +7855,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
-      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : isFireDef(d) ? ' atk-fire' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : isFireDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🔥</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${atkPlateCls(d)}">${atkElementOf(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
@@ -7873,7 +7876,7 @@ function cardTileHTML(d, opts){
     <div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(isMagicDef(d) ? '<span class="atk atk-magic" title="Magic attack"><i class="sg">🪄</i>' : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -31505,7 +31508,7 @@ function showPlacementPreview(row, side){
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
     <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
-    <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
+    <div class="stats"><span class="atk${atkPlateCls(d)}">${atkGlyphOf(d)}${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
   if(actualSide==='center'){
     const centerSlot = row.querySelector('.center-slot-empty');
@@ -35274,12 +35277,19 @@ function atkAmpTier(eff, base){
 function liveSwarmBonus(c){ try{ const m = matchState; return (m && m.engine && m.engine.swarmBonusOf) ? m.engine.swarmBonusOf(m.players, c) : 0; }catch(e){ return 0; } }
 // 2026-10-12 (user: "At super-minimised forms, remove the emojis from the attack and health labels"): the glyphs sit in their
 // own <i class="sg"> so the tiny-card rule can hide them.
-function atkLabelHTML(eff, base, d){ const g = isMagicDef(d) ? '🪄' : isFireDef(d) ? '🔥' : '⚔', /* + fire (BX, 2026-10-21) */ t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
+function atkLabelHTML(eff, base, d){ const g = atkGlyphOf(d), /* every element (EL, 2026-10-21) */ t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
 // Magic attackers (2026-10-14, user: "some units have a wand instead of a sword symbol on their bottom left, blue in colour").
 function isMagicDef(d){ return !!(d && ((d.effects && d.effects.magic) || d.dmgType === 'magic')); }
 // 2026-10-21 (package BX, owner: "we shall introduce 1 or 2 cards with fire damage in the attack label"): a unit whose swing deals fire
 // damage (dmgType 'heat', the engine's fire; 'fire' is read the same) shows a flame on its attack label, as magic shows the wand.
 function isFireDef(d){ return !!(d && !isMagicDef(d) && (d.dmgType === 'heat' || d.dmgType === 'fire')); }
+// 2026-10-21 (package EL, owner 18:29: "If it does Fire, Ice, Acid, Poison, Decay, Magic, Water, Stone, Metal, Lightning damage, the attack label on the card
+// should use those symbols instead."): the BX flame generalised. A swing that deals one of these shows its element's symbol in place of the sword, on a
+// tinted plate (class atk-<element>; heat keeps BX's atk-fire, magic its atk-magic). Physical keeps the sword. dmgType 'shock' is the engine's lightning.
+const ATK_ELEM_GLYPH = {heat:'🔥', cold:'❄️', acid:'🧪', poison:'☠️', decay:'🍂', magic:'🪄', water:'💧', stone:'🪨', metal:'⚙️', shock:'⚡'};
+function atkElementOf(d){ if(!d) return null; if(isMagicDef(d)) return 'magic'; const t = d.dmgType === 'fire' ? 'heat' : d.dmgType; return t && ATK_ELEM_GLYPH[t] ? t : null; }
+function atkGlyphOf(d){ const k = atkElementOf(d); return k ? ATK_ELEM_GLYPH[k] : '⚔'; }
+function atkPlateCls(d){ const k = atkElementOf(d); return k ? ' atk-' + (k === 'heat' ? 'fire' : k) : ''; }
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
@@ -40405,6 +40415,8 @@ function dmgGlyph(dmgType){
     case 'magic': return '🪄';
     case 'water': return '💧';
     case 'shock': return '⚡'; // 2026-10-16
+    case 'stone': return '🪨'; // 2026-10-21 (package EL)
+    case 'metal': return '⚙️'; // 2026-10-21 (package EL)
     default: return '➶';
   }
 }
@@ -40885,12 +40897,12 @@ const DangerPulse = (()=>{
 })();
 setTimeout(()=> DangerPulse.start(), 2000);
 // Damage-type icons beside the number (2026-10-06).
-const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed'], shock:['⚡','shock']}; // + shock: lightning (Electricity's arc, Dragon Lightning) has its own ⚡ number, 2026-10-16
+const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed'], shock:['⚡','shock'], stone:['🪨','stone'], metal:['⚙️','metal']}; // + stone, metal (EL, 2026-10-21) // + shock: lightning (Electricity's arc, Dragon Lightning) has its own ⚡ number, 2026-10-16
 // 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): every element has its emoji here, not only once
 // FX.A has run (it added magic 🪄 / water 💧 / acid / decay colours): the same icons, so the numbers and the battle log agree. Psychic
 // keeps the 💭 its own number already had. DMG_NAME: the word the battle log uses after the number.
 Object.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});
-const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', psychic:'psychic'};
+const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', stone:'stone', metal:'metal', psychic:'psychic'};
 // "for 3 ⚡ lightning damage" (an elemental hit) or "for 3" (physical), for the battle log (2026-10-17).
 function dmgLogText(dmg, dmgType){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType]; return di && w ? `${dmg} ${di[0]} ${w} damage` : String(dmg); }
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
