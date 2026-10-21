@@ -25,7 +25,11 @@ const CARDS_FILE = path.join(ROOT, 'canonical', 'cards.json'), PLAN_FILE = path.
 const TABLE = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
 const T = SC.make(TABLE);
 // v5 as it stood before BF5 (scale 1, Bounty 0.5): each card's place in the band
-const OLD = JSON.parse(JSON.stringify(TABLE)); OLD.budget.scale = 1; { const b = (OLD.skills || []).find(s=> s.id === 'bounty'); if(b) b.value = b.prevValue != null ? b.prevValue : 0.5; }
+const OLD = JSON.parse(JSON.stringify(TABLE)); Object.assign(OLD.budget, {scale: 1, plainBonus: 1, lightBonus: 1, fragileMult: 1}); // v5: no halving, no N multipliers (BF5 10-21)
+{ const b = [].concat(OLD.skills || [], OLD.triggers || []).find(s=> s.id === 'bounty'); if(b) b.value = 0.5; } // Bounty at the owner's 0.5 (BF5 doubled it)
+// 2026-10-21 (BF5): each card's place in the v5 band is read from it as it stood before the two-skill cut and the halving (its skills then:
+// a card that lost one gets that room back as stats), docs/balance/halve-ref-2026-10-21.json
+const REF = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'halve-ref-2026-10-21.json'), 'utf8')).cards; }catch(e){ return {}; } })();
 const T0 = SC.make(OLD);
 const BAND_LO = 0.6, BAND_HI = 1, cmd = process.argv[2] || 'plan';
 const TARGET = {'cave-bat-swarm': [1, 2]}; // owner 21:36
@@ -37,7 +41,7 @@ function chk(Tb, c, A, H){ const d = Object.assign({}, c, {attack: A, health: H}
 const half = (A, H)=> [A == null ? A : A > 0 ? Math.max(1, Math.round(A / 2)) : 0, H == null ? H : H > 0 ? Math.max(1, Math.round(H / 2)) : 0];
 
 function planCard(c){
-  const A0 = c.attack || 0, H0 = c.health || 0, old = chk(T0, c, A0, H0), now = chk(T, c, A0, H0);
+  const A0 = c.attack || 0, H0 = c.health || 0, rf = REF[c.id], old = rf ? chk(T0, Object.assign({}, c, {effects: rf.effects}), rf.attack || 0, rf.health || 0) : chk(T0, c, A0, H0), now = chk(T, c, A0, H0);
   const row = {id: c.id, name: c.name, rarity: c.rarity || 'common', wait: c.wait || 0, cost: c.cost || 0, was: [A0, H0], S: now.b1.S, N: now.b1.N, N0: old.b1.N, use0: r2(old.use), m: now.b1.m};
   if(TARGET[c.id]){ const [A, H] = TARGET[c.id], k = chk(T, c, A, H);
     return Object.assign(row, {now: [A, H], use: r2(k.use)}, k.ok ? {verdict: 'target', why: 'the owner\'s target (21:36)'} : {verdict: 'owner', why: `the owner's ${A}/${H} (21:36), applied; it does not fit: 2A+H+S ${r2(k.b1.x1)}${row.m !== 1 ? ' (×' + row.m + ')' : ''} vs N ${k.b1.N}, its skills (S ${row.S}) are the owner's call`}); }

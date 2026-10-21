@@ -17223,7 +17223,7 @@ const ROAD_LEVEL_CURVE = {enemyFrom: 4, enemyGainPerMap: 0.0125, bossMaps: 2, pl
 const LEVEL_STAT_STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 // The mean 2A+H gain over Lv 1 of the live cards with stats at each level (tools/forge_curve_2026_10_19.js gain; the test checks it
 // against the cards), the BF curve; and the old +10% / +5% steps' (LEGACY_LEVEL_GAIN: 0.10 at Lv 3, 0.20 at 6, 0.30 at 9 ...).
-const FORGE_MEAN_GAIN = [[0, 1], [0.012, 2], [0.012, 3], [0.227, 4], [0.228, 5], [0.232, 6], [0.52, 7], [0.52, 8], [0.525, 9], [0.818, 10], [0.992, 11]]; // 2026-10-19 (BF5): N halved (scale 0.5) and every card re-derived
+const FORGE_MEAN_GAIN = [[0, 1], [0.012, 2], [0.012, 3], [0.218, 4], [0.218, 5], [0.224, 6], [0.504, 7], [0.504, 8], [0.509, 9], [0.794, 10], [0.963, 11]]; // 2026-10-21 (BF5): N halved, the N multipliers, two skills at most, every card re-derived
 const LEGACY_LEVEL_GAIN = [[0, 1], [0.10, 3], [0.20, 6], [0.30, 9], [0.35, 10], [0.45, 11]];
 function gainTableAt(pts, L){ L = Number(L) || 0; if(L <= pts[0][1]) return 0;
   for(let i = 1; i < pts.length; i++) if(L <= pts[i][1]) return pts[i-1][0] + (L - pts[i-1][1]) / (pts[i][1] - pts[i-1][1]) * (pts[i][0] - pts[i-1][0]);
