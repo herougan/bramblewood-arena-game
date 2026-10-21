@@ -2343,5 +2343,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} wird ausgenutzt: +{b} Schaden ({n} übrig).",
  "{name} is isolated: −{n}/−{n}.": "{name} ist isoliert: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} Marke(n): jeder Treffer auf sie macht 1 mehr und verbraucht eine.",
- "Tap to see the card": "Tippen, um die Karte zu sehen"
+ "Tap to see the card": "Tippen, um die Karte zu sehen",
+ "Choose your Hero's people": "Wähle das Volk deines Helden",
+ "Raking the training ring…": "Der Trainingsring wird geharkt …",
+ "The Stomping Grounds didn't draw properly.": "Der Stampfplatz wurde nicht richtig angezeigt.",
+ "Your Hero is safe. Try again, or come back in a moment.": "Deinem Helden ist nichts passiert. Versuch es nochmal oder komm gleich wieder.",
+ "No skills yet. Your first pick comes at Level {n}.": "Noch keine Fähigkeiten. Deine erste Wahl kommt auf Stufe {n}.",
+ "No crystals yet. Craft your first one below.": "Noch keine Kristalle. Stell unten deinen ersten her."
 }

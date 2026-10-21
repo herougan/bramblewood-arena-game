@@ -8404,7 +8404,7 @@
   #view-stomp .hero-skill.is-choose{border:2px dashed var(--accent); background:var(--surface-2); grid-template-areas:"ico lv" "ico name" "ch ch";}
   #view-stomp .hero-skill.is-choose .hk-ico{animation:stompPick 1.8s ease-in-out infinite;}
   @keyframes stompPick{50%{box-shadow:inset 0 0 0 2px var(--accent), 0 0 12px rgba(255,190,90,.6);}}
-  #view-stomp .hk-choices{grid-area:ch; grid-column:auto; margin-top:6px; gap:6px;}
+  #view-stomp .hk-choices{grid-area:ch; margin-top:6px; gap:6px;}
   #view-stomp .hk-choices .btn{display:inline-flex; align-items:center; gap:4px;}
   #view-stomp .stomp-empty{padding:8px 10px; margin:0; font-size:13px; border-radius:10px; background:var(--surface-2); border:1px dashed var(--surface-border);}
   #view-stomp .hero-materia{gap:8px;}
@@ -8458,7 +8458,9 @@
     #view-stomp .hp-card, #view-stomp .hp-card .card-tile{width:84px !important;} #view-stomp .hp-card .card-tile{height:105px !important;}
     #view-stomp .stomp-create-row{flex-direction:column; align-items:stretch;} #view-stomp .stomp-create-row .hero-name-row{flex:none;}
     #view-stomp .stomp-create-row .btn{width:100%;}
-    #view-stomp .ss-skel{flex-direction:column;}
+    #view-stomp .ss-skel{flex-direction:column;} #view-stomp .ss-lines{flex:none; width:100%; align-items:center;}
+    #view-stomp .hero-stat{grid-template-columns:minmax(0,1fr) auto auto auto; grid-template-areas:"lbl lbl minus plus" "cost val minus plus"; column-gap:6px; row-gap:3px; padding:8px 10px;}
+    #view-stomp .hero-stat .hs-val{font-size:15px; padding:0 8px;}
   }
   @media (prefers-reduced-motion: reduce){ #view-stomp .stomp-dust{display:none;} #view-stomp .hero-skill.is-choose .hk-ico, #view-stomp .ss-card, #view-stomp .ss-lines i{animation:none;} }
   /* Arrow projectiles (2026-10-04) */

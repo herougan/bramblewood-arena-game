@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package SG: Stomping Grounds UI fidelity)
+- **Owner (23:43):** "Stomping Grounds UI fidelity should match the rest."
+- **Before:** two plain panels on the page backdrop: a text header and the Hero Hall, with the three peoples as bare art squares and the skills as text rows.
+- **Now a place, like the Forge and the Nest:** the Arena's training ring (map art `marena`) under a darkening veil, a hanging plank sign ("🐾 Stomping Grounds"), the subtitle on a dark strip, and dust drifting up off the ring (off under reduced motion).
+- **The Hero** stands on a mound of trampled earth (168 px card tile); name with a people chip, a proper XP bar, fact chips. The Stat points, Skills and Materia benches are their own panels; stat values sit in their card-badge colours; every skill row has its icon in a round token as in the Codex's skill book (🔒 locked, ✨ to pick), and the pick buttons show the skill icons.
+- **Raise a Hero (the empty state):** each people is shown as its Level-1 Hero card (the shared card renderer) instead of bare art. Empty hints on Skills (before Level 5) and Materia (no crystals yet).
+- **Loading and error states:** a card-shaped skeleton while the card data isn't ready, and a "Try again" panel if the page fails to draw (it used to stay blank).
+- Phone: no horizontal scroll at 390 px; the stat rows put the value under the label; no fixed or transformed layers in the scene. Same buttons, ids and handlers (tests/e2e/hero.py passes). 6 new texts (TX `ui.stomp-*`) in the 12 packs (`tools/i18n_2026_10_19_sg.py`). Screens: `docs/screens/sg/`.
+
 ## 2026-10-19 (package CF: card frames for equipment, Devilry and Evomax)
 - **Owner (22:32):** "Equipment & devilry card frame - can it be improved? ... too pink ... I don't want to stray too far from [the normal frame]. Just abit different."
 - **Before:** there was no equipment frame. Equipment wore whatever its archetype gave it: Quill Spear and the other plain equipment the normal walnut frame, Terraumbra (an Evomax equipment Easter egg) the pink nacre Evomax frame (`a-evolution.png`). Devilry units wore their own dark-iron frame with blood drips and pentagram studs.

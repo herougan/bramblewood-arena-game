@@ -2344,5 +2344,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name}被抓住破绽：+{b}伤害（剩{n}个）。",
  "{name} is isolated: −{n}/−{n}.": "{name}陷入孤立：−{n}/−{n}。",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n}个标记：每次命中它多造成1点伤害并消耗一个。",
- "Tap to see the card": "点按查看卡牌"
+ "Tap to see the card": "点按查看卡牌",
+ "Choose your Hero's people": "选择你的英雄的族群",
+ "Raking the training ring…": "正在耙平训练场…",
+ "The Stomping Grounds didn't draw properly.": "踩踏场没有正确显示。",
+ "Your Hero is safe. Try again, or come back in a moment.": "你的英雄安然无恙。再试一次，或者稍后再来。",
+ "No skills yet. Your first pick comes at Level {n}.": "还没有技能。第一次挑选在 {n} 级。",
+ "No crystals yet. Craft your first one below.": "还没有晶石。在下面打造你的第一颗吧。"
 }

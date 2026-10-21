@@ -2344,5 +2344,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name}の弱点を突く：+{b}ダメージ（残り{n}）。",
  "{name} is isolated: −{n}/−{n}.": "{name}は孤立：−{n}/−{n}。",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "トークン{n}個：命中ごとに1多く受け、1個使う。",
- "Tap to see the card": "タップしてカードを見る"
+ "Tap to see the card": "タップしてカードを見る",
+ "Choose your Hero's people": "ヒーローの種族を選ぼう",
+ "Raking the training ring…": "訓練場をならしています…",
+ "The Stomping Grounds didn't draw properly.": "踏み鳴らしの広場がうまく表示されませんでした。",
+ "Your Hero is safe. Try again, or come back in a moment.": "ヒーローは無事です。もう一度試すか、少ししてから来てください。",
+ "No skills yet. Your first pick comes at Level {n}.": "スキルはまだありません。最初の選択はレベル{n}で。",
+ "No crystals yet. Craft your first one below.": "クリスタルはまだありません。下で最初のひとつを作ろう。"
 }

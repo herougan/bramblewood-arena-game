@@ -2344,5 +2344,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name}의 약점을 공략: 피해 +{b} (남은 {n}).",
  "{name} is isolated: −{n}/−{n}.": "{name}이(가) 고립: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "토큰 {n}개: 명중마다 1 더 받고 하나를 써요.",
- "Tap to see the card": "탭하여 카드 보기"
+ "Tap to see the card": "탭하여 카드 보기",
+ "Choose your Hero's people": "영웅의 종족을 고르세요",
+ "Raking the training ring…": "훈련장을 고르는 중…",
+ "The Stomping Grounds didn't draw properly.": "쿵쿵 훈련장을 제대로 표시하지 못했어요.",
+ "Your Hero is safe. Try again, or come back in a moment.": "영웅은 무사해요. 다시 시도하거나 잠시 후에 다시 오세요.",
+ "No skills yet. Your first pick comes at Level {n}.": "아직 스킬이 없어요. 첫 선택은 레벨 {n}에서 해요.",
+ "No crystals yet. Craft your first one below.": "아직 수정이 없어요. 아래에서 첫 수정을 만들어 보세요."
 }

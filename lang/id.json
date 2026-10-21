@@ -2343,5 +2343,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} dieksploitasi: +{b} kerusakan (sisa {n}).",
  "{name} is isolated: −{n}/−{n}.": "{name} terkucil: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} token: tiap serangan padanya memberi 1 lebih dan memakai satu.",
- "Tap to see the card": "Ketuk untuk melihat kartu"
+ "Tap to see the card": "Ketuk untuk melihat kartu",
+ "Choose your Hero's people": "Pilih bangsa Pahlawanmu",
+ "Raking the training ring…": "Meratakan arena latihan…",
+ "The Stomping Grounds didn't draw properly.": "Lapangan Latihan tidak tampil dengan benar.",
+ "Your Hero is safe. Try again, or come back in a moment.": "Pahlawanmu aman. Coba lagi, atau kembali sebentar lagi.",
+ "No skills yet. Your first pick comes at Level {n}.": "Belum ada keahlian. Pilihan pertamamu datang di Level {n}.",
+ "No crystals yet. Craft your first one below.": "Belum ada kristal. Buat yang pertama di bawah."
 }

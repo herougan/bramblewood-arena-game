@@ -2344,5 +2344,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} சுரண்டப்படுகிறது: +{b} சேதம் ({n} மீதம்).",
  "{name} is isolated: −{n}/−{n}.": "{name} தனிமையில்: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} வில்லைகள்: அதன் மீதான ஒவ்வொரு தாக்குதலும் 1 அதிகம் தந்து ஒன்றைச் செலவழிக்கும்.",
- "Tap to see the card": "அட்டையைப் பார்க்கத் தட்டவும்"
+ "Tap to see the card": "அட்டையைப் பார்க்கத் தட்டவும்",
+ "Choose your Hero's people": "உங்கள் நாயகனின் இனத்தைத் தேர்ந்தெடுங்கள்",
+ "Raking the training ring…": "பயிற்சி வளையம் சீர்செய்யப்படுகிறது…",
+ "The Stomping Grounds didn't draw properly.": "பயிற்சிக் களம் சரியாகக் காட்டப்படவில்லை.",
+ "Your Hero is safe. Try again, or come back in a moment.": "உங்கள் நாயகன் பாதுகாப்பாக இருக்கிறான். மீண்டும் முயலுங்கள், அல்லது சற்று நேரம் கழித்து வாருங்கள்.",
+ "No skills yet. Your first pick comes at Level {n}.": "இன்னும் திறன்கள் இல்லை. முதல் தேர்வு நிலை {n}-இல் வரும்.",
+ "No crystals yet. Craft your first one below.": "இன்னும் படிகங்கள் இல்லை. முதலாவதைக் கீழே உருவாக்குங்கள்."
 }

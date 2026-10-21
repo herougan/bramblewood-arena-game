@@ -2342,5 +2342,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "Sinamantala ang {name}: +{b} pinsala ({n} natitira).",
  "{name} is isolated: −{n}/−{n}.": "Nakahiwalay ang {name}: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} token: dagdag na 1 ang bawat tama rito at gumagamit ng isa.",
- "Tap to see the card": "I-tap para makita ang card"
+ "Tap to see the card": "I-tap para makita ang card",
+ "Choose your Hero's people": "Piliin ang lahi ng iyong Bayani",
+ "Raking the training ring…": "Sinusuyod ang ruweda ng pagsasanay…",
+ "The Stomping Grounds didn't draw properly.": "Hindi naipakita nang maayos ang Tapakan.",
+ "Your Hero is safe. Try again, or come back in a moment.": "Ligtas ang iyong Bayani. Subukan ulit, o bumalik mamaya.",
+ "No skills yet. Your first pick comes at Level {n}.": "Wala pang kakayahan. Darating ang unang pili mo sa Level {n}.",
+ "No crystals yet. Craft your first one below.": "Wala pang kristal. Gawin ang una mo sa ibaba."
 }

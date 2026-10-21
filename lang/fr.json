@@ -2344,5 +2344,11 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} est exploitée : +{b} dégâts ({n} restant(s)).",
  "{name} is isolated: −{n}/−{n}.": "{name} est isolée : −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} jeton(s) : chaque coup qu’elle reçoit inflige 1 de plus et en use un.",
- "Tap to see the card": "Touchez pour voir la carte"
+ "Tap to see the card": "Touchez pour voir la carte",
+ "Choose your Hero's people": "Choisissez le peuple de votre Héros",
+ "Raking the training ring…": "On ratisse l’arène d’entraînement…",
+ "The Stomping Grounds didn't draw properly.": "Le Terrain de piétinement ne s’est pas affiché correctement.",
+ "Your Hero is safe. Try again, or come back in a moment.": "Votre Héros ne risque rien. Réessayez, ou revenez dans un instant.",
+ "No skills yet. Your first pick comes at Level {n}.": "Pas encore de compétence. Votre premier choix arrive au niveau {n}.",
+ "No crystals yet. Craft your first one below.": "Pas encore de cristal. Fabriquez le premier ci-dessous."
 }
