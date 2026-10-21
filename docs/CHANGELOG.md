@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (owner 16:13: relative skills shifted ×0.78; 43 cards re-fitted; no runs)
+- **Owner:** "for all skills that have been recalculated, how much were they shifted? Shift the big skills by a similar amount… those about doing damage… don't have to be shifted… I don't want to do runs."
+- **The shift:** the same measuring tool, run in both worlds on 202 skills (10-19 full size against BF6's halved partial), puts the halved-world worth at a median ×0.78 of the old (quartiles ×0.56 and ×1.04).
+  - Fixed-number skills held or grew: damage, heals, armor, +N stats, poison, bleed (Armor ×1.35, Regen ×1.43, Bleed ×1.12).
+  - Relative skills (those that multiply or copy the unit's own stats, speed or odds) shrank (Quick ×0.16, Sturdy ×0.18, Crit ×0.69).
+- **Applied:** 22 big relative skills × 0.78 in `canonical/skill-costs.json` (previous value kept in prevValue): Sturdy, Desecrate, Quick, Fast Forward, Mighty, Crit, Bulldoze, Revive, Sleep, Fork, Stagger, Charge, Confuse, Daunt, Stun on Hit, Dry, Scare, True Strike, Smoke Bomb, Keen Sense, Darksight, Swimmer. Damage and the other fixed-number skills are unchanged.
+- **Re-fit by formula** (`tools/bf6_rederive_2026_10_21.js plan/apply`): 43 cards gained stats. Examples: Jaguar Stalker 1/1 → 1/12, Cinder Skeleton 1/1 → 1/9, Two-Headed Calf 1/13 → 3/10. No skills changed.
+- **Still flagged (B14):** 80 cards at their floor. Cap 2 (A·H + S·|S| ≤ (N/3)²) leaves no room for A·H once a card's total S reaches N/3, which is about 3.8 for a Level 1 Common.
+
 ## 2026-10-21 (package TS2: skirmish decks by biome, and 16 themed PvP / Async Arena decks)
 - **Owner:** "Recommended cards in each biome to have been assigned to the skirmish. (thematicism is the key, we can change skills and stats later and even images later)"; "More PVP decks maybe, I like PVP to experience some of the cards we made."
 - **Skirmish decks:** 132 fights on Maps 1-24 and their side maps (114 main, 18 side) took the cards `docs/map-recommendations-2026-10-21.md` recommends for their map, in place of off-biome cards of similar rarity, wait and cost: beach creatures on the beach, cave creatures in caves. Deck sizes, fight kinds, boss cards and showcase cards are unchanged; Map 0, the tutorials and the raid / dungeon fights are untouched. Maps 1-4 lost their deep-sea cards (Kraken Spawnling, Humpback Elder, Reef Manta Glider); no Shark before Map 8. No card stat, skill or reward changed.
