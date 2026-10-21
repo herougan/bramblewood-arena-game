@@ -12070,12 +12070,12 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 /* Package U4 (2026-10-19, owner 23:20: "The show unseen and all by ID, -> should show a tick or not if enabled or not - can't tell.").
    1. The Codex's switches (.u4-switch: Show unseen, All by ID, Test cards): .codex-toolbar input made their checkbox a 160 px text
       pill, the same on and off. Now a real box: empty when off, gold with a ✓ when on, and the whole pill gold-ringed while on. */
-.codex-toolbar .u4-switch{gap:8px; transition:background .15s ease, border-color .15s ease, box-shadow .15s ease;}
-.codex-toolbar .u4-switch input[type=checkbox]{flex:none; min-width:0; width:18px; height:18px; padding:0; margin:0; border:2px solid color-mix(in srgb, var(--ink) 60%, transparent); border-radius:5px; background:rgba(255,255,255,.55); display:grid; place-items:center; box-shadow:none;}
-.codex-toolbar .u4-switch input[type=checkbox]::after{content:'✓'; width:auto; height:auto; border:0; transform:none; font:900 13px/1 system-ui,sans-serif; color:#2b1d10; opacity:0; transition:opacity .12s;}
+.codex-toolbar .u4-switch{gap:8px; transition:none;} /* instant: a switch shows its state the moment it's pressed, even while the grid redraws */
+.codex-toolbar .u4-switch input[type=checkbox]{flex:none; min-width:0; width:18px; height:18px; padding:0; margin:0; border:2px solid color-mix(in srgb, var(--ink) 60%, transparent); border-radius:5px; background:rgba(255,255,255,.55); display:grid; place-items:center; box-shadow:none; transition:none;}
+.codex-toolbar .u4-switch input[type=checkbox]::after{content:'✓'; width:auto; height:auto; border:0; transform:none; font:900 13px/1 system-ui,sans-serif; color:#2b1d10; opacity:0; transition:none;}
 .codex-toolbar .u4-switch input[type=checkbox]:checked{background:#e0b85a; border-color:#b8892c;}
 .codex-toolbar .u4-switch input[type=checkbox]:checked::after{opacity:1; transform:none;}
-.codex-toolbar .u4-switch.is-on, .codex-toolbar .u4-switch:has(input:checked){background:rgba(224,184,90,.28); border-color:#e0b85a; box-shadow:0 0 0 2px rgba(224,184,90,.8); font-weight:800;}
+.codex-toolbar .u4-switch.is-on, .codex-toolbar .u4-switch:has(input:checked){background:#f1da98; color:#2b1d10; border-color:#e0b85a; box-shadow:0 0 0 2px rgba(224,184,90,.8); font-weight:800;}
 /* 2. A filter set to anything but "All …" (Codex and Brambles selects, u4MarkSelect) wears the same gold ring as the Forge's deck scope. */
 .codex-toolbar select.u4-set{border-color:#e0b85a !important; box-shadow:0 0 0 2px rgba(224,184,90,.8) !important; font-weight:700;}
 /* 3. Single-choice chips say which one is chosen with a ✓ as well as the fill (card types, Base level / My best, Brambles' origins,

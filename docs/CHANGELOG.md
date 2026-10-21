@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package U4: visible toggle states, a Forge shortcut, the deck popup's Advancement sort)
+- **Owner (23:20):** "The show unseen and all by ID, -> should show a tick or not if enabled or not - can't tell."
+  - **Cause:** the Codex toolbar's text-field rule (`.codex-toolbar input`) stretched those checkboxes into empty 160 px pills, so on and off looked the same.
+  - **Show unseen, All by ID and Test cards** are switches now (`role="switch"`): an empty box when off, a gold box with a ✓ when on, and the whole pill turns light gold with a ring while on.
+  - **The audit:** any Codex or Brambles filter select set to anything but its "All …" option wears a gold ring. That covers types, animals, phyla, rarities, archetypes, effects, and Owned / Not owned. The chosen chip carries a ✓ as well as its fill: card types, Base level / My best, Brambles' origins, the Forge's All / Ready / Levelled / Max, and the skill filter's picks.
+- **Owner (23:34):** "a forge shortcut in the top right corner of the screen, together with arena and home. Home of course comes first."
+  - The Play cluster (Conquest, Arena, Raid, Dungeons) is now 🌰 Home, 🏟️ Arena (where it already showed), 🔨 Forge (once the Forge is open), then the key, ⚙️ and Energy.
+  - The Forge button goes to the Forge the way the page bar's shortcut does. The Arena button's texts are TX keys too, translated into the 12 packs.
+  - It fits on one line at 360, 390 and 1366 px, with no sideways scroller. At 360 px the map strip takes its own line under the cluster (U3's fallback).
+- **Owner (23:44):** "skirmish editor - sort by advancement option as well."
+  - The skirmish editor's deck popup has **Sort: Advancement**. It uses the Codex's order: Base, then each map's fights along the road with side maps after their parent, then packs and events. The choice is kept on the device.
+- **Tests:** `tests/u4-2026-10-19.js` (static), and `tests/e2e/u4_2026_10_19.py` (Playwright, 360 / 390 / 1366). `tests/mobile-nav-2026-10-19.js` now counts the Forge button in its overlap check. Screenshots are in `docs/screens/u4/`.
+
 ## 2026-10-19 (package CF: card frames for equipment, Devilry and Evomax)
 - **Owner (22:32):** "Equipment & devilry card frame - can it be improved? ... too pink ... I don't want to stray too far from [the normal frame]. Just abit different."
 - **Before:** there was no equipment frame. Equipment wore whatever its archetype gave it: Quill Spear and the other plain equipment the normal walnut frame, Terraumbra (an Evomax equipment Easter egg) the pink nacre Evomax frame (`a-evolution.png`). Devilry units wore their own dark-iron frame with blood drips and pentagram studs.
