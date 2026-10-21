@@ -93,7 +93,10 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   const kinds = m ? [...m[1].matchAll(/^\s*(\w+):\s*\{/gm)].map(x=> x[1]) : []; ok(kinds.length === 7 && kinds.every(k=> base['egg-' + k]), `an egg card for every EGG_KINDS entry (${kinds})`);
   { const {e} = mk(), rde = base['egg-red-dragon']; const pool = rde ? e.eggPoolFor(rde) : []; ok(rde && pool.length === 1 && pool[0].id === 'red-dragon', 'Red Dragon Egg hatches into the Red Dragon'); }
   const {e} = mk(); eggs.forEach(d=>{ const pool = e.eggPoolFor(d); ok(pool.length > 5 && pool.every(c=> !c.token && !c.test && !c.hidden && !c.hatchInto && ['common','uncommon'].includes(c.rarity)), `${d.name} hatches into Common/Uncommon real cards (${pool.length})`); });
-  ok(e.eggPoolFor(base['egg-bird']).every(c=> (c.species||[]).includes('Bird') || (c.archetypes||[]).some(a=> ['Bird','Hummingbird','Owl','Eagle','Duck','Raven'].includes(a))), 'a Speckled Egg only hatches birds');
+  // 2026-10-21 (package TT): since package TX an egg hatches by the type hierarchy (bramblewood-taxonomy.js): a bird is any card whose
+  // species, types or animal is a bird (the Stormcaller is an Elemental owl), and a Changeling is every type
+  { const TAXO = require(path.join(__dirname, '..', 'bramblewood-taxonomy.js')), pool = e.eggPoolFor(base['egg-bird']);
+    ok(pool.length > 5 && pool.every(c=> TAXO.typeSet(c).has('bird') || TAXO.isChangeling(c)), 'a Speckled Egg only hatches birds (or a Changeling)'); }
   const rareEgg = Object.assign({}, base['egg-bird'], {rarity:'rare'}); ok(e.eggPoolFor(rareEgg).some(c=> c.rarity === 'rare'), 'a rarer egg can hatch up to its own rarity'); }
 { const hatch = seed=>{ const {e, P} = mk(seed); const egg = put(e, P, 1, 'egg-bug', 0); put(e, P, 2, 'ke-wall', 0); egg.wait = 1; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
     return {egg, ev}; };

@@ -89,8 +89,9 @@ ok(/v \+= aiDarkCastWorth\(players, aiId, id\);/.test(fs.readFileSync(path.join(
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
 const pw = cards.find(c=> c.id === 'pall-wraith');
 ok(!!pw && pw.effects.castDarkness === true && pw.effects.darksight === true && !pw.test, 'the Pall Wraith: Cast Darkness + Darksight');
-ok(pw && pw.source && pw.source.kind === 'map' && pw.source.id === 'me' && pw.source.node === '20-A-2', 'its card reward: 20-A-2 (the Wraith Vents, Eye of the Volcano)');
-ok(/name:"The Wraith Vents", icon:"👻"/.test(src) && (JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')).find(c=> c.id === 'pall-wraith') || {}).source?.node === '20-A-2', 'Pall Wraith is the Wraith Vents reward (the 10-19 level pass took it out of the deck)');
+// 2026-10-21 (package RP, owner: "submaps get 1 unique card each"): the Wraith Vents keep only their boss card, so the Pall Wraith moved to 20-5
+ok(pw && pw.source && pw.source.kind === 'map' && pw.source.id === 'm11' && pw.source.node === '20-5', 'its card reward: 20-5 (moved off the Wraith Vents by package RP)');
+ok(/name:"The Wraith Vents", icon:"👻"/.test(src), 'the Wraith Vents side map is still there (its Pall Wraith reward moved to 20-5, package RP)');
 ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its numericId is unique');
 { // budget v3 (SB_V3_DEFAULTS + SB_DEFAULT_SKILLS, as the Test Lab reads them)
   const line = src.match(/^const SB_DEFAULT_SKILLS = (\{[^\n]*\});/m), costs = line ? new Function('return ' + line[1].replace(/\/\*[\s\S]*?\*\//g, ''))() : {};
@@ -154,6 +155,8 @@ const stub = new Proxy(function(){ return ''; }, {get:(t, k)=> k === Symbol.toPr
 const cardDefs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; cardDefs[c.id] = d; });
 const g0 = {TX, console, Math, JSON, Object, Array, String, Number, Set, Map, RegExp, Date, Symbol, Boolean, Error, parseInt, parseFloat, isNaN, Infinity, NaN, undefined,
   getCardDefs: ()=> cardDefs, escapeHtml: s=> String(s), escapeAttr: s=> String(s), adminModeEnabled: false, EXILE_ZONE_NAME: 'Removal Zone'};
+// 2026-10-21 (package TX merge): the real type hierarchy, not the catch-all stub (the stub made TAXO.ancestors() return '' and every description throw)
+g0.BramblewoodTaxonomy = require(path.join(ROOT, 'bramblewood-taxonomy.js'));
 const constLine = nm=> (L.find(l=> l.startsWith('const ' + nm + ' = ')) || '');
 const ctx = vm.createContext(new Proxy(g0, {has: ()=> true, get: (t, k)=> k in t ? t[k] : (typeof k === 'string' && /^[A-Z_]+$/.test(k) ? {} : stub), set: (t, k, v)=>{ t[k] = v; return true; }}));
 const fnSrc = nm=>{ const a = src.indexOf('\nfunction ' + nm + '('); if(a < 0) return ''; let i = src.indexOf('{', a), d = 0; for(; i < src.length; i++){ const ch = src[i]; if(ch === '{') d++; else if(ch === '}'){ d--; if(!d) break; } } return src.slice(a + 1, i + 1); };

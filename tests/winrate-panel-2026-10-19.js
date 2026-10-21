@@ -121,7 +121,12 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
     const SIDE90 = 1 / (1 + Math.exp(-(Math.log(.9 / .1) - G.ROAD_CURVE_SIDE_DR)));
     // 2026-10-19 (package LV): the Old Bramble and the Eye of the Volcano are on the curve (the Eye's boss fight is its Heart of the Mountain)
     ok(G.skirmishTargetBand('mo', B.byKey('mo', '0-B-4')).role === 'boss' && G.skirmishTargetBand('me', B.byKey('me', '20-A-4')).role === 'boss' && Math.abs(G.skirmishTargetBand('me', B.byKey('me', '20-A-1')).t - SIDE90) < 0.002, 'the Old Bramble and the Eye of the Volcano are on the curve');
-    ok(Math.abs(G.skirmishTargetBand('mq', B.byKey('mq', '1-A-1')).t - SIDE90) < 0.002 && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', 'side maps follow the same curve (a map ahead: 90% becomes 88.2%)');
+    // 2026-10-21 (package TT): package RP opens Clovermead after Map 5 and counts its fights as Map 5 (shieldMap 5: enemy level, Shield and
+    // your reference deck, as Lilypad Reach), so it is no longer a map ahead of your deck and keeps the main curve's 90%; the Pale Desert
+    // (counts as Map 19 on the Map 18 deck) still shows the step
+    { const q1 = G.skirmishTargetBand('mq', B.byKey('mq', '1-A-1')), pd1 = G.skirmishTargetBand('mpd', B.byKey('mpd', '18-A-1'));
+      ok(q1.t === .9 && !q1.ahead && G.fightMapNumber(B.byKey('mq', '1-A-1')) === 5 && G.skirmishTargetBand('mq', B.byKey('mq', '1-A-5')).role === 'boss', `Clovermead counts as Map 5 with the Map 5 deck: the main curve (${q1.t})`);
+      ok(Math.abs(pd1.t - SIDE90) < 0.002 && pd1.ahead === 1, `side maps a map ahead of your deck sit a step lower (90% becomes 88.2%: the Pale Desert's ${pd1.t})`); }
     const n1 = B.byKey('mc', '3-1'), nB = B.byKey('mc', '3-7'), cls = (mid, n, v)=>{ G.skirmishCurveCache[mid + ':' + n.key] = v; const h = G.skirmishCurveChipHTML(mid, n, ''); return (/se-curve-chip (\w*)/.exec(h) || [])[1]; };
     ok(cls('mc', n1, .90) === 'ok' && cls('mc', n1, .83) === 'ok' && cls('mc', n1, .80) === 'hard' && cls('mc', n1, .99) === 'easy', 'the first fight: 82-98% green, under red, over blue');
     ok(cls('mc', nB, .45) === 'ok' && cls('mc', nB, .30) === 'ok' && cls('mc', nB, .55) === 'easy' && cls('mc', nB, .25) === 'hard', 'the boss: 30-49% green, 50%+ blue, under 30% red');

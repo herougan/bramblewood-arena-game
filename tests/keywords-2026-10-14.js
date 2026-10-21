@@ -59,7 +59,8 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
   const R = byDef(P[1], 'k4-rabid'), hp = R.hp; e.debugAttack(P, so, byDef(P[2], 'k4-swim').uid, {}, []); ok(hp - R.hp === 6, `a Swimmer hits it for double (${hp - R.hp}, want 6)`); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-rabid', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-water', 'left', {}, []);
   const R = byDef(P[1], 'k4-rabid'), hp = R.hp; e.debugAttack(P, so, byDef(P[2], 'k4-water').uid, {}, []); ok(hp - R.hp === 6, `water damage is double too (${hp - R.hp}, want 6)`); }
-{ const d = defs['rabid-jackal']; ok(d && d.attack === 2 && d.health === 3 && d.effects.rabid && d.rarity === 'uncommon', 'Rabid Jackal is a 2/3 uncommon with Rabid'); }
+// 2026-10-21 (package TT): 3/5 since the 2026-10-19 card retune (BF3, v5 L/10 + Map term: raised to 65% of N); was 2/3
+{ const d = defs['rabid-jackal']; ok(d && d.attack === 3 && d.health === 5 && d.effects.rabid && d.rarity === 'uncommon', 'Rabid Jackal is a 3/5 uncommon with Rabid'); }
 // ---- Cower: hit last round -> this round it hides (shell: no attack, no damage from attacks) or backs off (flee: no attack, heals 2)
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-cower', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-hit', 'left', {}, []);
   const C = byDef(P[1], 'k4-cower'), F = byDef(P[2], 'k4-hit');

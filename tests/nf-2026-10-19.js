@@ -65,7 +65,7 @@ function makeNest(open, eggs){
 const copyBlock = between('// CARD_COPIES_NF:BEGIN', '// CARD_COPIES_NF:END');
 ok(copyBlock.length > 2000, '3. the CARD_COPIES_NF block is there');
 const refine = between('const REFINE_LADDER = [', '];') + '\n' + fnSrc('copyRefineRank');
-const forgeFns = ['forgeCreditOf', 'spareCopyIndex', 'feedDuplicate', 'levelUpCost', 'spendForgeCredit', 'forgeSetCopyLevel', 'forgeCopyLevel', 'disenchantableCopies',
+const forgeFns = ['forgeCreditOf', 'spareCopyIndex', 'feedDuplicate', 'levelUpCost', 'spendForgeCredit', 'forgeSetCopyLevel', 'forgeCopyLevel', 'disenchantableCopies', 'addForgeCredit',
   'meltCardValue', 'meltCard', 'spareDuplicatesTotal', 'fuseAllPlan', 'fuseAllDuplicates', 'mainDeckLevel'];
 forgeFns.forEach(f=> ok(fnSrc(f), `arena_app.js has ${f}`));
 const statsAt = (d, L)=> ({attack: d.attack + 2 * (L - 1), health: d.health + 3 * (L - 1)});
@@ -93,58 +93,55 @@ function makeCopies(o){
   return ctx;
 }
 // ---- the move of an old save
+// 2026-10-21 (package FG, owner: "Huge change: I think forge forges ALL cards of a particular suite."): NF's per-copy levels were
+// reversed: every copy sits at the card's level, and the credit is the card's (tests/fg-2026-10-19.js covers the move from per-copy
+// levels). What NF built stays and is checked here: every copy's uid, no deck weaker after the move, a deck's Base copies, the deck
+// fighting with your copies, the cloud row's copies.
 { const copies = {x: [{foil:false}, {foil:true, finish:'hex'}, {foil:false, shiny:true}, {foil:false}], y: [{foil:false}]};
   const ctx = makeCopies({copies, levels: {x: 5, b: 3}, credit: {x: {dust: 30, gold: 10}}, deck: {x: 3, b: 2}}), C = ctx.C; let a = ctx.myCardCopies.x;
   ok(!C.ready && ctx.localStorage.getItem(C.COPY_MODEL_KEY) == null, '3. before the move: no version flag');
-  ok(C.ensureCopyModel() === true && C.ready && ctx.localStorage.getItem(C.COPY_MODEL_KEY) === '1', '3. the move runs once and sets the version flag');
-  a = ctx.myCardCopies.x; // (the move writes a fresh array of the same copies)
+  ok(C.ensureCopyModel() === true && C.ready && ctx.localStorage.getItem(C.COPY_MODEL_KEY) === '2', '3. the move runs once and sets the version flag (2 since FG)');
+  a = ctx.myCardCopies.x;
   ok(a.every(c=> c.level === 5 && typeof c.uid === 'string' && c.uid.length > 4), '3. an old save: every copy keeps the card\'s level 5 (no deck gets weaker) and gets its own uid');
   ok(new Set(a.map(c=> c.uid)).size === 4, '3. the uids are unique');
   const best = a[C.bestCopyIdx('x')];
   ok(best.finish === 'hex', '3. the best copy on a level tie is the finest foil (hex over a Shiny over plain)');
-  ok(best.cr && best.cr.dust === 30 && best.cr.gold === 10 && !('x' in ctx.myForgeCredit), '3. the card\'s Forge credit moves onto its best copy');
-  ok(!best.free && a.filter(c=> c !== best).every(c=> c.free === 5), '3. the other copies\' levels are marked inherited (free)');
-  ok(ctx.getCardLevel('x') === 5 && ctx.myCardLevels.x === 5, '3. the best copy (and the card\'s level) is never lowered');
+  ok(ctx.myForgeCredit.x && ctx.myForgeCredit.x.dust === 30 && !a.some(c=> c.cr || c.free), '3. (FG) the card keeps its Forge credit; no copy carries credit or inherited levels');
+  ok(ctx.getCardLevel('x') === 5 && ctx.myCardLevels.x === 5, '3. the card\'s level is never lowered');
   ok(ctx.myCardCopies.y[0].level === 1, '3. an unlevelled card\'s copy starts at its starting level');
   ok((ctx.myCardCopies.b || []).length === 2 && ctx.myCardCopies.b.every(c=> c.level === 3 && c.m === 1), '3. a levelled Base card with no copy on record gets the 2 copies its deck held, at its level');
-  ok(/Each copy of a card now has its own level/.test(TX('toast.nf-copies-own-level')), '3. the note for a save with levelled spare copies');
+  ok(/every copy of a card together/.test(TX('toast.fg-card-levels')), '3. (FG) the note for a save whose copies differed');
   const before = JSON.stringify(ctx.myCardCopies); ctx.C.copyModelSync('x'); ok(JSON.stringify(ctx.myCardCopies) === before, '3. a second sync changes nothing');
-  // a second page load: the flag is set, nothing is moved again
-  const ctx2 = makeCopies({copies: JSON.parse(before), levels: {x: 5}}); ctx2.localStorage.setItem(ctx2.C.COPY_MODEL_KEY, '1');
+  const ctx2 = makeCopies({copies: JSON.parse(before), levels: {x: 5}}); ctx2.localStorage.setItem(ctx2.C.COPY_MODEL_KEY, '2');
   ctx2.C.ensureCopyModel(); ok(JSON.stringify(ctx2.myCardCopies.x) === JSON.stringify(JSON.parse(before).x), '3. with the flag set the move doesn\'t run again');
-  // ---- per-copy levels: forging one copy changes only that copy
+  // ---- (FG) forging any copy raises every copy
   const plain = a.find(c=> !c.foil && !c.shiny);
   C.forgeSetCopyLevel('x', plain.uid, 6);
-  ok(plain.level === 6 && a.filter(c=> c !== plain).every(c=> c.level === 5), '3. forging one copy to Lv 6 leaves every other copy at Lv 5');
-  ok(ctx.myCardLevels.x === 6 && a[C.bestCopyIdx('x')] === plain && plain.free === 5, '3. the card\'s shown level is its best copy (now the one forged: 5 inherited levels + 1 paid)');
-  ok(C.forgeCopyLevel('x', best.uid) === 5 && C.forgeCopyLevel('x', null) === 6, '3. the Forge reads the picked copy\'s level (the best by default)');
-  ok(C.levelUpCost(5, 'x', best.uid).credit.dust === 30 && C.levelUpCost(6, 'x', plain.uid).credit.dust === 0, '3. credit sits on its own copy');
-  C.spendForgeCredit('x', {dust: 30, gold: 10}, best.uid); ok(!best.cr, '3. spending a copy\'s credit clears it');
-  // ---- the deck fights with its strongest copies at their own levels
+  ok(a.every(c=> c.level === 6) && ctx.myCardLevels.x === 6, '3. (FG) forging the card to Lv 6 raises every copy');
+  ok(C.forgeCopyLevel('x', best.uid) === 6 && C.forgeCopyLevel('x', null) === 6, '3. every copy reads the card\'s level');
+  ok(C.levelUpCost(6, 'x', best.uid).credit.dust === 30 && C.levelUpCost(6, 'x', plain.uid).credit.dust === 30, '3. (FG) the credit is the card\'s, whichever copy is asked');
+  C.spendForgeCredit('x', {dust: 30, gold: 10}, best.uid); ok(!ctx.myForgeCredit.x, '3. spending the credit clears it');
+  // ---- the deck fights with its copies, all at the card's level
   const out = C.ownedDeckForMatch({x: 3});
-  ok(out.x === 1 && out['x~cp5'] === 2 && Object.keys(out).length === 2, `3. a deck of 3: the Lv 6 copy as "x" and two Lv 5 copies as "x~cp5" (${JSON.stringify(out)})`);
-  const cp = ctx.matchDefsOverlay['x~cp5'];
-  ok(cp && cp.level === 5 && cp.attack === statsAt(ctx.CARD_DEFS_BASELINE.x, 5).attack && cp.health === statsAt(ctx.CARD_DEFS_BASELINE.x, 5).health && cp.derivedFrom === 'x', '3. the copy fights with Lv 5\'s stats and is known as card x');
-  // a real engine: what lands on the board
+  ok(out.x === 3 && Object.keys(out).length === 1, `3. (FG) a deck of 3: three copies of "x" at Lv 6, no weaker copies (${JSON.stringify(out)})`);
   const defs = ctx.getCardDefs(), eng = makeSimEngine(defs, ()=> .5, {}), P = eng.newPlayer(1, out, {id:'c', name:'c', health:30, effects:{}});
-  const atks = P.deck.map(id=> eng.makeBoardCard(id).atk).sort((p, q)=> p - q), X0 = ctx.CARD_DEFS_BASELINE.x;
-  ok(JSON.stringify(atks) === JSON.stringify([statsAt(X0, 5).attack, statsAt(X0, 5).attack, statsAt(X0, 6).attack]), `3. in a real fight the cards come down at 18 / 18 / 20 Attack (${atks})`);
-  ok(JSON.stringify(C.ownedDeckForMatch({x: 1})) === '{"x":1}', '3. one copy in the deck: the best one, the card itself');
-  // a new copy joins at its starting level; a 5-card deck reaches it
+  const atks = P.deck.map(id=> eng.makeBoardCard(id).atk), X0 = ctx.CARD_DEFS_BASELINE.x;
+  ok(atks.length === 3 && atks.every(v=> v === statsAt(X0, 6).attack), `3. in a real fight every copy comes down at Lv 6's Attack (${atks})`);
+  ok(JSON.stringify(C.ownedDeckForMatch({x: 1})) === '{"x":1}', '3. one copy in the deck: the card itself');
   a.push({foil:false}); C.copyModelSync('x');
-  ok(a[4].level === 1 && JSON.stringify(C.deckCopyLevels('x', 5)) === '[6,5,5,5,1]', '3. a new copy starts at Lv 1 and only fights once the deck holds all five');
-  const o5 = C.ownedDeckForMatch({x: 5}); ok(o5['x~cp1'] === 1 && !ctx.matchDefsOverlay['x~cp5'] === false, '3. the weakest copy fights as "x~cp1"');
-  ok(C.mainDeckLevel({x: 5}, null) === 6 + 5 + 5 + 5 + 1, '3. the deck\'s battle rating counts each copy at its own level');
-  const ob = C.ownedDeckForMatch({b: 3}); ok(ctx.myCardCopies.b.length === 3 && ob.b === 2 && ob['b~cp0'] === 1, '3. a Base card gets a real third copy for the deck, at its starting level');
+  ok(a[4].level === 6 && JSON.stringify(C.deckCopyLevels('x', 5)) === '[6,6,6,6,6]', '3. (FG) a new copy joins at the card\'s level');
+  ok(C.mainDeckLevel({x: 5}, null) === 30, '3. the deck\'s battle rating counts each copy at the card\'s level');
+  const ob = C.ownedDeckForMatch({b: 3}); ok(ctx.myCardCopies.b.length === 3 && ob.b === 3, '3. a Base card gets a real third copy for the deck, at the card\'s level');
   ok(C.ownedDeckForMatch(null) === null && (ctx.standardMatchActive = true, JSON.stringify(C.ownedDeckForMatch({x: 3})) === '{"x":3}'), '3. a Standard match (every card Lv 1) is left alone'); ctx.standardMatchActive = false;
   // ---- the cloud row's copies
-  const row = C.cloudCopiesOf('x'); ok(row.length === 5 && row[0].u === plain.uid && row[0].l === 6 && row.every(r=> typeof r.u === 'string' && Number.isInteger(r.l)), '3. the cloud row carries each copy\'s uid and level, best first');
+  const row = C.cloudCopiesOf('x'); ok(row.length === 5 && row[0].u === a[C.bestCopyIdx('x')].uid && row.every(r=> r.l === 6 && typeof r.u === 'string'), '3. the cloud row carries each copy\'s uid and level (the card\'s), best first');
+  C.cloudApplyCopyLevels([{card_id:'x', copies:[{u: plain.uid, l: 3}]}]);
+  ok(a.every(c=> c.level === 6), '3. a pulled lower level never lowers the card');
   C.cloudApplyCopyLevels([{card_id:'x', copies:[{u: plain.uid, l: 3}, {u:'from-another-device', l: 8}]}]);
-  ok(plain.level === 6, '3. a pulled lower level never lowers a copy');
-  ok(Math.max(...a.map(c=> c.level)) === 8 && ctx.myCardLevels.x === 8 && a.filter(c=> c.level === 8).length === 1, '3. another device\'s Lv 8 copy lifts this device\'s strongest unmatched copy');
-  // ---- melting: inherited levels give nothing back
-  const inh = a.find(c=> c.free === 5 && c.level === 5); const mv = C.meltCardValue('x', inh.uid);
-  ok(!mv || mv.dust === 7 * mv.copies, `3. melting a copy whose levels were inherited refunds no levels (${JSON.stringify(mv)})`); }
+  ok(a.every(c=> c.level === 8) && ctx.myCardLevels.x === 8, '3. (FG) another device\'s Lv 8 lifts the whole card');
+  // ---- melting: the card as one; its extras (beyond the deck limit, 3 here) melt with it
+  const mv = C.meltCardValue('x', null);
+  ok(mv && mv.copies === 2 && mv.level === 8, `3. melting: the card's levels and its 2 extras (5 copies, limit 3) (${JSON.stringify(mv)})`); }
 // ---- 4. Fuse all extras: the highest level first, then the finest foil, then the oldest
 { const mk = (uid, level, extra)=> Object.assign({uid, level, foil:false}, extra || {});
   const copies = {
@@ -157,16 +154,15 @@ function makeCopies(o){
   const plan = C.fuseAllPlan(), byId = Object.fromEntries(plan.per.map(p=> [p.id, p]));
   ok(byId.y && byId.y.n === 3 && byId.y.toUid === 'b' && byId.y.to === 3, `4. y: a level tie at 3 goes to the finest foil (Etched over Hex) (${JSON.stringify(byId.y)})`);
   ok(byId.z && byId.z.n === 2 && byId.z.toUid === 'p', '4. z: a full tie goes to the oldest copy');
-  ok(byId.w && byId.w.n === 1 && byId.w.toUid === 'h' && byId.w.to === 4, '4. w: the highest level wins over a finer foil (plain Lv 4 over Gold leaf Lv 2)');
+  ok(byId.w && byId.w.n === 1 && byId.w.toUid === 'g' && byId.w.to === 4, '4. w: (FG) every copy is at the card\'s Lv 4, so the finest foil (Gold leaf) is its best copy');
   ok(C.spareDuplicatesTotal() === plan.copies && plan.copies === 6, '4. the button\'s count is the plan\'s');
   const r = C.fuseAllDuplicates();
   ok(r.count === 6 && r.cards === 3, '4. Fuse all fed 6 copies of 3 cards');
-  const cr = (id, uid)=> (ctx.myCardCopies[id].find(c=> c.uid === uid) || {}).cr || {};
-  ok(cr('y', 'b').dust === 30 && !cr('y', 'c').dust && !cr('y', 'a').dust, '4. y: all the credit is on the Etched Lv 3 copy');
-  ok(cr('z', 'p').dust === 20 && !cr('z', 'q').dust && cr('w', 'h').dust === 10 && !cr('w', 'g').dust, '4. z: on the oldest; w: on the Lv 4 copy');
+  const cr = id=> ctx.myForgeCredit[id] || {};
+  ok(cr('y').dust === 30 && cr('z').dust === 20 && cr('w').dust === 10 && !ctx.myCardCopies.y.some(c=> c.cr), '4. (FG) the credit lands on each card (30 / 20 / 10), not on a copy');
   ok(ctx.myCardCopies.y.map(c=> c.uid).join() === 'a,b,c' && ctx.myCardCopies.z.map(c=> c.uid).join() === 'p,q,r' && ctx.myCardCopies.w.map(c=> c.uid).join() === 'g,h,i', '4. the weakest spares went, a deck\'s worth stays');
-  ok(C.copySpareIdx('y').length === 0, '4. a copy with levels paid for on it (y\'s plain Lv 3) is never a spare');
-  ok(C.feedDuplicate('z', 'q') && cr('z', 'q').dust === 10 && ctx.myCardCopies.z.length === 2, '4. Feed a duplicate feeds the copy the Forge picked'); }
+  ok(C.copySpareIdx('y').length === 1, '4. (FG) levels are the card\'s, so y\'s plain Lv 3 copy is a spare too');
+  ok(C.feedDuplicate('z', 'q') && cr('z').dust === 30 && ctx.myCardCopies.z.length === 2, '4. Feed a duplicate banks on the card'); }
 
 // ======================= the rest of the game reads the copies =======================
 { const t = fnSrc('forgeTemper'); ok(/forgeUid\(id\)/.test(t) && /forgeSetCopyLevel\(id, uid, L\+1\)/.test(t) && !/myCardLevels\[id\] = L\+1/.test(t), '3. tempering raises only the copy on the anvil');
@@ -206,8 +202,10 @@ function makeCopies(o){
 ok(/\.forge-copy-picker\{/.test(tpl) && /\.fcp-chip\{/.test(tpl), '3. the copy picker CSS');
 
 // ======================= texts and packs =======================
-const KEYS = ['toast.nf-copies-own-level', 'ui.nf-fuse-blurb', 'ui.nf-fuse-tip', 'ui.nf-fuse-into', 'ui.nf-copy-level', 'ui.nf-copy-shiny', 'ui.nf-copy-plain', 'ui.nf-copy-deck',
-  'ui.nf-copy-has-credit', 'ui.nf-copies-title', 'ui.nf-copies-help', 'ui.nf-copy-credit', 'ui.nf-refines-this-copy', 'ui.nf-nest-taken', 'ui.nf-nest-locked', 'ui.nf-nest-full', 'ui.nf-energy-forged'];
+// 2026-10-21 (package FG): the per-copy texts (own levels, the copy's credit, the fuse into the best copy, Refines this copy) went with
+// the per-copy levels; package FG's own texts replace them (tests/fg-2026-10-19.js)
+const KEYS = ['ui.nf-copy-level', 'ui.nf-copy-shiny', 'ui.nf-copy-plain', 'ui.nf-copy-deck',
+  'ui.nf-copies-title', 'ui.nf-nest-taken', 'ui.nf-nest-locked', 'ui.nf-nest-full', 'ui.nf-energy-forged'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`'${k}'`), `${k} is a TX key the code uses`));
 const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u;
 const core = v=> v.trim().replace(LEAD, '').replace(/[\s:]+$/, '');

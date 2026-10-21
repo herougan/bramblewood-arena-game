@@ -179,7 +179,8 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(JSON.stringify(R.codexSkillsChosen()) === '["flying","armor"]', '9. the picks are a list of skill keys (junk dropped)');
   ok(R.codexFilterCount() === 1, '9. the picks count once in the ⚙️ Filters badge');
   const g = fnSrc('renderCodexGrid');
-  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ const ps = want\.map\(skillDefOf\); ids = ids\.filter\(id=> ps\.every\(\(p, i\)=> cardHasSkill\(defs\[id\], want\[i\], p\)\)\); \}/.test(g), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
+  // 2026-10-21 (package TX): each pick is a skill family (Diurnal = Diurnal {…}) or a skill group, read on the "?"-masked card
+  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ ids = ids\.filter\(id=>\{ const d = maskHiddenSkills\(defs\[id\]\); return want\.every\(k=> cardMatchesSkillPick\(d, k\)\); \}\); \}/.test(g), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
   ok(g.indexOf('const want = codexSkillsChosen()') < g.indexOf('codexDrawAlbum(gEl,'), '9. ... for the album and the grids alike');
   ok(/const o = Object\.assign\(\{\}, codexFilter\)/.test(fnSrc('saveCodexFilters')) && !/skills/.test(fnSrc('saveCodexFilters')), '9. the picks are saved with the other non-text filters (sticky)');
   const w = fnSrc('wireCodexSkillFilter');
@@ -210,7 +211,8 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(labels.every(l=> l && !/·|\(|—/.test(l) && l.length <= 18 && /^[A-Za-z]/.test(l)), `10. short plain section names, no glyphs or "·" detail: ${labels.join(', ')}`);
   ok(['Factions', 'Base', 'Packs', 'Mystery Booster', 'Easter eggs', 'Raid', 'Events', 'Blacksmith', 'First season', 'Maps 21–40'].every(l=> labels.includes(l)), '10. Factions, Base, Packs, Mystery Booster, Easter eggs, Raid, Events, Blacksmith, the seasons, Maps 21–40');
   const fac = R.codexViewSectionOf(cards[8], 'bands'), egg = R.codexViewSectionOf(cards[14], 'bands'), s1 = R.codexViewSectionOf(cards[1], 'bands');
-  ok(fac.label === 'Factions' && /every basic pack/.test(fac.tip) && egg.label === 'Easter eggs' && /Not obtainable/.test(egg.tip) && s1.tip === 'Map rewards from Maps 0–5', '10. the detail is in the tooltip (tip)');
+  // 2026-10-21 (package TT): package RP's faction rewards are in no pack ("Faction rewards: earned through skirmish progress and achievements, never from packs")
+  ok(fac.label === 'Factions' && /skirmish progress/.test(fac.tip) && /never from packs/.test(fac.tip) && egg.label === 'Easter eggs' && /Not obtainable/.test(egg.tip) && s1.tip === 'Map rewards from Maps 0–5', '10. the detail is in the tooltip (tip)');
   ok(/<span class="al-sec"\$\{sec\.tip \? ' title="' \+ escapeAttr\(sec\.tip\)/.test(fnSrc('albumPageHTML')) && /cx-section-head[^\n]*sec\.tip \? ` title=/.test(src), '10. the album page and the grid views show it on hover');
   ok(!/PACK_POOL_LABEL|'⚒️ Blacksmith · |'🎉 Events'|'🐙 Raid cards'|label:'🌱 Base'|'🍂 First season'/.test(src) && !('ui.ee-section' in TEXT), '10. none of the long names is left');
   // the controls on the book

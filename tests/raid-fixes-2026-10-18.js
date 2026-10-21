@@ -72,7 +72,10 @@ const tpl = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
   ok(P[2].hq.hp < h, `a Fire Bolt at the castle still lands (${h - P[2].hq.hp})`); }
 { const {e, P} = mk(); const t = put(e, P, 2, 'rf-wall', 0); e.debugSpawnCard(P, so, 1, 'rf-zap', 0, {}, []);
   ok(t.hp === 495, `Lightning on a unit still strikes it (${500 - t.hp})`); }
-ok(/With no enemy unit it strikes the bramble, which is never Shocked/.test(src) && !/'grounded'/.test(src), 'the Lightning text: the bramble is struck, never Shocked; no grounded log/float (2026-10-18 owner 15:05)');
+// 2026-10-21 (package TT): 'grounded' is now package SK3's Magnet status (Grounded, 2026-10-19), so the check names the old lightning
+// event itself: no 'grounded' log line or "⚡ Grounded" float in the app, no {type:'grounded'} event from the engine
+{ const eng = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-engine.js'), 'utf8');
+  ok(/With no enemy unit it strikes the bramble, which is never Shocked/.test(src) && !/ev\.type === 'grounded'/.test(src) && !/⚡ Grounded/.test(src) && !/type:'grounded'/.test(eng), 'the Lightning text: the bramble is struck, never Shocked; no grounded log/float (2026-10-18 owner 15:05)'); }
 
 // ---- The raid in the page: rows act in combat (no round-start volley for your rows), the clock, the end, the castle name, the camera
 ok(/reserveRows:2, reserveActs:true/.test(src), 'the raid engine runs with reserveActs');

@@ -35,7 +35,8 @@ is('otter-kit', 'otter'); is('wolf-spider-mother', 'wolf spider'); is('storm-her
 is('cinder-skeleton', 'horse', 'undead'); is('tide-spirit', 'seahorse', 'elemental'); is('summoned-shield', 'pangolin', 'construct'); is('red-dragon', 'dragon', 'mythic');
 is('cobalt-talon-fledgling', 'hummingbird'); is('moray-ambusher', 'moray eel'); is('shrine-high-priest', 'fox', 'spirit');
 // the species field is left as it is
-ok(byId['moray-ambusher'].species[0] === 'Cnidarian' && R.speciesNotes.some(n=> n.id === 'moray-ambusher'), '2. species unchanged; the disagreement is reported');
+// 2026-10-21 (package TX): the moray's species is Fish now (it was Cnidarian), so its disagreement note is gone; another one is still reported
+ok(byId['moray-ambusher'].species[0] === 'Fish' && !R.speciesNotes.some(n=> n.id === 'moray-ambusher') && R.speciesNotes.some(n=> n.id === 'tardigrade'), '2. species unchanged by the tool; the disagreements are reported');
 ok(R.counts.creatures === cards.filter(creature).length && R.counts.proposed === R.ownerCalls.length, '2. the report counts match');
 // the key sits right after species (cards.json keeps its order and indent)
 const raw = rd('canonical/cards.json');
@@ -45,7 +46,8 @@ ok(/"species": \[\n\s+"Mustelid"\n\s+\],\n\s+"animal": "otter",\n\s+"basicSet": 
 ok(!cards.some(c=> c.faction === 'otters'), '3. no card has the otters faction');
 ok(cards.filter(c=> c.faction === 'base').length === 27, '3. 27 Base cards (faction base)');
 const hb = cards.filter(c=> c.faction === 'hummingbirds');
-ok(hb.length === 12 && hb.every(c=> (c.archetypes || []).includes('Hummingbird') && c.animal === 'hummingbird'), '3. the Hummingbirds stay a faction: 12 cards, all hummingbirds');
+// 2026-10-21 (package TT): 13 since package BX's Greyplume Fledgling (a Hummingbird basic, the Otter Kit's mirror)
+ok(hb.length === 13 && hb.some(c=> c.id === 'greyplume-fledgling') && hb.every(c=> (c.archetypes || []).includes('Hummingbird') && c.animal === 'hummingbird'), '3. the Hummingbirds stay a faction: 13 cards, all hummingbirds');
 
 // 4. the Codex and the build
 const app = rd('arena_app.js'), tx = rd('bramblewood-texts.js');

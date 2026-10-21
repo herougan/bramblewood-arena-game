@@ -120,7 +120,11 @@ ok(/\{key:'swimmer', category:'passive', hidden:true, retired:true,/.test(src) &
 ['diurnalGrant', 'nocturnalGrant', 'fullMoonGrant'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'(Diurnal|Nocturnal|Full Moon)', kind:'grant'`).test(src), `11. ${k}: an editor row with a skill picker (a plain name since 2026-10-16)`));
 ok(/\{key:'tideGrant', category:'passive', label:'Tide', kind:'grant2', placeholders:\['Flood', 'Ebb'\]/.test(src), '11. Tide (Gives: Skills): two facets in the editor (plain name since 2026-10-16)');
 ok(/\{key:'fullMoon', category:'passive', label:'Full Moon', kind:'number', min:1, defaultValue:3,/.test(src), '11. plain Full Moon (default 3)');
-ok(/const SKILL_REVEAL_PARTS = \{diurnal:\['diurnalHp', 'diurnalGrant'\], nocturnal:\['nocturnalHp', 'nocturnalGrant'\], crepuscular:\['crepuscularHp'\], tide:\['tideGrant'\]/.test(src), '11. the braces hide with their skill while it is "?" (SKILL_REVEAL_PARTS)');
+// 2026-10-21 (package TT): since package TX the parts sit in SKILL_REVEAL_MAP's rows and SKILL_REVEAL_PARTS is read from it; the same parts
+{ const decl = nm=>{ const m = src.match(new RegExp(`^const ${nm} = [\\s\\S]*?;(?= *(//[^\\n]*)?\\n)`, 'm')); return m ? m[0] : ''; };
+  let parts = null; try{ parts = new Function(decl('SKILL_REVEAL_MAP') + '\n' + decl('SKILL_REVEAL_PARTS') + '\nreturn SKILL_REVEAL_PARTS;')(); }catch(e){}
+  ok(parts && JSON.stringify(parts) === JSON.stringify({swimmer:['swimmerGrant'], diurnal:['diurnalHp', 'diurnalGrant'], nocturnal:['nocturnalHp', 'nocturnalGrant'], crepuscular:['crepuscularHp'], tide:['tideGrant']}),
+    `11. the braces hide with their skill while it is "?" (SKILL_REVEAL_PARTS: ${JSON.stringify(parts)})`); }
 // the brace text helpers, run on their own
 { const pick = name=>{ const i = src.indexOf(`function ${name}(`); let d = 0, j = src.indexOf('{', i); for(; j < src.length; j++){ if(src[j] === '{') d++; else if(src[j] === '}' && --d === 0) break; } return src.slice(i, j + 1); };
   const ctx = {PASSIVE_DEFS:[{key:'evasive', label:'Evasive'}, {key:'thorns', label:'Thorns'}, {key:'armor', label:'Armor'}], SKILL_ICON:{}, valSuffix: v=> (v === true || v === 1 || v == null) ? '' : ' ' + v, Object, Number, String};

@@ -20,6 +20,11 @@ const ROOT = path.join(__dirname, '..');
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const read = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8'), readJSON = rel=> JSON.parse(read(rel));
 const src = read('arena_app.js'), cards = readJSON('canonical/cards.json'), defs = Object.fromEntries(cards.map(c=> [c.id, c]));
+// 2026-10-21 (package RP, the rewards and sources pass): it moved some of these cards on (docs/balance/rewards-pass-2026-10-21.json:
+// one unique reward a side map, plain rewards on Maps 0-1, the Devilry / Ecclesia gates, Otters and Hummingbirds to the faction
+// rewards). A card it moved is checked against its new source there.
+const RP_MOVES = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rewards-pass-2026-10-21.json'), 'utf8')).moves.map(m=> [m.id, m])); }catch(e){ return {}; } })();
+const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to); };
 const slice = (a, b)=>{ const i = src.indexOf(a), j = src.indexOf(b, i); if(i < 0 || j < 0) throw new Error('missing ' + a); return src.slice(i, j); };
 // eslint-disable-next-line no-eval
 const RR = eval(slice('// ROAD_RARITY:BEGIN', '// ROAD_RARITY:END') + ';({roadRarityCap, roadRarityStep, roadRarityOk})');
@@ -40,7 +45,8 @@ REC.forEach(p=>{ const c = defs[p.id];
   ok(c && !c.pool && !('poolMap' in c) && !('poolSlot' in c), `1. ${p.id}: live, its pool fields gone`);
   ok(c && c.numericId === p.numericId && c.numericId > OLD_MAX && c.numericId < 9001, `1. ${p.id}: a live card number (#${c && c.numericId}), not its pool #${p.poolNo}`);
   const s = c && c.source;
-  if(p.poolSlot === 'pack') ok(s && s.kind === 'pack' && s.tier === 1, `1. ${p.id}: made for a pack, in the basic pack pool (tier 1)`);
+  if(rpMoved(c)) ok(true, `1. ${p.id}: moved on by package RP (${JSON.stringify(RP_MOVES[p.id].to)})`);
+  else if(p.poolSlot === 'pack') ok(s && s.kind === 'pack' && s.tier === 1, `1. ${p.id}: made for a pack, in the basic pack pool (tier 1)`);
   else { const fam = family(p.poolMap), host = s && fam.find(m=> m.id === s.id), node = host && host.nodes.find(x=> x.key === s.node);
     ok(s && s.kind === 'map' && node, `1. ${p.id}: a skirmish-only reward on a fight of its map (${p.poolMap}): ${s && s.id}/${s && s.node}`);
     ok(node && RR.roadRarityOk(c.rarity, numOf(host), node.kind), `1. ${p.id}: ${c && c.rarity} within the ${s && s.node} (${node && node.kind}) cap`); }
@@ -56,7 +62,7 @@ ok(JSON.stringify(left) === JSON.stringify(['roseate-spoonbill', 'sanderling', '
 ['pincushion-urchin', 'banded-sea-krait', 'yellow-bellied-sea-snake', 'giant-cave-huntsman', 'polar-bear', 'walrus-icebreaker'].forEach(id=> ok(defs[id] && !defs[id].pool && defs[id].source, `1. the owner's examples are placed: ${id}`));
 const GI = ['fen-mink', 'tidepool-trapper-crab', 'grave-grin-hyena', 'bogfire-newt', 'plague-gnat-cloud', 'glasswing-moth', 'rivergate-drummer', 'frostmoon-howler', 'chapel-tortoise', 'weathervane-swift'];
 const GI_MAP = {'fen-mink': 'mw', 'plague-gnat-cloud': 'mw', 'tidepool-trapper-crab': 'mb', 'grave-grin-hyena': 'm5', 'bogfire-newt': 'm8', 'glasswing-moth': 'md', 'rivergate-drummer': 'mf', 'frostmoon-howler': 'm6', 'chapel-tortoise': 'm21', 'weathervane-swift': 'm22'};
-GI.forEach(id=>{ const c = defs[id]; ok(c && c.source && c.source.kind === 'map' && family(GI_MAP[id]).some(m=> m.id === c.source.id), `1. GI example ${id} placed where its note says (${GI_MAP[id]}): ${c && c.source && c.source.node}`); });
+GI.forEach(id=>{ const c = defs[id]; ok(c && (rpMoved(c) || (c.source && c.source.kind === 'map' && family(GI_MAP[id]).some(m=> m.id === c.source.id))), `1. GI example ${id} placed where its note says (${GI_MAP[id]}): ${c && c.source && c.source.node}`); });
 
 // ---- 2. every card a fight fields or gives exists and is live
 const bad = [];
@@ -123,7 +129,8 @@ const md = read('docs/thematic-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'thematic-pass-2026-10-19.xlsx')), '7. the spreadsheet');
 ok(REC.every(p=> md.includes(p.name)) && left.every(id=> md.includes(defs[id].name)), '7. the doc lists every placed card and the ones left in the pool');
 ok(/^# /.test(md) && md.includes('Badger Berserker') && md.includes('Pelican Diver'), '7. the doc names the drift it fixed');
-ok(read('docs/CHANGELOG.md').slice(0, 120000).includes('package TH'), '7. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
+// 2026-10-19 (LV): later packages' entries sit above it; 2026-10-21 (package TT): so many now that a fixed window misses it: its own dated heading
+ok(/^## 2026-10-19 \(package TH: the thematic pass\)$/m.test(read('docs/CHANGELOG.md')), '7. a CHANGELOG entry (its dated heading)');
 
 console.log(fail ? `thematic-2026-10-19: ${fail} of ${n} failed` : `thematic-2026-10-19: all ${n} checks passed`);
 process.exit(fail ? 1 : 0);

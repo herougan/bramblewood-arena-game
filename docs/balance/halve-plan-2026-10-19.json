@@ -1,8 +1,8 @@
 {
  "_about": "BF5 (2026-10-19, owner 21:36): N halved (scale 0.5), Bounty 1 a point; every live card re-derived at Level 1 keeping its share of N inside the band; the cards outside the band halved in proportion",
  "generated": "2026-10-19",
- "cards": 721,
- "band": 704,
+ "cards": 722,
+ "band": 705,
  "under": 0,
  "target": 0,
  "owner": 17,
@@ -9590,29 +9590,6 @@
    "use": 0.61
   },
   {
-   "id": "stonedrop-vulture",
-   "name": "Stonedrop Vulture",
-   "rarity": "uncommon",
-   "wait": 1,
-   "cost": 1,
-   "was": [
-    4,
-    7
-   ],
-   "S": 2.58,
-   "N": 18.91,
-   "N0": 37.82,
-   "use0": 0.7,
-   "m": 1.5,
-   "want": 0.7,
-   "verdict": "band",
-   "now": [
-    2,
-    3
-   ],
-   "use": 0.76
-  },
-  {
    "id": "newt-doctor",
    "name": "Newt Doctor",
    "rarity": "uncommon",
@@ -16608,6 +16585,52 @@
     3
    ],
    "use": 0.77
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 1,
+   "was": [
+    4,
+    7
+   ],
+   "S": 11.43,
+   "N": 18.91,
+   "N0": 37.82,
+   "use0": 0.7,
+   "m": 1.5,
+   "want": 0.7,
+   "verdict": "band",
+   "now": [
+    1,
+    1
+   ],
+   "use": 0.99
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "was": [
+    2,
+    5
+   ],
+   "S": 0,
+   "N": 10.6,
+   "N0": 20.77,
+   "use0": 0.65,
+   "m": 1.5,
+   "want": 0.65,
+   "verdict": "band",
+   "now": [
+    1,
+    3
+   ],
+   "use": 0.71
   }
  ],
  "prop": [

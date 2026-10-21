@@ -134,7 +134,8 @@ const fight = (e, P, ev, first)=> e.resolveCombat(P, so, {}, ev || [], first || 
   ok(ev.some(x=> x.type === 'hit' && x.attUid === a.uid && x.targetUid === s.uid) && P[2].hq.hp === P[2].hq.maxHp, 'Taunt: the swing at the empty column goes to the Taunt unit beside it, not the castle'); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'w2-hit', 0); const g = put(e, P, 2, 'w2-guard', 1); const ev = []; fight(e, P, ev, 1);
   ok(ev.some(x=> x.type === 'hitHQ' && x.attUid === a.uid) && g.hp === 500, 'Guardian is not Taunt: an empty column still goes to the castle'); }
-{ const sheep = base['sheep']; ok(sheep && sheep.rarity === 'starter' && sheep.cost === 0 && sheep.wait === 0 && sheep.attack === 1 && sheep.health === 5 && sheep.effects.taunt === true, 'the Sheep: starter, 0 cost, Wait 0, 1/5, Taunt'); }
+// 2026-10-21 (package TT): 2/10 since the 2026-10-19 card retune (BF3, v5 L/10 + Map term); was 1/5
+{ const sheep = base['sheep']; ok(sheep && sheep.rarity === 'starter' && sheep.cost === 0 && sheep.wait === 0 && sheep.attack === 2 && sheep.health === 10 && sheep.effects.taunt === true, 'the Sheep: starter, 0 cost, Wait 0, 2/10, Taunt'); }
 // ---- Molting: every 2 rounds, +N/+N and +1 Wait
 { const {e, P} = mk(); const m = put(e, P, 1, 'w2-molt', 0); put(e, P, 2, 'w2-wall', 0); fight(e, P, [], 1); ok(m.atk === 1 && m.wait === 0, 'Molting: nothing after round 1');
   const ev = []; fight(e, P, ev, 1); ok(m.atk === 3 && m.maxHp === 7 && m.wait === 1, `round 2: +2/+2 and +1 Wait (${m.atk}/${m.maxHp}, Wait ${m.wait})`);

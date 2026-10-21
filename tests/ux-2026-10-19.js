@@ -112,7 +112,7 @@ function codexApi(store, throwing){
 {
   const rf = fnSrc('renderForge');
   ok(/forgeCountBadgeHTML\(id\)/.test(rf) && /wireForgeCountBadges\(poolEl\)/.test(rf), '8b. every pool tile carries its count badge');
-  ok(/forgeCopiesWorthASheet\(forgeSelectedId\)\) openForgeCopySheet\(forgeSelectedId\)/.test(rf) && /data-forge-copy-sheet/.test(rf), '8a. picking a card opens the copies sheet; the anvil\'s button opens it again');
+  ok(/forgeCopiesWorthASheet\(forgeSelectedId\)\) openForgeCopySheet\(forgeSelectedId\)/.test(rf) && /data-forge-copy-sheet/.test(rf), '8a. picking a card opens the copies sheet (in Refine since FG); the anvil\'s button opens it');
   ok(/data-forge-copy-sheet/.test(fnSrc('forgeCopyPickerHTML')) && /forgeCopyPickerHTML\(id\)/.test(fnSrc('forgeAnvilHTML')) && /forgeCopyPickerHTML\(id\)/.test(fnSrc('refineAnvilHTML')), '8a. Upgrade and Refine show the copy summary');
   ok((src.match(/await forgeCentreStage\(/g) || []).length >= 5, '8c. temper, refine, limit break, promote and prestige play on the centre stage');
   ok(/forgeCentreStage\(play, \{el: panel/.test(fnSrc('energyForgeCelebrate')), '8c. forging Max Energy lifts its panel to the centre stage too');
@@ -217,20 +217,28 @@ async function browser(){
       if(mobile){ await pg.dispatchEvent('#forgePool [data-ux-count="ant-scout"]', 'pointerdown', {pointerType:'touch'}); await pg.waitForTimeout(650);
         ok(await pg.evaluate("[...document.querySelectorAll('.speech-bubble.ux-count-bubble')].some(b=> /Plain/.test(b.textContent))"), `${tag} 8b. a long press shows the breakdown`);
         await pg.dispatchEvent('#forgePool [data-ux-count="ant-scout"]', 'pointerup', {pointerType:'touch'}); await shot('forge-count-longpress'); await pg.waitForTimeout(400); }
-      // 8a. picking the card opens the copies sheet
+      // 8a. (2026-10-21, package FG, owner: "forge forges ALL cards of a particular suite") every copy shares the card's level: picking the
+      // card in Upgrade no longer opens the sheet by itself (Refine, which works on one copy, still does); the anvil's All copies button
+      // opens it, one group per finish, all at the card's level
+      await pg.evaluate("copyModelSync('ant-scout'); 1");
       await pg.click('#forgePool .card-tile[data-defid="ant-scout"]'); await pg.waitForTimeout(700);
+      ok(!(await pg.evaluate("!!document.querySelector('.ux-fcs-ov')")), `${tag} 8a. (FG) in Upgrade, picking the card doesn't open the sheet by itself`);
+      const sum = await pg.evaluate(`(()=>{ const c = document.querySelector('.ux-fcp .ux-fcp-cur'); return c ? c.textContent.replace(/\\s+/g, ' ').trim() : ''; })()`);
+      ok(/all Lv 10/.test(sum) && /Plain ×8/.test(sum), `${tag} 8a. (FG) the anvil says ×11, all Lv 10, and the finishes (${sum})`);
+      await pg.click('#forgeDetail [data-forge-copy-sheet]'); await pg.waitForTimeout(700);
       const sheet = await pg.evaluate(`(()=>{ const s = document.querySelector('.ux-fcs'); if(!s) return null; const g = [...s.querySelectorAll('.ux-fcs-g')];
         const grid = s.querySelector('.ux-fcs-grid'), r = s.getBoundingClientRect();
         return {groups: g.length, labels: g.map(x=> x.querySelector('.ux-fcs-lbl b').textContent + ' ' + x.querySelector('.ux-fcs-lbl small').textContent.trim() + (x.querySelector('.ux-fcs-n') ? ' ' + x.querySelector('.ux-fcs-n').textContent : '')), on: s.querySelectorAll('.ux-fcs-g.on').length,
           scrolls: getComputedStyle(grid).overflowY, fits: r.left >= 0 && r.right <= innerWidth + 0.5}; })()`);
-      ok(sheet && sheet.groups === 7, `${tag} 8a. the sheet shows every copy in groups (${sheet && sheet.labels.join(' | ')})`);
-      ok(sheet && /Lv 10 Plain ×5/.test(sheet.labels.join('|')) && sheet.on === 1, `${tag} 8a. "Lv 10 Plain ×5", and the copy on the anvil is marked`);
+      ok(sheet && sheet.groups === 4, `${tag} 8a. the sheet shows every copy, one group per finish (${sheet && sheet.labels.join(' | ')})`);
+      ok(sheet && sheet.labels.every(l=> /^Lv 10 /.test(l)) && /Lv 10 Plain ×8/.test(sheet.labels.join('|')) && sheet.on === 1, `${tag} 8a. "Lv 10 Plain ×8", every group at the card's Lv 10, one marked`);
       ok(sheet && sheet.scrolls === 'auto' && sheet.fits, `${tag} 8a. the grid scrolls and the sheet fits the screen`);
       await shot('forge-copies-sheet');
-      // pick the Lv 2 copy
-      await pg.evaluate(`(()=>{ const g = [...document.querySelectorAll('.ux-fcs-g')].find(x=> x.querySelector('.ux-fcs-lbl b').textContent.trim() === 'Lv 2'); if(g) g.click(); return !!g; })()`); await pg.waitForTimeout(600);
-      const anvil = await pg.evaluate(`(()=>{ const c = document.querySelector('.ux-fcp .ux-fcp-cur'); return {cur: c ? c.textContent.replace(/\\s+/g, ' ').trim() : '', sheet: !!document.querySelector('.ux-fcs-ov'), label: (document.querySelector('.forge-level-label') || {}).textContent}; })()`);
-      ok(anvil && !anvil.sheet && /Lv 2/.test(anvil.cur) && /Lv 2/.test(anvil.label || ''), `${tag} 8a. a pick closes the sheet and puts that copy on the anvil (${anvil && anvil.cur} / ${anvil && anvil.label})`);
+      await pg.keyboard.press('Escape'); await pg.waitForTimeout(400);
+      // the card at Lv 2, to temper it
+      await pg.evaluate("setCopyLevel('ant-scout', null, 2); renderForge(); 1"); await pg.waitForTimeout(400);
+      const anvil = await pg.evaluate(`(()=>({sheet: !!document.querySelector('.ux-fcs-ov'), label: (document.querySelector('.forge-level-label') || {}).textContent}))()`);
+      ok(anvil && !anvil.sheet && /Lv 2/.test(anvil.label || ''), `${tag} 8a. the sheet closed; the card on the anvil at Lv 2 (${anvil && anvil.label})`);
       await pg.evaluate("document.getElementById('forgeDetail').scrollIntoView({block:'center'}); 1"); await pg.waitForTimeout(300);
       await shot('forge-anvil');
       ok(await hscroll() <= 1, `${tag} no sideways scroll in the Forge`);
@@ -246,6 +254,7 @@ async function browser(){
       await pg.waitForTimeout(3000);
       const after = await pg.evaluate(`(()=>({ov: !!document.querySelector('.ux-fc-ov'), inPanel: !!document.querySelector('#forgeDetail #anvilStage'), label: (document.querySelector('.forge-level-label') || {}).textContent}))()`);
       ok(after && !after.ov && after.inPanel && /Lv 3/.test(after.label || ''), `${tag} 8c. it returns to the anvil, tempered (${after && after.label})`);
+      ok(await pg.evaluate("myCardCopies['ant-scout'].every(c=> c.level === 3)"), `${tag} 8c. (FG) every copy of the card is Lv 3 now`);
       // 9 + 11. the Codex
       await pg.mouse.move(2, h - 2); // no hover popover from where the last click was
       await pg.evaluate("codexSubTab = 'browse'; codexFilter.kind = ''; codexFilter.q = ''; switchTab('codex'); 1"); await pg.waitForTimeout(1500);
@@ -267,7 +276,7 @@ async function browser(){
       await shot('codex-detail-base');
       await pg.click('#uxCdLevel'); await pg.waitForTimeout(600);
       const cd2 = await pg.evaluate(`(()=>{ const c = document.getElementById('uxCdLevel'), atk = document.querySelector('.card-detail-card .card-pop-visual .card-tile .atk'); return {chip: c ? c.textContent : '', atk: atk ? parseInt(atk.textContent, 10) : null, saved: localStorage.getItem('bramblewood_codex_level_v1')}; })()`);
-      ok(/My best/.test(cd2.chip) && /Lv 10/.test(cd2.chip) && cd2.atk === lv.best && cd2.saved === 'best', `${tag} 9. the toggle shows your best and is remembered (${cd2.chip}, ⚔ ${cd2.atk})`);
+      ok(/My best/.test(cd2.chip) && /Lv 3/.test(cd2.chip) /* 2026-10-21 (FG): the card is Lv 3, every copy with it (was: the other copies' Lv 10) */ && cd2.atk === lv.best && cd2.saved === 'best', `${tag} 9. the toggle shows your best and is remembered (${cd2.chip}, ⚔ ${cd2.atk})`);
       await shot('codex-detail-best');
       await pg.evaluate("localStorage.setItem('bramblewood_codex_level_v1', 'base'); 1");
       // UX2: the Brambles page's filters

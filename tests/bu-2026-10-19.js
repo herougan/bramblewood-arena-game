@@ -89,7 +89,8 @@ ok(/crescentSlash\(P\.map\(/.test(sfx), 'cleaveSwing draws the crescent');
 
 // ---- 5. the tentacle strike
 ok(/function tentacleSVG\(B, T, w, dir\)/.test(fxf) && /const TENT = \{slam:220, squash:110, back:350\};/.test(fxf), 'the Tentacle Smack: a drawn SVG tentacle, slam 220 ms, pull back 350 ms');
-ok(/function smokePuff\(/.test(fxf) && /if\(!g \|\| RM\(\)\)\{ \/\/ reduced motion/.test(fxf), 'a smoke puff at impact; reduced motion: a flash');
+// 2026-10-21 (package TT): since package TF (2026-10-19, owner 22:09) reduced motion shows the tentacle lying still (fade in, hold, fade) with the flash, not the flash alone
+ok(/function smokePuff\(/.test(fxf) && /if\(reduced\)\{ \/\/ 2026-10-19 \(package TF\): reduced motion: the tentacle lies still/.test(fxf) && /reduced \? ' is-still' : ''/.test(fxf), 'a smoke puff at impact; reduced motion: the tentacle lies still, with a flash');
 ok(/\(reducedMotion\(\) && ev\.type !== 'raidSmack'\)/.test(src), 'the smack reaches FX.F under reduced motion (for its flash)');
 
 console.log(fail ? `bu-2026-10-19: ${fail} of ${n} failed` : `bu-2026-10-19: all ${n} passed`);

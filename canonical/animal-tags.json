@@ -65,9 +65,9 @@
   }
  ],
  "counts": {
-  "cards": 831,
-  "creatures": 734,
-  "tagged": 736,
+  "cards": 834,
+  "creatures": 737,
+  "tagged": 739,
   "animals": 351,
   "groups": 142,
   "withSubtype": 102,
@@ -94,13 +94,13 @@
    "ee": 8,
    "flavor": 15,
    "icon": 30,
-   "name": 536,
+   "name": 538,
    "proposed": 31,
-   "type": 54
+   "type": 55
   },
   "topGroups": {
-   "otter": 27,
-   "hummingbird": 25,
+   "otter": 28,
+   "hummingbird": 26,
    "fish": 24,
    "beetle": 19,
    "fox": 17,
@@ -119,11 +119,11 @@
    "songbird": 12,
    "ant": 11,
    "bear": 11,
+   "crow": 11,
    "mouse": 11,
    "ape": 10,
    "spider": 10,
    "badger": 10,
-   "crow": 10,
    "deer": 10,
    "bee": 9,
    "dog": 9,
@@ -362,10 +362,6 @@
   {
    "id": "gorge-wyrm",
    "note": "species Dragon; a giant worm (Annelid)"
-  },
-  {
-   "id": "moray-ambusher",
-   "note": "species Cnidarian; a moray eel is a fish (Fish)"
   },
   {
    "id": "rot-swollen-carcass",
@@ -1895,8 +1891,7 @@
    "group": "eel",
    "subtype": null,
    "how": "name",
-   "note": "species says Cnidarian; a moray is a fish",
-   "speciesNote": "species Cnidarian; a moray eel is a fish (Fish)"
+   "note": "a moray is a fish (species Fish since 2026-10-21, package TX; was Cnidarian)"
   },
   {
    "id": "sea-turtle-elder",
@@ -8867,6 +8862,36 @@
    "group": null,
    "subtype": null,
    "how": "none"
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "icon": "🦦",
+   "creature": true,
+   "animal": "otter",
+   "group": "otter",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "glintsnatch-magpie",
+   "name": "Glintsnatch Magpie",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "magpie",
+   "group": "crow",
+   "subtype": null,
+   "how": "name"
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
   }
  ]
 }
