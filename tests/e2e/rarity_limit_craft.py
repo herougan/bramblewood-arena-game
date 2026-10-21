@@ -58,7 +58,9 @@ async def main():
         check(st == ['dups', 10, True, 'cost'], f'limit break waits for the duplicates, then for the old cost: {st}')
 
         # 3: the board in the Forge
-        await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); forgeMode='upgrade'; forgeSelectedId='forager-ant'; codexSubTab='forge'; switchTab('codex'); 1"); await pg.wait_for_timeout(600)
+        # 2026-10-21 (package TT2): Cobble's Forge hello (2026-10-14) plays the first time the Forge shows; dialogues queue, so it held the
+        # rarity lesson of step 5 off the dock past this test's wait. It is not what this test checks: mark it heard.
+        await pg.evaluate("setDialogueFlag('seen:forge_cobble_intro', true); FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); forgeMode='upgrade'; forgeSelectedId='forager-ant'; codexSubTab='forge'; switchTab('codex'); 1"); await pg.wait_for_timeout(600)
         await pg.evaluate("forgeSelectedId='forager-ant'; renderForge(); 1"); await pg.wait_for_timeout(300)
         board = await pg.evaluate("""(()=>{ const b = document.querySelector('.forge-limit .lb-dups'); return b ? {on: b.querySelectorAll('.lb-dupboard i.on').length, all: b.querySelectorAll('.lb-dupboard i').length, label: b.querySelector('.lb-dups-label').textContent, tip: b.title} : null; })()""")
         check(board and board['on'] == 7 and board['all'] == 10 and board['label'] == '7/10 duplicates' and 'duplicates' in board['tip'], f'the Forge duplicate board: {board}')
@@ -72,10 +74,12 @@ async def main():
           const r = [craftNeedsHeld(seen), craftNeedsHeld(held), craftNeedsHeld('tempering-stone')];
           adminModeEnabled = true; r.push(craftNeedsHeld(seen)); adminModeEnabled = false;
           SMITH_RECIPES.push({out: seen, needs:{}, cost:{dust:0, gold:0}}); r.push(recipeReady(SMITH_RECIPES[SMITH_RECIPES.length-1]));
-          smithSel = SMITH_RECIPES.length - 1; forgeMode = 'smith'; renderForge(); const btn = document.getElementById('smithCraftBtn');
-          r.push(btn ? [btn.getAttribute('aria-disabled'), btn.title] : null); SMITH_RECIPES.pop(); smithSel = 0; return r; })()""")
+          smithSel = SMITH_RECIPES.length - 1; forgeMode = 'smith'; renderForge();
+          r.push([!document.querySelector('[data-smith="' + (SMITH_RECIPES.length - 1) + '"]'), !document.querySelector('#smithCraftBtn[data-needs-held]')]); SMITH_RECIPES.pop(); smithSel = 0; return r; })()""")
         check(cg[:5] == [True, False, False, False, False], f'craft gate: seen-only blocked, held ok, materia ok, admin bypass: {cg[:5]}')
-        check(cg[5] == ['true', 'You need to have held this card once to craft it.'], f'the Craft button for a seen-only card: {cg[5]}')
+        # 2026-10-21 (package TT2): since 2026-10-16 (owner: "If you dont have it, dont show up") the Blacksmith hides a recipe whose card
+        # you never held (smithRecipeVisible), so there is no disabled Craft button for it to check: the recipe and its button are not shown.
+        check(cg[5] == [True, True], f'a seen-only card\'s recipe is hidden in the Blacksmith (no Craft button for it): {cg[5]}')
 
         # 5: rarity lesson
         await pg.evaluate("forgeMode='upgrade'; codexSubTab='browse'; switchTab('codex'); 1"); await pg.wait_for_timeout(1300)

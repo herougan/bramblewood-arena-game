@@ -91,7 +91,8 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
 
 // ---- 4. Voltaic Eel
 { const d = base['voltaic-eel']; ok(d && d.effects.chainLightning === 2 && !('electricity' in d.effects), 'Voltaic Eel: Chain Lightning 2, no Electricity');
-  ok(d.effects.shock && d.effects.tide && d.rarity === 'rare', 'the rest of the Eel is as it was (stats moved by the 10-17 balance pass)'); }
+  // 2026-10-21 (package TT2): BF5's two-skill cut kept Shock + Chain Lightning and dropped Tide and the on-spawn trigger (docs/balance/two-skills-2026-10-21.json)
+  ok(d.effects.shock && !d.effects.tide && d.rarity === 'rare', 'the rest of the Eel: Shock kept, Tide cut by BF5 (two skills at most)'); }
 
 // ---- 5. The text: no wet sentence on Electricity's line; Wet is a keyword with its gloss; the Codex carries the note
 const src = fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8');

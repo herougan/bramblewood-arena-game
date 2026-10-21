@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package TT2: release triage of the SK2b … BF5 batch; one gameplay change, the tutorial's rival deck)
+- **The tutorial is winnable again (part 1).** The real part-1 fight (the owner's 10-20 decks, folded by BF5) won 35% of simulated fights on BF5's halved, rounded stats (71% on the pre-BF5 stats; the halved brambles alone move it about 1 point; the two-skill cuts and RP's starters don't touch it). The lever is the rival deck only, no card stats: its 2 Ducklings (3/3) are Pond Ducks (2/3) and its 2 Silver Minnows (2/4) Pond Trout (2/3); the Earthworms and Harvest Mice stay. 78% over 200 seeds, the fixed seed a win. **Live, the server's `__cfg:tutorial` row still overrides the file until B13's clear SQL is applied** (or the owner makes the same edit in the tutorial editor).
+- **Stale tests now assert the deliberate changes** (each with a dated comment naming the package):
+  - BF5: Cathedral Eagle 1/4 and Shrine High Priest 1/4 (prayer); the Voltaic Eel's Tide cut by the two-skill rule (lightning); the status-chip test's crowded unit is now a Soldier Ant whose Formation aura (SK1) draws its own chip, so the live-patch check clears it (ts-status-chips). It was not a UI regression: one strip, two chips.
+  - FG: a Common's levels 1-10 cost 744 Dust, a fed duplicate 40 (ui_smoke).
+  - UT (10-19): the Codex search matches the animal too; CX (10-19): 16-card album pages (codex_perf). The shared filter bar (TX) was not involved: a search for "otter" shows exactly the 29 cards whose name or animal says otter.
+  - RO (10-19): the Raid tab opens on the raids hub (flows).
+  - 10-16 owner rule: the Blacksmith hides a recipe whose card you never held; and Cobble's Forge hello queued ahead of the rarity lesson (rarity_limit_craft). Both also failed on the released build.
+  - ui_smoke's tutorial check now simulates part 1 as the game builds it (the config's decks, Open battles, brambles at BRAMBLE_SCALE); it measured the starter-builder fallback in gravity mode.
+  - snaps stops watching once a match is decided: with halved brambles its random matches now end, and the castle's fall and the victory dance moved tiles on purpose (the game's own snap guard was smoothing a reflow after the crumble).
+  - autobattle's speed floor 9 → 6 fights/s: the released main measures 8.6/s alone on this box, the batch 8.5-8.7/s.
+  - skill-worth: 41 entries added after the SW runs (SK1, SK3, EQ, BX, BF5, SK2b) carry a "not yet measured" reason; no value or measured number was invented.
+- **Still failing:** `trench` (core 17, band 20-400; balance follow-up from BF5: the Core's 14-Health stumps aren't halved, so halved cards rarely break them; at the game's halved wall the Core reads 7 and the left part is overwhelmed 40%; the trench is admin-only), `nv` B2 (the owner's layout call).
+
 ## 2026-10-21 (package BF5: N halved, every card re-derived, road and raid re-measured)
 - **Owner (10-19 21:36):** "I think numbers are way too big. Can we HALF everything?" ("Straight up, the total N value"). Then the 10-21 rulings: fold the owner's later live edits and halve them too; N multipliers; two skills at most; re-derive everything; re-measure with honest levers only.
 - **N is halved:** one constant, `scale: 0.5` in `bramblewood-budget.js` (also in `canonical/skill-costs.json`'s budget line, the Test Lab and the hub). Base, the Level terms and the Map × 0.2 term all halve; the A·H rule is (N/3)² of the halved N. Skill costs (S) stay. **Bounty 0.5 → 1** a point.
