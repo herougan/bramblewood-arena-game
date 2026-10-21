@@ -11905,6 +11905,33 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
   font:800 11.5px/1.1 'Baloo 2', system-ui, sans-serif; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.4);}
 .u3-turn-flash.is-last .u3tf-pill{background:linear-gradient(180deg, #ffe3d6, #f5b49a); color:#5a1b08; border-color:#c4502a;}
 @media (max-width:699px){ .u3-turn-flash .u3tf-pill{height:20px; font-size:11.5px; padding:0 10px;} }
+/* 2026-10-21 (package ED): the editors' tools. ✏️ on a card in the skirmish editor's deck list and a skirmish's deck preview (admins);
+   the 🚫 Art rejected corner (admins); the kind chip in the skirmish editor's header; its Enemy level; the Codex's Create card; the
+   results' "Saving your rewards…" while the buttons wait. */
+.se-deck .se-stack{position:relative;}
+.conquest-node-panel .cnp-sq-wrap{position:relative; flex:0 0 auto; display:inline-block;}
+.ed-edit-card{position:absolute; left:-6px; top:-6px; z-index:9; width:24px; height:24px; padding:0; border-radius:50%; border:1.5px solid #e0b85a; background:#2b2117; color:#fff8e6;
+  font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.45);}
+.ed-edit-card:hover, .ed-edit-card:focus-visible{background:#4a3824; outline:2px solid #ffd27a; outline-offset:1px;}
+@media (pointer:coarse){ .ed-edit-card{width:30px; height:30px; font-size:14px;} }
+.card-tile .ed-art-badge{position:absolute; bottom:-6px; left:-6px; z-index:4; width:18px; height:18px; border-radius:50%; background:#5a0d0d; border:2px solid #ff8a8a; color:#fff;
+  font-size:10px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 2px rgba(0,0,0,.35);}
+.ed-kind-chip{display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:999px; font:800 13px/1.1 'Baloo 2', system-ui, sans-serif; vertical-align:middle;
+  background:#3a4b36; color:#eaf6dc; border:1.5px solid #8fbf78; white-space:nowrap;}
+.ed-kind-chip.ed-kind-elite{background:#4a3a10; color:#ffe7a3; border-color:#e0b85a;}
+.ed-kind-chip.ed-kind-boss{background:#5a1414; color:#ffd6d6; border-color:#ff7a7a;}
+.ed-kind-chip.ed-kind-dungeon, .ed-kind-chip.ed-kind-champion, .ed-kind-chip.ed-kind-miniboss, .ed-kind-chip.ed-kind-subboss{background:#352a4c; color:#e6dcff; border-color:#a68ce0;}
+.ed-kind-chip.ed-kind-tutorial{background:#18394a; color:#d9f2ff; border-color:#6cb8e0;}
+.ed-enemy-level small.ed-enemy-level-note{display:block; font-size:11px; opacity:.8; margin-top:2px;}
+.ed-cx-admin{display:flex; justify-content:flex-end; margin:0 0 8px;}
+.ed-saving{margin:6px 0 0; font-size:13px; opacity:.85; text-align:center;}
+.winloss-card .winloss-actions button[data-ed-locked], .winloss-card .wl-corner-btn[data-ed-locked]{opacity:.55; cursor:progress;}
+.ce-art-review{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:12.5px;}
+.ce-art-review input[type=text]{width:100%; box-sizing:border-box;}
+.ed-art-review .ed-art-reason{display:block; margin:2px 0 4px; color:#ffb4b4;}
+.ed-art-review .btn{margin:2px 4px 0 0;}
+.ed-art-wrap{display:flex; flex-direction:column; align-items:center; gap:4px; max-width:120px;}
+.ed-art-wrap .ed-art-why{font-size:11px; line-height:1.25; color:#ffb4b4; text-align:center; overflow-wrap:anywhere;}
 </style>
 <style id="tsStyles">
 /* ===== Package TS (2026-10-19, owner 13:37: "In small mode, the status icon is wrongly sized and not fitting the contents! When in
