@@ -1,8 +1,33 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-21). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-22). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
+
+**MP-1. A map's card pool guides the editor; it does not restrict the game** · Decide · Maps · asked 2026-10-22
+- Package MP: the Map cards editor and the skirmish deck pickers read canonical/map-pools.json (and the admin's live edits). The pool decides what the pickers offer and which deck cards get a ⚠ chip; nothing in the game refuses a deck that strays from it (the deck-validation caps are package DR's).
+  - Guide only (editor)
+  - Also fail a check when a fight deck has a card outside its map's pool
+  - Also keep the CPU's generated decks (dungeons, endless floors) inside the pool
+- **Default:** Guide only (editor)
+
+**MP-2. "+ Load any card" saves to Special at once** · Decide · Maps · asked 2026-10-22
+- A card picked through + Load any card joins the deck and the map's (or submap's) Special tier immediately, as a live edit. Closing the skirmish editor without saving does not take it back out of Special; remove it in Map cards. The alternative holds the Special entry until the skirmish is saved.
+  - Write at once (now)
+  - Only when the skirmish is saved
+- **Default:** Write at once (now)
+
+**MP-3. A submap fight does not see the parent map's Special cards** · Decide · Maps · asked 2026-10-22
+- As briefed: a submap fight offers the parent's Cards, the submap's Cards and the submap's Special. The parent's Special (cards for the parent's odd fights) is left out, and the editor shows the parent's Cards read-only only.
+  - Left out (now)
+  - Show the parent's Special too, read-only
+- **Default:** Left out (now)
+
+**MP-4. What the three usage counters count** · Decide · Maps · asked 2026-10-22
+- On each card in Map cards: copies in this map's fight decks, in its submaps' fight decks, and in every other map's. Normal, elite, boss and a dungeon's wave decks count; the tutorial's fixed decks do not. It counts copies (a 4-of in a boss deck is 4), from the live map data, so the owner's edits are in it.
+  - Copies (now)
+  - Fights that use the card (a 4-of counts once)
+- **Default:** Copies (now)
 
 **AR-1. Standard PvP shares the PvP tickets and the rating** · Decide · Arena · asked 2026-10-21
 - Package AR split the Arena's PvP into two buttons. Standard PvP is the existing Standard format (every card at Level 1, no foils, a Standard deck built from any card) against the same strangers as Collection PvP, their decks also at Level 1. It uses the same 10 PvP tickets, moves the same rating and pays the same rewards. Your Standard deck is not recorded as a stranger, since it can hold cards you don't own.
@@ -190,6 +215,49 @@ _Generated from `decisions.json` (2026-10-21). The hub has a searchable, filtera
   - Pale Desert after Map 22, the Eye and the Lair after Map 24, the Old Bramble as Map 21
   - Keep these four as they are
 - **Default:** Keep these four as they are
+
+**DV1. The rarity ladder past Map 20** · Decide · Rarity · asked 2026-10-22
+- Package DV set the ladder (arena_app.js RARITY_INTRO): Common 0, Uncommon 1, Rare 5, Very Rare 10, Super Rare 20, Epic / Heroic by the Eye of the Volcano / the Volcano Lair (the main road fields them from Map 22). Proposed past that: Unique 30, Legendary 40, Mythic 55, Ancient 70, Divine 90. A skirmish caps at Super Rare on 20-29, Epic 30-39, Heroic 40-49 ...; an elite one step more, a boss two.
+  - Keep the proposal
+  - Other maps
+- **Default:** Keep the proposal
+
+**DV2. Map leaders outside the ladder** · Decide · Rarity · asked 2026-10-22
+- The 11 Heroic map leaders a boss pays on Maps 0-19 (Sergeant Bramblefox to the Yeti Chieftain) and the Triumvirate (Unique, 23-8) come before Heroic and Unique are revealed. DV kept them outside the ladder, as the old road cap did.
+  - Keep leaders outside the ladder
+  - Re-rank the leaders to their map
+- **Default:** Keep leaders outside the ladder
+
+**DV3. 1-2 skirmish rewards per map, not per fight** · Decide · Rewards · asked 2026-10-22
+- Read as per map: each main map pays 1-2 cards from fights (its last fight carries its top card); its other pool cards are basic-pack cards of that map. Most fights now give no card of their own (the base track still gives one on every elite and boss, the faction track every 8th win and each map end).
+  - Per map (as applied)
+  - Per fight: 1-2 cards on every fight
+- **Default:** Per map (as applied)
+
+**DV4. Packs gated by map and rarity** · Decide · Rewards · asked 2026-10-22
+- A basic-pack card now comes out of a pack or the base track only once its map is reached (source.map) and its rarity revealed (packCardReached); before, any pack card of any rarity came out from Map 5.
+  - Keep the gate
+  - Gate by rarity only
+  - No gate
+- **Default:** Keep the gate
+
+**DV5. Boss cards re-ranked for the ladder** · Decide · Rarity · asked 2026-10-22
+- The Caldera Wyrm and the Magnate Duck Legendary to Heroic, The Contradiction Unique to Epic, the Fire Drake Hatchling Common to Heroic (the Lair's reward). The Cathedral Eagle (Legendary, Ecclesia, held for Map 77) left 21-6 (the fight keeps its name); the Grovebearer Dragon-Turtle (Legendary) left 23-8 and is held for Map 40. The Caldera Wyrm is priced its own way and was not re-fitted (6/36).
+  - Keep
+  - Restore the Legendaries as boss exceptions
+- **Default:** Keep
+
+**DV6. Faction track gates after Map 20** · Decide · Rewards · asked 2026-10-22
+- Replaces RP2: Very Rare at 50 received, Map 20 and the Volcano Lair cleared (owner: after Map 20's strongest submap); Super Rare 60 / Map 22 / the Lair; Epic 70 / Map 26 / the Eye; Heroic 80 / Map 30 / the Lair; Unique and up 90 / Map 40.
+  - Keep
+  - Other numbers
+- **Default:** Keep
+
+**DV7. Side-map gates, out of order** · Decide · Maps · asked 2026-10-22
+- Replaces RP6's list: Clovermead after Map 12, Lilypad Reach 6, Smugglers' Grotto 7, the Mycelium Deep 8, the Sunken Depths 11, the Sunken Grove 13, the Aerie Vault 15, the Glimmer Depths 16, the Canopy 18, the Pale Desert 19, the Ice Hollow 21, the Basalt Foundry 23; the Old Bramble after the Ice Hollow; the Eye and the Lair after 20-10. Fights count as the gate map.
+  - Keep
+  - Other gates
+- **Default:** Keep
 
 **T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03
 - The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied.
