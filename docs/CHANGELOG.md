@@ -2,6 +2,186 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package CF: card frames for equipment, Devilry and Evomax)
+- **Owner (22:32):** "Equipment & devilry card frame - can it be improved? ... too pink ... I don't want to stray too far from [the normal frame]. Just abit different."
+- **Before:** there was no equipment frame. Equipment wore whatever its archetype gave it: Quill Spear and the other plain equipment the normal walnut frame, Terraumbra (an Evomax equipment Easter egg) the pink nacre Evomax frame (`a-evolution.png`). Devilry units wore their own dark-iron frame with blood drips and pentagram studs.
+- **Equipment frame (`.fr-equip`, every `cardType: 'equipment'` card):** the normal frame, forged: a gunmetal band instead of walnut, a pewter inlay and corner rivets, a small gear and two rivets on each side band.
+  - An archetype's equipment (Terraumbra, a Scrapper Crowbar) keeps the equipment frame and shows its archetype with the corner mark, as other unframed archetype cards do.
+- **Devilry:** the normal frame, smouldering: a crimson-to-charcoal band, an ember-red inlay, a seal sigil over each corner pin and a few ember glints that flicker (they hold still under reduced motion and Effects Low). The old Devilry aura stays.
+- **Evomax units:** the normal walnut frame with a pearl inlay, shell-rib ticks on the top band and plate, and a spiral shell on each side band, in place of the pink nacre frame. No Evomax unit exists yet; the sheet uses a stand-in.
+- CSS only (pixel-grid SVG ornaments on a new `.cframe-orn` layer, so the inlay's tint filter doesn't touch them). No new raster art. Structures keep their `s-<key>` boards; Ecclesia, Scrappers and the other archetypes are unchanged.
+- Comparison sheets (before / after, hand and detail size, 390 and 1366): `docs/screens/cf/`, rendered by `node tools/card_frame_sheet.js <tag>`.
+## 2026-10-19 (package TF: the raid's Tentacle Smack on desktop Chrome)
+- **Owner (22:09):** "in raids, i saw the tentacle slam in mobile, but not in chrome. The tentacle can slam vertical or horizontal."
+- **Root cause:** Chrome on a desktop follows the OS's "reduce motion" / "animation effects off" setting (`prefers-reduced-motion`). Under it, the smack drew **no tentacle at all**, only a 420 ms pink flash on the struck cards. There was a second cause: during a fight, GSAP's lag smoothing is off. A slow frame as the round opened could skip the whole 0.7 s slam, so its impact fired with the limb never painted. This was reproduced in headless Chromium at 1920×1080 and 1440×900.
+- **Reduced motion:** the tentacle now lies still along the struck column or row. It fades in, holds for about 600 ms and fades out, with the flash on the cards. The Tail Sweep keeps its plain flash.
+- **Frame-capped clock:** the tentacle advances at most 1/30 s per frame, so a long frame holds it instead of skipping it. It still follows hit-stop and the Lab's slow motion.
+- **Vertical (column):** it comes down its column. It grows out of the bramble when the bramble is above the column (phones). On a wide desktop board it comes out of the board's top edge above the column, leaning at most 16° toward the bramble. Before, it was one long diagonal from the corner tile.
+- **Horizontal (row):** unchanged. It lies along the row from the board's edge on the bramble's side.
+- **Mask region:** the base's fade mask now covers the limb's own box, not a 30000 px square.
+- **Test:** `tests/e2e/tentacle_fx_2026_10_19.py` (run with `--e2e`). It runs at 1366×768 (desktop) and 390×844 (phone), with reduced motion off and on, through the game's event path and a real round. At impact, it checks that the tentacle element is visible, inside the viewport, at opacity > 0.3 and painting pixels, and that it spans the right axis. Screenshots are in `docs/screens/tf/`, including 1920×1080 and 1440×900.
+## 2026-10-19 (package RW3: raid reward cards show as cards)
+- **Owner (22:14, 22:32):** "What is 'honeybrew'? it was a reward upon completion of the raid" … "The raid just showed Honeybrew, not a card image."
+- **What it was:** the card **Honeyjoe Brewer**, an Uncommon pack card. A won raid fight drops one pack card (package RC). The results showed it only as a small "🃏 Honeyjoe Brewer" pill, with no art, no rarity and nothing saying it was a card. No name builder, drink, item or currency called "Honeybrew" exists.
+- **Raid fight results:** the pill is gone. The dropped card sits under "Cards won" as the card itself: its tile (art), full name, rarity and "Pack card" (or "Raid card" for one of the raid's own). It flips in on the reward reveal like any victory's card, and a tap opens its details.
+- **Raid claim screen:** each card reward shows the tile, the full name, the rarity and "Pack card" / "Faction card". Once the screen has settled, a tap opens the card's details over it, and Esc closes the details, not the screen. The tile's stat glyphs no longer blow up to 32px (the reward-icon rule had reached into the tile).
+- New text: "Tap to see the card" (TX `results.rw3-card-open`, 12 packs). Test: `tests/raid-reward-card-2026-10-19.js`. Screens: `docs/screens/rw3/`.
+
+## 2026-10-19 (package SK3: skills batch 3, triggers × actions)
+- **Owner (21:56):** "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the required trigger or action." Most new skills are keywords that expand into ordinary triggers (Waiting, the layer cap, Confused and Exhaust all apply).
+- **New trigger:** On Any Death (any other unit dies, either side).
+- **New actions:** Duplicate, Feed on the graveyard, Buff all allies, Stench, Silence, Stymie, Exhaust, Petrify, Vulnerable, Barrage, Smoke Screen and Magnet.
+- **New skills** (on no existing card): Spawner, War Banner, Warcry, Shieldwall, Corpsefeeder, Amplifier, Stench, Broodkeeper, Herald, Harbinger, Spotter, and Silence / Stymie / Exhaust / Petrify as On Attack keywords. Every number is in the engine's `SK3_DEF` (per fight: `rules.sk3`).
+- **Aligned:**
+  - Executioner N: below 25% Health (was half). Grave-Grin Hyena's bonus now comes later.
+  - Shatter N: also hits Petrified and heavily armored (Armor 3+) units. On stone the hit is doubled, not halved.
+  - Hunter is shown as **Cull** (the key stays `hunter`; owner call). Its new default pick, Weak, means Attack 2 or less AND Health 4 or less. Fen Mink keeps its Poisoned pick.
+- **New spells** at the end of `canonical/cards.json`, with no source yet: Grave Call (Epic, 4), Smoke Screen (Rare, 2) and Magnet (Rare, 1). Their art prompts are in `docs/art/new-cards-2026-10-19-briefs.md`. No Clarity Bomb card (owner 22:08: it is the Spotter skill).
+- **Costs:** estimates in `canonical/skill-costs.json` (measuredHow "estimate SK3").
+- **Texts:** 102 TX keys in 12 packs (`tools/i18n_2026_10_19_sk3.py`). The Codex skills book, the status chips, log lines and the trigger builder all have them.
+- **Docs:** `docs/strategies-2026-10-19.md` (the owner's question 18: the archetypes, the go-wide audit and 8 new directions).
+- **Tests:** `tests/skills-sk3-2026-10-19.js`. The GI test follows the Executioner, Hunter and status-list changes.
+## 2026-10-19 (package SK1: new combat skills; the Cure / Heal / Cleanse split)
+- **Owner (21:36, 21:56):** new combat skills, Expose about hiding, Exploit about damage, Demolition renamed Siege, the Cure / Heal / Cleanse split; "if you can and it makes sense, feel free to use triggers and actions".
+- **Triggers × actions:** these five skills are now shorthands built from triggers and actions:
+  - Sentry N = On Enemy Enters (Facing): Damage N.
+  - Expose N / Exploit N / Venom Pulse N = On Hit: Expose / Exploit / Poison Tick N.
+  - Spoils N = On Kill (Creature): Buff itself +0/+N.
+  - The three triggers and the Exploit and Poison Tick actions are new. They are in the trigger builder too.
+- **New skills (on no card yet):**
+  - Formation (+1/+1 for each aligned ally, up to 2).
+  - Isolation (a drawback: −4..0 by allies within 2 columns).
+  - Anchor (can't be moved).
+  - Exploit N (tokens, +1 a hit).
+  - Spoils N (+0/+N on killing a creature).
+  - Venom Pulse N (the target's Poison ticks again).
+  - Punish N, behind a flag (`rules.punishSkill`), with three designs in `docs/skills-punish-proposal.md`.
+- **Reworked skills:**
+  - Sentry N deals N to each enemy unit entering its 3 facing slots, by play, spawn, move or swap. Before, it hit with its Attack once a round.
+  - Expose N strips hiding for N rounds: Invisible, Evasive, Smoke, Shadow and Stealth. Flying and Swift still dodge.
+  - Siege N is the old Demolisher plus the old Siege: +N on Structures and on the bramble. The five Demolisher cards and an equipment grant were renamed. `demolisher` is still an alias for old saves and server overrides.
+- **Cure / Heal / Cleanse:**
+  - Cure removes Poison only.
+  - Heal restores Health only, with no more Bleed stanch.
+  - Cleanse and Renewal remove the physical debuffs only: Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, Daunt and shredded Armor. They no longer remove Poison, Freeze or Stun.
+  - Phoenix Fledgling keeps its intent with Renewal + Cure 2.
+- **Numbers:** every number is a parameter. The defaults are in the engine's SK1_DEF, and one `{sk1:{...}}` object changes them all.
+- **Costs:** the new S estimates are in `canonical/skill-costs.json`, marked `measuredHow: "estimate SK1"` with low confidence. The reworked entries carry an `sk1Note` (re-measure).
+- **Texts and tests:**
+  - 63 new TX keys in the 12 packs (`tools/i18n_2026_10_19_sk1.py`), and the decisions in `docs/decisions.json`.
+  - The new test is `tests/skills-sk1-2026-10-19.js`.
+  - The Expose, Heal, Cleanse and Sentry checks in older tests were updated.
+
+## 2026-10-19 (package UX2: the Brambles page's filters)
+- **Owner (22:16):** "There's no filter in brambles search."
+- **The Codex's Brambles page has a filter bar like the card Codex's:**
+  - a name search;
+  - an Effect filter, listing each castle passive with its count: Starting Lumber, Lumber over time, First unit's Attack, Unit Health, Flyers' Attack, Healing, Enemy Wait, Ballista bolts, Thorns, Herb brew, Summons, Tentacle Smack, Tail Sweep and No passive;
+  - Owned / Not owned yet, using `castleUnlocked`;
+  - a sort: game order, Health (both ways) or name;
+  - "where it's from" chips with counts: Yours to own, Skirmishes, Bosses, Raids, and Tower & dungeons. These come from the fights that use each bramble (`nodeCastleId`, else the map's or the plain Bramble).
+- **Count and empty state:** a "N of M brambles" count, and an empty state with Clear filters. Owned brambles carry a ✓, and a bramble's fights show as small icons.
+- **Raid brambles:** Kraken's Reef and The Drowned Maw are listed from the live raids, with their Health a fight, the parts that use them and their throws. They are never owned.
+- **No "seen" filter:** brambles have no "seen" record, so that filter is left out.
+- **Texts and test:** 36 TX keys (`ui.ux2-*`), in the 12 packs via `tools/i18n_2026_10_19_ux.py`. `tests/ux-2026-10-19.js` is extended, including Playwright at 390 and 1366 and the screenshots `docs/screens/ux/brambles-*`.
+
+## 2026-10-19 (package RR: raid row parity)
+- **Owner (22:10): "Raid: Back units cleave the same way as the front units. And all the skills should work as if they were at the front okay!"** In a raid, a skill on a middle- or back-row unit now does what it does at the front.
+- **Swing shapes on the row it aims at.** A row unit's swing aims at the closest enemy row with a unit in its column (the front row when the column is empty everywhere). Every shape is worked out on that row, the same way as a front swing on the enemy front row:
+  - Cleave: the target and both neighbours in its row.
+  - Fork / Trident / Pitchfork: the target column ±1 (±2) in that row. Crab claws: L / R in that row. Octolash: the 8 nearest in that row. Tipsy: drifts along that row.
+  - Rook's Row / Bishop's Path, Wave (it pushes along the struck unit's row) and Puncture / Overwhelm.
+  - Backstab: the nearest unit in that row. With no unit in that row, it takes the closest row that has one. This also fixes a front Backstab holding its swing when only the boss's back rows had units.
+  - Taunt: a Taunt unit in that row, within a column, draws the swing. That includes a front-row swing that carries on to the middle row.
+  - Bloodlust: it leaps along its own row. Boomerang: thrown and caught from its row.
+  - Its prongs and lashes land at the row share too.
+- **Shots:** a row unit with Arrow, Bolt, Twin Shot, Volley and the like shoots, from its column. Shots are not cut by the row share.
+- **Round start and upkeep for every row:**
+  - Every round: Regeneration, Renewal, On Round Start, Per Turn, Bloom / Nursing / Healing / Cure (their allies found in every row), Satiety, Explode, Immolation, Irradiated, Proliferate, Restless (it walks along its row), Dynamite fuses, Charge, Cower and Prayer.
+  - While Ready: Lumber / Grace / Darkness, Rebuild and Creative.
+  - Auras from any row: Rally, Nature's Force, Kinship, Worship, Haste, Illuminate, Lumberjack, Fletcher and the others counted by `auraN`.
+  - A Wait that runs out on a row unit's action gives it Ready and its On Ready skills at that round's upkeep.
+  - On Ally / Enemy Ready, Played, Spawn and Healed, Esprit, Carrion, Amore and Ambush / Sentry now see the row units too.
+- **Slot refills in the unit's own row:** Revive, On Death: Spawn, Relic, Crystallise, Meiosis, Brood, Twin, Sprout and Spawn triggers. The first goes into its slot, the rest into the nearest free slots of that row.
+- **Arrival in a row:** a unit put into a middle or back row (an ally's play, a boss's Commons) arrives there at the start of the next combat. That fires its On Play skills (Pounce, Brood, Bounty, Shield, On Spawn ...) once. It doesn't arrive again if it later steps up.
+- **Ally-targeted actions** (Heal, Buff, Shield ...) can pick an ally in any raid row. "Adjacent" and "furthest" ally mean in the unit's own row. A row unit's "adjacent ally" used to hit the front row's leftmost unit.
+- **Unchanged, owner to decide:** a row swing still lands for half (rounded up), now one constant, `ROW_SWING_SHARE` (0.5). No owner rule set the half: it was Claude's call on 2026-10-17. Enemy-targeted skill pools (Pounce, Lightning, random-enemy actions) still pick from the enemy front row, as for a front unit.
+- Engine only (`bramblewood-engine.js`). Test: `tests/raid-row-parity-2026-10-19.js` (118 checks; 68 of them fail on the engine before RR).
+## 2026-10-19 (package EQ: equipment on the slots, Weapon Master, slot hazards, the Crowbar, the Bucketknee Wolf, Creeper's art)
+- **Equipment on the slots** (owner 21:36: "Same slot placement rules except you can play over creature units as well ... they take 1 turn to take the benefits"):
+  - An equipment card goes into any slot a unit could go to, where it lies alone, or onto a slot holding one of your units, where it goes under the unit. Dragging it onto a unit still works.
+  - A unit played, spawned or moved onto a lone piece picks it up.
+  - When they meet, the unit is equipping for one round (`equip.turns`, default 1). At the next round's start it gains the piece's Attack, Health and skills.
+  - A lone piece does nothing. It can't be hit, and the swing facing it goes past to the bramble, as for an empty slot. It doesn't open the slots beside it.
+  - When the unit dies, the piece stays in its slot for the next unit (`equip.breaks: true` sends it to the graveyard instead). An equipped piece moves with its unit. Structures and cages carry nothing.
+  - On the board: a lone piece is a small item in its cell, a carried one is tucked under the card (pulsing while equipping), and the card detail says what the unit carries. The CPU puts a piece under its strongest unit.
+- **Weapon Master N** (a skill): while it is on the field, its side's arrows deal N more (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) and each equipped ally gets +1/+1. **Armory** (new, Rare Structure, 0/21, Weapon Master 1, no source) is its structure version. **Pry N** (a skill): a landed hit strips N Armor for good.
+- **Slot hazards** (owner 21:36), five new hazard spells (no source yet). Each goes on one slot on either side, for 3 or 4 rounds:
+  - **Frost Slick** (Ice Floor): a unit coming in slides one slot on.
+  - **Magma Vent** (Lava Floor): On Round Start, Damage 2 (fire).
+  - **Bog Seep** (Poison Floor): On Enter Slot and On Round Start, Poison 2.
+  - **Miasma** (Toxic Gas): On Round Start, Poison 1, flyers too.
+  - **Rockfall** (Rubble): the foe can't play into that empty slot.
+  - Owner 21:56: their effects are **triggers and actions**, with one new trigger, **On Enter Slot**: it fires on a unit played, spawned or moved into a slot, and units can use it too. Flyers and Mountain Climbers are above the floors, except the gas.
+  - Drawn as an overlay on the slot. While a hazard card is held, every cell of both rows is a drop target. The CPU lays them where they bite.
+- **New cards** (at the end of `canonical/cards.json`, budgeted with today's helper by `tools/eq_cards_2026_10_19.js`): Crowbar (Rare equipment, +2/+0, Pry 1, 1 Lumber, no source), Bucketknee Wolf (Very Rare Easter egg, 6/14, Armor 1, Helmet, Wait 2), Armory, and the five hazards. The art prompts are in `docs/art/new-cards-2026-10-19-briefs.md`; no art was generated.
+- **Creeper** wears its old art again (`art/cards/creeper.png`).
+- **Shared code for SK1:** `slotEntries(players, key)` in the engine is the "a unit entered a slot" scan. Each caller keeps its own memory key. The On Enter Slot trigger and the floors use it (`floorScan`, run at the start of `watchScan`).
+- **Texts:** 36 new TX keys, in the 12 language packs with the new card names and flavour (`tools/i18n_2026_10_19_eq.py`).
+- **Merged with SK2:** the Petrified Tree had no animal, so `tools/animal_tags.py` stopped. It now has a proposed owl, like the Ent (an owner call). SK2's test now finds the tree by id, because the EQ cards come after it. Pry wears 🪝, since 🔧 is SK2's Repair.
+- **Tests:** `tests/equipment-hazards-2026-10-19.js` (new, 119 checks). `tests/equipment.js` and `tests/easter-eggs-2026-10-19.js` were updated. There is also a browser smoke test, `tests/e2e/eq_2026_10_19.py`.
+## 2026-10-19 (package SK2: economy and structure skills)
+- **Owner (21:36, 21:56):** economy and structure skills, plus Salvage and a Stone-making Petrified Tree. Use triggers and actions where they fit.
+- **Ten new skills, on no existing card yet** (engine: the `[SK2 BEGIN]` block in `bramblewood-engine.js`):
+  - **Harvest:** half its swings give 1 Lumber instead. With nothing opposite, it always harvests.
+  - **Scavenge N, M:** a death within 1 gives N points. Every M points (3) become 1 Lumber.
+  - **Salvage N, M:** like Scavenge, but only Structures count, and the points become Stone.
+  - **Repair N:** each turn it mends the most damaged allied structure within 1 column for N. With none, it mends your bramble for N/2.
+  - **Foraging N:** 1 Berry a turn. At 3 Berries it heals the most damaged other ally for N (3).
+  - **Milling N:** On Turn Start × Gain N Lumber, in the trigger layer. It still attacks.
+  - **Pickpocket N:** steals N counters from the unit it hits (Prayer tokens, Berries, points, Creativity; never debuffs). On the bramble it steals N resources, lowest rank first.
+  - **Sabotage N:** destroys N of the foe's resources, lowest rank first (Lumber, Stone, Metal, Uranium).
+  - **Arson N:** burns N of the foe's Lumber.
+  - **Fortification:** on play, it builds a 0/6 Palisade (a Structure token) in an empty slot beside it.
+- **Numbers:** every number is in `SK2_DEFAULTS` at the top of the engine. A fight can override any of them with `opts.sk2`. The app's card lines read the same table.
+- **Structures** are one unit category: `isStructureCard` covers the Structure type, a legacy type and `cardType: 'structure'`. Repair uses it, and so does Siege.
+- **New card:** Petrified Tree (Rare, Lumber 5, Wait 3, 0/45, Flora Structure). It gains 1 Stone each turn through On Turn Start × Gain Stone. It is the last card in `canonical/cards.json` and has no source yet. Its art prompt is in `docs/art/new-cards-2026-10-19-briefs.md`.
+- **App:**
+  - Skill names, card lines, Codex notes, icons and card-face chips.
+  - Berry, scavenge and salvage chips on the unit.
+  - Battle-log lines and floats.
+  - The Palisade's name, and a Berry keyword.
+  - Every string is a TX key, translated into the 12 packs (`tools/i18n_2026_10_19_sk2.py`).
+- **Skill costs:** Milling and Fortification are shorthands (trigger × action). The rest have S estimates (`measuredHow: "estimate SK2"`, low confidence).
+- **Tests:** `tests/skills-sk2-2026-10-19.js` (260 checks).
+
+## 2026-10-19 (package UX: the tutorial summary, the Forge's copies sheet, count badges and centre stage, the Codex's types and base level)
+- **Owner (21:36, UI notes 7, 8a–c, 9, 11).**
+- **Tutorial summary (7):** the map panel of T-0 and T-1 now reads like a skirmish's.
+  - It shows the rival deck the tutorial really deals (`tutorialDecksFor`, the tutorial editor's deck or the faction default), as card chips. The nodes' own decks are empty and were never used.
+  - It shows that deck's BR and the rival bramble's real Health (`tutHp`: 9 / 11, not the map's 28). The hover tooltip lists the same deck.
+  - The Field panel is gone ("Mist — There is no day/night cycle." taught nothing).
+- **Forge, copies sheet (8a):** picking a card whose copies differ opens a sheet of every copy you own.
+  - Copies are grouped by level and treatment, such as "Lv 10 · Plain ×5", strongest first (level, then finish). Plain, Foil steps, Shiny and Alt art are told apart.
+  - The tiles sit in a scrolling grid. ⭐ marks the copies your main deck fights with, and 🧩 marks a copy with Forge credit. A tap puts that copy on the anvil, preferring the one with credit.
+  - The anvil's two-row chip grid became one line ("Your copies ×8 · On the anvil Lv 2 Plain · 🃏 All copies"). The old selected chip's pale-on-pale text is fixed too.
+- **Forge, count badges (8b):** every pool tile shows ×N copies owned. Hovering (title), long-pressing or tapping it gives the breakdown by treatment ("You own 11: Plain ×8, ✨ Hex ×1, …").
+- **Forge, centre stage (8c):** tempering, refining, limit breaks, promotions and prestige lift the anvil stage out of the panel.
+  - The stage flies to the middle of the screen over a dimmed hearth spotlight and plays the smithing there. Tempering also plays its LEVEL burst there, then the stage flies back.
+  - Forging Max Energy (package NF's effect) lifts its Energy panel the same way.
+  - Reduced motion and Effects None keep everything in place (`forgeCentreStage`).
+- **Codex, base level (9):** card tiles and the card detail opened from the Codex show each card at its starting level (`cardBaseLevel`: Lv 1, or Lv 0 for Base, quest and tutorial cards).
+  - A "🌱 Base level / ⭐ My best" toggle at the end of the type row switches to the highest level you own. The detail has a chip that flips it.
+  - The choice is kept per device (`bramblewood_codex_level_v1`, try/catch).
+- **Codex, card types (11):** a chip row under the toolbar: All, 🐾 Creatures, 🏯 Structures, 📜 Spells, 🛡️ Equipment and 🌿 Brambles.
+  - Each chip shows how many cards the other filters leave. An empty type stays at 0, dashed: Spells are shelved, and no Equipment card is obtainable yet.
+  - Field cards count as Spells.
+  - Brambles are not Codex cards: their chip counts the Brambles page and opens it.
+  - On phones the row scrolls sideways.
+- **Texts:** 18 TX keys (`ui.ux-*`), in the 12 packs via `tools/i18n_2026_10_19_ux.py`. Rows a pack already had ("Close", "All", "Brambles") are kept.
+- **Test:** `tests/ux-2026-10-19.js` covers the base-level default, the storage fallback, the type rules and counts against `canonical/cards.json`, the copy groups and the wiring.
+  - With Playwright it also plays all of it at 390×844 (touch) and 1366×768.
+  - With `UX_SHOTS=1`, the screenshots go to `docs/screens/ux/`.
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
 - **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.

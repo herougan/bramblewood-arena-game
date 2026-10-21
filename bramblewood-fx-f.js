@@ -1102,7 +1102,7 @@ function clipTo(h, hr){ if(!h || !hr || !hr.width) return; Object.assign(h.style
 // The motion: (1) it slams down from above onto the struck column (a row smack: it lies across the row) in 220 ms, ease-in; (2) at
 // impact a short squash and the struck cards shake; (3) a smoke puff bursts out where it hits; (4) it pulls back up and out while
 // fading, 350 ms. Fixed to the window above the board, never clipped by the board's frame (its base fades in from nothing instead).
-// Reduced motion: a plain flash on the struck cards (no movement). Rects are read once at the start; the cards it shakes are found
+// Reduced motion: a plain flash on the struck cards (no movement; 2026-10-19, TF: now with the tentacle lying still, see below). Rects are read once at the start; the cards it shakes are found
 // again at impact (the round's redraw may have replaced them).
 const TENT = {slam:220, squash:110, back:350};
 css('tentacle', `.fxf .fxf-tentacle{position:fixed; left:0; top:0; overflow:visible; pointer-events:none;}
@@ -1141,11 +1141,15 @@ function tentacleSVG(B, T, w, dir){
     const ang = Math.atan2(P[i + 1][1] - P[i - 1][1], P[i + 1][0] - P[i - 1][0])*180/Math.PI;
     suck += `<ellipse class="tb-sk" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" rx="${(r*1.2).toFixed(1)}" ry="${r.toFixed(1)}" transform="rotate(${ang.toFixed(0)} ${c[0].toFixed(1)} ${c[1].toFixed(1)})" stroke-width="${Math.max(.6, r*.22).toFixed(2)}"/>`
       + `<circle class="tb-sk-in" cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="${(r*.42).toFixed(1)}"/>`; }
+  // 2026-10-19 (package TF): the base's fade mask covers the limb's own box (plus a margin), not a 30000 px square (a huge mask
+  // region is needless raster work, and one less thing for a desktop GPU to choke on).
+  const xs = P.map(p=> p[0]), ys = P.map(p=> p[1]), mx = (Math.min(...xs) - w*2).toFixed(0), my = (Math.min(...ys) - w*2).toFixed(0);
+  const mw = (Math.max(...xs) - Math.min(...xs) + w*4).toFixed(0), mh = (Math.max(...ys) - Math.min(...ys) + w*4).toFixed(0);
   const id = 'fxfT' + (++tentN), gx1 = B.x + nx*w*.6, gy1 = B.y + ny*w*.6, gx2 = B.x - nx*w*.6, gy2 = B.y - ny*w*.6;
   return `<defs><linearGradient id="${id}g" gradientUnits="userSpaceOnUse" x1="${gx1.toFixed(1)}" y1="${gy1.toFixed(1)}" x2="${gx2.toFixed(1)}" y2="${gy2.toFixed(1)}">`
     + `<stop offset="0" stop-color="#2c103f"/><stop offset=".35" stop-color="#6a2f8e"/><stop offset=".62" stop-color="#9a58bf"/><stop offset="1" stop-color="#3a1652"/></linearGradient>`
     + `<linearGradient id="${id}m" gradientUnits="userSpaceOnUse" x1="${B.x.toFixed(1)}" y1="${B.y.toFixed(1)}" x2="${T.x.toFixed(1)}" y2="${T.y.toFixed(1)}"><stop offset="0" stop-color="#000"/><stop offset=".2" stop-color="#fff"/></linearGradient>`
-    + `<mask id="${id}k" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="30000" height="30000"><rect x="-10000" y="-10000" width="30000" height="30000" fill="url(#${id}m)"/></mask></defs>`
+    + `<mask id="${id}k" maskUnits="userSpaceOnUse" x="${mx}" y="${my}" width="${mw}" height="${mh}"><rect x="${mx}" y="${my}" width="${mw}" height="${mh}" fill="url(#${id}m)"/></mask></defs>`
     + `<g class="tb-body"><g mask="url(#${id}k)"><path class="tb-halo" d="${skin}" stroke-width="${Math.max(3, w*.12).toFixed(1)}"/>`
     + `<path class="tb-skin" d="${skin}" fill="url(#${id}g)" stroke-width="${Math.max(1, w*.035).toFixed(2)}"/>`
     + `<path class="tb-belly" d="${smooth(under, true)}" stroke-width="${Math.max(2, w*.2).toFixed(1)}"/>${suck}`
@@ -1162,21 +1166,53 @@ function smokePuff(x, y, size, o){
       t.to(p, {x:x - s/2 + Math.cos(a)*d, y:y - s/2 + Math.sin(a)*d - size*.35, scale:rnd(1.3, 1.8), duration:rnd(.55, .75), ease:'power2.out'}, rnd(0, .05))
        .to(p, {opacity:0, duration:.4, ease:'power1.in'}, '<+.2'); } });
 }
+// 2026-10-19 (package TF, owner 22:09: "in raids, i saw the tentacle slam in mobile, but not in chrome. The tentacle can slam
+// vertical or horizontal"). Desktop Chrome follows the OS's "reduce motion" / "animation effects off" setting
+// (prefers-reduced-motion), and under it this used to draw no tentacle at all: only a 420 ms pink flash on the struck cards, easy to
+// miss. Now reduced motion shows the tentacle itself, still (no movement): its silhouette lies along the struck column or row, fades
+// in, holds about 600 ms and fades out, with the flash on the cards. And on a wide desktop board the column smack used to run as one
+// long diagonal from the bramble's corner tile to a column in the middle; a column smack now comes DOWN its column: from the bramble
+// when the bramble is above it (phones), otherwise out of the board's top edge above the column, leaning at most ~16 degrees toward
+// the bramble's side. A row smack lies along the row from the board's edge on the bramble's side (unchanged). Each smack announces
+// itself on document ('fxf:tentacle', detail {phase:'impact', horizontal, reduced}) at impact / full show, for the e2e test.
+const TENT_LEAN = Math.tan(16*Math.PI/180);
+const tentEmit = d=>{ try{ document.dispatchEvent(new CustomEvent('fxf:tentacle', {detail:d})); }catch(e){} };
+// 2026-10-19 (package TF): the tentacle runs on its own clock, at most 1/30 s per frame. During a fight GSAP's lag smoothing is off
+// (syncFightTimeScale), so one long frame as the round opens (the round-start events and the board's redraw, heavier on a big desktop
+// board) used to jump the whole 0.7 s slam: its impact fired with the limb never painted (seen in headless Chromium at 1920x1080).
+// Now a long frame only holds it, so every phase gets painted (at 60 fps it plays at its normal speed; about 25 frames in all). It
+// follows GSAP's time scale (hit-stop, the Lab's slow motion) and holds while GSAP's global timeline is paused (the e2e test freezes
+// it at impact). Its layers' safety removal is long for the same reason (GSAP's delayedCall runs on real time during a fight).
+const TENT_SAFE = 30000;
+function tentTL(vars){
+  const g = G(), tl = g.timeline(Object.assign({}, vars, {paused:true})); let last = 0;
+  const next = f=> (document.hidden || typeof requestAnimationFrame !== 'function') ? setTimeout(()=> f(performance.now()), 50) : requestAnimationFrame(f);
+  const step = now=>{
+    const gt = g.globalTimeline;
+    if(last && !gt.paused()) tl.time(Math.min(tl.duration(), tl.time() + Math.min(Math.max(0, now - last)/1000, 1/30)*gt.timeScale()));
+    last = now;
+    if(tl.progress() < 1) next(step); else tl.kill();
+  };
+  next(step); return tl;
+}
 // cells: the struck .board-card cells (a column: front to back; a row: left to right), or rects. opts: host (the battlefield, for the
-// base's edge), horizontal (a row smack), from 'left'|'right' (a row smack's side), onImpact, onDone.
+// base's edge), origin (the boss's bramble tile), horizontal (a row smack), from 'left'|'right' (a row smack's side), flashOnly (a plain
+// flash on the cells under reduced motion: the Tail Sweep's), onImpact, onDone.
 M.tentacleSmack = function(cells, opts){
   opts = opts || {};
   cells = (Array.isArray(cells) ? cells : [cells]).filter(Boolean);
   const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e).filter(r=> r && r.width > 0);
   const relive = e=>{ if(!e || !e.getBoundingClientRect) return null; if(e.isConnected) return e; const d = e.dataset || {};
     return (d.uid && document.querySelector(`.board-card[data-uid="${d.uid}"]`)) || (d.w2cell && document.querySelector(`[data-w2cell="${d.w2cell}"]`)) || null; };
-  const g = G();
+  const g = G(), reduced = RM() || !g;
   if(!rs.length){ call(opts.onImpact); return Promise.resolve(finish(opts)); }
-  if(!g || RM()){ // reduced motion (or no GSAP): a plain flash on the struck cards
-    const host = lay('fxf-tflashh', '', 1200);
+  // the flash on the struck cards (reduced motion; with the still tentacle unless flashOnly)
+  const flash = ms=>{ const host = lay('fxf-tflashh', '', TENT_SAFE);
     rs.forEach(r=>{ const f = document.createElement('i'); f.className = 'fxf-tflash'; Object.assign(f.style, {left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px'}); host.appendChild(f);
-      try{ f.animate([{opacity:0}, {opacity:.85, offset:.25}, {opacity:0}], {duration:420, easing:'ease-out'}); }catch(e){} });
-    call(opts.onImpact);
+      try{ f.animate([{opacity:0}, {opacity:.85, offset:.25}, {opacity:0}], {duration:ms, easing:'ease-out'}); }catch(e){} });
+    return host; };
+  if(reduced && opts.flashOnly){
+    const host = flash(420); call(opts.onImpact);
     return new Promise(res=> setTimeout(()=>{ host.remove(); finish(opts, res); }, 450));
   }
   const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
@@ -1192,6 +1228,13 @@ M.tentacleSmack = function(cells, opts){
   if(!horiz && org){
     const cx = ref.left + ref.width/2, bottom = Math.max(...rs.map(r=> r.bottom));
     T = {x:cx, y:bottom - chh*.18}; B = {x:org.left + org.width*.62, y:org.top + org.height*.62};
+    // 2026-10-19 (package TF): it comes down the column. A bramble too far to the side (a wide desktop board) gives way to the board's
+    // top edge above the column, the base leaning toward the bramble's side by at most TENT_LEAN of the reach.
+    const top0 = hr ? hr.top + 2 : Math.min(B.y, ref.top - chh*.6);
+    if(Math.abs(B.x - cx) > TENT_LEAN*Math.max(1, T.y - B.y)){
+      const lean = Math.min(Math.abs(B.x - cx), TENT_LEAN*Math.max(1, T.y - top0));
+      B = {x:cx + Math.sign(B.x - cx)*lean, y:top0};
+    }
     dir = T.x >= B.x ? 1 : -1; // the tip curls back toward the bramble's side
     hits = [{x:cx, y:bottom - chh*.1}, {x:cx, y:ref.top + chh*.15}];
     slamY = 0; grow = true;
@@ -1211,23 +1254,36 @@ M.tentacleSmack = function(cells, opts){
     hits = rs.map(r=> ({x:r.left + r.width/2, y:r.top + r.height*.75}));
     slamY = -(cy - (hr ? hr.top : 0) + chh*1.2);
   }
-  const h = lay('fxf-tenth', '', 4000), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
-  sv.setAttribute('class', 'fxf-tentacle'); sv.setAttribute('width', VW()); sv.setAttribute('height', VH()); sv.style.width = VW() + 'px'; sv.style.height = VH() + 'px';
+  const h = lay('fxf-tenth', '', TENT_SAFE), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
+  sv.setAttribute('class', 'fxf-tentacle' + (horiz ? ' is-row' : ' is-col') + (reduced ? ' is-still' : '')); sv.setAttribute('width', VW()); sv.setAttribute('height', VH()); sv.style.width = VW() + 'px'; sv.style.height = VH() + 'px';
   sv.innerHTML = tentacleSVG(B, T, w, dir); h.appendChild(sv);
   const body = sv.querySelector('.tb-body'), origin = grow ? `${B.x.toFixed(1)} ${B.y.toFixed(1)}` : horiz ? `${((B.x + T.x)/2).toFixed(1)} ${T.y.toFixed(1)}` : `${T.x.toFixed(1)} ${T.y.toFixed(1)}`;
+  const info = {phase:'impact', horizontal:horiz, reduced, base:{x:B.x, y:B.y}, tip:{x:T.x, y:T.y}};
+  if(reduced){ // 2026-10-19 (package TF): reduced motion: the tentacle lies still where it strikes (no movement), fades in, holds, fades
+    const HOLD = 600, done = res=>{ if(h.isConnected) h.remove(); finish(opts, res); };
+    const fl = flash(HOLD + 200);
+    return new Promise(res=>{
+      const hit = ()=>{ call(opts.onImpact); tentEmit(info); };
+      if(g){ g.set(body, {opacity:0});
+        tentTL({onComplete:()=>{ fl.remove(); done(res); }}).to(body, {opacity:1, duration:.08, ease:'none'}).add(hit)
+          .to(body, {opacity:0, duration:.2, ease:'power1.in'}, '+=' + (HOLD/1000)); }
+      else { hit(); setTimeout(()=>{ fl.remove(); done(res); }, HOLD + 200); }
+    });
+  }
   const squash = grow ? {scaleX:1.05, scaleY:1.05} : horiz ? {scaleX:1.02, scaleY:.78} : {scaleX:1.12, scaleY:.9};
-  if(grow){ // out of the bramble: it grows from its base to the struck cards, slams, then draws back into the bramble while fading
+  const impact = ()=>{
+    cells.map(relive).filter(Boolean).forEach(e=> shake(e, {amp:Math.max(3, cw*.07), n:5, y:2}));
+    hits.forEach((p, k)=> smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (k ? 5 : 9), spread:Math.PI*1.7}));
+    ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
+    call(opts.onImpact); tentEmit(info); };
+  if(grow){ // out of the bramble (or the board's edge): it grows from its base to the struck cards, slams, then draws back while fading
     return new Promise(res=>{
       const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
       g.set(body, {scale:.06, opacity:0, svgOrigin:origin});
-      g.timeline({onComplete:done})
+      tentTL({onComplete:done})
         .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
         .to(body, {scale:1, duration:TENT.slam/1000, ease:'power3.in'}, 0)
-        .add(()=>{
-          cells.map(relive).filter(Boolean).forEach(e=> shake(e, {amp:Math.max(3, cw*.07), n:5, y:2}));
-          hits.forEach((p, k)=> smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (k ? 5 : 9), spread:Math.PI*1.7}));
-          ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
-          call(opts.onImpact); })
+        .add(impact)
         .to(body, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
         .to(body, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
         .to(body, {scale:.08, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
@@ -1236,14 +1292,10 @@ M.tentacleSmack = function(cells, opts){
   return new Promise(res=>{
     const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
     g.set(body, {y:slamY, opacity:0, svgOrigin:origin});
-    g.timeline({onComplete:done})
+    tentTL({onComplete:done})
       .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
       .to(body, {y:0, duration:TENT.slam/1000, ease:'power3.in'}, 0)
-      .add(()=>{
-        cells.map(relive).filter(Boolean).forEach(e=> shake(e, {amp:Math.max(3, cw*.07), n:5, y:2}));
-        hits.forEach((p, k)=> smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (k ? 5 : 9), spread:Math.PI*1.7}));
-        ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
-        call(opts.onImpact); })
+      .add(impact)
       .to(body, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
       .to(body, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
       .to(body, {y:slamY*.9, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
@@ -1582,7 +1634,7 @@ function raidSmackFx(ev, env){
     const row = rowOf('A', env); if(!row) return;
     // 2026-10-19 (package U3): the smacks are the boss's bramble's (Kraken's Reef): the tentacle reaches out of its tile, top left
     const origin = (mineSide('A', env) ? document.querySelector('.top-play-row [data-hq="B"]') : null) || document.querySelector('[data-hq="B"]');
-    if(ev.front && env.reduced){ M.tentacleSmack(cardsOn('A', env), {horizontal:true}); return; } // a flash, no motion
+    if(ev.front && env.reduced){ M.tentacleSmack(cardsOn('A', env), {horizontal:true, flashOnly:true}); return; } // a flash, no motion (the Tail Sweep's; TF 2026-10-19: flashOnly, no tentacle)
     if(ev.front){ M.tailSweep(cardsOn('A', env).filter(e=> e.querySelector('.card-tile')), {host:env.battlefield}); return; }
     // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
     // 1 middle / 2 back) is the tentacle on its side, sweeping along that row; a column smack slams down the column through every row.
@@ -1776,7 +1828,7 @@ css('rcs', `
 .fxf-rcs-rw{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px; min-width:92px; max-width:150px; padding:10px 10px 8px; border-radius:14px; box-sizing:border-box;
   background:rgba(140,220,255,.10); border:1px solid rgba(140,220,255,.38);}
 .fxf-rcs-rw .ico{display:flex; align-items:center; justify-content:center; min-height:36px; font-size:30px; line-height:1; font-family:${EMOJI};}
-.fxf-rcs-rw .ico svg, .fxf-rcs-rw .ico img{width:32px; height:32px;}
+.fxf-rcs-rw:not(.is-card) .ico > svg, .fxf-rcs-rw:not(.is-card) .ico > img{width:32px; height:32px;} /* 2026-10-19 (package RW3): only the reward's own icon (it blew up a card tile's stat glyphs and emoji to 32px) */
 .fxf-rcs-rw .amt{font:900 20px/1.05 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
 .fxf-rcs-rw .lbl{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#c3e6f4; overflow-wrap:anywhere;}
 .fxf-rcs-rw.w-3{border-color:rgba(120,240,200,.6); background:rgba(90,220,180,.12);}
@@ -1785,6 +1837,15 @@ css('rcs', `
 .fxf-rcs-rw.w-5 .lbl{color:#ffe7b0;}
 .fxf-rcs-rw.is-card .ico{min-height:0; padding:6px 0 10px;} /* room for the tile's own badges above and below it */ .fxf-rcs-rw.is-card .ico .card-tile{width:84px !important; height:105px !important; margin:0; font-size:9px;}
 .fxf-rcs-rw.is-title .amt{font-size:17px; color:#ffe39a;}
+/* 2026-10-19 (package RW3): a card reward is the card (tile, full name, rarity, Pack card), a button to its details */
+.fxf-rcs-rw.has-open{padding:0; max-width:170px;}
+.fxf-rcs-open{all:unset; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; gap:3px; width:100%; padding:10px 10px 8px; border-radius:14px; cursor:pointer; text-align:center;}
+.fxf-rcs.is-done .fxf-rcs-open:hover{background:rgba(255,255,255,.07);} .fxf-rcs-open:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+.fxf-rcs-open .ico{font-family:inherit;}
+.fxf-rcs-rw .ico .card-tile{font-family:'Baloo 2',system-ui,sans-serif;}
+.fxf-rcs-open .nm{font:900 15px/1.12 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
+.fxf-rcs-open .rar{display:inline-flex; align-items:center; gap:5px; font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#eaf6ff;}
+.fxf-rcs-open .rar i{width:9px; height:9px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(255,255,255,.75), 0 0 6px currentColor;}
 .fxf-rcs-go{min-width:200px;}
 .fxf-rcs-hint{position:absolute; left:0; right:0; bottom:max(12px, env(safe-area-inset-bottom)); z-index:3; text-align:center; font:700 13px/1 'Baloo 2',system-ui,sans-serif; color:#d6f2fd; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 .fxf-rcs.is-done .fxf-rcs-hint{visibility:hidden;}
@@ -1798,6 +1859,15 @@ css('rcs', `
 // Beat sounds by weight (SoundKit cues, layered): 1 a bubble, 2 coins, 3 a chime, 4 a rare rise, 5 the legendary rise and a fanfare.
 const RCS_BEAT = {1:['bubble'], 2:['gold', 'bubble'], 3:['unlockChime', 'splash'], 4:['rareRise', 'unlockChime'], 5:['rareRise:1', 'leaderFanfare', 'boom']};
 const RCS_COLS = {1:['#bff0ff', '#e8fbff', '#7fd8ff'], 2:['#ffe08a', '#fff3c4', '#7fd8ff'], 3:['#7dffd0', '#c9fff0', '#45d6ff'], 4:['#c9a2ff', '#f0e2ff', '#7fd8ff'], 5:['#ffd56e', '#fff3c4', '#ff9f5a', '#ffffff']};
+// 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a card reward ({kind:'card', open:id, name,
+// rarity, rarityColor, label, tip}) is a button: the card's tile, its full name, its rarity and where it came from ("Pack card"); once the
+// screen has settled a tap (or Enter) opens the card's details through opts.openCard(id).
+function rcsCardRewardHTML(r, F){
+  const aria = [r.name, r.rarity, r.label].filter(Boolean).join(' · ') + (r.tip ? '. ' + r.tip : '');
+  return `<li class="fxf-rcs-rw w-${r.weight} is-card has-open${F}"><button type="button" class="fxf-rcs-open" data-open-card="${esc(r.open)}" aria-label="${esc(aria)}"${r.tip ? ` title="${esc(r.tip)}"` : ''}>`
+    + `<span class="ico" aria-hidden="true">${r.icon || ''}</span><span class="nm">${esc(r.name || '')}</span>`
+    + `${r.rarity ? `<span class="rar"><i style="background:${esc(r.rarityColor || '#9fb3c8')}" aria-hidden="true"></i>${esc(r.rarity)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></button></li>`;
+}
 M.raidClaimScreen = function(spec, opts){
   spec = spec || {}; opts = opts || {};
   const g = G(), calm = !!opts.calm || !g || RM();
@@ -1827,7 +1897,7 @@ M.raidClaimScreen = function(spec, opts){
           : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
-      <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
+      <ul class="fxf-rcs-list">${list.map(r=> r.open ? rcsCardRewardHTML(r, F) : `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
       <button type="button" class="btn primary big fxf-rcs-go${F}">${esc(T.collect)}</button>
     </div>
     <div class="fxf-rcs-hint">${esc(T.skip)}</div><div class="fxf-rcs-flash" aria-hidden="true"></div>`;
@@ -1853,12 +1923,16 @@ M.raidClaimScreen = function(spec, opts){
       const end = ()=>{ if(sway) sway.kill(); st.remove(); try{ before && before.focus && before.isConnected && before.focus({preventScroll:true}); }catch(e){} call(opts.onDone); res(); };
       st.style.pointerEvents = 'none'; st.style.transition = 'opacity .25s'; st.style.opacity = '0'; setTimeout(end, 260); }; // a CSS fade on a timer, so a slow frame can't keep it up
     const onKey = e=>{ if(closed) return;
-      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ go.focus(); }catch(_){} return; }
+      if(opts.covered && opts.covered()) return; // 2026-10-19 (package RW3): a card's details are open over the screen: their keys
+      // 2026-10-19 (package RW3): Tab cycles the reward cards and Collect once the screen has settled
+      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ const f = qa('.fxf-rcs-open').concat([go]), i = f.indexOf(document.activeElement); f[(i + (e.shiftKey ? f.length - 1 : 1) + (i < 0 ? f.length : 0)) % f.length].focus(); }catch(_){} return; }
       if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); done ? close() : skip(); return; }
       if(!done && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')){ e.preventDefault(); e.stopPropagation(); skip(); } };
     document.addEventListener('keydown', onKey, true);
     st.addEventListener('pointerdown', e=>{ if(e.target.closest && e.target.closest('.fxf-rcs-go')) return; if(!done) skip(e.timeStamp); });
     go.addEventListener('click', e=>{ e.stopPropagation(); if(e.timeStamp - skippedAt < 300) return; if(!done) skip(e.timeStamp); close(); }); // a double tap doesn't skip and close at once
+    // 2026-10-19 (package RW3): a reward card opens its details (the tap that skipped to the end doesn't also open it)
+    qa('.fxf-rcs-open').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(!done || e.timeStamp - skippedAt < 300){ if(!done) skip(e.timeStamp); return; } try{ opts.openCard && opts.openCard(b.getAttribute('data-open-card')); }catch(_){} }));
     if(calm){ // fades only: the scene, the card, then each line, then each reward
       const fades = qa('.fxf-rcs-fade'); let t = 30;
       fades.forEach(e=>{ calmTimers.push(setTimeout(()=> e.classList.add('is-in'), t)); t += e.classList.contains('fxf-rcs-rw') ? 260 : 140; });

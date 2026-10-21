@@ -7169,6 +7169,20 @@
      dark 12.9:1), and the counting number with them. */
   .winloss-card.is-raid .raid-results .hud-pill{color:var(--ink); background:var(--surface); border-color:var(--surface-border);}
   .winloss-card.is-raid .raid-results .hud-pill .reward-count{color:inherit;}
+  /* 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a won raid fight's card is the card: its
+     tile, full name, rarity and "Pack card", a button to the card's details (was a "🃏 name" pill). */
+  .raid-results .rw3-drop{flex:0 0 100%; display:flex; flex-direction:column; align-items:center; gap:6px; margin:4px 0 2px;}
+  .raid-results .rw3-drop .rw-head{color:#fbf1dc; font-weight:800;}
+  .rw3-card{all:unset; box-sizing:border-box; display:flex; align-items:center; gap:12px; max-width:min(100%, 340px); padding:8px 14px 8px 8px; border-radius:14px; cursor:pointer;
+    color:var(--ink); background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 14px rgba(0,0,0,.25); text-align:left;}
+  .rw3-card:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.32);} .rw3-card:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+  .rw3-card .rw3-tile{flex:0 0 auto;} .rw3-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
+  .rw3-card .rw3-txt{display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .rw3-card .rw3-name{font-size:17px; line-height:1.15; overflow-wrap:anywhere;}
+  .rw3-card .rw3-rarity{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700;}
+  .rw3-card .rw3-rarity i{width:10px; height:10px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(0,0,0,.25);}
+  .rw3-card .rw3-from{font-size:13px; opacity:.85;}
+  #cardDetailOverlay.rw3-over{z-index:9600;} /* a reward card's details over the raid claim screen (z-index 9500) */
   /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
   .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
@@ -11482,6 +11496,53 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   .card-tile.fr-unit.ar-ancient > .cframe{border-image-source:var(--fr-a-ancient);} .card-tile.fr-structure.ar-ancient > .cframe{border-image-source:var(--fr-s-ancient);}
   .card-tile.fr-unit.ar-outer > .cframe{border-image-source:var(--fr-a-outer);} .card-tile.fr-structure.ar-outer > .cframe{border-image-source:var(--fr-s-outer);}
   .card-tile.fr-unit.ar-void > .cframe{border-image-source:var(--fr-a-void);} .card-tile.fr-structure.ar-void > .cframe{border-image-source:var(--fr-s-void);}
+  /* ===== Package CF (2026-10-19, owner 22:32: "Equipment & devilry card frame - can it be improved? ... If it's equipment - it's too
+     pink and doesn't make you think of equipment. Is there Evomax card frame? Oh no, quill spear uses the normal card frame. I don't
+     want to stray too far from that. Just abit different.") =====
+     Equipment, Devilry and Evomax now all wear the NORMAL frame (unit.png: same shape, band widths, plate and layout) with a light
+     touch of their own, so they read as kin of the normal card rather than a different design:
+       equipment  (.fr-equip, every cardType 'equipment' card)  the band is gunmetal instead of walnut, the gold inlay and corner pins
+                  go pewter-bronze (a filter on .cframe), and the side bands carry a small gear and two rivets. An archetype's
+                  equipment (Terraumbra: Evomax, a Scrapper Crowbar) keeps this frame and shows its archetype by the corner mark.
+       Devilry    a crimson-to-charcoal band, the inlay goes ember red, sigils over the corner pins, a few ember glints.
+       Evomax     the walnut band as normal, a pearl (nacre) inlay, shell-rib ticks along the top band and plate, a spiral shell on
+                  each side band.
+     The ornaments are crisp pixel-grid SVGs on .cframe-orn (the sibling of .cframe, so the inlay's filter doesn't touch them),
+     placed on the frame's own 126x156 grid (background-size = the emblem's size on that grid). Ecclesia, Scrappers and the rest keep
+     their own frames; structures keep their boards (s-<key>). */
+  :root{
+    --cf-gear:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' width='9' height='9' shape-rendering='crispEdges'><path fill='%2314171a' d='M2 0h1v1h-1zM4 0h1v1h-1zM6 0h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM5 1h1v1h-1zM7 1h1v1h-1zM0 2h1v1h-1zM8 2h1v1h-1zM1 3h1v1h-1zM7 3h1v1h-1zM0 4h1v1h-1zM8 4h1v1h-1zM1 5h1v1h-1zM7 5h1v1h-1zM0 6h1v1h-1zM8 6h1v1h-1zM1 7h1v1h-1zM3 7h1v1h-1zM5 7h1v1h-1zM7 7h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1z'/><path fill='%23aab2bc' d='M2 1h1v1h-1zM4 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM5 3h1v1h-1zM6 3h1v1h-1zM1 4h1v1h-1zM2 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM2 7h1v1h-1zM4 7h1v1h-1zM6 7h1v1h-1z'/><path fill='%234a525c' d='M4 3h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM4 5h1v1h-1z'/></svg>");
+    --cf-rivet:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 6' width='6' height='6' shape-rendering='crispEdges'><path fill='%2314171a' d='M2 0h1v1h-1zM3 0h1v1h-1zM1 1h1v1h-1zM4 1h1v1h-1zM0 2h1v1h-1zM5 2h1v1h-1zM0 3h1v1h-1zM5 3h1v1h-1zM1 4h1v1h-1zM4 4h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1z'/><path fill='%237d8790' d='M2 1h1v1h-1zM3 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1z'/><path fill='%23d6dde4' d='M2 2h1v1h-1z'/></svg>");
+    --cf-sigil:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' width='9' height='9' shape-rendering='crispEdges'><path fill='%230a0405' d='M3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM2 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM7 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM1 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM7 6h1v1h-1zM2 7h1v1h-1zM6 7h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1z'/><path fill='%23c8243a' d='M3 1h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM2 2h1v1h-1zM6 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM1 4h1v1h-1zM7 4h1v1h-1zM1 5h1v1h-1zM3 5h1v1h-1zM5 5h1v1h-1zM7 5h1v1h-1zM2 6h1v1h-1zM6 6h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1z'/><path fill='%23ff9a4a' d='M4 4h1v1h-1z'/></svg>");
+    --cf-ember:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 3' width='3' height='3' shape-rendering='crispEdges'><path fill='%23ff6a1a' d='M1 0h1v1h-1zM0 1h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1z'/><path fill='%23ffd27a' d='M1 1h1v1h-1z'/></svg>");
+    --cf-spiral:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' width='9' height='9' shape-rendering='crispEdges'><path fill='%232a1a16' d='M2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM1 1h1v1h-1zM7 1h1v1h-1zM0 2h1v1h-1zM8 2h1v1h-1zM0 3h1v1h-1zM8 3h1v1h-1zM0 4h1v1h-1zM8 4h1v1h-1zM0 5h1v1h-1zM7 5h1v1h-1zM0 6h1v1h-1zM7 6h1v1h-1zM1 7h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM2 8h1v1h-1z'/><path fill='%23f3e6dc' d='M2 1h1v1h-1zM3 1h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM6 1h1v1h-1zM1 2h1v1h-1zM7 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1zM5 4h1v1h-1zM7 4h1v1h-1zM1 5h1v1h-1zM3 5h1v1h-1zM6 5h1v1h-1zM1 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM2 7h1v1h-1z'/><path fill='%239fc8b8' d='M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM2 3h1v1h-1zM6 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1z'/></svg>");
+  }
+  .card-tile > .cframe-orn{display:none; position:absolute; z-index:1; left:-2.5%; right:-2.5%; top:-2%; bottom:-2%; pointer-events:none; image-rendering:pixelated;}
+  /* -- equipment: forged (gunmetal band, pewter-bronze inlay and pins, a gear and two rivets on each side band) -- */
+  .card-tile.fr-equip.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 18%, #424a54) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 14%, #1a1e23) 100%) !important;}
+  .card-tile.fr-equip.art-extended{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 16%, #262c33) 0%, #101317 100%) !important;}
+  .card-tile.fr-equip.no-art{background:repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 14%, #56606a) 0%, #2b3138 45%, #121518 100%) !important;}
+  .card-tile.fr-equip > .cframe{filter:grayscale(1) sepia(.3) brightness(1.08);}
+  .card-tile.fr-equip > .cframe-orn{display:block; background:var(--cf-gear) 1.71% 44.56% / 7.143% 5.769% no-repeat, var(--cf-gear) 98.29% 44.56% / 7.143% 5.769% no-repeat, var(--cf-rivet) 2.92% 19.33% / 4.762% 3.846% no-repeat, var(--cf-rivet) 97.08% 19.33% / 4.762% 3.846% no-repeat, var(--cf-rivet) 2.92% 70.00% / 4.762% 3.846% no-repeat, var(--cf-rivet) 97.08% 70.00% / 4.762% 3.846% no-repeat;}
+  /* -- Devilry: the normal frame, smouldering (crimson-to-charcoal band, ember inlay, sigils on the corner pins, ember glints) -- */
+  .card-tile.fr-unit.ar-devilry > .cframe{border-image-source:var(--fr-unit); filter:hue-rotate(-38deg) saturate(1.7) brightness(.92);}
+  .card-tile.fr-unit.ar-devilry.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 20%, #3c1418) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 14%, #150809) 100%) !important;}
+  .card-tile.fr-unit.ar-devilry.art-extended{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 16%, #2c0f12) 0%, #100607 100%) !important;}
+  .card-tile.fr-unit.ar-devilry.no-art{background:linear-gradient(180deg, #3a1519 0%, #22100f 45%, #0e0606 100%) !important;}
+  .card-tile.fr-unit.ar-devilry > .cframe-orn{display:block; background:var(--cf-sigil) 2.56% 2.04% / 7.143% 5.769% no-repeat, var(--cf-sigil) 97.44% 2.04% / 7.143% 5.769% no-repeat, var(--cf-sigil) 2.56% 97.96% / 7.143% 5.769% no-repeat, var(--cf-sigil) 97.44% 97.96% / 7.143% 5.769% no-repeat;}
+  .card-tile.fr-unit.ar-devilry > .cframe-orn::after{content:''; position:absolute; inset:0; background:var(--cf-ember) 16.67% 3.27% / 2.381% 1.923% no-repeat, var(--cf-ember) 95.93% 59.15% / 2.381% 1.923% no-repeat, var(--cf-ember) 4.07% 31.70% / 2.381% 1.923% no-repeat, var(--cf-ember) 80.89% 96.41% / 2.381% 1.923% no-repeat; animation:cfEmber 2.8s ease-in-out infinite;}
+  @keyframes cfEmber{0%,100%{opacity:.35;} 40%{opacity:1;} 70%{opacity:.6;}}
+  /* -- Evomax: the normal walnut, a nacre inlay, shell ribs on the top band and plate, a spiral shell on each side band -- */
+  .card-tile.fr-unit.ar-evolution > .cframe{border-image-source:var(--fr-unit); filter:saturate(.22) brightness(1.32);}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn{display:block; background:var(--cf-spiral) 1.71% 44.56% / 7.143% 5.769% no-repeat, var(--cf-spiral) 98.29% 44.56% / 7.143% 5.769% no-repeat;}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn::before, .card-tile.fr-unit.ar-evolution > .cframe-orn::after{content:''; position:absolute; left:11.9%; right:11.9%; height:2.6%;
+    background:repeating-linear-gradient(90deg, rgba(246,234,226,.55) 0 1.1%, transparent 1.1% 6.9%);}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn::before{top:3.4%;}
+  .card-tile.fr-unit.ar-evolution > .cframe-orn::after{bottom:3%;}
+  @media (prefers-reduced-motion:reduce){ .card-tile > .cframe-orn::after{animation:none !important;} }
+  :where(html[data-fx="none"], html[data-fx="low"]) .card-tile > .cframe-orn::after{animation:none !important;}
+  /* ===== /Package CF ===== */
 /* ==== Arena and raid, 2026-10-17 (the user's notes, 23:25) ==== */
 /* The scene's own layers (syncSceneFx): the Abyss's light shafts from far above, marine snow and a murk below; the Arena's bunting.
    Transform / opacity animations only, on a handful of elements. */
@@ -11905,6 +11966,73 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 /* The status icons over the art (Sleep's 💤, Paralyze's ⚡, Blind's 👁, Shock, Stagger, Chained) follow the card's size too: a fixed
    22 px icon was a third of a small card. */
 .board-card .card-tile .status-overlay:not(.stun-overlay):not(.smoke-overlay){font-size:clamp(11px, calc(var(--cw, 120px) * .2), 22px) !important;}
+</style>
+<style id="uxStyles">
+/* ===== Package UX (2026-10-19, owner 21:36: UI notes 8a, 8b, 8c, 9, 11) ===== */
+/* 8a: the anvil's copy summary (the copies sheet holds every copy) */
+.forge-copy-picker.ux-fcp{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; padding:6px 10px; border-radius:12px; background:rgba(0,0,0,.18); border:1px solid var(--surface-border); font-size:12.5px;}
+.ux-fcp .ux-fcp-k b{color:var(--ink);} .ux-fcp .ux-fcp-k b.ux-fcp-n{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:2px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a;}
+.ux-fcp .ux-fcp-cur{color:var(--ink-muted);} .ux-fcp .ux-fcp-cur b{color:var(--ink); font:800 13px 'Baloo 2',system-ui,sans-serif;}
+.ux-fcp .ux-fcp-open{white-space:nowrap;}
+/* the copies sheet */
+.ux-fcs{max-width:min(720px, calc(100vw - 24px)); width:100%; padding:18px 18px 16px;}
+.ux-fcs h2{margin:0; font-size:20px;} .ux-fcs .ux-fcs-total{font:800 13px/1 'Baloo 2',system-ui,sans-serif; padding:3px 8px; margin-left:4px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 1.5px #e0b85a; vertical-align:middle;}
+.ux-fcs .ux-fcs-sub{margin:6px 0 10px;}
+.ux-fcs-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:14px 10px; max-height:min(60vh, 520px); overflow-y:auto; overscroll-behavior:contain; padding:10px 6px 6px;}
+.ux-fcs-g{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px 6px; border-radius:12px; border:1.5px solid transparent; background:transparent; color:var(--ink); font:inherit; cursor:pointer; transition:transform .15s ease, border-color .15s ease, background .15s ease;}
+.ux-fcs-g:hover{transform:translateY(-2px); background:rgba(201,164,106,.10);}
+.ux-fcs-g.on{border-color:#e0b85a; background:rgba(224,184,90,.16); box-shadow:0 0 0 2px rgba(224,184,90,.35);}
+.ux-fcs-g:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+.ux-fcs-tile .card-tile{width:78px !important; height:98px !important; font-size:8px; margin:0; pointer-events:none;}
+.ux-fcs-lbl{display:flex; flex-direction:column; align-items:center; line-height:1.15; text-align:center;}
+.ux-fcs-lbl b{font:800 14px 'Baloo 2',system-ui,sans-serif; color:var(--ink);} .ux-fcs-lbl small{font-size:11px; color:var(--ink-muted);}
+.ux-fcs-n{position:absolute; top:-2px; right:2px; z-index:8; font:800 12px/1 'Baloo 2',system-ui,sans-serif; padding:3px 7px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
+.ux-fcs-g em{position:absolute; top:-2px; font-style:normal; font-size:13px; line-height:1; z-index:8;} .ux-fcs-g .ux-fcs-deck{left:2px;} .ux-fcs-g .ux-fcs-cr{left:20px;}
+/* the old chip's "on" state read pale-on-pale in dark mode (owner's screenshot): keep its text dark on the light fill */
+.fcp-chip.on, .fcp-chip.on b{color:#2b1d10;} .fcp-chip.on small{color:#5a4630;}
+/* 8b: how many copies, on each Forge pool tile */
+.forge-tile .ux-copy-count{position:absolute; top:-7px; left:-2px; z-index:8; min-width:22px; height:22px; padding:0 6px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:#2b2117; color:#fff8e6; font:800 12px/1 'Baloo 2',system-ui,sans-serif; box-shadow:0 0 0 1.5px #c9a46a, 0 2px 6px rgba(0,0,0,.4); cursor:help; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation;}
+.forge-tile .ux-copy-count.is-many{box-shadow:0 0 0 2px #e0b85a, 0 2px 6px rgba(0,0,0,.4);}
+.forge-tile .ux-copy-count:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+.speech-bubble.ux-count-bubble{max-width:210px;}
+/* 8c: forging on the centre stage */
+.ux-fc-ov{position:fixed; inset:0; z-index:1150; background:radial-gradient(ellipse at 50% 48%, rgba(70,38,14,.55), rgba(8,5,3,.86) 60%); pointer-events:auto;}
+.ux-fc-spot{position:absolute; left:50%; top:50%; width:min(94vw, 620px); height:min(74vh, 560px); transform:translate(-50%, -50%); pointer-events:none;
+  background:radial-gradient(ellipse at 50% 58%, rgba(255,196,120,.38), rgba(255,140,50,.12) 42%, transparent 70%); animation:uxFcPulse 1.4s ease-in-out infinite alternate;}
+.ux-fc-host{position:fixed; left:50%; top:50%; transform:translate(-50%, -50%) scale(var(--ux-fc-s, 1.4)); transform-origin:50% 50%; will-change:transform;}
+.ux-fc-host > .ux-fc-on{margin:0 !important; max-width:none;}
+@keyframes uxFcPulse{from{opacity:.75;} to{opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .ux-fc-spot{animation:none;} }
+/* 11 + 9: the Codex's card types and its Base level / My best toggle */
+.ux-cx-kinds{display:flex; align-items:center; gap:8px 12px; flex-wrap:wrap; margin:0 0 10px;}
+.ux-kind-chips{display:flex; gap:6px; flex-wrap:wrap; flex:1 1 auto; min-width:0;}
+.ux-kind, .ux-lv{display:inline-flex; align-items:center; gap:5px; padding:5px 11px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(255,255,255,.06)); color:var(--ink); font:700 12.5px/1.1 inherit; font-family:inherit; cursor:pointer; white-space:nowrap;}
+.ux-kind .ux-kind-n{font:800 11.5px/1 'Baloo 2',system-ui,sans-serif; padding:2px 6px; border-radius:999px; background:rgba(0,0,0,.25); min-width:1.4em; text-align:center;}
+.ux-kind.on, .ux-lv.on{background:#e0b85a; border-color:#e0b85a; color:#2b1d10;} .ux-kind.on .ux-kind-n{background:rgba(43,29,16,.18);}
+.ux-kind.is-empty:not(.on){opacity:.55; border-style:dashed;}
+.ux-kind:focus-visible, .ux-lv:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+.ux-cx-level{display:inline-flex; border-radius:999px; overflow:hidden; border:1px solid var(--surface-border); flex:none;}
+.ux-cx-level .ux-lv{border:0; border-radius:0;} .ux-cx-level .ux-lv + .ux-lv{border-left:1px solid var(--surface-border);}
+.cd-chip.ux-cd-lv{font-family:inherit; color:inherit; cursor:default;} button.cd-chip.ux-cd-lv{cursor:pointer;} button.cd-chip.ux-cd-lv:hover{background:rgba(201,164,106,.35);}
+@media (max-width:600px){
+  .ux-cx-kinds{gap:6px;}
+  .ux-kind-chips{flex-wrap:nowrap; overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:none; padding-bottom:2px; -webkit-mask-image:linear-gradient(90deg, #000 88%, transparent); mask-image:linear-gradient(90deg, #000 88%, transparent);}
+  .ux-kind-chips::-webkit-scrollbar{display:none;}
+  .ux-kind, .ux-lv{padding:5px 9px; font-size:12px;}
+  .ux-fcs{padding:14px 12px 12px;} .ux-fcs-grid{grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); max-height:62vh;}
+  .ux-fcs-tile .card-tile{width:70px !important; height:88px !important;}
+}
+/* UX2 (2026-10-19, owner 22:16: "There's no filter in brambles search."): the Brambles page's filter bar */
+.ux2-brambles .ux2-br-bar{margin:10px 0 8px;}
+.ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 220px; min-width:0;}
+.ux2-br-count{margin:2px 0 10px; font-size:12.5px; color:var(--ink-muted);}
+.ux2-brambles .bramble-codex-card{position:relative;}
+.ux2-br-owned{position:absolute; top:4px; left:4px; z-index:9; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#2f6b2a; color:#fff; font:800 13px/1 system-ui,sans-serif; box-shadow:0 0 0 2px #bfe6a8;}
+.ux2-br-tags{position:absolute; top:4px; right:4px; z-index:9; display:flex; gap:2px; font-size:13px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+.ux2-brambles .u3-bramble-abs{margin:6px 0 4px; padding-left:0; list-style:none; font-size:12px; text-align:left;}
+.ux2-br-empty{flex:1 1 100%; text-align:center; padding:28px 12px; color:var(--ink-muted); border:1.5px dashed var(--surface-border); border-radius:14px;}
+.ux2-br-empty p{margin:0 0 10px;}
+@media (max-width:600px){ .ux2-brambles .ux2-br-bar input[type="search"]{flex:1 1 100%;} .ux2-brambles .ux2-br-bar select{flex:1 1 45%; min-width:0;} .ux2-brambles .bramble-codex-card{min-width:140px;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

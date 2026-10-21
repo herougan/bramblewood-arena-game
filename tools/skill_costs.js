@@ -75,7 +75,7 @@
       const parts = [], missing = []; let S = 0;
       Object.entries(effects || {}).forEach(([k, v])=>{
         if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=>{ if(!t) return; const c = triggerCost(t, card); missing.push(...c.missing); S += c.cost; parts.push(['trigger', t.on + ' → ' + t.do, c.cost, c.weight + ' × ' + c.value]); }); return; }
-        if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : {do:sh.action, amount:N}, card), c = r2(w.w * a.value); // both (2026-10-19, package GI): +N/+N, Kin Rally
+        if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : sh.field ? {do:sh.action, [sh.field]:N} : {do:sh.action, amount:N}, card) /* field (2026-10-19, SK1): Spoils is Health only */, c = r2(w.w * a.value); // both (2026-10-19, package GI): +N/+N, Kin Rally
           if(w.missing) missing.push(w.missing); if(a.missing) missing.push(a.missing); S += c; parts.push(['shorthand', k, c, w.w + ' × ' + r2(a.value)]); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); c = 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); }
         S += c; parts.push(['skill', k, c, '']);

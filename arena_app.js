@@ -320,6 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -1217,11 +1218,11 @@ const PASSIVE_DEFS = [
     codexNote:TX('ui.creative-codex-note')},
   // ---- Package GI (2026-10-19, owner 00:19: "continue with action items, and considering our gameplay-ideas ... create what you want to
   // create"; docs/gameplay-ideas-built-2026-10-19.md). Rules in bramblewood-engine.js (the Package GI block). On pool cards only so far.
-  {key:'hunter', category:'passive', label:TX('ui.skn-hunter'), kind:'selectNumber', numberWhen:['poison', 'bleed', 'wet', 'exposed'], numberTitle:'Hunter N: how much more damage',
-    selectOptions:()=> [{value:'poison', label:'Poisoned'}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}],
+  {key:'hunter', category:'passive', label:TX('ui.skn-hunter'), kind:'selectNumber', numberWhen:['weak', 'poison', 'bleed', 'wet', 'exposed'] /* + Weak, the default (2026-10-19, SK3) */, numberTitle:'Hunter N: how much more damage',
+    selectOptions:()=> [{value:'weak', label:TX('ui.hunter-vs-weak')}, {value:'poison', label:'Poisoned'}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}],
     desc:(v, n, e)=> giHunterText(v, e), codexNote:TX('ui.sk-hunter-codex'),
-    get:e=> e.hunter ? [GI_HUNTER_VS.includes(e.hunterVs) ? e.hunterVs : 'poison', numOr(e.hunter, 1)] : undefined,
-    apply:(e, vals)=>{ const vs = Array.isArray(vals) ? vals[0] : 'poison', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.hunter = n; if(vs && vs !== 'poison') e.hunterVs = vs; } }},
+    get:e=> e.hunter ? [GI_HUNTER_VS.includes(e.hunterVs) ? e.hunterVs : 'weak', numOr(e.hunter, 1)] : undefined,
+    apply:(e, vals)=>{ const vs = Array.isArray(vals) ? vals[0] : 'weak', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.hunter = n; if(vs && vs !== 'weak') e.hunterVs = vs; } }},
   {key:'executioner', category:'passive', label:TX('ui.skn-executioner'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-executioner', {n: numOr(v, 1)}), codexNote:TX('ui.sk-executioner-codex'), get:e=> e.executioner ? numOr(e.executioner, 1) : undefined},
   {key:'detonate', category:'passive', label:TX('ui.skn-detonate'), kind:'boolean', desc:()=> TX('ui.sk-detonate'), codexNote:TX('ui.sk-detonate-codex')},
   {key:'proliferate', category:'passive', label:TX('ui.skn-proliferate'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-proliferate-1') : TX('ui.sk-proliferate', {n: numOr(v, 1)}), codexNote:TX('ui.sk-proliferate-codex'), get:e=> e.proliferate ? numOr(e.proliferate, 1) : undefined},
@@ -1232,13 +1233,76 @@ const PASSIVE_DEFS = [
   {key:'fieldBreaker', category:'evergreen', label:TX('ui.skn-field-breaker'), kind:'number', min:1, defaultValue:2, desc:v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}), codexNote:TX('ui.sk-field-breaker-codex'), get:e=> e.fieldBreaker ? numOr(e.fieldBreaker, 2) : undefined},
 ];
 // Package GI (2026-10-19): Hunter's line names its status (one TX key each, so every language gets a whole sentence).
-const GI_HUNTER_VS = ['poison', 'bleed', 'wet', 'exposed'];
-const GI_HUNTER_TX = {poison: n=> TX('ui.sk-hunter-poison', {n}), bleed: n=> TX('ui.sk-hunter-bleed', {n}), wet: n=> TX('ui.sk-hunter-wet', {n}), exposed: n=> TX('ui.sk-hunter-exposed', {n})};
-const GI_HUNTER_WORD = {poison: ()=> TX('ui.hunter-vs-poison'), bleed: ()=> TX('ui.hunter-vs-bleed'), wet: ()=> TX('ui.hunter-vs-wet'), exposed: ()=> TX('ui.hunter-vs-exposed')};
+// 2026-10-19 (package SK3): + Weak (Attack <= 2 AND Health <= 4, the engine's SK3_DEF.cullAtk / cullHp), the new default; shown as "Cull".
+const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed'];
+const GI_HUNTER_TX = {weak: n=> TX('ui.sk-hunter-weak', {n, a: 2, h: 4}), poison: n=> TX('ui.sk-hunter-poison', {n}), bleed: n=> TX('ui.sk-hunter-bleed', {n}), wet: n=> TX('ui.sk-hunter-wet', {n}), exposed: n=> TX('ui.sk-hunter-exposed', {n})};
+const GI_HUNTER_WORD = {weak: ()=> TX('ui.hunter-vs-weak'), poison: ()=> TX('ui.hunter-vs-poison'), bleed: ()=> TX('ui.hunter-vs-bleed'), wet: ()=> TX('ui.hunter-vs-wet'), exposed: ()=> TX('ui.hunter-vs-exposed')};
 function giHunterParts(v, e){ const vs = e && e.hunter ? e.hunterVs : (Array.isArray(v) ? v[0] : null), n = e && e.hunter ? numOr(e.hunter, 1) : (Array.isArray(v) ? numOr(v[1], 1) : 1);
-  return {vs: GI_HUNTER_VS.includes(vs) ? vs : 'poison', n}; }
+  return {vs: GI_HUNTER_VS.includes(vs) ? vs : 'weak', n}; }
 function giHunterText(v, e){ const h = giHunterParts(v, e); return GI_HUNTER_TX[h.vs](h.n); }
 function giHunterHead(p, e){ const h = giHunterParts(null, e); return `${p.label} ${h.n} (${GI_HUNTER_WORD[h.vs]()})`; }
+// ---- Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. The rules are in bramblewood-engine.js (the Package SK3
+// block, SK3_DEF holds every default); most are keywords that expand into ordinary triggers x actions there. Every string is a TX key.
+// On no card yet (owner: "Don't assign the new skills to existing cards"), so the Codex skills book lists them for Admin Mode and once seen.
+const SK3_N = {banner:1, herald:2, shieldwall:1, broodkeeper:1, corpsefeeder:1, harbinger:1, warcry:1, amplifier:1, stench:1, silence:2, stymie:2, exhaust:2, petrify:1, ampCap:2, harbingerCap:3};
+const SK3_ROUNDS_TX = {silence:[()=> TX('ui.sk3-silence-1'), n=> TX('ui.sk3-silence', {n})], stymie:[()=> TX('ui.sk3-stymie-1'), n=> TX('ui.sk3-stymie', {n})],
+  petrify:[()=> TX('ui.sk3-petrify-1'), n=> TX('ui.sk3-petrify', {n})]}; // one whole sentence per number form (no built keys)
+const sk3Rounds = (k, n)=> n === 1 ? SK3_ROUNDS_TX[k][0]() : SK3_ROUNDS_TX[k][1](n);
+PASSIVE_DEFS.push(
+  {key:'spawner', category:'evergreen', label:TX('ui.skn-spawner'), kind:'cardCount', desc:v=> TX('ui.sk3-spawner', {card: (v && v[0]) ? cardName(v[0]) : '?'}), codexNote:TX('ui.sk3-spawner-codex'),
+    get:e=> e.spawner ? (typeof e.spawner === 'string' ? [e.spawner, 1] : [e.spawner.defId, e.spawner.count || 1]) : undefined,
+    apply:(e, vals)=>{ const defId = (vals && vals[0]) || ''; const count = Math.max(1, Number(vals && vals[1]) || 1); if(defId) e.spawner = count > 1 ? {defId, count} : defId; }},
+  {key:'banner', category:'passive', label:TX('ui.skn-banner'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-banner', {n: numOr(v, SK3_N.banner)}), get:e=> e.banner ? numOr(e.banner, SK3_N.banner) : undefined},
+  {key:'warcry', category:'evergreen', label:TX('ui.skn-warcry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-warcry', {n: numOr(v, SK3_N.warcry)}), get:e=> e.warcry ? numOr(e.warcry, SK3_N.warcry) : undefined},
+  {key:'shieldwall', category:'passive', label:TX('ui.skn-shieldwall'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-shieldwall', {n: numOr(v, SK3_N.shieldwall)}), get:e=> e.shieldwall ? numOr(e.shieldwall, SK3_N.shieldwall) : undefined},
+  {key:'corpsefeeder', category:'evergreen', label:TX('ui.skn-corpsefeeder'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-corpsefeeder', {n: numOr(v, SK3_N.corpsefeeder)}), codexNote:TX('ui.sk3-corpsefeeder-codex'), get:e=> e.corpsefeeder ? numOr(e.corpsefeeder, SK3_N.corpsefeeder) : undefined},
+  {key:'amplifier', category:'passive', label:TX('ui.skn-amplifier'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-amplifier', {n: numOr(v, SK3_N.amplifier), cap: SK3_N.ampCap}), codexNote:TX('ui.sk3-amplifier-codex'), get:e=> e.amplifier ? numOr(e.amplifier, SK3_N.amplifier) : undefined},
+  {key:'stench', category:'evergreen', label:TX('ui.skn-stench'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-stench', {n: numOr(v, SK3_N.stench)}), codexNote:TX('ui.sk3-stench-codex'), get:e=> e.stench ? numOr(e.stench, SK3_N.stench) : undefined},
+  {key:'broodkeeper', category:'passive', label:TX('ui.skn-broodkeeper'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-broodkeeper', {n: numOr(v, SK3_N.broodkeeper)}), get:e=> e.broodkeeper ? numOr(e.broodkeeper, SK3_N.broodkeeper) : undefined},
+  {key:'herald', category:'passive', label:TX('ui.skn-herald'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk3-herald', {n: numOr(v, SK3_N.herald)}), codexNote:TX('ui.sk3-herald-codex'), get:e=> e.herald ? numOr(e.herald, SK3_N.herald) : undefined},
+  {key:'harbinger', category:'passive', label:TX('ui.skn-harbinger'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk3-harbinger', {n: numOr(v, SK3_N.harbinger), cap: SK3_N.harbingerCap}), codexNote:TX('ui.sk3-harbinger-codex'), get:e=> e.harbinger ? numOr(e.harbinger, SK3_N.harbinger) : undefined},
+  {key:'spotter', category:'passive', label:TX('ui.skn-spotter'), kind:'boolean', desc:()=> TX('ui.sk3-spotter'), codexNote:TX('ui.sk3-spotter-codex')},
+  {key:'silence', category:'passive', label:TX('ui.skn-silence'), kind:'number', min:1, defaultValue:2, desc:v=> sk3Rounds('silence', numOr(v, SK3_N.silence)), codexNote:TX('ui.sk3-silence-codex'), get:e=> e.silence ? numOr(e.silence, SK3_N.silence) : undefined},
+  {key:'stymie', category:'passive', label:TX('ui.skn-stymie'), kind:'number', min:1, defaultValue:2, desc:v=> sk3Rounds('stymie', numOr(v, SK3_N.stymie)), codexNote:TX('ui.sk3-stymie-codex'), get:e=> e.stymie ? numOr(e.stymie, SK3_N.stymie) : undefined},
+  {key:'exhaust', category:'passive', label:TX('ui.skn-exhaust'), kind:'number', min:1, defaultValue:2, desc:v=> numOr(v, SK3_N.exhaust) === 1 ? TX('ui.sk3-exhaust-1') : TX('ui.sk3-exhaust', {n: numOr(v, SK3_N.exhaust)}), codexNote:TX('ui.sk3-exhaust-codex'), get:e=> e.exhaust ? numOr(e.exhaust, SK3_N.exhaust) : undefined},
+  {key:'petrify', category:'passive', label:TX('ui.skn-petrify'), kind:'number', min:1, defaultValue:1, desc:v=> sk3Rounds('petrify', numOr(v, SK3_N.petrify)), codexNote:TX('ui.sk3-petrify-codex'), get:e=> e.petrify ? numOr(e.petrify, SK3_N.petrify) : undefined},
+);
+// Shatter and Executioner aligned to the owner's spec (the engine's shatterBonus / sk3ExecLow): their lines follow.
+{ const sh = PASSIVE_DEFS.find(p=> p.key === 'shatter'); if(sh){ sh.desc = v=> TX('ui.sk3-shatter', {n: numOr(v, 2)}); sh.codexNote = TX('ui.sk3-shatter-codex'); } }
+// ---- end Package SK3 (registry)
+// ---- Package SK2 (2026-10-19, owner 21:36): the economy and structure skills (rules: the SK2 block in bramblewood-engine.js). Their
+// numbers come from the engine's SK2_DEFAULTS (the fallbacks below are the same values, for a page or sandbox without the engine).
+// On no card yet. The Skills chapter of the Codex book and the keyword registry read PASSIVE_DEFS, so they list them too.
+const SK2_UI = Object.assign({harvestLumber:1, scavengeN:1, scavengeEvery:3, salvageN:1, salvageEvery:3, repairN:2, repairBrambleRate:0.5, foragingN:3, foragingBerries:3, millingN:1,
+  pickpocketN:1, sabotageN:1, arsonN:1, fortifyAtk:0, fortifyHp:6}, (typeof SK2_DEFAULTS !== 'undefined' && SK2_DEFAULTS && typeof SK2_DEFAULTS.harvestLumber === 'number') ? SK2_DEFAULTS : {});
+const sk2Num = (v, k)=> numOr(v, SK2_UI[k]);
+const sk2ScavengeEvery = e=> (e && Number(e.scavengeEvery) >= 1) ? Math.round(Number(e.scavengeEvery)) : SK2_UI.scavengeEvery;
+const sk2SalvageEvery = e=> (e && Number(e.salvageEvery) >= 1) ? Math.round(Number(e.salvageEvery)) : SK2_UI.salvageEvery;
+const sk2RepairBramble = n=> Math.max(1, Math.floor(n * SK2_UI.repairBrambleRate));
+const SK2_LINE = {
+  harvest: v=> TX('ui.sk2-harvest', {n: sk2Num(v, 'harvestLumber')}),
+  scavenge: (v, n, e)=> TX('ui.sk2-scavenge', {n: sk2Num(v, 'scavengeN'), m: sk2ScavengeEvery(e)}),
+  salvage: (v, n, e)=> TX('ui.sk2-salvage', {n: sk2Num(v, 'salvageN'), m: sk2SalvageEvery(e)}),
+  repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
+  foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
+  milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
+  pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
+  sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
+  arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
+  fortification: ()=> TX('ui.sk2-fortification', {a: SK2_UI.fortifyAtk, h: SK2_UI.fortifyHp}),
+};
+PASSIVE_DEFS.push(
+  {key:'harvest', category:'passive', label:TX('ui.sk2n-harvest'), kind:'boolean', desc:v=> SK2_LINE.harvest(v), codexNote:TX('ui.sk2-harvest-codex')},
+  {key:'scavenge', category:'passive', label:TX('ui.sk2n-scavenge'), kind:'number', min:1, defaultValue:SK2_UI.scavengeN, desc:(v, n, e)=> SK2_LINE.scavenge(v, n, e), codexNote:TX('ui.sk2-scavenge-codex'), get:e=> e.scavenge ? sk2Num(e.scavenge, 'scavengeN') : undefined},
+  {key:'salvage', category:'passive', label:TX('ui.sk2n-salvage'), kind:'number', min:1, defaultValue:SK2_UI.salvageN, desc:(v, n, e)=> SK2_LINE.salvage(v, n, e), codexNote:TX('ui.sk2-salvage-codex'), get:e=> e.salvage ? sk2Num(e.salvage, 'salvageN') : undefined},
+  {key:'repair', category:'passive', label:TX('ui.sk2n-repair'), kind:'number', min:1, defaultValue:SK2_UI.repairN, desc:v=> SK2_LINE.repair(v), codexNote:TX('ui.sk2-repair-codex'), get:e=> e.repair ? sk2Num(e.repair, 'repairN') : undefined},
+  {key:'foraging', category:'passive', label:TX('ui.sk2n-foraging'), kind:'number', min:1, defaultValue:SK2_UI.foragingN, desc:v=> SK2_LINE.foraging(v), codexNote:TX('ui.sk2-foraging-codex'), get:e=> e.foraging ? sk2Num(e.foraging, 'foragingN') : undefined},
+  {key:'milling', category:'passive', label:TX('ui.sk2n-milling'), kind:'number', min:1, defaultValue:SK2_UI.millingN, desc:v=> SK2_LINE.milling(v), codexNote:TX('ui.sk2-milling-codex'), get:e=> e.milling ? sk2Num(e.milling, 'millingN') : undefined},
+  {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
+  {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
+  {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
+  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'boolean', desc:()=> SK2_LINE.fortification(), codexNote:TX('ui.sk2-fortification-codex')},
+);
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
@@ -1458,6 +1522,22 @@ const ACTION_DEFS = [
   {key:'rebuild', label:'Rebuild bramble', fields:['amount'], desc:"Restore N Health to this card's own bramble (or its Attack or Health with the amount picker), never above the bramble's max. Any trigger."},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, your Kin or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
+// ---- Package SK3 (2026-10-19): the new actions and the On Any Death trigger in the trigger builder (the engine's ACTION_KEYS / TRIGGER_KEYS).
+ACTION_DEFS.push(
+  {key:'duplicate', get label(){ return TX('ui.act3-duplicate'); }, fields:['who','sub'], whoOptions:['self','ally','enemy'], subOptions:['adjacent','random','furthest'], get desc(){ return TX('ui.act3-duplicate-desc'); }},
+  {key:'devourGrave', get label(){ return TX('ui.act3-devour-grave'); }, fields:['amount','amount2'], get desc(){ return TX('ui.act3-devour-grave-desc'); }},
+  {key:'buffAll', get label(){ return TX('ui.act3-buff-all'); }, fields:['amount','amount2'], get desc(){ return TX('ui.act3-buff-all-desc'); }},
+  {key:'stench', get label(){ return TX('ui.skn-stench'); }, fields:['amount','who','sub'], subOptions:['adjacent','random','all','area'], get desc(){ return TX('ui.act3-stench-desc'); }},
+  {key:'silence', get label(){ return TX('ui.skn-silence'); }, fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], get desc(){ return TX('ui.act3-silence-desc'); }},
+  {key:'stymie', get label(){ return TX('ui.skn-stymie'); }, fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], get desc(){ return TX('ui.act3-stymie-desc'); }},
+  {key:'exhaust', get label(){ return TX('ui.skn-exhaust'); }, fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], get desc(){ return TX('ui.act3-exhaust-desc'); }},
+  {key:'petrify', get label(){ return TX('ui.skn-petrify'); }, fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], get desc(){ return TX('ui.act3-petrify-desc'); }},
+  {key:'vulnerable', get label(){ return TX('ui.act3-vulnerable'); }, fields:['amount','who'], whoOptions:['enemy','both'], get desc(){ return TX('ui.act3-vulnerable-desc'); }},
+  {key:'barrage', get label(){ return TX('ui.act3-barrage'); }, fields:['amount','dmgType'], get desc(){ return TX('ui.act3-barrage-desc'); }},
+  {key:'smokeScreen', get label(){ return TX('ui.act3-smoke-screen'); }, fields:['amount'], get desc(){ return TX('ui.act3-smoke-screen-desc'); }},
+  {key:'magnet', get label(){ return TX('ui.act3-magnet'); }, fields:['amount'], get desc(){ return TX('ui.act3-magnet-desc'); }},
+);
+TRIGGER_DEFS.push({key:'onAnyDeath', get label(){ return TX('ui.trig3-any-death'); }, get desc(){ return TX('ui.trig3-any-death-desc'); }});
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
 // user named "opponent unit enters the battlefield" as just an example of "other ways" a
 // chain could break, implying more will follow). Each option's `value` is exactly what gets
@@ -1468,6 +1548,49 @@ function CHAIN_BREAK_OPTIONS(){
     {value:'enemySpawn', label:'Opponent plays any new card'},
   ];
 }
+// ==== Package SK1 (2026-10-19, owner 21:36: new combat skills; rules in bramblewood-engine.js, the Package SK1 block) ==============
+// The registry side: new skills join PASSIVE_DEFS (the editor's "+ Add Skill" list and the Skills chapter of the Codex book), the
+// reworked ones (Sentry N, Expose N, Siege N, Cure, Healing; Demolisher folded into Siege) are patched in place, and the new triggers
+// and actions join the trigger builder. Every string is a TX key. (Statuses, short lines, log and looks: the second SK1 block below.)
+// Owner 21:56 ("feel free to use triggers and actions"): Sentry, Expose, Exploit, Venom Pulse and Spoils are trigger × action shorthands.
+const SK1_DEFAULTS = {sentry:2, formation:1, expose:2, exploit:2, punish:2, siege:2, spoils:2, venomPulse:1}; // = the engine's SK1_DEF
+function sk1Patch(list, key, patch){ const p = list.find(x=> x.key === key); if(p) Object.assign(p, patch); else list.push(Object.assign({key}, patch)); }
+sk1Patch(PASSIVE_DEFS, 'sentry', {category:'passive', label:TX('ui.skn-sentry'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-sentry', {n: numOr(v, 2)}), codexNote:TX('ui.sk-sentry-codex'), get:e=> e.sentry ? numOr(e.sentry, 2) : undefined});
+sk1Patch(PASSIVE_DEFS, 'expose', {category:'evergreen', label:TX('ui.skn-expose'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-expose', {n: numOr(v, 2)}), codexNote:TX('ui.sk-expose-codex'), get:e=> e.expose ? numOr(e.expose, 2) : undefined});
+sk1Patch(PASSIVE_DEFS, 'siege', {category:'passive', label:TX('ui.skn-siege'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)}), codexNote:TX('ui.sk-siege-codex'), get:e=> (e.siege || e.demolisher) ? Math.max(e.siege ? numOr(e.siege, 2) : 0, e.demolisher ? numOr(e.demolisher, 2) : 0) : undefined});
+sk1Patch(PASSIVE_DEFS, 'demolisher', {hidden:true, retired:true, label:TX('ui.skn-siege'), desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)})}); // an old save's key: read as Siege
+sk1Patch(PASSIVE_DEFS, 'cure', {desc:v=> TX('ui.sk-cure', {n: numOr(v, 2)})});
+sk1Patch(PASSIVE_DEFS, 'healing', {desc:v=> TX('ui.sk-healing', {n: numOr(v, 1)})});
+PASSIVE_DEFS.push(
+  {key:'formation', category:'passive', label:TX('ui.skn-formation'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-formation', {n: numOr(v, 1)}), codexNote:TX('ui.sk-formation-codex'), get:e=> e.formation ? numOr(e.formation, 1) : undefined},
+  {key:'isolation', category:'passive', label:TX('ui.skn-isolation'), kind:'boolean', desc:()=> TX('ui.sk-isolation'), codexNote:TX('ui.sk-isolation-codex')},
+  {key:'anchor', category:'passive', label:TX('ui.skn-anchor'), kind:'boolean', desc:()=> TX('ui.sk-anchor'), codexNote:TX('ui.sk-anchor-codex')},
+  {key:'exploit', category:'evergreen', label:TX('ui.skn-exploit'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-exploit', {n: numOr(v, 2)}), codexNote:TX('ui.sk-exploit-codex'), get:e=> e.exploit ? numOr(e.exploit, 2) : undefined},
+  {key:'spoils', category:'passive', label:TX('ui.skn-spoils'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-spoils', {n: numOr(v, 2)}), codexNote:TX('ui.sk-spoils-codex'), get:e=> e.spoils ? numOr(e.spoils, 2) : undefined},
+  {key:'venomPulse', category:'passive', label:TX('ui.skn-venom-pulse'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-venom-pulse') : TX('ui.sk-venom-pulse-n', {n: numOr(v, 1)}), codexNote:TX('ui.sk-venom-pulse-codex'), get:e=> e.venomPulse ? numOr(e.venomPulse, 1) : undefined},
+  // Punish N: behind a flag (engine opts.flags.punish / rules.punishSkill), on no card; hidden from the editor until the owner picks a design.
+  {key:'punish', category:'passive', hidden:true, reserved:true, label:TX('ui.skn-punish'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-punish', {n: numOr(v, 2)}), codexNote:TX('ui.sk-punish-codex'), get:e=> e.punish ? numOr(e.punish, 2) : undefined},
+);
+TRIGGER_DEFS.push(
+  {key:'onEnemyEnter', label:TX('ui.trg-on-enemy-enter'), desc:TX('ui.trg-on-enemy-enter-desc')},
+  {key:'onHit', label:TX('ui.trg-on-hit'), desc:TX('ui.trg-on-hit-desc')},
+  {key:'onKillCreature', label:TX('ui.trg-on-kill-creature'), desc:TX('ui.trg-on-kill-creature-desc')},
+);
+ACTION_DEFS.push(
+  {key:'exploit', label:TX('ui.act-exploit'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-exploit-desc')},
+  {key:'poisonTick', label:TX('ui.act-poison-tick'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-poison-tick-desc')},
+);
+sk1Patch(ACTION_DEFS, 'expose', {desc:TX('ui.act-expose-desc')});
+sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
+sk1Patch(ACTION_DEFS, 'cleanse', {desc:TX('ui.act-cleanse-desc')});
+Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', exploit:'🩻', spoils:'🍖', venomPulse:'💉', punish:'⚖️', demolisher:'🏰'}); // Package SK1 (2026-10-19)
+// An old save's or a server override's Demolisher N reads as Siege N (the higher of the two when a card had both; the engine reads either).
+function sk1MigrateSiege(c){
+  const e = c && c.effects; if(!e || e.demolisher == null) return c;
+  const ne = Object.assign({}, e), d = numOr(e.demolisher, 2), s = e.siege ? numOr(e.siege, 2) : 0; delete ne.demolisher; if(d > 0 || s > 0) ne.siege = Math.max(d, s);
+  return Object.assign({}, c, {effects: ne});
+}
+// ==== end of Package SK1 (registry) ================================================================================================
 // SKILL_DEFS: the unified "+ Add Skill" registry for the card editor's Passive Abilities
 // section — every PASSIVE_DEFS keyword, Explode (a two-field passive), and the former
 // "Active preset" one-shots (Arrow/Render/Revive) all live here now as one flat list of
@@ -1966,7 +2089,10 @@ function cardFrameKind(d, opts){
   if(/\b(env-card|match-field-tile)\b/.test(opts.extraClass||'')) return 'field';
   return cardBackingKind(d);
 }
-const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
+// 2026-10-19 (package CF, owner 22:32: "Equipment & devilry card frame - can it be improved? ... I don't want to stray too far from
+// that. Just abit different."): .cframe-orn is the frame's ornament layer (rivets and gears, sigils and embers, shell ribs), a sibling
+// of .cframe so the filter that re-tints the normal frame's inlay doesn't touch it. It only shows on the frames that use it.
+const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i><i class="cframe-orn" aria-hidden="true"></i>';
 // Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
 // (then we can remove the top right hand corner context symbol for those. like the 5 point star for devilry and prayer)"): each
 // archetype (the CARD_ARCHETYPE_MARK keys) has its own frame, drawn by tools/make_card_frames.py. The call: a UNIT of an archetype
@@ -1989,13 +2115,18 @@ const CARD_ARCH_FRAMES = {
   void:{a:{art:'art/frames/a-void.png'}, s:{art:'art/frames/s-void.png'}},
 };
 // The archetype frame a card face wears (its CARD_ARCHETYPE_MARK key), or null. Only units and structures take one.
+// 2026-10-19 (package CF): equipment never takes an archetype frame. Every equipment card wears the equipment frame (fr-equip); an
+// archetype's equipment (Terraumbra, an Evomax Easter egg, used to wear the pink nacre Evomax frame) shows its archetype by the corner mark.
+// Devilry and Evomax units keep ar-<key>, but their CSS now draws the normal frame with a light touch (see "Package CF" in the template).
 function cardFrameArch(d, kind){
-  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia') return null;
+  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia' || d.cardType === 'equipment') return null;
   let key = null; try{ key = cardArchetypeKey(d); }catch(e){}
   return key && CARD_ARCH_FRAMES[key] ? key : null;
 }
 // fr-<kind>, plus ar-<archetype> when one applies: the classes that pick a card face's frame
-function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind); return 'fr-' + kind + (ar ? ' ar-' + ar : ''); }
+// + fr-equip (2026-10-19, package CF) on every equipment card: the normal frame, forged (gunmetal band, pewter inlay, rivets and gears)
+function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind);
+  return 'fr-' + kind + (kind === 'unit' && d && d.cardType === 'equipment' ? ' fr-equip' : '') + (ar ? ' ar-' + ar : ''); }
 (function installCardFrames(){
   try{
     if(document.getElementById('bwCardFrames')) return;
@@ -2048,7 +2179,9 @@ function speciesLine(def){
 }
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
+  if(sp.do==='hazard' && d.hazard) return eqHazardText(d); // a slot hazard (2026-10-19, package EQ)
   if(sp.do==='hasten') return `Each of your units on the field loses ${n} Wait.`;
+  { const s3 = sk3SpellText(sp); if(s3) return s3; } // Grave Call, Smoke Screen, Magnet (2026-10-19, package SK3)
   if(sp.do==='tailwind') return TX('ui.spell-tailwind', {n}); // 2026-10-18 (package D): terse
   if(sp.do==='mend') return `Heals each of your units by ${n}.`;
   if(sp.do==='sap') return `Each enemy unit loses ${n} Attack.`;
@@ -2118,6 +2251,7 @@ const KEYWORD_TERMS = [
   {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
 ];
+KEYWORD_TERMS.push({name:'Berry', re:'berr(?:y|ies)', cs:true, text:TX('ui.sk2-term-berry')}); // Foraging's token (2026-10-19, package SK2)
 const KEYWORD_RESOURCES = [
   {name:'Lumber', re:'lumber', c:'#a0662f'}, {name:'Stone', re:'stone', c:'#7d8590', cs:true}, {name:'Metal', re:'metal', c:'#6f8fae', cs:true},
   {name:'Grace', re:'grace', c:'#c39a1e', cs:true}, {name:'Prayer', re:'prayer', c:'#b8892a', cs:true}, {name:'Darkness', re:'darkness|dark points?', c:'#8b3fbf'},
@@ -2446,6 +2580,48 @@ Object.assign(SKILL_TEXT, {
   prayerWard: v=> TX('ui.sk-prayer-ward', {n: numOr(v, 1)}),
   fieldBreaker: v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}),
 });
+// Package SK3 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note), icons (all already in the emoji
+// atlases), the new statuses' glossary entries and the SK3 spells' sentence.
+Object.assign(SKILL_TEXT, {
+  spawner: v=> TX('ui.sk3-spawner', {card: (v && v[0]) ? cardName(v[0]) : (typeof v === 'string' ? cardName(v) : '?')}),
+  banner: v=> TX('ui.sk3-banner', {n: numOr(v, SK3_N.banner)}),
+  warcry: v=> TX('ui.sk3-warcry', {n: numOr(v, SK3_N.warcry)}),
+  shieldwall: v=> TX('ui.sk3-shieldwall', {n: numOr(v, SK3_N.shieldwall)}),
+  corpsefeeder: v=> TX('ui.sk3-corpsefeeder', {n: numOr(v, SK3_N.corpsefeeder)}),
+  amplifier: v=> TX('ui.sk3-amplifier', {n: numOr(v, SK3_N.amplifier), cap: SK3_N.ampCap}),
+  stench: v=> TX('ui.sk3-stench', {n: numOr(v, SK3_N.stench)}),
+  broodkeeper: v=> TX('ui.sk3-broodkeeper', {n: numOr(v, SK3_N.broodkeeper)}),
+  herald: v=> TX('ui.sk3-herald', {n: numOr(v, SK3_N.herald)}),
+  harbinger: v=> TX('ui.sk3-harbinger', {n: numOr(v, SK3_N.harbinger), cap: SK3_N.harbingerCap}),
+  spotter: ()=> TX('ui.sk3-spotter'),
+  silence: v=> sk3Rounds('silence', numOr(v, SK3_N.silence)),
+  stymie: v=> sk3Rounds('stymie', numOr(v, SK3_N.stymie)),
+  exhaust: v=> numOr(v, SK3_N.exhaust) === 1 ? TX('ui.sk3-exhaust-1') : TX('ui.sk3-exhaust', {n: numOr(v, SK3_N.exhaust)}),
+  petrify: v=> sk3Rounds('petrify', numOr(v, SK3_N.petrify)),
+  shatter: v=> TX('ui.sk3-shatter', {n: numOr(v, 2)}),
+});
+Object.assign(SKILL_ICON, {spawner:'🪺', banner:'🚩', warcry:'🗣️', shieldwall:'🧱', corpsefeeder:'💀', amplifier:'🔊', stench:'🦨', broodkeeper:'🐣', herald:'📜', harbinger:'🐦‍⬛',
+  spotter:'🦅', silence:'🚫', stymie:'⏸️', exhaust:'😫', petrify:'🪨'});
+STATUS_KEYWORDS.push(
+  {k:'silenced', re:/\b(silenced)\b/gi, cs:true, name:TX('ui.stn3-silenced'), c:'#6b7280', text:TX('ui.st3-silenced')},
+  {k:'stymied', re:/\b(stymied)\b/gi, cs:true, name:TX('ui.stn3-stymied'), c:'#a16207', text:TX('ui.st3-stymied')},
+  {k:'exhausted', re:/\b(exhaust(?:ed)?)\b/gi, cs:true, name:TX('ui.stn3-exhausted'), c:'#9a3412', text:TX('ui.st3-exhausted')},
+  {k:'grounded', re:/\b(grounded)\b/gi, cs:true, name:TX('ui.stn3-grounded'), c:'#475569', text:TX('ui.st3-grounded')},
+  {k:'stench', re:/\b(stench)\b/gi, cs:true, name:TX('ui.skn-stench'), c:'#4d7c0f', text:TX('ui.st3-stench')},
+);
+function sk3SpellText(sp){
+  if(sp.do === 'graveCall') return TX('ui.spell3-grave-call', {cap: sp.cap || 10});
+  if(sp.do === 'smokeScreen') return TX('ui.spell3-smoke-screen', {n: sp.amount || 2});
+  if(sp.do === 'magnet') return TX('ui.spell3-magnet', {n: sp.amount || 2});
+  return null; }
+// Package EQ (2026-10-19, owner 21:36): Weapon Master N and Pry N (rules in bramblewood-engine.js, the Package EQ block), and the On Enter Slot trigger.
+PASSIVE_DEFS.push(
+  {key:'weaponMaster', category:'passive', label:TX('ui.skn-weapon-master'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), codexNote:TX('ui.sk-weapon-master-codex', {n: 1}), get:e=> e.weaponMaster ? numOr(e.weaponMaster, 1) : undefined},
+  {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
+Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
+Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
+TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
+Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
 // Amore's state on a live unit (2026-10-16): 'love' (paired), 'broken' (partner gone) or 'single'.
@@ -2527,10 +2703,11 @@ function describeEffects(def, liveCard){
     lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''}`); lines.push(TX('ui.de-field-replaces')); // 2026-10-18 (package D): two short lines
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
-  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines
+  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(def.hazard ? TX('ui.eq-hz-how') : TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines; a slot hazard says where it goes (EQ, 2026-10-19)
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
+  { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
   else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
@@ -2897,7 +3074,8 @@ function getCardDefs(){
   const res = getCardDefs0();
   try{ const dd = matchState && matchState.engine && matchState.engine.derivedDefs; if(dd) for(const k in dd){ if(res[k] !== dd[k]) res[k] = dd[k];
     // Relic (2026-10-19, package E): the engine names the ghost "<Card> Relic" in English; the shown name comes from the text table.
-    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } } } }catch(e){}
+    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } }
+    if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name'); r._sk2Named = true; } } }catch(e){} // Fortification's Palisade (2026-10-19, package SK2)
   return res;
 }
 function getCardDefs0(){
@@ -2917,6 +3095,7 @@ function buildCardDefs(){
   Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && !lc.art && b.art) lc.art = b.art; });
   // 2026-10-16 (user: "All Worthy cards become Bounty."): the safety net for any way an old Worthy got into the overlay (a save, a restore).
   Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
+  Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -3139,7 +3318,7 @@ function cardSourceOf(d){
 // yet: cardObtainableFrom says no, unlockCardForPlayer refuses them from every source but an admin's grant, and the givers (packs,
 // drops, skirmish rewards, raids, the reward tracks, the Forge's fuse, the Nest's hatchlings in the engine) leave them out of their
 // pools. The Codex shows one you haven't seen as a masked "???" tile (easterEggMasked); the hub's card list masks it too.
-const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda'];
+const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda', 'bucketknee-wolf']; // + the Bucketknee Wolf (2026-10-19, package EQ)
 const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant']);
 function isEasterEgg(d){ return !!(d && (d.easterEgg || EASTER_EGG_IDS.includes(d.derivedFrom || d.id) || (d.source && d.source.kind === 'easteregg'))); }
 function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id]||[]).length || seenCardIds().has(id)); }catch(e){ return false; } }
@@ -5373,6 +5552,70 @@ const LIVE_STATUS_ROWS = [
 ];
 // Rounds left, for the statuses that count down in rounds (shown as "(2 rounds)" after the name).
 const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 'paralyzed', 'bound', 'webbed', 'blind', 'tipsy', 'confused', 'smoke', 'invisible']);
+// ==== Package SK1 (2026-10-19): statuses, short card lines, the battle log, the looks and the badges (registry: the first SK1 block) ==
+// Exposed counts rounds now (its hiding stripped); Exploit tokens are the old Expose counters' damage (+1 a hit); Formation and
+// Isolation show as a chip with the bonus (c.sk1Atk; the Health part is real max Health). Every string is a TX key.
+// (The Exposed row keeps its number, now the rounds left: ui.ls-exposed says "no hiding for N more rounds".)
+{ const ex = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'exposed');
+  LIVE_STATUS_ROWS.splice(ex + 1, 0, ['exploit', 'exploit', TX('ui.skn-exploit'), n=> TX('ui.ls-exploit', {n, s: n === 1 ? '' : 's'}), true]); }
+STATUS_KEYWORDS.push({k:'exploit', re:/\b(exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')});
+Object.assign(SKILL_TEXT, {
+  sentry: v=> TX('ui.sk-sentry', {n: numOr(v, SK1_DEFAULTS.sentry)}),
+  expose: v=> TX('ui.sk-expose', {n: numOr(v, SK1_DEFAULTS.expose)}),
+  exploit: v=> TX('ui.sk-exploit', {n: numOr(v, SK1_DEFAULTS.exploit)}),
+  siege: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
+  demolisher: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
+  formation: v=> TX('ui.sk-formation', {n: numOr(v, SK1_DEFAULTS.formation)}),
+  isolation: ()=> TX('ui.sk-isolation'),
+  anchor: ()=> TX('ui.sk-anchor'),
+  spoils: v=> TX('ui.sk-spoils', {n: numOr(v, SK1_DEFAULTS.spoils)}),
+  venomPulse: v=> numOr(v, 1) === 1 ? TX('ui.sk-venom-pulse') : TX('ui.sk-venom-pulse-n', {n: numOr(v, 1)}),
+  punish: v=> TX('ui.sk-punish', {n: numOr(v, SK1_DEFAULTS.punish)}),
+  cure: v=> TX('ui.sk-cure', {n: numOr(v, 2)}),
+  healing: v=> TX('ui.sk-healing', {n: numOr(v, 1)}),
+});
+function sk1LogText(ev, nm){
+  if(!ev || ev.type !== 'statusFx') return null;
+  const s = n=> n === 1 ? '' : 's';
+  if(ev.kind === 'expose') return {cls:'', text:TX('ui.log-expose-rounds', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
+  if(ev.kind === 'exploit') return {cls:'', text:TX('ui.log-exploit', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
+  if(ev.kind === 'exploitHit') return {cls:'', text:TX('ui.log-exploit-hit', {name: nm(ev.targetDefId), b: ev.bonus||1, n: ev.amount||0})};
+  if(ev.kind === 'exploitFade') return {cls:'', text:TX('ui.log-exploit-fade', {name: nm(ev.targetDefId)})};
+  if(ev.kind === 'poisonPulse') return {cls:'poison', text:TX('ui.log-poison-pulse', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
+  if(ev.kind === 'punish') return {cls:'', text:TX('ui.log-punish', {att: nm(ev.attDefId), name: nm(ev.targetDefId), dmg: ev.dmg||0})};
+  if(ev.kind === 'sk1Aura'){ if(ev.atk > 0) return {cls:'', text:TX('ui.log-formation', {name: nm(ev.targetDefId), n: ev.atk})};
+    if(ev.atk < 0) return {cls:'', text:TX('ui.log-isolation', {name: nm(ev.targetDefId), n: -ev.atk})}; return {cls:'', text:TX('ui.log-aura-off', {name: nm(ev.targetDefId)})}; }
+  return null;
+}
+function sk1Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'triggerFired' && ev.hook === 'onEnemyEnter'){ fl(boardCardEl(ev.uid), TX('ui.float-sentry'), 'quick'); snd('ambushTone'); return; }
+  if(ev.type !== 'statusFx') return;
+  const rc = rcOf(ev.targetUid), el = boardCardEl(ev.targetUid);
+  if(ev.kind === 'exploit'){ if(rc) rc.exploit = (rc.exploit||0) + (ev.amount||1); fl(el, TX('ui.float-exploit'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
+  if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
+  if(ev.kind === 'sk1Aura'){ if(rc){ rc.sk1Atk = ev.atk||0; if(ev.maxHpNow != null){ rc.maxHp = ev.maxHpNow; rc.hp = ev.hpNow; } }
+    if(ev.dAtk) fl(el, ev.dAtk > 0 ? `${ev.atk > 0 ? '🔗' : '🏝️'} +${ev.dAtk}/+${ev.dHp}` : `${ev.atk >= 0 && !ev.isolation ? '🔗' : '🏝️'} ${ev.dAtk}/${ev.dHp}`, ev.dAtk > 0 ? 'buff' : 'debuff');
+    refresh(ev.targetUid); return; }
+}
+// The Exploit tokens chip and the Formation / Isolation chip (the bonus it has right now).
+function sk1StatusBadges(c, badges){
+  if(c.exploit > 0) badges.push(`<span class="abadge exploit" title="${escapeAttr(TX('ui.exploit-tip', {n: c.exploit, s: c.exploit === 1 ? '' : 's'}))}">🩻${c.exploit}</span>`);
+  const a = c.sk1Atk || 0; if(a > 0) badges.push(`<span class="abadge formation" title="${escapeAttr(TX('ui.aura-formation-tip', {n: a}))}">🔗+${a}</span>`);
+  else if(a < 0) badges.push(`<span class="abadge isolation" title="${escapeAttr(TX('ui.aura-isolation-tip', {n: -a}))}">🏝️${a}</span>`);
+}
+// ==== end of Package SK1 (statuses and board) ======================================================================================
+// Package SK3 (2026-10-19): the new statuses under a unit's skills, as their chips name them.
+LIVE_STATUS_ROWS.push(['silenced', 'silenced', TX('ui.stn3-silenced'), ()=> TX('ui.st3-silenced'), false], ['stymied', 'stymied', TX('ui.stn3-stymied'), ()=> TX('ui.st3-stymied'), false],
+  ['exhaust', 'exhausted', TX('ui.stn3-exhausted'), ()=> TX('ui.st3-exhausted'), true], ['grounded', 'grounded', TX('ui.stn3-grounded'), ()=> TX('ui.st3-grounded'), false],
+  ['stench', 'stench', TX('ui.skn-stench'), ()=> TX('ui.st3-stench'), true]);
+['silenced', 'stymied', 'grounded'].forEach(k=> LIVE_STATUS_ROUNDS.add(k));
 function liveStatusGlossHTML(c){
   if(!c) return '';
   const rows = [];
@@ -5403,7 +5646,7 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
   // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
   const liveC = liveCard ? (currentCardByUid(liveCard.uid) || liveCard) : null;
-  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0)) : d.attack;
+  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0) + (liveC.sk1Atk||0) /* Formation / Isolation (SK1) */) : d.attack;
   const baseAtk = Number(d.attack)||0, atkBonus = effAtk - baseAtk;
   // 2026-10-11 (user): "⚔ 5 (2 + 3)" — total and base in red, the bonus in blue.
   // 2026-10-14 (user: "In the card details tooltip - it shows 5 (6+1 (blue) - 2(green)) for example"): the stat as it stands, then
@@ -6056,7 +6299,7 @@ function renderCodex(){
   codexTurnFn = null; codexAlbumState = null; // 2026-10-18 (package C): the album / book set these again when they draw
   { const sc = document.getElementById('codexScore'); if(sc) setTimeout(()=>{ try{ if(!sc.isConnected) return; sc.innerHTML = collectionScoreBarHTML(); wireCollectionScoreBar(sc); }catch(e){} }, 60); } // after the tab's first frame (it sits at the bottom)
   const body = document.getElementById('codexBody');
-  if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
+  if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); wireBramblesTab(body); return; } // + the filter bar (2026-10-19, package UX2)
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse'; // the Forge opens on Map 11 (2026-10-12)
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
@@ -6105,6 +6348,7 @@ function renderCodex(){
       </select>
       ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
+    ${codexKindRowHTML() /* 2026-10-19 (package UX): card types + the Base level / My best toggle */}
     <div class="cx-skill-active" id="cxSkillActive" hidden></div>
     <span id="codexResultCount"></span>
     <div class="${codexViewMode==='album' ? 'al-host' : 'grid-view'} ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
@@ -6133,6 +6377,7 @@ function renderCodex(){
   });
   { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; codexFilterBadge(); renderCodexGrid(); }); }
   wireCodexSkillFilter();
+  wireCodexKindRow(); // 2026-10-19 (package UX)
   const cxShowTest = document.getElementById('cxShowTest');
   if(cxShowTest) cxShowTest.addEventListener('change', e=>{ codexFilter.showTest = e.target.checked; renderCodexGrid(); });
   renderCodexGrid();
@@ -6298,6 +6543,80 @@ const codexTileCache = new Map(); // Codex tile HTML by card id, with the key it
 function saveCodexFilters(){ const o = Object.assign({}, codexFilter); delete o.showTest; uiStickySave('codex', o); } // 2026-10-16: kept (uiSticky)
 // 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
 let codexFlatById = (()=>{ try{ return localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){ return false; } })();
+// CODEX_UX:BEGIN (2026-10-19, package UX; tests/ux-2026-10-19.js evaluates this block)
+// Card types in the Codex (owner 21:36: "Filter in codex for Spells (unused), Equipment (unused), creature units, structure units,
+// Brambles."). A chip row under the toolbar: All, Creatures, Structures, Spells, Equipment, Brambles, each with how many cards the
+// other filters leave of it. A type with none still shows, at 0 (Spells are shelved, SPELLS_SHELVED; no Equipment card is
+// obtainable yet). The kinds come from the card's own fields: cardType 'equipment' / 'spell' (a field card, played for its effect, is
+// counted with the spells), the Structure tag (isStructure), a Castle card a Bramble; the rest are creatures. The Brambles are not
+// cards in the Codex list but have their own Codex page (the Brambles tab, every CHARACTER_DEFS entry): their chip counts them and
+// opens that page.
+const CODEX_KINDS = [
+  {key:'creature', icon:'🐾', label:()=> TX('ui.ux-kind-creature')},
+  {key:'structure', icon:'🏯', label:()=> TX('ui.ux-kind-structure')},
+  {key:'spell', icon:'📜', label:()=> TX('ui.ux-kind-spell')},
+  {key:'equipment', icon:'🛡️', label:()=> TX('ui.ux-kind-equipment')},
+  {key:'bramble', icon:'🌿', label:()=> TX('ui.ux-kind-bramble')},
+];
+function codexCardKind(d){
+  if(!d) return 'creature';
+  if(d.cardType === 'equipment') return 'equipment';
+  if(d.cardType === 'spell' || d.field) return 'spell';
+  if(d.isCastle || (d.archetypes || []).includes('Castle')) return 'bramble';
+  if(isStructure(d)) return 'structure';
+  return 'creature';
+}
+// {creature, structure, spell, equipment, bramble}: the cards of each kind among ids, plus brambles (the Brambles page's count).
+function codexKindCounts(ids, defs, brambles){
+  const out = {creature:0, structure:0, spell:0, equipment:0, bramble: brambles | 0};
+  (ids || []).forEach(id=>{ const k = codexCardKind(defs[id]); out[k] = (out[k] || 0) + 1; });
+  return out;
+}
+// The level the Codex shows a card at (owner 21:36: "The entry in the codex should be looking at the lvl 1 version(s), not the highest
+// level of what you own. I guess maybe you can toggle it. (Base level or not)"): 'base' (the default) shows every card at its starting
+// level (cardBaseLevel: Level 1, or Level 0 for Base, quest and tutorial cards), 'best' at the highest level you own of it. Kept per
+// device (localStorage; a blocked storage just means the default).
+const CODEX_LEVEL_KEY = 'bramblewood_codex_level_v1';
+function codexLevelMode(){ try{ return localStorage.getItem(CODEX_LEVEL_KEY) === 'best' ? 'best' : 'base'; }catch(e){ return 'base'; } }
+function setCodexLevelMode(m){ const v = m === 'best' ? 'best' : 'base'; try{ localStorage.setItem(CODEX_LEVEL_KEY, v); }catch(e){} return v; }
+// The card as the Codex shows it: at its base level (copyDefAt, the stats and level skills a copy at that level has) unless 'best'.
+// It keeps the card's own id and lock, so the tile, its click and its 🔒 stay the card's.
+function codexShownDef(id, d){
+  if(!d || codexLevelMode() === 'best') return d;
+  const b = copyBaseDef(id); if(!b) return d;
+  let x = null; try{ x = copyDefAt(id, cardBaseLevel(b)); }catch(e){ x = null; }
+  if(!x) return d; // already at its base level
+  const o = Object.assign({}, x, {id: d.id, locked: d.locked});
+  if(d.derivedFrom == null) delete o.derivedFrom; else o.derivedFrom = d.derivedFrom;
+  if(d.copyOf == null) delete o.copyOf; else o.copyOf = d.copyOf;
+  return o;
+}
+// CODEX_UX:END
+// The chip row's HTML (counts are filled in by renderCodexGrid, codexKindRowUpdate) and the level toggle at its end.
+function codexKindRowHTML(){
+  const k = codexFilter.kind || '', lv = codexLevelMode();
+  const chip = (key, icon, label)=> `<button type="button" class="ux-kind ${k === key ? 'on' : ''}" data-cxkind="${key}" aria-pressed="${k === key}">${icon} ${escapeHtml(label)} <b class="ux-kind-n" data-kn="${key || 'all'}"></b></button>`;
+  return `<div class="ux-cx-kinds" id="cxKindRow"><div class="ux-kind-chips" role="group" aria-label="${escapeAttr(TX('ui.ux-kind-label'))}">${chip('', '🗂️', TX('ui.ux-kind-all'))}${CODEX_KINDS.map(x=> chip(x.key, x.icon, x.label())).join('')}</div>
+    <span class="ux-cx-level" role="group" aria-label="${escapeAttr(TX('ui.ux-level-label'))}" title="${escapeAttr(TX('ui.ux-level-tip'))}"><button type="button" class="ux-lv ${lv === 'base' ? 'on' : ''}" data-cxlevel="base" aria-pressed="${lv === 'base'}">🌱 ${escapeHtml(TX('ui.ux-level-base'))}</button><button type="button" class="ux-lv ${lv === 'best' ? 'on' : ''}" data-cxlevel="best" aria-pressed="${lv === 'best'}">⭐ ${escapeHtml(TX('ui.ux-level-best'))}</button></span></div>`;
+}
+function codexKindRowUpdate(counts, all){
+  const row = document.getElementById('cxKindRow'); if(!row) return;
+  row.querySelectorAll('[data-kn]').forEach(b=>{ const key = b.dataset.kn, n = key === 'all' ? all : (counts[key] | 0); b.textContent = n;
+    const chip = b.closest('.ux-kind'); if(chip){ chip.classList.toggle('is-empty', !n); if(!n) chip.title = TX('ui.ux-kind-empty'); else chip.removeAttribute('title'); } });
+  const br = row.querySelector('[data-cxkind="bramble"]'); if(br) br.title = TX('ui.ux-kind-bramble-tip');
+}
+function wireCodexKindRow(){
+  const row = document.getElementById('cxKindRow'); if(!row) return;
+  { const chips = row.querySelector('.ux-kind-chips'), on = row.querySelector('.ux-kind.on'); if(chips && on && on.offsetLeft + on.offsetWidth > chips.clientWidth) chips.scrollLeft = on.offsetLeft - 8; } // a phone's row starts at the chosen type
+  row.querySelectorAll('[data-cxkind]').forEach(b=> b.addEventListener('click', ()=>{
+    const k = b.dataset.cxkind;
+    if(k === 'bramble'){ codexSubTab = 'brambles'; renderCodex(); try{ codexPageTurn('fwd'); }catch(e){} return; } // their own page
+    codexFilter.kind = k; row.querySelectorAll('[data-cxkind]').forEach(x=>{ const on = x.dataset.cxkind === k; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+    renderCodexGrid(); }));
+  row.querySelectorAll('[data-cxlevel]').forEach(b=> b.addEventListener('click', ()=>{
+    const v = setCodexLevelMode(b.dataset.cxlevel); row.querySelectorAll('[data-cxlevel]').forEach(x=>{ const on = x.dataset.cxlevel === v; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
+    renderCodexGrid(true); }));
+}
 function renderCodexGrid(keepPage){
   if(keepPage !== true) codexPage = 0;
   saveCodexFilters();
@@ -6357,6 +6676,10 @@ function renderCodexGrid(keepPage){
   // The masked slots only join once the player has seen a real card; they always come last (easterEggSectionOf).
   const eggsOnly = !adminModeEnabled && !Object.keys(defs).some(id=> !defs[id].test && !isHofVariant(defs[id]) && !isEasterEgg(defs[id]) && codexVisible(id));
   if(eggsOnly) ids = ids.filter(id=> !easterEggMasked(defs[id]));
+  // 2026-10-19 (package UX): how many of each card type the other filters leave, then the type filter itself
+  { let nb = 0; try{ nb = Object.keys(CHARACTER_DEFS).length; }catch(e){}
+    codexKindRowUpdate(codexKindCounts(ids, defs, nb), ids.length);
+    if(codexFilter.kind && codexFilter.kind !== 'bramble') ids = ids.filter(id=> codexCardKind(defs[id]) === codexFilter.kind); }
   const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id) && !(eggsOnly && easterEggMasked(defs[id]))).length;
   const unlockedCount = ids.filter(id=>!defs[id].locked).length;
   document.getElementById('codexResultCount').textContent = `${ids.length} of ${totalVisible} cards (${unlockedCount} unlocked)`;
@@ -6384,7 +6707,7 @@ function renderCodexGrid(keepPage){
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
   let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + ((window.BramblewoodI18n && window.BramblewoodI18n.current()) || 'en') + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
   const tileFor = id=>{
-    const d = defs[id];
+    const d = codexShownDef(id, defs[id]); // 2026-10-19 (package UX): at its base level unless "My best" (the cache key below is this def)
     // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)
     // will be greyed out. Those locked will have a locked symbol on them"): one list; no copies = greyed; locked = 🔒.
     const owned = (myCardCopies[id]||[]).length > 0;
@@ -6540,7 +6863,7 @@ function wireCodexGrid(groupIds){
 // C): a click that ends a swipe (the page just turned) doesn't open the card.
 function codexWireGridClick(gridEl){
   if(gridEl._cxClick) return; gridEl._cxClick = true;
-  gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); });
+  gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid'), {codex:true}); }); // 2026-10-19 (package UX): at the Codex's level
 }
 // ---- The skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") ----
 // Browse (album, Compressed and Full Art): a ✨ Skills button with the other filters opens a panel of the skills you have seen (the
@@ -7311,6 +7634,7 @@ function triggerBadges(d, live){
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
+CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -8258,8 +8582,9 @@ let cardDetailOpenId = null;
 // button riding at the same height as the top of the card instead of a whole header row, and the
 // creator's note / usage stats trimmed down (no section headings, a real sign-in button instead
 // of a paragraph telling you to go find one).
-function openCardDetail(defId){
-  const d = getCardDefs()[defId];
+function openCardDetail(defId, opts){
+  // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
+  const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), d = fromCodex ? codexShownDef(defId, d0) : d0;
   const overlay = document.getElementById('cardDetailOverlay');
   if(!d || !overlay) return;
   cardDetailOpenId = defId;
@@ -8283,7 +8608,8 @@ function openCardDetail(defId){
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
     .concat(animalChipsHTML(d)) // 2026-10-19 (package UT): the animal, the subtype, the Base mark
-    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
+    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : [])
+    .concat(fromCodex ? [codexDetailLevelChipHTML(defId, d0, d)] : []).join(''); // 2026-10-19 (package UX): Base level / My best
   // A card that brings another card (2026-10-13, user: "If a card spawns another card - show the other card's detail on the right
   // side"): every other card named in its skills or triggers, shown beside it with its abilities.
   const spawnIds = (()=>{ const defsAll = getCardDefs(), txt = JSON.stringify(d.effects||{}) + JSON.stringify(d.triggers||[]) + JSON.stringify(d.onDeath||'') + JSON.stringify(d.spawn||'');
@@ -8337,17 +8663,31 @@ function openCardDetail(defId){
   if(bigTile){ bigTile.style.cursor = 'zoom-in'; bigTile.addEventListener('click', inspect); }
   if(adminModeEnabled) wireCodexPlacement(defId);
   const signInBtn = document.getElementById('cdSignInStatsBtn');
-  if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId)));
+  if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId, opts)));
+  { const lc = document.getElementById('uxCdLevel'); if(lc) lc.addEventListener('click', ()=>{ setCodexLevelMode(codexLevelMode() === 'base' ? 'best' : 'base'); // 2026-10-19 (package UX)
+      try{ const row = document.getElementById('cxKindRow'); if(row){ row.querySelectorAll('[data-cxlevel]').forEach(x=>{ const on = x.dataset.cxlevel === codexLevelMode(); x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); renderCodexGrid(true); } }catch(e){}
+      openCardDetail(defId, opts); try{ const n = document.getElementById('uxCdLevel'); if(n) n.focus(); }catch(e){} }); }
   // Signed-in players' match history loads lazily (see loadMatchHistory) — if it's still in
   // flight when this modal opens, refresh just the stats section once it resolves instead of
   // leaving "Loading…" stuck forever.
   if(isSignedIn() && matchHistoryList===null){
     loadMatchHistory().then(()=>{
       if(cardDetailOpenId===defId && !overlay.hidden){
-        openCardDetail(defId);
+        openCardDetail(defId, opts);
       }
     });
   }
+}
+// The detail's level chip (2026-10-19, package UX): which level the Codex shows the card at; a button that flips Base level / My best
+// when you own it above its base level, a plain chip otherwise.
+function codexDetailLevelChipHTML(defId, d0, d){
+  let bl = null; try{ const b = copyBaseDef(defId); bl = b ? cardBaseLevel(b) : null; }catch(e){}
+  const lvOf = x=> x && x.level != null && Number.isFinite(Number(x.level)) ? Number(x.level) : bl; // a card at its base level may carry no level
+  const lv = lvOf(d), best = lvOf(d0), mode = codexLevelMode();
+  const lvTxt = lv != null ? ' · ' + escapeHtml(TX('ui.nf-copy-level', {n: lv})) : '';
+  const label = (mode === 'base' ? '🌱 ' + escapeHtml(TX('ui.ux-level-base')) : '⭐ ' + escapeHtml(TX('ui.ux-level-best'))) + lvTxt;
+  const differs = best != null && bl != null && best !== bl; // you own it above its base level: the two views differ
+  return differs ? `<button type="button" class="cd-chip ux-cd-lv" id="uxCdLevel" title="${escapeAttr(TX('ui.ux-level-tip'))}" aria-pressed="${mode === 'best'}">${label} ⇄</button>` : `<span class="cd-chip ux-cd-lv">${label}</span>`;
 }
 // Card inspector (2026-10-08, user: "Cards should be displayed prominently and in large size, to
 // appreciate the card. In the codex, the player can somehow open the card in large and spin the
@@ -8904,7 +9244,7 @@ function renderEditorInner(){
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
       <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
-      <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack']].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
+      <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
@@ -11492,7 +11832,11 @@ function energyForgeCelebrate(from, to){
   const sound = (n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} };
   if(!panel || !window.FX || !FX.D || !FX.D.energyForge){ sound('unlockChime'); return Promise.resolve(); }
   const hud = ['energyPill', 'energyPillPlay'].map(k=> document.getElementById(k)).find(e=> e && e.offsetParent) || null;
-  try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); }
+  const play = ()=>{ try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); } };
+  // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the Energy panel goes to the centre stage
+  // for it (forgeCentreStage), then back; the calm version stays where it is
+  if(calm || typeof forgeCentreStage !== 'function') return play();
+  return forgeCentreStage(play, {el: panel, hold: 450});
 }
 // D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
 function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
@@ -13218,15 +13562,130 @@ function characterPickerHTML(){
 // read-only Codex reference view — a dedicated portion listing every Bramble like a card (icon,
 // HP, passive, flavor) — separate from the actual in-deck PICKER, which now lives inline inside
 // the "Build your deck" panel (see renderPlayerSubTab) rather than its own standalone panel.
+// The Codex's Brambles page (2026-10-19, package UX2, owner 22:16: "There's no filter in brambles search."): the same kind of filter bar
+// as the card Codex: a name search, where a bramble is from (yours to own, skirmishes, bosses, raids, the Tower and the dungeons), its
+// effect (its castle passive, or a raid bramble's throws), owned or not, and a sort (game order, Health, name), with a count and an
+// empty state. The raid's brambles (Kraken's Reef, The Drowned Maw) are not CHARACTER_DEFS entries: they are listed from the live raids
+// (raidBrambleOf, their part fights' Health and attacks), never owned. The choices are kept like the Codex's (uiSticky; the search box
+// starts empty).
+// BRAMBLES_UX:BEGIN (tests/ux-2026-10-19.js evaluates this block)
+const BRAMBLE_ORIGINS = [
+  {key:'player', icon:'🏰', label:()=> TX('ui.ux2-br-player')},
+  {key:'skirmish', icon:'⚔️', label:()=> TX('ui.ux2-br-skirmish')},
+  {key:'boss', icon:'👑', label:()=> TX('ui.ux2-br-boss')},
+  {key:'raid', icon:'🐙', label:()=> TX('ui.ux2-br-raid')},
+  {key:'tower', icon:'🗼', label:()=> TX('ui.ux2-br-tower')},
+];
+const BRAMBLE_FX = [
+  {key:'startGold', icon:'🪵', label:()=> TX('ui.ux2-fx-start-lumber')},
+  {key:'castleLumberEvery', icon:'🪵', label:()=> TX('ui.ux2-fx-lumber-time')},
+  {key:'firstUnitAtkBonus', icon:'⚔️', label:()=> TX('ui.ux2-fx-first-atk')},
+  {key:'unitHpBonus', icon:'❤️', label:()=> TX('ui.ux2-fx-unit-hp')},
+  {key:'flyerAtkBonus', icon:'🪽', label:()=> TX('ui.ux2-fx-flyer-atk')},
+  {key:'castleRegen', icon:'💚', label:()=> TX('ui.ux2-fx-regen')},
+  {key:'enemyWaitBonus', icon:'⏳', label:()=> TX('ui.ux2-fx-enemy-wait')},
+  {key:'castleBolt', icon:'🏹', label:()=> TX('ui.ux2-fx-bolt')},
+  {key:'castleThorns', icon:'🌵', label:()=> TX('ui.ux2-fx-thorns')},
+  {key:'herbRefinery', icon:'🌿', label:()=> TX('ui.ux2-fx-herb')},
+  {key:'castleSpawn', icon:'🐣', label:()=> TX('ui.ux2-fx-spawn')},
+  {key:'smack', icon:'🦑', label:()=> TX('ui.ux2-fx-smack')},
+  {key:'sweep', icon:'🌊', label:()=> TX('ui.ux2-fx-sweep')},
+  {key:'none', icon:'▫️', label:()=> TX('ui.ux2-fx-none')},
+];
+// The effects of an entry {ch, attacks}: its castle passives that are on, its raid throws (a column smack, a front-row sweep), or 'none'.
+function brambleFxKeys(e){
+  const fx = (e && e.ch && e.ch.effects) || {}, out = BRAMBLE_FX.map(x=> x.key).filter(k=> k !== 'smack' && k !== 'sweep' && k !== 'none' && fx[k]);
+  ((e && e.attacks) || []).forEach(a=>{ const k = a && a.pattern === 'frontRow' ? 'sweep' : 'smack'; if(!out.includes(k)) out.push(k); });
+  return out.length ? out : ['none'];
+}
+// Filters and sorts entries [{ch, origins:[...], owned, attacks}] by f {q, origin, fx, own, sort}.
+function brambleFilterList(list, f){
+  f = f || {}; const q = String(f.q || '').trim().toLowerCase();
+  let out = (list || []).filter(e=> e && e.ch);
+  if(q) out = out.filter(e=> String(e.ch.name || '').toLowerCase().includes(q));
+  if(f.origin) out = out.filter(e=> (e.origins || []).includes(f.origin));
+  if(f.fx) out = out.filter(e=> brambleFxKeys(e).includes(f.fx));
+  if(f.own === 'owned') out = out.filter(e=> e.owned); else if(f.own === 'not') out = out.filter(e=> !e.owned);
+  const hp = e=> Number(e.ch.health) || 0, nm = (a, b)=> String(a.ch.name || '').localeCompare(String(b.ch.name || ''));
+  if(f.sort === 'hp-desc') out = out.slice().sort((a, b)=> hp(b) - hp(a) || nm(a, b));
+  else if(f.sort === 'hp-asc') out = out.slice().sort((a, b)=> hp(a) - hp(b) || nm(a, b));
+  else if(f.sort === 'name') out = out.slice().sort(nm);
+  return out;
+}
+// How many entries each origin / effect has (for the option labels).
+function brambleCounts(list){
+  const o = {}, fx = {}; (list || []).forEach(e=>{ (e.origins || []).forEach(k=>{ o[k] = (o[k] || 0) + 1; }); brambleFxKeys(e).forEach(k=>{ fx[k] = (fx[k] || 0) + 1; }); });
+  return {origins: o, fx};
+}
+// BRAMBLES_UX:END
+// Where each bramble fights: skirmishes, bosses (boss / final boss nodes), the Tower and the dungeons (endless maps). A fight with no
+// bramble of its own fights from the map's (MAP_CASTLE), else the plain Bramble.
+function brambleUsage(){
+  const use = new Map(), add = (id, k)=>{ if(!id) return; if(!use.has(id)) use.set(id, new Set()); use.get(id).add(k); };
+  try{ CONQUEST_MAPS.forEach(m=> (m.nodes || []).forEach(n=>{ const kind = baseKind(n.kind || 'skirmish'); if(kind === 'tutorial') return;
+    let id = null; try{ id = nodeCastleId(n); }catch(e){ id = n.characterId || null; }
+    add(id || 'castle', (m.tower || m.endless) ? 'tower' : (kind === 'boss' || kind === 'finalboss') ? 'boss' : 'skirmish'); })); }catch(e){}
+  return use;
+}
+function brambleRaidEntries(){
+  const out = [], byName = new Map();
+  let defs = []; try{ defs = liveRaidDefs(); }catch(e){ defs = []; }
+  defs.forEach(def=> (def.parts || []).forEach(p=>{ let br = null; try{ br = raidBrambleOf(def, p.id); }catch(e){ br = null; } if(!br) return;
+    let atks = []; try{ atks = (TrenchM.trenchConfig(def, p, null) || {}).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
+    let e = byName.get(br.name);
+    if(!e){ e = {ch: {id: 'raid-bramble-' + out.length, name: br.name, icon: br.icon, art: br.art, health: 0, rarity: 'mythic', archetypes: ['Castle'], effects: {}}, origins: ['raid'], owned: false, attacks: [], parts: [], raid: def.name || ''}; byName.set(br.name, e); out.push(e); }
+    e.ch.health = Math.max(e.ch.health, Number((p.fight || {}).castleHp) || 0); e.parts.push(p.name || p.id);
+    atks.forEach(a=>{ if(!e.attacks.some(x=> x.pattern === a.pattern && x.every === a.every && x.dmg === a.dmg && x.name === a.name)) e.attacks.push(a); }); }));
+  return out;
+}
+function brambleCodexEntries(){
+  const use = brambleUsage();
+  return Object.values(CHARACTER_DEFS).filter(Boolean).map(ch=>{ let owned = false; try{ owned = castleUnlocked(ch); }catch(e){}
+    return {ch, owned, attacks: [], origins: ['player'].concat([...(use.get(ch.id) || [])])}; }).concat(brambleRaidEntries());
+}
+let brambleFilter = Object.assign({q:'', origin:'', fx:'', own:'', sort:''}, uiSticky('brambles'));
 function bramblesTabHTML(){
-  return `<div class="panel"><h2>🌿 Brambles</h2><p class="panel-sub">A Bramble is the base you bring into battle — it sets your max HP and gives your whole team a passive for the match. Pick one from the Player tab, inside Build your deck.</p>
-    <div class="char-picker bramble-codex-grid">${Object.values(CHARACTER_DEFS).map(ch=>`
-      <div class="char-card bramble-codex-card">
-        ${cardTileHTML(ch, {isCastle:true, magnetic:true, extraClass:'castle-picker-tile'})}
-        <div class="desc">${characterDescHTML(ch)}</div>
-        <div class="flavor">${ch.flavor||''}</div>
-      </div>`).join('')}</div>
+  const all = brambleCodexEntries(), c = brambleCounts(all), f = brambleFilter;
+  const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${cur === v ? 'selected' : ''}>${escapeHtml(label)}</option>`;
+  return `<div class="panel ux2-brambles"><h2>🌿 Brambles</h2><p class="panel-sub">A Bramble is the base you bring into battle — it sets your max HP and gives your whole team a passive for the match. Pick one from the Player tab, inside Build your deck.</p>
+    <div class="codex-toolbar ux2-br-bar">
+      <input data-text-filter autocomplete="off" type="search" id="brSearch" placeholder="${escapeAttr(TX('ui.ux2-br-search'))}" aria-label="${escapeAttr(TX('ui.ux2-br-search'))}" value="${escapeAttr(f.q || '')}">
+      <select id="brFx" aria-label="${escapeAttr(TX('ui.ux2-fx-label'))}">${opt('', f.fx, '✨ ' + TX('ui.ux2-fx-all'))}${BRAMBLE_FX.filter(x=> c.fx[x.key] || f.fx === x.key).map(x=> opt(x.key, f.fx, `${x.icon} ${x.label()} (${c.fx[x.key] || 0})`)).join('')}</select>
+      <select id="brOwn" aria-label="${escapeAttr(TX('ui.ux2-own-label'))}">${opt('', f.own, TX('ui.ux2-own-any'))}${opt('owned', f.own, '✓ ' + TX('ui.ux2-own-yes'))}${opt('not', f.own, TX('ui.ux2-own-no'))}</select>
+      <select id="brSort" aria-label="${escapeAttr(TX('ui.ux2-sort-label'))}">${opt('', f.sort, TX('ui.ux2-sort-game'))}${opt('hp-desc', f.sort, TX('ui.ux2-sort-hp-desc'))}${opt('hp-asc', f.sort, TX('ui.ux2-sort-hp-asc'))}${opt('name', f.sort, TX('ui.ux2-sort-name'))}</select>
+    </div>
+    <div class="ux-cx-kinds"><div class="ux-kind-chips" role="group" aria-label="${escapeAttr(TX('ui.ux2-br-from'))}">${[{key:'', icon:'🗂️', label:()=> TX('ui.ux-kind-all')}].concat(BRAMBLE_ORIGINS).map(o=>{ const n = o.key ? (c.origins[o.key] || 0) : all.length, on = (f.origin || '') === o.key;
+      return `<button type="button" class="ux-kind ${on ? 'on' : ''} ${n ? '' : 'is-empty'}" data-brorigin="${o.key}" aria-pressed="${on}">${o.icon} ${escapeHtml(o.label())} <b class="ux-kind-n">${n}</b></button>`; }).join('')}</div></div>
+    <p class="ux2-br-count" id="brCount" aria-live="polite"></p>
+    <div class="char-picker bramble-codex-grid" id="brGrid"></div>
   </div>`;
+}
+function brambleCardHTML(e){
+  const ch = e.ch, isRaid = (e.origins || []).includes('raid'), raidDesc = isRaid ? `${raidBrambleAbsHTML(raidBrambleAbilityLines(e.attacks))}<div class="desc">${escapeHtml(TX('ui.ux2-raid-hp', {hp: ch.health, parts: e.parts.join(', ')}))}</div>` : '';
+  const tags = (e.origins || []).filter(k=> k !== 'player').map(k=> { const o = BRAMBLE_ORIGINS.find(x=> x.key === k); return o ? `<span class="ux2-br-tag" title="${escapeAttr(o.label())}">${o.icon}</span>` : ''; }).join('');
+  return `<div class="char-card bramble-codex-card ${e.owned ? 'is-owned' : ''}" data-brid="${escapeAttr(ch.id)}">
+    ${e.owned ? `<span class="ux2-br-owned" title="${escapeAttr(TX('ui.ux2-own-yes'))}">✓</span>` : ''}${tags ? `<span class="ux2-br-tags">${tags}</span>` : ''}
+    ${cardTileHTML(ch, {isCastle:true, magnetic:true, extraClass:'castle-picker-tile'})}
+    ${isRaid ? raidDesc : `<div class="desc">${characterDescHTML(ch)}</div>`}
+    <div class="flavor">${ch.flavor || ''}</div></div>`;
+}
+function renderBrambleGrid(){
+  const grid = document.getElementById('brGrid'), cnt = document.getElementById('brCount'); if(!grid) return;
+  const all = brambleCodexEntries(), shown = brambleFilterList(all, brambleFilter);
+  if(cnt) cnt.textContent = TX('ui.ux2-br-count', {n: shown.length, total: all.length});
+  grid.innerHTML = shown.length ? shown.map(brambleCardHTML).join('')
+    : `<div class="ux2-br-empty"><p>${escapeHtml(TX('ui.ux2-br-empty'))}</p><button type="button" class="btn small" id="brClear">${escapeHtml(TX('ui.ux2-br-clear'))}</button></div>`;
+  const cl = document.getElementById('brClear'); if(cl) cl.onclick = ()=>{ brambleFilter = {q:'', origin:'', fx:'', own:'', sort:''}; uiStickySave('brambles', brambleFilter); renderCodex(); };
+  try{ wireCardTileFlourish(grid); }catch(e){}
+}
+function wireBramblesTab(body){
+  if(!body) return;
+  const save = ()=>{ uiStickySave('brambles', brambleFilter); renderBrambleGrid(); };
+  const s = body.querySelector('#brSearch'); if(s){ let t = null; s.addEventListener('input', ()=>{ brambleFilter.q = s.value; clearTimeout(t); t = setTimeout(save, 100); }); }
+  [['brFx', 'fx'], ['brOwn', 'own'], ['brSort', 'sort']].forEach(([id, k])=>{ const el = body.querySelector('#' + id); if(el) el.addEventListener('change', ()=>{ brambleFilter[k] = el.value; save(); }); });
+  body.querySelectorAll('[data-brorigin]').forEach(b=> b.addEventListener('click', ()=>{ brambleFilter.origin = b.dataset.brorigin;
+    body.querySelectorAll('[data-brorigin]').forEach(x=>{ const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); save(); }));
+  renderBrambleGrid();
 }
 var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null; // 2026-10-16: per-copy looks (see deckLooksAll)
 function loadMyDeck(){
@@ -22077,7 +22536,7 @@ function renderConquestSubTab(body){
                             : [{transform:'scale(1.5)', opacity:0}, {transform:'none', opacity:1}], {duration: z==='in' ? 520 : 300, easing:'cubic-bezier(.2,.8,.3,1)'}); }
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
-    const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
+    const squad = Object.entries((node.kind === 'tutorial' ? tutorialSummaryNode(node) : node).deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', '); // 2026-10-19 (package UX): a tutorial lists the deck it deals
     // 2026-09-30, per explicit request ("The skirmish doesn't say how much energy it takes to
     // do the skirmish"): every fight already costs Energy scaled by node kind (ENERGY_COST,
     // keyed the same way KIND_LABEL is) -- this tooltip just never surfaced that cost before you
@@ -22085,7 +22544,7 @@ function renderConquestSubTab(body){
     // not fightable nodes and cost nothing.
     const towerFree = towerFloorCleared(node, progress), energyCost = towerFree ? 0 : nodeEnergyCost(map, node); // 2026-10-18 (package Z): a cleared Spire floor is free
     return `<div class="ctt-title"><span class="sk-code">${skirmishCode(map.id, node.key)}</span> ${node.icon} ${node.name}</div>
-      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}${towerFree ? ` · ${escapeHtml(TX('ui.tower-free-tag'))}` : ''}</div>
+      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node.kind === 'tutorial' ? tutorialSummaryNode(node) : node)}${energyCost?` · ${energyCost}⚡`:''}${towerFree ? ` · ${escapeHtml(TX('ui.tower-free-tag'))}` : ''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
       <div class="ctt-squad">${squad}</div>`;
   }
@@ -22137,11 +22596,15 @@ function renderConquestSubTab(body){
     // `revealDeck` at all is unconditionally revealed, same as every node behaved before this.
     // Once earned, conquestDeckShowOverride lets the player manually re-hide/reshow it (a real
     // toggle, not just a one-way reveal) — e.g. for a self-imposed "blind" run.
-    const earned = conquestDeckRevealed(map, selectedNode, progress);
+    // 2026-10-19 (package UX, owner 21:36: "Make the tutorial summary like the normal skirmish summary - deck list, and doesn't list
+    // field effect."): a tutorial node is summed up like a skirmish: the rival deck the tutorial really deals (tutorialDecksFor, the
+    // tutorial editor's or the faction default), its battle rating, always shown, and no Field panel (Map 0 teaches no field effect).
+    const isTut = selectedNode.kind === 'tutorial', sumNode = isTut ? tutorialSummaryNode(selectedNode) : selectedNode;
+    const earned = isTut || conquestDeckRevealed(map, selectedNode, progress);
     const revealed = earned; // 2026-10-10: no Show/Hide toggle any more
     // 2026-10-13 (user: "Improve the skirmish card detail"): a revealed deck is a strip of the real cards with their counts, each
     // opening its details, instead of a list of names.
-    const squadChips = Object.entries(selectedNode.deck||{}).filter(([id])=> defs[id]).sort((x, y)=> (defs[y[0]].cost||0) - (defs[x[0]].cost||0) || ((defs[y[0]].attack||0) + (defs[y[0]].health||0)) - ((defs[x[0]].attack||0) + (defs[x[0]].health||0)))
+    const squadChips = Object.entries(sumNode.deck||{}).filter(([id])=> defs[id]).sort((x, y)=> (defs[y[0]].cost||0) - (defs[x[0]].cost||0) || ((defs[y[0]].attack||0) + (defs[y[0]].health||0)) - ((defs[x[0]].attack||0) + (defs[x[0]].health||0)))
       // 2026-10-15 (user: "The skirmish detail shows the deck preview. Those cards should have tooltips on 1.0s hover or 0.5s mobile
       // hold"): each strip card carries data-defid, so the shared card popover opens after a 1 s hover (initPopover) or a 0.5 s hold
       // on touch; no native title, which would pop up on top of it.
@@ -22155,9 +22618,9 @@ function renderConquestSubTab(body){
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
     document.body.classList.add('cq-node-focus');
-    { const ev0 = selectedNode.virtual ? 0 : enemyDeckLevel(selectedNode), gap0 = selectedNode.virtual ? '' : deckLevelGapClass(ev0, mainDeckLevel(myDeckCounts, myLeaderId));
+    { const ev0 = selectedNode.virtual ? 0 : enemyDeckLevel(sumNode), gap0 = selectedNode.virtual ? '' : deckLevelGapClass(ev0, mainDeckLevel(myDeckCounts, myLeaderId));
       panelEl.classList.toggle('is-cleared', !!done); panelEl.classList.toggle('is-outlevel', !done && (gap0==='lv-red' || gap0==='lv-darkred')); }
-    if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
+    if(revealed) noteSighted(Object.keys(sumNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${'' /* 2026-10-12 (22:04, user: "The green tick is unecessary ... just put the S emblem on the top right hand corner"): the best rank sits on the panel's top-right edge */}
       ${done && progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]} cnp-rank-corner" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
@@ -22168,7 +22631,7 @@ function renderConquestSubTab(body){
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
-      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
@@ -22176,7 +22639,7 @@ function renderConquestSubTab(body){
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
-      ${skirmishFieldHTML(map.id, selectedNode)}
+      ${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial */}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
@@ -22680,8 +23143,10 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
     rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(raidLocale()), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
   if(shards > 0) rewards.push({kind:'currency', id:'raidShards', icon: raidShardIcon(def), amount:'+' + shards.toLocaleString(raidLocale()), label: raidShardName(def), weight:3}); // 2026-10-19 (package RC)
   // 2026-10-19 (package RC): a card is {id, from: 'pack' | 'faction' | 'raid'} (a bare id is a raid card, the older shape)
+  // 2026-10-19 (package RW3): + the card's full name, its rarity and a tap to its details (open), see raidRewardCardInfo
   (cardsGot || []).forEach(c=>{ const id = typeof c === 'string' ? c : c.id, from = typeof c === 'string' ? 'raid' : c.from, d = defs[id]; if(!d) return;
-    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+    const ci = raidRewardCardInfo(id, from) || {};
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label: raidRewardFromLabel(from), name: ci.name || d.name || id, rarity: ci.rarity || '', rarityColor: ci.color || '', open: id, tip: ci.tip || '', weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
   if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
@@ -22693,8 +23158,39 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
 function showRaidClaimScreen(spec){
   if(!raidClaimScreenReady()) return Promise.resolve();
   const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
-  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, locale: raidLocale(), openCard: openRaidRewardCard, covered: raidRewardCardOpen /* 2026-10-19 (package RW3) */, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
+// ---- Raid reward cards, shown as cards (2026-10-19, package RW3, owner 22:14 / 22:32: "What is 'honeybrew'? it was a reward upon
+// completion of the raid" … "The raid just showed Honeybrew, not a card image."): "Honeybrew" was no item, drink or currency: it was the
+// card Honeyjoe Brewer (an Uncommon pack card) that the won raid fight dropped (raidFightCardDrop), shown on the results only as a small
+// "🃏 Honeyjoe Brewer" pill with no art, no rarity and nothing saying it was a card. A raid's card reward now always shows the card: its
+// tile (the art, as in the victory screens' Cards won), its full name, its rarity and where it came from (Pack card / Faction card /
+// Raid card), and a tap opens the card's details. Used by the raid fight's results (raidOfflineHTML) and the claim screen (FX.F).
+function raidRewardFromLabel(from){ return from === 'pack' ? TX('results.rc-claim-pack-card') : from === 'faction' ? TX('results.rc-claim-faction-card') : TX('results.raid-claim-card'); }
+function raidRewardCardInfo(id, from){
+  const d = getCardDefs()[id]; if(!d) return null;
+  const r = rarityDef(d.rarity || 'common') || {}, name = d.name || id, rarity = r.label || d.rarity || '', fromLabel = raidRewardFromLabel(from);
+  return {d, name, rarity, color: r.color || '', fromLabel, aria: [name, rarity, fromLabel].filter(Boolean).join(' · '), tip: TX('results.rw3-card-open')};
+}
+// A won raid fight's card: 'raid' when it is one of the raid's own cards, else a pack card (raidFightCardDrop draws only those two)
+function raidDropFrom(m, id){ try{ return m && m.raidDef && raidCardIds(m.raidDef).includes(id) ? 'raid' : 'pack'; }catch(e){ return 'pack'; } }
+function raidRewardCardHTML(id, from){
+  const c = raidRewardCardInfo(id, from); if(!c) return '';
+  return `<button type="button" class="rw3-card" data-rw3-card="${escapeAttr(id)}" aria-label="${escapeAttr(c.aria + '. ' + c.tip)}" title="${escapeAttr(c.tip)}">`
+    + `<span class="rw3-tile">${cardTileHTML(c.d, {inPlay:true})}</span>`
+    + `<span class="rw3-txt"><b class="rw3-name">${escapeHtml(c.name)}</b><span class="rw3-rarity"><i style="background:${escapeAttr(c.color)}" aria-hidden="true"></i>${escapeHtml(c.rarity)}</span><span class="rw3-from">🃏 ${escapeHtml(c.fromLabel)}</span></span></button>`;
+}
+// A tap on a reward card opens its details; over the claim screen (z-index 9500) the details sit on top until they close.
+function openRaidRewardCard(id){
+  if(!id || !getCardDefs()[id]) return;
+  try{ openCardDetail(id); }catch(e){ return; }
+  const ov = document.getElementById('cardDetailOverlay'); if(!ov || ov.hidden || !document.querySelector('.fxf-rcs')) return;
+  ov.classList.add('rw3-over');
+  const mo = new MutationObserver(()=>{ if(ov.hidden){ ov.classList.remove('rw3-over'); mo.disconnect(); } }); mo.observe(ov, {attributes:true, attributeFilter:['hidden']});
+}
+// the details opened over the claim screen are up (the screen leaves its keys to them: Esc closes the details, not the screen)
+function raidRewardCardOpen(){ const ov = typeof document !== 'undefined' && document.getElementById('cardDetailOverlay'); return !!(ov && !ov.hidden && ov.classList.contains('rw3-over')); }
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('[data-rw3-card]'); if(!b || b.closest('.fxf-rcs')) return; openRaidRewardCard(b.getAttribute('data-rw3-card')); });
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
 // then three panels: how a raid fight's rows work (you in front, an ally in each row behind, the boss calling in Commons), the raid's
@@ -24723,6 +25219,16 @@ function tutorialNodeDecksHTML(node){
     <h3 class="se-h">Rival deck (${escapeHtml(pick)} pick) · ${n(D.rival)} cards</h3>
     ${stacks(D.rival)}
     <p class="panel-sub">The cards play with their own skills. Highlighted card: ${escapeHtml((defs[tutorialHighlightId(st, pick)]||{}).name || 'none')}.</p></div>`;
+}
+// The tutorial node as the map's summary panel sees it (2026-10-19, package UX): the node with the rival deck the tutorial deals
+// (tutorialDecksFor, the same call startTutorialMatch makes) in place of its own deck, which is empty: the tutorial never reads it.
+function tutorialSummaryNode(node){
+  if(!node || node.kind !== 'tutorial') return node;
+  const st = node.stage === 2 ? 2 : 1;
+  let rival = {}; try{ rival = tutorialDecksFor(st, loadFactionChoice() || 'both').rival || {}; }catch(e){ rival = {}; }
+  // the rival bramble's Health as startTutorialMatch sets it (the node's tutHp, else the tutorial editor's), not the map's hqHp
+  let hp = Number(node.tutHp) || 0; try{ if(!hp && tutorialCfg && tutorialCfg.rivalHp) hp = tutorialCfg.rivalHp + (st >= 2 ? 2 : 0); }catch(e){}
+  return Object.assign({}, node, {deck: rival}, hp > 0 ? {hqHp: hp} : {});
 }
 function tutorialDeckPreviewHTML(deck){
   const defs = getCardDefs(), ids = Object.keys(deck||{}).filter(id=> deck[id] > 0 && defs[id]);
@@ -30502,7 +31008,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -30564,7 +31070,7 @@ function renderBoard(opts){
     const hazardMap = (()=>{ try{ return m.engine.getHazards ? m.engine.getHazards() : {}; }catch(e){ return {}; } })(); // Trap / Slash & Burn (2026-10-16)
     for(let sl=-slotRange; sl<=slotRange; sl++){
       const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
-      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]); // + traps and burning ground (2026-10-16)
+      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
       if(c){ let h = boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: (c.gladiatorLeader ? 'is-gladiator-leader' : '') + (cur ? ' is-cursed' : '')});
         if(mark){ const k = h.lastIndexOf('</div>'); if(k >= 0) h = h.slice(0, k) + mark + h.slice(k); }
         html += h; continue; }
@@ -30638,7 +31144,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -32377,7 +32883,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-12 (user: "Crabs that benefit from the tide must show their modified attack"; Rage doubles): the board's Attack
   // includes Flow's +1, Inspired, and Rage's doubling.
   const tideNow = (isTideDefApp(d) && !((d.effects||{}).tideGrant && !(d.effects||{}).supremeTide) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
-  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
+  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.sk1Atk||0) /* Formation / Isolation (SK1) */ + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
   if(raging) effAtk *= 2;
   const atkLabel = atkLabelHTML(effAtk, d.attack, d);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
@@ -33033,7 +33539,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   if(matchPlayRows(m) === 'own' && popts && popts.reserve) return false; // 2026-10-19 (package RX): "Your row only" (a tag-team dungeon's playRows)
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}) : undefined); // + a hazard's row (EQ, 2026-10-19)
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -34798,10 +35304,11 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
       });
     });
   });
+  [1,2].forEach(pid=> ['left','center','right'].forEach(side=> m.players[pid].row[side].forEach(c=>{ const rc = m.replayCards[c.uid]; if(rc){ rc.sk2Berries = c.sk2Berries||0; rc.sk2Scavenge = c.sk2Scavenge||0; rc.sk2Salvage = c.sk2Salvage||0; } }))); // Package SK2 (2026-10-19): the chips' counts
   // The middle and back rows replay too (2026-10-19, package RV2, owner 08:42: "if the first row's interaction changes the board state
   // somehow, the next row reacts to that board state"): their units join replayCards (a shallow copy each, so their Health steps down
   // hit by hit), and m.replayReserve keeps who stands where as the round starts, losing a unit only when its death plays. Before, each
@@ -37139,7 +37646,7 @@ function victoryParade(rowId, upOverride){
 // board with a very slight shake. A click, tap or key skips straight to the results.
 function playRewardReveal(m){
   const defs = getCardDefs();
-  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || [])].filter(id=> defs[id]);
+  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || (m.raidCardDrop ? [m.raidCardDrop] : []) /* + a won raid fight's card (2026-10-19, package RW3) */)].filter(id=> defs[id]);
   const unlocks = [...(m.unlockedFights||[]).map(f=> ({icon:(f.node && f.node.icon) || '⚔️', label: _t('New fight: {name}', {name:(f.node && f.node.name) || ''})})),
                    ...(m.unlockedActivities||[]).map(a=> ({icon:a.icon || '✨', label:a.label || ''}))];
   if(!cards.length && !unlocks.length) return Promise.resolve();
@@ -37917,9 +38424,10 @@ function matchStatsHTML(m){
       ${raidRankEmblemHTML(m.raidRank, m.raidOverwhelmed, 'lg') /* 2026-10-19 (RV2): the fight's rank, emblemed for a win; (NV) the victory hexagon in the raid's ring, for every rank */}<span class="conquest-rank-badge raid-dmg-pill">${m.raidAdminTest ? TX('results.nv-raid-admin-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : m.raidOverwhelmed ? TX('results.nv-raid-overwhelm', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)}) : TX('results.nv-raid-damage', {n: raidNum(m.raidDamageDealt), name: escapeHtml(m.raidBoss.name)})}</span>
       ${adminModeEnabled ? raidDamageCalcHTML(m) : '' /* 2026-10-19 (NV): how that number was made; (package RB, owner 12:23: "Do not show the damage formula to players.") admins only */}${m.raidAdminTest ? `<span class="hud-pill nv-admin-test">${escapeHtml(TX('results.nv-admin-win'))}</span>` : ''}
       <span class="hud-pill" title="${escapeAttr(TX('results.shared-raid-hp-left-this-week'))}">${TX('results.hp-left', {raidRemainingAfter: raidNum(m.raidRemainingAfter), v2: m.raidRemainingAfter<=0?' — defeated!':''}) /* 2026-10-19 (package RB): 1,234 */}</span>
-      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}">🃏 ${escapeHtml(getCardDefs()[m.raidCardDrop].name)}</span>` : ''}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
+      ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${'' /* 2026-10-19 (package RW3): the dropped card is no longer a name pill (the owner's "Honeybrew"): it shows as the card, below */}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">${TX('results.dust', {v1: rewardCountSpan(orReward.dust)})}</span>` : ''}
+      ${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<div class="rw3-drop" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}"><div class="rw-head">${TX('results.cards-won')}</div>${raidRewardCardHTML(m.raidCardDrop, raidDropFrom(m, m.raidCardDrop))}</div>` : '' /* 2026-10-19 (package RW3): the card won, as a card (art, name, rarity, Pack card), a tap to its details */}
     </div>` : '';
   const gReward = m.gauntletRewardEarned;
   const gauntletHTML = (m.mode==='gauntlet' && m.gauntletStreakAfter!=null) ? `<div class="winloss-conquest-rewards">
@@ -38086,11 +38594,61 @@ function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
 const STATUS_END_NAMES = {brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+// ==== Package SK3 (2026-10-19): the board's side of the new skills (rules in bramblewood-engine.js, the Package SK3 block): the replay
+// snapshot's counters, the status chips (🚫 Silenced, ⏸️ Stymied, 😫 Exhausted, 🪨 Petrified N, 🧲 Grounded, 🦨 Stench with its green
+// wavy-line look), the battle-log lines and floats. Every string is a TX key.
+Object.assign(STATUS_END_NAMES, {silenced:TX('ui.stn3-silenced'), stymied:TX('ui.stn3-stymied'), exhaust:TX('ui.stn3-exhausted'), grounded:TX('ui.stn3-grounded'), stench:TX('ui.skn-stench')});
+CHIP_FALLBACK_SKILLS.push('spawner', 'banner', 'warcry', 'shieldwall', 'corpsefeeder', 'amplifier', 'stench', 'broodkeeper', 'herald', 'harbinger', 'spotter', 'silence', 'stymie', 'exhaust', 'petrify'); // their chips on the card face
+function sk3Snap(c){ const o = {}; if(c) ['silenced', 'stymied', 'exhaust', 'petrifyLeft', 'grounded', 'stench'].forEach(k=>{ if(c[k] > 0) o[k] = c[k]; }); return o; }
+function sk3StatusBadges(c, badges){
+  if(c.silenced > 0) badges.push(`<span class="abadge sk3-silenced" title="${escapeAttr(TX('ui.sk3-tip-silenced', {n: c.silenced}))}">🚫${c.silenced}</span>`);
+  if(c.stymied > 0) badges.push(`<span class="abadge sk3-stymied" title="${escapeAttr(TX('ui.sk3-tip-stymied', {n: c.stymied}))}">⏸️${c.stymied}</span>`);
+  if(c.exhaust > 0) badges.push(`<span class="abadge sk3-exhaust" title="${escapeAttr(TX('ui.sk3-tip-exhaust', {n: c.exhaust}))}">😫${c.exhaust}</span>`);
+  if(c.petrifyLeft > 0) badges.push(`<span class="abadge sk3-petrify" title="${escapeAttr(TX('ui.sk3-tip-petrified', {n: c.petrifyLeft}))}">🪨${c.petrifyLeft}</span>`);
+  if(c.grounded > 0) badges.push(`<span class="abadge sk3-grounded" title="${escapeAttr(TX('ui.sk3-tip-grounded', {n: c.grounded}))}">🧲${c.grounded}</span>`);
+  if(c.stench > 0) badges.push(`<span class="abadge sk3-stench" style="color:#4d7c0f;text-decoration:underline wavy #65a30d" title="${escapeAttr(TX('ui.sk3-tip-stench', {n: Math.min(3, c.stench)}))}">🦨${c.stench}</span>`);
+}
+const SK3_STATUS_FIELD = {silence:'silenced', stymie:'stymied', exhaust:'exhaust', petrify:'petrifyLeft', magnet:'grounded', stench:'stench', smokeScreen:'smoke', vulnerable:'shocked'};
+function sk3LogText(ev, nm){
+  if(!ev || ev.type !== 'statusFx') return null; const t = ()=> nm(ev.targetDefId), n = ev.amount;
+  switch(ev.kind){
+    case 'duplicate': return {cls:'', text:TX('ui.log3-duplicate', {att: nm(ev.attDefId), name: t()})};
+    case 'corpsefeed': return {cls:'gold', text:TX('ui.log3-corpsefeed', {name: t(), n})};
+    case 'silence': return {cls:'', text:TX('ui.log3-silence', {name: t(), n})};
+    case 'stymie': return {cls:'', text:TX('ui.log3-stymie', {name: t(), n})};
+    case 'exhaust': return {cls:'', text:TX('ui.log3-exhaust', {name: t(), n})};
+    case 'exhaustSpent': return {cls:'', text:TX('ui.log3-exhaust-spent', {name: t()})};
+    case 'petrify': return {cls:'', text:TX('ui.log3-petrify', {name: t(), n})};
+    case 'vulnerable': return {cls:'', text:TX('ui.log3-vulnerable', {name: t(), n})};
+    case 'barrage': return {cls:'', text:TX('ui.log3-barrage', {name: nm(ev.attDefId)})};
+    case 'smokeScreen': return {cls:'', text:TX('ui.log3-smoke', {name: t()})};
+    case 'magnet': return {cls:'', text:TX('ui.log3-magnet', {name: t()})};
+    case 'stench': return {cls:'', text:TX('ui.log3-stench', {name: t(), n: ev.total || n})};
+    case 'stenchWash': return {cls:'', text:TX('ui.log3-stench-wash', {name: t(), n})};
+    case 'graveCall': return {cls:'gold', text:TX('ui.log3-grave-call', {name: t(), n})};
+  }
+  return null;
+}
+function sk3Vfx(ev){
+  if(!ev || ev.type !== 'statusFx' || !matchState) return; const m = matchState;
+  const rc = m.replayCards && ev.targetUid != null ? m.replayCards[ev.targetUid] : null, el = boardCardEl(ev.targetUid);
+  const fl = (txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const refresh = ()=>{ try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} };
+  const f = SK3_STATUS_FIELD[ev.kind];
+  if(f){ if(rc) rc[f] = ev.total != null ? ev.total : Math.max(rc[f]||0, ev.amount||1); fl(({silence:'🚫', stymie:'⏸️', exhaust:'😫', petrify:'🪨', magnet:'🧲', stench:'🦨', smokeScreen:'🌫️', vulnerable:'⚡'})[ev.kind] + ' ' + (ev.amount||''), 'debuff'); refresh(); return; }
+  if(ev.kind === 'exhaustSpent' || ev.kind === 'stenchWash'){ if(rc) rc[ev.kind === 'exhaustSpent' ? 'exhaust' : 'stench'] = ev.total || 0; fl(ev.kind === 'exhaustSpent' ? '😫 ✗' : '💧 −' + (ev.amount||1), 'quick'); refresh(); return; }
+  if(ev.kind === 'corpsefeed' || ev.kind === 'graveCall'){ fl(`+${ev.amount||0}/+${ev.amount2||0}`, 'heal'); return; }
+  if(ev.kind === 'duplicate'){ fl('👥', 'quick'); return; }
+}
 function logText(ev){
   if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
+  { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
+  { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
+  { const k = sk1LogText(ev, nm); if(k) return k; } // package SK1 skills (2026-10-19)
+  { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
@@ -40235,7 +40793,10 @@ function ninthPassVfx(ev){
 // badges, battle-log lines and looks (SkillFX.* in bramblewood-skillfx.js), the trap / burning-ground marks on empty slots, and the
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
+  try{ sk3StatusBadges(c, badges); }catch(e){} // Silenced, Stymied, Exhausted, Petrified N, Grounded, Stench (2026-10-19, package SK3)
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
+  try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
+  try{ sk2StatusBadges(c, badges); }catch(e){} // Berries, scavenge and salvage points (2026-10-19, package SK2)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
@@ -40252,6 +40813,109 @@ function w2HazardMark(h){
   if(h.scorch > 0) out.push(`<span class="w2-hazard-mark scorch" title="Burning ground: the next card played here takes ${h.scorch} fire damage">🔥 ${h.scorch}</span>`);
   return out.join('');
 }
+// ==== Package EQ (2026-10-19, owner 21:36): the board side of equipment on the slots and the slot hazards (rules in bramblewood-engine.js,
+// the Package EQ block). eqSlotMarks draws, in each slot cell: the floor (an overlay with its icon and rounds left), a lone piece lying
+// there, the piece tucked under a unit (pulsing while it is equipping), and a hidden drop target (data-hzcell) that shows on both rows
+// while a hazard card is held (body.eq-hz-holding): drop or tap one to lay the hazard there.
+const EQ_FLOOR_ICON = {ice:'🧊', lava:'🌋', poison:'🫧', gas:'☁️', rubble:'🪨'};
+const EQ_KIND_NAME = {ice:()=> TX('ui.eq-kind-ice'), lava:()=> TX('ui.eq-kind-lava'), poison:()=> TX('ui.eq-kind-poison'), gas:()=> TX('ui.eq-kind-gas'), rubble:()=> TX('ui.eq-kind-rubble')};
+const EQ_FLOOR_TIP = {ice:f=> TX('ui.eq-floor-ice', {r:f.rounds}), lava:f=> TX('ui.eq-floor-lava', {r:f.rounds, n:f.n}), poison:f=> TX('ui.eq-floor-poison', {r:f.rounds, n:f.n}),
+  gas:f=> TX('ui.eq-floor-gas', {r:f.rounds, n:f.n}), rubble:f=> TX('ui.eq-floor-rubble', {r:f.rounds})};
+const EQ_HZ_TEXT = {ice:h=> TX('ui.eq-hz-ice', {r:h.rounds}), lava:h=> TX('ui.eq-hz-lava', {r:h.rounds, n:h.n}), poison:h=> TX('ui.eq-hz-poison', {r:h.rounds, n:h.n}),
+  gas:h=> TX('ui.eq-hz-gas', {r:h.rounds, n:h.n}), rubble:h=> TX('ui.eq-hz-rubble', {r:h.rounds})};
+function eqIsHazardDef(d){ return !!(d && d.cardType === 'spell' && d.hazard); }
+function eqHazardText(d){ const h = d.hazard || {}, k = EQ_HZ_TEXT[h.kind] ? h.kind : 'rubble'; return EQ_HZ_TEXT[k]({rounds: h.rounds || 3, n: h.n || 1}); }
+function eqLiveUnit(m, uid){ if(!m || uid == null) return null; for(const pid of [1,2]){ const pl = m.players && m.players[pid]; if(!pl || !pl.row) continue; const c = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x && x.uid === uid); if(c) return c; } return null; }
+function eqGrantText(grant){ return grant ? Object.entries(grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key === k); return (pd ? pd.label : k) + valSuffix(v); }).join(', ') : ''; }
+function eqSlotMarks(pid, sl, c){
+  const m = matchState; if(!m || !m.engine || !m.engine.floorAt) return '';
+  const defs = getCardDefs(), pl = m.players[pid]; let out = '';
+  const f = m.engine.floorAt(pid, sl);
+  if(f) out += `<span class="eq-floor eq-floor-${f.kind}" title="${escapeAttr((EQ_FLOOR_TIP[f.kind] || EQ_FLOOR_TIP.rubble)(f))}">${EQ_FLOOR_ICON[f.kind] || '⚠️'}<small>${f.rounds}</small></span>`;
+  const lone = m.engine.loneEquipAt ? m.engine.loneEquipAt(pl, sl) : null;
+  if(lone){ const d = defs[lone.defId] || {}; out += `<span class="eq-lone" title="${escapeAttr(TX('ui.eq-lone-tip', {name: d.name || lone.defId}))}">${d.icon || '⚒️'}</span>`; }
+  const u = c ? eqLiveUnit(m, c.uid) : null;
+  if(u && u.equipment){ const d = defs[u.equipment] || {};
+    const tip = u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: eqGrantText((d.equip || {}).grant) ? ', ' + eqGrantText((d.equip || {}).grant) : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
+    out += `<span class="eq-under${u.equipOn ? '' : ' is-equipping'}" title="${escapeAttr(tip)}">${d.icon || '⚒️'}</span>`; }
+  out += `<span class="eq-hz-drop" data-hzcell="${pid}:${sl}" aria-hidden="true"></span>`;
+  return out;
+}
+// the card detail of a unit on the board: what it carries
+function eqDetailLine(liveCard){
+  const m = matchState, u = liveCard ? (eqLiveUnit(m, liveCard.uid) || liveCard) : null; if(!u || !u.equipment) return null;
+  const d = getCardDefs()[u.equipment] || {}, g = eqGrantText((d.equip || {}).grant);
+  return u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: g ? ', ' + g : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
+}
+function eqLogText(ev, nm){
+  switch(ev.type){
+    case 'equip': return ev.pending ? {cls:'gold', text: TX('ui.eq-log-equip-pending', {unit: nm(ev.defId), item: nm(ev.equipDefId)})} : null;
+    case 'equipReady': return {cls:'gold', text: TX('ui.eq-log-equip-ready', {unit: nm(ev.defId), item: nm(ev.equipDefId), a: ev.attack, h: ev.health})};
+    case 'equipLaid': return {cls:'', text: TX('ui.eq-log-laid', {side: sideLabel(ev.side), item: nm(ev.equipDefId)})};
+    case 'equipDrop': return {cls:'', text: TX('ui.eq-log-drop', {item: nm(ev.equipDefId), unit: nm(ev.fromDefId)})};
+    case 'floorSet': return {cls:'', text: TX('ui.eq-log-floor-set', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', side: sideLabel(ev.side), kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)(), r: ev.rounds})};
+    case 'floorTick': return ev.dmg != null ? {cls:'', text: TX('ui.eq-log-tick-dmg', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', unit: nm(ev.defId), n: ev.dmg, kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})}
+      : {cls:'poison', text: TX('ui.eq-log-tick-poison', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', unit: nm(ev.defId), n: ev.poison || ev.bleed || 0, kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})};
+    case 'floorSlide': return {cls:'', text: TX('ui.eq-log-slide', {unit: nm(ev.defId)})};
+    case 'floorEnd': return {cls:'', text: TX('ui.eq-log-end', {icon: EQ_FLOOR_ICON[ev.kind] || '⚠️', kind: (EQ_KIND_NAME[ev.kind] || EQ_KIND_NAME.rubble)()})};
+  }
+  return null;
+}
+function eqVfx(ev){
+  if(ev.type === 'equipReady'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `⚒️ +${ev.attack}/+${ev.health}`, 'buff'); }
+  else if(ev.type === 'floorTick' && ev.dmg > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} -${ev.dmg}`, 'dmg'); }
+  else if(ev.type === 'floorTick' && ev.poison > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} ☠${ev.poison}`, 'poison'); }
+  else if(ev.type === 'floorSlide'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⛸️', 'buff'); }
+}
+// Holding a hazard card (pressed, dragged or tapped to arm): every cell of both rows becomes a drop target.
+function eqHeldHazardUid(){
+  const m = matchState; if(!m || m.over || m.resolving) return null; const pl = m.players && m.players[viewerHandPid(m)]; if(!pl) return null; const defs = getCardDefs();
+  const pick = uid=>{ const hc = uid != null && pl.hand.find(h=> h.uid === uid); return hc && eqIsHazardDef(defs[hc.defId]) ? hc.uid : null; };
+  const el = document.querySelector('#handStrip .card-tile.dragging') || (bwPressedCard && bwPressedCard.isConnected ? bwPressedCard : null);
+  const fromEl = el ? pick(Number(el.getAttribute('data-handuid'))) : null; return fromEl != null ? fromEl : pick(m.selectedUid);
+}
+let eqHoldQueued = false;
+function eqSyncHolding(){ if(eqHoldQueued) return; eqHoldQueued = true; requestAnimationFrame(()=>{ eqHoldQueued = false; document.body.classList.toggle('eq-hz-holding', eqHeldHazardUid() != null); }); }
+['dragstart','dragend','drop','click','pointerdown','pointerup','pointercancel','touchend','keyup'].forEach(t=> document.addEventListener(t, eqSyncHolding, true));
+function eqPlayHazardAt(uid, cell, dropPoint){
+  const m = matchState; if(!m || uid == null || !cell) return false;
+  const [tp, sl] = String(cell.getAttribute('data-hzcell')).split(':').map(Number);
+  const ok = (m.engine.hazardTargets(m.players, activePlayerId(m), (m.players[activePlayerId(m)].hand.find(h=> h.uid === uid) || {}).defId) || []).some(t=> t.pid === tp && t.slot === sl);
+  if(!ok){ showToast(TX('toast.eq-hz-no'), 'warn'); return true; }
+  playCardByUid(uid, sl, dropPoint, {hazardPid: tp}); return true;
+}
+document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(t && document.body.classList.contains('eq-hz-holding')){ e.preventDefault(); e.stopPropagation();
+  document.querySelectorAll('.eq-hz-drop.is-over').forEach(x=>{ if(x !== t) x.classList.remove('is-over'); }); t.classList.add('is-over'); } }, true);
+document.addEventListener('drop', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(!t || !document.body.classList.contains('eq-hz-holding')) return;
+  const uid = Number(e.dataTransfer && e.dataTransfer.getData('text/plain')); const m = matchState, pl = m && m.players[viewerHandPid(m)], hc = pl && pl.hand.find(h=> h.uid === uid);
+  if(!hc || !eqIsHazardDef(getCardDefs()[hc.defId])) return;
+  e.preventDefault(); e.stopImmediatePropagation(); t.classList.remove('is-over'); eqPlayHazardAt(uid, t, {x:e.clientX, y:e.clientY}); }, true);
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-hzcell]'); if(!t || !document.body.classList.contains('eq-hz-holding')) return;
+  const m = matchState; if(!m || m.selectedUid == null) return; const uid = eqHeldHazardUid(); if(uid == null) return;
+  e.preventDefault(); e.stopImmediatePropagation(); eqPlayHazardAt(uid, t); }, true);
+(function eqStyles(){ if(typeof document === 'undefined' || document.getElementById('eqStyles')) return; const st = document.createElement('style'); st.id = 'eqStyles';
+  st.textContent = `.board-card .eq-floor{position:absolute; left:4%; right:4%; bottom:3%; height:26%; border-radius:8px; display:flex; align-items:flex-end; justify-content:center; gap:2px; font-size:13px; line-height:1; padding-bottom:2px; visibility:visible; z-index:1; pointer-events:auto; box-shadow:inset 0 0 10px rgba(0,0,0,.25);}
+  .board-card .eq-floor small{font-size:10px; font-weight:700; color:#fff; text-shadow:0 1px 2px #000;}
+  .eq-floor-ice{background:linear-gradient(180deg, rgba(190,235,255,.15), rgba(150,215,255,.6));}
+  .eq-floor-lava{background:linear-gradient(180deg, rgba(255,150,40,.1), rgba(255,90,20,.65)); animation:eqLava 1.6s ease-in-out infinite alternate;}
+  .eq-floor-poison{background:linear-gradient(180deg, rgba(110,210,90,.1), rgba(80,170,60,.6));}
+  .board-card .eq-floor-gas{top:6%; height:auto; background:radial-gradient(ellipse at 50% 60%, rgba(210,225,100,.45), rgba(170,190,70,.12) 70%, transparent); align-items:flex-start; padding-top:3px;}
+  .eq-floor-rubble{background:linear-gradient(180deg, rgba(150,130,105,.25), rgba(110,92,70,.8));}
+  @keyframes eqLava{from{filter:brightness(.9);} to{filter:brightness(1.25);}}
+  .board-card .eq-lone{position:absolute; left:50%; bottom:30%; transform:translateX(-50%); font-size:20px; visibility:visible; z-index:2; filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));}
+  .board-card .eq-under{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font-size:13px; line-height:16px; padding:0 4px; border-radius:8px; background:rgba(45,32,20,.88); border:1px solid rgba(255,214,140,.6); visibility:visible; z-index:4;}
+  .board-card .eq-under.is-equipping{animation:eqEquip 0.9s ease-in-out infinite alternate;}
+  @keyframes eqEquip{from{opacity:.45;} to{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .eq-floor-lava, .board-card .eq-under.is-equipping{animation:none;} }
+  .board-card[data-uid] > .eq-floor{left:-5px; right:auto; top:auto; bottom:-9px; height:auto; padding:2px 5px; z-index:5; border:1px solid rgba(255,255,255,.35); align-items:center;}
+  .board-card.slot-target:has(> .eq-floor, > .eq-lone){opacity:1;}
+  body:not(.bw-holding) .board-card.slot-target:has(> .eq-floor, > .eq-lone){border-color:transparent; background:none;}
+  body:not(.bw-holding) .board-card.slot-target:has(> .eq-floor, > .eq-lone) .slot-target-plus{opacity:0;}
+  .board-card .eq-hz-drop{display:none;}
+  body.eq-hz-holding .board-card .eq-hz-drop{display:block; position:absolute; inset:0; z-index:8; visibility:visible; border:2px dashed rgba(255,205,100,.9); border-radius:8px; background:rgba(255,205,100,.1); cursor:copy; pointer-events:auto;}
+  body.eq-hz-holding .board-card .eq-hz-drop.is-over{background:rgba(255,205,100,.35);}`;
+  try{ document.head.appendChild(st); }catch(e){} })();
+// ==== end Package EQ (board) ===================================================================================================
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
@@ -40397,6 +41061,63 @@ function giStatusBadges(c, badges){
   if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🫙${c.brittle}</span>`);
   const e = ((getCardDefs()[c.defId] || {}).effects) || {};
   if(e.prayerWard && (c.prayerTokens||0) > 0) badges.push(`<span class="abadge prayer-ward" title="${escapeAttr(TX('ui.prayer-ward-tip', {n: numOr(e.prayerWard, 1)}))}">🧿${numOr(e.prayerWard, 1)}</span>`);
+}
+// ==== Package SK2 (2026-10-19): the board's side of the economy and structure skills (rules: the SK2 block in bramblewood-engine.js):
+// the Berry / scavenge / salvage chips, battle-log lines and floats. Every string is a TX key. A replay card (replayCardLike) carries no
+// SK2 field, so the chips read the round's replay snapshot (m.replayCards, seeded in resolveRoundCore) when the card has none.
+function sk2Val(c, k){ if(!c) return 0; if(k in c) return Number(c[k]) || 0; const rc = matchState && matchState.replayCards && matchState.replayCards[c.uid]; return rc ? (Number(rc[k]) || 0) : 0; }
+function sk2StatusBadges(c, badges){
+  const e = ((getCardDefs()[c.defId] || {}).effects) || {};
+  const b = sk2Val(c, 'sk2Berries'), sc = sk2Val(c, 'sk2Scavenge'), sv = sk2Val(c, 'sk2Salvage');
+  if(b > 0) badges.push(`<span class="abadge sk2-berries" title="${escapeAttr(TX('ui.sk2-berries-tip', {n: b, b: SK2_UI.foragingBerries}))}">🫐${b}</span>`);
+  if(sc > 0) badges.push(`<span class="abadge sk2-scavenge" title="${escapeAttr(TX('ui.sk2-scavenge-tip', {n: sc, m: sk2ScavengeEvery(e)}))}">🦝${sc}</span>`);
+  if(sv > 0) badges.push(`<span class="abadge sk2-salvage" title="${escapeAttr(TX('ui.sk2-salvage-tip', {n: sv, m: sk2SalvageEvery(e)}))}">🏚️${sv}</span>`);
+}
+const SK2_RES_TX = {lumber: n=> TX('ui.sk2-res-lumber', {n}), stone: n=> TX('ui.sk2-res-stone', {n}), metal: n=> TX('ui.sk2-res-metal', {n}), uranium: n=> TX('ui.sk2-res-uranium', {n})};
+const sk2ResList = list=> (list || []).map(t=> (SK2_RES_TX[t.res] || SK2_RES_TX.lumber)(t.n)).join(', ');
+function sk2LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'sk2'){ const name = nm(ev.defId);
+    if(ev.kind === 'harvest') return {cls:'gold', text: ev.forced ? TX('ui.sk2-log-harvest-forced', {name, n: ev.amount}) : TX('ui.sk2-log-harvest', {name, n: ev.amount})};
+    if(ev.kind === 'pickpocket') return {cls:'', text:TX('ui.sk2-log-pickpocket', {name, n: ev.amount, target: nm(ev.targetDefId)})};
+    if(ev.kind === 'pickpocketRes') return {cls:'gold', text:TX('ui.sk2-log-pickpocket-res', {name, list: sk2ResList(ev.taken)})};
+    if(ev.kind === 'sabotage') return {cls:'', text:TX('ui.sk2-log-sabotage', {name, list: sk2ResList(ev.lost)})};
+    if(ev.kind === 'arson') return {cls:'', text:TX('ui.sk2-log-arson', {name, n: ev.amount})};
+    if(ev.kind === 'fortify') return {cls:'', text:TX('ui.sk2-log-fortify', {name})};
+    return null; }
+  if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage')){ const name = nm(ev.attDefId), stone = ev.kind === 'sk2Salvage';
+    if(ev.gain > 0) return {cls:'gold', text: stone ? TX('ui.sk2-log-salvage-stone', {name, n: ev.gain}) : TX('ui.sk2-log-scavenge-lumber', {name, n: ev.gain})};
+    return {cls:'', text: stone ? TX('ui.sk2-log-salvage', {name, total: ev.total}) : TX('ui.sk2-log-scavenge', {name, total: ev.total})}; }
+  if(ev.type === 'statusFx' && ev.kind === 'sk2Berry') return {cls:'', text:TX('ui.sk2-log-berry', {name: nm(ev.attDefId), total: ev.total})};
+  if(ev.type === 'statusFx' && ev.kind === 'sk2BerryEat') return {cls:'', text:''};
+  if(ev.type === 'heal' && ev.cause === 'repair') return {cls:'heal', text:TX('ui.sk2-log-repair', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'heal' && ev.cause === 'forage') return {cls:'heal', text:TX('ui.sk2-log-forage', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'rebuild' && ev.repair) return {cls:'heal', text:TX('ui.sk2-log-repair-bramble', {name: nm(ev.defId), n: ev.amount})};
+  if(ev.type === 'skipTurn' && ev.reason === 'milling') return {cls:'', text:TX('ui.sk2-log-mill-holds', {name: nm(ev.defId)})};
+  return null;
+}
+function sk2Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'statusFx' && (ev.kind === 'sk2Scavenge' || ev.kind === 'sk2Salvage' || ev.kind === 'sk2Berry' || ev.kind === 'sk2BerryEat')){
+    const fld = ev.kind === 'sk2Scavenge' ? 'sk2Scavenge' : ev.kind === 'sk2Salvage' ? 'sk2Salvage' : 'sk2Berries', u = ev.attUid, rc = rcOf(u); if(rc) rc[fld] = ev.total || 0;
+    const el = boardCardEl(u);
+    if(ev.kind === 'sk2BerryEat') fl(el, '🫐 → 💚', 'heal');
+    else if(ev.gain > 0){ fl(el, `+${ev.gain}${ev.res === 'stone' ? '🪨' : '🪵'}`, 'gold'); snd('coin'); }
+    else fl(el, `${ev.kind === 'sk2Berry' ? '🫐' : ev.kind === 'sk2Salvage' ? '🏚️' : '🦝'} +${ev.amount || 1}`, 'buff');
+    refresh(u); return; }
+  if(ev.type !== 'sk2') return;
+  const el = boardCardEl(ev.uid);
+  if(ev.kind === 'harvest'){ fl(el, `🌽 +${ev.amount}🪵`, 'gold'); snd('coin'); return; }
+  if(ev.kind === 'pickpocket'){ const tr = rcOf(ev.targetUid), me = rcOf(ev.uid); (ev.taken || []).forEach(t=>{ if(tr) tr[t.key] = t.left; if(me) me[t.key] = t.total; });
+    fl(el, `👛 +${ev.amount}`, 'gold'); refresh(ev.uid); refresh(ev.targetUid); snd('coin'); return; }
+  if(ev.kind === 'pickpocketRes'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪵'); }catch(e){} } fl(el, `👛 +${ev.amount}`, 'gold'); snd('coin'); return; }
+  if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪛 −${ev.amount}`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'fortify'){ fl(el, '🏯', 'quick'); return; }
 }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
@@ -40715,7 +41436,11 @@ function renderVfxForEvent(ev){
   try{ w2SkillVfx(ev); }catch(e){} // W2 skills (2026-10-16)
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
+  try{ sk3Vfx(ev); }catch(e){} // package SK3 skills (2026-10-19)
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
+  try{ sk1Vfx(ev); }catch(e){} // package SK1 skills (2026-10-19)
+  try{ eqVfx(ev); }catch(e){} // package EQ (2026-10-19)
+  try{ sk2Vfx(ev); }catch(e){} // Package SK2 (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
@@ -41149,7 +41874,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
     else if(ev.kind==='creativity'){ if(el) floatText(el, `🎨 +${ev.amount||1}`, 'buff'); if(rc){ rc.creativity = ev.total != null ? ev.total : (rc.creativity||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Creative N (2026-10-18)
     else if(ev.kind==='prayer'){ if(el) floatText(el, `📿 +${ev.amount||1}`, 'buff'); if(rc){ rc.prayerTokens = ev.total != null ? ev.total : (rc.prayerTokens||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Prayer tokens (2026-10-19, package E)
-    else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = (rc.exposed||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15)
+    else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = Math.max(rc.exposed||0, ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15); N rounds, not stacking counters (2026-10-19, SK1)
     else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
     // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off."):
     // the badge goes, and FX.D.statusLook fades the crosshair out (it never just blinks off now).
@@ -41170,7 +41895,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff'); }
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
-    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; rc.exposed=0; } }
+    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.bleed=0; rc.scar=0; rc.exposed=0; rc.exploit=0; rc.shocked=0; rc.corrode=0; rc.brittle=0; rc.staggered=0; rc.armorLoss=0; } /* the physical debuffs only (2026-10-19, SK1) */ }
     else if(ev.kind==='stanch'){ try{ SoundKit.cleanseTone(); }catch(e){} if(el){ floatText(el, `🩹 -${ev.amount} 🩸`, 'heal'); cleanseVfx(el); } if(rc) rc.bleed = Math.max(0, (rc.bleed||0) - (ev.amount||0)); }
     else if(ev.kind==='grit'){ SoundKit.gritUp(); if(el) floatText(el, '+'+ev.amount+'⚔', 'gold'); }
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
@@ -42339,18 +43064,143 @@ let forgeCopyPick = {id:null, uid:null};
 function forgeUid(id){ if(!id || forgeCopyPick.id !== id || !forgeCopyPick.uid) return null; return (myCardCopies[id]||[]).some(c=> c && c.uid === forgeCopyPick.uid) ? forgeCopyPick.uid : null; }
 // The picked card as the picked copy: its own level's stats (copyDefAt), under the card's own id so the tile looks the same.
 function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]||[]).length) return sel; const L = forgeCopyLevel(id, forgeUid(id)), d = copyDefAt(id, L); return d ? Object.assign({}, d, {id}) : sel; }
-// The copy picker on the anvil (Upgrade and Refine): one chip per copy, strongest first, with its level and finish; the copies your
-// main deck fights with are marked. Shown when the card has more than one copy.
+// The copy picker on the anvil (Upgrade and Refine). 2026-10-19 (package UX, owner 21:36: "After selecting a card to forge, there is
+// a sub-window that shows ALL cards of the same name."): the row of one chip per copy (package NF) did not scale (eight Ant Scouts
+// filled two rows; fifty would fill the anvil), so the anvil keeps a one-line summary (how many copies, which one is on the anvil, a
+// button) and every copy lives in the copies sheet (openForgeCopySheet), which also opens by itself when you pick a card whose
+// copies differ. Shown when the card has more than one copy.
 function forgeCopyPickerHTML(id){
   if(!copyModelOn()) return ''; const a = myCardCopies[id] || []; if(a.length < 2) return '';
-  copyModelSync(id); const cur = copyIndexByUid(id, forgeUid(id)), order = copyOrder(id);
-  let inDeck = 0; try{ inDeck = Math.max(0, ((myDecks||[]).find(d=> d.id === mainDeckId) || getActiveDeck() || {counts: myDeckCounts}).counts[id] | 0); }catch(e){ inDeck = (myDeckCounts||{})[id] | 0; }
-  const chips = order.map((i, k)=>{ const c = a[i], r = copyRefineRank(c), step = c.foil ? (REFINE_LADDER[r] || REFINE_LADDER[1]) : null;
-    const finish = c.shiny ? '✦ ' + TX('ui.nf-copy-shiny') : step ? '✨ ' + _t(step.label) : TX('ui.nf-copy-plain');
-    const tags = [k < inDeck ? `<em class="fcp-deck" title="${escapeAttr(TX('ui.nf-copy-deck'))}">⭐</em>` : '', (copyCreditOf(c).dust || copyCreditOf(c).gold) ? `<em class="fcp-cr" title="${escapeAttr(TX('ui.nf-copy-has-credit'))}">🧩</em>` : ''].join('');
-    return `<button type="button" class="fcp-chip ${i === cur ? 'on' : ''}" data-forge-copy="${escapeAttr(c.uid)}" aria-pressed="${i === cur}"><b>${escapeHtml(TX('ui.nf-copy-level', {n: copyLevel(id, c)}))}</b><small>${escapeHtml(finish)}</small>${tags}</button>`; }).join('');
-  return `<div class="forge-copy-picker" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}"><div class="fcp-head"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <small>${escapeHtml(TX('ui.nf-copies-help'))}</small></div><div class="fcp-row">${chips}</div></div>`;
+  const groups = forgeCopyGroups(id), cur = forgeAnvilCopyUid(id), g = groups.find(x=> x.uids.includes(cur)) || groups[0];
+  return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
+    <span class="ux-fcp-k"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <b class="ux-fcp-n">×${a.length}</b></span>
+    ${g ? `<span class="ux-fcp-cur"><small>${escapeHtml(TX('ui.ux-copy-on-anvil'))}</small> <b>${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))}</b> <small>${escapeHtml(g.label)}</small></span>` : ''}
+    <button type="button" class="btn small ux-fcp-open" data-forge-copy-sheet="${escapeAttr(id)}" aria-haspopup="dialog">🃏 ${escapeHtml(TX('ui.ux-copy-change'))}</button></div>`;
 }
+// FORGE_UX:BEGIN (2026-10-19, package UX: the copies sheet, the copy-count badges, the centre-stage forging; tests/ux-2026-10-19.js)
+// A copy's treatment in words: Shiny, its foil step (Foil, Hex, Etched...), Alt art; Plain when it has none.
+function forgeCopyTreatment(c){
+  const parts = [];
+  if(c && c.shiny) parts.push('✦ ' + TX('ui.nf-copy-shiny'));
+  if(c && c.foil){ let st = null; try{ st = REFINE_LADDER[copyRefineRank(c)] || REFINE_LADDER[1]; }catch(e){} parts.push('✨ ' + _t((st && st.label) || 'Foil')); }
+  if(c && c.skin) parts.push('🎨 ' + TX('ui.ux-copy-alt-art'));
+  return parts.length ? parts.join(' · ') : TX('ui.nf-copy-plain');
+}
+// Your copies of a card in groups of the same level and treatment, strongest first (copyOrder: the level, then the finish, then
+// the oldest). Each group: {key, level, label, copy (its first copy, for the look), uids, pick (the copy a tap puts on the anvil:
+// one with Forge credit when the group has one, it tempers cheaper), credit}.
+function forgeCopyGroups(id){
+  const a = (typeof myCardCopies !== 'undefined' && myCardCopies[id]) || []; if(!a.length) return [];
+  try{ copyModelSync(id); }catch(e){}
+  const groups = [], byKey = new Map();
+  copyOrder(id).forEach(i=>{ const c = a[i]; if(!c) return; const L = copyLevel(id, c);
+    const key = [L, c.shiny ? 1 : 0, c.foil ? (c.finish || 'auto') : '', c.skin || ''].join('|');
+    let g = byKey.get(key); if(!g){ g = {key, level: L, copy: c, label: forgeCopyTreatment(c), uids: [], pick: c.uid, credit: false}; byKey.set(key, g); groups.push(g); }
+    g.uids.push(c.uid); const cr = copyCreditOf(c); if((cr.dust || cr.gold) && !g.credit){ g.credit = true; g.pick = c.uid; } });
+  return groups;
+}
+// "Plain ×5, ✨ Foil ×2, ✦ Shiny ×1": how many copies of each treatment you own, the most first.
+function forgeCopyBreakdown(id){
+  const m = new Map(); ((typeof myCardCopies !== 'undefined' && myCardCopies[id]) || []).forEach(c=>{ const t = forgeCopyTreatment(c); m.set(t, (m.get(t) || 0) + 1); });
+  return [...m.entries()].sort((x, y)=> y[1] - x[1]).map(([t, n])=> t + ' ×' + n).join(', ');
+}
+// The copy on the anvil: the picker's, else what the mode opens on (Upgrade: your best copy; Refine: your finest foil).
+function forgeAnvilCopyUid(id){
+  const a = myCardCopies[id] || []; let c = null;
+  try{ c = forgeMode === 'refine' ? a[forgeRefineIdx(id)] : copyByUid(id, forgeUid(id)); }catch(e){ c = null; }
+  return c ? c.uid : null;
+}
+// The pool tile's badge: "×8", with the breakdown by treatment on hover (title) and on a long press or a tap (a speech bubble).
+function forgeCountBadgeHTML(id){
+  const n = ((typeof myCardCopies !== 'undefined' && myCardCopies[id]) || []).length; if(!n) return '';
+  const tip = TX('ui.ux-copy-count-tip', {n, list: forgeCopyBreakdown(id)});
+  return `<span class="ux-copy-count${n > 1 ? ' is-many' : ''}" data-ux-count="${escapeAttr(id)}" tabindex="0" role="note" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">×${n}</span>`;
+}
+function wireForgeCountBadges(root){
+  if(!root) return;
+  root.querySelectorAll('[data-ux-count]').forEach(b=>{ if(b._ux) return; b._ux = 1; let t = null;
+    const show = ()=>{ try{ showSpeechBubble(b, b.getAttribute('aria-label'), 'ux-count-bubble', {hold: 2.4}); }catch(e){} };
+    b.addEventListener('pointerdown', e=>{ if(e.pointerType === 'mouse') return; clearTimeout(t); t = setTimeout(()=>{ t = null; b._lp = Date.now(); show(); }, 420); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(k=> b.addEventListener(k, ()=>{ clearTimeout(t); t = null; }));
+    b.addEventListener('contextmenu', e=> e.preventDefault());
+    b.addEventListener('click', e=>{ e.stopPropagation(); if(Date.now() - (b._lp || 0) < 600) return; show(); });
+    b.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); show(); } });
+  });
+}
+// The copies sheet: every copy you own of the card, one tile per group ("Lv 10 · Plain ×5"), in a scrolling grid. Tapping a group
+// puts its copy on the anvil. Only for Upgrade and Refine (the modes that work on one copy).
+function forgeCopiesWorthASheet(id){ return (forgeMode === 'upgrade' || forgeMode === 'refine') && copyModelOn() && forgeCopyGroups(id).length > 1; }
+function openForgeCopySheet(id){
+  const defs = getCardDefs(), d = defs[id], a = myCardCopies[id] || []; if(!d || a.length < 2) return;
+  const groups = forgeCopyGroups(id); if(!groups.length) return;
+  document.querySelectorAll('.ux-fcs-ov').forEach(x=> x.remove());
+  const cur = forgeAnvilCopyUid(id);
+  let inDeck = 0; try{ inDeck = Math.max(0, ((myDecks||[]).find(x=> x.id === mainDeckId) || getActiveDeck() || {counts: myDeckCounts}).counts[id] | 0); }catch(e){ inDeck = (myDeckCounts||{})[id] | 0; }
+  const deckUids = new Set(copyOrder(id).slice(0, inDeck).map(i=> a[i] && a[i].uid));
+  const tile = g=>{ let td = null; try{ td = copyDefAt(id, g.level); }catch(e){ td = null; }
+    const show = Object.assign({}, td || d, {id}), cls = [copyFinishClass(d, g.copy), g.copy.shiny ? 'is-shiny' : ''].filter(Boolean).join(' '), on = g.uids.includes(cur);
+    return `<button type="button" class="ux-fcs-g ${on ? 'on' : ''}" data-fcs="${escapeAttr(g.key)}" aria-pressed="${on}">
+      <span class="ux-fcs-tile">${cardTileHTML(show, {inPlay:true, extraClass: cls})}</span>
+      <span class="ux-fcs-lbl"><b>${escapeHtml(TX('ui.nf-copy-level', {n: g.level}))}</b><small>${escapeHtml(g.label)}</small></span>
+      ${g.uids.length > 1 ? `<b class="ux-fcs-n">×${g.uids.length}</b>` : ''}${g.uids.some(u=> deckUids.has(u)) ? `<em class="ux-fcs-deck" title="${escapeAttr(TX('ui.nf-copy-deck'))}">⭐</em>` : ''}${g.credit ? `<em class="ux-fcs-cr" title="${escapeAttr(TX('ui.nf-copy-has-credit'))}">🧩</em>` : ''}</button>`; };
+  const ov = document.createElement('div'); ov.className = 'modal-overlay bw-centre-dialog ux-fcs-ov';
+  ov.innerHTML = `<div class="modal ux-fcs" role="dialog" aria-modal="true" aria-labelledby="uxFcsTitle">
+    <div class="modal-head-row"><h2 id="uxFcsTitle">${escapeHtml(d.name)} <small class="ux-fcs-total">×${a.length}</small></h2><button type="button" class="modal-close-btn" data-x aria-label="${escapeAttr(TX('ui.ux-close'))}">✕</button></div>
+    <p class="panel-sub ux-fcs-sub"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> · ${escapeHtml(TX('ui.nf-copies-help'))}</p>
+    <div class="ux-fcs-grid">${groups.map(tile).join('')}</div></div>`;
+  document.body.appendChild(ov);
+  try{ decorateHolo(ov); }catch(e){}
+  let closed = false;
+  const close = ()=>{ if(closed) return; closed = true; document.removeEventListener('keydown', onKey, true); if(!reducedMotion()){ ov.classList.add('is-out'); setTimeout(()=> ov.remove(), 240); } else ov.remove(); };
+  const onKey = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
+  document.addEventListener('keydown', onKey, true);
+  ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = close);
+  ov.onclick = e=>{ if(e.target === ov) close(); };
+  ov.querySelectorAll('[data-fcs]').forEach(b=> b.onclick = ()=>{ const g = groups.find(x=> x.key === b.dataset.fcs); if(!g || forgeBusy) return;
+    forgeCopyPick = {id, uid: g.uids.includes(cur) ? cur : g.pick}; forgeMeltArmed = null; try{ SoundKit.gadget && SoundKit.gadget(); }catch(e){}
+    close(); renderForge(); });
+  setTimeout(()=>{ const f = ov.querySelector('.ux-fcs-g.on') || ov.querySelector('.ux-fcs-g'); if(f) try{ f.focus({preventScroll:false}); f.scrollIntoView({block:'nearest'}); }catch(e){} }, 30);
+}
+// Forging on the centre stage (2026-10-19, package UX, owner 21:36: "I also think Forging should have centre of field treatment."):
+// the anvil stage (the card, its glow, the hammer) lifts out of the panel and flies to the middle of the screen over a dimmed
+// spotlight, as the battle field's centre spotlight does; the smithing plays there (run), the result holds a beat (with the LEVEL
+// burst when one is given), then the stage flies back into its place in the panel. Resolves true when it played centred. Reduced
+// motion, Effects None or no Web Animations: run() where it is, unchanged. opts.el: another element to put on the stage (forging Max
+// Energy lifts its Energy panel, package NF's effect, the same way).
+let forgeCentreBusy = false;
+async function forgeCentreStage(run, opts){
+  opts = opts || {};
+  const stage = opts.el || document.getElementById('anvilStage');
+  if(!stage || !stage.parentNode || forgeCentreBusy || reducedMotion() || fxLevel() === 'none' || !stage.animate || typeof document === 'undefined'){ await run(); return false; }
+  forgeCentreBusy = true;
+  const r0 = stage.getBoundingClientRect();
+  const ph = document.createElement('div'); ph.className = 'ux-fc-ph'; ph.style.height = r0.height + 'px'; ph.setAttribute('aria-hidden', 'true');
+  stage.parentNode.insertBefore(ph, stage);
+  const ov = document.createElement('div'); ov.className = 'ux-fc-ov'; ov.innerHTML = '<div class="ux-fc-spot" aria-hidden="true"></div><div class="ux-fc-host"></div>';
+  document.body.appendChild(ov);
+  const host = ov.querySelector('.ux-fc-host'); host.style.width = r0.width + 'px'; host.appendChild(stage); stage.classList.add('ux-fc-on');
+  const scale = Math.max(.6, Math.min(1.7, (innerWidth - 32) / Math.max(1, r0.width), (innerHeight * 0.62) / Math.max(1, r0.height)));
+  host.style.setProperty('--ux-fc-s', scale.toFixed(3));
+  const r1 = host.getBoundingClientRect(); // its centred place (the CSS centres it, scaled)
+  const dx = (r0.left + r0.width / 2) - (r1.left + r1.width / 2), dy = (r0.top + r0.height / 2) - (r1.top + r1.height / 2);
+  const from = `translate(-50%, -50%) translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(1)`, mid = `translate(-50%, -50%) scale(${scale.toFixed(3)})`;
+  const wait = ms=> new Promise(r=> setTimeout(r, ms));
+  try{
+    ov.animate([{opacity:0}, {opacity:1}], {duration:280, easing:'ease-out', fill:'both'});
+    await new Promise(r=>{ const a = host.animate([{transform: from}, {transform: mid}], {duration:380, easing:'cubic-bezier(.2,.8,.25,1.1)', fill:'forwards'}); a.onfinish = a.oncancel = r; setTimeout(r, 600); });
+    try{ await run(); }catch(e){}
+    if(opts.burst){ try{ metaFx(opts.burst.kind || 'levelUp', host.querySelector('.card-tile'), {text: opts.burst.text}); }catch(e){} }
+    await wait(opts.hold != null ? opts.hold : 650);
+    const r2 = ph.getBoundingClientRect(); // the panel may have scrolled meanwhile: fly back to where the slot is now
+    const bx = (r2.left + r2.width / 2) - (innerWidth / 2), by = (r2.top + r2.height / 2) - (innerHeight / 2);
+    ov.animate([{opacity:1}, {opacity:0}], {duration:340, easing:'ease-in', fill:'forwards'});
+    await new Promise(r=>{ const a = host.animate([{transform: mid}, {transform: `translate(-50%, -50%) translate(${bx.toFixed(1)}px, ${by.toFixed(1)}px) scale(1)`}], {duration:340, easing:'cubic-bezier(.5,0,.75,0)', fill:'forwards'}); a.onfinish = a.oncancel = r; setTimeout(r, 520); });
+  }finally{
+    stage.classList.remove('ux-fc-on'); if(ph.isConnected) ph.replaceWith(stage); ov.remove(); forgeCentreBusy = false;
+  }
+  return true;
+}
+// FORGE_UX:END
 // Forge (reworked 2026-10-03, "Furnish the forge more fully... animations prepared for on-forge"):
 // a hearth header with only the currencies the Forge spends (T4: show a currency only where it
 // matters), a searchable/filterable pool that marks cards you can temper right now, and an anvil
@@ -42526,8 +43376,12 @@ function renderForge(){
     </div>`;
   const poolEl = document.getElementById('forgePool');
   const tileCls = id=> (id===forgeSelectedId?'selected ':'') + (forgeMode==='refine' ? bestCopyClass(id, defs[id]) : '');
-  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}</div>`).join('');
-  poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; forgeSelectedId = el.getAttribute('data-defid'); renderForge(); }));
+  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}${forgeCountBadgeHTML(id) /* 2026-10-19 (package UX): ×N copies */}</div>`).join('');
+  // 2026-10-19 (package UX): picking a card whose copies differ (levels or finishes) opens the copies sheet over the Forge
+  poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; const was = forgeSelectedId; forgeSelectedId = el.getAttribute('data-defid'); renderForge();
+    if(forgeSelectedId !== was && forgeCopiesWorthASheet(forgeSelectedId)) openForgeCopySheet(forgeSelectedId); }));
+  wireForgeCountBadges(poolEl);
+  root.querySelectorAll('[data-forge-copy-sheet]').forEach(b=> b.addEventListener('click', ()=>{ if(!forgeBusy) openForgeCopySheet(b.dataset.forgeCopySheet); }));
   const search = document.getElementById('forgeSearch');
   search.addEventListener('input', ()=>{ forgeSearch = search.value; const pos = search.selectionStart; renderForge(); const s2 = document.getElementById('forgeSearch'); s2.focus(); try{ s2.setSelectionRange(pos, pos); }catch(e){} });
   root.querySelectorAll('[data-forgefilter]').forEach(b=> b.addEventListener('click', ()=>{ forgeFilter = b.dataset.forgefilter; renderForge(); }));
@@ -43022,8 +43876,9 @@ async function forgeRefine(btn){
   if(!step){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
   const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
-  fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }); }catch(e){}
   forgeBusy = false; renderForge();
   showToast(TX('toast.refined-to', {name: d.name, label: step.label}), 'ok');
 }
@@ -43113,8 +43968,9 @@ async function forgeLimitBreak(btn){
   const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
   limitBreakCard(id, uid); if(keep) forgeCopyPick = {id, uid: keep};
   const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
-  fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
   forgeBusy = false; renderForge();
   showToast(TX('toast.broke-its-limit-level', {v1: getCardDefs()[id].name, LIMIT_BREAK_LEVEL}), 'ok');
 }
@@ -43175,8 +44031,9 @@ async function forgePromote(btn){
   if(changed){ try{ saveMyDecks(); localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
   logTxn({action:'promoted', cardId:to, cardName:defs[to].name, icon:defs[to].icon, source:'Promotion from '+d.name, before:id, after:to});
   const afterHTML = cardTileHTML(defs[to], {extraClass:'forge-preview'});
-  fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
   forgeBusy = false; forgePromotePick = null; forgeSelectedId = to; renderForge();
   showToast(TX('toast.was-promoted-to', {name: escapeHtml(d.name), v2: escapeHtml(defs[to].name), v3: changed ? ' Your decks have the new card.' : ''}), 'ok');
 }
@@ -43284,11 +44141,13 @@ async function forgeTemper(btn){
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   forgeSetCopyLevel(id, uid, L+1); if(keep) forgeCopyPick = {id, uid: keep}; // the tempered copy stays on the anvil
   const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
-  try{ await forgeTemperAnimation(beforeHTML, afterHTML); }catch(e){}
+  // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the tempering and its LEVEL burst play on
+  // the centre stage, then the card flies back to the anvil
+  let centred = false; try{ centred = await forgeCentreStage(()=> forgeTemperAnimation(beforeHTML, afterHTML), {burst: {kind: 'levelUp', text: 'LEVEL ' + (L+1) + '!'}, hold: 900}); }catch(e){}
   forgeBusy = false; renderForge();
   const pop = document.querySelector('#forgeDetail .forge-level-label');
   if(pop){ pop.classList.add('pop'); }
-  metaFx('levelUp', '#forgeDetail .card-tile', {text:'LEVEL ' + (L+1) + '!'});
+  if(!centred) metaFx('levelUp', '#forgeDetail .card-tile', {text:'LEVEL ' + (L+1) + '!'});
   showToast(TX('toast.is-now-level', {v1: getCardDefs()[id].name, v2: L+1}), 'ok');
 }
 async function forgePrestige(btn){
@@ -43300,8 +44159,9 @@ async function forgePrestige(btn){
   if(!prestigeUpCard(id)){ forgeBusy = false; denyShake(btn); return; }
   try{ SoundKit.prestigeTone && SoundKit.prestigeTone(); }catch(e){}
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
-  fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
+    fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
+    return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
   forgeBusy = false; renderForge();
 }
 /* ---- Home landing page (2026-09-20, per explicit request: "Have a 'Home' landing page...

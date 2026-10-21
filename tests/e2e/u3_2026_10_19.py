@@ -207,14 +207,18 @@ async def raid_part(b, w, h, phone):
     tr = await pg.evaluate("""(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return null; const t = b.getBoundingClientRect(), o = document.querySelector('.top-play-row [data-hq="B"]').getBoundingClientRect();
       const all = [...document.querySelectorAll('#rowMine > .board-card')], i = Math.floor(all.length/2);
       const cells = [all[i]].concat([...document.querySelectorAll('#battlefieldInner .reserve-row.mine')].map(r=> r.querySelectorAll(':scope > .board-card')[i])).filter(Boolean).map(e=> e.getBoundingClientRect());
-      return {t:[t.left, t.top, t.right, t.bottom], o:[o.left, o.top, o.right, o.bottom], low: Math.max(...cells.map(c=> c.top)), flare: document.querySelector('.top-play-row [data-hq="B"]').classList.contains('u3-bramble-smack')}; })()""")
+      return {bft: document.querySelector('.battlefield').getBoundingClientRect().top, t:[t.left, t.top, t.right, t.bottom], o:[o.left, o.top, o.right, o.bottom], low: Math.max(...cells.map(c=> c.top)), flare: document.querySelector('.top-play-row [data-hq="B"]').classList.contains('u3-bramble-smack')}; })()""")
     await shot(pg, f'tentacle-from-bramble-{tag}')
     await pg.evaluate("try{ gsap.globalTimeline.resume(); }catch(e){} 1")
     if check(hit and tr is not None, f'{tag}: the smack drew its tentacle'):
         t, o = tr['t'], tr['o']
-        check(t[0] <= o[2] and t[1] <= o[3] and t[2] >= o[0], f'{tag}: the tentacle reaches out of the bramble\'s tile ({[round(x) for x in t]} vs tile {[round(x) for x in o]})')
+        # 2026-10-19 (package TF): a column smack comes down its column: out of the bramble when the bramble is above it (phones), else
+        # out of the board's top edge above the column (a wide desktop board); tests/e2e/tentacle_fx_2026_10_19.py checks the axis
+        check((t[0] <= o[2] and t[1] <= o[3] and t[2] >= o[0]) or (not phone and t[1] <= tr['bft'] + 6), f'{tag}: the tentacle reaches out of the bramble\'s tile, or the board\'s top on a desktop ({[round(x) for x in t]} vs tile {[round(x) for x in o]}, board top {tr["bft"]:.0f})')
         check(t[3] >= tr['low'], f'{tag}: ...down to the column\'s last row ({t[3]:.0f} vs {tr["low"]:.0f})')
-    await pg.wait_for_timeout(1500)
+    for _ in range(60):  # (2026-10-19, TF: the tentacle's clock takes every frame it needs; a slow headless frame rate stretches it)
+        await pg.wait_for_timeout(100)
+        if not await pg.evaluate("!!document.querySelector('.fxf-tentacle')"): break
     check(not await pg.evaluate("!!document.querySelector('.fxf-tentacle')"), f'{tag}: the tentacle layer is removed afterwards')
     # a row smack comes in from the bramble's side (left)
     for attempt in range(3):  # (the page's own timers can be mid-redraw of the row; try again a moment later)

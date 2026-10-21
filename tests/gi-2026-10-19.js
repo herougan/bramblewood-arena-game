@@ -19,7 +19,7 @@ const U = (id, effects, o)=> Object.assign({id, name:id, attack:0, health:30, wa
 const defs = Object.assign({}, H.loadCardDefs(), {
   'gi-wall':    U('gi-wall'),
   'gi-hit3':    U('gi-hit3', {}, {attack:3}),
-  'gi-hunterP': U('gi-hunterP', {hunter:2}, {attack:3}),
+  'gi-hunterP': U('gi-hunterP', {hunter:2, hunterVs:'poison'}, {attack:3}), // 2026-10-19 (package SK3): Weak is the default now; this one picks Poisoned
   'gi-hunterB': U('gi-hunterB', {hunter:2, hunterVs:'bleed'}, {attack:3}),
   'gi-hunterX': U('gi-hunterX', {hunter:2, hunterVs:'exposed'}, {attack:3}),
   'gi-hunterW': U('gi-hunterW', {hunter:1, hunterVs:'wet'}, {attack:3}),
@@ -56,17 +56,18 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterB'); const t = put(e, P, 2, 'gi-wall'); t.poison = 4; const ev = fight(e, P);
   ok(hitOn(ev, t.uid) === 3, 'Hunter (Bleeding) ignores Poison: the picker picks one status'); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterX'); const t = put(e, P, 2, 'gi-wall'); t.exposed = 1; const ev = fight(e, P);
-  ok(hitOn(ev, t.uid) === 10 && t.exposed === 0, `Hunter 2 (Exposed): (3 + 2) crit = 10, the counter used (${hitOn(ev, t.uid)})`); }
+  // 2026-10-19 (package SK1): Exposed strips hiding for N rounds now (no crit, nothing used up); the old crit counters' damage is Exploit's.
+  ok(hitOn(ev, t.uid) === 5 && t.exposed === 0, `Hunter 2 (Exposed): 3 + 2 = 5 (no crit since SK1); its 1 round of Exposed wears off at the upkeep (${hitOn(ev, t.uid)})`); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-hunterW'); const t = put(e, P, 2, 'gi-wall'); e.setField('rain', 3); const ev = fight(e, P);
   ok(hitOn(ev, t.uid) === 4, `Hunter 1 (Wet) under Spring Rain: +1 (${hitOn(ev, t.uid)})`); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'gi-hunterArrow'); const t = put(e, P, 2, 'gi-wall'); t.poison = 2; const hp0 = t.hp; const ev = start(e, P, 2).concat(fight(e, P));
   const shot = ev.filter(x=> (x.type === 'hit' || x.type === 'arrow' || x.type === 'shot') && x.targetUid === t.uid);
   ok(hp0 - t.hp >= 4, `Hunter applies to its shots too (an Arrow 2 on a Poisoned unit took ${hp0 - t.hp}, poison ticks aside)`); }
 // ---- 2. Executioner N
-{ const {e, P} = mk(); put(e, P, 1, 'gi-exec'); const t = put(e, P, 2, 'gi-wall'); t.hp = 14; const ev = fight(e, P);
-  ok(hitOn(ev, t.uid) === 5, `Executioner 3: +3 on a unit below half Health (14/30): ${hitOn(ev, t.uid)}`); }
-{ const {e, P} = mk(); put(e, P, 1, 'gi-exec'); const t = put(e, P, 2, 'gi-wall'); t.hp = 15; const ev = fight(e, P);
-  ok(hitOn(ev, t.uid) === 2, 'Executioner: exactly half Health is not below half'); }
+{ const {e, P} = mk(); put(e, P, 1, 'gi-exec'); const t = put(e, P, 2, 'gi-wall'); t.hp = 7; const ev = fight(e, P);
+  ok(hitOn(ev, t.uid) === 5, `Executioner 3: +3 on a unit below 25% Health (7/30; package SK3 aligned it from half): ${hitOn(ev, t.uid)}`); }
+{ const {e, P} = mk(); put(e, P, 1, 'gi-exec'); const t = put(e, P, 2, 'gi-wall'); t.hp = 8; const ev = fight(e, P);
+  ok(hitOn(ev, t.uid) === 2, 'Executioner: 8/30 (above a quarter) gets no bonus'); }
 // ---- 3. Detonate
 { const {e, P} = mk(); put(e, P, 1, 'gi-det'); const t = put(e, P, 2, 'gi-wall'); t.poison = 4; const ev = fight(e, P); // (Poison ticks 4 and drops to 3 first)
   ok(hitOn(ev, t.uid) === 4 && t.poison === 0, `Detonate: 1 + its 3 Poison, then no Poison (${hitOn(ev, t.uid)}, poison ${t.poison})`);
@@ -143,7 +144,7 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
     for(let r = 1; r <= 6; r++){ out.push(...start(e, P, r)); out.push(...fight(e, P, r % 2 ? 1 : 2)); } return JSON.stringify(out.map(x=> [x.type, x.kind, x.field, x.targetUid, x.uid, x.dmg, x.amount])); };
   ok(run(21) === run(21), 'the same seed gives the same fight (fields + skills)'); ok(run(21) !== run(22) || true, 'another seed may differ'); }
 // ---- 14. The CPU
-{ const {e, P} = mk(); const t = put(e, P, 1, 'gi-wall'); t.poison = 2; t.hp = 12;
+{ const {e, P} = mk(); const t = put(e, P, 1, 'gi-wall'); t.poison = 2; t.hp = 7; /* below 25% (SK3) */
   ok(e.aiBonusVs(defs['gi-hunterP'], t) === 2 && e.aiBonusVs(defs['gi-exec'], t) === 3 && e.aiBonusVs(defs['gi-det'], t) === 2, 'aiBonusVs: Hunter, Executioner and Detonate count against the unit it would face');
   ok(e.aiBonusVs(defs['gi-hit3'], t) === 0, '... and nothing for a plain card'); }
 { const {e, P} = mk(); put(e, P, 2, 'gi-otter'); P[2].hand = [{uid:900, defId:'gi-otter'}, {uid:901, defId:'gi-otter'}];
@@ -208,7 +209,11 @@ ok(appSrc.includes('{ const g = giLogText(ev, nm); if(g) return g; }') && appSrc
 ok(appSrc.includes("'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots'].includes(ev.field)) hit = markFieldRow"), 'a new field row is learned when it first does something');
 ok(appSrc.includes('brittle:rc.brittle||0') && appSrc.includes('brittle:c.brittle||0'), 'the replay snapshot carries Brittle');
 const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)|hunter-vs-|st-brittle|stx-brittle|fx-name-(spore|thunder|tangled)|fxx?-(spore|thunder|tangled)|log-(spore|thunder|tangled|roots|detonate|proliferate|brittle|field-)|float-(brittle|field-break)|brittle-tip|prayer-ward-tip)/.test(k));
-ok(TKEYS.length === 67, `67 package GI TX keys (${TKEYS.length})`);
+// 2026-10-19 (package SK3): its own skill names (ui.skn-*) and Hunter's Weak pick are SK3's keys, counted in tests/skills-sk3-2026-10-19.js
+// (and any later package's ui.skn-* name, e.g. EQ's: only GI's nine skill names count here)
+const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || (/^ui\.skn-/.test(k) && !/^ui\.skn-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)$/.test(k));
+SK3_NOT_GI.test = SK3_NOT_GI;
+ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 67, `67 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);
 TKEYS.forEach(k=> ok(appSrc.includes(`TX('${k}'`), `${k} is used in arena_app.js`));
 TKEYS.filter(k=> !/codex|^ui\.fxx-|^ui\.stx-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
 // ---- 18. 12 packs: the texts, the pool cards' names and flavour
@@ -221,7 +226,7 @@ CODES.forEach(code=>{ const pack = JSON.parse(R('lang/' + code + '.json')), name
   ok(POOL.every(c=> names[c.name] && ui[c.flavor]), `${code}: the pool cards' names and flavour lines`); });
 // ---- 19. The engine wiring and the stated rules
 ok(eng.includes('if(rules.tideSpout && round > 1 && !fPause)') && eng.includes('if(round > 1 && !fPause) fieldEffects2Tick') && eng.includes('if(rules.swampFever && round > 1 && !fPause)') && eng.includes('if(paused) return; // Field Breaker'), 'Field Breaker gates the Tide-spout, Field effects 2/3, Swamp Fever and the volcano');
-ok(eng.includes("'bound','invincible','invisible','webbed','brittle']"), 'Brittle has a statusEnd (wears off)');
+ok(eng.includes("'bound','invincible','invisible','webbed','brittle'"), 'Brittle has a statusEnd (wears off)'); // (package SK3 appended its statuses after it)
 const D = JSON.parse(R('docs/decisions.json')), md = R('docs/decisions.md'), gi = (D.rules || []).find(r=> /Package GI/.test(r.intro || ''));
 ok(gi && gi.items.length >= 10 && gi.items.some(x=> /target the card it is about/.test(x)) && gi.items.some(x=> /Field Breaker N/.test(x)) && gi.items.some(x=> /🧿/.test(x)), 'decisions.json: the package GI stated rules');
 ok(md.includes('**A trigger can target the card it is about**') && md.includes('**Field Breaker N** (Claude'), 'decisions.md regenerated with them');

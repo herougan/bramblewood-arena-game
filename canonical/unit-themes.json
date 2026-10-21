@@ -1073,30 +1073,30 @@
   }
  ],
  "counts": {
-  "units": 731,
-  "live": 727,
+  "units": 734,
+  "live": 730,
   "pool": 4,
   "proposed": 108,
   "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
-   "type": 202,
+   "type": 203,
    "home map": 453,
    "fights": 19,
-   "fallback": 38,
+   "fallback": 40,
    "name": 11,
    "manual": 8
   },
   "biome": {
    "river": 73,
-   "meadow-forest": 92,
+   "meadow-forest": 93,
    "reef-ocean": 43,
    "desert-glass": 21,
    "tundra-ice": 30,
    "volcanic-ash": 72,
    "fungal": 24,
-   "village-keep": 36,
-   "taiga": 18,
+   "village-keep": 37,
+   "taiga": 19,
    "long-grass": 18,
    "redwood": 21,
    "jungle": 23,
@@ -1111,7 +1111,7 @@
    "coast": 19
   },
   "family": {
-   "mammal": 286,
+   "mammal": 287,
    "plant": 11,
    "insect": 72,
    "arachnid": 15,
@@ -1119,7 +1119,7 @@
    "worm": 11,
    "fungus": 2,
    "spirit-undead": 19,
-   "construct": 12,
+   "construct": 14,
    "elemental": 3,
    "fish": 40,
    "reptile": 39,
@@ -1134,9 +1134,9 @@
   },
   "faction": {
    "otters": 28,
-   "wild": 342,
+   "wild": 344,
    "hives": 20,
-   "beasts": 120,
+   "beasts": 121,
    "dogs-cats": 12,
    "spirits": 25,
    "supporting-folk": 61,
@@ -1152,7 +1152,7 @@
   },
   "animalGroup": {
    "otter": 27,
-   "owl": 11,
+   "owl": 12,
    "dolphin": 2,
    "bee": 9,
    "scorpion": 3,
@@ -1181,7 +1181,7 @@
    "badger": 10,
    "crocodile": 5,
    "crow": 10,
-   "wolf": 14,
+   "wolf": 15,
    "boar": 9,
    "turtle": 14,
    "squirrel": 9,
@@ -1190,7 +1190,7 @@
    "nautilus": 1,
    "deer": 10,
    "fox": 17,
-   "beaver": 6,
+   "beaver": 7,
    "snake": 12,
    "bat": 16,
    "mouse": 11,
@@ -1295,8 +1295,8 @@
    "panda": 1
   },
   "subtype": {
-   "plant": 11,
-   "structure": 13,
+   "plant": 12,
+   "structure": 14,
    "fungus": 2,
    "elemental": 11,
    "construct": 7,
@@ -4206,7 +4206,7 @@
      null
     ],
     [
-     "demolisher",
+     "siege",
      3
     ]
    ],
@@ -5117,7 +5117,7 @@
      1
     ],
     [
-     "demolisher",
+     "siege",
      2
     ]
    ],
@@ -6578,7 +6578,7 @@
    },
    "skills": [
     [
-     "demolisher",
+     "siege",
      1
     ]
    ],
@@ -13911,6 +13911,10 @@
     [
      "renewal",
      null
+    ],
+    [
+     "cure",
+     2
     ],
     [
      "flying",
@@ -24577,10 +24581,6 @@
     [
      "siege",
      4
-    ],
-    [
-     "demolisher",
-     3
     ]
    ],
    "types": [
@@ -34514,7 +34514,7 @@
      2
     ],
     [
-     "demolisher",
+     "siege",
      2
     ]
    ],
@@ -41290,6 +41290,153 @@
    "manual": [
     "biomes"
    ]
+  },
+  {
+   "id": "petrified-tree",
+   "name": "Petrified Tree",
+   "icon": "🪨",
+   "status": "live",
+   "rarity": "rare",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "construct",
+   "sub": null,
+   "animal": "owl",
+   "animalGroup": "owl",
+   "subtype": "plant",
+   "faction": "wild",
+   "size": "huge",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 5,
+    "wait": 3,
+    "attack": 0,
+    "health": 45,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "trigger",
+     "perTurn→gain 1"
+    ]
+   ],
+   "types": [
+    "Flora",
+    "Structure"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": null,
+   "structure": true,
+   "why": {
+    "biome": "type Flora",
+    "family": "Structure",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "bucketknee-wolf",
+   "name": "Bucketknee Wolf",
+   "icon": "🐺",
+   "status": "live",
+   "rarity": "veryrare",
+   "biomes": [
+    "taiga"
+   ],
+   "family": "mammal",
+   "sub": "Canid",
+   "animal": "wolf",
+   "animalGroup": "wolf",
+   "subtype": null,
+   "faction": "beasts",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 2,
+    "attack": 6,
+    "health": 14,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "armor",
+     1
+    ],
+    [
+     "helmet",
+     null
+    ]
+   ],
+   "types": [
+    "Wolf",
+    "Canid"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "easteregg",
+   "why": {
+    "biome": "usual ground of Wolf",
+    "family": "species Canid",
+    "faction": "hunter type / name"
+   }
+  },
+  {
+   "id": "armory",
+   "name": "Armory",
+   "icon": "⚔️",
+   "status": "live",
+   "rarity": "rare",
+   "biomes": [
+    "village-keep"
+   ],
+   "family": "construct",
+   "sub": null,
+   "animal": "beaver",
+   "animalGroup": "beaver",
+   "subtype": "structure",
+   "faction": "wild",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 0,
+    "health": 21,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "weaponMaster",
+     1
+    ]
+   ],
+   "types": [
+    "Structure"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": null,
+   "enemyOnly": true,
+   "structure": true,
+   "why": {
+    "biome": "usual ground of Structure",
+    "family": "Structure",
+    "faction": "default"
+   }
   },
   {
    "id": "dire-cave-olm",
