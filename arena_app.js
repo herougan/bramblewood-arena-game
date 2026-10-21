@@ -1844,6 +1844,10 @@ const SKILL_DEFS = [
   },
 ];
 const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','water']; // + magic and water (2026-10-14)
+// 2026-10-21 (owner 18:24: "Can I use Fire? In that dropdown list - add emojis."): editor labels for the Element dropdowns. The stored
+// value stays the engine's key (heat is fire); only the label changes.
+const DMG_TYPE_LABEL = {physical:'💢 Physical', cold:'❄️ Cold (ice)', heat:'🔥 Fire (heat)', acid:'🧪 Acid', poison:'☠️ Poison', decay:'🍂 Decay', magic:'🪄 Magic', water:'💧 Water'};
+const dmgTypeOptLabel = dt=> DMG_TYPE_LABEL[dt] || dt;
 // Elemental Damage Types -> signature status (2026-09-24, task #109, "one status effect per
 // elemental damage type"): a card's own dmgType field only ever drove Resist/Weakness math (see
 // resistFactor/weaknessFactor in bramblewood-engine.js) -- it never had anything to do with which
@@ -9669,7 +9673,7 @@ function renderEditorInner(){
            default for every other card, unchanged. -->
       <div class="field" title="This card's basic attack's damage type. Poison/Decay convert the attack's own damage into that element's signature effect instead of ordinary HP loss (see the Reference tab); every other value only affects Resist/Weakness matching, same as before.">
         <label>Element</label>
-        <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option ${((c.dmgType||'physical')===dt)?'selected':''}>${dt}</option>`).join('')}</select>
+        <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${((c.dmgType||'physical')===dt)?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>
       </div>
     </div>
     ${levelStatsEditorHTML(c)}
@@ -10456,7 +10460,7 @@ function actionFieldsHTML(t,i){
   if(aDef.fields.includes('nameMatch')) html += `<input type="text" placeholder="card name" class="w-110" data-t="nameMatch" data-i="${i}" value="${escapeAttr(t.nameMatch||'')}">`;
   if(aDef.fields.includes('matchMode')) html += `<select data-t="matchMode" data-i="${i}"><option value="exact" ${t.matchMode==='exact'?'selected':''}>exact name</option><option value="contains" ${t.matchMode!=='exact'?'selected':''}>name contains…</option></select>`;
   if(aDef.fields.includes('count')) html += `<input type="number" placeholder="count" class="w-56" data-t="count" data-i="${i}" value="${t.count||1}">`;
-  if(aDef.fields.includes('dmgType')) html += `<select data-t="dmgType" data-i="${i}">${[...DMG_TYPES].sort().map(dt=>`<option ${(t.dmgType===dt||(!t.dmgType&&dt==='physical'))?'selected':''}>${dt}</option>`).join('')}</select>`;
+  if(aDef.fields.includes('dmgType')) html += `<select data-t="dmgType" data-i="${i}">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${(t.dmgType===dt||(!t.dmgType&&dt==='physical'))?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>`;
   // Gain's resource picker (2026-09-30, new — see the 'gain' ACTION_DEFS entry's own comment).
   if(aDef.fields.includes('resource')){
     const opts = [

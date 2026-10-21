@@ -11,7 +11,7 @@ Status: specified by the owner. Package TR builds it after package EV (Evolute),
 | Name | Condition | Default {…} |
 |---|---|---|
 | **Gilded** | Your resources are worth more than 25, counting Lumber 1, Stone 2, Metal 3, Gold 5 each | +5/+10 |
-| **Championed** | It wins a duel. Default definition: it kills the enemy facing it while no ally stands beside it. Flag if a better one exists. | +3/+3 |
+| **Championed** | It wins a duel: its own attack kills the enemy it is fighting (owner 18:24: no "no ally beside it" condition) | +3/+3 |
 | **Veteran** | It survives 3 rounds | +2/+4 |
 | **Enraged** | It has Rage | none: the card sets it |
 | **Matured** | It survives N rounds | +2/+4 fodder (Stem) stats, which an evolute placed over it inherits |
