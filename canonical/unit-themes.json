@@ -1982,7 +1982,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 0,
-    "health": 20,
+    "health": 19,
     "dmg": "physical",
     "resist": []
    },
@@ -13158,8 +13158,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 1,
-    "health": 7,
+    "attack": 2,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -17469,7 +17469,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 2,
+    "health": 3,
     "dmg": "physical",
     "resist": []
    },
@@ -18292,14 +18292,14 @@
    "animalGroup": "fox",
    "subtype": "fiend",
    "faction": "ashen-choir",
-   "size": "small",
+   "size": "tiny",
    "stage": 4,
    "firstMap": 19,
    "body": {
     "cost": 0,
     "wait": 0,
-    "attack": 3,
-    "health": 4,
+    "attack": 2,
+    "health": 3,
     "dmg": "heat",
     "resist": []
    },
@@ -18642,14 +18642,14 @@
    "animalGroup": "cat",
    "subtype": "fiend",
    "faction": "ashen-choir",
-   "size": "small",
+   "size": "tiny",
    "stage": null,
    "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 2,
-    "health": 5,
+    "attack": 1,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
@@ -19102,7 +19102,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 2,
+    "health": 1,
     "dmg": "physical",
     "resist": []
    },
@@ -19306,14 +19306,14 @@
    "animalGroup": "eagle",
    "subtype": null,
    "faction": "ecclesia",
-   "size": "small",
+   "size": "tiny",
    "stage": 4,
    "firstMap": 21,
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 2,
-    "health": 5,
+    "attack": 1,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
@@ -27183,7 +27183,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 2,
+    "health": 1,
     "dmg": "physical",
     "resist": [
      "heat"
@@ -32000,8 +32000,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 3,
-    "health": 8,
+    "attack": 2,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },

@@ -13,7 +13,7 @@
   "black-dragon",
   "caldera-wyrm"
  ],
- "count": 22,
+ "count": 19,
  "cards": [
   {"id":"ravenous-wolverine","name":"Ravenous Wolverine","rarity":"rare","attack":1,"health":5,"wait":0,"cost":1,"pool":false,"source":"map:m6:17-6","sBefore":6,"sAfter":19.98,"sLegacy":1,"passedBefore":true,"N":15.97,"x1":26.98,"N2":28.34,"x2":24.98,"missMult":1,"overBy":{"x1":11.01,"x2":-3.36},"fails":["2A+H+S"],"costParts":["onAttack → buff 19.98 [3 × 6.66]"]},
   {"id":"worker-ant","name":"Worker Ant","rarity":"starter","attack":1,"health":2,"wait":0,"cost":0,"pool":false,"source":null,"sBefore":6,"sAfter":15.36,"sLegacy":1,"passedBefore":true,"N":10.39,"x1":19.36,"N2":11.99,"x2":17.36,"missMult":1,"overBy":{"x1":8.97,"x2":5.37},"fails":["2A+H+S","A*H+S"],"costParts":["onAttack → drawCard 15.36 [3 × 5.12]"]},
@@ -31,11 +31,8 @@
   {"id":"cave-cricket","name":"Cave Cricket","rarity":"common","attack":1,"health":2,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":1,"sAfter":5.12,"sLegacy":1,"passedBefore":true,"N":11.42,"x1":13.68,"N2":14.49,"x2":10.68,"missMult":1.5,"overBy":{"x1":2.26,"x2":-3.81},"fails":["2A+H+S"],"costParts":["darksight 5.12"]},
   {"id":"grass-viper","name":"Grass Viper","rarity":"uncommon","attack":1,"health":3,"wait":0,"cost":0,"pool":false,"source":"map:mw:5-3","sBefore":3,"sAfter":9.13,"sLegacy":3,"passedBefore":true,"N":11.94,"x1":14.13,"N2":15.84,"x2":12.13,"missMult":1,"overBy":{"x1":2.19,"x2":-3.71},"fails":["2A+H+S"],"costParts":["shedding 6","poison 3.13"]},
   {"id":"water-scorpion","name":"Water Scorpion","rarity":"common","attack":3,"health":6,"wait":1,"cost":1,"pool":true,"source":null,"sBefore":2,"sAfter":6.19,"sLegacy":2,"passedBefore":true,"N":16.53,"x1":18.19,"N2":30.36,"x2":24.19,"missMult":1,"overBy":{"x1":1.66,"x2":-6.17},"fails":["2A+H+S"],"costParts":["sentry 3.4","tide 2.79"]},
-  {"id":"cathedral-eagle","name":"Cathedral Eagle","rarity":"legendary","attack":2,"health":5,"wait":1,"cost":0,"pool":false,"source":null,"sBefore":4,"sAfter":4.23,"sLegacy":4,"passedBefore":false,"N":18.39,"x1":19.85,"N2":37.58,"x2":21.35,"missMult":1.5,"overBy":{"x1":1.46,"x2":-16.23},"fails":["2A+H+S"],"costParts":["relic 3.23","prayer 1"]},
-  {"id":"cinder-gecko","name":"Cinder Gecko","rarity":"common","attack":1,"health":2,"wait":0,"cost":0,"pool":false,"source":"map:m22:22-2","sBefore":1,"sAfter":5.75,"sLegacy":1,"passedBefore":true,"N":13.18,"x1":14.63,"N2":19.3,"x2":11.63,"missMult":1.5,"overBy":{"x1":1.45,"x2":-7.67},"fails":["2A+H+S"],"costParts":["dry 5.75"]},
   {"id":"courier-pigeon","name":"Courier Pigeon","rarity":"common","attack":1,"health":1,"wait":0,"cost":0,"pool":false,"source":null,"sBefore":2,"sAfter":5.12,"sLegacy":1,"passedBefore":true,"N":10.9,"x1":12.18,"N2":13.2,"x2":9.18,"missMult":1.5,"overBy":{"x1":1.28,"x2":-4.02},"fails":["2A+H+S"],"costParts":["onSpawn → drawCard 5.12 [1 × 5.12]"]},
   {"id":"cave-bat-swarm","name":"Cave Bat Swarm","rarity":"rare","attack":1,"health":2,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":1,"sAfter":5.14,"sLegacy":1,"passedBefore":true,"N":12.45,"x1":13.71,"N2":17.22,"x2":10.71,"missMult":1.5,"overBy":{"x1":1.26,"x2":-6.51},"fails":["2A+H+S"],"costParts":["fork 5.14"]},
-  {"id":"ant-hill","name":"Ant Hill","rarity":"common","attack":0,"health":20,"wait":3,"cost":2,"pool":false,"source":null,"sBefore":3,"sAfter":7.89,"sLegacy":1,"passedBefore":true,"N":27.49,"x1":27.89,"N2":83.97,"x2":7.89,"missMult":1,"overBy":{"x1":0.4,"x2":-76.08},"fails":["2A+H+S"],"costParts":["perTurn → spawnCard 7.89 [1.5 × 5.26]"]},
   {"id":"cave-flitter","name":"Cave Flitter","rarity":"uncommon","attack":1,"health":1,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":1,"sAfter":5.12,"sLegacy":1,"passedBefore":true,"N":11.94,"x1":12.18,"N2":15.84,"x2":9.18,"missMult":1.5,"overBy":{"x1":0.24,"x2":-6.66},"fails":["2A+H+S"],"costParts":["darksight 5.12"]}
  ]
 }

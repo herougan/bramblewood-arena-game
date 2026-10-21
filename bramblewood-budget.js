@@ -41,7 +41,7 @@ const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epi
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
 const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
-const PARAMS = ['crepuscularHp', 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs'];
+const PARAMS = ['crepuscularHp', 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */];
 // a card's abilities: its effects keys with a value (not a parameter of another skill), each trigger as 'trigger:<on>'
 function abilitiesOf(effects, params){ const e = effects || {}, P = params || PARAMS, out = [];
   Object.keys(e).forEach(k=>{ const v = e[k]; if(v == null || v === false || v === 0 || v === '' || (Array.isArray(v) && !v.length) || P.includes(k)) return;
