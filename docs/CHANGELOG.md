@@ -2,6 +2,21 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package BF5: N halved, every card re-derived, road and raid re-measured)
+- **Owner (10-19 21:36):** "I think numbers are way too big. Can we HALF everything?" ("Straight up, the total N value"). Then the 10-21 rulings: fold the owner's later live edits and halve them too; N multipliers; two skills at most; re-derive everything; re-measure with honest levers only.
+- **N is halved:** one constant, `scale: 0.5` in `bramblewood-budget.js` (also in `canonical/skill-costs.json`'s budget line, the Test Lab and the hub). Base, the Level terms and the Map × 0.2 term all halve; the A·H rule is (N/3)² of the halved N. Skill costs (S) stay. **Bounty 0.5 → 1** a point.
+- **N multipliers** (named constants, shown in the card editor's budget panel and the Test Lab): no abilities ×1.05, only light abilities (Flying, Tide, a time-of-day skill) ×1.02, Fragile ×0.75. Passive Vulnerable is a skill worth −1.5.
+- **Two skills at most:** 99 cards cut to two (Bounty first, then a time-of-day skill, then Darksight, then the two the name and flavour carry); 17 special cards (Epic and up, Supreme, hidden, Easter eggs, tokens) keep theirs. The owner's ants: Ant Scout Swarm alone, Soldier Ant + Formation 1, Tunnel Ant + Ambush 2.
+- **The owner's later live edits folded:** 13 cards, the Map 0 / Hedgerow / Shallows nodes, the tutorial and the Goliath's shards (one conflict: the Swarm Matriarch's art, the file's newer portrait kept). The server rows can be cleared with `supabase/proposed/20261021_clear_folded_overrides_2.sql` (**prepared, not applied**).
+- **Every card re-derived:** each keeps its share of N from before the cut and the halving (`docs/balance/halve-ref-2026-10-21.json`), in the band (over 60%, at most 100%). 719 cards: 702 in the band, 17 owner calls (their skills don't fit the halved N: halved in proportion, flagged); 24 halved in proportion (the Caldera Wyrm, tokens, the Nest's eggs, the Blacksmith's equipment). The Easter eggs go through the band; Terraumbra is measured with its grant (3/3 → 1/1). Cave Bat Swarm 1/2 (owner).
+- **Brambles halved too** (measured first: full brambles dragged fights toward the turn caps): `BRAMBLE_SCALE = 0.5` in `arena_app.js`, applied when a fight is built (the road, your castle in every mode, the raid 350 → 175 / Core 200 → 100 / elders' floor 55 → 28 / MX's raid Shield 50 → 25, the trench, the tutorial, the dungeon). The stored numbers stay full-size.
+- **Forge:** the curve follows the halved N times the card's multiplier; mean gain +1.2% Lv 2, +21.8% Lv 4, +50.4% Lv 7, +79.4% Lv 10, +96.3% Lv 11.
+- **Skill numbers that now look big** (flagged, not changed): Meteor 20, Fireball 15, Trap 6, Pounce 6, Armor up to 5 against a median card of 2/5.
+- **The road, re-measured (honest levers only: enemy decks, the level schedule, no new Shield, no field buffs):** 15 / 179 main fights on target on the halved cards, 59 / 179 after two tuner rounds (fresh seeds 57; side maps 24 / 77). 173 gaps are listed (168 too easy) in `docs/balance/road-gaps-2026-10-19.json`; the owner's own node fights (Maps 0-2) are untouched. Test floors follow (level-curve 55 / 50 / 20, side-maps 20).
+- **The raid, re-measured:** completion unchanged (100% for 30-250 participants, day 6.54 with 30), but the decks now break the halved bramble about half the time; no lever pulled (owner call B12, with a 410 probe).
+- **Owner calls:** B11 (halve the skills' fixed numbers too), B12 (the raid's brambles), B13 (apply the clear SQL) in `docs/decisions.json`.
+- Test: `tests/bf5-2026-10-21.js`.
+- Docs: `docs/balance/halve-2026-10-19.md`, `docs/balance/owner-edits-bf5-2026-10-21.json`, `docs/balance/two-skills-2026-10-21.json`.
 ## 2026-10-19 (package U4: visible toggle states, a Forge shortcut, the deck popup's Advancement sort)
 - **Owner (23:20):** "The show unseen and all by ID, -> should show a tick or not if enabled or not - can't tell."
   - **Cause:** the Codex toolbar's text-field rule (`.codex-toolbar input`) stretched those checkboxes into empty 160 px pills, so on and off looked the same.

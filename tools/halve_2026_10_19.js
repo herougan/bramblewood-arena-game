@@ -168,6 +168,7 @@ if(cmd === 'plan' || cmd === 'apply'){
     '- **Re-measure the skill worth afterwards** (`tools/skill_worth`). The costs (S) were measured at the old sizes.', '');
   if(GP) md.push('## The road, re-measured (honest levers only)', '',
     `The levers are the owner's from 16:22: enemy decks only, levels on the schedule, no new Shield, no field buffs. The final measure is \`docs/balance/skirmish-pass-bf-after.jsonl\` (120 games, the measure seeds). On target: **main maps ${GP.counts.main.green} / ${GP.counts.main.fights}**, **side maps ${GP.counts.side.green} / ${GP.counts.side.fights}**. On fresh seeds: ${GP.freshCounts && GP.freshCounts.main ? GP.freshCounts.main.green + ' / ' + GP.freshCounts.main.fights : '—'}. There are **${GP.gaps.total} gaps** (${GP.gaps.easy} too easy: a future "cheat" field; ${GP.gaps.hard} too hard), listed in \`docs/balance/road-gaps-2026-10-19.json\`.`, '');
+  const RR = rdj('docs/balance/halve-road-2026-10-21.json'); if(GP && RR) md.push(...RR.lines, ''); // (10-21) how the road got there
   if(RD) md.push('## The raid, re-measured', '', ...RD.lines, '');
   fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'halve-2026-10-19.md'), md.join('\n'));
   console.log('wrote docs/balance/halve-2026-10-19.md');

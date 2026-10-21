@@ -53,7 +53,7 @@ ok(rows.length > 200, `4. the BF measure has every fight (${rows.length} rows)`)
   // 2026-10-19 (BF3, owner 16:22): honest levers only; a side fight off its band is a listed gap (docs/balance/road-gaps-2026-10-19.json)
   const gaps = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'road-gaps-2026-10-19.json'), 'utf8')); }catch(e){ return null; } })();
   const listed = new Set(gaps ? gaps.gaps.list.map(g=> g.map + ':' + g.code) : []), unlisted = off.filter(r=> !listed.has(r.map + ':' + r.code));
-  ok(side.length > 60 && gaps && !unlisted.length && side.length - off.length >= 60, `4. side fights on the curve inside their bands: ${side.length - off.length} of ${side.length} (at least 60); the rest are listed gaps (unlisted: ${unlisted.map(r=> `${r.code} ${r.win}`).join(', ')})`);
+  ok(side.length > 60 && gaps && !unlisted.length && side.length - off.length >= 20 /* 2026-10-21 (BF5): halved N, honest levers only: 24 of 77; BF3 60 */, `4. side fights on the curve inside their bands: ${side.length - off.length} of ${side.length} (at least 20); the rest are listed gaps (unlisted: ${unlisted.map(r=> `${r.code} ${r.win}`).join(', ')})`);
   const mean = a=>{ const b = a.slice().sort((x, y)=> x - y); return b.length ? (b[(b.length - 1) >> 1] + b[b.length >> 1]) / 2 : 0; }, worse = []; // the median: the Eye's four-wave 20-A-4 can't be simulated (LV)
   // (BF3) a listed gap is left out: Gannet Cliffs' 2-B-2 / 2-B-3 / 2-B-4 are all easy gaps (a future "cheat" field), so mg is not compared
   for(const m of subs){ const mine = rows.filter(r=> r.map === m.id && r.curve && !r.endless && !listed.has(r.map + ':' + r.code)); if(!mine.length || m.shieldMap != null) continue;
