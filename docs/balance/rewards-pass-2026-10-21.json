@@ -1,0 +1,3177 @@
+{
+ "about": "Package RP (2026-10-21): every card source move of the rewards and sources pass. from/to are card sources; \"awaitingSource\" = no source yet (held for the map in held.map); obtainBefore/After = the map where it becomes obtainable (the stat budget's map term, Base + 0.2 x this; held cards keep their old one for the budget until placed). Apply with python3 tools/rewards_pass_apply_2026_10_21.py; made by node tools/rewards_pass_2026_10_21.js plan.",
+ "lineGates": {
+  "devilry": 66,
+  "ecclesia": 77,
+  "evomax": 30
+ },
+ "plainLumberOk": [
+  "badger-lumberjack"
+ ],
+ "submaps": {
+  "mtut": {
+   "name": "Tutorial",
+   "parent": "m1",
+   "parentMap": 0,
+   "opensAfter": null,
+   "shieldMap": null,
+   "keep": null
+  },
+  "mq": {
+   "name": "Clovermead",
+   "parent": "mf",
+   "parentMap": 1,
+   "opensAfter": {
+    "id": "mw",
+    "map": 5
+   },
+   "after": "1-1",
+   "shieldMap": 5,
+   "keep": "lucky-hopper"
+  },
+  "mp": {
+   "name": "Lilypad Reach",
+   "parent": "mb",
+   "parentMap": 2,
+   "opensAfter": {
+    "id": "m8",
+    "map": 6
+   },
+   "after": "2-1",
+   "shieldMap": 6,
+   "keep": "riverworks-bastion"
+  },
+  "m9": {
+   "name": "Basalt Foundry",
+   "parent": "m3",
+   "parentMap": 19,
+   "opensAfter": {
+    "id": "m23",
+    "map": 23
+   },
+   "after": "19-1",
+   "shieldMap": 23,
+   "keep": "ember-revenant"
+  },
+  "mj": {
+   "name": "The Sunken Depths",
+   "parent": "m7",
+   "parentMap": 10,
+   "opensAfter": {
+    "id": "m5",
+    "map": 14
+   },
+   "after": "10-9",
+   "shieldMap": 14,
+   "keep": "blue-ringed-octopus"
+  },
+  "mg": {
+   "name": "Smugglers' Grotto",
+   "parent": "mb",
+   "parentMap": 2,
+   "opensAfter": {
+    "id": "mu",
+    "map": 7
+   },
+   "after": "2-2",
+   "shieldMap": 7,
+   "keep": "octopus-tactician"
+  },
+  "mz": {
+   "name": "The Mycelium Deep",
+   "parent": "mu",
+   "parentMap": 7,
+   "opensAfter": {
+    "id": "m10",
+    "map": 11
+   },
+   "after": "7-6",
+   "shieldMap": 11,
+   "keep": "rootworm-colony"
+  },
+  "my": {
+   "name": "The Canopy",
+   "parent": "m5",
+   "parentMap": 14,
+   "opensAfter": {
+    "id": "md",
+    "map": 18
+   },
+   "after": "14-2",
+   "shieldMap": 18,
+   "keep": "jaguar-stalker"
+  },
+  "me": {
+   "name": "Eye of the Volcano",
+   "parent": "m11",
+   "parentMap": 20,
+   "opensAfter": null,
+   "after": "20-10",
+   "shieldMap": null,
+   "keep": "the-contradiction"
+  },
+  "mx": {
+   "name": "Volcano Lair",
+   "parent": "m11",
+   "parentMap": 20,
+   "opensAfter": null,
+   "after": "20-10",
+   "shieldMap": null,
+   "keep": "fire-drake-hatchling"
+  },
+  "ms": {
+   "name": "The Sunken Grove",
+   "parent": "mw",
+   "parentMap": 5,
+   "opensAfter": {
+    "id": "mk",
+    "map": 9
+   },
+   "after": "5-7",
+   "shieldMap": 9,
+   "keep": "hedgehog-herbalist"
+  },
+  "mn": {
+   "name": "The Glimmer Depths",
+   "parent": "m4",
+   "parentMap": 8,
+   "opensAfter": {
+    "id": "mh",
+    "map": 12
+   },
+   "after": "8-8",
+   "shieldMap": 12,
+   "keep": "lantern-spark-fly"
+  },
+  "mv": {
+   "name": "The Aerie Vault",
+   "parent": "m10",
+   "parentMap": 11,
+   "opensAfter": {
+    "id": "ml",
+    "map": 15
+   },
+   "after": "11-10",
+   "shieldMap": 15,
+   "keep": "wound-reaver"
+  },
+  "mi": {
+   "name": "The Ice Hollow",
+   "parent": "m6",
+   "parentMap": 17,
+   "opensAfter": {
+    "id": "m21",
+    "map": 21
+   },
+   "after": "17-8",
+   "shieldMap": 21,
+   "keep": "greenland-shark"
+  },
+  "mo": {
+   "name": "The Old Bramble",
+   "parent": "m1",
+   "parentMap": 0,
+   "opensAfter": {
+    "id": "mi",
+    "map": 17
+   },
+   "after": "0-4",
+   "shieldMap": 17,
+   "keep": "ent"
+  },
+  "mpd": {
+   "name": "The Pale Desert",
+   "parent": "md",
+   "parentMap": 18,
+   "opensAfter": {
+    "id": "md",
+    "map": 18
+   },
+   "after": "18-7",
+   "shieldMap": null,
+   "keep": "quicksand-queen"
+  },
+  "mm": {
+   "name": "Murgle Mayhem",
+   "parent": "m8",
+   "parentMap": 6,
+   "opensAfter": null,
+   "after": "6-8",
+   "shieldMap": null,
+   "keep": null
+  },
+  "mlb": {
+   "name": "The Long Burrow",
+   "parent": "m22",
+   "parentMap": 22,
+   "opensAfter": null,
+   "shieldMap": null,
+   "keep": null
+  }
+ },
+ "moves": [
+  {
+   "id": "shrine-acolyte",
+   "name": "Shrine Acolyte",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 20,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "shrine-high-priest",
+   "name": "Shrine High Priest",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-6"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 21,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "blessed-avatar",
+   "name": "Blessed Avatar",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 20,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": true
+  },
+  {
+   "id": "glowworm-cluster",
+   "name": "Glowworm Cluster",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 5,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "shrine-bell-ringer",
+   "name": "Shrine Bell-Ringer",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 20,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "chapel-tortoise",
+   "name": "Chapel Tortoise",
+   "rarity": "uncommon",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-3"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 21,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "cinder-imp",
+   "name": "Cinder Imp",
+   "rarity": "common",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "rarity": "common",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-1"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "pit-glutton",
+   "name": "Pit Glutton",
+   "rarity": "rare",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "brimstone-hound",
+   "name": "Brimstone Hound",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "blackmass-acolyte",
+   "name": "Blackmass Acolyte",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "dread-bell",
+   "name": "Dread Bell",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "tithe-collector",
+   "name": "Tithe Collector",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-7"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": true
+  },
+  {
+   "id": "lurking-dread",
+   "name": "Lurking Dread",
+   "rarity": "rare",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-8"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "puppeteer-imp",
+   "name": "Puppeteer Imp",
+   "rarity": "rare",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-9"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "the-sixfold",
+   "name": "The Sixfold",
+   "rarity": "epic",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-10"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "chapel-sparrow",
+   "name": "Chapel Sparrow",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 1,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "candle-moth",
+   "name": "Candle Moth",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-1"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "hymn-wren",
+   "name": "Hymn Wren",
+   "rarity": "common",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "abbey-goose",
+   "name": "Abbey Goose",
+   "rarity": "uncommon",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-3"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "golden-magpie",
+   "name": "Golden Magpie",
+   "rarity": "uncommon",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "friar-badger",
+   "name": "Friar Badger",
+   "rarity": "uncommon",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "storm-heron",
+   "name": "Storm Heron",
+   "rarity": "rare",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-6"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-7"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 11,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "cathedral-eagle",
+   "name": "Cathedral Eagle",
+   "rarity": "legendary",
+   "group": "ecclesia",
+   "from": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-6"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 21,
+   "obtainAfter": 0,
+   "held": {
+    "map": 77,
+    "why": "Ecclesia is found on Map 77 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "fruit-bat-familiar",
+   "name": "Fruit-bat Familiar",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-6"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "hellbender",
+   "name": "Hellbender",
+   "rarity": "common",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "flagellant-vulture",
+   "name": "Flagellant Vulture",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "vampire-finch",
+   "name": "Vampire Finch",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-7"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "chained-binturong",
+   "name": "Chained Binturong",
+   "rarity": "uncommon",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 19,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "rarity": "unique",
+   "group": "devilry",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 20,
+   "obtainAfter": 0,
+   "held": {
+    "map": 66,
+    "why": "Devilry is found on Map 66 (owner Oct 21)"
+   },
+   "plain": false
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "rarity": "common",
+   "group": "faction",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 11
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "rarity": "common",
+   "group": "faction",
+   "from": {
+    "id": "m1",
+    "kind": "map",
+    "node": "0-4"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 11
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "rarity": "uncommon",
+   "group": "faction",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 11
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "rarity": "rare",
+   "group": "faction",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-4"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 11
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "group": "faction",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 11,
+    "side": "tribes"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "rarity": "rare",
+   "group": "faction",
+   "from": {
+    "kind": "pack",
+    "tier": 11
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 11,
+    "side": "tribes"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "rarity": "common",
+   "group": "plain-start",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-1"
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 0,
+   "plain": true
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "rarity": "common",
+   "group": "plain-start",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-2"
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 0,
+   "plain": true
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "rarity": "common",
+   "group": "plain-start",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-3"
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 0,
+   "plain": true
+  },
+  {
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "rarity": "uncommon",
+   "group": "plain-start",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 0,
+   "plain": true
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "rarity": "common",
+   "group": "plain-start",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-2"
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 1,
+   "plain": true
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "rarity": "starter",
+   "group": "plain-start",
+   "from": null,
+   "to": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-3"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 1,
+   "plain": true
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "group": "plain-start",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 1,
+   "plain": false
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "rarity": "common",
+   "group": "plain-start",
+   "from": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-5"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 1,
+   "plain": true
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "rarity": "common",
+   "group": "side-map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "md",
+    "node": "18-7"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 18,
+   "plain": false
+  },
+  {
+   "id": "pale-oryx",
+   "name": "Pale Oryx",
+   "rarity": "uncommon",
+   "group": "side-map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-7"
+   },
+   "to": {
+    "kind": "map",
+    "id": "md",
+    "node": "18-7"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 18,
+   "plain": false
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "rare",
+   "group": "side-map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "md",
+    "node": "18-7"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 18,
+   "plain": false
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "rarity": "uncommon",
+   "group": "side-map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "md",
+    "node": "18-2"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 18,
+   "plain": false
+  },
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-1"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 4,
+   "plain": false
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-4"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 4,
+   "plain": false
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-1"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "id": "m1",
+    "kind": "map",
+    "node": "0-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-4"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 7,
+   "plain": false
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-3"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 7,
+   "plain": false
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "id": "m1",
+    "kind": "map",
+    "node": "0-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "ml",
+    "node": "15-6"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 15,
+   "plain": false
+  },
+  {
+   "id": "hedgehog-scout",
+   "name": "Hedgehog Scout",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-5"
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 12,
+   "plain": false
+  },
+  {
+   "id": "spring-rain",
+   "name": "Spring Rain",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-2"
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": true
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-1"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 6,
+   "plain": false
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-2"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 6,
+   "plain": false
+  },
+  {
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-3"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 6,
+   "plain": false
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-5"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 6,
+   "plain": false
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-7"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 6,
+   "plain": false
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-7"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-8"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 6,
+   "plain": false
+  },
+  {
+   "id": "minnow-skitter",
+   "name": "Minnow Skitter",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-1"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 9,
+   "plain": false
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-3"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 9,
+   "plain": false
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mg",
+    "node": "2-B-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-1"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mg",
+    "node": "2-B-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-4"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mg",
+    "node": "2-B-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-7"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mg",
+    "node": "2-B-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-1"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "full-moon",
+   "name": "Full Moon",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mg",
+    "node": "2-B-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-4"
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 7,
+   "plain": true
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-3"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-5"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 9,
+   "plain": false
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-5"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 9,
+   "plain": false
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-2"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-3"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-4"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-5"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-6"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "webspire-sentinel",
+   "name": "Webspire Sentinel",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-7"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-5"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 7,
+   "plain": false
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-6"
+   },
+   "obtainBefore": 7,
+   "obtainAfter": 9,
+   "plain": false
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mn",
+    "node": "8-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-8"
+   },
+   "obtainBefore": 8,
+   "obtainAfter": 8,
+   "plain": false
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-6"
+   },
+   "obtainBefore": 10,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-7"
+   },
+   "obtainBefore": 10,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-9"
+   },
+   "obtainBefore": 10,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-1"
+   },
+   "obtainBefore": 10,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "swordfish-spearman",
+   "name": "Swordfish Spearman",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-2"
+   },
+   "obtainBefore": 10,
+   "obtainAfter": 10,
+   "plain": false
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mv",
+    "node": "11-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-2"
+   },
+   "obtainBefore": 11,
+   "obtainAfter": 11,
+   "plain": false
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mv",
+    "node": "11-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-5"
+   },
+   "obtainBefore": 11,
+   "obtainAfter": 11,
+   "plain": false
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mi",
+    "node": "17-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-1"
+   },
+   "obtainBefore": 17,
+   "obtainAfter": 17,
+   "plain": false
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mi",
+    "node": "17-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-2"
+   },
+   "obtainBefore": 17,
+   "obtainAfter": 17,
+   "plain": false
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mi",
+    "node": "17-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-3"
+   },
+   "obtainBefore": 17,
+   "obtainAfter": 17,
+   "plain": false
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-2"
+   },
+   "obtainBefore": 19,
+   "obtainAfter": 19,
+   "plain": false
+  },
+  {
+   "id": "cinder-stoker",
+   "name": "Cinder Stoker",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-2"
+   },
+   "obtainBefore": 19,
+   "obtainAfter": 19,
+   "plain": false
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-3"
+   },
+   "obtainBefore": 19,
+   "obtainAfter": 19,
+   "plain": false
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Titan",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-8"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-4"
+   },
+   "obtainBefore": 19,
+   "obtainAfter": 19,
+   "plain": false
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-2"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "rarity": "veryrare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-3"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-4"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-5"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-7"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-9"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-6"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-10"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-7"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-1"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20,
+   "plain": false
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-1"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 22,
+   "plain": false
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-1"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-2"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 22,
+   "plain": false
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-3"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 22,
+   "plain": false
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-5"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 22,
+   "plain": false
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-6"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 22,
+   "plain": false
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-8"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 22,
+   "plain": false
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mo",
+    "node": "0-B-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-6"
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 13,
+   "plain": false
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-5"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 14,
+   "plain": false
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "rarity": "common",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-6"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 14,
+   "plain": false
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": "uncommon",
+   "group": "map",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-8"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-7"
+   },
+   "obtainBefore": 18,
+   "obtainAfter": 14,
+   "plain": false
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "id": "m1",
+    "kind": "map",
+    "node": "0-1"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 0,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-1"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "rarity": "uncommon",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-2"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-2"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "id": "mf",
+    "kind": "map",
+    "node": "1-4"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "rarity": "rare",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-4"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "rarity": "rare",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-5"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-1"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-1"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-1"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "rarity": "uncommon",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-2"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-2"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "puddle-hopper",
+   "name": "Puddle Hopper",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-5"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 1,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "dam-wall",
+   "name": "Dam Wall",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-2"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "beaver-builder",
+   "name": "Beaver Builder",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "rarity": "uncommon",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-6"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "pond-paddler",
+   "name": "Pond Paddler",
+   "rarity": "rare",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-2"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 2,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "mn",
+    "node": "8-A-3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "obtainBefore": 8,
+   "obtainAfter": 5,
+   "plain": false
+  },
+  {
+   "id": "thistle-baron",
+   "name": "The Thistle Baron",
+   "rarity": "heroic",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 1,
+   "obtainAfter": 0,
+   "held": {
+    "map": 21,
+    "why": "Map 1's boss leader (Thorns 2): no skills on Maps 0-1; proposed back as a Map 21+ \"advanced\" Thistle Baron reward"
+   },
+   "plain": false
+  },
+  {
+   "id": "missingno",
+   "name": "MissingNo.",
+   "rarity": "unique",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "m21"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 21,
+   "obtainAfter": 0,
+   "held": {
+    "map": 0,
+    "why": "a hidden glitch card with a map but no fight (it could never be had); proposed as an Easter egg (EASTER_EGG_IDS)"
+   },
+   "plain": false
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 7,
+   "obtainAfter": 0,
+   "held": {
+    "map": 26,
+    "why": "the Mycelium Deep keeps one card; Map 26, the Ant Empire"
+   },
+   "plain": false
+  },
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 7,
+   "obtainAfter": 0,
+   "held": {
+    "map": 26,
+    "why": "the Mycelium Deep keeps one card; Map 26, the Ant Empire"
+   },
+   "plain": false
+  },
+  {
+   "id": "oilbird",
+   "name": "Oilbird",
+   "rarity": "uncommon",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "mn",
+    "node": "8-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 8,
+   "obtainAfter": 0,
+   "held": {
+    "map": 29,
+    "why": "the Glimmer Depths keep one card; Sonar is Map 29's (the Abyssal Plains)"
+   },
+   "plain": false
+  },
+  {
+   "id": "glowing-gecko",
+   "name": "Glowing Gecko",
+   "rarity": "uncommon",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "mpd",
+    "node": "18-A-6"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 18,
+   "obtainAfter": 0,
+   "held": {
+    "map": 33,
+    "why": "the Pale Desert keeps one card; Irradiated is World 3's (Map 33, the Glowing Waste)"
+   },
+   "plain": false
+  },
+  {
+   "id": "toucan-courier",
+   "name": "Toucan Courier",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-1"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "poison-dart-frog",
+   "name": "Poison Dart Frog",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-1"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "velvet-worm",
+   "name": "Velvet Worm",
+   "rarity": "uncommon",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-1"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "leaf-chameleon",
+   "name": "Leaf Chameleon",
+   "rarity": "uncommon",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-1"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "strangler-vine",
+   "name": "Strangler Vine",
+   "rarity": "rare",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "name": "Slowpoke Sentinel",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "aye-aye-prowler",
+   "name": "Aye-aye Prowler",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-2"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "hanging-loafer",
+   "name": "Hanging Loafer",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-3"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "canopy-sloth-guardian",
+   "name": "Canopy Sloth Guardian",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-3"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-3"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "war-drum-mandrill",
+   "name": "War-Drum Mandrill",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "rarity": "rare",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "chilli-parrot",
+   "name": "Chilli Parrot",
+   "rarity": "uncommon",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-4"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "old-growth-tortoise",
+   "name": "Old-Growth Tortoise",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "slow-loris",
+   "name": "Slow Loris",
+   "rarity": "common",
+   "group": "held",
+   "from": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-5"
+   },
+   "to": "awaitingSource",
+   "obtainBefore": 14,
+   "obtainAfter": 0,
+   "held": {
+    "map": 25,
+    "why": "Map 25, the Rainforest Floor (the Canopy keeps one card; the road has no rainforest main map yet)"
+   },
+   "plain": false
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "rarity": "common",
+   "group": "base",
+   "from": {
+    "id": "mf",
+    "kind": "map",
+    "node": "1-1"
+   },
+   "to": "base",
+   "obtainBefore": 1,
+   "obtainAfter": 0,
+   "plain": true
+  }
+ ]
+}
