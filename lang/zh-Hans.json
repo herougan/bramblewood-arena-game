@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "目标石化N回合：不能攻击，伤害减半。",
  "The target's skills and triggers are off for N rounds.": "目标的技能与触发失效N回合。",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "目标的等待冻结N回合；已就绪的单位回到等待1。",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "单位需要一回合才能装备。单独放在格位上时它没有效果，也不阻挡；它的单位阵亡后，它会留给下一个单位。",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "世界展开了：你能去的每张地图都在顶部，🧭 能一次显示全部。",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "标记：祈祷标记、浆果、拾荒点数、创造力；从不偷减益。它们移到小偷身上。资源顺序：木材、岩石、金属、铀。",
  "Toxic Gas": "毒气",
@@ -2372,5 +2371,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n}个标记：每次命中它多造成1点伤害并消耗一个。",
  "Tap to see the card": "点按查看卡牌",
  "Shield {n} (falls as the raid weakens)": "护盾 {n}（随突袭减弱而下降）",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "首领的荆棘在每场战斗开始时拥有此护盾。它先于生命值吸收伤害，并随该部位剩余的生命值下降。"
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "首领的荆棘在每场战斗开始时拥有此护盾。它先于生命值吸收伤害，并随该部位剩余的生命值下降。",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "装备需要一回合。单独时毫无作用；其单位阵亡后仍会留下。"
 }

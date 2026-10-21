@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "O alvo torna-se pedra durante N rondas: sem ataque, metade do dano.",
  "The target's skills and triggers are off for N rounds.": "As habilidades e gatilhos do alvo ficam desligados durante N rondas.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "A Espera do alvo fica congelada durante N rondas; uma unidade pronta volta a Espera 1.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "A unidade leva uma rodada para se equipar. Sozinho num espaço não faz nada nem bloqueia nada; quando sua unidade morre, fica para a próxima.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "O mundo se abre: todo mapa que você alcança fica no topo, e a 🧭 mostra todos.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Fichas: fichas de Oração, Bagas, pontos de rapina, Criatividade; nunca um prejuízo. Passam para o ladrão. Recursos: Madeira, Pedra, Metal, Urânio.",
  "Toxic Gas": "Gás tóxico",
@@ -2371,5 +2370,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} ficha(s): cada golpe que sofre causa mais 1 e gasta uma.",
  "Tap to see the card": "Toque para ver a carta",
  "Shield {n} (falls as the raid weakens)": "Escudo {n} (diminui conforme a incursão enfraquece)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "O espinheiro do chefe começa cada luta com este escudo. Ele absorve os golpes antes da vida e diminui com a vida restante da parte."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "O espinheiro do chefe começa cada luta com este escudo. Ele absorve os golpes antes da vida e diminui com a vida restante da parte.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Leva uma rodada para equipar. Sozinho não faz nada; fica quando sua unidade morre."
 }

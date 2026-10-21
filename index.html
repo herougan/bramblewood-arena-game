@@ -38074,7 +38074,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=9daf626ef0", "es": "assets/lang/es.js?v=de83f60142", "fr": "assets/lang/fr.js?v=0e2ee45604", "id": "assets/lang/id.js?v=e59a6f384b", "it": "assets/lang/it.js?v=dcd46046c3", "ja": "assets/lang/ja.js?v=87dbaadf0c", "ko": "assets/lang/ko.js?v=5d7067cb6f", "pt": "assets/lang/pt.js?v=3ab1a7275a", "ta": "assets/lang/ta.js?v=549a505ec7", "tl": "assets/lang/tl.js?v=1d78f3fda4", "zh-Hans": "assets/lang/zh-Hans.js?v=d32002a8df", "zh-Hant": "assets/lang/zh-Hant.js?v=c9add2195c"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=385690d079", "es": "assets/lang/es.js?v=5f70bcc0ee", "fr": "assets/lang/fr.js?v=5f5208a10a", "id": "assets/lang/id.js?v=c0787a2c1f", "it": "assets/lang/it.js?v=b45af0e9cf", "ja": "assets/lang/ja.js?v=3f25389b19", "ko": "assets/lang/ko.js?v=ffa7eb72b8", "pt": "assets/lang/pt.js?v=799ebeadee", "ta": "assets/lang/ta.js?v=59a81aaf40", "tl": "assets/lang/tl.js?v=319c1a212e", "zh-Hans": "assets/lang/zh-Hans.js?v=21dbf1152a", "zh-Hant": "assets/lang/zh-Hant.js?v=9c8e6d0702"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -39197,7 +39197,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.spell-tailwind": "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.",
   "ui.de-equip": "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.",
   "ui.de-equip-grant": "Equip to one of your units: +{a}/+{h} and {grant}. One per unit; uses your play.",
-  "ui.de-equip-note": "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.",
+  "ui.de-equip-note": "Takes a round to equip. Alone it does nothing; it stays when its unit dies.",
   "ui.de-egg-into": "Hatches into the {name} when its Wait runs out. No Attack until then.",
   "ui.de-egg-random": "Hatches into a random {kind} (Common or Uncommon) when its Wait runs out. No Attack until then.",
   "ui.de-egg-random-up": "Hatches into a random {kind}, up to {rarity}, when its Wait runs out. No Attack until then.",
@@ -43172,7 +43172,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '0963ce56484d', BUILD_CARD_HASH = 'b636230c26c75cc239186cbff330556e9a017e500d9f2112cfb8e232ea0cbb38';
+const BUILD_ID = '41431e1c2f40', BUILD_CARD_HASH = 'b636230c26c75cc239186cbff330556e9a017e500d9f2112cfb8e232ea0cbb38';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

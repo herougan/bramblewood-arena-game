@@ -997,7 +997,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.spell-tailwind": "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.",
   "ui.de-equip": "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.",
   "ui.de-equip-grant": "Equip to one of your units: +{a}/+{h} and {grant}. One per unit; uses your play.",
-  "ui.de-equip-note": "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.",
+  "ui.de-equip-note": "Takes a round to equip. Alone it does nothing; it stays when its unit dies.",
   "ui.de-egg-into": "Hatches into the {name} when its Wait runs out. No Attack until then.",
   "ui.de-egg-random": "Hatches into a random {kind} (Common or Uncommon) when its Wait runs out. No Attack until then.",
   "ui.de-egg-random-up": "Hatches into a random {kind}, up to {rarity}, when its Wait runs out. No Attack until then.",

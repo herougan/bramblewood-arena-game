@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "Das Ziel wird N Runden zu Stein: kein Angriff, halber Schaden.",
  "The target's skills and triggers are off for N rounds.": "Fähigkeiten und Auslöser des Ziels sind N Runden aus.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "Das Warten des Ziels ist N Runden eingefroren; eine bereite Einheit geht zurück auf Warten 1.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "Die Einheit braucht eine Runde zum Ausrüsten. Allein auf einem Platz tut es nichts und blockt nichts; stirbt seine Einheit, bleibt es für die nächste liegen.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "Die Welt öffnet sich: Jede Karte, die du erreichen kannst, steht oben, und der 🧭 zeigt sie alle.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Marken: Gebetsmarken, Beeren, Sammelpunkte, Kreativität; nie eine Schwächung. Sie wandern auf den Dieb. Ressourcen: Holz, Stein, Metall, Uran.",
  "Toxic Gas": "Giftgas",
@@ -2371,5 +2370,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} Marke(n): jeder Treffer auf sie macht 1 mehr und verbraucht eine.",
  "Tap to see the card": "Tippen, um die Karte zu sehen",
  "Shield {n} (falls as the raid weakens)": "Schild {n} (sinkt, wenn der Raid schwächer wird)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Das Dornengestrüpp des Bosses beginnt jeden Kampf mit diesem Schild. Er fängt Treffer vor seiner Gesundheit ab und sinkt mit der verbleibenden Gesundheit des Teils."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Das Dornengestrüpp des Bosses beginnt jeden Kampf mit diesem Schild. Er fängt Treffer vor seiner Gesundheit ab und sinkt mit der verbleibenden Gesundheit des Teils.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Braucht eine Runde zum Ausrüsten. Allein bewirkt es nichts; es bleibt, wenn seine Einheit stirbt."
 }

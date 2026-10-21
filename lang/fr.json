@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "La cible se change en pierre pendant N manches : pas d’attaque, moitié des dégâts.",
  "The target's skills and triggers are off for N rounds.": "Les compétences et déclencheurs de la cible sont coupés pendant N manches.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "L’Attente de la cible est figée pendant N manches ; une unité prête repasse à Attente 1.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "L'unité met un round à s'équiper. Seul dans un emplacement, il ne fait rien et ne bloque rien ; quand son unité meurt, il reste pour la suivante.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "Le monde s'ouvre : chaque carte accessible est en haut, et la 🧭 les montre toutes.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Jetons : jetons de Prière, Baies, points de glanage, Créativité ; jamais un affaiblissement. Ils passent sur le voleur. Ressources : Bois, Pierre, Métal, Uranium.",
  "Toxic Gas": "Gaz toxique",
@@ -2372,5 +2371,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} jeton(s) : chaque coup qu’elle reçoit inflige 1 de plus et en use un.",
  "Tap to see the card": "Touchez pour voir la carte",
  "Shield {n} (falls as the raid weakens)": "Bouclier {n} (diminue à mesure que le raid faiblit)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "La ronce du boss commence chaque combat avec ce bouclier. Il encaisse les coups avant sa santé et diminue avec la santé restante de la partie."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "La ronce du boss commence chaque combat avec ce bouclier. Il encaisse les coups avant sa santé et diminue avec la santé restante de la partie.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Il faut un tour pour l'équiper. Seul, il ne fait rien ; il reste quand son unité meurt."
 }

@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "対象はNラウンド石になる：攻撃なし、ダメージ半分。",
  "The target's skills and triggers are off for N rounds.": "対象のスキルとトリガーがNラウンド止まる。",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "対象の待機がNラウンド止まる。準備完了のユニットは待機1に戻る。",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "装備には1ラウンドかかる。マスに単独で置かれている間は何もせず、何も防がない。持ち主が倒れても、次のユニットのためにそのマスに残る。",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "世界が広がった：行けるマップはすべて上に並び、🧭 で全部見られる。",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "トークン：祈りトークン、ベリー、拾い集めポイント、創造力。弱体は盗まない。盗んだ分は盗人に移る。資源は木材、石、金属、ウランの順。",
  "Toxic Gas": "毒ガス",
@@ -2372,5 +2371,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "トークン{n}個：命中ごとに1多く受け、1個使う。",
  "Tap to see the card": "タップしてカードを見る",
  "Shield {n} (falls as the raid weakens)": "シールド {n}（レイドが弱まるにつれて減少）",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "ボスのいばらは各戦闘をこのシールドで始めます。シールドは体力より先にダメージを受け止め、部位の残り体力に合わせて減っていきます。"
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "ボスのいばらは各戦闘をこのシールドで始めます。シールドは体力より先にダメージを受け止め、部位の残り体力に合わせて減っていきます。",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "装備には1ラウンドかかる。単独では何もしない。ユニットが倒れても残る。"
 }

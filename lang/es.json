@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "El objetivo se vuelve piedra durante N rondas: sin ataque, mitad de daño.",
  "The target's skills and triggers are off for N rounds.": "Las habilidades y disparadores del objetivo se apagan durante N rondas.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "La Espera del objetivo queda congelada N rondas; una unidad lista vuelve a Espera 1.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "La unidad tarda una ronda en equiparse. Solo en una casilla no hace nada ni bloquea nada; cuando su unidad muere, se queda para la siguiente.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "El mundo se abre: cada mapa al que puedes llegar está arriba, y la 🧭 los muestra todos.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Fichas: fichas de Oración, Bayas, puntos de rapiña, Creatividad; nunca un perjuicio. Pasan al ladrón. Recursos: Madera, Piedra, Metal, Uranio.",
  "Toxic Gas": "Gas tóxico",
@@ -2371,5 +2370,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} ficha(s): cada golpe que recibe hace 1 más y gasta una.",
  "Tap to see the card": "Toca para ver la carta",
  "Shield {n} (falls as the raid weakens)": "Escudo {n} (baja a medida que la incursión se debilita)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "La zarza del jefe empieza cada combate con este escudo. Absorbe los golpes antes que su salud y baja con la salud que le queda a la parte."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "La zarza del jefe empieza cada combate con este escudo. Absorbe los golpes antes que su salud y baja con la salud que le queda a la parte.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Tarda una ronda en equiparse. Solo no hace nada; se queda cuando su unidad muere."
 }

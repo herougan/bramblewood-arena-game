@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "Target menjadi batu selama N ronde: tanpa serangan, separuh kerusakan.",
  "The target's skills and triggers are off for N rounds.": "Skill dan pemicu target mati selama N ronde.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "Tunggu target membeku selama N ronde; unit yang Siap kembali ke Tunggu 1.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "Unit butuh satu ronde untuk memakainya. Sendirian di petak, ia tidak berbuat apa-apa dan tidak menghalangi; saat unitnya gugur, ia tetap di sana untuk unit berikutnya.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "Dunia terbuka: setiap peta yang bisa kamu capai ada di atas, dan 🧭 menampilkan semuanya.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Token: token Doa, Beri, poin pulung, Kreativitas; tak pernah debuff. Pindah ke si pencuri. Sumber daya: Kayu, Batu, Logam, Uranium.",
  "Toxic Gas": "Gas Beracun",
@@ -2371,5 +2370,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} token: tiap serangan padanya memberi 1 lebih dan memakai satu.",
  "Tap to see the card": "Ketuk untuk melihat kartu",
  "Shield {n} (falls as the raid weakens)": "Perisai {n} (berkurang saat raid melemah)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Semak duri bos memulai setiap pertarungan dengan Perisai ini. Perisai menahan serangan sebelum Nyawanya, dan berkurang seiring sisa Nyawa bagian itu."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Semak duri bos memulai setiap pertarungan dengan Perisai ini. Perisai menahan serangan sebelum Nyawanya, dan berkurang seiring sisa Nyawa bagian itu.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Butuh satu ronde untuk dipasang. Sendirian tidak berbuat apa-apa; tetap ada saat unitnya mati."
 }

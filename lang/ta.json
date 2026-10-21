@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "இலக்கு N சுற்றுகளுக்குக் கல்லாகும்: தாக்குதல் இல்லை, பாதிச் சேதம்.",
  "The target's skills and triggers are off for N rounds.": "இலக்கின் திறன்களும் தூண்டிகளும் N சுற்றுகளுக்கு நிற்கும்.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "இலக்கின் காத்திருப்பு N சுற்றுகளுக்கு உறையும்; தயாரான அலகு காத்திருப்பு 1 க்குத் திரும்பும்.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "அலகு அணிந்துகொள்ள ஒரு சுற்று ஆகும். ஓர் இடத்தில் தனியாக இருந்தால் எதுவும் செய்யாது, எதையும் தடுக்காது; அதன் அலகு இறந்தால் அடுத்ததற்காக அங்கேயே இருக்கும்.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "உலகம் திறக்கிறது: நீ அடையக்கூடிய ஒவ்வொரு வரைபடமும் மேலே உள்ளது, 🧭 அவை அனைத்தையும் காட்டும்.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "டோக்கன்கள்: பிரார்த்தனை டோக்கன்கள், பெர்ரிகள், பொறுக்கு புள்ளிகள், படைப்பாற்றல்; ஒருபோதும் பலவீனம் அல்ல. அவை திருடனிடம் போகும். வளங்கள்: மரம், கல், உலோகம், யுரேனியம்.",
  "Toxic Gas": "நச்சு வாயு",
@@ -2372,5 +2371,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} வில்லைகள்: அதன் மீதான ஒவ்வொரு தாக்குதலும் 1 அதிகம் தந்து ஒன்றைச் செலவழிக்கும்.",
  "Tap to see the card": "அட்டையைப் பார்க்கத் தட்டவும்",
  "Shield {n} (falls as the raid weakens)": "கேடயம் {n} (ரெய்டு பலவீனமாகும்போது குறையும்)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "முதலாளியின் முட்புதர் ஒவ்வொரு சண்டையையும் இந்தக் கேடயத்துடன் தொடங்குகிறது. அது உயிருக்கு முன் தாக்குதல்களை உறிஞ்சுகிறது, பகுதியின் மீதமுள்ள உயிருடன் குறைகிறது."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "முதலாளியின் முட்புதர் ஒவ்வொரு சண்டையையும் இந்தக் கேடயத்துடன் தொடங்குகிறது. அது உயிருக்கு முன் தாக்குதல்களை உறிஞ்சுகிறது, பகுதியின் மீதமுள்ள உயிருடன் குறைகிறது.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "அணிய ஒரு சுற்று ஆகும். தனியாக எதுவும் செய்யாது; அதன் அலகு இறந்தாலும் இருக்கும்."
 }

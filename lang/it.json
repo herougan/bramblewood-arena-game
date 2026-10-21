@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "Il bersaglio diventa pietra per N round: niente attacco, metà danni.",
  "The target's skills and triggers are off for N rounds.": "Abilità e innesci del bersaglio sono spenti per N round.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "L’Attesa del bersaglio è ferma per N round; un’unità pronta torna ad Attesa 1.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "L'unità impiega un round a equipaggiarsi. Da solo in uno spazio non fa nulla e non blocca nulla; quando la sua unità muore, resta per la prossima.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "Il mondo si apre: ogni mappa che puoi raggiungere è in alto, e la 🧭 le mostra tutte.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Segnalini: segnalini Preghiera, Bacche, punti di spigolatura, Creatività; mai un malus. Passano al ladro. Risorse: Legno, Pietra, Metallo, Uranio.",
  "Toxic Gas": "Gas tossico",
@@ -2371,5 +2370,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} segnalino/i: ogni colpo che subisce infligge 1 in più e ne usa uno.",
  "Tap to see the card": "Tocca per vedere la carta",
  "Shield {n} (falls as the raid weakens)": "Scudo {n} (cala man mano che il raid si indebolisce)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Il rovo del boss inizia ogni scontro con questo scudo. Assorbe i colpi prima della sua salute e cala con la salute rimasta alla parte."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Il rovo del boss inizia ogni scontro con questo scudo. Assorbe i colpi prima della sua salute e cala con la salute rimasta alla parte.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Serve un turno per equipaggiarlo. Da solo non fa nulla; resta quando la sua unità muore."
 }

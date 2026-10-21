@@ -309,7 +309,6 @@
  "The target turns to stone for N rounds: no attack, half damage taken.": "Nagiging bato ang target sa loob ng N round: walang atake, kalahating pinsala.",
  "The target's skills and triggers are off for N rounds.": "Patay ang mga skill at trigger ng target sa loob ng N round.",
  "The target's Wait is frozen for N rounds; a Ready unit goes back to Wait 1.": "Nakapirmi ang Wait ng target sa loob ng N round; bumabalik sa Wait 1 ang unit na Handa.",
- "The unit takes a round to equip. Alone in a slot it does nothing and blocks nothing; when its unit dies it stays for the next one.": "Isang round bago maisuot ng yunit. Kapag mag-isa sa puwesto, wala itong ginagawa at walang hinaharangan; kapag namatay ang yunit nito, naiiwan ito para sa susunod.",
  "The world opens up: every map you can reach is along the top, and the 🧭 shows them all.": "Bumubukas ang mundo: nasa itaas ang bawat mapang maaabot mo, at ipinapakita ng 🧭 ang lahat.",
  "Tokens: Prayer tokens, Berries, scavenge points, Creativity; never a debuff. They move onto the thief. Resources go Lumber, Stone, Metal, Uranium.": "Mga token: Prayer token, Berry, puntos ng pulot, Creativity; hindi kailanman debuff. Lumilipat ang mga ito sa magnanakaw. Mga resource: Kahoy, Bato, Metal, Uranium.",
  "Toxic Gas": "Nakalalasong Gas",
@@ -2370,5 +2369,6 @@
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} token: dagdag na 1 ang bawat tama rito at gumagamit ng isa.",
  "Tap to see the card": "I-tap para makita ang card",
  "Shield {n} (falls as the raid weakens)": "Kalasag {n} (bumababa habang humihina ang raid)",
- "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Sinisimulan ng tinik ng boss ang bawat laban gamit ang Kalasag na ito. Sinasalo nito ang mga tama bago ang Buhay nito, at bumababa ito kasabay ng natitirang Buhay ng bahagi."
+ "The boss's bramble starts each fight with this Shield. It soaks hits before its Health, and it falls with the part's remaining Health.": "Sinisimulan ng tinik ng boss ang bawat laban gamit ang Kalasag na ito. Sinasalo nito ang mga tama bago ang Buhay nito, at bumababa ito kasabay ng natitirang Buhay ng bahagi.",
+ "Takes a round to equip. Alone it does nothing; it stays when its unit dies.": "Isang round bago maisuot. Mag-isa, walang ginagawa; nananatili kapag namatay ang yunit nito."
 }
