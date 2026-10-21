@@ -16,6 +16,25 @@ const known = new Set(AREAS.map(a=> a[0]));
 L.inventory.forEach(e=>{ if(!known.has(e.area)){ known.add(e.area); AREAS.push([e.area, e.area, e.batch]); } });
 const qual = e=> (String(e.quality || '').match(/^(good|basic|missing|broken)/) || ['', 'basic'])[1];
 const nVar = e=>{ const r = L.get(e.id); return r ? r.variants.length : 0; };
+// 2026-10-21 (package FX-WAR, owner: "Flag the effect used if it's already used in game, so we know in the future"): every row says whether the
+// game calls it. 'live' = In game: <where> (the hook the inventory or the registration names); 'lab-only' = built and playable here, no
+// game code calls it ("Lab only (not used yet)"); 'future' = not built anywhere. The inventory's `status` comes from tools/effects-lab/refresh_inventory.py;
+// the rows the lab adds itself (map titles, map grandeur, fun) have none, so the hook text decides.
+const igOf = e=>{
+  const r = L.get(e.id), hook = String((r && r.inGameHook) || e.inGameHook || '');
+  let st = e.status;
+  if(!st) st = /not hooked|no caller|lab only|^future/i.test(hook) ? 'lab-only' : (r ? 'live' : 'future');
+  let w = String(st === 'live' ? (hook || e.trigger || 'the game') : '').replace(/\s+/g, ' ').replace(/\s*\((?:arena_app|bramblewood-[\w-]+)\.js\)/g, '').trim();
+  if(w.length > 100) w = w.slice(0, 97).replace(/\s+\S*$/, '') + '…';
+  return {st, where:w, full:String(hook || e.trigger || '')};
+};
+const igBadge = e=>{
+  const g = igOf(e);
+  if(g.st === 'live') return `<span class="ig is-game" title="${esc(g.full)}"><b>In game:</b> ${esc(g.where)}</span>`;
+  if(g.st === 'lab-only') return '<span class="ig is-lab"><b>Lab only</b> (not used yet)</span>';
+  if(g.st === 'retired') return '<span class="ig is-none">Retired: the game no longer calls it</span>';
+  return '<span class="ig is-none">Not built yet</span>';
+};
 
 // ---------- list ----------
 function playBtns(e){
@@ -31,7 +50,7 @@ function rowHTML(e){
     ['Variants', r && r.variants.map(v=> `${v.key}: ${v.label || '—'}`).join(' · ')], ['In-game hook', r && r.inGameHook], ['Batch', e.batch + ' · priority ' + e.priority + (e.future ? ' · planned' : '')]]
     .filter(x=> x[1]).map(([k, v])=> `<div><b>${k}</b> ${esc(v)}</div>`).join('');
   return `<div class="fxl-row${e.status === 'retired' ? ' is-retired' : ''}" data-id="${esc(e.id)}"><div class="fxl-main"><button type="button" class="fxl-name" aria-expanded="false">${esc(e.name)}</button>
-    <span class="fxl-id">${esc(e.id)}</span><div class="fxl-trig">${esc(e.trigger)}</div></div>
+    <span class="fxl-id">${esc(e.id)}</span><div class="fxl-trig">${esc(e.trigger)}</div><div class="fxl-ig">${igBadge(e)}</div></div>
     <div class="fxl-side"><div class="fxl-meta"><span class="fxl-q q-${q}">${q}</span>${e.status === 'retired' ? `<span class="fxl-q q-retired" title="${esc(e.retired || 'Retired')}">retired</span>` : ''}${(e.isNew || e.added) ? `<span class="fxl-q q-new"${e.added ? ` title="Added ${esc(e.added)}"` : ''}>new</span>` : e.updated ? `<span class="fxl-q q-upd" title="Updated ${esc(e.updated)}">updated</span>` : ''}${e.future ? '<span class="fxl-q q-future">future</span>' : ''}${e.priority === 1 ? '<span class="fxl-tag">P1</span>' : ''}${e.variantsSuggested ? '<span class="fxl-tag" title="The inventory suggests 2–3 variants to choose from">A/B?</span>' : ''}</div>
     <div class="fxl-play${r && r.variants.length > 1 ? ' is-many' : ''}">${playBtns(e)}</div></div><div class="fxl-more" hidden>${more}</div></div>`;
 }
@@ -43,7 +62,7 @@ list.innerHTML = AREAS.map(([a, label, batch])=>{
     <div class="fxl-rows">${rows.map(rowHTML).join('')}</div></details>`; }).join('');
 
 // ---------- filters ----------
-const F = {q:$('#fxlQ'), area:$('#fxlArea'), qual:$('#fxlQual'), vars:$('#fxlVars'), built:$('#fxlBuilt'), fut:$('#fxlFut')};
+const F = {q:$('#fxlQ'), area:$('#fxlArea'), qual:$('#fxlQual'), vars:$('#fxlVars'), built:$('#fxlBuilt'), fut:$('#fxlFut'), ig:$('#fxlIG')};
 F.area.innerHTML = '<option value="">All areas</option>' + AREAS.map(([a, l])=> `<option value="${a}">${esc(l)}</option>`).join('');
 const rowsById = new Map($$('.fxl-row', list).map(r=> [r.dataset.id, r]));
 function matches(e){
@@ -56,10 +75,11 @@ function matches(e){
   // 2026-10-17: what the 10-16/17 pass added or changed, and what it retired (inventory status / added / updated)
   if(F.built.value === 'new17' && !(e.added || e.updated)) return false; if(F.built.value === 'retired' && e.status !== 'retired') return false;
   if(F.fut.value === 'only' && !e.future) return false; if(F.fut.value === 'hide' && e.future) return false;
+  if(F.ig.value && igOf(e).st !== F.ig.value) return false; // 2026-10-21: In game / Lab only / Not built
   return true;
 }
 function applyFilters(){
-  let shown = 0; const filtering = !!(F.q.value.trim() || F.area.value || F.qual.value || F.vars.value || F.built.value || F.fut.value);
+  let shown = 0; const filtering = !!(F.q.value.trim() || F.area.value || F.qual.value || F.vars.value || F.built.value || F.fut.value || F.ig.value);
   $$('.fxl-area', list).forEach(d=>{
     let n = 0, b = 0, tot = 0;
     $$('.fxl-row', d).forEach(r=>{ const e = L.byId.get(r.dataset.id); const ok = matches(e); r.hidden = !ok; if(ok) n++; tot++; if(L.get(e.id)) b++; });
@@ -77,9 +97,10 @@ $('#fxlClear').addEventListener('click', ()=>{ Object.values(F).forEach(el=> el.
 function coverage(){
   const tot = L.inventory.length, built = L.inventory.filter(e=> L.get(e.id)).length, vars = L.list().filter(r=> r.variants.length >= 2).length;
   const added = L.inventory.filter(e=> e.added).length, upd = L.inventory.filter(e=> e.updated).length, retired = L.inventory.filter(e=> e.status === 'retired').length; // 2026-10-17
+  const nGame = L.inventory.filter(e=> igOf(e).st === 'live').length, nLab = L.inventory.filter(e=> igOf(e).st === 'lab-only').length; // 2026-10-21
   const sugg = L.inventory.filter(e=> e.variantsSuggested).length, suggDone = L.inventory.filter(e=> e.variantsSuggested && nVar(e) >= 2).length;
   $('#fxlCov').innerHTML = `<div class="fxl-covtop"><b>${built}</b> of ${tot} built <span class="fxl-pct">${(built/tot*100).toFixed(1)}%</span>
-    <span class="fxl-covbar"><i style="width:${(built/tot*100).toFixed(2)}%"></i></span><span class="fxl-covnote">${vars} with variants to choose · ${suggDone}/${sugg} suggested variant sets done · ${added} new and ${upd} updated on 10-16/17 · ${retired} retired</span></div>
+    <span class="fxl-covbar"><i style="width:${(built/tot*100).toFixed(2)}%"></i></span><span class="fxl-covnote">${vars} with variants to choose · ${suggDone}/${sugg} suggested variant sets done · ${added} new and ${upd} updated on 10-16/17 · ${retired} retired · <b>${nGame} in the game</b>, ${nLab} lab only</span></div>
     <details class="fxl-covareas"><summary>By area</summary><div class="fxl-covgrid">${AREAS.map(([a, l])=>{ const rows = L.inventory.filter(e=> e.area === a); if(!rows.length) return '';
       const b = rows.filter(e=> L.get(e.id)).length; return `<button type="button" class="fxl-covarea" data-area="${a}"><span>${esc(l)}</span><span class="fxl-covbar"><i style="width:${(b/rows.length*100).toFixed(1)}%"></i></span><span>${b}/${rows.length}</span></button>`; }).join('')}</div></details>`;
   $$('.fxl-covarea').forEach(b=> b.addEventListener('click', ()=>{ F.area.value = b.dataset.area; applyFilters(); const d = $(`.fxl-area[data-area="${b.dataset.area}"]`); if(d){ d.open = true; d.scrollIntoView({block:'start', behavior:'smooth'}); } }));

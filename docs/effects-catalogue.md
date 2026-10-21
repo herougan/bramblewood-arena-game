@@ -717,3 +717,84 @@ in one by one (`map-trails-one-by-one`), and a hidden skirmish popping in with i
 
 **Retired** (kept playable, marked in the catalogue): the shiny / foil death sheen, the "×2" duplicate, the "−N ✖" stamp, Bloodlust
 growing, Worthy's loot, the rank lesson box, the "+3 XP" line and the Lumber lesson window.
+
+
+## Smoke and war (2026-10-21)
+
+Package FX-WAR. Owner: "add smoke effects if we haven't yet, and others related to war, that we can pick and choose and use. Flag the
+effect used if it's already used in game, so we know in the future."
+
+**Where to pick:** the Effects Lab's **Smoke & war** tab (`tools/effects-lab/fxlab-war.js`, built by `tools/effects-lab/build.py`). The new
+effects live in `bramblewood-fx-war.js` as `window.WarFX`. Every card there, and every row of the Lab's Catalogue tab, carries a badge:
+green **In game: where** or brown **Lab only (not used yet)**. The Catalogue tab also has an "In game or not" filter and a count.
+
+**Not wired.** `WarFX` is not in `FX_BATCHES` (`arena_app.js` calls only `FX.A` to `FX.G`) and nothing in the game calls it. The file is
+loaded by the Lab only; `assemble_arena.py` is untouched, so it is not in the game bundle yet. To use one: add the file to the bundle,
+then call `WarFX.<name>(...)` from the event that should show it. Every function takes the DOM nodes (or a point) and `{onImpact, onDone}`,
+returns a Promise, and in reduced motion shows one still glyph and still fires both callbacks.
+
+How they are made: GSAP only (one tween per group of particles, so the Lab's slow-motion and the game's hit-stop apply), transform and
+opacity only, soft edges from radial gradients, SVG data-URI shapes for flames, stars and caltrops. No CSS filter, no blend-mode layer, no
+blood. Overlays are fixed nodes on `<body>` with the class `fxw-*`, removed when done.
+
+### Already in the game (audit, 2026-10-21)
+
+| Effect | Where it is called | In game |
+|---|---|---|
+| Smoke Bomb cloud | the Smoke Bomb skill: `arena_app.js` `smokeBomb` event, `SkillFX.smokeBomb` | yes |
+| Evade in smoke | a swing that misses a Smoked unit: `FX.A` `onEvent` `evaded {smoke}` | yes |
+| Evade in fog | a swing that misses in Thick Fog: `FX.A` `onEvent` `evaded {fog}` | yes |
+| Poison gas cloud | the `poisonGas` event: `w2SkillVfx`, `SkillFX.gasCloud` | yes |
+| Stampede dust roll | Overwhelm hitting the Bramble: `FX.A` `overwhelmHQ` | yes |
+| Dynamite blast | the Dynamite skill: `FX.A` `dynamite`, `SkillFX.dynamite` | yes |
+| Fireball | the Fireball skill: `SkillFX.fireball` | yes |
+| Fire arrow | a ranged hit with a fire arrow: `SkillFX.bowShot {fire}` | yes |
+| Volley arrow rain | the first Volley arrow of a round: `FX.A.arrowRain` | yes |
+| Siege ram | a hit on the Bramble with a Siege bonus: `FX.A` `hitHQ` | yes |
+| Ballista bolt | the `castleBolt` skill: `FX.A` | yes |
+| Rocket launch | the Rocket skill: `FX.A` | yes |
+| Rally | the Rally skill: `FX.A` `rally`, `SkillFX.rally` | yes |
+| Shockwave ring | hits of 8+ at Effects High, and Charge firing: `FX.A` `heavyShock` | yes |
+| Scorch (heat burn) | Heat, Immolation and Lava Tide ticks: `SkillFX.scorch` | yes |
+| Crater burn | a Meteor crater, once a round: `FX.A` `meteorBurn` | yes |
+| Burning ground set / sprung | `hazardSet` and `hazardSprung`: `SkillFX.trapSet` / `trapSnap {scorch}` | yes |
+| Blown-up death | a unit killed by Explode or Dynamite: `FX.C` `deathExplode` | yes |
+| Friction sparks | the Friction skill: `FX.A` `friction` | yes |
+| Crit sparks | a critical hit: `FX.A` | yes |
+| Rally standard (banner) | `FX.A.rallyStandard` | **Lab only** (nothing calls it) |
+| Wildfire front | `FX.B.wildfire` | **Lab only** |
+| Fog banks | `FX.B.fogBanks` | **Lab only** |
+
+The ambient looks (Thick Fog, Ashy and the weather and sky layers) belong to the field and weather code and are described in the sections
+above; this audit covers the event effects. The Lab's Smoke & war tab plays the 23 rows above as reference, so the old and new can be
+compared on one stage.
+
+### New in this package (all Lab only)
+
+| Name | Call | What it looks like | In game |
+|---|---|---|---|
+| Puff | `WarFX.puff(target, {dark, dust, size})` | a cartoon "poof": cloud blobs and a thin ring pop out of a card (light, gunpowder or dust) | Lab only (not used yet) |
+| Smoke bomb burst | `WarFX.smokeBurst(from, to, {dark, size})` | a lit bomb is lobbed in, then bursts into a ring of big clouds that linger as a haze | Lab only (not used yet) |
+| Smoke screen | `WarFX.smokeScreen(lane, {from, hold, dark})` | a wall of cloud rolls along a lane, hides it, holds, then lifts | Lab only (not used yet) |
+| Drifting battlefield smoke | `WarFX.battlefieldSmoke(host, {duration, dir, dark})` (has `.stop()`) | faint low smoke banks drift over the field; cards stay readable | Lab only (not used yet) |
+| Smoke column | `WarFX.smokeColumn(target, {duration, height, flame, dark})` | a twisting column with a small flame at its foot, over a burning card or castle | Lab only (not used yet) |
+| Battle dust | `WarFX.dustKick(target, {dir})` | dust and pebbles kicked up behind a charging card, with speed lines | Lab only (not used yet) |
+| Cannon blast | `WarFX.cannonBlast(from, to, {flight})` | muzzle flash and smoke, a ball that trails puffs, then a crash with debris and sparks | Lab only (not used yet) |
+| Catapult lob | `WarFX.catapultLob(from, to, {host, flight})` | a boulder in a high arc, a growing landing shadow, a crash with a ground ring and bouncing rocks | Lab only (not used yet) |
+| Explosion | `WarFX.explosion(target, {size, cards})` | white flash, a bubbly fireball, a ring that shoves neighbours, a star burst, sparks, debris, smoke | Lab only (not used yet) |
+| Flaming arrow volley | `WarFX.flamingVolley(from, targets, {n, onHit})` (up to 8) | fire arrows arc over, shed embers and land as small flame pops | Lab only (not used yet) |
+| Burning ground | `WarFX.burningGround(target, {duration, width, slot, smoke})` | a scorch mark with a row of cartoon flames and embers, then it burns out | Lab only (not used yet) |
+| Sword clash | `WarFX.swordClash(a, b)` | two cards lunge together: starburst, sparks, a ring and a crossed-swords glyph | Lab only (not used yet) |
+| War horn | `WarFX.warHorn(source, allies, {radius})` | a horn sounds three gold rings; reached allies hop and a note floats up | Lab only (not used yet) |
+| Siege ram slam | `WarFX.ramSlam(target, {from, host, shake})` | a ram drawn back and swung in: splinters, stone chips, ground ring, squash, a board shake | Lab only (not used yet) |
+| Caltrops | `WarFX.caltrops(from, lane, {n, hit})` | four-point jacks thrown across a lane, bounce twice, settle, glint, fade | Lab only (not used yet) |
+| Signal flare | `WarFX.signalFlare(source, {color, height})` | a flare climbs with a spark trail and bursts into a drifting star shell (red, green or gold) | Lab only (not used yet) |
+
+Nearest existing looks, for choosing: the Puff and the Smoke bomb burst sit next to `SkillFX.smokePuff` and `smokeBomb`; Smoke screen has
+no game twin (the Smoke status only blurs one card); the Cannon blast, Explosion and Flaming volley sit next to `FX.A.ballista`,
+`SkillFX.dynamite` and `FX.A.arrowRain`; the Ram slam sits next to `FX.A.siegeRam`; the War horn is the cartoon cousin of Rally and the
+unused `FX.A.rallyStandard`; Caltrops and the Smoke column have no twin.
+
+**How to keep this honest:** when an effect from this list is wired, change its row to "In game: <where>" here and in
+`NEW` in `tools/effects-lab/fxlab-war.js`. The Catalogue tab's badges come from `docs/effects-inventory-2026-10-15.json`
+(`python3 tools/effects-lab/refresh_inventory.py`); the Smoke & war tab's from its own two lists.
