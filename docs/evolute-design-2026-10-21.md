@@ -16,15 +16,14 @@ Status: designed by the owner, not built. Package EV builds it after package CX2
 - **DNA points:** an idea for collecting DNA points; not designed yet.
 - **Gate:** Evomax cards are obtainable from Map 30 (package RP).
 
-## Open questions for the owner
-1. **The escape-hatch wording:** what does the card say or show when an evolute goes over a creature without the right line? "…"
-2. **Shared type:** does any shared node in the type hierarchy count (bird ↔ raptor, mammal ↔ mustelid)? Or must one of them be the other's own Type, as Kin works since package TX?
-3. **The fodder's name.** Candidates that avoid chemistry words:
-   - **Host:** evolutes go over hosts.
-   - **Chrysalis:** for the fodders an Evolute Alpha can ride over directly.
-   - **Husk**, **Larva**, **Nestling**, **Seedstock** or **Spawnling** for the plain fodder.
-4. **How fodder empowers:** a flat bonus to the evolute (+N/+N), a skill handed on, or a multiplier on the inherited stats?
-5. **Pricing:**
-   - Evolute's worth includes the inherited stats, which depend on the board. One theoretical option, in the style of B15: price Evolute at the average stat line it inherits, discounted for the condition.
-   - The unit underneath leaves play. Does it count as dying? On Death, Bounty and grave effects depend on this.
-6. **DNA points:** park it until the archetype plays.
+## Owner's answers (17:49): these settle the open questions
+- **Shared type:** any shared type at all counts, e.g. both are birds, or both are river creatures (habitat, class or phylum, anywhere in the hierarchy).
+- **Names:** plain fodder is a **Stem**. A fodder an Evolute Alpha can ride over directly is a **Chrysalis**.
+- **How a Stem empowers:** by its own {…} (skills it hands to the evolute), or +1/+2 by default.
+- **The unit underneath** does not die and does not go to the graveyard. The cards stay together as a card stack and move as one stack. A unit leaving play this way triggers no On Death, Bounty or grave effects.
+- **Wrong evolutions are banned.** No escape hatch: an evolute can only be placed over a legal base (Evolute over a shared-type creature, Alpha over an Evolute, Omega over an Alpha; Alpha also over a Chrysalis). "I also don't want accidental wrong evolutions": the UI only highlights legal bases.
+- **Parasite:** a skill the owner has in mind; not formally defined yet. Don't build it.
+- **DNA points:** parked.
+
+## Still open (defaults the builder may take, flagged in its report)
+- **Pricing Evolute:** a theoretical price in the style of B15. Suggested: Evolute 3, Alpha 4, Omega 5, plus the evolute's own stats fitted to its N; a Stem's {} at 0.4 × S like a context skill.
