@@ -9,7 +9,7 @@ Status: designed by the owner, not built. Package EV builds it after package CX2
   - Why: it discourages sending a unit out for a one-time effect and then evoluting over it just before it dies.
 - **Evolute Alpha** can only evolute over a creature that has Evolute.
 - **Evolute Omega** can only evolute over a creature that has Evolute Alpha.
-- **The deck-building escape hatch:** to make the randomness easier to swallow, any evolute may also go over any creature. Then it gets only the base stat addition, not the special effects. The owner's sentence for this ended "E.g. If you do, '...'"; the exact wording is still open.
+- ~~The deck-building escape hatch~~: superseded by the owner at 17:49, wrong evolutions are banned (see below).
 - **Fodder** (needs a name; not "accelerant", which is saved for the chemistry biomes, Maps 60–80): fodder cards empower the evolutes placed over them.
   - Some fodders let an Evolute Alpha ride over them directly, skipping the Evolute stage.
 - "MOST of the time, the point of this archetype is the evolute."
