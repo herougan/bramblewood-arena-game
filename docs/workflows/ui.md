@@ -11,6 +11,7 @@ For screens, layout, the deck editor, Codex, Forge, map, raid UI, filters, anima
 - Phone (390) and desktop (1366) both matter. Check both with `python3 tools/shot.py --screen <name>` (or `--js "<call that opens it>"`), and view the PNGs.
 - Keep edits inside a named, dated block where you can (`// 2026-10-21 (package XX): reason`). Small call-site edits are marked the same way.
 - After text edits, run `python3 tools/text/keyify.py && python3 tools/text/export_texts.py`.
+  - **Warning (2026-10-21, package AR):** keyify.py deletes TX keys that the game looks up by building their names (e.g. `'ui.tf-' + name`, `'ui.fog-row-' + k`). Always check `git diff bramblewood-texts.js` after running it, and restore any key it dropped.
 - Labels leave out what their position already says. Confirmations are on-page (tap twice), never browser dialogs.
 
 ## Checks
