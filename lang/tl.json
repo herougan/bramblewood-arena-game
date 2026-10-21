@@ -176,6 +176,7 @@
  "It can't act until every corner is met.": "Hindi ito makakakilos hangga't hindi natutupad ang bawat sulok.",
  "Lycanthropy": "Likantropiya",
  "Mimic": "Gaya",
+ "No price in the skill-cost table for {skills}: a stand-in cost is used.": "Walang presyo sa talaan ng halaga ng kakayahan para sa {skills}: pansamantalang halaga ang ginamit.",
  "nothing": "wala",
  "Once it happens, it keeps them for the rest of the fight.": "Kapag nangyari na, mananatili ang mga ito hanggang matapos ang laban.",
  "Preset": "Preset",

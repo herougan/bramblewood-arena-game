@@ -176,6 +176,7 @@
  "It can't act until every corner is met.": "Sie kann nicht handeln, bis jede Ecke erfüllt ist.",
  "Lycanthropy": "Lykanthropie",
  "Mimic": "Nachahmer",
+ "No price in the skill-cost table for {skills}: a stand-in cost is used.": "Kein Preis in der Fähigkeitskosten-Tabelle für {skills}: Ein Ersatzwert wird verwendet.",
  "nothing": "nichts",
  "Once it happens, it keeps them for the rest of the fight.": "Ist es einmal geschehen, behält sie sie bis zum Ende des Kampfes.",
  "Preset": "Vorlage",

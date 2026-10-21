@@ -1724,6 +1724,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.bx-log-drop-bramble": "{name} flies over the bramble and drops a stone 🪨",
   "ui.budget-context": "Context skills (Tide, Diurnal, Transform …): {k} × the skills in their braces.",
   "ui.budget-context-card": "{skill}: {k} × {inner} = {s}",
+  "ui.budget-price-missing": "No price in the skill-cost table for {skills}: a stand-in cost is used.",
   "ui.sk-crepuscular": "By day: +{a}/+{h}. At night: +{a}/+{h}. Twilight brings both.",
   "ui.sk-crepuscular-grant": "By day it has {day}; at night, {night}; in Twilight, both.",
   "ui.cx-day": "Day",
