@@ -1609,6 +1609,10 @@ Object.assign(SKILL_ICON, {archer:'🏹'});
 // Here before SKILL_DEFS is built, so the card editor's "+ Add Skill" lists it; its card line is set beside the EQ block's.
 sk1Patch(PASSIVE_DEFS, 'injured', {category:'passive', label:TX('ui.skn-injured'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-injured', {n: numOr(v, 1)}), get:e=> e.injured ? numOr(e.injured, 1) : undefined});
 Object.assign(SKILL_ICON, {injured:'🩹'});
+// Package MT (2026-10-21, owner 16:33, B15): Mimic (Mirrorhide Mutant's, in place of Twin): when it enters play it becomes a copy of a
+// random ally (its skills, the higher of each stat). The rule is in bramblewood-engine.js (mimicOnArrive); its S is 5 (owner-set).
+sk1Patch(PASSIVE_DEFS, 'mimic', {category:'passive', label:TX('ui.skn-mimic'), kind:'boolean', desc:()=> TX('ui.sk-mimic')});
+Object.assign(SKILL_ICON, {mimic:'🪞'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
 // back in the editor as the temporary one (the engine's rallyUp); the passive Attack aura is War Banner's (its text below, SK3's block).
 sk1Patch(PASSIVE_DEFS, 'rally', {category:'passive', label:TX('ui.skn-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rally', {n: numOr(v, 1)}), get:e=> e.rally ? numOr(e.rally, 1) : undefined});
@@ -2659,6 +2663,7 @@ PASSIVE_DEFS.push(
   {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
+Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 Object.assign(SKILL_TEXT, {injured: v=> TX('ui.sk-injured', {n: numOr(v, 1)}), rally: v=> TX('ui.sk-rally', {n: numOr(v, 1)})}); // Package BF6 (2026-10-21): Injured N's and Rally N's card lines
 TRIGGER_DEFS.push({key:'onEnterSlot', label:TX('ui.trg-enter-slot'), desc:TX('ui.trg-enter-slot-desc')});
 Object.assign(SKILL_TEXT, SK2_LINE); // Package SK2 (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note)
@@ -7908,6 +7913,7 @@ function triggerBadges(d, live){
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
 CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter', 'disarm', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
+CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (🪞)
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
@@ -8884,7 +8890,8 @@ function openCardDetail(defId, opts){
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
     .concat(animalChipsHTML(d)) // 2026-10-19 (package UT): the animal, the subtype, the Base mark
-    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : [])
+    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : [])
+    .concat((()=>{ const mo = d.mimicOf && getCardDefs()[d.mimicOf]; return mo ? [`<span class="cd-chip">🪞 ${escapeHtml(TX('ui.mimic-copying', {name: mo.name}))}</span>`] : []; })()) // Package MT (2026-10-21): a Mimic shows whom it copies.concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : [])
     .concat(fromCodex ? [codexDetailLevelChipHTML(defId, d0, d)] : []).join(''); // 2026-10-19 (package UX): Base level / My best
   // A card that brings another card (2026-10-13, user: "If a card spawns another card - show the other card's detail on the right
   // side"): every other card named in its skills or triggers, shown beside it with its abilities.
@@ -39326,7 +39333,8 @@ function logText(ev){
   { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
   { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
-  { const k = sk1LogText(ev, nm); if(k) return k; } // package SK1 skills (2026-10-19)
+  { const k = sk1LogText(ev, nm); if(k) return k; }
+  if(ev.type === 'mimic') return {cls:'', text:TX('ui.log-mimic', {name: nm(ev.fromDefId || ev.defId), ally: nm(ev.allyDefId), atk: ev.atk, hp: ev.maxHp})}; // Package MT (2026-10-21) // package SK1 skills (2026-10-19)
   { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
@@ -41263,6 +41271,13 @@ function fifthPassVfx(ev){
   if(ev.type==='statusFx' && ev.kind==='wither'){ const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💀 Wither', 'debuff'); }catch(e){} witherSmokeVfx(el); } }
   if(ev.type==='witherTick'){ const rc = matchState.replayCards && matchState.replayCards[ev.uid]; if(rc){ rc.maxHp = Math.max(0, (rc.maxHp||0) - ev.n); rc.hp = Math.max(0, Math.min(rc.maxHp, (rc.hp||0) - ev.n)); }
     try{ updateCardHpDisplay(ev.uid); }catch(e){} const el = boardCardEl(ev.uid); if(el){ try{ floatText(el, '💀 −' + ev.n, 'debuff'); }catch(e){} witherSmokeVfx(el); } }
+  // Mimic (2026-10-21, package MT): the unit takes its copy's card and stats; the look is Twin's mirror sheen (bramblewood-fx-c.js, 'mimic').
+  if(ev.type==='mimic'){
+    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc){ rc.defId = ev.defId; rc.atk = ev.atk; rc.hp = ev.hp; rc.maxHp = ev.maxHp; }
+    try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
+    const el = boardCardEl(ev.uid); if(el){ try{ floatText(el, '🪞 ' + TX('ui.skn-mimic'), 'quick'); }catch(e){} }
+  }
   if(ev.type==='hatch'){
     const rc = matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.defId = ev.defId; rc.hp = rc.maxHp = ev.hp; rc.atk = ev.atk; rc.wait = 0; }

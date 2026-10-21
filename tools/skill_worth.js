@@ -670,4 +670,5 @@ if(require.main === module){
   else { const p = opt('out'); if(p){ fs.writeFileSync(p, JSON.stringify(data) + '\n'); console.log('wrote', p); } }
   console.log(`${results.length} runs, ${data.games} games, ${Math.round(data.ms / 1000)} s`);
 }
-module.exports = {BASELINES, CONTEXTS, FIELD_OF, PARAM_OF, WHY, ACTION_REF, makeLab, plan, census, aggregate, applyMeasured, gapsOf, sheetRows, writeReport, fmtTable};
+module.exports = {BASELINES, CONTEXTS, FIELD_OF, PARAM_OF, WHY, ACTION_REF, makeLab, plan, census, aggregate, applyMeasured, gapsOf, sheetRows, writeReport, fmtTable,
+  TYPICAL, SKILL_ENABLER, typicalOf /* 2026-10-21 (package MT): tools/skill_test.js picks the same typical values */};

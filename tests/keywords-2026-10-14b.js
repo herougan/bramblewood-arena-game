@@ -163,7 +163,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   ok(Math.abs(tw.slot - u.find(c=> !c.isTwin).slot) === 1, 'in the nearest free slot'); }
 { const pc = base['puddle-changeling'], mm = base['mirrorhide-mutant'];
   ok(pc && pc.effects.twin, 'Puddle Changeling has Twin');
-  ok(mm && mm.rarity === 'rare' && mm.effects.twin, 'Mirrorhide Mutant: rare Twin (stats/art/placement have moved on since 10-14)'); }
+  ok(mm && mm.rarity === 'rare' && mm.effects.mimic && !mm.effects.twin, 'Mirrorhide Mutant: rare, Mimic in place of Twin (2026-10-21, package MT, owner B15)'); }
 { const {e, P} = mk(); const ev = []; e.debugSpawnCard(P, so, 1, 'kb-sprout', 'left', {}, ev); const sp = all(P[1]).filter(c=> c.defId==='growth-sprout');
   // 2026-10-21 (BF5): the Growth Sprout token is halved with the rest (1/3 -> 1/2)
   ok(sp.length === 2 && sp.every(c=> c.atk === 1 && c.maxHp === 2), `Sprout 2: two 1/2 Growth Sprouts sprout beside it (${sp.length})`);

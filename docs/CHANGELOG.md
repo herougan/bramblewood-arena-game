@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package MT: Twin priced 20, the new Mimic skill, B14 / B15 answered, the standard skill test)
+- **Owner (B15, 16:33):** "creating a copy of a random ally card — probably 20+. Becoming a copy of a random ally card probably 5+. I think for mirrorhide mutant, they should copy the skills of the card, but their stats = the highest stat of both cards. E.g. 2/3 copying a 4/2 => 4/3."
+- **Mimic (new, Mirrorhide Mutant's in place of Twin):** when it enters play it becomes a copy of a random ally unit on your field (the fight's seeded RNG; never itself; no ally: nothing). It takes the ally card's skills and the higher of each printed stat (Attack, Health and max Health), keeps its own name, art and rarity, and shows "Copying <name>" on its card view and a log line. The copied arrival skills (Pounce, Twin, Rally ...) then fire. Engine: `mimicOnArrive` / `mimicDefOf` (a derived card, as Twin builds its own). The look is Twin's mirror sheen, reused. Texts in the 12 packs (`tools/i18n_2026_10_21_mt.py`).
+- **Costs (owner-set):** Twin 1 → 20, Mimic 5 (`canonical/skill-costs.json`).
+- **Re-fit by formula** (`tools/bf6_rederive_2026_10_21.js plan`, then `apply --only=` the two): Mirrorhide Mutant 3/5 → **2/11**; Puddle Changeling 2/2 → **1/1** (Twin at 20 is more than a Common's N 11.95: the floor of its shape, skills kept, flagged). The new `--only` keeps the apply to the named cards: a re-plan also moves four cards that keep their share (Swarm Matriarch, Tunnel Ant, Dragonscale Mail, Caldera Wyrm), which were not applied.
+- **B14 answered (owner 16:42):** cap 2 stays A·H + S·|S| ≤ (N/3)²; the flagged cards keep their floor stats on purpose.
+- **`tools/skill_test.js`:** the owner's standard skill test (docs/workflows/balance.md): `--mono` / `--duo`, 3/10 test units against 4/11 vanilla ones whose bramble gives one random creature +1/+0 or +0/+1 each turn, 35-Health brambles, `--games` 10,000 by default, `--skills`, `--jobs`. Output: win rate, gain over vanilla and budget points (tools/skill_worth.js's conversion), plus each pair's synergy in `--duo`. One 200-game run (Quick, Armor): the vanilla 3/10 deck wins 0% against the standard enemy, so every skill read 0% too (S 0, a bound). `--unit` / `--foe` change the stats.
+- Per the owner ("no test runs"), only `node --check` and the build were run.
+
 ## 2026-10-21 (owner 16:13: relative skills shifted ×0.78; 43 cards re-fitted; no runs)
 - **Owner:** "for all skills that have been recalculated, how much were they shifted? Shift the big skills by a similar amount… those about doing damage… don't have to be shifted… I don't want to do runs."
 - **The shift:** the same measuring tool, run in both worlds on 202 skills (10-19 full size against BF6's halved partial), puts the halved-world worth at a median ×0.78 of the old (quartiles ×0.56 and ×1.04).

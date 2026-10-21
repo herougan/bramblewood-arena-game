@@ -1825,6 +1825,8 @@ M.onEvent = function(ev, env){
       const d = defOf(env, ev.defId); if(d.effects && d.effects.skyfall && root.SkillFX && SkillFX.skyDrop) at(60, ()=>{ const es = uids.map(u=> el(u)).filter(Boolean); if(es.length) SkillFX.skyDrop(es, {fall:420}); });
       break; }
     case 'mindControl': at(560, ()=>{ const e = el(ev.targetUid); if(e) M.mindArrive(e, o); }); break;
+    // Mimic (2026-10-21, package MT): Twin's mirror sheen, reused: the sheen sweeps the ally it copies and a see-through copy peels off onto it
+    case 'mimic': at(320, ()=>{ const s = el(ev.allyUid), t = el(ev.uid); if(s && t) M.twinPeel(s, t, o); }); break;
     case 'remember': if(ev.uid != null) at(80, ()=>{ const e = el(ev.uid); if(e) M.rememberRise(e, o); }); break;
   }
 };

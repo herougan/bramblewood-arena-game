@@ -2,13 +2,13 @@
  "_about": "BF6 (2026-10-21): every card re-derived with the halved world's skill worth (its shape and its share of N kept, in the band for live cards and Easter eggs)",
  "generated": "2026-10-21",
  "cards": 750,
- "moved": 43,
- "band": 635,
+ "moved": 6,
+ "band": 636,
  "under": 7,
  "own": 28,
- "bucket": 78,
+ "bucket": 79,
  "dropped": 2,
- "flag": 80,
+ "flag": 79,
  "squeezed": 7,
  "squeezedFlag": 5,
  "rows": [
@@ -226,7 +226,7 @@
    ],
    "was": [
     5,
-    26
+    28
    ],
    "shape": [
     10,
@@ -237,8 +237,8 @@
    "N": 43.42,
    "N2": 209.48,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.95,
+   "use0": 1.04,
+   "useNowStats": 1,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -361,7 +361,7 @@
    ],
    "was": [
     2,
-    8
+    9
    ],
    "shape": [
     5,
@@ -372,9 +372,9 @@
    "N": 15.83,
    "N2": 27.84,
    "m": 1,
-   "use0": 0.98,
-   "useNowStats": 0.92,
-   "want": 0.98,
+   "use0": 1.05,
+   "useNowStats": 0.98,
+   "want": 1,
    "owner13": true,
    "verdict": "band",
    "now": [
@@ -2454,8 +2454,8 @@
     "daunt"
    ],
    "was": [
-    5,
-    28
+    6,
+    27
    ],
    "shape": [
     12,
@@ -2466,8 +2466,8 @@
    "N": 47.03,
    "N2": 245.76,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.97,
+   "use0": 1.03,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -3925,7 +3925,7 @@
    ],
    "was": [
     3,
-    14
+    15
    ],
    "shape": [
     5,
@@ -3936,8 +3936,8 @@
    "N": 25.28,
    "N2": 71.01,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 0.95,
+   "use0": 1.06,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -4355,7 +4355,7 @@
    ],
    "was": [
     1,
-    1
+    12
    ],
    "shape": [
     4,
@@ -4366,8 +4366,8 @@
    "N": 20.58,
    "N2": 47.06,
    "m": 1,
-   "use0": 0.55,
-   "useNowStats": 0.43,
+   "use0": 1.13,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -5068,8 +5068,8 @@
     "fork"
    ],
    "was": [
-    3,
-    12
+    4,
+    11
    ],
    "shape": [
     6,
@@ -5080,8 +5080,8 @@
    "N": 23.94,
    "N2": 63.68,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.92,
+   "use0": 1.03,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -6255,8 +6255,8 @@
     "brood"
    ],
    "was": [
-    1,
-    9
+    2,
+    8
    ],
    "shape": [
     2,
@@ -6267,16 +6267,16 @@
    "N": 19.13,
    "N2": 40.66,
    "m": 1,
-   "use0": 0.81,
-   "useNowStats": 0.74,
-   "want": 0.81,
+   "use0": 0.87,
+   "useNowStats": 0.8,
+   "want": 0.87,
    "owner13": true,
    "verdict": "band",
    "now": [
     2,
-    8
+    9
    ],
-   "use": 0.8
+   "use": 0.85
   },
   {
    "id": "feral-tuskboar",
@@ -6631,7 +6631,7 @@
     "dry"
    ],
    "was": [
-    3,
+    4,
     13
    ],
    "shape": [
@@ -6643,8 +6643,8 @@
    "N": 25.49,
    "N2": 72.19,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.92,
+   "use0": 1.07,
+   "useNowStats": 1,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -7040,8 +7040,8 @@
     "gash"
    ],
    "was": [
-    2,
-    16
+    3,
+    15
    ],
    "shape": [
     9,
@@ -7052,8 +7052,8 @@
    "N": 27.76,
    "N2": 85.62,
    "m": 1,
-   "use0": 1,
-   "useNowStats": 0.94,
+   "use0": 1.03,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -7892,7 +7892,7 @@
    ],
    "was": [
     1,
-    1
+    5
    ],
    "shape": [
     3,
@@ -7903,8 +7903,8 @@
    "N": 17.22,
    "N2": 32.95,
    "m": 1.5,
-   "use0": 0.73,
-   "useNowStats": 0.61,
+   "use0": 1.09,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -7959,8 +7959,8 @@
     "flying"
    ],
    "was": [
-    2,
-    5
+    3,
+    4
    ],
    "shape": [
     4,
@@ -7971,8 +7971,8 @@
    "N": 18.67,
    "N2": 38.73,
    "m": 1.5,
-   "use0": 1,
-   "useNowStats": 0.91,
+   "use0": 1.08,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -8699,7 +8699,7 @@
    ],
    "was": [
     2,
-    8
+    9
    ],
    "shape": [
     6,
@@ -8710,16 +8710,16 @@
    "N": 19.13,
    "N2": 40.66,
    "m": 1,
-   "use0": 0.93,
-   "useNowStats": 0.85,
-   "want": 0.93,
+   "use0": 0.99,
+   "useNowStats": 0.91,
+   "want": 0.99,
    "owner13": true,
    "verdict": "band",
    "now": [
     2,
-    9
+    10
    ],
-   "use": 0.91
+   "use": 0.96
   },
   {
    "id": "ant-scout",
@@ -9510,8 +9510,8 @@
     "keenSense"
    ],
    "was": [
-    1,
-    9
+    2,
+    8
    ],
    "shape": [
     2,
@@ -9522,8 +9522,8 @@
    "N": 17.07,
    "N2": 32.38,
    "m": 1,
-   "use0": 0.92,
-   "useNowStats": 0.83,
+   "use0": 0.98,
+   "useNowStats": 0.89,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -9543,8 +9543,8 @@
     "stagger"
    ],
    "was": [
-    4,
-    13
+    5,
+    12
    ],
    "shape": [
     7,
@@ -9555,8 +9555,8 @@
    "N": 25.7,
    "N2": 73.39,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.95,
+   "use0": 1.05,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -9685,7 +9685,7 @@
    ],
    "was": [
     4,
-    18
+    19
    ],
    "shape": [
     8,
@@ -9696,8 +9696,8 @@
    "N": 56.33,
    "N2": 352.56,
    "m": 1.5,
-   "use0": 1.12,
-   "useNowStats": 0.95,
+   "use0": 1.15,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -9797,7 +9797,7 @@
    ],
    "was": [
     4,
-    19
+    20
    ],
    "shape": [
     8,
@@ -9808,8 +9808,8 @@
    "N": 55.3,
    "N2": 339.79,
    "m": 1.5,
-   "use0": 1.09,
-   "useNowStats": 0.95,
+   "use0": 1.12,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -10724,7 +10724,7 @@
     "scare"
    ],
    "was": [
-    1,
+    2,
     10
    ],
    "shape": [
@@ -10736,8 +10736,8 @@
    "N": 19.13,
    "N2": 40.66,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.85,
+   "use0": 1.11,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -11679,8 +11679,8 @@
     "fork"
    ],
    "was": [
-    1,
-    13
+    3,
+    10
    ],
    "shape": [
     4,
@@ -11691,8 +11691,8 @@
    "N": 20.48,
    "N2": 46.6,
    "m": 1,
-   "use0": 1.07,
-   "useNowStats": 0.93,
+   "use0": 1.12,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -12082,8 +12082,8 @@
     "fork"
    ],
    "was": [
-    1,
-    17
+    2,
+    16
    ],
    "shape": [
     3,
@@ -12094,8 +12094,8 @@
    "N": 27.56,
    "N2": 84.39,
    "m": 1,
-   "use0": 1.13,
-   "useNowStats": 0.94,
+   "use0": 1.17,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -12183,8 +12183,8 @@
     "quick"
    ],
    "was": [
-    1,
-    10
+    2,
+    14
    ],
    "shape": [
     4,
@@ -12195,8 +12195,8 @@
    "N": 24.71,
    "N2": 67.84,
    "m": 1,
-   "use0": 0.93,
-   "useNowStats": 0.72,
+   "use0": 1.21,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -13131,7 +13131,7 @@
    ],
    "was": [
     0,
-    8
+    11
    ],
    "shape": [
     0,
@@ -13142,15 +13142,15 @@
    "N": 25.8,
    "N2": 73.96,
    "m": 1,
-   "use0": 0.64,
-   "useNowStats": 0.52,
-   "want": 0.64,
+   "use0": 0.78,
+   "useNowStats": 0.64,
+   "want": 0.78,
    "verdict": "own",
    "now": [
     0,
-    11
+    14
    ],
-   "use": 0.64
+   "use": 0.76
   },
   {
    "id": "puddle-changeling",
@@ -13172,20 +13172,22 @@
     6
    ],
    "S0": 1,
-   "S": 1,
+   "S": 20,
    "N": 11.95,
    "N2": 15.87,
    "m": 1,
    "use0": 0.61,
-   "useNowStats": 0.59,
+   "useNowStats": 2.18,
    "want": 1,
    "verdict": "flag",
    "now": [
-    2,
-    2
+    1,
+    1
    ],
-   "use": 0.59,
-   "why": "Twin is a full copy of the card: off the scale in the measure (S 20+ a copy on b2), so its cost (1) is no price; held at its stats, an owner call"
+   "use": 1.92,
+   "why": "no skill can go without thematic loss",
+   "bucket": true,
+   "fit": "no stats fit: S 20 against N 11.95 (cap 2: S·|S| 400 vs (N/3)² 15.87)"
   },
   {
    "id": "hedge-changeling",
@@ -13702,8 +13704,8 @@
     "darksight"
    ],
    "was": [
-    2,
-    14
+    3,
+    13
    ],
    "shape": [
     4,
@@ -13714,8 +13716,8 @@
    "N": 23.53,
    "N2": 61.52,
    "m": 1,
-   "use0": 1.05,
-   "useNowStats": 0.93,
+   "use0": 1.1,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -14143,8 +14145,8 @@
     "pounce"
    ],
    "was": [
-    4,
-    27
+    6,
+    36
    ],
    "shape": [
     6,
@@ -14155,15 +14157,15 @@
    "N": 23.06,
    "N2": 59.08,
    "m": 1,
-   "use0": 2.94,
-   "useNowStats": 2.34,
-   "want": 2.94,
+   "use0": 3.64,
+   "useNowStats": 2.91,
+   "want": 3.64,
    "verdict": "own",
    "now": [
-    6,
-    36
+    8,
+    49
    ],
-   "use": 2.91
+   "use": 3.64
   },
   {
    "id": "the-contradiction",
@@ -14245,7 +14247,7 @@
    ],
    "was": [
     1,
-    1
+    9
    ],
    "shape": [
     4,
@@ -14256,8 +14258,8 @@
    "N": 15.78,
    "N2": 27.67,
    "m": 1,
-   "use0": 0.55,
-   "useNowStats": 0.46,
+   "use0": 1.07,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -14312,8 +14314,8 @@
     "darksight"
    ],
    "was": [
-    1,
-    13
+    2,
+    12
    ],
    "shape": [
     3,
@@ -14324,8 +14326,8 @@
    "N": 21.2,
    "N2": 49.94,
    "m": 1,
-   "use0": 1.05,
-   "useNowStats": 0.92,
+   "use0": 1.1,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -14383,8 +14385,8 @@
     "pierce"
    ],
    "was": [
-    3,
-    15
+    4,
+    14
    ],
    "shape": [
     7,
@@ -14395,8 +14397,8 @@
    "N": 26.88,
    "N2": 80.28,
    "m": 1,
-   "use0": 1.11,
-   "useNowStats": 0.94,
+   "use0": 1.15,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -15494,7 +15496,7 @@
     "dry"
    ],
    "was": [
-    1,
+    2,
     11
    ],
    "shape": [
@@ -15506,8 +15508,8 @@
    "N": 19.96,
    "N2": 44.27,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.88,
+   "use0": 1.1,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -15863,8 +15865,8 @@
     "fencing"
    ],
    "was": [
-    1,
-    5
+    2,
+    13
    ],
    "shape": [
     5,
@@ -15875,8 +15877,8 @@
    "N": 23.68,
    "N2": 62.3,
    "m": 1,
-   "use0": 0.66,
-   "useNowStats": 0.54,
+   "use0": 1.11,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -16162,8 +16164,8 @@
     "darksight"
    ],
    "was": [
-    1,
-    11
+    2,
+    10
    ],
    "shape": [
     4,
@@ -16174,8 +16176,8 @@
    "N": 18.51,
    "N2": 38.07,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.92,
+   "use0": 1.06,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -16635,7 +16637,7 @@
    "wait": 2,
    "cost": 0,
    "skills": [
-    "twin"
+    "mimic"
    ],
    "was": [
     3,
@@ -16646,20 +16648,19 @@
     12
    ],
    "S0": 1,
-   "S": 1,
+   "S": 5,
    "N": 20.74,
    "N2": 47.79,
    "m": 1,
    "use0": 0.63,
-   "useNowStats": 0.58,
+   "useNowStats": 0.77,
    "want": 1,
-   "verdict": "flag",
+   "verdict": "band",
    "now": [
-    3,
-    5
+    2,
+    11
    ],
-   "use": 0.58,
-   "why": "Twin is a full copy of the card: off the scale in the measure (S 20+ a copy on b2), so its cost (1) is no price; held at its stats, an owner call"
+   "use": 0.96
   },
   {
    "id": "growth-sprout",
@@ -17402,8 +17403,8 @@
     "gash"
    ],
    "was": [
-    5,
-    20
+    7,
+    17
    ],
    "shape": [
     9,
@@ -17414,8 +17415,8 @@
    "N": 37.73,
    "N2": 158.17,
    "m": 1,
-   "use0": 1.03,
-   "useNowStats": 0.95,
+   "use0": 1.05,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -18697,8 +18698,8 @@
     "charge"
    ],
    "was": [
-    2,
-    10
+    4,
+    7
    ],
    "shape": [
     5,
@@ -18709,8 +18710,8 @@
    "N": 19.13,
    "N2": 40.66,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.9,
+   "use0": 1.06,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -18868,8 +18869,8 @@
     "mighty"
    ],
    "was": [
-    1,
-    7
+    2,
+    13
    ],
    "shape": [
     5,
@@ -18880,8 +18881,8 @@
    "N": 23.01,
    "N2": 58.83,
    "m": 1,
-   "use0": 0.75,
-   "useNowStats": 0.63,
+   "use0": 1.13,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -19938,8 +19939,8 @@
     "bulldoze"
    ],
    "was": [
-    1,
-    12
+    2,
+    11
    ],
    "shape": [
     5,
@@ -19950,8 +19951,8 @@
    "N": 19.65,
    "N2": 42.9,
    "m": 1,
-   "use0": 1.05,
-   "useNowStats": 0.93,
+   "use0": 1.1,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -20632,7 +20633,7 @@
    ],
    "was": [
     2,
-    14
+    15
    ],
    "shape": [
     3,
@@ -20643,8 +20644,8 @@
    "N": 23.84,
    "N2": 63.15,
    "m": 1,
-   "use0": 1.04,
-   "useNowStats": 0.94,
+   "use0": 1.09,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -20697,8 +20698,8 @@
     "confuse"
    ],
    "was": [
-    3,
-    9
+    4,
+    8
    ],
    "shape": [
     5,
@@ -20709,8 +20710,8 @@
    "N": 19.34,
    "N2": 41.56,
    "m": 1,
-   "use0": 1.01,
-   "useNowStats": 0.91,
+   "use0": 1.06,
+   "useNowStats": 0.96,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -21664,7 +21665,7 @@
    ],
    "was": [
     5,
-    20
+    22
    ],
    "shape": [
     8,
@@ -21675,8 +21676,8 @@
    "N": 38.35,
    "N2": 163.41,
    "m": 1,
-   "use0": 1.1,
-   "useNowStats": 0.95,
+   "use0": 1.15,
+   "useNowStats": 1,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -21732,7 +21733,7 @@
    ],
    "was": [
     1,
-    11
+    17
    ],
    "shape": [
     3,
@@ -21743,8 +21744,8 @@
    "N": 26.88,
    "N2": 80.28,
    "m": 1,
-   "use0": 0.82,
-   "useNowStats": 0.77,
+   "use0": 1.06,
+   "useNowStats": 0.99,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -21798,7 +21799,7 @@
     "pierce"
    ],
    "was": [
-    1,
+    2,
     11
    ],
    "shape": [
@@ -21810,8 +21811,8 @@
    "N": 19.96,
    "N2": 44.27,
    "m": 1,
-   "use0": 0.99,
-   "useNowStats": 0.88,
+   "use0": 1.1,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -22033,8 +22034,8 @@
     "revive"
    ],
    "was": [
-    1,
-    9
+    2,
+    10
    ],
    "shape": [
     3,
@@ -22045,8 +22046,8 @@
    "N": 18.62,
    "N2": 38.52,
    "m": 1,
-   "use0": 0.93,
-   "useNowStats": 0.82,
+   "use0": 1.1,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -22170,7 +22171,7 @@
    ],
    "was": [
     1,
-    1
+    8
    ],
    "shape": [
     3,
@@ -22181,8 +22182,8 @@
    "N": 15.31,
    "N2": 26.04,
    "m": 1,
-   "use0": 0.57,
-   "useNowStats": 0.47,
+   "use0": 1.04,
+   "useNowStats": 0.93,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -23026,7 +23027,7 @@
    ],
    "was": [
     1,
-    5
+    11
    ],
    "shape": [
     4,
@@ -23037,8 +23038,8 @@
    "N": 18.72,
    "N2": 38.94,
    "m": 1,
-   "use0": 0.72,
-   "useNowStats": 0.64,
+   "use0": 1.06,
+   "useNowStats": 0.97,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -24066,7 +24067,7 @@
    ],
    "was": [
     2,
-    18
+    19
    ],
    "shape": [
     3,
@@ -24077,8 +24078,8 @@
    "N": 28.43,
    "N2": 89.81,
    "m": 1,
-   "use0": 1.02,
-   "useNowStats": 0.95,
+   "use0": 1.06,
+   "useNowStats": 0.98,
    "want": 1,
    "verdict": "band",
    "now": [
@@ -24882,7 +24883,7 @@
    ],
    "was": [
     3,
-    8
+    9
    ],
    "shape": [
     4,
@@ -24893,8 +24894,8 @@
    "N": 28.8,
    "N2": 92.16,
    "m": 1.5,
-   "use0": 1.06,
-   "useNowStats": 0.9,
+   "use0": 1.12,
+   "useNowStats": 0.95,
    "want": 1,
    "verdict": "band",
    "now": [

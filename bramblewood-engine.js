@@ -3694,6 +3694,39 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function twinDefOf(defId){ const base = CARD_DEFS[defId]; const id = base.id + '~twin';
     if(!CARD_DEFS[id]) CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, token:true, twinOf: base.derivedFrom || base.id, effects: Object.assign({}, base.effects||{}, {twin:false})});
     return id; }
+  // Mimic (2026-10-21, package MT; owner 16:33: "for mirrorhide mutant, they should copy the skills of the card, but their stats = the
+  // highest stat of both cards. E.g. 2/3 copying a 4/2 => 4/3."): when it arrives it becomes a copy of a random ally unit on its side's
+  // field (the fight's seeded rnd; never itself or a Cage; no ally: nothing happens). It takes the ally card's skills (its effects, minus
+  // Mimic and the card-kind flags MIMIC_SKIP) and the higher of each printed stat, its own or the ally's, so max Health rises with Health;
+  // whatever it gained on arrival (perks, terrain, Vanguard) stays on top. Its name, art and rarity stay its own; the derived card carries
+  // mimicOf (the ally's card) for the log. Built as Twin builds its card (derivedDefs), so every reader of CARD_DEFS[defId].effects sees
+  // the copied skills, and the arrival skills it copied (Pounce, Twin, Rally ...) fire after it (applyOnSpawnEffects reads the new card).
+  const MIMIC_SKIP = ['mimic', 'leader', 'token', 'structure'];
+  function mimicDefOf(defId, allyDefId){ const base = CARD_DEFS[defId], ally = CARD_DEFS[allyDefId], id = (base.derivedFrom || base.id) + '~mimic~' + ally.id;
+    if(!CARD_DEFS[id]){ const eff = Object.assign({}, ally.effects || {}); MIMIC_SKIP.forEach(k=> delete eff[k]);
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, mimicOf: ally.derivedFrom || ally.id,
+        attack: Math.max(Number(base.attack) || 0, Number(ally.attack) || 0), health: Math.max(Number(base.health) || 0, Number(ally.health) || 0), effects: eff}); }
+    return id; }
+  function mimicOnArrive(players, sideOf, playerId, boardCard, events){
+    const base = CARD_DEFS[boardCard.defId]; boardCard.mimicked = true;
+    const pool = allBoardCards(players[playerId]).filter(c=> c !== boardCard && c.hp > 0 && !c.cageOf && c.defId !== '__cage' && CARD_DEFS[c.defId]);
+    if(!pool.length) return;
+    const ally = pool[Math.floor(rnd() * pool.length)], id = mimicDefOf(boardCard.defId, ally.defId), nd = CARD_DEFS[id], e = nd.effects;
+    const dA = Math.max(0, nd.attack - (Number(base.attack) || 0)), dH = Math.max(0, nd.health - (Number(base.health) || 0));
+    boardCard.defId = id; boardCard.atk += dA; boardCard.baseAtk += dA; boardCard.hp += dH; boardCard.maxHp += dH;
+    // the arrival state makeBoardCard seeds from a card's skills, for the copied ones
+    if(e.dynamite) boardCard.fuse = Number(e.dynamite) || 0;
+    if(e.fastForward) boardCard.ffCounters = Math.max(0, Number(e.fastForward) || 0);
+    if(e.explode){ boardCard.explodeRemaining = e.explode.time; boardCard.explodeFired = false; }
+    if(e.chained) boardCard.chained = true;
+    if(chargeOf(nd) && !(boardCard.wait > 0)) boardCard.chargeLeft = chargeOf(nd).n;
+    if(e.invincible) boardCard.invincible = w2N(nd, 'invincible');
+    if(e.invisible) boardCard.invisible = w2N(nd, 'invisible');
+    { const inj = e.injured, n = inj === true ? 1 : Math.max(0, Math.floor(Number(inj) || 0)); if(n > 0){ boardCard.hp = Math.max(1, boardCard.hp - n); boardCard.injured = n; } }
+    selfInflict(boardCard);
+    if(recordEvents && events) events.push({type:'mimic', side:sideOf(playerId), uid:boardCard.uid, defId:id, fromDefId:base.id, allyUid:ally.uid, allyDefId:ally.defId,
+      atk:boardCard.atk, hp:boardCard.hp, maxHp:boardCard.maxHp});
+  }
 
   // Leader summon (2026-09-18, Epic A — "clicking it attempts to summon it into a random open
   // slot at its normal summon cost"): deliberately a near-copy of placeCard above rather than a
@@ -5183,6 +5216,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events){
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // 2026-10-15: a Pounce on an Exposed unit reports its exposedHit into this play's events
     { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
+    { const mdef = CARD_DEFS[boardCard.defId]; if(mdef && mdef.effects && mdef.effects.mimic && !boardCard.mimicked) mimicOnArrive(players, sideOf, playerId, boardCard, events); } // Mimic (2026-10-21, package MT): first, so the rest reads the copy
     const def = CARD_DEFS[boardCard.defId];
     if(def && def.effects && def.effects.castDarkness) noteDarkCast(players, sideOf, events, boardCard, playerId); // Cast Darkness (2026-10-18): the dark falls as it arrives
     // Freezing (2026-10-15): on a Freezing field every unit arrives frozen (one freeze counter), unless it resists cold.

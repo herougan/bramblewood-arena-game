@@ -115,8 +115,9 @@ function kindOf(c){
 // The owner's 13 live edits keep their share of N (coordinator, 15:09); every other band card goes to the top of the band (owner 15:22:
 // "Just go to each card, and toggle all the values as equally as possible").
 // Held as they are and flagged: no constant prices their skill (BF6's measure).
-const HOLD = {'puddle-changeling': 'Twin is a full copy of the card: off the scale in the measure (S 20+ a copy on b2), so its cost (1) is no price; held at its stats, an owner call',
-  'mirrorhide-mutant': 'Twin is a full copy of the card: off the scale in the measure (S 20+ a copy on b2), so its cost (1) is no price; held at its stats, an owner call'};
+// 2026-10-21 (package MT, owner 16:33, B15): Twin is priced at 20 and Mirrorhide Mutant has Mimic (5) instead, so both cards are fitted by
+// the formula again (Puddle Changeling's Twin overflows a Common's N: the bucket, at the floor of its shape, skills kept).
+const HOLD = {};
 const OWNER13 = (()=>{ try{ return new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'owner-edits-bf5-2026-10-21.json'), 'utf8')).rows.map(r=> r.id)); }catch(e){ return new Set(); } })();
 // The candidates along the card's shape (A:H scaled by one factor, rounded), then the slack in cap 1 filled with Health a point at a time
 // while both caps hold (Attack stays where the shape put it). A wall (Attack 0) stays at 0 Attack.
@@ -324,7 +325,9 @@ else if(cmd === 'plan' || cmd === 'apply'){
   console.log(`${P.cards} cards: ${P.moved} move; ${P.band} in the band, ${P.under} under it, ${P.own} by their own share (tokens, eggs, equipment, the Wyrm), ${P.bucket} in the bucket and ${P.squeezed} squeezed under the band (${P.dropped} took a skill off; ${P.flag} flagged at the floor, ${P.squeezedFlag} under the band flagged)`);
   if(cmd === 'apply'){
     const cards = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')), by = {}; cards.forEach(c=> by[c.id] = c); let n = 0;
-    P.rows.forEach(r=>{ const c = by[r.id]; if(c.attack !== r.was[0] || c.health !== r.was[1]) throw new Error(r.id + ' changed since the plan');
+    // --only=a,b (2026-10-21, package MT): apply just these cards' rows (the plan file still holds every card)
+    const onlyArg = process.argv.find(a=> a.startsWith('--only=')), only = onlyArg ? new Set(onlyArg.slice(7).split(',')) : null;
+    P.rows.filter(r=> !only || only.has(r.id)).forEach(r=>{ const c = by[r.id]; if(c.attack !== r.was[0] || c.health !== r.was[1]) throw new Error(r.id + ' changed since the plan');
       if(r.dropped){ c.effects = r.effectsNow; }
       if(r.now[0] === r.was[0] && r.now[1] === r.was[1] && !r.dropped) return;
       if(c.attack != null || r.now[0]) c.attack = r.now[0]; if(c.health != null || r.now[1]) c.health = r.now[1];
