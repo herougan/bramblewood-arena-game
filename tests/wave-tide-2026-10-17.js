@@ -35,7 +35,7 @@ const push = (e, P, waveId, T)=>{ const W = put(e, P, 1, waveId, 0); const ev = 
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3);
   const {w, ev} = push(e, P, 'wt-waveR', T); ok(T.slot === 1 && w.dir === 'right' && !w.blocked && !ev.some(x=> x.type === 'washCrash'), `Wave right: one column right (${T.slot})`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', -2); put(e, P, 2, 'wt-wall', 2);
-  const {w} = push(e, P, 'wt-waveL', T); ok(T.slot === -2 && w.blocked && !w.bob && T.hp === 500, 'Wave left at the edge: blocked, no bounce the other way, no damage'); }
+  const {w} = push(e, P, 'wt-waveL', T); ok(T.slot === -3 && !w.blocked && w.cols === 1 && !w.bob && T.hp === 500, `Wave left at the edge: out into the frontier column, no damage (${T.slot}; 2026-10-21, package BX: was blocked)`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3); put(e, P, 2, 'wt-wall', 3); const W = put(e, P, 1, 'wt-waveA', 4);
   e.waveHit(P, so, 1, W, T, [], {}); const s1 = T.slot; e.waveHit(P, so, 1, W, T, [], {}); ok(s1 === -1 && T.slot === 0, `Wave alternate: left, then right (${s1}, ${T.slot})`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3); put(e, P, 2, 'wt-wall', 3);
@@ -69,9 +69,10 @@ const push = (e, P, waveId, T)=>{ const W = put(e, P, 1, waveId, 0); const ev = 
   ok(T.slot === 0 && A.slot === -1 && B.slot === 1, 'boxed in on both sides: nobody moves');
   ok(!w.bob && hit && T.hp === 499 && hit.hp === 499 && [A, B].filter(x=> x.hp === 500).length === 1, 'it crashes into one of them, both take 1 (no bob)');
   ok(ev.filter(x=> x.type === 'wave').length === 1 && ev.filter(x=> x.type === 'washCrash').length === 1, 'one wave event, one washCrash'); }
-{ let bad = 0, bounced = 0; for(let s = 1; s <= 100; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', -2), A = put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 2);
-    const {w} = push(e, P, 'wt-waveT', T); if(T.slot !== -2 || w.crashUid !== A.uid || A.hp !== 499) bad++; if(w.bounced) bounced++; }
-  ok(!bad, `the edge on one side and a unit on the other: the edge turns it back, into the unit (${bad} wrong)`); ok(bounced > 20 && bounced < 80, `...marked bounced when it had picked the edge (${bounced}/100)`); }
+// 2026-10-21 (package BX): the edge no longer turns it back; outward it rides into the frontier column, inward it crashes into the unit.
+{ let bad = 0, out = 0, crash = 0; for(let s = 1; s <= 100; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', -2), A = put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 2);
+    const {w} = push(e, P, 'wt-waveT', T); if(w.bounced) bad++; else if(T.slot === -3 && A.hp === 500) out++; else if(T.slot === -2 && w.crashUid === A.uid && A.hp === 499) crash++; else bad++; }
+  ok(!bad && out > 20 && crash > 20, `the edge on one side and a unit on the other: out into the frontier or into the unit, never bounced (${out} out, ${crash} crashes, ${bad} wrong)`); }
 { let crashes = 0, moves = 0, bad = 0; for(let s = 1; s <= 100; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', -1); A.webbed = 3; put(e, P, 2, 'wt-wall', 3);
     push(e, P, 'wt-waveT', T); if(T.slot === 1) moves++; else if(T.slot === 0 && A.slot === -1 && A.hp === 499 && T.hp === 499) crashes++; else bad++; }
   ok(!bad && crashes && moves, `a Webbed unit beside it is crashed into (it stays put); the other way it rides (${crashes} crashes, ${moves} rides, ${bad} wrong)`); }
@@ -126,7 +127,7 @@ const kills = (stats, side, id)=> (stats[side + '|' + id] || {}).kills || 0;
   ok(cr && T.hp === 500 - ft.n && [A, B].find(x=> x.uid === cr.otherUid).hp === 500 - ft.n, '...and both take N'); }
 { const {e, P} = mk({awash:true}, 5); const T = put(e, P, 1, 'wt-wall', -2), A = put(e, P, 1, 'wt-wall', 2); A.pinned = true;
   e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev); const w = ev.find(x=> x.type === 'wave');
-  ok(w && T.slot > -2 && !ev.some(x=> x.type === 'washCrash' && w.dir === 'left'), 'at the edge it turns back the other way (only the edge bounces it)'); }
+  ok(w && T.slot !== -2 && !w.blocked && !ev.some(x=> x.type === 'washCrash'), `at the edge it still moves: out into the frontier or back the other way (${T.slot}; 2026-10-21, package BX)`); }
 { const {e, P} = mk({awash:1}, 9); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', 3).pinned = true; e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
   const ft = ev.find(x=> x.field === 'awash'); ok(ft && ft.n === 1 && Math.abs(T.slot) === 1, 'rules.awash: 1 caps the roll at 1'); }
 { const {e, P} = mk({awash:true}, 9); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);

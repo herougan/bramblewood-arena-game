@@ -96,7 +96,8 @@
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
-      const A = d.attack || 0, H = d.health || 0, x1 = r2((2 * A + H + s.S) * m), x2 = r2((A * H + s.S) * m), N2 = r2((N / 3) * (N / 3));
+      // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
+      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, x1 = r2((2 * A + H + s.S) * m), x2 = r2((A * H + s.S) * m), N2 = r2((N / 3) * (N / 3));
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2
       return {N, S:s.S, x1, x2, N2, ok: x1 <= N && x2 <= N2, wellUnder: x1 <= N && x2 <= N2 && x1 <= N * 0.6, m, parts:s.parts, missing:s.missing};
     }

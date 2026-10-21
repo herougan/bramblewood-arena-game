@@ -74,7 +74,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const {e, P} = mk(); const T = put(e, P, 2, 'kc-wall', 0); const W = put(e, P, 1, 'kc-waveL', 0); put(e, P, 1, 'kc-wall', 1);
   const ev = []; e.debugAttack(P, so, W.uid, {}, ev); ok(T.slot === -1, 'with room to the left (the board reaches column 1), a lone unit moves');
   const {e:e2, P:P2} = mk(); const T2 = put(e2, P2, 2, 'kc-wall', -2); put(e2, P2, 2, 'kc-wall', 0); const W2 = put(e2, P2, 1, 'kc-waveL', -2); put(e2, P2, 1, 'kc-wall', 2);
-  const ev2 = []; e2.debugAttack(P2, so, W2.uid, {}, ev2); ok(T2.slot === -2 && ev2.find(x=> x.type==='wave').blocked, 'at the board edge the push is blocked'); }
+  const ev2 = []; e2.debugAttack(P2, so, W2.uid, {}, ev2); ok(T2.slot === -3 && !ev2.find(x=> x.type==='wave').blocked, `at the board edge it is pushed out into the frontier column (${T2.slot}; 2026-10-21, package BX)`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'kc-wall', 0); put(e, P, 2, 'kc-wall', -3); put(e, P, 2, 'kc-wall', 3); const W = put(e, P, 1, 'kc-waveA', 0);
   e.debugAttack(P, so, W.uid, {}, []); const s1 = T.slot; W.slot = s1; e.syncSlots(P[1]); P[1].row.center = []; P[1].row.left = s1 < 0 ? [W] : []; P[1].row.right = s1 > 0 ? [W] : [];
   e.debugAttack(P, so, W.uid, {}, []); ok(s1 === -1 && T.slot === 0, `Wave alternate: left, then right (${s1}, ${T.slot})`); }

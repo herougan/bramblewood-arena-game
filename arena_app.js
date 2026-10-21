@@ -1594,6 +1594,16 @@ sk1Patch(ACTION_DEFS, 'expose', {desc:TX('ui.act-expose-desc')});
 sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
 sk1Patch(ACTION_DEFS, 'cleanse', {desc:TX('ui.act-cleanse-desc')});
 Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', exploit:'🩻', spoils:'🍖', venomPulse:'💉', punish:'⚖️', demolisher:'🏰'}); // Package SK1 (2026-10-19)
+// ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
+// action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
+// the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
+sk1Patch(PASSIVE_DEFS, 'archer', {category:'evergreen', label:TX('ui.skn-archer'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-archer', {n: numOr(v, 2)}), get:e=> e.archer ? numOr(e.archer, 2) : undefined});
+sk1Patch(PASSIVE_DEFS, 'archerStyle', {category:'passive', label:TX('ui.skn-archer-style'), kind:'select', desc:v=> v === 'drop' ? TX('ui.archer-style-drop') : TX('ui.archer-style-bow'),
+  selectOptions:()=> [{value:'bow', label:TX('ui.archer-style-bow')}, {value:'drop', label:TX('ui.archer-style-drop')}],
+  get:e=> e.archerStyle ? (e.archerStyle === 'drop' ? 'drop' : 'bow') : undefined, apply:(e, v)=>{ if(v === 'drop') e.archerStyle = 'drop'; else delete e.archerStyle; }});
+TRIGGER_DEFS.push({key:'onAction', label:TX('ui.trg-on-action'), desc:TX('ui.trg-on-action-desc')});
+ACTION_DEFS.push({key:'arrow', label:TX('ui.act-arrow'), fields:['amount'], desc:TX('ui.act-arrow-desc')});
+Object.assign(SKILL_ICON, {archer:'🏹'});
 // An old save's or a server override's Demolisher N reads as Siege N (the higher of the two when a card had both; the engine reads either).
 function sk1MigrateSiege(c){
   const e = c && c.effects; if(!e || e.demolisher == null) return c;
@@ -2102,7 +2112,9 @@ function cardFrameKind(d, opts){
 // 2026-10-19 (package CF, owner 22:32: "Equipment & devilry card frame - can it be improved? ... I don't want to stray too far from
 // that. Just abit different."): .cframe-orn is the frame's ornament layer (rivets and gears, sigils and embers, shell ribs), a sibling
 // of .cframe so the filter that re-tints the normal frame's inlay doesn't touch it. It only shows on the frames that use it.
-const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i><i class="cframe-orn" aria-hidden="true"></i>';
+// + .cframe-fx (2026-10-21, package BX): the host of the rarity frames' rings and glows (bramblewood-fx-d.js), the card's own box, so they
+// line up with the frame at every size (they hung off the rarity band before, and sat a fifth of the way down the card).
+const CARD_FRAME_HTML = '<i class="cframe-fx" aria-hidden="true"></i><i class="cframe" aria-hidden="true"></i><i class="cframe-orn" aria-hidden="true"></i>';
 // Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
 // (then we can remove the top right hand corner context symbol for those. like the 5 point star for devilry and prayer)"): each
 // archetype (the CARD_ARCHETYPE_MARK keys) has its own frame, drawn by tools/make_card_frames.py. The call: a UNIT of an archetype
@@ -7525,7 +7537,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
-      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : isFireDef(d) ? ' atk-fire' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : isFireDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🔥</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
@@ -7592,6 +7604,7 @@ function poisonTagHTML(d){
 // greyed out"): one ⚡→X chip per custom trigger, X being what it does (🪦 for anything that works the graveyard). On the
 // board, a reactive trigger is off while its card is still Waiting (the engine's rule), and its ⚡ greys out.
 const TRIGGER_ALWAYS_ON = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // + Sacrifice and Charge (2026-10-14)
+TRIGGER_ALWAYS_ON.add('onAction'); // Package BX (2026-10-21): it only fires on a unit that is acting (the engine's ALWAYS_ON_HOOKS)
 function triggerActionEmoji(t){
   const defs = getCardDefs();
   switch(t.do){
@@ -7662,6 +7675,7 @@ function triggerBadges(d, live){
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
   'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
 CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter', 'disarm', 'repair', 'foraging', 'milling', 'pickpocket', 'sabotage', 'arson', 'fortification'); // Package SK2 (2026-10-19): a chip on the card face
+CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -7883,6 +7897,7 @@ function abilityBadges(d, bopts){
   // (Nocturnal, Bleed, Regen, Guardian, Stealth, Arrow, Crit…), so the card looked as if it had no skill. Each now gets its icon,
   // plus its number when it is more than 1. Skills that carry two numbers (Freeze, Sleep…) show the icon alone.
   CHIP_FALLBACK_SKILLS.forEach(k=>{ const v = e[k]; if(!v) return;
+    if(k === 'magic') return; // 2026-10-21 (package BX, owner: "For magic units, dont have to have the magic context label since it's obvious from their attack label")
     out.push(`<span class="ab-sk" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
@@ -34863,9 +34878,12 @@ function atkAmpTier(eff, base){
 function liveSwarmBonus(c){ try{ const m = matchState; return (m && m.engine && m.engine.swarmBonusOf) ? m.engine.swarmBonusOf(m.players, c) : 0; }catch(e){ return 0; } }
 // 2026-10-12 (user: "At super-minimised forms, remove the emojis from the attack and health labels"): the glyphs sit in their
 // own <i class="sg"> so the tiny-card rule can hide them.
-function atkLabelHTML(eff, base, d){ const g = isMagicDef(d) ? '🪄' : '⚔', t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
+function atkLabelHTML(eff, base, d){ const g = isMagicDef(d) ? '🪄' : isFireDef(d) ? '🔥' : '⚔', /* + fire (BX, 2026-10-21) */ t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
 // Magic attackers (2026-10-14, user: "some units have a wand instead of a sword symbol on their bottom left, blue in colour").
 function isMagicDef(d){ return !!(d && ((d.effects && d.effects.magic) || d.dmgType === 'magic')); }
+// 2026-10-21 (package BX, owner: "we shall introduce 1 or 2 cards with fire damage in the attack label"): a unit whose swing deals fire
+// damage (dmgType 'heat', the engine's fire; 'fire' is read the same) shows a flame on its attack label, as magic shows the wand.
+function isFireDef(d){ return !!(d && !isMagicDef(d) && (d.dmgType === 'heat' || d.dmgType === 'fire')); }
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
@@ -39105,7 +39123,8 @@ function logText(ev){
     case 'bloodTithe': return {cls:'bleed', text: ev.castle ? `⛧ Blood Tithe for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.` : `⛧ Blood Tithe for ${nm(ev.defId)}: ${nm(ev.targetDefId)} takes ${ev.dmg != null ? ev.dmg : ev.amount}.`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
-    case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
+    case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
+      return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
     case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
     case 'revive': return {cls:'gold', text:TX('ui.log-revive', {name: nm(ev.defId)})}; // 2026-10-19 (package RV): it did die (the death line is just before)
     case 'quiet': return ev.defId ? {cls:'', text:TX('ui.log-quiet-stills', {name: nm(ev.defId)})} : null; // 2026-10-19 (package RV): Quiet Contemplation stopped a doubling or an extra go
@@ -40277,6 +40296,35 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
 const ARROW_PNG = (()=>{ const v = "__ARROW_PNG__"; return v.indexOf('__ARROW') === 0 ? '' : v; })();
 const FIRE_ARROW_PNG = (()=>{ const v = "__FIRE_ARROW_PNG__"; return v.indexOf('__FIRE') === 0 ? '' : v; })();
 function arrowFlightMs(){ const mult = (matchState && matchState.speedMult) || 1; return Math.max(90, Math.round(260 / mult)); }
+// Package BX (2026-10-21, owner on Stonedrop Vulture: "it flies to the target and drops a stone, the card flies back"): the 'drop'
+// look of an Archer's arrow (effects.archerStyle). The card rises and flies over the target (outMs, the bow's draw time), lets a stone
+// fall onto it (fallMs, the arrow's flight: the hit lands as it would for an arrow), then flies back home. false = not drawn (no GSAP,
+// reduced motion, no element), and the caller draws the ordinary arrow instead.
+function bxDropStone(shooter, targetEl, outMs, fallMs){
+  if(!shooter || !targetEl || !hasGsap() || reducedMotion() || !shooter.isConnected) return false;
+  const a = shooter.getBoundingClientRect(), b = targetEl.getBoundingClientRect(); if(!a.width || !b.width) return false;
+  const sc = shooter.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1;
+  const dx = (b.left + b.width/2) - (a.left + a.width/2), up = b.top < a.top ? -1 : 1; // over the target, a little short of it on the near side
+  const dy = (b.top + b.height/2) - (a.top + a.height/2) - up*b.height*0.55;
+  const back = Math.max(220, Math.round(outMs*1.1));
+  gsap.killTweensOf(shooter, 'x,y,scale');
+  shooter.classList.add('bx-dropping');
+  gsap.timeline({onComplete:()=>{ shooter.classList.remove('bx-dropping'); gsap.set(shooter, {clearProps:'x,y,scale,zIndex'}); }})
+    .set(shooter, {zIndex:40})
+    .to(shooter, {x:dx/sc, y:dy/sc, scale:1.06, duration:outMs/1000, ease:'power2.inOut'})
+    .to(shooter, {y:'-=' + Math.round(6/sc), duration:Math.max(.06, fallMs/2000), ease:'sine.out', yoyo:true, repeat:1})
+    .to(shooter, {x:0, y:0, scale:1, duration:back/1000, ease:'power2.inOut'});
+  setTimeout(()=>{ try{
+    const s0 = shooter.getBoundingClientRect(), t = targetEl.getBoundingClientRect();
+    const st = document.createElement('div'); st.className = 'bx-stone'; st.setAttribute('aria-hidden', 'true'); st.textContent = '🪨'; document.body.appendChild(st);
+    const sz = Math.max(14, Math.min(34, t.width*0.28));
+    gsap.set(st, {x: s0.left + s0.width/2 - sz/2, y: s0.top + s0.height*0.7 - sz/2, fontSize: sz, rotation: -20, opacity:1});
+    gsap.timeline({onComplete:()=> st.remove()})
+      .to(st, {x: t.left + t.width/2 - sz/2, y: t.top + t.height*0.45 - sz/2, rotation: 160, duration: fallMs/1000, ease:'power2.in'})
+      .to(st, {scale:.6, opacity:0, duration:.22, ease:'power1.in'});
+  }catch(e){} }, outMs);
+  return true;
+}
 function spawnArrowProjectile(fromEl, toEl, fire){
   if(!fromEl || !toEl) return;
   const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect();
@@ -41998,7 +42046,8 @@ function renderVfxForEvent(ev){
         setTimeout(()=>{ try{ if(ev.type!=='evaded') SoundKit.arrowThunk(pa.fire); }catch(e){} }, arrowWind + arrowFlightMs());
         // 2026-10-06: the full bow choreography (draw, release + recoil, flight, impact) lives in
         // bramblewood-skillfx.js, shared with the Effects Lab; spawnArrowProjectile stays as a fallback.
-        if(window.SkillFX){ SkillFX.setImages(ARROW_PNG, FIRE_ARROW_PNG); SkillFX.bowShot(shooter || hqTileEl(ev.side), targetEl, {fire: pa.fire, draw: arrowWind, flight: arrowFlightMs(),
+        if(pa.style === 'drop' && bxDropStone(shooter, targetEl, arrowWind, arrowFlightMs())){} // Package BX (2026-10-21): flies over, drops a stone, flies back
+        else if(window.SkillFX){ SkillFX.setImages(ARROW_PNG, FIRE_ARROW_PNG); SkillFX.bowShot(shooter || hqTileEl(ev.side), targetEl, {fire: pa.fire, draw: arrowWind, flight: arrowFlightMs(),
           light: (x, y, rgb, big)=>{ try{ const bfEl = document.getElementById('battlefieldEl'); if(battleWeather && battleWeather.flash && bfEl){ const b = bfEl.getBoundingClientRect(); battleWeather.flash((x - b.left)/b.width, (y - b.top)/b.height, rgb, big ? 0.9 : 0.55, big ? 0.5 : 0.3, big ? 800 : 500); } }catch(e){} }}); }
         else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
@@ -42120,7 +42169,7 @@ function renderVfxForEvent(ev){
   // existing whole-battlefield playEarthquake() shake (the same "ground just shook" cue big-
   // creature spawns and castle hits already use) so this skill's AOE finally reads as one, plus
   // its own low rumbling tone and a banner on the caster.
-  if(ev.type==='arrow'){ matchState.pendingArrow = {uid: ev.uid, fire: !!ev.fire}; }
+  if(ev.type==='arrow'){ matchState.pendingArrow = {uid: ev.uid, fire: !!ev.fire, style: ev.style || null}; } // + an Archer's look (BX, 2026-10-21)
   if(ev.type==='earthquake'){
     const el = boardCardEl(ev.uid);
     SoundKit.earthquakeTone();

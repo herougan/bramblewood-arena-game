@@ -223,6 +223,10 @@ const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAtta
 // Package SK1 (2026-10-19): On Enemy Enters (Facing), On Hit, On Kill (Creature); the last two fire on its own blow, so even while Waiting.
 TRIGGER_KEYS.push('onEnemyEnter', 'onHit', 'onKillCreature');
 ALWAYS_ON_HOOKS.add('onHit'); ALWAYS_ON_HOOKS.add('onKillCreature'); // SK1 (2026-10-19)
+// Package BX (2026-10-21, owner: Stonedrop Vulture "instead has Archer N (Cannot attack, instead Arrow N every action)"): On Action fires
+// each time the unit takes its turn in the combat order (an Archer's instead of a swing; anyone else's just before On Attack). It only
+// fires on a unit that is acting, so it counts as always on.
+TRIGGER_KEYS.push('onAction'); ALWAYS_ON_HOOKS.add('onAction');
 // 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
 // triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
 // 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
@@ -231,6 +235,7 @@ const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam','duplicate','devourGrave','buffAll','stench','silence','stymie','exhaust','petrify','vulnerable','barrage','smokeScreen','magnet']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
 ACTION_KEYS.push('forgeWeapon', 'disarm'); // Package SK2b (2026-10-19 / owner Oct 21): a smith lays a weapon; Disarm takes one
 ACTION_KEYS.push('exploit', 'poisonTick'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N
+ACTION_KEYS.push('arrow'); // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -1679,6 +1684,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   is crashed into: it stops beside it and both take N (ev.crashUid, then a washCrash event; ev.cols 0 when it was right beside it).
   //   The board's edge (the outermost column any unit on either side stands in) stops it; with no fixed way, an edge right beside it
   //   turns it the other way instead (ev.bounced). A fixed way at the edge is blocked (ev.blocked). Nothing swaps any more.
+  //   2026-10-21 (package BX): the edge is one column further out now, the frontier (see ride below), so a unit standing at the
+  //   outermost column is pushed out into the frontier instead of being blocked.
   //   Packed (slotless) rows have no free columns: it crashes into its neighbour that way (no fixed way: the other way at the end of
   //   the row); alone, it bobs (ev.blocked, ev.bob, ev.touchUids).
   // The word "Awashed" is reserved for a future mechanic (the user, 2026-10-18), so the internal keys (rules.awash, ev.awash, the
@@ -1702,7 +1709,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       syncSlots(players[1]); syncSlots(players[2]);
       const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? (tRow ? rowsUnitsOf(players[pid]) : allBoardCards(players[pid])).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
       const s0 = t.slot, occ = new Map((tRow ? Object.values(rowMap).filter(c=> c && !c.gap) /* a body not yet swept still holds its slot */ : allBoardCards(pl).filter(live)).filter(c=> c !== t).map(c=> [c.slot, c]));
-      const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
+      // 2026-10-21 (package BX, owner: "the enemy pushed my units to the left. It failed as there were no more units in that direction,
+      // it was the 'frontier'. This shouldn't be the case, the unit should be pushed by Wave 1."): the board's edge no longer stops a
+      // push; the frontier, the one column just past the outermost unit (the slot a card could be played into beside it), is open, so a
+      // unit at the edge rides out into it. It goes no further than that one column (frontier = edge + 1).
+      const frontier = edge + 1;
+      const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > frontier) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
       const first = dir || washDir(s0, 0); let way = first, r = ride(way);
       if(!dir && r.to === s0 && !r.hit){ way = -first; r = ride(way); if(r.to !== s0 || r.hit) ev.bounced = true; else way = first; }
       ev.dir = way < 0 ? 'left' : 'right';
@@ -1886,7 +1898,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
   // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
-  function castleSwingAmt(att, base){ let n = Math.max(0, base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
+  // 2026-10-21 (package BX, owner: "Swarm: Doesn't seem to be doing the bonus damage to the bramble. It should do so."): a castle
+  // swing left out Swarm (and its mirror, Defiance), which a hit on a unit gets in damageCard; both count at the bramble now.
+  function castleSwingAmt(att, base){ let n = Math.max(0, base + swarmBonus(att) + defianceBonus(att) + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
   // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
   // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
   // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
@@ -2074,7 +2088,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
   const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp'], esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
@@ -4388,14 +4402,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.disarm && !s3) return sk1Trigs(e, base); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.dz === e.disarm && m.s3 === s3) return sk1Trigs(e, m.list);
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.disarm && !s3) return bxTrigs(e, sk1Trigs(e, base)); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.dz === e.disarm && m.s3 === s3) return bxTrigs(e, sk1Trigs(e, m.list));
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
     sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, dz:e.disarm, s3, list}); return sk1Trigs(e, list);
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, dz:e.disarm, s3, list}); return bxTrigs(e, sk1Trigs(e, list));
   }
   // ==== Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. Owner principle: "if you can and it makes sense, feel
   // free to use triggers and actions. if they dont suffice, add the required trigger or action." So most of these are keywords that
@@ -5601,7 +5615,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // earlier per-trigger flag) is now simply the default.
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
       if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
-      if(confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
+      if(t.keyword !== 'archer' /* its turn already rolled Confused's coin (BX, 2026-10-21) */ && confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
       if(boardCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Slippery (2026-10-16): "triggers/effects to fail" 1 in 2
       // A cost step (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... So the mid-action
       // is Burn 1 Lumber, the after-action is Deal N extra fire damage. One (unused) is Burn 1 Lumber, Heal ally N"): t.cost
@@ -6017,6 +6031,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           }
           break;
         }
+        case 'arrow': bxArrowShot(players, sideOf, playerId, boardCard, numN(t.amount, 1), stats, events, t.keyword === 'archer' ? 'archer' : 'action'); break; // Package BX (2026-10-21)
         default: if(!sk3RunAction(players, sideOf, playerId, boardCard, t, stats, events, extra)) sk2RunAction(players, sideOf, playerId, boardCard, t, stats, events); break; // + SK2b: Forge Weapon, Disarm // Package SK3 (2026-10-19): Duplicate, Silence, Stymie ...
       } };
       // Targets (2026-10-12, 23:12 list): an action with a who/sub picker can hit several distinct targets (t.targets),
@@ -6765,6 +6780,49 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'sk2', kind:'harvest', side, uid:a.att.uid, defId:a.att.defId, amount:got, forced: forced || undefined});
     return true;
   }
+  // ==== Package BX (2026-10-21): Archer N ====================================================================================
+  // Owner: "[Stonedrop Vulture] instead has Archer N (Cannot attack, instead Arrow N every action)." Built as a trigger × action:
+  //   Archer N = On Action × Arrow N, and the unit never swings. Its turn in the combat order (its Speed, its column, as a swing's) is
+  //   the On Action: it looses one arrow of N (bxArrowShot, the Arrow skill's shot: the enemy unit facing it, else the nearest, ties at
+  //   random, else the bramble; Fletcher, Fletcher's Eye and Weapon Master add, a Helmet can deflect it, Reflect bounces it, an Evasive
+  //   unit can dodge it, its kills are the archer's). Whatever stops a swing stops it (Stunned, Frozen, Asleep, Confused's coin ...),
+  //   but its Attack doesn't matter: it acts at 0 Attack too. No On Attack, no on-hit swing skills (it doesn't attack).
+  //   effects.archerStyle 'drop' (a look only): the card flies to the target, drops a stone and flies back (arena_app.js, BX block).
+  function bxIsArcher(c){ const e = c && effectsOf(c); return !!(e && e.archer && !(Number(e.archer) < 0)); }
+  var bxTrigMemo = null; // (var, made on first use: trigsOf may run before this line does)
+  function bxTrigs(e, list){
+    if(!e || !e.archer || Number(e.archer) < 0) return list;
+    if(!bxTrigMemo) bxTrigMemo = new WeakMap(); const m = bxTrigMemo.get(e); if(m && m.src === list && m.n === e.archer) return m.out;
+    const out = list.concat([{on:'onAction', do:'arrow', amount:numN(e.archer, 1), keyword:'archer'}]);
+    bxTrigMemo.set(e, {src:list, n:e.archer, out}); return out;
+  }
+  var bxBook = null; // the acting archer's kill-credit book (its arrow's kills are its kills, as a swing's are)
+  function bxArrowShot(players, sideOf, pid, c, n, stats, events, how){
+    const pl = players[pid], enemy = players[otherId(pid)]; if(!pl || !enemy || !c || !(c.hp > 0)) return false;
+    const amount = Math.max(0, Math.round(Number(n) || 0)) + ((pl.perks && pl.perks.fletcher) ? 1 : 0) + auraN(pl, 'fletcher') + eqArrowBonus(pl);
+    const opp = opposingCardOf(players, pid, c), near = (opp && opp.card && opp.card.hp > 0) ? opp.card : arrowTargetOf(players, pid, c);
+    const target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'};
+    if(c.invisible > 0){ c.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(pid), uid:c.uid, defId:c.defId, attacked:true}); } // shooting gives it away, as for Arrow
+    if(recordEvents && events) events.push({type:'arrow', side:sideOf(pid), defId:c.defId, uid:c.uid, targetSide:sideOf(otherId(pid)), targetUid: target.kind === 'card' ? target.card.uid : null, targetDefId: target.kind === 'card' ? target.card.defId : null,
+      amount, archer: how === 'archer' || undefined, style: (effectsOf(c).archerStyle || undefined)});
+    if(helmetDeflects(target, sideOf(otherId(pid)), events)) return true;
+    fireDamageAction(players, sideOf, pid, c.defId, amount, 'physical', target, stats, events, bxBook, c.uid, true); // true: a shot (Reflect, Evasive)
+    return true;
+  }
+  // The archer's turn: On Action (its Arrow N, and any other On Action trigger), in place of the swing. true when it took the turn.
+  function bxArcherTurn(players, sideOf, a, stats, events, killCredit){
+    if(!bxIsArcher(a.att)) return false;
+    const book0 = bxBook; bxBook = killCredit || {};
+    try{ runCustomTriggers(players, sideOf, a.attId, a.att, CARD_DEFS[a.att.defId], 'onAction', stats, events); } finally{ bxBook = book0; }
+    return true;
+  }
+  // Dive's eligibility (2026-10-21, package BX, owner: "Dive: I was thinking this can be for Flying, Tide, OR speeders/sprinters like the
+  // pronghorn or gazelle."): a unit may take Dive when it flies, has Tide, or carries the Sprinter tag (card data tags: the fast runners,
+  // the pronghorn, cheetah, springbok and hares). Dive itself is not built yet (no card, rule or doc has it; see
+  // docs/ramming-proposal-2026-10-21.md): this is the one rule it will read.
+  function isSprinterDef(def){ return !!(def && Array.isArray(def.tags) && def.tags.includes('Sprinter')); }
+  function diveEligible(defOrCard){ const def = defOrCard && defOrCard.defId ? CARD_DEFS[defOrCard.defId] : defOrCard; if(!def) return false;
+    const e = def.effects || {}; return !!(e.flying || e.tide || isSprinterDef(def)); }
   // After a swing: Pickpocket, Sabotage, Arson on what the swing landed on.
   function sk2AfterSwing(players, sideOf, a, stats, events){
     const hit = sk2SwingHit; sk2SwingHit = null; if(!hit || hit.att !== a.att) return;
@@ -7786,7 +7844,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             // >0. Please check at every battle step not just at the start ... what if an ally buffs it midway combat?"): the
             // swing's own bonuses count (Swarm, Defiance, day/night, Inspiring, the Flow tide), and a unit at 0 is NOT retired
             // for the round: every later look at the queue checks it again, so a buff mid-combat lets it swing.
-            if(swingAtkNow(card) <= 0){ if(!zeroNoted.has(uid)){ zeroNoted.add(uid); skipTurn('zeroAttack', card, ownId); } return; }
+            if(swingAtkNow(card) <= 0 && !bxIsArcher(card) /* an Archer acts at 0 Attack (BX, 2026-10-21) */){ if(!zeroNoted.has(uid)){ zeroNoted.add(uid); skipTurn('zeroAttack', card, ownId); } return; }
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
           });
         });
@@ -7816,7 +7874,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.cowerRound === combatNo){ skipTurn('cower', c, ownId); return false; }
       if(c.petrified){ skipTurn('petrified', c, ownId); return false; }
       if(c.frightRound != null && c.frightRound === turnNo){ skipTurn('frightened', c, ownId); return false; }
-      return swingAtkNow(c) > 0;
+      return swingAtkNow(c) > 0 || bxIsArcher(c); // an Archer acts at 0 Attack (BX, 2026-10-21)
     }
     // Picks (and removes from the pool) whichever currently-eligible attacker should act next:
     // Quick still overrides everything else exactly as before (a separate, unrelated mechanic —
@@ -7932,6 +7990,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // on-hit skill, no Bleed tick from swinging (Confuse had no other effect on the swing, so this is the whole rule for it).
       if(confusedFumbles(a.att, sideOf(a.attId), events, 'attack')){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       if(sk2SwingReplaced(players, sideOf, a, stats, events)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package SK2 (2026-10-19): Harvest instead of the swing
+      if(bxArcherTurn(players, sideOf, a, stats, events, killCredit)){ reflowAfterKills(null); watchScan(players, sideOf, stats, events); pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package BX (2026-10-21): Archer N, its arrow instead of the swing
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
       currentAttacker = a.att;
       const attDef = sk1Unhide(a.att, CARD_DEFS[a.att.defId]); // an Exposed Stealth unit swings as anyone does (2026-10-19, package SK1)
@@ -7961,6 +8020,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // card commits to attacking this round, AFTER atkThisRound is already captured above, so
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
       a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
+      runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAction', stats, events); // Package BX (2026-10-21): On Action, its turn
       runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events);
       // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack
       // finds/lands on a target.
@@ -8666,7 +8726,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
