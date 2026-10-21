@@ -6205,6 +6205,9 @@
   .dungeon-key-btn[hidden]{display:none !important;}
   .dungeon-key-btn .dk-n{position:absolute; right:-4px; bottom:-4px; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:8px; background:#e9c46a; color:#2b1d08; font:800 10.5px/16px 'Baloo 2', system-ui, sans-serif; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,.45); pointer-events:none;}
   .dungeon-key-btn.is-here{box-shadow:0 0 0 2px var(--accent);}
+  /* 2026-10-19 (package MX): out of keys: the key greys, the badge still says 0 (an empty, outlined badge) */
+  .dungeon-key-btn.is-empty .tab-emoji{filter:grayscale(1) opacity(.55);}
+  .dungeon-key-btn.is-empty .dk-n{background:#3a3f47; color:#e8e2d6; box-shadow:0 0 0 1.5px #9aa3ad inset, 0 1px 3px rgba(0,0,0,.45);}
   .topbar .dungeon-key-btn{padding:7px 10px;}
   #appWrap.in-match .dungeon-key-btn{display:none !important;}
   /* The Dungeons tab in Play (2026-10-15, user: "Maybe, it's its own, just another tab in 'Play'."). */
@@ -7169,6 +7172,20 @@
      dark 12.9:1), and the counting number with them. */
   .winloss-card.is-raid .raid-results .hud-pill{color:var(--ink); background:var(--surface); border-color:var(--surface-border);}
   .winloss-card.is-raid .raid-results .hud-pill .reward-count{color:inherit;}
+  /* 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a won raid fight's card is the card: its
+     tile, full name, rarity and "Pack card", a button to the card's details (was a "🃏 name" pill). */
+  .raid-results .rw3-drop{flex:0 0 100%; display:flex; flex-direction:column; align-items:center; gap:6px; margin:4px 0 2px;}
+  .raid-results .rw3-drop .rw-head{color:#fbf1dc; font-weight:800;}
+  .rw3-card{all:unset; box-sizing:border-box; display:flex; align-items:center; gap:12px; max-width:min(100%, 340px); padding:8px 14px 8px 8px; border-radius:14px; cursor:pointer;
+    color:var(--ink); background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 14px rgba(0,0,0,.25); text-align:left;}
+  .rw3-card:hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,0,0,.32);} .rw3-card:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+  .rw3-card .rw3-tile{flex:0 0 auto;} .rw3-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
+  .rw3-card .rw3-txt{display:flex; flex-direction:column; gap:3px; min-width:0;}
+  .rw3-card .rw3-name{font-size:17px; line-height:1.15; overflow-wrap:anywhere;}
+  .rw3-card .rw3-rarity{display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700;}
+  .rw3-card .rw3-rarity i{width:10px; height:10px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(0,0,0,.25);}
+  .rw3-card .rw3-from{font-size:13px; opacity:.85;}
+  #cardDetailOverlay.rw3-over{z-index:9600;} /* a reward card's details over the raid claim screen (z-index 9500) */
   /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
   .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
@@ -7456,6 +7473,9 @@
   .card-tile .castle-shield{position:absolute; z-index:4; left:clamp(3px, 6cqw, 10px); bottom:clamp(3px, 4cqw, 8px); font:800 clamp(10px, 13cqw, 17px)/1.1 'Baloo 2',system-ui,sans-serif; color:#cfe8ff; padding:.02em .3em 0; border-radius:.38em;
     background:linear-gradient(180deg, rgba(14,34,66,.9), rgba(6,16,34,.92)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,180,255,.55);}
   .card-tile .castle-shield.is-broken{opacity:.45; filter:grayscale(.6);}
+  /* 2026-10-19 (package MX): on a small bramble tile (the fight's HUD tiles) a Shield badge and a 3-digit Health (the raid's 🔷50 and 350)
+     overlapped, hiding the Health; there the badge sits just above the Health row */
+  @container (max-width: 72px){ .card-tile .castle-shield{bottom:calc(clamp(3px, 4cqw, 8px) + 1.45em);} }
   .card-tile .castle-shield{color:var(--sh-a, #cfe8ff); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px var(--sh-b, rgba(120,180,255,.55));} /* layer colour, blue → violet → magenta → pink (2026-10-12) */
   .se-armour{display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end;} .se-armour-layer{display:flex; flex-direction:column; gap:2px; font-weight:700; padding:4px 6px; border-radius:8px; background:linear-gradient(180deg, color-mix(in srgb, var(--sh-a) 35%, transparent), color-mix(in srgb, var(--sh-b) 25%, transparent)); border:1px solid var(--sh-b);}
   .se-armour-layer input{width:84px;}

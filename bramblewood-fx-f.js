@@ -1828,7 +1828,7 @@ css('rcs', `
 .fxf-rcs-rw{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:4px; min-width:92px; max-width:150px; padding:10px 10px 8px; border-radius:14px; box-sizing:border-box;
   background:rgba(140,220,255,.10); border:1px solid rgba(140,220,255,.38);}
 .fxf-rcs-rw .ico{display:flex; align-items:center; justify-content:center; min-height:36px; font-size:30px; line-height:1; font-family:${EMOJI};}
-.fxf-rcs-rw .ico svg, .fxf-rcs-rw .ico img{width:32px; height:32px;}
+.fxf-rcs-rw:not(.is-card) .ico > svg, .fxf-rcs-rw:not(.is-card) .ico > img{width:32px; height:32px;} /* 2026-10-19 (package RW3): only the reward's own icon (it blew up a card tile's stat glyphs and emoji to 32px) */
 .fxf-rcs-rw .amt{font:900 20px/1.05 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
 .fxf-rcs-rw .lbl{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#c3e6f4; overflow-wrap:anywhere;}
 .fxf-rcs-rw.w-3{border-color:rgba(120,240,200,.6); background:rgba(90,220,180,.12);}
@@ -1837,6 +1837,15 @@ css('rcs', `
 .fxf-rcs-rw.w-5 .lbl{color:#ffe7b0;}
 .fxf-rcs-rw.is-card .ico{min-height:0; padding:6px 0 10px;} /* room for the tile's own badges above and below it */ .fxf-rcs-rw.is-card .ico .card-tile{width:84px !important; height:105px !important; margin:0; font-size:9px;}
 .fxf-rcs-rw.is-title .amt{font-size:17px; color:#ffe39a;}
+/* 2026-10-19 (package RW3): a card reward is the card (tile, full name, rarity, Pack card), a button to its details */
+.fxf-rcs-rw.has-open{padding:0; max-width:170px;}
+.fxf-rcs-open{all:unset; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; gap:3px; width:100%; padding:10px 10px 8px; border-radius:14px; cursor:pointer; text-align:center;}
+.fxf-rcs.is-done .fxf-rcs-open:hover{background:rgba(255,255,255,.07);} .fxf-rcs-open:focus-visible{outline:3px solid #ffd56e; outline-offset:2px;}
+.fxf-rcs-open .ico{font-family:inherit;}
+.fxf-rcs-rw .ico .card-tile{font-family:'Baloo 2',system-ui,sans-serif;}
+.fxf-rcs-open .nm{font:900 15px/1.12 'Baloo 2',system-ui,sans-serif; color:#fff; overflow-wrap:anywhere;}
+.fxf-rcs-open .rar{display:inline-flex; align-items:center; gap:5px; font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; color:#eaf6ff;}
+.fxf-rcs-open .rar i{width:9px; height:9px; border-radius:50%; box-shadow:0 0 0 1.5px rgba(255,255,255,.75), 0 0 6px currentColor;}
 .fxf-rcs-go{min-width:200px;}
 .fxf-rcs-hint{position:absolute; left:0; right:0; bottom:max(12px, env(safe-area-inset-bottom)); z-index:3; text-align:center; font:700 13px/1 'Baloo 2',system-ui,sans-serif; color:#d6f2fd; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 .fxf-rcs.is-done .fxf-rcs-hint{visibility:hidden;}
@@ -1850,6 +1859,15 @@ css('rcs', `
 // Beat sounds by weight (SoundKit cues, layered): 1 a bubble, 2 coins, 3 a chime, 4 a rare rise, 5 the legendary rise and a fanfare.
 const RCS_BEAT = {1:['bubble'], 2:['gold', 'bubble'], 3:['unlockChime', 'splash'], 4:['rareRise', 'unlockChime'], 5:['rareRise:1', 'leaderFanfare', 'boom']};
 const RCS_COLS = {1:['#bff0ff', '#e8fbff', '#7fd8ff'], 2:['#ffe08a', '#fff3c4', '#7fd8ff'], 3:['#7dffd0', '#c9fff0', '#45d6ff'], 4:['#c9a2ff', '#f0e2ff', '#7fd8ff'], 5:['#ffd56e', '#fff3c4', '#ff9f5a', '#ffffff']};
+// 2026-10-19 (package RW3, owner 22:32: "The raid just showed Honeybrew, not a card image."): a card reward ({kind:'card', open:id, name,
+// rarity, rarityColor, label, tip}) is a button: the card's tile, its full name, its rarity and where it came from ("Pack card"); once the
+// screen has settled a tap (or Enter) opens the card's details through opts.openCard(id).
+function rcsCardRewardHTML(r, F){
+  const aria = [r.name, r.rarity, r.label].filter(Boolean).join(' · ') + (r.tip ? '. ' + r.tip : '');
+  return `<li class="fxf-rcs-rw w-${r.weight} is-card has-open${F}"><button type="button" class="fxf-rcs-open" data-open-card="${esc(r.open)}" aria-label="${esc(aria)}"${r.tip ? ` title="${esc(r.tip)}"` : ''}>`
+    + `<span class="ico" aria-hidden="true">${r.icon || ''}</span><span class="nm">${esc(r.name || '')}</span>`
+    + `${r.rarity ? `<span class="rar"><i style="background:${esc(r.rarityColor || '#9fb3c8')}" aria-hidden="true"></i>${esc(r.rarity)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></button></li>`;
+}
 M.raidClaimScreen = function(spec, opts){
   spec = spec || {}; opts = opts || {};
   const g = G(), calm = !!opts.calm || !g || RM();
@@ -1879,7 +1897,7 @@ M.raidClaimScreen = function(spec, opts){
           : `<span class="fxf-rcs-rank${spec.rank.emblem ? ' is-emblem' : ''}${F}" title="${esc(spec.rank.tip || '')}" aria-label="${esc(spec.rank.label || spec.rank.letter)}">${esc(spec.rank.letter)}</span>`) : '' /* 2026-10-19 (RV2) */}<span class="fxf-rcs-tier t-${tier}${F}"><span class="ti" aria-hidden="true">${RCS_TIER[tier]}</span><b>${esc(T.tier)}</b></span>
         <span class="fxf-rcs-dmg${F}"><small>${esc(T.damage)}</small><b class="fxf-rcs-num">${calm ? fmt(total) : '0'}</b></span>
       </div>
-      <ul class="fxf-rcs-list">${list.map(r=> `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
+      <ul class="fxf-rcs-list">${list.map(r=> r.open ? rcsCardRewardHTML(r, F) : `<li class="fxf-rcs-rw w-${r.weight} is-${esc(r.kind || 'currency')}${F}"><span class="ico" aria-hidden="true">${r.icon || ''}</span>${r.amount != null && r.amount !== '' ? `<span class="amt">${esc(r.amount)}</span>` : ''}<span class="lbl">${esc(r.label || '')}</span></li>`).join('')}</ul>
       <button type="button" class="btn primary big fxf-rcs-go${F}">${esc(T.collect)}</button>
     </div>
     <div class="fxf-rcs-hint">${esc(T.skip)}</div><div class="fxf-rcs-flash" aria-hidden="true"></div>`;
@@ -1905,12 +1923,16 @@ M.raidClaimScreen = function(spec, opts){
       const end = ()=>{ if(sway) sway.kill(); st.remove(); try{ before && before.focus && before.isConnected && before.focus({preventScroll:true}); }catch(e){} call(opts.onDone); res(); };
       st.style.pointerEvents = 'none'; st.style.transition = 'opacity .25s'; st.style.opacity = '0'; setTimeout(end, 260); }; // a CSS fade on a timer, so a slow frame can't keep it up
     const onKey = e=>{ if(closed) return;
-      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ go.focus(); }catch(_){} return; }
+      if(opts.covered && opts.covered()) return; // 2026-10-19 (package RW3): a card's details are open over the screen: their keys
+      // 2026-10-19 (package RW3): Tab cycles the reward cards and Collect once the screen has settled
+      if(e.key === 'Tab'){ e.preventDefault(); e.stopPropagation(); if(done) try{ const f = qa('.fxf-rcs-open').concat([go]), i = f.indexOf(document.activeElement); f[(i + (e.shiftKey ? f.length - 1 : 1) + (i < 0 ? f.length : 0)) % f.length].focus(); }catch(_){} return; }
       if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); done ? close() : skip(); return; }
       if(!done && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')){ e.preventDefault(); e.stopPropagation(); skip(); } };
     document.addEventListener('keydown', onKey, true);
     st.addEventListener('pointerdown', e=>{ if(e.target.closest && e.target.closest('.fxf-rcs-go')) return; if(!done) skip(e.timeStamp); });
     go.addEventListener('click', e=>{ e.stopPropagation(); if(e.timeStamp - skippedAt < 300) return; if(!done) skip(e.timeStamp); close(); }); // a double tap doesn't skip and close at once
+    // 2026-10-19 (package RW3): a reward card opens its details (the tap that skipped to the end doesn't also open it)
+    qa('.fxf-rcs-open').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(!done || e.timeStamp - skippedAt < 300){ if(!done) skip(e.timeStamp); return; } try{ opts.openCard && opts.openCard(b.getAttribute('data-open-card')); }catch(_){} }));
     if(calm){ // fades only: the scene, the card, then each line, then each reward
       const fades = qa('.fxf-rcs-fade'); let t = 30;
       fades.forEach(e=>{ calmTimers.push(setTimeout(()=> e.classList.add('is-in'), t)); t += e.classList.contains('fxf-rcs-rw') ? 260 : 140; });

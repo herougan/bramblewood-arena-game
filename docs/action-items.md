@@ -78,6 +78,13 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Cards | EQ calls | Hazard spells shelved with all spells (SPELLS_SHELVED): unshelve? Armory as Weapon Master's structure; Crowbar from the Blacksmith? "Rockfall" vs "Collapse"; Rubble blocks movement too? Hazard/Weapon Master costs unmeasured (4 hazards cost 0 Lumber) |
 | UI | Brambles "Yours to own" (UX2) | Counts 43 of 45 (all but raid brambles); split into Starter / Map reward / Drops? |
 | Cards | New cards need sources | Petrified Tree, Crowbar, Armory, Frost Slick, Magma Vent, Bog Seep, Miasma, Rockfall (flagged awaitingSource) |
+| Skills | SK3 names | Hunter shown as "Cull" (alt Finisher, Merciless); Broodkeeper (alt Nursery, Hatchery, Matriarch); Herald (alt Squire, Vassal, Banner-bearer); Spotter (alt Lookout, Beacon, Pathfinder); armor aura "Shieldwall" (Bulwark taken: rename old one Rampart?); spells Grave Call, Smoke Screen, Magnet |
+| Skills | SK3 behaviour changes | Grave-Grin Hyena's Executioner now <25% HP (was <50%); Hunter default target now Weak (A≤2 and H≤4); CPU doesn't value new skills yet |
+| Cards | Frames (CF) | Equipment = forged gunmetal normal frame; Devilry/Evomax = normal frame + accent; Terraumbra no longer pink. Equipment look is subtle on phones: stronger? |
+| Raid | Tentacle on desktop (TF) | Fixed (reduced motion showed only a flash; slow frames skipped the slam). Column smack on wide desktop comes from the board top, leaning ≤16° toward the bramble |
+| Raid | Shard income (MX) | Tickets cap a week at ~16 fights, so Leading gets ~60–80 shards a fall (not 100+). Want 1.5/fight or Leading ×6? Legendary (160) = 2–3 Leading falls |
+| Raid | Smack columns (MX) | Column smacks weight columns by unit count; rows now 1 in 3 each. Uniform over occupied columns instead? |
+| UI | Key badge at 0 (MX) | Kept showing a greyed "0"; hide it instead? |
 | Rules | Pounce open lane | Hit the bramble when nothing faces it? |
 | Rules | Detonate | 1-for-1 Poison is weak (measured ~0): ×2 or Detonate N? |
 | Rules | Field Breaker | Everything that ticks each round, or weather only? |

@@ -81,18 +81,19 @@ const healTrig = ev=> ev.filter(x=> x.type === 'triggerFired' && (x.action === '
   ok(ev.some(x=> x.type === 'heal' && x.targetUid === w.uid && x.amount === 3) && P[1].grace >= 1, 'Heal a hurt ally: heals, and its On Healed fires'); }
 ok(zeroHeal([]).length === 0, '(helper)');
 
-// ---- 3. Bleed at full Health counts as something to heal: a stanch, no heal
+// ---- 3. Bleed at full Health: 2026-10-19 (package SK1, owner 21:36: "heal only heals now"): a heal no longer stanches Bleed, so a
+// full-Health Bleeding unit has nothing to heal: no stanch, no heal, the trigger doesn't go off (Cleanse takes Bleed).
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-healer'); c.bleed = 3; const ev = round(e, P);
   const st = ev.filter(x=> x.kind === 'stanch' && x.targetUid === c.uid);
-  ok(st.length === 1 && c.hp === c.maxHp && !(c.bleed > 0), `full Health, Bleed 3 (2 after its upkeep fade): Heal 4 stanches it (bleed ${c.bleed}, stanch ${st[0] && st[0].amount})`);
+  ok(!st.length && c.hp === c.maxHp && c.bleed === 2, `full Health, Bleed 3 (2 after its upkeep fade): Heal 4 has nothing to heal (bleed ${c.bleed}, stanch ${st.length})`);
   ok(!ev.some(x=> x.type === 'heal'), '... with no heal event (no green heal look, no "+0")');
-  ok(healTrig(ev).length === 1, '... and its trigger did go off'); }
+  ok(healTrig(ev).length === 0, '... and its trigger did not go off'); }
 { const {e, P} = mk(); put(e, P, 1, 'hn-allyheal'); const w = put(e, P, 1, 'hn-healed', 'right'); w.bleed = 3; const ev = round(e, P);
-  ok(ev.some(x=> x.kind === 'stanch' && x.targetUid === w.uid) && !ev.some(x=> x.type === 'heal') && !(P[1].grace > 0), 'a stanch-only heal fires no On Healed'); }
+  ok(!ev.some(x=> x.kind === 'stanch') && !ev.some(x=> x.type === 'heal') && !(P[1].grace > 0), 'a full-Health Bleeding ally: no stanch, no heal, no On Healed'); }
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-regen'); c.bleed = 3; const ev = round(e, P);
   ok(!ev.some(x=> x.kind === 'stanch' && x.targetUid === c.uid) && !ev.some(x=> x.type === 'heal'), 'Regeneration keeps its 2026-10-14 rule: no stanch at full Health'); }
 { const {e, P} = mk(); const c = put(e, P, 1, 'hn-healer'); c.hp = 20; c.bleed = 3; const ev = round(e, P);
-  ok(c.hp === 22 && ev.some(x=> x.kind === 'stanch' && x.amount === 2) && ev.some(x=> x.type === 'heal' && x.amount === 2), `hurt and Bleeding: 2 stanched, 2 healed (hp ${c.hp})`); }
+  ok(c.hp === 24 && c.bleed === 2 && !ev.some(x=> x.kind === 'stanch') && ev.some(x=> x.type === 'heal' && x.amount === 4), `hurt and Bleeding: all 4 heal Health, the Bleed stays (SK1) (hp ${c.hp})`); }
 
 // ---- 4. no 0-amount heal event anywhere in a batch of real fights
 { const ids = H.fieldableIds(defs).filter(id=> { const f = (defs[id].effects) || {}; return f.regen || f.bloom || f.nursing || f.healing || f.sap || f.carrion || f.rebuild || f.banana || (f.triggers || []).some(t=> t.do === 'heal' || t.do === 'rebuild'); });

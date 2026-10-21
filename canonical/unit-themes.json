@@ -4206,7 +4206,7 @@
      null
     ],
     [
-     "demolisher",
+     "siege",
      3
     ]
    ],
@@ -5117,7 +5117,7 @@
      1
     ],
     [
-     "demolisher",
+     "siege",
      2
     ]
    ],
@@ -6578,7 +6578,7 @@
    },
    "skills": [
     [
-     "demolisher",
+     "siege",
      1
     ]
    ],
@@ -13911,6 +13911,10 @@
     [
      "renewal",
      null
+    ],
+    [
+     "cure",
+     2
     ],
     [
      "flying",
@@ -24577,10 +24581,6 @@
     [
      "siege",
      4
-    ],
-    [
-     "demolisher",
-     3
     ]
    ],
    "types": [
@@ -34514,7 +34514,7 @@
      2
     ],
     [
-     "demolisher",
+     "siege",
      2
     ]
    ],

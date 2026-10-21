@@ -15,6 +15,16 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - The skirmish editor's deck popup has **Sort: Advancement**. It uses the Codex's order: Base, then each map's fights along the road with side maps after their parent, then packs and events. The choice is kept on the device.
 - **Tests:** `tests/u4-2026-10-19.js` (static), and `tests/e2e/u4_2026_10_19.py` (Playwright, 360 / 390 / 1366). `tests/mobile-nav-2026-10-19.js` now counts the Forge button in its overlap check. Screenshots are in `docs/screens/u4/`.
 
+## 2026-10-19 (package MX: raid Shield 50, trophy shards per fight, random Tentacle Smack rows, the key badge at 0, swaps only for better cards)
+- **Raid Shield (owner 22:47: "Add a shield value of 50 to the Raid. As the HP% goes down, this 50 goes down proportionally."):** the boss's bramble in a raid fight opens with a Shield of 50 × the part's remaining Health share (the same share the boss's weakening uses): 50 fresh, 25 at half, 0 at the end. It soaks hits before Health and shows as 🔷 on the bramble, like any Shield. The raid screen and the VS boss card say "Shield 50 (falls as the raid weakens)" (TX keys, 12 packs).
+- **Raid editor:** a "Shield" field beside "Energy" for the raid (default 50; 0 turns it off) and for each part (blank = the raid's). A saved raid edit without one gets 50. `canonical/raids.json`: the Goliath's `shield: 50`. `tools/raid_completion_model.js measure --shield N`.
+- **Daily Dungeon key (owner 22:47):** the top-right 🗝️ always shows its count. At 0 keys the key greys out, the badge becomes an empty "0", and its tip says when the keys refill. Checked: the Energy pill (0/20) and the raid tickets chip (0/10) already show 0.
+- **Swaps (owner 22:47: "Don't recommend cards that are lousier than what i have in my deck."):** the swap window (the Map 0-1 teaching swaps, the Lumber lesson and the later offers) only suggests a swap when the new card is clearly better than the deck card going out. Clearly better means a higher budget score (2A+H+S × the half-miss multiplier), the same Lumber bracket or a cheaper one, and no more Wait. The new card also has to dominate the deck card or beat its score by 10% (at least 1 point). If nothing in the deck is weaker, no window opens. Both columns of the window follow the same rule. The Map 0-1 teaching card is now picked from the keyword cards that beat a deck card, so the lesson still shows. Test: `tests/mx-2026-10-19.js`.
+- **Raid trophy shards (owner 23:43: "minimum 1 per game you played ... Maybe 2x and 5x rewards"):** a fall pays 1 shard for each fight you played in that life, or the flat base (6) if that is more. Competent participants get ×2 and Leading ones ×5 (these were ×1.2 / ×1.4 plus +2 / +5). The standing bonuses (top 1% / 10% / 50%) and the held-raid share are unchanged. 40 fights give 40 / 80 / 200. The ticket budget allows about 16 fights a week, so in the model a Leading raider gets 60–80 a fall and a Competent one 14–24. The raid screen, Forge and rules texts are updated in all 12 packs, and `tests/rc-2026-10-19.js` covers the new rule. Recipe costs are unchanged.
+- **Measured:** a Map 13 deck deals 252 → 235 damage a fight (−7%; −16% on a fresh arm or tail), and wins 37% → 32% of its fights. Completion at 30 / 40 / 50 players stays 100% (the fall is about 0.05 days later). See `docs/balance/raid-balance-2026-10-19.md`.
+- **Tentacle Smack (owner: "The raids tentacles should be hitting a random column or row and not my row everytime btw!"):** a row smack used to hit the front row (yours) 2 times in 3. It now picks the front, middle or back row at even odds. Column smacks still pick among the columns that have units, weighted by how many units each holds. Seeded as before. A test checks that 200 rolls (over fights and over rounds) spread evenly across the rows and columns.
+- **Fix:** on small bramble tiles (the fight HUD at phone width) the 🔷 Shield badge covered a 3-digit Health. It now sits just above the Health row.
+
 ## 2026-10-19 (package CF: card frames for equipment, Devilry and Evomax)
 - **Owner (22:32):** "Equipment & devilry card frame - can it be improved? ... too pink ... I don't want to stray too far from [the normal frame]. Just abit different."
 - **Before:** there was no equipment frame. Equipment wore whatever its archetype gave it: Quill Spear and the other plain equipment the normal walnut frame, Terraumbra (an Evomax equipment Easter egg) the pink nacre Evomax frame (`a-evolution.png`). Devilry units wore their own dark-iron frame with blood drips and pentagram studs.
@@ -33,6 +43,12 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Horizontal (row):** unchanged. It lies along the row from the board's edge on the bramble's side.
 - **Mask region:** the base's fade mask now covers the limb's own box, not a 30000 px square.
 - **Test:** `tests/e2e/tentacle_fx_2026_10_19.py` (run with `--e2e`). It runs at 1366×768 (desktop) and 390×844 (phone), with reduced motion off and on, through the game's event path and a real round. At impact, it checks that the tentacle element is visible, inside the viewport, at opacity > 0.3 and painting pixels, and that it spans the right axis. Screenshots are in `docs/screens/tf/`, including 1920×1080 and 1440×900.
+## 2026-10-19 (package RW3: raid reward cards show as cards)
+- **Owner (22:14, 22:32):** "What is 'honeybrew'? it was a reward upon completion of the raid" … "The raid just showed Honeybrew, not a card image."
+- **What it was:** the card **Honeyjoe Brewer**, an Uncommon pack card. A won raid fight drops one pack card (package RC). The results showed it only as a small "🃏 Honeyjoe Brewer" pill, with no art, no rarity and nothing saying it was a card. No name builder, drink, item or currency called "Honeybrew" exists.
+- **Raid fight results:** the pill is gone. The dropped card sits under "Cards won" as the card itself: its tile (art), full name, rarity and "Pack card" (or "Raid card" for one of the raid's own). It flips in on the reward reveal like any victory's card, and a tap opens its details.
+- **Raid claim screen:** each card reward shows the tile, the full name, the rarity and "Pack card" / "Faction card". Once the screen has settled, a tap opens the card's details over it, and Esc closes the details, not the screen. The tile's stat glyphs no longer blow up to 32px (the reward-icon rule had reached into the tile).
+- New text: "Tap to see the card" (TX `results.rw3-card-open`, 12 packs). Test: `tests/raid-reward-card-2026-10-19.js`. Screens: `docs/screens/rw3/`.
 
 ## 2026-10-19 (package SK3: skills batch 3, triggers × actions)
 - **Owner (21:56):** "if you can and it makes sense, feel free to use triggers and actions. if they dont suffice, add the required trigger or action." Most new skills are keywords that expand into ordinary triggers (Waiting, the layer cap, Confused and Exhaust all apply).
@@ -48,6 +64,37 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Texts:** 102 TX keys in 12 packs (`tools/i18n_2026_10_19_sk3.py`). The Codex skills book, the status chips, log lines and the trigger builder all have them.
 - **Docs:** `docs/strategies-2026-10-19.md` (the owner's question 18: the archetypes, the go-wide audit and 8 new directions).
 - **Tests:** `tests/skills-sk3-2026-10-19.js`. The GI test follows the Executioner, Hunter and status-list changes.
+## 2026-10-19 (package SK1: new combat skills; the Cure / Heal / Cleanse split)
+- **Owner (21:36, 21:56):** new combat skills, Expose about hiding, Exploit about damage, Demolition renamed Siege, the Cure / Heal / Cleanse split; "if you can and it makes sense, feel free to use triggers and actions".
+- **Triggers × actions:** these five skills are now shorthands built from triggers and actions:
+  - Sentry N = On Enemy Enters (Facing): Damage N.
+  - Expose N / Exploit N / Venom Pulse N = On Hit: Expose / Exploit / Poison Tick N.
+  - Spoils N = On Kill (Creature): Buff itself +0/+N.
+  - The three triggers and the Exploit and Poison Tick actions are new. They are in the trigger builder too.
+- **New skills (on no card yet):**
+  - Formation (+1/+1 for each aligned ally, up to 2).
+  - Isolation (a drawback: −4..0 by allies within 2 columns).
+  - Anchor (can't be moved).
+  - Exploit N (tokens, +1 a hit).
+  - Spoils N (+0/+N on killing a creature).
+  - Venom Pulse N (the target's Poison ticks again).
+  - Punish N, behind a flag (`rules.punishSkill`), with three designs in `docs/skills-punish-proposal.md`.
+- **Reworked skills:**
+  - Sentry N deals N to each enemy unit entering its 3 facing slots, by play, spawn, move or swap. Before, it hit with its Attack once a round.
+  - Expose N strips hiding for N rounds: Invisible, Evasive, Smoke, Shadow and Stealth. Flying and Swift still dodge.
+  - Siege N is the old Demolisher plus the old Siege: +N on Structures and on the bramble. The five Demolisher cards and an equipment grant were renamed. `demolisher` is still an alias for old saves and server overrides.
+- **Cure / Heal / Cleanse:**
+  - Cure removes Poison only.
+  - Heal restores Health only, with no more Bleed stanch.
+  - Cleanse and Renewal remove the physical debuffs only: Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, Daunt and shredded Armor. They no longer remove Poison, Freeze or Stun.
+  - Phoenix Fledgling keeps its intent with Renewal + Cure 2.
+- **Numbers:** every number is a parameter. The defaults are in the engine's SK1_DEF, and one `{sk1:{...}}` object changes them all.
+- **Costs:** the new S estimates are in `canonical/skill-costs.json`, marked `measuredHow: "estimate SK1"` with low confidence. The reworked entries carry an `sk1Note` (re-measure).
+- **Texts and tests:**
+  - 63 new TX keys in the 12 packs (`tools/i18n_2026_10_19_sk1.py`), and the decisions in `docs/decisions.json`.
+  - The new test is `tests/skills-sk1-2026-10-19.js`.
+  - The Expose, Heal, Cleanse and Sentry checks in older tests were updated.
+
 ## 2026-10-19 (package UX2: the Brambles page's filters)
 - **Owner (22:16):** "There's no filter in brambles search."
 - **The Codex's Brambles page has a filter bar like the card Codex's:**
@@ -158,7 +205,6 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Test:** `tests/ux-2026-10-19.js` covers the base-level default, the storage fallback, the type rules and counts against `canonical/cards.json`, the copy groups and the wiring.
   - With Playwright it also plays all of it at 390×844 (touch) and 1366×768.
   - With `UX_SHOTS=1`, the screenshots go to `docs/screens/ux/`.
-
 ## 2026-10-19 (package BF4: the live server's card overrides folded into the file and balanced)
 - **Owner (19:34):** "can i check that every card has ran through ur budget limitation? even the mythics and divines need to be balanced first pass this way".
 - **What was found:** the live `card_overrides` table held 72 cards saved from the in-game editor between 10-11 and 10-18. The game lays them over `canonical/cards.json`, so on the live site they masked BF3's retune. The four Dragons are Mythic, Divine and Ancient there.
