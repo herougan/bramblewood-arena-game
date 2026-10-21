@@ -177,11 +177,13 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   // 2026-10-19 (package TC): canonical/skill-costs.json may carry the applied measured worth (prevValue 2); the Test Lab default stays 2
   const relV = rel && (rel.appliedAt && rel.prevValue === 2 ? Math.max(0, rel.measuredS) : 2);
   ok(rel && rel.scale === 'fixed' && rel.value === relV && SC.cardS({relic:true}, {}).S === relV && /relic:2 \/\* 2026-10-19/.test(fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8')), `6. Relic costs 2, or its applied measured worth (${rel && rel.value}), in canonical/skill-costs.json; 2 in the Test Lab default`);
-  const eagle = cards.find(c=> c.id === 'cathedral-eagle'); ok(eagle.attack === 4 && eagle.health === 12 && eagle.prayerReq === 4, '6. Cathedral Eagle 4/12, Prayer 4');
+  // 2026-10-21 (package TT2): BF5 halved N and re-derived every card: the Eagle 4/12 -> 1/4 (docs/balance/halve-ref-2026-10-21.json), Prayer 4 kept
+  const eagle = cards.find(c=> c.id === 'cathedral-eagle'); ok(eagle.attack === 1 && eagle.health === 4 && eagle.prayerReq === 4, '6. Cathedral Eagle 1/4 (BF5), Prayer 4');
   ok(ecc.filter(c=> c.prayerReq).every(c=> c.prayerReq >= 1 && c.prayerReq <= 5), '6. every Prayer need is 1..5');
   const req = id=> (cards.find(c=> c.id === id) || {}).prayerReq;
   ok(req('golden-magpie') === 3 && req('blessed-avatar') === 5 && req('vigil-owl') === 4 && req('cathedral-eagle') === 4 && req('hymn-wren') === 1 && req('storm-heron') === 3, '6. the retuned Prayer needs (Magpie 3, Avatar 5, Owl 4, Eagle 4)');
-  ok((cards.find(c=> c.id === 'shrine-high-priest') || {}).health === 12, '6. Shrine High Priest 3/12 (Relic)');
+  // 2026-10-21 (package TT2): BF5 re-derived the High Priest 3/12 -> 1/4 under the halved N
+  { const hp = cards.find(c=> c.id === 'shrine-high-priest') || {}; ok(hp.attack === 1 && hp.health === 4 && hp.effects && hp.effects.relic, '6. Shrine High Priest 1/4 (BF5, Relic)'); }
 }
 // ---- 7. the CPU
 { // its offering summons with the same token as the player's

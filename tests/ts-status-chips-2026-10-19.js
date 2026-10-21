@@ -82,8 +82,10 @@ async function browser(){
         const three = x=> x.text === '☠3 🩸1 💤2', two = x=> x.text === '☠3 +2';
         ok(ms.some(x=> three(x) || two(x)) && ms.filter(x=> /^☠3 /.test(x.text)).every(x=> three(x) || two(x)), `${tag}: Poison 3, Bleed 1, Sleep 2 read (${ms.slice(0, 3).map(x=> x.text).join(' | ')})`);
         // the live patch (a status landing or wearing off mid-replay) rebuilds the same strip in place
+        // 2026-10-21 (package TT2): BF5's halved stats changed which cards SETUP picks; the crowded unit is now the Soldier Ant, whose
+        // Formation aura (SK1's sk1Atk) draws its own 🔗+1 chip. The aura is cleared with the statuses, so the strip is Bleed alone.
         const live = await pg.evaluate(`(()=>{ const m = matchState, c = m.engine.allBoardCards(m.players[1]).find(x=> x.poison === 12); if(!c) return null;
-          const el = boardCardEl(c.uid), before = el && el.querySelector('.status-chips'); c.poison = 0; c.scar = 0; c.exposed = 0; c.corrode = 0; c.shocked = 0; c.asleep = 0; c.bleed = 2; updateCardStatusDisplay(c.uid);
+          const el = boardCardEl(c.uid), before = el && el.querySelector('.status-chips'); c.poison = 0; c.scar = 0; c.exposed = 0; c.corrode = 0; c.shocked = 0; c.asleep = 0; c.sk1Atk = 0; c.bleed = 2; updateCardStatusDisplay(c.uid);
           const s1 = el.querySelector('.status-chips'), one = s1 && {same: s1 === before, cls: s1.className, n: s1.children.length};
           c.bleed = 0; updateCardStatusDisplay(c.uid); return {one, gone: !el.querySelector('.status-chips')}; })()`);
         ok(live && live.one && live.one.same && live.one.n === 1 && !/\bo2\b/.test(live.one.cls) && live.gone, `${tag}: the live patch keeps one strip (1 chip, no "+N"), and removes it when the last status ends (${JSON.stringify(live)})`);

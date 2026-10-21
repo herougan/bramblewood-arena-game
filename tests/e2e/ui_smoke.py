@@ -178,13 +178,17 @@ async def main():
         await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)
         check(await pg.evaluate("document.querySelectorAll('.ro-deck-card').length") == 2, "the recent opponent's deck should open")
         # 7b: the tutorial is winnable for every side pick (2026-10-07 playtest: Otters lost ~9 in 10)
-        tut = await pg.evaluate("""(()=>{ const out = {}, defs = getCardDefs();
+        # 2026-10-21 (package TT2): simulate part 1 as startTutorialMatch builds it: the tutorial config's decks (tutorialDecksFor; the
+        # starter builders behind them are only a fallback since the owner's decks were folded in), Open battles (since 2026-10-12), both
+        # brambles at BRAMBLE_SCALE (BF5) and no rival loop cards. The old check measured the fallback decks in gravity mode.
+        tut = await pg.evaluate("""(()=>{ const out = {}, defs = getCardDefs(), cfg = tutorialCfg;
           for(const pick of ['otters','hummingbirds','both']){ let w = 0, fixedWin = false;
-            const myD = tutorialStagePlayerDeck(1, pick), rvD = tutorialStageOpponentDeck(1, pick);
+            const D = tutorialDecksFor(1, pick), myD = tutorialPlainDeck(D.mine, 1), rvD = tutorialPlainDeck(D.rival, 1);
+            const myHp = brambleHp(Math.min(TUTORIAL_MY_HP_MAX, cfg.myHp || TUTORIAL_MY_HP_MAX)), rvHp = brambleHp(cfg.rivalHp || 30);
             for(let i=0;i<60;i++){ const seed = i===0 ? TUTORIAL_SEED : 9100+i;
-              const engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode:'gravity'}); const sideOf = id=> id===1?'A':'B', st = {};
-              const P = {1: engine.newPlayer(1, myD, Object.assign({}, CHARACTER_DEFS.castle, {health: TUTORIAL_CFG_DEFAULT.myHp})), 2: engine.newPlayer(2, rvD, Object.assign({}, CHARACTER_DEFS.castle, {health: TUTORIAL_CFG_DEFAULT.rivalHp}))};
-              engine.draw(P[1],3,'A',st,null); engine.draw(P[2],3,'B',st,null); let over = false;
+              const engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode:'open'}); const sideOf = id=> id===1?'A':'B', st = {};
+              const P = {1: engine.newPlayer(1, myD, Object.assign({}, CHARACTER_DEFS.castle, {health: myHp})), 2: engine.newPlayer(2, rvD, Object.assign({}, CHARACTER_DEFS.castle, {health: rvHp}))};
+              P[2].loopCards = []; engine.draw(P[1],3,'A',st,null); engine.draw(P[2],3,'B',st,null); let over = false;
               for(let r=1; r<=40 && !over; r++){ engine.setSuddenDeath(r>=20, r>=30 ? 2 : 1); [1,2].forEach(k=>{ P[k].playedThisTurn=false; P[k].discardUsedThisTurn=false; });
                 engine.aiTakeTurn(P,sideOf,1,st,null); engine.aiTakeTurn(P,sideOf,2,st,null); over = engine.resolveCombat(P,sideOf,st,null, r%2===0?1:2); if(over) break; engine.draw(P[1],1,'A',st,null); engine.draw(P[2],1,'B',st,null); }
               const won = over && P[2].hq.hp<=0 && P[1].hq.hp>0; if(won) w++; if(i===0) fixedWin = won; }
@@ -256,8 +260,10 @@ async def main():
           const mains=CONQUEST_MAPS.filter(m=>!m.sub&&!m.reserved);
           return {common:forgeSpentOn(c,10).dust, epicMult:levelCostMult(e), castle, fed:fed&&fed.dust, credit:forgeCreditOf(c).dust-before, copies:myCardCopies[c].length,
             map20:enemyDeckLevel(mains[20].nodes.find(n=>n.kind==='skirmish')), map1:enemyDeckLevel(mains[0].nodes.find(n=>n.kind==='skirmish')), max: Math.round(22*30*ratingLevelFactor(10))}; })()""")
-        check(ec['common'] == 675 and ec['epicMult'] == 11 and ec['castle'] == 2760, f'forge prices: {ec}')
-        check(ec['fed'] == 36 and ec['credit'] == 36 and ec['copies'] == 2, f'feeding a duplicate: {ec}')
+        # 2026-10-21 (package TT2): package FG's cost curve (+10%): a Common's levels 1-10 cost 744 Dust (was 675), so a fed duplicate is
+        # 744 / 18.75 = 40 Dust of credit (was 36). The Epic multiplier and the brambles are unchanged.
+        check(ec['common'] == 744 and ec['epicMult'] == 11 and ec['castle'] == 2760, f'forge prices: {ec}')
+        check(ec['fed'] == 40 and ec['credit'] == 40 and ec['copies'] == 2, f'feeding a duplicate: {ec}')
         check(40 <= ec['map20'] <= 600 and ec['map1'] < 40 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
         await b.close()
     print(f'ui-smoke: {len(failures)} failure(s)')

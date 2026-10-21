@@ -1,4 +1,5 @@
--- 2026-10-21 (package BF5) PROPOSED, NOT APPLIED. The owner must approve before this runs against the live database.
+-- 2026-10-21 (package BF5) APPLIED 2026-10-21 ~15:40 SGT on the owner's approval (B13, 14:34). Result: 13 cards cleared, 5 cfg rows cleared, 18 rows backed up.
+-- The backup table also got RLS on and anon/authenticated access revoked at apply time (as in 20261019).
 -- The owner's later live edits (after BF4's clear), folded into the file (docs/balance/halve-2026-10-19.md, "The owner's 13 edits"):
 -- 13 card rows, the map-node rows of Map 0, Hedgerow (Map 1) and the Shallows (Map 2), the tutorial config and the Goliath.
 -- Same shape as supabase/migrations/20261019_clear_folded_overrides.sql (BF4):
@@ -9,6 +10,8 @@
 begin;
 
 create table if not exists public.card_overrides_backup_20261021 as select * from public.card_overrides where false;
+alter table public.card_overrides_backup_20261021 enable row level security;
+revoke all on public.card_overrides_backup_20261021 from anon, authenticated;
 insert into public.card_overrides_backup_20261021
   select * from public.card_overrides where id in (
     'swarm-matriarch',

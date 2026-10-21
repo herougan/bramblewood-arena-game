@@ -499,6 +499,14 @@ def _hb_data():
             'ratingWeight': rw, 'maps': [{'id': m['id'], 'num': m['num'], 'name': m['name'], 'sub': m['sub']} for m in HC['maps']]}
 HB_INLINE = f'const HB_DATA = {_js(_hb_data())};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'balance_edit_tab.js'), encoding='utf-8').read()
 HB_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'balance_edit_tab.css'), encoding='utf-8').read()
+# 2026-10-21 (package HC, owner: "Status chips: in Master Hub, let me know all the status chips and context chips (e.g. flying) available
+# and context fx (like blind) available. Maybe we can drop some of them."): the 🏷️ Chips & FX tab. docs/chips-inventory.json is written by
+# node tools/hub/chips_inventory.js from the game source (never typed by hand); the owner's Keep / Drop / Merge marks and notes live in the
+# artifact's db (collection chipReview; tools/hub/pull_chip_review.md). Run the generator first when the game's chips changed.
+_ch_path = os.path.join(ROOT, 'docs', 'chips-inventory.json')
+_ch = json.load(open(_ch_path, encoding='utf-8')) if os.path.exists(_ch_path) else None
+CH_INLINE = (f'const CH_DATA = {_js(_ch)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'chips_tab.js'), encoding='utf-8').read()) if _ch else ''
+CH_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'chips_tab.css'), encoding='utf-8').read()
 _fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
 FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -601,7 +609,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style></head><body>
+</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style></head><body>
 <header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
@@ -614,6 +622,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-budget" aria-controls="p-budget" data-tab="budget">🎚️ Budget &amp; stats</button>
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
 <button role="tab" id="t-units" aria-controls="p-units" data-tab="units">🗂 Units by theme</button>
+<button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
@@ -649,6 +658,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-budget" role="tabpanel" aria-labelledby="t-budget" hidden><div class="bal hb" id="hbHost"><p class="dec-empty">Loading the budget…</p></div></section>
 <section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
 <section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
+<section class="panel" id="p-chips" role="tabpanel" aria-labelledby="t-chips" hidden><div class="bal ch" id="chHost"><p class="dec-empty">{'Loading the chips…' if _ch else 'Run node tools/hub/chips_inventory.js, then rebuild the hub.'}</p></div></section>
 {curve_panel}
 {decks_panel}
 {dialogues_panel}
@@ -738,6 +748,7 @@ const SEARCH = {SEARCH_JSON};
 {SC_INLINE}
 {UT_INLINE}
 {HB_INLINE}
+{CH_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)
