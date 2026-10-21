@@ -119,6 +119,18 @@
 //                        'namedBuff' event for logging/VFX.
 // ============================================================================
 const CARD_DEFS_GLOBAL = (typeof __CARD_DEFS__ !== 'undefined') ? __CARD_DEFS__ : null;
+// Type taxonomy (2026-10-21, package TX; owner: "Specific animals are their greater animal type too. Eagles are birds. They should
+// count so in the game" + "Changelings count for every type."): every type comparison in the engine asks bramblewood-taxonomy.js
+// (the hierarchy built from canonical/animal-tags.json). In Node it is require()d; in the page and the simulator worker
+// assemble_arena.py puts it ahead of this file (the BramblewoodTaxonomy global). Without it (a bare copy of this file) the helpers
+// fall back to the old rule: the archetype itself, a Changeling for any type.
+const TAXONOMY = (typeof BramblewoodTaxonomy !== 'undefined' && BramblewoodTaxonomy) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-taxonomy.js') : null; }catch(e){ return null; } })();
+function txChangeling(d){ return !!(d && ((d.effects && d.effects.changeling) || d.subtype === 'changeling')); }
+// d counts as type T (an eagle is a Bird; a Changeling is everything).
+function txIsA(d, T){ if(!d || T == null || T === '') return false; if(TAXONOMY) return TAXONOMY.isA(d, T); return txChangeling(d) || (d.archetypes || []).includes(T) || (d.species || []).includes(T); }
+function txIsAny(d, list){ const l = list instanceof Set ? [...list] : (Array.isArray(list) ? list : [list]); return l.some(T=> txIsA(d, T)); }
+// a and b share a Type: one's own type is something the other is (a Bird-typed card and an eagle). A Changeling shares with all.
+function txShares(a, b){ if(!a || !b) return false; if(TAXONOMY) return TAXONOMY.shares(a, b); if(txChangeling(a) || txChangeling(b)) return true; const t = b.archetypes || []; return (a.archetypes || []).some(x=> t.includes(x)); }
 
 // Package SK2 (2026-10-19, owner 21:36; the rules are in makeSimEngine's SK2 block): every number of the economy and structure skills,
 // one table (top level, so the app's card lines read the same defaults). A fight overrides any of them with opts.sk2.
@@ -743,7 +755,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // field to also check here since Weakness never existed before this array did.
   function matchesResistKey(r, dmgType, attDef){
     if(dmgType && dmgType!=='physical' && r===dmgType) return true; // damage-type match
-    if(attDef && Array.isArray(attDef.archetypes) && attDef.archetypes.includes(r)) return true; // type-tag match
+    if(attDef && typeof r === 'string' && /^[A-Z]/.test(r) && txIsA(attDef, r)) return true; // type-tag match (2026-10-21, package TX: the hierarchy; an eagle attacker matches Bird)
     if(attDef && attDef.effects && attDef.effects[r]) return true; // keyword/ability match
     return false;
   }
@@ -882,7 +894,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function atheistHalves(card, dmgType, attDef){
     if(!isAtheist(card)) return false;
     if(dmgType === 'magic' || dmgType === 'dark' || dmgType === 'holy') return true;
-    const ar = (attDef && attDef.archetypes) || []; return ar.includes('Devilry') || ar.includes('Ecclesia');
+    return txIsAny(attDef, ['Devilry', 'Ecclesia']); // 2026-10-21 (package TX): through the taxonomy
   }
   // 2026-10-16 (user: "Field effect: Haunted - idk. but definitely skills or statuses - initimidate and fear is in question."): rules.haunted.
   // From round 2, one random unit on each side is Frightened for the round: it doesn't attack. Ghosts and Atheists aren't scared.
@@ -1028,17 +1040,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const order = physicalRowOrder(pl);
     const live = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf);
     const typesOf = c=> ((CARD_DEFS[c.defId]||{}).archetypes) || [];
+    // 2026-10-21 (package TX): a unit is in the chain of a type it counts as (an eagle in a Bird pack), not only one it lists
+    const isT = (c, T)=> txIsA(CARD_DEFS[c.defId], T);
     const isLeader = c=> live(c) && !!effectsOf(c).packLeader;
     const isMember = c=> live(c) && !isLeader(c) && packNOf(effectsOf(c)) > 0;
     const chains = [], leaders = order.filter(isLeader), led = new Set();
     leaders.forEach(L=> typesOf(L).forEach(t=> led.add(t)));
-    led.forEach(T=>{ const ms = order.filter(c=> isMember(c) && typesOf(c).includes(T)); if(!ms.length) return;
-      const ls = leaders.filter(L=> typesOf(L).includes(T));
+    led.forEach(T=>{ const ms = order.filter(c=> isMember(c) && isT(c, T)); if(!ms.length) return;
+      const ls = leaders.filter(L=> isT(L, T));
       chains.push({members: [...ls, ...ms], sum: ms.reduce((t, c)=> t + packNOf(effectsOf(c)), 0) + ls.reduce((t, L)=> t + Math.max(2, packNOf(effectsOf(L))) + 2, 0)}); });
     const free = new Set(); order.forEach(c=>{ if(isMember(c)) typesOf(c).forEach(t=>{ if(!led.has(t)) free.add(t); }); });
     free.forEach(T=>{ let run = [];
       const close = ()=>{ if(run.length >= 2) chains.push({members: run, sum: run.reduce((t, c)=> t + packNOf(effectsOf(c)), 0)}); run = []; };
-      order.forEach(c=>{ if(isMember(c) && typesOf(c).includes(T)) run.push(c); else close(); }); close(); });
+      order.forEach(c=>{ if(isMember(c) && isT(c, T)) run.push(c); else close(); }); close(); });
     const seen = new Set();
     chains.forEach(ch=>{ const key = ch.members.map(c=> c.uid).sort().join(','); if(seen.has(key)) return; seen.add(key);
       ch.members.forEach(c=>{ const o = out.get(c) || {n:0, bonus:0}; o.n = Math.max(o.n, ch.members.length); o.bonus += ch.sum; out.set(c, o); }); });
@@ -1049,8 +1063,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // whose outer end is such a unit.
   function packPlacementFor(pl, defId){
     const d = CARD_DEFS[defId] || {}, e = d.effects || {}; if(!(packNOf(e) > 0 || e.packLeader) || !pl) return null;
-    const mine = new Set(d.archetypes || []); if(!mine.size) return null;
-    const kin = c=>{ const ce = effectsOf(c); return c && !c.gap && c.hp > 0 && !c.cageOf && (packNOf(ce) > 0 || ce.packLeader) && (((CARD_DEFS[c.defId]||{}).archetypes)||[]).some(t=> mine.has(t)); };
+    const mine = new Set(d.archetypes || []); if(!mine.size && !txChangeling(d)) return null;
+    const kin = c=>{ const ce = effectsOf(c); return c && !c.gap && c.hp > 0 && !c.cageOf && (packNOf(ce) > 0 || ce.packLeader) && txShares(d, CARD_DEFS[c.defId]); }; // 2026-10-21 (package TX)
     if(slotMode){ const legal = legalSlots(pl); const near = new Set(); allBoardCards(pl).forEach(c=>{ if(kin(c)){ near.add(c.slot - 1); near.add(c.slot + 1); } });
       const ok = legal.filter(sl=> near.has(sl)).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b); return ok.length ? ok[0] : null; }
     const L = pl.row.left, R = pl.row.right;
@@ -1323,7 +1337,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // units a side get chilled; each gets +1 Wait. Units weak to cold also take 1 ice damage.
       const fc = Math.max(1, Number(rules.frostCount)||1, Number(rules.frostWait)||1), immune = new Set(rules.frostResist||[]);
       let iced = false;
-      [1,2].forEach(pid=>{ let cards = allLive(players[pid]).filter(c=>{ const d = CARD_DEFS[c.defId] || {}; if(resistFactor(c.defId, 'cold') < 1 || climbs(c)) return false; /* Mountain Climber (2026-10-16) */ if(pid === 2 && immune.size && (d.archetypes||[]).some(t=> immune.has(t))) return false; return true; });
+      [1,2].forEach(pid=>{ let cards = allLive(players[pid]).filter(c=>{ const d = CARD_DEFS[c.defId] || {}; if(resistFactor(c.defId, 'cold') < 1 || climbs(c)) return false; /* Mountain Climber (2026-10-16) */ if(pid === 2 && immune.size && txIsAny(d, immune)) return false; /* 2026-10-21 (package TX) */ return true; });
         // Freeze counters (2026-10-14, user: "Freeze - instead of giving a +Wait, it gives a freeze counter. The clock DOES +1. But
         // it looks icy"): the chill is a freeze counter now, not +1 Wait; it holds the unit exactly as long (see endOfRoundUpkeep).
         for(let k = 0; k < fc && cards.length; k++){ const i = Math.floor(rnd()*cards.length), c = cards.splice(i, 1)[0]; c.frozen = (c.frozen||0) + 1;
@@ -1864,9 +1878,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): +N per ally; a number on its own means
     // "any shared type, N each"; with a type list, swarmN sets N.
     const per = typeof def.effects.swarm === 'number' ? Math.max(0, def.effects.swarm) : Math.max(1, Number(def.effects.swarmN) || 1);
-    const mine = picked || new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic && !(curPlayers && [1,2].some(pid=> curPlayers[pid] && upkeepUnitsOf(curPlayers[pid]).some(c=> c!==card && c.hp>0 && ((CARD_DEFS[c.defId]||{}).effects||{}).growth)))) return 0;
+    const mine = picked || new Set(def.archetypes || []), mimic = txChangeling(def); if(!mine.size && !mimic && !(curPlayers && [1,2].some(pid=> curPlayers[pid] && upkeepUnitsOf(curPlayers[pid]).some(c=> c!==card && c.hp>0 && ((CARD_DEFS[c.defId]||{}).effects||{}).growth)))) return 0;
     // Growth (2026-10-14, user: "Growth unit tokens - 1/3. Very strong - empowered by Swarm"): a Growth token counts for every Swarm.
-    const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || (d.archetypes||[]).some(a=> mine.has(a)); };
+    // 2026-10-21 (package TX): "shares a type" and a picked type both go through the taxonomy (an eagle counts for a Bird swarm).
+    const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || txChangeling(d) || (picked ? txIsAny(d, picked) : txShares(def, d)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
       if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && shares(c)).length * per; }
     return 0;
@@ -1881,7 +1896,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const per = Math.max(1, Number(def.effects.defianceN) || 1);
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue;
       if(rowsUnitsOf(pl).includes(card)){ const foe = curPlayers[otherId(pid)]; if(!foe) return 0; /* + a raid's middle / back rows (2026-10-19, RR) */
-        return allBoardCards(foe).filter(c=> c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(t=> types.has(t))).length * per; } }
+        return allBoardCards(foe).filter(c=> c.hp>0 && !c.cageOf && txIsAny(CARD_DEFS[c.defId], types)).length * per; } } // 2026-10-21 (package TX)
     return 0;
   }
   function isRaging(card){
@@ -2041,8 +2056,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Psychic N (2026-10-14, user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."): each landed hit also
   // deals N psychic damage straight to Health: Armor, a unit Shield, Shell's temporary Health and a Ghost's immunity don't stop it.
   // Elementals and Plants have no mind to hurt: species Elemental or Plant, or archetype Elemental or Flora.
-  function isMindless(c){ const d = (c && CARD_DEFS[c.defId]) || {}, sp = d.species || [], ar = d.archetypes || [];
-    return sp.includes('Elemental') || sp.includes('Plant') || ar.includes('Elemental') || ar.includes('Flora'); }
+  function isMindless(c){ const d = (c && CARD_DEFS[c.defId]) || {};
+    if(txChangeling(d)) return false; // 2026-10-21 (package TX): a Changeling still has a mind (it only wears the shape)
+    return txIsAny(d, ['Elemental', 'Plant', 'Flora']); }
   function psychicHit(pid, att, c, sideOf, stats, events){
     const n = Number(effectsOf(att).psychic)||0; if(!(n > 0) || !c || !(c.hp > 0)) return 0;
     // Psychic Dampener (2026-10-17, raid field effect, rules.psychicDampener): psychic damage is halved, rounded down (Psychic 1 does nothing).
@@ -2250,7 +2266,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let kingSlayerBonus = 0;
     if(attDef && attDef.effects && attDef.effects.kingSlayer){
       const tdefKS = CARD_DEFS[targetCard.defId];
-      if(tdefKS && Array.isArray(tdefKS.archetypes) && tdefKS.archetypes.includes('King')){
+      if(tdefKS && txIsA(tdefKS, 'King')){ // 2026-10-21 (package TX)
         kingSlayerBonus = attDef.effects.kingSlayer;
         amt += kingSlayerBonus;
       }
@@ -2267,7 +2283,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     amt += giHitBonus(attDef, targetCard, dmgType) + detonateBonus(attDef, targetCard, dmgType); // Hunter N, Executioner N, Detonate (2026-10-19, package GI)
     amt += wetShockBonus(targetCard, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter (wetCountOf)
     // Siege N (2026-10-19, package SK1, owner 21:36: Demolition renamed Siege): +N on Structures (sk1SiegeN: Siege, or an old Demolisher).
-    { const sgN = sk1SiegeN(attDef); if(sgN > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && Array.isArray(tdD.archetypes) && tdD.archetypes.includes('Structure')) amt += sgN; } }
+    { const sgN = sk1SiegeN(attDef); if(sgN > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && txIsA(tdD, 'Structure')) amt += sgN; } } // 2026-10-21 (package TX)
     // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
     // it only weakens attacks aimed at this card.
     const supremeAtt = !!(attDef && attDef.effects && attDef.effects.supreme); // Supreme (2026-10-14): crushes Scare, Armor and shells
@@ -2421,7 +2437,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // this depth) — silent here, same treatment Expose gets in this function.
     if(attDef && attDef.effects && attDef.effects.kingSlayer){
       const tdefKS = CARD_DEFS[card.defId];
-      if(tdefKS && Array.isArray(tdefKS.archetypes) && tdefKS.archetypes.includes('King')){
+      if(tdefKS && txIsA(tdefKS, 'King')){ // 2026-10-21 (package TX)
         amount += attDef.effects.kingSlayer;
       }
     }
@@ -2570,7 +2586,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // pool narrowed to Kin while kinSrc is that acting unit (set by runCustomTriggers), so Adjacent / Any distance / Furthest / All /
   // N targets read exactly as they do for Ally. Only a pick made for kinSrc itself is narrowed: anything else resolved meanwhile
   // (a Reflect, another unit's trigger) is untouched.
-  function sharesType(a, b){ const da = a && CARD_DEFS[a.defId], db = b && CARD_DEFS[b.defId]; if(!da || !db) return false; const mine = da.archetypes || [], theirs = db.archetypes || []; return mine.some(t=> theirs.includes(t)); }
+  // 2026-10-21 (package TX): through the taxonomy (an eagle is Kin of a Bird-typed unit; a Changeling is everyone's Kin).
+  function sharesType(a, b){ const da = a && CARD_DEFS[a.defId], db = b && CARD_DEFS[b.defId]; if(!da || !db) return false; return txShares(da, db); }
   function isKinOf(src, c){ return !!(src && c && c !== src && c.uid !== src.uid && sharesType(src, c)); }
   let kinSrc = null;
   function kinOk(src, c){ return !kinSrc || src !== kinSrc || isKinOf(src, c); }
@@ -2830,7 +2847,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // applied as a difference so it rises and falls with the sources without healing past it or killing anything.
       let nf = 0; units.forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId]; if(d && d.effects && d.effects.natureForce) nf += (d.effects.natureForce === true ? 1 : Number(d.effects.natureForce)||0); });
       units.forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
-        const elem = (d.species||[]).includes('Elemental') || (d.archetypes||[]).includes('Elemental'); const want = elem ? nf : 0;
+        const elem = txIsA(d, 'Elemental'); const want = elem ? nf : 0; // 2026-10-21 (package TX)
         c.natureBonus = want; const had = c.natureHp || 0, delta = want - had; if(delta){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + delta); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + delta)); c.natureHp = want; } });
       // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"): every live
       // source on your side gives +X/+Y to each of your units of that Type (itself too, if it is one). Stacks. Health moves as a
@@ -2838,7 +2855,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       { const kin = {}; units.forEach(c=>{ if(c.hp<=0) return; const k = ((CARD_DEFS[c.defId]||{}).effects||{}).kinship;
           if(k && k.type){ const t = kin[k.type] || (kin[k.type] = [0,0]); t[0] += Number(k.atk)||0; t[1] += Number(k.hp)||0; } });
         units.forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
-          let a = 0, h = 0; Object.keys(kin).forEach(t=>{ if((d.archetypes||[]).includes(t) || (d.species||[]).includes(t)){ a += kin[t][0]; h += kin[t][1]; } });
+          let a = 0, h = 0; Object.keys(kin).forEach(t=>{ if(txIsA(d, t)){ a += kin[t][0]; h += kin[t][1]; } }); // 2026-10-21 (package TX): Kinship Bird lifts the eagles too; a Changeling gets every Kinship
           c.kinBonus = a; const had = c.kinHp || 0, dl = h - had; if(dl){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dl); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dl)); c.kinHp = h; } }); }
       // Lone Wolf X/Y and Sociable X/Y (2026-10-13, user: "Sociable likes being crowded (up to 4, 2 on each side) While Lone Wolf
       // likes being alone, separated by 2 squares on each side ... +X/+Y per slot freed up or not. If all 4 freed up, ANOTHER
@@ -4716,7 +4733,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const types = amoreTypes(card); if(!types.length) return;
     const pl = players[pid]; if(!pl) return;
     const pos = c=> Number.isInteger(c.slot) ? c.slot : 0;
-    const cands = upkeepUnitsOf(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && amoreTypes(o).some(t=> types.includes(t)))
+    const cands = upkeepUnitsOf(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && (amoreTypes(card).some(t=> txIsA(CARD_DEFS[o.defId], t)) || amoreTypes(o).some(t=> txIsA(CARD_DEFS[card.defId], t)))) /* 2026-10-21 (package TX): the taxonomy; 'Misc' never pairs */
       .sort((a, b)=> Math.abs(pos(a) - pos(card)) - Math.abs(pos(b) - pos(card)) || a.uid - b.uid);
     const mate = cands[0]; if(!mate) return;
     [[card, mate], [mate, card]].forEach(([c, o])=>{ c.amoreUsed = true; c.amoreWith = o.uid; c.amoreRegen = AMORE_REGEN; c.maxHp += AMORE_HP; c.hp += AMORE_HP; });
@@ -4954,7 +4971,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       && !d.easterEgg && !(d.source && d.source.kind === 'easteregg') /* 2026-10-19 (package EE): never an Easter egg (ungettable for now) */ && !d.hidden && !d.hero &&!d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss
       && !d.derivedFrom && !d.hatchInto && !(d.effects && d.effects.leader) && (d.attack|0) > 0
       && EGG_RARITY_ORDER.indexOf(d.rarity) >= 0 && EGG_RARITY_ORDER.indexOf(d.rarity) <= cap
-      && (h.any || (d.species||[]).some(x=> sp.includes(x)) || (d.archetypes||[]).some(x=> ar.includes(x))));
+      && (h.any || txIsAny(d, sp.concat(ar)))); // 2026-10-21 (package TX): an egg of Birds hatches any bird (a Cephalopod is a Mollusc)
   }
   function hatchEggCard(players, sideOf, pid, card, stats, events){
     const def = CARD_DEFS[card.defId]; const pool = eggPoolFor(def); if(!pool.length) return null;
@@ -5635,8 +5652,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(t.filterArchetype){
         const subject = extra && (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard || extra.subjectCard); // + SK1 (2026-10-19)
         const subjDef = subject ? CARD_DEFS[subject.defId] : null;
-        const subjArchetypes = (subjDef && subjDef.archetypes) || [];
-        if(!subjArchetypes.includes(t.filterArchetype) && !(subjDef && subjDef.effects && subjDef.effects.changeling)) return; // a Changeling passes for any type
+        if(!txIsA(subjDef, t.filterArchetype)) return; // 2026-10-21 (package TX): the taxonomy (an eagle passes a Bird filter); a Changeling passes for any type
       }
       // Kin filter (2026-10-19, package GI, Kin Rally): only when the subject is this unit's Kin (shares a Type with it); a Changeling passes.
       if(t.filterKin){ const sj = trigSubject, sd = sj ? CARD_DEFS[sj.defId] : null; if(!sj || !(isKinOf(boardCard, sj) || (sd && sd.effects && sd.effects.changeling))) return; }
@@ -6196,7 +6212,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function aiGiWorth(players, aiId, defId){
     const d = CARD_DEFS[defId] || {}, e = d.effects || {}, ai = players[aiId], foe = players[otherId(aiId)]; if(!ai || !foe || d.cardType || d.field) return 0;
     const mine = liveUnits(ai), foes = liveUnits(foe), probe = {defId}, ready = c=> !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0);
-    const isWolf = id=>{ const x = CARD_DEFS[id] || {}; return (x.archetypes || []).includes('Wolf') || !!(x.effects && x.effects.changeling); };
+    const isWolf = id=> txIsA(CARD_DEFS[id], 'Wolf'); // 2026-10-21 (package TX)
     let v = 0;
     if(e.kinRally){ const n = numN(e.kinRally, 1); v += ai.hand.filter(h=> h.defId !== defId && sharesType(probe, {defId:h.defId})).length * n * 1.0; }
     if(e.packHowl){ const n = numN(e.packHowl, 1); v += ai.hand.filter(h=> isWolf(h.defId)).length * n * 0.8; }

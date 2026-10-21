@@ -179,7 +179,8 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(JSON.stringify(R.codexSkillsChosen()) === '["flying","armor"]', '9. the picks are a list of skill keys (junk dropped)');
   ok(R.codexFilterCount() === 1, '9. the picks count once in the ⚙️ Filters badge');
   const g = fnSrc('renderCodexGrid');
-  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ const ps = want\.map\(skillDefOf\); ids = ids\.filter\(id=> ps\.every\(\(p, i\)=> cardHasSkill\(defs\[id\], want\[i\], p\)\)\); \}/.test(g), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
+  // 2026-10-21 (package TX): each pick is a skill family (Diurnal = Diurnal {…}) or a skill group, read on the "?"-masked card
+  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ ids = ids\.filter\(id=>\{ const d = maskHiddenSkills\(defs\[id\]\); return want\.every\(k=> cardMatchesSkillPick\(d, k\)\); \}\); \}/.test(g), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
   ok(g.indexOf('const want = codexSkillsChosen()') < g.indexOf('codexDrawAlbum(gEl,'), '9. ... for the album and the grids alike');
   ok(/const o = Object\.assign\(\{\}, codexFilter\)/.test(fnSrc('saveCodexFilters')) && !/skills/.test(fnSrc('saveCodexFilters')), '9. the picks are saved with the other non-text filters (sticky)');
   const w = fnSrc('wireCodexSkillFilter');

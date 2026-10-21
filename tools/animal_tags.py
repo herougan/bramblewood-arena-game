@@ -152,7 +152,7 @@ MANUAL = {
   'marshal-tuskwell': ('elephant', None, 'icon', ''), 'rodent-king': ('mouse', None, 'flavor', ''), 'elderhorn-monarch': ('deer', None, 'icon', ''),
   'shimmerwing-stag': ('deer', None, 'name', ''), 'stonedrop-vulture': ('vulture', None, 'flavor', 'an Egyptian vulture'), 'peak-condor': ('condor', None, 'name', ''),
   'mosswing-laborer': ('hummingbird', None, 'type', ''),
-  'moray-ambusher': ('moray eel', None, 'name', 'species says Cnidarian; a moray is a fish'), 'horseshoe-crab': ('horseshoe crab', None, 'name', ''),
+  'moray-ambusher': ('moray eel', None, 'name', 'a moray is a fish (species Fish since 2026-10-21, package TX; was Cnidarian)'), 'horseshoe-crab': ('horseshoe crab', None, 'name', ''),
   'tunnel-wyrm': ('worm', None, 'icon', 'a giant worm (species Dragon)'), 'gorge-wyrm': ('worm', None, 'icon', 'a giant worm (species Dragon)'),
   'thunder-lizard': ('lizard', None, 'flavor', '"not a dragon"'), 'komodo-warlord': ('komodo dragon', None, 'name', 'a lizard'),
   'cinder-stoker': ('salamander', None, 'flavor', 'crawls into the forge-pits (species Amphibian)'),
@@ -331,7 +331,7 @@ def tag(c):
 
 # Where the animal and the card's `species` disagree (species is left as it is; hand-checked, listed for the owner).
 SPECIES_NOTES = {
-  'moray-ambusher': 'species Cnidarian; a moray eel is a fish (Fish)',
+  # 2026-10-21 (package TX): moray-ambusher's species is Fish now, so it no longer disagrees.
   'tardigrade': 'species Insect; a tardigrade is a water bear, not an insect',
   'pill-bug': 'species Insect; a pill bug is a woodlouse, a crustacean (Crustacean)',
   'quarry-mole': 'species Rodent; moles are not rodents (Mammal)', 'ore-smelter-mole': 'species Rodent; moles are not rodents (Mammal)',

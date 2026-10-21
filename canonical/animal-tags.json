@@ -65,7 +65,7 @@
   }
  ],
  "counts": {
-  "cards": 828,
+  "cards": 831,
   "creatures": 734,
   "tagged": 736,
   "animals": 351,
@@ -362,10 +362,6 @@
   {
    "id": "gorge-wyrm",
    "note": "species Dragon; a giant worm (Annelid)"
-  },
-  {
-   "id": "moray-ambusher",
-   "note": "species Cnidarian; a moray eel is a fish (Fish)"
   },
   {
    "id": "rot-swollen-carcass",
@@ -1895,8 +1891,7 @@
    "group": "eel",
    "subtype": null,
    "how": "name",
-   "note": "species says Cnidarian; a moray is a fish",
-   "speciesNote": "species Cnidarian; a moray eel is a fish (Fish)"
+   "note": "a moray is a fish (species Fish since 2026-10-21, package TX; was Cnidarian)"
   },
   {
    "id": "sea-turtle-elder",
@@ -8832,6 +8827,36 @@
    "id": "rockfall",
    "name": "Rockfall",
    "icon": "🪨",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "grave-call",
+   "name": "Grave Call",
+   "icon": "🪦",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "smoke-screen",
+   "name": "Smoke Screen",
+   "icon": "🌫️",
+   "creature": false,
+   "animal": null,
+   "group": null,
+   "subtype": null,
+   "how": "none"
+  },
+  {
+   "id": "magnet",
+   "name": "Magnet",
+   "icon": "🧲",
    "creature": false,
    "animal": null,
    "group": null,

@@ -44,8 +44,9 @@ ok(/id="arenaNavBtnPlay" type="button" title="\$\{escapeAttr\(TX\('ui\.u4-arena-
 
 // ---- 3. the deck popup's Advancement sort
 const dp = B.grab('openDeckBuilderPopup');
-ok(/\['advance', TX\('ui\.u4-sort-advance'\)\]/.test(dp) && /\$\{sort === k \? 'selected' : ''\}/.test(dp), '3. Sort: Advancement is offered, the current sort selected');
-ok(/localStorage\.getItem\('bramblewood_dbp_sort_v1'\)/.test(dp) && /try\{ localStorage\.setItem\('bramblewood_dbp_sort_v1', sort\); \}catch\(_\)\{\}/.test(dp), '3. kept per device (in try/catch)');
+// 2026-10-21 (package TX): the popup's sort is the Codex filter bar's (cfBarHTML; it marks the current sort), with Advancement added
+ok(/cfBarHTML\(cf, 'dbp', null, \[\['advance', \(\)=> TX\('ui\.u4-sort-advance'\)\]\]\)/.test(dp) && /sel===k\?'selected':''/.test(B.grab('cfSortOptionsHTML')), '3. Sort: Advancement is offered, the current sort selected');
+ok(/try\{ const v = localStorage\.getItem\('bramblewood_dbp_sort_v1'\);/.test(dp) && /try\{ uiStickySave\('dbpTx', cf\); localStorage\.setItem\('bramblewood_dbp_sort_v1', cf\.sort\); \}catch\(e\)\{\}/.test(dp), '3. kept per device (in try/catch)');
 { const defs = {a:{name:'A', cost:3, k:'0'}, b:{name:'B', cost:1, k:'100020000003'}, c:{name:'C', cost:2, k:'100010000005'}, d:{name:'D', cost:1, k:'100011000000'}, e:{name:'E', cost:0, k:'9'}};
   const S = new Function('getCardDefs', 'advancementKey', B.grab('dbpAdvanceSortFn') + '\nreturn dbpAdvanceSortFn;')(()=> defs, d=> d.k);
   ok(Object.keys(defs).sort(S()).join('') === 'acdbe', '3. Base, Map 1 (its side map after it), Map 2, then the rest'); }

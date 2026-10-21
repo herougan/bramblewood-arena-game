@@ -10892,6 +10892,22 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cx-sk-chip[aria-pressed="true"], .cx-sk-chip.is-on{background:var(--accent); border-color:var(--accent-strong); color:var(--accent-ink);}
 .cx-sk-chip i{font-style:normal; opacity:.8;}
 .cx-skill-none{margin:0; color:var(--ink-muted);}
+/* 2026-10-21 (package TX): the skill groups row of the picker, and the Codex's filter bar in the deck editors (cfBarHTML) */
+.cx-skill-groups{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin:2px 0 6px;} .cx-skill-groups small{color:var(--ink-muted);}
+.cx-skill-chips.is-groups{margin-bottom:10px; padding-bottom:10px; border-bottom:1px dashed var(--surface-border); max-height:none;}
+.cx-sk-chip.is-group{border-style:dashed;}
+.cf-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px; flex:1 1 100%; min-width:0;}
+.cf-bar > select, .cf-panel > select{min-width:0; max-width:100%;}
+.cf-panel{flex:1 1 100%; display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:10px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink); box-sizing:border-box;}
+.cf-panel[hidden]{display:none !important;}
+.cf-panel > select{flex:1 1 150px;}
+.cf-panel > .cx-skill-panel{flex:1 1 100%; padding:8px 0 0;} .cf-panel > .cx-skill-panel[hidden]{display:none !important;}
+.cf-bar > .cx-skill-active{flex:1 1 100%; margin:0;}
+.dbp-tools{flex-wrap:wrap;} .dbp-tools .cf-bar{flex:1 1 100%;}
+.dbp-tools .cf-panel, .se-gallery .cf-panel{max-height:42vh; overflow-y:auto;}
+.cf-panel .cx-skill-chips:not(.is-groups){max-height:min(30vh, 260px);}
+.se-gallery .sg-tools .cf-bar{flex:1 1 100%;}
+@media (max-width:700px){ .cf-panel > select{flex:1 1 45%;} .cf-bar > select{flex:1 1 40%;} }
 .cx-skill-active{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 4px;} .cx-skill-active[hidden]{display:none;}
 .cx-skill-active > span{font-weight:800; font-size:13px; color:var(--page-ink, #f5ecd2);}
 .cx-skill-active > .btn{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
