@@ -2344,5 +2344,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} சுரண்டப்படுகிறது: +{b} சேதம் ({n} மீதம்).",
  "{name} is isolated: −{n}/−{n}.": "{name} தனிமையில்: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} வில்லைகள்: அதன் மீதான ஒவ்வொரு தாக்குதலும் 1 அதிகம் தந்து ஒன்றைச் செலவழிக்கும்.",
- "Tap to see the card": "அட்டையைப் பார்க்கத் தட்டவும்"
+ "Tap to see the card": "அட்டையைப் பார்க்கத் தட்டவும்",
+ "Archer": "வில்லாளி",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "இது ஒருபோதும் தாக்காது. அதற்குப் பதிலாக, தன் ஒவ்வொரு முறையிலும் எதிரே உள்ள எதிரி மீது {n} சேதம் தரும் அம்பை எய்கிறது (அங்கு யாரும் இல்லையெனில் அருகிலுள்ள எதிரி; களம் காலியெனில் முட்புதர்).",
+ "Archer look": "வில்லாளி தோற்றம்",
+ "Bow: it shoots an arrow": "வில்: அம்பு எய்கிறது",
+ "Drop: it flies over the target, drops a stone and flies back": "போடுதல்: இலக்கின் மேல் பறந்து, கல்லைப் போட்டு, திரும்பி வருகிறது",
+ "On Action": "செயலின்போது",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "சண்டையில் தன் முறை வரும் ஒவ்வொரு முறையும்: வில்லாளி தாக்குவதற்குப் பதிலாக, மற்றவை தாக்குவதற்குச் சற்று முன்.",
+ "Arrow": "அம்பு",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "எதிரே உள்ள எதிரி மீது N சேதம் தரும் அம்பை எய் (இல்லையெனில் அருகிலுள்ள எதிரி; களம் காலியெனில் முட்புதர்).",
+ "{name} flies over {target} and drops a stone 🪨": "{name} {target} மேல் பறந்து ஒரு கல்லைப் போடுகிறது 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name} முட்புதர் மேல் பறந்து ஒரு கல்லைப் போடுகிறது 🪨"
 }

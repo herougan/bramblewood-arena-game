@@ -2343,5 +2343,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} es explotada: +{b} de daño (quedan {n}).",
  "{name} is isolated: −{n}/−{n}.": "{name} está aislada: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} ficha(s): cada golpe que recibe hace 1 más y gasta una.",
- "Tap to see the card": "Toca para ver la carta"
+ "Tap to see the card": "Toca para ver la carta",
+ "Archer": "Arquero",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Nunca ataca. En su lugar, en cada uno de sus turnos dispara una flecha de {n} de daño al enemigo de enfrente (si no hay, al enemigo más cercano; al zarzal si el tablero está vacío).",
+ "Archer look": "Estilo de arquero",
+ "Bow: it shoots an arrow": "Arco: dispara una flecha",
+ "Drop: it flies over the target, drops a stone and flies back": "Soltar: vuela sobre el objetivo, suelta una piedra y vuelve",
+ "On Action": "Al actuar",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "Cada vez que le toca su turno en la pelea: un arquero en lugar de atacar, cualquier otro justo antes de atacar.",
+ "Arrow": "Flecha",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "Dispara una flecha de N de daño al enemigo de enfrente (al más cercano si no hay; al zarzal si el tablero está vacío).",
+ "{name} flies over {target} and drops a stone 🪨": "{name} vuela sobre {target} y suelta una piedra 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name} vuela sobre el zarzal y suelta una piedra 🪨"
 }

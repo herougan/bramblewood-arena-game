@@ -2344,5 +2344,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name}被抓住破绽：+{b}伤害（剩{n}个）。",
  "{name} is isolated: −{n}/−{n}.": "{name}陷入孤立：−{n}/−{n}。",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n}个标记：每次命中它多造成1点伤害并消耗一个。",
- "Tap to see the card": "点按查看卡牌"
+ "Tap to see the card": "点按查看卡牌",
+ "Archer": "弓手",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "从不攻击。改为在自己的每个回合向正对的敌人射出一支造成{n}点伤害的箭（若无正对敌人则射最近的敌人；场上无单位则射荆棘堡）。",
+ "Archer look": "弓手动画",
+ "Bow: it shoots an arrow": "弓：射出一支箭",
+ "Drop: it flies over the target, drops a stone and flies back": "投掷：飞到目标上方，丢下石头再飞回",
+ "On Action": "行动时",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "每当它在战斗中轮到行动：弓手以此代替攻击，其他单位在攻击前一刻。",
+ "Arrow": "箭",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "向正对的敌人射出一支造成N点伤害的箭（无则射最近的敌人；场上无单位则射荆棘堡）。",
+ "{name} flies over {target} and drops a stone 🪨": "{name}飞到{target}上方，丢下一块石头🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name}飞到荆棘堡上方，丢下一块石头🪨"
 }

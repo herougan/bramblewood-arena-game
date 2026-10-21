@@ -8636,6 +8636,12 @@
   /* Magic attackers (2026-10-14, user: "some units have a wand instead of a sword symbol on their bottom left, blue in colour"). */
   .card-tile .atk.atk-magic{color:#8fd0ff; background:linear-gradient(180deg,rgba(16,38,82,.9),rgba(6,16,44,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,190,255,.7), 0 0 6px rgba(80,160,255,.45);}
   .card-tile .atk.atk-magic .atk-buffed{color:#bfe6ff;}
+  /* Fire attacks (2026-10-21, package BX): a swing that deals fire damage (dmgType heat) shows a flame on the attack label, on an ember plate */
+  .card-tile .atk.atk-fire{color:#ffb070; background:linear-gradient(180deg,rgba(92,26,8,.9),rgba(44,10,4,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,140,60,.7), 0 0 6px rgba(255,110,30,.45);}
+  .card-tile .atk.atk-fire .atk-buffed{color:#ffd0a0;}
+  /* Archer's drop look (2026-10-21, package BX): the stone it lets fall (bxDropStone) */
+  .bx-stone{position:fixed; left:0; top:0; z-index:9000; pointer-events:none; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.5));}
+  .board-card.bx-dropping{pointer-events:none;}
   .ab-speed{color:#d9f3ff; font-weight:800;}
   .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(141,230,109,.45);}
   /* Names: a step smaller relative to the card, capped lower, so the scroll covers less art. */

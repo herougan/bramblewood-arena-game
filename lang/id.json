@@ -2343,5 +2343,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} dieksploitasi: +{b} kerusakan (sisa {n}).",
  "{name} is isolated: −{n}/−{n}.": "{name} terkucil: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} token: tiap serangan padanya memberi 1 lebih dan memakai satu.",
- "Tap to see the card": "Ketuk untuk melihat kartu"
+ "Tap to see the card": "Ketuk untuk melihat kartu",
+ "Archer": "Pemanah",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Tidak pernah menyerang. Sebagai gantinya, di setiap gilirannya ia melepaskan panah sebesar {n} kerusakan ke musuh di depannya (jika tidak ada, musuh terdekat; semak duri jika papan kosong).",
+ "Archer look": "Gaya pemanah",
+ "Bow: it shoots an arrow": "Busur: menembakkan panah",
+ "Drop: it flies over the target, drops a stone and flies back": "Jatuhkan: terbang di atas sasaran, menjatuhkan batu, lalu terbang kembali",
+ "On Action": "Saat Beraksi",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "Setiap kali gilirannya tiba dalam pertarungan: pemanah sebagai ganti menyerang, yang lain tepat sebelum menyerang.",
+ "Arrow": "Panah",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "Lepaskan panah sebesar N kerusakan ke musuh di depannya (musuh terdekat jika tidak ada; semak duri jika papan kosong).",
+ "{name} flies over {target} and drops a stone 🪨": "{name} terbang di atas {target} dan menjatuhkan batu 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name} terbang di atas semak duri dan menjatuhkan batu 🪨"
 }

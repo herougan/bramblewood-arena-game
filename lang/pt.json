@@ -2343,5 +2343,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} é explorada: +{b} de dano (restam {n}).",
  "{name} is isolated: −{n}/−{n}.": "{name} está isolada: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} ficha(s): cada golpe que sofre causa mais 1 e gasta uma.",
- "Tap to see the card": "Toque para ver a carta"
+ "Tap to see the card": "Toque para ver a carta",
+ "Archer": "Arqueiro",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Nunca ataca. Em vez disso, em cada um de seus turnos dispara uma flecha de {n} de dano no inimigo à frente (se não houver, no inimigo mais próximo; no espinheiro se o tabuleiro estiver vazio).",
+ "Archer look": "Estilo de arqueiro",
+ "Bow: it shoots an arrow": "Arco: dispara uma flecha",
+ "Drop: it flies over the target, drops a stone and flies back": "Soltar: voa sobre o alvo, solta uma pedra e volta",
+ "On Action": "Ao agir",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "Cada vez que chega sua vez na luta: um arqueiro em vez de atacar, qualquer outro logo antes de atacar.",
+ "Arrow": "Flecha",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "Dispara uma flecha de N de dano no inimigo à frente (o mais próximo se não houver; o espinheiro se o tabuleiro estiver vazio).",
+ "{name} flies over {target} and drops a stone 🪨": "{name} voa sobre {target} e solta uma pedra 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name} voa sobre o espinheiro e solta uma pedra 🪨"
 }

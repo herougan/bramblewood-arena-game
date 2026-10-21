@@ -894,7 +894,7 @@ M.badgePop = function(badge, opts){
 // Top rarities each get a frame of their own (tr-rarity-mythic … daemonic, 2026-10-15). They share .rarity-tier-top with
 // Legendary, so the frame keys off the tile's own rarity colour (--rarity-a in its style, set by cardTileHTML from RARITY_DEFS)
 // and needs no game edit: a Mythic card anywhere (Codex, board, pack, Forge) wears its frame. Drawn on the tile's ::before
-// ring (the gold-leaf rim it replaces) and on .rarity-band::before (inside the card, above the art, under the text).
+// ring (the gold-leaf rim it replaces) and on .cframe-fx::before (inside the card, above the art, under the text).
 // Lab variants: add `fxd-r-alt` to opt out of A, plus `fxd-r-<rarity>-b`/`-c` for B/C; `fxd-r-alt` alone is the old gold rim.
 const RK = {mythic:'#dc2626', ancient:'#1e3a8a', divine:'#f8fafc', void:'#7c6f8f', daemonic:'#111111'};
 // 2026-10-17 (user: "Mythic effect when zoomed out and zoomed in ... not exactly the same. It's gold on the blow up."): once a script
@@ -907,66 +907,79 @@ const RUNES = svgUrl(SVG((()=>{ const r = seeded('runes'); let p = ''; const gly
 const RUNE_RING = svgUrl(SVG((()=>{ const r = seeded('ring'); let p = ''; for(let k = 0; k < 16; k++){ const a = k/16*Math.PI*2, x = 50 + Math.cos(a)*38, y = 50 + Math.sin(a)*38; p += `<path transform='translate(${f1(x)} ${f1(y)}) rotate(${f1(a*180/Math.PI + 90)})' d='${['M0 -3v6M0 -3l2 2', 'M-2 -3l4 6M2 -3l-4 6', 'M-2 3v-6l4 6v-6', 'M0 -3l2 3l-2 3l-2 -3z'][r()*4|0]}'/>`; }
   return `<circle cx='50' cy='50' r='44' fill='none' stroke='#8fc0ff' stroke-width='.8'/><circle cx='50' cy='50' r='32' fill='none' stroke='#8fc0ff' stroke-width='.6'/><g fill='none' stroke='#cfe2ff' stroke-width='1'>${p}</g>`; })(), '0 0 100 100', 'xMidYMid meet'));
 const HORNS = svgUrl(SVG(`<g fill='#0a0505' stroke='#b0140a' stroke-width='1.2'><path d='M4 30 C2 16 8 6 20 2 C14 10 13 18 16 26 Z'/><path d='M96 30 C98 16 92 6 80 2 C86 10 87 18 84 26 Z'/></g><g fill='#ff2a14'><ellipse cx='40' cy='22' rx='3' ry='1.6'/><ellipse cx='60' cy='22' rx='3' ry='1.6'/></g>`));
-const FRAME_BAND = `content:''; position:absolute; left:0; right:0; bottom:0; height:400%; border-radius:12px; pointer-events:none; background-repeat:no-repeat;`;
+// 2026-10-21 (package BX, owner: "The card border shine effect (especially on the dragons) is offset. Please adjust this."): these layers
+// lived on .rarity-band's pseudo-elements and reached up over the card with height 400%, which assumed the band is a quarter of the card.
+// It isn't (22% on a framed-art card, a fixed 27.5px on the rest), so the frame's rings and glows sat a fifth of the way down the card,
+// worse the bigger the card. They live on .cframe-fx now (cardTileHTML's frame markup, CARD_FRAME_HTML), which covers the card exactly,
+// so they line up with the frame at every size: hand, board, raid, the zoomed card. .cframe-fx makes no stacking context: its ::before
+// (the glows inside the card) sits under the frame art and the name, its ::after (the rings round the edge) over the frame, as the gold rim.
+const FRAME_BAND = `content:''; position:absolute; inset:0; z-index:1; border-radius:12px; pointer-events:none; background-repeat:no-repeat;`;
 const FRAMES_CSS = ()=> `
   @property --fxd-a{syntax:'<angle>'; inherits:false; initial-value:0deg;}
+  /* the host of the frame layers (2026-10-21, package BX): the card's own box, no stacking context of its own (no z-index), so its
+     ::before / ::after take their places (1: under the frame art, 3: over it) among the card's own layers */
+  .card-tile > .cframe-fx{position:absolute; inset:0; display:block; pointer-events:none; border-radius:inherit;}
+  .board-card.ghost-preview .card-tile > .cframe-fx{display:none;}
   @keyframes fxdRingFlow{to{background-position:300% 0;}}
   @keyframes fxdAngle{to{--fxd-a:360deg;}}
   /* ---- Mythic: A living ember frame · B blood crystal · C heartbeat ---- */
   ${rSel('mythic')}::before{background:linear-gradient(115deg, #5a0606, #dc2626 18%, #ff8a3a 30%, #ffe0a0 34%, #ff5a1a 40%, #b01010 54%, #ff7a2a 70%, #ffd08a 74%, #8a0a0a 86%, #5a0606); background-size:300% 100%; animation:fxdRingFlow 4s linear infinite;}
-  ${rSel('mythic')} .rarity-band::before{${FRAME_BAND} background:repeating-linear-gradient(0deg, rgba(255,140,60,0) 0 5px, rgba(255,140,60,.16) 6px, rgba(255,140,60,0) 8px 12px), linear-gradient(0deg, rgba(255,70,20,.38), rgba(255,70,20,0) 34%); background-size:100% 24px, 100% 100%; animation:fxdHeat 2.4s linear infinite; mix-blend-mode:screen;}
+  ${rSel('mythic')} .cframe-fx::before{${FRAME_BAND} background:repeating-linear-gradient(0deg, rgba(255,140,60,0) 0 5px, rgba(255,140,60,.16) 6px, rgba(255,140,60,0) 8px 12px), linear-gradient(0deg, rgba(255,70,20,.38), rgba(255,70,20,0) 34%); background-size:100% 24px, 100% 100%; animation:fxdHeat 2.4s linear infinite; mix-blend-mode:screen;}
   ${rSel('mythic', 'b')}::before{background:repeating-conic-gradient(from var(--fxd-a) at 50% 50%, #ff5a5a 0 9deg, #6a0000 9deg 18deg, #ffc0c0 18deg 21deg, #b00010 21deg 34deg); animation:fxdAngle 9s linear infinite;}
-  ${rSel('mythic', 'b')} .rarity-band::before{${FRAME_BAND} background:radial-gradient(circle at 8% 4%, rgba(255,200,200,.55), transparent 14%), radial-gradient(circle at 92% 96%, rgba(255,120,120,.45), transparent 16%); animation:fxdBreathe 3s ease-in-out infinite; mix-blend-mode:screen;}
+  ${rSel('mythic', 'b')} .cframe-fx::before{${FRAME_BAND} background:radial-gradient(circle at 8% 4%, rgba(255,200,200,.55), transparent 14%), radial-gradient(circle at 92% 96%, rgba(255,120,120,.45), transparent 16%); animation:fxdBreathe 3s ease-in-out infinite; mix-blend-mode:screen;}
   ${rSel('mythic', 'c')}::before{background:#e01818; animation:fxdBeatRing 1.4s ease-in-out infinite;}
   @keyframes fxdBeatRing{0%,100%{filter:brightness(.8);} 10%{filter:brightness(1.8);} 22%{filter:brightness(.95);} 34%{filter:brightness(1.6);} 50%{filter:brightness(.85);}}
-  ${rSel('mythic', 'c')} .rarity-band::before{${FRAME_BAND} box-shadow:inset 0 0 18px rgba(255,20,20,.6); animation:fxdBeatRing 1.4s ease-in-out infinite;}
+  ${rSel('mythic', 'c')} .cframe-fx::before{${FRAME_BAND} box-shadow:inset 0 0 18px rgba(255,20,20,.6); animation:fxdBeatRing 1.4s ease-in-out infinite;}
   /* ---- Ancient: A rune stone · B deep tablet · C rune circle ---- */
   ${rSel('ancient')}::before{background:${noise('.35', 3, 21, '0 0 0 0 .45  0 0 0 0 .47  0 0 0 0 .52  0 0 0 -1 1.2', 'fractalNoise', 80)}, linear-gradient(160deg, #8a8f9a, #4a4e58 40%, #9aa0aa 70%, #3e424a); background-size:80px 80px, 100% 100%;}
-  ${rSel('ancient')} .rarity-band::before{${FRAME_BAND} background-image:${RUNES}; background-size:100% 100%; filter:drop-shadow(0 0 2px #3a7aff) drop-shadow(0 0 4px rgba(60,120,255,.6)); animation:fxdRuneGlow 4.5s ease-in-out infinite;}
+  ${rSel('ancient')} .cframe-fx::before{${FRAME_BAND} background-image:${RUNES}; background-size:100% 100%; filter:drop-shadow(0 0 2px #3a7aff) drop-shadow(0 0 4px rgba(60,120,255,.6)); animation:fxdRuneGlow 4.5s ease-in-out infinite;}
   @keyframes fxdRuneGlow{0%,100%{opacity:.35;} 50%{opacity:1;}}
   ${rSel('ancient', 'b')}::before{background:linear-gradient(160deg, #0e1c4a, #23408f 40%, #0a1430 70%, #2a4aa0);}
-  ${rSel('ancient', 'b')} .rarity-band::before{${FRAME_BAND} inset:auto 0 0 0; box-shadow:inset 0 0 0 4px rgba(10,20,60,.55), inset 0 0 0 5px rgba(120,170,255,.7), inset 0 0 14px rgba(60,110,255,.5); animation:fxdRuneGlow 3.5s ease-in-out infinite;}
+  ${rSel('ancient', 'b')} .cframe-fx::before{${FRAME_BAND} box-shadow:inset 0 0 0 4px rgba(10,20,60,.55), inset 0 0 0 5px rgba(120,170,255,.7), inset 0 0 14px rgba(60,110,255,.5); animation:fxdRuneGlow 3.5s ease-in-out infinite;}
   ${rSel('ancient', 'c')}::before{background:linear-gradient(160deg, #3a5aa8, #a8c4ff 30%, #1e3a8a 55%, #7aa0f0 80%, #1e3a8a);}
-  ${rSel('ancient', 'c')} .rarity-band::before{${FRAME_BAND} background-image:${RUNE_RING}; background-size:90% auto; background-position:50% 32%; opacity:.5; mix-blend-mode:screen; filter:drop-shadow(0 0 3px #4a8aff); animation:fxdRuneTurn 30s linear infinite;}
+  ${rSel('ancient', 'c')} .cframe-fx::before{${FRAME_BAND} background-image:${RUNE_RING}; background-size:90% auto; background-position:50% 32%; opacity:.5; mix-blend-mode:screen; filter:drop-shadow(0 0 3px #4a8aff); animation:fxdRuneTurn 30s linear infinite;}
   @keyframes fxdRuneTurn{to{background-position:50% 32%; filter:drop-shadow(0 0 3px #4a8aff) hue-rotate(20deg);}}
   /* ---- Divine: A halo rays · B Ecclesia glass ring · C halo ---- */
   ${rSel('divine')}::before{background:linear-gradient(115deg, transparent calc(var(--gold-x) - 9%), #fff calc(var(--gold-x)), transparent calc(var(--gold-x) + 9%)), linear-gradient(160deg, #fffdf0 0%, #ffe9a8 22%, #ffffff 40%, #f2d48a 60%, #fffaf0 82%, #e8c070 100%); animation:goldStreak 3.6s ease-in-out infinite;}
-  ${rSel('divine')} .rarity-band::before{${FRAME_BAND} background:repeating-conic-gradient(from 160deg at 50% -8%, rgba(255,250,220,0) 0deg 5deg, rgba(255,250,220,.5) 7deg, rgba(255,250,220,0) 9deg 15deg); -webkit-mask-image:linear-gradient(180deg, #000 0%, rgba(0,0,0,.4) 45%, transparent 75%); mask-image:linear-gradient(180deg, #000 0%, rgba(0,0,0,.4) 45%, transparent 75%); mix-blend-mode:screen; animation:fxdRays 8s ease-in-out infinite alternate;}
+  ${rSel('divine')} .cframe-fx::before{${FRAME_BAND} background:repeating-conic-gradient(from 160deg at 50% -8%, rgba(255,250,220,0) 0deg 5deg, rgba(255,250,220,.5) 7deg, rgba(255,250,220,0) 9deg 15deg); -webkit-mask-image:linear-gradient(180deg, #000 0%, rgba(0,0,0,.4) 45%, transparent 75%); mask-image:linear-gradient(180deg, #000 0%, rgba(0,0,0,.4) 45%, transparent 75%); mix-blend-mode:screen; animation:fxdRays 8s ease-in-out infinite alternate;}
   @keyframes fxdRays{0%{transform:rotate(-3deg); opacity:.75;} 100%{transform:rotate(3deg); opacity:1;}}
   ${rSel('divine', 'b')}::before{background:repeating-linear-gradient(90deg, #c8102e 0 14%, #1a1a1a 14% 15%, #1d4fb8 15% 29%, #1a1a1a 29% 30%, #e0a21a 30% 44%, #1a1a1a 44% 45%, #1d8a45 45% 59%, #1a1a1a 59% 60%); background-size:60% 100%; filter:saturate(1.3) brightness(1.2); animation:fxdRingFlow 14s linear infinite;}
-  ${rSel('divine', 'b')} .rarity-band::before{${FRAME_BAND} background:linear-gradient(200deg, rgba(255,250,230,.55), rgba(255,250,230,0) 30%), linear-gradient(160deg, rgba(255,240,210,0) 40%, rgba(255,240,210,.35) 50%, rgba(255,240,210,0) 60%); mix-blend-mode:screen; animation:fxdBreathe 5s ease-in-out infinite;}
+  ${rSel('divine', 'b')} .cframe-fx::before{${FRAME_BAND} background:linear-gradient(200deg, rgba(255,250,230,.55), rgba(255,250,230,0) 30%), linear-gradient(160deg, rgba(255,240,210,0) 40%, rgba(255,240,210,.35) 50%, rgba(255,240,210,0) 60%); mix-blend-mode:screen; animation:fxdBreathe 5s ease-in-out infinite;}
   ${rSel('divine', 'c')}::before{background:linear-gradient(160deg, #fff6d8, #f6d77a 40%, #ffffff 70%, #e8c070);}
-  ${rSel('divine', 'c')} .rarity-band::before{${FRAME_BAND} background:radial-gradient(ellipse 30% 5% at 50% 7%, transparent 55%, rgba(255,245,200,.95) 70%, rgba(255,230,150,.5) 82%, transparent 100%); filter:drop-shadow(0 0 4px #fff3c0); animation:fxdHaloBob 3s ease-in-out infinite;}
+  ${rSel('divine', 'c')} .cframe-fx::before{${FRAME_BAND} background:radial-gradient(ellipse 30% 5% at 50% 7%, transparent 55%, rgba(255,245,200,.95) 70%, rgba(255,230,150,.5) 82%, transparent 100%); filter:drop-shadow(0 0 4px #fff3c0); animation:fxdHaloBob 3s ease-in-out infinite;}
   @keyframes fxdHaloBob{0%,100%{transform:translateY(0);} 50%{transform:translateY(-1.5%);}}
   /* ---- Void: A static edge · B unravelling · C hollow (inverted rim) ---- */
   ${rSel('void')}::before{background:${noise('.8', 1, 31, '0 0 0 0 .6  0 0 0 0 .5  0 0 0 0 .8  0 0 0 0 1', 'fractalNoise', 80)}, #3a2f4a; background-size:80px 80px, 100% 100%; animation:fxdStatic .5s steps(5) infinite;}
-  ${rSel('void')} .rarity-band::before{${FRAME_BAND} background:radial-gradient(circle at 6% 10%, #fff 0 .8px, transparent 1.4px), radial-gradient(circle at 94% 22%, #e6dcff 0 .8px, transparent 1.4px), radial-gradient(circle at 8% 78%, #fff 0 .7px, transparent 1.3px), radial-gradient(circle at 90% 88%, #e6dcff 0 .9px, transparent 1.5px), radial-gradient(circle at 50% 3%, #fff 0 .7px, transparent 1.3px), radial-gradient(ellipse 70% 62% at 50% 50%, transparent 58%, rgba(30,10,50,.65) 96%); animation:fxdBreathe 2.6s ease-in-out infinite;}
+  ${rSel('void')} .cframe-fx::before{${FRAME_BAND} background:radial-gradient(circle at 6% 10%, #fff 0 .8px, transparent 1.4px), radial-gradient(circle at 94% 22%, #e6dcff 0 .8px, transparent 1.4px), radial-gradient(circle at 8% 78%, #fff 0 .7px, transparent 1.3px), radial-gradient(circle at 90% 88%, #e6dcff 0 .9px, transparent 1.5px), radial-gradient(circle at 50% 3%, #fff 0 .7px, transparent 1.3px), radial-gradient(ellipse 70% 62% at 50% 50%, transparent 58%, rgba(30,10,50,.65) 96%); animation:fxdBreathe 2.6s ease-in-out infinite;}
   ${rSel('void', 'b')}::before{background:conic-gradient(from var(--fxd-a), #7c6f8f 0 40deg, transparent 40deg 55deg, #b8a8d8 55deg 120deg, transparent 120deg 128deg, #5a4a70 128deg 230deg, transparent 230deg 250deg, #9a8ab8 250deg 360deg); animation:fxdAngle 7s linear infinite;}
-  ${rSel('void', 'b')} .rarity-band::before{${FRAME_BAND} box-shadow:inset 0 0 14px rgba(120,70,200,.55);}
+  ${rSel('void', 'b')} .cframe-fx::before{${FRAME_BAND} box-shadow:inset 0 0 14px rgba(120,70,200,.55);}
   ${rSel('void', 'c')}::before{background:#0b0712;}
-  ${rSel('void', 'c')} .rarity-band::before{${FRAME_BAND} -webkit-backdrop-filter:invert(1) hue-rotate(180deg) saturate(.6); backdrop-filter:invert(1) hue-rotate(180deg) saturate(.6); -webkit-mask-image:radial-gradient(ellipse 66% 58% at 50% 50%, transparent 74%, #000 100%); mask-image:radial-gradient(ellipse 66% 58% at 50% 50%, transparent 74%, #000 100%);}
+  ${rSel('void', 'c')} .cframe-fx::before{${FRAME_BAND} -webkit-backdrop-filter:invert(1) hue-rotate(180deg) saturate(.6); backdrop-filter:invert(1) hue-rotate(180deg) saturate(.6); -webkit-mask-image:radial-gradient(ellipse 66% 58% at 50% 50%, transparent 74%, #000 100%); mask-image:radial-gradient(ellipse 66% 58% at 50% 50%, transparent 74%, #000 100%);}
   /* ---- Daemonic: A hellfire · B horned · C smoulder ---- */
   ${rSel('daemonic')}::before{background:${noise('.05 .14', 3, 41, '0 0 0 0 1  0 0 0 0 .3  0 0 0 0 .05  0 0 0 -2.2 1.9', 'fractalNoise', 120)}, linear-gradient(0deg, #ff6a10, #9a0a06 50%, #120404); background-size:120px 120px, 100% 100%; animation:fxdFlame 3.9s linear infinite;}
-  ${rSel('daemonic')} .rarity-band::before{${FRAME_BAND} background:${noise('.05 .12', 3, 43, '0 0 0 0 1  0 0 0 0 .25  0 0 0 0 .04  0 0 0 -3 2', 'fractalNoise', 120)}; background-size:120px 120px; -webkit-mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,.5) 14%, transparent 26%); mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,.5) 14%, transparent 26%); mix-blend-mode:screen; animation:fxdFlame 4.8s linear infinite;}
+  ${rSel('daemonic')} .cframe-fx::before{${FRAME_BAND} background:${noise('.05 .12', 3, 43, '0 0 0 0 1  0 0 0 0 .25  0 0 0 0 .04  0 0 0 -3 2', 'fractalNoise', 120)}; background-size:120px 120px; -webkit-mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,.5) 14%, transparent 26%); mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,.5) 14%, transparent 26%); mix-blend-mode:screen; animation:fxdFlame 4.8s linear infinite;}
   ${rSel('daemonic', 'b')}::before{background:linear-gradient(160deg, #1a0606, #000 40%, #5a0a06 70%, #000);}
-  ${rSel('daemonic', 'b')} .rarity-band::before{${FRAME_BAND} background-image:${HORNS}; background-size:100% 100%; animation:fxdEyes 5s steps(1) infinite;}
+  ${rSel('daemonic', 'b')} .cframe-fx::before{${FRAME_BAND} background-image:${HORNS}; background-size:100% 100%; animation:fxdEyes 5s steps(1) infinite;}
   @keyframes fxdEyes{0%,46%,54%,100%{filter:drop-shadow(0 0 3px #ff1a0a);} 48%,52%{filter:drop-shadow(0 0 0 #000) brightness(.4);}}
   ${rSel('daemonic', 'c')}::before{background:linear-gradient(0deg, #ff4a10, #5a0602 35%, #0a0202 70%); animation:fxdBreathe 3s ease-in-out infinite;}
-  ${rSel('daemonic', 'c')} .rarity-band::before{${FRAME_BAND} background-image:radial-gradient(circle, #ffb060 0 1px, transparent 1.6px), radial-gradient(circle, #ff5a20 0 .8px, transparent 1.4px); background-size:23px 31px, 17px 26px; background-repeat:repeat; -webkit-mask-image:linear-gradient(0deg, #000, transparent 55%); mask-image:linear-gradient(0deg, #000, transparent 55%); animation:fxdEmbers 3s linear infinite;}
+  ${rSel('daemonic', 'c')} .cframe-fx::before{${FRAME_BAND} background-image:radial-gradient(circle, #ffb060 0 1px, transparent 1.6px), radial-gradient(circle, #ff5a20 0 .8px, transparent 1.4px); background-size:23px 31px, 17px 26px; background-repeat:repeat; -webkit-mask-image:linear-gradient(0deg, #000, transparent 55%); mask-image:linear-gradient(0deg, #000, transparent 55%); animation:fxdEmbers 3s linear infinite;}
   @keyframes fxdEmbers{to{background-position:6px -62px, -4px -52px;}}
   /* keep big galleries cheap: like the band itself, these only animate where few cards show, or under the pointer */
-  .card-tile .rarity-band::before, .card-tile .rarity-band::after{animation-play-state:paused;}
-  .board-card .card-tile .rarity-band::before, #handStrip .card-tile .rarity-band::before, .po2 .card-tile .rarity-band::before, .forge-preview-wrap .card-tile .rarity-band::before, .card-pop-visual .card-tile .rarity-band::before, .fxl-stage .card-tile .rarity-band::before, .card-tile:hover > .rarity-band::before,
-  .board-card .card-tile .rarity-band::after, #handStrip .card-tile .rarity-band::after, .po2 .card-tile .rarity-band::after, .forge-preview-wrap .card-tile .rarity-band::after, .card-pop-visual .card-tile .rarity-band::after, .fxl-stage .card-tile .rarity-band::after, .card-tile:hover > .rarity-band::after{animation-play-state:running;}
-  @media (prefers-reduced-motion: reduce){ .card-tile .rarity-band::before, .card-tile .rarity-band::after, .card-tile.rarity-tier-top::before{animation:none !important;} }
-  html[data-fx="none"] .card-tile .rarity-band::before, html[data-fx="none"] .card-tile .rarity-band::after{animation:none !important;}
+  .card-tile .cframe-fx::before, .card-tile .cframe-fx::after{animation-play-state:paused;}
+  .board-card .card-tile .cframe-fx::before, #handStrip .card-tile .cframe-fx::before, .po2 .card-tile .cframe-fx::before, .forge-preview-wrap .card-tile .cframe-fx::before, .card-pop-visual .card-tile .cframe-fx::before, .fxl-stage .card-tile .cframe-fx::before, .card-tile:hover > .cframe-fx::before,
+  .board-card .card-tile .cframe-fx::after, #handStrip .card-tile .cframe-fx::after, .po2 .card-tile .cframe-fx::after, .forge-preview-wrap .card-tile .cframe-fx::after, .card-pop-visual .card-tile .cframe-fx::after, .fxl-stage .card-tile .cframe-fx::after, .card-tile:hover > .cframe-fx::after{animation-play-state:running;}
+  @media (prefers-reduced-motion: reduce){ .card-tile .cframe-fx::before, .card-tile .cframe-fx::after, .card-tile.rarity-tier-top::before{animation:none !important;} }
+  html[data-fx="none"] .card-tile .cframe-fx::before, html[data-fx="none"] .card-tile .cframe-fx::after{animation:none !important;}
   /* ---- Prestige Gold (tr-prestige-gold): a glint now travels round the gold ring ---- */
-  .card-tile.prestige-gold:not(.fxd-plain) .rarity-band::after{${FRAME_BAND} inset:auto -3px -3px; height:calc(400% + 6px); border-radius:14px; padding:3px; box-sizing:border-box;
+  .card-tile.prestige-gold:not(.fxd-plain) .cframe-fx::after{${FRAME_BAND} inset:-3px; z-index:3; border-radius:14px; padding:3px; box-sizing:border-box;
     background:conic-gradient(from var(--fxd-a), transparent 0 300deg, rgba(255,255,230,.95) 335deg, transparent 360deg); ${BORDER_MASK} animation:fxdAngle 3.2s linear infinite;}
   /* ---- Supreme (tr-supreme): a prismatic edge turns round the card; the stat glints stay ---- */
-  .card-tile.is-supreme:not(.fxd-plain) .rarity-band::after{${FRAME_BAND} inset:auto -2px -2px; height:calc(400% + 4px); border-radius:14px; padding:2.5px; box-sizing:border-box;
+  .card-tile.is-supreme:not(.fxd-plain) .cframe-fx::after{${FRAME_BAND} inset:-2px; z-index:3; border-radius:14px; padding:2.5px; box-sizing:border-box;
     background:conic-gradient(from var(--fxd-a), hsl(0 100% 70%), hsl(60 100% 65%), hsl(140 100% 60%), hsl(200 100% 65%), hsl(270 100% 72%), hsl(330 100% 70%), hsl(360 100% 70%)); ${BORDER_MASK} animation:fxdAngle 4s linear infinite; filter:saturate(1.2) brightness(1.1);}
   .card-tile.is-supreme:not(.fxd-plain){box-shadow:0 0 10px rgba(200,170,255,.45);}
+  /* 2026-10-21 (package BX): on a Legendary-and-up card the rarity rim (the tile's ::before, -2px with a 3px band) owns the edge; the
+     prismatic edge runs just inside it (its inner 1px line on), so both show, concentric with the frame at every size */
+  .card-tile.is-supreme.rarity-tier-top:not(.fxd-plain) .cframe-fx::after{inset:1px; padding:2px; border-radius:11px;}
   /* ---- Shiny mark (tr-shiny-mark): the ✦ cycles colour and throws a four-point flash ---- */
   .shiny-mark:not(.fxd-plain){animation:fxdShinyMark 2.4s ease-in-out infinite;}
   @keyframes fxdShinyMark{0%,100%{transform:scale(.9) rotate(0deg); filter:hue-rotate(0deg) drop-shadow(0 0 2px #fff);} 45%{transform:scale(1.25) rotate(20deg); filter:hue-rotate(160deg) drop-shadow(0 0 6px #fff);} 55%{transform:scale(1) rotate(25deg); filter:hue-rotate(200deg) drop-shadow(0 0 3px #fff);}}
@@ -988,7 +1001,7 @@ const FRAMES_CSS = ()=> `
   .card-tile.fxd-boss::before{inset:-2px; border-radius:14px; z-index:3; pointer-events:none; padding:3px; box-sizing:border-box; ${BORDER_MASK}
     background:linear-gradient(115deg, transparent calc(var(--gold-x) - 7%), rgba(255,120,90,.9) var(--gold-x), transparent calc(var(--gold-x) + 7%)), linear-gradient(160deg, #3a3c42, #0e0f12 35%, #4a4c54 60%, #121316); animation:goldStreak 5.5s ease-in-out infinite;}
   .card-tile.fxd-boss{box-shadow:0 6px 14px -4px rgba(200,20,10,.65), 0 0 0 1px #000;}
-  .card-tile.fxd-boss .rarity-band::after{${FRAME_BAND} background:radial-gradient(circle at 4% 3%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), radial-gradient(circle at 96% 3%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), radial-gradient(circle at 4% 97%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), radial-gradient(circle at 96% 97%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), linear-gradient(0deg, rgba(200,20,10,.3), transparent 22%);}
+  .card-tile.fxd-boss .cframe-fx::after{${FRAME_BAND} z-index:3; background:radial-gradient(circle at 4% 3%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), radial-gradient(circle at 96% 3%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), radial-gradient(circle at 4% 97%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), radial-gradient(circle at 96% 97%, #8a8f99 0 2px, #2a2c30 2.6px, transparent 3.4px), linear-gradient(0deg, rgba(200,20,10,.3), transparent 22%);}
 `;
 const framesReady = ()=>{ css('foil-base', FOIL_BASE); css('frames', FRAMES_CSS()); };
 framesReady(); // 2026-10-15: the rarity frames are plain CSS on every tile, so they go in at load (one <style>, no work per card)

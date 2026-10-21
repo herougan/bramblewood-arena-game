@@ -1521,7 +1521,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.act-poison-tick-desc": "The chosen target's Poison ticks N times now, its whole stack each; the stack doesn't wear down.",
   "ui.act-expose-desc": "Expose a chosen target for N rounds: its hiding is stripped (Invisible, Evasive, Smoke, Shadow, Stealth).",
   "ui.act-heal-desc": "Restore a chosen target's Health (this card by default), never above its max. Heal only heals: Cleanse takes Bleed, Cure takes Poison.",
-  "ui.act-cleanse-desc": "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun."
+  "ui.act-cleanse-desc": "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Exploit, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Poison, Freeze or Stun.",
+  "ui.skn-archer": "Archer",
+  "ui.sk-archer": "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).",
+  "ui.skn-archer-style": "Archer look",
+  "ui.archer-style-bow": "Bow: it shoots an arrow",
+  "ui.archer-style-drop": "Drop: it flies over the target, drops a stone and flies back",
+  "ui.trg-on-action": "On Action",
+  "ui.trg-on-action-desc": "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.",
+  "ui.act-arrow": "Arrow",
+  "ui.act-arrow-desc": "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).",
+  "ui.bx-log-drop": "{name} flies over {target} and drops a stone 🪨",
+  "ui.bx-log-drop-bramble": "{name} flies over the bramble and drops a stone 🪨"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

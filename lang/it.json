@@ -2343,5 +2343,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} viene sfruttata: +{b} danni ({n} rimasti).",
  "{name} is isolated: −{n}/−{n}.": "{name} è isolata: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} segnalino/i: ogni colpo che subisce infligge 1 in più e ne usa uno.",
- "Tap to see the card": "Tocca per vedere la carta"
+ "Tap to see the card": "Tocca per vedere la carta",
+ "Archer": "Arciere",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Non attacca mai. Invece, a ogni suo turno scocca una freccia da {n} danni al nemico di fronte (se non c'è, al nemico più vicino; al roveto se il campo è vuoto).",
+ "Archer look": "Stile da arciere",
+ "Bow: it shoots an arrow": "Arco: scocca una freccia",
+ "Drop: it flies over the target, drops a stone and flies back": "Sgancio: vola sopra il bersaglio, lascia cadere un sasso e torna indietro",
+ "On Action": "All'azione",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "Ogni volta che tocca a lui in battaglia: un arciere invece di attaccare, chiunque altro subito prima di attaccare.",
+ "Arrow": "Freccia",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "Scocca una freccia da N danni al nemico di fronte (al più vicino se non c'è; al roveto se il campo è vuoto).",
+ "{name} flies over {target} and drops a stone 🪨": "{name} vola sopra {target} e lascia cadere un sasso 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name} vola sopra il roveto e lascia cadere un sasso 🪨"
 }

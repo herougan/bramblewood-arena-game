@@ -2343,5 +2343,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name} wird ausgenutzt: +{b} Schaden ({n} übrig).",
  "{name} is isolated: −{n}/−{n}.": "{name} ist isoliert: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} Marke(n): jeder Treffer auf sie macht 1 mehr und verbraucht eine.",
- "Tap to see the card": "Tippen, um die Karte zu sehen"
+ "Tap to see the card": "Tippen, um die Karte zu sehen",
+ "Archer": "Bogenschütze",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Greift nie an. Stattdessen schießt es in jedem seiner Züge einen Pfeil für {n} Schaden auf den Gegner gegenüber (ist dort keiner, auf den nächsten Gegner; auf das Dornengestrüpp, wenn das Feld leer ist).",
+ "Archer look": "Bogenschützen-Stil",
+ "Bow: it shoots an arrow": "Bogen: es schießt einen Pfeil",
+ "Drop: it flies over the target, drops a stone and flies back": "Abwurf: es fliegt über das Ziel, lässt einen Stein fallen und fliegt zurück",
+ "On Action": "Bei Aktion",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "Jedes Mal, wenn es im Kampf an der Reihe ist: ein Bogenschütze statt anzugreifen, alle anderen kurz bevor sie angreifen.",
+ "Arrow": "Pfeil",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "Schieße einen Pfeil für N Schaden auf den Gegner gegenüber (den nächsten Gegner, wenn keiner da ist; das Dornengestrüpp, wenn das Feld leer ist).",
+ "{name} flies over {target} and drops a stone 🪨": "{name} fliegt über {target} und lässt einen Stein fallen 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name} fliegt über das Dornengestrüpp und lässt einen Stein fallen 🪨"
 }

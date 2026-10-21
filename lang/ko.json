@@ -2344,5 +2344,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name}의 약점을 공략: 피해 +{b} (남은 {n}).",
  "{name} is isolated: −{n}/−{n}.": "{name}이(가) 고립: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "토큰 {n}개: 명중마다 1 더 받고 하나를 써요.",
- "Tap to see the card": "탭하여 카드 보기"
+ "Tap to see the card": "탭하여 카드 보기",
+ "Archer": "궁수",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "공격하지 않는다. 대신 자기 차례마다 정면의 적에게 피해 {n}의 화살을 쏜다 (정면에 없으면 가장 가까운 적, 전장이 비었으면 가시덤불).",
+ "Archer look": "궁수 연출",
+ "Bow: it shoots an arrow": "활: 화살을 쏜다",
+ "Drop: it flies over the target, drops a stone and flies back": "투하: 대상 위로 날아가 돌을 떨어뜨리고 돌아온다",
+ "On Action": "행동 시",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "전투에서 자기 차례가 올 때마다: 궁수는 공격 대신, 그 밖의 유닛은 공격 직전에.",
+ "Arrow": "화살",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "정면의 적에게 피해 N의 화살을 쏜다 (없으면 가장 가까운 적, 전장이 비었으면 가시덤불).",
+ "{name} flies over {target} and drops a stone 🪨": "{name}이(가) {target} 위로 날아가 돌을 떨어뜨렸다 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name}이(가) 가시덤불 위로 날아가 돌을 떨어뜨렸다 🪨"
 }

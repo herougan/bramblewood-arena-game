@@ -2344,5 +2344,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "{name}の弱点を突く：+{b}ダメージ（残り{n}）。",
  "{name} is isolated: −{n}/−{n}.": "{name}は孤立：−{n}/−{n}。",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "トークン{n}個：命中ごとに1多く受け、1個使う。",
- "Tap to see the card": "タップしてカードを見る"
+ "Tap to see the card": "タップしてカードを見る",
+ "Archer": "射手",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "攻撃しない。代わりに自分の番ごとに、正面の敵へ{n}ダメージの矢を放つ（正面にいなければ最も近い敵へ、盤面が空ならイバラへ）。",
+ "Archer look": "射手の演出",
+ "Bow: it shoots an arrow": "弓：矢を放つ",
+ "Drop: it flies over the target, drops a stone and flies back": "落下：標的の上へ飛び、石を落として戻る",
+ "On Action": "行動時",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "戦いで自分の番が来るたびに：射手は攻撃の代わりに、それ以外は攻撃の直前に。",
+ "Arrow": "矢",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "正面の敵へNダメージの矢を放つ（いなければ最も近い敵へ、盤面が空ならイバラへ）。",
+ "{name} flies over {target} and drops a stone 🪨": "{name}は{target}の上へ飛び、石を落とした🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "{name}はイバラの上へ飛び、石を落とした🪨"
 }

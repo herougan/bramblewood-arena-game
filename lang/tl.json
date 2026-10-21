@@ -2342,5 +2342,16 @@
  "{name} is exploited: +{b} damage ({n} left).": "Sinamantala ang {name}: +{b} pinsala ({n} natitira).",
  "{name} is isolated: −{n}/−{n}.": "Nakahiwalay ang {name}: −{n}/−{n}.",
  "{n} token{s}: each hit on it deals 1 more and uses one.": "{n} token: dagdag na 1 ang bawat tama rito at gumagamit ng isa.",
- "Tap to see the card": "I-tap para makita ang card"
+ "Tap to see the card": "I-tap para makita ang card",
+ "Archer": "Mamamana",
+ "It never attacks. Instead, on each of its turns it looses an arrow for {n} damage at the enemy facing it (with none there, the nearest enemy; the bramble if the board is empty).": "Hindi ito umaatake kailanman. Sa halip, sa bawat turn nito ay pumapana ito ng palasong may {n} pinsala sa kalabang nasa harap (kung wala, sa pinakamalapit na kalaban; sa tinikan kung walang laman ang larangan).",
+ "Archer look": "Istilo ng mamamana",
+ "Bow: it shoots an arrow": "Pana: pumapana ng palaso",
+ "Drop: it flies over the target, drops a stone and flies back": "Hulog: lumilipad sa ibabaw ng target, naghuhulog ng bato, at bumabalik",
+ "On Action": "Sa Pagkilos",
+ "Each time it takes its turn in the fight: an Archer instead of attacking, anyone else just before it attacks.": "Tuwing sasapit ang turn nito sa laban: ang mamamana sa halip na umatake, ang iba bago mismo umatake.",
+ "Arrow": "Palaso",
+ "Loose an arrow for N damage at the enemy facing it (the nearest enemy if none; the bramble if the board is empty).": "Pumana ng palasong may N pinsala sa kalabang nasa harap (ang pinakamalapit kung wala; ang tinikan kung walang laman ang larangan).",
+ "{name} flies over {target} and drops a stone 🪨": "Lumipad si {name} sa ibabaw ng {target} at naghulog ng bato 🪨",
+ "{name} flies over the bramble and drops a stone 🪨": "Lumipad si {name} sa ibabaw ng tinikan at naghulog ng bato 🪨"
 }

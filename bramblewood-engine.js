@@ -220,6 +220,10 @@ const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAtta
 // Package SK1 (2026-10-19): On Enemy Enters (Facing), On Hit, On Kill (Creature); the last two fire on its own blow, so even while Waiting.
 TRIGGER_KEYS.push('onEnemyEnter', 'onHit', 'onKillCreature');
 ALWAYS_ON_HOOKS.add('onHit'); ALWAYS_ON_HOOKS.add('onKillCreature'); // SK1 (2026-10-19)
+// Package BX (2026-10-21, owner: Stonedrop Vulture "instead has Archer N (Cannot attack, instead Arrow N every action)"): On Action fires
+// each time the unit takes its turn in the combat order (an Archer's instead of a swing; anyone else's just before On Attack). It only
+// fires on a unit that is acting, so it counts as always on.
+TRIGGER_KEYS.push('onAction'); ALWAYS_ON_HOOKS.add('onAction');
 // 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
 // triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
 // 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
@@ -227,6 +231,7 @@ ALWAYS_ON_HOOKS.add('onHit'); ALWAYS_ON_HOOKS.add('onKillCreature'); // SK1 (202
 const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam','duplicate','devourGrave','buffAll','stench','silence','stymie','exhaust','petrify','vulnerable','barrage','smokeScreen','magnet']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
 ACTION_KEYS.push('exploit', 'poisonTick'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N
+ACTION_KEYS.push('arrow'); // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -2079,7 +2084,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
   const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp'], esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
@@ -4393,13 +4398,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !s3) return sk1Trigs(e, base); // + Milling (2026-10-19, package SK2); + the SK1 keyword shorthands
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.s3 === s3) return sk1Trigs(e, m.list);
+    if(!e.kinRally && !e.packHowl && !e.milling && !s3) return bxTrigs(e, sk1Trigs(e, base)); // + Milling (2026-10-19, package SK2); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.s3 === s3) return bxTrigs(e, sk1Trigs(e, m.list));
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, s3, list}); return sk1Trigs(e, list);
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, s3, list}); return bxTrigs(e, sk1Trigs(e, list));
   }
   // ==== Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. Owner principle: "if you can and it makes sense, feel
   // free to use triggers and actions. if they dont suffice, add the required trigger or action." So most of these are keywords that
@@ -5605,7 +5610,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // earlier per-trigger flag) is now simply the default.
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
       if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
-      if(confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
+      if(t.keyword !== 'archer' /* its turn already rolled Confused's coin (BX, 2026-10-21) */ && confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
       if(boardCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Slippery (2026-10-16): "triggers/effects to fail" 1 in 2
       // A cost step (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... So the mid-action
       // is Burn 1 Lumber, the after-action is Deal N extra fire damage. One (unused) is Burn 1 Lumber, Heal ally N"): t.cost
@@ -6020,6 +6025,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           }
           break;
         }
+        case 'arrow': bxArrowShot(players, sideOf, playerId, boardCard, numN(t.amount, 1), stats, events, t.keyword === 'archer' ? 'archer' : 'action'); break; // Package BX (2026-10-21)
         default: sk3RunAction(players, sideOf, playerId, boardCard, t, stats, events, extra); break; // Package SK3 (2026-10-19): Duplicate, Silence, Stymie ...
       } };
       // Targets (2026-10-12, 23:12 list): an action with a who/sub picker can hit several distinct targets (t.targets),
@@ -6766,6 +6772,42 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const got = addLumber(players[a.attId], numN(e.harvest, SK2.harvestLumber));
     ensureStat(stats || {}, side, a.att.defId).lumberGenerated += got;
     if(recordEvents && events) events.push({type:'sk2', kind:'harvest', side, uid:a.att.uid, defId:a.att.defId, amount:got, forced: forced || undefined});
+    return true;
+  }
+  // ==== Package BX (2026-10-21): Archer N ====================================================================================
+  // Owner: "[Stonedrop Vulture] instead has Archer N (Cannot attack, instead Arrow N every action)." Built as a trigger × action:
+  //   Archer N = On Action × Arrow N, and the unit never swings. Its turn in the combat order (its Speed, its column, as a swing's) is
+  //   the On Action: it looses one arrow of N (bxArrowShot, the Arrow skill's shot: the enemy unit facing it, else the nearest, ties at
+  //   random, else the bramble; Fletcher, Fletcher's Eye and Weapon Master add, a Helmet can deflect it, Reflect bounces it, an Evasive
+  //   unit can dodge it, its kills are the archer's). Whatever stops a swing stops it (Stunned, Frozen, Asleep, Confused's coin ...),
+  //   but its Attack doesn't matter: it acts at 0 Attack too. No On Attack, no on-hit swing skills (it doesn't attack).
+  //   effects.archerStyle 'drop' (a look only): the card flies to the target, drops a stone and flies back (arena_app.js, BX block).
+  function bxIsArcher(c){ const e = c && effectsOf(c); return !!(e && e.archer && !(Number(e.archer) < 0)); }
+  var bxTrigMemo = null; // (var, made on first use: trigsOf may run before this line does)
+  function bxTrigs(e, list){
+    if(!e || !e.archer || Number(e.archer) < 0) return list;
+    if(!bxTrigMemo) bxTrigMemo = new WeakMap(); const m = bxTrigMemo.get(e); if(m && m.src === list && m.n === e.archer) return m.out;
+    const out = list.concat([{on:'onAction', do:'arrow', amount:numN(e.archer, 1), keyword:'archer'}]);
+    bxTrigMemo.set(e, {src:list, n:e.archer, out}); return out;
+  }
+  var bxBook = null; // the acting archer's kill-credit book (its arrow's kills are its kills, as a swing's are)
+  function bxArrowShot(players, sideOf, pid, c, n, stats, events, how){
+    const pl = players[pid], enemy = players[otherId(pid)]; if(!pl || !enemy || !c || !(c.hp > 0)) return false;
+    const amount = Math.max(0, Math.round(Number(n) || 0)) + ((pl.perks && pl.perks.fletcher) ? 1 : 0) + auraN(pl, 'fletcher') + eqArrowBonus(pl);
+    const opp = opposingCardOf(players, pid, c), near = (opp && opp.card && opp.card.hp > 0) ? opp.card : arrowTargetOf(players, pid, c);
+    const target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'};
+    if(c.invisible > 0){ c.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(pid), uid:c.uid, defId:c.defId, attacked:true}); } // shooting gives it away, as for Arrow
+    if(recordEvents && events) events.push({type:'arrow', side:sideOf(pid), defId:c.defId, uid:c.uid, targetSide:sideOf(otherId(pid)), targetUid: target.kind === 'card' ? target.card.uid : null, targetDefId: target.kind === 'card' ? target.card.defId : null,
+      amount, archer: how === 'archer' || undefined, style: (effectsOf(c).archerStyle || undefined)});
+    if(helmetDeflects(target, sideOf(otherId(pid)), events)) return true;
+    fireDamageAction(players, sideOf, pid, c.defId, amount, 'physical', target, stats, events, bxBook, c.uid, true); // true: a shot (Reflect, Evasive)
+    return true;
+  }
+  // The archer's turn: On Action (its Arrow N, and any other On Action trigger), in place of the swing. true when it took the turn.
+  function bxArcherTurn(players, sideOf, a, stats, events, killCredit){
+    if(!bxIsArcher(a.att)) return false;
+    const book0 = bxBook; bxBook = killCredit || {};
+    try{ runCustomTriggers(players, sideOf, a.attId, a.att, CARD_DEFS[a.att.defId], 'onAction', stats, events); } finally{ bxBook = book0; }
     return true;
   }
   // After a swing: Pickpocket, Sabotage, Arson on what the swing landed on.
@@ -7712,7 +7754,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             // >0. Please check at every battle step not just at the start ... what if an ally buffs it midway combat?"): the
             // swing's own bonuses count (Swarm, Defiance, day/night, Inspiring, the Flow tide), and a unit at 0 is NOT retired
             // for the round: every later look at the queue checks it again, so a buff mid-combat lets it swing.
-            if(swingAtkNow(card) <= 0){ if(!zeroNoted.has(uid)){ zeroNoted.add(uid); skipTurn('zeroAttack', card, ownId); } return; }
+            if(swingAtkNow(card) <= 0 && !bxIsArcher(card) /* an Archer acts at 0 Attack (BX, 2026-10-21) */){ if(!zeroNoted.has(uid)){ zeroNoted.add(uid); skipTurn('zeroAttack', card, ownId); } return; }
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
           });
         });
@@ -7742,7 +7784,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.cowerRound === combatNo){ skipTurn('cower', c, ownId); return false; }
       if(c.petrified){ skipTurn('petrified', c, ownId); return false; }
       if(c.frightRound != null && c.frightRound === turnNo){ skipTurn('frightened', c, ownId); return false; }
-      return swingAtkNow(c) > 0;
+      return swingAtkNow(c) > 0 || bxIsArcher(c); // an Archer acts at 0 Attack (BX, 2026-10-21)
     }
     // Picks (and removes from the pool) whichever currently-eligible attacker should act next:
     // Quick still overrides everything else exactly as before (a separate, unrelated mechanic —
@@ -7858,6 +7900,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // on-hit skill, no Bleed tick from swinging (Confuse had no other effect on the swing, so this is the whole rule for it).
       if(confusedFumbles(a.att, sideOf(a.attId), events, 'attack')){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       if(sk2SwingReplaced(players, sideOf, a, stats, events)){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package SK2 (2026-10-19): Harvest instead of the swing
+      if(bxArcherTurn(players, sideOf, a, stats, events, killCredit)){ reflowAfterKills(null); watchScan(players, sideOf, stats, events); pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; } // Package BX (2026-10-21): Archer N, its arrow instead of the swing
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
       currentAttacker = a.att;
       const attDef = sk1Unhide(a.att, CARD_DEFS[a.att.defId]); // an Exposed Stealth unit swings as anyone does (2026-10-19, package SK1)
@@ -7887,6 +7930,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // card commits to attacking this round, AFTER atkThisRound is already captured above, so
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
       a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
+      runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAction', stats, events); // Package BX (2026-10-21): On Action, its turn
       runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events);
       // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack
       // finds/lands on a target.
