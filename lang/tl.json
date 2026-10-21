@@ -2666,5 +2666,10 @@
  "The Vault Warden": "Ang Bantay ng Silong",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "Mga silong sa ilalim ng buhangin ng Arena. Bawat tatlong palapag, bumubukas ang mga pinto sa ibang lupain.",
  "The next door grinds open.": "Umiingit na bumubukas ang susunod na pinto.",
- "Every tenth floor the warden of the vaults comes down to meet you.": "Bawat ikasampung palapag, bumababa ang bantay ng silong para harapin ka."
+ "Every tenth floor the warden of the vaults comes down to meet you.": "Bawat ikasampung palapag, bumababa ang bantay ng silong para harapin ka.",
+ "Deck limit: {n} Legendaries": "Limit ng deck: {n} Maalamat",
+ "Deck limit: {n} Mythics": "Limit ng deck: {n} Mitiko",
+ "Deck limit: {n} {rank}": "Limit ng deck: {n} {rank}",
+ "Over the {rank} limit: {n}/{cap}": "Lampas sa limit ng {rank}: {n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "Lampas na ang deck mo sa limit ng {rank} ({n}/{cap}). Mag-alis ng {out} para makapaglaro."
 }

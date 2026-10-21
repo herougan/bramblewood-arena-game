@@ -2668,5 +2668,10 @@
  "The Vault Warden": "穹窖守衛",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "競技場沙地下的穹窖。每過三層，門就通往另一片土地。",
  "The next door grinds open.": "下一扇門嘎吱嘎吱地打開了。",
- "Every tenth floor the warden of the vaults comes down to meet you.": "每到第十層，穹窖的守衛就會下來迎戰你。"
+ "Every tenth floor the warden of the vaults comes down to meet you.": "每到第十層，穹窖的守衛就會下來迎戰你。",
+ "Deck limit: {n} Legendaries": "牌組上限：傳說 {n} 張",
+ "Deck limit: {n} Mythics": "牌組上限：神話生物 {n} 張",
+ "Deck limit: {n} {rank}": "牌組上限：{rank} {n} 張",
+ "Over the {rank} limit: {n}/{cap}": "超出{rank}上限：{n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "你的牌組超出了{rank}上限（{n}/{cap}）。請移出 {out} 張後再開戰。"
 }

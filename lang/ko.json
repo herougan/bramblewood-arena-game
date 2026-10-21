@@ -2668,5 +2668,10 @@
  "The Vault Warden": "묘실 수호자",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "투기장 모래 아래의 묘실. 세 층마다 문이 다른 땅으로 열려요.",
  "The next door grinds open.": "다음 문이 삐걱이며 열려요.",
- "Every tenth floor the warden of the vaults comes down to meet you.": "열 층마다 묘실의 수호자가 내려와 맞서요."
+ "Every tenth floor the warden of the vaults comes down to meet you.": "열 층마다 묘실의 수호자가 내려와 맞서요.",
+ "Deck limit: {n} Legendaries": "덱 제한: 전설 {n}장",
+ "Deck limit: {n} Mythics": "덱 제한: 신화 {n}장",
+ "Deck limit: {n} {rank}": "덱 제한: {rank} {n}장",
+ "Over the {rank} limit: {n}/{cap}": "{rank} 제한 초과: {n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "덱이 {rank} 제한을 넘었어요 ({n}/{cap}). 플레이하려면 {out}장을 빼 주세요."
 }

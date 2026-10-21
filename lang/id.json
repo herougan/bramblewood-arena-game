@@ -2667,5 +2667,10 @@
  "The Vault Warden": "Penjaga Ruang Besi",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "Ruang-ruang di bawah pasir Arena. Setiap tiga lantai, pintunya terbuka ke negeri lain.",
  "The next door grinds open.": "Pintu berikutnya terbuka berderit.",
- "Every tenth floor the warden of the vaults comes down to meet you.": "Setiap lantai kesepuluh, penjaga ruang besi turun menemuimu."
+ "Every tenth floor the warden of the vaults comes down to meet you.": "Setiap lantai kesepuluh, penjaga ruang besi turun menemuimu.",
+ "Deck limit: {n} Legendaries": "Batas dek: {n} Legendaris",
+ "Deck limit: {n} Mythics": "Batas dek: {n} Mitos",
+ "Deck limit: {n} {rank}": "Batas dek: {n} {rank}",
+ "Over the {rank} limit: {n}/{cap}": "Melebihi batas {rank}: {n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "Dekmu melebihi batas {rank} ({n}/{cap}). Keluarkan {out} agar bisa main."
 }

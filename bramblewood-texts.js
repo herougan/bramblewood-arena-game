@@ -1865,7 +1865,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fog-row-hp": "Health",
   "ui.fog-row-wait": "Wait",
   "ui.fog-row-skills": "Skills",
-  "ui.fxl-fog-note": "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers."
+  "ui.fxl-fog-note": "The enemy row beyond your units' reach is fogged. Your Mole's Darksight clears what it covers.",
+  "ui.dr-limit-legendary": "Deck limit: {n} Legendaries",
+  "ui.dr-limit-mythic": "Deck limit: {n} Mythics",
+  "ui.dr-limit-rank": "Deck limit: {n} {rank}",
+  "ui.dr-over-pill": "Over the {rank} limit: {n}/{cap}",
+  "toast.dr-deck-over-cap": "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

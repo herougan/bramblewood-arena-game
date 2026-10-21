@@ -54,6 +54,16 @@ function power(d){ const fx = Object.keys(d.effects||{}).length; return ((d.atta
 function pool(defs){ return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].pool /* 2026-10-19 (package AN): pool cards aren't live */ &&!String(id).includes('~')).sort((a,b)=> power(defs[a])-power(defs[b]) || (a<b?-1:1)); }
 function pickN(r, arr, n, exclude){ const ex = new Set(exclude||[]); const out = []; let guard = 0; while(out.length<n && guard++<500){ const v = arr[Math.floor(r()*arr.length)]; if(!ex.has(v) && !out.includes(v)) out.push(v); } return out; }
 function baseId(id){ return String(id).split('~')[0]; }
+// Top-rank deck caps (2026-10-22, package DR; owner: Legendary 3 / Mythic 2 / each rank above 1 per deck, the leader included). The numbers and the
+// counting are BramblewoodBudget's (read when called: a page global loaded after this file, required under Node). The deck here is `run.deck`
+// plus the main leader and the sub-leader; the bench is not in the deck, so a bench card only meets the cap when it moves into the deck.
+function Bud(){ return root && root.BramblewoodBudget || (typeof require === 'function' ? require('./bramblewood-budget.js') : null); }
+function deckHeld(run){ const held = {}; Object.keys(run.deck||{}).forEach(id=>{ held[baseId(id)] = (held[baseId(id)]||0) + (run.deck[id]|0); }); return held; }
+function rankBlocked(defs, run, id){ const B = Bud(); if(!B || !defs) return false; return !!B.deckRankBlock(deckHeld(run), baseId(id), defs, [run.leader, run.subLeader].filter(Boolean)); }
+// the ids a draft step may not offer: one more copy would break a cap
+function rankBlockedIds(defs, run){ const B = Bud(); if(!B) return [];
+  const held = deckHeld(run), leaders = [run.leader, run.subLeader].filter(Boolean);
+  return Object.keys(defs).filter(id=> defs[id] && B.deckRankCapOf(defs[id].rarity) && B.deckRankBlock(held, id, defs, leaders)); }
 
 // ---------------- run lifecycle ----------------
 function newRun(seed, now){
@@ -71,12 +81,12 @@ function draftOffers(defs, characters, run){
   const ids = pool(defs);
   if(kind==='leader' || kind==='subLeader'){
     const top = ids.slice(Math.floor(ids.length*0.6));
-    return {kind, options: pickN(r, top, 3, [run.leader])};
+    return {kind, options: pickN(r, top, 3, [run.leader].concat(rankBlockedIds(defs, run)))}; // + never an offer past a top-rank deck cap (2026-10-22, package DR)
   }
   // Card picks: a band that drifts upward a little with each pick, so the draft has a curve.
   const i = run.step - 3, t = i / Math.max(1, AB.PICKS-1);
   const band = ids.slice(Math.floor(ids.length*(0.05 + 0.35*t)), Math.ceil(ids.length*(0.55 + 0.4*t)));
-  return {kind, options: pickN(r, band, 3, [run.leader, run.subLeader])};
+  return {kind, options: pickN(r, band, 3, [run.leader, run.subLeader].concat(rankBlockedIds(defs, run)))}; // 2026-10-22 (package DR)
 }
 function applyDraftPick(run, choice){
   const kind = draftStepKind(run.step);
@@ -106,13 +116,13 @@ function boonOffers(defs, run){
     {type:'passive', card: passiveTarget, key: passive.key, value: passive.value, label:'Add ' + passive.label},
   ];
 }
-function applyBoon(run, boon){
+function applyBoon(run, boon, defs){ // + defs (2026-10-22, package DR): with it, a duplicate that would break a top-rank deck cap goes to the bench
   if(!boon) return run;
   const p = run.patches[boon.card] = run.patches[boon.card] || {atk:0, hp:0, add:{}};
   run.bench = run.bench || {}; run.levels = run.levels || {};
   if(boon.type==='dup'){
     // A duplicate keeps the card's level. It goes into the deck if there's room, else the bench.
-    if(deckTotal(run.deck) < AB.DECK_SIZE) run.deck[boon.card] = (run.deck[boon.card]||0) + 1;
+    if(deckTotal(run.deck) < AB.DECK_SIZE && !rankBlocked(defs, run, boon.card)) run.deck[boon.card] = (run.deck[boon.card]||0) + 1;
     else if(deckTotal(run.bench) < AB.BENCH_SIZE) run.bench[boon.card] = (run.bench[boon.card]||0) + 1;
   }
   else if(boon.type==='buff'){ p.atk += boon.atk; p.hp += boon.hp; run.levels[boon.card] = (run.levels[boon.card]||1) + 1; }
@@ -123,7 +133,7 @@ function applyBoon(run, boon){
 }
 // Bench ⇄ deck (prep phase). The deck holds at most DECK_SIZE cards, the bench BENCH_SIZE.
 function moveToBench(run, id){ run.bench = run.bench||{}; if(!(run.deck[id]>0) || deckTotal(run.bench) >= AB.BENCH_SIZE) return false; run.deck[id]--; if(!run.deck[id]) delete run.deck[id]; run.bench[id] = (run.bench[id]||0) + 1; return true; }
-function moveToDeck(run, id){ run.bench = run.bench||{}; if(!(run.bench[id]>0) || deckTotal(run.deck) >= AB.DECK_SIZE) return false; run.bench[id]--; if(!run.bench[id]) delete run.bench[id]; run.deck[id] = (run.deck[id]||0) + 1; return true; }
+function moveToDeck(run, id, defs){ run.bench = run.bench||{}; if(!(run.bench[id]>0) || deckTotal(run.deck) >= AB.DECK_SIZE || rankBlocked(defs, run, id)) return false; run.bench[id]--; if(!run.bench[id]) delete run.bench[id]; run.deck[id] = (run.deck[id]||0) + 1; return true; } // + defs: the top-rank deck caps (2026-10-22, package DR)
 function runDeckLevel(defs, run){ return deckLevelOf(defs, run.deck, id=> (run.levels||{})[id]||1, [run.leader, run.subLeader].filter(Boolean)); }
 function castleHealthFor(baseHealth, fightsPlayed){ return Math.round(baseHealth * (1 + AB.CASTLE_GROWTH * (fightsPlayed||0))); }
 function subLeaderOffers(defs, run){
@@ -233,7 +243,7 @@ function seedGhost(defs, characters, stage, i, epoch){
     applyDraftPick(run, choice);
   }
   const boons = stage + Math.floor(stage/3);
-  for(let k=0;k<boons;k++){ run.fights = k; const offs = boonOffers(defs, run); applyBoon(run, offs[Math.floor(r()*offs.length)]); }
+  for(let k=0;k<boons;k++){ run.fights = k; const offs = boonOffers(defs, run); applyBoon(run, offs[Math.floor(r()*offs.length)], defs); }
   run.fights = boons;
   const who = ghostIdentity(seed);
   return Object.assign(snapshotSide(run), {owner:`abseed-${stage}-${i}`, name: who.name, avatar: who.avatar, stage, source:'seed'});
@@ -241,6 +251,7 @@ function seedGhost(defs, characters, stage, i, epoch){
 function validSnapshot(defs, characters, g){
   if(!g || !g.deck || !characters[g.castle] || !defs[g.leader] || !defs[g.subLeader]) return false;
   const ids = Object.keys(g.deck); if(!ids.length || deckTotal(g.deck) > AB.DECK_SIZE + 2) return false;
+  { const B = Bud(); if(B && B.deckRankOver(deckHeld(g), defs, [g.leader, g.subLeader].filter(Boolean)).length) return false; } // 2026-10-22 (package DR): a recorded deck past a top-rank cap isn't a legal opponent
   return ids.every(id=> defs[baseId(id)]) && Object.keys(g.patches||{}).every(id=> defs[id]);
 }
 function opponentPool(defs, characters, stage, recorded, now){
