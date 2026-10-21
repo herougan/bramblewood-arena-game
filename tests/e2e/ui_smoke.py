@@ -173,9 +173,10 @@ async def main():
         check(await pg.evaluate("__rpcCalls.filter(c=>c[0]==='submit_fight').length===1"), 'a fight should be handed in exactly once')
         await pg.evaluate("matchState=null; endMatch && 1")
         await pg.evaluate("playSubTab='arena'; switchTab('play'); 1")
-        # 7: recent opponents
-        await pg.evaluate("playSubTab='arena'; switchTab('play'); 1"); await pg.wait_for_timeout(400)
-        await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)
+        # 7: recent opponents (2026-10-21, package AR: they moved from the Arena to the Profile's match log, PvP / PvE tabs; the log
+        # opens on the tab of the latest fight, so row 0 is showing)
+        await pg.evaluate("switchTab('profile'); 1"); await pg.wait_for_timeout(400)
+        await pg.click('#matchLogPanel [data-ro-view="0"]'); await pg.wait_for_timeout(300)
         check(await pg.evaluate("document.querySelectorAll('.ro-deck-card').length") == 2, "the recent opponent's deck should open")
         # 7b: the tutorial is winnable for every side pick (2026-10-07 playtest: Otters lost ~9 in 10)
         # 2026-10-21 (package TT2): simulate part 1 as startTutorialMatch builds it: the tutorial config's decks (tutorialDecksFor; the

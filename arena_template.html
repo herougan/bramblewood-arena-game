@@ -4804,6 +4804,7 @@
   .map-theme-mq{--mt-a:#8fc85a; --mt-b:#5f9a3a; --mt-c:#2f5a22;} .map-theme-mj{--mt-a:#1f7e93; --mt-b:#14566b; --mt-c:#0b2f3e;}
   .map-theme-mz{--mt-a:#7a5aa0; --mt-b:#3f2e4d; --mt-c:#1f1626;} .map-theme-me{--mt-a:#b0401f; --mt-b:#5e1a0c; --mt-c:#260a04;}
   .map-theme-mm{--mt-a:#3f5a3a; --mt-b:#24361f; --mt-c:#111a0e;}
+  .map-theme-muc{--mt-a:#b59a6a; --mt-b:#6b5636; --mt-c:#2c2214;} /* 2026-10-21 (package AR): the Undercroft, old sandstone vaults */
   /* 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
      the Outskirts (m1) now wear Thistlewood's sunny-meadow art and tint, Thistlewood (mf) the Outskirts' stream-and-pond forest. */
   .map-theme-m1{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}
@@ -9405,6 +9406,45 @@
   .map-trail-svg .trail-pop{animation:trailPopIn .9s ease-out 1.3s both;}
   @keyframes trailPopIn{from{opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .map-trail-svg .trail-pop{animation:none;} }
+  /* Fog of War (2026-10-21, package FOG; owner: "a fog of war effect"): rules.fogOfWar hides the enemy units out of the player's reach (information
+     only). A fogged card keeps its art and frame; Attack, Health, Wait, the skill chips, the element plate and the statuses read "?" (CSS here, so a
+     live number patch can't undo it; the skill strip is built as one "?" chip in JS). One mist layer sits over the enemy side (.fog-layer, a bank per
+     out-of-reach column, no per-card filter); its two mist sheets drift at 30 fps (steps) and stand still under reduced motion / low effects. */
+  .board-card.is-fogged:not(.fog-show-atk) .stats .atk, .board-card.is-fogged:not(.fog-show-hp) .stats .hp{color:transparent !important; text-shadow:none !important; background:none !important; box-shadow:none !important; animation:none !important;}
+  .board-card.is-fogged:not(.fog-show-atk) .stats .atk > *, .board-card.is-fogged:not(.fog-show-hp) .stats .hp > *{visibility:hidden;}
+  .board-card.is-fogged:not(.fog-show-atk) .stats .atk::after{content:'?'; position:absolute; left:0; top:0; color:var(--card-atk-color); text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;}
+  .board-card.is-fogged:not(.fog-show-hp) .stats .hp::after{content:'?'; position:absolute; right:0; top:0; color:var(--card-hp-color); text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;}
+  .board-card.is-fogged .card-tile .waitbadge > *, .board-card.is-fogged .card-tile .chargebadge > *{visibility:hidden;}
+  .board-card.is-fogged .card-tile .waitbadge::after, .board-card.is-fogged .card-tile .chargebadge::after{content:'?'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font:inherit;}
+  .board-card.is-fogged :is(.badges-bottom, .status-overlay, .rage-shield, .shell-up, .heat-haze, .cage-bars, .fuse-badge, .levelbadge, .seen-new){display:none !important;}
+  .board-card.is-fogged .card-tile{animation:none !important;}
+  .board-card.is-fogged .fog-chips .fog-q{background:rgba(214,224,236,.55); color:#2d3a4a;}
+  .board-card.is-fogged .fog-peek-chip{outline:1.5px solid rgba(255,238,170,.85); outline-offset:1px; border-radius:999px;}
+  .board-card.is-fogged.fog-show-atk .stats .atk, .board-card.is-fogged.fog-show-hp .stats .hp{filter:drop-shadow(0 0 5px rgba(255,238,170,.9));}
+  .board-card .fog-veil{position:absolute; inset:-1px; z-index:7; pointer-events:none; border-radius:10px; background:linear-gradient(180deg, rgba(228,236,246,.5), rgba(196,210,226,.34) 55%, rgba(206,218,232,.2)); box-shadow:inset 0 0 14px 4px rgba(226,234,244,.35);}
+  .board-card .fog-veil.is-clearing{animation:fogClear .9s ease-out forwards;}
+  .board-card .fog-veil.is-entering{animation:fogEnter .8s ease-in both;}
+  @keyframes fogClear{from{opacity:1;} to{opacity:0;}}
+  @keyframes fogEnter{from{opacity:0;} to{opacity:1;}}
+  .battlefield-inner.has-fog{position:relative;}
+  .fog-layer{position:absolute; z-index:4; pointer-events:none; contain:layout style;}
+  .fog-bank{position:absolute; top:-8px; bottom:-8px; display:block; overflow:hidden; opacity:1; transition:opacity .9s ease; animation:fogBankIn .9s ease;
+    -webkit-mask-image:radial-gradient(ellipse 64% 58% at 50% 50%, #000 36%, transparent 100%); mask-image:radial-gradient(ellipse 64% 58% at 50% 50%, #000 36%, transparent 100%);}
+  .fog-bank.is-clear{opacity:0;}
+  @keyframes fogBankIn{from{opacity:0;} to{opacity:1;}}
+  .fog-bank::before, .fog-bank::after{content:''; position:absolute; inset:-6% -40%; will-change:transform;}
+  .fog-bank::before{background:radial-gradient(ellipse 22% 30% at 20% 36%, rgba(232,238,246,.7), transparent 72%), radial-gradient(ellipse 20% 28% at 62% 62%, rgba(214,224,236,.62), transparent 72%), radial-gradient(ellipse 18% 24% at 84% 30%, rgba(240,244,250,.55), transparent 74%); animation:fogDriftA 70s steps(2100) infinite alternate;}
+  .fog-bank::after{background:radial-gradient(ellipse 24% 26% at 38% 70%, rgba(222,231,242,.6), transparent 72%), radial-gradient(ellipse 18% 30% at 74% 40%, rgba(236,242,250,.58), transparent 72%), radial-gradient(ellipse 16% 22% at 8% 62%, rgba(208,220,234,.5), transparent 74%); animation:fogDriftB 95s steps(2850) infinite alternate-reverse;}
+  @keyframes fogDriftA{from{transform:translate3d(-10%,0,0);} to{transform:translate3d(10%,3%,0);}}
+  @keyframes fogDriftB{from{transform:translate3d(8%,2%,0);} to{transform:translate3d(-8%,-3%,0);}}
+  .fog-layer.is-paused .fog-bank::before, .fog-layer.is-paused .fog-bank::after{animation-play-state:paused;}
+  @media (prefers-reduced-motion: reduce){ .fog-bank::before, .fog-bank::after, .fog-bank{animation:none;} .board-card .fog-veil.is-clearing, .board-card .fog-veil.is-entering{animation:none;} .board-card .fog-veil.is-clearing{opacity:0;} }
+  html[data-fx="low"] .fog-bank::before, html[data-fx="low"] .fog-bank::after, html[data-fx="none"] .fog-bank::before, html[data-fx="none"] .fog-bank::after{animation:none;}
+  #cardPop .fog-pop-tile .costbadge, #cardPop .fog-pop-tile .waitbadge, #cardPop .fog-pop-tile .pitchbadge{display:none;}
+  #cardPop .fog-tag{background:rgba(196,210,226,.55); color:#1d2a3a;}
+  #cardPop .fog-pop-rows{list-style:none; margin:6px 0 4px; padding:0; display:grid; gap:2px; font-size:12px;}
+  #cardPop .fog-pop-rows li{display:flex; justify-content:space-between; gap:10px; opacity:.9;}
+  #cardPop .fog-pop-rows li b{font-weight:700;}
 </style>
 </head>
 <body>
@@ -11876,6 +11916,136 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   .ar2-stats{width:100%;} .ar2-stat{flex:1 1 0; min-width:0; padding:5px 6px;}
   .ar2-fields{grid-template-columns:1fr;}
 }
+
+/* The Arena as a place (2026-10-21, package AR, owner 22:41: "Background." / "PVP should be top, split into two PVP buttons" /
+   "Showcase the field effects more centre and prominently, using hover to see the effect. Limit the text on the screen"): the
+   tourney ground (--map-art from .map-theme-marena) under a darkening veil, bunting along the top, a hanging plank sign like the
+   Stomping Grounds', dust drifting off the sand; the two PvP buttons, today's field as big Environment cards whose words show in
+   a bubble (hover, focus, long press), the other modes as small tiles. Panels take the theme tokens; only the scene (art, sign,
+   bunting) is fixed. No transform or filter on the scene, so fixed children stay fixed on iOS. */
+.ar3-scene{position:relative; display:flex; flex-direction:column; gap:14px; padding:70px clamp(14px,3vw,36px) 26px; border-radius:18px; isolation:isolate; overflow:hidden; text-align:left;
+  --match-card-w:150px; --match-card-h:188px;
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0, rgba(255,226,170,.22), transparent 70%),
+    linear-gradient(180deg, rgba(24,16,8,.08) 0, rgba(24,16,8,.34) 280px, rgba(30,21,13,.9) 620px, #261a10 800px),
+    var(--map-art, none) center top/max(100%, 1100px) auto no-repeat, #3a2a1c;
+  image-rendering:pixelated; box-shadow:inset 0 0 0 1px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.4);}
+.ar3-scene > *{position:relative; z-index:1; image-rendering:auto;}
+.ar3-scene > .ar2-bunting{position:absolute; z-index:2;}
+.ar3-scene::after{content:attr(data-sign); position:absolute; top:24px; left:50%; transform:translateX(-50%) rotate(-1.2deg); z-index:3; pointer-events:none; white-space:nowrap;
+  font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:17px; letter-spacing:.04em; color:#2a1d10; padding:4px 20px; border-radius:6px;
+  background:repeating-linear-gradient(0deg, rgba(122,90,48,.10) 0 2px, transparent 2px 7px), linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30;
+  box-shadow:0 6px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.5);}
+.ar3-scene::before{content:''; position:absolute; top:0; left:50%; width:min(170px, 46%); height:28px; transform:translateX(-50%); z-index:3; pointer-events:none;
+  border-left:2px solid rgba(60,40,20,.85); border-right:2px solid rgba(60,40,20,.85);}
+.ar3-motes{position:absolute !important; inset:0; z-index:0 !important; pointer-events:none; overflow:hidden; border-radius:inherit;}
+.ar3-motes i{position:absolute; bottom:-8px; width:5px; height:5px; border-radius:50%; background:rgba(240,214,160,.75); box-shadow:0 0 6px 1px rgba(240,214,160,.35); opacity:0; animation:stompDust 10s linear infinite;}
+/* chips under the sign */
+.ar3-chips{display:flex; flex-wrap:wrap; justify-content:center; gap:8px;}
+.ar3-chip{display:inline-flex; align-items:center; gap:5px; padding:4px 12px; border-radius:999px; font-size:13px; line-height:1.2; color:#fbecd6; background:rgba(22,12,5,.78); border:1px solid rgba(255,220,150,.32); box-shadow:0 3px 8px rgba(0,0,0,.25);}
+.ar3-chip b{font-family:'Baloo 2',system-ui,sans-serif; font-size:15px;} .ar3-chip small{opacity:.8;}
+.ar3-chip .deck-size-badge{font-size:12px;}
+.ar3-chip-btn{cursor:pointer; font-size:15px; padding:4px 10px; min-height:30px;} .ar3-chip-btn:hover{border-color:#e8c46a;}
+.ar3-chip-btn:focus-visible{outline:3px solid var(--focus); outline-offset:2px;}
+.ar3-continue{align-self:center; display:inline-flex; align-items:center; gap:8px;} .ar3-continue small{opacity:.85; font-weight:600;}
+/* the two PvP buttons */
+.ar3-pvp{display:flex; flex-direction:column; gap:10px;}
+.ar3-pvp-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.ar3-pvp-btn{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; min-height:150px; padding:16px 12px; border-radius:18px; white-space:normal; text-align:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.25); position:relative; overflow:hidden;}
+.ar3-pvp-btn::before{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.22) 50%, transparent 70%) -160% 0/60% 100% no-repeat; transition:background-position .6s ease;}
+.ar3-pvp-btn:hover:not(:disabled)::before{background-position:260% 0;}
+.ar3-pvp-btn.is-standard{background:var(--wait) !important; border-color:rgba(0,0,0,.25) !important; color:#fff !important;}
+.ar3-pvp-ico{font-size:44px; line-height:1; filter:drop-shadow(0 3px 0 rgba(0,0,0,.3));}
+.ar3-pvp-lbl{font-family:'Baloo 2',system-ui,sans-serif; font-size:25px; font-weight:800; line-height:1.1;}
+.ar3-pvp-sub{font-size:12.5px; font-weight:600; opacity:.92;}
+.ar3-pvp-foot{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px;}
+.ar3-tk{display:inline-flex; align-items:center; gap:5px; padding:4px 12px; border-radius:999px; font-size:13px; color:#fbecd6; background:rgba(22,12,5,.78); border:1px solid rgba(255,220,150,.32);}
+.ar3-tk b{font-family:'Baloo 2',system-ui,sans-serif; font-size:15px;} .ar3-tk small{opacity:.8;}
+.ar3-std-deck{color:#fbecd6 !important; background:rgba(22,12,5,.78) !important; border:1px solid rgba(255,220,150,.32) !important; border-radius:999px !important;}
+.ar3-std-deck.is-short{border-color:#e8a04a !important;}
+/* panels */
+.ar3-panel{border-radius:16px; padding:14px 16px; background:var(--surface); color:var(--ink); border:1px solid var(--surface-border); box-shadow:0 8px 22px rgba(0,0,0,.32);}
+.ar3-panel h3{margin:0; font-family:'Baloo 2',system-ui,sans-serif; font-size:18px; font-weight:800;}
+/* today's field, centre stage */
+.ar3-today{text-align:center;}
+.ar3-today-head{display:flex; flex-wrap:wrap; justify-content:center; align-items:baseline; gap:4px 12px; margin-bottom:12px;}
+.ar3-today-when{font-size:12.5px; color:var(--ink-muted); font-weight:700;}
+.ar3-next{margin-left:4px; letter-spacing:.1em;}
+.ar3-fields{display:flex; flex-wrap:wrap; justify-content:center; gap:18px 22px; padding:4px 0 6px;}
+.ar3-classic{margin:0; color:var(--ink-muted); font-weight:700;}
+.ar3-field{position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; width:var(--match-card-w); cursor:help; border-radius:14px; outline:none; -webkit-touch-callout:none; user-select:none;}
+.ar3-field .match-field-tile{position:relative; margin:0; transition:transform .25s cubic-bezier(.5,1.75,.75,1.25), box-shadow .25s ease; cursor:inherit;}
+.ar3-field:hover .match-field-tile, .ar3-field:focus-visible .match-field-tile, .ar3-field.is-open .match-field-tile{transform:translateY(-6px) rotate(-1.5deg); box-shadow:0 14px 24px rgba(0,0,0,.35);}
+.ar3-field:focus-visible{outline:3px solid var(--focus); outline-offset:4px;}
+.ar3-fname{font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:14px; line-height:1.2; color:var(--ink);}
+.ar3-tip{position:absolute; left:50%; bottom:calc(100% - 22px); width:min(250px, 74vw); transform:translate(-50%, 6px); z-index:5; pointer-events:none; opacity:0; visibility:hidden;
+  display:flex; flex-direction:column; gap:4px; padding:10px 12px; border-radius:12px; text-align:left; font-size:13px; line-height:1.4;
+  background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border); box-shadow:0 10px 26px rgba(0,0,0,.4); transition:opacity .16s ease, transform .16s ease, visibility 0s linear .16s;}
+.ar3-tip b{font-family:'Baloo 2',system-ui,sans-serif; font-size:15px;}
+.ar3-tip::after{content:''; position:absolute; left:50%; top:100%; width:12px; height:12px; transform:translate(-50%, -6px) rotate(45deg); background:inherit; border-right:1px solid var(--surface-border); border-bottom:1px solid var(--surface-border);}
+.ar3-field:hover .ar3-tip, .ar3-field:focus-visible .ar3-tip, .ar3-field.is-open .ar3-tip{opacity:1; visibility:visible; transform:translate(-50%, 0); transition:opacity .16s ease, transform .16s ease;}
+/* the other modes */
+.ar3-modes-head{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 12px; margin-bottom:12px;}
+.ar3-format{margin:0 !important; justify-content:flex-end !important;}
+.ar3-modes{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;}
+.ar3-mode{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; min-height:96px; padding:12px 8px; border-radius:14px; text-align:center; font:inherit; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--surface-border); box-shadow:0 2px 6px var(--shadow); cursor:pointer; transition:transform .18s ease, border-color .18s ease;}
+button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
+.ar3-mode:focus-visible{outline:3px solid var(--focus); outline-offset:2px;}
+.ar3-mode.is-hero{background:var(--accent); color:var(--accent-ink); border-color:var(--accent-strong);}
+.ar3-mode.is-caged{cursor:default;}
+.ar3-mode-ico{font-size:28px; line-height:1;}
+.ar3-mode-lbl{font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:16px; line-height:1.15;}
+.ar3-mode-line{font-size:12px; font-weight:700; color:var(--ink-muted);}
+.ar3-mode.is-hero .ar3-mode-line{color:inherit;}
+.ar3-mode-acts{display:flex; flex-wrap:wrap; justify-content:center; gap:4px; margin-top:4px;}
+.ar3-mode.live-queue-status .ar3-mode-ico{animation:liveQueuePulse 1.4s ease-in-out infinite;}
+/* loading / error */
+.ar3-state{display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; padding:28px 20px;}
+.ar3-state h3{margin:0;} .ar3-state .panel-sub{margin:0;}
+.ar3-state-ico{font-size:34px; width:64px; height:64px; display:grid; place-items:center; border-radius:50%; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--surface-border);}
+.ar3-skel{display:grid; grid-template-columns:1fr 1fr; gap:14px; width:min(520px, 100%);}
+.ar3-skel span{display:block; height:110px; border-radius:16px;}
+.ar3-skel-cards{display:flex; gap:16px; justify-content:center;} .ar3-skel-cards i{display:block; width:96px; height:120px; border-radius:12px;}
+.ar3-skel span, .ar3-skel-cards i{background:linear-gradient(90deg, var(--surface-2) 0%, var(--surface-3) 50%, var(--surface-2) 100%) 0 0/200% 100%; animation:stompShimmer 1.3s linear infinite;}
+.ar3-state-msg{margin:0; color:var(--ink-muted); font-weight:700;}
+.ar3-format{display:flex; gap:2px; padding:3px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); flex-wrap:nowrap !important;}
+.ar3-format .tk-speed-btn{border-radius:999px; padding:5px 12px; min-height:30px; font-size:13px; flex:none;} .ar3-format .tk-speed-btn + .tk-speed-btn{border-left:0;}
+/* admin raid tickets (Admin and, in Admin Mode, the raid hub) */
+.admin-rt{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; margin:8px 0 0;}
+.admin-rt.is-hub{padding:6px 10px; border-radius:12px; background:var(--surface-2); border:1px dashed var(--surface-border); margin:6px 0 10px;}
+.admin-rt-k{font-size:13px; font-weight:700;} .admin-rt-k b{font-family:'Baloo 2',system-ui,sans-serif; font-size:16px;}
+.admin-rt input{width:76px; min-height:30px; background:var(--surface); color:var(--ink); border:1px solid var(--surface-border); border-radius:8px; padding:2px 6px; font:inherit;}
+/* the Profile's match log (moved from the Arena): PvP / PvE tabs over the recent-opponent rows */
+.pf-matchlog .ml-head{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 12px; margin-bottom:10px;}
+.pf-matchlog .ml-head h3{margin:0;}
+.pf-matchlog .ml-tabs{display:flex; gap:2px; padding:3px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border);}
+.pf-matchlog .ml-tabs .tk-speed-btn{border-radius:999px; padding:5px 14px; flex:none; color:var(--ink);} .pf-matchlog .ml-tabs .tk-speed-btn + .tk-speed-btn{border-left:0;}
+.pf-matchlog .ml-tabs .tk-speed-btn.is-on{color:var(--accent-ink);}
+.pf-matchlog .ml-tabs small{opacity:.75; font-weight:700;}
+.pf-matchlog .ml-row .ro-name{flex:1;}
+.pf-matchlog .ml-date{flex:none; font-size:12px; color:var(--ink-muted); white-space:nowrap;}
+.pf-matchlog .ro-res{width:24px; height:24px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; flex:none; font-weight:900; color:#fff; background:var(--grave);}
+.pf-matchlog .ro-res.win{background:var(--health);} .pf-matchlog .ro-res.loss{background:var(--attack);}
+.pf-matchlog .ml-empty{margin:0;}
+@media (max-width:600px){
+  .ar3-scene{padding:66px 10px 16px; border-radius:12px; gap:12px; --match-card-w:112px; --match-card-h:140px;}
+  .ar3-scene::after{font-size:14px;}
+  .ar3-pvp-row{gap:10px;}
+  .ar3-pvp-btn{min-height:122px; padding:12px 6px; border-radius:14px;}
+  .ar3-pvp-ico{font-size:34px;} .ar3-pvp-lbl{font-size:19px;} .ar3-pvp-sub{font-size:11.5px;}
+  .ar3-panel{padding:12px 10px;}
+  .ar3-fields{gap:14px 12px;}
+  .ar3-fields{position:relative;} .ar3-field{position:static;} /* the bubble spans the field panel, so it never runs off a phone's edge */
+  .ar3-tip{left:6px; right:6px; width:auto; bottom:calc(100% - 4px); transform:translateY(6px);} .ar3-tip::after{display:none;}
+  .ar3-field:hover .ar3-tip, .ar3-field:focus-visible .ar3-tip, .ar3-field.is-open .ar3-tip{transform:none;}
+  .ar3-modes{grid-template-columns:1fr 1fr; gap:8px;}
+  .ar3-mode{min-height:84px;}
+  .ar3-modes-head{justify-content:center;}
+  .ar3-skel span{height:90px;} .ar3-skel-cards i{width:72px; height:90px;}
+}
+@media (prefers-reduced-motion: reduce){ .ar3-motes{display:none;} .ar3-skel span, .ar3-skel-cards i, .ar3-mode.live-queue-status .ar3-mode-ico{animation:none;} .ar3-field .match-field-tile, .ar3-tip{transition:none;} .ar3-pvp-btn::before{display:none;} }
 
 /* The raid menu: the boss as a card, your week at a glance, the parts, how the rows work, the field, the rewards. */
 .raid3{position:relative; overflow:hidden;}

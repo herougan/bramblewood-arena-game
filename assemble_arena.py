@@ -273,6 +273,7 @@ MAP_ART_DERIVED = {
     # 2026-10-18 (audit R3-WP6: the Spire and the Long Burrow drew only a gradient): the two last dungeons get backdrops too.
     "tw": ("m10", 12, 1.50, 0.82),   # The Babel Spire: Eyrie Heights' stone and sky pools, colder and bluer
     "mlb": ("m4", 120, 0.85, 1.05),  # The Long Burrow: the caves turned from violet to packed earth and root
+    "muc": ("m4", 160, 0.55, 0.85),  # 2026-10-21 (package AR): the Undercroft, vaults under the Arena: the caves turned to old sandstone
 }
 def _derived_map_png(src, dh, ds, dv):
     from PIL import Image
@@ -285,7 +286,7 @@ def _derived_map_png(src, dh, ds, dv):
     buf = _io.BytesIO(); out.save(buf, format="PNG", optimize=True); return buf.getvalue()
 _art_ids = []
 # 2026-10-18: loops over whole map ids, so the Babel Spire ("tw", no "m" prefix) and the Long Burrow ("mlb") fit in.
-for _id in ["m" + _m for _m in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "lb", "tut", "arena", "abyss", "pd"]] + ["tw"]:   # + "pd", the Pale Desert (2026-10-18, package PD)   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
+for _id in ["m" + _m for _m in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "lb", "uc", "tut", "arena", "abyss", "pd"]] + ["tw"]:   # + "pd", the Pale Desert (2026-10-18, package PD)   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
     _fp = SCRATCH + "art/maps/%s.png" % _id
     if _id in MAP_ART_DERIVED:
         _data = _derived_map_png(*MAP_ART_DERIVED[_id])
