@@ -466,7 +466,7 @@
   },
   "15": {
    "pool": 250,
-   "score": 100,
+   "score": 98.8,
    "cards": [
     {
      "id": "soldier-ant",
@@ -495,7 +495,7 @@
     }
    ],
    "level": 3,
-   "generated": "2026-10-19"
+   "generated": "2026-10-21"
   },
   "16": {
    "pool": 264,

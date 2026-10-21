@@ -1,0 +1,749 @@
+{
+ "_about": "BF5 (2026-10-21): the owner's 13 live card edits (10-19 to 10-20) against the budget at Level 1: the file before them (v5), the owner's stats (v5: N full, Bounty 0.5, no N multipliers) and now (halved N, multipliers, two-skill cut, re-derived)",
+ "rows": [
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "edited": "2026-10-19T15:23:30.045+00:00",
+   "filePre": {
+    "stats": [
+     2,
+     11
+    ],
+    "S": 3.21,
+    "N": 36.58,
+    "x1": 27.32,
+    "use": 0.75,
+    "x2": 37.82,
+    "N2": 148.68,
+    "ok": true,
+    "miss": 1.5
+   },
+   "owner": {
+    "stats": [
+     2,
+     11
+    ],
+    "S": 3.21,
+    "N": 36.58,
+    "x1": 27.32,
+    "use": 0.75,
+    "x2": 37.82,
+    "N2": 148.68,
+    "ok": true,
+    "miss": 1.5
+   },
+   "now": {
+    "stats": [
+     1,
+     8
+    ],
+    "S": 3.21,
+    "N": 18.29,
+    "x1": 13.21,
+    "use": 0.72,
+    "x2": 11.21,
+    "N2": 37.17,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "esprit": 1,
+     "brood": 1
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-19T15:46:58.553+00:00",
+   "filePre": {
+    "stats": [
+     3,
+     3
+    ],
+    "S": 7.55,
+    "N": 21.8,
+    "x1": 16.55,
+    "use": 0.76,
+    "x2": 16.55,
+    "N2": 52.8,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     4,
+     11
+    ],
+    "S": 7.55,
+    "N": 21.8,
+    "x1": 26.55,
+    "use": 1.22,
+    "x2": 51.55,
+    "N2": 52.8,
+    "ok": false,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     1,
+     1
+    ],
+    "S": 7.55,
+    "N": 10.9,
+    "x1": 10.55,
+    "use": 0.97,
+    "x2": 8.55,
+    "N2": 13.2,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "quick": true
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T15:49:16.47+00:00",
+   "filePre": {
+    "stats": [
+     4,
+     7
+    ],
+    "S": 0,
+    "N": 22.22,
+    "x1": 15,
+    "use": 0.68,
+    "x2": 28,
+    "N2": 54.86,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     7,
+     9
+    ],
+    "S": 0,
+    "N": 22.22,
+    "x1": 34.5,
+    "use": 1.55,
+    "x2": 94.5,
+    "N2": 54.86,
+    "ok": false,
+    "miss": 1.5
+   },
+   "now": {
+    "stats": [
+     1,
+     2
+    ],
+    "S": 0,
+    "N": 8.33,
+    "x1": 6,
+    "use": 0.72,
+    "x2": 3,
+    "N2": 7.71,
+    "ok": true,
+    "miss": 1.5,
+    "effects": {
+     "flying": true,
+     "fragile": true
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:08:35.169+00:00",
+   "filePre": {
+    "stats": [
+     1,
+     6
+    ],
+    "S": 1.37,
+    "N": 22.22,
+    "x1": 14.06,
+    "use": 0.63,
+    "x2": 11.06,
+    "N2": 54.86,
+    "ok": true,
+    "miss": 1.5
+   },
+   "owner": {
+    "stats": [
+     3,
+     7
+    ],
+    "S": 1.37,
+    "N": 22.22,
+    "x1": 21.56,
+    "use": 0.97,
+    "x2": 33.56,
+    "N2": 54.86,
+    "ok": true,
+    "miss": 1.5
+   },
+   "now": {
+    "stats": [
+     1,
+     3
+    ],
+    "S": 1.37,
+    "N": 11.11,
+    "x1": 9.56,
+    "use": 0.86,
+    "x2": 6.56,
+    "N2": 13.71,
+    "ok": true,
+    "miss": 1.5,
+    "effects": {
+     "triggers": [
+      {
+       "on": "onKill",
+       "do": "gain",
+       "amount": 1,
+       "resource": "lumber"
+      }
+     ],
+     "flying": true
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:09:02.682+00:00",
+   "filePre": {
+    "stats": [
+     2,
+     6
+    ],
+    "S": 6.53,
+    "N": 22.84,
+    "x1": 16.53,
+    "use": 0.72,
+    "x2": 18.53,
+    "N2": 57.96,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     2,
+     15
+    ],
+    "S": 6.53,
+    "N": 22.84,
+    "x1": 25.53,
+    "use": 1.12,
+    "x2": 36.53,
+    "N2": 57.96,
+    "ok": false,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     1,
+     6
+    ],
+    "S": 2.74,
+    "N": 11.42,
+    "x1": 10.74,
+    "use": 0.94,
+    "x2": 8.74,
+    "N2": 14.49,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "armor": 1,
+     "crabClaws": true
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:09:28.18+00:00",
+   "filePre": {
+    "stats": [
+     5,
+     5
+    ],
+    "S": 0,
+    "N": 22.01,
+    "x1": 15,
+    "use": 0.68,
+    "x2": 25,
+    "N2": 53.83,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     5,
+     10
+    ],
+    "S": 0,
+    "N": 22.01,
+    "x1": 20,
+    "use": 0.91,
+    "x2": 50,
+    "N2": 53.83,
+    "ok": true,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     2,
+     5
+    ],
+    "S": 0,
+    "N": 11.56,
+    "x1": 9,
+    "use": 0.78,
+    "x2": 10,
+    "N2": 14.85,
+    "ok": true,
+    "miss": 1,
+    "effects": {}
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:09:40.281+00:00",
+   "filePre": {
+    "stats": [
+     4,
+     5
+    ],
+    "S": 2.79,
+    "N": 22.22,
+    "x1": 15.79,
+    "use": 0.71,
+    "x2": 22.79,
+    "N2": 54.86,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     4,
+     13
+    ],
+    "S": 2.79,
+    "N": 22.22,
+    "x1": 23.79,
+    "use": 1.07,
+    "x2": 54.79,
+    "N2": 54.86,
+    "ok": false,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     1,
+     5
+    ],
+    "S": 2.79,
+    "N": 11.11,
+    "x1": 9.79,
+    "use": 0.88,
+    "x2": 7.79,
+    "N2": 13.71,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "tide": true,
+     "crabClaws": true
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:09:56.564+00:00",
+   "filePre": {
+    "stats": [
+     1,
+     4
+    ],
+    "S": 10.64,
+    "N": 22.84,
+    "x1": 16.64,
+    "use": 0.73,
+    "x2": 14.64,
+    "N2": 57.96,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     4,
+     10
+    ],
+    "S": 10.64,
+    "N": 22.84,
+    "x1": 28.64,
+    "use": 1.25,
+    "x2": 50.64,
+    "N2": 57.96,
+    "ok": false,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     1,
+     2
+    ],
+    "S": 6.9,
+    "N": 11.42,
+    "x1": 10.9,
+    "use": 0.95,
+    "x2": 8.9,
+    "N2": 14.49,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "tide": true,
+     "wave": "left"
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "rarity": "common",
+   "wait": 3,
+   "cost": 2,
+   "edited": "2026-10-20T16:11:47.793+00:00",
+   "filePre": {
+    "stats": [
+     5,
+     30
+    ],
+    "S": 1.5,
+    "N": 56.42,
+    "x1": 41.5,
+    "use": 0.74,
+    "x2": 151.5,
+    "N2": 353.69,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     0,
+     50
+    ],
+    "S": 7.89,
+    "N": 56.42,
+    "x1": 57.89,
+    "use": 1.03,
+    "x2": 7.89,
+    "N2": 353.69,
+    "ok": false,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     0,
+     20
+    ],
+    "S": 7.89,
+    "N": 28.21,
+    "x1": 27.89,
+    "use": 0.99,
+    "x2": 7.89,
+    "N2": 88.42,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "triggers": [
+      {
+       "do": "spawnCard",
+       "on": "perTurn",
+       "count": 1,
+       "defId": "ant-scout",
+       "turnOf": "self"
+      }
+     ]
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:12:04.643+00:00",
+   "filePre": {
+    "stats": [
+     2,
+     9
+    ],
+    "S": 1.5,
+    "N": 21.8,
+    "x1": 14.5,
+    "use": 0.67,
+    "x2": 19.5,
+    "N2": 52.8,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     2,
+     16
+    ],
+    "S": 1.5,
+    "N": 21.8,
+    "x1": 21.5,
+    "use": 0.99,
+    "x2": 33.5,
+    "N2": 52.8,
+    "ok": true,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     1,
+     6
+    ],
+    "S": 1.5,
+    "N": 10.9,
+    "x1": 9.5,
+    "use": 0.87,
+    "x2": 7.5,
+    "N2": 13.2,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "triggers": [
+      {
+       "do": "heal",
+       "on": "onAttack",
+       "who": "self",
+       "amount": 1
+      }
+     ]
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
+   "wait": 0,
+   "cost": 0,
+   "edited": "2026-10-20T16:12:16.108+00:00",
+   "filePre": {
+    "stats": [
+     4,
+     7
+    ],
+    "S": 0,
+    "N": 20.77,
+    "x1": 15,
+    "use": 0.72,
+    "x2": 28,
+    "N2": 47.93,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     4,
+     11
+    ],
+    "S": 0,
+    "N": 20.77,
+    "x1": 19,
+    "use": 0.91,
+    "x2": 44,
+    "N2": 47.93,
+    "ok": true,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     2,
+     5
+    ],
+    "S": 0,
+    "N": 10.39,
+    "x1": 9,
+    "use": 0.87,
+    "x2": 10,
+    "N2": 11.99,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "swarm": true
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0,
+   "edited": "2026-10-20T16:12:25.959+00:00",
+   "filePre": {
+    "stats": [
+     5,
+     11
+    ],
+    "S": 0,
+    "N": 29.55,
+    "x1": 21,
+    "use": 0.71,
+    "x2": 55,
+    "N2": 97.02,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     5,
+     18
+    ],
+    "S": 0,
+    "N": 29.55,
+    "x1": 28,
+    "use": 0.95,
+    "x2": 90,
+    "N2": 97.02,
+    "ok": true,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     2,
+     7
+    ],
+    "S": 2.5,
+    "N": 14.78,
+    "x1": 13.5,
+    "use": 0.91,
+    "x2": 16.5,
+    "N2": 24.27,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "swarm": true,
+     "formation": 1
+    }
+   },
+   "verdict": "band",
+   "why": null
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "rare",
+   "wait": 1,
+   "cost": 1,
+   "edited": "2026-10-20T16:12:36.009+00:00",
+   "filePre": {
+    "stats": [
+     6,
+     11
+    ],
+    "S": 0,
+    "N": 35.13,
+    "x1": 23,
+    "use": 0.65,
+    "x2": 66,
+    "N2": 137.12,
+    "ok": true,
+    "miss": 1
+   },
+   "owner": {
+    "stats": [
+     6,
+     20
+    ],
+    "S": 0,
+    "N": 35.13,
+    "x1": 32,
+    "use": 0.91,
+    "x2": 120,
+    "N2": 137.12,
+    "ok": true,
+    "miss": 1
+   },
+   "now": {
+    "stats": [
+     2,
+     7
+    ],
+    "S": 4.34,
+    "N": 17.57,
+    "x1": 15.34,
+    "use": 0.87,
+    "x2": 18.34,
+    "N2": 34.3,
+    "ok": true,
+    "miss": 1,
+    "effects": {
+     "swarm": true,
+     "swarmN": 2,
+     "ambush": 2
+    }
+   },
+   "verdict": "band",
+   "why": null
+  }
+ ]
+}

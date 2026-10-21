@@ -55,6 +55,14 @@ Owner directions 09:52: (1) budget N formula (Base-1+L)(1+L/20); (2) Forge level
 - tests updated (a77be17); reference decks rebuilt (decks --keep); bf6-mid2: 28/179 green (141 easy)
 - E round 1: tune4.sh 30 bf6-mid2t bf6-curve-fixes "--decks-only --wide" (bf6-mid2t = bf6-mid2 without Map 0's owner decks)
 
+- BF5 10-21 rulings: fold of the owner's later edits (d491a05; SQL 20261021_clear_folded_overrides_2.sql proposed, not applied);
+  N multipliers plain 1.05 / light 1.02 / Fragile 0.75, Vulnerable -1.5 (c7612cc); two skills at most, 99 cut, ants (16ed1e9);
+  re-derive from halve-ref-2026-10-21.json (d51977e); huntsman Poison+Pounce, Moon Jelly Tide+Moonpull (c7922a7);
+  Easter eggs in the band, Terraumbra measured with its grant 3/3 -> 1/1 (53c65cf); plan 719 rows: 702 band, 17 owner, 24 prop
+- owner-edits evaluation: docs/balance/owner-edits-bf5-2026-10-21.json (6 of 13 over v5 at the owner's stats); halve doc sections
+  (10-21 rulings, owner edits, two-skill list, limit-break note, Map x 0.2 kept)
+- reference decks rebuild (decks --from=1 --to=24 --keep, scratchpad/decks6.log) running
+
 ## Next
 - mark_apply (apply:false for 0-1..0-4), apply, measure bf6-mid3, round 2 at 60, final bf-after / bf-fresh, road_gaps, tests floors
 - raid: raid_completion_model measure --n 20 --out docs/balance/raid-balance-bf5-fights.json, cycle; doc halve-raid json

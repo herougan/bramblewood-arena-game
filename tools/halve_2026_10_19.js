@@ -12,8 +12,8 @@
 //     its skills not stripped.
 //   - the owner's own targets: the Cave Bat Swarm 1/2 (21:36, "Okay to make cave bat swarm 1/2."), checked against the rules.
 //   - outside the band (no budget of their own), halved in proportion: the Caldera Wyrm (kept as printed in BF3 by decision B10: its power
-//     is the field's; "a halving applies to it too"), the tokens the skills put on the board, the Easter eggs, the Nest's eggs and the
-//     Blacksmith's equipment (stat bonuses). Materia, spells, fields, test cards and pool cards are not touched.
+//     is the field's; "a halving applies to it too"), the tokens the skills put on the board, the Nest's eggs and the
+//     Blacksmith's equipment (stat bonuses). (10-21: the Easter eggs go through the band; an equipment egg is measured with its grant.) Materia, spells, fields, test cards and pool cards are not touched.
 // creatorNote "2026-10-19 halve (BF5): was A/H". Only attack, health and creatorNote are written (the parallel skill packages merge clean).
 //   node tools/halve_2026_10_19.js plan    -> docs/balance/halve-plan-2026-10-19.json (+ the summary)
 //   node tools/halve_2026_10_19.js apply   -> canonical/cards.json
@@ -103,8 +103,14 @@ if(cmd === 'plan' || cmd === 'apply'){
     '- **Skill costs stay as they are.** The owner said to halve N only. Bounty doubles, from 0.5 to 1 a point (owner 21:36: "Bounty is way too strong. Let bounty N = N * 2."). Skill-heavy cards therefore lose relatively more of their stats.',
     `- **Each live card keeps its place in the band.** That place is the share of N its 2A+H+S filled under v5, held between just over 60% and 100%. The new stats are the card's A:H shape scaled by one factor and rounded, whose share of the halved N lands closest to that place, from below where it can. Both rules must hold, inclusive, at Level 1 and at the card's start level. Attack 0 stays 0, a non-zero Attack stays at least 1, and Health is at least 1.`,
     '- **The owner\'s target:** the Cave Bat Swarm is 1/2 (21:36: "Okay to make cave bat swarm 1/2.").',
-    '- **Halved in proportion:** cards outside the band, which have no budget of their own. These are the Caldera Wyrm (kept as printed in BF3 under decision B10, but "a halving applies to it too"), the tokens skills put on the board, the Easter eggs, the Nest\'s eggs and the Blacksmith\'s equipment.',
-    '- **Not touched:** materia, spells, fields, test cards and pool cards.',
+    '- **Halved in proportion:** cards outside the band, which have no budget of their own. These are the Caldera Wyrm (kept as printed in BF3 under decision B10, but "a halving applies to it too"), the tokens skills put on the board, the Nest\'s eggs and the Blacksmith\'s equipment. The Easter eggs go through the band like the rest (10-21; the EE package fitted each to the budget); Terraumbra, an equipment card, is measured with its grant as its skills.',
+    '- **Not touched:** materia, spells, fields, test cards and pool cards.', '',
+    '## The 10-21 rulings (owner, through the coordinator)', '',
+    '- **The owner\'s later live edits are folded first, then halved like everything else.** 13 cards (edited on the server 10-19 to 10-20), Map 0 / Hedgerow / Shallows nodes, the tutorial and the Goliath\'s shards (`tools/fold_server_overrides_2026_10_21.js`, `docs/balance/server-overrides/fold-plan-2026-10-21.json`). One conflict: the Swarm Matriarch\'s art (the file\'s newer portrait is kept). RB2\'s raid values are unchanged. The server rows can be cleared with `supabase/proposed/20261021_clear_folded_overrides_2.sql` (prepared, **not applied**).',
+    '- **N multipliers** in the shared helper (`bramblewood-budget.js` `nMultOf`, named constants shown in the card editor\'s budget panel and the Test Lab): a card with **no abilities ×1.05** (`plainBonus`); a card whose only abilities are light ones (Flying, Tide, Diurnal, Nocturnal, Crepuscular, Sun-shy, Night-blind) **×1.02** (`lightBonus`); **Fragile ×0.75** (`fragileMult`, it is priced on N now). Passive **Vulnerable** is a skill with a negative value (−1.5).',
+    '- **Two skills at most** (`tools/two_skills_2026_10_21.js`, `docs/balance/two-skills-2026-10-21.json`): special and thematic cards (Epic and up, Supreme, hidden, Easter eggs, tokens) keep theirs. The list is below.',
+    '- **Each card\'s place in the band is read before the cut and the halving** (`docs/balance/halve-ref-2026-10-21.json`, v5 with Bounty 0.5 and no multipliers), so a card that lost a skill gets that room back as stats.',
+    '- **The Map × 0.2 term stays** in Base (halved with the rest of N). **Limit break balances a card to the next series\' standard**: a broken card is measured as if it were obtained on the next map series, so its extra power is that series\' Map term and level, not a separate allowance.',
     '- **Only `attack`, `health` and `creatorNote` are written.** The note reads "2026-10-19 halve (BF5): was A/H".', '',
     '## Summary', '', '| | Cards |', '|---|---|',
     `| Live cards | ${P.cards} |`, `| Re-derived in the band | ${P.band} |`, `| Under the band (the floor of their shape) | ${P.under} |`, `| At the owner\'s target | ${P.target} |`, `| Owner calls | ${P.owner} |`, `| Halved in proportion (outside the band) | ${P.proportion} |`, '',
@@ -124,6 +130,18 @@ if(cmd === 'plan' || cmd === 'apply'){
     const top = v.sort((a, b)=> b[0] - a[0]), mx = top[0][0], against = k === 'armor' ? mA : mH; if(mx < (k === 'armor' ? mA : Math.max(3, mH - 1))) return null;
     return `| ${label} | ${v.length} | ${[...new Set(v.map(x=> x[0]))].sort((a, b)=> a - b).join(', ')} | ${top.slice(0, 2).map(x=> `${x[1].name} ${x[1].attack}/${x[1].health} (${x[0]})`).join('; ')} | ${k === 'armor' ? `Armor ${mx} against a median Attack of ${mA}: most attackers barely scratch it` : `${mx} against a median Health of ${mH}`} |`; }).filter(Boolean);
   const trig = live.filter(c=> (c.effects && c.effects.triggers || []).some(t=> typeof t.amount === 'number' && t.amount >= mH)).map(c=> c.name);
+  const OE = rdj('docs/balance/owner-edits-bf5-2026-10-21.json'), TS = rdj('docs/balance/two-skills-2026-10-21.json');
+  if(OE){ const fm = b=> `${st(b.stats)} (${pct(b.use)}${b.ok ? '' : ', **over**'})`;
+    md.push('## The owner\'s 13 live edits, against the budget', '',
+      'Each at Level 1: the file before the edit (v5), the owner\'s stats under v5 (N full, Bounty 0.5, no multipliers; share of N by 2A+H+S, **over** = a rule broken) and now (halved N, multipliers, two-skill cut, re-derived to the v5 share, held at 100% at most). `docs/balance/owner-edits-bf5-2026-10-21.json`.', '',
+      '| Card | Rarity | Wait / Lumber | File before | Owner (v5) | Now (BF5) | S now / N now |', '|---|---|---|---|---|---|---|',
+      ...OE.rows.map(r=> `| ${r.name} | ${r.rarity} | ${r.wait} / ${r.cost} | ${fm(r.filePre)} | ${fm(r.owner)} | **${fm(r.now)}** | ${r.now.S} / ${r.now.N} |`), '',
+      `**What the edits say.** Twelve of them raised Health (most by 4 to 9 points; the Ant Hill by 20, to 0/50; the Mayfly Dancer\'s Attack too, 4 → 7); the Swarm Matriarch\'s left its stats at 2/11. ${OE.rows.filter(r=> !r.owner.ok).length} of the 13 sat over the v5 budget at the owner\'s stats. They read as "the cards should be sturdier than the budget lets them": Health is cheap in play next to what the budget charges for it, or the skills on them (Quick, Tide, Fragile, Crab Claws) cost more than they are worth. Under BF5 they keep the owner\'s A:H shape, at the share of the halved N the edit asked for (100% where it asked for more). The ones that shrink most are the ones whose skills now fill most of the halved N: the Tomcat (Quick, S 7.55 of N 10.9) and the Tide Pool Crab (S 6.9 of 11.42).`, ''); }
+  if(TS){ const cut = TS.rows.filter(r=> r.dropped.length), sp = TS.rows.filter(r=> !r.dropped.length && !r.added);
+    md.push('## Two skills at most', '', `${cut.length} cards were cut to two; ${sp.length} special or thematic cards keep more; the order was Bounty, then a time-of-day skill, then Darksight, then the two the card\'s name and flavour carry. A skill\'s parameters went with it.`, '',
+      '**The owner\'s ants:** Ant Scout keeps Swarm alone (cheap: Wait 0, Lumber 0); the Soldier Ant gets **Formation 1** beside Swarm (Wait 1: soldiers hold the line); the Tunnel Ant gets **Ambush 2** beside Swarm (Wait 1, Lumber 1: it comes out of the tunnel at the enemy that enters).', '',
+      '| Card | Rarity | Had | Keeps | Cut |', '|---|---|---|---|---|', ...cut.slice().sort((a, b)=> a.name.localeCompare(b.name)).map(r=> `| ${r.name} | ${r.rarity} | ${r.was.join(', ')} | ${r.keep.join(' + ')} | ${r.dropped.join(', ')} |`), '',
+      `Special cards that keep more: ${sp.map(r=> r.name + ' (' + r.keep.length + ')').join(', ')}.`, ''); }
   md.push('## Brambles: halved too (measured)', '',
     'Whether the owner\'s "HALF everything" covers the brambles was not plain, so it was measured. The halved cards were played against full-size brambles, then against halved ones.' + (PR ? ` The sample is ${PR.fights} road fights (every 9th of the BF4 measure, 60 games each, \`docs/balance/halve-bramble-probe-2026-10-19.json\`). Sudden death starts at round 20.` : ''), '',
     ...(PR ? ['| | BF4 (full cards, full brambles) | Halved cards, full brambles | Halved cards, halved brambles |', '|---|---|---|---|',
@@ -136,7 +154,7 @@ if(cmd === 'plan' || cmd === 'apply'){
     '- **The raid:** the arms\' and tail\'s brambles **350 → 175** a fight, the **Core 200 → 100**, the **elders\' Health floor 55 → 28** (`bossHpBonusMax`), the trench wall, and the raiders\' merged castle.',
     '- **The tutorial** (both brambles) and the **dungeon** (its foes\' brambles).', '',
     '## The Forge curve', '',
-    'It follows N on its own (`forgeCurve` banks each level\'s ΔN, halved with N). The mean 2A+H gain over Level 1 (`FORGE_MEAN_GAIN`) is now **+1.2% at Lv 2, +22.7% at Lv 4, +52% at Lv 7, +81.8% at Lv 10 and +99% at Lv 11**. Under v5 it was +4.4%, +20.8%, +45.8%, +70.5% and +79.6%.',
+    'It follows N on its own (`forgeCurve` banks each level\'s ΔN, halved with N, times the card\'s N multiplier). The mean 2A+H gain over Level 1 (`FORGE_MEAN_GAIN`) is now **+1.2% at Lv 2, +21.8% at Lv 4, +50.4% at Lv 7, +79.4% at Lv 10 and +96.3% at Lv 11**. Under v5 it was +4.4%, +20.8%, +45.8%, +70.5% and +79.6%.',
     '- **The minor step (Lv 2) mostly rounds to nothing** at halved sizes.',
     '- **The majors weigh relatively more**, because a card\'s stats are a smaller part of its halved N (S didn\'t halve).',
     '- **The majors still always add a point.** On the smallest cards that point can run one point past N at Lv 10 and 11. `tests/forge-curve-2026-10-19.js` allows exactly that.', '',
