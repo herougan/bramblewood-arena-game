@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package DV: the map divvy, the rarity ladder, map pools)
+- **Each main map has a pool of 6-10 creatures** (`canonical/map-pools.json`, the map editor's file): its enemy decks are built from it, 1-2 of
+  them are its skirmish rewards and the rest are basic-pack cards with that map. 305 former skirmish rewards became pack cards of their map.
+- **The rarity ladder:** Map 1's last match brings the first Uncommon (the Badger Lumberjack), Map 2 has two, the first Rare is on Map 5, the
+  first Very Rare on Map 10, the first Super Rare on Map 20; the Volcano Lair reveals Heroic and the Eye of the Volcano Epic. Packs, the base
+  track and the faction track only give a rarity once it is revealed (and a pack card once its map is reached).
+- **175 enemy decks on Maps 1-24 rebuilt** from the pools (sizes, kinds and named bosses kept; Map 0, tutorials and raids untouched).
+- **32 cards re-ranked** (Base and faction cards spread out; Rares off Maps 2-4; a Very Rare per map from 10; the Caldera Wyrm, Magnate Duck
+  and Fire Drake Hatchling Heroic, The Contradiction Epic) and re-fitted by formula with 25 cards whose obtain map moved.
+- **Side maps re-gated** (Clovermead after Map 12, the Mycelium Deep after 8, the Sunken Depths after 11, the Sunken Grove after 13, the
+  Glimmer Depths after 16, the Pale Desert after 19); the faction track's Very Rare waits for Map 20 and the Volcano Lair.
+- Report: `docs/map-divvy-2026-10-22.md`; owner calls DV1-DV7.
+
 ## 2026-10-22 (skill costs: human pass I + Claude pass II; 360 cards re-fitted)
 - **Pass I (owner):** 259 skill-cost edits from the hub, applied to `canonical/skill-costs.json`.
 - **Pass II (Claude):** 16 of the owner's raises were brought down to their strongest measurement where they sat more than 50% above it, e.g. Earthquake 8 → 0.44, Cast Darkness 6 → 0.54, On Ready Gold 10 → 6.24, Vulnerable 4 → 1.93. The hub entries were updated to match.
