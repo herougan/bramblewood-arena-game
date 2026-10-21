@@ -301,7 +301,7 @@
   },
   "10": {
    "pool": 171,
-   "score": 99.1,
+   "score": 100,
    "cards": [
     {
      "id": "otter-centurion",
@@ -330,11 +330,11 @@
     }
    ],
    "level": 0,
-   "generated": "2026-10-19"
+   "generated": "2026-10-21"
   },
   "11": {
    "pool": 183,
-   "score": 85,
+   "score": 100,
    "cards": [
     {
      "id": "otter-centurion",
@@ -352,22 +352,22 @@
      "n": 4
     },
     {
-     "id": "riverwing-envoy",
-     "name": "Riverwing Envoy",
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
      "n": 4
     },
     {
-     "id": "mangrove-kingfisher",
-     "name": "Mangrove Kingfisher",
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
      "n": 4
     }
    ],
    "level": 3,
-   "generated": "2026-10-19"
+   "generated": "2026-10-21"
   },
   "12": {
    "pool": 196,
-   "score": 96.4,
+   "score": 98.8,
    "cards": [
     {
      "id": "otter-centurion",
@@ -385,8 +385,8 @@
      "n": 4
     },
     {
-     "id": "trapdoor-spider",
-     "name": "Trapdoor Spider",
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
      "n": 4
     },
     {
@@ -396,11 +396,11 @@
     }
    ],
    "level": 3,
-   "generated": "2026-10-19"
+   "generated": "2026-10-21"
   },
   "13": {
    "pool": 216,
-   "score": 99,
+   "score": 100,
    "cards": [
     {
      "id": "soldier-ant",
@@ -429,7 +429,7 @@
     }
    ],
    "level": 3,
-   "generated": "2026-10-19"
+   "generated": "2026-10-21"
   },
   "14": {
    "pool": 237,
@@ -462,7 +462,7 @@
     }
    ],
    "level": 3,
-   "generated": "2026-10-19"
+   "generated": "2026-10-21"
   },
   "15": {
    "pool": 250,

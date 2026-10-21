@@ -73,7 +73,8 @@ ok(goliath.tuning && goliath.tuning.alliesPerTurn === 2 && goliath.tuning.bossAt
 { const RaidM = require('../bramblewood-raid.js'); const st = RaidM.raidState(goliath, [], 0, {cycle:0}), f = RaidM.fightFor(goliath, st, 'left', {});
   const allies = [0, 1].map(i=> A.raidAllyOf({name:'A' + i, deck: goliath.allyDecks[i].deck, level:0}, i));
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: E.mulberry32(3), allies, myCastle:{id:'castle', health:30}, myDeck:{'otter-guard':10}, recordEvents:false, rand: E.mulberry32(4)});
-  ok(b.players[2].hq.hp === f.castleHp && b.cfg.castleHp === f.castleHp, `the boss's bramble is the part's fight castleHp, not the trench's (${b.players[2].hq.hp} / ${f.castleHp}; trench ${(f.part.trench || {}).castleHp})`);
+  // 2026-10-21 (BF5): at BRAMBLE_SCALE 0.5
+  ok(b.players[2].hq.hp === Math.max(1, Math.round(f.castleHp * 0.5)) && b.cfg.castleHp === Math.max(1, Math.round(f.castleHp * 0.5)), `the boss's bramble is the part's fight castleHp, not the trench's (${b.players[2].hq.hp} / ${f.castleHp}; trench ${(f.part.trench || {}).castleHp})`);
   const src0 = H.loadCardDefs()['kraken-spawnling'], cp = b.overlay['kraken-spawnling~raid'];
   ok(cp && cp.attack === Math.max(1, Math.round(src0.attack * goliath.tuning.bossAtkPct)) && cp.health === Math.max(1, Math.round(src0.health * goliath.tuning.bossHpPct)), `boss cards at the tuned share of their stats (${cp && cp.attack}/${cp && cp.health})`);
   // both allies play a card each turn (tuning.alliesPerTurn 2), and each play runs the hand-play animation hook

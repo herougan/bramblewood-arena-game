@@ -42,7 +42,9 @@ function chk(Tb, c, A, H){ const d = Object.assign({}, c, {attack: A, health: H}
 const half = (A, H)=> [A == null ? A : A > 0 ? Math.max(1, Math.round(A / 2)) : 0, H == null ? H : H > 0 ? Math.max(1, Math.round(H / 2)) : 0];
 
 function planCard(c){
-  const A0 = c.attack || 0, H0 = c.health || 0, rf = REF[c.id], old = rf ? chk(T0, Object.assign({}, c, {effects: rf.effects}), rf.attack || 0, rf.health || 0) : chk(T0, c, A0, H0), now = chk(T, c, A0, H0);
+  // (10-21) an equipment card (the Easter egg Terraumbra) is measured with its grant as its skills, as the EE package priced it (tests/easter-eggs-2026-10-19.js)
+  const grant = c.cardType === 'equipment' && c.equip && c.equip.grant || null; if(grant) c = Object.assign({}, c, {effects: Object.assign({}, c.effects, grant)});
+  const A0 = c.attack || 0, H0 = c.health || 0, rf = REF[c.id], old = rf ? chk(T0, Object.assign({}, c, {effects: Object.assign({}, rf.effects, grant || {})}), rf.attack || 0, rf.health || 0) : chk(T0, c, A0, H0), now = chk(T, c, A0, H0);
   const row = {id: c.id, name: c.name, rarity: c.rarity || 'common', wait: c.wait || 0, cost: c.cost || 0, was: [A0, H0], S: now.b1.S, N: now.b1.N, N0: old.b1.N, use0: r2(old.use), m: now.b1.m};
   if(TARGET[c.id]){ const [A, H] = TARGET[c.id], k = chk(T, c, A, H);
     return Object.assign(row, {now: [A, H], use: r2(k.use)}, k.ok ? {verdict: 'target', why: 'the owner\'s target (21:36)'} : {verdict: 'owner', why: `the owner's ${A}/${H} (21:36), applied; it does not fit: 2A+H+S ${r2(k.b1.x1)}${row.m !== 1 ? ' (×' + row.m + ')' : ''} vs N ${k.b1.N}, its skills (S ${row.S}) are the owner's call`}); }
@@ -63,11 +65,12 @@ function planAll(){
   const cards = JSON.parse(fs.readFileSync(CARDS_FILE, 'utf8')), rows = [], prop = [];
   cards.forEach(c=>{
     if(c.attack == null && c.health == null) return; if(ONLY.length && !ONLY.includes(c.id)) return;
-    if(PROPORTION[c.id] || (c.token && SC.measured(Object.assign({}, c, {token: false}))) || isEgg(c) || c.cardType === 'equipment' || (c.hatchInto && !c.pool)){
+    // (10-21) the Easter eggs go through the band like the rest: the EE package made each fit the budget (tests/easter-eggs-2026-10-19.js)
+    if(PROPORTION[c.id] || (c.token && SC.measured(Object.assign({}, c, {token: false}))) || (c.cardType === 'equipment' && !isEgg(c)) || (c.hatchInto && !c.pool)){
       const now = half(c.attack, c.health), kind = PROPORTION[c.id] ? 'wyrm' : c.token ? 'token' : isEgg(c) ? 'easter egg' : c.cardType === 'equipment' ? 'equipment' : 'nest egg';
       if(now[0] !== c.attack || now[1] !== c.health) prop.push({id: c.id, name: c.name, kind, was: [c.attack, c.health], now, why: PROPORTION[c.id] || 'halved in proportion (no budget band of its own)'});
       return; }
-    if(R.live(c)) rows.push(planCard(c));
+    if(R.live(c) || isEgg(c) && (SC.measured(c) || c.cardType === 'equipment')) rows.push(planCard(c));
   });
   const by = v=> rows.filter(r=> r.verdict === v);
   const out = {_about: 'BF5 (2026-10-19, owner 21:36): N halved (scale 0.5), Bounty 1 a point; every live card re-derived at Level 1 keeping its share of N inside the band; the cards outside the band halved in proportion',

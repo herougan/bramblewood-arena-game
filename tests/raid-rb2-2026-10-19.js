@@ -21,8 +21,9 @@ ok(goliath.bossHpBonusMax === 55, 'the elders start at up to 55 Health (was 50):
   ok(f.castleHp === 350, `fightFor hands the fight the part's 350 (${f.castleHp})`);
   const A = require(path.join(ROOT, 'tools', 'raid_full_sim.js')).A;
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false});
-  ok(b.players[2].hq.hp === 350 && b.players[2].hq.maxHp === 350, `the boss's bramble in the built fight: ${b.players[2].hq.hp}/${b.players[2].hq.maxHp}`);
-  const u = b.overlay[b.bossUnitId]; ok(u && u.health + b.bossHpBonus === 55, `a fresh raid's elder: ${u && u.health} + ${b.bossHpBonus} = 55`); }
+  // 2026-10-21 (BF5): the fight is built at BRAMBLE_SCALE 0.5 (raids.json keeps the full 350 / 55)
+  ok(b.players[2].hq.hp === 175 && b.players[2].hq.maxHp === 175, `the boss's bramble in the built fight: ${b.players[2].hq.hp}/${b.players[2].hq.maxHp} (350 halved)`);
+  const u = b.overlay[b.bossUnitId]; ok(u && u.health + b.bossHpBonus === 28, `a fresh raid's elder: ${u && u.health} + ${b.bossHpBonus} = 28 (55 halved)`); }
 
 // ---- saved edits: RB's numbers move, an admin's own stay
 ok(R.RAID_SCALE_V === 3, 'scale 3');

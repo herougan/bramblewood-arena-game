@@ -93,10 +93,11 @@ function build(st, opts){ st = st || RaidM.raidState(goliath, [], 0, {cycle:0});
   const m = {raidDef: goliath, raidFull:true, round:1, players: b.players, engine: b.engine, sideOf: b.sideOf, stats: b.stats, raidAllies: allies, raidBossUnitId: b.bossUnitId, raidBossHpBonus: b.bossHpBonus, raidBossRowDecks: b.rowDecks, raidCommonPool: b.commonPool};
   return {b, m, f, allies}; }
 { const {b, m} = build(), u = b.overlay[b.bossUnitId];
-  ok(u && u.health < 55 && u.health + b.bossHpBonus === 55, `a fresh raid's boss unit: ${u && u.health} + ${b.bossHpBonus} = 55 Health (RB2)`);
+  // 2026-10-21 (BF5): the fight is built at BRAMBLE_SCALE 0.5: RB2's 55 is 28
+  ok(u && u.health < 28 && u.health + b.bossHpBonus === 28, `a fresh raid's boss unit: ${u && u.health} + ${b.bossHpBonus} = 28 Health (RB2's 55, halved)`);
   Object.assign(B.CARD_DEFS_BASELINE, b.overlay); m.round = 3; const ev = []; A.raidBossUnit(m, ev);
-  const c = b.engine.allBoardCards(b.players[2]).find(x=> x.bossUnit); ok(c && c.hp === 55 && c.maxHp === 55, `it comes in at 55/55 (${c && c.hp}/${c && c.maxHp})`); }
-ok(/RaidM\.bossHpBonus\(def, st, defs\[bossUnitId\]\.health\)\.bonus/.test(src), 'the fight build passes the unit\'s basic Health');
+  const c = b.engine.allBoardCards(b.players[2]).find(x=> x.bossUnit); ok(c && c.hp === 28 && c.maxHp === 28, `it comes in at 28/28 (${c && c.hp}/${c && c.maxHp})`); }
+ok(/RaidM\.bossHpBonus\(raidDefScaled\(def\), st, defs\[bossUnitId\]\.health\)\.bonus/.test(src), 'the fight build passes the unit\'s basic Health (BF5: the raid at BRAMBLE_SCALE)');
 ok(/Boss unit Health, fresh raid<input id="reBossHpBonus"/.test(src), 'the raid editor names the field for what it is now');
 
 // ======================= 5. the boss plays 3 cards a turn, one a row =======================
