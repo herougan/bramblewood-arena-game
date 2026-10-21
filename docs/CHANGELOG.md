@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package DR: deck caps on the top ranks)
+- **The rule (owner):** per deck, the leader included, at most 3 Legendary, 2 Mythic, and 1 each of Ancient, Divine, Void and Daemonic. Each rank's cap is its own; copies count. A flagged rarity counts as its rank (dev-Legendary is a Legendary). The numbers live in `bramblewood-budget.js` (`DECK_RANK_CAPS`).
+- **Deck builders:** a card past its rank's cap can't be added in the Camp/Play deck editor (click, drag), the Standard deck, the leader picker (greyed) or the admin skirmish/dungeon/tutorial deck popups and editor; a chip says why ("Deck limit: 3 Legendaries"). A deck over a cap shows a pill in the editor.
+- **Before a fight:** Quick Battle, Conquest, Dungeon, Live Ranked and friend invites refuse a deck over a cap and say which rank and by how many.
+- **CPU and generated decks:** enemy decks (`levelledEnemyDeck`, dungeon waves) are fitted before the fight: the weakest excess copies are swapped for the highest card below the caps that shares their theme. Ghost and PvP stranger decks, the vs-AI random deck and the Autobattler draft (offers, boon copies, bench moves, recorded opponents) respect the caps; recorded PvP/Async decks are checked with their leader.
+- Texts: 5 new keys, translated in the 12 packs.
+
 ## 2026-10-22 (skill costs: human pass I + Claude pass II; 360 cards re-fitted)
 - **Pass I (owner):** 259 skill-cost edits from the hub, applied to `canonical/skill-costs.json`.
 - **Pass II (Claude):** 16 of the owner's raises were brought down to their strongest measurement where they sat more than 50% above it, e.g. Earthquake 8 → 0.44, Cast Darkness 6 → 0.54, On Ready Gold 10 → 6.24, Vulnerable 4 → 1.93. The hub entries were updated to match.

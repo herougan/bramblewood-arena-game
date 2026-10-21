@@ -123,6 +123,25 @@ function rarityParts(r){ const k = String(r || 'common'); if(RARITY_STORED[k]) r
 function rarityCompose(rank, flag){ rank = LADDER.includes(rank) ? rank : 'common'; if(!flag || !RARITY_FLAGS.includes(flag)) return rank;
   const hit = Object.keys(RARITY_STORED).find(k=> RARITY_STORED[k][0] === flag && RARITY_STORED[k][1] === rank); return hit || (flag + rank); }
 function rankOf(rarity){ const k = rarity || 'common'; return Math.max(0, LADDER.indexOf(AS[k] || rarityParts(k).rank)); }
+// Deck caps on the top ranks (2026-10-22, package DR; owner: "For Legendary onwards, only 3 Legendaries can exist in a deck (including leader),
+// Mythic takes this to 2, then beyond only 1. (meaning you can only own at max 2 differently named mythics in a deck). And so on."): per deck,
+// the leader included, at most 3 cards of Legendary, 2 of Mythic and 1 of each rank above (Ancient, Divine, Void, Daemonic). Each rank's cap is
+// its own (they do not share one pool). A flagged rarity counts as its rank (rankOf: devlegendary = Legendary). Copies count: the per-rarity copy
+// limits already hold Unique and up to 1 copy, so in practice these are 3 / 2 / 1 different cards. The cap table is the only place the numbers live.
+const DECK_RANK_CAPS = {legendary: 3, mythic: 2}, DECK_RANK_CAP_REST = 1;
+function deckRankCapOf(rarity){ const i = rankOf(rarity); if(i < LADDER.indexOf('legendary')) return null; const rank = LADDER[i];
+  return {rank, cap: DECK_RANK_CAPS[rank] || DECK_RANK_CAP_REST}; }
+// {rank: {n, cap}} for the capped ranks a deck uses. counts = {cardId: copies}, defs = {cardId: def}, leaders = [cardId] (each counts once).
+function deckRankUsage(counts, defs, leaders){ const out = {};
+  const add = (id, n)=>{ const d = defs && defs[id]; if(!d || d.token || !(n > 0)) return; const c = deckRankCapOf(d.rarity); if(!c) return;
+    const o = out[c.rank] || (out[c.rank] = {n: 0, cap: c.cap}); o.n += n; };
+  Object.keys(counts || {}).forEach(id=> add(id, counts[id] | 0)); (leaders || []).forEach(id=> { if(id) add(id, 1); }); return out; }
+// The ranks over their cap: [{rank, n, cap}].
+function deckRankOver(counts, defs, leaders){ const u = deckRankUsage(counts, defs, leaders);
+  return Object.keys(u).filter(r=> u[r].n > u[r].cap).map(r=> ({rank: r, n: u[r].n, cap: u[r].cap})); }
+// null, or {rank, n, cap} when one more copy of `id` would put its rank over the cap (n = what the deck holds already).
+function deckRankBlock(counts, id, defs, leaders){ const d = defs && defs[id]; if(!d || d.token) return null; const c = deckRankCapOf(d.rarity); if(!c) return null;
+  const u = deckRankUsage(counts, defs, leaders)[c.rank]; const n = u ? u.n : 0; return n >= c.cap ? {rank: c.rank, n, cap: c.cap} : null; }
 function ritualPts(effects){ const r = effects && effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (+b || 0), 0) : 0; }
 // The level-independent part of N for a card ({rarity, wait, cost, effects, obtainMap}). 2026-10-19 (BF2, owner 15:25: "note that there is
 // a Map * 0.2 number there"): + perMap (0.2) × the map number where the card becomes obtainable (d.obtainMap: a map reward its map, a
@@ -191,5 +210,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

@@ -2668,5 +2668,10 @@
  "The Vault Warden": "Le Gardien des caveaux",
  "Vaults under the Arena’s sand. Every three floors the doors open onto another land.": "Des caveaux sous le sable de l’Arène. Tous les trois étages, les portes s’ouvrent sur une autre contrée.",
  "The next door grinds open.": "La porte suivante s’ouvre en grinçant.",
- "Every tenth floor the warden of the vaults comes down to meet you.": "Tous les dix étages, le gardien des caveaux descend à votre rencontre."
+ "Every tenth floor the warden of the vaults comes down to meet you.": "Tous les dix étages, le gardien des caveaux descend à votre rencontre.",
+ "Deck limit: {n} Legendaries": "Limite du deck : {n} Légendaires",
+ "Deck limit: {n} Mythics": "Limite du deck : {n} Mythiques",
+ "Deck limit: {n} {rank}": "Limite du deck : {n} {rank}",
+ "Over the {rank} limit: {n}/{cap}": "Limite de {rank} dépassée : {n}/{cap}",
+ "Your deck is over the {rank} limit ({n}/{cap}). Take {out} out to play.": "Ton deck dépasse la limite de {rank} ({n}/{cap}). Retires-en {out} pour jouer."
 }
