@@ -2,19 +2,19 @@
 
 Scope: card SOURCE / placement / reward fields only (never attack, health or effects; BF5 re-derives stats in parallel).
 
-## Plan
-1. Audit every card into one category (skirmish reward, pack, faction reward, raid / smith / nest / base / Easter egg / awaitingSource). Fix overlaps.
-2. Faction rewards: Otter- and Hummingbird-side cards into the Factions pool (tier 11 + side); `factionRewardTrack` with rarity gates by
-   faction cards received (25 / +15 / +10 ...) and map floors (Rare Map 14, Very Rare Map 25); hand-out hooks (every K first clears,
-   elite / boss first clears, the 0-2 pack, achievements). Simulate the road, tune K.
-3. Maps 0–1 rewards vanilla (one Lumber card on Map 1); propose a Quarry Mole replacement.
-4. Devilry (66), Ecclesia (77), Evomax (30) gates: their cards off every source before those maps.
-5. Submaps: gates (Smugglers' Grotto after Map 7, a gate for each), at most 1 unique reward each.
-6. docs/map-recommendations-2026-10-21.md; decisions (rules entry); CHANGELOG; tests/rewards-pass-2026-10-21.js.
+## Done
+- [x] Audit: every card in one category, no overlaps (`node tools/rewards_pass_2026_10_21.js audit`).
+- [x] Faction reward track: `FACTION_REWARD_TRACK` region in arena_app.js (gates 25 / 40 & Map 14 / 50 & Map 25 ...; lowest first; plain first on
+      Maps 0-1; hand-outs: 0-2 pack, map milestones, every 8th first clear, ambush, 8 achievements). Sim: `tools/faction_track_sim_2026_10_21.js`.
+- [x] 158 source moves: plan `docs/balance/rewards-pass-2026-10-21.json` (made from the pre-pass sources, idempotent), applied by
+      `tools/rewards_pass_apply_2026_10_21.py` (format byte-identical); `canonical/card-obtain-maps.json` regenerated.
+- [x] Maps 0-1 plain, Map 1 Lumber (Badger Lumberjack 1-4); teaching extra cards off on Maps 0-1.
+- [x] Devilry / Ecclesia held (31); side maps one unique + gates (10 re-gated, shieldMap = gate).
+- [x] Tests: tests/rewards-pass-2026-10-21.js (161 checks); card-pass, card-pool, thematic, pale-desert, maps-2026-10-18 follow the moves.
+- [x] Docs: docs/balance/rewards-pass-2026-10-21.md, docs/map-recommendations-2026-10-21.md, decisions (rules entry + RP1-RP6), CHANGELOG.
+- [x] Merged main (SK2b etc.), rebuilt.
 
-## State
-- [ ] code: FACTION_REWARD_TRACK region in arena_app.js
-- [ ] data plan docs/balance/rewards-pass-2026-10-21.json + tools/rewards_pass_2026_10_21.py (applies it, keeps cards.json's format)
-- [ ] submap gates in CONQUEST_MAPS
-- [ ] sim tools/faction_track_sim_2026_10_21.js
-- [ ] tests, docs, decisions, CHANGELOG, build, commit
+## Notes for the merge with BF5
+- 71 cards changed obtain map and 52 are held (record: obtainBefore / obtainAfter): re-run BF5's derivation on them after merging.
+- If BF5 regenerates card-obtain-maps.json, run `node tools/forge_curve_2026_10_19.js maps` after the merge.
+- Re-running `node tools/rewards_pass_2026_10_21.js plan && python3 tools/rewards_pass_apply_2026_10_21.py` is safe (no-op when applied).
