@@ -127,7 +127,8 @@ const md = read('docs/thematic-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'thematic-pass-2026-10-19.xlsx')), '7. the spreadsheet');
 ok(REC.every(p=> md.includes(p.name)) && left.every(id=> md.includes(defs[id].name)), '7. the doc lists every placed card and the ones left in the pool');
 ok(/^# /.test(md) && md.includes('Badger Berserker') && md.includes('Pelican Diver'), '7. the doc names the drift it fixed');
-ok(read('docs/CHANGELOG.md').slice(0, 120000).includes('package TH'), '7. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it
+// 2026-10-19 (LV): later packages' entries sit above it; 2026-10-21 (package TT): so many now that a fixed window misses it: its own dated heading
+ok(/^## 2026-10-19 \(package TH: the thematic pass\)$/m.test(read('docs/CHANGELOG.md')), '7. a CHANGELOG entry (its dated heading)');
 
 console.log(fail ? `thematic-2026-10-19: ${fail} of ${n} failed` : `thematic-2026-10-19: all ${n} checks passed`);
 process.exit(fail ? 1 : 0);

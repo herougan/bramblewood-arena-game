@@ -32118,10 +32118,10 @@
     "species": [
       "Mustelid"
     ],
+    "animal": "otter",
     "archetypes": [
       "Otter"
     ],
-    "animal": "otter",
     "effects": {
       "triggers": [
         {
@@ -32157,10 +32157,10 @@
     "species": [
       "Bird"
     ],
+    "animal": "magpie",
     "archetypes": [
       "Bird"
     ],
-    "animal": "magpie",
     "effects": {
       "disarm": true,
       "flying": true

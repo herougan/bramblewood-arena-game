@@ -95,6 +95,8 @@ for(const code of ['de', 'fr', 'es', 'ja', 'zh-Hans', 'it', 'pt', 'ko', 'zh-Hant
   const cardDefs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; cardDefs[c.id] = d; });
   const g0 = {TX, console, Math, JSON, Object, Array, String, Number, Set, Map, RegExp, Date, Symbol, Boolean, Error, parseInt, parseFloat, isNaN, Infinity, NaN, undefined,
     getCardDefs: ()=> cardDefs, escapeHtml: s=> String(s), escapeAttr: s=> String(s), i18nHtmlText: s=> s, adminModeEnabled: false, EXILE_ZONE_NAME: 'Removal Zone'};
+  // 2026-10-21 (package TT, after TX): the real type hierarchy, not the catch-all stub (speciesLine calls TAXO.ancestors(x).has), as tests/d-2026-10-19.js
+  g0.BramblewoodTaxonomy = require(path.join(ROOT, 'bramblewood-taxonomy.js'));
   const ctx = vm.createContext(new Proxy(g0, {has: ()=> true, get: (t, k)=> k in t ? t[k] : (typeof k === 'string' && /^[A-Z_]+$/.test(k) ? {} : stub), set: (t, k, v)=>{ t[k] = v; return true; }}));
   const a1 = lineOf(/^const SKILL_ICON = /), b1 = lineOf(/^function cardName\(/, a1);
   const code = L.slice(a1, b1).join('\n').replace(/\/\* ---- Skill reveal[\s\S]*?\[SKILL_REVEAL_END\] \*\//, 'function maskHiddenSkills(d){ return d; } function hiddenSkillsOf(){ return []; } function skillHiddenNow(){ return false; }')
@@ -130,7 +132,8 @@ ok(/\.kw\.kw-legendary\{[^}]*background:linear-gradient\(180deg,#f7dc7e,#c99a22\
   ok(/Shadow of the Valley of Death is a very far future map/.test(all) && /Pall Wraith \(`pall-wraith`[^)]*\) lives in the Eye of the Volcano \(20-A/.test(all), 'the far-future map, and the Pall Wraith in the Eye of the Volcano until then');
   ok(/True Strike is affected by Legendary dodges/.test(all) && /Illusory is not Legendary/.test(all), 'the Legendary dodge rules');
   ok(md.includes('**Shadow of the Valley of Death is a very far future map.**') && md.includes('## Stated rules · 2026-10-18'), 'decisions.md is regenerated with it');
-  const pwc = cards.find(c=> c.id === 'pall-wraith'); ok(pwc && pwc.source && pwc.source.node === '20-A-2', 'the Pall Wraith\'s card reward is still 20-A-2'); }
+  // 2026-10-21 (package TT): package RP ("submaps get 1 unique card each") moved it to 20-5 (docs/balance/rewards-pass-2026-10-21.md), as tests/d-2026-10-19.js
+  const pwc = cards.find(c=> c.id === 'pall-wraith'); ok(pwc && pwc.source && pwc.source.kind === 'map' && pwc.source.id === 'm11' && pwc.source.node === '20-5', 'the Pall Wraith\'s card reward is 20-5 (moved off 20-A-2 by package RP)'); }
 
 console.log(`legendary-2026-10-19: ${n - fail}/${n} checks passed`);
 process.exit(fail ? 1 : 0);

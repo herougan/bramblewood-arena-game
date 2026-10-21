@@ -186,8 +186,12 @@ const GI_BANDS = {common: [35, 60], uncommon: [45, 68], rare: [52, 75]};
 ok(POOL.length === 10, `ten example cards (${POOL.length})`);
 GI_KEYS.forEach(k=> ok(POOL.some(c=> c.effects && c.effects[k]), `an example card shows ${k}`));
 ok(!ALL.some(c=> !POOL.includes(c) && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no other card has a new skill yet');
+// 2026-10-21 (package TT): package RP held some placed cards back for a later map (to: awaitingSource; the Chapel Tortoise: Ecclesia on Map 77),
+// so a card RP lists as held has no source and carries awaitingSource instead (docs/balance/rewards-pass-2026-10-21.json)
+const RP_HELD = new Set(JSON.parse(R('docs/balance/rewards-pass-2026-10-21.json')).moves.filter(m=> m.to === 'awaitingSource').map(m=> m.id));
 POOL.forEach(c=>{ const b = T.budget(c), pl = GI_PLACED.find(p=> p.id === c.id), wr = /Measured ([\d.]+)% over (\d+) games/.exec(c.creatorNote || ''), band = GI_BANDS[c.rarity];
-  ok(!c.pool && pl && mapIds.has(pl.poolMap) && c.source && c.locked && c.uuid && c.creatorNote, `${c.id}: placed (source ${c.source && c.source.kind}), its pool map ${pl && pl.poolMap} is a map, a note`);
+  const held = RP_HELD.has(c.id) && !c.source && c.awaitingSource === true;
+  ok(!c.pool && pl && mapIds.has(pl.poolMap) && (c.source || held) && c.locked && c.uuid && c.creatorNote, `${c.id}: placed (source ${c.source ? c.source.kind : held ? 'held by RP' : undefined}), its pool map ${pl && pl.poolMap} is a map, a note`);
   ok(b.ok && !b.missing.length, `${c.id}: inside budget v3 (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})`);
   ok(wr && band && +wr[1] >= band[0] && +wr[1] <= band[1], `${c.id}: measured inside its ${c.rarity} band (${wr && wr[1]}%)`);
   ok(!!H.loadCardDefs()[c.id], `${c.id}: live (the harness, like the build, has it)`); });

@@ -1,6 +1,6 @@
 {
  "note": "The Pale Desert (side map 18-A) against the Map 18 reference deck: simulateReferenceFight, 120 games on seeds 9100 + 37g (the skirmish pass's and the win-rate panel's) and on fresh seeds 5100 + 37g. Written by node tests/pale-desert-2026-10-19.js --measure.",
- "generated": "2026-10-19",
+ "generated": "2026-10-21",
  "fights": [
   {
    "key": "18-A-1",
@@ -55,12 +55,12 @@
    "kind": "skirmish",
    "name": "Vulture Road",
    "target": 0.69,
-   "win": 0.7416666666666667,
-   "fresh": 0.6916666666666667,
+   "win": 0.8,
+   "fresh": 0.8166666666666667,
    "shield": 19,
    "hp": 30,
-   "avgRounds": 10.7,
-   "sig": "[\"18-A-5\",\"skirmish\",{\"stonedrop-vulture\":2,\"skull-vulture\":2,\"dust-hyena\":4,\"rabid-jackal\":1,\"caustic-scorpion\":4,\"sand-widow\":1,\"komodo-warlord\":2},{\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"bramblewood-lynx\",1,1,9,9,{\"bounty\":1}],[\"caustic-scorpion\",1,2,2,12,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"dust-hyena\",0,0,3,10,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"komodo-warlord\",3,4,9,38,{\"poison\":3,\"bounty\":1,\"gash\":3}],[\"mangrove-manatee\",1,3,3,28,{\"tide\":true,\"regen\":2,\"guardian\":true}],[\"nautilus-drifter\",1,3,3,28,{\"onReadyGold\":1,\"bounty\":1}],[\"pelican-diver\",1,1,3,9,{\"triggers\":[{\"on\":\"onReady\",\"do\":\"damage\",\"amount\":2,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"}],\"flying\":true}],[\"rabid-jackal\",0,0,3,5,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"raccoon-bandit\",0,1,6,8,{\"nocturnal\":true,\"bounty\":1}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"skull-vulture\",1,1,3,4,{\"flying\":true,\"daunt\":1,\"nocturnal\":true}],[\"stonedrop-vulture\",1,1,4,7,{\"flying\":true,\"skyfall\":3}]],18,3.54]"
+   "avgRounds": 10.5,
+   "sig": "[\"18-A-5\",\"skirmish\",{\"stonedrop-vulture\":2,\"skull-vulture\":2,\"dust-hyena\":4,\"rabid-jackal\":1,\"caustic-scorpion\":4,\"sand-widow\":1,\"komodo-warlord\":2},{\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"bramblewood-lynx\",1,1,9,9,{\"bounty\":1}],[\"caustic-scorpion\",1,2,2,12,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"dust-hyena\",0,0,3,10,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"komodo-warlord\",3,4,9,38,{\"poison\":3,\"bounty\":1,\"gash\":3}],[\"mangrove-manatee\",1,3,3,28,{\"tide\":true,\"regen\":2,\"guardian\":true}],[\"nautilus-drifter\",1,3,3,28,{\"onReadyGold\":1,\"bounty\":1}],[\"pelican-diver\",1,1,3,9,{\"triggers\":[{\"on\":\"onReady\",\"do\":\"damage\",\"amount\":2,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"}],\"flying\":true}],[\"rabid-jackal\",0,0,3,5,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"raccoon-bandit\",0,1,6,8,{\"nocturnal\":true,\"bounty\":1}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"skull-vulture\",1,1,3,4,{\"flying\":true,\"daunt\":1,\"nocturnal\":true}],[\"stonedrop-vulture\",1,1,4,7,{\"flying\":true,\"archer\":3,\"archerStyle\":\"drop\"}]],18,3.54]"
   },
   {
    "key": "18-A-6",
@@ -68,10 +68,10 @@
    "name": "The Salt Pan",
    "target": 0.644,
    "win": 0.6833333333333333,
-   "fresh": 0.675,
+   "fresh": 0.7166666666666667,
    "shield": 19,
    "hp": 30,
-   "avgRounds": 12.1,
+   "avgRounds": 12,
    "sig": "[\"18-A-6\",\"skirmish\",{\"glowing-gecko\":2,\"sandfish\":3,\"caustic-scorpion\":3,\"thorny-devil\":3,\"sand-widow\":1,\"rabid-jackal\":2,\"dust-hyena\":4},{\"field\":\"heatwave\",\"heatLevel\":2,\"mirage\":true},null,null,null,[[\"bramblewood-lynx\",1,1,9,9,{\"bounty\":1}],[\"caustic-scorpion\",1,2,2,12,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"dust-hyena\",0,0,3,10,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"glowing-gecko\",1,1,7,12,{\"irradiated\":2}],[\"mangrove-manatee\",1,3,3,28,{\"tide\":true,\"regen\":2,\"guardian\":true}],[\"nautilus-drifter\",1,3,3,28,{\"onReadyGold\":1,\"bounty\":1}],[\"pelican-diver\",1,1,3,9,{\"triggers\":[{\"on\":\"onReady\",\"do\":\"damage\",\"amount\":2,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"}],\"flying\":true}],[\"rabid-jackal\",0,0,3,5,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"raccoon-bandit\",0,1,6,8,{\"nocturnal\":true,\"bounty\":1}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"sandfish\",1,1,3,11,{\"dry\":true,\"invisible\":2}],[\"thorny-devil\",1,2,2,14,{\"thorns\":2,\"dry\":true}]],18,3.54]"
   },
   {

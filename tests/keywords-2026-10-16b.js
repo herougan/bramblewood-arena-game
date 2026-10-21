@@ -59,7 +59,8 @@ const near = (x, y, tol)=> Math.abs(x - y) <= (tol || 0.12);
 { const r = landed({att:'te-fence', def:'te-tide', rules:{tideEvade:true}}); ok(r.rate === 1, `B. Fencing cuts through it, as it does Evasive (${r.rate})`); }
 { const r = landed({att:'te-hit', def:'te-evtide', rules:{tideEvade:true}}); ok(near(r.rate, 0.5), `B. an Evasive Tide unit still rolls once, not twice (${r.rate})`); }
 // the switches in the app
-ok(/function tideEvadeOn\(\)\{/.test(eng) && /globalThis\.BramblewoodTestRules/.test(eng) && /return \{ tideEvadeOn, /.test(eng), 'B. the engine reads rules / opts / the page switch, and exposes tideEvadeOn');
+// 2026-10-21 (package TT): package EQ (2026-10-19) put `...EQ_API` first in the engine's returned object, so the exposure is checked on a built engine
+ok(/function tideEvadeOn\(\)\{/.test(eng) && /globalThis\.BramblewoodTestRules/.test(eng) && typeof E.makeSimEngine(defs, E.mulberry32(1), {rules:{}}).tideEvadeOn === 'function', 'B. the engine reads rules / opts / the page switch, and exposes tideEvadeOn');
 ok(/const TEST_RULE_DEFS = \[\n  \{key:'tideEvade',/.test(src) && /testRuleOn\(k\)\{ try\{ return !!\(adminModeEnabled && testRulesStored\(\)\[k\]\)/.test(src), 'B. the Admin rule test only counts while Admin Mode is on');
 ok(/\$\{adminModeEnabled \? testRulesPanelHTML\(\) : ''\}/.test(src) && /id="admin\$\{r\.key\[0\]\.toUpperCase\(\) \+ r\.key\.slice\(1\)\}Chk"/.test(src) && /getElementById\('adminTideEvadeChk'\)/.test(src), 'B. the Admin page has the switch');
 ok(/data-sbxrule=/.test(src) && /setTestRule\(chk\.getAttribute\('data-sbxrule'\), chk\.checked\)/.test(src), 'B. ...and so does the Test Lab panel (admins)');

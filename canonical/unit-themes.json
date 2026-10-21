@@ -1073,49 +1073,50 @@
   }
  ],
  "counts": {
-  "units": 734,
-  "live": 730,
+  "units": 737,
+  "live": 733,
   "pool": 4,
-  "proposed": 108,
+  "proposed": 106,
   "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
-   "type": 203,
-   "home map": 453,
-   "fights": 19,
-   "fallback": 40,
-   "name": 11,
-   "manual": 8
+   "type": 253,
+   "home map": 381,
+   "fights": 26,
+   "fallback": 43,
+   "name": 16,
+   "manual": 8,
+   "other": 10
   },
   "biome": {
-   "river": 73,
-   "meadow-forest": 93,
-   "reef-ocean": 43,
-   "desert-glass": 21,
+   "river": 68,
+   "meadow-forest": 85,
+   "reef-ocean": 45,
+   "desert-glass": 26,
    "tundra-ice": 30,
-   "volcanic-ash": 72,
-   "fungal": 24,
-   "village-keep": 37,
+   "volcanic-ash": 71,
+   "fungal": 17,
+   "village-keep": 41,
    "taiga": 19,
    "long-grass": 18,
-   "redwood": 21,
+   "redwood": 22,
    "jungle": 23,
-   "maze-briar": 24,
-   "mangrove": 18,
-   "mountain-sky": 37,
-   "swamp": 52,
-   "cliffs": 38,
-   "caves": 46,
-   "savanna": 17,
-   "pale-desert": 9,
-   "coast": 19
+   "caves": 52,
+   "maze-briar": 26,
+   "mangrove": 23,
+   "mountain-sky": 36,
+   "swamp": 57,
+   "cliffs": 39,
+   "savanna": 20,
+   "coast": 18,
+   "pale-desert": 1
   },
   "family": {
-   "mammal": 287,
+   "mammal": 288,
    "plant": 11,
    "insect": 72,
    "arachnid": 15,
-   "bird": 126,
+   "bird": 128,
    "worm": 11,
    "fungus": 2,
    "spirit-undead": 19,
@@ -1133,10 +1134,10 @@
    "myriapod": 3
   },
   "faction": {
-   "otters": 28,
+   "otters": 29,
    "wild": 344,
    "hives": 20,
-   "beasts": 121,
+   "beasts": 122,
    "dogs-cats": 12,
    "spirits": 25,
    "supporting-folk": 61,
@@ -1147,11 +1148,11 @@
    "hollow-kin": 12,
    "great-beasts": 12,
    "tidefolk": 3,
-   "hummingbirds": 25,
+   "hummingbirds": 26,
    "ashen-choir": 15
   },
   "animalGroup": {
-   "otter": 27,
+   "otter": 28,
    "owl": 12,
    "dolphin": 2,
    "bee": 9,
@@ -1180,7 +1181,7 @@
    "raccoon": 7,
    "badger": 10,
    "crocodile": 5,
-   "crow": 10,
+   "crow": 11,
    "wolf": 15,
    "boar": 9,
    "turtle": 14,
@@ -1230,7 +1231,7 @@
    "songbird": 12,
    "bird": 2,
    "moth": 8,
-   "hummingbird": 25,
+   "hummingbird": 26,
    "mole": 5,
    "snail": 4,
    "woodlouse": 2,
@@ -1972,7 +1973,6 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "fungal",
     "meadow-forest"
    ],
    "family": "insect",
@@ -1982,8 +1982,8 @@
    "subtype": "structure",
    "faction": "hives",
    "size": "large",
-   "stage": 2,
-   "firstMap": 7,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 2,
     "wait": 3,
@@ -2009,16 +2009,14 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mz"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "structure": true,
    "why": {
-    "biome": "home map mz; type Ants",
+    "biome": "type Ants",
     "family": "species Insect",
     "faction": "Ants / Bee"
    }
@@ -2312,6 +2310,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
+    "meadow-forest",
     "long-grass"
    ],
    "family": "mammal",
@@ -2321,8 +2320,8 @@
    "subtype": null,
    "faction": "dogs-cats",
    "size": "small",
-   "stage": 3,
-   "firstMap": 15,
+   "stage": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -2337,15 +2336,17 @@
     "Canid"
    ],
    "maps": {
-    "home": [],
+    "home": [
+     "m1"
+    ],
     "fights": {
      "ml": 2
     }
    },
-   "source": "pack",
+   "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "fights mostly on long-grass",
+    "biome": "home map m1; fights mostly on long-grass",
     "family": "species Canid",
     "faction": "Dog / Cat"
    },
@@ -2627,8 +2628,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -2783,7 +2784,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "fungal"
+    "caves"
    ],
    "family": "arachnid",
    "sub": "Arachnid",
@@ -2793,7 +2794,7 @@
    "faction": "beasts",
    "size": "large",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 8,
    "body": {
     "cost": 2,
     "wait": 3,
@@ -2819,7 +2820,7 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "m4"
     ],
     "fights": {}
    },
@@ -2827,7 +2828,7 @@
    "enemyOnly": true,
    "structure": true,
    "why": {
-    "biome": "home map mz",
+    "biome": "home map m4",
     "family": "species Arachnid",
     "faction": "hunter type / name"
    }
@@ -2839,6 +2840,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "meadow-forest",
     "fungal"
    ],
    "family": "worm",
@@ -2848,8 +2850,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 7,
+   "stage": 1,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -2865,7 +2867,7 @@
    ],
    "maps": {
     "home": [
-     "mu"
+     "mf"
     ],
     "fights": {
      "mu": 11,
@@ -2875,7 +2877,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mu",
+    "biome": "home map mf; fights mostly on fungal",
     "family": "species Annelid",
     "faction": "default"
    }
@@ -2952,7 +2954,7 @@
    "faction": "beasts",
    "size": "colossal",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 11,
    "body": {
     "cost": 3,
     "wait": 4,
@@ -2981,7 +2983,7 @@
    ],
    "maps": {
     "home": [
-     "mx"
+     "m22"
     ],
     "fights": {
      "m11": 3,
@@ -2993,7 +2995,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mx",
+    "biome": "home map m22",
     "family": "Dragon",
     "faction": "creature rank / Dragon",
     "manual": "a giant worm (🪱) with the Dragon species; not one of the ranked great beasts"
@@ -3057,7 +3059,7 @@
    "status": "live",
    "rarity": "rare",
    "biomes": [
-    "fungal"
+    "caves"
    ],
    "family": "insect",
    "sub": "Insect",
@@ -3067,7 +3069,7 @@
    "faction": "wild",
    "size": "swarm",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 8,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -3096,14 +3098,14 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "m4"
     ],
     "fights": {}
    },
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mz",
+    "biome": "home map m4",
     "family": "species Insect",
     "faction": "default"
    }
@@ -3179,7 +3181,6 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "fungal",
     "meadow-forest"
    ],
    "family": "plant",
@@ -3189,8 +3190,8 @@
    "subtype": "plant",
    "faction": "wild",
    "size": "small",
-   "stage": 2,
-   "firstMap": 7,
+   "stage": 1,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -3206,14 +3207,14 @@
    ],
    "maps": {
     "home": [
-     "mu"
+     "mf"
     ],
     "fights": {}
    },
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mu; type Flora",
+    "biome": "home map mf",
     "family": "Elemental, name",
     "faction": "default"
    }
@@ -3331,6 +3332,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "redwood",
     "meadow-forest"
    ],
    "family": "plant",
@@ -3341,7 +3343,7 @@
    "faction": "wild",
    "size": "colossal",
    "stage": 3,
-   "firstMap": 17,
+   "firstMap": 13,
    "body": {
     "cost": 3,
     "wait": 5,
@@ -3367,7 +3369,7 @@
    ],
    "maps": {
     "home": [
-     "mo"
+     "mr"
     ],
     "fights": {
      "mo": 1
@@ -3377,7 +3379,7 @@
    "enemyOnly": true,
    "structure": true,
    "why": {
-    "biome": "home map mo",
+    "biome": "home map mr; type Flora",
     "family": "Elemental, name",
     "faction": "default"
    },
@@ -3653,6 +3655,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "mangrove",
     "river"
    ],
    "family": "fish",
@@ -3684,7 +3687,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "mk"
     ],
     "fights": {
      "mb": 2,
@@ -3695,7 +3698,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "home map mk; fights mostly on river",
     "family": "species Fish",
     "faction": "default"
    }
@@ -3737,17 +3740,15 @@
     "Fish"
    ],
    "maps": {
-    "home": [
-     "mp"
-    ],
+    "home": [],
     "fights": {
      "mp": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "fights mostly on river",
     "family": "species Fish",
     "faction": "hunter type / name",
     "manual": "the lore bible: the Legion tames fish, \"pike lancers, carp couriers\""
@@ -4543,7 +4544,7 @@
    ],
    "maps": {
     "home": [
-     "mq"
+     "m1"
     ],
     "fights": {
      "m1": 2
@@ -4552,7 +4553,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mq",
+    "biome": "home map m1",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -4633,14 +4634,14 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
    "faction": "wild",
    "size": "large",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 7,
    "body": {
     "cost": 2,
     "wait": 2,
@@ -4665,7 +4666,7 @@
    ],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -4679,7 +4680,7 @@
    "enemyOnly": true,
    "why": {
     "biome": "home map mg; type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -4694,7 +4695,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "nautilus",
    "animalGroup": "nautilus",
    "subtype": null,
@@ -4722,7 +4723,7 @@
    ],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -4738,7 +4739,7 @@
    "enemyOnly": true,
    "why": {
     "biome": "home map mk; type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -5069,7 +5070,7 @@
    ],
    "maps": {
     "home": [
-     "mv"
+     "m10"
     ],
     "fights": {
      "m10": 28,
@@ -5079,7 +5080,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mv",
+    "biome": "home map m10",
     "family": "species Bird",
     "faction": "hunter type / name"
    }
@@ -5840,9 +5841,7 @@
     "Rodent"
    ],
    "maps": {
-    "home": [
-     "mp"
-    ],
+    "home": [],
     "fights": {
      "mb": 2,
      "m2": 4,
@@ -5850,10 +5849,10 @@
      "mg": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "type Beaver",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -5874,8 +5873,8 @@
    "subtype": "structure",
    "faction": "supporting-folk",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 6,
+   "stage": 1,
+   "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -5896,16 +5895,14 @@
     "Rodent"
    ],
    "maps": {
-    "home": [
-     "mp"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "structure": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "type Beaver",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -5952,18 +5949,16 @@
     "Rodent"
    ],
    "maps": {
-    "home": [
-     "mp"
-    ],
+    "home": [],
     "fights": {
      "m24": 4,
      "mp": 4
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp; fights mostly on village-keep",
+    "biome": "type Beaver; fights mostly on village-keep",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -6066,7 +6061,7 @@
    ],
    "maps": {
     "home": [
-     "ms"
+     "mw"
     ],
     "fights": {
      "mw": 12,
@@ -6076,7 +6071,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map ms",
+    "biome": "home map mw",
     "family": "species Reptile",
     "faction": "hunter type / name"
    }
@@ -6177,7 +6172,7 @@
    ],
    "maps": {
     "home": [
-     "ms"
+     "mw"
     ],
     "fights": {
      "mw": 10,
@@ -6188,7 +6183,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map ms",
+    "biome": "home map mw",
     "family": "species Reptile",
     "faction": "hunter type / name"
    }
@@ -6241,7 +6236,7 @@
    ],
    "maps": {
     "home": [
-     "ms"
+     "mw"
     ],
     "fights": {
      "mw": 11,
@@ -6252,7 +6247,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map ms",
+    "biome": "home map mw",
     "family": "species Reptile",
     "faction": "hunter type / name"
    }
@@ -6896,7 +6891,6 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest",
     "swamp"
    ],
    "family": "amphibian",
@@ -6927,9 +6921,7 @@
     "Amphibian"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {
      "mf": 4,
      "mw": 5,
@@ -6939,10 +6931,10 @@
      "mm": 150
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mq; fights mostly on swamp",
+    "biome": "fights mostly on swamp",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -6954,6 +6946,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "swamp",
     "river"
    ],
    "family": "amphibian",
@@ -6991,7 +6984,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "m8"
     ],
     "fights": {
      "mp": 1
@@ -7000,7 +6993,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "home map m8; fights mostly on river",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -7137,7 +7130,7 @@
    "faction": "supporting-folk",
    "size": "medium",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -7191,7 +7184,7 @@
    "faction": "supporting-folk",
    "size": "large",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 2,
     "wait": 2,
@@ -7242,8 +7235,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "large",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 4,
@@ -7263,15 +7256,13 @@
     "Xenarthran"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my",
+    "biome": "type Sloth",
     "family": "species Xenarthran",
     "faction": "craft folk type"
    }
@@ -7293,8 +7284,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "colossal",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 3,
     "wait": 6,
@@ -7357,8 +7348,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 2,
-   "firstMap": 6,
+   "stage": 4,
+   "firstMap": 24,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -7378,17 +7369,15 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mp"
-    ],
+    "home": [],
     "fights": {
      "m24": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp; fights mostly on village-keep",
+    "biome": "name; fights mostly on village-keep",
     "family": "species Bird",
     "faction": "default"
    }
@@ -7409,8 +7398,8 @@
    "subtype": null,
    "faction": "goldfeather",
    "size": "small",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 7,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -7496,7 +7485,7 @@
    ],
    "maps": {
     "home": [
-     "mi"
+     "m6"
     ],
     "fights": {
      "m6": 15,
@@ -7506,7 +7495,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mi",
+    "biome": "home map m6",
     "family": "species Primate",
     "faction": "default"
    },
@@ -8109,8 +8098,8 @@
    "subtype": "spirit",
    "faction": "ecclesia",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 20,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -8129,15 +8118,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m11"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m11",
+    "biome": "held by package RP; made for map m11",
     "family": "Elemental, name",
     "faction": "shrine name"
    }
@@ -8158,8 +8145,8 @@
    "subtype": "spirit",
    "faction": "ecclesia",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 21,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -8182,15 +8169,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m21"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m21",
+    "biome": "held by package RP; made for map m21",
     "family": "Elemental, name",
     "faction": "shrine name"
    }
@@ -8226,18 +8211,16 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m11"
-    ],
+    "home": [],
     "fights": {
      "m11": 36,
      "me": 16
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m11",
+    "biome": "fights mostly on volcanic-ash",
     "family": "Elemental, name",
     "faction": "shrine name"
    }
@@ -8642,19 +8625,17 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "m5": 7,
      "mtut": 4,
      "my": 10
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Bird",
     "faction": "default"
    }
@@ -8675,8 +8656,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -8696,15 +8677,13 @@
     "Amphibian"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -8726,8 +8705,8 @@
    "subtype": "plant",
    "faction": "wild",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -8748,17 +8727,15 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "my": 4
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my; type Flora",
+    "biome": "type Rainforest; type Flora",
     "family": "Elemental, name",
     "faction": "default"
    }
@@ -8871,7 +8848,6 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "pale-desert",
     "savanna"
    ],
    "family": "mammal",
@@ -8903,7 +8879,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "m5"
     ],
     "fights": {
      "m5": 12,
@@ -8914,7 +8890,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mpd; type Savanna",
+    "biome": "home map m5",
     "family": "species Hyaenid",
     "faction": "hunter type / name"
    }
@@ -9406,7 +9382,7 @@
    ],
    "maps": {
     "home": [
-     "mj"
+     "m7"
     ],
     "fights": {
      "mk": 6,
@@ -9416,7 +9392,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mj; fights mostly on mangrove",
+    "biome": "home map m7; fights mostly on mangrove",
     "family": "species Fish",
     "faction": "hunter type / name"
    }
@@ -9431,11 +9407,11 @@
     "reef-ocean"
    ],
    "family": "fish",
-   "sub": "Cnidarian",
+   "sub": "Fish",
    "animal": "moray eel",
    "animalGroup": "eel",
    "subtype": null,
-   "faction": "wild",
+   "faction": "beasts",
    "size": "large",
    "stage": 1,
    "firstMap": 1,
@@ -9463,7 +9439,7 @@
    ],
    "types": [
     "Coral Reef",
-    "Cnidarian"
+    "Fish"
    ],
    "maps": {
     "home": [],
@@ -9473,8 +9449,8 @@
    "enemyOnly": true,
    "why": {
     "biome": "type Coral Reef",
-    "family": "species Cnidarian",
-    "faction": "default",
+    "family": "species Fish",
+    "faction": "hunter type / name",
     "manual": "cards.json species says Cnidarian; a moray is an eel"
    },
    "manual": [
@@ -9564,7 +9540,7 @@
     "reef-ocean"
    ],
    "family": "sea-invertebrate",
-   "sub": "Cnidarian",
+   "sub": "Cnidaria",
    "animal": "coral",
    "animalGroup": "coral",
    "subtype": "structure",
@@ -9593,7 +9569,7 @@
    "types": [
     "Coral Reef",
     "Structure",
-    "Cnidarian"
+    "Cnidaria"
    ],
    "maps": {
     "home": [],
@@ -9606,7 +9582,7 @@
    "structure": true,
    "why": {
     "biome": "type Coral Reef",
-    "family": "species Cnidarian",
+    "family": "species Cnidaria",
     "faction": "default"
    }
   },
@@ -10250,8 +10226,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "tiny",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 6,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -10397,7 +10373,7 @@
      "mn": 6
     }
    },
-   "source": "pack",
+   "source": null,
    "enemyOnly": true,
    "why": {
     "biome": "type Cave",
@@ -10508,7 +10484,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "m3": 2,
@@ -10520,7 +10496,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map me",
+    "biome": "home map m11",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -10543,7 +10519,7 @@
    "faction": "wild",
    "size": "swarm",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -10568,7 +10544,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "m11": 6,
@@ -10582,7 +10558,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map me; fights mostly on meadow-forest",
+    "biome": "home map m11; fights mostly on meadow-forest",
     "family": "species Bird",
     "faction": "default"
    }
@@ -10656,7 +10632,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "caves",
+    "reef-ocean",
     "volcanic-ash"
    ],
    "family": "crustacean",
@@ -10700,7 +10676,7 @@
    ],
    "maps": {
     "home": [
-     "mg"
+     "m7"
     ],
     "fights": {
      "mb": 6,
@@ -10712,7 +10688,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mg; type Volcanic",
+    "biome": "home map m7; type Volcanic",
     "family": "species Crustacean",
     "faction": "default"
    }
@@ -11166,8 +11142,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "coast",
-    "reef-ocean"
+    "reef-ocean",
+    "coast"
    ],
    "family": "fish",
    "sub": "Fish",
@@ -11176,8 +11152,8 @@
    "subtype": null,
    "faction": "tidefolk",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 9,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -11202,7 +11178,7 @@
    ],
    "maps": {
     "home": [
-     "mg"
+     "m7"
     ],
     "fights": {
      "mk": 2,
@@ -11213,7 +11189,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mg; fights mostly on reef-ocean",
+    "biome": "home map m7; type Coastal",
     "family": "species Fish",
     "faction": "eel / seal of the Current or the Mangroves"
    }
@@ -11560,7 +11536,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "fungal",
+    "mangrove",
     "swamp",
     "mountain-sky"
    ],
@@ -11597,7 +11573,7 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "mk"
     ],
     "fights": {
      "m8": 2,
@@ -11608,7 +11584,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mz; type Swamp; fights mostly on mountain-sky",
+    "biome": "home map mk; type Swamp; fights mostly on mountain-sky",
     "family": "species Annelid",
     "faction": "default"
    }
@@ -11710,18 +11686,16 @@
     "Primate"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "m5": 2,
      "my": 2
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my; fights mostly on savanna",
+    "biome": "type Rainforest; fights mostly on savanna",
     "family": "species Primate",
     "faction": "default"
    }
@@ -11771,19 +11745,17 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mz"
-    ],
+    "home": [],
     "fights": {
      "mu": 9,
      "mz": 4,
      "mn": 8
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map mz",
+    "biome": "fights mostly on fungal",
     "family": "species Insect",
     "faction": "default"
    },
@@ -11969,8 +11941,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -11995,17 +11967,15 @@
     "Reptile"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "my": 1
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Reptile",
     "faction": "craft folk type"
    },
@@ -12898,7 +12868,7 @@
    ],
    "maps": {
     "home": [
-     "mv"
+     "m10"
     ],
     "fights": {
      "m10": 9,
@@ -12909,7 +12879,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mv",
+    "biome": "home map m10",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -12931,7 +12901,7 @@
    "faction": "supporting-folk",
    "size": "small",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -12951,15 +12921,13 @@
     "Rodent"
    ],
    "maps": {
-    "home": [
-     "m1"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m1",
+    "biome": "usual ground of Chipmunk",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -12975,7 +12943,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "cuttlefish",
    "animalGroup": "cuttlefish",
    "subtype": null,
@@ -13003,7 +12971,7 @@
    ],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -13015,7 +12983,7 @@
    "enemyOnly": true,
    "why": {
     "biome": "home map m2; type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -13029,7 +12997,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
@@ -13057,11 +13025,11 @@
    ],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
-     "mj"
+     "m7"
     ],
     "fights": {
      "m2": 1,
@@ -13071,8 +13039,8 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mj",
-    "family": "species Mollusc",
+    "biome": "home map m7",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -13092,8 +13060,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -13113,17 +13081,15 @@
     "Xenarthran"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "my": 10
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my",
+    "biome": "type Sloth",
     "family": "species Xenarthran",
     "faction": "craft folk type"
    }
@@ -13144,8 +13110,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "large",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 2,
     "wait": 2,
@@ -13165,15 +13131,13 @@
     "Xenarthran"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map my",
+    "biome": "type Sloth",
     "family": "species Xenarthran",
     "faction": "craft folk type"
    }
@@ -13302,7 +13266,7 @@
    "faction": "otters",
    "size": "large",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 2,
    "body": {
     "cost": 2,
     "wait": 1,
@@ -13323,18 +13287,16 @@
     "Mustelid"
    ],
    "maps": {
-    "home": [
-     "m1"
-    ],
+    "home": [],
     "fights": {
      "mb": 4,
      "mg": 3
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m1; fights mostly on coast",
+    "biome": "type River; fights mostly on coast",
     "family": "species Mustelid",
     "faction": "Otter type"
    }
@@ -13346,7 +13308,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest"
+    "fungal"
    ],
    "family": "bird",
    "sub": "Bird",
@@ -13355,8 +13317,8 @@
    "subtype": null,
    "faction": "beasts",
    "size": "small",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 2,
+   "firstMap": 7,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -13385,14 +13347,14 @@
    ],
    "maps": {
     "home": [
-     "m1"
+     "mu"
     ],
     "fights": {}
    },
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m1",
+    "biome": "home map mu",
     "family": "species Bird",
     "faction": "hunter type / name"
    }
@@ -13404,7 +13366,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest"
+    "long-grass"
    ],
    "family": "mammal",
    "sub": "Canid",
@@ -13413,8 +13375,8 @@
    "subtype": null,
    "faction": "dogs-cats",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 3,
+   "firstMap": 15,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -13435,14 +13397,14 @@
    ],
    "maps": {
     "home": [
-     "m1"
+     "ml"
     ],
     "fights": {}
    },
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m1",
+    "biome": "home map ml",
     "family": "species Canid",
     "faction": "Dog / Cat"
    }
@@ -13454,7 +13416,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest"
+    "village-keep"
    ],
    "family": "mammal",
    "sub": "Felid",
@@ -13464,7 +13426,7 @@
    "faction": "dogs-cats",
    "size": "small",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -13484,15 +13446,13 @@
     "Felid"
    ],
    "maps": {
-    "home": [
-     "m1"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m1",
+    "biome": "usual ground of Cat",
     "family": "species Felid",
     "faction": "Dog / Cat"
    }
@@ -13514,7 +13474,7 @@
    "faction": "wild",
    "size": "swarm",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 11,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -13607,6 +13567,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "swamp",
     "river"
    ],
    "family": "amphibian",
@@ -13642,7 +13603,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "m8"
     ],
     "fights": {
      "mp": 2
@@ -13651,7 +13612,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "home map m8; fights mostly on river",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -13723,8 +13684,8 @@
    "subtype": "spirit",
    "faction": "ecclesia",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 20,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -13747,15 +13708,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m11"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m11",
+    "biome": "held by package RP; made for map m11",
     "family": "Elemental, name",
     "faction": "shrine name"
    }
@@ -13777,7 +13736,7 @@
    "faction": "beasts",
    "size": "medium",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 20,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -13801,7 +13760,7 @@
    ],
    "maps": {
     "home": [
-     "mx"
+     "m22"
     ],
     "fights": {
      "m9": 7,
@@ -13811,7 +13770,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mx",
+    "biome": "home map m22",
     "family": "species Canid",
     "faction": "hunter type / name",
     "manual": "a volcano jackal with the Dog type: a beast, not a village dog"
@@ -13864,7 +13823,7 @@
    ],
    "maps": {
     "home": [
-     "m9"
+     "m3"
     ],
     "fights": {
      "m22": 15,
@@ -13876,7 +13835,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "home map m3",
     "family": "Elemental, emoji",
     "faction": "spirit / elemental / golem"
    }
@@ -13927,7 +13886,7 @@
    ],
    "maps": {
     "home": [
-     "m9"
+     "m3"
     ],
     "fights": {
      "m9": 4
@@ -13936,7 +13895,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "home map m3",
     "family": "species Bird",
     "faction": "default"
    }
@@ -13959,7 +13918,7 @@
    "faction": "wild",
    "size": "medium",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 20,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -13981,7 +13940,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "m22": 1,
@@ -13994,7 +13953,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map me; fights mostly on caves",
+    "biome": "home map m11; fights mostly on caves",
     "family": "species Suid",
     "faction": "default"
    }
@@ -14016,7 +13975,7 @@
    "faction": "great-beasts",
    "size": "large",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 20,
    "body": {
     "cost": 3,
     "wait": 2,
@@ -14042,7 +14001,7 @@
    ],
    "maps": {
     "home": [
-     "mx"
+     "m22"
     ],
     "fights": {
      "m9": 3,
@@ -14052,7 +14011,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mx",
+    "biome": "home map m22",
     "family": "Dragon",
     "faction": "creature rank / Dragon"
    }
@@ -14073,8 +14032,8 @@
    "subtype": null,
    "faction": "hollow-kin",
    "size": "small",
-   "stage": 2,
-   "firstMap": 8,
+   "stage": 3,
+   "firstMap": 12,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -14415,8 +14374,9 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "fungal",
-    "swamp"
+    "caves",
+    "swamp",
+    "fungal"
    ],
    "family": "insect",
    "sub": "Insect",
@@ -14456,7 +14416,7 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "m4"
     ],
     "fights": {
      "mu": 3
@@ -14465,7 +14425,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mz; type Swamp",
+    "biome": "home map m4; type Swamp; fights mostly on fungal",
     "family": "species Insect",
     "faction": "default"
    }
@@ -14488,8 +14448,8 @@
    "subtype": null,
    "faction": "tidefolk",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 8,
    "body": {
     "cost": 2,
     "wait": 0,
@@ -14523,7 +14483,7 @@
    ],
    "maps": {
     "home": [
-     "mg"
+     "m4"
     ],
     "fights": {
      "mj": 1
@@ -14532,7 +14492,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mg; type Ocean; type River",
+    "biome": "home map m4; type Ocean; type River",
     "family": "species Fish",
     "faction": "eel / seal of the Current or the Mangroves"
    }
@@ -14580,7 +14540,7 @@
    ],
    "maps": {
     "home": [
-     "mx"
+     "m22"
     ],
     "fights": {
      "mx": 3
@@ -14589,7 +14549,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mx",
+    "biome": "home map m22",
     "family": "species Insect",
     "faction": "Ants / Bee"
    }
@@ -14601,6 +14561,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "swamp",
     "river"
    ],
    "family": "reptile",
@@ -14641,7 +14602,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "m8"
     ],
     "fights": {
      "mp": 1
@@ -14650,7 +14611,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mp",
+    "biome": "home map m8; type River",
     "family": "species Reptile",
     "faction": "craft folk type"
    },
@@ -14839,6 +14800,10 @@
     [
      "hunter",
      2
+    ],
+    [
+     "hunterVs",
+     "poison"
     ]
    ],
    "types": [
@@ -15133,7 +15098,6 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "meadow-forest",
     "river"
    ],
    "family": "mammal",
@@ -15143,8 +15107,8 @@
    "subtype": null,
    "faction": "otters",
    "size": "small",
-   "stage": 1,
-   "firstMap": 1,
+   "stage": 2,
+   "firstMap": 11,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -15165,14 +15129,12 @@
     "Mustelid"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mf; type Otter",
+    "biome": "type Otter",
     "family": "species Mustelid",
     "faction": "Otter type"
    }
@@ -15272,16 +15234,14 @@
     "Reptile"
    ],
    "maps": {
-    "home": [
-     "m21"
-    ],
+    "home": [],
     "fights": {
      "m21": 8
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map m21",
+    "biome": "fights mostly on mountain-sky",
     "family": "species Reptile",
     "faction": "Ecclesia type"
    }
@@ -15982,8 +15942,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 7,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -17730,7 +17690,6 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest",
     "maze-briar"
    ],
    "family": "mammal",
@@ -17762,7 +17721,7 @@
    ],
    "maps": {
     "home": [
-     "mf"
+     "mh"
     ],
     "fights": {
      "mf": 3,
@@ -17772,7 +17731,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mf; type Hedgehog",
+    "biome": "home map mh",
     "family": "species Erinaceid",
     "faction": "craft folk type"
    }
@@ -17810,9 +17769,7 @@
     "Amphibian"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {
      "m1": 2,
      "mf": 5,
@@ -17821,9 +17778,9 @@
      "mm": 150
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map mf; fights mostly on swamp",
+    "biome": "name; fights mostly on swamp",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -17865,14 +17822,12 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mq",
+    "biome": "usual ground of Insect",
     "family": "species Insect",
     "faction": "default"
    }
@@ -17948,7 +17903,7 @@
    "faction": "supporting-folk",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -18025,19 +17980,17 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {
      "m1": 2,
      "mf": 2,
      "mn": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "enemyOnly": true,
    "why": {
-    "biome": "home map mf",
+    "biome": "fights mostly on meadow-forest",
     "family": "species Insect",
     "faction": "default"
    }
@@ -18260,7 +18213,7 @@
    "faction": "supporting-folk",
    "size": "medium",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 23,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -18591,7 +18544,7 @@
     "wait": 0,
     "attack": 5,
     "health": 7,
-    "dmg": "physical",
+    "dmg": "heat",
     "resist": []
    },
    "skills": [
@@ -18606,9 +18559,7 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m3"
-    ],
+    "home": [],
     "fights": {
      "m3": 16,
      "m11": 20,
@@ -18617,10 +18568,10 @@
      "mx": 2
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m3",
+    "biome": "type Imp",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -18641,8 +18592,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -18667,15 +18618,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Imp",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -18718,17 +18667,15 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {
      "m3": 2
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -18749,8 +18696,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -18772,15 +18719,13 @@
     "Canid"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "species Canid",
     "faction": "Devil / Imp type"
    }
@@ -18801,8 +18746,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "small",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -18822,15 +18767,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -18851,8 +18794,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -18873,16 +18816,14 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "structure": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -18903,8 +18844,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -18919,15 +18860,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -18948,8 +18887,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -18977,15 +18916,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -19006,8 +18943,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -19027,15 +18964,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Imp",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -19056,8 +18991,8 @@
    "subtype": "fiend",
    "faction": "ashen-choir",
    "size": "large",
-   "stage": 4,
-   "firstMap": 19,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19077,15 +19012,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "Elemental, name",
     "faction": "Devil / Imp type"
    }
@@ -19207,8 +19140,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "small",
-   "stage": 1,
-   "firstMap": 1,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19233,15 +19166,13 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map mq",
+    "biome": "held by package RP; made for map mq",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19262,8 +19193,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "small",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19288,15 +19219,13 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10",
+    "biome": "held by package RP; made for map m10",
     "family": "species Insect",
     "faction": "Ecclesia type"
    }
@@ -19317,8 +19246,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19339,15 +19268,13 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10",
+    "biome": "held by package RP; made for map m10",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19368,8 +19295,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "small",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -19390,15 +19317,13 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10",
+    "biome": "held by package RP; made for map m10",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19410,7 +19335,6 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "mountain-sky",
     "village-keep"
    ],
    "family": "bird",
@@ -19420,8 +19344,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "small",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": 4,
+   "firstMap": 24,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19446,17 +19370,15 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {
      "m24": 8
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10; fights mostly on village-keep",
+    "biome": "fights mostly on village-keep",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19477,8 +19399,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -19503,15 +19425,13 @@
     "Mustelid"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10",
+    "biome": "held by package RP; made for map m10",
     "family": "species Mustelid",
     "faction": "Ecclesia type"
    }
@@ -19532,8 +19452,8 @@
    "subtype": "elemental",
    "faction": "ecclesia",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -19555,15 +19475,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10",
+    "biome": "name",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19584,8 +19502,8 @@
    "subtype": null,
    "faction": "ecclesia",
    "size": "small",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -19614,15 +19532,13 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m10"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m10",
+    "biome": "held by package RP; made for map m10",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19677,17 +19593,15 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m21"
-    ],
+    "home": [],
     "fights": {
      "m21": 1
     }
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map m21",
+    "biome": "fights mostly on mountain-sky",
     "family": "species Bird",
     "faction": "Ecclesia type"
    }
@@ -19708,8 +19622,8 @@
    "subtype": "glitch",
    "faction": "spirits",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 21,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -19728,16 +19642,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m21"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "hidden": true,
    "why": {
-    "biome": "home map m21",
+    "biome": "held by package RP; made for map m21",
     "family": "species Bird",
     "faction": "default",
     "manual": "the glitch: \"it has been in the tall grass the whole time\""
@@ -20950,8 +20862,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 1,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -20971,15 +20883,13 @@
     "Mustelid"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "enemyOnly": true,
    "why": {
-    "biome": "home map mf",
+    "biome": "held by package RP; made for map mf",
     "family": "species Mustelid",
     "faction": "default"
    }
@@ -21048,7 +20958,7 @@
     "river"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
@@ -21076,7 +20986,7 @@
    ],
    "types": [
     "Leader",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -21088,7 +20998,7 @@
    "enemyOnly": true,
    "why": {
     "biome": "home map m2",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -22652,7 +22562,7 @@
     "wait": 0,
     "attack": 1,
     "health": 13,
-    "dmg": "physical",
+    "dmg": "heat",
     "resist": []
    },
    "skills": [
@@ -22667,7 +22577,7 @@
    ],
    "maps": {
     "home": [
-     "m9"
+     "m3"
     ],
     "fights": {
      "m3": 8,
@@ -22680,7 +22590,7 @@
    "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "home map m9",
+    "biome": "home map m3",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -23346,13 +23256,15 @@
     "Mustelid"
    ],
    "maps": {
-    "home": [],
+    "home": [
+     "mf"
+    ],
     "fights": {}
    },
-   "source": "pack",
+   "source": "map",
    "enemyOnly": true,
    "why": {
-    "biome": "usual ground of Badger",
+    "biome": "home map mf",
     "family": "species Mustelid",
     "faction": "craft folk type"
    }
@@ -24041,7 +23953,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "m3": 2,
@@ -24053,7 +23965,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map me",
+    "biome": "home map m11",
     "family": "species Undead",
     "faction": "spirit / elemental / golem"
    }
@@ -24098,7 +24010,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "me": 11
@@ -24106,7 +24018,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map me",
+    "biome": "home map m11",
     "family": "species Undead",
     "faction": "spirit / elemental / golem"
    }
@@ -24155,7 +24067,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "me": 2
@@ -24163,7 +24075,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map me",
+    "biome": "home map m11",
     "family": "species Undead",
     "faction": "spirit / elemental / golem"
    }
@@ -24210,7 +24122,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "m11": 2
@@ -24218,7 +24130,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map me",
+    "biome": "home map m11",
     "family": "species Undead",
     "faction": "spirit / elemental / golem"
    }
@@ -24295,7 +24207,7 @@
    "faction": "spirits",
    "size": "large",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 23,
    "body": {
     "cost": 2,
     "wait": 1,
@@ -24446,8 +24358,8 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest",
-    "village-keep"
+    "village-keep",
+    "meadow-forest"
    ],
    "family": "bird",
    "sub": "Bird",
@@ -24457,7 +24369,7 @@
    "faction": "supporting-folk",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -24478,16 +24390,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {
      "mq": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mq; type Village",
+    "biome": "type Village; fights mostly on meadow-forest",
     "family": "species Bird",
     "faction": "craft folk type"
    }
@@ -24612,7 +24522,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "pale-desert",
+    "desert-glass",
     "mountain-sky",
     "cliffs"
    ],
@@ -24639,8 +24549,12 @@
      null
     ],
     [
-     "skyfall",
+     "archer",
      3
+    ],
+    [
+     "archerStyle",
+     "drop"
     ]
    ],
    "types": [
@@ -24650,7 +24564,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "md"
     ],
     "fights": {
      "mc": 6,
@@ -24661,7 +24575,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Mountain; fights mostly on cliffs",
+    "biome": "home map md; type Mountain; fights mostly on cliffs",
     "family": "species Bird",
     "faction": "hunter type / name"
    }
@@ -24673,6 +24587,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
+    "swamp",
     "river"
    ],
    "family": "amphibian",
@@ -24705,7 +24620,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "m8"
     ],
     "fights": {
      "mp": 2
@@ -24713,7 +24628,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mp",
+    "biome": "home map m8; type Pond",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -24725,8 +24640,8 @@
    "status": "live",
    "rarity": "rare",
    "biomes": [
-    "meadow-forest",
-    "maze-briar"
+    "maze-briar",
+    "meadow-forest"
    ],
    "family": "mammal",
    "sub": "Mammal",
@@ -24760,16 +24675,14 @@
     "Mammal"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {
      "mf": 1
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mf; type Hedgehog",
+    "biome": "type Hedgehog; fights mostly on meadow-forest",
     "family": "species Mammal",
     "faction": "craft folk type"
    }
@@ -24965,7 +24878,7 @@
    "faction": "dogs-cats",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -24982,7 +24895,7 @@
    ],
    "maps": {
     "home": [
-     "mq"
+     "m1"
     ],
     "fights": {
      "mq": 1
@@ -24990,7 +24903,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mq; type Village",
+    "biome": "home map m1; type Village",
     "family": "species Mammal",
     "faction": "Dog / Cat"
    }
@@ -25013,7 +24926,7 @@
    "faction": "dogs-cats",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 0,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -25030,7 +24943,7 @@
    ],
    "maps": {
     "home": [
-     "mq"
+     "m1"
     ],
     "fights": {
      "mq": 1
@@ -25038,7 +24951,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mq; type Village",
+    "biome": "home map m1; type Village",
     "family": "species Mammal",
     "faction": "Dog / Cat"
    }
@@ -25557,7 +25470,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "squid",
    "animalGroup": "squid",
    "subtype": null,
@@ -25586,7 +25499,7 @@
    "types": [
     "Cephalopod",
     "Ocean",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [],
@@ -25595,7 +25508,7 @@
    "source": "raid",
    "why": {
     "biome": "type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -25609,7 +25522,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "squid",
    "animalGroup": "squid",
    "subtype": null,
@@ -25638,7 +25551,7 @@
    "types": [
     "Cephalopod",
     "Ocean",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [],
@@ -25650,7 +25563,7 @@
    "source": "raid",
    "why": {
     "biome": "type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -25664,7 +25577,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
@@ -25693,7 +25606,7 @@
    "types": [
     "Cephalopod",
     "Ocean",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [],
@@ -25705,7 +25618,7 @@
    "source": "raid",
    "why": {
     "biome": "type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -25719,7 +25632,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "vampire squid",
    "animalGroup": "squid",
    "subtype": null,
@@ -25748,7 +25661,7 @@
    "types": [
     "Cephalopod",
     "Ocean",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [],
@@ -25759,7 +25672,7 @@
    "source": "raid",
    "why": {
     "biome": "type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -25773,7 +25686,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
@@ -25802,7 +25715,7 @@
    "types": [
     "Cephalopod",
     "Ocean",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [],
@@ -25811,7 +25724,7 @@
    "source": "raid",
    "why": {
     "biome": "type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -25825,7 +25738,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
@@ -25854,7 +25767,7 @@
    "types": [
     "Cephalopod",
     "Ocean",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [],
@@ -25863,7 +25776,7 @@
    "source": "raid",
    "why": {
     "biome": "type Cephalopod",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -26917,7 +26830,7 @@
    "faction": "wild",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -26941,16 +26854,14 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {
      "mq": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mq",
+    "biome": "name",
     "family": "species Insect",
     "faction": "default"
    }
@@ -27130,9 +27041,9 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "pale-desert",
+    "savanna",
     "desert-glass",
-    "savanna"
+    "pale-desert"
    ],
    "family": "mammal",
    "sub": "Herpestid",
@@ -27141,8 +27052,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 18,
+   "stage": 3,
+   "firstMap": 14,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -27168,7 +27079,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "m5"
     ],
     "fights": {
      "mpd": 4
@@ -27176,7 +27087,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Desert; type Savanna",
+    "biome": "home map m5; type Desert; fights mostly on pale-desert",
     "family": "species Herpestid",
     "faction": "default"
    }
@@ -27191,7 +27102,7 @@
     "reef-ocean"
    ],
    "family": "sea-invertebrate",
-   "sub": "Cnidarian",
+   "sub": "Cnidaria",
    "animal": "jellyfish",
    "animalGroup": "jellyfish",
    "subtype": null,
@@ -27224,7 +27135,7 @@
    "types": [
     "Ocean",
     "Coral Reef",
-    "Cnidarian"
+    "Cnidaria"
    ],
    "maps": {
     "home": [],
@@ -27233,7 +27144,7 @@
    "source": null,
    "why": {
     "biome": "type Ocean",
-    "family": "species Cnidarian",
+    "family": "species Cnidaria",
     "faction": "default"
    }
   },
@@ -27247,7 +27158,7 @@
     "reef-ocean"
    ],
    "family": "sea-invertebrate",
-   "sub": "Cnidarian",
+   "sub": "Cnidaria",
    "animal": "jellyfish",
    "animalGroup": "jellyfish",
    "subtype": null,
@@ -27275,18 +27186,18 @@
    ],
    "types": [
     "Ocean",
-    "Cnidarian"
+    "Cnidaria"
    ],
    "maps": {
     "home": [
-     "mj"
+     "m7"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mj",
-    "family": "species Cnidarian",
+    "biome": "home map m7",
+    "family": "species Cnidaria",
     "faction": "default"
    }
   },
@@ -27356,6 +27267,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "mangrove",
     "swamp"
    ],
    "family": "amphibian",
@@ -27365,8 +27277,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 1,
-   "firstMap": 5,
+   "stage": 2,
+   "firstMap": 9,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -27392,13 +27304,13 @@
    ],
    "maps": {
     "home": [
-     "ms"
+     "mk"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map ms",
+    "biome": "home map mk; type Swamp",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -27497,7 +27409,7 @@
    ],
    "maps": {
     "home": [
-     "mi"
+     "m6"
     ],
     "fights": {
      "m6": 4,
@@ -27506,7 +27418,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mi",
+    "biome": "home map m6",
     "family": "species Mustelid",
     "faction": "hunter type / name"
    }
@@ -27557,7 +27469,7 @@
    ],
    "maps": {
     "home": [
-     "mx"
+     "m22"
     ],
     "fights": {
      "m22": 1,
@@ -27566,7 +27478,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mx; type Cave",
+    "biome": "home map m22; type Cave",
     "family": "species Myriapod",
     "faction": "default"
    }
@@ -27616,7 +27528,7 @@
    ],
    "maps": {
     "home": [
-     "mx"
+     "m22"
     ],
     "fights": {
      "md": 6,
@@ -27631,7 +27543,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mx",
+    "biome": "home map m22",
     "family": "species Reptile",
     "faction": "default"
    }
@@ -27738,7 +27650,7 @@
    ],
    "maps": {
     "home": [
-     "mn"
+     "m4"
     ],
     "fights": {
      "m4": 6
@@ -27746,7 +27658,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mn",
+    "biome": "home map m4",
     "family": "species Amphibian",
     "faction": "Cave + mole / bat / salamander"
    }
@@ -27767,8 +27679,8 @@
    "subtype": null,
    "faction": "beasts",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 8,
+   "stage": 1,
+   "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -27793,14 +27705,12 @@
     "Arachnid"
    ],
    "maps": {
-    "home": [
-     "mn"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mn",
+    "biome": "type Cave",
     "family": "species Arachnid",
     "faction": "hunter type / name"
    }
@@ -27822,7 +27732,7 @@
    "faction": "beasts",
    "size": "small",
    "stage": 1,
-   "firstMap": 1,
+   "firstMap": 5,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -27842,16 +27752,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {
      "mq": 1
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mq",
+    "biome": "name",
     "family": "species Bird",
     "faction": "hunter type / name"
    }
@@ -27863,8 +27771,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "pale-desert",
-    "savanna"
+    "savanna",
+    "pale-desert"
    ],
    "family": "mammal",
    "sub": "Canid",
@@ -27873,8 +27781,8 @@
    "subtype": null,
    "faction": "beasts",
    "size": "small",
-   "stage": 4,
-   "firstMap": 18,
+   "stage": 3,
+   "firstMap": 14,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -27900,7 +27808,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "m5"
     ],
     "fights": {
      "md": 3,
@@ -27909,7 +27817,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Savanna",
+    "biome": "home map m5; fights mostly on pale-desert",
     "family": "species Canid",
     "faction": "hunter type / name"
    }
@@ -28016,6 +27924,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "mangrove",
     "river",
     "coast"
    ],
@@ -28048,7 +27957,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "mk"
     ],
     "fights": {
      "mb": 8,
@@ -28058,7 +27967,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mp; fights mostly on coast",
+    "biome": "home map mk; type River; fights mostly on coast",
     "family": "species Fish",
     "faction": "default"
    }
@@ -28070,9 +27979,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "fungal",
-    "swamp",
-    "caves"
+    "caves",
+    "swamp"
    ],
    "family": "mammal",
    "sub": "Bat",
@@ -28082,7 +27990,7 @@
    "faction": "hollow-kin",
    "size": "small",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 8,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -28112,13 +28020,13 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "m4"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mz; type Swamp; type Cave",
+    "biome": "home map m4; type Swamp",
     "family": "species Bat",
     "faction": "Cave + mole / bat / salamander"
    }
@@ -28133,7 +28041,7 @@
     "village-keep"
    ],
    "family": "mammal",
-   "sub": "Feline",
+   "sub": "Felid",
    "animal": "cat",
    "animalGroup": "cat",
    "subtype": null,
@@ -28164,7 +28072,7 @@
     ]
    ],
    "types": [
-    "Feline"
+    "Felid"
    ],
    "maps": {
     "home": [],
@@ -28172,9 +28080,9 @@
    },
    "source": null,
    "why": {
-    "biome": "usual ground of Feline",
-    "family": "species Feline",
-    "faction": "default",
+    "biome": "usual ground of Felid",
+    "family": "species Felid",
+    "faction": "hunter type / name",
     "manual": "a cat in a starry hat: house-sized cats are friends of both peoples"
    },
    "manual": [
@@ -28301,8 +28209,8 @@
    "subtype": null,
    "faction": "otters",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 1,
+   "stage": 2,
+   "firstMap": 11,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -28356,8 +28264,8 @@
    "subtype": null,
    "faction": "hummingbirds",
    "size": "small",
-   "stage": 1,
-   "firstMap": 1,
+   "stage": 2,
+   "firstMap": 11,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -28772,7 +28680,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "squid",
    "animalGroup": "squid",
    "subtype": null,
@@ -28804,18 +28712,18 @@
    ],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
-     "mj"
+     "m7"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mj",
-    "family": "species Mollusc",
+    "biome": "home map m7",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -28941,6 +28849,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "mangrove",
     "swamp"
    ],
    "family": "mammal",
@@ -28950,8 +28859,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 5,
+   "stage": 2,
+   "firstMap": 9,
    "body": {
     "cost": 0,
     "wait": 1,
@@ -28972,7 +28881,7 @@
    ],
    "maps": {
     "home": [
-     "ms"
+     "mk"
     ],
     "fights": {
      "ms": 2
@@ -28980,7 +28889,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map ms",
+    "biome": "home map mk; type Swamp",
     "family": "species Rodent",
     "faction": "default"
    },
@@ -29076,14 +28985,12 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mq",
+    "biome": "type Forest",
     "family": "species Bird",
     "faction": "default"
    }
@@ -29403,17 +29310,15 @@
     "Primate"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "m5": 4,
      "my": 4
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my; fights mostly on savanna",
+    "biome": "type Rainforest; fights mostly on savanna",
     "family": "species Primate",
     "faction": "default"
    }
@@ -29543,8 +29448,8 @@
    "subtype": null,
    "faction": "road-folk",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -29569,16 +29474,14 @@
     "Procyonid"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "my": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Procyonid",
     "faction": "mouse / rat / raccoon"
    }
@@ -29856,7 +29759,6 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "swamp",
     "caves",
     "river"
    ],
@@ -29867,8 +29769,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "small",
-   "stage": 1,
-   "firstMap": 5,
+   "stage": 2,
+   "firstMap": 8,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -29890,13 +29792,13 @@
    ],
    "maps": {
     "home": [
-     "ms"
+     "m4"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map ms; type Mole; type River",
+    "biome": "home map m4; type River",
     "family": "species Rodent",
     "faction": "craft folk type"
    }
@@ -30044,13 +29946,13 @@
    ],
    "maps": {
     "home": [
-     "mj"
+     "m7"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mj",
+    "biome": "home map m7",
     "family": "species Fish",
     "faction": "default"
    }
@@ -30065,14 +29967,14 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "blue-ringed octopus",
    "animalGroup": "octopus",
    "subtype": null,
    "faction": "wild",
    "size": "large",
-   "stage": 2,
-   "firstMap": 10,
+   "stage": 3,
+   "firstMap": 14,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -30090,7 +29992,7 @@
    "types": [
     "Cephalopod",
     "Coral Reef",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -30103,7 +30005,7 @@
    "source": "map",
    "why": {
     "biome": "home map mj",
-    "family": "species Mollusc",
+    "family": "species Cephalopod",
     "faction": "default"
    }
   },
@@ -30332,8 +30234,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -30354,16 +30256,14 @@
     "Annelid"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "my": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Annelid",
     "faction": "default"
    }
@@ -30375,8 +30275,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "pale-desert",
-    "desert-glass"
+    "desert-glass",
+    "pale-desert"
    ],
    "family": "reptile",
    "sub": "Reptile",
@@ -30407,16 +30307,14 @@
     "Reptile"
    ],
    "maps": {
-    "home": [
-     "mpd"
-    ],
+    "home": [],
     "fights": {
      "mpd": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map mpd; type Desert",
+    "biome": "type Desert; fights mostly on pale-desert",
     "family": "species Reptile",
     "faction": "default"
    }
@@ -30631,6 +30529,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
+    "swamp",
     "river"
    ],
    "family": "amphibian",
@@ -30663,13 +30562,13 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "m8"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mp",
+    "biome": "home map m8; type Pond",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -30714,7 +30613,7 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "mu"
     ],
     "fights": {
      "mz": 4
@@ -30722,7 +30621,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mz; type Pond",
+    "biome": "home map mu; type Pond",
     "family": "species Annelid",
     "faction": "default"
    }
@@ -31019,17 +30918,15 @@
     "Primate"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "m5": 4,
      "my": 4
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my; fights mostly on savanna",
+    "biome": "type Rainforest; fights mostly on savanna",
     "family": "species Primate",
     "faction": "default"
    }
@@ -31051,8 +30948,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -31073,17 +30970,15 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "m9": 4,
      "my": 1
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my; fights mostly on volcanic-ash",
+    "biome": "type Rainforest; fights mostly on volcanic-ash",
     "family": "species Insect",
     "faction": "default"
    }
@@ -31095,6 +30990,7 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
+    "swamp",
     "river",
     "coast"
    ],
@@ -31128,7 +31024,7 @@
    ],
    "maps": {
     "home": [
-     "mp"
+     "m8"
     ],
     "fights": {
      "mb": 6,
@@ -31138,7 +31034,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mp; fights mostly on coast",
+    "biome": "home map m8; type River; fights mostly on coast",
     "family": "species Insect",
     "faction": "default"
    }
@@ -31360,8 +31256,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "volcanic-ash",
-    "caves"
+    "caves",
+    "volcanic-ash"
    ],
    "family": "mammal",
    "sub": "Bat",
@@ -31371,7 +31267,7 @@
    "faction": "ashen-choir",
    "size": "medium",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 23,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -31392,16 +31288,14 @@
     "Bat"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {
      "m9": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map m9; type Bat",
+    "biome": "type Bat; type Devil",
     "family": "species Bat",
     "faction": "Devil / Imp type"
    }
@@ -31423,7 +31317,7 @@
    "faction": "ashen-choir",
    "size": "medium",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 23,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -31444,16 +31338,14 @@
     "Amphibian"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {
      "m9": 6
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "species Amphibian",
     "faction": "Devil / Imp type"
    }
@@ -31808,13 +31700,13 @@
    ],
    "maps": {
     "home": [
-     "mi"
+     "m6"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mi; type Cave",
+    "biome": "home map m6; type Cave",
     "family": "species Arachnid",
     "faction": "hunter type / name"
    }
@@ -31927,8 +31819,8 @@
    "status": "live",
    "rarity": "rare",
    "biomes": [
-    "pale-desert",
-    "desert-glass"
+    "desert-glass",
+    "pale-desert"
    ],
    "family": "bird",
    "sub": "Bird",
@@ -31960,7 +31852,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "md"
     ],
     "fights": {
      "mpd": 2
@@ -31968,7 +31860,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Desert",
+    "biome": "home map md; fights mostly on pale-desert",
     "family": "species Bird",
     "faction": "hunter type / name"
    }
@@ -32444,8 +32336,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": 4,
+   "firstMap": 18,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -32466,16 +32358,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {
      "my": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Bird",
     "faction": "default"
    }
@@ -32642,7 +32532,6 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest",
     "village-keep"
    ],
    "family": "insect",
@@ -32674,14 +32563,12 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mq"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mq; type Village",
+    "biome": "type Village",
     "family": "species Insect",
     "faction": "Ants / Bee"
    }
@@ -32903,8 +32790,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 3,
-   "firstMap": 14,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -32925,14 +32812,12 @@
     "Reptile"
    ],
    "maps": {
-    "home": [
-     "my"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map my",
+    "biome": "type Rainforest",
     "family": "species Reptile",
     "faction": "default"
    }
@@ -32953,8 +32838,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 8,
+   "stage": 3,
+   "firstMap": 12,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -32975,16 +32860,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mn"
-    ],
+    "home": [],
     "fights": {
      "mn": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map mn",
+    "biome": "type Cave",
     "family": "species Bird",
     "faction": "default"
    }
@@ -33127,7 +33010,7 @@
    ],
    "maps": {
     "home": [
-     "m9"
+     "m3"
     ],
     "fights": {
      "m9": 3
@@ -33135,7 +33018,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map m9",
+    "biome": "home map m3",
     "family": "species Amphibian",
     "faction": "default"
    }
@@ -33210,7 +33093,7 @@
    "faction": "ashen-choir",
    "size": "medium",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 23,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -33231,16 +33114,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {
      "m9": 2
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "species Bird",
     "faction": "Devil / Imp type"
    }
@@ -33262,7 +33143,7 @@
    "faction": "ashen-choir",
    "size": "large",
    "stage": 4,
-   "firstMap": 19,
+   "firstMap": 23,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -33283,16 +33164,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {
      "m9": 1
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "species Bird",
     "faction": "Devil / Imp type"
    }
@@ -33460,7 +33339,7 @@
     "reef-ocean"
    ],
    "family": "sea-invertebrate",
-   "sub": "Cnidarian",
+   "sub": "Cnidaria",
    "animal": "jellyfish",
    "animalGroup": "jellyfish",
    "subtype": null,
@@ -33485,7 +33364,7 @@
    "types": [
     "Ocean",
     "Elemental",
-    "Cnidarian"
+    "Cnidaria"
    ],
    "maps": {
     "home": [],
@@ -33494,7 +33373,7 @@
    "source": null,
    "why": {
     "biome": "type Ocean",
-    "family": "species Cnidarian",
+    "family": "species Cnidaria",
     "faction": "default"
    }
   },
@@ -33953,17 +33832,15 @@
     "Mammal"
    ],
    "maps": {
-    "home": [
-     "m9"
-    ],
+    "home": [],
     "fights": {
      "m3": 8,
      "m9": 27
     }
    },
-   "source": "map",
+   "source": null,
    "why": {
-    "biome": "home map m9",
+    "biome": "type Devil",
     "family": "species Mammal",
     "faction": "Devil / Imp type"
    }
@@ -34165,7 +34042,7 @@
     "volcanic-ash"
    ],
    "family": "mammal",
-   "sub": "Feline",
+   "sub": "Felid",
    "animal": "snow leopard",
    "animalGroup": "leopard",
    "subtype": null,
@@ -34208,7 +34085,7 @@
    "types": [
     "Mountain",
     "Frost",
-    "Feline"
+    "Felid"
    ],
    "maps": {
     "home": [
@@ -34221,7 +34098,7 @@
    "source": "map",
    "why": {
     "biome": "home map m22; type Mountain; fights mostly on volcanic-ash",
-    "family": "species Feline",
+    "family": "species Felid",
     "faction": "hunter type / name"
    }
   },
@@ -35040,7 +34917,6 @@
    "status": "live",
    "rarity": "rare",
    "biomes": [
-    "fungal",
     "caves"
    ],
    "family": "arachnid",
@@ -35051,7 +34927,7 @@
    "faction": "beasts",
    "size": "medium",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 8,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -35077,13 +34953,13 @@
    ],
    "maps": {
     "home": [
-     "mz"
+     "m4"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mz; type Cave",
+    "biome": "home map m4",
     "family": "species Arachnid",
     "faction": "hunter type / name"
    }
@@ -35166,8 +35042,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "small",
-   "stage": 1,
-   "firstMap": 5,
+   "stage": 2,
+   "firstMap": 9,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -35310,7 +35186,7 @@
    ],
    "maps": {
     "home": [
-     "me"
+     "m11"
     ],
     "fights": {
      "me": 2
@@ -35318,7 +35194,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map me",
+    "biome": "home map m11",
     "family": "species Bird",
     "faction": "hunter type / name"
    }
@@ -35611,8 +35487,8 @@
    "subtype": "fiend",
    "faction": "great-beasts",
    "size": "huge",
-   "stage": 4,
-   "firstMap": 20,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 3,
     "wait": 3,
@@ -35644,15 +35520,13 @@
     "Elemental"
    ],
    "maps": {
-    "home": [
-     "me"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": null,
    "rank": 3,
    "why": {
-    "biome": "home map me",
+    "biome": "type Fiend",
     "family": "Elemental, name",
     "faction": "creature rank / Dragon"
    }
@@ -35674,8 +35548,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "medium",
-   "stage": 1,
-   "firstMap": 2,
+   "stage": 2,
+   "firstMap": 8,
    "body": {
     "cost": 1,
     "wait": 2,
@@ -35709,13 +35583,13 @@
    ],
    "maps": {
     "home": [
-     "mg"
+     "m4"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map mg; type Coastal",
+    "biome": "home map m4; type Coastal",
     "family": "species Crustacean",
     "faction": "default"
    }
@@ -35762,14 +35636,12 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {}
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mf",
+    "biome": "type Forest",
     "family": "species Insect",
     "faction": "default"
    }
@@ -35781,8 +35653,8 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "pale-desert",
-    "desert-glass"
+    "desert-glass",
+    "pale-desert"
    ],
    "family": "reptile",
    "sub": "Reptile",
@@ -35818,7 +35690,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "md"
     ],
     "fights": {
      "mpd": 9
@@ -35826,7 +35698,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Desert",
+    "biome": "home map md; fights mostly on pale-desert",
     "family": "species Reptile",
     "faction": "default"
    }
@@ -35838,8 +35710,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "pale-desert",
-    "desert-glass"
+    "desert-glass",
+    "pale-desert"
    ],
    "family": "mammal",
    "sub": "Mammal",
@@ -35875,7 +35747,7 @@
    ],
    "maps": {
     "home": [
-     "mpd"
+     "md"
     ],
     "fights": {
      "mpd": 8
@@ -35883,7 +35755,7 @@
    },
    "source": "map",
    "why": {
-    "biome": "home map mpd; type Desert",
+    "biome": "home map md; fights mostly on pale-desert",
     "family": "species Mammal",
     "faction": "default"
    }
@@ -35957,8 +35829,8 @@
    "status": "live",
    "rarity": "common",
    "biomes": [
-    "meadow-forest",
-    "river"
+    "river",
+    "meadow-forest"
    ],
    "family": "mammal",
    "sub": "Rodent",
@@ -35968,7 +35840,7 @@
    "faction": "wild",
    "size": "small",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 4,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -35994,13 +35866,13 @@
    ],
    "maps": {
     "home": [
-     "m1"
+     "m2"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map m1; type River",
+    "biome": "home map m2; type Mouse",
     "family": "species Rodent",
     "faction": "default"
    }
@@ -36012,8 +35884,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "meadow-forest",
-    "river"
+    "river",
+    "meadow-forest"
    ],
    "family": "mammal",
    "sub": "Mustelid",
@@ -36023,7 +35895,7 @@
    "faction": "beasts",
    "size": "small",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 4,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -36049,13 +35921,13 @@
    ],
    "maps": {
     "home": [
-     "m1"
+     "m2"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map m1; type River",
+    "biome": "home map m2; type Forest",
     "family": "species Mustelid",
     "faction": "hunter type / name"
    }
@@ -36118,6 +35990,7 @@
    "status": "live",
    "rarity": "rare",
    "biomes": [
+    "fungal",
     "meadow-forest"
    ],
    "family": "mammal",
@@ -36127,8 +36000,8 @@
    "subtype": null,
    "faction": "beasts",
    "size": "small",
-   "stage": 1,
-   "firstMap": 0,
+   "stage": 2,
+   "firstMap": 7,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -36153,13 +36026,13 @@
    ],
    "maps": {
     "home": [
-     "m1"
+     "mu"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map m1",
+    "biome": "home map mu; type Forest",
     "family": "species Mustelid",
     "faction": "hunter type / name"
    }
@@ -36223,6 +36096,7 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
+    "swamp",
     "river"
    ],
    "family": "reptile",
@@ -36233,7 +36107,7 @@
    "faction": "beasts",
    "size": "small",
    "stage": 1,
-   "firstMap": 0,
+   "firstMap": 5,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -36259,13 +36133,13 @@
    ],
    "maps": {
     "home": [
-     "m1"
+     "mw"
     ],
     "fights": {}
    },
    "source": "map",
    "why": {
-    "biome": "home map m1",
+    "biome": "home map mw; type River",
     "family": "species Reptile",
     "faction": "hunter type / name"
    }
@@ -36308,17 +36182,15 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {
      "mf": 2,
      "mq": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mf",
+    "biome": "type Field",
     "family": "species Insect",
     "faction": "default"
    }
@@ -36413,17 +36285,15 @@
     "Insect"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {
      "mf": 2,
      "mq": 2
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mf",
+    "biome": "type Forest",
     "family": "species Insect",
     "faction": "default"
    }
@@ -36518,16 +36388,14 @@
     "Bird"
    ],
    "maps": {
-    "home": [
-     "mf"
-    ],
+    "home": [],
     "fights": {
      "mf": 4
     }
    },
-   "source": "map",
+   "source": "pack",
    "why": {
-    "biome": "home map mf",
+    "biome": "type Field",
     "family": "species Bird",
     "faction": "default"
    }
@@ -37659,8 +37527,8 @@
    "subtype": null,
    "faction": "supporting-folk",
    "size": "tiny",
-   "stage": 1,
-   "firstMap": 5,
+   "stage": 2,
+   "firstMap": 9,
    "body": {
     "cost": 0,
     "wait": 0,
@@ -41439,6 +41307,152 @@
    }
   },
   {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "icon": "🦦",
+   "status": "live",
+   "rarity": "uncommon",
+   "biomes": [
+    "river"
+   ],
+   "family": "mammal",
+   "sub": "Mustelid",
+   "animal": "otter",
+   "animalGroup": "otter",
+   "subtype": null,
+   "faction": "otters",
+   "size": "medium",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 2,
+    "wait": 1,
+    "attack": 1,
+    "health": 14,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "trigger",
+     "perTurn→forgeWeapon 1"
+    ]
+   ],
+   "types": [
+    "Otter",
+    "Mustelid"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": null,
+   "why": {
+    "biome": "type Otter",
+    "family": "species Mustelid",
+    "faction": "Otter type"
+   }
+  },
+  {
+   "id": "glintsnatch-magpie",
+   "name": "Glintsnatch Magpie",
+   "icon": "🐦‍⬛",
+   "status": "live",
+   "rarity": "uncommon",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "magpie",
+   "animalGroup": "crow",
+   "subtype": null,
+   "faction": "wild",
+   "size": "small",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 0,
+    "attack": 3,
+    "health": 7,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "disarm",
+     null
+    ],
+    [
+     "flying",
+     null
+    ]
+   ],
+   "types": [
+    "Bird",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": null,
+   "why": {
+    "biome": "usual ground of Bird",
+    "family": "species Bird",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "icon": "🐦",
+   "status": "live",
+   "rarity": "starter",
+   "biomes": [
+    "cliffs"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "hummingbird",
+   "animalGroup": "hummingbird",
+   "subtype": null,
+   "faction": "hummingbirds",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 0,
+   "body": {
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 5,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "flying",
+     null
+    ]
+   ],
+   "types": [
+    "Hummingbird",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": null,
+   "starterDeck": "hummingbirds",
+   "why": {
+    "biome": "type Hummingbird",
+    "family": "species Bird",
+    "faction": "Hummingbird type"
+   }
+  },
+  {
    "id": "dire-cave-olm",
    "name": "Peakroot Olm",
    "internalName": "Dire Cave Olm",
@@ -41803,198 +41817,13 @@
    }
   },
   {
-   "id": "elder-oilbird",
-   "name": "Sundered Oilbird",
-   "internalName": "Elder Oilbird",
-   "nameProposal": true,
-   "icon": "🐦",
-   "status": "proposed",
-   "rarity": "veryrare",
-   "biomes": [
-    "caves",
-    "volcanic-ash"
-   ],
-   "family": "bird",
-   "sub": "Bird",
-   "animal": "oilbird",
-   "animalGroup": "nightjar",
-   "subtype": null,
-   "faction": "wild",
-   "size": "huge",
-   "stage": 4,
-   "firstMap": 20,
-   "body": {
-    "cost": 2,
-    "wait": 2,
-    "attack": 9,
-    "health": 21,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Bird",
-    "Cave",
-    "Bird"
-   ],
-   "maps": {
-    "home": [
-     "m11"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "elder",
-    "of": "oilbird",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
-    "eff": {
-     "attack": 1.5,
-     "health": 1.75
-    },
-    "N": 49.29,
-    "N2": 269.94,
-    "x1": 39,
-    "x2": 189,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.8,
-      "health": 2
-     },
-     "cost": 2,
-     "wait": 2,
-     "attack": 10,
-     "health": 19
-    },
-    "baseSkills": [
-     [
-      "sonar",
-      null
-     ]
-    ],
-    "map": "m11",
-    "mapName": "The Sundered Peak",
-    "mapNo": 20
-   },
-   "why": {
-    "biome": "Oilbird's ground, later on The Sundered Peak (Map 20)",
-    "family": "from Oilbird",
-    "faction": "from Oilbird"
-   }
-  },
-  {
-   "id": "dire-sulfur-vent-crab",
-   "name": "Glimmer Vent Crab",
-   "internalName": "Dire Sulfur Vent Crab",
-   "nameProposal": true,
-   "icon": "🦀",
-   "status": "proposed",
-   "rarity": "rare",
-   "biomes": [
-    "caves",
-    "volcanic-ash"
-   ],
-   "family": "crustacean",
-   "sub": "Crustacean",
-   "animal": "crab",
-   "animalGroup": "crab",
-   "subtype": null,
-   "faction": "wild",
-   "size": "medium",
-   "stage": 2,
-   "firstMap": 8,
-   "body": {
-    "cost": 1,
-    "wait": 1,
-    "attack": 3,
-    "health": 22,
-    "dmg": "heat",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Volcanic",
-    "Crustacean"
-   ],
-   "maps": {
-    "home": [
-     "mn"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "sulfur-vent-crab",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 1.5,
-     "health": 2
-    },
-    "N": 35.13,
-    "N2": 137.12,
-    "x1": 28,
-    "x2": 66,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 1,
-     "wait": 1,
-     "attack": 3,
-     "health": 17
-    },
-    "baseSkills": [
-     [
-      "thorns",
-      1
-     ],
-     [
-      "tide",
-      null
-     ],
-     [
-      "molting",
-      1
-     ],
-     [
-      "crabClaws",
-      null
-     ]
-    ],
-    "map": "mn",
-    "mapName": "The Glimmer Depths",
-    "mapNo": 8
-   },
-   "why": {
-    "biome": "Sulfur Vent Crab's ground, later on The Glimmer Depths (Map 8)",
-    "family": "from Sulfur Vent Crab",
-    "faction": "from Sulfur Vent Crab"
-   }
-  },
-  {
-   "id": "elder-ghost-crayfish",
-   "name": "Old Pale Crayfish",
-   "internalName": "Elder Ghost Crayfish",
+   "id": "dire-ghost-crayfish",
+   "name": "Sundered Ghost Crayfish",
+   "internalName": "Dire Ghost Crayfish",
    "nameProposal": true,
    "icon": "🦞",
    "status": "proposed",
-   "rarity": "veryrare",
+   "rarity": "rare",
    "biomes": [
     "caves",
     "volcanic-ash"
@@ -42005,14 +41834,14 @@
    "animalGroup": "lobster",
    "subtype": null,
    "faction": "wild",
-   "size": "huge",
+   "size": "large",
    "stage": 4,
    "firstMap": 20,
    "body": {
     "cost": 2,
-    "wait": 3,
-    "attack": 5,
-    "health": 36,
+    "wait": 2,
+    "attack": 4,
+    "health": 30,
     "dmg": "physical",
     "resist": []
    },
@@ -42029,33 +41858,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "elder",
+    "tier": "dire",
     "of": "ghost-crayfish",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
+    "wait": 0,
+    "rarityStep": 1,
     "eff": {
-     "attack": 1.67,
-     "health": 2
+     "attack": 1.33,
+     "health": 1.67
     },
-    "N": 58.07,
-    "N2": 374.68,
-    "x1": 46,
-    "x2": 180,
+    "N": 48.26,
+    "N2": 258.78,
+    "x1": 38,
+    "x2": 120,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.8,
-      "health": 2
+      "attack": 1.4,
+      "health": 1.5
      },
      "cost": 2,
-     "wait": 3,
-     "attack": 5,
-     "health": 36
+     "wait": 2,
+     "attack": 4,
+     "health": 27
     },
     "baseSkills": [
      [
@@ -42090,7 +41919,8 @@
    "status": "proposed",
    "rarity": "uncommon",
    "biomes": [
-    "caves"
+    "caves",
+    "volcanic-ash"
    ],
    "family": "fish",
    "sub": "Fish",
@@ -42099,8 +41929,8 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": 2,
-   "firstMap": 8,
+   "stage": 4,
+   "firstMap": 20,
    "body": {
     "cost": 1,
     "wait": 0,
@@ -42116,7 +41946,7 @@
    ],
    "maps": {
     "home": [
-     "mn"
+     "m11"
     ],
     "fights": {}
    },
@@ -42164,12 +41994,12 @@
       null
      ]
     ],
-    "map": "mn",
-    "mapName": "The Glimmer Depths",
-    "mapNo": 8
+    "map": "m11",
+    "mapName": "The Sundered Peak",
+    "mapNo": 20
    },
    "why": {
-    "biome": "Blind Cave Fish's ground, later on The Glimmer Depths (Map 8)",
+    "biome": "Blind Cave Fish's ground, later on The Sundered Peak (Map 20)",
     "family": "from Blind Cave Fish",
     "faction": "from Blind Cave Fish"
    }
@@ -42563,36 +42393,37 @@
    "nameProposal": true,
    "icon": "🐙",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "caves",
-    "reef-ocean"
+    "reef-ocean",
+    "volcanic-ash"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
    "faction": "wild",
    "size": "huge",
-   "stage": 2,
-   "firstMap": 8,
+   "stage": 4,
+   "firstMap": 20,
    "body": {
     "cost": 3,
     "wait": 2,
     "attack": 7,
-    "health": 29,
+    "health": 30,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
-     "mn"
+     "m11"
     ],
     "fights": {}
    },
@@ -42608,12 +42439,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.17,
-     "health": 1.32
+     "health": 1.36
     },
-    "N": 54.46,
-    "N2": 329.54,
-    "x1": 43,
-    "x2": 203,
+    "N": 55.49,
+    "N2": 342.13,
+    "x1": 44,
+    "x2": 210,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -42624,7 +42455,7 @@
      "cost": 3,
      "wait": 2,
      "attack": 8,
-     "health": 27
+     "health": 28
     },
     "baseSkills": [
      [
@@ -42640,12 +42471,12 @@
       null
      ]
     ],
-    "map": "mn",
-    "mapName": "The Glimmer Depths",
-    "mapNo": 8
+    "map": "m11",
+    "mapName": "The Sundered Peak",
+    "mapNo": 20
    },
    "why": {
-    "biome": "Octopus Tactician's ground, later on The Glimmer Depths (Map 8)",
+    "biome": "Octopus Tactician's ground, later on The Sundered Peak (Map 20)",
     "family": "from Octopus Tactician",
     "faction": "from Octopus Tactician"
    }
@@ -43472,32 +43303,31 @@
    }
   },
   {
-   "id": "dire-riptide-eel",
-   "name": "Undertow Eel",
-   "internalName": "Dire Riptide Eel",
+   "id": "dire-shoal-shark",
+   "name": "Kelp Shoal Shark",
+   "internalName": "Dire Shoal Shark",
    "nameProposal": true,
-   "icon": "🐍",
+   "icon": "🦈",
    "status": "proposed",
    "rarity": "rare",
    "biomes": [
     "coast",
-    "reef-ocean",
     "mangrove"
    ],
    "family": "fish",
    "sub": "Fish",
-   "animal": "eel",
-   "animalGroup": "eel",
+   "animal": "shark",
+   "animalGroup": "shark",
    "subtype": null,
-   "faction": "tidefolk",
+   "faction": "beasts",
    "size": "large",
    "stage": 2,
    "firstMap": 9,
    "body": {
     "cost": 2,
-    "wait": 1,
-    "attack": 12,
-    "health": 8,
+    "wait": 2,
+    "attack": 8,
+    "health": 22,
     "dmg": "physical",
     "resist": []
    },
@@ -43515,7 +43345,7 @@
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "riptide-eel",
+    "of": "shoal-shark",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -43524,12 +43354,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.33,
-     "health": 1.33
+     "health": 1.57
     },
-    "N": 40.51,
-    "N2": 182.34,
-    "x1": 32,
-    "x2": 96,
+    "N": 48.26,
+    "N2": 258.78,
+    "x1": 38,
+    "x2": 176,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -43538,15 +43368,11 @@
       "health": 1.5
      },
      "cost": 2,
-     "wait": 1,
-     "attack": 11,
-     "health": 9
+     "wait": 2,
+     "attack": 8,
+     "health": 21
     },
     "baseSkills": [
-     [
-      "reload",
-      1
-     ],
      [
       "tide",
       null
@@ -43557,9 +43383,9 @@
     "mapNo": 9
    },
    "why": {
-    "biome": "Riptide Eel's ground, later on The Kelp Mangroves (Map 9)",
-    "family": "from Riptide Eel",
-    "faction": "from Riptide Eel"
+    "biome": "Shoal Shark's ground, later on The Kelp Mangroves (Map 9)",
+    "family": "from Shoal Shark",
+    "faction": "from Shoal Shark"
    }
   },
   {
@@ -43938,6 +43764,103 @@
    }
   },
   {
+   "id": "dire-stonedrop-vulture",
+   "name": "Rimefire Stonedrop",
+   "internalName": "Dire Stonedrop Vulture",
+   "nameProposal": true,
+   "icon": "🪨",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "desert-glass",
+    "mountain-sky",
+    "cliffs",
+    "pale-desert"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "vulture",
+   "animalGroup": "vulture",
+   "subtype": null,
+   "faction": "beasts",
+   "size": "medium",
+   "stage": 4,
+   "firstMap": 18,
+   "body": {
+    "cost": 2,
+    "wait": 1,
+    "attack": 8,
+    "health": 16,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Mountain",
+    "Vulture",
+    "Bird"
+   ],
+   "maps": {
+    "home": [
+     "mpd"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "stonedrop-vulture",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 2,
+     "health": 2.29
+    },
+    "N": 40.51,
+    "N2": 182.34,
+    "x1": 32,
+    "x2": 128,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 2,
+     "wait": 1,
+     "attack": 6,
+     "health": 11
+    },
+    "baseSkills": [
+     [
+      "flying",
+      null
+     ],
+     [
+      "archer",
+      3
+     ],
+     [
+      "archerStyle",
+      "drop"
+     ]
+    ],
+    "map": "mpd",
+    "mapName": "The Pale Desert",
+    "mapNo": 18
+   },
+   "why": {
+    "biome": "Stonedrop Vulture's ground, later on The Pale Desert (Map 18)",
+    "family": "from Stonedrop Vulture",
+    "faction": "from Stonedrop Vulture"
+   }
+  },
+  {
    "id": "dire-trapdoor-spider",
    "name": "Alcove Trapdoor Spider",
    "internalName": "Dire Trapdoor Spider",
@@ -44021,98 +43944,6 @@
     "biome": "Trapdoor Spider's ground, later on Caves & Alcoves (Map 8)",
     "family": "from Trapdoor Spider",
     "faction": "from Trapdoor Spider"
-   }
-  },
-  {
-   "id": "elder-wolf-spider-mother",
-   "name": "Old Brood Wolf Spider",
-   "internalName": "Elder Wolf Spider Mother",
-   "nameProposal": true,
-   "icon": "🕷️",
-   "status": "proposed",
-   "rarity": "rare",
-   "biomes": [
-    "fungal",
-    "meadow-forest",
-    "caves"
-   ],
-   "family": "arachnid",
-   "sub": "Arachnid",
-   "animal": "wolf spider",
-   "animalGroup": "spider",
-   "subtype": null,
-   "faction": "beasts",
-   "size": "large",
-   "stage": 2,
-   "firstMap": 8,
-   "body": {
-    "cost": 2,
-    "wait": 2,
-    "attack": 8,
-    "health": 22,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Forest",
-    "Arachnid",
-    "Arachnid"
-   ],
-   "maps": {
-    "home": [
-     "m4"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "elder",
-    "of": "wolf-spider-mother",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
-    "eff": {
-     "attack": 2.67,
-     "health": 3.14
-    },
-    "N": 48.26,
-    "N2": 258.78,
-    "x1": 38,
-    "x2": 176,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.8,
-      "health": 2
-     },
-     "cost": 2,
-     "wait": 2,
-     "attack": 5,
-     "health": 14
-    },
-    "baseSkills": [
-     [
-      "brood",
-      2
-     ],
-     [
-      "pounce",
-      2
-     ]
-    ],
-    "map": "m4",
-    "mapName": "Caves & Alcoves",
-    "mapNo": 8
-   },
-   "why": {
-    "biome": "Wolf Spider Mother's ground, later on Caves & Alcoves (Map 8)",
-    "family": "from Wolf Spider Mother",
-    "faction": "from Wolf Spider Mother"
    }
   },
   {
@@ -44570,88 +44401,6 @@
    }
   },
   {
-   "id": "dire-bramble-sprout",
-   "name": "Thornshoot Sprout",
-   "internalName": "Dire Bramble Sprout",
-   "nameProposal": true,
-   "icon": "🌱",
-   "status": "proposed",
-   "rarity": "uncommon",
-   "biomes": [
-    "fungal",
-    "meadow-forest",
-    "caves"
-   ],
-   "family": "plant",
-   "sub": "Elemental",
-   "animal": "hedgehog",
-   "animalGroup": "hedgehog",
-   "subtype": "plant",
-   "faction": "wild",
-   "size": "medium",
-   "stage": 2,
-   "firstMap": 8,
-   "body": {
-    "cost": 1,
-    "wait": 0,
-    "attack": 4,
-    "health": 13,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Flora",
-    "Elemental"
-   ],
-   "maps": {
-    "home": [
-     "m4"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "bramble-sprout",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 1.33,
-     "health": 1.3
-    },
-    "N": 27.38,
-    "N2": 83.3,
-    "x1": 21,
-    "x2": 52,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 1,
-     "wait": 0,
-     "attack": 4,
-     "health": 13
-    },
-    "baseSkills": [],
-    "map": "m4",
-    "mapName": "Caves & Alcoves",
-    "mapNo": 8
-   },
-   "why": {
-    "biome": "Bramble Sprout's ground, later on Caves & Alcoves (Map 8)",
-    "family": "from Bramble Sprout",
-    "faction": "from Bramble Sprout"
-   }
-  },
-  {
    "id": "dire-hollow-oath-keeper",
    "name": "Rootbound Oath-Keeper",
    "internalName": "Dire Hollow Oath-Keeper",
@@ -44734,37 +44483,39 @@
    }
   },
   {
-   "id": "dire-compost-grub",
-   "name": "Mouldering Grub",
-   "internalName": "Dire Compost Grub",
+   "id": "dire-planarian-splitter",
+   "name": "Caves Planarian Splitter",
+   "internalName": "Dire Planarian Splitter",
    "nameProposal": true,
    "icon": "🪱",
    "status": "proposed",
-   "rarity": "uncommon",
+   "rarity": "rare",
    "biomes": [
     "fungal",
+    "river",
     "caves"
    ],
    "family": "worm",
    "sub": "Annelid",
-   "animal": "grub",
-   "animalGroup": "beetle",
+   "animal": "flatworm",
+   "animalGroup": "worm",
    "subtype": null,
    "faction": "wild",
    "size": "large",
    "stage": 2,
    "firstMap": 8,
    "body": {
-    "cost": 1,
-    "wait": 0,
-    "attack": 1,
-    "health": 19,
+    "cost": 2,
+    "wait": 1,
+    "attack": 5,
+    "health": 22,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
     "Worm",
+    "Pond",
     "Annelid"
    ],
    "maps": {
@@ -44776,7 +44527,7 @@
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "compost-grub",
+    "of": "planarian-splitter",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -44784,13 +44535,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1,
-     "health": 1.36
+     "attack": 1.25,
+     "health": 1.47
     },
-    "N": 27.38,
-    "N2": 83.3,
-    "x1": 21,
-    "x2": 19,
+    "N": 40.51,
+    "N2": 182.34,
+    "x1": 32,
+    "x2": 110,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -44798,57 +44549,60 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 1,
-     "wait": 0,
-     "attack": 1,
-     "health": 19
+     "cost": 2,
+     "wait": 1,
+     "attack": 6,
+     "health": 20
     },
-    "baseSkills": [],
+    "baseSkills": [
+     [
+      "meiosis",
+      1
+     ]
+    ],
     "map": "m4",
     "mapName": "Caves & Alcoves",
     "mapNo": 8
    },
    "why": {
-    "biome": "Compost Grub's ground, later on Caves & Alcoves (Map 8)",
-    "family": "from Compost Grub",
-    "faction": "from Compost Grub"
+    "biome": "Planarian Splitter's ground, later on Caves & Alcoves (Map 8)",
+    "family": "from Planarian Splitter",
+    "faction": "from Planarian Splitter"
    }
   },
   {
-   "id": "elder-gangrenous-leech",
-   "name": "Old Bloat Leech",
-   "internalName": "Elder Gangrenous Leech",
+   "id": "elder-tunnel-wyrm",
+   "name": "Caves Tunnel Wyrm",
+   "internalName": "Elder Tunnel Wyrm",
    "nameProposal": true,
    "icon": "🪱",
    "status": "proposed",
    "rarity": "rare",
    "biomes": [
     "fungal",
-    "swamp",
-    "mountain-sky",
     "caves"
    ],
    "family": "worm",
-   "sub": "Annelid",
-   "animal": "leech",
-   "animalGroup": "leech",
+   "sub": "Dragon",
+   "animal": "worm",
+   "animalGroup": "worm",
    "subtype": null,
-   "faction": "wild",
-   "size": "huge",
+   "faction": "beasts",
+   "size": "colossal",
    "stage": 2,
    "firstMap": 8,
    "body": {
     "cost": 2,
-    "wait": 2,
-    "attack": 4,
-    "health": 30,
+    "wait": 3,
+    "attack": 6,
+    "health": 33,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
-    "Swamp",
-    "Annelid"
+    "Worm",
+    "Dragon"
    ],
    "maps": {
     "home": [
@@ -44859,7 +44613,7 @@
    "source": null,
    "variant": {
     "tier": "elder",
-    "of": "gangrenous-leech",
+    "of": "tunnel-wyrm",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -44867,13 +44621,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 2,
-     "health": 2.5
+     "attack": 1.5,
+     "health": 1.65
     },
-    "N": 48.26,
-    "N2": 258.78,
-    "x1": 38,
-    "x2": 120,
+    "N": 57.04,
+    "N2": 361.51,
+    "x1": 45,
+    "x2": 198,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -44882,18 +44636,14 @@
       "health": 2
      },
      "cost": 2,
-     "wait": 2,
-     "attack": 4,
-     "health": 24
+     "wait": 3,
+     "attack": 7,
+     "health": 31
     },
     "baseSkills": [
      [
-      "poison",
-      2
-     ],
-     [
-      "fester",
-      null
+      "bounty",
+      1
      ]
     ],
     "map": "m4",
@@ -44901,9 +44651,9 @@
     "mapNo": 8
    },
    "why": {
-    "biome": "Gangrenous Leech's ground, later on Caves & Alcoves (Map 8)",
-    "family": "from Gangrenous Leech",
-    "faction": "from Gangrenous Leech"
+    "biome": "Tunnel Wyrm's ground, later on Caves & Alcoves (Map 8)",
+    "family": "from Tunnel Wyrm",
+    "faction": "from Tunnel Wyrm"
    }
   },
   {
@@ -45168,6 +44918,98 @@
     "biome": "Rafflesia's ground, later on The Sundered Peak (Map 20)",
     "family": "from Rafflesia",
     "faction": "from Rafflesia"
+   }
+  },
+  {
+   "id": "dire-mudpuppy",
+   "name": "Coral Mudpuppy",
+   "internalName": "Dire Mudpuppy",
+   "nameProposal": true,
+   "icon": "🦎",
+   "status": "proposed",
+   "rarity": "uncommon",
+   "biomes": [
+    "mangrove",
+    "swamp",
+    "reef-ocean"
+   ],
+   "family": "amphibian",
+   "sub": "Amphibian",
+   "animal": "mudpuppy",
+   "animalGroup": "salamander",
+   "subtype": null,
+   "faction": "wild",
+   "size": "medium",
+   "stage": 2,
+   "firstMap": 10,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 5,
+    "health": 17,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Swamp",
+    "Newt",
+    "Amphibian"
+   ],
+   "maps": {
+    "home": [
+     "m7"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "mudpuppy",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 1.67,
+     "health": 2.13
+    },
+    "N": 34.1,
+    "N2": 129.2,
+    "x1": 27,
+    "x2": 85,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 1,
+     "wait": 1,
+     "attack": 4,
+     "health": 12
+    },
+    "baseSkills": [
+     [
+      "regen",
+      1
+     ],
+     [
+      "tide",
+      null
+     ]
+    ],
+    "map": "m7",
+    "mapName": "Coral Current",
+    "mapNo": 10
+   },
+   "why": {
+    "biome": "Mudpuppy's ground, later on Coral Current (Map 10)",
+    "family": "from Mudpuppy",
+    "faction": "from Mudpuppy"
    }
   },
   {
@@ -45537,37 +45379,39 @@
    }
   },
   {
-   "id": "elder-reef-shark",
-   "name": "Scarred Reef Shark",
-   "internalName": "Elder Reef Shark",
+   "id": "elder-shallows-fry",
+   "name": "Coral Shallows Fry",
+   "internalName": "Elder Shallows Fry",
    "nameProposal": true,
-   "icon": "🦈",
+   "icon": "🐟",
    "status": "proposed",
    "rarity": "rare",
    "biomes": [
     "mangrove",
+    "river",
+    "coast",
     "reef-ocean"
    ],
    "family": "fish",
    "sub": "Fish",
-   "animal": "shark",
-   "animalGroup": "shark",
+   "animal": "minnow",
+   "animalGroup": "fish",
    "subtype": null,
-   "faction": "beasts",
-   "size": "colossal",
+   "faction": "wild",
+   "size": "large",
    "stage": 2,
    "firstMap": 10,
    "body": {
-    "cost": 3,
-    "wait": 4,
-    "attack": 12,
-    "health": 34,
+    "cost": 1,
+    "wait": 1,
+    "attack": 10,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
-    "Fish",
+    "River",
     "Fish"
    ],
    "maps": {
@@ -45579,7 +45423,7 @@
    "source": null,
    "variant": {
     "tier": "elder",
-    "of": "reef-shark",
+    "of": "shallows-fry",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -45587,13 +45431,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 1.5,
-     "health": 1.55
+     "attack": 2,
+     "health": 2.67
     },
-    "N": 73.06,
-    "N2": 593.08,
-    "x1": 58,
-    "x2": 408,
+    "N": 35.13,
+    "N2": 137.12,
+    "x1": 28,
+    "x2": 80,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45601,20 +45445,12 @@
       "attack": 1.8,
       "health": 2
      },
-     "cost": 3,
-     "wait": 4,
-     "attack": 14,
-     "health": 30
+     "cost": 1,
+     "wait": 1,
+     "attack": 9,
+     "health": 6
     },
     "baseSkills": [
-     [
-      "sweep",
-      2
-     ],
-     [
-      "bounty",
-      1
-     ],
      [
       "tide",
       null
@@ -45625,9 +45461,9 @@
     "mapNo": 10
    },
    "why": {
-    "biome": "Reef Shark's ground, later on Coral Current (Map 10)",
-    "family": "from Reef Shark",
-    "faction": "from Reef Shark"
+    "biome": "Shallows Fry's ground, later on Coral Current (Map 10)",
+    "family": "from Shallows Fry",
+    "faction": "from Shallows Fry"
    }
   },
   {
@@ -45829,7 +45665,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "nautilus",
    "animalGroup": "nautilus",
    "subtype": null,
@@ -45848,7 +45684,7 @@
    "skills": [],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -46083,9 +45919,101 @@
    }
   },
   {
-   "id": "dire-puddle-hopper",
-   "name": "Bramble Bog-Hopper",
-   "internalName": "Dire Puddle Hopper",
+   "id": "dire-gangrenous-leech",
+   "name": "Coral Gangrenous Leech",
+   "internalName": "Dire Gangrenous Leech",
+   "nameProposal": true,
+   "icon": "🪱",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "mangrove",
+    "swamp",
+    "mountain-sky",
+    "reef-ocean"
+   ],
+   "family": "worm",
+   "sub": "Annelid",
+   "animal": "leech",
+   "animalGroup": "leech",
+   "subtype": null,
+   "faction": "wild",
+   "size": "large",
+   "stage": 2,
+   "firstMap": 10,
+   "body": {
+    "cost": 2,
+    "wait": 1,
+    "attack": 4,
+    "health": 24,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Swamp",
+    "Annelid"
+   ],
+   "maps": {
+    "home": [
+     "m7"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "gangrenous-leech",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 2,
+     "health": 2
+    },
+    "N": 40.51,
+    "N2": 182.34,
+    "x1": 32,
+    "x2": 96,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 2,
+     "wait": 1,
+     "attack": 3,
+     "health": 18
+    },
+    "baseSkills": [
+     [
+      "poison",
+      2
+     ],
+     [
+      "fester",
+      null
+     ]
+    ],
+    "map": "m7",
+    "mapName": "Coral Current",
+    "mapNo": 10
+   },
+   "why": {
+    "biome": "Gangrenous Leech's ground, later on Coral Current (Map 10)",
+    "family": "from Gangrenous Leech",
+    "faction": "from Gangrenous Leech"
+   }
+  },
+  {
+   "id": "dire-meadow-frog",
+   "name": "Old Meadow Frog",
+   "internalName": "Dire Meadow Frog",
    "nameProposal": true,
    "icon": "🐸",
    "status": "proposed",
@@ -46106,8 +46034,8 @@
    "body": {
     "cost": 1,
     "wait": 0,
-    "attack": 4,
-    "health": 13,
+    "attack": 7,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -46125,7 +46053,7 @@
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "puddle-hopper",
+    "of": "meadow-frog",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -46133,13 +46061,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.33,
-     "health": 1.63
+     "attack": 1.4,
+     "health": 1.4
     },
     "N": 27.38,
     "N2": 83.3,
     "x1": 21,
-    "x2": 52,
+    "x2": 49,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -46149,94 +46077,8 @@
      },
      "cost": 1,
      "wait": 0,
-     "attack": 4,
-     "health": 12
-    },
-    "baseSkills": [
-     [
-      "tide",
-      null
-     ]
-    ],
-    "map": "mo",
-    "mapName": "The Old Bramble",
-    "mapNo": 17
-   },
-   "why": {
-    "biome": "Puddle Hopper's ground, later on The Old Bramble (Map 17)",
-    "family": "from Puddle Hopper",
-    "faction": "from Puddle Hopper"
-   }
-  },
-  {
-   "id": "elder-meadow-frog",
-   "name": "Old Meadow Croaker",
-   "internalName": "Elder Meadow Frog",
-   "nameProposal": true,
-   "icon": "🐸",
-   "status": "proposed",
-   "rarity": "rare",
-   "biomes": [
-    "meadow-forest",
-    "swamp"
-   ],
-   "family": "amphibian",
-   "sub": "Amphibian",
-   "animal": "frog",
-   "animalGroup": "frog",
-   "subtype": null,
-   "faction": "wild",
-   "size": "large",
-   "stage": 3,
-   "firstMap": 17,
-   "body": {
-    "cost": 1,
-    "wait": 1,
-    "attack": 9,
-    "health": 10,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Frog",
-    "Amphibian"
-   ],
-   "maps": {
-    "home": [
-     "mo"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "elder",
-    "of": "meadow-frog",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
-    "eff": {
-     "attack": 1.8,
-     "health": 2
-    },
-    "N": 35.13,
-    "N2": 137.12,
-    "x1": 28,
-    "x2": 90,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.8,
-      "health": 2
-     },
-     "cost": 1,
-     "wait": 1,
-     "attack": 9,
-     "health": 10
+     "attack": 6,
+     "health": 8
     },
     "baseSkills": [],
     "map": "mo",
@@ -47028,6 +46870,86 @@
    }
   },
   {
+   "id": "elder-bramble-sprout",
+   "name": "Old Bramble Sprout",
+   "internalName": "Elder Bramble Sprout",
+   "nameProposal": true,
+   "icon": "🌱",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "plant",
+   "sub": "Elemental",
+   "animal": "hedgehog",
+   "animalGroup": "hedgehog",
+   "subtype": "plant",
+   "faction": "wild",
+   "size": "large",
+   "stage": 3,
+   "firstMap": 17,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 5,
+    "health": 18,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Flora",
+    "Elemental"
+   ],
+   "maps": {
+    "home": [
+     "mo"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "elder",
+    "of": "bramble-sprout",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 1,
+    "rarityStep": 2,
+    "eff": {
+     "attack": 1.67,
+     "health": 1.8
+    },
+    "N": 35.13,
+    "N2": 137.12,
+    "x1": 28,
+    "x2": 90,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.8,
+      "health": 2
+     },
+     "cost": 1,
+     "wait": 1,
+     "attack": 5,
+     "health": 18
+    },
+    "baseSkills": [],
+    "map": "mo",
+    "mapName": "The Old Bramble",
+    "mapNo": 17
+   },
+   "why": {
+    "biome": "Bramble Sprout's ground, later on The Old Bramble (Map 17)",
+    "family": "from Bramble Sprout",
+    "faction": "from Bramble Sprout"
+   }
+  },
+  {
    "id": "dire-slow-worm",
    "name": "Brambleshade Slow-worm",
    "internalName": "Dire Slow-worm",
@@ -47111,6 +47033,87 @@
     "biome": "Slow-worm's ground, later on The Old Bramble (Map 17)",
     "family": "from Slow-worm",
     "faction": "from Slow-worm"
+   }
+  },
+  {
+   "id": "dire-compost-grub",
+   "name": "Mouldering Grub",
+   "internalName": "Dire Compost Grub",
+   "nameProposal": true,
+   "icon": "🪱",
+   "status": "proposed",
+   "rarity": "uncommon",
+   "biomes": [
+    "meadow-forest",
+    "fungal"
+   ],
+   "family": "worm",
+   "sub": "Annelid",
+   "animal": "grub",
+   "animalGroup": "beetle",
+   "subtype": null,
+   "faction": "wild",
+   "size": "large",
+   "stage": 3,
+   "firstMap": 17,
+   "body": {
+    "cost": 1,
+    "wait": 0,
+    "attack": 1,
+    "health": 19,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Worm",
+    "Annelid"
+   ],
+   "maps": {
+    "home": [
+     "mo"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "compost-grub",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 1,
+     "health": 1.36
+    },
+    "N": 27.38,
+    "N2": 83.3,
+    "x1": 21,
+    "x2": 19,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 1,
+     "wait": 0,
+     "attack": 1,
+     "health": 19
+    },
+    "baseSkills": [],
+    "map": "mo",
+    "mapName": "The Old Bramble",
+    "mapNo": 17
+   },
+   "why": {
+    "biome": "Compost Grub's ground, later on The Old Bramble (Map 17)",
+    "family": "from Compost Grub",
+    "faction": "from Compost Grub"
    }
   },
   {
@@ -47749,52 +47752,49 @@
    }
   },
   {
-   "id": "dire-stonedrop-vulture",
-   "name": "Rimefire Stonedrop",
-   "internalName": "Dire Stonedrop Vulture",
+   "id": "dire-sulfur-vent-crab",
+   "name": "Glimmer Vent Crab",
+   "internalName": "Dire Sulfur Vent Crab",
    "nameProposal": true,
-   "icon": "🪨",
+   "icon": "🦀",
    "status": "proposed",
    "rarity": "rare",
    "biomes": [
-    "pale-desert",
-    "mountain-sky",
-    "cliffs",
+    "reef-ocean",
     "volcanic-ash"
    ],
-   "family": "bird",
-   "sub": "Bird",
-   "animal": "vulture",
-   "animalGroup": "vulture",
+   "family": "crustacean",
+   "sub": "Crustacean",
+   "animal": "crab",
+   "animalGroup": "crab",
    "subtype": null,
-   "faction": "beasts",
+   "faction": "wild",
    "size": "medium",
-   "stage": 4,
-   "firstMap": 22,
+   "stage": 2,
+   "firstMap": 10,
    "body": {
-    "cost": 2,
+    "cost": 1,
     "wait": 1,
-    "attack": 8,
-    "health": 16,
-    "dmg": "physical",
+    "attack": 3,
+    "health": 22,
+    "dmg": "heat",
     "resist": []
    },
    "skills": [],
    "types": [
-    "Mountain",
-    "Vulture",
-    "Bird"
+    "Volcanic",
+    "Crustacean"
    ],
    "maps": {
     "home": [
-     "m22"
+     "mj"
     ],
     "fights": {}
    },
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "stonedrop-vulture",
+    "of": "sulfur-vent-crab",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -47802,13 +47802,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 2,
-     "health": 2.29
+     "attack": 1.5,
+     "health": 2
     },
-    "N": 40.51,
-    "N2": 182.34,
-    "x1": 32,
-    "x2": 128,
+    "N": 35.13,
+    "N2": 137.12,
+    "x1": 28,
+    "x2": 66,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47816,39 +47816,47 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 2,
+     "cost": 1,
      "wait": 1,
-     "attack": 6,
-     "health": 11
+     "attack": 3,
+     "health": 17
     },
     "baseSkills": [
      [
-      "flying",
+      "thorns",
+      1
+     ],
+     [
+      "tide",
       null
      ],
      [
-      "skyfall",
-      3
+      "molting",
+      1
+     ],
+     [
+      "crabClaws",
+      null
      ]
     ],
-    "map": "m22",
-    "mapName": "The Rimefire Caldera",
-    "mapNo": 22
+    "map": "mj",
+    "mapName": "The Sunken Depths",
+    "mapNo": 10
    },
    "why": {
-    "biome": "Stonedrop Vulture's ground, later on The Rimefire Caldera (Map 22)",
-    "family": "from Stonedrop Vulture",
-    "faction": "from Stonedrop Vulture"
+    "biome": "Sulfur Vent Crab's ground, later on The Sunken Depths (Map 10)",
+    "family": "from Sulfur Vent Crab",
+    "faction": "from Sulfur Vent Crab"
    }
   },
   {
-   "id": "dire-open-ocean-hermit-crab",
-   "name": "Sunken Hermit Crab",
-   "internalName": "Dire Open-Ocean Hermit Crab",
+   "id": "elder-open-ocean-hermit-crab",
+   "name": "Sunken Open-Ocean Hermit Crab",
+   "internalName": "Elder Open-Ocean Hermit Crab",
    "nameProposal": true,
    "icon": "🦀",
    "status": "proposed",
-   "rarity": "uncommon",
+   "rarity": "rare",
    "biomes": [
     "reef-ocean",
     "coast"
@@ -47859,14 +47867,14 @@
    "animalGroup": "crab",
    "subtype": null,
    "faction": "wild",
-   "size": "medium",
+   "size": "large",
    "stage": 2,
    "firstMap": 10,
    "body": {
     "cost": 1,
-    "wait": 0,
-    "attack": 4,
-    "health": 13,
+    "wait": 1,
+    "attack": 5,
+    "health": 18,
     "dmg": "physical",
     "resist": []
    },
@@ -47883,33 +47891,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "dire",
+    "tier": "elder",
     "of": "open-ocean-hermit-crab",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
+    "wait": 1,
+    "rarityStep": 2,
     "eff": {
-     "attack": 2,
-     "health": 2.17
+     "attack": 2.5,
+     "health": 3
     },
-    "N": 27.38,
-    "N2": 83.3,
-    "x1": 21,
-    "x2": 52,
+    "N": 35.13,
+    "N2": 137.12,
+    "x1": 28,
+    "x2": 90,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.4,
-      "health": 1.5
+      "attack": 1.8,
+      "health": 2
      },
      "cost": 1,
-     "wait": 0,
-     "attack": 3,
-     "health": 9
+     "wait": 1,
+     "attack": 4,
+     "health": 12
     },
     "baseSkills": [
      [
@@ -48029,38 +48037,37 @@
    }
   },
   {
-   "id": "elder-electric-ray",
-   "name": "Sunken Electric Ray",
-   "internalName": "Elder Electric Ray",
+   "id": "elder-riptide-eel",
+   "name": "Sunken Riptide Eel",
+   "internalName": "Elder Riptide Eel",
    "nameProposal": true,
-   "icon": "⚡",
+   "icon": "🐍",
    "status": "proposed",
    "rarity": "veryrare",
    "biomes": [
     "reef-ocean",
-    "mangrove"
+    "coast"
    ],
    "family": "fish",
    "sub": "Fish",
-   "animal": "ray",
-   "animalGroup": "ray",
+   "animal": "eel",
+   "animalGroup": "eel",
    "subtype": null,
-   "faction": "wild",
+   "faction": "tidefolk",
    "size": "huge",
    "stage": 2,
    "firstMap": 10,
    "body": {
     "cost": 2,
     "wait": 2,
-    "attack": 9,
-    "health": 21,
+    "attack": 14,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
-    "Fish",
-    "Ocean",
+    "Coastal",
     "Fish"
    ],
    "maps": {
@@ -48072,7 +48079,7 @@
    "source": null,
    "variant": {
     "tier": "elder",
-    "of": "electric-ray",
+    "of": "riptide-eel",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -48080,13 +48087,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 1.8,
-     "health": 2.1
+     "attack": 1.56,
+     "health": 1.83
     },
     "N": 49.29,
     "N2": 269.94,
     "x1": 39,
-    "x2": 189,
+    "x2": 154,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48096,13 +48103,17 @@
      },
      "cost": 2,
      "wait": 2,
-     "attack": 9,
-     "health": 20
+     "attack": 13,
+     "health": 12
     },
     "baseSkills": [
      [
-      "charge",
-      "n 2, do {\"do\":\"damage\",\"amount\":3,\"who\":\"enemy\",\"sub\":\"random\"}"
+      "reload",
+      1
+     ],
+     [
+      "tide",
+      null
      ]
     ],
     "map": "mj",
@@ -48110,9 +48121,9 @@
     "mapNo": 10
    },
    "why": {
-    "biome": "Electric Ray's ground, later on The Sunken Depths (Map 10)",
-    "family": "from Electric Ray",
-    "faction": "from Electric Ray"
+    "biome": "Riptide Eel's ground, later on The Sunken Depths (Map 10)",
+    "family": "from Riptide Eel",
+    "faction": "from Riptide Eel"
    }
   },
   {
@@ -48216,7 +48227,7 @@
     "reef-ocean"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "octopus",
    "animalGroup": "octopus",
    "subtype": null,
@@ -48235,7 +48246,7 @@
    "skills": [],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -48294,9 +48305,9 @@
    }
   },
   {
-   "id": "dire-camouflage-frog",
-   "name": "Mossveil Frog",
-   "internalName": "Dire Camouflage Frog",
+   "id": "dire-ferry-toll-frog",
+   "name": "Old Ferry Toll-Frog",
+   "internalName": "Dire Ferry Toll-Frog",
    "nameProposal": true,
    "icon": "🐸",
    "status": "proposed",
@@ -48315,16 +48326,17 @@
    "stage": 3,
    "firstMap": 17,
    "body": {
-    "cost": 2,
-    "wait": 1,
-    "attack": 6,
-    "health": 19,
+    "cost": 1,
+    "wait": 0,
+    "attack": 5,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
     "Frog",
+    "River",
     "Amphibian"
    ],
    "maps": {
@@ -48336,7 +48348,7 @@
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "camouflage-frog",
+    "of": "ferry-toll-frog",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -48344,13 +48356,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 2,
-     "health": 2.11
+     "attack": 1.67,
+     "health": 1.83
     },
-    "N": 39.47,
-    "N2": 173.1,
-    "x1": 31,
-    "x2": 114,
+    "N": 27.38,
+    "N2": 83.3,
+    "x1": 21,
+    "x2": 55,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48358,15 +48370,15 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 2,
-     "wait": 1,
+     "cost": 1,
+     "wait": 0,
      "attack": 4,
-     "health": 14
+     "health": 9
     },
     "baseSkills": [
      [
-      "evasive",
-      null
+      "trigger",
+      "onKill→gain 1"
      ],
      [
       "tide",
@@ -48378,96 +48390,9 @@
     "mapNo": 17
    },
    "why": {
-    "biome": "Camouflage Frog's ground, later on The Old Bramble (Map 17)",
-    "family": "from Camouflage Frog",
-    "faction": "from Camouflage Frog"
-   }
-  },
-  {
-   "id": "elder-newt-doctor",
-   "name": "Old Newt Doctor",
-   "internalName": "Elder Newt Doctor",
-   "nameProposal": true,
-   "icon": "🦎",
-   "status": "proposed",
-   "rarity": "veryrare",
-   "biomes": [
-    "river",
-    "meadow-forest"
-   ],
-   "family": "amphibian",
-   "sub": "Amphibian",
-   "animal": "newt",
-   "animalGroup": "salamander",
-   "subtype": null,
-   "faction": "wild",
-   "size": "large",
-   "stage": 3,
-   "firstMap": 17,
-   "body": {
-    "cost": 1,
-    "wait": 2,
-    "attack": 5,
-    "health": 25,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Pond",
-    "Newt",
-    "Amphibian"
-   ],
-   "maps": {
-    "home": [
-     "mo"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "elder",
-    "of": "newt-doctor",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
-    "eff": {
-     "attack": 2.5,
-     "health": 2.5
-    },
-    "N": 43.92,
-    "N2": 214.33,
-    "x1": 35,
-    "x2": 125,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.8,
-      "health": 2
-     },
-     "cost": 1,
-     "wait": 2,
-     "attack": 4,
-     "health": 20
-    },
-    "baseSkills": [
-     [
-      "healing",
-      1
-     ]
-    ],
-    "map": "mo",
-    "mapName": "The Old Bramble",
-    "mapNo": 17
-   },
-   "why": {
-    "biome": "Newt Doctor's ground, later on The Old Bramble (Map 17)",
-    "family": "from Newt Doctor",
-    "faction": "from Newt Doctor"
+    "biome": "Ferry Toll-Frog's ground, later on The Old Bramble (Map 17)",
+    "family": "from Ferry Toll-Frog",
+    "faction": "from Ferry Toll-Frog"
    }
   },
   {
@@ -48834,38 +48759,38 @@
    }
   },
   {
-   "id": "dire-shallows-fry",
-   "name": "Kelp Shallows Fry",
-   "internalName": "Dire Shallows Fry",
+   "id": "dire-reef-manta-glider",
+   "name": "Kelp Manta",
+   "internalName": "Dire Reef Manta Glider",
    "nameProposal": true,
-   "icon": "🐟",
+   "icon": "🐡",
    "status": "proposed",
    "rarity": "uncommon",
    "biomes": [
     "river",
-    "coast",
+    "reef-ocean",
     "mangrove"
    ],
    "family": "fish",
    "sub": "Fish",
-   "animal": "minnow",
-   "animalGroup": "fish",
+   "animal": "manta ray",
+   "animalGroup": "ray",
    "subtype": null,
    "faction": "wild",
-   "size": "medium",
+   "size": "large",
    "stage": 2,
    "firstMap": 9,
    "body": {
-    "cost": 1,
-    "wait": 0,
-    "attack": 8,
-    "health": 5,
+    "cost": 3,
+    "wait": 1,
+    "attack": 5,
+    "health": 26,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
-    "River",
+    "Ocean",
     "Fish"
    ],
    "maps": {
@@ -48877,7 +48802,7 @@
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "shallows-fry",
+    "of": "reef-manta-glider",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -48885,13 +48810,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.6,
-     "health": 1.67
+     "attack": 1.67,
+     "health": 2
     },
-    "N": 27.38,
-    "N2": 83.3,
-    "x1": 21,
-    "x2": 40,
+    "N": 45.67,
+    "N2": 231.75,
+    "x1": 36,
+    "x2": 130,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48899,14 +48824,22 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 1,
-     "wait": 0,
-     "attack": 7,
-     "health": 5
+     "cost": 3,
+     "wait": 1,
+     "attack": 4,
+     "health": 20
     },
     "baseSkills": [
      [
+      "evasive",
+      null
+     ],
+     [
       "tide",
+      null
+     ],
+     [
+      "wave",
       null
      ]
     ],
@@ -48915,43 +48848,44 @@
     "mapNo": 9
    },
    "why": {
-    "biome": "Shallows Fry's ground, later on The Kelp Mangroves (Map 9)",
-    "family": "from Shallows Fry",
-    "faction": "from Shallows Fry"
+    "biome": "Reef Manta Glider's ground, later on The Kelp Mangroves (Map 9)",
+    "family": "from Reef Manta Glider",
+    "faction": "from Reef Manta Glider"
    }
   },
   {
-   "id": "elder-minnow-skitter",
-   "name": "Old Silverside",
-   "internalName": "Elder Minnow Skitter",
+   "id": "elder-electric-catfish",
+   "name": "Old Electric Catfish",
+   "internalName": "Elder Electric Catfish",
    "nameProposal": true,
-   "icon": "🐟",
+   "icon": "⚡",
    "status": "proposed",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "biomes": [
     "river",
     "meadow-forest"
    ],
    "family": "fish",
    "sub": "Fish",
-   "animal": "minnow",
-   "animalGroup": "fish",
+   "animal": "electric catfish",
+   "animalGroup": "catfish",
    "subtype": null,
    "faction": "wild",
-   "size": "large",
+   "size": "huge",
    "stage": 3,
    "firstMap": 17,
    "body": {
-    "cost": 1,
-    "wait": 1,
-    "attack": 7,
-    "health": 14,
+    "cost": 2,
+    "wait": 2,
+    "attack": 5,
+    "health": 29,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
     "Fish",
+    "River",
     "Fish"
    ],
    "maps": {
@@ -48963,7 +48897,7 @@
    "source": null,
    "variant": {
     "tier": "elder",
-    "of": "minnow-skitter",
+    "of": "electric-catfish",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -48971,13 +48905,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 2.33,
-     "health": 2.33
+     "attack": 1.67,
+     "health": 1.81
     },
-    "N": 35.13,
-    "N2": 137.12,
-    "x1": 28,
-    "x2": 98,
+    "N": 49.29,
+    "N2": 269.94,
+    "x1": 39,
+    "x2": 145,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -48985,15 +48919,15 @@
       "attack": 1.8,
       "health": 2
      },
-     "cost": 1,
-     "wait": 1,
+     "cost": 2,
+     "wait": 2,
      "attack": 5,
-     "health": 12
+     "health": 29
     },
     "baseSkills": [
      [
-      "tide",
-      null
+      "shockBolt",
+      2
      ]
     ],
     "map": "mo",
@@ -49001,97 +48935,9 @@
     "mapNo": 17
    },
    "why": {
-    "biome": "Minnow Skitter's ground, later on The Old Bramble (Map 17)",
-    "family": "from Minnow Skitter",
-    "faction": "from Minnow Skitter"
-   }
-  },
-  {
-   "id": "dire-mayfly-dancer",
-   "name": "Kelp Mayfly",
-   "internalName": "Dire Mayfly Dancer",
-   "nameProposal": true,
-   "icon": "🦟",
-   "status": "proposed",
-   "rarity": "uncommon",
-   "biomes": [
-    "river",
-    "coast",
-    "mangrove"
-   ],
-   "family": "insect",
-   "sub": "Insect",
-   "animal": "mayfly",
-   "animalGroup": "mayfly",
-   "subtype": null,
-   "faction": "wild",
-   "size": "medium",
-   "stage": 2,
-   "firstMap": 9,
-   "body": {
-    "cost": 1,
-    "wait": 0,
-    "attack": 5,
-    "health": 11,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Insect",
-    "River",
-    "Insect"
-   ],
-   "maps": {
-    "home": [
-     "mk"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "mayfly-dancer",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 1.25,
-     "health": 1.57
-    },
-    "N": 27.38,
-    "N2": 83.3,
-    "x1": 21,
-    "x2": 55,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 1,
-     "wait": 0,
-     "attack": 5,
-     "health": 11
-    },
-    "baseSkills": [
-     [
-      "fragile",
-      null
-     ]
-    ],
-    "map": "mk",
-    "mapName": "The Kelp Mangroves",
-    "mapNo": 9
-   },
-   "why": {
-    "biome": "Mayfly Dancer's ground, later on The Kelp Mangroves (Map 9)",
-    "family": "from Mayfly Dancer",
-    "faction": "from Mayfly Dancer"
+    "biome": "Electric Catfish's ground, later on The Old Bramble (Map 17)",
+    "family": "from Electric Catfish",
+    "faction": "from Electric Catfish"
    }
   },
   {
@@ -49288,7 +49134,7 @@
     "mangrove"
    ],
    "family": "mollusc",
-   "sub": "Mollusc",
+   "sub": "Cephalopod",
    "animal": "cuttlefish",
    "animalGroup": "cuttlefish",
    "subtype": null,
@@ -49307,7 +49153,7 @@
    "skills": [],
    "types": [
     "Cephalopod",
-    "Mollusc"
+    "Cephalopod"
    ],
    "maps": {
     "home": [
@@ -49366,100 +49212,9 @@
    }
   },
   {
-   "id": "dire-grass-snake",
-   "name": "Kelp Water Snake",
-   "internalName": "Dire Grass Snake",
-   "nameProposal": true,
-   "icon": "🐍",
-   "status": "proposed",
-   "rarity": "rare",
-   "biomes": [
-    "river",
-    "mangrove"
-   ],
-   "family": "reptile",
-   "sub": "Reptile",
-   "animal": "grass snake",
-   "animalGroup": "snake",
-   "subtype": null,
-   "faction": "beasts",
-   "size": "medium",
-   "stage": 2,
-   "firstMap": 9,
-   "body": {
-    "cost": 2,
-    "wait": 1,
-    "attack": 6,
-    "health": 20,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "River",
-    "Snake",
-    "Reptile"
-   ],
-   "maps": {
-    "home": [
-     "mk"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "grass-snake",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 2,
-     "health": 2.5
-    },
-    "N": 40.51,
-    "N2": 182.34,
-    "x1": 32,
-    "x2": 120,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 2,
-     "wait": 1,
-     "attack": 4,
-     "health": 12
-    },
-    "baseSkills": [
-     [
-      "tide",
-      null
-     ],
-     [
-      "revive",
-      null
-     ]
-    ],
-    "map": "mk",
-    "mapName": "The Kelp Mangroves",
-    "mapNo": 9
-   },
-   "why": {
-    "biome": "Grass Snake's ground, later on The Kelp Mangroves (Map 9)",
-    "family": "from Grass Snake",
-    "faction": "from Grass Snake"
-   }
-  },
-  {
-   "id": "dire-bog-behemoth",
-   "name": "Sable Bog Behemoth",
-   "internalName": "Dire Bog Behemoth",
+   "id": "dire-puddle-hopper",
+   "name": "Bramble Bog-Hopper",
+   "internalName": "Dire Puddle Hopper",
    "nameProposal": true,
    "icon": "🐸",
    "status": "proposed",
@@ -49473,18 +49228,16 @@
    "animalGroup": "frog",
    "subtype": null,
    "faction": "wild",
-   "size": "colossal",
+   "size": "medium",
    "stage": 2,
    "firstMap": 6,
    "body": {
-    "cost": 4,
-    "wait": 4,
-    "attack": 8,
-    "health": 47,
+    "cost": 1,
+    "wait": 0,
+    "attack": 4,
+    "health": 13,
     "dmg": "physical",
-    "resist": [
-     "acid"
-    ]
+    "resist": []
    },
    "skills": [],
    "types": [
@@ -49500,7 +49253,7 @@
    "source": null,
    "variant": {
     "tier": "dire",
-    "of": "bog-behemoth",
+    "of": "puddle-hopper",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -49508,13 +49261,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.14,
-     "health": 1.24
+     "attack": 1.33,
+     "health": 1.63
     },
-    "N": 79.05,
-    "N2": 694.32,
-    "x1": 63,
-    "x2": 376,
+    "N": 27.38,
+    "N2": 83.3,
+    "x1": 21,
+    "x2": 52,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -49522,10 +49275,98 @@
       "attack": 1.4,
       "health": 1.5
      },
+     "cost": 1,
+     "wait": 0,
+     "attack": 4,
+     "health": 12
+    },
+    "baseSkills": [
+     [
+      "tide",
+      null
+     ]
+    ],
+    "map": "m8",
+    "mapName": "Sable Swampmire",
+    "mapNo": 6
+   },
+   "why": {
+    "biome": "Puddle Hopper's ground, later on Sable Swampmire (Map 6)",
+    "family": "from Puddle Hopper",
+    "faction": "from Puddle Hopper"
+   }
+  },
+  {
+   "id": "elder-bog-behemoth",
+   "name": "Old Mangrove Behemoth",
+   "internalName": "Elder Bog Behemoth",
+   "nameProposal": true,
+   "icon": "🐸",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "swamp",
+    "mangrove"
+   ],
+   "family": "amphibian",
+   "sub": "Amphibian",
+   "animal": "frog",
+   "animalGroup": "frog",
+   "subtype": null,
+   "faction": "wild",
+   "size": "colossal",
+   "stage": 2,
+   "firstMap": 9,
+   "body": {
+    "cost": 4,
+    "wait": 5,
+    "attack": 9,
+    "health": 54,
+    "dmg": "physical",
+    "resist": [
+     "acid"
+    ]
+   },
+   "skills": [],
+   "types": [
+    "Frog",
+    "Amphibian"
+   ],
+   "maps": {
+    "home": [
+     "mk"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "elder",
+    "of": "bog-behemoth",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 1,
+    "rarityStep": 2,
+    "eff": {
+     "attack": 1.29,
+     "health": 1.42
+    },
+    "N": 90.93,
+    "N2": 918.7,
+    "x1": 72,
+    "x2": 486,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.8,
+      "health": 2
+     },
      "cost": 4,
-     "wait": 4,
-     "attack": 10,
-     "health": 43
+     "wait": 5,
+     "attack": 13,
+     "health": 46
     },
     "baseSkills": [
      [
@@ -49541,105 +49382,14 @@
       3
      ]
     ],
-    "map": "m8",
-    "mapName": "Sable Swampmire",
-    "mapNo": 6
-   },
-   "why": {
-    "biome": "Bog Behemoth's ground, later on Sable Swampmire (Map 6)",
-    "family": "from Bog Behemoth",
-    "faction": "from Bog Behemoth"
-   }
-  },
-  {
-   "id": "elder-bogfire-newt",
-   "name": "Kelp Bogfire Newt",
-   "internalName": "Elder Bogfire Newt",
-   "nameProposal": true,
-   "icon": "🦎",
-   "status": "proposed",
-   "rarity": "rare",
-   "biomes": [
-    "swamp",
-    "mangrove"
-   ],
-   "family": "amphibian",
-   "sub": "Amphibian",
-   "animal": "newt",
-   "animalGroup": "salamander",
-   "subtype": null,
-   "faction": "wild",
-   "size": "huge",
-   "stage": 2,
-   "firstMap": 9,
-   "body": {
-    "cost": 1,
-    "wait": 2,
-    "attack": 2,
-    "health": 30,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Newt",
-    "Swamp",
-    "Amphibian"
-   ],
-   "maps": {
-    "home": [
-     "mk"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "elder",
-    "of": "bogfire-newt",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
-    "eff": {
-     "attack": 2,
-     "health": 2
-    },
-    "N": 42.88,
-    "N2": 204.3,
-    "x1": 34,
-    "x2": 60,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.8,
-      "health": 2
-     },
-     "cost": 1,
-     "wait": 2,
-     "attack": 2,
-     "health": 30
-    },
-    "baseSkills": [
-     [
-      "poison",
-      1
-     ],
-     [
-      "detonate",
-      null
-     ]
-    ],
     "map": "mk",
     "mapName": "The Kelp Mangroves",
     "mapNo": 9
    },
    "why": {
-    "biome": "Bogfire Newt's ground, later on The Kelp Mangroves (Map 9)",
-    "family": "from Bogfire Newt",
-    "faction": "from Bogfire Newt"
+    "biome": "Bog Behemoth's ground, later on The Kelp Mangroves (Map 9)",
+    "family": "from Bog Behemoth",
+    "faction": "from Bog Behemoth"
    }
   },
   {
@@ -50104,40 +49854,40 @@
    }
   },
   {
-   "id": "elder-fire-ant-raft",
-   "name": "Grand Fire Ant Raft",
-   "internalName": "Elder Fire Ant Raft",
+   "id": "elder-mayfly-dancer",
+   "name": "Kelp Mayfly Dancer",
+   "internalName": "Elder Mayfly Dancer",
    "nameProposal": true,
-   "icon": "🐜",
+   "icon": "🦟",
    "status": "proposed",
    "rarity": "rare",
    "biomes": [
     "swamp",
-    "meadow-forest",
+    "river",
+    "coast",
     "mangrove"
    ],
    "family": "insect",
    "sub": "Insect",
-   "animal": "fire ant",
-   "animalGroup": "ant",
+   "animal": "mayfly",
+   "animalGroup": "mayfly",
    "subtype": null,
-   "faction": "hives",
-   "size": "swarm",
+   "faction": "wild",
+   "size": "large",
    "stage": 2,
    "firstMap": 9,
    "body": {
-    "cost": 2,
-    "wait": 2,
-    "attack": 6,
-    "health": 26,
+    "cost": 1,
+    "wait": 1,
+    "attack": 7,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
    "skills": [],
    "types": [
-    "Swamp",
-    "Ants",
     "Insect",
+    "River",
     "Insect"
    ],
    "maps": {
@@ -50149,7 +49899,7 @@
    "source": null,
    "variant": {
     "tier": "elder",
-    "of": "fire-ant-raft",
+    "of": "mayfly-dancer",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
@@ -50157,13 +49907,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 2,
-     "health": 2.17
+     "attack": 1.75,
+     "health": 2
     },
-    "N": 48.26,
-    "N2": 258.78,
-    "x1": 38,
-    "x2": 156,
+    "N": 35.13,
+    "N2": 137.12,
+    "x1": 28,
+    "x2": 98,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -50171,22 +49921,14 @@
       "attack": 1.8,
       "health": 2
      },
-     "cost": 2,
-     "wait": 2,
-     "attack": 5,
-     "health": 24
+     "cost": 1,
+     "wait": 1,
+     "attack": 7,
+     "health": 14
     },
     "baseSkills": [
      [
-      "tide",
-      null
-     ],
-     [
-      "poison",
-      1
-     ],
-     [
-      "swarm",
+      "fragile",
       null
      ]
     ],
@@ -50195,9 +49937,9 @@
     "mapNo": 9
    },
    "why": {
-    "biome": "Fire Ant Raft's ground, later on The Kelp Mangroves (Map 9)",
-    "family": "from Fire Ant Raft",
-    "faction": "from Fire Ant Raft"
+    "biome": "Mayfly Dancer's ground, later on The Kelp Mangroves (Map 9)",
+    "family": "from Mayfly Dancer",
+    "faction": "from Mayfly Dancer"
    }
   },
   {
@@ -50273,6 +50015,10 @@
      [
       "hunter",
       2
+     ],
+     [
+      "hunterVs",
+      "poison"
      ]
     ],
     "map": "m8",
@@ -50988,6 +50734,92 @@
     "biome": "Frostbitten Wolverine's ground, later on The Rimefire Caldera (Map 22)",
     "family": "from Frostbitten Wolverine",
     "faction": "from Frostbitten Wolverine"
+   }
+  },
+  {
+   "id": "dire-paper-wasp",
+   "name": "Goldfeather Paper Wasp",
+   "internalName": "Dire Paper Wasp",
+   "nameProposal": true,
+   "icon": "🐝",
+   "status": "proposed",
+   "rarity": "uncommon",
+   "biomes": [
+    "village-keep"
+   ],
+   "family": "insect",
+   "sub": "Insect",
+   "animal": "paper wasp",
+   "animalGroup": "wasp",
+   "subtype": null,
+   "faction": "hives",
+   "size": "medium",
+   "stage": 4,
+   "firstMap": 24,
+   "body": {
+    "cost": 1,
+    "wait": 0,
+    "attack": 4,
+    "health": 13,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Insect",
+    "Village",
+    "Insect"
+   ],
+   "maps": {
+    "home": [
+     "m24"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "paper-wasp",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 1.33,
+     "health": 1.44
+    },
+    "N": 27.38,
+    "N2": 83.3,
+    "x1": 21,
+    "x2": 52,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 1,
+     "wait": 0,
+     "attack": 4,
+     "health": 13
+    },
+    "baseSkills": [
+     [
+      "wilting",
+      1
+     ]
+    ],
+    "map": "m24",
+    "mapName": "Goldfeather Keep",
+    "mapNo": 24
+   },
+   "why": {
+    "biome": "Paper Wasp's ground, later on Goldfeather Keep (Map 24)",
+    "family": "from Paper Wasp",
+    "faction": "from Paper Wasp"
    }
   },
   {

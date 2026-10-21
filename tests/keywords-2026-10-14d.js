@@ -146,7 +146,10 @@ const css = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
   const ev = []; e.roundStart(P, 1, so, {}, ev); ok(R.slot === 1 && A.slot === 0, `round start: one column toward the nearest enemy, swapping with the ally there (${R.slot}, ${A.slot})`);
   ok(ev.some(x=> x.type==='restless'), 'logged'); e.roundStart(P, 2, so, {}, []); e.roundStart(P, 3, so, {}, []); ok(R.slot === 3, `until it faces it (${R.slot})`);
   e.roundStart(P, 4, so, {}, []); ok(R.slot === 3, 'then it stays put'); }
-{ const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')); ok(!cards.some(c=> c.effects && c.effects.restless), 'no card has Restless'); }
+// 2026-10-21 (package TT): package EE (2026-10-19, docs/easter-eggs.md) gave Restless to two Easter eggs, the Creeper and the Nyoogle
+// (no source gives an Easter egg); every other card still goes without
+{ const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')); const rest = cards.filter(c=> c.effects && c.effects.restless).map(c=> c.id).sort().join(',');
+  ok(rest === 'creeper,nyoogle', `no card has Restless but the Easter eggs Creeper and Nyoogle (${rest})`); }
 
 // ---- the app knows every new skill
 { ['crabClaws','meiosis','nullify','restless','charge'].forEach(k=> ok(new RegExp(`key:'${k}'`).test(src), `${k} is in the skill list`));

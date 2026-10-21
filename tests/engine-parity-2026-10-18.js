@@ -250,9 +250,11 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
   ok(L('m40', 'boss', {ai:'basic'}) === 0 && L('m1', 'skirmish', {ai:'smartest'}) === 2 && L('m5', 'skirmish', {ai:'smart'}) === 1, "Edit skirmish's pick (node.ai) overrides Auto");
   ok(R.cpuAiLevelOfMatch({mode:'tutorial'}) === 0 && R.cpuAiLevelOfMatch({mode:'ai'}) === 1 && R.cpuAiLevelOfMatch({mode:'conquest', aiLevel:2}) === 2, 'matches: the tutorial basic, others smart unless the fight set a level');
   ok(/<select id="seAi">/.test(src) && /'loopUnits','ai'\]\.forEach\(\(k,i\)=>\{ const val = v\(\[[^\]]*'seAi'\]\[i\]\)/.test(src), 'Edit skirmish: a Difficulty select (seAi) read into node.ai');
-  ok(/'rating','leaderGrant','ai'\]\.forEach/.test(src) && /ai:'CPU difficulty'/.test(src), 'Edit skirmish: clearing Difficulty back to Auto is saved and listed like the other fields');
+  // 2026-10-21 (package TT): package ED added 'enemyLevel' after 'ai' in the cleared-fields list
+  ok(/'rating','leaderGrant','ai','enemyLevel'\]\.forEach/.test(src) && /ai:'CPU difficulty'/.test(src), 'Edit skirmish: clearing Difficulty back to Auto is saved and listed like the other fields');
   ok(/const aiLevel = cpuAiLevelForNode\(mapId, node\);/.test(src) && /rules: fightRules\(mapId, node\), aiLevel\}/.test(src), "startConquestMatch gives the engine the fight's level");
-  ok(/m\.engine\.setAiLevel\(cpuAiLevelOfMatch\(m\)\)/.test(src) && /RESUME_FIELDS = \['aiLevel'/.test(src), "the CPU's turn applies the match's level (a resumed fight too)");
+  // 2026-10-21 (package TT): package ED put 'matchUid' first in RESUME_FIELDS; 'aiLevel' is still saved
+  ok(/m\.engine\.setAiLevel\(cpuAiLevelOfMatch\(m\)\)/.test(src) && /const RESUME_FIELDS = \['matchUid' \/\*[^*]*\*\/, 'aiLevel',/.test(src), "the CPU's turn applies the match's level (a resumed fight too)");
   ok(/cpuAiPillHTML\(lv\)/.test(src), 'the VS opener shows the CPU difficulty pill'); }
 
 console.log(fail ? `engine-parity-2026-10-18: ${fail} of ${n} FAILED` : `engine-parity-2026-10-18: all ${n} passed`);

@@ -2,6 +2,31 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-21 (package TT: test triage after the SK2b … FX-WAR batch; no gameplay or balance change)
+- **One tool fix (a merge drop):** `tools/lib_bramble.js` now extracts `nodeEnemyLevelOverride`. Package ED made `roadEnemyLevelExact` call it, but the helper wasn't in the tool's list. Every tool and test that measures a fight crashed (`nodeEnemyLevelOverride is not defined`): the win-rate panel, the Pale Desert, side maps, and the balance tools. The game itself was fine.
+- **Stale tests follow the documented changes.** Each edit has a dated comment naming the change.
+  - The BF3 retune: Rabid Jackal 3/5, Sheep 2/10.
+  - Package EE: Restless only on the Easter eggs Creeper and Nyoogle.
+  - The BF4 fold: the Sulfur Cinder Moth's Illuminate. The Nyoogle has it too.
+  - TX: eggs hatch by the type hierarchy (Changelings count), the reveal map, and the taxonomy loaded in the legendary test's sandbox.
+  - EQ: `...EQ_API` heads the engine's API.
+  - SK3: Grounded is the Magnet status now. The old lightning "grounded" event stays gone.
+  - ED: the cleared fields gain `enemyLevel`, RESUME_FIELDS starts with `matchUid`, and `!m.rewardDuplicate` guards the refund and the rewards.
+  - UX: the tutorial tooltip's summary node.
+  - TF: under reduced motion the tentacle lies still.
+  - RP: the Pall Wraith reward is at 20-5, the Factions tip says "never from packs", the Chapel Tortoise is held, and Clovermead counts as Map 5, so it is on the main curve.
+  - BX: the Greyplume Fledgling makes 13 Hummingbirds.
+  - TH: its CHANGELOG entry is found by its heading.
+- **Regenerated data:**
+  - The emoji used-set gains 12 new emoji, with sets and atlases rebuilt. Additions only.
+  - `canonical/animal-tags.json` covers SK2b's and BX's new cards. The Glintsnatch Magpie stays a **magpie**: a hand-checked row in `tools/animal_tags.py`, like the Golden Magpie's, overrides the 🐦‍⬛ icon that read as a raven.
+  - `canonical/unit-themes.json`: `tools/unit_themes.js` learns TX's species names (Cephalopod and Cnidaria families, Felid's usual ground). A card RP held back keeps the biome of the map it was made for.
+  - `docs/balance/pale-desert-2026-10-19.json` is re-measured, because BX turned the Stonedrop Vulture's Skyfall into Archer.
+- **Still failing, for their owners:**
+  - `pale-desert` 18-A-5: 80%, band 61-77%, after BX's Archer change. Balance, for BF5.
+  - `guild-skills`: the trench core baseline. Same cause as `trench`, for BF5.
+  - `nv` B2: on phones, the raid VS screen's MX Shield line pushes the boss art under the sticky Start button. A UI call.
+
 ## 2026-10-21 (workflow audit: cheaper, safer development; no gameplay change)
 - **Owner:** "Audit and improve our existing workflow before making changes to the game… Do not change gameplay or deploy."
 - **`CLAUDE.md`** (new, repo root): the hard rules, one source of truth per kind of information, and the build, test, merge and release commands. Every new chat and agent reads it, so briefs no longer repeat the rules.

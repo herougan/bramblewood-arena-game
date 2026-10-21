@@ -76,7 +76,8 @@ const ARCH_BIOME = {River:'river', Pond:'river', Otter:'river', Beaver:'river', 
 const FALLBACK_BIOME = [['Raven', 'swamp' /* the night swamp's ravens */], ['Duck', 'river'], ['Chipmunk', 'meadow-forest'], ['Wolf', 'taiga'], ['Dog', 'village-keep'], ['Cat', 'village-keep'],
   ['Structure', 'village-keep'], ['Traveller', 'long-grass' /* the road */], ['Raccoon', 'meadow-forest'], ['Badger', 'meadow-forest'], ['Sheep', 'meadow-forest'], ['Bovine', 'meadow-forest'],
   ['Bat', 'caves'], ['Ape', 'jungle'], ['Primate', 'jungle'], ['Frog', 'swamp'], ['Amphibian', 'swamp'], ['Fish', 'river'], ['Turtle', 'meadow-forest'], ['Beetle', 'meadow-forest'],
-  ['Insect', 'meadow-forest'], ['Mollusc', 'meadow-forest'], ['Bird', 'meadow-forest'], ['Canid', 'meadow-forest'], ['Feline', 'village-keep'], ['Worm', 'meadow-forest'], ['Annelid', 'meadow-forest'], ['Erinaceid', 'maze-briar']];
+  ['Insect', 'meadow-forest'], ['Mollusc', 'meadow-forest'], ['Bird', 'meadow-forest'], ['Canid', 'meadow-forest'], ['Feline', 'village-keep'], ['Worm', 'meadow-forest'], ['Annelid', 'meadow-forest'], ['Erinaceid', 'maze-briar'],
+  ['Felid', 'village-keep'] /* 2026-10-21 (package TT): TX's name for Feline */];
 // Name words that say where a creature lives (only used when the map and the archetypes say nothing more).
 const NAME_BIOME = [[/\b(cave|cavern|grotto|stalact|glowworm|guano|burrow)/i, 'caves'], [/\b(glass|dune|sand|scorpion|desert)/i, 'desert-glass'],
   [/\b(ash|cinder|ember|magma|lava|basalt|obsidian|volcan|caldera|fumarole|forge|slag)/i, 'volcanic-ash'], [/\b(frost|snow|ice|rime|glacier|glacial|arctic|polar|tundra|permafrost)/i, 'tundra-ice'],
@@ -94,7 +95,9 @@ const FAMILIES = [
   ['spirit-undead', '👻', 'Spirit / undead'], ['fiend', '👺', 'Fiend / imp'], ['dragon', '🐉', 'Dragon'], ['construct', '🗿', 'Construct / structure'], ['changeling', '🫧', 'Changeling'],
 ].map(([id, icon, label])=> ({id, icon, label}));
 const SPECIES_FAMILY = {Insect:'insect', Arachnid:'arachnid', Myriapod:'myriapod', Crustacean:'crustacean', Mollusc:'mollusc', Cnidarian:'sea-invertebrate', Echinoderm:'sea-invertebrate',
-  Annelid:'worm', Fish:'fish', Amphibian:'amphibian', Reptile:'reptile', Bird:'bird', Plant:'plant', Undead:'spirit-undead', Dragon:'dragon', Elemental:'elemental'};
+  Annelid:'worm', Fish:'fish', Amphibian:'amphibian', Reptile:'reptile', Bird:'bird', Plant:'plant', Undead:'spirit-undead', Dragon:'dragon', Elemental:'elemental',
+  // 2026-10-21 (package TT): package TX's species names (bramblewood-taxonomy.js: a Cephalopod is a Mollusc; Cnidarian is now Cnidaria)
+  Cephalopod:'mollusc', Cnidaria:'sea-invertebrate'};
 const MAMMALS = ['Mustelid', 'Rodent', 'Canid', 'Primate', 'Bat', 'Lagomorph', 'Felid', 'Feline', 'Bovine', 'Cervid', 'Suid', 'Ursid', 'Cetacean', 'Procyonid', 'Equid', 'Xenarthran',
   'Pinniped', 'Erinaceid', 'Herpestid', 'Megafauna', 'Hyaenid', 'Mammal'];
 MAMMALS.forEach(s=> SPECIES_FAMILY[s] = 'mammal');
@@ -291,6 +294,9 @@ function factionOf(c, ctx, family){
   return ['wild', 'default'];
 }
 
+// 2026-10-21 (package TT): the map each card held by the rewards pass (to: awaitingSource) came from (docs/balance/rewards-pass-2026-10-21.json)
+const RP_HELD_FROM = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rewards-pass-2026-10-21.json'), 'utf8')).moves
+  .filter(m=> m.to === 'awaitingSource' && m.from && (m.from.kind === 'map' || m.from.kind === 'secret') && m.from.id).map(m=> [m.id, m.from.id])); }catch(e){ return {}; } })();
 function tag(c){
   const status = c.pool ? 'pool' : 'live', src = c.source || {}, why = {};
   const home = [];
@@ -320,6 +326,9 @@ function tag(c){
   const fTop = Object.entries(fb).sort((a, b)=> b[1] - a[1])[0];
   if(fTop && (!bio.length || fTop[1] >= fTot * 0.5)) add(fTop[0], 'fights mostly on ' + fTop[0]);
   if(src.kind === 'raid') add('reef-ocean', 'raid (the deep)');
+  // 2026-10-21 (package TT): a card package RP held back (awaitingSource) keeps the biome of the map it was made for (RP's `from`),
+  // the biome only: it has no home, stage or first map until it is placed again
+  if(!bio.length && c.awaitingSource && RP_HELD_FROM[c.id]){ const m = RP_HELD_FROM[c.id], opts = [MAP_BIOME[m]].concat(MAP_BIOMES_MORE[m] || []); add(opts.find(b=> archB.includes(b)) || opts[0], 'held by package RP; made for map ' + m); }
   if(!bio.length){ const T = typesOf(c); for(const [t, b] of FALLBACK_BIOME) if(T.includes(t)){ add(b, 'usual ground of ' + t); break; } }
   const [family, famWhy] = familyOf(c);
   const [faction, facWhy] = factionOf(c, {home, seen: home.concat(Object.keys(fights))}, family);

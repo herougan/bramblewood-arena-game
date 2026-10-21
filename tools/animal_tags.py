@@ -182,6 +182,8 @@ MANUAL = {
   'mudflat-godwit': ('godwit', None, 'name', ''), 'sunbittern-strider': ('sunbittern', None, 'name', ''), 'booming-bittern': ('bittern', None, 'name', ''),
   'hoopoe-herald': ('hoopoe', None, 'name', ''), 'lyrebird-mimic': ('lyrebird', None, 'name', ''), 'weaver-bird': ('weaver bird', None, 'name', ''),
   'jay-pilferer': ('jay', None, 'name', ''), 'golden-magpie': ('magpie', None, 'name', ''), 'field-crow': ('crow', None, 'name', ''),
+  # 2026-10-21 (package TT): SK2b's Glintsnatch Magpie stays a magpie (its name); without this row its 🐦‍⬛ icon tagged it a raven
+  'glintsnatch-magpie': ('magpie', None, 'name', ''),
   'gull-thief': ('gull', None, 'name', ''), 'courier-pigeon': ('pigeon', None, 'name', ''), 'pigeon-peon': ('pigeon', None, 'name', ''),
   'crossed-eyes': ('pigeon', None, 'proposed', 'a cross-eyed little bird (🐦); proposed: a pigeon'),
   'weathervane-swift': ('swift', None, 'name', ''), 'talon-archer': ('hawk', None, 'icon', '🦅 with a bow'),

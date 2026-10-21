@@ -99,7 +99,8 @@ ok(/players\[2\]\.hq\.shield = sc\.shield; players\[2\]\.hq\.maxShield = sc\.shi
 { const d = byKey('me', '20-A-4'), w = H.dungeonWaves(d); ok(w[w.length - 1].shield === 32 && w[0].shield === Math.round(32 * 0.25), /* BF: Map 21's 32 */ `the dungeon's castles: first ${w[0].shield}, last ${w[w.length - 1].shield}`); }
 ok(H.castleLineText(byKey('mc', '3-7')) === `🏰 ${H.skirmishCastle(byKey('mc', '3-7')).hp} HP · 🔷 ${H.skirmishCastle(byKey('mc', '3-7')).shield} Armour`, 'the VS / tooltip line shows the fight\'s Shield (the rule, or the skirmish pass\'s override)');
 ok(/castleLineText\(node\)/.test(fn('showVersusOpener')), 'the VS screen reads castleLineText');
-ok(/castleLineText\(node\)/.test(src.slice(src.indexOf('ctt-kind') - 200, src.indexOf('ctt-kind') + 200)), 'the node tooltip reads castleLineText');
+// 2026-10-21 (package TT): since package UX (2026-10-19) the tutorial node's tooltip reads its summary node (tutorialSummaryNode)
+ok(/castleLineText\(node\.kind === 'tutorial' \? tutorialSummaryNode\(node\) : node\)/.test(src.slice(src.indexOf('ctt-kind') - 200, src.indexOf('ctt-kind') + 200)), 'the node tooltip reads castleLineText');
 ok(/scD = skirmishCastle\(draft\), L = scD\.layers/.test(src) && /Rule: Map \$\{nodeMapNumber\(draft\)\}/.test(src), 'the skirmish editor shows the rule and its value');
 ok(/draft\.shieldOverride = ls\.length > 1 \? ls : \(ls\[0\] \|\| 0\)/.test(src) && !/draft\.armour = ls\.reduce/.test(src), 'the editor saves a changed Shield as shieldOverride, not armour');
 
