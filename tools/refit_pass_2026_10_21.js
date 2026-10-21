@@ -5,6 +5,7 @@
 // level, with use <= 100% of N. Attack 0 stays 0; a non-zero Attack stays >= 1; Health >= 1. No fit at all: the floor, flagged.
 // Only band cards (BF6 plan kind 'band'): tokens, eggs, equipment and Easter eggs are priced their own way and are left alone.
 //   node tools/refit_pass_2026_10_21.js ids.json          dry run      ... apply    writes canonical/cards.json
+// A card with no legal line keeps its stats and is listed in docs/balance/human-pass-1-flagged-2026-10-21.json; --floor drops it to 1/1.
 'use strict';
 if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
 const fs = require('fs'), path = require('path'), ROOT = path.join(__dirname, '..');
@@ -25,10 +26,10 @@ for(const c of cards){
     const A = sA === 0 ? 0 : Math.max(1, Math.round(sA * k)), H = Math.max(1, Math.round(sH * k));
     const u = ok(c, A, H); if(u && (!best || u > best.u || (u === best.u && A + H > best.A + best.H))) best = {A, H, u};
   }
-  if(!best){ const A = sA === 0 ? 0 : 1; best = {A, H: 1, u: 0}; flagged.push(c.id); }
+  if(!best){ flagged.push(c.id); if(!process.argv.includes('--floor')) continue; const A = sA === 0 ? 0 : 1; best = {A, H: 1, u: 0}; } // no legal line: kept as is (flagged) unless --floor
   if(best.A !== A0 || best.H !== H0) moves.push({c, from: `${A0}/${H0}`, to: `${best.A}/${best.H}`, A: best.A, H: best.H, u: best.u});
 }
-console.log(`${moves.length} cards move; ${flagged.length} have no legal line at all (floor, flagged)`);
+console.log(`${moves.length} cards move; ${flagged.length} have no legal line at all (${process.argv.includes('--floor') ? 'floored' : 'kept as they are'}, flagged)`);
 moves.slice(0, 30).forEach(m=> console.log(`  ${m.c.id.padEnd(28)} ${m.from.padStart(6)} -> ${m.to.padEnd(6)} ${(m.u * 100).toFixed(0)}%`));
 if(process.argv.includes('apply')){
   for(const m of moves){ m.c.attack = m.c.attack == null && m.A === 0 ? m.c.attack : m.A; m.c.health = m.H;

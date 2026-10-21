@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (skill costs: human pass I + Claude pass II; 360 cards re-fitted)
+- **Pass I (owner):** 259 skill-cost edits from the hub, applied to `canonical/skill-costs.json`.
+- **Pass II (Claude):** 16 of the owner's raises were brought down to their strongest measurement where they sat more than 50% above it, e.g. Earthquake 8 → 0.44, Cast Darkness 6 → 0.54, On Ready Gold 10 → 6.24, Vulnerable 4 → 1.93. The hub entries were updated to match.
+- **Re-fit by formula:** 360 cards moved to the largest line on their own shape that holds both caps. 124 cards have no legal line under these prices; they keep their stats and are flagged.
+- **Fragile:** now −8 as a skill and also ×0.75 on N, which looks like a double count (owner call).
+- Report: `docs/balance/human-pass-1-2026-10-22.md`.
+
 ## 2026-10-21 (package LAB2: the Effects Lab catches up with today, and its field stays in view)
 - **Owner:** "Update the effects lab with all the new effects" and "make the 'field' sticky to the top". Nothing in the game changed; this is
   the Lab only (`tools/effects-lab/`, rebuilt with `python3 tools/effects-lab/build.py`, hub not republished).
