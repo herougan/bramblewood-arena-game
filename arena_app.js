@@ -44826,23 +44826,62 @@ let deckShowList = true; // D16 (2026-10-03): Deck opens straight into the activ
 let heroCreatePeople = 'legion';
 // The Hero Hall lives in the Stomping Grounds now (2026-10-13); it redraws whichever page it's on.
 function heroHallRerender(){ if(typeof currentTab !== 'undefined' && currentTab === 'stomp') renderStomp(); else renderDeckSection(); }
+// 2026-10-19 (package SG, owner 23:43: "Stomping Grounds UI fidelity should match the rest."): the Stomping Grounds is a place now,
+// like the Forge and the Nest: the Arena's training ring (map art "marena") under a veil, a hanging sign, a dust layer, the Hero on
+// a mound of trampled earth, the three benches as their own panels, and loading / error states. A visual and layout pass only: the
+// same buttons, ids, data attributes and handlers (tests/e2e/hero.py and the batch-F hooks in bramblewood-fx-f.js rely on them).
+// The scene's shell (sign, subtitle, dust) is built once per visit, so a stat click redraws only #stompBody and the dust keeps drifting.
+let stompLoadTries = 0;
+function stompDataReady(){ try{ return typeof CARD_DEFS_BASELINE !== 'undefined' && Object.keys(CARD_DEFS_BASELINE).length > 0 && typeof HERO_PEOPLES !== 'undefined'; }catch(e){ return false; } }
+function stompStateHTML(kind){
+  // kind: 'loading' | 'error'. The loading state is a card-shaped placeholder and three bench placeholders, as the page will look.
+  if(kind === 'loading') return `<section class="panel stomp-state is-loading" role="status" aria-live="polite"><div class="ss-skel" aria-hidden="true"><span class="ss-card"></span><span class="ss-lines"><i></i><i></i><i></i></span></div><p class="ss-msg">${escapeHtml(TX('ui.stomp-loading'))}</p></section>`;
+  return `<section class="panel stomp-state is-error" role="alert"><span class="ss-ico" aria-hidden="true">🐾</span><h3>${escapeHtml(TX('ui.stomp-error'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.stomp-error-hint'))}</p><button type="button" class="btn primary" id="stompRetryBtn">↻ ${escapeHtml(TX('ui.stomp-retry'))}</button></section>`;
+}
 function renderStomp(){
   const root = document.getElementById('view-stomp'); if(!root) return;
-  root.innerHTML = `<div class="stomp-scene"><div class="panel stomp-head"><h2>🐾 Stomping Grounds</h2><p class="panel-sub">Where heroes train. Level yours, spend its points and pick its skills.</p></div><div id="stompBody"></div></div>`;
-  renderHeroHall(document.getElementById('stompBody'));
+  root.classList.add('stomp-scene', 'map-theme-marena');
+  const title = TX('ui.stomp-title');
+  root.dataset.sign = '🐾 ' + (window.i18 ? i18(title) : title);
+  if(!root.querySelector(':scope > #stompBody')){
+    root.innerHTML = `<div class="stomp-dust" aria-hidden="true">${Array.from({length:12}, (_, k)=> `<i style="left:${(k*37)%94 + 3}%; animation-delay:${-((k*1.3)%7).toFixed(1)}s; animation-duration:${7 + (k*0.9)%5}s"></i>`).join('')}</div>
+      <header class="stomp-head"><h2 class="sr-only">🐾 ${escapeHtml(title)}</h2><p class="stomp-sub">${escapeHtml(TX('ui.stomp-sub'))}</p></header>
+      <div id="stompBody"></div>`;
+  }
+  const body = document.getElementById('stompBody');
+  if(!stompDataReady()){
+    body.innerHTML = stompStateHTML(stompLoadTries < 20 ? 'loading' : 'error');
+    if(stompLoadTries++ < 20) setTimeout(()=>{ if(typeof currentTab !== 'undefined' && currentTab === 'stomp') renderStomp(); }, 250);
+    else { const rb = document.getElementById('stompRetryBtn'); if(rb) rb.onclick = ()=>{ stompLoadTries = 0; renderStomp(); }; }
+    return;
+  }
+  stompLoadTries = 0;
+  try{ renderHeroHall(body); }
+  catch(e){
+    try{ console.error('[Bramblewood] Stomping Grounds failed to draw:', e); }catch(_){}
+    body.innerHTML = stompStateHTML('error');
+    const rb = document.getElementById('stompRetryBtn'); if(rb) rb.onclick = ()=>{ root.innerHTML = ''; renderStomp(); };
+  }
+}
+// A people's Level-1 Hero as the card it would be (2026-10-19, package SG): the create screen shows real card tiles, not bare art.
+function heroPreviewDef(k){
+  const P = HERO_PEOPLES[k], ad = CARD_DEFS_BASELINE[P.art] || {};
+  return {id:HERO_ID, name:P.label, icon:P.icon, art:ad.art || '', hero:true, heroLevel:1, attack:P.base.attack, health:P.base.health,
+    cost:1, wait:1, rarity:heroRarityForLevel(1), archetypes:P.archetypes.slice(), effects:{}, locked:false};
 }
 function renderHeroHall(body){
   if(!body) return;
   if(!myHero){
-    body.innerHTML = `<div class="panel hero-hall hero-create">
-      <h2>🦸 Raise a Hero</h2>
-      <p class="panel-sub">Your own card. It levels up from battles and from crafting Materia in the Forge, to Level 100. You spend its stat points and pick its skills.</p>
-      <div class="hero-peoples">${Object.entries(HERO_PEOPLES).map(([k, P])=>{ const ad = CARD_DEFS_BASELINE[P.art]||{}; return `<button type="button" class="hero-people ${k===heroCreatePeople?'on':''}" data-people="${k}">
-        <span class="hp-art">${ad.art ? `<img src="${ad.art}" alt="" draggable="false">` : `<span>${P.icon}</span>`}</span>
-        <b>${P.icon} ${escapeHtml(P.label)}</b><small>${escapeHtml(P.blurb)}</small><small class="hp-base">Starts ⚔${P.base.attack} ❤${P.base.health}</small></button>`; }).join('')}</div>
-      <label class="hero-name-row">Name <input id="heroNameInput" maxlength="24" placeholder="${escapeAttr(HERO_PEOPLES[heroCreatePeople].label)}"></label>
-      <button type="button" class="btn primary big" id="heroCreateBtn">🦸 Raise my Hero</button>
-    </div>`;
+    body.innerHTML = `<section class="panel hero-hall hero-create stomp-stage">
+      <div class="stomp-intro"><span class="si-ico" aria-hidden="true">🦸</span><div><h2>🦸 Raise a Hero</h2>
+      <p class="panel-sub">Your own card. It levels up from battles and from crafting Materia in the Forge, to Level 100. You spend its stat points and pick its skills.</p></div></div>
+      <h3 class="stomp-kicker">${escapeHtml(TX('ui.stomp-choose-people'))}</h3>
+      <div class="hero-peoples" role="radiogroup" aria-label="${escapeAttr(TX('ui.stomp-choose-people'))}">${Object.entries(HERO_PEOPLES).map(([k, P])=> `<button type="button" class="hero-people ${k===heroCreatePeople?'on':''}" data-people="${k}" role="radio" aria-checked="${k===heroCreatePeople}">
+        <span class="hp-card">${cardTileHTML(heroPreviewDef(k), {extraClass:'is-hero-card'})}</span>
+        <span class="hp-text"><b>${P.icon} ${escapeHtml(P.label)}</b><small>${escapeHtml(P.blurb)}</small><small class="hp-base">Starts ⚔${P.base.attack} ❤${P.base.health}</small></span></button>`).join('')}</div>
+      <div class="stomp-create-row"><label class="hero-name-row">Name <input id="heroNameInput" maxlength="24" placeholder="${escapeAttr(HERO_PEOPLES[heroCreatePeople].label)}"></label>
+      <button type="button" class="btn primary big" id="heroCreateBtn">🦸 Raise my Hero</button></div>
+    </section>`;
     body.querySelectorAll('[data-people]').forEach(b=> b.addEventListener('click', ()=>{ heroCreatePeople = b.dataset.people; renderHeroHall(body); }));
     document.getElementById('heroCreateBtn').addEventListener('click', ()=>{
       const name = (document.getElementById('heroNameInput').value || '').trim().slice(0, 24) || HERO_PEOPLES[heroCreatePeople].label;
@@ -44854,43 +44893,49 @@ function renderHeroHall(body){
   }
   const h = myHero, P = HERO_PEOPLES[h.people], lv = heroLevelFromXp(h.xp), L = lv.level, d = heroDef();
   const free = heroPointsFree(h), inDeck = (myDeckCounts && myDeckCounts[HERO_ID] > 0);
-  const statRow = (key, label, now, step, note, max)=> `<div class="hero-stat"><span class="hs-label">${label}</span><b class="hs-val">${now}</b>
+  // 2026-10-19 (package SG): each stat's value sits in the colour of its badge on the card (⚔ red, ❤ green, ⏳ blue) via data-stat.
+  const statRow = (key, label, now, step, note, max)=> `<div class="hero-stat" data-stat="${key}"><span class="hs-label">${label}</span><b class="hs-val">${now}</b>
       <span class="hs-cost">${HERO_COSTS[key]} pts ${note}</span>
       <button type="button" class="btn small" data-hstat="${key}" data-dir="-1" ${h.alloc[key]<=0?'disabled':''} aria-label="Less ${escapeAttr(label)}">−</button>
       <button type="button" class="btn small primary" data-hstat="${key}" data-dir="1" ${free < HERO_COSTS[key] || (max!=null && h.alloc[key]>=max) ?'disabled':''} aria-label="More ${escapeAttr(label)}">+</button></div>`;
+  // 2026-10-19 (package SG): every skill row opens with its skill's icon in a round token, as the Codex's skill book does.
+  const skIco = k=> `<span class="hk-ico" aria-hidden="true">${(k && skillIconHTML(k)) || '✦'}</span>`;
   const skills = HERO_SKILL_LEVELS.map(at=>{
     const picked = h.picks[at];
-    if(picked){ const sd = heroSkillDef(picked); return `<div class="hero-skill is-picked"><span class="hk-lv">Lv ${at}</span><b>${escapeHtml(sd ? sd.label : picked)}</b><small>${escapeHtml(sd && sd.desc ? sd.desc(heroSkillValue(L)) : '')}</small></div>`; }
-    if(L < at) return `<div class="hero-skill is-locked"><span class="hk-lv">Lv ${at}</span><small>A new skill at Level ${at}</small></div>`;
-    return `<div class="hero-skill is-choose"><span class="hk-lv">Lv ${at}</span><b>Pick one</b><div class="hk-choices">${heroSkillOffer(h, at).map(k=>{ const sd = heroSkillDef(k); return `<button type="button" class="btn small" data-hpick="${at}" data-skill="${k}" title="${escapeAttr(sd.desc ? sd.desc(heroSkillValue(L)) : '')}">${escapeHtml(sd.label)}</button>`; }).join('')}</div></div>`;
+    if(picked){ const sd = heroSkillDef(picked); return `<div class="hero-skill is-picked">${skIco(picked)}<span class="hk-lv">Lv ${at}</span><b>${escapeHtml(sd ? sd.label : picked)}</b><small>${escapeHtml(sd && sd.desc ? sd.desc(heroSkillValue(L)) : '')}</small></div>`; }
+    if(L < at) return `<div class="hero-skill is-locked"><span class="hk-ico" aria-hidden="true">🔒</span><span class="hk-lv">Lv ${at}</span><small>A new skill at Level ${at}</small></div>`;
+    return `<div class="hero-skill is-choose"><span class="hk-ico" aria-hidden="true">✨</span><span class="hk-lv">Lv ${at}</span><b>Pick one</b><div class="hk-choices">${heroSkillOffer(h, at).map(k=>{ const sd = heroSkillDef(k); return `<button type="button" class="btn small" data-hpick="${at}" data-skill="${k}" title="${escapeAttr(sd.desc ? sd.desc(heroSkillValue(L)) : '')}"><span class="hkc-ico" aria-hidden="true">${skillIconHTML(k) || '✦'}</span> ${escapeHtml(sd.label)}</button>`; }).join('')}</div></div>`;
   }).join('');
-  body.innerHTML = `<div class="panel hero-hall">
+  const noSkills = !Object.keys(h.picks || {}).length && L < HERO_SKILL_LEVELS[0];
+  const mats = materiaStore(), noMats = !MATERIA_KINDS.some(k=> (mats[k.id]||0) > 0);
+  body.innerHTML = `<section class="panel hero-hall stomp-stage">
     <div class="hero-top">
-      <div class="hero-card-big">${cardTileHTML(d, {extraClass:'is-hero-card'})}</div>
+      <div class="stomp-plinth"><div class="hero-card-big">${cardTileHTML(d, {extraClass:'is-hero-card'})}</div></div>
       <div class="hero-info">
         <h2>🦸 ${escapeHtml(d.name)} <small>${escapeHtml(P.label)}</small></h2>
-        <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? `<span class="hero-xpbar"><span style="width:${Math.round(lv.into/lv.need*100)}%"></span></span><small>${lv.into} / ${lv.need} XP</small>` : '<small>Max level</small>'}</div>
+        <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? `<span class="hero-xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="${lv.need}" aria-valuenow="${lv.into}"><span style="width:${Math.round(lv.into/lv.need*100)}%"></span></span><small>${lv.into} / ${lv.need} XP</small>` : '<small>Max level</small>'}</div>
         ${(()=>{ const r = rarityDef(d.rarity), nx = heroNextRarity(L); return `<div class="hero-rarity"><span class="hr-now" style="--hr:${r.color||'#eab308'}">${escapeHtml(_t(r.label))}</span>${nx ? `<small>${escapeHtml(_t('{rarity} at Level {n}', {rarity:_t(rarityDef(nx.rarity).label), n:nx.level}))}</small>` : `<small>${escapeHtml(_t('Top rarity'))}</small>`}</div>`; })()}
         <div class="hero-facts"><span>🪵 Costs ${d.cost}</span><span>⏳ Wait ${d.wait}</span><span>⚔ ${h.battles||0} battles · ${h.wins||0} wins</span></div>
         <div class="hero-deck-row">${inDeck ? '<span class="hero-in-deck">✓ In your active deck</span><button type="button" class="btn small ghost" id="heroDeckBtn">Take out of deck</button>' : '<button type="button" class="btn primary" id="heroDeckBtn">🃏 Add to my deck</button>'}</div>
         <p class="panel-sub hero-howto">XP: win with your Hero in the deck <b>+30</b> (+10 if it took the field), lose or draw <b>+10</b>, craft Materia <b>+${MATERIA_HERO_XP}</b>. Live and online matches don't carry your Hero yet.</p>
       </div>
     </div>
-    <div class="hero-cols">
-      <div class="hero-block"><h3>Stat points <span class="hero-free ${free>0?'has':''}">${free} free</span></h3>
+  </section>
+  <div class="hero-cols">
+      <section class="panel hero-block"><h3><span class="hb-ico" aria-hidden="true">🏋️</span>Stat points <span class="hero-free ${free>0?'has':''}">${free} free</span></h3>
         ${statRow('atk', '⚔ Attack', d.attack, 1, '/ +1')}
         ${statRow('hp', '❤ Health', d.health, 1, '/ +1')}
         ${statRow('speed', '⏳ Swiftness', d.wait===0 ? 'Wait 0' : 'Wait 1', 1, '/ Wait −1', 1)}
         <button type="button" class="btn small ghost" id="heroRespecBtn" ${heroPointsSpent(h)?'':'disabled'}>↺ Reset points (free for now)</button>
-      </div>
-      <div class="hero-block"><h3>Skills</h3>${skills}</div>
-      <div class="hero-block"><h3>💎 Materia</h3>
+      </section>
+      <section class="panel hero-block"><h3><span class="hb-ico" aria-hidden="true">📘</span>Skills</h3>${noSkills ? `<p class="empty-hint stomp-empty">${escapeHtml(TX('ui.stomp-no-skills', {n: HERO_SKILL_LEVELS[0]}))}</p>` : ''}${skills}</section>
+      <section class="panel hero-block"><h3><span class="hb-ico" aria-hidden="true">💎</span>Materia</h3>
         <p class="panel-sub">Craft a crystal from ${MATERIA_DUST_COST} ✨ Dust. Your Hero gains ${MATERIA_HERO_XP} XP each time. Crystals are kept for socketing, coming later.</p>
-        <div class="hero-materia">${MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${materiaStore()[k.id]||0}</span>`).join('')}</div>
+        <div class="hero-materia">${MATERIA_KINDS.map(k=> `<span class="mk-${k.id} ${(mats[k.id]||0) ? '' : 'is-none'}" title="${escapeAttr(k.name)}">${k.icon} ${mats[k.id]||0}</span>`).join('')}</div>
+        ${noMats ? `<p class="empty-hint stomp-empty">${escapeHtml(TX('ui.stomp-no-materia'))}</p>` : ''}
         <button type="button" class="btn primary" id="heroCraftBtn" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft Materia · ${MATERIA_DUST_COST} ✨</button>
         <small class="hero-dust">You have ${myCurrencies.dust||0} ✨</small>
-      </div>
-    </div>
+      </section>
   </div>`;
   body.querySelectorAll('[data-hstat]').forEach(b=> b.addEventListener('click', ()=>{
     const k = b.dataset.hstat, dir = +b.dataset.dir;
