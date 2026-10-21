@@ -422,7 +422,7 @@ here: `node tools/forge_curve_2026_10_19.js maps`). Of the 158 moves: **59 cards
 e.g. the Clovermead and Map 0-1 cards going to the packs, 1 → 5; Shepherd's Bark 0 → 15; Elder Willow 0 → 13), **12 went down** (the Meadow Frog to Base 1 → 0, Badger
 Lumberjack 5 → 1, Terrier Pup 5 → 0, Bramble Sprout 7 → 1, Compost Grub 7 → 1, the three Pale Desert savanna animals 18 → 14, Glimmer Spider
 8 → 5, the Clovermead plain cards 1 → 0), **35 stayed** and the **52 held** cards are 0 in the file (no source) but keep their old map in
-the record (`obtainBefore`), which the tests use for their budget until they are placed. The record lists each one's before and after;
+the record (`obtainBefore`), which tests/pale-desert-2026-10-19.js uses for their budget until they are placed. The record lists each one's before and after;
 BF5's derived stats for the 71 cards whose map changed (and the 52 held ones, once placed) should be re-run on the new map. The faction rewards keep the pack's obtain map (5) for now:
 see the owner calls.
 
