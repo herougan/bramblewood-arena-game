@@ -1,0 +1,68 @@
+{
+ "_about": "Which cards belong to which map (package MP, 2026-10-22). Per main map: cards (the map's pool), special (cards added from a skirmish's \"Load any card\": a skirmish that is deliberately different), and per submap its own cards and special. A skirmish on a main map draws from cards + special; one on a submap from the parent's cards + the submap's cards + special. Edited in the Map cards editor (admin); live edits are card_overrides rows __cfg:map-pools:<mapId> (override this file at load); fold them back with node tools/fold_map_pools.js. Never edit by hand while rows are live.",
+ "maps": {
+  "m1": {"cards": [], "special": [], "submaps": {
+   "mtut": {"cards": [], "special": []},
+   "mo": {"cards": [], "special": []}
+  }},
+  "mf": {"cards": [], "special": [], "submaps": {
+   "mq": {"cards": [], "special": []}
+  }},
+  "mb": {"cards": [], "special": [], "submaps": {
+   "mp": {"cards": [], "special": []},
+   "mg": {"cards": [], "special": []}
+  }},
+  "mc": {"cards": [], "special": [], "submaps": {}},
+  "m2": {"cards": [], "special": [], "submaps": {}},
+  "mw": {"cards": [], "special": [], "submaps": {
+   "ms": {"cards": [], "special": []}
+  }},
+  "m8": {"cards": [], "special": [], "submaps": {
+   "mm": {"cards": [], "special": []}
+  }},
+  "mu": {"cards": [], "special": [], "submaps": {
+   "mz": {"cards": [], "special": []}
+  }},
+  "m4": {"cards": [], "special": [], "submaps": {
+   "mn": {"cards": [], "special": []}
+  }},
+  "mk": {"cards": [], "special": [], "submaps": {}},
+  "m7": {"cards": [], "special": [], "submaps": {
+   "mj": {"cards": [], "special": []}
+  }},
+  "m10": {"cards": [], "special": [], "submaps": {
+   "mv": {"cards": [], "special": []},
+   "muc": {"cards": [], "special": []}
+  }},
+  "mh": {"cards": [], "special": [], "submaps": {}},
+  "mr": {"cards": [], "special": [], "submaps": {}},
+  "m5": {"cards": [], "special": [], "submaps": {
+   "my": {"cards": [], "special": []}
+  }},
+  "ml": {"cards": [], "special": [], "submaps": {}},
+  "mt": {"cards": [], "special": [], "submaps": {}},
+  "m6": {"cards": [], "special": [], "submaps": {
+   "mi": {"cards": [], "special": []}
+  }},
+  "md": {"cards": [], "special": [], "submaps": {
+   "mpd": {"cards": [], "special": []}
+  }},
+  "m3": {"cards": [], "special": [], "submaps": {
+   "m9": {"cards": [], "special": []}
+  }},
+  "m11": {"cards": [], "special": [], "submaps": {
+   "me": {"cards": [], "special": []},
+   "mx": {"cards": [], "special": []},
+   "tw": {"cards": [], "special": []}
+  }},
+  "m21": {"cards": [], "special": [], "submaps": {}},
+  "m22": {"cards": [], "special": [], "submaps": {
+   "mlb": {"cards": [], "special": []}
+  }},
+  "m23": {"cards": [], "special": [], "submaps": {}},
+  "m24": {"cards": [], "special": [], "submaps": {}},
+  "r18": {"cards": [], "special": [], "submaps": {}},
+  "r19": {"cards": [], "special": [], "submaps": {}},
+  "r20": {"cards": [], "special": [], "submaps": {}}
+ }
+}

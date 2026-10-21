@@ -16,6 +16,10 @@ For new cards, stat or skill edits, rewards, skirmish decks, card texts and name
 - Live edits come in through Supabase `card_overrides` and the hub's db tabs. They are inputs, not the source:
   - fold them into cards.json (`tools/fold_server_overrides_2026_10_19.js`, `tools/hub/apply_balance_edits.js`);
   - then propose a clearing SQL in `supabase/proposed/`, which is applied only on "apply it".
+- Map card pools (2026-10-22, package MP): `canonical/map-pools.json` is the source for which cards belong to which map and submap (`cards`, and `special` for cards added from one skirmish's "+ Load any card"). The admin's Map cards editor saves live as `card_overrides` rows `__cfg:map-pools:<mapId>` (one per main map, the submaps inside it; they win over the file at load). To fold them back:
+  1. read the rows (read-only SQL): `select id, data, deleted, updated_at from card_overrides where id like '__cfg:map-pools:%';` and save the result as JSON (e.g. `docs/balance/server-overrides/map-pools-dump-<date>.json`);
+  2. `node tools/fold_map_pools.js <dump.json> --dry`, then without `--dry`: each row replaces that map's entry in the file (ids not in cards.json are dropped and listed; deleted rows change nothing);
+  3. rebuild, commit, and only then ask the owner for "apply it" on `supabase/proposed/20261022_clear_map_pools.sql` (it deletes the `__cfg:map-pools:%` rows). Never edit the file by hand while rows are live: the rows win.
 
 ## Checks (cheapest first)
 1. `python3 -c "import json;json.load(open('canonical/cards.json'))"` and the build.

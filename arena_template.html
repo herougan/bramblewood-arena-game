@@ -12632,6 +12632,73 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
       the Forge's filters, the skill filter's picks). */
 .ux-kind.on::before, .ux-lv.on::before, .forge-chip.on::before, .cx-sk-chip[aria-pressed="true"]::before{content:'✓'; font-weight:900; margin-right:1px;}
 .ux-lv:not(.on), .ux-kind:not(.on){background:var(--surface-2, rgba(255,255,255,.06)); color:var(--ink);}
+/* 2026-10-22 (package MP, owner 00:51 / 00:57): the Map cards editor, the deck pickers' pool view and the off-pool chips. Cards are drawn
+   large: the tile fills its grid cell and its text scales with the cell (container query units: 12.5cqw = the tile's own 12.5px at 100px). */
+.mc-overlay{z-index:1400; padding:2vh 2vw; align-items:center;}
+#cardDetailOverlay.mp-over{z-index:1500;}
+.mc-modal{width:min(1400px, 100%); height:min(96vh, 100%); max-width:none; display:flex; flex-direction:column; gap:8px; padding:14px 16px; box-sizing:border-box;}
+.mc-modal .modal-head-row{flex:0 0 auto; display:flex; align-items:center; gap:10px;} .mc-modal .modal-head-row h2{margin:0; flex:1;}
+.mc-status{font-size:12px; color:var(--ink-muted);}
+.mc-top{flex:0 0 auto; display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
+.mc-top select{min-width:0; max-width:100%; flex:1 1 220px;} .mc-top #mcPoolSort{flex:0 1 150px;}
+.mc-seg{display:inline-flex; border:1px solid var(--surface-border); border-radius:999px; overflow:hidden; background:var(--surface-2);}
+.mc-seg button{border:0; background:none; color:var(--ink); padding:6px 12px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; min-height:34px;}
+.mc-seg button.on{background:var(--accent); color:var(--accent-ink);}
+.mc-tabs{display:none;}
+.mc-body{flex:1 1 auto; min-height:0; display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(0, 1fr); gap:14px;}
+.mc-pane{min-height:0; overflow-y:auto; padding:2px 6px 14px 2px; display:flex; flex-direction:column; gap:12px;}
+.mc-add-pane{border-left:1px solid var(--surface-border); padding-left:14px;}
+.mc-add-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap;} .mc-add-head h3{margin:0; flex:1;}
+.mc-add-tools{display:flex; flex-wrap:wrap; gap:8px; position:sticky; top:0; z-index:5; background:var(--surface); padding:4px 0 6px;} .mc-add-tools > input{flex:1 1 180px; min-width:0;}
+.mc-sum{display:flex; flex-direction:column; gap:8px; padding:10px 12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border);}
+.mc-sum-row{display:flex; flex-wrap:wrap; align-items:flex-end; gap:6px 10px;}
+.mc-chip{display:inline-flex; align-items:center; gap:5px; padding:2px 9px; border-radius:999px; font-size:12px; background:var(--surface); border:1px solid var(--surface-border);} .mc-chip i{width:9px; height:9px; border-radius:50%; background:var(--rc, #9ca3af);} .mc-chip b{font-variant-numeric:tabular-nums;}
+.mc-hist{display:flex; flex-direction:column; gap:3px; min-width:0;} .mc-hist > b{font-size:12px;}
+.mc-bars{display:flex; gap:4px; align-items:flex-end; height:62px;}
+.mc-bars span{display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:1px; width:26px; height:100%;} .mc-bars em{font-style:normal; font-size:11px; font-weight:700; font-variant-numeric:tabular-nums;}
+.mc-bars u{display:block; width:100%; height:calc(var(--h) * .36); min-height:2px; border-radius:3px 3px 0 0; background:var(--accent); text-decoration:none;} .mc-bars small{font-size:10.5px; color:var(--ink-muted);} .mc-bars .is-zero{opacity:.45;}
+.mc-tier{display:flex; flex-direction:column; gap:8px;} .mc-tier h3{margin:0; font-size:16px; display:inline;} .mc-tier-h, .mc-tier > summary{display:flex; align-items:baseline; flex-wrap:wrap; gap:4px 10px;} .mc-tier > summary{cursor:pointer; list-style:revert;}
+.mc-n{display:inline-block; padding:0 8px; border-radius:999px; background:var(--surface-3); font-size:12px; font-weight:800;} .mc-tip{color:var(--ink-muted); font-size:12px;}
+.mc-tier.is-ro{opacity:.92; border-top:1px dashed var(--surface-border); padding-top:8px;}
+.mc-none{margin:0; padding:14px; text-align:center; border:2px dashed var(--surface-border); border-radius:12px;}
+.mc-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(var(--mc-min, 190px), 1fr)); gap:16px 12px; align-items:start;}
+.mc-modal[data-density="medium"]{--mc-min:140px;} .mc-modal[data-density="large"]{--mc-min:190px;}
+.mc-card{display:flex; flex-direction:column; gap:4px; min-width:0;}
+.mc-face{display:block; width:100%; padding:0; border:0; background:none; color:inherit; cursor:pointer; container-type:inline-size; border-radius:12px;}
+.mc-face .card-tile, .dbp-pool.is-pooled .dbp-stack .card-tile, .sg-grid.is-pooled .sg-item .card-tile{width:100% !important; font-size:12.5cqw; pointer-events:none;}
+.dbp-pool.is-pooled .dbp-stack, .sg-grid.is-pooled .sg-item{container-type:inline-size;}
+.mc-face:hover .card-tile, .mc-face:focus-visible .card-tile{transform:translateY(-3px);} .mc-face:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+.mc-bar{display:flex; align-items:center; justify-content:space-between; gap:6px; min-height:28px; font-size:12px;}
+.mp-used{display:inline-flex; align-items:center; gap:3px; padding:2px 8px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); font-weight:800; font-variant-numeric:tabular-nums; cursor:help;}
+.mp-used i{font-style:normal;} .mp-used i.is-zero{opacity:.4; font-weight:500;} .mp-used s{text-decoration:none; opacity:.5;}
+.mc-acts{display:inline-flex; gap:4px;}
+.mc-acts button, .mc-info{min-width:30px; min-height:30px; border:1px solid var(--surface-border); border-radius:8px; background:var(--surface-2); color:var(--ink); cursor:pointer; font-size:14px; line-height:1;}
+.mc-acts button:hover, .mc-info:hover{background:var(--surface-3);} .mc-acts [data-mc-remove]:hover{background:#e8b4a8; color:#4a1409;}
+.mc-in{flex:1; text-align:right; font-size:11.5px; font-weight:700; color:var(--accent-strong); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.mc-res-item.is-in .mc-face{opacity:.4; cursor:default; filter:saturate(.6);}
+.mc-more{align-self:center; margin:6px auto;}
+@media (max-width:900px){
+  .mc-overlay{padding:0;} .mc-modal{width:100%; height:100dvh; border-radius:0; padding:10px 12px;}
+  .mc-tabs{display:flex; gap:6px; flex:0 0 auto;} .mc-tabs button{flex:1; min-height:38px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); border-radius:10px; font:inherit; font-weight:700;} .mc-tabs button.on{background:var(--accent); color:var(--accent-ink);}
+  .mc-body{display:block; overflow:hidden;} .mc-pane{height:100%;} .mc-add-pane{border-left:0; padding-left:2px;}
+  .mc-modal[data-view="pool"] .mc-add-pane, .mc-modal[data-view="add"] #mcPool{display:none;}
+  .mc-modal[data-density="medium"]{--mc-min:100px;} .mc-modal[data-density="large"]{--mc-min:160px;} .mc-grid{gap:12px 8px;}
+  .mc-bar{font-size:11px; flex-wrap:wrap; justify-content:center; gap:4px;} .mp-used{padding:2px 6px;} .mc-in{display:none;} .mc-add-head h3{display:none;} .mc-add-head{justify-content:flex-end;}
+  .mc-acts button, .mc-info{min-width:34px; min-height:34px;}
+}
+/* the pickers' pool view: tier headings, then large cards */
+.dbp-pool.is-pooled, .sg-grid.is-pooled{grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:16px 12px;}
+@media (max-width:560px){ .dbp-pool.is-pooled, .sg-grid.is-pooled{grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px 8px;} }
+.skirmish-editor .se-h-row{flex-wrap:wrap;} .skirmish-editor .se-h-row .se-h{flex:1 1 220px;} .skirmish-editor .se-h-row .btn{white-space:nowrap;}
+.mp-tier-h{grid-column:1 / -1; margin:6px 0 0; padding:4px 2px; font-size:15px; border-bottom:1px solid var(--surface-border);} .mp-tier-h small{font-size:12px; color:var(--ink-muted);}
+.dbp-pool.is-pooled .dbp-stack .ps-count{font-size:calc(11px + 1cqw);}
+.mp-more{grid-column:1 / -1; justify-self:center;} .mp-empty{grid-column:1 / -1; text-align:center;}
+.mp-note{margin:0; padding:6px 10px; border-radius:8px; background:var(--surface-2); border:1px solid var(--surface-border); font-weight:700;}
+.mp-warn{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; padding:8px 10px; border-radius:10px; background:rgba(214,138,30,.16); border:1px solid rgba(214,138,30,.6); font-size:13px;} .mp-warn:empty{display:none;}
+.mp-warn-h{font-weight:800;} .mp-chip{display:inline-flex; align-items:center; gap:6px; padding:2px 4px 2px 9px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
+.mp-chip button{border:0; border-radius:999px; padding:3px 9px; background:var(--accent); color:var(--accent-ink); font:inherit; font-size:12px; font-weight:700; cursor:pointer; min-height:26px;}
+#dbpWarn:empty, .se-mp-warn:empty{display:none;}
+.dbp-stack.is-offpool, .se-stack.is-offpool{position:relative;} .dbp-stack.is-offpool::after, .se-stack.is-offpool::after{content:'⚠'; position:absolute; top:-6px; left:-4px; z-index:6; font-size:14px; line-height:1; padding:2px 3px; border-radius:6px; background:#f0b429; color:#3a2600; box-shadow:0 1px 3px rgba(0,0,0,.4);}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
