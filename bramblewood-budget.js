@@ -62,8 +62,12 @@ const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, p
 // (BF6, owner 15:09: scale is 1 again; the halving is in the coefficients above.) // v5 (2026-10-19 13:52); levelLinDiv 10 since 15:48 ("let's try L/10"; L/5 before, from the 13:54 check)
 const LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
 const AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
-const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
-const LIGHT = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
+// 2026-10-22 (package BF8; owner 11:58: "Blind*ing gives blind ... Blinding will be a flat skill not a multiplier"): the on-hit Blind
+// skill (shown as Blinding) is no longer a half-miss quality; it is priced as a skill in canonical/skill-costs.json.
+const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow'];
+// 2026-10-22 (BF8; owner: "Tide: Just the flat charge is enough. Dont do the minor bonus."): Tide is out of LIGHT; plain Tide costs its
+// flat price only. Tide {…} braces stay CONTEXT_MULT (0.4) × their contents (owner: "I think it should be 0.4x").
+const LIGHT = ['flying', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
 const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */, 'kinglyGrant' /* 2026-10-21 (TR): King's braces */];
 // Context skills (2026-10-21, package CX2; owner 17:42: "Regarding context-skills like Diurnal - {} or Tide - {} etc. The costing is wrong.
 // Tide - {} should be 0.5x the skills contained within ... Since Tide is not guaranteed, I think the coefficient should be reduced to 0.4x
@@ -178,8 +182,8 @@ function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) ==
   const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
   // BF7 (2026-10-22): the half-miss m on the stat terms only; Fragile's f on the whole left side (capScores)
   return {cap1: '(2A + H)×m + S ≤ N', cap2: 'A·H×m + S·|S| ≤ (N/3)²' /* BF6 (owner 15:15); BF7 m on the stats only */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileUse'),
-    miss: `m = ${g('missMult')} per half-miss skill (Evasive, Swift, Flying, Shadow, Blind), on the stats only, not on S` /* BF7 */,
-    fragileText: `Fragile: both left sides × ${g('fragileUse')} (more stats for a card that takes double damage)` /* BF7 */,
+    miss: `m = ${g('missMult')} per half-miss skill (Evasive, Swift, Flying, Shadow), on the stats only, not on S` /* BF7 */,
+    fragileText: `Fragile, Purblind: both left sides × ${g('fragileUse')} (more stats for a card that takes double damage or swings blind)` /* BF7 */,
     context: `Context skills ({…}): ${CONTEXT_MULT} × S of the skills in their braces` /* CX2 */,
     base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
 function nOf(d, L, cfg){ return r2(nAt(baseOf(d, cfg), L, cfg) * nMultOf(d && d.effects, cfg)); } // BF5: x the card's N multiplier
@@ -189,7 +193,8 @@ function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }
 function productScore(A, H, S){ A = +A || 0; H = +H || 0; S = +S || 0; return A * H + S * Math.abs(S); }
 function missMultOf(effects, cfg){ const e = effects || {}, m = num(cfg, 'missMult'); let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
 // BF7 (2026-10-22, owner: "things that must be less than N have a x0.7 multiplier!"): f, fragileUse (0.7) for a Fragile card, else 1.
-function fragileUseOf(effects, cfg){ return effects && effects.fragile ? num(cfg, 'fragileUse') : 1; }
+// BF8 (2026-10-22, owner: "Purblind will be 0.7x"): a Purblind card (blind itself) takes the same f; Fragile and Purblind together multiply.
+function fragileUseOf(effects, cfg){ const e = effects || {}, f = num(cfg, 'fragileUse'); let x = 1; if(e.fragile) x *= f; if(e.purblind) x *= f; return x; }
 // The two caps' left sides (BF7, 2026-10-22), the one copy every check calls (tools/skill_costs.js budget, the game's sbCheck, the hub):
 // {m, f, x1: f × ((2A + H) × m + S), x2: f × (A·H × m + S·|S|)}; cap 1 is x1 ≤ N, cap 2 x2 ≤ (N/3)². A is the Attack that counts (an
 // Archer's is 0, the caller's rule). opts.m / opts.f stand in for the card's own (a caller that knows only the multiplier).

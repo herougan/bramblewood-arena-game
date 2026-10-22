@@ -3,12 +3,8 @@
  "soldier-ant",
  "ant-warrior",
  "alley-cat",
- "boar-rampager",
  "octopus-tactician",
- "alpha-howler",
  "raven-harbinger",
- "fox-warchief",
- "lodge-engineer",
  "rodent-king",
  "poison-dart-croaker",
  "quill-thorn-boar",
@@ -39,7 +35,6 @@
  "tunnel-ant",
  "red-dragon",
  "blue-dragon",
- "tiny-cave-dweller",
  "beaver-lumberjack",
  "courier-pigeon",
  "ash-imp",
@@ -104,5 +99,7 @@
  "chamois-leaper",
  "alpine-swift",
  "lemming-swarm",
- "krill-swarm"
+ "krill-swarm",
+ "tide-pool-crab",
+ "conch-crawler"
 ]

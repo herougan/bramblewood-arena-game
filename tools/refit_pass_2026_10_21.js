@@ -33,7 +33,8 @@ for(const c of cards){
   if(best.A !== A0 || best.H !== H0) moves.push({c, from: `${A0}/${H0}`, to: `${best.A}/${best.H}`, A: best.A, H: best.H, u: best.u});
 }
 console.log(`${moves.length} cards move; ${flagged.length} have no legal line at all (${process.argv.includes('--floor') ? 'floored' : 'kept as they are'}, flagged)`);
-moves.slice(0, 30).forEach(m=> console.log(`  ${m.c.id.padEnd(28)} ${m.from.padStart(6)} -> ${m.to.padEnd(6)} ${(m.u * 100).toFixed(0)}%`));
+if(process.argv.includes('--list-all')) console.log('flagged: ' + flagged.join(', ')); // 2026-10-22 (BF8): the whole list for the report
+(process.argv.includes('--list-all') ? moves : moves.slice(0, 30)).forEach(m=> console.log(`  ${m.c.id.padEnd(28)} ${m.from.padStart(6)} -> ${m.to.padEnd(6)} ${(m.u * 100).toFixed(0)}%`));
 if(process.argv.includes('apply')){
   for(const m of moves){ m.c.attack = m.c.attack == null && m.A === 0 ? m.c.attack : m.A; m.c.health = m.H;
     m.c.creatorNote = (m.c.creatorNote ? m.c.creatorNote + ' ' : '') + `${NOTE}: ${m.from} -> ${m.to}.`; }

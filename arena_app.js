@@ -1769,7 +1769,7 @@ const SKILL_DEFS = [
   // card take 50% more damage from everything. (Corrode, the third new status, is a plain
   // stacking number and lives up in PASSIVE_DEFS alongside Poison/Bleed.)
   {
-    key:'blind', category:'passive', label:'Blind', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
+    key:'blind', category:'passive', label:'Blinding', /* 2026-10-22 (BF8, owner: "Blind*ing gives blind") */ kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Blind the target for Duration round(s).',
     get:e=> e.blind ? [e.blind.chance, e.blind.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.blind = {chance, duration}; },
@@ -27795,7 +27795,7 @@ function runCardCheck(host){
 const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh; 2026-10-21 (BF6): so do the halved coefficients (v6)
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
-const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
+const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow']; // 2026-10-22 (BF8): Blind (Blinding) is a priced skill now, not a half-miss
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 // 2026-10-21 (package CX5, owner call CX5): the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (built
 // in as SKILL_COSTS_TABLE) with SkillCosts, i.e. tools/skill_costs.js inlined by the build: the one implementation the balance tools, the

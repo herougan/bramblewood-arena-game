@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package BF8: Bounty only where it fits, Tide without the light bonus, Blinding priced, Purblind ×0.7, the Green Dragon simplified)
+- **Owner (11:58 / 12:00):** "Tide: Just the flat charge is enough. Dont do the minor bonus." "Blind*ing gives blind … Blinding will be a flat skill not a multiplier - you guess at what it will be. Purblind will be 0.7x." "Simplify the dragon's skills I guess. 1/7 is too weak." "Remove bounty from all cards with bounty. Only those thematic - like the trash panda."
+- **Bounty:** removed from 53 cards. It stays on 8 that carry loot: Trash Panda Trickster, Raccoon Bandit, Raccoon Warlord, The Magnate Duck, Chipmunk Stockpiler, Pack Mule, Riverside Peddler, Beaver Lumberjack. The five dragons lost it too.
+- **Green Dragon:** Bounty and Overwhelm off (Flying, Poison, Supreme left): 1/7 → **3/20**. White Dragon 1/11 → 2/23, Black Dragon 8/8 → 9/9. Red and Blue Dragon still have no legal line (call BF8-3).
+- **Formula (`bramblewood-budget.js`):** Tide is out of LIGHT, so a plain-Tide card pays its flat 1.5 with no ×1.02 on N; Tide {…} braces stay 0.4 × their contents. Blind is no longer a half-miss quality: the skill is shown as **Blinding** (editor label, 12 packs) and costs 2.5 (estimate, call BF8-1). Purblind takes fragileUse ×0.7 on both caps' left sides, like Fragile. The game's Test Lab list and `tools/skill_costs.js` follow.
+- **Re-fit by formula** (`tools/refit_pass_2026_10_21.js`, the 142 Bounty / Tide / Blind / Purblind cards): 62 moved, e.g. Alpha Howler 1/1 → 6/6, Nautilus Drifter 1/3 → 4/12, Elderhorn Monarch 1/14 → 2/28, Horned Lizard 4/5 → 5/7; plain-Tide cards lose about 1 Health. Five flagged cards now fit (Alpha Howler, Boar Rampager, Fox Warchief, Lodge Engineer, Tiny Cave Dweller); 103 band cards still have no legal line (`docs/balance/human-pass-1-flagged-2026-10-21.json`). The re-fit tool gains `--list-all`.
+
 ## 2026-10-22 (package RW: first-clear card ranks per card, skirmish card drops, the drop line)
 - **First-clear card rewards:** the rank is per card now (replaces "none on Maps 0–5, B from 6, A from 21"): at least B, S for a Rare or above, SS for any card in an elite or boss fight,
   one step up every 20 maps (Maps 20–39: A, SS, elites SSS; 40+: S, SSS), capped at SSS. Resources need only the clear; tutorial fights need nothing. A fight paying a Common and a Rare
