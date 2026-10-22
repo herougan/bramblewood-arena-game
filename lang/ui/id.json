@@ -858,7 +858,7 @@
  "Frigid: each round one random card on each side gets +1 Wait.": "Membeku: setiap ronde satu kartu acak di tiap sisi mendapat +1 Tunggu.",
  "From Pack {v1} ({v2} cards).": "Dari Paket {v1} ({v2} kartu).",
  "From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.": "Mulai ronde 2, setiap unit punya peluang 1 banding 2 tiap ronde untuk mendapat 1 Racun. Bangunan tak pernah tertular.",
- "From round 2, the ground burns one random unit on each side for 2 fire damage every round.": "Mulai ronde 2, tanah membakar satu unit acak di tiap sisi dengan 2 kerusakan api setiap ronde.",
+ "From round 2, the ground burns one random unit on each side for 1 fire damage every round.": "Mulai ronde 2, tanah membakar satu unit acak di tiap sisi dengan 1 kerusakan api setiap ronde.",
  "From round {v1}, any damage to a bramble destroys it.": "Mulai ronde {v1}, kerusakan sekecil apa pun pada semak menghancurkannya.",
  "Front row · You": "Baris depan · Kamu",
  "Frost": "Embun Beku",

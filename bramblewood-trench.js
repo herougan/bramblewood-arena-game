@@ -151,6 +151,10 @@ function createTrench(opts){
     // boss special attacks
     // 2026-10-22 (package FX): the raid fight's Tentacle Smack is 1–2 now (dmgMin/dmg); the classic trench keeps its own number
     // (trenchDmg, the old 6), so its balance (tests/trench.js) is unchanged. Owner call FX3.
+    // 2026-10-22 (package FX2, owner 14:12: the weaker AOE attacks deal 1, the strongest of the first three fights 2): the Goliath has no
+    // trenchDmg any more, so the classic trench uses the raid's own numbers (Tentacles' smack 1, Tail Sweep 2, the Core's smack its top,
+    // 2: the trench doesn't roll dmgMin); its balance holds with the Core's trench bramble at 300 (was the fight's 200). trenchDmg still
+    // works for an editor-made attack.
     cfg.attacks.forEach(a0=>{
       const a = a0.trenchDmg != null ? Object.assign({}, a0, {dmg: a0.trenchDmg}) : a0;
       const every = Math.max(1, a.every||1);

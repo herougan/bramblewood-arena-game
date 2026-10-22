@@ -108,7 +108,7 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-pitch', 'left', {}, []); ['left','right','left','right','left','right'].forEach(s=> e.debugSpawnCard(P, so, 2, 'k2-wall', s, {}, []));
   const ws = all(P[2]), b = ws.map(c=> c.hp); e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
   const hit = ws.filter((c, i)=> b[i] > c.hp); const me = all(P[1])[0].slot;
-  ok(hit.length === 4 && hit.every(c=> Math.abs(c.slot - me) <= 2) && hit.every(c=> b[ws.indexOf(c)] - c.hp === 1), `Pitchfork hits 4 units within 2 columns, half each (${ws.map((c, i)=> c.slot + ':' + (b[i] - c.hp))})`); }
+  ok(hit.length === 4 && hit.every(c=> Math.abs(c.slot - me) <= 2) && hit.every(c=> b[ws.indexOf(c)] - c.hp === 2), `Pitchfork hits 4 units within 2 columns, half each, 1.5 lands as 2 (FX2) (${ws.map((c, i)=> c.slot + ':' + (b[i] - c.hp))})`); }
 // Octolash: 8 nearest units, never the castle
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-octo', 'left', {}, []); for(let i=0; i<10; i++) e.debugSpawnCard(P, so, 2, 'k2-wall', i%2 ? 'left' : 'right', {}, []);
   const ws = all(P[2]), b = ws.map(c=> c.hp), hq = P[2].hq.hp; e.debugAttack(P, so, all(P[1])[0].uid, {}, []);

@@ -46,9 +46,7 @@
               "id": "smack",
               "name": "Tentacle Smack",
               "pattern": "column",
-              "dmgMin": 1,
-              "dmg": 2,
-              "trenchDmg": 6,
+              "dmg": 1,
               "every": 3
             }
           ],
@@ -79,9 +77,7 @@
               "id": "smack",
               "name": "Tentacle Smack",
               "pattern": "column",
-              "dmgMin": 1,
-              "dmg": 2,
-              "trenchDmg": 6,
+              "dmg": 1,
               "every": 3
             }
           ],
@@ -112,7 +108,7 @@
               "id": "sweep",
               "name": "Tail Sweep",
               "pattern": "frontRow",
-              "dmg": 3,
+              "dmg": 2,
               "every": 2
             }
           ],
@@ -152,7 +148,6 @@
               "pattern": "column",
               "dmgMin": 1,
               "dmg": 2,
-              "trenchDmg": 6,
               "every": 3
             }
           ],
@@ -190,7 +185,8 @@
             "waitDelta": 1,
             "illusory": 0.667
           },
-          "wallHp": 70
+          "wallHp": 70,
+          "castleHp": 300
         },
         "cost": {
           "energy": 5

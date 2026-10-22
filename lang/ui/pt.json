@@ -858,7 +858,7 @@
  "Frigid: each round one random card on each side gets +1 Wait.": "Gélido: em cada ronda uma carta aleatória de cada lado recebe +1 de Espera.",
  "From Pack {v1} ({v2} cards).": "Do pacote {v1} ({v2} cartas).",
  "From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.": "A partir da ronda 2, cada unidade tem 1 hipótese em 2 por ronda de ganhar 1 de Veneno. As estruturas nunca a apanham.",
- "From round 2, the ground burns one random unit on each side for 2 fire damage every round.": "A partir da ronda 2, o chão queima em cada ronda uma unidade aleatória de cada lado com 2 de dano de fogo.",
+ "From round 2, the ground burns one random unit on each side for 1 fire damage every round.": "A partir da ronda 2, o chão queima em cada ronda uma unidade aleatória de cada lado com 1 de dano de fogo.",
  "From round {v1}, any damage to a bramble destroys it.": "A partir da ronda {v1}, qualquer dano a um silvado destrói-o.",
  "Front row · You": "Fila da frente · Tu",
  "Frost": "Geada",

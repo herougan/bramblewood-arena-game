@@ -125,13 +125,13 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-ghost', 'left', {}, []); const G = byDef(P[2], 'kb-ghost');
   e.debugSpawnCard(P, so, 1, 'kb-hit', 'left', {}, []); ok(dealt(e, P, byDef(P[1], 'kb-hit').uid, G) === 0, 'Ghost: a physical attack does nothing'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-ghost', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'kb-fire', 'left', {}, []);
-  ok(dealt(e, P, byDef(P[1], 'kb-fire').uid, byDef(P[2], 'kb-ghost')) === 2, 'Ghost: a fire attack of 5 deals half, rounded down (2)'); }
+  ok(dealt(e, P, byDef(P[1], 'kb-fire').uid, byDef(P[2], 'kb-ghost')) === 3, 'Ghost: a fire attack of 5 deals half: 2.5 lands as 3 (FX2)'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-ghost', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'kb-wand', 'left', {}, []);
   ok(dealt(e, P, byDef(P[1], 'kb-wand').uid, byDef(P[2], 'kb-ghost')) === 5, 'Ghost: magic deals full'); }
-{ const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-ghost', 'left', {}, []); const G = byDef(P[2], 'kb-ghost'); e.damageCardFlat(G, 1, 'poison'); ok(G.hp === 50, 'Ghost: a 1-point poison tick halves to nothing'); }
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-ghost', 'left', {}, []); const G = byDef(P[2], 'kb-ghost'); e.damageCardFlat(G, 1, 'poison'); ok(G.hp === 49, 'Ghost: a 1-point poison tick halves to 0.5, which lands as 1 (FX2; it was nothing)'); }
 { const s = (rules, att)=>{ const {e, P} = mk(rules); e.roundStart(P, 1, so, {}, []); e.debugSpawnCard(P, so, 2, 'kb-shade', 'left', {}, []); e.debugSpawnCard(P, so, 1, att || 'kb-seer', 'left', {}, []); return dealt(e, P, byDef(P[1], att || 'kb-seer').uid, byDef(P[2], 'kb-shade')); };
-  ok(s({phase:'day'}) === 5, 'Shade by day: full damage'); ok(s({phase:'night'}) === 2, 'Shade at night: half, rounded down');
-  ok(s({phase:'day', dark:'dark'}) === 2, 'Shade in a dark cave: half'); ok(s({phase:'night'}, 'kb-seewand') === 5, 'Shade: magic is full even at night');
+  ok(s({phase:'day'}) === 5, 'Shade by day: full damage'); ok(s({phase:'night'}) === 3, 'Shade at night: half, 2.5 lands as 3 (FX2)');
+  ok(s({phase:'day', dark:'dark'}) === 3, 'Shade in a dark cave: half (2.5 lands as 3, FX2)'); ok(s({phase:'night'}, 'kb-seewand') === 5, 'Shade: magic is full even at night');
   const {e, P} = mk({phase:'night'}); e.roundStart(P, 1, so, {}, []); e.debugSpawnCard(P, so, 2, 'kb-shade', 'left', {}, []); const S = byDef(P[2], 'kb-shade'); e.damageCardFlat(S, 4, 'heat'); ok(S.hp === 496, 'Shade: a field hazard (no attacker) is not halved'); }
 { const swings = (rules, att)=>{ const {e, P} = mk(rules, 11); e.roundStart(P, 1, so, {}, []); e.debugSpawnCard(P, so, 2, 'kb-shadow', 'left', {}, []); e.debugSpawnCard(P, so, 1, att || 'kb-seer', 'left', {}, []);
     const A = byDef(P[1], att || 'kb-seer'), S = byDef(P[2], 'kb-shadow'); let hits = 0; for(let i = 0; i < 200; i++){ const hp = S.hp; e.debugAttack(P, so, A.uid, {}, []); if(S.hp < hp) hits++; } return hits; };
@@ -146,7 +146,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-ghost', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'kb-sup', 'left', {}, []); const G = byDef(P[2], 'kb-ghost'); G.tempHp = 5;
   ok(dealt(e, P, byDef(P[1], 'kb-sup').uid, G) === 10, 'Supreme vs a Ghost with temporary Health: magic, and the shell is crushed'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'kb-sup', 'left', {}, []); const S = byDef(P[1], 'kb-sup');
-  e.debugSpawnCard(P, so, 2, 'kb-hit', 'left', {}, []); ok(dealt(e, P, byDef(P[2], 'kb-hit').uid, S) === 2, 'a Supreme beast takes half of a physical 5 (2)');
+  e.debugSpawnCard(P, so, 2, 'kb-hit', 'left', {}, []); ok(dealt(e, P, byDef(P[2], 'kb-hit').uid, S) === 3, 'a Supreme beast takes half of a physical 5 (2.5 lands as 3, FX2)');
   const {e:e2, P:P2} = mk(); e2.debugSpawnCard(P2, so, 1, 'kb-sup', 'left', {}, []); e2.debugSpawnCard(P2, so, 2, 'kb-wand', 'left', {}, []);
   ok(dealt(e2, P2, byDef(P2[2], 'kb-wand').uid, byDef(P2[1], 'kb-sup')) === 5, 'magic hits it in full'); }
 { const castle = id=>{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'kb-wall', 'left', {}, []); e.debugSpawnCard(P, so, 1, id, 'right', {}, []); e.debugSpawnCard(P, so, 2, 'kb-bulwark', 'left', {}, []);

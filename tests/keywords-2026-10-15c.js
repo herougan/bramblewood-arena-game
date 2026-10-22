@@ -38,12 +38,12 @@ const hurt = ws=> ws.filter(c=> c.hp < c.maxHp);
   e.debugAttack(P, so, F.uid, {}, []); ok(far.hp === 500 && P[2].hq.hp === hq - 3, 'Fork with no unit in range: it attacks straight ahead (the castle)'); }
 { const {e, P} = mk(); const ws = [-2, -1, 0, 1, 2].map(s=> put(e, P, 2, 'kc-wall', s)); const T = put(e, P, 1, 'kc-tri', 0);
   e.debugAttack(P, so, T.uid, {}, []); const h = hurt(ws);
-  ok(h.length === 3 && h.every(c=> Math.abs(c.slot) <= 1) && ws[2].hp === 497 && ws[1].hp === 499 && ws[3].hp === 499, `Trident: C full, L and R half (${ws.map(c=> c.slot + ':' + c.hp)})`); }
+  ok(h.length === 3 && h.every(c=> Math.abs(c.slot) <= 1) && ws[2].hp === 497 && ws[1].hp === 498 && ws[3].hp === 498, `Trident: C full, L and R half: 1.5 lands as 2 (FX2) (${ws.map(c=> c.slot + ':' + c.hp)})`); }
 { const {e, P} = mk(); const ws = [-3, -2, -1, 0, 1, 2, 3].map(s=> put(e, P, 2, 'kc-wall', s)); const T = put(e, P, 1, 'kc-pitch', 0);
   e.debugAttack(P, so, T.uid, {}, []); const h = hurt(ws);
-  ok(h.length === 4 && h.every(c=> Math.abs(c.slot) <= 2) && ws[3].hp < 500 && h.every(c=> c.hp === 499), `Pitchfork: 4 lines within 2 columns, C among them, half each (${ws.map(c=> c.slot + ':' + c.hp)})`); }
+  ok(h.length === 4 && h.every(c=> Math.abs(c.slot) <= 2) && ws[3].hp < 500 && h.every(c=> c.hp === 498), `Pitchfork: 4 lines within 2 columns, C among them, half each, 1.5 lands as 2 (FX2) (${ws.map(c=> c.slot + ':' + c.hp)})`); }
 { let hitW = 0, bad = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk(s); const w = put(e, P, 2, 'kc-wall', 2); const T = put(e, P, 1, 'kc-pitch', 0); const hq = P[2].hq.hp;
-    e.debugAttack(P, so, T.uid, {}, []); if(w.hp === 499) hitW++; else if(w.hp !== 500) bad++; if(P[2].hq.hp !== hq - 1) bad++; }
+    e.debugAttack(P, so, T.uid, {}, []); if(w.hp === 498) hitW++; else if(w.hp !== 500) bad++; if(P[2].hq.hp !== hq - 2) bad++; } // half of 3: 1.5 lands as 2 (FX2)
   ok(!bad && hitW > 4 && hitW < 26, `Pitchfork: nothing in front, its C prong hits the castle for half; a unit 2 columns out is struck when it aims that way (${hitW}/30, ${bad} bad)`); }
 { const {e, P} = mk(); const w = put(e, P, 2, 'kc-wall', 2); const T = put(e, P, 1, 'kc-tri', 0); const hq = P[2].hq.hp;
   e.debugAttack(P, so, T.uid, {}, []); ok(w.hp === 500 && P[2].hq.hp === hq - 3, 'Trident: a unit 2 columns away is out of range, so it swings at the castle'); }

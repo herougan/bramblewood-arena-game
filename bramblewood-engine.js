@@ -466,7 +466,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // owner rule). The owner's 2026-10-19 22:10 call ("all the skills should work as if they were at the front") may mean 1 (full):
   // asked in the RR report, left at 0.5 until the owner says. A row unit's prong / lash hits, and its Boomerang's return, take it too.
   const ROW_SWING_SHARE = 0.5;
-  function rowShareOf(n){ return n > 0 ? Math.ceil(n * ROW_SWING_SHARE) : n; }
+  function rowShareOf(n){ return n > 0 ? n * ROW_SWING_SHARE : n; } // exact (2026-10-22, package FX2; was rounded up): the hit's one rounding is applyDamage's / damageHQ's
   // The free slot nearest s0 in a middle / back row (2026-10-19, package RR: a token, a Revive, a Relic or a split in that row),
   // s0 itself first when allowed; ties at random, as spawnBeside's. null when none within 15 columns.
   function rowFreeSlotNear(pl, r, s0, selfOk){ const rw = pl && pl.reserve && pl.reserve[r - 1]; if(!rw) return null; s0 = Number.isInteger(s0) ? s0 : 0;
@@ -844,6 +844,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-22 (package FX, owner 12:10: "Crushing depths and similar field effects need to be nerfed. Starting with 1 damage only."):
   // the default is 1 (was 5); a number on the flag still sets it.
   const FIELD_DMG_DEFAULT = 1;
+  // 2026-10-22 (package FX2, owner 14:12: "Volcano hazards - idk how much I wrote, but 5 may be the max dmg. The normal average damage over a
+  // turn cannot exceed 1 in this case."): a chance hazard hits for at most HAZARD_HIT_MAX, and its number x its chance of firing stays at or
+  // under 1 a unit a round. Landslide 1 in 4 for 3 (0.75); the volcano's Lava Tide, Eruption and comets, and Scorched Ground, 1 each
+  // (their chances run up to every round). A map's own number is capped at 5.
+  const HAZARD_HIT_MAX = 5, LANDSLIDE_DMG = 3, VOLCANO_HIT = 1;
+  function hazardHit(v, dflt){ const n = Number(v) > 0 ? Number(v) : dflt; return Math.min(HAZARD_HIT_MAX, n); }
   function crushingN(){ return fxN(rules.crushingDepths, FIELD_DMG_DEFAULT); }
   // 2026-10-16 (user: "Illusions or Mirage?: every turn, a random card is made a clone off - but at 1/1 and only copies over skills like
   // Flying, Swimming and Haste, nothing else."): rules.mirage.
@@ -1438,19 +1444,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-17 (user: "Landslide's effect is too much. it should only affect the L/C/R cards, and the vfx should only land on those."): the rocks
     // come down on one random column that holds a unit (columnBurst) and the column on each side of it: only the units in those three
     // columns, on both sides, take the damage (not Flying, not Mountain Climbers). The header event names the columns and the units it hits.
-    if(rules.landslide && rnd() < landslideOdds()){ const n = Number(rules.landslideDmg) > 0 ? Number(rules.landslideDmg) : 5; const cb = columnBurst(players);
+    // 2026-10-22 (package FX2, owner 14:12: "Landslide 1/4 chance to deal 3"): 3 (was 5); a map's own landslideDmg is capped at HAZARD_HIT_MAX (5).
+    if(rules.landslide && rnd() < landslideOdds()){ const n = hazardHit(rules.landslideDmg, LANDSLIDE_DMG); const cb = columnBurst(players);
       if(cb){ const cs = [cb.col - 1, cb.col, cb.col + 1], victims = [];
         [1,2].forEach(pid=> cs.forEach(col=>{ const en = cb.cols[pid][col]; if(!en || en.kind !== 'card' || !en.card || !(en.card.hp > 0) || en.card.cageOf) return; const c = en.card; if(effectsOf(c).flying || climbs(c)) return; victims.push([pid, c]); }));
         ev({type:'fieldTick', field:'landslide', round, amount:n, col:cb.col, cols:cs, uids:victims.map(v=> v[1].uid)});
         victims.forEach(([pid, c])=> hit(pid, c, n, 'physical', 'landslideHit')); } }
     // Crushing Depths: N (5) water damage to every unit; Tide units and Swimmers take half (rounded down); water Resist halves it again.
     if(rules.crushingDepths){ const n = crushingN(); ev({type:'fieldTick', field:'crushingDepths', round, amount:n});
-      // 2026-10-22 (package FX): a halving keeps at least 1 (so at the default 1 a Swimmer takes 1, like anyone), except when both
-      // halvings stack: a Tide unit or Swimmer that also resists water takes half rounded down, then Resist's half (so 0 at the default 1).
+      // 2026-10-22 (package FX2, owner: "if x < 0.5, 0; else 1 ... Only round once"): a Tide unit or Swimmer takes an exact half and water
+      // Resist halves it again inside damageCardFlat; the hit is rounded once, where it lands. At the default 1: anyone 1, a Swimmer 0.5 -> 1,
+      // a Swimmer that resists water 0.25 -> 0. At 5: 5, 2.5 -> 3, 1.25 -> 1. (FX's "at least 1" on the half, and its rounding down when
+      // both halvings stacked, are gone: the one rounding gives the same 1 and 0 at the default.)
       [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const tide = isTide(c), both = tide && resistFactor(c.defId, 'water') < 1;
-        const d = !tide ? n : both ? Math.floor(n / 2) : Math.max(1, Math.floor(n / 2));
-        if(!(d > 0)){ ev({type:'fieldTick', field:'crushingHit', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:0, dmgType:'water', swimmer:true, resisted:true}); return; }
-        hit(pid, c, d, 'water', 'crushingHit', {swimmer: (tide && d < n) || undefined}); })); }
+        const d = tide ? n / 2 : n;
+        hit(pid, c, d, 'water', 'crushingHit', tide ? {swimmer: true, resisted: both || undefined} : undefined); })); }
     // Hail: N (1; was 3 until 2026-10-22, package FX) cold damage to every unit.
     if(rules.hail){ const n = fxN(rules.hail, FIELD_DMG_DEFAULT); ev({type:'fieldTick', field:'hail', round, amount:n}); [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, n, 'cold', 'hailHit'))); }
     // Glass-storm: every unit is buffeted by flying glass for its own random 1–3 damage.
@@ -1572,7 +1580,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(cometRounds > 0 && round > 1){
       cometRounds -= 1;
       if(recordEvents && events) events.push({type:'fieldTick', field:'cometRain', round, left: cometRounds});
-      [1,2].forEach(pid=> allLive(players[pid]).filter(c=> !c.cageOf && !climbs(c)).forEach(c=>{ const n = 2 + Math.floor(rnd()*4), hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
+      // 2026-10-22 (package FX2): 1 fire each (was a random 2-5): comets fall on every unit three rounds running, so 1 is the most that keeps a round's average at 1.
+      [1,2].forEach(pid=> allLive(players[pid]).filter(c=> !c.cageOf && !climbs(c)).forEach(c=>{ const n = VOLCANO_HIT, hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
         if(recordEvents && events) events.push({type:'fieldTick', field:'comet', side:sideOf(pid), uid:c.uid, defId:c.defId, roll:n, dmg:Math.max(0, hp0 - c.hp)}); }));
     }
     const vc = round > 1 ? volcanoChances(round) : null;
@@ -1584,18 +1593,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(keys.length){ const col = keys[Math.floor(rnd()*keys.length)];
           [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
             if(!c || c.gap || !(c.hp > 0) || c.cageOf || isFlyingCard(c) || climbs(c)) return;
-            const hp0 = c.hp; damageCardFlat(c, 3, 'heat'); burnt = true;
+            const hp0 = c.hp; damageCardFlat(c, VOLCANO_HIT, 'heat'); burnt = true; // 1 (was 3; 2026-10-22, package FX2): its chance runs up to 60% a round, and higher on a rising volcano
             if(recordEvents && events) events.push({type:'fieldTick', field:'lavaTide', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col}); }); } }
       if(stone) [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !c.cageOf && !climbs(c)); if(!cs.length) return;
         const c = cs[Math.floor(rnd()*cs.length)]; c.petrified = true;
         if(recordEvents && events) events.push({type:'fieldTick', field:'petrify', side:sideOf(pid), uid:c.uid, defId:c.defId}); });
-      if(boom){ erupt(Number(rules.eruption) > 0 ? Number(rules.eruption) : 2);
+      if(boom){ erupt(hazardHit(rules.eruption, VOLCANO_HIT)); // 1 by default (was 2; 2026-10-22, package FX2), at most 5
         volcanoRiseFrom = round + 1; cometRounds = 3; // the cycle resets (a rising level climbs again from its base), and comets follow
         if(recordEvents && events) events.push({type:'fieldTick', field:'eruptionReset', round, comets:3});
         // 2026-10-17 (user: "Ashy (volcano explosion)"): after the Eruption the ground is Ashy this round and the next 3.
         if(rules.ashyAfterEruption){ ashyUntil = turnNo + 3; if(recordEvents && events) events.push({type:'fieldTick', field:'ashy', round, until: ashyUntil, rounds:4}); } }
     } else {
-      const n = Number(rules.eruption)||0;
+      const n = Number(rules.eruption) > 0 ? hazardHit(rules.eruption, VOLCANO_HIT) : 0; // Scorched Ground: every round, so the editor's preset is 1 now (was 2; FX2), and at most 5
       if(n > 0 && round > 1 && !volcanoOn()) erupt(n, true);
     }
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
@@ -2053,7 +2062,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.shade && !magic && fromAttack && darkNow()) n++;
     return n;
   }
-  function halveTimes(amt, n){ for(let i = 0; i < n; i++) amt = Math.floor(amt / 2); return amt; }
+  function halveTimes(amt, n){ for(let i = 0; i < n; i++) amt = amt / 2; return amt; } // exact (2026-10-22, FX2; was rounded down each time)
   function ghostBleedClamp(c){ if(!c || !(c.bleed > 0)) { if(c && c.ichorBleed) c.ichorBleed = 0; return; }
     if(isGhost(c)) c.bleed = Math.min(c.bleed, Math.max(0, c.ichorBleed||0));
     if(c.ichorBleed > c.bleed) c.ichorBleed = c.bleed; }
@@ -2086,11 +2095,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return txIsAny(d, ['Elemental', 'Plant', 'Flora']); }
   function psychicHit(pid, att, c, sideOf, stats, events){
     const n = Number(effectsOf(att).psychic)||0; if(!(n > 0) || !c || !(c.hp > 0)) return 0;
-    // Psychic Dampener (2026-10-17, raid field effect, rules.psychicDampener): psychic damage is halved, rounded down (Psychic 1 does nothing).
-    const damp = !!rules.psychicDampener, n2 = damp ? Math.floor(n / 2) : n;
-    const tpid = otherId(pid), mindless = isMindless(c), dmg = (mindless || c.invincible > 0) ? 0 : n2; // + Invincible (2026-10-16)
-    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) noteKiller(c, att.uid, att.defId);
-      ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
+    // Psychic Dampener (2026-10-17, raid field effect, rules.psychicDampener): psychic damage is halved.
+    // 2026-10-22 (package FX2): the half is exact and the hit goes through applyDamage (raw: no Armor, Shell or Shield, as before), which
+    // rounds it once, half up: a dampened Psychic 1 is 0.5 and lands as 1 (it did nothing when the half was rounded down), Psychic 3 lands 2.
+    const damp = !!rules.psychicDampener, n2 = damp ? n / 2 : n;
+    const tpid = otherId(pid), mindless = isMindless(c), x = (mindless || c.invincible > 0) ? 0 : n2; // + Invincible (2026-10-16)
+    const dmg = x > 0 ? applyDamage(c, x, {raw: true, wake: true, killerUid: att.uid, killerDefId: att.defId}).dmg : 0;
+    if(dmg > 0){ ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
     if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined, dampened: (damp && n2 < n) || undefined});
     return dmg;
   }
@@ -2389,15 +2400,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const rfH = resistFactor(targetCard.defId, dmgType, attDef), wfH = weaknessFactor(targetCard.defId, dmgType, attDef);
     const factor = rfH * wfH * defenderDamageFactor(targetCard.defId);
     dnFactorMods(mods, targetCard.defId, rfH, wfH); // 2026-10-22 (package DN)
-    if(factor===0) amt = 0; else if(factor!==1) amt = Math.max(1, Math.floor(amt*factor)); // Immune takes nothing
-    { const hv = spiritHalves(targetCard, supremeAtt ? 'magic' : dmgType, !!attCard); if(hv){ amt = halveTimes(Math.floor(amt), hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
-    if(amt > 0 && atheistHalves(targetCard, supremeAtt ? 'magic' : dmgType, attDef)){ amt = Math.max(1, Math.floor(amt / 2)); mods.push('resist'); } // Atheist (2026-10-16)
+    // 2026-10-22 (package FX2): exact from here to applyDamage. The old "at least 1" after a Resist / Weakness / Fragile factor and after the
+    // Atheist half was a patch for rounding down (a 1 resisted is 0.5, which now rounds to 1 anyway); dropped, so a 0 stays 0 and two halvings
+    // of a 1 (0.25) come to 0, as the owner's rule says.
+    if(factor===0) amt = 0; else if(factor!==1) amt = amt * factor; // Immune takes nothing
+    { const hv = spiritHalves(targetCard, supremeAtt ? 'magic' : dmgType, !!attCard); if(hv){ amt = halveTimes(amt, hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
+    if(amt > 0 && atheistHalves(targetCard, supremeAtt ? 'magic' : dmgType, attDef)){ amt = amt / 2; mods.push('resist'); } // Atheist (2026-10-16)
     // Shock (status, 2026-09-17): while active, every hit this card takes lands for 50% more —
     // a "vulnerable" debuff, distinct from Rage's self-damage-doubling (that's a stance the card
     // chooses; Shock is inflicted on it). Applied after Resist/Weakness so a resisted hit still
     // gets shocked proportionally, before Armor so Armor still partially mitigates it.
-    if(targetCard.shocked>0){ amt = Math.ceil(amt*1.5); mods.push('shocked'); }
-    if(targetCard && isRaging(targetCard)){ amt = Math.floor(amt/2); mods.push('rage'); }
+    if(targetCard.shocked>0){ amt = amt * 1.5; mods.push('shocked'); } // exact (FX2; was rounded up)
+    if(targetCard && isRaging(targetCard)){ amt = amt / 2; mods.push('rage'); } // exact (FX2; was rounded down)
     const tdef = CARD_DEFS[targetCard.defId];
     // Rend (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Pierce"): bypasses Armor
     // AND Shell's temporary bonus armor entirely for this hit -- the direct counter-tech to
@@ -2418,14 +2432,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // stays silent, same "only when it actually mattered" convention as Bulwark's own display gate).
     const rendBypass = rend && nominalArmor>0;
     let armorBlocked = false, armorSoaked = 0; // armorSoaked: how much Armor took off this hit (2026-10-16, for the 🛡 chip's glow and konk)
+    // 2026-10-22 (package FX2): Armor comes off the exact amount (was off the amount rounded down); armorBlocked = it brought a hit that
+    // would have landed (0.5 or more) under 0.5, so the hit shows 0.
     if(armor>0){
       const before = amt;
-      amt = Math.max(0, Math.floor(amt) - armor);
-      armorSoaked = Math.max(0, Math.floor(before) - amt);
-      if(amt===0 && before>0) armorBlocked = true;
+      amt = Math.max(0, amt - armor);
+      armorSoaked = Math.max(0, before - amt);
+      if(roundDmg(amt)===0 && roundDmg(before)>0) armorBlocked = true;
       if(armorSoaked > 0) mods.push('armor'); // 2026-10-22 (package DN)
     } else {
-      amt = Math.max(0, Math.floor(amt));
+      amt = Math.max(0, amt);
     }
     // Elemental dmgType conversion (2026-09-29, explicit design: "the elements can be both
     // passives and attack damage type"): once the final post-mitigation damage number is known,
@@ -2446,16 +2462,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
                               // from `amt` (the real returned dmg) since Poison zeroes `amt` out
                               // entirely; front-end log text reads this to say what actually
                               // happened instead of just "hit for 0".
+    // 2026-10-22 (package FX2): the stacks and the Attack lost are where this hit comes into play, so they take the hit's rounded number
+    // (roundDmg); the Health damage itself stays exact until applyDamage.
     if(dmgType==='poison' && amt>0){
-      const got = addPoison(targetCard, amt); // a Structure / poison-Immune unit takes no stacks (2026-10-15)
-      elementalConvert = 'poison';
-      elementalAmount = got;
+      const pn = roundDmg(amt);
+      if(pn > 0){ const got = addPoison(targetCard, pn); // a Structure / poison-Immune unit takes no stacks (2026-10-15)
+        elementalConvert = 'poison';
+        elementalAmount = got; }
       amt = 0;
-    } else if(dmgType==='decay' && amt>0){
-      targetCard.atk = Math.max(0, targetCard.atk - amt);
-      if(targetCard.baseAtk!=null) targetCard.baseAtk = Math.max(0, targetCard.baseAtk - amt);
+    } else if(dmgType==='decay' && roundDmg(amt)>0){
+      const dn = roundDmg(amt);
+      targetCard.atk = Math.max(0, targetCard.atk - dn);
+      if(targetCard.baseAtk!=null) targetCard.baseAtk = Math.max(0, targetCard.baseAtk - dn);
       elementalConvert = 'decay';
-      elementalAmount = amt;
+      elementalAmount = dn;
     }
     return {dmg: amt, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit, mods};
   }
@@ -2487,28 +2507,50 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     card.killedBy = attUid; card.killedByDef = attDefId || null; card.killedByPid = null;
     if(curPlayers && attUid != null) for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && rowsUnitsOf(pl).some(x=> x && x.uid === attUid)){ card.killedByPid = pid; if(!card.killedByDef){ const k = rowsUnitsOf(pl).find(x=> x && x.uid === attUid); card.killedByDef = k ? k.defId : null; } break; } } // + the middle / back rows (2026-10-19, TS)
   }
+  // 2026-10-22 (package FX2, owner 14:12: "we shall do normal rounding. if x < 0.5, 0; else 1 ... Only round once, when it comes into
+  // fruition on the battlefield. Internal calculations should never round. Even when passing numbers between functions ... the first
+  // ApplyDamage(X) before damage calculation and etc. then the final real ApplyDamage(Y) which results in a literal ReduceHealth(Y) 1-1 +
+  // firing related triggers."): a hit's damage is worked out exactly (computeHitDamage, damageCardFlat's own pipeline, the row share,
+  // halvings, x1.5, Resist, Armor, Fragile, stone; no rounding in between or between functions) and comes to the unit through applyDamage,
+  // the one place its Health goes down for a hit. applyDamage rounds once, half up (roundDmg: under 0.5 is 0, otherwise the nearest whole
+  // number, a half going up: 0.25 -> 0, 0.5 -> 1, 1.5 -> 2, 2.5 -> 3), then a Shell's temporary Health and a Shield soak, Health drops by
+  // exactly what is left, and the hit's follow-ups run (the hit note, Punish, sudden death, the killer, waking, Shell, Nullify). Its result
+  // is the number the 'hit' event carries; the callers' On Attacked / On Death triggers read it. A bramble's damage is rounded the same way,
+  // once, as it reaches damageHQ.
+  const DMG_EPS = 1e-9; // float noise: 0.1 * 5 must count as the 0.5 it is
+  function roundDmg(x){ x = Number(x); if(!(x + DMG_EPS >= 0.5)) return 0; return Math.floor(x + 0.5 + DMG_EPS); }
+  function applyDamage(card, x, o){
+    o = o || {};
+    const y = roundDmg(x);
+    const dmg = (o.raw || o.crush) ? y : spendTempHp(card, y), tempSoak = y - dmg; // Shell's temporary Health, then a Shield (2026-10-12 / 10-14)
+    if(o.mods){ if(tempSoak > 0) o.mods.push('shield'); lastHitMods = {uid: card.uid, mods: o.mods}; } // 2026-10-22 (package DN)
+    if(o.punishBy !== undefined) sk1NotePunish(card, o.punishBy); // Punish N (2026-10-19, package SK1, flagged)
+    if(o.noteHit) noteHit(card, dmg, o.dmgType);
+    const hp0 = card.hp;
+    card.hp = Math.max(0, card.hp - dmg);
+    if(o.suddenDeath && o.suddenDeath(dmg)) card.hp = 0;
+    if(o.killerUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, o.killerUid, o.killerDefId); // who:'killer' (2026-10-14)
+    if(o.wake && dmg > 0 && card.asleep > 0){ if(o.wokeBy !== undefined) card._wokeBy = o.wokeBy ? Object.assign({uid: o.wokeBy.uid, n: card.asleep, t: o.wokeBy.t}) : null; card.asleep = 0; noteWoke(card); }
+    if(o.shell) shellUp(card);
+    if(o.nul && card.hp <= 0) nullifyKill(card);
+    return {dmg, tempSoak};
+  }
   function damageCard(card, amount, dmgType, attCard){
     const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = r0;
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
     const mods = r0.mods || []; // 2026-10-22 (package DN)
-    if(shelledByCower(card) && !crush){ if(r0.dmg > 0) mods.push('immune'); r0.dmg = 0; } // Cower 'shell' (2026-10-14): attacks can't hurt it this round
-    if(card.invincible > 0){ if(r0.dmg > 0) mods.push('immune'); r0.dmg = 0; } // Invincible N (2026-10-16): no damage of any kind for its first N rounds
-    if(card.petrified && !crush){ const d0 = r0.dmg; r0.dmg = Math.floor(r0.dmg * sk3StoneFactor(card, attCard ? CARD_DEFS[attCard.defId] : null)); if(r0.dmg < d0) mods.push('stone'); else if(r0.dmg > d0) mods.push('weak'); } // Petrification (2026-10-14): stone takes half; Shatter doubles it instead (2026-10-19, SK3)
-    const dmg = crush ? r0.dmg : spendTempHp(card, r0.dmg), tempSoak = r0.dmg - dmg; // Shell's temporary Health goes first (2026-10-12)
-    if(tempSoak > 0) mods.push('shield');
-    lastHitMods = {uid: card.uid, mods};
+    let x = r0.dmg; // exact (FX2)
+    if(shelledByCower(card) && !crush){ if(roundDmg(x) > 0) mods.push('immune'); x = 0; } // Cower 'shell' (2026-10-14): attacks can't hurt it this round
+    if(card.invincible > 0){ if(roundDmg(x) > 0) mods.push('immune'); x = 0; } // Invincible N (2026-10-16): no damage of any kind for its first N rounds
+    if(card.petrified && !crush){ const d0 = x; x = x * sk3StoneFactor(card, attCard ? CARD_DEFS[attCard.defId] : null); if(x < d0) mods.push('stone'); else if(x > d0) mods.push('weak'); } // Petrification (2026-10-14): stone takes half; Shatter doubles it instead (2026-10-19, SK3); exact (FX2)
     const nul = isNullifier(attCard); // Nullify (2026-10-14): the hit doesn't count as "hit" for Cower, and Shell doesn't go up
-    if(attCard) sk1NotePunish(card, attCard.uid); // Punish N (2026-10-19, package SK1, flagged)
-    if(!nul) noteHit(card, dmg, dmgType);
-    const hp0 = card.hp;
-    card.hp = Math.max(0, card.hp - dmg);
     // sudden death: any hit that lands kills; from 2026-10-15 even one Armor / a Shell / stone soaked to 0 ("at least 1 dmg"),
     // unless the unit is Immune to it
-    if(suddenDeath && (dmg>0 || (amount > 0 && resistFactor(card.defId, dmgType, attCard ? CARD_DEFS[attCard.defId] : null) !== 0))) card.hp = 0;
-    if(hp0 > 0 && card.hp <= 0 && attCard) noteKiller(card, attCard.uid, attCard.defId); // who:'killer' (2026-10-14): the unit whose hit killed it
-    if(dmg>0 && card.asleep>0){ card._wokeBy = attCard ? {uid: attCard.uid, n: card.asleep, t: turnNo} : null; card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake" (2026-10-18: _wokeBy, so that same hit's own Sleep stacks on the tokens it had)
-    if(!nul) shellUp(card);
-    if(nul && card.hp <= 0) nullifyKill(card);
+    const sd = suddenDeath ? (d=> d>0 || (amount > 0 && resistFactor(card.defId, dmgType, attCard ? CARD_DEFS[attCard.defId] : null) !== 0)) : null;
+    const {dmg, tempSoak} = applyDamage(card, x, {dmgType, crush, mods, punishBy: attCard ? attCard.uid : undefined, noteHit: !nul, suddenDeath: sd,
+      killerUid: attCard ? attCard.uid : null, killerDefId: attCard ? attCard.defId : null,
+      wake: true, wokeBy: attCard ? {uid: attCard.uid, t: turnNo} : null, // Asleep (2026-09-16): breaks the instant real damage lands (2026-10-18: _wokeBy, so that same hit's own Sleep stacks on the tokens it had)
+      shell: !nul, nul});
     return {dmg, armorBlocked, armorSoaked:r0.armorSoaked||0, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit, mods};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
@@ -2539,25 +2581,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const rfH = resistFactor(card.defId, dmgType, attDef), wfH = weaknessFactor(card.defId, dmgType, attDef);
     const factor = rfH * wfH * defenderDamageFactor(card.defId);
     const mods = []; dnFactorMods(mods, card.defId, rfH, wfH); // 2026-10-22 (package DN): display only
-    let dmg = factor===0 ? 0 : factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount; // Immune takes nothing
-    { const hv = spiritHalves(card, dmgType, !!attDef); if(hv){ dmg = halveTimes(Math.floor(dmg), hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
-    if(dmg > 0 && atheistHalves(card, dmgType, attDef)){ dmg = Math.max(1, Math.floor(dmg / 2)); mods.push('resist'); } // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
-    if(card.shocked>0){ dmg = Math.ceil(dmg*1.5); mods.push('shocked'); } // Shock applies to ranged/flat hits too
-    if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush){ if(dmg > 0) mods.push('immune'); dmg = 0; } // Cower 'shell': arrows and bolts too, not statuses
-    if(card.petrified && !crush){ const d0 = dmg; dmg = Math.floor(dmg * sk3StoneFactor(card, attDef)); if(dmg < d0) mods.push('stone'); else if(dmg > d0) mods.push('weak'); } // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
-    if(card.invincible > 0){ if(dmg > 0) mods.push('immune'); dmg = 0; } // Invincible N (2026-10-16): statuses, arrows and bolts too
-    if(!crush){ const d1 = dmg; dmg = spendTempHp(card, dmg); if(dmg < d1) mods.push('shield'); }
-    lastHitMods = {uid: card.uid, mods};
-    noteHit(card, dmg, dmgType);
-    if(!EXPOSE_TICKS.has(dmgType)) sk1NotePunish(card, attUid); // Punish N (2026-10-19, package SK1, flagged)
-    const hp0 = card.hp;
-    card.hp = Math.max(0, card.hp - dmg);
-    if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
-    if(suddenDeath && amount > 0 && factor !== 0 && !EXPOSE_TICKS.has(dmgType)) card.hp = 0; // ...a hit soaked to 0 too (2026-10-15); status ticks still need to hurt
-    if(attUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, attUid, attDefId); // who:'killer' (2026-10-14)
-    if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep breaks on any flat/ranged damage too
-    shellUp(card); // Shell triggers on arrows and every other hit too (2026-10-12)
-    return dmg;
+    // 2026-10-22 (package FX2): exact all the way to applyDamage (no "at least 1" after a factor or the Atheist half, no rounding of a
+    // halving, of Shock's x1.5 or of stone); see damageCard.
+    let dmg = factor===0 ? 0 : factor!==1 ? amount*factor : amount; // Immune takes nothing
+    { const hv = spiritHalves(card, dmgType, !!attDef); if(hv){ dmg = halveTimes(dmg, hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
+    if(dmg > 0 && atheistHalves(card, dmgType, attDef)){ dmg = dmg / 2; mods.push('resist'); } // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
+    if(card.shocked>0){ dmg = dmg * 1.5; mods.push('shocked'); } // Shock applies to ranged/flat hits too
+    if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Cower 'shell': arrows and bolts too, not statuses
+    if(card.petrified && !crush){ const d0 = dmg; dmg = dmg * sk3StoneFactor(card, attDef); if(dmg < d0) mods.push('stone'); else if(dmg > d0) mods.push('weak'); } // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
+    if(card.invincible > 0){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Invincible N (2026-10-16): statuses, arrows and bolts too
+    const tick = EXPOSE_TICKS.has(dmgType);
+    // sudden death: any hit that lands kills, and from 2026-10-15 a hit soaked to 0 too; status ticks still need to hurt
+    const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null;
+    return applyDamage(card, dmg, {dmgType, crush, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
+      killerUid: attUid, killerDefId: attDefId, wake: true /* Asleep breaks on any flat/ranged damage too */, shell: true /* Shell triggers on arrows and every other hit too (2026-10-12) */}).dmg;
   }
   // Bulwark (2026-09-17): sums every live Bulwark stack on the DEFENDING side's own board —
   // "while this card is on the board, your Castle takes N less damage from every hit." Read
@@ -2576,6 +2613,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // uniformly at the one place all castle damage funnels through, rather than re-deriving the
   // reduction at every call site.
   function damageHQ(pl, amount){
+    amount = roundDmg(amount); // 2026-10-22 (package FX2): a bramble's hit comes in exact (a row share, Bloodlust's half) and is rounded once, here, half up; Bulwark and the Skirmish Armour are whole numbers after it
     if(typeof pl.onHqHit === 'function'){ const r = pl.onHqHit(amount, currentAttacker); if(typeof r === 'number') return r; }
     const crush = !!(currentAttacker && effectsOf(currentAttacker).supreme); // Supreme (2026-10-14, user: "They crush armour and ward etc.")
     if(pl.perks && pl.perks.ward && amount > 0 && !crush){ pl.perks.ward = false; return 0; } // Wildpath "Unmoving": the first castle hit is ignored
@@ -2990,7 +3028,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
-    return (card.staggered>0) ? Math.floor(base*0.5) : base;
+    // 2026-10-22 (package FX2): exact now (a Staggered 5 swings for 2.5 and lands as 3 when nothing else changes it); the hit is rounded
+    // once, where it lands (applyDamage). effAtk feeds damage, the AI's sorting and a few comparisons; no card face reads it.
+    return (card.staggered>0) ? base*0.5 : base;
   }
   // Bleed (item #12): unlike Poison (a once-per-round upkeep tick), a Bled unit takes damage
   // equal to its own current stack every time it performs an attack, defends against one, or
@@ -8413,7 +8453,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // If an earlier attacker's kill this same round already caused this card to fall toward
       // center (or its flank to close up), it now swings from wherever it actually stands.
       const rowSwing = a.reserve || 0; // its row (1 middle, 2 back), 0 for the front row (2026-10-19, TS)
-      const rowHalf = n=> rowSwing ? rowShareOf(n) : n; // a middle / back-row swing lands for ROW_SWING_SHARE (half), rounded up (as its strike did since 2026-10-17; one constant since 2026-10-19, RR)
+      const rowHalf = n=> rowSwing ? rowShareOf(n) : n; // a middle / back-row swing lands for ROW_SWING_SHARE (half; exact since 2026-10-22, FX2, rounded once where it lands; one constant since 2026-10-19, RR)
       // Its events keep the shape the page's raid replay reads (2026-10-17): a hit is a volleyHit, a castle hit a volleyCastle, a dodge
       // an evaded with volley / row / targetRow. A front-row swing's events are unchanged.
       const rowEv = o=>{ if(!rowSwing || !o) return o;
@@ -8508,7 +8548,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // columns, every one at full damage.) An empty line is a thrust at thin air. The forkSwing event lists every line for the picture.
       const prongSpec = (target && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
       let prongCols = [], forkPlan = null;
-      const halfAtk = n=> n > 0 ? Math.max(1, Math.floor(n / 2)) : 0;
+      const halfAtk = n=> n > 0 ? n / 2 : 0; // exact (2026-10-22, package FX2; was half rounded down, at least 1: a rounding patch, since a 1's half, 0.5, now lands as 1)
       if(prongSpec){
         const lanesP = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
         const liveAt = c=>{ const en = c != null ? liveEnemyCols[c] : null; return !!(en && en.kind === 'card' && en.card && en.card.hp > 0); };
@@ -8707,7 +8747,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
         const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col); // + a middle / back-row swing, on the row it aims at (2026-10-19, RR)
         const swingAmt0 = ((mainHalf ? halfAtk(atkThisRound) : atkThisRound) + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1); // a half line (2026-10-17)
-        const swingAmt = rowHalf(bloodlustHalves(a.att, defCard) ? Math.ceil(swingAmt0 / 2) : swingAmt0); // Bloodlust (2026-10-17): half on Structures; a row swing: half (2026-10-19, TS)
+        const swingAmt = rowHalf(bloodlustHalves(a.att, defCard) ? swingAmt0 / 2 : swingAmt0); // Bloodlust (2026-10-17): half on Structures; a row swing: half (2026-10-19, TS); exact (2026-10-22, FX2)
         const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, swingAmt, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
@@ -8740,7 +8780,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const durianThorns = nullHit ? 0 : (defCard.thornsBonus||0); // Durian (2026-10-14): Thorns +1 per durian eaten
         if((defDefEarly.effects && defDefEarly.effects.thorns) || durianThorns > 0){
           const thornsDmg = (Number(defDefEarly.effects && defDefEarly.effects.thorns)||0) + durianThorns;
-          a.att.hp = Math.max(0, a.att.hp - thornsDmg);
+          applyDamage(a.att, thornsDmg, {raw: true}); // 2026-10-22 (package FX2): through the one apply function (Thorns is whole numbers, so nothing rounds)
           ensureStat(stats, sideOf(a.enemyId), defCard.defId).thornsDealt += thornsDmg;
           ensureStat(stats, mySide, a.att.defId).taken += thornsDmg;
           if(recordEvents && events) events.push({type:'thorns', side:sideOf(a.enemyId), fromDefId:defCard.defId, fromUid:defCard.uid, targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, dmg:thornsDmg});
@@ -8950,7 +8990,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const siegeBonus = sk1SiegeN(attDef); // 2026-10-19 (package SK1): Siege N, an old Demolisher too (true = the default)
         const bulwarkBlocked = bulwarkReductionFor(players[a.enemyId]);
         const castleAmt0 = (mainHalf ? halfAtk(castleSwingAmt(a.att, atkThisRound)) : castleSwingAmt(a.att, atkThisRound)) + siegeBonus; // Pitchfork's C line at the castle: half (2026-10-17)
-        const castleAmt = rowHalf(bloodlustHalves(a.att, null) ? Math.ceil(castleAmt0 / 2) : castleAmt0); // a row swing: half (2026-10-19, TS)
+        const castleAmt = rowHalf(bloodlustHalves(a.att, null) ? castleAmt0 / 2 : castleAmt0); // a row swing: half (2026-10-19, TS); exact, rounded once in damageHQ (2026-10-22, FX2)
         const dmg = damageHQ(players[a.enemyId], castleAmt); // Bloodlust (2026-10-17): half on castles
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
@@ -9078,7 +9118,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // N plain damage to a card from no one: it can't be dodged; On Attacked, Bleed and death all follow as normal.
   function debugDamage(players, sideOf, uid, amount, stats, events){
     const f = findBoardCard(players, uid); if(!f || f.card.hp<=0) return 0;
-    const c = f.card, dmg = damageCardFlat(c, Math.max(0, amount|0), 'true', null);
+    const c = f.card, dmg = damageCardFlat(c, Math.max(0, Number(amount)||0), 'true', null); // exact in, rounded once where it lands (2026-10-22, FX2; was cut to a whole number here)
     if(recordEvents && events) events.push({type:'hit', side:sideOf(otherId(f.pid)), attDefId:c.defId, attUid:null, targetSide:sideOf(f.pid), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg, dmgType:'true', ranged:true, source:'Tester'});
     if(c.hp>0){ bleedTick(sideOf, f.pid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, f.pid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     removeDeadCards(players, sideOf, {}, stats, events);
@@ -9103,7 +9143,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

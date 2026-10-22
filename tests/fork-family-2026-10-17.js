@@ -63,7 +63,7 @@ const same = (a, b)=> JSON.stringify(a) === JSON.stringify(b);
     if(fs2.aim === 'left') left++; else right++;
     if(!same(r.d, want) || r.castle !== 0 || !same(fs2.lines.map(l=> l.off), fs2.aim === 'left' ? [-2, -1, 0, 1] : [-1, 0, 1, 2]) || !fs2.lines.every(l=> l.half)) bad++; }
   ok(!bad, `Pitchfork: LL/L/C/R aimed left, L/C/R/RR aimed right, half on every prong (${bad} bad of 40)`); ok(left > 8 && right > 8, `Pitchfork: aims left and right at random (${left}/${right})`); }
-{ const r = swing('ff-pitch5', [0]); ok(r.d['0'] === 2, 'Pitchfork with 5 Attack: 2 a prong (half, rounded down)'); }
+{ const r = swing('ff-pitch5', [0]); ok(r.d['0'] === 3, 'Pitchfork with 5 Attack: 3 a prong (half, 2.5, lands as 3: FX2, 2026-10-22)'); }
 { let ok2 = 0; for(let s = 1; s <= 20; s++){ const r = swing('ff-pitch', [-1, 1], s); if(r.castle === 2 && r.d['-1'] === 2 && r.d['1'] === 2) ok2++; }
   ok(ok2 === 20, `Pitchfork, nobody in front: the middle prong hits the castle for half, the sides half (${ok2}/20)`); }
 

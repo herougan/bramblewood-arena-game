@@ -858,7 +858,7 @@
  "Frigid: each round one random card on each side gets +1 Wait.": "கடுங்குளிர்: ஒவ்வொரு சுற்றும் ஒவ்வொரு பக்கத்திலும் ஒரு சீரற்ற அட்டை +1 காத்திரு பெறும்.",
  "From Pack {v1} ({v2} cards).": "பொதி {v1} இலிருந்து ({v2} அட்டைகள்).",
  "From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.": "சுற்று 2 முதல், ஒவ்வொரு சுற்றும் ஒவ்வொரு அலகுக்கும் 1 நஞ்சு பெற 2-இல் 1 வாய்ப்பு உண்டு. கட்டமைப்புகளுக்கு ஒருபோதும் தொற்றாது.",
- "From round 2, the ground burns one random unit on each side for 2 fire damage every round.": "சுற்று 2 முதல், ஒவ்வொரு சுற்றும் நிலம் ஒவ்வொரு பக்கத்திலும் ஒரு சீரற்ற அலகை 2 நெருப்புச் சேதத்தால் எரிக்கும்.",
+ "From round 2, the ground burns one random unit on each side for 1 fire damage every round.": "சுற்று 2 முதல், ஒவ்வொரு சுற்றும் நிலம் ஒவ்வொரு பக்கத்திலும் ஒரு சீரற்ற அலகை 1 நெருப்புச் சேதத்தால் எரிக்கும்.",
  "From round {v1}, any damage to a bramble destroys it.": "சுற்று {v1} முதல், முட்புதருக்கு எந்தச் சேதமும் அதை அழிக்கும்.",
  "Front row · You": "முன் வரிசை · நீ",
  "Frost": "பனிப்படலம்",

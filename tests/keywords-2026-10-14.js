@@ -82,7 +82,7 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
   const G = byDef(P[1], 'k4-ghost'); e.debugAttack(P, so, byDef(P[2], 'k4-hit').uid, {}, []); ok(G.hp === 20, `a physical hit does nothing to a Ghost (${G.hp})`);
   e.damageCardFlat(G, 3, 'physical'); ok(G.hp === 20, 'physical arrows pass through too');
   // 2026-10-14 second pass (user: "those creatures that deal elemental damage physically, deal half. Only magic damage deals equal")
-  e.damageCardFlat(G, 3, 'heat'); ok(G.hp === 19, `fire burns it for half, rounded down (${G.hp}, want 19)`); }
+  e.damageCardFlat(G, 3, 'heat'); ok(G.hp === 18, `fire burns it for half: 1.5 lands as 2 (FX2, 2026-10-22: one rounding, half up) (${G.hp}, want 18)`); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-ghost', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-magic', 'left', {}, []);
   const G = byDef(P[1], 'k4-ghost'), ev = []; e.debugAttack(P, so, byDef(P[2], 'k4-magic').uid, {}, ev);
   ok(G.hp === 16, `a Magic attack hurts a Ghost (${G.hp})`); ok(ev.some(x=> x.type==='hit' && x.dmgType==='magic'), 'the hit is logged as magic damage'); }
@@ -119,7 +119,7 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
 const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard(m.P, so, 1, 'k4-wall', 'left', {}, []); m.e.debugSpawnCard(m.P, so, 2, 'k4-wall', 'left', {}, []); return m; };
 { const {e, P} = lone({lavaTideChance:100, petrifyChance:0, eruptionChance:0}); const ev = []; e.roundStart(P, 2, so, {}, ev);
   const lt = ev.filter(x=> x.type==='fieldTick' && x.field==='lavaTide');
-  ok(lt.length === 2 && all(P[1])[0].hp === 497 && all(P[2])[0].hp === 497, `Lava Tide at 100%: the column's units take 3 (${lt.length}, ${all(P[1])[0].hp})`);
+  ok(lt.length === 2 && all(P[1])[0].hp === 499 && all(P[2])[0].hp === 499, `Lava Tide at 100%: the column's units take 1 (FX2; was 3) (${lt.length}, ${all(P[1])[0].hp})`);
   ok(!ev.some(x=> x.field==='petrify' || x.field==='eruption'), 'the other hazards at 0% never fire'); }
 { const {e, P} = mk(7, {lavaTideChance:100}); e.debugSpawnCard(P, so, 1, 'k4-fly', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-hot', 'left', {}, []);
   e.roundStart(P, 2, so, {}, []); ok(all(P[1])[0].hp === 20, 'a Flyer is above the lava'); ok(all(P[2])[0].hp === 19, `heat-proof halves it (${all(P[2])[0].hp})`); }
@@ -127,12 +127,12 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
   const ev = []; e.roundStart(P, 2, so, {}, ev); const A = all(P[1])[0], W = all(P[2])[0];
   ok(A.petrified && W.petrified && ev.filter(x=> x.field==='petrify').length === 2, 'Petrification at 100%: one unit a side turns to stone');
   e.resolveCombat(P, so, {}, [], 1); ok(W.hp === 500, `a stone unit can't attack (${W.hp})`);
-  const hp = A.hp; e.damageCard(A, 5, 'physical', null); ok(hp - A.hp === 2, `and takes half damage (${hp - A.hp})`);
+  const hp = A.hp; e.damageCard(A, 5, 'physical', null); ok(hp - A.hp === 3, `and takes half damage: 2.5 lands as 3 (FX2) (${hp - A.hp})`);
   e.roundStart(P, 3, so, {}, []); ok(A.petrified, 'still 100%: petrified again');
   const m2 = lone({petrifyChance:0}); m2.e.roundStart(m2.P, 2, so, {}, []); ok(!all(m2.P[1])[0].petrified, 'at 0% nothing turns to stone'); }
 { const {e, P} = lone({eruptionChance:100, eruption:3}); const ev = []; e.roundStart(P, 2, so, {}, ev);
   ok(ev.filter(x=> x.field==='eruption').length === 2 && all(P[1])[0].hp === 497, 'Eruption at 100% with rules.eruption 3: 3 to one unit a side');
-  const m2 = lone({eruptionChance:100}); m2.e.roundStart(m2.P, 2, so, {}, []); ok(all(m2.P[1])[0].hp === 498, 'with no rules.eruption it is 2'); }
+  const m2 = lone({eruptionChance:100}); m2.e.roundStart(m2.P, 2, so, {}, []); ok(all(m2.P[1])[0].hp === 499, 'with no rules.eruption it is 1 (FX2; was 2)'); }
 { const {e, P} = lone({lavaTideChance:0, petrifyChance:0, eruptionChance:0, eruption:5}); let n = 0;
   for(let r = 2; r < 12; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); n += ev.filter(x=> x.type==='fieldTick').length; }
   ok(n === 0 && all(P[1])[0].hp === 500, `every hazard at 0%: nothing ever happens, even with rules.eruption set (${n})`); }
@@ -163,8 +163,8 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
   for(let r = 3; r < 8; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); const cs = ev.filter(x=> x.type==='fieldTick' && x.field==='comet'); per.push(cs.length); cs.forEach(x=> rolls.push(x)); }
   ok(per.join() === '5,5,5,0,0', `comets strike all 5 units for 3 rounds, then stop (${per})`);
   const plain = rolls.filter(x=> x.defId==='k4-wall'), hot = rolls.filter(x=> x.defId==='k4-hot');
-  ok(plain.every(x=> x.roll >= 2 && x.roll <= 5 && x.dmg === x.roll), `each comet deals 2–5 to a plain unit (${plain.map(x=> x.dmg)})`);
-  ok(new Set(plain.map(x=> x.dmg)).size > 1, 'the damage differs from unit to unit');
+  ok(plain.length > 0 && plain.every(x=> x.roll === 1 && x.dmg === 1), `each comet deals 1 to a plain unit (FX2; was a random 2–5) (${plain.map(x=> x.dmg)})`);
+  ok(new Set(plain.map(x=> x.dmg)).size === 1, 'every unit takes the same 1 (FX2: the random 2–5 is gone)');
   ok(hot.length === 3 && hot.every(x=> x.dmg === Math.max(1, Math.floor(x.roll / 2))), `a fire-resistant unit takes half (${hot.map(x=> x.roll + '→' + x.dmg)})`);
   const run = ()=>{ const m = mk(13, {lavaTideChance:0, petrifyChance:0, eruptionChance:100}); m.e.debugSpawnCard(m.P, so, 1, 'k4-wall', 'left', {}, []); m.e.debugSpawnCard(m.P, so, 2, 'k4-wall', 'left', {}, []);
     const out = []; for(let r = 2; r < 6; r++){ const ev = []; m.e.roundStart(m.P, r, so, {}, ev); ev.filter(x=> x.field==='comet').forEach(x=> out.push(x.dmg)); } return out.join(); };

@@ -858,7 +858,7 @@
  "Frigid: each round one random card on each side gets +1 Wait.": "혹한: 매 라운드 양쪽의 무작위 카드 한 장이 대기 +1.",
  "From Pack {v1} ({v2} cards).": "팩 {v1}에서(카드 {v2}장).",
  "From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.": "2라운드부터 매 라운드 모든 유닛이 2분의 1 확률로 독 1을 얻어요. 구조물은 걸리지 않아요.",
- "From round 2, the ground burns one random unit on each side for 2 fire damage every round.": "2라운드부터 매 라운드 땅이 양쪽의 무작위 유닛 하나를 화염 피해 2로 태워요.",
+ "From round 2, the ground burns one random unit on each side for 1 fire damage every round.": "2라운드부터 매 라운드 땅이 양쪽의 무작위 유닛 하나를 화염 피해 1로 태워요.",
  "From round {v1}, any damage to a bramble destroys it.": "{v1}라운드부터 덤불이 피해를 조금이라도 받으면 파괴돼요.",
  "Front row · You": "앞줄 · 나",
  "Frost": "서리",

@@ -32,10 +32,10 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
 const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
 const eng = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-engine.js'), 'utf8');
 
-// ---- Landslide: 1 in 4, 5 to every unit that isn't flying (Mountain Climbers too are spared)
+// ---- Landslide: 1 in 4, 3 (5 until 2026-10-22, package FX2) to every unit that isn't flying (Mountain Climbers too are spared)
 { const {e, P} = mk({landslide:100}); const a = put(e, P, 1, 'fe-wall', 0), f = put(e, P, 1, 'fe-fly', 1), c = put(e, P, 2, 'fe-climb', 0), b = put(e, P, 2, 'fe-wall', 1);
   e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
-  ok(a.hp === 495 && b.hp === 495, `Landslide: 5 to the grounded units (${a.hp}, ${b.hp})`); ok(f.hp === 500 && c.hp === 500, `...not the flyer or the climber (${f.hp}, ${c.hp})`);
+  ok(a.hp === 497 && b.hp === 497, `Landslide: 3 to the grounded units (FX2; was 5) (${a.hp}, ${b.hp})`); ok(f.hp === 500 && c.hp === 500, `...not the flyer or the climber (${f.hp}, ${c.hp})`);
   ok(ev.some(x=> x.type === 'fieldTick' && x.field === 'landslide') && ev.filter(x=> x.field === 'landslideHit').length === 2, 'Landslide: one header and one line per unit hit'); }
 // 2026-10-17 (user: "Landslide's effect is too much. it should only affect the L/C/R cards, and the vfx should only land on those."): only
 // the three neighbouring columns round a random one take the rocks, on both sides; the header names those columns and the units it hits.
@@ -46,7 +46,7 @@ const eng = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-engine.js'),
     if(us.some(c=> c.hp < 500) && them.some(c=> c.hp < 500)) sides++; }
   ok(!bad, `Landslide: only the struck column and its two neighbours, both sides (${bad} bad of 30)`); ok(sides === 30, 'Landslide: both sides of those columns'); }
 { const {e, P} = mk({landslide:100}); const a = put(e, P, 1, 'fe-wall', 0), b = put(e, P, 1, 'fe-wall', 1), c = put(e, P, 2, 'fe-wall', -1); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
-  ok([a, b, c].filter(x=> x.hp === 495).length >= 2, `Landslide: neighbouring columns share the rocks (${[a, b, c].map(x=> x.hp)})`); }
+  ok([a, b, c].filter(x=> x.hp === 497).length >= 2, `Landslide: neighbouring columns share the rocks (${[a, b, c].map(x=> x.hp)})`); }
 ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the field card text names the three columns');
 { let hits = 0; for(let s = 1; s <= 400; s++){ const {e, P} = mk({landslide:true}, s); put(e, P, 1, 'fe-wall', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev); if(ev.some(x=> x.field === 'landslide')) hits++; }
   ok(hits > 70 && hits < 130, `Landslide: about 1 in 4 rounds by default (${hits}/400)`); }
@@ -66,8 +66,8 @@ ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the fi
 // 2026-10-22 (package FX): the default is 1 (was 5); this block sets 5 to keep the halving rules covered, the next one checks the default
 { const {e, P} = mk({crushingDepths:5, phase:'cycle'}); const a = put(e, P, 1, 'fe-wall', 0), t = put(e, P, 1, 'fe-tide', 1), tr = put(e, P, 2, 'fe-tideres', 0), r = put(e, P, 2, 'fe-res', 1);
   e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
-  ok(a.hp === 495, `Crushing Depths: 5 water damage (${a.hp})`); ok(t.hp === 498, `...a Swimmer takes half, rounded down (${t.hp})`);
-  ok(tr.hp === 499, `...a water-resistant Swimmer a quarter (${tr.hp})`); ok(r.hp === 498, `...water Resist alone, half (${r.hp})`);
+  ok(a.hp === 495, `Crushing Depths: 5 water damage (${a.hp})`); ok(t.hp === 497, `...a Swimmer takes half: 2.5 lands as 3 (FX2, 2026-10-22: one rounding, half up) (${t.hp})`);
+  ok(tr.hp === 499, `...a water-resistant Swimmer a quarter: 1.25 lands as 1 (${tr.hp})`); ok(r.hp === 497, `...water Resist alone, half: 2.5 lands as 3 (FX2, 2026-10-22: one rounding, half up) (${r.hp})`);
   ok(e.getPhase() === null, `Crushing Depths: no day or night even on a cycling map (${e.getPhase()})`); }
 { const {e, P} = mk({crushingDepths:true}); const a = put(e, P, 1, 'fe-wall', 0), t = put(e, P, 1, 'fe-tide', 1), tr = put(e, P, 2, 'fe-tideres', 0), r = put(e, P, 2, 'fe-res', 1);
   e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
@@ -126,13 +126,13 @@ ok(mk({sandstorm:true}).e.forecast().wind.mode === 'windy' && mk({sandstorm:true
 
 // ---- Hail, Lava Spout, Scorching III
 { const {e, P} = mk({hail:3}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-cold', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
-  ok(a.hp === 497 && c.hp === 499, `Hail 3: 3 ice damage, cold Resist half (${a.hp}, ${c.hp})`); }
+  ok(a.hp === 497 && c.hp === 498, `Hail 3: 3 ice damage, cold Resist half: 1.5 lands as 2 (FX2, 2026-10-22: one rounding, half up) (${a.hp}, ${c.hp})`); }
 { const {e, P} = mk({hail:true}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-cold', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
-  ok(a.hp === 499 && c.hp === 499, `Hail (FX): 1 ice damage by default; Resist keeps at least 1 (${a.hp}, ${c.hp})`); }
+  ok(a.hp === 499 && c.hp === 499, `Hail (FX): 1 ice damage by default; Resist's half, 0.5, lands as 1 (FX2) (${a.hp}, ${c.hp})`); }
 { const {e, P} = mk({lavaSpout:true}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
   ok(a.hp === 499 && c.hp === 499, `Lava Spout (FX): 1 fire by default (${a.hp}, ${c.hp})`); }
 { const {e, P} = mk({lavaSpout:3}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
-  ok(a.hp === 497 && c.hp === 499, `Lava Spout 3: 3 fire to the units in the column, fire Resist half (${a.hp}, ${c.hp})`); ok(ev.some(x=> x.field === 'lavaSpout' && x.col === 0), 'Lava Spout: the burst names its column'); }
+  ok(a.hp === 497 && c.hp === 498, `Lava Spout 3: 3 fire to the units in the column, fire Resist half: 1.5 lands as 2 (FX2, 2026-10-22: one rounding, half up) (${a.hp}, ${c.hp})`); ok(ev.some(x=> x.field === 'lavaSpout' && x.col === 0), 'Lava Spout: the burst names its column'); }
 { const {e, P} = mk({field:'heatwave', heatLevel:3}); const us = [-2, -1, 0, 1].map(s=> put(e, P, 1, 'fe-wall', s)); e.roundStart(P, 2, so, {}, []); // a field ticks every round start
   ok(us.every(c=> c.hp === 497), `Scorching III: 4 units a side, 3 fire damage each (${us.map(c=> c.hp)})`); }
 
@@ -155,7 +155,7 @@ ok(mk({sandstorm:true}).e.forecast().wind.mode === 'windy' && mk({sandstorm:true
 
 // ---- Atheist
 { const hit = id=>{ const {e, P} = mk(); const t = put(e, P, 2, 'fe-atheist', 0), A = put(e, P, 1, id, 0); e.debugAttack(P, so, A.uid, {}, []); return 500 - t.hp; };
-  ok(hit('fe-hit') === 3 && hit('fe-magic') === 1 && hit('fe-devil') === 1, `Atheist: half from magic and Devilry (${hit('fe-hit')}, ${hit('fe-magic')}, ${hit('fe-devil')})`);
+  ok(hit('fe-hit') === 3 && hit('fe-magic') === 2 && hit('fe-devil') === 2, `Atheist: half from magic and Devilry, 1.5 lands as 2 (FX2) (${hit('fe-hit')}, ${hit('fe-magic')}, ${hit('fe-devil')})`);
   const {e, P} = mk(); const t = put(e, P, 2, 'fe-atheist', 0); e.damageCardFlat(t, 6, 'magic'); ok(t.hp === 497, `Atheist: a magic bolt halved (${500 - t.hp})`); }
 
 // ---- Haunted: a unit a side is Frightened and skips its attack; Ghosts and Atheists never

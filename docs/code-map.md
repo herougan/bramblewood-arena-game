@@ -9,14 +9,14 @@
 |---|---|---|
 | `arena_app.js` | All game UI and meta-game: screens, Forge, Codex, deck editor, map, raid UI, saves. Mapped below. | 53761 |
 | `arena_template.html` | Page shell and almost all CSS. assemble_arena.py inlines the scripts into it. | 13110 |
-| `bramblewood-engine.js` | DOM-free battle rules: combat order, keywords, skills, statuses, AI. Tests run it headless. | 9214 |
+| `bramblewood-engine.js` | DOM-free battle rules: combat order, keywords, skills, statuses, AI. Tests run it headless. | 9254 |
 | `bramblewood-budget.js` | Card budget N(L) and the stat checks (the balance formula). | 241 |
 | `bramblewood-texts.js` | Every player-facing string as a TX key (English). Translations: lang/<code>.json keyed by the English text. | 1938 |
 | `bramblewood-raid.js / -trench.js / -ghosts.js / -autobattle.js` | Raid rules, the trench, Async Arena ghosts, autobattler. | 634 |
 | `bramblewood-fx-a..g.js, -skillfx.js, -unitfx.js, -procfx.js, -shaders.js` | Visual effects. |  |
 | `canonical/*.json` | Card data (cards.json is the source of truth), raids, monsters, skill costs, animal tags. |  |
 | `assemble_arena.py` | Build: writes bramblewood-arena.html (rename to index.html) and assets/lang/*.js. | 400 |
-| `tests/run-all.sh` | The list of tests. Run them with tests/run.js (tiers, cache, quiet output). | 177 |
+| `tests/run-all.sh` | The list of tests. Run them with tests/run.js (tiers, cache, quiet output). | 178 |
 | `tools/hub/` | The project hub artifact (build_hub.py, publish_site.sh) and the db-edit fold scripts. |  |
 
 ## arena_app.js
@@ -99,52 +99,52 @@ Blocks and tables: `EXILE_ZONE_NAME` L292, `BLOOM_COND_NAMES` L586, `TRANSFORM_G
 
 ## bramblewood-engine.js
 
-586 top-level functions, 17 UPPER_CASE constants or package blocks.
+589 top-level functions, 17 UPPER_CASE constants or package blocks.
 
 ### Multiplayer, arenas and guilds (16 functions)
-Main spans: L762–4688, L9109–9109
-Functions: `matchesResistKey` L762, `darkCasterLive` L1214, `allLive` L1258, `liveUnits` L1405, `relayoutRow` L1701, `isGhost` L2026, `ghostBleedClamp` L2057, `liveRowsOf` L2813, `resolveLiveTarget` L3175, `liveColOf` L3242, `liveSharedPos` L3263, `findNextLiveCardBeyond` L3298, `liveKingsOf` L3975, `springAmbush` L4417, `pidOfLive` L4688, `simulateOneMatch` L9109
+Main spans: L762–4728, L9149–9149
+Functions: `matchesResistKey` L762, `darkCasterLive` L1220, `allLive` L1264, `liveUnits` L1411, `relayoutRow` L1710, `isGhost` L2035, `ghostBleedClamp` L2066, `liveRowsOf` L2851, `resolveLiveTarget` L3215, `liveColOf` L3282, `liveSharedPos` L3303, `findNextLiveCardBeyond` L3338, `liveKingsOf` L4015, `springAmbush` L4457, `pidOfLive` L4728, `simulateOneMatch` L9149
 
 ### Forge, Nest and crafting (4 functions)
-Main spans: L5309–5319, L7312–7319
-Functions: `eggPoolFor` L5309, `hatchEggCard` L5319, `sk2ForgedDefOf` L7312, `sk2ForgeSlot` L7319
+Main spans: L5349–5359, L7352–7359
+Functions: `eggPoolFor` L5349, `hatchEggCard` L5359, `sk2ForgedDefOf` L7352, `sk2ForgeSlot` L7359
 
 ### Deck editor and filters (1 functions)
 Main spans: L164–164
 Functions: `buildDeckIdsFrom` L164
 
 ### Map, road, skirmish and quests (15 functions)
-Main spans: L829–2845, L4843–4843
-Functions: `tideEvadeOn` L829, `isTideDef` L1118, `noteTideCard` L1119, `tideInNow` L1123, `getTide` L1133, `tideRising` L1134, `supremeTideOf` L1138, `tideAtk` L1140, `tideArmor` L1141, `isTide` L1142, `tideEvades` L1145, `tideSpoutTick` L1538, `hasTideGrant` L2216, `evasiveGate` L2845, `sk3TrigGate` L4843
+Main spans: L829–2883, L4883–4883
+Functions: `tideEvadeOn` L829, `isTideDef` L1124, `noteTideCard` L1125, `tideInNow` L1129, `getTide` L1139, `tideRising` L1140, `supremeTideOf` L1144, `tideAtk` L1146, `tideArmor` L1147, `isTide` L1148, `tideEvades` L1151, `tideSpoutTick` L1546, `hasTideGrant` L2227, `evasiveGate` L2883, `sk3TrigGate` L4883
 
 ### Rewards, packs, shop and factions (14 functions)
-Main spans: L200–2215, L3873–5451, L7288–7294, L9179–9179
-Blocks and tables: `TRIGGER_KEYS` L217, `ACTION_KEYS` L247, `FOG_REVEAL_KEYS` L9179
-Functions: `statKey` L200, `packNOf` L1053, `packChainsOf` L1054, `packPlacementFor` L1080, `cellKeyOf` L1635, `bountyOf` L2072, `grantStats` L2215, `evoGrantedOf` L3873, `addGold` L3956, `eqDrop` L4261, `avalancheStrike` L5257, `grantShield` L5451, `sk2EconomyTrigs` L7288, `sk2Price` L7294
+Main spans: L200–2226, L3913–5491, L7328–7334, L9219–9219
+Blocks and tables: `TRIGGER_KEYS` L217, `ACTION_KEYS` L247, `FOG_REVEAL_KEYS` L9219
+Functions: `statKey` L200, `packNOf` L1059, `packChainsOf` L1060, `packPlacementFor` L1086, `cellKeyOf` L1644, `bountyOf` L2081, `grantStats` L2226, `evoGrantedOf` L3913, `addGold` L3996, `eqDrop` L4301, `avalancheStrike` L5297, `grantShield` L5491, `sk2EconomyTrigs` L7328, `sk2Price` L7334
 
-### Battle UI and board (71 functions)
-Main spans: L172–9079
+### Battle UI and board (73 functions)
+Main spans: L172–9119
 Blocks and tables: `HQ_MAX_HP` L172, `SUDDEN_DEATH_ROUND` L177, `SUDDEN_DEATH_CASTLE_ROUND` L184, `DRAW_ROUND_CAP` L185, `STALL_ROUNDS_FOR_DRAW` L186, `STALL_DRAW_FROM_ROUND` L189
-Functions: `boardSignature` L192, `allBoardCards` L308, `convergeBoard` L333, `resolvePlacementSlot` L376, `rowFreeSlotNear` L472, `sweepDeadReserves` L503, `putInSlot` L519, `setCastle` L617, `makeBoardCard` L663, `attackerDamageFactor` L784, `defenderDamageFactor` L791, `laneBonusOf` L931, `getField` L968, `setField` L971, `castleRoundActions` L1260, `roundStart` L1278, `fieldEffects2Tick` L1409, `darkPerTurn` L1653, `cageHpForLevel` L1875, `leaderOnBoard` L1938, `castleSwingAmt` L1943, `spendTempHp` L1969, `attackDmgType` L2037, `computeHitDamage` L2322, `damageCard` L2490, `damageCardFlat` L2517, `damageHQ` L2578, `tallyCastleDealt` L2599, `pickRandomEnemyTarget` L2600, `applyTargetedStatus` L2750, `combatHitLands` L2881, `statusDecayHeld` L3050, `stunRoundsOf` L3071, `rollStatusOnHit` L3072, `combatColumnsOf` L3121, `slotAt` L3187, `nearestEnemyCard` L3283, `canPlay` L3518, `nearestFreeSlot` L3698, `crownSweep` L4006, `fireDamageAction` L4069, `slotEntries` L4272, `eqRoundStart` L4320, `aiEquipPlay` L4371, `sk1EnemyEnters` L4553, `hunterVsOf` L4715, `fieldPaused` L4751, `fieldBreak` L4752, `fieldHazardRules` L4754, `payFromCastle` L5155, `applyShotStatus` L5787, `aiChooseSlot` L6516, `aiBonusVs` L6559, `aiChooseSlotSmartest` L6594, `aiFieldWorth` L6651, `aiTakeTurn` L6701, `aiTakeTurnOnce` L6709, `fireRoundStartTriggers` L6930, `statusSnap` L7034, `pushStatusEnds` L7041 … and 11 more
+Functions: `boardSignature` L192, `allBoardCards` L308, `convergeBoard` L333, `resolvePlacementSlot` L376, `rowFreeSlotNear` L472, `sweepDeadReserves` L503, `putInSlot` L519, `setCastle` L617, `makeBoardCard` L663, `attackerDamageFactor` L784, `defenderDamageFactor` L791, `laneBonusOf` L937, `getField` L974, `setField` L977, `castleRoundActions` L1266, `roundStart` L1284, `fieldEffects2Tick` L1415, `darkPerTurn` L1662, `cageHpForLevel` L1884, `leaderOnBoard` L1947, `castleSwingAmt` L1952, `spendTempHp` L1978, `attackDmgType` L2046, `computeHitDamage` L2333, `roundDmg` L2521, `applyDamage` L2522, `damageCard` L2538, `damageCardFlat` L2559, `damageHQ` L2615, `tallyCastleDealt` L2637, `pickRandomEnemyTarget` L2638, `applyTargetedStatus` L2788, `combatHitLands` L2919, `statusDecayHeld` L3090, `stunRoundsOf` L3111, `rollStatusOnHit` L3112, `combatColumnsOf` L3161, `slotAt` L3227, `nearestEnemyCard` L3323, `canPlay` L3558, `nearestFreeSlot` L3738, `crownSweep` L4046, `fireDamageAction` L4109, `slotEntries` L4312, `eqRoundStart` L4360, `aiEquipPlay` L4411, `sk1EnemyEnters` L4593, `hunterVsOf` L4755, `fieldPaused` L4791, `fieldBreak` L4792, `fieldHazardRules` L4794, `payFromCastle` L5195, `applyShotStatus` L5827, `aiChooseSlot` L6556, `aiBonusVs` L6599, `aiChooseSlotSmartest` L6634, `aiFieldWorth` L6691, `aiTakeTurn` L6741, `aiTakeTurnOnce` L6749, `fireRoundStartTriggers` L6970 … and 13 more
 
 ### Admin, profile, cloud and sync (5 functions)
-Main spans: L313–1008, L4560–4881
-Functions: `syncSlots` L313, `syncGladiatorHq` L532, `syncPhaseStats` L1008, `sk1SyncAuras` L4560, `sk3Sync` L4881
+Main spans: L313–1014, L4600–4921
+Functions: `syncSlots` L313, `syncGladiatorHq` L532, `syncPhaseStats` L1014, `sk1SyncAuras` L4600, `sk3Sync` L4921
 
 ### Cards, levels and skills (48 functions)
-Main spans: L121–7969
+Main spans: L121–8009
 Blocks and tables: `CARD_DEFS_GLOBAL` L121, `AI_LEVEL_MAX` L171
-Functions: `ensureStat` L201, `frontCardAt` L385, `gladiatorLeaderOf` L526, `placeGladiatorLeader` L540, `costOfCard` L555, `graceCostOfCard` L556, `devilryCostOfCard` L561, `exileCostOfCard` L562, `phaseStatsOf` L994, `isFlyingCard` L1195, `illusionDefOf` L1399, `deriveDef` L1784, `ownerPidOfCard` L1936, `isStructureCard` L2077, `patchUnitDef` L2128, `condStatsOf` L2217, `perksOfCard` L2321, `findCardSide` L2772, `opposingCardOf` L3351, `payExileCost` L3413, `relicDefOf` L3491, `isEcclesiaDef` L3500, `placeCard` L3538, `debugSpawnCard` L3666, `meiosisDefOf` L3755, `broodDefOf` L3783, `twinDefOf` L3790, `mimicDefOf` L3801, `isEvoluteDef` L3847, `isStemDef` L3848, `evoBaseDef` L3857, `evoDefOf` L3892, `isKingDef` L3968, `summonLeader` L4028, `isEquipDef` L4206, `isHazardDef` L4207, `sk3DupDefOf` L4962, `pitchYieldOfDef` L5121, `pitchCard` L5126, `crystalDefOf` L5200, `skillAreaHit` L5352, `hasShotSkill` L5800, `columnOfCard` L6499, `isSprinterDef` L7191, `sk2PalisadeDefOf` L7254, `removeDeadCards` L7630, `removeDeadCardsPass` L7672, `isBoomerangDef` L7969
+Functions: `ensureStat` L201, `frontCardAt` L385, `gladiatorLeaderOf` L526, `placeGladiatorLeader` L540, `costOfCard` L555, `graceCostOfCard` L556, `devilryCostOfCard` L561, `exileCostOfCard` L562, `phaseStatsOf` L1000, `isFlyingCard` L1201, `illusionDefOf` L1405, `deriveDef` L1793, `ownerPidOfCard` L1945, `isStructureCard` L2086, `patchUnitDef` L2139, `condStatsOf` L2228, `perksOfCard` L2332, `findCardSide` L2810, `opposingCardOf` L3391, `payExileCost` L3453, `relicDefOf` L3531, `isEcclesiaDef` L3540, `placeCard` L3578, `debugSpawnCard` L3706, `meiosisDefOf` L3795, `broodDefOf` L3823, `twinDefOf` L3830, `mimicDefOf` L3841, `isEvoluteDef` L3887, `isStemDef` L3888, `evoBaseDef` L3897, `evoDefOf` L3932, `isKingDef` L4008, `summonLeader` L4068, `isEquipDef` L4246, `isHazardDef` L4247, `sk3DupDefOf` L5002, `pitchYieldOfDef` L5161, `pitchCard` L5166, `crystalDefOf` L5240, `skillAreaHit` L5392, `hasShotSkill` L5840, `columnOfCard` L6539, `isSprinterDef` L7231, `sk2PalisadeDefOf` L7294, `removeDeadCards` L7670, `removeDeadCardsPass` L7712, `isBoomerangDef` L8009
 
 ### Text and translation (4 functions)
 Main spans: L128–133
 Functions: `txChangeling` L128, `txIsA` L130, `txIsAny` L131, `txShares` L133
 
 ### Tests and dev tools (3 functions)
-Main spans: L2173–2173, L9087–9096
-Functions: `debugIrradiatePoint` L2173, `debugHeal` L9087, `debugFireTrigger` L9096
+Main spans: L2184–2184, L9127–9136
+Functions: `debugIrradiatePoint` L2184, `debugHeal` L9127, `debugFireTrigger` L9136
 
-### Other (405 functions)
-Main spans: L127–9201
-Blocks and tables: `TAXONOMY` L127, `SK2_DEFAULTS` L137, `ALWAYS_ON_HOOKS` L234, `TRIGGER_LAYER_CAP` L246, `FOG_REVEAL_RADIUS` L9180, `FOG_PEEK_SKIP` L9199
+### Other (406 functions)
+Main spans: L127–9241
+Blocks and tables: `TAXONOMY` L127, `SK2_DEFAULTS` L137, `ALWAYS_ON_HOOKS` L234, `TRIGGER_LAYER_CAP` L246, `FOG_REVEAL_RADIUS` L9220, `FOG_PEEK_SKIP` L9239
 

@@ -802,7 +802,7 @@ const PASSIVE_DEFS = [
   // sword symbol on their bottom left, blue in colour").
   // 2026-10-14 (user: "Ghost - not just unaffected by physical, those creatures that deal elemental damage physically, deal half. Only
   // magic damage deals equal").
-  {key:'ghost', category:'passive', label:'Ghost', kind:'boolean', desc:()=>`Normal attacks pass straight through it. Fire, frost, poison, acid, water and the like deal half (rounded down). Only magic deals full damage. It can't Bleed (except from Ichor).`},
+  {key:'ghost', category:'passive', label:'Ghost', kind:'boolean', desc:()=>`Normal attacks pass straight through it. Fire, frost, poison, acid, water and the like deal half. Only magic deals full damage. It can't Bleed (except from Ichor).`},
   {key:'magic', category:'passive', label:'Magic', kind:'boolean', desc:()=>`Its attacks deal magic damage (the blue wand). Magic hurts Ghosts.`},
   // Ichor (user: "Corrosive blood: When hit, the attacker takes N acid damage and loses 1 Armor" + "ghosts are immune to bleed but
   // ichor gives bleed indirectly").
@@ -812,7 +812,7 @@ const PASSIVE_DEFS = [
   // skill the card has ... Every turn this happens, then irradiation drops by 1").
   {key:'irradiated', category:'passive', label:'Irradiated', kind:'number', min:0, desc:v=>`Every upkeep it gives ${v} Irradiation to the enemy facing it and to the units beside it, and 1 to itself. Each Irradiation token takes 1 point a round, at random: 1 max Health (most likely), 1 Attack, or 1 from a skill (Snipe 2 becomes Snipe 1; a one-word skill like Flying goes after 2 points). Then the tokens drop by 1. Radiation Resist halves the tokens; Immunity stops them.`},
   // 2026-10-14 (second pass). Shade and Shadow (user: "Effects like Shade and Ghost and Shadow").
-  {key:'shade', category:'passive', label:'Shade', kind:'boolean', desc:()=>`At night or in darkness, it takes half damage (rounded down) from attacks that aren't magic. By day it is an ordinary unit.`},
+  {key:'shade', category:'passive', label:'Shade', kind:'boolean', desc:()=>`At night or in darkness, it takes half damage from attacks that aren't magic. By day it is an ordinary unit.`},
   {key:'shadow', category:'passive', label:'Shadow', kind:'boolean', desc:()=>`At night or in darkness, attacks at it miss 1 in 2. Magic never misses it.`},
   // Supreme (user: "Dragons and Sphinxes are supreme beasts. Leviathans too. (Dont use this type willynilly). Their attacks have a sparkle
   // on the icon. They crush armour and ward etc. Their armor (HP also sparkles) are magic. So non-magic damage deals 1/2, rounded down").
@@ -1003,10 +1003,10 @@ const PASSIVE_DEFS = [
   // separate family from the existing Resistance/Weakness boxes (which only apply against a
   // matching dmgType/archetype/keyword) — see attackerDamageFactor/defenderDamageFactor in the
   // engine. Feeble/Mighty scale what this card deals; Fragile/Sturdy scale what it takes.
-  {key:'feeble', category:'passive', label:'Feeble', kind:'boolean', desc:()=>`Always deals half damage (rounded down, min 1), on every hit it lands. Unconditional — not tied to a damage type.`},
+  {key:'feeble', category:'passive', label:'Feeble', kind:'boolean', desc:()=>`Always deals half damage, on every hit it lands. Unconditional — not tied to a damage type.`},
   {key:'mighty', category:'passive', label:'Mighty', kind:'boolean', desc:()=>`Always deals double damage on every hit it lands. Unconditional — not tied to a damage type.`},
   {key:'fragile', category:'passive', label:'Fragile', kind:'boolean', desc:()=>`Always takes double damage from every hit. Unconditional — not tied to a damage type, unlike the Weakness box.`},
-  {key:'sturdy', category:'passive', label:'Sturdy', kind:'boolean', desc:()=>`Always takes half damage (rounded down, min 1) from every hit. Unconditional — not tied to a damage type, unlike the Resistance box.`},
+  {key:'sturdy', category:'passive', label:'Sturdy', kind:'boolean', desc:()=>`Always takes half damage from every hit. Unconditional — not tied to a damage type, unlike the Resistance box.`},
   {key:'crit', category:'passive', label:'Crit', kind:'boolean', desc:()=>`Once per round, 1-in-2 chance to double all damage dealt that round.`},
   {key:'fester', category:'passive', label:'Fester', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current poison stacks.`},
   {key:'rupture', category:'passive', label:'Rupture', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current bleed stacks.`},
@@ -17562,7 +17562,7 @@ const VOLCANO_HAZARDS = [
   // 2026-10-18 (package D): terse, since the row adds "Chance each round: …"; the rest is the Map Codex's (codex)
   {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> TX('ui.fx-lava-tide'), codex:TX('ui.fxx-lava-tide')},
   {key:'petrify', icon:'🪨', name:'Petrification', text:()=> TX('ui.fx-petrify'), codex:TX('ui.fxx-petrify')},
-  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> TX('ui.fx-eruption', {n: Number(r.eruption) > 0 ? r.eruption : 2}), codex:TX('ui.fxx-eruption')},
+  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> TX('ui.fx-eruption', {n: Number(r.eruption) > 0 ? Math.min(5, Number(r.eruption)) : 1}), codex:TX('ui.fxx-eruption')}, // default 1, at most 5 (FX2, 2026-10-22; was 2)
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
 // Field effects 2 (2026-10-16, the user's field-effect curriculum notes): one text per effect, shared by the Environment cards
@@ -17597,7 +17597,7 @@ const FIELD2 = {
   arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 1 a round', text:TX('ui.fx-arrow-slits')},
   // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
-  // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
+  // in the engine's psychicHit (half; exact, rounded once where it lands since 2026-10-22, FX2) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
   psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:TX('ui.fx-psychic-dampener'), codex:TX('ui.fxx-psychic-dampener')},
   // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
   // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
@@ -25235,7 +25235,7 @@ function trenchAllies(def, liveRows, seed){
   return out;
 }
 function trenchAttackText(a){
-  return a.pattern==='column' ? `${escapeHtml(a.name||'Column attack')}: ${a.trenchDmg != null ? a.trenchDmg : raidAtkDmgText(a) /* FX 2026-10-22: the classic trench keeps its own number */} to a whole column every ${a.every} turn${a.every===1?'':'s'} (telegraphed)`
+  return a.pattern==='column' ? `${escapeHtml(a.name||'Column attack')}: ${a.trenchDmg != null ? a.trenchDmg : (a.dmg||0) /* FX 2026-10-22: the classic trench's own number; FX2: else the attack's dmg, the most a smack rolls (the trench doesn't roll) */} to a whole column every ${a.every} turn${a.every===1?'':'s'} (telegraphed)`
        : a.pattern==='frontRow' ? `${escapeHtml(a.name||'Sweep')}: ${a.dmg} to every card in the front row every ${a.every} turn${a.every===1?'':'s'}` : escapeHtml(a.name||a.id);
 }
 function openTrenchSetup(def, partId){
@@ -28917,8 +28917,8 @@ const FXL_FIELDS = [
   {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> DARK_LEVEL_TEXT.absolute, rules:{dark:'absolute'}, units:FXL_DARK_UNITS}, // 2026-10-18 (package D)
   {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
-  {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({eruption:3}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100, eruption:3}},
-  {key:'eruption', icon:'🔥', name:SCORCHED_NAME, text:()=> scorchedGroundText(3), rules:{eruption:3}},
+  {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100}}, // the default 1 (FX2, 2026-10-22; was a 3 here)
+  {key:'eruption', icon:'🔥', name:SCORCHED_NAME, text:()=> scorchedGroundText(1), rules:{eruption:1}}, // 1 (FX2, 2026-10-22; was 3)
   // (The "Terrain: … II" entries left with home ground, 2026-10-14: a terrain on its own does nothing now.)
   {key:'bossSurge', icon:'💢', name:'Boss surge', text:()=> "Their boss surges when it's cast.", unsupported:'It needs a real boss fight (a boss card cast by the enemy) and can\'t be staged with stand-ins.'},
   {key:'enemyOre', icon:'⛏️', name:'Deep mines', text:()=> 'Their side digs the Stone and Metal it needs.', unsupported:'It only changes the enemy\'s resources, so there is nothing to see on the field.'},
@@ -30407,7 +30407,7 @@ const FIELD_EFFECTS = [
   {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:'Both sides gain 1 Lumber every 3 rounds.'},
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
-  {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
+  {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:1}, text:'From round 2, the ground burns one random unit on each side for 1 fire damage every round.'}, // 1 (was 2; 2026-10-22, package FX2: a hazard every round averages at most 1)
   // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:TIDESPOUT_TEXT, editorOnly:true, oneOff:true}, // 2026-10-14
   {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:DARK_LEVEL_TEXT.dark, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D): the one Darkness line

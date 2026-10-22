@@ -53,7 +53,14 @@ const R = new Function('TX', 'escapeHtml', B.grab('RAID_BRAMBLES') + '\n' + B.gr
   const lines = R.raidBrambleAbilityLines([{name:'Tentacle Smack', pattern:'column', dmg:6, every:3}, {name:'Tail Sweep', pattern:'frontRow', dmg:3, every:2}]);
   ok(lines.length === 2 && /^Tentacle Smack: every 3 turns a tentacle lashes out of the reef at one of your columns or rows \(a column first, then a row\), 6 damage to each unit there\./.test(lines[0]) && /glows red the turn before/.test(lines[0]) && /your bramble takes the hit/.test(lines[0]), `3. the smack's line: when and what (${lines[0]})`);
   ok(/^Tail Sweep: every 2 turns the reef sweeps your front row, 3 damage to each unit there\.$/.test(lines[1]), '3. the Tail\'s sweep too');
-  ok((goliath.parts || []).filter(p=> p.trench && (p.trench.attacks || []).some(a=> a.name === 'Tentacle Smack' && a.pattern === 'column' && a.dmgMin === 1 && a.dmg === 2 && a.every === 3)).length === 3, '3. the smack in the raid data: 1–2 damage every 3 turns on both Tentacles and the Core (package FX, 2026-10-22; was 6)');
+  // 2026-10-22 (package FX2, owner 14:12: the strongest AOE among the first three fights deals 2, the weaker AOE attacks 1): the Tentacles'
+  // smack is 1, the Tail Sweep 2, and the Core's smack keeps FX's 1–2 (the Core is not one of the first three).
+  const smacks = id=> ((((goliath.parts || []).find(p=> p.id === id) || {}).trench || {}).attacks || []).filter(a=> a.name === 'Tentacle Smack' && a.pattern === 'column' && a.every === 3);
+  ok(['left', 'right'].every(id=> smacks(id).length === 1 && smacks(id)[0].dmg === 1 && smacks(id)[0].dmgMin == null), '3. the Tentacles\' smack in the raid data: 1 damage every 3 turns (FX2; FX had 1–2, was 6)');
+  ok(smacks('core').length === 1 && smacks('core')[0].dmgMin === 1 && smacks('core')[0].dmg === 2, '3. the Core\'s smack keeps 1–2 (FX)');
+  { const tail = (((goliath.parts || []).find(p=> p.id === 'tail') || {}).trench || {}).attacks || [];
+    ok(tail.length === 1 && tail[0].pattern === 'frontRow' && tail[0].dmg === 2 && tail[0].every === 2, '3. the Tail Sweep: 2 to the front row every 2 turns (FX2; was 3)'); }
+  ok((goliath.parts || []).every(p=> !((p.trench || {}).attacks || []).some(a=> a.trenchDmg != null)), '3. no trench-only number left: the classic trench uses the same attacks (FX2)');
   ok(/1–2 damage to each unit there/.test(R.raidBrambleAbilityLines([{name:'Tentacle Smack', pattern:'column', dmgMin:1, dmg:2, every:3}])[0]), '3. a rolled smack reads 1–2 (FX)'); }
 ok(/const bramble = typeof raidBrambleOf === 'function' \? raidBrambleOf\(def(?:, partId)?\) : null;/.test(B.grab('buildRaidFullFight')) && /health: cfg\.castleHp, effects:\{\}\},\s*bramble \? \{name: bramble\.name, icon: bramble\.icon, art: bramble\.art \|\| undefined, raidBramble: true, partName: f\.part\.name\} : \{\}\)/.test(B.grab('buildRaidFullFight')),
   '3. the boss castle takes the name and portrait only (same Health, no effects): the raid\'s balance is unchanged');

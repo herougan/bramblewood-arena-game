@@ -26,11 +26,11 @@ const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
 const fxf = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-f.js'), 'utf8');
 const raids = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'raids.json'), 'utf8'));
 
-// ---- Psychic Dampener: a Psychic 3 hit lands for 1 (half, rounded down); a Confuse lasts 1 round less (a 1-round Confuse doesn't land)
+// ---- Psychic Dampener: a Psychic 3 hit lands for 2 (half, 1.5, rounded once half up; FX2 2026-10-22, was 1); a Confuse lasts 1 round less (a 1-round Confuse doesn't land)
 { const run = rules=>{ const {e, P} = mk(rules); put(e, P, 1, 'ra-psy', 0); const w = put(e, P, 2, 'ra-wall', 0); const ev = []; e.resolveCombat(P, so, {}, ev, 1); return {hp: w.hp, ev}; };
   const off = run(null), on = run({psychicDampener:true});
-  ok(off.hp === 496, `no dampener: 1 + Psychic 3 (${off.hp})`); ok(on.hp === 498, `Psychic Dampener: 1 + Psychic 1 (${on.hp})`);
-  ok(on.ev.some(x=> x.type === 'psychic' && x.dampened && x.dmg === 1), 'the psychic event says it was dampened'); }
+  ok(off.hp === 496, `no dampener: 1 + Psychic 3 (${off.hp})`); ok(on.hp === 497, `Psychic Dampener: 1 + Psychic 1.5 -> 2 (FX2) (${on.hp})`);
+  ok(on.ev.some(x=> x.type === 'psychic' && x.dampened && x.dmg === 2), 'the psychic event says it was dampened'); }
 { const conf = (id, rules)=>{ const {e, P} = mk(rules); put(e, P, 1, id, 0); const w = put(e, P, 2, 'ra-wall', 0); const ev = []; e.resolveCombat(P, so, {}, ev, 1); return {c: w.confused || 0, ev}; };
   ok(conf('ra-conf1', null).c === 1, 'no dampener: a 1-round Confuse lands');
   const d1 = conf('ra-conf1', {psychicDampener:true}); ok(d1.c === 0 && d1.ev.some(x=> x.type === 'dampened' && x.what === 'confuse'), `Psychic Dampener: a 1-round Confuse doesn't land (${d1.c})`);

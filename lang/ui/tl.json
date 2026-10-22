@@ -858,7 +858,7 @@
  "Frigid: each round one random card on each side gets +1 Wait.": "Napakalamig: bawat round, isang random na card sa bawat panig ang makakakuha ng +1 Hintay.",
  "From Pack {v1} ({v2} cards).": "Mula sa Pack {v1} ({v2} card).",
  "From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.": "Mula round 2, may 1 sa 2 na tsansa bawat round ang bawat yunit na magkaroon ng 1 Lason. Hindi kailanman nahahawa ang mga istruktura.",
- "From round 2, the ground burns one random unit on each side for 2 fire damage every round.": "Mula round 2, sinusunog ng lupa ang isang random na yunit sa bawat panig nang 2 pinsalang apoy bawat round.",
+ "From round 2, the ground burns one random unit on each side for 1 fire damage every round.": "Mula round 2, sinusunog ng lupa ang isang random na yunit sa bawat panig nang 1 pinsalang apoy bawat round.",
  "From round {v1}, any damage to a bramble destroys it.": "Mula round {v1}, anumang pinsala sa dawag ay sumisira rito.",
  "Front row · You": "Unahang hanay · Ikaw",
  "Frost": "Hamog na Yelo",
