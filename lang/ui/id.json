@@ -32,7 +32,6 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Kayu, +1 Batu; 1 kerusakan ke semua",
  "+1 starting Lumber.": "+1 Kayu awal.",
  "+1 🪵 every {v1} rounds": "+1 🪵 setiap {v1} ronde",
- "+{v1} Attack for every ally that shares a type with it.": "+{v1} Serangan untuk setiap sekutu yang berbagi tipe dengannya.",
  "+{v1} Dust": "+{v1} Debu",
  "+{v1} Energy from a capsule.": "+{v1} Energi dari kapsul.",
  "+{v1} Energy. Come back tomorrow for more.": "+{v1} Energi. Kembali besok untuk lagi.",
@@ -559,7 +558,6 @@
  "Daunt {v1}": "Gentar {v1}",
  "Daunted: −{v1} Attack until the end of next round": "Gentar: −{v1} Serangan sampai akhir ronde berikutnya",
  "Day and Night": "Siang dan Malam",
- "Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.": "Siang dan malam bergantian setiap 3 ronde, dimulai dengan siang. Yang bermain kedua membuka dengan kartu tambahan.",
  "Day and night flip every round.": "Siang dan malam berganti setiap ronde.",
  "Day and night trade places every 3 rounds.": "Siang dan malam bertukar tempat setiap 3 ronde.",
  "Day and night trade places every {v1} rounds. Draw +1 on each new Day.": "Siang dan malam bertukar tempat setiap {v1} ronde. Ambil +1 di setiap Siang baru.",
@@ -2227,7 +2225,6 @@
  "Whisper’s Game": "Permainan Bisikan",
  "Who are you?": "Kamu siapa?",
  "Whoever left it is coming back cold and hungry.": "Siapa pun yang meninggalkannya akan kembali kedinginan dan kelaparan.",
- "Whoever plays second opens with an extra card.": "Yang bermain kedua membuka dengan kartu tambahan.",
  "Wild Beasts Bundle": "Bungkusan Binatang Liar",
  "Wildpaths": "Jalur Liar",
  "Wildpaths: Conquest passives": "Jalur Liar: pasif Penaklukan",
@@ -2621,5 +2618,8 @@
  "Blinding": "Membutakan",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Serangan biasa yang diarahkan ke sekutu yang bersebelahan mengenai kartu ini. Skill dan serangan area tidak.",
  "Takes the plain attacks aimed at its adjacent allies.": "Menerima serangan biasa yang diarahkan ke sekutu yang bersebelahan.",
- "{v1} foil per card.": "{v1} foil per kartu."
+ "{v1} foil per card.": "{v1} foil per kartu.",
+ "Every cave has one chest too heavy to open. Grab it and it grabs back.": "Setiap gua punya satu peti yang terlalu berat untuk dibuka. Raihlah, dan ia akan meraihmu balik.",
+ "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Serangan untuk setiap sekutu yang berbagi tipe dengannya. Bangunan tidak dihitung.",
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Serangan untuk tiap sekutu yang merupakan {v2}. Bangunan tidak dihitung."
 }

@@ -6,6 +6,49 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Shipped together: DOC, TU2, RW3, BF10, DF (study), PG, EB (entries below).
 - **Release fixes:** the built-in default deck had 4 Otter Centurions (over PG's Rare limit of 3): now 3, with 5 Bee Knights. The Nest's tab labels keep their emoji outside the translated text, and "Eggs and babies" / "Level 0" were added to the main language packs. A pack's "🪺 Nest" button opens the Nest only when the packs brought a Level 0 recruit, else "⛺ Camp".
 - **Release checks:** full suite: the four new failures were tests on the old rules (Nest tabs, Flying ×1.5) and test setups that started fights with a deck they don't own (PG); all updated and passing. e2e ui_smoke 0 failures, flows 0 issues.
+## 2026-10-23 (package EN: Spellward, Surrounding, one King, Liege and Assault, Rage {…}, the evolute fixes, the volcano's reset, the second player's Shield, the CPU in the fog, Backstab's edge, Bulwark's shields, the Coffer Mimic, Swarm without Structures)
+- Owner's 10-23 00:10 answers GD2-1, GD2-5, TR-4 .. TR-6, EV-1 .. EV-7, FX2-1, D21, D24, FOG1 (items 4, 7, 12, 31-40, 88, 90, 92) and his 01:57 notes 2, 5, 10.
+- **Spellward (GD2-1):** Spellshield is Spellward everywhere (engine key `spellward`, texts, 12 packs, Codex, editor, `skill-costs.json`); an
+  old card's `spellshield` still reads as it and saved cards are migrated as they load (`enMigrateCard`).
+- **Surrounding (GD2-5):** a Codex term beside Adjacent: the 8 places around a unit (diagonals included; a raid's rows too). Dynamite ("to
+  every surrounding unit"; on the raid board it now also reaches its own rows in front and behind, `surroundingOwnOf`), Scavenge and
+  Salvage say it. Adjacent stays the four directions.
+- **One King (TR-4, TR-5):** King is off the Rodent King, the Glacial Ape-King, the Yeti Chieftain and the Gannet Queen (TR had taken Bounty
+  off the first two for King; it stays off, BF8's loot-carriers rule); the Magnate Duck is the one King. King 4 -> **1.4** (0.4 x Kingly 3.5: Tribute 1 0.5 + Armor 2 x 1.5). The Duck still has no legal
+  line (its five other skills break cap 2): kept 1/22, not floored (call EN-1).
+- **Liege {…} and Assault N (TR-4):** Assault N: +N on its own swing (unit, prongs, bramble), never on a Counterattack; **1.8 a point**.
+  Liege {…}: its braces while a King of its side (not itself) is on the battlefield, Assault 2 by default; **0.3 x the braces** (plain
+  Liege 1.08; `CONTEXT_MULT_BY.liegeGrant`). Editor rows, Codex, texts.
+- **Rage {…} (TR-6):** the Enraged preset is gone (a saved one becomes Rage {…}). `rageGrant` beside Rage: Rage as before plus the braces
+  while it rages (read without the braces' own Health, so it does not flicker). Cost: Rage's own + **0.4 x the braces** (`CONTEXT_MULT_BY.rageGrant`:
+  on for the lower half of its Health, 0.5, x 0.8 for a fall from above half in one blow).
+- **Evolute (EV-1 .. EV-7):** an evolute waits its own Wait **plus the base's remaining Wait** (EV-4; the CPU counts it); Alpha and Omega
+  cost **3** (EV-5); 23 baby-like cards gain **Stem (Fodder) at Level 1** (`levelSkills`; EV-6, list call EN-6); EV-1/2/3/7 kept as built
+  (the Terraumbra is already the Evomax equipment; a stage reads only the type of the card it goes over).
+- **The volcano (FX2-1):** after each Eruption it is Very Low the next round and climbs a level a round back to its own; the forecast
+  names the level (`volcanoLevel`; speed: call EN-7).
+- **Backstab (D21):** still the nearest enemy unit, never the bramble; its +N now lands when that unit is Blind, Stunned, Frozen, Asleep,
+  Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or stone, or would swing blind in the dark while the attacker sees (was: not
+  directly in front). **0.6 a point** (an estimate, call EN-5).
+- **The second player (D24):** +1 Shield on its bramble, nothing else, wherever a second-player bonus applied (the Arena's rule sets, Double
+  Time fights); the Arena texts say so.
+- **Fog of War (FOG1):** the CPU plays through the fog from its side (`aiFogFor`, `aiSees` / `aiFront` / `aiFoes` in its slot, card,
+  hazard, field and doom choices). Swings and skills still reach fogged units on both sides (call EN-8).
+- **Bulwark N (01:57 note 2):** no longer softens bramble hits; as it arrives it raises **two 0/4N Bulwark Shields** (Structure tokens, no
+  skill) in the free front-row slots nearest it. **8 a point** (2 x 4N Health). Calls EN-2 (price, the Titan) and EN-3 ("vanguard" read
+  as the front line).
+- **Coffer Mimic (01:57 note 5, new card):** a treasure chest in Map 8's caves (m4 pool, basic pack): Structure, **Shapeshifter** (new: a
+  Changeling for Structures only, `bramblewood-taxonomy.js`; 0.1), Thorns 4, Lumber 1, Wait 1, Uncommon **0/8** (by formula, 2A+H+S <= N;
+  cap 2 cannot hold with Thorns 4 at this cost: call EN-4). Placeholder 🧰; NightCafe prompt in `docs/art/new-cards-2026-10-21-briefs.md`.
+- **Swarm (01:57 note 10):** Structures don't count (engine and the lines).
+- **Re-fit** (`tools/refit_pass_2026_10_21.js`, every card whose S moved): Rodent King 4/14 -> 3/11, Ancient Sloth Titan 4/39 -> 1/14, Yeti Chieftain 3/14 -> 4/20,
+  The Gannet Queen 1/13 -> 1/15, Stormcaller 1/28 -> 1/29, Hanging Loafer 2/22 -> 2/23, Raven Hexcaller 1/1 -> 2/2, Bone Diviner 2/2 -> 4/4,
+  Stoat Cutthroat 3/11 -> 3/12, Wrong-Way Salmon 1/8 -> 1/10, Cunning Vixen 1/8 -> 1/10. No legal line, kept: Magnate Duck 1/22, Muskrat
+  Lodgekeeper 3/13 (flagged list merged). The Glacial Ape-King keeps the owner's hand 6/37 (it fits). `card-obtain-maps.json`
+  regenerated (the Coffer Mimic 8; the Magnate Duck 24, stale since DV8).
+- Texts: TX keys and the 12 packs (`tools/i18n_2026_10_23_en.py`; the Spellshield and other replaced rows dropped). Decisions: the 16
+  items' outcomes say "Built (EN)"; new calls EN-1 .. EN-8. Tests: `tests/en-2026-10-23.js` (new); `backstab`, `gd2-2026-10-22`,
+  `keywords-2026-10-11`, `-14` (the volcano), `-14b` (Bulwark) follow the new rules.
 
 ## 2026-10-23 (package EB: the early road for a fresh player's real deck, Map 1 beatable, items 2% per Energy, 8-Energy capsules)
 - Owner notes of 01:57, items 1, 8 (the rules; the tooltip wording is UI4's) and 9; DF-4 ("Map 1 extremely difficult").

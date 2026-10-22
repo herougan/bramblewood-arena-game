@@ -68,7 +68,7 @@ const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow'];
 // 2026-10-22 (BF8; owner: "Tide: Just the flat charge is enough. Dont do the minor bonus."): Tide is out of LIGHT; plain Tide costs its
 // flat price only. Tide {…} braces stay CONTEXT_MULT (0.4) × their contents (owner: "I think it should be 0.4x").
 const LIGHT = ['flying', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
-const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */, 'kinglyGrant' /* 2026-10-21 (TR): King's braces */];
+const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */, 'kinglyGrant' /* 2026-10-21 (TR): King's braces */, 'liegeGrant', 'rageGrant' /* 2026-10-23 (EN): Liege's and Rage's braces */];
 // Context skills (2026-10-21, package CX2; owner 17:42: "Regarding context-skills like Diurnal - {} or Tide - {} etc. The costing is wrong.
 // Tide - {} should be 0.5x the skills contained within ... Since Tide is not guaranteed, I think the coefficient should be reduced to 0.4x
 // instead."): a skill whose braces hold other skills costs CONTEXT_MULT × the S of everything in its braces, across all its phases (Tide:
@@ -94,15 +94,21 @@ const CONTEXT = {
   transform: v=> [transformGainOf(v)], // + the named presets' default braces (TR, 2026-10-21)
   kinglyGrant: v=> [obj(v)], // King – Kingly {…} (TR, 2026-10-21): 0.4 x the S of what the Crown gives it (the plain King's price is the default's)
   stemGrant: v=> [obj(v)], // Stem / Chrysalis – {…} (2026-10-21, package EV): what it hands the evolute placed over it, at 0.4 × its S
+  liegeGrant: v=> [obj(v)], // Liege – {…} (2026-10-23, package EN): its braces while a King is on its side, at CONTEXT_MULT_BY.liegeGrant (0.3)
+  rageGrant: v=> [obj(v)], // Rage – {…} (2026-10-23, package EN): its braces while its Rage is on, at CONTEXT_MULT_BY.rageGrant (0.4), on top of Rage's own price
   bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null // only Bloom's braces form; the plain +2/+2 keeps its measured worth
 };
-const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */, king: 'kinglyGrant' /* TR (2026-10-21) */};
+// Context skills with their own multiplier (2026-10-23, package EN). Liege – {…}: 0.3 (owner TR-4: "Liege is worth 0.3x {...}").
+// Rage – {…}: 0.4, by logic: Rage is on for the lower half of the unit's Health (0.5), and a unit can
+// fall from above half in one blow (x 0.8). Rage itself keeps its own price beside it (rage is not in CONTEXT_FLAG: the braces add to it).
+const CONTEXT_MULT_BY = {liegeGrant: 0.3, rageGrant: 0.4};
+const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */, king: 'kinglyGrant' /* TR (2026-10-21) */, liege: 'liegeGrant' /* EN (2026-10-23): a plain Liege is Liege – {Assault 2}, priced in skill-costs.json */};
 // S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
   sets.forEach(g=>{ if(!g) return; const rest = Object.assign({}, g), A = +rest.attack || 0, H = +rest.health || 0; delete rest.attack; delete rest.health;
     inner += 2 * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); });
-  const m = mult == null ? CONTEXT_MULT : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; }
+  const m = mult == null ? (CONTEXT_MULT_BY[k] != null ? CONTEXT_MULT_BY[k] : CONTEXT_MULT) : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; } // + CONTEXT_MULT_BY (EN, 2026-10-23)
 // true when effects.k is a plain flag whose braces sit beside it (it costs nothing on its own then)
 function contextFlagCovered(k, e){ const g = CONTEXT_FLAG[k]; return !!(g && e && e[g] && typeof e[g] === 'object'); }
 // a card's abilities: its effects keys with a value (not a parameter of another skill), each trigger as 'trigger:<on>'
@@ -242,5 +248,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

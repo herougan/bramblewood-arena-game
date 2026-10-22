@@ -31,3 +31,15 @@ A proud hummingbird duelist hovering face-on with wings blurred, an extremely lo
 ```
 
 Names offered: **Swordbill Challenger** (used: the Hummingbird "Duelist" naming, "Challenger" for Taunt), Ensifer, the Swordbill (a titled name; no card name carries a comma, so not used), Mosswing Swordbill.
+
+## Package EN (2026-10-23: the Coffer Mimic)
+
+#### Coffer Mimic (`coffer-mimic`), placeholder 🧰
+
+The owner (2026-10-23, 01:57 note 5): "Add a mimic card - it has shapeshifter instead of changeling. It is not all types. It is structure shapeshifter. It has thorns 4." A treasure chest in the Map 8 caves that is really a creature: an old banded wooden chest, its lid a little open, a row of blunt wooden teeth along the rim and a long tongue curling out, small glowing eyes in the dark gap. Thorns are its bramble-wood briars growing through the planks. One bright accent: the warm gold glow from inside the lid. Wording notes: no "spiked" or "studded"; the bands are plain iron.
+
+```
+A living treasure chest crouched in a mossy cave, old weathered oak planks bound with plain iron bands, the lid slightly open showing a row of blunt wooden teeth and a long curling pink tongue, two small glowing eyes in the dark gap, thorny bramble briars growing through its planks, a warm golden glow spilling from inside the lid, glittering cave crystals, dripping stalactites and a few scattered coins on the stone floor in the background, cool blue cave light, detailed pixel art, full background
+```
+
+Names offered: **Coffer Mimic** (used), Strongbox Lurker, Briar Chest.

@@ -37,14 +37,15 @@ function setup(a, b){ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEv
 { const e = E.makeSimEngine(defs, E.mulberry32(9), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}; const st = {};
   e.debugSpawnCard(P, so, 1, 'kw-counter', 'left', {}, []); const hq = P[2].hq.hp; const ev = []; e.resolveCombat(P, so, st, ev, 1);
   ok(P[2].hq.hp === hq, 'a Counterattack unit with nobody hitting it never attacks'); }
-// Actions per turn: 2 plays a turn; the side playing second gets 2 cards and 1 Health (3 actions: 3 cards, 2 Health, 1 Lumber)
+// Actions per turn: 2 plays a turn; the side playing second gets +1 Shield on its bramble (EN, 2026-10-23; was 2 cards and 1 Health)
 { const e = E.makeSimEngine(defs, E.mulberry32(3), {battleMode:'open', rules:{actions:2}}); const P = {1:e.newPlayer(1,{'kw-hit':10}), 2:e.newPlayer(2,{'kw-hit':10})}; const st = {};
   e.draw(P[1], 3, 'A', st, []); const h = P[1].hand.slice();
   ok(e.placeCard(P, so, 1, h[0].uid, 'left', st, []) && !P[1].playedThisTurn, 'first of two plays leaves one');
   ok(e.placeCard(P, so, 1, h[1].uid, 'right', st, []) && P[1].playedThisTurn, 'second play uses the turn');
   ok(!e.placeCard(P, so, 1, h[2].uid, 'right', st, []), 'no third play');
-  const hp = P[2].hq.maxHp, n = P[2].hand.length; e.applySecondPlayerBonus(P[2], 'B', st, []); ok(P[2].hand.length === n + 2 && P[2].hq.maxHp === hp + 1, 'second player: +2 cards, +1 Health');
-  const b3 = e.secondPlayerBonus(3); ok(b3.cards === 3 && b3.life === 2 && b3.lumber === 1, '3 actions: 3 cards, 2 Health, 1 Lumber'); }
+  // 2026-10-23 (package EN, owner D24: "2nd player has no benefit except +1 Shield to Bramble."): was +2 cards, +1 Health (3 actions: 3 cards, 2 Health, 1 Lumber)
+  const hp = P[2].hq.maxHp, n = P[2].hand.length; e.applySecondPlayerBonus(P[2], 'B', st, []); ok(P[2].hand.length === n && P[2].hq.maxHp === hp && P[2].hq.shield === 1, 'second player: +1 Shield on its bramble, nothing else');
+  const b3 = e.secondPlayerBonus(3); ok(b3.cards === 0 && b3.life === 0 && b3.lumber === 0 && b3.shield === 1, '3 actions: still only the Shield'); }
 // Spell: Tailwind takes the turn and every unit of yours loses 1 Wait
 { const e = E.makeSimEngine(defs, E.mulberry32(4), {battleMode:'open'}); const P = {1:e.newPlayer(1,{'tailwind':5}), 2:e.newPlayer(2,{})}; const st = {};
   e.debugSpawnCard(P, so, 1, 'thornwood-palisade', 'left', {}, []); const u = e.allBoardCards(P[1])[0]; u.wait = 2; P[1].lumber = 3;

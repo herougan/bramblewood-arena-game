@@ -82,9 +82,10 @@ PAIRS.forEach(([ar, tr])=>{ const seen = new Set(); let bad = 0;
 // ---- Octolash: the 8 nearest in that row
 PAIRS.forEach(([ar, tr])=>{ const r = swing('rr-octo', ar, tr, [-4, -3, -2, -1, 0, 1, 2, 3, 4]); const h = hitSlots(r);
   ok(h.length === 8 && h.includes(0) && took(r, 0) === amt(ar, 8) && took(r, 2) === amt(ar, 8), `${tag(ar, tr)} Octolash: 8 lashes (${h.length}), each ${took(r, 2)}`); });
-// ---- Backstab 3: nothing in its column: the nearest unit, +3
+// ---- Backstab 3: nothing in its column: the nearest unit; 2026-10-23 (package EN, owner D21): the +3 only when that unit is worse at
+// combat (Blind, Stunned ...), no longer for being off to the side, so a healthy target takes the plain 8
 PAIRS.forEach(([ar, tr])=>{ const r = swing('rr-stab', ar, tr, [2, -3]);
-  ok(same(hitSlots(r), [2]) && took(r, 2) === amt(ar, 11), `${tag(ar, tr)} Backstab: the nearest (slot 2) for ${took(r, 2)} (want ${amt(ar, 11)})`); });
+  ok(same(hitSlots(r), [2]) && took(r, 2) === amt(ar, 8), `${tag(ar, tr)} Backstab: the nearest (slot 2) for ${took(r, 2)} (want ${amt(ar, 8)})`); });
 // ---- Tipsy: the swing drifts L / C / R along that row
 PAIRS.forEach(([ar, tr])=>{ const seen = new Set(); let off = 0;
   for(let seed = 1; seed <= 24; seed++){ const r = swing('rr-plain', ar, tr, [-1, 0, 1], {seed, before:(e, P, att)=>{ att.tipsy = 9; }}); hitSlots(r).forEach(sl=> seen.add(sl)); if(hitSlots(r).length > 1) off++; }

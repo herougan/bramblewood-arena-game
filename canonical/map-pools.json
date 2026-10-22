@@ -56,7 +56,7 @@
    "special": []
   },
   "m4": {
-   "cards": ["blind-cave-fish", "cave-olm", "star-nosed-mole", "sulfur-cinder-moth", "stalactite-golem", "nightshade-moth", "vampire-bat", "whip-spider", "giant-cave-huntsman", "echo-screecher", "quarry-mole"],
+   "cards": ["blind-cave-fish", "cave-olm", "star-nosed-mole", "sulfur-cinder-moth", "stalactite-golem", "nightshade-moth", "vampire-bat", "whip-spider", "giant-cave-huntsman", "echo-screecher", "quarry-mole", "coffer-mimic"],
    "submaps": {
     "mn": ["lantern-spark-fly", "barrow-leech-bat", "bat-swarmling", "beetle-grunt", "cave-bat-swarm", "cave-cricket", "cave-flitter", "cave-swiftlet", "glowworm-cluster", "monarch-wingblade", "oilbird", "swarm-matriarch", "tunnel-ant"]
    },

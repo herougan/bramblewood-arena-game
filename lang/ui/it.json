@@ -32,7 +32,6 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Legname, +1 Pietra; 1 danno a tutti",
  "+1 starting Lumber.": "+1 Legname iniziale.",
  "+1 🪵 every {v1} rounds": "+1 🪵 ogni {v1} round",
- "+{v1} Attack for every ally that shares a type with it.": "+{v1} Attacco per ogni alleato che condivide un tipo con lei.",
  "+{v1} Dust": "+{v1} Polvere",
  "+{v1} Energy from a capsule.": "+{v1} Energia da una capsula.",
  "+{v1} Energy. Come back tomorrow for more.": "+{v1} Energia. Torna domani per averne altra.",
@@ -559,7 +558,6 @@
  "Daunt {v1}": "Intimidire {v1}",
  "Daunted: −{v1} Attack until the end of next round": "Intimorito: −{v1} Attacco fino alla fine del prossimo round",
  "Day and Night": "Giorno e notte",
- "Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.": "Giorno e notte si alternano ogni 3 round, iniziando dal giorno. Chi gioca per secondo inizia con una carta in più.",
  "Day and night flip every round.": "Giorno e notte si alternano ogni round.",
  "Day and night trade places every 3 rounds.": "Giorno e notte si scambiano ogni 3 round.",
  "Day and night trade places every {v1} rounds. Draw +1 on each new Day.": "Giorno e notte si scambiano ogni {v1} round. Pesca +1 a ogni nuovo Giorno.",
@@ -2227,7 +2225,6 @@
  "Whisper’s Game": "Il gioco di Sussurro",
  "Who are you?": "Chi sei?",
  "Whoever left it is coming back cold and hungry.": "Chiunque l’abbia lasciata tornerà infreddolito e affamato.",
- "Whoever plays second opens with an extra card.": "Chi gioca per secondo inizia con una carta in più.",
  "Wild Beasts Bundle": "Fagotto delle bestie selvagge",
  "Wildpaths": "Sentieri selvaggi",
  "Wildpaths: Conquest passives": "Sentieri selvaggi: passive di Conquista",
@@ -2621,5 +2618,8 @@
  "Blinding": "Accecante",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Gli attacchi normali diretti a un alleato adiacente colpiscono invece questa carta. Abilità e colpi ad area no.",
  "Takes the plain attacks aimed at its adjacent allies.": "Incassa gli attacchi normali diretti agli alleati adiacenti.",
- "{v1} foil per card.": "{v1} lamina per carta."
+ "{v1} foil per card.": "{v1} lamina per carta.",
+ "Every cave has one chest too heavy to open. Grab it and it grabs back.": "Ogni grotta ha un forziere troppo pesante da aprire. Afferralo, e sarà lui ad afferrare te.",
+ "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Attacco per ogni alleato che condivide un tipo con lei. Le Strutture non contano.",
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Attacco per ogni alleato che è {v2}. Le Strutture non contano."
 }

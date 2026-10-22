@@ -173,6 +173,7 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
   const R = {volcano:'even', lavaTideChance:0, petrifyChance:0}; const {e, P} = lone(R);
   ok(e.volcanoChances(6).eruption === 63, `before an Eruption the odds keep rising (${e.volcanoChances(6).eruption})`);
   R.eruptionChance = 100; e.roundStart(P, 5, so, {}, []); delete R.eruptionChance;
-  ok(e.volcanoChances(6).eruption === 55 && e.volcanoChances(8).eruption === 59, `after it, back to the base 55 and rising again (${e.volcanoChances(6).eruption}, ${e.volcanoChances(8).eruption})`); }
+  // 2026-10-23 (package EN, owner FX2-1: "After eruptions, it restarts to very low again."): Very Low next round, up a level a round, then rising
+  ok(e.volcanoChances(6).eruption === 3 && e.volcanoChances(9).eruption === 55 && e.volcanoChances(11).eruption === 59, `after it, Very Low (3), back up to the base 55, and rising again (${e.volcanoChances(6).eruption}, ${e.volcanoChances(9).eruption}, ${e.volcanoChances(11).eruption})`); }
 console.log(fail ? `keywords-2026-10-14: ${fail} failure(s)` : 'keywords-2026-10-14: all passed');
 process.exit(fail ? 1 : 0);

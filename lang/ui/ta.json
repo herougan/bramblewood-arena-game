@@ -32,7 +32,6 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 மரக்கட்டை, +1 கல்; அனைவருக்கும் 1 சேதம்",
  "+1 starting Lumber.": "+1 தொடக்க மரக்கட்டை.",
  "+1 🪵 every {v1} rounds": "ஒவ்வொரு {v1} சுற்றுகளுக்கும் +1 🪵",
- "+{v1} Attack for every ally that shares a type with it.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல்.",
  "+{v1} Dust": "+{v1} தூசி",
  "+{v1} Energy from a capsule.": "ஒரு குப்பியிலிருந்து +{v1} ஆற்றல்.",
  "+{v1} Energy. Come back tomorrow for more.": "+{v1} ஆற்றல். மேலும் பெற நாளை வா.",
@@ -559,7 +558,6 @@
  "Daunt {v1}": "அச்சுறுத்தல் {v1}",
  "Daunted: −{v1} Attack until the end of next round": "அஞ்சியது: அடுத்த சுற்றின் முடிவு வரை −{v1} தாக்குதல்",
  "Day and Night": "பகலும் இரவும்",
- "Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.": "பகலும் இரவும் ஒவ்வொரு 3 சுற்றுக்கும் மாறும், பகலில் தொடங்கும். இரண்டாவதாக ஆடுபவர் ஒரு கூடுதல் அட்டையுடன் தொடங்குவார்.",
  "Day and night flip every round.": "பகலும் இரவும் ஒவ்வொரு சுற்றும் மாறும்.",
  "Day and night trade places every 3 rounds.": "பகலும் இரவும் ஒவ்வொரு 3 சுற்றுக்கும் இடம் மாறும்.",
  "Day and night trade places every {v1} rounds. Draw +1 on each new Day.": "பகலும் இரவும் ஒவ்வொரு {v1} சுற்றுக்கும் இடம் மாறும். ஒவ்வொரு புதிய பகலிலும் +1 எடு.",
@@ -2227,7 +2225,6 @@
  "Whisper’s Game": "கிசுகிசுப்பின் விளையாட்டு",
  "Who are you?": "நீ யார்?",
  "Whoever left it is coming back cold and hungry.": "அதை விட்டுச் சென்றவர் குளிரிலும் பசியிலும் திரும்பி வருவார்.",
- "Whoever plays second opens with an extra card.": "இரண்டாவதாக ஆடுபவர் ஒரு கூடுதல் அட்டையுடன் தொடங்குவார்.",
  "Wild Beasts Bundle": "காட்டு விலங்குகள் மூட்டை",
  "Wildpaths": "காட்டுப்பாதைகள்",
  "Wildpaths: Conquest passives": "காட்டுப்பாதைகள்: படையெடுப்புச் செயலற்ற திறன்கள்",
@@ -2621,5 +2618,8 @@
  "Blinding": "குருடாக்கல்",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "அடுத்துள்ள கூட்டாளியை நோக்கிய சாதாரணத் தாக்குதல்கள் அதற்குப் பதிலாக இந்த அட்டையைத் தாக்கும். திறன்களும் பரப்புத் தாக்குதல்களும் அல்ல.",
  "Takes the plain attacks aimed at its adjacent allies.": "அடுத்துள்ள கூட்டாளிகளை நோக்கிய சாதாரணத் தாக்குதல்களை ஏற்கும்.",
- "{v1} foil per card.": "ஒரு அட்டைக்கு {v1} மினுமினுப்பு."
+ "{v1} foil per card.": "ஒரு அட்டைக்கு {v1} மினுமினுப்பு.",
+ "Every cave has one chest too heavy to open. Grab it and it grabs back.": "ஒவ்வொரு குகையிலும் திறக்க முடியாத அளவு கனமான ஒரு பெட்டி உண்டு. அதைப் பிடித்தால், அது உங்களைப் பிடிக்கும்.",
+ "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2} ஆக உள்ள ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை."
 }

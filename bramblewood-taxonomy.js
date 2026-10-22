@@ -48,6 +48,11 @@
     ancMemo.set(k, s); return s;
   }
   function isChangeling(d){ return !!(d && ((d.effects && d.effects.changeling) || d.subtype === 'changeling')); }
+  // Shapeshifter (2026-10-23, package EN, owner 01:57 note 5: "it has shapeshifter instead of changeling. It is not all types. It is structure
+  // shapeshifter."): a Changeling for Structures only. It is a Structure, and it shares a type with every Structure, both ways (Kin,
+  // Formation, Swarm-by-type and the rest); with anything else it shares only its own types. effects.shapeshifter: true (Structure).
+  function isShapeshifter(d){ return !!(d && d.effects && d.effects.shapeshifter); }
+  function isStructureDef(d){ return !!(d && (((d.archetypes || []).some(t=> key(t) === 'structure')) || d.subtype === 'structure' || d.type === 'Structure' || d.cardType === 'structure')); }
   // A card's own Types (keys): its archetypes.
   function ownTypes(d){ return ((d && d.archetypes) || []).map(key).filter(Boolean); }
   // What a card is (keys): archetypes, species, animal and all their ancestors. Memoised per card object (re-worked if its fields change).
@@ -61,12 +66,13 @@
     if(isMemo) isMemo.set(d, {sig, set: out});
     return out;
   }
-  function isA(d, T){ if(!d || T == null || T === '') return false; if(isChangeling(d)) return true; return typeSet(d).has(key(T)); }
+  function isA(d, T){ if(!d || T == null || T === '') return false; if(isChangeling(d)) return true; if(isShapeshifter(d) && key(T) === 'structure') return true; return typeSet(d).has(key(T)); }
   function isAny(d, list){ if(!d) return false; const l = Array.isArray(list) ? list : (list instanceof Set ? [...list] : [list]); if(!l.length) return false;
-    if(isChangeling(d)) return true; const s = typeSet(d); return l.some(T=> s.has(key(T))); }
+    if(isChangeling(d)) return true; const s = typeSet(d); return l.some(T=> s.has(key(T)) || (key(T) === 'structure' && isShapeshifter(d))); }
   function shares(a, b){
     if(!a || !b) return false;
     if(isChangeling(a) || isChangeling(b)) return true;
+    if((isShapeshifter(a) && isStructureDef(b)) || (isShapeshifter(b) && isStructureDef(a))) return true; // EN (2026-10-23)
     const sa = typeSet(a), sb = typeSet(b);
     return ownTypes(a).some(t=> sb.has(t)) || ownTypes(b).some(t=> sa.has(t));
   }
@@ -79,7 +85,7 @@
   function typeNames(d){ return [...typeSet(d)].map(k=> NAMES[k] || k); }
   // The nodes that have something under them (the filter's wider types: Bird, Raptor, Mammal, Aquatic …), display names.
   function parentNodes(){ const s = new Set(); Object.values(PARENTS).forEach(ps=> ps.forEach(p=> s.add(p))); return [...s].map(k=> NAMES[k] || k).sort(); }
-  const api = {PARENTS, NAMES, ALIAS, SPECIES_PHYLUM, PHYLUM_ICON, HABITATS, key, name, ancestors, isChangeling, ownTypes, typeSet, isA, isAny, shares,
+  const api = {PARENTS, NAMES, ALIAS, SPECIES_PHYLUM, PHYLUM_ICON, HABITATS, key, name, ancestors, isChangeling, isShapeshifter /* EN */, isStructureDef /* EN */, ownTypes, typeSet, isA, isAny, shares,
     sharedTypes, phylumOf, phylaOf, isHabitat, typeNames, parentNodes};
   if(typeof module !== 'undefined' && module.exports) module.exports = api;
   root.BramblewoodTaxonomy = api;
