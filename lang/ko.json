@@ -2761,5 +2761,18 @@
  "In stock: {n}": "재고: {n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "품절. 수레에는 레이드 티켓이 어떤 날에만, 한 번에 한 장씩 있어요.",
  "Not in stock today. Admin Mode shows it anyway.": "오늘은 재고가 없어요. 관리자 모드에서는 그래도 보여요.",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "카드의 사본마다 다시 각자의 레벨이 있어요. 모든 사본은 원래 레벨을 유지했고, 이제 대장간은 한 번에 사본 하나씩 다뤄요."
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "카드의 사본마다 다시 각자의 레벨이 있어요. 모든 사본은 원래 레벨을 유지했고, 이제 대장간은 한 번에 사본 하나씩 다뤄요.",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "이 덱에 {n}장, 덱당 최대 {cap}장({rarity}). 보유: {owned}장.",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "덱에 {name}이(가) {n}장 있어요. {rarity} 카드는 덱에 최대 {cap}장까지예요.",
+ "Your deck has {n} {name}, but you own {owned}.": "덱에 {name}이(가) {n}장 있지만 보유한 건 {owned}장이에요.",
+ "Imported. {n} copies over the deck limits were left out: {list}": "가져왔어요. 덱 한도를 넘는 {n}장은 빼 두었어요: {list}",
+ "{map} is coming soon.": "{map}은(는) 곧 열려요.",
+ "{map} opens later. First reach {parent}.": "{map}은(는) 나중에 열려요. 먼저 {parent}에 가세요.",
+ "{map} opens when its quest is done.": "퀘스트를 마치면 {map}이(가) 열려요.",
+ "{map} opens once you clear {other}.": "{other}을(를) 클리어하면 {map}이(가) 열려요.",
+ "{map} opens once you beat {code} {fight}.": "{code} {fight}에서 이기면 {map}이(가) 열려요.",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "{prev}을(를) 클리어하면 {map}이(가) 열려요. 남은 전투: {codes}.",
+ "{map} is not open yet.": "{map}은(는) 아직 열리지 않았어요.",
+ "Back to {map}": "{map}(으)로 돌아가기",
+ "Thistlewood is the next one along. Want to see where it sits?": "다음은 엉겅퀴 숲이에요. 어디 있는지 볼래요?"
 }

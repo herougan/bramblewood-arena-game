@@ -2761,5 +2761,18 @@
  "In stock: {n}": "கையிருப்பு: {n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "விற்றுத் தீர்ந்தது. வண்டியில் சில நாட்களில் மட்டுமே ஒரு ரெய்டு டிக்கெட் இருக்கும், ஒரு நேரத்தில் ஒன்று.",
  "Not in stock today. Admin Mode shows it anyway.": "இன்று கையிருப்பில் இல்லை. நிர்வாகப் பயன்முறை இருந்தாலும் காட்டும்.",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "ஒவ்வொரு அட்டைப் பிரதிக்கும் மீண்டும் தனி நிலை உண்டு. ஒவ்வொரு பிரதியும் தன் நிலையை வைத்துக்கொண்டது; பட்டறை இப்போது ஒரு நேரத்தில் ஒரு பிரதியில் வேலை செய்யும்."
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "ஒவ்வொரு அட்டைப் பிரதிக்கும் மீண்டும் தனி நிலை உண்டு. ஒவ்வொரு பிரதியும் தன் நிலையை வைத்துக்கொண்டது; பட்டறை இப்போது ஒரு நேரத்தில் ஒரு பிரதியில் வேலை செய்யும்.",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "இந்த அடுக்கில் {n}, ஒரு அடுக்கில் அதிகபட்சம் {cap} ({rarity}). உங்களிடம் {owned} உள்ளது.",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "உங்கள் அடுக்கில் {n} {name} உள்ளன. ஒரு {rarity} அட்டை ஒரு அடுக்கில் அதிகபட்சம் {cap} பிரதிகள் மட்டுமே இருக்கலாம்.",
+ "Your deck has {n} {name}, but you own {owned}.": "உங்கள் அடுக்கில் {n} {name} உள்ளன, ஆனால் உங்களிடம் {owned} மட்டுமே உள்ளது.",
+ "Imported. {n} copies over the deck limits were left out: {list}": "இறக்கப்பட்டது. அடுக்கு வரம்பை மீறிய {n} பிரதிகள் விடப்பட்டன: {list}",
+ "{map} is coming soon.": "{map} விரைவில் வரும்.",
+ "{map} opens later. First reach {parent}.": "{map} பின்னர் திறக்கும். முதலில் {parent} ஐ அடையுங்கள்.",
+ "{map} opens when its quest is done.": "அதன் பணி முடிந்ததும் {map} திறக்கும்.",
+ "{map} opens once you clear {other}.": "{other} ஐ முடித்ததும் {map} திறக்கும்.",
+ "{map} opens once you beat {code} {fight}.": "{code} {fight} ஐ வென்றதும் {map} திறக்கும்.",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "{prev} ஐ முடித்ததும் {map} திறக்கும். இன்னும் வெல்ல வேண்டியவை: {codes}.",
+ "{map} is not open yet.": "{map} இன்னும் திறக்கவில்லை.",
+ "Back to {map}": "{map} க்குத் திரும்பு",
+ "Thistlewood is the next one along. Want to see where it sits?": "அடுத்தது முட்செடிக் காடு. அது எங்கே இருக்கிறது என்று பார்க்கலாமா?"
 }

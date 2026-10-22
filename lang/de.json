@@ -2760,5 +2760,18 @@
  "In stock: {n}": "Vorrätig: {n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Ausverkauft. Der Karren hat nur an manchen Tagen ein Raid-Ticket, immer nur eins.",
  "Not in stock today. Admin Mode shows it anyway.": "Heute nicht vorrätig. Der Admin-Modus zeigt es trotzdem.",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Jede Kopie einer Karte hat wieder ihre eigene Stufe. Jede Kopie hat ihre Stufe behalten; die Schmiede bearbeitet jetzt eine Kopie nach der anderen."
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Jede Kopie einer Karte hat wieder ihre eigene Stufe. Jede Kopie hat ihre Stufe behalten; die Schmiede bearbeitet jetzt eine Kopie nach der anderen.",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "{n} in diesem Deck, höchstens {cap} pro Deck ({rarity}). Du besitzt {owned}.",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "Dein Deck hat {n}× {name}. Eine {rarity}-Karte darf höchstens {cap}-mal in einem Deck sein.",
+ "Your deck has {n} {name}, but you own {owned}.": "Dein Deck hat {n}× {name}, aber du besitzt nur {owned}.",
+ "Imported. {n} copies over the deck limits were left out: {list}": "Importiert. {n} Exemplare über den Deck-Limits wurden weggelassen: {list}",
+ "{map} is coming soon.": "{map} kommt bald.",
+ "{map} opens later. First reach {parent}.": "{map} öffnet sich später. Erreiche zuerst {parent}.",
+ "{map} opens when its quest is done.": "{map} öffnet sich, wenn seine Quest erledigt ist.",
+ "{map} opens once you clear {other}.": "{map} öffnet sich, sobald du {other} abgeschlossen hast.",
+ "{map} opens once you beat {code} {fight}.": "{map} öffnet sich, sobald du {code} {fight} gewonnen hast.",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "{map} öffnet sich, sobald du {prev} abgeschlossen hast. Noch zu gewinnen: {codes}.",
+ "{map} is not open yet.": "{map} ist noch nicht offen.",
+ "Back to {map}": "Zurück zu {map}",
+ "Thistlewood is the next one along. Want to see where it sits?": "Distelwald ist der nächste. Willst du sehen, wo er liegt?"
 }

@@ -2097,13 +2097,16 @@ Object.keys(RARITY_FLAG_LABEL).forEach(f=> ['common', 'uncommon', 'rare', 'veryr
 // forming the bulk of a deck down to one-of singleton top-end rarities. Starter/Quest/Quest-Unique
 // are cosmetic print variants of Common/Uncommon/Unique respectively (see their own RARITY_DEFS
 // entries) so they alias straight onto that tier's limit rather than getting their own number.
+// 2026-10-23 (package PG, owner item 9: "commons-ancient: 5/4/3/2/1/1/1/1...."): Common 5, Uncommon 4, Rare 3, Very Rare 2, every rarity
+// above 1 (was Common 10, Uncommon 5, Rare 4, Very Rare / Super Rare 3, Epic / Heroic 2). Starter counts as Common; a special rarity as
+// its tier. bramblewood-ghosts.js keeps the same table for recorded PvP / ghost decks. The top-rank deck caps (package DR) still apply on top.
 const RARITY_MAX_COPIES = {
-  common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2,
+  common:5, uncommon:4, rare:3, veryrare:2, superrare:1, epic:1, heroic:1,
   unique:1, legendary:1, mythic:1, ancient:1, divine:1, void:1, daemonic:1,
-  starter:10, quest:5, questunique:1,
-  special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4,
+  starter:5, quest:4, questunique:1,
+  special:3, devlegendary:1, devancient:1, eventlegendary:1, eventrare:3,
 };
-function maxCopiesForRarity(rarity){ const k = rarity||'common'; if(RARITY_MAX_COPIES[k] != null) return RARITY_MAX_COPIES[k]; const d = typeof RARITY_DEFS !== 'undefined' && RARITY_DEFS.find(x=> x.key === k); return (d && d.as && RARITY_MAX_COPIES[d.as]) || 10; } // + a derived flag × rank pair counts as its rank (CX2)
+function maxCopiesForRarity(rarity){ const k = rarity||'common'; if(RARITY_MAX_COPIES[k] != null) return RARITY_MAX_COPIES[k]; const d = typeof RARITY_DEFS !== 'undefined' && RARITY_DEFS.find(x=> x.key === k); return (d && d.as && RARITY_MAX_COPIES[d.as]) || RARITY_MAX_COPIES.common; } // + a derived flag × rank pair counts as its rank (CX2)
 // Rarity on the road (2026-10-16, placement and rarity; user: "For maps, we can have slightly more rarity pushed in normal
 // skirmishes. Maybe in Map 16 onwards, very rare can appear. Map 21 onwards, 1 super rare here and there. For bosses ... for Map
 // 1-19, Heroics shouldn't appear in bosses. However, the dragon lair 'extra-boss' will be Legendary. (the first, and only for Map
@@ -13017,7 +13020,9 @@ function maybeOpenPitching(){
 function unlockCardForPlayer(id, source, copyOpts){
   if(!id || !CARD_DEFS_BASELINE[id] && !liveCards[id]) return false; // not a real card id
   if(isEasterEgg(liveCards[id] || CARD_DEFS_BASELINE[id]) && !EASTER_EGG_GRANT_SOURCES.has(source)) return false; // 2026-10-19 (package EE): Easter eggs, admin grants only
-  { const pd = liveCards[id] || CARD_DEFS_BASELINE[id]; if(pd && (pd.cost||0) > 0 && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !pitchingUnlocked()){
+  // 2026-10-23 (package PG): a tutorial reward is never held: it goes straight into your starting deck, so holding it made a second copy
+  // arrive later (the starting deck had already been given its copy).
+  { const pd = liveCards[id] || CARD_DEFS_BASELINE[id]; if(pd && (pd.cost||0) > 0 && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !isTutorialCopySource(source) && !pitchingUnlocked()){
       const held = loadPitchHeld(); held.push({id, source}); try{ localStorage.setItem(PITCH_HELD_KEY, JSON.stringify(held)); }catch(e){} return false; } } // held until pitching opens
   { const ud = liveCards[id] || CARD_DEFS_BASELINE[id]; if(isUnattainable(ud) && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !(source === 'mysteryEgg' && isEasterEgg(ud))) return false; } // + a Mystery Booster's Easter egg (RW3) // not obtainable yet (2026-10-12)
   // The Nest (2026-09-27, item 10): every real grant now also adds an owned COPY, even when the
@@ -13281,7 +13286,12 @@ var copyModelReady = false, copyUidSeq = 0; // var: read by cloudPushCardLevels,
 function newCopyUid(){ return 'c' + Date.now().toString(36) + (copyUidSeq++).toString(36) + Math.floor(Math.random() * 1296).toString(36); }
 function copyBaseDef(id){ return (typeof CARD_DEFS_BASELINE !== 'undefined' && CARD_DEFS_BASELINE[id]) || (typeof liveCards !== 'undefined' && liveCards[id]) || null; } // the order getCardLevel reads
 function copyBaseLevelOf(id){ return cardBaseLevel(copyBaseDef(id)); }
-function isUnlimitedCard(id){ const d = copyBaseDef(id); try{ return !!d && cardSourceOf(d).kind === 'base'; }catch(e){ return false; } }
+// Base cards (basic, starter, the tutorial's rewards). 2026-10-23 (package PG, owner: "only 1 copy each!"): they are no longer unlimited.
+// isBaseSourceCard is what isUnlimitedCard used to say; it is kept for saves from before (the copy-model move and grandfatherBaseCopies
+// make real copies for the Base cards an old deck already holds). isUnlimitedCard is false for every card now: a deck holds only copies
+// you own.
+function isBaseSourceCard(id){ const d = copyBaseDef(id); try{ return !!d && cardSourceOf(d).kind === 'base'; }catch(e){ return false; } }
+function isUnlimitedCard(id){ return false; }
 // A copy's level: never below the card's starting level, except a hatchling copy (Level 0); 11 at most (a limit break).
 function copyLevel(id, c){ if(!c) return 0; const b = copyBaseLevelOf(id); let L = Number.isFinite(c.level) ? c.level : b; if(L < b && !c.hatch) L = b; return Math.max(0, Math.min(LIMIT_BREAK_LEVEL, Math.round(L))); }
 function copyFoilRank(c){ let r = 0; try{ r = c && c.foil ? copyRefineRank(c) : 0; }catch(e){ r = c && c.foil ? 1 : 0; } return r + (c && c.shiny ? 0.5 : 0); }
@@ -13328,12 +13338,12 @@ function ensureCopyModel(){
   const credit = myForgeCredit, decks = [].concat(myDecks || [], [{counts: myDeckCounts}]); // (throws while still loading: tried again later)
   const need = {}; decks.forEach(d=> Object.entries((d && d.counts) || {}).forEach(([id, n])=>{ need[id] = Math.max(need[id] || 0, n | 0); }));
   let note = 0;
-  const ids = new Set(Object.keys(myCardCopies || {}).concat(Object.keys(need).filter(id=> isUnlimitedCard(id) && ((myCardCopies[id] || []).length || getCardLevel(id) > copyBaseLevelOf(id)))));
+  const ids = new Set(Object.keys(myCardCopies || {}).concat(Object.keys(need).filter(id=> isBaseSourceCard(id) && ((myCardCopies[id] || []).length || getCardLevel(id) > copyBaseLevelOf(id)))));
   ids.forEach(id=>{
     if(id === HERO_ID) return;
     const a = myCardCopies[id] = (myCardCopies[id] || []).map(c=> (c && typeof c === 'object') ? c : {foil:false});
     const b = copyBaseLevelOf(id);
-    if(isUnlimitedCard(id)) while(a.length < (need[id] || 0)) a.push({foil:false, m:1});
+    if(isBaseSourceCard(id)) while(a.length < (need[id] || 0)) a.push({foil:false, m:1});
     if(!a.length) return;
     // 2026-10-23 (package RW3): version 3, per-copy levels again (see COPY_MODEL_VERSION). Any copy credit goes onto the card (FG).
     let dust = 0, gold = 0; a.forEach(c=>{ const cr = copyCreditOf(c); dust += cr.dust; gold += cr.gold; delete c.cr; });
@@ -13357,6 +13367,18 @@ function ensureCopyModel(){
 }
 function copyModelOn(){ try{ return ensureCopyModel(); }catch(e){ return false; } }
 if(typeof setTimeout === 'function') setTimeout(()=>{ try{ ensureCopyModel(); }catch(e){} }, 0);
+// Saves from before package PG (2026-10-23): Base cards were unlimited, so a deck may hold more of one than you have copies of. Once, for a
+// player past the tutorial, each Base card gets real copies up to the most any of your decks holds, so no deck you built shrinks. A new
+// account (tutorial not done) is only marked; its starting cards come one copy each (tutorialStarterCopiesLevel0).
+const PG_BASE_COPIES_KEY = 'bramblewood_pg_base_copies_v1';
+function grandfatherBaseCopies(){
+  try{ if(localStorage.getItem(PG_BASE_COPIES_KEY)) return; }catch(e){ return; }
+  try{ if(typeof loadTutorialDone === 'function' && loadTutorialDone()){
+      const need = {}; [].concat(myDecks || [], [{counts: myDeckCounts}]).forEach(d=> Object.entries((d && d.counts) || {}).forEach(([id, n])=>{ need[id] = Math.max(need[id] || 0, n | 0); }));
+      Object.keys(need).forEach(id=>{ if(id !== HERO_ID && isBaseSourceCard(id) && (myCardCopies[id] || []).length < need[id]) materializeCopies(id, need[id]); }); }
+    localStorage.setItem(PG_BASE_COPIES_KEY, '1'); }catch(e){}
+}
+if(typeof setTimeout === 'function') setTimeout(()=>{ try{ if(copyModelOn()) grandfatherBaseCopies(); }catch(e){} }, 0);
 // The levels of the k copies a deck fights with: your strongest k (copies a deck holds beyond the ones you own, which only a Base
 // card can have, start at its starting level).
 function deckCopyLevels(id, n){
@@ -14504,7 +14526,9 @@ function deckSizeBadgeHTML(counts){
   // 2026-10-22 (package DR): the working deck is over a top-rank cap (it came in before the rule, or a leader change tipped it): say which rank
   let rankPill = ''; if(counts === myDeckCounts){ try{ const o = BramblewoodBudget.deckRankOver(counts, getCardDefs(), deckLeaderIds())[0];
     if(o) rankPill = ` <span class="deck-size-warn-pill">${escapeHtml(TX('ui.dr-over-pill', {rank: _t(deckRankLabel(o.rank)), n: o.n, cap: o.cap}))}</span>`; }catch(e){} }
-  return `${countHTML}${warnPillHTML}${rankPill}`;
+  // 2026-10-23 (package PG): a card over its copy limit (rarity, or more than you own: a deck from before the rule)
+  let copyPill = ''; if(counts === myDeckCounts){ try{ const p = deckCopyProblem(counts); if(p) copyPill = ` <span class="deck-size-warn-pill">${escapeHtml(deckCopyProblemText(p))}</span>`; }catch(e){} }
+  return `${countHTML}${warnPillHTML}${rankPill}${copyPill}`;
 }
 
 // ---- Multiple decks (2026-09-20, per explicit request: "Deck Menu: Similar to the 'Player'
@@ -15387,7 +15411,7 @@ function wireDeckListDrop(){
     if(!defId || !defs[defId] || defs[defId].locked) return;
     // Same rarity copy-limit enforcement as the click/tap path (deckCardClick) -- this drop
     // handler bypasses that function entirely, so it needs its own identical check.
-    if(editionCapReached(myDeckCounts, defId, defs) || defId === myLeaderId){ // a leader can't also sit in the deck (2026-10-12)
+    if(editionCapReached(myDeckCounts, defId, defs) || defId === myLeaderId || (myDeckCounts[defId]||0) >= ownedCopiesOf(defId)){ // a leader can't also sit in the deck (2026-10-12); + never more than you own (2026-10-23, package PG: the drop skipped that check)
       denyShake(listEl);
       try{ fxHook('deckFull', listEl); }catch(e){} // 2026-10-15 batch F
       return;
@@ -16170,7 +16194,9 @@ const DIALOGUES = {
   // ---- Map curiosities and road chats (2026-10-12, user: "More NPC chats and curiosities per map (max 2 per map)") ----
   cur_m1_signpost: {lines:[
     {who:'swiftpaw', text:'A signpost, and every arm points somewhere we haven\'t been yet.'},
-    {who:'traveller', text:'Clovermead is the next one along. Want to see where it sits?', options:[{label:'Show me the road.', goto:'go', act:'map:mq'}, {label:'One map at a time.', goto:'stay'}]},
+    // 2026-10-23 (package PG, owner item 13): it pointed at Clovermead ('map:mq'), which has not been the next map since it became a side
+    // map that waits on Map 12, so "Show me the road" landed on a locked map. It points at Thistlewood (Map 1), the real next map.
+    {who:'traveller', text:'Thistlewood is the next one along. Want to see where it sits?', options:[{label:'Show me the road.', goto:'go', act:'map:mf'}, {label:'One map at a time.', goto:'stay'}]},
     {label:'stay', who:'traveller', text:'Sensible. The road keeps.', goto:'end'},
     {label:'go', who:'traveller', text:'There. Past the briars.'},
     {label:'end', who:'swiftpaw', text:'Someone carved a little otter on the post. Nice work, too.'},
@@ -16374,7 +16400,11 @@ function performDialogueAct(act){
     else if(k === 'tavern') openTavern();
     else if(k === 'forge'){ codexSubTab = 'forge'; switchTab('codex'); }
     else if(k === 'codex'){ codexSubTab = v || 'browse'; switchTab('codex'); }
-    else if(k === 'map'){ playSubTab = 'conquest'; conquestSelectedMap = v; conquestSelectedNodeKey = null; switchTab('play'); }
+    else if(k === 'map'){ // 2026-10-23 (package PG, owner item 13): a signpost to a locked map (Map 0's 🪧 points at Clovermead) no longer
+      // moves you onto it ("This map is locked"); you stay where you are and are told what opens it.
+      const tm = CONQUEST_MAPS.find(m=> m.id === v); if(!tm) return;
+      if(!isMapUnlocked(tm, loadConquestProgress()) && !adminModeEnabled){ showToast('🔒 ' + mapLockReason(tm), 'warn'); return; }
+      playSubTab = 'conquest'; conquestSelectedMap = v; conquestSelectedNodeKey = null; switchTab('play'); }
     else if(k === 'spot'){ const sp = FEATURE_SPOTS.find(x=> x.key === v); if(sp && featureUnlocked(sp.key)) sp.go(); }
   }catch(e){}
 }
@@ -18365,7 +18395,8 @@ function tentQuickCount(id, prev){
   const tile = document.querySelector(`#myDeckPool .card-tile[data-defid="${sel}"]`), stack = tile && tile.closest('.pool-stack');
   const name = (getCardDefs()[id] || {}).name || id;
   edSetStackCount(chips[0], n, '×' + n); chips[0].title = `${name} ×${n}: click to add one, Shift+click to take one out`;
-  if(stack){ const owned = ownedCopiesOf(id); if(owned !== Infinity){ const left = Math.max(0, owned - n); edSetStackCount(stack, owned, `${left}/${owned}`); stack.classList.toggle('is-spent', left <= 0); } }
+  if(stack){ const owned = ownedCopiesOf(id); if(owned !== Infinity){ const left = Math.max(0, owned - n); edSetStackCount(stack, owned, `${left}/${owned}`); stack.classList.toggle('is-spent', left <= 0); }
+    const lc = stack.querySelector(':scope > .pg-limit'); if(lc){ const tmp = document.createElement('div'); tmp.innerHTML = deckLimitChipHTML(id, n); if(tmp.firstElementChild) lc.replaceWith(tmp.firstElementChild); } } // the copy-limit chip (PG)
   const badgeEl = document.getElementById('myDeckSizeBadge'); if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
   // the deck's banner (its battle rating, its stats: ~100 ms to draw) follows once the clicking stops, not on every click
   clearTimeout(tentQuickCount._t); tentQuickCount._t = setTimeout(()=>{ try{ refreshDeckHeroBanner(); }catch(e){} }, 250);
@@ -22071,6 +22102,28 @@ function isMapUnlocked(map, progress){
   // progression gate.
   return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key))); // a hidden skirmish is optional (2026-10-15)
 }
+// Why a map is locked, in one line (2026-10-23, package PG, owner item 13): the signposts' toast and the locked map's notice name what
+// opens it, the same rules isMapUnlocked reads: a side map's way in (its fight, another map, a quest) or its parent map; a main map the
+// fights of the map before it that are still to win.
+function mapLockReason(map, progress){
+  progress = progress || loadConquestProgress();
+  const nm = m=> m.name + (!m.sub && mapNumberOf(m.id) != null ? ` (${TX('ui.pg-map-n', {n: mapNumberOf(m.id)})})` : '');
+  try{
+    if(map.reserved) return TX('ui.pg-lock-soon', {map: map.name});
+    if(map.sub){
+      const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
+      if(parent && !isMapUnlocked(parent, progress)) return TX('ui.pg-lock-parent', {map: map.name, parent: nm(parent)});
+      if(map.entry && map.entry.quest && !loadDialogueFlags()['quest_done:' + map.entry.quest]) return TX('ui.pg-lock-quest', {map: map.name});
+      if(map.entry && map.entry.afterMapCleared && !conquestMapCleared(map.entry.afterMapCleared)){ const g = CONQUEST_MAPS.find(m=> m.id === map.entry.afterMapCleared); if(g) return TX('ui.pg-lock-clear-map', {map: map.name, other: nm(g)}); }
+      if(map.entry && map.entry.after && parent){ const n = parent.nodes.find(x=> x.key === map.entry.after); if(n && !progress.completed.includes(conquestNodeId(parent.id, n.key))) return TX('ui.pg-lock-fight', {map: map.name, code: skirmishCode(parent.id, n.key), fight: n.name || n.key}); }
+      return TX('ui.pg-lock-later', {map: map.name});
+    }
+    const prev = map.unlockAfter && CONQUEST_MAPS.find(m=> m.id === map.unlockAfter);
+    if(prev){ const left = prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !progress.completed.includes(conquestNodeId(prev.id, n.key)));
+      if(left.length) return TX('ui.pg-lock-main', {map: map.name, prev: nm(prev), codes: left.map(n=> skirmishCode(prev.id, n.key)).join(', ')}); }
+  }catch(e){}
+  return TX('ui.pg-lock-later', {map: map.name});
+}
 // Conquest reward payouts (2026-09-20, picking up the Conquest/PvE research notes' own
 // recommendation: "reward payouts on node clear (first-clear bonus + repeat-clear trickle) ...
 // are the two highest-value, lowest-risk additions — self-contained, don't touch combat rules").
@@ -22256,9 +22309,15 @@ function rollSRankFind(mapId, rank, rng){
   setDialogueFlag(flag, true);
   return pool[Math.floor((rng || Math.random)()*pool.length)];
 }
+// 2026-10-23 (package PG, owner item 13: "After map 0 complete, it doesnt unlock Map 1 automatically"): the win that clears a main map
+// opens the next one at once (isMapUnlocked) and, back on the map, the road takes you there (renderConquestSubTab reads this once).
+var conquestAutoAdvanceTo = null;
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
   const id = conquestNodeId(node.mapId, node.nodeId);
+  try{ const mains = mainConquestMaps(), here = CONQUEST_MAPS.find(m=> m.id === node.mapId), nx = here && !here.sub ? mains[mains.indexOf(here) + 1] : null;
+    if(nx && !progress.completed.includes(id) && !isMapUnlocked(nx, progress)){ const p2 = Object.assign({}, progress, {completed: progress.completed.concat([id])});
+      if(isMapUnlocked(nx, p2)) conquestAutoAdvanceTo = nx.id; } }catch(e){}
   if(!progress.completed.includes(id)) progress.completed.push(id);
   if(!progress.clearedAt) progress.clearedAt = {}; if(!progress.clearedAt[id]) progress.clearedAt[id] = Date.now(); // first-clear time, for side maps that turn up days later (2026-10-12)
   if(node.kind==='raidboss' && !progress.raidUnlocked.includes(id)) progress.raidUnlocked.push(id);
@@ -23591,6 +23650,7 @@ function swapOutAllowed(outId, newId){
   const defs = getCardDefs(), o = defs[outId], d = defs[newId]; if(!o || !d || outId === newId || o.isLeader || o.hero) return false;
   if(swapRarityIndex(o.rarity) > swapRarityIndex(d.rarity)) return false; // never a rarer card out for a commoner one
   { const after = Object.assign({}, myDeckCounts); after[outId] = (after[outId]||0) - 1; if(deckRankBlockFor(after, newId, defs, deckLeaderIds())) return false; } // 2026-10-22 (package DR): never a swap past the Legendary / Mythic / higher deck caps
+  if((myDeckCounts[newId]||0) >= deckCopyLimit(newId, defs)) return false; // 2026-10-23 (package PG): nor past the copy limits (rarity, copies owned)
   return starterDeckCardIds().has(outId) || (o.attack||0) + (o.health||0) <= 3 || o.rarity === 'starter' || o.rarity === 'basic' || !!o.tutorial;
 }
 // The weakest card in the deck: a 1-Attack or 1-Health card first, then the smallest total (only cards swapOutAllowed lets go).
@@ -23798,6 +23858,9 @@ function renderConquestSubTab(body){
   healTutorial2Flag();
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
   { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1'; } // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
+  // 2026-10-23 (package PG): the fight that just cleared a map opened the next one; back on the map, you are taken there (once)
+  if(conquestAutoAdvanceTo && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const nx = CONQUEST_MAPS.find(m=> m.id === conquestAutoAdvanceTo); conquestAutoAdvanceTo = null;
+    if(nx && isMapUnlocked(nx, loadConquestProgress())){ conquestSelectedMap = nx.id; conquestSelectedNodeKey = null; conquestWorldView = false; } }
   setTimeout(maybeOfferDeckSwap, 600);
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
@@ -23890,7 +23953,11 @@ function renderConquestSubTab(body){
   if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}${MAP_ART_IDS.has(map.id) ? ' has-map-art' : ''}`;
   if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
   if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless)){ // admins may open a locked dungeon or the Tower (2026-10-16)
-    mainEl.innerHTML = `<div class="empty-hint">This map is locked — clear the previous map's Skirmish/Elite/Boss nodes first.</div>`;
+    // 2026-10-23 (package PG, owner item 13): no way should land you here any more (signposts check first), but if one does, the notice
+    // says what opens this map and takes you back to the furthest map you can play. Was a dead end ("clear the previous map's ... first").
+    const backTo = mainConquestMaps().filter(m=> isMapUnlocked(m, progress)).pop() || CONQUEST_MAPS[0];
+    mainEl.innerHTML = `<div class="empty-hint pg-locked-map"><p>🔒 ${escapeHtml(mapLockReason(map, progress))}</p><button type="button" class="btn small" id="pgLockedBack">${escapeHtml(TX('ui.pg-lock-back', {map: backTo.name}))}</button></div>`;
+    { const b = document.getElementById('pgLockedBack'); if(b) b.onclick = ()=>{ conquestSelectedMap = backTo.id; conquestSelectedNodeKey = null; renderConquestSubTab(body); }; }
     return;
   }
   const positions = mapNodePositions(map);
@@ -26437,16 +26504,22 @@ function buildFactionStarterDeck(pick){
 //            STARTER_BASE_SIZE (17) cards in all. Nobody sees these until the Armoury opens; Part II's deck box counts them.
 //   all    - shown + hidden: the real base deck (17). Part I's reward makes 18, Part II's two make 20.
 const STARTER_SHOWN = 8, STARTER_BASE_SIZE = 17;
+// 2026-10-23 (package PG, owner item 8: "We might be misunderstanding the initial cards given. - only 1 copy each! You only gain the remaining
+// copies as you move forward in the game"): the starting deck is ONE copy of each card. The lists' numbers now only say which cards are in
+// it (side, then shared, then filler, then cfg.starterTopUp), and the deck is topped up with further different cards until, with the
+// tutorial's reward cards (T-1's and your side's two from T-2, which may be a second copy of a card), it holds exactly DECK_SIZE (20).
+// Was: copies by the lists' numbers (Pond Trout ×3, Honey Bee ×3 …) to 17, and every Base card free and unlimited on top.
+function starterDeckTarget(pick){ let r = 0; try{ r = tutorialRewardIds().length + tutorialRewards2(pick || 'both').length; }catch(e){} return Math.max(STARTER_SHOWN, DECK_SIZE - r); }
 function starterDeckParts(pick){
   const defs = getCardDefs(), cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT;
   const side = pick==='otters' ? cfg.starterOtters : pick==='hummingbirds' ? cfg.starterHummingbirds : cfg.starterBoth;
-  const copies = [];
-  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared].forEach(list=> Object.entries(list).forEach(([id, n])=>{ if(defs[id]) for(let i = 0; i < (n|0); i++) copies.push(id); }));
-  const filler = []; Object.entries(cfg.starterFiller || STARTER_CFG_DEFAULT.starterFiller || {}).forEach(([id, n])=>{ if(defs[id]) for(let i = 0; i < (n|0); i++) filler.push(id); });
-  const add = (o, id)=>{ o[id] = (o[id]||0) + 1; };
+  const other = pick==='otters' ? 'hummingbirds' : pick==='hummingbirds' ? 'otters' : null; // the top-up never hands you the other side's cards
+  const ids = [], seen = new Set(), take = id=>{ if(!defs[id] || seen.has(id) || defs[id].token) return; if(other && defs[id].faction === other) return; seen.add(id); ids.push(id); };
+  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared, cfg.starterFiller || STARTER_CFG_DEFAULT.starterFiller || {}].forEach(list=> Object.keys(list).forEach(id=>{ if((list[id]|0) > 0) take(id); }));
+  (Array.isArray(cfg.starterTopUp) ? cfg.starterTopUp : STARTER_CFG_DEFAULT.starterTopUp).forEach(take);
+  const target = starterDeckTarget(pick);
   const shown = {}, hidden = {}, all = {};
-  copies.forEach((id, i)=>{ add(i < STARTER_SHOWN ? shown : hidden, id); add(all, id); });
-  for(let i = 0; i < filler.length && copies.length + i < STARTER_BASE_SIZE; i++){ add(hidden, filler[i]); add(all, filler[i]); }
+  ids.slice(0, target).forEach((id, i)=>{ (i < STARTER_SHOWN ? shown : hidden)[id] = 1; all[id] = 1; });
   return {shown, hidden, all};
 }
 function tutorialRewardIds(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; const later = new Set(Object.values(tutorialRewards2Cfg()).flat());
@@ -26743,6 +26816,9 @@ const STARTER_CFG_DEFAULT = {
   starterHummingbirds: {'crimson-wing-recruit':2, 'mosswing-laborer':1},
   starterBoth: {'otter-centurion':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
   starterFiller: {'honey-bee':3, 'silver-minnow':3, 'sparrow-chick':3}, // 1/2 each: the trainees the swaps replace
+  // 2026-10-23 (package PG): one copy of each card now, so the deck is filled to 20 with further different Base cards, in this order
+  // (the sturdier ones first; the tutorial fights' own cards). starterDeckParts skips any already in the lists above.
+  starterTopUp: ['pond-duck', 'acorn-chipmunk', 'cottontail', 'chipmunk-forager', 'river-carp', 'burrow-rabbit', 'meadow-rabbit', 'duckling', 'harvest-mouse', 'sheep', 'garden-snail', 'earthworm', 'guppy'],
   // 2026-10-12 (10:57, user: "the first card nets you the quarry mole, only the 2nd one nets you the side-specific card. If you
   // chose both sides, maybe you get a 3rd uncommon card ... a meerkat"): part 1 gives the Quarry Mole, part 2 two more cards
   // (your side's), making 20; picking both also brings the Meerkat Wayfarer to your collection.
@@ -27340,14 +27416,15 @@ function tutorialCopyLevel0(id){
   try{ if(!copyModelOn()) return; const a = myCardCopies[id] || [], c = a[a.length - 1]; if(!c) return;
     tutorialMarkLevel0(id, c); tutorialHatchlingIfAllZero(id); saveCardCopies(); }catch(e){}
 }
-// The starting deck: Base and starter cards are unlimited, so their copies are made here, at Level 0 (made for a deck: m:1), up to
-// the count the deck holds (the reward copies granted a moment earlier count).
+// The starting deck: its copies are made here, at Level 0 (made for a deck: m:1), up to the count the deck holds (the reward copies
+// granted a moment earlier count). 2026-10-23 (package PG): these are the ONLY copies of the starting cards you get (one each; Base cards
+// are no longer unlimited), so every card of the deck gets its copy here, whatever its source, even with the copy model not ready yet.
 function tutorialStarterCopiesLevel0(deck){
-  try{ if(!copyModelOn()) return;
-    Object.entries(deck || {}).forEach(([id, n])=>{ if(!isUnlimitedCard(id)) return;
+  try{ const ready = copyModelOn();
+    Object.entries(deck || {}).forEach(([id, n])=>{ if((typeof HERO_ID !== 'undefined' && id === HERO_ID) || id === 'wandering-traveller') return;
       const a = myCardCopies[id] = myCardCopies[id] || [];
-      while(a.length < (n | 0)){ const c = {foil:false, m:1, uid: newCopyUid()}; tutorialMarkLevel0(id, c); a.push(c); }
-      tutorialHatchlingIfAllZero(id); });
+      while(a.length < (n | 0)){ const c = {foil:false, m:1, uid: newCopyUid()}; if(ready) tutorialMarkLevel0(id, c); a.push(c); }
+      if(ready) tutorialHatchlingIfAllZero(id); });
     saveCardCopies(); }catch(e){}
 }
 // TUTORIAL_LEVEL0_UT:END
@@ -30387,17 +30464,42 @@ function logRaidAttempt(boss, won, rounds, damageDealt){
 // depth is how many copies you have; a deck may use up to that many (and its rarity limit), whatever your other decks use.
 // Base cards are unlimited. The deck itself shows as small card stacks with ×N.
 let deckStackTreatments = (()=>{ try{ return localStorage.getItem('bramblewood_deck_stackfx') !== 'apart'; }catch(e){ return true; } })();
+// 2026-10-23 (package PG, owner items 6, 8, 10: "only 1 copy each! You only gain the remaining copies as you move forward in the game"):
+// Base and starter cards are no longer free and unlimited. Before, every basic / starter / tutorial-reward card (cardSourceOf kind 'base')
+// was "owned" by everyone and had Infinity copies, so a new account's deck builder listed ~40 cards it was never given and let any of them
+// (the Quarry Mole, while it was T-1's reward) be added without end. Now a card is in the pool only when you hold a copy (or it is in
+// your deck), and a deck may hold at most the copies you own. The Wandering Traveller stays everyone's leader (one copy).
 function ownedForDeck(id){
-  const d = getCardDefs()[id]; if(!d) return false; if(id === HERO_ID) return true;
-  if(d.basic || d.rarity==='starter' || d.tutorial || id==='wandering-traveller') return true;
+  const d = getCardDefs()[id]; if(!d) return false; if(id === HERO_ID || id === 'wandering-traveller') return true;
   if((myDeckCounts||{})[id] > 0) return true;
   return (myCardCopies[id]||[]).length > 0 || !!(myUnlockedCardIds && myUnlockedCardIds.has(id));
 }
 function ownedCopiesOf(id){
   const d = getCardDefs()[id]; if(!d) return 0; if(id === HERO_ID) return 1;
-  if(cardSourceOf(d).kind === 'base') return Infinity;
-  const n = (myCardCopies[id]||[]).length; return Math.max(n, (myUnlockedCardIds && myUnlockedCardIds.has(id)) ? 1 : 0);
+  const n = (myCardCopies[id]||[]).length; return Math.max(n, ((myUnlockedCardIds && myUnlockedCardIds.has(id)) || id === 'wandering-traveller') ? 1 : 0);
 }
+// The most copies of `id` a deck may hold right now (package PG): the rarity's limit (editions share their base card's) and the copies
+// you own, whichever is lower.
+function deckCopyLimit(id, defs){
+  defs = defs || getCardDefs(); const d = defs[id]; if(!d) return 0;
+  return Math.max(0, Math.min(maxCopiesForRarity(((defs[editionRootId(d)] || d).rarity)), maxCopiesForRarity(d.rarity), ownedCopiesOf(id)));
+}
+// A deck fitted to the limits (package PG): each card cut to deckCopyLimit, the leader taken out. {counts, cut:[{id, from, to}]}.
+function clampDeckToLimits(counts, leaderId){
+  const defs = getCardDefs(), out = {}, cut = [];
+  Object.keys(counts || {}).forEach(id=>{ const n = Math.max(0, Math.round(Number(counts[id]) || 0)); if(!n || !defs[id]) return;
+    const lim = id === leaderId ? 0 : deckCopyLimit(id, defs); const k = Math.min(n, lim); if(k < n) cut.push({id, from: n, to: k}); if(k > 0) out[id] = k; });
+  return {counts: out, cut};
+}
+// The deck's first card over a limit (package PG), for the editor's pill and the fight gate: null or {id, n, cap, owned}.
+function deckCopyProblem(counts){
+  const defs = getCardDefs();
+  for(const id of Object.keys(counts || {})){ const n = counts[id] | 0, d = defs[id]; if(!d || n <= 0 || id === HERO_ID) continue;
+    const cap = maxCopiesForRarity(d.rarity), owned = ownedCopiesOf(id);
+    if(n > cap || n > owned) return {id, n, cap, owned}; }
+  return null;
+}
+function deckCopyProblemText(p){ const d = getCardDefs()[p.id] || {}; return p.n > p.cap ? TX('toast.pg-deck-over-copy-limit', {name: d.name || p.id, n: p.n, cap: p.cap, rarity: _t(rarityDef(d.rarity || 'common').label)}) : TX('toast.pg-deck-over-owned', {name: d.name || p.id, n: p.n, owned: p.owned}); }
 // ---- Per-copy looks (2026-10-16, user: "Unlocking a shiny or an alt art doesnt mean ALL art is the same now. You have to take that
 // shiny version and put it into your deck and etc.") ----
 // A Shiny copy is one copy, and an alternate-art skin dresses one copy (each owned skin = one plain copy wearing it); neither
@@ -30506,9 +30608,16 @@ function deckSortFn(sortMode){
     if(sortMode==='rarity') return RARITY_TIER_BANDS.indexOf(B.rarity||'common') - RARITY_TIER_BANDS.indexOf(A.rarity||'common') || A.name.localeCompare(B.name);
     return ((A.cost||0)-(B.cost||0)) || A.name.localeCompare(B.name); };
 }
-function stackHTML(tile, depth, badge, extra){
+function stackHTML(tile, depth, badge, extra, limitChip){
   const d = Math.max(1, Math.min(3, depth));
-  return `<div class="pool-stack depth-${d} ${extra||''}">${tile}${badge ? `<b class="ps-count">${badge}</b>` : ''}</div>`;
+  return `<div class="pool-stack depth-${d} ${extra||''}">${tile}${badge ? `<b class="ps-count">${badge}</b>` : ''}${limitChip || ''}</div>`;
+}
+// The copy-limit chip on a Camp pool card (2026-10-23, package PG, owner item 9): "2/3" = 2 in this deck, at most 3 per deck for its
+// rarity. Turns red at the limit. Its tip names the rarity's limit and the copies you own.
+function deckLimitChipHTML(id, used){
+  const d = getCardDefs()[id]; if(!d || id === HERO_ID) return '';
+  const cap = maxCopiesForRarity(d.rarity), tip = TX('ui.pg-limit-tip', {n: used | 0, cap, rarity: _t(rarityDef(d.rarity || 'common').label), owned: ownedCopiesOf(id)});
+  return `<span class="pg-limit ${(used|0) >= cap ? 'is-max' : ''}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${used|0}/${cap}</span>`;
 }
 function renderMyDeckPanels(){
   const defs = getCardDefs();
@@ -30562,10 +30671,10 @@ function renderMyDeckPanels(){
       // 2026-10-16 (user: "...You have to take that shiny version and put it into your deck"): the plain copies are one stack and
       // each Shiny / alt-art look its own, so you pick which copy goes in. Only cards that have such a look get the extra stacks.
       const st = lookStock(id), lk = deckLooksFor(id), lookKeys = (st.shiny ? ['shiny'] : []).concat(Object.keys(st.skins).map(k=> 'skin:' + k));
-      if(!lookKeys.length) return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '');
+      if(!lookKeys.length) return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '', deckLimitChipHTML(id, used)); // + the copy-limit chip (PG)
       const usedSkins = Object.keys(lk).filter(k=> k.startsWith('skin:')).length, plainIn = used - deckLookCount(lk);
       const plainOwned = st.plain, plainLeft = plainOwned === Infinity ? Infinity : Math.max(0, plainOwned - plainIn - usedSkins);
-      const plainStack = plainOwned > 0 ? stackHTML(cardTileHTML(defs[id], {magnetic:true}), plainOwned === Infinity ? 3 : plainOwned, plainOwned === Infinity ? '' : `${plainLeft}/${plainOwned}`, plainLeft <= 0 ? 'is-spent' : '') : '';
+      const plainStack = plainOwned > 0 ? stackHTML(cardTileHTML(defs[id], {magnetic:true}), plainOwned === Infinity ? 3 : plainOwned, plainOwned === Infinity ? '' : `${plainLeft}/${plainOwned}`, plainLeft <= 0 ? 'is-spent' : '', deckLimitChipHTML(id, used)) : '';
       return plainStack + lookKeys.map(key=>{ const have = key === 'shiny' ? st.shiny : 1, inDeck = lk[key] | 0, leftK = Math.max(0, Math.min(have - inDeck, key === 'shiny' ? Infinity : plainLeft));
         return `<div class="look-stack" data-look="${escapeAttr(key)}" data-lookid="${escapeAttr(id)}" style="${lookStyle(id, key)}" title="${escapeAttr(defs[id].name + ': ' + lookLabel(id, key) + (key === 'shiny' ? '' : ' (dresses one plain copy)'))}">${stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: lookTileClass(id, key)}), have, `${leftK}/${have}`, leftK <= 0 ? 'is-spent' : '')}<span class="look-tag">${escapeHtml(lookLabel(id, key))}</span></div>`; }).join('');
     }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
@@ -30588,15 +30697,18 @@ function renderMyDeckPanels(){
       el.addEventListener('click', e=>{ e.stopPropagation(); lookClick(e, id, look); }, true);
       el.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); lookClick({shiftKey:true}, id, look); }, true); });
     document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=>{ el.title = (el.title ? el.title + ' · ' : '') + 'Click: add one · Shift+click: take one out';
-      el.addEventListener('contextmenu', e=>{ const id = el.getAttribute('data-defid'); if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); }); }
+      el.addEventListener('contextmenu', e=>{ const id = el.getAttribute('data-defid'); if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); });
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
   // enforcement -- see deckCardClick's own comment. The Sandbox tool's identical-looking listeners
   // below (renderSimPools) deliberately omit this argument.
+  // 2026-10-23 (package PG): this listener now sits inside the block that defines fast(); since package ED (10-21) it sat outside it, so a
+  // click on a pool card threw "fast is not defined" and added nothing (owner 10-23 01:03 item 7: "clicking the card in the tent's deck
+  // editor should add the card in - not just drag and drop").
   document.querySelectorAll('#myDeckPool .card-tile:not(.locked):not(.is-look-tile)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid');
     // 2026-10-16: a plain tile takes a plain copy. When every plain copy is in (only a Shiny / alt-art look is left), say so.
     if(!e.shiftKey){ const st = lookStock(id); if(st.plain !== Infinity && (st.shiny || Object.keys(st.skins).length)){ const lk = deckLooksFor(id), plainUsed = (myDeckCounts[id]|0) - deckLookCount(lk) + Object.keys(lk).filter(k=> k.startsWith('skin:')).length; if(plainUsed >= st.plain){ denyShake(el); floatText(el, _t('Every plain copy is in'), 'debuff'); return; } } }
-    deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); })); // 2026-10-21 (package ED): count-only
+    deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); })); } // 2026-10-21 (package ED): count-only
   // Item #10: both the pool tiles and the deck-list chips can be dragged (2026-10-18: onto #myDeckList; the leader slot they were
   // also dropped on is gone, the leader is picked in openLoadoutPicker) — a locked pool
   // tile is deliberately excluded, matching the same "not usable yet" rule the click-to-add
@@ -30643,7 +30755,9 @@ function wireCardTileFlourish(root){
 // to skip it, so a 21-card deck could start a Conquest fight — found in the 2026-10-03 story pass).
 function deckSizeOkOrWarn(){
   if(typeof restoreMainDeck==='function' && currentTab!=='deck') restoreMainDeck();
-  if(deckTotal(myDeckCounts)===DECK_SIZE) return deckRankOkOrWarn(myDeckCounts, deckLeaderIds()); // + the Legendary / Mythic / higher deck caps (2026-10-22, package DR)
+  // 2026-10-23 (package PG): + the copy limits (rarity: Common 5 … Very Rare 2, higher 1; and the copies you own), named card by card
+  if(deckTotal(myDeckCounts)===DECK_SIZE){ const cp = deckCopyProblem(myDeckCounts); if(cp){ showToast(deckCopyProblemText(cp), 'warn'); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return false; }
+    return deckRankOkOrWarn(myDeckCounts, deckLeaderIds()); } // + the Legendary / Mythic / higher deck caps (2026-10-22, package DR)
   showToast(TX('toast.your-main-deck-has-cards-it-3', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
   return false;
 }
@@ -48310,7 +48424,10 @@ async function importDeckCodeFlow(btnEl){
     SoundKit.deny(); if(btnEl){ denyShake(btnEl); floatText(btnEl, '⚠ '+result.reason, 'debuff'); }
     return;
   }
-  const nd = { id: genDeckId(), name: result.deck.name, characterId: result.deck.characterId, leaderId: result.deck.leaderId, counts: result.deck.counts };
+  // 2026-10-23 (package PG): an imported deck is cut to the copy limits (rarity, copies you own); the cards cut are named
+  const fit = clampDeckToLimits(result.deck.counts, result.deck.leaderId);
+  if(fit.cut.length){ const defs = getCardDefs(); setTimeout(()=> showToast(TX('toast.pg-import-cut', {n: fit.cut.reduce((s, c)=> s + c.from - c.to, 0), list: fit.cut.slice(0, 4).map(c=> `${(defs[c.id]||{}).name || c.id} ${c.from}→${c.to}`).join(', ')}), 'warn'), 600); }
+  const nd = { id: genDeckId(), name: result.deck.name, characterId: result.deck.characterId, leaderId: result.deck.leaderId, counts: fit.counts };
   // Avoid a confusing pair of decks with identical names sitting side by side in the list.
   if(myDecks.some(x=>x.name===nd.name)) nd.name = nd.name + ' (imported)';
   myDecks.push(nd); saveMyDecks();

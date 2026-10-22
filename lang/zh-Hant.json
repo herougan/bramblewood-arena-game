@@ -2761,5 +2761,18 @@
  "In stock: {n}": "庫存：{n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "已售罄。貨車只在某些日子有突襲券，每次一張。",
  "Not in stock today. Admin Mode shows it anyway.": "今天沒有庫存。管理員模式仍會顯示。",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "每張卡牌的每個副本又有各自的等級了。每個副本都保留了原來的等級；鍛造爐現在一次處理一個副本。"
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "每張卡牌的每個副本又有各自的等級了。每個副本都保留了原來的等級；鍛造爐現在一次處理一個副本。",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "此牌組中 {n} 張，每副牌組最多 {cap} 張（{rarity}）。你擁有 {owned} 張。",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "你的牌組有 {n} 張{name}。{rarity}卡牌每副牌組最多 {cap} 張。",
+ "Your deck has {n} {name}, but you own {owned}.": "你的牌組有 {n} 張{name}，但你只擁有 {owned} 張。",
+ "Imported. {n} copies over the deck limits were left out: {list}": "已匯入。超出牌組上限的 {n} 張未加入：{list}",
+ "{map} is coming soon.": "{map}即將推出。",
+ "{map} opens later. First reach {parent}.": "{map}稍後開放。先到達{parent}。",
+ "{map} opens when its quest is done.": "完成其任務後，{map}開放。",
+ "{map} opens once you clear {other}.": "通關{other}後，{map}開放。",
+ "{map} opens once you beat {code} {fight}.": "贏下 {code} {fight} 後，{map}開放。",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "通關{prev}後，{map}開放。還需贏下：{codes}。",
+ "{map} is not open yet.": "{map}尚未開放。",
+ "Back to {map}": "返回{map}",
+ "Thistlewood is the next one along. Want to see where it sits?": "下一個是薊木林。要看看它在哪兒嗎？"
 }

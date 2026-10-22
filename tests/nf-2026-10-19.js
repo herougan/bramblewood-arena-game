@@ -135,7 +135,9 @@ function makeCopies(o){
   ok(a[4].level === 1 && JSON.stringify(C.deckCopyLevels('x', 5)) === '[6,5,5,5,1]', '3. a new copy starts at Lv 1 and only fights once the deck holds all five');
   const o5 = C.ownedDeckForMatch({x: 5}); ok(o5['x~cp1'] === 1 && !ctx.matchDefsOverlay['x~cp5'] === false, '3. the weakest copy fights as "x~cp1"');
   ok(C.mainDeckLevel({x: 5}, null) === 6 + 5 + 5 + 5 + 1, '3. the deck\'s battle rating counts each copy at its own level');
-  const ob = C.ownedDeckForMatch({b: 3}); ok(ctx.myCardCopies.b.length === 3 && ob.b === 2 && ob['b~cp0'] === 1, '3. a Base card gets a real third copy for the deck, at its starting level');
+  // 2026-10-23 (package PG, owner "only 1 copy each!"): Base cards are no longer unlimited, so a fight makes no copy the player doesn't own
+  // (was: a Base card got a real third copy for the deck, at its starting level). The deck builder never lets a deck hold more than you own.
+  { const nb = (ctx.myCardCopies.b || []).length; const ob = C.ownedDeckForMatch({b: 3}); ok((ctx.myCardCopies.b || []).length === nb && (ob.b|0) + (ob['b~cp0']|0) + (ob['b~cp3']|0) === 3, `3. a Base card gets no free copy at fight time any more (PG): copies ${nb} → ${(ctx.myCardCopies.b || []).length}`); }
   ok(C.ownedDeckForMatch(null) === null && (ctx.standardMatchActive = true, JSON.stringify(C.ownedDeckForMatch({x: 3})) === '{"x":3}'), '3. a Standard match (every card Lv 1) is left alone'); ctx.standardMatchActive = false;
   // ---- the cloud row's copies
   const row = C.cloudCopiesOf('x'); ok(row.length === 5 && row[0].u === plain.uid && row[0].l === 6 && row.every(r=> typeof r.u === 'string' && Number.isInteger(r.l)), '3. the cloud row carries each copy\'s uid and level, best first');
