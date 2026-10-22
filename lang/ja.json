@@ -2761,5 +2761,18 @@
  "In stock: {n}": "在庫：{n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "売り切れ。荷車にレイドチケットがあるのは一部の日だけで、一度に1枚です。",
  "Not in stock today. Admin Mode shows it anyway.": "今日は在庫がありません。管理者モードでは表示されます。",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "カードのコピーはそれぞれ自分のレベルに戻りました。どのコピーも元のレベルのままです。鍛冶場は一度に1枚ずつ鍛えます。"
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "カードのコピーはそれぞれ自分のレベルに戻りました。どのコピーも元のレベルのままです。鍛冶場は一度に1枚ずつ鍛えます。",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "このデッキに{n}枚、1デッキ最大{cap}枚（{rarity}）。所持数：{owned}枚。",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "デッキに{name}が{n}枚あります。{rarity}のカードは1デッキに最大{cap}枚までです。",
+ "Your deck has {n} {name}, but you own {owned}.": "デッキに{name}が{n}枚ありますが、所持数は{owned}枚です。",
+ "Imported. {n} copies over the deck limits were left out: {list}": "インポートしました。デッキの上限を超えた{n}枚は外しました：{list}",
+ "{map} is coming soon.": "{map}は近日公開です。",
+ "{map} opens later. First reach {parent}.": "{map}はあとで開きます。まず{parent}にたどり着きましょう。",
+ "{map} opens when its quest is done.": "クエストを終えると{map}が開きます。",
+ "{map} opens once you clear {other}.": "{other}をクリアすると{map}が開きます。",
+ "{map} opens once you beat {code} {fight}.": "{code} {fight}に勝つと{map}が開きます。",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "{prev}をクリアすると{map}が開きます。残り：{codes}。",
+ "{map} is not open yet.": "{map}はまだ開いていません。",
+ "Back to {map}": "{map}に戻る",
+ "Thistlewood is the next one along. Want to see where it sits?": "次はアザミの森だ。どこにあるか見てみる？"
 }

@@ -2760,5 +2760,18 @@
  "In stock: {n}": "Stok: {n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Habis. Gerobak hanya punya Tiket Raid pada hari-hari tertentu, satu per satu.",
  "Not in stock today. Admin Mode shows it anyway.": "Hari ini tidak ada stok. Mode Admin tetap menampilkannya.",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Setiap salinan kartu kembali punya levelnya sendiri. Setiap salinan tetap di levelnya; Tempa kini mengerjakan satu salinan sekaligus."
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Setiap salinan kartu kembali punya levelnya sendiri. Setiap salinan tetap di levelnya; Tempa kini mengerjakan satu salinan sekaligus.",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "{n} di dek ini, paling banyak {cap} per dek ({rarity}). Kamu punya {owned}.",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "Dekmu berisi {n} {name}. Kartu {rarity} paling banyak {cap} salinan dalam satu dek.",
+ "Your deck has {n} {name}, but you own {owned}.": "Dekmu berisi {n} {name}, tapi kamu hanya punya {owned}.",
+ "Imported. {n} copies over the deck limits were left out: {list}": "Diimpor. {n} salinan yang melebihi batas dek tidak dimasukkan: {list}",
+ "{map} is coming soon.": "{map} segera hadir.",
+ "{map} opens later. First reach {parent}.": "{map} terbuka nanti. Capai {parent} dulu.",
+ "{map} opens when its quest is done.": "{map} terbuka setelah misinya selesai.",
+ "{map} opens once you clear {other}.": "{map} terbuka setelah kamu menuntaskan {other}.",
+ "{map} opens once you beat {code} {fight}.": "{map} terbuka setelah kamu memenangkan {code} {fight}.",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "{map} terbuka setelah kamu menuntaskan {prev}. Masih harus dimenangkan: {codes}.",
+ "{map} is not open yet.": "{map} belum terbuka.",
+ "Back to {map}": "Kembali ke {map}",
+ "Thistlewood is the next one along. Want to see where it sits?": "Hutan Duri yang berikutnya. Mau lihat letaknya?"
 }

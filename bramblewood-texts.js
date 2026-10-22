@@ -1967,7 +1967,20 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rw3-rt-stock": "In stock: {n}",
   "ui.rw3-rt-sold-out-why": "Sold out. The cart has a Raid Ticket only on some days, one at a time.",
   "ui.rw3-rt-not-today-why": "Not in stock today. Admin Mode shows it anyway.",
-  "toast.rw3-copy-levels": "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time."
+  "toast.rw3-copy-levels": "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.",
+  "ui.pg-limit-tip": "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.",
+  "toast.pg-deck-over-copy-limit": "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.",
+  "toast.pg-deck-over-owned": "Your deck has {n} {name}, but you own {owned}.",
+  "toast.pg-import-cut": "Imported. {n} copies over the deck limits were left out: {list}",
+  "ui.pg-map-n": "Map {n}",
+  "ui.pg-lock-soon": "{map} is coming soon.",
+  "ui.pg-lock-parent": "{map} opens later. First reach {parent}.",
+  "ui.pg-lock-quest": "{map} opens when its quest is done.",
+  "ui.pg-lock-clear-map": "{map} opens once you clear {other}.",
+  "ui.pg-lock-fight": "{map} opens once you beat {code} {fight}.",
+  "ui.pg-lock-main": "{map} opens once you clear {prev}. Still to win: {codes}.",
+  "ui.pg-lock-later": "{map} is not open yet.",
+  "ui.pg-lock-back": "Back to {map}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

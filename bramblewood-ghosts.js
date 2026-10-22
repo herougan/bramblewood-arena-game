@@ -21,8 +21,9 @@
 const ASYNC = {MAX_WINS:7, MAX_LOSSES:3, MIN_ACTIVE_PER_STAGE:12, ACTIVE_DAYS:14};
 const RAID = {CYCLE_DAYS:7, POOL_MULT:8, MIN_RAIDERS:8, MAX_RAIDERS:16, SEED_SHARE:0.5};
 const DAY = 24*3600*1000;
-// Same per-rarity copy limits as the deck builder (arena_app.js RARITY_MAX_COPIES).
-const RARITY_MAX_COPIES = {common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2, unique:1, legendary:1, mythic:1, ancient:1, divine:1, void:1, daemonic:1, starter:10, quest:5, questunique:1, special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4};
+// Same per-rarity copy limits as the deck builder (arena_app.js RARITY_MAX_COPIES). 2026-10-23 (package PG, owner): Common 5, Uncommon 4,
+// Rare 3, Very Rare 2, every rarity above 1 (was 10 / 5 / 4 / 3 / 3 / 2 / 2).
+const RARITY_MAX_COPIES = {common:5, uncommon:4, rare:3, veryrare:2, superrare:1, epic:1, heroic:1, unique:1, legendary:1, mythic:1, ancient:1, divine:1, void:1, daemonic:1, starter:5, quest:4, questunique:1, special:3, devlegendary:1, devancient:1, eventlegendary:1, eventrare:3};
 const DECK_SIZE = 20;
 const GHOST_NAMES = ['Moss','Briony','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Teasel','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
 const AVATAR_CHARS = ['otter','hummingbird','mouse'];
@@ -34,7 +35,7 @@ function hashStr(s){ let h = 2166136261; for(let i=0;i<s.length;i++){ h ^= s.cha
 // loaded after this file, under Node it is required. A flagged rarity ('devepic', 'questrare' ...) takes its rank's copy limit like the deck builder.
 function Bud(){ return root && root.BramblewoodBudget || (typeof require === 'function' ? require('./bramblewood-budget.js') : null); }
 function capOf(d){ const r = (d && d.rarity) || 'common'; if(RARITY_MAX_COPIES[r] != null) return RARITY_MAX_COPIES[r];
-  const B = Bud(); return (B && RARITY_MAX_COPIES[B.LADDER[B.rankOf(r)]]) || 10; }
+  const B = Bud(); return (B && RARITY_MAX_COPIES[B.LADDER[B.rankOf(r)]]) || RARITY_MAX_COPIES.common; }
 // Top-rank deck caps (2026-10-22, package DR): Legendary 3, Mythic 2, each rank above 1, the leaders counted (BramblewoodBudget.deckRank*).
 function rankOverErrors(defs, deck, leaders){ const B = Bud(); if(!B) return [];
   return B.deckRankOver(deck, defs, leaders).map(o=> `${o.n} ${o.rank} cards, the deck limit is ${o.cap}`); }

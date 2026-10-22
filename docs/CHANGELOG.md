@@ -7,6 +7,36 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Measured:** the robust skill test (`docs/balance/skill-test-robust-mono-2000-2026-10-22.md`) puts Flying's worth at 5.88 stat points against 6.89 paid at ×1.5 (a Flying deck wins 28.4% against the vanilla deck's 41.1%), which is ×1.398.
 - **Formula:** `MISS_MULT_BY = {flying: 1.39}` in `bramblewood-budget.js` (`missMultFor`); every other half-miss skill stays ×1.5. The card editor's budget panel and Test Lab (`sbMissMult`) and `tools/skill_costs.js` read it.
 - **Re-fit** (135 Flying cards, shape kept): only 3 gain a whole stat point: Red Dragon 3/17 → 3/19, Blue Dragon 3/17 → 3/19, Ford Kingfisher 0/1 → 0/6. The rest sit within one point of their cap.
+## 2026-10-23 (package PG: one copy of each starting card, the copy ladder 5/4/3/2/1, no free unlimited Base cards, the Map 0 signpost, Armor checked)
+- Owner report of 01:03, items 4, 6, 8, 9, 10, 13 (and 7: clicking a card in the Camp adds it again).
+- **Starting cards, one copy each (items 8, 10). Root cause:** every basic / starter / tutorial-reward card (`cardSourceOf` kind `base`) counted
+  as owned by everyone with Infinity copies (`ownedForDeck`, `ownedCopiesOf`), and the starting deck was built from the tutorial lists'
+  numbers (Pond Trout x3, Honey Bee x3 ...). So a new account's Camp listed 44 cards after 0-3, 38 of them unlimited. Now a card is in the
+  Camp only when you hold a copy, a deck holds only the copies you own, and the starting deck is 20 different cards, one copy each: your
+  side's list, the shared list and the filler (their numbers now only say which cards), topped up from `starterTopUp`, plus T-1's and T-2's
+  rewards (`starterDeckParts`, `tutorialStarterCopiesLevel0`). Fresh Otters account after 0-3 (live tutorial config): before 25 copies of 15
+  cards held and 44 cards in the Camp (38 unlimited); after 25 copies of 24 cards, the Camp lists those 24 (+ the Wandering Traveller,
+  your leader), none unlimited (call PG-3).
+- **Infinite Quarry Moles (item 6). Root cause:** the Mole was T-1's reward, so it counted as a Base card: unlimited in the deck builder. RW3
+  moved it to 8-1; Base cards are no longer unlimited at all. A tutorial reward is no longer held for pitching either (with the live config the
+  Mole arrived a second time at 0-1).
+- **Saves from before:** once, for a player past the tutorial, each Base card in a saved deck gets real copies up to what that deck holds
+  (`grandfatherBaseCopies`), so no deck shrinks; a deck over the ladder shows a pill and can't start a fight until trimmed (call PG-2).
+- **Copy ladder (item 9):** Common 5, Uncommon 4, Rare 3, Very Rare 2, every rarity above 1 (Starter as Common, special rarities as their
+  tier; was 10 / 5 / 4 / 3 / 3 / 2 / 2), in `RARITY_MAX_COPIES` and `bramblewood-ghosts.js`. Enforced on click, drag, swap offers, deck import
+  (cut to the limits and the copies you own, with a note) and the fight gate (named card by card); each Camp pool card shows "in deck / limit"
+  (e.g. 2/3). The per-deck Legendary 3 / Mythic 2 caps (DR) still apply on top (call PG-1). Disenchant / Fuse extras follow the ladder.
+  Enemy decks are unchanged (122 of 467 hold more; call PG-6).
+- **Camp click (item 7):** a click on a pool card threw "fast is not defined" since package ED (10-21), so only drag added cards. Fixed.
+- **Map 0 → Map 1 (item 13):** the gate opened Map 1 the moment 0-4 was won (fresh account; Maps 1 → 2 the same). What put the owner on a locked
+  "Map 1" was Map 0's 🪧 signpost: "Show me the road" jumped to Clovermead, a side map of Map 1 that waits on Map 12. It points at Thistlewood
+  now; a signpost to a locked map stays put and says what opens it (`mapLockReason`); the locked notice names it and offers "Back to …"; and the
+  fight that clears a map takes you to the next map when you return to it (call PG-4).
+- **Armor (item 4):** not a display or rounding fault in this build: a 3/7 Armor 1 Beetle Grunt hit 4, 4, 2 shows 3, 3, 1 and dies at 0; in 13
+  auto-played 0-4 fights the shown Health matched the engine after every hit and round and each death played at 0. The engine removes the dead
+  after each attacker's / skill's action. Open: a heal later in the same action can't save a unit at 0 (call PG-5).
+- Texts: 14 new rows (13 TX keys + the signpost line) in the 12 packs (`tools/i18n_2026_10_23_pg.py`); two retired UI rows.
+- Tests: `tests/pg-2026-10-23.js` (new, 217 checks); `nf-2026-10-19` and `fg-2026-10-19` follow the new rules. Screens: `docs/screens/PG/`.
 
 ## 2026-10-23 (package RW3: drops by Energy, every skirmish pays, packs fully random, rare foils, the Shop's Raid Ticket, rarer ticket notices, disenchant table, per-copy Forge levels, PvP pools, the Quarry Mole on 8-1)
 - Owner answers of 00:10, items 5, 6, 8, 19, 23, 25, 42, 44, 48, 53, 68, 69 (foils), 86 (GD2-3, GD2-4, GD2-6, RW2-3, AR-1, RK2, RK4, RP3, DV4, E2, C1, E11).

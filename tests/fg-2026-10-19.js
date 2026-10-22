@@ -57,21 +57,23 @@ const plain = (k, L, extra)=> Array.from({length: k}, (_, i)=> Object.assign({ui
 
 // ======================= 5. extras: beyond the deck limit =======================
 console.log(`  the deck limits (RARITY_MAX_COPIES): Common ${MAXC.common}, Uncommon ${MAXC.uncommon}, Rare ${MAXC.rare}, Very Rare ${MAXC.veryrare}, Epic ${MAXC.epic}, Legendary ${MAXC.legendary}`);
-ok(MAXC.common === 10 && MAXC.uncommon === 5 && MAXC.rare === 4 && MAXC.legendary === 1, '5. the limits the owner asked about: a Common deck holds 10, so 5 Commons are not extras');
+// 2026-10-23 (package PG, owner item 9: "commons-ancient: 5/4/3/2/1/1/1/1"): the ladder is Common 5, Uncommon 4, Rare 3, Very Rare 2, higher 1 (was 10 / 5 / 4 / 3);
+// the expected extras below follow it.
+ok(MAXC.common === 5 && MAXC.uncommon === 4 && MAXC.rare === 3 && MAXC.veryrare === 2 && MAXC.legendary === 1, '5. the limits the owner asked for (PG): a Common deck holds 5, so 5 Commons are not extras');
 { const F = make().F;
   ok(F.copiesBeyondCap(5, 10) === 0 && F.copiesBeyondCap(10, 10) === 0 && F.copiesBeyondCap(11, 10) === 1 && F.copiesBeyondCap(13, 10) === 3, '5. copiesBeyondCap: 5 / 10 / 11 / 13 Commons → 0 / 0 / 1 / 3 extras');
   ok(F.copiesBeyondCap(5, 5) === 0 && F.copiesBeyondCap(6, 5) === 1 && F.copiesBeyondCap(2, 1) === 1 && F.copiesBeyondCap(1, 0) === 0, '5. … Uncommons at 5 / 6 → 0 / 1; a one-of keeps 1'); }
 { const ctx = make({copies: {c: plain(5), u: plain(6), r: plain(4), l: plain(3), b: plain(14)}}), F = ctx.F; F.ensureCopyModel();
-  ok(F.disenchantableCopies('c').length === 0, '5. 5 Commons: nothing to disenchant (the limit is 10)');
-  ok(F.disenchantableCopies('u').length === 1 && F.disenchantableCopies('r').length === 0 && F.disenchantableCopies('l').length === 2, '5. 6 Uncommons → 1, 4 Rares → 0, 3 Legendaries → 2');
+  ok(F.disenchantableCopies('c').length === 0, '5. 5 Commons: nothing to disenchant (the limit is 5)');
+  ok(F.disenchantableCopies('u').length === 2 && F.disenchantableCopies('r').length === 1 && F.disenchantableCopies('l').length === 2, '5. 6 Uncommons → 2, 4 Rares → 1, 3 Legendaries → 2');
   ok(F.disenchantableCopies('b').length === 0, '5. Base cards never melt, however many');
-  const sum = F.disenchantSummary(); ok(sum.copies === 3 && sum.per.length === 2, `5. Disenchant extras: 3 copies of 2 cards (${JSON.stringify(sum.per)})`);
-  ok(F.fuseAllPlan().copies === 7 && F.spareDuplicatesTotal() === 7, '5. Fuse all extras: the same rule (1 + 2, and the Base card\'s 4 beyond 10, which fuse but never melt)');
+  const sum = F.disenchantSummary(); ok(sum.copies === 5 && sum.per.length === 3, `5. Disenchant extras: 5 copies of 3 cards (${JSON.stringify(sum.per)})`);
+  ok(F.fuseAllPlan().copies === 14 && F.spareDuplicatesTotal() === 14, `5. Fuse all extras: the same rule (2 + 1 + 2, and the Base card\'s 9 beyond 5, which fuse but never melt) (${F.fuseAllPlan().copies})`);
   ctx.myCardCopies.c.push(...plain(8)); // 13 Commons
-  ok(F.disenchantableCopies('c').length === 3 && F.fuseAllCountFor('c', 10) === 3, '5. 13 Commons: 3 extras for both');
+  ok(F.disenchantableCopies('c').length === 8 && F.fuseAllCountFor('c', MAXC.common) === 8, '5. 13 Commons: 8 extras for both');
   ctx.myCardCopies.c[1].foil = true; ctx.myCardCopies.c[2].shiny = true;
-  ok(F.disenchantableCopies('c').length === 3, '5. foil and Shiny copies are kept; still 3 plain extras melt');
-  const mv = F.meltCardValue('c', null); ok(mv && mv.copies === 3, `5. melting the card melts its 3 extras, no more (${mv && mv.copies})`); }
+  ok(F.disenchantableCopies('c').length === 8, '5. foil and Shiny copies are kept; still 8 plain extras melt');
+  const mv = F.meltCardValue('c', null); ok(mv && mv.copies === 8, `5. melting the card melts its 8 extras, no more (${mv && mv.copies})`); }
 
 // ======================= A. per-copy levels again (RW3, 2026-10-23) =======================
 // FG (10-21) made every copy share the card's level; RW3 (owner, 10-23 item 25: "Maybe we should go back to card-based since everything is
@@ -106,8 +108,8 @@ ok(MAXC.common === 10 && MAXC.uncommon === 5 && MAXC.rare === 4 && MAXC.legendar
   // melting: one copy's paid levels (inherited ones give nothing), the card's credit, and the extras
   const mctx = make({copies: {c: plain(12, 4)}, levels: {c: 4}, credit: {c: {dust: 20, gold: 0}}, version: 2}); mctx.F.ensureCopyModel();
   const mv = mctx.F.meltCardValue('c', null), spent = mctx.F.forgeSpentOn('c', 4);
-  ok(mv && mv.copies === 2 && mv.dust === 2 * 7 + Math.round((spent.dust + 20) * 0.97), `A. melting the best copy refunds its levels (97%) + the card's credit, and 2 extras (${JSON.stringify(mv)})`);
-  mctx.F.meltCard('c', null); ok(mctx.myCardCopies.c.length === 10 && mctx.myCardCopies.c.filter(x=> x.level === 1).length === 1 && !mctx.myForgeCredit.c, 'A. after the melt: 10 copies, the melted one at Lv 1, the others keep Lv 4, no credit');
+  ok(mv && mv.copies === 7 && mv.dust === 7 * 7 + Math.round((spent.dust + 20) * 0.97), `A. melting the best copy refunds its levels (97%) + the card's credit, and 7 extras (${JSON.stringify(mv)})`);
+  mctx.F.meltCard('c', null); ok(mctx.myCardCopies.c.length === 5 && mctx.myCardCopies.c.filter(x=> x.level === 1).length === 1 && !mctx.myForgeCredit.c, 'A. after the melt: 5 copies, the melted one at Lv 1, the others keep Lv 4, no credit');
   const mv2 = mctx.F.meltCardValue('c', mctx.myCardCopies.c.find(x=> x.level === 4).uid); ok(!mv2 || mv2.dust === 0 || mv2.dust === (mv2.copies * 7), 'A. a copy whose levels were only inherited refunds no levels'); }
 { // an older save (one level per card): every copy at that level, the card keeps its credit
   const ctx = make({copies: {c: [{foil:false}, {foil:true}]}, levels: {c: 3}, credit: {c: {dust: 9, gold: 1}}, version: 0}); ctx.F.ensureCopyModel();
@@ -134,12 +136,12 @@ ok(MAXC.common === 10 && MAXC.uncommon === 5 && MAXC.rare === 4 && MAXC.legendar
 // ======================= 2. the Fuse tab =======================
 { const ctx = make({copies: {c: plain(13, 3)}, levels: {c: 3}, version: 2 /* RW3: a save from FG, so the copies above the best inherited their level */}), F = ctx.F; F.ensureCopyModel();
   const one = F.fusePreview('c', 1), all = F.fusePreview('c', null), dv = ctx.duplicateValue('c');
-  ok(one.spares === 12 && all.extras === 3 && all.n === 3 && one.n === 1 && all.cap === 10, `2. 13 Commons: 12 spares, 3 extras; Fuse all takes 3 (${JSON.stringify({s: one.spares, e: all.extras})})`);
-  ok(one.creditAfter.dust === dv.dust && all.creditAfter.dust === 3 * dv.dust && all.level === 3 && all.keeps === 10, '2. the preview: the credit each adds, the level kept, 10 copies left');
+  ok(one.spares === 12 && all.extras === 8 && all.n === 8 && one.n === 1 && all.cap === 5, `2. 13 Commons: 12 spares, 8 extras; Fuse all takes 8 (${JSON.stringify({s: one.spares, e: all.extras})})`);
+  ok(one.creditAfter.dust === dv.dust && all.creditAfter.dust === 8 * dv.dust && all.level === 3 && all.keeps === 5, '2. the preview: the credit each adds, the level kept, 5 copies left');
   const reach = F.fuseCreditReach('c', 3, {dust: 53 + 62 + 10, gold: 35 + 41 + 5}); ok(reach.to === 5 && reach.pct > 0 && reach.pct < 1, `2. credit for two steps and a bit: Lv 3 → 5 and part of 6 (${JSON.stringify(reach)})`);
   ok(F.fuseCreditReach('c', 0, {dust: 9999, gold: 9999}).to === 0, '2. a Level 0 card is the Nest\'s: credit doesn\'t level it');
-  const r = F.fuseCopies('c', all.n); ok(r && r.n === 3 && ctx.myCardCopies.c.length === 10 && ctx.myForgeCredit.c.dust === 3 * dv.dust, '2. Fuse all: 3 go, 10 stay, the credit lands on the card');
-  ok(F.fusePreview('c', null).extras === 0 && F.fusePreview('c', 1).spares === 9, '2. after it: no extras, 9 spares a Fuse 1 may still take'); }
+  const r = F.fuseCopies('c', all.n); ok(r && r.n === 8 && ctx.myCardCopies.c.length === 5 && ctx.myForgeCredit.c.dust === 8 * dv.dust, '2. Fuse all: 8 go, 5 stay, the credit lands on the card');
+  ok(F.fusePreview('c', null).extras === 0 && F.fusePreview('c', 1).spares === 4, '2. after it: no extras, 4 spares a Fuse 1 may still take'); }
 { const anvil = fnSrc('fuseAnvilHTML'), rf = fnSrc('renderForge'), modes = between('const FORGE_MODES = {', '};');
   ok(/fuse:\s+\{icon:'🧩', get label\(\)\{ return TX\('ui\.fg-fuse-tab'\)/.test(modes) && /forgeMode==='fuse' \? fuseAnvilHTML/.test(rf), '2. Fuse is its own Forge tab with its own anvil');
   ok(/forgeCopyPickerHTML\(id\)/.test(anvil) && /fgFuseOneBtn/.test(anvil) && /fgFuseAllBtn/.test(anvil) && /ui\.fg-fuse-result/.test(anvil), '2. it shows the copies window, the result and Fuse / Fuse all');

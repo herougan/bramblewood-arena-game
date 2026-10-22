@@ -2760,5 +2760,18 @@
  "In stock: {n}": "Em stock: {n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Esgotado. A carroça só tem um bilhete de incursão em alguns dias, um de cada vez.",
  "Not in stock today. Admin Mode shows it anyway.": "Hoje não há stock. O modo de administrador mostra-o na mesma.",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Cada cópia de uma carta volta a ter o seu próprio nível. Todas as cópias mantiveram o nível que tinham; a Forja trabalha agora uma cópia de cada vez."
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Cada cópia de uma carta volta a ter o seu próprio nível. Todas as cópias mantiveram o nível que tinham; a Forja trabalha agora uma cópia de cada vez.",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "{n} neste baralho, no máximo {cap} por baralho ({rarity}). Tens {owned}.",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "O teu baralho tem {n} {name}. Uma carta {rarity} pode ter no máximo {cap} cópias num baralho.",
+ "Your deck has {n} {name}, but you own {owned}.": "O teu baralho tem {n} {name}, mas só tens {owned}.",
+ "Imported. {n} copies over the deck limits were left out: {list}": "Importado. {n} cópias acima dos limites do baralho ficaram de fora: {list}",
+ "{map} is coming soon.": "{map} chega em breve.",
+ "{map} opens later. First reach {parent}.": "{map} abre mais tarde. Primeiro chega a {parent}.",
+ "{map} opens when its quest is done.": "{map} abre quando completares a sua missão.",
+ "{map} opens once you clear {other}.": "{map} abre quando concluíres {other}.",
+ "{map} opens once you beat {code} {fight}.": "{map} abre quando venceres {code} {fight}.",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "{map} abre quando concluíres {prev}. Ainda por vencer: {codes}.",
+ "{map} is not open yet.": "{map} ainda não está aberto.",
+ "Back to {map}": "Voltar a {map}",
+ "Thistlewood is the next one along. Want to see where it sits?": "Bosque dos Cardos é o próximo. Queres ver onde fica?"
 }

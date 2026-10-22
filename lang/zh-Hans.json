@@ -2761,5 +2761,18 @@
  "In stock: {n}": "库存：{n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "已售罄。货车只在某些日子有突袭券，每次一张。",
  "Not in stock today. Admin Mode shows it anyway.": "今天没有库存。管理员模式仍会显示。",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "每张卡牌的每个副本又有各自的等级了。每个副本都保留了原来的等级；锻造炉现在一次处理一个副本。"
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "每张卡牌的每个副本又有各自的等级了。每个副本都保留了原来的等级；锻造炉现在一次处理一个副本。",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "此卡组中 {n} 张，每副卡组最多 {cap} 张（{rarity}）。你拥有 {owned} 张。",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "你的卡组有 {n} 张{name}。{rarity}卡牌每副卡组最多 {cap} 张。",
+ "Your deck has {n} {name}, but you own {owned}.": "你的卡组有 {n} 张{name}，但你只拥有 {owned} 张。",
+ "Imported. {n} copies over the deck limits were left out: {list}": "已导入。超出卡组上限的 {n} 张未加入：{list}",
+ "{map} is coming soon.": "{map}即将推出。",
+ "{map} opens later. First reach {parent}.": "{map}稍后开放。先到达{parent}。",
+ "{map} opens when its quest is done.": "完成其任务后，{map}开放。",
+ "{map} opens once you clear {other}.": "通关{other}后，{map}开放。",
+ "{map} opens once you beat {code} {fight}.": "赢下 {code} {fight} 后，{map}开放。",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "通关{prev}后，{map}开放。还需赢下：{codes}。",
+ "{map} is not open yet.": "{map}尚未开放。",
+ "Back to {map}": "返回{map}",
+ "Thistlewood is the next one along. Want to see where it sits?": "下一个是蓟木林。要看看它在哪儿吗？"
 }

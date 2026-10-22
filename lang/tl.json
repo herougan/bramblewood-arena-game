@@ -2759,5 +2759,18 @@
  "In stock: {n}": "May stock: {n}",
  "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Ubos na. May Raid Ticket ang kariton sa ilang araw lang, isa-isa.",
  "Not in stock today. Admin Mode shows it anyway.": "Walang stock ngayon. Ipinapakita pa rin ito ng Admin Mode.",
- "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "May sariling antas na ulit ang bawat kopya ng card. Naitago ng bawat kopya ang antas nito; isa-isang kopya na ang ginagawa ng Forge."
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "May sariling antas na ulit ang bawat kopya ng card. Naitago ng bawat kopya ang antas nito; isa-isang kopya na ang ginagawa ng Forge.",
+ "{n} in this deck, at most {cap} per deck ({rarity}). You own {owned}.": "{n} sa deck na ito, hanggang {cap} lang bawat deck ({rarity}). May {owned} ka.",
+ "Your deck has {n} {name}. A {rarity} card may have at most {cap} copies in a deck.": "May {n} {name} ang deck mo. Hanggang {cap} kopya lang ng {rarity} na card ang puwede sa isang deck.",
+ "Your deck has {n} {name}, but you own {owned}.": "May {n} {name} ang deck mo, pero {owned} lang ang hawak mo.",
+ "Imported. {n} copies over the deck limits were left out: {list}": "Na-import. Hindi isinama ang {n} kopyang lampas sa limit ng deck: {list}",
+ "{map} is coming soon.": "Malapit nang dumating ang {map}.",
+ "{map} opens later. First reach {parent}.": "Magbubukas ang {map} mamaya. Abutin muna ang {parent}.",
+ "{map} opens when its quest is done.": "Magbubukas ang {map} kapag tapos na ang quest nito.",
+ "{map} opens once you clear {other}.": "Magbubukas ang {map} kapag natapos mo ang {other}.",
+ "{map} opens once you beat {code} {fight}.": "Magbubukas ang {map} kapag natalo mo ang {code} {fight}.",
+ "{map} opens once you clear {prev}. Still to win: {codes}.": "Magbubukas ang {map} kapag natapos mo ang {prev}. Kailangan pang ipanalo: {codes}.",
+ "{map} is not open yet.": "Hindi pa bukas ang {map}.",
+ "Back to {map}": "Bumalik sa {map}",
+ "Thistlewood is the next one along. Want to see where it sits?": "Gubat ng Dawag ang susunod. Gusto mong makita kung nasaan ito?"
 }
