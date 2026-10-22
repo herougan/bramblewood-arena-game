@@ -156,9 +156,9 @@
    "special": ["marshal-tuskwell"]
   },
   "m24": {
-   "cards": ["duckling-squadron", "elderhorn-monarch", "tax-collector-teal", "lodge-engineer", "goose-sentry", "mallard-halberdier", "mallard-marauder", "battlement-heron", "gilded-swan-knight", "iron-warden", "magnate-duck"],
+   "cards": ["duckling-squadron", "elderhorn-monarch", "tax-collector-teal", "lodge-engineer", "goose-sentry", "mallard-halberdier", "mallard-marauder", "battlement-heron", "gilded-swan-knight", "iron-warden"],
    "submaps": {},
-   "special": []
+   "special": ["magnate-duck"]
   }
  }
 }
