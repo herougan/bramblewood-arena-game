@@ -32,7 +32,6 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Kahoy, +1 Bato; 1 pinsala sa lahat",
  "+1 starting Lumber.": "+1 panimulang Kahoy.",
  "+1 🪵 every {v1} rounds": "+1 🪵 bawat {v1} round",
- "+{v1} Attack for every ally that shares a type with it.": "+{v1} Atake para sa bawat kakampi na kapareho nito ng uri.",
  "+{v1} Dust": "+{v1} Alikabok",
  "+{v1} Energy from a capsule.": "+{v1} Enerhiya mula sa capsule.",
  "+{v1} Energy. Come back tomorrow for more.": "+{v1} Enerhiya. Bumalik bukas para sa higit pa.",
@@ -559,7 +558,6 @@
  "Daunt {v1}": "Panakot {v1}",
  "Daunted: −{v1} Attack until the end of next round": "Nasindak: −{v1} Atake hanggang matapos ang susunod na round",
  "Day and Night": "Araw at Gabi",
- "Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.": "Nagpapalitan ang araw at gabi bawat 3 round, simula sa araw. Ang pangalawang maglalaro ay magsisimula nang may dagdag na card.",
  "Day and night flip every round.": "Nagpapalit ang araw at gabi bawat round.",
  "Day and night trade places every 3 rounds.": "Nagpapalit ng puwesto ang araw at gabi bawat 3 round.",
  "Day and night trade places every {v1} rounds. Draw +1 on each new Day.": "Nagpapalit ng puwesto ang araw at gabi bawat {v1} round. Bumunot ng +1 sa bawat bagong Araw.",
@@ -2227,7 +2225,6 @@
  "Whisper’s Game": "Ang Laro ni Bulong",
  "Who are you?": "Sino ka?",
  "Whoever left it is coming back cold and hungry.": "Sinumang nag-iwan nito ay babalik nang giniginaw at gutom.",
- "Whoever plays second opens with an extra card.": "Ang pangalawang maglalaro ay magsisimula nang may dagdag na card.",
  "Wild Beasts Bundle": "Bigkis ng mga Mababangis na Hayop",
  "Wildpaths": "Wildpaths",
  "Wildpaths: Conquest passives": "Wildpaths: mga passive sa Pananakop",
@@ -2621,5 +2618,8 @@
  "Blinding": "Pambulag",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Ang mga karaniwang atake na nakatutok sa katabing kakampi ay tatama sa card na ito. Hindi kasama ang mga skill at mga tirang pang-area.",
  "Takes the plain attacks aimed at its adjacent allies.": "Sinasalo ang mga karaniwang atake na nakatutok sa mga katabing kakampi nito.",
- "{v1} foil per card.": "{v1} foil bawat card."
+ "{v1} foil per card.": "{v1} foil bawat card.",
+ "Every cave has one chest too heavy to open. Grab it and it grabs back.": "Bawat kuweba ay may isang kabang masyadong mabigat buksan. Hawakan mo ito at hahawakan ka rin nito.",
+ "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Atake para sa bawat kakampi na kapareho nito ng uri. Hindi bilang ang mga Istruktura.",
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Atake sa bawat kakampi na {v2}. Hindi bilang ang mga Istruktura."
 }

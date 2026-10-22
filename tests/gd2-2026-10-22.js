@@ -5,7 +5,7 @@
 //        Shieldwall, Electricity ... read it.
 //   GD-2 "Random": several Guardians, one at random (seeded).
 //   GD-3 "if it's skills (including arrow), guardianship doesn't help. So no redirection for skills.": Guardian takes plain swings
-//        only; an arrow goes to its target. The new Spellshield takes single-target skills aimed at an adjacent ally.
+//        only; an arrow goes to its target. The new Spellward (named Spellshield until 2026-10-23, GD2-1) takes single-target skills aimed at an adjacent ally.
 //   GD-4 King Slayer 🗡️, Fencer 🤺 (source checks).
 //   GD-5 / GD-6: a first-clear pack-card reward drops like a skirmish-exclusive one (21% on repeats, its rarity's share).
 'use strict';
@@ -18,7 +18,7 @@ const so = id=> id===1 ? 'A' : 'B';
 const U = (id, effects, o)=> Object.assign({id, name:id, attack:0, health:500, wait:0, cost:0, effects: effects || {}}, o || {});
 const defs = Object.assign({}, H.loadCardDefs(), {
   'g2-hit': U('g2-hit', {}, {attack:4}), 'g2-wall': U('g2-wall', {}), 'g2-guard': U('g2-guard', {guardian:true}),
-  'g2-archer': U('g2-archer', {archer:3}), 'g2-ss': U('g2-ss', {spellshield:true}), 'g2-form': U('g2-form', {formation:1}, {attack:1}),
+  'g2-archer': U('g2-archer', {archer:3}), 'g2-ss': U('g2-ss', {spellward:true}), 'g2-form': U('g2-form', {formation:1}, {attack:1}),
   'g2-haste': U('g2-haste', {haste:true}), 'g2-wallarmor': U('g2-wallarmor', {shieldwall:2}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -61,17 +61,17 @@ const same = (a, b)=> a.length === b.length && a.every(x=> b.includes(x));
   const ev = []; e.resolveCombat(P, so, {}, ev, 1);
   ok(t.hp === 497 && g.hp === 500 && g2.hp === 500, `an arrow (Archer 3) goes to its target, no Guardian steps in (target -${500 - t.hp}, guards -${500 - g.hp} / -${500 - g2.hp})`);
   ok(!ev.some(x=> x.guardianRedirect), 'no guardianRedirect on a shot'); }
-// Spellshield: the arrow aimed at its adjacent ally hits it; a swing does not
+// Spellward: the arrow aimed at its adjacent ally hits it; a swing does not
 { const {e, P} = mk(); place(e, P, 1, 0, 'g2-archer', 0); const t = place(e, P, 2, 0, 'g2-wall', 0), s = place(e, P, 2, 1, 'g2-ss', 0);
   const ev = []; e.resolveCombat(P, so, {}, ev, 1);
-  ok(t.hp === 500 && s.hp === 497, `Spellshield: an arrow aimed at the ally in front of it hits the Spellshield unit (target -${500 - t.hp}, shield -${500 - s.hp})`);
-  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'spellshield' && x.attUid === s.uid && x.targetUid === t.uid), 'Spellshield: a statusFx spellshield event names both'); }
+  ok(t.hp === 500 && s.hp === 497, `Spellward: an arrow aimed at the ally in front of it hits the Spellward unit (target -${500 - t.hp}, shield -${500 - s.hp})`);
+  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'spellward' && x.attUid === s.uid && x.targetUid === t.uid), 'Spellward: a statusFx spellward event names both'); }
 { const {e, P} = mk(); place(e, P, 1, 0, 'g2-hit', 0); const t = place(e, P, 2, 0, 'g2-wall', 0), s = place(e, P, 2, 0, 'g2-ss', 1);
-  e.resolveCombat(P, so, {}, [], 1); ok(t.hp === 496 && s.hp === 500, `Spellshield: a plain swing still lands on its target (target -${500 - t.hp}, shield -${500 - s.hp})`); }
+  e.resolveCombat(P, so, {}, [], 1); ok(t.hp === 496 && s.hp === 500, `Spellward: a plain swing still lands on its target (target -${500 - t.hp}, shield -${500 - s.hp})`); }
 { const {e, P} = mk(); const s = place(e, P, 2, 0, 'g2-ss', 0);
-  ok(e.spellshieldFor(P[2], s) === null, 'Spellshield: never shields itself'); const s2 = place(e, P, 2, 0, 'g2-ss', 1); ok(e.spellshieldFor(P[2], s) === s2, 'Spellshield: a Spellshield unit is shielded by an adjacent one'); }
+  ok(e.spellwardFor(P[2], s) === null, 'Spellward: never shields itself'); const s2 = place(e, P, 2, 0, 'g2-ss', 1); ok(e.spellwardFor(P[2], s) === s2, 'Spellward: a Spellward unit is shielded by an adjacent one'); }
 { const {e, P} = mk({reserveActs:false}); const t = place(e, P, 2, 0, 'g2-wall', 0); place(e, P, 2, 1, 'g2-ss', 0);
-  ok(e.spellshieldFor(P[2], t) === null, 'Spellshield: a waiting reserve does not shield (off the raid board adjacent is left / right)'); }
+  ok(e.spellwardFor(P[2], t) === null, 'Spellward: a waiting reserve does not shield (off the raid board adjacent is left / right)'); }
 
 // ---- GD-1: skills that read adjacent
 { const {e, P} = mk(); const f = place(e, P, 1, 0, 'g2-form', 0); place(e, P, 1, 1, 'g2-wall', 0); place(e, P, 1, 2, 'g2-wall', 0);
@@ -90,11 +90,11 @@ ok(/🤺/.test(app), "Fencer's mark is 🤺");
 
 // ---- the skill's data
 const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
-const ssc = costs.skills.find(x=> x.id === 'spellshield'), gc = costs.skills.find(x=> x.id === 'guardian');
-ok(ssc && gc && ssc.value > 0, `skill-costs: spellshield priced (${ssc && ssc.value}; Guardian ${gc && gc.value})`);
+const ssc = costs.skills.find(x=> x.id === 'spellward'), gc = costs.skills.find(x=> x.id === 'guardian');
+ok(ssc && gc && ssc.value > 0, `skill-costs: spellward priced (${ssc && ssc.value}; Guardian ${gc && gc.value})`);
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
-ok(!cards.some(c=> c.effects && c.effects.spellshield), 'no card has Spellshield yet');
-ok(/\{key:'spellshield', category:'passive'/.test(app) && /spellshield:'/.test(app), 'editor row and icon for Spellshield');
+ok(!cards.some(c=> c.effects && c.effects.spellward), 'no card has Spellward yet');
+ok(/\{key:'spellward', category:'passive'/.test(app) && /spellward:'/.test(app), 'editor row and icon for Spellward');
 
 // ---- GD-5 / GD-6: first-clear pack cards, and their drop (21% on repeats; within it the card's rarity share, else a pack card; one roll)
 { const vm = require('vm');

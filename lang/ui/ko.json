@@ -32,7 +32,6 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "목재 +1, 돌 +1; 모두에게 1 피해",
  "+1 starting Lumber.": "시작 목재 +1.",
  "+1 🪵 every {v1} rounds": "{v1}라운드마다 +1 🪵",
- "+{v1} Attack for every ally that shares a type with it.": "타입을 공유하는 아군 하나마다 공격 +{v1}.",
  "+{v1} Dust": "가루 +{v1}",
  "+{v1} Energy from a capsule.": "캡슐로 에너지 +{v1}.",
  "+{v1} Energy. Come back tomorrow for more.": "에너지 +{v1}. 내일 또 와요.",
@@ -559,7 +558,6 @@
  "Daunt {v1}": "위협 {v1}",
  "Daunted: −{v1} Attack until the end of next round": "위축: 다음 라운드 끝까지 공격 −{v1}",
  "Day and Night": "낮과 밤",
- "Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.": "낮과 밤이 3라운드마다 바뀌고, 낮부터 시작해요. 두 번째로 플레이하는 쪽이 카드 한 장을 더 들고 시작해요.",
  "Day and night flip every round.": "낮과 밤이 매 라운드 뒤집혀요.",
  "Day and night trade places every 3 rounds.": "낮과 밤이 3라운드마다 자리를 바꿔요.",
  "Day and night trade places every {v1} rounds. Draw +1 on each new Day.": "낮과 밤이 {v1}라운드마다 자리를 바꿔요. 새 낮마다 드로우 +1.",
@@ -2227,7 +2225,6 @@
  "Whisper’s Game": "속삭임의 게임",
  "Who are you?": "누구세요?",
  "Whoever left it is coming back cold and hungry.": "이걸 두고 간 누군가는 춥고 배고픈 채로 돌아올 거예요.",
- "Whoever plays second opens with an extra card.": "두 번째로 플레이하는 쪽이 카드 한 장을 더 들고 시작해요.",
  "Wild Beasts Bundle": "야수 꾸러미",
  "Wildpaths": "야생길",
  "Wildpaths: Conquest passives": "야생길: 정복 패시브",
@@ -2621,5 +2618,8 @@
  "Blinding": "실명 공격",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "인접한 아군을 노린 일반 공격은 대신 이 카드에 맞아요. 스킬과 범위 공격은 제외.",
  "Takes the plain attacks aimed at its adjacent allies.": "인접한 아군을 노린 일반 공격을 대신 받아요.",
- "{v1} foil per card.": "카드당 포일 {v1}."
+ "{v1} foil per card.": "카드당 포일 {v1}.",
+ "Every cave has one chest too heavy to open. Grab it and it grabs back.": "어느 동굴에나 너무 무거워 열 수 없는 상자가 하나 있다. 붙잡으면, 그것도 당신을 붙잡는다.",
+ "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "타입을 공유하는 아군 하나마다 공격 +{v1}. 건축물은 세지 않습니다.",
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}인 아군마다 공격력 +{v1}. 건축물은 세지 않습니다."
 }

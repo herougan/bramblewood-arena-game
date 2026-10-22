@@ -594,11 +594,11 @@ function bloomLabel(bw){ bw = bw || {}; const w = (Array.isArray(bw.when) ? bw.w
 // Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): + Gilded, Championed, Veteran, Enraged and Matured, each with its
 // own condition (the unit's own: TRANSFORM_UNIT_COND_KEYS) and default braces (TRANSFORM_GAIN_APP = the engine's TRANSFORM_GAIN; a card's own
 // gain replaces them; Enraged has none). Matured's braces are Stem stats: the evolute played onto it gains them, the unit itself nothing.
-const TRANSFORM_PRESETS_APP = {lycanthropy: 'fullmoon', gilded: 'rich', championed: 'duel', veteran: 'rounds3', enraged: 'rage', matured: 'rounds'};
+const TRANSFORM_PRESETS_APP = {lycanthropy: 'fullmoon', gilded: 'rich', championed: 'duel', veteran: 'rounds3', matured: 'rounds'}; // − Enraged (2026-10-23, package EN, owner TR-6: "remove Enraged"; Rage – {…} is rageGrant now, migrateEnraged)
 const TRANSFORM_GAIN_APP = {gilded: {attack: 5, health: 10}, championed: {attack: 3, health: 3}, veteran: {attack: 2, health: 4}, matured: {attack: 2, health: 4}};
 const TRANSFORM_UNIT_COND_KEYS = ['rich', 'duel', 'rounds3', 'rage', 'rounds'];
 const TRANSFORM_ICON = {lycanthropy: '🐺', gilded: '🪙', championed: '🏆', veteran: '⭐', enraged: '💢', matured: '🌾'};
-function transformPresetName(k){ return k === 'lycanthropy' ? TX('ui.tf-lycanthropy') : ((TRANSFORM_GAIN_APP[k] || k === 'enraged') ? TX('ui.tf-' + k) : (k || '')); }
+function transformPresetName(k){ return k === 'lycanthropy' ? TX('ui.tf-lycanthropy') : (TRANSFORM_GAIN_APP[k] ? TX('ui.tf-' + k) : (k || '')); }
 function transformCondName(k, tf){ return TRANSFORM_UNIT_COND_KEYS.includes(k) ? TX('ui.tfc-' + k, {n: Math.max(1, Math.round(Number(tf && tf.rounds) || 2))}) : (BLOOM_COND_NAMES[k] || k); }
 function transformGainOfApp(tf){ const g = tf && tf.gain; return (g && typeof g === 'object' && Object.keys(g).length) ? g : ((tf && TRANSFORM_GAIN_APP[tf.name]) || {}); }
 function transformCondsOf(tf){ const w = tf && (tf.when != null ? tf.when : TRANSFORM_PRESETS_APP[tf.name]); return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
@@ -709,7 +709,7 @@ const PASSIVE_DEFS = [
   {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units adjacent to it and to the enemy facing it.`} /* 2026-10-22 (GD2, GD-1): "adjacent" */, // 2026-10-12, the world boss
   // Swarm keyword family (2026-10-09; not an archetype, 2026-10-13): strength in numbers; Cleave and Swipe are its answer.
   // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): N per ally, stored as swarmN.
-  {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
+  {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}. Structures don't count.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.` /* + Structures don't count (EN, 2026-10-23, owner 01:57 note 10) */,
     get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined,
     apply:(e,v,n)=>{ e.swarm = Array.isArray(v) && v.length ? v.slice() : true; const k = Number(n)||1; if(k > 1) e.swarmN = k; }},
   // Hive Mind retired (2026-10-15, user: "I don't like Hive Mind as a skill."): hidden from "+ Add Skill" (hidden) and from every
@@ -775,7 +775,7 @@ const PASSIVE_DEFS = [
   // and published edits (it reads as Illuminate) but leaves the editor and the lists.
   {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. The catch: its light also reaches the enemy unit directly facing it, which doesn't miss for the dark either (nor for Night-blindness).`}, // 2026-10-16; 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate.")
   {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
-  {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the bramble. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
+  {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=> TX('ui.sk-backstab', {n: numOr(n, 2)})}, // 2026-10-23 (package EN, owner D21); the EN block below patches it
   {key:'shieldCall', category:'passive', hidden:true, retired:true /* 2026-10-21 (BF6, owner 15:15: "Shield call -> Armor"): no card has it now; the engine's rule stays so an old save or a server override with it still works */, label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
   {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
@@ -1047,7 +1047,7 @@ const PASSIVE_DEFS = [
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy bramble.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
-  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Bramble takes ${v} less damage from every hit it takes.`},
+  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
   // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
   {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
@@ -1660,10 +1660,11 @@ sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
 sk1Patch(ACTION_DEFS, 'cleanse', {desc:TX('ui.act-cleanse-desc')});
 Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', exploit:'🩻', spoils:'🍖', venomPulse:'💉', punish:'⚖️', demolisher:'🏰'}); // Package SK1 (2026-10-19)
 // ==== Package GD2 (2026-10-22, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for shielding
-// allies from skills."): Spellshield 🪬, Guardian's twin for skills. Rules: bramblewood-engine.js spellshieldFor (an adjacent unit's
-// single-target enemy skill hits it instead). Priced in canonical/skill-costs.json (an estimate); no card has it yet. Name: call GD2-1.
-PASSIVE_DEFS.push({key:'spellshield', category:'passive', label:TX('ui.skn-spellshield'), kind:'boolean', desc:()=> TX('ui.sk-spellshield'), codexNote:TX('ui.sk-spellshield-codex')});
-Object.assign(SKILL_ICON, {spellshield:'🪬'});
+// allies from skills."): Spellward 🪬 (named by the owner 2026-10-23, GD2-1: "Spellward."; was Spellshield), Guardian's twin for skills.
+// Rules: bramblewood-engine.js spellwardFor (an adjacent unit's single-target enemy skill hits it instead). Priced in
+// canonical/skill-costs.json (an estimate); no card has it yet. An old key is migrated (enMigrateCard).
+PASSIVE_DEFS.push({key:'spellward', category:'passive', label:TX('ui.skn-spellward'), kind:'boolean', desc:()=> TX('ui.sk-spellward'), codexNote:TX('ui.sk-spellward-codex')});
+Object.assign(SKILL_ICON, {spellward:'🪬'});
 // ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
 // action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
 // the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
@@ -1708,6 +1709,25 @@ sk1Patch(PASSIVE_DEFS, 'tribute', {category:'passive', label:TX('ui.skn-tribute'
 sk1Patch(PASSIVE_DEFS, 'kingSlayer', {desc:v=> TX('ui.sk-king-slayer', {n: numOr(v, 1)})});
 { const u = PASSIVE_DEFS.find(x=> x.key === 'usurper'); if(u && u.desc){ const d0 = u.desc; u.desc = (v, n, e)=> d0(v, n, e) + ' ' + TX('ui.sk-usurper-crown'); } }
 Object.assign(SKILL_ICON, {king:'👑', kinglyGrant:'👑', tribute:'🪙'});
+// Package EN (2026-10-23, the owner's 10-23 00:10 answers TR-4 / TR-6 and his 01:57 notes 2, 5, 10; rules in bramblewood-engine.js):
+//   Assault N   +N Attack on its own swing only (owner: "Extra N attack only when attacking"), never on a Counterattack;
+//   Liege – {…} its braces while a King of its side is on the battlefield (owner: "Activates only if the king is on your side"; Assault 2
+//               by default); priced 0.3 x the braces (bramblewood-budget.js CONTEXT_MULT_BY);
+//   Rage – {…}  Rage's usual effect plus the braces while it rages (rageGrant; Enraged is gone, enMigrateCard), 0.4 x the braces on top;
+//   Shapeshifter a Changeling for Structures only (bramblewood-taxonomy.js); Bulwark N two 0/4N shields as it arrives; Backstab's new edge.
+const LIEGE_DEFAULT_APP = {assault: 2};
+function liegeOfApp(e){ const g = e && e.liegeGrant; return g && typeof g === 'object' && Object.keys(g).length ? g : LIEGE_DEFAULT_APP; }
+sk1Patch(PASSIVE_DEFS, 'assault', {category:'passive', label:TX('ui.skn-assault'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-assault', {n: numOr(v, 2)}), get:e=> e.assault ? numOr(e.assault, 2) : undefined});
+sk1Patch(PASSIVE_DEFS, 'liege', {category:'passive', label:TX('ui.skn-liege'), kind:'boolean', desc:(v, n, e)=> TX('ui.sk-liege', {skills: grantText(liegeOfApp(e))}), codexNote:TX('ui.sk-liege-codex'),
+  get:e=> (e.liege && !(e.liegeGrant && typeof e.liegeGrant === 'object')) ? true : undefined});
+sk1Patch(PASSIVE_DEFS, 'liegeGrant', {category:'passive', label:TX('ui.skn-liege'), kind:'grant', placeholder:'assault 2', desc:v=> TX('ui.sk-liege', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-liege-codex'),
+  get:e=> e.liegeGrant && typeof e.liegeGrant === 'object' ? grantToText(e.liegeGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.liegeGrant = g; e.liege = true; } }});
+sk1Patch(PASSIVE_DEFS, 'rageGrant', {category:'passive', label:TX('ui.skn-rage'), kind:'grant', placeholder:'assault 2', desc:v=> TX('ui.sk-rage-grant', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
+  get:e=> e.rageGrant && typeof e.rageGrant === 'object' ? grantToText(e.rageGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.rageGrant = g; e.rage = true; } }});
+sk1Patch(PASSIVE_DEFS, 'shapeshifter', {category:'passive', label:TX('ui.skn-shapeshifter'), kind:'boolean', desc:()=> TX('ui.sk-shapeshifter')});
+sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)}), codexNote:TX('ui.sk-bulwark-codex')});
+sk1Patch(PASSIVE_DEFS, 'backstab', {category:'passive', label:'Backstab', kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), codexNote:TX('ui.sk-backstab-codex')});
+Object.assign(SKILL_ICON, {assault:'⚔️', liege:'🛡️👑', liegeGrant:'🛡️👑', rageGrant:'😡', shapeshifter:'🧰'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
 // back in the editor as the temporary one (the engine's rallyUp); the passive Attack aura is War Banner's (its text below, SK3's block).
 sk1Patch(PASSIVE_DEFS, 'rally', {category:'passive', label:TX('ui.skn-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-rally', {n: numOr(v, 1)}), get:e=> e.rally ? numOr(e.rally, 1) : undefined});
@@ -1716,6 +1736,17 @@ Object.assign(SKILL_ICON, {rally:'📣'});
 function sk1MigrateSiege(c){
   const e = c && c.effects; if(!e || e.demolisher == null) return c;
   const ne = Object.assign({}, e), d = numOr(e.demolisher, 2), s = e.siege ? numOr(e.siege, 2) : 0; delete ne.demolisher; if(d > 0 || s > 0) ne.siege = Math.max(d, s);
+  return Object.assign({}, c, {effects: ne});
+}
+// 2026-10-23 (package EN): a saved card (a live edit, a server override, a restore) keeps working after two renames:
+//   GD2-1 (owner: "Spellward."): effects.spellshield -> effects.spellward;
+//   TR-6 (owner: "remove Enraged ... Rage - {...} means the typical effects of Rage, PLUS {...}"): a transform {name:'enraged', gain} ->
+//   Rage plus effects.rageGrant = gain (no gain: plain Rage).
+function enMigrateCard(c){
+  const e = c && c.effects; if(!e || !(e.spellshield != null || (e.transform && typeof e.transform === 'object' && e.transform.name === 'enraged'))) return c;
+  const ne = Object.assign({}, e);
+  if(ne.spellshield != null){ if(ne.spellshield && ne.spellward == null) ne.spellward = ne.spellshield; delete ne.spellshield; }
+  if(ne.transform && ne.transform.name === 'enraged'){ const g = ne.transform.gain; delete ne.transform; ne.rage = true; if(g && typeof g === 'object' && Object.keys(g).length) ne.rageGrant = g; }
   return Object.assign({}, c, {effects: ne});
 }
 // ==== end of Package SK1 (registry) ================================================================================================
@@ -2451,6 +2482,7 @@ const KEYWORD_TERMS = [
   {name:'Pitch', re:'pitch(?:ed|es|ing)?', text:'give up a card from your hand for Lumber (once a turn).'},
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
   {name:'Adjacent', re:'adjacent', text:'directly left or right; in a raid, also directly in front or behind.'}, // 2026-10-22 (package GD2, owner GD-1)
+  {name:'Surrounding', re:'surrounding', text:TX('ui.term-surrounding')}, // 2026-10-23 (package EN, owner GD2-5: "Dynamite is adjacent but including diagonals - is there a way to name this?")
   {name:'Kin', re:'kin', cs:true, text:'your own units that share a Type with this one (never itself).'}, // 2026-10-18: the Kin target
   {name:'Dark-blind', re:'dark-blind', text:TX('ui.term-dark-blind')}, // 2026-10-18 (package D): the Darkness card's word
   {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
@@ -2552,7 +2584,7 @@ const SKILL_TEXT = {
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
   brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
   sweep: v=> `Also deals ${numOr(v, 1)} damage to the units beside its target.`, // Cleave N: default 1 (2026-10-16)
-  rage: ()=> `Below half Health: double Attack and takes half damage.`,
+  rage: (v, n, e)=> e && e.rageGrant && typeof e.rageGrant === 'object' ? TX('ui.sk-rage-grant', {skills: grantText(e.rageGrant) || TX('ui.cx-nothing')}) : `Below half Health: double Attack and takes half damage.`, // + Rage – {…} (EN, 2026-10-23)
   immolation: v=> `Deal ${v} fire damage to all adjacent units every upkeep.`,
   speed: v=> `Speed ${v}: faster units swing first.`, haste: ()=> `Speed +2, and +1 to adjacent allies.`,
   rabid: v=> `Its hits add ${numOr(v, 2)} Poison. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
@@ -2578,7 +2610,7 @@ const SKILL_TEXT = {
   illuminate: ()=> `Lights up the dark: your units don't miss in darkness, and nor does the enemy unit facing it.`, // 2026-10-15; the facing foe too (2026-10-17)
   darksight: ()=> `It can see in darkness.`, // 2026-10-15
   nursing: v=> `Heal your weakest wounded unit for ${numOr(v, 2)} every upkeep.`, // 2026-10-15
-  backstab: v=> `Attacks the nearest enemy unit, never the bramble. +${v} damage when that unit isn't the one in front.`,
+  backstab: v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), // 2026-10-23 (package EN, owner D21): the edge is the target's state now
   shieldCall: ()=> `Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead.`,
   boomerang: ()=> `Its throw comes back next round and hits the same target again. Catch it!`,
   trident: ()=> `One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right.`, // 2026-10-17
@@ -2626,7 +2658,7 @@ const SKILL_TEXT = {
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy bramble.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
-  bulwark: v=> `Your bramble takes ${v} less damage from every hit.`,
+  bulwark: v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)}), // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
   reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
@@ -2727,7 +2759,7 @@ const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 
 Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
   defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
-  swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it.`,
+  swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}. Structures don't count.` : `+${n||1} Attack for every ally that shares a type with it. Structures don't count.`, // + Structures don't count (EN, 2026-10-23, owner 01:57 note 10)
   crepuscular: v=> { const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); }, // CX2 (2026-10-21): by day and at night, both in Twilight
   sunshy: ()=> `Blind by day.`,
   nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side (or faces it).`, // 2026-10-17
@@ -2971,6 +3003,7 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if((p.key==='loyalGrant' && e.loyal) || (p.key==='usurperGrant' && e.usurper)) return; // CX2: the stat line already says "and {skills}"
     if(p.key==='stemGrant' && e.chrysalis) return; // EV (2026-10-21): the Chrysalis line already says what its braces hand over
+    if(p.key==='rageGrant' && e.rage) return; // EN (2026-10-23): the Rage line already says "and {skills}"
     // CX2 (2026-10-21): Ritual's conditions at the corners of a shape; Transform's "Lycanthropy: under {Full Moon}, gain {…}"; Crepuscular's two parts
     if(p.key==='ritual'){ const r = e.ritual || {}, cs = RITUAL_CONDS.filter(c=> r[c.k]);
       lines.push(`<span class="ritual-line">${ic('ritual')}Ritual — ${escapeHtml(TX('ui.cx-ritual-short'))}${ritualShapeHTML(cs.map(c=> ({html: `${c.ico}<b>${r[c.k]}</b>`})), {w: 124, h: 100, r: 40, cls: 'rs-card', label: TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})})}</span>`); return; }
@@ -3323,6 +3356,7 @@ function getCardDefs(){
     // Relic (2026-10-19, package E): the engine names the ghost "<Card> Relic" in English; the shown name comes from the text table.
     const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } }
     if(r && r.sk2Palisade && !r._sk2Named){ r.name = TX('ui.sk2-palisade-name'); r._sk2Named = true; }
+    if(r && r.bulwarkShield && !r._enNamed){ r.name = TX('ui.en-bulwark-shield'); r._enNamed = true; } // Bulwark N's shields (EN, 2026-10-23)
     if(r && r.sk2Forged && !r._sk2Named){ r.name = TX('ui.sk2-forged-name'); r._sk2Named = true; } } }catch(e){} // + the smith's Forged Blade (SK2b) // Fortification's Palisade (2026-10-19, package SK2)
   return res;
 }
@@ -3344,6 +3378,7 @@ function buildCardDefs(){
   // 2026-10-16 (user: "All Worthy cards become Bounty."): the safety net for any way an old Worthy got into the overlay (a save, a restore).
   Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
   Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now
+  Object.keys(liveCards).forEach(id=>{ const m = enMigrateCard(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-23 (package EN): Spellshield is Spellward, Enraged is Rage – {…}
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -5836,7 +5871,7 @@ Object.assign(SKILL_TEXT, {
   siege: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
   demolisher: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
   formation: v=> TX('ui.sk-formation', {n: numOr(v, SK1_DEFAULTS.formation)}),
-  spellshield: ()=> TX('ui.sk-spellshield'), // GD2 (2026-10-22)
+  spellward: ()=> TX('ui.sk-spellward'), // GD2 (2026-10-22); Spellward since 2026-10-23 (EN)
   isolation: ()=> TX('ui.sk-isolation'),
   anchor: ()=> TX('ui.sk-anchor'),
   spoils: v=> TX('ui.sk-spoils', {n: numOr(v, SK1_DEFAULTS.spoils)}),
@@ -5848,7 +5883,7 @@ Object.assign(SKILL_TEXT, {
 function sk1LogText(ev, nm){
   if(!ev || ev.type !== 'statusFx') return null;
   const s = n=> n === 1 ? '' : 's';
-  if(ev.kind === 'spellshield') return {cls:'', text:TX('ui.log-spellshield', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // GD2 (2026-10-22)
+  if(ev.kind === 'spellward' || ev.kind === 'spellshield') return {cls:'', text:TX('ui.log-spellward', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // GD2 (2026-10-22); Spellward (EN, 2026-10-23)
   if(ev.kind === 'expose') return {cls:'', text:TX('ui.log-expose-rounds', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
   if(ev.kind === 'exploit') return {cls:'', text:TX('ui.log-exploit', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
   if(ev.kind === 'exploitHit') return {cls:'', text:TX('ui.log-exploit-hit', {name: nm(ev.targetDefId), b: ev.bonus||1, n: ev.amount||0})};
@@ -5872,7 +5907,7 @@ function sk1Vfx(ev){
   if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
   if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
-  if(ev.kind === 'spellshield'){ const se = boardCardEl(ev.attUid); if(se){ fl(se, '🪬', 'buff'); try{ flashShield(se); }catch(e){} } return; } // GD2 (2026-10-22): the Spellshield steps in
+  if(ev.kind === 'spellward' || ev.kind === 'spellshield'){ const se = boardCardEl(ev.attUid); if(se){ fl(se, '🪬', 'buff'); try{ flashShield(se); }catch(e){} } return; } // GD2 (2026-10-22): the Spellward unit steps in (EN, 2026-10-23)
   if(ev.kind === 'sk1Aura'){ if(rc){ rc.sk1Atk = ev.atk||0; if(ev.maxHpNow != null){ rc.maxHp = ev.maxHpNow; rc.hp = ev.hpNow; } }
     if(ev.dAtk) fl(el, ev.dAtk > 0 ? `${ev.atk > 0 ? '🔗' : '🏝️'} +${ev.dAtk}/+${ev.dHp}` : `${ev.atk >= 0 && !ev.isolation ? '🔗' : '🏝️'} ${ev.dAtk}/${ev.dHp}`, ev.dAtk > 0 ? 'buff' : 'debuff');
     refresh(ev.targetUid); return; }
@@ -10403,8 +10438,8 @@ function defaultSkillValue(key){
 }
 // A Zeitgeber's two forms (2026-10-16): the plain stat bonus and the skill list ("Diurnal" + Gives: Stat bonus / Skills).
 // 2026-10-21 (package CX2): + Crepuscular {day}{night}, Rainrunner {…}, Loyal {…}, Usurper {…}; Full Moon {…} left for Transform's Lycanthropy.
-const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */, king:'kinglyGrant' /* TR (2026-10-21): the default Kingly or King – {…} */};
-const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem', kinglyGrant:'king'};
+const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */, king:'kinglyGrant' /* TR (2026-10-21): the default Kingly or King – {…} */, liege:'liegeGrant' /* EN (2026-10-23): Liege {Assault 2} or Liege – {…} */};
+const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem', kinglyGrant:'king', liegeGrant:'liege'};
 // The kinds whose row is a context skill (braces): no "+ at a later level" button on them (CX2, owner 17:42: "+ skill inside each phase,
 // plus the normal add-skill, already cover it").
 const CONTEXT_ROW_KINDS = new Set(['grant', 'grant2', 'transform', 'ritual']);
@@ -10440,7 +10475,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // Transform (CX2, 2026-10-21): [preset] under [condition] → gain { … }; Lycanthropy brings Full Moon.
   else if(s.kind==='transform'){ const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key), cond = String(vals[1] || 'night').toLowerCase();
     valueHtml = `<select data-sk="val0" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-preset'))}" title="${escapeAttr(TX('ui.cx-preset'))}" onchange="if(TRANSFORM_PRESETS_APP[this.value]){ const c = this.closest('.skill-row').querySelector('[data-sk=&quot;val1&quot;]'); if(c) c.value = TRANSFORM_PRESETS_APP[this.value]; }"><option value="">${escapeHtml(TX('ui.cx-custom'))}</option>${Object.keys(TRANSFORM_PRESETS_APP).map(k=> `<option value="${k}" ${vals[0] === k ? 'selected' : ''}>${escapeHtml(transformPresetName(k))}</option>`).join('')}</select>` +
-      `<span class="cx-kw">${escapeHtml(TX('ui.cx-under'))}</span><select data-sk="val1" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-condition'))}">${Object.keys(BLOOM_COND_NAMES).concat(TRANSFORM_UNIT_COND_KEYS /* TR (2026-10-21): the unit's own conditions */).map(k=> `<option value="${k}" ${cond === k ? 'selected' : ''}>${escapeHtml(transformCondName(k))}</option>`).join('')}</select>` +
+      `<span class="cx-kw">${escapeHtml(TX('ui.cx-under'))}</span><select data-sk="val1" data-i="${i}" aria-label="${escapeAttr(TX('ui.cx-condition'))}">${Object.keys(BLOOM_COND_NAMES).concat(TRANSFORM_UNIT_COND_KEYS.filter(k=> k !== 'rage' /* EN (2026-10-23): Enraged removed; Rage – {…} instead */) /* TR (2026-10-21): the unit's own conditions */).map(k=> `<option value="${k}" ${cond === k ? 'selected' : ''}>${escapeHtml(transformCondName(k))}</option>`).join('')}</select>` +
       `<span class="cx-kw">${escapeHtml(TX('ui.cx-gain'))}</span>${grantPickerHTML(i, 'val2', vals[2] || '', (s.grantPlaceholders || [])[0])}`; }
   // Ritual (CX2, 2026-10-21): its three conditions at the corners of a triangle.
   else if(s.kind==='ritual'){ const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key), tips = [TX('ui.cx-ritual-perished'), TX('ui.cx-ritual-drawn'), TX('ui.cx-ritual-bramble')];
@@ -19060,7 +19095,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="Day all match unless the map is a night map (2026-10-12). Real time: the player's clock decides (7 PM to 7 AM is day), with a doubled twilight on the minute at 7">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
           <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
-          <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 bramble Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
+          <label title="Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
           ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire the smartest CPU on every floor">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[cpuAiKeyOf(cpuAiAutoLevel(mapId, draft))] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
@@ -29429,7 +29464,7 @@ const FXL_SKILL_SETUPS = {
   timber: {res:{lumber:3}, note:'You hold 3 Lumber.'}, rockSolid: {res:{stone:2}, note:'You hold 2 Stone.'}, ironWill: {res:{metal:1}, note:'You hold 1 Metal.'},
   worship: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Acolyte', icon:'🙏', effects:{prayer:3}}}], note:'An ally with Prayer 3 stands beside it (3 Prayer tokens a round from its first upkeep).'}, // 2026-10-19: Prayer tokens
   snipe: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands opposite it.'},
-  backstab: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'The nearest enemy is not the one in front.'},
+  backstab: {status:{foe:{blind:2}}, note:'The dummy in front is Blind: the Backstab lands.'}, // 2026-10-23 (package EN, owner D21)
   bloom: {steps:[{dmg:'ally', n:6}, 'round', 'round'], note:'The Sparring Partner is wounded first.'},
   festering: {status:{foe:{poison:3}}, steps:['round', 'round'], note:'The dummy in front starts Poisoned.'},
   rupture: {status:{subject:{bleed:3}}, note:'The Specimen starts Bleeding.'},
@@ -30821,9 +30856,9 @@ function deckSizeOkOrWarn(){
 // effects. I'm thinking the arena mode changes rapidly, so the player is inclined to build many different kind of
 // decks (even maybe all-nights and all-brights)"). The Arena's rule set rotates daily; every Arena fight that day
 // (Quick Battle, Gauntlet, Pass & Play, PvP, Async) uses it. Live Ranked stays Standard until lockstep is verified.
-// Engine side: makeSimEngine(..., {rules}) in bramblewood-engine.js. secondDraw: whoever plays second opens with 1 more.
+// Engine side: makeSimEngine(..., {rules}) in bramblewood-engine.js. secondDraw: whoever plays second gets the second-player bonus (+1 Shield on its bramble since 2026-10-23, EN / D24; was 1 more card).
 const ARENA_RULESETS = [
-  {id:'standard',  icon:'🌗', name:'Standard',     text:'Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.', rules:{phase:'cycle'}, secondDraw:1},
+  {id:'standard',  icon:'🌗', name:'Standard',     text:'Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.' /* 2026-10-23 (package EN, owner D24): was an extra card */, rules:{phase:'cycle'}, secondDraw:1},
   {id:'longnight', icon:'🌙', name:'The Long Night', text:'It is night all match.', rules:{phase:'night'}, secondDraw:1},
   {id:'midsummer', icon:'☀️', name:'Midsummer',     text:'It is day all match.', rules:{phase:'day'}, secondDraw:1},
   {id:'dusk',      icon:'🌆', name:'Dusk Start',    text:'The match starts at night; day comes after round 3.', rules:{phase:'nightFirst'}, secondDraw:1},
@@ -30932,7 +30967,7 @@ function portentRuleset(p){
   const rules = {}; let battleMode = 'open';
   p.effects.forEach(f=>{ if(f.rules) Object.assign(rules, f.rules); if(f.terrain) rules.terrain = f.terrain; if(f.battleMode) battleMode = f.battleMode; });
   const name = (p.holiday ? p.holiday + ': ' : p.strange ? 'Strange day: ' : '') + p.effects.map(f=> f.name).join(' · ');
-  return {id:'daily-' + p.day, icon: p.effects.map(f=> f.icon).join(''), name, text: p.effects.map(f=> f.text.replace(/\.?$/, '.')).join(' ') + ' Whoever plays second opens with an extra card.',
+  return {id:'daily-' + p.day, icon: p.effects.map(f=> f.icon).join(''), name, text: p.effects.map(f=> f.text.replace(/\.?$/, '.')).join(' ') + ' Whoever plays second starts with +1 Shield on its bramble.', /* 2026-10-23 (package EN, owner D24) */
     rules, secondDraw:1, battleMode, portent: p};
 }
 function arenaThemeFor(day){ return portentRuleset(dailyPortent(day)); }
@@ -31059,9 +31094,10 @@ function startMatchInner(mode, opts, standardDeck){
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
-  // The side that plays second opens with one more card ("draw 2 if you start 2nd"): the PvP stranger always plays
-  // first, so you're second there; everywhere else the opponent plays after you.
-  if(arenaRuleset.secondDraw || (arenaRuleset.rules && arenaRuleset.rules.actions > 1)){ const second = mode==='pvp' ? 1 : 2; engine.applySecondPlayerBonus(players[second], second===1 ? 'A' : 'B', stats, []); } // 1 action: +1 card; N actions: +N cards, +N-1 Health, +N-2 Lumber (2026-10-11)
+  // The side that plays second gets the second-player bonus: the PvP stranger always plays first, so you're second there; everywhere
+  // else the opponent plays after you. 2026-10-23 (package EN, owner D24: "2nd player has no benefit except +1 Shield to Bramble."): the
+  // bonus is +1 Shield on its bramble and nothing else (was one more card, "draw 2 if you start 2nd"; N actions: N cards, Health, Lumber).
+  if(arenaRuleset.secondDraw || (arenaRuleset.rules && arenaRuleset.rules.actions > 1)){ const second = mode==='pvp' ? 1 : 2; engine.applySecondPlayerBonus(players[second], second===1 ? 'A' : 'B', stats, []); } // +1 Shield on its bramble (EN, 2026-10-23; was +1 card, N actions +N cards, +N-1 Health, +N-2 Lumber)
   // Caged Fight (2026-10-10): your leader starts caged on the enemy board, 4 slots to your right. Cage level =
   // round((your deck level + the enemy's) / 100), 0–10. In Pass & Play it's both ways: player 2's leader is caged on your
   // board, 4 to their right (slot -4, since the rows face each other).

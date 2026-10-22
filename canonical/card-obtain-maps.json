@@ -489,6 +489,7 @@
   "tax-collector-teal": 24,
   "battlement-heron": 24,
   "gilded-swan-knight": 24,
+  "magnate-duck": 24,
   "gallery-orb-weaver": 8,
   "cottonmouth-matriarch": 6,
   "hedgehog-herbalist": 5,
@@ -588,6 +589,7 @@
   "ringed-seal": 5,
   "woodland-caribou": 16,
   "musk-ox-calf": 5,
-  "swordbill-challenger": 5
+  "swordbill-challenger": 5,
+  "coffer-mimic": 8
  }
 }
