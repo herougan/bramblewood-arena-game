@@ -18,7 +18,7 @@
 //
 // New in this revision (2026-09-10 "castle + more keywords" expansion):
 //   Passive keywords : expose (bonus dmg on next hit taken, any source),
-//                        guardian (an adjacent ally takes hits meant for you)
+//                        guardian (an adjacent ally takes the plain swings meant for you; GD2)
 //   Generic triggers  : + onAllySpawn (fires on every OTHER card, and the
 //                        player's Castle, whenever any card is played);
 //                        + a `once:true` flag any trigger entry can carry,
@@ -1610,7 +1610,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       liveRowsOf(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows, their own row's neighbours (2026-10-19, RR)
         const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
-        [order[i-1], order[i+1]].forEach(c=>{ if(c && c.hp > 0) hits.push([pid, c]); });
+        adjacentOf(pl, src).forEach(c=>{ if(c && c.hp > 0) hits.push([pid, c]); }); // adjacent (2026-10-22, GD2: + in front / behind in a raid; was order[i±1])
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && opp.card.hp > 0) hits.push([otherId(pid), opp.card]);
         hits.forEach(([tp, c])=>{ if(heatProof(c)) return; damageCardFlat(c, k, 'heat'); burnt = true;
           if(recordEvents && events) events.push({type:'fieldTick', field:'immolation', side:sideOf(tp), uid:c.uid, defId:c.defId, dmg:k, srcUid:src.uid, srcDefId:src.defId, mods:dnModsFor(c.uid)}); }); }); }); // + mods (DN2)
@@ -1620,7 +1620,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       liveRowsOf(pl).forEach(src=>{ const k = Number(effectsOf(src).irradiated)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows (2026-10-19, RR)
         const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
-        [order[i-1], order[i+1]].forEach(c=>{ if(c && !c.gap && c.hp > 0) hits.push([pid, c, k]); });
+        adjacentOf(pl, src).forEach(c=>{ if(c && !c.gap && c.hp > 0) hits.push([pid, c, k]); }); // adjacent (2026-10-22, GD2)
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && !opp.card.gap && opp.card.hp > 0) hits.push([otherId(pid), opp.card, k]);
         hits.push([pid, src, 1]);
         hits.forEach(([tp, c, n])=>{ const got = irradiate(c, n); if(!got) return;
@@ -1993,9 +1993,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
       const cards = upkeepUnitsOf(pl), add = new Map(); /* + a raid's middle / back rows (2026-10-19, RR) */
       if(cards.some(c=> c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).haste)){
-        const order = physicalRowOrder(pl);
-        order.forEach((c, i)=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || !effectsOf(c).haste) return;
-          [order[i-1], order[i+1]].forEach(n=>{ if(n && !n.gap && n.hp > 0) add.set(n, (add.get(n)||0) + 1); }); });
+        // 2026-10-22 (package GD2, GD-1): Haste's +1 goes to its adjacent allies (adjacentOf: + in front / behind, and a middle / back-row
+        // Haste unit's own row, in a raid). Off the raid board this is the front row's left / right, as before.
+        cards.forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || !effectsOf(c).haste) return;
+          adjacentOf(pl, c).forEach(n=>{ if(n && !n.gap && n.hp > 0) add.set(n, (add.get(n)||0) + 1); }); });
       }
       cards.forEach(c=>{ if(!c || c.gap) return; const e = effectsOf(c);
         const v = (Number(e.speed)||0) + (e.haste ? 2 : 0) + (add.get(c)||0);
@@ -2652,6 +2653,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const SHIELD_TOKEN = 'summoned-shield';
   let shieldEvents = null, shieldSideOf = null; // set by the skill resolvers for the event log
   function shieldCall(ownerPl, card){
+    { const ss = spellshieldFor(ownerPl, card); if(ss) return ss; } // Spellshield (2026-10-22, package GD2): an adjacent Spellshield unit takes the skill first
     if(!ownerPl || !card || card.hp<=0 || card.defId===SHIELD_TOKEN || !CARD_DEFS[SHIELD_TOKEN] || sk1Anchored(card)) return null; // + an Anchor unit doesn't step aside (2026-10-19, package SK1)
     const dog = upkeepUnitsOf(ownerPl).find(c=> c.hp>0 && !c.shieldCallUsed /* + a raid's middle / back-row Shield Call unit (2026-10-19, RR) */ && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.shieldCall);
     if(!dog) return null;
@@ -2765,7 +2767,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(isAlly){
         const fullOrder = rowOrderOf(sidePl, boardCard); // a middle / back-row unit: the allies beside it in its own row (2026-10-19, RR; was the front row's, from index -1)
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
-        const cands = idx < 0 ? [] : [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
+        const cands = idx < 0 ? [] : [fullOrder[idx-1], fullOrder[idx+1]].concat(frontBehindOf(sidePl, boardCard)).filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
         if(!cands.length) return null;
         return {pl:sidePl, card: cands[Math.floor(rnd()*cands.length)]};
       }
@@ -2850,33 +2852,65 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // The live units of a side whose skills act each round (2026-10-19, package RR): in a raid (RESERVE_ACTS) every row, front first.
   function liveRowsOf(pl){ return pl ? (RESERVE_ACTS ? rowsUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0) : allLive(pl)) : []; }
-  // Guardian: a card adjacent (one slot either way, physical row order) to the original
-  // target takes the hit instead, if it's alive and carries effects.guardian.
-  // Only ever redirects damage — spatial mechanics (sweep continuation, swipe's
-  // "closest N" search) still use the ORIGINAL target's position, not the
-  // guardian's, so protection doesn't also warp targeting geometry.
-  // 2026-10-22 (package GD, owner N22-12: "Guardian now blocks for all adjacent allies in the 4 cardinal directions"): the four
-  // neighbours are the unit to its left and right in its own row, and the unit directly in front of / behind it (same column = same
-  // slot, in the next row toward the enemy / away from it). Front / behind exists only on a board whose middle and back rows fight
-  // (RESERVE_ACTS, the raid): a waiting reserve isn't on the battlefield yet, so it neither guards nor is guarded. When several
-  // could step in, the first in this order takes it: left, right, in front, behind. A Guardian never guards itself (the target
-  // is not its own neighbour), and only single-target hits come through here (area hits never call it).
-  function isLiveGuardian(n){ return !!(n && !n.gap && n.hp > 0 && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian); }
+  // ---- Adjacent (2026-10-22, package GD2, owner GD-1: "From now on, things that deal with L/R can just say 'adjacent' e.g. Formation
+  // cares about adjacent units. Adjacent is defined as behind, in front, left, right. Only relevant in raids or multi-player dungeons.")
+  // A unit's adjacent units are the one to its left and the one to its right in its own row, and, only where every row fights
+  // (RESERVE_ACTS: the raid board, and any multi-row board built the same way), the one directly in front of it and the one directly
+  // behind it (same column = same slot, the next row toward / away from the enemy). Everywhere else a reserve row only waits to step
+  // up, so it is not adjacent to anything and "adjacent" is just left / right, exactly as before (the card matrix's fights: 0 diffs).
+  //   frontBehindOf(pl, card)  [in front, behind] (non-null, no gaps); [] off a board whose rows fight
+  //   adjacentOf(pl, card)     [left, right, in front, behind] (non-null, no gaps; dead units are the caller's to drop)
+  // Skills on it: Guardian, Spellshield, Formation, Haste, Shieldwall, Amplifier, Immolation, Irradiated, Inspiring, Friction,
+  // Proliferate, Electricity, Chain Lightning, Dragon Lightning, Spitfire's splash, and a trigger's Adjacent Ally target.
   function columnNeighboursOf(pl, card, r){ // [in front, behind] for a unit in row r (0 front, 1 middle, 2 back); [] off the raid board
-    if(!RESERVE_ACTS || !slotMode || !pl || !pl.reserve || !Number.isInteger(card.slot)) return [];
+    if(!RESERVE_ACTS || !slotMode || !pl || !pl.reserve || !card || !Number.isInteger(card.slot)) return [];
     const at = rr=> rr === 0 ? allBoardCards(pl).find(c=> c.slot === card.slot) : (pl.reserve[rr - 1] || {})[card.slot];
     return [r > 0 ? at(r - 1) : null, r < pl.reserve.length ? at(r + 1) : null];
   }
+  function frontBehindOf(pl, card){
+    if(!RESERVE_ACTS || !slotMode || !pl || !card || !Number.isInteger(card.slot)) return [];
+    const r = reserveRowOf(pl, card); if(!r && !allBoardCards(pl).includes(card)) return [];
+    return columnNeighboursOf(pl, card, r).filter(c=> c && !c.gap && c !== card);
+  }
+  function adjacentOf(pl, card){
+    if(!pl || !card) return [];
+    const order = rowOrderOf(pl, card), i = order.indexOf(card);
+    return (i < 0 ? [] : [order[i-1], order[i+1]]).filter(c=> c && !c.gap).concat(frontBehindOf(pl, card));
+  }
+  // Guardian: a unit adjacent to the original target (adjacentOf) takes the hit instead, if it's alive and carries effects.guardian.
+  // Only ever redirects damage — spatial mechanics (sweep continuation, swipe's "closest N" search) still use the ORIGINAL target's
+  // position, not the guardian's, so protection doesn't also warp targeting geometry. A Guardian never guards itself (the target
+  // is not its own neighbour); a Guardian next to another Guardian is guarded by it.
+  // 2026-10-22 (package GD2, owner GD-2: "Random"): when several Guardians could step in, one of them at random (the fight's seeded
+  // RNG; it only rolls when there are two or more, so a fight with one Guardian draws the same numbers as before). Was: left, right,
+  // in front, behind (GD).
+  // 2026-10-22 (package GD2, owner GD-3: "AOE can't get redirected ... if it's skills (including arrow), guardianship doesn't help. So
+  // no redirection for skills."): only plain swings come here: a unit's basic attack (its main swing, a middle / back-row unit's
+  // swing in a raid) and the extra prongs of that same swing (Fork, Trident, Pitchfork, Octolash: each prong is a full single-target
+  // swing at its unit). Cleave's side damage is a spread of the swing (an area), so it isn't redirected, as before. Arrows (Arrow,
+  // Archer, Snipe), Bolts, shots, damage skills, status skills and areas all reach the unit they were aimed at. Skills have their
+  // own interceptor now: Spellshield (spellshieldFor, called from shieldCall).
+  function isLiveGuardian(n){ return !!(n && !n.gap && n.hp > 0 && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian); }
   function redirectToGuardian(enemyPl, card){
-    const order = physicalRowOrder(enemyPl);
-    const idx = order.findIndex(c=>c.uid===card.uid);
-    // 2026-10-19 (package TS): a middle- or back-row target's Guardian is a unit beside it in that same row (slot - 1 / slot + 1).
-    if(idx===-1){ const r = reserveRowOf(enemyPl, card); if(!r) return card; const rw = enemyPl.reserve[r - 1];
-      for(const n of [rw[card.slot - 1], rw[card.slot + 1]].concat(columnNeighboursOf(enemyPl, card, r))){ if(isLiveGuardian(n)) return n; }
-      return card; }
-    const neighbors = [order[idx-1], order[idx+1]].concat(columnNeighboursOf(enemyPl, card, 0)).filter(Boolean);
-    for(const n of neighbors){ if(isLiveGuardian(n)) return n; }
-    return card;
+    if(!enemyPl || !card) return card;
+    const gs = adjacentOf(enemyPl, card).filter(n=> n !== card && isLiveGuardian(n));
+    if(!gs.length) return card;
+    return gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)];
+  }
+  // Spellshield (2026-10-22, package GD2, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for
+  // shielding allies from skills."): a single-target enemy skill aimed at a unit adjacent to a Spellshield unit hits the Spellshield
+  // unit instead (an arrow or other shot, a Bolt, a damage skill, a status skill: whatever an enemy skill picks one unit for). Areas
+  // and plain swings aren't touched (a swing is Guardian's). Never itself; several: one at random (seeded). It steps in where the
+  // skill picks its target (shieldCall's hook, so before the dodge roll: the Spellshield unit rolls its own dodge). Engine key
+  // effects.spellshield (true). No card has it yet.
+  function isLiveSpellshield(n){ return !!(n && !n.gap && n.hp > 0 && !n.cageOf && ((CARD_DEFS[n.defId]||{}).effects||{}).spellshield); }
+  function spellshieldFor(ownerPl, card){
+    if(!ownerPl || !card || !(card.hp > 0)) return null;
+    const ss = adjacentOf(ownerPl, card).filter(n=> n !== card && isLiveSpellshield(n));
+    if(!ss.length) return null;
+    const s = ss.length === 1 ? ss[0] : ss[Math.floor(rnd()*ss.length)];
+    if(recordEvents && shieldEvents) shieldEvents.push({type:'statusFx', kind:'spellshield', side: shieldSideOf ? shieldSideOf(ownerPl.id) : undefined, attUid:s.uid, attDefId:s.defId, targetSide: shieldSideOf ? shieldSideOf(ownerPl.id) : undefined, targetUid:card.uid, targetDefId:card.defId});
+    return s;
   }
   // Evasive (2026-09-29): a card with effects.evasive gets a flat, non-stacking 1-in-2
   // chance to avoid any qualifying single-target hit aimed at it — a lane's primary melee
@@ -4131,8 +4165,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true});
         return null; // (2026-10-15) callers that add a status on a landed shot (Ice Arrow, the Bolts) read the result
       }
-      const c = redirectToGuardian(enemy, target.card); // Guardian: an adjacent protector eats the hit instead, if one's alive
-      const guardianRedirect = c.uid !== target.card.uid;
+      // 2026-10-22 (package GD2, owner GD-3: "if it's skills (including arrow), guardianship doesn't help"): no Guardian redirect for a
+      // skill's or a shot's damage any more (was redirectToGuardian here). A Spellshield steps in where the skill picks its target.
+      const c = target.card;
+      const guardianRedirect = false;
       const dmg = damageCardFlat(c, realAmount, dmgType, attDefId, attUid);
       aStat.dealt += dmg;
       if(attUid != null){ const src = allBoardCards(owner).find(x=> x.uid === attUid); if(src) applySpite(players, sideOf, otherId(ownerId), c, src, dmg, stats, events, killCredit); }
@@ -4518,7 +4554,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Sentry N      = On Enemy Enters (Facing): Damage N to that unit. An enemy unit enters one of the 3 slots facing it (the opposing
   //                 L/C/R: played, spawned, a reserve stepping up, or, on open boards, moved there or between them: Restless, a Wave /
   //                 the field's Wave, Tornado, a swap, a Bloodlust leap). Once per unit per look (watchScan). A skill's damage: Evasion
-  //                 can dodge it, a Guardian can step in. (Was: once a round, its Attack.) An old `true` = the default N.
+  //                 can dodge it (no Guardian steps in since GD2). (Was: once a round, its Attack.) An old `true` = the default N.
   //   Formation (N) +N/+N for each ally aligned with it, up to SK1_DEF.formationMax (2): the units right beside it in its row, and in a
   //                 raid the ones right behind / in front of it in its column. Worked out afresh on every board change (watchScan).
   //   Isolation     a drawback: counts its allies within SK1_DEF.isolationRange (2) columns (any row, in a raid); with 0, 1, 2, 3, 4+
@@ -4614,7 +4650,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(pl.reserve) pl.reserve.forEach((rw, r)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && !c.gap && c.hp > 0 && !c.cageOf) units.push({c, row:r + 1, col:Number(sl)}); }));
       units.forEach(u=>{ const e = effectsOf(u.c); let a = 0, h = 0, form = 0, iso = null;
         if(e.formation){ const n = sk1N(u.c, 'formation');
-          form = Math.min(Math.max(0, Number(SK1_DEF.formationMax) || 0), units.filter(o=> o !== u && ((o.row === u.row && Math.abs(o.col - u.col) === 1) || (o.col === u.col && Math.abs(o.row - u.row) === 1))).length);
+          form = Math.min(Math.max(0, Number(SK1_DEF.formationMax) || 0), units.filter(o=> o !== u && ((o.row === u.row && Math.abs(o.col - u.col) === 1) || (RESERVE_ACTS && o.col === u.col && Math.abs(o.row - u.row) === 1))).length); // adjacent (2026-10-22, GD2, GD-1): in front / behind only where the rows fight (was any reserve row)
           a += n * form; h += n * form; }
         if(e.isolation){ const tbl = Array.isArray(e.isolation) ? e.isolation : SK1_DEF.isolationTable, rng = Math.max(0, Number(SK1_DEF.isolationRange) || 0);
           const k = units.filter(o=> o !== u && Math.abs(o.col - u.col) <= rng).length; iso = Math.max(0, Number(tbl[Math.min(k, tbl.length - 1)]) || 0); a -= iso; h -= iso; }
@@ -4789,7 +4825,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       liveRowsOf(me).filter(c=> !c.cageOf && effectsOf(c).proliferate).forEach(src=>{ // + a raid's middle / back rows (2026-10-19, RR)
         let pool = liveUnits(foe).filter(c=> c.poison > 0), n = numN(effectsOf(src).proliferate, 1);
         while(n-- > 0 && pool.length){ const carrier = pool.splice(Math.floor(rnd()*pool.length), 1)[0];
-          const order = rowOrderOf(foe, carrier), i = order.indexOf(carrier), nb = [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !poisonProof(c));
+          const nb = adjacentOf(foe, carrier).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !poisonProof(c));
           if(!nb.length) continue; const t = nb.length > 1 ? nb[Math.floor(rnd()*nb.length)] : nb[0]; addPoison(t, 1);
           if(recordEvents && events) events.push({type:'statusFx', kind:'proliferate', side:sideOf(pid), attDefId:src.defId, attUid:src.uid, fromUid:carrier.uid, fromDefId:carrier.defId, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:1, total:t.poison}); } }); });
   }
@@ -4919,9 +4955,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const sk3BaseFx = c=> ((CARD_DEFS[(c && c._sk3Base) || (c && c.defId)] || {}).effects) || {};
   const sk3Live = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf);
   // Neighbours in the row (slots on open boards, the physical order on packed rows).
+  // 2026-10-22 (package GD2, GD-1): its adjacent units: + in front / behind on a board whose rows fight (frontBehindOf), and a middle /
+  // back-row unit's own row there. Off the raid board: the front row's left / right, as before.
   function sk3Beside(pl, c){
     if(!pl || !c) return [];
-    if(slotMode && Number.isInteger(c.slot)){ syncSlots(pl); return allBoardCards(pl).filter(x=> x !== c && sk3Live(x) && Number.isInteger(x.slot) && Math.abs(x.slot - c.slot) === 1); }
+    if(slotMode && Number.isInteger(c.slot)){ syncSlots(pl); const r = RESERVE_ACTS ? reserveRowOf(pl, c) : 0;
+      const lr = r ? [pl.reserve[r - 1][c.slot - 1], pl.reserve[r - 1][c.slot + 1]].filter(sk3Live)
+        : allBoardCards(pl).filter(x=> x !== c && sk3Live(x) && Number.isInteger(x.slot) && Math.abs(x.slot - c.slot) === 1);
+      return lr.concat(frontBehindOf(pl, c).filter(sk3Live)); }
     const o = physicalRowOrder(pl), i = o.indexOf(c); return i < 0 ? [] : [o[i-1], o[i+1]].filter(sk3Live);
   }
   // The auras, recomputed with the Rally family (computeRallyBonuses): War Banner and Herald (Attack and Health moved as a difference,
@@ -4930,8 +4971,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
       const live = allBoardCards(pl).filter(sk3Live), fx = c=> effectsOf(c);
       let bannerSum = 0; live.forEach(c=>{ if(fx(c).banner) bannerSum += sk3N(fx(c), 'banner'); });
-      const amp = new Map(); live.forEach(c=>{ const e = fx(c); if(!e.amplifier) return; const n = sk3N(sk3BaseFx(c), 'amplifier'); sk3Beside(pl, c).forEach(x=> amp.set(x, (amp.get(x)||0) + n)); });
-      live.forEach(c=>{ const want = Math.min(SK3_DEF.ampCap, amp.get(c) || 0); if((c._sk3Amp||0) !== want){ c._sk3Amp = want; sk3Apply(c); } });
+      const amp = new Map(), liveAll = upkeepUnitsOf(pl).filter(sk3Live) /* + a raid's middle / back rows (GD2) */; liveAll.forEach(c=>{ const e = fx(c); if(!e.amplifier) return; const n = sk3N(sk3BaseFx(c), 'amplifier'); sk3Beside(pl, c).forEach(x=> amp.set(x, (amp.get(x)||0) + n)); });
+      liveAll.forEach(c=>{ const want = Math.min(SK3_DEF.ampCap, amp.get(c) || 0); if((c._sk3Amp||0) !== want){ c._sk3Amp = want; sk3Apply(c); } });
       // 2026-10-21 (package BF6, owner 15:15: "War Banner: passive increase in attack while this unit is present"): War Banner is Attack
       // only now (+N/+0, the old passive Rally's aura); Herald keeps +N/+N.
       live.forEach(c=>{ const e = fx(c); const ban = bannerSum - (e.banner ? sk3N(e, 'banner') : 0); let her = 0;
@@ -5323,7 +5364,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // has two) each take N magic damage. Armor doesn't stop it (it is not a melee hit), and it strikes even if the target just fell.
   function dragonLightningStrike(players, sideOf, pid, att, target, n, stats, events, killCredit){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
-    const order = rowOrderOf(pl, target), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf); // a middle / back-row target: its own row (2026-10-19, RR)
+    const side = adjacentOf(pl, target).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf); // adjacent (2026-10-22, GD2; was its row's left / right) // a middle / back-row target: its own row (2026-10-19, RR)
     const struck = [target].concat(side.length ? [side[Math.floor(rnd()*side.length)]] : []).filter(c=> c.hp > 0);
     if(recordEvents && events) events.push({type:'dragonLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:struck.map(c=> c.uid), n});
     struck.forEach((c, i)=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
@@ -5395,6 +5436,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const order = physicalRowOrder(pl), i = order.indexOf(t); if(i < 0) return [];
     return [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
   }
+  // The live units adjacent to t (2026-10-22, package GD2, GD-1): besideOf, + in front / behind on a board whose rows fight. For the
+  // skills that jump or splash to "a unit adjacent to" the one they struck: Electricity, Chain Lightning, Spitfire's flames. (Fireball,
+  // Meteor, Rocket, Dynamite, Cleave, the prongs and Taunt are column shapes across the board and keep besideOf / their own columns.)
+  function adjacentFoesOf(pl, t){ return besideOf(pl, t).concat(frontBehindOf(pl, t).filter(c=> c.hp > 0 && !c.cageOf)); }
   // One area hit from a skill: flat damage (Armor doesn't stop it, Evade can't dodge an area), a 'hit' event, and the usual
   // reactions (Bleed, On Attacked) if it lives.
   function skillAreaHit(players, sideOf, pid, att, c, n, dmgType, stats, events, tag){
@@ -5524,7 +5569,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // rule above). 2026-10-17: the wet target's extra 1-damage zap and the arc's own +1 are gone (Wet is general now).
   function electricityArc(players, sideOf, pid, att, target, n, stats, events, killCredit){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
-    const side = besideOf(pl, target), arc = side.length ? side[Math.floor(rnd()*side.length)] : null;
+    const side = adjacentFoesOf(pl, target), arc = side.length ? side[Math.floor(rnd()*side.length)] : null;
     const wetA = arc ? wetCountOf(arc) : 0;
     if(recordEvents && events) events.push({type:'electricity', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, arcUid: arc ? arc.uid : null, n, wetArc:wetA || undefined});
     const credit = c=>{ if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } };
@@ -5539,9 +5584,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
     const struck = [target], jumps = [];
     for(let k = 0; k < 2; k++){
-      const cand = []; struck.forEach(s=> besideOf(pl, s).forEach(c=>{ if(!struck.includes(c) && !cand.includes(c)) cand.push(c); }));
+      const cand = []; struck.forEach(s=> adjacentFoesOf(pl, s).forEach(c=>{ if(!struck.includes(c) && !cand.includes(c)) cand.push(c); }));
       if(!cand.length) break;
-      const c = cand[Math.floor(rnd()*cand.length)], via = struck.slice().reverse().find(s=> besideOf(pl, s).includes(c)) || target;
+      const c = cand[Math.floor(rnd()*cand.length)], via = struck.slice().reverse().find(s=> adjacentFoesOf(pl, s).includes(c)) || target;
       struck.push(c); jumps.push({c, via, wet: wetCountOf(c)});
     }
     if(recordEvents && events) events.push({type:'chainLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:jumps.map(j=> j.c.uid), n});
@@ -5922,16 +5967,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
           if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true); // true: a shot, Reflect bounces it (2026-10-17)
-          else { // a no-damage spit (Poison Bolt): it can still be dodged, and a Guardian still steps in
+          else { // a no-damage spit (Poison Bolt): it can still be dodged (no Guardian since GD2)
             const rf = reflectShotOf(players, sideOf, pid, target.card, events); // Reflect (2026-10-17): the spit bounces back at the spitter's side
             if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid);
-              else if(dodgeCheck(rf.target.card, rf.src.defId)) hitCard = redirectToGuardian(players[pid], rf.target.card);
+              else if(dodgeCheck(rf.target.card, rf.src.defId)) hitCard = rf.target.card; // no Guardian for a skill (GD2, GD-3)
               else if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(rf.pid), attDefId:rf.src.defId, attUid:rf.src.uid, targetSide:sideOf(pid), targetDefId:rf.target.card.defId, targetUid:rf.target.card.uid, ranged:true}); }
             else if(!dodgeCheck(target.card, c.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
-            else hitCard = redirectToGuardian(enemy, target.card); }
+            else hitCard = target.card; } // 2026-10-22 (GD2, GD-3): a Guardian no longer steps in for a spit (a skill)
           const bounced = shotBounced; shotBounced = false;
           if(hitCard && shot.status) applyShotStatus(shot.status, (shot.n || 1) + (shot.status === 'poison' ? venomBoost(bounced ? otherId(pid) : pid) : 0), hitCard, c, sideOf(pid), sideOf(otherId(pid)), events, ensureStat(stats, sideOf(pid), c.defId)); // + Venom Master on the Poison Bolt (2026-10-17)
-          if(hitCard && shot.spitfire && !bounced && rnd() < 0.5){ const by = besideOf(enemy, hitCard); if(by.length) skillAreaHit(players, sideOf, pid, c, by[Math.floor(rnd()*by.length)], 1, 'heat', stats, events, {spitfireSplash:true}); }
+          if(hitCard && shot.spitfire && !bounced && rnd() < 0.5){ const by = adjacentFoesOf(enemy, hitCard); if(by.length) skillAreaHit(players, sideOf, pid, c, by[Math.floor(rnd()*by.length)], 1, 'heat', stats, events, {spitfireSplash:true}); }
         });
       }
     }
@@ -8623,7 +8668,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // swing. Friction N (2026-10-12, user: "a negative passive that deals N damage to your adjacent allies when this
       // unit attacks").
       { const ie = attDef.effects || {}, insp = Number(ie.inspiring)||0, fric = Number(ie.friction)||0;
-        if(insp > 0 || fric > 0) [liveSelf.col - 1, liveSelf.col + 1].forEach(col=>{ const en = liveOwnCols[col]; if(!en || en.kind!=='card' || !en.card || !(en.card.hp > 0)) return; const ally = en.card;
+        // 2026-10-22 (package GD2, GD-1): + the allies in front of / behind it where the rows fight (frontBehindOf; none elsewhere).
+        if(insp > 0 || fric > 0) [liveSelf.col - 1, liveSelf.col + 1].map(col=> liveOwnCols[col]).concat(frontBehindOf(players[a.attId], a.att).map(card=> ({kind:'card', card}))).forEach(en=>{ if(!en || en.kind!=='card' || !en.card || !(en.card.hp > 0)) return; const ally = en.card;
           if(insp > 0){ ally.inspired = (ally.inspired||0) + insp; if(recordEvents && events) events.push({type:'statusFx', kind:'inspired', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:ally.uid, targetDefId:ally.defId, amount:insp}); }
           if(fric > 0){ const fd = damageCardFlat(ally, fric, 'physical', a.att.defId); if(recordEvents && events) events.push({type:'friction', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:mySide, targetUid:ally.uid, targetDefId:ally.defId, dmg:fd, mods:dnModsFor(ally.uid)}); }
         }); }
@@ -9150,7 +9196,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellshieldFor /* 2026-10-22 (package GD2): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 

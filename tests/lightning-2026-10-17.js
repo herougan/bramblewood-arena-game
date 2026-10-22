@@ -101,7 +101,7 @@ const line = k=> (src.match(new RegExp(`\\n  \\{key:'${k}', [^\\n]*`)) || [''])[
 ok(/label:'Electricity'/.test(line('electricity')) && !/wet/i.test(line('electricity').replace(/codexNote:'[^']*'/, '')), 'Electricity: the card line has no wet sentence');
 ok(/codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has\.'/.test(line('electricity')), 'Electricity: the Wet note is Codex-only (codexNote)');
 ok(/label:'Chain Lightning'/.test(line('chainLightning')) && /codexNote:'A Wet unit/.test(line('chainLightning')), 'Chain Lightning: a skill (PASSIVE_DEFS) with the Codex Wet note');
-ok(/\n  electricity: v=> `Its hits arc to a unit beside the target for \$\{numOr\(v, 1\)\} lightning damage\.`/.test(src), 'Electricity SKILL_TEXT: no "wet units take +1"');
+ok(/\n  electricity: v=> `Its hits arc to a unit adjacent to the target for \$\{numOr\(v, 1\)\} lightning damage\.`/.test(src), 'Electricity SKILL_TEXT: no "wet units take +1"');
 ok(/\n  chainLightning: v=> `/.test(src) && /chainLightning:'🌩️'/.test(src) && /if\(e\.chainLightning\) out\.push/.test(src), 'Chain Lightning: card text, icon and chip');
 ok(/\n  chainLightning: \{foes:FXL_FOES3/.test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), 'Chain Lightning: an Effects library setup');
 ok(/case 'chainLightning':/.test(src) && /ev\.type==='chainLightning'/.test(src), 'chainLightning: a log line and a look');

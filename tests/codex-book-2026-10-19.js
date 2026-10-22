@@ -201,7 +201,7 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
 // ---- 10. package CX (2026-10-19, owner 14:07): short section names, first / last, the turn controls on the book
 { // short names: every section the player can see is a TX key with no "·" detail in it; the detail is a tooltip
   const ctx = {TX, adminModeEnabled:false, codexFlatById:false, BASE_GAME_MAPS:21, CODEX_TIER_THEMES:['The Wildwood', 'The Far Reaches'], baseGameBeaten: ()=> true,
-    isEasterEgg: d=> !!d.egg, advancementKey: ()=> '', mapNumberOf: id=> ({m3:3, m8:8, m13:13, m18:18, m30:30, m45:45})[id], mainConquestMaps: ()=> [], CONQUEST_MAPS: [],
+    isEasterEgg: d=> !!d.egg, easterEggsShown: ()=> true /* GD2: the egg section is Admin Mode only */, advancementKey: ()=> '', mapNumberOf: id=> ({m3:3, m8:8, m13:13, m18:18, m30:30, m45:45})[id], mainConquestMaps: ()=> [], CONQUEST_MAPS: [],
     cardSourceOf: d=> d.src, Math, Number, Object};
   const R = run(['codexTierName', 'codexSectionOf', 'codexSmithSection', 'mapBandOf', 'packPoolSection', 'packSectionOf', 'easterEggSectionOf', 'codexViewSectionOf'], ctx);
   const cards = [{src:{kind:'base'}}, {src:{kind:'map', id:'m3'}}, {src:{kind:'map', id:'m8'}}, {src:{kind:'map', id:'m13'}}, {src:{kind:'map', id:'m18'}}, {src:{kind:'map', id:'m30'}}, {src:{kind:'map', id:'m45'}},

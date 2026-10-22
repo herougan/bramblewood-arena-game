@@ -706,7 +706,7 @@ const PASSIVE_DEFS = [
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
   {key:'sweep', category:'passive', label:'Cleave', kind:'number', min:1, defaultValue:1, desc:v=>`Cleaves through the line: hits the unit in front, and the enemy units on its left and right each take ${numOr(v, 1)} bonus damage.`}, // 2026-10-16 (user: "Cleave N: Default 1.") // renamed from Sweep (2026-10-13); key kept
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: its Attack doubles (brambles too), and it takes half damage.`},
-  {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units next to it, yours and theirs, and to the enemy facing it.`}, // 2026-10-12, the world boss
+  {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units adjacent to it and to the enemy facing it.`} /* 2026-10-22 (GD2, GD-1): "adjacent" */, // 2026-10-12, the world boss
   // Swarm keyword family (2026-10-09; not an archetype, 2026-10-13): strength in numbers; Cleave and Swipe are its answer.
   // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): N per ally, stored as swarmN.
   {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
@@ -788,7 +788,7 @@ const PASSIVE_DEFS = [
   // Speed (user: "Swing Order. So Speed +N means that: When combat begins, all creatures of the highest speed go in turn order.
   // Then the next fastest, then the next fastest. Not extra attacks.").
   {key:'speed', category:'passive', label:'Speed', kind:'number', desc:v=>`Speed ${v}: in combat, the fastest units swing first, then the next fastest, and so on. Same Speed: the usual turn order. Not extra attacks.`},
-  {key:'haste', category:'passive', label:'Haste', kind:'boolean', desc:()=>`Speed +2 for itself and Speed +1 for the allies beside it, while it lives.`},
+  {key:'haste', category:'passive', label:'Haste', kind:'boolean', desc:()=>`Speed +2 for itself and Speed +1 for its adjacent allies, while it lives.`} /* GD2: adjacent */,
   // Rabid (user: "Rabid Beasts: 2/3, Poison 2, Vulnerable to water").
   // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Rabid N, the Poison its hits add
   // (default 2; an old Rabid saved as true reads as Rabid 2).
@@ -810,7 +810,7 @@ const PASSIVE_DEFS = [
   // Irradiated (user: "think about what radiation does - it makes the creature weaker, and wither away").
   // Irradiated, reworked 2026-10-14 (user: "Irradiation tokens - Irradiated. For each token, remove either 1 ATT, 1 HP, or 1 value from a
   // skill the card has ... Every turn this happens, then irradiation drops by 1").
-  {key:'irradiated', category:'passive', label:'Irradiated', kind:'number', min:0, desc:v=>`Every upkeep it gives ${v} Irradiation to the enemy facing it and to the units beside it, and 1 to itself. Each Irradiation token takes 1 point a round, at random: 1 max Health (most likely), 1 Attack, or 1 from a skill (Snipe 2 becomes Snipe 1; a one-word skill like Flying goes after 2 points). Then the tokens drop by 1. Radiation Resist halves the tokens; Immunity stops them.`},
+  {key:'irradiated', category:'passive', label:'Irradiated', kind:'number', min:0, desc:v=>`Every upkeep it gives ${v} Irradiation to the enemy facing it and to the units adjacent to it, and 1 to itself. Each Irradiation token takes 1 point a round, at random: 1 max Health (most likely), 1 Attack, or 1 from a skill (Snipe 2 becomes Snipe 1; a one-word skill like Flying goes after 2 points). Then the tokens drop by 1. Radiation Resist halves the tokens; Immunity stops them.`},
   // 2026-10-14 (second pass). Shade and Shadow (user: "Effects like Shade and Ghost and Shadow").
   {key:'shade', category:'passive', label:'Shade', kind:'boolean', desc:()=>`At night or in darkness, it takes half damage from attacks that aren't magic. By day it is an ordinary unit.`},
   {key:'shadow', category:'passive', label:'Shadow', kind:'boolean', desc:()=>`At night or in darkness, attacks at it miss 1 in 2. Magic never misses it.`},
@@ -901,8 +901,8 @@ const PASSIVE_DEFS = [
   // Without a list it keeps the old Fast Forward.
   {key:'swimmerGrant', category:'passive', hidden:true, retired:true, label:'Swimmer Skills', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flood round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
     get:e=> e.swimmerGrant ? grantToText(e.swimmerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.swimmerGrant = g; e.swimmer = true; } }},
-  {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
-  {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
+  {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, its adjacent allies get +${v} Attack for their next swing.`} /* GD2: adjacent */,
+  {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each adjacent ally.`} /* GD2: adjacent */,
   // Worthy folded into Bounty (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty."): out of the editor and the
   // lists.
   // 2026-10-16 (user: "All Worthy cards become Bounty. Worthy will seem something else in the future."): RETIRED, EMPTY SLOT. No card
@@ -991,7 +991,7 @@ const PASSIVE_DEFS = [
   // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
-  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Single-target hits aimed at an ally beside it, in front of it or behind it land on this card instead. Area hits don't.`} /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
+  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.`} /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
@@ -1167,7 +1167,7 @@ const PASSIVE_DEFS = [
   {key:'tornado', category:'evergreen', label:'Tornado', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, a tornado whirls the enemy row: ${v||1} random enemy unit${(v||1) === 1 ? ' is' : 's are'} thrown to a random other column (swapping with any unit there) and take${(v||1) === 1 ? 's' : ''} 1 damage. Flyers are flung harder: 2 damage. Pinned units hold on.`},
   {key:'avalanche', category:'evergreen', label:'Avalanche', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, an avalanche buries the enemy board: every enemy unit that isn't flying takes ${v||1} cold damage and gets +1 Wait.`},
   {key:'tsunami', category:'evergreen', label:'Tsunami', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, a great wave washes the enemy board: every enemy unit is pushed back (+1 Wait), and those that can't swim (not Swimmers or Tide units) take ${v||1} water damage. The Tide starts, if it hasn't yet.`},
-  {key:'dragonLightning', category:'passive', label:'Dragon Lightning', kind:'number', min:1, defaultValue:1, desc:v=>`Red lightning follows its swing: whenever its attack connects, the target and one unit beside it each take ${v||1} magic damage. Armor doesn't stop it, and it strikes even if the target falls.`},
+  {key:'dragonLightning', category:'passive', label:'Dragon Lightning', kind:'number', min:1, defaultValue:1, desc:v=>`Red lightning follows its swing: whenever its attack connects, the target and one unit adjacent to it each take ${v||1} magic damage. Armor doesn't stop it, and it strikes even if the target falls.`},
   {key:'wither', category:'passive', label:'Wither', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits wither the target: for 3 rounds it loses ${v||1} max Health (and ${v||1} Health) every upkeep, and nothing can heal it while it withers. A fresh hit starts the 3 rounds again.`},
   // 2026-10-14 (sixth pass). Fencing (user: "Duelist should use 'Fencing' - a new skill related to fine & precise swordsmanship. Maybe
   // fencing = cannot miss Evade creatures"); Fireball (user: "On Ready _ Shoot an AOE fireball to a random enemy. in a 3-x size area,
@@ -1190,8 +1190,8 @@ const PASSIVE_DEFS = [
   // 2026-10-17 (user: "Remove the wet unit description from electricity. Wet units just take +N damage by default, for every wet counter.
   // Can see this in codex instead."): the wet sentence is gone from the card line; Wet is a general rule now (the Wet keyword, and the
   // codexNote the Skills Codex adds). Chain Lightning (user: "Voltaic Eel should have chain lighting as well"): Electricity's longer cousin.
-  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
-  {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit beside it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
+  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit adjacent to the target for ${v||1} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
+  {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit adjacent to it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
   {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the bramble), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
   // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
   // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
@@ -1230,7 +1230,7 @@ const PASSIVE_DEFS = [
   {key:'sonar', category:'passive', label:'Sonar', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
   {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Poison.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
-  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit beside it for 1. (Fire Bolt always aims at the enemy opposite.)`},
+  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit adjacent to it for 1. (Fire Bolt always aims at the enemy opposite.)`},
   {key:'slashBurn', category:'evergreen', label:'Slash & Burn', kind:'number', min:1, defaultValue:3, desc:v=>`When it kills a unit, the ground there burns: the next enemy card played into that slot takes ${numOr(v, 3)} fire damage.`},
   // Devilry payments (2026-10-16, user: "Devilry 2 skills: hurting your own castle on play as payment. Also, hurting a random ally on
   // play as payment. Not sure of the name. Penance?"): Penance N (your castle) and Blood Tithe N (a random ally; the castle if none).
@@ -1659,6 +1659,11 @@ sk1Patch(ACTION_DEFS, 'expose', {desc:TX('ui.act-expose-desc')});
 sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
 sk1Patch(ACTION_DEFS, 'cleanse', {desc:TX('ui.act-cleanse-desc')});
 Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', exploit:'🩻', spoils:'🍖', venomPulse:'💉', punish:'⚖️', demolisher:'🏰'}); // Package SK1 (2026-10-19)
+// ==== Package GD2 (2026-10-22, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for shielding
+// allies from skills."): Spellshield 🪬, Guardian's twin for skills. Rules: bramblewood-engine.js spellshieldFor (an adjacent unit's
+// single-target enemy skill hits it instead). Priced in canonical/skill-costs.json (an estimate); no card has it yet. Name: call GD2-1.
+PASSIVE_DEFS.push({key:'spellshield', category:'passive', label:TX('ui.skn-spellshield'), kind:'boolean', desc:()=> TX('ui.sk-spellshield'), codexNote:TX('ui.sk-spellshield-codex')});
+Object.assign(SKILL_ICON, {spellshield:'🪬'});
 // ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
 // action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
 // the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
@@ -2442,7 +2447,7 @@ const STATUS_KEYWORDS = [
 const KEYWORD_TERMS = [
   {name:'Pitch', re:'pitch(?:ed|es|ing)?', text:'give up a card from your hand for Lumber (once a turn).'},
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
-  {name:'Adjacent', re:'adjacent', text:'the columns to its left, centre and right.'},
+  {name:'Adjacent', re:'adjacent', text:'directly left or right; in a raid, also directly in front or behind.'}, // 2026-10-22 (package GD2, owner GD-1)
   {name:'Kin', re:'kin', cs:true, text:'your own units that share a Type with this one (never itself).'}, // 2026-10-18: the Kin target
   {name:'Dark-blind', re:'dark-blind', text:TX('ui.term-dark-blind')}, // 2026-10-18 (package D): the Darkness card's word
   {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
@@ -2601,7 +2606,7 @@ const SKILL_TEXT = {
   fullMoon: v=> `The first full moon over it: +${numOr(v, 3)}/+${numOr(v, 3)} for the rest of the fight.`, fullMoonGrant: v=> `The first full moon over it: ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
-  guardian: ()=> `Takes the single-target hits aimed at the allies beside, in front of and behind it.`, // 2026-10-22 (package GD): + in front / behind
+  guardian: ()=> `Takes the plain attacks aimed at its adjacent allies.`, // 2026-10-22 (package GD): + in front / behind; (GD2, GD-3): swings only
   quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
@@ -2654,7 +2659,7 @@ Object.assign(SKILL_TEXT, {
   tornado: v=> `When it arrives, ${Number(v) > 1 ? v + ' random enemy units are' : 'a random enemy unit is'} flung to another column for 1 damage (2 for flyers).`,
   avalanche: v=> `When it arrives, every enemy unit without Flying takes ${v||1} cold damage and +1 Wait.`,
   tsunami: v=> `When it arrives, every enemy unit gets +1 Wait; non-swimmers take ${v||1} water damage. Starts the Tide.`,
-  dragonLightning: v=> `Its hits call red lightning: ${v||1} damage to the target and a unit beside it, ignoring Armor.`,
+  dragonLightning: v=> `Its hits call red lightning: ${v||1} damage to the target and a unit adjacent to it, ignoring Armor.`,
   wither: v=> `Its hits wither: -${v||1} max Health a round for 3 rounds, and no healing meanwhile.`,
 });
 // 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
@@ -2666,8 +2671,8 @@ Object.assign(SKILL_TEXT, {
   bananarang: v=> `A Boomerang that may be eaten when it comes home (+${numOr(v, 3)} Health, 1 in 2, only if hurt).`,
   durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +${numOr(v, 1)} (stacks).`, // 2026-10-16 skill audit: Durian N
   shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
-  electricity: v=> `Its hits arc to a unit beside the target for ${numOr(v, 1)} lightning damage.`, // 2026-10-17: no wet note (Wet is a general rule)
-  chainLightning: v=> `Its hits chain lightning on through 2 more enemy units beside the target, ${numOr(v, 2)} lightning damage each.`, // 2026-10-17
+  electricity: v=> `Its hits arc to a unit adjacent to the target for ${numOr(v, 1)} lightning damage.`, // 2026-10-17: no wet note (Wet is a general rule)
+  chainLightning: v=> `Its hits chain lightning on through 2 more enemy units adjacent to the target, ${numOr(v, 2)} lightning damage each.`, // 2026-10-17
   keenSense: v=> `Darkness and Blind don't make it miss grounded units; it can't be Blinded.`,
 });
 // W2 skills (2026-10-16): the one-line card text. Defaults as in PASSIVE_DEFS (W2_DEF in the engine).
@@ -3561,6 +3566,12 @@ const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant']);
 function isEasterEgg(d){ return !!(d && (d.easterEgg || EASTER_EGG_IDS.includes(d.derivedFrom || d.id) || (d.source && d.source.kind === 'easteregg'))); }
 function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id]||[]).length || seenCardIds().has(id)); }catch(e){ return false; } }
 function easterEggMasked(d){ return isEasterEgg(d) && !easterEggSeen(d.id) && !(adminModeEnabled && codexShowUnseen); }
+// 2026-10-22 (package GD2, owner: "Easter egg maybe is only visible for admins in admin mode. Otherwise, no! They are EASTER eggs -
+// hidden"): only an admin with Admin Mode on sees that Easter eggs exist (their "???" slots, their Codex section, the 🥚 marker, the
+// counts). Everyone else sees nothing: no slot, no section, no count, no search or filter hit, no "Easter egg" words. A card a player
+// owns anyway (an admin grant) shows as an ordinary card of theirs, with no Easter-egg words on it.
+function easterEggsShown(){ return !!adminModeEnabled; }
+function easterEggOwned(id){ try{ return !!((myCardCopies[id]||[]).length || (myUnlockedCardIds && myUnlockedCardIds.has(id))); }catch(e){ return false; } }
 // The "???" tile an unseen Easter egg shows in the Codex: its rarity band only; no name, art, numbers or skills, and it opens nothing.
 function easterEggMaskDef(d){ return {id:'ee-mask', name:'???', icon:'🥚', cost:0, wait:0, attack:0, health:0, effects:{}, archetypes:[], species:[], rarity:d.rarity, flavor:'', locked:true}; }
 // The map where a card becomes obtainable (2026-10-19, package BF2; owner 15:25: "note that there is a Map * 0.2 number there"), for the
@@ -3611,7 +3622,7 @@ function creatureRankText(d){
 }
 // Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
 function cardWhereToGetText(d){
-  if(isEasterEgg(d)) return TX('ui.ee-where'); // 2026-10-19 (package EE)
+  if(isEasterEgg(d)) return easterEggsShown() ? TX('ui.ee-where') : 'Not obtainable yet'; // 2026-10-19 (package EE); GD2: no egg words outside Admin Mode
   if(isUnattainable(d)) return 'Not obtainable yet';
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
@@ -3826,7 +3837,7 @@ function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t =
 // 2026-10-19 (package CX): "Easter eggs", with "not obtainable yet" as its tooltip.
 function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:TX('ui.cx-sec-eggs'), tip:TX('ui.cx-sec-eggs-tip')}; }
 function codexViewSectionOf(d, view){
-  if(isEasterEgg(d) && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
+  if(isEasterEgg(d) && easterEggsShown() /* GD2 */ && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
   if(view==='all'){
@@ -5810,6 +5821,7 @@ Object.assign(SKILL_TEXT, {
   siege: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
   demolisher: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
   formation: v=> TX('ui.sk-formation', {n: numOr(v, SK1_DEFAULTS.formation)}),
+  spellshield: ()=> TX('ui.sk-spellshield'), // GD2 (2026-10-22)
   isolation: ()=> TX('ui.sk-isolation'),
   anchor: ()=> TX('ui.sk-anchor'),
   spoils: v=> TX('ui.sk-spoils', {n: numOr(v, SK1_DEFAULTS.spoils)}),
@@ -5821,6 +5833,7 @@ Object.assign(SKILL_TEXT, {
 function sk1LogText(ev, nm){
   if(!ev || ev.type !== 'statusFx') return null;
   const s = n=> n === 1 ? '' : 's';
+  if(ev.kind === 'spellshield') return {cls:'', text:TX('ui.log-spellshield', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // GD2 (2026-10-22)
   if(ev.kind === 'expose') return {cls:'', text:TX('ui.log-expose-rounds', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
   if(ev.kind === 'exploit') return {cls:'', text:TX('ui.log-exploit', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount||1, s: s(ev.amount||1)})};
   if(ev.kind === 'exploitHit') return {cls:'', text:TX('ui.log-exploit-hit', {name: nm(ev.targetDefId), b: ev.bonus||1, n: ev.amount||0})};
@@ -5844,6 +5857,7 @@ function sk1Vfx(ev){
   if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
   if(ev.kind === 'punish'){ fl(el, TX('ui.float-punish'), 'debuff'); snd('ambushTone'); return; }
+  if(ev.kind === 'spellshield'){ const se = boardCardEl(ev.attUid); if(se){ fl(se, '🪬', 'buff'); try{ flashShield(se); }catch(e){} } return; } // GD2 (2026-10-22): the Spellshield steps in
   if(ev.kind === 'sk1Aura'){ if(rc){ rc.sk1Atk = ev.atk||0; if(ev.maxHpNow != null){ rc.maxHp = ev.maxHpNow; rc.hp = ev.hpNow; } }
     if(ev.dAtk) fl(el, ev.dAtk > 0 ? `${ev.atk > 0 ? '🔗' : '🏝️'} +${ev.dAtk}/+${ev.dHp}` : `${ev.atk >= 0 && !ev.isolation ? '🔗' : '🏝️'} ${ev.dAtk}/${ev.dHp}`, ev.dAtk > 0 ? 'buff' : 'debuff');
     refresh(ev.targetUid); return; }
@@ -6927,7 +6941,7 @@ function renderCodexGrid(keepPage){
   // they own or have seen, plus the cards of a pack once its merchant is on the map (the map table's "Cards revealed").
   // Materia live in the Inventory, for everyone.
   const visMemo = new Map(); // 2026-10-18: asked twice per card below (the shown list and the total), worked out once
-  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || isEasterEgg(defs[id]) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id]))); visMemo.set(id, v); } return v; }; // + Easter eggs: always a slot, a masked "???" one until seen (2026-10-19, package EE)
+  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && (isEasterEgg(defs[id]) ? (easterEggsShown() || easterEggOwned(id)) : ((adminModeEnabled && codexShowUnseen) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id])))); visMemo.set(id, v); } return v; }; // + Easter eggs: a slot, a masked "???" one until seen (2026-10-19, package EE); only in Admin Mode, else only one you own, as a plain card (2026-10-22, GD2)
   // 2026-10-19 (package EE): a masked Easter egg never matches a search or a skill filter (its name and skills are the secret)
   if(codexFilter.q || codexSkillsChosen().length) ids = ids.filter(id=> !easterEggMasked(defs[id]));
   // 2026-10-13 (user: "The codex shouldn't show cards unseen. All cards are hidden by default"): admins too, unless they tick
@@ -6980,12 +6994,14 @@ function renderCodexGrid(keepPage){
     // is redrawn once Map 0 is cleared, without a reload.
     let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
-    if(easterEggMasked(d)){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
+    if(easterEggMasked(d) && easterEggsShown()){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
     if(hit && hit.sig === sig) return hit.html;
     const tags = [];
-    if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob" title="${escapeAttr(TX('ui.ee-admin-tip'))}">🥚 ${escapeHtml(TX('ui.ee-tag'))}</span>`); // 2026-10-19 (package EE)
-    else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
+    // 2026-10-22 (package GD2, owner: "Not available and Easter egg pills ... are too large. Use a symbol like 🚫"): each is a small symbol
+    // (🥚 / 🚫) with its words in title and aria-label; the words follow the symbol only on a wide screen (.cx-tag-words, hidden on phones).
+    if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob cx-tag-sym" title="${escapeAttr(TX('ui.ee-admin-tip'))}" aria-label="${escapeAttr(TX('ui.ee-tag'))}">🥚<span class="cx-tag-words"> ${escapeHtml(TX('ui.ee-tag'))}</span></span>`); // 2026-10-19 (package EE)
+    else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob cx-tag-sym" title="Not obtainable yet: the card editor\'s Obtainable box" aria-label="Not obtainable">🚫<span class="cx-tag-words"> Not obtainable</span></span>');
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
     let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable'})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
@@ -8186,7 +8202,7 @@ function abilityBadges(d, bopts){
   if(e.nursing) out.push(`<span title="Nursing: heals your weakest unit every upkeep">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15
   if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
   if(e.inspiring) out.push(`${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
-  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
+  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts its adjacent allies when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
   if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
   if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
   if(e.loyal || e.loyalGrant) out.push(`${iconHTML('loyal', '🎖️')}`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`);
@@ -8199,7 +8215,7 @@ function abilityBadges(d, bopts){
   if(e.cower) out.push(`<span title="Cower (${e.cower === 'flee' ? 'Flee' : 'Shell'}): hit last turn, it ${e.cower === 'flee' ? 'backs off' : 'hides'} this turn">${iconHTML('cower', '🫣')}</span>`);
   if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
   if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
-  if(e.irradiated) out.push(`<span title="Irradiated ${e.irradiated}: gives Irradiation to its neighbours and the enemy facing it">${iconHTML('irradiated', '☢️')}${n1(e.irradiated)}</span>`);
+  if(e.irradiated) out.push(`<span title="Irradiated ${e.irradiated}: gives Irradiation to its adjacent units and the enemy facing it">${iconHTML('irradiated', '☢️')}${n1(e.irradiated)}</span>`);
   // 2026-10-14 (second pass)
   if(e.shade) out.push(`<span title="Shade: half damage from non-magic attacks at night or in darkness">${iconHTML('shade', '🌫️')}</span>`);
   if(e.shadow) out.push(`<span title="Shadow: at night or in darkness, attacks at it miss 1 in 2">${iconHTML('shadow-skill', '👤')}</span>`);
@@ -8225,7 +8241,7 @@ function abilityBadges(d, bopts){
   if(e.tornado) out.push(`<span title="Tornado ${e.tornado === true ? 1 : e.tornado}: when it arrives, enemy units are flung to other columns">${iconHTML('tornado', '🌪️')}💨${n1(e.tornado)}</span>`);
   if(e.avalanche) out.push(`<span title="Avalanche ${e.avalanche === true ? 1 : e.avalanche}: when it arrives, every grounded enemy takes damage and +1 Wait">${iconHTML('avalanche', '🏔️')}${n1(e.avalanche)}</span>`);
   if(e.tsunami) out.push(`<span title="Tsunami ${e.tsunami === true ? 1 : e.tsunami}: when it arrives, every enemy +1 Wait; non-swimmers take damage">${iconHTML('tsunami', '🌊')}💥${n1(e.tsunami)}</span>`);
-  if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit beside it">${iconHTML('dragon-lightning', '🐉')}⚡${n1(e.dragonLightning)}</span>`);
+  if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit adjacent to it">${iconHTML('dragon-lightning', '🐉')}⚡${n1(e.dragonLightning)}</span>`);
   if(e.wither) out.push(`<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">${iconHTML('wither', '💀')}${n1(e.wither)}</span>`);
   if(d.hatchInto) out.push(`<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">${iconHTML('hatch-into', '🥚')}</span>`);
   // 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
@@ -8236,8 +8252,8 @@ function abilityBadges(d, bopts){
   if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
   if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
   if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
-  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
-  if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units beside the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
+  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
+  if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
@@ -9437,6 +9453,67 @@ function nodeRewardCardIds(mapId, nodeKey){
   const defs = getCardDefs();
   return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]); }); // + no Easter egg (2026-10-19, package EE)
 }
+// ==== Package GD2 (2026-10-22, owner GD-5: "There should be a mix of 'no first clear card', 'first clear skirmish-exclusive card', 'first
+// clear pack card reward' and of course pack rewards.. Skirmish exclusive makes up 1-2 (max 3). The rest are a mix of the rest."): a
+// skirmish's first clear can pay a PACK card too: a card of that map's basic-pack pool (canonical/map-pools.json, source {kind:'pack'}),
+// which stays a pack card (its source is unchanged, so packs and the drop keep it). It is named per fight in SKIRMISH_FIRST_PACK_CARDS
+// (written by tools/gd5_first_cards_2026_10_22.js) or by the node's own firstCard field (a live node edit wins). nodeFirstClearCardIds is
+// every card a first clear pays (the skirmish-exclusive ones, nodeRewardCardIds, then the pack card); the First Clear box, the grant, Clear
+// map and the drop (GD: 21% on repeats, that card's rarity share) all read it. nodeRewardCardIds stays the exclusive cards only.
+/* GD5-TABLE-START (generated: node tools/gd5_first_cards_2026_10_22.js apply) */
+const SKIRMISH_FIRST_PACK_CARDS = {
+  'm1:0-3': 'house-cat',
+  'mf:1-2': 'dormouse',
+  'mf:1-4': 'field-mouse',
+  'mb:2-2': 'pincushion-urchin',
+  'mc:3-1': 'hawk-arrowkeeper',
+  'mc:3-4': 'kittiwake-flock',
+  'm2:4-1': 'snapstick-turtle',
+  'mw:5-1': 'snapper-hatchling',
+  'mw:5-3': 'constrictor-coil',
+  'm8:6-1': 'poison-dart-croaker',
+  'm8:6-3': 'camouflage-frog',
+  'mu:7-2': 'dung-beetle',
+  'mu:7-4': 'hollow-oath-keeper',
+  'm4:8-1': 'blind-cave-fish',
+  'm4:8-4': 'vampire-bat',
+  'm4:8-6': 'stalactite-golem',
+  'mk:9-1': 'mangrove-mudskipper',
+  'mk:9-4': 'mudpuppy',
+  'm7:10-1': 'clownfish-scout',
+  'm7:10-4': 'coral-reef-shark',
+  'm10:11-1': 'alpine-marmot',
+  'm10:11-3': 'chipmunk-hoarder',
+  'mh:12-1': 'bramble-hoglet',
+  'mh:12-3': 'mouse-sapper',
+  'mr:13-3': 'fox-kit',
+  'm5:14-1': 'springbok-pronker',
+  'm5:14-4': 'hoopoe-herald',
+  'ml:15-1': 'pronghorn-racer',
+  'mt:16-1': 'snowshoe-hare',
+  'm6:17-1': 'snow-ermine',
+  'm6:17-4': 'harbor-seal',
+  'md:18-1': 'thorny-devil',
+  'md:18-3': 'roadrunner-courier',
+  'm3:19-1': 'cinder-stoker',
+  'm11:20-1': 'pack-mule',
+  'm11:20-3': 'ashbone-ghoul',
+  'm21:21-1': 'pika-hoarder',
+  'm21:21-3': 'glacier-yak',
+  'm22:22-1': 'cinder-gecko',
+  'm22:22-4': 'cinder-hornet',
+  'm23:23-1': 'badger-trench-digger',
+  'm23:23-4': 'siege-rhino',
+  'm24:24-1': 'duckling-squadron',
+  'm24:24-3': 'elderhorn-monarch',
+};
+/* GD5-TABLE-END */
+function nodeFirstPackCardIds(mapId, nodeKey){
+  let node = null; try{ node = (findConquestNode(mapId, nodeKey) || {}).node; }catch(e){}
+  const v = node && node.firstCard != null ? node.firstCard : SKIRMISH_FIRST_PACK_CARDS[mapId + ':' + nodeKey], defs = getCardDefs();
+  return [].concat(v || []).filter(id=> defs[id] && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]));
+}
+function nodeFirstClearCardIds(mapId, nodeKey){ const own = nodeRewardCardIds(mapId, nodeKey); return own.concat(nodeFirstPackCardIds(mapId, nodeKey).filter(id=> !own.includes(id))); }
 // Unattainable cards (2026-10-12, user: "Help me make all cards unattainable, then we build them together"): a card with
 // `unattainable: true` can't come out of a pack, a reward, a find, a craft or a promotion. Base, starter and tutorial
 // cards, tokens, tests, materia and the hero stay obtainable so a new player can still play. Card editor: "Obtainable".
@@ -21983,7 +22060,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   // through the tutorial flow (tutorialRewardIds, tutorialRewards2 for your side), not the node's reward list, so their First Clear box
   // was empty. It shows those cards now; no rank is ever needed and a won tutorial greys them all.
   const isTutNode = !!(node && node.kind === 'tutorial');
-  const ids = isTutNode ? (()=>{ try{ return node.stage === 2 ? tutorialRewards2(loadFactionChoice() || 'both') : tutorialRewardIds(); }catch(e){ return []; } })() : nodeRewardCardIds(mapId, node.key);
+  const ids = isTutNode ? (()=>{ try{ return node.stage === 2 ? tutorialRewards2(loadFactionChoice() || 'both') : tutorialRewardIds(); }catch(e){ return []; } })() : nodeFirstClearCardIds(mapId, node.key); // + a first-clear pack card (GD2, GD-5)
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
@@ -22213,7 +22290,7 @@ function adminCompleteNodes(mapId, keys, opts){
   saveConquestProgress(p); try{ maybeOpenPitching(); }catch(e){}
   // Clearing by hand still pays the cards (2026-10-13, user: "everytime I clear the map, I should receive the card rewards from
   // the skirmishes from the map").
-  let got = 0; keys.forEach(k=>{ const id = conquestNodeId(mapId, k); if(cardRewardsClaimed().has(id)) return; nodeRewardCardIds(mapId, k).forEach(cid=>{ try{ if(unlockCardForPlayer(cid, 'reward') !== false) got++; }catch(e){} }); markCardRewardsClaimed(id); });
+  let got = 0; keys.forEach(k=>{ const id = conquestNodeId(mapId, k); if(cardRewardsClaimed().has(id)) return; nodeFirstClearCardIds(mapId, k).forEach(cid=>{ try{ if(unlockCardForPlayer(cid, 'reward') !== false) got++; }catch(e){} }); markCardRewardsClaimed(id); });
   // 2026-10-17 (user: "Pressing clear map gives you all the first clear and normal clear rewards of the whole map."): Clear map
   // (opts.allRewards) paid only the reward cards. It now also pays, for every fight it clears for the first time, that fight's
   // first-clear Maple Leaves and Dust, its first-clear packs (its own pack, its faction pack, the map's free pack) and its
@@ -37732,7 +37809,7 @@ async function resolveRoundCore(opts){
         m.conquestRewardEarned = {gold:payout.gold, dust:payout.dust, isFirstClear, rankBonus: (bonus.gold || bonus.dust) ? Object.assign({rank}, bonus) : null}; // read once by the post-match screen below
         // 2026-10-03 ("First time rewards are displayed below the rewards, greyed out. To teach what
         // you have earned from this in the past"): on a repeat clear, remember the one-off bonus.
-        if(!isFirstClear) m.conquestFirstClearPast = {gold: rewardTier.first.gold, dust: rewardTier.first.dust, cards: nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId)};
+        if(!isFirstClear) m.conquestFirstClearPast = {gold: rewardTier.first.gold, dust: rewardTier.first.dust, cards: nodeFirstClearCardIds(m.conquestNode.mapId, m.conquestNode.nodeId)}; // + a pack card (GD2)
       }
       // Skirmish reward cards (2026-10-02): every card whose source is this exact node is granted on
       // the FIRST clear only.
@@ -37748,7 +37825,7 @@ async function resolveRoundCore(opts){
       const openNode = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode;
       const opening = isFirstClear && openNode && (openNode.firstOneCard || openNode.firstFactionPack) ? openNode : null;
       if(!claimedSet.has(preId) && !(opening && opening.firstFactionPack)){
-        const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId).slice(0, opening ? 1 : Infinity), gotBefore = cardRewardGotIds(preId), rwNode = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode;
+        const cardIds = nodeFirstClearCardIds(m.conquestNode.mapId, m.conquestNode.nodeId).slice(0, opening ? 1 : Infinity), gotBefore = cardRewardGotIds(preId), rwNode = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode;
         const give = [], wait = [];
         cardIds.filter(id=> !gotBefore.includes(id)).forEach(id=>{ const need = cardRewardRankFor(m.conquestNode.mapId, rwNode, id); (!need || rankAtLeast(rank, need) ? give : wait).push({id, rank: need}); });
         give.forEach(g=> unlockCardForPlayer(g.id, 'conquestReward'));
@@ -41242,12 +41319,14 @@ function playHandSummonGlow(uid){
 // (Poison's conversion instead replaces the HP damage entirely) and the two should be tellable
 // apart at a glance during a fight.
 const ELEMENTAL_BURST_GLYPH = {cold:'❄', heat:'🔥', acid:'🧪', poison:'☠', decay:'🦠', shock:'⚡'}; // + shock (2026-10-16)
-function hitExplosionVfx(uid, dmgType){
+// 2026-10-22 (package GD2, owner GD-4: "Fencer: 🤺"): a Fencing unit's plain hit bursts as 🤺 instead of 💥 (attDefId, from the hit event).
+function hitExplosionVfx(uid, dmgType, attDefId){
   const el = boardCardEl(uid); if(!el) return;
   const burst = document.createElement('div');
   const elemGlyph = ELEMENTAL_BURST_GLYPH[dmgType];
+  let fencer = false; try{ const ad = attDefId && getCardDefs()[attDefId]; fencer = !!(ad && ad.effects && ad.effects.fencing); }catch(e){}
   burst.className = 'fx-burst hit-burst' + (elemGlyph ? ` fx-burst-elemental fx-burst-${dmgType}` : '');
-  burst.textContent = elemGlyph || '💥';
+  burst.textContent = elemGlyph || (fencer ? '🤺' : '💥');
   // Kept away from the very edges (25%-75%) so the burst always reads as landing ON the card.
   burst.style.left = (25 + Math.random()*50).toFixed(1)+'%';
   burst.style.top = (25 + Math.random()*50).toFixed(1)+'%';
@@ -42199,13 +42278,13 @@ function dnFloat(el, dmg, o){
 // A damage number's text for a stamp or a log (no element): '💥🪄14🦴' (DN2; 💥 since GD)
 function dnText(dmg, type, mods, crit, blocked){ const p = dmgFloatParts(dmg, type, crit, mods, blocked); return p.text.replace(' ', '') + (p.post || ''); }
 try{ window.dnText = dnText; window.dnFloat = dnFloat; window.dnMarkOf = (mods, dmg)=> dnModKey(mods, false, dmg); }catch(e){} // for FX.F's raid stamps
-function flashDmg(uid, dmg, blocked, dmgType, crit, mods){
+function flashDmg(uid, dmg, blocked, dmgType, crit, mods, attDefId){ // + attDefId (GD2): a Fencer's 🤺 burst
   const el = boardCardEl(uid);
   if(!el) return;
   recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
   // 2026-10-22 (package DN): one format for every hit (was '🛡 0', '👊🔥 -12', '🔥 -5', '-5'); the colours stay with the same classes.
   dnFloat(el, dmg, {type: dmgType, crit, mods, blocked, fit: true}); // DN2: through dnFloat (the elemental crit's look)
-  hitExplosionVfx(uid, dmgType);
+  hitExplosionVfx(uid, dmgType, attDefId);
   try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
 }
 // Keyword cues derived straight from the card's own definition — Quick/Stealth/Reload/
@@ -43853,7 +43932,7 @@ function renderVfxForEvent(ev){
         if(typeof maybeSpeakHQ==='function') maybeSpeakHQ(ev.targetSide, 'castleOnHit');
       }
       else {
-        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods); // + the mark (DN, 2026-10-22)
+        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods, ev.attDefId); // + the mark (DN, 2026-10-22); + the attacker, a Fencer's 🤺 (GD2)
         armorBadgeGlow(targetEl, ev); // 2026-10-15
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):
         // subtract this hit's damage, then — same gate as the engine (defCard.hp>0) — if the
@@ -43956,7 +44035,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='kingSlayer'){
     const el = boardCardEl(ev.targetUid);
     SoundKit.kingSlayerTone();
-    if(el) floatText(el, `👑💥 King Slayer! +${ev.amount}`, 'debuff');
+    if(el) floatText(el, `🗡️ King Slayer! +${ev.amount}`, 'debuff'); // 🗡️ (2026-10-22, package GD2, owner GD-4: "King Slayer: 🗡️"; was 👑💥)
   }
   // Frenzy (2026-09-16 mechanic; VFX/SFX gap found in the 2026-09-21 coverage audit): the
   // engine's requeue-for-a-bonus-attack decision used to push no event at all, so a Frenzy
@@ -46044,7 +46123,7 @@ function skirmishOwnDropShare(rarity){
 // The fight's own reward cards a repeat win can drop (a skirmish only; [] for anything else).
 function skirmishOwnDropIds(node, mapId){
   if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return [];
-  try{ return nodeRewardCardIds(mapId, node.key); }catch(e){ return []; }
+  try{ return nodeFirstClearCardIds(mapId, node.key); }catch(e){ return []; } // + a first-clear pack card drops the same way (GD2, GD-5)
 }
 // The card-drop chance a fight shows on its panel (the same numbers the win rolls). o.repeat: a repeat win (the fight is cleared).
 function nodeCardDropChance(mapId, node, o){
@@ -50980,7 +51059,7 @@ function applyPendingMapReset(){
     CONQUEST_MAPS.forEach(m=> m.nodes.filter(nd=> nd.kind === 'tutorial').forEach(nd=>{ const id = conquestNodeId(m.id, nd.key); if(!p.completed.includes(id)) p.completed.push(id); }));
     let cards = 0;
     maps.forEach(m=> m.nodes.filter(nd=> nd.kind !== 'tutorial').forEach(nd=>{ const id = conquestNodeId(m.id, nd.key); if(!p.completed.includes(id)) p.completed.push(id); p.ranks[id] = 'S';
-      nodeRewardCardIds(m.id, nd.key).forEach(cid=>{ try{ if(unlockCardForPlayer(cid, 'reward') !== false) cards++; }catch(e){} }); markCardRewardsClaimed(id); }));
+      nodeFirstClearCardIds(m.id, nd.key).forEach(cid=>{ try{ if(unlockCardForPlayer(cid, 'reward') !== false) cards++; }catch(e){} }); markCardRewardsClaimed(id); }));
     saveConquestProgress(p);
     const revealed = maps.map(m=> m.id); try{ localStorage.setItem(MAP_REVEALED_KEY, JSON.stringify(revealed)); }catch(e){}
     FEATURE_SPOTS.forEach(sp=>{ if(sp.mapNumber != null && sp.mapNumber < job.n) unlockFeature(sp.key); });

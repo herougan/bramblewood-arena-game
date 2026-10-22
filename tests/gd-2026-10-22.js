@@ -37,11 +37,10 @@ const place = (e, P, pid, r, id, sl)=> r === 0 ? put(e, P, pid, id, sl) : e.fill
   ok(e.redirectToGuardian(P[2], t) === g, 'back target: the Guardian in front of it (middle row) steps in'); }
 { const {e, P} = mk(); const t = place(e, P, 2, 0, 'gd-wall', 0); place(e, P, 2, 1, 'gd-guard', 1); place(e, P, 2, 2, 'gd-guard', 0);
   ok(e.redirectToGuardian(P[2], t) === t, 'not adjacent (diagonal, two rows back): nobody steps in'); }
-// order: left, right, in front, behind
+// order (GD-2, superseded 2026-10-22 by GD2: "Random"): one of the live adjacent Guardians, seeded; tests/gd2-2026-10-22.js checks the spread
 { const {e, P} = mk(); const t = place(e, P, 2, 1, 'gd-wall', 0), f = place(e, P, 2, 0, 'gd-guard', 0), b = place(e, P, 2, 2, 'gd-guard', 0), r = place(e, P, 2, 1, 'gd-guard', 1);
-  ok(e.redirectToGuardian(P[2], t) === r, 'right beats in front and behind');
-  r.hp = 0; ok(e.redirectToGuardian(P[2], t) === f, 'in front beats behind'); f.hp = 0; ok(e.redirectToGuardian(P[2], t) === b, 'behind when the others are down');
-  const l = place(e, P, 2, 1, 'gd-guard', -1); r.hp = 500; ok(e.redirectToGuardian(P[2], t) === l, 'left beats right'); }
+  ok([r, f, b].includes(e.redirectToGuardian(P[2], t)), 'one of the adjacent Guardians steps in');
+  r.hp = 0; f.hp = 0; ok(e.redirectToGuardian(P[2], t) === b, 'behind when the others are down'); }
 // a Guardian is not its own guard; a Guardian target is guarded by a neighbouring Guardian
 { const {e, P} = mk(); const g = place(e, P, 2, 0, 'gd-guard', 0);
   ok(e.redirectToGuardian(P[2], g) === g, 'a lone Guardian takes its own hit (no self-guard)');
@@ -84,6 +83,7 @@ let rnd = seeded(2210); const granted = [];
 const sbx = {getCardDefs: ()=> cdefs, RARITY_DEFS, RANK_ORDER: ['E','D','C','B','A','S','SS','SSS'], baseKind: k=> ({champion:'elite', miniboss:'elite', subboss:'boss'})[k] || k,
   mapNumberOf: id=> ({m5: 5, m15: 15})[id] != null ? ({m5: 5, m15: 15})[id] : null, rankAtLeast: (h, n)=> sbx.RANK_ORDER.indexOf(h) >= sbx.RANK_ORDER.indexOf(n),
   nodeRewardCardIds: (mapId, key)=> key === 'own-common' ? ['terrier-pup'] : key === 'own-rare' ? ['quillguard'] : [], nodeFirstClearPacks: ()=> [],
+  nodeFirstClearCardIds: (mapId, key)=> sbx.nodeRewardCardIds(mapId, key) /* GD2: the drop reads every first-clear card */,
   packCardPool: ()=> cards.filter(c=> c.source && c.source.kind === 'pack' && !c.token && !c.test).map(c=> c.id), isEquipmentDef: d=> d.cardType === 'equipment', isEasterEgg: d=> !!d.easterEgg,
   unlockCardForPlayer: id=>{ granted.push(id); return true; }, Math: Object.assign(Object.create(Math), {random: ()=> rnd()}), Object, String, Number, Array, Set, JSON, out: {}};
 vm.createContext(sbx);

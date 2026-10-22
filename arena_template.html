@@ -1132,6 +1132,10 @@
   .cx-tag{position:absolute; left:4px; bottom:4px; z-index:6; font-size:10px; font-weight:800; padding:1px 6px; border-radius:999px; background:var(--surface); color:var(--ink); border:1px solid var(--surface-border); pointer-events:none;}
   .cx-tag-hidden{background:var(--ink); color:var(--surface);}
   .cx-tag-event{left:auto; right:4px; top:4px; bottom:auto; max-width:90%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  /* 2026-10-22 (package GD2, owner: "Not available and Easter egg pills?pips are too large. Use a symbol like 🚫"): the admin's 🚫 Not
+     obtainable and 🥚 Easter egg markers are a symbol; the words follow it only on a wide screen (title / aria-label carry them). */
+  .cx-tag.cx-tag-sym{padding:0 5px; font-size:10px; line-height:16px; white-space:nowrap;}
+  @media (max-width:700px){ .cx-tag.cx-tag-sym{padding:0; width:16px; height:16px; line-height:16px; text-align:center; font-size:10px; background:rgba(0,0,0,.45); border:0;} .cx-tag-sym .cx-tag-words{display:none;} }
   .hof-panel{margin-bottom:14px;}
   .hof-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
   .hof-entry{display:flex; flex-direction:column; gap:6px;}
