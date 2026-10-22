@@ -18,12 +18,12 @@ const bounty = [].concat(table.skills || [], table.triggers || []).find(s=> s.id
 ok(bounty && bounty.value === 1, `1. Bounty 1 a point (owner 21:36: "Let bounty N = N * 2"; got ${bounty && bounty.value})`);
 
 // 2. the N multipliers (named constants; shown in the budget panel and the Test Lab)
-ok(BB.DEFAULTS.plainBonus === 1.05 && BB.DEFAULTS.lightBonus === 1.02 && BB.DEFAULTS.fragileMult === 0.75, '2. plainBonus 1.05, lightBonus 1.02, fragileMult 0.75');
-ok(table.budget.plainBonus === 1.05 && table.budget.lightBonus === 1.02 && table.budget.fragileMult === 0.75, '2. the same in the skill-costs budget line');
+ok(BB.DEFAULTS.plainBonus === 1.05 && BB.DEFAULTS.lightBonus === 1.02 && BB.DEFAULTS.fragileUse === 0.7, '2. plainBonus 1.05, lightBonus 1.02, fragileUse 0.7 (BF7, 2026-10-22: Fragile is no longer an N multiplier, fragileMult 0.75)');
+ok(table.budget.plainBonus === 1.05 && table.budget.lightBonus === 1.02 && table.budget.fragileUse === 0.7, '2. the same in the skill-costs budget line');
 ok(BB.nMultOf({}, BB.DEFAULTS) === 1.05, '2. no abilities: x1.05');
 ok(BB.nMultOf({flying: true}, BB.DEFAULTS) === 1.02 && BB.nMultOf({tide: true, diurnal: true}, BB.DEFAULTS) === 1.02, '2. only Flying / Tide / time of day: x1.02');
 ok(BB.nMultOf({flying: true, poison: 1}, BB.DEFAULTS) === 1, '2. a light ability beside another: x1');
-ok(Math.abs(BB.nMultOf({flying: true, fragile: true}, BB.DEFAULTS) - 0.75) < 1e-9, '2. Fragile: x0.75');
+ok(BB.nMultOf({flying: true, fragile: true}, BB.DEFAULTS) === 1 && BB.fragileUseOf({fragile: true}, BB.DEFAULTS) === 0.7 && BB.fragileUseOf({}, BB.DEFAULTS) === 1, '2. Fragile: no N multiplier (x1 with Flying), fragileUse x0.7 on the caps (BF7, 2026-10-22; was x0.75 on N)');
 const vul = (table.skills || []).find(s=> s.id === 'vulnerable'); ok(vul && vul.value < 0, '2. passive Vulnerable is a negative skill value');
 ok(/function sbNMultLine\(d\)/.test(src) && /ui\.budget-lab-nmult/.test(src), '2. the card editor\'s budget panel and the Test Lab show the multipliers');
 

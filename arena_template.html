@@ -11175,6 +11175,25 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* 2026-10-18 (package DK): each daily dungeon fight and Sweep run uses a 🗝️ key; with none, Fight / Sweep / Next are greyed and say why */
 .cnp-dungeon-keys{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
 .cnp-dungeon-keys.is-empty, .dg-nokeys, .sm-nokeys, .conquest-headline .dungeon-ticket-line.is-empty{color:#ff9a7a;}
+/* 2026-10-22 (package RW, owner N22-6: "dont ever write rank B. it should be an emblem"): the fight panel's drop line, "Possible drops: 🥚 2% · 🃏 7%" and the
+   rank emblem the card drop needs. .rw-mini is the small inline hex (a drop line, a waiting card in the results, a sentence); SS and SSS shrink their letters to fit. */
+.cnp-drops{margin:6px 0 0; display:flex; flex-wrap:wrap; align-items:center; gap:2px 6px; font-size:12.5px; font-weight:700; color:#f0e2c0;}
+.cnp-drops .cnp-drops-l{opacity:.85;}
+.cnp-drops .cnp-drop{white-space:nowrap;}
+.cnp-drops .cnp-drops-sep{opacity:.85; margin:0 -2px;}
+.rank-hex.rw-mini{position:relative !important; top:auto !important; right:auto !important; left:auto !important; width:22px; height:25px; rotate:-8deg; margin:0 2px !important; transform:none !important; z-index:auto; flex:0 0 auto; display:inline-grid; vertical-align:middle;}
+.rank-hex.rw-mini b{font-size:13px !important; letter-spacing:0; -webkit-text-stroke:0 !important;}
+.rank-hex.rw-mini.rank-SS b{font-size:10.5px !important; letter-spacing:-.06em;}
+.rank-hex.rw-mini.rank-SSS b{font-size:8px !important; letter-spacing:-.08em;}
+.rank-hex.rw-mini.rw-inline{margin:0 3px !important; vertical-align:-7px;}
+.rw-act.rw-locked-card{gap:4px;}
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank.rank-SS b{font-size:11px !important; letter-spacing:-.06em;}
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank.rank-SSS b{font-size:8.5px !important; letter-spacing:-.08em;}
+/* the loss grade is the hex too (was the words "Rank F"); F, FF and FFF get a dull rose hex and letters that fit */
+.rank-hex.rank-F i, .rank-hex.rank-FF i, .rank-hex.rank-FFF i{background:conic-gradient(from var(--fa, 0deg), #d9b3b3, #8c4a4a, #f0d2d2, #a65d5d, #d9b3b3);}
+.rank-hex.rank-FF b{font-size:26px;} .rank-hex.rank-FFF b{font-size:19px; letter-spacing:-.06em;}
+.wl-loss-rank .rank-hex b{font:800 34px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:0; color:#fff;}
+.wl-loss-rank .rank-hex.rank-FF b{font-size:26px;} .wl-loss-rank .rank-hex.rank-FFF b{font-size:19px; letter-spacing:-.06em;}
 .dg-nokeys{margin:6px 0 0; font-weight:700;}
 .dg-sweep.is-nokeys, .cnp-fight.is-nokeys, #wlNextBattleBtn.is-nokeys{filter:grayscale(.65) brightness(.85); cursor:not-allowed;}
 .sr-keys{margin:4px 0 0; font-weight:700;}

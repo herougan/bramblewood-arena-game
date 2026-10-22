@@ -19692,7 +19692,7 @@ function questsModalHTML(){
       const canSwap = !q.swapUsed && !done && !got;
       return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''} ${shown ? 'rank-' + x.rank : ''}" style="--rot:${rot*0.7}deg">
         <span class="qn-pin" aria-hidden="true"></span>
-        ${shown ? `<span class="qn-rank qn-rank-${x.rank}" title="A rare Rank ${x.rank} notice">${x.rank}</span>` : ''}
+        ${shown ? `<span class="qn-rank qn-rank-${x.rank}" title="${escapeAttr(TX('ui.rw-rare-notice'))}">${x.rank}</span>` : ''}
         <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
         <div class="qn-label">${escapeHtml(x.label)}</div>
         <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
@@ -21553,7 +21553,7 @@ function lossRankHeadlineHTML(m){
   if(!m || m.mode !== 'conquest' || m.winner === 1 || !/^F+$/.test(m.conquestRankEarned || '')) return '';
   const d = (()=>{ try{ return lossCastleDamage(m); }catch(e){ return null; } })();
   const note = d ? `Their bramble took ${d.total} damage${d.shield ? ` (${d.shield} of it to its Armour)` : ''}.` : '';
-  return `<div class="wl-loss-rank" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}"><b class="rank-${m.conquestRankEarned}">Rank ${m.conquestRankEarned}</b>${note ? `<small>${escapeHtml(note)}</small>` : ''}</div>`;
+  return `<div class="wl-loss-rank" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}"><span class="rank-hex wl-rank rank-${m.conquestRankEarned}" role="img" aria-label="${escapeAttr(TX('results.rank', {conquestRankEarned: m.conquestRankEarned}))}"><i aria-hidden="true"></i><b aria-hidden="true">${m.conquestRankEarned}</b></span>${/* 2026-10-22 (RW, owner: "dont ever write rank B. it should be an emblem"): the loss grade as the hex too, was the words "Rank F" */''}${note ? `<small>${escapeHtml(note)}</small>` : ''}</div>`;
 }
 function conquestRankFor(m, node){
   const hq = m.players[1].hq, frac = hq.maxHp > 0 ? Math.max(0, hq.hp)/hq.maxHp : 0;
@@ -21945,15 +21945,18 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
-  const gotCards = done && cardRewardsClaimed().has(conquestNodeId(mapId, node.key)), needR = ids.length && !gotCards ? cardRewardRankFor(mapId, node) : null;
+  // 2026-10-22 (package RW, owner N22-4): the rank is per card (cardRewardRankFor), so a fight paying a Common and a Rare shows a different
+  // emblem on each; a card already yours (the ledger, per card) is greyed with no emblem. The emblem is the hex, never the words.
+  const nid0 = conquestNodeId(mapId, node.key), gotOf = id=> !!done && cardRewardIsGot(nid0, id);
   // 2026-10-16 (user: "Card rewards locked behind A, S etc. The card park or card has a emblem on it, representing the rank. Default is
   // nothing - first clear is enough."): a card that needs a rank wears that rank's small hex emblem on its corner (was a separate "B+"
   // pill before the cards); a card that only needs the first clear shows nothing extra.
-  const rankMark = needR ? `<span class="rank-hex rank-${needR} cnp-rw-rank" aria-hidden="true"><i></i><b>${needR}</b></span>` : '';
-  const needLbl = needR ? `, needs rank ${needR} or better` : '';
-  const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card${needLbl}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
-    : `<span class="cnp-rw-card ${gotCards?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (gotCards ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}</span>`).join('');
+  const cards = ids.map(id=>{ const got = gotOf(id), needR = got ? null : cardRewardRankFor(mapId, node, id);
+    const rankMark = needR ? `<span class="rank-hex rank-${needR} cnp-rw-rank" aria-hidden="true"><i></i><b>${needR}</b></span>` : '';
+    const needLbl = needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '';
+    return isCardHiddenForPlayer(defs[id])
+    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
+    : `<span class="cnp-rw-card ${got?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}</span>`; }).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
@@ -21977,6 +21980,20 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const blocks = (cur.length ? 1 : 0) + (cardsAll ? 1 : 0) + (rankHTML ? 1 : 0);
   setTimeout(fitFirstClearLabels, 0); requestAnimationFrame(()=> fitFirstClearLabels());
   return `<div class="cnp-rw ${done?'is-done':''}" style="--rw-cols:${Math.max(1, blocks)}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label"><span class="cnp-rw-word">First Clear</span>${done ? ' <i class="cnp-rw-ok" aria-hidden="true">✓</i>' : ''}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
+}
+// The fight panel's drop line (2026-10-22, package RW, owner N22-6): "Possible drops: 🥚 2% · 🃏 7%" and, after the card, the rank emblem the card drop
+// needs (what a Common needs there, cardRewardRankFor with no card; a Rare asks more). The egg number is eggChanceFor (the first-clear chance until the fight
+// is cleared, the repeat one after), the card number the same one the win rolls (nodeCardDropChance). Nothing on a tutorial fight or when neither can drop.
+function fmtDropPct(p){ const v = p * 100; return (v >= 10 ? Math.round(v) : Math.round(v * 100) / 100) + '%'; }
+function cnpDropsLineHTML(mapId, node, done){
+  if(!node || node.kind === 'tutorial' || node.virtual) return '';
+  let egg = 0, card = 0; try{ egg = eggChanceFor(node, mapId, !done) || 0; }catch(e){} try{ card = nodeCardDropChance(mapId, node) || 0; }catch(e){}
+  if(!(egg > 0) && !(card > 0)) return '';
+  const parts = [];
+  if(egg > 0) parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-egg', {p: fmtDropPct(egg)}))}"><span aria-hidden="true">🥚 ${fmtDropPct(egg)}</span></span>`);
+  if(card > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
+    parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(card)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(card)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
+  return `<p class="cnp-drops"><span class="cnp-drops-l">${escapeHtml(TX('ui.rw-drops'))}</span> ${parts.join('<span class="cnp-drops-sep" aria-hidden="true"> · </span>')}</p>`;
 }
 function fitFirstClearLabels(){
   document.querySelectorAll('.cnp-rw.is-done').forEach(box=>{
@@ -23250,10 +23267,35 @@ function markCardRewardsClaimed(nid){ const s0 = cardRewardsClaimed(); s0.add(ni
 // 2026-10-16 (user: "Card rewards locked behind A, S etc. ... Default is nothing - first clear is enough. For Map 0-5 ... 6 onwards, B
 // needed. 21 onwards, A needed."): no rank on Maps 0–5, B from Map 6, A from Map 21 (was B from 5, A from 15, S from 30). A fight can
 // still ask for its own rank (node.cardRank: 'B' / 'A' / 'S'), which is the only way a card reward needs S now.
-function cardRewardRankFor(mapId, node){
-  if(node && node.cardRank && /^(B|A|S+)$/.test(node.cardRank)) return node.cardRank;
-  const n = mapNumberOf(mapId); if(n == null) return null; return n >= 21 ? 'A' : n >= 6 ? 'B' : null;
+// 2026-10-22 (package RW, owner N22-4) REPLACES that rule (it stood here as "none on Maps 0–5, B from 6, A from 21"): the rank is per CARD, not
+// per fight. Resources (Maple Leaves, Dust, materia …) need only the clear and have no rank. A card needs at least B, or at least S when it is
+// Rare or above; an elite fight (bosses count as elites, owner call RW-1) asks SS for any card. Every 20 maps all of these step up one rank
+// (Maps 0–19 as above; 20–39: A, SS for Rare+, elites SSS; 40+: S, SSS for Rare+), capped at SSS (RANK_ORDER). A fight's own node.cardRank
+// can only raise it. A tutorial fight (and a map with no number) needs nothing. cardId is the reward card (its rarity decides); with no cardId
+// it is the rank a Common needs, the lowest the fight asks of any card (what the fight panel's drop line shows).
+const CARD_RANK_STEP_MAPS = 20; // every 20 maps the ranks step up one
+function rarityAtLeastRare(r){
+  const d = RARITY_DEFS.find(x=> x.key === r), key = d ? (d.as || d.key) : 'common'; // Quest / Special / Event … count as the rank they stand for
+  return RARITY_DEFS.findIndex(x=> x.key === key) >= RARITY_DEFS.findIndex(x=> x.key === 'rare');
 }
+function nodeIsEliteForRank(node){ const k = baseKind((node && node.kind) || 'skirmish'); return k === 'elite' || k === 'boss' || k === 'raidboss' || k === 'finalboss'; } // owner call RW-1: bosses count as elites
+function cardRewardRankFor(mapId, node, cardId){
+  if(node && node.kind === 'tutorial') return null;
+  const n = mapNumberOf(mapId); if(n == null) return null;
+  const d = cardId ? getCardDefs()[cardId] : null;
+  let i = RANK_ORDER.indexOf(nodeIsEliteForRank(node) ? 'SS' : (d && rarityAtLeastRare(d.rarity)) ? 'S' : 'B') + Math.floor(n / CARD_RANK_STEP_MAPS);
+  if(node && node.cardRank && /^(B|A|S+)$/.test(node.cardRank)) i = Math.max(i, RANK_ORDER.indexOf(node.cardRank));
+  return RANK_ORDER[Math.min(i, RANK_ORDER.length - 1)];
+}
+// Which of a fight's reward cards are already yours (2026-10-22, RW): the node-level ledger (cardRewardsClaimed) says "all of them"; a fight
+// that paid some cards at one rank and keeps the rest for a better win lists the paid ones here, so a later win claims only the others.
+const CARD_REWARD_GOT_KEY = 'bramblewood_card_rewards_got_v1';
+function cardRewardGotMap(){ try{ const o = JSON.parse(localStorage.getItem(CARD_REWARD_GOT_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } }
+function cardRewardGotIds(nid){ const a = cardRewardGotMap()[nid]; return Array.isArray(a) ? a : []; }
+function markCardRewardGot(nid, ids){ try{ const o = cardRewardGotMap(); o[nid] = [...new Set((o[nid] || []).concat(ids))]; localStorage.setItem(CARD_REWARD_GOT_KEY, JSON.stringify(o)); }catch(e){} }
+function cardRewardIsGot(nid, id){ return cardRewardsClaimed().has(nid) || cardRewardGotIds(nid).includes(id); }
+// The small rank emblem (the hex, never the words, owner 2026-10-22: "dont ever write rank B. it should be an emblem"). The words are only the label.
+function rankEmblemHTML(rank, cls){ return rank ? `<span class="rank-hex rank-${escapeAttr(rank)} ${cls || ''}" role="img" aria-label="${escapeAttr(TX('ui.rw-needs-rank', {rank}))}"><i aria-hidden="true"></i><b aria-hidden="true">${escapeHtml(rank)}</b></span>` : ''; }
 // The Map 0 swap window (2026-10-13): "everytime they win a card, show a special UI subwindow on the conquest map ... that lets
 // them switch out a basic card with the card gotten". One window per card won; pick a deck card to trade out, or keep the deck.
 let pendingDeckSwap = null;
@@ -23718,7 +23760,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
+          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
     </div>
@@ -23957,6 +23999,7 @@ function renderConquestSubTab(body){
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
+      ${cnpDropsLineHTML(map.id, selectedNode, done) /* 2026-10-22 (package RW, owner N22-6): one short line of the small drop chances */}
       ${newSkillRibbonHTML(selectedNode)}
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
@@ -27834,7 +27877,7 @@ function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : 
 // 2026-10-21 (BF5, owner): the card's N multiplier, one line when it isn't 1: no abilities x plainBonus, only light ones x lightBonus; Fragile (BF7, 2026-10-22) is no longer one: its x0.7 is on the caps (sbFragileUse)
 function sbNMultLine(d){ const B = BramblewoodBudget, cfg = Object.assign({}, SB_V3_DEFAULTS, (typeof sbLoad === 'function' ? sbLoad() : {})), e = (d && d.effects) || {}, a = B.abilitiesOf(e), g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], out = [];
   if(!a.length) out.push(TX('ui.budget-nmult-plain', {k: g('plainBonus')})); else if(a.every(x=> B.LIGHT.includes(x))) out.push(TX('ui.budget-nmult-light', {k: g('lightBonus')}));
-  if(a.includes('fragile')) out.push(B.formulaParts(cfg).fragileText + '.'); // 2026-10-22 (BF7): Fragile is x0.7 on both caps' left sides now, not N x fragileMult (the helper's words; TX ui.budget-nmult-fragile still says "N ×", a texts package)
+  if(a.includes('fragile')) out.push(TX('ui.budget-nmult-fragile', {k: g('fragileUse')})); // 2026-10-22 (BF7): Fragile is x0.7 on both caps' left sides now, not N x fragileMult; the TX words were reworded by RW
   // 2026-10-21 (package TR, owner HB2-1): the two-skill rule's count, where it is over two (plain Flying, Tide, Diurnal, Nocturnal don't count; several count 1)
   const n2 = B.skillCountOf ? B.skillCountOf(e) : a.length, warn = n2 > 2 ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-two-skills', {n: n2}))}</small>` : '';
   return (out.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(out.join(' '))}</small>` : '') + warn; }
@@ -27848,11 +27891,11 @@ function ceBudgetHTML(d){
   const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), c = sbCheck(A, D, S, N, M, F); // CX5 (10-21): S from canonical/skill-costs.json; BF7 (10-22): F
   const rar = (d.rarity || 'common'), rd = RARITY_DEFS.find(r=> r.key === rar), rarLabel = rd ? rd.label : rar[0].toUpperCase() + rar.slice(1);
   const W = Number(d.wait)||0, C = Number(d.cost)||0, f1 = v=> Math.round(v * 10) / 10, m = M !== 1 ? ` × ${f1(M)}` : '', mark = ok=> ok ? '✓' : '✗', op = ok=> ok ? '≤' : '&gt;'; // inclusive (BF3, 16:22)
-  // 2026-10-22 (BF7): with a half-miss ×M (now on the stats only) or Fragile's ×F the TX lines' "(… + S){m}" no longer shows the sum, so these
-  // cards get the worked lines in the helper's form (English until a texts package rewords ui.budget-stats / ui.budget-product)
+  // 2026-10-22 (BF7, texts by RW): the worked lines show the rule as it is now: f × ((2×A + H) × m + S) and f × (A×H × m + S×|S|). {f} is "0.7 × " for a Fragile
+  // card, else empty; {m} is "×1.5" per half-miss skill (on the stats only), else empty. ui.budget-stats / ui.budget-product carry the new wording (was an English fallback here).
   const r2m = v=> Math.round(v * 100) / 100, fp = F !== 1 ? `${r2m(F)} × ` : '', mm = M !== 1 ? `×${r2m(M)}` : '';
-  const statsLine = M === 1 && F === 1 ? TX('ui.budget-stats', {a: A, h: D, s: f1(S), m, x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)}) : `Stats: ${fp}((2×${A} + ${D})${mm} + ${f1(S)} skills) = ${f1(c.x1)} ${op(c.r1)} N = ${f1(N)} ${mark(c.r1)}`;
-  const productLine = M === 1 && F === 1 ? TX('ui.budget-product', {a: A, h: D, s: f1(S), m, x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)}) : `Product: ${fp}(${A}×${D}${mm} + ${f1(S)}×|${f1(S)}|) = ${f1(c.x2)} ${op(c.r2)} (N/3)² = ${f1(c.N2)} ${mark(c.r2)}`;
+  const statsLine = TX('ui.budget-stats', {f: fp, a: A, h: D, m: mm, s: f1(S), x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)});
+  const productLine = TX('ui.budget-product', {f: fp, a: A, h: D, m: mm, s: f1(S), x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)});
   const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
   // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
   const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
@@ -27879,11 +27922,10 @@ let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
   const rows = ids.map(id=>{ const d = defs[id], pr = sbPriceS(d, cfg) /* CX5 (10-21): canonical/skill-costs.json */, S = pr.S, lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg) /* BF7 (10-22) */, c = sbCheck(A, D, S, N, M, F); return {id, d, S, miss: pr.missing, lv, N, A, D, M, F, c, fit: c.ok ? null : sbFit(d, S, N, M, F)}; });
-  const fpBB = BramblewoodBudget.formulaParts(Object.assign({}, SB_V3_DEFAULTS, cfg)); // 2026-10-22 (BF7): the helper's words for the half-miss and Fragile rules
   const fails = rows.filter(r=> !r.c.ok), pinks = rows.filter(r=> r.c.wellUnder), shown = sbState.onlyFail ? fails : rows;
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">${escapeHtml(TX('ui.budget-lab-intro'))} ${escapeHtml(sbFormulaText(cfg))}. ${escapeHtml(fpBB.miss)}; those skills cost 0. N multipliers: no abilities × ${escapeHtml(String(g('plainBonus')))}, only light abilities × ${escapeHtml(String(g('lightBonus')))}. ${escapeHtml(fpBB.fragileText)}. <!-- 2026-10-19 (BF2): v5, through TX; 2026-10-22 (BF7): the half-miss and Fragile sentences from the helper (TX ui.budget-lab-miss / ui.budget-lab-nmult describe the old rule until a texts package) --> Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Attack and Health (not S) count ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves): ${escapeHtml(fpBB.cap1)}, ${escapeHtml(fpBB.cap2)}. Skill costs (S) come from canonical/skill-costs.json, the table the balance tools and the hub use (CX5, 2026-10-21). <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
+    <p class="panel-sub">${escapeHtml(TX('ui.budget-lab-intro'))} ${escapeHtml(sbFormulaText(cfg))}. ${escapeHtml(TX('ui.budget-lab-miss', {m: g('missMult'), skills: (cfg.halfMiss || SB_HALF_MISS).join(', ')}))} ${escapeHtml(TX('ui.budget-lab-nmult', {plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileUse')}))} <!-- 2026-10-19 (BF2): v5, through TX; 2026-10-22 (BF7 rule, RW wording): the half-miss and N-multiplier sentences are TX again, saying the new rule --> Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Skill costs (S) come from canonical/skill-costs.json, the table the balance tools and the hub use (CX5, 2026-10-21). <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
     <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label title="BF5 (owner 21:36): the whole N times this; 0.5 halves it">N × ${inp('sbScale', 'scale', '0.05')}</label><label title="N = (Base + Level / this) × (1 + Level / growth)">Level ÷ ${inp('sbLevelLin', 'levelLinDiv')}</label><label title="N = (Base + Level / ÷) × (1 + Level / this)">Level growth ÷ ${inp('sbLevelDiv', 'levelDiv')}</label><label title="Level 0: Base − this">Level 0 − ${inp('sbZero', 'zeroPenalty', '0.5')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
       <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label title="Ritual points = the sum of the Ritual's counts">Per Ritual point ${inp('sbRitual', 'perRitual', '0.1')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
       <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v5 numbers">Reset to v5</button>
@@ -31377,7 +31419,7 @@ function renderMatchUI(){
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
-        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${adminModeEnabled && !m.fxLib && m.mode!=='sandbox' ? `<button type="button" class="btn small admin-edit-btn${m._editMode ? ' is-on' : ''}" id="adminEditModeBtn" role="switch" aria-checked="${!!m._editMode}" title="${escapeAttr(TX('ui.ui3-edit-mode-tip'))}">✏️<span class="trc-lbl"> ${escapeHtml(TX('ui.ui3-edit-mode'))}</span></button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
+        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${adminModeEnabled && !m.fxLib && m.mode!=='sandbox' ? `<button type="button" class="btn small admin-edit-btn${m._editMode ? ' is-on' : ''}" id="adminEditModeBtn" role="switch" aria-checked="${!!m._editMode}" title="${escapeAttr(TX('ui.ui3-edit-mode-tip'))}">✏️<span class="trc-lbl"> ${escapeHtml(TX('ui.ui3-edit-mode'))}</span></button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : TX('ui.rw-autoplay-tip') /* 2026-10-22 (RW): no rank letter in words */}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
         <button class="btn small" id="quitMatchBtn" aria-label="${isAsync?'Save & Exit':'Quit'}" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':`title="${isAsync?'Save & Exit':'Quit'}"`}><span class="trc-ico" aria-hidden="true">${isAsync?'💾':'🚪'}</span><span class="trc-lbl">${isAsync?'Save & Exit':'Quit'}</span></button>
       </div>
       ${'' /* 2026-10-15 (user: "On the opposite side of the field in the same position, I should see the enemy's currencies."): the
@@ -37590,16 +37632,22 @@ async function resolveRoundCore(opts){
       // Card rewards by rank (2026-10-13, user: "As games progress, card rewards are only guaranteed on B->A->S"): from Map 5 a
       // fight's reward cards need rank B, from Map 15 rank A, from Map 30 rank S. Below that they wait for a better win; the
       // fight's other first-clear rewards still pay out.
-      const needRank = cardRewardRankFor(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node), claimedSet = cardRewardsClaimed(); // 2026-10-16: Maps 6/21, or the fight's own cardRank
+      // 2026-10-22 (package RW, owner N22-4): the rank is per card now (cardRewardRankFor(map, node, cardId): B, S for Rare+, SS for an elite's cards,
+      // one step up every 20 maps), not one rank for the fight; the paid cards are listed per card (cardRewardGotIds) so a later better win claims the rest.
+      const claimedSet = cardRewardsClaimed();
       // Map 0's opening fights (2026-10-15, user: "0-1 will give a single card reward. The swap is for that. 0-2 will give a faction
       // pack"): on their first clear, 0-1 (node.firstOneCard) gives exactly one card and 0-2 (node.firstFactionPack) exactly one
       // faction pack; no extra drops, teaching cards or track cards ride along.
       const openNode = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode;
       const opening = isFirstClear && openNode && (openNode.firstOneCard || openNode.firstFactionPack) ? openNode : null;
       if(!claimedSet.has(preId) && !(opening && opening.firstFactionPack)){
-        const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId).slice(0, opening ? 1 : Infinity);
-        if(!needRank || rankAtLeast(rank, needRank)){ cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward')); if(cardIds.length) m.conquestCardsEarned = cardIds; markCardRewardsClaimed(preId); }
-        else if(cardIds.length) m.conquestCardsNeedRank = needRank;
+        const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId).slice(0, opening ? 1 : Infinity), gotBefore = cardRewardGotIds(preId), rwNode = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode;
+        const give = [], wait = [];
+        cardIds.filter(id=> !gotBefore.includes(id)).forEach(id=>{ const need = cardRewardRankFor(m.conquestNode.mapId, rwNode, id); (!need || rankAtLeast(rank, need) ? give : wait).push({id, rank: need}); });
+        give.forEach(g=> unlockCardForPlayer(g.id, 'conquestReward'));
+        if(give.length){ m.conquestCardsEarned = give.map(g=> g.id); markCardRewardGot(preId, m.conquestCardsEarned); }
+        if(wait.length) m.conquestCardsNeedRank = wait; // [{id, rank}]: kept for a better win
+        else markCardRewardsClaimed(preId);
       }
       if(isFirstClear){
         // First egg (2026-10-08): the first skirmish you clear on the fourth map leaves an egg in your Nest.
@@ -37672,7 +37720,7 @@ async function resolveRoundCore(opts){
       // map's enemy decks that you don't own yet. At most once per map.
       if(!opening) try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
       // Card drops (2026-10-12, 11:39 list): any win can drop one of the enemy's cards. See rollCardDrop.
-      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId); if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
+      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId, {rank}); /* 2026-10-22 (RW): the win's rank gates the drop */ if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
       // Map table rewards (2026-10-12): free packs on a map's boss first clear, and Base cards grow from bosses.
       try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp && fp.held) m.conquestPackHeld = fp.id; else if(fp) m.conquestFreePack = fp; }catch(e){}
       try{ const bx = baseCardBossGrowth((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(bx) m.conquestBaseGrowth = bx; }catch(e){}
@@ -39994,6 +40042,11 @@ function rewardCastleCardHTML(x){
   const tip = spare ? TX('results.spare-bramble-tip', {name: ch.name}) : TX('results.now-in-your-collection', {v1: ch.name});
   return `<div class="rw-card is-unlock rw-castle is-first-seen${spare ? ' is-spare' : ''}" data-castle="${escapeAttr(ch.id)}" data-tip="${escapeAttr(tip)}">${cardTileHTML(Object.assign({}, ch, {icon: ch.icon || '🏰'}), {isCastle:true, inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span><span class="rw-new${spare ? ' rw-spare' : ''}" aria-hidden="true">${spare ? TX('results.spare') : TX('results.new')}</span></div>`;
 }
+// A reward card this win was not good enough for (2026-10-22, package RW): a lock, a card and the rank emblem it needs (m.conquestCardsNeedRank = [{id, rank}]).
+function lockedCardChipsHTML(m, cls){
+  const w = Array.isArray(m.conquestCardsNeedRank) ? m.conquestCardsNeedRank : [];
+  return w.filter(x=> x && x.rank).map(x=> `<span class="${cls} rw-locked-card" tabindex="0" data-tip="${escapeAttr(TX('ui.rw-card-waits'))}"><span aria-hidden="true">🔒 🃏</span>${rankEmblemHTML(x.rank, 'rw-mini')}</span>`).join('');
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
@@ -40059,6 +40112,7 @@ function rewardsPanelHTML(m){
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.kit-boss-item'))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+  { const lk = lockedCardChipsHTML(m, 'rw-act'); if(lk) acts.push(lk); } // 2026-10-22 (RW): a reward card waiting for a better win, as lock + card + the rank emblem
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
@@ -40184,7 +40238,7 @@ function matchStatsHTML(m){
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="${escapeAttr(TX('results.defeating-a-named-conquest-leader-boss'))}">${TX('results.metal', {v1: rewardCountSpan(m.conquestMetalEarned)})}</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="${escapeAttr(TX('results.food-tokens-buy-sunfeather-packs-in'))}">${TX('results.food', {conquestFoodEarned: m.conquestFoodEarned})}</span>` : ''}
       ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.opened-its-cards-are-already-in'))}">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? (' ' + TX('results.new-subfaction')) : ''}</span>` : ''}
-      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="${escapeAttr(TX('results.new-card-unlocked'))}">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}${m.conquestCardsNeedRank ? `<span class="hud-pill" title="${escapeAttr(TX('results.win-this-fight-at-rank-or', {conquestCardsNeedRank: m.conquestCardsNeedRank}))}">${TX('results.card-at-rank', {conquestCardsNeedRank: m.conquestCardsNeedRank})}</span>` : ''}
+      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="${escapeAttr(TX('results.new-card-unlocked'))}">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}${lockedCardChipsHTML(m, 'hud-pill') /* 2026-10-22 (RW): the rank as the emblem, never the words (was "🔒 Card at rank B+") */}
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
   // sets conquestRankEarned (it isn't a Conquest node at all).
@@ -45551,8 +45605,8 @@ function scaleTrailJournalHTML(){
   const when = rewarded ? (()=>{ try{ return new Date(f[SCALE_TRAIL_DONE_FLAG]).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(e){ return ''; } })() : '';
   const foot = rewarded ? `<span class="er-meta">Finished${when ? ' ' + escapeHtml(when) : ''}. The dragons are only sleeping.</span>`
     : done ? '<span class="er-meta">All eight found</span><button type="button" class="er-seal" data-scale-claim="1">🎁 Claim reward</button>'
-    : '<span class="er-meta">An S rank or better in the right fight finds a scale, once.</span>';
-  return `<p class="qn-sub">A trail of Dragon Scales runs along the road. Each one waits in a single fight for an S rank or better.</p>
+    : `<span class="er-meta">${TX('ui.rw-scale-meta', {emblem: rankEmblemHTML('S', 'rw-mini rw-inline')})}</span>`; // 2026-10-22 (RW): the rank as the emblem
+  return `<p class="qn-sub">${TX('ui.rw-scale-sub', {emblem: rankEmblemHTML('S', 'rw-mini rw-inline')})}</p>
     <div class="qn-cork er-cork"><section class="qn-board er-board st-board">
       <article class="er-writ st-writ ${done && !rewarded ? 'is-ready' : ''} ${rewarded ? 'is-done' : ''}">
         <header class="er-band"><span class="er-kind">🐉 Hidden trail</span><span class="er-status">${rewarded ? 'Complete' : done ? 'Done: claim it' : 'In progress'}</span></header>
@@ -45692,8 +45746,65 @@ function cardDropRarity(kind){
   const t = [['heroic', /boss|worldboss/.test(kind) ? 0.01 : 0], ['epic', kind === 'worldboss' || kind === 'raidWin' ? 0.01 : 0], ['superrare', 0.02], ['veryrare', 0.05], ['rare', 0.10], ['uncommon', 0.30]];
   let r = Math.random(); for(const [rar, p] of t){ if(r < p) return rar; r -= p; } return 'common';
 }
+// 2026-10-22 (package RW, owners N22-4 and N22-5, calls RW-2 and RW-3): two changes to card drops.
+//  (a) The rank gate. opts.rank is the win's rank; a drop only lands when it meets the gate for that card's rarity on that map (the same
+//      rule as a reward card, cardRewardRankFor: B, S for Rare+, SS in an elite, one step up every 20 maps). Without opts.rank (raids and
+//      other callers) there is no gate.
+//  (b) A skirmish that gives nothing else (no reward card, no reward token, no free pack: skirmishDropApplies) drops a PACK card through
+//      rollSkirmishCardDrop instead of an enemy card; every other fight keeps the roll below unchanged (RW-3).
+function dropRankOk(node, mapId, id, opts){
+  if(!opts || opts.rank === undefined) return true;
+  const need = cardRewardRankFor(mapId, node, id); return !need || rankAtLeast(opts.rank, need);
+}
+const SKIRMISH_DROP_CHANCE = 0.07; // 30% below the old skirmish 10% (owner N22-5)
+// RW-2: the base rarity by map (the owner gave Commons from Map 0, Uncommons from Map 10, Rares rarely from Map 30; these shares are my reading, easy to tune here).
+const SKIRMISH_DROP_RARITY = [[30, [['common', 0.70], ['uncommon', 0.25], ['rare', 0.05]]], [10, [['common', 0.75], ['uncommon', 0.25]]], [0, [['common', 1]]]];
+const SKIRMISH_DROP_SHIFT = 0.05, SKIRMISH_OWN_SHARE = 0.5; // 5% one rarity down, 5% one up (then a second 5% for one more up); half the time the fight's own pack card
+function skirmishDropApplies(node, mapId){
+  if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return false;
+  if(nodeRewardCardIds(mapId, node.key).length) return false; // a card reward
+  if(node.rewardTokens && node.rewardTokens.length) return false; // a placeholder reward (Faction Reward / Growth)
+  if(nodeFirstClearPacks(mapId, node).length) return false; // a free or faction pack
+  return true;
+}
+// The rarity roll: the map's base rarity, then the shift. Returns {base, rar}.
+function skirmishDropRarityRoll(mapNo, rng){
+  rng = rng || Math.random;
+  const row = SKIRMISH_DROP_RARITY.find(([from])=> (mapNo || 0) >= from)[1], ladder = RARITY_DEFS.filter(r=> !r.as && r.key !== 'starter').map(r=> r.key);
+  let base = row[0][0], r = rng(); for(const [k, p] of row){ if(r < p){ base = k; break; } r -= p; }
+  const i0 = ladder.indexOf(base), s = rng(); let i = i0;
+  if(s < SKIRMISH_DROP_SHIFT) i = Math.max(0, i0 - 1); else if(s < 2 * SKIRMISH_DROP_SHIFT){ i = i0 + 1; if(rng() < SKIRMISH_DROP_SHIFT) i++; }
+  return {base, rar: ladder[Math.min(i, ladder.length - 1)]};
+}
+// The card: only pack cards of the basic pack pool (pool 1; the faction pool 11 has its own track) that the player has reached by map (packCardPool →
+// packCardReached). Half the time one of this fight's own enemy cards of that rarity; otherwise another card of that rarity from the pack, or the
+// pack directly when the fight has none at that rarity. A rarity with no card in reach steps down until one has.
+function skirmishDropPick(node, rar, rng){
+  rng = rng || Math.random;
+  const defs = getCardDefs(), ladder = RARITY_DEFS.filter(r=> !r.as && r.key !== 'starter').map(r=> r.key), base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
+  const poolIds = packCardPool(defs, 1).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
+  const deckPack = [...new Set(Object.keys(node.deck || {}).map(base))].filter(id=> inPool.has(id)), at = (ids, r)=> ids.filter(id=> (defs[id].rarity || 'common') === r), pick = a=> a[Math.floor(rng() * a.length)];
+  for(let i = ladder.indexOf(rar); i >= 0; i--){
+    const own = at(deckPack, ladder[i]); if(own.length && rng() < SKIRMISH_OWN_SHARE) return pick(own);
+    let rest = at(poolIds, ladder[i]).filter(id=> !own.includes(id)); if(!rest.length) rest = own.length ? own : at(poolIds, ladder[i]);
+    if(rest.length) return pick(rest);
+  }
+  return null;
+}
+function skirmishDropRoll(node, mapId, rng){ const rr = skirmishDropRarityRoll(mapNumberOf(mapId), rng), id = skirmishDropPick(node, rr.rar, rng); return {id, base: rr.base, rar: rr.rar}; }
+function rollSkirmishCardDrop(node, mapId, opts){
+  if(Math.random() >= SKIRMISH_DROP_CHANCE) return null;
+  const r = skirmishDropRoll(node, mapId); if(!r.id || !dropRankOk(node, mapId, r.id, opts)) return null;
+  unlockCardForPlayer(r.id, 'cardDrop'); return r.id;
+}
+// The card-drop chance a fight shows on its panel (the same numbers the win rolls).
+function nodeCardDropChance(mapId, node){
+  const kind = node.kind || 'skirmish'; if(kind === 'skirmish' && skirmishDropApplies(node, mapId)) return SKIRMISH_DROP_CHANCE;
+  return CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
+}
 function rollCardDrop(node, mapId, opts){
   if(!node) return null; const kind = (opts && opts.kind) || node.kind || 'skirmish';
+  if(kind === 'skirmish' && skirmishDropApplies(node, mapId)) return rollSkirmishCardDrop(node, mapId, opts); // 2026-10-22 (RW)
   const chance = CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
   if(Math.random() >= chance) return null;
   const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }; // + no Easter egg (2026-10-19, package EE)
@@ -45704,7 +45815,7 @@ function rollCardDrop(node, mapId, opts){
   let want = cardDropRarity(kind);
   for(let i = order.indexOf(want); i >= 0; i--){ const r = order[i];
     const pool = deckIds.filter(id=> (defs[id].rarity||'common') === r); const pool2 = pool.length ? pool : mapIds.filter(id=> (defs[id].rarity||'common') === r);
-    if(pool2.length){ const id = pool2[Math.floor(Math.random()*pool2.length)]; unlockCardForPlayer(id, 'cardDrop'); return id; } }
+    if(pool2.length){ const id = pool2[Math.floor(Math.random()*pool2.length)]; if(opts && opts.rank !== undefined && !dropRankOk(node, mapId, id, opts)) return null; /* 2026-10-22 (RW): the rank gate */ unlockCardForPlayer(id, 'cardDrop'); return id; } }
   return null;
 }
 function rollMateriaDrops(node, isFirstClear, rank){

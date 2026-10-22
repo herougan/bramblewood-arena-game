@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package RW: first-clear card ranks per card, skirmish card drops, the drop line)
+- **First-clear card rewards:** the rank is per card now (replaces "none on Maps 0–5, B from 6, A from 21"): at least B, S for a Rare or above, SS for any card in an elite or boss fight,
+  one step up every 20 maps (Maps 20–39: A, SS, elites SSS; 40+: S, SSS), capped at SSS. Resources need only the clear; tutorial fights need nothing. A fight paying a Common and a Rare
+  shows a different emblem on each card, and a later better win claims the cards it missed. Random card drops land only when the win's rank meets the gate for that card's rarity.
+- **Skirmish card drops:** a skirmish with no card reward, token or free pack drops a pack card on 7% of wins (was 10%): Common only on Maps 0–9, Common or Uncommon from Map 10, a rare Rare from
+  Map 30, then 5% one rarity down and 5% one up (a second 5% for another up). Half the time it is one of the fight's own pack cards. Other fights keep their old drop. Calls RW-1 to RW-3.
+- **The fight panel** shows `Possible drops: 🥚 2% · 🃏 7%` and the rank emblem the card drop needs. Rank words are gone from the results chip, the loss headline, the Dragon Scale trail and the tooltips: the hex emblem instead.
+- **Texts:** the six budget strings now describe BF7's rule (f × ((2A+H) × m + S) ≤ N …), and BF7's English fallback lines in the card editor are gone. New texts are translated in the 12 packs (`tools/i18n_2026_10_22_rw.py`).
+- Tests: `tests/bf5-2026-10-21.js` asserts `fragileUse` 0.7 (was `fragileMult` 0.75).
+
 ## 2026-10-22 (package BF7: pass III applied, the half-miss on stats only, Fragile ×0.7)
 - **Card stats:** 124 band cards re-fitted by formula (111 grow, mostly +1 or +2 Health; 12 come down, most of them cards that had no line before: White Dragon 4/19 → 1/11,
   Green Dragon 3/18 → 1/7, Gatling Hog 3/11 → 1/4). Mayfly Dancer 3/7 → 2/7. Band cards with no legal line 130 → 108;
