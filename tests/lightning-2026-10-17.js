@@ -113,7 +113,7 @@ ok(/if\(p\.codexNote\) txt \+= ' ' \+ p\.codexNote;/.test(src), 'the Skills Code
 // ---- 6. The board: element emoji, and every lightning hit is its own bolt (nothing thrown)
 { const icon = {}; vm.runInNewContext((src.match(/const DMG_ICON = \{[^\n]*/) || [''])[0].replace('const DMG_ICON', 'DMG') + '\n' + (src.match(/Object\.assign\(DMG_ICON, \{[^\n]*/) || [''])[0].replace('DMG_ICON', 'DMG') + '\nout.v = DMG;', {out: icon});
   const D = icon.v || {}; ok(D.shock[0] === '⚡' && D.heat[0] === '🔥' && D.cold[0] === '❄️' && D.water[0] === '💧' && D.acid[0] === '🧪' && D.poison[0] === '☠️' && D.magic[0] === '🪄' && D.psychic[0] === '💭', 'DMG_ICON: every element has its emoji'); }
-ok(/function dmgLogText\(dmg, dmgType\)/.test(src) && /hit \$\{nm\(ev\.targetDefId\)\} for \$\{dmgLogText\(ev\.dmg, ev\.dmgType\)\}/.test(src), 'the battle log names the element with its emoji ("for 3 ⚡ lightning damage")');
+ok(/function dmgLogText\(dmg, dmgType(, ev)?\)/.test(src) && /hit \$\{nm\(ev\.targetDefId\)\} for \$\{dmgLogText\(ev\.dmg, ev\.dmgType(, ev)?\)\}/.test(src), /* + ev: the 👊 and mark (DN2, 2026-10-22) */ 'the battle log names the element with its emoji ("for 3 ⚡ lightning damage")');
 ok(/\? '👊' : ''\) \+ g;/.test(src), 'an elemental crit keeps its emoji'); // 2026-10-22 (package DN): 👊 then the element's glyph, in dmgFloatParts
 const fnSrc = name=>{ const i = src.indexOf(`\nfunction ${name}(`); if(i < 0) return ''; let d = 0, j = src.indexOf('{', i); for(let k = j; k < src.length; k++){ const ch = src[k]; if(ch === '{') d++; else if(ch === '}'){ d--; if(!d) return src.slice(i, k + 1); } } return ''; };
 { const els = {}; const el = u=> (els[u] = els[u] || {id:u, classList:{add(){}, remove(){}}});

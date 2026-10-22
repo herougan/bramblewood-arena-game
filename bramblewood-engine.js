@@ -1378,7 +1378,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       [1,2].forEach(pid=>{ const cards = allLive(players[pid]).filter(c=> resistFactor(c.defId, 'heat') >= 1 && !climbs(c)); // + Mountain Climber (2026-10-16)
         for(let k = 0; k <= L && cards.length; k++){ const c = cards.splice(Math.floor(rnd()*cards.length), 1)[0]; const hp0 = c.hp;
           damageCardFlat(c, L, 'heat'); const dmg = Math.max(0, hp0 - c.hp); // weakness doubles inside damageCardFlat
-          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg}); } });
+          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg, mods:dnModsFor(c.uid)}); } }); // + mods (DN2, 2026-10-22)
       removeDeadCards(players, sideOf, {}, stats, events);
     } else if(f === 'rain'){
       [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const h = applyHeal(c, 2, sideOf(pid), events); if(h > 0){
@@ -1416,7 +1416,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const ev = o=>{ if(recordEvents && events) events.push(o); };
     let hurt = false;
     const hit = (pid, c, n, type, field, extra)=>{ if(!c || !(c.hp > 0) || !(n > 0)) return 0; const hp0 = c.hp; damageCardFlat(c, n, type); const dmg = Math.max(0, hp0 - c.hp); hurt = true;
-      ensureStat(stats, sideOf(pid), c.defId).taken += dmg; ev(Object.assign({type:'fieldTick', field, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg, dmgType:type}, extra || {})); return dmg; };
+      ensureStat(stats, sideOf(pid), c.defId).taken += dmg; ev(Object.assign({type:'fieldTick', field, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg, dmgType:type, mods:dnModsFor(c.uid)}, extra || {})); return dmg; }; // + mods (DN2, 2026-10-22)
     // Leylines II: +1 Lumber a round to each side (the game has no mana: Lumber is what cards cost). Leylines III: +1 Lumber and +1 Stone.
     if(rules.leylines2 || rules.leylines3) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       const l = (rules.leylines2 ? 1 : 0) + (rules.leylines3 ? 1 : 0); const got = addLumber(pl, l); ev({type:'lumber', side:sideOf(pid), defId:null, amount:got, rule:true, leylines:true});
@@ -1556,8 +1556,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
       if(!c || c.gap || !(c.hp > 0) || c.cageOf) return;
       c.wait = (c.wait||0) + 1; let dmg = 0;
-      if(!isTide(c)){ const hp0 = c.hp; damageCardFlat(c, 1, 'water'); dmg = Math.max(0, hp0 - c.hp); hurt = true; }
-      if(recordEvents && events) events.push({type:'wash', spout:true, side:sideOf(pid), targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, dmg, col}); });
+      let mods; if(!isTide(c)){ const hp0 = c.hp; damageCardFlat(c, 1, 'water'); dmg = Math.max(0, hp0 - c.hp); hurt = true; mods = dnModsFor(c.uid); }
+      if(recordEvents && events) events.push({type:'wash', spout:true, side:sideOf(pid), targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, dmg, col, mods}); }); // + mods (DN2, 2026-10-22)
     if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
   }
   function volcanoTick(players, round, sideOf, stats, events, paused){
@@ -1573,7 +1573,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // keeps its name. dmg is what the unit really lost.
     const erupt = (n, ground)=> [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !groundProof(c)); if(!cs.length) return;
       const c = cs[Math.floor(rnd()*cs.length)]; const hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
-      if(recordEvents && events) events.push({type:'fieldTick', field: ground ? 'scorched' : 'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp)}); });
+      if(recordEvents && events) events.push({type:'fieldTick', field: ground ? 'scorched' : 'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), mods:dnModsFor(c.uid)}); }); // + mods (DN2)
     // Comets (2026-10-14, user: "After eruption, the cycle resets, but for the next 3 turns, comets rain down, dealing 2-5 (random)
     // fire damage to each unit. The damage dealt to each unit is random."): for 3 rounds after an Eruption, at the start of the round
     // every unit on both sides is struck for its own 2–5 fire damage (the fight's seeded roll; fire-resistant units take half).
@@ -1582,7 +1582,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'fieldTick', field:'cometRain', round, left: cometRounds});
       // 2026-10-22 (package FX2): 1 fire each (was a random 2-5): comets fall on every unit three rounds running, so 1 is the most that keeps a round's average at 1.
       [1,2].forEach(pid=> allLive(players[pid]).filter(c=> !c.cageOf && !climbs(c)).forEach(c=>{ const n = VOLCANO_HIT, hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
-        if(recordEvents && events) events.push({type:'fieldTick', field:'comet', side:sideOf(pid), uid:c.uid, defId:c.defId, roll:n, dmg:Math.max(0, hp0 - c.hp)}); }));
+        if(recordEvents && events) events.push({type:'fieldTick', field:'comet', side:sideOf(pid), uid:c.uid, defId:c.defId, roll:n, dmg:Math.max(0, hp0 - c.hp), mods:dnModsFor(c.uid)}); })); // + mods (DN2)
     }
     const vc = round > 1 ? volcanoChances(round) : null;
     if(vc){
@@ -1594,7 +1594,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
             if(!c || c.gap || !(c.hp > 0) || c.cageOf || isFlyingCard(c) || climbs(c)) return;
             const hp0 = c.hp; damageCardFlat(c, VOLCANO_HIT, 'heat'); burnt = true; // 1 (was 3; 2026-10-22, package FX2): its chance runs up to 60% a round, and higher on a rising volcano
-            if(recordEvents && events) events.push({type:'fieldTick', field:'lavaTide', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col}); }); } }
+            if(recordEvents && events) events.push({type:'fieldTick', field:'lavaTide', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col, mods:dnModsFor(c.uid)}); }); } } // + mods (DN2)
       if(stone) [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !c.cageOf && !climbs(c)); if(!cs.length) return;
         const c = cs[Math.floor(rnd()*cs.length)]; c.petrified = true;
         if(recordEvents && events) events.push({type:'fieldTick', field:'petrify', side:sideOf(pid), uid:c.uid, defId:c.defId}); });
@@ -1613,7 +1613,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         [order[i-1], order[i+1]].forEach(c=>{ if(c && c.hp > 0) hits.push([pid, c]); });
         const opp = opposingCardOf(players, pid, src); if(opp && opp.card && opp.card.hp > 0) hits.push([otherId(pid), opp.card]);
         hits.forEach(([tp, c])=>{ if(heatProof(c)) return; damageCardFlat(c, k, 'heat'); burnt = true;
-          if(recordEvents && events) events.push({type:'fieldTick', field:'immolation', side:sideOf(tp), uid:c.uid, defId:c.defId, dmg:k, srcUid:src.uid, srcDefId:src.defId}); }); }); });
+          if(recordEvents && events) events.push({type:'fieldTick', field:'immolation', side:sideOf(tp), uid:c.uid, defId:c.defId, dmg:k, srcUid:src.uid, srcDefId:src.defId, mods:dnModsFor(c.uid)}); }); }); }); // + mods (DN2)
     // Irradiated N (reworked 2026-10-14, user: "Irradiation tokens - Irradiated ..."; see irradiationTick): every upkeep it gives
     // N Irradiation tokens to the enemy facing it and to the units beside it (yours too), and 1 to itself. A 'radiation' Resist
     // halves the tokens a unit gets; Immunity stops them.
@@ -1780,9 +1780,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(recordEvents && events) events.push(ev);
     if(crashInto && t.hp > 0 && crashInto.hp > 0){ // both take N (a hit: Exposed doubles it, like any flat hit)
-      const sd = sideOf(tpid), h1 = t.hp, h2 = crashInto.hp, d1 = damageCardFlat(t, n, 'impact'), d2 = damageCardFlat(crashInto, n, 'impact');
+      const sd = sideOf(tpid), h1 = t.hp, h2 = crashInto.hp, d1 = damageCardFlat(t, n, 'impact'), m1 = dnModsFor(t.uid), d2 = damageCardFlat(crashInto, n, 'impact'), m2 = dnModsFor(crashInto.uid); // m1, m2: marks (DN2)
       ensureStat(stats || {}, sd, t.defId).taken += d1; ensureStat(stats || {}, sd, crashInto.defId).taken += d2;
-      if(recordEvents && events) events.push({type:'washCrash', side:sd, uid:t.uid, defId:t.defId, otherUid:crashInto.uid, otherDefId:crashInto.defId, n, dmg:d1, otherDmg:d2});
+      if(recordEvents && events) events.push({type:'washCrash', side:sd, uid:t.uid, defId:t.defId, otherUid:crashInto.uid, otherDefId:crashInto.defId, n, dmg:d1, otherDmg:d2, mods:m1, otherMods:m2});
       const book = killCredit || {};
       if(ev.attUid != null && ev.attDefId) [[t, h1], [crashInto, h2]].forEach(([c, h0])=>{ if(h0 > 0 && c.hp <= 0){
         noteKiller(c, ev.attUid, ev.attDefId); (book[c.uid] = book[c.uid] || new Set()).add(statKey(ev.side, ev.attDefId)); } });
@@ -2115,7 +2115,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(base - (att.armorLoss||0) > 0){ att.armorLoss = (att.armorLoss||0) + 1; lost = 1; }
     if(att.hp > 0){ att.bleed = (att.bleed||0) + 1; att.ichorBleed = (att.ichorBleed||0) + 1; }
     ensureStat(stats, sideOf(otherId(defOwnerId)), att.defId).taken += dmg;
-    if(recordEvents && events) events.push({type:'statusFx', kind:'ichor', side:sideOf(defOwnerId), attUid:defCard.uid, attDefId:defCard.defId, targetSide:sideOf(otherId(defOwnerId)), targetUid:att.uid, targetDefId:att.defId, amount:dmg, armor:lost, bleed:1});
+    if(recordEvents && events) events.push({type:'statusFx', kind:'ichor', side:sideOf(defOwnerId), attUid:defCard.uid, attDefId:defCard.defId, targetSide:sideOf(otherId(defOwnerId)), targetUid:att.uid, targetDefId:att.defId, amount:dmg, mods:dnModsFor(att.uid) /* DN2 */, armor:lost, bleed:1});
     if(att.hp <= 0 && killCredit){ if(!killCredit[att.uid]) killCredit[att.uid] = new Set(); killCredit[att.uid].add(statKey(sideOf(defOwnerId), defCard.defId)); }
   }
   // Irradiation tokens (2026-10-14, user: "Irradiation tokens - Irradiated. For each token, remove either 1 ATT, 1 HP, or 1 value from
@@ -2523,7 +2523,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     o = o || {};
     const y = roundDmg(x);
     const dmg = (o.raw || o.crush) ? y : spendTempHp(card, y), tempSoak = y - dmg; // Shell's temporary Health, then a Shield (2026-10-12 / 10-14)
-    if(o.mods){ if(tempSoak > 0) o.mods.push('shield'); lastHitMods = {uid: card.uid, mods: o.mods}; } // 2026-10-22 (package DN)
+    if(o.mods && tempSoak > 0) o.mods.push('shield'); // 2026-10-22 (package DN)
+    lastHitMods = {uid: card.uid, mods: o.mods || (tempSoak > 0 ? ['shield'] : [])}; // 2026-10-22 (package DN2): every apply sets it (a raw one too), so a tick's event never reads an older hit's marks
     if(o.punishBy !== undefined) sk1NotePunish(card, o.punishBy); // Punish N (2026-10-19, package SK1, flagged)
     if(o.noteHit) noteHit(card, dmg, o.dmgType);
     const hp0 = card.hp;
@@ -3082,7 +3083,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ensureStat(stats, sideOf(ownerId), card.defId).taken += dmg;
     // 2026-10-18 (user: "Bleed and poison both tick down by 1 per turn."): the stack no longer wears down per action; it loses 1
     // once a round at upkeep, like Poison (applyPoisonTicks, a 'bleedFade' event). decay:false keeps old replays' badge maths right.
-    if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause, decay:false});
+    if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause, decay:false, mods:dnModsFor(card.uid)}); // + mods (DN2)
   }
   // Festering (2026-10-10, user: "a new global effect skill - this passive makes it such that all units on the field do
   // not remove their status counters naturally when they trigger - bleed & poison only, for now"): while any live unit
@@ -4204,7 +4205,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const k = pid + ':s' + card.slot, h = hazards[k]; if(!h) return; delete hazards[k];
     [['trap', 'physical'], ['scorch', 'heat']].forEach(([kind, dt])=>{ if(!(h[kind] > 0) || !(card.hp > 0)) return;
       const dmg = damageCardFlat(card, h[kind], dt); ensureStat(stats, sideOf(pid), card.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'hazardSprung', kind, side:sideOf(pid), pid, slot:card.slot, uid:card.uid, defId:card.defId, dmg}); });
+      if(recordEvents && events) events.push({type:'hazardSprung', kind, side:sideOf(pid), pid, slot:card.slot, uid:card.uid, defId:card.defId, dmg, dmgType:dt, mods:dnModsFor(card.uid)}); }); // + type, mods (DN2)
     if(!(card.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events);
   }
   // ==== Package EQ (2026-10-19, owner 21:36): equipment on the slots, Weapon Master, Pry, and slot hazards (floors) ==========
@@ -4327,7 +4328,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!f || !c || !(c.hp > 0) || floorImmune(c, f)) return;
     (f.triggers || []).filter(t=> t.on === hook).forEach(t=>{ if(!(c.hp > 0)) return; const n = eqN(t.amount, f.n); if(!(n > 0)) return;
       const ev = {type:'floorTick', kind:f.kind, hook, side:sideOf(pid), pid, slot:c.slot, uid:c.uid, defId:c.defId, action:t.do};
-      if(t.do === 'damage'){ ev.dmg = damageCardFlat(c, n, t.dmgType || 'physical'); ensureStat(stats, sideOf(pid), c.defId).taken += ev.dmg; }
+      if(t.do === 'damage'){ ev.dmg = damageCardFlat(c, n, t.dmgType || 'physical'); ev.dmgType = t.dmgType || 'physical'; ev.mods = dnModsFor(c.uid); /* DN2 */ ensureStat(stats, sideOf(pid), c.defId).taken += ev.dmg; }
       else if(t.do === 'poison'){ ev.poison = addPoison(c, n); if(!(ev.poison > 0)) return; }
       else if(t.do === 'bleed'){ if(isGhost(c)) return; c.bleed = (c.bleed || 0) + n; ev.bleed = n; }
       else return;
@@ -4586,7 +4587,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const hp0 = t.hp, dmg = damageCardFlat(t, t.poison, 'poison'); total += dmg;
       if(hp0 > 0 && t.hp <= 0 && att) noteKiller(t, att.uid, att.defId);
       if(att) ensureStat(stats, side, att.defId).dealt += dmg; ensureStat(stats, tSide, t.defId).taken += dmg;
-      sk1Ev(events, {type:'poisonTick', side:tSide, defId:t.defId, uid:t.uid, dmg, decay:false, pulse:true, attUid: att ? att.uid : null, attDefId: att ? att.defId : null}); }
+      sk1Ev(events, {type:'poisonTick', side:tSide, defId:t.defId, uid:t.uid, dmg, mods:dnModsFor(t.uid) /* DN2 */, decay:false, pulse:true, attUid: att ? att.uid : null, attDefId: att ? att.defId : null}); }
     return total;
   }
   // On Enemy Enters (Facing): watchScan calls this for each watcher a of the unit x that came into its watch.
@@ -5136,7 +5137,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(att) sk2SwingHit = {att, target: target || 'hq'}; // Package SK2 (2026-10-19): what the swing landed on, for Pickpocket / Sabotage / Arson
     const n = att ? (att._fireHit||0) : 0; if(!(n > 0)) return; att._fireHit = 0;
     if(target){ if(!(target.hp > 0)) return; const d = damageCardFlat(target, n, 'heat', att.defId, att.uid); if(aStat) aStat.dealt += d; ensureStat(stats, tSide, target.defId).taken += d;
-      if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, targetUid:target.uid, targetDefId:target.defId, dmg:d, n}); return; }
+      if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, targetUid:target.uid, targetDefId:target.defId, dmg:d, n, mods:dnModsFor(target.uid)}); return; } // + mods (DN2)
     if(!foe) return; const d = damageHQ(foe, n); if(aStat){ aStat.dealt += d; aStat.faceDamage += d; }
     if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, castle:true, dmg:d, n});
   }
@@ -5206,7 +5207,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(!pool.length){ const paid = payFromCastle(pl, n); if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, castle:true, dmg:paid}); }
       else { const t = pool[Math.floor(rnd() * pool.length)], dmg = damageCardFlat(t, n, 'curse');
         ensureStat(stats, side, t.defId).taken += dmg;
-        if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, targetSide:side, targetUid:t.uid, targetDefId:t.defId, dmg});
+        if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, targetSide:side, targetUid:t.uid, targetDefId:t.defId, dmg, mods:dnModsFor(t.uid)}); // + mods (DN2)
         if(!(t.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events); } }
   }
   // Bound (Tangleweed / Strangle): can't attack while Bound; ticks down like Frozen (survives the upkeep of the round it was set).
@@ -5438,7 +5439,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const c = liveFoesOf(pl).find(x=> b.slot != null ? x.slot === b.slot : cellKeyOf(players, b.pid, x) === b.cell) || null;
       b.left -= 1; let dmg = 0;
       if(c){ dmg = damageCardFlat(c, 2, 'heat', b.srcDefId); ensureStat(stats, sideOf(b.pid), c.defId).taken += dmg; ensureStat(stats, b.side, b.srcDefId).dealt += dmg; any = true; }
-      if(recordEvents && events) events.push({type:'meteorBurn', side:b.side, attDefId:b.srcDefId, attUid:b.srcUid, targetSide:sideOf(b.pid), uid: c ? c.uid : null, defId: c ? c.defId : null, dmg, left:b.left, craterUid:b.uid, slot:b.slot});
+      if(recordEvents && events) events.push({type:'meteorBurn', side:b.side, attDefId:b.srcDefId, attUid:b.srcUid, targetSide:sideOf(b.pid), uid: c ? c.uid : null, defId: c ? c.defId : null, dmg, left:b.left, craterUid:b.uid, slot:b.slot, mods: c ? dnModsFor(c.uid) : undefined}); // + mods (DN2)
       if(b.left <= 0) meteorBurns.splice(i, 1);
     }
     if(any) removeDeadCards(players, sideOf, {}, stats, events);
@@ -6915,15 +6916,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Chilli (2026-10-15): a unit that ate one takes 1 damage at the start of every round ("it's very hot").
     const hot = []; [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(c.chilli > 0 && c.hp > 0) hot.push({pl, card:c}); }));
     for(const {pl,card} of hot){ if(card.hp<=0) continue; const dmg = damageCardFlat(card, 1, 'chilli'); ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'statusFx', kind:'chilliBurn', side:sideOf(pl.id), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(pl.id), targetDefId:card.defId, targetUid:card.uid, amount:dmg}); }
+      if(recordEvents && events) events.push({type:'statusFx', kind:'chilliBurn', side:sideOf(pl.id), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(pl.id), targetDefId:card.defId, targetUid:card.uid, amount:dmg, mods:dnModsFor(card.uid)}); } // + mods (DN2)
     // Toxin (2026-10-16): its whole stack every round, and it never wears off. Strangle (2026-10-16): a Bound unit held by a Strangler
     // takes the squeeze at the start of the round it is Bound for.
     { let w2Hurt = false;
       [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0)) return;
         if(c.toxin > 0){ const dmg = damageCardFlat(c, c.toxin, 'poison'); w2Hurt = true; ensureStat(stats, sideOf(pl.id), c.defId).taken += dmg;
-          if(recordEvents && events) events.push({type:'toxinTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, stack:c.toxin}); }
+          if(recordEvents && events) events.push({type:'toxinTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, stack:c.toxin, mods:dnModsFor(c.uid)}); } // + mods (DN2)
         if(c.hp > 0 && c.bound > 0 && c.boundDmg > 0){ const dmg = damageCardFlat(c, c.boundDmg, 'strangle'); w2Hurt = true; ensureStat(stats, sideOf(pl.id), c.defId).taken += dmg;
-          if(recordEvents && events) events.push({type:'strangleTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg}); } }));
+          if(recordEvents && events) events.push({type:'strangleTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, mods:dnModsFor(c.uid)}); } })); // + mods (DN2)
       if(w2Hurt && !poisoned.length && !cursed.length){ removeDeadCards(players, sideOf, {}, stats, events); return; } }
     if(!poisoned.length && !cursed.length){ if(hot.length) removeDeadCards(players, sideOf, {}, stats, events); return; }
     for(const {pl,card} of poisoned){
@@ -6932,13 +6933,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
       const decay = !statusDecayHeld() && card.poison > 0; // 2026-10-10: each tick wears the stack down by 1 (see bleedTick)
       if(decay) card.poison -= 1;
-      if(recordEvents && events) events.push({type:'poisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, decay});
+      if(recordEvents && events) events.push({type:'poisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, decay, mods:dnModsFor(card.uid)}); // + mods (DN2)
     }
     for(const {pl,card,n} of cursed){
       if(card.hp<=0) continue;
       const dmg = damageCardFlat(card, n, 'curse');
       ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'curseTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg});
+      if(recordEvents && events) events.push({type:'curseTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, mods:dnModsFor(card.uid)}); // + mods (DN2)
     }
     removeDeadCards(players, sideOf, {}, stats, events);
   }
@@ -6963,7 +6964,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(card.baseAtk!=null) card.baseAtk = Math.max(0, card.baseAtk - amt);
       const dmg = damageCardFlat(card, amt, 'decay');
       ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'decayTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, atk:amt});
+      if(recordEvents && events) events.push({type:'decayTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, atk:amt, mods:dnModsFor(card.uid)}); // + mods (DN2)
     }
     removeDeadCards(players, sideOf, {}, stats, events);
   }
@@ -8617,7 +8618,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       { const ie = attDef.effects || {}, insp = Number(ie.inspiring)||0, fric = Number(ie.friction)||0;
         if(insp > 0 || fric > 0) [liveSelf.col - 1, liveSelf.col + 1].forEach(col=>{ const en = liveOwnCols[col]; if(!en || en.kind!=='card' || !en.card || !(en.card.hp > 0)) return; const ally = en.card;
           if(insp > 0){ ally.inspired = (ally.inspired||0) + insp; if(recordEvents && events) events.push({type:'statusFx', kind:'inspired', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:ally.uid, targetDefId:ally.defId, amount:insp}); }
-          if(fric > 0){ const fd = damageCardFlat(ally, fric, 'physical', a.att.defId); if(recordEvents && events) events.push({type:'friction', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:mySide, targetUid:ally.uid, targetDefId:ally.defId, dmg:fd}); }
+          if(fric > 0){ const fd = damageCardFlat(ally, fric, 'physical', a.att.defId); if(recordEvents && events) events.push({type:'friction', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:mySide, targetUid:ally.uid, targetDefId:ally.defId, dmg:fd, mods:dnModsFor(ally.uid)}); }
         }); }
       if(attDef.effects && attDef.effects.grit && target.kind==='card' && effAtk(target.card) > effAtk(a.att)){
         const gritAmt = attDef.effects.grit;
@@ -9034,7 +9035,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(attDef.effects && Number(attDef.effects.recoil) > 0 && a.att.hp > 0){
         const rd = damageCardFlat(a.att, Number(attDef.effects.recoil), 'recoil');
         ensureStat(stats, mySide, a.att.defId).taken += rd;
-        if(recordEvents && events) events.push({type:'statusFx', kind:'recoil', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:rd});
+        if(recordEvents && events) events.push({type:'statusFx', kind:'recoil', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:rd, mods:dnModsFor(a.att.uid)}); // + mods (DN2)
       }
       // Swipe N (new, 2026-10-12, user: "What would Swipe do then?"; proposal): a landed swing swipes N Lumber from the
       // opponent: they lose it and this side gains it (only what they have). For raiders and thieves.
@@ -9142,7 +9143,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { ...EQ_API /* 2026-10-19 (package EQ) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 

@@ -8852,6 +8852,16 @@
   .dmg-float .df-mod{font-size:.78em; margin-left:.02em;}
   .dmg-float.df-tight{gap:0 !important; letter-spacing:0 !important;} .dmg-float.df-tight .df-ico{font-size:.56em;} /* a long hit number on a narrow card: smaller glyphs before a smaller number */
   .dmg-float .df-mod-blocked, .dmg-float .df-mod-reduced{color:#d6e4f7; font-family:'Segoe UI Symbol','Noto Sans Symbols 2','Apple Symbols',system-ui,sans-serif; font-weight:700; -webkit-text-stroke:3px #0e1a2c; paint-order:stroke fill; font-size:.78em;}
+  /* 2026-10-22 (package DN2, owner DN-2): an elemental crit's type glyph, DMG_CRIT_GLYPH_SCALE (--dn-crit-scale) times the glyph size,
+     on a soft burn in the element's colour (--dn-glow, the type's own --g2); the mark after the number keeps its size. */
+  .dmg-float .df-ico.df-crit-g{font-size:calc(.78em * var(--dn-crit-scale, 1.4)); border-radius:50%; padding:0 .04em;
+    background:radial-gradient(circle, color-mix(in srgb, var(--dn-glow, #ffb347) 62%, transparent) 0 30%, color-mix(in srgb, var(--dn-glow, #ffb347) 0%, transparent) 70%);
+    text-shadow:0 0 .14em var(--dn-glow, #ffb347), 0 0 .36em var(--dn-glow, #ffb347), 0 2px 0 rgba(0,0,0,.55);}
+  .dmg-float .df-ico.df-crit-g img{filter:drop-shadow(0 0 .1em var(--dn-glow, #ffb347)) drop-shadow(0 0 .26em var(--dn-glow, #ffb347));}
+  /* 2026-10-22 (package DN2): a number shrunk to fit its card (a crit's 50px on a phone card) thins its dark edge with it; the fixed 7px
+     edge filled most of a 22px number and read as a dark number. */
+  .dmg-float.df-shrunk .df-num::before{-webkit-text-stroke-width:.2em;}
+  .dmg-float.df-tight .df-ico.df-crit-g{font-size:calc(.56em * var(--dn-crit-scale, 1.4));}
   .dmg-float .df-ico.df-gplus{display:inline-flex; vertical-align:-.06em; filter:drop-shadow(0 2px 0 rgba(0,0,0,.45)) drop-shadow(0 0 5px rgba(90,220,120,.6));} /* the heal's green plus (2026-10-16) */
   /* Crit: a bigger, hotter number on a spinning gold starburst; a CRIT! stamp lands on the card. */
   .dmg-float.crit{font-size:50px !important; --g1:#fffbe6; --g2:#ff7a1a; --edge:#3a0a00;}

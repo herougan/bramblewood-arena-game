@@ -91,7 +91,7 @@ ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.
   ok(/html \+= stampedeFacingHTML\(m, uid, f, src, sr, cx, cy\);/.test(fnSrc('showFacing')), 'showFacing adds it after the line to the blocker');
   ok(/\.facing-svg line\.facing-stampede\{stroke:#ff8a4c; opacity:\.28;\}/.test(tpl) && /\.facing-svg line\.facing-stampede\.is-over\{stroke:#ff6a2a; opacity:\.95;\}/.test(tpl), 'its CSS: faint / lit'); }
 { const i = src.indexOf("if(ev.type==='overwhelmHQ'){\n    const el = hqTileEl(ev.targetSide);"), blk = i < 0 ? '' : src.slice(i, src.indexOf('\n  }', i));
-  ok(!!blk && /hqRibbonFloatAnchor\(ev\.targetSide\) \|\| el/.test(blk) && /floatText\(at, '💥 -'\+ev\.dmg, 'hq-big'\)/.test(blk) && !/floatText\(el,/.test(blk), 'Stampede\'s number pops on the field\'s HP bar, like a hitHQ\'s');
+  ok(!!blk && /hqRibbonFloatAnchor\(ev\.targetSide\) \|\| el/.test(blk) && /dnFloat\(at, ev\.dmg, \{addCls:'hq-big', fit:false\}\)/.test(blk) /* DN2 (2026-10-22): <number>, no minus (was '💥 -N') */ && !/floatText\(el,/.test(blk), 'Stampede\'s number pops on the field\'s HP bar, like a hitHQ\'s');
   const j = src.indexOf("if(ev.type==='pierceHQ'){\n    const el = hqTileEl(ev.targetSide);"), pb = j < 0 ? '' : src.slice(j, src.indexOf('\n  }', j));
   ok(/hqRibbonFloatAnchor\(ev\.targetSide\) \|\| el/.test(pb), '... and so does Puncture\'s'); }
 

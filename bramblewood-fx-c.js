@@ -1011,7 +1011,7 @@ M.deathPrism = function(el, opts){ return M.foilPeel(el, opts); };
 M.lethalStamp = function(el, opts){
   opts = opts || {}; const D = dying(el); if(!D) return Promise.resolve(); const {x, y, h} = D;
   return run(opts, (tl, mk)=>{
-    const k = mk('fxc-ko', (opts.dmg ? '−' + opts.dmg + ' ' : '') + '✖'); tl.set(k, {x, y:y - h*.12, xPercent:-50, yPercent:-50, scale:2.6, rotation:-14, opacity:0}, 0)
+    const k = mk('fxc-ko', (opts.dmg ? opts.dmg + ' ' : '') + '✖'); /* no minus (DN2, 2026-10-22) */ tl.set(k, {x, y:y - h*.12, xPercent:-50, yPercent:-50, scale:2.6, rotation:-14, opacity:0}, 0)
       .to(k, {scale:1, opacity:1, duration:.14, ease:'power4.in'}, 0).to(k, {x:'+=3', duration:.03, yoyo:true, repeat:3}, .14).to(k, {scale:1.1, opacity:0, y:'-=14', duration:.3, ease:'power1.in'}, .55);
     tl.add(()=> snd('critTone'), .12);
   });

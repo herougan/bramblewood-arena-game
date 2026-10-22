@@ -25777,11 +25777,11 @@ function raidStrikeVfx(ev){
   if(!castle && ev.uid != null){ const pi = m._pendingImpacts || (m._pendingImpacts = {}); pi[String(ev.uid)] = pr; }
   setTimeout(()=>{
     try{ if(matchState === m){
-      if(castle){ if(target){ floatText(hqRibbonFloatAnchor(ev.side) || target, `🏹 -${ev.dmg}`, 'hq-big'); if(!simple) try{ shakeEl(target); }catch(e){} }
+      if(castle){ if(target){ dnFloat(hqRibbonFloatAnchor(ev.side) || target, ev.dmg, {type: ev.dmgType, crit: ev.crit, addCls:'hq-big', fit:false}); /* DN2 */ if(!simple) try{ shakeEl(target); }catch(e){} }
         if(ev.dmg > 0) displayHqDamage(m, ev.side, ev.dmg); } // the bar steps down with it (2026-10-18)
       else { const rc = m.replayCards && m.replayCards[ev.uid]; if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg);
         try{ updateCardHpDisplay(ev.uid); }catch(e){}
-        const el = boardCardEl(ev.uid); if(el){ floatText(el, `🏹-${ev.dmg}`, 'dmg'); if(!simple){ try{ impactSquash(el, ev.dmg||0); }catch(e){} try{ shakeEl(el); }catch(e){} } } }
+        const el = boardCardEl(ev.uid); if(el){ dnFloat(el, ev.dmg, {type: ev.dmgType, crit: ev.crit, mods: ev.mods, blocked: ev.armorBlocked}); /* DN2 */ if(!simple){ try{ impactSquash(el, ev.dmg||0); }catch(e){} try{ shakeEl(el); }catch(e){} } } }
       if(target) SoundKit.at(target, ()=> SoundKit.hitAt(ev.dmg||0, castle)); } }catch(e){}
     pr.landed = true; done(); }, impact);
 }
@@ -25915,13 +25915,13 @@ function raidSpecials(m, events){
         ev = {type:'raidSmack', kind:'column', name:a.name || 'Smack', col, row:null, dmg, hits:hit.length};
       }
       ev.rolled = raidAtkRange(a).hi > raidAtkRange(a).lo || undefined; // a rolled number (the tentacle shows it)
-      hit.forEach(c=> E.damageCardFlat(c, dmg, 'physical', null));
+      ev.struck = hit.map(c=>{ const d = E.damageCardFlat(c, dmg, 'physical', null); return {uid: c.uid, dmg: d, mods: E.hitModsFor ? E.hitModsFor(c.uid) : undefined}; }); // DN2 (2026-10-22): what each unit took and its mark (display only)
       if(!hit.length) pl.hq.hp = Math.max(0, pl.hq.hp - dmg);
       (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
       events.push(ev);
     } else if(a.pattern === 'frontRow'){
-      const hit = E.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> E.damageCardFlat(c, a.dmg||0, 'physical', null));
-      events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true});
+      const hit = E.allBoardCards(pl).filter(c=> c.hp > 0), struck = hit.map(c=>{ const d = E.damageCardFlat(c, a.dmg||0, 'physical', null); return {uid: c.uid, dmg: d, mods: E.hitModsFor ? E.hitModsFor(c.uid) : undefined}; }); // + struck (DN2)
+      events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true, struck});
     }
   });
   E.removeDeadCards(m.players, m.sideOf, {}, m.stats, events);
@@ -40627,11 +40627,11 @@ function logText(ev){
     case 'mindControl': return {cls:'poison', text:`🎭 ${nm(ev.attDefId)} takes control of ${nm(ev.targetDefId)}.`};
     case 'stunPlayer': return {cls:'poison', text:`🔔 ${nm(ev.attDefId)}: ${ev.side==='A' ? 'the enemy skips' : 'you skip'} ${ev.turns>1 ? ev.turns + ' turns' : 'a turn'}.`};
     case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
-    case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
+    case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${dnLogNum(ev.dmg, ev)}).`};
     case 'tide': if(ev.moonpull) return {cls:'', text:`🌙🌊 ${nm(ev.defId)}'s Moonpull: the Tide comes in. Flood!`}; // 2026-10-15 (user: "Ebb should say nothing, just 'Tide goes in, Ebb goes out' since it's not a universal truth that Tide units get 1
       // armor on Ebb"): the log says the state, like the pill; each card's own line says what it gets.
       return {cls:'', text: ev.tide==='high' ? '🌊🌊 High Tide!' : ev.tide==='flow' ? '🌊 Flood: the tide goes in.' : '🐚 Ebb: the tide goes out.'};
-    case 'wash': return ev.spout ? {cls:'', text:`⛲ The spout washes ${nm(ev.targetDefId)} back: +1 Wait${ev.dmg ? `, and ${ev.dmg} water damage` : ''}.`} : {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
+    case 'wash': return ev.spout ? {cls:'', text:`⛲ The spout washes ${nm(ev.targetDefId)} back: +1 Wait${ev.dmg ? `, and ${dnLogNum(ev.dmg, ev)} 💧 water damage` : ''}.`} : {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     // Irradiation tokens (2026-10-14): what each token took this upkeep.
     case 'irradiation': { const pts = (ev.points||[]).map(p=> p.kind==='hp' ? '−1 max Health' : p.kind==='atk' ? '−1 Attack' : p.what==='removed' ? `lost ${irrSkillName(p)}` : p.what==='weakened' ? `${irrSkillName(p)} weakened` : p.what==='narrowed' ? `${irrSkillName(p)} narrowed` : `${irrSkillName(p)} −1`);
       return {cls:'', text:`☢️ Radiation eats at ${nm(ev.defId)}: ${pts.join(', ') || 'nothing'}. ${ev.left} token${ev.left===1?'':'s'} left.`}; }
@@ -40641,11 +40641,11 @@ function logText(ev){
     case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? ev.dmg : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
-      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} bramble hit ${nm(ev.targetDefId)} for ${DMG_NAME[ev.dmgType] ? dmgLogText(ev.dmg, ev.dmgType) : ev.dmg + (ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : '')}.`}; // 2026-10-16 (it read "castle hit …"); 2026-10-17: + the element's emoji
+      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} bramble hit ${nm(ev.targetDefId)} for ${DMG_NAME[ev.dmgType] ? dmgLogText(ev.dmg, ev.dmgType, ev) : dnLogNum(ev.dmg, ev) + (ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : '')}.`}; // 2026-10-16 (it read "castle hit …"); 2026-10-17: + the element's emoji
       // Elemental conversion note (2026-09-29): Poison zeroes ev.dmg out entirely (the whole
       // amount became poison stacks instead), so without this the log would just read "hit for
       // 0" with no explanation. Decay still shows its real ev.dmg plus the extra ATK-drain note.
@@ -40654,11 +40654,11 @@ function logText(ev){
       else if(ev.elementalConvert==='decay') elemNote = ` (also -${ev.elementalAmount} Attack, Decay 🦠)`;
       // 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): "for 3 ⚡ lightning damage", and a Wet
       // unit's lightning hit says how many Wet counters added to it.
-      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.wet ? ` (Wet ${ev.wet}: +${ev.wet} 💧)` : ''}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
+      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${dmgLogText(ev.dmg, ev.dmgType, ev)}${ev.wet ? ` (Wet ${ev.wet}: +${ev.wet} 💧)` : ''}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit && ev.ambush?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
     }
-    case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.swipe?' (swipe)':''}.`}; // 2026-10-17: + the element's emoji (a castle hit that carries a dmgType)
-    case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${ev.dmg} onto ${nm(ev.targetDefId)}. 🌵`};
-    case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${ev.dmg} damage back at ${nm(ev.targetDefId)}. 🪞`};
+    case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble for ${dmgLogText(ev.dmg, ev.dmgType, ev)}${ev.swipe?' (swipe)':''}.`}; // 2026-10-17: + the element's emoji (a castle hit that carries a dmgType)
+    case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${dnLogNum(ev.dmg, ev)} onto ${nm(ev.targetDefId)}. 🌵`};
+    case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${dnLogNum(ev.dmg, ev)} damage back at ${nm(ev.targetDefId)}. 🪞`};
     case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 🗡`};
     case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 💥`};
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
@@ -40668,12 +40668,12 @@ function logText(ev){
     case 'blindMiss': return {cls:'', text: ev.night ? `${nm(ev.attDefId)} can't see in the dark and misses! 🌙` : `${nm(ev.attDefId)} swings blindly and misses! 👁`};
     case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
     case 'confusedWhiff': return {cls:'', text:TX('ui.log-confused-fumbles', {name: nm(ev.defId)})}; // 2026-10-19 (package FZ): a trigger, skill or action fumbled
-    case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
+    case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${dnLogNum(ev.dmg, ev)} ☠️ poison damage. 🫧`};
     // 2026-10-16 (user: "Status damage should be recorded in the log"): the Devilry payments had no line (they printed their raw type)
     case 'penance': return {cls:'poison', text:`⛧ Penance for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.`};
     case 'bloodTithe': return {cls:'bleed', text: ev.castle ? `⛧ Blood Tithe for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.` : `⛧ Blood Tithe for ${nm(ev.defId)}: ${nm(ev.targetDefId)} takes ${ev.dmg != null ? ev.dmg : ev.amount}.`};
-    case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
-    case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
+    case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${dnLogNum(ev.dmg, ev)} damage and -${ev.atk} Attack. 🦠`};
+    case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${dnLogNum(ev.dmg, ev)} 🩸 bleed damage. 🩸`};
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
     case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
@@ -40695,7 +40695,7 @@ function logText(ev){
     case 'lumber': return ev.rule ? {cls:'gold', text:`🪵 Timber Fair: ${sideLabel(ev.side)} gains +${ev.amount} Lumber.`} : ev.cause==='worthyDeath' ? {cls:'gold', text:`${nm(ev.defId)}'s fall gives ${sideLabel(ev.side)} +${ev.amount} 🪵.`} /* the old cause; no "Worthy" on screen (2026-10-16) */ : {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪵.`};
     case 'metal': return {cls:'gold', text:`${nm(ev.defId)} brought up +${ev.amount} 🔩 Metal.`};
     case 'uranium': return {cls:'gold', text:`${nm(ev.defId)} gave off +${ev.amount} ☢️ Uranium.`};
-    case 'friction': return {cls:'', text:`${nm(ev.attDefId)} ground against ${nm(ev.targetDefId)} for ${ev.dmg} (Friction ⚙️).`};
+    case 'friction': return {cls:'', text:`${nm(ev.attDefId)} ground against ${nm(ev.targetDefId)} for ${dnLogNum(ev.dmg, ev)} (Friction ⚙️).`};
     case 'elementalEnergy': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} ✨.`};
     // 2026-09-21 audit: `heal` (a dedicated healer-target event, engine's fireHealAction — distinct
     // from `sap`'s attacker-heals-self-off-the-hit shape) had no case either, and `chainBreak`
@@ -40730,7 +40730,7 @@ function logText(ev){
         scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡)`,
         armorShred: `stripped ${ev.amount} Armor from ${nm(ev.targetDefId)} for good 🛡`,
         daunt: `daunted ${nm(ev.targetDefId)}: −${ev.amount} Attack until the end of next round 😨`,
-        recoil: `took ${ev.amount} recoil from its own swing 💢`,
+        recoil: `took ${dnLogNum(ev.amount, ev)} recoil from its own swing 💢`,
         spite: `lashed back at ${nm(ev.targetDefId)} for ${ev.amount} (Spiteful) 😠`,
         counter: `counterattacked ${nm(ev.targetDefId)} for ${ev.amount} ↩️`,
         cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
@@ -40741,7 +40741,7 @@ function logText(ev){
         shellUp: `went into its shell (+${ev.amount} Armor, +${ev.amount} temporary Health) 🐚`,
         unitShield: ev.attUid === ev.targetUid ? `raised a Shield: +${ev.amount} temporary Health (${ev.total} in all) 💠` : `shielded ${nm(ev.targetDefId)}: +${ev.amount} temporary Health 💠`, // Shield (2026-10-14)
         cower: ev.mode === 'flee' ? `was hit last turn and backs off${ev.amount ? ` (+${ev.amount} Health)` : ''} 🫣` : `was hit last turn and hides in its shell: attacks can't hurt it this turn 🫣`,
-        ichor: `splashed ${nm(ev.targetDefId)} with corrosive blood: ${ev.amount} acid${ev.armor ? ', −1 Armor' : ''}, Bleed 1 🧪`,
+        ichor: `splashed ${nm(ev.targetDefId)} with corrosive blood: ${dnLogNum(ev.amount, ev)} 🧪 acid${ev.armor ? ', −1 Armor' : ''}, Bleed 1 🧪`,
         shellDown: `came out of its shell 🐚`,
         swimmer: skillHiddenNow('swimmer') ? `strikes again, quick as a flash ❔` : `rode the Flood for a quick attack 🏊`, // 2026-10-15: unnamed while Swimmer is "?" (SKILL_REVEAL)
         // Nocturnal / Diurnal / Crepuscular growing and fading with the phase (2026-10-15: these printed the bare event name before).
@@ -40752,7 +40752,7 @@ function logText(ev){
         tailwind: `caught the Tailwind for an extra turn 🪁`,
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
         chilli: `ate a chilli: +${ev.amount}⚔, and its attacks burn now 🌶️🔥`, // Chilli (2026-10-15)
-        chilliBurn: `is very hot from its chilli: ${ev.amount} damage 🌶️`,
+        chilliBurn: `is very hot from its chilli: ${dnLogNum(ev.amount, ev)} damage 🌶️`,
         rocket: `launched a rocket 🚀`,
         shed: `shed its skin and came out stronger (+1/+1) 🐍`,
         wither: `withered ${nm(ev.targetDefId)} (−${ev.amount} max Health a round for 3 rounds, no healing) 💀`, // 2026-10-14
@@ -40859,15 +40859,15 @@ function logText(ev){
       return {cls:'', text: ev.bob ? `〰️ ${who} lifts ${nm(ev.targetDefId)}, but it's boxed in: it bobs in place.` : ev.blocked ? `〰️ ${who} breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.`
         : ev.crashUid != null && !(ev.cols > 0) ? `〰️ ${who} slams ${nm(ev.targetDefId)} ${ev.dir} into the unit beside it!`
         : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the edge turned it back)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14); 2026-10-18: Wave N crashes, no swaps (swapUid only in old replays)
-    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Wave N (2026-10-18; the skill and the field)
+    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${dnLogNum(ev.dmg, ev)} and ${dnLogNum(ev.otherDmg, ev, ev.otherMods || null)}).`}; // Wave N (2026-10-18; the skill and the field)
     // 2026-10-14 (sixth pass)
     case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the bramble!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
     case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the bramble!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
-    case 'meteorBurn': return {cls:'', text: ev.uid != null ? `☄️ The meteor's crater burns ${nm(ev.defId)} for ${ev.dmg}${ev.left ? '' : ' (the fire goes out)'}.` : `☄️ The meteor's crater smoulders${ev.left ? '' : ' out'}.`};
+    case 'meteorBurn': return {cls:'', text: ev.uid != null ? `☄️ The meteor's crater burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}${ev.left ? '' : ' (the fire goes out)'}.` : `☄️ The meteor's crater smoulders${ev.left ? '' : ' out'}.`};
     case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'}${ev.amount > 0 ? ` (+${ev.amount} Health)` : ''}.` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the bramble' : nm(ev.targetDefId)} (${ev.n})!`};
     case 'durian': return {cls:'', text:`${nm(ev.defId)} eats a durian: Thorns +1 (Thorns ${ev.thorns} now). 🌵`};
     // 2026-10-14 (seventh pass)
-    case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${ev.dmg} psychic damage.`};
+    case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${dnLogNum(ev.dmg, ev, ev.dampened ? ['resist'] : null)} 💭 psychic damage.`};
     case 'smokeBomb': return {cls:'', text: ev.ally ? `💣💨 ${nm(ev.defId)} throws a smoke bomb: ${nm(ev.targetDefId)} hides in the smoke (attacks at it miss 1 in 2).` : ev.effect === 'blind' ? `💣💨 ${nm(ev.defId)} throws a smoke bomb in ${nm(ev.targetDefId)}'s face: Blinded!` : `💣💨 ${nm(ev.defId)} throws a smoke bomb at ${nm(ev.targetDefId)}, who sniffs its way through it.`};
     case 'electricity': return {cls:'', text:`🔌 ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}!`}; // 2026-10-17: the Wet note moved to the hit's own line
     case 'chainLightning': return {cls:'', text:`🌩️ Chain lightning from ${nm(ev.attDefId)}'s hit ${(ev.uids||[]).length ? `jumps to ${(ev.uids||[]).length} more unit${(ev.uids||[]).length===1?'':'s'}` : 'finds nobody beside it'}!`}; // 2026-10-17
@@ -41379,7 +41379,7 @@ function washPushVfx(ev){
   afterSettle(ev.targetUid, (el, r, row0)=>{
     const host = fxHostAt(el || row0, 2000, r);
     try{ floatText(host, '⏪ +1 Wait', 'debuff wait-push'); }catch(e){}
-    if(ev.dmg) setTimeout(()=>{ try{ floatText(host, `💧-${ev.dmg}`, 'dmg'); }catch(e){} }, 260);
+    if(ev.dmg) setTimeout(()=>{ try{ dnFloat(host, ev.dmg, {type:'water', mods: ev.mods, fit:true}); }catch(e){} }, 260); /* DN2 */
     if(ev.spout) eruptionGeyserVfx(host, true); else washSplashVfx(host);
     if(!el) return;
     el.classList.toggle('push-up', !!el.closest('#rowEnemy, [data-row="enemy"]'));
@@ -41411,7 +41411,7 @@ function cometStrikeVfx(ev){
 function cometFall(ev, k, host, r){
   const delay = Math.min(1400, k * 110);
   const mult = (matchState && matchState.speedMult) || 1, d = Math.round(delay / Math.max(.5, mult));
-  const impact = ()=>{ try{ floatText(host, `☄️-${ev.dmg}`, 'dmg'); }catch(e){}
+  const impact = ()=>{ try{ dnFloat(host, ev.dmg, {type:'heat', mods: ev.mods, fit:true}); }catch(e){} /* DN2 */
     const el = boardCardEl(ev.uid); if(el){ el.classList.remove('comet-hit'); void el.offsetWidth; el.classList.add('comet-hit'); setTimeout(()=> el.classList.remove('comet-hit'), 700); try{ shakeEl(el); }catch(e){} }
     try{ const F = window.SkillFX; if(F && F.burst) F.burst(r.left + r.width/2, r.top + r.height*.45, -90, 'fire', 8); }catch(e){}
     try{ SoundKit.hitAt ? SoundKit.hitAt(ev.dmg||2, false) : null; }catch(e){} };
@@ -41447,7 +41447,15 @@ function floatText(el, text, cls, opts){
   // 2026-10-16 (user: "Heal's plusses look greyed out ... they should be green."): the ➕ glyph is grey in the emoji fonts; the heal's
   // icon is SkillFX's green plus instead.
   const gplus = icon === '➕' && window.SkillFX && SkillFX.GREEN_PLUS;
-  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico${gplus ? ' df-gplus' : ''}">${gplus ? SkillFX.GREEN_PLUS : icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`
+  // 2026-10-22 (package DN2): an elemental crit (o.critEl) draws its type glyph big with a glow in the element's colour, apart from a
+  // 👊 before it (DMG_CRIT_FIST_ON_ELEMENT), and its number in the type's colours, lighter and up the hue wheel (dnCritTint).
+  const ct = o.critEl ? dnCritTint(o.critEl.cls) : null, cg = o.critEl && o.critEl.glyph ? o.critEl.glyph.replace(/\uFE0F/g, '') : '';
+  const icoHTML = (o.critEl && cg && icon.endsWith(cg))
+    ? (icon.length > cg.length ? `<span class="df-ico">${icon.slice(0, icon.length - cg.length)}</span>` : '') + `<span class="df-ico df-crit-g"${ct ? ` style="--dn-glow:${escapeAttr(ct.glow)}"` : ''}>${cg}</span>`
+    : (icon ? `<span class="df-ico${gplus ? ' df-gplus' : ''}">${gplus ? SkillFX.GREEN_PLUS : icon}</span>` : '');
+  if(o.critEl) f.style.setProperty('--dn-crit-scale', String(DMG_CRIT_GLYPH_SCALE));
+  if(ct){ f.style.setProperty('--g1', ct.g1); f.style.setProperty('--g2', ct.g2); if(ct.edge) f.style.setProperty('--edge', ct.edge); f.classList.add('df-crit-el'); }
+  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + icoHTML + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`
     + (o.post ? `<span class="df-ico df-mod${o.postKey ? ' df-mod-' + o.postKey : ''}">${escapeHtml(o.post)}</span>` : ''); // the target's damage mark after the number (DN)
   // DN: a fitted number draws its emoji in the chosen set now (the page's observer would a moment later), so its width is measured right
   if(o.fit && typeof EmojiStyle !== 'undefined' && EmojiStyle && EmojiStyle.isActive && EmojiStyle.isActive()) f.querySelectorAll('.df-ico:not(.df-gplus)').forEach(s=>{ try{ s.innerHTML = EmojiStyle.html(s.textContent); }catch(e){} });
@@ -41470,7 +41478,7 @@ function floatText(el, text, cls, opts){
   if(o.fit){ try{ const cw = el.offsetWidth || el.getBoundingClientRect().width; let fw = f.offsetWidth; // both in layout px (the board is zoomed by a transform)
     if(cw > 0 && fw > 0){ let fit = (cw * 0.96) / fw;
       if(fit < 1 && f.querySelector('.df-ico')){ f.classList.add('df-tight'); fw = f.offsetWidth || fw; fit = (cw * 0.96) / fw; } // the glyphs give way first, then the number
-      if(fit < 1){ const fs = parseFloat(getComputedStyle(f).fontSize) || 24; f.style.setProperty('font-size', (fs * fit).toFixed(1) + 'px', 'important'); fw = f.offsetWidth || fw * fit; }
+      if(fit < 1){ const fs = parseFloat(getComputedStyle(f).fontSize) || 24; f.style.setProperty('font-size', (fs * fit).toFixed(1) + 'px', 'important'); f.classList.add('df-shrunk'); fw = f.offsetWidth || fw * fit; } // df-shrunk: its edge thins with it (DN2)
       big = Math.max(1, Math.min(big, cw / fw)); } }catch(e){} }
   const barShift = onBar ? u3ClampOnBar(el, f, big) : 0; // 2026-10-19 (package U3): a number at the HP fill's end stays on screen
   if(hasGsap()){
@@ -42063,7 +42071,13 @@ const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['�
 Object.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});
 const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', stone:'stone', metal:'metal', psychic:'psychic'};
 // "for 3 ⚡ lightning damage" (an elemental hit) or "for 3" (physical), for the battle log (2026-10-17).
-function dmgLogText(dmg, dmgType){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType]; return di && w ? `${dmg} ${di[0]} ${w} damage` : String(dmg); }
+function dmgLogText(dmg, dmgType, ev){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType], n = ev ? dnLogNum(dmg, ev) : dmg; return di && w ? `${n} ${di[0]} ${w} damage` : String(n); } // + ev: the number's 👊 and mark (DN2)
+// 2026-10-22 (package DN2, owner DN-4 "Yes"): a damage number in the battle log carries the floating number's marks, 👊 before a crit and the
+// target's mark after it (🦴 Fragile, 💢 Weakness / Shocked, ⛨ reduced or blocked, 🚫 immune), from the same event fields (mods, armorBlocked,
+// crit; a bramble's Bulwark is its ⛨). Symbols, not words: the translated log templates still match (the number is a captured value).
+function dnLogNum(n, ev, mods){ ev = ev || {}; const md = mods !== undefined ? mods : (ev.mods || (ev.bulwark > 0 ? ['armor'] : null)), blocked = !!(ev.armorBlocked || ev.bulwark > 0) && mods === undefined;
+  const mk = dnModKey(md, blocked, n), crit = !!ev.crit && !ev.ambush && !(blocked && !(n > 0));
+  return (crit ? '👊' : '') + n + (mk ? DN_MOD_GLYPH[mk] : ''); }
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
 // quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
 // cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
@@ -42118,19 +42132,67 @@ function dnTypeGlyph(dmgType){
   const k = dmgType === 'fire' ? 'heat' : dmgType;
   return ATK_ELEM_GLYPH[k] || (DMG_ICON[k] && DMG_ICON[k][0]) || ''; // bleed 🩸 and psychic 💭 keep their own number icons
 }
-function dmgFloatParts(dmg, dmgType, crit, mods, blocked){
-  const g = dnTypeGlyph(dmgType), di = DMG_ICON[dmgType === 'fire' ? 'heat' : dmgType], mk = dnModKey(mods, blocked, dmg);
-  const pre = (crit && !(blocked && !(dmg > 0)) ? '👊' : '') + g;
-  const cls = blocked && !(dmg > 0) ? 'blocked' : crit ? 'crit' + (di ? ' ' + di[1] : '') : (di ? di[1] : '');
-  return {text: (pre ? pre + ' ' : '') + String(dmg || 0), cls, post: mk ? DN_MOD_GLYPH[mk] : '', mod: mk};
+// 2026-10-22 (package DN2, owner 15:39, DN-2: "can you just make the damage type emoji bigger if it's non physical. e.g. wand for magic
+// becomes big if its crit! or even colour burn it abit? What would the color of the text be btw? a 10% lighter and higher hue version of
+// the original color?"): a crit that isn't physical shows its type glyph big (DMG_CRIT_GLYPH_SCALE) with a glow in the element's colour,
+// and its number takes the type's colours made DMG_CRIT_LIGHTEN lighter (of the lightness range) and turned DMG_CRIT_HUE degrees up the
+// hue wheel. A physical crit keeps 👊 (DN-3). Normal hits keep their colours. The four constants are the only knobs.
+const DMG_CRIT_LIGHTEN = 0.10, DMG_CRIT_HUE = 12, DMG_CRIT_GLYPH_SCALE = 1.4;
+const DMG_CRIT_FIST_ON_ELEMENT = false; // true: an elemental crit also keeps the 👊 before its big glyph (DN's 👊❄️14🦴)
+// Damage types that are their own kind of tick (no element): the glyph their number has always led with (DN2, 2026-10-22).
+const DN_TICK_GLYPH = {curse:'🜏', chilli:'🌶️', strangle:'🪢'};
+function dnTypeGlyphAny(dmgType){ return dnTypeGlyph(dmgType) || DN_TICK_GLYPH[dmgType] || ''; }
+function dmgFloatParts(dmg, dmgType, crit, mods, blocked, glyph){
+  const t = dmgType === 'fire' ? 'heat' : dmgType;
+  const g = glyph != null ? glyph : dnTypeGlyphAny(t), di = DMG_ICON[t], mk = dnModKey(mods, blocked, dmg);
+  const zero = blocked && !(dmg > 0), critOn = !!crit && !zero, critEl = critOn && !!g; // a crit with a type glyph is the elemental crit (DN2)
+  const pre = critEl ? (DMG_CRIT_FIST_ON_ELEMENT ? '👊' : '') + g : (critOn ? '👊' : '') + g;
+  const cls = zero ? 'blocked' : critOn ? 'crit' + (di ? ' ' + di[1] : '') : (di ? di[1] : '');
+  return {text: (pre ? pre + ' ' : '') + String(dmg || 0), cls, post: mk ? DN_MOD_GLYPH[mk] : '', mod: mk, critEl: critEl ? {glyph: g, cls: di ? di[1] : (t || '')} : null};
 }
+// The crit colours (DN2): the type's own --g1 / --g2 read once from the stylesheet (a probe float with that class), then lightened and
+// turned up the hue wheel. Cached per class; '' when the class has no colours of its own.
+const dnCritTintCache = {};
+function dnHsl(c){
+  const m = String(c || '').trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i), r = String(c || '').match(/rgba?\(\s*([\d.]+)[ ,]+([\d.]+)[ ,]+([\d.]+)/i);
+  let R, G, B;
+  if(m){ const h = m[1].length === 3 ? m[1].split('').map(x=> x + x).join('') : m[1]; R = parseInt(h.slice(0, 2), 16); G = parseInt(h.slice(2, 4), 16); B = parseInt(h.slice(4, 6), 16); }
+  else if(r){ R = +r[1]; G = +r[2]; B = +r[3]; } else return null;
+  R /= 255; G /= 255; B /= 255; const mx = Math.max(R, G, B), mn = Math.min(R, G, B), l = (mx + mn) / 2, d = mx - mn;
+  let h = 0, s = 0;
+  if(d){ s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === R ? (G - B) / d + (G < B ? 6 : 0) : mx === G ? (B - R) / d + 2 : (R - G) / d + 4; h *= 60; }
+  return {h, s, l};
+}
+function dnCritShift(c){ const x = dnHsl(c); if(!x) return c;
+  const h = ((x.h + DMG_CRIT_HUE) % 360 + 360) % 360, l = Math.min(1, x.l + DMG_CRIT_LIGHTEN);
+  return `hsl(${h.toFixed(1)} ${(x.s * 100).toFixed(1)}% ${(l * 100).toFixed(1)}%)`; }
+function dnCritTint(cls){
+  if(!cls) return null; if(cls in dnCritTintCache) return dnCritTintCache[cls];
+  let out = null;
+  try{ const p = document.createElement('div'); p.className = 'dmg-float ' + cls; p.style.cssText = 'position:fixed; left:-999px; top:-999px; visibility:hidden;';
+    document.body.appendChild(p); const cs = getComputedStyle(p), g1 = cs.getPropertyValue('--g1').trim(), g2 = cs.getPropertyValue('--g2').trim(), edge = cs.getPropertyValue('--edge').trim(); p.remove();
+    if(g2) out = {g1: dnCritShift(g1 || g2), g2: dnCritShift(g2), edge, glow: g2}; }catch(e){}
+  return (dnCritTintCache[cls] = out);
+}
+// Every damage number (DN2, 2026-10-22, owner DN-1 "Yes"): ticks, field damage, bramble hits, Reflect / Thorns, the raid's smacks and
+// splash all read <type glyph><number><mark> like a hit, no minus. o: {type, glyph (a type glyph to use instead), mods, blocked, crit,
+// cls (a class to use instead of the type's, e.g. a tick's own colours), addCls (added, e.g. 'hq-big'), fit (default: on unit cards)}.
+function dnFloat(el, dmg, o){
+  if(!el) return; o = o || {};
+  const p = dmgFloatParts(dmg, o.type, !!o.crit, o.mods, !!o.blocked, o.glyph);
+  const cls = ((o.cls != null && !(p.cls === 'blocked' || /\bcrit\b/.test(p.cls)) ? o.cls : p.cls) + (o.addCls ? ' ' + o.addCls : '')).trim();
+  const onCard = !!(el.closest && el.closest('.board-card, .card-tile, .fx-float-host'));
+  floatText(el, p.text, cls, {post: p.post, postKey: p.mod, fit: o.fit != null ? !!o.fit : onCard, noIcon: true, critEl: p.critEl, heavy: !cls && (dmg||0) >= 8});
+}
+// A damage number's text for a stamp or a log (no element): '👊🪄14🦴' (DN2)
+function dnText(dmg, type, mods, crit, blocked){ const p = dmgFloatParts(dmg, type, crit, mods, blocked); return p.text.replace(' ', '') + (p.post || ''); }
+try{ window.dnText = dnText; window.dnFloat = dnFloat; window.dnMarkOf = (mods, dmg)=> dnModKey(mods, false, dmg); }catch(e){} // for FX.F's raid stamps
 function flashDmg(uid, dmg, blocked, dmgType, crit, mods){
   const el = boardCardEl(uid);
   if(!el) return;
   recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
   // 2026-10-22 (package DN): one format for every hit (was '🛡 0', '👊🔥 -12', '🔥 -5', '-5'); the colours stay with the same classes.
-  const p = dmgFloatParts(dmg, dmgType, crit, mods, blocked);
-  floatText(el, p.text, p.cls, {post: p.post, postKey: p.mod, fit: true, noIcon: true, heavy: !p.cls && (dmg||0) >= 8});
+  dnFloat(el, dmg, {type: dmgType, crit, mods, blocked, fit: true}); // DN2: through dnFloat (the elemental crit's look)
   hitExplosionVfx(uid, dmgType);
   try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
 }
@@ -42624,7 +42686,7 @@ function sixthPassVfx(ev){
   }
   if(ev.type==='meteorBurn'){
     const el = ev.uid != null ? boardCardEl(ev.uid) : null;
-    if(el){ try{ floatText(el, '☄️🔥-' + ev.dmg, 'dmg'); }catch(e){} if(F && F.scorch) try{ F.scorch(el, {}); }catch(e){} }
+    if(el){ try{ dnFloat(el, ev.dmg, {type:'heat', mods: ev.mods}); }catch(e){} /* DN2 */ if(F && F.scorch) try{ F.scorch(el, {}); }catch(e){} }
     if(!ev.left){ const c = boardCardEl(ev.craterUid); if(c) c.classList.remove('meteor-crater'); if(el) el.classList.remove('meteor-crater'); if(matchState.meteorCraters) delete matchState.meteorCraters[ev.craterUid]; }
   }
   if(ev.type==='banana'){
@@ -42639,7 +42701,7 @@ function sixthPassVfx(ev){
   // 2026-10-14 (seventh pass): Psychic's purple mind-wave; Smoke Bomb's lobbed bomb and grey cloud.
   if(ev.type==='psychic'){
     const t = boardCardEl(ev.targetUid);
-    if(t){ if(F && F.mindWave) try{ F.mindWave(boardCardEl(ev.attUid), t, {immune:!!ev.immune}); }catch(e){} try{ floatText(t, ev.immune ? '💭 No mind' : '💭 -' + ev.dmg, ev.immune ? 'buff' : 'dmg'); }catch(e){} }
+    if(t){ if(F && F.mindWave) try{ F.mindWave(boardCardEl(ev.attUid), t, {immune:!!ev.immune}); }catch(e){} try{ dnFloat(t, ev.immune ? 0 : ev.dmg, {type:'psychic', mods: ev.immune ? ['immune'] : ev.dampened ? ['resist'] : null}); }catch(e){} } /* DN2 */
     if(!ev.immune){ const rc = rcs[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.dmg||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} }
   }
   if(ev.type==='smokeBomb'){
@@ -42954,7 +43016,7 @@ function eqLogText(ev, nm){
 }
 function eqVfx(ev){
   if(ev.type === 'equipReady'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `⚒️ +${ev.attack}/+${ev.health}`, 'buff'); }
-  else if(ev.type === 'floorTick' && ev.dmg > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} -${ev.dmg}`, 'dmg'); }
+  else if(ev.type === 'floorTick' && ev.dmg > 0){ const el = boardCardEl(ev.uid); if(el) dnFloat(el, ev.dmg, {type: ev.dmgType, mods: ev.mods}); } /* DN2 */
   else if(ev.type === 'floorTick' && ev.poison > 0){ const el = boardCardEl(ev.uid); if(el) floatText(el, `${EQ_FLOOR_ICON[ev.kind] || ''} ☠${ev.poison}`, 'poison'); }
   else if(ev.type === 'floorSlide'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⛸️', 'buff'); }
 }
@@ -43018,7 +43080,7 @@ function field2LogText(ev, nm){
   const who = s=> s === 'A' ? 'your' : "the enemy's";
   if(ev.type === 'fieldTick'){
     const h = FIELD2_HIT[ev.field];
-    if(h) return ev.atheist ? {cls:'', text:`✴️ ${nm(ev.defId)} doesn't believe in ley lines: no damage.`} : {cls:'', text:`${h[0]} ${nm(ev.defId)} takes ${ev.dmg} from ${h[1]}${ev.roll ? ` (${ev.roll})` : ''}${ev.swimmer ? ' (it swims: half)' : ''}.`};
+    if(h) return ev.atheist ? {cls:'', text:`✴️ ${nm(ev.defId)} doesn't believe in ley lines: no damage.`} : {cls:'', text:`${h[0]} ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} from ${h[1]}${ev.roll ? ` (${ev.roll})` : ''}${ev.swimmer ? ' (it swims: half)' : ''}.`};
     switch(ev.field){
       case 'landslide': return {cls:'', text:`🪨 Landslide! Rocks come down on three neighbouring columns: ${ev.amount} damage to every unit there that isn't flying.`}; // 2026-10-17
       case 'crushingDepths': return {cls:'', text:`🫧 The depths press down: ${ev.amount} water damage to every unit (Swimmers take half).`};
@@ -43039,8 +43101,8 @@ function field2LogText(ev, nm){
       case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Wave ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17; "Wave" on screen since 2026-10-18 (Awash and Wave are one)
       // The raid's back rows (2026-10-17)
       case 'volley': return {cls:'gold', text: ev.side === 'A' ? '🏹 Your allies\u2019 rows strike from behind the line.' : '🏹 The enemy\u2019s back rows strike.'};
-      case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${ev.dmg}.`};
-      case 'volleyCastle': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${ev.side === 'B' ? 'the enemy' : 'your'} bramble for ${ev.dmg}${ev.shielded ? ' (shielded)' : ''}.`};
+      case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`};
+      case 'volleyCastle': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${ev.side === 'B' ? 'the enemy' : 'your'} bramble for ${dnLogNum(ev.dmg, ev)}${ev.shielded ? ' (shielded)' : ''}.`};
     }
     return null;
   }
@@ -43067,7 +43129,7 @@ function field2Vfx(ev){
     const h = FIELD2_HIT[ev.field];
     if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}
       if(!el) return; if(ev.atheist){ fl(el, '✴️ Atheist', 'quick'); return; }
-      fl(el, `${h[0]}-${ev.dmg}`, ev.field === 'lavaSpoutHit' ? 'heat' : 'dmg'); try{ shakeEl(el); }catch(e){}
+      try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.field === 'lavaSpoutHit' ? 'heat' : null), mods: ev.mods}); }catch(e){} try{ shakeEl(el); }catch(e){} /* DN2 */
       if(!F || !fx()) return; const c = at(el);
       if(ev.field === 'hailHit' && F.burst) F.burst(c.x, c.y - 20, 270, 'ice', 6);
       else if(ev.field === 'glassHit' && F.burst) F.burst(c.x, c.y, Math.random()*360, 'zap', 5);
@@ -43255,10 +43317,10 @@ function w2LogText(ev, nm){
     return null;
   }
   switch(ev.type){
-    case 'toxinTick': return {cls:'poison', text:`☣️ ${nm(ev.defId)} takes ${ev.dmg} from Toxin.`};
-    case 'strangleTick': return {cls:'', text:`🪢 ${nm(ev.defId)} is squeezed for ${ev.dmg}.`};
+    case 'toxinTick': return {cls:'poison', text:`☣️ ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} from Toxin.`};
+    case 'strangleTick': return {cls:'', text:`🪢 ${nm(ev.defId)} is squeezed for ${dnLogNum(ev.dmg, ev)}.`};
     case 'hazardSet': return {cls:'', text: ev.kind === 'trap' ? `${nm(ev.srcDefId)} sets a trap 🪤 (${ev.n}) on the empty slot facing it.` : `🔥 The ground burns where ${nm(ev.srcDefId)} made its kill (${ev.n} to the next card played there).`};
-    case 'hazardSprung': return {cls:'', text: ev.kind === 'trap' ? `🪤 Snap! ${nm(ev.defId)} steps into a trap (${ev.dmg}).` : `🔥 ${nm(ev.defId)} is played onto burning ground (${ev.dmg}).`};
+    case 'hazardSprung': return {cls:'', text: ev.kind === 'trap' ? `🪤 Snap! ${nm(ev.defId)} steps into a trap (${dnLogNum(ev.dmg, ev)}).` : `🔥 ${nm(ev.defId)} is played onto burning ground (${dnLogNum(ev.dmg, ev)}).`};
     case 'poisonGas': return {cls:'poison', text:`😷 ${nm(ev.defId)} lets out a poison gas: ${ev.hits.length} enemy unit${ev.hits.length === 1 ? '' : 's'} +${ev.n} ☠.`};
     case 'absoluteZero': return {cls:'', text:`🧊 Absolute Zero! ${nm(ev.defId)} freezes ${ev.hits.length} enemy unit${ev.hits.length === 1 ? '' : 's'} for the round.`};
     case 'nova': return {cls:'', text:`🔮 ${nm(ev.defId)} bursts into a Nova: ${ev.n} magic damage to every enemy unit.`};
@@ -43294,11 +43356,11 @@ function w2SkillVfx(ev){
   }
   switch(ev.type){
     case 'toxinTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0)); m.lastHurtBy = m.lastHurtBy || {}; m.lastHurtBy[ev.uid] = 'poison';
-      snd('bubble'); fl(el, `☣️ -${ev.dmg}`, 'poison-tick'); if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
+      snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
-      fl(el, `🪢 -${ev.dmg}`, 'dmg'); if(el && fx()) F.squeeze(el); try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
+      try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')) F.trapSet(c, {kind: ev.kind}); }); break;
-    case 'hazardSprung': w2Later(560, ()=>{ const el = boardCardEl(ev.uid); if(!el) return; fl(el, `${ev.kind === 'trap' ? '🪤' : '🔥'} -${ev.dmg}`, 'dmg'); if(fx('low')) F.trapSnap(el, {kind: ev.kind}); snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }); break;
+    case 'hazardSprung': w2Later(560, ()=>{ const el = boardCardEl(ev.uid); if(!el) return; try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.kind === 'trap' ? 'physical' : 'heat'), mods: ev.mods}); }catch(e){} if(fx('low')) F.trapSnap(el, {kind: ev.kind}); /* DN2 */ snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }); break;
     case 'poisonGas': { const els = (ev.hits||[]).map(u=>{ const rc = rcOf(u); if(rc) rc.poison = (rc.poison||0) + (ev.n||0); return boardCardEl(u); }).filter(Boolean);
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
     case 'absoluteZero': w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); if(fx()) F.absoluteZero(document.getElementById('battlefieldEl'), now); snd('iceShatter'); }); break;
@@ -43425,7 +43487,7 @@ function devilPayVfx(ev){
   w2Later(ev.type === 'bloodTithe' && !ev.castle ? 520 : 480, ()=>{
     const el = (ev.type === 'bloodTithe' && !ev.castle) ? boardCardEl(ev.targetUid) : hqTileEl(ev.side);
     if(!el) return; snd('curse'); devilPulse(el);
-    try{ floatText(el, `⛧ -${ev.dmg}`, 'dmg'); }catch(e){}
+    try{ dnFloat(el, ev.dmg, {mods: ev.mods}); }catch(e){} /* DN2 */
     if(ev.type === 'bloodTithe' && !ev.castle) try{ updateCardHpDisplay(ev.targetUid); }catch(e){}
     else try{ updateHqHpDisplay(ev.side); }catch(e){}
   });
@@ -43454,7 +43516,7 @@ function skills2Vfx(ev){
   if(ev.type === 'lumberBurn'){ const pill = document.getElementById(ev.side === 'A' ? 'hudLumberPill' : 'hudLumberPillB') || document.getElementById('hudLumberPill'), me = boardCardEl(ev.uid);
     if(ev.side === 'A' && pill) fl(pill, '🔥 -1', 'dmg'); if(pill && me && ev.side === 'A') floatGlyphs(pill, me, ['🔥'], {size:18, rise:20}); else if(me) fl(me, '🔥 -1🪵', 'debuff'); snd('burnAway'); return; }
   if(ev.type === 'fireHit'){ const at = Math.max(0, (animMs().windup||0) + (animMs().impactPad||0) + 60);
-    setTimeout(()=>{ const el = ev.castle ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid); fl(el, `🔥 -${ev.dmg}`, 'dmg');
+    setTimeout(()=>{ const el = ev.castle ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid); try{ dnFloat(el, ev.dmg, {type:'heat', mods: ev.mods}); }catch(e){} /* DN2 */
       if(!ev.castle){ const r = rc(ev.targetUid); if(r) r.hp = Math.max(0, (r.hp||0) - (ev.dmg||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} }
       else try{ displayHqDamage(matchState, ev.targetSide, ev.dmg); }catch(e){}
       if(el) floatGlyphs(el, el, ['🔥', '🔥'], {size:20, rise:26, rise2:44, ms:700}); }, at); return; }
@@ -43771,7 +43833,7 @@ function renderVfxForEvent(ev){
         hqHitBigVfx(targetEl, ev.dmg);
         // 2026-10-15 (user: "The damage numbers to your castle should come from the battlefield respective HP bar instead. Since the
         // player's focus is in the centre."): the number rises from the middle of that side's HP ribbon on the field.
-        floatText(hqRibbonFloatAnchor(ev.targetSide) || targetEl, (DMG_ICON[ev.dmgType] ? DMG_ICON[ev.dmgType][0] + ' ' : '') + '-'+ev.dmg, 'hq-big'); // 2026-10-17: + the element's emoji
+        dnFloat(hqRibbonFloatAnchor(ev.targetSide) || targetEl, ev.dmg, {type: ev.dmgType, crit: ev.crit, mods: ev.bulwark > 0 ? ['armor'] : null, blocked: ev.bulwark > 0, addCls:'hq-big', fit:false}); // 2026-10-17: + the element's emoji; DN2 (2026-10-22): <type><number><mark>, Bulwark is the ⛨
         const mm = matchState;
         displayHqDamage(mm, ev.targetSide, ev.dmg);
         // Task #228 (Castle speech bubble presets): same intermittent-chatter treatment a
@@ -43984,7 +44046,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
     else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
     else if(ev.kind==='chilli'){ if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
-    else if(ev.kind==='chilliBurn'){ if(el) floatText(el, `🌶️ −${ev.amount}`, 'dmg'); }
+    else if(ev.kind==='chilliBurn'){ if(el) dnFloat(el, ev.amount, {type:'chilli', mods: ev.mods}); } /* DN2 */
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
     else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
@@ -44007,9 +44069,9 @@ function renderVfxForEvent(ev){
     // pulse, and Grit's permanent attack gain — same statusFx envelope as the four above,
     // just three new `kind`s.
     else if(ev.kind==='daunt'){ try{ SoundKit.curse(); }catch(e){} if(el) floatText(el, '😨 −'+ev.amount+'⚔', 'debuff'); if(rc){ (rc.daunts = rc.daunts || []).push({n:ev.amount}); } }
-    else if(ev.kind==='recoil'){ if(el){ floatText(el, '💢 −'+ev.amount, 'debuff'); try{ recoilEl(el, 0.7); }catch(e){} } }
+    else if(ev.kind==='recoil'){ if(el){ dnFloat(el, ev.amount, {mods: ev.mods}); /* DN2 */ try{ recoilEl(el, 0.7); }catch(e){} } }
     // 2026-10-14: Ichor's splash on the attacker, and a Cower unit hiding or backing off
-    else if(ev.kind==='ichor'){ if(el){ floatText(el, '🧪 −'+ev.amount + (ev.armor ? ' −1🛡' : ''), 'debuff'); try{ recoilEl(el, 0.6); }catch(e){} } if(rc){ rc.bleed = (rc.bleed||0) + 1; if(ev.armor) rc.armorLoss = (rc.armorLoss||0) + 1; } }
+    else if(ev.kind==='ichor'){ if(el){ dnFloat(el, ev.amount, {type:'acid', mods: ev.mods}); if(ev.armor) floatText(el, '−1🛡', 'debuff'); /* DN2 */ try{ recoilEl(el, 0.6); }catch(e){} } if(rc){ rc.bleed = (rc.bleed||0) + 1; if(ev.armor) rc.armorLoss = (rc.armorLoss||0) + 1; } }
     else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff'); }
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
@@ -44126,7 +44188,7 @@ function renderVfxForEvent(ev){
   // pattern as Thorns just above, its own tone/glyph so the two don't sound identical.
   if(ev.type==='reflect'){
     SoundKit.reflectTone(); flashDmg(ev.targetUid, ev.dmg, false);
-    const el = boardCardEl(ev.targetUid); if(el) floatText(el, '🪞 -'+ev.dmg, 'debuff');
+    const el = boardCardEl(ev.targetUid); if(el) floatText(el, '🪞', 'quick'); // DN2 (2026-10-22): the number is flashDmg's (one number, not two)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.targetUid);
@@ -44138,7 +44200,7 @@ function renderVfxForEvent(ev){
     const el = hqTileEl(ev.targetSide);
     SoundKit.pierceTone();
     if(el) flashHqDamage(el);
-    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '🗡 -'+ev.dmg, 'hq-big'); } // on the field's HP bar too (2026-10-18, BP)
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) dnFloat(at, ev.dmg, {addCls:'hq-big', fit:false}); } /* DN2 */ // on the field's HP bar too (2026-10-18, BP)
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -44151,7 +44213,7 @@ function renderVfxForEvent(ev){
     // 2026-10-18 (package BP, owner: "Trample's damage number should be at the battlefield HP bar's centre — same as the rest"): the
     // number pops on the field's HP bar (hqRibbonFloatAnchor, as a hitHQ's does), no longer on the bramble tile under the board.
     if(el){ shakeEl(el); flashHqDamage(el); }
-    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '💥 -'+ev.dmg, 'hq-big'); }
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) dnFloat(at, ev.dmg, {addCls:'hq-big', fit:false}); } /* DN2 */
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -44266,7 +44328,7 @@ function renderVfxForEvent(ev){
     // existing bubble chime + emoji-led float number together read as one distinct beat.
     SoundKit.bubble(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'poison-tint-pulse');
     poisonBubbleBurstVfx(ev.uid);
-    floatText(el, '☠️ -'+ev.dmg, 'poison-tick');
+    dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); /* DN2 */
     // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!' It just drops a greyed out toxin
     // counter from your toxin context label"): the 1-a-round wear-down drops a grey "☠−1" off the Poison badge (FX.D.poisonDrop, measured
     // before the badge is redrawn below). The last counter's look fades off with its bubbles in FX.D.syncStatusLooks.
@@ -44284,7 +44346,7 @@ function renderVfxForEvent(ev){
   // green rather than just a slightly different number.
   if(ev.type==='bleedTick'){
     SoundKit.bleedTick(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
-    floatText(el, '🩸 -'+ev.dmg, 'bleed-tick');
+    dnFloat(el, ev.dmg, {type:'bleed', mods: ev.mods, cls:'bleed-tick'}); /* DN2 */
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.bleed = Math.max(0, (rc.bleed||0) - 1); }
     updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
@@ -44292,7 +44354,7 @@ function renderVfxForEvent(ev){
   // Awash crash (2026-10-18, user: "Awash N: Move N. If crash into another unit, both take N damage."): both units jolt and take N.
   if(ev.type==='washCrash'){
     try{ SoundKit.thud ? SoundKit.thud() : (SoundKit.quick && SoundKit.quick()); }catch(e){}
-    [[ev.uid, ev.dmg], [ev.otherUid, ev.otherDmg]].forEach(([u, d])=>{ const el = boardCardEl(u); if(el){ shakeEl(el); floatText(el, '💥 -' + d, 'bleed-tick'); }
+    [[ev.uid, ev.dmg, ev.mods], [ev.otherUid, ev.otherDmg, ev.otherMods]].forEach(([u, d, md])=>{ const el = boardCardEl(u); if(el){ shakeEl(el); dnFloat(el, d, {mods: md, cls:'bleed-tick'}); } /* DN2 */
       const rc = matchState && matchState.replayCards && matchState.replayCards[u]; if(rc) rc.hp = Math.max(0, rc.hp - (d|0)); updateCardHpDisplay(u); });
   }
   // Bleed wears down 1 a round at upkeep (2026-10-18): no damage, just the badge counting down.
@@ -44307,7 +44369,7 @@ function renderVfxForEvent(ev){
   // changes elsewhere in this file — the badge catches up on the card's next full re-render.
   if(ev.type==='decayTick'){
     SoundKit.corrodeTone(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
-    floatText(el, '🦠 '+ev.dmg+'! (-'+ev.atk+'⚔)', 'bleed-tick');
+    dnFloat(el, ev.dmg, {type:'decay', mods: ev.mods, cls:'bleed-tick'}); if(ev.atk) setTimeout(()=>{ try{ floatText(el, '−'+ev.atk+'⚔', 'debuff'); }catch(e){} }, 220); /* DN2 */
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(rc.atk!=null) rc.atk = Math.max(0, rc.atk - ev.atk); }
     updateCardHpDisplay(ev.uid);
@@ -44377,7 +44439,7 @@ function renderVfxForEvent(ev){
   // Friction (2026-10-12): a grinding spark on the ally beside the attacker, and its Health drops in the replay too.
   if(ev.type==='friction'){ const el = boardCardEl(ev.targetUid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.dmg||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){}
-    if(el){ shakeEl(el); floatText(el, `⚙️ -${ev.dmg}`, 'dmg'); } try{ SoundKit.hitAt(ev.dmg||1, false); }catch(e){} }
+    if(el){ shakeEl(el); dnFloat(el, ev.dmg, {mods: ev.mods}); } /* DN2 */ try{ SoundKit.hitAt(ev.dmg||1, false); }catch(e){} }
   // Fields and day/night (2026-10-09)
   if(ev.type==='fieldTick' && ev.field==='tideSpout'){ try{ SoundKit.splash(); }catch(e){} if(ev.tideIn) try{ tideWaveVfx('flow'); }catch(e){} }
   // Irradiation tokens (2026-10-14): what the radiation took, floated over the card; the badge follows the token count.
@@ -44398,7 +44460,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
-    if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? (ev.field === 'immolation' ? 'heat' : 'dmg') : 'heal'); }catch(e){} // Immolation's burn is a fire number (2026-10-16)
+    if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : (ev.dmg ? dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.freeze ? 'cold' : 'heat'), mods: ev.mods}) : floatText(el, `🌧️+${ev.heal}`, 'heal')); }catch(e){} /* DN2: <type><number><mark> (fieldGlyph was the source) */ // Immolation's burn is a fire number (2026-10-16)
     if(ev.field==='petrify' && el){ el.classList.add('is-petrified'); try{ SoundKit.thud ? SoundKit.thud() : null; }catch(e){} }
     if(ev.field==='lavaTide' && el){ el.classList.add('lava-tide-hit'); setTimeout(()=> el.classList.remove('lava-tide-hit'), 900); eruptionGeyserVfx(el); try{ SoundKit.boom ? SoundKit.boom() : null; }catch(e){} }
     if(ev.field==='irradiated'){ try{ SoundKit.geiger(ev.tokens||1); }catch(e){} } // 2026-10-14: the geiger counter goes off (throttled)
@@ -44411,7 +44473,7 @@ function renderVfxForEvent(ev){
     if(ev.field==='immolation'){ const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('immolate-pulse'); setTimeout(()=> src.classList.remove('immolate-pulse'), 900); } } }
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast(TX('toast.your-leader-is-free'), 'ok'); }
-  if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
+  if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ dnFloat(el, ev.dmg, {type:'curse', mods: ev.mods}); }catch(e){} } /* DN2 */
   if(ev.type==='wash'){ try{ washPushVfx(ev); }catch(e){}
     if(ev.spout && ev.dmg){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} } }
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
@@ -47042,7 +47104,7 @@ function useItem(id){
   else if(id === 'scoutmap'){ const h0 = me.hand.length; E.draw(me, 2, 'A', m.stats, []); r.n = Math.max(0, me.hand.length - h0); }
   else if(id === 'firepot'){ const foes = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && !c.cageOf);
     targetUids = foes.map(t=> t.uid); r.k = foes.length;
-    foes.forEach(t=> E.damageCardFlat(t, 3, 'heat'));
+    r.hit = {}; foes.forEach(t=>{ const d = E.damageCardFlat(t, 3, 'heat'); r.hit[t.uid] = {d, mods: E.hitModsFor ? E.hitModsFor(t.uid) : null}; }); // DN2 (2026-10-22): what each took and its mark, for its number
     E.removeDeadCards(m.players, m.sideOf, {}, m.stats, deaths); r.dead = deaths.filter(ev=> ev.type === 'death').length; }
   else if(id === 'honeycake'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && c.hp < c.maxHp);
     r.per = {}; mine.forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); c.hp += h; r.n += h; r.per[c.uid] = h; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
@@ -47096,7 +47158,7 @@ function itemLanded(m, id, r, targets, deaths){
     const host = fxHostAt(t.el.isConnected ? t.el : document.body, 1900, t.el.isConnected ? null : t.rect);
     host.style.setProperty('--ik', tint);
     const ring = document.createElement('span'); ring.className = 'item-hit-ring'; host.appendChild(ring);
-    floatText(host, floatFor(t), cls);
+    if(id === 'firepot' && r.hit && r.hit[t.uid]) dnFloat(host, r.hit[t.uid].d, {type:'heat', mods: r.hit[t.uid].mods, fit:true}); else floatText(host, floatFor(t), cls); // DN2: the firepot's number reads like a hit
     if(t.el.isConnected){ t.el.classList.remove('item-hit'); void t.el.offsetWidth; t.el.style.setProperty('--ik', tint); t.el.classList.add('item-hit'); setTimeout(()=>{ try{ t.el.classList.remove('item-hit'); }catch(e){} }, 700); }
   }catch(e){} });
   try{ pushLog({type:'itemUsed', item:id, r:{n:r.n, k:r.k, dead:r.dead}}); }catch(e){}

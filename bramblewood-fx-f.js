@@ -1661,7 +1661,11 @@ function raidSmackFx(ev, env){
     const showNum = ()=>{ if(!(ev.dmg > 0) || !struck.length) return; // (no unit hit: the bramble's own Health pop shows it)
       const rs = struck.map(e=> e.getBoundingClientRect()).filter(r=> r.width); if(!rs.length) return;
       const x = rs.reduce((t, r)=> t + r.left + r.width / 2, 0) / rs.length, y = rs.reduce((t, r)=> t + r.top + r.height / 2, 0) / rs.length;
-      stamp(x, y, '🦑 −' + ev.dmg, {color:'smack', size:22, hold:.6, rot:-6}); };
+      // 2026-10-22 (package DN2, owner DN-1): the stamp reads like every damage number, <type><number> with no minus (a smack is physical,
+      // so no glyph); a unit that took a different number, or has a mark (🦴 Fragile, ⛨ ...), gets its own number on its card.
+      stamp(x, y, typeof window.dnText === 'function' ? window.dnText(ev.dmg, 'physical') : String(ev.dmg), {color:'smack', size:22, hold:.6, rot:-6});
+      if(typeof window.dnFloat === 'function') (ev.struck || []).forEach(s=>{ if(s.dmg === ev.dmg && !(window.dnMarkOf && window.dnMarkOf(s.mods, s.dmg))) return;
+        const e = struck.find(c=> String(c.dataset.uid || (c.querySelector('[data-uid]') || {dataset:{}}).dataset.uid) === String(s.uid)); if(e) try{ window.dnFloat(e, s.dmg, {mods: s.mods}); }catch(x){} }); };
     if(ev.front && env.reduced){ M.tentacleSmack(cells, {horizontal:true, flashOnly:true, onImpact:showNum}); return; } // a flash, no motion (TF 2026-10-19: flashOnly)
     M.tentacleSmack(cells, {host:env.battlefield, origin, horizontal, onImpact:showNum});
   }
