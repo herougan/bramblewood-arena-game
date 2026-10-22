@@ -15651,16 +15651,16 @@
     "test": false,
     "uuid": "5bdfb30a-7f27-4f01-92cc-a80d0752b4a5",
     "wait": 0,
-    "attack": 4,
+    "attack": 3,
     "flavor": "Barks the orders, then runs in first anyway.",
-    "health": 12,
+    "health": 10,
     "locked": true,
-    "rarity": "heroic",
+    "rarity": "rare",
     "resist": [],
     "source": {
-      "id": "m1",
+      "id": "mr",
       "kind": "map",
-      "node": "0-4"
+      "node": "13-2"
     },
     "dmgType": "physical",
     "effects": {},
@@ -15735,7 +15735,7 @@
         "Who taught you to march?"
       ]
     },
-    "creatorNote": "2026-10-19 retune (server override folded): was 4/8 heroic (live server version of 2026-10-12; well under: 2A+H+S 49% -> 71% of N 32.55). 2026-10-19 halve (BF5): was 6/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/6."
+    "creatorNote": "2026-10-19 retune (server override folded): was 4/8 heroic (live server version of 2026-10-12; well under: 2A+H+S 49% -> 71% of N 32.55). 2026-10-19 halve (BF5): was 6/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/6. 2026-10-22 (package SK, owner 09:52): Heroic -> Rare and moved from Map 0 (0-4) to the leader of 13-2 Fox Run (Map 13, the Redwood Deep: the Greenhood Band's foxes), re-fitted by the formula at Rare and Map 13: 4/12 -> 3/10."
   },
   {
     "cost": 1,

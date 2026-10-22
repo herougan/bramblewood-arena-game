@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package SK: skirmish sizes 5-7, leaders from Map 2, Sergeant Bramblefox moves to Map 13)
+- **Skirmish sizes (owner 09:52):** every skirmish on a main map or side map holds 5-7 different cards (149 fights: 47 with 5, 94 with 6, 8 with 7; was 17 with 4, 28 with 7
+  and 14 with 8-12). A 7 only where one card clearly leads (7-2, 22-4, 2-A-3, 19-A-5, 14-A-3, 20-B-1, 18-A-3, 18-A-7). New cards come only from the map's pool and the road's
+  rarity ladder; a fight's reward card stays on its deck; total copies and battle rating stay within about 10% (three fights with a Common-only body rise more: call SK-3).
+  Not changed: the Tutorial lessons (T-2, T-3), the endless floors, elites, bosses, Map 0 (already 6 each). `tools/skirmish_sizes_2026_10_22.js` plans, applies and checks it.
+- **Leaders:** from Map 2 on (a side map counts as its parent) every skirmish's leader is its showcase card, the chosen one or the Auto pick (`skirmishLeadersOf` in
+  `arena_app.js`, used by the fight setup, the battle rating, the leader grants, the rank caps and the curve cache). The CPU brings it out from reserve as before; the leader
+  stays in the deck too; an explicit `node.leaders` wins; nothing new is shown to players. 14 fights got a hand-picked showcase where Auto is a small card (call SK-2).
+  The Edit skirmish screen says which card leads when none is picked.
+- **Sergeant Bramblefox:** Heroic -> Rare, 4/12 -> 3/10 (re-fitted by the formula), moved from Map 0 (0-4) to the leader of 13-2 Fox Run (Map 13, the Greenhood Band's
+  foxes), paid when 13-2 is cleared and no longer on 0-4; Map 13's pool holds it as SPECIAL. Call SK-1.
+- `tools/lib_bramble.js` exposes the leader helper and the battle rating to the balance tools.
+
 ## 2026-10-22 (package DV2: skirmish rewards by new cards, the ladder to Mythic, the map pools in three tiers, Load any card as its own modal)
 - **Owner (07:41):** DV1, DV3, DV5 and MP's calls answered (DONE in `docs/decisions.json`; new call DV8, the Magnate Duck).
 - **Skirmish rewards per map** follow its new cards: "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1." New = a pool card that first

@@ -90,7 +90,7 @@
   "mr": {
    "cards": ["fox-kit", "swift-fox", "berserker-boar", "stag-knight", "grizzly-vanguard", "tasmanian-devil", "woodpecker-sapper", "bramblewood-lynx", "fawn-scout", "shimmerwing-stag"],
    "submaps": {},
-   "special": []
+   "special": ["sergeant-bramblefox"]
   },
   "m5": {
    "cards": ["springbok-pronker", "hoopoe-herald", "meerkat-burrower", "weaver-bird", "dust-hyena", "grave-grin-hyena", "pangolin-roller", "marula-elephant", "spitting-cobra", "savanna-cheetah"],
