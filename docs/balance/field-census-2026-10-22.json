@@ -1,0 +1,290 @@
+{
+ "_about": "tools/skill_test_robust.js --census: the share of conquest-map fights (arena_app.js CONQUEST_MAPS + fightRules' map-level rules) that carry each field; the four 50-floor climbs left out. FIELD_CONFIG's classes: uncommon = 2.5%+ or named by the owner (darkness, rain, fog)",
+ "generated": "2026-10-22",
+ "fights": 267,
+ "climbsLeftOut": [
+  "mm",
+  "mlb",
+  "muc",
+  "tw"
+ ],
+ "rows": [
+  {
+   "key": "phase:cycle",
+   "fights": 205,
+   "share": 0.768
+  },
+  {
+   "key": "phase:off",
+   "fights": 47,
+   "share": 0.176
+  },
+  {
+   "key": "wet",
+   "fights": 38,
+   "share": 0.142
+  },
+  {
+   "key": "wind:windy",
+   "fights": 31,
+   "share": 0.116
+  },
+  {
+   "key": "tide",
+   "fights": 21,
+   "share": 0.079
+  },
+  {
+   "key": "eruption",
+   "fights": 18,
+   "share": 0.067
+  },
+  {
+   "key": "dark:dark",
+   "fights": 17,
+   "share": 0.064
+  },
+  {
+   "key": "phase:night",
+   "fights": 15,
+   "share": 0.056
+  },
+  {
+   "key": "wind:gale",
+   "fights": 15,
+   "share": 0.056
+  },
+  {
+   "key": "swampFever",
+   "fights": 14,
+   "share": 0.052
+  },
+  {
+   "key": "highTide",
+   "fights": 13,
+   "share": 0.049
+  },
+  {
+   "key": "misty",
+   "fights": 13,
+   "share": 0.049
+  },
+  {
+   "key": "sandstorm",
+   "fights": 10,
+   "share": 0.037
+  },
+  {
+   "key": "canopy",
+   "fights": 8,
+   "share": 0.03
+  },
+  {
+   "key": "firstBlood",
+   "fights": 8,
+   "share": 0.03
+  },
+  {
+   "key": "arrowSlits",
+   "fights": 7,
+   "share": 0.026
+  },
+  {
+   "key": "field:heatwave1",
+   "fights": 7,
+   "share": 0.026
+  },
+  {
+   "key": "undergrowth",
+   "fights": 7,
+   "share": 0.026
+  },
+  {
+   "key": "field:heatwave2",
+   "fights": 6,
+   "share": 0.022
+  },
+  {
+   "key": "field:heatwave3",
+   "fights": 6,
+   "share": 0.022
+  },
+  {
+   "key": "lavaSpout",
+   "fights": 6,
+   "share": 0.022
+  },
+  {
+   "key": "crushingDepths",
+   "fights": 5,
+   "share": 0.019
+  },
+  {
+   "key": "dark:pitch",
+   "fights": 5,
+   "share": 0.019
+  },
+  {
+   "key": "permaTide",
+   "fights": 5,
+   "share": 0.019
+  },
+  {
+   "key": "freezing",
+   "fights": 4,
+   "share": 0.015
+  },
+  {
+   "key": "frostbite",
+   "fights": 4,
+   "share": 0.015
+  },
+  {
+   "key": "hail",
+   "fights": 4,
+   "share": 0.015
+  },
+  {
+   "key": "mirage",
+   "fights": 4,
+   "share": 0.015
+  },
+  {
+   "key": "ashRain",
+   "fights": 3,
+   "share": 0.011
+  },
+  {
+   "key": "landslide",
+   "fights": 3,
+   "share": 0.011
+  },
+  {
+   "key": "sulphurFumes",
+   "fights": 3,
+   "share": 0.011
+  },
+  {
+   "key": "field:frozen",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "slippery",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "sporeCloud",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "tallGrass",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "tangledRoots",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "thunderstorm",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "volcano",
+   "fights": 2,
+   "share": 0.007
+  },
+  {
+   "key": "ashy",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "bishopPath",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "consternation",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "field:heatwave",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "glassStorm",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "quietContemplation",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "rookRow",
+   "fights": 1,
+   "share": 0.004
+  },
+  {
+   "key": "tideSpout",
+   "fights": 1,
+   "share": 0.004
+  }
+ ],
+ "classes": {
+  "daynight": "common",
+  "tide": "common",
+  "dark": "uncommon",
+  "rain": "uncommon",
+  "fog": "uncommon",
+  "wet": "uncommon",
+  "wind": "uncommon",
+  "scorching": "uncommon",
+  "eruption": "uncommon",
+  "swampFever": "uncommon",
+  "highTide": "uncommon",
+  "sandstorm": "uncommon",
+  "canopy": "uncommon",
+  "firstBlood": "uncommon",
+  "arrowSlits": "uncommon",
+  "lavaSpout": "rare",
+  "crushingDepths": "rare",
+  "mirage": "rare",
+  "hail": "rare",
+  "freezing": "rare",
+  "frigid": "rare",
+  "moon": "rare",
+  "landslide": "rare",
+  "ashRain": "rare",
+  "ashy": "rare",
+  "sulphurFumes": "rare",
+  "sporeCloud": "rare",
+  "tangledRoots": "rare",
+  "thunderstorm": "rare",
+  "tallGrass": "rare",
+  "slippery": "rare",
+  "volcano": "rare",
+  "tideSpout": "rare",
+  "rookRow": "rare",
+  "bishopPath": "rare",
+  "consternation": "rare",
+  "glassStorm": "rare",
+  "quietContemplation": "rare",
+  "leylines": "rare",
+  "haunted": "rare",
+  "psychicDampener": "rare",
+  "awash": "rare",
+  "cloudy": "rare",
+  "lumber": "rare",
+  "doubleTime": "rare"
+ }
+}
