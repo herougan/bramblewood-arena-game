@@ -4,31 +4,6 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**MP-1. A map's card pool guides the editor; it does not restrict the game** · Decide · Maps · asked 2026-10-22
-- Package MP: the Map cards editor and the skirmish deck pickers read canonical/map-pools.json (and the admin's live edits). The pool decides what the pickers offer and which deck cards get a ⚠ chip; nothing in the game refuses a deck that strays from it (the deck-validation caps are package DR's).
-  - Guide only (editor)
-  - Also fail a check when a fight deck has a card outside its map's pool
-  - Also keep the CPU's generated decks (dungeons, endless floors) inside the pool
-- **Default:** Guide only (editor)
-
-**MP-2. "+ Load any card" saves to Special at once** · Decide · Maps · asked 2026-10-22
-- A card picked through + Load any card joins the deck and the map's (or submap's) Special tier immediately, as a live edit. Closing the skirmish editor without saving does not take it back out of Special; remove it in Map cards. The alternative holds the Special entry until the skirmish is saved.
-  - Write at once (now)
-  - Only when the skirmish is saved
-- **Default:** Write at once (now)
-
-**MP-3. A submap fight does not see the parent map's Special cards** · Decide · Maps · asked 2026-10-22
-- As briefed: a submap fight offers the parent's Cards, the submap's Cards and the submap's Special. The parent's Special (cards for the parent's odd fights) is left out, and the editor shows the parent's Cards read-only only.
-  - Left out (now)
-  - Show the parent's Special too, read-only
-- **Default:** Left out (now)
-
-**MP-4. What the three usage counters count** · Decide · Maps · asked 2026-10-22
-- On each card in Map cards: copies in this map's fight decks, in its submaps' fight decks, and in every other map's. Normal, elite, boss and a dungeon's wave decks count; the tutorial's fixed decks do not. It counts copies (a 4-of in a boss deck is 4), from the live map data, so the owner's edits are in it.
-  - Copies (now)
-  - Fights that use the card (a 4-of counts once)
-- **Default:** Copies (now)
-
 **AR-1. Standard PvP shares the PvP tickets and the rating** · Decide · Arena · asked 2026-10-21
 - Package AR split the Arena's PvP into two buttons. Standard PvP is the existing Standard format (every card at Level 1, no foils, a Standard deck built from any card) against the same strangers as Collection PvP, their decks also at Level 1. It uses the same 10 PvP tickets, moves the same rating and pays the same rewards. Your Standard deck is not recorded as a stranger, since it can hold cards you don't own.
   - Keep it shared
@@ -216,23 +191,11 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Keep these four as they are
 - **Default:** Keep these four as they are
 
-**DV1. The rarity ladder past Map 20** · Decide · Rarity · asked 2026-10-22
-- Package DV set the ladder (arena_app.js RARITY_INTRO): Common 0, Uncommon 1, Rare 5, Very Rare 10, Super Rare 20, Epic / Heroic by the Eye of the Volcano / the Volcano Lair (the main road fields them from Map 22). Proposed past that: Unique 30, Legendary 40, Mythic 55, Ancient 70, Divine 90. A skirmish caps at Super Rare on 20-29, Epic 30-39, Heroic 40-49 ...; an elite one step more, a boss two.
-  - Keep the proposal
-  - Other maps
-- **Default:** Keep the proposal
-
 **DV2. Map leaders outside the ladder** · Decide · Rarity · asked 2026-10-22
 - The 11 Heroic map leaders a boss pays on Maps 0-19 (Sergeant Bramblefox to the Yeti Chieftain) and the Triumvirate (Unique, 23-8) come before Heroic and Unique are revealed. DV kept them outside the ladder, as the old road cap did.
   - Keep leaders outside the ladder
   - Re-rank the leaders to their map
 - **Default:** Keep leaders outside the ladder
-
-**DV3. 1-2 skirmish rewards per map, not per fight** · Decide · Rewards · asked 2026-10-22
-- Read as per map: each main map pays 1-2 cards from fights (its last fight carries its top card); its other pool cards are basic-pack cards of that map. Most fights now give no card of their own (the base track still gives one on every elite and boss, the faction track every 8th win and each map end).
-  - Per map (as applied)
-  - Per fight: 1-2 cards on every fight
-- **Default:** Per map (as applied)
 
 **DV4. Packs gated by map and rarity** · Decide · Rewards · asked 2026-10-22
 - A basic-pack card now comes out of a pack or the base track only once its map is reached (source.map) and its rarity revealed (packCardReached); before, any pack card of any rarity came out from Map 5.
@@ -240,12 +203,6 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Gate by rarity only
   - No gate
 - **Default:** Keep the gate
-
-**DV5. Boss cards re-ranked for the ladder** · Decide · Rarity · asked 2026-10-22
-- The Caldera Wyrm and the Magnate Duck Legendary to Heroic, The Contradiction Unique to Epic, the Fire Drake Hatchling Common to Heroic (the Lair's reward). The Cathedral Eagle (Legendary, Ecclesia, held for Map 77) left 21-6 (the fight keeps its name); the Grovebearer Dragon-Turtle (Legendary) left 23-8 and is held for Map 40. The Caldera Wyrm is priced its own way and was not re-fitted (6/36).
-  - Keep
-  - Restore the Legendaries as boss exceptions
-- **Default:** Keep
 
 **DV6. Faction track gates after Map 20** · Decide · Rewards · asked 2026-10-22
 - Replaces RP2: Very Rare at 50 received, Map 20 and the Volcano Lair cleared (owner: after Map 20's strongest submap); Super Rare 60 / Map 22 / the Lair; Epic 70 / Map 26 / the Eye; Heroic 80 / Map 30 / the Lair; Unique and up 90 / Map 40.
@@ -465,6 +422,35 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Decided
 
+**MP-1. A map's card pool guides the editor; it does not restrict the game** · Decide · Maps · asked 2026-10-22 · decided 2026-10-22
+- Package MP: the Map cards editor and the skirmish deck pickers read canonical/map-pools.json (and the admin's live edits). The pool decides what the pickers offer and which deck cards get a ⚠ chip; nothing in the game refuses a deck that strays from it (the deck-validation caps are package DR's).
+  - Guide only (editor)
+  - Also fail a check when a fight deck has a card outside its map's pool
+  - Also keep the CPU's generated decks (dungeons, endless floors) inside the pool
+- **Default:** Guide only (editor)
+- **Outcome:** Owner 07:41: OK. The pool guides the editor and the deck pickers; nothing in the game refuses a deck that strays from it.
+
+**MP-2. "+ Load any card" saves to Special at once** · Decide · Maps · asked 2026-10-22 · decided 2026-10-22
+- A card picked through + Load any card joins the deck and the map's (or submap's) Special tier immediately, as a live edit. Closing the skirmish editor without saving does not take it back out of Special; remove it in Map cards. The alternative holds the Special entry until the skirmish is saved.
+  - Write at once (now)
+  - Only when the skirmish is saved
+- **Default:** Write at once (now)
+- **Outcome:** Owner 07:41: OK. A card picked through + Load any card joins the deck and the map's SPECIAL at once (now from its own modal).
+
+**MP-3. A submap fight does not see the parent map's Special cards** · Decide · Maps · asked 2026-10-22 · decided 2026-10-22
+- As briefed: a submap fight offers the parent's Cards, the submap's Cards and the submap's Special. The parent's Special (cards for the parent's odd fights) is left out, and the editor shows the parent's Cards read-only only.
+  - Left out (now)
+  - Show the parent's Special too, read-only
+- **Default:** Left out (now)
+- **Outcome:** Owner 07:41: OK, replaced by the three tiers (package DV2): one SPECIAL list per main map, shared with its submaps' fights; a main-map fight offers MAP + SPECIAL, a submap fight MAP + that SUBMAP + SPECIAL.
+
+**MP-4. What the three usage counters count** · Decide · Maps · asked 2026-10-22 · decided 2026-10-22
+- On each card in Map cards: copies in this map's fight decks, in its submaps' fight decks, and in every other map's. Normal, elite, boss and a dungeon's wave decks count; the tutorial's fixed decks do not. It counts copies (a 4-of in a boss deck is 4), from the live map data, so the owner's edits are in it.
+  - Copies (now)
+  - Fights that use the card (a 4-of counts once)
+- **Default:** Copies (now)
+- **Outcome:** Owner 07:41: OK. The three usage counters count copies, from the live map data.
+
 **HB2-1. Swordbill Challenger keeps three skills as a thematic exception** · Decide · Cards · asked 2026-10-21 · decided 2026-10-21
 - Package HB2's new Very Rare Hummingbird (3/5, Wait 1, Flying + Taunt + Counterattack, 98% of N) has three skills. The two-skill rule's tests only exempt Epic and up, Supreme, hidden, Easter-egg and token cards, so the card is named in a THEMATIC set in tests/bf5-2026-10-21.js and tools/two_skills_2026_10_21.js. Alternatives: drop Flying (a Hummingbird that walks) or fold Counterattack into Taunt.
   - Keep three skills as a named exception
@@ -472,6 +458,34 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Cut to two (Flying + Taunt)
 - **Default:** Keep three skills as a named exception
 - **Outcome:** Owner 18:23: plain Flying, Tide, Diurnal and Nocturnal don't count toward the two-skill limit; several of them count as 1. Built by package TR (bramblewood-budget.js skillCountOf, the two-skill tool, the editor's budget panel). The Swordbill Challenger is within the rule; 69 cards got back the skill BF5 cut only because one of these counted.
+
+**DV1. The rarity ladder past Map 20** · Decide · Rarity · asked 2026-10-22 · decided 2026-10-22
+- Package DV set the ladder (arena_app.js RARITY_INTRO): Common 0, Uncommon 1, Rare 5, Very Rare 10, Super Rare 20, Epic / Heroic by the Eye of the Volcano / the Volcano Lair (the main road fields them from Map 22). Proposed past that: Unique 30, Legendary 40, Mythic 55, Ancient 70, Divine 90. A skirmish caps at Super Rare on 20-29, Epic 30-39, Heroic 40-49 ...; an elite one step more, a boss two.
+  - Keep the proposal
+  - Other maps
+- **Default:** Keep the proposal
+- **Outcome:** Owner 07:41: OK, with changes. Heroic moves to Map 25 and Mythic to Map 60 (Epic 22, Unique 30, Legendary 40 as proposed). Ancient, Divine, Void and Daemonic never appear on the road (road skirmishes or road rewards): only special quests and dungeons give them, and Mythic is the highest rarity the road reaches. The Volcano Lair and the Eye of the Volcano still introduce the first Heroic and Epic (side maps may exceed the road). Built by package DV2 (arena_app.js RARITY_INTRO, ROAD_MAIN_FROM, ROAD_NEVER).
+
+**DV3. 1-2 skirmish rewards per map, not per fight** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- Read as per map: each main map pays 1-2 cards from fights (its last fight carries its top card); its other pool cards are basic-pack cards of that map. Most fights now give no card of their own (the base track still gives one on every elite and boss, the faction track every 8th win and each map end).
+  - Per map (as applied)
+  - Per fight: 1-2 cards on every fight
+- **Default:** Per map (as applied)
+- **Outcome:** Owner 07:41: per map, by new cards. 10 new cards from that map = 3 skirmish rewards, 6-9 = 2, under 6 = 1; about 2 is the normal. 'New' = a pool card that first appears on that map (not carried over from an earlier map), and one the map gives out (Base and starter cards are not counted). Built by package DV2: 16 maps pay 3, 8 pay 2, Map 21 pays 1; Map 1 keeps the Badger Lumberjack at 1-5.
+
+**DV5. Boss cards re-ranked for the ladder** · Decide · Rarity · asked 2026-10-22 · decided 2026-10-22
+- The Caldera Wyrm and the Magnate Duck Legendary to Heroic, The Contradiction Unique to Epic, the Fire Drake Hatchling Common to Heroic (the Lair's reward). The Cathedral Eagle (Legendary, Ecclesia, held for Map 77) left 21-6 (the fight keeps its name); the Grovebearer Dragon-Turtle (Legendary) left 23-8 and is held for Map 40. The Caldera Wyrm is priced its own way and was not re-fitted (6/36).
+  - Keep
+  - Restore the Legendaries as boss exceptions
+- **Default:** Keep
+- **Outcome:** Owner 07:41: OK, keep. (Package DV2: with Heroic from Map 25 the Magnate Duck left Map 24's boss deck, see DV8.)
+
+**DV8. The Magnate Duck cannot be Map 24's boss under the new ladder** · Decide · Rarity · asked 2026-10-22
+- Heroic is introduced on the road at Map 25 (DV1), but the Magnate Duck (Heroic, was Legendary) was the named boss card of 24-8, The Magnate Duck. Package DV2 swapped it out for the next card of its theme (a third Gilded Swan Knight; the boss keeps its name, hqHp and rules) and removed it from Map 24's pool; the card stays Heroic with no source. Options: leave it held for Map 25+, re-rank it to Epic (then refit its stats, 1/22 has no legal line) and put it back in 24-8, or move the fight's name to Map 25.
+  - Held for Map 25+ (now)
+  - Re-rank to Epic and put it back in 24-8
+  - Other
+- **Default:** Held for Map 25+ (now)
 
 **E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Hue shift, not a foil: the art is recoloured by a fixed per-card hue (90–270°), soft white glow, twinkling ✦. Prism stays a foil treatment.
