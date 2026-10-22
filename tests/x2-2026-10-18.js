@@ -140,10 +140,10 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8'));
     ok(keys.every(k=> pack[peel(TXT.TEXT[k])]), `the ${code} pack translates them`); });
   const fxf = fs.readFileSync(path.join(ROOT, 'bramblewood-fx-f.js'), 'utf8');
-  ok(/if\(ev\.kind === 'row'\)\{/.test(fxf) && /horizontal:true\}\); return;/.test(fxf), 'a row smack plays the tentacle sweeping along the row');
+  ok(/if\(ev\.front \|\| ev\.kind === 'row'\)\{/.test(fxf) && /horizontal = true;/.test(fxf), 'a row smack plays the tentacle sweeping along the row (FX 2026-10-22: the Tail Sweep too)');
   // 2026-10-19 (package BU): the tentacle is a drawn SVG limb now; for a row it lies along the row, from the board's edge, and slams down on it
   ok(/const horiz = !!opts\.horizontal,/.test(fxf) && /B = \{x:fromLeft \? left0 - w\*\.2 : right0 \+ w\*\.2,/.test(fxf), 'the tentacle VFX turns on its side for a row');
-  ok(/M\.tentacleSmack\(\[all\[i\]\]\.concat\(resRows\.map/.test(fxf), 'a column smack slams down the column through every row'); }
+  ok(/cells = \[all\[i\]\]\.concat\(resRows\.map/.test(fxf) && /M\.tentacleSmack\(cells, \{host:env\.battlefield, origin, horizontal/.test(fxf), 'a column smack slams down the column through every row'); }
 
 // ---- 15: the Babel Spire plays at the highest CPU level
 ok(E.AI_LEVEL_MAX === 2, 'the engine names its highest CPU level (AI_LEVEL_MAX = 2, Smartest)');

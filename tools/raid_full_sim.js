@@ -26,7 +26,7 @@ const DECKS = String(arg('decks', 'starter,6,10,15,20')).split(','), LEADER = ar
 const RAIDS = JSON.parse(fs.readFileSync(path.resolve(arg('raids', path.join(__dirname, '..', 'canonical', 'raids.json'))), 'utf8'));
 
 const NAMES = ['RARITY_TIER_BANDS', 'canLeadDef', 'RAID_BOSS_ATK', 'raidAllyOf', 'raidAllyLeaderOf', 'RAID_BOSS_UNIT_ROUNDS', 'raidBossUnit', 'RAID_BOSS_UNIT_NAMES',
-  'raidBossUnitName', 'raidBossCommons', 'raidFieldRulesOf', 'mergeRaidCastles', 'raidAlliesTurn', 'raidAllyPlays', 'RAID_TUNE_DEFAULTS', 'raidTune', 'raidSmackRoll', 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind',
+  'raidBossUnitName', 'raidBossCommons', 'raidFieldRulesOf', 'mergeRaidCastles', 'raidAlliesTurn', 'raidAllyPlays', 'RAID_TUNE_DEFAULTS', 'raidTune', 'raidSmackRoll', 'raidAtkRange', 'raidSmackDmg', 'raidAtkDmgText', /* FX 2026-10-22 */ 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind',
   'guildScaledBramble', 'BRAMBLE_SCALE', 'brambleHp', 'brambleChar', 'raidDefScaled', /* BF5 */ 'RAID_ROW_DECK_SIZE', 'RAID_BOSS_PLAY_ROWS', 'raidBossRowPlays', 'RANK_ORDER', 'rankForHqFraction', 'raidFightRank', 'raidRowUnits', 'raidColUnits', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget', 'raidSpecials', 'buildRaidFullFight', 'seededRng', 'referencePlayerDeck', 'referencePlayerLevel', 'levelGateMap', /* 2026-10-19 (LV): the fractional level curve */ 'ROAD_LEVEL_CURVE', 'LEVEL_STAT_STEPS', 'levelMix', 'levelMixDeck'];
 const body = [
   'let matchDefsOverlay = {}; const makeSimEngine = E.makeSimEngine; function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',

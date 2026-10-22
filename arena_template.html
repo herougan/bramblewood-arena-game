@@ -2151,14 +2151,21 @@
      any other board card (so columns never shift), but visibly distinct — a soft gold
      boundary and glow — so it reads as "the next card goes here" rather than as a plain
      gap in the row. */
+  /* 2026-10-22 (package FX, owner 12:11: "The central slot btw, must be translucent, except for the borders and symbolage"): the fill is
+     a faint wash (the ground shows through; it was a solid mix with the page's --bg, a pale box on the raid's dark sea), while the
+     border and the ✦ are fully opaque in --slot-ink, with a thin --slot-halo outline in the other tone. The ink follows the ground:
+     syncSlotInk (arena_app.js) sets data-slot-tone on the board from its art's luminance. Without a tone, the old gold. */
   .center-slot-inner{
+    --slot-ink:var(--gold); --slot-halo:rgba(0,0,0,.35);
     width:100%; height:100%; border-radius:10px; box-sizing:border-box;
-    border:2px dashed color-mix(in srgb, var(--gold) 60%, transparent);
-    background:color-mix(in srgb, var(--gold) 12%, var(--bg));
-    box-shadow:inset 0 0 10px color-mix(in srgb, var(--gold) 25%, transparent);
+    border:2px dashed var(--slot-ink);
+    background:color-mix(in srgb, var(--slot-ink) 9%, transparent);
+    box-shadow:0 0 0 1px var(--slot-halo), inset 0 0 0 1px var(--slot-halo);
     display:flex; align-items:center; justify-content:center;
-    font-size:20px; color:var(--gold); opacity:.7;
+    font-size:20px; color:var(--slot-ink); opacity:1; text-shadow:0 0 2px var(--slot-halo), 0 1px 0 var(--slot-halo);
   }
+  .battlefield[data-slot-tone="dark"] .center-slot-inner{--slot-ink:#f2d88c; --slot-halo:rgba(8,6,2,.6);}
+  .battlefield[data-slot-tone="light"] .center-slot-inner{--slot-ink:#5a3d0c; --slot-halo:rgba(255,250,235,.7);}
   /* 2026-09-22 (explicit bug report: "the central slot appearing again after all units are
      destroyed should animate out, not just appear flatly"): .center-slot-empty is never part of
      the FLIP/entrance-tween system above (it carries no data-flip-id/data-uid — see FLIP_SEL and

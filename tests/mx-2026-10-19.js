@@ -127,7 +127,7 @@ const card = (id, a, h, x)=> Object.assign({id, attack: a, health: h, cost: 0, w
 // btw!"): a row smack picks the front, middle or back row 1 in 3 each (it was the front, your own row, 2 times in 3); a column smack
 // any column with your units (weighted by them: on a full board, evenly). 200 seeded rolls each, over fights (seeds) and over rounds.
 { const seedSrc = src.slice(src.indexOf('function seededRng(seed){'), src.indexOf('let currentMatchSeed'));
-  const F = new Function(seedSrc + ['raidSmackRoll', 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget'].map(B.grab).join('\n') + '; return {raidSmackTarget, raidSmackRow, raidPickColumn, raidSmackKind};')();
+  const F = new Function(seedSrc + ['raidSmackRoll', 'raidAtkRange', 'raidSmackDmg', 'RAID_SMACK_BACK_CHANCE', 'raidSmackBack', 'raidSmackKind', 'raidPickColumn', 'raidSmackRow', 'raidSmackTarget'].map(B.grab).join('\n') + '; return {raidSmackTarget, raidSmackRow, raidPickColumn, raidSmackKind};')();
   const COLS = [-2, -1, 0, 1, 2], unit = sl=> ({slot: sl, hp: 5});
   const row = ()=> Object.fromEntries(COLS.map(c=> [c, unit(c)]));
   const m = seed=> ({raidSeed: seed, players: {1: {reserve: [row(), row()]}}, engine: {allBoardCards: ()=> COLS.map(unit)}});

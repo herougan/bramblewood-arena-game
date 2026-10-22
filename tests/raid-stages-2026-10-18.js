@@ -26,11 +26,11 @@ ok(/owner 15:05/.test(stage('Enraged').note || '') && /owner 15:05/.test(stage('
 { const f = R.fightFor(g, stateAt(stage('Enraged')), part, {myCastleHp: 100});
   ok(f.stage === 'Enraged' && f.bossAtk === 2 && f.extraVolley === 0 && !f.stripAbilities && f.castleHpPct === 0, `Enraged: +2 Attack, no extra back-row volley (2026-10-18 owner 15:05) (${JSON.stringify(f.stageRules)})`);
   ok(f.myCastleHp === 100, 'Enraged: your castle keeps its Health');
-  ok(f.fieldRules.crushingDepths === 2 && f.fieldRules.tide === true && !f.fieldRules.landslide, 'Enraged: the raid\'s own field, no Landslide'); }
+  ok(f.fieldRules.crushingDepths === true /* FX 2026-10-22: was 2 */ && f.fieldRules.tide === true && !f.fieldRules.landslide, 'Enraged: the raid\'s own field, no Landslide'); }
 { const f = R.fightFor(g, stateAt(stage('Thrashing')), part, {myCastleHp: 100});
   ok(f.stage === 'Thrashing' && f.bossAtk === 4 && f.extraVolley === 0 && f.castleHpPct === -10, `Thrashing: +4 Attack, no extra volley, castle -10% (${JSON.stringify(f.stageRules)})`);
   ok(f.myCastleHp === 90, `Thrashing: your castle 100 -> 90 (${f.myCastleHp})`);
-  ok(f.fieldRules.landslide === true && f.fieldRules.crushingDepths === 2 && f.fieldRules.psychicDampener === true, `Thrashing: Landslide on top of the raid's field (${JSON.stringify(f.fieldRules)})`); }
+  ok(f.fieldRules.landslide === true && f.fieldRules.crushingDepths === true && f.fieldRules.psychicDampener === true, `Thrashing: Landslide on top of the raid's field (${JSON.stringify(f.fieldRules)})`); }
 { const f = R.fightFor(g, stateAt(stage('Exposed')), part);
   ok(f.stripAbilities && !f.bossAtk && !f.extraVolley, 'Exposed: strips abilities, nothing else'); }
 { const f = R.fightFor(g, stateAt(null), part, {myCastleHp: 80});
