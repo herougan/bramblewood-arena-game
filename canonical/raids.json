@@ -157,7 +157,7 @@
               "name": "Left Stump",
               "icon": "🦑",
               "attack": 3,
-              "health": 14,
+              "health": 20,
               "armor": 0,
               "aura": 1
             },
@@ -166,7 +166,7 @@
               "name": "Tail Stump",
               "icon": "🌊",
               "attack": 3,
-              "health": 14,
+              "health": 20,
               "armor": 0,
               "aura": 1
             },
@@ -175,7 +175,7 @@
               "name": "Right Stump",
               "icon": "🦑",
               "attack": 3,
-              "health": 14,
+              "health": 20,
               "armor": 0,
               "aura": 1
             }
