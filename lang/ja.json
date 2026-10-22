@@ -2717,5 +2717,7 @@
  "Stats, wallet, medals": "成績・財布・メダル",
  "Challenge": "チャレンジ",
  "a challenge card": "チャレンジカード",
- "A card dropped in this raid fight": "このレイド戦でカードがドロップしました"
+ "A card dropped in this raid fight": "このレイド戦でカードがドロップしました",
+ "Reading damage numbers": "ダメージ表示の読み方",
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴：ダメージの種類の記号（通常攻撃はなし、クリティカルは先頭に 👊）、ダメージ、そして対象の受け方：🦴 脆弱（2倍）、💢 弱点（増加）、⛨ アーマー・耐性・シールドが一部を防いだ、🚫 無効。"
 }

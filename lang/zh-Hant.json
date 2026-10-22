@@ -2717,5 +2717,7 @@
  "Stats, wallet, medals": "數據、錢包、獎章",
  "Challenge": "挑戰",
  "a challenge card": "一張挑戰卡",
- "A card dropped in this raid fight": "這場突襲戰掉落了一張卡牌"
+ "A card dropped in this raid fight": "這場突襲戰掉落了一張卡牌",
+ "Reading damage numbers": "如何看傷害數字",
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴：傷害類型的符號（普通攻擊沒有，暴擊時前面加 👊），傷害值，然後是目標的承受方式：🦴 脆弱（雙倍），💢 弱點（更多），⛨ 護甲、抗性或護盾擋下了一部分，🚫 免疫。"
 }

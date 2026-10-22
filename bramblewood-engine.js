@@ -2355,7 +2355,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
     // it only weakens attacks aimed at this card.
     const supremeAtt = !!(attDef && attDef.effects && attDef.effects.supreme); // Supreme (2026-10-14): crushes Scare, Armor and shells
-    { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0 && !supremeAtt) amt = Math.max(0, amt - sc); }
+    const mods = []; // 2026-10-22 (package DN): why this hit's number changed, for the floating number's mark (display only, no math)
+    { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0 && !supremeAtt){ amt = Math.max(0, amt - sc); mods.push('scare'); } }
     // Exposed (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
     // don't miss."): c.exposed is how many Expose counters it has (Expose N gives N). Each hit it takes uses one up (before Armor,
     // so Armor still mitigates it); dodgeCheck / combatHitLands / the Blind and dark rolls stop the misses.
@@ -2385,16 +2386,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // together if a card somehow has more than one for the same hit (e.g. 0.5 * 2 = 1x net — a
     // self-cancelling edge case, not specially handled, since a card author combining them is on
     // them).
-    const factor = resistFactor(targetCard.defId, dmgType, attDef) * weaknessFactor(targetCard.defId, dmgType, attDef) * defenderDamageFactor(targetCard.defId);
+    const rfH = resistFactor(targetCard.defId, dmgType, attDef), wfH = weaknessFactor(targetCard.defId, dmgType, attDef);
+    const factor = rfH * wfH * defenderDamageFactor(targetCard.defId);
+    dnFactorMods(mods, targetCard.defId, rfH, wfH); // 2026-10-22 (package DN)
     if(factor===0) amt = 0; else if(factor!==1) amt = Math.max(1, Math.floor(amt*factor)); // Immune takes nothing
-    { const hv = spiritHalves(targetCard, supremeAtt ? 'magic' : dmgType, !!attCard); if(hv) amt = halveTimes(Math.floor(amt), hv); } // Ghost / Supreme / Shade (2026-10-14)
-    if(amt > 0 && atheistHalves(targetCard, supremeAtt ? 'magic' : dmgType, attDef)) amt = Math.max(1, Math.floor(amt / 2)); // Atheist (2026-10-16)
+    { const hv = spiritHalves(targetCard, supremeAtt ? 'magic' : dmgType, !!attCard); if(hv){ amt = halveTimes(Math.floor(amt), hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
+    if(amt > 0 && atheistHalves(targetCard, supremeAtt ? 'magic' : dmgType, attDef)){ amt = Math.max(1, Math.floor(amt / 2)); mods.push('resist'); } // Atheist (2026-10-16)
     // Shock (status, 2026-09-17): while active, every hit this card takes lands for 50% more —
     // a "vulnerable" debuff, distinct from Rage's self-damage-doubling (that's a stance the card
     // chooses; Shock is inflicted on it). Applied after Resist/Weakness so a resisted hit still
     // gets shocked proportionally, before Armor so Armor still partially mitigates it.
-    if(targetCard.shocked>0) amt = Math.ceil(amt*1.5);
-    if(targetCard && isRaging(targetCard)) amt = Math.floor(amt/2);
+    if(targetCard.shocked>0){ amt = Math.ceil(amt*1.5); mods.push('shocked'); }
+    if(targetCard && isRaging(targetCard)){ amt = Math.floor(amt/2); mods.push('rage'); }
     const tdef = CARD_DEFS[targetCard.defId];
     // Rend (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Pierce"): bypasses Armor
     // AND Shell's temporary bonus armor entirely for this hit -- the direct counter-tech to
@@ -2420,6 +2423,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       amt = Math.max(0, Math.floor(amt) - armor);
       armorSoaked = Math.max(0, Math.floor(before) - amt);
       if(amt===0 && before>0) armorBlocked = true;
+      if(armorSoaked > 0) mods.push('armor'); // 2026-10-22 (package DN)
     } else {
       amt = Math.max(0, Math.floor(amt));
     }
@@ -2453,8 +2457,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       elementalConvert = 'decay';
       elementalAmount = amt;
     }
-    return {dmg: amt, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit};
+    return {dmg: amt, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit, mods};
   }
+  // 2026-10-22 (package DN, owner: "<Damage Type Emoji> <Number> <Target's Damage Modifier>"): the reasons a hit's number moved, kept
+  // beside the damage math and never feeding back into it. dnFactorMods reads the factors the hit already computed; lastHitMods is the
+  // most recent hit's list (damageCard and damageCardFlat both set it), and dnModsFor(uid) hands it to the 'hit' event pushed right after.
+  function dnFactorMods(mods, defId, rf, wf){
+    const e = (CARD_DEFS[defId] && CARD_DEFS[defId].effects) || {};
+    if(rf === 0) mods.push('immune'); else if(rf < 1) mods.push('resist');
+    if(wf > 1) mods.push('weak');
+    if(e.fragile) mods.push('fragile');
+    if(e.sturdy) mods.push('sturdy');
+  }
+  let lastHitMods = null;
+  function dnModsFor(uid){ const l = lastHitMods; return l && l.uid === uid && l.mods.length ? l.mods.slice() : undefined; }
   // Nullify (2026-10-14, user: "an Evergreen effect like Shield Burn in Duel Masters. when this card hits the enemy, ignore all
   // triggers and effects that would result from that hit from that unit. E.g. if the unit has an on-death trigger, ignore that.
   // And when it dies, it goes straight to Exile zone."): a Nullify attacker's landed hit gets no reaction from the unit it hits:
@@ -2474,10 +2490,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function damageCard(card, amount, dmgType, attCard){
     const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = r0;
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
-    if(shelledByCower(card) && !crush) r0.dmg = 0; // Cower 'shell' (2026-10-14): attacks can't hurt it this round
-    if(card.invincible > 0) r0.dmg = 0; // Invincible N (2026-10-16): no damage of any kind for its first N rounds
-    if(card.petrified && !crush) r0.dmg = Math.floor(r0.dmg * sk3StoneFactor(card, attCard ? CARD_DEFS[attCard.defId] : null)); // Petrification (2026-10-14): stone takes half; Shatter doubles it instead (2026-10-19, SK3)
+    const mods = r0.mods || []; // 2026-10-22 (package DN)
+    if(shelledByCower(card) && !crush){ if(r0.dmg > 0) mods.push('immune'); r0.dmg = 0; } // Cower 'shell' (2026-10-14): attacks can't hurt it this round
+    if(card.invincible > 0){ if(r0.dmg > 0) mods.push('immune'); r0.dmg = 0; } // Invincible N (2026-10-16): no damage of any kind for its first N rounds
+    if(card.petrified && !crush){ const d0 = r0.dmg; r0.dmg = Math.floor(r0.dmg * sk3StoneFactor(card, attCard ? CARD_DEFS[attCard.defId] : null)); if(r0.dmg < d0) mods.push('stone'); else if(r0.dmg > d0) mods.push('weak'); } // Petrification (2026-10-14): stone takes half; Shatter doubles it instead (2026-10-19, SK3)
     const dmg = crush ? r0.dmg : spendTempHp(card, r0.dmg), tempSoak = r0.dmg - dmg; // Shell's temporary Health goes first (2026-10-12)
+    if(tempSoak > 0) mods.push('shield');
+    lastHitMods = {uid: card.uid, mods};
     const nul = isNullifier(attCard); // Nullify (2026-10-14): the hit doesn't count as "hit" for Cower, and Shell doesn't go up
     if(attCard) sk1NotePunish(card, attCard.uid); // Punish N (2026-10-19, package SK1, flagged)
     if(!nul) noteHit(card, dmg, dmgType);
@@ -2490,7 +2509,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dmg>0 && card.asleep>0){ card._wokeBy = attCard ? {uid: attCard.uid, n: card.asleep, t: turnNo} : null; card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake" (2026-10-18: _wokeBy, so that same hit's own Sleep stacks on the tokens it had)
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
-    return {dmg, armorBlocked, armorSoaked:r0.armorSoaked||0, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit};
+    return {dmg, armorBlocked, armorSoaked:r0.armorSoaked||0, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit, mods};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
@@ -2517,15 +2536,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const atkFactor = attackerDamageFactor(attDef);
     if(atkFactor!==1) amount = amount * atkFactor;
     const crush = !!(attDef && attDef.effects && attDef.effects.supreme); if(crush) dmgType = 'magic'; // Supreme (2026-10-14): its bolts are magic too, and crush shells
-    const factor = resistFactor(card.defId, dmgType, attDef) * weaknessFactor(card.defId, dmgType, attDef) * defenderDamageFactor(card.defId);
+    const rfH = resistFactor(card.defId, dmgType, attDef), wfH = weaknessFactor(card.defId, dmgType, attDef);
+    const factor = rfH * wfH * defenderDamageFactor(card.defId);
+    const mods = []; dnFactorMods(mods, card.defId, rfH, wfH); // 2026-10-22 (package DN): display only
     let dmg = factor===0 ? 0 : factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount; // Immune takes nothing
-    { const hv = spiritHalves(card, dmgType, !!attDef); if(hv) dmg = halveTimes(Math.floor(dmg), hv); } // Ghost / Supreme / Shade (2026-10-14)
-    if(dmg > 0 && atheistHalves(card, dmgType, attDef)) dmg = Math.max(1, Math.floor(dmg / 2)); // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
-    if(card.shocked>0) dmg = Math.ceil(dmg*1.5); // Shock applies to ranged/flat hits too
-    if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush) dmg = 0; // Cower 'shell': arrows and bolts too, not statuses
-    if(card.petrified && !crush) dmg = Math.floor(dmg * sk3StoneFactor(card, attDef)); // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
-    if(card.invincible > 0) dmg = 0; // Invincible N (2026-10-16): statuses, arrows and bolts too
-    if(!crush) dmg = spendTempHp(card, dmg);
+    { const hv = spiritHalves(card, dmgType, !!attDef); if(hv){ dmg = halveTimes(Math.floor(dmg), hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
+    if(dmg > 0 && atheistHalves(card, dmgType, attDef)){ dmg = Math.max(1, Math.floor(dmg / 2)); mods.push('resist'); } // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
+    if(card.shocked>0){ dmg = Math.ceil(dmg*1.5); mods.push('shocked'); } // Shock applies to ranged/flat hits too
+    if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush){ if(dmg > 0) mods.push('immune'); dmg = 0; } // Cower 'shell': arrows and bolts too, not statuses
+    if(card.petrified && !crush){ const d0 = dmg; dmg = Math.floor(dmg * sk3StoneFactor(card, attDef)); if(dmg < d0) mods.push('stone'); else if(dmg > d0) mods.push('weak'); } // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
+    if(card.invincible > 0){ if(dmg > 0) mods.push('immune'); dmg = 0; } // Invincible N (2026-10-16): statuses, arrows and bolts too
+    if(!crush){ const d1 = dmg; dmg = spendTempHp(card, dmg); if(dmg < d1) mods.push('shield'); }
+    lastHitMods = {uid: card.uid, mods};
     noteHit(card, dmg, dmgType);
     if(!EXPOSE_TICKS.has(dmgType)) sk1NotePunish(card, attUid); // Punish N (2026-10-19, package SK1, flagged)
     const hp0 = card.hp;
@@ -3321,7 +3343,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(confusedFumbles(card, sideOf(ownerId), events, 'counter')) return; // Confused (2026-10-19, package FZ): the counter fumbles 1 in 2
     const r = damageCard(opp.card, amt, cd.dmgType || 'physical', card);
     ensureStat(stats, sideOf(ownerId), card.defId).dealt += r.dmg; ensureStat(stats, sideOf(otherId(ownerId)), opp.card.defId).taken += r.dmg;
-    if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, counter:true});
+    if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, mods:dnModsFor(opp.card.uid), dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, counter:true});
       events.push({type:'statusFx', kind:'counter', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, amount:r.dmg}); }
     if(opp.card.hp <= 0 && killCredit){ killCredit[opp.card.uid] = killCredit[opp.card.uid] || new Set(); killCredit[opp.card.uid].add(statKey(sideOf(ownerId), card.defId)); }
     if(opp.card.hp <= 0 && !card.duelWon){ card.duelWon = true; trDirty = true; } // Championed (TR, 2026-10-21): a counter that kills its attacker wins the duel too
@@ -4067,7 +4089,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       aStat.dealt += dmg;
       if(attUid != null){ const src = allBoardCards(owner).find(x=> x.uid === attUid); if(src) applySpite(players, sideOf, otherId(ownerId), c, src, dmg, stats, events, killCredit); }
       ensureStat(stats, sideOf(otherId(ownerId)), c.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType, ranged:true, guardianRedirect});
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg, dmgType, ranged:true, guardianRedirect});
       // Chained (Devilry, 2026-09-17): a missile/skill hit large enough breaks a chained
       // defender free too, same threshold check as a landed melee hit below.
       maybeBreakChain(players, sideOf, otherId(ownerId), c, stats, events, {kind:'damage', amount:dmg});
@@ -4425,7 +4447,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(recordEvents && events) events.push({type:'ambush', side:sideOf(foeId), uid:a.uid, defId:a.defId, targetSide:sideOf(pid), targetUid:x.uid, targetDefId:x.defId, amount:n, moved: !fresh.has(x) || undefined});
               const dmg = damageCardFlat(x, n, 'physical', a.defId, a.uid);
               ensureStat(stats, sideOf(foeId), a.defId).dealt += dmg; ensureStat(stats, sideOf(pid), x.defId).taken += dmg;
-              if(recordEvents && events) events.push({type:'hit', side:sideOf(foeId), attDefId:a.defId, attUid:a.uid, targetSide:sideOf(pid), targetDefId:x.defId, targetUid:x.uid, dmg, dmgType:'physical', ambush:true, ranged:false});
+              if(recordEvents && events) events.push({type:'hit', side:sideOf(foeId), attDefId:a.defId, attUid:a.uid, targetSide:sideOf(pid), targetDefId:x.defId, targetUid:x.uid, mods:dnModsFor(x.uid), dmg, dmgType:'physical', ambush:true, ranged:false});
               if(x.hp > 0){ bleedTick(sideOf, pid, x, stats, events, 'defend'); runCustomTriggers(players, sideOf, pid, x, CARD_DEFS[x.defId], 'onAttacked', stats, events); wiltOnHit(x, sideOf(pid), events); } } }
           // Sentry N (2026-10-19, package SK1 rework; was once a round, its Attack, while Ready): N to each unit that comes into its watch.
           // + On Enemy Enters (Facing) (2026-10-19, package SK1): any trigger on it, Sentry N's keyword trigger too.
@@ -5259,7 +5281,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     struck.forEach((c, i)=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
       // jump/viaUid (2026-10-17): the bolt's path for the board (attacker -> target -> the unit beside it); its hit draws that jump
-      if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'magic', ranged:true, dragonLightning:true, jump:i, viaUid: i ? target.uid : undefined});
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg, dmgType:'magic', ranged:true, dragonLightning:true, jump:i, viaUid: i ? target.uid : undefined});
       if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } });
   }
   // Wither N: its hits wither the target: for the next 3 rounds it loses N max Health (and N Health) each upkeep, and nothing can
@@ -5331,7 +5353,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!c || !(c.hp > 0) || !(n > 0)) return 0;
     const tpid = otherId(pid), dmg = damageCardFlat(c, n, dmgType, att.defId, att.uid);
     ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
-    if(recordEvents && events) events.push(Object.assign({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType, ranged:true}, tag || {}));
+    if(recordEvents && events) events.push(Object.assign({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg, dmgType, ranged:true}, tag || {}));
     if(c.hp > 0){ bleedTick(sideOf, tpid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, tpid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     return dmg;
   }
@@ -5736,7 +5758,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c === attCard || !grounded(c)) return;
       const r = damageCard(c, amount, 'physical', null);
       ensureStat(stats, sideOf(ownerId), c.defId).taken += r.dmg;
-      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(ownerId), targetDefId:c.defId, targetUid:c.uid, dmg:r.dmg, dmgType:'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, friendly:true, quake:true});
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(ownerId), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg:r.dmg, dmgType:'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, friendly:true, quake:true});
     }));
   }
   // Arrow N / Fire Arrow N (2026-10-04, "new skills: Arrow and Fire Arrow — an arrow flies towards
@@ -7826,7 +7848,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(r.card.hp<=0 || r.n<=0) return;
         const foes = allBoardCards(players[otherId(r.pid)]).filter(c=> c.hp>0 && !c.cageOf); if(!foes.length) return;
         const t = foes[Math.floor(rnd()*foes.length)], dmg = damageCardFlat(t, r.n, 'physical', r.card.defId);
-        if(recordEvents && events) events.push({type:'hit', side:sideOf(r.pid), attDefId:r.card.defId, attUid:r.card.uid, targetSide:sideOf(otherId(r.pid)), targetDefId:t.defId, targetUid:t.uid, dmg, dmgType:'physical', ranged:true, retribution:true});
+        if(recordEvents && events) events.push({type:'hit', side:sideOf(r.pid), attDefId:r.card.defId, attUid:r.card.uid, targetSide:sideOf(otherId(r.pid)), targetDefId:t.defId, targetUid:t.uid, mods:dnModsFor(t.uid), dmg, dmgType:'physical', ranged:true, retribution:true});
         if(t.hp<=0){ killCredit[t.uid] = killCredit[t.uid] || new Set(); killCredit[t.uid].add(statKey(sideOf(r.pid), r.card.defId)); }
       });
     }
@@ -7990,7 +8012,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(tgt){
           const r = damageCard(tgt, dmg, dmgType, null);
           ensureStat(stats, sideOf(foeId), tgt.defId).taken += r.dmg; ensureStat(stats, sideOf(pid), b.defId).dealt += r.dmg;
-          if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), targetDefId:tgt.defId, targetUid:tgt.uid, dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, boomerang:true});
+          if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), targetDefId:tgt.defId, targetUid:tgt.uid, mods:dnModsFor(tgt.uid), dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, boomerang:true});
         } else if(recordEvents && events) events.push({type:'boomerangWhiff', side:sideOf(pid), defId:b.defId, uid:b.uid});
       }
       removeDeadCards(players, sideOf, {}, stats, events);
@@ -8013,7 +8035,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           else {
             const r = damageCard(home, dmg, dmgType, null);
             ensureStat(stats, sideOf(pid), home.defId).taken += r.dmg;
-            if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(pid), targetDefId:home.defId, targetUid:home.uid, dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, boomerang:true, friendly:true});
+            if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(pid), targetDefId:home.defId, targetUid:home.uid, mods:dnModsFor(home.uid), dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, boomerang:true, friendly:true});
           }
         } else {
           const d = damageHQ(pl, dmg);
@@ -8593,7 +8615,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const r2 = damageCard(side, sweepN, dmgType, null);
         aStat.dealt += r2.dmg;
         ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, mods:dnModsFor(side.uid), dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
         maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
         if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
         killCredit[side.uid].add(statKey(mySide, a.att.defId));
@@ -8617,7 +8639,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
-              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
+              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -8691,7 +8713,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
+        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -9057,7 +9079,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function debugDamage(players, sideOf, uid, amount, stats, events){
     const f = findBoardCard(players, uid); if(!f || f.card.hp<=0) return 0;
     const c = f.card, dmg = damageCardFlat(c, Math.max(0, amount|0), 'true', null);
-    if(recordEvents && events) events.push({type:'hit', side:sideOf(otherId(f.pid)), attDefId:c.defId, attUid:null, targetSide:sideOf(f.pid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'true', ranged:true, source:'Tester'});
+    if(recordEvents && events) events.push({type:'hit', side:sideOf(otherId(f.pid)), attDefId:c.defId, attUid:null, targetSide:sideOf(f.pid), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg, dmgType:'true', ranged:true, source:'Tester'});
     if(c.hp>0){ bleedTick(sideOf, f.pid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, f.pid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     removeDeadCards(players, sideOf, {}, stats, events);
     return dmg;

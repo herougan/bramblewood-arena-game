@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package DN: damage numbers read type, number, mark)
+- **Owner:** "Rule <Damage Type Emoji> <Number> <Target's Damage Modifier> e.g. 🔥20⛨ (blocked slightly). If you crit, for normal attacks you can simply use the crit symbol ... ❇❄️14🦴 (15 ice damage (crit) on a fragile enemy.)"
+- **A unit hit's floating number is `<type><number><mark>`:** the element's symbol from the attack label (EL's 🔥 ❄️ 🧪 ☠️ 🍂 🪄 💧 🪨 ⚙️ ⚡; Bleed 🩸 and Psychic 💭 keep theirs), none for a plain physical hit. A crit puts the game's existing crit fist first (👊7, 👊❄️14🦴), used instead of the note's ❇ (call DN-3). No minus sign on hits any more (call DN-1). Colours, the heavy-hit size and the crit burst are unchanged.
+- **The mark, one per hit, strongest first:** 🚫 immune (0 from Immune, Invincible or a Cower shell), ⛨ blocked to 0 by Armor, 🦴 Fragile, 💢 Weakness or Shocked, ⛨ any reduction (Armor, Resist, Sturdy, Shell / temporary Health, stone, Rage's half, Scare, Ghost / Atheist halving) (call DN-2).
+- **Engine:** every `hit` event carries `mods` (the reasons its number moved: `fragile`, `weak`, `shocked`, `resist`, `sturdy`, `armor`, `shield`, `stone`, `rage`, `scare`, `immune`), collected beside the damage maths in `computeHitDamage`, `damageCard` and `damageCardFlat` and never read by them. No damage number changed: the card-matrix signatures (30,680 fights, event order and every hit's damage) are identical to origin/batch-1022's.
+- **Fit:** a hit number is never wider than its unit card: the glyphs shrink first (`.df-tight`), then the number (`floatText`'s new `opts.fit`); its emoji are drawn in the chosen set before it is measured. Checked at 390 and 1366.
+- **Codex:** the Skills book's contents page has a "Reading damage numbers" line (2 TX keys, 12 packs, `tools/i18n_2026_10_22_dn.py`). The battle log is unchanged (it has its own wording; call DN-4).
+- Tests: `lightning-2026-10-17` reads the new crit line. Screens: `docs/screens/DN/`.
+
 ## 2026-10-22 (package RW2: reward ranks capped at S, challenge cards, one card drop for every fight, raid drops lowered)
 - **Owner (RW-1):** "The max cap is always S. SS and SSS is only for challenge missions." **First-clear card ranks** never ask above S: B for Commons / Uncommons and S for Rare+ on Maps 0–19, A / S on 20–39, S from 40; elites and bosses ask S (was SS, SSS from Map 20). The card-drop gate follows.
 - **Challenge cards** ask SS: six non-pack elite rewards, one per four maps from Map 4, the highest rarity there (`source.challenge: true` in cards.json, `tools/challenge_cards_2026_10_22.js`): The Heron Hag (6-8), Echo Matriarch (8-8), Pride Queen (14-8), Yeti Chieftain (19-6), Triumphvirate (23-8), Iron Warden (24-6). The fight panel shows them with a gold frame, a "Challenge" ribbon and the SS emblem.

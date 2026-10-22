@@ -1160,6 +1160,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.exposed-tip": "Exposed: no hiding or Evasive dodge for {n} round{s}.",
   "ui.codex-statuses": "Statuses",
   "ui.codex-statuses-sub": "What each status does to the unit that has it.",
+  "ui.codex-dmg-key-title": "Reading damage numbers",
+  "ui.codex-dmg-key": "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.",
   "ui.fx-tide": "From round 2 the Tide floods and ebbs. Flood: Tide units +1 Attack; Ebb: +1 Armor.",
   "ui.fxx-tide": "A Flood fills the board: every unit that isn’t Flying is Wet. Swimmers and Tide units are Wet in Ebb too.",
   "ui.fx-landslide": "From round 2, 1 in 4 a round: rocks hit three neighbouring columns for 5 (not Flying units).",

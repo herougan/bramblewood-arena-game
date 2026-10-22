@@ -8574,6 +8574,7 @@ function bookTocHTML(S){
   return `<h3 class="bk-title">${escapeHtml(TX('ui.book-contents'))}</h3>
     <p class="bk-intro">${escapeHtml(adminModeEnabled ? TX('ui.book-intro-admin') : TX('ui.book-intro'))}</p>
     ${chapters ? `<ol class="bk-toc">${chapters}</ol>` : `<p class="bk-intro">${escapeHtml(words ? TX('ui.book-no-match') : TX('ui.book-empty'))}</p>`}
+    <p class="bk-intro bk-dmg-key"><b>${escapeHtml(TX('ui.codex-dmg-key-title'))}</b><br>${escapeHtml(TX('ui.codex-dmg-key'))}</p>${'' /* 2026-10-22 (package DN): how to read a damage number, on the Skills book's contents page (always shown) */}
     ${letters.length > 1 ? `<h4 class="bk-az-h">${escapeHtml(TX('ui.book-az'))}</h4><div class="bk-az">${letters.map(L=> `<button type="button" data-bkgo="${S.az[L]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.az[L] + 1}))}">${escapeHtml(L)}</button>`).join('')}</div>` : ''}`;
 }
 // The pages from `first` (one, or two side by side): pages[i] is {toc}, {items:[...]} or {blank}.
@@ -41421,18 +41422,21 @@ function cometFall(ev, k, host, r){
   document.body.appendChild(c);
   setTimeout(impact, d + 380); setTimeout(()=> c.remove(), d + 900);
 }
-function floatText(el, text, cls){
+// opts (2026-10-22, package DN): {post: the target's damage mark drawn after the number, heavy: a big physical hit, fit: keep the number
+// no wider than the unit card, noIcon: no automatic class icon}. Only flashDmg passes it; every other number is unchanged.
+function floatText(el, text, cls, opts){
   if(!el) return;
   if(floatDetachDepth > 0 && el.closest && el.closest('.board-card[data-uid]')){ const uid = el.closest('.board-card[data-uid]').dataset.uid; // upkeep numbers outlive the re-render (2026-10-14)
-    afterSettle(uid, (e1, r, row0)=>{ try{ floatText(fxHostAt(e1 || row0, 1900, r), text, cls); }catch(e){} }); return; }
+    afterSettle(uid, (e1, r, row0)=>{ try{ floatText(fxHostAt(e1 || row0, 1900, r), text, cls, opts); }catch(e){} }); return; }
+  const o = opts || {};
   const f = document.createElement('div');
   let raw = String(text);
   const classes = String(cls || '').split(/\s+/).filter(Boolean);
   const pictoRe = /[\p{Extended_Pictographic}☀-➿️‍⌰]+/gu; // + ⌰, Momentum's icon (2026-10-16), so it sits in the icon slot
   const isNumber = /^[+-]?\d+$/.test(raw.trim());
-  if(isNumber && !pictoRe.test(raw)){ const k = classes.find(c=> FLOAT_ICON[c]); if(k) raw = FLOAT_ICON[k] + ' ' + raw; }
+  if(isNumber && !o.noIcon && !pictoRe.test(raw)){ const k = classes.find(c=> FLOAT_ICON[c]); if(k) raw = FLOAT_ICON[k] + ' ' + raw; }
   pictoRe.lastIndex = 0;
-  const heavyHit = /^-\d+$/.test(String(text)) && Math.abs(parseInt(text, 10)) >= 8 && !cls;
+  const heavyHit = !!o.heavy || (/^-\d+$/.test(String(text)) && Math.abs(parseInt(text, 10)) >= 8 && !cls);
   f.className = 'dmg-float'+(cls?(' '+cls):'')+(heavyHit?' heavy':'');
   // 2026-10-06: the icon is its own element beside the number, so the number's gradient fill can't wash out the emoji.
   const icon = (raw.match(pictoRe) || []).join('').replace(/️/g, '');
@@ -41443,8 +41447,11 @@ function floatText(el, text, cls){
   // 2026-10-16 (user: "Heal's plusses look greyed out ... they should be green."): the ➕ glyph is grey in the emoji fonts; the heal's
   // icon is SkillFX's green plus instead.
   const gplus = icon === '➕' && window.SkillFX && SkillFX.GREEN_PLUS;
-  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico${gplus ? ' df-gplus' : ''}">${gplus ? SkillFX.GREEN_PLUS : icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
-  f.dataset.t = raw;
+  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico${gplus ? ' df-gplus' : ''}">${gplus ? SkillFX.GREEN_PLUS : icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`
+    + (o.post ? `<span class="df-ico df-mod${o.postKey ? ' df-mod-' + o.postKey : ''}">${escapeHtml(o.post)}</span>` : ''); // the target's damage mark after the number (DN)
+  // DN: a fitted number draws its emoji in the chosen set now (the page's observer would a moment later), so its width is measured right
+  if(o.fit && typeof EmojiStyle !== 'undefined' && EmojiStyle && EmojiStyle.isActive && EmojiStyle.isActive()) f.querySelectorAll('.df-ico:not(.df-gplus)').forEach(s=>{ try{ s.innerHTML = EmojiStyle.html(s.textContent); }catch(e){} });
+  f.dataset.t = raw + (o.post || '');
   // Placement (2026-10-08, user: "The numbers should appear higher on the card (opposing field). For our side
   // ... greater x-variation (by 15%)"): enemy-row numbers start high on the card; ours keep their spot and fan
   // out 15% wider. Small random y and travel jitter keep simultaneous numbers from stacking.
@@ -41456,8 +41463,15 @@ function floatText(el, text, cls){
   const dy0 = Math.random()*10-5;
   const top0 = enemyRow ? 12 : 40;
   const travel = 0.9 + Math.random()*0.2;
-  const big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
+  let big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
+  // 2026-10-22 (package DN, "the glyphs must not make the floater wider than the unit card"): a hit number with its type and mark
+  // glyphs settles at no wider than the card (fit < 1 shrinks it), and its burst-out peak is held to the card's width too.
+  if(o.fit){ try{ const cw = el.offsetWidth || el.getBoundingClientRect().width; let fw = f.offsetWidth; // both in layout px (the board is zoomed by a transform)
+    if(cw > 0 && fw > 0){ let fit = (cw * 0.96) / fw;
+      if(fit < 1 && f.querySelector('.df-ico')){ f.classList.add('df-tight'); fw = f.offsetWidth || fw; fit = (cw * 0.96) / fw; } // the glyphs give way first, then the number
+      if(fit < 1){ const fs = parseFloat(getComputedStyle(f).fontSize) || 24; f.style.setProperty('font-size', (fs * fit).toFixed(1) + 'px', 'important'); fw = f.offsetWidth || fw * fit; }
+      big = Math.max(1, Math.min(big, cw / fw)); } }catch(e){} }
   const barShift = onBar ? u3ClampOnBar(el, f, big) : 0; // 2026-10-19 (package U3): a number at the HP fill's end stays on screen
   if(hasGsap()){
     // 2026-10-03: GSAP owns the motion (the old CSS bounce read as a second number).
@@ -42085,14 +42099,38 @@ function applySkinClasses(root){
   });
 }
 (()=>{ let q = false; new MutationObserver(()=>{ if(q) return; q = true; requestAnimationFrame(()=>{ q = false; if(document.getElementById('rowMine')) applySkinClasses(); }); }).observe(document.documentElement, {childList:true, subtree:true}); })();
-function flashDmg(uid, dmg, blocked, dmgType, crit){
+// Damage numbers (2026-10-22, package DN, owner: "Rule <Damage Type Emoji> <Number> <Target's Damage Modifier> e.g. 🔥20⛨ ... ❇❄️14🦴"):
+// <type glyph><number><mark>. The type glyph is the element's symbol from the attack label (EL's set: atkGlyphOf); a plain physical hit
+// has none. A crit puts the game's crit fist 👊 first (alone for a physical crit, 👊❄️ for an elemental one; the game's own crit mark is
+// used instead of the note's ❇). The mark is the target's damage modifier on that hit (ev.mods from the engine), the strongest one only.
+const DN_MOD_GLYPH = {immune:'🚫', blocked:'⛨', fragile:'🦴', weak:'💢', reduced:'⛨'};
+const DN_REDUCED = ['armor', 'resist', 'sturdy', 'shield', 'stone', 'rage', 'scare'];
+function dnModKey(mods, blocked, dmg){
+  const m = Array.isArray(mods) ? mods : [];
+  if(m.includes('immune') && !(dmg > 0)) return 'immune';
+  if(blocked && !(dmg > 0)) return 'blocked';
+  if(m.includes('fragile')) return 'fragile';
+  if(m.includes('weak') || m.includes('shocked')) return 'weak';
+  if(m.some(k=> DN_REDUCED.includes(k))) return 'reduced';
+  return null;
+}
+function dnTypeGlyph(dmgType){
+  const k = dmgType === 'fire' ? 'heat' : dmgType;
+  return ATK_ELEM_GLYPH[k] || (DMG_ICON[k] && DMG_ICON[k][0]) || ''; // bleed 🩸 and psychic 💭 keep their own number icons
+}
+function dmgFloatParts(dmg, dmgType, crit, mods, blocked){
+  const g = dnTypeGlyph(dmgType), di = DMG_ICON[dmgType === 'fire' ? 'heat' : dmgType], mk = dnModKey(mods, blocked, dmg);
+  const pre = (crit && !(blocked && !(dmg > 0)) ? '👊' : '') + g;
+  const cls = blocked && !(dmg > 0) ? 'blocked' : crit ? 'crit' + (di ? ' ' + di[1] : '') : (di ? di[1] : '');
+  return {text: (pre ? pre + ' ' : '') + String(dmg || 0), cls, post: mk ? DN_MOD_GLYPH[mk] : '', mod: mk};
+}
+function flashDmg(uid, dmg, blocked, dmgType, crit, mods){
   const el = boardCardEl(uid);
   if(!el) return;
   recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
-  const di = DMG_ICON[dmgType];
-  if(blocked) floatText(el, '🛡 0', 'blocked');
-  else if(crit) floatText(el, (di ? '👊' + di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); // 👊 added by floatText; no CRIT! stamp (2026-10-08); 2026-10-17: an elemental crit keeps its element's emoji beside the 👊
-  else floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
+  // 2026-10-22 (package DN): one format for every hit (was '🛡 0', '👊🔥 -12', '🔥 -5', '-5'); the colours stay with the same classes.
+  const p = dmgFloatParts(dmg, dmgType, crit, mods, blocked);
+  floatText(el, p.text, p.cls, {post: p.post, postKey: p.mod, fit: true, noIcon: true, heavy: !p.cls && (dmg||0) >= 8});
   hitExplosionVfx(uid, dmgType);
   try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
 }
@@ -43565,7 +43603,7 @@ function renderVfxForEvent(ev){
       tile.classList.remove('quake-jolt'); void tile.offsetWidth; tile.classList.add('quake-jolt'); setTimeout(()=> tile.classList.remove('quake-jolt'), 420);
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, false));
       if(ev.armorBlocked) SoundKit.clang();
-      flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, false);
+      flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, false, ev.mods); // + the mark (DN, 2026-10-22)
       const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
       if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
       updateCardHpDisplay(ev.targetUid); updateCardStatusDisplay(ev.targetUid);
@@ -43741,7 +43779,7 @@ function renderVfxForEvent(ev){
         if(typeof maybeSpeakHQ==='function') maybeSpeakHQ(ev.targetSide, 'castleOnHit');
       }
       else {
-        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush);
+        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods); // + the mark (DN, 2026-10-22)
         armorBadgeGlow(targetEl, ev); // 2026-10-15
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):
         // subtract this hit's damage, then — same gate as the engine (defCard.hp>0) — if the
