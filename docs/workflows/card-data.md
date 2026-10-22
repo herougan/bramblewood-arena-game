@@ -30,3 +30,6 @@ For new cards, stat or skill edits, rewards, skirmish decks, card texts and name
 
 ## Done when
 The cards validate, the budget check passes or the exception is named, the texts are translated, there is a CHANGELOG entry, and any owner calls are added to `docs/decisions.json`.
+
+## Flexibility (owner, 2026-10-22 08:31)
+"We support changing rarities, we support moving cards around. Not everything is confirmed, it's still very flexible." When a card breaks a rule (rarity ladder, a map's pool, a deck cap), prefer re-ranking it or moving it to where it fits over holding it back with no source. Re-fit by formula after any rarity change (tools/refit_pass_2026_10_21.js).
