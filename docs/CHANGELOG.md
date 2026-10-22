@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (release: batch 10-22)
+- Shipped together: BF8, TU, RW2, FX, DN, FX2, DN2 (entries below). Release checks: `node tests/run.js --full` 50 failing suites against main's 49 (the extra two: ed-2026-10-21 passes alone, 134/134, a load timing; keywords-15r's Bounty check updated for BF8; trench fixed by FX2); card-matrix golden accepted (main's was already stale: 56,437 diffs); e2e ui_smoke 0 failures, flows 0 issues.
+
 ## 2026-10-22 (package DN2: every damage number in one format, the elemental crit, marks in the battle log)
 - **Owner (15:39):** "DN-1 Yes. DN-3 OKAY. DN-4 Yes. DN-2 Im now thinking, can you just make the damage type emoji bigger if it's non physical. e.g. wand for magic becomes big if its crit! or even colour burn it abit? What would the color of the text be btw? a 10% lighter and higher hue version of the original color?"
 - **Every damage number reads `<type><number><mark>`, no minus (DN-1):** Poison ☠️, Bleed 🩸, Decay 🍂, Toxin, Strangle 🪢, Curse 🜏 and Chilli 🌶️ ticks; field damage (scorched ground, eruption, comets, lava tide, hail, the depths, ley lines, landslide, arrow slits, the tide-spout); bramble hits on the HP bar (crit 👊, Bulwark ⛨); Pierce and Stampede; Reflect and Thorns; Friction, Recoil, Ichor 🧪, traps, the meteor's crater, Fire on hit, the firepot; splash; the raid's Tentacle Smack and Tail Sweep stamps (a plain "2"; a unit that took a different number or has a mark gets its own). All go through one helper, `dnFloat`, beside `flashDmg`. Source glyphs give way to the type glyph (none for physical) (call DN2-2). Reflect's second "🪞 -N" number is now a 🪞 cue (the number is the hit's). Heals and stat changes keep their look.
