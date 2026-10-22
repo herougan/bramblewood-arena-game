@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (skill costs pass III: proposal only, nothing applied)
+- **Proposal for the owner, nothing applied:** `canonical/skill-costs.json` and `canonical/cards.json` are unchanged. Five price cuts, each backed by a measurement it sits above: Bounty 3 → 1.84, On Attack 3 → 1.35,
+  Add Wait 3.5 → 2.8, Twin Strike 6 → 3.17, Octolash 25 → 6.48. The owner's own pass I cuts are kept. In a dry-run re-fit of every card, the cards with no legal line go from 130 to 116. The owner's further
+  options (floor-only measurements, his own prices above the halved-world measure, skills the standard test can't see) would bring it to 54. Each card still without a line gets its cheapest
+  one-skill fix, and the doc shows what each Fragile reading (drop the −8 or drop the ×0.75) does to the Mayfly Dancer.
+  `docs/balance/pass-3-proposal-2026-10-22.md`, `docs/balance/pass-3-skill-costs-2026-10-22.json` (ready for `tools/hub/apply_skill_costs.js`), `docs/balance/pass-3-dryrun-2026-10-22.json`,
+  `tools/pass3_skill_costs_2026_10_22.js`.
+
 ## 2026-10-22 (package DV2: skirmish rewards by new cards, the ladder to Mythic, the map pools in three tiers, Load any card as its own modal)
 - **Owner (07:41):** DV1, DV3, DV5 and MP's calls answered (DONE in `docs/decisions.json`; new call DV8, the Magnate Duck).
 - **Skirmish rewards per map** follow its new cards: "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1." New = a pool card that first

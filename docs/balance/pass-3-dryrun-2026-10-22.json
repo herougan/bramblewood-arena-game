@@ -1,0 +1,5811 @@
+{
+ "generated": "2026-10-22",
+ "proposal": [
+  {
+   "kind": "trigger",
+   "id": "bounty",
+   "before": 3,
+   "proposed": 1.84,
+   "value": 1.84
+  },
+  {
+   "kind": "trigger",
+   "id": "onAttack",
+   "before": 3,
+   "proposed": 1.35,
+   "value": 1.35
+  },
+  {
+   "kind": "action",
+   "id": "addWait",
+   "before": 3.5,
+   "proposed": 2.8,
+   "value": 2.8
+  },
+  {
+   "kind": "skill",
+   "id": "twinStrike",
+   "before": 6,
+   "proposed": 3.17,
+   "value": 3.17
+  },
+  {
+   "kind": "skill",
+   "id": "octolash",
+   "before": 25,
+   "proposed": 6.48,
+   "value": 6.48
+  }
+ ],
+ "noFitNow": [
+  {
+   "id": "bee-drone",
+   "stats": "0/1",
+   "S": 7.6,
+   "room": 3.39,
+   "over": 4.21,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onAttacked",
+     "S": 7.6
+    },
+    {
+     "kind": "action",
+     "id": "spawnCard",
+     "S": 7.6
+    }
+   ]
+  },
+  {
+   "id": "soldier-ant",
+   "stats": "1/2",
+   "S": 5,
+   "room": 4.83,
+   "over": 0.17,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "formation",
+     "S": 2.5
+    }
+   ]
+  },
+  {
+   "id": "ant-warrior",
+   "stats": "3/6",
+   "S": 7.5,
+   "room": 4.28,
+   "over": 3.22,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "rage",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    }
+   ]
+  },
+  {
+   "id": "alley-cat",
+   "stats": "1/8",
+   "S": 8.5,
+   "room": 4.57,
+   "over": 3.93,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "twinStrike",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "bleed",
+     "S": 2.5
+    }
+   ]
+  },
+  {
+   "id": "monarch-wingblade",
+   "stats": "2/5",
+   "S": 5.5,
+   "room": 5.31,
+   "over": 0.19,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 2.5
+    }
+   ]
+  },
+  {
+   "id": "boar-rampager",
+   "stats": "1/1",
+   "S": 10.8,
+   "room": 8.05,
+   "over": 2.75,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 7.8
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "octopus-tactician",
+   "stats": "1/1",
+   "S": 12.3,
+   "room": 8.58,
+   "over": 3.72,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 7.8
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "alpha-howler",
+   "stats": "1/1",
+   "S": 10.8,
+   "room": 9.84,
+   "over": 0.96,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 7.8
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "raven-harbinger",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.35,
+   "over": 1.65,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "evolute",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "fox-warchief",
+   "stats": "1/1",
+   "S": 10.8,
+   "room": 8.26,
+   "over": 2.54,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 7.8
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "lodge-engineer",
+   "stats": "3/17",
+   "S": 9.24,
+   "room": 8.99,
+   "over": 0.25,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "rodent-king",
+   "stats": "4/14",
+   "S": 10.24,
+   "room": 8.58,
+   "over": 1.66,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    },
+    {
+     "kind": "skill",
+     "id": "king",
+     "S": 4
+    }
+   ]
+  },
+  {
+   "id": "poison-dart-croaker",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 5.81,
+   "over": 0.69,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "quill-thorn-boar",
+   "stats": "1/1",
+   "S": 8.1,
+   "room": 6.72,
+   "over": 1.38,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "thorns",
+     "S": 8.1
+    }
+   ]
+  },
+  {
+   "id": "raven-hexcaller",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.54,
+   "over": 1.46,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "evoluteAlpha",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "render",
+     "S": 2
+    }
+   ]
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "stats": "1/6",
+   "S": 7,
+   "room": 5.88,
+   "over": 1.12,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "diurnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "bone-diviner",
+   "stats": "1/1",
+   "S": 7.8,
+   "room": 6.64,
+   "over": 1.16,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "evoluteOmega",
+     "S": 5
+    },
+    {
+     "kind": "trigger",
+     "id": "onKill",
+     "S": 2.8
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 2.8
+    }
+   ]
+  },
+  {
+   "id": "colony",
+   "stats": "0/11",
+   "S": 7.6,
+   "room": 5.62,
+   "over": 1.98,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onAttacked",
+     "S": 7.6
+    },
+    {
+     "kind": "action",
+     "id": "spawnCard",
+     "S": 7.6
+    }
+   ]
+  },
+  {
+   "id": "poison-dart-frog",
+   "stats": "1/1",
+   "S": 7.5,
+   "room": 4.46,
+   "over": 3.04,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 7.5
+    }
+   ]
+  },
+  {
+   "id": "sea-turtle-elder",
+   "stats": "1/1",
+   "S": 12,
+   "room": 9.36,
+   "over": 2.64,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "revive",
+     "S": 4.5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "coral-polyp-colony",
+   "stats": "0/11",
+   "S": 7.74,
+   "room": 5.1,
+   "over": 2.64,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "golden-eagle-diver",
+   "stats": "1/1",
+   "S": 4.6,
+   "room": 3.97,
+   "over": 0.63,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "pounce",
+     "S": 3.6
+    },
+    {
+     "kind": "skill",
+     "id": "diurnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "rockslide-ram",
+   "stats": "1/1",
+   "S": 6.3,
+   "room": 6.05,
+   "over": 0.25,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onAttack",
+     "S": 6.3
+    },
+    {
+     "kind": "action",
+     "id": "buff",
+     "S": 6.3
+    }
+   ]
+  },
+  {
+   "id": "blind-cave-fish",
+   "stats": "1/1",
+   "S": 4.6,
+   "room": 3.18,
+   "over": 1.42,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "darksight",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    },
+    {
+     "kind": "skill",
+     "id": "evasive",
+     "S": 0.1
+    }
+   ]
+  },
+  {
+   "id": "ash-cloud-condor",
+   "stats": "1/1",
+   "S": 6.3,
+   "room": 5.68,
+   "over": 0.62,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 6.3
+    },
+    {
+     "kind": "action",
+     "id": "stun",
+     "S": 6.3
+    }
+   ]
+  },
+  {
+   "id": "obsidian-scorpion",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.92,
+   "over": 1.08,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "boreal-elk",
+   "stats": "1/1",
+   "S": 7.8,
+   "room": 7.07,
+   "over": 0.73,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 7.8
+    }
+   ]
+  },
+  {
+   "id": "barnacle-fortress",
+   "stats": "0/1",
+   "S": 7.5,
+   "room": 6,
+   "over": 1.5,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 7.5
+    }
+   ]
+  },
+  {
+   "id": "ravenous-wolverine",
+   "stats": "1/1",
+   "S": 12.6,
+   "room": 5.76,
+   "over": 6.84,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onAttack",
+     "S": 12.6
+    },
+    {
+     "kind": "action",
+     "id": "buff",
+     "S": 12.6
+    }
+   ]
+  },
+  {
+   "id": "dune-jackal",
+   "stats": "1/1",
+   "S": 9,
+   "room": 4.64,
+   "over": 4.36,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "dry",
+     "S": 4
+    }
+   ]
+  },
+  {
+   "id": "porcupine-roller",
+   "stats": "1/1",
+   "S": 5.4,
+   "room": 4.35,
+   "over": 1.05,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "thorns",
+     "S": 5.4
+    }
+   ]
+  },
+  {
+   "id": "trash-panda-trickster",
+   "stats": "1/2",
+   "S": 4,
+   "room": 3.86,
+   "over": 0.14,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "nocturnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "honey-badger-fury",
+   "stats": "2/9",
+   "S": 5,
+   "room": 4.64,
+   "over": 0.36,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "rage",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "stats": "3/8",
+   "S": 6.24,
+   "room": 5.21,
+   "over": 1.03,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    }
+   ]
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.64,
+   "over": 0.36,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "feral-tomcat",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "over": 1.14,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.99,
+   "over": 0.01,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "stats": "5/17",
+   "S": 10,
+   "room": 9.61,
+   "over": 0.39,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "fireArrow",
+     "S": 7
+    },
+    {
+     "kind": "skill",
+     "id": "pierce",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "dune-jackal-scout",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 5.09,
+   "over": 0.41,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "dry",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "glacier-yak",
+   "stats": "1/13",
+   "S": 9.15,
+   "room": 8.28,
+   "over": 0.87,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 7.35
+    },
+    {
+     "kind": "action",
+     "id": "addWait",
+     "S": 7.35
+    },
+    {
+     "kind": "skill",
+     "id": "freeze",
+     "S": 1.8
+    }
+   ]
+  },
+  {
+   "id": "nightshade-moth",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.58,
+   "over": 0.42,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sleep",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "nocturnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "voltaic-eel",
+   "stats": "1/7",
+   "S": 10.43,
+   "room": 6.35,
+   "over": 4.08,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "chainLightning",
+     "S": 8
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    },
+    {
+     "kind": "skill",
+     "id": "shock",
+     "S": 0.93
+    }
+   ]
+  },
+  {
+   "id": "elder-tortoise",
+   "stats": "1/1",
+   "S": 8.85,
+   "room": 7.76,
+   "over": 1.09,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 7.35
+    },
+    {
+     "kind": "action",
+     "id": "addWait",
+     "S": 7.35
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "stats": "2/16",
+   "S": 10.35,
+   "room": 9.06,
+   "over": 1.29,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 7.35
+    },
+    {
+     "kind": "action",
+     "id": "addWait",
+     "S": 7.35
+    },
+    {
+     "kind": "skill",
+     "id": "onDeathSpawn",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5,
+   "over": 1,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "proliferate",
+     "S": 6
+    }
+   ]
+  },
+  {
+   "id": "rivergate-drummer",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 5.35,
+   "over": 1.15,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onAllyPlayed",
+     "S": 6.5
+    },
+    {
+     "kind": "action",
+     "id": "buff",
+     "S": 5.25
+    },
+    {
+     "kind": "action",
+     "id": "buff.amount2",
+     "S": 1.25
+    }
+   ]
+  },
+  {
+   "id": "otter-guard",
+   "stats": "4/8",
+   "S": 6,
+   "room": 5.95,
+   "over": 0.05,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 6
+    }
+   ]
+  },
+  {
+   "id": "bee-forager",
+   "stats": "0/5",
+   "S": 3.1,
+   "room": 2.83,
+   "over": 0.27,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    },
+    {
+     "kind": "trigger",
+     "id": "onAttack",
+     "S": 0.6
+    },
+    {
+     "kind": "action",
+     "id": "heal",
+     "S": 0.6
+    }
+   ]
+  },
+  {
+   "id": "worker-ant",
+   "stats": "1/1",
+   "S": 12.3,
+   "room": 3.32,
+   "over": 8.98,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onAttack",
+     "S": 12.3
+    },
+    {
+     "kind": "action",
+     "id": "drawCard",
+     "S": 12.3
+    }
+   ]
+  },
+  {
+   "id": "tunnel-ant",
+   "stats": "2/9",
+   "S": 6.5,
+   "room": 6.3,
+   "over": 0.2,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "ambush",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    }
+   ]
+  },
+  {
+   "id": "red-dragon",
+   "stats": "4/20",
+   "S": 23.5,
+   "room": 14.74,
+   "over": 8.76,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "fireArrow",
+     "S": 10.5
+    },
+    {
+     "kind": "skill",
+     "id": "supreme",
+     "S": 7
+    },
+    {
+     "kind": "skill",
+     "id": "stunOnHit",
+     "S": 3
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "white-dragon",
+   "stats": "4/19",
+   "S": 18.3,
+   "room": 15.3,
+   "over": 3,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "supreme",
+     "S": 7
+    },
+    {
+     "kind": "skill",
+     "id": "scare",
+     "S": 5
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "blue-dragon",
+   "stats": "4/19",
+   "S": 26,
+   "room": 14.45,
+   "over": 11.55,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "supremeTide",
+     "S": 8
+    },
+    {
+     "kind": "skill",
+     "id": "supreme",
+     "S": 7
+    },
+    {
+     "kind": "skill",
+     "id": "lightning",
+     "S": 6
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "green-dragon",
+   "stats": "3/18",
+   "S": 17.78,
+   "room": 14.74,
+   "over": 3.04,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 7.5
+    },
+    {
+     "kind": "skill",
+     "id": "supreme",
+     "S": 7
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "stats": "1/4",
+   "S": 4.5,
+   "room": 4.18,
+   "over": 0.32,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "beaver-lumberjack",
+   "stats": "4/4",
+   "S": 6,
+   "room": 4.83,
+   "over": 1.17,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 6
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 6
+    }
+   ]
+  },
+  {
+   "id": "courier-pigeon",
+   "stats": "1/1",
+   "S": 4.31,
+   "room": 2.95,
+   "over": 1.36,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 4.31
+    },
+    {
+     "kind": "action",
+     "id": "drawCard",
+     "S": 4.31
+    }
+   ]
+  },
+  {
+   "id": "ash-imp",
+   "stats": "2/7",
+   "S": 6,
+   "room": 3.68,
+   "over": 2.32,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sacrifice",
+     "S": 6
+    }
+   ]
+  },
+  {
+   "id": "blackmass-acolyte",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5.18,
+   "over": 0.82,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "desecrate",
+     "S": 6
+    }
+   ]
+  },
+  {
+   "id": "puppeteer-imp",
+   "stats": "1/1",
+   "S": 7.35,
+   "room": 5.53,
+   "over": 1.82,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 7.35
+    },
+    {
+     "kind": "action",
+     "id": "mindControl",
+     "S": 7.35
+    }
+   ]
+  },
+  {
+   "id": "fleetfootd",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 4.03,
+   "over": 2.47,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "abbey-goose",
+   "stats": "1/1",
+   "S": 8,
+   "room": 5.18,
+   "over": 2.82,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "healing",
+     "S": 8
+    }
+   ]
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "stats": "1/1",
+   "S": 12,
+   "room": 11.31,
+   "over": 0.69,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "bleed",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "fork",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "land-tiller",
+   "stats": "1/8",
+   "S": 6.24,
+   "room": 3.86,
+   "over": 2.38,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    }
+   ]
+  },
+  {
+   "id": "nectar-vintner",
+   "stats": "1/1",
+   "S": 4,
+   "room": 3.09,
+   "over": 0.91,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "bloom",
+     "S": 4
+    }
+   ]
+  },
+  {
+   "id": "snail-mail",
+   "stats": "0/1",
+   "S": 10.11,
+   "room": 7.02,
+   "over": 3.09,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 8.61
+    },
+    {
+     "kind": "action",
+     "id": "drawCard",
+     "S": 8.61
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "talon-archer",
+   "stats": "1/2",
+   "S": 7,
+   "room": 5.83,
+   "over": 1.17,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "diurnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "stats": "1/1",
+   "S": 14.7,
+   "room": 9.72,
+   "over": 4.98,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 11.7
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "daily-post",
+   "stats": "1/1",
+   "S": 4.31,
+   "room": 3.09,
+   "over": 1.22,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onSpawn",
+     "S": 4.31
+    },
+    {
+     "kind": "action",
+     "id": "drawCard",
+     "S": 4.31
+    }
+   ]
+  },
+  {
+   "id": "sunfeather-scout",
+   "stats": "1/7",
+   "S": 6.24,
+   "room": 4.05,
+   "over": 2.19,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    }
+   ]
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.62,
+   "over": 1.38,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "pierce",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "sunspire-choirmother",
+   "stats": "3/6",
+   "S": 8.34,
+   "room": 6.61,
+   "over": 1.73,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "esprit",
+     "S": 4.2
+    },
+    {
+     "kind": "skill",
+     "id": "espritHp",
+     "S": 2.2
+    },
+    {
+     "kind": "skill",
+     "id": "diurnal",
+     "S": 1
+    },
+    {
+     "kind": "skill",
+     "id": "diurnalHp",
+     "S": 0.94
+    }
+   ]
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "stats": "2/24",
+   "S": 14.04,
+   "room": 12.97,
+   "over": 1.07,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "regen",
+     "S": 7.8
+    },
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    }
+   ]
+  },
+  {
+   "id": "puddle-changeling",
+   "stats": "1/1",
+   "S": 10.1,
+   "room": 3.86,
+   "over": 6.24,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "twin",
+     "S": 10
+    },
+    {
+     "kind": "skill",
+     "id": "changeling",
+     "S": 0.1
+    }
+   ]
+  },
+  {
+   "id": "thornwood-palisade",
+   "stats": "0/16",
+   "S": 7,
+   "room": 6.55,
+   "over": 0.45,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "spiteful",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "counterattack",
+     "S": 2
+    }
+   ]
+  },
+  {
+   "id": "conch-crawler",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 4.9,
+   "over": 0.6,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "shell",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "moonlit-hare",
+   "stats": "1/1",
+   "S": 8,
+   "room": 5.35,
+   "over": 2.65,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "moonborn",
+     "S": 8
+    }
+   ]
+  },
+  {
+   "id": "lunar-howler",
+   "stats": "1/1",
+   "S": 12,
+   "room": 7.78,
+   "over": 4.22,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "moonborn",
+     "S": 12
+    }
+   ]
+  },
+  {
+   "id": "the-contradiction",
+   "stats": "2/19",
+   "S": 10.2,
+   "room": 9.34,
+   "over": 0.86,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "regen",
+     "S": 5.2
+    },
+    {
+     "kind": "skill",
+     "id": "rage",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "magma-wraith",
+   "stats": "1/9",
+   "S": 7.1,
+   "room": 5.4,
+   "over": 1.7,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "fireArrow",
+     "S": 7
+    },
+    {
+     "kind": "skill",
+     "id": "evasive",
+     "S": 0.1
+    }
+   ]
+  },
+  {
+   "id": "gatling-hog",
+   "stats": "3/11",
+   "S": 9,
+   "room": 6.47,
+   "over": 2.53,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "twinStrike",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "hummingbird-needler",
+   "stats": "1/3",
+   "S": 3.5,
+   "room": 3.39,
+   "over": 0.11,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "bleed",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "pierce",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "goliath-tentacle",
+   "stats": "1/1",
+   "S": 13.2,
+   "room": 11.47,
+   "over": 1.73,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sweep",
+     "S": 11.7
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "lone-grey-wolf",
+   "stats": "4/15",
+   "S": 12,
+   "room": 8.54,
+   "over": 3.46,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "loneWolf",
+     "S": 12
+    }
+   ]
+  },
+  {
+   "id": "caiman-hatchling",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "over": 1.14,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "ember-centipede",
+   "stats": "1/1",
+   "S": 9,
+   "room": 5.6,
+   "over": 3.4,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "dry",
+     "S": 4
+    }
+   ]
+  },
+  {
+   "id": "rabid-jackal",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.53,
+   "over": 1.47,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "rabid",
+     "S": 5
+    },
+    {
+     "kind": "skill",
+     "id": "weakness",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "rafflesia",
+   "stats": "1/1",
+   "S": 7.35,
+   "room": 5.34,
+   "over": 2.01,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onRoundStart",
+     "S": 7.35
+    },
+    {
+     "kind": "action",
+     "id": "debuff",
+     "S": 7.35
+    }
+   ]
+  },
+  {
+   "id": "puffball-bombardier",
+   "stats": "1/10",
+   "S": 5.5,
+   "room": 5.35,
+   "over": 0.15,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 2.5
+    }
+   ]
+  },
+  {
+   "id": "arc-bat",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.33,
+   "over": 0.67,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "electricity",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "nocturnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "blister-beetle",
+   "stats": "1/1",
+   "S": 5.2,
+   "room": 5,
+   "over": 0.2,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "onDeath",
+     "S": 5.2
+    },
+    {
+     "kind": "action",
+     "id": "poison",
+     "S": 5.2
+    }
+   ]
+  },
+  {
+   "id": "sheep",
+   "stats": "1/7",
+   "S": 3,
+   "room": 2.83,
+   "over": 0.17,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "taunt",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "moon-jerboa",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.58,
+   "over": 1.42,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "fullMoon",
+     "S": 8
+    }
+   ]
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "stats": "4/15",
+   "S": 25,
+   "room": 7.95,
+   "over": 17.05,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "octolash",
+     "S": 25
+    }
+   ]
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "stats": "1/1",
+   "S": 10,
+   "room": 6.23,
+   "over": 3.77,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "nursing",
+     "S": 10
+    }
+   ]
+  },
+  {
+   "id": "swift-fox",
+   "stats": "1/1",
+   "S": 5.59,
+   "room": 4.92,
+   "over": 0.67,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "fastForward",
+     "S": 5.59
+    }
+   ]
+  },
+  {
+   "id": "pangolin-roller",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.44,
+   "over": 1.56,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sturdy",
+     "S": 8
+    }
+   ]
+  },
+  {
+   "id": "woodpecker-sapper",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.4,
+   "over": 0.6,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "perforate",
+     "S": 7
+    }
+   ]
+  },
+  {
+   "id": "spitting-cobra",
+   "stats": "6/10",
+   "S": 18,
+   "room": 8.09,
+   "over": 9.91,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "twinShot",
+     "S": 18
+    }
+   ]
+  },
+  {
+   "id": "sperm-whale-elder",
+   "stats": "6/17",
+   "S": 15,
+   "room": 10.12,
+   "over": 4.88,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "tsunami",
+     "S": 15
+    }
+   ]
+  },
+  {
+   "id": "salamander-pyromancer",
+   "stats": "2/18",
+   "S": 16,
+   "room": 10.12,
+   "over": 5.88,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "fireball",
+     "S": 16
+    }
+   ]
+  },
+  {
+   "id": "starfall-owl",
+   "stats": "5/26",
+   "S": 22,
+   "room": 15.91,
+   "over": 6.09,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "meteor",
+     "S": 22
+    }
+   ]
+  },
+  {
+   "id": "fumarole-ibex",
+   "stats": "1/13",
+   "S": 7.6,
+   "room": 7.07,
+   "over": 0.53,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "mountainClimber",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "pounce",
+     "S": 3.6
+    }
+   ]
+  },
+  {
+   "id": "war-elephant",
+   "stats": "0/28",
+   "S": 21,
+   "room": 12.54,
+   "over": 8.46,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "arrowCount",
+     "S": 12
+    },
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "tax-collector-teal",
+   "stats": "2/4",
+   "S": 4,
+   "room": 3.94,
+   "over": 0.06,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "swipe",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "hoard",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "battlement-heron",
+   "stats": "1/14",
+   "S": 9,
+   "room": 7.13,
+   "over": 1.87,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "arrow",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "sentry",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "magnate-duck",
+   "stats": "1/22",
+   "S": 22.5,
+   "room": 14.87,
+   "over": 7.63,
+   "parts": [
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 9
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 9
+    },
+    {
+     "kind": "skill",
+     "id": "swipe",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "armor",
+     "S": 4.5
+    }
+   ]
+  },
+  {
+   "id": "fathom-leviathan",
+   "stats": "5/28",
+   "S": 43.5,
+   "room": 16.35,
+   "over": 27.15,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "tsunami",
+     "S": 30
+    },
+    {
+     "kind": "skill",
+     "id": "supreme",
+     "S": 7
+    },
+    {
+     "kind": "trigger",
+     "id": "bounty",
+     "S": 3
+    },
+    {
+     "kind": "action",
+     "id": "gain",
+     "S": 3
+    }
+   ]
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "stats": "1/1",
+   "S": 24.36,
+   "room": 17.72,
+   "over": 6.64,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "sturdy",
+     "S": 8
+    },
+    {
+     "kind": "skill",
+     "id": "regen",
+     "S": 7.8
+    },
+    {
+     "kind": "skill",
+     "id": "sprout",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "ashmantle-fiend",
+   "stats": "5/22",
+   "S": 13,
+   "room": 12.74,
+   "over": 0.26,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "immolation",
+     "S": 8
+    },
+    {
+     "kind": "skill",
+     "id": "scare",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "hedgerow-shrew",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "over": 1.14,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "pincushion-urchin",
+   "stats": "1/1",
+   "S": 6.9,
+   "room": 4.9,
+   "over": 2,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "thorns",
+     "S": 5.4
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "rock-pool-starfish",
+   "stats": "1/1",
+   "S": 6.7,
+   "room": 5,
+   "over": 1.7,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "regen",
+     "S": 5.2
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "limpet-clinger",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 3.86,
+   "over": 1.64,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "shell",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "fulmar-spitter",
+   "stats": "1/1",
+   "S": 5.4,
+   "room": 4.91,
+   "over": 0.49,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "thorns",
+     "S": 5.4
+    }
+   ]
+  },
+  {
+   "id": "red-billed-chough",
+   "stats": "1/1",
+   "S": 4,
+   "room": 3.99,
+   "over": 0.01,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "mountainClimber",
+     "S": 4
+    }
+   ]
+  },
+  {
+   "id": "fire-ant-raft",
+   "stats": "1/3",
+   "S": 6.5,
+   "room": 6.13,
+   "over": 0.37,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "giant-water-bug",
+   "stats": "1/1",
+   "S": 7.5,
+   "room": 6.16,
+   "over": 1.34,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "venomous",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "greater-siren",
+   "stats": "1/1",
+   "S": 9.3,
+   "room": 7.81,
+   "over": 1.49,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "regen",
+     "S": 7.8
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "truffle-piglet",
+   "stats": "3/11",
+   "S": 6.24,
+   "room": 6.19,
+   "over": 0.05,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "onReadyGold",
+     "S": 6.24
+    }
+   ]
+  },
+  {
+   "id": "red-backed-salamander",
+   "stats": "1/1",
+   "S": 5.2,
+   "room": 5,
+   "over": 0.2,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "regen",
+     "S": 5.2
+    }
+   ]
+  },
+  {
+   "id": "banded-sea-krait",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.26,
+   "over": 0.74,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "venomous",
+     "S": 6
+    },
+    {
+     "kind": "skill",
+     "id": "nocturnal",
+     "S": 1
+    }
+   ]
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "stats": "1/1",
+   "S": 9,
+   "room": 6.65,
+   "over": 2.35,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 7.5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "stats": "1/1",
+   "S": 9.4,
+   "room": 6.3,
+   "over": 3.1,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "thorns",
+     "S": 5.4
+    },
+    {
+     "kind": "skill",
+     "id": "poison",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "lionfish",
+   "stats": "1/1",
+   "S": 6.9,
+   "room": 6.13,
+   "over": 0.77,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "thorns",
+     "S": 5.4
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "chamois-leaper",
+   "stats": "1/7",
+   "S": 7.6,
+   "room": 6.33,
+   "over": 1.27,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "mountainClimber",
+     "S": 4
+    },
+    {
+     "kind": "skill",
+     "id": "pounce",
+     "S": 3.6
+    }
+   ]
+  },
+  {
+   "id": "alpine-swift",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.05,
+   "over": 0.95,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "quick",
+     "S": 5
+    }
+   ]
+  },
+  {
+   "id": "lemming-swarm",
+   "stats": "1/5",
+   "S": 4.7,
+   "room": 3.86,
+   "over": 0.84,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "brood",
+     "S": 2.2
+    }
+   ]
+  },
+  {
+   "id": "krill-swarm",
+   "stats": "1/7",
+   "S": 4,
+   "room": 3.86,
+   "over": 0.14,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "swarm",
+     "S": 2.5
+    },
+    {
+     "kind": "skill",
+     "id": "tide",
+     "S": 1.5
+    }
+   ]
+  },
+  {
+   "id": "swordbill-challenger",
+   "stats": "3/5",
+   "S": 5,
+   "room": 4.62,
+   "over": 0.38,
+   "parts": [
+    {
+     "kind": "skill",
+     "id": "taunt",
+     "S": 3
+    },
+    {
+     "kind": "skill",
+     "id": "counterattack",
+     "S": 2
+    }
+   ]
+  }
+ ],
+ "proposalRows": [
+  {
+   "kind": "trigger",
+   "id": "bounty",
+   "before": 3,
+   "proposed": 1.84,
+   "value": 1.84,
+   "price": 3,
+   "measuredS": 11.52,
+   "conf": "low",
+   "halved": 1.84,
+   "halvedN": 1,
+   "halvedClamped": 0,
+   "freesAlone": 6
+  },
+  {
+   "kind": "trigger",
+   "id": "onAttack",
+   "before": 3,
+   "proposed": 1.35,
+   "value": 1.35,
+   "price": 3,
+   "measuredS": 4.77,
+   "conf": "low",
+   "halved": 1.35,
+   "halvedN": 24,
+   "halvedClamped": 11,
+   "freesAlone": 3
+  },
+  {
+   "kind": "action",
+   "id": "addWait",
+   "before": 3.5,
+   "proposed": 2.8,
+   "value": 2.8,
+   "price": 3.5,
+   "measuredS": 2.8,
+   "conf": "high",
+   "halved": 0.86,
+   "halvedN": 1,
+   "halvedClamped": 0,
+   "freesAlone": 3
+  },
+  {
+   "kind": "skill",
+   "id": "twinStrike",
+   "before": 6,
+   "proposed": 3.17,
+   "value": 3.17,
+   "price": 6,
+   "measuredS": 10.95,
+   "conf": "low",
+   "halved": 3.17,
+   "halvedN": 1,
+   "halvedClamped": 0,
+   "freesAlone": 1
+  },
+  {
+   "kind": "skill",
+   "id": "octolash",
+   "before": 25,
+   "proposed": 6.48,
+   "value": 6.48,
+   "price": 25,
+   "measuredS": 28.61,
+   "conf": "low",
+   "halved": 6.48,
+   "halvedN": 1,
+   "halvedClamped": 0,
+   "freesAlone": 1
+  }
+ ],
+ "proposalFrees": 14,
+ "options": {
+  "floor": [
+   {
+    "kind": "skill",
+    "id": "onReadyGold",
+    "proposed": 2.6,
+    "price": 6.24,
+    "measuredS": 6.24,
+    "conf": "low",
+    "halved": 2.6,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 7,
+    "marginal": 7,
+    "cumulative": 21
+   },
+   {
+    "kind": "skill",
+    "id": "rage",
+    "proposed": 2.72,
+    "price": 5,
+    "measuredS": 16.04,
+    "conf": "low",
+    "halved": 2.72,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 2,
+    "cumulative": 23
+   },
+   {
+    "kind": "skill",
+    "id": "swipe",
+    "proposed": 2.72,
+    "price": 3,
+    "measuredS": 3.19,
+    "conf": "low",
+    "halved": 2.72,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 24
+   },
+   {
+    "kind": "skill",
+    "id": "meteor",
+    "proposed": 1.32,
+    "price": 2,
+    "measuredS": 5.37,
+    "conf": "low",
+    "halved": 1.32,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 25
+   }
+  ],
+  "ownerCut": [
+   {
+    "kind": "skill",
+    "id": "quick",
+    "proposed": 2.35,
+    "price": 5,
+    "measuredS": 7.55,
+    "conf": "high",
+    "halved": 2.35,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 8,
+    "marginal": 8,
+    "cumulative": 33
+   },
+   {
+    "kind": "skill",
+    "id": "sweep",
+    "proposed": 1.91,
+    "price": 3.9,
+    "measuredS": 4.54,
+    "conf": "high",
+    "halved": 1.91,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 6,
+    "marginal": 6,
+    "cumulative": 39
+   },
+   {
+    "kind": "action",
+    "id": "drawCard",
+    "proposed": 2.28,
+    "price": 4.1,
+    "measuredS": 5.12,
+    "conf": "high",
+    "halved": 2.28,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 4,
+    "marginal": 4,
+    "cumulative": 43
+   },
+   {
+    "kind": "skill",
+    "id": "pounce",
+    "proposed": 1.05,
+    "price": 1.8,
+    "measuredS": 2.4,
+    "conf": "high",
+    "halved": 1.05,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 3,
+    "marginal": 3,
+    "cumulative": 46
+   },
+   {
+    "kind": "skill",
+    "id": "bleed",
+    "proposed": 2.1,
+    "price": 2.5,
+    "measuredS": 2.7,
+    "conf": "high",
+    "halved": 2.1,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 2,
+    "cumulative": 48
+   },
+   {
+    "kind": "skill",
+    "id": "shell",
+    "proposed": 1,
+    "price": 2,
+    "measuredS": 2.69,
+    "conf": "high",
+    "halved": 1,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 2,
+    "cumulative": 50
+   },
+   {
+    "kind": "skill",
+    "id": "sturdy",
+    "proposed": 0.7,
+    "price": 8,
+    "measuredS": 16.9,
+    "conf": "high",
+    "halved": 0.7,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 2,
+    "cumulative": 52
+   },
+   {
+    "kind": "skill",
+    "id": "poison",
+    "proposed": 2.19,
+    "price": 2.5,
+    "measuredS": 3.13,
+    "conf": "high",
+    "halved": 2.19,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 53
+   },
+   {
+    "kind": "skill",
+    "id": "venomous",
+    "proposed": 2.41,
+    "price": 3,
+    "measuredS": 3.13,
+    "conf": "high",
+    "halved": 2.41,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 54
+   },
+   {
+    "kind": "skill",
+    "id": "proliferate",
+    "proposed": 3.71,
+    "price": 6,
+    "measuredS": 10.68,
+    "conf": "high",
+    "halved": 3.71,
+    "halvedN": 2,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 55
+   },
+   {
+    "kind": "skill",
+    "id": "nursing",
+    "proposed": 2.73,
+    "price": 5,
+    "measuredS": 5.03,
+    "conf": "high",
+    "halved": 2.73,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 56
+   },
+   {
+    "kind": "skill",
+    "id": "electricity",
+    "proposed": 1.92,
+    "price": 3,
+    "measuredS": 3.6,
+    "conf": "high",
+    "halved": 1.92,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 57
+   },
+   {
+    "kind": "skill",
+    "id": "perforate",
+    "proposed": 2.45,
+    "price": 3.5,
+    "measuredS": 3.72,
+    "conf": "high",
+    "halved": 2.45,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 58
+   },
+   {
+    "kind": "skill",
+    "id": "desecrate",
+    "proposed": 2.99,
+    "price": 6,
+    "measuredS": 9.41,
+    "conf": "high",
+    "halved": 2.99,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 59
+   },
+   {
+    "kind": "skill",
+    "id": "sleep",
+    "proposed": 1.74,
+    "price": 4,
+    "measuredS": 5.16,
+    "conf": "high",
+    "halved": 1.74,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 60
+   },
+   {
+    "kind": "action",
+    "id": "poison",
+    "proposed": 0.93,
+    "price": 1.3,
+    "measuredS": 1.61,
+    "conf": "high",
+    "halved": 0.93,
+    "halvedN": 1,
+    "halvedClamped": 1,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 61
+   },
+   {
+    "kind": "skill",
+    "id": "ambush",
+    "proposed": 1.09,
+    "price": 2,
+    "measuredS": 2.17,
+    "conf": "high",
+    "halved": 1.09,
+    "halvedN": 2,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 62
+   },
+   {
+    "kind": "skill",
+    "id": "fastForward",
+    "proposed": 1.74,
+    "price": 5.59,
+    "measuredS": 7.17,
+    "conf": "high",
+    "halved": 1.74,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 63
+   },
+   {
+    "kind": "skill",
+    "id": "freeze",
+    "proposed": 0.8,
+    "price": 1.8,
+    "measuredS": 1.89,
+    "conf": "high",
+    "halved": 0.8,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 0,
+    "marginal": 0,
+    "cumulative": 63
+   },
+   {
+    "kind": "skill",
+    "id": "fork",
+    "proposed": 1.69,
+    "price": 4,
+    "measuredS": 5.14,
+    "conf": "high",
+    "halved": 1.69,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 0,
+    "cumulative": 63
+   }
+  ],
+  "unmeasured": [
+   {
+    "kind": "skill",
+    "id": "swarm",
+    "proposed": 1,
+    "price": 2.5,
+    "measuredS": -0.04,
+    "conf": "high",
+    "halved": -0.05,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 5,
+    "marginal": 5,
+    "cumulative": 68
+   },
+   {
+    "kind": "skill",
+    "id": "mountainClimber",
+    "proposed": 2,
+    "price": 4,
+    "measuredS": 8.28,
+    "conf": "low",
+    "halved": -0.05,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 3,
+    "marginal": 1,
+    "cumulative": 69
+   },
+   {
+    "kind": "skill",
+    "id": "pierce",
+    "proposed": 0,
+    "price": 1,
+    "measuredS": 0,
+    "conf": "high",
+    "halved": -0.05,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 1,
+    "cumulative": 70
+   },
+   {
+    "kind": "skill",
+    "id": "taunt",
+    "proposed": 1,
+    "price": 3,
+    "measuredS": -1.81,
+    "conf": "high",
+    "halved": -1.14,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 2,
+    "cumulative": 72
+   },
+   {
+    "kind": "skill",
+    "id": "counterattack",
+    "proposed": 1,
+    "price": 2,
+    "measuredS": -8.21,
+    "conf": "low",
+    "halved": -1.89,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 2,
+    "marginal": 1,
+    "cumulative": 73
+   },
+   {
+    "kind": "skill",
+    "id": "sacrifice",
+    "proposed": 1,
+    "price": 3,
+    "measuredS": 0,
+    "conf": "high",
+    "halved": -0.05,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 74
+   },
+   {
+    "kind": "skill",
+    "id": "immolation",
+    "proposed": 2,
+    "price": 4,
+    "measuredS": -1.56,
+    "conf": "low",
+    "halved": -1.32,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 75
+   },
+   {
+    "kind": "skill",
+    "id": "esprit",
+    "proposed": 1,
+    "price": 2.1,
+    "measuredS": 0,
+    "conf": "high",
+    "halved": -0.05,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 1,
+    "cumulative": 76
+   },
+   {
+    "kind": "skill",
+    "id": "hoard",
+    "proposed": 0,
+    "price": 0.5,
+    "measuredS": 0,
+    "conf": "high",
+    "halved": -0.02,
+    "halvedN": 1,
+    "halvedClamped": 0,
+    "aloneOnTopOfProposal": 1,
+    "marginal": 0,
+    "cumulative": 76
+   }
+  ]
+ },
+ "refit": {
+  "before": {
+   "band": 714,
+   "noFit": 130,
+   "noFitTiny": 76,
+   "tinyAfter": 9,
+   "moves": 62
+  },
+  "after": {
+   "band": 714,
+   "noFit": 116,
+   "noFitTiny": 71,
+   "tinyAfter": 9,
+   "moves": 115
+  },
+  "drifted": [
+   {
+    "id": "dolphin-knight",
+    "now": "4/7",
+    "before": "4/8",
+    "after": "4/8"
+   },
+   {
+    "id": "otter-scout",
+    "now": "1/7",
+    "before": "1/9",
+    "after": "1/10"
+   },
+   {
+    "id": "great-horned-owl",
+    "now": "2/12",
+    "before": "2/13",
+    "after": "2/13"
+   },
+   {
+    "id": "bramblewood-lynx",
+    "now": "5/6",
+    "before": "5/7",
+    "after": "5/7"
+   },
+   {
+    "id": "fungal-colossus",
+    "now": "2/17",
+    "before": "2/18",
+    "after": "2/19"
+   },
+   {
+    "id": "pike-lancer",
+    "now": "4/7",
+    "before": "4/8",
+    "after": "4/8"
+   },
+   {
+    "id": "wolf-pack-runner",
+    "now": "3/10",
+    "before": "3/11",
+    "after": "3/12"
+   },
+   {
+    "id": "elderhorn-monarch",
+    "now": "1/7",
+    "before": "1/10",
+    "after": "3/22"
+   },
+   {
+    "id": "termite-mound",
+    "now": "0/6",
+    "before": "0/14",
+    "after": "0/14"
+   },
+   {
+    "id": "marsh-gas-toad",
+    "now": "1/10",
+    "before": "1/11",
+    "after": "1/11"
+   },
+   {
+    "id": "magma-salamander",
+    "now": "3/10",
+    "before": "3/11",
+    "after": "3/11"
+   },
+   {
+    "id": "fiddler-crab-swarm",
+    "now": "1/7",
+    "before": "1/8",
+    "after": "1/8"
+   },
+   {
+    "id": "humpback-elder",
+    "now": "2/15",
+    "before": "2/19",
+    "after": "2/19"
+   },
+   {
+    "id": "raccoon-nightcrew",
+    "now": "4/7",
+    "before": "4/8",
+    "after": "4/8"
+   },
+   {
+    "id": "kraken-spawnling",
+    "now": "2/12",
+    "before": "2/15",
+    "after": "2/15"
+   },
+   {
+    "id": "magma-titan",
+    "now": "2/10",
+    "before": "2/12",
+    "after": "2/12"
+   },
+   {
+    "id": "coral-current-eel",
+    "now": "3/8",
+    "before": "3/9",
+    "after": "3/9"
+   },
+   {
+    "id": "fen-mink",
+    "now": "1/7",
+    "before": "1/10",
+    "after": "1/10"
+   },
+   {
+    "id": "ant-scout",
+    "now": "1/4",
+    "before": "1/5",
+    "after": "1/5"
+   },
+   {
+    "id": "voidfeather-scout",
+    "now": "2/4",
+    "before": "2/5",
+    "after": "2/5"
+   },
+   {
+    "id": "meadow-frog",
+    "now": "2/5",
+    "before": "2/6",
+    "after": "2/6"
+   },
+   {
+    "id": "pit-glutton",
+    "now": "2/10",
+    "before": "2/11",
+    "after": "2/11"
+   },
+   {
+    "id": "lurking-dread",
+    "now": "1/7",
+    "before": "1/10",
+    "after": "1/10"
+   },
+   {
+    "id": "night-watchman",
+    "now": "1/3",
+    "before": "1/4",
+    "after": "1/4"
+   },
+   {
+    "id": "otter-ferryman",
+    "now": "3/7",
+    "before": "3/8",
+    "after": "3/8"
+   },
+   {
+    "id": "echo-matriarch",
+    "now": "2/11",
+    "before": "2/12",
+    "after": "2/12"
+   },
+   {
+    "id": "net-thrower",
+    "now": "3/8",
+    "before": "3/9",
+    "after": "3/9"
+   },
+   {
+    "id": "riverside-peddler",
+    "now": "1/4",
+    "before": "1/6",
+    "after": "2/6"
+   },
+   {
+    "id": "badger-lumberjack",
+    "now": "1/10",
+    "before": "1/11",
+    "after": "1/11"
+   },
+   {
+    "id": "grindstone-boar",
+    "now": "3/10",
+    "before": "3/12",
+    "after": "3/12"
+   },
+   {
+    "id": "rainmaker-frog",
+    "now": "3/10",
+    "before": "3/11",
+    "after": "3/11"
+   },
+   {
+    "id": "siege-rhino",
+    "now": "5/15",
+    "before": "5/16",
+    "after": "5/16"
+   },
+   {
+    "id": "stonedrop-vulture",
+    "now": "6/6",
+    "before": "9/9",
+    "after": "9/9"
+   },
+   {
+    "id": "otter-flag-bearer",
+    "now": "2/7",
+    "before": "2/8",
+    "after": "2/8"
+   },
+   {
+    "id": "triumvirate",
+    "now": "4/16",
+    "before": "4/17",
+    "after": "4/17"
+   },
+   {
+    "id": "goliath-broodmother",
+    "now": "4/17",
+    "before": "4/19",
+    "after": "4/19"
+   },
+   {
+    "id": "vampire-bat",
+    "now": "2/4",
+    "before": "2/5",
+    "after": "2/5"
+   },
+   {
+    "id": "baby-bat",
+    "now": "2/4",
+    "before": "2/5",
+    "after": "2/5"
+   },
+   {
+    "id": "nightjar-drifter",
+    "now": "1/6",
+    "before": "1/9",
+    "after": "1/9"
+   },
+   {
+    "id": "hoopoe-herald",
+    "now": "2/11",
+    "before": "2/12",
+    "after": "2/12"
+   },
+   {
+    "id": "marula-elephant",
+    "now": "4/20",
+    "before": "4/21",
+    "after": "4/21"
+   },
+   {
+    "id": "swordfish-spearman",
+    "now": "3/13",
+    "before": "3/14",
+    "after": "3/14"
+   },
+   {
+    "id": "mayfly-dancer",
+    "now": "3/7",
+    "before": "3/8",
+    "after": "3/8"
+   },
+   {
+    "id": "echidna-quillshot",
+    "now": "4/13",
+    "before": "4/15",
+    "after": "4/15"
+   },
+   {
+    "id": "skunk-gasser",
+    "now": "1/3",
+    "before": "1/4",
+    "after": "1/4"
+   },
+   {
+    "id": "supernova-jelly",
+    "now": "2/6",
+    "before": "2/7",
+    "after": "2/7"
+   },
+   {
+    "id": "snow-leopard",
+    "now": "2/12",
+    "before": "2/14",
+    "after": "2/14"
+   },
+   {
+    "id": "rimeheart-colossus",
+    "now": "3/17",
+    "before": "3/19",
+    "after": "3/19"
+   },
+   {
+    "id": "cottonmouth-matriarch",
+    "now": "1/4",
+    "before": "1/5",
+    "after": "1/5"
+   },
+   {
+    "id": "water-vole",
+    "now": "1/3",
+    "before": "1/4",
+    "after": "1/4"
+   },
+   {
+    "id": "oystercatcher",
+    "now": "2/4",
+    "before": "2/5",
+    "after": "2/5"
+   },
+   {
+    "id": "great-crested-grebe",
+    "now": "2/5",
+    "before": "2/6",
+    "after": "2/6"
+   },
+   {
+    "id": "swamp-rabbit",
+    "now": "1/3",
+    "before": "1/4",
+    "after": "1/4"
+   },
+   {
+    "id": "wolf-spider-mother",
+    "now": "3/7",
+    "before": "3/8",
+    "after": "3/8"
+   },
+   {
+    "id": "cave-swiftlet",
+    "now": "1/4",
+    "before": "1/6",
+    "after": "1/6"
+   },
+   {
+    "id": "proboscis-monkey",
+    "now": "2/7",
+    "before": "2/9",
+    "after": "2/9"
+   },
+   {
+    "id": "anvil-thrush",
+    "now": "1/4",
+    "before": "1/6",
+    "after": "1/6"
+   },
+   {
+    "id": "garden-tiger-moth",
+    "now": "1/4",
+    "before": "1/5",
+    "after": "1/5"
+   },
+   {
+    "id": "harp-seal-pup",
+    "now": "1/4",
+    "before": "1/6",
+    "after": "1/6"
+   },
+   {
+    "id": "beluga",
+    "now": "1/11",
+    "before": "1/15",
+    "after": "1/15"
+   },
+   {
+    "id": "arctic-tern",
+    "now": "1/7",
+    "before": "1/8",
+    "after": "1/8"
+   },
+   {
+    "id": "ringed-seal",
+    "now": "1/9",
+    "before": "1/11",
+    "after": "1/11"
+   }
+  ],
+  "freed": [
+   {
+    "id": "monarch-wingblade",
+    "now": "2/5",
+    "after": "2/4",
+    "u": 0.93
+   },
+   {
+    "id": "alpha-howler",
+    "now": "1/1",
+    "after": "2/2",
+    "u": 0.53
+   },
+   {
+    "id": "lodge-engineer",
+    "now": "3/17",
+    "after": "1/8",
+    "u": 0.67
+   },
+   {
+    "id": "rockslide-ram",
+    "now": "1/1",
+    "after": "5/5",
+    "u": 0.97
+   },
+   {
+    "id": "ravenous-wolverine",
+    "now": "1/1",
+    "after": "1/1",
+    "u": 0.49
+   },
+   {
+    "id": "trash-panda-trickster",
+    "now": "1/2",
+    "after": "2/3",
+    "u": 0.82
+   },
+   {
+    "id": "glacier-yak",
+    "now": "1/13",
+    "after": "1/10",
+    "u": 0.79
+   },
+   {
+    "id": "elder-tortoise",
+    "now": "1/1",
+    "after": "2/2",
+    "u": 0.57
+   },
+   {
+    "id": "rot-swollen-carcass",
+    "now": "2/16",
+    "after": "1/4",
+    "u": 0.54
+   },
+   {
+    "id": "bee-forager",
+    "now": "0/5",
+    "after": "0/4",
+    "u": 0.98
+   },
+   {
+    "id": "tiny-cave-dweller",
+    "now": "1/4",
+    "after": "1/6",
+    "u": 0.88
+   },
+   {
+    "id": "beaver-lumberjack",
+    "now": "4/4",
+    "after": "3/3",
+    "u": 0.86
+   },
+   {
+    "id": "gatling-hog",
+    "now": "3/11",
+    "after": "1/4",
+    "u": 0.62
+   },
+   {
+    "id": "blue-ringed-octopus",
+    "now": "4/15",
+    "after": "2/9",
+    "u": 0.81
+   }
+  ],
+  "stillNo": [
+   "bee-drone",
+   "soldier-ant",
+   "ant-warrior",
+   "alley-cat",
+   "boar-rampager",
+   "octopus-tactician",
+   "raven-harbinger",
+   "fox-warchief",
+   "rodent-king",
+   "poison-dart-croaker",
+   "quill-thorn-boar",
+   "raven-hexcaller",
+   "eagle-sharpshooter",
+   "bone-diviner",
+   "colony",
+   "poison-dart-frog",
+   "sea-turtle-elder",
+   "coral-polyp-colony",
+   "golden-eagle-diver",
+   "blind-cave-fish",
+   "ash-cloud-condor",
+   "obsidian-scorpion",
+   "boreal-elk",
+   "barnacle-fortress",
+   "dune-jackal",
+   "porcupine-roller",
+   "honey-badger-fury",
+   "chipmunk-hoarder",
+   "chipmunk-cavalry",
+   "feral-tomcat",
+   "jackrabbit-sprinter",
+   "pyroclast-wyrm",
+   "dune-jackal-scout",
+   "nightshade-moth",
+   "voltaic-eel",
+   "plague-gnat-cloud",
+   "rivergate-drummer",
+   "otter-guard",
+   "worker-ant",
+   "tunnel-ant",
+   "red-dragon",
+   "white-dragon",
+   "blue-dragon",
+   "green-dragon",
+   "courier-pigeon",
+   "ash-imp",
+   "blackmass-acolyte",
+   "puppeteer-imp",
+   "fleetfootd",
+   "abbey-goose",
+   "ironmaw-warwolf",
+   "land-tiller",
+   "nectar-vintner",
+   "snail-mail",
+   "talon-archer",
+   "marshal-of-rivergate",
+   "daily-post",
+   "sunfeather-scout",
+   "ruby-throat-duelist",
+   "sunspire-choirmother",
+   "old-willow-of-the-ford",
+   "puddle-changeling",
+   "thornwood-palisade",
+   "conch-crawler",
+   "moonlit-hare",
+   "lunar-howler",
+   "the-contradiction",
+   "magma-wraith",
+   "hummingbird-needler",
+   "goliath-tentacle",
+   "lone-grey-wolf",
+   "caiman-hatchling",
+   "ember-centipede",
+   "rabid-jackal",
+   "rafflesia",
+   "puffball-bombardier",
+   "arc-bat",
+   "blister-beetle",
+   "sheep",
+   "moon-jerboa",
+   "vampire-bat-nurse",
+   "swift-fox",
+   "pangolin-roller",
+   "woodpecker-sapper",
+   "spitting-cobra",
+   "sperm-whale-elder",
+   "salamander-pyromancer",
+   "starfall-owl",
+   "fumarole-ibex",
+   "war-elephant",
+   "tax-collector-teal",
+   "battlement-heron",
+   "magnate-duck",
+   "fathom-leviathan",
+   "grovebearer-dragon-turtle",
+   "ashmantle-fiend",
+   "hedgerow-shrew",
+   "pincushion-urchin",
+   "rock-pool-starfish",
+   "limpet-clinger",
+   "fulmar-spitter",
+   "red-billed-chough",
+   "fire-ant-raft",
+   "giant-water-bug",
+   "greater-siren",
+   "truffle-piglet",
+   "red-backed-salamander",
+   "banded-sea-krait",
+   "yellow-bellied-sea-snake",
+   "crown-of-thorns-star",
+   "lionfish",
+   "chamois-leaper",
+   "alpine-swift",
+   "lemming-swarm",
+   "krill-swarm",
+   "swordbill-challenger"
+  ],
+  "lost": [],
+  "otherMoves": [
+   {
+    "id": "yeti",
+    "now": "5/25",
+    "after": "5/26"
+   },
+   {
+    "id": "scraper-of-skies",
+    "now": "0/24",
+    "after": "0/25"
+   },
+   {
+    "id": "otter-shieldback",
+    "now": "3/13",
+    "after": "3/14"
+   },
+   {
+    "id": "war-hound",
+    "now": "3/10",
+    "after": "3/11"
+   },
+   {
+    "id": "armored-mastiff",
+    "now": "4/18",
+    "after": "4/19"
+   },
+   {
+    "id": "war-panther",
+    "now": "5/16",
+    "after": "5/17"
+   },
+   {
+    "id": "tunnel-wyrm",
+    "now": "3/13",
+    "after": "3/14"
+   },
+   {
+    "id": "elder-willow",
+    "now": "0/30",
+    "after": "0/32"
+   },
+   {
+    "id": "stoneheart-golem",
+    "now": "3/19",
+    "after": "3/20"
+   },
+   {
+    "id": "pufferfish-bulwark",
+    "now": "1/15",
+    "after": "1/16"
+   },
+   {
+    "id": "reef-shark",
+    "now": "5/14",
+    "after": "5/15"
+   },
+   {
+    "id": "quillguard",
+    "now": "2/17",
+    "after": "2/18"
+   },
+   {
+    "id": "raccoon-bandit",
+    "now": "4/5",
+    "after": "4/6"
+   },
+   {
+    "id": "raccoon-warlord",
+    "now": "4/17",
+    "after": "4/18"
+   },
+   {
+    "id": "badger-berserker",
+    "now": "3/12",
+    "after": "3/13"
+   },
+   {
+    "id": "crocodile-ambusher",
+    "now": "5/15",
+    "after": "5/16"
+   },
+   {
+    "id": "turtle-bastion",
+    "now": "2/20",
+    "after": "2/21"
+   },
+   {
+    "id": "nautilus-drifter",
+    "now": "1/3",
+    "after": "2/7"
+   },
+   {
+    "id": "chipmunk-stockpiler",
+    "now": "1/7",
+    "after": "1/8"
+   },
+   {
+    "id": "badger-sapper",
+    "now": "3/13",
+    "after": "3/15"
+   },
+   {
+    "id": "woodland-brawler",
+    "now": "3/13",
+    "after": "3/14"
+   },
+   {
+    "id": "stag-knight",
+    "now": "4/13",
+    "after": "4/15"
+   },
+   {
+    "id": "beaver-builder",
+    "now": "1/6",
+    "after": "1/8"
+   },
+   {
+    "id": "dam-wall",
+    "now": "0/18",
+    "after": "0/19"
+   },
+   {
+    "id": "riverworks-bastion",
+    "now": "0/25",
+    "after": "0/27"
+   },
+   {
+    "id": "constrictor-coil",
+    "now": "4/13",
+    "after": "4/14"
+   },
+   {
+    "id": "vampire-roost",
+    "now": "0/21",
+    "after": "0/23"
+   },
+   {
+    "id": "field-mouse",
+    "now": "1/5",
+    "after": "1/7"
+   },
+   {
+    "id": "squires-mount",
+    "now": "3/11",
+    "after": "3/12"
+   },
+   {
+    "id": "warhorse-charger",
+    "now": "4/14",
+    "after": "4/15"
+   },
+   {
+    "id": "bog-behemoth",
+    "now": "1/23",
+    "after": "1/24"
+   },
+   {
+    "id": "lucky-hopper",
+    "now": "1/10",
+    "after": "1/12"
+   },
+   {
+    "id": "buck-brawler",
+    "now": "4/13",
+    "after": "4/15"
+   },
+   {
+    "id": "hanging-loafer",
+    "now": "2/19",
+    "after": "2/20"
+   },
+   {
+    "id": "ancient-sloth-titan",
+    "now": "4/36",
+    "after": "4/37"
+   },
+   {
+    "id": "mangrove-monitor",
+    "now": "3/9",
+    "after": "3/10"
+   },
+   {
+    "id": "black-dragon",
+    "now": "1/1",
+    "after": "5/5"
+   },
+   {
+    "id": "village-miller",
+    "now": "2/3",
+    "after": "3/4"
+   },
+   {
+    "id": "cinder-stoker",
+    "now": "1/8",
+    "after": "1/9"
+   },
+   {
+    "id": "pack-mule",
+    "now": "1/8",
+    "after": "1/9"
+   }
+  ]
+ },
+ "allOptions": {
+  "band": 714,
+  "noFit": 54,
+  "noFitTiny": 36,
+  "tinyAfter": 12,
+  "moves": 243
+ },
+ "fixes": [
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "stats": "0/1",
+   "S": 7.6,
+   "room": 3.39,
+   "fix": {
+    "what": "drop trigger onAttacked → spawnCard",
+    "dS": 7.6,
+    "line": "0/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "stats": "1/2",
+   "S": 5,
+   "room": 4.83,
+   "fix": {
+    "what": "drop swarm",
+    "dS": 2.5,
+    "line": "3/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "swarm 1"
+   ]
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "stats": "3/6",
+   "S": 7.5,
+   "room": 4.28,
+   "fix": {
+    "what": "drop rage",
+    "dS": 5,
+    "line": "2/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "stats": "1/8",
+   "S": 5.67,
+   "room": 4.57,
+   "fix": {
+    "what": "drop bleed",
+    "dS": 2.5,
+    "line": "1/8",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "boar-rampager",
+   "name": "Boar Rampager",
+   "stats": "1/1",
+   "S": 9.64,
+   "room": 8.05,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 1.84,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sweep 1.91"
+   ]
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "stats": "1/1",
+   "S": 11.14,
+   "room": 8.58,
+   "fix": {
+    "what": "sweep 3 → 1",
+    "dS": 3.9,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sweep 1.91"
+   ]
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.35,
+   "fix": {
+    "what": "poison 2 → 1",
+    "dS": 2.5,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "stats": "1/1",
+   "S": 9.64,
+   "room": 8.26,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 1.84,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sweep 1.91"
+   ]
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "stats": "4/14",
+   "S": 10.24,
+   "room": 8.58,
+   "fix": {
+    "what": "drop king",
+    "dS": 4,
+    "line": "3/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 5.81,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "stats": "1/1",
+   "S": 8.1,
+   "room": 6.72,
+   "fix": {
+    "what": "thorns 3 → 2",
+    "dS": 2.7,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "raven-hexcaller",
+   "name": "Raven Hexcaller",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.54,
+   "fix": {
+    "what": "drop render",
+    "dS": 2,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "stats": "1/6",
+   "S": 7,
+   "room": 5.88,
+   "dropHalfMiss": [
+    "drop flying -> 1/4"
+   ],
+   "fix": {
+    "what": "arrow 2 → 1",
+    "dS": 3,
+    "line": "1/8",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "bone-diviner",
+   "name": "Bone Diviner",
+   "stats": "1/1",
+   "S": 7.8,
+   "room": 6.64,
+   "dropHalfMiss": [
+    "drop flying -> 2/2"
+   ],
+   "fix": {
+    "what": "trigger onKill → gain: amount 2 → 1",
+    "dS": 1.4,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "stats": "0/11",
+   "S": 7.6,
+   "room": 5.62,
+   "fix": {
+    "what": "drop trigger onAttacked → spawnCard",
+    "dS": 7.6,
+    "line": "0/17",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "poison-dart-frog",
+   "name": "Poison Dart Frog",
+   "stats": "1/1",
+   "S": 7.5,
+   "room": 4.46,
+   "fix": {
+    "what": "poison 3 → 1",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "stats": "1/1",
+   "S": 12,
+   "room": 9.36,
+   "fix": {
+    "what": "armor 4 → 2",
+    "dS": 3,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "stats": "0/11",
+   "S": 7.74,
+   "room": 5.1,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "0/14",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "stats": "1/1",
+   "S": 4.6,
+   "room": 3.97,
+   "dropHalfMiss": [
+    "drop flying -> 2/2"
+   ],
+   "fix": {
+    "what": "pounce 3 → 1",
+    "dS": 1.8,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "pounce 1.05"
+   ]
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "stats": "1/1",
+   "S": 4.6,
+   "room": 3.18,
+   "fix": {
+    "what": "drop darksight",
+    "dS": 3,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "stats": "1/1",
+   "S": 6.3,
+   "room": 5.68,
+   "dropHalfMiss": [
+    "drop flying -> 3/3"
+   ],
+   "fix": {
+    "what": "drop trigger onSpawn → stun",
+    "dS": 6.3,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.92,
+   "fix": {
+    "what": "armor 2 → 1",
+    "dS": 1.5,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "stats": "1/1",
+   "S": 7.8,
+   "room": 7.07,
+   "fix": {
+    "what": "sweep 2 → 1",
+    "dS": 3.9,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sweep 1.91"
+   ]
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress",
+   "stats": "0/1",
+   "S": 7.5,
+   "room": 6,
+   "fix": {
+    "what": "armor 5 → 4",
+    "dS": 1.5,
+    "line": "0/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "stats": "1/1",
+   "S": 9,
+   "room": 4.64,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "stats": "1/1",
+   "S": 5.4,
+   "room": 4.35,
+   "fix": {
+    "what": "thorns 2 → 1",
+    "dS": 2.7,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "stats": "2/9",
+   "S": 5,
+   "room": 4.64,
+   "fix": {
+    "what": "drop rage",
+    "dS": 5,
+    "line": "2/10",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "rage 2.72"
+   ]
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "stats": "3/8",
+   "S": 6.24,
+   "room": 5.21,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "3/9",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.64,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.99,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "stats": "5/17",
+   "S": 10,
+   "room": 9.61,
+   "fix": {
+    "what": "pierce 5 → 3",
+    "dS": 1,
+    "line": "2/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "pierce 0"
+   ]
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 5.09,
+   "fix": {
+    "what": "drop armor",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.58,
+   "dropHalfMiss": [
+    "drop flying -> 2/2"
+   ],
+   "fix": {
+    "what": "drop nocturnal",
+    "dS": 1,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sleep 1.74"
+   ]
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "stats": "1/7",
+   "S": 10.43,
+   "room": 6.35,
+   "fix": {
+    "what": "drop chainLightning",
+    "dS": 8,
+    "line": "2/12",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5,
+   "fix": {
+    "what": "drop proliferate",
+    "dS": 6,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "proliferate 3.71"
+   ]
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 5.35,
+   "fix": {
+    "what": "drop kinRally",
+    "dS": 6.5,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "stats": "4/8",
+   "S": 6,
+   "room": 5.95,
+   "fix": {
+    "what": "arrow 2 → 1",
+    "dS": 3,
+    "line": "3/7",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "stats": "1/1",
+   "S": 5.54,
+   "room": 3.32,
+   "fix": {
+    "what": "drop trigger onAttack → drawCard",
+    "dS": 5.54,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "drawCard 2.28"
+   ]
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "stats": "2/9",
+   "S": 6.5,
+   "room": 6.3,
+   "fix": {
+    "what": "ambush 2 → 1",
+    "dS": 2,
+    "line": "2/10",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "ambush 1.09",
+    "swarm 1"
+   ]
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "stats": "4/20",
+   "S": 22.34,
+   "room": 14.74,
+   "fix": {
+    "what": "drop fireArrow",
+    "dS": 10.5,
+    "line": "3/17",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "stats": "4/19",
+   "S": 17.14,
+   "room": 15.3,
+   "dropHalfMiss": [
+    "drop flying -> 3/17"
+   ],
+   "fix": {
+    "what": "scare 3 → 1",
+    "dS": 2.5,
+    "line": "2/10",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "stats": "4/19",
+   "S": 24.84,
+   "room": 14.45,
+   "fix": null,
+   "pair": {
+    "what": "lightning 4 → 1; drop supreme",
+    "dS": 11,
+    "line": "2/9"
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "stats": "3/18",
+   "S": 16.62,
+   "room": 14.74,
+   "dropHalfMiss": [
+    "drop flying -> 3/17"
+   ],
+   "fix": {
+    "what": "poison 3 → 2",
+    "dS": 2.5,
+    "line": "2/9",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "courier-pigeon",
+   "name": "Courier Pigeon",
+   "stats": "1/1",
+   "S": 4.31,
+   "room": 2.95,
+   "fix": {
+    "what": "drop trigger onSpawn → drawCard",
+    "dS": 4.31,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "drawCard 2.28"
+   ]
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "stats": "2/7",
+   "S": 6,
+   "room": 3.68,
+   "fix": {
+    "what": "sacrifice 2 → 1",
+    "dS": 3,
+    "line": "1/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sacrifice 1"
+   ]
+  },
+  {
+   "id": "blackmass-acolyte",
+   "name": "Blackmass Acolyte",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5.18,
+   "fix": {
+    "what": "drop desecrate",
+    "dS": 6,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "desecrate 2.99"
+   ]
+  },
+  {
+   "id": "puppeteer-imp",
+   "name": "Puppeteer Imp",
+   "stats": "1/1",
+   "S": 7.35,
+   "room": 5.53,
+   "fix": {
+    "what": "drop trigger onSpawn → mindControl",
+    "dS": 7.35,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 4.03,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "abbey-goose",
+   "name": "Abbey Goose",
+   "stats": "1/1",
+   "S": 8,
+   "room": 5.18,
+   "fix": {
+    "what": "healing 2 → 1",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "stats": "1/1",
+   "S": 12,
+   "room": 11.31,
+   "fix": {
+    "what": "armor 2 → 1",
+    "dS": 1.5,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "bleed 2.1",
+    "fork 1.69"
+   ]
+  },
+  {
+   "id": "land-tiller",
+   "name": "Land Tiller",
+   "stats": "1/8",
+   "S": 6.24,
+   "room": 3.86,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "1/10",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "stats": "1/1",
+   "S": 4,
+   "room": 3.09,
+   "fix": {
+    "what": "drop bloom",
+    "dS": 4,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "stats": "0/1",
+   "S": 10.11,
+   "room": 7.02,
+   "fix": {
+    "what": "trigger onSpawn → drawCard: count 2 → 1",
+    "dS": 4.3,
+    "line": "0/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "drawCard 2.28"
+   ]
+  },
+  {
+   "id": "talon-archer",
+   "name": "Talon Archer",
+   "stats": "1/2",
+   "S": 7,
+   "room": 5.83,
+   "dropHalfMiss": [
+    "drop flying -> 1/3"
+   ],
+   "fix": {
+    "what": "arrow 2 → 1",
+    "dS": 3,
+    "line": "2/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "stats": "1/1",
+   "S": 14.7,
+   "room": 9.72,
+   "fix": {
+    "what": "sweep 4 → 1",
+    "dS": 7.8,
+    "line": "6/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sweep 1.91"
+   ]
+  },
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "stats": "1/1",
+   "S": 4.31,
+   "room": 3.09,
+   "fix": {
+    "what": "drop trigger onSpawn → drawCard",
+    "dS": 4.31,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "drawCard 2.28"
+   ]
+  },
+  {
+   "id": "sunfeather-scout",
+   "name": "Sunfeather Scout",
+   "stats": "1/7",
+   "S": 6.24,
+   "room": 4.05,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "1/8",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.62,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "stats": "3/6",
+   "S": 8.34,
+   "room": 6.61,
+   "fix": {
+    "what": "drop diurnal + diurnalHp",
+    "dS": 1.94,
+    "line": "1/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "esprit 1"
+   ]
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "stats": "2/24",
+   "S": 14.04,
+   "room": 12.97,
+   "fix": {
+    "what": "regen 3 → 2",
+    "dS": 2.6,
+    "line": "2/19",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "puddle-changeling",
+   "name": "Puddle Changeling",
+   "stats": "1/1",
+   "S": 10.1,
+   "room": 3.86,
+   "fix": {
+    "what": "drop twin",
+    "dS": 10,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "stats": "0/16",
+   "S": 7,
+   "room": 6.55,
+   "fix": {
+    "what": "drop counterattack",
+    "dS": 2,
+    "line": "0/14",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "counterattack 1"
+   ]
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 4.9,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "shell 1"
+   ]
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "stats": "1/1",
+   "S": 8,
+   "room": 5.35,
+   "fix": {
+    "what": "moonborn 2 → 1",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "stats": "1/1",
+   "S": 12,
+   "room": 7.78,
+   "fix": {
+    "what": "moonborn 4 → 1",
+    "dS": 8,
+    "line": "6/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "stats": "2/19",
+   "S": 10.2,
+   "room": 9.34,
+   "fix": {
+    "what": "regen 2 → 1",
+    "dS": 2.6,
+    "line": "2/15",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "rage 2.72"
+   ]
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "stats": "1/9",
+   "S": 7.1,
+   "room": 5.4,
+   "fix": {
+    "what": "fireArrow 2 → 1",
+    "dS": 3.5,
+    "line": "1/7",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "stats": "1/3",
+   "S": 3.5,
+   "room": 3.39,
+   "dropHalfMiss": [
+    "drop flying -> 1/4"
+   ],
+   "fix": {
+    "what": "drop pierce",
+    "dS": 1,
+    "line": "1/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "bleed 2.1",
+    "pierce 0"
+   ]
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "stats": "1/1",
+   "S": 13.2,
+   "room": 11.47,
+   "fix": {
+    "what": "sweep 5 → 3",
+    "dS": 3.9,
+    "line": "6/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sweep 1.91"
+   ]
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "stats": "4/15",
+   "S": 12,
+   "room": 8.54,
+   "fix": {
+    "what": "drop loneWolf",
+    "dS": 12,
+    "line": "4/17",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "stats": "1/1",
+   "S": 9,
+   "room": 5.6,
+   "fix": {
+    "what": "drop dry",
+    "dS": 4,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.53,
+   "fix": {
+    "what": "drop rabid",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "stats": "1/1",
+   "S": 7.35,
+   "room": 5.34,
+   "fix": {
+    "what": "drop trigger onRoundStart → debuff",
+    "dS": 7.35,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "stats": "1/10",
+   "S": 5.5,
+   "room": 5.35,
+   "fix": {
+    "what": "drop poison",
+    "dS": 2.5,
+    "line": "1/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "poison 2.19"
+   ]
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.33,
+   "dropHalfMiss": [
+    "drop flying -> 3/3"
+   ],
+   "fix": {
+    "what": "drop nocturnal",
+    "dS": 1,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "electricity 1.92"
+   ]
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "stats": "1/1",
+   "S": 5.2,
+   "room": 5,
+   "fix": {
+    "what": "trigger onDeath → poison: amount 5 → 4",
+    "dS": 1.04,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "poison 0.93"
+   ]
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "stats": "1/7",
+   "S": 3,
+   "room": 2.83,
+   "fix": {
+    "what": "drop taunt",
+    "dS": 3,
+    "line": "1/7",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "taunt 1"
+   ]
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.58,
+   "fix": {
+    "what": "fullMoon 3 → 1",
+    "dS": 4,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "stats": "1/1",
+   "S": 10,
+   "room": 6.23,
+   "fix": {
+    "what": "nursing 2 → 1",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "nursing 2.73"
+   ]
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "stats": "1/1",
+   "S": 5.59,
+   "room": 4.92,
+   "fix": {
+    "what": "drop fastForward",
+    "dS": 5.59,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "fastForward 1.74"
+   ]
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.44,
+   "fix": {
+    "what": "drop sturdy",
+    "dS": 8,
+    "line": "6/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sturdy 0.7"
+   ]
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.4,
+   "fix": {
+    "what": "perforate 2 → 1",
+    "dS": 3.5,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "perforate 2.45"
+   ]
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "stats": "6/10",
+   "S": 18,
+   "room": 8.09,
+   "fix": {
+    "what": "drop twinShot",
+    "dS": 18,
+    "line": "6/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "stats": "6/17",
+   "S": 15,
+   "room": 10.12,
+   "fix": {
+    "what": "drop tsunami",
+    "dS": 15,
+    "line": "6/18",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "stats": "2/18",
+   "S": 16,
+   "room": 10.12,
+   "fix": {
+    "what": "fireball 15 → 9",
+    "dS": 6,
+    "line": "1/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "stats": "5/26",
+   "S": 22,
+   "room": 15.91,
+   "fix": {
+    "what": "meteor 20 → 13",
+    "dS": 8,
+    "line": "3/18",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "meteor 1.32"
+   ]
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "stats": "1/13",
+   "S": 7.6,
+   "room": 7.07,
+   "fix": {
+    "what": "pounce 2 → 1",
+    "dS": 1.8,
+    "line": "1/13",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "pounce 1.05",
+    "mountainClimber 2"
+   ]
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "stats": "0/28",
+   "S": 21,
+   "room": 12.54,
+   "fix": {
+    "what": "drop arrowCount",
+    "dS": 12,
+    "line": "0/28",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "stats": "2/4",
+   "S": 4,
+   "room": 3.94,
+   "dropHalfMiss": [
+    "drop flying -> 2/4"
+   ],
+   "fix": {
+    "what": "hoard 2 → 1",
+    "dS": 0.5,
+    "line": "1/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "swipe 2.72",
+    "hoard 0"
+   ]
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "stats": "1/14",
+   "S": 9,
+   "room": 7.13,
+   "fix": {
+    "what": "arrow 2 → 1",
+    "dS": 3,
+    "line": "1/13",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "stats": "1/22",
+   "S": 19.02,
+   "room": 14.87,
+   "fix": {
+    "what": "drop armor",
+    "dS": 4.5,
+    "line": "1/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "stats": "5/28",
+   "S": 42.34,
+   "room": 16.35,
+   "fix": {
+    "what": "drop tsunami",
+    "dS": 30,
+    "line": "4/25",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "stats": "1/1",
+   "S": 24.36,
+   "room": 17.72,
+   "fix": {
+    "what": "drop regen",
+    "dS": 7.8,
+    "line": "6/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "sturdy 0.7"
+   ]
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "stats": "5/22",
+   "S": 13,
+   "room": 12.74,
+   "fix": {
+    "what": "scare 2 → 1",
+    "dS": 2.5,
+    "line": "3/15",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "immolation 2"
+   ]
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "stats": "1/1",
+   "S": 6.9,
+   "room": 4.9,
+   "fix": {
+    "what": "thorns 2 → 1",
+    "dS": 2.7,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "stats": "1/1",
+   "S": 6.7,
+   "room": 5,
+   "fix": {
+    "what": "regen 2 → 1",
+    "dS": 2.6,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop shell",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "shell 1"
+   ]
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "stats": "1/1",
+   "S": 5.4,
+   "room": 4.91,
+   "dropHalfMiss": [
+    "drop flying -> 2/2"
+   ],
+   "fix": {
+    "what": "thorns 2 → 1",
+    "dS": 2.7,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "stats": "1/1",
+   "S": 4,
+   "room": 3.99,
+   "dropHalfMiss": [
+    "drop flying -> 3/3"
+   ],
+   "fix": {
+    "what": "drop mountainClimber",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "mountainClimber 2"
+   ]
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "stats": "1/3",
+   "S": 6.5,
+   "room": 6.13,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "2/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "swarm 1"
+   ]
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "stats": "1/1",
+   "S": 7.5,
+   "room": 6.16,
+   "fix": {
+    "what": "venomous 2 → 1",
+    "dS": 3,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "stats": "1/1",
+   "S": 9.3,
+   "room": 7.81,
+   "fix": {
+    "what": "regen 3 → 2",
+    "dS": 2.6,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "stats": "3/11",
+   "S": 6.24,
+   "room": 6.19,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "3/13",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "onReadyGold 2.6"
+   ]
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "stats": "1/1",
+   "S": 5.2,
+   "room": 5,
+   "fix": {
+    "what": "regen 2 → 1",
+    "dS": 2.6,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.26,
+   "fix": {
+    "what": "drop nocturnal",
+    "dS": 1,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "venomous 2.41"
+   ]
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "stats": "1/1",
+   "S": 9,
+   "room": 6.65,
+   "fix": {
+    "what": "poison 3 → 1",
+    "dS": 5,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "stats": "1/1",
+   "S": 9.4,
+   "room": 6.3,
+   "fix": {
+    "what": "drop thorns",
+    "dS": 5.4,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "stats": "1/1",
+   "S": 6.9,
+   "room": 6.13,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": []
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "stats": "1/7",
+   "S": 7.6,
+   "room": 6.33,
+   "fix": {
+    "what": "pounce 2 → 1",
+    "dS": 1.8,
+    "line": "1/7",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "pounce 1.05",
+    "mountainClimber 2"
+   ]
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.05,
+   "dropHalfMiss": [
+    "drop flying -> 1/1"
+   ],
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "quick 2.35"
+   ]
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "stats": "1/5",
+   "S": 4.7,
+   "room": 3.86,
+   "fix": {
+    "what": "drop brood",
+    "dS": 2.2,
+    "line": "1/7",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "swarm 1"
+   ]
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "stats": "1/7",
+   "S": 4,
+   "room": 3.86,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "1/7",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "swarm 1"
+   ]
+  },
+  {
+   "id": "swordbill-challenger",
+   "name": "Swordbill Challenger",
+   "stats": "3/5",
+   "S": 5,
+   "room": 4.62,
+   "dropHalfMiss": [
+    "drop flying -> 2/4"
+   ],
+   "fix": {
+    "what": "drop counterattack",
+    "dS": 2,
+    "line": "2/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "optionThatFreesIt": [
+    "taunt 1",
+    "counterattack 1"
+   ]
+  }
+ ],
+ "halfMissOnStatsOnly": {
+  "noFitFlyersNow": 28,
+  "freedNow": 16,
+  "freedOnTopOfProposal": 14
+ },
+ "fragile": [
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "stats": "3/7",
+   "now": {
+    "line": "3/8",
+    "N": 9.05,
+    "S": -8
+   },
+   "noMinus8": {
+    "line": "1/3",
+    "N": 9.05,
+    "S": 0
+   },
+   "noMult": {
+    "line": "4/8",
+    "N": 12.06,
+    "S": -8
+   },
+   "neither": {
+    "line": "2/4",
+    "N": 12.06,
+    "S": 0
+   },
+   "measured": {
+    "line": "1/3",
+    "N": 9.05,
+    "S": -1.76
+   }
+  }
+ ]
+}
