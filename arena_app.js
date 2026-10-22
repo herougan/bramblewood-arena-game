@@ -22032,13 +22032,23 @@ function cnpRewardStripHTML(mapId, node, done, rank){
 function fmtDropPct(p){ const v = p * 100; return (v >= 10 ? Math.round(v) : Math.round(v * 100) / 100) + '%'; }
 function cnpDropsLineHTML(mapId, node, done){
   if(!node || node.kind === 'tutorial' || node.virtual) return '';
-  let egg = 0, card = 0; try{ egg = eggChanceFor(node, mapId, !done) || 0; }catch(e){} try{ card = nodeCardDropChance(mapId, node) || 0; }catch(e){}
+  let egg = 0, card = 0; try{ egg = eggChanceFor(node, mapId, !done) || 0; }catch(e){} try{ card = nodeCardDropChance(mapId, node, {repeat: !!done}) || 0; }catch(e){}
   if(!(egg > 0) && !(card > 0)) return '';
   const parts = [];
   if(egg > 0) parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-egg', {p: fmtDropPct(egg)}))}"><span aria-hidden="true">🥚 ${fmtDropPct(egg)}</span></span>`);
+  // 2026-10-22 (package GD, owner on RW2-1): a cleared skirmish with a reward card shows that card (a small tile, tap to zoom) with its own chance
+  // a win and its rank emblem, then the pack card's share (🃏): together they make the 21%.
+  let odds = null; try{ odds = done && card > 0 ? skirmishOwnDropOdds(mapId, node) : null; }catch(e){}
+  if(odds){ const defs = getCardDefs();
+    odds.own.forEach(o=>{ const d = defs[o.id]; if(!d) return; let need = null; try{ need = cardRewardRankFor(mapId, node, o.id); }catch(e){}
+      const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">❓</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardTileHTML(d, {inPlay:true})}</span>`;
+      parts.push(`<span class="cnp-drop cnp-drop-own" role="img" aria-label="${escapeAttr(TX('ui.gd-drop-own', {name: isCardHiddenForPlayer(d) ? '?' : d.name, p: fmtDropPct(o.p)}))}">${tile}<span aria-hidden="true">${fmtDropPct(o.p)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); });
+    if(odds.pack > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
+      parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(odds.pack)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(odds.pack)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
+  } else
   if(card > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
     parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(card)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(card)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
-  return `<p class="cnp-drops"><span class="cnp-drops-l">${escapeHtml(TX('ui.rw-drops'))}</span> ${parts.join('<span class="cnp-drops-sep" aria-hidden="true"> · </span>')}</p>`;
+  return `<div class="cnp-drops"><span class="cnp-drops-l">${escapeHtml(TX('ui.rw-drops'))}</span> ${parts.join('<span class="cnp-drops-sep" aria-hidden="true"> · </span>')}</div>`; // a div (2026-10-22, GD: was a <p>, which a card tile's divs would break open)
 }
 function fitFirstClearLabels(){
   document.querySelectorAll('.cnp-rw.is-done').forEach(box=>{
@@ -37817,7 +37827,7 @@ async function resolveRoundCore(opts){
       // map's enemy decks that you don't own yet. At most once per map.
       if(!opening) try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
       // Card drops (2026-10-12, 11:39 list): any win can drop one of the enemy's cards. See rollCardDrop.
-      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId, {rank}); /* 2026-10-22 (RW): the win's rank gates the drop */ if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
+      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId, {rank, firstClear: !!isFirstClear}); /* 2026-10-22 (RW): the win's rank gates the drop; + firstClear (GD): a repeat win of a reward-card skirmish rolls 21% */ if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
       // Map table rewards (2026-10-12): free packs on a map's boss first clear, and Base cards grow from bosses.
       try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp && fp.held) m.conquestPackHeld = fp.id; else if(fp) m.conquestFreePack = fp; }catch(e){}
       try{ const bx = baseCardBossGrowth((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(bx) m.conquestBaseGrowth = bx; }catch(e){}
@@ -46004,8 +46014,8 @@ function rollSkirmishCardDrop(node, mapId, opts, chance){
 // fight but a raid fight (raidFightCardDrop) and a tutorial rolls the one pack-card drop above (the map's rarity shares, the shift, half the
 // time the fight's own pack card, the rank gate). Its chance is the skirmish's 7% per ⚡ of the fight kind's Energy tier (ENERGY_COST: a
 // skirmish 1, elite / champion / miniboss / dungeon 2, sub-boss / boss 3, world / raid boss 4, megaraid / final boss 5), capped at 25%
-// (DROP_CHANCE_CAP): 7% · 14% · 21% · 25% · 25% (was 10 / 20-30 / 30-40 / 70 / 100% of an enemy deck card). A skirmish keeps RW's rule:
-// it drops only when it gives nothing else (skirmishDropApplies). The tier is the kind's, not the map-scaled cost a fight charges
+// (DROP_CHANCE_CAP): 7% · 14% · 21% · 25% · 25% (was 10 / 20-30 / 30-40 / 70 / 100% of an enemy deck card). A skirmish kept RW's rule
+// (it dropped only when it gave nothing else, skirmishDropApplies) until GD (2026-10-22): every skirmish win drops now, see nodeCardDropChance. The tier is the kind's, not the map-scaled cost a fight charges
 // (nodeEnergyCost climbs with the map, so it would push every later fight to the cap).
 const DROP_CHANCE_PER_ENERGY = SKIRMISH_DROP_CHANCE, DROP_CHANCE_CAP = 0.25;
 function fightDropEnergy(kind){
@@ -46013,16 +46023,59 @@ function fightDropEnergy(kind){
   return ENERGY_COST[kind] != null ? ENERGY_COST[kind] : ENERGY_COST[baseKind(kind)] != null ? ENERGY_COST[baseKind(kind)] : ENERGY_COST.skirmish;
 }
 function fightCardDropChance(kind){ return Math.min(DROP_CHANCE_CAP, Math.round(DROP_CHANCE_PER_ENERGY * fightDropEnergy(kind) * 10000) / 10000); }
-// The card-drop chance a fight shows on its panel (the same numbers the win rolls).
-function nodeCardDropChance(mapId, node){
+// 2026-10-22 (package GD, owner on RW2-1, 18:20: "There are two kinds of first-clear drop card reward skirmishes: skirmish-exclusive, or from
+// that map range's pack. ALL skirmishes have a low chance to get a card from the pack. For skirmishes, the chance of getting a card is tripled.
+// But you mostly (50+%) get THAT card. (If it's higher in rarity, then the chance actually decreases - your call. Maybe 60/50/40/25/20/10/5/4/3/2/1..."):
+//  - every skirmish win, first clear and repeats, rolls the pack-card drop at 7% (skirmishDropApplies no longer shuts out a skirmish whose
+//    first clear pays a card, a reward token or a pack);
+//  - a skirmish with a first-clear reward card (nodeRewardCardIds) rolls 21% (SKIRMISH_OWN_DROP_MULT x 7%) on a repeat win, and a card that
+//    drops there is that reward card with the chance for its rarity (SKIRMISH_OWN_DROP_BY_RARITY), else a pack card as usual. Several reward
+//    cards: one of them, evenly. The first clear pays the card itself, so it rolls the plain 7%.
+//  - the rank gate (dropRankOk, RW / RW2) applies to whichever card drops.
+const SKIRMISH_OWN_DROP_MULT = 3;
+// The reward card's share of a drop by its rarity, down the ladder (RARITY_DEFS order, special rarities as their `as`): Common 60%, Uncommon 50%,
+// Rare 40%, Very Rare 25%, Super Rare 20%, Epic 10%, Heroic 5%, Unique 4%, Legendary 3%, Mythic 2%, Ancient 1%, and 1% past it (Divine, Void, Daemonic).
+const SKIRMISH_OWN_DROP_BY_RARITY = [0.60, 0.50, 0.40, 0.25, 0.20, 0.10, 0.05, 0.04, 0.03, 0.02, 0.01];
+function skirmishOwnDropShare(rarity){
+  const rd = RARITY_DEFS.find(r=> r.key === rarity), k = rd && rd.as ? rd.as : (rarity === 'starter' || !rd ? 'common' : rarity);
+  const ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && r.key !== 'starter').map(r=> r.key), i = Math.max(0, ladder.indexOf(k));
+  return SKIRMISH_OWN_DROP_BY_RARITY[Math.min(i, SKIRMISH_OWN_DROP_BY_RARITY.length - 1)];
+}
+// The fight's own reward cards a repeat win can drop (a skirmish only; [] for anything else).
+function skirmishOwnDropIds(node, mapId){
+  if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return [];
+  try{ return nodeRewardCardIds(mapId, node.key); }catch(e){ return []; }
+}
+// The card-drop chance a fight shows on its panel (the same numbers the win rolls). o.repeat: a repeat win (the fight is cleared).
+function nodeCardDropChance(mapId, node, o){
   if(!node || node.kind === 'tutorial') return 0;
   const kind = node.kind || 'skirmish';
-  if(baseKind(kind) === 'skirmish') return skirmishDropApplies(node, mapId) ? fightCardDropChance(kind) : 0;
+  if(baseKind(kind) === 'skirmish'){
+    if(node.tower || node.virtual) return skirmishDropApplies(node, mapId) ? fightCardDropChance(kind) : 0;
+    const c = fightCardDropChance(kind); // every skirmish win (GD)
+    return o && o.repeat && skirmishOwnDropIds(node, mapId).length ? Math.min(1, Math.round(c * SKIRMISH_OWN_DROP_MULT * 10000) / 10000) : c;
+  }
   return fightCardDropChance(kind);
 }
-function rollCardDrop(node, mapId, opts){
+// What a skirmish panel shows for a repeat win (GD): [{id, p}] the reward card(s) with their chance of dropping per win, and the pack card's.
+function skirmishOwnDropOdds(mapId, node){
+  const ids = skirmishOwnDropIds(node, mapId); if(!ids.length) return null;
+  const all = nodeCardDropChance(mapId, node, {repeat:true}), defs = getCardDefs();
+  const own = ids.map(id=> ({id, p: all * skirmishOwnDropShare((defs[id] || {}).rarity) / ids.length}));
+  return {all, own, pack: Math.max(0, all - own.reduce((t, x)=> t + x.p, 0))};
+}
+function rollCardDrop(node, mapId, opts, rng){
   if(!node) return null;
-  const chance = nodeCardDropChance(mapId, node); if(!(chance > 0)) return null;
+  rng = rng || Math.random;
+  const repeat = !!(opts && opts.firstClear === false);
+  const chance = nodeCardDropChance(mapId, node, {repeat}); if(!(chance > 0)) return null;
+  const ids = repeat ? skirmishOwnDropIds(node, mapId) : [];
+  if(ids.length){ // GD: a repeat win of a skirmish with a reward card
+    if(rng() >= chance) return null;
+    const id = ids[Math.floor(rng() * ids.length)], d = getCardDefs()[id];
+    if(d && rng() < skirmishOwnDropShare(d.rarity)){ if(!dropRankOk(node, mapId, id, opts)) return null; unlockCardForPlayer(id, 'cardDrop'); return id; }
+    return rollSkirmishCardDrop(node, mapId, opts, 1); // otherwise a pack card as usual (the 21% roll is already won)
+  }
   return rollSkirmishCardDrop(node, mapId, opts, chance); // 2026-10-22 (RW2): the one pack-card drop, at the fight's chance
 }
 function rollMateriaDrops(node, isFirstClear, rank){

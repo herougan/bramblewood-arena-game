@@ -1917,6 +1917,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rw-drops": "Possible drops:",
   "ui.rw-drop-egg": "Egg drop chance: {p}",
   "ui.rw-drop-card": "Card drop chance: {p}",
+  "ui.gd-drop-own": "{name} drop chance: {p}",
   "ui.rw2-challenge": "Challenge",
   "ui.rw2-challenge-card": "a challenge card",
   "results.rw2-raid-card-survived": "A card dropped in this raid fight",

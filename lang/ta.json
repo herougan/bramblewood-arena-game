@@ -2719,5 +2719,6 @@
  "a challenge card": "ஒரு சவால் அட்டை",
  "A card dropped in this raid fight": "இந்த ரெய்டு சண்டையில் ஒரு அட்டை கிடைத்தது",
  "Reading damage numbers": "சேத எண்களைப் படிப்பது",
- "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: சேத வகையின் குறி (சாதாரண அடிக்கு இல்லை, கிரிட்டில் முன்னால் 💥), சேதம், பிறகு இலக்கு அதை எப்படி ஏற்றது: 🦴 Fragile (இரட்டிப்பு), 💢 பலவீனம் (அதிகம்), ⛨ கவசம், எதிர்ப்பு அல்லது கேடயம் சிறிது தாங்கியது, 🚫 தாக்கமில்லை."
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: சேத வகையின் குறி (சாதாரண அடிக்கு இல்லை, கிரிட்டில் முன்னால் 💥), சேதம், பிறகு இலக்கு அதை எப்படி ஏற்றது: 🦴 Fragile (இரட்டிப்பு), 💢 பலவீனம் (அதிகம்), ⛨ கவசம், எதிர்ப்பு அல்லது கேடயம் சிறிது தாங்கியது, 🚫 தாக்கமில்லை.",
+ "{name} drop chance: {p}": "{name} கிடைக்கும் வாய்ப்பு: {p}"
 }
