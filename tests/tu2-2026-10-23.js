@@ -59,7 +59,7 @@ ok(TEXT['coach.tap-t-2-then-press-fight'] === '🎓 Tap T-2, then press ⚔️ F
 
 // --- 4. the Nest
 const nest = fnSrc('renderNest');
-ok(/\['eggs', TX\('ui\.tu2-nest-tab-eggs'\)\], \['recruits', TX\('ui\.tu2-nest-tab-recruits'\)\]/.test(nest), '4. two recruit tabs (+ Upgrades)');
+ok(/\['eggs', '🥚 ' \+ TX\('ui\.tu2-nest-tab-eggs'\)\], \['recruits', '🌱 ' \+ TX\('ui\.tu2-nest-tab-recruits'\)\]/.test(nest) /* 2026-10-23 (release): emoji outside the TX text */, '4. two recruit tabs (+ Upgrades)');
 ok(/nestTab === 'recruits' \? Object\.keys\(defs\)\.filter\([^;]*nestHasLevel0Copy\(id\)/.test(nest), '4. the Level 0 tab lists only cards with a Level-0 copy');
 ok(!/ownedIds\.length \? nestGridHTML\(ownedIds, defs\)\s*\n\s*: `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own/.test(nest), '4. no list of every owned card');
 const fac = fnSrc('factionCopyLevel0');

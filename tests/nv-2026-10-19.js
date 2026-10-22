@@ -149,7 +149,7 @@ async function browser(){
       await pg.click('#homeNavBtnPlay'); await pg.waitForTimeout(500);
       ok(await pg.evaluate("currentTab === 'home' && !document.getElementById('view-home').hidden"), `B1. ${w}x${h}: the 🌰 goes Home`);
       // the raid's VS screen: you, your side's parts and total, the boss; the button below the art; nothing cut off
-      await pg.evaluate("(()=>{ playSubTab='raid'; switchTab('play'); window.payRaidAttempt = ()=> true; window.raidLeaderCapCheck = ()=> ({ok:true}); startRaidPartMatch(activeRaidDef(), 'tail'); return 1; })()"); await pg.waitForTimeout(1200);
+      await pg.evaluate("(()=>{ Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); /* 2026-10-23 (PG): a deck fights only with copies it owns */ playSubTab='raid'; switchTab('play'); window.payRaidAttempt = ()=> true; window.raidLeaderCapCheck = ()=> ({ok:true}); startRaidPartMatch(activeRaidDef(), 'tail'); return 1; })()"); await pg.waitForTimeout(1200);
       const v = await pg.evaluate(`(()=>{ const el = document.querySelector('.vs-screen.vs2.is-raid'); if(!el) return null; const q = s=> el.querySelector(s), rc = e=> e && e.getBoundingClientRect();
         const rows = [...el.querySelectorAll('.vs2-sb-row')].map(r=> r.querySelector('.vs2-sb-br').textContent);
         const cut = [...el.querySelectorAll('.vs2-sb-txt b, .vs2-sb-txt small, .vs-name')].filter(e=> e.scrollWidth > e.clientWidth + 1).length;

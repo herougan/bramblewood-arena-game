@@ -58,7 +58,7 @@ async function browser(){
         const ctx = await b.newContext({viewport:{width:w, height:h}, isMobile:mobile, hasTouch:mobile, deviceScaleFactor: mobile ? 2 : 1}); const pg = await ctx.newPage(); pg.on('pageerror', e=> errs.push(String(e)));
         await pg.addInitScript(INIT); await pg.goto(URL, {waitUntil:'domcontentloaded', timeout:120000}); await pg.waitForTimeout(2500);
         await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); 1");
-        if(kind === 'raid') await pg.evaluate("(()=>{ playSubTab='raid'; switchTab('play'); window.payRaidAttempt = ()=> true; window.raidLeaderCapCheck = ()=> ({ok:true}); startRaidPartMatch(activeRaidDef(), 'tail'); return 1; })()");
+        if(kind === 'raid') await pg.evaluate("(()=>{ Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); /* 2026-10-23 (PG): a deck fights only with copies it owns */ playSubTab='raid'; switchTab('play'); window.payRaidAttempt = ()=> true; window.raidLeaderCapCheck = ()=> ({ok:true}); startRaidPartMatch(activeRaidDef(), 'tail'); return 1; })()");
         else await pg.evaluate("(()=>{ playSubTab='arena'; switchTab('play'); startMatch('ai'); return 1; })()");
         await pg.waitForTimeout(1500); await pg.evaluate("document.querySelectorAll('.vs-screen').forEach(e=> e.click()); 1"); await pg.waitForTimeout(1500);
         await pg.evaluate(SETUP); await pg.waitForTimeout(900);

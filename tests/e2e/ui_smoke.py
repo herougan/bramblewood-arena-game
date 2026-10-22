@@ -40,7 +40,7 @@ async def new_page(b, w, h):
     pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
     await pg.add_init_script(INIT)
     await pg.goto(URL); await pg.wait_for_timeout(1500)
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; 1")
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); 1")  # 2026-10-23 (PG): a deck fights only with copies it owns
     return pg, errs
 
 async def main():
@@ -77,7 +77,8 @@ async def main():
         await pg.evaluate("myCardLevels['bee-drone']=3; switchTab('codex'); 1"); await pg.wait_for_timeout(300)
         check(await pg.evaluate("[...document.querySelectorAll('#codexGrid .levelbadge')].every(e=> getComputedStyle(e).display==='none')"), 'card levels should be hidden in the Codex')
         await pg.evaluate("unlockCardForPlayer('bee-drone','test'); switchTab('nest'); 1"); await pg.wait_for_timeout(300)
-        check(await pg.evaluate("[...document.querySelectorAll('#nestGrid .levelbadge')].some(e=> getComputedStyle(e).display!=='none')"), 'card levels should show in the Nest')
+        # 2026-10-23 (TU2, owner: "Nest only lists baby/eggs or level 0 base cards"): a Level 3 card is not a recruit
+        check(await pg.evaluate("![...document.querySelectorAll('#nestGrid [data-defid=\"bee-drone\"]')].length"), 'the Nest should list only Level 0 recruits (a Level 3 Bee Drone stays out)')
         await pg.evaluate("switchTab('deck'); 1"); await pg.wait_for_timeout(300)
         if await pg.query_selector('#deckLevelFilter'):
             await pg.select_option('#deckLevelFilter', '3'); await pg.wait_for_timeout(200)
@@ -134,7 +135,7 @@ async def main():
         check(await pg.evaluate("myCurrencies.dust < 300"), 'tempering should spend Magic Dust')
         # 5: a trench raid opens the full three-row battle (2026-10-12; the trench minigame is benched)
         # 2026-10-19 (package RO): the Raid tab opens on the hub; its card opens the raid
-        await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
+        await pg.evaluate("Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); /* 2026-10-23 (PG): a deck fights only with copies it owns */ playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
         check(await pg.evaluate("!!document.querySelector('.raid-hub [data-raid-open]')"), 'the Raid tab should open on the raids hub')
         await pg.click('.raid-hub [data-raid-open]'); await pg.wait_for_timeout(500)
         await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(2500)

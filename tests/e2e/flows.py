@@ -28,7 +28,7 @@ async def fresh(b, w=1366, h=860):
     # 2026-10-12: every card starts unobtainable (the user is building the list); the flows make them obtainable again.
     await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
     # Energy refills 1 every 5 minutes now (2026-10-10), so each fresh page tops it up instead of relying on regen.
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy=60; saveCurrencies&&saveCurrencies(); saveEnergyState({current:(typeof energyMax==='function' ? energyMax() : 20), lastRegenAt:Date.now()}); refreshEnergyHud(); 1")
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); /* 2026-10-23 (PG): owned copies */ myCurrencies.energy=60; saveCurrencies&&saveCurrencies(); saveEnergyState({current:(typeof energyMax==='function' ? energyMax() : 20), lastRegenAt:Date.now()}); refreshEnergyHud(); 1")
     return pg, errs
 async def nav_ok(pg, label):
     if await pg.evaluate("currentTab")=='home': 

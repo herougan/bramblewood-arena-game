@@ -48,7 +48,8 @@ const table = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   const p11 = {rarity: 'common', wait: 1, cost: 1}, v = ctx.priced({}, p11), a = ctx.priced({armor: 1}, p11), N0 = BB.nAt(BB.baseOf(p11), 1);
   ok(Math.abs(v.q - N0 * BB.DEFAULTS.plainBonus) < 0.02, `2. a vanilla Wait 1 Lumber 1 common has N(1) × the plain bonus in stats (${v.q.toFixed(2)})`);
   ok(Math.abs(a.q - (N0 - a.S)) < 0.02 && a.S > 0, `2. an Armor 1 unit gives up its S ${a.S} (${a.q.toFixed(2)} points)`);
-  const f = ctx.priced({flying: true}, p11); ok(Math.abs(f.q - (f.N - f.S) / 1.5) < 0.02, '2. a half-miss skill divides the stat points by 1.5');
+  const f = ctx.priced({evasive: true}, p11); ok(Math.abs(f.q - (f.N - f.S) / 1.5) < 0.02, '2. a half-miss skill divides the stat points by 1.5');
+  const fl = ctx.priced({flying: true}, p11); ok(Math.abs(fl.q - (fl.N - fl.S) / 1.39) < 0.02, '2. Flying divides them by 1.39 (BF10, 2026-10-23)');
   let capOk = true; for(let i = 0; i < 200; i++){ const pr = ctx.priced({armor: 3}, mix.profiles[i % mix.profiles.length]), st = ctx.statsOf(pr, {attack: 3, health: 10}, (i % 7) / 7, (i % 5) / 5, true);
     if(pr.f * (st.A * st.H * pr.m + pr.S * Math.abs(pr.S)) > (pr.N / 3) * (pr.N / 3) + 1e-9 && st.A > 0) capOk = false; }
   ok(capOk, '2. cap 2 holds on every unit (Attack moves to Health)'); }

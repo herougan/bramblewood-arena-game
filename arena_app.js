@@ -14468,7 +14468,7 @@ function loadMyDeck(){
     const raw = localStorage.getItem('bramblewood_arena_deck');
     if(raw) return JSON.parse(raw);
   }catch(e){}
-  return {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
+  return {'otter-centurion':3,'bee-knight':5,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1} /* 2026-10-23 (release 10-23): within PG's copy limits (Rare 3, Common 5) */;
 }
 function saveMyDeck(){ if(deckDraftActive()) return markDeckDirty(); try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} try{ saveDeckLooks(); }catch(e){} /* 2026-10-16: which copies are Shiny / alt art */ if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
 function deckTotal(counts){ return Object.values(counts||{}).reduce((a,b)=> a + (typeof b === 'number' ? b : 0), 0); } // 2026-10-19 (package SY2): numbers only (a cloud row's counts may carry the deck's meta object)
@@ -14495,7 +14495,7 @@ const DECK_SIZE = 20;
 function randomAiDeck(){
   const defs = getCardDefs();
   const pool = getDraftableIds(true).filter(id=>!defs[id].locked);
-  if(pool.length===0) return {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1}; // fallback if somehow nothing is unlocked
+  if(pool.length===0) return {'otter-centurion':3,'bee-knight':5,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1} /* 2026-10-23 (release 10-23): within PG's copy limits (Rare 3, Common 5) */; // fallback if somehow nothing is unlocked
   const shuffled = [...pool].sort(()=>Math.random()-0.5);
   const distinctCount = Math.max(1, Math.min(pool.length, 5 + Math.floor(Math.random()*5))); // 5-9 distinct cards, clamped to what's actually available
   const chosen = shuffled.slice(0, distinctCount);
@@ -31024,7 +31024,7 @@ function startMatchInner(mode, opts, standardDeck){
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: arenaMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
-  const DEFAULT_DECK = {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
+  const DEFAULT_DECK = {'otter-centurion':3,'bee-knight':5,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1} /* 2026-10-23 (release 10-23): within PG's copy limits (Rare 3, Common 5) */;
   // 'ai' (Arena's "vs AI" quick match) gets a freshly randomized deck every match — see
   // randomAiDeck above. 'pc' (local pass-and-play) and 'async' keep DEFAULT_DECK as a neutral
   // placeholder second hand, since those modes are two humans, not the AI opponent this request
@@ -49409,7 +49409,7 @@ function renderNest(){
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${escapeHtml(nestTab === 'recruits' ? TX('ui.tu2-nest-recruits-sub', {n: ownedIds.length}) : TX('ui.tu2-nest-eggs-sub', {n: eggN}))}</p>
-      ${facilityTabsHTML('nest', nestTab, [['eggs', TX('ui.tu2-nest-tab-eggs')], ['recruits', TX('ui.tu2-nest-tab-recruits')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08); 2026-10-23 (TU2): two recruit tabs */}
+      ${facilityTabsHTML('nest', nestTab, [['eggs', '🥚 ' + TX('ui.tu2-nest-tab-eggs')], ['recruits', '🌱 ' + TX('ui.tu2-nest-tab-recruits')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08); 2026-10-23 (TU2): two recruit tabs */}
       ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestTab === 'eggs' ? nestKeeperHTML() : `<div class="tu2-recruit-head"><p class="panel-sub">${escapeHtml(TX('ui.tu2-nest-recruits-help', {kibble: myCurrencies.kibble||0}))}</p>${ownedIds.length ? `<button type="button" class="btn small primary" id="nestTrainBtn">🌱 ${escapeHtml(TX('ui.tu2-nest-train'))}</button>` : ''}</div>`}
       <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
     </div>
