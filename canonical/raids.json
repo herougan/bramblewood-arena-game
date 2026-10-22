@@ -7,7 +7,7 @@
     "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.",
     "ground": "mabyss",
     "fieldRules": {
-      "crushingDepths": 2,
+      "crushingDepths": true,
       "tide": true,
       "psychicDampener": true
     },
@@ -46,7 +46,9 @@
               "id": "smack",
               "name": "Tentacle Smack",
               "pattern": "column",
-              "dmg": 6,
+              "dmgMin": 1,
+              "dmg": 2,
+              "trenchDmg": 6,
               "every": 3
             }
           ],
@@ -77,7 +79,9 @@
               "id": "smack",
               "name": "Tentacle Smack",
               "pattern": "column",
-              "dmg": 6,
+              "dmgMin": 1,
+              "dmg": 2,
+              "trenchDmg": 6,
               "every": 3
             }
           ],
@@ -146,7 +150,9 @@
               "id": "smack",
               "name": "Tentacle Smack",
               "pattern": "column",
-              "dmg": 6,
+              "dmgMin": 1,
+              "dmg": 2,
+              "trenchDmg": 6,
               "every": 3
             }
           ],

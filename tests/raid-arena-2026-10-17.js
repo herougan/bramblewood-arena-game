@@ -85,7 +85,7 @@ ok(/reserveRows:2, reserveActs:true/.test(src), 'a raid round: your back rows st
 
 // ---- The Goliath's data: its field, its Commons, its ground
 { const g = raids.find(r=> r.id === 'goliath');
-  ok(g && g.fieldRules && g.fieldRules.psychicDampener === true && g.fieldRules.crushingDepths === 2 && g.fieldRules.tide === true, 'the Goliath fights under Crushing Depths 2, the Tide and the Psychic Dampener');
+  ok(g && g.fieldRules && g.fieldRules.psychicDampener === true && g.fieldRules.crushingDepths === true && g.fieldRules.tide === true, 'the Goliath fights under Crushing Depths (its default 1 since FX, 2026-10-22; was 2), the Tide and the Psychic Dampener');
   ok(g.ground === 'mabyss', 'the Goliath fights in the Abyss');
   ok((g.commonPool || []).length >= 5 && g.commonPool.every(id=> defs[id] && (defs[id].rarity || 'common') === 'common'), 'its Commons are real Commons');
   ok(R.raidCommonPool(g, g.parts[0], defs).join() === g.commonPool.join(), 'the raid\'s own pool wins'); }

@@ -1629,23 +1629,41 @@ M.onEvent = function(ev, env){
   if(t === 'raidSmack') raidSmackFx(ev, env);
 };
 // The boss's smack on your side (2026-10-19, BU: its own function, so Low effects and reduced motion reach it too).
+// 2026-10-22 (package FX, owner 12:10: "on the PC version ... It's still the green connected boxes worm effect hitting the first row
+// only. Not the purple tentacles."): that green, scaled "worm" was the Tail Sweep (M.tailSweep), the Goliath Tail's own attack (the
+// raid's 'frontRow' pattern: always your front row). It was never a width or desktop branch: the Tail part plays it at every width,
+// and the arms and the Core play the purple Tentacle Smack. The Goliath is all tentacle, so the Tail Sweep now draws the same purple
+// tentacle lying along your front row (M.tentacleSmack, horizontal, out of the bramble's side); M.tailSweep stays for the Effects Lab.
+// Each smack also shows the damage it dealt (ev.dmg, rolled 1 or 2 for the Tentacle Smack) as a stamp over the struck units.
+// Cells are found by their column (data-w2cell "<pid>:s<slot>" on the front row, the same index in the reserve rows), as the
+// telegraph (raid-tele) marks them, so the tentacle lands where the red glow was.
+css('smacknum', `.fxf .fxf-stamp.c-smack{color:#ffb3ec; background:rgba(60,10,70,.55); border-color:#d58cff; text-shadow:0 1px 0 rgba(0,0,0,.6), 0 0 8px rgba(214,150,255,.8);}`);
 function raidSmackFx(ev, env){
   {
     const row = rowOf('A', env); if(!row) return;
     // 2026-10-19 (package U3): the smacks are the boss's bramble's (Kraken's Reef): the tentacle reaches out of its tile, top left
     const origin = (mineSide('A', env) ? document.querySelector('.top-play-row [data-hq="B"]') : null) || document.querySelector('[data-hq="B"]');
-    if(ev.front && env.reduced){ M.tentacleSmack(cardsOn('A', env), {horizontal:true, flashOnly:true}); return; } // a flash, no motion (the Tail Sweep's; TF 2026-10-19: flashOnly, no tentacle)
-    if(ev.front){ M.tailSweep(cardsOn('A', env).filter(e=> e.querySelector('.card-tile')), {host:env.battlefield}); return; }
-    // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
-    // 1 middle / 2 back) is the tentacle on its side, sweeping along that row; a column smack slams down the column through every row.
     const all = $$(':scope > .board-card', row), resRows = $$('#battlefieldInner .reserve-row.mine');
-    if(ev.kind === 'row'){
-      const r = ev.row | 0, rr = r ? resRows.find(x=> +x.dataset.resrow === r) : null, cells = r ? (rr ? $$(':scope > .board-card', rr) : []) : all;
-      const units = cells.filter(e=> e.querySelector('.card-tile'));
-      M.tentacleSmack(units.length ? units : cells, {host:env.battlefield, origin, horizontal:true}); return;
+    const units = cells=> cells.filter(e=> e.querySelector('.card-tile'));
+    let cells, horizontal = false;
+    if(ev.front || ev.kind === 'row'){
+      // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
+      // 1 middle / 2 back) is the tentacle on its side, sweeping along that row; the Tail Sweep (ev.front) is a row smack on your front row.
+      const r = ev.front ? 0 : (ev.row | 0), rr = r ? resRows.find(x=> +x.dataset.resrow === r) : null, rc = r ? (rr ? $$(':scope > .board-card', rr) : []) : all;
+      cells = units(rc).length ? units(rc) : rc; horizontal = true;
+    } else {
+      // a column smack slams down the column through every row
+      const mid = Math.floor(all.length / 2), bySlot = all.findIndex(e=> new RegExp(':s' + (ev.col | 0) + '$').test(e.dataset.w2cell || ''));
+      const i = bySlot >= 0 ? bySlot : Math.max(0, Math.min(all.length - 1, (ev.col | 0) + mid));
+      cells = [all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean);
     }
-    const i = Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)));
-    M.tentacleSmack([all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean), {host:env.battlefield, origin});
+    const struck = units(cells);
+    const showNum = ()=>{ if(!(ev.dmg > 0) || !struck.length) return; // (no unit hit: the bramble's own Health pop shows it)
+      const rs = struck.map(e=> e.getBoundingClientRect()).filter(r=> r.width); if(!rs.length) return;
+      const x = rs.reduce((t, r)=> t + r.left + r.width / 2, 0) / rs.length, y = rs.reduce((t, r)=> t + r.top + r.height / 2, 0) / rs.length;
+      stamp(x, y, '🦑 −' + ev.dmg, {color:'smack', size:22, hold:.6, rot:-6}); };
+    if(ev.front && env.reduced){ M.tentacleSmack(cells, {horizontal:true, flashOnly:true, onImpact:showNum}); return; } // a flash, no motion (TF 2026-10-19: flashOnly)
+    M.tentacleSmack(cells, {host:env.battlefield, origin, horizontal, onImpact:showNum});
   }
 }
 

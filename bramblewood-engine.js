@@ -841,7 +841,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-16 (user: "Consternation: cards in the hand lose 1/1 every upkeep. This holds even after playing it."): rules.consternation N.
   function consternationN(){ return fxN(rules.consternation, 1); }
   // 2026-10-16 (user: "Crushing Depths - Does 5 water damage to all creatures every turn. Swimmers take half. (Stacks w/ resistance = 1/4)")
-  function crushingN(){ return fxN(rules.crushingDepths, 5); }
+  // 2026-10-22 (package FX, owner 12:10: "Crushing depths and similar field effects need to be nerfed. Starting with 1 damage only."):
+  // the default is 1 (was 5); a number on the flag still sets it.
+  const FIELD_DMG_DEFAULT = 1;
+  function crushingN(){ return fxN(rules.crushingDepths, FIELD_DMG_DEFAULT); }
   // 2026-10-16 (user: "Illusions or Mirage?: every turn, a random card is made a clone off - but at 1/1 and only copies over skills like
   // Flying, Swimming and Haste, nothing else."): rules.mirage.
   // 2026-10-16 (user: "FE about something about hiding in the treetops ... Pounce does extra damage and units with Swift have Evasive, Flying
@@ -1412,11 +1415,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.leylines2 || rules.leylines3) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       const l = (rules.leylines2 ? 1 : 0) + (rules.leylines3 ? 1 : 0); const got = addLumber(pl, l); ev({type:'lumber', side:sideOf(pid), defId:null, amount:got, rule:true, leylines:true});
       if(rules.leylines3){ const st = addOre(pl, 'stone', 1); ev({type:'stone', side:sideOf(pid), defId:null, amount:st, rule:true, leylines:true}); } });
-    // Leylines III: the lines burn: 3 magic damage to every unit and to both castles (a castle never drops below 1 from it). Atheists: none.
-    if(rules.leylines3){ ev({type:'fieldTick', field:'leylines', round});
+    // Leylines III: the lines burn: 1 magic damage (3 until 2026-10-22, package FX) to every unit and to both castles (a castle never drops below 1 from it). Atheists: none.
+    if(rules.leylines3){ const ly = FIELD_DMG_DEFAULT; ev({type:'fieldTick', field:'leylines', round, amount:ly});
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
-        liveUnits(pl).forEach(c=>{ if(isAtheist(c)){ ev({type:'fieldTick', field:'leylinesHit', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:0, atheist:true}); return; } hit(pid, c, 3, 'magic', 'leylinesHit'); });
-        if(pl.hq && pl.hq.hp > 1){ const d = Math.min(3, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'leylinesCastle', side:sideOf(pid), dmg:d}); } }); }
+        liveUnits(pl).forEach(c=>{ if(isAtheist(c)){ ev({type:'fieldTick', field:'leylinesHit', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:0, atheist:true}); return; } hit(pid, c, ly, 'magic', 'leylinesHit'); });
+        if(pl.hq && pl.hq.hp > 1){ const d = Math.min(ly, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'leylinesCastle', side:sideOf(pid), dmg:d}); } }); }
     // Field effects 3 (2026-10-17). Sulphur Fumes: every unit that doesn't resist fire, isn't Dry and isn't Flying chokes this round (−N Attack).
     if(rules.sulphurFumes){ const n = fxN(rules.sulphurFumes, 1); let k = 0;
       [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const e = effectsOf(c), rs = (CARD_DEFS[c.defId]||{}).resist || []; if(e.flying || e.dry || rs.includes('heat') || rs.includes('fire') || resistFactor(c.defId, 'heat') < 1 || isStructureCard(c)) return;
@@ -1426,7 +1429,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.ashRain){ const n = fxN(rules.ashRain, 1); ev({type:'fieldTick', field:'ashRain', round, amount:n});
       [1,2].forEach(pid=>{ const pl = players[pid]; if(pl && pl.hq && pl.hq.hp > 1){ const d = Math.min(n, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'ashRainCastle', side:sideOf(pid), dmg:d}); } }); }
     // Arrow Slits: the defenders' walls (player 2's castle) shoot one arrow at a random unit of player 1.
-    if(rules.arrowSlits){ const n = fxN(rules.arrowSlits, 2), pool = liveUnits(players[1]);
+    if(rules.arrowSlits){ const n = fxN(rules.arrowSlits, FIELD_DMG_DEFAULT), /* 2026-10-22 (package FX): 1, was 2 */ pool = liveUnits(players[1]);
       if(pool.length){ const c = pool[Math.floor(rnd()*pool.length)]; ev({type:'fieldTick', field:'arrowSlits', round, amount:n, side:sideOf(1), uid:c.uid, defId:c.defId});
         if(!helmetDeflects({kind:'card', card:c}, sideOf(1), events)) hit(1, c, n, 'physical', 'arrowSlitHit'); }
       else ev({type:'fieldTick', field:'arrowSlits', round, amount:n, none:true}); }
@@ -1442,13 +1445,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         victims.forEach(([pid, c])=> hit(pid, c, n, 'physical', 'landslideHit')); } }
     // Crushing Depths: N (5) water damage to every unit; Tide units and Swimmers take half (rounded down); water Resist halves it again.
     if(rules.crushingDepths){ const n = crushingN(); ev({type:'fieldTick', field:'crushingDepths', round, amount:n});
-      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, isTide(c) ? Math.max(1, Math.floor(n / 2)) : n, 'water', 'crushingHit', {swimmer: isTide(c) || undefined}))); }
-    // Hail: N (3) cold damage to every unit.
-    if(rules.hail){ const n = fxN(rules.hail, 3); ev({type:'fieldTick', field:'hail', round, amount:n}); [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, n, 'cold', 'hailHit'))); }
+      // 2026-10-22 (package FX): a halving keeps at least 1 (so at the default 1 a Swimmer takes 1, like anyone), except when both
+      // halvings stack: a Tide unit or Swimmer that also resists water takes half rounded down, then Resist's half (so 0 at the default 1).
+      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const tide = isTide(c), both = tide && resistFactor(c.defId, 'water') < 1;
+        const d = !tide ? n : both ? Math.floor(n / 2) : Math.max(1, Math.floor(n / 2));
+        if(!(d > 0)){ ev({type:'fieldTick', field:'crushingHit', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:0, dmgType:'water', swimmer:true, resisted:true}); return; }
+        hit(pid, c, d, 'water', 'crushingHit', {swimmer: (tide && d < n) || undefined}); })); }
+    // Hail: N (1; was 3 until 2026-10-22, package FX) cold damage to every unit.
+    if(rules.hail){ const n = fxN(rules.hail, FIELD_DMG_DEFAULT); ev({type:'fieldTick', field:'hail', round, amount:n}); [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, n, 'cold', 'hailHit'))); }
     // Glass-storm: every unit is buffeted by flying glass for its own random 1–3 damage.
-    if(rules.glassStorm){ ev({type:'fieldTick', field:'glassStorm', round}); [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const r = 1 + Math.floor(rnd()*3); hit(pid, c, r, 'physical', 'glassHit', {roll:r}); })); }
-    // Lava Spout: one random column bursts: N (3) fire damage to the units there, both sides.
-    if(rules.lavaSpout){ const b = columnBurst(players); if(b){ const n = fxN(rules.lavaSpout, 3); ev({type:'fieldTick', field:'lavaSpout', col:b.col, round, amount:n});
+    // 2026-10-22 (package FX): 1 each (was a random 1–3); a number on the flag is the most a unit can roll (1 to N), so rules.glassStorm: 3 is the old storm.
+    if(rules.glassStorm){ const top = Math.max(1, Math.round(fxN(rules.glassStorm, FIELD_DMG_DEFAULT))); ev({type:'fieldTick', field:'glassStorm', round, amount:top});
+      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const r = top > 1 ? 1 + Math.floor(rnd()*top) : 1; hit(pid, c, r, 'physical', 'glassHit', top > 1 ? {roll:r} : undefined); })); }
+    // Lava Spout: one random column bursts: N (1; was 3 until 2026-10-22, package FX) fire damage to the units there, both sides.
+    if(rules.lavaSpout){ const b = columnBurst(players); if(b){ const n = fxN(rules.lavaSpout, FIELD_DMG_DEFAULT); ev({type:'fieldTick', field:'lavaSpout', col:b.col, round, amount:n});
       [1,2].forEach(pid=>{ const en = b.cols[pid][b.col], c = en && en.kind === 'card' ? en.card : null; if(c && !c.gap && !c.cageOf) hit(pid, c, n, 'heat', 'lavaSpoutHit', {col:b.col}); }); } }
     // Consternation: every card in each hand loses 1/1 (N/N). The loss rides on the hand card (h.consterned) and comes onto the field with it.
     if(rules.consternation){ const n = consternationN(); [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !pl.hand.length) return; let k = 0;
@@ -1479,14 +1489,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ---- Package GI field effects (2026-10-19, docs/gameplay-ideas-2026-10-19.md). From round 2, every round, one random unit a side:
     // Spore Cloud (rules.sporeCloud): falls Asleep for this round (Sleep 1, so the Sleep cap N+1 holds it at 2; damage wakes it as ever).
     //   Poison-proof units (Structures, poison Immune) breathe nothing in.
-    // Thunderstorm N (rules.thunderstorm, 2): lightning strikes it for N shock damage (Wet counters add, as for any lightning).
+    // Thunderstorm N (rules.thunderstorm, 1; 2 until 2026-10-22, package FX): lightning strikes it for N shock damage (Wet counters add, as for any lightning).
     // Tangled Roots (rules.tangledRoots): roots grab it: Webbed for this round (no dodge, can't move or be moved). Flyers are above them.
     // A pick that finds no unit on a side skips that side.
     const giPick = (pid, ok)=>{ const cs = liveUnits(players[pid]).filter(ok); return cs.length ? cs[Math.floor(rnd()*cs.length)] : null; };
     if(rules.sporeCloud){ ev({type:'fieldTick', field:'sporeCloud', round});
       [1,2].forEach(pid=>{ const c = giPick(pid, x=> !poisonProof(x)); if(!c) return; const had = c.asleep||0; c.asleep = Math.max(had, Math.min(had + 1, 2));
         ev({type:'statusFx', kind:'sleep', field:'sporeCloud', side:sideOf(pid), attUid:null, attDefId:null, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, left:c.asleep}); }); }
-    if(rules.thunderstorm){ const n = fxN(rules.thunderstorm, 2); ev({type:'fieldTick', field:'thunderstorm', round, amount:n});
+    if(rules.thunderstorm){ const n = fxN(rules.thunderstorm, FIELD_DMG_DEFAULT); /* 2026-10-22 (package FX): 1, was 2 */ ev({type:'fieldTick', field:'thunderstorm', round, amount:n});
       let struck = false; [1,2].forEach(pid=>{ const c = giPick(pid, ()=> true); if(c){ hit(pid, c, n, 'shock', 'thunderHit', {wet: wetCountOf(c) || undefined}); struck = true; } });
       if(struck) removeDeadCards(players, sideOf, {}, stats, events); }
     if(rules.tangledRoots){ ev({type:'fieldTick', field:'tangledRoots', round});

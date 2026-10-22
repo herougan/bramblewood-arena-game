@@ -149,7 +149,10 @@ function createTrench(opts){
     const out = [];
     const round = T.round;
     // boss special attacks
-    cfg.attacks.forEach(a=>{
+    // 2026-10-22 (package FX): the raid fight's Tentacle Smack is 1–2 now (dmgMin/dmg); the classic trench keeps its own number
+    // (trenchDmg, the old 6), so its balance (tests/trench.js) is unchanged. Owner call FX3.
+    cfg.attacks.forEach(a0=>{
+      const a = a0.trenchDmg != null ? Object.assign({}, a0, {dmg: a0.trenchDmg}) : a0;
       const every = Math.max(1, a.every||1);
       if(round % every !== 0) return;
       if(a.pattern === 'column'){

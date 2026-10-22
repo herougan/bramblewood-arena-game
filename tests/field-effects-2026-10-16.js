@@ -62,12 +62,18 @@ ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the fi
 { const {e, P} = mk({consternation:3}, 3, {1:{'fe-small':4}}); e.draw(P[1], 1, 'A', {}, []); const h = P[1].hand[0]; e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
   e.placeCard(P, so, 1, h.uid, 0, {}, []); const c = all(P[1])[0]; ok(c.atk === 0 && c.maxHp === 1 && c.hp === 1, `Consternation: never below 0 Attack and 1 Health (${c.atk}/${c.hp})`); }
 
-// ---- Crushing Depths: 5 water a round; Swimmers half; water Resist halves again; no day or night
-{ const {e, P} = mk({crushingDepths:true, phase:'cycle'}); const a = put(e, P, 1, 'fe-wall', 0), t = put(e, P, 1, 'fe-tide', 1), tr = put(e, P, 2, 'fe-tideres', 0), r = put(e, P, 2, 'fe-res', 1);
+// ---- Crushing Depths: N water a round; Swimmers half; water Resist halves again; no day or night
+// 2026-10-22 (package FX): the default is 1 (was 5); this block sets 5 to keep the halving rules covered, the next one checks the default
+{ const {e, P} = mk({crushingDepths:5, phase:'cycle'}); const a = put(e, P, 1, 'fe-wall', 0), t = put(e, P, 1, 'fe-tide', 1), tr = put(e, P, 2, 'fe-tideres', 0), r = put(e, P, 2, 'fe-res', 1);
   e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
   ok(a.hp === 495, `Crushing Depths: 5 water damage (${a.hp})`); ok(t.hp === 498, `...a Swimmer takes half, rounded down (${t.hp})`);
   ok(tr.hp === 499, `...a water-resistant Swimmer a quarter (${tr.hp})`); ok(r.hp === 498, `...water Resist alone, half (${r.hp})`);
   ok(e.getPhase() === null, `Crushing Depths: no day or night even on a cycling map (${e.getPhase()})`); }
+{ const {e, P} = mk({crushingDepths:true}); const a = put(e, P, 1, 'fe-wall', 0), t = put(e, P, 1, 'fe-tide', 1), tr = put(e, P, 2, 'fe-tideres', 0), r = put(e, P, 2, 'fe-res', 1);
+  e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
+  ok(a.hp === 499 && t.hp === 499 && r.hp === 499, `Crushing Depths (FX): 1 water damage by default; a Swimmer and water Resist keep at least 1 (${a.hp}, ${t.hp}, ${r.hp})`);
+  ok(tr.hp === 500 && ev.some(x=> x.field === 'crushingHit' && x.uid === tr.uid && x.dmg === 0), `...a water-resistant Swimmer takes none of a 1 (both halvings) (${tr.hp})`);
+  ok(ev.some(x=> x.field === 'crushingDepths' && x.amount === 1), 'the tick says 1'); }
 
 // ---- Rook's Row / Bishop's Path
 { const run = (rules, id, foeSlots, atkSlot)=>{ const {e, P} = mk(rules); const fs2 = foeSlots.map(s=> put(e, P, 2, 'fe-wall', s)); const A = put(e, P, 1, id, atkSlot || 0); const ev = []; e.debugAttack(P, so, A.uid, {}, ev); return {hp: fs2.map(c=> c.hp), ev}; };
@@ -110,17 +116,23 @@ ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the fi
 { const {e, P} = mk({slippery:100}); const ev = []; put(e, P, 1, 'fe-trig', 0, ev); ok(ev.some(x=> x.type === 'slipFizzle'), 'Slippery: a trigger can fail (slipFizzle)'); }
 
 // ---- Glass-storm (Sandstorm + wind + 1–3 a round), Sandstorm's wind
-{ const {e, P} = mk({glassStorm:true}); const a = put(e, P, 1, 'fe-wall', 0), b = put(e, P, 2, 'fe-wall', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
-  ok(a.hp >= 497 && a.hp <= 499 && b.hp >= 497 && b.hp <= 499, `Glass-storm: each unit takes 1–3 (${500 - a.hp}, ${500 - b.hp})`);
+{ const {e, P} = mk({glassStorm:3}); const a = put(e, P, 1, 'fe-wall', 0), b = put(e, P, 2, 'fe-wall', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
+  ok(a.hp >= 497 && a.hp <= 499 && b.hp >= 497 && b.hp <= 499, `Glass-storm 3: each unit takes 1–3 (${500 - a.hp}, ${500 - b.hp})`);
+  { const {e, P} = mk({glassStorm:true}); const a = put(e, P, 1, 'fe-wall', 0), b = put(e, P, 2, 'fe-wall', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
+    ok(a.hp === 499 && b.hp === 499, `Glass-storm (FX): 1 each by default (${500 - a.hp}, ${500 - b.hp})`); }
   ok(e.forecast().wind && e.forecast().wind.mode === 'windy', 'Glass-storm: the wind is random each round (Windy)'); }
 ok(mk({sandstorm:true}).e.forecast().wind.mode === 'windy' && mk({sandstorm:true, wind:'gale'}).e.forecast().wind.mode === 'gale' && !mk({}).e.forecast().wind, 'Sandstorm brings Windy\'s wind (a fight\'s own wind wins)');
 { let windy = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk({sandstorm:true}, s); const ev = []; e.roundStart(P, 1, so, {}, ev); if(ev.some(x=> x.type === 'wind')) windy++; } ok(windy === 30, `Sandstorm: a wind roll every round (${windy}/30)`); }
 
 // ---- Hail, Lava Spout, Scorching III
+{ const {e, P} = mk({hail:3}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-cold', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
+  ok(a.hp === 497 && c.hp === 499, `Hail 3: 3 ice damage, cold Resist half (${a.hp}, ${c.hp})`); }
 { const {e, P} = mk({hail:true}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-cold', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
-  ok(a.hp === 497 && c.hp === 499, `Hail: 3 ice damage, cold Resist half (${a.hp}, ${c.hp})`); }
-{ const {e, P} = mk({lavaSpout:true}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
-  ok(a.hp === 497 && c.hp === 499, `Lava Spout: 3 fire to the units in the column, fire Resist half (${a.hp}, ${c.hp})`); ok(ev.some(x=> x.field === 'lavaSpout' && x.col === 0), 'Lava Spout: the burst names its column'); }
+  ok(a.hp === 499 && c.hp === 499, `Hail (FX): 1 ice damage by default; Resist keeps at least 1 (${a.hp}, ${c.hp})`); }
+{ const {e, P} = mk({lavaSpout:true}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
+  ok(a.hp === 499 && c.hp === 499, `Lava Spout (FX): 1 fire by default (${a.hp}, ${c.hp})`); }
+{ const {e, P} = mk({lavaSpout:3}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
+  ok(a.hp === 497 && c.hp === 499, `Lava Spout 3: 3 fire to the units in the column, fire Resist half (${a.hp}, ${c.hp})`); ok(ev.some(x=> x.field === 'lavaSpout' && x.col === 0), 'Lava Spout: the burst names its column'); }
 { const {e, P} = mk({field:'heatwave', heatLevel:3}); const us = [-2, -1, 0, 1].map(s=> put(e, P, 1, 'fe-wall', s)); e.roundStart(P, 2, so, {}, []); // a field ticks every round start
   ok(us.every(c=> c.hp === 497), `Scorching III: 4 units a side, 3 fire damage each (${us.map(c=> c.hp)})`); }
 
@@ -137,8 +149,8 @@ ok(mk({sandstorm:true}).e.forecast().wind.mode === 'windy' && mk({sandstorm:true
 { const {e, P} = mk({leylines3:true}); const a = put(e, P, 1, 'fe-wall', 0), t = put(e, P, 1, 'fe-atheist', 1), g = put(e, P, 2, 'fe-ghost', 0); P[1].lumber = 0; P[1].stone = 0; const hq = P[1].hq.hp;
   e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
   ok(P[1].lumber === 1 && P[1].stone === 1, `Leylines III: +1 Lumber and +1 Stone (${P[1].lumber}, ${P[1].stone})`);
-  ok(a.hp === 497 && t.hp === 500 && g.hp === 497, `Leylines III: 3 magic damage to every unit (a Ghost too), none to the Atheist (${a.hp}, ${t.hp}, ${g.hp})`);
-  ok(P[1].hq.hp === hq - 3 && P[2].hq.hp === P[2].hq.maxHp - 3, 'Leylines III: both castles take 3');
+  ok(a.hp === 499 && t.hp === 500 && g.hp === 499, `Leylines III: 1 magic damage to every unit (a Ghost too), none to the Atheist (FX: was 3) (${a.hp}, ${t.hp}, ${g.hp})`);
+  ok(P[1].hq.hp === hq - 1 && P[2].hq.hp === P[2].hq.maxHp - 1, 'Leylines III: both castles take 1 (FX: was 3)');
   P[1].hq.hp = 2; e.roundStart(P, 3, so, {}, []); ok(P[1].hq.hp === 1, `Leylines III: a castle never drops below 1 from it (${P[1].hq.hp})`); }
 
 // ---- Atheist
