@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package DOC: the owner's 10-23 00:10 answers)
+- 78 decisions closed in `docs/decisions.json` with his quotes (the ones that need building name their package: TU2, RW3, EN, SX, AR3); T3, S1, S2 wait for "apply it", S3 and S4 for a Chrome session; A1, A2 and G2 rewritten with the detail he asked for. The build list is at the top of `docs/action-items.md`.
+
 ## 2026-10-22 (release: batch 10-22b)
 - Shipped together: BF9, ST, GD, GD2 (entries below).
 - **Trench Core:** its three stumps 14 → 20 Health (`canonical/raids.json`, Goliath core trench). BF9's cheaper Supreme / Supreme Tide re-fitted the dragons in the raiders' decks, and the Core was overwhelmed in 7% of `tests/trench.js` runs (limit 5%; 3% before). At 20 it is 3% again (core average 79). Raising the Core bramble itself (300 → 380) changed nothing while the stumps stand.

@@ -1,5 +1,57 @@
 # Action items
 
+## 10-23 owner answers: building
+
+From the owner's 10-23 00:10 answers (numbers are his list's). Packages: TU2, RW3, EN, SX, AR3. Details and quotes in `docs/decisions.json`. Live database writes (T3, S1, S2) wait for his "apply it"; S3 and S4 wait for a Chrome session with him.
+
+| # | Decision | Package | Item |
+|---|---|---|---|
+| 1 | — | TU2 | Tutorial exit: a player who finished T-1/T-2 but is stuck in the tutorial-only map must have a way out; T-2 leads to an exit to Map 0. |
+| 2 | — | TU2 | Admin: the tutorial Brambles' Health and rewards must be editable. |
+| 15 | TU-1 | TU2 | Label the tutorial fights T-1 to T-5. |
+| 74 | N1 | TU2 | The Nest lists only baby/egg cards and level-0 base cards, in two tabs (recruits); faction cards start at level 0. |
+| 85 | E10 | TU2 | Prepare a card combining / converting page: its own feature page, not a subtab. Nothing designed yet. |
+| 84 | E9 | TU2 | Retire Krooni 👑 for now. |
+| 24 | AR-2 | TU2 | Hide both daily dungeons (the Undercroft and Murgle Mayhem) until they are balanced and their special reward is decided; keep the defaults in the notes. |
+| 41 | RK1 | TU2 | The Raid Ticket in the Shop becomes the Bonus Raid Ticket (300 Maple Leaves) with a different outline. |
+| 5 | GD2-3 | RW3 | Move a pack card to a skirmish as the exclusive first-clear card on Maps 4, 6, 11, 12, 18, 20, 21. |
+| 6 | GD2-4 | RW3 | Every skirmish pays that season's pack, a faction pack, a skirmish-exclusive card or a card of that season's pack. |
+| 19 | RW2-3 | RW3 | Card drop is about 1% per Energy spent; elites and above +1/2/3/4%; ticketed dungeons keep their higher rates. |
+| 53 | DV4 | RW3 | No map or rarity gate on pack output: packs are completely random, nothing changes their output. |
+| 69 | C1 | RW3 | Evaluate the pack foil chances; they should be rare (C1 itself stays open, "later"). |
+| 42 | RK2 | RW3 | The Bonus Raid Ticket is for sale only when the shop randomly has it, and it sells out after one purchase. |
+| 44 | RK4 | RW3 | SS / SSS raid notices about once a month or two; S notices 0.5-0.7 a week. |
+| 68 | E2 | RW3 | Disenchant values 5/10/25/45/65/100/150/250/400/700/1200/2000+ in rarity order (check the rarity list and the "etc."). |
+| 86 | E11 | RW3 | The Nest Nurse makes eggs hatch faster; no Shiny-chance bonus. |
+| 25 | — | RW3 | Forge: go back to card-based upgrades (the owner changed it to card_name-based; everything else is per card). |
+| 23 | AR-1 | RW3 | Standard PvP and Collection PvP draw from different pools; PvP keeps the foil treatments. |
+| 8 | GD2-6 | RW3 | How a player can own an Easter egg: giveaways, or a supremely low chance in mystery packs. |
+| 31 | TR-4 | EN | Remove King from the four non-Kings; only the Magnate Duck is a King (balance it, not 1/1). New skill Liege {...}: active only while the King is on your side, worth 0.3x its braces, default Assault N with N=2. |
+| 32 | TR-5 | EN | Price Liege at 0.3x its braces; the other prices stay. |
+| 33 | TR-6 | EN | Remove the Enraged condition; Rage keeps its definition; "Rage {...}" = Rage's usual effects plus the braces, costed by logic. |
+| 34 | EV-1 | EN | The Terraumbra is the Evomax equipment. |
+| 36 | EV-3 | EN | Evolute type is shared only with the card under it; once evolved over, the card below is not referenced. |
+| 37 | EV-4 | EN | An evolute with Wait also takes on the base's remaining Wait. |
+| 38 | EV-5 | EN | Evolute, Alpha and Omega all cost 3. |
+| 39 | EV-6 | EN | Baby-like cards get Fodder (the only non-Evomax cards that do), only at level 1; baby-like cards start at level 0. |
+| 12 | FX2-1 | EN | The volcano restarts at very low after each eruption. |
+| 90 | D24 | EN | Arena second player: no extra card; +1 Shield on its Bramble only. |
+| 92 | FOG1 | EN | Fog applies to both sides: the CPU also cannot target what it cannot reach. |
+| 88 | D21 | EN | Backstab triggers on a target with a status that weakens it in combat, or when the attacker has a skill that strengthens it (blind against evade, for example). |
+| 7 | GD2-5 | EN | Name the shape "adjacent including diagonals" (Dynamite): suggested "Surrounding". |
+| 4 | GD2-1 | EN | Rename Spellshield to Spell Ward. |
+| 95 | — | SX | Damage affected by its target (armor, for one) gets its own sound effect (an armor "ting"); if the source has an sfx, play it and the target-effect sound too. |
+| 11 | DN2-4 | SX | Element colour shift +12 degrees, with poison less blue and a little brighter. |
+| 66 | H2 | SX | Hero XP bar: Battle XP, Materia XP, and a third section that takes either; Battle XP there is 25% less efficient. |
+| 26 | AR-3 | AR3 | The co-op group dungeon: a big pass, launched as one package. |
+| 48 | RP3 | (unassigned) | Quarry Mole moves to 8-1 (card data; no package named yet). |
+| 64 | I2 | (unassigned) | Number-aware translation templates (no package named yet). |
+| 60 | D17 | (owner files) | Music: only 2-3 tracks are usable; better tracks are needed, and they need CC0 files from the owner. |
+| 71 | G2 | (a later hub package) | Move the still-relevant .md files into the master hub (the owner dislikes many disparate files); G2's detail now lives in its decision item. |
+| 8 | GD2-6 | (with the RW3 row above) | Easter-egg sources: giveaways; a supremely low chance in mystery packs. |
+| 49 | RP4 | Owner later | The two factions should end symmetric; the owner balances the Hummingbirds himself later. |
+| 24 | AR-2 | TU2 (note) | Note for the notes file: both daily dungeons are hidden because they need balancing and their special reward is undecided. |
+
 ## 10-22 owner notes (09:46, 09:52)
 
 | ID | Batch | Item |
