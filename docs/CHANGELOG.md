@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package CB: the Galactic Condor turns and manoeuvres to fire its Position Beam)
+- **Owner (07:42):** "It must animate to look like it turns and manoeuvres to fire the beam." Before the beam fires, the Condor now takes up the stance for where it stands:
+  **centre** rears up, then dips its head forward and aims straight across; **side** banks and turns toward the angle it fires at, with a small lift and a gentle sway;
+  **edge** coils, then swings right round to face along the row and keeps turning as the beam sweeps across (nearest unit first). A recoil as the beam fires, then it settles back into its slot.
+- GSAP transforms on the card only (no filter, no blend layer); a rising whoosh and hum (`SoundKit.beamTurn`). Effects Low and reduced motion: no manoeuvre, the beam as before.
+  Code: `positionBeamVfx` in `arena_app.js` (the `positionBeam` branch of `renderVfxForEvent`; `delayForEvent` waits for the pose). Engine and texts untouched.
+- Effects Lab: the Position Beam is on the "Built 10-21/22" tab (7 looks, In game badge). The Lab now carries `hasGsap`, `reducedMotion`, `fxLevel` and `fxAtLeast` shims.
+
 ## 2026-10-22 (package DV: the map divvy, the rarity ladder, map pools)
 - **Each main map has a pool of 6-10 creatures** (`canonical/map-pools.json`, the map editor's file): its enemy decks are built from it, 1-2 of
   them are its skirmish rewards and the rest are basic-pack cards with that map. 305 former skirmish rewards became pack cards of their map.

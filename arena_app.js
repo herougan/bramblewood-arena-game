@@ -4890,6 +4890,7 @@ const SoundKit = (()=>{
     // Backstab: a quick sidestep whoosh, then a thin, nasty slice.
     backstabSlice(){ fnoise(0.16, 0.05, {type:'bandpass', freq:900, freqEnd:3200, q:1.2, attack:0.05}); fnoise(0.07, 0.08, {type:'highpass', freq:6000, freqEnd:2500, q:1.4, attack:0.002, delay:0.15}); tone(2600, 0.05, 'triangle', 0.04, 0.16); },
     // Anti-Air boomerang: a whirring throw that dopplers away and back.
+    beamTurn(){ for(let i = 0; i < 5; i++) fnoise(0.07, 0.028 + i*0.006, {type:'bandpass', freq:480 + i*320, q:3, attack:0.01, delay:i*0.07}); tone(330, 0.2, 'sine', 0.04); tone(495, 0.22, 'sine', 0.045, 0.3); }, // 2026-10-22 (package CB): the Condor turns to aim its Position Beam, a rising whoosh and a two-note hum
     boomerangWhirr(){ for(let i = 0; i < 6; i++) fnoise(0.06, 0.045 - i*0.004, {type:'bandpass', freq:700 + i*260, q:3, attack:0.01, delay:i*0.07}); for(let i = 0; i < 5; i++) fnoise(0.06, 0.025 + i*0.004, {type:'bandpass', freq:1900 - i*240, q:3, attack:0.01, delay:0.5 + i*0.07}); },
     // Shop shelf: a tap on wood and a soft jar clink.
     shelfPick(){ noise(0.02, 0.05); tone(320, 0.05, 'sine', 0.06); tone(2100, 0.18, 'sine', 0.025, 0.03); tone(3150, 0.12, 'sine', 0.012, 0.035); },
@@ -39619,6 +39620,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='death') base = 900; // was 550; 2026-10-12: the slower topple needs its time on screen
   else if(ev.type==='render') base = 780;
   else if(ev.type==='pounce') base = 340;
+  else if(ev.type==='positionBeam' && ev._pbMs) base = ev._pbMs; // 2026-10-22 (package CB): the Condor turns to aim first; the first bolt is drawn as it reaches its pose
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
   else if(ev.type==='wave') base = ev.blocked ? 640 : 820; // 2026-10-17 (user: "Make it ride the wave and move to its new location"): the ride (or the bob) plays out before the next re-render
   else if(ev.type==='forkSwing') base = 0; // the swing's lines follow at once (2026-10-17)
@@ -42413,6 +42415,58 @@ function drawLightningBolt(ev){
     else if(window.SkillFX && SkillFX.lightning && b.chain.length > 1) SkillFX.lightning(b.chain[0], b.chain.slice(1), {cls: b.cls});
   }catch(e){}
 }
+// 2026-10-22 (package CB, owner 07:42: "It must animate to look like it turns and manoeuvres to fire the beam."): the Galactic Condor's
+// Position Beam (package EE) is aimed by where the Condor stands, so before the beam fires the Condor visibly takes up the stance for it.
+// The engine's positionBeam event carries the case (ev.lane: 'centre' | 'side' | 'edge'), the column (ev.col, signed) and the units hit.
+//   centre  rears up (stretches tall, tips back), then dips its head forward and aims straight across
+//   side    banks and turns toward the angle it fires at: leans and rotates toward the units hit, a small lift (up the screen), then a gentle sway
+//   edge    coils, then swings right around to face along the row (a big turn, back.out overshoot); it keeps turning as the beam sweeps
+//           across in the direction it faces (the hits arrive nearest first, one every 640 ms, so the sweep already runs that way)
+// then a little recoil as the beam fires, and it settles back to its slot (clearProps:'transform', so it ends exactly where it began).
+// GSAP transforms on the card's inner .card-tile only (as animateAttacker does: the outer .board-card belongs to Flip). No filter, no blend
+// layer. Effects Low and below, and reduced motion: nothing here runs (the beam alone, as before). ev._pbMs is the time (at 1x) the
+// positionBeam event holds the replay for, so the first bolt is drawn as the pose is reached (delayForEvent reads it).
+const POSITION_BEAM_AIM_MS = {centre: 620, side: 520, edge: 760};
+function positionBeamVfx(ev){
+  if(!ev || ev.type !== 'positionBeam' || !hasGsap() || reducedMotion() || !fxAtLeast('med')) return 0;
+  const el = boardCardEl(ev.uid), tile = el && el.querySelector('.card-tile'); if(!tile) return 0;
+  const lane = POSITION_BEAM_AIM_MS[ev.lane] ? ev.lane : 'centre';
+  const mult = (matchState && matchState.speedMult) || 1, s = 1/Math.max(0.5, mult); // GSAP seconds follow the fight's speed
+  const r = el.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  // which way the beam goes on screen: toward the middle of the units it hits (the castle counts when it is hit)
+  const pts = (ev.targetUids || []).map(u=> boardCardEl(u)).filter(Boolean); if(ev.hq){ const h = hqTileEl(ev.targetSide); if(h) pts.push(h); }
+  let dx = 0, dy = 0; pts.forEach(p=>{ const q = p.getBoundingClientRect(); dx += (q.left + q.width/2 - cx)/pts.length; dy += (q.top + q.height/2 - cy)/pts.length; });
+  const fw = Math.abs(dy) > 4 ? Math.sign(dy) : (ev.side === 'A' ? -1 : 1);                       // toward the foe: -1 up the screen, 1 down it
+  const sx = Math.abs(dx) > 4 ? Math.sign(dx) : (Math.sign(-(ev.col || 0)) || 1);                 // across: a side or edge beam angles inward
+  const nHit = Math.max(1, (ev.targetUids || []).length + (ev.hq ? 1 : 0)), hold = Math.min(7.2, 0.2 + 0.64*nHit)*s; // it holds its pose while the hits arrive (an edge beam sweeps up to ten units, 640 ms apiece)
+  const uid = String(ev.uid), out = Math.min(4, Math.abs(ev.col || 0));
+  gsap.killTweensOf(tile, 'y,x,rotation,scale,scaleX,scaleY');
+  attackingUids.add(uid); el.classList.add('is-attacking'); // lifts it above its neighbours while it turns (a 70-degree turn reaches across the lane)
+  const tl = gsap.timeline({onComplete:()=>{ attackingUids.delete(uid); el.classList.remove('is-attacking'); }});
+  ev._pbTl = tl; // (kept on the event so a frame-by-frame check can seek it)
+  if(lane === 'centre'){
+    tl.to(tile, {y:-fw*18, scaleY:1.13, scaleX:.95, rotation:-5, duration:.34*s, ease:'power2.out'})                      // rears up
+      .to(tile, {y:fw*14, scaleY:.93, scaleX:1.05, rotation:3, duration:.28*s, ease:'power3.in'})                        // dips its head forward
+      .to(tile, {y:-fw*3, scaleY:1.03, scaleX:.98, rotation:0, duration:.09*s, ease:'power2.out'})                       // the kick as it fires
+      .to(tile, {y:fw*8, scaleY:.97, scaleX:1.02, duration:hold, ease:'sine.out'});                                      // holds the aim
+  } else if(lane === 'side'){
+    const rot = sx*(15 + 3*out);
+    tl.to(tile, {rotation:rot*1.15, x:sx*9, y:-9, scaleX:1.06, scaleY:1.06, duration:.34*s, ease:'power2.out'})        // banks and lifts
+      .to(tile, {rotation:rot, x:sx*7, y:-7, duration:.18*s, ease:'sine.inOut'})
+      .to(tile, {x:sx*2, y:-11, scaleX:1.1, scaleY:1.1, duration:.08*s, ease:'power2.out'})                           // the kick
+      .to(tile, {rotation:rot - sx*4, x:sx*6, y:-8, scaleX:1.06, scaleY:1.06, duration:hold/2, ease:'sine.inOut'})    // sways while it fires
+      .to(tile, {rotation:rot + sx*3, x:sx*8, y:-7, duration:hold/2, ease:'sine.inOut'});
+  } else {
+    tl.to(tile, {rotation:-sx*9, x:-sx*5, scaleX:.97, scaleY:.97, duration:.2*s, ease:'power2.out'})                      // coils the other way
+      .to(tile, {rotation:sx*62, x:sx*14, y:-8, scaleX:1.08, scaleY:1.08, duration:.56*s, ease:'back.out(1.4)'})       // swings round to face along the row
+      .to(tile, {x:sx*10, scaleX:1.12, scaleY:1.12, duration:.08*s, ease:'power2.out'})                                  // the kick
+      .to(tile, {rotation:sx*74, x:sx*20, scaleX:1.08, scaleY:1.08, duration:hold, ease:'sine.inOut'});                  // keeps turning as the beam sweeps
+  }
+  tl.to(tile, {rotation:0, x:0, y:0, scaleX:1, scaleY:1, duration:.45*s, ease:lane === 'edge' ? 'power2.inOut' : 'back.out(1.6)', clearProps:'transform'}); // settles back into its slot
+  try{ SoundKit.beamTurn && SoundKit.beamTurn(); }catch(e){}
+  ev._pbMs = POSITION_BEAM_AIM_MS[lane];
+  return ev._pbMs;
+}
 // 2026-10-15 (eighth pass, user: "widen the effects list we have"): the skills that only had a floating word now get their
 // own short SkillFX look in real fights (the Effects library plays them too, since it runs the same replay). Each layers over
 // the existing number, sound and tint; Medium effects and up, never with reduced motion, and the ones that can repeat play at
@@ -43472,7 +43526,7 @@ function renderVfxForEvent(ev){
   // card. The continuous per-round buff itself stays a live stat recompute with no per-round
   // event, same as before — this only marks the moment the aura turns on.
   // Pounce (2026-10-12): a quick crouch-and-spring on the card as it lands, then the hit plays as normal.
-  if(ev.type==='positionBeam'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `🌈 ${TX('ui.act-position-beam')} ${ev.amount}`, 'gold'); } // 2026-10-19 (package EE): the hits draw the beam (lightningBoltOf)
+  if(ev.type==='positionBeam'){ const el = boardCardEl(ev.uid); if(el) floatText(el, `🌈 ${TX('ui.act-position-beam')} ${ev.amount}`, 'gold'); fightSafe(()=> positionBeamVfx(ev), 'positionBeam'); } // 2026-10-19 (package EE): the hits draw the beam (lightningBoltOf); 2026-10-22 (package CB): the Condor turns and manoeuvres first (positionBeamVfx)
   if(ev.type==='pounce'){
     const el = boardCardEl(ev.uid);
     if(el){ floatText(el, `🐾 Pounce ${ev.amount}`, 'gold'); } // 2026-10-15: the spring is now the hit's own leap onto its target (SkillFX.pounceOnto)

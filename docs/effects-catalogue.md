@@ -883,3 +883,21 @@ Statuses: Stench and Brittle have no look in the game's code today. Exposed has 
 
 **How to keep this honest:** when one of the ideas is wired, change its row to "In game: <where>" here and its `add(...)` entry in
 `fxlab-ideas.js` (the badge is `Lab only` for every entry in that tab until then).
+
+## Position Beam: the Galactic Condor turns to fire (2026-10-22, package CB)
+
+Owner (07:42): "Condor: okay. It must animate to look like it turns and manoeuvres to fire the beam." In game: `positionBeamVfx(ev)` in `arena_app.js`
+(called from the `positionBeam` branch of `renderVfxForEvent`; `delayForEvent` holds the replay for `ev._pbMs` so the first bolt is drawn as the pose is
+reached). GSAP transforms on the Condor's inner `.card-tile` only (rotate, translate, scale; no filter, no blend layer), the card lifted above its
+neighbours with `.is-attacking` while it turns, and `clearProps:'transform'` at the end so it returns exactly to its slot. Sound: `SoundKit.beamTurn`
+(a rising whoosh and a two-note hum). Effects Low and below, and reduced motion: no manoeuvre, the beam as before.
+
+| Case | Manoeuvre (before the beam) | Aim time at 1x |
+|---|---|---|
+| Centre | rears up (stretches tall, tips back), then dips its head forward and aims straight across | 620 ms |
+| Side (1 to 4 out) | banks and turns toward the angle it fires at (15 to 27 degrees by column), a small lift, then a gentle sway while it fires | 520 ms |
+| Edge (5 out) | coils the other way, then swings right round to face along the row (about 62 degrees, overshoot) and keeps turning to about 74 as the beam sweeps across, nearest first | 760 ms |
+
+All three: a short recoil as the beam fires, then it settles back (0.45 s). The direction is read from where the units hit are on screen, so it works
+from either side and for an enemy Condor. Effects Lab: **Built 10-21/22** tab, group "Galactic Condor: Position Beam" (7 looks: Centre, Side from the
+right and the left, Edge left and right, Enemy Condor, Effects Low). In game: yes.

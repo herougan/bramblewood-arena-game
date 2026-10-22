@@ -3,7 +3,7 @@
    played with the game's own code (functions copied from arena_app.js into fx-src.js, listed in fx-src-extra.txt), on the sticky field.
    Owner: "Update the effects lab with all the new effects." Every entry carries "In game: <where>".
    Packages: EV (Evolute), MT (Mimic), TR (Crown and Transforms), UI3 (Shield on the battlefield bars), EL (ten element attack plates),
-   RK (total raid rank), BX (Stonedrop Vulture), FG (Forge centre stage, the hatch).
+   RK (total raid rank), BX (Stonedrop Vulture), FG (Forge centre stage, the hatch), and from 2026-10-22 CB (the Galactic Condor turns to fire its Position Beam).
    Where the game's handler is inline in renderVfxForEvent (evolve, hatch) the same calls are made in the same order (noted per entry).
    ============================================================ */
 (function(){
@@ -239,10 +239,55 @@ add('fg', 'fg-hatch-board', 'An egg hatches on the board', 'a hatching unit in a
       snd('unlockChime'); await c.wait(1500); }]],
   {sig:'eggCrackVfx(x, y) + floatText 🐣 + pop'});
 
+// -- CB: the Galactic Condor's Position Beam (package CB, 2026-10-22; the beam itself is package EE, 2026-10-19)
+// The game: the engine's {type:'positionBeam'} event reaches renderVfxForEvent, which floats "🌈 Position Beam" and calls positionBeamVfx(ev): the
+// Condor's inner .card-tile rears / banks / swings round on GSAP transforms, then settles back (clearProps). The event holds the replay for
+// ev._pbMs so the first hit's bolt (lightningBoltOf / drawLightningBolt, one hit every 640 ms, nearest first) is drawn as the pose is reached.
+// This stand-in plays the same calls on a field of five columns (the game's edge is five columns out; the Lab row is five wide, so the leftmost
+// or rightmost card plays the edge). Effects Low / reduced motion: positionBeamVfx returns at once (no manoeuvre) and the beam is as before.
+function beamField(c, o){
+  c.tab.arena.classList.add('lab2-gal');
+  const n = o.n || 5, row = (cls, ws)=> `<div class="sk-row ${cls}">${ws.join('')}</div>`;
+  const foe = Array.from({length:n}, (_, i)=> L.wrapHTML(o.down && i === o.at ? 'rare' : (i % 2 ? 'uncommon' : 'common'), 9400 + i, o.down && i === o.at ? 'galactic-condor' : 'lab-beam-foe'));
+  const mine = Array.from({length:n}, (_, i)=> L.wrapHTML(!o.down && i === o.at ? 'rare' : 'common', 9410 + i, !o.down && i === o.at ? 'galactic-condor' : 'lab-beam-ally'));
+  c.arenaHTML((o.castle ? row('sk-enemy', [L.wrapHTML('castle', 9499, 'castle')]) : '') + row('sk-enemy', foe) + row('sk-mine', mine));
+  const cw = boardCardEl((o.down ? 9400 : 9410) + o.at), nm = cw && cw.querySelector('.card-tile .nm'); if(nm) nm.textContent = 'Galactic Condor';
+  return (o.down ? 9400 : 9410) + o.at;
+}
+async function condorBeam(c, o){
+  const uid = beamField(c, o), tbase = o.down ? 9410 : 9400, tsd = o.down ? 'A' : 'B', sd = o.down ? 'B' : 'A';
+  c.match(); await c.wait(450);
+  const targets = (o.hits || []).map(i=> tbase + i);
+  const ev = {type:'positionBeam', side:sd, targetSide:tsd, uid, defId:'galactic-condor', lane:o.lane, col:o.col, amount:3, targetUids:targets, hq:!!o.hq};
+  try{ floatText(boardCardEl(uid), '🌈 ' + T('ui.act-position-beam') + ' 3', 'gold'); }catch(e){}
+  const ms = o.low ? 0 : positionBeamVfx(ev); // the game's call: 0 at Effects Low and under reduced motion
+  await c.wait(ms || 150);
+  const list = targets.map(u=> ({u})).concat(o.hq ? [{hq:true}] : []);
+  for(const h of list){
+    const hit = h.hq ? {type:'hitHQ', ranged:true, positionBeam:o.lane, attUid:uid, side:sd, targetSide:tsd, dmg:3} : {type:'hit', ranged:true, positionBeam:o.lane, attUid:uid, targetUid:h.u, side:sd, targetSide:tsd, dmg:3};
+    const b = lightningBoltOf(hit); if(!b){ await c.wait(640); continue; }
+    drawLightningBolt(hit);
+    const t = h.hq ? hqTileEl('B') : boardCardEl(h.u);
+    setTimeout(()=>{ try{ floatText(t, '-3', 'dmg'); if(typeof shakeEl === 'function') shakeEl(t); }catch(e){} }, b.ms);
+    await c.wait(640);
+  }
+  await c.wait(1200);
+}
+add('cb', 'cb-condor', 'Galactic Condor turns to fire its Position Beam', 'the Galactic Condor\'s Charge in a fight (engine event positionBeam: renderVfxForEvent calls positionBeamVfx, then the hits draw the beam, lightningBoltOf)',
+  'Before it fires, the Condor takes up the stance for where it stands. Centre: it rears up (stretches tall, tips back), then dips its head forward and aims straight across; the beam hits the unit across and the Bramble. Side: it banks and turns toward the angle it fires at, with a small lift and a gentle sway; the beam hits the units diagonally across. Edge: it coils, then swings right round to face along the row and keeps turning as the beam sweeps across, nearest first. Then a recoil as it fires, and it settles back exactly into its slot. Transforms on the card only (no filter, no blend layer); a rising whoosh and hum. Effects Low and reduced motion: no manoeuvre, just the beam.',
+  [['Centre', c=> condorBeam(c, {n:3, at:1, castle:true, lane:'centre', col:0, hits:[1], hq:true})],
+   ['Side (from the right)', c=> condorBeam(c, {at:4, lane:'side', col:2, hits:[3, 2]})],
+   ['Side (from the left)', c=> condorBeam(c, {at:0, lane:'side', col:-2, hits:[1, 2]})],
+   ['Edge (left, sweeps right)', c=> condorBeam(c, {at:0, lane:'edge', col:-5, hits:[1, 2, 3, 4]})],
+   ['Edge (right, sweeps left)', c=> condorBeam(c, {at:4, lane:'edge', col:5, hits:[3, 2, 1, 0]})],
+   ['Enemy Condor (fires down)', c=> condorBeam(c, {at:4, down:true, lane:'side', col:2, hits:[3, 2]})],
+   ['Effects Low (beam only)', c=> condorBeam(c, {at:4, lane:'side', col:2, hits:[3, 2], low:true})]],
+  {sig:'positionBeamVfx(ev) + lightningBoltOf(hit) + drawLightningBolt(hit)'});
+
 L.mount({
-  id:'built', title:'Built 10-21', pill:['live', 'New'],
-  sub:'Everything built on 2026-10-21 that the Lab did not show yet, played with the game\'s own code. Every entry says where it shows up in the game. The field stays pinned at the top while you scroll; pick any button to play it there.',
-  chips:[['ev', 'Evolute'], ['mt', 'Mimic'], ['tr', 'Crown and Transforms'], ['ui3', 'Shield bars'], ['el', 'Element plates'], ['rk', 'Raid rank'], ['bx', 'Archer'], ['fg', 'Forge and hatch']],
+  id:'built', title:'Built 10-21 and 10-22', pill:['live', 'New'],
+  sub:'Everything built on 2026-10-21 and 2026-10-22 that the Lab did not show yet, played with the game\'s own code. Every entry says where it shows up in the game. The field stays pinned at the top while you scroll; pick any button to play it there.',
+  chips:[['ev', 'Evolute'], ['mt', 'Mimic'], ['tr', 'Crown and Transforms'], ['ui3', 'Shield bars'], ['el', 'Element plates'], ['rk', 'Raid rank'], ['bx', 'Archer'], ['fg', 'Forge and hatch'], ['cb', 'Condor beam']],
   groups:[
     {key:'ev', title:'Evolute (package EV)', tag:'Evolute', tone:'evo'},
     {key:'mt', title:'Mimic (package MT)', tag:'Mimic', tone:'evo'},
@@ -252,6 +297,7 @@ L.mount({
     {key:'rk', title:'Total raid rank (package RK)', tag:'RK', tone:'raid'},
     {key:'bx', title:'Archer stone drop (package BX)', tag:'BX', tone:'war'},
     {key:'fg', title:'Forge centre stage and the hatch (package FG)', tag:'FG', tone:'forge'},
+    {key:'cb', title:'Galactic Condor: Position Beam (package CB, 2026-10-22)', tag:'CB', tone:'sky'},
   ],
   entries:E,
 });
