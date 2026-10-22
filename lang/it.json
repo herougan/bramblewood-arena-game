@@ -2718,5 +2718,5 @@
  "a challenge card": "una carta sfida",
  "A card dropped in this raid fight": "In questo scontro del raid è caduta una carta",
  "Reading damage numbers": "Leggere i danni",
- "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: il simbolo del tipo di danno (nessuno per un colpo semplice, 👊 davanti per un critico), il danno, poi come l'ha preso il bersaglio: 🦴 Fragile (doppio), 💢 una debolezza (di più), ⛨ Armatura, una resistenza o uno scudo ne ha assorbito una parte, 🚫 immune."
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: il simbolo del tipo di danno (nessuno per un colpo semplice, 💥 davanti per un critico), il danno, poi come l'ha preso il bersaglio: 🦴 Fragile (doppio), 💢 una debolezza (di più), ⛨ Armatura, una resistenza o uno scudo ne ha assorbito una parte, 🚫 immune."
 }

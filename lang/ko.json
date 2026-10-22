@@ -2719,5 +2719,5 @@
  "a challenge card": "도전 카드",
  "A card dropped in this raid fight": "이번 레이드 전투에서 카드가 나왔어요",
  "Reading damage numbers": "피해 숫자 읽는 법",
- "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: 피해 유형 기호(일반 공격은 없음, 치명타는 앞에 👊), 피해량, 그리고 대상이 받은 방식: 🦴 연약(2배), 💢 약점(더 많이), ⛨ 방어구·저항·보호막이 일부를 막음, 🚫 면역."
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: 피해 유형 기호(일반 공격은 없음, 치명타는 앞에 💥), 피해량, 그리고 대상이 받은 방식: 🦴 연약(2배), 💢 약점(더 많이), ⛨ 방어구·저항·보호막이 일부를 막음, 🚫 면역."
 }

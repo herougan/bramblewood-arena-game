@@ -36,7 +36,7 @@ const app = R('arena_app.js');
 const grabConst = n=>{ const m = app.match(new RegExp('^const ' + n + ' = [^\\n]*$', 'm')); return m ? m[0] : ''; };
 const grabFn = n=>{ const i = app.indexOf('\nfunction ' + n + '('); if(i < 0) return ''; const j = app.indexOf('\n}', i); const k = app.indexOf('\n', i + 1);
   const line = app.slice(i + 1, k); return /\}\s*(\/\/.*)?$/.test(line) && (line.match(/\{/g) || []).length === (line.match(/\}/g) || []).length ? line : app.slice(i + 1, j + 2); };
-const src = ['ATK_ELEM_GLYPH', 'DMG_ICON', 'DMG_NAME', 'DN_MOD_GLYPH', 'DN_REDUCED', 'DN_TICK_GLYPH'].map(grabConst).join('\n')
+const src = ['DN_CRIT_MARK', 'ATK_ELEM_GLYPH', 'DMG_ICON', 'DMG_NAME', 'DN_MOD_GLYPH', 'DN_REDUCED', 'DN_TICK_GLYPH'].map(grabConst).join('\n')
   + "\nObject.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});\n"
   + (app.match(/^const DMG_CRIT_LIGHTEN = [^\n]*$/m) || [''])[0] + '\n' + (app.match(/^const DMG_CRIT_FIST_ON_ELEMENT = [^\n]*$/m) || [''])[0] + '\n'
   + ['dnModKey', 'dnTypeGlyph', 'dnTypeGlyphAny', 'dmgFloatParts', 'dnHsl', 'dnCritShift', 'dmgLogText', 'dnLogNum', 'dnText'].map(grabFn).join('\n')
@@ -48,9 +48,9 @@ if(X){
   const ice = X.dmgFloatParts(14, 'cold', true, ['fragile'], false);
   ok(ice.text === '❄️ 14' && ice.post === '🦴' && ice.critEl && ice.critEl.glyph === '❄️' && /\bcrit\b/.test(ice.cls), `2. an ice crit on a Fragile unit: big ❄️, 14, 🦴 (${JSON.stringify(ice)})`);
   const mag = X.dmgFloatParts(9, 'magic', true, [], false);
-  ok(mag.text === '🪄 9' && mag.critEl && mag.critEl.cls === 'magic', '2. a magic crit: the wand is the big glyph (no 👊)');
+  ok(mag.text === '🪄 9' && mag.critEl && mag.critEl.cls === 'magic', '2. a magic crit: the wand is the big glyph (no 💥)');
   const phy = X.dmgFloatParts(7, 'physical', true, ['armor'], false);
-  ok(phy.text === '👊 7' && phy.post === '⛨' && !phy.critEl, '2. a physical crit keeps 👊 (DN-3), no big glyph');
+  ok(phy.text === '💥 7' && phy.post === '⛨' && !phy.critEl, '2. a physical crit keeps the crit mark 💥 (DN2-3, GD), no big glyph');
   const tick = X.dmgFloatParts(3, 'poison', false, ['fragile'], false);
   ok(tick.text === '☠️ 3' && tick.post === '🦴' && !/-/.test(tick.text), '2. a poison tick: ☠️3🦴, no minus');
   ok(X.dmgFloatParts(2, 'curse', false, null, false).text === '🜏 2', '2. a curse tick keeps its 🜏');
@@ -60,10 +60,10 @@ if(X){
     const q = L < .5 ? L * (1 + S) : L + S - L * S, p = 2 * L - q, f = t=>{ t = (t + 1) % 1; return t < 1/6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2/3 ? p + (q - p) * (2/3 - t) * 6 : p; };
     return '#' + [f(H2 + 1/3), f(H2), f(H2 - 1/3)].map(v=> Math.round(v * 255).toString(16).padStart(2, '0')).join(''); }));
   ok(a && b && Math.abs(((b.h - a.h + 360) % 360) - 12) < 1.5 && Math.abs((b.l - a.l) - 0.10) < 0.01, `2. the crit colour: +12° hue, +10% lightness (${a && a.h.toFixed(1)}→${b && b.h.toFixed(1)}, ${a && a.l.toFixed(2)}→${b && b.l.toFixed(2)})`);
-  ok(X.dnLogNum(14, {mods:['fragile'], crit:true}) === '👊14🦴', '2. the log: 👊14🦴');
+  ok(X.dnLogNum(14, {mods:['fragile'], crit:true}) === '💥14🦴', '2. the log: 💥14🦴 (GD)');
   ok(X.dnLogNum(0, {armorBlocked:true, mods:['armor']}) === '0⛨', '2. the log: blocked to 0 reads 0⛨');
   ok(X.dnLogNum(5, {bulwark:2}) === '5⛨', "2. the log: a bramble's Bulwark is its ⛨");
-  ok(X.dnLogNum(3, {crit:true, ambush:true}) === '3', '2. an Ambush hit gets no 👊 (as its floating number)');
+  ok(X.dnLogNum(3, {crit:true, ambush:true}) === '3', '2. an Ambush hit gets no 💥 (as its floating number)');
   ok(X.dmgLogText(3, 'heat', {mods:['weak']}) === '3💢 🔥 fire damage', `2. the log keeps its words: "${X.dmgLogText(3, 'heat', {mods:['weak']})}"`);
   ok(X.dnText(2, 'physical') === '2', '2. the smack stamp: a bare 2');
 }
@@ -74,7 +74,7 @@ if(X){
   ['☠️ -', '🩸 -', "'🪞 -'", '`🜏-', "'🦠 '+ev.dmg", '`☣️ -', '`🪢 -', '`⚙️ -', '`🏹-', '`💧-', '`☄️-'].forEach(t=> ok(!app.includes(t), `3. the old float "${t}" is gone`));
   ok(/function dnFloat\(el, dmg, o\)/.test(app) && /dnFloat\(el, dmg, \{type: dmgType, crit, mods, blocked, fit: true\}\)/.test(app), '3. flashDmg and every other damage number share dnFloat');
   ok(/hq-big', fit:false\}\); \/\/ 2026-10-17: \+ the element's emoji; DN2/.test(app), "3. a bramble hit's number reads <type><number><mark> on its bar");
-  ok(/\$\{ev\.crit && ev\.ambush\?' 💥 Crit!':''\}/.test(app), '3. the hit line drops "💥 Crit!" for the 👊 on its number (an Ambush keeps the words)');
+  ok(/\$\{ev\.crit && ev\.ambush\?' 💥 Crit!':''\}/.test(app), '3. the hit line drops "💥 Crit!" for the 💥 on its number (an Ambush keeps the words)');
   const fxf = R('bramblewood-fx-f.js'); ok(!/'🦑 −' \+ ev\.dmg/.test(fxf) && /window\.dnText\(ev\.dmg, 'physical'\)/.test(fxf), "3. the tentacle's stamp has no minus");
   const tpl = R('arena_template.html'); ok(/\.dmg-float \.df-ico\.df-crit-g\{font-size:calc\(\.78em \* var\(--dn-crit-scale, 1\.4\)\)/.test(tpl), "3. the crit glyph's size comes from --dn-crit-scale (DMG_CRIT_GLYPH_SCALE)"); }
 

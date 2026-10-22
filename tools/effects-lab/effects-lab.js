@@ -479,7 +479,7 @@ try{ decorateLabFoils(document); }catch(e){}
   if($('#dispCard')){ $('#dispCard').addEventListener('change', paintDisplays); paintDisplays(); }
 
   // --- damage numbers tab
-  const NUMS = [['−3', '-3', ''], ['−12 heavy', '-12', ''], ['👊 Critical', '-11', 'crit'], ['🩸 Bleed', '-2', 'bleed-tick'], ['🔥 Fire', '-4', 'heat'], ['❄️ Cold', '-3', 'cold'],
+  const NUMS = [['−3', '-3', ''], ['−12 heavy', '-12', ''], ['💥 Critical', '-11', 'crit'], ['🩸 Bleed', '-2', 'bleed-tick'], ['🔥 Fire', '-4', 'heat'], ['❄️ Cold', '-3', 'cold'],
     ['☠️ Poison', '-2', 'poison-tick'], ['💚 Heal', '+4', 'heal'], ['🛡 Blocked', '0', 'blocked'], ['🪙 Gold', '+2', 'gold']];
   const ne = $('#numEnemy'), nm = $('#numMine');
   if(ne) ne.setAttribute('data-row', 'enemy'); if(nm) nm.setAttribute('data-row', 'mine');

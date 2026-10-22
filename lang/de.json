@@ -2718,5 +2718,5 @@
  "a challenge card": "eine Herausforderungskarte",
  "A card dropped in this raid fight": "In diesem Raidkampf ist eine Karte gefallen",
  "Reading damage numbers": "Schadenszahlen lesen",
- "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: das Symbol der Schadensart (keins bei einem normalen Treffer, 👊 vorn bei einem Krit), der Schaden, dann wie das Ziel ihn nahm: 🦴 Zerbrechlich (doppelt), 💢 eine Schwäche (mehr), ⛨ Rüstung, eine Resistenz oder ein Schild fing etwas ab, 🚫 immun."
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: das Symbol der Schadensart (keins bei einem normalen Treffer, 💥 vorn bei einem Krit), der Schaden, dann wie das Ziel ihn nahm: 🦴 Zerbrechlich (doppelt), 💢 eine Schwäche (mehr), ⛨ Rüstung, eine Resistenz oder ein Schild fing etwas ab, 🚫 immun."
 }
