@@ -12202,6 +12202,21 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .fxf-rcs-total{display:inline-flex; align-items:center;} .fxf-rcs-total .raid-total-rank{font-size:16px; padding:5px 14px; margin:0;}
 .rk-tk-ico{position:relative; display:inline-block; line-height:1;} .rk-tk-ico i{position:absolute; right:-.38em; bottom:-.28em; font-size:.55em; font-style:normal;}
 .inv-sec .rk-inv-use{margin-top:10px;} .raid-hub .rk-use-row{margin:6px 0;}
+/* 2026-10-23 (package TU2, owner RK1: "call it like Bonus Raid Ticket and it has a different outline"): the A-rank ticket wears a gold
+   ring (a double gold outline and a soft glow); the bought / found Raid Ticket keeps the plain glyph */
+.rk-tk-ico.is-bonus{padding:.06em .14em; border-radius:.32em; outline:.12em solid #d99a1c; outline-offset:.06em; box-shadow:0 0 0 .22em rgba(255,236,170,.8), 0 0 .5em .16em rgba(255,190,60,.75);}
+.rk-tk-ico.is-bonus i{right:-.5em; bottom:-.42em;}
+/* 2026-10-23 (TU2): Coming soon (the Promotion page, its Forge pointer), the Nest's Level 0 head, the Tutorial's way out to Map 0 */
+.tu2-soon-chip{display:inline-block; vertical-align:middle; margin-left:6px; padding:2px 9px; border-radius:999px; font-size:12px; font-weight:800; letter-spacing:.02em; color:var(--text, #2b2118); background:rgba(255,215,120,.35); border:1px dashed rgba(180,130,40,.7);}
+.forge-promote.is-soon{background:rgba(0,0,0,.06); border-style:dashed;}
+.forge-promote.is-soon .btn{margin-top:6px;}
+.tu2-promo-page{max-width:640px; margin:0 auto; text-align:center;}
+.tu2-promo-page p{max-width:52ch; margin:10px auto; line-height:1.5;}
+.tu2-promo-art{display:flex; justify-content:center; align-items:center; gap:14px; margin:18px 0 8px; font-size:52px; opacity:.85;}
+.tu2-promo-art span{display:grid; place-items:center; width:84px; height:110px; border-radius:12px; border:2px dashed rgba(150,110,50,.55); background:rgba(255,240,210,.25);}
+.tu2-promo-art i{font-style:normal; font-size:30px; opacity:.6;}
+@media (max-width:560px){ .tu2-promo-art{font-size:40px;} .tu2-promo-art span{width:66px; height:86px;} }
+.tu2-recruit-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin-top:6px;} .tu2-recruit-head .panel-sub{margin:0; flex:1 1 260px;}
 .raid-hub .rh-tags{display:flex; flex-wrap:wrap; gap:4px;} .raid-hub .rh-tags:empty{display:none;}
 .raid-hub .rh-tag{font-size:11.5px; font-weight:800; padding:1px 8px; border-radius:999px; border:1px solid var(--surface-border);}
 .raid-hub .rh-tag.is-auto{border-color:var(--accent);}
@@ -13051,6 +13066,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
   <div id="view-deck" hidden></div>
   <div id="view-shop" hidden></div>
   <div id="view-nest" hidden></div>
+  <div id="view-promotion" hidden></div>
   <div id="view-market" hidden></div>
   <div id="view-friends" hidden></div>
   <div id="view-profile" hidden></div>

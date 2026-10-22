@@ -336,7 +336,7 @@ Built (changelog 05:30). Choices to check:
 - **0-2's card** (Chipmunk Cavalry) moved to 0-3, so 0-3 gives Owl Nightwatch and Chipmunk Cavalry.
 - **"Both sides" players** get a random faction pack at 0-2.
 - **Strictly better** means Cost and Wait no higher, Attack and Health no lower, at least one strictly better, and no fewer skills.
-- **The tutorial fights** keep their internal ids `tutorial`/`tutorial2` (shown T-0, T-1).
+- **The tutorial fights** keep their internal ids `tutorial`/`tutorial2` (shown T-1, T-2 since 2026-10-23, TU2; the three after them keep keys T-2 / T-3 / T-4 and read T-3 / T-4 / T-5).
 - **The dialogue panel** moved about 5% left on the map, not 8%, so it doesn't cover the map list.
 - **No "Play tutorial" button** turned up after picking a side here. If you still see one, tell me when.
 - **The Misty on 1-1** isn't in the live data. It's probably an edit saved only in your browser.
@@ -438,7 +438,7 @@ All built (see the changelog's 23:30 entry). ✅ Toxin is a real skill since 10-
 
 | Item | What's in the game now |
 |---|---|
-| Tutorial | The tutorials are skirmishes T-0 and T-1 (no "!"); part 1 unlocks "Tutorial Part 2", part 2 "Conquest Map" and has one Claim Rewards button; "This is the enemy Castle" holds the round; the leader's Wait is taught with a pause and a pointer; Initiative waits a turn; all tutorial words shortened |
+| Tutorial | The tutorials are skirmishes T-1 and T-2 (no "!"; labelled T-0 and T-1 until 2026-10-23); part 1 unlocks "Tutorial Part 2", part 2 "Conquest Map" and has one Claim Rewards button; "This is the enemy Castle" holds the round; the leader's Wait is taught with a pause and a pointer; Initiative waits a turn; all tutorial words shortened |
 | Maps | First visit to any map: zoom out, then the skirmishes drop in. Interactibles have no circles. Open-air side maps exit through the main map's icon; caves have a lamp. Critters and your pawn face the way they walk |
 | Lessons | Lumber shown as a picture, a "Needs Lumber" tag on drawn cards, a ghost card dragged to the Graveyard; Maps 0–1 swap in Flying, Swimmer and Diurnal cards; later, better cards are offered as swaps. Armoury on Map 0 |
 | Screens | Back buttons on every page off the map; iPad laid out like a computer; skirmish card fits, B beside the lock, New skills strip off; admin buttons beside the card and Clear/Unclear map on the toolbar (clearing pays the cards) |
