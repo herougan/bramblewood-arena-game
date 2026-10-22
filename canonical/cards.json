@@ -12441,15 +12441,14 @@
     "icon": "\ud83d\udc09",
     "cost": 4,
     "wait": 5,
-    "attack": 4,
-    "health": 20,
+    "attack": 3,
+    "health": 17,
     "dmgType": "heat",
     "resist": [
       "heat"
     ],
     "effects": {
       "flying": true,
-      "stunOnHit": 1,
       "fireArrow": 4,
       "supreme": true
     },
@@ -12489,7 +12488,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (server override folded): was 10/44 mythic (live server version of 2026-10-16; over budget: 2A+H+S 111% -> 99% of N 98.17). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16."
+    "creatorNote": "2026-10-19 retune (server override folded): was 10/44 mythic (live server version of 2026-10-16; over budget: 2A+H+S 111% -> 99% of N 98.17). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 4/20 -> 3/17."
   },
   {
     "id": "white-dragon",
@@ -12498,7 +12497,7 @@
     "cost": 4,
     "wait": 5,
     "attack": 2,
-    "health": 23,
+    "health": 24,
     "dmgType": "cold",
     "resist": [
       "cold"
@@ -12549,7 +12548,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-18 (package D, owner 20:01: \"White Dragon has true strike - it never misses.\"): + True Strike (its attacks never miss). Over budget v3 as before (Dragons are the owner's open call); stats unchanged. 2026-10-19 retune (server override folded): was 10/44 divine (live server version of 2026-10-16; over budget: 2A+H+S 111% -> 96% of N 100.23). 2026-10-19 halve (BF5): was 8/37. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/18. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/19 -> 1/11. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 1/11 -> 2/23."
+    "creatorNote": "2026-10-18 (package D, owner 20:01: \"White Dragon has true strike - it never misses.\"): + True Strike (its attacks never miss). Over budget v3 as before (Dragons are the owner's open call); stats unchanged. 2026-10-19 retune (server override folded): was 10/44 divine (live server version of 2026-10-16; over budget: 2A+H+S 111% -> 96% of N 100.23). 2026-10-19 halve (BF5): was 8/37. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/18. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/19 -> 1/11. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 1/11 -> 2/23. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 2/23 -> 2/24."
   },
   {
     "id": "blue-dragon",
@@ -12557,18 +12556,14 @@
     "icon": "\ud83d\udc09",
     "cost": 4,
     "wait": 5,
-    "attack": 4,
-    "health": 19,
+    "attack": 3,
+    "health": 17,
     "dmgType": "acid",
     "resist": [
       "acid"
     ],
     "effects": {
       "flying": true,
-      "paralyze": {
-        "chance": 50,
-        "duration": 1
-      },
       "lightning": 4,
       "supreme": true,
       "supremeTide": true
@@ -12609,7 +12604,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (v5 L/10): was 10/44 (over budget: 2A+H+S 110.1% -> 99.3% of N 97.13). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16."
+    "creatorNote": "2026-10-19 retune (v5 L/10): was 10/44 (over budget: 2A+H+S 110.1% -> 99.3% of N 97.13). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 4/19 -> 3/17."
   },
   {
     "id": "green-dragon",
@@ -12618,7 +12613,7 @@
     "cost": 4,
     "wait": 5,
     "attack": 3,
-    "health": 20,
+    "health": 21,
     "dmgType": "poison",
     "resist": [
       "poison"
@@ -12664,7 +12659,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (server override folded): was 10/50 mythic (live server version of 2026-10-18; over budget: 2A+H+S 126% -> 100% of N 98.17). 2026-10-19 halve (BF5): was 8/38. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/15. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 3/18 -> 1/7. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 1/7 -> 3/20."
+    "creatorNote": "2026-10-19 retune (server override folded): was 10/50 mythic (live server version of 2026-10-18; over budget: 2A+H+S 126% -> 100% of N 98.17). 2026-10-19 halve (BF5): was 8/38. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/15. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 3/18 -> 1/7. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 1/7 -> 3/20. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 3/20 -> 3/21."
   },
   {
     "id": "black-dragon",
@@ -12672,8 +12667,8 @@
     "icon": "\ud83d\udc09",
     "cost": 4,
     "wait": 5,
-    "attack": 9,
-    "health": 9,
+    "attack": 10,
+    "health": 10,
     "dmgType": "decay",
     "resist": [
       "decay"
@@ -12720,7 +12715,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (server override folded): was 10/50 ancient (live server version of 2026-10-16; over budget: 2A+H+S 120% -> 99% of N 99.2). 2026-10-19 halve (BF5): was 8/41. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/17. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/19. 2026-10-21 human pass I (owner's hub skill costs): 4/20 -> 1/1. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 1/1 -> 8/8. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 8/8 -> 9/9."
+    "creatorNote": "2026-10-19 retune (server override folded): was 10/50 ancient (live server version of 2026-10-16; over budget: 2A+H+S 120% -> 99% of N 99.2). 2026-10-19 halve (BF5): was 8/41. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/17. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/19. 2026-10-21 human pass I (owner's hub skill costs): 4/20 -> 1/1. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 1/1 -> 8/8. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 8/8 -> 9/9. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 9/9 -> 10/10."
   },
   {
     "id": "straw-training-dummy",

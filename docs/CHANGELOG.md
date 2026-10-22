@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package BF9: Legendary skills cheaper, the Red and Blue Dragons trimmed)
+- **Owner (18:20, BF8-3):** "Trim + lower the skill score of the legendary skills. I don't think theyre worth that much. Maybe 3-5."
+- **Prices (`canonical/skill-costs.json`, owner-set):** Supreme 7 → 5, Supreme Tide 8 → 4. True Strike, the third Legendary skill, is already 1.5.
+- **Trim:** Red Dragon loses Stun on Hit, Blue Dragon loses Paralyze. Both now fit the formula: **3/17** each (they were over it at 4/20 and 4/19). Re-fitted with them: White Dragon 2/24, Green Dragon 3/21, Black Dragon 10/10. Fathom Leviathan (Supreme, Tide, Tsunami, Wave) still has no legal line. Band cards without one: 103 → 101.
+
 ## 2026-10-22 (release: batch 10-22)
 - Shipped together: BF8, TU, RW2, FX, DN, FX2, DN2 (entries below). Release checks: `node tests/run.js --full` 50 failing suites against main's 49 (the extra two: ed-2026-10-21 passes alone, 134/134, a load timing; keywords-15r's Bounty check updated for BF8; trench fixed by FX2); card-matrix golden accepted (main's was already stale: 56,437 diffs); e2e ui_smoke 0 failures, flows 0 issues.
 
