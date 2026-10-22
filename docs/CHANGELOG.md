@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (release: batch 10-23)
+- Shipped together: DOC, TU2, RW3, BF10, DF (study), PG, EB (entries below).
+- **Release fixes:** the built-in default deck had 4 Otter Centurions (over PG's Rare limit of 3): now 3, with 5 Bee Knights. The Nest's tab labels keep their emoji outside the translated text, and "Eggs and babies" / "Level 0" were added to the main language packs. A pack's "🪺 Nest" button opens the Nest only when the packs brought a Level 0 recruit, else "⛺ Camp".
+- **Release checks:** full suite: the four new failures were tests on the old rules (Nest tabs, Flying ×1.5) and test setups that started fights with a deck they don't own (PG); all updated and passing. e2e ui_smoke 0 failures, flows 0 issues.
+
 ## 2026-10-23 (package EB: the early road for a fresh player's real deck, Map 1 beatable, items 2% per Energy, 8-Energy capsules)
 - Owner notes of 01:57, items 1, 8 (the rules; the tooltip wording is UI4's) and 9; DF-4 ("Map 1 extremely difficult").
 - **Measured** (`tools/eb_early_road_2026_10_23.js`, `docs/balance/eb-2026-10-23.json`, 100 games a fight and side): the starting deck the

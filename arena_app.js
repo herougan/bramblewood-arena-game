@@ -50621,12 +50621,17 @@ function openPackAnimation(pack, opened, opts){
     const left = opened.length - packIdx - 1;
     // 2026-10-15 (user: "The NEST icon shouldnt be available when opening packs till we have it unlocked"): the 🪺 shortcut
     // shows only once the Nest's map spot has been opened.
-    const nestBtn = featureUnlockedSafe('nest') ? `<button type="button" class="po2-glass" id="poNest" title="See them in your Nest">🪺 Nest</button>` : '';
+    // 2026-10-23 (release 10-23): the Nest lists only Level 0 recruits since TU2 (owner N1), so this button goes to the Nest only when the
+    // packs brought one; otherwise it opens the Camp, where the new cards are. Was always the Nest (a flow found the cards missing there).
+    const poIds = opened.flatMap(x=> (x && x.results) || []).map(r=> r && (r.id || r.defId || r.cardId)).filter(Boolean);
+    const poRecruit = poIds.some(id=> { try{ return nestHasLevel0Copy(id); }catch(e){ return false; } });
+    const nestBtn = poRecruit && featureUnlockedSafe('nest') ? `<button type="button" class="po2-glass" id="poNest" title="See them in your Nest">🪺 Nest</button>`
+      : `<button type="button" class="po2-glass" id="poNest" title="See them in your Camp">⛺ Camp</button>`;
     return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `${nestBtn}<button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
   };
   const wireFoot = ()=>{
     const done = overlay.querySelector('#poDone'); if(done) done.onclick = close;
-    const nest = overlay.querySelector('#poNest'); if(nest) nest.onclick = ()=>{ close(); switchTab('nest'); };
+    const nest = overlay.querySelector('#poNest'); if(nest) nest.onclick = ()=>{ const toNest = /Nest/.test(nest.title); close(); if(toNest){ nestTab = 'recruits'; switchTab('nest'); } else switchTab('deck'); }; // 2026-10-23: the button's own target (see footActions)
     const next = overlay.querySelector('#poNext'); if(next) next.onclick = ()=>{ packIdx++; showPack(); };
     const f = overlay.querySelector('#poNext') || overlay.querySelector('#poDone'); if(f) f.focus({preventScroll:true});
   };

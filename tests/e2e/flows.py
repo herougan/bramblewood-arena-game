@@ -77,7 +77,7 @@ async def main():
         await pg.close()
     # 1-tut. the tutorial's first guided steps lock everything but the step; the tutorial gates the game
     pg, errs = await fresh(b)
-    await pg.evaluate("localStorage.removeItem('bramblewood_arena_tutorial_done'); GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); beginTutorialStage(1); 1"); await pg.wait_for_timeout(1500)
+    await pg.evaluate("localStorage.removeItem('bramblewood_arena_tutorial_done'); localStorage.removeItem('bramblewood_tutorial2_done_v1'); /* 2026-10-23 (TU2): the T-2 flag would heal the T-1 one */ GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); beginTutorialStage(1); 1"); await pg.wait_for_timeout(1500)
     q = await pg.query_selector('#quitMatchBtn')
     if q:
         bb = await q.bounding_box(); await pg.mouse.click(bb['x']+bb['width']/2, bb['y']+bb['height']/2); await pg.wait_for_timeout(500)
@@ -159,10 +159,12 @@ async def main():
     await pg.click('[data-buypack="bronze"]:not([data-qty])'); await pg.wait_for_timeout(400); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(400)
     got = await pg.evaluate("[...document.querySelectorAll('.po-card .card-tile')].map(e=>e.dataset.defid)")
     await pg.click('#poNest'); await pg.wait_for_timeout(500)
-    if await pg.evaluate("currentTab")!='nest': bad('pack: "See them in the Nest" did not open the Nest')
-    nest = await pg.evaluate("[...document.querySelectorAll('#nestGrid [data-nestcard]')].map(e=>e.dataset.nestcard)")
-    for d in got:
-        if d not in nest: bad(f'pack: {d} not in the Nest')
+    # 2026-10-23 (TU2): the Nest lists only Level 0 recruits; with none in the packs the button opens the Camp instead
+    tab = await pg.evaluate("currentTab")
+    if tab=='nest':
+        nest = await pg.evaluate("[...document.querySelectorAll('#nestGrid [data-nestcard]')].map(e=>e.dataset.nestcard)")
+        if not any(d in nest for d in got): bad('pack: the Nest opened but shows none of the new recruits')
+    elif tab!='deck': bad(f'pack: the button opened {tab}, not the Nest or the Camp')
     await pg.evaluate("switchTab('deck'); 1"); await pg.wait_for_timeout(400)
     # open the deck editor
     ed = await pg.query_selector('[data-editdeck]')
