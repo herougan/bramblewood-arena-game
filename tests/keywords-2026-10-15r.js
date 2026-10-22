@@ -89,7 +89,11 @@ for(let s = 1; s <= 8; s++){ const {e, P} = mk(null, s); const far = put(e, P, 2
 { const {e, P} = mk(); const l0 = P[1].lumber; const W = put(e, P, 1, 'kr-worthy', 0); const A = put(e, P, 2, 'kr-hit', 0); A.atk = 9; const f0 = P[2].lumber;
   ok(P[1].lumber === l0, `26. a raw Worthy 3 pays nothing on play any more (${P[1].lumber - l0})`); e.debugAttack(P, so, A.uid, {}, []); e.removeDeadCards(P, so, {}, {}, []); ok(W.hp <= 0 && P[2].lumber === f0, `26. ...nor on death (${P[2].lumber - f0})`); }
 ok(!cards.some(c=> 'worthy' in (c.effects||{})), '26. no card carries Worthy');
-{ const c = id=> cards.find(x=> x.id === id).effects.bounty; ok(c('elder-willow') === 2 && c('beaver-lumberjack') === 2 && c('field-mouse') === 1, '26. Worthy N moved to Bounty N (Worthy 2 + Bounty 1 = Bounty 2)'); }
+// 2026-10-22 (BF8, owner 12:00: "remove bounty from all cards with bounty. Only those thematic"): Bounty stays on 8 loot carriers only;
+// Beaver Lumberjack keeps its folded Worthy 2 (Bounty 2), Elder Willow and Field Mouse lost theirs.
+{ const KEEP = ['trash-panda-trickster','raccoon-bandit','raccoon-warlord','magnate-duck','chipmunk-stockpiler','pack-mule','riverside-peddler','beaver-lumberjack'];
+  const has = cards.filter(x=> !x.test && 'bounty' in (x.effects || {})).map(x=> x.id).sort();
+  ok(cards.find(x=> x.id === 'beaver-lumberjack').effects.bounty === 2 && has.every(id=> KEEP.includes(id)), `26. Bounty only on the 8 loot carriers; Beaver Lumberjack's is 2 (${has.join(', ')})`); }
 ok(/\{key:'worthy', category:'passive', hidden:true, retired:true,/.test(src), '26. Worthy is out of the editor and the lists');
 
 // ---- 43. every extra hit rolls its own miss
