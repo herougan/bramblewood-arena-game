@@ -38,7 +38,8 @@ function grab(name){
   if(m) return src.slice(m.index, declEnd(src, m.index + m[0].length, false));
   throw new Error('arena_app.js: no declaration ' + name);
 }
-const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', 'ROAD_RARITY_ALIAS', 'roadRarityStep',
+const NAMES = [/* 2026-10-22 (package SK): the skirmish leader rule and the battle rating the deck tools measure against */ 'RARITY_DEFS', 'RARITY_TIER_BANDS', 'RATING_WEIGHT', 'ratingWeightOf', 'ratingLevelFactor', 'deckLevelFrom', 'enemyDeckLevel', 'edRealNode', 'nodeShowcaseId', 'SKIRMISH_LEADER_FROM_MAP', 'skirmishLeadersOf',
+  'RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', 'ROAD_RARITY_ALIAS', 'roadRarityStep',
   /* 2026-10-22 (package DV): the rarity ladder */ 'RARITY_INTRO', 'SIDE_RARITY_INTRO', 'ROAD_MAIN_FROM', 'ROAD_EPIC_HEROIC_FROM', 'ROAD_NEVER', 'roadNever', 'rarityIntroMap', 'roadRevealedCap', 'roadSkirmishCap', 'roadStepCap', 'roadBossCap', 'roadRarityCap', 'roadRarityOk',
   /* 2026-10-19 (EE): no source gives an Easter egg */ 'EASTER_EGG_IDS', 'isEasterEgg',
   'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
@@ -70,7 +71,7 @@ const body = [
   // Maps 1-4 an elite, every 5th map a boss, the rest a mini-boss). The tools read the source's kinds before today, so every map ender
   // was measured with the wrong Shield multiplier, castle level, CPU level and boss enemy level (e.g. 1-5 as a boss; the game's is an elite).
   'applyRoadKinds();',
-  'return {CONQUEST_MAPS, mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, prepareLeaderGrants, applySkirmishSetup, fightRules, levelledEnemyDeck, roadEnemyLevel, cpuAiLevelForNode,',
+  'return {CONQUEST_MAPS, skirmishLeadersOf, nodeShowcaseId, enemyDeckLevel, ratingWeightOf, ratingLevelFactor, RATING_WEIGHT, SKIRMISH_LEADER_FROM_MAP, mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, prepareLeaderGrants, applySkirmishSetup, fightRules, levelledEnemyDeck, roadEnemyLevel, cpuAiLevelForNode,',
   '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, roadRarityStep, ROAD_RARITY_STEPS, RARITY_INTRO, SIDE_RARITY_INTRO, ROAD_MAIN_FROM, ROAD_NEVER, roadNever, rarityIntroMap, roadRevealedCap, /* DV 2026-10-22 */ statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
   '  roadEnderKind, WINRATE_REF_DECKS, referencePlayerLevel, referenceDeckFor, referenceFightSetup, playReferenceGame, simulateReferenceFight, skirmishTargetWinRate, roadCurveTarget, skirmishTargetBand, skirmishCurveChipHTML, skirmishCurveCache, skirmishCurveNote, checkSkirmishCurve, skirmishCurveSimCache, SKIRMISH_CURVE_SIMS,',
   '  ROAD_LEVEL_CURVE, ENDLESS_FLOOR_CURVE, levelForGain, levelMix, levelMixDeck, roadEnemyLevelExact, roadMapOfFight, shieldMapOf,',

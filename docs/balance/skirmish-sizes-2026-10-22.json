@@ -1,0 +1,4623 @@
+{
+ "_about": "Package SK (2026-10-22): every skirmish deck (main maps and submaps, not the endless dungeons or the Tutorial lessons) as 5-7 different cards, its leader (Map 2 on: the showcase card) and the battle rating (enemyDeckLevel; leader counted) before and after. `from` is the deck before the package. node tools/skirmish_sizes_2026_10_22.js plan|apply|check.",
+ "nodes": {
+  "m1/0-1": {
+   "mapNo": 0,
+   "from": {
+    "duckling": 3,
+    "honey-bee": 4,
+    "pond-duck": 3,
+    "crossed-eyes": 3,
+    "garden-snail": 4,
+    "silver-minnow": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "crossed-eyes": 3,
+    "duckling": 3,
+    "garden-snail": 4,
+    "honey-bee": 4,
+    "pond-duck": 3,
+    "silver-minnow": 3
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 9,
+   "brAfter": 9,
+   "tier": "A",
+   "notes": []
+  },
+  "m1/0-2": {
+   "mapNo": 0,
+   "from": {
+    "ant-scout": 3,
+    "bee-sentry": 3,
+    "river-carp": 4,
+    "bee-forager": 3,
+    "forager-ant": 3,
+    "duck-paddler": 4
+   },
+   "showcaseBefore": "ant-scout",
+   "to": {
+    "ant-scout": 3,
+    "bee-forager": 3,
+    "bee-sentry": 3,
+    "duck-paddler": 4,
+    "forager-ant": 3,
+    "river-carp": 4
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 11,
+   "brAfter": 11,
+   "tier": "A",
+   "notes": []
+  },
+  "m1/0-3": {
+   "mapNo": 0,
+   "from": {
+    "house-cat": 3,
+    "cottontail": 3,
+    "feral-tomcat": 4,
+    "meadow-rabbit": 4,
+    "chipmunk-forager": 3,
+    "chipmunk-skirmisher": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "chipmunk-forager": 3,
+    "chipmunk-skirmisher": 3,
+    "cottontail": 3,
+    "feral-tomcat": 4,
+    "house-cat": 3,
+    "meadow-rabbit": 4
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 15,
+   "brAfter": 15,
+   "tier": "A",
+   "notes": []
+  },
+  "m1/0-4": {
+   "mapNo": 0,
+   "from": {
+    "fox-kit": 4,
+    "otter-kit": 2,
+    "beetle-grunt": 4,
+    "duck-paddler": 4,
+    "feral-tomcat": 4,
+    "cobalt-talon-fledgling": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "beetle-grunt": 4,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 4,
+    "feral-tomcat": 4,
+    "fox-kit": 4,
+    "otter-kit": 2
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 16,
+   "brAfter": 16,
+   "tier": "A",
+   "notes": []
+  },
+  "mf/1-1": {
+   "mapNo": 1,
+   "from": {
+    "bramble-sprout": 3,
+    "compost-grub": 3,
+    "cricket-drummer": 3,
+    "dormouse": 3,
+    "field-mouse": 3,
+    "field-vole": 3,
+    "harvest-mouse": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bramble-sprout": 3,
+    "compost-grub": 3,
+    "cricket-drummer": 3,
+    "dormouse": 3,
+    "field-mouse": 4,
+    "field-vole": 4
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 19,
+   "brAfter": 20,
+   "tier": "A",
+   "notes": [
+    "-harvest-mouse"
+   ]
+  },
+  "mf/1-2": {
+   "mapNo": 1,
+   "from": {
+    "bramble-sprout": 3,
+    "compost-grub": 3,
+    "cricket-drummer": 3,
+    "dormouse": 3,
+    "harvest-mouse": 3,
+    "meadow-frog": 3,
+    "quarry-mole": 2
+   },
+   "showcaseBefore": "bramble-sprout",
+   "to": {
+    "bramble-sprout": 3,
+    "cricket-drummer": 3,
+    "dormouse": 4,
+    "harvest-mouse": 4,
+    "meadow-frog": 4,
+    "quarry-mole": 2
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 19,
+   "brAfter": 18,
+   "tier": "A",
+   "notes": [
+    "-compost-grub"
+   ]
+  },
+  "mf/1-3": {
+   "mapNo": 1,
+   "from": {
+    "bramble-sprout": 3,
+    "compost-grub": 3,
+    "field-mouse": 3,
+    "field-vole": 3,
+    "meadow-frog": 3,
+    "quarry-mole": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bramble-sprout": 3,
+    "compost-grub": 3,
+    "field-mouse": 3,
+    "field-vole": 3,
+    "meadow-frog": 3,
+    "quarry-mole": 3
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 20,
+   "brAfter": 20,
+   "tier": "A",
+   "notes": []
+  },
+  "mf/1-4": {
+   "mapNo": 1,
+   "from": {
+    "cricket-drummer": 3,
+    "dormouse": 3,
+    "field-mouse": 3,
+    "field-vole": 3,
+    "harvest-mouse": 3,
+    "meadow-frog": 3,
+    "quarry-mole": 2
+   },
+   "showcaseBefore": "quarry-mole",
+   "to": {
+    "dormouse": 3,
+    "field-mouse": 3,
+    "field-vole": 4,
+    "harvest-mouse": 4,
+    "meadow-frog": 4,
+    "quarry-mole": 2
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 19,
+   "brAfter": 18,
+   "tier": "A",
+   "notes": [
+    "-cricket-drummer"
+   ]
+  },
+  "mb/2-1": {
+   "mapNo": 2,
+   "from": {
+    "conch-crawler": 3,
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 3,
+    "pincushion-urchin": 3,
+    "sea-turtle-elder": 3,
+    "tide-pool-crab": 2
+   },
+   "showcaseBefore": "open-ocean-hermit-crab",
+   "to": {
+    "conch-crawler": 3,
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 3,
+    "pincushion-urchin": 4,
+    "sea-turtle-elder": 4
+   },
+   "showcase": "open-ocean-hermit-crab",
+   "leader": "open-ocean-hermit-crab",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": [
+    "-tide-pool-crab"
+   ]
+  },
+  "mb/2-2": {
+   "mapNo": 2,
+   "from": {
+    "conch-crawler": 3,
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 3,
+    "pincushion-urchin": 3,
+    "tide-pool-crab": 3,
+    "tidepool-trapper-crab": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "conch-crawler": 3,
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 3,
+    "pincushion-urchin": 4,
+    "tide-pool-crab": 4
+   },
+   "showcase": null,
+   "leader": "fiddler-crab-swarm",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": [
+    "-tidepool-trapper-crab"
+   ]
+  },
+  "mb/2-3": {
+   "mapNo": 2,
+   "from": {
+    "conch-crawler": 4,
+    "open-ocean-hermit-crab": 3,
+    "tide-pool-crab": 3,
+    "tidepool-trapper-crab": 3,
+    "conch-herald": 3,
+    "grey-seal-bull": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "conch-crawler": 4,
+    "open-ocean-hermit-crab": 4,
+    "tide-pool-crab": 4,
+    "tidepool-trapper-crab": 4,
+    "conch-herald": 1,
+    "grey-seal-bull": 1
+   },
+   "showcase": null,
+   "leader": "grey-seal-bull",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 26,
+   "brAfter": 26,
+   "tier": "A",
+   "notes": []
+  },
+  "mb/2-4": {
+   "mapNo": 2,
+   "from": {
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 3,
+    "sea-turtle-elder": 3,
+    "tide-pool-crab": 3,
+    "conch-herald": 2,
+    "grey-seal-bull": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "gull-thief": 4,
+    "open-ocean-hermit-crab": 4,
+    "sea-turtle-elder": 4,
+    "tide-pool-crab": 5,
+    "conch-herald": 1,
+    "grey-seal-bull": 1
+   },
+   "showcase": null,
+   "leader": "grey-seal-bull",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 19,
+   "copiesAfter": 19,
+   "brBefore": 24,
+   "brAfter": 26,
+   "tier": "B",
+   "notes": [
+    "-fiddler-crab-swarm"
+   ]
+  },
+  "mc/3-1": {
+   "mapNo": 3,
+   "from": {
+    "hawk-arrowkeeper": 3,
+    "kittiwake-flock": 3,
+    "peak-condor": 3,
+    "puffin-diver": 3,
+    "red-billed-chough": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hawk-arrowkeeper": 3,
+    "kittiwake-flock": 3,
+    "peak-condor": 3,
+    "puffin-diver": 3,
+    "red-billed-chough": 3
+   },
+   "showcase": null,
+   "leader": "peak-condor",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": []
+  },
+  "mc/3-2": {
+   "mapNo": 3,
+   "from": {
+    "hawk-arrowkeeper": 3,
+    "kittiwake-flock": 3,
+    "peak-condor": 3,
+    "puffin-diver": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hawk-arrowkeeper": 2,
+    "kittiwake-flock": 2,
+    "peak-condor": 3,
+    "puffin-diver": 3,
+    "red-billed-chough": 2
+   },
+   "showcase": null,
+   "leader": "peak-condor",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": [
+    "+red-billed-chough"
+   ]
+  },
+  "mc/3-3": {
+   "mapNo": 3,
+   "from": {
+    "hawk-arrowkeeper": 3,
+    "kittiwake-flock": 3,
+    "peak-condor": 3,
+    "puffin-diver": 3,
+    "red-billed-chough": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hawk-arrowkeeper": 3,
+    "kittiwake-flock": 3,
+    "peak-condor": 3,
+    "puffin-diver": 3,
+    "red-billed-chough": 3
+   },
+   "showcase": null,
+   "leader": "peak-condor",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": []
+  },
+  "mc/3-4": {
+   "mapNo": 3,
+   "from": {
+    "kittiwake-flock": 4,
+    "fulmar-spitter": 3,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 2,
+    "peregrine-stooper": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "kittiwake-flock": 5,
+    "fulmar-spitter": 2,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 2,
+    "peregrine-stooper": 2
+   },
+   "showcase": null,
+   "leader": "mountain-goat-climber",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 34,
+   "brAfter": 37,
+   "tier": "B",
+   "notes": []
+  },
+  "m2/4-1": {
+   "mapNo": 4,
+   "from": {
+    "box-turtle": 3,
+    "snapstick-turtle": 3,
+    "stone-turtle-warden": 3,
+    "water-shrew": 2,
+    "water-vole": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "box-turtle": 3,
+    "snapstick-turtle": 3,
+    "stone-turtle-warden": 3,
+    "water-shrew": 2,
+    "water-vole": 2
+   },
+   "showcase": null,
+   "leader": "snapstick-turtle",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 13,
+   "copiesAfter": 13,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": []
+  },
+  "m2/4-2": {
+   "mapNo": 4,
+   "from": {
+    "box-turtle": 4,
+    "snapstick-turtle": 3,
+    "stone-turtle-warden": 3,
+    "water-shrew": 3,
+    "water-vole": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "box-turtle": 4,
+    "snapstick-turtle": 3,
+    "stone-turtle-warden": 3,
+    "water-shrew": 3,
+    "water-vole": 3
+   },
+   "showcase": null,
+   "leader": "snapstick-turtle",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": []
+  },
+  "mw/5-1": {
+   "mapNo": 5,
+   "from": {
+    "caiman-hatchling": 3,
+    "constrictor-coil": 3,
+    "crocodile-ambusher": 3,
+    "snapper-hatchling": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "caiman-hatchling": 2,
+    "constrictor-coil": 2,
+    "crocodile-ambusher": 3,
+    "snapper-hatchling": 3,
+    "venomlord-serpent": 2
+   },
+   "showcase": null,
+   "leader": "crocodile-ambusher",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 20,
+   "brAfter": 22,
+   "tier": "B",
+   "notes": [
+    "+venomlord-serpent"
+   ]
+  },
+  "mw/5-2": {
+   "mapNo": 5,
+   "from": {
+    "caiman-hatchling": 3,
+    "constrictor-coil": 3,
+    "snapper-hatchling": 3,
+    "venomlord-serpent": 3,
+    "grass-snake": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "caiman-hatchling": 3,
+    "constrictor-coil": 3,
+    "snapper-hatchling": 3,
+    "swamp-alligator": 2,
+    "venomlord-serpent": 3
+   },
+   "showcase": null,
+   "leader": "venomlord-serpent",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 23,
+   "brAfter": 22,
+   "tier": "A",
+   "notes": [
+    "swap grass-snake->swamp-alligator"
+   ]
+  },
+  "mw/5-3": {
+   "mapNo": 5,
+   "from": {
+    "constrictor-coil": 4,
+    "snapper-hatchling": 3,
+    "swamp-alligator": 3,
+    "grass-viper": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "constrictor-coil": 3,
+    "snapper-hatchling": 3,
+    "swamp-alligator": 3,
+    "venomlord-serpent": 2,
+    "grass-viper": 1
+   },
+   "showcase": "venomlord-serpent",
+   "leader": "venomlord-serpent",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 23,
+   "brAfter": 24,
+   "tier": "A",
+   "notes": [
+    "+venomlord-serpent",
+    "showcase set by hand: venomlord-serpent (Auto, grass-viper, is no sensible leader)"
+   ]
+  },
+  "mw/5-4": {
+   "mapNo": 5,
+   "from": {
+    "caiman-hatchling": 4,
+    "snapper-hatchling": 3,
+    "venomlord-serpent": 3,
+    "fen-mink": 3,
+    "grass-viper": 3,
+    "alligator-gar": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "caiman-hatchling": 4,
+    "snapper-hatchling": 3,
+    "venomlord-serpent": 3,
+    "fen-mink": 3,
+    "grass-viper": 4,
+    "alligator-gar": 1
+   },
+   "showcase": "venomlord-serpent",
+   "leader": "venomlord-serpent",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 33,
+   "brAfter": 33,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: venomlord-serpent (Auto, alligator-gar, is no sensible leader)"
+   ]
+  },
+  "m8/6-1": {
+   "mapNo": 6,
+   "from": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "mire-witch-heron": 3,
+    "poison-dart-croaker": 2,
+    "bogfire-newt": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "mire-witch-heron": 3,
+    "poison-dart-croaker": 3,
+    "bogfire-newt": 1
+   },
+   "showcase": null,
+   "leader": "bogfire-newt",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 23,
+   "brAfter": 25,
+   "tier": "B",
+   "notes": []
+  },
+  "m8/6-2": {
+   "mapNo": 6,
+   "from": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "mire-witch-heron": 3,
+    "poison-dart-croaker": 3,
+    "booming-bittern": 3,
+    "newt-doctor": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 3,
+    "marsh-wisp": 4,
+    "mire-witch-heron": 4,
+    "poison-dart-croaker": 4,
+    "booming-bittern": 2
+   },
+   "showcase": null,
+   "leader": "booming-bittern",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 25,
+   "brAfter": 26,
+   "tier": "A",
+   "notes": [
+    "-newt-doctor"
+   ]
+  },
+  "m8/6-3": {
+   "mapNo": 6,
+   "from": {
+    "camouflage-frog": 4,
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "bogfire-newt": 3,
+    "booming-bittern": 3,
+    "newt-doctor": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 4,
+    "marsh-wisp": 4,
+    "bogfire-newt": 2,
+    "booming-bittern": 2,
+    "newt-doctor": 1
+   },
+   "showcase": null,
+   "leader": "bogfire-newt",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 29,
+   "brAfter": 30,
+   "tier": "A",
+   "notes": []
+  },
+  "m8/6-4": {
+   "mapNo": 6,
+   "from": {
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "bogfire-newt": 3,
+    "adder-ambusher": 2,
+    "raven-scout": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "constrictor-coil": 3,
+    "marsh-wisp": 4,
+    "bogfire-newt": 4,
+    "adder-ambusher": 1,
+    "raven-scout": 1
+   },
+   "showcase": null,
+   "leader": "adder-ambusher",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 13,
+   "copiesAfter": 13,
+   "brBefore": 43,
+   "brAfter": 43,
+   "tier": "A",
+   "notes": []
+  },
+  "mu/7-1": {
+   "mapNo": 7,
+   "from": {
+    "compost-grub": 4,
+    "dung-beetle": 3,
+    "fungal-colossus": 3,
+    "truffle-piglet": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "compost-grub": 3,
+    "dung-beetle": 4,
+    "fungal-colossus": 3,
+    "hollow-oath-keeper": 1,
+    "truffle-piglet": 1
+   },
+   "showcase": null,
+   "leader": "truffle-piglet",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 30,
+   "brAfter": 33,
+   "tier": "C",
+   "notes": [
+    "+hollow-oath-keeper"
+   ]
+  },
+  "mu/7-2": {
+   "mapNo": 7,
+   "from": {
+    "compost-grub": 3,
+    "dung-beetle": 3,
+    "hollow-oath-keeper": 3,
+    "leafcutter-gardener": 3,
+    "owl-nightwatch": 3,
+    "ant-warrior": 2,
+    "planarian-splitter": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "compost-grub": 3,
+    "dung-beetle": 3,
+    "hollow-oath-keeper": 3,
+    "leafcutter-gardener": 4,
+    "owl-nightwatch": 4,
+    "ant-warrior": 1,
+    "planarian-splitter": 1
+   },
+   "showcase": null,
+   "leader": "planarian-splitter",
+   "sizeBefore": 7,
+   "sizeAfter": 7,
+   "copiesBefore": 19,
+   "copiesAfter": 19,
+   "brBefore": 32,
+   "brAfter": 34,
+   "tier": "B",
+   "notes": []
+  },
+  "mu/7-3": {
+   "mapNo": 7,
+   "from": {
+    "dung-beetle": 4,
+    "leafcutter-gardener": 4,
+    "ant-warrior": 3,
+    "planarian-splitter": 2,
+    "wolf-spider-mother": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "dung-beetle": 5,
+    "leafcutter-gardener": 5,
+    "ant-warrior": 2,
+    "planarian-splitter": 2,
+    "wolf-spider-mother": 1
+   },
+   "showcase": null,
+   "leader": "wolf-spider-mother",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 45,
+   "brAfter": 49,
+   "tier": "B",
+   "notes": []
+  },
+  "mu/7-4": {
+   "mapNo": 7,
+   "from": {
+    "fungal-colossus": 3,
+    "hollow-oath-keeper": 3,
+    "owl-nightwatch": 3,
+    "ant-warrior": 3,
+    "planarian-splitter": 2,
+    "truffle-piglet": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "fungal-colossus": 3,
+    "hollow-oath-keeper": 4,
+    "owl-nightwatch": 4,
+    "ant-warrior": 2,
+    "planarian-splitter": 1,
+    "truffle-piglet": 2
+   },
+   "showcase": null,
+   "leader": "planarian-splitter",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 38,
+   "brAfter": 40,
+   "tier": "A",
+   "notes": []
+  },
+  "m4/8-1": {
+   "mapNo": 8,
+   "from": {
+    "blind-cave-fish": 3,
+    "cave-olm": 3,
+    "nightshade-moth": 3,
+    "stalactite-golem": 3,
+    "star-nosed-mole": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "blind-cave-fish": 1,
+    "cave-olm": 1,
+    "nightshade-moth": 4,
+    "stalactite-golem": 5,
+    "star-nosed-mole": 3
+   },
+   "showcase": null,
+   "leader": "stalactite-golem",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 26,
+   "brAfter": 29,
+   "tier": "C",
+   "notes": []
+  },
+  "m4/8-2": {
+   "mapNo": 8,
+   "from": {
+    "blind-cave-fish": 3,
+    "stalactite-golem": 3,
+    "star-nosed-mole": 3,
+    "sulfur-cinder-moth": 3,
+    "vampire-bat": 2,
+    "whip-spider": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "blind-cave-fish": 3,
+    "stalactite-golem": 3,
+    "star-nosed-mole": 4,
+    "sulfur-cinder-moth": 4,
+    "vampire-bat": 1,
+    "whip-spider": 1
+   },
+   "showcase": null,
+   "leader": "whip-spider",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 33,
+   "brAfter": 35,
+   "tier": "B",
+   "notes": []
+  },
+  "m4/8-3": {
+   "mapNo": 8,
+   "from": {
+    "cave-olm": 4,
+    "nightshade-moth": 3,
+    "sulfur-cinder-moth": 3,
+    "vampire-bat": 2,
+    "whip-spider": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cave-olm": 4,
+    "nightshade-moth": 4,
+    "sulfur-cinder-moth": 4,
+    "vampire-bat": 1,
+    "whip-spider": 1
+   },
+   "showcase": null,
+   "leader": "whip-spider",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 34,
+   "brAfter": 35,
+   "tier": "A",
+   "notes": []
+  },
+  "m4/8-4": {
+   "mapNo": 8,
+   "from": {
+    "blind-cave-fish": 4,
+    "vampire-bat": 3,
+    "echo-screecher": 3,
+    "giant-cave-huntsman": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "blind-cave-fish": 4,
+    "vampire-bat": 3,
+    "whip-spider": 2,
+    "echo-screecher": 2,
+    "giant-cave-huntsman": 1
+   },
+   "showcase": null,
+   "leader": "giant-cave-huntsman",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 65,
+   "brAfter": 67,
+   "tier": "A",
+   "notes": [
+    "+whip-spider"
+   ]
+  },
+  "m4/8-5": {
+   "mapNo": 8,
+   "from": {
+    "cave-olm": 4,
+    "sulfur-cinder-moth": 4,
+    "vampire-bat": 2,
+    "whip-spider": 2,
+    "echo-screecher": 2,
+    "giant-cave-huntsman": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cave-olm": 4,
+    "sulfur-cinder-moth": 5,
+    "vampire-bat": 2,
+    "whip-spider": 3,
+    "echo-screecher": 1,
+    "giant-cave-huntsman": 1
+   },
+   "showcase": null,
+   "leader": "giant-cave-huntsman",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 53,
+   "brAfter": 54,
+   "tier": "A",
+   "notes": []
+  },
+  "m4/8-6": {
+   "mapNo": 8,
+   "from": {
+    "blind-cave-fish": 4,
+    "stalactite-golem": 4,
+    "vampire-bat": 2,
+    "whip-spider": 2,
+    "echo-screecher": 2,
+    "giant-cave-huntsman": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "blind-cave-fish": 4,
+    "stalactite-golem": 5,
+    "vampire-bat": 2,
+    "whip-spider": 3,
+    "echo-screecher": 1,
+    "giant-cave-huntsman": 1
+   },
+   "showcase": null,
+   "leader": "giant-cave-huntsman",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 53,
+   "brAfter": 54,
+   "tier": "A",
+   "notes": []
+  },
+  "mk/9-1": {
+   "mapNo": 9,
+   "from": {
+    "mangrove-monitor": 3,
+    "mangrove-mudskipper": 3,
+    "minnow-skitter": 3,
+    "mudpuppy": 3,
+    "reef-shark": 2,
+    "archerfish": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "mangrove-monitor": 1,
+    "mangrove-mudskipper": 1,
+    "minnow-skitter": 4,
+    "mudpuppy": 5,
+    "reef-shark": 4,
+    "archerfish": 1
+   },
+   "showcase": null,
+   "leader": "archerfish",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 30,
+   "brAfter": 33,
+   "tier": "C",
+   "notes": []
+  },
+  "mk/9-2": {
+   "mapNo": 9,
+   "from": {
+    "mangrove-mudskipper": 4,
+    "minnow-skitter": 3,
+    "banded-sea-krait": 3,
+    "sunbittern-strider": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "mangrove-mudskipper": 5,
+    "minnow-skitter": 4,
+    "archerfish": 1,
+    "banded-sea-krait": 1,
+    "sunbittern-strider": 1
+   },
+   "showcase": null,
+   "leader": "sunbittern-strider",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 37,
+   "brAfter": 38,
+   "tier": "A",
+   "notes": [
+    "+archerfish"
+   ]
+  },
+  "mk/9-3": {
+   "mapNo": 9,
+   "from": {
+    "mangrove-mudskipper": 4,
+    "minnow-skitter": 3,
+    "reef-shark": 3,
+    "mangrove-kingfisher": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "mangrove-monitor": 2,
+    "mangrove-mudskipper": 3,
+    "minnow-skitter": 3,
+    "reef-shark": 3,
+    "mangrove-kingfisher": 1
+   },
+   "showcase": null,
+   "leader": "mangrove-kingfisher",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 40,
+   "brAfter": 43,
+   "tier": "B",
+   "notes": [
+    "+archerfish",
+    "swap archerfish->mangrove-monitor"
+   ]
+  },
+  "mk/9-4": {
+   "mapNo": 9,
+   "from": {
+    "mangrove-mudskipper": 3,
+    "mudpuppy": 3,
+    "reef-shark": 3,
+    "archerfish": 3,
+    "banded-sea-krait": 3,
+    "mangrove-manatee": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "mangrove-mudskipper": 4,
+    "mudpuppy": 4,
+    "reef-shark": 5,
+    "archerfish": 1,
+    "banded-sea-krait": 2,
+    "mangrove-manatee": 1
+   },
+   "showcase": null,
+   "leader": "mangrove-manatee",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 45,
+   "brAfter": 45,
+   "tier": "A",
+   "notes": []
+  },
+  "m7/10-1": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 4,
+    "kraken-spawnling": 3,
+    "parrotfish": 3,
+    "coral-reef-shark": 3,
+    "electric-ray": 3,
+    "riptide-eel": 2,
+    "swordfish-spearman": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 5,
+    "kraken-spawnling": 4,
+    "parrotfish": 5,
+    "coral-reef-shark": 2,
+    "electric-ray": 3,
+    "swordfish-spearman": 1
+   },
+   "showcase": null,
+   "leader": "swordfish-spearman",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 45,
+   "brAfter": 47,
+   "tier": "A",
+   "notes": [
+    "-riptide-eel"
+   ]
+  },
+  "m7/10-2": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 4,
+    "parrotfish": 3,
+    "electric-ray": 3,
+    "riptide-eel": 2,
+    "great-barracuda": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 5,
+    "parrotfish": 5,
+    "electric-ray": 2,
+    "riptide-eel": 1,
+    "great-barracuda": 1
+   },
+   "showcase": null,
+   "leader": "great-barracuda",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 47,
+   "brAfter": 47,
+   "tier": "A",
+   "notes": []
+  },
+  "m7/10-3": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 4,
+    "parrotfish": 3,
+    "coral-reef-shark": 3,
+    "electric-ray": 2,
+    "lions-mane-jelly": 2,
+    "riptide-eel": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 5,
+    "parrotfish": 4,
+    "coral-reef-shark": 2,
+    "electric-ray": 1,
+    "lions-mane-jelly": 2,
+    "riptide-eel": 2
+   },
+   "showcase": null,
+   "leader": "riptide-eel",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 41,
+   "brAfter": 43,
+   "tier": "A",
+   "notes": []
+  },
+  "m7/10-4": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 4,
+    "coral-reef-shark": 3,
+    "electric-ray": 3,
+    "lions-mane-jelly": 2,
+    "riptide-eel": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 5,
+    "coral-reef-shark": 2,
+    "electric-ray": 3,
+    "lions-mane-jelly": 2,
+    "riptide-eel": 2
+   },
+   "showcase": null,
+   "leader": "riptide-eel",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 44,
+   "brAfter": 48,
+   "tier": "B",
+   "notes": []
+  },
+  "m7/10-5": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 4,
+    "kraken-spawnling": 4,
+    "great-barracuda": 2,
+    "colossal-squid": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 4,
+    "kraken-spawnling": 5,
+    "great-barracuda": 1,
+    "swordfish-spearman": 1,
+    "colossal-squid": 1
+   },
+   "showcase": null,
+   "leader": "colossal-squid",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 62,
+   "brAfter": 66,
+   "tier": "B",
+   "notes": [
+    "+swordfish-spearman"
+   ]
+  },
+  "m10/11-1": {
+   "mapNo": 11,
+   "from": {
+    "alpine-marmot": 4,
+    "chipmunk-hoarder": 3,
+    "eyrie-warden": 3,
+    "apollo-butterfly": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 3,
+    "chipmunk-hoarder": 2,
+    "eyrie-warden": 3,
+    "mountain-hare": 2,
+    "swamp-alligator": 2
+   },
+   "showcase": null,
+   "leader": "swamp-alligator",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 30,
+   "brAfter": 30,
+   "tier": "A",
+   "notes": [
+    "+mountain-hare",
+    "swap apollo-butterfly->swamp-alligator"
+   ]
+  },
+  "m10/11-2": {
+   "mapNo": 11,
+   "from": {
+    "alpine-marmot": 4,
+    "eyrie-warden": 3,
+    "mountain-hare": 3,
+    "balloon-archer": 2,
+    "mountain-goat-climber": 2,
+    "eagle-owl-quartermaster": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 5,
+    "eyrie-warden": 4,
+    "mountain-hare": 4,
+    "balloon-archer": 1,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1
+   },
+   "showcase": null,
+   "leader": "eagle-owl-quartermaster",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 43,
+   "brAfter": 45,
+   "tier": "A",
+   "notes": []
+  },
+  "m10/11-3": {
+   "mapNo": 11,
+   "from": {
+    "alpine-marmot": 4,
+    "chipmunk-hoarder": 3,
+    "eyrie-warden": 3,
+    "mountain-goat-climber": 2,
+    "eagle-owl-quartermaster": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 4,
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1
+   },
+   "showcase": null,
+   "leader": "eagle-owl-quartermaster",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 41,
+   "brAfter": 44,
+   "tier": "B",
+   "notes": []
+  },
+  "m10/11-4": {
+   "mapNo": 11,
+   "from": {
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 3,
+    "mountain-hare": 3,
+    "eagle-owl-quartermaster": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 2,
+    "chipmunk-hoarder": 3,
+    "eyrie-warden": 3,
+    "mountain-hare": 3,
+    "eagle-owl-quartermaster": 1
+   },
+   "showcase": null,
+   "leader": "eagle-owl-quartermaster",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 40,
+   "brAfter": 43,
+   "tier": "B",
+   "notes": [
+    "+alpine-marmot"
+   ]
+  },
+  "mh/12-1": {
+   "mapNo": 12,
+   "from": {
+    "bramble-hoglet": 3,
+    "field-mouse": 3,
+    "hedgehog-scout": 3,
+    "mouse-sapper": 3,
+    "seed-cache-squirrel": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bramble-hoglet": 3,
+    "field-mouse": 3,
+    "hedgehog-scout": 3,
+    "mouse-sapper": 3,
+    "seed-cache-squirrel": 3
+   },
+   "showcase": null,
+   "leader": "mouse-sapper",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 27,
+   "brAfter": 30,
+   "tier": "B",
+   "notes": []
+  },
+  "mh/12-2": {
+   "mapNo": 12,
+   "from": {
+    "bramble-hoglet": 4,
+    "field-mouse": 4,
+    "hedgehog-scout": 3,
+    "cunning-vixen": 3,
+    "hedge-weasel": 2,
+    "lyrebird-mimic": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bramble-hoglet": 4,
+    "field-mouse": 5,
+    "hedgehog-scout": 4,
+    "cunning-vixen": 2,
+    "hedge-weasel": 1,
+    "lyrebird-mimic": 2
+   },
+   "showcase": null,
+   "leader": "lyrebird-mimic",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 37,
+   "brAfter": 38,
+   "tier": "A",
+   "notes": []
+  },
+  "mh/12-3": {
+   "mapNo": 12,
+   "from": {
+    "bramble-hoglet": 4,
+    "mouse-sapper": 3,
+    "cunning-vixen": 3,
+    "hedge-weasel": 2,
+    "lyrebird-mimic": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bramble-hoglet": 5,
+    "mouse-sapper": 4,
+    "cunning-vixen": 2,
+    "hedge-weasel": 1,
+    "lyrebird-mimic": 2
+   },
+   "showcase": null,
+   "leader": "lyrebird-mimic",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 40,
+   "brAfter": 41,
+   "tier": "A",
+   "notes": []
+  },
+  "mh/12-4": {
+   "mapNo": 12,
+   "from": {
+    "hedgehog-scout": 4,
+    "cunning-vixen": 3,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 2,
+    "quillguard": 2,
+    "thorn-shrike": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hedgehog-scout": 5,
+    "cunning-vixen": 3,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 3,
+    "quillguard": 1,
+    "thorn-shrike": 1
+   },
+   "showcase": null,
+   "leader": "quillguard",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 59,
+   "brAfter": 61,
+   "tier": "A",
+   "notes": []
+  },
+  "mr/13-1": {
+   "mapNo": 13,
+   "from": {
+    "berserker-boar": 4,
+    "fox-kit": 3,
+    "stag-knight": 3,
+    "swift-fox": 3,
+    "woodpecker-sapper": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "berserker-boar": 5,
+    "fox-kit": 4,
+    "stag-knight": 4,
+    "swift-fox": 4,
+    "bramblewood-lynx": 1,
+    "fawn-scout": 1
+   },
+   "showcase": null,
+   "leader": "bramblewood-lynx",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 19,
+   "copiesAfter": 19,
+   "brBefore": 56,
+   "brAfter": 56,
+   "tier": "A",
+   "notes": [
+    "-woodpecker-sapper"
+   ]
+  },
+  "mr/13-2": {
+   "mapNo": 13,
+   "from": {
+    "berserker-boar": 4,
+    "fox-kit": 3,
+    "grizzly-vanguard": 3,
+    "tasmanian-devil": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "berserker-boar": 4,
+    "fox-kit": 3,
+    "grizzly-vanguard": 3,
+    "swift-fox": 3,
+    "tasmanian-devil": 2,
+    "sergeant-bramblefox": 1
+   },
+   "showcase": "sergeant-bramblefox",
+   "leader": "sergeant-bramblefox",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 61,
+   "brAfter": 56,
+   "tier": "hand",
+   "notes": [
+    "hand-set deck"
+   ]
+  },
+  "mr/13-3": {
+   "mapNo": 13,
+   "from": {
+    "fox-kit": 4,
+    "stag-knight": 4,
+    "tasmanian-devil": 3,
+    "woodpecker-sapper": 2,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "fox-kit": 4,
+    "stag-knight": 5,
+    "tasmanian-devil": 3,
+    "woodpecker-sapper": 3,
+    "bramblewood-lynx": 1,
+    "fawn-scout": 1
+   },
+   "showcase": null,
+   "leader": "bramblewood-lynx",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 65,
+   "brAfter": 68,
+   "tier": "A",
+   "notes": []
+  },
+  "mr/13-4": {
+   "mapNo": 13,
+   "from": {
+    "berserker-boar": 4,
+    "fox-kit": 4,
+    "tasmanian-devil": 3,
+    "bramblewood-lynx": 3,
+    "fawn-scout": 2,
+    "shimmerwing-stag": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "berserker-boar": 5,
+    "fox-kit": 5,
+    "tasmanian-devil": 4,
+    "bramblewood-lynx": 2,
+    "fawn-scout": 1,
+    "shimmerwing-stag": 1
+   },
+   "showcase": null,
+   "leader": "shimmerwing-stag",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 83,
+   "brAfter": 83,
+   "tier": "A",
+   "notes": []
+  },
+  "m5/14-1": {
+   "mapNo": 14,
+   "from": {
+    "hoopoe-herald": 3,
+    "meerkat-burrower": 3,
+    "springbok-pronker": 3,
+    "dust-hyena": 3,
+    "marula-elephant": 2,
+    "pangolin-roller": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hoopoe-herald": 4,
+    "meerkat-burrower": 4,
+    "springbok-pronker": 4,
+    "dust-hyena": 2,
+    "marula-elephant": 1,
+    "pangolin-roller": 1
+   },
+   "showcase": null,
+   "leader": "marula-elephant",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 46,
+   "brAfter": 46,
+   "tier": "A",
+   "notes": []
+  },
+  "m5/14-2": {
+   "mapNo": 14,
+   "from": {
+    "hoopoe-herald": 3,
+    "meerkat-burrower": 3,
+    "springbok-pronker": 3,
+    "weaver-bird": 3,
+    "grave-grin-hyena": 2,
+    "spitting-cobra": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hoopoe-herald": 3,
+    "meerkat-burrower": 3,
+    "springbok-pronker": 4,
+    "weaver-bird": 4,
+    "grave-grin-hyena": 1,
+    "spitting-cobra": 1
+   },
+   "showcase": null,
+   "leader": "spitting-cobra",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 49,
+   "brAfter": 53,
+   "tier": "B",
+   "notes": []
+  },
+  "m5/14-3": {
+   "mapNo": 14,
+   "from": {
+    "weaver-bird": 3,
+    "dust-hyena": 3,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "pangolin-roller": 3,
+    "spitting-cobra": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "weaver-bird": 5,
+    "dust-hyena": 2,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "pangolin-roller": 3,
+    "spitting-cobra": 1
+   },
+   "showcase": null,
+   "leader": "spitting-cobra",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 67,
+   "brAfter": 72,
+   "tier": "B",
+   "notes": []
+  },
+  "m5/14-4": {
+   "mapNo": 14,
+   "from": {
+    "hoopoe-herald": 4,
+    "dust-hyena": 3,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "savanna-cheetah": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "hoopoe-herald": 3,
+    "weaver-bird": 1,
+    "dust-hyena": 3,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 4
+   },
+   "showcase": null,
+   "leader": "marula-elephant",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 64,
+   "brAfter": 62,
+   "tier": "A",
+   "notes": [
+    "swap savanna-cheetah->weaver-bird"
+   ]
+  },
+  "ml/15-1": {
+   "mapNo": 15,
+   "from": {
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 3,
+    "shepherds-bark": 3,
+    "warhorse-charger": 3,
+    "stable-colt": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 3,
+    "shepherds-bark": 3,
+    "warhorse-charger": 4,
+    "stable-colt": 1
+   },
+   "showcase": "cataphract-destrier",
+   "leader": "cataphract-destrier",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 37,
+   "brAfter": 38,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: cataphract-destrier (Auto, stable-colt, is no sensible leader)"
+   ]
+  },
+  "ml/15-2": {
+   "mapNo": 15,
+   "from": {
+    "warhorse-charger": 3,
+    "bison-bulldozer": 3,
+    "border-collie": 3,
+    "stable-colt": 3,
+    "raccoon-bandit": 2,
+    "stoat-cutthroat": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "warhorse-charger": 4,
+    "bison-bulldozer": 3,
+    "border-collie": 3,
+    "stable-colt": 4,
+    "raccoon-bandit": 1,
+    "stoat-cutthroat": 1
+   },
+   "showcase": null,
+   "leader": "stoat-cutthroat",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 75,
+   "brAfter": 78,
+   "tier": "A",
+   "notes": []
+  },
+  "ml/15-3": {
+   "mapNo": 15,
+   "from": {
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 4,
+    "shepherds-bark": 3,
+    "bison-bulldozer": 3,
+    "raccoon-bandit": 2,
+    "stoat-cutthroat": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 5,
+    "shepherds-bark": 4,
+    "bison-bulldozer": 3,
+    "raccoon-bandit": 1,
+    "stoat-cutthroat": 1
+   },
+   "showcase": null,
+   "leader": "stoat-cutthroat",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 59,
+   "brAfter": 62,
+   "tier": "A",
+   "notes": []
+  },
+  "ml/15-4": {
+   "mapNo": 15,
+   "from": {
+    "cataphract-destrier": 4,
+    "bison-bulldozer": 3,
+    "stable-colt": 3,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 2,
+    "talon-archer": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cataphract-destrier": 4,
+    "bison-bulldozer": 3,
+    "stable-colt": 3,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 2,
+    "talon-archer": 2
+   },
+   "showcase": "cataphract-destrier",
+   "leader": "cataphract-destrier",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 92,
+   "brAfter": 95,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: cataphract-destrier (Auto, talon-archer, is no sensible leader)"
+   ]
+  },
+  "mt/16-1": {
+   "mapNo": 16,
+   "from": {
+    "alpha-howler": 3,
+    "dhole-runner": 3,
+    "frost-hare-sprinter": 3,
+    "snowshoe-hare": 3,
+    "trickster-fox": 3,
+    "taiga-lynx": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpha-howler": 3,
+    "dhole-runner": 3,
+    "frost-hare-sprinter": 3,
+    "snowshoe-hare": 3,
+    "trickster-fox": 3,
+    "woodland-caribou": 1
+   },
+   "showcase": null,
+   "leader": "woodland-caribou",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 39,
+   "brAfter": 41,
+   "tier": "A",
+   "notes": [
+    "swap taiga-lynx->woodland-caribou"
+   ]
+  },
+  "mt/16-2": {
+   "mapNo": 16,
+   "from": {
+    "dhole-runner": 4,
+    "frost-hare-sprinter": 4,
+    "snowshoe-hare": 3,
+    "trickster-fox": 3,
+    "taiga-lynx": 2,
+    "wolf-pack-runner": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "dhole-runner": 4,
+    "frost-hare-sprinter": 4,
+    "snowshoe-hare": 4,
+    "trickster-fox": 4,
+    "taiga-lynx": 1,
+    "wolf-pack-runner": 1
+   },
+   "showcase": null,
+   "leader": "wolf-pack-runner",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 54,
+   "brAfter": 56,
+   "tier": "A",
+   "notes": []
+  },
+  "mt/16-3": {
+   "mapNo": 16,
+   "from": {
+    "alpha-howler": 4,
+    "boreal-elk": 4,
+    "frost-hare-sprinter": 3,
+    "snowshoe-hare": 3,
+    "woodland-caribou": 2,
+    "taiga-lynx": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpha-howler": 3,
+    "boreal-elk": 3,
+    "frost-hare-sprinter": 3,
+    "snowshoe-hare": 3,
+    "trickster-fox": 2,
+    "woodland-caribou": 4
+   },
+   "showcase": null,
+   "leader": "woodland-caribou",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 47,
+   "brAfter": 46,
+   "tier": "A",
+   "notes": [
+    "swap taiga-lynx->trickster-fox"
+   ]
+  },
+  "mt/16-4": {
+   "mapNo": 16,
+   "from": {
+    "alpha-howler": 3,
+    "boreal-elk": 3,
+    "dhole-runner": 3,
+    "frost-hare-sprinter": 3,
+    "trickster-fox": 3,
+    "taiga-lynx": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpha-howler": 3,
+    "boreal-elk": 4,
+    "dhole-runner": 3,
+    "frost-hare-sprinter": 2,
+    "trickster-fox": 3,
+    "taiga-lynx": 1
+   },
+   "showcase": null,
+   "leader": "taiga-lynx",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 39,
+   "brAfter": 52,
+   "tier": "C",
+   "notes": []
+  },
+  "m6/17-1": {
+   "mapNo": 17,
+   "from": {
+    "glacial-ape-king": 4,
+    "harbor-seal": 3,
+    "snow-ermine": 3,
+    "snow-bunting-archer": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "glacial-ape-king": 4,
+    "harbor-seal": 3,
+    "snow-ermine": 3,
+    "snow-bunting-archer": 1,
+    "spitting-spider": 1
+   },
+   "showcase": "glacial-ape-king",
+   "leader": "glacial-ape-king",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 38,
+   "brAfter": 41,
+   "tier": "B",
+   "notes": [
+    "+spitting-spider",
+    "showcase set by hand: glacial-ape-king (Auto, snow-bunting-archer, is no sensible leader)"
+   ]
+  },
+  "m6/17-2": {
+   "mapNo": 17,
+   "from": {
+    "glacial-ape-king": 4,
+    "spitting-spider": 3,
+    "frostmoon-howler": 3,
+    "ravenous-wolverine": 3,
+    "lone-grey-wolf": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "glacial-ape-king": 5,
+    "spitting-spider": 4,
+    "frostmoon-howler": 2,
+    "ravenous-wolverine": 3,
+    "lone-grey-wolf": 1
+   },
+   "showcase": null,
+   "leader": "lone-grey-wolf",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 100,
+   "brAfter": 103,
+   "tier": "A",
+   "notes": []
+  },
+  "m6/17-3": {
+   "mapNo": 17,
+   "from": {
+    "glacial-ape-king": 4,
+    "harbor-seal": 3,
+    "snow-bunting-archer": 2,
+    "spitting-spider": 2,
+    "frostmoon-howler": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "glacial-ape-king": 4,
+    "harbor-seal": 3,
+    "snow-bunting-archer": 2,
+    "spitting-spider": 3,
+    "frostmoon-howler": 1
+   },
+   "showcase": "glacial-ape-king",
+   "leader": "glacial-ape-king",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 13,
+   "copiesAfter": 13,
+   "brBefore": 57,
+   "brAfter": 55,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: glacial-ape-king (Auto, frostmoon-howler, is no sensible leader)"
+   ]
+  },
+  "m6/17-4": {
+   "mapNo": 17,
+   "from": {
+    "harbor-seal": 4,
+    "snow-ermine": 4,
+    "snow-bunting-archer": 3,
+    "spitting-spider": 3,
+    "ravenous-wolverine": 2,
+    "polar-bear": 2,
+    "walrus-icebreaker": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "harbor-seal": 5,
+    "snow-ermine": 5,
+    "snow-bunting-archer": 3,
+    "spitting-spider": 3,
+    "ravenous-wolverine": 2,
+    "walrus-icebreaker": 2
+   },
+   "showcase": null,
+   "leader": "walrus-icebreaker",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 84,
+   "brAfter": 87,
+   "tier": "A",
+   "notes": [
+    "-polar-bear"
+   ]
+  },
+  "md/18-1": {
+   "mapNo": 18,
+   "from": {
+    "komodo-warlord": 3,
+    "roadrunner-courier": 3,
+    "sandfish": 3,
+    "thorny-devil": 3,
+    "caustic-scorpion": 3,
+    "dromedary": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "komodo-warlord": 3,
+    "roadrunner-courier": 4,
+    "sandfish": 4,
+    "thorny-devil": 4,
+    "caustic-scorpion": 1,
+    "dromedary": 1
+   },
+   "showcase": null,
+   "leader": "dromedary",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 49,
+   "brAfter": 52,
+   "tier": "A",
+   "notes": []
+  },
+  "md/18-2": {
+   "mapNo": 18,
+   "from": {
+    "komodo-warlord": 3,
+    "thorny-devil": 3,
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "fennec-fox": 3,
+    "obsidian-scorpion": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "komodo-warlord": 3,
+    "thorny-devil": 3,
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "fennec-fox": 3,
+    "obsidian-scorpion": 2
+   },
+   "showcase": "komodo-warlord",
+   "leader": "komodo-warlord",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 73,
+   "brAfter": 77,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: komodo-warlord (Auto, obsidian-scorpion, is no sensible leader)"
+   ]
+  },
+  "md/18-3": {
+   "mapNo": 18,
+   "from": {
+    "komodo-warlord": 3,
+    "roadrunner-courier": 3,
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "dromedary": 3
+   },
+   "showcaseBefore": null,
+   "to": {
+    "komodo-warlord": 4,
+    "roadrunner-courier": 5,
+    "antlion-pit": 2,
+    "caustic-scorpion": 2,
+    "dromedary": 2
+   },
+   "showcase": null,
+   "leader": "dromedary",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 61,
+   "brAfter": 63,
+   "tier": "A",
+   "notes": []
+  },
+  "md/18-4": {
+   "mapNo": 18,
+   "from": {
+    "sandfish": 3,
+    "caustic-scorpion": 3,
+    "dromedary": 3,
+    "fennec-fox": 3,
+    "obsidian-scorpion": 2,
+    "dust-devil-kestrel": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "sandfish": 5,
+    "caustic-scorpion": 3,
+    "dromedary": 3,
+    "fennec-fox": 3,
+    "obsidian-scorpion": 1,
+    "dust-devil-kestrel": 1
+   },
+   "showcase": null,
+   "leader": "dust-devil-kestrel",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 99,
+   "brAfter": 103,
+   "tier": "A",
+   "notes": []
+  },
+  "m3/19-1": {
+   "mapNo": 19,
+   "from": {
+    "cinder-stoker": 3,
+    "glacier-wolf-pack": 3,
+    "porcupine-roller": 3,
+    "fire-salamander": 2,
+    "quill-volley": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-stoker": 3,
+    "glacier-wolf-pack": 4,
+    "porcupine-roller": 4,
+    "fire-salamander": 1,
+    "quill-volley": 1
+   },
+   "showcase": null,
+   "leader": "quill-volley",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 13,
+   "copiesAfter": 13,
+   "brBefore": 63,
+   "brAfter": 66,
+   "tier": "A",
+   "notes": []
+  },
+  "m3/19-2": {
+   "mapNo": 19,
+   "from": {
+    "cinder-stoker": 3,
+    "magma-titan": 3,
+    "phoenix-fledgling": 3,
+    "porcupine-roller": 3,
+    "scree-goat": 2,
+    "quill-volley": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-stoker": 3,
+    "magma-titan": 3,
+    "phoenix-fledgling": 4,
+    "porcupine-roller": 4,
+    "scree-goat": 1,
+    "quill-volley": 1
+   },
+   "showcase": null,
+   "leader": "quill-volley",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 58,
+   "brAfter": 64,
+   "tier": "B",
+   "notes": []
+  },
+  "m11/20-1": {
+   "mapNo": 20,
+   "from": {
+    "ashbone-ghoul": 3,
+    "cave-warlord": 3,
+    "cinder-skeleton": 3,
+    "pack-mule": 3,
+    "bear-cub": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "ashbone-ghoul": 3,
+    "cave-warlord": 3,
+    "cinder-skeleton": 3,
+    "pack-mule": 4,
+    "bear-cub": 1
+   },
+   "showcase": "cave-warlord",
+   "leader": "cave-warlord",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 44,
+   "brAfter": 45,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: cave-warlord (Auto, bear-cub, is no sensible leader)"
+   ]
+  },
+  "m11/20-2": {
+   "mapNo": 20,
+   "from": {
+    "pack-mule": 4,
+    "bear-cub": 3,
+    "magma-wraith": 3,
+    "ash-cloud-condor": 3,
+    "magma-salamander": 2,
+    "woodland-brawler": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "pack-mule": 5,
+    "bear-cub": 4,
+    "magma-wraith": 4,
+    "ash-cloud-condor": 2,
+    "magma-salamander": 1,
+    "woodland-brawler": 1
+   },
+   "showcase": null,
+   "leader": "woodland-brawler",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 109,
+   "brAfter": 111,
+   "tier": "A",
+   "notes": []
+  },
+  "m11/20-3": {
+   "mapNo": 20,
+   "from": {
+    "ashbone-ghoul": 4,
+    "pack-mule": 3,
+    "bear-cub": 3,
+    "magma-wraith": 2,
+    "ash-cloud-condor": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "ashbone-ghoul": 5,
+    "pack-mule": 5,
+    "bear-cub": 2,
+    "magma-wraith": 1,
+    "ash-cloud-condor": 1
+   },
+   "showcase": null,
+   "leader": "ash-cloud-condor",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 69,
+   "brAfter": 71,
+   "tier": "A",
+   "notes": []
+  },
+  "m11/20-4": {
+   "mapNo": 20,
+   "from": {
+    "cave-warlord": 4,
+    "cinder-skeleton": 4,
+    "pack-mule": 3,
+    "bear-cub": 3,
+    "magma-wraith": 2,
+    "ash-cloud-condor": 2,
+    "magma-salamander": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cave-warlord": 4,
+    "cinder-skeleton": 5,
+    "pack-mule": 3,
+    "bear-cub": 3,
+    "magma-wraith": 2,
+    "magma-salamander": 3
+   },
+   "showcase": "cave-warlord",
+   "leader": "cave-warlord",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 71,
+   "brAfter": 70,
+   "tier": "A",
+   "notes": [
+    "-ash-cloud-condor",
+    "showcase set by hand: cave-warlord (Auto, magma-salamander, is no sensible leader)"
+   ]
+  },
+  "m21/21-1": {
+   "mapNo": 21,
+   "from": {
+    "alpine-marmot": 4,
+    "eagle-sharpshooter": 3,
+    "pika-hoarder": 3,
+    "golden-eagle-diver": 2,
+    "mountain-goat-climber": 2,
+    "scree-goat": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 5,
+    "eagle-sharpshooter": 4,
+    "pika-hoarder": 4,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "scree-goat": 1
+   },
+   "showcase": null,
+   "leader": "scree-goat",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 53,
+   "brAfter": 54,
+   "tier": "A",
+   "notes": []
+  },
+  "m21/21-2": {
+   "mapNo": 21,
+   "from": {
+    "eagle-sharpshooter": 4,
+    "glacier-yak": 4,
+    "pika-hoarder": 3,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 2,
+    "scree-goat": 2,
+    "snow-leopard": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 5,
+    "eagle-sharpshooter": 2,
+    "glacier-yak": 5,
+    "pika-hoarder": 5,
+    "scree-goat": 1,
+    "snow-leopard": 1
+   },
+   "showcase": null,
+   "leader": "snow-leopard",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 19,
+   "copiesAfter": 19,
+   "brBefore": 63,
+   "brAfter": 74,
+   "tier": "C",
+   "notes": [
+    "-mountain-goat-climber",
+    "swap golden-eagle-diver->alpine-marmot"
+   ]
+  },
+  "m21/21-3": {
+   "mapNo": 21,
+   "from": {
+    "alpine-marmot": 4,
+    "glacier-yak": 4,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 3,
+    "snow-leopard": 1,
+    "snow-owl-sentinel": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 4,
+    "glacier-yak": 4,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 3,
+    "snow-leopard": 1,
+    "snow-owl-sentinel": 1
+   },
+   "showcase": "glacier-yak",
+   "leader": "glacier-yak",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 83,
+   "brAfter": 87,
+   "tier": "A",
+   "notes": [
+    "showcase set by hand: glacier-yak (Auto, snow-owl-sentinel, is no sensible leader)"
+   ]
+  },
+  "m22/22-1": {
+   "mapNo": 22,
+   "from": {
+    "cinder-gecko": 4,
+    "cinder-hornet": 4,
+    "fumarole-ibex": 2,
+    "ur-elk": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 4,
+    "cinder-hornet": 5,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 1,
+    "ur-elk": 1
+   },
+   "showcase": null,
+   "leader": "ur-elk",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 90,
+   "brAfter": 96,
+   "tier": "B",
+   "notes": [
+    "+rimefire-salamander"
+   ]
+  },
+  "m22/22-2": {
+   "mapNo": 22,
+   "from": {
+    "cinder-gecko": 4,
+    "gorge-wyrm": 4,
+    "permafrost-mammoth": 4,
+    "ice-petrel": 3,
+    "rimefire-salamander": 2,
+    "ur-elk": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 3,
+    "cinder-hornet": 1,
+    "gorge-wyrm": 4,
+    "permafrost-mammoth": 4,
+    "ice-petrel": 3,
+    "rimefire-salamander": 3
+   },
+   "showcase": "gorge-wyrm",
+   "leader": "gorge-wyrm",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 69,
+   "brAfter": 68,
+   "tier": "A",
+   "notes": [
+    "swap ur-elk->cinder-hornet",
+    "showcase set by hand: gorge-wyrm (Auto, rimefire-salamander, is no sensible leader)"
+   ]
+  },
+  "m22/22-3": {
+   "mapNo": 22,
+   "from": {
+    "cinder-hornet": 4,
+    "ice-petrel": 3,
+    "badger-berserker": 3,
+    "fumarole-ibex": 2,
+    "rimefire-salamander": 2,
+    "ur-elk": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-hornet": 5,
+    "ice-petrel": 4,
+    "badger-berserker": 2,
+    "fumarole-ibex": 2,
+    "rimefire-salamander": 2,
+    "ur-elk": 1
+   },
+   "showcase": null,
+   "leader": "ur-elk",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 121,
+   "brAfter": 127,
+   "tier": "A",
+   "notes": []
+  },
+  "m22/22-4": {
+   "mapNo": 22,
+   "from": {
+    "cinder-gecko": 5,
+    "ice-petrel": 3,
+    "badger-berserker": 3,
+    "fumarole-ibex": 3,
+    "rimefire-salamander": 3,
+    "ur-elk": 2,
+    "caldera-snow-leopard": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 2,
+    "ice-petrel": 3,
+    "badger-berserker": 2,
+    "fumarole-ibex": 3,
+    "rimefire-salamander": 3,
+    "ur-elk": 2
+   },
+   "showcase": null,
+   "leader": "ur-elk",
+   "sizeBefore": 7,
+   "sizeAfter": 7,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 129,
+   "brAfter": 133,
+   "tier": "A",
+   "notes": [
+    "swap caldera-snow-leopard->cinder-hornet",
+    "7 cards: leader x2"
+   ]
+  },
+  "m22/22-5": {
+   "mapNo": 22,
+   "from": {
+    "cinder-hornet": 7,
+    "badger-berserker": 2,
+    "fumarole-ibex": 3,
+    "rimefire-salamander": 2,
+    "ur-elk": 2,
+    "caldera-snow-leopard": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 2,
+    "cinder-hornet": 7,
+    "badger-berserker": 1,
+    "fumarole-ibex": 3,
+    "rimefire-salamander": 2,
+    "ur-elk": 2
+   },
+   "showcase": null,
+   "leader": "ur-elk",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 125,
+   "brAfter": 125,
+   "tier": "A",
+   "notes": [
+    "swap caldera-snow-leopard->cinder-gecko"
+   ]
+  },
+  "m23/23-1": {
+   "mapNo": 23,
+   "from": {
+    "badger-trench-digger": 4,
+    "pack-mule": 3,
+    "balloon-archer": 3,
+    "trebuchet-crew": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "badger-trench-digger": 4,
+    "mouse-sapper": 2,
+    "pack-mule": 3,
+    "balloon-archer": 2,
+    "trebuchet-crew": 1
+   },
+   "showcase": null,
+   "leader": "trebuchet-crew",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 78,
+   "brAfter": 81,
+   "tier": "A",
+   "notes": [
+    "+mouse-sapper"
+   ]
+  },
+  "m23/23-2": {
+   "mapNo": 23,
+   "from": {
+    "badger-trench-digger": 4,
+    "mouse-sapper": 3,
+    "pack-mule": 3,
+    "balloon-archer": 3,
+    "howdah-archers": 2,
+    "testudo-tortoise": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "badger-trench-digger": 4,
+    "mouse-sapper": 3,
+    "pack-mule": 4,
+    "balloon-archer": 4,
+    "howdah-archers": 1,
+    "testudo-tortoise": 1
+   },
+   "showcase": null,
+   "leader": "testudo-tortoise",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 85,
+   "brAfter": 89,
+   "tier": "A",
+   "notes": []
+  },
+  "m23/23-3": {
+   "mapNo": 23,
+   "from": {
+    "mouse-sapper": 4,
+    "balloon-archer": 3,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 2,
+    "siege-rhino": 2,
+    "testudo-tortoise": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "mouse-sapper": 5,
+    "balloon-archer": 4,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 2
+   },
+   "showcase": null,
+   "leader": "siege-rhino",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 129,
+   "brAfter": 133,
+   "tier": "A",
+   "notes": []
+  },
+  "m23/23-4": {
+   "mapNo": 23,
+   "from": {
+    "mouse-sapper": 4,
+    "pack-mule": 4,
+    "beetle-battering-ram": 3,
+    "siege-rhino": 2,
+    "testudo-tortoise": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "mouse-sapper": 5,
+    "pack-mule": 5,
+    "beetle-battering-ram": 2,
+    "siege-rhino": 1,
+    "testudo-tortoise": 2
+   },
+   "showcase": null,
+   "leader": "siege-rhino",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 108,
+   "brAfter": 107,
+   "tier": "A",
+   "notes": []
+  },
+  "m23/23-5": {
+   "mapNo": 23,
+   "from": {
+    "mouse-sapper": 5,
+    "balloon-archer": 3,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 3,
+    "war-elephant": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "badger-trench-digger": 1,
+    "mouse-sapper": 5,
+    "balloon-archer": 3,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 3
+   },
+   "showcase": null,
+   "leader": "siege-rhino",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 137,
+   "brAfter": 138,
+   "tier": "A",
+   "notes": [
+    "swap war-elephant->badger-trench-digger"
+   ]
+  },
+  "m24/24-1": {
+   "mapNo": 24,
+   "from": {
+    "duckling-squadron": 3,
+    "elderhorn-monarch": 3,
+    "goose-sentry": 2,
+    "mallard-halberdier": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "duckling-squadron": 3,
+    "elderhorn-monarch": 3,
+    "tax-collector-teal": 2,
+    "goose-sentry": 1,
+    "mallard-halberdier": 1
+   },
+   "showcase": null,
+   "leader": "mallard-halberdier",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 10,
+   "copiesAfter": 10,
+   "brBefore": 98,
+   "brAfter": 98,
+   "tier": "A",
+   "notes": [
+    "+tax-collector-teal"
+   ]
+  },
+  "m24/24-2": {
+   "mapNo": 24,
+   "from": {
+    "duckling-squadron": 4,
+    "lodge-engineer": 3,
+    "tax-collector-teal": 3,
+    "goose-sentry": 2,
+    "mallard-halberdier": 2,
+    "mallard-marauder": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "duckling-squadron": 5,
+    "lodge-engineer": 3,
+    "tax-collector-teal": 4,
+    "goose-sentry": 1,
+    "mallard-halberdier": 1,
+    "mallard-marauder": 2
+   },
+   "showcase": null,
+   "leader": "mallard-halberdier",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 113,
+   "brAfter": 116,
+   "tier": "A",
+   "notes": []
+  },
+  "m24/24-3": {
+   "mapNo": 24,
+   "from": {
+    "elderhorn-monarch": 4,
+    "lodge-engineer": 2,
+    "goose-sentry": 2,
+    "mallard-halberdier": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "elderhorn-monarch": 4,
+    "lodge-engineer": 2,
+    "tax-collector-teal": 2,
+    "goose-sentry": 1,
+    "mallard-halberdier": 1
+   },
+   "showcase": null,
+   "leader": "mallard-halberdier",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 10,
+   "copiesAfter": 10,
+   "brBefore": 108,
+   "brAfter": 108,
+   "tier": "A",
+   "notes": [
+    "+tax-collector-teal"
+   ]
+  },
+  "m24/24-4": {
+   "mapNo": 24,
+   "from": {
+    "duckling-squadron": 5,
+    "battlement-heron": 3,
+    "mallard-marauder": 3,
+    "gilded-swan-knight": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "duckling-squadron": 5,
+    "elderhorn-monarch": 3,
+    "mallard-halberdier": 1,
+    "mallard-marauder": 2,
+    "gilded-swan-knight": 1
+   },
+   "showcase": null,
+   "leader": "gilded-swan-knight",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 138,
+   "brAfter": 141,
+   "tier": "A",
+   "notes": [
+    "+mallard-halberdier",
+    "swap battlement-heron->elderhorn-monarch"
+   ]
+  },
+  "m24/24-5": {
+   "mapNo": 24,
+   "from": {
+    "elderhorn-monarch": 4,
+    "lodge-engineer": 3,
+    "battlement-heron": 3,
+    "goose-sentry": 3,
+    "mallard-marauder": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "elderhorn-monarch": 5,
+    "lodge-engineer": 4,
+    "battlement-heron": 2,
+    "goose-sentry": 2,
+    "mallard-marauder": 2
+   },
+   "showcase": null,
+   "leader": "battlement-heron",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 125,
+   "brAfter": 129,
+   "tier": "A",
+   "notes": []
+  },
+  "mq/1-A-1": {
+   "mapNo": 1,
+   "from": {
+    "rabbit-kit": 3,
+    "meadow-rabbit": 1,
+    "pigeon-peon": 2,
+    "field-crow": 1,
+    "clover-butterfly": 2,
+    "stag-beetle": 2,
+    "harvest-mouse": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clover-butterfly": 2,
+    "harvest-mouse": 2,
+    "meadow-rabbit": 1,
+    "pigeon-peon": 2,
+    "rabbit-kit": 4,
+    "stag-beetle": 2
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 13,
+   "copiesAfter": 13,
+   "brBefore": 35,
+   "brAfter": 35,
+   "tier": "A",
+   "notes": [
+    "-field-crow"
+   ]
+  },
+  "mq/1-A-2": {
+   "mapNo": 1,
+   "from": {
+    "honey-bee": 3,
+    "bee-forager": 3,
+    "bee-sentry": 2,
+    "stag-beetle": 2,
+    "burrow-rabbit": 4,
+    "lucky-hopper": 1,
+    "acorn-chipmunk": 2,
+    "field-mouse": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bee-forager": 4,
+    "bee-sentry": 2,
+    "burrow-rabbit": 5,
+    "field-mouse": 2,
+    "honey-bee": 3,
+    "stag-beetle": 3
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 8,
+   "sizeAfter": 6,
+   "copiesBefore": 19,
+   "copiesAfter": 19,
+   "brBefore": 29,
+   "brAfter": 29,
+   "tier": "A",
+   "notes": [
+    "-lucky-hopper",
+    "-acorn-chipmunk"
+   ]
+  },
+  "mq/1-A-3": {
+   "mapNo": 1,
+   "from": {
+    "meadow-frog": 1,
+    "jay-pilferer": 1,
+    "field-mouse": 2,
+    "honey-bee": 2,
+    "acorn-chipmunk": 2,
+    "house-cat": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "acorn-chipmunk": 2,
+    "field-mouse": 2,
+    "honey-bee": 2,
+    "house-cat": 2,
+    "jay-pilferer": 1,
+    "meadow-frog": 1
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 10,
+   "copiesAfter": 10,
+   "brBefore": 20,
+   "brAfter": 20,
+   "tier": "A",
+   "notes": []
+  },
+  "mq/1-A-4": {
+   "mapNo": 1,
+   "from": {
+    "field-mouse": 2,
+    "chipmunk-forager": 1,
+    "house-cat": 1,
+    "farm-dog": 1,
+    "village-miller": 2,
+    "burrow-rabbit": 3,
+    "acorn-chipmunk": 2,
+    "field-vole": 2,
+    "honey-bee": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "burrow-rabbit": 4,
+    "field-mouse": 2,
+    "field-vole": 3,
+    "honey-bee": 3,
+    "house-cat": 1,
+    "village-miller": 3
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 9,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 20,
+   "brAfter": 20,
+   "tier": "A",
+   "notes": [
+    "-chipmunk-forager",
+    "-farm-dog",
+    "-acorn-chipmunk"
+   ]
+  },
+  "mp/2-A-1": {
+   "mapNo": 2,
+   "from": {
+    "minnow-skitter": 1,
+    "guppy": 4,
+    "great-crested-grebe": 2,
+    "sea-turtle-elder": 2,
+    "shallows-fry": 2,
+    "tidepool-trapper-crab": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "great-crested-grebe": 2,
+    "guppy": 4,
+    "minnow-skitter": 1,
+    "sea-turtle-elder": 2,
+    "shallows-fry": 2,
+    "tidepool-trapper-crab": 2
+   },
+   "showcase": null,
+   "leader": "minnow-skitter",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 13,
+   "copiesAfter": 13,
+   "brBefore": 17,
+   "brAfter": 19,
+   "tier": "B",
+   "notes": []
+  },
+  "mp/2-A-2": {
+   "mapNo": 2,
+   "from": {
+    "pond-duck": 1,
+    "minnow-skitter": 2,
+    "guppy": 2,
+    "shallows-fry": 3,
+    "mangrove-mudskipper": 2,
+    "fiddler-crab-swarm": 2,
+    "duckling": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "duckling": 3,
+    "fiddler-crab-swarm": 2,
+    "guppy": 3,
+    "mangrove-mudskipper": 2,
+    "minnow-skitter": 1,
+    "shallows-fry": 3
+   },
+   "showcase": null,
+   "leader": "minnow-skitter",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 17,
+   "brAfter": 18,
+   "tier": "A",
+   "notes": [
+    "-pond-duck"
+   ]
+  },
+  "mp/2-A-3": {
+   "mapNo": 2,
+   "from": {
+    "river-carp": 1,
+    "pond-duck": 2,
+    "old-sturgeon": 1,
+    "guppy": 4,
+    "fiddler-crab-swarm": 2,
+    "mayfly-dancer": 2,
+    "duckling": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "duckling": 3,
+    "fiddler-crab-swarm": 1,
+    "guppy": 5,
+    "mayfly-dancer": 1,
+    "pond-duck": 2,
+    "river-carp": 1,
+    "old-sturgeon": 1
+   },
+   "showcase": null,
+   "leader": "old-sturgeon",
+   "sizeBefore": 7,
+   "sizeAfter": 7,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 16,
+   "brAfter": 18,
+   "tier": "B",
+   "notes": []
+  },
+  "mp/2-A-4": {
+   "mapNo": 2,
+   "from": {
+    "river-carp": 1,
+    "minnow-skitter": 3,
+    "ford-kingfisher": 4,
+    "mayfly-dancer": 2,
+    "guppy": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "guppy": 3,
+    "mayfly-dancer": 2,
+    "minnow-skitter": 3,
+    "river-carp": 1,
+    "ford-kingfisher": 3
+   },
+   "showcase": null,
+   "leader": "ford-kingfisher",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 25,
+   "brAfter": 26,
+   "tier": "A",
+   "notes": []
+  },
+  "m9/19-A-1": {
+   "mapNo": 19,
+   "from": {
+    "ember-jackal": 2,
+    "beaver-lumberjack": 2,
+    "phoenix-fledgling": 2,
+    "chained-binturong": 4,
+    "sulfur-vent-crab": 2,
+    "cinder-imp": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "beaver-lumberjack": 3,
+    "cinder-imp": 3,
+    "phoenix-fledgling": 3,
+    "chained-binturong": 3,
+    "sulfur-vent-crab": 1,
+    "ember-jackal": 1
+   },
+   "showcase": null,
+   "leader": "ember-jackal",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 83,
+   "brAfter": 85,
+   "tier": "A",
+   "notes": []
+  },
+  "m9/19-A-2": {
+   "mapNo": 19,
+   "from": {
+    "magma-salamander": 2,
+    "obsidian-scorpion": 4,
+    "hellbender": 2,
+    "chained-binturong": 2,
+    "cinder-gecko": 2,
+    "cinder-imp": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 3,
+    "cinder-imp": 3,
+    "hellbender": 2,
+    "chained-binturong": 2,
+    "magma-salamander": 1,
+    "obsidian-scorpion": 3
+   },
+   "showcase": null,
+   "leader": "magma-salamander",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 109,
+   "brAfter": 108,
+   "tier": "A",
+   "notes": []
+  },
+  "m9/19-A-3": {
+   "mapNo": 19,
+   "from": {
+    "phoenix-fledgling": 1,
+    "cinder-stoker": 2,
+    "pyroclast-wyrm": 1,
+    "obsidian-scorpion": 2,
+    "cinder-imp": 4,
+    "tide-spirit": 1,
+    "fire-salamander": 2,
+    "chained-binturong": 2,
+    "hellbender": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-imp": 5,
+    "cinder-stoker": 3,
+    "hellbender": 3,
+    "pyroclast-wyrm": 2,
+    "fire-salamander": 3,
+    "tide-spirit": 1
+   },
+   "showcase": null,
+   "leader": "tide-spirit",
+   "sizeBefore": 9,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 79,
+   "brAfter": 79,
+   "tier": "A",
+   "notes": [
+    "-phoenix-fledgling",
+    "-obsidian-scorpion",
+    "-chained-binturong"
+   ]
+  },
+  "m9/19-A-4": {
+   "mapNo": 19,
+   "from": {
+    "obsidian-scorpion": 2,
+    "pyroclast-wyrm": 2,
+    "beaver-lumberjack": 1,
+    "phoenix-fledgling": 1,
+    "chained-binturong": 2,
+    "sulfur-vent-crab": 2,
+    "cinder-imp": 4
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-imp": 5,
+    "phoenix-fledgling": 1,
+    "pyroclast-wyrm": 2,
+    "chained-binturong": 2,
+    "sulfur-vent-crab": 3,
+    "obsidian-scorpion": 1
+   },
+   "showcase": "pyroclast-wyrm",
+   "leader": "pyroclast-wyrm",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 77,
+   "brAfter": 74,
+   "tier": "A",
+   "notes": [
+    "-beaver-lumberjack",
+    "showcase set by hand: pyroclast-wyrm (Auto, obsidian-scorpion, is no sensible leader)"
+   ]
+  },
+  "m9/19-A-5": {
+   "mapNo": 19,
+   "from": {
+    "flagellant-vulture": 2,
+    "echidna-quillshot": 2,
+    "cinder-imp": 2,
+    "tide-spirit": 1,
+    "hellbender": 2,
+    "ashbone-ghoul": 2,
+    "chained-binturong": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "ashbone-ghoul": 3,
+    "cinder-imp": 2,
+    "hellbender": 3,
+    "chained-binturong": 1,
+    "flagellant-vulture": 1,
+    "tide-spirit": 1,
+    "echidna-quillshot": 1
+   },
+   "showcase": null,
+   "leader": "echidna-quillshot",
+   "sizeBefore": 7,
+   "sizeAfter": 7,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 105,
+   "brAfter": 109,
+   "tier": "A",
+   "notes": []
+  },
+  "m9/19-A-6": {
+   "mapNo": 19,
+   "from": {
+    "magma-salamander": 1,
+    "obsidian-scorpion": 2,
+    "ember-jackal": 2,
+    "fruit-bat-familiar": 2,
+    "cinder-imp": 4,
+    "hellbender": 2,
+    "quill-volley": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-imp": 5,
+    "hellbender": 3,
+    "fruit-bat-familiar": 2,
+    "ember-jackal": 2,
+    "obsidian-scorpion": 1,
+    "quill-volley": 1
+   },
+   "showcase": null,
+   "leader": "ember-jackal",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 109,
+   "brAfter": 108,
+   "tier": "A",
+   "notes": [
+    "-magma-salamander"
+   ]
+  },
+  "mj/10-A-1": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 2,
+    "orca-vanguard": 1,
+    "kraken-spawnling": 2,
+    "silver-minnow": 4,
+    "glass-octopus": 1
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 2,
+    "kraken-spawnling": 3,
+    "orca-vanguard": 2,
+    "parrotfish": 2,
+    "silver-minnow": 1
+   },
+   "showcase": null,
+   "leader": "kraken-spawnling",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 10,
+   "copiesAfter": 10,
+   "brBefore": 28,
+   "brAfter": 27,
+   "tier": "A",
+   "notes": [
+    "swap glass-octopus->parrotfish"
+   ]
+  },
+  "mj/10-A-2": {
+   "mapNo": 10,
+   "from": {
+    "clownfish-scout": 2,
+    "parrotfish": 2,
+    "silver-minnow": 4,
+    "nautilus-drifter": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 1,
+    "kraken-spawnling": 2,
+    "parrotfish": 1,
+    "silver-minnow": 3,
+    "coral-reef-shark": 3
+   },
+   "showcase": null,
+   "leader": "coral-reef-shark",
+   "sizeBefore": 4,
+   "sizeAfter": 5,
+   "copiesBefore": 10,
+   "copiesAfter": 10,
+   "brBefore": 36,
+   "brAfter": 35,
+   "tier": "A",
+   "notes": [
+    "+coral-reef-shark",
+    "swap nautilus-drifter->kraken-spawnling"
+   ]
+  },
+  "mj/10-A-3": {
+   "mapNo": 10,
+   "from": {
+    "kraken-spawnling": 1,
+    "orca-vanguard": 1,
+    "silver-minnow": 2,
+    "blue-ringed-octopus": 2,
+    "glass-octopus": 2,
+    "sulfur-vent-crab": 2,
+    "clownfish-scout": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "clownfish-scout": 3,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 1,
+    "silver-minnow": 2,
+    "sulfur-vent-crab": 3,
+    "blue-ringed-octopus": 2
+   },
+   "showcase": null,
+   "leader": "blue-ringed-octopus",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 55,
+   "brAfter": 53,
+   "tier": "A",
+   "notes": [
+    "-glass-octopus"
+   ]
+  },
+  "mg/2-B-1": {
+   "mapNo": 2,
+   "from": {
+    "sulfur-vent-crab": 4,
+    "tide-pool-crab": 2,
+    "blind-cave-fish": 1,
+    "mallard-marauder": 4,
+    "trash-panda-trickster": 2,
+    "fiddler-crab-swarm": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "blind-cave-fish": 1,
+    "fiddler-crab-swarm": 3,
+    "tide-pool-crab": 2,
+    "trash-panda-trickster": 3,
+    "sulfur-vent-crab": 3,
+    "mallard-marauder": 3
+   },
+   "showcase": null,
+   "leader": "mallard-marauder",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 15,
+   "copiesAfter": 15,
+   "brBefore": 55,
+   "brAfter": 57,
+   "tier": "A",
+   "notes": []
+  },
+  "mz/7-A-1": {
+   "mapNo": 7,
+   "from": {
+    "compost-grub": 3,
+    "worker-ant": 2,
+    "fungal-colossus": 1,
+    "planarian-splitter": 4,
+    "garden-snail": 4,
+    "swarm-matriarch": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "compost-grub": 2,
+    "fungal-colossus": 1,
+    "garden-snail": 5,
+    "worker-ant": 4,
+    "planarian-splitter": 3,
+    "swarm-matriarch": 1
+   },
+   "showcase": null,
+   "leader": "swarm-matriarch",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 38,
+   "brAfter": 39,
+   "tier": "A",
+   "notes": []
+  },
+  "mz/7-A-2": {
+   "mapNo": 7,
+   "from": {
+    "fungal-colossus": 2,
+    "honey-bee": 4,
+    "trapdoor-spider": 2,
+    "wolf-spider-mother": 4,
+    "dung-beetle": 2,
+    "ant-warrior": 2,
+    "garden-snail": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "dung-beetle": 3,
+    "fungal-colossus": 2,
+    "garden-snail": 3,
+    "honey-bee": 5,
+    "trapdoor-spider": 1,
+    "wolf-spider-mother": 4
+   },
+   "showcase": null,
+   "leader": "trapdoor-spider",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 51,
+   "brAfter": 52,
+   "tier": "A",
+   "notes": [
+    "-ant-warrior"
+   ]
+  },
+  "my/14-A-1": {
+   "mapNo": 14,
+   "from": {
+    "slow-loris": 2,
+    "toucan-courier": 2,
+    "slowpoke-sentinel": 4,
+    "velvet-worm": 2,
+    "termite-mound": 4,
+    "siege-rhino": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "slow-loris": 2,
+    "slowpoke-sentinel": 5,
+    "termite-mound": 5,
+    "toucan-courier": 2,
+    "velvet-worm": 1,
+    "siege-rhino": 1
+   },
+   "showcase": null,
+   "leader": "siege-rhino",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 58,
+   "brAfter": 64,
+   "tier": "B",
+   "notes": []
+  },
+  "my/14-A-2": {
+   "mapNo": 14,
+   "from": {
+    "toucan-courier": 2,
+    "slowpoke-sentinel": 2,
+    "ancient-sloth-titan": 1,
+    "aye-aye-prowler": 2,
+    "bramblewood-macaque": 1,
+    "termite-mound": 2,
+    "hoopoe-herald": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "ancient-sloth-titan": 1,
+    "hoopoe-herald": 3,
+    "slowpoke-sentinel": 2,
+    "termite-mound": 3,
+    "toucan-courier": 2,
+    "bramblewood-macaque": 1
+   },
+   "showcase": "ancient-sloth-titan",
+   "leader": "ancient-sloth-titan",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 48,
+   "brAfter": 52,
+   "tier": "B",
+   "notes": [
+    "-aye-aye-prowler",
+    "showcase set by hand: ancient-sloth-titan (Auto, bramblewood-macaque, is no sensible leader)"
+   ]
+  },
+  "my/14-A-3": {
+   "mapNo": 14,
+   "from": {
+    "slowpoke-sentinel": 2,
+    "toucan-courier": 2,
+    "kinkajou-lurker": 2,
+    "aye-aye-prowler": 2,
+    "termite-mound": 2,
+    "savanna-cheetah": 2,
+    "howler-monkey": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "aye-aye-prowler": 3,
+    "slowpoke-sentinel": 2,
+    "termite-mound": 3,
+    "toucan-courier": 2,
+    "howler-monkey": 2,
+    "kinkajou-lurker": 1,
+    "savanna-cheetah": 1
+   },
+   "showcase": null,
+   "leader": "savanna-cheetah",
+   "sizeBefore": 7,
+   "sizeAfter": 7,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 77,
+   "brAfter": 83,
+   "tier": "B",
+   "notes": []
+  },
+  "mx/20-B-1": {
+   "mapNo": 20,
+   "from": {
+    "ember-jackal": 2,
+    "magma-salamander": 3,
+    "cinder-hornet": 3,
+    "fire-drake-hatchling": 2,
+    "cinder-gecko": 2,
+    "pack-mule": 2,
+    "tide-spirit": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 3,
+    "cinder-hornet": 4,
+    "pack-mule": 3,
+    "ember-jackal": 1,
+    "magma-salamander": 2,
+    "tide-spirit": 2,
+    "fire-drake-hatchling": 1
+   },
+   "showcase": null,
+   "leader": "fire-drake-hatchling",
+   "sizeBefore": 7,
+   "sizeAfter": 7,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 153,
+   "brAfter": 160,
+   "tier": "A",
+   "notes": []
+  },
+  "mx/20-B-2": {
+   "mapNo": 20,
+   "from": {
+    "obsidian-scorpion": 3,
+    "basalt-boar": 3,
+    "cinder-stoker": 2,
+    "ember-centipede": 2,
+    "pack-mule": 2,
+    "tide-spirit": 4
+   },
+   "showcaseBefore": null,
+   "to": {
+    "basalt-boar": 3,
+    "cinder-stoker": 2,
+    "ember-centipede": 3,
+    "pack-mule": 3,
+    "obsidian-scorpion": 2,
+    "tide-spirit": 3
+   },
+   "showcase": null,
+   "leader": "tide-spirit",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 89,
+   "brAfter": 90,
+   "tier": "A",
+   "notes": []
+  },
+  "mx/20-B-3": {
+   "mapNo": 20,
+   "from": {
+    "magma-titan": 1,
+    "pyroclast-wyrm": 1,
+    "magma-salamander": 1,
+    "gorge-wyrm": 1,
+    "ashbone-ghoul": 2,
+    "cinder-stoker": 2,
+    "pack-mule": 2,
+    "cinder-gecko": 2,
+    "silverback-brawler": 2,
+    "cinder-imp": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-imp": 5,
+    "cinder-stoker": 1,
+    "gorge-wyrm": 1,
+    "pack-mule": 3,
+    "silverback-brawler": 5,
+    "magma-salamander": 1
+   },
+   "showcase": null,
+   "leader": "magma-salamander",
+   "sizeBefore": 10,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 46,
+   "brAfter": 61,
+   "tier": "C",
+   "notes": [
+    "-magma-titan",
+    "-pyroclast-wyrm",
+    "-ashbone-ghoul",
+    "-cinder-gecko"
+   ]
+  },
+  "ms/5-A-1": {
+   "mapNo": 5,
+   "from": {
+    "puddle-hopper": 2,
+    "grass-viper": 3,
+    "mosquito-cloud": 2,
+    "swamp-rabbit": 1,
+    "snapper-hatchling": 2,
+    "echo-keeper": 2,
+    "caiman-hatchling": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "caiman-hatchling": 3,
+    "echo-keeper": 3,
+    "mosquito-cloud": 2,
+    "puddle-hopper": 2,
+    "snapper-hatchling": 3,
+    "grass-viper": 1
+   },
+   "showcase": null,
+   "leader": "grass-viper",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 40,
+   "brAfter": 40,
+   "tier": "A",
+   "notes": [
+    "-swamp-rabbit"
+   ]
+  },
+  "ms/5-A-2": {
+   "mapNo": 5,
+   "from": {
+    "mangrove-mudskipper": 4,
+    "constrictor-coil": 2,
+    "snapper-hatchling": 4,
+    "baby-horned-capybara": 2,
+    "bog-behemoth": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "baby-horned-capybara": 2,
+    "bog-behemoth": 2,
+    "constrictor-coil": 2,
+    "mangrove-mudskipper": 4,
+    "snapper-hatchling": 4
+   },
+   "showcase": null,
+   "leader": "bog-behemoth",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 33,
+   "brAfter": 36,
+   "tier": "B",
+   "notes": []
+  },
+  "ms/5-A-3": {
+   "mapNo": 5,
+   "from": {
+    "constrictor-coil": 3,
+    "puddle-hopper": 3,
+    "echo-keeper": 2,
+    "grass-viper": 2,
+    "alligator-gar": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "constrictor-coil": 3,
+    "echo-keeper": 3,
+    "puddle-hopper": 4,
+    "grass-viper": 1,
+    "alligator-gar": 1
+   },
+   "showcase": null,
+   "leader": "alligator-gar",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 12,
+   "copiesAfter": 12,
+   "brBefore": 53,
+   "brAfter": 56,
+   "tier": "B",
+   "notes": []
+  },
+  "mn/8-A-1": {
+   "mapNo": 8,
+   "from": {
+    "blind-cave-fish": 3,
+    "bat-swarmling": 3,
+    "sulfur-cinder-moth": 2,
+    "glowworm-cluster": 4,
+    "cave-swiftlet": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bat-swarmling": 3,
+    "blind-cave-fish": 3,
+    "cave-swiftlet": 2,
+    "glowworm-cluster": 4,
+    "sulfur-cinder-moth": 2
+   },
+   "showcase": null,
+   "leader": "glowworm-cluster",
+   "sizeBefore": 5,
+   "sizeAfter": 5,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 33,
+   "brAfter": 36,
+   "tier": "B",
+   "notes": []
+  },
+  "mn/8-A-2": {
+   "mapNo": 8,
+   "from": {
+    "bat-swarmling": 2,
+    "echo-screecher": 3,
+    "barrow-leech-bat": 2,
+    "oilbird": 2,
+    "swarm-matriarch": 2,
+    "cave-cricket": 2,
+    "lantern-spark-fly": 2,
+    "cave-bat-swarm": 3,
+    "cave-flitter": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bat-swarmling": 4,
+    "cave-cricket": 4,
+    "oilbird": 3,
+    "barrow-leech-bat": 3,
+    "cave-bat-swarm": 3,
+    "echo-screecher": 3
+   },
+   "showcase": null,
+   "leader": "echo-screecher",
+   "sizeBefore": 9,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 91,
+   "brAfter": 94,
+   "tier": "A",
+   "notes": [
+    "-swarm-matriarch",
+    "-cave-flitter",
+    "-lantern-spark-fly"
+   ]
+  },
+  "mn/8-A-3": {
+   "mapNo": 8,
+   "from": {
+    "bat-swarmling": 3,
+    "sulfur-cinder-moth": 1,
+    "echo-screecher": 2,
+    "cave-bat-swarm": 4,
+    "swarm-matriarch": 4,
+    "monarch-wingblade": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "bat-swarmling": 4,
+    "sulfur-cinder-moth": 2,
+    "cave-bat-swarm": 3,
+    "echo-screecher": 1,
+    "monarch-wingblade": 2,
+    "swarm-matriarch": 4
+   },
+   "showcase": null,
+   "leader": "echo-screecher",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 105,
+   "brAfter": 107,
+   "tier": "A",
+   "notes": []
+  },
+  "mv/11-A-1": {
+   "mapNo": 11,
+   "from": {
+    "rockslide-ram": 4,
+    "peak-condor": 4,
+    "eyrie-warden": 1,
+    "chipmunk-hoarder": 2,
+    "eagle-owl-quartermaster": 4,
+    "wound-reaver": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "chipmunk-hoarder": 3,
+    "eyrie-warden": 2,
+    "peak-condor": 4,
+    "rockslide-ram": 4,
+    "eagle-owl-quartermaster": 3,
+    "wound-reaver": 1
+   },
+   "showcase": null,
+   "leader": "wound-reaver",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 74,
+   "brAfter": 75,
+   "tier": "A",
+   "notes": []
+  },
+  "mv/11-A-2": {
+   "mapNo": 11,
+   "from": {
+    "golden-eagle-diver": 1,
+    "eyrie-warden": 2,
+    "alpine-avalanche": 3,
+    "eagle-owl-quartermaster": 4,
+    "chipmunk-hoarder": 2,
+    "chipmunk-stockpiler": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-avalanche": 3,
+    "chipmunk-hoarder": 3,
+    "chipmunk-stockpiler": 3,
+    "eyrie-warden": 2,
+    "golden-eagle-diver": 1,
+    "eagle-owl-quartermaster": 2
+   },
+   "showcase": null,
+   "leader": "eagle-owl-quartermaster",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 63,
+   "brAfter": 62,
+   "tier": "A",
+   "notes": []
+  },
+  "mv/11-A-3": {
+   "mapNo": 11,
+   "from": {
+    "mountain-goat-climber": 2,
+    "rockslide-ram": 1,
+    "peak-condor": 1,
+    "chipmunk-hoarder": 2,
+    "chipmunk-stockpiler": 2,
+    "eagle-owl-quartermaster": 4,
+    "ibex-rockcaller": 2,
+    "eyrie-warden": 2,
+    "alpine-marmot": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "alpine-marmot": 3,
+    "chipmunk-hoarder": 4,
+    "chipmunk-stockpiler": 4,
+    "eyrie-warden": 3,
+    "eagle-owl-quartermaster": 3,
+    "ibex-rockcaller": 1
+   },
+   "showcase": null,
+   "leader": "ibex-rockcaller",
+   "sizeBefore": 9,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 78,
+   "brAfter": 77,
+   "tier": "A",
+   "notes": [
+    "-rockslide-ram",
+    "-peak-condor",
+    "-mountain-goat-climber"
+   ]
+  },
+  "mi/17-A-1": {
+   "mapNo": 17,
+   "from": {
+    "glacial-ape-king": 4,
+    "ringed-seal": 2,
+    "snow-ermine": 2,
+    "arctic-fox-raider": 4,
+    "krill-swarm": 2,
+    "frost-hare-sprinter": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "frost-hare-sprinter": 2,
+    "glacial-ape-king": 4,
+    "krill-swarm": 2,
+    "ringed-seal": 2,
+    "snow-ermine": 2,
+    "arctic-fox-raider": 4
+   },
+   "showcase": "glacial-ape-king",
+   "leader": "glacial-ape-king",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 68,
+   "brAfter": 72,
+   "tier": "B",
+   "notes": [
+    "showcase set by hand: glacial-ape-king (Auto, arctic-fox-raider, is no sensible leader)"
+   ]
+  },
+  "mi/17-A-2": {
+   "mapNo": 17,
+   "from": {
+    "harp-seal-pup": 2,
+    "krill-swarm": 2,
+    "frostmoon-howler": 2,
+    "alpha-howler": 2,
+    "snow-ermine": 2,
+    "frost-hare-sprinter": 2,
+    "lemming-swarm": 1,
+    "snow-bunting-archer": 2,
+    "lone-grey-wolf": 1,
+    "ravenous-wolverine": 1,
+    "boreal-elk": 1,
+    "glacial-ape-king": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "frost-hare-sprinter": 4,
+    "glacial-ape-king": 4,
+    "harp-seal-pup": 3,
+    "krill-swarm": 4,
+    "snow-ermine": 4,
+    "lone-grey-wolf": 1
+   },
+   "showcase": null,
+   "leader": "lone-grey-wolf",
+   "sizeBefore": 12,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 69,
+   "brAfter": 71,
+   "tier": "A",
+   "notes": [
+    "-ravenous-wolverine",
+    "-boreal-elk",
+    "-lemming-swarm",
+    "-frostmoon-howler",
+    "-snow-bunting-archer",
+    "-alpha-howler"
+   ]
+  },
+  "mi/17-A-3": {
+   "mapNo": 17,
+   "from": {
+    "frostmoon-howler": 2,
+    "lemming-swarm": 3,
+    "arctic-tern": 1,
+    "lone-grey-wolf": 3,
+    "arctic-fox-raider": 2,
+    "greenland-shark": 2,
+    "ravenous-wolverine": 1,
+    "harp-seal-pup": 2,
+    "krill-swarm": 2,
+    "glacial-ape-king": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "glacial-ape-king": 3,
+    "harp-seal-pup": 3,
+    "krill-swarm": 3,
+    "lemming-swarm": 5,
+    "greenland-shark": 3,
+    "lone-grey-wolf": 3
+   },
+   "showcase": null,
+   "leader": "lone-grey-wolf",
+   "sizeBefore": 10,
+   "sizeAfter": 6,
+   "copiesBefore": 20,
+   "copiesAfter": 20,
+   "brBefore": 110,
+   "brAfter": 108,
+   "tier": "A",
+   "notes": [
+    "-ravenous-wolverine",
+    "-arctic-tern",
+    "-arctic-fox-raider",
+    "-frostmoon-howler"
+   ]
+  },
+  "mo/0-B-1": {
+   "mapNo": 0,
+   "from": {
+    "glacier-wolf-pack": 3,
+    "pond-duck": 2,
+    "otter-kit": 2,
+    "pond-trout": 3,
+    "ant-scout": 2,
+    "burrow-rabbit": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "ant-scout": 2,
+    "burrow-rabbit": 2,
+    "glacier-wolf-pack": 3,
+    "otter-kit": 2,
+    "pond-duck": 2,
+    "pond-trout": 3
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 20,
+   "brAfter": 20,
+   "tier": "A",
+   "notes": []
+  },
+  "mo/0-B-2": {
+   "mapNo": 0,
+   "from": {
+    "otter-paddler": 2,
+    "trash-panda-trickster": 1,
+    "otter-kit": 2,
+    "burrow-rabbit": 1,
+    "ant-scout": 2,
+    "meadow-rabbit": 2,
+    "tunnel-ant": 2,
+    "forager-ant": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "ant-scout": 2,
+    "forager-ant": 3,
+    "meadow-rabbit": 3,
+    "otter-kit": 2,
+    "otter-paddler": 2,
+    "tunnel-ant": 2
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 8,
+   "sizeAfter": 6,
+   "copiesBefore": 14,
+   "copiesAfter": 14,
+   "brBefore": 36,
+   "brAfter": 36,
+   "tier": "A",
+   "notes": [
+    "-burrow-rabbit",
+    "-trash-panda-trickster"
+   ]
+  },
+  "mo/0-B-3": {
+   "mapNo": 0,
+   "from": {
+    "pond-duck": 1,
+    "otter-paddler": 1,
+    "thornwood-palisade": 2,
+    "trash-panda-trickster": 2,
+    "burrow-rabbit": 4,
+    "otter-kit": 4,
+    "meadow-rabbit": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "burrow-rabbit": 4,
+    "meadow-rabbit": 2,
+    "otter-kit": 5,
+    "pond-duck": 1,
+    "trash-panda-trickster": 2,
+    "thornwood-palisade": 2
+   },
+   "showcase": null,
+   "leader": null,
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 33,
+   "brAfter": 33,
+   "tier": "A",
+   "notes": [
+    "-otter-paddler"
+   ]
+  },
+  "mpd/18-A-1": {
+   "mapNo": 18,
+   "from": {
+    "sandfish": 3,
+    "caustic-scorpion": 3,
+    "thorny-devil": 3,
+    "meerkat-sentry": 1,
+    "roadrunner-courier": 2,
+    "dune-jackal-scout": 1,
+    "sand-widow": 1,
+    "dust-hyena": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "roadrunner-courier": 3,
+    "sand-widow": 2,
+    "sandfish": 4,
+    "thorny-devil": 5,
+    "caustic-scorpion": 1,
+    "dust-hyena": 1
+   },
+   "showcase": null,
+   "leader": "caustic-scorpion",
+   "sizeBefore": 8,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 51,
+   "brAfter": 52,
+   "tier": "A",
+   "notes": [
+    "-dune-jackal-scout",
+    "-meerkat-sentry"
+   ]
+  },
+  "mpd/18-A-2": {
+   "mapNo": 18,
+   "from": {
+    "dune-jackal": 3,
+    "dune-jackal-scout": 2,
+    "rabid-jackal": 2,
+    "sandfish": 1,
+    "fennec-fox": 2,
+    "moon-jerboa": 2,
+    "caustic-scorpion": 1,
+    "dust-hyena": 2,
+    "roadrunner-courier": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "dune-jackal": 5,
+    "dune-jackal-scout": 3,
+    "roadrunner-courier": 3,
+    "caustic-scorpion": 1,
+    "moon-jerboa": 3,
+    "rabid-jackal": 2
+   },
+   "showcase": null,
+   "leader": "caustic-scorpion",
+   "sizeBefore": 9,
+   "sizeAfter": 6,
+   "copiesBefore": 17,
+   "copiesAfter": 17,
+   "brBefore": 59,
+   "brAfter": 60,
+   "tier": "A",
+   "notes": [
+    "-sandfish",
+    "-dust-hyena",
+    "-fennec-fox"
+   ]
+  },
+  "mpd/18-A-3": {
+   "mapNo": 18,
+   "from": {
+    "dust-devil-kestrel": 1,
+    "sandstorm-roc": 2,
+    "roadrunner-courier": 2,
+    "horned-lizard": 2,
+    "caustic-scorpion": 4,
+    "armadillo-guard": 2,
+    "sand-widow": 1,
+    "dust-hyena": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "armadillo-guard": 3,
+    "roadrunner-courier": 3,
+    "sand-widow": 2,
+    "sandfish": 3,
+    "sandstorm-roc": 3,
+    "caustic-scorpion": 1,
+    "dust-devil-kestrel": 1
+   },
+   "showcase": null,
+   "leader": "dust-devil-kestrel",
+   "sizeBefore": 8,
+   "sizeAfter": 7,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 70,
+   "brAfter": 76,
+   "tier": "B",
+   "notes": [
+    "-dust-hyena",
+    "swap horned-lizard->sandfish"
+   ]
+  },
+  "mpd/18-A-4": {
+   "mapNo": 18,
+   "from": {
+    "meerkat-burrower": 4,
+    "meerkat-sentry": 3,
+    "fennec-fox": 3,
+    "caustic-scorpion": 2,
+    "sand-widow": 2,
+    "dust-hyena": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "meerkat-burrower": 5,
+    "meerkat-sentry": 4,
+    "sand-widow": 3,
+    "caustic-scorpion": 1,
+    "dust-hyena": 1,
+    "fennec-fox": 2
+   },
+   "showcase": null,
+   "leader": "caustic-scorpion",
+   "sizeBefore": 6,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 55,
+   "brAfter": 57,
+   "tier": "A",
+   "notes": []
+  },
+  "mpd/18-A-5": {
+   "mapNo": 18,
+   "from": {
+    "stonedrop-vulture": 2,
+    "skull-vulture": 2,
+    "dust-hyena": 4,
+    "rabid-jackal": 1,
+    "caustic-scorpion": 2,
+    "sand-widow": 1,
+    "roadrunner-courier": 2,
+    "cinder-gecko": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 3,
+    "roadrunner-courier": 3,
+    "sand-widow": 1,
+    "dust-hyena": 4,
+    "skull-vulture": 3,
+    "stonedrop-vulture": 2
+   },
+   "showcase": null,
+   "leader": "stonedrop-vulture",
+   "sizeBefore": 8,
+   "sizeAfter": 6,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 65,
+   "brAfter": 68,
+   "tier": "A",
+   "notes": [
+    "-rabid-jackal",
+    "-caustic-scorpion"
+   ]
+  },
+  "mpd/18-A-6": {
+   "mapNo": 18,
+   "from": {
+    "sandfish": 3,
+    "caustic-scorpion": 3,
+    "thorny-devil": 3,
+    "sand-widow": 1,
+    "rabid-jackal": 2,
+    "dust-hyena": 4,
+    "fennec-fox": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "sand-widow": 2,
+    "sandfish": 4,
+    "thorny-devil": 4,
+    "caustic-scorpion": 3,
+    "dust-hyena": 4,
+    "rabid-jackal": 1
+   },
+   "showcase": null,
+   "leader": "caustic-scorpion",
+   "sizeBefore": 7,
+   "sizeAfter": 6,
+   "copiesBefore": 18,
+   "copiesAfter": 18,
+   "brBefore": 62,
+   "brAfter": 64,
+   "tier": "A",
+   "notes": [
+    "-fennec-fox"
+   ]
+  },
+  "mpd/18-A-7": {
+   "mapNo": 18,
+   "from": {
+    "pale-oryx": 1,
+    "dromedary": 2,
+    "dune-jackal-scout": 1,
+    "meerkat-sentry": 2,
+    "caustic-scorpion": 1,
+    "dust-hyena": 4,
+    "quicksand-queen": 1,
+    "cinder-gecko": 2,
+    "trapdoor-spider": 2
+   },
+   "showcaseBefore": null,
+   "to": {
+    "cinder-gecko": 4,
+    "dune-jackal-scout": 3,
+    "meerkat-sentry": 4,
+    "dromedary": 1,
+    "dust-hyena": 2,
+    "trapdoor-spider": 1,
+    "quicksand-queen": 1
+   },
+   "showcase": null,
+   "leader": "quicksand-queen",
+   "sizeBefore": 9,
+   "sizeAfter": 7,
+   "copiesBefore": 16,
+   "copiesAfter": 16,
+   "brBefore": 85,
+   "brAfter": 88,
+   "tier": "A",
+   "notes": [
+    "-caustic-scorpion",
+    "-pale-oryx"
+   ]
+  }
+ }
+}
