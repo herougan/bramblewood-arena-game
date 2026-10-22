@@ -45,7 +45,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "அதிலிருந்து 2-க்குள் உள்ள ஒவ்வொரு காலி இடத்துக்கும் +{v1}/+{v2}, நான்கும் காலியாக இருந்தால் மேலும் +{v3}/+{v4}.",
  "+{v1}/+{v2} whenever {v3} enters play.": "{v3} ஆட்டத்தில் நுழையும் ஒவ்வொரு முறையும் +{v1}/+{v2}.",
  "+{v1}⚔ next swing": "அடுத்த வீச்சுக்கு +{v1}⚔",
- ", 1 new guaranteed": ", 1 புதியது உறுதி",
  ", already won": ", ஏற்கனவே வென்றது",
  ", already yours": ", ஏற்கனவே உன்னுடையது",
  ", an Iron Shard": ", ஒரு இரும்புத் துண்டு",
@@ -2469,7 +2468,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — உள்ளே செல்லும் வழியைக் கண்டுபிடிக்க {v2} ஐ முடி",
  "{v1} — Clear {v2} to open": "{v1} — திறக்க {v2} ஐ முடி",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} எதிர் ⚔{v5} ❤{v6}{v7}{v8}: எல்லா வகையிலும் சமம் அல்லது சிறந்தது.",
- "{v1}% foil per card.": "ஒரு அட்டைக்கு {v1}% மினுமினுப்பு.",
  "{v1}'s turn to plan": "{v1} திட்டமிடும் முறை",
  "{v1}, round {v2} of {v3}": "{v1}, சுற்று {v3} இல் {v2}",
  "{v1}, then it can be built": "{v1}, பிறகு அதைக் கட்டலாம்",
@@ -2624,5 +2622,6 @@
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "அதன் அலகு உடலை விட நீளமானது. முதலில் வணங்கும்; பிறகு யார் முயன்று பார்க்க விரும்புகிறார் என்று கேட்கும்.",
  "Blinding": "குருடாக்கல்",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "அடுத்துள்ள கூட்டாளியை நோக்கிய சாதாரணத் தாக்குதல்கள் அதற்குப் பதிலாக இந்த அட்டையைத் தாக்கும். திறன்களும் பரப்புத் தாக்குதல்களும் அல்ல.",
- "Takes the plain attacks aimed at its adjacent allies.": "அடுத்துள்ள கூட்டாளிகளை நோக்கிய சாதாரணத் தாக்குதல்களை ஏற்கும்."
+ "Takes the plain attacks aimed at its adjacent allies.": "அடுத்துள்ள கூட்டாளிகளை நோக்கிய சாதாரணத் தாக்குதல்களை ஏற்கும்.",
+ "{v1} foil per card.": "ஒரு அட்டைக்கு {v1} மினுமினுப்பு."
 }

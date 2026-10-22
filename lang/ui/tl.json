@@ -45,7 +45,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "+{v1}/+{v2} para sa bawat bakanteng slot sa loob ng 2 mula rito, at +{v3}/+{v4} pa kapag bakante ang lahat ng 4.",
  "+{v1}/+{v2} whenever {v3} enters play.": "+{v1}/+{v2} tuwing papasok sa laro ang {v3}.",
  "+{v1}⚔ next swing": "+{v1}⚔ sa susunod na hampas",
- ", 1 new guaranteed": ", 1 bagong garantisado",
  ", already won": ", napanalunan na",
  ", already yours": ", iyo na",
  ", an Iron Shard": ", isang Piraso ng Bakal",
@@ -2469,7 +2468,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — tapusin ang {v2} para makahanap ng daan papasok",
  "{v1} — Clear {v2} to open": "{v1} — Tapusin ang {v2} para mabuksan",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} laban sa ⚔{v5} ❤{v6}{v7}{v8}: kasinghusay o mas mahusay sa lahat ng paraan.",
- "{v1}% foil per card.": "{v1}% foil bawat card.",
  "{v1}'s turn to plan": "Turn ni {v1} na magplano",
  "{v1}, round {v2} of {v3}": "{v1}, round {v2} sa {v3}",
  "{v1}, then it can be built": "{v1}, saka ito maitatayo",
@@ -2624,5 +2622,6 @@
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "Mas mahaba ang tuka nito kaysa sa katawan. Yuyuko muna ito, saka itatanong kung sino ang gustong sumubok.",
  "Blinding": "Pambulag",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Ang mga karaniwang atake na nakatutok sa katabing kakampi ay tatama sa card na ito. Hindi kasama ang mga skill at mga tirang pang-area.",
- "Takes the plain attacks aimed at its adjacent allies.": "Sinasalo ang mga karaniwang atake na nakatutok sa mga katabing kakampi nito."
+ "Takes the plain attacks aimed at its adjacent allies.": "Sinasalo ang mga karaniwang atake na nakatutok sa mga katabing kakampi nito.",
+ "{v1} foil per card.": "{v1} foil bawat card."
 }

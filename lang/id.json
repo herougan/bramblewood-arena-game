@@ -2756,5 +2756,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "Telur dan anak tumbuh di sarang. Kartu Level 0 menunggu di 🌱 Level 0.",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "Sarang dan sedikit Kibble melatih kartu Level 0 ke Level 1. Setelah itu, Tempa yang melanjutkan.",
  "Tap T-2, then press ⚔️ Fight.": "Ketuk T-2, lalu tekan ⚔️ Bertarung.",
- "In the fight: {n} (every bramble's Health is halved)": "Dalam pertarungan: {n} (nyawa setiap semak duri dibagi dua)"
+ "In the fight: {n} (every bramble's Health is halved)": "Dalam pertarungan: {n} (nyawa setiap semak duri dibagi dua)",
+ "In stock: {n}": "Stok: {n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Habis. Gerobak hanya punya Tiket Raid pada hari-hari tertentu, satu per satu.",
+ "Not in stock today. Admin Mode shows it anyway.": "Hari ini tidak ada stok. Mode Admin tetap menampilkannya.",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Setiap salinan kartu kembali punya levelnya sendiri. Setiap salinan tetap di levelnya; Tempa kini mengerjakan satu salinan sekaligus."
 }

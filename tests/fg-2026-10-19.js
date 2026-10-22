@@ -4,8 +4,8 @@
 //      copiesBeyondCap / disenchantableCopies / fuseAllCountFor / meltCardValue: never below the deck limit (Common 10)
 //   2. the Fuse tab: fusePreview / fuseCreditReach / fuseCopies (what a fuse gives, the extras only for Fuse all)
 //   3. Reinforce: reinforcePreview (current → next, the cost after credit, the gate, the same answer as castleCanTemper)
-//   A. (10-21) "forge forges ALL cards of a particular suite": every copy at the card's level; the move from per-copy levels (the
-//      highest copy's level, the copies' credit added onto the card); the cloud row still round-trips
+//   A. (10-21) "forge forges ALL cards of a particular suite" made every copy share the card's level; RW3 (10-23, owner: "go back to
+//      card-based") puts each copy's level back (version 3 move: no level lost) and keeps the card's Forge credit
 //   B. (10-21) the cost curve: +10% overall, Lv 0→7 a little less than 8→10, the limit break 2× the road
 //   C. (10-21) Reset Forge progress: every card to its starting level, tutorial / hatched cards to Level 0, credit and Prestige gone
 //   6. the foil-upgrade name is one TX key; 1. the hatch egg sits on its rays' centre; TX keys in all 12 packs
@@ -47,10 +47,10 @@ function make(o){
     cardRarityTier: d=> (d && d.rarity) || 'common', DUPLICATE_DIVISOR: {common: 18.75, uncommon: 18.75, rare: 18.75, legendary: 15}};
   ctx.getCardDefs = ()=>{ const out = {}; Object.keys(BASE).forEach(id=>{ out[id] = Object.assign({}, BASE[id], {level: ctx.getCardLevel(id)}); }); return out; };
   ctx.duplicateValue = id=>{ const full = ctx.F.forgeSpentOn(id, 10), k = ctx.DUPLICATE_DIVISOR[(BASE[id] || {}).rarity] || 18.75; return {dust: Math.round(full.dust / k), gold: Math.round(full.gold / k)}; };
-  ctx.localStorage.setItem('bramblewood_card_copy_model_v', o.version != null ? String(o.version) : '2'); // before the block's own 0 ms move
+  ctx.localStorage.setItem('bramblewood_card_copy_model_v', o.version != null ? String(o.version) : '3'); // before the block's own 0 ms move (3 since RW3: per-copy levels again)
   vm.createContext(ctx);
   vm.runInContext(refine + '\n' + STEP + '\n' + copyBlock + '\n' + resetBlock + '\n' + forgeFns.map(fnSrc).join('\n') +
-    '\nthis.F = {ensureCopyModel, copyModelSync, copyLevel, copyOrder, copySpareIdx, setCopyLevel, cloudCopiesOf, cloudApplyCopyLevels, copiesBeyondCap, fuseAllCountFor, resetForgeProgress, FORGE_STEP_DUST, LIMIT_BREAK_COST_MULT, ' + forgeFns.join(', ') + '};', ctx);
+    '\nthis.F = {ensureCopyModel, copyModelSync, copyLevel, copyOrder, bestCopyIdx, copySpareIdx, setCopyLevel, cloudCopiesOf, cloudApplyCopyLevels, copiesBeyondCap, fuseAllCountFor, resetForgeProgress, FORGE_STEP_DUST, LIMIT_BREAK_COST_MULT, ' + forgeFns.join(', ') + '};', ctx);
   return ctx;
 }
 const plain = (k, L, extra)=> Array.from({length: k}, (_, i)=> Object.assign({uid: 'p' + i + Math.random().toString(36).slice(2, 6), level: L == null ? 1 : L, foil: false}, extra || {}));
@@ -73,45 +73,52 @@ ok(MAXC.common === 10 && MAXC.uncommon === 5 && MAXC.rare === 4 && MAXC.legendar
   ok(F.disenchantableCopies('c').length === 3, '5. foil and Shiny copies are kept; still 3 plain extras melt');
   const mv = F.meltCardValue('c', null); ok(mv && mv.copies === 3, `5. melting the card melts its 3 extras, no more (${mv && mv.copies})`); }
 
-// ======================= A. card-level Forge =======================
-{ // the move from a version-1 save: per-copy levels and credit
-  const copies = {c: [{uid:'a', level:5, foil:false, cr:{dust:30, gold:10}}, {uid:'b', level:3, foil:true, finish:'hex', free:3, cr:{dust:12, gold:4}}, {uid:'d', level:1, foil:false}],
+// ======================= A. per-copy levels again (RW3, 2026-10-23) =======================
+// FG (10-21) made every copy share the card's level; RW3 (owner, 10-23 item 25: "Maybe we should go back to card-based since everything is
+// based on that") puts each copy's level back (NF's model) and keeps FG's card-level Forge credit. The move, version 3.
+{ // the move from a version-2 save (FG: one level for every copy): every copy keeps it; only the best copy counts as paid for
+  const copies = {c: [{uid:'a', level:5, foil:false}, {uid:'b', level:5, foil:true, finish:'hex'}, {uid:'d', level:5, foil:false}],
     u: [{uid:'e', level:2, foil:false}, {uid:'f', level:2, foil:false}], t: [{uid:'g', level:0, hatch:1, tut:1, foil:false}]};
-  const ctx = make({copies, levels: {c: 5, u: 2}, credit: {c: {dust: 5, gold: 0}}, version: 1}), F = ctx.F;
-  ok(F.ensureCopyModel() === true && ctx.localStorage.getItem('bramblewood_card_copy_model_v') === '2', 'A. the move runs once and sets version 2');
-  ok(ctx.myCardCopies.c.every(x=> x.level === 5 && !x.cr && !x.free), 'A. every copy takes the highest copy\'s level (5); per-copy credit and inherited marks go');
-  ok(ctx.myForgeCredit.c.dust === 47 && ctx.myForgeCredit.c.gold === 14, `A. the copies' credit (30 + 12) adds onto the card's (5): ✨47 / 14 (${JSON.stringify(ctx.myForgeCredit.c)})`);
-  ok(ctx.myCardCopies.c[1].foil && ctx.myCardCopies.c[1].finish === 'hex', 'A. finishes stay on their copy');
+  const ctx = make({copies, levels: {c: 5, u: 2}, credit: {c: {dust: 47, gold: 14}}, version: 2}), F = ctx.F;
+  ok(F.ensureCopyModel() === true && ctx.localStorage.getItem('bramblewood_card_copy_model_v') === '3', 'A. the move runs once and sets version 3');
+  ok(ctx.myCardCopies.c.every(x=> x.level === 5), 'A. no level is lost: every copy keeps the card\'s Lv 5');
+  const best = ctx.myCardCopies.c[F.bestCopyIdx('c')];
+  ok(best.uid === 'b' && !best.free && ctx.myCardCopies.c.filter(x=> x !== best).every(x=> x.free === 5), 'A. the best copy (the Hex foil) counts as paid for; the others\' levels are inherited (free)');
+  ok(ctx.myForgeCredit.c.dust === 47 && ctx.myForgeCredit.c.gold === 14 && !ctx.myCardCopies.c.some(x=> x.cr), 'A. the Forge credit stays on the card');
   ok(ctx.myCardCopies.t[0].level === 0 && ctx.myCardCopies.t[0].hatch === 1, 'A. a Level 0 hatchling stays Level 0');
-  ok(ctx.toasts.length === 1 && /every copy of a card together/.test(ctx.toasts[0]), 'A. a save whose copies differed hears about it once');
-  // forging moves every copy
-  F.forgeSetCopyLevel('c', 'd', 6); ok(ctx.myCardCopies.c.every(x=> x.level === 6) && ctx.myCardLevels.c === 6, 'A. tempering one copy raises them all (6)');
-  ok(F.forgeCopyLevel('c', 'b') === 6 && F.forgeCopyLevel('c', null) === 6, 'A. every copy reads the card\'s level');
+  ok(ctx.toasts.length === 1 && /own level again/.test(ctx.toasts[0]), 'A. a save with levelled spare copies hears about it once');
+  // forging moves one copy
+  F.forgeSetCopyLevel('c', 'd', 6); ok(ctx.myCardCopies.c.find(x=> x.uid === 'd').level === 6 && ctx.myCardCopies.c.filter(x=> x.uid !== 'd').every(x=> x.level === 5) && ctx.myCardLevels.c === 6, 'A. tempering one copy raises only that copy (6; the others stay 5); the card shows its best copy');
+  ok(F.forgeCopyLevel('c', 'b') === 5 && F.forgeCopyLevel('c', null) === 6, 'A. the Forge reads the picked copy\'s level (the best by default)');
   ok(F.forgeCreditOf('c', 'b').dust === 47 && F.forgeCreditOf('c', null).dust === 47, 'A. the credit is the card\'s, whichever copy is asked');
-  // a fed duplicate goes onto the card; spares no longer depend on "paid levels"
-  const before = ctx.myCardCopies.c.length; ctx.myCardCopies.c.push({uid:'n1', level:6, foil:false}, {uid:'n2', level:6, foil:false});
-  ok(F.copySpareIdx('c').length === 4, 'A. any plain copy but the best (the Hex foil) is a spare, levelled or not: all 4 plain ones');
+  // spares: a copy with levels paid for on it is never a spare; one that only inherited its levels is
+  const before = ctx.myCardCopies.c.length; ctx.myCardCopies.c.push({uid:'n1', level:1, foil:false}, {uid:'n2', level:1, foil:false});
+  ok(F.copySpareIdx('c').length === 3 && !F.copySpareIdx('c').map(i=> ctx.myCardCopies.c[i].uid).includes('d'), 'A. spares: the plain copies with no paid levels (a, n1, n2), not d (paid Lv 6) nor the best');
   const v = F.feedDuplicate('c', null); ok(v && ctx.myCardCopies.c.length === before + 1 && ctx.myForgeCredit.c.dust === 47 + v.dust, 'A. Feed a duplicate banks on the card');
-  // a sync lifts every copy to myCardLevels (a reward that levels a card)
-  ctx.myCardLevels.u = 4; F.copyModelSync('u'); ok(ctx.myCardCopies.u.every(x=> x.level === 4), 'A. a reward that levels the card lifts every copy');
-  // the cloud row round-trips: every copy at the card's level; a pulled higher level lifts the card; a lower one never lowers it
-  const row = F.cloudCopiesOf('c'); ok(row.length === ctx.myCardCopies.c.length && row.every(x=> x.l === 6 && typeof x.u === 'string'), 'A. the cloud row: every copy at the card\'s level');
-  F.cloudApplyCopyLevels([{card_id:'c', level: 3, copies: row.map(x=> ({u: x.u, l: 3}))}]); ok(ctx.myCardCopies.c.every(x=> x.level === 6), 'A. a lower pulled level never lowers the card');
-  F.cloudApplyCopyLevels([{card_id:'c', level: 6, copies: [{u: 'other-device', l: 8}]}]); ok(ctx.myCardCopies.c.every(x=> x.level === 8) && ctx.myCardLevels.c === 8, 'A. another device\'s Lv 8 copy lifts the whole card here');
-  F.cloudApplyCopyLevels([{card_id:'u', level: 7, copies: null}]); ok(ctx.myCardCopies.u.every(x=> x.level === 7), 'A. a row with no copies (the column missing) still lifts by its level');
-  ctx.myCardCopies.c.push(...plain(230, 8)); ok(F.cloudCopiesOf('c').length === 200, 'A. at most 200 copies a row (the column\'s check)');
-  // melting: the card as one
-  const mctx = make({copies: {c: plain(12, 4)}, levels: {c: 4}, credit: {c: {dust: 20, gold: 0}}}); mctx.F.ensureCopyModel();
+  // a sync lifts only the best copy to myCardLevels (a reward that levels a card)
+  ctx.myCardLevels.u = 4; F.copyModelSync('u'); ok(ctx.myCardCopies.u.filter(x=> x.level === 4).length === 1 && ctx.myCardCopies.u.filter(x=> x.level === 2).length === 1, 'A. a reward that levels the card lifts its best copy only');
+  // the cloud row round-trips per copy
+  const row = F.cloudCopiesOf('c'); ok(row.length === ctx.myCardCopies.c.length && row[0].l === 6 && row.some(x=> x.l === 1), 'A. the cloud row: each copy\'s own level, best first');
+  F.cloudApplyCopyLevels([{card_id:'c', level: 3, copies: row.map(x=> ({u: x.u, l: Math.min(3, x.l)}))}]); ok(ctx.myCardCopies.c.find(x=> x.uid === 'd').level === 6, 'A. a lower pulled level never lowers a copy');
+  F.cloudApplyCopyLevels([{card_id:'c', level: 6, copies: [{u: 'other-device', l: 8}]}]); ok(ctx.myCardCopies.c.filter(x=> x.level === 8).length === 1 && ctx.myCardLevels.c === 8, 'A. another device\'s Lv 8 copy lifts one copy here (the strongest), not all');
+  F.cloudApplyCopyLevels([{card_id:'u', level: 7, copies: null}]); ok(ctx.myCardCopies.u.filter(x=> x.level === 7).length === 1, 'A. a row with no copies (the column missing) lifts the best copy by its level');
+  ctx.myCardCopies.c.push(...plain(230, 1)); ok(F.cloudCopiesOf('c').length === 200, 'A. at most 200 copies a row (the column\'s check)');
+  // melting: one copy's paid levels (inherited ones give nothing), the card's credit, and the extras
+  const mctx = make({copies: {c: plain(12, 4)}, levels: {c: 4}, credit: {c: {dust: 20, gold: 0}}, version: 2}); mctx.F.ensureCopyModel();
   const mv = mctx.F.meltCardValue('c', null), spent = mctx.F.forgeSpentOn('c', 4);
-  ok(mv && mv.copies === 2 && mv.dust === 2 * 7 + Math.round((spent.dust + 20) * 0.97), `A. melting refunds the card's levels once (97%) + credit, and its 2 extras (${JSON.stringify(mv)})`);
-  mctx.F.meltCard('c', null); ok(mctx.myCardCopies.c.length === 10 && mctx.myCardCopies.c.every(x=> x.level === 1) && !mctx.myForgeCredit.c, 'A. after the melt: 10 copies, all at Lv 1, no credit'); }
+  ok(mv && mv.copies === 2 && mv.dust === 2 * 7 + Math.round((spent.dust + 20) * 0.97), `A. melting the best copy refunds its levels (97%) + the card's credit, and 2 extras (${JSON.stringify(mv)})`);
+  mctx.F.meltCard('c', null); ok(mctx.myCardCopies.c.length === 10 && mctx.myCardCopies.c.filter(x=> x.level === 1).length === 1 && !mctx.myForgeCredit.c, 'A. after the melt: 10 copies, the melted one at Lv 1, the others keep Lv 4, no credit');
+  const mv2 = mctx.F.meltCardValue('c', mctx.myCardCopies.c.find(x=> x.level === 4).uid); ok(!mv2 || mv2.dust === 0 || mv2.dust === (mv2.copies * 7), 'A. a copy whose levels were only inherited refunds no levels'); }
 { // an older save (one level per card): every copy at that level, the card keeps its credit
   const ctx = make({copies: {c: [{foil:false}, {foil:true}]}, levels: {c: 3}, credit: {c: {dust: 9, gold: 1}}, version: 0}); ctx.F.ensureCopyModel();
-  ok(ctx.myCardCopies.c.every(x=> x.level === 3 && x.uid) && ctx.myForgeCredit.c.dust === 9 && !ctx.toasts.length, 'A. a pre-copy save: every copy at the card\'s Lv 3, its credit stays on the card, no note'); }
+  ok(ctx.myCardCopies.c.every(x=> x.level === 3 && x.uid) && ctx.myForgeCredit.c.dust === 9, 'A. a pre-copy save: every copy at the card\'s Lv 3, its credit stays on the card'); }
+{ // a version-1 save (NF per-copy levels): its levels stand; per-copy credit goes onto the card
+  const ctx = make({copies: {c: [{uid:'a', level:5, foil:false, cr:{dust:30, gold:10}}, {uid:'b', level:3, foil:true, finish:'hex', free:3, cr:{dust:12, gold:4}}, {uid:'d', level:1, foil:false}]}, levels: {c: 5}, credit: {c: {dust: 5, gold: 0}}, version: 1}); ctx.F.ensureCopyModel();
+  ok(ctx.myCardCopies.c.map(x=> x.level).join(',') === '5,3,1' && ctx.myCardCopies.c[1].free === 3 && !ctx.myCardCopies.c.some(x=> x.cr) && ctx.myForgeCredit.c.dust === 47, 'A. a version-1 save: per-copy levels stand, inherited marks stay, the copies\' credit adds onto the card (47)'); }
 { const nf = fnSrc('finishNurture'), gc = fnSrc('grantCardCopy');
-  ok(/setCopyLevel\(e\.cardId, null, 1\)/.test(nf), 'A. the Nest trains the whole card to Level 1');
-  ok(/copy\.level = Math\.max\(copyBaseLevelOf\(id\), topCopyLevel\(id\)\)/.test(gc), 'A. a new copy joins at the card\'s level');
-  ok(/forgeMode === 'refine' && copyModelOn\(\)/.test(fnSrc('forgeCopiesWorthASheet')), 'A. the copies window opens by itself only in Refine (the one mode that picks a copy)'); }
+  ok(/a\[i\]\.level = 1/.test(nf) && !/setCopyLevel\(e\.cardId, null, 1\)/.test(nf), 'A. the Nest trains one Level-0 copy to Level 1 (not the whole card)');
+  ok(/copy\.level = copyBaseLevelOf\(id\)/.test(gc), 'A. a new copy comes at the card\'s starting level');
+  ok(/\(forgeMode === 'upgrade' \|\| forgeMode === 'refine'\) && copyModelOn\(\)/.test(fnSrc('forgeCopiesWorthASheet')), 'A. the copies window opens in Upgrade and Refine (the modes that work on one copy)'); }
 
 // ======================= B. the cost curve =======================
 { const F = make().F, step = L=> F.levelUpCostRaw(L, 'c');
@@ -125,7 +132,7 @@ ok(MAXC.common === 10 && MAXC.uncommon === 5 && MAXC.rare === 4 && MAXC.legendar
   ok(F.forgeSpentOn('c', 11).dust === F.forgeSpentOn('c', 10).dust * 3, 'B. what a limit-broken card cost in all: the road + 2× the road'); }
 
 // ======================= 2. the Fuse tab =======================
-{ const ctx = make({copies: {c: plain(13, 3)}, levels: {c: 3}}), F = ctx.F; F.ensureCopyModel();
+{ const ctx = make({copies: {c: plain(13, 3)}, levels: {c: 3}, version: 2 /* RW3: a save from FG, so the copies above the best inherited their level */}), F = ctx.F; F.ensureCopyModel();
   const one = F.fusePreview('c', 1), all = F.fusePreview('c', null), dv = ctx.duplicateValue('c');
   ok(one.spares === 12 && all.extras === 3 && all.n === 3 && one.n === 1 && all.cap === 10, `2. 13 Commons: 12 spares, 3 extras; Fuse all takes 3 (${JSON.stringify({s: one.spares, e: all.extras})})`);
   ok(one.creditAfter.dust === dv.dust && all.creditAfter.dust === 3 * dv.dust && all.level === 3 && all.keeps === 10, '2. the preview: the credit each adds, the level kept, 10 copies left');

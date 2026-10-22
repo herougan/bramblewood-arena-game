@@ -61,30 +61,30 @@ const RARITY = {
 // cards with that map (rule 11). Map 0's decks are the owner's own and stay: its pool is what they hold.
 const POOLS = {
   m1:  {rewards: {'chipmunk-skirmisher': '0-1', 'terrier-pup': '0-4'}, extra: ['farm-dog'], ownerDecks: true},
-  mf:  {cards: ['cricket-drummer', 'dormouse', 'compost-grub', 'bramble-sprout', 'field-vole', 'field-mouse', 'quarry-mole', 'harvest-mouse', 'meadow-frog', 'badger-lumberjack'],
-        rewards: {'cricket-drummer': '1-1', 'badger-lumberjack': '1-5'}},
+  mf:  {cards: ['cricket-drummer', 'dormouse', 'compost-grub', 'bramble-sprout', 'field-vole', 'field-mouse', 'harvest-mouse', 'meadow-frog', 'badger-lumberjack'],
+        rewards: {'cricket-drummer': '1-1', 'badger-lumberjack': '1-5'}}, // 2026-10-23 (RW3, RP3): the Quarry Mole moved to Map 8 (8-1)
   mb:  {cards: ['fiddler-crab-swarm', 'pincushion-urchin', 'gull-thief', 'tidepool-trapper-crab', 'tide-pool-crab', 'open-ocean-hermit-crab', 'sea-turtle-elder', 'conch-crawler', 'grey-seal-bull', 'conch-herald'],
         rewards: {'fiddler-crab-swarm': '2-1', 'conch-herald': '2-4', 'grey-seal-bull': '2-5'}},
   mc:  {cards: ['puffin-diver', 'hawk-arrowkeeper', 'peak-condor', 'kittiwake-flock', 'red-billed-chough', 'fulmar-spitter', 'razorbill', 'mountain-goat-climber', 'peregrine-stooper', 'golden-eagle-diver'],
         rewards: {'puffin-diver': '3-2', 'peregrine-stooper': '3-5', 'golden-eagle-diver': '3-7'}},
   m2:  {cards: ['snapstick-turtle', 'stone-turtle-warden', 'water-vole', 'box-turtle', 'water-shrew', 'river-mink', 'muskrat-lodgekeeper', 'pyrenean-desman', 'platypus-spur', 'old-sturgeon'],
-        rewards: {'platypus-spur': '4-3', 'muskrat-lodgekeeper': '4-4', 'old-sturgeon': '4-5'}},
+        rewards: {'platypus-spur': '4-3', 'muskrat-lodgekeeper': '4-4', 'old-sturgeon': '4-5', 'snapstick-turtle': '4-1'}}, // + RW3 (GD2-3): 4-1
   mw:  {cards: ['snapper-hatchling', 'constrictor-coil', 'venomlord-serpent', 'crocodile-ambusher', 'swamp-alligator', 'caiman-hatchling', 'grass-viper', 'grass-snake', 'fen-mink', 'alligator-gar'],
         rewards: {'grass-viper': '5-4', 'fen-mink': '5-6', 'alligator-gar': '5-7'}},
   m8:  {cards: ['poison-dart-croaker', 'camouflage-frog', 'marsh-wisp', 'mire-witch-heron', 'constrictor-coil', 'bogfire-newt', 'newt-doctor', 'booming-bittern', 'raven-scout', 'adder-ambusher'],
-        rewards: {'newt-doctor': '6-5', 'adder-ambusher': '6-8'}, special: {'venomlord-serpent': ['6-5']}},
+        rewards: {'newt-doctor': '6-5', 'adder-ambusher': '6-8', 'poison-dart-croaker': '6-1', 'booming-bittern': '6-2'}, special: {'venomlord-serpent': ['6-5']}}, // + RW3 (GD2-3): 6-1, 6-2
   mu:  {cards: ['compost-grub', 'dung-beetle', 'leafcutter-gardener', 'hollow-oath-keeper', 'owl-nightwatch', 'fungal-colossus', 'truffle-piglet', 'ant-warrior', 'planarian-splitter', 'wolf-spider-mother'],
         rewards: {'truffle-piglet': '7-1', 'wolf-spider-mother': '7-6'}},
-  m4:  {cards: ['blind-cave-fish', 'cave-olm', 'star-nosed-mole', 'sulfur-cinder-moth', 'stalactite-golem', 'nightshade-moth', 'vampire-bat', 'whip-spider', 'giant-cave-huntsman', 'echo-screecher'],
-        rewards: {'star-nosed-mole': '8-2', 'giant-cave-huntsman': '8-7', 'echo-screecher': '8-8'}},
+  m4:  {cards: ['blind-cave-fish', 'cave-olm', 'star-nosed-mole', 'sulfur-cinder-moth', 'stalactite-golem', 'nightshade-moth', 'vampire-bat', 'whip-spider', 'giant-cave-huntsman', 'echo-screecher', 'quarry-mole'],
+        rewards: {'star-nosed-mole': '8-2', 'giant-cave-huntsman': '8-7', 'echo-screecher': '8-8', 'quarry-mole': '8-1'}}, // + RW3 (RP3): the Quarry Mole, 8-1
   mk:  {cards: ['mangrove-mudskipper', 'minnow-skitter', 'mudpuppy', 'mangrove-monitor', 'reef-shark', 'archerfish', 'sunbittern-strider', 'banded-sea-krait', 'mangrove-kingfisher', 'mangrove-manatee'],
         rewards: {'mangrove-kingfisher': '9-3', 'banded-sea-krait': '9-5', 'mangrove-manatee': '9-7'}},
   m7:  {cards: ['clownfish-scout', 'parrotfish', 'kraken-spawnling', 'coral-reef-shark', 'riptide-eel', 'electric-ray', 'lions-mane-jelly', 'swordfish-spearman', 'great-barracuda', 'colossal-squid'],
         rewards: {'electric-ray': '10-2', 'great-barracuda': '10-6', 'colossal-squid': '10-9'}, special: {'orca-vanguard': ['10-9']}},
   m10: {cards: ['alpine-marmot', 'chipmunk-hoarder', 'eyrie-warden', 'mountain-hare', 'mountain-goat-climber', 'apollo-butterfly', 'balloon-archer', 'chamois-leaper', 'eagle-owl-quartermaster', 'ibex-rockcaller'],
-        rewards: {'chamois-leaper': '11-9', 'ibex-rockcaller': '11-10'}},
+        rewards: {'chamois-leaper': '11-9', 'ibex-rockcaller': '11-10', 'alpine-marmot': '11-1', 'eagle-owl-quartermaster': '11-2'}}, // + RW3 (GD2-3): 11-1, 11-2
   mh:  {cards: ['field-mouse', 'hedgehog-scout', 'bramble-hoglet', 'mouse-sapper', 'seed-cache-squirrel', 'cunning-vixen', 'hedge-weasel', 'lyrebird-mimic', 'quillguard', 'thorn-shrike'],
-        rewards: {'hedgehog-scout': '12-5', 'quillguard': '12-7'}},
+        rewards: {'hedgehog-scout': '12-5', 'quillguard': '12-7', 'bramble-hoglet': '12-1', 'cunning-vixen': '12-2'}}, // + RW3 (GD2-3): 12-1, 12-2
   mr:  {cards: ['fox-kit', 'swift-fox', 'berserker-boar', 'stag-knight', 'grizzly-vanguard', 'tasmanian-devil', 'woodpecker-sapper', 'bramblewood-lynx', 'fawn-scout', 'shimmerwing-stag'],
         rewards: {'fawn-scout': '13-1', 'shimmerwing-stag': '13-8'}},
   m5:  {cards: ['springbok-pronker', 'hoopoe-herald', 'meerkat-burrower', 'weaver-bird', 'dust-hyena', 'grave-grin-hyena', 'pangolin-roller', 'marula-elephant', 'spitting-cobra', 'savanna-cheetah'],
@@ -96,13 +96,13 @@ const POOLS = {
   m6:  {cards: ['snow-ermine', 'harbor-seal', 'glacial-ape-king', 'snow-bunting-archer', 'spitting-spider', 'frostmoon-howler', 'ravenous-wolverine', 'lone-grey-wolf', 'walrus-icebreaker', 'polar-bear'],
         rewards: {'lone-grey-wolf': '17-2', 'polar-bear': '17-6', 'walrus-icebreaker': '17-8'}},
   md:  {cards: ['thorny-devil', 'roadrunner-courier', 'sandfish', 'komodo-warlord', 'caustic-scorpion', 'fennec-fox', 'dromedary', 'antlion-pit', 'obsidian-scorpion', 'dust-devil-kestrel'],
-        rewards: {'antlion-pit': '18-6', 'obsidian-scorpion': '18-5', 'dust-devil-kestrel': '18-7'}, special: {'sand-widow': ['18-7']}},
+        rewards: {'antlion-pit': '18-6', 'obsidian-scorpion': '18-5', 'dust-devil-kestrel': '18-7', 'thorny-devil': '18-1', 'caustic-scorpion': '18-2'}, special: {'sand-widow': ['18-7']}}, // + RW3 (GD2-3): 18-1, 18-2
   m3:  {cards: ['cinder-stoker', 'magma-titan', 'phoenix-fledgling', 'yeti', 'glacier-wolf-pack', 'porcupine-roller', 'scree-goat', 'fire-salamander', 'quill-volley', 'echidna-quillshot'],
         rewards: {'fire-salamander': '19-3', 'quill-volley': '19-2', 'echidna-quillshot': '19-6'}},
   m11: {cards: ['pack-mule', 'cinder-skeleton', 'ashbone-ghoul', 'cave-warlord', 'bear-cub', 'magma-wraith', 'ash-cloud-condor', 'magma-salamander', 'woodland-brawler', 'ossuary-lammergeier'],
-        rewards: {'magma-wraith': '20-7', 'woodland-brawler': '20-9', 'ossuary-lammergeier': '20-10'}, special: {'ancient-sloth-titan': ['20-9']}},
+        rewards: {'magma-wraith': '20-7', 'woodland-brawler': '20-9', 'ossuary-lammergeier': '20-10', 'pack-mule': '20-1', 'ash-cloud-condor': '20-2'}, special: {'ancient-sloth-titan': ['20-9']}}, // + RW3 (GD2-3): 20-1, 20-2
   m21: {cards: ['pika-hoarder', 'glacier-yak', 'eagle-sharpshooter', 'alpine-marmot', 'mountain-goat-climber', 'scree-goat', 'golden-eagle-diver', 'snow-leopard', 'snow-owl-sentinel'],
-        rewards: {'snow-owl-sentinel': '21-6'}},
+        rewards: {'snow-owl-sentinel': '21-6', 'pika-hoarder': '21-1'}}, // + RW3 (GD2-3): 21-1
   m22: {cards: ['cinder-gecko', 'cinder-hornet', 'gorge-wyrm', 'permafrost-mammoth', 'ice-petrel', 'rimefire-salamander', 'badger-berserker', 'fumarole-ibex', 'ur-elk', 'caldera-snow-leopard'],
         rewards: {'rimefire-salamander': '22-2', 'ur-elk': '22-6', 'caldera-snow-leopard': '22-8'}, special: {'rimeheart-colossus': ['22-8']}},
   m23: {cards: ['mouse-sapper', 'badger-trench-digger', 'pack-mule', 'balloon-archer', 'howdah-archers', 'siege-rhino', 'trebuchet-crew', 'testudo-tortoise', 'beetle-battering-ram', 'war-elephant'],
@@ -157,6 +157,10 @@ const srcKindOf = c=> c.source ? (c.source.kind === 'pack' && +c.source.tier ===
 const givenByMap = c=> !!c && !isLeader(c) && c.cardType !== 'equipment' && srcKindOf(c) !== 'faction' && !KEEP_KINDS.has(srcKindOf(c));
 // owner 07:41, DV3: "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1. About 2 should be the normal."
 const REWARDS_FOR = n=> n >= 10 ? 3 : n >= 6 ? 2 : 1;
+// 2026-10-23 (package RW3, owner GD2-3: "Skirmish exclusives have priority. So move the pack cards." and RP3, the Quarry Mole to 8-1): the
+// skirmish rewards RW3 added on top of REWARDS_FOR (tools/rw3_first_rewards_2026_10_23.js), and the one card a pool grew by (m4: the mole).
+const RW3_EXTRA_REWARDS = {m2: 1, m8: 2, m4: 1, m10: 2, mh: 2, md: 2, m11: 2, m21: 1}, RW3_EXTRA_POOL = {m4: 1};
+const rewardsWant = (mid, n)=> REWARDS_FOR(n) + (RW3_EXTRA_REWARDS[mid] || 0);
 // the pool cards that first appear on each map (poolLists: {mapId: [ids]} in road order; Map 0 first), that the map gives out
 function newCardsByMap(poolLists, by){ const seen = new Set(), out = {};
   Object.keys(poolLists).forEach(mid=>{ const fresh = poolLists[mid].filter(id=> !seen.has(id)); poolLists[mid].forEach(id=> seen.add(id)); out[mid] = fresh.filter(id=> givenByMap(by[id])); });
@@ -246,7 +250,7 @@ function plan(){
   const keepKinds = KEEP_KINDS, srcKind = srcKindOf;
   // 2026-10-22 (DV2, owner 07:41): each map's number of skirmish rewards follows its count of new cards (REWARDS_FOR)
   const neu = newCardsByMap(Object.fromEntries(mains.map(m=> [m.id, poolOf(m.id)])), by);
-  mains.forEach(m=>{ const want = REWARDS_FOR(neu[m.id].length), have = Object.keys(POOLS[m.id].rewards || {}).length;
+  mains.forEach(m=>{ const want = rewardsWant(m.id, neu[m.id].length), have = Object.keys(POOLS[m.id].rewards || {}).length;
     if(want !== have) errs.push(`${m.id}: ${neu[m.id].length} new cards want ${want} skirmish rewards, POOLS has ${have}`);
     Object.keys(POOLS[m.id].rewards || {}).forEach(id=>{ if(!neu[m.id].includes(id)) errs.push(`${m.id}: reward ${id} is not one of the map's new cards`); }); });
   // 1. skirmish rewards
@@ -386,9 +390,9 @@ function check(){
   // 4. the pools: 6-10 a map (Map 0's owner decks aside); 2026-10-22 (DV2, owner 07:41) the skirmish rewards per main map follow its new cards:
   //    "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1." Rewards are new cards of the map, in that fight's deck, never pack cards
   const neu = newCardsByMap(Object.fromEntries(mains.map(m=> [m.id, pools[m.id].cards])), by);
-  mains.forEach((m, i)=>{ const P = pools[m.id]; if(i > 0) ok(P.cards.length >= 6 && P.cards.length <= 10, `pool size ${m.id}: ${P.cards.length}`);
+  mains.forEach((m, i)=>{ const P = pools[m.id]; if(i > 0) ok(P.cards.length >= 6 && P.cards.length <= 10 + (RW3_EXTRA_POOL[m.id] || 0), `pool size ${m.id}: ${P.cards.length}`);
     const rw = cs.filter(c=> c.source && c.source.kind === 'map' && c.source.id === m.id && c.source.node && !isLeader(c) && c.cardType !== 'equipment');
-    ok(rw.length === REWARDS_FOR(neu[m.id].length), `skirmish rewards ${m.id}: ${rw.length} (${rw.map(c=> c.id).join(', ')}), want ${REWARDS_FOR(neu[m.id].length)} for ${neu[m.id].length} new cards`);
+    ok(rw.length === rewardsWant(m.id, neu[m.id].length), `skirmish rewards ${m.id}: ${rw.length} (${rw.map(c=> c.id).join(', ')}), want ${rewardsWant(m.id, neu[m.id].length)} for ${neu[m.id].length} new cards`);
     rw.forEach(c=>{ ok(neu[m.id].includes(c.id), `reward ${c.id} is not a new card of ${m.id}`); const n = m.nodes.find(x=> x.key === c.source.node); if(i > 0) ok(n && n.deck && n.deck[c.id] > 0, `reward ${c.id} is not in ${c.source.node}'s deck`); }); // (Map 0's decks are the owner's)
     ok(new Set(rw.map(c=> c.source.node)).size === rw.length, `two skirmish rewards on one fight in ${m.id}`);
     neu[m.id].forEach(id=>{ if(!rw.some(c=> c.id === id)){ const c = by[id], s2 = c.source; ok(s2 && s2.kind === 'pack' && s2.map === m.id || id in {'fox-kit': 1, 'feral-tomcat': 1, 'beetle-grunt': 1, 'house-cat': 1, 'farm-dog': 1}, `${id} (new on ${m.id}) is neither a reward nor a pack card of it: ${JSON.stringify(s2)}`); } }); });

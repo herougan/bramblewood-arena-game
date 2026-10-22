@@ -2,6 +2,42 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package RW3: drops by Energy, every skirmish pays, packs fully random, rare foils, the Shop's Raid Ticket, rarer ticket notices, disenchant table, per-copy Forge levels, PvP pools, the Quarry Mole on 8-1)
+- Owner answers of 00:10, items 5, 6, 8, 19, 23, 25, 42, 44, 48, 53, 68, 69 (foils), 86 (GD2-3, GD2-4, GD2-6, RW2-3, AR-1, RK2, RK4, RP3, DV4, E2, C1, E11).
+- **Card drops (item 19, RW2-3):** 1% per ⚡ of the fight kind's Energy tier + a shield bonus (elite / champion / miniboss / dungeon +1%, sub-boss +2%,
+  boss +3%, world / raid boss, megaraid, final boss +4%), no cap: skirmish 1%, elite 3%, sub-boss 5%, boss 6%, world / raid boss 8%, final boss 9%
+  (was 7% a tier capped at 25%). A skirmish with a first-clear card rolls 3x on repeats (3%), then that card's rarity share (RW2-1's 60/50/40...).
+  The daily (ticketed) dungeons' floors keep 7% a tier capped at 25% (`ticketedDungeonDropChance`). The drop line shows the new numbers (call RW3-1).
+- **Every skirmish pays on its first clear (items 5, 6):** the seven maps with no skirmish-exclusive card got 1-2 (12 cards moved out of the packs,
+  `tools/rw3_first_rewards_2026_10_23.js` + `_apply_….py`); every other open skirmish pays a card of its map's pack. 101 main-map skirmishes: exclusive
+  23 → 36, pack card 44 → 64, pack 1, nothing 33 → 0. A season / faction pack fallback exists (`SKIRMISH_FIRST_PACKS`, empty: no map ran out of cards).
+  `tools/map_divvy_2026_10_22.js` knows the extra rewards (`RW3_EXTRA_REWARDS`) and its check passes (call RW3-8).
+- **The Quarry Mole (item 48, RP3):** out of Base, the first-clear card of 8-1 (Caves & Alcoves; two in 8-1's deck); Thistlewood's pool and decks lost it
+  (1-4's showcase is the Field Vole). T-1 no longer pays it even though the live tutorial config lists it (`TUTORIAL_REWARD_RETIRED`); the clearing SQL
+  is `supabase/proposed/20261023_rw3_tutorial_reward.sql`, not applied (call RW3-9).
+- **Packs completely random (item 53, DV4):** no map, rarity or pitching gate on what a pack gives, no recent-pull weight, no new-card guarantee; the
+  drop, the base track and raid claims keep the gate (`packCardPool(…, gated)`). Prices and availability unchanged (call RW3-3).
+- **Rare foils (item 69, C1):** 1% a card (Hedgerow), 1.5% (Tidemire), 2% (Highcrest, Mystery), faction packs 1%; the Highcrest's guaranteed foil is off
+  (about 1.3 foils a Case → 0.16). Advanced packs keep 10x on their first five (call RW3-4).
+- **Easter eggs (item 8, GD2-6):** a Mystery Booster card is an Easter egg 0.05% of the time (source `mysteryEgg`); giveaways are the admin grants (call RW3-10).
+- **The Shop's Raid Ticket (item 42, RK2):** in stock on 25% of days (one roll a local day), stock 1, "Sold out" once bought, no shelf item on other days
+  (`RAID_TICKET_SHOP_*`; the sold day travels with the progress) (call RW3-5).
+- **Ticket notices (item 44, RK4):** S, SS, SSS notices bring a Raid Ticket 40% each (was 30 / 60 / 100%): at 6 notices a day, S 0.59 a week, SS + SSS one
+  every 1.4 months (call RW3-2).
+- **Disenchant (item 68, E2):** Common 5, Uncommon 10, Rare 25, Very Rare 45, Super Rare 65, Epic 100, Heroic 150, Unique 250, Legendary 400, Mythic 700,
+  Ancient 1,200, Divine 2,000, Void 3,000, Daemonic 4,500 Magic Dust a plain spare (special rarities as their tier) (call RW3-6).
+- **The Nurse (item 86, E11):** already makes eggs, babies and Level-0 training faster (2.5% a mastery point, at most half); never the Shiny chance. Unchanged (call RW3-11).
+- **Forge levels per copy again (item 25). Root cause:** package FG (10-21, "forge forges ALL cards of a particular suite") made every copy of a card share
+  one level (`setCopyLevel` moved them all, `copyModelSync` held them together). Now each copy is tempered, limit broken, melted and trained on its own
+  (NF's model); the duplicate credit stays on the card. **Migration (copy model version 3, once):** every copy keeps the level it had (the shared level
+  becomes each copy's), only the best copy counts as paid for (the others' levels are marked inherited, so a melt refunds them once); a version-1 save's
+  per-copy levels stand. One toast (`toast.rw3-copy-levels`). Upgrade picks a copy again (call RW3-7).
+- **PvP pools (item 23, AR-1):** Standard PvP and Collection PvP meet different strangers (a Standard deck is recorded at `ghost_decks` stage 100 + tier,
+  no SQL change); a Standard match keeps your foils and Shinies.
+- Texts: 6 TX keys (`ui.rw3-rt-*`, `toast.rw3-copy-levels`) in 12 packs (`tools/i18n_2026_10_23_rw3.py`); `toast.fg-card-levels` retired; two stale `lang/ui`
+  rows updated. Tests: `tests/rw3-2026-10-23.js` (new, 10,000-roll checks); `rw2`, `gd`, `gd2` follow the drop numbers; `nf`, `deck-sync`, `ux` back to
+  per-copy levels, `fg` section A rewritten. Decisions: Built (RW3) on 12 items; RW3-1 … RW3-11 asked. Screens: `docs/screens/RW3/`.
+
 ## 2026-10-23 (package DOC: the owner's 10-23 00:10 answers)
 - 78 decisions closed in `docs/decisions.json` with his quotes (the ones that need building name their package: TU2, RW3, EN, SX, AR3); T3, S1, S2 wait for "apply it", S3 and S4 for a Chrome session; A1, A2 and G2 rewritten with the detail he asked for. The build list is at the top of `docs/action-items.md`.
 ## 2026-10-23 (package TU2: the Tutorial's way out, tutorial Health and rewards editable, T-1 to T-5, the Nest's recruits, Promotion page, Krooni retired, daily dungeons hidden, the Bonus Raid Ticket)

@@ -45,7 +45,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "2칸 이내의 빈칸 하나마다 +{v1}/+{v2}, 4칸이 모두 비면 +{v3}/+{v4} 더.",
  "+{v1}/+{v2} whenever {v3} enters play.": "{v3}이(가) 나올 때마다 +{v1}/+{v2}.",
  "+{v1}⚔ next swing": "다음 공격 +{v1}⚔",
- ", 1 new guaranteed": ", 신규 1장 보장",
  ", already won": ", 이미 획득",
  ", already yours": ", 이미 보유",
  ", an Iron Shard": ", 철 조각",
@@ -2469,7 +2468,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — {v2}을(를) 클리어하면 들어갈 길이 보여요",
  "{v1} — Clear {v2} to open": "{v1} — {v2}을(를) 클리어하면 열려요",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} 대 ⚔{v5} ❤{v6}{v7}{v8}: 모든 면에서 같거나 더 나아요.",
- "{v1}% foil per card.": "카드당 포일 {v1}%.",
  "{v1}'s turn to plan": "{v1}의 계획 차례",
  "{v1}, round {v2} of {v3}": "{v1}, {v3}라운드 중 {v2}라운드",
  "{v1}, then it can be built": "{v1}, 그 뒤 지을 수 있어요",
@@ -2624,5 +2622,6 @@
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "부리가 몸보다 길다. 먼저 고개를 숙여 인사하고, 누가 겨뤄 보겠느냐고 묻는다.",
  "Blinding": "실명 공격",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "인접한 아군을 노린 일반 공격은 대신 이 카드에 맞아요. 스킬과 범위 공격은 제외.",
- "Takes the plain attacks aimed at its adjacent allies.": "인접한 아군을 노린 일반 공격을 대신 받아요."
+ "Takes the plain attacks aimed at its adjacent allies.": "인접한 아군을 노린 일반 공격을 대신 받아요.",
+ "{v1} foil per card.": "카드당 포일 {v1}."
 }

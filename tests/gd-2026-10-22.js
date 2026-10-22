@@ -87,31 +87,31 @@ const sbx = {getCardDefs: ()=> cdefs, RARITY_DEFS, RANK_ORDER: ['E','D','C','B',
   packCardPool: ()=> cards.filter(c=> c.source && c.source.kind === 'pack' && !c.token && !c.test).map(c=> c.id), isEquipmentDef: d=> d.cardType === 'equipment', isEasterEgg: d=> !!d.easterEgg,
   unlockCardForPlayer: id=>{ granted.push(id); return true; }, Math: Object.assign(Object.create(Math), {random: ()=> rnd()}), Object, String, Number, Array, Set, JSON, out: {}};
 vm.createContext(sbx);
-vm.runInContext([constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'),
+vm.runInContext([constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'), constSrc('DROP_PER_ENERGY_RW3'), constSrc('DROP_SHIELD_BONUS'), /* RW3 */
   constSrc('CARD_RANK_STEP_MAPS'), constSrc('CARD_RANK_CAP'), constSrc('SKIRMISH_OWN_DROP_MULT'), constSrc('SKIRMISH_OWN_DROP_BY_RARITY'),
   ...['rarityAtLeastRare', 'nodeIsEliteForRank', 'cardRewardIsChallenge', 'cardRewardRankFor', 'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll',
-    'rollSkirmishCardDrop', 'fightDropEnergy', 'fightCardDropChance', 'skirmishOwnDropShare', 'skirmishOwnDropIds', 'nodeCardDropChance', 'skirmishOwnDropOdds', 'rollCardDrop'].map(fnSrc)].join('\n') +
+    'rollSkirmishCardDrop', 'fightDropEnergy', 'dropShieldBonus', 'ticketedDungeonDropChance', 'isTicketedDungeonFight', 'fightCardDropChance', 'skirmishOwnDropShare', 'skirmishOwnDropIds', 'nodeCardDropChance', 'skirmishOwnDropOdds', 'rollCardDrop'].map(fnSrc)].join('\n') +
   '\nout.f = {nodeCardDropChance, rollCardDrop, skirmishOwnDropShare, skirmishOwnDropOdds};', sbx);
 const F = sbx.out.f;
 const WANT_SHARE = {common: .60, uncommon: .50, rare: .40, veryrare: .25, superrare: .20, epic: .10, heroic: .05, unique: .04, legendary: .03, mythic: .02, ancient: .01, divine: .01, daemonic: .01, quest: .50, special: .40, starter: .60};
 Object.entries(WANT_SHARE).forEach(([r, p])=> ok(F.skirmishOwnDropShare(r) === p, `drop: ${r} reward card share ${p * 100}% (got ${F.skirmishOwnDropShare(r)})`));
 const nodeC = {key: 'own-common', kind: 'skirmish', deck: {}}, nodeR = {key: 'own-rare', kind: 'skirmish', deck: {}}, nodeP = {key: 'plain', kind: 'skirmish', deck: {}};
-ok(F.nodeCardDropChance('m15', nodeC) === 0.07 && F.nodeCardDropChance('m15', nodeC, {repeat: true}) === 0.21, 'drop: a reward-card skirmish shows 7% before its clear, 21% after');
-ok(F.nodeCardDropChance('m15', nodeP, {repeat: true}) === 0.07, 'drop: a skirmish with no reward card stays 7% on repeats');
-ok(F.nodeCardDropChance('m15', Object.assign({rewardTokens: ['factionReward']}, nodeP), {repeat: true}) === 0.07, 'drop: a skirmish whose first clear pays a token now drops too (7%; was 0)');
-ok(F.nodeCardDropChance('m15', {key: 'own-common', kind: 'elite', deck: {}}, {repeat: true}) === 0.14, 'drop: an elite keeps its tier chance (14%)');
+ok(F.nodeCardDropChance('m15', nodeC) === 0.01 && F.nodeCardDropChance('m15', nodeC, {repeat: true}) === 0.03, 'drop: a reward-card skirmish shows 1% before its clear, 3% after (RW3: 1% per Energy, 3x on repeats)');
+ok(F.nodeCardDropChance('m15', nodeP, {repeat: true}) === 0.01, 'drop: a skirmish with no reward card stays 1% on repeats (RW3)');
+ok(F.nodeCardDropChance('m15', Object.assign({rewardTokens: ['factionReward']}, nodeP), {repeat: true}) === 0.01, 'drop: a skirmish whose first clear pays a token drops too (1% since RW3)');
+ok(F.nodeCardDropChance('m15', {key: 'own-common', kind: 'elite', deck: {}}, {repeat: true}) === 0.03, 'drop: an elite keeps its tier chance (RW3: 2% + 1% shield bonus = 3%)');
 const N = 10000;
 const run = (node, opts, seed)=>{ rnd = seeded(seed); granted.length = 0; let any = 0, own = 0, pack = 0; const ownId = (sbx.nodeRewardCardIds('m15', node.key) || [])[0];
   for(let i = 0; i < N; i++){ const id = F.rollCardDrop(node, 'm15', opts); if(id){ any++; if(id === ownId) own++; else pack++; } } return {any: any / N, own: own / N, pack: pack / N}; };
 const pc = x=> (x * 100).toFixed(2) + '%';
 for(const [nm, node, share] of [['Common (terrier-pup)', nodeC, .60], ['Rare (quillguard)', nodeR, .40]]){
   const r = run(node, {rank: 'S', firstClear: false}, nm.length * 97);
-  console.log(`  repeat wins of a skirmish paying a ${nm}, ${N} seeded rolls: any card ${pc(r.any)} (want 21%), its own card ${pc(r.own)} (want ${pc(.21 * share)}), a pack card ${pc(r.pack)} (want ${pc(.21 * (1 - share))})`);
-  ok(Math.abs(r.any - .21) < .012 && Math.abs(r.own - .21 * share) < .01 && Math.abs(r.pack - .21 * (1 - share)) < .01, `drop: ${nm} repeat wins: ${pc(r.any)} any, ${pc(r.own)} own, ${pc(r.pack)} pack`);
+  console.log(`  repeat wins of a skirmish paying a ${nm}, ${N} seeded rolls: any card ${pc(r.any)} (want 3%), its own card ${pc(r.own)} (want ${pc(.03 * share)}), a pack card ${pc(r.pack)} (want ${pc(.03 * (1 - share))})`);
+  ok(Math.abs(r.any - .03) < .005 && Math.abs(r.own - .03 * share) < .004 && Math.abs(r.pack - .03 * (1 - share)) < .004, /* RW3: 3% */ `drop: ${nm} repeat wins: ${pc(r.any)} any, ${pc(r.own)} own, ${pc(r.pack)} pack`);
   const f = run(node, {rank: 'S', firstClear: true}, nm.length * 13);
-  console.log(`  first clears of the same skirmish, ${N} rolls: any card ${pc(f.any)} (want 7%), its own card ${pc(f.own)} (want 0)`);
-  ok(Math.abs(f.any - .07) < .008 && f.own === 0, `drop: ${nm} first clear: 7% pack only (${pc(f.any)}, own ${pc(f.own)})`);
-  const o = F.skirmishOwnDropOdds('m15', node); ok(o && Math.abs(o.own[0].p - .21 * share) < 1e-9 && Math.abs(o.pack - .21 * (1 - share)) < 1e-9, `drop: the panel's odds for a ${nm} match (${o && pc(o.own[0].p)} + ${o && pc(o.pack)})`);
+  console.log(`  first clears of the same skirmish, ${N} rolls: any card ${pc(f.any)} (want 1%), its own card ${pc(f.own)} (want 0)`);
+  ok(Math.abs(f.any - .01) < .004 && f.own === 0, `drop: ${nm} first clear: 1% pack only (${pc(f.any)}, own ${pc(f.own)})`);
+  const o = F.skirmishOwnDropOdds('m15', node); ok(o && Math.abs(o.own[0].p - .03 * share) < 1e-9 && Math.abs(o.pack - .03 * (1 - share)) < 1e-9, `drop: the panel's odds for a ${nm} match (${o && pc(o.own[0].p)} + ${o && pc(o.pack)})`);
 }
 { const r = run(nodeR, {rank: 'B', firstClear: false}, 77); ok(r.own === 0, `drop: the rank gate holds: a B win never drops the Rare reward card (asks S): ${pc(r.own)}`); }
 ok(/rollCardDrop\([^\n]*\{rank, firstClear: !!isFirstClear\}\)/.test(app), 'drop: the win tells rollCardDrop whether it was the first clear');

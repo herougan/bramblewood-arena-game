@@ -71,7 +71,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "2マス以内の空き枠1つごとに+{v1}/+{v2}、4つすべて空いていればさらに+{v3}/+{v4}。",
  "+{v1}/+{v2} whenever {v3} enters play.": "{v3}が場に出るたびに+{v1}/+{v2}。",
  "+{v1}⚔ next swing": "次の一撃 +{v1}⚔",
- ", 1 new guaranteed": "、新カード1枚確定",
  ", already won": "、獲得済み",
  ", already yours": "、入手済み",
  ", an Iron Shard": "、鉄のかけら",
@@ -4914,7 +4913,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — {v2}を制覇すると入り口が見つかる",
  "{v1} — Clear {v2} to open": "{v1} — {v2}を制覇すると開く",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} 対 ⚔{v5} ❤{v6}{v7}{v8}：どの点でも同等以上。",
- "{v1}% foil per card.": "カード1枚ごとにフォイル{v1}%。",
  "{v1}% of the time, a": "{v1}%の確率で、",
  "{v1}% of the time, a shot": "{v1}%の確率で、射撃が",
  "{v1}'s Avalanche buries {v2} enemy unit{s}: {v3} cold damage and +1 Wait.": "{v1}の雪崩が敵ユニット{v2}体を埋める：冷気ダメージ{v3}、待機+1。",
@@ -5104,5 +5102,6 @@
  "When the wolves come, the herd forms a ring, and the calves go in the middle.": "オオカミが来ると群れは輪になり、子どもたちは真ん中に入る。",
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "爪で氷に呼吸穴を掘り、冬のあいだずっと開けておく。",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "くちばしは体より長い。まず一礼し、それから「お手合わせ願えるのはどなた？」と尋ねる。",
- "Blinding": "目くらまし"
+ "Blinding": "目くらまし",
+ "{v1} foil per card.": "カード1枚ごとにフォイル{v1}。"
 }

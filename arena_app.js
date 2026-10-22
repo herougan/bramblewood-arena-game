@@ -110,7 +110,7 @@
         localStorage.setItem('bramblewood_arena_profile', JSON.stringify({name:'Debug: Tutorial Done'}));
         localStorage.setItem('bramblewood_arena_tutorial_done', '1');
         if(!localStorage.getItem('bramblewood_arena_faction')) localStorage.setItem('bramblewood_arena_faction', 'otters');
-        const unlocked = new Set(['river-warden','sunspire-envoy','quarry-mole']);
+        const unlocked = new Set(['river-warden','sunspire-envoy']); // 2026-10-23 (RW3): no Quarry Mole (an 8-1 reward now)
         try{
           const raw = localStorage.getItem('bramblewood_arena_unlocked');
           if(raw){ const arr = JSON.parse(raw); if(Array.isArray(arr)) arr.forEach(id=> unlocked.add(id)); }
@@ -3262,7 +3262,9 @@ function buildStandardDefs(){
   Object.keys(src).forEach(id=>{
     const d = src[id]; if(!d) return;
     const o = Object.assign({}, d, {locked:false, hidden:false});
-    ['prestigeTier','prestigeClass','prestigeIcon','prestigeLabel','foil','shiny','enchant','hatchling'].forEach(k=>{ delete o[k]; });
+    // 2026-10-23 (package RW3, owner on AR-1: "PVP still keeps the foil treatments."): a Standard match keeps your foils and Shinies
+    // (they are looks only); prestige, Materia and levels still go.
+    ['prestigeTier','prestigeClass','prestigeIcon','prestigeLabel','enchant','hatchling'].forEach(k=>{ delete o[k]; });
     if(d.attack!=null || d.health!=null){ const st = statsAtLevel(d, 1); o.attack = st.attack; o.health = st.health; }
     o.level = 1; o.baseLevel = cardBaseLevel(d); out[id] = o;
   });
@@ -3547,7 +3549,11 @@ function cardMapUsage(){
 // 2026-10-02 (explicit): NOTHING is obtainable by default — a card can only be unlocked from a
 // source the admin has assigned to it. The only automatic source is Base: starter/basic cards
 // (playable from the start) and the tutorial series' own reward cards.
-const TUTORIAL_REWARD_IDS = ['river-warden','sunspire-envoy','quarry-mole','rabbit-kit','riverwing-envoy'];
+const TUTORIAL_REWARD_IDS = ['river-warden','sunspire-envoy','rabbit-kit','riverwing-envoy']; // 2026-10-23 (RW3, RP3): the Quarry Mole left (an 8-1 reward now)
+// 2026-10-23 (package RW3, owner RP3: "YES! See earlier non-registered complaint", N22-8: the Quarry Mole's effects were too advanced for
+// the start): the Quarry Mole is Caves & Alcoves' 8-1 first-clear card, so T-1 no longer pays it, even while the live tutorial config
+// (__cfg:tutorial, rewards ["quarry-mole"]) still lists it; supabase/proposed/20261023_rw3_tutorial_reward.sql clears that row's list.
+const TUTORIAL_REWARD_RETIRED = new Set(['quarry-mole']);
 function cardSourceOf(d){
   if(d && d.source && d.source.kind) return d.source;
   if(TUTORIAL_REWARD_IDS.includes(d.id)) return {kind:'base', auto:true, tutorialReward:true};
@@ -3562,7 +3568,11 @@ function cardSourceOf(d){
 // drops, skirmish rewards, raids, the reward tracks, the Forge's fuse, the Nest's hatchlings in the engine) leave them out of their
 // pools. The Codex shows one you haven't seen as a masked "???" tile (easterEggMasked); the hub's card list masks it too.
 const EASTER_EGG_IDS = ['creeper', 'terraumbra', 'exo-podas', 'galactic-condor', 'pink-maus', 'nyoogle', 'tobasco-drakon', 'demo-panda', 'bucketknee-wolf']; // + the Bucketknee Wolf (2026-10-19, package EQ)
-const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant']);
+const EASTER_EGG_GRANT_SOURCES = new Set(['admin', 'adminGrant', 'devGrant', 'mysteryEgg']); // + mysteryEgg (2026-10-23, package RW3): a Mystery Booster's very rare Easter egg
+// 2026-10-23 (package RW3, owner on GD2-6: "The method to own one is in giveaways or supremely low chance in mystery packs"): each card of a
+// Mystery Booster is, at 0.05% (1 in 2,000), an Easter egg instead (one of EASTER_EGG_IDS at random). Giveaways are the admin grants above.
+const MYSTERY_EGG_CHANCE = 0.0005;
+function mysteryEggPick(rng){ rng = rng || Math.random; const defs = getCardDefs(), ids = EASTER_EGG_IDS.filter(id=> defs[id]); return ids.length ? ids[Math.floor(rng() * ids.length)] : null; }
 function isEasterEgg(d){ return !!(d && (d.easterEgg || EASTER_EGG_IDS.includes(d.derivedFrom || d.id) || (d.source && d.source.kind === 'easteregg'))); }
 function easterEggSeen(id){ try{ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id]||[]).length || seenCardIds().has(id)); }catch(e){ return false; } }
 function easterEggMasked(d){ return isEasterEgg(d) && !easterEggSeen(d.id) && !(adminModeEnabled && codexShowUnseen); }
@@ -9466,50 +9476,79 @@ function nodeRewardCardIds(mapId, nodeKey){
 const SKIRMISH_FIRST_PACK_CARDS = {
   'm1:0-3': 'house-cat',
   'mf:1-2': 'dormouse',
+  'mf:1-3': 'compost-grub',
   'mf:1-4': 'field-mouse',
   'mb:2-2': 'pincushion-urchin',
+  'mb:2-3': 'tidepool-trapper-crab',
   'mc:3-1': 'hawk-arrowkeeper',
+  'mc:3-3': 'peak-condor',
   'mc:3-4': 'kittiwake-flock',
-  'm2:4-1': 'snapstick-turtle',
+  'm2:4-2': 'stone-turtle-warden',
   'mw:5-1': 'snapper-hatchling',
-  'mw:5-3': 'constrictor-coil',
-  'm8:6-1': 'poison-dart-croaker',
+  'mw:5-2': 'constrictor-coil',
+  'mw:5-3': 'venomlord-serpent',
   'm8:6-3': 'camouflage-frog',
+  'm8:6-4': 'marsh-wisp',
   'mu:7-2': 'dung-beetle',
+  'mu:7-3': 'leafcutter-gardener',
   'mu:7-4': 'hollow-oath-keeper',
-  'm4:8-1': 'blind-cave-fish',
-  'm4:8-4': 'vampire-bat',
+  'm4:8-3': 'cave-olm',
+  'm4:8-4': 'blind-cave-fish',
+  'm4:8-5': 'sulfur-cinder-moth',
   'm4:8-6': 'stalactite-golem',
   'mk:9-1': 'mangrove-mudskipper',
+  'mk:9-2': 'minnow-skitter',
   'mk:9-4': 'mudpuppy',
   'm7:10-1': 'clownfish-scout',
+  'm7:10-3': 'parrotfish',
   'm7:10-4': 'coral-reef-shark',
-  'm10:11-1': 'alpine-marmot',
+  'm7:10-5': 'kraken-spawnling',
   'm10:11-3': 'chipmunk-hoarder',
-  'mh:12-1': 'bramble-hoglet',
+  'm10:11-4': 'eyrie-warden',
   'mh:12-3': 'mouse-sapper',
+  'mh:12-4': 'hedge-weasel',
   'mr:13-3': 'fox-kit',
+  'mr:13-4': 'berserker-boar',
   'm5:14-1': 'springbok-pronker',
+  'm5:14-3': 'weaver-bird',
   'm5:14-4': 'hoopoe-herald',
   'ml:15-1': 'pronghorn-racer',
+  'ml:15-4': 'cataphract-destrier',
   'mt:16-1': 'snowshoe-hare',
+  'mt:16-2': 'frost-hare-sprinter',
   'm6:17-1': 'snow-ermine',
-  'm6:17-4': 'harbor-seal',
-  'md:18-1': 'thorny-devil',
+  'm6:17-3': 'harbor-seal',
+  'm6:17-4': 'snow-bunting-archer',
   'md:18-3': 'roadrunner-courier',
+  'md:18-4': 'sandfish',
   'm3:19-1': 'cinder-stoker',
-  'm11:20-1': 'pack-mule',
   'm11:20-3': 'ashbone-ghoul',
-  'm21:21-1': 'pika-hoarder',
-  'm21:21-3': 'glacier-yak',
+  'm11:20-4': 'cinder-skeleton',
+  'm21:21-2': 'glacier-yak',
+  'm21:21-3': 'snow-leopard',
   'm22:22-1': 'cinder-gecko',
-  'm22:22-4': 'cinder-hornet',
+  'm22:22-3': 'cinder-hornet',
+  'm22:22-4': 'ice-petrel',
+  'm22:22-5': 'badger-berserker',
   'm23:23-1': 'badger-trench-digger',
+  'm23:23-3': 'howdah-archers',
   'm23:23-4': 'siege-rhino',
+  'm23:23-5': 'beetle-battering-ram',
   'm24:24-1': 'duckling-squadron',
+  'm24:24-2': 'tax-collector-teal',
   'm24:24-3': 'elderhorn-monarch',
+  'm24:24-4': 'mallard-halberdier',
 };
 /* GD5-TABLE-END */
+// 2026-10-23 (package RW3, owner on GD2-4: "A Skirmish must always give either a pack of that 'season', a faction pack or a skirmish exclusive
+// or a card of that season's pack"): a main-map skirmish with neither an exclusive card nor a pack card left to give pays a pack on its first
+// clear instead: {kind:'free', id} (that season's pack: Maps 0-5 bronze, 6-10 silver, 11+ gold) or {kind:'faction', id:'mine'}. Written by
+// tools/rw3_first_rewards_2026_10_23.js (empty today: every skirmish has a card); read by nodeFirstClearPacks.
+/* RW3-PACKS-START (generated: node tools/rw3_first_rewards_2026_10_23.js apply) */
+const SKIRMISH_FIRST_PACKS = {
+
+};
+/* RW3-PACKS-END */
 function nodeFirstPackCardIds(mapId, nodeKey){
   let node = null; try{ node = (findConquestNode(mapId, nodeKey) || {}).node; }catch(e){}
   const v = node && node.firstCard != null ? node.firstCard : SKIRMISH_FIRST_PACK_CARDS[mapId + ':' + nodeKey], defs = getCardDefs();
@@ -12937,6 +12976,7 @@ function saveUnlockedCardIds(skipCloudPush){ try{ localStorage.setItem('bramblew
 // label registry, not a trigger/condition system — no condition-checking is wired to it yet.
 const CARD_UNLOCK_SOURCES = {
   shopPack: 'Shop pack',
+  mysteryEgg: 'Mystery Booster', // 2026-10-23 (package RW3)
   tutorialReward: 'Tutorial series reward',
   eventReward: 'Event reward',
   skirmishReward: 'Skirmish reward',
@@ -12979,7 +13019,7 @@ function unlockCardForPlayer(id, source, copyOpts){
   if(isEasterEgg(liveCards[id] || CARD_DEFS_BASELINE[id]) && !EASTER_EGG_GRANT_SOURCES.has(source)) return false; // 2026-10-19 (package EE): Easter eggs, admin grants only
   { const pd = liveCards[id] || CARD_DEFS_BASELINE[id]; if(pd && (pd.cost||0) > 0 && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !pitchingUnlocked()){
       const held = loadPitchHeld(); held.push({id, source}); try{ localStorage.setItem(PITCH_HELD_KEY, JSON.stringify(held)); }catch(e){} return false; } } // held until pitching opens
-  { const ud = liveCards[id] || CARD_DEFS_BASELINE[id]; if(isUnattainable(ud) && !UNATTAINABLE_ADMIN_SOURCES.has(source)) return false; } // not obtainable yet (2026-10-12)
+  { const ud = liveCards[id] || CARD_DEFS_BASELINE[id]; if(isUnattainable(ud) && !UNATTAINABLE_ADMIN_SOURCES.has(source) && !(source === 'mysteryEgg' && isEasterEgg(ud))) return false; } // + a Mystery Booster's Easter egg (RW3) // not obtainable yet (2026-10-12)
   // The Nest (2026-09-27, item 10): every real grant now also adds an owned COPY, even when the
   // defId is already unlocked — see grantCardCopy's own comment. This runs before the
   // already-unlocked early-return below so a 2nd/3rd/4th pull of the same card still counts as
@@ -13182,13 +13222,12 @@ function grantCardCopy(id, opts){
   // 2026-10-18 (package NF): a new copy is its own card, at the card's starting level (older saves are moved over first, so it
   // never inherits another copy's level).
   try{ ensureCopyModel(); }catch(e){}
-  // 2026-10-21 (package FG, owner: "forge forges ALL cards of a particular suite"): the level is the card's, so a new copy joins at
-  // the card's level (its starting level for a card you didn't have)
-  if(copyModelReady){ copy.uid = newCopyUid(); copy.level = Math.max(copyBaseLevelOf(id), topCopyLevel(id)); }
+  // 2026-10-23 (package RW3, owner: "go back to card-based since everything is based on that"): each copy has its own level again
+  // (NF), so a new copy comes at the card's starting level. (FG, 10-21, had it join at the card's shared level.)
+  if(copyModelReady){ copy.uid = newCopyUid(); copy.level = copyBaseLevelOf(id); }
   myCardCopies[id].push(copy);
   // 2026-10-19 (package UT): a card shown at Level 0 (a tutorial or hatchling copy) shows its new Level 1 copy once one arrives
-  // (2026-10-21, package FG: and so does every copy of it, copyModelSync)
-  if(copyModelReady && copy.level > 0) try{ if(hatchlingIds().has(id)){ copyModelSync(id); saveCardLevels(); } }catch(e){}
+  if(copyModelReady && copy.level > 0) try{ if(hatchlingIds().has(id)){ syncBestLevel(id); saveCardLevels(); } }catch(e){} // RW3: per copy again (NF)
   saveCardCopies();
   if(shiny && !forcedShiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(TX('toast.shiny-your-new-came-out-shiny', {v1: d ? d.name : 'card'}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
 }
@@ -13225,7 +13264,19 @@ function ownsShiny(id){ return (myCardCopies[id]||[]).some(c=> c && c.shiny); }
 //     is lost and nothing is refunded);
 //   - an older save (one level per card): every copy at that level, the card keeps its credit.
 // A save that had copies at different levels, or credit on more than one copy, hears about it once (toast.fg-card-levels).
-const COPY_MODEL_KEY = 'bramblewood_card_copy_model_v', COPY_MODEL_VERSION = 2, COPY_MODEL_NOTE_KEY = 'bramblewood_card_copy_model_note_v2';
+// 2026-10-23 (package RW3, owner, item 25: "Change to FORGE: I changed it to card_name-based upgrade not card-based. Maybe we should go
+// back to card-based since everything is based on that."): back to NF's per-copy levels. Root cause: FG (10-21, "forge forges ALL
+// cards of a particular suite") made every copy of a card share one level (setCopyLevel moved them all, copyModelSync held them
+// together), while a copy's foil, finish, Shiny, skin, deck use and Refine stayed per copy. Now each copy is tempered, limit broken,
+// melted and trained on its own again; copyModelSync only lifts the BEST copy to myCardLevels[id] (never every copy), and
+// myCardLevels[id] is the best copy's level. Forge credit stays on the card (FG's myForgeCredit[id], spent on whichever copy is
+// tempered), so no credit has to be split between copies. The move, version 3 (once per save), loses no level:
+//   - a version-2 save (one level for every copy): every copy keeps that level (the shared level becomes each copy's level, so no
+//     deck gets weaker); the best copy counts as paid for, the others' levels are marked inherited (free, as NF's move did), so
+//     melting several copies can never refund the same levels twice;
+//   - a version-1 save (NF per-copy levels): its levels stand as they are; per-copy credit is added onto the card (FG's step);
+//   - an older save (one level per card): every copy at that level, the others inherited, as above.
+const COPY_MODEL_KEY = 'bramblewood_card_copy_model_v', COPY_MODEL_VERSION = 3, COPY_MODEL_NOTE_KEY = 'bramblewood_card_copy_model_note_v3';
 var copyModelReady = false, copyUidSeq = 0; // var: read by cloudPushCardLevels, which sits above
 function newCopyUid(){ return 'c' + Date.now().toString(36) + (copyUidSeq++).toString(36) + Math.floor(Math.random() * 1296).toString(36); }
 function copyBaseDef(id){ return (typeof CARD_DEFS_BASELINE !== 'undefined' && CARD_DEFS_BASELINE[id]) || (typeof liveCards !== 'undefined' && liveCards[id]) || null; } // the order getCardLevel reads
@@ -13234,6 +13285,8 @@ function isUnlimitedCard(id){ const d = copyBaseDef(id); try{ return !!d && card
 // A copy's level: never below the card's starting level, except a hatchling copy (Level 0); 11 at most (a limit break).
 function copyLevel(id, c){ if(!c) return 0; const b = copyBaseLevelOf(id); let L = Number.isFinite(c.level) ? c.level : b; if(L < b && !c.hatch) L = b; return Math.max(0, Math.min(LIMIT_BREAK_LEVEL, Math.round(L))); }
 function copyFoilRank(c){ let r = 0; try{ r = c && c.foil ? copyRefineRank(c) : 0; }catch(e){ r = c && c.foil ? 1 : 0; } return r + (c && c.shiny ? 0.5 : 0); }
+// Levels the player paid for on this copy (inherited ones don't count). (NF; back in RW3)
+function copyPaidLevels(id, c){ return Math.max(0, copyLevel(id, c) - Math.max(copyBaseLevelOf(id), (c && c.free) | 0)); }
 function copyIsPlain(c){ return !(c && (c.foil || c.shiny || c.skin)); }
 // Strongest first: the highest level, then the finest foil treatment, then the oldest copy (owner, package NF item 4: "Fuse all
 // extras should go into the highest level card first, then if draw, into the highest foil treatment."). [0] is the card's best copy:
@@ -13247,23 +13300,22 @@ function topCopyLevel(id){ const a = myCardCopies[id] || []; let t = -1; a.forEa
 function copyModelSync(id){
   const a = myCardCopies[id]; if(!a || !a.length) return a || [];
   for(let i = 0; i < a.length; i++){ if(!a[i] || typeof a[i] !== 'object') a[i] = {foil:false}; const c = a[i]; if(!c.uid) c.uid = newCopyUid(); if(!Number.isFinite(c.level)) c.level = copyBaseLevelOf(id); }
-  // 2026-10-21 (package FG): every copy at the card's level, the higher of myCardLevels and the best copy
-  const want = Number(myCardLevels[id]) || 0, top = topCopyLevel(id), L = Math.min(LIMIT_BREAK_LEVEL, Math.max(want, top));
-  a.forEach(c=>{ c.level = L; if(L > 0) delete c.hatch; delete c.free; });
-  if(L > want && (L > 0 || myCardLevels[id] != null)) myCardLevels[id] = L;
+  // 2026-10-23 (package RW3): per copy again (NF): a higher myCardLevels lifts the best copy only; else myCardLevels follows the best copy
+  const want = Number(myCardLevels[id]) || 0, top = topCopyLevel(id);
+  if(want > top){ const c = a[bestCopyIdx(id)]; c.level = Math.min(LIMIT_BREAK_LEVEL, want); if(c.level > 0) delete c.hatch; }
+  else if(top > want && (top > 0 || myCardLevels[id] != null)) myCardLevels[id] = top;
   return a;
 }
 function copyModelSyncAll(){ Object.keys(myCardCopies || {}).forEach(id=>{ try{ copyModelSync(id); }catch(e){} }); }
 // After a copy's level changed: myCardLevels[id] is the best copy's level again (it can go down: a melt, a promotion).
 function syncBestLevel(id){ const top = topCopyLevel(id); if(top < 0) return; if(top > 0 || myCardLevels[id] != null) myCardLevels[id] = top; }
-// 2026-10-21 (package FG, owner: "forge forges ALL cards of a particular suite"): sets the CARD's level, so every copy moves with it
-// (uid is kept for the callers' sake; it no longer picks one copy). It can lower the card (a melt, a promotion, the Forge reset).
+// Sets ONE copy's level (uid; your best copy when none is given). 2026-10-23 (package RW3): per copy again, as NF had it (FG had it
+// set every copy). It can lower that copy (a melt, a promotion); myCardLevels[id] follows the best copy.
 function setCopyLevel(id, uid, L){
-  const a = myCardCopies[id] || []; if(!a.length) return false;
-  L = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, L|0));
-  a.forEach(c=>{ if(!c || typeof c !== 'object') return; if(!c.uid) c.uid = newCopyUid(); c.level = L; if(L > 0) delete c.hatch; delete c.free; });
-  if(L > 0 || myCardLevels[id] != null) myCardLevels[id] = L;
-  saveCardCopies(); saveCardLevels(); try{ invalidateCardDefs(); }catch(e){} return true;
+  copyModelSync(id); const c = copyByUid(id, uid); if(!c) return false;
+  c.level = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, L|0)); if(c.level > 0) delete c.hatch;
+  if(c.free && c.free > c.level) c.free = c.level;
+  syncBestLevel(id); saveCardCopies(); saveCardLevels(); try{ invalidateCardDefs(); }catch(e){} return true;
 }
 // A copy's own credit: only a version-1 save still has it, until the move adds it onto the card.
 function copyCreditOf(c){ const cr = (c && c.cr) || {}; return {dust: Math.max(0, cr.dust|0), gold: Math.max(0, cr.gold|0)}; }
@@ -13283,22 +13335,24 @@ function ensureCopyModel(){
     const b = copyBaseLevelOf(id);
     if(isUnlimitedCard(id)) while(a.length < (need[id] || 0)) a.push({foil:false, m:1});
     if(!a.length) return;
+    // 2026-10-23 (package RW3): version 3, per-copy levels again (see COPY_MODEL_VERSION). Any copy credit goes onto the card (FG).
+    let dust = 0, gold = 0; a.forEach(c=>{ const cr = copyCreditOf(c); dust += cr.dust; gold += cr.gold; delete c.cr; });
+    if(dust || gold){ const o = credit[id] || {}; credit[id] = {dust: (o.dust | 0) + dust, gold: (o.gold | 0) + gold}; }
+    if(v === 1){ a.forEach(c=>{ if(!c.uid) c.uid = newCopyUid(); if(!Number.isFinite(c.level)) c.level = b; }); return; } // NF levels stand
+    // v2 (one level for every copy) or older (one level per card): every copy keeps the card's level; only the best one counts as paid
     let L = getCardLevel(id);
-    if(v >= 1){ // 2026-10-21 (package FG): from per-copy levels: the highest copy's level; the copies' credit added onto the card
-      const lv = a.filter(c=> Number.isFinite(c.level)).map(c=> copyLevel(id, c));
-      if(lv.length){ L = Math.max(Math.max(...lv), Number(myCardLevels[id]) || 0); if(new Set(lv).size > 1) note++; }
-      let dust = 0, gold = 0, withCr = 0; a.forEach(c=>{ const cr = copyCreditOf(c); if(cr.dust || cr.gold) withCr++; dust += cr.dust; gold += cr.gold; });
-      if(dust || gold){ const o = credit[id] || {}; credit[id] = {dust: (o.dust | 0) + dust, gold: (o.gold | 0) + gold}; if(withCr > 1) note++; }
-    }
+    if(v === 2){ const lv = a.filter(c=> Number.isFinite(c.level)).map(c=> copyLevel(id, c)); if(lv.length) L = Math.max(Math.max(...lv), Number(myCardLevels[id]) || 0); }
     L = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, L));
-    a.forEach(c=>{ if(!c.uid) c.uid = newCopyUid(); c.level = L; delete c.cr; delete c.free; if(L < b) c.hatch = 1; else if(L > 0) delete c.hatch; });
+    a.forEach(c=>{ if(!c.uid) c.uid = newCopyUid(); c.level = L; delete c.free; if(L < b) c.hatch = 1; else if(L > 0) delete c.hatch; });
+    const best = a[bestCopyIdx(id)]; a.forEach(c=>{ if(c !== best && c.level > b) c.free = c.level; });
+    if(a.length > 1 && L > b) note++;
     if(L > 0 && (myCardLevels[id] | 0) < L) myCardLevels[id] = L;
   });
   copyModelReady = true;
   copyModelSyncAll(); saveCardCopies(); try{ saveForgeCredit(); }catch(e){} try{ saveCardLevels(true); }catch(e){}
   try{ localStorage.setItem(COPY_MODEL_KEY, String(COPY_MODEL_VERSION)); }catch(e){}
   // A save whose copies of a card differed in level, or had credit on several copies, hears about the change once.
-  if(note){ try{ if(!localStorage.getItem(COPY_MODEL_NOTE_KEY)){ localStorage.setItem(COPY_MODEL_NOTE_KEY, '1'); setTimeout(()=>{ try{ showToast(TX('toast.fg-card-levels'), 'ok'); }catch(e){} }, 5000); } }catch(e){} }
+  if(note){ try{ if(!localStorage.getItem(COPY_MODEL_NOTE_KEY)){ localStorage.setItem(COPY_MODEL_NOTE_KEY, '1'); setTimeout(()=>{ try{ showToast(TX('toast.rw3-copy-levels'), 'ok'); }catch(e){} }, 5000); } }catch(e){} }
   return true;
 }
 function copyModelOn(){ try{ return ensureCopyModel(); }catch(e){ return false; } }
@@ -13314,8 +13368,7 @@ function deckCopyLevels(id, n){
 // Forge works on one, so each can be forged on its own. They start at its starting level (the best one rises to myCardLevels).
 function materializeCopies(id, n){
   const a = myCardCopies[id] = myCardCopies[id] || []; if(a.length >= n) return false;
-  const L = Math.max(copyBaseLevelOf(id), topCopyLevel(id)); // 2026-10-21 (package FG): at the card's level
-  while(a.length < n) a.push({foil:false, m:1, uid: newCopyUid(), level: L});
+  while(a.length < n) a.push({foil:false, m:1, uid: newCopyUid(), level: copyBaseLevelOf(id)}); // RW3: at the starting level again (NF)
   copyModelSync(id); saveCardCopies(); return true;
 }
 // The card as one copy at level L: the card's own def (with its Materia and prestige) with that level's stats and level skills.
@@ -13353,11 +13406,11 @@ function ownedDeckForMatch(counts, engineDefs){
 }
 // The spare copies of a card, weakest first (the lowest level, then the newest): plain copies (no foil, Shiny or skin) that are
 // neither its best copy nor `target` (the copy being fed), have no levels paid for on them and weren't made for a deck (m).
-// 2026-10-21 (package FG): levels are the card's, so a copy has none of its own: any plain copy but the best one is a spare.
+// 2026-10-23 (package RW3): per-copy levels again, so a copy with levels paid for on it is not a spare (NF; FG had dropped the check).
 function copySpareIdx(id, target){
   const a = myCardCopies[id] || []; if(a.length < 2) return [];
   const best = bestCopyIdx(id); if(target == null || target < 0) target = best;
-  return a.map((c, i)=> i).filter(i=> i !== best && i !== target && copyIsPlain(a[i]) && !(a[i] && a[i].m))
+  return a.map((c, i)=> i).filter(i=> i !== best && i !== target && copyIsPlain(a[i]) && !(a[i] && a[i].m) && !copyPaidLevels(id, a[i]))
     .sort((x, y)=> copyLevel(id, a[x]) - copyLevel(id, a[y]) || y - x);
 }
 // How many copies "Fuse all extras" takes from a card: its spares beyond what a deck can hold (cap).
@@ -13374,14 +13427,18 @@ function fuseAllCountFor(id, cap){ const a = myCardCopies[id] || []; return Math
 function cloudCopiesOf(id){ const a = myCardCopies[id] || []; if(!a.length) return null; return copyOrder(id).slice(0, 200).map(i=> ({u: a[i].uid, l: copyLevel(id, a[i])})); }
 // A pulled row's copies, never lowering a copy: the same copy (uid) takes the higher level; on a device whose copies have other uids
 // (the copies themselves live on each device), the cloud's levels go to this device's copies in strength order, as many as it has.
-// 2026-10-21 (package FG): a pulled row's highest level (its `level` or any of its copies') lifts the CARD, so every copy here; a lower
-// one never lowers it.
+// 2026-10-23 (package RW3): per copy again (NF's rule): the same copy (uid) takes the higher level; the rest go to this device's other
+// copies in strength order, marked inherited (free). A row with no copies list lifts the best copy to its level. FG had every copy lifted.
 function cloudApplyCopyLevels(rows){
   if(!copyModelOn()) return 0; let changed = 0;
   (rows || []).forEach(r=>{ const id = r && r.card_id, list = r && Array.isArray(r.copies) ? r.copies : []; if(!id || !(myCardCopies[id] || []).length) return;
-    copyModelSync(id); const cur = topCopyLevel(id);
-    const hi = Math.max(Math.max(0, Math.min(LIMIT_BREAK_LEVEL, Number(r.level) | 0)), ...list.map(x=> Math.max(0, Math.min(LIMIT_BREAK_LEVEL, (x && x.l) | 0))));
-    if(hi > cur){ myCardLevels[id] = hi; copyModelSync(id); changed++; } });
+    copyModelSync(id); const a = myCardCopies[id], used = new Set(), rest = [];
+    const lvl = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, Number(r.level) | 0)); if(!list.length && lvl > topCopyLevel(id)){ const c = a[bestCopyIdx(id)]; c.level = lvl; if(lvl > 0) delete c.hatch; changed++; }
+    list.forEach(x=>{ const l = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, x && x.l | 0)); const i = x && x.u ? a.findIndex(c=> c.uid === x.u) : -1;
+      if(i >= 0 && !used.has(i)){ used.add(i); if(l > copyLevel(id, a[i])){ a[i].level = l; if(l > 0) delete a[i].hatch; changed++; } } else rest.push(l); });
+    rest.sort((x, y)=> y - x);
+    copyOrder(id).filter(i=> !used.has(i)).forEach((i, k)=>{ if(k < rest.length && rest[k] > copyLevel(id, a[i])){ a[i].level = rest[k]; if(rest[k] > 0) delete a[i].hatch; a[i].free = Math.max(a[i].free | 0, rest[k]); changed++; } });
+    syncBestLevel(id); });
   if(changed){ saveCardCopies(); try{ invalidateCardDefs(); }catch(e){} }
   return changed;
 }
@@ -13420,8 +13477,14 @@ function copyTreatmentBonus(d, copy){
   if(d && d.artExtended) b += 1;
   return b;
 }
-function disenchantValue(d, copy){ const pct = DISENCHANT_PCT[cardRarityTier(d)] || 0.25; return Math.max(1, Math.round(pct / 100 * MATERIA_UNIT.dust * (1 + copyTreatmentBonus(d, copy)))); }
-const DISENCHANT_DUST = Object.fromEntries(Object.keys(DISENCHANT_PCT).map(k=> [k, Math.max(1, Math.round(DISENCHANT_PCT[k] / 100 * MATERIA_UNIT.dust))])); // plain-copy value by rarity (kept for older readers)
+// 2026-10-23 (package RW3, owner on E2: "5/10/25/45/65/100/150/250/400/700/1200/2000+ etc."): a plain spare copy melts for a fixed Magic
+// Dust by rarity, along RARITY_DEFS: Common 5, Uncommon 10, Rare 25, Very Rare 45, Super Rare 65, Epic 100, Heroic 150, Unique 250,
+// Legendary 400, Mythic 700, Ancient 1,200, Divine 2,000, and "etc." past it at about x1.5 a step: Void 3,000, Daemonic 4,500. Starter
+// counts as Common (Starter cards can't be melted anyway); the special rarities as their tier (cardRarityTier: Quest = Uncommon,
+// Special / Event-Rare = Rare, Dev- / Event-Legendary = Legendary, Dev-Ancient = Ancient). Treatments still multiply it (1 + bonus).
+// Was DISENCHANT_PCT of a Materia Unit (Common 2, Rare 8, Legendary 42 Dust).
+const DISENCHANT_DUST = {starter:5, common:5, uncommon:10, rare:25, veryrare:45, superrare:65, epic:100, heroic:150, unique:250, legendary:400, mythic:700, ancient:1200, divine:2000, void:3000, daemonic:4500};
+function disenchantValue(d, copy){ const base = DISENCHANT_DUST[cardRarityTier(d)] || DISENCHANT_DUST.common; return Math.max(1, Math.round(base * (1 + copyTreatmentBonus(d, copy)))); }
 function canDisenchantCard(d){ if(!d || d.token || d.hero || d.cardType === 'materia') return false; const r = d.rarity || 'common'; return !(cardSourceOf(d).kind === 'base' || r === 'starter' || r === 'quest' || r === 'questunique' || isEventCard(d) || (d.source && d.source.kind === 'quest')); }
 function disenchantableCopies(id, keepUid){
   const d = getCardDefs()[id], copies = myCardCopies[id] || [];
@@ -13454,10 +13517,10 @@ function meltCardValue(id, uid){
   const base = cardBaseLevel(forgeBaseDef(id));
   if(!copyModelOn()) return null;
   copyModelSync(id);
-  // 2026-10-21 (package FG, owner: "forge forges ALL cards of a particular suite"): the card melts down as one: its levels come off
-  // every copy (97% of what they cost from its starting level back) with the card's credit, and its extras melt with it
-  const c = copyByUid(id, uid), L = copyLevel(id, c), cr = forgeCreditOf(id), spare = disenchantableCopies(id, c && c.uid);
-  const spent = forgeSpentOn(id, L);
+  // 2026-10-23 (package RW3): one copy melts again (NF): its paid levels come off (levels it only inherited give nothing back), with
+  // the card's credit (FG keeps credit on the card), and its extras melt with it
+  const c = copyByUid(id, uid), L = copyLevel(id, c), from = Math.max(base, (c && c.free) | 0), cr = forgeCreditOf(id), spare = disenchantableCopies(id, c && c.uid);
+  const all = forgeSpentOn(id, L), inh = forgeSpentOn(id, from), spent = {dust: Math.max(0, all.dust - inh.dust), gold: Math.max(0, all.gold - inh.gold)};
   const copiesDust = spare.reduce((t, i)=> t + disenchantValue(d, copies[i]), 0);
   const v = {dust: copiesDust + Math.round((spent.dust + cr.dust) * 0.97), gold: Math.round((spent.gold + cr.gold) * 0.97), copies: spare.length, level: L, base, uid: c && c.uid};
   return (v.dust || v.gold) ? v : null;
@@ -13466,7 +13529,7 @@ function meltCard(id, uid){
   const v = meltCardValue(id, uid); if(!v) return null;
   const drop = new Set(disenchantableCopies(id, v.uid));
   myCardCopies[id] = (myCardCopies[id]||[]).filter((x, i)=> !drop.has(i));
-  delete myForgeCredit[id]; saveForgeCredit(); setCopyLevel(id, v.uid, v.base); // 2026-10-21 (package FG): every copy, and the card's credit
+  delete myForgeCredit[id]; saveForgeCredit(); { const c = copyByUid(id, v.uid); if(c) delete c.free; } setCopyLevel(id, v.uid, v.base); // 2026-10-23 (RW3): that copy only, and the card's credit
   try{ invalidateCardDefs(); }catch(e){}
   grantCurrency('dust', v.dust); if(v.gold) grantCurrency('gold', v.gold); saveCurrencies();
   return v;
@@ -15792,7 +15855,7 @@ function liveCanWrite(){ return !!(sbClient && cloudUserId && LiveData.available
 function liveTableMissing(error){ return !!error && (/does not exist|schema cache|relation/i.test(error.message||'') || error.code==='42P01' || error.code==='PGRST205'); }
 function liveRowToGhost(mode, r){
   const base = {owner: r.owner_id, name: r.display_name || 'Player', avatar: r.avatar || null, stage: r.stage, at: Date.parse(r.recorded_at)||0, source:'player'};
-  return mode==='pvp' ? Object.assign(base, {deck: (r.payload||{}).deck || {}, rating: (r.payload||{}).rating, deckLevel: (r.payload||{}).deckLevel}) : Object.assign({}, r.payload||{}, base);
+  return mode==='pvp' ? Object.assign(base, {deck: (r.payload||{}).deck || {}, rating: (r.payload||{}).rating, deckLevel: (r.payload||{}).deckLevel, format: (r.payload||{}).format || undefined /* RW3: 'standard' */}) : Object.assign({}, r.payload||{}, base);
 }
 async function liveRefreshGhosts(mode, force){
   if(!sbClient || LiveData.available===false) return false;
@@ -19469,7 +19532,12 @@ const QUEST_SHOWN_RANKS = new Set(['A','S','SS','SSS']);
 const QUEST_KIT_ITEMS = {daily:{A:1, S:1, SS:2, SSS:3}, weekly:[3, 2, 1]};
 // A Raid Ticket from a rare notice (2026-10-21, package RK, owner 18:35: "a usable item you can buy or encounter"): an S notice or better
 // (4.5% of notices) brings one at this chance, once the Raid is open: about 0.1 a day at six notices, a little under one a week.
-const QUEST_RAID_TICKET_CHANCE = {S:0.3, SS:0.6, SSS:1};
+// 2026-10-23 (package RW3, owner on RK4: "SS, SSS notices should be so rare, maybe once per 1mo/2mo if all notices are always refreshed and
+// completed. S is more common, 0.5-0.7 per week."): a player who takes every notice finishes 6 a day (3 at midnight + 6 AM, 12 PM, 6 PM;
+// the free swap replaces one, it doesn't add one): 42 a week, 182.6 a month (30.44 days). By QUEST_RANK_WEIGHT an S notice is 3.5%
+// (1.47 a week), SS 0.8% and SSS 0.2% (together 1.83 a month). At 40% each: S tickets 1.47 x 0.4 = 0.59 a week; SS + SSS tickets
+// 1.83 x 0.4 = 0.73 a month, one every 1.4 months. Was S 30% (0.44 a week), SS 60%, SSS 100% (1.24 a month).
+const QUEST_RAID_TICKET_CHANCE = {S:0.4, SS:0.4, SSS:0.4};
 function grantKitItems(n){
   if(!n || !featureUnlockedSafe('fieldkit')) return [];
   const o = loadItems(), ids = Object.keys(ITEM_DEFS), got = [];
@@ -20278,25 +20346,43 @@ function loadPvpDecks(){ try{ return JSON.parse(localStorage.getItem(PVP_DECKS_K
 // Candidates: live PvP decks, this browser's recorded decks, and seeded strangers for every tier.
 const PVP_RECENT_KEY = 'bramblewood_pvp_recent_owners_v1';
 function myPvpDeckLevel(){ return deckPowerLevel(myDeckCounts, myLeaderId) || 1; }
-function pvpCandidates(){
+// 2026-10-23 (package RW3, owner on AR-1: "OKAY. But PVP and Collection share different pools. PVP still keeps the foil treatments."):
+// Standard PvP (every card at Level 1) and Collection PvP keep the shared tickets and rating (AR-1's default) but meet strangers from
+// two pools. A Standard PvP match records your Standard deck into the Standard pool, and only Standard PvP draws from it. In the live
+// table (ghost_decks: mode 'pvp', stage 0-200, unique per owner / mode / stage) a Standard deck sits at stage PVP_STD_STAGE + tier, so
+// it never overwrites your Collection deck and needs no SQL change; on this browser it has its own key. The seeded strangers of the
+// two pools come from different seeds. Collection PvP reads stages below PVP_STD_STAGE only.
+const PVP_STD_STAGE = 100, PVP_STD_DECKS_KEY = 'bramblewood_pvp_std_decks_v1';
+function loadPvpStdDecks(){ try{ return JSON.parse(localStorage.getItem(PVP_STD_DECKS_KEY)||'[]') || []; }catch(e){ return []; } }
+function pvpGhostIsStd(g){ return !!g && (g.format === 'standard' || (g.stage | 0) >= PVP_STD_STAGE); }
+function pvpCandidates(std){
   const defs = getCardDefs(), mine = myGhostOwnerId();
   liveRefreshGhosts('pvp');
-  const fill = g=> Object.assign({}, g, {rating: g.rating!=null ? g.rating : Ghosts.tierMidRating(Math.min(5, Math.round((g.stage||0)*5/6))), deckLevel: g.deckLevel!=null ? g.deckLevel : Ghosts.simpleDeckLevel(defs, g.deck)});
-  const real = LiveData.ghosts.pvp.concat(loadPvpDecks()).filter(g=> g.owner!==mine && g.owner!==cloudUserId && g.deck && !Ghosts.validateDeck(defs, g.deck, g.leaders).length).map(fill); // + leaders (2026-10-22, package DR)
-  const epoch = Math.floor(Date.now()/(7*24*3600*1000));
+  const tierOf = g=> std ? Math.max(0, (g.stage | 0) - PVP_STD_STAGE) : (g.stage || 0);
+  const fill = g=> Object.assign({}, g, {stage: tierOf(g), rating: g.rating!=null ? g.rating : Ghosts.tierMidRating(Math.min(5, Math.round(tierOf(g)*5/6))), deckLevel: g.deckLevel!=null ? g.deckLevel : Ghosts.simpleDeckLevel(defs, g.deck)});
+  const live = LiveData.ghosts.pvp.filter(g=> pvpGhostIsStd(g) === !!std);
+  const real = live.concat(std ? loadPvpStdDecks() : loadPvpDecks()).filter(g=> g.owner!==mine && g.owner!==cloudUserId && g.deck && !Ghosts.validateDeck(defs, g.deck, g.leaders).length).map(fill); // + leaders (2026-10-22, package DR)
+  const epoch = Math.floor(Date.now()/(7*24*3600*1000)) + (std ? 7919 : 0); // RW3: the Standard pool's seeded strangers differ
   const seeds = []; for(let t=0; t<=5; t++) seeds.push(...Ghosts.seedPvpStrangers(defs, t, 8, epoch));
   return real.concat(seeds);
 }
-function pickPvpStranger(seed){
+function pickPvpStranger(seed, std){
   let recent = []; try{ recent = JSON.parse(localStorage.getItem(PVP_RECENT_KEY)||'[]'); }catch(e){}
-  const res = Ghosts.matchPvp({rating: myRating, deckLevel: myPvpDeckLevel()}, pvpCandidates(), seed, recent);
+  const lvl = std ? (deckPowerLevel(std, null) || 1) : myPvpDeckLevel();
+  const res = Ghosts.matchPvp({rating: myRating, deckLevel: lvl}, pvpCandidates(std ? true : false), seed, recent);
   if(res.opponent){ recent = [res.opponent.owner].concat(recent.filter(o=> o!==res.opponent.owner)).slice(0, 5); try{ localStorage.setItem(PVP_RECENT_KEY, JSON.stringify(recent)); }catch(e){} }
   return res;
 }
 function pvpOpponentPool(){ return {decks: pvpCandidates()}; } // kept for older callers/tests
-function recordMyPvpDeck(){
+function recordMyPvpDeck(stdDeck){
   if(!Ghosts) return;
   const tier = Ghosts.tierIndexForRating(myRating);
+  if(stdDeck){ // 2026-10-23 (package RW3, AR-1): your Standard deck joins the Standard pool only
+    const se = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, stdDeck), leaders: [], stage: tier, rating: Math.round(myRating), deckLevel: deckPowerLevel(stdDeck, null) || 1, at: Date.now(), source:'player', format:'standard'};
+    try{ localStorage.setItem(PVP_STD_DECKS_KEY, JSON.stringify(Ghosts.recordAsyncGhost(loadPvpStdDecks(), se, 200))); }catch(e){}
+    livePushGhost('pvp', PVP_STD_STAGE + tier, {deck: se.deck, rating: se.rating, deckLevel: se.deckLevel, format:'standard'});
+    return;
+  }
   const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), leaders: deckLeaderIds(), stage: tier, rating: Math.round(myRating), deckLevel: myPvpDeckLevel(), at: Date.now(), source:'player'};
   try{ localStorage.setItem(PVP_DECKS_KEY, JSON.stringify(Ghosts.recordAsyncGhost(loadPvpDecks(), entry, 200))); }catch(e){}
   livePushGhost('pvp', tier, {deck: entry.deck, rating: entry.rating, deckLevel: entry.deckLevel});
@@ -20601,9 +20687,9 @@ const CONQUEST_MAPS = [
   { id:"mf", unlockAfter:"m1", name:"Thistlewood", icon:"🌼", blurb:"Thistle and fern under the first big trees — hedgerows, burrows and a lot of small, busy things.", sequential:true,
     nodes: [
       { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"bramble-sprout":3,"compost-grub":3,"cricket-drummer":3,"dormouse":3,"field-mouse":4,"field-vole":4}, flavor:"Every hedge here has ears in it.", requires:[], fixedPos:{"x":15,"y":45} },
-      { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"bramble-sprout":3,"cricket-drummer":3,"dormouse":4,"harvest-mouse":4,"meadow-frog":4,"quarry-mole":2}, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"], fixedPos:{"x":40,"y":60}, showcase:"bramble-sprout" },
-      { key:"1-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"bramble-sprout":3,"compost-grub":3,"field-mouse":3,"field-vole":3,"meadow-frog":3,"quarry-mole":3}, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"], fixedPos:{"x":40,"y":30} },
-      { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"dormouse":3,"field-mouse":3,"field-vole":4,"harvest-mouse":4,"meadow-frog":4,"quarry-mole":2}, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"], fixedPos:{"x":65,"y":45}, showcase:"quarry-mole" },
+      { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"bramble-sprout":3,"cricket-drummer":3,"dormouse":4,"harvest-mouse":4,"meadow-frog":4,"field-vole":2}, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"], fixedPos:{"x":40,"y":60}, showcase:"bramble-sprout" }, /* 2026-10-23 (RW3, RP3): the Quarry Mole moved to 8-1; Field Vole in its place */
+      { key:"1-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"bramble-sprout":3,"compost-grub":3,"field-mouse":3,"field-vole":3,"meadow-frog":3,"harvest-mouse":3}, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"], fixedPos:{"x":40,"y":30} }, /* 2026-10-23 (RW3, RP3): Harvest Mouse for the Quarry Mole */
+      { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"dormouse":3,"field-mouse":3,"field-vole":4,"harvest-mouse":4,"meadow-frog":4,"compost-grub":2}, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"], fixedPos:{"x":65,"y":45}, showcase:"field-vole" }, /* 2026-10-23 (RW3, RP3): Compost Grub for the Quarry Mole (Map 1 keeps its one Uncommon on 1-5); showcase the Field Vole */
       { key:"1-5", kind:"elite", name:"The Thistle Baron", icon:"🌼", shieldOverride:3, deck:{"bramble-sprout":3,"compost-grub":3,"cricket-drummer":3,"dormouse":3,"field-mouse":3,"field-vole":3,"badger-lumberjack":2}, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"], fixedPos:{"x":85,"y":45}, ender:true, showcase:"badger-lumberjack" },
     ]},
   { id:"mb", unlockAfter:"mf", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", sequential:true,
@@ -20669,7 +20755,7 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m4", unlockAfter:"mu", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
     nodes: [
-      { key:"8-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"blind-cave-fish":1,"cave-olm":1,"nightshade-moth":4,"stalactite-golem":5,"star-nosed-mole":3}, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
+      { key:"8-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"blind-cave-fish":1,"quarry-mole":2,"nightshade-moth":4,"stalactite-golem":4,"star-nosed-mole":3} /* 2026-10-23 (RW3, RP3): the Quarry Mole, 8-1's first-clear card, fights here (for the Cave Olm and a Golem) */, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
       { key:"8-2", kind:"skirmish", name:"Glowworm Grotto", icon:"🪱", deck:{"blind-cave-fish":3,"stalactite-golem":3,"star-nosed-mole":4,"sulfur-cinder-moth":4,"vampire-bat":1,"whip-spider":1}, hqHp:48, flavor:"Lit just brightly enough to see what finds you.", requires:["8-1"] },
       { key:"8-3", kind:"skirmish", name:"Cinder Vents", icon:"🔥", deck:{"cave-olm":4,"nightshade-moth":4,"sulfur-cinder-moth":4,"vampire-bat":1,"whip-spider":1}, flavor:"The heat down here comes from somewhere nobody has mapped.", requires:["8-2"] },
       { key:"8-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"blind-cave-fish":4,"vampire-bat":3,"whip-spider":2,"echo-screecher":2,"giant-cave-huntsman":1}, rules:{"landslide":true}, flavor:"Every sound down here comes back changed.", requires:["8-3"] },
@@ -24624,7 +24710,7 @@ function grantRaidShards(raidId, n){
 function raidRewardPools(def){
   const defs = getCardDefs(), w = id=> legendaryHeldBack(defs[id]) ? 0 : Math.max(0, +(PACK_RARITY_WEIGHT[defs[id].rarity || 'common'] ?? 4) || 0);
   let faction = []; try{ faction = factionTrackPool(); }catch(e){}
-  return {pack: packCardPool(defs, 1), faction, raid: raidCardIds(def), rarityOf: id=> (defs[id] || {}).rarity || 'common', weight: w};
+  return {pack: packCardPool(defs, 1, false, true /* RW3: gated, a raid claim is not a pack */), faction, raid: raidCardIds(def), rarityOf: id=> (defs[id] || {}).rarity || 'common', weight: w};
 }
 // What a claim's cards are, granted: [{id, from:'pack'|'faction'|'raid'}].
 function grantRaidRewardCards(def, rw){
@@ -26365,7 +26451,7 @@ function starterDeckParts(pick){
 }
 function tutorialRewardIds(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; const later = new Set(Object.values(tutorialRewards2Cfg()).flat());
   // an older saved config listed all three rewards for part 1; the part-2 cards now come with part 2
-  return (Array.isArray(cfg.rewards) ? cfg.rewards : STARTER_CFG_DEFAULT.rewards).filter(id=> getCardDefs()[id] && !later.has(id)); }
+  return (Array.isArray(cfg.rewards) ? cfg.rewards : STARTER_CFG_DEFAULT.rewards).filter(id=> getCardDefs()[id] && !later.has(id) && !TUTORIAL_REWARD_RETIRED.has(id)); } // + RW3: a retired reward (the Quarry Mole) is skipped
 function tutorialRewards2Cfg(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || {}; return Object.assign({}, STARTER_CFG_DEFAULT.rewards2, cfg.rewards2 || {}); }
 function tutorialRewards2(pick){ const r = tutorialRewards2Cfg(); return (r[pick] || r.both || []).filter(id=> getCardDefs()[id]); }
 function rivalOf(pick){ return pick==='otters' ? 'hummingbirds' : (pick==='hummingbirds' ? 'otters' : 'both'); }
@@ -26667,7 +26753,7 @@ const STARTER_CFG_DEFAULT = {
 // 2026-10-18 (X3, owner 15:37 "D. Tutorial only"): your own bramble is very low in the two tutorial fights too: 8 Health (was 16),
 // against the rival's 6 (8 in part 2), and capped there even if a saved tutorial config says more. Map 0's fights keep your bramble's own Health.
 const TUTORIAL_MY_HP_MAX = 8;
-const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:8, rivalHp:7, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:{"duckling":1,"pond-duck":1,"cottontail":1,"pond-trout":1,"silver-minnow":1,"acorn-chipmunk":1,"chipmunk-forager":1}, rivalDeck:{"pond-duck":2,"earthworm":2,"harvest-mouse":2,"pond-trout":2}, steps:{}, myDeck2:{"duckling":1,"honey-bee":1,"pond-duck":2,"cottontail":2,"pond-trout":3,"silver-minnow":1,"acorn-chipmunk":3,"chipmunk-forager":2}, rewards:["quarry-mole"], highlight1:"pond-duck", highlight2:"wandering-traveller", rivalDeck2:{"duckling":3,"earthworm":3,"honey-bee":3,"otter-kit":1,"pond-duck":1,"pond-trout":1,"crossed-eyes":1,"meadow-rabbit":1,"silver-minnow":3,"chipmunk-forager":1}, starterBoth:{"dormouse":1,"otter-kit":2,"otter-paddler":2}, starterOtters:{"otter-kit":2,"fleetfootd":1,"otter-centurion":2}, starterShared:{"pond-trout":3,"meadow-frog":2,"crossed-eyes":1,"duck-paddler":2}, starterHummingbirds:{"mosswing-laborer":1,"crimson-wing-recruit":2,"cobalt-talon-fledgling":2}}; // 2026-10-21 (BF5): the owner's live tutorial (10-20) folded in
+const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:8, rivalHp:7, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:{"duckling":1,"pond-duck":1,"cottontail":1,"pond-trout":1,"silver-minnow":1,"acorn-chipmunk":1,"chipmunk-forager":1}, rivalDeck:{"pond-duck":2,"earthworm":2,"harvest-mouse":2,"pond-trout":2}, steps:{}, myDeck2:{"duckling":1,"honey-bee":1,"pond-duck":2,"cottontail":2,"pond-trout":3,"silver-minnow":1,"acorn-chipmunk":3,"chipmunk-forager":2}, rewards:[] /* 2026-10-23 (RW3, RP3): was ["quarry-mole"] */, highlight1:"pond-duck", highlight2:"wandering-traveller", rivalDeck2:{"duckling":3,"earthworm":3,"honey-bee":3,"otter-kit":1,"pond-duck":1,"pond-trout":1,"crossed-eyes":1,"meadow-rabbit":1,"silver-minnow":3,"chipmunk-forager":1}, starterBoth:{"dormouse":1,"otter-kit":2,"otter-paddler":2}, starterOtters:{"otter-kit":2,"fleetfootd":1,"otter-centurion":2}, starterShared:{"pond-trout":3,"meadow-frog":2,"crossed-eyes":1,"duck-paddler":2}, starterHummingbirds:{"mosswing-laborer":1,"crimson-wing-recruit":2,"cobalt-talon-fledgling":2}}; // 2026-10-21 (BF5): the owner's live tutorial (10-20) folded in
 // 2026-10-21 (package TT2): part 1's rival deck eased, the honest lever (no card stats): BF5's halved, rounded stats left the owner's
 // deck winning 35% of simulated part-1 fights (71% on the pre-BF5 stats; the halved brambles alone move it ~1 point). Its two Ducklings
 // (3/3) are now Pond Ducks (2/3) and its two Silver Minnows (2/4) Pond Trout (2/3); the Earthworm walls and Harvest Mice stay: 78%
@@ -29838,7 +29924,7 @@ function packEditorCardHTML(p, i){
       <label>👑 Krooni <input class="pe-in" type="number" min="0" data-k="kroon" value="${p.kroon||0}"></label>
       <label>🔩 Metal <input class="pe-in" type="number" min="0" data-k="metal" value="${p.metal||0}"></label>
       <label>Level-up chance <input class="pe-in" type="number" min="0" max="1" step="0.01" data-k="levelChance" value="${p.levelChance||0}"></label>
-      <label class="pe-chk"><input class="pe-in" type="checkbox" data-k="newGuaranteed" ${p.newGuaranteed?'checked':''}> One new card guaranteed</label>
+      ${'' /* 2026-10-23 (package RW3, DV4: "Packs outputs can never be changed by anything"): the "One new card guaranteed" box is gone; rollPackCards no longer reads newGuaranteed */}
       <label class="pe-chk"><input class="pe-in" type="checkbox" data-k="comingSoon" ${p.comingSoon?'checked':''}> Coming soon (not on sale)</label>
     </div>
     <h4>Rarity odds <small>${odds.packNo ? `Pack ${odds.packNo}: commons fixed at ${odds.commonShare}% (by pack number), the rest by rarity; a weight of 0 turns a rarity off · chance per card in brackets` : 'relative weights · chance per card in brackets (from this pool)'}</small></h4>
@@ -30787,10 +30873,11 @@ function startMatchInner(mode, opts, standardDeck){
     if(!usePvpTicket()){ if(standardDeck){ standardMatchActive = false; _stdDefsCache = null; } showToast(TX('toast.no-pvp-tickets-left-one-comes', {PVP_TICKETS_PER_DAY}), 'warn'); return; } // 2026-10-21 (package AR): a refused Standard PvP leaves the format off
     asyncStage = pvpStageForRating(myRating);
     try{ fxHook('pvpTicketUsed'); }catch(e){} // 2026-10-15 batch F: the ticket tears
-    asyncGhost = pickPvpStranger(currentMatchSeed).opponent;
-    // 2026-10-21 (package AR): Standard PvP (the Arena's 🃏 button) meets the same strangers, every card at Level 1. Your Standard deck
-    // holds cards you may not own, so it isn't recorded as a stranger for Collection PvP.
-    if(!standardDeck) recordMyPvpDeck();
+    asyncGhost = pickPvpStranger(currentMatchSeed, standardDeck || null).opponent;
+    // 2026-10-21 (package AR): Standard PvP (the Arena's 🃏 button), every card at Level 1. Your Standard deck holds cards you may not
+    // own, so it isn't recorded as a stranger for Collection PvP. 2026-10-23 (package RW3, AR-1): the two meet different pools; a
+    // Standard deck is recorded into the Standard pool.
+    recordMyPvpDeck(standardDeck || null);
   }
   if(mode==='async' && Ghosts){
     const run = loadAsyncRun() || Ghosts.newAsyncRun(Date.now());
@@ -45477,7 +45564,7 @@ function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]|
 function forgeCopyPickerHTML(id){
   if(!copyModelOn()) return ''; const a = myCardCopies[id] || []; if(a.length < 2) return '';
   const groups = forgeCopyGroups(id), cur = forgeAnvilCopyUid(id), g = groups.find(x=> x.uids.includes(cur)) || groups[0];
-  if(forgeMode !== 'refine') return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
+  if(forgeMode !== 'refine' && forgeMode !== 'upgrade') return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
     <span class="ux-fcp-k"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <b class="ux-fcp-n">×${a.length}</b></span>
     <span class="ux-fcp-cur"><b>${escapeHtml(TX('ui.fg-copies-all-level', {n: g ? g.level : forgeCopyLevel(id, null)}))}</b> <small>${escapeHtml(forgeCopyBreakdown(id))}</small></span>
     <button type="button" class="btn small ux-fcp-open" data-forge-copy-sheet="${escapeAttr(id)}" aria-haspopup="dialog">🃏 ${escapeHtml(TX('ui.ux-copy-change'))}</button></div>`;
@@ -45538,7 +45625,7 @@ function wireForgeCountBadges(root){
 }
 // The copies sheet: every copy you own of the card, one tile per group ("Lv 10 · Plain ×5"), in a scrolling grid. Tapping a group
 // puts its copy on the anvil. Only for Upgrade and Refine (the modes that work on one copy).
-function forgeCopiesWorthASheet(id){ return forgeMode === 'refine' && copyModelOn() && forgeCopyGroups(id).length > 1; } // 2026-10-21 (package FG): only Refine picks a copy now
+function forgeCopiesWorthASheet(id){ return (forgeMode === 'upgrade' || forgeMode === 'refine') && copyModelOn() && forgeCopyGroups(id).length > 1; } // 2026-10-23 (RW3): Upgrade picks a copy again (per-copy levels)
 function openForgeCopySheet(id){
   const defs = getCardDefs(), d = defs[id], a = myCardCopies[id] || []; if(!d || a.length < 2) return;
   const groups = forgeCopyGroups(id); if(!groups.length) return;
@@ -46174,7 +46261,7 @@ function skirmishDropRarityRoll(mapNo, rng){
 function skirmishDropPick(node, rar, rng){
   rng = rng || Math.random;
   const defs = getCardDefs(), ladder = RARITY_DEFS.filter(r=> !r.as && r.key !== 'starter').map(r=> r.key), base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
-  const poolIds = packCardPool(defs, 1).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
+  const poolIds = packCardPool(defs, 1, false, true /* RW3: a drop keeps the map / rarity gate */).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
   const deckPack = [...new Set(Object.keys(node.deck || {}).map(base))].filter(id=> inPool.has(id)), at = (ids, r)=> ids.filter(id=> (defs[id].rarity || 'common') === r), pick = a=> a[Math.floor(rng() * a.length)];
   for(let i = ladder.indexOf(rar); i >= 0; i--){
     const own = at(deckPack, ladder[i]); if(own.length && rng() < SKIRMISH_OWN_SHARE) return pick(own);
@@ -46196,12 +46283,23 @@ function rollSkirmishCardDrop(node, mapId, opts, chance){
 // (DROP_CHANCE_CAP): 7% · 14% · 21% · 25% · 25% (was 10 / 20-30 / 30-40 / 70 / 100% of an enemy deck card). A skirmish kept RW's rule
 // (it dropped only when it gave nothing else, skirmishDropApplies) until GD (2026-10-22): every skirmish win drops now, see nodeCardDropChance. The tier is the kind's, not the map-scaled cost a fight charges
 // (nodeEnergyCost climbs with the map, so it would push every later fight to the cap).
-const DROP_CHANCE_PER_ENERGY = SKIRMISH_DROP_CHANCE, DROP_CHANCE_CAP = 0.25;
+const DROP_CHANCE_PER_ENERGY = SKIRMISH_DROP_CHANCE, DROP_CHANCE_CAP = 0.25; // RW2's rate: now the ticketed dungeons' only (RW3 below)
 function fightDropEnergy(kind){
   kind = kind || 'skirmish'; if(kind === 'tutorial') return 0;
   return ENERGY_COST[kind] != null ? ENERGY_COST[kind] : ENERGY_COST[baseKind(kind)] != null ? ENERGY_COST[baseKind(kind)] : ENERGY_COST.skirmish;
 }
-function fightCardDropChance(kind){ return Math.min(DROP_CHANCE_CAP, Math.round(DROP_CHANCE_PER_ENERGY * fightDropEnergy(kind) * 10000) / 10000); }
+// 2026-10-23 (package RW3, owner on RW2-3: "No, the drop rate is based on energy use. I think about 1% per energy. But of course,
+// difficult-er skirmishes like elites have 1/2/3/4% higher chance of dropping (only) since elites and above have shields. Ticketed dungeons
+// keep their higher drop rates."): a card drops 1% per ⚡ of the kind's Energy tier (ENERGY_COST), plus a shield bonus by kind: elite /
+// champion / miniboss / dungeon +1%, sub-boss +2%, boss +3%, world / raid boss, megaraid and final boss +4% (DROP_SHIELD_BONUS). No cap.
+// So: skirmish 1%, elite 3%, sub-boss 5%, boss 6%, world / raid boss 8%, megaraid / final boss 9%. A daily dungeon's floors (the ticketed
+// dungeons, isDailyDungeonMap) keep RW2's 7% per ⚡ capped at 25% (ticketedDungeonDropChance): 7% a floor, 14% a mini-boss floor.
+const DROP_PER_ENERGY_RW3 = 0.01;
+const DROP_SHIELD_BONUS = {elite:0.01, champion:0.01, miniboss:0.01, dungeon:0.01, subboss:0.02, boss:0.03, worldboss:0.04, raidboss:0.04, megaraid:0.04, finalboss:0.04};
+function dropShieldBonus(kind){ kind = kind || 'skirmish'; const b = DROP_SHIELD_BONUS[kind] != null ? DROP_SHIELD_BONUS[kind] : DROP_SHIELD_BONUS[baseKind(kind)]; return b || 0; }
+function fightCardDropChance(kind){ const e = fightDropEnergy(kind); if(!e) return 0; return Math.round((DROP_PER_ENERGY_RW3 * e + dropShieldBonus(kind)) * 10000) / 10000; }
+function ticketedDungeonDropChance(kind){ return Math.min(DROP_CHANCE_CAP, Math.round(DROP_CHANCE_PER_ENERGY * fightDropEnergy(kind) * 10000) / 10000); }
+function isTicketedDungeonFight(mapId){ try{ return isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId)); }catch(e){ return false; } }
 // 2026-10-22 (package GD, owner on RW2-1, 18:20: "There are two kinds of first-clear drop card reward skirmishes: skirmish-exclusive, or from
 // that map range's pack. ALL skirmishes have a low chance to get a card from the pack. For skirmishes, the chance of getting a card is tripled.
 // But you mostly (50+%) get THAT card. (If it's higher in rarity, then the chance actually decreases - your call. Maybe 60/50/40/25/20/10/5/4/3/2/1..."):
@@ -46229,6 +46327,7 @@ function skirmishOwnDropIds(node, mapId){
 function nodeCardDropChance(mapId, node, o){
   if(!node || node.kind === 'tutorial') return 0;
   const kind = node.kind || 'skirmish';
+  if(isTicketedDungeonFight(mapId)) return ticketedDungeonDropChance(kind); // 2026-10-23 (RW3): the ticketed dungeons keep their higher rate
   if(baseKind(kind) === 'skirmish'){
     if(node.tower || node.virtual) return skirmishDropApplies(node, mapId) ? fightCardDropChance(kind) : 0;
     const c = fightCardDropChance(kind); // every skirmish win (GD)
@@ -46253,7 +46352,7 @@ function rollCardDrop(node, mapId, opts, rng){
     if(rng() >= chance) return null;
     const id = ids[Math.floor(rng() * ids.length)], d = getCardDefs()[id];
     if(d && rng() < skirmishOwnDropShare(d.rarity)){ if(!dropRankOk(node, mapId, id, opts)) return null; unlockCardForPlayer(id, 'cardDrop'); return id; }
-    return rollSkirmishCardDrop(node, mapId, opts, 1); // otherwise a pack card as usual (the 21% roll is already won)
+    return rollSkirmishCardDrop(node, mapId, opts, 1); // otherwise a pack card as usual (the repeat roll, 3× the base since RW3, is already won)
   }
   return rollSkirmishCardDrop(node, mapId, opts, chance); // 2026-10-22 (RW2): the one pack-card drop, at the fight's chance
 }
@@ -47263,14 +47362,27 @@ if(typeof document !== 'undefined') document.addEventListener('click', e=>{
   else { const body = document.getElementById('playSubBody'); if(body && playSubTab === 'raid' && !matchState) renderRaidSubTab(body); }
 });
 // On the Shop's shelf once the Raid tab is open; one a buy, buying stops at RAID_TICKET_ITEM_CAP held.
-function shopRaidTicketOnShelf(){ return adminModeEnabled || tabOpen('raid'); }
-function shopRaidTicketFull(){ return raidTicketItems() >= RAID_TICKET_ITEM_CAP; }
+// 2026-10-23 (package RW3, owner on RK2: "You can only buy if they have it. It sells out in one (1). It appearing is random."): the cart
+// has a Raid Ticket on a day only by chance: each local day (itemDay, the field kit's day) rolls once, RAID_TICKET_SHOP_CHANCE = 25%
+// (seeded on the day, so a reload doesn't re-roll; about 1.75 days a week, 7.6 a month). Stock is 1: buying it sells it out until a
+// later day rolls one in (RAID_TICKET_SHOP_KEY holds the day it was bought; it travels with the progress). A day without one: no
+// shelf item. Sold out: the shelf shows it greyed with "Sold out". Admin Mode always sees it (marked as off today when not in stock).
+const RAID_TICKET_SHOP_CHANCE = 0.25, RAID_TICKET_SHOP_KEY = 'bramblewood_shop_raidticket_v1';
+PROGRESS_KEYS.push(RAID_TICKET_SHOP_KEY);
+// the day's roll: hashStr of the day, mixed again (consecutive days hash too alike for a plain seededUnit: 27% over 10,000 days)
+function shopRaidTicketDayRoll(day){ let h = hashStr('shopraidticket:' + day); h = Math.imul(h ^ (h >>> 16), 0x45d9f3b); h = Math.imul(h ^ (h >>> 16), 0x45d9f3b); h ^= h >>> 16; return (h >>> 0) / 4294967296; }
+function shopRaidTicketInStockDay(day){ return shopRaidTicketDayRoll(day) < RAID_TICKET_SHOP_CHANCE; }
+function shopRaidTicketSoldDay(){ try{ return Number(localStorage.getItem(RAID_TICKET_SHOP_KEY)); }catch(e){ return NaN; } }
+function shopRaidTicketStock(){ const day = itemDay(); if(!shopRaidTicketInStockDay(day)) return 0; return shopRaidTicketSoldDay() === day ? 0 : 1; }
+function shopRaidTicketSoldOut(){ const day = itemDay(); return shopRaidTicketInStockDay(day) && shopRaidTicketSoldDay() === day; }
+function shopRaidTicketOnShelf(){ if(adminModeEnabled) return true; if(!tabOpen('raid')) return false; return shopRaidTicketInStockDay(itemDay()); }
+function shopRaidTicketFull(){ return raidTicketItems() >= RAID_TICKET_ITEM_CAP || shopRaidTicketStock() < 1; } // + out of stock (RW3)
 function shopRaidTicketShelfHTML(i, selected){
   const k = 'raidticket:1', full = shopRaidTicketFull(), tilt = ((i*37) % 7) - 3, name = raidTicketItemName();
-  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(name)}</span><span class="shelf-tag">${full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span></button>`;
+  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(name)}</span><span class="shelf-tag">${shopRaidTicketStock() < 1 ? escapeHtml(TX(shopRaidTicketSoldOut() ? 'ui.rw3-rt-sold-out' : 'ui.rw3-rt-not-today')) : full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span></button>`;
 }
 function shopRaidTicketDetailHTML(){
-  return `<b class="sd-name">${raidTicketItemIcon()} ${escapeHtml(raidTicketItemName())}</b><span class="sd-line">${escapeHtml(TX('ui.raid-ticket-shop-line', {cap: RAID_POINTS_MAX}))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: raidTicketItems(), cap: RAID_TICKET_ITEM_CAP}))}</span><span class="sd-price">${shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span>${shopRaidTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RAID_TICKET_ITEM_CAP}))}</span>` : ''}`;
+  return `<b class="sd-name">${raidTicketItemIcon()} ${escapeHtml(raidTicketItemName())}</b><span class="sd-line">${escapeHtml(TX('ui.raid-ticket-shop-line', {cap: RAID_POINTS_MAX}))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: raidTicketItems(), cap: RAID_TICKET_ITEM_CAP}))}</span><span class="sd-line">${escapeHtml(TX('ui.rw3-rt-stock', {n: shopRaidTicketStock()}))}</span><span class="sd-price">${shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span>${shopRaidTicketStock() < 1 ? `<span class="sd-why">${escapeHtml(TX(shopRaidTicketSoldOut() ? 'ui.rw3-rt-sold-out-why' : 'ui.rw3-rt-not-today-why'))}</span>` : shopRaidTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RAID_TICKET_ITEM_CAP}))}</span>` : ''}`;
 }
 function shopRaidTicketCounter(el){
   const full = shopRaidTicketFull(), afford = (myCurrencies.gold||0) >= RAID_TICKET_ITEM_PRICE;
@@ -47278,6 +47390,7 @@ function shopRaidTicketCounter(el){
   const b = el.querySelector('#shopBuyRaidTicket'); if(b) b.onclick = ()=>{
     if(shopRaidTicketFull() || (myCurrencies.gold||0) < RAID_TICKET_ITEM_PRICE){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
     myCurrencies.gold -= RAID_TICKET_ITEM_PRICE; saveCurrencies(); addRaidTicketItems(1);
+    try{ localStorage.setItem(RAID_TICKET_SHOP_KEY, String(itemDay())); }catch(e){} // RW3: stock 1, sold out until another day rolls one
     try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
     showToast(TX('toast.raid-ticket-bought', {n: raidTicketItems()}), 'ok');
     renderShop(); };
@@ -48252,12 +48365,15 @@ const SHOP_PACKS_DEFAULT = [
   // 2026-10-12 (22:04, user: "Rename the pack names to something more about the themes of the maps they represent"): Hedgerow Pouch
   // (the hedges, beaches and cliffs of Maps 0–5), Tidemire Chest (the swamps, caves and reefs of Maps 6–10), Highcrest Case (the heights,
   // forests and savanna of Maps 11–15).
-  {id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
-  {id:'silver', packNo:2, name:'Tidemire Chest', icon:'🐚', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false},
+  // 2026-10-23 (package RW3, owner on C1: "Pack foil chances - evaluate also. Should be rare."): a card comes out foil 1% (Hedgerow Pouch),
+  // 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster); faction packs 1%. Was 4 / 8 / 12 (+ one foil guaranteed in every Highcrest
+  // Case, about 1.3 foils a Case) / 10 / 4%. The guarantee is off. An Advanced pack's first five cards keep 10x (10 / 15 / 20%).
+  {id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.01, foilGuaranteed:false},
+  {id:'silver', packNo:2, name:'Tidemire Chest', icon:'🐚', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.015, foilGuaranteed:false},
   // Mystery Booster (2026-10-10, user: "Mystery booster with strange cards"): its own pool (tier 99) of oddities that
   // don't come out of any other pack.
-  {id:'mystery', name:'Mystery Booster', icon:'❓', cost:{gold:80, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0, pool:99, foilChance:0.1, foilGuaranteed:false},
-  {id:'gold', packNo:3, name:'Highcrest Case', icon:'🏔️', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
+  {id:'mystery', name:'Mystery Booster', icon:'❓', cost:{gold:80, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0, pool:99, foilChance:0.02, foilGuaranteed:false},
+  {id:'gold', packNo:3, name:'Highcrest Case', icon:'🏔️', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.02, foilGuaranteed:false}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
@@ -48270,7 +48386,7 @@ const FOIL_FINISHES = [
 ];
 const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
 function normalizePack(p){
-  const o = Object.assign({pool:1, foilChance:0.04, foilGuaranteed:false}, p);
+  const o = Object.assign({pool:1, foilChance:0.01, foilGuaranteed:false}, p); // RW3: default 1% (was 4%)
   o.cost = Object.assign({gold:0, gems:0}, p.cost||{});
   o.foilFinishes = Object.assign({}, p.foilFinishes && Object.keys(p.foilFinishes).length ? p.foilFinishes : PACK_FOIL_FINISHES_DEFAULT);
   o.rarityWeights = Object.assign({}, PACK_RARITY_WEIGHT, p.rarityWeights||{});
@@ -48434,10 +48550,10 @@ function shelfPrice(p, qty){ return qty > 1 ? packSetCost(p, qty) : {gold:p.cost
 function shelfPriceHTML(c){ return [c.gold ? `${mapleLeafIconHTML()}${c.gold}` : '', c.gems ? `🍂${c.gems}` : ''].filter(Boolean).join(' '); }
 function shelfDetailHTML(p, qty){
   const st = shelfStatus(p), c = shelfPrice(p, qty), poolN = packCardPool(null, p.pool||1).length;
-  const what = p.advanced ? `🃏 <b>5 cards</b> at 10× the foil chance, <b>+5 bonus cards</b>` : `🃏 <b>${p.cards||3} cards</b> each${p.newGuaranteed ? ', 1 new guaranteed' : ''}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon && currencyShown('kroon') /* 2026-10-23 (TU2) */ ? ` · 👑 ${p.kroon} Krooni` : ''}`;
+  const what = p.advanced ? `🃏 <b>5 cards</b> at 10× the foil chance, <b>+5 bonus cards</b>` : `🃏 <b>${p.cards||3} cards</b> each${'' /* 2026-10-23 (RW3, DV4): no new-card guarantee any more */}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon && currencyShown('kroon') /* 2026-10-23 (TU2) */ ? ` · 👑 ${p.kroon} Krooni` : ''}`;
   const from = (p.pool||1)===99 ? `Strange cards that come out of no other pack (${poolN}).` : `From Pack ${p.pool||1} (${poolN} cards).`;
   return `<b class="sd-name">${escapeHtml(p.name)}${qty > 1 ? ` ×${qty}` : ''}</b>
-    <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${Math.round(p.foilChance*100)}% foil per card.` : ''}</span>
+    <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${fmtDropPct(+p.foilChance)} foil per card.` : ''}</span>
     <span class="sd-price">${shelfPriceHTML(c)}${c.discount ? ` <small>(${Math.round(c.discount*1000)/10}% off)</small>` : ''}</span>${st ? `<span class="sd-why">${escapeHtml(st.why)}</span>` : ''}`;
 }
 function renderShopShelves(grid, signedIn){
@@ -48922,8 +49038,8 @@ function startNurture(cardId, slot){ const n = nestState(); const at = nestSlotF
 function finishNurture(itemId){ const n = nestState(), e = n.eggs.find(x=> x.id === itemId); if(!e || e.kind !== 'nurture' || Date.now() < e.hatchAt) return null;
   n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n);
   // 2026-10-18 (package NF): one Level-0 copy (the oldest) trains to Level 1; the card's other copies keep their own levels
-  // 2026-10-21 (package FG, owner: "forge forges ALL cards of a particular suite"): the card trains to Level 1, every copy with it
-  let done = false; if(copyModelOn()){ copyModelSync(e.cardId); const a = myCardCopies[e.cardId] || []; if(a.some(c=> copyLevel(e.cardId, c) === 0)){ setCopyLevel(e.cardId, null, 1); done = true; } }
+  // 2026-10-23 (package RW3): per copy again: the oldest Level-0 copy trains to Level 1 (FG had trained every copy)
+  let done = false; if(copyModelOn()){ copyModelSync(e.cardId); const a = myCardCopies[e.cardId] || [], i = a.findIndex(c=> copyLevel(e.cardId, c) === 0); if(i >= 0){ a[i].level = 1; delete a[i].hatch; syncBestLevel(e.cardId); saveCardCopies(); done = true; } }
   if(!done) myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0);
   saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
 let nestNurturePrefill = null;
@@ -49316,11 +49432,15 @@ function packPoolOf(d){ const src = cardSourceOf(d); return src.kind==='pack' ? 
 // packs ... The otter specific cards are contained throughout the 3 basic packs"): a pack built on pool 1 (the Sprout
 // Pouch, Tidemire Chest and Highcrest Case) also draws from the Otter (11), Hummingbird (12) and shared Riverbank (13) pools.
 const BASIC_PACK_POOLS = [1]; // 2026-10-13 (user: "the otters and hummingbirds that you get along the way - i think remove them from all packs. They can only be gotten through progress"); was [1, 11]   // 2026-10-12: the Otter, Hummingbird and Riverbank pools (11–13) merged into one Factions pool (11)
-function packCardPool(defs, pool, exact){
+// 2026-10-23 (package RW3, owner on DV4: "No keep packs completely random. Packs outputs can never be changed by anything"): a pack
+// draws from its whole pool, whatever the player has reached: no map gate, no rarity gate, no Lumber-before-pitching gate (a Lumber
+// card that comes early waits for pitching in unlockCardForPlayer, as any other). `gated` keeps DV's gates for the things that are not
+// packs and read the pack pool: the skirmish / fight card drop (skirmishDropPick), the base reward track and a raid claim's pack cards.
+function packCardPool(defs, pool, exact, gated){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
-  const early = !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12)
-  const reach = adminModeEnabled ? Infinity : (()=>{ try{ return trackMapReached(); }catch(e){ return 0; } })();
+  const early = gated && !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12; gated callers only since RW3)
+  const reach = !gated || adminModeEnabled ? Infinity : (()=>{ try{ return trackMapReached(); }catch(e){ return 0; } })();
   return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-22 (package DV, owner 00:43: "Then decide which (1-2) will be skirmish rewards. The rest will be generic pack rewards."): a
@@ -49349,7 +49469,10 @@ function rollPackCards(pack){
   const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1);
   if(!pool.length) return [];
   const weights = Object.assign({}, PACK_RARITY_WEIGHT, pack.rarityWeights||{});
-  const recent = packRecentPulls[pack.pool||1] || (packRecentPulls[pack.pool||1] = {});
+  // 2026-10-23 (package RW3, DV4: "Packs outputs can never be changed by anything"): no memory of earlier packs (the 10-12 fading
+  // "recent pulls" weight is off: the pools are whole now, so one card can't crowd a pack) and no new-card guarantee (it read your
+  // collection). Inside one pack a card still comes at most `cap` times (the pack's own shape, not your history).
+  const recent = {};
   const w = id=>{ const v = weights[defs[id].rarity||'common']; const base = v === undefined ? 4 : Math.max(0, +v||0); return base * Math.pow(0.35, recent[id] || 0); };
   const pickW = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); if(!(tot > 0)) return list[Math.floor(Math.random()*list.length)]; let r = Math.random()*tot; for(const id of list){ r -= w(id); if(r<=0) return id; } return list[list.length-1]; };
   // 2026-10-16 (placement and rarity): a numbered pack first rolls the rarity (commons at the pack's fixed share, the rest by
@@ -49360,14 +49483,11 @@ function rollPackCards(pack){
     const tot = keys.reduce((t, k)=> t + shares[k], 0); let r = Math.random()*tot, k0 = keys[keys.length - 1]; for(const k of keys){ r -= shares[k]; if(r <= 0){ k0 = k; break; } }
     const sub = cls[k0], tw = sub.reduce((t, id)=> t + Math.pow(0.35, recent[id] || 0), 0); let q = Math.random()*tw; for(const id of sub){ q -= Math.pow(0.35, recent[id] || 0); if(q <= 0) return id; } return sub[sub.length - 1]; };
   const out = [];
-  const unowned = pool.filter(id=> !(myCardCopies[id]||[]).length && !myUnlockedCardIds.has(id));
-  if(pack.newGuaranteed && unowned.length) out.push(pick(unowned));
+  // (RW3: pack.newGuaranteed is no longer read here; see above)
   const n = pack.cards||3, cap = Math.max(1, Math.ceil(n / Math.max(1, pool.length)));
   let guard = 0;
   while(out.length < n && guard++ < 500){ const left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break; out.push(pick(left)); }
   while(out.length < n) out.push(pick(pool));
-  Object.keys(recent).forEach(id=>{ recent[id] *= 0.6; if(recent[id] < 0.05) delete recent[id]; });
-  out.forEach(id=> recent[id] = (recent[id] || 0) + 1);
   return out.sort(()=> Math.random()-0.5);
 }
 // Which pulls come out foil, and in which finish. null = plain.
@@ -49511,7 +49631,9 @@ function purchasePackOnce(pack, prepaid){
   if(pack.metal) grantCurrency('metal', pack.metal);
   if(pack.kroon) grantCurrency('kroon', pack.kroon);
   const foils = rollPackFoils(pack, pulls.length);
-  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
+  const eggAt = new Set(); // 2026-10-23 (package RW3, GD2-6): a Mystery Booster card is an Easter egg 0.05% of the time
+  if((pack.baseId || pack.id) === MYSTERY_PACK_ID) pulls = pulls.map((id, i)=>{ if(Math.random() >= MYSTERY_EGG_CHANCE) return id; const e = mysteryEggPick(); if(!e) return id; eggAt.add(i); return e; });
+  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, eggAt.has(i) ? 'mysteryEgg' : 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
   results.forEach(r=> rollBonusCopy(r, 'shopPack')); // 2026-10-17
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
@@ -49547,6 +49669,7 @@ const FACTION_PACKS = {
   folk:  {id:'folk', kind:'sub', name:'Woodland Folk Bundle', icon:'🌾', people:'folk', tint:'#5a7a3a', blurb:'Farmers, millers and everyone the war keeps walking through.'},
 };
 const FACTION_PACK_OWN = 2, FACTION_PACK_GENERAL = 1;
+const FACTION_PACK_FOIL = 0.01; // 2026-10-23 (package RW3, C1): foils are rare (was 0.04)
 // World 1's one Legendary (2026-10-16, placement and rarity: the dragon lair's boss is "the first, and only [Legendary] for Map 0-20"):
 // faction packs, Faction Rewards and Faction Growth hold back Legendary-and-up cards (the Old Willow of the Ford) until you reach Map 21.
 function legendaryHeldBack(d){ try{ return !!d && roadRarityStep(d.rarity) >= roadRarityStep('legendary') && trackMapReached() < 21; }catch(e){ return false; } }
@@ -49568,7 +49691,7 @@ function creditFactionPack(id){
   const fp = FACTION_PACKS[id]; if(!fp || !factionPackPool(fp, 'own').length) return null;
   const roll = rollFactionPackCards(fp); if(!roll.pulls.length) return null;
   if(fp.kind === 'faction') try{ noteFactionReceived(roll.pulls.filter(p=> p.from === 'own').length); }catch(e){} // 2026-10-21 (package RP): the faction reward track's count
-  const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:0.04, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
+  const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:FACTION_PACK_FOIL /* RW3: 1% (was 4%) */, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
   const foils = rollPackFoils(pack, roll.pulls.length);
   const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
   results.forEach(r=> rollBonusCopy(r, 'factionPack')); // 2026-10-17
@@ -49725,7 +49848,7 @@ function trackPick(pool, rnd){
   let r = rnd()*tot; for(const [id, w] of dupes){ r -= w; if(r <= 0) return id; } return dupes[dupes.length-1][0];
 }
 function factionTrackPool(){ const fp = FACTION_PACKS[myFactionPackId()]; return fp ? factionPackPool(fp, 'own') : []; }
-function baseTrackPool(){ return packCardPool(getCardDefs(), 1, true); }
+function baseTrackPool(){ return packCardPool(getCardDefs(), 1, true, true); } // RW3: the base track keeps DV's gate (it is not a pack)
 // One step of progress: a card from your faction's track and one from the base track. Returns the ids granted.
 function grantTrackCards(why, extraPool){
   const out = [];
@@ -49978,6 +50101,7 @@ function nodeFirstClearPacks(mapId, node){
   const out = []; if(!node) return out;
   if(node.firstPack) out.push({kind:'free', id:node.firstPack});
   if(node.firstFactionPack) out.push({kind:'faction', id: FACTION_PACKS[node.firstFactionPack] ? node.firstFactionPack : 'mine'});
+  if(!node.firstPack && !node.firstFactionPack){ const rp = SKIRMISH_FIRST_PACKS[mapId + ':' + node.key]; if(rp) out.push(Object.assign({}, rp)); } // 2026-10-23 (package RW3, GD2-4)
   try{ const idx = mainConquestMaps().findIndex(m=> m.id === mapId), pid = MAP_FREE_PACKS[idx]; if(pid && !node.firstPack && mapRewardNodeKey(mainConquestMaps()[idx]) === node.key) out.push({kind:'free', id:pid}); }catch(e){}
   return out;
 }

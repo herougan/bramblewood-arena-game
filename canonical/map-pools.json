@@ -10,7 +10,7 @@
    "special": []
   },
   "mf": {
-   "cards": ["cricket-drummer", "dormouse", "compost-grub", "bramble-sprout", "field-vole", "field-mouse", "quarry-mole", "harvest-mouse", "meadow-frog", "badger-lumberjack"],
+   "cards": ["cricket-drummer", "dormouse", "compost-grub", "bramble-sprout", "field-vole", "field-mouse", "harvest-mouse", "meadow-frog", "badger-lumberjack"],
    "submaps": {
     "mq": ["lucky-hopper", "acorn-chipmunk", "bee-forager", "bee-sentry", "buck-brawler", "burrow-rabbit", "chipmunk-forager", "clover-butterfly", "cottontail", "farm-dog", "field-crow", "honey-bee", "house-cat", "jay-pilferer", "ladybird-guard", "meadow-rabbit", "pigeon-peon", "rabbit-kit", "stag-beetle", "tunnel-ant", "village-miller"]
    },
@@ -56,7 +56,7 @@
    "special": []
   },
   "m4": {
-   "cards": ["blind-cave-fish", "cave-olm", "star-nosed-mole", "sulfur-cinder-moth", "stalactite-golem", "nightshade-moth", "vampire-bat", "whip-spider", "giant-cave-huntsman", "echo-screecher"],
+   "cards": ["blind-cave-fish", "cave-olm", "star-nosed-mole", "sulfur-cinder-moth", "stalactite-golem", "nightshade-moth", "vampire-bat", "whip-spider", "giant-cave-huntsman", "echo-screecher", "quarry-mole"],
    "submaps": {
     "mn": ["lantern-spark-fly", "barrow-leech-bat", "bat-swarmling", "beetle-grunt", "cave-bat-swarm", "cave-cricket", "cave-flitter", "cave-swiftlet", "glowworm-cluster", "monarch-wingblade", "oilbird", "swarm-matriarch", "tunnel-ant"]
    },

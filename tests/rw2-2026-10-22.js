@@ -5,7 +5,7 @@
 //      challenge cards picked by tools/challenge_cards_2026_10_22.js are flagged, one per four-map band from Map 4, on elite-kind fights;
 //      the fight panel marks them (ribbon + TX key, 12 packs);
 //   2. the skirmish drop shares: Maps 10-29 Common 80 / Uncommon 20, Maps 30+ 70 / 25 / 5 (10,000 rolls each, before the shift);
-//   3. one drop for every fight: 7% per Energy tier (ENERGY_COST), capped at 25%; the old CARD_DROP_CHANCE table is gone; 10,000 seeded
+//   3. one drop for every fight: since RW3 (2026-10-23) 1% per Energy tier (ENERGY_COST) + the shield bonus (elite 1, sub-boss 2, boss 3, world / final 4), no cap (was 7% a tier, capped at 25%); the old CARD_DROP_CHANCE table is gone; 10,000 seeded
 //      wins of each kind land on those numbers;
 //   4. raid fights: survived 1%, the enemy bramble killed 12%, killed at S+ 25% (10,000 seeded fights each); the raid's own card stays
 //      RAID_CARD_DROP_CHANCE of the cards that drop;
@@ -39,10 +39,10 @@ const ctx = {getCardDefs: ()=> defs, RARITY_DEFS, RANK_ORDER: ['E','D','C','B','
   packCardPool: ()=> cards.filter(c=> c.source && c.source.kind === 'pack' && !c.token && !c.test).map(c=> c.id), isEquipmentDef: d=> d.cardType === 'equipment', isEasterEgg: d=> !!d.easterEgg,
   unlockCardForPlayer: id=>{ granted.push(id); return true; }, Math: Object.assign(Object.create(Math), {random: ()=> rnd()}), Object, String, Number, Array, Set, JSON, out: {}};
 vm.createContext(ctx);
-vm.runInContext([constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'),
+vm.runInContext([constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'), constSrc('DROP_PER_ENERGY_RW3'), constSrc('DROP_SHIELD_BONUS'), /* RW3 */
   constSrc('CARD_RANK_STEP_MAPS'), constSrc('CARD_RANK_CAP'),
   ...['rarityAtLeastRare', 'nodeIsEliteForRank', 'cardRewardIsChallenge', 'cardRewardRankFor', 'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll',
-    'rollSkirmishCardDrop', 'fightDropEnergy', 'fightCardDropChance', 'nodeCardDropChance', 'rollCardDrop'].map(fnSrc)].join('\n') +
+    'rollSkirmishCardDrop', 'fightDropEnergy', 'dropShieldBonus', 'ticketedDungeonDropChance', 'isTicketedDungeonFight', 'fightCardDropChance', 'nodeCardDropChance', 'rollCardDrop'].map(fnSrc)].join('\n') +
   '\nout.f = {cardRewardRankFor, cardRewardIsChallenge, skirmishDropRarityRoll, fightCardDropChance, nodeCardDropChance, rollCardDrop};', ctx);
 const F = ctx.out.f;
 
@@ -78,16 +78,16 @@ for(const [map, want] of [[15, {common: 0.80, uncommon: 0.20}], [35, {common: 0.
 }
 ok(/\[10, \[\['common', 0\.80\], \['uncommon', 0\.20\]\]\]/.test(constSrc('SKIRMISH_DROP_RARITY')), '2. the table says 80 / 20 from Map 10');
 
-// ---- 3. one drop for every fight, 7% per Energy tier, capped at 25%
+// ---- 3. one drop for every fight: 1% per Energy tier + the shield bonus (RW3, owner RW2-3), no cap
 ok(!/\nconst CARD_DROP_CHANCE = /.test(src), '3. the old table by fight kind is gone');
-const WANT = {skirmish: 0.07, elite: 0.14, champion: 0.14, miniboss: 0.14, dungeon: 0.14, subboss: 0.21, boss: 0.21, worldboss: 0.25, raidboss: 0.25, megaraid: 0.25, finalboss: 0.25};
+const WANT = {skirmish: 0.01, elite: 0.03, champion: 0.03, miniboss: 0.03, dungeon: 0.03, subboss: 0.05, boss: 0.06, worldboss: 0.08, raidboss: 0.08, megaraid: 0.09, finalboss: 0.09}; // RW3
 Object.entries(WANT).forEach(([k, p])=> ok(F.fightCardDropChance(k) === p, `3. ${k}: ${p * 100}% (got ${F.fightCardDropChance(k)})`));
 ok(F.nodeCardDropChance('m5', {key: 'x', kind: 'tutorial'}) === 0, '3. no drop in a tutorial fight');
 for(const kind of ['skirmish', 'elite', 'boss', 'raidboss']){
   rnd = seeded(kind.length * 31); granted.length = 0; let got = 0;
   for(let i = 0; i < N; i++){ if(F.rollCardDrop({key: 'x', kind, deck: {}}, 'm15', {})) got++; }
   console.log(`  ${kind} wins on Map 15, ${N} rolls: ${pct(got, N)} dropped a card (want ${+(WANT[kind] * 100).toFixed(1)}%)`);
-  ok(Math.abs(got / N - WANT[kind]) < 0.012 && granted.every(id=> defs[id].source && defs[id].source.kind === 'pack'), `3. ${kind}: ${pct(got, N)} of ${N} wins drop a pack card`);
+  ok(Math.abs(got / N - WANT[kind]) < 0.006 && granted.every(id=> defs[id].source && defs[id].source.kind === 'pack'), `3. ${kind}: ${pct(got, N)} of ${N} wins drop a pack card`);
 }
 { rnd = seeded(5); let got = 0; for(let i = 0; i < N; i++){ if(F.rollCardDrop({key: 'x', kind: 'elite', deck: {}}, 'm15', {rank: 'A'})) got++; }
   ok(got === 0, `3. the rank gate holds: an A win in an elite (asks S) drops nothing (${got})`); }

@@ -1626,7 +1626,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.log3-stench": "{name} reeks: {n} Stench.",
   "ui.log3-stench-wash": "{name} is washed clean of {n} Stench.",
   "ui.log3-grave-call": "{name} answers the Grave Call: +{n}/+{n}.",
-  "toast.fg-card-levels": "The Forge now levels every copy of a card together. Each card took the level of its best copy, and the duplicate credit on its copies was added up on the card.",
   "toast.fg-finish-done": "✨ {name}: now {label}.",
   "toast.fg-forge-reset": "🔨 Forge progress reset: {cards} cards changed level, {zero} back to Level 0.",
   "toast.fg-fused": "🧩 Fused {n} cop{plural_ies} of {name}: ✨ {dust} of credit on the card.",
@@ -1962,7 +1961,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.tu2-promo-p2": "Nothing here can be used yet, and none of your cards change.",
   "ui.tu2-bonus-ticket-name": "Bonus Raid Ticket",
   "ui.tu2-bonus-ticket-desc": "Paid by a fallen raid when your total raid rank was high. Use it for an extra raid fight.",
-  "toast.tu2-bonus-ticket-granted": "🎫 A Bonus Raid Ticket for your raid rank: one extra raid fight."
+  "toast.tu2-bonus-ticket-granted": "🎫 A Bonus Raid Ticket for your raid rank: one extra raid fight.",
+  "ui.rw3-rt-sold-out": "Sold out",
+  "ui.rw3-rt-not-today": "Not today",
+  "ui.rw3-rt-stock": "In stock: {n}",
+  "ui.rw3-rt-sold-out-why": "Sold out. The cart has a Raid Ticket only on some days, one at a time.",
+  "ui.rw3-rt-not-today-why": "Not in stock today. Admin Mode shows it anyway.",
+  "toast.rw3-copy-levels": "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

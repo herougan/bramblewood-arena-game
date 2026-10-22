@@ -71,7 +71,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "+{v1}/+{v2} pour chaque emplacement vide à 2 places ou moins, et +{v3}/+{v4} de plus si les 4 sont vides.",
  "+{v1}/+{v2} whenever {v3} enters play.": "+{v1}/+{v2} chaque fois que {v3} entre en jeu.",
  "+{v1}⚔ next swing": "+{v1}⚔ au prochain coup",
- ", 1 new guaranteed": ", 1 nouvelle garantie",
  ", already won": ", déjà gagné",
  ", already yours": ", déjà à vous",
  ", an Iron Shard": ", un Éclat de fer",
@@ -4914,7 +4913,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — réussissez {v2} pour trouver un passage",
  "{v1} — Clear {v2} to open": "{v1} — Réussissez {v2} pour l’ouvrir",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} contre ⚔{v5} ❤{v6}{v7}{v8} : aussi bonne ou meilleure en tout point.",
- "{v1}% foil per card.": "{v1} % de brillante par carte.",
  "{v1}% of the time, a": "{v1} % du temps, un",
  "{v1}% of the time, a shot": "{v1} % du temps, un tir",
  "{v1}'s Avalanche buries {v2} enemy unit{s}: {v3} cold damage and +1 Wait.": "L’Avalanche de {v1} ensevelit {v2} unité{s} ennemie{s} : {v3} dégâts de froid et +1 Attente.",
@@ -5104,5 +5102,6 @@
  "When the wolves come, the herd forms a ring, and the calves go in the middle.": "Quand les loups arrivent, le troupeau forme un cercle, et les veaux vont au milieu.",
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "Il gratte un trou de respiration dans la glace avec ses griffes et le garde ouvert tout l'hiver.",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "Son bec est plus long que son corps. Il salue d'abord, puis demande qui veut tenter sa chance.",
- "Blinding": "Aveuglant"
+ "Blinding": "Aveuglant",
+ "{v1} foil per card.": "{v1} de brillante par carte."
 }

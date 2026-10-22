@@ -2757,5 +2757,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "Les œufs et les petits grandissent dans les nids. Les cartes de niveau 0 attendent sous 🌱 Niveau 0.",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "Un nid et quelques croquettes font passer une carte du niveau 0 au niveau 1. La Forge prend la suite.",
  "Tap T-2, then press ⚔️ Fight.": "Touchez T-2, puis appuyez sur ⚔️ Combattre.",
- "In the fight: {n} (every bramble's Health is halved)": "En combat : {n} (la santé de chaque roncier est divisée par deux)"
+ "In the fight: {n} (every bramble's Health is halved)": "En combat : {n} (la santé de chaque roncier est divisée par deux)",
+ "In stock: {n}": "En stock : {n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Épuisé. La charrette n’a un ticket de raid que certains jours, un seul à la fois.",
+ "Not in stock today. Admin Mode shows it anyway.": "Pas en stock aujourd’hui. Le mode admin l’affiche quand même.",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Chaque exemplaire d’une carte a de nouveau son propre niveau. Chaque exemplaire a gardé son niveau ; la Forge travaille maintenant un exemplaire à la fois."
 }

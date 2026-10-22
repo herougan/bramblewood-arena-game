@@ -2757,5 +2757,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "முட்டைகளும் குட்டிகளும் கூடுகளில் வளரும். நிலை 0 அட்டைகள் 🌱 நிலை 0 இல் காத்திருக்கும்.",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "ஒரு கூடும் சிறிது தீவனமும் நிலை 0 அட்டையை நிலை 1 ஆக்கும். அதன் பிறகு பட்டறை பார்த்துக்கொள்ளும்.",
  "Tap T-2, then press ⚔️ Fight.": "T-2 ஐத் தட்டி, பிறகு ⚔️ சண்டை அழுத்துங்கள்.",
- "In the fight: {n} (every bramble's Health is halved)": "சண்டையில்: {n} (ஒவ்வொரு முட்புதரின் உயிரும் பாதியாகும்)"
+ "In the fight: {n} (every bramble's Health is halved)": "சண்டையில்: {n} (ஒவ்வொரு முட்புதரின் உயிரும் பாதியாகும்)",
+ "In stock: {n}": "கையிருப்பு: {n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "விற்றுத் தீர்ந்தது. வண்டியில் சில நாட்களில் மட்டுமே ஒரு ரெய்டு டிக்கெட் இருக்கும், ஒரு நேரத்தில் ஒன்று.",
+ "Not in stock today. Admin Mode shows it anyway.": "இன்று கையிருப்பில் இல்லை. நிர்வாகப் பயன்முறை இருந்தாலும் காட்டும்.",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "ஒவ்வொரு அட்டைப் பிரதிக்கும் மீண்டும் தனி நிலை உண்டு. ஒவ்வொரு பிரதியும் தன் நிலையை வைத்துக்கொண்டது; பட்டறை இப்போது ஒரு நேரத்தில் ஒரு பிரதியில் வேலை செய்யும்."
 }

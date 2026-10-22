@@ -2757,5 +2757,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "卵と赤ちゃんは巣で育ちます。レベル0のカードは 🌱 レベル0 で待っています。",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "巣と少しのキブルで、レベル0のカードがレベル1になります。その先は鍛冶場の出番です。",
  "Tap T-2, then press ⚔️ Fight.": "T-2 をタップして、⚔️ バトルを押しましょう。",
- "In the fight: {n} (every bramble's Health is halved)": "戦闘では：{n}（いばらの体力はすべて半分になります）"
+ "In the fight: {n} (every bramble's Health is halved)": "戦闘では：{n}（いばらの体力はすべて半分になります）",
+ "In stock: {n}": "在庫：{n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "売り切れ。荷車にレイドチケットがあるのは一部の日だけで、一度に1枚です。",
+ "Not in stock today. Admin Mode shows it anyway.": "今日は在庫がありません。管理者モードでは表示されます。",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "カードのコピーはそれぞれ自分のレベルに戻りました。どのコピーも元のレベルのままです。鍛冶場は一度に1枚ずつ鍛えます。"
 }

@@ -14,18 +14,18 @@ From the owner's 10-23 00:10 answers (numbers are his list's). Packages: TU2, RW
 | 84 | E9 | TU2 | Retire Krooni 👑 for now. |
 | 24 | AR-2 | TU2 | Hide both daily dungeons (the Undercroft and Murgle Mayhem) until they are balanced and their special reward is decided; keep the defaults in the notes. |
 | 41 | RK1 | TU2 | The Raid Ticket in the Shop becomes the Bonus Raid Ticket (300 Maple Leaves) with a different outline. |
-| 5 | GD2-3 | RW3 | Move a pack card to a skirmish as the exclusive first-clear card on Maps 4, 6, 11, 12, 18, 20, 21. |
-| 6 | GD2-4 | RW3 | Every skirmish pays that season's pack, a faction pack, a skirmish-exclusive card or a card of that season's pack. |
-| 19 | RW2-3 | RW3 | Card drop is about 1% per Energy spent; elites and above +1/2/3/4%; ticketed dungeons keep their higher rates. |
-| 53 | DV4 | RW3 | No map or rarity gate on pack output: packs are completely random, nothing changes their output. |
-| 69 | C1 | RW3 | Evaluate the pack foil chances; they should be rare (C1 itself stays open, "later"). |
-| 42 | RK2 | RW3 | The Bonus Raid Ticket is for sale only when the shop randomly has it, and it sells out after one purchase. |
-| 44 | RK4 | RW3 | SS / SSS raid notices about once a month or two; S notices 0.5-0.7 a week. |
-| 68 | E2 | RW3 | Disenchant values 5/10/25/45/65/100/150/250/400/700/1200/2000+ in rarity order (check the rarity list and the "etc."). |
-| 86 | E11 | RW3 | The Nest Nurse makes eggs hatch faster; no Shiny-chance bonus. |
-| 25 | — | RW3 | Forge: go back to card-based upgrades (the owner changed it to card_name-based; everything else is per card). |
-| 23 | AR-1 | RW3 | Standard PvP and Collection PvP draw from different pools; PvP keeps the foil treatments. |
-| 8 | GD2-6 | RW3 | How a player can own an Easter egg: giveaways, or a supremely low chance in mystery packs. |
+| 5 | GD2-3 | RW3 (built 10-23) | Move a pack card to a skirmish as the exclusive first-clear card on Maps 4, 6, 11, 12, 18, 20, 21. |
+| 6 | GD2-4 | RW3 (built 10-23) | Every skirmish pays that season's pack, a faction pack, a skirmish-exclusive card or a card of that season's pack. |
+| 19 | RW2-3 | RW3 (built 10-23) | Card drop is about 1% per Energy spent; elites and above +1/2/3/4%; ticketed dungeons keep their higher rates. |
+| 53 | DV4 | RW3 (built 10-23) | No map or rarity gate on pack output: packs are completely random, nothing changes their output. |
+| 69 | C1 | RW3 (built 10-23) | Evaluate the pack foil chances; they should be rare (C1 itself stays open, "later"). |
+| 42 | RK2 | RW3 (built 10-23) | The Bonus Raid Ticket is for sale only when the shop randomly has it, and it sells out after one purchase. |
+| 44 | RK4 | RW3 (built 10-23) | SS / SSS raid notices about once a month or two; S notices 0.5-0.7 a week. |
+| 68 | E2 | RW3 (built 10-23) | Disenchant values 5/10/25/45/65/100/150/250/400/700/1200/2000+ in rarity order (check the rarity list and the "etc."). |
+| 86 | E11 | RW3 (built 10-23) | The Nest Nurse makes eggs hatch faster; no Shiny-chance bonus. |
+| 25 | — | RW3 (built 10-23) | Forge: go back to card-based upgrades (the owner changed it to card_name-based; everything else is per card). |
+| 23 | AR-1 | RW3 (built 10-23) | Standard PvP and Collection PvP draw from different pools; PvP keeps the foil treatments. |
+| 8 | GD2-6 | RW3 (built 10-23) | How a player can own an Easter egg: giveaways, or a supremely low chance in mystery packs. |
 | 31 | TR-4 | EN | Remove King from the four non-Kings; only the Magnate Duck is a King (balance it, not 1/1). New skill Liege {...}: active only while the King is on your side, worth 0.3x its braces, default Assault N with N=2. |
 | 32 | TR-5 | EN | Price Liege at 0.3x its braces; the other prices stay. |
 | 33 | TR-6 | EN | Remove the Enraged condition; Rage keeps its definition; "Rage {...}" = Rage's usual effects plus the braces, costed by logic. |
@@ -44,11 +44,11 @@ From the owner's 10-23 00:10 answers (numbers are his list's). Packages: TU2, RW
 | 11 | DN2-4 | SX | Element colour shift +12 degrees, with poison less blue and a little brighter. |
 | 66 | H2 | SX | Hero XP bar: Battle XP, Materia XP, and a third section that takes either; Battle XP there is 25% less efficient. |
 | 26 | AR-3 | AR3 | The co-op group dungeon: a big pass, launched as one package. |
-| 48 | RP3 | (unassigned) | Quarry Mole moves to 8-1 (card data; no package named yet). |
+| 48 | RP3 | RW3 (built 10-23) | Quarry Mole moves to 8-1 (its first-clear card; out of Base and off T-1). |
 | 64 | I2 | (unassigned) | Number-aware translation templates (no package named yet). |
 | 60 | D17 | (owner files) | Music: only 2-3 tracks are usable; better tracks are needed, and they need CC0 files from the owner. |
 | 71 | G2 | (a later hub package) | Move the still-relevant .md files into the master hub (the owner dislikes many disparate files); G2's detail now lives in its decision item. |
-| 8 | GD2-6 | (with the RW3 row above) | Easter-egg sources: giveaways; a supremely low chance in mystery packs. |
+| 8 | GD2-6 | RW3 (built 10-23) | Easter-egg sources: giveaways; a supremely low chance in mystery packs. |
 | 49 | RP4 | Owner later | The two factions should end symmetric; the owner balances the Hummingbirds himself later. |
 | 24 | AR-2 | TU2 (note) | Note for the notes file: both daily dungeons are hidden because they need balancing and their special reward is undecided. |
 

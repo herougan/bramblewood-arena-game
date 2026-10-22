@@ -2757,5 +2757,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "蛋和幼崽在巢裡長大。0 級卡牌在 🌱 0 級 裡等著。",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "巢加一點狗糧就能把 0 級卡牌訓練到 1 級，之後交給鍛造爐。",
  "Tap T-2, then press ⚔️ Fight.": "點 T-2，然後按 ⚔️ 戰鬥。",
- "In the fight: {n} (every bramble's Health is halved)": "戰鬥中：{n}（每座荊棘堡的生命都減半）"
+ "In the fight: {n} (every bramble's Health is halved)": "戰鬥中：{n}（每座荊棘堡的生命都減半）",
+ "In stock: {n}": "庫存：{n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "已售罄。貨車只在某些日子有突襲券，每次一張。",
+ "Not in stock today. Admin Mode shows it anyway.": "今天沒有庫存。管理員模式仍會顯示。",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "每張卡牌的每個副本又有各自的等級了。每個副本都保留了原來的等級；鍛造爐現在一次處理一個副本。"
 }

@@ -2756,5 +2756,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "Eier und Junge wachsen in den Nestern. Karten auf Stufe 0 warten unter 🌱 Stufe 0.",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "Ein Nest und etwas Futter bringen eine Karte von Stufe 0 auf Stufe 1. Danach übernimmt die Schmiede.",
  "Tap T-2, then press ⚔️ Fight.": "Tippe auf T-2 und drück dann ⚔️ Kämpfen.",
- "In the fight: {n} (every bramble's Health is halved)": "Im Kampf: {n} (die Lebenspunkte jedes Dornenhags werden halbiert)"
+ "In the fight: {n} (every bramble's Health is halved)": "Im Kampf: {n} (die Lebenspunkte jedes Dornenhags werden halbiert)",
+ "In stock: {n}": "Vorrätig: {n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Ausverkauft. Der Karren hat nur an manchen Tagen ein Raid-Ticket, immer nur eins.",
+ "Not in stock today. Admin Mode shows it anyway.": "Heute nicht vorrätig. Der Admin-Modus zeigt es trotzdem.",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "Jede Kopie einer Karte hat wieder ihre eigene Stufe. Jede Kopie hat ihre Stufe behalten; die Schmiede bearbeitet jetzt eine Kopie nach der anderen."
 }

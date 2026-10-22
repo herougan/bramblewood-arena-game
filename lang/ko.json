@@ -2757,5 +2757,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "알과 새끼는 둥지에서 자라요. 레벨 0 카드는 🌱 레벨 0 에서 기다려요.",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "둥지와 사료 조금이면 레벨 0 카드가 레벨 1이 돼요. 그다음은 대장간이 맡아요.",
  "Tap T-2, then press ⚔️ Fight.": "T-2 을 탭하고 ⚔️ 전투를 눌러요.",
- "In the fight: {n} (every bramble's Health is halved)": "전투에서: {n} (모든 가시덤불의 체력은 절반이 돼요)"
+ "In the fight: {n} (every bramble's Health is halved)": "전투에서: {n} (모든 가시덤불의 체력은 절반이 돼요)",
+ "In stock: {n}": "재고: {n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "품절. 수레에는 레이드 티켓이 어떤 날에만, 한 번에 한 장씩 있어요.",
+ "Not in stock today. Admin Mode shows it anyway.": "오늘은 재고가 없어요. 관리자 모드에서는 그래도 보여요.",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "카드의 사본마다 다시 각자의 레벨이 있어요. 모든 사본은 원래 레벨을 유지했고, 이제 대장간은 한 번에 사본 하나씩 다뤄요."
 }

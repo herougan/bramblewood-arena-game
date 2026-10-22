@@ -71,7 +71,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "+{v1}/+{v2} für jeden leeren Platz bis 2 neben ihr, und weitere +{v3}/+{v4}, wenn alle 4 leer sind.",
  "+{v1}/+{v2} whenever {v3} enters play.": "+{v1}/+{v2}, wann immer {v3} ins Spiel kommt.",
  "+{v1}⚔ next swing": "+{v1}⚔ nächster Schlag",
- ", 1 new guaranteed": ", 1 neue garantiert",
  ", already won": ", schon gewonnen",
  ", already yours": ", schon deine",
  ", an Iron Shard": ", ein Eisensplitter",
@@ -4914,7 +4913,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — schaffe {v2}, um einen Weg hinein zu finden",
  "{v1} — Clear {v2} to open": "{v1} — Schaffe {v2}, um es zu öffnen",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} gegen ⚔{v5} ❤{v6}{v7}{v8}: in jeder Hinsicht gleich gut oder besser.",
- "{v1}% foil per card.": "{v1} % Folie pro Karte.",
  "{v1}% of the time, a": "In {v1} % der Fälle ein",
  "{v1}% of the time, a shot": "In {v1} % der Fälle ein Schuss",
  "{v1}'s Avalanche buries {v2} enemy unit{s}: {v3} cold damage and +1 Wait.": "Die Lawine von {v1} begräbt {v2} gegnerische Einheit(en): {v3} Kälteschaden und +1 Warten.",
@@ -5104,5 +5102,6 @@
  "When the wolves come, the herd forms a ring, and the calves go in the middle.": "Wenn die Wölfe kommen, bildet die Herde einen Ring, und die Kälber kommen in die Mitte.",
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "Sie kratzt mit den Krallen ein Atemloch ins Eis und hält es den ganzen Winter offen.",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "Sein Schnabel ist länger als sein Körper. Es verneigt sich zuerst und fragt dann, wer es versuchen möchte.",
- "Blinding": "Blendend"
+ "Blinding": "Blendend",
+ "{v1} foil per card.": "{v1} Folie pro Karte."
 }

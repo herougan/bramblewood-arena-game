@@ -71,7 +71,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "2 格內每有一個空格子 +{v1}/+{v2}，4 格全空時再 +{v3}/+{v4}。",
  "+{v1}/+{v2} whenever {v3} enters play.": "每當{v3}進場時 +{v1}/+{v2}。",
  "+{v1}⚔ next swing": "下一擊 +{v1}⚔",
- ", 1 new guaranteed": "，必出 1 張新卡",
  ", already won": "，已獲得",
  ", already yours": "，已擁有",
  ", an Iron Shard": "，一塊鐵碎片",
@@ -4914,7 +4913,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — 通關{v2}才能找到入口",
  "{v1} — Clear {v2} to open": "{v1} — 通關{v2}即可開啟",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} 對比 ⚔{v5} ❤{v6}{v7}{v8}：各方面都一樣好或更好。",
- "{v1}% foil per card.": "每張卡 {v1}% 閃卡機率。",
  "{v1}% of the time, a": "有 {v1}% 的機率，一次",
  "{v1}% of the time, a shot": "有 {v1}% 的機率，一次射擊",
  "{v1}'s Avalanche buries {v2} enemy unit{s}: {v3} cold damage and +1 Wait.": "{v1} 的雪崩掩埋了 {v2} 個敵方單位：{v3} 點冰冷傷害，等待 +1。",
@@ -5104,5 +5102,6 @@
  "When the wolves come, the herd forms a ring, and the calves go in the middle.": "狼群一來，牛群就圍成一圈，小牛待在中間。",
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "牠用爪子在冰上刨出一個呼吸孔，整個冬天都讓它保持暢通。",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "牠的喙比身體還長。牠先鞠躬行禮，再問誰想來試試。",
- "Blinding": "致盲打擊"
+ "Blinding": "致盲打擊",
+ "{v1} foil per card.": "每張卡 {v1} 閃卡機率。"
 }

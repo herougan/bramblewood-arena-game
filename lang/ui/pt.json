@@ -45,7 +45,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "+{v1}/+{v2} por cada espaço vazio a 2 ou menos dela, e mais +{v3}/+{v4} quando os 4 estão vazios.",
  "+{v1}/+{v2} whenever {v3} enters play.": "+{v1}/+{v2} sempre que {v3} entra em jogo.",
  "+{v1}⚔ next swing": "+{v1}⚔ no próximo golpe",
- ", 1 new guaranteed": ", 1 nova garantida",
  ", already won": ", já ganha",
  ", already yours": ", já é tua",
  ", an Iron Shard": ", uma Lasca de ferro",
@@ -2469,7 +2468,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — vence {v2} para encontrares uma entrada",
  "{v1} — Clear {v2} to open": "{v1} — Vence {v2} para abrir",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} contra ⚔{v5} ❤{v6}{v7}{v8}: igual ou melhor em tudo.",
- "{v1}% foil per card.": "{v1}% brilhante por carta.",
  "{v1}'s turn to plan": "É a vez de {v1} planear",
  "{v1}, round {v2} of {v3}": "{v1}, ronda {v2} de {v3}",
  "{v1}, then it can be built": "{v1}, depois pode ser construído",
@@ -2624,5 +2622,6 @@
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "O bico é mais longo do que o corpo. Ele faz uma reverência primeiro e depois pergunta quem quer tentar.",
  "Blinding": "Cegante",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Ataques normais contra um aliado adjacente atingem esta carta. Habilidades e golpes em área não.",
- "Takes the plain attacks aimed at its adjacent allies.": "Recebe os ataques normais contra os aliados adjacentes."
+ "Takes the plain attacks aimed at its adjacent allies.": "Recebe os ataques normais contra os aliados adjacentes.",
+ "{v1} foil per card.": "{v1} brilhante por carta."
 }

@@ -71,7 +71,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "+{v1}/+{v2} por cada hueco vacío a 2 o menos de ella, y +{v3}/+{v4} más si los 4 están vacíos.",
  "+{v1}/+{v2} whenever {v3} enters play.": "+{v1}/+{v2} cada vez que {v3} entra en juego.",
  "+{v1}⚔ next swing": "+{v1}⚔ el próximo golpe",
- ", 1 new guaranteed": ", 1 nueva garantizada",
  ", already won": ", ya ganada",
  ", already yours": ", ya es tuya",
  ", an Iron Shard": ", una Esquirla de hierro",
@@ -4914,7 +4913,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — supera {v2} para encontrar la entrada",
  "{v1} — Clear {v2} to open": "{v1} — Supera {v2} para abrirlo",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} frente a ⚔{v5} ❤{v6}{v7}{v8}: igual o mejor en todo.",
- "{v1}% foil per card.": "{v1} % de brillo por carta.",
  "{v1}% of the time, a": "El {v1} % de las veces, un",
  "{v1}% of the time, a shot": "El {v1} % de las veces, un disparo",
  "{v1}'s Avalanche buries {v2} enemy unit{s}: {v3} cold damage and +1 Wait.": "La Avalancha de {v1} entierra {v2} unidad{s} enemiga{s}: {v3} de daño de frío y +1 de Espera.",
@@ -5104,5 +5102,6 @@
  "When the wolves come, the herd forms a ring, and the calves go in the middle.": "Cuando llegan los lobos, la manada forma un círculo y las crías van en el centro.",
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "Rasca con sus garras un respiradero en el hielo y lo mantiene abierto todo el invierno.",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "Su pico es más largo que su cuerpo. Primero hace una reverencia y luego pregunta quién quiere probar.",
- "Blinding": "Cegador"
+ "Blinding": "Cegador",
+ "{v1} foil per card.": "{v1} de brillo por carta."
 }

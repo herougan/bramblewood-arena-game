@@ -2755,5 +2755,9 @@
  "Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.": "Lumalaki sa mga pugad ang mga itlog at anak. Naghihintay ang mga card na Antas 0 sa 🌱 Antas 0.",
  "A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.": "Ang pugad at kaunting Kibble ang nagsasanay sa card na Antas 0 hanggang Antas 1. Ang Forge na ang bahala pagkatapos.",
  "Tap T-2, then press ⚔️ Fight.": "I-tap ang T-2, tapos pindutin ang ⚔️ Lumaban.",
- "In the fight: {n} (every bramble's Health is halved)": "Sa laban: {n} (hinahati sa dalawa ang buhay ng bawat bramble)"
+ "In the fight: {n} (every bramble's Health is halved)": "Sa laban: {n} (hinahati sa dalawa ang buhay ng bawat bramble)",
+ "In stock: {n}": "May stock: {n}",
+ "Sold out. The cart has a Raid Ticket only on some days, one at a time.": "Ubos na. May Raid Ticket ang kariton sa ilang araw lang, isa-isa.",
+ "Not in stock today. Admin Mode shows it anyway.": "Walang stock ngayon. Ipinapakita pa rin ito ng Admin Mode.",
+ "Each copy of a card has its own level again. Every copy kept the level it had; the Forge now works on one copy at a time.": "May sariling antas na ulit ang bawat kopya ng card. Naitago ng bawat kopya ang antas nito; isa-isang kopya na ang ginagawa ng Forge."
 }

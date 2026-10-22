@@ -45,7 +45,6 @@
  "+{v1}/+{v2} for each empty slot within 2 of it, and +{v3}/+{v4} more when all 4 are empty.": "+{v1}/+{v2} untuk setiap slot kosong dalam jarak 2 darinya, dan +{v3}/+{v4} lagi jika keempatnya kosong.",
  "+{v1}/+{v2} whenever {v3} enters play.": "+{v1}/+{v2} setiap kali {v3} masuk permainan.",
  "+{v1}⚔ next swing": "+{v1}⚔ ayunan berikutnya",
- ", 1 new guaranteed": ", 1 kartu baru dijamin",
  ", already won": ", sudah dimenangkan",
  ", already yours": ", sudah milikmu",
  ", an Iron Shard": ", Serpihan Besi",
@@ -2469,7 +2468,6 @@
  "{v1} — clear {v2} to find a way in": "{v1} — selesaikan {v2} untuk menemukan jalan masuk",
  "{v1} — Clear {v2} to open": "{v1} — Selesaikan {v2} untuk membukanya",
  "{v1} ❤{v2}{v3}{v4} against ⚔{v5} ❤{v6}{v7}{v8}: as good or better in every way.": "{v1} ❤{v2}{v3}{v4} melawan ⚔{v5} ❤{v6}{v7}{v8}: sama atau lebih baik dalam segala hal.",
- "{v1}% foil per card.": "{v1}% foil per kartu.",
  "{v1}'s turn to plan": "Giliran {v1} menyusun rencana",
  "{v1}, round {v2} of {v3}": "{v1}, ronde {v2} dari {v3}",
  "{v1}, then it can be built": "{v1}, lalu bisa dibangun",
@@ -2624,5 +2622,6 @@
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "Paruhnya lebih panjang daripada tubuhnya. Ia membungkuk dulu, lalu bertanya siapa yang mau mencoba.",
  "Blinding": "Membutakan",
  "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Serangan biasa yang diarahkan ke sekutu yang bersebelahan mengenai kartu ini. Skill dan serangan area tidak.",
- "Takes the plain attacks aimed at its adjacent allies.": "Menerima serangan biasa yang diarahkan ke sekutu yang bersebelahan."
+ "Takes the plain attacks aimed at its adjacent allies.": "Menerima serangan biasa yang diarahkan ke sekutu yang bersebelahan.",
+ "{v1} foil per card.": "{v1} foil per kartu."
 }
