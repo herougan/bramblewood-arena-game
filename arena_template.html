@@ -11486,6 +11486,9 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   .home-note.note-tavern{left:-130px; top:272px; rotate:-3deg;} /* 2026-10-13 UI audit: it had no spot and sat on the Play tile */
   @media (max-width:860px){ .home-note.note-tavern{position:static; rotate:0deg;} }
   @media (max-width:860px){ .home-note.note-inv{position:static; rotate:0deg;} }
+  /* 2026-10-22 (package TU, owner: "In mobile mode, the Profile icon should be a button in the main menu"): phones only; desktop keeps the top bar's 👤 chip */
+  .home-note.note-profile{display:none;}
+  @media (max-width:860px){ .home-note.note-profile{display:flex; position:static; rotate:0deg;} }
   /* Dragon scale glint on the map */
   .map-node-scale{position:absolute; right:-6px; bottom:-4px; width:12px; height:12px; border-radius:50%; background:radial-gradient(circle, #fff6d0 0%, #ffcf6a 40%, rgba(255,140,40,0) 70%); animation:scaleGlint 2.6s ease-in-out infinite; pointer-events:none;}
   .map-node-scale.is-found{width:auto; height:auto; background:none; font-size:12px; animation:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));}

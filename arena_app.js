@@ -15720,7 +15720,9 @@ const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tut
   // 2026-10-10: tutorial progress (level, side, guided step, tries), for Admin → Players
   'bramblewood_tutorial_progress_v1',
   // 2026-10-17 (card stats): your lifetime record per card (CARD_STATS_KEY; integers only, only cards with a record)
-  'bramblewood_card_stats_v1'];
+  'bramblewood_card_stats_v1',
+  // 2026-10-22 (package TU): Tutorial II won (TUTORIAL2_KEY, spelled out: that const is declared further down); see healTutorial2Flag
+  'bramblewood_tutorial2_done_v1'];
 // Keys merged (union) on pull instead of overwritten, because both devices may have added to them.
 const PROGRESS_MERGE_KEYS = {
   'bramblewood_arena_discovered': (a,b)=> JSON.stringify(Array.from(new Set([...(JSON.parse(a||'[]')||[]), ...(JSON.parse(b||'[]')||[])]))),
@@ -21941,17 +21943,21 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   // once won; currencies stacked, then the cards (hover blows them up), then the best rank. No
   // native title tooltips; names go in aria-labels.
   const defs = getCardDefs();
-  const ids = nodeRewardCardIds(mapId, node.key);
+  // 2026-10-22 (package TU, owner 11:58: "The Skirmish rewards (first time) for Tutorial are not shown."): T-0 and T-1 pay their cards
+  // through the tutorial flow (tutorialRewardIds, tutorialRewards2 for your side), not the node's reward list, so their First Clear box
+  // was empty. It shows those cards now; no rank is ever needed and a won tutorial greys them all.
+  const isTutNode = !!(node && node.kind === 'tutorial');
+  const ids = isTutNode ? (()=>{ try{ return node.stage === 2 ? tutorialRewards2(loadFactionChoice() || 'both') : tutorialRewardIds(); }catch(e){ return []; } })() : nodeRewardCardIds(mapId, node.key);
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
   // 2026-10-22 (package RW, owner N22-4): the rank is per card (cardRewardRankFor), so a fight paying a Common and a Rare shows a different
   // emblem on each; a card already yours (the ledger, per card) is greyed with no emblem. The emblem is the hex, never the words.
-  const nid0 = conquestNodeId(mapId, node.key), gotOf = id=> !!done && cardRewardIsGot(nid0, id);
+  const nid0 = conquestNodeId(mapId, node.key), gotOf = id=> !!done && (isTutNode || cardRewardIsGot(nid0, id));
   // 2026-10-16 (user: "Card rewards locked behind A, S etc. The card park or card has a emblem on it, representing the rank. Default is
   // nothing - first clear is enough."): a card that needs a rank wears that rank's small hex emblem on its corner (was a separate "B+"
   // pill before the cards); a card that only needs the first clear shows nothing extra.
-  const cards = ids.map(id=>{ const got = gotOf(id), needR = got ? null : cardRewardRankFor(mapId, node, id);
+  const cards = ids.map(id=>{ const got = gotOf(id), needR = (got || isTutNode) ? null : cardRewardRankFor(mapId, node, id);
     const rankMark = needR ? `<span class="rank-hex rank-${needR} cnp-rw-rank" aria-hidden="true"><i></i><b>${needR}</b></span>` : '';
     const needLbl = needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '';
     return isCardHiddenForPlayer(defs[id])
@@ -22046,11 +22052,14 @@ function findConquestNode(mapId, nodeKey){
 // pre-existing map is left exactly as it always behaved (every node open at once, the moment the
 // map itself unlocks) so returning players' expectations don't quietly change under them.
 function worldRevealed(){
+  // 2026-10-22 (package TU, owner 11:58: "it's supposed to be a unique map with T1 and T2 side by side"): until Tutorial II is won the
+  // start map stands alone, with no map list, for admins too (the layout editor still lists every map).
+  if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)) return false;
   if(adminModeEnabled) return true;
   try{ if(localStorage.getItem('bramblewood_world_open_v1') === '1') return true; }catch(e){}
   try{ const p = loadConquestProgress(), mf = CONQUEST_MAPS.find(m=> m.id==='mf'); if(!mf) return true;
     const key = mapRewardNodeKey(mf); if(key && p.completed.includes(conquestNodeId('mf', key))) return true;
-    return p.completed.some(id=> !['m1','mq','mf'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it
+    return p.completed.some(id=> !['m1','mq','mf','mtut'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it (2026-10-22, TU: the Tutorial's own fights don't count; T-0 alone used to open the world)
 }
 function isNodeVisible(map, node, index, progress){
   if(node.chance > 0 && !adminModeEnabled){ const nid = conquestNodeId(map.id, node.key); if(!progress.completed.includes(nid) && !(progress.found||[]).includes(nid)) return false; }
@@ -22392,9 +22401,10 @@ function tutSideCentred(map, pos){
 function tutPairCentred(map, pos){
   const idx = map.nodes.map((n, i)=> n.kind === 'tutorial' ? i : -1).filter(i=> i >= 0 && pos[i]);
   if(!idx.length) return pos;
-  const cx = idx.reduce((a, i)=> a + pos[i].x, 0)/idx.length, cy = idx.reduce((a, i)=> a + pos[i].y, 0)/idx.length;
   const out = pos.slice();
-  idx.forEach(i=>{ out[i] = {x: +(50 + (pos[i].x - cx)*1.3).toFixed(2), y: +(52 + (pos[i].y - cy)*1.15).toFixed(2)}; });
+  // 2026-10-22 (package TU, owner 11:58: "a unique map with T1 and T2 side by side"): the pair stands level, T-0 left of T-1, in the
+  // middle (was: their real spots' diagonal shape, centred and widened ×1.3).
+  idx.forEach(i=>{ out[i] = {x: map.nodes[i].stage === 2 ? 64 : 36, y: 52}; });
   return out;
 }
 // The first look at the opened-up Tutorial map (2026-10-18): T-0 and T-1 start where they stood (the middle) and glide to their real
@@ -23536,7 +23546,12 @@ function openSweepMenu(anchor, map, node, energyCost, body, how){
 }
 function renderConquestSubTab(body){
   // Until Tutorial II is won, the road starts in the Tutorial side map (2026-10-13).
-  if(!loadTutorial2Done() && !adminModeEnabled && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
+  // 2026-10-22 (package TU, owner 11:58: "After completing T1, it doesn't progress. It's stuck there. (It might be because I reset my
+  // account"): Admin Mode used to skip this, and Reset all keeps Admin Mode, so an admin's fresh account won T-0 and was sent to the
+  // Outskirts, which show nothing until Tutorial II is won, while T-1 sat on the Tutorial map it couldn't see. The start map now holds
+  // for everyone; only the layout editor may look elsewhere. A save whose progress shows Tutorial II won gets its flag back first.
+  healTutorial2Flag();
+  if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
   setTimeout(maybeOfferDeckSwap, 600);
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
@@ -26094,6 +26109,17 @@ const TUTORIAL2_KEY = 'bramblewood_tutorial2_done_v1';
 const MAP_REVEALED_KEY = 'bramblewood_map_revealed_v1';
 function loadTutorial2Done(){ try{ return localStorage.getItem(TUTORIAL2_KEY) === '1'; }catch(e){ return false; } }
 function saveTutorial2Done(){ try{ localStorage.setItem(TUTORIAL2_KEY, '1'); }catch(e){} }
+// 2026-10-22 (package TU): the Tutorial II flag wasn't in the cloud progress blob (PROGRESS_KEYS has it from today), so a save pulled
+// onto a new device had T-0 won, a road of cleared maps, and Tutorial II "not won", and was sent back to the start map. A save whose
+// progress holds mtut:tutorial2, or any cleared fight off the Tutorial map (every road fight comes after Tutorial II), gets the flag.
+function healTutorial2Flag(){
+  try{ if(loadTutorial2Done() || !loadTutorialDone()) return false;
+    const done = (loadConquestProgress().completed || []).map(String);
+    if(done.includes('mtut:tutorial2') || done.some(id=> !/^mtut:/.test(id))){ saveTutorial2Done(); return true; }
+  }catch(e){}
+  return false;
+}
+setTimeout(healTutorial2Flag, 0); // once the whole script has run (the progress helpers' constants are declared further down)
 const TUTORIAL_SEED = 20261005; // the tutorial always plays the same, hand-checked run (2026-10-09: was 20261003, which lost as Otters once the rival bees gained Swarm; this one wins for every side pick in 6 rounds)
 function loadTutorialStage(){
   try{ const n = parseInt(localStorage.getItem('bramblewood_arena_tutorial_stage')||'1', 10); if(n>=1 && n<=TUTORIAL_STAGE_COUNT) return n; }catch(e){}
@@ -46591,6 +46617,8 @@ function renderHome(){
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
+        ${/* 2026-10-22 (package TU, owner 11:58: "In mobile mode, the Profile icon should be a button in the main menu."): phones get a Profile note with the others; wider screens keep the 👤 chip in the top bar only (CSS) */ ''}
+        <button type="button" class="home-note note-profile" data-hometab="profile" title="${escapeAttr(TX('ui.home-profile'))}"><i class="pin" aria-hidden="true">📌</i><b>👤 ${escapeHtml(TX('ui.home-profile'))}</b><small>${escapeHtml(TX('ui.home-profile-sub'))}</small></button>
         ${tabOpen('inventory') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
         ${wildpathsOpen() ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Conquest passives"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
         ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}

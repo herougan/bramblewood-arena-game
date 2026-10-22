@@ -96,6 +96,7 @@ run node tests/maps-2026-10-18.js   # 2026-10-18 (V3): Lilypad Reach waits on Ga
 run node tests/poison-fx-2026-10-19.js   # 2026-10-18 (package P): no "cured" on natural Poison decay, grey drop, boiling pool, flurries on/off, lab = game hook
 run node tests/hn-2026-10-19.js   # 2026-10-19 (package HN): nothing to heal = no event, log, "+0", look, sound or heal trigger for every heal kind; partial heals; Bleed = stanch only; the app skips 0 heals (replays too)
 run node tests/visuals-2026-10-18.js   # 2026-10-18 (V1): the standing Tide, no tide chip, chilled flyers' frame and half hover, idle glance, smaller cliff gulls
+run node tests/tu-2026-10-22.js   # 2026-10-22 (package TU): Profile on the phone's Home menu, the start map holds for admins too (T-0 stall), T-0/T-1 side by side, Tutorial II flag synced and restored, tutorial first-clear cards
 run node tests/tutorial-2026-10-18.js   # 2026-10-18 (package T): drag hint shows the highlighted card, faction pick goes straight in, green board, centred T-0/T-1, card windows fade out shrinking
 run node tests/x2-2026-10-18.js   # 2026-10-18 (package X2): raid stages without the extra volley, lightning at a bramble (no Shocked), the Spire at AI_LEVEL_MAX, the Flood wets land units, the full-board tide look
 run node tests/ui-2026-10-18.js   # 2026-10-18 (package U): why-not label on hover-out, card shadows, revealAfter "?" (Quarry Mole, Psychic Dampener), one unlock row, swap gap, Creative N, deck rarity floor, egg rewards, swap after the pack

@@ -2,6 +2,24 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package TU: the T-0 stall, the start map, tutorial first-clear cards, Profile on phones)
+- Owner, 11:58: "After completing T1, it doesn't progress. It's stuck there. (It might be because I reset my account - not sure) I think it's cause, it's
+  supposed to be a unique map with T1 and T2 side by side. Only once completing T2 do you see the full map and the tutorials as their own submap."
+- **The stall:** Profile → Reset all keeps Admin Mode, and Admin Mode skipped the start map. A reset admin account won T-0 and landed on the
+  Outskirts, which show no fights until Tutorial II is won, while T-1 sat on the Tutorial map it was never sent back to. The start map now holds for
+  everyone until Tutorial II is won (only the layout editor looks elsewhere). Reproduced headlessly (fresh save, Admin Mode on) before the fix and
+  played through after it, at 390 and 1366.
+- **The start map stands alone:** T-0 and T-1 side by side in the middle (was their diagonal shape), no map list beside them. A T-0 win no longer
+  opens the world early (the Tutorial's own fights don't count), so the "The world opens up" toast waits for the real moment. After Tutorial II:
+  the Outskirts with the 🎓 Tutorial submap entrance; inside, all five fights, the later three locked until 0-4, 7-6 and 17-8 (unchanged gates; call TU-1).
+- **Saves that already finished the tutorials:** the Tutorial II flag now travels with the cloud progress, and a save whose progress shows Tutorial II
+  won (mtut:tutorial2, or any cleared road fight) gets the flag back on load, so a pulled save lands on the full map instead of the start map.
+- Owner: "The Skirmish rewards (first time) for Tutorial are not shown." **T-0 and T-1 now show their first-clear cards** in the fight panel (T-0 the
+  Quarry Mole; T-1 your side's two cards), with no rank emblem; a won tutorial shows them ticked. T-2 to T-4 already showed theirs.
+- Owner: "In mobile mode, the Profile icon should be a button in the main menu." **Phones get a 👤 Profile note** in the Home menu, beside Quests and
+  Achievements (TX `ui.home-profile`, `ui.home-profile-sub`, 12 packs). Desktop is unchanged (call TU-2). Calls TU-1 to TU-3.
+- Tests: `tests/tu-2026-10-22.js` (new); `tests/tutorial-2026-10-18.js` checks the side-by-side pair. Screens: `docs/screens/TU/`.
+
 ## 2026-10-22 (package RW: first-clear card ranks per card, skirmish card drops, the drop line)
 - **First-clear card rewards:** the rank is per card now (replaces "none on Maps 0–5, B from 6, A from 21"): at least B, S for a Rare or above, SS for any card in an elite or boss fight,
   one step up every 20 maps (Maps 20–39: A, SS, elites SSS; 40+: S, SSS), capped at SSS. Resources need only the clear; tutorial fights need nothing. A fight paying a Common and a Rare

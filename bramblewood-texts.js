@@ -1220,6 +1220,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.wind-head-wing": "Flying – Headwind: its skills and triggers go off twice",
   "ui.wind-tail-quick": "Tailwind: a quick extra turn before combat",
   "ui.back-to-home": "Back to Home",
+  "ui.home-profile": "Profile",
+  "ui.home-profile-sub": "Stats, wallet, medals",
   "ui.speed-locked": "{speed}×: Clear Map {n}",
   "ui.nv-home": "Home",
   "ui.u4-arena": "Arena",
