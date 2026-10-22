@@ -1,5 +1,17 @@
 # Action items
 
+## 10-22 owner notes (09:46, 09:52)
+
+| ID | Batch | Item |
+|---|---|---|
+| N22-2 | Content (package SK) | Skirmish decks hold 5–7 different cards; 7 is rare (6 cronies and 1 bigger unit, the leader). From Map 2 on, every skirmish has a leader: its highlighted (showcase) card, also summoned from reserve so it comes out often. Players aren't told. Now: 16 skirmishes have 4 cards, 14 have 7, none has a leader. |
+| N22-3 | Content (package SK) | Sergeant Bramblefox: a Heroic map leader paid on Map 0 (0-4), outside the rarity ladder. Lower its rarity and move it to another map, as that map's reward and in its skirmish. |
+| N22-4 | Rewards (package RW) | First-clear rewards: resources need only the clear. Card rewards need at least B, or S when the card is Rare or above; elites at least SS. Every 20 maps the ranks step up by one (Maps 20–39: A, SS for Rare+; 40+: S, SSS for Rare+), capped at SSS. The same gates apply to random card drops. Replaces the 10-16 rule (none on Maps 0–5, B from 6, A from 21). |
+| N22-5 | Rewards (package RW) | Skirmishes with no pack or card reward drop a pack card instead: Commons from Map 0, Uncommons from Map 10, Rares (rarely) from Map 30. 50% it is the fight's own card, else another card of the same rarity from that card's pack. The drop rate is 30% lower than today's 10%. Off-rarity: 5% one rank down, 5% one rank up, and a second 5% roll for two up. |
+| N22-6 | UI (package RW) | Fights show their small drop chances on one line (`Possible drops: 🥚 2% · 🃏 7%` plus the rank emblem). Ranks are always the hex emblem, never "rank B" (now in docs/workflows/ui.md). |
+| N22-7 | Future | Mystery enemies: art clouded except the centre, name "?", skills discovered slowly over time (the "?" skill hiding is the base). |
+| N22-8 | Done | The Quarry Mole is no longer a starting reward (owner: good, its effects were too advanced for the start). |
+
 ## 10-21 owner notes: queued (run as batches after the workflow audit)
 
 | ID | Batch | Item |

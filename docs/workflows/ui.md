@@ -14,6 +14,11 @@ For screens, layout, the deck editor, Codex, Forge, map, raid UI, filters, anima
   - **Warning (2026-10-21, package AR):** keyify.py deletes TX keys that the game looks up by building their names (e.g. `'ui.tf-' + name`, `'ui.fog-row-' + k`). Always check `git diff bramblewood-texts.js` after running it, and restore any key it dropped.
 - Labels leave out what their position already says. Confirmations are on-page (tap twice), never browser dialogs.
 
+## How the game says things (owner, 2026-10-22: "dont ever write rank B. it should be an emblem")
+- **Ranks are always the hex emblem** (`.rank-hex rank-<R>`: `<span class="rank-hex rank-B"><i></i><b>B</b></span>`), never the words "rank B" or "B+". The rule covers fight panels, rewards, drops, results and tooltips. Screen-reader text may still say it (`aria-label`).
+- **Chances are one short line of icons and numbers**, for example `Possible drops: 🥚 2% · 🃏 7%`, with the rank emblem placed after the drop it gates.
+- Resources keep their own icons (Maple Leaves, Lumber and so on); cards show as cards, not as name pills.
+
 ## Checks
 - Run the build and `node --check arena_app.js`, then `node tests/run.js --smoke`.
 - Then the area's tests: `node tests/run.js --only '<area>'`, plus that area's e2e script in `tests/e2e/` when interaction changed.
