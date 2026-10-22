@@ -4,6 +4,28 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**RW-1. Bosses count as elites for the card-reward rank** · Decide · Rewards · asked 2026-10-22
+- N22-4 says elite fights need at least SS for any card. Package RW treats every boss kind (boss, sub-boss, final boss, raid boss, world boss) like an elite, so a boss's reward cards need SS on Maps 0–19, SSS from Map 20 (the rank is per card: B, or S for a Rare or above, one step up every 20 maps, capped at SSS; an elite or boss asks SS first). A fight's own cardRank can only raise it. Tutorial fights need nothing. The same gate holds for random card drops.
+  - Bosses count as elites (now)
+  - Bosses ask the same as a skirmish
+  - Bosses ask one step more than elites
+- **Default:** Bosses count as elites (now)
+
+**RW-2. Skirmish card drops: 7% a win, and the rarity shares by map** · Decide · Rewards · asked 2026-10-22
+- A skirmish with no card reward, no reward token and no free pack drops a pack card 7% of the time (30% below the old 10%). The base rarity: Maps 0–9 Common only; Maps 10–29 Common 75%, Uncommon 25%; Maps 30+ Common 70%, Uncommon 25%, Rare 5%. Then a shift: 5% one rarity down, 5% one up, and an up has a second 5% roll for one more up. The shares are my reading of "Commons from Map 0, Uncommons from Map 10, Rares rarely from Map 30"; they are the table SKIRMISH_DROP_RARITY in arena_app.js. The drop only lands when the win's rank meets the gate for that card's rarity (RW-1), so on Maps 0–19 a win below B gives no drop. 10,000 rolls: Map 5 gives Common 94.8% / Uncommon 4.9% / Rare 0.3% after the shift (only up-shifts exist from Common), Map 15 gives 72.6 / 26.1 / 1.3, Map 35 gives 68.3 / 25.6 / 5.9 / 0.2 Very Rare.
+  - As built
+  - Raise the Rare share on Maps 30+
+  - No drop below a certain rank is fine; show it
+  - Drop the rank gate for skirmish drops
+- **Default:** As built
+
+**RW-3. Other fights keep the old card drop (now rank-gated); skirmish drops use the basic pack pool only** · Decide · Rewards · asked 2026-10-22
+- Elite, boss and the rest keep rollCardDrop as it was (a chance by fight kind, then one of the enemy deck's cards by the rarity table), only now behind the rank gate. The new skirmish drop draws from the basic pack pool (pool 1) cards the player has reached by map (packCardReached); half the time one of the fight's own pack cards of that rarity, else another card of that rarity from the pool, and from the pool directly when the fight has none. The faction pool (11, the otters and hummingbirds) stays on its own reward track and never drops from a skirmish. A rarity with no card in reach steps down until one has.
+  - As built
+  - Let faction cards drop too
+  - Move elites and bosses to the pack-card drop as well
+- **Default:** As built
+
 **BF7-4. Your five live edits of 10-21 evening: two were merged with later file changes** · Decide · Cards · asked 2026-10-22
 - Folded into canonical/cards.json with your stats as printed. Tide Pool Crab: you added Shield 3 while package TR (after your save) gave it Armor 1 back, so it now has Tide + Armor 1 + Shield 3 at 1/3, and no legal line. Glacial Ape-King: your row still had Bounty 1 (TR swapped Bounty for King after your save): it keeps King + Earthquake 4 at your 6/37, 103% of N (its formula line is 6/35). Conch Crawler 1/1 with Shield 4 has no legal line. Ford Kingfisher 0/1 fits (33% of N). Ember Tetra 3/7 is new: no source and no art, and its Tide braces (S 5.4) leave no legal line at any stats.
   - Keep them as folded
