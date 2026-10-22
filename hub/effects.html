@@ -12727,6 +12727,12 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .mp-warn-h{font-weight:800;} .mp-chip{display:inline-flex; align-items:center; gap:6px; padding:2px 4px 2px 9px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
 .mp-chip button{border:0; border-radius:999px; padding:3px 9px; background:var(--accent); color:var(--accent-ink); font:inherit; font-size:12px; font-weight:700; cursor:pointer; min-height:26px;}
 #dbpWarn:empty, .se-mp-warn:empty{display:none;}
+/* 2026-10-22 (package DV2): + Load any card is its own modal over the picker (full catalogue, filter bar, large cards); a pool card's move-to select */
+.mp-any-modal .mp-any-res{flex:1 1 auto; padding-top:4px;} .mp-any-modal .mc-add-tools{flex:0 0 auto; position:static;} .mp-any-modal .mp-note{flex:0 0 auto;}
+.mc-acts select.mc-move{min-width:34px; max-width:60px; min-height:30px; border:1px solid var(--surface-border); border-radius:8px; background:var(--surface-2); color:var(--ink); cursor:pointer; font-size:14px; padding:0 2px; text-align-last:center;}
+.mc-acts select.mc-move:hover{background:var(--surface-3);}
+.mc-tier + .mc-tier{border-top:1px solid var(--surface-border); padding-top:10px;}
+@media (max-width: 760px){ .mc-acts select.mc-move{min-height:34px;} }
 .dbp-stack.is-offpool, .se-stack.is-offpool{position:relative;} .dbp-stack.is-offpool::after, .se-stack.is-offpool::after{content:'⚠'; position:absolute; top:-6px; left:-4px; z-index:6; font-size:14px; line-height:1; padding:2px 3px; border-radius:6px; background:#f0b429; color:#3a2600; box-shadow:0 1px 3px rgba(0,0,0,.4);}
 
 , each key added once), never into
@@ -18140,7 +18146,7 @@ html{overflow-x:hidden;} body{overflow-x:clip !important; overflow-y:visible !im
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet. Every effect also carries a badge (2026-10-21): <span class="ig is-game"><b>In game:</b> where</span> the game calls it today, or <span class="ig is-lab"><b>Lab only</b> (not used yet)</span> nothing calls it.</p>
 </header>
 <nav class="toc" role="tablist" aria-label="Effects">
-  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="war">💨 Smoke &amp; war</button><button type="button" role="tab" data-tab="built">🆕 Built 10-21</button><button type="button" role="tab" data-tab="ideas">💡 Ideas 10-21</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="war">💨 Smoke &amp; war</button><button type="button" role="tab" data-tab="built">🆕 Built 10-21/22</button><button type="button" role="tab" data-tab="ideas">💡 Ideas 10-21</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
 </nav>
 
 <section id="catalogue"><h2>Effects catalogue</h2>
@@ -24289,17 +24295,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.mp-add": "Add cards",
   "ui.mp-add-to": "Add to",
   "ui.mp-search": "Search a card…",
-  "ui.mp-t-cards": "Cards",
+  "ui.mp-t-map": "Map",
   "ui.mp-t-special": "Special",
-  "ui.mp-t-subcards": "Submap: Cards",
-  "ui.mp-t-subspecial": "Submap: Special",
-  "ui.mp-t-parent": "{name}: Cards",
+  "ui.mp-t-submap": "Submap: {name}",
   "ui.mp-special-tip": "Cards added from a skirmish's deck editor, for a fight that is deliberately different.",
-  "ui.mp-parent-note": "Read only here. Edit it on the parent map.",
   "ui.mp-empty": "No cards here yet.",
   "ui.mp-none-match": "No cards match.",
-  "ui.mp-move-special": "Move to Special",
-  "ui.mp-move-cards": "Move to Cards",
+  "ui.mp-move-to": "Move to…",
   "ui.mp-remove": "Remove",
   "ui.mp-details": "Details",
   "ui.mp-summary": "{n} cards in this pool",
@@ -24313,7 +24315,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.mp-saved-local": "Saved in this browser only",
   "ui.mp-show-more": "Show more",
   "ui.mp-load-any": "+ Load any card",
-  "ui.mp-back-pool": "Back to this map's cards",
+  "ui.mp-any-title": "Load any card",
   "ui.mp-loading-any": "All cards. A card you pick goes into the deck and into {map}'s Special cards.",
   "ui.mp-added-special": "{name} added to the deck and to {map}'s Special cards.",
   "ui.mp-added-special-n": "Added to {map}'s Special cards.",
@@ -26913,6 +26915,7 @@ const SoundKit = (()=>{
     // Backstab: a quick sidestep whoosh, then a thin, nasty slice.
     backstabSlice(){ fnoise(0.16, 0.05, {type:'bandpass', freq:900, freqEnd:3200, q:1.2, attack:0.05}); fnoise(0.07, 0.08, {type:'highpass', freq:6000, freqEnd:2500, q:1.4, attack:0.002, delay:0.15}); tone(2600, 0.05, 'triangle', 0.04, 0.16); },
     // Anti-Air boomerang: a whirring throw that dopplers away and back.
+    beamTurn(){ for(let i = 0; i < 5; i++) fnoise(0.07, 0.028 + i*0.006, {type:'bandpass', freq:480 + i*320, q:3, attack:0.01, delay:i*0.07}); tone(330, 0.2, 'sine', 0.04); tone(495, 0.22, 'sine', 0.045, 0.3); }, // 2026-10-22 (package CB): the Condor turns to aim its Position Beam, a rising whoosh and a two-note hum
     boomerangWhirr(){ for(let i = 0; i < 6; i++) fnoise(0.06, 0.045 - i*0.004, {type:'bandpass', freq:700 + i*260, q:3, attack:0.01, delay:i*0.07}); for(let i = 0; i < 5; i++) fnoise(0.06, 0.025 + i*0.004, {type:'bandpass', freq:1900 - i*240, q:3, attack:0.01, delay:0.5 + i*0.07}); },
     // Shop shelf: a tap on wood and a soft jar clink.
     shelfPick(){ noise(0.02, 0.05); tone(320, 0.05, 'sine', 0.06); tone(2100, 0.18, 'sine', 0.025, 0.03); tone(3150, 0.12, 'sine', 0.012, 0.035); },
@@ -29128,6 +29131,94 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   crabClaws:'🦞', meiosis:'🧫', nullify:'🚫', restless:'👣', charge:'⏲️'};
 
 function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) ? '' : ' ' + v; }
+
+const POSITION_BEAM_AIM_MS = {centre: 620, side: 520, edge: 760};
+
+function positionBeamVfx(ev){
+  if(!ev || ev.type !== 'positionBeam' || !hasGsap() || reducedMotion() || !fxAtLeast('med')) return 0;
+  const el = boardCardEl(ev.uid), tile = el && el.querySelector('.card-tile'); if(!tile) return 0;
+  const lane = POSITION_BEAM_AIM_MS[ev.lane] ? ev.lane : 'centre';
+  const mult = (matchState && matchState.speedMult) || 1, s = 1/Math.max(0.5, mult); // GSAP seconds follow the fight's speed
+  const r = el.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  // which way the beam goes on screen: toward the middle of the units it hits (the castle counts when it is hit)
+  const pts = (ev.targetUids || []).map(u=> boardCardEl(u)).filter(Boolean); if(ev.hq){ const h = hqTileEl(ev.targetSide); if(h) pts.push(h); }
+  let dx = 0, dy = 0; pts.forEach(p=>{ const q = p.getBoundingClientRect(); dx += (q.left + q.width/2 - cx)/pts.length; dy += (q.top + q.height/2 - cy)/pts.length; });
+  const fw = Math.abs(dy) > 4 ? Math.sign(dy) : (ev.side === 'A' ? -1 : 1);                       // toward the foe: -1 up the screen, 1 down it
+  const sx = Math.abs(dx) > 4 ? Math.sign(dx) : (Math.sign(-(ev.col || 0)) || 1);                 // across: a side or edge beam angles inward
+  const nHit = Math.max(1, (ev.targetUids || []).length + (ev.hq ? 1 : 0)), hold = Math.min(7.2, 0.2 + 0.64*nHit)*s; // it holds its pose while the hits arrive (an edge beam sweeps up to ten units, 640 ms apiece)
+  const uid = String(ev.uid), out = Math.min(4, Math.abs(ev.col || 0));
+  gsap.killTweensOf(tile, 'y,x,rotation,scale,scaleX,scaleY');
+  attackingUids.add(uid); el.classList.add('is-attacking'); // lifts it above its neighbours while it turns (a 70-degree turn reaches across the lane)
+  const tl = gsap.timeline({onComplete:()=>{ attackingUids.delete(uid); el.classList.remove('is-attacking'); }});
+  ev._pbTl = tl; // (kept on the event so a frame-by-frame check can seek it)
+  if(lane === 'centre'){
+    tl.to(tile, {y:-fw*18, scaleY:1.13, scaleX:.95, rotation:-5, duration:.34*s, ease:'power2.out'})                      // rears up
+      .to(tile, {y:fw*14, scaleY:.93, scaleX:1.05, rotation:3, duration:.28*s, ease:'power3.in'})                        // dips its head forward
+      .to(tile, {y:-fw*3, scaleY:1.03, scaleX:.98, rotation:0, duration:.09*s, ease:'power2.out'})                       // the kick as it fires
+      .to(tile, {y:fw*8, scaleY:.97, scaleX:1.02, duration:hold, ease:'sine.out'});                                      // holds the aim
+  } else if(lane === 'side'){
+    const rot = sx*(15 + 3*out);
+    tl.to(tile, {rotation:rot*1.15, x:sx*9, y:-9, scaleX:1.06, scaleY:1.06, duration:.34*s, ease:'power2.out'})        // banks and lifts
+      .to(tile, {rotation:rot, x:sx*7, y:-7, duration:.18*s, ease:'sine.inOut'})
+      .to(tile, {x:sx*2, y:-11, scaleX:1.1, scaleY:1.1, duration:.08*s, ease:'power2.out'})                           // the kick
+      .to(tile, {rotation:rot - sx*4, x:sx*6, y:-8, scaleX:1.06, scaleY:1.06, duration:hold/2, ease:'sine.inOut'})    // sways while it fires
+      .to(tile, {rotation:rot + sx*3, x:sx*8, y:-7, duration:hold/2, ease:'sine.inOut'});
+  } else {
+    tl.to(tile, {rotation:-sx*9, x:-sx*5, scaleX:.97, scaleY:.97, duration:.2*s, ease:'power2.out'})                      // coils the other way
+      .to(tile, {rotation:sx*62, x:sx*14, y:-8, scaleX:1.08, scaleY:1.08, duration:.56*s, ease:'back.out(1.4)'})       // swings round to face along the row
+      .to(tile, {x:sx*10, scaleX:1.12, scaleY:1.12, duration:.08*s, ease:'power2.out'})                                  // the kick
+      .to(tile, {rotation:sx*74, x:sx*20, scaleX:1.08, scaleY:1.08, duration:hold, ease:'sine.inOut'});                  // keeps turning as the beam sweeps
+  }
+  tl.to(tile, {rotation:0, x:0, y:0, scaleX:1, scaleY:1, duration:.45*s, ease:lane === 'edge' ? 'power2.inOut' : 'back.out(1.6)', clearProps:'transform'}); // settles back into its slot
+  try{ SoundKit.beamTurn && SoundKit.beamTurn(); }catch(e){}
+  ev._pbMs = POSITION_BEAM_AIM_MS[lane];
+  return ev._pbMs;
+}
+
+function lightningBoltOf(ev){
+  if(!ev || !matchState) return null;
+  if(ev._bolt !== undefined) return ev._bolt;
+  if(!(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') || !ev.ranged || ev.quake){ ev._bolt = null; return null; }
+  const el = u=> u == null ? null : boardCardEl(u);
+  const tgt = ev.type==='hitHQ' ? hqTileEl(ev.targetSide) : el(ev.targetUid);
+  const src = el(ev.attUid) || hqTileEl(ev.side);
+  const pb = matchState.pendingBolt, ps = matchState.pendingStrike;
+  const strikeMore = kind=> !!(ps && ps.kind === kind && String(ps.attUid) === String(ev.attUid) && (ev.jump||0) < (ps.n||0) - 1);
+  let chain, cls = '', sky = false, more = false, kind;
+  if(ev.electricity){ kind = 'electricity'; cls = 'sfx-bolt-electric';
+    chain = ev.viaUid != null && String(ev.viaUid) !== String(ev.targetUid) ? [src, el(ev.viaUid), tgt] : electricChain(ev); }
+  else if(ev.chainLightning){ kind = 'chainLightning'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, el(ev.viaUid), tgt]; more = strikeMore('chainLightning'); }
+  else if(ev.dragonLightning){ kind = 'dragonLightning'; cls = 'sfx-bolt-red'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, tgt]; more = strikeMore('dragonLightning'); }
+  else if(ev.skyBolt){ kind = 'sky'; sky = true; chain = [tgt]; }
+  else if(ev.positionBeam){ kind = 'beam'; cls = 'sfx-bolt-beam'; chain = [src, tgt]; } // 2026-10-19 (package EE): the Condor's beam reuses the bolt, prismatic
+  else if(pb && pb.element === 'shock' && String(pb.uid) === String(ev.attUid)){ kind = 'shockBolt'; chain = [src, tgt]; }
+  else if(ev.dmgType === 'shock'){ kind = 'shock'; chain = [src, tgt]; }
+  else { ev._bolt = null; return null; }
+  chain = chain.filter(Boolean);
+  const jumps = sky ? 1 : Math.max(1, chain.length - 1);
+  ev._bolt = {kind, chain, cls, sky, more, ms: (jumps - 1)*152 + 70};
+  return ev._bolt;
+}
+
+function drawLightningBolt(ev){
+  const b = ev && ev._bolt; if(!b) return;
+  try{ SoundKit.shockTone && SoundKit.shockTone(); }catch(e){}
+  const t = b.chain[b.chain.length - 1];
+  if(b.kind === 'dragonLightning' && t && t.classList){ setTimeout(()=>{ t.classList.add('dragon-struck'); setTimeout(()=> t.classList.remove('dragon-struck'), 700); }, b.ms); }
+  if(reducedMotion()) return;
+  try{
+    if(b.sky){ if(t && window.FX && FX.A && FX.A.stormBolt) FX.A.stormBolt(t, {}); else if(t && window.SkillFX && SkillFX.lightning) SkillFX.lightning(hqTileEl(ev.side) || t, [t], {}); }
+    else if(window.SkillFX && SkillFX.lightning && b.chain.length > 1) SkillFX.lightning(b.chain[0], b.chain.slice(1), {cls: b.cls});
+  }catch(e){}
+}
+
+function electricChain(ev){
+  const pe = matchState && matchState.pendingElectric, a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid);
+  const mid = ev.arc && pe && String(pe.attUid) === String(ev.attUid) && pe.targetUid != null && String(pe.targetUid) !== String(ev.targetUid) ? boardCardEl(pe.targetUid) : null;
+  return [a, mid, t].filter(Boolean);
+}
+
+const attackingUids = new Set();
 
 </script>
 <script>window.TREAT_CARDS = {"legendary": "<div class=\"card-tile rarity-tier-top         \" data-defid=\"dominion-nestguard\"  style=\"--rarity-a:#dc2626; --rarity-b:#dc2626\">\n    \n    \n    \n    \n    \n    <div class=\"costbadge\" title=\"Cost to play\"><span class=\"pips pips-lumber\" aria-label=\"1\"><i>\ud83e\udeb5</i></span></div>\n    <div class=\"waitbadge\" title=\"Wait \u2014 turns before it can act after being played\"><span class=\"pips pips-wait\" aria-label=\"1\"><i>\u23f3</i></span></div>\n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/dominion-nestguard.png?v=0199d09580\" alt=\"Dominion Nestguard\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc26</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Dominion Nestguard</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26944</span><span class=\"hp\">\u27649</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "epic": "<div class=\"card-tile rarity-tier-high         \" data-defid=\"crimson-wing-recruit\"  style=\"--rarity-a:#9333ea; --rarity-b:#9333ea\">\n    \n    \n    \n    \n    \n    \n    \n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/crimson-wing-recruit.png?v=5e325fa992\" alt=\"Crimson Wing Recruit\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc26</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Crimson Wing Recruit</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26942</span><span class=\"hp\">\u27643</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "rare": "<div class=\"card-tile rarity-tier-mid         \" data-defid=\"cobalt-talon-fledgling\"  style=\"--rarity-a:#3b82f6; --rarity-b:#3b82f6\">\n    \n    \n    \n    \n    \n    \n    \n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/cobalt-talon-fledgling.png?v=342eaf22f4\" alt=\"Cobalt Talon Fledgling\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc26</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Cobalt Talon Fledgling</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26941</span><span class=\"hp\">\u27642</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "fire": "<div class=\"card-tile rarity-tier-low         \" data-defid=\"soldier-ant\"  style=\"--rarity-a:#726c60; --rarity-b:#726c60\">\n    \n    \n    \n    \n    \n    \n    <div class=\"waitbadge\" title=\"Wait \u2014 turns before it can act after being played\"><span class=\"pips pips-wait\" aria-label=\"1\"><i>\u23f3</i></span></div>\n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/soldier-ant.png?v=fc2713589a\" alt=\"Soldier Ant\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc1c</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Soldier Ant</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26943</span><span class=\"hp\">\u27648</span></div>\n    \n    \n    \n  </div>", "bee": "<div class=\"card-tile rarity-tier-low         \" data-defid=\"bee-knight\"  style=\"--rarity-a:#726c60; --rarity-b:#726c60\">\n    \n    \n    \n    \n    \n    \n    \n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/bee-knight.png?v=0e32ae8e85\" alt=\"Bee Knight\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc1d</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Bee Knight</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26942</span><span class=\"hp\">\u27643</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "common": "<div class=\"card-tile rarity-tier-low       biome-river  \" data-defid=\"otter-centurion\"  style=\"--rarity-a:#726c60; --rarity-b:#726c60\">\n    \n    \n    \n    \n    \n    \n    <div class=\"waitbadge\" title=\"Wait \u2014 turns before it can act after being played\"><span class=\"pips pips-wait\" aria-label=\"1\"><i>\u23f3</i></span></div>\n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/otter-centurion.png?v=67fa548e64\" alt=\"Otter Centurion\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83e\udda6</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Otter Centurion</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26943</span><span class=\"hp\">\u27649</span></div>\n    \n    \n    \n  </div>"};</script>
@@ -45910,6 +46001,11 @@ def('forgeCentreBusy', false);
 // the Effects level (the Lab always plays at High, Low under reduced motion) and style: fxLevel() / fxAtLeast() / forgeCentreStage read these
 def('fxLevelSetting', ()=> reduce() ? 'low' : 'high');
 def('fxStyle', ()=> 'classic');
+// 2026-10-22 (package CB): the game's own effect functions (positionBeamVfx ...) ask these; the Lab did not carry them, so a call threw a ReferenceError
+def('hasGsap', ()=> typeof W.gsap !== 'undefined');
+def('reducedMotion', ()=> reduce());
+def('fxLevel', ()=> W.fxLevelSetting());
+def('fxAtLeast', l=> ['none', 'low', 'med', 'high'].indexOf(W.fxLevelSetting()) >= ['none', 'low', 'med', 'high'].indexOf(l));
 // the hatch reveal asks whether the card is a Level 0 hatchling (the Nest's list); the Lab's stand-in rare card is one
 def('hatchlingIds', ()=> new Set(['lab-hatchling']));
 // the Crown badge's tooltip names the Kingly skills (grantText reads the passive table; the Lab shows the keys)
@@ -46110,7 +46206,7 @@ W.LAB2 = {mount, tabs:TABS, fieldCtx, fieldHTML, initSticky, navTop, clearBody, 
    played with the game's own code (functions copied from arena_app.js into fx-src.js, listed in fx-src-extra.txt), on the sticky field.
    Owner: "Update the effects lab with all the new effects." Every entry carries "In game: <where>".
    Packages: EV (Evolute), MT (Mimic), TR (Crown and Transforms), UI3 (Shield on the battlefield bars), EL (ten element attack plates),
-   RK (total raid rank), BX (Stonedrop Vulture), FG (Forge centre stage, the hatch).
+   RK (total raid rank), BX (Stonedrop Vulture), FG (Forge centre stage, the hatch), and from 2026-10-22 CB (the Galactic Condor turns to fire its Position Beam).
    Where the game's handler is inline in renderVfxForEvent (evolve, hatch) the same calls are made in the same order (noted per entry).
    ============================================================ */
 (function(){
@@ -46346,10 +46442,55 @@ add('fg', 'fg-hatch-board', 'An egg hatches on the board', 'a hatching unit in a
       snd('unlockChime'); await c.wait(1500); }]],
   {sig:'eggCrackVfx(x, y) + floatText 🐣 + pop'});
 
+// -- CB: the Galactic Condor's Position Beam (package CB, 2026-10-22; the beam itself is package EE, 2026-10-19)
+// The game: the engine's {type:'positionBeam'} event reaches renderVfxForEvent, which floats "🌈 Position Beam" and calls positionBeamVfx(ev): the
+// Condor's inner .card-tile rears / banks / swings round on GSAP transforms, then settles back (clearProps). The event holds the replay for
+// ev._pbMs so the first hit's bolt (lightningBoltOf / drawLightningBolt, one hit every 640 ms, nearest first) is drawn as the pose is reached.
+// This stand-in plays the same calls on a field of five columns (the game's edge is five columns out; the Lab row is five wide, so the leftmost
+// or rightmost card plays the edge). Effects Low / reduced motion: positionBeamVfx returns at once (no manoeuvre) and the beam is as before.
+function beamField(c, o){
+  c.tab.arena.classList.add('lab2-gal');
+  const n = o.n || 5, row = (cls, ws)=> `<div class="sk-row ${cls}">${ws.join('')}</div>`;
+  const foe = Array.from({length:n}, (_, i)=> L.wrapHTML(o.down && i === o.at ? 'rare' : (i % 2 ? 'uncommon' : 'common'), 9400 + i, o.down && i === o.at ? 'galactic-condor' : 'lab-beam-foe'));
+  const mine = Array.from({length:n}, (_, i)=> L.wrapHTML(!o.down && i === o.at ? 'rare' : 'common', 9410 + i, !o.down && i === o.at ? 'galactic-condor' : 'lab-beam-ally'));
+  c.arenaHTML((o.castle ? row('sk-enemy', [L.wrapHTML('castle', 9499, 'castle')]) : '') + row('sk-enemy', foe) + row('sk-mine', mine));
+  const cw = boardCardEl((o.down ? 9400 : 9410) + o.at), nm = cw && cw.querySelector('.card-tile .nm'); if(nm) nm.textContent = 'Galactic Condor';
+  return (o.down ? 9400 : 9410) + o.at;
+}
+async function condorBeam(c, o){
+  const uid = beamField(c, o), tbase = o.down ? 9410 : 9400, tsd = o.down ? 'A' : 'B', sd = o.down ? 'B' : 'A';
+  c.match(); await c.wait(450);
+  const targets = (o.hits || []).map(i=> tbase + i);
+  const ev = {type:'positionBeam', side:sd, targetSide:tsd, uid, defId:'galactic-condor', lane:o.lane, col:o.col, amount:3, targetUids:targets, hq:!!o.hq};
+  try{ floatText(boardCardEl(uid), '🌈 ' + T('ui.act-position-beam') + ' 3', 'gold'); }catch(e){}
+  const ms = o.low ? 0 : positionBeamVfx(ev); // the game's call: 0 at Effects Low and under reduced motion
+  await c.wait(ms || 150);
+  const list = targets.map(u=> ({u})).concat(o.hq ? [{hq:true}] : []);
+  for(const h of list){
+    const hit = h.hq ? {type:'hitHQ', ranged:true, positionBeam:o.lane, attUid:uid, side:sd, targetSide:tsd, dmg:3} : {type:'hit', ranged:true, positionBeam:o.lane, attUid:uid, targetUid:h.u, side:sd, targetSide:tsd, dmg:3};
+    const b = lightningBoltOf(hit); if(!b){ await c.wait(640); continue; }
+    drawLightningBolt(hit);
+    const t = h.hq ? hqTileEl('B') : boardCardEl(h.u);
+    setTimeout(()=>{ try{ floatText(t, '-3', 'dmg'); if(typeof shakeEl === 'function') shakeEl(t); }catch(e){} }, b.ms);
+    await c.wait(640);
+  }
+  await c.wait(1200);
+}
+add('cb', 'cb-condor', 'Galactic Condor turns to fire its Position Beam', 'the Galactic Condor\'s Charge in a fight (engine event positionBeam: renderVfxForEvent calls positionBeamVfx, then the hits draw the beam, lightningBoltOf)',
+  'Before it fires, the Condor takes up the stance for where it stands. Centre: it rears up (stretches tall, tips back), then dips its head forward and aims straight across; the beam hits the unit across and the Bramble. Side: it banks and turns toward the angle it fires at, with a small lift and a gentle sway; the beam hits the units diagonally across. Edge: it coils, then swings right round to face along the row and keeps turning as the beam sweeps across, nearest first. Then a recoil as it fires, and it settles back exactly into its slot. Transforms on the card only (no filter, no blend layer); a rising whoosh and hum. Effects Low and reduced motion: no manoeuvre, just the beam.',
+  [['Centre', c=> condorBeam(c, {n:3, at:1, castle:true, lane:'centre', col:0, hits:[1], hq:true})],
+   ['Side (from the right)', c=> condorBeam(c, {at:4, lane:'side', col:2, hits:[3, 2]})],
+   ['Side (from the left)', c=> condorBeam(c, {at:0, lane:'side', col:-2, hits:[1, 2]})],
+   ['Edge (left, sweeps right)', c=> condorBeam(c, {at:0, lane:'edge', col:-5, hits:[1, 2, 3, 4]})],
+   ['Edge (right, sweeps left)', c=> condorBeam(c, {at:4, lane:'edge', col:5, hits:[3, 2, 1, 0]})],
+   ['Enemy Condor (fires down)', c=> condorBeam(c, {at:4, down:true, lane:'side', col:2, hits:[3, 2]})],
+   ['Effects Low (beam only)', c=> condorBeam(c, {at:4, lane:'side', col:2, hits:[3, 2], low:true})]],
+  {sig:'positionBeamVfx(ev) + lightningBoltOf(hit) + drawLightningBolt(hit)'});
+
 L.mount({
-  id:'built', title:'Built 10-21', pill:['live', 'New'],
-  sub:'Everything built on 2026-10-21 that the Lab did not show yet, played with the game\'s own code. Every entry says where it shows up in the game. The field stays pinned at the top while you scroll; pick any button to play it there.',
-  chips:[['ev', 'Evolute'], ['mt', 'Mimic'], ['tr', 'Crown and Transforms'], ['ui3', 'Shield bars'], ['el', 'Element plates'], ['rk', 'Raid rank'], ['bx', 'Archer'], ['fg', 'Forge and hatch']],
+  id:'built', title:'Built 10-21 and 10-22', pill:['live', 'New'],
+  sub:'Everything built on 2026-10-21 and 2026-10-22 that the Lab did not show yet, played with the game\'s own code. Every entry says where it shows up in the game. The field stays pinned at the top while you scroll; pick any button to play it there.',
+  chips:[['ev', 'Evolute'], ['mt', 'Mimic'], ['tr', 'Crown and Transforms'], ['ui3', 'Shield bars'], ['el', 'Element plates'], ['rk', 'Raid rank'], ['bx', 'Archer'], ['fg', 'Forge and hatch'], ['cb', 'Condor beam']],
   groups:[
     {key:'ev', title:'Evolute (package EV)', tag:'Evolute', tone:'evo'},
     {key:'mt', title:'Mimic (package MT)', tag:'Mimic', tone:'evo'},
@@ -46359,6 +46500,7 @@ L.mount({
     {key:'rk', title:'Total raid rank (package RK)', tag:'RK', tone:'raid'},
     {key:'bx', title:'Archer stone drop (package BX)', tag:'BX', tone:'war'},
     {key:'fg', title:'Forge centre stage and the hatch (package FG)', tag:'FG', tone:'forge'},
+    {key:'cb', title:'Galactic Condor: Position Beam (package CB, 2026-10-22)', tag:'CB', tone:'sky'},
   ],
   entries:E,
 });
