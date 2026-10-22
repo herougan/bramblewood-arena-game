@@ -4,6 +4,21 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**BF7-4. Your five live edits of 10-21 evening: two were merged with later file changes** · Decide · Cards · asked 2026-10-22
+- Folded into canonical/cards.json with your stats as printed. Tide Pool Crab: you added Shield 3 while package TR (after your save) gave it Armor 1 back, so it now has Tide + Armor 1 + Shield 3 at 1/3, and no legal line. Glacial Ape-King: your row still had Bounty 1 (TR swapped Bounty for King after your save): it keeps King + Earthquake 4 at your 6/37, 103% of N (its formula line is 6/35). Conch Crawler 1/1 with Shield 4 has no legal line. Ford Kingfisher 0/1 fits (33% of N). Ember Tetra 3/7 is new: no source and no art, and its Tide braces (S 5.4) leave no legal line at any stats.
+  - Keep them as folded
+  - Crab: drop Armor 1 (your Shield 3 only)
+  - Ape-King: Bounty back instead of King
+  - Give Ember Tetra a source (map or pack)
+- **Default:** Keep them as folded
+
+**BF7-5. 106 band cards still have no legal line: the hand-pass list** · Decide · Balance · asked 2026-10-22
+- After BF7's re-fit, 106 band cards (plus Conch Crawler and Tide Pool Crab) have no legal line and keep their stats (docs/balance/human-pass-1-flagged-2026-10-21.json). docs/balance/hand-pass-2026-10-22.md gives each the cheapest single change (shrink or drop one skill, never Flying) and the line it would get; the Blue Dragon needs two. None is applied.
+  - Apply the cheapest change on each
+  - Pick per card
+  - Leave them off the formula
+- **Default:** Pick per card
+
 **AR-1. Standard PvP shares the PvP tickets and the rating** · Decide · Arena · asked 2026-10-21
 - Package AR split the Arena's PvP into two buttons. Standard PvP is the existing Standard format (every card at Level 1, no foils, a Standard deck built from any card) against the same strangers as Collection PvP, their decks also at Level 1. It uses the same 10 PvP tickets, moves the same rating and pays the same rewards. Your Standard deck is not recorded as a stranger, since it can hold cards you don't own.
   - Keep it shared
@@ -216,6 +231,27 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Other gates
 - **Default:** Keep
 
+**SK-1. Sergeant Bramblefox: Rare, Map 13, the leader of Fox Run** · Decide · Rarity · asked 2026-10-22
+- Owner 09:52: lower its rarity and move it to another map, as that map's reward and in its skirmish. Done (package SK): Heroic -> Rare, from Map 0 (0-4) to The Redwood Deep (Map 13), the leader (showcase) of 13-2 Fox Run and paid when 13-2 is cleared (grantClearedBossLeaders reads its source, so clearing 0-4 no longer pays it; a player who already holds it keeps it). Why there: the lore bible's Greenhood Band (foxes, magpies and outcast mice) lives in the Redwood Deep and the Briar Maze, and Fox Run's deck is the foxes (Fox Kit, Swift Fox). Rare is allowed from Map 5 and is below Map 13's Very Rare cap, so it is the deck's top card. Re-fitted by the formula at Rare and Map 13: 4/12 -> 3/10 (89% of N), cost 1, no skills. Map 13's pool holds it under SPECIAL (the MAP list is full at 10). Fox Run now: Berserker Boar 4, Fox Kit 3, Swift Fox 3, Grizzly Vanguard 3, Tasmanian Devil 2, Bramblefox 1 (Lynx and Fawn Scout out, so it leads the deck); battle rating 61 -> 56. Heads-up: a live `__cfg:map-pools:mr` row would win over the file; the admin's Map cards editor shows it.
+  - Keep: Rare, 13-2 Fox Run
+  - Another map (the Briar Maze's Quill Path 12-2, the Greenhood Band's other home)
+  - Another rarity (Uncommon, or Very Rare at Map 13)
+- **Default:** Keep: Rare, 13-2 Fox Run
+
+**SK-2. Skirmish leaders picked by hand (the highlighted card changes)** · Decide · Maps · asked 2026-10-22
+- Owner 09:52: from Map 2 every skirmish's leader is its highlighted (showcase) card. The leader is the chosen showcase, else the Auto pick (top rarity, then Attack + Health/2). Where that Auto pick is a small card beside a much bigger unit (for example a 1/1 Rare beside a 1/25 Common that costs 3) I set `showcase` by hand to the biggest unit by cost and strength, so the highlighted card, and the leader, changes on these 14 fights: 5-3 and 5-4 Venomlord Serpent; 15-1 and 15-4 Cataphract Destrier; 17-1, 17-3 and 17-A-1 Glacial Ape King; 18-2 Komodo Warlord; 20-1 and 20-4 Cave Warlord; 21-3 Glacier Yak; 22-2 Gorge Wyrm; 19-A-4 Pyroclast Wyrm; 14-A-2 Ancient Sloth Titan. Every other fight keeps its Auto pick as the leader (the 2-1 crab is yours). Change a leader in the Showcase picker (Admin): the leader follows.
+  - Keep these picks
+  - Back to Auto everywhere (the strongest by rarity)
+  - Tell me which to change
+- **Default:** Keep these picks
+
+**SK-3. Skirmish sizes: 8 sevens, and three fights that rate higher with their leader** · Decide · Balance · asked 2026-10-22
+- 149 skirmishes (main maps and side maps) now hold 5-7 different cards: 47 have 5, 94 have 6, 8 have 7 (7 only with a clear leader: 7-2, 22-4, 2-A-3, 19-A-5, 14-A-3, 20-B-1, 18-A-3, 18-A-7; was 28 sevens, and 14 decks of 8 to 12 cards, all on the side maps). 17 fights had 4 cards and got a fifth from the map's pool. The leader counts double in the battle rating, so I traded copies (and, in 15 fights, a heavy card for a lighter one the map already uses) to keep each rating within about 10% of before; the smallest decks (rating 20) rise by 2, which is a leader's minimum. Three fights stay above: 16-4 (39 -> 52), 21-2 (63 -> 74) and 20-B-3 (46 -> 61), where the rest of the deck is already Common so copies cannot offset a Rare or Very Rare leader. Not touched: the Tutorial map's lesson fights (T-2 has 7 cards and T-3 has 8, they teach with a hand-picked lineup), the endless dungeons' generated floors, elites and bosses, and Maps 0-1 (no leaders, sizes only).
+  - Keep
+  - Give those three a lighter leader (a Common showcase)
+  - Allow more sevens
+- **Default:** Keep
+
 **T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03
 - The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied.
   - Say "apply it" and I run supabase/migrations/20261003_fight_sessions.sql
@@ -421,6 +457,27 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Keep the Mist scene
 
 ## Decided
+
+**BF7-1. The half-miss ×1.5 counts on the stats only; Fragile is ×0.7 on both caps** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
+- Pass III's formula option: the half-miss ×1.5 was on S too, so a flyer's skills cost half again. Fragile was −8 as a skill and ×0.75 on N, which shrinks N (fewer stats), the opposite of the intent. Mayfly Dancer (Flying, Fragile) re-fits at 2/7; without Fragile it would get 2/4.
+  - ×1.5 on the stats only; Fragile ×0.7 on both left sides
+  - Keep ×1.5 on both scores and Fragile on N
+- **Default:** ×1.5 on the stats only; Fragile ×0.7 on both left sides
+- **Outcome:** Owner (pass III answers): "Do your cut. I misread alot of the x1.5 skills and I used a flat number instead actually." On Fragile: "Fragile should be smth like x0.7 (so that you can have more stats!) ... The idea is that things that must be less than N have a x0.7 multiplier!" Built (package BF7) in bramblewood-budget.js capScores: f × ((2A + H) × m + S) ≤ N and f × (A·H × m + S·|S|) ≤ (N/3)², m = 1.5 per half-miss skill on Attack and Health only, f = fragileUse 0.7 for a Fragile card. BF5's fragileMult (N × 0.75) is gone. The game's editor budget panel, the Test Lab, the hub's Budget & stats and Skill costs tabs and every balance tool read it.
+
+**BF7-2. A quality priced by a multiplier costs 0 as a skill** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
+- Two you may want to look at: (1) the light bonus (N × 1.02 for a card whose only abilities are Flying, Tide or day / night ones) sits on cards whose Tide (1.5) or Diurnal / Nocturnal (1) is also priced; it is a small bonus, not the same quality counted twice, so it stays. (2) Blind on a card is an on-hit chance (Horned Lizard 50%), yet it takes the full ×1.5 like Evasive.
+  - Zero the multiplier-priced skills
+  - Keep the flat prices too
+- **Default:** Zero the multiplier-priced skills
+- **Outcome:** Owner: "Make sure there's no duplicates." Built (package BF7): Fragile −8 → 0, Blind −3 → 0, Evasive 0.1 → 0, Swift 5 → 0 (Flying and Shadow were 0 already). Checked and left as they are (no double price): context skills (their plain flag already costs 0 beside braces), transforms, King / Stem braces, the plain and light N bonuses.
+
+**BF7-3. Bounty stays 3; four pass III cuts applied** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
+- Pass III proposed five cuts (docs/balance/pass-3-proposal-2026-10-22.md); Bounty's 1.84 came from a test deck with no Lumber-costed units.
+  - Four cuts, Bounty kept
+  - All five cuts
+- **Default:** Four cuts, Bounty kept
+- **Outcome:** Owner: "Bounty is unique, because it's actually very strong, but maybe in your testing, you don't use many lumber costed units." Bounty stays 3. Applied at their measured worth: On Attack 3 → 1.35, Add Wait 3.5 → 2.8, Twin Strike 6 → 3.17, Octolash 25 → 6.48. Then every band card was re-fitted (124 moved); no-fit cards 130 → 108. Randomising Lumber and Wait in the test setups is a future balance row in docs/action-items.md.
 
 **MP-1. A map's card pool guides the editor; it does not restrict the game** · Decide · Maps · asked 2026-10-22 · decided 2026-10-22
 - Package MP: the Map cards editor and the skirmish deck pickers read canonical/map-pools.json (and the admin's live edits). The pool decides what the pickers offer and which deck cards get a ⚠ chip; nothing in the game refuses a deck that strays from it (the deck-validation caps are package DR's).
