@@ -12249,6 +12249,21 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .fxf-rcs-total{display:inline-flex; align-items:center;} .fxf-rcs-total .raid-total-rank{font-size:16px; padding:5px 14px; margin:0;}
 .rk-tk-ico{position:relative; display:inline-block; line-height:1;} .rk-tk-ico i{position:absolute; right:-.38em; bottom:-.28em; font-size:.55em; font-style:normal;}
 .inv-sec .rk-inv-use{margin-top:10px;} .raid-hub .rk-use-row{margin:6px 0;}
+/* 2026-10-23 (package TU2, owner RK1: "call it like Bonus Raid Ticket and it has a different outline"): the A-rank ticket wears a gold
+   ring (a double gold outline and a soft glow); the bought / found Raid Ticket keeps the plain glyph */
+.rk-tk-ico.is-bonus{padding:.06em .14em; border-radius:.32em; outline:.12em solid #d99a1c; outline-offset:.06em; box-shadow:0 0 0 .22em rgba(255,236,170,.8), 0 0 .5em .16em rgba(255,190,60,.75);}
+.rk-tk-ico.is-bonus i{right:-.5em; bottom:-.42em;}
+/* 2026-10-23 (TU2): Coming soon (the Promotion page, its Forge pointer), the Nest's Level 0 head, the Tutorial's way out to Map 0 */
+.tu2-soon-chip{display:inline-block; vertical-align:middle; margin-left:6px; padding:2px 9px; border-radius:999px; font-size:12px; font-weight:800; letter-spacing:.02em; color:var(--text, #2b2118); background:rgba(255,215,120,.35); border:1px dashed rgba(180,130,40,.7);}
+.forge-promote.is-soon{background:rgba(0,0,0,.06); border-style:dashed;}
+.forge-promote.is-soon .btn{margin-top:6px;}
+.tu2-promo-page{max-width:640px; margin:0 auto; text-align:center;}
+.tu2-promo-page p{max-width:52ch; margin:10px auto; line-height:1.5;}
+.tu2-promo-art{display:flex; justify-content:center; align-items:center; gap:14px; margin:18px 0 8px; font-size:52px; opacity:.85;}
+.tu2-promo-art span{display:grid; place-items:center; width:84px; height:110px; border-radius:12px; border:2px dashed rgba(150,110,50,.55); background:rgba(255,240,210,.25);}
+.tu2-promo-art i{font-style:normal; font-size:30px; opacity:.6;}
+@media (max-width:560px){ .tu2-promo-art{font-size:40px;} .tu2-promo-art span{width:66px; height:86px;} }
+.tu2-recruit-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin-top:6px;} .tu2-recruit-head .panel-sub{margin:0; flex:1 1 260px;}
 .raid-hub .rh-tags{display:flex; flex-wrap:wrap; gap:4px;} .raid-hub .rh-tags:empty{display:none;}
 .raid-hub .rh-tag{font-size:11.5px; font-weight:800; padding:1px 8px; border-radius:999px; border:1px solid var(--surface-border);}
 .raid-hub .rh-tag.is-auto{border-color:var(--accent);}
@@ -13098,6 +13113,7 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
   <div id="view-deck" hidden></div>
   <div id="view-shop" hidden></div>
   <div id="view-nest" hidden></div>
+  <div id="view-promotion" hidden></div>
   <div id="view-market" hidden></div>
   <div id="view-friends" hidden></div>
   <div id="view-profile" hidden></div>
@@ -39637,7 +39653,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=b8b80a6ec2", "es": "assets/lang/es.js?v=01f95abd30", "fr": "assets/lang/fr.js?v=a5afba278a", "id": "assets/lang/id.js?v=fa5e635446", "it": "assets/lang/it.js?v=18caf0823c", "ja": "assets/lang/ja.js?v=77c31f2bd1", "ko": "assets/lang/ko.js?v=5bda14ebd6", "pt": "assets/lang/pt.js?v=6117f8a373", "ta": "assets/lang/ta.js?v=c2257af174", "tl": "assets/lang/tl.js?v=7b183aeb22", "zh-Hans": "assets/lang/zh-Hans.js?v=31e6ae3291", "zh-Hant": "assets/lang/zh-Hant.js?v=c26cd2d1cf"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2e6f078196", "es": "assets/lang/es.js?v=974ebd3d79", "fr": "assets/lang/fr.js?v=e2f1700c45", "id": "assets/lang/id.js?v=b4618dc7a5", "it": "assets/lang/it.js?v=53f5298db6", "ja": "assets/lang/ja.js?v=bca93069d4", "ko": "assets/lang/ko.js?v=483def7465", "pt": "assets/lang/pt.js?v=8e2cb3e6da", "ta": "assets/lang/ta.js?v=6e814ef306", "tl": "assets/lang/tl.js?v=b6bba5c07c", "zh-Hans": "assets/lang/zh-Hans.js?v=29e10e9f28", "zh-Hant": "assets/lang/zh-Hant.js?v=e79c829dce"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -40125,7 +40141,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.raid-ticket-bought": "🎫 Raid Ticket bought. You have {n}.",
   "toast.raid-ticket-found": "🎫 You found a Raid Ticket! Use it for an extra raid fight.",
   "toast.raid-ticket-granted": "🎫 Raid rank {raidRank}: a free Raid Ticket for an extra raid fight.",
-  "results.raid-ticket-grant": "Raid Ticket (rank {raidRank})",
   "toast.raid-auto-unlocked": "🤖 You completed {name}: Auto is open for its fights from now on.",
   "results.raid-strong": "Competent participant",
   "ui.play-rows-own": "Your row only",
@@ -40324,7 +40339,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.forge-curve-minor": "small step",
   "ui.forge-curve-none": "no change",
   "ui.forge-curve-aria": "Stat gains from level {from} to level {to}",
-  "ui.nest-tab-cards": "🪺 Cards and eggs",
   "ui.tavern-tab-recruit": "🤝 Recruit",
   "ui.nest-upg-title": "🪺 Nests",
   "ui.nest-upg-built": "{open} of {max} built",
@@ -40443,7 +40457,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.the-river-chose-the-otters": "🎲 The river chose the Otters.",
   "toast.the-river-chose-the-hummingbirds": "🎲 The river chose the Hummingbirds.",
   "toast.tutorial-paused-tap-start-the-tutorial": "Tutorial paused — tap the 🎓 on the Outskirts map whenever you’re ready.",
-  "coach.tap-t-1-then-press-fight": "🎓 Tap T-1, then press ⚔️ Fight.",
+  "coach.tap-t-2-then-press-fight": "🎓 Tap T-2, then press ⚔️ Fight.",
   "coach.press-fight": "⚔️ Press Fight.",
   "tutorial.your-leader": "Your leader",
   "tutorial.you-look-like-you-need-help": "You look like you need help. I watched that first fight from the hedge: good instincts, thin ranks, and the next bramble is sturdier. A road's safer walked by two, and I owe this valley a favour or two. I'm with you now: call me onto the field when you need me.",
@@ -41693,7 +41707,41 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rw-glint": "Something glints here. A top rank might find it.",
   "ui.rw-rare-notice": "A rare notice",
   "ui.rw-scale-meta": "A win at {emblem} or better in the right fight finds a scale, once.",
-  "ui.rw-scale-sub": "A trail of Dragon Scales runs along the road. Each one waits in a single fight for a win at {emblem} or better."
+  "ui.rw-scale-sub": "A trail of Dragon Scales runs along the road. Each one waits in a single fight for a win at {emblem} or better.",
+  "map.tu2-exit": "To Map {n}",
+  "map.tu2-exit-tip": "Way out: on to Map {n}, {name}",
+  "ui.tu2-tut-hp": "Bramble Health",
+  "ui.tu2-tut-hp-fight": "In the fight: {n} (every bramble's Health is halved)",
+  "ui.tu2-tut-hp-tip": "The rival bramble's Health in this tutorial fight. Blank: the tutorial editor's fallback.",
+  "ui.tu2-te-hp": "Part {n}: rival bramble Health",
+  "ui.tu2-te-hp-tip": "Saved on that tutorial fight: the same number as its Bramble Health in Edit skirmish.",
+  "toast.tu2-tut-rewards-published": "🎓 Tutorial rewards saved and published.",
+  "toast.tu2-tut-rewards-saved": "🎓 Tutorial rewards saved in this browser.",
+  "ui.tu2-tut-rw-title": "Rewards: {name}",
+  "ui.tu2-tut-rw-sub1": "A new player gets these cards for winning this tutorial, and they go into the starting deck.",
+  "ui.tu2-tut-rw-sub2": "A new player gets these cards for winning this tutorial, by the side they picked.",
+  "ui.tu2-tut-rw-live": "Changes go live for every player.",
+  "ui.tu2-tut-rw-local": "Changes stay in this browser (sign in as an admin to publish them).",
+  "ui.tu2-tut-rw-side-otters": "Picked Otters",
+  "ui.tu2-tut-rw-side-hummingbirds": "Picked Hummingbirds",
+  "ui.tu2-tut-rw-side-both": "Picked both",
+  "ui.tu2-tut-rw-none": "No reward cards yet.",
+  "ui.tu2-nest-tab-eggs": "🥚 Eggs and babies",
+  "ui.tu2-nest-tab-recruits": "🌱 Level 0",
+  "ui.tu2-nest-eggs-sub": "Eggs and babies: {n}",
+  "ui.tu2-nest-recruits-sub": "Level 0 cards: {n}",
+  "ui.tu2-nest-recruits-help": "A nest trains a Level 0 card to Level 1 with 🦴 Kibble. You have 🦴 {kibble}.",
+  "ui.tu2-nest-train": "Train one",
+  "ui.tu2-nest-recruits-none": "No Level 0 cards right now. Fresh hatchlings, Base cards and new faction cards wait here until a nest trains them.",
+  "ui.tu2-coming-soon": "Coming soon",
+  "ui.tu2-promo-title": "Promotion",
+  "ui.tu2-promo-forge-note": "Turning a card into a different card will have its own page. It isn't built yet.",
+  "ui.tu2-promo-open": "See the Promotion page",
+  "ui.tu2-promo-p1": "Promotion will turn a card you have raised into a different card. Which cards, what it costs and what happens to the old card are not decided yet.",
+  "ui.tu2-promo-p2": "Nothing here can be used yet, and none of your cards change.",
+  "ui.tu2-bonus-ticket-name": "Bonus Raid Ticket",
+  "ui.tu2-bonus-ticket-desc": "Paid by a fallen raid when your total raid rank was high. Use it for an extra raid fight.",
+  "toast.tu2-bonus-ticket-granted": "🎫 A Bonus Raid Ticket for your raid rank: one extra raid fight."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -42587,7 +42635,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 // ---- Node ids follow the map numbers (2026-10-14, user: "The internal Map IDs have not been edited to the current layout. (1-1
 // is still called f-1).") ----------------------------------------------------------------------------------------------------
 // Every fight's internal key is now the code the player sees (Thistlewood's first fight is 1-1, not f-1; the Outskirts' are 0-1…0-4,
-// not 1-1…1-4; side maps 1-A-1…; the endless dungeon 6-MM-1…). The tutorials keep 'tutorial' / 'tutorial2' (shown T-0 / T-1): that
+// not 1-1…1-4; side maps 1-A-1…; the endless dungeon 6-MM-1…). The tutorials keep 'tutorial' / 'tutorial2' (shown T-1 / T-2 since 2026-10-23, TU2): that
 // key is read in ~100 places by the tutorial flow. Keys are per map (saves store `mapId:key`), and no map's new keys reuse one of its
 // old keys, so translating twice is harmless. LEGACY_NODE_KEYS is {mapId: {oldKey: newKey}}; this runs before anything below reads
 // localStorage, and the cloud rows (map layouts, skirmish edits, card sources, the progress blob) go through the same helpers when
@@ -45626,7 +45674,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '6e66801eb433', BUILD_CARD_HASH = 'edcaf623998608cb96e9680fc7a75d82a5ec21d83e36b2088774e545a749a92e';
+const BUILD_ID = '16fd567ffe77', BUILD_CARD_HASH = 'edcaf623998608cb96e9680fc7a75d82a5ec21d83e36b2088774e545a749a92e';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -46122,7 +46170,9 @@ function skirmishCode(mapId, nodeKey){
   const n = mapNumberOf(mapId); if(n===null) return '';
   const node = m.nodes.find(x=> x.key===nodeKey); if(!node) return '';
   if(node.code) return node.code; // endless dungeons: 6-MM-1 … (2026-10-13)
-  if(node.kind==='tutorial') return `T-${Math.max(0, (node.stage||1) - 1)}`; // 2026-10-13: the tutorials are skirmishes T-0 and T-1
+  // 2026-10-23 (package TU2, owner TU-1: "if indices start at 1, then T-1 to T-5"): the tutorials read T-1 and T-2 (were T-0 / T-1); the
+  // three after them carry their label in `code` (keys T-2 / T-3 / T-4 stay, saves store mtut:<key>, so only the labels moved)
+  if(node.kind==='tutorial') return `T-${Math.max(1, node.stage||1)}`; // 2026-10-13: the tutorials are skirmishes
   if(node.kind==='raidboss') return `${n}-R`;
   const fights = m.nodes.filter(x=> x.kind!=='tutorial' && x.kind!=='raidboss');
   const k = fights.indexOf(node) + 1;
@@ -46153,7 +46203,7 @@ function mapBandColour(n){
   const t = Math.min(1, (n - 21)/19); return `hsl(${Math.round(85 + t*195)} ${Math.round(60 - t*15)}% ${Math.round(58 - t*30)}%)`;
 }
 // The Tutorial side map's later fights (2026-10-16, user: "When doing T1 and T2, T3-T5 are hidden. T3 and T5 gradually unlock over Map
-// 1/8/18"): counting its five fights T1–T5 as the user does (shown T-0 … T-4), T-2, T-3 and T-4 stay off the map (no marker, no
+// 1/8/18"): counting its five fights T1–T5 as the user does (shown T-1 … T-5 since 2026-10-23, TU2; keys tutorial, tutorial2, T-2, T-3, T-4), keys T-2, T-3 and T-4 stay off the map (no marker, no
 // trail) while the two tutorials are being played, then appear as you reach Map 1, Map 8 and Map 18 (that map open: the boss of the
 // map before it beaten). Visible in the layout editor.
 const TUT_SIDE_GATE = {'T-2':1, 'T-3':8, 'T-4':18};
@@ -51958,6 +52008,7 @@ function isUnattainable(d){
 }
 function openNodeRewardsEditor(mapId, nodeKey){
   const found = findConquestNode(mapId, nodeKey); if(!found) return;
+  if(found.node.kind === 'tutorial') return openTutorialRewardsEditor(mapId, nodeKey, found.node); // 2026-10-23 (package TU2)
   let overlay = document.getElementById('nodeRewardsOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'nodeRewardsOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   let q = '';
@@ -53624,6 +53675,11 @@ const CURRENCY_META = {
   // week)"): 1 every week, +1 for each of the first two weekly quest tiers you finish; you can hold 3. Local like Kibble.
   beer: {glyph:'🍺', label:'Beer'},
 };
+// Krooni retired for now (2026-10-23, package TU2, owner E9: "Retire Krooni for now"): nothing spends them, so players no longer see or
+// earn them (the Highcrest Case's 3 Krooni, the wallet, the pack lines). A saved balance is left exactly as it is (myCurrencies.kroon,
+// still synced), and Admin Mode still shows it (wallet, Admin's currency row, the pack editor). Bring them back: KROONI_RETIRED = false.
+const KROONI_RETIRED = true;
+function currencyShown(k){ return !(k === 'kroon' && KROONI_RETIRED && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
    'win 10 matches'"). Deliberately built entirely on data that ALREADY exists and is already
@@ -54749,6 +54805,7 @@ let myCurrencies = loadCurrencies();
 function saveCurrencies(skipCloudPush){ try{ localStorage.setItem('bramblewood_arena_currencies', JSON.stringify(myCurrencies)); }catch(e){} if(!skipCloudPush) cloudPushCurrencies(); }
 function grantCurrency(kind, amount){
   if(!CURRENCY_META[kind] || !(amount>0)) return;
+  if(kind === 'kroon' && KROONI_RETIRED) return; // 2026-10-23 (TU2): retired, none earned (a saved balance stays)
   myCurrencies[kind] = (myCurrencies[kind]||0) + amount;
   saveCurrencies();
 }
@@ -54823,7 +54880,7 @@ function staminaPanelHTML(where){
 // should be on another tab in each of their own respective pages."): the Forge, the Nest and the Tavern each keep their upgrades in
 // a ⬆️ Upgrades tab of their own page (the Forge: its tier, its Max Energy steps, the 🗝️ Key ring; the Nest: its Max Energy steps
 // and the next nest to build; the Tavern: its Max Energy steps). The Profile has one summary row per place that opens that tab.
-let nestTab = 'cards', tavernTab = 'recruit';
+let nestTab = 'eggs', tavernTab = 'recruit'; // 2026-10-23 (TU2): 'eggs' | 'recruits' | 'upgrades' (was 'cards' | 'upgrades')
 function staminaReady(where){ const P = STAMINA_PLACES[where]; if(!P || placeStamina(where) >= P.costs.length || staminaLockedBy(where)) return false; return staminaAffordable(staminaCost(where)); }
 // {done, of, ready} for a place's upgrades: steps bought, steps there are, and whether one can be bought now
 function facilityUpgradeState(place){
@@ -55407,6 +55464,7 @@ function unlockCardForPlayer(id, source, copyOpts){
   // owning more copies, not a silent no-op.
   grantCardCopy(id, copyOpts);
   if(isTutorialCopySource(source)) tutorialCopyLevel0(id); // 2026-10-19 (package UT): a tutorial reward is a Level 0 copy
+  else factionCopyLevel0(id); // 2026-10-23 (package TU2): a faction card's first copies come at Level 0 too (owner N1)
   noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
   noteGainedForSwap(id, source); // a clearly better card than one in your deck is offered as a swap (2026-10-15, at most 10 ever)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
@@ -59205,7 +59263,7 @@ function mapCampfireHTML(){
 }
 let conquestSubZoom = null;
 function subMapEntrancesHTML(map, progress){
-  return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry).map(sm=>{
+  return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m)) /* 2026-10-23 (TU2): a hidden daily dungeon has no entrance */).map(sm=>{
     const open = isMapUnlocked(sm, progress), after = sm.entry.after && map.nodes.find(n=> n.key===sm.entry.after);
     const fightable = sm.nodes.filter(n=> n.kind!=='tutorial'), done = fightable.filter(n=> progress.completed.includes(conquestNodeId(sm.id, n.key))).length;
     const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
@@ -59324,16 +59382,21 @@ function subMapIsDark(map){ if(!map) return false; if(isCaveSubMap(map) || map.d
   try{ return map.nodes.some(n=> n.kind !== 'tutorial' && (n.rules || {}).dark); }catch(e){ return false; } }
 function subMapExitHTML(map, positions){
   if(!map.sub) return '';
-  if(map.id === 'mtut' && !loadTutorial2Done()) return ''; // the way out opens with Tutorial II
+  // 2026-10-23 (package TU2, owner 00:10: "If T1-T2 is complete, T2 leads to an exit to Map 0"): the Tutorial's way out opens once
+  // T-1 and T-2 are both won (tutorialPairDone: the flags or the progress), stands beside T-2 (tutorial2) and leads to Map 0;
+  // taking it also sets the flags the full map needs (see the #mapSubExit click). Was: only once the Tutorial II flag was set.
+  const tut = map.id === 'mtut';
+  if(tut && !tutorialPairDone()) return '';
   const parent = CONQUEST_MAPS.find(m=> m.id === map.parent); if(!parent) return '';
-  const idx = map.nodes.findIndex(n=> n.kind !== 'tutorial'), base = positions[Math.max(0, idx)] || {x:50, y:50};
-  const def = map.axis === 'x' ? {x: Math.max(1, base.x - 2.6), y: Math.max(10, Math.min(90, base.y + 24))} // a left-to-right dungeon: just behind floor 1 (2026-10-16)
+  const idx = tut ? map.nodes.findIndex(n=> n.key === 'tutorial2') : map.nodes.findIndex(n=> n.kind !== 'tutorial'), base = positions[Math.max(0, idx)] || {x:50, y:50};
+  const def = tut ? {x: Math.max(6, Math.min(94, base.x + 12)), y: Math.max(10, Math.min(90, base.y - 14))} // beside T-2, up and to its right
+    : map.axis === 'x' ? {x: Math.max(1, base.x - 2.6), y: Math.max(10, Math.min(90, base.y + 24))} // a left-to-right dungeon: just behind floor 1 (2026-10-16)
     : {x: Math.max(6, Math.min(94, base.x - 12)), y: Math.max(10, Math.min(90, base.y + 16))};
-  const p = decorPos(map.id, '~exit', def), key = map.nodes[Math.max(0, idx)] && map.nodes[Math.max(0, idx)].key;
-  const tip = 'Way out — back to ' + parent.name;
+  const p = decorPos(map.id, tut ? '~exit-t2' : '~exit', def), key = map.nodes[Math.max(0, idx)] && map.nodes[Math.max(0, idx)].key;
+  const tip = tut ? TX('map.tu2-exit-tip', {n: mapNumberOf(parent.id) ?? 0, name: parent.name}) : 'Way out — back to ' + parent.name;
   return `<svg class="map-spot-links map-exit-link" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line ${key ? `data-a="${escapeAttr(key)}" data-b="~exit"` : ''} x1="${base.x}" y1="${base.y}" x2="${p.x}" y2="${p.y}"/></svg>
     <button type="button" class="map-cave map-subexit ${isCaveSubMap(map) ? 'is-cave' : 'is-open'}" id="mapSubExit" data-lkey="~exit" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
-      ${isCaveSubMap(map) ? `<span class="mse-rays" aria-hidden="true"></span><span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth mse-mouth" aria-hidden="true"></span><span class="mse-lamp" aria-hidden="true"></span>` : `<span class="mse-home" aria-hidden="true">${parent.icon || '🗺️'}</span>`}<span class="msc-name">↑ Way out</span></button>`;
+      ${isCaveSubMap(map) ? `<span class="mse-rays" aria-hidden="true"></span><span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth mse-mouth" aria-hidden="true"></span><span class="mse-lamp" aria-hidden="true"></span>` : `<span class="mse-home" aria-hidden="true">${parent.icon || '🗺️'}</span>`}<span class="msc-name">${tut ? '↑ ' + escapeHtml(TX('map.tu2-exit', {n: mapNumberOf(parent.id) ?? 0})) : '↑ Way out'}</span></button>`;
 }
 // Map curiosities (2026-10-12): small things on each map that start a conversation. At most two per map, counting the
 // Outskirts well and the Hollow's chat cave. The first visit plays it; later visits say a short line. A reply can open a menu.
@@ -61339,9 +61402,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
-        ${(()=>{ const scD = skirmishCastle(draft), L = scD.layers; overlay._shieldShown = L.slice(); /* 2026-10-18 (X3): the inputs show the Shield rule's value unless this fight overrides it */ return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend><p class="se-shield-rule panel-sub">Rule: Map ${nodeMapNumber(draft)} × ${shieldRuleMult(draft.kind)} = <b>${scD.rule}</b> Shield${scD.overridden ? ` · <b>overridden</b> <button type="button" class="btn small" id="seShieldRule">↺ Use the rule</button>` : ' (change a value to override it for this fight)'}</p>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
+        ${draft.kind === 'tutorial' ? '' /* 2026-10-23 (TU2): a tutorial's bramble has no Shield layers (startTutorialMatch never reads them) */ : (()=>{ const scD = skirmishCastle(draft), L = scD.layers; overlay._shieldShown = L.slice(); /* 2026-10-18 (X3): the inputs show the Shield rule's value unless this fight overrides it */ return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend><p class="se-shield-rule panel-sub">Rule: Map ${nodeMapNumber(draft)} × ${shieldRuleMult(draft.kind)} = <b>${scD.rule}</b> Shield${scD.overridden ? ` · <b>overridden</b> <button type="button" class="btn small" id="seShieldRule">↺ Use the rule</button>` : ' (change a value to override it for this fight)'}</p>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
-        <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
+        ${draft.kind === 'tutorial' ? '' /* 2026-10-23 (TU2): nor a bramble level; its Health is the Bramble Health field */ : `<label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>`}
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
         ${draft.kind === 'tutorial' ? '' : (()=>{ // 2026-10-21 (package ED, owner #7): this fight's enemy level (blank: the road curve), the level its preview and its fight use
           const bare = Object.assign({}, draft, {enemyLevel: null}); NODE_MAP_HINT.set(bare, mapId); const curve = roadEnemyLevelExact(bare), ovr = nodeEnemyLevelOverride(draft);
@@ -61395,7 +61458,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
                 return `<div class="se-dg-deck"><div class="se-dg-deck-head"><b>Bramble ${i + 1}</b><small>${i === 0 ? `the deck below · ${n} cards` : n ? `${n} cards` : 'keeps the deck it already has'}</small>${i === 0 ? '' : `<button type="button" class="btn small" data-wave-deck="${i}">🃏 ${n ? 'Edit' : 'Give it a deck'}</button>${n ? `<button type="button" class="btn small ghost" data-wave-clear="${i}" title="Use the deck it already has">✕</button>` : ''}`}</div>
                   ${n ? `<div class="se-deck-stacks se-dg-strip">${ids.sort(deckSortFn('cost')).map(id=> `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), dk[id], '×' + dk[id])}</span>`).join('')}</div>` : ''}</div>`; }).join('')}</div>`; })()}
           </fieldset>`; })() : ''}
-        <div class="se-pick-field"><span class="se-pick-label">Bramble</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the bramble gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain bramble')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>${draft.kind === 'tutorial' ? `<label class="se-tut-hp" title="The rival bramble's health in this tutorial (blank: the tutorial editor's number)">Bramble HP<input id="seTutHp" type="number" min="1" max="500" placeholder="${(tutorialCfg.rivalHp||6) + (draft.stage === 2 ? 2 : 0)}" value="${draft.tutHp != null ? escapeAttr(draft.tutHp) : ''}"></label>` : ''}
+        <div class="se-pick-field"><span class="se-pick-label">Bramble</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the bramble gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain bramble')} ${draft.kind === 'tutorial' ? '' /* 2026-10-23 (TU2): a tutorial's Health is the field below, not the bramble's own */ : `<small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small>`}</span><span class="se-pick-go">Change ›</span>`; })()}</button></div>${draft.kind === 'tutorial' ? `<label class="se-tut-hp" title="${escapeAttr(TX('ui.tu2-tut-hp-tip'))}">${escapeHtml(TX('ui.tu2-tut-hp'))}<input id="seTutHp" type="number" min="1" max="500" placeholder="${(tutorialCfg.rivalHp||6) + (draft.stage === 2 ? 2 : 0)}" value="${draft.tutHp != null ? escapeAttr(draft.tutHp) : ''}"><small class="tu2-hp-fight">${escapeHtml(TX('ui.tu2-tut-hp-fight', {n: brambleHp(Number(draft.tutHp) > 0 ? Number(draft.tutHp) : (tutorialCfg.rivalHp||6) + (draft.stage === 2 ? 2 : 0))}))}</small></label>` : '' /* 2026-10-23 (TU2): what the fight shows (BRAMBLE_SCALE halves every bramble) */}
         <div class="se-wide se-leaders"><div class="se-leaders-head"><b>👑 Leaders</b><label class="se-inline">How many<select id="seLeaderCount" aria-label="Number of leaders">${[0,1,2,3,4,5].map(n=> `<option value="${n}" ${n===leaderSlots?'selected':''}>${n}</option>`).join('')}</select></label><small>the CPU may bring each one out once${(()=>{ if(draft.leaders && draft.leaders.length) return ''; try{ const a = skirmishLeadersOf(draft, mapId)[0], d = a && getCardDefs()[a]; return d ? ` · none picked: from Map ${SKIRMISH_LEADER_FROM_MAP} the showcase card (${escapeHtml(d.name)}) leads` : ''; }catch(e){ return ''; } })()}</small></div>
           <div class="se-leader-slots">${Array.from({length: leaderSlots}, (_, k)=>{ const id = (draft.leaders||[])[k], d = id && getCardDefs()[id]; return `<div class="se-slot${d ? '' : ' is-empty'}"><button type="button" class="se-slot-btn" data-leader-slot="${k}" title="${d ? 'Change' : 'Choose'} leader ${k+1}">${d ? cardTileHTML(d, {inPlay:true}) : `<span class="se-slot-plus">＋</span><small>Leader ${k+1}</small>`}</button>${d ? `<button type="button" class="se-x" data-leader-rm="${k}" aria-label="Remove leader ${k+1}">✕</button>` : ''}</div>`; }).join('') || '<small class="panel-sub">No leaders. Pick a number above to add slots.</small>'}</div></div>
 
@@ -61562,7 +61625,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
         const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
         const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED)
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel','tutHp'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED) // + tutHp (2026-10-23, TU2: a blank Bramble Health used to snap back to the map's 9 / 11)
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -63315,9 +63378,9 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"tutorial", kind:"tutorial", stage:1, name:"Tutorial", icon:"🎓", hqHp:28, flavor:"One guided fight that teaches the basics.", requires:[], fixedPos:{"x":16,"y":64}, deck:{}, tutHp:9 },
       { key:"tutorial2", kind:"tutorial", stage:2, name:"Tutorial II", icon:"🎓", hqHp:28, flavor:"Your leader joins you. Clear it to open the Outskirts.", requires:["tutorial"], fixedPos:{"x":34,"y":40}, deck:{}, tutHp:11 },
-      { key:"T-2", code:"T-2", kind:"skirmish", name:"The Odd Lot", icon:"🃏", deck:{"bee-knight":2,"dynamite-packrat":2,"caustic-scorpion":2,"gull-thief":2,"rockslide-ram":2,"toucan-courier":2,"earthworm":4}, firstPack:"bronze", flavor:"A travelling show of the strangest cards on the road. Win and they pay you in a pack.", requires:["tutorial2"], fixedPos:{x:52, y:62} },
-      { key:"T-3", code:"T-3", kind:"skirmish", lesson:"rank", name:"Ranks and Challenges", icon:"🏅", deck:{"otter-kit":1,"otter-paddler":3,"meadow-rabbit":1,"pond-trout":3,"worker-ant":3,"badger-berserker":2,"thornwood-palisade":3,"burrow-rabbit":2}, flavor:"Win without a scratch. The cleaner the win, the better the rank.", requires:["T-2"], fixedPos:{x:68, y:38} },
-      { key:"T-4", code:"T-4", kind:"elite", name:"The Final Exam", icon:"🎓", shieldOverride:53, deck:{"rockslide-ram":2,"scree-goat":2,"eagle-sharpshooter":2,"ash-cloud-condor":1,"golden-eagle-diver":2,"burrow-rabbit":4,"badger-berserker":2,"trash-panda-trickster":2,"dynamite-packrat":1,"toucan-courier":2}, flavor:"Nobody passes this one by accident.", requires:["T-3"], fixedPos:{"x":86,"y":58} },
+      { key:"T-2", code:"T-3" /* 2026-10-23 (TU2): shown T-3, key kept */, kind:"skirmish", name:"The Odd Lot", icon:"🃏", deck:{"bee-knight":2,"dynamite-packrat":2,"caustic-scorpion":2,"gull-thief":2,"rockslide-ram":2,"toucan-courier":2,"earthworm":4}, firstPack:"bronze", flavor:"A travelling show of the strangest cards on the road. Win and they pay you in a pack.", requires:["tutorial2"], fixedPos:{x:52, y:62} },
+      { key:"T-3", code:"T-4" /* 2026-10-23 (TU2) */, kind:"skirmish", lesson:"rank", name:"Ranks and Challenges", icon:"🏅", deck:{"otter-kit":1,"otter-paddler":3,"meadow-rabbit":1,"pond-trout":3,"worker-ant":3,"badger-berserker":2,"thornwood-palisade":3,"burrow-rabbit":2}, flavor:"Win without a scratch. The cleaner the win, the better the rank.", requires:["T-2"], fixedPos:{x:68, y:38} },
+      { key:"T-4", code:"T-5" /* 2026-10-23 (TU2) */, kind:"elite", name:"The Final Exam", icon:"🎓", shieldOverride:53, deck:{"rockslide-ram":2,"scree-goat":2,"eagle-sharpshooter":2,"ash-cloud-condor":1,"golden-eagle-diver":2,"burrow-rabbit":4,"badger-berserker":2,"trash-panda-trickster":2,"dynamite-packrat":1,"toucan-courier":2}, flavor:"Nobody passes this one by accident.", requires:["T-3"], fixedPos:{"x":86,"y":58} },
     ]},
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 5 is cleared (afterMapCleared "mw"); its fights count as Map 5 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
   // 2026-10-22 (package DV, owner 00:43: "make them accessible after a certain future map is complete. Don't have to be sequential, an early submap could be unlocked later on but a later submap be unlocked just 1 map after"): opens once Map 12 is cleared (was Map 5); its fights count as Map 12 (shieldMap). docs/map-divvy-2026-10-22.md
@@ -63561,7 +63624,13 @@ function endlessDungeon(cfg){
   return {id: cfg.id, sub: true, parent: cfg.parent, endless: true, axis: cfg.axis === 'x' ? 'x' : 'y', entry: cfg.entry, name: cfg.name, icon: cfg.icon, blurb: cfg.blurb, sequential: true, nodes,
     preview: !!cfg.preview};
 }
-CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8', entry:{x:88, y:16, after:'6-8', label:'Murgle Mayhem'},
+// The daily dungeons are hidden from players (2026-10-23, package TU2, owner AR-2: "Hide for now, note in notes. In fact hide both daily
+// dungeons require future balancing anyway. We havent even decided what special thing they give."): Murgle Mayhem, the Undercroft and
+// the Long Burrow are `preview` maps, the same switch the Long Burrow used before its release: no entrance on their parent map, no
+// stop on the World map, no Dungeons tab, no 🗝️ key button for players; Admin Mode still sees and opens all of them. Climbs, best
+// floors and keys in a save are untouched. Backlog: docs/action-items.md (decide what they give, rebalance, then set this to false).
+const DAILY_DUNGEONS_HIDDEN = true;
+CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8', preview: DAILY_DUNGEONS_HIDDEN, entry:{x:88, y:16, after:'6-8', label:'Murgle Mayhem'},
   name:'Murgle Mayhem', icon:'🐸', bossName:'The Murgle King', bossIcon:'👑', floors:50, baseHq:40,
   blurb:'A sinkhole of bog water under the Swampmire that goes down further than anyone has counted. Something down there keeps sending the frogs back up.',
   flavor:'More frogs. Angrier frogs.', bossFlavor:'Every tenth floor something bigger is waiting in the reeds.',
@@ -63575,7 +63644,7 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8',
 // see its slot as "Coming soon" (not a lock they could meet). Releasing it is this one switch: set LONG_BURROW_RELEASED to true and
 // it opens for players once they reach the Rimefire Caldera (Dungeons tab, World map and the key button all follow `preview`).
 const LONG_BURROW_RELEASED = true; // 2026-10-18 (user: "Release long_burrow.")
-CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:!LONG_BURROW_RELEASED, entry:{x:50, y:50, label:'The Long Burrow'},
+CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:!LONG_BURROW_RELEASED || DAILY_DUNGEONS_HIDDEN /* 2026-10-23 (TU2) */, entry:{x:50, y:50, label:'The Long Burrow'},
   name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
   blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',
   flavor:'More diggers. Deeper setts.', bossFlavor:'Every tenth sett belongs to someone bigger, and they heard you coming.',
@@ -63603,7 +63672,7 @@ function undercroftTheme(f){
   return {key: map.id, name: map.name, icon: map.icon, deck: el.deck, rules: el.rules || null, bossDeck: boss ? boss.deck : null, bossRules: boss ? (boss.rules || null) : null};
 }
 { const T = (k, en)=> (typeof TX === 'function' ? TX(k) : en);
-  CONQUEST_MAPS.push(endlessDungeon({id:'muc', code:'UC', mapNumber:11, parent:'m10', entry:{x:84, y:72, label: T('map.uc-entry', 'The Undercroft')},
+  CONQUEST_MAPS.push(endlessDungeon({id:'muc', code:'UC', mapNumber:11, parent:'m10', preview: DAILY_DUNGEONS_HIDDEN /* 2026-10-23 (TU2) */, entry:{x:84, y:72, label: T('map.uc-entry', 'The Undercroft')},
     name: T('map.uc-name', 'The Undercroft'), icon:'🏛️', bossName: T('map.uc-boss', 'The Vault Warden'), bossIcon:'👑', floors:50, baseHq:50,
     blurb: T('map.uc-blurb', 'Vaults under the Arena’s sand. Every three floors the doors open onto another land.'),
     flavor: T('map.uc-flavor', 'The next door grinds open.'), bossFlavor: T('map.uc-boss-flavor', 'Every tenth floor the warden of the vaults comes down to meet you.'),
@@ -66120,6 +66189,7 @@ function renderConquestSubTab(body){
   // for everyone; only the layout editor may look elsewhere. A save whose progress shows Tutorial II won gets its flag back first.
   healTutorial2Flag();
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
+  { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1'; } // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
   setTimeout(maybeOfferDeckSwap, 600);
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
@@ -66462,7 +66532,9 @@ function renderConquestSubTab(body){
     showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
   mainEl.querySelectorAll('[data-curio]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitCuriosity(b.dataset.curio, b); }));
   { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitSmallCave(c); }); }
-  { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; leaveSubMap(map, body); }); }
+  { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return;
+      if(map.id === 'mtut'){ healTutorial2Flag(); if(!loadTutorialDone()) saveTutorialDone(); if(!loadTutorial2Done()) saveTutorial2Done(); } // 2026-10-23 (TU2): the full map's flags come with the exit (they ride the next progress push; a forced push here re-drew the Tutorial map over the walk out)
+      leaveSubMap(map, body); }); }
   { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitWanderer(w); }); }
   mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
   if(conquestSubZoom === 'grow'){ conquestSubZoom = null;
@@ -67080,8 +67152,9 @@ function claimRaidReward(def, claim){
   // total raid rank A or better (RaidM.RAID_TICKET_GRANT_RANK) pays RAID_TICKET_GRANT Raid Tickets, shown on the claim screen
   const tRank = RaidM.raidTotalRank ? RaidM.raidTotalRank(claim.mine || 0) : null;
   const tGrant = kill && tRank && RaidM.raidTotalRankAtLeast(tRank, RaidM.RAID_TICKET_GRANT_RANK) ? (RaidM.RAID_TICKET_GRANT || 1) : 0;
-  if(tGrant){ addRaidTicketItems(tGrant); spec.rewards.push({kind:'item', id:'raidTicket', icon: raidTicketItemIcon(), amount:'+' + tGrant, label: TX('results.raid-ticket-grant', {raidRank: tRank}), weight:4});
-    if(!screen) setTimeout(()=>{ try{ showToast(TX('toast.raid-ticket-granted', {raidRank: tRank}), 'ok'); }catch(e){} }, 2000); }
+  // 2026-10-23 (package TU2, owner RK1): it is a Bonus Raid Ticket (its own item, the gold ring); the claim screen's total rank badge says why
+  if(tGrant){ addRaidBonusTickets(tGrant); spec.rewards.push({kind:'item', id:'raidBonusTicket', icon: raidBonusTicketIcon(), amount:'+' + tGrant, label: raidBonusTicketName(), weight:4});
+    if(!screen) setTimeout(()=>{ try{ showToast(TX('toast.tu2-bonus-ticket-granted'), 'ok'); }catch(e){} }, 2000); }
   if(xpBarReady()){ const x0 = loadXp().xp; spec.xp = xpBarSpec(x0, x0 + xp); } // 2026-10-18 (RW follow-up): the claim screen's XP bar
   // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
   if(screen) showRaidClaimScreen(spec);
@@ -67211,7 +67284,7 @@ function raidHubHTML(){
     <div class="rh-head"><h2>🐙 ${escapeHtml(TX('ui.raid-hub-title'))}</h2>${raidTicketChipHTML(tickets, next)}</div>
     <p class="panel-sub">${escapeHtml(TX('ui.raid-hub-sub', {cap: RAID_POINTS_MAX}))}</p>
     ${tickets <= 0 ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())}</p>` : ''}
-    ${raidTicketItems() ? `<p class="r3-hint rk-use-row">${raidTicketUseBtnHTML()}</p>` : '' /* 2026-10-21 (package RK): Raid Tickets, past the cap too */}
+    ${raidTicketsHeld() /* 2026-10-23 (TU2) */ ? `<p class="r3-hint rk-use-row">${raidTicketUseBtnHTML()}</p>` : '' /* 2026-10-21 (package RK): Raid Tickets, past the cap too */}
     ${adminModeEnabled ? adminRaidTicketsHTML('hub') : '' /* 2026-10-21 (package AR): admin raid tickets */}
     ${claims.map(x=> `<div class="rh-claims"><b>${escapeHtml(x.def.name || x.def.id)}</b>${x.list.map((c, i)=> raidClaimRowHTML(c, i, x.def.id)).join('')}</div>`).join('')}
     <div class="rh-list">${live.map(raidHubCardHTML).join('')}</div>
@@ -68700,11 +68773,24 @@ function saveTutorial2Done(){ try{ localStorage.setItem(TUTORIAL2_KEY, '1'); }ca
 // onto a new device had T-0 won, a road of cleared maps, and Tutorial II "not won", and was sent back to the start map. A save whose
 // progress holds mtut:tutorial2, or any cleared fight off the Tutorial map (every road fight comes after Tutorial II), gets the flag.
 function healTutorial2Flag(){
-  try{ if(loadTutorial2Done() || !loadTutorialDone()) return false;
+  try{ if(loadTutorial2Done() && loadTutorialDone()) return false;
     const done = (loadConquestProgress().completed || []).map(String);
-    if(done.includes('mtut:tutorial2') || done.some(id=> !/^mtut:/.test(id))){ saveTutorial2Done(); return true; }
+    // 2026-10-23 (package TU2, owner 00:10: "There is a possible chance the player completes the tutorials but is stuck in the T1-T2 only
+    // map. In that world, there is no way to get out."): self-healing both ways. T-2 won (its flag, mtut:tutorial2, or any road fight)
+    // means T-1 was won too, so a lost T-1 flag comes back with it; the start map then never holds a player who finished both.
+    const t2 = loadTutorial2Done() || done.includes('mtut:tutorial2') || done.some(id=> !/^mtut:/.test(id));
+    if(!t2 || !(loadTutorialDone() || done.includes('mtut:tutorial') || loadTutorial2Done() || done.includes('mtut:tutorial2'))) return false;
+    if(!loadTutorialDone()) saveTutorialDone();
+    if(!loadTutorial2Done()) saveTutorial2Done();
+    return true;
   }catch(e){}
   return false;
+}
+// Both tutorials won (2026-10-23, TU2): the flags, or the progress that proves them.
+function tutorialPairDone(){
+  try{ const done = (loadConquestProgress().completed || []).map(String);
+    return (loadTutorialDone() || done.includes('mtut:tutorial')) && (loadTutorial2Done() || done.includes('mtut:tutorial2'));
+  }catch(e){ return false; }
 }
 setTimeout(healTutorial2Flag, 0); // once the whole script has run (the progress helpers' constants are declared further down)
 const TUTORIAL_SEED = 20261005; // the tutorial always plays the same, hand-checked run (2026-10-09: was 20261003, which lost as Otters once the rival bees gained Swarm; this one wins for every side pick in 6 rounds)
@@ -69088,6 +69174,55 @@ function textToDeck(txt){
   });
   return {deck: Object.keys(out).length ? out : null, bad};
 }
+// 2026-10-23 (package TU2, owner 00:10: "Im also not able to edit the tutorial bramble's HPs and rewards"). The rival bramble's Health
+// had two editors and one silently lost: the tutorial editor's "Rival bramble HP" (tutorialCfg.rivalHp; the live __cfg:tutorial row
+// holds 12 since 10-22) only counts when a tutorial fight has no tutHp of its own, and both fights carry one in CONQUEST_MAPS (9 and
+// 11), so that edit never reached a fight. The number is now the node's tutHp everywhere: the skirmish editor's Bramble Health and
+// these two fields both save it as a node edit (__cfg:map-nodes:mtut, published like any fight's), and tutorialCfg.rivalHp is only the
+// fallback for a fight whose Health is blanked.
+function tutorialNodeOfStage(st){ const mp = CONQUEST_MAPS.find(m=> m.id === 'mtut'); return mp ? mp.nodes.find(n=> n.kind === 'tutorial' && (n.stage === 2 ? 2 : 1) === (st >= 2 ? 2 : 1)) || null : null; }
+function tutorialRivalHpOf(node, st){ const h = Number(node && node.tutHp) || 0; return h > 0 ? h : ((tutorialCfg && tutorialCfg.rivalHp) || 6) + (st >= 2 ? 2 : 0); }
+function saveTutorialRivalHpFields(ov){
+  [1, 2].forEach(n=>{ const el = ov.querySelector('#teRivalHp' + n), tn = tutorialNodeOfStage(n); if(!el || !tn) return;
+    const v = Math.max(1, Math.min(500, Math.round(Number(el.value) || 0))); if(!(Number(el.value) > 0) || v === tutorialRivalHpOf(tn, n)) return;
+    saveNodeField('mtut', tn.key, 'tutHp', v); });
+}
+// The tutorial fights' first-clear cards (TU2): Part 1 pays tutorialCfg.rewards, Part 2 tutorialCfg.rewards2[side] (claimTutorialWin,
+// the after-win deck top-up), so ✏️ Edit rewards on a tutorial fight edits those lists and publishes them with the tutorial config.
+// It used to open the ordinary editor: "No reward cards yet", and a card added there moved its source to a node the tutorial never pays.
+function openTutorialRewardsEditor(mapId, nodeKey, node){
+  let overlay = document.getElementById('nodeRewardsOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'nodeRewardsOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const st = node.stage === 2 ? 2 : 1, sides = st === 2 ? ['otters', 'hummingbirds', 'both'] : [null];
+  let q = '', side = st === 2 ? (loadFactionChoice() || 'both') : null;
+  const listOf = sd=> st === 1 ? tutorialRewardIds().slice() : (tutorialRewards2Cfg()[sd] || []).filter(id=> getCardDefs()[id]);
+  const save = async (sd, ids)=>{ const next = Object.assign({}, tutorialCfg);
+    if(st === 1) next.rewards = ids; else next.rewards2 = Object.assign({}, tutorialRewards2Cfg(), {[sd]: ids});
+    tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); const pub = await publishTutorialCfg();
+    showToast(pub ? TX('toast.tu2-tut-rewards-published') : TX('toast.tu2-tut-rewards-saved'), 'ok'); };
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab === 'play' && !matchState) renderPlay(); };
+  const render = ()=>{
+    const defs = getCardDefs(), cur = listOf(side);
+    const matches = q.trim().length < 2 ? [] : Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isEquipmentDef(defs[id]) && !isEasterEgg(defs[id]) && !cur.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 24);
+    overlay.innerHTML = `<div class="modal node-rewards-modal tu2-tut-rewards" role="dialog" aria-label="${escapeAttr(TX('ui.tu2-tut-rw-title', {name: node.name}))}">
+      <div class="modal-head-row"><h2>✏️ ${escapeHtml(TX('ui.tu2-tut-rw-title', {name: node.name}))}</h2><button class="modal-close-btn" id="nrClose" aria-label="Close">✕</button></div>
+      <p class="panel-sub">${escapeHtml(conquestNodeLabel(mapId, nodeKey))}. ${escapeHtml(st === 1 ? TX('ui.tu2-tut-rw-sub1') : TX('ui.tu2-tut-rw-sub2'))} ${escapeHtml(cloudCardAdmin ? TX('ui.tu2-tut-rw-live') : TX('ui.tu2-tut-rw-local'))}</p>
+      ${st === 2 ? `<div class="facility-tabs" role="tablist">${sides.map(sd=> `<button type="button" role="tab" class="facility-tab ${sd === side ? 'on' : ''}" data-tu2-side="${sd}" aria-selected="${sd === side}">${escapeHtml(({otters: TX('ui.tu2-tut-rw-side-otters'), hummingbirds: TX('ui.tu2-tut-rw-side-hummingbirds'), both: TX('ui.tu2-tut-rw-side-both')})[sd])}</button>`).join('')}</div>` : ''}
+      <div class="nr-current">${cur.length ? cur.map((id, i)=>`<div class="nr-card">${cardTileHTML(defs[id], {inPlay:true})}<button type="button" class="btn small ghost nr-remove" data-i="${i}">Remove</button></div>`).join('') : `<p class="panel-sub">${escapeHtml(TX('ui.tu2-tut-rw-none'))}</p>`}</div>
+      <input data-text-filter autocomplete="off" type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}">
+      <div class="nr-results">${matches.map(id=>`<button type="button" class="nr-result" data-id="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span></button>`).join('')}</div>
+    </div>`;
+    overlay.hidden = false;
+    overlay.querySelector('#nrClose').onclick = close;
+    overlay.querySelectorAll('[data-tu2-side]').forEach(b=> b.onclick = ()=>{ side = b.dataset.tu2Side; render(); });
+    const search = overlay.querySelector('#nrSearch');
+    search.addEventListener('input', ()=>{ q = search.value; const pos = search.selectionStart; render(); const s2 = overlay.querySelector('#nrSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
+    overlay.querySelectorAll('.nr-result').forEach(b=> b.onclick = async ()=>{ await save(side, listOf(side).concat(b.dataset.id)); q = ''; render(); });
+    overlay.querySelectorAll('.nr-remove').forEach(b=> b.onclick = async ()=>{ const a = listOf(side); a.splice(+b.dataset.i, 1); await save(side, a); render(); });
+  };
+  overlay.onclick = e=>{ if(e.target === overlay) close(); };
+  render();
+}
 function openTutorialEditor(){
   let ov = document.getElementById('tutorialEditorOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'tutorialEditorOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
@@ -69105,7 +69240,7 @@ function openTutorialEditor(){
     <p class="panel-sub">Changes apply to the next tutorial that starts. ${cloudCardAdmin ? 'Save publishes them for every new player.' : 'You are not signed in as a cloud admin, so Save only changes this browser.'}</p>
     <div class="te-grid">
       <label title="At most ${TUTORIAL_MY_HP_MAX} (2026-10-18: the tutorial keeps your bramble very low)">Your bramble HP<input type="number" id="teMyHp" min="1" max="${TUTORIAL_MY_HP_MAX}" value="${Math.min(TUTORIAL_MY_HP_MAX, c.myHp||TUTORIAL_MY_HP_MAX)}"></label>
-      <label>Rival bramble HP<input type="number" id="teRivalHp" min="1" max="200" value="${c.rivalHp||30}"></label>
+      ${[1, 2].map(n=>{ const tn = tutorialNodeOfStage(n); return `<label title="${escapeAttr(TX('ui.tu2-te-hp-tip'))}">${escapeHtml(TX('ui.tu2-te-hp', {n}))}<input type="number" id="teRivalHp${n}" min="1" max="500" value="${tutorialRivalHpOf(tn, n)}"></label>`; }).join('') /* 2026-10-23 (TU2): one number per tutorial fight, the node's tutHp (was one "Rival bramble HP" the nodes' own 9 / 11 always beat) */}
       <label>Starting hand<input type="number" id="teHand" min="1" max="5" value="${c.handSize||3}"></label>
       <label>Seed<input type="number" id="teSeed" min="0" value="${c.seed||TUTORIAL_SEED}" title="The tutorial always plays the same draws for a given seed"></label>
     </div>
@@ -69165,7 +69300,7 @@ function openTutorialEditor(){
     const bad = my.bad.concat(rv.bad, my2.bad, rv2.bad, [$('teHl1').value.trim(), $('teHl2').value.trim()].filter(id=> id && !getCardDefs()[id]), stS.bad, stO.bad, stH.bad, stB.bad, rewards.filter(id=> !getCardDefs()[id]));
     if(bad.length){ $('teMsg').textContent = '⚠️ Unknown card ids: ' + bad.join(', '); return null; }
     const steps = {}; ov.querySelectorAll('[data-testep]').forEach(t=>{ const v = t.value.trim(); if(v) steps[t.dataset.testep] = v; });
-    return {myHp: Math.max(1, +$('teMyHp').value||12), rivalHp: Math.max(1, +$('teRivalHp').value||10), handSize: Math.max(1, Math.min(5, +$('teHand').value||3)), seed: (+$('teSeed').value>>>0) || TUTORIAL_SEED,
+    return {myHp: Math.max(1, +$('teMyHp').value||12), rivalHp: c.rivalHp, handSize: Math.max(1, Math.min(5, +$('teHand').value||3)), seed: (+$('teSeed').value>>>0) || TUTORIAL_SEED,
       rivalNames: {otters: $('teRival_otters').value.trim(), hummingbirds: $('teRival_hummingbirds').value.trim(), both: $('teRival_both').value.trim()},
       myDeck: my.deck, rivalDeck: rv.deck, myDeck2: my2.deck, rivalDeck2: rv2.deck, steps,
       highlight1: $('teHl1').value.trim(), highlight2: $('teHl2').value.trim(),
@@ -69174,10 +69309,10 @@ function openTutorialEditor(){
   };
   // 2026-10-12 (10:44, user: "Saving and publishing the tutorial editor doesnt update the deck preview ... pressing save in the deck
   // edit should close the deck edit after saving"): Save closes the editor and redraws the map editor's tutorial decks behind it.
-  $('teSave').onclick = async ()=>{ const next = read(); if(!next) return; tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); saveTutorialCfg(); const pub = await publishTutorialCfg();
+  $('teSave').onclick = async ()=>{ const next = read(); if(!next) return; saveTutorialRivalHpFields(ov); tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); saveTutorialCfg(); const pub = await publishTutorialCfg();
     close(); showToast(pub ? '🎓 Tutorial saved and published.' : '🎓 Tutorial saved in this browser.', 'ok'); try{ if(window.__seRerender) window.__seRerender(); }catch(e){} };
   $('teReset').onclick = ()=>{ tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT); saveTutorialCfg(); openTutorialEditor(); };
-  $('teTest').onclick = ()=>{ const next = read(); if(!next) return; tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); saveTutorialCfg();
+  $('teTest').onclick = ()=>{ const next = read(); if(!next) return; saveTutorialRivalHpFields(ov); tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); saveTutorialCfg();
     close(); GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
     startTutorialMatch(1, null, {adminTest:true}); };
 }
@@ -69339,7 +69474,7 @@ function guideToTutorial2(){
   const go = ()=>{
     const el = document.querySelector('.map-node[data-nodekey="tutorial2"]');
     if(!el){ if(++tries < 12) setTimeout(go, 300); return; }
-    try{ showCoachTip({id:'go-tutorial2', action:true, gate:true, ring:true, text:TX('coach.tap-t-1-then-press-fight'), anchor:()=> document.querySelector('.map-node[data-nodekey="tutorial2"]')}, el); }catch(e){}
+    try{ showCoachTip({id:'go-tutorial2', action:true, gate:true, ring:true, text:TX('coach.tap-t-2-then-press-fight') /* 2026-10-23 (TU2): Tutorial II reads T-2 */, anchor:()=> document.querySelector('.map-node[data-nodekey="tutorial2"]')}, el); }catch(e){}
     // 2026-10-12 (10:57, user: "it should ask you to click twice. The play button should also be highlighted, out of the
     // darkness"): once Part 2 is selected, the second tap is the Fight button, lit in the spotlight.
     let n = 0; const watch = setInterval(()=>{ n++;
@@ -69608,6 +69743,19 @@ function tutorialStarterCopiesLevel0(deck){
     saveCardCopies(); }catch(e){}
 }
 // TUTORIAL_LEVEL0_UT:END
+// Faction cards start at Level 0 (2026-10-23, package TU2, owner N1: "Faction cards also start at level 0."): cardBaseLevel still gives a
+// faction card Level 1 (its printed stats are its Level 1 stats, as the budget prices them), so, like the tutorial's copies, a new
+// copy of a faction card comes as a Level 0 copy (c.lv0, and the hatchling mark while no copy is above 0) that the Nest trains to
+// Level 1 with Kibble. Only while the card has no copy above Level 0: a card you have already raised keeps its level. Copies owned
+// before today are left as they are. The Wandering Traveller (no faction) still comes at Level 1.
+function isFactionLevel0Def(d){ return !!(d && d.faction && d.id !== 'wandering-traveller' && !d.token && d.cardType !== 'materia' && d.cardType !== 'equipment'); }
+function factionCopyLevel0(id){
+  try{ if(!copyModelOn()) return; const d = copyBaseDef(id); if(!isFactionLevel0Def(d)) return;
+    const a = myCardCopies[id] || [], c = a[a.length - 1]; if(!c) return;
+    if(a.slice(0, -1).some(x=> x && copyLevel(id, x) > 0) || (myCardLevels[id] | 0) > cardBaseLevel(d)) return;
+    c.level = 0; c.lv0 = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
+    tutorialHatchlingIfAllZero(id); saveCardCopies(); }catch(e){}
+}
 // Win/loss modal copy for tutorial-mode matches -- pulled out of renderMatchUI's big template
 // literal so the stage-number/reward-callout logic reads clearly on its own.
 // 2026-10-07 playtest: a 0–30 loss was titled "So Close!". It says so only when it was close.
@@ -87983,7 +88131,7 @@ function forgeStatsAt(id, level){
   const b = forgeBaseDef(id) || {}; const st = statsAtLevel(b, level);
   return {attack: b.attack!=null ? st.attack : null, health: b.health!=null ? st.health : null};
 }
-function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false)); }
+function forgeReady(id){ const L = getCardLevel(id); if(PROMOTION_PAGE_LIVE && promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false)); }
 function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
   const defs = getCardDefs();
@@ -89121,8 +89269,14 @@ function wireForgeRaid(root){
 const PROMOTE_COST = {gold:300, dust:100}; // ×5 with the forge economy v2 income (2026-10-11)
 let forgePromotePick = null;
 function promotionTargets(id){ const d = getCardDefs()[id], defs = getCardDefs(); return d && Array.isArray(d.promotesTo) ? d.promotesTo.filter(t=> defs[t]) : []; }
+// 2026-10-23 (package TU2, owner E10: "No. Combining or converting cards to different cards is a concept we havent explored. HOWEVER,
+// please prepare this tab. This is not a subtap - it will be its own feature page!"): Promotion leaves the Forge's card panel for its
+// own page (renderPromotionPage, tab 'promotion'), which says plainly that it is not built yet. A card that lists promotesTo shows a
+// pointer to that page here instead of the Promote controls; forgePromote and its data stay in the code, unused, for the real page.
+const PROMOTION_PAGE_LIVE = false;
 function forgePromotionHTML(id, sel, L){
   const targets = promotionTargets(id); if(!targets.length) return '';
+  if(!PROMOTION_PAGE_LIVE) return `<div class="forge-promote is-soon"><div class="fp-head">⬆ ${escapeHtml(TX('ui.tu2-promo-title'))} <span class="tu2-soon-chip">${escapeHtml(TX('ui.tu2-coming-soon'))}</span></div><p class="forge-note">${escapeHtml(TX('ui.tu2-promo-forge-note'))}</p><button type="button" class="btn small" data-go-promotion>${escapeHtml(TX('ui.tu2-promo-open'))}</button></div>`;
   const defs = getCardDefs(), at = Math.max(1, Number(sel.promoteAt)||3);
   if(L < at) return `<div class="forge-promote is-locked"><div class="fp-head">⬆ ${escapeHtml(_t('Promotion at Lv {n}', {n:at}))}</div><p class="forge-note">${targets.map(t=> `${defs[t].icon||''} ${escapeHtml(defs[t].name)}`).join(' · ')}</p></div>`;
   if(!targets.includes(forgePromotePick)) forgePromotePick = null;
@@ -89511,6 +89665,17 @@ function raidTicketItemName(){ return TX('ui.raid-ticket-item-name'); }
 // the item's icon: the raid's 🎫 with a small 🐙, so it isn't taken for the Rename Ticket beside it
 function raidTicketItemIcon(){ return '<span class="rk-tk-ico">🎫<i aria-hidden="true">🐙</i></span>'; }
 function raidTicketItems(){ try{ return Math.max(0, Math.floor(Number(localStorage.getItem(RAID_TICKET_ITEM_KEY)) || 0)); }catch(e){ return 0; } }
+// The Bonus Raid Ticket (2026-10-23, package TU2, owner RK1: "call it like Bonus Raid Ticket and it has a different outline"): the ticket a
+// fallen raid's claim pays at total rank A or better is its own item, held apart from the bought / found Raid Tickets (so it never counts
+// toward the Shop's cap of RAID_TICKET_ITEM_CAP) and drawn with a gold ring (.rk-tk-ico.is-bonus). It does the same thing: one extra
+// raid fight, past the cap too. Using a ticket spends a Bonus one first.
+const RAID_BONUS_TICKET_KEY = 'bramblewood_raid_bonus_tickets_v1';
+PROGRESS_KEYS.push(RAID_BONUS_TICKET_KEY);
+function raidBonusTicketName(){ return TX('ui.tu2-bonus-ticket-name'); }
+function raidBonusTicketIcon(){ return '<span class="rk-tk-ico is-bonus">🎫<i aria-hidden="true">🐙</i></span>'; }
+function raidBonusTickets(){ try{ return Math.max(0, Math.floor(Number(localStorage.getItem(RAID_BONUS_TICKET_KEY)) || 0)); }catch(e){ return 0; } }
+function addRaidBonusTickets(n){ const v = Math.max(0, raidBonusTickets() + Math.round(Number(n) || 0)); try{ localStorage.setItem(RAID_BONUS_TICKET_KEY, String(v)); }catch(e){} return v; }
+function raidTicketsHeld(){ return raidTicketItems() + raidBonusTickets(); }
 function addRaidTicketItems(n){ const v = Math.max(0, raidTicketItems() + Math.round(Number(n) || 0)); try{ localStorage.setItem(RAID_TICKET_ITEM_KEY, String(v)); }catch(e){} return v; }
 // a drop or a gift: +n, with the toast (why: 'found' or a raid rank for the A-rank grant)
 function grantRaidTicketItems(n, rank){
@@ -89520,8 +89685,8 @@ function grantRaidTicketItems(n, rank){
 }
 // Spends one item for one raid ticket. The regen clock is left as it ran (a stack that reaches the cap rests it, as settleRaidPoints does).
 function useRaidTicketItem(){
-  if(raidTicketItems() < 1) return false;
-  settleRaidPoints(); addRaidTicketItems(-1);
+  if(raidTicketsHeld() < 1) return false;
+  settleRaidPoints(); if(raidBonusTickets() > 0) addRaidBonusTickets(-1); else addRaidTicketItems(-1); // 2026-10-23 (TU2): a Bonus one first
   myCurrencies.raidPoints = (Number(myCurrencies.raidPoints) || 0) + 1;
   if(myCurrencies.raidPoints >= RAID_POINTS_MAX) myCurrencies.raidPointsUpdatedAt = new Date().toISOString();
   saveCurrencies();
@@ -89564,8 +89729,8 @@ if(typeof document !== 'undefined') document.addEventListener('click', e=>{
 });
 // "Use a Raid Ticket (2 left)", where the raid's tickets are short and on the Inventory's shelf; '' when you hold none
 function raidTicketUseBtnHTML(cls){
-  const n = raidTicketItems(); if(!n) return '';
-  return `<button type="button" class="btn small ${cls || ''}" data-raid-use-ticket>${raidTicketItemIcon()} ${escapeHtml(TX('ui.raid-ticket-use', {n}))}</button>`;
+  const n = raidTicketsHeld(); if(!n) return ''; // 2026-10-23 (TU2): + Bonus Raid Tickets (spent first, shown with their ring)
+  return `<button type="button" class="btn small ${cls || ''}" data-raid-use-ticket>${raidBonusTickets() ? raidBonusTicketIcon() : raidTicketItemIcon()} ${escapeHtml(TX('ui.raid-ticket-use', {n}))}</button>`;
 }
 if(typeof document !== 'undefined') document.addEventListener('click', e=>{
   const b = e.target && e.target.closest && e.target.closest('[data-raid-use-ticket]'); if(!b) return;
@@ -89794,7 +89959,7 @@ function renderInventory(){
   const mat = slots(shown(['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale','abyssal-ink','strange-materia'].filter(id=> defs[id]).map(id=> ({key:id, icon:defs[id].icon, count:ownedCount(id), name:defs[id].name, sub:''})), 'mat'), 'No Materia yet. It comes from duplicates and the road.');
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> e.kind !== 'nurture' && nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
   const crystals = slots(shown(MATERIA_KINDS.map(k=> ({key:k.id, icon:k.icon, count:st[k.id]||0, name:k.name + ' crystal', sub:'for Enchanting'})), 'cry'), 'No crystals yet.');
-  const wallet = Object.keys(CURRENCY_META).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
+  const wallet = Object.keys(CURRENCY_META).filter(currencyShown /* 2026-10-23 (TU2): no Krooni for players */).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
   // 2026-10-15 (user: "The first 'explanation card' in inventory does not need to be included. Self explanatory." and "Don't show
   // the 'Scale trail' in inventory."): the heading card is a screen-reader heading only, and the Scale Trail is off the shelf.
   root.innerHTML = `<div class="inv-page">
@@ -89812,8 +89977,9 @@ function renderInventory(){
       <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc},
-      {key:'raid', icon:raidTicketItemIcon(), count:raidTicketItems(), name:raidTicketItemName(), sub:TX('ui.raid-ticket-item-desc', {cap: RAID_POINTS_MAX})}], 'tk'); // 2026-10-21 (package RK): + the Raid Ticket, with its Use button
-      const notes = [tk.some(t=> t.key === 'tk:rename') ? TX('ui.rename-ticket-inv-note') : '', tk.some(t=> t.key === 'tk:raid') ? TX('ui.raid-ticket-inv-note') : ''].filter(Boolean).join(' · ');
+      {key:'raid', icon:raidTicketItemIcon(), count:raidTicketItems(), name:raidTicketItemName(), sub:TX('ui.raid-ticket-item-desc', {cap: RAID_POINTS_MAX})},
+      {key:'raidbonus', icon:raidBonusTicketIcon(), count:raidBonusTickets(), name:raidBonusTicketName(), sub:TX('ui.tu2-bonus-ticket-desc')}], 'tk'); // 2026-10-21 (package RK): + the Raid Ticket, with its Use button // 2026-10-23 (TU2): + the Bonus Raid Ticket
+      const notes = [tk.some(t=> t.key === 'tk:rename') ? TX('ui.rename-ticket-inv-note') : '', tk.some(t=> t.key === 'tk:raid' || t.key === 'tk:raidbonus') ? TX('ui.raid-ticket-inv-note') : ''].filter(Boolean).join(' · ');
       return tk.length ? `<section class="panel inv-sec"><h3>🎫 Tickets <small>${escapeHtml(notes)}</small></h3><div class="inv-slots">${slots(tk, '')}</div>${raidTicketUseBtnHTML('rk-inv-use')}</section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">🪺 Nest</button>' /* 2026-10-17 (user): "🪺 Nest", like "⚒️ Blacksmith" */ : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
@@ -90746,7 +90912,7 @@ function shelfPrice(p, qty){ return qty > 1 ? packSetCost(p, qty) : {gold:p.cost
 function shelfPriceHTML(c){ return [c.gold ? `${mapleLeafIconHTML()}${c.gold}` : '', c.gems ? `🍂${c.gems}` : ''].filter(Boolean).join(' '); }
 function shelfDetailHTML(p, qty){
   const st = shelfStatus(p), c = shelfPrice(p, qty), poolN = packCardPool(null, p.pool||1).length;
-  const what = p.advanced ? `🃏 <b>5 cards</b> at 10× the foil chance, <b>+5 bonus cards</b>` : `🃏 <b>${p.cards||3} cards</b> each${p.newGuaranteed ? ', 1 new guaranteed' : ''}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon ? ` · 👑 ${p.kroon} Krooni` : ''}`;
+  const what = p.advanced ? `🃏 <b>5 cards</b> at 10× the foil chance, <b>+5 bonus cards</b>` : `🃏 <b>${p.cards||3} cards</b> each${p.newGuaranteed ? ', 1 new guaranteed' : ''}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon && currencyShown('kroon') /* 2026-10-23 (TU2) */ ? ` · 👑 ${p.kroon} Krooni` : ''}`;
   const from = (p.pool||1)===99 ? `Strange cards that come out of no other pack (${poolN}).` : `From Pack ${p.pool||1} (${poolN} cards).`;
   return `<b class="sd-name">${escapeHtml(p.name)}${qty > 1 ? ` ×${qty}` : ''}</b>
     <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${Math.round(p.foilChance*100)}% foil per card.` : ''}</span>
@@ -91418,21 +91584,26 @@ function wireNestGrid(root, ownedIds, defs){
 function renderNest(){
   const root = document.getElementById('view-nest');
   const defs = getCardDefs();
-  const ownedIds = Object.keys(defs).filter(id=> myCardCopies[id] && myCardCopies[id].length>0 && defs[id].cardType!=='materia').sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||''));
-  const totalCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].length, 0);
-  const foilCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].filter(c=>c.foil).length, 0);
+  // 2026-10-23 (package TU2, owner N1: "Nest only lists baby/eggs or level 0 base cards (in two tabs) - these are like 'recruits'"): the
+  // Nest no longer repeats the Codex (every owned card). 🥚 Eggs and babies: the nests and what is in them. 🌱 Level 0: the cards with a
+  // Level-0 copy (fresh hatchlings, Base cards, the tutorial's copies, faction cards: nestHasLevel0Copy), the ones a nest trains to
+  // Level 1. ⬆️ Upgrades as before. An old 'cards' tab reads as 'eggs'.
+  if(nestTab !== 'recruits' && nestTab !== 'upgrades') nestTab = 'eggs';
+  const ownedIds = nestTab === 'recruits' ? Object.keys(defs).filter(id=> myCardCopies[id] && myCardCopies[id].length>0 && defs[id].cardType!=='materia' && !defs[id].token && !defs[id].test && nestHasLevel0Copy(id)).sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||'')) : [];
+  const eggN = nestState().eggs.filter(e=> e.kind !== 'nurture').length; // in the nests, the basket and your pack
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
-      <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
-      ${facilityTabsHTML('nest', nestTab, [['cards', TX('ui.nest-tab-cards')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
-      ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestKeeperHTML()}
+      <p class="panel-sub">${escapeHtml(nestTab === 'recruits' ? TX('ui.tu2-nest-recruits-sub', {n: ownedIds.length}) : TX('ui.tu2-nest-eggs-sub', {n: eggN}))}</p>
+      ${facilityTabsHTML('nest', nestTab, [['eggs', TX('ui.tu2-nest-tab-eggs')], ['recruits', TX('ui.tu2-nest-tab-recruits')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08); 2026-10-23 (TU2): two recruit tabs */}
+      ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestTab === 'eggs' ? nestKeeperHTML() : `<div class="tu2-recruit-head"><p class="panel-sub">${escapeHtml(TX('ui.tu2-nest-recruits-help', {kibble: myCurrencies.kibble||0}))}</p>${ownedIds.length ? `<button type="button" class="btn small primary" id="nestTrainBtn">🌱 ${escapeHtml(TX('ui.tu2-nest-train'))}</button>` : ''}</div>`}
       <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
     </div>
-    <div class="grid-view" id="nestGrid" ${nestTab === 'upgrades' ? 'hidden' : ''}>${
-      nestTab === 'upgrades' ? '' : ownedIds.length ? nestGridHTML(ownedIds, defs)
-      : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own any cards yet — win fights or open packs to start your collection.</p>
-          <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
+    <div class="grid-view" id="nestGrid" ${nestTab !== 'recruits' ? 'hidden' : ''}>${
+      nestTab !== 'recruits' ? '' : ownedIds.length ? nestGridHTML(ownedIds, defs)
+      : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">${escapeHtml(TX('ui.tu2-nest-recruits-none'))}</p>
+          <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button></div></div>`
     }</div>`;
+  { const tb = root.querySelector('#nestTrainBtn'); if(tb) tb.onclick = ()=> openNestPicker(); }
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   if(nestTab === 'upgrades'){ wireStamina(root, renderNest); root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest();
     if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
@@ -91462,13 +91633,23 @@ function renderNest(){
 // here and there in the Nest instead, changing the 'Cards you've won…' line"): the per-card hover
 // title is gone; what it said now takes turns with the Nest's own description.
 const NEST_TIPS = [
-  "Cards you've won or pulled from packs. Your starter cards are in your deck.",
+  '🥚 Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.', // 2026-10-23 (TU2): the Nest lists recruits only (was "Cards you've won or pulled from packs...")
   '🔍 Tap a card to see it up close and spin it in the light.',
   '🃏 A taller stack means more copies of that card.',
   '🔨 Take a card to the Forge to raise its attack and health.',
   '👁️ Hover a card (or hold it on a phone) to see everything it does.',
-  '🎁 Packs, first clears and quest rewards all land here.',
+  '🦴 A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.', // 2026-10-23 (TU2): was "Packs, first clears and quest rewards all land here." 
 ];
+// The Promotion page (2026-10-23, package TU2, owner E10: "it will be its own feature page!"): not built yet, so the page says so and
+// offers nothing to press (the page bar's Back is the way out). Reached from the Forge's card panel, where Promotion used to sit.
+function renderPromotionPage(){
+  const root = document.getElementById('view-promotion'); if(!root) return;
+  root.innerHTML = `<div class="panel tu2-promo-page"><h2>⬆ ${escapeHtml(TX('ui.tu2-promo-title'))} <span class="tu2-soon-chip">${escapeHtml(TX('ui.tu2-coming-soon'))}</span></h2>
+    <div class="tu2-promo-art" aria-hidden="true"><span>🃏</span><i>→</i><span>✨</span></div>
+    <p>${escapeHtml(TX('ui.tu2-promo-p1'))}</p>
+    <p class="panel-sub">${escapeHtml(TX('ui.tu2-promo-p2'))}</p></div>`;
+}
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('[data-go-promotion]'); if(!b) return; e.preventDefault(); switchTab('promotion'); });
 // Holographic foil (2026-10-03, effects experiment #1 — "(1) for ease immediately"). Pure CSS on the
 // real card (no WebGL): a rainbow band, a fine sparkle texture and a glare spot, blended with
 // colour-dodge so the art itself seems to catch the light. The pointer (or phone tilt) moves the
@@ -92602,7 +92783,7 @@ function openPackAnimation(pack, opened, opts){
   };
   // ---- 3. this pack's summary ----
   const footBits = o=>{
-    const bits = []; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`); if(pack.kroon) bits.push(`👑 +${pack.kroon} Krooni`);
+    const bits = []; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`); if(pack.kroon && !KROONI_RETIRED) bits.push(`👑 +${pack.kroon} Krooni`); // 2026-10-23 (TU2): none paid while retired
     if(o.leveledId && defs[o.leveledId]) bits.push(`⭐ ${escapeHtml(defs[o.leveledId].name)} reached Lv ${getCardLevel(o.leveledId)}`);
     if(o.bonus) bits.push(`🎁 ${_t('Bonus card: nothing Uncommon or better, so you get one more')}`);
     return bits;
@@ -92658,7 +92839,7 @@ function openPackAnimation(pack, opened, opts){
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
-    const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon) bits.push(`👑 +${kroon} Krooni`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
+    const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
       <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
@@ -94316,6 +94497,7 @@ function switchTab(tab){
   document.getElementById('view-deck').hidden = tab!=='deck';
   document.getElementById('view-shop').hidden = tab!=='shop';
   document.getElementById('view-nest').hidden = tab!=='nest';
+  { const vpr = document.getElementById('view-promotion'); if(vpr) vpr.hidden = tab!=='promotion'; } // 2026-10-23 (package TU2): Promotion, its own page
   { const vm = document.getElementById('view-market'); if(vm) vm.hidden = tab!=='market'; }
   document.getElementById('view-profile').hidden = tab!=='profile';
   document.getElementById('view-ranking').hidden = tab!=='ranking';
@@ -94342,6 +94524,7 @@ function switchTab(tab){
   if(tab==='deck') safeRender('DeckSection', renderDeckSection);
   if(tab==='shop') safeRender('Shop', renderShop);
   if(tab==='nest') safeRender('Nest', renderNest);
+  if(tab==='promotion') safeRender('Promotion', renderPromotionPage); // 2026-10-23 (package TU2)
   if(tab==='market') safeRender('FleaMarket', renderFleaMarket);
   if(tab==='profile') safeRender('Profile', renderProfile);
   if(tab==='ranking') safeRender('Ranking', renderRanking);
@@ -94640,7 +94823,10 @@ function triggerEntranceAnimation(instant){
     // long), but re-showing the Faction Choice screen (and its 15s countdown) on every reload would
     // silently re-roll the player's faction and restart the whole series from skirmish 1 every time
     // they closed the tab. needsFactionPick / needsTutorialResume below are mutually exclusive.
-    const needsFactionPick = !loadTutorialDone() && !loadFactionChoice() && !loadResumeSnapshot();
+    // 2026-10-23 (package TU2): a save whose progress shows both tutorials won gets its flags back first, so a lost flag never drops a
+    // finished player into the tutorial again (healTutorial2Flag's own setTimeout runs only after this)
+    try{ healTutorial2Flag(); }catch(eHeal){}
+    const needsFactionPick =!loadTutorialDone() && !loadFactionChoice() && !loadResumeSnapshot();
     const needsTutorialResume = !loadTutorialDone() && !!loadFactionChoice() && !loadResumeSnapshot();
     function enterTutorialFlow(){ try{ if(matchState) return; if(needsFactionPick && !loadFactionChoice()) showFactionScreen(); else if(needsTutorialResume) beginTutorialStage(loadTutorialStage()); }catch(eTut){ console.error('[Bramblewood] enterTutorialFlow failed, falling back to Home:', eTut); try{ switchTab('home'); }catch(eHome){} } }
     if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else if(!tryResumeAbandonedMatch()){ switchTab('home'); maybeRemindSignIn(); } clearWatchdog(); return; }

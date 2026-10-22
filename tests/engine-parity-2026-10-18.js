@@ -251,7 +251,7 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
   ok(R.cpuAiLevelOfMatch({mode:'tutorial'}) === 0 && R.cpuAiLevelOfMatch({mode:'ai'}) === 1 && R.cpuAiLevelOfMatch({mode:'conquest', aiLevel:2}) === 2, 'matches: the tutorial basic, others smart unless the fight set a level');
   ok(/<select id="seAi">/.test(src) && /'loopUnits','ai'\]\.forEach\(\(k,i\)=>\{ const val = v\(\[[^\]]*'seAi'\]\[i\]\)/.test(src), 'Edit skirmish: a Difficulty select (seAi) read into node.ai');
   // 2026-10-21 (package TT): package ED added 'enemyLevel' after 'ai' in the cleared-fields list
-  ok(/'rating','leaderGrant','ai','enemyLevel'\]\.forEach/.test(src) && /ai:'CPU difficulty'/.test(src), 'Edit skirmish: clearing Difficulty back to Auto is saved and listed like the other fields');
+  ok(/'rating','leaderGrant','ai','enemyLevel'(,'\w+')*\]\.forEach/.test(src) /* 2026-10-23 (TU2): + 'tutHp' after it */ && /ai:'CPU difficulty'/.test(src), 'Edit skirmish: clearing Difficulty back to Auto is saved and listed like the other fields');
   ok(/const aiLevel = cpuAiLevelForNode\(mapId, node\);/.test(src) && /rules: fightRules\(mapId, node\), aiLevel\}/.test(src), "startConquestMatch gives the engine the fight's level");
   // 2026-10-21 (package TT): package ED put 'matchUid' first in RESUME_FIELDS; 'aiLevel' is still saved
   ok(/m\.engine\.setAiLevel\(cpuAiLevelOfMatch\(m\)\)/.test(src) && /const RESUME_FIELDS = \['matchUid' \/\*[^*]*\*\/, 'aiLevel',/.test(src), "the CPU's turn applies the match's level (a resumed fight too)");

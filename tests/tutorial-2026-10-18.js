@@ -4,7 +4,7 @@
 //      of whatever is held) that keeps its look (mounted with mountDragGhost, no desaturating filter) and glides to the open slot;
 //   2. picking a side goes straight into the tutorial fight (it starts under the fading picker; Home, with the level, never shows);
 //   4. the tutorial's board is tinted green (bf-tutorial);
-//   5. while T-2…T-4 are off the Tutorial map, T-0 and T-1 stand centred; once the map opens up they slide to their real spots once;
+//   5. while T-3…T-5 are off the Tutorial map, T-1 and T-2 stand centred (labels since 2026-10-23, TU2; were T-2…T-4, T-0 and T-1); once the map opens up they slide to their real spots once;
 //   7. the tutorial's card windows close by fading out while shrinking a little (94%, 280 ms), and simply go with reduced motion.
 // Browser checks with screenshots were run by hand (see docs/CHANGELOG.md, package T).
 'use strict';
@@ -65,8 +65,8 @@ ok((mnp.match(/tutSideCentred\(map,/g) || []).length === 2, 'mapNodePositions ce
   const side = new Function('tutSideNodeHidden', 'tutPairCentred', 'conquestLayoutEdit', tc + '\nreturn tutSideCentred;')((m, n)=> hidden && /^T-/.test(n.key), pair, false);
   const c = side(map, pos), mx = (c[0].x + c[1].x)/2, my = (c[0].y + c[1].y)/2;
   ok(Math.abs(mx - 50) < 0.01 && Math.abs(my - 52) < 0.01, `during the tutorials the pair is centred (${mx}, ${my})`);
-  // 2026-10-22 (package TU, owner: "T1 and T2 side by side"): level, T-0 on the left (was: the pair kept its diagonal shape)
-  ok(c[0].y === c[1].y && c[0].x < c[1].x && c[1].x - c[0].x >= 20, 'the pair stands side by side, T-0 on the left');
+  // 2026-10-22 (package TU, owner: "T1 and T2 side by side"): level, T-1 on the left (was: the pair kept its diagonal shape)
+  ok(c[0].y === c[1].y && c[0].x < c[1].x && c[1].x - c[0].x >= 20, 'the pair stands side by side, T-1 on the left');
   ok(c[2] === pos[2], 'the hidden fights keep their spots');
   hidden = false;
   ok(side(map, pos) === pos, 'once the map opens up every fight is at its real spot');

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // 2026-10-14 (user: "The internal Map IDs have not been edited to the current layout. (1-1 is still called f-1)."): every fight's
 // key is now the code the player sees, and old saves / cloud rows are translated on load. This checks that
-//   1. every fight's key equals its displayed code (the tutorials keep 'tutorial' / 'tutorial2', shown T-0 / T-1);
+//   1. every fight's key equals its displayed code (the tutorials keep 'tutorial' / 'tutorial2', shown T-1 / T-2; 2026-10-23, TU2: the
+//      Tutorial map's fights read T-1 … T-5 in map order while their keys stay tutorial, tutorial2, T-2, T-3, T-4);
 //   2. LEGACY_NODE_KEYS covers every fight of every renamed map, is one-to-one, and never maps onto another old key;
 //   3. a sample save from before the rename (progress, ranks, first wins, layout, skirmish edits, pawn, resume, idle sweep,
 //      card overlay, cloud rows) comes out on the new keys, and migrating twice changes nothing.
@@ -27,11 +28,12 @@ const codeOf = new Function('CONQUEST_MAPS', [fn('mainConquestMaps'), fn('mapNum
 let fights = 0;
 CONQUEST_MAPS.forEach(m=> m.nodes.forEach(n=>{
   if(n.kind === 'tutorial') return; fights++;
-  ok(n.key === codeOf(m.id, n.key), `${m.id}: key ${n.key} is shown as ${codeOf(m.id, n.key)}`);
+  ok(m.id === 'mtut' ? codeOf(m.id, n.key) === 'T-' + (m.nodes.indexOf(n) + 1) : n.key === codeOf(m.id, n.key), `${m.id}: key ${n.key} is shown as ${codeOf(m.id, n.key)}`);
   (n.requires||[]).forEach(r=> ok(m.nodes.some(x=> x.key === r), `${m.id}:${n.key} requires ${r}, which is on the map`));
 }));
 CONQUEST_MAPS.filter(m=> m.entry && m.entry.after).forEach(m=>{ const p = CONQUEST_MAPS.find(x=> x.id === m.parent); ok(p && p.nodes.some(n=> n.key === m.entry.after), `${m.id}: entrance opens after ${m.entry.after} on ${m.parent}`); });
 ok(fights > 250, `all fights checked (${fights})`);
+{ const tm = CONQUEST_MAPS.find(m=> m.id === 'mtut'); ok(tm && tm.nodes.map(n=> codeOf('mtut', n.key)).join(' ') === 'T-1 T-2 T-3 T-4 T-5', `the Tutorial map reads T-1 … T-5 (${tm && tm.nodes.map(n=> codeOf('mtut', n.key)).join(' ')})`); }
 
 // --- the table covers every fight of every renamed map
 const T = M.LEGACY_NODE_KEYS;

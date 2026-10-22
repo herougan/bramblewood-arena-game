@@ -4,6 +4,40 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-10-23 (package DOC: the owner's 10-23 00:10 answers)
 - 78 decisions closed in `docs/decisions.json` with his quotes (the ones that need building name their package: TU2, RW3, EN, SX, AR3); T3, S1, S2 wait for "apply it", S3 and S4 for a Chrome session; A1, A2 and G2 rewritten with the detail he asked for. The build list is at the top of `docs/action-items.md`.
+## 2026-10-23 (package TU2: the Tutorial's way out, tutorial Health and rewards editable, T-1 to T-5, the Nest's recruits, Promotion page, Krooni retired, daily dungeons hidden, the Bonus Raid Ticket)
+- Owner answers of 00:10, items 1, 2, 15, 74, 85, 84, 24, 41 (TU-1, N1, E10, E9, AR-2, RK1).
+- **The Tutorial's way out (item 1):** once T-1 and T-2 are both won (their flags, or `mtut:tutorial` / `mtut:tutorial2` in the progress:
+  `tutorialPairDone`), the Tutorial map shows "↑ To Map 0" beside T-2; taking it sets both tutorial flags and walks out to the
+  Outskirts. **Self-healing:** `healTutorial2Flag` now restores either flag from the other or from the progress, and runs before the
+  boot decides whether to drop the player into the tutorial, so a finished player whose flag was lost lands on the map, not in T-1 again.
+- **Tutorial Health and rewards (item 2). Root cause:** the Tutorial editor's "Rival bramble HP" (`tutorialCfg.rivalHp`, live at 12 since
+  10-22 15:23) only counts for a tutorial fight with no Health of its own, and both fights carry `tutHp` 9 / 11 in `CONQUEST_MAPS`, so
+  that edit never reached a fight; a blanked Bramble Health in Edit skirmish snapped back to 9 / 11; Edit rewards opened the ordinary
+  node editor ("No reward cards yet"), while the tutorial pays from `tutorialCfg.rewards` / `rewards2`. Now one number per fight: the
+  node's `tutHp`, edited in Edit skirmish (Bramble Health, with "In the fight: N", since every bramble is halved) and in the Tutorial
+  editor (Part 1 / Part 2), saved as a fight edit (`__cfg:map-nodes:mtut`) like any fight's; blank falls back for real. Edit rewards on
+  a tutorial fight edits its reward cards (Part 2 per side) and publishes them with the tutorial config. The tutorial editor no longer
+  shows Bramble level or Shield layers (the tutorial never read them). No live data changed (call TU2-3).
+- **T-1 to T-5 (item 15, TU-1):** the Tutorial map's fights read T-1 … T-5 (were T-0 … T-4). Keys stay (`tutorial`, `tutorial2`, `T-2`,
+  `T-3`, `T-4`; saves store `mtut:<key>`), so no migration; the labels come from `skirmishCode` and the nodes' `code`. The coach tip names
+  T-2 (`coach.tap-t-2-then-press-fight`, 12 packs). Tests and `docs/action-items.md` follow.
+- **The Nest lists recruits only (item 74, N1):** tabs 🥚 Eggs and babies (the nests) and 🌱 Level 0 (cards with a Level-0 copy: fresh
+  hatchlings, Base cards, the tutorial's copies, faction cards; a Train one button), plus ⬆️ Upgrades; it no longer lists every owned
+  card. **Faction cards start at Level 0:** a new copy of a faction card comes as a Level 0 copy (`factionCopyLevel0`, like the
+  tutorial's), trained to Level 1 in a nest; a card already raised keeps its level; copies owned before are unchanged (call TU2-2).
+- **Promotion (item 85, E10):** its own page (`#view-promotion`, tab `promotion`), "Coming soon", a short honest description, no
+  controls. The Forge's card panel, where Promotion lived, points to it instead of the Promote controls (`PROMOTION_PAGE_LIVE = false`;
+  the Worker Ant's working Promotion is hidden, its code and data kept; call TU2-4).
+- **Krooni retired (item 84, E9):** none earned (`grantCurrency`), not in the wallet, not on the Highcrest Case's shop or opening lines;
+  saved balances untouched, Admin Mode still shows them (`KROONI_RETIRED`, `currencyShown`; call TU2-5).
+- **Daily dungeons hidden (item 24, AR-2):** Murgle Mayhem, the Undercroft and the Long Burrow are `preview` maps for players
+  (`DAILY_DUNGEONS_HIDDEN`): no entrance on their map, no World map stop, no Dungeons tab, no key button; Admin Mode opens them; saves
+  keep climbs and keys (call TU2-1; the backlog row is the DOC package's).
+- **The Bonus Raid Ticket (item 41, RK1):** a fallen raid's claim at total rank A or better pays a Bonus Raid Ticket, its own item
+  (`bramblewood_raid_bonus_tickets_v1`, in the progress blob, outside the Shop's cap of 9) with a gold ring outline (`.rk-tk-ico.is-bonus`);
+  it works as a Raid Ticket and is spent first. Inventory shows both.
+- Texts: 38 TX keys (`*.tu2-*`), two Nest tips, translated in the 12 packs (`tools/i18n_2026_10_23_tu2.py`). Test `tests/tu2-2026-10-23.js`
+  (new); `node-ids`, `gates`, `tu-2026-10-22`, `tutorial-2026-10-18` follow the labels and the hidden Long Burrow. Screens: `docs/screens/TU2/`.
 
 ## 2026-10-22 (release: batch 10-22b)
 - Shipped together: BF9, ST, GD, GD2 (entries below).

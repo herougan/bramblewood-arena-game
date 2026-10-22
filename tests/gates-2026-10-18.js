@@ -69,7 +69,10 @@ ok(!/Map 22 is not charted/.test(src), 'no text still calls Map 22 uncharted');
 ok(!/Map 22 is still a Reserved map/.test(src), 'the Long Burrow comment no longer calls Map 22 Reserved');
 ok(/^const LONG_BURROW_RELEASED = true;/m.test(src), 'the Long Burrow is released (2026-10-18, user: "Release long_burrow.")');
 const mlb = CONQUEST_MAPS.find(m=> m.id === 'mlb');
-ok(mlb && !mlb.preview && mlb.parent === 'm22' && charted(main.indexOf(CONQUEST_MAPS.find(m=> m.id === 'm22'))), 'the Long Burrow is open on the charted Map 22');
+// 2026-10-23 (package TU2, owner AR-2): every daily dungeon is hidden from players for now (DAILY_DUNGEONS_HIDDEN), so the released Long
+// Burrow is a preview again while that switch is on; it still sits on the charted Map 22
+const ddHidden = /^const DAILY_DUNGEONS_HIDDEN = true;/m.test(src);
+ok(mlb && (ddHidden ? mlb.preview : !mlb.preview) && mlb.parent === 'm22' && charted(main.indexOf(CONQUEST_MAPS.find(m=> m.id === 'm22'))), 'the Long Burrow is on the charted Map 22, open unless the daily dungeons are hidden');
 ok(/preview:!LONG_BURROW_RELEASED/.test(src), 'the switch drives the Long Burrow\'s preview flag');
 
 // the Flea Market sits on Map 31: nothing shows a lock for it
