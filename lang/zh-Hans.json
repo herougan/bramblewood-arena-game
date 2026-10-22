@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "从第2回合起，闪电每回合击中每方随机一个单位，造成{n}点伤害。",
  "From round 2, one random unit a side falls Asleep for the round.": "从第2回合起，每方随机一个单位在该回合陷入睡眠。",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "从第2回合起，树根抓住每方随机一个单位：该回合蛛网缠身。",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "第 2 回合起，地面每回合灼烧双方各一个随机单位，造成 {n} 点火焰伤害。",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "第 2 回合起，城墙随机射击一个进攻方单位，造成 1 点。头盔可以挡开。",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "第 2 回合起，单位会窒息：造成的一切 −1 攻击。抗火、干燥和飞行单位不受影响。",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "第 2 回合起。喷发后几率重置，彗星对每个单位造成 1 点火焰伤害（抗火单位减半）。",
@@ -1107,7 +1106,6 @@
  "Language": "语言",
  "Laurels": "桂冠",
  "Laurels: earned only in Arena fights against other players": "桂冠：只能在与其他玩家的竞技场战斗中获得",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "熔岩可能淹没随机一列：非飞行单位受到 1 点火焰伤害。",
  "Leader": "领袖",
  "Learned {v1}.": "学会了{v1}。",
  "Learned. Still a preview: not in fights yet.": "已学会。仍是预览：战斗中暂不可用。",
@@ -1839,7 +1837,6 @@
  "Two players, one device": "双人同屏",
  "Type Tags (biome/animal) filter": "类型标签(生态/动物)筛选",
  "Units defeated": "击败单位",
- "Units that resist fire are spared.": "抗火单位不受影响。",
  "Unlock all features": "解锁所有功能",
  "Unlock your first Raid Boss.": "解锁你的第一个突袭首领。",
  "Unlocked": "已解锁",
@@ -2802,5 +2799,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "每方每回合可出的牌数。后手的一方荆棘丛 +1 护盾，别无其他",
  "The dummy in front is Blind: the Backstab lands.": "正前方的假人失明了：背刺命中。",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "它周围的 8 个位置：左、右、前、后和 4 个斜角（突袭中的各排也算）。",
- "Eggs and babies": "蛋与幼崽"
+ "Eggs and babies": "蛋与幼崽",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "酷热，等级 2：每轮双方各有 3 个随机单位受到 1 点火焰伤害。耐热单位不受影响。",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "酷热，等级 3：每轮双方各有 4 个随机单位受到 1 点火焰伤害。耐热单位不受影响。",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "熔岩可能淹没随机一列：非飞行单位受到 2 点火焰伤害。",
+ "A line of fire: 1 to every unit": "一道火线：每个单位 1 点",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 一道火线扫过焦土。",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "它从左到右穿过双方前线。抗火单位和登山者不受影响。",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "从第 2 轮起，每轮有一道火线扫过战场：它碰到的每个单位受到 1 点火焰伤害。",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "每轮开始时，双方各有 2 个随机单位受到 1 点火焰伤害。耐热单位不受影响。"
 }

@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "Mula round 2, tinatamaan ng kidlat ang isang random na unit bawat panig nang {n}.",
  "From round 2, one random unit a side falls Asleep for the round.": "Mula round 2, isang random na unit bawat panig ang Matutulog sa round na iyon.",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "Mula round 2, sinusunggaban ng ugat ang isang random na unit bawat panig: Webbed sa round na iyon.",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "Mula round 2, sinusunog ng lupa ang isang random na unit sa bawat panig nang {n} pinsalang apoy bawat round.",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "Mula round 2, pinapana ng mga pader ang random na umaatakeng unit nang 1. Kayang ilihis ito ng Helmet.",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "Mula round 2, nasasakal ang mga unit: −1 Atake sa lahat ng ibinibigay nila. Nakahihinga ang matibay sa apoy, Tuyo at lumilipad.",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "Mula round 2. Pagkatapos ng pagsabog, bumabalik sa simula ang tsansa, at tinatamaan ng mga kometa ang bawat unit nang 1 apoy (kalahati sa matibay sa apoy).",
@@ -1107,7 +1106,6 @@
  "Language": "Wika",
  "Laurels": "Laurel",
  "Laurels: earned only in Arena fights against other players": "Laurel: nakukuha lang sa mga laban sa Arena kontra ibang manlalaro",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "Maaaring bahain ng lava ang random na column: 1 pinsalang apoy sa hindi lumilipad.",
  "Leader": "Pinuno",
  "Learned {v1}.": "Natutunan ang {v1}.",
  "Learned. Still a preview: not in fights yet.": "Natutunan. Preview pa lang: wala pa sa mga laban.",
@@ -1838,7 +1836,6 @@
  "Two players, one device": "Dalawang manlalaro, isang device",
  "Type Tags (biome/animal) filter": "Salain ayon sa tag (biome/hayop)",
  "Units defeated": "Mga unit na natalo",
- "Units that resist fire are spared.": "Ligtas ang mga unit na matibay sa apoy.",
  "Unlock all features": "I-unlock ang lahat ng feature",
  "Unlock your first Raid Boss.": "I-unlock ang una mong Raid Boss.",
  "Unlocked": "Nabuksan",
@@ -2801,5 +2798,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Mga card na maaaring laruin ng bawat panig bawat turno. Ang pangalawang panig ay may +1 Kalasag sa dawag nito, at wala nang iba",
  "The dummy in front is Blind: the Backstab lands.": "Bulag ang dummy sa harap: tumatama ang Saksak-Talikod.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "ang 8 puwesto sa paligid nito: kaliwa, kanan, harap, likod at ang 4 na pahilis (pati ang mga hanay ng raid).",
- "Eggs and babies": "Mga itlog at sanggol"
+ "Eggs and babies": "Mga itlog at sanggol",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Nakapapaso, level 2: bawat round, 3 random na yunit sa bawat panig ang tatanggap ng 1 pinsalang apoy. Ligtas ang mga yunit na matibay sa init.",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Nakapapaso, level 3: bawat round, 4 na random na yunit sa bawat panig ang tatanggap ng 1 pinsalang apoy. Ligtas ang mga yunit na matibay sa init.",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "Maaaring bahain ng lava ang random na column: 2 pinsalang apoy sa hindi lumilipad.",
+ "A line of fire: 1 to every unit": "Linya ng apoy: 1 sa bawat yunit",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 Dumaan ang linya ng apoy sa nasusunog na lupa.",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "Tumatawid ito sa dalawang unahang hanay mula kaliwa pakanan. Ligtas ang mga yunit na matibay sa apoy at ang mga Mountain Climber.",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "Mula round 2, may linya ng apoy na dumadaan sa larangan bawat round: 1 pinsalang apoy sa bawat yunit na madaanan nito.",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "Sa simula ng bawat round, 2 random na yunit sa bawat panig ang tatanggap ng 1 pinsalang apoy. Ligtas ang mga yunit na matibay sa init."
 }

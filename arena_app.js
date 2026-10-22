@@ -2386,7 +2386,7 @@ function liveAmountValue(mode, liveCard){
 const CLOUDY_TEXT = 'Cloud shadows drift over the field. By day the clouds halve the Diurnal bonus (rounded down).';
 const FIELD_TEXT = {
   frozen:   {name:'Frigid', text:'At the start of every round, one random card on each side gets +1 Wait.'},
-  heatwave: {name:'Scorching', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
+  heatwave: {name:'Scorching', text:TX('ui.fx-scorching1')}, // 2026-10-23 (FX3): the real rule (was "every unit takes 1"; it is 2 random units a side)
   rain:     {name:'Spring Rain', text:'At the start of every round, every unit heals 2.'},
   fog:      {name:'Thick Fog', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
   moon:     {name:'Full Moon', text:'It stays night while the moon is up.'},
@@ -17622,7 +17622,14 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
   // fights: one random unit a side takes 2 fire damage a round in elites, 3 in the boss fights, 5 against the world boss.
   // The boss and the world boss surge +2/+4 when they are cast, and the world boss's side digs the Stone and Metal it needs.
   if(VOLCANO_MAPS.has(mid) && node){ const k = node.kind || '';
-    if(r.eruption == null) r.eruption = k === 'worldboss' ? 5 : /boss/.test(k) ? 3 : /elite|champion|dungeon/.test(k) ? 2 : 0;
+    // 2026-10-23 (package FX3, owner 01:57 note 7: "2 for single target or higher if rare and single-target. (max 3)"): this number is the
+    // volcano Eruption's hit where the fight has volcano odds (elites 2, boss fights 3; the world boss 3, was 5). Without odds it only turns
+    // Scorched Ground on, whose line of fire burns every unit for 1 (the engine's scorchSweep).
+    if(r.eruption == null) r.eruption = /boss/.test(k) ? 3 : /elite|champion|dungeon/.test(k) ? 2 : 0;
+    // One ground fire a fight (FX3, owner 01:57 note 7: "The burning from scorched ground seems to be hitting twice"): Map 20's six elite and
+    // boss fights and 22-7 set Scorching (field heatwave) themselves AND got this automatic Scorched Ground, so two round-start burns played
+    // on the same units in the same upkeep with the same 🔥 number. Scorched Ground's line of fire (every front unit, 1) is the one kept.
+    if(Number(r.eruption) > 0 && !(r.volcano || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null) && r.field === 'heatwave' && !(node.rules && Number(node.rules.eruption) > 0)){ delete r.field; delete r.heatLevel; r.scorchedOverScorching = true; }
     if(r.bossSurge == null && /^(finalboss|boss|worldboss)$/.test(k)) r.bossSurge = {atk:2, hp:4};
     if(r.enemyOre == null && k === 'worldboss') r.enemyOre = {stone:1, metal:1, metalEvery:2};
     // 2026-10-17: the glow's uneven Day/Night, and Ashy ground after the volcano's Eruption (where a fight gives the volcano odds).
@@ -17677,7 +17684,7 @@ function terrainSummary(t, rules){
   void bonus; void who; let txt = '';
   const er = rules && Number(rules.eruption) || 0;
   if(volcanoRulesOn(rules)){ const o = volcanoOddsOf(rules, 2); const hz = VOLCANO_HAZARDS.filter(h=> o[h.key] > 0).map(h=> `${h.name} (${volcanoChanceWord(rules, h.key)})`); if(hz.length) txt = `The mountain stirs: ${hz.join(', ')}.`; }
-  else if(er > 0) txt = scorchedGroundText(er);
+  else if(er > 0) txt = scorchedGroundText();
   return txt;
 }
 // Lantern light in the dark (2026-10-14, the Effects Lab's lantern, made safe for fights): in pitch-black and absolute
@@ -17795,12 +17802,14 @@ function volcanoOddsOf(r, round){ if(!volcanoRulesOn(r)) return null; const t = 
 // Scorched Ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed"): the old fixed
 // "Eruptions" (rules.eruption with no volcano odds). The volcano's Eruption hazard keeps its name.
 const SCORCHED_NAME = 'Scorched Ground';
-function scorchedGroundText(n){ return TX('ui.fx-scorched', {n}); } // 2026-10-18 (package D): terse; "resist fire" is in the Codex
+// 2026-10-23 (package FX3): the Eruption's hit, as the engine's volcanoSingleHit: 2, a fight's own number up to 3.
+function volcanoEruptionHit(r){ const n = Number(r && r.eruption); return n > 0 ? Math.min(3, n) : 2; }
+function scorchedGroundText(){ return TX('ui.fx-scorched'); } // 2026-10-18 (package D): terse; "resist fire" is in the Codex. 2026-10-23 (FX3): the line of fire, 1 to every unit; no number to pass
 const VOLCANO_HAZARDS = [
   // 2026-10-18 (package D): terse, since the row adds "Chance each round: …"; the rest is the Map Codex's (codex)
   {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> TX('ui.fx-lava-tide'), codex:TX('ui.fxx-lava-tide')},
   {key:'petrify', icon:'🪨', name:'Petrification', text:()=> TX('ui.fx-petrify'), codex:TX('ui.fxx-petrify')},
-  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> TX('ui.fx-eruption', {n: Number(r.eruption) > 0 ? Math.min(5, Number(r.eruption)) : 1}), codex:TX('ui.fxx-eruption')}, // default 1, at most 5 (FX2, 2026-10-22; was 2)
+  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> TX('ui.fx-eruption', {n: volcanoEruptionHit(r)}), codex:TX('ui.fxx-eruption')}, // default 2, at most 3 (FX3, 2026-10-23; FX2 had 1, at most 5)
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
 // Field effects 2 (2026-10-16, the user's field-effect curriculum notes): one text per effect, shared by the Environment cards
@@ -17860,7 +17869,7 @@ const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
 // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
 const TIDESPOUT_TEXT = TX('ui.fx-tide-spout'); // 2026-10-18 (package D): terse
-const FIELD2_SCORCHING3_TEXT ='Scorching, level 3: each round 4 random units on each side take 3 fire damage. Heat-resistant units are spared.';
+const FIELD2_SCORCHING3_TEXT = TX('ui.fx-scorching3'); // 2026-10-23 (FX3): 1 each (was 3)
 function fieldConditionRows(r){
   // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
   // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
@@ -17870,7 +17879,7 @@ function fieldConditionRows(r){
   if(volcanoRulesOn(r)){ const o = volcanoOddsOf(r, 2);
     const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
     VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`, h.codex); }); }
-  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`, TX('ui.fxx-scorched'));
+  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(), '', TX('ui.fx-scorched-short'), TX('ui.fxx-scorched')); // 2026-10-23 (FX3): was `Burns a unit a side for ${r.eruption}` (the map's 2 / 3 / 5)
   // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so."): a Sandstorm or Glass-storm brings Windy's wind (unless the fight sets one).
   const wind = r.wind || ((r.sandstorm || r.glassStorm) ? 'windy' : null);
   if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale, WIND_CODEX.gale);
@@ -18984,9 +18993,9 @@ function skirmishFieldChips(mapId, draft){
   if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field && (Number(x.rules.heatLevel)||1) === (Number(eff.heatLevel)||1)) || FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); } // + the Scorching level (2026-10-16)
   else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frigid (off)', 'The map would freeze this fight.');
   // (Terrain chips went with home ground, 2026-10-14: a terrain on its own does nothing to switch on or off.)
-  if(volcanoRulesOn(eff)){ const lv = VOLCANO_LEVELS[eff.volcano]; add('volcano', true, '🌋', `Volcano: ${lv ? lv.label : 'custom odds'}`, VOLCANO_HAZARDS.map(h=> `${h.name}: ${volcanoChanceWord(eff, h.key)}`).join(' · ') + (Number(eff.eruption) > 0 ? ` (eruptions deal ${eff.eruption})` : '') + '.'); }
-  else if(Number(eff.eruption) > 0) add('eruption', true, '🔥', `${SCORCHED_NAME} ${eff.eruption}`, scorchedGroundText(eff.eruption));
-  else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, `The ground would burn for ${auto.eruption}.`);
+  if(volcanoRulesOn(eff)){ const lv = VOLCANO_LEVELS[eff.volcano]; add('volcano', true, '🌋', `Volcano: ${lv ? lv.label : 'custom odds'}`, VOLCANO_HAZARDS.map(h=> `${h.name}: ${volcanoChanceWord(eff, h.key)}`).join(' · ') + (Number(eff.eruption) > 0 ? ` (eruptions deal ${volcanoEruptionHit(eff)})` : '') + '.'); }
+  else if(Number(eff.eruption) > 0) add('eruption', true, '🔥', SCORCHED_NAME, scorchedGroundText()); // FX3: no number (1 to every unit)
+  else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, scorchedGroundText());
   if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'Periodic High Tides.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
   if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', TIDESPOUT_TEXT); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
   if(eff.tideEvade) add('tideEvade', true, '🌊', 'Tide evade (test)', 'While the tide is in, Tide units are Evasive against attacks from units without Tide. Both sides.'); // 2026-10-16
@@ -19013,7 +19022,7 @@ function skirmishFxAddOptionsHTML(){
   const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name + (f.oneOff ? ' (one-off)' : ''))}</option>`; // one-off: meant for one fight (2026-10-16)
   const grp = (label, list)=> `<optgroup label="${escapeAttr(label)}">${list.map(o).join('')}</optgroup>`;
   const by = g=> FIELD_EFFECTS.filter(f=> !f.arenaOnly && g.includes(f.group));
-  const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🔥', name:SCORCHED_NAME + ' ' + n}))
+  const erupt = [1, 2, 3].map(n=> ({id:'eruption@' + n, icon: n === 1 ? '🔥' : '🌋', name: n === 1 ? SCORCHED_NAME : 'Volcano eruptions hit ' + n})) // FX3 (2026-10-23): Scorched Ground has no number; 2 / 3 is the Eruption's (max 3)
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
   return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', FIELD_EFFECTS.filter(f=> !f.arenaOnly && !['field', 'cloudy', 'lumber', 'gift', 'phase', 'mode'].includes(f.group)).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
@@ -29313,7 +29322,7 @@ const FXL_FIELDS = [
   {key:'swampFever', icon:'🤢', name:'Swamp Fever', text:()=> 'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', rules:{swampFever:50}, steps:['round', 'round'], units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Palisade', icon:'🪵', archetypes:['Structure']}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Two rounds; the Palisade beside it is a Structure and never catches it.'},
   {key:'freezing', icon:'🧊', name:'Freezing', text:()=> 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', rules:{freezing:true}, steps:[{spawn:'subject'}, 'round'], note:'The Specimen arrives frozen and sits out a round.'},
   {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
-  {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> 'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', rules:{field:'heatwave', heatLevel:2}},
+  {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> TX('ui.fx-scorching2') /* FX3: 1 each (was 2) */, rules:{field:'heatwave', heatLevel:2}},
   // Field effects 2 (2026-10-16): texts in FIELD2; each entry stages what makes its rule visible.
   {key:'scorching3', icon:'🔥', name:'Scorching III', text:()=> FIELD2_SCORCHING3_TEXT, rules:{field:'heatwave', heatLevel:3}},
   ...[
@@ -30880,18 +30889,18 @@ const FIELD_EFFECTS = [
   {id:'frost',     group:'field', icon:'❄️', name:'Frigid',         weird:2, cost:1, rules:{field:'frozen'}, text:'Frigid: each round one random card on each side gets +1 Wait.'},
   {id:'fog',       group:'field', icon:'🌫️', name:'Fog',            weird:2, cost:1, rules:{field:'fog'}, text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
   {id:'rain',      group:'field', icon:'🌧️', name:'Spring Rain',    weird:1, cost:1, rules:{field:'rain'}, text:'Spring Rain: every unit heals 2 at the start of each round.'},
-  {id:'heatwave',  group:'field', icon:'🔥', name:'Scorching',      weird:2, cost:1, rules:{field:'heatwave'}, text:'Scorching: every unit takes 1 damage at the start of each round.'},
+  {id:'heatwave',  group:'field', icon:'🔥', name:'Scorching',      weird:2, cost:1, rules:{field:'heatwave'}, text:TX('ui.fx-scorching1')}, // 2026-10-23 (FX3): the real rule
   {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:'Both sides gain 1 Lumber every 3 rounds.'},
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
-  {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:1}, text:'From round 2, the ground burns one random unit on each side for 1 fire damage every round.'}, // 1 (was 2; 2026-10-22, package FX2: a hazard every round averages at most 1)
+  {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:1}, text:TX('ui.fx-scorched')}, // 2026-10-23 (FX3): the line of fire // 1 (was 2; 2026-10-22, package FX2: a hazard every round averages at most 1)
   // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:TIDESPOUT_TEXT, editorOnly:true, oneOff:true}, // 2026-10-14
   {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:DARK_LEVEL_TEXT.dark, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D): the one Darkness line
   {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:DARK_LEVEL_TEXT.pitch, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D)
   // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
   // have a 50% to gain 1 poison."): built and offered here; no map carries them yet (docs/field-effects-and-map-gaps-2026-10-15.md).
-  {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', editorOnly:true},
+  {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:TX('ui.fx-scorching2') /* FX3: 1 each (was 2) */, editorOnly:true},
   {id:'freezing',  group:'freezing', icon:'🧊', name:'Freezing', weird:2, cost:1, rules:{freezing:true}, text:'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', editorOnly:true},
   {id:'swampfever',group:'swampFever', icon:'🤢', name:'Swamp Fever', weird:2, cost:1, rules:{swampFever:50}, text:'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', editorOnly:true},
   {id:'sandstorm', group:'sandstorm', icon:'🏜️', name:'Sandstorm', weird:2, cost:1, rules:{sandstorm:true}, text:'Attacks at units miss 1 in 4, except from Dry units.', editorOnly:true},
@@ -41125,7 +41134,7 @@ function logText(ev){
     case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='scorchedSweep' ? {cls:'', text: TX('ui.fx-scorched-sweep-log')} /* FX3 */ : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -42934,7 +42943,35 @@ function upkeepHoldMs(events, m){
   (events || []).forEach(ev=>{ if(!ev || ev.type === 'draw') return;
     ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : ev.type === 'wave' ? 1250 : 650); }); // + an Awash ride plays out (2026-10-17)
   const mult = (m && m.speedMult) || 1;
-  return ms ? Math.max(120, Math.round(Math.min(1600, ms) / mult)) : 0;
+  const sweep = (events || []).some(ev=> ev && ev.type === 'fieldTick' && ev.field === 'scorchedSweep') ? scorchSweepMs(m) + Math.round(450 / mult) : 0; // the line of fire (FX3)
+  return ms ? Math.max(sweep, Math.max(120, Math.round(Math.min(1600, ms) / mult))) : 0;
+}
+// Scorched Ground's line of fire (2026-10-23, package FX3, owner 01:57 note 3: "a line of fire moves from the left side to the right side. As
+// it touches a card, it takes fire damage."): the Effects Lab's Wildfire front (FX.B.wildfire, a flame band) crosses the battlefield, and each
+// unit's 🔥1 (DN's number) floats as the band reaches the middle of that card, not all at once. The engine already burned them all
+// (scorchSweep); this only times what you see. The cards are looked up when the band reaches them, so the upkeep's redraw doesn't lose
+// them; a card that died meanwhile keeps the place it had. Effects "none" or reduced motion: no band, the numbers float at once.
+const SCORCH_SWEEP_MS = 1600;
+function scorchSweepMs(m){ return Math.max(450, Math.round(SCORCH_SWEEP_MS / Math.max(1, (m && m.speedMult) || 1))); }
+let scorchSweepNow = null; // {t0, ms, left, width} of the band crossing now
+function scorchSweepVfx(ev){
+  const m = matchState; if(!m) return;
+  const bf = document.getElementById('battlefieldEl'), still = reducedMotion() || !fxAtLeast('low');
+  if(ev.field === 'scorchedSweep'){
+    const r = bf ? bf.getBoundingClientRect() : null; const ms = scorchSweepMs(m);
+    scorchSweepNow = r && r.width && !still ? {t0: performance.now(), ms, left: r.left, width: r.width} : null;
+    if(scorchSweepNow){ try{ const B = window.FX && window.FX.B; if(B && B.wildfire) B.wildfire(bf, {host: bf, duration: ms / 1000}); }catch(e){} }
+    try{ SoundKit.fireIgnite ? SoundKit.fireIgnite() : SoundKit.boom && SoundKit.boom(); }catch(e){}
+    return;
+  }
+  const el0 = boardCardEl(ev.uid), r0 = el0 ? el0.getBoundingClientRect() : null, sw = scorchSweepNow;
+  const land = ()=>{ const el = boardCardEl(ev.uid), r = el ? el.getBoundingClientRect() : r0; if(!r) return;
+    const host = fxHostAt(el || el0, 1900, r);
+    try{ dnFloat(host, ev.dmg, {type:'heat', mods: ev.mods, fit:true}); }catch(e){}
+    if(el){ try{ const F = window.SkillFX; if(F && F.scorchMark && !still) F.scorchMark(el); }catch(e){} try{ updateCardHpDisplay(ev.uid); }catch(e){} } };
+  if(!sw || !r0){ land(); return; }
+  const at = Math.max(0, Math.min(1, (r0.left + r0.width / 2 - sw.left) / sw.width)) * sw.ms - (performance.now() - sw.t0);
+  setTimeout(land, Math.max(0, Math.round(at)));
 }
 function showUpkeepChip(){
   hideUpkeepChip();
@@ -44945,7 +44982,8 @@ function renderVfxForEvent(ev){
     if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, '🤢 +1☠', 'poison'); SoundKit.poisonApply(); }catch(e){} }
     else { if(rc) rc.frozen = Math.max(rc.frozen||0, 1); if(el) try{ floatText(el, '🧊 Frozen', 'debuff'); SoundKit.freezeChime && SoundKit.freezeChime(); }catch(e){} }
     try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
-  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
+  if(ev.type==='fieldTick' && (ev.field === 'scorchedSweep' || ev.field === 'scorched')){ try{ scorchSweepVfx(ev); }catch(e){} } // the line of fire (FX3, 2026-10-23)
+  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing', 'scorched', 'scorchedSweep'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : (ev.dmg ? dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.freeze ? 'cold' : 'heat'), mods: ev.mods}) : floatText(el, `🌧️+${ev.heal}`, 'heal')); }catch(e){} /* DN2: <type><number><mark> (fieldGlyph was the source) */ // Immolation's burn is a fire number (2026-10-16)

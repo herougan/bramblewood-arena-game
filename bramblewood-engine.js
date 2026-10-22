@@ -803,7 +803,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (the first round of each new day) lets both sides draw a card. Nocturnal cards hit +1 at night, Diurnal by day.
   const FIELDS = {
     frozen:   {name:'Frigid', icon:'❄️', text:'At the start of every round, one random unit on each side gets +1 Wait (more at higher levels). Units weak to cold also take 1 damage.'},
-    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every round, two random units on each side take 1 fire damage (more at higher levels). Heat-resistant units are spared; units weak to heat take double.'},
+    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every round, two random units on each side take 1 fire damage (more units at higher levels, still 1 each). Heat-resistant units are spared; units weak to heat take double.'}, // FX3 (2026-10-23)
     rain:     {name:'Spring Rain', icon:'🌧️', text:'At the start of every round, every unit heals 2.'},
     fog:      {name:'Thick Fog', icon:'🌫️', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
     // 2026-10-14 (user: "Night/Day ... Not brought up by playing a card"): the Full Moon no longer makes it night. While it is up
@@ -850,6 +850,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (their chances run up to every round). A map's own number is capped at 5.
   const HAZARD_HIT_MAX = 5, LANDSLIDE_DMG = 3, VOLCANO_HIT = 1;
   function hazardHit(v, dflt){ const n = Number(v) > 0 ? Number(v) : dflt; return Math.min(HAZARD_HIT_MAX, n); }
+  // 2026-10-23 (package FX3, owner 01:57 note 7: "volcano's effects haven't been scaled down - to deal 1 damage for every turn ones, 2 for
+  // single target or higher if rare and single-target. (max 3)"): the volcano family by shape. Every round (Scorching I-III, Scorched
+  // Ground's line of fire, the comets, Lava Spout, Ash Rain): VOLCANO_EVERY 1, whatever a map's number says. A single-target chance hit
+  // (the Eruption, a unit a side; Lava Tide, a column, so a unit a side): VOLCANO_SINGLE 2. A map's own number for those (a boss fight's
+  // rarer, bigger eruption) may go up to VOLCANO_RARE_MAX 3, never more. FX2's VOLCANO_HIT stays the comets' 1.
+  const VOLCANO_EVERY = 1, VOLCANO_SINGLE = 2, VOLCANO_RARE_MAX = 3;
+  function volcanoSingleHit(v){ const n = Number(v) > 0 ? Number(v) : VOLCANO_SINGLE; return Math.min(VOLCANO_RARE_MAX, n); }
   function crushingN(){ return fxN(rules.crushingDepths, FIELD_DMG_DEFAULT); }
   // 2026-10-16 (user: "Illusions or Mirage?: every turn, a random card is made a clone off - but at 1/1 and only copies over skills like
   // Flying, Swimming and Haste, nothing else."): rules.mirage.
@@ -1193,7 +1200,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.lavaSpout && r >= 2) out.lavaSpout = true; // 2026-10-16
     if(cometRounds > 0) out.comets = cometRounds; // comets still to fall after an Eruption (2026-10-14)
     if(vc){ out.volcano = vc; const lv = volcanoLevelAt(r); if(lv) out.volcanoLevel = lv; } // the hazards' odds next round (2026-10-14); whether they come stays a roll; + the level it is at (FX2-1, EN 2026-10-23)
-    else if(Number(rules.eruption) > 0 && r >= 2) out.eruption = Number(rules.eruption);
+    else if(Number(rules.eruption) > 0 && r >= 2){ out.eruption = VOLCANO_EVERY; out.scorched = true; } // the line of fire, 1 a unit (FX3, 2026-10-23; was the map's number)
     return out;
   }
   function isWindy(){ return windNow; }
@@ -1374,10 +1381,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // D66 (2026-10-13, user: "Scorch does fire damage to non resistance ... The damage increases, number of targets increases
       // ... For those vulnerable, they take double fire damage"): level L (rules.heatLevel, 1–3): L+1 random units a side take
       // L fire damage. Heat-resistant and Dry units are spared; units weak to heat take double.
+      // 2026-10-23 (package FX3, owner 01:57 note 7: "1 damage for every turn ones"): every level burns for 1 (was L); the level is the
+      // number of units, L+1 a side (2, 3, 4).
       const L = Math.max(1, Math.min(3, Number(rules.heatLevel)||1));
       [1,2].forEach(pid=>{ const cards = allLive(players[pid]).filter(c=> resistFactor(c.defId, 'heat') >= 1 && !climbs(c)); // + Mountain Climber (2026-10-16)
         for(let k = 0; k <= L && cards.length; k++){ const c = cards.splice(Math.floor(rnd()*cards.length), 1)[0]; const hp0 = c.hp;
-          damageCardFlat(c, L, 'heat'); const dmg = Math.max(0, hp0 - c.hp); // weakness doubles inside damageCardFlat
+          damageCardFlat(c, VOLCANO_EVERY, 'heat'); const dmg = Math.max(0, hp0 - c.hp); // weakness doubles inside damageCardFlat; 1 at every level (FX3)
           if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg, mods:dnModsFor(c.uid)}); } }); // + mods (DN2, 2026-10-22)
       removeDeadCards(players, sideOf, {}, stats, events);
     } else if(f === 'rain'){
@@ -1432,7 +1441,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         c.chokeRound = turnNo; c.chokeN = n; k++; ev({type:'statusFx', kind:'choking', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:n}); }));
       ev({type:'fieldTick', field:'sulphurFumes', round, amount:n, count:k}); }
     // Ash Rain: both castles take N (1), never below 1. (Its other half, the dimmed sun, is in phaseStatsOf: dimSun.)
-    if(rules.ashRain){ const n = fxN(rules.ashRain, 1); ev({type:'fieldTick', field:'ashRain', round, amount:n});
+    if(rules.ashRain){ const n = Math.min(VOLCANO_EVERY, fxN(rules.ashRain, 1)); /* every round: 1 at most (FX3, 2026-10-23) */ ev({type:'fieldTick', field:'ashRain', round, amount:n});
       [1,2].forEach(pid=>{ const pl = players[pid]; if(pl && pl.hq && pl.hq.hp > 1){ const d = Math.min(n, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'ashRainCastle', side:sideOf(pid), dmg:d}); } }); }
     // Arrow Slits: the defenders' walls (player 2's castle) shoot one arrow at a random unit of player 1.
     if(rules.arrowSlits){ const n = fxN(rules.arrowSlits, FIELD_DMG_DEFAULT), /* 2026-10-22 (package FX): 1, was 2 */ pool = liveUnits(players[1]);
@@ -1466,7 +1475,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.glassStorm){ const top = Math.max(1, Math.round(fxN(rules.glassStorm, FIELD_DMG_DEFAULT))); ev({type:'fieldTick', field:'glassStorm', round, amount:top});
       [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const r = top > 1 ? 1 + Math.floor(rnd()*top) : 1; hit(pid, c, r, 'physical', 'glassHit', top > 1 ? {roll:r} : undefined); })); }
     // Lava Spout: one random column bursts: N (1; was 3 until 2026-10-22, package FX) fire damage to the units there, both sides.
-    if(rules.lavaSpout){ const b = columnBurst(players); if(b){ const n = fxN(rules.lavaSpout, FIELD_DMG_DEFAULT); ev({type:'fieldTick', field:'lavaSpout', col:b.col, round, amount:n});
+    if(rules.lavaSpout){ const b = columnBurst(players); if(b){ const n = Math.min(VOLCANO_EVERY, fxN(rules.lavaSpout, FIELD_DMG_DEFAULT)); /* every round: 1 at most (FX3, 2026-10-23) */ ev({type:'fieldTick', field:'lavaSpout', col:b.col, round, amount:n});
       [1,2].forEach(pid=>{ const en = b.cols[pid][b.col], c = en && en.kind === 'card' ? en.card : null; if(c && !c.gap && !c.cageOf) hit(pid, c, n, 'heat', 'lavaSpoutHit', {col:b.col}); }); } }
     // Consternation: every card in each hand loses 1/1 (N/N). The loss rides on the hand card (h.consterned) and comes onto the field with it.
     if(rules.consternation){ const n = consternationN(); [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !pl.hand.length) return; let k = 0;
@@ -1584,6 +1593,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const erupt = (n, ground)=> [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !groundProof(c)); if(!cs.length) return;
       const c = cs[Math.floor(rnd()*cs.length)]; const hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
       if(recordEvents && events) events.push({type:'fieldTick', field: ground ? 'scorched' : 'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), mods:dnModsFor(c.uid)}); }); // + mods (DN2)
+    const scorchSweep = ()=>{ const cols = {1: combatColumnsOf(players[1]), 2: combatColumnsOf(players[2])};
+      const keys = [...new Set([...Object.keys(cols[1]), ...Object.keys(cols[2])].map(Number))].sort((x, y)=> x - y);
+      if(recordEvents && events) events.push({type:'fieldTick', field:'scorchedSweep', round, cols: keys, dmg: VOLCANO_EVERY});
+      keys.forEach(col=> [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
+        if(!c || c.gap || !(c.hp > 0) || c.cageOf || groundProof(c)) return;
+        const hp0 = c.hp; damageCardFlat(c, VOLCANO_EVERY, 'heat'); burnt = true;
+        if(recordEvents && events) events.push({type:'fieldTick', field:'scorched', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col, mods:dnModsFor(c.uid)}); })); }; // FX3 (2026-10-23)
     // Comets (2026-10-14, user: "After eruption, the cycle resets, but for the next 3 turns, comets rain down, dealing 2-5 (random)
     // fire damage to each unit. The damage dealt to each unit is random."): for 3 rounds after an Eruption, at the start of the round
     // every unit on both sides is struck for its own 2–5 fire damage (the fight's seeded roll; fire-resistant units take half).
@@ -1603,20 +1619,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(keys.length){ const col = keys[Math.floor(rnd()*keys.length)];
           [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
             if(!c || c.gap || !(c.hp > 0) || c.cageOf || isFlyingCard(c) || climbs(c)) return;
-            const hp0 = c.hp; damageCardFlat(c, VOLCANO_HIT, 'heat'); burnt = true; // 1 (was 3; 2026-10-22, package FX2): its chance runs up to 60% a round, and higher on a rising volcano
+            const hp0 = c.hp; damageCardFlat(c, VOLCANO_SINGLE, 'heat'); burnt = true; // 2 (FX3, 2026-10-23: a single-target chance hit, a unit a side; FX2 had 1, before it 3)
             if(recordEvents && events) events.push({type:'fieldTick', field:'lavaTide', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col, mods:dnModsFor(c.uid)}); }); } } // + mods (DN2)
       if(stone) [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !c.cageOf && !climbs(c)); if(!cs.length) return;
         const c = cs[Math.floor(rnd()*cs.length)]; c.petrified = true;
         if(recordEvents && events) events.push({type:'fieldTick', field:'petrify', side:sideOf(pid), uid:c.uid, defId:c.defId}); });
-      if(boom){ erupt(hazardHit(rules.eruption, VOLCANO_HIT)); // 1 by default (was 2; 2026-10-22, package FX2), at most 5
+      if(boom){ erupt(volcanoSingleHit(rules.eruption)); // 2 by default, a map's own number at most 3 (FX3, 2026-10-23; FX2 had 1, at most 5)
         volcanoRiseFrom = round + 1; cometRounds = 3; // the cycle resets (a rising level climbs again from its base), and comets follow
         if(VOLCANO_LEVELS[rules.volcano]){ volcanoResetAt = round; volcanoRiseFrom = round + 1 + Math.max(0, VOLCANO_ORDER.indexOf(rules.volcano)); } // FX2-1 (EN): back to Very Low, then up a level a round (an 'even' volcano rises again once it is back)
         if(recordEvents && events) events.push({type:'fieldTick', field:'eruptionReset', round, comets:3});
         // 2026-10-17 (user: "Ashy (volcano explosion)"): after the Eruption the ground is Ashy this round and the next 3.
         if(rules.ashyAfterEruption){ ashyUntil = turnNo + 3; if(recordEvents && events) events.push({type:'fieldTick', field:'ashy', round, until: ashyUntil, rounds:4}); } }
     } else {
-      const n = Number(rules.eruption) > 0 ? hazardHit(rules.eruption, VOLCANO_HIT) : 0; // Scorched Ground: every round, so the editor's preset is 1 now (was 2; FX2), and at most 5
-      if(n > 0 && round > 1 && !volcanoOn()) erupt(n, true);
+      // Scorched Ground as a line of fire (2026-10-23, package FX3, owner 01:57 note 3: "a line of fire moves from the left side to the right
+      // side. As it touches a card, it takes fire damage." and note 7: every-round hazards deal 1). Was: one random unit a side for the map's
+      // number (2 in elites, 3 in boss fights, 5 against a world boss). Now from round 2 a line sweeps both sides' front lines (the battle
+      // row; a raid's reserve rows are not crossed), column by column from the left, and every unit it touches takes 1 fire: no roll, so
+      // it is the same in every replay. Fire / heat-resistant units and Mountain Climbers are spared, as before. rules.eruption only turns
+      // it on now (its number is the volcano Eruption's, above). One header event, then one 'scorched' event a unit, in sweep order.
+      if(Number(rules.eruption) > 0 && round > 1 && !volcanoOn()) scorchSweep();
     }
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       liveRowsOf(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows, their own row's neighbours (2026-10-19, RR)

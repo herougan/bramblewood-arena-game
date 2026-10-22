@@ -119,7 +119,7 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
 const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard(m.P, so, 1, 'k4-wall', 'left', {}, []); m.e.debugSpawnCard(m.P, so, 2, 'k4-wall', 'left', {}, []); return m; };
 { const {e, P} = lone({lavaTideChance:100, petrifyChance:0, eruptionChance:0}); const ev = []; e.roundStart(P, 2, so, {}, ev);
   const lt = ev.filter(x=> x.type==='fieldTick' && x.field==='lavaTide');
-  ok(lt.length === 2 && all(P[1])[0].hp === 499 && all(P[2])[0].hp === 499, `Lava Tide at 100%: the column's units take 1 (FX2; was 3) (${lt.length}, ${all(P[1])[0].hp})`);
+  ok(lt.length === 2 && all(P[1])[0].hp === 498 && all(P[2])[0].hp === 498, `Lava Tide at 100%: the column's units take 2 (FX3, a single-target hit; FX2 had 1, before it 3) (${lt.length}, ${all(P[1])[0].hp})`);
   ok(!ev.some(x=> x.field==='petrify' || x.field==='eruption'), 'the other hazards at 0% never fire'); }
 { const {e, P} = mk(7, {lavaTideChance:100}); e.debugSpawnCard(P, so, 1, 'k4-fly', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-hot', 'left', {}, []);
   e.roundStart(P, 2, so, {}, []); ok(all(P[1])[0].hp === 20, 'a Flyer is above the lava'); ok(all(P[2])[0].hp === 19, `heat-proof halves it (${all(P[2])[0].hp})`); }
@@ -131,8 +131,8 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
   e.roundStart(P, 3, so, {}, []); ok(A.petrified, 'still 100%: petrified again');
   const m2 = lone({petrifyChance:0}); m2.e.roundStart(m2.P, 2, so, {}, []); ok(!all(m2.P[1])[0].petrified, 'at 0% nothing turns to stone'); }
 { const {e, P} = lone({eruptionChance:100, eruption:3}); const ev = []; e.roundStart(P, 2, so, {}, ev);
-  ok(ev.filter(x=> x.field==='eruption').length === 2 && all(P[1])[0].hp === 497, 'Eruption at 100% with rules.eruption 3: 3 to one unit a side');
-  const m2 = lone({eruptionChance:100}); m2.e.roundStart(m2.P, 2, so, {}, []); ok(all(m2.P[1])[0].hp === 499, 'with no rules.eruption it is 1 (FX2; was 2)'); }
+  ok(ev.filter(x=> x.field==='eruption').length === 2 && all(P[1])[0].hp === 497, 'Eruption at 100% with rules.eruption 3: 3 to one unit a side (the most, FX3)');
+  const m2 = lone({eruptionChance:100}); m2.e.roundStart(m2.P, 2, so, {}, []); ok(all(m2.P[1])[0].hp === 498, 'with no rules.eruption it is 2 (FX3; FX2 had 1)'); }
 { const {e, P} = lone({lavaTideChance:0, petrifyChance:0, eruptionChance:0, eruption:5}); let n = 0;
   for(let r = 2; r < 12; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); n += ev.filter(x=> x.type==='fieldTick').length; }
   ok(n === 0 && all(P[1])[0].hp === 500, `every hazard at 0%: nothing ever happens, even with rules.eruption set (${n})`); }
@@ -148,9 +148,9 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
 // ---- The old rules.eruption N: from round 2, every round, one unit a side takes N. Renamed Scorched Ground 2026-10-14 (its
 // events say field 'scorched' now; the volcano's Eruption hazard keeps 'eruption').
 { const {e, P} = lone({eruption:2}); let per = [];
-  for(let r = 1; r < 6; r++){ const ev = []; if(r > 1) e.roundStart(P, r, so, {}, ev); per.push(ev.filter(x=> x.field==='scorched' && x.dmg===2).length); }
-  ok(per.join() === '0,2,2,2,2', `Scorched Ground: 2 a round from round 2 (${per})`);
-  ok(e.forecast().eruption === 2 && !e.forecast().volcano, 'and the forecast still says Eruption 2'); }
+  for(let r = 1; r < 6; r++){ const ev = []; if(r > 1) e.roundStart(P, r, so, {}, ev); per.push(ev.filter(x=> x.field==='scorched' && x.dmg===1).length); }
+  ok(per.join() === '0,2,2,2,2', `Scorched Ground: its line of fire burns both units for 1 a round from round 2, whatever the number (FX3) (${per})`);
+  ok(e.forecast().eruption === 1 && e.forecast().scorched && !e.forecast().volcano, 'and the forecast says Scorched Ground, 1'); }
 // ---- Comets after an Eruption (2026-10-14, user: "After eruption, the cycle resets, but for the next 3 turns, comets rain down,
 // dealing 2-5 (random) fire damage to each unit. The damage dealt to each unit is random.")
 { const R = {lavaTideChance:0, petrifyChance:0, eruptionChance:100}; const {e, P} = mk(13, R);

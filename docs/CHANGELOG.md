@@ -2,6 +2,38 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package FX3: the volcano by shape, Scorched Ground as a line of fire, one ground fire a fight)
+- Owner 01:57 notes 3 ("a line of fire moves from the left side to the right side. As it touches a card, it takes fire damage") and 7
+  ("1 damage for every turn ones, 2 for single target or higher if rare and single-target. (max 3) The burning from scorched ground seems
+  to be hitting twice"); DF-4.
+- **The volcano family, old -> new** (engine `VOLCANO_EVERY` 1, `VOLCANO_SINGLE` 2, `VOLCANO_RARE_MAX` 3): Scorching I 2 units a side x 1
+  (unchanged), II 3 x 2 -> 3 x 1, III 4 x 3 -> 4 x 1; Scorched Ground one random unit a side for the fight's 2 (elites) / 3 (bosses) / 5
+  (world bosses) -> the line of fire, 1 to every front unit; comets 1 (unchanged); Lava Spout 1, now capped at 1 whatever its number; Ash
+  Rain 1 to brambles, capped at 1; Lava Tide (a unit a side in a column) 1 -> 2; the Eruption (a unit a side) 1 -> 2, a fight's own number up
+  to 3 (was 5: boss / miniboss fights 3, world bosses 5 -> 3). No damage: Petrification, Sulphur Fumes, Ashy, Volcano Glow, Boss surge, Deep
+  mines. Skills (Immolation, Slash & Burn) are not field hazards and are unchanged.
+- **Why FX / FX2 missed Scorched Ground:** FX left the volcano alone (call FX1); FX2 changed the engine's default and the editor preset to
+  1, but a volcano map's fights never use the default: `fightRules` in arena_app.js writes the number per fight kind (2 / 3 / 5), and FX2
+  only capped it at 5. The field card's short line was a literal (`Burns a unit a side for ${r.eruption}`), so it said 5 on the world
+  boss.
+- **The double hit:** not an event counted twice (one `scorched` event and one 🔥 number per burn, checked in the page with a hooked
+  `floatText`): Map 20's six elite and boss fights and 22-7 set Scorching III themselves and also got the automatic Scorched Ground, so two
+  round-start burns hit the same units in the same upkeep with the same 🔥 number. `fightRules` keeps one ground fire: Scorched Ground's
+  line (call FX3-2).
+- **The line of fire:** the engine's `scorchSweep` crosses both front lines column by column from the left (a raid's back rows are not
+  crossed); every unit takes 1 fire, fire-resistant units and Mountain Climbers are spared; no roll, so every replay is the same. One
+  `scorchedSweep` header, then one `scorched` event a unit in sweep order. On screen: the Effects Lab's Wildfire front (`FX.B.wildfire`,
+  now taking a duration; its lab card says "in game") crosses the battlefield in 1.6 s (faster at 2x / 5x), and each card's 🔥1 floats as
+  the band reaches its middle (`scorchSweepVfx`); the upkeep holds until it has crossed. Reduced motion or Effects off: no band, the
+  numbers at once. The forecast says Scorched Ground, 1.
+- **Map 20, the DF ant deck** (Lv 8 / Lv 4, 40 games, `referenceFightSetup`): 20-5 7.5 / 0 -> 62.5 / 50, 20-6 0 / 0 -> 12.5 / 5, 20-7 2.5 / 0
+  -> 92.5 / 75, 20-8 0 / 0 -> 32.5 / 20, 20-9 2.5 / 0 -> 42.5 / 32.5, 20-10 2.5 / 5 -> 35 / 20.
+- Texts: TX keys `ui.fx-scorched`, `-short`, `-sweep-log`, `ui.fxx-scorched`, `ui.fx-lava-tide`, `ui.fx-scorching1..3` (the Scorching
+  lines were literals that said 2 / 3 damage, and "every unit takes 1"), 12 packs (`tools/i18n_2026_10_23_fx3.py`). Edit skirmish:
+  "Scorched Ground", "Volcano eruptions hit 2 / 3" (was Scorched Ground 2 / 3 / 5).
+- Tests: `tests/fx3-2026-10-23.js` (new); `fx2-2026-10-22`, `keywords-2026-10-14`, `field-effects-2026-10-16` follow the new numbers.
+  Calls FX3-1 .. FX3-3. Screens: `docs/screens/FX3/`.
+
 ## 2026-10-23 (release: batch 10-23)
 - Shipped together: DOC, TU2, RW3, BF10, DF (study), PG, EB (entries below).
 - **Release fixes:** the built-in default deck had 4 Otter Centurions (over PG's Rare limit of 3): now 3, with 5 Bee Knights. The Nest's tab labels keep their emoji outside the translated text, and "Eggs and babies" / "Level 0" were added to the main language packs. A pack's "🪺 Nest" button opens the Nest only when the packs brought a Level 0 recruit, else "⛺ Camp".

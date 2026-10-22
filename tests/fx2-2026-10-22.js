@@ -68,9 +68,9 @@ const hitOn = (att, tgt, setup)=>{ const {e, P} = mk(); const t = put(e, P, 2, t
 { let n = 0; const R = 4000; for(let s = 1; s <= R; s++){ const {e, P} = mk({landslide:true}, s); put(e, P, 1, 'f2-wall', 0); const ev = []; e.roundStart(P, 2, so, {}, ev); if(ev.some(x=> x.field === 'landslide')) n++; }
   const p = n / R; ok(Math.abs(p - 0.25) < 0.03 && p * 3 <= 1, `5. Landslide fires about 1 round in 4 (${(p * 100).toFixed(1)}%), so 3 a hit averages ${(p * 3).toFixed(2)} a round (at most 1)`); }
 { const one = rules=>{ const {e, P} = mk(Object.assign({volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:0}, rules)); const a = put(e, P, 1, 'f2-wall', 0); put(e, P, 2, 'f2-wall', 0); e.roundStart(P, 2, so, {}, []); return 500 - a.hp; };
-  ok(one({lavaTideChance:100}) === 1, `5. Lava Tide at 100%: 1 (was 3) (${one({lavaTideChance:100})})`);
-  ok(one({eruptionChance:100}) === 1, `5. Eruption at 100%: 1 to one unit a side (was 2) (${one({eruptionChance:100})})`);
-  ok(one({eruptionChance:100, eruption:8}) === 5, `5. a map's eruption number is capped at 5 (${one({eruptionChance:100, eruption:8})})`); }
+  ok(one({lavaTideChance:100}) === 2, `5. Lava Tide at 100%: 2 (FX3, a single-target hit; FX2 had 1) (${one({lavaTideChance:100})})`);
+  ok(one({eruptionChance:100}) === 2, `5. Eruption at 100%: 2 to one unit a side (FX3; FX2 had 1) (${one({eruptionChance:100})})`);
+  ok(one({eruptionChance:100, eruption:8}) === 3, `5. a map's eruption number is capped at 3 (FX3; FX2 had 5) (${one({eruptionChance:100, eruption:8})})`); }
 { const {e, P} = mk({volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100}); const a = put(e, P, 1, 'f2-wall', 0), h = put(e, P, 2, 'f2-heatres', 0);
   e.roundStart(P, 2, so, {}, []); // the eruption; comets from the next round
   const ev = []; e.roundStart(P, 3, so, {}, ev); const cs = ev.filter(x=> x.field === 'comet');

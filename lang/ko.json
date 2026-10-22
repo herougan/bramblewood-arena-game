@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "2라운드부터, 번개가 각 진영의 무작위 유닛 하나에 {n} 피해를 줘요.",
  "From round 2, one random unit a side falls Asleep for the round.": "2라운드부터, 각 진영의 무작위 유닛 하나가 그 라운드 동안 잠들어요.",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "2라운드부터, 뿌리가 각 진영의 무작위 유닛 하나를 붙잡아요: 그 라운드 동안 거미줄에 걸려요.",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "2라운드부터 땅이 매 라운드 양쪽의 무작위 유닛 하나를 화염 피해 {n}(으)로 태운다.",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "2라운드부터 성벽이 무작위 공격 측 유닛을 쏜다(1). 투구로 막을 수 있다.",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "2라운드부터 유닛이 숨이 막힌다: 주는 모든 것에 공격 −1. 화염 저항, 건조, 비행 유닛은 멀쩡하다.",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "2라운드부터. 분화 뒤 확률이 초기화되고, 혜성이 모든 유닛에게 화염 1 (화염 저항은 절반).",
@@ -1107,7 +1106,6 @@
  "Language": "언어",
  "Laurels": "월계관",
  "Laurels: earned only in Arena fights against other players": "월계관: 다른 플레이어와의 아레나 전투에서만 얻어요",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "용암이 무작위 열을 덮칠 수 있다: 비행하지 않는 유닛에게 화염 피해 1.",
  "Leader": "리더",
  "Learned {v1}.": "{v1}을(를) 배웠어요.",
  "Learned. Still a preview: not in fights yet.": "배웠어요. 아직 미리보기라 전투엔 안 나와요.",
@@ -1839,7 +1837,6 @@
  "Two players, one device": "두 명, 한 기기",
  "Type Tags (biome/animal) filter": "유형 태그(생태/동물) 필터",
  "Units defeated": "처치한 유닛",
- "Units that resist fire are spared.": "화염 저항 유닛은 무사하다.",
  "Unlock all features": "모든 기능 잠금 해제",
  "Unlock your first Raid Boss.": "첫 레이드 보스를 잠금 해제하세요.",
  "Unlocked": "해금",
@@ -2803,5 +2800,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "각 진영이 한 턴에 낼 수 있는 카드 수. 두 번째 진영은 덤불에 방패 +1만 받습니다",
  "The dummy in front is Blind: the Backstab lands.": "앞의 허수아비가 실명 상태: 백스탭이 적중합니다.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "주위 8칸: 좌, 우, 앞, 뒤, 대각선 4칸 (레이드의 줄도 포함).",
- "Eggs and babies": "알과 새끼"
+ "Eggs and babies": "알과 새끼",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "폭염 레벨 2: 매 라운드 양쪽의 무작위 유닛 3체가 화염 피해 1. 열 저항 유닛은 제외.",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "폭염 레벨 3: 매 라운드 양쪽의 무작위 유닛 4체가 화염 피해 1. 열 저항 유닛은 제외.",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "용암이 무작위 열을 덮칠 수 있다: 비행하지 않는 유닛에게 화염 피해 2.",
+ "A line of fire: 1 to every unit": "불길의 선: 모든 유닛에게 1",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 불길의 선이 그을린 땅을 휩쓸어요.",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "양쪽 최전선을 왼쪽에서 오른쪽으로 지나가요. 화염 저항 유닛과 등반가는 무사해요.",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "2라운드부터 매 라운드 불길의 선이 전장을 휩쓸어요: 닿는 모든 유닛에게 화염 피해 1.",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "매 라운드 시작 시 양쪽의 무작위 유닛 2체가 화염 피해 1. 열 저항 유닛은 제외."
 }
