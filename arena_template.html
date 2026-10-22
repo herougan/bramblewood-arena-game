@@ -11205,6 +11205,13 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cnp-drops .cnp-drops-l{opacity:.85;}
 .cnp-drops .cnp-drop{white-space:nowrap;}
 .cnp-drops .cnp-drops-sep{opacity:.85; margin:0 -2px;}
+/* 2026-10-22 (package GD): a cleared skirmish's reward card on its drop line, a small tile before its chance */
+.cnp-drops .cnp-drop-own{display:inline-flex; align-items:center; gap:4px;}
+.cnp-drops .cnp-drop-tile{display:inline-block; width:30px; flex:0 0 auto; vertical-align:middle; cursor:zoom-in; line-height:0;}
+.cnp-drops .cnp-drop-tile .card-tile{width:100% !important; pointer-events:none;}
+.cnp-drops .cnp-drop-tile .card-tile .stats, .cnp-drops .cnp-drop-tile .card-tile .nm, .cnp-drops .cnp-drop-tile .card-tile .sg,
+.cnp-drops .cnp-drop-tile .card-tile .levelbadge, .cnp-drops .cnp-drop-tile .card-tile .prestigebadge{display:none !important;} /* the art only at this size; tap for the card */
+.cnp-drops .cnp-drop-tile.is-mystery{width:auto; line-height:1;}
 .rank-hex.rw-mini{position:relative !important; top:auto !important; right:auto !important; left:auto !important; width:22px; height:25px; rotate:-8deg; margin:0 2px !important; transform:none !important; z-index:auto; flex:0 0 auto; display:inline-grid; vertical-align:middle;}
 .rank-hex.rw-mini b{font-size:13px !important; letter-spacing:0; -webkit-text-stroke:0 !important;}
 .rank-hex.rw-mini.rank-SS b{font-size:10.5px !important; letter-spacing:-.06em;}

@@ -2719,5 +2719,6 @@
  "a challenge card": "一张挑战卡",
  "A card dropped in this raid fight": "这场突袭战掉落了一张卡牌",
  "Reading damage numbers": "如何看伤害数字",
- "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴：伤害类型的符号（普通攻击没有，暴击时前面加 👊），伤害值，然后是目标的承受方式：🦴 脆弱（双倍），💢 弱点（更多），⛨ 护甲、抗性或护盾挡下了一部分，🚫 免疫。"
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴：伤害类型的符号（普通攻击没有，暴击时前面加 💥），伤害值，然后是目标的承受方式：🦴 脆弱（双倍），💢 弱点（更多），⛨ 护甲、抗性或护盾挡下了一部分，🚫 免疫。",
+ "{name} drop chance: {p}": "{name} 掉落几率：{p}"
 }

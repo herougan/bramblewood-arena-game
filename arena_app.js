@@ -991,7 +991,7 @@ const PASSIVE_DEFS = [
   // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
-  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
+  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Single-target hits aimed at an ally beside it, in front of it or behind it land on this card instead. Area hits don't.`} /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
@@ -2601,7 +2601,7 @@ const SKILL_TEXT = {
   fullMoon: v=> `The first full moon over it: +${numOr(v, 3)}/+${numOr(v, 3)} for the rest of the fight.`, fullMoonGrant: v=> `The first full moon over it: ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
-  guardian: ()=> `Takes the hits aimed at adjacent allies.`,
+  guardian: ()=> `Takes the single-target hits aimed at the allies beside, in front of and behind it.`, // 2026-10-22 (package GD): + in front / behind
   quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
@@ -22032,13 +22032,23 @@ function cnpRewardStripHTML(mapId, node, done, rank){
 function fmtDropPct(p){ const v = p * 100; return (v >= 10 ? Math.round(v) : Math.round(v * 100) / 100) + '%'; }
 function cnpDropsLineHTML(mapId, node, done){
   if(!node || node.kind === 'tutorial' || node.virtual) return '';
-  let egg = 0, card = 0; try{ egg = eggChanceFor(node, mapId, !done) || 0; }catch(e){} try{ card = nodeCardDropChance(mapId, node) || 0; }catch(e){}
+  let egg = 0, card = 0; try{ egg = eggChanceFor(node, mapId, !done) || 0; }catch(e){} try{ card = nodeCardDropChance(mapId, node, {repeat: !!done}) || 0; }catch(e){}
   if(!(egg > 0) && !(card > 0)) return '';
   const parts = [];
   if(egg > 0) parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-egg', {p: fmtDropPct(egg)}))}"><span aria-hidden="true">🥚 ${fmtDropPct(egg)}</span></span>`);
+  // 2026-10-22 (package GD, owner on RW2-1): a cleared skirmish with a reward card shows that card (a small tile, tap to zoom) with its own chance
+  // a win and its rank emblem, then the pack card's share (🃏): together they make the 21%.
+  let odds = null; try{ odds = done && card > 0 ? skirmishOwnDropOdds(mapId, node) : null; }catch(e){}
+  if(odds){ const defs = getCardDefs();
+    odds.own.forEach(o=>{ const d = defs[o.id]; if(!d) return; let need = null; try{ need = cardRewardRankFor(mapId, node, o.id); }catch(e){}
+      const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">❓</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardTileHTML(d, {inPlay:true})}</span>`;
+      parts.push(`<span class="cnp-drop cnp-drop-own" role="img" aria-label="${escapeAttr(TX('ui.gd-drop-own', {name: isCardHiddenForPlayer(d) ? '?' : d.name, p: fmtDropPct(o.p)}))}">${tile}<span aria-hidden="true">${fmtDropPct(o.p)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); });
+    if(odds.pack > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
+      parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(odds.pack)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(odds.pack)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
+  } else
   if(card > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
     parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(card)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(card)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
-  return `<p class="cnp-drops"><span class="cnp-drops-l">${escapeHtml(TX('ui.rw-drops'))}</span> ${parts.join('<span class="cnp-drops-sep" aria-hidden="true"> · </span>')}</p>`;
+  return `<div class="cnp-drops"><span class="cnp-drops-l">${escapeHtml(TX('ui.rw-drops'))}</span> ${parts.join('<span class="cnp-drops-sep" aria-hidden="true"> · </span>')}</div>`; // a div (2026-10-22, GD: was a <p>, which a card tile's divs would break open)
 }
 function fitFirstClearLabels(){
   document.querySelectorAll('.cnp-rw.is-done').forEach(box=>{
@@ -31239,7 +31249,7 @@ function stampedeFacingHTML(m, uid, f, src, sr, cx, cy){
     // from the blocker's centre straight on to the HP bar (the bar's own middle height, at the blocker's column, kept on the bar)
     const x1 = cx(fr), y1 = cy(fr), X2 = cx({left: Math.max(rr.left + 12, Math.min(rr.right - 12, fr.left + fr.width/2)), width: 0}), y2 = cy(rr);
     let h = `<line class="facing-stampede${over > 0 ? ' is-over' : ''}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${X2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
-    if(over > 0){ const ty = f.pid===1 ? y2 + rr.height/2 + 14 : y2 - rr.height/2 - 6; h += `<text class="facing-stampede-n" x="${(X2 + 16).toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="start">💥 +${over}</text>`; }
+    if(over > 0){ const ty = f.pid===1 ? y2 + rr.height/2 + 14 : y2 - rr.height/2 - 6; h += `<text class="facing-stampede-n" x="${(X2 + 16).toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="start">🐘 +${over}</text>`; /* 🐘 Stampede (2026-10-22, GD: 💥 is the crit mark now) */ }
     return h;
   }catch(err){ return ''; }
 }
@@ -37817,7 +37827,7 @@ async function resolveRoundCore(opts){
       // map's enemy decks that you don't own yet. At most once per map.
       if(!opening) try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
       // Card drops (2026-10-12, 11:39 list): any win can drop one of the enemy's cards. See rollCardDrop.
-      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId, {rank}); /* 2026-10-22 (RW): the win's rank gates the drop */ if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
+      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId, {rank, firstClear: !!isFirstClear}); /* 2026-10-22 (RW): the win's rank gates the drop; + firstClear (GD): a repeat win of a reward-card skirmish rolls 21% */ if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
       // Map table rewards (2026-10-12): free packs on a map's boss first clear, and Base cards grow from bosses.
       try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp && fp.held) m.conquestPackHeld = fp.id; else if(fp) m.conquestFreePack = fp; }catch(e){}
       try{ const bx = baseCardBossGrowth((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(bx) m.conquestBaseGrowth = bx; }catch(e){}
@@ -40660,7 +40670,7 @@ function logText(ev){
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${dnLogNum(ev.dmg, ev)} onto ${nm(ev.targetDefId)}. 🌵`};
     case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${dnLogNum(ev.dmg, ev)} damage back at ${nm(ev.targetDefId)}. 🪞`};
     case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 🗡`};
-    case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 💥`};
+    case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 🐘`}; // 🐘 (Stampede's icon; was 💥, now the crit mark: GD 2026-10-22)
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
     case 'dynamite': return {cls:'', text:`🧨 ${nm(ev.defId)}'s dynamite goes off: ${ev.amount} damage to ${ev.hits} card${ev.hits===1?'':'s'} around it!`};
     case 'deflect': return {cls:'', text:`🪖 The shot glances off ${nm(ev.defId)}'s helmet.`};
@@ -40796,7 +40806,7 @@ function logText(ev){
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
     }
-    case 'explode': return {cls:'exile', text:`${nm(ev.defId)}'s fuse ran out — 💥 ${ev.dmg} damage to ${ev.targetUid? nm(ev.targetDefId) : (ev.targetSide==='A'?'your bramble':'the enemy bramble')}!`};
+    case 'explode': return {cls:'exile', text:`${nm(ev.defId)}'s fuse ran out — 💣 ${ev.dmg} damage to ${ev.targetUid? nm(ev.targetDefId) : (ev.targetSide==='A'?'your bramble':'the enemy bramble')}!`};
     case 'namedBuff': return {cls:'gold', text:`${nm(ev.attDefId)} buffed ${nm(ev.targetDefId)} +${ev.amount}⚔${ev.amount2?`/+${ev.amount2}❤`:''}. 🐝`};
     case 'ready': return {cls:'', text:`${nm(ev.defId)} is ready to fight.`};
     case 'frenzy': return {cls:'quick', text:ev.twin ? `${nm(ev.attDefId)} strikes twice! ⚔⚔` : `${nm(ev.attDefId)} is in a frenzy: it strikes again! 🔥`};
@@ -41354,7 +41364,9 @@ function denyShake(el){
 }
 // Number icons (2026-10-08, user: "add a Punch emoji before the number. Same for bleed, fire, cold, poison,
 // heal, blocked (def symbol), gold"): a bare number with one of these classes gets its icon in front.
-const FLOAT_ICON = {crit:'👊', bleed:'🩸', 'bleed-tick':'🩸', heat:'🔥', cold:'❄️', poison:'☠️', 'poison-tick':'☠️', heal:'➕', /* 2026-10-16: the heal's ➕ */ blocked:'🛡', gold:'🪙'};
+// 2026-10-22 (package GD, owner DN2-3: "💥 is a better symbol for Crit to me."): the crit mark on every damage number and log line (was 👊).
+const DN_CRIT_MARK = '💥';
+const FLOAT_ICON = {crit:DN_CRIT_MARK, bleed:'🩸', 'bleed-tick':'🩸', heat:'🔥', cold:'❄️', poison:'☠️', 'poison-tick':'☠️', heal:'➕', /* 2026-10-16: the heal's ➕ */ blocked:'🛡', gold:'🪙'};
 // Round-start numbers that last (2026-10-14, user: "The damage effect of the volcanic ground ... have to show damage numbers!"):
 // the upkeep's field events (Scorched Ground, the volcano, comets, the Tide-spout's push) play just before the board re-renders,
 // which used to wipe their floating numbers within a frame. While floatDetachDepth > 0, a number aimed at a board card floats on
@@ -42071,13 +42083,13 @@ const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['�
 Object.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});
 const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', stone:'stone', metal:'metal', psychic:'psychic'};
 // "for 3 ⚡ lightning damage" (an elemental hit) or "for 3" (physical), for the battle log (2026-10-17).
-function dmgLogText(dmg, dmgType, ev){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType], n = ev ? dnLogNum(dmg, ev) : dmg; return di && w ? `${n} ${di[0]} ${w} damage` : String(n); } // + ev: the number's 👊 and mark (DN2)
+function dmgLogText(dmg, dmgType, ev){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType], n = ev ? dnLogNum(dmg, ev) : dmg; return di && w ? `${n} ${di[0]} ${w} damage` : String(n); } // + ev: the number's crit mark (💥 since GD) and mark (DN2)
 // 2026-10-22 (package DN2, owner DN-4 "Yes"): a damage number in the battle log carries the floating number's marks, 👊 before a crit and the
 // target's mark after it (🦴 Fragile, 💢 Weakness / Shocked, ⛨ reduced or blocked, 🚫 immune), from the same event fields (mods, armorBlocked,
 // crit; a bramble's Bulwark is its ⛨). Symbols, not words: the translated log templates still match (the number is a captured value).
 function dnLogNum(n, ev, mods){ ev = ev || {}; const md = mods !== undefined ? mods : (ev.mods || (ev.bulwark > 0 ? ['armor'] : null)), blocked = !!(ev.armorBlocked || ev.bulwark > 0) && mods === undefined;
   const mk = dnModKey(md, blocked, n), crit = !!ev.crit && !ev.ambush && !(blocked && !(n > 0));
-  return (crit ? '👊' : '') + n + (mk ? DN_MOD_GLYPH[mk] : ''); }
+  return (crit ? DN_CRIT_MARK : '') + n + (mk ? DN_MOD_GLYPH[mk] : ''); } // DN_CRIT_MARK: 💥 (2026-10-22, GD; was 👊)
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
 // quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
 // cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
@@ -42138,7 +42150,7 @@ function dnTypeGlyph(dmgType){
 // and its number takes the type's colours made DMG_CRIT_LIGHTEN lighter (of the lightness range) and turned DMG_CRIT_HUE degrees up the
 // hue wheel. A physical crit keeps 👊 (DN-3). Normal hits keep their colours. The four constants are the only knobs.
 const DMG_CRIT_LIGHTEN = 0.10, DMG_CRIT_HUE = 12, DMG_CRIT_GLYPH_SCALE = 1.4;
-const DMG_CRIT_FIST_ON_ELEMENT = false; // true: an elemental crit also keeps the 👊 before its big glyph (DN's 👊❄️14🦴)
+const DMG_CRIT_FIST_ON_ELEMENT = false; // true: an elemental crit also keeps the crit mark (DN_CRIT_MARK, 💥 since GD) before its big glyph (💥❄️14🦴)
 // Damage types that are their own kind of tick (no element): the glyph their number has always led with (DN2, 2026-10-22).
 const DN_TICK_GLYPH = {curse:'🜏', chilli:'🌶️', strangle:'🪢'};
 function dnTypeGlyphAny(dmgType){ return dnTypeGlyph(dmgType) || DN_TICK_GLYPH[dmgType] || ''; }
@@ -42146,7 +42158,7 @@ function dmgFloatParts(dmg, dmgType, crit, mods, blocked, glyph){
   const t = dmgType === 'fire' ? 'heat' : dmgType;
   const g = glyph != null ? glyph : dnTypeGlyphAny(t), di = DMG_ICON[t], mk = dnModKey(mods, blocked, dmg);
   const zero = blocked && !(dmg > 0), critOn = !!crit && !zero, critEl = critOn && !!g; // a crit with a type glyph is the elemental crit (DN2)
-  const pre = critEl ? (DMG_CRIT_FIST_ON_ELEMENT ? '👊' : '') + g : (critOn ? '👊' : '') + g;
+  const pre = critEl ? (DMG_CRIT_FIST_ON_ELEMENT ? DN_CRIT_MARK : '') + g : (critOn ? DN_CRIT_MARK : '') + g; // 💥 (GD; was 👊)
   const cls = zero ? 'blocked' : critOn ? 'crit' + (di ? ' ' + di[1] : '') : (di ? di[1] : '');
   return {text: (pre ? pre + ' ' : '') + String(dmg || 0), cls, post: mk ? DN_MOD_GLYPH[mk] : '', mod: mk, critEl: critEl ? {glyph: g, cls: di ? di[1] : (t || '')} : null};
 }
@@ -42184,7 +42196,7 @@ function dnFloat(el, dmg, o){
   const onCard = !!(el.closest && el.closest('.board-card, .card-tile, .fx-float-host'));
   floatText(el, p.text, cls, {post: p.post, postKey: p.mod, fit: o.fit != null ? !!o.fit : onCard, noIcon: true, critEl: p.critEl, heavy: !cls && (dmg||0) >= 8});
 }
-// A damage number's text for a stamp or a log (no element): '👊🪄14🦴' (DN2)
+// A damage number's text for a stamp or a log (no element): '💥🪄14🦴' (DN2; 💥 since GD)
 function dnText(dmg, type, mods, crit, blocked){ const p = dmgFloatParts(dmg, type, crit, mods, blocked); return p.text.replace(' ', '') + (p.post || ''); }
 try{ window.dnText = dnText; window.dnFloat = dnFloat; window.dnMarkOf = (mods, dmg)=> dnModKey(mods, false, dmg); }catch(e){} // for FX.F's raid stamps
 function flashDmg(uid, dmg, blocked, dmgType, crit, mods){
@@ -44171,7 +44183,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='explode'){
     const el = boardCardEl(ev.uid);
     SoundKit.boom();
-    if(el){ shakeEl(el); floatText(el, '💥 Boom!', 'debuff'); }
+    if(el){ shakeEl(el); floatText(el, '💣 Boom!', 'debuff'); } // 💣 Explode's icon (2026-10-22, GD: 💥 is the crit mark now)
   }
   if(ev.type==='namedBuff'){
     SoundKit.buffUp();
@@ -46002,8 +46014,8 @@ function rollSkirmishCardDrop(node, mapId, opts, chance){
 // fight but a raid fight (raidFightCardDrop) and a tutorial rolls the one pack-card drop above (the map's rarity shares, the shift, half the
 // time the fight's own pack card, the rank gate). Its chance is the skirmish's 7% per ⚡ of the fight kind's Energy tier (ENERGY_COST: a
 // skirmish 1, elite / champion / miniboss / dungeon 2, sub-boss / boss 3, world / raid boss 4, megaraid / final boss 5), capped at 25%
-// (DROP_CHANCE_CAP): 7% · 14% · 21% · 25% · 25% (was 10 / 20-30 / 30-40 / 70 / 100% of an enemy deck card). A skirmish keeps RW's rule:
-// it drops only when it gives nothing else (skirmishDropApplies). The tier is the kind's, not the map-scaled cost a fight charges
+// (DROP_CHANCE_CAP): 7% · 14% · 21% · 25% · 25% (was 10 / 20-30 / 30-40 / 70 / 100% of an enemy deck card). A skirmish kept RW's rule
+// (it dropped only when it gave nothing else, skirmishDropApplies) until GD (2026-10-22): every skirmish win drops now, see nodeCardDropChance. The tier is the kind's, not the map-scaled cost a fight charges
 // (nodeEnergyCost climbs with the map, so it would push every later fight to the cap).
 const DROP_CHANCE_PER_ENERGY = SKIRMISH_DROP_CHANCE, DROP_CHANCE_CAP = 0.25;
 function fightDropEnergy(kind){
@@ -46011,16 +46023,59 @@ function fightDropEnergy(kind){
   return ENERGY_COST[kind] != null ? ENERGY_COST[kind] : ENERGY_COST[baseKind(kind)] != null ? ENERGY_COST[baseKind(kind)] : ENERGY_COST.skirmish;
 }
 function fightCardDropChance(kind){ return Math.min(DROP_CHANCE_CAP, Math.round(DROP_CHANCE_PER_ENERGY * fightDropEnergy(kind) * 10000) / 10000); }
-// The card-drop chance a fight shows on its panel (the same numbers the win rolls).
-function nodeCardDropChance(mapId, node){
+// 2026-10-22 (package GD, owner on RW2-1, 18:20: "There are two kinds of first-clear drop card reward skirmishes: skirmish-exclusive, or from
+// that map range's pack. ALL skirmishes have a low chance to get a card from the pack. For skirmishes, the chance of getting a card is tripled.
+// But you mostly (50+%) get THAT card. (If it's higher in rarity, then the chance actually decreases - your call. Maybe 60/50/40/25/20/10/5/4/3/2/1..."):
+//  - every skirmish win, first clear and repeats, rolls the pack-card drop at 7% (skirmishDropApplies no longer shuts out a skirmish whose
+//    first clear pays a card, a reward token or a pack);
+//  - a skirmish with a first-clear reward card (nodeRewardCardIds) rolls 21% (SKIRMISH_OWN_DROP_MULT x 7%) on a repeat win, and a card that
+//    drops there is that reward card with the chance for its rarity (SKIRMISH_OWN_DROP_BY_RARITY), else a pack card as usual. Several reward
+//    cards: one of them, evenly. The first clear pays the card itself, so it rolls the plain 7%.
+//  - the rank gate (dropRankOk, RW / RW2) applies to whichever card drops.
+const SKIRMISH_OWN_DROP_MULT = 3;
+// The reward card's share of a drop by its rarity, down the ladder (RARITY_DEFS order, special rarities as their `as`): Common 60%, Uncommon 50%,
+// Rare 40%, Very Rare 25%, Super Rare 20%, Epic 10%, Heroic 5%, Unique 4%, Legendary 3%, Mythic 2%, Ancient 1%, and 1% past it (Divine, Void, Daemonic).
+const SKIRMISH_OWN_DROP_BY_RARITY = [0.60, 0.50, 0.40, 0.25, 0.20, 0.10, 0.05, 0.04, 0.03, 0.02, 0.01];
+function skirmishOwnDropShare(rarity){
+  const rd = RARITY_DEFS.find(r=> r.key === rarity), k = rd && rd.as ? rd.as : (rarity === 'starter' || !rd ? 'common' : rarity);
+  const ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && r.key !== 'starter').map(r=> r.key), i = Math.max(0, ladder.indexOf(k));
+  return SKIRMISH_OWN_DROP_BY_RARITY[Math.min(i, SKIRMISH_OWN_DROP_BY_RARITY.length - 1)];
+}
+// The fight's own reward cards a repeat win can drop (a skirmish only; [] for anything else).
+function skirmishOwnDropIds(node, mapId){
+  if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return [];
+  try{ return nodeRewardCardIds(mapId, node.key); }catch(e){ return []; }
+}
+// The card-drop chance a fight shows on its panel (the same numbers the win rolls). o.repeat: a repeat win (the fight is cleared).
+function nodeCardDropChance(mapId, node, o){
   if(!node || node.kind === 'tutorial') return 0;
   const kind = node.kind || 'skirmish';
-  if(baseKind(kind) === 'skirmish') return skirmishDropApplies(node, mapId) ? fightCardDropChance(kind) : 0;
+  if(baseKind(kind) === 'skirmish'){
+    if(node.tower || node.virtual) return skirmishDropApplies(node, mapId) ? fightCardDropChance(kind) : 0;
+    const c = fightCardDropChance(kind); // every skirmish win (GD)
+    return o && o.repeat && skirmishOwnDropIds(node, mapId).length ? Math.min(1, Math.round(c * SKIRMISH_OWN_DROP_MULT * 10000) / 10000) : c;
+  }
   return fightCardDropChance(kind);
 }
-function rollCardDrop(node, mapId, opts){
+// What a skirmish panel shows for a repeat win (GD): [{id, p}] the reward card(s) with their chance of dropping per win, and the pack card's.
+function skirmishOwnDropOdds(mapId, node){
+  const ids = skirmishOwnDropIds(node, mapId); if(!ids.length) return null;
+  const all = nodeCardDropChance(mapId, node, {repeat:true}), defs = getCardDefs();
+  const own = ids.map(id=> ({id, p: all * skirmishOwnDropShare((defs[id] || {}).rarity) / ids.length}));
+  return {all, own, pack: Math.max(0, all - own.reduce((t, x)=> t + x.p, 0))};
+}
+function rollCardDrop(node, mapId, opts, rng){
   if(!node) return null;
-  const chance = nodeCardDropChance(mapId, node); if(!(chance > 0)) return null;
+  rng = rng || Math.random;
+  const repeat = !!(opts && opts.firstClear === false);
+  const chance = nodeCardDropChance(mapId, node, {repeat}); if(!(chance > 0)) return null;
+  const ids = repeat ? skirmishOwnDropIds(node, mapId) : [];
+  if(ids.length){ // GD: a repeat win of a skirmish with a reward card
+    if(rng() >= chance) return null;
+    const id = ids[Math.floor(rng() * ids.length)], d = getCardDefs()[id];
+    if(d && rng() < skirmishOwnDropShare(d.rarity)){ if(!dropRankOk(node, mapId, id, opts)) return null; unlockCardForPlayer(id, 'cardDrop'); return id; }
+    return rollSkirmishCardDrop(node, mapId, opts, 1); // otherwise a pack card as usual (the 21% roll is already won)
+  }
   return rollSkirmishCardDrop(node, mapId, opts, chance); // 2026-10-22 (RW2): the one pack-card drop, at the fight's chance
 }
 function rollMateriaDrops(node, isFirstClear, rank){

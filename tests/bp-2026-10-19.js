@@ -86,7 +86,7 @@ ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.
   ok(ctx.stampedeExpected(6, 3, 2) === 1, 'Armor 2 soaks first: 6 - 2 - 3 = 1');
   ok(ctx.stampedeExpected(3, 5, 0) === 0 && ctx.stampedeExpected(5, 5, 0) === 0, 'no kill, or an exact kill: nothing carries on'); }
 { const sh = fnSrc('stampedeFacingHTML');
-  ok(!!sh && /class="facing-stampede\$\{over > 0 \? ' is-over' : ''\}"/.test(sh) && /💥 \+\$\{over\}/.test(sh), 'the second segment: faint, lit with 💥 +N when it carries over');
+  ok(!!sh && /class="facing-stampede\$\{over > 0 \? ' is-over' : ''\}"/.test(sh) && /🐘 \+\$\{over\}/.test(sh), 'the second segment: faint, lit with 🐘 +N when it carries over'); // 🐘 since 2026-10-22 (GD: 💥 is the crit mark)
   ok(/\.effects\|\|\{\}\)\.overwhelm/.test(sh) && /f\.foes\.length !== 1/.test(sh) && /data-hpribbon="\$\{f\.pid===1 \? 'B' : 'A'\}"/.test(sh), 'only a Stampede unit with one blocker, aimed at the enemy HP bar');
   ok(/html \+= stampedeFacingHTML\(m, uid, f, src, sr, cx, cy\);/.test(fnSrc('showFacing')), 'showFacing adds it after the line to the blocker');
   ok(/\.facing-svg line\.facing-stampede\{stroke:#ff8a4c; opacity:\.28;\}/.test(tpl) && /\.facing-svg line\.facing-stampede\.is-over\{stroke:#ff6a2a; opacity:\.95;\}/.test(tpl), 'its CSS: faint / lit'); }

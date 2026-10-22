@@ -2718,5 +2718,6 @@
  "a challenge card": "kartu tantangan",
  "A card dropped in this raid fight": "Sebuah kartu jatuh di pertarungan raid ini",
  "Reading damage numbers": "Membaca angka damage",
- "❄️14🦴: the damage type's symbol (none for a plain hit, 👊 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: simbol jenis damage (tidak ada untuk serangan biasa, 👊 di depan saat kritikal), jumlah damage, lalu cara target menerimanya: 🦴 Rapuh (dua kali lipat), 💢 kelemahan (lebih besar), ⛨ Armor, resistansi, atau perisai menahan sebagian, 🚫 kebal."
+ "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: simbol jenis damage (tidak ada untuk serangan biasa, 💥 di depan saat kritikal), jumlah damage, lalu cara target menerimanya: 🦴 Rapuh (dua kali lipat), 💢 kelemahan (lebih besar), ⛨ Armor, resistansi, atau perisai menahan sebagian, 🚫 kebal.",
+ "{name} drop chance: {p}": "Peluang {name}: {p}"
 }
