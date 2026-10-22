@@ -13,6 +13,10 @@
 //   node tools/map_divvy_2026_10_22.js pools    -> canonical/map-pools.json from the plan and the live CONQUEST_MAPS
 //   node tools/map_divvy_2026_10_22.js check    -> the rules, on the live files (after apply): exit 1 on any failure
 // The ladder itself is the game's (arena_app.js ROAD_RARITY: roadRarityCap, RARITY_INTRO), read through tools/lib_bramble.js.
+// 2026-10-22 (package DV2, owner 07:41): rule 11's "1-2 rewards" became "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1."
+// (REWARDS_FOR / newCardsByMap below; "new" = first in the pools' order, so not carried over, and a card the map gives out: not Base, starter,
+// leader or a special source). The ladder is Epic 22, Heroic 25, Unique 30, Legendary 40, Mythic 60 and nothing above Mythic on the road.
+// `plan` now also records `sources` (every pooled card's source after the plan), so `apply` can put a demoted reward back to a pack card.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -60,23 +64,23 @@ const POOLS = {
   mf:  {cards: ['cricket-drummer', 'dormouse', 'compost-grub', 'bramble-sprout', 'field-vole', 'field-mouse', 'quarry-mole', 'harvest-mouse', 'meadow-frog', 'badger-lumberjack'],
         rewards: {'cricket-drummer': '1-1', 'badger-lumberjack': '1-5'}},
   mb:  {cards: ['fiddler-crab-swarm', 'pincushion-urchin', 'gull-thief', 'tidepool-trapper-crab', 'tide-pool-crab', 'open-ocean-hermit-crab', 'sea-turtle-elder', 'conch-crawler', 'grey-seal-bull', 'conch-herald'],
-        rewards: {'fiddler-crab-swarm': '2-1', 'grey-seal-bull': '2-5'}},
+        rewards: {'fiddler-crab-swarm': '2-1', 'conch-herald': '2-4', 'grey-seal-bull': '2-5'}},
   mc:  {cards: ['puffin-diver', 'hawk-arrowkeeper', 'peak-condor', 'kittiwake-flock', 'red-billed-chough', 'fulmar-spitter', 'razorbill', 'mountain-goat-climber', 'peregrine-stooper', 'golden-eagle-diver'],
-        rewards: {'puffin-diver': '3-2', 'golden-eagle-diver': '3-7'}},
+        rewards: {'puffin-diver': '3-2', 'peregrine-stooper': '3-5', 'golden-eagle-diver': '3-7'}},
   m2:  {cards: ['snapstick-turtle', 'stone-turtle-warden', 'water-vole', 'box-turtle', 'water-shrew', 'river-mink', 'muskrat-lodgekeeper', 'pyrenean-desman', 'platypus-spur', 'old-sturgeon'],
-        rewards: {'platypus-spur': '4-3', 'old-sturgeon': '4-5'}},
+        rewards: {'platypus-spur': '4-3', 'muskrat-lodgekeeper': '4-4', 'old-sturgeon': '4-5'}},
   mw:  {cards: ['snapper-hatchling', 'constrictor-coil', 'venomlord-serpent', 'crocodile-ambusher', 'swamp-alligator', 'caiman-hatchling', 'grass-viper', 'grass-snake', 'fen-mink', 'alligator-gar'],
-        rewards: {'grass-viper': '5-4', 'alligator-gar': '5-7'}},
+        rewards: {'grass-viper': '5-4', 'fen-mink': '5-6', 'alligator-gar': '5-7'}},
   m8:  {cards: ['poison-dart-croaker', 'camouflage-frog', 'marsh-wisp', 'mire-witch-heron', 'constrictor-coil', 'bogfire-newt', 'newt-doctor', 'booming-bittern', 'raven-scout', 'adder-ambusher'],
         rewards: {'newt-doctor': '6-5', 'adder-ambusher': '6-8'}, special: {'venomlord-serpent': ['6-5']}},
   mu:  {cards: ['compost-grub', 'dung-beetle', 'leafcutter-gardener', 'hollow-oath-keeper', 'owl-nightwatch', 'fungal-colossus', 'truffle-piglet', 'ant-warrior', 'planarian-splitter', 'wolf-spider-mother'],
         rewards: {'truffle-piglet': '7-1', 'wolf-spider-mother': '7-6'}},
   m4:  {cards: ['blind-cave-fish', 'cave-olm', 'star-nosed-mole', 'sulfur-cinder-moth', 'stalactite-golem', 'nightshade-moth', 'vampire-bat', 'whip-spider', 'giant-cave-huntsman', 'echo-screecher'],
-        rewards: {'star-nosed-mole': '8-2', 'echo-screecher': '8-8'}},
+        rewards: {'star-nosed-mole': '8-2', 'giant-cave-huntsman': '8-7', 'echo-screecher': '8-8'}},
   mk:  {cards: ['mangrove-mudskipper', 'minnow-skitter', 'mudpuppy', 'mangrove-monitor', 'reef-shark', 'archerfish', 'sunbittern-strider', 'banded-sea-krait', 'mangrove-kingfisher', 'mangrove-manatee'],
-        rewards: {'mangrove-kingfisher': '9-3', 'mangrove-manatee': '9-7'}},
+        rewards: {'mangrove-kingfisher': '9-3', 'banded-sea-krait': '9-5', 'mangrove-manatee': '9-7'}},
   m7:  {cards: ['clownfish-scout', 'parrotfish', 'kraken-spawnling', 'coral-reef-shark', 'riptide-eel', 'electric-ray', 'lions-mane-jelly', 'swordfish-spearman', 'great-barracuda', 'colossal-squid'],
-        rewards: {'electric-ray': '10-2', 'colossal-squid': '10-9'}, special: {'orca-vanguard': ['10-9']}},
+        rewards: {'electric-ray': '10-2', 'great-barracuda': '10-6', 'colossal-squid': '10-9'}, special: {'orca-vanguard': ['10-9']}},
   m10: {cards: ['alpine-marmot', 'chipmunk-hoarder', 'eyrie-warden', 'mountain-hare', 'mountain-goat-climber', 'apollo-butterfly', 'balloon-archer', 'chamois-leaper', 'eagle-owl-quartermaster', 'ibex-rockcaller'],
         rewards: {'chamois-leaper': '11-9', 'ibex-rockcaller': '11-10'}},
   mh:  {cards: ['field-mouse', 'hedgehog-scout', 'bramble-hoglet', 'mouse-sapper', 'seed-cache-squirrel', 'cunning-vixen', 'hedge-weasel', 'lyrebird-mimic', 'quillguard', 'thorn-shrike'],
@@ -84,31 +88,34 @@ const POOLS = {
   mr:  {cards: ['fox-kit', 'swift-fox', 'berserker-boar', 'stag-knight', 'grizzly-vanguard', 'tasmanian-devil', 'woodpecker-sapper', 'bramblewood-lynx', 'fawn-scout', 'shimmerwing-stag'],
         rewards: {'fawn-scout': '13-1', 'shimmerwing-stag': '13-8'}},
   m5:  {cards: ['springbok-pronker', 'hoopoe-herald', 'meerkat-burrower', 'weaver-bird', 'dust-hyena', 'grave-grin-hyena', 'pangolin-roller', 'marula-elephant', 'spitting-cobra', 'savanna-cheetah'],
-        rewards: {'grave-grin-hyena': '14-2', 'savanna-cheetah': '14-8'}},
+        rewards: {'grave-grin-hyena': '14-2', 'spitting-cobra': '14-6', 'savanna-cheetah': '14-8'}},
   ml:  {cards: ['pronghorn-racer', 'warhorse-charger', 'cataphract-destrier', 'shepherds-bark', 'stable-colt', 'border-collie', 'bison-bulldozer', 'stoat-cutthroat', 'raccoon-bandit', 'talon-archer'],
-        rewards: {'border-collie': '15-2', 'talon-archer': '15-7'}},
+        rewards: {'border-collie': '15-2', 'stoat-cutthroat': '15-3', 'talon-archer': '15-7'}},
   mt:  {cards: ['snowshoe-hare', 'frost-hare-sprinter', 'dhole-runner', 'trickster-fox', 'alpha-howler', 'boreal-elk', 'woodland-caribou', 'wolf-pack-runner', 'taiga-lynx', 'dhole-matriarch'],
-        rewards: {'woodland-caribou': '16-3', 'dhole-matriarch': '16-7'}},
+        rewards: {'woodland-caribou': '16-3', 'taiga-lynx': '16-4', 'dhole-matriarch': '16-7'}},
   m6:  {cards: ['snow-ermine', 'harbor-seal', 'glacial-ape-king', 'snow-bunting-archer', 'spitting-spider', 'frostmoon-howler', 'ravenous-wolverine', 'lone-grey-wolf', 'walrus-icebreaker', 'polar-bear'],
-        rewards: {'lone-grey-wolf': '17-2', 'walrus-icebreaker': '17-8'}},
+        rewards: {'lone-grey-wolf': '17-2', 'polar-bear': '17-6', 'walrus-icebreaker': '17-8'}},
   md:  {cards: ['thorny-devil', 'roadrunner-courier', 'sandfish', 'komodo-warlord', 'caustic-scorpion', 'fennec-fox', 'dromedary', 'antlion-pit', 'obsidian-scorpion', 'dust-devil-kestrel'],
-        rewards: {'antlion-pit': '18-6', 'dust-devil-kestrel': '18-7'}, special: {'sand-widow': ['18-7']}},
+        rewards: {'antlion-pit': '18-6', 'obsidian-scorpion': '18-5', 'dust-devil-kestrel': '18-7'}, special: {'sand-widow': ['18-7']}},
   m3:  {cards: ['cinder-stoker', 'magma-titan', 'phoenix-fledgling', 'yeti', 'glacier-wolf-pack', 'porcupine-roller', 'scree-goat', 'fire-salamander', 'quill-volley', 'echidna-quillshot'],
-        rewards: {'fire-salamander': '19-3', 'echidna-quillshot': '19-6'}},
+        rewards: {'fire-salamander': '19-3', 'quill-volley': '19-2', 'echidna-quillshot': '19-6'}},
   m11: {cards: ['pack-mule', 'cinder-skeleton', 'ashbone-ghoul', 'cave-warlord', 'bear-cub', 'magma-wraith', 'ash-cloud-condor', 'magma-salamander', 'woodland-brawler', 'ossuary-lammergeier'],
-        rewards: {'magma-wraith': '20-7', 'ossuary-lammergeier': '20-10'}, special: {'ancient-sloth-titan': ['20-9']}},
+        rewards: {'magma-wraith': '20-7', 'woodland-brawler': '20-9', 'ossuary-lammergeier': '20-10'}, special: {'ancient-sloth-titan': ['20-9']}},
   m21: {cards: ['pika-hoarder', 'glacier-yak', 'eagle-sharpshooter', 'alpine-marmot', 'mountain-goat-climber', 'scree-goat', 'golden-eagle-diver', 'snow-leopard', 'snow-owl-sentinel'],
-        rewards: {'eagle-sharpshooter': '21-4', 'snow-owl-sentinel': '21-6'}},
+        rewards: {'snow-owl-sentinel': '21-6'}},
   m22: {cards: ['cinder-gecko', 'cinder-hornet', 'gorge-wyrm', 'permafrost-mammoth', 'ice-petrel', 'rimefire-salamander', 'badger-berserker', 'fumarole-ibex', 'ur-elk', 'caldera-snow-leopard'],
-        rewards: {'rimefire-salamander': '22-2', 'caldera-snow-leopard': '22-8'}, special: {'rimeheart-colossus': ['22-8']}},
+        rewards: {'rimefire-salamander': '22-2', 'ur-elk': '22-6', 'caldera-snow-leopard': '22-8'}, special: {'rimeheart-colossus': ['22-8']}},
   m23: {cards: ['mouse-sapper', 'badger-trench-digger', 'pack-mule', 'balloon-archer', 'howdah-archers', 'siege-rhino', 'trebuchet-crew', 'testudo-tortoise', 'beetle-battering-ram', 'war-elephant'],
         rewards: {'testudo-tortoise': '23-2', 'war-elephant': '23-8'}, special: {'marshal-tuskwell': ['23-8']}},
   m24: {cards: ['duckling-squadron', 'elderhorn-monarch', 'tax-collector-teal', 'lodge-engineer', 'goose-sentry', 'mallard-halberdier', 'mallard-marauder', 'battlement-heron', 'gilded-swan-knight', 'iron-warden'],
-        rewards: {'iron-warden': '24-6', 'gilded-swan-knight': '24-8'}, special: {'magnate-duck': ['24-8']}},
+        rewards: {'iron-warden': '24-6', 'battlement-heron': '24-5', 'gilded-swan-knight': '24-8'}},
 };
 // The boss cards (owner brief: keep the fights' roles and boss cards): a fight named for a pool card always fields it
 const NAMED = {'7-5': 'hollow-oath-keeper', '7-6': 'fungal-colossus', '8-8': 'stalactite-golem', '13-8': 'shimmerwing-stag', '16-7': 'alpha-howler', '17-8': 'glacial-ape-king',
   '19-6': 'yeti', '20-5': 'cave-warlord', '20-10': 'cave-warlord'};
+// 2026-10-22 (DV2): decks set by hand where the builder's mix would lose the fight's character. 24-8: the Magnate Duck is Heroic and the road
+// fields Heroic from Map 25 (owner, DV1), so the boss keeps its old deck with the Duck swapped for the next card of its theme (a third Gilded Swan Knight).
+const DECK_OVERRIDE = {'24-8': {'duckling-squadron': 5, 'battlement-heron': 3, 'gilded-swan-knight': 3, 'iron-warden': 1}};
 // A pool card's home map (where it is a reward or a pack card) is the first map whose pool holds it; later pools carry it over.
 // Side maps (rule 8: open after a later main map, not in order; rule 9: may go past the parent's rarity and count): the gate
 // (entry.afterMapCleared), the map its fights count as (shieldMap), and its 1-3 new cards (card: fight); the unique each already has stays.
@@ -144,6 +151,16 @@ const fightNo = (m, n)=>{ G.NODE_MAP_HINT.set(n, m.id); return m.sub ? G.fightMa
 const isNormalSkirmish = n=> (n.kind || 'skirmish') === 'skirmish';
 const isRaid = n=> /^(raidboss|megaraid)$/.test(n.kind || ''); // a raid boss's own deck (baseKind counts a worldboss as one: not here)
 const rarOf = (by, id)=> (by[id] && by[id].rarity) || 'common';
+// 2026-10-22 (DV2): the sources that keep their own (Base, faction, raid ...), and what a main map's pool gives out
+const KEEP_KINDS = new Set(['base', 'raid', 'smith', 'nest', 'quest', 'secret', 'materia', 'easteregg']);
+const srcKindOf = c=> c.source ? (c.source.kind === 'pack' && +c.source.tier === 11 ? 'faction' : c.source.kind) : (c.awaitingSource ? 'awaitingSource' : G.cardSourceOf(c).kind);
+const givenByMap = c=> !!c && !isLeader(c) && c.cardType !== 'equipment' && srcKindOf(c) !== 'faction' && !KEEP_KINDS.has(srcKindOf(c));
+// owner 07:41, DV3: "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1. About 2 should be the normal."
+const REWARDS_FOR = n=> n >= 10 ? 3 : n >= 6 ? 2 : 1;
+// the pool cards that first appear on each map (poolLists: {mapId: [ids]} in road order; Map 0 first), that the map gives out
+function newCardsByMap(poolLists, by){ const seen = new Set(), out = {};
+  Object.keys(poolLists).forEach(mid=>{ const fresh = poolLists[mid].filter(id=> !seen.has(id)); poolLists[mid].forEach(id=> seen.add(id)); out[mid] = fresh.filter(id=> givenByMap(by[id])); });
+  return out; }
 
 // the skirmish fights of a main map in order (raid bosses keep their own decks)
 const buildable = m=> (m.nodes || []).filter(n=> n.deck && !isRaid(n) && n.kind !== 'tutorial');
@@ -155,6 +172,7 @@ function buildDecks(m, pool, special, by){
   const no = mapNo(m.id), nodes = buildable(m), N = nodes.length, used = {}, out = {};
   pool.forEach(id=> used[id] = 0);
   nodes.forEach((n, i)=>{
+    if(DECK_OVERRIDE[n.key]){ out[n.key] = {from: n.deck, to: DECK_OVERRIDE[n.key], showcase: null}; Object.keys(DECK_OVERRIDE[n.key]).forEach(id=>{ if(used[id] != null) used[id]++; }); return; }
     const S = Object.values(n.deck).reduce((a, b)=> a + b, 0), t = N > 1 ? i / (N - 1) : 1, kind = n.kind || 'skirmish';
     const capS = STEP(G.roadRarityCap(no, kind));
     const sp = Object.keys(special || {}).filter(id=> special[id].includes(n.key));
@@ -163,6 +181,8 @@ function buildDecks(m, pool, special, by){
     // early skirmishes stay a step lighter than the map's top card (when enough lighter cards exist)
     let use = avail;
     if(isNormalSkirmish(n) && t < 0.4){ const lo = avail.filter(id=> STEP(rarOf(by, id)) < hi); if(lo.length >= 4) use = lo; }
+    // 2026-10-22 (DV2): the fight's own reward card is always on its deck, even where the "a step lighter" rule would leave it out (9-3, 17-2)
+    Object.keys(POOLS[m.id].rewards || {}).forEach(id=>{ if(POOLS[m.id].rewards[id] === n.key && avail.includes(id) && !use.includes(id)) use = use.concat(id); });
     const must = [...sp];
     if(!isNormalSkirmish(n)){ // the boss card: the old deck's top card when it is in the pool, else the pool's top card
       const old = Object.keys(n.deck).filter(id=> use.includes(id)).sort((a, b)=> STEP(rarOf(by, b)) - STEP(rarOf(by, a)) || n.deck[b] - n.deck[a])[0];
@@ -223,8 +243,12 @@ function plan(){
   const skirmishReward = {};
   mains.forEach(m=>{ const P = POOLS[m.id]; Object.keys(P.rewards || {}).forEach(id=>{ skirmishReward[id] = {kind: 'map', id: m.id, node: P.rewards[id]}; }); });
   Object.keys(SUBMAPS).forEach(sid=>{ Object.entries(SUBMAPS[sid].cards).forEach(([id, node])=>{ skirmishReward[id] = {kind: 'map', id: sid, node}; }); });
-  const keepKinds = new Set(['base', 'raid', 'smith', 'nest', 'quest', 'secret', 'materia', 'easteregg']);
-  const srcKind = c=> c.source ? (c.source.kind === 'pack' && +c.source.tier === 11 ? 'faction' : c.source.kind) : (c.awaitingSource ? 'awaitingSource' : G.cardSourceOf(c).kind);
+  const keepKinds = KEEP_KINDS, srcKind = srcKindOf;
+  // 2026-10-22 (DV2, owner 07:41): each map's number of skirmish rewards follows its count of new cards (REWARDS_FOR)
+  const neu = newCardsByMap(Object.fromEntries(mains.map(m=> [m.id, poolOf(m.id)])), by);
+  mains.forEach(m=>{ const want = REWARDS_FOR(neu[m.id].length), have = Object.keys(POOLS[m.id].rewards || {}).length;
+    if(want !== have) errs.push(`${m.id}: ${neu[m.id].length} new cards want ${want} skirmish rewards, POOLS has ${have}`);
+    Object.keys(POOLS[m.id].rewards || {}).forEach(id=>{ if(!neu[m.id].includes(id)) errs.push(`${m.id}: reward ${id} is not one of the map's new cards`); }); });
   // 1. skirmish rewards
   Object.entries(skirmishReward).forEach(([id, s])=> to[id] = s);
   // 2. the rest of each pool: a basic-pack card of its home map (Base, faction and the special kinds keep their own source)
@@ -261,7 +285,9 @@ function plan(){
   const rarityChanges = Object.keys(RARITY).map(id=>{ const c0 = CARDS_RAW.find(c=> c.id === id); return {id, name: c0.name, from: c0.rarity, to: RARITY[id]}; }).filter(x=> x.from !== x.to);
   if(errs.length){ console.error(errs.join('\n')); process.exit(1); }
   const rec = {about: 'Package DV (2026-10-22): the map divvy. pools: each main map\'s cards (rewards: the 1-2 skirmish rewards; the rest are basic-pack cards with that map); rarityChanges (re-fitted by tools/refit_pass_2026_10_21.js); moves: every card source move in RP\'s format (from/to are sources; "awaitingSource" = held); decks: every rebuilt enemy deck (from/to); submaps: gates and new cards. Made by node tools/map_divvy_2026_10_22.js plan; cards applied by python3 tools/map_divvy_apply_2026_10_22.py, decks by node tools/map_divvy_2026_10_22.js decks.',
-    ladder: G.RARITY_INTRO, pools: Object.fromEntries(mains.map(m=> [m.id, {map: mapNo(m.id), name: m.name, cards: poolOf(m.id), rewards: POOLS[m.id].rewards, special: POOLS[m.id].special || {}}])),
+    ladder: G.RARITY_INTRO, ladderMain: G.ROAD_MAIN_FROM, roadNever: G.ROAD_NEVER,
+    pools: Object.fromEntries(mains.map(m=> [m.id, {map: mapNo(m.id), name: m.name, cards: poolOf(m.id), newCards: neu[m.id].length, rewards: POOLS[m.id].rewards, special: POOLS[m.id].special || {}}])),
+    sources: Object.fromEntries(Object.entries(to).map(([id, v])=> [id, v])),
     rarityChanges, moves, decks, submaps, held: HOLD};
   fs.writeFileSync(OUT, JSON.stringify(rec, null, 1) + '\n');
   const cnt = {}; moves.forEach(x=> cnt[x.group] = (cnt[x.group] || 0) + 1);
@@ -294,20 +320,22 @@ function writeDecks(){
 
 // ---------------------------------------------------------------- canonical/map-pools.json (the coordinator's shape, owner 00:51)
 function writePools(){
+  // 2026-10-22 (package DV2): the file is now the owner's (and the admin's folded edits), so this only writes a missing file or with --force
+  if(fs.existsSync(POOLS_OUT) && !process.argv.includes('--force')){ console.log('canonical/map-pools.json exists: not overwritten (use --force to regenerate it from the plan)'); return; }
   const rec = JSON.parse(fs.readFileSync(OUT, 'utf8'));
   const deckIds = n=> Object.keys(n.deck || {});
-  const out = {_about: 'Per-map card pools (owner 2026-10-22): which cards belong to each map. Skirmish deck editors offer only these. Tiers: cards (the map\'s pool), special (cards added for one unusual skirmish), submaps (each side map\'s own pool and special).', maps: {}};
+  const out = {_about: 'Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: "cards" (the MAP tier), "submaps" (each side map\'s own cards, one list each) and "special" (the cards added through a skirmish deck editor\'s + Load any card; one list for the map and its submaps\' fights). Shape: tools/lib_map_pools.js.', maps: {}};
   mains.forEach(m=>{ const cards = rec.pools[m.id].cards.slice(); const special = Object.keys(rec.pools[m.id].special || {});
     // a raid boss's own deck (11-R, 20-R) is one unusual fight: its cards outside the pool are special
     m.nodes.forEach(n=> deckIds(n).forEach(id=>{ if(!cards.includes(id) && !special.includes(id)) special.push(id); }));
     const subs = {};
-    MAPS.filter(x=> x.sub && x.parent === m.id).forEach(sm=>{ const own = [], sp = [];
+    MAPS.filter(x=> x.sub && x.parent === m.id).forEach(sm=>{ const own = [];
       const newer = SUBMAPS[sm.id] ? Object.keys(SUBMAPS[sm.id].cards) : []; newer.forEach(id=> own.push(id));
       // the cards its fights use; an endless dungeon's or the tutorial's decks are its own and listed whole
       const use = {}; sm.nodes.forEach(n=> deckIds(n).forEach(id=> use[id] = (use[id] || 0) + 1));
       Object.keys(use).sort().forEach(id=>{ if(own.includes(id) || cards.includes(id)) return; own.push(id); });
-      subs[sm.id] = {cards: own, special: sp}; });
-    out.maps[m.id] = {cards, special, submaps: subs}; });
+      subs[sm.id] = own; });
+    out.maps[m.id] = {cards, submaps: subs, special}; });
   fs.writeFileSync(POOLS_OUT, JSON.stringify(out, null, 2) + '\n');
   console.log('canonical/map-pools.json:', Object.keys(out.maps).length, 'maps');
 }
@@ -316,6 +344,8 @@ function writePools(){
 function check(){
   const cs = CARDS_RAW, by = byIdOf(cs), fails = [], ok = (c, msg)=>{ if(!c) fails.push(msg); };
   const pools = JSON.parse(fs.readFileSync(POOLS_OUT, 'utf8')).maps;
+  // 0. map-pools.json is in the three-tier shape (2026-10-22, DV2): { cards: [], submaps: { id: [] }, special: [] }
+  Object.entries(pools).forEach(([id, P])=>{ ok(Array.isArray(P.cards) && Array.isArray(P.special) && P.submaps && !Array.isArray(P.submaps) && Object.values(P.submaps).every(Array.isArray) && Object.keys(P).every(k=> ['cards', 'submaps', 'special'].includes(k)), `map-pools shape: ${id}`); });
   const R = id=> rarOf(by, id);
   // 1. the ladder, every enemy deck (main and side maps; not raid bosses, tutorials, endless dungeons)
   MAPS.forEach(m=>{ if(m.reserved || m.endless || m.id === 'mtut') return; (m.nodes || []).forEach(n=>{ if(!n.deck || isRaid(n)) return; const no = fightNo(m, n);
@@ -325,6 +355,8 @@ function check(){
     Object.entries(n.deck).forEach(([id, k])=> ok(k <= G.maxCopiesForRarity(R(id)), `copies: ${m.id} ${n.key} ${id} x${k} over ${G.maxCopiesForRarity(R(id))}`));
     const cnt = r=> Object.entries(n.deck).filter(([id])=> STEP(R(id)) === STEP(r)).reduce((a, [, k])=> a + k, 0) + (n.leaders || []).filter(id=> STEP(R(id)) === STEP(r)).length;
     ok(cnt('legendary') <= 3 && cnt('mythic') <= 2 && ['ancient', 'divine', 'void', 'daemonic'].every(r=> cnt(r) <= 1), `DR caps: ${m.id} ${n.key}`);
+    // 2026-10-22 (DV2, owner 07:41): Ancient, Divine, Void and Daemonic never appear on the road
+    Object.keys(n.deck).forEach(id=> ok(!G.roadNever(R(id)), `never: ${m.id} ${n.key} holds ${id} (${R(id)})`));
     // every normal skirmish deck holds Commons (two copies at least)
     if(isNormalSkirmish(n)) ok(Object.entries(n.deck).filter(([id])=> STEP(R(id)) === 0).reduce((a, [, k])=> a + k, 0) >= 2, `commons: ${m.id} ${n.key} has under 2 Common copies`);
     // rule 13 (Maps 21+): the low rarities barely shrink, Common + Uncommon at least 40% of a normal skirmish deck
@@ -351,14 +383,23 @@ function check(){
   ok(u1.size === 1 && [...u1].every(id=> last.deck[id] && m1.nodes.every(n=> n === last || !n.deck[id])), `Map 1 Uncommons: ${[...u1].join(', ')} (want 1, in ${last.key} only)`);
   ok(kindsOn('mb', 'uncommon').size === 2, `Map 2 Uncommons: ${[...kindsOn('mb', 'uncommon')].join(', ')} (want 2)`);
   ok(kindsOn('m1', 'uncommon').size === 0, `Map 0 Uncommons: ${[...kindsOn('m1', 'uncommon')].join(', ')}`);
-  // 4. the pools: 6-10 a map (Map 0's owner decks aside); 1-2 skirmish rewards a main map (leaders aside), never also a pack card
+  // 4. the pools: 6-10 a map (Map 0's owner decks aside); 2026-10-22 (DV2, owner 07:41) the skirmish rewards per main map follow its new cards:
+  //    "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1." Rewards are new cards of the map, in that fight's deck, never pack cards
+  const neu = newCardsByMap(Object.fromEntries(mains.map(m=> [m.id, pools[m.id].cards])), by);
   mains.forEach((m, i)=>{ const P = pools[m.id]; if(i > 0) ok(P.cards.length >= 6 && P.cards.length <= 10, `pool size ${m.id}: ${P.cards.length}`);
     const rw = cs.filter(c=> c.source && c.source.kind === 'map' && c.source.id === m.id && c.source.node && !isLeader(c) && c.cardType !== 'equipment');
-    ok(rw.length >= 1 && rw.length <= 2, `skirmish rewards ${m.id}: ${rw.map(c=> c.id).join(', ')}`); });
-  // 5. map-pools.json covers every deck (coordinator 00:51)
+    ok(rw.length === REWARDS_FOR(neu[m.id].length), `skirmish rewards ${m.id}: ${rw.length} (${rw.map(c=> c.id).join(', ')}), want ${REWARDS_FOR(neu[m.id].length)} for ${neu[m.id].length} new cards`);
+    rw.forEach(c=>{ ok(neu[m.id].includes(c.id), `reward ${c.id} is not a new card of ${m.id}`); const n = m.nodes.find(x=> x.key === c.source.node); if(i > 0) ok(n && n.deck && n.deck[c.id] > 0, `reward ${c.id} is not in ${c.source.node}'s deck`); }); // (Map 0's decks are the owner's)
+    ok(new Set(rw.map(c=> c.source.node)).size === rw.length, `two skirmish rewards on one fight in ${m.id}`);
+    neu[m.id].forEach(id=>{ if(!rw.some(c=> c.id === id)){ const c = by[id], s2 = c.source; ok(s2 && s2.kind === 'pack' && s2.map === m.id || id in {'fox-kit': 1, 'feral-tomcat': 1, 'beetle-grunt': 1, 'house-cat': 1, 'farm-dog': 1}, `${id} (new on ${m.id}) is neither a reward nor a pack card of it: ${JSON.stringify(s2)}`); } }); });
+  // 2026-10-22 (DV2): the main road introduces Epic at 22 and Heroic at 25 (side maps may be earlier)
+  [['epic', 22], ['heroic', 25]].forEach(([r, at])=> mains.forEach(m=>{ const no = mapNo(m.id); if(no >= at) return; m.nodes.forEach(n=>{ if(!n.deck || isRaid(n)) return; Object.keys(n.deck).forEach(id=> ok(STEP(R(id)) !== STEP(r), `main road: ${m.id} ${n.key} holds ${id} (${r}) before Map ${at}`)); }); }));
+  // no skirmish reward of Ancient or above, and none past the ladder
+  cs.forEach(c=> { if(c.source && c.source.kind === 'map' && c.source.node && !isLeader(c)) ok(!G.roadNever(c.rarity), `never: reward ${c.id} (${c.rarity})`); });
+  // 5. map-pools.json covers every deck: a main-map fight by MAP + SPECIAL, a submap fight by MAP + its SUBMAP + SPECIAL (2026-10-22, DV2)
   MAPS.forEach(m=>{ if(m.reserved) return; const main = m.sub ? MAPS.find(x=> x.id === m.parent) : m, P = pools[main.id]; if(!P){ fails.push('no pool for ' + main.id); return; }
     const sub = m.sub ? P.submaps[m.id] : null; if(m.sub && !sub){ fails.push(`no submap ${m.id} under ${main.id}`); return; }
-    m.nodes.forEach(n=> Object.keys(n.deck || {}).forEach(id=>{ const inPool = P.cards.includes(id) || (!m.sub && P.special.includes(id)) || (sub && (sub.cards.includes(id) || sub.special.includes(id)));
+    m.nodes.forEach(n=> Object.keys(n.deck || {}).forEach(id=>{ const inPool = P.cards.includes(id) || P.special.includes(id) || (sub && sub.includes(id));
       ok(inPool, `map-pools: ${m.id} ${n.key} uses ${id}, in no pool`); })); });
   // a side map's new cards: not on a main map's deck or reward up to its gate
   Object.entries(SUBMAPS).forEach(([sid, S])=>{ const gateNo = S.gate ? (S.gate === 'mi' ? 21 : mapNo(S.gate)) : 20;

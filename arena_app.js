@@ -2120,15 +2120,22 @@ function roadRarityStep(r){ r = r || 'common'; const i = ROAD_RARITY_STEPS.index
 // Heroic, and the other submap will introduce an Epic!" and "As we progress, it gets 'slower' in introducing new rarities"): the
 // rarity ladder. A rarity is REVEALED on the road at RARITY_INTRO's map; before that no enemy deck holds it and no fight, pack or
 // track hands it out. Epic and Heroic are revealed by Map 20's two side maps (SIDE_RARITY_INTRO: the Eye of the Volcano, the Volcano
-// Lair); the main road fields them from Map 22, a map after. Unique on, Claude's proposal (owner to confirm): Unique 30, Legendary 40,
-// Mythic 55, Ancient 70, Divine 90. docs/map-divvy-2026-10-22.md. Was (2026-10-16 / BF3): skirmish Rare to 9, Very Rare 10-20,
+// Lair); the main road fields Epic from Map 22 and Heroic from Map 25 (DV2, below). Unique 30, Legendary 40, Mythic 60 (owner OK'd 07:41,
+// DV1); Ancient and above never. docs/map-divvy-2026-10-22.md. Was (2026-10-16 / BF3): skirmish Rare to 9, Very Rare 10-20,
 // Super Rare 21-35, Epic 36-40, Heroic 41-50, Unique 51+; bosses a step or two higher (Epic on Maps 10-19, Legendary from 21).
-const RARITY_INTRO = {common:0, uncommon:1, rare:5, veryrare:10, superrare:20, epic:21, heroic:21, unique:30, legendary:40, mythic:55, ancient:70, divine:90, void:100, daemonic:100};
+// 2026-10-22 (package DV2, owner 07:41, DV1: "Move Heroic to Map 25. Mythic can be Map 60 I think. Ancient and above are never guaranteed. I think
+// they come from special quests and dungeons. Mythic shall be the default highest rarity."): the main road introduces Epic at 22, Heroic at 25,
+// Unique 30, Legendary 40, Mythic 60. Ancient, Divine, Void and Daemonic NEVER appear on the road (skirmishes, rewards, packs and tracks): only
+// special quests and dungeons give them (ROAD_NEVER). Mythic is the highest rarity the road reaches.
+const RARITY_INTRO = {common:0, uncommon:1, rare:5, veryrare:10, superrare:20, epic:21, heroic:21, unique:30, legendary:40, mythic:60};
+const ROAD_NEVER = ['ancient', 'divine', 'void', 'daemonic'];
+function roadNever(r){ return ROAD_NEVER.includes(ROAD_RARITY_STEPS[roadRarityStep(r)]); }
 const SIDE_RARITY_INTRO = {me:'epic', mx:'heroic'}; // the side map whose fights reveal it (Eye of the Volcano, Volcano Lair)
-const ROAD_EPIC_HEROIC_FROM = 22; // the main road fields Epic and Heroic from here (a map after the side maps that reveal them)
+const ROAD_MAIN_FROM = {epic:22, heroic:25}; // the main road fields Epic from Map 22 (a map after the Eye of the Volcano) and Heroic from Map 25 (owner, DV1); the side maps reveal them earlier
+const ROAD_EPIC_HEROIC_FROM = ROAD_MAIN_FROM.epic; // kept for older callers: the first of the two
 function rarityIntroMap(r){ const k = ROAD_RARITY_STEPS[roadRarityStep(r)]; return RARITY_INTRO[k] != null ? RARITY_INTRO[k] : 0; }
 // The highest rarity revealed by Map n on the main road (Epic and Heroic count from ROAD_EPIC_HEROIC_FROM).
-function roadRevealedCap(n){ let top = 'common'; ROAD_RARITY_STEPS.forEach(k=>{ const at = (k === 'epic' || k === 'heroic') ? ROAD_EPIC_HEROIC_FROM : RARITY_INTRO[k]; if(at != null && n >= at) top = k; }); return top; }
+function roadRevealedCap(n){ let top = 'common'; ROAD_RARITY_STEPS.forEach(k=>{ if(ROAD_NEVER.includes(k)) return; const at = ROAD_MAIN_FROM[k] != null ? ROAD_MAIN_FROM[k] : RARITY_INTRO[k]; if(at != null && n >= at) top = k; }); return top; } // 2026-10-22 (DV2): never past Mythic
 // A skirmish's cap by map; an elite gets one step more and a boss (miniboss, worldboss, dungeon) two, never past what is revealed.
 // So Map 1's skirmishes are Common and its last match (an elite) holds its one Uncommon; Map 5's fights reach Rare; Map 10's Very Rare.
 function roadSkirmishCap(n){ return n >= 70 ? 'mythic' : n >= 60 ? 'legendary' : n >= 50 ? 'unique' : n >= 40 ? 'heroic' : n >= 30 ? 'epic' : n >= 20 ? 'superrare' : n >= 10 ? 'veryrare' : n >= 5 ? 'rare' : n >= 2 ? 'uncommon' : 'common'; }
@@ -2151,7 +2158,8 @@ function rarityRevealedForPlayer(r, reach){
   const k = ROAD_RARITY_STEPS[roadRarityStep(r)], at = RARITY_INTRO[k] || 0;
   if(reach == null){ try{ reach = trackMapReached(); }catch(e){ reach = 0; } }
   const side = Object.keys(SIDE_RARITY_INTRO).find(id=> SIDE_RARITY_INTRO[id] === k);
-  if(side){ if(reach >= ROAD_EPIC_HEROIC_FROM) return true; try{ return typeof conquestMapCleared === 'function' && conquestMapCleared(side); }catch(e){ return false; } }
+  if(roadNever(r)) return false; // 2026-10-22 (DV2): Ancient and above never come from the road
+  if(side){ if(reach >= (ROAD_MAIN_FROM[k] || ROAD_EPIC_HEROIC_FROM)) return true; try{ return typeof conquestMapCleared === 'function' && conquestMapCleared(side); }catch(e){ return false; } }
   return reach >= at;
 }
 // ROAD_RARITY:END
@@ -18215,7 +18223,7 @@ function openSkirmishGallery(o){
   document.body.appendChild(el);
   let q = '', only = 'all';
   // 2026-10-22 (package MP): o.pool = the fight's map id (deck picks): the map's pool under its tier headings, + Load any card (see openDeckBuilderPopup)
-  const pm = o.kind === 'deck' && o.pool ? {mapId: o.pool, any: false, shown: 96, note: ''} : null;
+  const pm = o.kind === 'deck' && o.pool ? {mapId: o.pool, note: ''} : null; // 2026-10-22 (package DV2): + Load any card is its own modal (openMapLoadAny), not a view of this one
   // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar here too (deck and leader picks)
   const cf = Object.assign(cfDefaults(), {sort:'rarity', dir:'asc'}, (()=>{ try{ return uiSticky('sgTx'); }catch(e){ return {}; } })()), cfKeep = {}; // rarity, low to high: the old order
   const RAR = ['starter','common','uncommon','rare','epic','legendary','unique'];
@@ -18241,23 +18249,22 @@ function openSkirmishGallery(o){
         const picked = o.kind === 'leader' && (o.current||[]).includes(d.id);
         return `<div class="sg-item${n ? ' is-in' : ''}${picked ? ' is-picked' : ''}" data-pick="${escapeAttr(d.id)}" role="button" tabindex="0" title="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${n ? `<span class="sg-count">×${n}</span><button type="button" class="sg-minus" data-minus="${escapeAttr(d.id)}" aria-label="Remove one ${escapeAttr(d.name)}">−</button>` : ''}${picked ? '<span class="sg-count">👑</span>' : ''}</div>`;
       };
-      if(pm && !pm.any){ // 2026-10-22 (package MP): the map's pool, tier by tier
+      if(pm){ // 2026-10-22 (package MP): the map's pool, tier by tier (MAP, its SUBMAP, SPECIAL)
         body = mpPoolGroupsHTML(pm.mapId, pass, (a, b)=> by(a, b), id=> item(defs[id])) || mpPoolEmptyHTML(pm.mapId);
       } else {
         let list = pool.filter(pass);
         list = list.slice().sort((a, b)=> by(a.id, b.id));
-        const cap = pm ? pm.shown : list.length;
-        body = list.slice(0, cap).map(item).join('') + (list.length > cap ? `<button type="button" class="btn small mp-more" data-mp-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - cap})</button>` : '') || '<p class="panel-sub">No cards match.</p>';
+        body = list.map(item).join('') || '<p class="panel-sub">No cards match.</p>';
       }
     }
     el.innerHTML = `<div class="modal se-gallery" role="dialog" aria-label="${escapeAttr(title)}">
       <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-sg-close aria-label="Close">✕</button></div>
       <div class="sg-tools"><input data-text-filter autocomplete="off" type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}">
         ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
-        ${pm ? `<button type="button" class="btn small${pm.any ? ' primary' : ''}" data-mp-any>${escapeHtml(pm.any ? '← ' + TX('ui.mp-back-pool') : TX('ui.mp-load-any'))}</button>` : ''}
+        ${pm ? `<button type="button" class="btn small" data-mp-any>${escapeHtml(TX('ui.mp-load-any'))}</button>` : ''}
         ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}
         ${o.kind !== 'castle' ? cfBarHTML(cf, 'sg', defs) : ''}</div>
-      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}${pm && (pm.any || pm.note) ? ' ' + escapeHtml(pm.note || TX('ui.mp-loading-any', {map: (mpMapById(pm.mapId) || {name: pm.mapId}).name})) : ''}</p>
+      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}${pm && pm.note ? ' ' + escapeHtml(pm.note) : ''}</p>
       <div class="sg-grid${o.kind === 'castle' ? ' is-castles' : ''}${pm ? ' is-pooled' : ''}">${body}</div>
     </div>`;
     el.querySelectorAll('[data-sg-close]').forEach(b=> b.onclick = close);
@@ -18268,12 +18275,13 @@ function openSkirmishGallery(o){
     if(o.kind !== 'castle') cfWire(el, cf, 'sg', ()=>{ try{ uiStickySave('sgTx', cf); }catch(e){} render(); }, cfKeep); // 2026-10-21 (package TX)
     el.querySelectorAll('[data-minus]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); o.minus(b.dataset.minus); render(); });
     // 2026-10-22 (package MP): + Load any card, Show more, Open Map cards
-    { const any = el.querySelector('[data-mp-any]'); if(any) any.onclick = ()=>{ pm.any = !pm.any; pm.shown = 96; pm.note = ''; render(); }; }
-    { const more = el.querySelector('[data-mp-more]'); if(more) more.onclick = ()=>{ pm.shown += 96; render(); }; }
+    // 2026-10-22 (package DV2): its own modal; the card joins the deck (unless a deck cap refuses it) and the map's SPECIAL, then the modal closes
+    { const any = el.querySelector('[data-mp-any]'); if(any) any.onclick = ()=> openMapLoadAny({mapId: pm.mapId,
+        onPick: id=>{ const before = o.counts[id] || 0; o.pick(id); return (o.counts[id] || 0) > before; },
+        onDone: (id, added)=>{ pm.note = added ? TX('ui.mp-added-special', {name: (defs[id] || {}).name || id, map: (mpMapById(pm.mapId) || {name: pm.mapId}).name}) : ''; render(); }}); }
     { const op = el.querySelector('[data-mp-open]'); if(op) op.onclick = ()=> openMapCardsEditor(pm.mapId, {onClose: render}); }
     el.querySelectorAll('[data-pick]').forEach(b=>{
       const go = ()=>{ const id = b.dataset.pick; o.pick(id);
-        if(pm && pm.any && !mapPoolHas(pm.mapId, id)){ mapPoolAdd(pm.mapId, 'special', id); pm.note = TX('ui.mp-added-special', {name: (defs[id] || {}).name || id, map: (mpMapById(pm.mapId) || {name: pm.mapId}).name}); } // the card joins the map's Special tier
         if(o.kind === 'deck') render(); else close(); };
       b.addEventListener('click', go);
       b.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(); } });
@@ -18298,7 +18306,7 @@ function openDeckBuilderPopup(o){
   // 2026-10-22 (package MP, owner 00:51: "when editing the deck of the skirmishes, they only show cards from this set. I have to press a special button
   // if I want to load in a new card"): o.pool = the fight's map id. The picker then offers that map's pool under its tier headings, in large cards;
   // "+ Load any card" opens the whole catalogue, and a card picked there joins the deck AND the map's Special tier.
-  const pm = o.pool ? {mapId: o.pool, any: false, shown: 96} : null;
+  const pm = o.pool ? {mapId: o.pool} : null; // 2026-10-22 (package DV2): + Load any card opens its own modal (openMapLoadAny)
   // 2026-10-21 (package TX, owner: "skirmish included always!"): the Codex's filter bar; its choices are kept between popups
   // + package U4's "Sort: Advancement" (dbpAdvanceSortFn: earliest first, low to high; latest first, high to low), still kept per device
   // in bramblewood_dbp_sort_v1
@@ -18312,12 +18320,11 @@ function openDeckBuilderPopup(o){
     return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
   const poolItem = id=> { const defs = getCardDefs(); return `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`; };
   const poolHTML = ()=>{
-    if(pm && !pm.any){ // 2026-10-22 (package MP): the map's pool, tier by tier
+    if(pm){ // 2026-10-22 (package MP): the map's pool, tier by tier (MAP, its SUBMAP, SPECIAL)
       const ql = q.trim().toLowerCase();
       return mpPoolGroupsHTML(pm.mapId, (d, id)=> !d.test && id !== HERO_ID && (!ql || d.name.toLowerCase().includes(ql)) && cfMatch(d, cf), sortBy(), poolItem) || mpPoolEmptyHTML(pm.mapId);
     }
-    const list = all(), cap = pm ? pm.shown : 400;
-    return list.slice(0, cap).map(poolItem).join('') + (pm && list.length > cap ? `<button type="button" class="btn small mp-more" data-mp-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - cap})</button>` : '');
+    return all().slice(0, 400).map(poolItem).join('');
   };
   const warnHTML = ()=> pm ? mpWarnHTML(pm.mapId, counts) : '';
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
@@ -18335,28 +18342,30 @@ function openDeckBuilderPopup(o){
   const mapName = ()=> { const m = mpMapById(pm.mapId); return m ? m.name : pm.mapId; };
   const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); o.onClose && o.onClose(); };
   const onKey = e=>{ if(e.key === 'Escape') close(); }; document.addEventListener('keydown', onKey);
+  // 2026-10-21 (package ED, owner #10: "It hangs when I add or remove cards ... just change the number count. Unless it is 0->1 or 1->0"):
+  // every click redrew the deck row and up to 400 pool stacks (~1-2.6 s a click at 1366). Now a click rewrites the card's counts and the
+  // total (edPopupCount); only a card arriving or leaving redraws, and only the deck row.
+  const quick = (id, before)=>{ const n = counts[id] || 0; if((before > 0) !== (n > 0)){ const dk = ov.querySelector('#dbpDeck'); dk.innerHTML = deckHTML(); warnRefresh(); }
+    edPopupCount(ov, id, n); ov.querySelector('#dbpTotal').textContent = total(); };
+  // 2026-10-22 (package DR): the top-rank deck caps (Legendary 3 / Mythic 2 / higher 1, o.leaders counted) apply here too, even though the popup is `unlimited`
+  const rankStop = (el, id)=>{ const rb = deckRankBlockFor(counts, id, getCardDefs(), typeof o.leaders === 'function' ? o.leaders() : o.leaders); if(!rb) return false; denyShake(el); floatText(el, deckRankLimitText(rb), 'debuff'); return true; };
+  // one more copy of a card (the pool stack, the deck row, or the Load any card modal); false when an edition or rank cap refuses it
+  const addCopy = (el, id)=>{ if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(el); return false; } if(rankStop(el, id)) return false;
+    const before = counts[id] || 0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); return true; };
   ov.addEventListener('click', e=>{
     if(e.target === ov || e.target.closest('[data-close]')) return close();
     const a = e.target.closest('[data-add]'), r = e.target.closest('[data-rm]');
-    // 2026-10-21 (package ED, owner #10: "It hangs when I add or remove cards ... just change the number count. Unless it is 0->1 or 1->0"):
-    // every click redrew the deck row and up to 400 pool stacks (~1-2.6 s a click at 1366). Now a click rewrites the card's counts and the
-    // total (edPopupCount); only a card arriving or leaving redraws, and only the deck row.
-    const quick = (id, before)=>{ const n = counts[id] || 0; if((before > 0) !== (n > 0)){ const dk = ov.querySelector('#dbpDeck'); dk.innerHTML = deckHTML(); warnRefresh(); }
-      edPopupCount(ov, id, n); ov.querySelector('#dbpTotal').textContent = total(); };
-    // 2026-10-22 (package MP): ⚠ chips (Add to Special), + Load any card, the pool's Show more and Open Map cards
-    { const sp = e.target.closest('[data-mp-special]'), all2 = e.target.closest('[data-mp-special-all]');
-      if(pm && (sp || all2)){ mpAddOffPool(pm.mapId, counts, sp ? sp.dataset.mpSpecial : null); refresh(); note(TX('ui.mp-added-special-n', {map: mapName()})); return; }
-      if(pm && e.target.closest('[data-mp-more]')){ pm.shown += 96; refresh('pool'); return; }
-      if(pm && e.target.closest('[data-mp-open]')){ openMapCardsEditor(pm.mapId, {onClose: ()=>{ refresh(); }}); return; }
-      if(pm && e.target.closest('#dbpAny')){ pm.any = !pm.any; pm.shown = 96; const b = ov.querySelector('#dbpAny'); b.textContent = pm.any ? '← ' + TX('ui.mp-back-pool') : TX('ui.mp-load-any'); b.classList.toggle('primary', pm.any);
-        note(pm.any ? TX('ui.mp-loading-any', {map: mapName()}) : ''); refresh('pool'); return; } }
-    // 2026-10-22 (package DR): the top-rank deck caps (Legendary 3 / Mythic 2 / higher 1, o.leaders counted) apply here too, even though the popup is `unlimited`
-    const rankStop = (el, id)=>{ const rb = deckRankBlockFor(counts, id, getCardDefs(), typeof o.leaders === 'function' ? o.leaders() : o.leaders); if(!rb) return false; denyShake(el); floatText(el, deckRankLimitText(rb), 'debuff'); return true; };
-    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } if(rankStop(a, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){}
-      if(pm && pm.any && !mapPoolHas(pm.mapId, id)){ mapPoolAdd(pm.mapId, 'special', id); note(TX('ui.mp-added-special', {name: (getCardDefs()[id] || {}).name || id, map: mapName()})); } // 2026-10-22 (package MP): the card joins the map's Special tier
-      quick(id, before); }
+    if(pm){ // 2026-10-22 (package MP): the ⚠ chips (Add to Special), + Load any card, Open Map cards
+      const sp = e.target.closest('[data-mp-special]'), all2 = e.target.closest('[data-mp-special-all]');
+      if(sp || all2){ mpAddOffPool(pm.mapId, counts, sp ? sp.dataset.mpSpecial : null); refresh(); note(TX('ui.mp-added-special-n', {map: mapName()})); return; }
+      if(e.target.closest('[data-mp-open]')){ openMapCardsEditor(pm.mapId, {onClose: ()=>{ refresh(); }}); return; }
+      // 2026-10-22 (package DV2): its own modal over this picker; the card joins the deck and the map's SPECIAL, then the modal closes
+      if(e.target.closest('#dbpAny')){ openMapLoadAny({mapId: pm.mapId, onPick: (id, el)=> addCopy(el, id),
+        onDone: (id, added)=>{ note(added ? TX('ui.mp-added-special', {name: (getCardDefs()[id] || {}).name || id, map: mapName()}) : ''); refresh(); }}); return; } // refresh() redraws the deck row too: the card is in the pool now, no ⚠
+    }
+    if(a){ addCopy(a, a.dataset.add); }
     // 2026-10-13 (user: "In the mini deck editor of the skirmish editor, click means +, shift+click means -").
-    else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } if(rankStop(r, id)) return; const before = counts[id]||0; counts[id] = before + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} quick(id, before); }
+    else if(r && !e.shiftKey){ addCopy(r, r.dataset.rm); }
     else if(r){ const id = r.dataset.rm, before = counts[id]||0; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} quick(id, before); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
@@ -18366,14 +18375,17 @@ function openDeckBuilderPopup(o){
 // ---- Package MP (2026-10-22, owner 00:51 / 00:57): the map card pools -------------------------------------------------------------
 // "Introduce a map editor for cards. It lets me select cards relevant to this map ONLY. Submaps have a similar mechanic ... when editing
 // the deck of the skirmishes, they only show cards from this set. I have to press a special button if I want to load in a new card (it
-// goes into the map's 2nd tier called special cards)."  A pool is per MAIN map: {cards, special, submaps:{<id>:{cards, special}}}.
-// Source of truth: canonical/map-pools.json (inlined at build). The admin's live edits ride the card_overrides table as
-// `__cfg:map-pools:<mapId>` rows (one per main map, written through cloudWriteCardOverride like `__cfg:map-nodes:<id>`), win over the
-// file at load, and are folded back by tools/fold_map_pools.js. A fight on a main map draws from its Cards + Special; a fight on a
-// submap from the parent's Cards + the submap's Cards + the submap's Special.
+// goes into the map's 2nd tier called special cards)."
+// 2026-10-22 (package DV2, owner 07:41): "Break into 3 tiers: MAP, SUBMAP(s) (1 each), SPECIAL. SPECIAL are those you pressed the 'Load any card'
+// button." A pool is per MAIN map: {cards: [MAP], submaps: {<submapId>: [that submap's own cards]}, special: [added via + Load any card]}. One
+// SPECIAL list covers the map's submaps' fights too. Source of truth: canonical/map-pools.json (inlined at build). The admin's live edits ride
+// the card_overrides table as `__cfg:map-pools:<mapId>` rows (one per main map, written through cloudWriteCardOverride like
+// `__cfg:map-nodes:<id>`), win over the file at load, and are folded back by tools/fold_map_pools.js. A fight on a main map draws from MAP +
+// SPECIAL; a fight on a submap from MAP + that SUBMAP + SPECIAL. Old rows and local edits ({cards, special, submaps:{id:{cards, special}}}) are
+// read as the new shape (mpClean; tools/lib_map_pools.js normalizeEntry does the same for the file and the fold).
 const MAP_POOLS_BASE = __MAP_POOLS__;
 const MAP_POOLS_KEY = 'bramblewood_map_pools_v1';
-let mapPoolEdits = {}; // {mainMapId: {pool:{cards, special, submaps}, localAt}}
+let mapPoolEdits = {}; // {mainMapId: {pool:{cards, submaps, special}, localAt}}
 try{ mapPoolEdits = JSON.parse(localStorage.getItem(MAP_POOLS_KEY) || '{}') || {}; }catch(e){ mapPoolEdits = {}; }
 function persistMapPools(){ try{ localStorage.setItem(MAP_POOLS_KEY, JSON.stringify(mapPoolEdits)); }catch(e){} }
 const mpListeners = new Set();
@@ -18383,36 +18395,54 @@ function mpStatusText(){ return !mpStatus ? '' : mpStatus.ok ? '☁️ ' + TX('u
 function mpMapById(id){ return CONQUEST_MAPS.find(m=> m.id === id) || null; }
 function mpTopOf(mapId){ const m = mpMapById(mapId); return m && m.sub ? m.parent : mapId; }
 function mpIsSub(mapId){ const m = mpMapById(mapId); return !!(m && m.sub); }
+function mpSubsOf(top){ return CONQUEST_MAPS.filter(m=> m.sub && m.parent === top && !m.reserved); }
 function mpClean(p){
-  const arr = a=> [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))], o = {cards: arr(p && p.cards), special: arr(p && p.special), submaps: {}};
-  Object.keys((p && p.submaps) || {}).forEach(k=>{ const s = p.submaps[k] || {}; o.submaps[k] = {cards: arr(s.cards), special: arr(s.special)}; });
+  const arr = a=> [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))], o = {cards: arr(p && p.cards), submaps: {}, special: arr(p && p.special)};
+  Object.keys((p && p.submaps) || {}).forEach(k=>{ const s = p.submaps[k];
+    if(Array.isArray(s)) o.submaps[k] = arr(s);
+    else { o.submaps[k] = arr(s && s.cards); o.special = arr(o.special.concat(arr(s && s.special))); } }); // the old shape: a submap's own Special joins the map's one SPECIAL
   return o;
 }
 // the main map's entry as the game reads it: a live edit wins over the file
 function mpEntry(top){ const e = mapPoolEdits[top]; return mpClean(e && e.pool ? e.pool : ((MAP_POOLS_BASE || {}).maps || {})[top]); }
-function mapPoolScope(mapId){
-  const sub = mpIsSub(mapId), top = mpTopOf(mapId), ent = mpEntry(top), own = sub ? (ent.submaps[mapId] || {cards: [], special: []}) : ent;
-  return {mapId, top, sub, cards: own.cards, special: own.special, parentCards: sub ? ent.cards : []};
-}
-// tiers in the order a fight reads them: parent Cards (read only), Cards, Special
+function mapPoolScope(mapId){ const sub = mpIsSub(mapId), top = mpTopOf(mapId); return {mapId, top, sub, ent: mpEntry(top)}; }
+// the tiers a FIGHT of this map reads, in order: MAP, its SUBMAP (a submap fight only), SPECIAL. key: 'cards' | 'sub:<submapId>' | 'special'
 function mapPoolTiers(mapId){
-  const sc = mapPoolScope(mapId), out = [];
-  if(sc.sub){ const p = mpMapById(sc.top); out.push({key: 'parent', ro: true, ids: sc.parentCards, label: TX('ui.mp-t-parent', {name: p ? p.name : sc.top})}); }
-  out.push({key: 'cards', ids: sc.cards, label: TX(sc.sub ? 'ui.mp-t-subcards' : 'ui.mp-t-cards')});
-  out.push({key: 'special', ids: sc.special, label: TX(sc.sub ? 'ui.mp-t-subspecial' : 'ui.mp-t-special')});
+  const sc = mapPoolScope(mapId), out = [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}];
+  if(sc.sub){ const sm = mpMapById(mapId); out.push({key: 'sub:' + mapId, sub: mapId, ids: sc.ent.submaps[mapId] || [], label: TX('ui.mp-t-submap', {name: sm ? sm.name : mapId})}); }
+  out.push({key: 'special', ids: sc.ent.special, label: TX('ui.mp-t-special')});
+  return out;
+}
+// every tier of a MAIN map, for the editor: MAP, one SUBMAP section per submap, SPECIAL
+function mapPoolSections(top){
+  const ent = mpEntry(top), out = [{key: 'cards', ids: ent.cards, label: TX('ui.mp-t-map')}];
+  mpSubsOf(top).forEach(sm=> out.push({key: 'sub:' + sm.id, sub: sm.id, ids: ent.submaps[sm.id] || [], label: TX('ui.mp-t-submap', {name: (sm.icon ? sm.icon + ' ' : '') + sm.name})}));
+  out.push({key: 'special', ids: ent.special, label: TX('ui.mp-t-special')});
   return out;
 }
 function mapPoolIds(mapId){ return [...new Set(mapPoolTiers(mapId).flatMap(t=> t.ids))]; }
 function mapPoolTierOf(mapId, id){ const t = mapPoolTiers(mapId).find(x=> x.ids.includes(id)); return t ? t.key : ''; }
 function mapPoolHas(mapId, id){ return !!mapPoolTierOf(mapId, id); }
 function mpMutate(mapId, fn){
-  const top = mpTopOf(mapId), ent = mpEntry(top), own = mpIsSub(mapId) ? (ent.submaps[mapId] = ent.submaps[mapId] || {cards: [], special: []}) : ent;
-  fn(own); mapPoolEdits[top] = {pool: mpClean(ent), localAt: Date.now()};
+  const top = mpTopOf(mapId), ent = mpEntry(top);
+  fn(ent); mapPoolEdits[top] = {pool: mpClean(ent), localAt: Date.now()};
   persistMapPools(); mpScheduleSave(top); mpChanged();
 }
-// adding a card that is in the other tier moves it
-function mapPoolAdd(mapId, tier, id){ mpMutate(mapId, own=>{ own.cards = own.cards.filter(x=> x !== id); own.special = own.special.filter(x=> x !== id); own[tier === 'special' ? 'special' : 'cards'].push(id); }); }
-function mapPoolRemove(mapId, id){ mpMutate(mapId, own=>{ own.cards = own.cards.filter(x=> x !== id); own.special = own.special.filter(x=> x !== id); }); }
+function mpDrop(ent, id, tier){ // tier: one tier key, or null for every tier
+  if(!tier || tier === 'cards') ent.cards = ent.cards.filter(x=> x !== id);
+  if(!tier || tier === 'special') ent.special = ent.special.filter(x=> x !== id);
+  Object.keys(ent.submaps).forEach(k=>{ if(!tier || tier === 'sub:' + k) ent.submaps[k] = ent.submaps[k].filter(x=> x !== id); });
+}
+// 'special' only ever grows (the + Load any card path); 'cards' or 'sub:<id>' puts the card in that one tier, taking it out of the others (a move)
+function mapPoolAdd(mapId, tier, id){
+  mpMutate(mapId, ent=>{
+    if(tier === 'special'){ if(!ent.special.includes(id)) ent.special.push(id); return; }
+    mpDrop(ent, id, null);
+    if(tier === 'cards') ent.cards.push(id); else { const k = String(tier).replace(/^sub:/, ''); (ent.submaps[k] = ent.submaps[k] || []).push(id); }
+  });
+}
+function mapPoolRemove(mapId, id, tier){ mpMutate(mapId, ent=> mpDrop(ent, id, tier || null)); }
+function mapPoolMove(mapId, id, to){ if(to && to !== 'special') mapPoolAdd(mapId, to, id); } // MAP <-> a SUBMAP; SPECIAL is never a move target (owner 07:41)
 function mapPoolReset(mapId){ const top = mpTopOf(mapId); delete mapPoolEdits[top]; persistMapPools(); mpScheduleSave(top); mpChanged(); }
 const mpTimers = {};
 function mpScheduleSave(top){ clearTimeout(mpTimers[top]); mpTimers[top] = setTimeout(()=> publishMapPools(top), 700); }
@@ -18449,11 +18479,7 @@ function mpUsedHTML(v){
   v = v || [0, 0, 0];
   return `<span class="mp-used" title="${escapeAttr(TX('ui.mp-used-tip', {a: v[0], b: v[1], c: v[2]}))}">${v.map(n=> `<i class="${n ? '' : 'is-zero'}">${n}</i>`).join('<s>·</s>')}</span>`;
 }
-function mpMapList(){
-  const all = CONQUEST_MAPS.filter(m=> !m.reserved), out = [];
-  all.filter(m=> !m.sub).forEach(m=>{ out.push(m); all.filter(s=> s.sub && s.parent === m.id).forEach(s=> out.push(s)); });
-  return out;
-}
+function mpMainList(){ return CONQUEST_MAPS.filter(m=> !m.reserved && !m.sub); } // 2026-10-22 (package DV2): main maps only; a submap is a section of its parent
 function mpCatalogIds(){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const d = defs[id]; return d && !d.test && !d.hallOfFame && !d.baseId && id !== HERO_ID; }); }
 // the picker's pool: the tiers as headings, each card once (the first tier that has it)
 function mpPoolGroupsHTML(mapId, pass, by, item){
@@ -18493,21 +18519,29 @@ function mpSummaryHTML(ids, defs){
   return `<div class="mc-sum"><div class="mc-sum-row"><b>${escapeHtml(TX('ui.mp-summary', {n: ids.length}))}</b>${rar}</div>`
     + `<div class="mc-sum-row">${hist('🪵 ' + TX('ui.mp-lumber'), lum, ['0', '1', '2', '3', '4', '5+'])}${hist('⏳ ' + TX('ui.mp-wait'), wt, ['0', '1', '2', '3+'])}</div></div>`;
 }
-// -- the Map cards editor: pick a map or a submap; its tiers in full, large cards; an Add cards panel with the Codex's whole filter bar
+// -- the Map cards editor: pick a main map; its three tiers in full, large cards: MAP, one SUBMAP section per submap, then SPECIAL; an Add
+// cards panel with the Codex's whole filter bar. (2026-10-22, package DV2, owner 07:41: "Break into 3 tiers: MAP, SUBMAP(s) (1 each), SPECIAL
+// ... So we keep the simple Map list of cards." No Cards <-> Special toggle: a card moves to a SUBMAP (or back to MAP) or is removed; SPECIAL
+// fills only from + Load any card in a skirmish deck picker.)
 const MC_UI_KEY = 'bramblewood_mapcards_ui_v1';
 function openMapCardsEditor(mapId0, o){
   o = o || {};
   const old = document.getElementById('mapCardsOverlay'); if(old) old.remove();
-  const maps = mpMapList(); if(!maps.length) return;
-  let mapId = maps.some(m=> m.id === mapId0) ? mapId0 : maps[0].id;
-  const ui = Object.assign({density: 'large', target: 'cards', sort: 'cost', shown: 48, parentOpen: false}, (()=>{ try{ return JSON.parse(localStorage.getItem(MC_UI_KEY) || '{}') || {}; }catch(e){ return {}; } })());
+  const maps = mpMainList(); if(!maps.length) return;
+  let mapId = mpTopOf(mapId0), focusSub = mpIsSub(mapId0) ? mapId0 : null; // a submap opens its parent, scrolled to its section
+  if(!maps.some(m=> m.id === mapId)) mapId = maps[0].id;
+  const ui = Object.assign({density: 'large', target: 'cards', sort: 'cost', shown: 48}, (()=>{ try{ return JSON.parse(localStorage.getItem(MC_UI_KEY) || '{}') || {}; }catch(e){ return {}; } })());
   ui.shown = 48;
-  const saveUi = ()=>{ try{ localStorage.setItem(MC_UI_KEY, JSON.stringify({density: ui.density, target: ui.target, sort: ui.sort, parentOpen: ui.parentOpen})); }catch(e){} };
+  const saveUi = ()=>{ try{ localStorage.setItem(MC_UI_KEY, JSON.stringify({density: ui.density, target: ui.target, sort: ui.sort})); }catch(e){} };
   const cf = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('mcTx'); }catch(e){ return {}; } })()), cfKeep = {};
   let q = '', usage = mpUsage(mapId), resetArmed = 0;
+  const sections = ()=> mapPoolSections(mapId);
+  const targets = ()=> sections().filter(t=> t.key !== 'special');
+  const fixTarget = ()=>{ if(focusSub && targets().some(t=> t.key === 'sub:' + focusSub)) ui.target = 'sub:' + focusSub; if(!targets().some(t=> t.key === ui.target)) ui.target = 'cards'; };
+  fixTarget();
   const ov = document.createElement('div'); ov.id = 'mapCardsOverlay'; ov.className = 'modal-overlay mc-overlay'; document.body.appendChild(ov);
   const $ = sel=> ov.querySelector(sel);
-  const mapLabel = m=> (m.sub ? '↳ ' : '') + (m.icon || '') + ' ' + m.name;
+  const mapLabel = m=> (m.icon || '') + ' ' + m.name;
   ov.innerHTML = `<div class="modal mc-modal" role="dialog" aria-label="${escapeAttr(TX('ui.mp-title'))}" data-density="${ui.density}" data-view="pool">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(TX('ui.mp-title'))}</h2><span class="mc-status" id="mcStatus">${escapeHtml(mpStatusText())}</span><button type="button" class="modal-close-btn" data-mc-close aria-label="Close">✕</button></div>
     <div class="mc-top">
@@ -18532,25 +18566,26 @@ function openMapCardsEditor(mapId0, o){
   const sortFn = (key, dir)=>{ const defs = getCardDefs();
     if(key === 'used'){ const sg = dir === 'asc' ? 1 : -1; return (a, b)=> sg * (((usage[a] || [0, 0, 0])[2]) - ((usage[b] || [0, 0, 0])[2])) || (defs[a].name || '').localeCompare(defs[b].name || ''); }
     return cfSortFn(key, dir, defs); };
-  const tierLabel = k=> mapPoolTiers(mapId).find(t=> t.key === k).label;
-  const renderTarget = ()=>{ $('#mcTarget').innerHTML = ['cards', 'special'].map(k=> `<button type="button" data-mc-target="${k}" class="${ui.target === k ? 'on' : ''}">${escapeHtml(tierLabel(k))}</button>`).join(''); };
-  const renderReset = ()=>{ const b = $('#mcReset'), has = !!mapPoolEdits[mpTopOf(mapId)]; b.disabled = !has; b.textContent = '↺ ' + (resetArmed ? TX('ui.mp-reset-confirm') : TX('ui.mp-reset')); b.classList.toggle('danger', !!resetArmed); };
-  // the pool pane: the balance summary, then each tier
+  const renderTarget = ()=>{ fixTarget(); const t = targets(), box = $('#mcTarget'); box.hidden = t.length < 2; // one tier only: nothing to choose
+    box.innerHTML = t.map(x=> `<button type="button" data-mc-target="${escapeAttr(x.key)}" class="${ui.target === x.key ? 'on' : ''}">${escapeHtml(x.label)}</button>`).join(''); };
+  const renderReset = ()=>{ const b = $('#mcReset'), has = !!mapPoolEdits[mapId]; b.disabled = !has; b.textContent = '↺ ' + (resetArmed ? TX('ui.mp-reset-confirm') : TX('ui.mp-reset')); b.classList.toggle('danger', !!resetArmed); };
+  // a card in MAP or a SUBMAP can move to the other of those; SPECIAL is never a target (it fills from + Load any card only)
+  const moveSel = (id, t)=>{ const dest = targets().filter(x=> x.key !== t.key); if(t.key === 'special' || !dest.length) return '';
+    return `<select class="mc-move" data-mc-moveto="${escapeAttr(id)}" data-from="${escapeAttr(t.key)}" title="${escapeAttr(TX('ui.mp-move-to'))}" aria-label="${escapeAttr(TX('ui.mp-move-to'))}"><option value="">⇄</option>${dest.map(x=> `<option value="${escapeAttr(x.key)}">${escapeHtml(x.label)}</option>`).join('')}</select>`; };
+  // the pool pane: the balance summary, then the three tiers
   const cardCell = (id, t)=>{ const defs = getCardDefs();
     return `<div class="mc-card" data-id="${escapeAttr(id)}"><button type="button" class="mc-face" data-mc-detail="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}">${cardTileHTML(defs[id], {inPlay: true})}</button>
-      <div class="mc-bar">${mpUsedHTML(usage[id])}${t.ro ? '' : `<span class="mc-acts"><button type="button" data-mc-move="${escapeAttr(id)}" title="${escapeAttr(TX(t.key === 'cards' ? 'ui.mp-move-special' : 'ui.mp-move-cards'))}" aria-label="${escapeAttr(TX(t.key === 'cards' ? 'ui.mp-move-special' : 'ui.mp-move-cards'))}">⇄</button><button type="button" data-mc-remove="${escapeAttr(id)}" title="${escapeAttr(TX('ui.mp-remove'))}" aria-label="${escapeAttr(TX('ui.mp-remove'))}">✕</button></span>`}</div></div>`; };
+      <div class="mc-bar">${mpUsedHTML(usage[id])}<span class="mc-acts">${moveSel(id, t)}<button type="button" data-mc-remove="${escapeAttr(id)}" data-from="${escapeAttr(t.key)}" title="${escapeAttr(TX('ui.mp-remove'))}" aria-label="${escapeAttr(TX('ui.mp-remove'))}">✕</button></span></div></div>`; };
   const renderPool = ()=>{
-    const defs = getCardDefs(), tiers = mapPoolTiers(mapId), by = sortFn(ui.sort, 'asc'), eff = mapPoolIds(mapId).filter(id=> defs[id]);
-    const order = tiers.filter(t=> !t.ro).concat(tiers.filter(t=> t.ro));
+    const defs = getCardDefs(), secs = sections(), by = sortFn(ui.sort, 'asc'), eff = [...new Set(secs.flatMap(t=> t.ids))].filter(id=> defs[id]);
     const sec = t=>{ const ids = t.ids.filter(id=> defs[id]).sort(by), grid = ids.length ? `<div class="mc-grid">${ids.map(id=> cardCell(id, t)).join('')}</div>` : `<p class="panel-sub mc-none">${escapeHtml(TX('ui.mp-empty'))}</p>`;
-      const tip = t.key === 'special' ? `<small class="mc-tip">${escapeHtml(TX('ui.mp-special-tip'))}</small>` : t.ro ? `<small class="mc-tip">${escapeHtml(TX('ui.mp-parent-note'))}</small>` : '';
-      return t.ro ? `<details class="mc-tier is-ro" data-tier="${t.key}" ${ui.parentOpen ? 'open' : ''}><summary><h3>${escapeHtml(t.label)} <span class="mc-n">${ids.length}</span></h3></summary>${tip}${grid}</details>`
-        : `<section class="mc-tier" data-tier="${t.key}"><div class="mc-tier-h"><h3>${escapeHtml(t.label)} <span class="mc-n">${ids.length}</span></h3>${tip}</div>${grid}</section>`; };
+      const tip = t.key === 'special' ? `<small class="mc-tip">${escapeHtml(TX('ui.mp-special-tip'))}</small>` : '';
+      return `<section class="mc-tier" data-tier="${escapeAttr(t.key)}"><div class="mc-tier-h"><h3>${escapeHtml(t.label)} <span class="mc-n">${ids.length}</span></h3>${tip}</div>${grid}</section>`; };
     const pane = $('#mcPool'), st = pane.scrollTop;
-    pane.innerHTML = mpSummaryHTML(eff, defs) + order.map(sec).join('');
+    pane.innerHTML = mpSummaryHTML(eff, defs) + secs.map(sec).join('');
     pane.scrollTop = st;
   };
-  // the results: the whole catalogue through the filter bar; cards already in this fight's pool are marked
+  // the results: the whole catalogue through the filter bar; cards already in one of this map's tiers are marked
   const renderRes = ()=>{
     const defs = getCardDefs(), ql = q.trim().toLowerCase(), by = sortFn(cf.sort, cf.dir);
     const list = mpCatalogIds().filter(id=> (!ql || defs[id].name.toLowerCase().includes(ql) || (defs[id].animal || '').toLowerCase().includes(ql)) && cfMatch(defs[id], cf)).sort(by);
@@ -18561,8 +18596,8 @@ function openMapCardsEditor(mapId0, o){
       + (list.length > ui.shown ? `<button type="button" class="btn small mc-more" data-mc-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - ui.shown})</button>` : '') : `<p class="panel-sub">${escapeHtml(TX('ui.mp-none-match'))}</p>`;
     mark();
   };
-  const mark = ()=>{ const tiers = mapPoolTiers(mapId);
-    ov.querySelectorAll('.mc-res-item').forEach(el=>{ const t = tiers.find(x=> x.ids.includes(el.dataset.id)), c = el.querySelector('[data-mc-in]');
+  const mark = ()=>{ const secs = sections();
+    ov.querySelectorAll('.mc-res-item').forEach(el=>{ const t = secs.find(x=> x.ids.includes(el.dataset.id)), c = el.querySelector('[data-mc-in]');
       el.classList.toggle('is-in', !!t); if(c) c.textContent = t ? '✓ ' + t.label : ''; }); };
   const renderStatus = ()=>{ const s = $('#mcStatus'); if(s) s.textContent = mpStatusText(); };
   const changed = kind=>{ if(!ov.isConnected) return; if(kind === 'status') return renderStatus(); renderPool(); mark(); renderTarget(); renderReset(); renderStatus(); };
@@ -18574,21 +18609,65 @@ function openMapCardsEditor(mapId0, o){
     const t = e.target; if(t === ov || t.closest('[data-mc-close]')) return close();
     let b;
     if((b = t.closest('[data-mc-detail]'))) return mpOpenDetail(b.dataset.mcDetail);
-    if((b = t.closest('[data-mc-add]'))){ const id = b.dataset.mcAdd; if(!mapPoolHas(mapId, id)) mapPoolAdd(mapId, ui.target, id); return; }
-    if((b = t.closest('[data-mc-remove]'))) return mapPoolRemove(mapId, b.dataset.mcRemove);
-    if((b = t.closest('[data-mc-move]'))){ const id = b.dataset.mcMove; return mapPoolAdd(mapId, mapPoolTierOf(mapId, id) === 'cards' ? 'special' : 'cards', id); }
+    if((b = t.closest('[data-mc-add]'))){ const id = b.dataset.mcAdd; if(!sections().some(x=> x.ids.includes(id))) mapPoolAdd(mapId, ui.target, id); return; }
+    if((b = t.closest('[data-mc-remove]'))) return mapPoolRemove(mapId, b.dataset.mcRemove, b.dataset.from);
     if((b = t.closest('[data-mc-density]'))){ ui.density = b.dataset.mcDensity; modal.dataset.density = ui.density; ov.querySelectorAll('[data-mc-density]').forEach(x=> x.classList.toggle('on', x === b)); return saveUi(); }
-    if((b = t.closest('[data-mc-target]'))){ ui.target = b.dataset.mcTarget; renderTarget(); return saveUi(); }
+    if((b = t.closest('[data-mc-target]'))){ ui.target = b.dataset.mcTarget; focusSub = null; renderTarget(); return saveUi(); }
     if((b = t.closest('[data-mc-view]'))){ modal.dataset.view = b.dataset.mcView; ov.querySelectorAll('[data-mc-view]').forEach(x=> x.classList.toggle('on', x === b)); return; }
     if(t.closest('[data-mc-more]')){ ui.shown += 48; const r = $('#mcAdd'), st = r.scrollTop; renderRes(); r.scrollTop = st; return; }
     if(t.closest('#mcReset')){ if(!resetArmed){ resetArmed = 1; renderReset(); setTimeout(()=>{ resetArmed = 0; if(ov.isConnected) renderReset(); }, 3000); return; } resetArmed = 0; return mapPoolReset(mapId); }
   });
-  ov.addEventListener('toggle', e=>{ if(e.target.matches && e.target.matches('details.mc-tier')){ ui.parentOpen = e.target.open; saveUi(); } }, true);
-  $('#mcMap').addEventListener('change', e=>{ mapId = e.target.value; usage = mpUsage(mapId); resetArmed = 0; ui.shown = 48; renderPool(); renderTarget(); renderReset(); renderRes(); $('#mcPool').scrollTop = 0; });
+  ov.addEventListener('change', e=>{ const sel = e.target.closest && e.target.closest('[data-mc-moveto]'); if(sel && sel.value) mapPoolMove(mapId, sel.dataset.mcMoveto, sel.value); });
+  $('#mcMap').addEventListener('change', e=>{ mapId = e.target.value; focusSub = null; ui.target = 'cards'; usage = mpUsage(mapId); resetArmed = 0; ui.shown = 48; renderPool(); renderTarget(); renderReset(); renderRes(); $('#mcPool').scrollTop = 0; });
   $('#mcPoolSort').addEventListener('change', e=>{ ui.sort = e.target.value; saveUi(); renderPool(); });
   $('#mcSearch').addEventListener('input', e=>{ q = e.target.value; ui.shown = 48; clearTimeout(ov._t); ov._t = setTimeout(renderRes, 120); });
   cfWire(ov, cf, 'mc', ()=>{ try{ uiStickySave('mcTx', cf); }catch(e){} ui.shown = 48; renderRes(); }, cfKeep);
   renderPool(); renderTarget(); renderReset(); renderRes();
+  if(focusSub){ const el = $('[data-tier="sub:' + focusSub + '"]'); if(el) setTimeout(()=>{ try{ el.scrollIntoView({block: 'start'}); }catch(e){} }, 30); }
+}
+// 2026-10-22 (package DV2, owner 07:41): "that load any card should launch its own UI, not a toggle of the cards you see": the + Load any card
+// button of a skirmish deck picker opens THIS modal, a full-catalogue picker (the Codex's filter bar, a search, large cards) over the picker; the
+// pool underneath does not change. o = {mapId: the fight's map, onPick(id, tileEl): true once the card is in the deck (false: refused, the modal
+// stays), onDone(id, addedToSpecial)}. A card that no tier of this fight's map holds joins the map's SPECIAL; then the modal closes.
+function openMapLoadAny(o){
+  const old = document.getElementById('mpAnyOverlay'); if(old) old.remove();
+  const mp = mpMapById(o.mapId), mapName = mp ? mp.name : o.mapId, defs = getCardDefs();
+  const cf = Object.assign(cfDefaults(), (()=>{ try{ return uiSticky('laTx'); }catch(e){ return {}; } })()), cfKeep = {};
+  let q = '', shown = 48;
+  const ov = document.createElement('div'); ov.id = 'mpAnyOverlay'; ov.className = 'modal-overlay mc-overlay mp-any-overlay'; document.body.appendChild(ov);
+  ov.innerHTML = `<div class="modal mc-modal mp-any-modal" role="dialog" aria-label="${escapeAttr(TX('ui.mp-any-title'))}" data-density="large" data-view="add">
+    <div class="modal-head-row"><h2>🃏 ${escapeHtml(TX('ui.mp-any-title'))}</h2><button type="button" class="modal-close-btn" data-la-close aria-label="Close">✕</button></div>
+    <p class="panel-sub mp-note">${escapeHtml(TX('ui.mp-loading-any', {map: mapName}))}</p>
+    <div class="mc-add-tools"><input data-text-filter autocomplete="off" type="search" id="laSearch" placeholder="${escapeAttr(TX('ui.mp-search'))}" aria-label="${escapeAttr(TX('ui.mp-search'))}">${cfBarHTML(cf, 'la', null)}</div>
+    <div class="mc-pane mp-any-res" id="laRes"></div></div>`;
+  const $ = sel=> ov.querySelector(sel);
+  const renderRes = ()=>{
+    const ql = q.trim().toLowerCase(), by = cfSortFn(cf.sort, cf.dir, defs);
+    const list = mpCatalogIds().filter(id=> (!ql || defs[id].name.toLowerCase().includes(ql) || (defs[id].animal || '').toLowerCase().includes(ql)) && cfMatch(defs[id], cf)).sort(by);
+    const tiers = mapPoolTiers(o.mapId), res = $('#laRes'), st = res.scrollTop;
+    res.innerHTML = list.length ? `<div class="mc-grid">${list.slice(0, shown).map(id=> { const t = tiers.find(x=> x.ids.includes(id));
+      return `<div class="mc-card mc-res-item${t ? ' is-pooled' : ''}" data-id="${escapeAttr(id)}"><button type="button" class="mc-face" data-la-pick="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}">${cardTileHTML(defs[id], {inPlay: true})}</button>
+        <div class="mc-bar"><span class="mc-in">${t ? '✓ ' + escapeHtml(t.label) : ''}</span><button type="button" class="mc-info" data-mc-detail="${escapeAttr(id)}" title="${escapeAttr(TX('ui.mp-details'))}" aria-label="${escapeAttr(TX('ui.mp-details'))}">🔍</button></div></div>`; }).join('')}</div>`
+      + (list.length > shown ? `<button type="button" class="btn small mc-more" data-la-more>${escapeHtml(TX('ui.mp-show-more'))} (${list.length - shown})</button>` : '') : `<p class="panel-sub">${escapeHtml(TX('ui.mp-none-match'))}</p>`;
+    res.scrollTop = st;
+  };
+  const close = ()=>{ document.removeEventListener('keydown', onKey, true); ov.remove(); };
+  const onKey = e=>{ if(e.key !== 'Escape') return; const d = document.getElementById('cardDetailOverlay'); if(d && !d.hidden) return; e.stopPropagation(); close(); };
+  document.addEventListener('keydown', onKey, true);
+  ov.addEventListener('click', e=>{
+    const t = e.target; if(t === ov || t.closest('[data-la-close]')) return close();
+    let b;
+    if((b = t.closest('[data-mc-detail]'))) return mpOpenDetail(b.dataset.mcDetail);
+    if(t.closest('[data-la-more]')){ shown += 48; return renderRes(); }
+    if((b = t.closest('[data-la-pick]'))){ const id = b.dataset.laPick;
+      if(o.onPick && o.onPick(id, b) === false) return; // refused (a deck cap): the modal stays
+      const addSpecial = !mapPoolHas(o.mapId, id); if(addSpecial) mapPoolAdd(o.mapId, 'special', id);
+      close(); o.onDone && o.onDone(id, addSpecial); }
+  });
+  $('#laSearch').addEventListener('input', e=>{ q = e.target.value; shown = 48; clearTimeout(ov._t); ov._t = setTimeout(renderRes, 120); });
+  cfWire(ov, cf, 'la', ()=>{ try{ uiStickySave('laTx', cf); }catch(e){} shown = 48; renderRes(); }, cfKeep);
+  renderRes();
+  setTimeout(()=>{ const s = $('#laSearch'); if(s && !matchMedia('(pointer:coarse)').matches) s.focus(); }, 30);
 }
 // Edit skirmish's field effects (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc."):
 // every effect this fight runs with, whether the map gives it or it was set here, with ✕ (switch it off) and ↺ (back to the
@@ -20455,8 +20534,8 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"9-1", kind:"skirmish", name:"Mudflat Skippers", icon:"🐟", deck:{"mangrove-monitor":3,"mangrove-mudskipper":3,"minnow-skitter":3,"mudpuppy":3,"reef-shark":2,"archerfish":2}, rules:{"tide":true}, flavor:"Fish that walk. Crabs that wave. Nothing here is normal.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"mangrove-mudskipper":4,"minnow-skitter":3,"banded-sea-krait":3,"sunbittern-strider":2}, rules:{"tide":true}, flavor:"Something long basks on every root.", requires:["9-1"] },
-      { key:"9-3", kind:"skirmish", name:"Kingfisher Dive", icon:"🐦", deck:{"mangrove-mudskipper":3,"minnow-skitter":3,"reef-shark":3,"archerfish":3}, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
-      { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", shieldOverride:4, deck:{"mangrove-mudskipper":4,"mudpuppy":3,"reef-shark":3,"banded-sea-krait":3,"mangrove-kingfisher":2,"mangrove-manatee":2}, hqHp:48, rules:{"tide":true}, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
+      { key:"9-3", kind:"skirmish", name:"Kingfisher Dive", icon:"🐦", deck:{"mangrove-mudskipper":4,"minnow-skitter":3,"reef-shark":3,"mangrove-kingfisher":2}, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
+      { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", shieldOverride:4, deck:{"mangrove-mudskipper":3,"mudpuppy":3,"reef-shark":3,"archerfish":3,"banded-sea-krait":3,"mangrove-manatee":2}, hqHp:48, rules:{"tide":true}, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
       { key:"9-5", kind:"elite", name:"Moray Den", icon:"🐍", rules:{tangledRoots:true}, deck:{"mangrove-monitor":4,"reef-shark":4,"archerfish":3,"banded-sea-krait":3,"sunbittern-strider":2,"mangrove-kingfisher":2,"mangrove-manatee":2}, flavor:"Every hole in the roots has a pair of eyes in it.", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", rules:{tangledRoots:true}, deck:{"mangrove-mudskipper":4,"reef-shark":4,"archerfish":3,"sunbittern-strider":2,"mangrove-kingfisher":2,"mangrove-manatee":2}, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
       { key:"9-7", kind:"boss", name:"The Kelp Witch", icon:"🧜", deck:{"mangrove-monitor":4,"mangrove-mudskipper":3,"minnow-skitter":3,"sunbittern-strider":2,"mangrove-kingfisher":2,"mangrove-manatee":2}, flavor:"She speaks for the tide, and the tide is not friendly today.", requires:["9-5","9-6"] },
@@ -20526,7 +20605,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"15-1", kind:"skirmish", name:"Colt Meadow", icon:"🐴", deck:{"cataphract-destrier":4,"pronghorn-racer":3,"shepherds-bark":3,"warhorse-charger":3,"stable-colt":2}, rules:{"undergrowth":true}, flavor:"Young horses running wild, and something chasing them.", requires:[] },
       { key:"15-2", kind:"skirmish", name:"Squire Road", icon:"🛡️", deck:{"warhorse-charger":3,"bison-bulldozer":3,"border-collie":3,"stable-colt":3,"raccoon-bandit":2,"stoat-cutthroat":2}, rules:{"undergrowth":true}, flavor:"The village sends its squires out to meet you.", requires:["15-1"] },
-      { key:"15-3", kind:"skirmish", name:"Stoat Ambush", icon:"🗡️", deck:{"cataphract-destrier":4,"pronghorn-racer":3,"shepherds-bark":3,"bison-bulldozer":3,"border-collie":3,"raccoon-bandit":2}, rules:{"undergrowth":true,"tallGrass":true}, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
+      { key:"15-3", kind:"skirmish", name:"Stoat Ambush", icon:"🗡️", deck:{"cataphract-destrier":4,"pronghorn-racer":4,"shepherds-bark":3,"bison-bulldozer":3,"raccoon-bandit":2,"stoat-cutthroat":2}, rules:{"undergrowth":true,"tallGrass":true}, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
       { key:"15-4", kind:"skirmish", name:"Archer Hill", icon:"🏹", deck:{"cataphract-destrier":4,"bison-bulldozer":3,"stable-colt":3,"raccoon-bandit":3,"stoat-cutthroat":2,"talon-archer":2}, rules:{"undergrowth":true,"tallGrass":true}, flavor:"Arrows from a hill you can't see the top of.", requires:["15-2","15-3"] },
       { key:"15-5", kind:"elite", name:"Charge of the Warhorses", icon:"🐎", deck:{"warhorse-charger":4,"bison-bulldozer":3,"border-collie":3,"stable-colt":3,"raccoon-bandit":3,"stoat-cutthroat":2,"talon-archer":2}, rules:{"undergrowth":true}, flavor:"You hear them before you see them.", requires:["15-4"] },
       { key:"15-6", kind:"elite", name:"The Kennels", icon:"🐕", deck:{"cataphract-destrier":4,"warhorse-charger":3,"border-collie":3,"raccoon-bandit":2,"stoat-cutthroat":2,"talon-archer":2}, rules:{"undergrowth":true}, flavor:"Every farm on the plain keeps dogs, and every dog is here.", requires:["15-4"] },
@@ -20538,7 +20617,7 @@ const CONQUEST_MAPS = [
       { key:"16-1", kind:"skirmish", name:"Snowshoe Tracks", icon:"🐇", deck:{"alpha-howler":3,"dhole-runner":3,"frost-hare-sprinter":3,"snowshoe-hare":3,"trickster-fox":3,"taiga-lynx":1}, hqHp:37, flavor:"Tracks everywhere, and none of them lead anywhere.", requires:[] },
       { key:"16-2", kind:"skirmish", name:"Pinecone Drop", icon:"🌰", deck:{"dhole-runner":4,"frost-hare-sprinter":4,"snowshoe-hare":3,"trickster-fox":3,"taiga-lynx":2,"wolf-pack-runner":2}, hqHp:39, flavor:"The cones are falling. Some of them are ticking.", requires:["16-1"] },
       { key:"16-3", kind:"skirmish", name:"Elk Crossing", icon:"🦌", shieldOverride:32, deck:{"alpha-howler":4,"boreal-elk":4,"frost-hare-sprinter":3,"snowshoe-hare":3,"woodland-caribou":2,"taiga-lynx":2}, flavor:"The herd crosses here every winter. You are in the way.", requires:["16-1"] },
-      { key:"16-4", kind:"skirmish", name:"Lynx Shadow", icon:"🐈", shieldOverride:28, deck:{"alpha-howler":3,"boreal-elk":3,"dhole-runner":3,"frost-hare-sprinter":3,"trickster-fox":3,"wolf-pack-runner":1}, flavor:"Tufted ears in every shadow.", requires:["16-2","16-3"] },
+      { key:"16-4", kind:"skirmish", name:"Lynx Shadow", icon:"🐈", shieldOverride:28, deck:{"alpha-howler":3,"boreal-elk":3,"dhole-runner":3,"frost-hare-sprinter":3,"trickster-fox":3,"taiga-lynx":1}, flavor:"Tufted ears in every shadow.", requires:["16-2","16-3"] },
       { key:"16-5", kind:"elite", name:"The Running Pack", icon:"🐺", deck:{"alpha-howler":4,"dhole-runner":4,"frost-hare-sprinter":3,"snowshoe-hare":3,"woodland-caribou":2,"taiga-lynx":2,"dhole-matriarch":2}, flavor:"They run in a line, and the line never breaks.", requires:["16-4"] },
       { key:"16-6", kind:"elite", name:"Reaver's Hollow", icon:"🐺", shieldOverride:47, deck:{"alpha-howler":4,"dhole-runner":3,"frost-hare-sprinter":3,"snowshoe-hare":3,"trickster-fox":3,"wolf-pack-runner":2,"dhole-matriarch":2}, rules:{"consternation":true}, flavor:"Bones in the snow, and fresh ones.", requires:["16-4"] },
       { key:"16-7", kind:"boss", name:"The Howling Alpha", icon:"🐺", deck:{"alpha-howler":4,"frost-hare-sprinter":4,"snowshoe-hare":4,"woodland-caribou":2,"taiga-lynx":2,"wolf-pack-runner":2,"dhole-matriarch":2}, hqHp:87, rules:{"field":"frozen","frostCount":1,"frostResist":["Tundra","Frost","Taiga"]}, flavor:"Every wolf in the taiga answers to one voice.", requires:["16-5","16-6"] },
@@ -20546,12 +20625,12 @@ const CONQUEST_MAPS = [
   { id:"m6", unlockAfter:"mt", name:"Wolfsbane Tundra", icon:"🐺", blurb:"Frozen ground north of the grassland — the packs here hunt in formation.", sequential:true,
     nodes: [
       { key:"17-1", kind:"skirmish", name:"Ice Fang Patrol", icon:"🦊", deck:{"glacial-ape-king":4,"harbor-seal":3,"snow-ermine":3,"snow-bunting-archer":2}, flavor:"The snow keeps every track fresh, including the ones circling back.", requires:[] },
-      { key:"17-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"glacial-ape-king":4,"harbor-seal":4,"spitting-spider":3,"frostmoon-howler":2,"ravenous-wolverine":2}, flavor:"A pack this far south of the treeline means the treeline moved.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-1"] },
-      { key:"17-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"glacial-ape-king":4,"snow-bunting-archer":3,"spitting-spider":2,"frostmoon-howler":2,"ravenous-wolverine":2}, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{"frostResist":["Tundra","Frost","Taiga"],"hail":true}, requires:["17-2"] },
-      { key:"17-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"harbor-seal":4,"snow-ermine":4,"snow-bunting-archer":3,"ravenous-wolverine":3,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, hqHp:34, flavor:"You never see the lynx. You only see the elk break formation.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-3"] },
+      { key:"17-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"glacial-ape-king":4,"spitting-spider":3,"frostmoon-howler":3,"ravenous-wolverine":3,"lone-grey-wolf":2}, flavor:"A pack this far south of the treeline means the treeline moved.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-1"] },
+      { key:"17-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"glacial-ape-king":4,"harbor-seal":3,"snow-bunting-archer":2,"spitting-spider":2,"frostmoon-howler":2}, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{"frostResist":["Tundra","Frost","Taiga"],"hail":true}, requires:["17-2"] },
+      { key:"17-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"harbor-seal":4,"snow-ermine":4,"snow-bunting-archer":3,"spitting-spider":3,"ravenous-wolverine":2,"polar-bear":2,"walrus-icebreaker":2}, hqHp:34, flavor:"You never see the lynx. You only see the elk break formation.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-3"] },
       { key:"17-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"snow-ermine":4,"frostmoon-howler":3,"ravenous-wolverine":3,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-4"] },
-      { key:"17-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"glacial-ape-king":5,"spitting-spider":3,"frostmoon-howler":3,"ravenous-wolverine":3,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, hqHp:152, flavor:"The herd does not run from the cold. It carries it.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-5"] },
-      { key:"17-7", kind:"elite", name:"Alpha Howler's Den", icon:"🐾", shieldOverride:47, deck:{"harbor-seal":5,"snow-bunting-archer":3,"frostmoon-howler":3,"ravenous-wolverine":3,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, flavor:"The howl reaches every den on the tundra at once.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":2,"freezing":true}, requires:["17-6"] },
+      { key:"17-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"glacial-ape-king":5,"snow-bunting-archer":3,"frostmoon-howler":3,"ravenous-wolverine":3,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, hqHp:152, flavor:"The herd does not run from the cold. It carries it.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-5"] },
+      { key:"17-7", kind:"elite", name:"Alpha Howler's Den", icon:"🐾", shieldOverride:47, deck:{"harbor-seal":5,"spitting-spider":3,"frostmoon-howler":3,"ravenous-wolverine":3,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, flavor:"The howl reaches every den on the tundra at once.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":2,"freezing":true}, requires:["17-6"] },
       { key:"17-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", shieldOverride:68, deck:{"glacial-ape-king":4,"snow-ermine":4,"ravenous-wolverine":2,"lone-grey-wolf":2,"polar-bear":2,"walrus-icebreaker":2}, flavor:"Old enough to remember when the ice was thicker.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":3,"frostCount":3,"freezing":true}, requires:["17-7"] },
     ]},
   // The Glass Dunes (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
@@ -20651,7 +20730,7 @@ const CONQUEST_MAPS = [
       { key:"24-5", kind:"skirmish", name:"The Battlements", icon:"🏹", deck:{"elderhorn-monarch":4,"lodge-engineer":3,"battlement-heron":3,"goose-sentry":3,"mallard-marauder":2}, rules:{arrowSlits:2}, flavor:"Up on the wall walk, everyone has a bow and a better view than you.", requires:["24-4"], fixedPos:{x:58, y:22} },
       { key:"24-6", kind:"elite", name:"The Gilded Guard", icon:"🦢", shieldOverride:49, deck:{"duckling-squadron":5,"tax-collector-teal":4,"mallard-marauder":3,"gilded-swan-knight":2,"iron-warden":1}, flavor:"Swans in gold plate. Beautiful, loyal, and very, very bad-tempered.", requires:["24-4"], fixedPos:{x:64, y:80} },
       { key:"24-7", kind:"elite", name:"The Treasury", icon:"🪙", deck:{"elderhorn-monarch":4,"tax-collector-teal":3,"goose-sentry":3,"iron-warden":1}, hqHp:390, flavor:"The vault door is open. That should worry you more than it does.", requires:["24-6"], fixedPos:{x:80, y:58} },
-      { key:"24-8", kind:"boss", name:"The Magnate Duck", icon:"👑", deck:{"duckling-squadron":5,"battlement-heron":3,"gilded-swan-knight":2,"iron-warden":1,"magnate-duck":1}, hqHp:420, rules:{arrowSlits:2}, flavor:"He owns the keep, the valley, the road you came in on, and he would like to discuss your bill.", requires:["24-5","24-7"], fixedPos:{x:90, y:26} },
+      { key:"24-8", kind:"boss", name:"The Magnate Duck", icon:"👑", deck:{"duckling-squadron":5,"battlement-heron":3,"gilded-swan-knight":3,"iron-warden":1}, hqHp:420, rules:{arrowSlits:2}, flavor:"He owns the keep, the valley, the road you came in on, and he would like to discuss your bill.", requires:["24-5","24-7"], fixedPos:{x:90, y:26} },
     ]},
   { id:"r18", unlockAfter:"m24", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   { id:"r19", unlockAfter:"r18", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
@@ -49027,7 +49106,7 @@ const FACTION_RARITY_GATES = {
   rare:     {at:40, map:14},  // "15 later, rares ... the rare should only come in Map 14+"
   // 2026-10-22 (package DV, owner 00:43: "We should get our first Very Rare after Map 20's strongest submap is complete"): Very Rare
   // waits on Map 20 and the Volcano Lair cleared (`side`: its worldboss is Map 20's strongest fight); was Map 25. The rest follow
-  // the rarity ladder (RARITY_INTRO: Epic and Heroic after their side maps; Unique and up from 40). Proposals, owner to confirm.
+  // the rarity ladder (RARITY_INTRO: Epic and Heroic after their side maps; Unique 30, Legendary 40, Mythic 60; Ancient and above never). Proposals, owner to confirm.
   veryrare: {at:50, map:20, side:'mx'},  // "10 later, very rares ... much later"
   superrare:{at:60, map:22, side:'mx'},  // "etc. Pace this out" (proposals, owner to confirm); was Map 30
   epic:     {at:70, map:26, side:'me'},  // was Map 35
@@ -49048,6 +49127,7 @@ function factionRarityKey(r){ r = r || 'common'; if(r === 'starter') return 'com
 function factionReceived(st){ st = st || loadFactionPool(); return Math.max(0, +st.received || 0); }
 // Is this rarity open on the track (received cards and map reached)? `ctx` ({received, map}) lets the sim and the tests ask without a save.
 function factionRarityOpen(rarity, ctx){
+  if(roadNever(rarity)) return false; // 2026-10-22 (package DV2): Ancient and above never come from the road
   const g = FACTION_RARITY_GATES[factionRarityKey(rarity)]; if(!g) return false;
   const received = ctx && ctx.received != null ? ctx.received : factionReceived(), map = ctx && ctx.map != null ? ctx.map : trackMapReached();
   if(!(received >= g.at && map >= g.map)) return false;

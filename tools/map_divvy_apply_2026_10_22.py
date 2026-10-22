@@ -34,7 +34,10 @@ for r in plan['rarityChanges']:
         print('missing card', r['id']); sys.exit(1)
     if c.get('rarity') != r['to']:
         c['rarity'] = r['to']; todo += 1
-for m in plan['moves']:
+# 2026-10-22 (package DV2): `sources` is every pooled card's source after the plan (a card the plan puts back where it started has no
+# move, so only `sources` can restore it, e.g. a reward demoted to a pack card); older records have `moves` only
+todo_src = [{'id': k, 'to': v} for k, v in plan['sources'].items()] if 'sources' in plan else plan['moves']
+for m in todo_src:
     c = by.get(m['id'])
     if c is None:
         print('missing card', m['id']); sys.exit(1)
@@ -52,7 +55,7 @@ for m in plan['moves']:
             c.pop('awaitingSource', None)
     if not done:
         todo += 1
-total = len(plan['moves']) + len(plan['rarityChanges'])
+total = len(todo_src) + len(plan['rarityChanges'])
 if '--check' in sys.argv:
     print('%d of %d changes not applied' % (todo, total))
     sys.exit(1 if todo else 0)

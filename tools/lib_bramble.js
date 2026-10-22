@@ -39,7 +39,7 @@ function grab(name){
   throw new Error('arena_app.js: no declaration ' + name);
 }
 const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', 'ROAD_RARITY_ALIAS', 'roadRarityStep',
-  /* 2026-10-22 (package DV): the rarity ladder */ 'RARITY_INTRO', 'SIDE_RARITY_INTRO', 'ROAD_EPIC_HEROIC_FROM', 'rarityIntroMap', 'roadRevealedCap', 'roadSkirmishCap', 'roadStepCap', 'roadBossCap', 'roadRarityCap', 'roadRarityOk',
+  /* 2026-10-22 (package DV): the rarity ladder */ 'RARITY_INTRO', 'SIDE_RARITY_INTRO', 'ROAD_MAIN_FROM', 'ROAD_EPIC_HEROIC_FROM', 'ROAD_NEVER', 'roadNever', 'rarityIntroMap', 'roadRevealedCap', 'roadSkirmishCap', 'roadStepCap', 'roadBossCap', 'roadRarityCap', 'roadRarityOk',
   /* 2026-10-19 (EE): no source gives an Easter egg */ 'EASTER_EGG_IDS', 'isEasterEgg',
   'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
   'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
@@ -71,7 +71,7 @@ const body = [
   // was measured with the wrong Shield multiplier, castle level, CPU level and boss enemy level (e.g. 1-5 as a boss; the game's is an elite).
   'applyRoadKinds();',
   'return {CONQUEST_MAPS, mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, prepareLeaderGrants, applySkirmishSetup, fightRules, levelledEnemyDeck, roadEnemyLevel, cpuAiLevelForNode,',
-  '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, roadRarityStep, ROAD_RARITY_STEPS, RARITY_INTRO, SIDE_RARITY_INTRO, rarityIntroMap, roadRevealedCap, /* DV 2026-10-22 */ statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
+  '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, roadRarityStep, ROAD_RARITY_STEPS, RARITY_INTRO, SIDE_RARITY_INTRO, ROAD_MAIN_FROM, ROAD_NEVER, roadNever, rarityIntroMap, roadRevealedCap, /* DV 2026-10-22 */ statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
   '  roadEnderKind, WINRATE_REF_DECKS, referencePlayerLevel, referenceDeckFor, referenceFightSetup, playReferenceGame, simulateReferenceFight, skirmishTargetWinRate, roadCurveTarget, skirmishTargetBand, skirmishCurveChipHTML, skirmishCurveCache, skirmishCurveNote, checkSkirmishCurve, skirmishCurveSimCache, SKIRMISH_CURVE_SIMS,',
   '  ROAD_LEVEL_CURVE, ENDLESS_FLOOR_CURVE, levelForGain, levelMix, levelMixDeck, roadEnemyLevelExact, roadMapOfFight, shieldMapOf,',
   '  roadEnemyScheduleLevel, cardObtainMap, OBTAIN_MAP_OF, deckStatGain, enemyLevelKeepingPace, legacyLevelForGain, shieldRuleMult, forgeCurveOf, gainOfLevel, legacyGainOfLevel, forgeGainShift, FORGE_MEAN_GAIN, sideMapAhead, fightMapNumber, ROAD_CURVE_SIDE_DR, curveStatsAtLevel: typeof curveStatsAtLevel === "function" ? curveStatsAtLevel : null, cardMaxLevel, mapOfNode,',

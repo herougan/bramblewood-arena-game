@@ -10,12 +10,18 @@
   "heroic": 21,
   "unique": 30,
   "legendary": 40,
-  "mythic": 55,
-  "ancient": 70,
-  "divine": 90,
-  "void": 100,
-  "daemonic": 100
+  "mythic": 60
  },
+ "ladderMain": {
+  "epic": 22,
+  "heroic": 25
+ },
+ "roadNever": [
+  "ancient",
+  "divine",
+  "void",
+  "daemonic"
+ ],
  "pools": {
   "m1": {
    "map": 0,
@@ -46,6 +52,7 @@
     "terrier-pup",
     "farm-dog"
    ],
+   "newCards": 7,
    "rewards": {
     "chipmunk-skirmisher": "0-1",
     "terrier-pup": "0-4"
@@ -67,6 +74,7 @@
     "meadow-frog",
     "badger-lumberjack"
    ],
+   "newCards": 7,
    "rewards": {
     "cricket-drummer": "1-1",
     "badger-lumberjack": "1-5"
@@ -88,8 +96,10 @@
     "grey-seal-bull",
     "conch-herald"
    ],
+   "newCards": 10,
    "rewards": {
     "fiddler-crab-swarm": "2-1",
+    "conch-herald": "2-4",
     "grey-seal-bull": "2-5"
    },
    "special": {}
@@ -109,8 +119,10 @@
     "peregrine-stooper",
     "golden-eagle-diver"
    ],
+   "newCards": 10,
    "rewards": {
     "puffin-diver": "3-2",
+    "peregrine-stooper": "3-5",
     "golden-eagle-diver": "3-7"
    },
    "special": {}
@@ -130,8 +142,10 @@
     "platypus-spur",
     "old-sturgeon"
    ],
+   "newCards": 10,
    "rewards": {
     "platypus-spur": "4-3",
+    "muskrat-lodgekeeper": "4-4",
     "old-sturgeon": "4-5"
    },
    "special": {}
@@ -151,8 +165,10 @@
     "fen-mink",
     "alligator-gar"
    ],
+   "newCards": 10,
    "rewards": {
     "grass-viper": "5-4",
+    "fen-mink": "5-6",
     "alligator-gar": "5-7"
    },
    "special": {}
@@ -172,6 +188,7 @@
     "raven-scout",
     "adder-ambusher"
    ],
+   "newCards": 9,
    "rewards": {
     "newt-doctor": "6-5",
     "adder-ambusher": "6-8"
@@ -197,6 +214,7 @@
     "planarian-splitter",
     "wolf-spider-mother"
    ],
+   "newCards": 9,
    "rewards": {
     "truffle-piglet": "7-1",
     "wolf-spider-mother": "7-6"
@@ -218,8 +236,10 @@
     "giant-cave-huntsman",
     "echo-screecher"
    ],
+   "newCards": 10,
    "rewards": {
     "star-nosed-mole": "8-2",
+    "giant-cave-huntsman": "8-7",
     "echo-screecher": "8-8"
    },
    "special": {}
@@ -239,8 +259,10 @@
     "mangrove-kingfisher",
     "mangrove-manatee"
    ],
+   "newCards": 10,
    "rewards": {
     "mangrove-kingfisher": "9-3",
+    "banded-sea-krait": "9-5",
     "mangrove-manatee": "9-7"
    },
    "special": {}
@@ -260,8 +282,10 @@
     "great-barracuda",
     "colossal-squid"
    ],
+   "newCards": 10,
    "rewards": {
     "electric-ray": "10-2",
+    "great-barracuda": "10-6",
     "colossal-squid": "10-9"
    },
    "special": {
@@ -285,6 +309,7 @@
     "eagle-owl-quartermaster",
     "ibex-rockcaller"
    ],
+   "newCards": 9,
    "rewards": {
     "chamois-leaper": "11-9",
     "ibex-rockcaller": "11-10"
@@ -306,6 +331,7 @@
     "quillguard",
     "thorn-shrike"
    ],
+   "newCards": 9,
    "rewards": {
     "hedgehog-scout": "12-5",
     "quillguard": "12-7"
@@ -327,6 +353,7 @@
     "fawn-scout",
     "shimmerwing-stag"
    ],
+   "newCards": 9,
    "rewards": {
     "fawn-scout": "13-1",
     "shimmerwing-stag": "13-8"
@@ -348,8 +375,10 @@
     "spitting-cobra",
     "savanna-cheetah"
    ],
+   "newCards": 10,
    "rewards": {
     "grave-grin-hyena": "14-2",
+    "spitting-cobra": "14-6",
     "savanna-cheetah": "14-8"
    },
    "special": {}
@@ -369,8 +398,10 @@
     "raccoon-bandit",
     "talon-archer"
    ],
+   "newCards": 10,
    "rewards": {
     "border-collie": "15-2",
+    "stoat-cutthroat": "15-3",
     "talon-archer": "15-7"
    },
    "special": {}
@@ -390,8 +421,10 @@
     "taiga-lynx",
     "dhole-matriarch"
    ],
+   "newCards": 10,
    "rewards": {
     "woodland-caribou": "16-3",
+    "taiga-lynx": "16-4",
     "dhole-matriarch": "16-7"
    },
    "special": {}
@@ -411,8 +444,10 @@
     "walrus-icebreaker",
     "polar-bear"
    ],
+   "newCards": 10,
    "rewards": {
     "lone-grey-wolf": "17-2",
+    "polar-bear": "17-6",
     "walrus-icebreaker": "17-8"
    },
    "special": {}
@@ -432,8 +467,10 @@
     "obsidian-scorpion",
     "dust-devil-kestrel"
    ],
+   "newCards": 10,
    "rewards": {
     "antlion-pit": "18-6",
+    "obsidian-scorpion": "18-5",
     "dust-devil-kestrel": "18-7"
    },
    "special": {
@@ -457,8 +494,10 @@
     "quill-volley",
     "echidna-quillshot"
    ],
+   "newCards": 10,
    "rewards": {
     "fire-salamander": "19-3",
+    "quill-volley": "19-2",
     "echidna-quillshot": "19-6"
    },
    "special": {}
@@ -478,8 +517,10 @@
     "woodland-brawler",
     "ossuary-lammergeier"
    ],
+   "newCards": 10,
    "rewards": {
     "magma-wraith": "20-7",
+    "woodland-brawler": "20-9",
     "ossuary-lammergeier": "20-10"
    },
    "special": {
@@ -502,8 +543,8 @@
     "snow-leopard",
     "snow-owl-sentinel"
    ],
+   "newCards": 5,
    "rewards": {
-    "eagle-sharpshooter": "21-4",
     "snow-owl-sentinel": "21-6"
    },
    "special": {}
@@ -523,8 +564,10 @@
     "ur-elk",
     "caldera-snow-leopard"
    ],
+   "newCards": 10,
    "rewards": {
     "rimefire-salamander": "22-2",
+    "ur-elk": "22-6",
     "caldera-snow-leopard": "22-8"
    },
    "special": {
@@ -548,6 +591,7 @@
     "beetle-battering-ram",
     "war-elephant"
    ],
+   "newCards": 7,
    "rewards": {
     "testudo-tortoise": "23-2",
     "war-elephant": "23-8"
@@ -573,15 +617,1961 @@
     "gilded-swan-knight",
     "iron-warden"
    ],
+   "newCards": 10,
    "rewards": {
     "iron-warden": "24-6",
+    "battlement-heron": "24-5",
     "gilded-swan-knight": "24-8"
    },
-   "special": {
-    "magnate-duck": [
-     "24-8"
-    ]
-   }
+   "special": {}
+  }
+ },
+ "sources": {
+  "chipmunk-skirmisher": {
+   "kind": "map",
+   "id": "m1",
+   "node": "0-1"
+  },
+  "terrier-pup": {
+   "kind": "map",
+   "id": "m1",
+   "node": "0-4"
+  },
+  "cricket-drummer": {
+   "kind": "map",
+   "id": "mf",
+   "node": "1-1"
+  },
+  "badger-lumberjack": {
+   "kind": "map",
+   "id": "mf",
+   "node": "1-5"
+  },
+  "fiddler-crab-swarm": {
+   "kind": "map",
+   "id": "mb",
+   "node": "2-1"
+  },
+  "conch-herald": {
+   "kind": "map",
+   "id": "mb",
+   "node": "2-4"
+  },
+  "grey-seal-bull": {
+   "kind": "map",
+   "id": "mb",
+   "node": "2-5"
+  },
+  "puffin-diver": {
+   "kind": "map",
+   "id": "mc",
+   "node": "3-2"
+  },
+  "peregrine-stooper": {
+   "kind": "map",
+   "id": "mc",
+   "node": "3-5"
+  },
+  "golden-eagle-diver": {
+   "kind": "map",
+   "id": "mc",
+   "node": "3-7"
+  },
+  "platypus-spur": {
+   "kind": "map",
+   "id": "m2",
+   "node": "4-3"
+  },
+  "muskrat-lodgekeeper": {
+   "kind": "map",
+   "id": "m2",
+   "node": "4-4"
+  },
+  "old-sturgeon": {
+   "kind": "map",
+   "id": "m2",
+   "node": "4-5"
+  },
+  "grass-viper": {
+   "kind": "map",
+   "id": "mw",
+   "node": "5-4"
+  },
+  "fen-mink": {
+   "kind": "map",
+   "id": "mw",
+   "node": "5-6"
+  },
+  "alligator-gar": {
+   "kind": "map",
+   "id": "mw",
+   "node": "5-7"
+  },
+  "newt-doctor": {
+   "kind": "map",
+   "id": "m8",
+   "node": "6-5"
+  },
+  "adder-ambusher": {
+   "kind": "map",
+   "id": "m8",
+   "node": "6-8"
+  },
+  "truffle-piglet": {
+   "kind": "map",
+   "id": "mu",
+   "node": "7-1"
+  },
+  "wolf-spider-mother": {
+   "kind": "map",
+   "id": "mu",
+   "node": "7-6"
+  },
+  "star-nosed-mole": {
+   "kind": "map",
+   "id": "m4",
+   "node": "8-2"
+  },
+  "giant-cave-huntsman": {
+   "kind": "map",
+   "id": "m4",
+   "node": "8-7"
+  },
+  "echo-screecher": {
+   "kind": "map",
+   "id": "m4",
+   "node": "8-8"
+  },
+  "mangrove-kingfisher": {
+   "kind": "map",
+   "id": "mk",
+   "node": "9-3"
+  },
+  "banded-sea-krait": {
+   "kind": "map",
+   "id": "mk",
+   "node": "9-5"
+  },
+  "mangrove-manatee": {
+   "kind": "map",
+   "id": "mk",
+   "node": "9-7"
+  },
+  "electric-ray": {
+   "kind": "map",
+   "id": "m7",
+   "node": "10-2"
+  },
+  "great-barracuda": {
+   "kind": "map",
+   "id": "m7",
+   "node": "10-6"
+  },
+  "colossal-squid": {
+   "kind": "map",
+   "id": "m7",
+   "node": "10-9"
+  },
+  "chamois-leaper": {
+   "kind": "map",
+   "id": "m10",
+   "node": "11-9"
+  },
+  "ibex-rockcaller": {
+   "kind": "map",
+   "id": "m10",
+   "node": "11-10"
+  },
+  "hedgehog-scout": {
+   "kind": "map",
+   "id": "mh",
+   "node": "12-5"
+  },
+  "quillguard": {
+   "kind": "map",
+   "id": "mh",
+   "node": "12-7"
+  },
+  "fawn-scout": {
+   "kind": "map",
+   "id": "mr",
+   "node": "13-1"
+  },
+  "shimmerwing-stag": {
+   "kind": "map",
+   "id": "mr",
+   "node": "13-8"
+  },
+  "grave-grin-hyena": {
+   "kind": "map",
+   "id": "m5",
+   "node": "14-2"
+  },
+  "spitting-cobra": {
+   "kind": "map",
+   "id": "m5",
+   "node": "14-6"
+  },
+  "savanna-cheetah": {
+   "kind": "map",
+   "id": "m5",
+   "node": "14-8"
+  },
+  "border-collie": {
+   "kind": "map",
+   "id": "ml",
+   "node": "15-2"
+  },
+  "stoat-cutthroat": {
+   "kind": "map",
+   "id": "ml",
+   "node": "15-3"
+  },
+  "talon-archer": {
+   "kind": "map",
+   "id": "ml",
+   "node": "15-7"
+  },
+  "woodland-caribou": {
+   "kind": "map",
+   "id": "mt",
+   "node": "16-3"
+  },
+  "taiga-lynx": {
+   "kind": "map",
+   "id": "mt",
+   "node": "16-4"
+  },
+  "dhole-matriarch": {
+   "kind": "map",
+   "id": "mt",
+   "node": "16-7"
+  },
+  "lone-grey-wolf": {
+   "kind": "map",
+   "id": "m6",
+   "node": "17-2"
+  },
+  "polar-bear": {
+   "kind": "map",
+   "id": "m6",
+   "node": "17-6"
+  },
+  "walrus-icebreaker": {
+   "kind": "map",
+   "id": "m6",
+   "node": "17-8"
+  },
+  "antlion-pit": {
+   "kind": "map",
+   "id": "md",
+   "node": "18-6"
+  },
+  "obsidian-scorpion": {
+   "kind": "map",
+   "id": "md",
+   "node": "18-5"
+  },
+  "dust-devil-kestrel": {
+   "kind": "map",
+   "id": "md",
+   "node": "18-7"
+  },
+  "fire-salamander": {
+   "kind": "map",
+   "id": "m3",
+   "node": "19-3"
+  },
+  "quill-volley": {
+   "kind": "map",
+   "id": "m3",
+   "node": "19-2"
+  },
+  "echidna-quillshot": {
+   "kind": "map",
+   "id": "m3",
+   "node": "19-6"
+  },
+  "magma-wraith": {
+   "kind": "map",
+   "id": "m11",
+   "node": "20-7"
+  },
+  "woodland-brawler": {
+   "kind": "map",
+   "id": "m11",
+   "node": "20-9"
+  },
+  "ossuary-lammergeier": {
+   "kind": "map",
+   "id": "m11",
+   "node": "20-10"
+  },
+  "snow-owl-sentinel": {
+   "kind": "map",
+   "id": "m21",
+   "node": "21-6"
+  },
+  "rimefire-salamander": {
+   "kind": "map",
+   "id": "m22",
+   "node": "22-2"
+  },
+  "ur-elk": {
+   "kind": "map",
+   "id": "m22",
+   "node": "22-6"
+  },
+  "caldera-snow-leopard": {
+   "kind": "map",
+   "id": "m22",
+   "node": "22-8"
+  },
+  "testudo-tortoise": {
+   "kind": "map",
+   "id": "m23",
+   "node": "23-2"
+  },
+  "war-elephant": {
+   "kind": "map",
+   "id": "m23",
+   "node": "23-8"
+  },
+  "iron-warden": {
+   "kind": "map",
+   "id": "m24",
+   "node": "24-6"
+  },
+  "battlement-heron": {
+   "kind": "map",
+   "id": "m24",
+   "node": "24-5"
+  },
+  "gilded-swan-knight": {
+   "kind": "map",
+   "id": "m24",
+   "node": "24-8"
+  },
+  "lucky-hopper": {
+   "kind": "map",
+   "id": "mq",
+   "node": "1-A-5"
+  },
+  "riverworks-bastion": {
+   "kind": "map",
+   "id": "mp",
+   "node": "2-A-7"
+  },
+  "octopus-tactician": {
+   "kind": "map",
+   "id": "mg",
+   "node": "2-B-4"
+  },
+  "hedgehog-herbalist": {
+   "kind": "map",
+   "id": "ms",
+   "node": "5-A-4"
+  },
+  "rootworm-colony": {
+   "kind": "map",
+   "id": "mz",
+   "node": "7-A-5"
+  },
+  "lantern-spark-fly": {
+   "kind": "map",
+   "id": "mn",
+   "node": "8-A-4"
+  },
+  "blue-ringed-octopus": {
+   "kind": "map",
+   "id": "mj",
+   "node": "10-A-5"
+  },
+  "wound-reaver": {
+   "kind": "map",
+   "id": "mv",
+   "node": "11-A-4"
+  },
+  "jaguar-stalker": {
+   "kind": "map",
+   "id": "my",
+   "node": "14-A-5"
+  },
+  "hercules-beetle": {
+   "kind": "map",
+   "id": "my",
+   "node": "14-A-4"
+  },
+  "kinkajou-lurker": {
+   "kind": "map",
+   "id": "my",
+   "node": "14-A-3"
+  },
+  "greenland-shark": {
+   "kind": "map",
+   "id": "mi",
+   "node": "17-A-4"
+  },
+  "ent": {
+   "kind": "map",
+   "id": "mo",
+   "node": "0-B-4"
+  },
+  "quicksand-queen": {
+   "kind": "map",
+   "id": "mpd",
+   "node": "18-A-9"
+  },
+  "ember-revenant": {
+   "kind": "map",
+   "id": "m9",
+   "node": "19-A-10"
+  },
+  "the-contradiction": {
+   "kind": "map",
+   "id": "me",
+   "node": "20-A-4"
+  },
+  "fire-drake-hatchling": {
+   "kind": "map",
+   "id": "mx",
+   "node": "20-B-4"
+  },
+  "farm-dog": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m1"
+  },
+  "dormouse": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mf"
+  },
+  "compost-grub": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mf"
+  },
+  "bramble-sprout": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mf"
+  },
+  "field-vole": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mf"
+  },
+  "field-mouse": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mf"
+  },
+  "pincushion-urchin": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "gull-thief": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "tidepool-trapper-crab": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "tide-pool-crab": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "open-ocean-hermit-crab": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "sea-turtle-elder": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "conch-crawler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "hawk-arrowkeeper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "peak-condor": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "kittiwake-flock": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "red-billed-chough": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "fulmar-spitter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "razorbill": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "mountain-goat-climber": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "snapstick-turtle": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "stone-turtle-warden": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "water-vole": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "box-turtle": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "water-shrew": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "river-mink": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "pyrenean-desman": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "snapper-hatchling": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "constrictor-coil": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "venomlord-serpent": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "crocodile-ambusher": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "swamp-alligator": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "caiman-hatchling": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "grass-snake": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "poison-dart-croaker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "camouflage-frog": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "marsh-wisp": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "mire-witch-heron": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "bogfire-newt": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "booming-bittern": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "raven-scout": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "dung-beetle": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "leafcutter-gardener": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "hollow-oath-keeper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "owl-nightwatch": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "fungal-colossus": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "ant-warrior": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "planarian-splitter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "blind-cave-fish": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "cave-olm": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "sulfur-cinder-moth": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "stalactite-golem": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "nightshade-moth": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "vampire-bat": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "whip-spider": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "mangrove-mudskipper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "minnow-skitter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "mudpuppy": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "mangrove-monitor": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "reef-shark": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "archerfish": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "sunbittern-strider": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "clownfish-scout": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "parrotfish": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "kraken-spawnling": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "coral-reef-shark": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "riptide-eel": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "lions-mane-jelly": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "swordfish-spearman": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "alpine-marmot": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "chipmunk-hoarder": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "eyrie-warden": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "mountain-hare": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "apollo-butterfly": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "balloon-archer": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "eagle-owl-quartermaster": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m10"
+  },
+  "bramble-hoglet": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "mouse-sapper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "seed-cache-squirrel": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "cunning-vixen": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "hedge-weasel": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "lyrebird-mimic": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "thorn-shrike": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "fox-kit": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "swift-fox": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "berserker-boar": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "stag-knight": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "grizzly-vanguard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "tasmanian-devil": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "woodpecker-sapper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "bramblewood-lynx": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "springbok-pronker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "hoopoe-herald": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "meerkat-burrower": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "weaver-bird": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "dust-hyena": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "pangolin-roller": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "marula-elephant": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "pronghorn-racer": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "warhorse-charger": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "cataphract-destrier": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "shepherds-bark": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "stable-colt": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "bison-bulldozer": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "raccoon-bandit": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "snowshoe-hare": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "frost-hare-sprinter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "dhole-runner": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "trickster-fox": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "alpha-howler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "boreal-elk": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "wolf-pack-runner": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "snow-ermine": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "harbor-seal": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "glacial-ape-king": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "snow-bunting-archer": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "spitting-spider": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "frostmoon-howler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "ravenous-wolverine": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "thorny-devil": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "roadrunner-courier": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "sandfish": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "komodo-warlord": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "caustic-scorpion": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "fennec-fox": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "dromedary": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "cinder-stoker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "magma-titan": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "phoenix-fledgling": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "yeti": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "glacier-wolf-pack": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "porcupine-roller": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "scree-goat": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "pack-mule": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "cinder-skeleton": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "ashbone-ghoul": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "cave-warlord": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "bear-cub": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "ash-cloud-condor": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "magma-salamander": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "pika-hoarder": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m21"
+  },
+  "glacier-yak": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m21"
+  },
+  "eagle-sharpshooter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m21"
+  },
+  "snow-leopard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m21"
+  },
+  "cinder-gecko": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "cinder-hornet": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "gorge-wyrm": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "permafrost-mammoth": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "ice-petrel": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "badger-berserker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "fumarole-ibex": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "badger-trench-digger": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "howdah-archers": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "siege-rhino": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "trebuchet-crew": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "beetle-battering-ram": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "duckling-squadron": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "elderhorn-monarch": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "tax-collector-teal": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "lodge-engineer": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "goose-sentry": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "mallard-halberdier": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "mallard-marauder": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m24"
+  },
+  "grovebearer-dragon-turtle": "awaitingSource",
+  "scraper-of-skies": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m3"
+  },
+  "great-horned-owl": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "armored-mastiff": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "war-panther": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "silverback-brawler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "trapdoor-spider": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "webspire-sentinel": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "tunnel-wyrm": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "carrion-fly-swarm": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "monarch-wingblade": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "thornvine-lasher": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "elder-willow": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "tide-spirit": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "pufferfish-bulwark": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "raccoon-warlord": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "boar-rampager": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "turtle-bastion": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "eagle-diver": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "nautilus-drifter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "tusked-vanguard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "chipmunk-stockpiler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "badger-sapper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "antler-skirmisher": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "firetail-trickster": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "fox-warchief": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "vampire-roost": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "rodent-king": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "squires-mount": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "bog-behemoth": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "warren-scout": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "buck-brawler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "ancient-sloth-titan": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "sand-widow": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "orca-vanguard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "quill-thorn-boar": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "pack-wolf-reaver": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "termite-mound": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "tundra-musk-ox": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "alpine-avalanche": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "rockslide-ram": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mc"
+  },
+  "bog-leech": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "marsh-gas-toad": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "cypress-root-lurker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "deep-cave-troll": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "sulfur-vent-crab": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "pinecone-sapper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "barnacle-fortress": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "pelican-diver": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "gangrenous-leech": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "feral-tuskboar": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "reef-manta-glider": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "humpback-elder": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "sandstorm-roc": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "quillback-elder": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "raccoon-nightcrew": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "cuttlefish-illusionist": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "migration-leader": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m2"
+  },
+  "pack-rat-looter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "jackrabbit-sprinter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "ml"
+  },
+  "ember-jackal": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "basalt-boar": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "pyroclast-wyrm": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "frost-thistle-lynx": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mt"
+  },
+  "dune-jackal-scout": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "voltaic-eel": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "elder-tortoise": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "rot-swollen-carcass": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "king-maker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "plague-gnat-cloud": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "glasswing-moth": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "weathervane-swift": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "bramblewood-bonebreaker": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "blizzard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
+  },
+  "heatwave": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "spring-rain": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "thick-fog": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mb"
+  },
+  "full-moon": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "echo-keeper": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "bog-revenant": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "the-unremembered": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "willow-o-wisp": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "skull-vulture": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "pall-wraith": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "obsidian-lich": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "marching-elephant": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "stonedrop-vulture": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "subterraneaner": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "house-cat": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m1"
+  },
+  "cave-centipede": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "millipede-hauler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "meerkat-sentry": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "bombardier-beetle": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "fox-sharpshot": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "frillneck-duelist": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "monitor-rambler": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "dynamite-packrat": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "ember-centipede": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "ash-moth": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "rabid-jackal": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "shallows-fry": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "baby-bat": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "baby-horned-capybara": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "mongoose-duelist": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "nightjar-drifter": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "mudflat-godwit": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "moon-jerboa": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "werebadger": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m23"
+  },
+  "carrion-beetle": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "tarantula-hawk": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "glasswing-butterfly": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "margay": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mr"
+  },
+  "lotus-frog": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "vampire-bat-nurse": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "mayfly-dancer": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "sawfish": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "mantis-shrimp": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "firefly-swarm": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "armadillo-guard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "piranha-shoal": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "cone-snail": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "lamprey": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "skunk-gasser": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mh"
+  },
+  "fire-hawk": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m11"
+  },
+  "cleaner-wrasse": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "lovebird": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "horned-lizard": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "marula-monkey": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m5"
+  },
+  "ashwing-ptarmigan": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m22"
+  },
+  "gallery-orb-weaver": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "cottonmouth-matriarch": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "sea-cucumber": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "grotto-lobster": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "pale-oryx": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "md"
+  },
+  "pine-marten": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mu"
+  },
+  "fire-ant-raft": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "anhinga-spearbird": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mw"
+  },
+  "giant-water-bug": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "greater-siren": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m8"
+  },
+  "ghost-crayfish": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m4"
+  },
+  "fishing-cat": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "mk"
+  },
+  "yellow-bellied-sea-snake": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "crown-of-thorns-star": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "whale-shark": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m7"
+  },
+  "beluga": {
+   "kind": "pack",
+   "tier": 1,
+   "map": "m6"
   }
  },
  "rarityChanges": [
@@ -798,6 +2788,23 @@
    "obtainAfter": 1
   },
   {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 2
+  },
+  {
    "id": "golden-eagle-diver",
    "name": "Golden Eagle Diver",
    "rarity": "uncommon",
@@ -814,6 +2821,24 @@
    },
    "obtainBefore": 3,
    "obtainAfter": 3
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-4"
+   },
+   "obtainBefore": 4,
+   "obtainAfter": 4
   },
   {
    "id": "old-sturgeon",
@@ -847,6 +2872,24 @@
     "kind": "map",
     "id": "mw",
     "node": "5-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 5
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "rarity": "uncommon",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-6"
    },
    "obtainBefore": 5,
    "obtainAfter": 5
@@ -906,6 +2949,24 @@
    "obtainAfter": 7
   },
   {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-6"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-7"
+   },
+   "obtainBefore": 8,
+   "obtainAfter": 8
+  },
+  {
    "id": "echo-screecher",
    "name": "Echo Screecher",
    "rarity": "rare",
@@ -922,6 +2983,24 @@
    },
    "obtainBefore": 8,
    "obtainAfter": 8
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-5"
+   },
+   "obtainBefore": 9,
+   "obtainAfter": 9
   },
   {
    "id": "colossal-squid",
@@ -960,6 +3039,24 @@
    "obtainAfter": 12
   },
   {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "rarity": "rare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-7"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-6"
+   },
+   "obtainBefore": 14,
+   "obtainAfter": 14
+  },
+  {
    "id": "savanna-cheetah",
    "name": "Savanna Cheetah",
    "rarity": "veryrare",
@@ -995,6 +3092,23 @@
    "obtainAfter": 15
   },
   {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "rarity": "rare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "to": {
+    "kind": "map",
+    "id": "mt",
+    "node": "16-4"
+   },
+   "obtainBefore": 5,
+   "obtainAfter": 16
+  },
+  {
    "id": "dhole-matriarch",
    "name": "Dhole Matriarch",
    "rarity": "veryrare",
@@ -1011,6 +3125,24 @@
    },
    "obtainBefore": 16,
    "obtainAfter": 16
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-5"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-6"
+   },
+   "obtainBefore": 17,
+   "obtainAfter": 17
   },
   {
    "id": "walrus-icebreaker",
@@ -1031,6 +3163,24 @@
    "obtainAfter": 17
   },
   {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "rarity": "rare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-4"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-2"
+   },
+   "obtainBefore": 19,
+   "obtainAfter": 19
+  },
+  {
    "id": "echidna-quillshot",
    "name": "Echidna Quillshot",
    "rarity": "veryrare",
@@ -1047,6 +3197,24 @@
    },
    "obtainBefore": 19,
    "obtainAfter": 19
+  },
+  {
+   "id": "woodland-brawler",
+   "name": "Woodland Brawler",
+   "rarity": "veryrare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-8"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-9"
+   },
+   "obtainBefore": 20,
+   "obtainAfter": 20
   },
   {
    "id": "ossuary-lammergeier",
@@ -1083,6 +3251,24 @@
    },
    "obtainBefore": 21,
    "obtainAfter": 21
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "rarity": "veryrare",
+   "group": "skirmish-reward",
+   "from": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-7"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-6"
+   },
+   "obtainBefore": 22,
+   "obtainAfter": 22
   },
   {
    "id": "hercules-beetle",
@@ -1343,23 +3529,6 @@
    "obtainAfter": 2
   },
   {
-   "id": "conch-herald",
-   "name": "Conch Herald",
-   "rarity": "uncommon",
-   "group": "pack",
-   "from": {
-    "kind": "pack",
-    "tier": 1
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "mb"
-   },
-   "obtainBefore": 5,
-   "obtainAfter": 2
-  },
-  {
    "id": "hawk-arrowkeeper",
    "name": "Hawk Arrowkeeper",
    "rarity": "common",
@@ -1483,24 +3652,6 @@
    "obtainAfter": 3
   },
   {
-   "id": "peregrine-stooper",
-   "name": "Peregrine Stooper",
-   "rarity": "uncommon",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "mc",
-    "node": "3-5"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "mc"
-   },
-   "obtainBefore": 3,
-   "obtainAfter": 3
-  },
-  {
    "id": "snapstick-turtle",
    "name": "Snapstick Turtle",
    "rarity": "common",
@@ -1598,24 +3749,6 @@
     "kind": "map",
     "id": "m2",
     "node": "4-4"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m2"
-   },
-   "obtainBefore": 4,
-   "obtainAfter": 4
-  },
-  {
-   "id": "muskrat-lodgekeeper",
-   "name": "Muskrat Lodgekeeper",
-   "rarity": "uncommon",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m2",
-    "node": "4-2"
    },
    "to": {
     "kind": "pack",
@@ -1760,24 +3893,6 @@
     "kind": "map",
     "id": "mw",
     "node": "5-1"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "mw"
-   },
-   "obtainBefore": 5,
-   "obtainAfter": 5
-  },
-  {
-   "id": "fen-mink",
-   "name": "Fen Mink",
-   "rarity": "uncommon",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "mw",
-    "node": "5-5"
    },
    "to": {
     "kind": "pack",
@@ -2166,24 +4281,6 @@
    "obtainAfter": 8
   },
   {
-   "id": "giant-cave-huntsman",
-   "name": "Giant Cave Huntsman",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m4",
-    "node": "8-6"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m4"
-   },
-   "obtainBefore": 8,
-   "obtainAfter": 8
-  },
-  {
    "id": "mangrove-mudskipper",
    "name": "Mangrove Mudskipper",
    "rarity": "common",
@@ -2310,24 +4407,6 @@
    "obtainAfter": 9
   },
   {
-   "id": "banded-sea-krait",
-   "name": "Banded Sea Krait",
-   "rarity": "uncommon",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "mk",
-    "node": "9-4"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "mk"
-   },
-   "obtainBefore": 9,
-   "obtainAfter": 9
-  },
-  {
    "id": "clownfish-scout",
    "name": "Clownfish Scout",
    "rarity": "common",
@@ -2442,24 +4521,6 @@
     "kind": "map",
     "id": "m7",
     "node": "10-2"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m7"
-   },
-   "obtainBefore": 10,
-   "obtainAfter": 10
-  },
-  {
-   "id": "great-barracuda",
-   "name": "Great Barracuda",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m7",
-    "node": "10-6"
    },
    "to": {
     "kind": "pack",
@@ -2992,24 +5053,6 @@
    "obtainAfter": 14
   },
   {
-   "id": "spitting-cobra",
-   "name": "Spitting Cobra",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m5",
-    "node": "14-7"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m5"
-   },
-   "obtainBefore": 14,
-   "obtainAfter": 14
-  },
-  {
    "id": "pronghorn-racer",
    "name": "Pronghorn Racer",
    "rarity": "common",
@@ -3108,24 +5151,6 @@
     "kind": "map",
     "id": "ml",
     "node": "15-4"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "ml"
-   },
-   "obtainBefore": 15,
-   "obtainAfter": 15
-  },
-  {
-   "id": "stoat-cutthroat",
-   "name": "Stoat Cutthroat",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "ml",
-    "node": "15-3"
    },
    "to": {
     "kind": "pack",
@@ -3279,23 +5304,6 @@
    "obtainAfter": 16
   },
   {
-   "id": "taiga-lynx",
-   "name": "Taiga Lynx",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "pack",
-    "tier": 1
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "mt"
-   },
-   "obtainBefore": 5,
-   "obtainAfter": 16
-  },
-  {
    "id": "snow-ermine",
    "name": "Snow Ermine",
    "rarity": "common",
@@ -3412,24 +5420,6 @@
     "kind": "map",
     "id": "m6",
     "node": "17-6"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m6"
-   },
-   "obtainBefore": 17,
-   "obtainAfter": 17
-  },
-  {
-   "id": "polar-bear",
-   "name": "Polar Bear",
-   "rarity": "veryrare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m6",
-    "node": "17-5"
    },
    "to": {
     "kind": "pack",
@@ -3566,24 +5556,6 @@
    "obtainAfter": 18
   },
   {
-   "id": "obsidian-scorpion",
-   "name": "Obsidian Scorpion",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "md",
-    "node": "18-5"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "md"
-   },
-   "obtainBefore": 18,
-   "obtainAfter": 18
-  },
-  {
    "id": "cinder-stoker",
    "name": "Cinder Stoker",
    "rarity": "common",
@@ -3699,24 +5671,6 @@
     "kind": "map",
     "id": "m3",
     "node": "19-3"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m3"
-   },
-   "obtainBefore": 19,
-   "obtainAfter": 19
-  },
-  {
-   "id": "quill-volley",
-   "name": "Quill Volley",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m3",
-    "node": "19-4"
    },
    "to": {
     "kind": "pack",
@@ -3853,24 +5807,6 @@
    "obtainAfter": 20
   },
   {
-   "id": "woodland-brawler",
-   "name": "Woodland Brawler",
-   "rarity": "veryrare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m11",
-    "node": "20-8"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m11"
-   },
-   "obtainBefore": 20,
-   "obtainAfter": 20
-  },
-  {
    "id": "pika-hoarder",
    "name": "Pika Hoarder",
    "rarity": "common",
@@ -3897,6 +5833,24 @@
     "kind": "map",
     "id": "m21",
     "node": "21-5"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m21"
+   },
+   "obtainBefore": 21,
+   "obtainAfter": 21
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": "common",
+   "group": "pack",
+   "from": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-4"
    },
    "to": {
     "kind": "pack",
@@ -4037,24 +5991,6 @@
     "kind": "map",
     "id": "m22",
     "node": "22-4"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m22"
-   },
-   "obtainBefore": 22,
-   "obtainAfter": 22
-  },
-  {
-   "id": "ur-elk",
-   "name": "Ür-Elk",
-   "rarity": "veryrare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m22",
-    "node": "22-7"
    },
    "to": {
     "kind": "pack",
@@ -4269,24 +6205,6 @@
     "kind": "map",
     "id": "m24",
     "node": "24-4"
-   },
-   "to": {
-    "kind": "pack",
-    "tier": 1,
-    "map": "m24"
-   },
-   "obtainBefore": 24,
-   "obtainAfter": 24
-  },
-  {
-   "id": "battlement-heron",
-   "name": "Battlement Heron",
-   "rarity": "rare",
-   "group": "pack",
-   "from": {
-    "kind": "map",
-    "id": "m24",
-    "node": "24-5"
    },
    "to": {
     "kind": "pack",
@@ -7992,10 +9910,10 @@
      "minnow-skitter": 2
     },
     "to": {
-     "mangrove-mudskipper": 3,
+     "mangrove-mudskipper": 4,
      "minnow-skitter": 3,
      "reef-shark": 3,
-     "archerfish": 3
+     "mangrove-kingfisher": 2
     },
     "showcase": null
    },
@@ -8010,11 +9928,11 @@
      "fiddler-crab-swarm": 2
     },
     "to": {
-     "mangrove-mudskipper": 4,
+     "mangrove-mudskipper": 3,
      "mudpuppy": 3,
      "reef-shark": 3,
+     "archerfish": 3,
      "banded-sea-krait": 3,
-     "mangrove-kingfisher": 2,
      "mangrove-manatee": 2
     },
     "showcase": null
@@ -9001,11 +10919,11 @@
     },
     "to": {
      "cataphract-destrier": 4,
-     "pronghorn-racer": 3,
+     "pronghorn-racer": 4,
      "shepherds-bark": 3,
      "bison-bulldozer": 3,
-     "border-collie": 3,
-     "raccoon-bandit": 2
+     "raccoon-bandit": 2,
+     "stoat-cutthroat": 2
     },
     "showcase": null
    },
@@ -9178,7 +11096,7 @@
      "dhole-runner": 3,
      "frost-hare-sprinter": 3,
      "trickster-fox": 3,
-     "wolf-pack-runner": 1
+     "taiga-lynx": 1
     },
     "showcase": null
    },
@@ -9286,10 +11204,10 @@
     },
     "to": {
      "glacial-ape-king": 4,
-     "harbor-seal": 4,
      "spitting-spider": 3,
-     "frostmoon-howler": 2,
-     "ravenous-wolverine": 2
+     "frostmoon-howler": 3,
+     "ravenous-wolverine": 3,
+     "lone-grey-wolf": 2
     },
     "showcase": null
    },
@@ -9303,10 +11221,10 @@
     },
     "to": {
      "glacial-ape-king": 4,
-     "snow-bunting-archer": 3,
+     "harbor-seal": 3,
+     "snow-bunting-archer": 2,
      "spitting-spider": 2,
-     "frostmoon-howler": 2,
-     "ravenous-wolverine": 2
+     "frostmoon-howler": 2
     },
     "showcase": null
    },
@@ -9327,8 +11245,8 @@
      "harbor-seal": 4,
      "snow-ermine": 4,
      "snow-bunting-archer": 3,
-     "ravenous-wolverine": 3,
-     "lone-grey-wolf": 2,
+     "spitting-spider": 3,
+     "ravenous-wolverine": 2,
      "polar-bear": 2,
      "walrus-icebreaker": 2
     },
@@ -9369,7 +11287,7 @@
     },
     "to": {
      "glacial-ape-king": 5,
-     "spitting-spider": 3,
+     "snow-bunting-archer": 3,
      "frostmoon-howler": 3,
      "ravenous-wolverine": 3,
      "lone-grey-wolf": 2,
@@ -9391,7 +11309,7 @@
     },
     "to": {
      "harbor-seal": 5,
-     "snow-bunting-archer": 3,
+     "spitting-spider": 3,
      "frostmoon-howler": 3,
      "ravenous-wolverine": 3,
      "lone-grey-wolf": 2,
@@ -10504,9 +12422,8 @@
     "to": {
      "duckling-squadron": 5,
      "battlement-heron": 3,
-     "gilded-swan-knight": 2,
-     "iron-warden": 1,
-     "magnate-duck": 1
+     "gilded-swan-knight": 3,
+     "iron-warden": 1
     },
     "showcase": null
    }

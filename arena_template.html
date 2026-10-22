@@ -12698,6 +12698,12 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .mp-warn-h{font-weight:800;} .mp-chip{display:inline-flex; align-items:center; gap:6px; padding:2px 4px 2px 9px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
 .mp-chip button{border:0; border-radius:999px; padding:3px 9px; background:var(--accent); color:var(--accent-ink); font:inherit; font-size:12px; font-weight:700; cursor:pointer; min-height:26px;}
 #dbpWarn:empty, .se-mp-warn:empty{display:none;}
+/* 2026-10-22 (package DV2): + Load any card is its own modal over the picker (full catalogue, filter bar, large cards); a pool card's move-to select */
+.mp-any-modal .mp-any-res{flex:1 1 auto; padding-top:4px;} .mp-any-modal .mc-add-tools{flex:0 0 auto; position:static;} .mp-any-modal .mp-note{flex:0 0 auto;}
+.mc-acts select.mc-move{min-width:34px; max-width:60px; min-height:30px; border:1px solid var(--surface-border); border-radius:8px; background:var(--surface-2); color:var(--ink); cursor:pointer; font-size:14px; padding:0 2px; text-align-last:center;}
+.mc-acts select.mc-move:hover{background:var(--surface-3);}
+.mc-tier + .mc-tier{border-top:1px solid var(--surface-border); padding-top:10px;}
+@media (max-width: 760px){ .mc-acts select.mc-move{min-height:34px;} }
 .dbp-stack.is-offpool, .se-stack.is-offpool{position:relative;} .dbp-stack.is-offpool::after, .se-stack.is-offpool::after{content:'⚠'; position:absolute; top:-6px; left:-4px; z-index:6; font-size:14px; line-height:1; padding:2px 3px; border-radius:6px; background:#f0b429; color:#3a2600; box-shadow:0 1px 3px rgba(0,0,0,.4);}
 </style>
 

@@ -2,6 +2,28 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package DV2: skirmish rewards by new cards, the ladder to Mythic, the map pools in three tiers, Load any card as its own modal)
+- **Owner (07:41):** DV1, DV3, DV5 and MP's calls answered (DONE in `docs/decisions.json`; new call DV8, the Magnate Duck).
+- **Skirmish rewards per map** follow its new cards: "If 10 new cards from that map, 3 skirmish rewards. If 6-9, 2. If <6, 1." New = a pool card that first
+  appears on that map (not carried over) and that the map gives out (Base and starter cards don't count). **3:** Maps 2, 3, 4, 5, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20, 22, 24;
+  **2:** Maps 0, 1 (the Badger Lumberjack stays at 1-5), 6, 7, 11, 12, 13, 23; **1:** Map 21 (the Eagle Sharpshooter is a pack card again). The 16 third rewards come from
+  the stronger, thematic fights (Conch Herald 2-4, Peregrine Stooper 3-5, Polar Bear 17-6, Obsidian Scorpion 18-5 ...) and the rest stay pack cards of their map.
+  `canonical/card-obtain-maps.json` regenerated (no change: the map numbers did not move). 10 enemy decks rebuilt (the fight's reward card is always on its deck).
+- **The road's ladder:** Epic 22 (as before), **Heroic 25** (was 22), Unique 30, Legendary 40, **Mythic 60** (was 55); **Ancient, Divine, Void and Daemonic never appear
+  on road skirmishes, rewards, packs or the faction track** (`ROAD_NEVER`); Mythic is the road's highest rarity. The Volcano Lair and the Eye of the Volcano still introduce
+  Heroic and Epic. On Maps 21+ one thing broke: the Magnate Duck (Heroic) in Map 24's boss deck; it is swapped for a third Gilded Swan Knight (DV8).
+- **`canonical/map-pools.json`, three tiers** per main map: `{cards: [MAP], submaps: {<id>: [that submap's cards]}, special: [added via + Load any card]}`; one SPECIAL
+  covers the map's submaps' fights. Migrated from the old shape (each submap's cards its list; all 13 special entries merged into the maps' one list). The build inline,
+  the live `__cfg:map-pools:<mapId>` rows (old rows read as the new shape, written back as new), `tools/fold_map_pools.js`, the usage counters and DV's check all follow
+  (`tools/lib_map_pools.js`, `tools/map_pools_migrate_2026_10_22.js`).
+- **Map cards editor:** exactly three sections: **MAP**, one **SUBMAP** per submap, **SPECIAL**. Main maps only in the map list (a submap opens its parent, scrolled to it).
+  No Cards <-> Special toggle: a card moves to a submap (or back to MAP) from a "Move to..." select, or is removed; Add cards targets MAP or a submap. SPECIAL fills only from Load any card.
+- **Skirmish deck pickers** offer MAP + SPECIAL for a main-map fight, MAP + that SUBMAP + SPECIAL for a submap fight. **+ Load any card** opens its **own modal** (the whole
+  catalogue, the Codex filter bar and search, large cards) over the picker; picking a card adds it to the deck (a deck cap can refuse it) and to the map's SPECIAL, then closes it.
+- Texts: 3 new strings, 7 dead rows pruned, in the 12 packs (`tools/i18n_2026_10_22_dv2.py`). DV's check (`node tools/map_divvy_2026_10_22.js check`) is updated for the reward
+  rule, the ladder, the shape and "the reward is on its fight's deck". Checked: JSON, `node --check`, the build, DV's check, a headless run (tiers per fight, Load any card,
+  old-shape rows, move and remove) and shots at 390 and 1366 in `docs/screens/dv2/`. No test suites run (owner). Expect `tests/road-rarity-2026-10-16.js`, `tests/rewards-pass-2026-10-21.js` and the card matrix to need their goldens at release.
+
 ## 2026-10-22 (package DV: the map divvy, the rarity ladder, map pools)
 - **Each main map has a pool of 6-10 creatures** (`canonical/map-pools.json`, the map editor's file): its enemy decks are built from it, 1-2 of
   them are its skirmish rewards and the rest are basic-pack cards with that map. 305 former skirmish rewards became pack cards of their map.
