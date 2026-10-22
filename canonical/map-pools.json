@@ -14,7 +14,7 @@
    "submaps": {
     "mq": ["lucky-hopper", "acorn-chipmunk", "bee-forager", "bee-sentry", "buck-brawler", "burrow-rabbit", "chipmunk-forager", "clover-butterfly", "cottontail", "farm-dog", "field-crow", "honey-bee", "house-cat", "jay-pilferer", "ladybird-guard", "meadow-rabbit", "pigeon-peon", "rabbit-kit", "stag-beetle", "tunnel-ant", "village-miller"]
    },
-   "special": []
+   "special": ["meadow-rabbit", "cottontail", "ant-scout"]
   },
   "mb": {
    "cards": ["fiddler-crab-swarm", "pincushion-urchin", "gull-thief", "tidepool-trapper-crab", "tide-pool-crab", "open-ocean-hermit-crab", "sea-turtle-elder", "conch-crawler", "grey-seal-bull", "conch-herald"],

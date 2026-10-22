@@ -63,7 +63,7 @@ ok(/isBaseSourceCard\(id\)/.test(fnSrc('grandfatherBaseCopies')) && /loadTutoria
   const STARTER_CFG_DEFAULT = vm.runInNewContext('(' + cfgSrc.replace('const STARTER_CFG_DEFAULT = ', '').replace(/;$/, '') + ')');
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')); const defs = {}; cards.forEach(c=> defs[c.id] = c);
   const mk = (rewards, rewards2)=> new Function('getCardDefs', 'tutorialCfg', 'STARTER_CFG_DEFAULT', 'STARTER_SHOWN', 'DECK_SIZE', 'tutorialRewardIds', 'tutorialRewards2',
-    [fnSrc('starterDeckTarget'), fnSrc('starterDeckParts'), 'return starterDeckParts;'].join('\n'))(()=> defs, null, STARTER_CFG_DEFAULT, 8, 20, ()=> rewards, ()=> rewards2);
+    [between(src, 'const PG_STARTER_TOP_UP = [', '];') /* 2026-10-23 (EB): the top-up goes through starterTopUpList */, fnSrc('starterTopUpList'), fnSrc('starterDeckTarget'), fnSrc('starterDeckParts'), 'return starterDeckParts;'].join('\n'))(()=> defs, null, STARTER_CFG_DEFAULT, 8, 20, ()=> rewards, ()=> rewards2);
   for(const pick of ['otters', 'hummingbirds', 'both']){
     const p = mk([], ['x', 'y'])(pick), n = Object.values(p.all);
     ok(n.every(k=> k === 1) && n.length === 18, `2. ${pick}: the starting deck is 18 different cards, one copy each (+ T-2's two rewards = 20): ${n.length}`);

@@ -63,7 +63,7 @@ ok(/\.hud-pack\.is-spent\{animation:kitSpentFade/.test(tpl) && /@keyframes kitSp
   ok(!maps[15].nodes[0].grantsItem, '1. side maps are left alone'); }
 ok(fnSrc('grantBossKitItem') && /if\(isFirstClear && bn && bn\.grantsItem\)\{ const bi = grantBossKitItem\(\); if\(bi\) m\.conquestBossKitItem = bi; \}/.test(src), '1. a grantsItem boss\'s first clear gives a kit item');
 ok(/TX\('results\.kit-boss-item'\)/.test(src) && /TX\('ui\.node-grants-item'/.test(src), '1. the results chip and the node panel line');
-ok(/const SKIRMISH_KIT_PER_DAY = 3;/.test(src) && /const QUEST_KIT_ITEMS = \{daily:\{A:1, S:1, SS:2, SSS:3\}, weekly:\[3, 2, 1\]\};/.test(src), '1. the daily earning rules are unchanged');
+ok(/const SKIRMISH_KIT_PER_DAY = 3[,;]/.test(src) /* 2026-10-23 (EB): + KIT_DROP_PER_ENERGY on the same line */ && /const QUEST_KIT_ITEMS = \{daily:\{A:1, S:1, SS:2, SSS:3\}, weekly:\[3, 2, 1\]\};/.test(src), '1. the daily earning rules are unchanged');
 
 // ---- 2. premium Sweep of the daily dungeons
 ['premiumFromProfile', 'isPremiumPlayer', 'refreshPremiumFlag', 'dungeonSweepableFloor', 'dungeonSweepNode', 'dungeonSweepBtnHTML'].forEach(f=> ok(fnSrc(f), `arena_app.js has ${f}`));
@@ -114,7 +114,7 @@ ok(/\.premium-badge\{/.test(tpl) && /\.dg-sweep\.is-locked/.test(tpl), '2. the b
   ok(r.first.gold === 66 && r.repeat.gold === 0 && r.repeat.dust === 0, '3. a Spire floor pays its first clear, and 0 again');
   ok(T.nodeRewardTier(plain).repeat.gold === 30, '3. other fights keep their clear-again reward'); }
 { const s = src.slice(src.indexOf('\nfunction startConquestMatch('), src.indexOf('\nfunction startConquestMatch(') + 9000);
-  ok(/const towerReplay = !!node\.tower && towerFloorCleared\(node\); let towerEnergyPaid = 0;/.test(s) && /if\(!\(opts && opts\.skipEnergyCost\) && !towerReplay\)\{/.test(s), '3. a cleared floor starts without spending Energy');
+  ok(/const towerReplay = !!node\.tower && towerFloorCleared\(node\); let towerEnergyPaid = 0(, energyPaid = 0)?;/.test(s) /* 2026-10-23 (EB): + energyPaid */ && /if\(!\(opts && opts\.skipEnergyCost\) && !towerReplay\)\{/.test(s), '3. a cleared floor starts without spending Energy');
   ok(/if\(node\.tower\) towerEnergyPaid = cost; else bumpQuestCounter\('energyConquest', cost\);/.test(s) && /towerReplay, towerEnergyPaid,/.test(s), '3. a new floor\'s Energy is held for a refund'); }
 // 2026-10-21 (package TT): package ED's one result per match adds !m.rewardDuplicate to the refund and the rewards (below)
 ok(/if\(m\.mode==='conquest' && m\.winner!==1 && m\.towerEnergyPaid > 0 && !m\.towerRefunded && !m\.rewardDuplicate\)\{ m\.towerRefunded = m\.towerEnergyPaid;(?: \/\/[^\n]*)?\s*try\{ const st = settleEnergy\(\); st\.current \+= m\.towerEnergyPaid; saveEnergyState\(st\);/.test(src), '3. a lost, forfeited or drawn new floor refunds its Energy');

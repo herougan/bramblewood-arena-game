@@ -1980,7 +1980,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pg-lock-fight": "{map} opens once you beat {code} {fight}.",
   "ui.pg-lock-main": "{map} opens once you clear {prev}. Still to win: {codes}.",
   "ui.pg-lock-later": "{map} is not open yet.",
-  "ui.pg-lock-back": "Back to {map}"
+  "ui.pg-lock-back": "Back to {map}",
+  "ui.eb-kit-src": "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.",
+  "ui.eb-kit-left": "{n} left today",
+  "ui.eb-kit-done": "done for today",
+  "ui.eb-kit-more": "A notices and above · finished weekly tiers",
+  "results.eb-capsule": "Energy capsule (+{n} ⚡)",
+  "results.eb-capsule-tip": "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.",
+  "results.eb-ticket-tip": "A Raid Ticket: one more Raid attempt."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

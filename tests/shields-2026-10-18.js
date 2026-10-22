@@ -82,7 +82,7 @@ ok(sh('me', '20-A-4') === BS(32) && sh('mx', '20-B-4') === BS(63) && sh('m11', '
 { const m1 = CONQUEST_MAPS.find(m=> m.id === 'm1');
   const hp = m1.nodes.map(x=> [x.key, H.skirmishCastle(x).hp]);
   // 2026-10-19 (BF4): 0-4's hqHp is the owner's 25 (the live node edit of 10-18, folded in; was 52), so its base bramble is 15 (was 20)
-  ok(JSON.stringify(hp) === JSON.stringify([['0-1', BS(10)], ['0-2', BS(12)], ['0-3', BS(14)], ['0-4', BS(15)]]), `Map 0's road: ${JSON.stringify(hp)} (BF5: 10 / 12 / 14 / 15 halved)`);
+  ok(JSON.stringify(hp) === JSON.stringify([['0-1', BS(10)], ['0-2', BS(12)], ['0-3', BS(24)], ['0-4', BS(10)]]), `Map 0's road: ${JSON.stringify(hp)} (BF5: 10 / 12 / 14 / 15 halved; 2026-10-23, EB: 0-3 24, 0-4's hqHp 10)`);
   m1.nodes.forEach(x=> ok(H.nodeCastleLevel(x) === 0, `${x.key}: the base bramble is Lv 0`));
   ok(H.skirmishCastle(byKey('m1', '0-4')).character.id === 'plains-terrace', 'the Map 0 boss keeps its own bramble (and passive)');
   const tut = CONQUEST_MAPS.find(m=> m.id === 'mtut'), old = CONQUEST_MAPS.find(m=> m.id === 'mo');

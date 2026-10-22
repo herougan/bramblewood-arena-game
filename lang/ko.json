@@ -2774,5 +2774,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "{prev}을(를) 클리어하면 {map}이(가) 열려요. 남은 전투: {codes}.",
  "{map} is not open yet.": "{map}은(는) 아직 열리지 않았어요.",
  "Back to {map}": "{map}(으)로 돌아가기",
- "Thistlewood is the next one along. Want to see where it sits?": "다음은 엉겅퀴 숲이에요. 어디 있는지 볼래요?"
+ "Thistlewood is the next one along. Want to see where it sits?": "다음은 엉겅퀴 숲이에요. 어디 있는지 볼래요?",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "길에서 발견: 정복 승리마다 사용한 ⚡ 1당 {pct}%, 하루 최대 {n}개.",
+ "{n} left today": "오늘 {n}개 남음",
+ "done for today": "오늘은 끝",
+ "A notices and above · finished weekly tiers": "A등급 이상 공고 · 완료한 주간 단계",
+ "Energy capsule (+{n} ⚡)": "에너지 캡슐 (+{n} ⚡)",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "에너지 캡슐은 에너지를 {n} 줍니다. ⚡ 에너지를 눌러 사용하세요.",
+ "A Raid Ticket: one more Raid attempt.": "레이드 티켓: 레이드 도전 1회 추가."
 }

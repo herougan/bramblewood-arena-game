@@ -2773,5 +2773,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "{map} öffnet sich, sobald du {prev} abgeschlossen hast. Noch zu gewinnen: {codes}.",
  "{map} is not open yet.": "{map} ist noch nicht offen.",
  "Back to {map}": "Zurück zu {map}",
- "Thistlewood is the next one along. Want to see where it sits?": "Distelwald ist der nächste. Willst du sehen, wo er liegt?"
+ "Thistlewood is the next one along. Want to see where it sits?": "Distelwald ist der nächste. Willst du sehen, wo er liegt?",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "Unterwegs gefunden: {pct} % pro Eroberungssieg für jedes verbrauchte ⚡, bis zu {n} am Tag.",
+ "{n} left today": "heute noch {n}",
+ "done for today": "für heute erledigt",
+ "A notices and above · finished weekly tiers": "Aushänge ab A · abgeschlossene Wochenstufen",
+ "Energy capsule (+{n} ⚡)": "Energiekapsel (+{n} ⚡)",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "Eine Energiekapsel gibt {n} Energie. Tippe auf ⚡ Energie, um sie zu nutzen.",
+ "A Raid Ticket: one more Raid attempt.": "Ein Raid-Ticket: ein Raid-Versuch mehr."
 }

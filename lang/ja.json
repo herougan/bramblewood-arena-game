@@ -2774,5 +2774,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "{prev}をクリアすると{map}が開きます。残り：{codes}。",
  "{map} is not open yet.": "{map}はまだ開いていません。",
  "Back to {map}": "{map}に戻る",
- "Thistlewood is the next one along. Want to see where it sits?": "次はアザミの森だ。どこにあるか見てみる？"
+ "Thistlewood is the next one along. Want to see where it sits?": "次はアザミの森だ。どこにあるか見てみる？",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "道中で見つかる：征服の勝利ごとに使った⚡1につき{pct}%、1日{n}個まで。",
+ "{n} left today": "今日はあと{n}個",
+ "done for today": "今日はもう終わり",
+ "A notices and above · finished weekly tiers": "Aランク以上の掲示 · 達成した週間段階",
+ "Energy capsule (+{n} ⚡)": "エネルギーカプセル（+{n} ⚡）",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "エネルギーカプセルはエネルギーを{n}回復します。⚡エネルギーをタップして使います。",
+ "A Raid Ticket: one more Raid attempt.": "レイドチケット：レイドにもう1回挑戦できます。"
 }

@@ -2772,5 +2772,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "Magbubukas ang {map} kapag natapos mo ang {prev}. Kailangan pang ipanalo: {codes}.",
  "{map} is not open yet.": "Hindi pa bukas ang {map}.",
  "Back to {map}": "Bumalik sa {map}",
- "Thistlewood is the next one along. Want to see where it sits?": "Gubat ng Dawag ang susunod. Gusto mong makita kung nasaan ito?"
+ "Thistlewood is the next one along. Want to see where it sits?": "Gubat ng Dawag ang susunod. Gusto mong makita kung nasaan ito?",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "Nakukuha sa daan: {pct}% bawat panalo sa Conquest sa bawat ⚡ na nagamit, hanggang {n} bawat araw.",
+ "{n} left today": "{n} pa ngayong araw",
+ "done for today": "tapos na ngayong araw",
+ "A notices and above · finished weekly tiers": "Mga paskil na A pataas · natapos na lingguhang antas",
+ "Energy capsule (+{n} ⚡)": "Energy capsule (+{n} ⚡)",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "Nagbibigay ang Energy capsule ng {n} Energy. I-tap ang ⚡ Energy para gamitin ito.",
+ "A Raid Ticket: one more Raid attempt.": "Isang Raid Ticket: isa pang subok sa Raid."
 }

@@ -2,6 +2,32 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package EB: the early road for a fresh player's real deck, Map 1 beatable, items 2% per Energy, 8-Energy capsules)
+- Owner notes of 01:57, items 1, 8 (the rules; the tooltip wording is UI4's) and 9; DF-4 ("Map 1 extremely difficult").
+- **Measured** (`tools/eb_early_road_2026_10_23.js`, `docs/balance/eb-2026-10-23.json`, 100 games a fight and side): the starting deck the
+  game builds after T-2 (live tutorial lists, one copy each, every copy Level 0, the owner's live stats for the weak Base cards). Before ->
+  after, mean of Otters / Hummingbirds / Both (road target): T-1 89 -> 95, T-2 28 -> 78; 0-1 78 -> 94 (90), 0-2 58 -> 81 (75), 0-3 37 -> 64
+  (60), 0-4 20 -> 42 (45); **1-1 5.7 -> 83.7 (90), 1-2 7.3 -> 74.7 (80), 1-3 9.3 -> 74 (70), 1-4 6 -> 55.3 (60), the Baron 6 -> 39.3 (40)**.
+  The reference deck now wins Map 1 88 / 78 / 78 / 57 / 53% (was 0-12%).
+- **The real deck after T-2 (EB-1):** the baby filler no longer joins it; it is topped up, one copy each, with the sturdier cards first (River
+  Carp, Burrow Rabbit, Duck Paddler, Farm Dog, Chipmunk Forager ...; `starterTopUp`, a saved config with PG's old list gets the new one).
+- **Brambles (EB-6):** the enemy's bramble is plain in T-1, T-2 and on Map 0 (0-2 / 0-3 lost the Outskirts Watchtower, T-2 its rival's);
+  0-4 keeps the +1 Attack to the first unit. Your bramble starts at least 3 above the enemy's Health + Shield in T-1, T-2 and on Maps 0-1
+  (`earlyHomeBramble`, also in the tools' `referenceFightSetup`): T-1 8 against 5, T-2 9 against 6. 0-3's base bramble 7 -> 12 Health,
+  0-4's 8 -> 5 (to their bands).
+- **The enemy's level (EB-3):** Level 0 on Map 0 (below a card's own level: a Chipmunk Skirmisher 2/7, not 2/8), on Map 1 0 / 25 / 25 / 50 /
+  50% of the copies at Level 1 (`EARLY_ENEMY_LEVEL`); Map 2 on unchanged; the editor's Enemy level still wins.
+- **Map 1 (EB-2):** 1-1 to 1-4 defend a plain bramble with less Health (5 / 6 / 7 / 6; the Hedgerow Burrow's +1 Health a unit decided every
+  2-Attack trade), the Baron 6 + 2 Shield; decks mix the 2/8 commons with Harvest Mouse, Meadow Rabbit, Cottontail and Ant Scout (Map 1's pool
+  `special`), 20 cards each, reward cards kept; 1-2's showcase is the Cricket Drummer.
+- **Items (EB-4):** a Conquest win you played rolls 2% per Energy the fight cost (`KIT_DROP_PER_ENERGY`, `energyPaid`), at most 3 items a day;
+  was the day's first 3 wins, sure. Notices, weekly tiers and item bosses still come on top. The inventory says so (TX keys).
+- **Energy capsules (EB-5):** 8 Energy (was 20); a first-clear 🔋 token on 1-3, 2-1, 4-2, 6-3, 9-3, 12-3, 15-3, 18-3, 21-3, 24-3 (2-1's replaces
+  the "first win on Map 2" capsule); the results show it. Item tokens (capsule, Raid Ticket) now come on top of a fight's card reward and
+  drop (`itemRewardTokens`), no longer in place of them.
+- Texts: 7 TX keys in the 12 packs (`tools/i18n_2026_10_23_eb.py`). Tests: `tests/eb-2026-10-23.js` (new, 213 checks); `pg`, `level-curve`,
+  `shields` and `z` follow the new rules. Screens: `docs/screens/EB/`.
+
 ## 2026-10-23 (package BF10: Flying ×1.39)
 - **Owner (01:03, 01:57):** "I think Flying may be overcosted." "I estimate Flying is worth x1.39."
 - **Measured:** the robust skill test (`docs/balance/skill-test-robust-mono-2000-2026-10-22.md`) puts Flying's worth at 5.88 stat points against 6.89 paid at ×1.5 (a Flying deck wins 28.4% against the vanilla deck's 41.1%), which is ×1.398.

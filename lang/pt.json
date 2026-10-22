@@ -2773,5 +2773,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "{map} abre quando concluíres {prev}. Ainda por vencer: {codes}.",
  "{map} is not open yet.": "{map} ainda não está aberto.",
  "Back to {map}": "Voltar a {map}",
- "Thistlewood is the next one along. Want to see where it sits?": "Bosque dos Cardos é o próximo. Queres ver onde fica?"
+ "Thistlewood is the next one along. Want to see where it sits?": "Bosque dos Cardos é o próximo. Queres ver onde fica?",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "Encontrados pelo caminho: {pct}% por vitória de Conquista por cada ⚡ gasto, até {n} por dia.",
+ "{n} left today": "faltam {n} hoje",
+ "done for today": "terminado por hoje",
+ "A notices and above · finished weekly tiers": "Avisos A ou mais · níveis semanais concluídos",
+ "Energy capsule (+{n} ⚡)": "Cápsula de energia (+{n} ⚡)",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "Uma cápsula de energia dá {n} de energia. Toca em ⚡ Energia para a usar.",
+ "A Raid Ticket: one more Raid attempt.": "Um bilhete de raide: mais uma tentativa de raide."
 }

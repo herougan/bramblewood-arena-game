@@ -2773,5 +2773,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "{map} terbuka setelah kamu menuntaskan {prev}. Masih harus dimenangkan: {codes}.",
  "{map} is not open yet.": "{map} belum terbuka.",
  "Back to {map}": "Kembali ke {map}",
- "Thistlewood is the next one along. Want to see where it sits?": "Hutan Duri yang berikutnya. Mau lihat letaknya?"
+ "Thistlewood is the next one along. Want to see where it sits?": "Hutan Duri yang berikutnya. Mau lihat letaknya?",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "Ditemukan di jalan: {pct}% per kemenangan Penaklukan untuk tiap ⚡ yang dipakai, sampai {n} sehari.",
+ "{n} left today": "sisa {n} hari ini",
+ "done for today": "selesai untuk hari ini",
+ "A notices and above · finished weekly tiers": "Pengumuman A ke atas · tingkat mingguan yang selesai",
+ "Energy capsule (+{n} ⚡)": "Kapsul energi (+{n} ⚡)",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "Kapsul energi memberi {n} Energi. Ketuk ⚡ Energi untuk memakainya.",
+ "A Raid Ticket: one more Raid attempt.": "Tiket Raid: satu kesempatan Raid lagi."
 }

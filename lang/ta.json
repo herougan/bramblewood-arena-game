@@ -2774,5 +2774,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "{prev} ஐ முடித்ததும் {map} திறக்கும். இன்னும் வெல்ல வேண்டியவை: {codes}.",
  "{map} is not open yet.": "{map} இன்னும் திறக்கவில்லை.",
  "Back to {map}": "{map} க்குத் திரும்பு",
- "Thistlewood is the next one along. Want to see where it sits?": "அடுத்தது முட்செடிக் காடு. அது எங்கே இருக்கிறது என்று பார்க்கலாமா?"
+ "Thistlewood is the next one along. Want to see where it sits?": "அடுத்தது முட்செடிக் காடு. அது எங்கே இருக்கிறது என்று பார்க்கலாமா?",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "வழியில் கிடைப்பவை: ஒவ்வொரு வெற்றி சண்டையிலும் பயன்படுத்திய ஒவ்வொரு ⚡ க்கும் {pct}%, ஒரு நாளில் அதிகபட்சம் {n}.",
+ "{n} left today": "இன்று இன்னும் {n}",
+ "done for today": "இன்றைக்கு முடிந்தது",
+ "A notices and above · finished weekly tiers": "A மற்றும் மேல் அறிவிப்புகள் · முடித்த வாராந்திர நிலைகள்",
+ "Energy capsule (+{n} ⚡)": "ஆற்றல் குப்பி (+{n} ⚡)",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "ஒரு ஆற்றல் குப்பி {n} ஆற்றல் தரும். பயன்படுத்த ⚡ ஆற்றலைத் தட்டவும்.",
+ "A Raid Ticket: one more Raid attempt.": "ஒரு ரெய்டு சீட்டு: இன்னும் ஒரு ரெய்டு முயற்சி."
 }

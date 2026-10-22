@@ -2774,5 +2774,12 @@
  "{map} opens once you clear {prev}. Still to win: {codes}.": "通關{prev}後，{map}開放。還需贏下：{codes}。",
  "{map} is not open yet.": "{map}尚未開放。",
  "Back to {map}": "返回{map}",
- "Thistlewood is the next one along. Want to see where it sits?": "下一個是薊木林。要看看它在哪兒嗎？"
+ "Thistlewood is the next one along. Want to see where it sits?": "下一個是薊木林。要看看它在哪兒嗎？",
+ "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.": "路上拾得：每場征服勝利每消耗 1 ⚡ 有 {pct}% 機會，每天最多 {n} 個。",
+ "{n} left today": "今天還剩 {n} 個",
+ "done for today": "今天已滿",
+ "A notices and above · finished weekly tiers": "A 級及以上告示 · 完成的每週階段",
+ "Energy capsule (+{n} ⚡)": "能量膠囊（+{n} ⚡）",
+ "An Energy capsule gives {n} Energy. Tap ⚡ Energy to use it.": "能量膠囊提供 {n} 點能量。點擊 ⚡ 能量即可使用。",
+ "A Raid Ticket: one more Raid attempt.": "突襲券：多一次突襲機會。"
 }

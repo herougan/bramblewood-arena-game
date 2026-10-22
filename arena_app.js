@@ -12566,7 +12566,12 @@ function saveEnergyState(s){ try{ localStorage.setItem(ENERGY_KEY, JSON.stringif
 const FREE_ENERGY_KEY = 'bramblewood_free_energy_day', FREE_ENERGY_AMOUNT = 5;
 // Energy capsules (D54, 2026-10-13, user: "An energy capsule early, around Map 2"): a stored refill. Your first win on Map 2
 // gives one; using it (from the Energy panel) adds 20 Energy and can go over the cap.
-const ENERGY_CAPSULE_KEY = 'bramblewood_energy_capsules_v1', ENERGY_CAPSULE_AMOUNT = 20, MAP2_CAPSULE_KEY = 'bramblewood_map2_capsule_v1';
+// 2026-10-23 (package EB, owner 01:57 note 9: "Energy capsules should be given here and there. At least one in Map 1 somewhere (first time
+// reward). An energy capsule gives 8 energy."): a capsule adds ENERGY_CAPSULE_AMOUNT = 8 (was 20). They are first-clear rewards now, the
+// 🔋 reward token (REWARD_TOKENS.energyCapsule, editable in ✏️ Edit rewards) on one skirmish every three maps or so: 1-3, 2-1, 4-2, 6-3,
+// 9-3, 12-3, 15-3, 18-3, 21-3, 24-3 (80 Energy over the road). The old "first win on Map 2" capsule is 2-1's token (that win was always
+// 2-1's first clear); MAP2_CAPSULE_KEY stays so a save that has it is never paid twice.
+const ENERGY_CAPSULE_KEY = 'bramblewood_energy_capsules_v1', ENERGY_CAPSULE_AMOUNT = 8, MAP2_CAPSULE_KEY = 'bramblewood_map2_capsule_v1';
 function energyCapsules(){ try{ return Number(localStorage.getItem(ENERGY_CAPSULE_KEY)) || 0; }catch(e){ return 0; } }
 function addEnergyCapsules(n){ try{ localStorage.setItem(ENERGY_CAPSULE_KEY, String(Math.max(0, energyCapsules() + n))); }catch(e){} }
 function useEnergyCapsule(){ if(energyCapsules() < 1) return false; addEnergyCapsules(-1); const st = settleEnergy(); st.current += ENERGY_CAPSULE_AMOUNT; saveEnergyState(st); return true; }
@@ -17293,7 +17298,10 @@ function nodeCastleId(node){
   if(!node) return null; if(node.characterId) return node.characterId;
   const m = mapOfNode(node); if(!m) return null;
   // Map 0 (2026-10-13, user: "For the skirmishes in Map 0, the castles have no effect until 0-2"): 0-1's castle is plain.
-  if(!m.sub && m.id === 'm1'){ const f = m.nodes.filter(n=> baseKind(n.kind || 'skirmish') !== 'tutorial'); if(f[0] && (f[0] === node || f[0].key === node.key)) return null; }
+  // 2026-10-23 (package EB, owner 01:57 note 1: the enemy "should use basic no-effect brambles in Map 0 and in T1, T2. (Except maybe the last
+  // skirmish of Map 0, where it gives +1 attack to the first guy)"): every Map 0 road fight defends a plain bramble (was: 0-2 and 0-3 the
+  // Outskirts Watchtower, +1 Attack to the first unit); 0-4 keeps its own pick (node.characterId, the Plains Terrace: +1 Attack to the first unit).
+  if(!m.sub && m.id === 'm1') return null;
   const id = MAP_CASTLE[m.sub ? m.parent : m.id];
   return id && CHARACTER_DEFS[id] ? id : null;
 }
@@ -17356,7 +17364,7 @@ function raidDefScaled(def){ if(!def) return def; const R = (typeof RaidM !== 'u
   return Object.assign({}, def, def.bossHpBonusMax ? {bossHpBonusMax: brambleHp(def.bossHpBonusMax)} : {},
     {shield: sh(ok(def.shield) ? def.shield : (R.RAID_SHIELD_DEFAULT != null ? R.RAID_SHIELD_DEFAULT : 50))},
     Array.isArray(def.parts) ? {parts: def.parts.map(p=> p && ok(p.shield) ? Object.assign({}, p, {shield: sh(p.shield)}) : p)} : {}); }
-const BASE_BRAMBLE_HP = {skirmish:[10, 12, 14, 15], elite:16, boss:20};
+const BASE_BRAMBLE_HP = {skirmish:[10, 12, 24, 15], elite:16, boss:20}; // 2026-10-23 (package EB): 0-3 24 (was 14; 76% for the real starting deck against a 60% target, 66% now)
 function baseBrambleHp(node){
   const m = mapOfNode(node); if(!m || m.sub || mapNumberOf(m.id) !== 0 || !node) return null;
   const k = baseKind(node.kind || 'skirmish'); if(k === 'tutorial') return null;
@@ -17420,6 +17428,16 @@ function skirmishCastle(node){
   const layers = (ov ? ov.map(brambleHp) : null) || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
   const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
   return {character, hp, shield, total: hp + shield, layers, rule, overridden: !!ov};
+}
+// Your bramble leads on the early road (2026-10-23, package EB, owner 01:57 note 1: "to not make it too difficult, our bramble will start at
+// higher health than the enemy"): in T-1, T-2 and every fight of Maps 0 and 1 (their side maps are come-back-later fights and are left out)
+// your bramble starts with at least the enemy's Health + Shield + EARLY_BRAMBLE_LEAD (at BRAMBLE_SCALE). Your own bramble's Health counts
+// when it is higher (it is on Map 0: 15 against 5-8). The game and the tools (referenceFightSetup) use the same rule.
+const EARLY_BRAMBLE_LEAD = 3, EARLY_BRAMBLE_LAST_MAP = 1;
+function earlyBrambleHp(own, enemyTotal){ return Math.max(Number(own) || 0, (Number(enemyTotal) || 0) + EARLY_BRAMBLE_LEAD); }
+function earlyHomeBramble(node, ch){
+  const m = mapOfNode(node), no = m && !m.sub ? mapNumberOf(m.id) : null; if(!ch || no == null || no > EARLY_BRAMBLE_LAST_MAP) return ch;
+  const h = earlyBrambleHp(ch.health, skirmishCastle(node).total); return h > (Number(ch.health) || 0) ? Object.assign({}, ch, {health: h}) : ch;
 }
 function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${sc.hp} HP${sc.shield ? ` · 🔷 ${sc.shield} ${_t('Armour')}` : ''}`; }
 // The panel's castle line (2026-10-12, user: "The health and armour can use this format 'N <Health Icon> M <Blue Diamond Icon>'
@@ -18140,7 +18158,7 @@ function referenceFightSetup(mapId, node, opts){
     const missing = [...new Set(Object.keys(enemyDeck).concat(Object.keys(mine)).filter(id=> !defs[id]))];
     if(missing.length){ const e = new Error('unknown cards: ' + missing.join(', ')); e.unknownCards = missing; throw e; }
     return {mapId, node, ref, defs, mine, enemyDeck, setup: setup[2], seed0: opts.seed0 || 9100, rules: fightRules(mapId, node), cpu: cpuAiLevelForNode(mapId, node),
-      mode: node.battleMode || CONQUEST_DEFAULT_MODE, sc: skirmishCastle(node), myCastle: brambleChar(CHARACTER_DEFS.castle || {id:'castle', health:30})}; // BF5: at BRAMBLE_SCALE
+      mode: node.battleMode || CONQUEST_DEFAULT_MODE, sc: skirmishCastle(node), myCastle: earlyHomeBramble(node, brambleChar(CHARACTER_DEFS.castle || {id:'castle', health:30}))}; // BF5: at BRAMBLE_SCALE; EB (2026-10-23): the early lead
   } finally { matchDefsOverlay = savedOverlay; matchLeaderGrantMap = savedGrant; invalidateCardDefs(); }
 }
 // One game g of a reference fight. It ends at DRAW_ROUND_CAP rounds (the stall rule earlier), and after maxMs (if given) as a draw.
@@ -19582,23 +19600,29 @@ function grantKitItems(n){
 // Sweeps) brings one item, picked at random from the kit with the everyday ones more likely (SKIRMISH_KIT_WEIGHT). Only once
 // the traveller's kit is open; an item already at the cap isn't picked, and a win with every item capped doesn't use up a slot.
 // The day's tally lives in the kit's own save (winDay / winCount).
-const SKIRMISH_KIT_PER_DAY = 3;
+// 2026-10-23 (package EB, owner 01:57 note 8: "for items, you can get a max of 3 a day. Their drop rate is 2% per energy"): a Conquest win
+// you played rolls for an item at KIT_DROP_PER_ENERGY (2%) per ⚡ the fight used (energyPaid: 1⚡ 2%, 5⚡ 10%; a free fight rolls nothing),
+// and at most SKIRMISH_KIT_PER_DAY (3) items a local day come this way (winCount now counts the items found, not the wins). Was: the day's
+// first 3 Conquest wins each brought one, sure. Items from notices, weekly tiers and item-granting bosses are not counted against the 3.
+const SKIRMISH_KIT_PER_DAY = 3, KIT_DROP_PER_ENERGY = 0.02;
 const SKIRMISH_KIT_WEIGHT = {draught:5, kindling:5, scoutmap:4, honeycake:4, whetstone:3, caltrops:3, firepot:2};
+function kitDropChance(energy){ return Math.max(0, Math.min(1, Math.round(KIT_DROP_PER_ENERGY * (Number(energy) || 0) * 10000) / 10000)); }
 function skirmishKitLeftToday(){
   if(!featureUnlockedSafe('fieldkit')) return 0;
   const o = loadItems(); return o.winDay === itemDay() ? Math.max(0, SKIRMISH_KIT_PER_DAY - (o.winCount||0)) : SKIRMISH_KIT_PER_DAY;
 }
-function grantSkirmishKitItem(){
+function grantSkirmishKitItem(energy, rng){
   if(!featureUnlockedSafe('fieldkit')) return null;
   const o = loadItems(), today = itemDay();
   if(o.winDay !== today){ o.winDay = today; o.winCount = 0; }
   if((o.winCount||0) >= SKIRMISH_KIT_PER_DAY) return null;
+  const chance = kitDropChance(energy); if(!(chance > 0) || !((rng || Math.random)() < chance)) return null; // 2026-10-23 (EB): the 2%-a-⚡ roll
   const pool = Object.keys(ITEM_DEFS).filter(id=> (o.counts[id]||0) < ITEM_CAP);
   if(!pool.length) return null;
   const tot = pool.reduce((t, id)=> t + (SKIRMISH_KIT_WEIGHT[id] || 1), 0); let x = Math.random() * tot, pick = pool[pool.length - 1];
   for(const id of pool){ x -= (SKIRMISH_KIT_WEIGHT[id] || 1); if(x < 0){ pick = id; break; } }
   o.counts[pick] = (o.counts[pick]||0) + 1; o.winCount = (o.winCount||0) + 1; saveItems(o);
-  return {id: pick, nth: o.winCount, of: SKIRMISH_KIT_PER_DAY};
+  return {id: pick, nth: o.winCount, of: SKIRMISH_KIT_PER_DAY, chance};
 }
 // A boss that grants an item (2026-10-18, package Z; node.grantsItem, see GRANTS_ITEM_FROM_MAP): its first clear gives one item,
 // picked like the daily-win ones (SKIRMISH_KIT_WEIGHT, skipping items at the cap). It doesn't use up one of the day's 3 win items.
@@ -20710,22 +20734,27 @@ const CONQUEST_MAPS = [
       { key:"0-1", kind:"skirmish", name:"Pond Patrol", icon:"🐌", deck:{"crossed-eyes":3,"duckling":3,"garden-snail":4,"honey-bee":4,"pond-duck":3,"silver-minnow":3}, hqHp:30, flavor:"A river patrol that wandered too far from the water.", requires:[], firstOneCard:true },
       { key:"0-2", kind:"skirmish", name:"Thicket Swarm", icon:"🐝", deck:{"ant-scout":3,"bee-forager":3,"bee-sentry":3,"duck-paddler":4,"forager-ant":3,"river-carp":4}, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["0-1"], firstFactionPack:"mine", hqHp:28, showcase:"ant-scout" },
       { key:"0-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"chipmunk-forager":3,"chipmunk-skirmisher":3,"cottontail":3,"feral-tomcat":4,"house-cat":3,"meadow-rabbit":4}, hqHp:28, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["0-2"] },
-      { key:"0-4", kind:"skirmish", name:"Frost Vanguard", icon:"🦊", deck:{"beetle-grunt":4,"cobalt-talon-fledgling":2,"duck-paddler":4,"feral-tomcat":4,"fox-kit":4,"otter-kit":2}, hqHp:25, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", requires:["0-3"], ender:true },
+      { key:"0-4", kind:"skirmish", name:"Frost Vanguard", icon:"🦊", deck:{"beetle-grunt":4,"cobalt-talon-fledgling":2,"duck-paddler":4,"feral-tomcat":4,"fox-kit":4,"otter-kit":2}, hqHp:10 /* 2026-10-23 (EB): was 25 (the base bramble's 15 won: 8 Health at BRAMBLE_SCALE); now 5, beside its +1 Attack bramble */, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", requires:["0-3"], ender:true },
     ]},
   // 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
   // Thistlewood now has the stream-and-pond art along its lower edge, and its auto-scattered trail put 1-4 and the boss in the
   // water. The default trail (fixedPos) is now the published layout's, all above the stream; a published layout still wins.
+  // 2026-10-23 (package EB, owner 01:57 note 1: "Map 1 was extremely difficult to beat"): a fresh player's real deck (the starting deck after
+  // T-2, Level 0 copies) won 6-9% of Map 1 (tools/eb_early_road_2026_10_23.js, docs/balance/eb-2026-10-23.json). Retuned to the road curve
+  // (90 / 80 / 70 / 60, the Baron 40): the skirmishes defend a plain bramble (characterId "castle"; the Hedgerow Burrow gave every enemy unit
+  // +1 Health, which decides 2-Attack trades) with less Health (hqHp), the decks mix Map 1's 2/8 commons with smaller field cards (Harvest Mouse,
+  // Meadow Rabbit, Cottontail, Ant Scout: map-pools.json "special"), and the enemy's copies are Level 0 rising to half Level 1 (EARLY_ENEMY_LEVEL).
   { id:"mf", unlockAfter:"m1", name:"Thistlewood", icon:"🌼", blurb:"Thistle and fern under the first big trees — hedgerows, burrows and a lot of small, busy things.", sequential:true,
     nodes: [
-      { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"bramble-sprout":3,"compost-grub":3,"cricket-drummer":3,"dormouse":3,"field-mouse":4,"field-vole":4}, flavor:"Every hedge here has ears in it.", requires:[], fixedPos:{"x":15,"y":45} },
-      { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"bramble-sprout":3,"cricket-drummer":3,"dormouse":4,"harvest-mouse":4,"meadow-frog":4,"field-vole":2}, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"], fixedPos:{"x":40,"y":60}, showcase:"bramble-sprout" }, /* 2026-10-23 (RW3, RP3): the Quarry Mole moved to 8-1; Field Vole in its place */
-      { key:"1-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"bramble-sprout":3,"compost-grub":3,"field-mouse":3,"field-vole":3,"meadow-frog":3,"harvest-mouse":3}, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"], fixedPos:{"x":40,"y":30} }, /* 2026-10-23 (RW3, RP3): Harvest Mouse for the Quarry Mole */
-      { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"dormouse":3,"field-mouse":3,"field-vole":4,"harvest-mouse":4,"meadow-frog":4,"compost-grub":2}, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"], fixedPos:{"x":65,"y":45}, showcase:"field-vole" }, /* 2026-10-23 (RW3, RP3): Compost Grub for the Quarry Mole (Map 1 keeps its one Uncommon on 1-5); showcase the Field Vole */
-      { key:"1-5", kind:"elite", name:"The Thistle Baron", icon:"🌼", shieldOverride:3, deck:{"bramble-sprout":3,"compost-grub":3,"cricket-drummer":3,"dormouse":3,"field-mouse":3,"field-vole":3,"badger-lumberjack":2}, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"], fixedPos:{"x":85,"y":45}, ender:true, showcase:"badger-lumberjack" },
+      { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"cricket-drummer":2,"field-mouse":2,"field-vole":3,"harvest-mouse":4,"meadow-rabbit":3,"cottontail":3,"ant-scout":3}, characterId:"castle", hqHp:10, flavor:"Every hedge here has ears in it.", requires:[], fixedPos:{"x":15,"y":45} },
+      { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"dormouse":2,"cricket-drummer":2,"harvest-mouse":4,"meadow-rabbit":3,"cottontail":3,"ant-scout":3,"field-vole":3}, characterId:"castle", hqHp:12, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"], fixedPos:{"x":40,"y":60}, showcase:"cricket-drummer" }, /* 2026-10-23 (EB): showcase the Cricket Drummer (the Bramble Sprout left this deck) */ /* 2026-10-23 (RW3, RP3): the Quarry Mole moved to 8-1; Field Vole in its place */
+      { key:"1-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Burrow Line", icon:"🕳️", deck:{"compost-grub":2,"bramble-sprout":2,"field-mouse":2,"field-vole":3,"harvest-mouse":4,"meadow-rabbit":3,"cottontail":2,"ant-scout":2}, characterId:"castle", hqHp:14, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"], fixedPos:{"x":40,"y":30} }, /* 2026-10-23 (RW3, RP3): Harvest Mouse for the Quarry Mole */
+      { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"field-mouse":2,"dormouse":2,"field-vole":4,"harvest-mouse":4,"meadow-frog":3,"compost-grub":2,"meadow-rabbit":3}, characterId:"castle", hqHp:12, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"], fixedPos:{"x":65,"y":45}, showcase:"field-vole" }, /* 2026-10-23 (RW3, RP3): Compost Grub for the Quarry Mole (Map 1 keeps its one Uncommon on 1-5); showcase the Field Vole */
+      { key:"1-5", kind:"elite", name:"The Thistle Baron", icon:"🌼", shieldOverride:3, hqHp:12, deck:{"bramble-sprout":2,"compost-grub":2,"cricket-drummer":2,"cottontail":2,"field-mouse":2,"field-vole":3,"harvest-mouse":3,"meadow-rabbit":2,"badger-lumberjack":2}, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"], fixedPos:{"x":85,"y":45}, ender:true, showcase:"badger-lumberjack" },
     ]},
   { id:"mb", unlockAfter:"mf", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", sequential:true,
     nodes: [
-      { key:"2-1", kind:"skirmish", name:"Rock Pool Raiders", icon:"🦀", deck:{"conch-crawler":3,"fiddler-crab-swarm":3,"gull-thief":3,"open-ocean-hermit-crab":3,"pincushion-urchin":4,"sea-turtle-elder":4}, hqHp:31, rules:{"tide":true}, flavor:"Low tide leaves a lot of angry things behind.", requires:[], showcase:"open-ocean-hermit-crab" },
+      { key:"2-1", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Rock Pool Raiders", icon:"🦀", deck:{"conch-crawler":3,"fiddler-crab-swarm":3,"gull-thief":3,"open-ocean-hermit-crab":3,"pincushion-urchin":4,"sea-turtle-elder":4}, hqHp:31, rules:{"tide":true}, flavor:"Low tide leaves a lot of angry things behind.", requires:[], showcase:"open-ocean-hermit-crab" },
       { key:"2-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"conch-crawler":3,"fiddler-crab-swarm":3,"gull-thief":3,"open-ocean-hermit-crab":3,"pincushion-urchin":4,"tide-pool-crab":4}, rules:{"tide":true}, flavor:"They are not after you. They are after your lunch.", requires:["2-1"] },
       { key:"2-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"conch-crawler":4,"open-ocean-hermit-crab":4,"tide-pool-crab":4,"tidepool-trapper-crab":4,"conch-herald":1,"grey-seal-bull":1}, rules:{"tide":true}, flavor:"A whole street of shells, and every one of them is occupied.", requires:["2-2"] },
       { key:"2-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"gull-thief":4,"open-ocean-hermit-crab":4,"sea-turtle-elder":4,"tide-pool-crab":5,"conch-herald":1,"grey-seal-bull":1}, rules:{"tideSpout":true,"tide":true}, flavor:"Watch the sky. Then watch it again.", requires:["2-3"] },
@@ -20747,7 +20776,7 @@ const CONQUEST_MAPS = [
   { id:"m2", unlockAfter:"mc", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", sequential:true,
     nodes: [
       { key:"4-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", shieldOverride:0, hqHp:19, deck:{"box-turtle":3,"snapstick-turtle":3,"stone-turtle-warden":3,"water-shrew":2,"water-vole":2}, flavor:"The shallows here are only shallow at low tide.", requires:[] },
-      { key:"4-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", shieldOverride:1, deck:{"box-turtle":4,"snapstick-turtle":3,"stone-turtle-warden":3,"water-shrew":3,"water-vole":3}, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["4-1"] },
+      { key:"4-2", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Tidal Ring", icon:"🦞", shieldOverride:1, deck:{"box-turtle":4,"snapstick-turtle":3,"stone-turtle-warden":3,"water-shrew":3,"water-vole":3}, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["4-1"] },
       { key:"4-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"stone-turtle-warden":3,"muskrat-lodgekeeper":3,"old-sturgeon":3,"platypus-spur":3,"pyrenean-desman":2}, flavor:"They surface in formation. That is the last warning you get.", requires:["4-2"] },
       { key:"4-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", shieldOverride:5, deck:{"snapstick-turtle":3,"stone-turtle-warden":3,"water-vole":3,"muskrat-lodgekeeper":3,"old-sturgeon":3,"platypus-spur":3}, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["4-3"] },
       { key:"4-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", hqHp:15, shieldOverride:0, deck:{"snapstick-turtle":3,"water-shrew":3,"muskrat-lodgekeeper":3,"old-sturgeon":3,"pyrenean-desman":3,"river-mink":2}, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["4-4"] },
@@ -20767,7 +20796,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"6-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"camouflage-frog":3,"constrictor-coil":3,"marsh-wisp":3,"mire-witch-heron":3,"poison-dart-croaker":3,"bogfire-newt":1}, hqHp:95, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
       { key:"6-2", kind:"skirmish", name:"Mire Ambush", icon:"🐊", shieldOverride:0, deck:{"camouflage-frog":3,"constrictor-coil":3,"marsh-wisp":4,"mire-witch-heron":4,"poison-dart-croaker":4,"booming-bittern":2}, flavor:"The roots move only when you stop watching them.", requires:["6-1"] },
-      { key:"6-3", kind:"skirmish", name:"Toad Chorus", icon:"🐸", deck:{"camouflage-frog":5,"constrictor-coil":4,"marsh-wisp":4,"bogfire-newt":2,"booming-bittern":2,"newt-doctor":1}, hqHp:235, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["6-2"] },
+      { key:"6-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Toad Chorus", icon:"🐸", deck:{"camouflage-frog":5,"constrictor-coil":4,"marsh-wisp":4,"bogfire-newt":2,"booming-bittern":2,"newt-doctor":1}, hqHp:235, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["6-2"] },
       { key:"6-4", kind:"skirmish", name:"Root Snare", icon:"🌿", deck:{"constrictor-coil":3,"marsh-wisp":4,"bogfire-newt":4,"adder-ambusher":1,"raven-scout":1}, hqHp:107, flavor:"The mire does not attack. It waits for you to step wrong.", requires:["6-3"] },
       { key:"6-5", kind:"elite", name:"Venomlord's Coil", icon:"🐍", deck:{"marsh-wisp":3,"venomlord-serpent":3,"bogfire-newt":3,"booming-bittern":3,"newt-doctor":2,"raven-scout":2}, hqHp:90, rules:{"swampFever":50}, flavor:"It only needs to catch you once.", characterId:"plains-terrace", requires:["6-4"] },
       { key:"6-6", kind:"elite", name:"Crocodile Run", icon:"🐊", deck:{"camouflage-frog":4,"constrictor-coil":4,"marsh-wisp":3,"booming-bittern":3,"newt-doctor":2,"raven-scout":2}, hqHp:46, rules:{"swampFever":50}, flavor:"The bank looks empty right up until it isn’t.", requires:["6-5"] },
@@ -20800,7 +20829,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"9-1", kind:"skirmish", name:"Mudflat Skippers", icon:"🐟", deck:{"mangrove-monitor":1,"mangrove-mudskipper":1,"minnow-skitter":4,"mudpuppy":5,"reef-shark":4,"archerfish":1}, rules:{"tide":true}, flavor:"Fish that walk. Crabs that wave. Nothing here is normal.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"mangrove-mudskipper":5,"minnow-skitter":4,"archerfish":1,"banded-sea-krait":1,"sunbittern-strider":1}, rules:{"tide":true}, flavor:"Something long basks on every root.", requires:["9-1"] },
-      { key:"9-3", kind:"skirmish", name:"Kingfisher Dive", icon:"🐦", deck:{"mangrove-monitor":2,"mangrove-mudskipper":3,"minnow-skitter":3,"reef-shark":3,"mangrove-kingfisher":1}, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
+      { key:"9-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Kingfisher Dive", icon:"🐦", deck:{"mangrove-monitor":2,"mangrove-mudskipper":3,"minnow-skitter":3,"reef-shark":3,"mangrove-kingfisher":1}, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
       { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", shieldOverride:4, deck:{"mangrove-mudskipper":4,"mudpuppy":4,"reef-shark":5,"archerfish":1,"banded-sea-krait":2,"mangrove-manatee":1}, hqHp:48, rules:{"tide":true}, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
       { key:"9-5", kind:"elite", name:"Moray Den", icon:"🐍", rules:{tangledRoots:true}, deck:{"mangrove-monitor":4,"reef-shark":4,"archerfish":3,"banded-sea-krait":3,"sunbittern-strider":2,"mangrove-kingfisher":2,"mangrove-manatee":2}, flavor:"Every hole in the roots has a pair of eyes in it.", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", rules:{tangledRoots:true}, deck:{"mangrove-mudskipper":4,"reef-shark":4,"archerfish":3,"sunbittern-strider":2,"mangrove-kingfisher":2,"mangrove-manatee":2}, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
@@ -20837,7 +20866,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"12-1", kind:"skirmish", name:"Hedge Mice", icon:"🐭", deck:{"bramble-hoglet":3,"field-mouse":3,"hedgehog-scout":3,"mouse-sapper":3,"seed-cache-squirrel":3}, flavor:"A whole village lives inside the hedge walls.", requires:[] },
       { key:"12-2", kind:"skirmish", name:"Quill Path", icon:"🦔", deck:{"bramble-hoglet":4,"field-mouse":5,"hedgehog-scout":4,"cunning-vixen":2,"hedge-weasel":1,"lyrebird-mimic":2}, rules:{"rookRow":true}, flavor:"Walk carefully. Everything here is pointy.", requires:["12-1"] },
-      { key:"12-3", kind:"skirmish", name:"Warren Run", icon:"🐇", deck:{"bramble-hoglet":5,"mouse-sapper":4,"cunning-vixen":2,"hedge-weasel":1,"lyrebird-mimic":2}, flavor:"The rabbits know every gap in the hedge. You don't.", requires:["12-1"] },
+      { key:"12-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Warren Run", icon:"🐇", deck:{"bramble-hoglet":5,"mouse-sapper":4,"cunning-vixen":2,"hedge-weasel":1,"lyrebird-mimic":2}, flavor:"The rabbits know every gap in the hedge. You don't.", requires:["12-1"] },
       { key:"12-4", kind:"skirmish", name:"Thornvine Arch", icon:"🌿", deck:{"hedgehog-scout":5,"cunning-vixen":3,"hedge-weasel":3,"lyrebird-mimic":3,"quillguard":1,"thorn-shrike":1}, rules:{"bishopPath":true}, flavor:"The arch closes behind you.", requires:["12-2","12-3"] },
       { key:"12-5", kind:"elite", name:"Quillback Hold", icon:"🦔", deck:{"hedgehog-scout":4,"seed-cache-squirrel":3,"cunning-vixen":3,"hedge-weasel":3,"lyrebird-mimic":2,"quillguard":2}, flavor:"The oldest porcupines hold the centre of the maze.", requires:["12-4"] },
       { key:"12-6", kind:"elite", name:"Rodent Court", icon:"🐀", deck:{"field-mouse":4,"seed-cache-squirrel":4,"cunning-vixen":3,"quillguard":2,"thorn-shrike":2}, rules:{"mirage":true}, flavor:"Court is in session. You are the accused.", requires:["12-4"] },
@@ -20871,7 +20900,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"15-1", kind:"skirmish", name:"Colt Meadow", icon:"🐴", deck:{"cataphract-destrier":4,"pronghorn-racer":3,"shepherds-bark":3,"warhorse-charger":4,"stable-colt":1}, rules:{"undergrowth":true}, flavor:"Young horses running wild, and something chasing them.", requires:[], showcase:"cataphract-destrier" },
       { key:"15-2", kind:"skirmish", name:"Squire Road", icon:"🛡️", deck:{"warhorse-charger":4,"bison-bulldozer":3,"border-collie":3,"stable-colt":4,"raccoon-bandit":1,"stoat-cutthroat":1}, rules:{"undergrowth":true}, flavor:"The village sends its squires out to meet you.", requires:["15-1"] },
-      { key:"15-3", kind:"skirmish", name:"Stoat Ambush", icon:"🗡️", deck:{"cataphract-destrier":4,"pronghorn-racer":5,"shepherds-bark":4,"bison-bulldozer":3,"raccoon-bandit":1,"stoat-cutthroat":1}, rules:{"undergrowth":true,"tallGrass":true}, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
+      { key:"15-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Stoat Ambush", icon:"🗡️", deck:{"cataphract-destrier":4,"pronghorn-racer":5,"shepherds-bark":4,"bison-bulldozer":3,"raccoon-bandit":1,"stoat-cutthroat":1}, rules:{"undergrowth":true,"tallGrass":true}, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
       { key:"15-4", kind:"skirmish", name:"Archer Hill", icon:"🏹", deck:{"cataphract-destrier":4,"bison-bulldozer":3,"stable-colt":3,"raccoon-bandit":3,"stoat-cutthroat":2,"talon-archer":2}, rules:{"undergrowth":true,"tallGrass":true}, flavor:"Arrows from a hill you can't see the top of.", requires:["15-2","15-3"], showcase:"cataphract-destrier" },
       { key:"15-5", kind:"elite", name:"Charge of the Warhorses", icon:"🐎", deck:{"warhorse-charger":4,"bison-bulldozer":3,"border-collie":3,"stable-colt":3,"raccoon-bandit":3,"stoat-cutthroat":2,"talon-archer":2}, rules:{"undergrowth":true}, flavor:"You hear them before you see them.", requires:["15-4"] },
       { key:"15-6", kind:"elite", name:"The Kennels", icon:"🐕", deck:{"cataphract-destrier":4,"warhorse-charger":3,"border-collie":3,"raccoon-bandit":2,"stoat-cutthroat":2,"talon-archer":2}, rules:{"undergrowth":true}, flavor:"Every farm on the plain keeps dogs, and every dog is here.", requires:["15-4"] },
@@ -20905,7 +20934,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"18-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"komodo-warlord":3,"roadrunner-courier":4,"sandfish":4,"thorny-devil":4,"caustic-scorpion":1,"dromedary":1}, hqHp:229, rules:{"sandstorm":true}, flavor:"They laugh at you from the next dune over.", requires:[] },
       { key:"18-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"komodo-warlord":3,"thorny-devil":3,"antlion-pit":3,"caustic-scorpion":3,"fennec-fox":3,"obsidian-scorpion":2}, hqHp:184, rules:{"sandstorm":true}, flavor:"Every stone you turn has a tail under it.", requires:["18-1"], showcase:"komodo-warlord" },
-      { key:"18-3", kind:"skirmish", name:"Widow's Web", icon:"🕷️", deck:{"komodo-warlord":4,"roadrunner-courier":5,"antlion-pit":2,"caustic-scorpion":2,"dromedary":2}, hqHp:43, rules:{"sandstorm":true}, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["18-1"] },
+      { key:"18-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Widow's Web", icon:"🕷️", deck:{"komodo-warlord":4,"roadrunner-courier":5,"antlion-pit":2,"caustic-scorpion":2,"dromedary":2}, hqHp:43, rules:{"sandstorm":true}, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["18-1"] },
       // 2026-10-18 (owner: "New dromedary card"): one Dromedary walks the storm in 18-4; its card reward is 18-3 Widow's Web.
       { key:"18-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", deck:{"sandfish":5,"caustic-scorpion":3,"dromedary":3,"fennec-fox":3,"obsidian-scorpion":1,"dust-devil-kestrel":1}, hqHp:82, rules:{"sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
       { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"roadrunner-courier":4,"antlion-pit":3,"dromedary":3,"fennec-fox":3,"obsidian-scorpion":3,"dust-devil-kestrel":2}, hqHp:89, rules:{"glassStorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
@@ -20949,7 +20978,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"21-1", kind:"skirmish", name:"Thaw Path", icon:"🐐", deck:{"alpine-marmot":5,"eagle-sharpshooter":4,"pika-hoarder":4,"golden-eagle-diver":1,"mountain-goat-climber":1,"scree-goat":1}, hqHp:180, flavor:"Meltwater runs down a path the goats have walked since before the storm.", requires:[] },
       { key:"21-2", kind:"skirmish", name:"Tarn Shore", icon:"🧊", shieldOverride:12, deck:{"alpine-marmot":5,"eagle-sharpshooter":2,"glacier-yak":5,"pika-hoarder":5,"scree-goat":1,"snow-leopard":1}, hqHp:200, flavor:"The tarn is so still the sky sits in it twice.", requires:["21-1"] },
-      { key:"21-3", kind:"skirmish", name:"Cloud Ledge", icon:"☁️", deck:{"alpine-marmot":4,"glacier-yak":4,"golden-eagle-diver":3,"mountain-goat-climber":3,"snow-leopard":1,"snow-owl-sentinel":1}, flavor:"Step off the ledge and you land on cloud. Probably.", requires:["21-1"], showcase:"glacier-yak" },
+      { key:"21-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Cloud Ledge", icon:"☁️", deck:{"alpine-marmot":4,"glacier-yak":4,"golden-eagle-diver":3,"mountain-goat-climber":3,"snow-leopard":1,"snow-owl-sentinel":1}, flavor:"Step off the ledge and you land on cloud. Probably.", requires:["21-1"], showcase:"glacier-yak" },
       { key:"21-4", kind:"elite", name:"The Avalanche's Wake", icon:"🏔️", shieldOverride:29, deck:{"alpine-marmot":4,"eagle-sharpshooter":4,"pika-hoarder":4,"mountain-goat-climber":3,"scree-goat":3,"snow-leopard":1,"snow-owl-sentinel":1}, flavor:"The snow came down last night. The rams are still standing on top of it.", requires:["21-2"] },
       { key:"21-5", kind:"elite", name:"Snow Owl Parliament", icon:"🦉", deck:{"alpine-marmot":4,"pika-hoarder":4,"mountain-goat-climber":3,"scree-goat":3,"snow-leopard":1,"snow-owl-sentinel":1}, flavor:"They have been debating your arrival since dawn. They have reached no decision, only a verdict.", requires:["21-3"] },
       { key:"21-6", kind:"boss", name:"The Cathedral Eagle", icon:"🦅", shieldOverride:79, deck:{"alpine-marmot":4,"eagle-sharpshooter":4,"pika-hoarder":4,"mountain-goat-climber":3,"scree-goat":2,"snow-owl-sentinel":1}, flavor:"It nests on the very top of the world, and it saw you coming three maps ago.", requires:["21-4","21-5"], rules:{"quietContemplation":true} }, // Quiet Contemplation (2026-10-19, package RV, owner 00:19)
@@ -20991,7 +21020,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"24-1", kind:"skirmish", name:"Breach the Gate", icon:"🚪", deck:{"duckling-squadron":3,"elderhorn-monarch":3,"tax-collector-teal":2,"goose-sentry":1,"mallard-halberdier":1}, hqHp:340, rules:{arrowSlits:true}, flavor:"Break the gate and the keep is open. The geese behind it disagree.", requires:[], fixedPos:{x:8, y:56} },
       { key:"24-2", kind:"skirmish", name:"The Bailey", icon:"🦆", deck:{"duckling-squadron":5,"lodge-engineer":3,"tax-collector-teal":4,"goose-sentry":1,"mallard-halberdier":1,"mallard-marauder":2}, hqHp:350, flavor:"The whole garrison drills here. They are very good at drilling.", requires:["24-1"], fixedPos:{x:24, y:34} },
-      { key:"24-3", kind:"skirmish", name:"The Counting House", icon:"💰", deck:{"elderhorn-monarch":4,"lodge-engineer":2,"tax-collector-teal":2,"goose-sentry":1,"mallard-halberdier":1}, hqHp:350, flavor:"Every coin in the valley comes through this room, and every one is counted twice.", requires:["24-1"], fixedPos:{x:26, y:80} },
+      { key:"24-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"The Counting House", icon:"💰", deck:{"elderhorn-monarch":4,"lodge-engineer":2,"tax-collector-teal":2,"goose-sentry":1,"mallard-halberdier":1}, hqHp:350, flavor:"Every coin in the valley comes through this room, and every one is counted twice.", requires:["24-1"], fixedPos:{x:26, y:80} },
       { key:"24-4", kind:"skirmish", name:"The Courtyard Fountain", icon:"⛲", deck:{"duckling-squadron":5,"elderhorn-monarch":3,"mallard-halberdier":1,"mallard-marauder":2,"gilded-swan-knight":1}, flavor:"A fountain of real gold coins. Don't drink from it.", requires:["24-2","24-3"], fixedPos:{x:44, y:56} },
       { key:"24-5", kind:"skirmish", name:"The Battlements", icon:"🏹", deck:{"elderhorn-monarch":5,"lodge-engineer":4,"battlement-heron":2,"goose-sentry":2,"mallard-marauder":2}, rules:{arrowSlits:true}, flavor:"Up on the wall walk, everyone has a bow and a better view than you.", requires:["24-4"], fixedPos:{x:58, y:22} },
       { key:"24-6", kind:"elite", name:"The Gilded Guard", icon:"🦢", shieldOverride:49, deck:{"duckling-squadron":5,"tax-collector-teal":4,"mallard-marauder":3,"gilded-swan-knight":2,"iron-warden":1}, flavor:"Swans in gold plate. Beautiful, loyal, and very, very bad-tempered.", requires:["24-4"], fixedPos:{x:64, y:80} },
@@ -26509,14 +26538,21 @@ const STARTER_SHOWN = 8, STARTER_BASE_SIZE = 17;
 // it (side, then shared, then filler, then cfg.starterTopUp), and the deck is topped up with further different cards until, with the
 // tutorial's reward cards (T-1's and your side's two from T-2, which may be a second copy of a card), it holds exactly DECK_SIZE (20).
 // Was: copies by the lists' numbers (Pond Trout ×3, Honey Bee ×3 …) to 17, and every Base card free and unlimited on top.
+const PG_STARTER_TOP_UP = ['pond-duck', 'acorn-chipmunk', 'cottontail', 'chipmunk-forager', 'river-carp', 'burrow-rabbit', 'meadow-rabbit', 'duckling', 'harvest-mouse', 'sheep', 'garden-snail', 'earthworm', 'guppy'];
+function starterTopUpList(cfg){ const t = cfg && Array.isArray(cfg.starterTopUp) ? cfg.starterTopUp : null;
+  return !t || JSON.stringify(t) === JSON.stringify(PG_STARTER_TOP_UP) ? STARTER_CFG_DEFAULT.starterTopUp : t; }
 function starterDeckTarget(pick){ let r = 0; try{ r = tutorialRewardIds().length + tutorialRewards2(pick || 'both').length; }catch(e){} return Math.max(STARTER_SHOWN, DECK_SIZE - r); }
 function starterDeckParts(pick){
   const defs = getCardDefs(), cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT;
   const side = pick==='otters' ? cfg.starterOtters : pick==='hummingbirds' ? cfg.starterHummingbirds : cfg.starterBoth;
   const other = pick==='otters' ? 'hummingbirds' : pick==='hummingbirds' ? 'otters' : null; // the top-up never hands you the other side's cards
   const ids = [], seen = new Set(), take = id=>{ if(!defs[id] || seen.has(id) || defs[id].token) return; if(other && defs[id].faction === other) return; seen.add(id); ids.push(id); };
-  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared, cfg.starterFiller || STARTER_CFG_DEFAULT.starterFiller || {}].forEach(list=> Object.keys(list).forEach(id=>{ if((list[id]|0) > 0) take(id); }));
-  (Array.isArray(cfg.starterTopUp) ? cfg.starterTopUp : STARTER_CFG_DEFAULT.starterTopUp).forEach(take);
+  // 2026-10-23 (package EB, owner 01:57 note 1: "we cannot use this base basic cards (like i made duckling super weak) after T2. Meaning, our
+  // real deck must be actually stronger"): the baby filler (cfg.starterFiller: Honey Bee, Silver Minnow, Sparrow Chick) no longer joins the
+  // real deck; it is topped up from cfg.starterTopUp, now the sturdier cards (EB_STARTER_TOP_UP). A saved config whose top-up is the old
+  // PG list of trainees (PG_STARTER_TOP_UP) gets EB's list instead.
+  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared].forEach(list=> Object.keys(list).forEach(id=>{ if((list[id]|0) > 0) take(id); }));
+  starterTopUpList(cfg).forEach(take);
   const target = starterDeckTarget(pick);
   const shown = {}, hidden = {}, all = {};
   ids.slice(0, target).forEach((id, i)=>{ (i < STARTER_SHOWN ? shown : hidden)[id] = 1; all[id] = 1; });
@@ -26815,10 +26851,13 @@ const STARTER_CFG_DEFAULT = {
   starterOtters: {'otter-kit':1, 'otter-centurion':1, 'fleetfootd':1},
   starterHummingbirds: {'crimson-wing-recruit':2, 'mosswing-laborer':1},
   starterBoth: {'otter-centurion':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
-  starterFiller: {'honey-bee':3, 'silver-minnow':3, 'sparrow-chick':3}, // 1/2 each: the trainees the swaps replace
+  starterFiller: {'honey-bee':3, 'silver-minnow':3, 'sparrow-chick':3}, // 1/2 each: the trainees the swaps replace. 2026-10-23 (EB): no longer in the real deck
   // 2026-10-23 (package PG): one copy of each card now, so the deck is filled to 20 with further different Base cards, in this order
   // (the sturdier ones first; the tutorial fights' own cards). starterDeckParts skips any already in the lists above.
-  starterTopUp: ['pond-duck', 'acorn-chipmunk', 'cottontail', 'chipmunk-forager', 'river-carp', 'burrow-rabbit', 'meadow-rabbit', 'duckling', 'harvest-mouse', 'sheep', 'garden-snail', 'earthworm', 'guppy'],
+  // 2026-10-23 (package EB, owner 01:57 note 1): the sturdier cards your real deck keeps after T-2, vanilla, about 2 Attack / 8-10 Health
+  // (the Map 1 enemy's size) where the trainees are 3/3 or 1/5: Base's River Carp, Burrow Rabbit, Duck Paddler and Chipmunk Forager, the Farm
+  // Dog (a Map 0 pack common that no skirmish pays on its first clear), Otter Kit and Meadow Frog, then the old trainees. Was PG_STARTER_TOP_UP.
+  starterTopUp: ['river-carp', 'burrow-rabbit', 'duck-paddler', 'farm-dog', 'chipmunk-forager', 'otter-kit', 'meadow-frog', 'pond-duck', 'acorn-chipmunk', 'cottontail', 'otter-paddler', 'pond-trout', 'meadow-rabbit', 'crossed-eyes', 'harvest-mouse', 'sheep', 'duckling', 'silver-minnow', 'honey-bee', 'garden-snail', 'earthworm', 'guppy'],
   // 2026-10-12 (10:57, user: "the first card nets you the quarry mole, only the 2nd one nets you the side-specific card. If you
   // chose both sides, maybe you get a 3rd uncommon card ... a meerkat"): part 1 gives the Quarry Mole, part 2 two more cards
   // (your side's), making 20; picking both also brings the Meerkat Wayfarer to your collection.
@@ -27116,9 +27155,10 @@ function startTutorialMatch(stage, arrangedIds, opts){
   // have no effect. Then only the 2nd onwards"): part 1's rival castle is plain; part 2's is the Outskirts Watchtower.
   const tutNode = (()=>{ for(const mp of CONQUEST_MAPS){ const n = mp.nodes.find(x=> x.kind === 'tutorial' && (x.stage === 2 ? 2 : 1) === (st >= 2 ? 2 : 1)); if(n) return n; } return null; })();
   const chosen = tutNode && tutNode.characterId && CHARACTER_DEFS[tutNode.characterId]; // the editor's Castle choice (2026-10-13)
-  const watch = !chosen && st >= 2 && CHARACTER_DEFS['outskirts-watchtower'];
+  const watch = false; // 2026-10-23 (package EB, owner 01:57 note 1: "basic no-effect brambles in Map 0 and in T1, T2"): part 2's rival is plain too (was the Outskirts Watchtower)
   const rivalCharacter = Object.assign({}, chosen || watch || CHARACTER_DEFS['castle'], {id: chosen ? tutNode.characterId : watch ? 'outskirts-watchtower' : 'tutorial-rival', name: chosen ? chosen.name : watch ? watch.name : rivalName},
     tutNode && tutNode.tutHp ? {health: tutNode.tutHp} : cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); rivalCharacter.health = brambleHp(rivalCharacter.health || 30); // BF5: at BRAMBLE_SCALE // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
+  myCharacter.health = earlyBrambleHp(myCharacter.health, rivalCharacter.health); // 2026-10-23 (package EB): your bramble leads the rival's (was 4 against 5, then 6)
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
     2: engine.newPlayer(2, rivalCounts, rivalCharacter),
@@ -27787,8 +27827,20 @@ function roadMapOfFight(node){
 // (Lv 4 at Map 20, Lv 4.8 at Map 24, a step over the reference player's 3.9 / 4.6).
 function roadEnemyScheduleLevel(no){ const S = ROAD_LEVEL_CURVE.enemySchedule; if(no == null || no < S.firstMap) return 0;
   if(no <= S.lv1To) return 1; if(no < 10) return Math.min(2, 1 + (no - (S.lv1To + 1)) / Math.max(1, S.lv2At - (S.lv1To + 1))); return S.from10 + (no - 10) * S.risePerMap; }
+// The early road's enemy level (2026-10-23, package EB, owner 01:57 note 1: "didn't want the lvl0-1 discrepancy to show. Meaning at Map 0 the
+// units that are lvl 0 remain 0. Map 1, some of them can be lvl 1"): your starting copies are Level 0 (tutorialStarterCopiesLevel0), so on
+// Map 0 every enemy card fights at Level 0 too, even a card whose own level is 1 (a Field Mouse 2/7, not 2/8), and on Map 1 a growing share
+// of the enemy's copies is at Level 1, by the fight's place on the map (EARLY_ENEMY_LEVEL: 0.2 = a fifth of the copies; levelMixDeck splits
+// them). Main Maps 0 and 1 only (their side maps are come-back-later fights); the skirmish editor's Enemy level still wins.
+// Was: Map 0 at the printed level (Level 1 for most commons) and every Map 1 fight at Level 1 (roadEnemyScheduleLevel).
+const EARLY_ENEMY_LEVEL = {0: [0], 1: [0, 0.25, 0.25, 0.5, 0.5]};
+function earlyEnemyLevel(node){
+  const m = node && mapOfNode(node); if(!m || m.sub) return null; const t = EARLY_ENEMY_LEVEL[mapNumberOf(m.id)]; if(!t) return null;
+  const list = roadCurveFights(m), i = Math.max(0, list.findIndex(n=> n === node || n.key === node.key)); return t[Math.min(i, t.length - 1)];
+}
 function roadEnemyLevelExact(node){
   { const ov = nodeEnemyLevelOverride(node); if(ov != null) return ov; } // 2026-10-21 (package ED, owner #7): the skirmish editor's Enemy level for this fight
+  { const e = earlyEnemyLevel(node); if(e != null) return e; } // 2026-10-23 (package EB): Maps 0 and 1
   const no = roadMapOfFight(node), C = ROAD_LEVEL_CURVE;
   if(C.enemySchedule && !C.enemyKeepsPace){ if(no == null) return 0; const cap = node.floor > 1 && !node.tower ? ENDLESS_FLOOR_CURVE.levelCap : 10;
     return Math.min(cap, Math.round(roadEnemyScheduleLevel(no) * 100) / 100); }
@@ -27864,17 +27916,18 @@ function fitEnemyDeckRankCaps(node, deck){
 function levelledEnemyDeck(node, deck){
   if(typeof fitEnemyDeckRankCaps === 'function') deck = fitEnemyDeckRankCaps(node, deck); // 2026-10-22 (package DR)
   const road =roadEnemyLevelExact(node), set = (node && node.cardLevels) || {};
-  const lv = Object.assign({}, road ? Object.fromEntries(Object.keys(deck||{}).map(id=> [id, road])) : {}, set);
+  const early = nodeEnemyLevelOverride(node) == null ? earlyEnemyLevel(node) : null; // 2026-10-23 (package EB): Level 0 copies on Maps 0 and 1, below a card's own level
+  const lv = Object.assign({}, road || early != null ? Object.fromEntries(Object.keys(deck||{}).map(id=> [id, road])) : {}, set);
   if(!Object.keys(lv).length || !deck) return deck;
   const out = {}, base = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   // the road's fractional level splits each card's copies over its two stat steps; a level set in the editor is whole, for every copy
   const parts = []; { const mixed = {}; Object.keys(deck).forEach(id=>{ if(set[id] == null || set[id] === '') mixed[id] = deck[id]; else parts.push([id, deck[id], set[id]]); });
-    if(road) levelMixDeck(mixed, road).forEach(p=> parts.push(p)); else Object.entries(mixed).forEach(([id, n])=> parts.push([id, n, null])); }
+    if(road || early != null) levelMixDeck(mixed, road).forEach(p=> parts.push(p)); else Object.entries(mixed).forEach(([id, n])=> parts.push([id, n, null])); }
   parts.forEach(([id, n, L])=>{
     const b = base[id];
     if(L == null || L === '' || !b || (b.attack==null && b.health==null)){ out[id] = (out[id]||0) + n; return; }
     const lvl = Math.max(0, Math.min((node && node.levelCap) || LIMIT_BREAK_LEVEL, Math.round(Number(L)||0))), did = id + '@lv' + lvl;
-    const st = statsBeyondLevel(b, Math.max(cardBaseLevel(b), lvl)); // = statsAtLevel up to the card's own top level (the Tower goes past it, 2026-10-16)
+    const st = statsBeyondLevel(b, early != null ? lvl : Math.max(cardBaseLevel(b), lvl)); // = statsAtLevel up to the card's own top level (the Tower goes past it, 2026-10-16); EB: the early road goes below it (Level 0)
     matchDefsOverlay[did] = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level: lvl, baseLevel: cardBaseLevel(b), locked: false});
     out[did] = (out[did]||0) + n;
   });
@@ -27902,13 +27955,14 @@ function startConquestMatch(mapId, nodeKey, opts){
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   // 2026-10-18 (package Z): a cleared Babel Spire floor is free (towerReplay); a new floor's Energy is held (towerEnergyPaid) so a
   // loss can give it back, and it only counts for the "Use N Energy" notice once the floor is won.
-  const towerReplay = !!node.tower && towerFloorCleared(node); let towerEnergyPaid = 0;
+  const towerReplay = !!node.tower && towerFloorCleared(node); let towerEnergyPaid = 0, energyPaid = 0;
   if(!(opts && opts.skipEnergyCost) && !towerReplay){
     const cost = nodeEnergyCost(mapId, node) || 1;
     if(!spendEnergy(cost)){
       energyShortToast(cost);
       return false;
     }
+    energyPaid = cost; // 2026-10-23 (package EB): the field-kit item roll is 2% per ⚡ this fight used (rollSkirmishKitItem)
     if(node.tower) towerEnergyPaid = cost; else bumpQuestCounter('energyConquest', cost);
   }
   // Boss banter (2026-10-18, audit E5: the boss_banter dialogue was written but never played; a one-line copy of its first line
@@ -27934,7 +27988,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = myCastleDef();
+  const myCharacter = earlyHomeBramble(node, myCastleDef()); // 2026-10-23 (package EB): your bramble leads on Maps 0 and 1
   const enemyCharacter = skirmishCastle(node).character;
   let myDeck = myOwnedDeck, enemyDeck = levelledDeck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
@@ -27965,6 +28019,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
     fightSession, transcript: [], dungeonKeyStaked: !!dungeonKeyStaked,
     towerReplay, towerEnergyPaid, // 2026-10-18 (package Z)
+    energyPaid, // 2026-10-23 (package EB)
     battleMode,
     gladiatorLeaderDefs: battleMode==='gladiator' ? {1: myGlad && myGlad.defId, 2: enemyGlad && enemyGlad.defId} : null,
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
@@ -38165,7 +38220,7 @@ async function resolveRoundCore(opts){
       // as card tiles with the cards won (rewardsPanelHTML); was the m.conquestCastleSpare text pill ("New bramble: X" / "Spare: X").
       try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd && CHARACTER_DEFS[cd.id]) m.conquestCastleDrops = (m.conquestCastleDrops||[]).concat([{id:cd.id, kind:cd.kind === 'new' ? 'new' : 'spare'}]); }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
-      try{ const ki = grantSkirmishKitItem(); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 first 3 Conquest wins a day (2026-10-17)
+      try{ const ki = grantSkirmishKitItem(m.energyPaid); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 2% per ⚡ the fight used, at most 3 a day (2026-10-23, EB; was the first 3 Conquest wins a day)
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; if(isFirstClear && bn && bn.grantsItem){ const bi = grantBossKitItem(); if(bi) m.conquestBossKitItem = bi; } }catch(e){} // 🎒 a boss that grants an item (2026-10-18, package Z)
       // Faction packs and Food tokens (2026-10-11).
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
@@ -38196,7 +38251,10 @@ async function resolveRoundCore(opts){
         } else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); // offered only when it clearly beats a deck card (2026-10-15)
       }catch(e){}
       try{ if(isFirstClear && /elite|champion/.test(m.conquestNode.kind||'') && (wildpathRanks().b3||0) > 0 && wildpathsOpen()){ unlockCardForPlayer('iron-shard', 'materia'); setTimeout(()=>{ try{ showToast(TX('toast.prospector-1-iron-shard'), 'ok'); }catch(e){} }, 2000); } }catch(e){}
-      try{ if(mapNumberOf(m.conquestNode.mapId) === 2 && localStorage.getItem(MAP2_CAPSULE_KEY) !== '1'){ localStorage.setItem(MAP2_CAPSULE_KEY, '1'); addEnergyCapsules(1); setTimeout(()=>{ try{ showToast(TX('toast.you-found-an-energy-capsule-tap', {ENERGY_CAPSULE_AMOUNT}), 'ok'); }catch(e){} }, 1800); } }catch(e){}
+      // 2026-10-23 (package EB): a fight's item tokens (🔋 Energy capsule, 🎫 Raid Ticket) pay on its first clear, beside its card reward; was the
+      // Map 2 rule (the first win on Map 2 gave a capsule), now 2-1's token
+      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; if(isFirstClear && bn){ const got = grantItemRewardTokens(bn); if(got.length){ m.conquestItemTokens = got;
+        if(got.includes('energyCapsule')) setTimeout(()=>{ try{ showToast(TX('toast.you-found-an-energy-capsule-tap', {ENERGY_CAPSULE_AMOUNT}), 'ok'); }catch(e){} }, 1800); } } }catch(e){}
       try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast((journeysAdminOnly() ? '🙈 [hidden] ' : '') + TX('toast.step-of', {icon: J.icon, name: J.name, step: jr.step, length: J.steps.length, v5: jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}), 'ok'); }catch(e){} }, 1400); } }catch(e){}
       try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
         void mi; void bn; }catch(e){} // the Map 20 crown is retired (2026-10-13): Faction Growth hands out the Epic and Heroic last
@@ -40595,6 +40653,8 @@ function rewardsPanelHTML(m){
   // 2026-10-17: a field-kit item from one of the day's first 3 Conquest wins, with which of the 3 it was.
   if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+  (m.conquestItemTokens || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(!T) return; // 2026-10-23 (package EB): a first-clear Energy capsule / Raid Ticket
+    acts.push(`<span class="rw-act rw-kit rw-token" data-tip="${escapeAttr(t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : TX('results.eb-ticket-tip'))}">${T.icon} ${escapeHtml(t === 'energyCapsule' ? TX('results.eb-capsule', {n: ENERGY_CAPSULE_AMOUNT}) : _t(T.label))}</span>`); });
   if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.kit-boss-item'))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   { const lk = lockedCardChipsHTML(m, 'rw-act'); if(lk) acts.push(lk); } // 2026-10-22 (RW): a reward card waiting for a better win, as lock + card + the rank emblem
@@ -46356,7 +46416,7 @@ const SKIRMISH_DROP_SHIFT = 0.05, SKIRMISH_OWN_SHARE = 0.5; // 5% one rarity dow
 function skirmishDropApplies(node, mapId){
   if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return false;
   if(nodeRewardCardIds(mapId, node.key).length) return false; // a card reward
-  if(node.rewardTokens && node.rewardTokens.length) return false; // a placeholder reward (Faction Reward / Growth)
+  if(cardRewardTokens(node).length) return false; // a placeholder reward (Faction Reward / Growth); 2026-10-23 (EB): an item token (capsule, ticket) doesn't count
   if(nodeFirstClearPacks(mapId, node).length) return false; // a free or faction pack
   return true;
 }
@@ -47718,12 +47778,12 @@ function renderInventory(){
       // and the item slots"): skirmish wording; the note sits under the slots with its own top margin (.inv-kit-note).
       const kit = shown(Object.entries(ITEM_DEFS).map(([id, d])=> ({key:id, icon:d.icon, count:ic[id]||0, name:d.name, sub:d.desc})), 'kit');
       // 2026-10-17 (user: "The field kit card itself can also have a pack."): the Field kit is a card with the traveller's satchel
-      // (pixel art, .inv-kit-pack) beside the slots, and it says where items come from, including the day's first 3 Conquest wins.
+      // (pixel art, .inv-kit-pack) beside the slots, and it says where items come from (2026-10-23, EB: 2% per ⚡ a Conquest win, at most 3 a day).
       const left = skirmishKitLeftToday();
       return `<section class="panel inv-sec inv-kit"><div class="inv-kit-pack" aria-hidden="true"></div><div class="inv-kit-body"><h3>🎒 Field kit <small>${escapeHtml(TX('ui.kit-inv-head', {max: KIT_USES_PER_FIGHT, cap: ITEM_CAP})) /* 2026-10-18 (package Z): two a skirmish */}</small></h3>
       <div class="inv-slots">${slots(kit, 'Nothing in the kit yet. Win a Conquest fight to find one.')}</div>
       <p class="panel-sub inv-kit-note">${escapeHtml(TX('ui.kit-inv-note', {max: KIT_USES_PER_FIGHT}))}</p>
-      <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
+      <p class="panel-sub inv-kit-src">${escapeHtml(TX('ui.eb-kit-src', {pct: Math.round(KIT_DROP_PER_ENERGY * 100), n: SKIRMISH_KIT_PER_DAY}))} <b class="inv-kit-left ${left ? '' : 'is-done'}">${escapeHtml(left ? TX('ui.eb-kit-left', {n: left}) : TX('ui.eb-kit-done'))}</b> · ${escapeHtml(TX('ui.eb-kit-more'))}</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc},
       {key:'raid', icon:raidTicketItemIcon(), count:raidTicketItems(), name:raidTicketItemName(), sub:TX('ui.raid-ticket-item-desc', {cap: RAID_POINTS_MAX})},
@@ -50109,9 +50169,15 @@ function factionGrowth(rnd){
   return grantOne(pick, 'factionGrowth') ? pick : null;
 }
 // Reward placeholders on a fight (node.rewardTokens): 'factionReward' and 'factionGrowth', set in ✏️ Edit rewards.
-const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', run:()=>{ addEnergyCapsules(1); return null; }},
-  raidTicket:{icon:'🎫', label:'Raid Ticket', run:()=>{ grantRaidTicketItems(1); return null; }} /* 2026-10-21 (package RK): a Raid Ticket on a fight, set in ✏️ Edit rewards */};
-function grantRewardTokens(node){ const out = []; ((node && node.rewardTokens) || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(T){ const id = T.run(); if(id) out.push(id); } }); return out; }
+// 2026-10-23 (package EB): the item tokens (item: true: the Energy capsule, the Raid Ticket) come on top of the fight's own first-clear reward
+// and its card drop (grantItemRewardTokens, at the win); only the card placeholders stand in for the reward (cardRewardTokens). Before, a
+// capsule or ticket token took the place of an elite's track card and shut off the skirmish's card drop.
+const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', item:true, run:()=>{ addEnergyCapsules(1); return null; }},
+  raidTicket:{icon:'🎫', label:'Raid Ticket', item:true, run:()=>{ grantRaidTicketItems(1); return null; }} /* 2026-10-21 (package RK): a Raid Ticket on a fight, set in ✏️ Edit rewards */};
+function cardRewardTokens(node){ return ((node && node.rewardTokens) || []).filter(t=> REWARD_TOKENS[t] && !REWARD_TOKENS[t].item); }
+function itemRewardTokens(node){ return ((node && node.rewardTokens) || []).filter(t=> REWARD_TOKENS[t] && REWARD_TOKENS[t].item); }
+function grantRewardTokens(node){ const out = []; cardRewardTokens(node).forEach(t=>{ const id = REWARD_TOKENS[t].run(); if(id) out.push(id); }); return out; }
+function grantItemRewardTokens(node){ const out = []; itemRewardTokens(node).forEach(t=>{ try{ REWARD_TOKENS[t].run(); out.push(t); }catch(e){} }); return out; }
 function saveNodeField(mapId, nodeKey, field, value){
   const e = nodePatchFor(mapId);
   if(isAddedNode(mapId, nodeKey)) e.added = e.added.map(n=> n.key === nodeKey ? Object.assign({}, n, {[field]: value}) : n);
@@ -50165,7 +50231,7 @@ function rollConquestPackDrops(node, isFirstClear){
   const bigFight = ['elite','boss','raidboss','finalboss'].includes(baseKind(node.kind||'skirmish'));
   // 2026-10-13: an elite or boss, first clear, now hands out one faction-track card and one base-track card straight away
   // (no pack to open). Subfaction bundles retired: subfactions come from Journeys (Maps 15–20).
-  if(isFirstClear && node.rewardTokens && node.rewardTokens.length) out.cards = grantRewardTokens(node); // the editor's placeholders win
+  if(isFirstClear && cardRewardTokens(node).length) out.cards = grantRewardTokens(node); // the editor's placeholders win (2026-10-23, EB: the card ones; item tokens pay at the win)
   // 2026-10-21 (package RP, owner Oct 21: faction rewards "given throughout skirmishes as progress", paced so the Rare lands around Map 14):
   // the faction card comes on a main map's last fight (its ender, the map milestone) instead of every elite and boss; the base-track card
   // still comes with every elite and boss first clear. Every FACTION_REWARD_TRACK.everyWins-th first clear adds one (factionTrackOnWin).

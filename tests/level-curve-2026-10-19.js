@@ -32,12 +32,12 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
 { let last = -1, mono = true, line = true;
   // 2026-10-19 (BF3, owner 16:22: "In Map 5+, there's lvl 1-2. In Map 10+, there will be lvl 2+"): the enemy's level is the owner's schedule
   for(let no = 0; no < mains.length; no++){ if(!mains[no].nodes.some(x=> x.deck)) continue; const L = G.roadEnemyLevelExact(fightAt(no, 'skirmish'));
-    if(L < last - 1e-9) mono = false; last = L; if(!near(L, Math.round(G.roadEnemyScheduleLevel(no) * 100) / 100, 0.001)) line = false; }
+    if(L < last - 1e-9) mono = false; last = L; if(no >= 2 /* 2026-10-23 (EB): Maps 0-1 follow EARLY_ENEMY_LEVEL */ && !near(L, Math.round(G.roadEnemyScheduleLevel(no) * 100) / 100, 0.001)) line = false; }
   ok(mono, '1. the enemy\'s level only rises along the road');
   ok(line && !G.ROAD_LEVEL_CURVE.enemyKeepsPace, '1. the enemy\'s level is the owner\'s schedule (BF3; enemyKeepsPace off)');
-  ok(G.roadEnemyLevelExact(fightAt(0, 'skirmish')) === 0 && G.roadEnemyLevelExact(fightAt(1, 'skirmish')) === 1 && G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 1
+  ok(G.roadEnemyLevelExact(fightAt(0, 'skirmish')) === 0 && G.roadEnemyLevelExact(fightAt(1, 'skirmish')) === 0 && G.roadEnemyLevelExact(fightAt(2, 'skirmish')) === 1 && G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 1
     && near(G.roadEnemyLevelExact(fightAt(7, 'skirmish')), 1.5, 0.01) && near(G.roadEnemyLevelExact(fightAt(9, 'skirmish')), 2, 0.01) && near(G.roadEnemyLevelExact(fightAt(10, 'skirmish')), 2, 0.01) && near(G.roadEnemyLevelExact(fightAt(20, 'skirmish')), 4, 0.01),
-    '1. the enemy: printed on Map 0, Lv 1 on Maps 1-4, Lv 1 -> 2 on Maps 5-9, Lv 2 at Map 10, then +0.2 a map (Lv 4 at Map 20)');
+    '1. the enemy: Lv 0 on Map 0 and from Lv 0 on Map 1 (EB, 2026-10-23), Lv 1 on Maps 2-4, Lv 1 -> 2 on Maps 5-9, Lv 2 at Map 10, then +0.2 a map (Lv 4 at Map 20)');
   ok(G.roadEnemyLevelExact(fightAt(14, 'boss')) > G.roadEnemyLevelExact(fightAt(14, 'skirmish')) && G.roadEnemyLevelExact(fightAt(14, 'elite')) === G.roadEnemyLevelExact(fightAt(14, 'skirmish')), '1. a boss fights two maps further on; an elite on its map\'s line');
   const w = G.CONQUEST_MAPS.find(m=> m.id === 'm11').nodes.find(x=> x.kind === 'worldboss'); G.NODE_MAP_HINT.set(w, 'm11');
   ok(w && G.roadMapOfFight(w) === 20 + G.ROAD_LEVEL_CURVE.bossMaps && G.roadEnemyLevelExact(w) > 1, '1. the Map 20 world boss is levelled like a boss, two maps on (it fought at its printed level before)');
@@ -61,7 +61,7 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
   for(const m of G.CONQUEST_MAPS){ if(m.reserved || m.tower) continue; for(const nd of m.nodes){ if(!nd.deck || nd.kind === 'tutorial') continue; G.NODE_MAP_HINT.set(nd, m.id);
     const sc = G.skirmishCastle(nd), bare = Object.assign({}, nd); delete bare.hqHp; delete bare.shieldOverride; G.NODE_MAP_HINT.set(bare, m.id); const own = G.skirmishCastle(bare);
     if(sc.overridden){ nS++; if(sc.shield > 2 * Math.max(1, own.rule)) over.push(`${nd.key} ${sc.shield} (rule ${own.rule})`); }
-    if(sc.hp < own.hp){ nH++; if(!(m.id === 'm1') && sc.hp < Math.round(own.hp * 0.6)) low.push(`${nd.key} ${sc.hp} of ${own.hp}`); } } }
+    if(sc.hp < own.hp){ nH++; if(!(m.id === 'm1' || m.id === 'mf' /* 2026-10-23 (EB): Map 1's small brambles */) && sc.hp < Math.round(own.hp * 0.6)) low.push(`${nd.key} ${sc.hp} of ${own.hp}`); } } }
   ok(nS <= MAX_SHIELD, `3. ${nS} fights with a Shield override (was 96; at most ${MAX_SHIELD})`);
   ok(!over.length, '3. no Shield override over 2x the rule: ' + over.join(', '));
   ok(nH <= MAX_HEALTH, `3. ${nH} fights with a lower Health (was 53; at most ${MAX_HEALTH})`);
