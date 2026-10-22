@@ -57,7 +57,7 @@ The budget is v3 at Level 1, from `tools/skill_costs.js`. The numbers are in eac
 
 Each unit hit takes the beam's full amount (5 for the Condor). Evasion and Guardian apply. The beam is not a shot, so Reflect doesn't bounce it.
 
-The look reuses the lightning bolt with a prismatic, hue-cycling glow (`sfx-bolt-beam`), plus a "🌈 Position Beam 5" float and a log line.
+The look reuses the lightning bolt with a prismatic, hue-cycling glow (`sfx-bolt-beam`), plus a "🌈 Position Beam 5" float and a log line. Since 2026-10-22 (package CB) the Condor first turns and manoeuvres to fire: centre rears up then dips its head forward, a side banks toward its angle, the edge swings round to face along the row (`positionBeamVfx`; none at Effects Low or reduced motion).
 
 The text is the TX key `ui.act-position-beam-desc` (17 words): "fire a 5 beam. Centre: the unit across and the bramble. Side: diagonally inward. Edge: the row inward."
 

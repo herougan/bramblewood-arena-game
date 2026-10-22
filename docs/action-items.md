@@ -52,7 +52,7 @@ Done overnight and this morning: road curve, theme pass (96 pool cards placed), 
 | Units | Tutorial Level 0 | Hummingbird side's tutorial cards also Level 0 (fairness): OK? |
 | Easter eggs | Names | ANSWERED 10-22 07:42: names okay (Habanero Drakon, Kegfuse Panda, Nyoogle) |
 | Easter eggs | Codex teaser | 8 "???" tiles visible from the start and counted, or hidden until seen? |
-| Easter eggs | Condor "+5" | ANSWERED 10-22 07:42: okay, and it must animate turning and manoeuvring to fire the beam (package CB) |
+| Easter eggs | Condor "+5" | ANSWERED 10-22 07:42: okay, and it must animate turning and manoeuvring to fire the beam. BUILT 10-22 by package CB: centre rears and dips, side banks, edge swings round (Effects Lab, Built 10-21/22) |
 | Easter eggs | Rarities | Drakon Rare, Panda Super Rare; Nyoogle tagged cat/mythic |
 | Server | Deck sync migration (SY) | supabase/proposed/20261019_deck_sync.sql: looks + deleted_at columns, checks, stale-write guard. Optional: apply? |
 | Server | Device-only data (SY) | Per-copy foil/Shiny/skins and Kibble, Food, Beer, Kroon, Laurels still don't sync. Sync next? |

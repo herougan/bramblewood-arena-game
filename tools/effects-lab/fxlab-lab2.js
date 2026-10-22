@@ -34,6 +34,11 @@ def('forgeCentreBusy', false);
 // the Effects level (the Lab always plays at High, Low under reduced motion) and style: fxLevel() / fxAtLeast() / forgeCentreStage read these
 def('fxLevelSetting', ()=> reduce() ? 'low' : 'high');
 def('fxStyle', ()=> 'classic');
+// 2026-10-22 (package CB): the game's own effect functions (positionBeamVfx ...) ask these; the Lab did not carry them, so a call threw a ReferenceError
+def('hasGsap', ()=> typeof W.gsap !== 'undefined');
+def('reducedMotion', ()=> reduce());
+def('fxLevel', ()=> W.fxLevelSetting());
+def('fxAtLeast', l=> ['none', 'low', 'med', 'high'].indexOf(W.fxLevelSetting()) >= ['none', 'low', 'med', 'high'].indexOf(l));
 // the hatch reveal asks whether the card is a Level 0 hatchling (the Nest's list); the Lab's stand-in rare card is one
 def('hatchlingIds', ()=> new Set(['lab-hatchling']));
 // the Crown badge's tooltip names the Kingly skills (grantText reads the passive table; the Lab shows the keys)

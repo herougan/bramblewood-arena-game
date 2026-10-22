@@ -23,6 +23,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Texts: 3 new strings, 7 dead rows pruned, in the 12 packs (`tools/i18n_2026_10_22_dv2.py`). DV's check (`node tools/map_divvy_2026_10_22.js check`) is updated for the reward
   rule, the ladder, the shape and "the reward is on its fight's deck". Checked: JSON, `node --check`, the build, DV's check, a headless run (tiers per fight, Load any card,
   old-shape rows, move and remove) and shots at 390 and 1366 in `docs/screens/dv2/`. No test suites run (owner). Expect `tests/road-rarity-2026-10-16.js`, `tests/rewards-pass-2026-10-21.js` and the card matrix to need their goldens at release.
+## 2026-10-22 (package CB: the Galactic Condor turns and manoeuvres to fire its Position Beam)
+- **Owner (07:42):** "It must animate to look like it turns and manoeuvres to fire the beam." Before the beam fires, the Condor now takes up the stance for where it stands:
+  **centre** rears up, then dips its head forward and aims straight across; **side** banks and turns toward the angle it fires at, with a small lift and a gentle sway;
+  **edge** coils, then swings right round to face along the row and keeps turning as the beam sweeps across (nearest unit first). A recoil as the beam fires, then it settles back into its slot.
+- GSAP transforms on the card only (no filter, no blend layer); a rising whoosh and hum (`SoundKit.beamTurn`). Effects Low and reduced motion: no manoeuvre, the beam as before.
+  Code: `positionBeamVfx` in `arena_app.js` (the `positionBeam` branch of `renderVfxForEvent`; `delayForEvent` waits for the pose). Engine and texts untouched.
+- Effects Lab: the Position Beam is on the "Built 10-21/22" tab (7 looks, In game badge). The Lab now carries `hasGsap`, `reducedMotion`, `fxLevel` and `fxAtLeast` shims.
 
 ## 2026-10-22 (package DV: the map divvy, the rarity ladder, map pools)
 - **Each main map has a pool of 6-10 creatures** (`canonical/map-pools.json`, the map editor's file): its enemy decks are built from it, 1-2 of

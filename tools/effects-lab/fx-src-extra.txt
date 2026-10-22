@@ -123,3 +123,10 @@ evoStackHTML
 # the Crown badge's tooltip (grantText) reads the skill icons
 SKILL_ICON
 valSuffix
+# CB (2026-10-22): the Galactic Condor's Position Beam: it turns and manoeuvres (positionBeamVfx), then the hits draw the beam (lightningBoltOf / drawLightningBolt)
+POSITION_BEAM_AIM_MS
+positionBeamVfx
+lightningBoltOf
+drawLightningBolt
+electricChain
+attackingUids
