@@ -2622,5 +2622,7 @@
  "When the wolves come, the herd forms a ring, and the calves go in the middle.": "늑대가 오면 무리는 둥글게 원을 만들고, 송아지들은 한가운데로 들어간다.",
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "발톱으로 얼음에 숨구멍을 긁어 내고, 겨울 내내 그것을 열어 둔다.",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "부리가 몸보다 길다. 먼저 고개를 숙여 인사하고, 누가 겨뤄 보겠느냐고 묻는다.",
- "Blinding": "실명 공격"
+ "Blinding": "실명 공격",
+ "Single-target hits aimed at an ally beside it, in front of it or behind it land on this card instead. Area hits don't.": "옆, 앞, 뒤의 아군을 노린 단일 대상 공격은 대신 이 카드에 맞는다. 범위 공격은 제외.",
+ "Takes the single-target hits aimed at the allies beside, in front of and behind it.": "옆, 앞, 뒤의 아군을 노린 단일 대상 공격을 대신 받는다."
 }

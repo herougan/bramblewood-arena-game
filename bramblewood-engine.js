@@ -2855,20 +2855,27 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Only ever redirects damage — spatial mechanics (sweep continuation, swipe's
   // "closest N" search) still use the ORIGINAL target's position, not the
   // guardian's, so protection doesn't also warp targeting geometry.
+  // 2026-10-22 (package GD, owner N22-12: "Guardian now blocks for all adjacent allies in the 4 cardinal directions"): the four
+  // neighbours are the unit to its left and right in its own row, and the unit directly in front of / behind it (same column = same
+  // slot, in the next row toward the enemy / away from it). Front / behind exists only on a board whose middle and back rows fight
+  // (RESERVE_ACTS, the raid): a waiting reserve isn't on the battlefield yet, so it neither guards nor is guarded. When several
+  // could step in, the first in this order takes it: left, right, in front, behind. A Guardian never guards itself (the target
+  // is not its own neighbour), and only single-target hits come through here (area hits never call it).
+  function isLiveGuardian(n){ return !!(n && !n.gap && n.hp > 0 && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian); }
+  function columnNeighboursOf(pl, card, r){ // [in front, behind] for a unit in row r (0 front, 1 middle, 2 back); [] off the raid board
+    if(!RESERVE_ACTS || !slotMode || !pl || !pl.reserve || !Number.isInteger(card.slot)) return [];
+    const at = rr=> rr === 0 ? allBoardCards(pl).find(c=> c.slot === card.slot) : (pl.reserve[rr - 1] || {})[card.slot];
+    return [r > 0 ? at(r - 1) : null, r < pl.reserve.length ? at(r + 1) : null];
+  }
   function redirectToGuardian(enemyPl, card){
     const order = physicalRowOrder(enemyPl);
     const idx = order.findIndex(c=>c.uid===card.uid);
     // 2026-10-19 (package TS): a middle- or back-row target's Guardian is a unit beside it in that same row (slot - 1 / slot + 1).
     if(idx===-1){ const r = reserveRowOf(enemyPl, card); if(!r) return card; const rw = enemyPl.reserve[r - 1];
-      for(const n of [rw[card.slot - 1], rw[card.slot + 1]]){ if(n && n.hp > 0 && !n.gap && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian) return n; }
+      for(const n of [rw[card.slot - 1], rw[card.slot + 1]].concat(columnNeighboursOf(enemyPl, card, r))){ if(isLiveGuardian(n)) return n; }
       return card; }
-    const neighbors = [order[idx-1], order[idx+1]].filter(Boolean);
-    for(const n of neighbors){
-      if(n.hp>0){
-        const ndef = CARD_DEFS[n.defId];
-        if(ndef && ndef.effects && ndef.effects.guardian) return n;
-      }
-    }
+    const neighbors = [order[idx-1], order[idx+1]].concat(columnNeighboursOf(enemyPl, card, 0)).filter(Boolean);
+    for(const n of neighbors){ if(isLiveGuardian(n)) return n; }
     return card;
   }
   // Evasive (2026-09-29): a card with effects.evasive gets a flat, non-stacking 1-in-2
@@ -8739,7 +8746,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(target.kind==='card' && !combatHitLands(a.att, target.card, true)){
         if(recordEvents && events) events.push(rowEv(fkTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid})));
       } else if(target.kind==='card'){
-        // Guardian: an adjacent protector (same row, one slot either way) takes the hit
+        // Guardian: an adjacent protector (left / right, or in front / behind on the raid board since 2026-10-22, GD) takes the hit
         // instead, if alive. Sweep/Swipe continuation still uses target.col (the ORIGINAL
         // target's position), so protection redirects damage without warping geometry.
         const defCard = redirectToGuardian(players[a.enemyId], target.card);
@@ -9143,7 +9150,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { ...EQ_API /* 2026-10-19 (package EQ) */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 

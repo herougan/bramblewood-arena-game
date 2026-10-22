@@ -991,7 +991,7 @@ const PASSIVE_DEFS = [
   // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
-  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
+  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Single-target hits aimed at an ally beside it, in front of it or behind it land on this card instead. Area hits don't.`} /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
@@ -2601,7 +2601,7 @@ const SKILL_TEXT = {
   fullMoon: v=> `The first full moon over it: +${numOr(v, 3)}/+${numOr(v, 3)} for the rest of the fight.`, fullMoonGrant: v=> `The first full moon over it: ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
-  guardian: ()=> `Takes the hits aimed at adjacent allies.`,
+  guardian: ()=> `Takes the single-target hits aimed at the allies beside, in front of and behind it.`, // 2026-10-22 (package GD): + in front / behind
   quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
