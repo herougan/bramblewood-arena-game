@@ -15857,7 +15857,8 @@
     "source": {
       "kind": "map",
       "id": "m3",
-      "node": "19-6"
+      "node": "19-6",
+      "challenge": true
     },
     "numericId": 416,
     "uuid": "3e776cb9-4efe-48f0-8ef9-9e4d004c4793",
@@ -15919,7 +15920,8 @@
     "source": {
       "kind": "map",
       "id": "m4",
-      "node": "8-8"
+      "node": "8-8",
+      "challenge": true
     },
     "numericId": 417,
     "uuid": "e8fdf148-5d92-4500-a3b5-06c12d97c31d",
@@ -15976,7 +15978,8 @@
     "source": {
       "kind": "map",
       "id": "m5",
-      "node": "14-8"
+      "node": "14-8",
+      "challenge": true
     },
     "numericId": 418,
     "uuid": "86a1f5c7-e853-47e2-af17-6a7df9101471",
@@ -16150,7 +16153,8 @@
     "source": {
       "kind": "map",
       "id": "m8",
-      "node": "6-8"
+      "node": "6-8",
+      "challenge": true
     },
     "numericId": 421,
     "uuid": "3b9aef6c-2407-4d6a-a8b1-d6431d761621",
@@ -17968,7 +17972,8 @@
     "source": {
       "kind": "map",
       "id": "m24",
-      "node": "24-6"
+      "node": "24-6",
+      "challenge": true
     },
     "id": "iron-warden",
     "name": "Iron Warden",
@@ -19724,7 +19729,8 @@
     "source": {
       "kind": "map",
       "id": "m23",
-      "node": "23-8"
+      "node": "23-8",
+      "challenge": true
     },
     "creatorNote": "2026-10-19 (card pass, package CB): source: 23-8 Marshal Tuskwell (miniboss, The Goldfeather Siege) (the Savanna's Unique Dictator leads the siege: the Map 23 boss gives him (a Unique fits the Map 21-35 boss cap)). 2026-10-19 halve (BF5): was 6/22. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/9. 2026-10-21 human pass I (owner's hub skill costs): 5/18 -> 4/16. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/16 -> 4/17."
   },

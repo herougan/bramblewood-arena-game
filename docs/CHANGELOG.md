@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package RW2: reward ranks capped at S, challenge cards, one card drop for every fight, raid drops lowered)
+- **Owner (RW-1):** "The max cap is always S. SS and SSS is only for challenge missions." **First-clear card ranks** never ask above S: B for Commons / Uncommons and S for Rare+ on Maps 0–19, A / S on 20–39, S from 40; elites and bosses ask S (was SS, SSS from Map 20). The card-drop gate follows.
+- **Challenge cards** ask SS: six non-pack elite rewards, one per four maps from Map 4, the highest rarity there (`source.challenge: true` in cards.json, `tools/challenge_cards_2026_10_22.js`): The Heron Hag (6-8), Echo Matriarch (8-8), Pride Queen (14-8), Yeti Chieftain (19-6), Triumphvirate (23-8), Iron Warden (24-6). The fight panel shows them with a gold frame, a "Challenge" ribbon and the SS emblem.
+- **Skirmish drop shares (RW-2):** Maps 10–29 Common 80% / Uncommon 20% (was 75 / 25); 30+ stays 70 / 25 / 5.
+- **One card drop (RW-3):** elites, bosses and the rest use the skirmish's pack-card drop (was a 20–100% roll for an enemy deck card), at 7% per ⚡ of the kind's Energy tier, capped at 25%: skirmish 7%, elite / miniboss 14%, boss 21%, world / raid boss and final boss 25%. The fight panel's drop line shows it. A skirmish with a first-clear reward still drops nothing (call RW2-1).
+- **Raid fights (owner 12:13):** a card drops 1% when you only survive (was 0%), 12% when the enemy bramble falls, 25% when it falls at S or better (was 100% for any win); the raid's own card stays 1.5% of those (now at most 0.375% a fight). The raid currency and a fall's claim are unchanged (call RW2-4).
+- Texts: 3 TX keys, 12 packs (`tools/i18n_2026_10_22_rw2.py`). Tests: `tests/rw2-2026-10-22.js` (new, 10,000-roll checks); `rc`, `easter-eggs` and `card-pass` follow the new drop and the challenge flag. Calls RW2-1 to RW2-4. Screens: `docs/screens/RW2/`.
+
 ## 2026-10-22 (package BF8: Bounty only where it fits, Tide without the light bonus, Blinding priced, Purblind ×0.7, the Green Dragon simplified)
 - **Owner (11:58 / 12:00):** "Tide: Just the flat charge is enough. Dont do the minor bonus." "Blind*ing gives blind … Blinding will be a flat skill not a multiplier - you guess at what it will be. Purblind will be 0.7x." "Simplify the dragon's skills I guess. 1/7 is too weak." "Remove bounty from all cards with bounty. Only those thematic - like the trash panda."
 - **Bounty:** removed from 53 cards. It stays on 8 that carry loot: Trash Panda Trickster, Raccoon Bandit, Raccoon Warlord, The Magnate Duck, Chipmunk Stockpiler, Pack Mule, Riverside Peddler, Beaver Lumberjack. The five dragons lost it too.

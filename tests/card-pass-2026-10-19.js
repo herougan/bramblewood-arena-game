@@ -76,7 +76,8 @@ const obtainable = c=>{ const s = G.cardSourceOf(c); if(['pack', 'base', 'raid',
 const none = live.filter(c=> c.cardType !== 'materia' && !c.easterEgg && !c.awaitingSource && !obtainable(c) && !P.SOURCELESS[c.id]).map(c=> c.id);   // 2026-10-19 (EE): Easter eggs are ungettable on purpose; new cards flagged awaitingSource (SK2/EQ/SK3, owner places them later)
 ok(!none.length, '3. every live card has a source or is on the allowed sourceless list: ' + none.slice(0, 10).join(', '));
 Object.keys(P.SOURCELESS).forEach(id=> ok(defs[id] && !obtainable(defs[id]) && P.SOURCELESS[id].length > 10, `3. ${id} stays sourceless, with its reason`));
-(PLAN.sources || []).forEach(s=> ok(defs[s.id] && (JSON.stringify(defs[s.id].source) === JSON.stringify(s.source) || rpMoved(defs[s.id])) && /package CB/.test(defs[s.id].creatorNote || ''), `3. ${s.id}: sourced as planned (${s.where}), or moved on by package RP`));
+const srcPlain = src=>{ if(!src || !src.challenge) return src; const o = Object.assign({}, src); delete o.challenge; return o; }; // 2026-10-22 (RW2): a challenge flag on the source is not a move
+(PLAN.sources || []).forEach(s=> ok(defs[s.id] && (JSON.stringify(srcPlain(defs[s.id].source)) === JSON.stringify(s.source) || rpMoved(defs[s.id])) && /package CB/.test(defs[s.id].creatorNote || ''), `3. ${s.id}: sourced as planned (${s.where}), or moved on by package RP`));
 const per = {}; live.forEach(c=>{ const s = c.source; if(s && s.kind === 'map' && s.node && c.cardType !== 'equipment') per[s.id + ':' + s.node] = (per[s.id + ':' + s.node] || 0) + 1; });
 const crowd = Object.entries(per).filter(([k, v])=> v > 3 && (PLAN.sources || []).some(s=> s.source.kind === 'map' && s.source.id + ':' + s.source.node === k));
 ok(!crowd.length, '3. no fight the pass gave a card to gives more than 3: ' + crowd.map(([k, v])=> k + ' ' + v).join(', '));

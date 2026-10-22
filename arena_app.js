@@ -9369,7 +9369,8 @@ function wireCodexPlacement(defId){
     else if(k==='map'){
       const node = document.getElementById('cdpNode').value;
       if(!node){ document.getElementById('cdpMsg').textContent = 'Pick which skirmish rewards it.'; return; }
-      raw.source = {kind:'map', id: document.getElementById('cdpMap').value, node};
+      const was = raw.source || {}; raw.source = {kind:'map', id: document.getElementById('cdpMap').value, node};
+      if(was.challenge === true && was.kind === 'map' && was.id === raw.source.id && was.node === node) raw.source.challenge = true; // 2026-10-22 (RW2): a challenge card stays one while it stays on its fight
     }
     else if(k==='pack') raw.source = {kind:'pack', tier: Math.max(1, parseInt(document.getElementById('cdpPackTier').value,10)||1)};
     else if(k==='event'){
@@ -21959,10 +21960,13 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   // pill before the cards); a card that only needs the first clear shows nothing extra.
   const cards = ids.map(id=>{ const got = gotOf(id), needR = (got || isTutNode) ? null : cardRewardRankFor(mapId, node, id);
     const rankMark = needR ? `<span class="rank-hex rank-${needR} cnp-rw-rank" aria-hidden="true"><i></i><b>${needR}</b></span>` : '';
-    const needLbl = needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '';
+    // 2026-10-22 (package RW2, owner on RW-1): a challenge card (source challenge:true, asks SS) wears a "Challenge" ribbon and a gold frame
+    const chal = !isTutNode && cardRewardIsChallenge(mapId, node, id), chalCls = chal ? ' is-challenge' : '';
+    const chalMark = chal ? `<span class="cnp-rw-chal" aria-hidden="true">${escapeHtml(TX('ui.rw2-challenge'))}</span>` : '';
+    const needLbl = (chal ? ', ' + TX('ui.rw2-challenge-card') : '') + (needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '');
     return isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
-    : `<span class="cnp-rw-card ${got?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}</span>`; }).join('');
+    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
+    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}${chalMark}</span>`; }).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
@@ -23280,22 +23284,34 @@ function markCardRewardsClaimed(nid){ const s0 = cardRewardsClaimed(); s0.add(ni
 // 2026-10-22 (package RW, owner N22-4) REPLACES that rule (it stood here as "none on Maps 0–5, B from 6, A from 21"): the rank is per CARD, not
 // per fight. Resources (Maple Leaves, Dust, materia …) need only the clear and have no rank. A card needs at least B, or at least S when it is
 // Rare or above; an elite fight (bosses count as elites, owner call RW-1) asks SS for any card. Every 20 maps all of these step up one rank
-// (Maps 0–19 as above; 20–39: A, SS for Rare+, elites SSS; 40+: S, SSS for Rare+), capped at SSS (RANK_ORDER). A fight's own node.cardRank
+// (Maps 0–19 as above; 20–39: A, SS for Rare+, elites SSS; 40+: S, SSS for Rare+), capped at SSS (RANK_ORDER; RW2 below caps it at S). A fight's own node.cardRank
 // can only raise it. A tutorial fight (and a map with no number) needs nothing. cardId is the reward card (its rarity decides); with no cardId
 // it is the rank a Common needs, the lowest the fight asks of any card (what the fight panel's drop line shows).
+// 2026-10-22 (package RW2, owner on RW-1: "The max cap is always S. SS and SSS is only for challenge missions. It's too difficult to achieve.
+// Sporadically, some of the skirmish rewards (non pack) can only be gotten through SS (Elites). These will be called challenge cards"): every
+// step above is now CAPPED AT S (CARD_RANK_CAP), elites and bosses included, so an elite asks S (was SS), Maps 20-39 ask A / S (was A / SS /
+// elites SSS) and Maps 40+ ask S. The one exception is a challenge card: a first-clear reward whose source carries challenge:true
+// (canonical/cards.json, set by tools/challenge_cards_2026_10_22.js; the owner edits the flag there) asks SS (CHALLENGE_CARD_RANK).
 const CARD_RANK_STEP_MAPS = 20; // every 20 maps the ranks step up one
+const CARD_RANK_CAP = 'S', CHALLENGE_CARD_RANK = 'SS'; // 2026-10-22 (RW2)
 function rarityAtLeastRare(r){
   const d = RARITY_DEFS.find(x=> x.key === r), key = d ? (d.as || d.key) : 'common'; // Quest / Special / Event … count as the rank they stand for
   return RARITY_DEFS.findIndex(x=> x.key === key) >= RARITY_DEFS.findIndex(x=> x.key === 'rare');
 }
 function nodeIsEliteForRank(node){ const k = baseKind((node && node.kind) || 'skirmish'); return k === 'elite' || k === 'boss' || k === 'raidboss' || k === 'finalboss'; } // owner call RW-1: bosses count as elites
+// Is this card a challenge card of this fight (2026-10-22, RW2): its source is this fight and carries challenge:true.
+function cardRewardIsChallenge(mapId, node, cardId){
+  const d = cardId ? getCardDefs()[cardId] : null, s = d && d.source;
+  return !!(s && s.kind === 'map' && s.challenge === true && node && s.id === mapId && s.node === node.key);
+}
 function cardRewardRankFor(mapId, node, cardId){
   if(node && node.kind === 'tutorial') return null;
   const n = mapNumberOf(mapId); if(n == null) return null;
+  if(cardRewardIsChallenge(mapId, node, cardId)) return CHALLENGE_CARD_RANK; // 2026-10-22 (RW2): a challenge card asks SS
   const d = cardId ? getCardDefs()[cardId] : null;
-  let i = RANK_ORDER.indexOf(nodeIsEliteForRank(node) ? 'SS' : (d && rarityAtLeastRare(d.rarity)) ? 'S' : 'B') + Math.floor(n / CARD_RANK_STEP_MAPS);
+  let i = RANK_ORDER.indexOf(nodeIsEliteForRank(node) ? 'S' /* RW2: was SS */ : (d && rarityAtLeastRare(d.rarity)) ? 'S' : 'B') + Math.floor(n / CARD_RANK_STEP_MAPS);
   if(node && node.cardRank && /^(B|A|S+)$/.test(node.cardRank)) i = Math.max(i, RANK_ORDER.indexOf(node.cardRank));
-  return RANK_ORDER[Math.min(i, RANK_ORDER.length - 1)];
+  return RANK_ORDER[Math.min(i, RANK_ORDER.indexOf(CARD_RANK_CAP))]; // RW2: capped at S (was SSS)
 }
 // Which of a fight's reward cards are already yours (2026-10-22, RW): the node-level ledger (cardRewardsClaimed) says "all of them"; a fight
 // that paid some cards at one rank and keeps the rest for a better win lists the paid ones here, so a later win claims only the others.
@@ -24475,7 +24491,12 @@ function grantRaidRewardCards(def, rw){
 }
 // A won raid fight's card (2026-10-19, package RC; was rollCardDrop over the boss's deck, i.e. one of the raid's cards every win): a
 // pack card at the raid-win rarity roll (cardDropRarity), and only at RaidM.RAID_CARD_DROP_CHANCE one of the raid's own cards.
-function raidFightCardDrop(def){
+// 2026-10-22 (package RW2, owner 12:13): first a roll whether the fight drops a card at all, by how it ended (o: {killed, survived, rank};
+// RaidM.raidFightDropChance: survived 1%, the enemy bramble killed 12%, killed at S or better 25%); then the card as before. Without o (old
+// callers) it is treated as a plain kill.
+function raidFightCardDrop(def, o){
+  const chance = RaidM.raidFightDropChance ? RaidM.raidFightDropChance(o || {killed: true}) : 1;
+  if(!(Math.random() < chance)) return null;
   const pools = raidRewardPools(def || {});
   if(pools.raid.length && Math.random() < RaidM.RAID_CARD_DROP_CHANCE){ const got = RaidM.rollRaidRewardCards({cards:0, raidCardChance:1}, pools); if(got.raid[0]){ unlockCardForPlayer(got.raid[0], 'cardDrop'); return got.raid[0]; } }
   const want = cardDropRarity('raidWin'), exact = pools.pack.filter(id=> pools.rarityOf(id) === want);
@@ -25992,7 +26013,12 @@ function settleRaidPartAfterMatch(m){
     try{ m.raidRemainingAfter = Math.round((currentRaidStateFor(def).byId[m.raidPart]||{remaining:0}).remaining); }catch(e){ m.raidRemainingAfter = 0; } return; }
   const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed, m.raidRank);
   m.raidRewardEarned = {gold:r.gold, dust:r.dust}; m.raidInk = r.ink; m.raidBelow = r.below; m.raidMinDamage = r.minDamage;
-  if(m.winner === 1){ try{ const cd = raidFightCardDrop(def); if(cd) m.raidCardDrop = cd; }catch(e){} } // 2026-10-19 (package RC): a pack card; the raid's own only at RAID_CARD_DROP_CHANCE (was a card of the boss's deck every win)
+  // 2026-10-19 (package RC): a pack card; the raid's own only at RAID_CARD_DROP_CHANCE (was a card of the boss's deck every win).
+  // 2026-10-22 (package RW2, owner 12:13): a fight you only survived can drop one too, and every drop is a chance now (raidFightCardDrop):
+  // survived 1%, their bramble killed 12%, killed at S or better 25%. The rank is the fight's raid rank, else your bramble's Health grade.
+  { const hq = m.players[1].hq, mine = hq.hp > 0 && m.endReason !== 'forfeit';
+    const o = {killed: m.winner === 1, survived: m.winner !== 2 && mine, rank: m.raidRank || (mine ? rankForHqFraction(hq.maxHp > 0 ? hq.hp / hq.maxHp : 0) : null)};
+    if(o.killed || o.survived){ try{ const cd = raidFightCardDrop(def, o); if(cd) m.raidCardDrop = cd; }catch(e){} } }
   if(m.winner === 1){ try{ const egg = rollEggDrop({kind:'raidWin', deck: (m.raidBoss||{}).deck || {}}, null, true); if(egg) m.raidEggDrop = egg; }catch(e){} }
   m.raidDamageDealt = r.contribution; m.raidOverwhelmed = overwhelmed;
   m.raidRemainingAfter = r.remainingAfter;
@@ -40302,7 +40328,7 @@ function matchStatsHTML(m){
       ${m.raidInk ? `<span class="hud-pill" title="${escapeAttr(TX('results.raid-materia-everyone-who-joins-brings'))}">${TX('results.abyssal-ink', {raidInk: m.raidInk})}</span>` : ''}${m.raidEggDrop ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.an-egg-found-after-the-raid'))}">${TX('results.an-egg-2', {v1: (EGG_KINDS[m.raidEggDrop]||{}).icon || '🥚'})}</span>` : ''}${'' /* 2026-10-19 (package RW3): the dropped card is no longer a name pill (the owner's "Honeybrew"): it shows as the card, below */}${m.raidBelow ? `<span class="hud-pill" title="${escapeAttr(TX('results.nv-full-reward-tip', {min: m.raidMinDamage}))}">${escapeHtml(TX('results.nv-full-reward-from', {min: m.raidMinDamage, dealt: m.raidBrambleDealt != null ? m.raidBrambleDealt : 0}))}</span>` : ''}
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(orReward.gold)})}</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">${TX('results.dust', {v1: rewardCountSpan(orReward.dust)})}</span>` : ''}
-      ${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<div class="rw3-drop" title="${escapeAttr(TX('results.a-card-dropped-for-winning-the'))}"><div class="rw-head">${TX('results.cards-won')}</div>${raidRewardCardHTML(m.raidCardDrop, raidDropFrom(m, m.raidCardDrop))}</div>` : '' /* 2026-10-19 (package RW3): the card won, as a card (art, name, rarity, Pack card), a tap to its details */}
+      ${m.raidCardDrop && getCardDefs()[m.raidCardDrop] ? `<div class="rw3-drop" title="${escapeAttr((m.winner === 1 ? TX('results.a-card-dropped-for-winning-the') : TX('results.rw2-raid-card-survived')) /* 2026-10-22 (RW2): a survived fight can drop one too */)}"><div class="rw-head">${TX('results.cards-won')}</div>${raidRewardCardHTML(m.raidCardDrop, raidDropFrom(m, m.raidCardDrop))}</div>` : '' /* 2026-10-19 (package RW3): the card won, as a card (art, name, rarity, Pack card), a tap to its details */}
     </div>` : '';
   const gReward = m.gauntletRewardEarned;
   const gauntletHTML = (m.mode==='gauntlet' && m.gauntletStreakAfter!=null) ? `<div class="winloss-conquest-rewards">
@@ -45767,7 +45793,10 @@ function wireBlacksmith(root){
 // The missing % becomes common. For bosses: add a 1% heroic. then for world bosses, 1% epic"): after a win, a roll by fight
 // kind; if it hits, a rarity roll, then one of the enemy deck's cards of that rarity (else of this map's decks, else the next
 // rarity down). It joins your collection, Codex source or not.
-const CARD_DROP_CHANCE = {skirmish:0.10, elite:0.20, champion:0.20, dungeon:0.20, miniboss:0.30, subboss:0.30, boss:0.40, finalboss:0.40, worldboss:0.70, raidboss:0.70, megaraid:1, raidWin:1};
+// 2026-10-22 (package RW2, owner on RW-3: "No use the same card drop. (The drop rate should be roughly scaled to the energy use.)"): the
+// old table by kind (CARD_DROP_CHANCE: skirmish 10%, elite 20%, miniboss 30%, boss 40%, world / raid boss 70%, megaraid 100%) and its roll
+// over the enemy deck are gone; every fight now rolls the one pack-card drop below (fightCardDropChance). cardDropRarity stays for a won
+// raid fight's pack card (raidFightCardDrop).
 function cardDropRarity(kind){
   const t = [['heroic', /boss|worldboss/.test(kind) ? 0.01 : 0], ['epic', kind === 'worldboss' || kind === 'raidWin' ? 0.01 : 0], ['superrare', 0.02], ['veryrare', 0.05], ['rare', 0.10], ['uncommon', 0.30]];
   let r = Math.random(); for(const [rar, p] of t){ if(r < p) return rar; r -= p; } return 'common';
@@ -45777,14 +45806,16 @@ function cardDropRarity(kind){
 //      rule as a reward card, cardRewardRankFor: B, S for Rare+, SS in an elite, one step up every 20 maps). Without opts.rank (raids and
 //      other callers) there is no gate.
 //  (b) A skirmish that gives nothing else (no reward card, no reward token, no free pack: skirmishDropApplies) drops a PACK card through
-//      rollSkirmishCardDrop instead of an enemy card; every other fight keeps the roll below unchanged (RW-3).
+//      rollSkirmishCardDrop instead of an enemy card; every other fight keeps the roll below unchanged (RW-3). (RW2 below: every fight
+//      now uses this pack-card drop, its chance scaled by Energy tier.)
 function dropRankOk(node, mapId, id, opts){
   if(!opts || opts.rank === undefined) return true;
   const need = cardRewardRankFor(mapId, node, id); return !need || rankAtLeast(opts.rank, need);
 }
 const SKIRMISH_DROP_CHANCE = 0.07; // 30% below the old skirmish 10% (owner N22-5)
 // RW-2: the base rarity by map (the owner gave Commons from Map 0, Uncommons from Map 10, Rares rarely from Map 30; these shares are my reading, easy to tune here).
-const SKIRMISH_DROP_RARITY = [[30, [['common', 0.70], ['uncommon', 0.25], ['rare', 0.05]]], [10, [['common', 0.75], ['uncommon', 0.25]]], [0, [['common', 1]]]];
+// 2026-10-22 (package RW2, owner on RW-2: "80/20 and 70/25/5 is fine."): Maps 10-29 are Common 80% / Uncommon 20% (was 75 / 25).
+const SKIRMISH_DROP_RARITY = [[30, [['common', 0.70], ['uncommon', 0.25], ['rare', 0.05]]], [10, [['common', 0.80], ['uncommon', 0.20]]], [0, [['common', 1]]]];
 const SKIRMISH_DROP_SHIFT = 0.05, SKIRMISH_OWN_SHARE = 0.5; // 5% one rarity down, 5% one up (then a second 5% for one more up); half the time the fight's own pack card
 function skirmishDropApplies(node, mapId){
   if(!node || node.tower || node.virtual || baseKind(node.kind || 'skirmish') !== 'skirmish') return false;
@@ -45818,31 +45849,35 @@ function skirmishDropPick(node, rar, rng){
   return null;
 }
 function skirmishDropRoll(node, mapId, rng){ const rr = skirmishDropRarityRoll(mapNumberOf(mapId), rng), id = skirmishDropPick(node, rr.rar, rng); return {id, base: rr.base, rar: rr.rar}; }
-function rollSkirmishCardDrop(node, mapId, opts){
-  if(Math.random() >= SKIRMISH_DROP_CHANCE) return null;
+function rollSkirmishCardDrop(node, mapId, opts, chance){
+  if(Math.random() >= (chance != null ? chance : SKIRMISH_DROP_CHANCE)) return null;
   const r = skirmishDropRoll(node, mapId); if(!r.id || !dropRankOk(node, mapId, r.id, opts)) return null;
   unlockCardForPlayer(r.id, 'cardDrop'); return r.id;
 }
+// 2026-10-22 (package RW2, owner on RW-3: "No use the same card drop. (The drop rate should be roughly scaled to the energy use.)"): every
+// fight but a raid fight (raidFightCardDrop) and a tutorial rolls the one pack-card drop above (the map's rarity shares, the shift, half the
+// time the fight's own pack card, the rank gate). Its chance is the skirmish's 7% per ⚡ of the fight kind's Energy tier (ENERGY_COST: a
+// skirmish 1, elite / champion / miniboss / dungeon 2, sub-boss / boss 3, world / raid boss 4, megaraid / final boss 5), capped at 25%
+// (DROP_CHANCE_CAP): 7% · 14% · 21% · 25% · 25% (was 10 / 20-30 / 30-40 / 70 / 100% of an enemy deck card). A skirmish keeps RW's rule:
+// it drops only when it gives nothing else (skirmishDropApplies). The tier is the kind's, not the map-scaled cost a fight charges
+// (nodeEnergyCost climbs with the map, so it would push every later fight to the cap).
+const DROP_CHANCE_PER_ENERGY = SKIRMISH_DROP_CHANCE, DROP_CHANCE_CAP = 0.25;
+function fightDropEnergy(kind){
+  kind = kind || 'skirmish'; if(kind === 'tutorial') return 0;
+  return ENERGY_COST[kind] != null ? ENERGY_COST[kind] : ENERGY_COST[baseKind(kind)] != null ? ENERGY_COST[baseKind(kind)] : ENERGY_COST.skirmish;
+}
+function fightCardDropChance(kind){ return Math.min(DROP_CHANCE_CAP, Math.round(DROP_CHANCE_PER_ENERGY * fightDropEnergy(kind) * 10000) / 10000); }
 // The card-drop chance a fight shows on its panel (the same numbers the win rolls).
 function nodeCardDropChance(mapId, node){
-  const kind = node.kind || 'skirmish'; if(kind === 'skirmish' && skirmishDropApplies(node, mapId)) return SKIRMISH_DROP_CHANCE;
-  return CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
+  if(!node || node.kind === 'tutorial') return 0;
+  const kind = node.kind || 'skirmish';
+  if(baseKind(kind) === 'skirmish') return skirmishDropApplies(node, mapId) ? fightCardDropChance(kind) : 0;
+  return fightCardDropChance(kind);
 }
 function rollCardDrop(node, mapId, opts){
-  if(!node) return null; const kind = (opts && opts.kind) || node.kind || 'skirmish';
-  if(kind === 'skirmish' && skirmishDropApplies(node, mapId)) return rollSkirmishCardDrop(node, mapId, opts); // 2026-10-22 (RW)
-  const chance = CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
-  if(Math.random() >= chance) return null;
-  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }; // + no Easter egg (2026-10-19, package EE)
-  const base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
-  const deckIds = [...new Set(Object.keys(node.deck||{}).map(base).filter(ok))];
-  const map = CONQUEST_MAPS.find(m2=> m2.id === mapId); const mapIds = map ? [...new Set(map.nodes.flatMap(n=> Object.keys(n.deck||{})).map(base).filter(ok))] : [];
-  const order = ['common','uncommon','rare','veryrare','superrare','epic','heroic'];
-  let want = cardDropRarity(kind);
-  for(let i = order.indexOf(want); i >= 0; i--){ const r = order[i];
-    const pool = deckIds.filter(id=> (defs[id].rarity||'common') === r); const pool2 = pool.length ? pool : mapIds.filter(id=> (defs[id].rarity||'common') === r);
-    if(pool2.length){ const id = pool2[Math.floor(Math.random()*pool2.length)]; if(opts && opts.rank !== undefined && !dropRankOk(node, mapId, id, opts)) return null; /* 2026-10-22 (RW): the rank gate */ unlockCardForPlayer(id, 'cardDrop'); return id; } }
-  return null;
+  if(!node) return null;
+  const chance = nodeCardDropChance(mapId, node); if(!(chance > 0)) return null;
+  return rollSkirmishCardDrop(node, mapId, opts, chance); // 2026-10-22 (RW2): the one pack-card drop, at the fight's chance
 }
 function rollMateriaDrops(node, isFirstClear, rank){
   const out = {}; if(!node || node.kind==='tutorial') return out;

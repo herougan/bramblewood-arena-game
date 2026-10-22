@@ -61,11 +61,14 @@ const LEVELS = [[3, 2000], [4, 12000], [5, 60000]];
     legendaryHeldBack: ()=> false, PACK_RARITY_WEIGHT: W, factionTrackPool: ()=> pools.faction, packCardPool: ()=> pools.pack.slice(),
     cardDropRarity: ()=> ctx.Math.random() < 0.3 ? 'uncommon' : 'common', unlockCardForPlayer: (id, s)=>{ got.push([id, s]); return true; }};
   vm.createContext(ctx); vm.runInContext(EGG_SRC + ['isEasterEgg', 'raidCardIds', 'raidRewardPools', 'raidFightCardDrop'].map(fnSrc).join('\n') + '\nthis.drop = raidFightCardDrop;', ctx);
-  let raid = 0; for(let i = 0; i < 2000; i++){ const id = ctx.drop(goliath); if(id && defs[id].source.kind === 'raid') raid++; }
-  console.log(`  raid fights with a raid card: ${raid}/2000`); ok(got.length === 2000 && raid / 2000 < 0.03, `1. seeded: ${raid} of 2,000 won raid fights dropped a raid card (${(raid / 20).toFixed(2)}%); the rest a pack card`);
+  // 2026-10-22 (package RW2, owner 12:13): a raid fight drops a card only at RaidM.raidFightDropChance (survived 1%, killed 12%, killed at S+ 25%);
+  // the raid's own card is still RAID_CARD_DROP_CHANCE of the cards that do drop. 2,000 S+ kills: about 500 cards, almost all pack cards.
+  let raid = 0; for(let i = 0; i < 2000; i++){ const id = ctx.drop(goliath, {killed: true, rank: 'SSS'}); if(id && defs[id].source.kind === 'raid') raid++; }
+  console.log(`  raid fights with a card: ${got.length}/2000, a raid card: ${raid}`); ok(got.length > 400 && got.length < 600 && raid / Math.max(1, got.length) < 0.05, `1. seeded: ${got.length} of 2,000 S+ raid kills dropped a card (~25%), ${raid} of them a raid card; the rest pack cards`);
+  ok(R.raidFightDropChance({survived: true}) === 0.01 && R.raidFightDropChance({killed: true, rank: 'A'}) === 0.12 && R.raidFightDropChance({killed: true, rank: 'S'}) === 0.25 && R.raidFightDropChance({}) === 0, '1. (RW2) raid fight drop chances: survived 1%, killed 12%, killed at S+ 25%, a loss 0');
   ok(got.filter(g=> defs[g[0]].source.kind === 'pack').every(g=> g[1] === 'raidReward'), '1. a pack card from a raid fight is a raid reward (not a card drop)'); }
 const settle = fnSrc('settleRaidPartAfterMatch');
-ok(/raidFightCardDrop\(def\)/.test(settle) && !/rollCardDrop\(\{kind:'raidWin'/.test(settle), '1. a won raid fight no longer rolls a card of the boss\'s deck');
+ok(/raidFightCardDrop\(def(, o)?\)/.test(settle) /* + RW2's outcome */ && !/rollCardDrop\(\{kind:'raidWin'/.test(settle), '1. a won raid fight no longer rolls a card of the boss\'s deck');
 const claim = fnSrc('claimRaidReward');
 ok(/grantRaidRewardCards\(def, rwc\)/.test(claim) && /grantRaidShards\(def\.id, rw\.shards \|\| 0\)/.test(claim) && !/grantRaidCards\(/.test(src), '1. a claim grants reward cards + shards; grantRaidCards is gone');
 

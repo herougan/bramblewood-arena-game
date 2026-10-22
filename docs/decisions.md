@@ -4,27 +4,76 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**RW-1. Bosses count as elites for the card-reward rank** · Decide · Rewards · asked 2026-10-22
-- N22-4 says elite fights need at least SS for any card. Package RW treats every boss kind (boss, sub-boss, final boss, raid boss, world boss) like an elite, so a boss's reward cards need SS on Maps 0–19, SSS from Map 20 (the rank is per card: B, or S for a Rare or above, one step up every 20 maps, capped at SSS; an elite or boss asks SS first). A fight's own cardRank can only raise it. Tutorial fights need nothing. The same gate holds for random card drops.
-  - Bosses count as elites (now)
-  - Bosses ask the same as a skirmish
-  - Bosses ask one step more than elites
-- **Default:** Bosses count as elites (now)
+**BF8-1. Blinding priced 2.5 (my guess); two more ways to blind are for later** · Decide · Balance · asked 2026-10-22
+- You said Blinding is a flat skill and asked me to guess. It is 2.5 for 50% a hit, 2 rounds (Horned Lizard): between Paralyze 2 and Stun on Hit 3. Horned Lizard re-fitted 4/5 → 5/7. You named three ways to blind (dazzling lights, a powder or acid spray, poking the eyes); only the one skill exists, shown as Blinding. The other two are not built.
+  - Keep 2.5
+  - Cheaper (2)
+  - Dearer (3)
+  - Build the other two ways to blind
+- **Default:** Keep 2.5
 
-**RW-2. Skirmish card drops: 7% a win, and the rarity shares by map** · Decide · Rewards · asked 2026-10-22
-- A skirmish with no card reward, no reward token and no free pack drops a pack card 7% of the time (30% below the old 10%). The base rarity: Maps 0–9 Common only; Maps 10–29 Common 75%, Uncommon 25%; Maps 30+ Common 70%, Uncommon 25%, Rare 5%. Then a shift: 5% one rarity down, 5% one up, and an up has a second 5% roll for one more up. The shares are my reading of "Commons from Map 0, Uncommons from Map 10, Rares rarely from Map 30"; they are the table SKIRMISH_DROP_RARITY in arena_app.js. The drop only lands when the win's rank meets the gate for that card's rarity (RW-1), so on Maps 0–19 a win below B gives no drop. 10,000 rolls: Map 5 gives Common 94.8% / Uncommon 4.9% / Rare 0.3% after the shift (only up-shifts exist from Common), Map 15 gives 72.6 / 26.1 / 1.3, Map 35 gives 68.3 / 25.6 / 5.9 / 0.2 Very Rare.
+**BF8-2. Stats inside braces: +1 Health counts 1, not 0.5** · Decide · Balance · asked 2026-10-22
+- Your Tide example priced Ebb {+1 Health} at 0.4 × 0.5. Today a stat inside braces counts 2A + H, so +1 Health counts 1 (0.4 after the context multiplier) and +1 Attack counts 2. Nothing changed.
+  - Keep 2A + H
+  - Health in braces counts 0.5
+  - Both halve in braces
+- **Default:** Keep 2A + H
+
+**BF8-3. The Red and Blue Dragons still have no legal line without Bounty** · Decide · Cards · asked 2026-10-22
+- Bounty is off all five dragons and Overwhelm is off the Green Dragon (1/7 → 3/20, White 1/11 → 2/23, Black 8/8 → 9/9). Red Dragon 4/20 (Flying, Stun on Hit, Fire Arrow 4, Supreme) and Blue Dragon 4/19 (Flying, Paralyze, Lightning 4, Supreme, Supreme Tide) still have no line and keep their stats. docs/balance/hand-pass-2026-10-22.md gives Red: Fire Arrow 4 → 1 (2/12); Blue: Lightning 4 → 1 and drop Supreme (2/9).
+  - Red: drop Stun on Hit; Blue: drop Paralyze
+  - Shrink the arrows / lightning (hand-pass lines)
+  - Leave them off the formula
+- **Default:** Red: drop Stun on Hit; Blue: drop Paralyze
+
+**TU-1. When the later tutorial fights open, and what they are called** · Decide · Tutorial · asked 2026-10-22
+- Note of 10-22 11:58: "In the tutorials, you now see five (5). (The first of which T-3 is locked till you progress further)". After Tutorial II the Tutorial submap shows all five fights; the three after the tutorials stay locked markers that say which fight opens them, as set on 10-16 ("T3 and T5 gradually unlock over Map 1/8/18"): the third opens when Map 0's boss (0-4) is beaten, the fourth with 7-6, the fifth with 17-8 (TUT_SIDE_GATE). On the map the five are labelled T-0, T-1, T-2, T-3, T-4, so the one your note calls T-3 (the third) reads T-2 on screen. Package TU kept both the gates and the labels.
+  - As built (T-0 to T-4; Maps 1 / 8 / 18)
+  - Label them T-1 to T-5 so the labels match how you count
+  - Open the third fight later (say once Map 1 is cleared)
+- **Default:** As built (T-0 to T-4; Maps 1 / 8 / 18)
+
+**TU-2. Phones: keep the 👤 chip in the top bar as well as the new Profile button** · Decide · UI · asked 2026-10-22
+- Note of 10-22 11:58: "In mobile mode, the Profile icon should be a button in the main menu." Phones now have a Profile note in the Home menu, with Quests, Achievements and the rest; desktop is unchanged. The top bar's 👤 chip stays on phones too, because for a guest it is the Sign in button (and it shows the sync state).
+  - Keep both (now)
+  - On phones, hide the chip once signed in
+  - On phones, hide the chip always (sign in from the Profile page)
+- **Default:** Keep both (now)
+
+**TU-3. What Profile → Reset all should leave behind** · Decide · Admin · asked 2026-10-22
+- The T-0 stall came from Reset all keeping Admin Mode: with Admin Mode on the game skipped the start map, so the T-0 win landed on an empty Outskirts. Package TU fixed that (the start map now holds for everyone). Reset all still keeps Admin Mode, your name and the editor content, and it does not touch the cloud: from reading the code, a signed-in device also loses its local sync time, so the next load may take the older cloud progress back (player_progress is not wiped). Nothing was changed here.
+  - As is
+  - Reset all also turns Admin Mode off
+  - Reset all also resets the cloud progress of a signed-in account (tap twice)
+- **Default:** As is
+
+**RW2-1. Skirmishes with a first-clear reward: no card drop, repeats included** · Decide · Rewards · asked 2026-10-22
+- N22-5 gave the pack-card drop to "skirmishes with no pack or card reward", and RW2 keeps that: a skirmish whose first clear pays a card, a reward token or a free pack never drops a card, not even on a repeat win. Before RW2 those skirmishes still had the old 10% enemy-card drop (RW-3 moved every fight to the one pack drop, so they now have none). Elites and bosses drop on every win.
+  - As built (no drop)
+  - They drop on repeat wins only (7%)
+  - They drop on every win (7%)
+- **Default:** As built (no drop)
+
+**RW2-2. Challenge cards: one per four maps from Map 4, the highest-rarity elite reward** · Decide · Rewards · asked 2026-10-22
+- Six challenge cards ask SS: The Heron Hag (Heroic, 6-8 The Alligator King), Echo Matriarch (Heroic, 8-8 The Stalactite Warden), Pride Queen (Heroic, 14-8 The Savanna Warlord), Yeti Chieftain (Heroic, 19-6 The Frost Yeti King), Triumphvirate (Unique, 23-8 Marshal Tuskwell), Iron Warden (Epic, 24-6 The Gilded Guard). The rule: main maps in bands of four from Map 4 (4-7, 8-11 …), over the first-clear cards of elite-kind fights (elite, champion, miniboss, dungeon), the one of the highest rarity (Rare or above), ties to the later fight. Maps 0-3 and side maps have none. Five of the six sit on the map's miniboss. Edit by setting or clearing source.challenge in canonical/cards.json (tools/challenge_cards_2026_10_22.js --list shows them).
   - As built
-  - Raise the Rare share on Maps 30+
-  - No drop below a certain rank is fine; show it
-  - Drop the rank gate for skirmish drops
+  - Elite fights only (not minibosses)
+  - One per two maps
+  - Also on Maps 0-3
 - **Default:** As built
 
-**RW-3. Other fights keep the old card drop (now rank-gated); skirmish drops use the basic pack pool only** · Decide · Rewards · asked 2026-10-22
-- Elite, boss and the rest keep rollCardDrop as it was (a chance by fight kind, then one of the enemy deck's cards by the rarity table), only now behind the rank gate. The new skirmish drop draws from the basic pack pool (pool 1) cards the player has reached by map (packCardReached); half the time one of the fight's own pack cards of that rarity, else another card of that rarity from the pool, and from the pool directly when the fight has none. The faction pool (11, the otters and hummingbirds) stays on its own reward track and never drops from a skirmish. A rarity with no card in reach steps down until one has.
-  - As built
-  - Let faction cards drop too
-  - Move elites and bosses to the pack-card drop as well
-- **Default:** As built
+**RW2-3. Card drops 7% per Energy tier, capped at 25%** · Decide · Rewards · asked 2026-10-22
+- The drop chance is 7% x the fight kind's Energy tier (ENERGY_COST, not the map-scaled cost a fight charges, which climbs to 10+ on later maps): 1 skirmish 7%, 2 elite 14%, 3 boss 21%, 4 world / raid boss 28% and 5 final boss / megaraid 35% are capped at 25% (DROP_CHANCE_CAP), the raids' own S+ maximum. The rank gate still applies (an elite or boss drop needs an S win).
+  - As built (cap 25%)
+  - No cap (28% / 35%)
+  - Cap at 21% (boss level)
+- **Default:** As built (cap 25%)
+
+**RW2-4. A raid's fall still pays its reward cards** · Decide · Raids · asked 2026-10-22
+- RW2 lowered the card a raid FIGHT drops (survived 1%, enemy bramble killed 12%, killed at S or better 25%; was a pack card on every won fight). The claim when a raid falls (raidReward) is unchanged: every participant's claim pays the raid's rewards.cards (1, +1 for the top 10%, +1 for a Leading participant) as pack / faction cards at the participation level's rarity floor, plus a 1.5% raid-card roll. A held raid pays a chance at one card (up to 10%).
+  - Keep the claim's cards
+  - Lower the claim's cards too (e.g. a chance instead of a sure card)
+- **Default:** Keep the claim's cards
 
 **BF7-4. Your five live edits of 10-21 evening: two were merged with later file changes** · Decide · Cards · asked 2026-10-22
 - Folded into canonical/cards.json with your stats as printed. Tide Pool Crab: you added Shield 3 while package TR (after your save) gave it Armor 1 back, so it now has Tide + Armor 1 + Shield 3 at 1/3, and no legal line. Glacial Ape-King: your row still had Bounty 1 (TR swapped Bounty for King after your save): it keeps King + Earthquake 4 at your 6/37, 103% of N (its formula line is 6/35). Conch Crawler 1/1 with Shield 4 has no legal line. Ford Kingfisher 0/1 fits (33% of N). Ember Tetra 3/7 is new: no source and no art, and its Tide braces (S 5.4) leave no legal line at any stats.
@@ -479,6 +528,31 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Keep the Mist scene
 
 ## Decided
+
+**RW-1. Bosses count as elites for the card-reward rank** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- N22-4 says elite fights need at least SS for any card. Package RW treats every boss kind (boss, sub-boss, final boss, raid boss, world boss) like an elite, so a boss's reward cards need SS on Maps 0–19, SSS from Map 20 (the rank is per card: B, or S for a Rare or above, one step up every 20 maps, capped at SSS; an elite or boss asks SS first). A fight's own cardRank can only raise it. Tutorial fights need nothing. The same gate holds for random card drops.
+  - Bosses count as elites (now)
+  - Bosses ask the same as a skirmish
+  - Bosses ask one step more than elites
+- **Default:** Bosses count as elites (now)
+- **Outcome:** Owner (Oct 22): "I go back on what I said. The max cap is always S. SS and SSS is only for challenge missions. It's too difficult to achieve. Sporadically, some of the skirmish rewards (non pack) can only be gotten through SS (Elites). These will be called challenge cards, so we should pick the higher rarity cards." Built (package RW2): the card-reward rank is capped at S everywhere (CARD_RANK_CAP): B for a Common / Uncommon and S for Rare+ on Maps 0-19, A / S on Maps 20-39, S from Map 40; elites and bosses ask S (was SS, SSS from Map 20); a fight's own cardRank is capped too; the same gate holds for card drops. Challenge cards ask SS: a first-clear reward whose source carries challenge:true in canonical/cards.json (the owner edits the flag there). Six picked by tools/challenge_cards_2026_10_22.js (one per four-map band from Map 4: the highest-rarity Rare+ reward of an elite-kind fight, ties to the later fight): The Heron Hag (6-8), Echo Matriarch (8-8), Pride Queen (14-8), Yeti Chieftain (19-6), Triumphvirate (23-8), Iron Warden (24-6). The fight panel shows them with a gold frame, a Challenge ribbon and the SS emblem (call RW2-2).
+
+**RW-2. Skirmish card drops: 7% a win, and the rarity shares by map** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- A skirmish with no card reward, no reward token and no free pack drops a pack card 7% of the time (30% below the old 10%). The base rarity: Maps 0–9 Common only; Maps 10–29 Common 75%, Uncommon 25%; Maps 30+ Common 70%, Uncommon 25%, Rare 5%. Then a shift: 5% one rarity down, 5% one up, and an up has a second 5% roll for one more up. The shares are my reading of "Commons from Map 0, Uncommons from Map 10, Rares rarely from Map 30"; they are the table SKIRMISH_DROP_RARITY in arena_app.js. The drop only lands when the win's rank meets the gate for that card's rarity (RW-1), so on Maps 0–19 a win below B gives no drop. 10,000 rolls: Map 5 gives Common 94.8% / Uncommon 4.9% / Rare 0.3% after the shift (only up-shifts exist from Common), Map 15 gives 72.6 / 26.1 / 1.3, Map 35 gives 68.3 / 25.6 / 5.9 / 0.2 Very Rare.
+  - As built
+  - Raise the Rare share on Maps 30+
+  - No drop below a certain rank is fine; show it
+  - Drop the rank gate for skirmish drops
+- **Default:** As built
+- **Outcome:** Owner (Oct 22): "80/20 and 70/25/5 is fine." Built (package RW2): Maps 10-29 Common 80% / Uncommon 20% (was 75 / 25); Maps 30+ 70 / 25 / 5 unchanged; Maps 0-9 Common only; then the 5% down / 5% up shift. 10,000 rolls (tests/rw2-2026-10-22.js): Map 15 80.0 / 20.0, Map 35 69.7 / 25.1 / 5.2.
+
+**RW-3. Other fights keep the old card drop (now rank-gated); skirmish drops use the basic pack pool only** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- Elite, boss and the rest keep rollCardDrop as it was (a chance by fight kind, then one of the enemy deck's cards by the rarity table), only now behind the rank gate. The new skirmish drop draws from the basic pack pool (pool 1) cards the player has reached by map (packCardReached); half the time one of the fight's own pack cards of that rarity, else another card of that rarity from the pool, and from the pool directly when the fight has none. The faction pool (11, the otters and hummingbirds) stays on its own reward track and never drops from a skirmish. A rarity with no card in reach steps down until one has.
+  - As built
+  - Let faction cards drop too
+  - Move elites and bosses to the pack-card drop as well
+- **Default:** As built
+- **Outcome:** Owner (Oct 22): "No use the same card drop. (The drop rate should be roughly scaled to the energy use.)" Built (package RW2): rollCardDrop's old roll (a chance by kind: elite 20%, miniboss 30%, boss 40%, world / raid boss 70%, megaraid 100%, one of the enemy deck's cards) is gone; every fight but a raid fight and a tutorial rolls the skirmish's pack-card drop (map rarity shares, the shift, half the time the fight's own pack card, the rank gate), at 7% per ⚡ of the kind's Energy tier (ENERGY_COST), capped at 25%: skirmish 7%, elite / champion / miniboss / dungeon 14%, sub-boss / boss 21%, world boss / raid boss / megaraid / final boss 25% (call RW2-3). 10,000 seeded wins each: 6.6 / 14.0 / 20.5 / 24.6%. A skirmish with a first-clear reward still drops nothing (call RW2-1).
 
 **BF7-1. The half-miss ×1.5 counts on the stats only; Fragile is ×0.7 on both caps** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
 - Pass III's formula option: the half-miss ×1.5 was on S too, so a flyer's skills cost half again. Fragile was −8 as a skill and ×0.75 on N, which shrinks N (fewer stats), the opposite of the intent. Mayfly Dancer (Flying, Fragile) re-fits at 2/7; without Fragile it would get 2/4.

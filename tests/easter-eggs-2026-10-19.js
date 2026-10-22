@@ -58,10 +58,15 @@ const granted = [];
 const ctx = {defs, getCardDefs: ()=> defs, liveCards: {}, CARD_DEFS_BASELINE: defs, adminModeEnabled: false, codexShowUnseen: false, TUTORIAL_REWARD_IDS: [],
   pitchingUnlocked: ()=> true, hofBlocked: ()=> false, SPELLS_SHELVED: true, BASIC_PACK_POOLS: [1], baseKind: k=> k, CONQUEST_MAPS: [{id:'m1', nodes:[{key:'n1', deck:Object.fromEntries(LIST.map(id=> [id, 1]))}]}],
   myCardCopies: {}, myUnlockedCardIds: new Set(), copiesOwned: ()=> 0, maxCopiesForRarity: ()=> 4, trackMapReached: ()=> 99, TRACK_STAGES: ['common', 'uncommon', 'rare'], TRACK_LATE: ['veryrare', 'superrare'], TRACK_LATE_MAP: 10,
-  unlockCardForPlayer: id=>{ granted.push(id); return true; }, seenCardIds: ()=> new Set(), Math, Object, Set, JSON, String, Number, Array, out: {}};
+  unlockCardForPlayer: id=>{ granted.push(id); return true; }, seenCardIds: ()=> new Set(), Math, Object, Set, JSON, String, Number, Array, out: {},
+  // 2026-10-22 (package RW2): every fight rolls the one pack-card drop now (rollCardDrop -> rollSkirmishCardDrop at nodeCardDropChance)
+  RARITY_DEFS: ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic'].map(key=> ({key})), mapNumberOf: ()=> 35, nodeFirstClearPacks: ()=> [],
+  packCardReached: ()=> true}; // packCardPool asks it since the map divvy; this test had no stub, so it stopped at its first packCardPool call (pre-existing; stubbed by RW2)
 vm.createContext(ctx);
-const pieces = [constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), constSrc('UNATTAINABLE_ADMIN_SOURCES'), constSrc('CARD_DROP_CHANCE'),
-  ...['isEasterEgg', 'easterEggSeen', 'easterEggMasked', 'easterEggMaskDef', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'packPoolOf', 'packCardPool', 'cardDropRarity', 'rollCardDrop', 'nodeRewardCardIds', 'trackPick', 'raidCardIds'].map(fnSrc)];
+const pieces = [constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), constSrc('UNATTAINABLE_ADMIN_SOURCES'),
+  constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'), // 2026-10-22 (RW2; was CARD_DROP_CHANCE)
+  ...['isEasterEgg', 'easterEggSeen', 'easterEggMasked', 'easterEggMaskDef', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'packPoolOf', 'packCardPool', 'cardDropRarity', 'rollCardDrop', 'nodeRewardCardIds', 'trackPick', 'raidCardIds',
+    'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll', 'rollSkirmishCardDrop', 'fightDropEnergy', 'fightCardDropChance', 'nodeCardDropChance'].map(fnSrc)];
 vm.runInContext(pieces.join('\n') + '\nout.f = {isEasterEgg, cardObtainableFrom, isUnattainable, packCardPool, rollCardDrop, nodeRewardCardIds, trackPick, raidCardIds, easterEggMasked, easterEggMaskDef};', ctx);
 const F = ctx.out.f;
 const eggDefs = Object.keys(defs).filter(isEggId);
@@ -70,8 +75,8 @@ ok(eggDefs.every(id=> F.isEasterEgg(defs[id])), 'isEasterEgg knows every egg, by
 ok(eggDefs.every(id=> F.cardObtainableFrom(defs[id]) === null && F.isUnattainable(defs[id])), 'cardObtainableFrom: none (so isUnattainable)');
 ok(!F.isEasterEgg(defs['musk-ox-calf']) && F.cardObtainableFrom(defs['musk-ox-calf']) === 'pack', 'an ordinary pack card is untouched');
 [0, 1, 11, 99].forEach(pool=> [false, true].forEach(exact=>{ const ids = F.packCardPool(defs, pool, exact); ok(ids.length > 0 && !ids.some(isEggId), `pack pool ${pool}${exact ? ' (exact)' : ''}: no Easter egg (${ids.filter(isEggId)})`); }));
-{ const node = ctx.CONQUEST_MAPS[0].nodes[0]; let got = 0; const r0 = Math.random; Math.random = ()=> 0; try{ for(let i = 0; i < 20; i++){ const id = F.rollCardDrop(node, 'm1', {kind:'raidWin'}); if(id) got++; } }finally{ Math.random = r0; }
-  ok(!granted.some(isEggId) && got === 0, `card drops: an all-egg enemy deck drops nothing (${granted.filter(isEggId)})`); }
+{ const node = ctx.CONQUEST_MAPS[0].nodes[0]; let got = 0; const r0 = Math.random; Math.random = ()=> 0; try{ for(let i = 0; i < 20; i++){ const id = F.rollCardDrop(Object.assign({kind: 'elite'}, node), 'm1', {}); if(id) got++; } }finally{ Math.random = r0; }
+  ok(!granted.some(isEggId) && got > 0, `card drops: an all-egg enemy deck drops pack cards only, never an egg (${granted.filter(isEggId)}; ${got} drops)`); } // RW2: the pack-card drop
 ok(!F.nodeRewardCardIds('m1', 'n1').some(isEggId), 'skirmish rewards: none');
 { const pool = eggDefs.concat(['musk-ox-calf']); let bad = 0; for(let i = 0; i < 50; i++){ const id = F.trackPick(pool, ()=> (i % 10) / 10); if(isEggId(id)) bad++; } ok(!bad, 'reward tracks (faction / base / growth): never an egg'); }
 ok(!F.raidCardIds({id:'r1'}).some(isEggId), 'raid cards: none');

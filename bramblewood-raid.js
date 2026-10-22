@@ -452,6 +452,19 @@ function raidReward(def, state, owner, opts){
 // RAID_CARD_DROP_CHANCE is the ONE place the raid-card chance lives (the owner wants "almost never"): a fall's claim rolls it once,
 // and so does a won raid fight (the page's raidFightCardDrop). A held raid's claim never rolls it.
 const RAID_CARD_DROP_CHANCE = 0.015;
+// 2026-10-22 (package RW2, owner 12:13: "Raid card drop rates seem to be Super high. Lower their drop rates- even on a win. Should be like <25%.
+// Maybe the max 25% chance for a S+ completion. ... Lower is just survive (maybe ~1%). >10% if at least you killed the enemy bramble. This is
+// okay since the main reward should be the raid currency."): the chance that a raid fight drops a card at all (was: every won fight a pack
+// card, and nothing for a fight you only survived). By how the fight ended: survived (your bramble stands, theirs too) 1%; their bramble
+// killed 12%; killed with a rank of S or better 25%. A dropped card is the raid's own one at RAID_CARD_DROP_CHANCE, else a pack card, so a
+// raid's own card is now at most 25% x 1.5% = 0.375% a fight (was 1.5% a won fight). A fall's claim (raidReward) is unchanged.
+const RAID_FIGHT_CARD_DROP = {survive: 0.01, kill: 0.12, killS: 0.25};
+// o: {killed, survived, rank}. The page's settleRaidPartAfterMatch fills it.
+function raidFightDropChance(o){
+  o = o || {};
+  if(o.killed){ const S = ['S', 'SS', 'SSS', 'U']; return S.includes(o.rank) ? RAID_FIGHT_CARD_DROP.killS : RAID_FIGHT_CARD_DROP.kill; }
+  return o.survived ? RAID_FIGHT_CARD_DROP.survive : 0;
+}
 // shards: the flat base of trophy shards on a fall (a raid's rewards.shards replaces it) when that is more than RAID_SHARDS_PER_FIGHT x
 // your fights; shardMult for the level (2026-10-19, package MX: x1 / x2 / x5, was x1.2 / x1.4 with +2 / +5 extraShards); RAID_TIER_SHARDS
 // on top for the standing (top 1% / 10% / 50%). Owner may retune every number here.
@@ -611,6 +624,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
 
 const api = {DAY, RESPAWN_HOURS_DEFAULT, respawnMs, killTimeOf, raidGenerations, raidNow, generationState, PARTICIPATION_DEFAULTS, participationRules, participationOf, raidReward,
   RAID_CARD_DROP_CHANCE, RAID_REWARD_TABLE, RAID_SHARDS_PER_FIGHT, RAID_TIER_SHARDS, RAID_CARD_WEIGHT, raidRarityRank, rollRaidRewardCards, RAID_RECIPE_COST, raidRecipeFor, raidRecipeShort, payRaidRecipe, // 2026-10-19 (package RC)
+  RAID_FIGHT_CARD_DROP, raidFightDropChance, // 2026-10-22 (package RW2)
   TICKETS, settleTickets, spendTickets, nextTicketIn, attemptCost, autoUnlocked, instanceCap, assignInstance, partKey, parsePartKey,
   CYCLE_MS, cycleOf, partTotal, SCORING_DEFAULTS, RAID_SCALE_V, RAID_SCALE_HP, migrateRaidScale, WEAKEN_FLOOR_DEFAULT, weakenFloor, bossWeakening, weakenShare, weakenCard, RAID_SHIELD_DEFAULT, raidShieldMax, raidShield, /* 2026-10-19 (package MX) */ RB_TIER_DAMAGE, INSTANCE_CAP_DEFAULT, // 2026-10-19 (package RB)
    RAID_TOTAL_RANKS, RAID_TICKET_GRANT_RANK, RAID_TICKET_GRANT, raidTotalRank, raidTotalRankNext, raidTotalRankAtLeast, // 2026-10-21 (package RK)
