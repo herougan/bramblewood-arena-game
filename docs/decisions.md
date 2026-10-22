@@ -1,385 +1,141 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-22). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-23). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
-**GD2-1. The skill that shields allies from skills: Spellshield 🪬** · Decide · Battle rules · asked 2026-10-22
-- Built as Spellshield 🪬 (engine key spellshield): a single-target enemy skill (an arrow or other shot, a Bolt, a damage or status skill) aimed at a unit adjacent to it hits it instead; never itself; several at random. Price 0.8 in canonical/skill-costs.json, an estimate (about 3/4 of Guardian's 1.06: fewer hits come as skills than as swings, but they are the heavier ones). No card has it yet; measure it with tools/skill_test_robust.js before one gets it.
-  - Spellshield
-  - Spell Ward
-  - Mirrorguard
-- **Default:** Spellshield
+**EB-1. Your real deck after T-2: the sturdier top-up (as built), or a new set of sturdy starter cards** · Decide · Tutorial · asked 2026-10-23
+- Your 01:57 note 1: the Base trainees stay weak, so the deck after T-2 must be stronger. Built: the baby filler (Honey Bee, Silver Minnow, Sparrow Chick) no longer joins the real deck, and the deck is topped up, one copy each, with the sturdier cards first: River Carp 2/10, Burrow Rabbit 2/10, Duck Paddler 2/10, Farm Dog 2/8, Chipmunk Forager 1/8, Otter Kit, Meadow Frog, then the old trainees (STARTER_CFG_DEFAULT.starterTopUp). Your side's list and the shared list (the 8 cards T-1 shows) stay. The limit: only about 7 vanilla cards of that size exist that no skirmish pays on its first clear, so about half the deck is still trainees (3/3s at Level 0). The live tutorial config also holds T-2's rewards (rewards2): Hummingbirds get the Crimson-Wing Recruit (3/1), Both the Riverwing Envoy (1/6); they would be sturdier cards too, but the live row wins until you republish it. Measured with the live lists (docs/balance/eb-2026-10-23.json): Map 0 78/58/37/20% before, 94/81/64/42% after (with the bramble and level changes in EB-2 and EB-3).
+  - As built (sturdier top-up, filler out)
+  - Add a set of new sturdy vanilla starter cards (about 2/8, one per role) and build the real deck from them
+  - As built, and make T-2's rewards sturdier in the tutorial editor
+- **Default:** As built (sturdier top-up, filler out)
 
-**GD2-2. Cleave's side damage isn't a swing a Guardian takes** · Decide · Battle rules · asked 2026-10-22
-- Guardian takes plain swings: the main attack and each prong of a Fork, Trident, Pitchfork or Octolash (each prong is a full single-target swing). Cleave's bonus damage to the units beside the target is a spread of one swing, so it reaches those units, as before.
+**EB-2. Map 1 retuned: plain brambles and smaller ones on 1-1 to 1-4, mixed decks** · Decide · Balance · asked 2026-10-23
+- A fresh player's real deck won 6-9% of Map 1 (ant deck 45-62%, reference deck 0-12%, DF). The deciding factor is 2-Attack trades: the Hedgerow Burrow gave every enemy unit +1 Health, so a 2/8 survived one more hit than yours. Built: 1-1 to 1-4 defend a plain bramble (Health 5 / 6 / 7 / 6, Shield 1), the Baron keeps the Plains Terrace (+1 Attack to the first unit) at 6 Health + 2 Shield; the decks mix Map 1's 2/8 commons with Harvest Mouse, Meadow Rabbit, Cottontail and Ant Scout (Map 1's pool 'special'), 20 cards each, reward cards kept. Real deck, mean of the three sides, before -> after (target): 1-1 5.7 -> 83.7 (90), 1-2 7.3 -> 74.7 (80), 1-3 9.3 -> 74 (70), 1-4 6 -> 55.3 (60), 1-5 6 -> 39.3 (40). The reference deck now wins 88 / 78 / 78 / 57 / 53%, the ant deck 98 / 90 / 75 / 75 / 65% (40 games). The Hedgerow Burrow is on no Map 1 fight now.
+  - As built (no Burrow on Map 1)
+  - Put the Burrow back on the Baron (1-5) with an easier deck
+  - Retune Map 1 against the reference deck instead
+- **Default:** As built (no Burrow on Map 1)
+
+**EB-3. The enemy at Level 0 on Map 0, rising to half Level 1 on Map 1; the fight panel still shows printed stats** · Decide · Balance · asked 2026-10-23
+- Your note: 'at Map 0 the units that are lvl 0 remain 0. Map 1, some of them can be lvl 1'. Your starting copies are Level 0, so the enemy's are now too: every Map 0 enemy card fights at Level 0 even when its own level is 1 (a Chipmunk Skirmisher 2/7, not 2/8), and on Map 1 a share of the copies is Level 1: 0, 25, 25, 50, 50% by the fight's place (EARLY_ENEMY_LEVEL; Map 2 on is Level 1 as before; the skirmish editor's Enemy level still wins). The fight panel's deck tiles still show the printed stats (2/8) while the fight plays the Level 0 ones; your own Camp tiles show your copies' level.
+  - As built, and show the level's stats on the panel's tiles (a small UI package)
+  - As built, leave the panel
+  - Back to printed on Map 0 and Level 1 on Map 1
+- **Default:** As built, and show the level's stats on the panel's tiles (a small UI package)
+
+**EB-4. Items: 2% per Energy of the fight, 3 a day: which Energy, and which items count** · Decide · Items · asked 2026-10-23
+- Your 01:57 note 8. Built: a Conquest win you played rolls 2% per Energy the fight cost you (nodeEnergyCost: Map 1's fights 1-2 Energy = 2-4%, Map 4 4 Energy = 8%, Map 10 about 7 = 14%, a boss double), and at most 3 items a day come this way; a free fight (Sweep, admin jump, cleared Spire floor) rolls nothing. Was: the day's first 3 Conquest wins each brought an item, sure. Items from A+ notices, finished weekly tiers and item-granting bosses still come on top and don't count against the 3. RW3's card drops use the fight kind's tier instead (a skirmish is 1 Energy there, whatever the map). The results tooltip still says 'your first 3 Conquest wins'; its wording is package UI4's.
+  - As built (the Energy the fight cost; fight drops only)
+  - Use the kind's tier like card drops (a skirmish 2%, an elite 4%, a boss 6%)
+  - Count every item source against the 3 a day
+- **Default:** As built (the Energy the fight cost; fight drops only)
+
+**EB-5. Energy capsules: 8 Energy, a first-clear reward every three maps** · Decide · Rewards · asked 2026-10-23
+- Your 01:57 note 9. Built: a capsule gives 8 Energy (was 20) and is a first-clear reward token (the 🔋 placeholder, editable in Edit rewards) on 1-3, 2-1, 4-2, 6-3, 9-3, 12-3, 15-3, 18-3, 21-3 and 24-3: 10 capsules, 80 Energy over the road. 2-1's replaces the old 'first win on Map 2' capsule (a save that had it is not paid twice). The item tokens (capsule, Raid Ticket) now come on top of a fight's card reward and card drop; before, a token stood in for an elite's track card and shut off the skirmish's drop. A capsule already in a save gives 8 when used.
   - As built
-  - A Guardian takes Cleave's side hits too
+  - More often (every other map)
+  - Bigger capsules late (8 early, 15 from Map 12)
 - **Default:** As built
 
-**GD2-3. Seven maps have no skirmish-exclusive card** · Decide · Rewards · asked 2026-10-22
-- Maps 4, 6, 11, 12, 18, 20 and 21 have no skirmish whose first clear pays an exclusive card: their own cards sit on their elites and bosses, or are their pack cards. Left as they are ("if it turns out there is not much left, then okay"); their skirmishes pay pack cards. Giving each one would move one of its pack cards (or an elite's card) to a skirmish.
+**EB-6. Map 0's brambles: plain on 0-1 to 0-3, 0-3 bigger, 0-4 smaller** · Decide · Balance · asked 2026-10-23
+- Built (your note: no-effect brambles in T-1, T-2 and Map 0, 'except maybe the last skirmish of Map 0, where it gives +1 attack to the first guy'): 0-2 and 0-3 lost the Outskirts Watchtower and T-2 its rival's, 0-4 keeps the Plains Terrace (+1 Attack to the first unit). Your bramble starts above the enemy's Health + Shield + 3 in T-1, T-2 and on Maps 0-1 (T-1 8 against 5, T-2 9 against 6; on Maps 0-1 your 15 is already higher). With the Level 0 enemy (EB-3), 0-3 was 76% against a 60% target, so its base bramble went from 7 to 12 Health, and 0-4 (20%, target 45%) from 8 to 5. Real deck, before -> after: 0-1 78 -> 94, 0-2 58 -> 81, 0-3 37 -> 64, 0-4 20 -> 42; T-1 89 -> 95, T-2 28 -> 78.
   - As built
-  - Move one card to a skirmish on each of those maps
+  - Keep 0-3 and 0-4 at their old Health (0-3 then about 76%, 0-4 about 25%)
+  - Make 0-4 plain too (about 42% at its old 8 Health)
 - **Default:** As built
 
-**GD2-4. No new free packs or tokens on skirmishes** · Decide · Rewards · asked 2026-10-22
-- Pack rewards on skirmishes stay as they were (Map 0's 0-2 faction pack; the map free packs are on bosses). Adding packs or Faction Reward tokens to skirmishes would speed up the economy and the faction track, both tuned. 33 of the 101 skirmishes pay no card.
+**DF-1. Difficulty doesn't climb: from Map 16 the road gets easier, not harder** · Decide · Balance · asked 2026-10-23
+- Measured fresh on all 179 fights of Maps 0-24 (Maps 25-28 aren't charted yet; data: docs/balance/df-2026-10-23.json). On paper the enemy climbs: skirmish enemy level 0 (Map 0), 1 (Maps 1-5), 2 (Maps 9-10), 3 (Map 15), 4.8 (Map 24). Its mean 2A+H per card goes 9.5 (Map 0), 6-16 (Maps 1-14), 14-20 (Maps 15-24). Uncommon-or-rarer cards: 0%, then about 30% (Maps 3-13), then about 50% (Maps 14-24, range 19-57%). Skirmish bramble: 6.5 Health on Map 0; 10-15 + Shield 0-5 on Maps 1-10; 15 + Shield 7-14 on Maps 16-24. Yours is 15 throughout. Decks: 20 cards on Maps 0-2, 13-18 after. The player wins anyway. Your ant swarm deck (Base only: Tunnel Ant 4, Soldier Ant 6, Ant Scout 6, Worker Ant 2, Forager Ant 2), at the level a typical player can afford, wins this share of skirmishes: Map 0 64%, Maps 1-4 69%, Maps 5-10 74%, Maps 11-15 66%, Maps 16-19 96%, Map 20 88%, Maps 21-24 93%. Played at Lv 1 throughout (never forged), it still wins 75% of Map 16-24 skirmishes and loses only 0.5 points a map. Difficulty is spiky, not climbing. The hard spots are Maps 1, 7, 11 and 14 and Map 20's elites (DF-4); Maps 16-19 are the easiest stretch of the road. A realistic collected deck (Base plus one copy of each first-clear card) wins 81% of Map 16-24 skirmishes; the game's reference decks win 96%. Three causes. (1) Between Map 10 and Map 16 your level goes from 1 to 8 (the Forge caps, DF-2), while the enemy's goes from 2 to 3.2. (2) The level curve is stepped: mean stat gain over Lv 1 is +1% at Lv 2-3, +22% at Lv 4-6, +50% at Lv 7-9 and +79% at Lv 10. So the enemy's climb from Lv 2 to 4.8 crosses one step in fifteen maps. (3) The road targets restart on every map: skirmishes go 90% down to 60%, then the ender 40%, the same on Map 1 as on Map 24. Trial ('pace' curve: the enemy stays 0.5-2.5 levels under your Forge cap; Lv 3 on Maps 11-12, 4.5 on Map 15, 5.5 on Map 16, then +0.25 a map to 7.75 on Map 24; elites +0.5, bosses +1). Map 16-24 skirmishes: ant deck 93.5% to 87.7%, collected deck 80.6% to 73.4%. Map 16-24 elites: ant 70.5% to 62.2%, collected 54.3% to 43.1%. Maps 16-19 barely move (95.5% to 95.2%), because Lv 3.5 to 5.8 stays on the Lv 4-6 step. Going halfway to pace changed nothing measurable.
+  - The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
+  - The pace enemy curve only
+  - No level change: get the climb from DF-3 and from retuning each fight against the ant and collected decks
+  - Leave it
+- **Default:** The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
+
+**DF-2. Levels gate by map, not by resources; Base decks never need replacing** · Decide · Balance · asked 2026-10-23
+- Model (docs/balance/df-2026-10-23.json, econ): Forge step costs by rarity, x0.5 for Base and map cards, levels per copy since RW3. Income: the first-clear Dust and Leaves of every main and side map, plus notices (about 83 Dust each, 6 a day from Map 4, one map a day, 3/4 of the Dust spent on the deck), minus the Forge tier upgrades. Dust banked: 7,800 at Map 11, 12,200 at Map 16, 20,600 at Map 24; first clears alone give 5,800 by Map 11. The ant deck (20 copies) costs 1,300 Dust to reach Lv 3, 2,160 for Lv 4 and 7,490 for Lv 8. So every deck reaches the Forge cap on the map that opens it: Lv 3 at Map 11, Lv 4 at Map 13, Lv 8 at Map 16. A light player (3 notices a day) and a binge player (3 maps a day) land at the same levels. Only the reference decks (4 copies of pack rares) lag, at Lv 6.8-7.9 on Maps 18-23. The road's reference player is still modelled at Lv 3 to 4.6 on Maps 16-24 (referencePlayerLevel), 4-5 levels under what a player affords, so the road was tuned against a weaker player than the real one. What holds decks back is duplicates of anything outside Base. One more copy of a specific card takes about 56 repeat fights of its skirmish for a common (3% x 60% a fight), about 83 for a rare, or about 98 Hedgerow Pouches (4,900 Leaves) for a common, since packs are fully random (1 in 293 pack cards). So a collected deck is mostly single copies. The strongest deck a player can own is a Base synergy deck: open from Map 0, cheapest to level, never outclassed. Ant deck at Lv 1 / 4 / 8: skirmishes on Maps 1-10 about 72% / 84% / 93%; on Maps 16-24 75% / 85% / 94%; elites on Maps 16-24 53% / 63% / 71%. Answer: the first strong deck comes on Map 0, and it can steamroll Maps 16-24. Levelling doesn't stifle it; duplicates hold back every other deck (the collected deck wins 81% of Map 16-24 skirmishes).
+  - Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
+  - Base cards stop at Lv 4 only
+  - Slow the Forge instead: the Ember Forge (Map 16) caps at Lv 6, Lv 8 from Map 21
+  - Leave levelling as is
+- **Default:** Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
+
+**DF-3. Selfish map effects from Map 5: a boon only the enemy's deck can use** · Decide · Map effects · asked 2026-10-23
+- Design. Each map from Map 5 names a theme (an archetype or a skill). Its boon turns on in a fight when at least half the enemy deck's cards share that theme ('most of the cards'). It counts the CPU's deck only, so a player who builds the same deck gets nothing. The Environment card shows the count (e.g. '11/16 Cave'), with a red outline and a small 'theirs' mark beside the neutral field cards. Where it hooks in: (1) FIELD_EFFECTS entries with selfish:true and rules.boon:'<id>', so Edit skirmish can add, swap or switch one off (rules.boon:'none'); (2) fightRules adds the map's boon from a MAP_BOONS table, the way it adds terrain; (3) the engine reads rules.boon for player 2 only, as it already does rules.bossSurge (on cast) and rules.enemyOre (each round). The theme count runs once at newPlayer. Damage boons go through hit(); field immunities use the same checks as heatProof. (4) Texts are TX keys. (5) Each boon is priced as a field condition in tools/skill_test_robust.js, then the road is retuned with skirmish_pass.js. 15 candidates (in brackets: fights on that map where the theme reaches half the deck today): Map 5 Coiled Venom: Snake, their Poison +1 (4/7). Map 7 Mycelium Web: Insect or Flora; when one dies, their weakest unit heals 2 (3/6). Map 8 Blind Fury (your example): Cave; their Darksight units deal 2x damage in Darkness (8/8). Map 9 Root Tangle: Mangrove; Regen 1 while the Tide is in (5/7). Map 10 Riptide: their Tide units +1 Attack on each Flood (9/9). Map 12 Briar Pact: their Thorns +1 per other Thorns unit in play, at most +2 (counted per unit: Thorns is under half of every deck). Map 13 Den Cunning: the first Fox they play each round gets Fast Forward 1 (per unit: Fox 18-50%). Map 16 Wolf Moon: at night their Pack bonus doubles (per unit: Wolf 17-55%). Map 17 Frostborn: Frigid ground skips their Frost and Tundra units (8/8). Map 18 Heat Shimmer: your attacks at their Desert units miss 1 in 3 (7/7). Map 19 Ember Quills: Volcanic or Porcupine; their Thorns hit as fire and Burn 1 (5/6). Map 20 Fireborn: Scorched Ground and Scorching pass over their Volcanic units, with Scorching III cut to I (5/10; see DF-4). Map 22 Fire and Ice: their Volcanic units +1 Attack, their Frost units +2 Health (7/8). Map 23 Siege Works: their Siege damage to your bramble +1 per other Siege unit, at most +2 (5/8). Map 24 Royal Treasury: +1 Lumber a round while they hold 3+ Ducks (6/8). Left out: Maps 11 and 14 are already the hardest (ant deck 38% and 46% of skirmishes). On Maps 6, 15 and 21 no theme reaches half the deck (the DV deck pass could sharpen those decks first).
+  - Build it: one boon per map from Map 5, on every fight of that map, the 15 above, theme at half the deck
+  - Only on elites, mini-bosses and bosses
+  - On skirmishes too, but only from Map 10
+  - Not now
+- **Default:** Build it: one boon per map from Map 5, on every fight of that map, the 15 above, theme at half the deck
+
+**DF-4. Five spots break the curve: Maps 1, 7, 11, 14 and Map 20's elites** · Decide · Balance · asked 2026-10-23
+- Same decks and runs as DF-1 (docs/balance/df-2026-10-23.json). Each map's road targets: skirmishes 90% down to 60%, elites about 70-60%, the ender 40%. Map 1 (Thistlewood): the ant deck wins 51% of skirmishes, the collected deck 50%, the reference deck 3% (1-1's target is 90%). The enemy's Mice swarm (Swarm on 16 cards) out-trades Base cards at Lv 0-1. That fits your 01:57 note that Map 1 was extremely hard. Map 7 (Morel Hollow): ant 48%, collected 18%; 7-3 (Decay and Growth) holds the ant deck to 8%. Map 11 (Eyrie Heights): ant 38%, collected 24%. Its ten fights are flyers and Guardians in a Gale, which ground decks can't reach. Map 14 (Savanna Reaches): ant 46%, collected 33% (Lv 1 ants 19%), against Tangle, Executioner and First Blood. Map 20 (Sundered Peak), the six elite and boss fights: the ant deck wins 0-7% even at Lv 8, the collected deck 0-10%, while the reference deck (bigger units) wins 33-98%. Scorching III (3 units a side take 2 a round) plus Eruption 2-5 wipes small units. So the map punishes swarm decks rather than being hard, which matches what you saw.
+  - Retune Maps 1, 7, 11 and 14 to the road targets against the ant and collected decks (deck and Shield moves with tools/skirmish_pass.js); cut Map 20's Scorching III to I and show Scorched Ground as the line of fire moving left to right from the effect playground
+  - Map 20's field effects only
+  - Leave them: DF-1 and DF-3 reshape the curve first
+- **Default:** Retune Maps 1, 7, 11 and 14 to the road targets against the ant and collected decks (deck and Shield moves with tools/skirmish_pass.js); cut Map 20's Scorching III to I and show Scorched Ground as the line of fire moving left to right from the effect playground
+
+**BF10-1. Evasive and Shadow cost more than they are worth too** · Decide · Balance · asked 2026-10-23
+- The robust skill test measured the other half-miss skills against their ×1.5 price: Evasive worth 5.77 vs 7.14 paid (deck wins 23.8%), Shadow 1.94 vs 7.14 (1.8%), Swift 7.03 vs 7.14 (fair). That points to Evasive ×1.37 and Shadow ×1.1. Only Flying (×1.39) was changed.
+  - Evasive ×1.37, Shadow ×1.1
+  - Evasive only
+  - Leave them at ×1.5
+- **Default:** Evasive ×1.37, Shadow ×1.1
+
+**BF10-2. Bulwark 1 is priced 1 but measured at 3.27** · Decide · Balance · asked 2026-10-23
+- Same test: a Bulwark 1 deck wins 59.2% against the vanilla deck's 41.1% (net +1.34 stat points). You are redesigning Bulwark N (two vanguard shields of 4×N Health); price the new one after it is built.
+  - Reprice after the redesign
+  - Price the current one at 3.3 now
+- **Default:** Reprice after the redesign
+
+**PG-1. Copy ladder 5/4/3/2/1 per card, and the per-deck Legendary 3 / Mythic 2 caps on top** · Decide · Decks · asked 2026-10-23
+- Built (package PG, item 9): at most 5 copies of a Common (Starter too), 4 Uncommon, 3 Rare, 2 Very Rare, 1 of everything above, per card, in the Camp, the Standard deck, swaps, import, the fight gate and ghost / PvP decks. Package DR's per-deck caps (3 Legendary, 2 Mythic, 1 of each rank above, different cards counted together) are a different rule and were kept, so a deck still holds at most 3 different Legendaries. Disenchant / Fuse 'extras' follow the ladder (copies beyond 5 Commons, 4 Uncommons ... are extras now).
+  - Keep both (as built)
+  - Ladder only: drop the per-deck rank caps
+- **Default:** Keep both (as built)
+
+**PG-2. Saves from before the copy rules** · Decide · Decks · asked 2026-10-23
+- Base cards were free and unlimited until today. Once, for a player past the tutorial, every Base card in any of their decks got real copies up to what that deck holds, so no saved deck shrinks (a Quarry Mole x7 already in a deck stays). A deck over the new ladder (e.g. 7 Pond Trout) shows a pill in the Camp and can't start a fight until it is trimmed; nothing is cut automatically.
+  - As built (keep copies, the player trims)
+  - Trim saved decks to the ladder automatically
+  - Take back the unlimited copies (each Base card to 1)
+- **Default:** As built (keep copies, the player trims)
+
+**PG-3. The starting deck: 20 different cards, one copy each** · Decide · Tutorial · asked 2026-10-23
+- Built (items 8, 10): the starting deck is one copy of each card of your side's list, the shared list and the filler (their numbers now only say which cards), topped up in order from starterTopUp (Pond Duck, Acorn Chipmunk, Cottontail, Chipmunk Forager, River Carp, Burrow Rabbit, Meadow Rabbit, Duckling, Harvest Mouse, Sheep ...) to 20 with T-1's and T-2's rewards. A fresh Otters account after 0-3 holds 25 copies of 24 cards (Otter Centurion x2 with T-2's reward; everything else x1) and the Camp lists only those, instead of 44 'owned' cards, 38 of them unlimited. The deck builder lists only cards you hold. The top-up list is in STARTER_CFG_DEFAULT (the tutorial editor does not show it yet).
   - As built
-  - Add a free pack or a token to some of the 33
+  - Pick the top-up cards yourself (tutorial editor)
+  - Let the first deck be short of 20
 - **Default:** As built
 
-**GD2-5. What reads "adjacent" and what keeps its shape** · Decide · Battle rules · asked 2026-10-22
-- On adjacent (in front / behind too, in a raid): Guardian, Spellshield, Formation, Haste, Shieldwall, Amplifier, Immolation, Irradiated, Inspiring, Friction, Proliferate, Electricity, Chain Lightning, Dragon Lightning, Spitfire's splash, the Adjacent Ally target. Kept as they are: shapes across the board (Fireball's 3 columns, Meteor, Rocket, Dynamite's 3x3, Cleave, the prongs, Taunt, Stench, Landslide, Ambush / Sentry facing), where a token appears (Twin, Sprout, Brood, Palisade, Spawner: a free slot nearby), and Pack chains (front row only today).
-  - As built
-  - Pack chains across rows too
-  - The splash shapes too
-- **Default:** As built
+**PG-4. Clearing a map takes you to the next one** · Decide · Map · asked 2026-10-23
+- Item 13. The gate already opened Map 1 the moment 0-4 was won (checked on a fresh account, and Map 1 -> 2). What landed you on a locked map was Map 0's signpost: its 'Show me the road' pointed at Clovermead, a side map of Map 1 that waits on Map 12. It now points at Thistlewood, a signpost to a locked map says what opens it instead of moving you, and the locked notice offers the way back. Also built: after the fight that clears a map, back on the map you are taken to the next map once.
+  - As built (move on to the next map)
+  - Stay on the cleared map
+- **Default:** As built (move on to the next map)
 
-**GD2-6. An Easter egg a player owns shows as a plain card** · Decide · Codex · asked 2026-10-22
-- Outside Admin Mode nobody sees an Easter egg: no "???" slot, no section, no count, no filter or search hit, no Easter-egg words. A player who owns one anyway (only an admin grant gives one) sees it in their Codex as an ordinary card, its where-to-get line "Not obtainable yet".
-  - As built
-  - Hide it from its owner too
-- **Default:** As built
-
-**DN2-1. An elemental crit shows only its big glyph, no 👊** · Decide · Battle UI · asked 2026-10-22
-- Read from "can you just make the damage type emoji bigger if it's non physical": an ice crit on a Fragile unit now reads (big ❄️)14🦴 (DN had 👊❄️14🦴). A physical crit keeps 👊7. One switch brings the fist back on elemental crits (DMG_CRIT_FIST_ON_ELEMENT).
-  - As built (big glyph only)
-  - 👊 and the big glyph
-- **Default:** As built (big glyph only)
-
-**DN2-2. Damage numbers lead with the damage type, not the source** · Decide · Battle UI · asked 2026-10-22
-- Following the rule (type glyph, none for physical), numbers that used to show their source now show their type: an Arrow Slits arrow, a trap, Pierce, Stampede, Friction, a Penance / Blood Tithe payment and the tentacle's stamp are plain numbers (was 🏹 🪤 🗡 💥 ⚙️ ⛧ 🦑); a comet or scorched ground is 🔥 (was ☄️ 🌋); Decay is 🍂 (was 🦠). Ticks with no element keep their own glyph: Curse 🜏, Chilli 🌶️, Strangle 🪢. The skill's own effect (the tentacle, the arrow, the spark) still plays.
-  - As built
-  - Keep a source glyph on physical-only sources (🏹 🦑 🪤)
-- **Default:** As built
-
-**DN2-4. "Higher hue" is +12 degrees for every element** · Decide · Battle UI · asked 2026-10-22
-- Built as asked (lighter by 10%, hue +12 degrees). Fire turns a brighter yellow-orange and magic a pinker violet, but ice turns slightly bluer (its hue is already past cyan), not the lighter cyan I described at 15:39. Poison greens turn a little bluer too.
-  - As built (+12 for all)
-  - Warmer for every element (fire and magic +12, ice and poison -12)
-- **Default:** As built (+12 for all)
-
-**FX2-1. The volcano's hazards together, at its higher levels** · Decide · Balance · asked 2026-10-22
-- Each hazard alone stays at or under 1 a unit a round (Lava Tide, Eruption, comets and Scorched Ground are 1 each). Together, measured with 3 units a side over rounds 2–20: very low 0.10, low 0.41 (the only level the maps use), medium 0.64, rising ("even") 1.19, high 1.34, because after an eruption comets hit every unit for 3 rounds and at the higher levels eruptions come almost every round. The most one unit took in one round was 3 (a comet, an eruption and lava together).
-  - As built (each hazard at most 1)
-  - Comets 1 in 2 rounds at the higher levels
-  - Cap the volcano at 1 a unit a round in total
-- **Default:** As built (each hazard at most 1)
-
-**BF8-1. Blinding priced 2.5 (my guess); two more ways to blind are for later** · Decide · Balance · asked 2026-10-22
-- You said Blinding is a flat skill and asked me to guess. It is 2.5 for 50% a hit, 2 rounds (Horned Lizard): between Paralyze 2 and Stun on Hit 3. Horned Lizard re-fitted 4/5 → 5/7. You named three ways to blind (dazzling lights, a powder or acid spray, poking the eyes); only the one skill exists, shown as Blinding. The other two are not built.
-  - Keep 2.5
-  - Cheaper (2)
-  - Dearer (3)
-  - Build the other two ways to blind
-- **Default:** Keep 2.5
-
-**BF8-2. Stats inside braces: +1 Health counts 1, not 0.5** · Decide · Balance · asked 2026-10-22
-- Your Tide example priced Ebb {+1 Health} at 0.4 × 0.5. Today a stat inside braces counts 2A + H, so +1 Health counts 1 (0.4 after the context multiplier) and +1 Attack counts 2. Nothing changed.
-  - Keep 2A + H
-  - Health in braces counts 0.5
-  - Both halve in braces
-- **Default:** Keep 2A + H
-
-**TU-1. When the later tutorial fights open, and what they are called** · Decide · Tutorial · asked 2026-10-22
-- Note of 10-22 11:58: "In the tutorials, you now see five (5). (The first of which T-3 is locked till you progress further)". After Tutorial II the Tutorial submap shows all five fights; the three after the tutorials stay locked markers that say which fight opens them, as set on 10-16 ("T3 and T5 gradually unlock over Map 1/8/18"): the third opens when Map 0's boss (0-4) is beaten, the fourth with 7-6, the fifth with 17-8 (TUT_SIDE_GATE). On the map the five are labelled T-0, T-1, T-2, T-3, T-4, so the one your note calls T-3 (the third) reads T-2 on screen. Package TU kept both the gates and the labels.
-  - As built (T-0 to T-4; Maps 1 / 8 / 18)
-  - Label them T-1 to T-5 so the labels match how you count
-  - Open the third fight later (say once Map 1 is cleared)
-- **Default:** As built (T-0 to T-4; Maps 1 / 8 / 18)
-
-**TU-2. Phones: keep the 👤 chip in the top bar as well as the new Profile button** · Decide · UI · asked 2026-10-22
-- Note of 10-22 11:58: "In mobile mode, the Profile icon should be a button in the main menu." Phones now have a Profile note in the Home menu, with Quests, Achievements and the rest; desktop is unchanged. The top bar's 👤 chip stays on phones too, because for a guest it is the Sign in button (and it shows the sync state).
-  - Keep both (now)
-  - On phones, hide the chip once signed in
-  - On phones, hide the chip always (sign in from the Profile page)
-- **Default:** Keep both (now)
-
-**TU-3. What Profile → Reset all should leave behind** · Decide · Admin · asked 2026-10-22
-- The T-0 stall came from Reset all keeping Admin Mode: with Admin Mode on the game skipped the start map, so the T-0 win landed on an empty Outskirts. Package TU fixed that (the start map now holds for everyone). Reset all still keeps Admin Mode, your name and the editor content, and it does not touch the cloud: from reading the code, a signed-in device also loses its local sync time, so the next load may take the older cloud progress back (player_progress is not wiped). Nothing was changed here.
-  - As is
-  - Reset all also turns Admin Mode off
-  - Reset all also resets the cloud progress of a signed-in account (tap twice)
+**PG-5. A unit at 0 Health before its action ends** · Decide · Battle rules · asked 2026-10-23
+- Item 4. A 3/7 Armor 1 Beetle Grunt hit 4, 4, 2 shows 3, 3, 1 and dies at exactly 0; in 13 auto-played 0-4 fights the shown Health matched the engine after every hit and round and every death played at 0 (screens in docs/screens/PG; the final hit shows its number and Health 0 together). The engine removes the dead after each attacker's action and each skill action, as you said. One gap with your rule: inside the same action a unit at 0 can't be healed (applyHeal refuses 0 Health), and its On Attacked / Bleed-on-defend don't fire. Should a heal or shield that lands later in the same action save it?
+  - As is (0 Health = dead, removed when the action ends)
+  - A heal later in the same action saves it
 - **Default:** As is
 
-**RW2-2. Challenge cards: one per four maps from Map 4, the highest-rarity elite reward** · Decide · Rewards · asked 2026-10-22
-- Six challenge cards ask SS: The Heron Hag (Heroic, 6-8 The Alligator King), Echo Matriarch (Heroic, 8-8 The Stalactite Warden), Pride Queen (Heroic, 14-8 The Savanna Warlord), Yeti Chieftain (Heroic, 19-6 The Frost Yeti King), Triumphvirate (Unique, 23-8 Marshal Tuskwell), Iron Warden (Epic, 24-6 The Gilded Guard). The rule: main maps in bands of four from Map 4 (4-7, 8-11 …), over the first-clear cards of elite-kind fights (elite, champion, miniboss, dungeon), the one of the highest rarity (Rare or above), ties to the later fight. Maps 0-3 and side maps have none. Five of the six sit on the map's miniboss. Edit by setting or clearing source.challenge in canonical/cards.json (tools/challenge_cards_2026_10_22.js --list shows them).
-  - As built
-  - Elite fights only (not minibosses)
-  - One per two maps
-  - Also on Maps 0-3
-- **Default:** As built
-
-**RW2-3. Card drops 7% per Energy tier, capped at 25%** · Decide · Rewards · asked 2026-10-22
-- The drop chance is 7% x the fight kind's Energy tier (ENERGY_COST, not the map-scaled cost a fight charges, which climbs to 10+ on later maps): 1 skirmish 7%, 2 elite 14%, 3 boss 21%, 4 world / raid boss 28% and 5 final boss / megaraid 35% are capped at 25% (DROP_CHANCE_CAP), the raids' own S+ maximum. The rank gate still applies (an elite or boss drop needs an S win).
-  - As built (cap 25%)
-  - No cap (28% / 35%)
-  - Cap at 21% (boss level)
-- **Default:** As built (cap 25%)
-
-**RW2-4. A raid's fall still pays its reward cards** · Decide · Raids · asked 2026-10-22
-- RW2 lowered the card a raid FIGHT drops (survived 1%, enemy bramble killed 12%, killed at S or better 25%; was a pack card on every won fight). The claim when a raid falls (raidReward) is unchanged: every participant's claim pays the raid's rewards.cards (1, +1 for the top 10%, +1 for a Leading participant) as pack / faction cards at the participation level's rarity floor, plus a 1.5% raid-card roll. A held raid pays a chance at one card (up to 10%).
-  - Keep the claim's cards
-  - Lower the claim's cards too (e.g. a chance instead of a sure card)
-- **Default:** Keep the claim's cards
-
-**BF7-4. Your five live edits of 10-21 evening: two were merged with later file changes** · Decide · Cards · asked 2026-10-22
-- Folded into canonical/cards.json with your stats as printed. Tide Pool Crab: you added Shield 3 while package TR (after your save) gave it Armor 1 back, so it now has Tide + Armor 1 + Shield 3 at 1/3, and no legal line. Glacial Ape-King: your row still had Bounty 1 (TR swapped Bounty for King after your save): it keeps King + Earthquake 4 at your 6/37, 103% of N (its formula line is 6/35). Conch Crawler 1/1 with Shield 4 has no legal line. Ford Kingfisher 0/1 fits (33% of N). Ember Tetra 3/7 is new: no source and no art, and its Tide braces (S 5.4) leave no legal line at any stats.
-  - Keep them as folded
-  - Crab: drop Armor 1 (your Shield 3 only)
-  - Ape-King: Bounty back instead of King
-  - Give Ember Tetra a source (map or pack)
-- **Default:** Keep them as folded
-
-**BF7-5. 106 band cards still have no legal line: the hand-pass list** · Decide · Balance · asked 2026-10-22
-- After BF7's re-fit, 106 band cards (plus Conch Crawler and Tide Pool Crab) have no legal line and keep their stats (docs/balance/human-pass-1-flagged-2026-10-21.json). docs/balance/hand-pass-2026-10-22.md gives each the cheapest single change (shrink or drop one skill, never Flying) and the line it would get; the Blue Dragon needs two. None is applied.
-  - Apply the cheapest change on each
-  - Pick per card
-  - Leave them off the formula
-- **Default:** Pick per card
-
-**AR-1. Standard PvP shares the PvP tickets and the rating** · Decide · Arena · asked 2026-10-21
-- Package AR split the Arena's PvP into two buttons. Standard PvP is the existing Standard format (every card at Level 1, no foils, a Standard deck built from any card) against the same strangers as Collection PvP, their decks also at Level 1. It uses the same 10 PvP tickets, moves the same rating and pays the same rewards. Your Standard deck is not recorded as a stranger, since it can hold cards you don't own.
-  - Keep it shared
-  - A separate rating for Standard
-  - Separate tickets for Standard
-- **Default:** Keep it shared
-
-**AR-2. The Undercroft: the Arena's Dungeon as a daily dungeon on Map 11** · Decide · Dungeons · asked 2026-10-21
-- The Arena's Dungeon (3 fights against random decks, losses carried over) is gone from the Arena; an unfinished run in an old save is no longer offered. In its place the Undercroft opens on Map 11 (the Arena's map) as a daily dungeon: each floor takes a Dungeon key, 50 floors, each harder (half a map further on per floor, +3 bramble Health), a mini-boss every 10th floor, a loss sends you back to floor 1. Every 3 floors the land changes: 15 maps' first elite deck and field rules, in order of their battle rating (Savanna 47 up to Wolfsbane Tundra 106); only floors 46-50 go round to the first. Like Murgle Mayhem, each floor's first clear gives 10 Gold Leaves (500 in all).
-  - Keep these defaults
-  - Different lands or order
-  - Fewer floors
-  - No Gold Leaves from the Undercroft
-- **Default:** Keep these defaults
-
-**AR-3. The group dungeon is a Coming soon slot** · Decide · Dungeons · asked 2026-10-21
-- You asked for group dungeons with live players, recorded in the Daily Dungeon section. There is no co-op dungeon in the game yet (only the D49 design, docs/coop-dungeon-design-2026-10-13.md), so the Daily Dungeons tab now ends with a Group Dungeon slot marked Coming soon. Building it means the netcode in that doc (the Ranked Live host, extended to 2-4 players).
-  - Build the co-op dungeon next
-  - Keep the slot for now
-  - Remove the slot
-- **Default:** Keep the slot for now
-
-**AR-4. The match log is this device's last 40 fights** · Decide · Profile · asked 2026-10-21
-- Recent opponents moved from the Arena to the Profile as a match log with PvP and PvE tabs (opponent, mode, result, date, the deck you faced, and from now on your deck's name). It is what this device records: the last 40 fights (was 20), not Ranked Live, which stays in the signed-in Match History below it. Syncing the log to the account would need a new column or table (SQL for your apply).
-  - Keep it on the device
-  - Sync it to the account
-- **Default:** Keep it on the device
-
-**TR-1. 24 cards fall to their 1/1 floor with their cut skill back** · Decide · Balance · asked 2026-10-21
-- HB2-1 gave 69 cards back the skill BF5 cut only because Flying, Tide, Diurnal or Nocturnal counted, and the formula re-fitted them (--only). 45 still fit. 24 have no room under cap 2 and drop to 1/1 (skills kept, flagged like B14): Eagle Diver 1/4, Alpha Howler 1/15, Orca Vanguard 1/21, Snow Owl Sentinel 2/7, Permafrost Mammoth 2/20, Moray Ambusher 2/12, Cave Bat Swarm 2/5, Blind Cave Fish 1/3, Sulfur Vent Crab 2/9, Tide Pool Crab 1/3, Open-Ocean Hermit Crab 1/6, Reef Manta Glider 1/7, Nightshade Moth 1/5, Elder Tortoise 1/15, Vigil Owl 2/9, Willow-o'-Wisp 1/12, Skull Vulture 3/3, Moon Jelly 2/8, Voltwing Bat 1/4, Static Bat 1/6, Sea Cucumber 2/11, Alligator Gar 2/14, Mangrove Manatee 2/17, Giant Clam 1/14 (all now 1/1). 7 more were 1/1 already. The free skills still cost S (Tide 2.79, a time of day about 2.5).
-  - Keep: every skill back, 1/1 where the formula says so
-  - Take the restored skill off again on these 24 (back to their stats before TR)
-  - Price plain Flying / Tide / Diurnal / Nocturnal lower in the budget too
-- **Default:** Keep: every skill back, 1/1 where the formula says so
-
-**TR-2. Bounty came back on 7 cards** · Decide · Balance · asked 2026-10-21
-- BF5 cut Bounty first (your 21:36: "Bounty is way too strong") wherever a card had three skills. On 7 of them the third skill was a free one under HB2-1, so the cut is undone: Monarch Wingblade, Reef Shark, Octopus Tactician, Alpha Howler, Vampire Roost, Bog Behemoth, Tiny Cave Dweller. Bounty is priced at 1 a point (your BF5 value), so the formula took it out of their stats.
-  - Keep Bounty on them
-  - Keep it cut (Bounty is never restored)
-- **Default:** Keep Bounty on them
-
-**TR-3. The Crown's open cases (built as defaults)** · Decide · Rules · asked 2026-10-21
-- Package TR built your Crown rules. Calls taken: (a) once the Crown fades it is gone for the fight: a later King stays uncrowned; (b) the crowned King killed by an enemy unit while no King is left anywhere: +1 Gold for the killer's side (your kill rule), not the dead King's; (c) friendly fire counts as no source unit (the Crown drops); (d) the King that picks up a dropped Crown, or the liege's pick, is random among that side's Kings (the fight's seeded random); (e) a holder that leaves play without dying (bounced, exiled) drops it as with no source; (f) a crowned unit that an evolute goes over keeps the Crown (it is the same unit).
-  - Keep these
-  - Let a later King take a fresh Crown after it fades
-  - Change (b): +1 Gold for the dead King's side
-- **Default:** Keep these
-
-**TR-4. Which cards are Kings** · Decide · Cards · asked 2026-10-21
-- King given to: Rodent King (Bounty off for the two-skill rule; 4/15 -> 4/14), Glacial Ape-King (Bounty off; 7/36 -> 7/34), Yeti Chieftain (5/22 -> 5/20), The Gannet Queen (3/9 -> 1/10). Not given: the Pride Queen (with King's 2.39 her Quick leaves no room: 2/14 -> 1/1) and the Magnate Duck (King type already; 1/22 -> 1/1); the Quicksand Queen is a trap, not a ruler. Usurper was extended to steal the Crown (the Crown Pretender is the card for it); no new skill was needed.
-  - Keep these four
-  - Also the Pride Queen and the Magnate Duck at 1/1
-  - Name others
-- **Default:** Keep these four
-
-**TR-5. Prices for King, Kingly, Tribute and the five transforms (theoretical)** · Decide · Balance · asked 2026-10-21
-- canonical/skill-costs.json, ownerSet false, B15-style. Tribute 0.5 a point (half of a Lumber income: Gold buys nothing in a fight yet). Kingly 5.98 = Tribute 1 + Armor 2 (2 x 2.74), never printed. King 2.39 = 0.4 x Kingly, as a context skill (the Crown is not certain); with its own braces 0.4 x them. Transforms at CONTEXT_MULT 0.4 x the gain: Gilded {+5/+10} 8, Championed {+3/+3} 3.6, Veteran {+2/+4} 3.2, Matured {+2/+4 Stem stats} 3.2, Enraged 0.4 x its braces. Plain Crepuscular 1.6 (CX2).
-  - Keep these prices
-  - Raise or lower some (name them)
-  - Measure them with tools/skill_worth.js
-- **Default:** Keep these prices
-
-**TR-6. Transform conditions, as read by package TR** · Decide · Rules · asked 2026-10-21
-- Enraged: "It has Rage" is read as its Rage being on (Rage, below half Health); having the skill would trigger it at once. Matured: N rounds, 2 by default (tf.rounds; the editor doesn't set N yet). Veteran and Matured count rounds survived on the field, at each round's start. Championed: a kill by its own swing or its Counterattack against the unit it fights (a Guardian that takes the hit is the one it fights); kills by Arrow, Pounce or other skills don't count. Gilded: Lumber 1, Stone 2, Metal 3, Gold 5 each, more than 25, checked as the board updates. No card has a transform preset yet.
-  - Keep these readings
-  - Enraged = it has the Rage skill
-  - Championed also by skill kills
-- **Default:** Keep these readings
-
-**EV-1. Which cards are the Evomax lines (there was no Evomax unit)** · Decide · Cards · asked 2026-10-21
-- No Evomax unit existed (Terraumbra, an equipment Easter egg, was the line's only card). Package EV made lines from cards no player can get yet, so the Map 30 gate holds and no reward moved: Slowpoke Sentinel (Stem) -> Canopy Sloth Guardian (Evolute) -> Hanging Loafer (Alpha); Raven Harbinger (Evolute) -> Raven Hexcaller (Alpha) -> Bone Diviner (Omega); Gale Sprite (Evolute) -> Stormcaller (Alpha). They are mechanicLine evolution now. Missing stages are listed as cards to make in docs/evolute-design-2026-10-21.md (a sloth Omega, a storm Omega, an insect Evolute and Alpha for the Cocoon, beetle, frog and dragon lines).
-  - Keep these three lines
-  - Pick other cards (name them)
-  - Make new Evomax cards instead and revert these
-- **Default:** Keep these three lines
-
-**EV-2. When an evolute dies, do the cards under it fire their On Death?** · Decide · Rules · asked 2026-10-21
-- Built: no. The whole stack goes to the graveyard (or the Removal Zone, wherever the evolute goes) and only the top card's own death effects happen (its On Death, Bounty, Relic ...). The cards under it fire nothing, matching "a unit leaving play this way triggers no On Death, Bounty or grave effects".
-  - No: only the top card's death effects
-  - Yes: each card in the stack fires its own On Death (top first)
-- **Default:** No: only the top card's death effects
-
-**EV-3. Evolute bases: shared type at every stage, creatures only** · Decide · Rules · asked 2026-10-21
-- Built: Alpha and Omega also need a shared type with their base (the rule named it for Evolute only). A plain Evolute cannot go over a unit that is already an evolute (no sideways or downward evolving). Structures, cages and a Gladiator leader are never bases, and only front-row units are (a raid's middle and back rows are not). The editor offers Evolute / Alpha / Omega on Evomax cards only.
-  - Keep all of these
-  - Alpha and Omega need no shared type
-  - Allow an Evolute over an evolute
-- **Default:** Keep all of these
-
-**EV-4. An evolute waits its own Wait again** · Decide · Rules · asked 2026-10-21
-- Built ("Wait and Lumber costs work as usual"): the stack waits the evolute's printed Wait, even over a Ready base. The CPU counts that against Ready bases. Alternatives: keep the base's remaining Wait, or the higher of the two.
-  - Its own Wait (as usual)
-  - The base's remaining Wait
-  - The higher of the two
-- **Default:** Its own Wait (as usual)
-
-**EV-5. Evolute prices (theoretical)** · Decide · Balance · asked 2026-10-21
-- canonical/skill-costs.json, ownerSet false: Evolute 3, Alpha 4, Omega 5 (your suggestion). Stem and Chrysalis 1.6 (0.4 x (2*1 + 2), the +1/+2 they hand over), or 0.4 x their braces' S. The evolutes' printed stats are fitted to their own N; on the board a stack is the sum, so a Stormcaller fitted to 1/23 lands on a base and becomes far bigger. No run can measure this (it rides on the player).
-  - Keep these prices
-  - Raise them (name the numbers)
-  - Price an evolute against its line's summed N instead
-- **Default:** Keep these prices
-
-**EV-6. The Nest eggs as fodder, with a species** · Decide · Cards · asked 2026-10-21
-- The Speckled Egg is a Stem and the Cocoon a Chrysalis. Each got a species (Bird, Insect) so an evolute can share a type with it: eggs had none, so Kin and type skills now count them too. Re-fit by formula: 0/2 -> 0/1. An egg ridden by an evolute never hatches.
-  - Keep
-  - Keep the skills, no species (then no evolute can use them)
-  - Revert the eggs
-- **Default:** Keep
-
-**EV-7. The raven evolutes sit at their 1/1 floor** · Decide · Balance · asked 2026-10-21
-- Following your HB2-1 answer (Flying does not count toward two skills), the ravens keep every skill: Raven Harbinger Flying + Poison 2 + Evolute, Raven Hexcaller Flying + Render + Evolute Alpha, Bone Diviner Flying + On Kill +2 Lumber + Evolute Omega. With Flying's x1.5 the formula puts all three at 1/1 (flagged, skills kept). In a stack they add to the base's stats, so the stack is still big. Without Flying, the Hexcaller and the Bone Diviner were 1/7.
-  - Keep: every skill, 1/1
-  - Cut Flying on the Hexcaller and the Bone Diviner (back to 1/7)
-  - Lower the stage costs for these three
-- **Default:** Keep: every skill, 1/1
-
-**RK1. Raid Ticket price in the Shop** · Decide · Raid · asked 2026-10-21
-- Package RK sells the Raid Ticket (one extra raid fight, past the cap of 10) for 300 Maple Leaves, beside the Rename Ticket (250 Maple Leaves); a fight also pays about 16 Maple Leaves and 12 Dust back. Gold Leaves would make it scarcer.
-  - 300 Maple Leaves
-  - 250 Maple Leaves (as the Rename Ticket)
-  - 500 Maple Leaves
-  - 30 Gold Leaves
-- **Default:** 300 Maple Leaves
-
-**RK2. A limit on buying Raid Tickets** · Decide · Raid · asked 2026-10-21
-- Buying stops only while you hold 9; you can buy, use and buy again. Free tickets give at most about 16 fights a raid (10 + 1 a day), so an average player (751 raid damage a fight) tops out near rank A; S needs about 4 bought tickets, U about 24 (7,200 Maple Leaves). Rank is buyable with Maple Leaves unless a weekly limit is added.
-  - No limit (hold at most 9)
-  - At most 3 bought a week
-  - At most 5 bought a week
-- **Default:** No limit (hold at most 9)
-
-**RK3. The A-rank Raid Ticket only when the raid falls** · Decide · Raid · asked 2026-10-21
-- Owner: 'completing a raid (with at least A rank) should give you 1x ticket'. Built as: a fall's claim at total raid rank A or better pays 1 Raid Ticket; a raid that ends standing (held) pays none, whatever the rank.
-  - Falls only
-  - Falls and held raids
-- **Default:** Falls only
-
-**RK4. Where Raid Tickets drop** · Decide · Raid · asked 2026-10-21
-- Built: an S notice 30%, SS 60%, SSS 100% (about 0.7 a week at six notices a day), and a raidTicket reward token (a fight's first clear) that is on no fight yet. Chests have no drop table to add it to.
-  - Keep (notices only; token unused)
-  - Also put the token on a few boss fights
-  - Also one per finished weekly tier
-- **Default:** Keep (notices only; token unused)
-
-**RK5. The total rank ladder against the ticket budget** · Decide · Raid · asked 2026-10-21
-- Kept as given (F 800 .. A 9,000, S 15,000 .. U 30,000). At 751 raid damage a fight (BF5's model) the ranks take 2 / 2 / 4 / 7 / 10 / 12 / 20 / 27 / 34 / 40 fights; free tickets allow about 16 a raid (12 when it falls on day 3), so S and up need bought tickets or wins at high fight ranks (a win at SSS counts 2,000, so U in 15). Fine as an aspiration, or scale the top?
-  - Keep the ladder
-  - Scale S..U down (e.g. 12k / 14k / 16k / 18k)
-- **Default:** Keep the ladder
-
-**RP1. Faction rewards' map term in the stat budget** · Decide · Rewards · asked 2026-10-21
-- A faction Rare can't be had before Map 14 and a Very Rare before Map 25 (the faction reward track), but cardObtainMap still counts every faction reward as a pack card (Map 5) for N's Map x 0.2. Changing it moves N for the 42 faction cards (package BF5's stats).
-  - Follow the gate (Common 0, Uncommon ~7, Rare 14, Very Rare 25 ...)
-  - Keep Map 5 for all faction cards
-- **Default:** Keep Map 5 until BF5 lands
-
-**RP2. The later faction gates** · Decide · Rewards · asked 2026-10-21
-- Proposed: Very Rare at 50 received and Map 25; Super Rare 60 / Map 30; Epic 70 / 35; Heroic 80 / 40; Unique and up 90 / 50 (FACTION_RARITY_GATES). The sim puts about 76 received by Map 25 and 111 by Map 40.
-  - Keep the proposal
-  - Other numbers
-- **Default:** Keep the proposal
-
-**RP3. Quarry Mole out of Base** · Decide · Rewards · asked 2026-10-21
-- The Quarry Mole (Darksight, Keen Sense, 1 Lumber) is a Base card everyone owns. Proposal: make it a Caves & Alcoves (Map 8, 8-1) reward; the Badger Lumberjack on 1-4 is the Lumber introduction now, and the plain Harvest Mouse is already Base.
-  - Move the mole to 8-1
-  - Keep it in Base
-- **Default:** Move the mole to 8-1
-
-**RP4. Plain start for Hummingbirds, the 0-2 pack and the tutorial rewards** · Decide · Rewards · asked 2026-10-21
-- Every Hummingbird faction card flies (no plain one), the 0-2 faction pack's third card is any basic-pack card, and the tutorial's reward cards (Rabbit Kit, River Warden, Sunspire Envoy, Riverwing Envoy) have skills. The pass made skirmish rewards and the faction picks plain on Maps 0-1 only.
-  - Add a plain Hummingbird common and plain tutorial rewards
-  - Leave as is
-- **Default:** Leave as is
-
-**RP5. Held cards: the Canopy's rainforest animals, the Thistle Baron, Eyrie Heights' theme** · Decide · Rewards · asked 2026-10-21
-- 15 Canopy animals are held for a Map 25 rainforest (the Savanna Reaches has room for 10 now); the Thistle Baron (Map 1's leader, Thorns) is held for Map 21+; Eyrie Heights' chapel birds are Ecclesia (Map 77), so Map 11 still fields cards nobody can collect; the Basalt Foundry's fights are Devilry (Map 66).
-  - Keep them held and re-theme Map 11 and the Foundry
-  - Put the Canopy animals on Map 14 now
-- **Default:** Keep them held
-
-**RP6. The last side-map gates** · Decide · Maps · asked 2026-10-21
-- Gated now (after Map N cleared, fights count as Map N): Clovermead 5, Lilypad Reach 6, Smugglers' Grotto 7, Sunken Grove 9, Mycelium Deep 11, Glimmer Depths 12, Sunken Depths 14, Aerie Vault 15, Canopy 18, Ice Hollow 21, Basalt Foundry 23. Kept: the Pale Desert (after Map 18), the Eye of the Volcano and the Volcano Lair (after 20-10), the Old Bramble (after the Ice Hollow, still counting as Map 17).
-  - Pale Desert after Map 22, the Eye and the Lair after Map 24, the Old Bramble as Map 21
-  - Keep these four as they are
-- **Default:** Keep these four as they are
-
-**DV2. Map leaders outside the ladder** · Decide · Rarity · asked 2026-10-22
-- The 11 Heroic map leaders a boss pays on Maps 0-19 (Sergeant Bramblefox to the Yeti Chieftain) and the Triumvirate (Unique, 23-8) come before Heroic and Unique are revealed. DV kept them outside the ladder, as the old road cap did.
-  - Keep leaders outside the ladder
-  - Re-rank the leaders to their map
-- **Default:** Keep leaders outside the ladder
-
-**DV4. Packs gated by map and rarity** · Decide · Rewards · asked 2026-10-22
-- A basic-pack card now comes out of a pack or the base track only once its map is reached (source.map) and its rarity revealed (packCardReached); before, any pack card of any rarity came out from Map 5.
-  - Keep the gate
-  - Gate by rarity only
-  - No gate
-- **Default:** Keep the gate
-
-**DV6. Faction track gates after Map 20** · Decide · Rewards · asked 2026-10-22
-- Replaces RP2: Very Rare at 50 received, Map 20 and the Volcano Lair cleared (owner: after Map 20's strongest submap); Super Rare 60 / Map 22 / the Lair; Epic 70 / Map 26 / the Eye; Heroic 80 / Map 30 / the Lair; Unique and up 90 / Map 40.
-  - Keep
-  - Other numbers
-- **Default:** Keep
-
-**DV7. Side-map gates, out of order** · Decide · Maps · asked 2026-10-22
-- Replaces RP6's list: Clovermead after Map 12, Lilypad Reach 6, Smugglers' Grotto 7, the Mycelium Deep 8, the Sunken Depths 11, the Sunken Grove 13, the Aerie Vault 15, the Glimmer Depths 16, the Canopy 18, the Pale Desert 19, the Ice Hollow 21, the Basalt Foundry 23; the Old Bramble after the Ice Hollow; the Eye and the Lair after 20-10. Fights count as the gate map.
-  - Keep
-  - Other gates
-- **Default:** Keep
-
-**SK-1. Sergeant Bramblefox: Rare, Map 13, the leader of Fox Run** · Decide · Rarity · asked 2026-10-22
-- Owner 09:52: lower its rarity and move it to another map, as that map's reward and in its skirmish. Done (package SK): Heroic -> Rare, from Map 0 (0-4) to The Redwood Deep (Map 13), the leader (showcase) of 13-2 Fox Run and paid when 13-2 is cleared (grantClearedBossLeaders reads its source, so clearing 0-4 no longer pays it; a player who already holds it keeps it). Why there: the lore bible's Greenhood Band (foxes, magpies and outcast mice) lives in the Redwood Deep and the Briar Maze, and Fox Run's deck is the foxes (Fox Kit, Swift Fox). Rare is allowed from Map 5 and is below Map 13's Very Rare cap, so it is the deck's top card. Re-fitted by the formula at Rare and Map 13: 4/12 -> 3/10 (89% of N), cost 1, no skills. Map 13's pool holds it under SPECIAL (the MAP list is full at 10). Fox Run now: Berserker Boar 4, Fox Kit 3, Swift Fox 3, Grizzly Vanguard 3, Tasmanian Devil 2, Bramblefox 1 (Lynx and Fawn Scout out, so it leads the deck); battle rating 61 -> 56. Heads-up: a live `__cfg:map-pools:mr` row would win over the file; the admin's Map cards editor shows it.
-  - Keep: Rare, 13-2 Fox Run
-  - Another map (the Briar Maze's Quill Path 12-2, the Greenhood Band's other home)
-  - Another rarity (Uncommon, or Very Rare at Map 13)
-- **Default:** Keep: Rare, 13-2 Fox Run
-
-**SK-2. Skirmish leaders picked by hand (the highlighted card changes)** · Decide · Maps · asked 2026-10-22
-- Owner 09:52: from Map 2 every skirmish's leader is its highlighted (showcase) card. The leader is the chosen showcase, else the Auto pick (top rarity, then Attack + Health/2). Where that Auto pick is a small card beside a much bigger unit (for example a 1/1 Rare beside a 1/25 Common that costs 3) I set `showcase` by hand to the biggest unit by cost and strength, so the highlighted card, and the leader, changes on these 14 fights: 5-3 and 5-4 Venomlord Serpent; 15-1 and 15-4 Cataphract Destrier; 17-1, 17-3 and 17-A-1 Glacial Ape King; 18-2 Komodo Warlord; 20-1 and 20-4 Cave Warlord; 21-3 Glacier Yak; 22-2 Gorge Wyrm; 19-A-4 Pyroclast Wyrm; 14-A-2 Ancient Sloth Titan. Every other fight keeps its Auto pick as the leader (the 2-1 crab is yours). Change a leader in the Showcase picker (Admin): the leader follows.
-  - Keep these picks
-  - Back to Auto everywhere (the strongest by rarity)
-  - Tell me which to change
-- **Default:** Keep these picks
-
-**SK-3. Skirmish sizes: 8 sevens, and three fights that rate higher with their leader** · Decide · Balance · asked 2026-10-22
-- 149 skirmishes (main maps and side maps) now hold 5-7 different cards: 47 have 5, 94 have 6, 8 have 7 (7 only with a clear leader: 7-2, 22-4, 2-A-3, 19-A-5, 14-A-3, 20-B-1, 18-A-3, 18-A-7; was 28 sevens, and 14 decks of 8 to 12 cards, all on the side maps). 17 fights had 4 cards and got a fifth from the map's pool. The leader counts double in the battle rating, so I traded copies (and, in 15 fights, a heavy card for a lighter one the map already uses) to keep each rating within about 10% of before; the smallest decks (rating 20) rise by 2, which is a leader's minimum. Three fights stay above: 16-4 (39 -> 52), 21-2 (63 -> 74) and 20-B-3 (46 -> 61), where the rest of the deck is already Common so copies cannot offset a Rare or Very Rare leader. Not touched: the Tutorial map's lesson fights (T-2 has 7 cards and T-3 has 8, they teach with a hand-picked lineup), the endless dungeons' generated floors, elites and bosses, and Maps 0-1 (no leaders, sizes only).
-  - Keep
-  - Give those three a lighter leader (a Common showcase)
-  - Allow more sevens
-- **Default:** Keep
+**PG-6. Enemy decks and the new copy ladder** · Decide · Decks · asked 2026-10-23
+- The ladder was built for the player's decks (Camp, Standard, swaps, import, fights) and ghost / PvP decks. 122 of 467 skirmish / elite / boss decks hold more than it allows (e.g. 22-5 Cinder Hornet x7 Common, 22-7 Caldera Snow Leopard x2 Super Rare, 1-A-5 Tunnel Ant x4 Rare); they are unchanged. tests/thematic-2026-10-19.js flags the four it watches.
+  - Leave enemy decks as they are
+  - Fit them to the ladder (tools/map_divvy check + a pass)
+- **Default:** Leave enemy decks as they are
 
 **T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03
-- The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied.
+- The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
   - Say "apply it" and I run supabase/migrations/20261003_fight_sessions.sql
   - Wait
 - **Default:** Wait (local seeds keep working)
 
 **D17. Sound direction and sourcing** · Decide · Sound · asked 2026-10-03
-- Overall feel for the cue sheet (sfx-cue-sheet.md), and whether to use CC0 packs or your own recordings. Real samples will beat more synthesis; I can't download them from here.
+- Overall feel for the cue sheet (sfx-cue-sheet.md), and whether to use CC0 packs or your own recordings. Real samples will beat more synthesis; I can't download them from here. Owner (10-23 00:10): "The musics right now have to be improved. only 2-3 tracks are usable." Not a pick between the options: the music needs better tracks, and only 2-3 are usable now, so it needs CC0 files from him (see the 10-23 backlog).
   - A. Cosy and organic
   - B. Chiptune
   - C. Mixed (organic world, chiptune UI)
@@ -387,101 +143,55 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Send your own files
 - **Default:** C, CC0 when files arrive
 
-**D18. Play Maps 1–4 and say how difficulty and rewards feel** · Feedback · Balance · asked 2026-10-03
-- Map 1 is an on-ramp; Maps 1–2 have reward cards; Map 2 retuned. Note: since 2026-10-08 Conquest fights default to Open mode (no collapsing), which changes how the AI and positions play, so the old difficulty numbers need a re-check.
-- **Default:** I re-simulate win rates under Open mode next
-
 **L1. Which beasts the Hummingbirds befriend; proposed card renames** · Decide · Lore · asked 2026-10-06
 - Open questions from lore-bible.md. Dogs and cats are settled (see L2).
 - **Default:** Keep current names
 
-**I1. Native-speaker review for Tagalog, Tamil, Japanese and Korean** · Decide · Languages · asked 2026-10-06
-- Machine-quality translations ship now (including card names). A native pass would catch tone and idiom.
-  - Find reviewers
-  - Ship as is
-- **Default:** Ship as is
-
-**I2. Translate text that contains numbers** · Decide · Languages · asked 2026-10-08
-- Lines like "3 cards", "Pack 2 of 10", "N new cards!" stay English because the translator matches whole strings. Fix: number-aware templates for each language.
-  - Approve the template change
-  - Leave English
-- **Default:** Approve
-
 **H1. Hero levelling pace, stat prices, and Materia socketing (v2)** · Feedback · Hero · asked 2026-10-06
 - Play a few fights with a Hero and say how it feels; do you want Materia socketing next?
 
-**H2. The 3-part Hero XP bar (feedback item 17)** · Decide · Hero · asked 2026-10-08
-- How the three XP bars should split (battle XP, Materia XP, ...?) — needs your picture of it.
-
-**E1. A free pack for guests before sign-in** · Decide · Economy · asked 2026-10-08
-- Let a guest open one Sprout Pouch before asking them to sign in.
-  - Yes
-  - No
-- **Default:** Yes
-
-**E2. Disenchant values (Magic Dust per extra copy)** · Confirm · Economy · asked 2026-10-08
-- Built with: Common 5, Uncommon 8, Rare 15, Very Rare 20, Super Rare 30, Epic 40, Heroic 50, Unique 60, Legendary 100, Mythic 150, Ancient 200. Never Base/Quest/levelled/foil/Shiny; keeps one copy.
-  - Keep
-  - Change the numbers
-- **Default:** Keep
-
 **C1. Which cards get the six new finishes** · Decide · Cards · asked 2026-10-08
-- Hex, Etched, Ice, Gold leaf, Reverse and Prism are built (Effects Lab → Card treatment centre). Who gets them: rarities, events, pack tiers, prestige?
-
-**G1. Combo counter** · Decide · Battle · asked 2026-10-07
-- A counter for chains of triggered abilities in one round, with escalating sound/visuals.
-  - Build it
-  - Skip
+- Hex, Etched, Ice, Gold leaf, Reverse and Prism are built (Effects Lab → Card treatment centre). Who gets them: rarities, events, pack tiers, prestige? Owner (10-23 00:10): "- later. Pack foil chances - evaluate also. Should be rare." Stays open for later; the pack foil chances are to be evaluated in package RW3 and kept rare. Built (RW3, the pack-foil part): a card comes out foil 1% (Hedgerow Pouch), 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster), faction packs 1%; was 4 / 8 / 12 / 10 / 4%, and every Highcrest Case had one foil guaranteed (about 1.3 foils a Case; now 0.16). An Advanced pack's first five cards keep 10x (10 / 15 / 20%). Call RW3-4.
 
 **G2. Siding with Otters or Hummingbirds (proposal)** · Decide · Lore · asked 2026-10-08
-- See siding-proposal-2026-10-08.md: a standing meter moved by dialogue choices and which side's fights you take, unlocking side-specific rewards, titles and a late-game fork.
+- (Rewritten 10-23 at the owner's request, all inside this item; the older siding-proposal-2026-10-08.md is source material, to move into the hub later.) What it is: the player is a traveller both peoples want on their side: the Otters (Rivergate Legion) and the Hummingbirds (Sunfeather Tribes). A hidden Standing number from -100 (Otters) to +100 (Hummingbirds) moves with the player's choices, and the band it sits in decides which rewards, titles, shops and story branches open. Where it lives today: the side picked in the tutorial is stored as `bramblewood_arena_faction` (saveFactionChoice / loadFactionChoice, arena_app.js) and today only sets the starter deck, the voice in warnings and the faction pack; cards carry `faction` (14 Hummingbird cards, 27 base) and `source.side` ('tribes', 'shared'); the faction reward track (noteFactionReceived) counts faction-pack pulls. Dialogue choices already exist (playDialogue with onDone replies, for example the Old Well in visitOldWell). Nothing reads a Standing yet. What siding changes for the player: (1) Reward cards: some skirmishes offer two reward cards, one per side; the player gets the one matching their band, Neutral gets a third (road-folk, dog or cat card). (2) Side shops: a Legion Quartermaster and a Tribe Trader on later maps, different stock. (3) Titles and character looks (Legion Outrider, Friend of the Tribes, Wanderer of Both Banks). (4) Materia leaning: Otter crafting nudges Shield/Formation, Hummingbird crafting Flight/Bond. (5) Story: dialogue warms or cools by band; from Map 6 a key skirmish plays differently by band; a Neutral track keeps the peace through a series of tests, hardest, with unique rewards. (6) It never locks a people's cards away: off-side cards stay in packs and the Market, only the story rewards differ; and nobody is punished for the tutorial pick. What moves Standing: dialogue choices +/-2 to 8 (no number shown on the button), first clears of one people's skirmishes +/-1 (fighting Otters drifts you to the Hummingbirds and the reverse), side quests +/-5 to 15 (a few per map, often exclusive), neutral acts (helping dogs, cats, road-folk, the Traveller) pull toward 0. Drift is slow: 2-3 maps of consistent choices to a friend band, most of the campaign to be Sworn. Five bands: Sworn Otter (<= -60), Otter friend (-59 to -20), Neutral (-19 to 19), Sunfeather friend (20 to 59), Sworn Sunfeather (>= 60); a two-coloured banner on Profile and the Conquest map shows the band. Build in four steps: (1) the Standing store (saved with the account), the banner and hidden weights on dialogue choices, Old Well first; (2) two-sided reward cards on 3-4 skirmishes of Maps 1-3, picked in the skirmish editor; (3) two side quests per map for Maps 1-3; (4) side shops from Map 4, titles, the Map 6 fork. Open questions for you: (a) start at +/-10 from the tutorial pick, or everyone at 0? (b) is the meter shown as a number or only as the band name? (c) is Neutral a full third path with its own ending, or only a resting place? (d) should the two-sided rewards and the side quests wait until the factions are symmetric (RP4), so neither side is the stronger pick? (e) how does siding interact with the Hummingbird gate (the faction pack) and the 0-2 faction pack? (f) can the player reset Standing, or does drift back by effort only? Options stay: Approve as written, Change parts, Not yet. Waiting for your pass over (a)-(f).
   - Approve as written
   - Change parts
   - Not yet
 
-**T1. Catch-up mechanics** · Discuss · Design · asked 2026-10-03
-- Rested XP, a weekly comeback quest tier, cheaper early Conquest once you've cleared further, a gentler curve.
-
-**T2. Replays** · Discuss · Design · asked 2026-10-03
-- Watch-only or re-fight this deck? Share links? How many to keep?
-
-**N1. The Nest repeats the Codex** · Discuss · Design · asked 2026-10-08
-- You noted the Nest overlaps the Codex. Kept for now. Ideas when you're ready: the Nest as your trophy shelf (Shinies, foils, prestige), or merge it into Codex as an Owned filter.
-- **Default:** Keep for now
-
 **S1. Apply the admin player list function** · Decide · Server · asked 2026-10-08
-- The Admin → Players portal reads one admin-only, read-only database function (admin_list_players: profiles, levels, currencies, cards, matches; no emails). Written in supabase/proposed/20261008_admin_list_players.sql. Applying it (and the panel that reads it, already drafted) was held for your OK.
+- The Admin → Players portal reads one admin-only, read-only database function (admin_list_players: profiles, levels, currencies, cards, matches; no emails). Written in supabase/proposed/20261008_admin_list_players.sql. Applying it (and the panel that reads it, already drafted) was held for your OK. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
   - Say "apply it" (admin list)
   - Wait
 - **Default:** Apply
 
 **S2. Anti-cheat tier 1** · Decide · Security · asked 2026-10-08
-- Players can currently edit their own rating and currencies from the browser console. Tier 1 makes rating read-only and refuses any single write that adds more than 2,000 Maple / 200 Gold Leaves. supabase/proposed/20261008_anticheat_tier1.sql.
+- Players can currently edit their own rating and currencies from the browser console. Tier 1 makes rating read-only and refuses any single write that adds more than 2,000 Maple / 200 Gold Leaves. supabase/proposed/20261008_anticheat_tier1.sql. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
   - Apply tier 1
   - Change the caps
   - Wait
 - **Default:** Apply tier 1
 
 **S3. Turn on leaked-password protection** · Do · Security · asked 2026-10-08
-- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login.
+- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner.
   - Done
   - Skip
 - **Default:** Done
 
 **S4. SonarCloud as well as CodeQL?** · Decide · Security · asked 2026-10-08
-- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token.
+- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token. Owner (10-23 00:10): "Chrome". Needs a Chrome session with the owner.
   - Add SonarCloud
   - CodeQL is enough
 - **Default:** CodeQL is enough
 
 **A1. API keys + monthly caps for GPT Image and fal/Kling** · Do · Art · asked 2026-10-08
-- Create the keys yourself, keep them as local environment variables (never in the repo), set a monthly cap in each dashboard. Nothing is bought without your OK. See asset-pipeline-action-items.md.
+- Nothing here is bought; every step is yours, in your browser, and no key ever goes into the repo or a chat. 1. OpenAI (GPT Image): sign in at platform.openai.com, open the Billing page and read the plan; add a payment method only if the dashboard asks for one before the key works (that is your call, I never add one). 2. Set the monthly cap there first: Settings > Limits (or Billing > Usage limits), set a monthly budget (the asset plan assumes a few dollars: about 30 splash sprites, 5-10 images per skin, so start with a low cap) and an email alert at 50% and 80%. 3. Create the key: API keys > Create new secret key, name it bramblewood-local, restrict it to the project if the dashboard offers a project; copy it once. 4. fal.ai (FLUX LoRA training and Kling video): sign in at fal.ai, open Billing and Usage; fal is prepaid credits, so the cap is the amount you load (load the smallest top-up, or none until you decide on A2), and use the usage view to watch the spend. 5. Create the fal key: Keys > Add key, scope API, name it bramblewood-local; copy it once. Kling comes through fal (image-to-video), so it needs no separate account; if you ever use Kling's own site instead, set its monthly credit cap in its billing page and keep auto-renew off. 6. Store both keys as local environment variables on your machine, not in any file in the repo: for example OPENAI_API_KEY and FAL_KEY in your shell profile or the OS key store. The art tools read them from the environment only, and `git grep` must never find them. 7. Tell me 'keys are set' (never paste the keys). I will check only that the variables exist (set or not set, never their value), run one test image through the pixel pass (`tools/art/pixelize.py`) and report what it cost on the dashboard. 8. Rotate or delete a key at once in the dashboard if you ever think it leaked. What is still open after A1: the review gate (generated assets land in the hub's Visual Library as 'proposed'), and the commercial-use terms for OpenAI, fal and Kling before any paid marketing (asset-pipeline-action-items.md, items 13-14).
   - Done
   - Not yet
 - **Default:** Not yet
 
 **A2. Train a Bramblewood pixel LoRA?** · Decide · Art · asked 2026-10-08
-- FLUX.2 [dev] trained on ~30 of our PixelLab cards (~$6.40 per 1,000 steps on fal), for Maps 9–10 cards and Home sprites while PixelLab is capped.
+- What a Bramblewood pixel LoRA is: a small add-on trained on our own card art so a general image model (FLUX.2 [dev], trained on fal) draws new cards in the same house style; PixelLab stays the main source and heroes stay PixelLab. Data: 20-40 of the best existing PixelLab cards from art/cards (633 PNGs, 256x256 today), picked for one coherent look: same outline weight, same palette (tools/art/palette.json), a spread of subjects (mammal, bird, insect, structure), no text in the image, no watermarked stock. Each image gets a short caption in the style of docs/art-style-prompts.md with a trigger word (for example 'bwpixel') so the style can be called on and off. About half a day of curation, which I can do from the repo; you pick or veto the 30. Tool options: (a) fal's FLUX.2 trainer (hosted, no GPU, upload a zip of images and captions, about 1,000-2,000 steps, roughly $6.40 per 1,000 steps on fal's list, so about $6-13 per training run plus about a few cents per generated image; check the current price on fal's page before any run); (b) Replicate's FLUX trainer (similar, per-run pricing); (c) a local or rented GPU with ai-toolkit/kohya (cheaper per run, but needs a rented GPU and setup time; not worth it for a 10-card test). Recommendation: (a), because A1 already puts a fal key and cap in place. Cost range: a first test is about $7-15 in total (one 1,000-step training plus 10-40 generations), and a retrain with fixes is the same again; a full set of Maps 9-10 cards afterwards is cents per card. All of it stays under the cap you set in A1; nothing runs without your OK on the amount. Test plan on 10 cards: (1) train once on the 30; (2) generate the 10 test cards, chosen from existing cards whose PixelLab art we already like, so each result can be set beside the original (a mix: 3 small animals, 2 birds, 2 insects, 1 structure, 1 large beast, 1 fantasy creature); (3) run each through `tools/art/pixelize.py` (nearest-neighbour downscale to the 160 px grid, palette snap, outline clean-up); (4) review in the hub's Visual Library as 'proposed', scoring each on outline, palette, readable silhouette at card size and fit beside the PixelLab neighbours; (5) pass if at least 7 of 10 are usable with at most a pixel pass and one retry, fail otherwise; (6) if it passes, spend the same amount on the Maps 9-10 cards and the Home sprites that wait on PixelLab; if it fails, delete the LoRA and keep PixelLab only. Needs from you: A1 done, a yes on the training spend, and a veto pass over the 30 picks.
   - Yes, test on 10 cards
   - Not yet
 - **Default:** Yes, test on 10 cards
@@ -492,91 +202,159 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Later
 - **Default:** Later
 
-**F3. Enchant and Refine numbers** · Confirm · Cards · asked 2026-10-08
-- Enchant: Ember +1⚔ (scorch), Stone +3❤, Tide +2❤, Grove +1⚔+1❤. Refine costs from 40✨+100🍁 (Foil) up to 200✨+450🍁+10🍂 (Gold leaf). Tide is currently a weaker Stone; give it something of its own?
-  - Keep
-  - Retune
-- **Default:** Keep
+**TU2-1. Which daily dungeons are hidden for now** · Decide · Dungeons · asked 2026-10-23
+- Your answer to AR-2: "hide both daily dungeons require future balancing anyway. We havent even decided what special thing they give." There are three ticketed daily dungeons: Murgle Mayhem (Map 6), the Undercroft (Map 11) and the Long Burrow (Map 22, released 10-18). Package TU2 hid all three from players (one switch, DAILY_DUNGEONS_HIDDEN: no entrance on their map, no World map stop, no Dungeons tab, no 🗝️ key button); Admin Mode still opens them, and saves keep their climbs and keys. The backlog row (decide what they give, rebalance) is in docs/action-items.md.
+  - Hide all three (as built)
+  - Hide the Undercroft and Murgle Mayhem; keep the Long Burrow open
+  - Hide only the Undercroft
+- **Default:** Hide all three (as built)
 
-**C3. Victory shift and the castle's white gradient** · Clarify · Battle · asked 2026-10-09
-- Couldn't reproduce either. Which cards move at the end of a fight, and when? Where does the white gradient on the castle show (fight, map, results)? A screenshot would settle both.
+**TU2-2. How faction cards start at Level 0** · Decide · Economy · asked 2026-10-23
+- N1: "Faction cards also start at level 0." They started at Level 1 (cardBaseLevel; their printed stats are their Level 1 stats, as the budget prices them). Package TU2 made a new copy of a faction card a Level 0 copy, as the tutorial's copies already are: about 85% of its printed stats until a nest trains it to Level 1 with Kibble, and it shows in the Nest's 🌱 Level 0 tab. A card you already raised keeps its level; copies owned before today are unchanged. The other way would make Level 0 the printed stats for every faction card (and every Level above one step stronger than today), which moves all 41 faction cards' balance.
+  - New copies come at Level 0, trained in the Nest (as built)
+  - Faction cards' printed stats become Level 0 (rebalance all 41)
+  - Back to Level 1
+- **Default:** New copies come at Level 0, trained in the Nest (as built)
 
-**E9. What do Krooni 👑 buy?** · Decide · Economy · asked 2026-10-09
-- The Golden case gives 3 Krooni. Nothing spends them yet, and they're kept on this device only (no database column). Ideas: cosmetic finishes, a Krooni-only pack, or Hero rarity boosts.
-  - Cosmetics
-  - A Krooni pack
-  - Hero boosts
-  - Decide later
-- **Default:** Decide later
+**TU2-3. The tutorial brambles' Health: 9 and 11, or the 12 you set** · Decide · Tutorial · asked 2026-10-23
+- Why the tutorial Health edits did nothing: the Tutorial editor's "Rival bramble HP" (live since 10-22 15:23 at 12) only counts for a tutorial fight with no Health of its own, and both fights carry one (9 and 11). Each fight's Health is now one number, edited in Edit skirmish (Bramble Health) or the Tutorial editor (Part 1 / Part 2), saved as a fight edit like any other fight. Nothing was changed in the live data, so the fights still use 9 and 11; the fight halves every bramble's Health (BRAMBLE_SCALE), so they show 5 and 6. The editor now says so beside the field.
+  - Keep 9 and 11 (as now)
+  - 12 and 14 (your 12; Part 2 two sturdier)
+  - Other numbers (set them in the editor)
+- **Default:** Keep 9 and 11 (as now)
 
-**E10. Promotion cost and level** · Decide · Economy · asked 2026-10-09
-- Worker Ant promotes at Lv 3 for 60 Maple Leaves + 20 Dust. The ant goes back to Lv 0, so it can be promoted again into the other choices. Ant Warrior uses the Soldier Ant's art for now.
-  - Keep
-  - Higher level (5)
-  - Free promotion, keep the level
-- **Default:** Keep
+**TU2-4. The Worker Ant's Promotion in the Forge is hidden** · Decide · Economy · asked 2026-10-23
+- E10: "Combining or converting cards to different cards is a concept we havent explored. HOWEVER, please prepare this tab ... it will be its own feature page!" The Forge did have a working Promotion: the Worker Ant (promotesTo, at Level 3, for 300 Maple Leaves + 100 Magic Dust) could become an Ant Warrior or one of two other ants. Package TU2 replaced that panel with a pointer to the new Promotion page, which says "Coming soon" and has no controls; the code and the card data stay (PROMOTION_PAGE_LIVE).
+  - Keep it hidden until the Promotion page is designed (as built)
+  - Bring the Worker Ant's Promotion back on the new page as it was
+- **Default:** Keep it hidden until the Promotion page is designed (as built)
 
-**E11. Nurse master bonus** · Decide · Economy · asked 2026-10-09
-- The Nest Nurse (a Unique+ card or the Wandering Traveller) is in, but what it does is still open. Ideas: eggs hatch 25% faster; a small chance a hatch comes out Shiny.
-  - Faster hatching
-  - Shiny chance
+**TU2-5. The Highcrest Case without its 3 Krooni** · Decide · Economy · asked 2026-10-23
+- E9: "Retire Krooni for now." Players no longer see or earn Krooni: the Highcrest Case (250 Maple Leaves + 30 Gold Leaves) no longer pays its 3 Krooni and its shop line no longer mentions them; the wallet hides them. Saved balances are untouched and Admin Mode still shows them. Nothing replaces the 3 Krooni in the case.
+  - Nothing in their place (as built)
+  - Lower the case's price a little
+  - Something else in the case
+- **Default:** Nothing in their place (as built)
+
+**RW3-1. Which fights get which shield bonus on the card drop** · Decide · Rewards · asked 2026-10-23
+- Built: elite, champion, miniboss and dungeon +1%; sub-boss +2%; boss +3%; world boss, raid boss, megaraid and final boss +4% (the owner's 1/2/3/4% read as the four steps above a skirmish). So skirmish 1%, elite 3%, sub-boss 5%, boss 6%, world / raid boss 8%, megaraid / final boss 9%.
+  - As built
+  - Bosses +4% too (boss 7%)
+  - Only elite +1 / boss +2 / world +3 / final +4, nothing for sub-bosses
+- **Default:** As built
+
+**RW3-2. Rare notices: rarer tickets, or rarer notices?** · Decide · Raid · asked 2026-10-23
+- Built: the S, SS and SSS notices appear as often as before (3.5%, 0.8%, 0.2% of notices); what changed is how often they bring a Raid Ticket: 40% each, so S tickets 0.59 a week and SS + SSS tickets one every 1.4 months. If you meant the SS / SSS notices themselves (their big rewards too) should appear only once a month or two, their weight would drop from 1.0% to about 0.5% of notices.
+  - As built (rarer tickets)
+  - Rarer SS / SSS notices (about 0.5%)
   - Both
-- **Default:** Faster hatching
+- **Default:** As built (rarer tickets)
 
-**D20. Devilry: my readings of your list (all built, all revertible)** · Decide · Design · asked 2026-10-10
-- Built as I read them: (1) Dark Summon is a second play each turn, just for ⛧ cards, and every Dark Summon card also costs Darkness (a free extra play measured at 100%). (2) Darkness comes from your own units perishing (+1 each); 'dark actions' were left open. (3) Devour uses your play for the turn and works once per devourer. (4) Ritual's 'units perished' counts both sides. (5) Sacrifice N sits on the fodder; the discount comes off Darkness first, then Lumber. (6) Your blank keyword is named Offering N. 2026-10-10 (you: 'darkness is not clear. Is it gained? idk'): yes, it is gained: +1 each time one of YOUR units perishes (Ash Imp adds +1 on arrival). It's shown only if your deck has at least one Devilry card: the pill reads '★ 3 · ⛧ 1' (Darkness held, dark summons left this turn), and each gain floats a ★ +1. You gain 1 dark summon per turn; it doesn't stack.
-  - Keep all six
-  - Change some (tell me which)
-- **Default:** Keep all six
+**RW3-3. Packs: no new-card guarantee, faction packs keep their track** · Decide · Rewards · asked 2026-10-23
+- "Packs outputs can never be changed by anything" also turned off the new-card guarantee (the Tidemire Chest and the Highcrest Case promised one card you don't own) and the 10-12 weight that made a recently pulled card less likely. A faction pack's two faction cards still follow the faction reward track (RP: Commons first, then Uncommons...), which reads your collection; its general card is fully random.
+  - As built
+  - Keep the new-card guarantee
+  - Faction packs fully random too
+- **Default:** As built
 
-**D21. Backstab: what should it do?** · Decide · Design · asked 2026-10-10
-- You listed Backstab as a neutral skill without a rule. Suggestion: Backstab N, +N damage when it hits a unit that is facing a different target (rewards Pitchfork, Sweep and off-centre angles).
-  - Use the suggestion
-  - Something else (tell me)
-  - Drop it
-- **Default:** Use the suggestion
+**RW3-4. Pack foil chances** · Decide · Cards · asked 2026-10-23
+- Built: 1% a card (Hedgerow Pouch), 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster), faction packs 1%; the Highcrest Case's guaranteed foil is off; Advanced packs keep 10x on their first five cards (10 / 15 / 20%). Was 4 / 8 / 12 / 10 / 4% plus the guarantee.
+  - As built
+  - Lower still (0.5 / 1 / 1.5%)
+  - Keep the Highcrest guarantee
+- **Default:** As built
 
-**D22. Fast Forward counters: build next?** · Decide · Design · asked 2026-10-10
-- Your rule: with N counters, a unit runs its turn, upkeep included, N extra times before joining the main action order. It needs a pre-combat pass in the engine, about half a day of work with tests.
-  - Build it next
-  - After Ecclesia
-  - Later
-- **Default:** After Ecclesia
+**RW3-5. The Shop's Raid Ticket restock** · Decide · Raid · asked 2026-10-23
+- Built: each local day the cart has a Raid Ticket at 25% (about 1.75 days a week), one in stock; buying it sells it out until another day rolls one. The day's roll is the same for every player that day.
+  - As built (25% a day)
+  - 15% a day (about 1 a week)
+  - A roll per player
+- **Default:** As built (25% a day)
 
-**D24. Arena rules: daily rotation and the second-player card** · Decide · Balance · asked 2026-10-10
-- Built: the Arena's rule set changes daily (Standard, Long Night, Midsummer, Dusk Start, Timber Fair with +1 Lumber every 3 rounds, Frost Week, Fog on the Moor). In every Arena set, whoever plays second opens with an extra card. Conquest keeps day-first, no extra card and no free Lumber unless a fight sets its own rules; Live Ranked plays Standard. Should Conquest also give the second player the extra card (it would need a retune)?
-  - Keep Conquest as is
-  - Add the second-player card to Conquest too
-  - Change the rotation
-- **Default:** Keep Conquest as is
+**RW3-6. Disenchant past Divine** · Decide · Economy · asked 2026-10-23
+- The owner's list ends at Divine 2,000 "+ etc.". Built: x1.5 a step, Void 3,000 and Daemonic 4,500.
+  - As built
+  - x2 a step (4,000 / 8,000)
+- **Default:** As built
 
-**D19. Archetypes: which to build first** · Decide · Design · asked 2026-10-09
-- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions. 2026-10-09 (default taken on 'continue'): Swarm built first (Swarm N + Hive Mind on ants and bees). Then Tide (taken on 'continue', revertible): Flow/Ebb each round from round 2; Tide +1 on Flow, -1 damage taken on Ebb; Wash pushes the facing enemy +1 Wait once; 18 water cards tagged, 7 trimmed back into band, 28 water fights retuned. Then the active Exile zone (also on 'continue', revertible): Echoes 🕯️ (+1 per card sent to your Removal Zone) and Remember N (returns from the zone at N Echoes), with Echo Keeper, Marsh Wisp and Bog Revenant. Then the Forgotten Ones (also on 'continue', revertible): Remember returns +1/+1 per Echo spent, the Forgotten tag, and The Unremembered (Swampmire boss reward). 2026-10-10: Devilry built from your new list (see D20). Next suggested: Ecclesia with your Prayer value (D23).
-  - Ecclesia next (D23)
-  - Scrapper next
-  - Evolution next
-  - Pause archetypes
-- **Default:** Ecclesia next (D23)
+**RW3-7. Per-copy Forge levels: where the duplicate credit sits** · Decide · Forge · asked 2026-10-23
+- Levels are per copy again (item 25). The duplicate credit (fed spares) stays on the card, as FG had it, and pays for whichever copy you temper; NF (10-18) had it on one copy. A save keeps every level (each copy keeps the shared level it had; only the best copy counts as paid for, so melting refunds the levels once).
+  - As built (credit on the card)
+  - Credit on the copy it was fed to
+- **Default:** As built (credit on the card)
 
-**FOG1. Fog of War is information only: the CPU still sees your whole board** · Decide · Battle UI · asked 2026-10-21
-- Package FOG hides the far enemy columns from the player's view only. Combat, targeting and the CPU play exactly as before, and the enemy's view of your units is not fogged. Raids, Pass & Play and the Collapse rows are left out.
-  - Keep it as a view-only rule
-  - Also make the CPU unable to target units it cannot reach (an engine change)
-- **Default:** Keep it as a view-only rule
+**RW3-8. Skirmish exclusives: the 12 cards that left the packs** · Decide · Rewards · asked 2026-10-23
+- Built (GD2-3): 2 exclusives on each map that had none and has 4+ skirmishes, 1 on Maps 4 and 21; the cards are the ones those skirmishes already paid as first-clear pack cards or that fight in them, the higher rarity first: caustic-scorpion (Uncommon, also in the Tutorial's T-2 deck), eagle-owl-quartermaster and ash-cloud-condor (Rares) are among them. DV2's count rule (3 / 2 / 1 rewards per map by its new cards) is now exceeded on those maps (tools/map_divvy_2026_10_22.js check allows it, RW3_EXTRA_REWARDS).
+  - As built
+  - Only 1 per map
+  - Swap a card (name it)
+- **Default:** As built
 
-**FOG2. Fog reach is the unit's column and the ones beside it; revealers add only permanence** · Decide · Battle UI · asked 2026-10-21
-- Reach follows your Parasite note (a live unit in the column or beside it; the centre is always open, as for placement). Illuminate has no radius, so Darksight, Keen Eye and Illuminate cover the same three columns, but what they cover stays revealed for the rest of the fight.
-  - Keep: same reach, revealers make it permanent
-  - Give revealers a wider reach (2 columns each side)
-- **Default:** Keep: same reach, revealers make it permanent
+**RW3-9. T-1's first-clear card** · Decide · Tutorial · asked 2026-10-23
+- The Quarry Mole left T-1 (it is 8-1's now). T-1 pays no card until one is picked in the Tutorial editor (or keep it so). The live tutorial config still lists the mole; the game skips it, and supabase/proposed/20261023_rw3_tutorial_reward.sql clears it (waits for "apply it").
+  - No card on T-1
+  - A plain Common (name it)
+  - The Rabbit Kit (D46)
+- **Default:** No card on T-1
 
-**FOG3. Fog of War uses the Mist scene as its card art for now** · Decide · Battle UI · asked 2026-10-21
-- The Environment card borrows art/fields/misty.png. A new scene needs generating under the art workflow.
-  - Generate a Fog of War scene
-  - Keep the Mist scene
-- **Default:** Keep the Mist scene
+**RW3-10. Easter eggs in Mystery Boosters: how rare** · Decide · Codex · asked 2026-10-23
+- Built: 0.05% a card (1 in 2,000 cards, about 1 in 670 Mystery Boosters of 3), any of the nine Easter eggs.
+  - As built (0.05%)
+  - 0.01%
+  - 0.1%
+- **Default:** As built (0.05%)
+
+**RW3-11. The Nurse: mastery-based speed or a flat 25%** · Decide · Economy · asked 2026-10-23
+- Already built (10-15): 2.5% faster per Nursing mastery point, at most 50%. A typical Unique nurse is about 20-25%. The owner said "eggs hatch faster" with no number.
+  - Keep the mastery scale
+  - A flat 25%
+- **Default:** Keep the mastery scale
 
 ## Decided
+
+**GD2-1. The skill that shields allies from skills: Spellshield 🪬** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-23
+- Built as Spellshield 🪬 (engine key spellshield): a single-target enemy skill (an arrow or other shot, a Bolt, a damage or status skill) aimed at a unit adjacent to it hits it instead; never itself; several at random. Price 0.8 in canonical/skill-costs.json, an estimate (about 3/4 of Guardian's 1.06: fewer hits come as skills than as swings, but they are the heavier ones). No card has it yet; measure it with tools/skill_test_robust.js before one gets it.
+  - Spellshield
+  - Spell Ward
+  - Mirrorguard
+- **Default:** Spellshield
+- **Outcome:** Owner (10-23 00:10): "Spellward." Not the default name: the skill is called Spellward (his spelling, one word; the second option), not Spellshield. Rename it everywhere (engine key, texts, language packs); the rule itself is unchanged. To build in package EN: the name is "Spellward" (one word, his spelling).
+
+**GD2-2. Cleave's side damage isn't a swing a Guardian takes** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-23
+- Guardian takes plain swings: the main attack and each prong of a Fork, Trident, Pitchfork or Octolash (each prong is a full single-target swing). Cleave's bonus damage to the units beside the target is a spread of one swing, so it reaches those units, as before.
+  - As built
+  - A Guardian takes Cleave's side hits too
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "As built." Guardian keeps taking plain swings only; Cleave's side hits still reach the units beside the target (the default).
+
+**GD2-3. Seven maps have no skirmish-exclusive card** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-23
+- Maps 4, 6, 11, 12, 18, 20 and 21 have no skirmish whose first clear pays an exclusive card: their own cards sit on their elites and bosses, or are their pack cards. Left as they are ("if it turns out there is not much left, then okay"); their skirmishes pay pack cards. Giving each one would move one of its pack cards (or an elite's card) to a skirmish.
+  - As built
+  - Move one card to a skirmish on each of those maps
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "Skirmish exclusives have priority. So move the pack cards." Not the default: on Maps 4, 6, 11, 12, 18, 20 and 21 one pack card moves to a skirmish as its first-clear exclusive card. To build in package RW3. Built (RW3): every main map has a skirmish-exclusive card now. Maps 4, 6, 11, 12, 18, 20, 21 had none: 1 card moved out of the packs on the maps with fewer than 4 skirmishes (Maps 4, 21), 2 on the others (12 cards: snapstick-turtle 4-1; poison-dart-croaker 6-1, booming-bittern 6-2; alpine-marmot 11-1, eagle-owl-quartermaster 11-2; bramble-hoglet 12-1, cunning-vixen 12-2; thorny-devil 18-1, caustic-scorpion 18-2; pack-mule 20-1, ash-cloud-condor 20-2; pika-hoarder 21-1), each from that skirmish's own deck (tools/rw3_first_rewards_2026_10_23.js). Exclusive skirmishes 23 -> 36 (with the Quarry Mole on 8-1, RP3).
+
+**GD2-4. No new free packs or tokens on skirmishes** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-23
+- Pack rewards on skirmishes stay as they were (Map 0's 0-2 faction pack; the map free packs are on bosses). Adding packs or Faction Reward tokens to skirmishes would speed up the economy and the faction track, both tuned. 33 of the 101 skirmishes pay no card.
+  - As built
+  - Add a free pack or a token to some of the 33
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "A Skirmish must always give either a pack of that 'season', a faction pack or a skirmish exclusive or a card of that season's pack" Not the default: the 33 skirmishes that pay nothing now pay one of those four; no skirmish pays nothing. To build in package RW3. Built (RW3): no skirmish pays nothing on its first clear: 101 main-map skirmishes = 36 exclusive cards, 64 cards of that map's pack, 1 pack (0-2's faction pack); was 23 / 44 / 1 / 33 nothing. Every map still had pack cards to give, so no new season or faction pack was needed; the fallback (that season's pack, then your faction pack, taking turns) is built (SKIRMISH_FIRST_PACKS) and empty.
+
+**GD2-5. What reads "adjacent" and what keeps its shape** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-23
+- On adjacent (in front / behind too, in a raid): Guardian, Spellshield, Formation, Haste, Shieldwall, Amplifier, Immolation, Irradiated, Inspiring, Friction, Proliferate, Electricity, Chain Lightning, Dragon Lightning, Spitfire's splash, the Adjacent Ally target. Kept as they are: shapes across the board (Fireball's 3 columns, Meteor, Rocket, Dynamite's 3x3, Cleave, the prongs, Taunt, Stench, Landslide, Ambush / Sentry facing), where a token appears (Twin, Sprout, Brood, Palisade, Spawner: a free slot nearby), and Pack chains (front row only today).
+  - As built
+  - Pack chains across rows too
+  - The splash shapes too
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "Okay. Dynamite is adjacent but including diagonals - is there a way to name this?" Keep the shapes as built (the default). Open naming question: Dynamite reaches the 8 cells around its target, diagonals included; EN proposes one word for it (suggested "Surrounding": left, right, in front, behind and the four diagonals) and uses it in the texts, leaving "adjacent" at the four directions. To build in package EN.
+
+**GD2-6. An Easter egg a player owns shows as a plain card** · Decide · Codex · asked 2026-10-22 · decided 2026-10-23
+- Outside Admin Mode nobody sees an Easter egg: no "???" slot, no section, no count, no filter or search hit, no Easter-egg words. A player who owns one anyway (only an admin grant gives one) sees it in their Codex as an ordinary card, its where-to-get line "Not obtainable yet".
+  - As built
+  - Hide it from its owner too
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "Yes. The method to own one is in giveaways or supremely low chance in mystery packs" An owner keeps seeing the Easter egg as an ordinary card (the default); what is new is how a player can own one: giveaways, or a supremely low chance in mystery packs. To build in package RW3. Built (RW3): a Mystery Booster card is an Easter egg 0.05% of the time (1 in 2,000 cards; MYSTERY_EGG_CHANCE), one of the nine at random, granted through its own source 'mysteryEgg'. Giveaways are the admin grants that already existed.
 
 **GD-1. Guardian's front / behind is raid-board only** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-22
 - In front / behind needs rows that fight, so it applies on the raid board (3 rows, every row acts). Elsewhere a reserve row is only waiting to step up (not on the battlefield), so a Guardian waiting there doesn't guard the unit in front of it, and nothing guards a waiting unit. Normal fights have one row, so they only have left / right (the card matrix shows 0 changed fights); in 600 random raid-board fights with Guardians, 508 ended differently.
@@ -621,12 +399,33 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** As built (chance per win)
 - **Outcome:** Owner 19:27: "GD-6: Sounds correct I think? For skirmish first-clear reward card drops - they don't roll twice. They just roll for the skirmish-exclusive, then if they get it, they roll within it to see if they get another card instead." Checked (package GD2): rollCardDrop already does exactly this: one roll at 21% on a repeat win, then within it the reward card's rarity share (Common 60% ...), else a pack card; no second roll (a Common reward: 12.6% the card, 8.4% a pack card; 20,000 seeded rolls in tests/gd2-2026-10-22.js). Nothing changed. The panel line shows the per-win chance, as built.
 
+**DN2-1. An elemental crit shows only its big glyph, no 👊** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-23
+- Read from "can you just make the damage type emoji bigger if it's non physical": an ice crit on a Fragile unit now reads (big ❄️)14🦴 (DN had 👊❄️14🦴). A physical crit keeps 👊7. One switch brings the fist back on elemental crits (DMG_CRIT_FIST_ON_ELEMENT).
+  - As built (big glyph only)
+  - 👊 and the big glyph
+- **Default:** As built (big glyph only)
+- **Outcome:** Owner (10-23 00:10): "Yes." As built: an elemental crit shows only its big glyph.
+
+**DN2-2. Damage numbers lead with the damage type, not the source** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-23
+- Following the rule (type glyph, none for physical), numbers that used to show their source now show their type: an Arrow Slits arrow, a trap, Pierce, Stampede, Friction, a Penance / Blood Tithe payment and the tentacle's stamp are plain numbers (was 🏹 🪤 🗡 💥 ⚙️ ⛧ 🦑); a comet or scorched ground is 🔥 (was ☄️ 🌋); Decay is 🍂 (was 🦠). Ticks with no element keep their own glyph: Curse 🜏, Chilli 🌶️, Strangle 🪢. The skill's own effect (the tentacle, the arrow, the spark) still plays.
+  - As built
+  - Keep a source glyph on physical-only sources (🏹 🦑 🪤)
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "Yes." As built: damage numbers lead with the damage type.
+
 **DN2-3. The log's "💥 Crit!" becomes the 👊 on the number** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
 - A crit's log line now reads "hit X for 👊14🦴 ❄️ cold damage" instead of "... for 14 ❄️ cold damage 💥 Crit!". An Ambush hit (no 👊 on its floating number either) keeps the words.
   - As built
   - Keep "💥 Crit!" too
 - **Default:** As built
 - **Outcome:** Owner 18:20: "DN2-3: 💥 is a better symbol for Crit to me." Built (package GD): 💥 replaces 👊 as the crit mark on floating numbers, bramble hits, the battle log ("hit X for 💥14🦴 ❄️ cold damage"), the Codex's "reading damage numbers" line and DN2's constants (DN_CRIT_MARK). Other 💥 that sat on a number or a log line moved off it: Explode's fuse line and its "Boom!" float are 💣, Stampede's log line and its carry-over preview (+N) are 🐘.
+
+**DN2-4. "Higher hue" is +12 degrees for every element** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-23
+- Built as asked (lighter by 10%, hue +12 degrees). Fire turns a brighter yellow-orange and magic a pinker violet, but ice turns slightly bluer (its hue is already past cyan), not the lighter cyan I described at 15:39. Poison greens turn a little bluer too.
+  - As built (+12 for all)
+  - Warmer for every element (fire and magic +12, ice and poison -12)
+- **Default:** As built (+12 for all)
+- **Outcome:** Owner (10-23 00:10): "Okay. Maybe poison turns a little less bluer than it would do, and abit brighter instead." Keep +12 degrees for every element, but poison's shift is eased so it goes less blue and a little brighter. To build in package SX.
 
 **DN-1. Hit numbers drop the minus sign; the other damage numbers keep theirs** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
 - Package DN follows the note's format exactly ("🔥20⛨"), so a unit hit now reads 🔥3⛨, 👊7, 👊❄️14🦴, 5 (was 🔥 -3, -7, 👊❄️ -14). The other damage numbers are separate code and keep their old look with a minus: Bleed and Poison ticks, field damage (comets, lava, hail, the tentacle's 🦑 −2), bramble hits on the HP bar, Reflect and Thorns. Colours are unchanged everywhere.
@@ -683,6 +482,14 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Keep the Tail Sweep as is
 - **Outcome:** Owner 14:12: "FX-3: Raids hit too hard. Tail sweep for 2 instead? If its supposed to be the stronger attack among the first 3 fights before the core, okay. Otherwise, 1-2. The weaker attacks should just be 1 (AOE). Non AOE attacks can go up to 3, but in this case, there isn't." Built (package FX2): the Tail Sweep is the strongest AOE attack of the first three fights (your whole front row, every 2 turns), so it deals 2 (was 3). The Tentacles' Tentacle Smack (a column or a row, every 3 turns) is a weaker AOE attack: 1 (FX had 1–2). There are no single-target boss attacks. The Core's smack keeps FX's 1–2 (call FX2-2). The classic trench now uses the same numbers (no trenchDmg 6); its balance test holds with the Core's trench bramble at 300 (was 200). The Tail Sweep stays on your front row.
 
+**FX2-1. The volcano's hazards together, at its higher levels** · Decide · Balance · asked 2026-10-22 · decided 2026-10-23
+- Each hazard alone stays at or under 1 a unit a round (Lava Tide, Eruption, comets and Scorched Ground are 1 each). Together, measured with 3 units a side over rounds 2–20: very low 0.10, low 0.41 (the only level the maps use), medium 0.64, rising ("even") 1.19, high 1.34, because after an eruption comets hit every unit for 3 rounds and at the higher levels eruptions come almost every round. The most one unit took in one round was 3 (a comet, an eruption and lava together).
+  - As built (each hazard at most 1)
+  - Comets 1 in 2 rounds at the higher levels
+  - Cap the volcano at 1 a unit a round in total
+- **Default:** As built (each hazard at most 1)
+- **Outcome:** Owner (10-23 00:10): "After eruptions, it restarts to very low again." Not one of the three options: the volcano's level falls back to very low after each eruption and climbs again, instead of rising to the higher levels and staying there. To build in package EN.
+
 **FX2-2. The Core's Tentacle Smack keeps 1–2** · Decide · Raids · asked 2026-10-22 · decided 2026-10-22
 - Your rule covers the first three fights (the Tentacles and the Tail): the Tail Sweep 2, the Tentacles' smack 1. The Core is the fourth fight, so its smack keeps FX's 1–2 (a seeded 50/50, shown on the tentacle). In the classic trench (admins only) a smack doesn't roll, so the Core's is 2 there.
   - Keep the Core at 1–2
@@ -699,6 +506,23 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** As built (your rule as written)
 - **Outcome:** Owner 18:20: "FX2-3: OKAY as is". Kept as built: one rounding half up, so a halved 1 lands as 1.
 
+**BF8-1. Blinding priced 2.5 (my guess); two more ways to blind are for later** · Decide · Balance · asked 2026-10-22 · decided 2026-10-23
+- You said Blinding is a flat skill and asked me to guess. It is 2.5 for 50% a hit, 2 rounds (Horned Lizard): between Paralyze 2 and Stun on Hit 3. Horned Lizard re-fitted 4/5 → 5/7. You named three ways to blind (dazzling lights, a powder or acid spray, poking the eyes); only the one skill exists, shown as Blinding. The other two are not built.
+  - Keep 2.5
+  - Cheaper (2)
+  - Dearer (3)
+  - Build the other two ways to blind
+- **Default:** Keep 2.5
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep Blinding at 2.5 (the default).
+
+**BF8-2. Stats inside braces: +1 Health counts 1, not 0.5** · Decide · Balance · asked 2026-10-22 · decided 2026-10-23
+- Your Tide example priced Ebb {+1 Health} at 0.4 × 0.5. Today a stat inside braces counts 2A + H, so +1 Health counts 1 (0.4 after the context multiplier) and +1 Attack counts 2. Nothing changed.
+  - Keep 2A + H
+  - Health in braces counts 0.5
+  - Both halve in braces
+- **Default:** Keep 2A + H
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep 2A + H: +1 Health counts 1 inside braces (the default).
+
 **BF8-3. The Red and Blue Dragons still have no legal line without Bounty** · Decide · Cards · asked 2026-10-22 · decided 2026-10-22
 - Bounty is off all five dragons and Overwhelm is off the Green Dragon (1/7 → 3/20, White 1/11 → 2/23, Black 8/8 → 9/9). Red Dragon 4/20 (Flying, Stun on Hit, Fire Arrow 4, Supreme) and Blue Dragon 4/19 (Flying, Paralyze, Lightning 4, Supreme, Supreme Tide) still have no line and keep their stats. docs/balance/hand-pass-2026-10-22.md gives Red: Fire Arrow 4 → 1 (2/12); Blue: Lightning 4 → 1 and drop Supreme (2/9).
   - Red: drop Stun on Hit; Blue: drop Paralyze
@@ -707,6 +531,30 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Red: drop Stun on Hit; Blue: drop Paralyze
 - **Outcome:** Owner (18:20): "Trim + lower the skill score of the legendary skills. I don't think theyre worth that much. Maybe 3-5." Built (package BF9): Supreme 7 → 5, Supreme Tide 8 → 4 (True Strike already 1.5). Red Dragon loses Stun on Hit (Flying, Fire Arrow 4, Supreme): 4/20 → 3/17. Blue Dragon loses Paralyze (Flying, Lightning 4, Supreme, Supreme Tide): 4/19 → 3/17. Re-fitted with them: White Dragon 2/23 → 2/24, Green 3/20 → 3/21, Black 9/9 → 10/10. Fathom Leviathan still has no legal line.
 
+**TU-1. When the later tutorial fights open, and what they are called** · Decide · Tutorial · asked 2026-10-22 · decided 2026-10-23
+- Note of 10-22 11:58: "In the tutorials, you now see five (5). (The first of which T-3 is locked till you progress further)". After Tutorial II the Tutorial submap shows all five fights; the three after the tutorials stay locked markers that say which fight opens them, as set on 10-16 ("T3 and T5 gradually unlock over Map 1/8/18"): the third opens when Map 0's boss (0-4) is beaten, the fourth with 7-6, the fifth with 17-8 (TUT_SIDE_GATE). On the map the five are labelled T-0, T-1, T-2, T-3, T-4, so the one your note calls T-3 (the third) reads T-2 on screen. Package TU kept both the gates and the labels.
+  - As built (T-0 to T-4; Maps 1 / 8 / 18)
+  - Label them T-1 to T-5 so the labels match how you count
+  - Open the third fight later (say once Map 1 is cleared)
+- **Default:** As built (T-0 to T-4; Maps 1 / 8 / 18)
+- **Outcome:** Owner (10-23 00:10): "Standardise to how we have been doing things - if indices start at 1, then T-1 to T-5" Second option: the tutorial fights are labelled T-1 to T-5, not T-0 to T-4. To build in package TU2.
+
+**TU-2. Phones: keep the 👤 chip in the top bar as well as the new Profile button** · Decide · UI · asked 2026-10-22 · decided 2026-10-23
+- Note of 10-22 11:58: "In mobile mode, the Profile icon should be a button in the main menu." Phones now have a Profile note in the Home menu, with Quests, Achievements and the rest; desktop is unchanged. The top bar's 👤 chip stays on phones too, because for a guest it is the Sign in button (and it shows the sync state).
+  - Keep both (now)
+  - On phones, hide the chip once signed in
+  - On phones, hide the chip always (sign in from the Profile page)
+- **Default:** Keep both (now)
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the chip and the Profile button on phones (the default).
+
+**TU-3. What Profile → Reset all should leave behind** · Decide · Admin · asked 2026-10-22 · decided 2026-10-23
+- The T-0 stall came from Reset all keeping Admin Mode: with Admin Mode on the game skipped the start map, so the T-0 win landed on an empty Outskirts. Package TU fixed that (the start map now holds for everyone). Reset all still keeps Admin Mode, your name and the editor content, and it does not touch the cloud: from reading the code, a signed-in device also loses its local sync time, so the next load may take the older cloud progress back (player_progress is not wiped). Nothing was changed here.
+  - As is
+  - Reset all also turns Admin Mode off
+  - Reset all also resets the cloud progress of a signed-in account (tap twice)
+- **Default:** As is
+- **Outcome:** Owner (10-23 00:10): "OKAY Turn admin mode off is not needed. (unless we can turn it on again)" Reset all stays as is (the default): it keeps Admin Mode, so no change.
+
 **RW2-1. Skirmishes with a first-clear reward: no card drop, repeats included** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
 - N22-5 gave the pack-card drop to "skirmishes with no pack or card reward", and RW2 keeps that: a skirmish whose first clear pays a card, a reward token or a free pack never drops a card, not even on a repeat win. Before RW2 those skirmishes still had the old 10% enemy-card drop (RW-3 moved every fight to the one pack drop, so they now have none). Elites and bosses drop on every win.
   - As built (no drop)
@@ -714,6 +562,30 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - They drop on every win (7%)
 - **Default:** As built (no drop)
 - **Outcome:** Owner 18:20: "RW2-1: Yes. There are two kinds of first-clear drop card reward skirmishes: skirmish-exclusive, or from that map range's pack. ALL skirmishes have a low chance to get a card from the pack. For skirmishes, the chance of getting a card is tripled. But you mostly (50+%) get THAT card. (If it's higher in rarity, then the chance actually decreases - your call. Maybe 60/50/40/25/20/10/5/4/3/2/1..." Built (package GD): every skirmish win, first clear and repeats, rolls the pack-card drop at 7% (a skirmish paying a card, a token or a pack no longer drops nothing). A skirmish with a first-clear reward card rolls 21% on repeat wins; a card that drops there is its reward card with the share for that card's rarity (Common 60%, Uncommon 50%, Rare 40%, Very Rare 25%, Super Rare 20%, Epic 10%, Heroic 5%, Unique 4%, Legendary 3%, Mythic 2%, Ancient and above 1%; special rarities as their tier), else a pack card as usual. So a Common reward card drops 12.6% a repeat win and a Rare one 8.4%. The rank gate stays. A cleared skirmish's drop line shows its reward card (small tile), its chance and its rank emblem, then 🃏 for the pack card's share. The first clear rolls the plain 7% (it pays the card itself). Calls GD-5 and GD-6.
+
+**RW2-2. Challenge cards: one per four maps from Map 4, the highest-rarity elite reward** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-23
+- Six challenge cards ask SS: The Heron Hag (Heroic, 6-8 The Alligator King), Echo Matriarch (Heroic, 8-8 The Stalactite Warden), Pride Queen (Heroic, 14-8 The Savanna Warlord), Yeti Chieftain (Heroic, 19-6 The Frost Yeti King), Triumphvirate (Unique, 23-8 Marshal Tuskwell), Iron Warden (Epic, 24-6 The Gilded Guard). The rule: main maps in bands of four from Map 4 (4-7, 8-11 …), over the first-clear cards of elite-kind fights (elite, champion, miniboss, dungeon), the one of the highest rarity (Rare or above), ties to the later fight. Maps 0-3 and side maps have none. Five of the six sit on the map's miniboss. Edit by setting or clearing source.challenge in canonical/cards.json (tools/challenge_cards_2026_10_22.js --list shows them).
+  - As built
+  - Elite fights only (not minibosses)
+  - One per two maps
+  - Also on Maps 0-3
+- **Default:** As built
+- **Outcome:** Owner (10-23 00:10): "OKAY" Challenge cards stay as built.
+
+**RW2-3. Card drops 7% per Energy tier, capped at 25%** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-23
+- The drop chance is 7% x the fight kind's Energy tier (ENERGY_COST, not the map-scaled cost a fight charges, which climbs to 10+ on later maps): 1 skirmish 7%, 2 elite 14%, 3 boss 21%, 4 world / raid boss 28% and 5 final boss / megaraid 35% are capped at 25% (DROP_CHANCE_CAP), the raids' own S+ maximum. The rank gate still applies (an elite or boss drop needs an S win).
+  - As built (cap 25%)
+  - No cap (28% / 35%)
+  - Cap at 21% (boss level)
+- **Default:** As built (cap 25%)
+- **Outcome:** Owner (10-23 00:10): "No, the drop rate is based on energy use. I think about 1% per energy. But of course, difficult-er skirmishes like elites have 1/2/3/4% higher chance of dropping (only) since elites and above have shields. Ticketed dungeons keep their higher drop rates. Skirmishes might have shields, but they are rather low" Not the default: replaces 7% per Energy tier capped at 25%. A drop is about 1% per Energy spent; elites and above get 1/2/3/4% more (they have shields); ticketed dungeons keep their higher rates. To build in package RW3. Built (RW3): 1% per Energy tier (ENERGY_COST) + a shield bonus by kind: elite / champion / miniboss / dungeon +1%, sub-boss +2%, boss +3%, world / raid boss, megaraid and final boss +4%; no cap. Skirmish 1%, elite 3%, sub-boss 5%, boss 6%, world / raid boss 8%, megaraid / final boss 9%. A skirmish with a first-clear card rolls 3x on repeat wins (3%), then that card's rarity share (Common 60% ...). The ticketed dungeons (the daily dungeons' floors) keep 7% per tier capped at 25% (7%, mini-boss floors 14%). 10,000-roll checks in tests/rw3-2026-10-23.js.
+
+**RW2-4. A raid's fall still pays its reward cards** · Decide · Raids · asked 2026-10-22 · decided 2026-10-23
+- RW2 lowered the card a raid FIGHT drops (survived 1%, enemy bramble killed 12%, killed at S or better 25%; was a pack card on every won fight). The claim when a raid falls (raidReward) is unchanged: every participant's claim pays the raid's rewards.cards (1, +1 for the top 10%, +1 for a Leading participant) as pack / faction cards at the participation level's rarity floor, plus a 1.5% raid-card roll. A held raid pays a chance at one card (up to 10%).
+  - Keep the claim's cards
+  - Lower the claim's cards too (e.g. a chance instead of a sure card)
+- **Default:** Keep the claim's cards
+- **Outcome:** Owner (10-23 00:10): "OKAY anyway the raid will be rebalanced later - seeing where people typically unlock the raid." Keep the claim's cards (the default); the raid is rebalanced later from where players unlock it.
 
 **RW-1. Bosses count as elites for the card-reward rank** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
 - N22-4 says elite fights need at least SS for any card. Package RW treats every boss kind (boss, sub-boss, final boss, raid boss, world boss) like an elite, so a boss's reward cards need SS on Maps 0–19, SSS from Map 20 (the rank is per card: B, or S for a Rare or above, one step up every 20 maps, capped at SSS; an elite or boss asks SS first). A fight's own cardRank can only raise it. Tutorial fights need nothing. The same gate holds for random card drops.
@@ -761,6 +633,23 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Four cuts, Bounty kept
 - **Outcome:** Owner: "Bounty is unique, because it's actually very strong, but maybe in your testing, you don't use many lumber costed units." Bounty stays 3. Applied at their measured worth: On Attack 3 → 1.35, Add Wait 3.5 → 2.8, Twin Strike 6 → 3.17, Octolash 25 → 6.48. Then every band card was re-fitted (124 moved); no-fit cards 130 → 108. Randomising Lumber and Wait in the test setups is a future balance row in docs/action-items.md.
 
+**BF7-4. Your five live edits of 10-21 evening: two were merged with later file changes** · Decide · Cards · asked 2026-10-22 · decided 2026-10-23
+- Folded into canonical/cards.json with your stats as printed. Tide Pool Crab: you added Shield 3 while package TR (after your save) gave it Armor 1 back, so it now has Tide + Armor 1 + Shield 3 at 1/3, and no legal line. Glacial Ape-King: your row still had Bounty 1 (TR swapped Bounty for King after your save): it keeps King + Earthquake 4 at your 6/37, 103% of N (its formula line is 6/35). Conch Crawler 1/1 with Shield 4 has no legal line. Ford Kingfisher 0/1 fits (33% of N). Ember Tetra 3/7 is new: no source and no art, and its Tide braces (S 5.4) leave no legal line at any stats.
+  - Keep them as folded
+  - Crab: drop Armor 1 (your Shield 3 only)
+  - Ape-King: Bounty back instead of King
+  - Give Ember Tetra a source (map or pack)
+- **Default:** Keep them as folded
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the five live edits as folded (the default).
+
+**BF7-5. 106 band cards still have no legal line: the hand-pass list** · Decide · Balance · asked 2026-10-22 · decided 2026-10-23
+- After BF7's re-fit, 106 band cards (plus Conch Crawler and Tide Pool Crab) have no legal line and keep their stats (docs/balance/human-pass-1-flagged-2026-10-21.json). docs/balance/hand-pass-2026-10-22.md gives each the cheapest single change (shrink or drop one skill, never Flying) and the line it would get; the Blue Dragon needs two. None is applied.
+  - Apply the cheapest change on each
+  - Pick per card
+  - Leave them off the formula
+- **Default:** Pick per card
+- **Outcome:** Owner (10-23 00:10): "OKAY" Pick per card (the default), no bulk change.
+
 **MP-1. A map's card pool guides the editor; it does not restrict the game** · Decide · Maps · asked 2026-10-22 · decided 2026-10-22
 - Package MP: the Map cards editor and the skirmish deck pickers read canonical/map-pools.json (and the admin's live edits). The pool decides what the pickers offer and which deck cards get a ⚠ chip; nothing in the game refuses a deck that strays from it (the deck-validation caps are package DR's).
   - Guide only (editor)
@@ -790,6 +679,179 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Copies (now)
 - **Outcome:** Owner 07:41: OK. The three usage counters count copies, from the live map data.
 
+**AR-1. Standard PvP shares the PvP tickets and the rating** · Decide · Arena · asked 2026-10-21 · decided 2026-10-23
+- Package AR split the Arena's PvP into two buttons. Standard PvP is the existing Standard format (every card at Level 1, no foils, a Standard deck built from any card) against the same strangers as Collection PvP, their decks also at Level 1. It uses the same 10 PvP tickets, moves the same rating and pays the same rewards. Your Standard deck is not recorded as a stranger, since it can hold cards you don't own.
+  - Keep it shared
+  - A separate rating for Standard
+  - Separate tickets for Standard
+- **Default:** Keep it shared
+- **Outcome:** Owner (10-23 00:10): "OKAY. But PVP and Collection share different pools. PVP still keeps the foil treatments." Keep the tickets and the rating shared (the default), but Standard PvP and Collection PvP draw opponents from different pools, and PvP keeps its foil treatments. To build in package RW3. Built (RW3): tickets and rating stay shared; Standard PvP meets Standard decks only and Collection PvP Collection decks only (a Standard deck is recorded into the Standard pool: ghost_decks mode 'pvp', stage 100 + tier, so no SQL change; its own key in the browser; different seeded strangers). A Standard match keeps your foils and Shinies (prestige, Materia and levels still go).
+
+**AR-2. The Undercroft: the Arena's Dungeon as a daily dungeon on Map 11** · Decide · Dungeons · asked 2026-10-21 · decided 2026-10-23
+- The Arena's Dungeon (3 fights against random decks, losses carried over) is gone from the Arena; an unfinished run in an old save is no longer offered. In its place the Undercroft opens on Map 11 (the Arena's map) as a daily dungeon: each floor takes a Dungeon key, 50 floors, each harder (half a map further on per floor, +3 bramble Health), a mini-boss every 10th floor, a loss sends you back to floor 1. Every 3 floors the land changes: 15 maps' first elite deck and field rules, in order of their battle rating (Savanna 47 up to Wolfsbane Tundra 106); only floors 46-50 go round to the first. Like Murgle Mayhem, each floor's first clear gives 10 Gold Leaves (500 in all).
+  - Keep these defaults
+  - Different lands or order
+  - Fewer floors
+  - No Gold Leaves from the Undercroft
+- **Default:** Keep these defaults
+- **Outcome:** Owner (10-23 00:10): "Hide for now, note in notes. In fact hide both daily dungeons require future balancing anyway. We havent even decided what special thing htey give." Not the defaults: both daily dungeons (the Undercroft and Murgle Mayhem) are hidden until they are balanced and their special reward is decided; the defaults stay in the notes. To build in package TU2.
+
+**AR-3. The group dungeon is a Coming soon slot** · Decide · Dungeons · asked 2026-10-21 · decided 2026-10-23
+- You asked for group dungeons with live players, recorded in the Daily Dungeon section. There is no co-op dungeon in the game yet (only the D49 design, docs/coop-dungeon-design-2026-10-13.md), so the Daily Dungeons tab now ends with a Group Dungeon slot marked Coming soon. Building it means the netcode in that doc (the Ranked Live host, extended to 2-4 players).
+  - Build the co-op dungeon next
+  - Keep the slot for now
+  - Remove the slot
+- **Default:** Keep the slot for now
+- **Outcome:** Owner (10-23 00:10): "AR-3 This is a big pass. I like this. Can you launch a big pass for this." Build the co-op dungeon next (the first option), as one large pass. To build in package AR3.
+
+**AR-4. The match log is this device's last 40 fights** · Decide · Profile · asked 2026-10-21 · decided 2026-10-23
+- Recent opponents moved from the Arena to the Profile as a match log with PvP and PvE tabs (opponent, mode, result, date, the deck you faced, and from now on your deck's name). It is what this device records: the last 40 fights (was 20), not Ranked Live, which stays in the signed-in Match History below it. Syncing the log to the account would need a new column or table (SQL for your apply).
+  - Keep it on the device
+  - Sync it to the account
+- **Default:** Keep it on the device
+- **Outcome:** Owner (10-23 00:10): "OKAY - it's not sync'd? I think this is okay." Keep the match log on the device (the default).
+
+**TR-1. 24 cards fall to their 1/1 floor with their cut skill back** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
+- HB2-1 gave 69 cards back the skill BF5 cut only because Flying, Tide, Diurnal or Nocturnal counted, and the formula re-fitted them (--only). 45 still fit. 24 have no room under cap 2 and drop to 1/1 (skills kept, flagged like B14): Eagle Diver 1/4, Alpha Howler 1/15, Orca Vanguard 1/21, Snow Owl Sentinel 2/7, Permafrost Mammoth 2/20, Moray Ambusher 2/12, Cave Bat Swarm 2/5, Blind Cave Fish 1/3, Sulfur Vent Crab 2/9, Tide Pool Crab 1/3, Open-Ocean Hermit Crab 1/6, Reef Manta Glider 1/7, Nightshade Moth 1/5, Elder Tortoise 1/15, Vigil Owl 2/9, Willow-o'-Wisp 1/12, Skull Vulture 3/3, Moon Jelly 2/8, Voltwing Bat 1/4, Static Bat 1/6, Sea Cucumber 2/11, Alligator Gar 2/14, Mangrove Manatee 2/17, Giant Clam 1/14 (all now 1/1). 7 more were 1/1 already. The free skills still cost S (Tide 2.79, a time of day about 2.5).
+  - Keep: every skill back, 1/1 where the formula says so
+  - Take the restored skill off again on these 24 (back to their stats before TR)
+  - Price plain Flying / Tide / Diurnal / Nocturnal lower in the budget too
+- **Default:** Keep: every skill back, 1/1 where the formula says so
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep: every skill back, 1/1 where the formula says so (the default).
+
+**TR-2. Bounty came back on 7 cards** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
+- BF5 cut Bounty first (your 21:36: "Bounty is way too strong") wherever a card had three skills. On 7 of them the third skill was a free one under HB2-1, so the cut is undone: Monarch Wingblade, Reef Shark, Octopus Tactician, Alpha Howler, Vampire Roost, Bog Behemoth, Tiny Cave Dweller. Bounty is priced at 1 a point (your BF5 value), so the formula took it out of their stats.
+  - Keep Bounty on them
+  - Keep it cut (Bounty is never restored)
+- **Default:** Keep Bounty on them
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep Bounty on the 7 cards (the default).
+
+**TR-3. The Crown's open cases (built as defaults)** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
+- Package TR built your Crown rules. Calls taken: (a) once the Crown fades it is gone for the fight: a later King stays uncrowned; (b) the crowned King killed by an enemy unit while no King is left anywhere: +1 Gold for the killer's side (your kill rule), not the dead King's; (c) friendly fire counts as no source unit (the Crown drops); (d) the King that picks up a dropped Crown, or the liege's pick, is random among that side's Kings (the fight's seeded random); (e) a holder that leaves play without dying (bounced, exiled) drops it as with no source; (f) a crowned unit that an evolute goes over keeps the Crown (it is the same unit).
+  - Keep these
+  - Let a later King take a fresh Crown after it fades
+  - Change (b): +1 Gold for the dead King's side
+- **Default:** Keep these
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the Crown cases as built (the default).
+
+**TR-4. Which cards are Kings** · Decide · Cards · asked 2026-10-21 · decided 2026-10-23
+- King given to: Rodent King (Bounty off for the two-skill rule; 4/15 -> 4/14), Glacial Ape-King (Bounty off; 7/36 -> 7/34), Yeti Chieftain (5/22 -> 5/20), The Gannet Queen (3/9 -> 1/10). Not given: the Pride Queen (with King's 2.39 her Quick leaves no room: 2/14 -> 1/1) and the Magnate Duck (King type already; 1/22 -> 1/1); the Quicksand Queen is a trap, not a ruler. Usurper was extended to steal the Crown (the Crown Pretender is the card for it); no new skill was needed.
+  - Keep these four
+  - Also the Pride Queen and the Magnate Duck at 1/1
+  - Name others
+- **Default:** Keep these four
+- **Outcome:** Owner (10-23 00:10): "No none of our current card are kings. Remove. Only the Magnate Duck. (don't make it 1/1! Maybe King costs too much! - balance on your own.) Also new skill: Liege: {...}. Activates only if the king is on your side. Liege is worth 0.3x {...}. Default Assault N: (Extra N attack only when attacking) where for Liege, N=2." Not the default: King comes off the Rodent King, Glacial Ape-King, Yeti Chieftain and The Gannet Queen; only the Magnate Duck is a King (balance it so it is not 1/1). New skill Liege {...}: the braces apply only while the King is on your side, priced 0.3x the braces; the default braces are Assault N (extra N attack only when attacking), N=2. To build in package EN.
+
+**TR-5. Prices for King, Kingly, Tribute and the five transforms (theoretical)** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
+- canonical/skill-costs.json, ownerSet false, B15-style. Tribute 0.5 a point (half of a Lumber income: Gold buys nothing in a fight yet). Kingly 5.98 = Tribute 1 + Armor 2 (2 x 2.74), never printed. King 2.39 = 0.4 x Kingly, as a context skill (the Crown is not certain); with its own braces 0.4 x them. Transforms at CONTEXT_MULT 0.4 x the gain: Gilded {+5/+10} 8, Championed {+3/+3} 3.6, Veteran {+2/+4} 3.2, Matured {+2/+4 Stem stats} 3.2, Enraged 0.4 x its braces. Plain Crepuscular 1.6 (CX2).
+  - Keep these prices
+  - Raise or lower some (name them)
+  - Measure them with tools/skill_worth.js
+- **Default:** Keep these prices
+- **Outcome:** Owner (10-23 00:10): "See TR-4, otherwise OK." Keep the prices (the default), plus Liege at 0.3x its braces as set in TR-4. To build in package EN.
+
+**TR-6. Transform conditions, as read by package TR** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
+- Enraged: "It has Rage" is read as its Rage being on (Rage, below half Health); having the skill would trigger it at once. Matured: N rounds, 2 by default (tf.rounds; the editor doesn't set N yet). Veteran and Matured count rounds survived on the field, at each round's start. Championed: a kill by its own swing or its Counterattack against the unit it fights (a Guardian that takes the hit is the one it fights); kills by Arrow, Pounce or other skills don't count. Gilded: Lumber 1, Stone 2, Metal 3, Gold 5 each, more than 25, checked as the board updates. No card has a transform preset yet.
+  - Keep these readings
+  - Enraged = it has the Rage skill
+  - Championed also by skill kills
+- **Default:** Keep these readings
+- **Outcome:** Owner (10-23 00:10): "OH right. Then instead - remove Enraged. Rage keeps its definition and default. Otherwise, Rage - {...} means the typical effects of Rage, PLUS {...}. Cost it using logic." Not the defaults: the Enraged transform condition is removed; Rage keeps its definition; "Rage {...}" means Rage's usual effects plus the braces, costed by the engine's own logic. To build in package EN.
+
+**EV-1. Which cards are the Evomax lines (there was no Evomax unit)** · Decide · Cards · asked 2026-10-21 · decided 2026-10-23
+- No Evomax unit existed (Terraumbra, an equipment Easter egg, was the line's only card). Package EV made lines from cards no player can get yet, so the Map 30 gate holds and no reward moved: Slowpoke Sentinel (Stem) -> Canopy Sloth Guardian (Evolute) -> Hanging Loafer (Alpha); Raven Harbinger (Evolute) -> Raven Hexcaller (Alpha) -> Bone Diviner (Omega); Gale Sprite (Evolute) -> Stormcaller (Alpha). They are mechanicLine evolution now. Missing stages are listed as cards to make in docs/evolute-design-2026-10-21.md (a sloth Omega, a storm Omega, an insect Evolute and Alpha for the Cocoon, beetle, frog and dragon lines).
+  - Keep these three lines
+  - Pick other cards (name them)
+  - Make new Evomax cards instead and revert these
+- **Default:** Keep these three lines
+- **Outcome:** Owner (10-23 00:10): "It's okay. The Terraumbra is an Evomax equipment" Keep the three Evomax lines (the default); the Terraumbra is the Evomax equipment. To build in package EN.
+
+**EV-2. When an evolute dies, do the cards under it fire their On Death?** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
+- Built: no. The whole stack goes to the graveyard (or the Removal Zone, wherever the evolute goes) and only the top card's own death effects happen (its On Death, Bounty, Relic ...). The cards under it fire nothing, matching "a unit leaving play this way triggers no On Death, Bounty or grave effects".
+  - No: only the top card's death effects
+  - Yes: each card in the stack fires its own On Death (top first)
+- **Default:** No: only the top card's death effects
+- **Outcome:** Owner (10-23 00:10): "No." Only the top card's death effects fire (the default).
+
+**EV-3. Evolute bases: shared type at every stage, creatures only** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
+- Built: Alpha and Omega also need a shared type with their base (the rule named it for Evolute only). A plain Evolute cannot go over a unit that is already an evolute (no sideways or downward evolving). Structures, cages and a Gladiator leader are never bases, and only front-row units are (a raid's middle and back rows are not). The editor offers Evolute / Alpha / Omega on Evomax cards only.
+  - Keep all of these
+  - Alpha and Omega need no shared type
+  - Allow an Evolute over an evolute
+- **Default:** Keep all of these
+- **Outcome:** Owner (10-23 00:10): "Yes. But just shared with what it is. Once evolved over, do not reference the card below. OKAY to the rest" Keep all of these (the default), with the type rule narrowed: the type is shared only with the card it sits on at that moment; once evolved over, the card below is no longer referenced. To build in package EN.
+
+**EV-4. An evolute waits its own Wait again** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
+- Built ("Wait and Lumber costs work as usual"): the stack waits the evolute's printed Wait, even over a Ready base. The CPU counts that against Ready bases. Alternatives: keep the base's remaining Wait, or the higher of the two.
+  - Its own Wait (as usual)
+  - The base's remaining Wait
+  - The higher of the two
+- **Default:** Its own Wait (as usual)
+- **Outcome:** Owner (10-23 00:10): "Yes. (If it has Wait) It gains remaining Wait as well." Not quite the default: the evolute waits its own Wait and, if it has Wait, also takes on the base's remaining Wait. To build in package EN.
+
+**EV-5. Evolute prices (theoretical)** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
+- canonical/skill-costs.json, ownerSet false: Evolute 3, Alpha 4, Omega 5 (your suggestion). Stem and Chrysalis 1.6 (0.4 x (2*1 + 2), the +1/+2 they hand over), or 0.4 x their braces' S. The evolutes' printed stats are fitted to their own N; on the board a stack is the sum, so a Stormcaller fitted to 1/23 lands on a base and becomes far bigger. No run can measure this (it rides on the player).
+  - Keep these prices
+  - Raise them (name the numbers)
+  - Price an evolute against its line's summed N instead
+- **Default:** Keep these prices
+- **Outcome:** Owner (10-23 00:10): "OKAY. (Alpha and Omega should also be 3, since they are difficult to achieve.)" Keep the prices, except Alpha and Omega are 3 as well (Evolute 3, Alpha 3, Omega 3). To build in package EN.
+
+**EV-6. The Nest eggs as fodder, with a species** · Decide · Cards · asked 2026-10-21 · decided 2026-10-23
+- The Speckled Egg is a Stem and the Cocoon a Chrysalis. Each got a species (Bird, Insect) so an evolute can share a type with it: eggs had none, so Kin and type skills now count them too. Re-fit by formula: 0/2 -> 0/1. An egg ridden by an evolute never hatches.
+  - Keep
+  - Keep the skills, no species (then no evolute can use them)
+  - Revert the eggs
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "OKAY. They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1. (baby-like cards start at 0.)" Keep (the default), widened: every baby-like card gets Fodder, the only non-Evomax cards that do, and only from level 1 (baby-like cards start at level 0). To build in package EN.
+
+**EV-7. The raven evolutes sit at their 1/1 floor** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
+- Following your HB2-1 answer (Flying does not count toward two skills), the ravens keep every skill: Raven Harbinger Flying + Poison 2 + Evolute, Raven Hexcaller Flying + Render + Evolute Alpha, Bone Diviner Flying + On Kill +2 Lumber + Evolute Omega. With Flying's x1.5 the formula puts all three at 1/1 (flagged, skills kept). In a stack they add to the base's stats, so the stack is still big. Without Flying, the Hexcaller and the Bone Diviner were 1/7.
+  - Keep: every skill, 1/1
+  - Cut Flying on the Hexcaller and the Bone Diviner (back to 1/7)
+  - Lower the stage costs for these three
+- **Default:** Keep: every skill, 1/1
+- **Outcome:** Owner (10-23 00:10): "Okay" Keep: every skill, 1/1 (the default).
+
+**RK1. Raid Ticket price in the Shop** · Decide · Raid · asked 2026-10-21 · decided 2026-10-23
+- Package RK sells the Raid Ticket (one extra raid fight, past the cap of 10) for 300 Maple Leaves, beside the Rename Ticket (250 Maple Leaves); a fight also pays about 16 Maple Leaves and 12 Dust back. Gold Leaves would make it scarcer.
+  - 300 Maple Leaves
+  - 250 Maple Leaves (as the Rename Ticket)
+  - 500 Maple Leaves
+  - 30 Gold Leaves
+- **Default:** 300 Maple Leaves
+- **Outcome:** Owner (10-23 00:10): "OKAY. But call it like Bonus Raid Ticket and it has a different outline." 300 Maple Leaves (the default), renamed Bonus Raid Ticket, with a different outline from the other tickets. To build in package TU2.
+
+**RK2. A limit on buying Raid Tickets** · Decide · Raid · asked 2026-10-21 · decided 2026-10-23
+- Buying stops only while you hold 9; you can buy, use and buy again. Free tickets give at most about 16 fights a raid (10 + 1 a day), so an average player (751 raid damage a fight) tops out near rank A; S needs about 4 bought tickets, U about 24 (7,200 Maple Leaves). Rank is buyable with Maple Leaves unless a weekly limit is added.
+  - No limit (hold at most 9)
+  - At most 3 bought a week
+  - At most 5 bought a week
+- **Default:** No limit (hold at most 9)
+- **Outcome:** Owner (10-23 00:10): "You can only buy if they have it. It sells out in one (1). It appearing is random." Not an option: the Bonus Raid Ticket is for sale only when the shop randomly has it, and it sells out after one purchase. To build in package RW3. Built (RW3): the Shop has a Raid Ticket only on some days: each local day rolls once (25%, about 1.75 days a week, 7.6 a month; the roll is the day's, so a reload doesn't re-roll). Stock 1: buying it sells it out ("Sold out") until another day rolls one; a day without one shows no ticket. Admin Mode always sees it. Price 300 Maple Leaves as before.
+
+**RK3. The A-rank Raid Ticket only when the raid falls** · Decide · Raid · asked 2026-10-21 · decided 2026-10-23
+- Owner: 'completing a raid (with at least A rank) should give you 1x ticket'. Built as: a fall's claim at total raid rank A or better pays 1 Raid Ticket; a raid that ends standing (held) pays none, whatever the rank.
+  - Falls only
+  - Falls and held raids
+- **Default:** Falls only
+- **Outcome:** Owner (10-23 00:10): "OKAY" The A-rank Raid Ticket only when the raid falls (the default).
+
+**RK4. Where Raid Tickets drop** · Decide · Raid · asked 2026-10-21 · decided 2026-10-23
+- Built: an S notice 30%, SS 60%, SSS 100% (about 0.7 a week at six notices a day), and a raidTicket reward token (a fight's first clear) that is on no fight yet. Chests have no drop table to add it to.
+  - Keep (notices only; token unused)
+  - Also put the token on a few boss fights
+  - Also one per finished weekly tier
+- **Default:** Keep (notices only; token unused)
+- **Outcome:** Owner (10-23 00:10): "SS, SSS notices should be so rare, maybe once per 1mo/2mo if all notices are always refreshed and completed. S is more common, 0.5-0.7 per week." Not the default: SS and SSS notices become much rarer (about once a month or two if every notice is refreshed and completed); S drops 0.5-0.7 a week. To build in package RW3. Built (RW3): a notice brings a Raid Ticket at S 40%, SS 40%, SSS 40% (was 30 / 60 / 100%). With 6 notices completed a day (42 a week, 182.6 a month) and the rank weights S 3.5%, SS 0.8%, SSS 0.2%: S tickets 42 x 3.5% x 40% = 0.59 a week; SS + SSS tickets 182.6 x 1.0% x 40% = 0.73 a month (one every 1.4 months). Checked over 10,000 simulated weeks.
+
+**RK5. The total rank ladder against the ticket budget** · Decide · Raid · asked 2026-10-21 · decided 2026-10-23
+- Kept as given (F 800 .. A 9,000, S 15,000 .. U 30,000). At 751 raid damage a fight (BF5's model) the ranks take 2 / 2 / 4 / 7 / 10 / 12 / 20 / 27 / 34 / 40 fights; free tickets allow about 16 a raid (12 when it falls on day 3), so S and up need bought tickets or wins at high fight ranks (a win at SSS counts 2,000, so U in 15). Fine as an aspiration, or scale the top?
+  - Keep the ladder
+  - Scale S..U down (e.g. 12k / 14k / 16k / 18k)
+- **Default:** Keep the ladder
+- **Outcome:** Owner (10-23 00:10): "30,000 is only possible if they hit SSS 15 times. Anyway, in the future, there might be other ways to get more raid tickets." Keep the ladder (the default).
+
 **HB2-1. Swordbill Challenger keeps three skills as a thematic exception** · Decide · Cards · asked 2026-10-21 · decided 2026-10-21
 - Package HB2's new Very Rare Hummingbird (3/5, Wait 1, Flying + Taunt + Counterattack, 98% of N) has three skills. The two-skill rule's tests only exempt Epic and up, Supreme, hidden, Easter-egg and token cards, so the card is named in a THEMATIC set in tests/bf5-2026-10-21.js and tools/two_skills_2026_10_21.js. Alternatives: drop Flying (a Hummingbird that walks) or fold Counterattack into Taunt.
   - Keep three skills as a named exception
@@ -798,12 +860,61 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Keep three skills as a named exception
 - **Outcome:** Owner 18:23: plain Flying, Tide, Diurnal and Nocturnal don't count toward the two-skill limit; several of them count as 1. Built by package TR (bramblewood-budget.js skillCountOf, the two-skill tool, the editor's budget panel). The Swordbill Challenger is within the rule; 69 cards got back the skill BF5 cut only because one of these counted.
 
+**RP1. Faction rewards' map term in the stat budget** · Decide · Rewards · asked 2026-10-21 · decided 2026-10-23
+- A faction Rare can't be had before Map 14 and a Very Rare before Map 25 (the faction reward track), but cardObtainMap still counts every faction reward as a pack card (Map 5) for N's Map x 0.2. Changing it moves N for the 42 faction cards (package BF5's stats).
+  - Follow the gate (Common 0, Uncommon ~7, Rare 14, Very Rare 25 ...)
+  - Keep Map 5 for all faction cards
+- **Default:** Keep Map 5 until BF5 lands
+- **Outcome:** Owner (10-23 00:10): "Actually OKAY!" Keep Map 5 for faction cards until BF5 lands (the default).
+
+**RP2. The later faction gates** · Decide · Rewards · asked 2026-10-21 · decided 2026-10-23
+- Proposed: Very Rare at 50 received and Map 25; Super Rare 60 / Map 30; Epic 70 / 35; Heroic 80 / 40; Unique and up 90 / 50 (FACTION_RARITY_GATES). The sim puts about 76 received by Map 25 and 111 by Map 40.
+  - Keep the proposal
+  - Other numbers
+- **Default:** Keep the proposal
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the proposal (the default).
+
+**RP3. Quarry Mole out of Base** · Decide · Rewards · asked 2026-10-21 · decided 2026-10-23
+- The Quarry Mole (Darksight, Keen Sense, 1 Lumber) is a Base card everyone owns. Proposal: make it a Caves & Alcoves (Map 8, 8-1) reward; the Badger Lumberjack on 1-4 is the Lumber introduction now, and the plain Harvest Mouse is already Base.
+  - Move the mole to 8-1
+  - Keep it in Base
+- **Default:** Move the mole to 8-1
+- **Outcome:** Owner (10-23 00:10): "YES! See earlier non-registered complaint" Move the Quarry Mole to 8-1 (the default). Package not named in the 10-23 split; card data, assign when queued. Built (RW3): the Quarry Mole is Caves & Alcoves' 8-1 first-clear card (source map m4 / 8-1; Thistlewood's pool -> Caves & Alcoves'). The "earlier complaint" was N22-8 (its effects too advanced for the start): T-1 no longer pays it, even though the live tutorial config still lists it (the game skips it; supabase/proposed/20261023_rw3_tutorial_reward.sql clears the list, on "apply it"). 8-1 fights with two Quarry Moles; Thistlewood's 1-2 / 1-3 / 1-4 decks lost theirs (Field Vole, Harvest Mouse, Compost Grub; 1-4's showcase is the Field Vole). Call RW3-9.
+
+**RP4. Plain start for Hummingbirds, the 0-2 pack and the tutorial rewards** · Decide · Rewards · asked 2026-10-21 · decided 2026-10-23
+- Every Hummingbird faction card flies (no plain one), the 0-2 faction pack's third card is any basic-pack card, and the tutorial's reward cards (Rabbit Kit, River Warden, Sunspire Envoy, Riverwing Envoy) have skills. The pass made skirmish rewards and the faction picks plain on Maps 0-1 only.
+  - Add a plain Hummingbird common and plain tutorial rewards
+  - Leave as is
+- **Default:** Leave as is
+- **Outcome:** Owner (10-23 00:10): "I can balance the hummingbirds myself later. The hummingbird and otter factions should be symmetric." Leave as is (the default) for now; the owner balances the Hummingbirds later, and the two factions are to end up symmetric.
+
+**RP5. Held cards: the Canopy's rainforest animals, the Thistle Baron, Eyrie Heights' theme** · Decide · Rewards · asked 2026-10-21 · decided 2026-10-23
+- 15 Canopy animals are held for a Map 25 rainforest (the Savanna Reaches has room for 10 now); the Thistle Baron (Map 1's leader, Thorns) is held for Map 21+; Eyrie Heights' chapel birds are Ecclesia (Map 77), so Map 11 still fields cards nobody can collect; the Basalt Foundry's fights are Devilry (Map 66).
+  - Keep them held and re-theme Map 11 and the Foundry
+  - Put the Canopy animals on Map 14 now
+- **Default:** Keep them held
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep them held (the default).
+
+**RP6. The last side-map gates** · Decide · Maps · asked 2026-10-21 · decided 2026-10-23
+- Gated now (after Map N cleared, fights count as Map N): Clovermead 5, Lilypad Reach 6, Smugglers' Grotto 7, Sunken Grove 9, Mycelium Deep 11, Glimmer Depths 12, Sunken Depths 14, Aerie Vault 15, Canopy 18, Ice Hollow 21, Basalt Foundry 23. Kept: the Pale Desert (after Map 18), the Eye of the Volcano and the Volcano Lair (after 20-10), the Old Bramble (after the Ice Hollow, still counting as Map 17).
+  - Pale Desert after Map 22, the Eye and the Lair after Map 24, the Old Bramble as Map 21
+  - Keep these four as they are
+- **Default:** Keep these four as they are
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep these four as they are (the default); DV7 replaces the list.
+
 **DV1. The rarity ladder past Map 20** · Decide · Rarity · asked 2026-10-22 · decided 2026-10-22
 - Package DV set the ladder (arena_app.js RARITY_INTRO): Common 0, Uncommon 1, Rare 5, Very Rare 10, Super Rare 20, Epic / Heroic by the Eye of the Volcano / the Volcano Lair (the main road fields them from Map 22). Proposed past that: Unique 30, Legendary 40, Mythic 55, Ancient 70, Divine 90. A skirmish caps at Super Rare on 20-29, Epic 30-39, Heroic 40-49 ...; an elite one step more, a boss two.
   - Keep the proposal
   - Other maps
 - **Default:** Keep the proposal
 - **Outcome:** Owner 07:41: OK, with changes. Heroic moves to Map 25 and Mythic to Map 60 (Epic 22, Unique 30, Legendary 40 as proposed). Ancient, Divine, Void and Daemonic never appear on the road (road skirmishes or road rewards): only special quests and dungeons give them, and Mythic is the highest rarity the road reaches. The Volcano Lair and the Eye of the Volcano still introduce the first Heroic and Epic (side maps may exceed the road). Built by package DV2 (arena_app.js RARITY_INTRO, ROAD_MAIN_FROM, ROAD_NEVER).
+
+**DV2. Map leaders outside the ladder** · Decide · Rarity · asked 2026-10-22 · decided 2026-10-23
+- The 11 Heroic map leaders a boss pays on Maps 0-19 (Sergeant Bramblefox to the Yeti Chieftain) and the Triumvirate (Unique, 23-8) come before Heroic and Unique are revealed. DV kept them outside the ladder, as the old road cap did.
+  - Keep leaders outside the ladder
+  - Re-rank the leaders to their map
+- **Default:** Keep leaders outside the ladder
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the map leaders outside the ladder (the default).
 
 **DV3. 1-2 skirmish rewards per map, not per fight** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
 - Read as per map: each main map pays 1-2 cards from fights (its last fight carries its top card); its other pool cards are basic-pack cards of that map. Most fights now give no card of their own (the base track still gives one on every elite and boss, the faction track every 8th win and each map end).
@@ -812,12 +923,34 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Per map (as applied)
 - **Outcome:** Owner 07:41: per map, by new cards. 10 new cards from that map = 3 skirmish rewards, 6-9 = 2, under 6 = 1; about 2 is the normal. 'New' = a pool card that first appears on that map (not carried over from an earlier map), and one the map gives out (Base and starter cards are not counted). Built by package DV2: 16 maps pay 3, 8 pay 2, Map 21 pays 1; Map 1 keeps the Badger Lumberjack at 1-5.
 
+**DV4. Packs gated by map and rarity** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-23
+- A basic-pack card now comes out of a pack or the base track only once its map is reached (source.map) and its rarity revealed (packCardReached); before, any pack card of any rarity came out from Map 5.
+  - Keep the gate
+  - Gate by rarity only
+  - No gate
+- **Default:** Keep the gate
+- **Outcome:** Owner (10-23 00:10): "No keep packs completely random. Packs outputs can never be changed by anything" Not the default: no gate by map or rarity; a pack's output is completely random and nothing changes it. To build in package RW3. Built (RW3): packs draw from their whole pool: no map gate, no rarity gate, no Lumber-before-pitching gate (a Lumber card that comes early waits for pitching, as other grants do). Nothing remembers earlier packs: the 10-12 recent-pull weight and the new-card guarantee (Tidemire Chest, Highcrest Case) are off. Prices and where packs are sold are unchanged. The card drop, the base reward track and a raid claim's pack cards keep the gate (they are not packs). Calls RW3-3.
+
 **DV5. Boss cards re-ranked for the ladder** · Decide · Rarity · asked 2026-10-22 · decided 2026-10-22
 - The Caldera Wyrm and the Magnate Duck Legendary to Heroic, The Contradiction Unique to Epic, the Fire Drake Hatchling Common to Heroic (the Lair's reward). The Cathedral Eagle (Legendary, Ecclesia, held for Map 77) left 21-6 (the fight keeps its name); the Grovebearer Dragon-Turtle (Legendary) left 23-8 and is held for Map 40. The Caldera Wyrm is priced its own way and was not re-fitted (6/36).
   - Keep
   - Restore the Legendaries as boss exceptions
 - **Default:** Keep
 - **Outcome:** Owner 07:41: OK, keep. (Package DV2: with Heroic from Map 25 the Magnate Duck left Map 24's boss deck, see DV8.)
+
+**DV6. Faction track gates after Map 20** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-23
+- Replaces RP2: Very Rare at 50 received, Map 20 and the Volcano Lair cleared (owner: after Map 20's strongest submap); Super Rare 60 / Map 22 / the Lair; Epic 70 / Map 26 / the Eye; Heroic 80 / Map 30 / the Lair; Unique and up 90 / Map 40.
+  - Keep
+  - Other numbers
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the faction track gates (the default).
+
+**DV7. Side-map gates, out of order** · Decide · Maps · asked 2026-10-22 · decided 2026-10-23
+- Replaces RP6's list: Clovermead after Map 12, Lilypad Reach 6, Smugglers' Grotto 7, the Mycelium Deep 8, the Sunken Depths 11, the Sunken Grove 13, the Aerie Vault 15, the Glimmer Depths 16, the Canopy 18, the Pale Desert 19, the Ice Hollow 21, the Basalt Foundry 23; the Old Bramble after the Ice Hollow; the Eye and the Lair after 20-10. Fights count as the gate map.
+  - Keep
+  - Other gates
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "OKAY to be out of order." Keep the side-map gates, out of order (the default).
 
 **DV8. The Magnate Duck cannot be Map 24's boss under the new ladder** · Decide · Rarity · asked 2026-10-22
 - Heroic is introduced on the road at Map 25 (DV1), but the Magnate Duck (Heroic, was Legendary) was the named boss card of 24-8, The Magnate Duck. Package DV2 swapped it out for the next card of its theme (a third Gilded Swan Knight; the boss keeps its name, hqHp and rules) and removed it from Map 24's pool; the card stays Heroic with no source. Options: leave it held for Map 25+, re-rank it to Epic (then refit its stats, 1/22 has no legal line) and put it back in 24-8, or move the fight's name to Map 25.
@@ -826,8 +959,88 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Other
 - **Default:** Held for Map 25+ (now)
 
+**SK-1. Sergeant Bramblefox: Rare, Map 13, the leader of Fox Run** · Decide · Rarity · asked 2026-10-22 · decided 2026-10-23
+- Owner 09:52: lower its rarity and move it to another map, as that map's reward and in its skirmish. Done (package SK): Heroic -> Rare, from Map 0 (0-4) to The Redwood Deep (Map 13), the leader (showcase) of 13-2 Fox Run and paid when 13-2 is cleared (grantClearedBossLeaders reads its source, so clearing 0-4 no longer pays it; a player who already holds it keeps it). Why there: the lore bible's Greenhood Band (foxes, magpies and outcast mice) lives in the Redwood Deep and the Briar Maze, and Fox Run's deck is the foxes (Fox Kit, Swift Fox). Rare is allowed from Map 5 and is below Map 13's Very Rare cap, so it is the deck's top card. Re-fitted by the formula at Rare and Map 13: 4/12 -> 3/10 (89% of N), cost 1, no skills. Map 13's pool holds it under SPECIAL (the MAP list is full at 10). Fox Run now: Berserker Boar 4, Fox Kit 3, Swift Fox 3, Grizzly Vanguard 3, Tasmanian Devil 2, Bramblefox 1 (Lynx and Fawn Scout out, so it leads the deck); battle rating 61 -> 56. Heads-up: a live `__cfg:map-pools:mr` row would win over the file; the admin's Map cards editor shows it.
+  - Keep: Rare, 13-2 Fox Run
+  - Another map (the Briar Maze's Quill Path 12-2, the Greenhood Band's other home)
+  - Another rarity (Uncommon, or Very Rare at Map 13)
+- **Default:** Keep: Rare, 13-2 Fox Run
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep Sergeant Bramblefox: Rare, 13-2 Fox Run (the default).
+
+**SK-2. Skirmish leaders picked by hand (the highlighted card changes)** · Decide · Maps · asked 2026-10-22 · decided 2026-10-23
+- Owner 09:52: from Map 2 every skirmish's leader is its highlighted (showcase) card. The leader is the chosen showcase, else the Auto pick (top rarity, then Attack + Health/2). Where that Auto pick is a small card beside a much bigger unit (for example a 1/1 Rare beside a 1/25 Common that costs 3) I set `showcase` by hand to the biggest unit by cost and strength, so the highlighted card, and the leader, changes on these 14 fights: 5-3 and 5-4 Venomlord Serpent; 15-1 and 15-4 Cataphract Destrier; 17-1, 17-3 and 17-A-1 Glacial Ape King; 18-2 Komodo Warlord; 20-1 and 20-4 Cave Warlord; 21-3 Glacier Yak; 22-2 Gorge Wyrm; 19-A-4 Pyroclast Wyrm; 14-A-2 Ancient Sloth Titan. Every other fight keeps its Auto pick as the leader (the 2-1 crab is yours). Change a leader in the Showcase picker (Admin): the leader follows.
+  - Keep these picks
+  - Back to Auto everywhere (the strongest by rarity)
+  - Tell me which to change
+- **Default:** Keep these picks
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the hand-picked leaders (the default).
+
+**SK-3. Skirmish sizes: 8 sevens, and three fights that rate higher with their leader** · Decide · Balance · asked 2026-10-22 · decided 2026-10-23
+- 149 skirmishes (main maps and side maps) now hold 5-7 different cards: 47 have 5, 94 have 6, 8 have 7 (7 only with a clear leader: 7-2, 22-4, 2-A-3, 19-A-5, 14-A-3, 20-B-1, 18-A-3, 18-A-7; was 28 sevens, and 14 decks of 8 to 12 cards, all on the side maps). 17 fights had 4 cards and got a fifth from the map's pool. The leader counts double in the battle rating, so I traded copies (and, in 15 fights, a heavy card for a lighter one the map already uses) to keep each rating within about 10% of before; the smallest decks (rating 20) rise by 2, which is a leader's minimum. Three fights stay above: 16-4 (39 -> 52), 21-2 (63 -> 74) and 20-B-3 (46 -> 61), where the rest of the deck is already Common so copies cannot offset a Rare or Very Rare leader. Not touched: the Tutorial map's lesson fights (T-2 has 7 cards and T-3 has 8, they teach with a hand-picked lineup), the endless dungeons' generated floors, elites and bosses, and Maps 0-1 (no leaders, sizes only).
+  - Keep
+  - Give those three a lighter leader (a Common showcase)
+  - Allow more sevens
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "OKAY (7 cards should be rare - 8 7s is okay i think)" Keep (the default): 8 skirmishes with 7 cards stays; 7 is meant to be rare.
+
+**D18. Play Maps 1–4 and say how difficulty and rewards feel** · Feedback · Balance · asked 2026-10-03 · decided 2026-10-23
+- Map 1 is an on-ramp; Maps 1–2 have reward cards; Map 2 retuned. Note: since 2026-10-08 Conquest fights default to Open mode (no collapsing), which changes how the AI and positions play, so the old difficulty numbers need a re-check.
+- **Default:** I re-simulate win rates under Open mode next
+- **Outcome:** Owner (10-23 00:10): "played - seems OKAY" Maps 1-4 feel right; no change to difficulty or rewards.
+
+**I1. Native-speaker review for Tagalog, Tamil, Japanese and Korean** · Decide · Languages · asked 2026-10-06 · decided 2026-10-23
+- Machine-quality translations ship now (including card names). A native pass would catch tone and idiom.
+  - Find reviewers
+  - Ship as is
+- **Default:** Ship as is
+- **Outcome:** Owner (10-23 00:10): "OKAY" Ship as is (the default); no native-speaker review for now.
+
+**I2. Translate text that contains numbers** · Decide · Languages · asked 2026-10-08 · decided 2026-10-23
+- Lines like "3 cards", "Pack 2 of 10", "N new cards!" stay English because the translator matches whole strings. Fix: number-aware templates for each language.
+  - Approve the template change
+  - Leave English
+- **Default:** Approve
+- **Outcome:** Owner (10-23 00:10): "Template change" Approve the template change (number-aware templates for each language). Package not named in the 10-23 split (translations); queue it as an i18n package.
+
+**H2. The 3-part Hero XP bar (feedback item 17)** · Decide · Hero · asked 2026-10-08 · decided 2026-10-23
+- How the three XP bars should split (battle XP, Materia XP, ...?) — needs your picture of it.
+- **Outcome:** Owner (10-23 00:10): "Battle XP, Materia XP, Battle XP OR Materia XP. But if you use Battle XP for the 3rd section, there is a 25% inefficiency." The Hero XP bar has three sections: Battle XP, Materia XP, and a third that takes either; filling the third with Battle XP is 25% less efficient. To build in package SX.
+
+**E1. A free pack for guests before sign-in** · Decide · Economy · asked 2026-10-08 · decided 2026-10-23
+- Let a guest open one Sprout Pouch before asking them to sign in.
+  - Yes
+  - No
+- **Default:** Yes
+- **Outcome:** Owner (10-23 00:10): "No." No free pack for guests before sign-in.
+
+**E2. Disenchant values (Magic Dust per extra copy)** · Confirm · Economy · asked 2026-10-08 · decided 2026-10-23
+- Built with: Common 5, Uncommon 8, Rare 15, Very Rare 20, Super Rare 30, Epic 40, Heroic 50, Unique 60, Legendary 100, Mythic 150, Ancient 200. Never Base/Quest/levelled/foil/Shiny; keeps one copy.
+  - Keep
+  - Change the numbers
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "5/10/25/45/65/100/150/250/400/700/1200/2000+ etc." Change the numbers (not the default). Taken in rarity order: Common 5, Uncommon 10, Rare 25, Very Rare 45, Super Rare 65, Epic 100, Heroic 150, Unique 250, Legendary 400, Mythic 700, Ancient 1200, and the next rarity above Ancient 2000+; RW3 checks the rarity list and the "etc.". To build in package RW3. Built (RW3): Magic Dust per plain spare copy, RARITY_DEFS order: Common 5, Uncommon 10, Rare 25, Very Rare 45, Super Rare 65, Epic 100, Heroic 150, Unique 250, Legendary 400, Mythic 700, Ancient 1,200, Divine 2,000, then x1.5 a step for the "etc.": Void 3,000, Daemonic 4,500. Starter as Common (Starter cards can't be melted anyway); special rarities as their tier (Quest = Uncommon, Special and Event-Rare = Rare, Dev- / Event-Legendary = Legendary, Dev-Ancient = Ancient). Foil, Shiny, skin and extended art still multiply it. Was a % of a Materia Unit (Common 2, Rare 8, Legendary 42).
+
 **E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Hue shift, not a foil: the art is recoloured by a fixed per-card hue (90–270°), soft white glow, twinkling ✦. Prism stays a foil treatment.
+
+**G1. Combo counter** · Decide · Battle · asked 2026-10-07 · decided 2026-10-23
+- A counter for chains of triggered abilities in one round, with escalating sound/visuals.
+  - Build it
+  - Skip
+- **Outcome:** Owner (10-23 00:10): "No." Skip the combo counter.
+
+**T1. Catch-up mechanics** · Discuss · Design · asked 2026-10-03 · decided 2026-10-23
+- Rested XP, a weekly comeback quest tier, cheaper early Conquest once you've cleared further, a gentler curve.
+- **Outcome:** Owner (10-23 00:10): "OKAY" Catch-up mechanics: the four ideas listed are approved as a direction.
+
+**T2. Replays** · Discuss · Design · asked 2026-10-03 · decided 2026-10-23
+- Watch-only or re-fight this deck? Share links? How many to keep?
+- **Outcome:** Owner (10-23 00:10): "OKAY to all, max past 20" Replays: all the options listed are approved, and the keep-count goes past 20.
+
+**N1. The Nest repeats the Codex** · Discuss · Design · asked 2026-10-08 · decided 2026-10-23
+- You noted the Nest overlaps the Codex. Kept for now. Ideas when you're ready: the Nest as your trophy shelf (Shinies, foils, prestige), or merge it into Codex as an Owned filter.
+- **Default:** Keep for now
+- **Outcome:** Owner (10-23 00:10): "Nest only lists baby/eggs or level 0 base cards (in two tabs) - these are like 'recruits'. Faction cards also start at level 0." Not the default (keep for now): the Nest lists only baby/egg cards and level-0 base cards, in two tabs, like recruits; faction cards also start at level 0. To build in package TU2.
 
 **E4. Pack set discounts** · Decide · Economy · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Revised 2026-10-08: 1/10/25/50/100 packs = 0/5/6/7/7.5% off. Built.
@@ -919,6 +1132,13 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 **F2. Shiny in battle** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Shiny is rolled in the one grant function, so any card received can be Shiny. A card you own a Shiny copy of is Shiny in your hand and on the board, and units it spawns are Shiny too.
 
+**F3. Enchant and Refine numbers** · Confirm · Cards · asked 2026-10-08 · decided 2026-10-23
+- Enchant: Ember +1⚔ (scorch), Stone +3❤, Tide +2❤, Grove +1⚔+1❤. Refine costs from 40✨+100🍁 (Foil) up to 200✨+450🍁+10🍂 (Gold leaf). Tide is currently a weaker Stone; give it something of its own?
+  - Keep
+  - Retune
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the Enchant and Refine numbers (the default).
+
 **B1. Open-mode difficulty tweaks** · Decide · Balance · asked 2026-10-08 · decided 2026-10-09
 - Re-simulated under Open fights (difficulty-open-mode-2026-10-08.md): Maps 1–4 got easier; Map 3's first two skirmishes (16 HP) are now easier than Map 2's; the Frost Yeti King (130 HP) is a 0% wall. Proposed: Badger Warband and Quill Line to ~22 HP; Yeti King to ~90 HP or make its fight Gravity (collapsing) as a special. Superseded if B2 retunes all maps.
   - Apply both
@@ -950,12 +1170,72 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - It's a bug: it reverts
   - Lock it after the first save
 
+**C3. Victory shift and the castle's white gradient** · Clarify · Battle · asked 2026-10-09 · decided 2026-10-23
+- Couldn't reproduce either. Which cards move at the end of a fight, and when? Where does the white gradient on the castle show (fight, map, results)? A screenshot would settle both.
+- **Outcome:** Owner (10-23 00:10): "Now this is rarer - so mabye OKAY for now." Leave the victory shift and the castle gradient alone for now; it happens rarely.
+
+**E9. What do Krooni 👑 buy?** · Decide · Economy · asked 2026-10-09 · decided 2026-10-23
+- The Golden case gives 3 Krooni. Nothing spends them yet, and they're kept on this device only (no database column). Ideas: cosmetic finishes, a Krooni-only pack, or Hero rarity boosts.
+  - Cosmetics
+  - A Krooni pack
+  - Hero boosts
+  - Decide later
+- **Default:** Decide later
+- **Outcome:** Owner (10-23 00:10): "Retire Krooni for now" Nothing will spend Krooni; retire them from the game for now. To build in package TU2.
+
+**E10. Promotion cost and level** · Decide · Economy · asked 2026-10-09 · decided 2026-10-23
+- Worker Ant promotes at Lv 3 for 60 Maple Leaves + 20 Dust. The ant goes back to Lv 0, so it can be promoted again into the other choices. Ant Warrior uses the Soldier Ant's art for now.
+  - Keep
+  - Higher level (5)
+  - Free promotion, keep the level
+- **Default:** Keep
+- **Outcome:** Owner (10-23 00:10): "No. Combining or converting cards to different cards is a concept we havent explored. HOWEVER, please prepare this tab. This is not a subtap - it will be its own feature page!" Keep promotion as is (the default); card combining and converting is not designed yet, but prepare its page: its own feature page, not a subtab. To build in package TU2.
+
+**E11. Nurse master bonus** · Decide · Economy · asked 2026-10-09 · decided 2026-10-23
+- The Nest Nurse (a Unique+ card or the Wandering Traveller) is in, but what it does is still open. Ideas: eggs hatch 25% faster; a small chance a hatch comes out Shiny.
+  - Faster hatching
+  - Shiny chance
+  - Both
+- **Default:** Faster hatching
+- **Outcome:** Owner (10-23 00:10): "YES eggs hatch faster. No, shiny chance cant be increased." Faster hatching only (the first option); the Nurse does not touch the Shiny chance. To build in package RW3. Built (RW3): already in the game since 10-15: the Nurse master speeds every egg, baby and Level-0 training by 2.5% per Nursing mastery point, at most half the time (a Unique Lv 1 nurse: about 22%; the Wandering Traveller with Nursing: more). It never touches the Shiny chance (0.5%, rolled when a copy is granted). No change made; call RW3-11 if a flat 25% is wanted instead.
+
+**D20. Devilry: my readings of your list (all built, all revertible)** · Decide · Design · asked 2026-10-10 · decided 2026-10-23
+- Built as I read them: (1) Dark Summon is a second play each turn, just for ⛧ cards, and every Dark Summon card also costs Darkness (a free extra play measured at 100%). (2) Darkness comes from your own units perishing (+1 each); 'dark actions' were left open. (3) Devour uses your play for the turn and works once per devourer. (4) Ritual's 'units perished' counts both sides. (5) Sacrifice N sits on the fodder; the discount comes off Darkness first, then Lumber. (6) Your blank keyword is named Offering N. 2026-10-10 (you: 'darkness is not clear. Is it gained? idk'): yes, it is gained: +1 each time one of YOUR units perishes (Ash Imp adds +1 on arrival). It's shown only if your deck has at least one Devilry card: the pill reads '★ 3 · ⛧ 1' (Darkness held, dark summons left this turn), and each gain floats a ★ +1. You gain 1 dark summon per turn; it doesn't stack.
+  - Keep all six
+  - Change some (tell me which)
+- **Default:** Keep all six
+- **Outcome:** Owner (10-23 00:10): "OKAY for now" Keep all six Devilry readings (the default).
+
+**D21. Backstab: what should it do?** · Decide · Design · asked 2026-10-10 · decided 2026-10-23
+- You listed Backstab as a neutral skill without a rule. Suggestion: Backstab N, +N damage when it hits a unit that is facing a different target (rewards Pitchfork, Sweep and off-centre angles).
+  - Use the suggestion
+  - Something else (tell me)
+  - Drop it
+- **Default:** Use the suggestion
+- **Outcome:** Owner (10-23 00:10): "No idea. But if the enemy has a status that makes them less effective at combat or YOU have a skill that makes you MORE effective at combat (blind vs evade e.g.)" Not the suggestion: Backstab gains its bonus when the target has a status that makes it less effective at combat, or the attacker has a skill that makes it more effective (blind against evade, for example). To build in package EN.
+
+**D22. Fast Forward counters: build next?** · Decide · Design · asked 2026-10-10 · decided 2026-10-23
+- Your rule: with N counters, a unit runs its turn, upkeep included, N extra times before joining the main action order. It needs a pre-combat pass in the engine, about half a day of work with tests.
+  - Build it next
+  - After Ecclesia
+  - Later
+- **Default:** After Ecclesia
+- **Outcome:** Owner (10-23 00:10): "Okay. Unused for now" After Ecclesia (the default); not built, no card uses it yet.
+
 **D23. Ecclesia next, with your Prayer value?** · Decide · Design · asked 2026-10-10
 - Prayer value = the sum of Prayer N on your board + the cards in your Removal Zone, +1 once a turn by exiling a hand card when summoning an Ecclesia card. Ecclesia cards need a Prayer value (a threshold, not spent). Effect ideas: Worship, Divine Retribution, Lightning, Midas Touch, Healing, Satiety. 2026-10-10 (taken on 'continue'): built. See the archetypes note for every rule, the nine cards and the measurements.
   - Build Ecclesia next
   - Scrapper next
   - Evolution next
 - **Default:** Build Ecclesia next
+
+**D24. Arena rules: daily rotation and the second-player card** · Decide · Balance · asked 2026-10-10 · decided 2026-10-23
+- Built: the Arena's rule set changes daily (Standard, Long Night, Midsummer, Dusk Start, Timber Fair with +1 Lumber every 3 rounds, Frost Week, Fog on the Moor). In every Arena set, whoever plays second opens with an extra card. Conquest keeps day-first, no extra card and no free Lumber unless a fight sets its own rules; Live Ranked plays Standard. Should Conquest also give the second player the extra card (it would need a retune)?
+  - Keep Conquest as is
+  - Add the second-player card to Conquest too
+  - Change the rotation
+- **Default:** Keep Conquest as is
+- **Outcome:** Owner (10-23 00:10): "OKAY. 2nd player has no benefit except +1 Shield to Bramble." Keep Conquest as is (the default); in the Arena the second player's extra card is replaced by +1 Shield on its Bramble, and nothing else. To build in package EN.
 
 **B6. The hummingbird starter deck beats the otter starter deck ~99% of the time** · Decide · Balance · asked 2026-10-09
 - Starter vs starter in simulation (300 matches): otters win 0.9%. All 10 hummingbird Basics fly (dodge half of ground attacks), most are Diurnal (+1 by day), and they run 2 copies each of 10 solid cards against the otters' 20 singles with several 1-Attack fillers. Removing Diurnal alone: 3.7%; a gentler 1-in-3 dodge: 3.3%. Packages that land near even: (C) the 7 hummingbird Basics with 2+ Attack lose 1 Attack, and 5 otter ground Basics (Otter Guard, River Carp, Otter Paddler, Burrow Rabbit, Ant Scout) gain Reach (their attacks ignore the Flying dodge): 47.7%. (F) the same hummingbird nerf, +1 Attack on 6 otter 1-Attack fillers (Honey Bee, Silver Minnow, Duckling, Otter Kit, Worker Ant, Chipmunk Forager), and Reach on Otter Guard and River Carp only: 46.8%. Reach is already in the engine (no card uses it yet). Not applied because it changes the faction players picked, their saved decks and the tutorial. 2026-10-10: superseded by your new basic set (shared six + three per side): the starter mirror now measures 52.9%.
@@ -964,6 +1244,15 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Something else (tell me)
   - Leave as is
 - **Default:** F: nerf hummingbirds, lift otter fillers, Reach on 2
+
+**D19. Archetypes: which to build first** · Decide · Design · asked 2026-10-09 · decided 2026-10-23
+- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions. 2026-10-09 (default taken on 'continue'): Swarm built first (Swarm N + Hive Mind on ants and bees). Then Tide (taken on 'continue', revertible): Flow/Ebb each round from round 2; Tide +1 on Flow, -1 damage taken on Ebb; Wash pushes the facing enemy +1 Wait once; 18 water cards tagged, 7 trimmed back into band, 28 water fights retuned. Then the active Exile zone (also on 'continue', revertible): Echoes 🕯️ (+1 per card sent to your Removal Zone) and Remember N (returns from the zone at N Echoes), with Echo Keeper, Marsh Wisp and Bog Revenant. Then the Forgotten Ones (also on 'continue', revertible): Remember returns +1/+1 per Echo spent, the Forgotten tag, and The Unremembered (Swampmire boss reward). 2026-10-10: Devilry built from your new list (see D20). Next suggested: Ecclesia with your Prayer value (D23).
+  - Ecclesia next (D23)
+  - Scrapper next
+  - Evolution next
+  - Pause archetypes
+- **Default:** Ecclesia next (D23)
+- **Outcome:** Owner (10-23 00:10): "OKAY to your suggestion" The suggested archetype order stands (the default).
 
 **T10. New Unique cards can break the raid ghost generator** · Note · Tech · asked 2026-10-09
 - Making the Wandering Traveller Unique left stage-5 ghost decks under 20 cards, so it was reverted. The generator needs a fallback before more Unique cards are added.
@@ -1092,6 +1381,27 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Keep both as they are
 - **Default:** Price Twin as the card's own body
 - **Outcome:** Owner 16:33: "B15: Only a theoretical pricing is possible since this depends on the skill of the player. I would say creating a copy of a random ally card — probably 20+. Becoming a copy of a random ally card probably 5+. I think for mirrorhide mutant, they should copy the skills of the card, but their stats = the highest stat of both cards. E.g. 2/3 copying a 4/2 => 4/3." Built (package MT): Twin is priced 20 (owner-set); Mirrorhide Mutant has the new Mimic (5, owner-set) instead of Twin; both re-fitted by formula: Puddle Changeling 1/1 (Twin overflows a Common's N; floor, skills kept), Mirrorhide Mutant 2/11.
+
+**FOG1. Fog of War is information only: the CPU still sees your whole board** · Decide · Battle UI · asked 2026-10-21 · decided 2026-10-23
+- Package FOG hides the far enemy columns from the player's view only. Combat, targeting and the CPU play exactly as before, and the enemy's view of your units is not fogged. Raids, Pass & Play and the Collapse rows are left out.
+  - Keep it as a view-only rule
+  - Also make the CPU unable to target units it cannot reach (an engine change)
+- **Default:** Keep it as a view-only rule
+- **Outcome:** Owner (10-23 00:10): "Both sides" Not the view-only default: fog applies to both sides, so the CPU also cannot target what it cannot reach (the engine change). To build in package EN.
+
+**FOG2. Fog reach is the unit's column and the ones beside it; revealers add only permanence** · Decide · Battle UI · asked 2026-10-21 · decided 2026-10-23
+- Reach follows your Parasite note (a live unit in the column or beside it; the centre is always open, as for placement). Illuminate has no radius, so Darksight, Keen Eye and Illuminate cover the same three columns, but what they cover stays revealed for the rest of the fight.
+  - Keep: same reach, revealers make it permanent
+  - Give revealers a wider reach (2 columns each side)
+- **Default:** Keep: same reach, revealers make it permanent
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the reach; revealers make it permanent (the default).
+
+**FOG3. Fog of War uses the Mist scene as its card art for now** · Decide · Battle UI · asked 2026-10-21 · decided 2026-10-23
+- The Environment card borrows art/fields/misty.png. A new scene needs generating under the art workflow.
+  - Generate a Fog of War scene
+  - Keep the Mist scene
+- **Default:** Keep the Mist scene
+- **Outcome:** Owner (10-23 00:10): "OKAY" Keep the Mist scene (the default).
 
 ## Stated rules · 2026-10-21
 
