@@ -4,6 +4,51 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**DN2-1. An elemental crit shows only its big glyph, no 👊** · Decide · Battle UI · asked 2026-10-22
+- Read from "can you just make the damage type emoji bigger if it's non physical": an ice crit on a Fragile unit now reads (big ❄️)14🦴 (DN had 👊❄️14🦴). A physical crit keeps 👊7. One switch brings the fist back on elemental crits (DMG_CRIT_FIST_ON_ELEMENT).
+  - As built (big glyph only)
+  - 👊 and the big glyph
+- **Default:** As built (big glyph only)
+
+**DN2-2. Damage numbers lead with the damage type, not the source** · Decide · Battle UI · asked 2026-10-22
+- Following the rule (type glyph, none for physical), numbers that used to show their source now show their type: an Arrow Slits arrow, a trap, Pierce, Stampede, Friction, a Penance / Blood Tithe payment and the tentacle's stamp are plain numbers (was 🏹 🪤 🗡 💥 ⚙️ ⛧ 🦑); a comet or scorched ground is 🔥 (was ☄️ 🌋); Decay is 🍂 (was 🦠). Ticks with no element keep their own glyph: Curse 🜏, Chilli 🌶️, Strangle 🪢. The skill's own effect (the tentacle, the arrow, the spark) still plays.
+  - As built
+  - Keep a source glyph on physical-only sources (🏹 🦑 🪤)
+- **Default:** As built
+
+**DN2-3. The log's "💥 Crit!" becomes the 👊 on the number** · Decide · Battle UI · asked 2026-10-22
+- A crit's log line now reads "hit X for 👊14🦴 ❄️ cold damage" instead of "... for 14 ❄️ cold damage 💥 Crit!". An Ambush hit (no 👊 on its floating number either) keeps the words.
+  - As built
+  - Keep "💥 Crit!" too
+- **Default:** As built
+
+**DN2-4. "Higher hue" is +12 degrees for every element** · Decide · Battle UI · asked 2026-10-22
+- Built as asked (lighter by 10%, hue +12 degrees). Fire turns a brighter yellow-orange and magic a pinker violet, but ice turns slightly bluer (its hue is already past cyan), not the lighter cyan I described at 15:39. Poison greens turn a little bluer too.
+  - As built (+12 for all)
+  - Warmer for every element (fire and magic +12, ice and poison -12)
+- **Default:** As built (+12 for all)
+
+**FX2-1. The volcano's hazards together, at its higher levels** · Decide · Balance · asked 2026-10-22
+- Each hazard alone stays at or under 1 a unit a round (Lava Tide, Eruption, comets and Scorched Ground are 1 each). Together, measured with 3 units a side over rounds 2–20: very low 0.10, low 0.41 (the only level the maps use), medium 0.64, rising ("even") 1.19, high 1.34, because after an eruption comets hit every unit for 3 rounds and at the higher levels eruptions come almost every round. The most one unit took in one round was 3 (a comet, an eruption and lava together).
+  - As built (each hazard at most 1)
+  - Comets 1 in 2 rounds at the higher levels
+  - Cap the volcano at 1 a unit a round in total
+- **Default:** As built (each hazard at most 1)
+
+**FX2-2. The Core's Tentacle Smack keeps 1–2** · Decide · Raids · asked 2026-10-22
+- Your rule covers the first three fights (the Tentacles and the Tail): the Tail Sweep 2, the Tentacles' smack 1. The Core is the fourth fight, so its smack keeps FX's 1–2 (a seeded 50/50, shown on the tentacle). In the classic trench (admins only) a smack doesn't roll, so the Core's is 2 there.
+  - Keep the Core at 1–2
+  - The Core's smack 1 too
+  - The Core's smack 2
+- **Default:** Keep the Core at 1–2
+
+**FX2-3. A half of 1 is 1: Resist, Ghost, Atheist and the Psychic Dampener no longer stop a 1** · Decide · Balance · asked 2026-10-22
+- Under one rounding half up, a single halving of 1 is 0.5 and lands as 1, so Resist, a Ghost's, Supreme's or Shade's half, Atheist and the Psychic Dampener do nothing against a 1-point hit or tick (a Ghost took 0 from a 1-point poison tick before; a dampened Psychic 1 did nothing; now both are 1). Two halvings (0.25) still come to 0. Across the card matrix's 30,680 fights, 488 changed, 48 of them changed winner, all from this kind of rounding.
+  - As built (your rule as written)
+  - Round halves down only for a 1 (a resisted 1 is 0)
+  - Bring back "at least 1" with rounding down
+- **Default:** As built (your rule as written)
+
 **BF8-1. Blinding priced 2.5 (my guess); two more ways to blind are for later** · Decide · Balance · asked 2026-10-22
 - You said Blinding is a flat skill and asked me to guess. It is 2.5 for 50% a hit, 2 rounds (Horned Lizard): between Paralyze 2 and Stun on Hit 3. Horned Lizard re-fitted 4/5 → 5/7. You named three ways to blind (dazzling lights, a powder or acid spray, poking the eyes); only the one skill exists, shown as Blinding. The other two are not built.
   - Keep 2.5
@@ -528,6 +573,61 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - **Default:** Keep the Mist scene
 
 ## Decided
+
+**DN-1. Hit numbers drop the minus sign; the other damage numbers keep theirs** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
+- Package DN follows the note's format exactly ("🔥20⛨"), so a unit hit now reads 🔥3⛨, 👊7, 👊❄️14🦴, 5 (was 🔥 -3, -7, 👊❄️ -14). The other damage numbers are separate code and keep their old look with a minus: Bleed and Poison ticks, field damage (comets, lava, hail, the tentacle's 🦑 −2), bramble hits on the HP bar, Reflect and Thorns. Colours are unchanged everywhere.
+  - As built (hits only)
+  - Bring every damage number to the new format
+  - Put the minus back on hits
+- **Default:** As built (hits only)
+- **Outcome:** Owner 15:39: "DN-1 Yes. DN-3 OKAY. DN-4 Yes. DN-2 Im now thinking, can you just make the damage type emoji bigger if it's non physical. e.g. wand for magic becomes big if its crit! or even colour burn it abit? What would the color of the text be btw? a 10% lighter and higher hue version of the original color?" Built (package DN2): every damage number reads <type glyph><number><mark> with no minus: Poison / Bleed / Decay / Toxin / Strangle / Curse / Chilli ticks, field damage (scorched ground, eruption, comets, lava, hail, ley lines, the depths, arrow slits, landslide), bramble hits on the HP bar (Bulwark is the ⛨), Pierce and Stampede, Reflect / Thorns, Friction, Recoil, Ichor, traps, the meteor's crater, Fire on hit, the firepot, splash, and the raid's Tentacle Smack / Tail Sweep stamps. The engine adds the marks (mods) to those events; no number changed (card matrix: 0 diffs). Heals keep their look.
+
+**DN-2. The marks after a hit number, and which one wins** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
+- One mark per hit, the strongest: 🚫 immune (the hit did 0 because of Immune, Invincible or a Cower shell), then ⛨ blocked to 0 by Armor, then 🦴 Fragile, then 💢 Weakness (also Shocked, which takes ×1.5), then ⛨ any reduction (Armor, Resist, Sturdy, Shell / temporary Health, stone, Rage's half, Scare, Ghost / Atheist halving). The engine now tags each hit with why its number moved (`mods` on the hit event, display only). ⛨ is a text symbol (no emoji exists), drawn in steel with a dark edge.
+  - As built
+  - Separate marks for Armor and Resist
+  - Show two marks when an up and a down both apply
+- **Default:** As built
+- **Outcome:** Owner 15:39: "DN-1 Yes. DN-3 OKAY. DN-4 Yes. DN-2 Im now thinking, can you just make the damage type emoji bigger if it's non physical. e.g. wand for magic becomes big if its crit! or even colour burn it abit? What would the color of the text be btw? a 10% lighter and higher hue version of the original color?" Built (package DN2): the mark rule stays as built. A crit that isn't physical draws its type glyph 1.4x on a soft burn in the element's colour (no 👊), and its number takes the type's colours 10% lighter and 12 degrees up the hue wheel (DMG_CRIT_LIGHTEN 0.10, DMG_CRIT_HUE 12, DMG_CRIT_GLYPH_SCALE 1.4 in arena_app.js). Marks keep their size; a physical crit keeps 👊; normal hits keep their colours.
+
+**DN-3. Crits use the game's 👊, not ❇** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
+- The note suggested ❇ for elemental crits unless the game already had a crit mark. It does: 👊 (since 2026-10-08). So a physical crit reads 👊7 and an ice crit on a Fragile unit reads 👊❄️14🦴.
+  - Keep 👊
+  - Use ❇ for elemental crits only
+  - Use ❇ for every crit
+- **Default:** Keep 👊
+- **Outcome:** Owner 15:39: "DN-1 Yes. DN-3 OKAY. DN-4 Yes. DN-2 Im now thinking, can you just make the damage type emoji bigger if it's non physical. e.g. wand for magic becomes big if its crit! or even colour burn it abit? What would the color of the text be btw? a 10% lighter and higher hue version of the original color?" Kept: 👊 is the crit mark (physical crits).
+
+**DN-4. The battle log keeps its own wording** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
+- The log doesn't share the floating number's formatter (it says "hit X for 3 🔥 fire damage — blocked to 0 by Armor! 🛡 … 💥 Crit!"), so DN left it unchanged; no golden or log text moved. The same marks could be added to its lines.
+  - As built
+  - Add the 🦴 / 💢 / ⛨ / 🚫 mark to log lines
+- **Default:** As built
+- **Outcome:** Owner 15:39: "DN-1 Yes. DN-3 OKAY. DN-4 Yes. DN-2 Im now thinking, can you just make the damage type emoji bigger if it's non physical. e.g. wand for magic becomes big if its crit! or even colour burn it abit? What would the color of the text be btw? a 10% lighter and higher hue version of the original color?" Built (package DN2): battle-log damage lines carry the same marks after the number (🦴 💢 ⛨ 🚫) and 👊 before a crit's number, and the element glyph where the line names the type ("took 3 ☠️ poison damage", "2 🧪 acid", "1 💭 psychic damage"). Wording otherwise unchanged; the marks sit inside the translated templates' values, so the 12 packs still match.
+
+**FX1. Which field effects count as "similar" to Crushing Depths (now 1 damage)** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
+- Set to 1 damage a round by default, and every map number brought down to 1: Crushing Depths (5; the raid's 2), Hail (3; maps 22-4, 22-7, 22-8 had 2), Glass-storm (random 1–3), Lava Spout (3; 22-5, 22-8 had 2), Leylines III (3 to units and brambles), Thunderstorm (2; 10-7, 10-9), Arrow Slits (2; 23-7 had 3, 24-5 and 24-8 had 2). Left alone: Landslide (1 in 4 rounds, 5 to three columns: a chance event, not every round), the volcano's hazards and Scorched Ground (boss mechanics), Tide-spout (already 1), Ash Rain (1 to brambles only).
+  - Keep this split
+  - Landslide to 1 too
+  - Landslide to 2–3
+- **Default:** Keep this split
+- **Outcome:** Owner 14:12: "FX-1: Landslide 1/4 chance to deal 3. Volcano hazards - idk how much I wrote, but 5 may be the max dmg. The normal average damage over a turn cannot exceed 1 in this case." Built (package FX2): Landslide 1 in 4 for 3 (was 5; 0.75 a round on a unit in its columns). The volcano: Lava Tide 1 (was 3), Eruption 1 (was 2), comets 1 to every unit (was a random 2–5), Scorched Ground's editor preset 1 (was 2). Each hazard's number times its chance stays at or under 1 at every volcano level, and a map's own number is capped at 5. Measured on the only level the maps use (low, 22-6 and 22-8): 0.41 a unit a round from all three together (about 1.35 before). Call FX2-1 asks about the higher levels combined.
+
+**FX2. How a 1-damage Crushing Depths halves for Swimmers** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
+- Chosen: a halving keeps at least 1, so at 1 damage a Tide unit or Swimmer takes 1 like everyone. Only when both halvings stack (a Swimmer or Tide unit that also resists water) does it round down: 0 at 1 damage. Hail and Lava Spout keep the game's usual Resist rule (half, at least 1), so Resist does nothing against a 1.
+  - Keep (at least 1; Swimmer + Water Resist takes 0)
+  - Swimmers take 0 at 1 damage
+  - Always at least 1
+- **Default:** Keep (at least 1; Swimmer + Water Resist takes 0)
+- **Outcome:** Owner 14:12: "FX-2: we shall do normal rounding. if x < 0.5, 0; else 1. Is this fair? Only round once, when it comes into fruition on the battlefield. Internal calculations should never round. Even when passing numbers between functions. Idk how you code it internally - the first ApplyDamage(X) before damage calculation and etc. then the final real ApplyDamage(Y) which results in a literal ReduceHealth(Y) 1-1 + firing related triggers." Built (package FX2): damage is worked out exactly (Resist, Weakness, Fragile, Sturdy, Ghost / Supreme / Shade / Atheist halves, Shock x1.5, Rage's half, stone, Armor, a row's half share, Bloodlust, half lines, Stagger, the Psychic Dampener, a Swimmer's half in the Crushing Depths) and rounded once, half up, in applyDamage, the one place a unit's Health goes down for a hit (damageHQ for a bramble). So a Swimmer at 1 takes 0.5 -> 1, a water-resistant Swimmer 0.25 -> 0, as this call's default had it; a 3 into Resist now lands 2 (was 1), a 5 lands 3 (was 2). The "at least 1" after a factor or a half is gone (it was a patch for rounding down).
+
+**FX3. The Tail Sweep: purple tentacle now, but still always your front row for 3** · Decide · Raids · asked 2026-10-22 · decided 2026-10-22
+- The green "worm" on PC was the Tail part's Tail Sweep, which always hits your front row (its rule, at every width). It is now drawn as the purple tentacle along the front row. Its damage (3 every 2 turns) is its own data and was not changed. The Tentacle Smack (arms and Core) is 1–2 now in the raid fight; the classic trench mode keeps its 6.
+  - Keep the Tail Sweep as is
+  - Tail Sweep picks a random row like the Smack
+  - Tail Sweep 1–2 damage too
+- **Default:** Keep the Tail Sweep as is
+- **Outcome:** Owner 14:12: "FX-3: Raids hit too hard. Tail sweep for 2 instead? If its supposed to be the stronger attack among the first 3 fights before the core, okay. Otherwise, 1-2. The weaker attacks should just be 1 (AOE). Non AOE attacks can go up to 3, but in this case, there isn't." Built (package FX2): the Tail Sweep is the strongest AOE attack of the first three fights (your whole front row, every 2 turns), so it deals 2 (was 3). The Tentacles' Tentacle Smack (a column or a row, every 3 turns) is a weaker AOE attack: 1 (FX had 1–2). There are no single-target boss attacks. The Core's smack keeps FX's 1–2 (call FX2-2). The classic trench now uses the same numbers (no trenchDmg 6); its balance test holds with the Core's trench bramble at 300 (was 200). The Tail Sweep stays on your front row.
 
 **RW-1. Bosses count as elites for the card-reward rank** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
 - N22-4 says elite fights need at least SS for any card. Package RW treats every boss kind (boss, sub-boss, final boss, raid boss, world boss) like an elite, so a boss's reward cards need SS on Maps 0–19, SSS from Map 20 (the rank is per card: B, or S for a Rare or above, one step up every 20 maps, capped at SSS; an elite or boss asks SS first). A fight's own cardRank can only raise it. Tutorial fights need nothing. The same gate holds for random card drops.
