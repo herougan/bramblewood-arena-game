@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "Mulai ronde 2, petir menyambar satu unit acak tiap pihak sebesar {n}.",
  "From round 2, one random unit a side falls Asleep for the round.": "Mulai ronde 2, satu unit acak tiap pihak Tertidur selama ronde itu.",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "Mulai ronde 2, akar mencengkeram satu unit acak tiap pihak: Terjerat selama ronde itu.",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "Mulai ronde 2, tanah membakar satu unit acak di tiap sisi sebesar {n} kerusakan api tiap ronde.",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "Mulai ronde 2, tembok menembak unit penyerang acak sebesar 1. Helm bisa menangkisnya.",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "Mulai ronde 2, unit tercekik: −1 Serangan pada semua yang mereka berikan. Unit tahan api, Kering dan terbang bernapas lega.",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "Mulai ronde 2. Setelah letusan, peluangnya diatur ulang, dan komet menghantam tiap unit sebesar 1 api (separuh bagi yang tahan api).",
@@ -1107,7 +1106,6 @@
  "Language": "Bahasa",
  "Laurels": "Daun Salam",
  "Laurels: earned only in Arena fights against other players": "Laurel: hanya didapat dari pertarungan Arena melawan pemain lain",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "Lava bisa membanjiri kolom acak: 1 kerusakan api ke yang tak terbang.",
  "Leader": "Pemimpin",
  "Learned {v1}.": "Mempelajari {v1}.",
  "Learned. Still a preview: not in fights yet.": "Dipelajari. Masih pratinjau: belum ada di pertarungan.",
@@ -1839,7 +1837,6 @@
  "Two players, one device": "Dua pemain, satu perangkat",
  "Type Tags (biome/animal) filter": "Saring label (bioma/hewan)",
  "Units defeated": "Unit dikalahkan",
- "Units that resist fire are spared.": "Unit yang tahan api tidak terkena.",
  "Unlock all features": "Buka semua fitur",
  "Unlock your first Raid Boss.": "Buka Bos Raid pertamamu.",
  "Unlocked": "Terbuka",
@@ -2802,5 +2799,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Kartu yang boleh dimainkan tiap pihak per giliran. Pihak yang bermain kedua mendapat +1 Perisai pada semaknya, tidak lebih",
  "The dummy in front is Blind: the Backstab lands.": "Boneka di depan Buta: Tikaman dari Belakang mengenai.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "8 tempat di sekelilingnya: kiri, kanan, depan, belakang, dan 4 diagonal (juga baris dalam raid).",
- "Eggs and babies": "Telur dan bayi"
+ "Eggs and babies": "Telur dan bayi",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Terik, level 2: setiap ronde 3 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena.",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Terik, level 3: setiap ronde 4 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena.",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "Lava bisa membanjiri kolom acak: 2 kerusakan api ke yang tak terbang.",
+ "A line of fire: 1 to every unit": "Garis api: 1 ke setiap unit",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 Garis api menyapu tanah yang hangus.",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "Ia melintasi kedua garis depan dari kiri ke kanan. Unit yang tahan api dan Pendaki Gunung tidak terkena.",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "Mulai ronde 2, garis api menyapu medan setiap ronde: 1 kerusakan api ke setiap unit yang disentuhnya.",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "Di awal setiap ronde, 2 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena."
 }

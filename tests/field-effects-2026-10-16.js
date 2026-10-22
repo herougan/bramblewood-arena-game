@@ -132,9 +132,9 @@ ok(mk({sandstorm:true}).e.forecast().wind.mode === 'windy' && mk({sandstorm:true
 { const {e, P} = mk({lavaSpout:true}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
   ok(a.hp === 499 && c.hp === 499, `Lava Spout (FX): 1 fire by default (${a.hp}, ${c.hp})`); }
 { const {e, P} = mk({lavaSpout:3}); const a = put(e, P, 1, 'fe-wall', 0), c = put(e, P, 2, 'fe-fire', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
-  ok(a.hp === 497 && c.hp === 498, `Lava Spout 3: 3 fire to the units in the column, fire Resist half: 1.5 lands as 2 (FX2, 2026-10-22: one rounding, half up) (${a.hp}, ${c.hp})`); ok(ev.some(x=> x.field === 'lavaSpout' && x.col === 0), 'Lava Spout: the burst names its column'); }
+  ok(a.hp === 499 && c.hp === 499, `Lava Spout 3: an every-round hazard deals 1 whatever its number (FX3, 2026-10-23); fire Resist half: 0.5 lands as 1 (${a.hp}, ${c.hp})`); ok(ev.some(x=> x.field === 'lavaSpout' && x.col === 0), 'Lava Spout: the burst names its column'); }
 { const {e, P} = mk({field:'heatwave', heatLevel:3}); const us = [-2, -1, 0, 1].map(s=> put(e, P, 1, 'fe-wall', s)); e.roundStart(P, 2, so, {}, []); // a field ticks every round start
-  ok(us.every(c=> c.hp === 497), `Scorching III: 4 units a side, 3 fire damage each (${us.map(c=> c.hp)})`); }
+  ok(us.every(c=> c.hp === 499), `Scorching III: 4 units a side, 1 fire damage each (FX3, 2026-10-23; was 3) (${us.map(c=> c.hp)})`); }
 
 // ---- Leylines I (the zeitgebers stronger), II (+1 Lumber), III (+1 Lumber, +1 Stone, 3 to all; Atheists spared)
 { const stat = (rules, id)=>{ const {e, P} = mk(Object.assign({phase:'day'}, rules)); const c = put(e, P, 1, id, 0); e.syncPhaseStats(P, so, []); return [c.phaseAtk||0, (c.maxHp - 500)]; };

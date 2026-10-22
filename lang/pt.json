@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "A partir da ronda 2, um raio atinge uma unidade ao acaso de cada lado por {n}.",
  "From round 2, one random unit a side falls Asleep for the round.": "A partir da ronda 2, uma unidade ao acaso de cada lado adormece durante a ronda.",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "A partir da ronda 2, raízes agarram uma unidade ao acaso de cada lado: presa na teia durante a ronda.",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "A partir da ronda 2, o chão queima uma unidade ao acaso de cada lado com {n} de dano de fogo por ronda.",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "A partir da ronda 2, as muralhas disparam contra uma unidade atacante ao acaso com 1. Um Capacete pode desviá-lo.",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "A partir da ronda 2, as unidades sufocam: −1 de Ataque em tudo o que causam. As resistentes ao fogo, Secas e voadoras respiram.",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "A partir da ronda 2. Depois de uma erupção, as hipóteses recomeçam, e os cometas atingem cada unidade com 1 de fogo (metade às resistentes ao fogo).",
@@ -1107,7 +1106,6 @@
  "Language": "Idioma",
  "Laurels": "Louros",
  "Laurels: earned only in Arena fights against other players": "Louros: só se ganham em combates da Arena contra outros jogadores",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "A lava pode inundar uma coluna ao acaso: 1 de dano de fogo às não voadoras.",
  "Leader": "Líder",
  "Learned {v1}.": "Aprendeste {v1}.",
  "Learned. Still a preview: not in fights yet.": "Aprendido. Ainda é uma antevisão: ainda não está nos combates.",
@@ -1839,7 +1837,6 @@
  "Two players, one device": "Dois jogadores, um dispositivo",
  "Type Tags (biome/animal) filter": "Filtro de etiquetas (bioma/animal)",
  "Units defeated": "Unidades derrotadas",
- "Units that resist fire are spared.": "As unidades resistentes ao fogo são poupadas.",
  "Unlock all features": "Desbloquear todos os recursos",
  "Unlock your first Raid Boss.": "Desbloqueie seu primeiro chefe de Raide.",
  "Unlocked": "Desbloqueado",
@@ -2802,5 +2799,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Cartas que cada lado pode jogar por turno. O lado que joga em segundo recebe +1 Escudo no seu silvado, e nada mais",
  "The dummy in front is Blind: the Backstab lands.": "O boneco em frente está Cego: a Punhalada pelas costas acerta.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "os 8 lugares à volta: esquerda, direita, frente, trás e as 4 diagonais (também as filas de uma incursão).",
- "Eggs and babies": "Ovos e crias"
+ "Eggs and babies": "Ovos e crias",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Escaldante, nível 2: em cada ronda 3 unidades aleatórias de cada lado sofrem 1 de dano de fogo. As unidades resistentes ao calor são poupadas.",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Escaldante, nível 3: em cada ronda 4 unidades aleatórias de cada lado sofrem 1 de dano de fogo. As unidades resistentes ao calor são poupadas.",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "A lava pode inundar uma coluna ao acaso: 2 de dano de fogo às não voadoras.",
+ "A line of fire: 1 to every unit": "Uma linha de fogo: 1 a cada unidade",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 Uma linha de fogo varre o chão queimado.",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "Atravessa as duas linhas da frente da esquerda para a direita. As unidades resistentes ao fogo e os Escaladores são poupados.",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "A partir da ronda 2, uma linha de fogo varre o campo em cada ronda: 1 de dano de fogo a cada unidade que toca.",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "No início de cada ronda, 2 unidades aleatórias de cada lado sofrem 1 de dano de fogo. As unidades resistentes ao calor são poupadas."
 }

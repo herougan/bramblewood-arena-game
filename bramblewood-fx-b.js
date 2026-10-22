@@ -1384,8 +1384,9 @@ M.monsoon = function(host, opts){ opts = Object.assign({}, opts, host && host.no
   return run([box], opts, (t)=>{ t.fromTo([dim, ...sh], {opacity:0}, {opacity:1, duration:.4}).fromTo(pud, {scale:0, opacity:0}, {scale:1, opacity:1, duration:.8, stagger:.12}, .4).to(box, {opacity:0, duration:.4}, 2.0); }); };
 M.wildfire = function(host, opts){ opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = futureBox(opts);
   const f = bits(box, 1, ()=> ({cls:'fxb-flame2', style:'left:0;'}))[0]; const em = bits(box, 24, ()=> ({cls:'fxb-ember', style:`left:0; top:${rnd(5, 95)}%;`})); const char = bits(box, 1, ()=> ({cls:'fxb-fwash', style:'background:linear-gradient(90deg, rgba(40,20,10,.35), transparent); transform-origin:0 50%;'}))[0];
-  return run([box], opts, (t)=>{ t.fromTo(f, {x:0}, {x:r.width, duration:1.8, ease:'none'}).fromTo(char, {scaleX:0}, {scaleX:1, duration:1.8, ease:'none'}, 0);
-    em.forEach((e, i)=> t.fromTo(e, {x:r.width*i/24, opacity:0}, {opacity:1, y:-rnd(20, 50), duration:.5}, i*.075).to(e, {opacity:0, duration:.2}, '>')); t.to(box, {opacity:0, duration:.35}, 1.9); }); };
+  const D = Number(opts.duration) > 0 ? Number(opts.duration) : 1.8; // 2026-10-23 (package FX3): Scorched Ground plays it in fights, at the fight's speed
+  return run([box], opts, (t)=>{ t.fromTo(f, {x:0}, {x:r.width, duration:D, ease:'none'}).fromTo(char, {scaleX:0}, {scaleX:1, duration:D, ease:'none'}, 0);
+    em.forEach((e, i)=> t.fromTo(e, {x:r.width*i/24, opacity:0}, {opacity:1, y:-rnd(20, 50), duration:.5 * D / 1.8}, i*.075 * D / 1.8).to(e, {opacity:0, duration:.2}, '>')); t.to(box, {opacity:0, duration:.35}, D + .1); }); };
 M.migration = function(host, opts){ opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = futureBox(opts);
   const herd = bits(box, 7, i=> ({cls:'fxb-herd', text:pick(['🦬', '🦌', '🐗', '🦬']), style:`left:-12%; top:${42 + (i%3)*5}%;`})); const dust = bits(box, 8, i=> ({cls:'fxb-dust', style:`left:-12%; top:${48 + (i%3)*4}%;`}));
   return run([box], opts, (t)=>{ herd.forEach((h, i)=> t.fromTo(h, {x:0, scaleX:-1}, {x:r.width*1.25, duration:2, ease:'none'}, i*.12).to(h, {y:-4, duration:.12, yoyo:true, repeat:15, ease:'sine.inOut'}, i*.12));

@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "சுற்று 2 முதல், ஒவ்வொரு பக்கத்திலும் ஒரு சீரற்ற அலகை மின்னல் {n} தாக்கும்.",
  "From round 2, one random unit a side falls Asleep for the round.": "சுற்று 2 முதல், ஒவ்வொரு பக்கத்திலும் ஒரு சீரற்ற அலகு அந்தச் சுற்றுக்குத் தூங்கும்.",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "சுற்று 2 முதல், வேர்கள் ஒவ்வொரு பக்கத்திலும் ஒரு சீரற்ற அலகைப் பிடிக்கும்: அந்தச் சுற்றுக்கு வலையில் சிக்கும்.",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "சுற்று 2 முதல், நிலம் ஒவ்வொரு பக்கமும் ஒரு சீரற்ற அலகைச் சுற்றுக்கு {n} நெருப்புச் சேதத்துடன் எரிக்கும்.",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "சுற்று 2 முதல், சுவர்கள் சீரற்ற தாக்கும் அலகை 1 சுடும். தலைக்கவசம் அதைத் திருப்பலாம்.",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "சுற்று 2 முதல், அலகுகள் மூச்சுத் திணறும்: அவை தரும் அனைத்திலும் −1 தாக்குதல். நெருப்பு எதிர்ப்பு, உலர், பறக்கும் அலகுகள் நன்றாக மூச்சு விடும்.",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "சுற்று 2 முதல். வெடிப்புக்குப் பின் வாய்ப்புகள் மீட்டமையும், வால்நட்சத்திரங்கள் ஒவ்வோர் அலகையும் 1 நெருப்பால் தாக்கும் (நெருப்பு எதிர்ப்பவற்றுக்குப் பாதி).",
@@ -1107,7 +1106,6 @@
  "Language": "மொழி",
  "Laurels": "வெற்றி மாலைகள்",
  "Laurels: earned only in Arena fights against other players": "வாகைகள்: பிற ஆட்டக்காரர்களுக்கு எதிரான அரங்கச் சண்டைகளில் மட்டும் கிடைக்கும்",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "எரிமலைக்குழம்பு சீரற்ற நிரலை மூழ்கடிக்கலாம்: பறக்காதவற்றுக்கு 1 நெருப்புச் சேதம்.",
  "Leader": "தலைவர்",
  "Learned {v1}.": "{v1} கற்றுக்கொள்ளப்பட்டது.",
  "Learned. Still a preview: not in fights yet.": "கற்றுக்கொண்டது. இன்னும் முன்னோட்டம் மட்டுமே: சண்டைகளில் இல்லை.",
@@ -1839,7 +1837,6 @@
  "Two players, one device": "இருவர், ஒரே சாதனம்",
  "Type Tags (biome/animal) filter": "வகைக் குறிச்சொல் (உயிர்ச்சூழல்/விலங்கு) வடிகட்டி",
  "Units defeated": "தோற்கடித்த அலகுகள்",
- "Units that resist fire are spared.": "நெருப்பை எதிர்க்கும் அலகுகள் தப்பும்.",
  "Unlock all features": "எல்லா அம்சங்களையும் திற",
  "Unlock your first Raid Boss.": "உங்கள் முதல் ரெய்டு பாஸைத் திற.",
  "Unlocked": "திறக்கப்பட்டது",
@@ -2803,5 +2800,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "ஒவ்வொரு தரப்பும் ஒரு முறைக்கு விளையாடக்கூடிய அட்டைகள். இரண்டாவதாக ஆடும் தரப்புக்குத் தன் முட்புதரில் +1 கேடயம் மட்டும்",
  "The dummy in front is Blind: the Backstab lands.": "எதிரே உள்ள பொம்மை குருடாக உள்ளது: முதுகுக் குத்து விழுகிறது.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "அதைச் சுற்றியுள்ள 8 இடங்கள்: இடம், வலம், முன், பின், 4 மூலைவிட்டங்கள் (ரெய்டின் வரிசைகளும்).",
- "Eggs and babies": "முட்டைகளும் குட்டிகளும்"
+ "Eggs and babies": "முட்டைகளும் குட்டிகளும்",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "கொளுத்தும் வெயில், நிலை 2: ஒவ்வொரு சுற்றும் ஒவ்வொரு பக்கத்திலும் 3 சீரற்ற அலகுகள் 1 நெருப்புச் சேதம் பெறும். வெப்பம் தாங்கும் அலகுகள் தவிர்க்கப்படும்.",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "கொளுத்தும் வெயில், நிலை 3: ஒவ்வொரு சுற்றும் ஒவ்வொரு பக்கத்திலும் 4 சீரற்ற அலகுகள் 1 நெருப்புச் சேதம் பெறும். வெப்பம் தாங்கும் அலகுகள் தவிர்க்கப்படும்.",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "எரிமலைக்குழம்பு சீரற்ற நிரலை மூழ்கடிக்கலாம்: பறக்காதவற்றுக்கு 2 நெருப்புச் சேதம்.",
+ "A line of fire: 1 to every unit": "நெருப்புக் கோடு: ஒவ்வொரு அலகுக்கும் 1",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 எரிந்த நிலத்தின் குறுக்கே ஒரு நெருப்புக் கோடு கடக்கிறது.",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "இது இரு முன்வரிசைகளையும் இடமிருந்து வலமாகக் கடக்கும். நெருப்பை எதிர்க்கும் அலகுகளும் மலையேறிகளும் தப்பும்.",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "சுற்று 2 முதல், ஒவ்வொரு சுற்றும் ஒரு நெருப்புக் கோடு களத்தைக் கடக்கும்: அது தொடும் ஒவ்வொரு அலகுக்கும் 1 நெருப்புச் சேதம்.",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "ஒவ்வொரு சுற்றின் தொடக்கத்திலும், ஒவ்வொரு பக்கத்திலும் 2 சீரற்ற அலகுகள் 1 நெருப்புச் சேதம் பெறும். வெப்பம் தாங்கும் அலகுகள் தவிர்க்கப்படும்."
 }

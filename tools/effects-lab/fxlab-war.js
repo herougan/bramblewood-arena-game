@@ -152,7 +152,7 @@ const OLD = [
   {id:'o-friction', group:'war', name:'Friction sparks', where:'the Friction skill (FX.A onEvent friction)', v:[['Play', c=> FA().frictionSparks(c.mine[0], c.mine[1])]]},
   {id:'o-crit', group:'war', name:'Crit sparks', where:'a critical hit (FX.A onEvent, by faction colours)', v:[['Play', c=> FA().critSparks(c.foe[0])]]},
   {id:'o-standard', group:'war', name:'Rally standard (banner)', inGame:false, where:'', v:[['Play', c=> FA().rallyStandard(c.mine)]]},
-  {id:'o-wildfire', group:'war', name:'Wildfire front', inGame:false, where:'', v:[['Play', c=> FB().wildfire(c.arena)]]},
+  {id:'o-wildfire', group:'war', name:'Wildfire front', inGame:true, where:'Scorched Ground: the line of fire each round (FX3, 2026-10-23)', v:[['Play', c=> FB().wildfire(c.arena)]]},
   {id:'o-fogbanks', group:'smoke', name:'Fog banks', inGame:false, where:'', v:[['Play', c=> FB().fogBanks(c.arena)]]},
 ];
 window.FXLAB_WAR = {NEW, OLD};

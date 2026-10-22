@@ -916,7 +916,6 @@
  "From round 2, lightning strikes one random unit a side for {n}.": "第2ラウンドから、雷が各陣営のランダムなユニット1体に{n}を与える。",
  "From round 2, one random unit a side falls Asleep for the round.": "第2ラウンドから、各陣営のランダムなユニット1体がそのラウンド睡眠になる。",
  "From round 2, roots grab one random unit a side: Webbed for the round.": "第2ラウンドから、根が各陣営のランダムなユニット1体をつかむ：そのラウンドはクモの巣状態。",
- "From round 2, the ground burns a random unit on each side for {n} fire damage a round.": "ラウンド2から、地面が毎ラウンド各陣営のランダムなユニット1体を {n} の炎ダメージで焼く。",
  "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.": "ラウンド2から、城壁が攻め手のランダムなユニットを 1 で射る。ヘルメットで弾ける。",
  "From round 2, units choke: −1 Attack on everything they deal. Fire-resistant, Dry and Flying units breathe easy.": "ラウンド2からユニットはむせる：与えるすべてに攻撃 −1。炎耐性・乾燥・飛行ユニットは平気。",
  "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).": "ラウンド2から。噴火の後は確率が戻り、彗星が全ユニットに 1 の炎（炎耐性は半分）。",
@@ -1107,7 +1106,6 @@
  "Language": "言語",
  "Laurels": "月桂",
  "Laurels: earned only in Arena fights against other players": "月桂：他のプレイヤーとのアリーナ戦でのみ手に入ります",
- "Lava may flood a random column: 1 fire damage to non-flyers.": "溶岩がランダムな列を覆うことがある：飛行しないユニットに 1 の炎ダメージ。",
  "Leader": "リーダー",
  "Learned {v1}.": "{v1} を習得しました。",
  "Learned. Still a preview: not in fights yet.": "習得しました。まだプレビューで、戦闘には未対応です。",
@@ -1839,7 +1837,6 @@
  "Two players, one device": "2人で1台",
  "Type Tags (biome/animal) filter": "タイプタグ(バイオーム/動物)で絞り込み",
  "Units defeated": "撃破ユニット数",
- "Units that resist fire are spared.": "炎耐性のあるユニットは無事。",
  "Unlock all features": "全機能を解放",
  "Unlock your first Raid Boss.": "初めてのレイドボスを解放する。",
  "Unlocked": "解放",
@@ -2802,5 +2799,13 @@
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "各陣営が1ターンに出せるカード数。後攻はいばらにシールド+1、それ以外はなし",
  "The dummy in front is Blind: the Backstab lands.": "正面の人形は盲目：背後からの一撃が決まる。",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "周りの8か所：左右、前後、斜め4方向（レイドの列も）。",
- "Eggs and babies": "卵と赤ちゃん"
+ "Eggs and babies": "卵と赤ちゃん",
+ "Scorching, level 2: each round 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "灼熱、レベル2：毎ラウンド両陣営のランダムなユニット3体が火炎ダメージ1。熱耐性のあるユニットは無事。",
+ "Scorching, level 3: each round 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "灼熱、レベル3：毎ラウンド両陣営のランダムなユニット4体が火炎ダメージ1。熱耐性のあるユニットは無事。",
+ "Lava may flood a random column: 2 fire damage to non-flyers.": "溶岩がランダムな列を覆うことがある：飛行しないユニットに 2 の炎ダメージ。",
+ "A line of fire: 1 to every unit": "炎の線：全ユニットに1",
+ "🔥 A line of fire sweeps across the scorched ground.": "🔥 炎の線が焦げた大地を横切る。",
+ "It crosses both front lines from left to right. Units that resist fire, and Mountain Climbers, are spared.": "両陣営の前列を左から右へ横切る。炎耐性のあるユニットと登山家は無事。",
+ "From round 2, a line of fire sweeps past each round: 1 fire damage to every unit it touches.": "ラウンド2から、毎ラウンド炎の線が戦場を横切る：触れたユニットすべてに火炎ダメージ1。",
+ "Each round, 2 random units a side take 1 fire damage. Heat-resistant units are spared.": "毎ラウンド開始時、両陣営のランダムなユニット2体が火炎ダメージ1。熱耐性のあるユニットは無事。"
 }
