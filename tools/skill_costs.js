@@ -137,7 +137,7 @@ if(typeof require !== 'undefined' && typeof module !== 'undefined' && require.ma
   const T = SC.make(JSON.parse(fs.readFileSync(file, 'utf8'))), cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).filter(SC.measured);
   if(args.includes('--diff')){
     const rows = cards.map(c=>{ const b = T.budget(c), oldS = SC.legacyS(c.effects), r2 = v=> Math.round(v * 100) / 100;
-      let m = 1; ['evasive','swift','flying','shadow' /* BF8 (2026-10-22): Blind priced as a skill */].forEach(h=>{ if((c.effects || {})[h]) m *= 1.5; });
+      let m = 1; ['evasive','swift','flying','shadow'].forEach(h=>{ if((c.effects || {})[h]) m *= (h === 'flying' ? 1.39 : 1.5); }); /* BF10 (2026-10-23): Flying x1.39 */
       const A = c.attack || 0, H = c.health || 0, oldOk = r2((2*A + H + oldS)*m) < b.N && r2((A*H + oldS)*m) < b.N2;
       return {id:c.id, name:c.name, oldS, S:b.S, d:r2(b.S - oldS), oldOk, ok:b.ok, missing:b.missing, parts:b.parts}; });
     const big = rows.filter(r=> Math.abs(r.d) > 2).sort((a, b)=> b.d - a.d), flip = rows.filter(r=> r.oldOk !== r.ok), miss = [...new Set(rows.flatMap(r=> r.missing))];

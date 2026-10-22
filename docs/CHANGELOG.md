@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package BF10: Flying ×1.39)
+- **Owner (01:03, 01:57):** "I think Flying may be overcosted." "I estimate Flying is worth x1.39."
+- **Measured:** the robust skill test (`docs/balance/skill-test-robust-mono-2000-2026-10-22.md`) puts Flying's worth at 5.88 stat points against 6.89 paid at ×1.5 (a Flying deck wins 28.4% against the vanilla deck's 41.1%), which is ×1.398.
+- **Formula:** `MISS_MULT_BY = {flying: 1.39}` in `bramblewood-budget.js` (`missMultFor`); every other half-miss skill stays ×1.5. The card editor's budget panel and Test Lab (`sbMissMult`) and `tools/skill_costs.js` read it.
+- **Re-fit** (135 Flying cards, shape kept): only 3 gain a whole stat point: Red Dragon 3/17 → 3/19, Blue Dragon 3/17 → 3/19, Ford Kingfisher 0/1 → 0/6. The rest sit within one point of their cap.
+
 ## 2026-10-23 (package RW3: drops by Energy, every skirmish pays, packs fully random, rare foils, the Shop's Raid Ticket, rarer ticket notices, disenchant table, per-copy Forge levels, PvP pools, the Quarry Mole on 8-1)
 - Owner answers of 00:10, items 5, 6, 8, 19, 23, 25, 42, 44, 48, 53, 68, 69 (foils), 86 (GD2-3, GD2-4, GD2-6, RW2-3, AR-1, RK2, RK4, RP3, DV4, E2, C1, E11).
 - **Card drops (item 19, RW2-3):** 1% per ⚡ of the fight kind's Energy tier + a shield bonus (elite / champion / miniboss / dungeon +1%, sub-boss +2%,

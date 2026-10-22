@@ -12444,7 +12444,7 @@
     "cost": 4,
     "wait": 5,
     "attack": 3,
-    "health": 17,
+    "health": 19,
     "dmgType": "heat",
     "resist": [
       "heat"
@@ -12490,7 +12490,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (server override folded): was 10/44 mythic (live server version of 2026-10-16; over budget: 2A+H+S 111% -> 99% of N 98.17). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 4/20 -> 3/17."
+    "creatorNote": "2026-10-19 retune (server override folded): was 10/44 mythic (live server version of 2026-10-16; over budget: 2A+H+S 111% -> 99% of N 98.17). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 4/20 -> 3/17. 2026-10-23 BF10 (Flying x1.39): 3/17 -> 3/19."
   },
   {
     "id": "white-dragon",
@@ -12559,7 +12559,7 @@
     "cost": 4,
     "wait": 5,
     "attack": 3,
-    "health": 17,
+    "health": 19,
     "dmgType": "acid",
     "resist": [
       "acid"
@@ -12606,7 +12606,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (v5 L/10): was 10/44 (over budget: 2A+H+S 110.1% -> 99.3% of N 97.13). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 4/19 -> 3/17."
+    "creatorNote": "2026-10-19 retune (v5 L/10): was 10/44 (over budget: 2A+H+S 110.1% -> 99.3% of N 97.13). 2026-10-19 halve (BF5): was 9/39. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/16. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 4/19 -> 3/17. 2026-10-23 BF10 (Flying x1.39): 3/17 -> 3/19."
   },
   {
     "id": "green-dragon",
@@ -16846,7 +16846,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 0,
-    "health": 1,
+    "health": 6,
     "effects": {
       "flying": true,
       "pounce": 2
@@ -16874,7 +16874,7 @@
       "side": "shared"
     },
     "unattainable": true,
-    "creatorNote": "2026-10-19 halve (BF5): was 3/4. 2026-10-21 human pass I (owner's hub skill costs): 1/1 -> 2/2. 2026-10-22 (BF7): the owner's live edit of 2026-10-21 folded in (0/1; the file had 2/2); his hand balance, left out of the BF7 re-fit."
+    "creatorNote": "2026-10-19 halve (BF5): was 3/4. 2026-10-21 human pass I (owner's hub skill costs): 1/1 -> 2/2. 2026-10-22 (BF7): the owner's live edit of 2026-10-21 folded in (0/1; the file had 2/2); his hand balance, left out of the BF7 re-fit. 2026-10-23 BF10 (Flying x1.39): 0/1 -> 0/6."
   },
   {
     "id": "truce-heron",

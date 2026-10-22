@@ -28211,7 +28211,7 @@ function sbSkillCost(effects, cfg){
   return t;
 }
 // The ×1.5 per half-miss skill the card has (they stack in the engine, so they stack here). Since 2026-10-22 (BF7) it multiplies the stat terms only (sbCheck).
-function sbMissMult(d, cfg){ const e = (d && d.effects) || {}, m = cfg.missMult == null ? 1.5 : cfg.missMult; let x = 1; (cfg.halfMiss || SB_HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
+function sbMissMult(d, cfg){ const e = (d && d.effects) || {}, m = cfg.missMult == null ? 1.5 : cfg.missMult; const by = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.MISS_MULT_BY) || {}; let x = 1; (cfg.halfMiss || SB_HALF_MISS).forEach(k=>{ if(e[k]) x *= (by[k] != null ? by[k] : m); }); return x; } // 2026-10-23 (BF10): per-skill multipliers (Flying x1.4) from the budget helper
 // 2026-10-22 (package BF7, owner: "things that must be less than N have a x0.7 multiplier!"): Fragile's f (fragileUse, 0.7) on both caps' left sides, else 1
 function sbFragileUse(d, cfg){ const g = cfg && cfg.fragileUse != null ? cfg.fragileUse : SB_V3_DEFAULTS.fragileUse; return BramblewoodBudget.fragileUseOf((d && d.effects) || {}, {fragileUse: g}); }
 function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r.key), d = RARITY_DEFS.find(r=> r.key === k); return Math.max(0, ladder.indexOf(d && d.as ? d.as : (k || 'common'))); }
