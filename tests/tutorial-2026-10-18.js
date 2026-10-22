@@ -58,14 +58,15 @@ const tc = fnSrc('tutSideCentred'), tp = fnSrc('tutPairCentred'), slide = fnSrc(
 ok(tc && tp && slide, 'tutSideCentred, tutPairCentred and tutMapOpenSlide exist');
 ok((mnp.match(/tutSideCentred\(map,/g) || []).length === 2, 'mapNodePositions centres the pair on both paths (with and without layout overrides)');
 {
-  const map = {id:'mtut', nodes:[{key:'tutorial', kind:'tutorial'}, {key:'tutorial2', kind:'tutorial'}, {key:'T-2'}, {key:'T-3'}, {key:'T-4'}]};
+  const map = {id:'mtut', nodes:[{key:'tutorial', kind:'tutorial', stage:1}, {key:'tutorial2', kind:'tutorial', stage:2}, {key:'T-2'}, {key:'T-3'}, {key:'T-4'}]};
   const pos = [{x:16, y:64}, {x:34, y:40}, {x:52, y:62}, {x:68, y:38}, {x:86, y:58}];
   const pair = new Function(tp + '\nreturn tutPairCentred;')();
   let hidden = true;
   const side = new Function('tutSideNodeHidden', 'tutPairCentred', 'conquestLayoutEdit', tc + '\nreturn tutSideCentred;')((m, n)=> hidden && /^T-/.test(n.key), pair, false);
   const c = side(map, pos), mx = (c[0].x + c[1].x)/2, my = (c[0].y + c[1].y)/2;
   ok(Math.abs(mx - 50) < 0.01 && Math.abs(my - 52) < 0.01, `during the tutorials the pair is centred (${mx}, ${my})`);
-  ok(c[1].x - c[0].x > pos[1].x - pos[0].x && (c[0].y > c[1].y), 'the pair keeps its shape (a little wider)');
+  // 2026-10-22 (package TU, owner: "T1 and T2 side by side"): level, T-0 on the left (was: the pair kept its diagonal shape)
+  ok(c[0].y === c[1].y && c[0].x < c[1].x && c[1].x - c[0].x >= 20, 'the pair stands side by side, T-0 on the left');
   ok(c[2] === pos[2], 'the hidden fights keep their spots');
   hidden = false;
   ok(side(map, pos) === pos, 'once the map opens up every fight is at its real spot');
