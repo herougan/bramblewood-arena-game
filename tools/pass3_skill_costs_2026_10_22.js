@@ -45,8 +45,9 @@ function refitAll(T){ const out = {}; BAND.forEach(c=> out[c.id] = fit(T, c)); r
 // The skill room: the largest S the card's smallest line (Attack 0 or 1, Health 1) leaves under both caps at L1 and its start level.
 function room(T, c){ const lv = SC.levelOf(c), A = (c.attack || 0) === 0 ? 0 : 1, H = 1, d = Object.assign({}, c, {attack: A, health: H});
   const e = c.effects || {}, Aeff = (e.archer && !(Number(e.archer) < 0)) ? 0 : A; let best = Infinity, bind = '';
-  [...new Set([1, lv])].forEach(L=>{ const b = T.budget(d, {level: L}), m = b.m, N = b.N;
-    const s1 = N / m - 2 * Aeff - H, s2 = Math.sqrt(Math.max(0, (N / 3) * (N / 3) / m - Aeff * H));
+  [...new Set([1, lv])].forEach(L=>{ const b = T.budget(d, {level: L}), m = b.m, f = b.f || 1, N = b.N;
+    // 2026-10-22 (BF7): the caps are f × ((2A + H) × m + S) <= N and f × (A·H × m + S·|S|) <= (N/3)^2 (bramblewood-budget.js capScores)
+    const s1 = N / f - (2 * Aeff + H) * m, s2 = Math.sqrt(Math.max(0, (N / 3) * (N / 3) / f - Aeff * H * m));
     if(s1 < best){ best = s1; bind = 'cap 1 at L' + L; } if(s2 < best){ best = s2; bind = 'cap 2 at L' + L; } });
   return {S: r2(best), bind}; }
 
@@ -108,7 +109,7 @@ function refitReport(rows){
 // a shrink beats a drop at the same S. Returns per card {id, S, fix: {what, S removed, line} | null, best two-change fix when no single one does}.
 const COMPANION = {tide: ['tideGrant'], diurnal: ['diurnalGrant', 'diurnalHp'], nocturnal: ['nocturnalGrant', 'nocturnalHp'], crepuscular: ['crepuscularGrant', 'crepuscularHp'],
   esprit: ['espritHp', 'espritWho'], swarm: ['swarmN'], arrow: ['arrowCount'], king: ['kinglyGrant'], fullMoon: ['fullMoonGrant'], defiance: ['defianceN'], stem: ['stemGrant']};
-// The half-miss skills (Flying, Evasive ...) cost 0 S but x1.5 on both scores; dropping one is a different card, so it is not offered as the
+// The half-miss skills (Flying, Evasive ...) cost 0 S but x1.5 on the stat terms (BF7, 2026-10-22; both scores before); dropping one is a different card, so it is not offered as the
 // cheapest fix (fixes() reports separately whether dropping it alone would do).
 const HALF = BASE.halfMiss || ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 function variants(c, withHalf){ const e = c.effects || {}, out = [];
@@ -141,7 +142,7 @@ function halfMissStatsOnly(rows, ids){ const T = SC.make(tableWith(rows));
   return ids.filter(id=>{ const c = BY_ID.get(id), sA = c.attack || 0, A = sA === 0 ? 0 : Math.max(1, Math.round(sA * 0.05)), H = Math.max(1, Math.round(Math.max(1, c.health) * 0.05));
     return [...new Set([1, SC.levelOf(c)])].every(L=> okAt(c, A, H, L)); }); }
 
-// The Fragile cards under three readings: as now (-8 as a skill and x0.75 on N), without the -8 (Fragile priced 0), without the x0.75 (fragileMult 1).
+// The Fragile cards under three readings: as now (-8 as a skill and x0.75 on N), without the -8 (Fragile priced 0), without the x0.75 (fragileMult 1). (2026-10-22, BF7: fragileMult is gone and Fragile is x0.7 on the caps, so this report is pass III history.)
 function fragileReport(rows){
   const Ts = {now: SC.make(tableWith(rows)), noMinus8: SC.make(tableWith(rows, t=>{ t.skills.find(x=> x.id === 'fragile').value = 0; })),
     noMult: SC.make(tableWith(rows, t=>{ t.budget.fragileMult = 1; })),

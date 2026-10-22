@@ -76,6 +76,8 @@ const bandOf = d=> BANDS[d.rarity || 'common'] || BANDS.common;
 //   Base = 20 + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + 1×Ritual points (the sum of the Ritual's counts)
 //   N = (Base − 1 + Level) × (1 + Level/20)   (v3: N = Base + 2×Level)
 //   pass = (2A + H + S)×m < N and (A×H + S)×m < (N/3)², m = ×1.5 per half-miss skill. Reported in each row's `budget`.
+//   (2026-10-22, BF7: the pass is SkillCosts' budget(), now f × ((2A + H)×m + S) ≤ N and f × (A×H×m + S·|S|) ≤ (N/3)², m on the stats
+//   only, f = 0.7 for Fragile: bramblewood-budget.js capScores.)
 // 2026-10-18 (owner: "Triggers and actions are costed by How often x How strong"): S comes from canonical/skill-costs.json through
 // tools/skill_costs.js, the same code the master hub's Skill costs tab runs. Keyword costs are the old SB_SKILLS table unchanged;
 // each trigger entry now costs its trigger weight × its action value (was 1 for the whole list) and Bounty N costs 0.5 × N (was 0).

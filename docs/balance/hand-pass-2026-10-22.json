@@ -1,0 +1,1742 @@
+{
+ "generated": "2026-10-22",
+ "counts": {
+  "noFitBefore": 130,
+  "noFitAfter": 108,
+  "tinyAfter": 10,
+  "movedByRefit": 124,
+  "ownerFolded": 3
+ },
+ "rows": [
+  {
+   "id": "abbey-goose",
+   "name": "Abbey Goose",
+   "stats": "1/1",
+   "S": 8,
+   "room": 5.18,
+   "fix": {
+    "what": "healing 2 → 1",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "healing 8"
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "stats": "1/8",
+   "S": 5.67,
+   "room": 4.57,
+   "fix": {
+    "what": "drop bleed",
+    "dS": 2.5,
+    "line": "1/8",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "twinStrike 3.17, bleed 2.5"
+  },
+  {
+   "id": "alpha-howler",
+   "name": "Alpha Howler",
+   "stats": "1/1",
+   "S": 10.8,
+   "room": 9.84,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 3,
+    "line": "6/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 7.8, bounty 3"
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.95,
+   "dropHalfMiss": [
+    "drop flying -> 1/1"
+   ],
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5"
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "stats": "3/6",
+   "S": 7.5,
+   "room": 4.28,
+   "fix": {
+    "what": "drop rage",
+    "dS": 5,
+    "line": "2/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "rage 5, swarm 2.5"
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "stats": "2/7",
+   "S": 6,
+   "room": 3.68,
+   "fix": {
+    "what": "sacrifice 2 → 1",
+    "dS": 3,
+    "line": "1/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sacrifice 6"
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "stats": "5/22",
+   "S": 13,
+   "room": 12.74,
+   "fix": {
+    "what": "scare 2 → 1",
+    "dS": 2.5,
+    "line": "3/15",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "immolation 8, scare 5"
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.26,
+   "fix": {
+    "what": "drop nocturnal",
+    "dS": 1,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "venomous 6, nocturnal 1"
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress",
+   "stats": "0/1",
+   "S": 7.5,
+   "room": 6,
+   "fix": {
+    "what": "armor 5 → 4",
+    "dS": 1.5,
+    "line": "0/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "armor 7.5"
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "stats": "1/14",
+   "S": 9,
+   "room": 7.13,
+   "fix": {
+    "what": "arrow 2 → 1",
+    "dS": 3,
+    "line": "1/13",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "arrow 6, sentry 3"
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "stats": "4/4",
+   "S": 6,
+   "room": 4.83,
+   "fix": {
+    "what": "bounty 2 → 1",
+    "dS": 3,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "bounty 6"
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "stats": "0/1",
+   "S": 7.6,
+   "room": 4.16,
+   "fix": {
+    "what": "drop trigger onAttacked → spawnCard",
+    "dS": 7.6,
+    "line": "0/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onAttacked 7.6"
+  },
+  {
+   "id": "blackmass-acolyte",
+   "name": "Blackmass Acolyte",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5.18,
+   "fix": {
+    "what": "drop desecrate",
+    "dS": 6,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "desecrate 6"
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "stats": "1/1",
+   "S": 4.5,
+   "room": 3.9,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "darksight 3, tide 1.5"
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "stats": "1/1",
+   "S": 5.2,
+   "room": 5,
+   "fix": {
+    "what": "trigger onDeath → poison: amount 5 → 4",
+    "dS": 1.04,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onDeath 5.2"
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "stats": "4/19",
+   "S": 26,
+   "room": 17.7,
+   "fix": null,
+   "pair": {
+    "what": "drop bounty; drop lightning",
+    "dS": 9,
+    "line": "2/8"
+   },
+   "owner": false,
+   "top": "supremeTide 8, supreme 7"
+  },
+  {
+   "id": "boar-rampager",
+   "name": "Boar Rampager",
+   "stats": "1/1",
+   "S": 10.8,
+   "room": 8.05,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 3,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 7.8, bounty 3"
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "stats": "1/1",
+   "S": 7.8,
+   "room": 7.07,
+   "fix": {
+    "what": "sweep 2 → 1",
+    "dS": 3.9,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 7.8"
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5"
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "stats": "1/7",
+   "S": 7.6,
+   "room": 6.33,
+   "fix": {
+    "what": "pounce 2 → 1",
+    "dS": 1.8,
+    "line": "1/7",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "mountainClimber 4, pounce 3.6"
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.64,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5"
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "stats": "3/8",
+   "S": 6.24,
+   "room": 5.21,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "3/9",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24"
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "stats": "0/11",
+   "S": 7.6,
+   "room": 5.62,
+   "fix": {
+    "what": "drop trigger onAttacked → spawnCard",
+    "dS": 7.6,
+    "line": "0/17",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onAttacked 7.6"
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "stats": "1/1",
+   "S": 8.5,
+   "room": 4.9,
+   "fix": {
+    "what": "drop shell",
+    "dS": 4,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": true,
+   "top": "shell 4, shield 3"
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "stats": "0/11",
+   "S": 7.74,
+   "room": 5.1,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "0/14",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24, tide 1.5"
+  },
+  {
+   "id": "courier-pigeon",
+   "name": "Courier Pigeon",
+   "stats": "1/1",
+   "S": 4.31,
+   "room": 3.61,
+   "fix": {
+    "what": "drop trigger onSpawn → drawCard",
+    "dS": 4.31,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onSpawn 4.31"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "stats": "1/1",
+   "S": 9.4,
+   "room": 6.3,
+   "fix": {
+    "what": "drop thorns",
+    "dS": 5.4,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "thorns 5.4, poison 2.5"
+  },
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "stats": "1/1",
+   "S": 4.31,
+   "room": 3.79,
+   "fix": {
+    "what": "drop trigger onSpawn → drawCard",
+    "dS": 4.31,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onSpawn 4.31"
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "stats": "1/1",
+   "S": 9,
+   "room": 4.64,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5, dry 4"
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 5.09,
+   "fix": {
+    "what": "drop armor",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "dry 4, armor 1.5"
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "stats": "1/1",
+   "S": 9,
+   "room": 5.6,
+   "fix": {
+    "what": "drop dry",
+    "dS": 4,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5, dry 4"
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "stats": "5/28",
+   "S": 43.5,
+   "room": 16.35,
+   "fix": {
+    "what": "drop tsunami",
+    "dS": 30,
+    "line": "4/21",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "tsunami 30, supreme 7"
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "stats": "1/3",
+   "S": 6.5,
+   "room": 6.13,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "2/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "poison 2.5, swarm 2.5"
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 4.03,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5, tide 1.5"
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "stats": "1/1",
+   "S": 10.8,
+   "room": 8.26,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 3,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 7.8, bounty 3"
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "stats": "1/13",
+   "S": 7.6,
+   "room": 7.07,
+   "fix": {
+    "what": "pounce 2 → 1",
+    "dS": 1.8,
+    "line": "1/13",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "mountainClimber 4, pounce 3.6"
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "stats": "1/1",
+   "S": 7.5,
+   "room": 6.16,
+   "fix": {
+    "what": "venomous 2 → 1",
+    "dS": 3,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "venomous 6, tide 1.5"
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "stats": "1/1",
+   "S": 13.2,
+   "room": 11.47,
+   "fix": {
+    "what": "sweep 5 → 3",
+    "dS": 3.9,
+    "line": "6/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 11.7, tide 1.5"
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "stats": "1/1",
+   "S": 9.3,
+   "room": 7.81,
+   "fix": {
+    "what": "regen 3 → 2",
+    "dS": 2.6,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "regen 7.8, tide 1.5"
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "stats": "1/1",
+   "S": 24.36,
+   "room": 17.72,
+   "fix": {
+    "what": "drop regen",
+    "dS": 7.8,
+    "line": "6/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sturdy 8, regen 7.8"
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5"
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "stats": "2/9",
+   "S": 5,
+   "room": 4.64,
+   "fix": {
+    "what": "drop rage",
+    "dS": 5,
+    "line": "2/10",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "rage 5"
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "stats": "1/1",
+   "S": 12,
+   "room": 11.31,
+   "fix": {
+    "what": "armor 2 → 1",
+    "dS": 1.5,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "bleed 5, fork 4"
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "stats": "1/1",
+   "S": 5,
+   "room": 4.99,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5"
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "stats": "1/7",
+   "S": 4,
+   "room": 3.86,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "1/7",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "swarm 2.5, tide 1.5"
+  },
+  {
+   "id": "land-tiller",
+   "name": "Land Tiller",
+   "stats": "1/8",
+   "S": 6.24,
+   "room": 3.86,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "1/10",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24"
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "stats": "1/5",
+   "S": 4.7,
+   "room": 3.86,
+   "fix": {
+    "what": "drop brood",
+    "dS": 2.2,
+    "line": "1/7",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "swarm 2.5, brood 2.2"
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "stats": "1/1",
+   "S": 5.5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop shell",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "shell 4, tide 1.5"
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "stats": "1/1",
+   "S": 6.9,
+   "room": 6.13,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "thorns 5.4, tide 1.5"
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "stats": "3/17",
+   "S": 9.24,
+   "room": 8.99,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 3,
+    "line": "3/14",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24, bounty 3"
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "stats": "4/15",
+   "S": 12,
+   "room": 8.54,
+   "fix": {
+    "what": "drop loneWolf",
+    "dS": 12,
+    "line": "4/17",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "loneWolf 12"
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "stats": "1/1",
+   "S": 12,
+   "room": 7.78,
+   "fix": {
+    "what": "moonborn 4 → 1",
+    "dS": 8,
+    "line": "6/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "moonborn 12"
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "stats": "1/9",
+   "S": 7,
+   "room": 6.61,
+   "fix": {
+    "what": "fireArrow 2 → 1",
+    "dS": 3.5,
+    "line": "1/9",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "fireArrow 7"
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "stats": "1/1",
+   "S": 14.7,
+   "room": 9.72,
+   "fix": {
+    "what": "sweep 4 → 1",
+    "dS": 7.8,
+    "line": "6/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 11.7, armor 3"
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.58,
+   "fix": {
+    "what": "fullMoon 3 → 1",
+    "dS": 4,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "fullMoon 8"
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "stats": "1/1",
+   "S": 8,
+   "room": 5.35,
+   "fix": {
+    "what": "moonborn 2 → 1",
+    "dS": 4,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "moonborn 8"
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "stats": "1/1",
+   "S": 4,
+   "room": 3.79,
+   "fix": {
+    "what": "drop bloom",
+    "dS": 4,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "bloom 4"
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.92,
+   "fix": {
+    "what": "armor 2 → 1",
+    "dS": 1.5,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "poison 5, armor 3"
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "stats": "1/1",
+   "S": 12.3,
+   "room": 8.58,
+   "fix": {
+    "what": "drop sweep",
+    "dS": 7.8,
+    "line": "6/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sweep 7.8, bounty 3"
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "stats": "2/24",
+   "S": 14.04,
+   "room": 12.97,
+   "fix": {
+    "what": "regen 3 → 2",
+    "dS": 2.6,
+    "line": "2/19",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "regen 7.8, onReadyGold 6.24"
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "stats": "4/8",
+   "S": 6,
+   "room": 5.95,
+   "fix": {
+    "what": "arrow 2 → 1",
+    "dS": 3,
+    "line": "3/7",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "arrow 6"
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "stats": "1/1",
+   "S": 8,
+   "room": 6.44,
+   "fix": {
+    "what": "drop sturdy",
+    "dS": 8,
+    "line": "6/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "sturdy 8"
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "stats": "1/1",
+   "S": 6.9,
+   "room": 4.9,
+   "fix": {
+    "what": "thorns 2 → 1",
+    "dS": 2.7,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "thorns 5.4, tide 1.5"
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5,
+   "fix": {
+    "what": "drop proliferate",
+    "dS": 6,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "proliferate 6"
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 5.81,
+   "fix": {
+    "what": "drop tide",
+    "dS": 1.5,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "poison 5, tide 1.5"
+  },
+  {
+   "id": "poison-dart-frog",
+   "name": "Poison Dart Frog",
+   "stats": "1/1",
+   "S": 7.5,
+   "room": 4.46,
+   "fix": {
+    "what": "poison 3 → 1",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "poison 7.5"
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "stats": "1/1",
+   "S": 5.4,
+   "room": 4.35,
+   "fix": {
+    "what": "thorns 2 → 1",
+    "dS": 2.7,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "thorns 5.4"
+  },
+  {
+   "id": "puddle-changeling",
+   "name": "Puddle Changeling",
+   "stats": "1/1",
+   "S": 10.1,
+   "room": 3.86,
+   "fix": {
+    "what": "drop twin",
+    "dS": 10,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "twin 10, changeling 0.1"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "stats": "1/10",
+   "S": 5.5,
+   "room": 5.35,
+   "fix": {
+    "what": "drop poison",
+    "dS": 2.5,
+    "line": "1/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "arrow 3, poison 2.5"
+  },
+  {
+   "id": "puppeteer-imp",
+   "name": "Puppeteer Imp",
+   "stats": "1/1",
+   "S": 7.35,
+   "room": 5.53,
+   "fix": {
+    "what": "drop trigger onSpawn → mindControl",
+    "dS": 7.35,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onSpawn 7.35"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "stats": "5/17",
+   "S": 10,
+   "room": 9.61,
+   "fix": {
+    "what": "pierce 5 → 3",
+    "dS": 1,
+    "line": "2/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "fireArrow 7, pierce 3"
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "stats": "1/1",
+   "S": 8.1,
+   "room": 6.72,
+   "fix": {
+    "what": "thorns 3 → 2",
+    "dS": 2.7,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "thorns 8.1"
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "stats": "1/1",
+   "S": 6,
+   "room": 4.53,
+   "fix": {
+    "what": "drop rabid",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "rabid 5, weakness 1"
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "stats": "1/1",
+   "S": 7.35,
+   "room": 5.34,
+   "fix": {
+    "what": "drop trigger onRoundStart → debuff",
+    "dS": 7.35,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onRoundStart 7.35"
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "stats": "1/1",
+   "S": 8,
+   "room": 7.78,
+   "fix": {
+    "what": "poison 2 → 1",
+    "dS": 2.5,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "poison 5, evolute 3"
+  },
+  {
+   "id": "raven-hexcaller",
+   "name": "Raven Hexcaller",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5.56,
+   "fix": {
+    "what": "drop render",
+    "dS": 2,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "evoluteAlpha 4, render 2"
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "stats": "4/20",
+   "S": 23.5,
+   "room": 18.05,
+   "fix": {
+    "what": "fireArrow 4 → 1",
+    "dS": 7,
+    "line": "2/12",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "fireArrow 10.5, supreme 7"
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "stats": "1/1",
+   "S": 5.2,
+   "room": 5,
+   "fix": {
+    "what": "regen 2 → 1",
+    "dS": 2.6,
+    "line": "4/4",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "regen 5.2"
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "stats": "1/1",
+   "S": 6.5,
+   "room": 5.35,
+   "fix": {
+    "what": "drop kinRally",
+    "dS": 6.5,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onAllyPlayed 6.5, buff 5.25"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "stats": "1/1",
+   "S": 6.7,
+   "room": 5,
+   "fix": {
+    "what": "regen 2 → 1",
+    "dS": 2.6,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "regen 5.2, tide 1.5"
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "stats": "4/14",
+   "S": 10.24,
+   "room": 8.58,
+   "fix": {
+    "what": "drop king",
+    "dS": 4,
+    "line": "3/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24, king 4"
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "stats": "1/1",
+   "S": 6,
+   "room": 5.66,
+   "fix": {
+    "what": "drop pierce",
+    "dS": 1,
+    "line": "2/2",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5, pierce 1"
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "stats": "2/18",
+   "S": 16,
+   "room": 10.12,
+   "fix": {
+    "what": "fireball 15 → 9",
+    "dS": 6,
+    "line": "1/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "fireball 16"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "stats": "1/1",
+   "S": 12,
+   "room": 9.36,
+   "fix": {
+    "what": "armor 4 → 2",
+    "dS": 3,
+    "line": "2/2",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "armor 6, revive 4.5"
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "stats": "1/7",
+   "S": 3,
+   "room": 2.83,
+   "fix": {
+    "what": "drop taunt",
+    "dS": 3,
+    "line": "1/7",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "taunt 3"
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "stats": "0/1",
+   "S": 10.11,
+   "room": 7.02,
+   "fix": {
+    "what": "trigger onSpawn → drawCard: count 2 → 1",
+    "dS": 4.3,
+    "line": "0/6",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onSpawn 8.61, armor 1.5"
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "stats": "1/2",
+   "S": 5,
+   "room": 4.83,
+   "fix": {
+    "what": "drop swarm",
+    "dS": 2.5,
+    "line": "3/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "swarm 2.5, formation 2.5"
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "stats": "6/17",
+   "S": 15,
+   "room": 10.12,
+   "fix": {
+    "what": "drop tsunami",
+    "dS": 15,
+    "line": "6/18",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "tsunami 15"
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "stats": "6/10",
+   "S": 18,
+   "room": 8.09,
+   "fix": {
+    "what": "drop twinShot",
+    "dS": 18,
+    "line": "6/11",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "twinShot 18"
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "stats": "5/26",
+   "S": 22,
+   "room": 15.91,
+   "fix": {
+    "what": "meteor 20 → 13",
+    "dS": 8,
+    "line": "3/18",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "meteor 22"
+  },
+  {
+   "id": "sunfeather-scout",
+   "name": "Sunfeather Scout",
+   "stats": "1/7",
+   "S": 6.24,
+   "room": 4.95,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "1/8",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24"
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "stats": "3/6",
+   "S": 8.34,
+   "room": 8.09,
+   "fix": {
+    "what": "diurnalHp 2 → 1",
+    "dS": 0.47,
+    "line": "1/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "esprit 4.2, espritHp 2.2"
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "stats": "1/1",
+   "S": 5.59,
+   "room": 4.92,
+   "fix": {
+    "what": "drop fastForward",
+    "dS": 5.59,
+    "line": "5/5",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "fastForward 5.59"
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "stats": "2/19",
+   "S": 10.2,
+   "room": 9.34,
+   "fix": {
+    "what": "regen 2 → 1",
+    "dS": 2.6,
+    "line": "2/15",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "regen 5.2, rage 5"
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "stats": "1/22",
+   "S": 22.5,
+   "room": 14.87,
+   "fix": {
+    "what": "drop bounty",
+    "dS": 9,
+    "line": "1/29",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "bounty 9, swipe 6"
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "stats": "0/16",
+   "S": 7,
+   "room": 6.55,
+   "fix": {
+    "what": "drop counterattack",
+    "dS": 2,
+    "line": "0/14",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "spiteful 5, counterattack 2"
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "stats": "1/3",
+   "S": 5,
+   "room": 3.75,
+   "fix": {
+    "what": "drop shield",
+    "dS": 2,
+    "line": "1/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": true,
+   "top": "shield 2, armor 1.5"
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "stats": "1/4",
+   "S": 4.5,
+   "room": 4.18,
+   "fix": {
+    "what": "drop armor",
+    "dS": 1.5,
+    "line": "1/6",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "bounty 3, armor 1.5"
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "stats": "1/1",
+   "S": 5,
+   "room": 3.86,
+   "fix": {
+    "what": "drop quick",
+    "dS": 5,
+    "line": "4/4",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "quick 5"
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "stats": "1/2",
+   "S": 4,
+   "room": 3.86,
+   "fix": {
+    "what": "drop nocturnal",
+    "dS": 1,
+    "line": "2/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "bounty 3, nocturnal 1"
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "stats": "3/11",
+   "S": 6.24,
+   "room": 6.19,
+   "fix": {
+    "what": "drop onReadyGold",
+    "dS": 6.24,
+    "line": "3/13",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onReadyGold 6.24"
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "stats": "2/9",
+   "S": 6.5,
+   "room": 6.3,
+   "fix": {
+    "what": "ambush 2 → 1",
+    "dS": 2,
+    "line": "2/10",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "ambush 4, swarm 2.5"
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "stats": "1/1",
+   "S": 10,
+   "room": 6.23,
+   "fix": {
+    "what": "nursing 2 → 1",
+    "dS": 5,
+    "line": "3/3",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "nursing 10"
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "stats": "1/7",
+   "S": 10.43,
+   "room": 6.35,
+   "fix": {
+    "what": "drop chainLightning",
+    "dS": 8,
+    "line": "2/12",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "chainLightning 8, tide 1.5"
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "stats": "0/28",
+   "S": 21,
+   "room": 12.54,
+   "fix": {
+    "what": "drop arrowCount",
+    "dS": 12,
+    "line": "0/28",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "arrowCount 12, arrow 6"
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "stats": "1/1",
+   "S": 7,
+   "room": 6.4,
+   "fix": {
+    "what": "perforate 2 → 1",
+    "dS": 3.5,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "perforate 7"
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "stats": "1/1",
+   "S": 5.54,
+   "room": 3.32,
+   "fix": {
+    "what": "drop trigger onAttack → drawCard",
+    "dS": 5.54,
+    "line": "3/3",
+    "kind": "drop",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "onAttack 5.54"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "stats": "1/1",
+   "S": 9,
+   "room": 6.65,
+   "fix": {
+    "what": "poison 3 → 1",
+    "dS": 5,
+    "line": "5/5",
+    "kind": "shrink",
+    "tiny": false
+   },
+   "owner": false,
+   "top": "poison 7.5, tide 1.5"
+  }
+ ]
+}

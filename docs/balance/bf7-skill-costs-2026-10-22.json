@@ -1,0 +1,33 @@
+{
+ "_about": "BF7 (2026-10-22): the four pass III cuts the owner accepted (\"Do your cut\"), Bounty left out (owner: \"Bounty is unique, because it is actually very strong\"; it stays 3). Applied with node tools/hub/apply_skill_costs.js docs/balance/bf7-skill-costs-2026-10-22.json. From docs/balance/pass-3-skill-costs-2026-10-22.json.",
+ "rows": [
+  {
+   "kind": "trigger",
+   "id": "onAttack",
+   "before": 3,
+   "proposed": 1.35,
+   "value": 1.35
+  },
+  {
+   "kind": "action",
+   "id": "addWait",
+   "before": 3.5,
+   "proposed": 2.8,
+   "value": 2.8
+  },
+  {
+   "kind": "skill",
+   "id": "twinStrike",
+   "before": 6,
+   "proposed": 3.17,
+   "value": 3.17
+  },
+  {
+   "kind": "skill",
+   "id": "octolash",
+   "before": 25,
+   "proposed": 6.48,
+   "value": 6.48
+  }
+ ]
+}

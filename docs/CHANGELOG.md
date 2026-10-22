@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-22 (package BF7: pass III applied, the half-miss on stats only, Fragile ×0.7)
+- **Card stats:** 124 band cards re-fitted by formula (111 grow, mostly +1 or +2 Health; 12 come down, most of them cards that had no line before: White Dragon 4/19 → 1/11,
+  Green Dragon 3/18 → 1/7, Gatling Hog 3/11 → 1/4). Mayfly Dancer 3/7 → 2/7. Band cards with no legal line 130 → 108;
+  they keep their stats (`docs/balance/human-pass-1-flagged-2026-10-21.json`), and `docs/balance/hand-pass-2026-10-22.md` gives each the cheapest one change for the owner (not applied).
+- **The formula** (owner, calls BF7-1 to BF7-3): the half-miss ×1.5 now counts on Attack and Health only, not on skills; Fragile is ×0.7 on the left side of both caps
+  (`fragileUse`, replacing N × 0.75), so a Fragile card gets more stats. One copy, `capScores` in `bramblewood-budget.js`, used by `tools/skill_costs.js`, the editor's budget
+  panel, the Test Lab, the hub's Budget & stats and the swap suggestions. Skills priced by a multiplier now cost 0 (Fragile, Blind, Evasive, Swift).
+- **Prices:** On Attack 3 → 1.35, Add Wait 3.5 → 2.8, Twin Strike 6 → 3.17, Octolash 25 → 6.48 (their measured worth); Bounty stays 3.
+- **The owner's 5 live edits of 10-21** folded in with his stats (call BF7-4): Conch Crawler, Ford Kingfisher, Glacial Ape-King, Tide Pool Crab, and the new Ember Tetra (no source yet).
+  `tools/fold_server_overrides_2026_10_22.js`, `tools/hand_pass_2026_10_22.js`.
+
 ## 2026-10-22 (skill costs pass III: proposal only, nothing applied)
 - **Proposal for the owner, nothing applied:** `canonical/skill-costs.json` and `canonical/cards.json` are unchanged. Five price cuts, each backed by a measurement it sits above: Bounty 3 → 1.84, On Attack 3 → 1.35,
   Add Wait 3.5 → 2.8, Twin Strike 6 → 3.17, Octolash 25 → 6.48. The owner's own pass I cuts are kept. In a dry-run re-fit of every card, the cards with no legal line go from 130 to 116. The owner's further

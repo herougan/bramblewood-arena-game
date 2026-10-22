@@ -33,12 +33,12 @@
     ['perMap', 'Map', '× the map where the card becomes obtainable', 0.05],
     ['scale', 'N × (scale)', 'BF5 (owner 21:36): the whole N times this; 0.5 halves it', 0.05],
     ['plainBonus', 'N × (no abilities)', 'BF5 (10-21): a card with no abilities at all', 0.01], ['lightBonus', 'N × (only light abilities)', 'BF5 (10-21): only Flying, Tide, Diurnal / Nocturnal / Crepuscular', 0.01],
-    ['fragileMult', 'N × (Fragile)', 'BF5 (10-21): Fragile, a negative value', 0.05],
+    ['fragileUse', 'Fragile ×', 'BF7 (10-22): a Fragile card\'s caps, both left sides × this (more stats; was BF5\'s N × 0.75)', 0.05],
     ['levelLinDiv', 'Level ÷ (in Base)', 'N = (Base + L ÷ this) × …', 1],
     ['levelDiv', 'Level ÷ (growth)', '… × (1 + L ÷ this)', 1],
     ['zeroPenalty', 'Level 0 penalty', 'N at Level 0 = Base − this', 0.5],
-    ['missMult', 'Half-miss ×', 'both scores × this per Evasive, Swift, Flying, Shadow, Blind', 0.05],
-    ['bandLow', 'Band: well under at', 'a card is well under when 2A+H+S ≤ this × N; over when 2A+H+S > N or A·H+S·|S| > (N/3)² (BF6, owner 15:15)', 0.05]];
+    ['missMult', 'Half-miss ×', 'the stat terms (2A+H, A·H; not S, BF7 10-22) × this per Evasive, Swift, Flying, Shadow, Blind', 0.05],
+    ['bandLow', 'Band: well under at', 'a card is well under when f×((2A+H)×m+S) ≤ this × N; over when f×((2A+H)×m+S) > N or f×(A·H×m+S·|S|) > (N/3)² (BF6, owner 15:15; BF7 10-22)', 0.05]];
   const FALLBACK = {perMap: 0, bandLow: 0.6};
   const SEEDB = {}; CONST.forEach(([k])=> SEEDB[k] = FILEB[k] != null ? +FILEB[k] : DEF[k] != null ? +DEF[k] : FALLBACK[k]);
   const NOTFILE = k=> FILEB[k] == null && DEF[k] == null; // shown, but neither file has it yet
@@ -66,8 +66,10 @@
   const st = {view:'budget', level:'1', q:'', v:'all', r:'*', map:'*', an:'*', key:'status', dir:-1, open:null, mq:'', mv:'all', mg:'*', mkey:'over', mdir:-1, mopen:null};
   const levelFor = c=> st.level === 'start' ? SC.levelOf(c) : 1;
   function statusOf(x1, x2, N, cfg){ const N2 = r2((N / 3) * (N / 3)); if(x1 > N + EPS || x2 > N2 + EPS) return 'over'; if(x1 <= (+cfg.bandLow) * N + EPS) return 'under'; return 'in'; }
-  function evalCard(c, cfg, s){ const A = +s.attack || 0, H = +s.health || 0, sc = sOf(c, A), m = Math.pow(+cfg.missMult, c.halves), L = levelFor(c);
-    const base = baseOf(c, cfg, c.mapN), N = BB.nAt(base, L, cfg), N2 = r2((N / 3) * (N / 3)), x1 = r2((2 * A + H + sc.S) * m), x2 = r2((A * H + sc.S * Math.abs(sc.S)) * m) /* 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A·H + S·|S| */;
+  // 2026-10-22 (package BF7): the caps' left sides from the helper (BB.capScores: the half-miss m on the stat terms only, Fragile's f on the whole
+  // left side), N x the card's N multiplier (BB.nMultOf) and an Archer's Attack at 0, as tools/skill_costs.js budget() does
+  function evalCard(c, cfg, s){ const A = +s.attack || 0, H = +s.health || 0, sc = sOf(c, A), m = Math.pow(+cfg.missMult, c.halves), L = levelFor(c), e = c.effects || {}, Ae = (e.archer && !(Number(e.archer) < 0)) ? 0 : A;
+    const base = baseOf(c, cfg, c.mapN), N = r2(BB.nAt(base, L, cfg) * (BB.nMultOf ? BB.nMultOf(e, cfg) : 1)), N2 = r2((N / 3) * (N / 3)), cs = BB.capScores(Ae, H, sc.S, e, cfg, {m}), x1 = cs.x1, x2 = cs.x2 /* 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A·H + S·|S| */;
     return {base, L, N, N2, S: sc.S, parts: sc.parts, missing: sc.missing, m, x1, x2, status: statusOf(x1, x2, N, cfg), share: x1 / N}; }
   let FILE = {}, NOW = {};
   function recomputeFile(){ const cfg = cfgOf(null); FILE = {}; cards.forEach(c=> FILE[c.id] = evalCard(c, cfg, c)); }
@@ -82,7 +84,7 @@
   const mStats = r=>{ const e = mEd[r.key], s = r.st || {}; return {attack: e && e.attack != null ? e.attack : s.attack, health: e && e.health != null ? e.health : s.health}; };
   function evalMon(r, cfg, s){
     const A = +s.attack || 0, H = +s.health || 0, m = Math.pow(+cfg.missMult, r.halves), S = +r.S || 0, d = {rarity: r.st.rarity, wait: r.st.wait || 0, cost: r.st.cost || 0, effects: {}};
-    const x1 = r2((2 * A + H + S) * m), x2 = r2((A * H + S * Math.abs(S)) * m) /* BF6: cap 2 A·H + S·|S| */, need = r2(Math.max(x1, 3 * Math.sqrt(Math.max(0, x2))));
+    const cs = BB.capScores(A, H, S, null, cfg, {m, f: r.f || 1}) /* BF7 (10-22): m on the stats only */, x1 = cs.x1, x2 = cs.x2 /* BF6: cap 2 A·H + S·|S| */, need = r2(Math.max(x1, 3 * Math.sqrt(Math.max(0, x2))));
     const nAt = (dd, L)=> BB.nAt(baseOf(dd, cfg, r.map), L, cfg), holds = N=> x1 <= N + EPS && x2 <= (N / 3) * (N / 3) + EPS;
     const N = nAt(d, r.lv); let eq = null;
     for(let k = Math.min(LEG, BB.rankOf(d.rarity)); k <= LEG && !eq; k++){ const dd = Object.assign({}, d, {rarity: BB.LADDER[k]}); for(let L = 1; L <= 11; L++) if(holds(nAt(dd, L))){ eq = {rarity: BB.LADDER[k], level: L, past: false}; break; } }
@@ -243,7 +245,7 @@
     if(!$('hbSum')) return; const cfg = cfgOf(bEd), c0 = cfgOf(null), a = tally(NOW), b = tally(FILE), d = (x, y)=> x === y ? '' : ` <small>(file ${y})</small>`;
     const rar = $('hbRar'); if(rar) rar.innerHTML = rarityChips(cfg);
     const f = BB.formulaParts ? BB.formulaParts(cfg) : null;
-    $('hbFormula').textContent = f ? `${f.n}; ${f.zero}. ${f.base}${HAS_MAP || !(+cfg.perMap) ? '' : ' + ' + cfg.perMap + '×Map'}. Well under at ≤ ${cfg.bandLow} × N.` : '';
+    $('hbFormula').textContent = f ? `${f.n}; ${f.zero}. ${f.base}${HAS_MAP || !(+cfg.perMap) ? '' : ' + ' + cfg.perMap + '×Map'}. Well under at ≤ ${cfg.bandLow} × N.${f.miss ? ` Caps: ${f.cap1}, ${f.cap2}; ${f.miss}. ${f.fragileText}.` : '' /* BF7 (10-22) */}` : '';
     const flips = cards.filter(c=> NOW[c.id].status !== FILE[c.id].status);
     $('hbSum').innerHTML = `<div class="sc-tile v-ok"><b>${a.in}</b><span>in band${d(a.in, b.in)}</span></div><div class="sc-tile v-over"><b>${a.over}</b><span>over budget${d(a.over, b.over)}</span></div>`
       + `<div class="sc-tile v-under"><b>${a.under}</b><span>well under${d(a.under, b.under)}</span></div><div class="sc-tile"><b>${flips.length}</b><span>flipped, of ${cards.length} cards</span></div>`;

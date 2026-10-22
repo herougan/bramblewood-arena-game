@@ -6,7 +6,10 @@
 // Only band cards (BF6 plan kind 'band'): tokens, eggs, equipment and Easter eggs are priced their own way and are left alone.
 //   node tools/refit_pass_2026_10_21.js ids.json          dry run      ... apply    writes canonical/cards.json
 // A card with no legal line keeps its stats and is listed in docs/balance/human-pass-1-flagged-2026-10-21.json; --floor drops it to 1/1.
+// 2026-10-22 (package BF7): the caps come from tools/skill_costs.js budget(), which calls bramblewood-budget.js capScores (the half-miss
+// x1.5 on the stats only, Fragile x0.7 on both left sides), so this re-fit follows the current rule; --note="..." sets the dated note.
 'use strict';
+const NOTE = ((process.argv.find(a=> a.startsWith('--note=')) || '').slice(7)) || '2026-10-21 human pass I (owner\'s hub skill costs)';
 if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
 const fs = require('fs'), path = require('path'), ROOT = path.join(__dirname, '..');
 const SC = require('./card_retune_2026_10_19.js').SC;
@@ -33,7 +36,7 @@ console.log(`${moves.length} cards move; ${flagged.length} have no legal line at
 moves.slice(0, 30).forEach(m=> console.log(`  ${m.c.id.padEnd(28)} ${m.from.padStart(6)} -> ${m.to.padEnd(6)} ${(m.u * 100).toFixed(0)}%`));
 if(process.argv.includes('apply')){
   for(const m of moves){ m.c.attack = m.c.attack == null && m.A === 0 ? m.c.attack : m.A; m.c.health = m.H;
-    m.c.creatorNote = (m.c.creatorNote ? m.c.creatorNote + ' ' : '') + `2026-10-21 human pass I (owner's hub skill costs): ${m.from} -> ${m.to}.`; }
+    m.c.creatorNote = (m.c.creatorNote ? m.c.creatorNote + ' ' : '') + `${NOTE}: ${m.from} -> ${m.to}.`; }
   fs.writeFileSync(CARDS, JSON.stringify(cards, null, 2).replace(/[\u007f-￿]/g, ch=> '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')) + '\n');
   fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), JSON.stringify(flagged, null, 1) + '\n');
   console.log('applied');

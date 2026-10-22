@@ -231,7 +231,7 @@
         + `<td class="num sc-v">${v === 'over' ? 'over ' : v === 'under' ? 'under ' : ''}${Math.abs(g) < 0.1 ? Math.round(g * 1000) / 10 : Math.round(g * 100)}%</td></tr>`;
       if(st.open !== c.id) return row;
       const parts = b.parts.length ? b.parts.map(p=> `<span class="chip">${esc(p[0] === 'skill' ? label('skill', {id:p[1]}) : p[1])} <b>${p[2]}</b>${p[3] ? ' <small>(' + esc(p[3]) + ')</small>' : ''}</span>`).join(' ') : 'No skills (S = 0).';
-      return row + `<tr class="sc-detail"><td colspan="8">S = ${b.S}: ${parts}${b.m !== 1 ? ` · both scores × ${b.m} (half-miss)` : ''}${b.missing.length ? ` · <b>no entry:</b> ${esc(b.missing.join(', '))}` : ''}</td></tr>`; }).join('')
+      return row + `<tr class="sc-detail"><td colspan="8">S = ${b.S}: ${parts}${b.m !== 1 ? ` · Attack and Health × ${b.m} (half-miss; not S, BF7 10-22)` : ''}${b.f && b.f !== 1 ? ` · Fragile: both scores × ${b.f}` : ''}${b.missing.length ? ` · <b>no entry:</b> ${esc(b.missing.join(', '))}` : ''}</td></tr>`; }).join('')
       || '<tr><td colspan="8" class="dec-empty">No card matches.</td></tr>';
     $('scFoot').textContent = (list.length > MAX ? `Showing ${MAX} of ${list.length}; narrow the filters to see the rest. ` : `${list.length} card${list.length === 1 ? '' : 's'}. `)
       + 'Margin: how far inside the tighter rule is (negative = over). Tap a card for its S breakdown. N uses the level the card starts at (Base and quest cards 0, rewards 1).';

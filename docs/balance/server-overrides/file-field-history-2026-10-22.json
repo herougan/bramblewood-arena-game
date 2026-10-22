@@ -1,0 +1,46 @@
+{
+ "tide-pool-crab|attack": {
+  "commit": "2e3cfef5",
+  "at": "2026-10-22T00:31:02+08:00"
+ },
+ "tide-pool-crab|health": {
+  "commit": "2e3cfef5",
+  "at": "2026-10-22T00:31:02+08:00"
+ },
+ "tide-pool-crab|effects": {
+  "commit": "56318b2f",
+  "at": "2026-10-21T20:04:23+08:00"
+ },
+ "glacial-ape-king|source": {
+  "commit": "4e2901e3",
+  "at": "2026-10-22T01:19:02+08:00"
+ },
+ "glacial-ape-king|attack": {
+  "commit": "ebe73f77",
+  "at": "2026-10-21T16:09:29+08:00"
+ },
+ "glacial-ape-king|health": {
+  "commit": "2e3cfef5",
+  "at": "2026-10-22T00:31:02+08:00"
+ },
+ "glacial-ape-king|effects": {
+  "commit": "56318b2f",
+  "at": "2026-10-21T20:04:23+08:00"
+ },
+ "ford-kingfisher|attack": {
+  "commit": "2e3cfef5",
+  "at": "2026-10-22T00:31:02+08:00"
+ },
+ "ford-kingfisher|health": {
+  "commit": "2e3cfef5",
+  "at": "2026-10-22T00:31:02+08:00"
+ },
+ "conch-crawler|source": {
+  "commit": "4e2901e3",
+  "at": "2026-10-22T01:19:02+08:00"
+ },
+ "tide-pool-crab|source": {
+  "commit": "4e2901e3",
+  "at": "2026-10-22T01:19:02+08:00"
+ }
+}

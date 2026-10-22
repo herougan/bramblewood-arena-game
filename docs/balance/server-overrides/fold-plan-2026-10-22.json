@@ -1,0 +1,266 @@
+{
+ "_about": "BF7 (2026-10-22): the owner's 5 live whole-card edits of 10-21 evening folded into canonical/cards.json (tools/fold_server_overrides_2026_10_22.js). Stats as he printed them; effects three-way merged where the file changed them later.",
+ "generated": "2026-10-22",
+ "cards": 5,
+ "rows": [
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "upd": "2026-10-21T10:40:28.301Z",
+   "server": [
+    1,
+    1
+   ],
+   "fileNow": [
+    1,
+    1
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "tide": true,
+      "shell": 2
+     },
+     "to": {
+      "tide": true,
+      "shell": 2,
+      "shield": 4
+     }
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "source",
+     "server": {
+      "kind": "pack",
+      "tier": 1
+     },
+     "file": {
+      "kind": "pack",
+      "tier": 1,
+      "map": "mb"
+     },
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-22T01:19:02+08:00",
+     "fileCommit": "4e2901e3"
+    }
+   ],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "shell": 2,
+    "shield": 4
+   },
+   "rarity": "common",
+   "wait": 1,
+   "cost": 0
+  },
+  {
+   "id": "ember-tetra-3caj",
+   "name": "Ember Tetra",
+   "upd": "2026-10-21T09:31:56.720Z",
+   "isNew": true,
+   "server": [
+    3,
+    7
+   ],
+   "noSource": true,
+   "noArt": true,
+   "effects": {
+    "tide": true,
+    "tideGrant": {
+     "ebb": {
+      "armor": 2
+     },
+     "flood": {
+      "fireArrow": 4
+     }
+    }
+   },
+   "rarity": "uncommon",
+   "wait": 1,
+   "cost": 0
+  },
+  {
+   "id": "ford-kingfisher",
+   "name": "Ford Kingfisher",
+   "upd": "2026-10-21T10:47:57.720Z",
+   "server": [
+    0,
+    1
+   ],
+   "fileNow": [
+    2,
+    2
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "flying": true,
+    "pounce": 2
+   },
+   "rarity": "uncommon",
+   "wait": 0,
+   "cost": 1
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "upd": "2026-10-21T10:35:34.262Z",
+   "server": [
+    6,
+    37
+   ],
+   "fileNow": [
+    7,
+    33
+   ],
+   "changes": [],
+   "conflicts": [
+    {
+     "field": "source",
+     "server": {
+      "id": "m6",
+      "kind": "map",
+      "node": "17-1"
+     },
+     "file": {
+      "kind": "pack",
+      "tier": 1,
+      "map": "m6"
+     },
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-22T01:19:02+08:00",
+     "fileCommit": "4e2901e3"
+    }
+   ],
+   "kept": [
+    {
+     "field": "resist",
+     "server": [],
+     "file": [
+      "cold"
+     ]
+    }
+   ],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-10-21T20:04:23+08:00",
+     "fileCommit": "56318b2f",
+     "base": {
+      "bounty": 1,
+      "earthquake": 4
+     },
+     "server": {
+      "bounty": 1,
+      "earthquake": 4
+     },
+     "file": {
+      "earthquake": 4,
+      "king": true
+     },
+     "result": {
+      "earthquake": 4,
+      "king": true
+     },
+     "ownerChange": []
+    }
+   ],
+   "effects": {
+    "earthquake": 4,
+    "king": true
+   },
+   "rarity": "common",
+   "wait": 6,
+   "cost": 4
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "upd": "2026-10-21T10:40:47.515Z",
+   "server": [
+    1,
+    3
+   ],
+   "fileNow": [
+    2,
+    2
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "tide": true,
+      "armor": 1
+     },
+     "to": {
+      "tide": true,
+      "armor": 1,
+      "shield": 3
+     }
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "source",
+     "server": {
+      "kind": "pack",
+      "tier": 1
+     },
+     "file": {
+      "kind": "pack",
+      "tier": 1,
+      "map": "mb"
+     },
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-22T01:19:02+08:00",
+     "fileCommit": "4e2901e3"
+    }
+   ],
+   "kept": [],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-10-21T20:04:23+08:00",
+     "fileCommit": "56318b2f",
+     "base": {
+      "tide": true
+     },
+     "server": {
+      "tide": true,
+      "shield": 3
+     },
+     "file": {
+      "tide": true,
+      "armor": 1
+     },
+     "result": {
+      "tide": true,
+      "armor": 1,
+      "shield": 3
+     },
+     "ownerChange": [
+      {
+       "key": "shield",
+       "base": null,
+       "owner": 3
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "tide": true,
+    "armor": 1,
+    "shield": 3
+   },
+   "rarity": "common",
+   "wait": 0,
+   "cost": 0
+  }
+ ]
+}
