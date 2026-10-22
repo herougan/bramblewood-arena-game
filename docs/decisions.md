@@ -4,6 +4,44 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**GD2-1. The skill that shields allies from skills: Spellshield 🪬** · Decide · Battle rules · asked 2026-10-22
+- Built as Spellshield 🪬 (engine key spellshield): a single-target enemy skill (an arrow or other shot, a Bolt, a damage or status skill) aimed at a unit adjacent to it hits it instead; never itself; several at random. Price 0.8 in canonical/skill-costs.json, an estimate (about 3/4 of Guardian's 1.06: fewer hits come as skills than as swings, but they are the heavier ones). No card has it yet; measure it with tools/skill_test_robust.js before one gets it.
+  - Spellshield
+  - Spell Ward
+  - Mirrorguard
+- **Default:** Spellshield
+
+**GD2-2. Cleave's side damage isn't a swing a Guardian takes** · Decide · Battle rules · asked 2026-10-22
+- Guardian takes plain swings: the main attack and each prong of a Fork, Trident, Pitchfork or Octolash (each prong is a full single-target swing). Cleave's bonus damage to the units beside the target is a spread of one swing, so it reaches those units, as before.
+  - As built
+  - A Guardian takes Cleave's side hits too
+- **Default:** As built
+
+**GD2-3. Seven maps have no skirmish-exclusive card** · Decide · Rewards · asked 2026-10-22
+- Maps 4, 6, 11, 12, 18, 20 and 21 have no skirmish whose first clear pays an exclusive card: their own cards sit on their elites and bosses, or are their pack cards. Left as they are ("if it turns out there is not much left, then okay"); their skirmishes pay pack cards. Giving each one would move one of its pack cards (or an elite's card) to a skirmish.
+  - As built
+  - Move one card to a skirmish on each of those maps
+- **Default:** As built
+
+**GD2-4. No new free packs or tokens on skirmishes** · Decide · Rewards · asked 2026-10-22
+- Pack rewards on skirmishes stay as they were (Map 0's 0-2 faction pack; the map free packs are on bosses). Adding packs or Faction Reward tokens to skirmishes would speed up the economy and the faction track, both tuned. 33 of the 101 skirmishes pay no card.
+  - As built
+  - Add a free pack or a token to some of the 33
+- **Default:** As built
+
+**GD2-5. What reads "adjacent" and what keeps its shape** · Decide · Battle rules · asked 2026-10-22
+- On adjacent (in front / behind too, in a raid): Guardian, Spellshield, Formation, Haste, Shieldwall, Amplifier, Immolation, Irradiated, Inspiring, Friction, Proliferate, Electricity, Chain Lightning, Dragon Lightning, Spitfire's splash, the Adjacent Ally target. Kept as they are: shapes across the board (Fireball's 3 columns, Meteor, Rocket, Dynamite's 3x3, Cleave, the prongs, Taunt, Stench, Landslide, Ambush / Sentry facing), where a token appears (Twin, Sprout, Brood, Palisade, Spawner: a free slot nearby), and Pack chains (front row only today).
+  - As built
+  - Pack chains across rows too
+  - The splash shapes too
+- **Default:** As built
+
+**GD2-6. An Easter egg a player owns shows as a plain card** · Decide · Codex · asked 2026-10-22
+- Outside Admin Mode nobody sees an Easter egg: no "???" slot, no section, no count, no filter or search hit, no Easter-egg words. A player who owns one anyway (only an admin grant gives one) sees it in their Codex as an ordinary card, its where-to-get line "Not obtainable yet".
+  - As built
+  - Hide it from its owner too
+- **Default:** As built
+
 **DN2-1. An elemental crit shows only its big glyph, no 👊** · Decide · Battle UI · asked 2026-10-22
 - Read from "can you just make the damage type emoji bigger if it's non physical": an ice crit on a Fragile unit now reads (big ❄️)14🦴 (DN had 👊❄️14🦴). A physical crit keeps 👊7. One switch brings the fist back on elemental crits (DMG_CRIT_FIST_ON_ELEMENT).
   - As built (big glyph only)
@@ -14,12 +52,6 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 - Following the rule (type glyph, none for physical), numbers that used to show their source now show their type: an Arrow Slits arrow, a trap, Pierce, Stampede, Friction, a Penance / Blood Tithe payment and the tentacle's stamp are plain numbers (was 🏹 🪤 🗡 💥 ⚙️ ⛧ 🦑); a comet or scorched ground is 🔥 (was ☄️ 🌋); Decay is 🍂 (was 🦠). Ticks with no element keep their own glyph: Curse 🜏, Chilli 🌶️, Strangle 🪢. The skill's own effect (the tentacle, the arrow, the spark) still plays.
   - As built
   - Keep a source glyph on physical-only sources (🏹 🦑 🪤)
-- **Default:** As built
-
-**DN2-3. The log's "💥 Crit!" becomes the 👊 on the number** · Decide · Battle UI · asked 2026-10-22
-- A crit's log line now reads "hit X for 👊14🦴 ❄️ cold damage" instead of "... for 14 ❄️ cold damage 💥 Crit!". An Ambush hit (no 👊 on its floating number either) keeps the words.
-  - As built
-  - Keep "💥 Crit!" too
 - **Default:** As built
 
 **DN2-4. "Higher hue" is +12 degrees for every element** · Decide · Battle UI · asked 2026-10-22
@@ -35,20 +67,6 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Cap the volcano at 1 a unit a round in total
 - **Default:** As built (each hazard at most 1)
 
-**FX2-2. The Core's Tentacle Smack keeps 1–2** · Decide · Raids · asked 2026-10-22
-- Your rule covers the first three fights (the Tentacles and the Tail): the Tail Sweep 2, the Tentacles' smack 1. The Core is the fourth fight, so its smack keeps FX's 1–2 (a seeded 50/50, shown on the tentacle). In the classic trench (admins only) a smack doesn't roll, so the Core's is 2 there.
-  - Keep the Core at 1–2
-  - The Core's smack 1 too
-  - The Core's smack 2
-- **Default:** Keep the Core at 1–2
-
-**FX2-3. A half of 1 is 1: Resist, Ghost, Atheist and the Psychic Dampener no longer stop a 1** · Decide · Balance · asked 2026-10-22
-- Under one rounding half up, a single halving of 1 is 0.5 and lands as 1, so Resist, a Ghost's, Supreme's or Shade's half, Atheist and the Psychic Dampener do nothing against a 1-point hit or tick (a Ghost took 0 from a 1-point poison tick before; a dampened Psychic 1 did nothing; now both are 1). Two halvings (0.25) still come to 0. Across the card matrix's 30,680 fights, 488 changed, 48 of them changed winner, all from this kind of rounding.
-  - As built (your rule as written)
-  - Round halves down only for a 1 (a resisted 1 is 0)
-  - Bring back "at least 1" with rounding down
-- **Default:** As built (your rule as written)
-
 **BF8-1. Blinding priced 2.5 (my guess); two more ways to blind are for later** · Decide · Balance · asked 2026-10-22
 - You said Blinding is a flat skill and asked me to guess. It is 2.5 for 50% a hit, 2 rounds (Horned Lizard): between Paralyze 2 and Stun on Hit 3. Horned Lizard re-fitted 4/5 → 5/7. You named three ways to blind (dazzling lights, a powder or acid spray, poking the eyes); only the one skill exists, shown as Blinding. The other two are not built.
   - Keep 2.5
@@ -63,13 +81,6 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Health in braces counts 0.5
   - Both halve in braces
 - **Default:** Keep 2A + H
-
-**BF8-3. The Red and Blue Dragons still have no legal line without Bounty** · Decide · Cards · asked 2026-10-22
-- Bounty is off all five dragons and Overwhelm is off the Green Dragon (1/7 → 3/20, White 1/11 → 2/23, Black 8/8 → 9/9). Red Dragon 4/20 (Flying, Stun on Hit, Fire Arrow 4, Supreme) and Blue Dragon 4/19 (Flying, Paralyze, Lightning 4, Supreme, Supreme Tide) still have no line and keep their stats. docs/balance/hand-pass-2026-10-22.md gives Red: Fire Arrow 4 → 1 (2/12); Blue: Lightning 4 → 1 and drop Supreme (2/9).
-  - Red: drop Stun on Hit; Blue: drop Paralyze
-  - Shrink the arrows / lightning (hand-pass lines)
-  - Leave them off the formula
-- **Default:** Red: drop Stun on Hit; Blue: drop Paralyze
 
 **TU-1. When the later tutorial fights open, and what they are called** · Decide · Tutorial · asked 2026-10-22
 - Note of 10-22 11:58: "In the tutorials, you now see five (5). (The first of which T-3 is locked till you progress further)". After Tutorial II the Tutorial submap shows all five fights; the three after the tutorials stay locked markers that say which fight opens them, as set on 10-16 ("T3 and T5 gradually unlock over Map 1/8/18"): the third opens when Map 0's boss (0-4) is beaten, the fourth with 7-6, the fifth with 17-8 (TUT_SIDE_GATE). On the map the five are labelled T-0, T-1, T-2, T-3, T-4, so the one your note calls T-3 (the third) reads T-2 on screen. Package TU kept both the gates and the labels.
@@ -91,13 +102,6 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Reset all also turns Admin Mode off
   - Reset all also resets the cloud progress of a signed-in account (tap twice)
 - **Default:** As is
-
-**RW2-1. Skirmishes with a first-clear reward: no card drop, repeats included** · Decide · Rewards · asked 2026-10-22
-- N22-5 gave the pack-card drop to "skirmishes with no pack or card reward", and RW2 keeps that: a skirmish whose first clear pays a card, a reward token or a free pack never drops a card, not even on a repeat win. Before RW2 those skirmishes still had the old 10% enemy-card drop (RW-3 moved every fight to the one pack drop, so they now have none). Elites and bosses drop on every win.
-  - As built (no drop)
-  - They drop on repeat wins only (7%)
-  - They drop on every win (7%)
-- **Default:** As built (no drop)
 
 **RW2-2. Challenge cards: one per four maps from Map 4, the highest-rarity elite reward** · Decide · Rewards · asked 2026-10-22
 - Six challenge cards ask SS: The Heron Hag (Heroic, 6-8 The Alligator King), Echo Matriarch (Heroic, 8-8 The Stalactite Warden), Pride Queen (Heroic, 14-8 The Savanna Warlord), Yeti Chieftain (Heroic, 19-6 The Frost Yeti King), Triumphvirate (Unique, 23-8 Marshal Tuskwell), Iron Warden (Epic, 24-6 The Gilded Guard). The rule: main maps in bands of four from Map 4 (4-7, 8-11 …), over the first-clear cards of elite-kind fights (elite, champion, miniboss, dungeon), the one of the highest rarity (Rare or above), ties to the later fight. Maps 0-3 and side maps have none. Five of the six sit on the map's miniboss. Edit by setting or clearing source.challenge in canonical/cards.json (tools/challenge_cards_2026_10_22.js --list shows them).
@@ -574,6 +578,56 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
 
 ## Decided
 
+**GD-1. Guardian's front / behind is raid-board only** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-22
+- In front / behind needs rows that fight, so it applies on the raid board (3 rows, every row acts). Elsewhere a reserve row is only waiting to step up (not on the battlefield), so a Guardian waiting there doesn't guard the unit in front of it, and nothing guards a waiting unit. Normal fights have one row, so they only have left / right (the card matrix shows 0 changed fights); in 600 random raid-board fights with Guardians, 508 ended differently.
+  - As built (raid board only)
+  - Waiting reserves guard too
+- **Default:** As built (raid board only)
+- **Outcome:** Owner 19:27: "GD-1: From now on, things that deal with L/R can just say 'adjacent' e.g. Formation cares about adjacent units. Adjacent is defined as behind, in front, left, right. Only relevant in raids or multi-player dungeons. (I see that Guardian's short desc is already correct)" Built (package GD2): one engine helper, adjacentOf (bramblewood-engine.js): left and right in a unit's own row, plus directly in front / behind only where every row fights (the raid board, RESERVE_ACTS); elsewhere just left / right, so ordinary fights play exactly as before. On it: Guardian, the new Spellshield, Formation (a waiting reserve no longer counts), Haste, Shieldwall, Amplifier, Immolation, Irradiated, Inspiring, Friction, Proliferate, Electricity, Chain Lightning, Dragon Lightning, Spitfire's splash and a trigger's Adjacent Ally target. Their texts and the Codex term say "adjacent" (12 packs). Column shapes keep their columns (call GD2-5).
+
+**GD-2. Which Guardian steps in: left, right, in front, behind** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-22
+- When two or more Guardians are next to the target, the first in this order takes the hit: left, right, the one in front, the one behind (the old rule was left before right). A Guardian never guards itself, but a Guardian next to another Guardian is guarded by it.
+  - As built (left, right, in front, behind)
+  - In front first (it stands between the enemy and the target)
+- **Default:** As built (left, right, in front, behind)
+- **Outcome:** Owner 19:27: "GD-2: Random," Built (package GD2): when two or more Guardians are adjacent to the target, one of them takes the hit at random (the fight's seeded RNG, so replays repeat; it only rolls with two or more, so a fight with one Guardian draws the same numbers as before).
+
+**GD-3. Status-only skills still go to the unit they aim at** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-22
+- Guardian takes single-target hits: a swing, an arrow or another shot, and a skill that deals damage to one target. A skill that only puts a status on one enemy (Poison, Expose, Stun, Bleed or Add Wait aimed at one unit) is not redirected, as before. Area hits are never redirected.
+  - As built
+  - A Guardian also takes single-target statuses
+- **Default:** As built
+- **Outcome:** Owner 19:27: "GD-3: AOE can't get redirected. Status only skills hmm. I think if it's skills (including arrow), guardianship doesn't help. So no redirection for skills. We have ward for dodging skills right? There can be a similar skill - but for shielding allies from skills." Built (package GD2): Guardian redirects plain swings only: a unit's basic attack and the prongs of that swing (Fork, Trident, Pitchfork, Octolash: each prong is a full single-target swing). Cleave's side damage is a spread of the swing, so not redirected, as before (call GD2-2). Arrows (Arrow, Archer, Snipe), Bolts, shots, damage and status skills reach their target; areas never redirect. New skill Spellshield 🪬 (call GD2-1 for the name): a single-target enemy skill aimed at an adjacent ally hits the Spellshield unit instead. There is no Ward that dodges skills in the game: the closest are Helmet (deflects half the shots aimed at it) and Evasive.
+
+**GD-4. 💥 is the crit mark; the hit burst keeps 💥** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
+- On numbers and log lines 💥 now means a crit only: Explode's fuse line and its "Boom!" float use 💣, Stampede's log line and its carry-over preview (+N) use 🐘. The quick burst that flashes on a card when it's hit by a physical attack is still a 💥, with no number on it (elemental hits show their own glyph). The raid smack's log line ("💥 X sweeps your front row"), "💥 Crash!" and "👑💥 King Slayer!" keep theirs (words, not a number).
+  - As built
+  - Change the hit burst too (e.g. a white spark)
+  - Change every other 💥 in the battle
+- **Default:** As built
+- **Outcome:** Owner 19:27: "GD-4: King Slayer: 🗡️, Fencer: 🤺" Built (package GD2): King Slayer's float is "🗡️ King Slayer! +N" (was 👑💥); a Fencing unit's plain hit bursts as 🤺 instead of 💥 (Fencing had no float or log mark of its own; the hit burst was its 💥).
+
+**GD-5. Skirmishes whose first clear is a pack or a token: 7%** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- Every first-clear reward card a skirmish pays today is skirmish-only (since RP, a map's reward cards are never pack cards), so the tripled drop covers those skirmishes. A skirmish whose first clear gives a pack or a Faction Reward / Growth token has no single card to drop, so it has the plain 7% pack-card drop on every win (it had none). If a skirmish is ever given a pack card as its reward, the same 21% rule picks it up.
+  - As built (7%)
+  - Triple those too (21% pack cards)
+- **Default:** As built (7%)
+- **Outcome:** Owner 19:27: "GD-5: No. There should be a mix of 'no first clear card', 'first clear skirmish-exclusive card', 'first clear pack card reward' and of course pack rewards.. Skirmish exclusive makes up 1-2 (max 3). The rest are a mix of the rest. If it turns out there is not much left, then okay." Built (package GD2): a skirmish's first clear can pay a pack card of its own map (SKIRMISH_FIRST_PACK_CARDS, written by tools/gd5_first_cards_2026_10_22.js; the card stays a pack card). The exclusive cards stay where they were (every map had 0-2). The other skirmishes alternate pack card / none: of 101 main-map skirmishes, 23 pay an exclusive card, 44 a pack card (each one from that fight's own deck), 1 a pack (0-2), 33 nothing. A pack-card skirmish drops like an exclusive one: 7% on its first clear, 21% on repeats with that card at its rarity share. Calls GD2-3, GD2-4. docs/balance/gd5-first-cards-2026-10-22.json.
+
+**GD-6. The drop line shows the reward card's chance per win** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- A cleared skirmish's drop line reads, for a Common reward card: (card) 13% · 🃏 8.4%, its chance a win (21% x 60% = 12.6%, rounded as the line rounds above 10%) and the pack card's share. Before the first clear it reads 🃏 7% (the card itself is in the First Clear box).
+  - As built (chance per win)
+  - Show 🃏 21% and the card's share of it (60%)
+- **Default:** As built (chance per win)
+- **Outcome:** Owner 19:27: "GD-6: Sounds correct I think? For skirmish first-clear reward card drops - they don't roll twice. They just roll for the skirmish-exclusive, then if they get it, they roll within it to see if they get another card instead." Checked (package GD2): rollCardDrop already does exactly this: one roll at 21% on a repeat win, then within it the reward card's rarity share (Common 60% ...), else a pack card; no second roll (a Common reward: 12.6% the card, 8.4% a pack card; 20,000 seeded rolls in tests/gd2-2026-10-22.js). Nothing changed. The panel line shows the per-win chance, as built.
+
+**DN2-3. The log's "💥 Crit!" becomes the 👊 on the number** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
+- A crit's log line now reads "hit X for 👊14🦴 ❄️ cold damage" instead of "... for 14 ❄️ cold damage 💥 Crit!". An Ambush hit (no 👊 on its floating number either) keeps the words.
+  - As built
+  - Keep "💥 Crit!" too
+- **Default:** As built
+- **Outcome:** Owner 18:20: "DN2-3: 💥 is a better symbol for Crit to me." Built (package GD): 💥 replaces 👊 as the crit mark on floating numbers, bramble hits, the battle log ("hit X for 💥14🦴 ❄️ cold damage"), the Codex's "reading damage numbers" line and DN2's constants (DN_CRIT_MARK). Other 💥 that sat on a number or a log line moved off it: Explode's fuse line and its "Boom!" float are 💣, Stampede's log line and its carry-over preview (+N) are 🐘.
+
 **DN-1. Hit numbers drop the minus sign; the other damage numbers keep theirs** · Decide · Battle UI · asked 2026-10-22 · decided 2026-10-22
 - Package DN follows the note's format exactly ("🔥20⛨"), so a unit hit now reads 🔥3⛨, 👊7, 👊❄️14🦴, 5 (was 🔥 -3, -7, 👊❄️ -14). The other damage numbers are separate code and keep their old look with a minus: Bleed and Poison ticks, field damage (comets, lava, hail, the tentacle's 🦑 −2), bramble hits on the HP bar, Reflect and Thorns. Colours are unchanged everywhere.
   - As built (hits only)
@@ -628,6 +682,38 @@ _Generated from `decisions.json` (2026-10-22). The hub has a searchable, filtera
   - Tail Sweep 1–2 damage too
 - **Default:** Keep the Tail Sweep as is
 - **Outcome:** Owner 14:12: "FX-3: Raids hit too hard. Tail sweep for 2 instead? If its supposed to be the stronger attack among the first 3 fights before the core, okay. Otherwise, 1-2. The weaker attacks should just be 1 (AOE). Non AOE attacks can go up to 3, but in this case, there isn't." Built (package FX2): the Tail Sweep is the strongest AOE attack of the first three fights (your whole front row, every 2 turns), so it deals 2 (was 3). The Tentacles' Tentacle Smack (a column or a row, every 3 turns) is a weaker AOE attack: 1 (FX had 1–2). There are no single-target boss attacks. The Core's smack keeps FX's 1–2 (call FX2-2). The classic trench now uses the same numbers (no trenchDmg 6); its balance test holds with the Core's trench bramble at 300 (was 200). The Tail Sweep stays on your front row.
+
+**FX2-2. The Core's Tentacle Smack keeps 1–2** · Decide · Raids · asked 2026-10-22 · decided 2026-10-22
+- Your rule covers the first three fights (the Tentacles and the Tail): the Tail Sweep 2, the Tentacles' smack 1. The Core is the fourth fight, so its smack keeps FX's 1–2 (a seeded 50/50, shown on the tentacle). In the classic trench (admins only) a smack doesn't roll, so the Core's is 2 there.
+  - Keep the Core at 1–2
+  - The Core's smack 1 too
+  - The Core's smack 2
+- **Default:** Keep the Core at 1–2
+- **Outcome:** Owner 18:20: "FX2-2: OKAY". Kept as built: the Core's Tentacle Smack stays 1–2.
+
+**FX2-3. A half of 1 is 1: Resist, Ghost, Atheist and the Psychic Dampener no longer stop a 1** · Decide · Balance · asked 2026-10-22 · decided 2026-10-22
+- Under one rounding half up, a single halving of 1 is 0.5 and lands as 1, so Resist, a Ghost's, Supreme's or Shade's half, Atheist and the Psychic Dampener do nothing against a 1-point hit or tick (a Ghost took 0 from a 1-point poison tick before; a dampened Psychic 1 did nothing; now both are 1). Two halvings (0.25) still come to 0. Across the card matrix's 30,680 fights, 488 changed, 48 of them changed winner, all from this kind of rounding.
+  - As built (your rule as written)
+  - Round halves down only for a 1 (a resisted 1 is 0)
+  - Bring back "at least 1" with rounding down
+- **Default:** As built (your rule as written)
+- **Outcome:** Owner 18:20: "FX2-3: OKAY as is". Kept as built: one rounding half up, so a halved 1 lands as 1.
+
+**BF8-3. The Red and Blue Dragons still have no legal line without Bounty** · Decide · Cards · asked 2026-10-22 · decided 2026-10-22
+- Bounty is off all five dragons and Overwhelm is off the Green Dragon (1/7 → 3/20, White 1/11 → 2/23, Black 8/8 → 9/9). Red Dragon 4/20 (Flying, Stun on Hit, Fire Arrow 4, Supreme) and Blue Dragon 4/19 (Flying, Paralyze, Lightning 4, Supreme, Supreme Tide) still have no line and keep their stats. docs/balance/hand-pass-2026-10-22.md gives Red: Fire Arrow 4 → 1 (2/12); Blue: Lightning 4 → 1 and drop Supreme (2/9).
+  - Red: drop Stun on Hit; Blue: drop Paralyze
+  - Shrink the arrows / lightning (hand-pass lines)
+  - Leave them off the formula
+- **Default:** Red: drop Stun on Hit; Blue: drop Paralyze
+- **Outcome:** Owner (18:20): "Trim + lower the skill score of the legendary skills. I don't think theyre worth that much. Maybe 3-5." Built (package BF9): Supreme 7 → 5, Supreme Tide 8 → 4 (True Strike already 1.5). Red Dragon loses Stun on Hit (Flying, Fire Arrow 4, Supreme): 4/20 → 3/17. Blue Dragon loses Paralyze (Flying, Lightning 4, Supreme, Supreme Tide): 4/19 → 3/17. Re-fitted with them: White Dragon 2/23 → 2/24, Green 3/20 → 3/21, Black 9/9 → 10/10. Fathom Leviathan still has no legal line.
+
+**RW2-1. Skirmishes with a first-clear reward: no card drop, repeats included** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
+- N22-5 gave the pack-card drop to "skirmishes with no pack or card reward", and RW2 keeps that: a skirmish whose first clear pays a card, a reward token or a free pack never drops a card, not even on a repeat win. Before RW2 those skirmishes still had the old 10% enemy-card drop (RW-3 moved every fight to the one pack drop, so they now have none). Elites and bosses drop on every win.
+  - As built (no drop)
+  - They drop on repeat wins only (7%)
+  - They drop on every win (7%)
+- **Default:** As built (no drop)
+- **Outcome:** Owner 18:20: "RW2-1: Yes. There are two kinds of first-clear drop card reward skirmishes: skirmish-exclusive, or from that map range's pack. ALL skirmishes have a low chance to get a card from the pack. For skirmishes, the chance of getting a card is tripled. But you mostly (50+%) get THAT card. (If it's higher in rarity, then the chance actually decreases - your call. Maybe 60/50/40/25/20/10/5/4/3/2/1..." Built (package GD): every skirmish win, first clear and repeats, rolls the pack-card drop at 7% (a skirmish paying a card, a token or a pack no longer drops nothing). A skirmish with a first-clear reward card rolls 21% on repeat wins; a card that drops there is its reward card with the share for that card's rarity (Common 60%, Uncommon 50%, Rare 40%, Very Rare 25%, Super Rare 20%, Epic 10%, Heroic 5%, Unique 4%, Legendary 3%, Mythic 2%, Ancient and above 1%; special rarities as their tier), else a pack card as usual. So a Common reward card drops 12.6% a repeat win and a Rare one 8.4%. The rank gate stays. A cleared skirmish's drop line shows its reward card (small tile), its chance and its rank emblem, then 🃏 for the pack card's share. The first clear rolls the plain 7% (it pays the card itself). Calls GD-5 and GD-6.
 
 **RW-1. Bosses count as elites for the card-reward rank** · Decide · Rewards · asked 2026-10-22 · decided 2026-10-22
 - N22-4 says elite fights need at least SS for any card. Package RW treats every boss kind (boss, sub-boss, final boss, raid boss, world boss) like an elite, so a boss's reward cards need SS on Maps 0–19, SSS from Map 20 (the rank is per card: B, or S for a Rare or above, one step up every 20 maps, capped at SSS; an elite or boss asks SS first). A fight's own cardRank can only raise it. Tutorial fights need nothing. The same gate holds for random card drops.
