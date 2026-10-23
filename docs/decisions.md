@@ -4,6 +4,103 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**UI4-1. Deck slot prices** · Decide · Camp · asked 2026-10-23
+- Built (UI4, your 01:03 note 5): a new player has 1 deck slot; more are bought in order in the Camp (under My Decks) or the Tavern's Upgrades tab. Slot 2: 150 Magic Dust + 150 Maple Leaves. Slot 3: 300 Dust + 250 Leaves. Slot 4 (Map 15 cleared): 600 Dust + 350 Leaves + 1 River Pearl + 1 Tempering Stone (Map 15's boss pays both on its first clear). Slot 5 (Map 21 cleared): 900 Dust + 450 Leaves + 1 Ember Core (from the Map 20 raid / world bosses). Slot 6 (Map 27): 1200 + 600 + 2 Ember Cores. Slot 7 (Map 33): 1500 + 750 + 1 Strange Materia + 1 Ember Core. Maps 27 and 33 are still Reserved, so slots 6-7 wait for them. Map 21's own fights pay only Iron Shards, so slot 5 asks for the Ember Core the road pays just before it. Existing saves keep every deck they have (their slots start at their deck count); a deck pulled from the cloud raises the slots the same way.
+  - As built
+  - Cheaper (halve slots 2-3)
+  - Map 21's slot pays Iron Shards instead of an Ember Core
+  - No cap past slot 7 (keep adding at the slot 7 price)
+- **Default:** As built
+
+**UI4-2. Swarm in the hand's blue numbers: 4 or 5 for an Ant Scout with 3 ants out** · Decide · Battle · asked 2026-10-23
+- Built (UI4, your 01:57 note 11): a hand card shows in blue the Attack / Health it would have if played now, worked out by the engine's own rules (engine previewPlayStats). The engine's Swarm counts the OTHER allies that share a type, so an Ant Scout (1 Attack) with 3 ants out shows 1 + 3 = 4; your example said 1 + (3+1) x 1 = 5, which would count the scout itself. Also: a card whose skill depends on where it stands (Formation, Sociable, Lone Wolf) is previewed in the slot a plain play takes (the centre first, then the right end).
+  - As built (4: other allies only, as fights work today)
+  - Count the card itself too (a rule change for every Swarm card in fights)
+- **Default:** As built (4: other allies only, as fights work today)
+
+**UI4-3. Which faction packs open the several-swap window** · Decide · Deck · asked 2026-10-23
+- Built (UI4, your 01:03 note 3): a faction pack's cards come as one swap window, a row per card (your deck card on the left, the pack card on the right, a tick each, Swap N). A row only appears where a weak deck card (starter, baby, tutorial card) may go and the pack card scores higher. The first faction pack (the one after 0-2) always shows it; every later faction pack counts as one of the 10 swap offers a player ever gets.
+  - As built (every faction pack, first one free)
+  - Only the 0-2 pack
+  - Every faction pack, never counted
+- **Default:** As built (every faction pack, first one free)
+
+**FX3-1. What Scorched Ground's line of fire touches** · Decide · Balance · asked 2026-10-23
+- Built (FX3, your 01:57 note 3): from round 2, every round, a line of fire crosses the board from left to right and every unit on both front lines takes 1 fire as it passes (fire-resistant units and Mountain Climbers are spared; a raid's back rows are not crossed). It used to burn one random unit a side for the fight's number (2 / 3 / 5). On a full board that is more damage in total than before (5 a side against 2-5 on one unit), spread thin.
+  - As built (every front unit, 1)
+  - One random unit a side, 1 (the line is only the look)
+  - Every front unit, 1, every other round
+- **Default:** As built (every front unit, 1)
+
+**FX3-2. One ground fire a fight: Scorched Ground replaces Scorching where both were on** · Decide · Balance · asked 2026-10-23
+- The "hitting twice" was two effects, not one counted twice: Map 20's six elite and boss fights (and 22-7) set Scorching III themselves, and every big fight on a volcano map also gets Scorched Ground automatically, so two round-start burns hit the same units in the same upkeep with the same 🔥 number. Built: where both would be on, only Scorched Ground's line of fire stays (fightRules). This also settles DF-4's "cut Scorching III to I" for those fights. Map 20, ant deck at Lv 8, 40 games: 20-5 7.5 -> 62.5%, 20-6 0 -> 12.5%, 20-7 2.5 -> 92.5%, 20-8 0 -> 32.5%, 20-9 2.5 -> 42.5%, 20-10 2.5 -> 35%.
+  - As built (Scorched Ground only)
+  - Scorching only (no automatic Scorched Ground there)
+  - Keep both (two burns a round)
+- **Default:** As built (Scorched Ground only)
+
+**FX3-3. Which volcano hazards count as single-target (2) and rare (3)** · Decide · Balance · asked 2026-10-23
+- Built by your rule (every round 1, single target 2, rare single target up to 3): Lava Tide (a column, so one unit a side) 1 -> 2; the Eruption (one unit a side) 1 -> 2, and a fight's own number up to 3 (boss and miniboss fights on the volcano maps: 3; the world bosses had 5, now 3). Together, 3 units a side over rounds 2-20: very low 0.11, low 0.45, medium 0.68, rising 0.97, high 1.01 a unit a round; the most one unit took in one round is 5 (a comet, an Eruption and a Lava Tide at once; 6 with a boss's 3).
+  - As built
+  - Lava Tide 1 (a column counts as an area)
+  - Eruption 2 everywhere (no 3)
+  - Cap one unit's volcano damage at 3 a round
+- **Default:** As built
+
+**EN-1. Cards with no legal line after EN, kept as they are** · Decide · Balance · asked 2026-10-23
+- The re-fit (tools/refit_pass_2026_10_21.js) found no stats that fit both caps for two cards, so they keep their stats (listed in docs/balance/human-pass-1-flagged-2026-10-21.json): the Magnate Duck 1/22 (the only King: Armor 3, Midas 3, Bounty 3, Swipe 2, Hoard 3, King; S 23.9 against cap 2's (N/3)^2 = 247: S x S alone is 571) and the Muskrat Lodgekeeper 3/13 (Bulwark 1 at 8 + Tide). Your note said not to make the Duck 1/1.
+  - Keep them as they are (named exceptions)
+  - Floor them (--floor: 1/1)
+  - Trim a skill on each (e.g. the Duck's Bounty 3)
+- **Default:** Keep them as they are (named exceptions)
+
+**EN-2. Bulwark N's price (8 a point) and the Ancient Sloth Titan** · Decide · Balance · asked 2026-10-23
+- Bulwark N now raises two 0/4N shields, priced by what it raises: 2 x 4N Health = 8 a point (it was 1, half-scale, for the old bramble armour). The Ancient Sloth Titan (Bulwark 2, S 16) re-fits 4/39 -> 1/14, because cap 2 (S x S) bites; with Bulwark 1 it would be about 2/30. The Muskrat Lodgekeeper (Bulwark 1) has no legal line (EN-1).
+  - As built (8 a point; Titan 1/14 + two 0/8 shields)
+  - Titan to Bulwark 1 and re-fit
+  - Price the shields' Health at half (4 a point)
+- **Default:** As built (8 a point; Titan 1/14 + two 0/8 shields)
+
+**EN-3. Bulwark's shields: "vanguard" read as the front line** · Decide · Battle rules · asked 2026-10-23
+- Your 01:57 note: "summons 2 bulwark shields somewhere - vanguard and 4*N HP". The Vanguard skill acts only on the opening hand and the first card played, so a token would gain nothing from it. Built: the shields stand in the vanguard, the free front-row slots nearest the Bulwark unit, as 0/4N Structures with no skill.
+  - As built (front row, no skill)
+  - Give the shields Guardian
+  - Give the shields Taunt
+- **Default:** As built (front row, no skill)
+
+**EN-4. The Coffer Mimic: Thorns 4 at 1 Lumber breaks cap 2** · Decide · Cards · asked 2026-10-23
+- New card (01:57 note 5): Coffer Mimic, a treasure chest in the Map 8 caves (m4 pool, basic pack), Structure, Shapeshifter (a Changeling for Structures only), Thorns 4, Lumber 1, Wait 1. By formula at Level 1: Uncommon N 18.9, S 10.9 (Thorns 4 x 2.7 + 0.1), so Health 8 (Common would be 6). Cap 2 (S x S 118.8 against (N/3)^2 39.8) cannot hold at any rarity with Thorns 4 at this cost (even Legendary is 76). Art: placeholder 🧰, NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md.
+  - Keep: Uncommon 0/8, a named exception
+  - Thorns 2 (fits cap 2 better)
+  - Lumber 2
+- **Default:** Keep: Uncommon 0/8, a named exception
+
+**EN-5. Backstab's conditions and its price (0.6 a point, an estimate)** · Decide · Balance · asked 2026-10-23
+- Built (D21): +N when the target is Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or stone, or would swing blind in the dark while the attacker sees. Not included: a target still Waiting, a Shocked or Exposed target (they take more damage but fight as well). Price 0.6 a point (was 1.5 half-scale for the side rule), not measured: tools/skill_test_robust.js --skills backstab would measure it.
+  - As built
+  - Also when the target is still Waiting
+  - Measure it before cards change
+- **Default:** As built
+
+**EN-6. Which cards are baby-like (Fodder at Level 1)** · Decide · Cards · asked 2026-10-23
+- Built (EV-6): Stem from Level 1 on 23 cards picked by name: Terrier Pup, Snapper Hatchling, Bear Cub, Fox Kit, Fire Drake Hatchling, Kraken Spawnling, Duckling Squadron, Phoenix Fledgling, Otter Kit, Duckling, Cobalt Fledgling, Sparrow Chick, Rabbit Kit, Two-Headed Calf, Caiman Hatchling, Shallows Fry, Baby Bat, Baby Horned Capybara, Truffle Piglet, Harp Seal Pup, Musk Ox Calf, Greyplume Fledgling, Fawn Scout. Left out: Bramble Sprout (a plant), the eggs (they keep Stem / Chrysalis as before). Stats not re-fitted (Stem only matters under an Evomax evolute).
+  - Keep this list
+  - Name others to add or drop
+- **Default:** Keep this list
+
+**EN-7. How fast the volcano climbs back after an eruption** · Decide · Balance · asked 2026-10-23
+- Built (FX2-1): Very Low the round after an Eruption, then one level a round back to its own (a High volcano: Very Low, Low, Medium, Even, High). The comets still fall for the 3 rounds after the Eruption.
+  - As built (one level a round)
+  - One level every 2 rounds
+  - Very Low until the comets end, then one level a round
+- **Default:** As built (one level a round)
+
+**EN-8. Fog of War: does a fogged unit stop the CPU's targeted skills too?** · Decide · Battle rules · asked 2026-10-23
+- Built (FOG1): the CPU's choices (where and what to play, its hazards, fields and kill checks) read only what its fog shows. Swings, arrows and other auto-targeted skills still reach fogged units on both sides, so your units hit fogged enemies as before. The other reading: a CPU unit's random-target skills skip your fogged units (and the same for yours).
+  - As built (fog limits choices, not rules)
+  - Fogged units cannot be targeted by skills of the side that cannot see them
+- **Default:** As built (fog limits choices, not rules)
+
 **EB-1. Your real deck after T-2: the sturdier top-up (as built), or a new set of sturdy starter cards** · Decide · Tutorial · asked 2026-10-23
 - Your 01:57 note 1: the Base trainees stay weak, so the deck after T-2 must be stronger. Built: the baby filler (Honey Bee, Silver Minnow, Sparrow Chick) no longer joins the real deck, and the deck is topped up, one copy each, with the sturdier cards first: River Carp 2/10, Burrow Rabbit 2/10, Duck Paddler 2/10, Farm Dog 2/8, Chipmunk Forager 1/8, Otter Kit, Meadow Frog, then the old trainees (STARTER_CFG_DEFAULT.starterTopUp). Your side's list and the shared list (the 8 cards T-1 shows) stay. The limit: only about 7 vanilla cards of that size exist that no skirmish pays on its first clear, so about half the deck is still trainees (3/3s at Level 0). The live tutorial config also holds T-2's rewards (rewards2): Hummingbirds get the Crimson-Wing Recruit (3/1), Both the Riverwing Envoy (1/6); they would be sturdier cards too, but the live row wins until you republish it. Measured with the live lists (docs/balance/eb-2026-10-23.json): Map 0 78/58/37/20% before, 94/81/64/42% after (with the bramble and level changes in EB-2 and EB-3).
   - As built (sturdier top-up, filler out)
@@ -128,12 +225,6 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Fit them to the ladder (tools/map_divvy check + a pass)
 - **Default:** Leave enemy decks as they are
 
-**T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03
-- The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
-  - Say "apply it" and I run supabase/migrations/20261003_fight_sessions.sql
-  - Wait
-- **Default:** Wait (local seeds keep working)
-
 **D17. Sound direction and sourcing** · Decide · Sound · asked 2026-10-03
 - Overall feel for the cue sheet (sfx-cue-sheet.md), and whether to use CC0 packs or your own recordings. Real samples will beat more synthesis; I can't download them from here. Owner (10-23 00:10): "The musics right now have to be improved. only 2-3 tracks are usable." Not a pick between the options: the music needs better tracks, and only 2-3 are usable now, so it needs CC0 files from him (see the 10-23 backlog).
   - A. Cosy and organic
@@ -159,27 +250,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Change parts
   - Not yet
 
-**S1. Apply the admin player list function** · Decide · Server · asked 2026-10-08
-- The Admin → Players portal reads one admin-only, read-only database function (admin_list_players: profiles, levels, currencies, cards, matches; no emails). Written in supabase/proposed/20261008_admin_list_players.sql. Applying it (and the panel that reads it, already drafted) was held for your OK. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
-  - Say "apply it" (admin list)
-  - Wait
-- **Default:** Apply
-
-**S2. Anti-cheat tier 1** · Decide · Security · asked 2026-10-08
-- Players can currently edit their own rating and currencies from the browser console. Tier 1 makes rating read-only and refuses any single write that adds more than 2,000 Maple / 200 Gold Leaves. supabase/proposed/20261008_anticheat_tier1.sql. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
-  - Apply tier 1
-  - Change the caps
-  - Wait
-- **Default:** Apply tier 1
-
 **S3. Turn on leaked-password protection** · Do · Security · asked 2026-10-08
-- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner.
+- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner. 10-23 06:59 (Chrome session): the dashboard toggle "Prevent use of leaked passwords" is "Only available on Pro plan and above"; the org is on the Free plan, so it was not turned on (nothing is bought). Free alternative on the same panel: password requirements (e.g. letters + digits) and a longer minimum length; not changed without the owner's word.
   - Done
   - Skip
 - **Default:** Done
 
 **S4. SonarCloud as well as CodeQL?** · Decide · Security · asked 2026-10-08
-- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token. Owner (10-23 00:10): "Chrome". Needs a Chrome session with the owner.
+- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token. Owner (10-23 00:10): "Chrome". Needs a Chrome session with the owner. 10-23 06:59: the repo is public, so SonarCloud is free for it. It needs the owner to log in at sonarcloud.io with GitHub (Claude cannot sign in or create accounts); then the repo can be imported and its token stored as a GitHub secret (asked before doing it).
   - Add SonarCloud
   - CodeQL is enough
 - **Default:** CodeQL is enough
@@ -290,13 +368,6 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Swap a card (name it)
 - **Default:** As built
 
-**RW3-9. T-1's first-clear card** · Decide · Tutorial · asked 2026-10-23
-- The Quarry Mole left T-1 (it is 8-1's now). T-1 pays no card until one is picked in the Tutorial editor (or keep it so). The live tutorial config still lists the mole; the game skips it, and supabase/proposed/20261023_rw3_tutorial_reward.sql clears it (waits for "apply it").
-  - No card on T-1
-  - A plain Common (name it)
-  - The Rabbit Kit (D46)
-- **Default:** No card on T-1
-
 **RW3-10. Easter eggs in Mystery Boosters: how rare** · Decide · Codex · asked 2026-10-23
 - Built: 0.05% a card (1 in 2,000 cards, about 1 in 670 Mystery Boosters of 3), any of the nine Easter eggs.
   - As built (0.05%)
@@ -318,7 +389,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Spell Ward
   - Mirrorguard
 - **Default:** Spellshield
-- **Outcome:** Owner (10-23 00:10): "Spellward." Not the default name: the skill is called Spellward (his spelling, one word; the second option), not Spellshield. Rename it everywhere (engine key, texts, language packs); the rule itself is unchanged. To build in package EN: the name is "Spellward" (one word, his spelling).
+- **Outcome:** Owner (10-23 00:10): "Spellward." Not the default name: the skill is called Spellward (his spelling, one word; the second option), not Spellshield. Rename it everywhere (engine key, texts, language packs); the rule itself is unchanged. To build in package EN: the name is "Spellward" (one word, his spelling). Built (EN): the skill is Spellward everywhere: engine key effects.spellward (an old card's spellshield still reads as it, and saved cards are migrated as they load, enMigrateCard), texts (TX ui.skn-spellward ...), the 12 packs (the Spellshield rows replaced), Codex, editor, skill-costs.json (id spellward, 0.8).
 
 **GD2-2. Cleave's side damage isn't a swing a Guardian takes** · Decide · Battle rules · asked 2026-10-22 · decided 2026-10-23
 - Guardian takes plain swings: the main attack and each prong of a Fork, Trident, Pitchfork or Octolash (each prong is a full single-target swing). Cleave's bonus damage to the units beside the target is a spread of one swing, so it reaches those units, as before.
@@ -347,7 +418,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Pack chains across rows too
   - The splash shapes too
 - **Default:** As built
-- **Outcome:** Owner (10-23 00:10): "Okay. Dynamite is adjacent but including diagonals - is there a way to name this?" Keep the shapes as built (the default). Open naming question: Dynamite reaches the 8 cells around its target, diagonals included; EN proposes one word for it (suggested "Surrounding": left, right, in front, behind and the four diagonals) and uses it in the texts, leaving "adjacent" at the four directions. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "Okay. Dynamite is adjacent but including diagonals - is there a way to name this?" Keep the shapes as built (the default). Open naming question: Dynamite reaches the 8 cells around its target, diagonals included; EN proposes one word for it (suggested "Surrounding": left, right, in front, behind and the four diagonals) and uses it in the texts, leaving "adjacent" at the four directions. To build in package EN. Built (EN): the word is "Surrounding": the 8 places around a unit (left, right, in front, behind and the 4 diagonals; in a raid its own rows in front and behind too). A Codex term beside Adjacent. Skills of that shape, now worded with it: Dynamite ("to every surrounding unit"; on the raid board it now also reaches its own rows in front and behind, diagonals included), Scavenge and Salvage. Adjacent stays the four directions.
 
 **GD2-6. An Easter egg a player owns shows as a plain card** · Decide · Codex · asked 2026-10-22 · decided 2026-10-23
 - Outside Admin Mode nobody sees an Easter egg: no "???" slot, no section, no count, no filter or search hit, no Easter-egg words. A player who owns one anyway (only an admin grant gives one) sees it in their Codex as an ordinary card, its where-to-get line "Not obtainable yet".
@@ -488,7 +559,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Comets 1 in 2 rounds at the higher levels
   - Cap the volcano at 1 a unit a round in total
 - **Default:** As built (each hazard at most 1)
-- **Outcome:** Owner (10-23 00:10): "After eruptions, it restarts to very low again." Not one of the three options: the volcano's level falls back to very low after each eruption and climbs again, instead of rising to the higher levels and staying there. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "After eruptions, it restarts to very low again." Not one of the three options: the volcano's level falls back to very low after each eruption and climbs again, instead of rising to the higher levels and staying there. To build in package EN. Built (EN): after each Eruption the volcano is Very Low the next round and climbs one level a round back to its own (Very Low, Low, Medium, Even, High); an Even volcano rises again from there. The forecast carries the level (volcanoLevel). How fast it climbs is call EN-7.
 
 **FX2-2. The Core's Tentacle Smack keeps 1–2** · Decide · Raids · asked 2026-10-22 · decided 2026-10-22
 - Your rule covers the first three fights (the Tentacles and the Tail): the Tail Sweep 2, the Tentacles' smack 1. The Core is the fourth fight, so its smack keeps FX's 1–2 (a seeded 50/50, shown on the tentacle). In the classic trench (admins only) a smack doesn't roll, so the Core's is 2 there.
@@ -740,7 +811,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Also the Pride Queen and the Magnate Duck at 1/1
   - Name others
 - **Default:** Keep these four
-- **Outcome:** Owner (10-23 00:10): "No none of our current card are kings. Remove. Only the Magnate Duck. (don't make it 1/1! Maybe King costs too much! - balance on your own.) Also new skill: Liege: {...}. Activates only if the king is on your side. Liege is worth 0.3x {...}. Default Assault N: (Extra N attack only when attacking) where for Liege, N=2." Not the default: King comes off the Rodent King, Glacial Ape-King, Yeti Chieftain and The Gannet Queen; only the Magnate Duck is a King (balance it so it is not 1/1). New skill Liege {...}: the braces apply only while the King is on your side, priced 0.3x the braces; the default braces are Assault N (extra N attack only when attacking), N=2. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "No none of our current card are kings. Remove. Only the Magnate Duck. (don't make it 1/1! Maybe King costs too much! - balance on your own.) Also new skill: Liege: {...}. Activates only if the king is on your side. Liege is worth 0.3x {...}. Default Assault N: (Extra N attack only when attacking) where for Liege, N=2." Not the default: King comes off the Rodent King, Glacial Ape-King, Yeti Chieftain and The Gannet Queen; only the Magnate Duck is a King (balance it so it is not 1/1). New skill Liege {...}: the braces apply only while the King is on your side, priced 0.3x the braces; the default braces are Assault N (extra N attack only when attacking), N=2. To build in package EN. Built (EN): King is off the Rodent King, the Glacial Ape-King, the Yeti Chieftain and the Gannet Queen (the Bounty TR took off the first two stays off: BF8 keeps Bounty to the loot carriers); re-fit Rodent King 4/14 -> 3/11, Yeti Chieftain 3/14 -> 4/20, Gannet Queen 1/13 -> 1/15, the Ape-King keeps your 6/37 (it fits); the Magnate Duck is the one King. King re-priced 4 -> 1.4 (0.4 x Kingly at today's prices: Tribute 1 0.5 + Armor 2 x 1.5 = 3.5). The Duck still has no legal line by formula (its other five skills already break cap 2), so it keeps 1/22, not floored (call EN-1). New skills Liege {...} (0.3 x the braces; a plain Liege is Liege {Assault 2} = 1.08) and Assault N (+N on its own swing, never a counter; 1.8 a point), with editor rows, Codex lines and texts in the 12 packs.
 
 **TR-5. Prices for King, Kingly, Tribute and the five transforms (theoretical)** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
 - canonical/skill-costs.json, ownerSet false, B15-style. Tribute 0.5 a point (half of a Lumber income: Gold buys nothing in a fight yet). Kingly 5.98 = Tribute 1 + Armor 2 (2 x 2.74), never printed. King 2.39 = 0.4 x Kingly, as a context skill (the Crown is not certain); with its own braces 0.4 x them. Transforms at CONTEXT_MULT 0.4 x the gain: Gilded {+5/+10} 8, Championed {+3/+3} 3.6, Veteran {+2/+4} 3.2, Matured {+2/+4 Stem stats} 3.2, Enraged 0.4 x its braces. Plain Crepuscular 1.6 (CX2).
@@ -748,7 +819,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Raise or lower some (name them)
   - Measure them with tools/skill_worth.js
 - **Default:** Keep these prices
-- **Outcome:** Owner (10-23 00:10): "See TR-4, otherwise OK." Keep the prices (the default), plus Liege at 0.3x its braces as set in TR-4. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "See TR-4, otherwise OK." Keep the prices (the default), plus Liege at 0.3x its braces as set in TR-4. To build in package EN. Built (EN): the prices kept, except King 1.4 and Kingly 3.5 (see TR-4), Liege 0.3 x its braces (bramblewood-budget.js CONTEXT_MULT_BY), Assault 1.8 a point, Enraged removed.
 
 **TR-6. Transform conditions, as read by package TR** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
 - Enraged: "It has Rage" is read as its Rage being on (Rage, below half Health); having the skill would trigger it at once. Matured: N rounds, 2 by default (tf.rounds; the editor doesn't set N yet). Veteran and Matured count rounds survived on the field, at each round's start. Championed: a kill by its own swing or its Counterattack against the unit it fights (a Guardian that takes the hit is the one it fights); kills by Arrow, Pounce or other skills don't count. Gilded: Lumber 1, Stone 2, Metal 3, Gold 5 each, more than 25, checked as the board updates. No card has a transform preset yet.
@@ -756,7 +827,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Enraged = it has the Rage skill
   - Championed also by skill kills
 - **Default:** Keep these readings
-- **Outcome:** Owner (10-23 00:10): "OH right. Then instead - remove Enraged. Rage keeps its definition and default. Otherwise, Rage - {...} means the typical effects of Rage, PLUS {...}. Cost it using logic." Not the defaults: the Enraged transform condition is removed; Rage keeps its definition; "Rage {...}" means Rage's usual effects plus the braces, costed by the engine's own logic. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "OH right. Then instead - remove Enraged. Rage keeps its definition and default. Otherwise, Rage - {...} means the typical effects of Rage, PLUS {...}. Cost it using logic." Not the defaults: the Enraged transform condition is removed; Rage keeps its definition; "Rage {...}" means Rage's usual effects plus the braces, costed by the engine's own logic. To build in package EN. Built (EN): the Enraged preset is gone (engine, editor, skill-costs.json; a saved Enraged card becomes Rage {...} as it loads). Rage {...} (effects.rageGrant beside Rage): Rage as before plus the braces while it rages. Cost: Rage's own price + 0.4 x the braces' S (CONTEXT_MULT_BY.rageGrant: Rage is on for the lower half of its Health, 0.5, and a unit can fall from above half in one blow, x 0.8).
 
 **EV-1. Which cards are the Evomax lines (there was no Evomax unit)** · Decide · Cards · asked 2026-10-21 · decided 2026-10-23
 - No Evomax unit existed (Terraumbra, an equipment Easter egg, was the line's only card). Package EV made lines from cards no player can get yet, so the Map 30 gate holds and no reward moved: Slowpoke Sentinel (Stem) -> Canopy Sloth Guardian (Evolute) -> Hanging Loafer (Alpha); Raven Harbinger (Evolute) -> Raven Hexcaller (Alpha) -> Bone Diviner (Omega); Gale Sprite (Evolute) -> Stormcaller (Alpha). They are mechanicLine evolution now. Missing stages are listed as cards to make in docs/evolute-design-2026-10-21.md (a sloth Omega, a storm Omega, an insect Evolute and Alpha for the Cocoon, beetle, frog and dragon lines).
@@ -764,14 +835,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Pick other cards (name them)
   - Make new Evomax cards instead and revert these
 - **Default:** Keep these three lines
-- **Outcome:** Owner (10-23 00:10): "It's okay. The Terraumbra is an Evomax equipment" Keep the three Evomax lines (the default); the Terraumbra is the Evomax equipment. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "It's okay. The Terraumbra is an Evomax equipment" Keep the three Evomax lines (the default); the Terraumbra is the Evomax equipment. To build in package EN. Built (EN): nothing to change: the Terraumbra is already an Evomax (mechanicLine evolution) equipment; pinned in tests/en-2026-10-23.js.
 
 **EV-2. When an evolute dies, do the cards under it fire their On Death?** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
 - Built: no. The whole stack goes to the graveyard (or the Removal Zone, wherever the evolute goes) and only the top card's own death effects happen (its On Death, Bounty, Relic ...). The cards under it fire nothing, matching "a unit leaving play this way triggers no On Death, Bounty or grave effects".
   - No: only the top card's death effects
   - Yes: each card in the stack fires its own On Death (top first)
 - **Default:** No: only the top card's death effects
-- **Outcome:** Owner (10-23 00:10): "No." Only the top card's death effects fire (the default).
+- **Outcome:** Owner (10-23 00:10): "No." Only the top card's death effects fire (the default). Built (EN): kept as built (only the top card's death effects fire).
 
 **EV-3. Evolute bases: shared type at every stage, creatures only** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
 - Built: Alpha and Omega also need a shared type with their base (the rule named it for Evolute only). A plain Evolute cannot go over a unit that is already an evolute (no sideways or downward evolving). Structures, cages and a Gladiator leader are never bases, and only front-row units are (a raid's middle and back rows are not). The editor offers Evolute / Alpha / Omega on Evomax cards only.
@@ -779,7 +850,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Alpha and Omega need no shared type
   - Allow an Evolute over an evolute
 - **Default:** Keep all of these
-- **Outcome:** Owner (10-23 00:10): "Yes. But just shared with what it is. Once evolved over, do not reference the card below. OKAY to the rest" Keep all of these (the default), with the type rule narrowed: the type is shared only with the card it sits on at that moment; once evolved over, the card below is no longer referenced. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "Yes. But just shared with what it is. Once evolved over, do not reference the card below. OKAY to the rest" Keep all of these (the default), with the type rule narrowed: the type is shared only with the card it sits on at that moment; once evolved over, the card below is no longer referenced. To build in package EN. Built (EN): kept; checked that a stage reads only the type of the card it goes over at that moment (its own derived card) and nothing reads the cards under it (they are only zone entries); the rule is now written in the engine's EV block.
 
 **EV-4. An evolute waits its own Wait again** · Decide · Rules · asked 2026-10-21 · decided 2026-10-23
 - Built ("Wait and Lumber costs work as usual"): the stack waits the evolute's printed Wait, even over a Ready base. The CPU counts that against Ready bases. Alternatives: keep the base's remaining Wait, or the higher of the two.
@@ -787,7 +858,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - The base's remaining Wait
   - The higher of the two
 - **Default:** Its own Wait (as usual)
-- **Outcome:** Owner (10-23 00:10): "Yes. (If it has Wait) It gains remaining Wait as well." Not quite the default: the evolute waits its own Wait and, if it has Wait, also takes on the base's remaining Wait. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "Yes. (If it has Wait) It gains remaining Wait as well." Not quite the default: the evolute waits its own Wait and, if it has Wait, also takes on the base's remaining Wait. To build in package EN. Built (EN): an evolute waits its own Wait plus the base's remaining Wait (a Ready base adds nothing); the CPU counts a waiting base's Wait against it.
 
 **EV-5. Evolute prices (theoretical)** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
 - canonical/skill-costs.json, ownerSet false: Evolute 3, Alpha 4, Omega 5 (your suggestion). Stem and Chrysalis 1.6 (0.4 x (2*1 + 2), the +1/+2 they hand over), or 0.4 x their braces' S. The evolutes' printed stats are fitted to their own N; on the board a stack is the sum, so a Stormcaller fitted to 1/23 lands on a base and becomes far bigger. No run can measure this (it rides on the player).
@@ -795,7 +866,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Raise them (name the numbers)
   - Price an evolute against its line's summed N instead
 - **Default:** Keep these prices
-- **Outcome:** Owner (10-23 00:10): "OKAY. (Alpha and Omega should also be 3, since they are difficult to achieve.)" Keep the prices, except Alpha and Omega are 3 as well (Evolute 3, Alpha 3, Omega 3). To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "OKAY. (Alpha and Omega should also be 3, since they are difficult to achieve.)" Keep the prices, except Alpha and Omega are 3 as well (Evolute 3, Alpha 3, Omega 3). To build in package EN. Built (EN): Evolute Alpha 4 -> 3 and Omega 5 -> 3 in skill-costs.json; re-fit: Hanging Loafer 2/22 -> 2/23, Stormcaller 1/28 -> 1/29, Raven Hexcaller 1/1 -> 2/2, Bone Diviner 2/2 -> 4/4.
 
 **EV-6. The Nest eggs as fodder, with a species** · Decide · Cards · asked 2026-10-21 · decided 2026-10-23
 - The Speckled Egg is a Stem and the Cocoon a Chrysalis. Each got a species (Bird, Insect) so an evolute can share a type with it: eggs had none, so Kin and type skills now count them too. Re-fit by formula: 0/2 -> 0/1. An egg ridden by an evolute never hatches.
@@ -803,7 +874,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Keep the skills, no species (then no evolute can use them)
   - Revert the eggs
 - **Default:** Keep
-- **Outcome:** Owner (10-23 00:10): "OKAY. They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1. (baby-like cards start at 0.)" Keep (the default), widened: every baby-like card gets Fodder, the only non-Evomax cards that do, and only from level 1 (baby-like cards start at level 0). To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "OKAY. They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1. (baby-like cards start at 0.)" Keep (the default), widened: every baby-like card gets Fodder, the only non-Evomax cards that do, and only from level 1 (baby-like cards start at level 0). To build in package EN. Built (EN): 23 baby-like cards (by name: kits, cubs, pups, chicks, hatchlings, fledglings, calves, a fawn, a piglet, a spawnling, a fry, the ducklings, the Baby Bat and the Baby Horned Capybara) gain Stem (Fodder) at Level 1 (levelSkills 1), never at Level 0; the eggs keep theirs as before. The list is call EN-6.
 
 **EV-7. The raven evolutes sit at their 1/1 floor** · Decide · Balance · asked 2026-10-21 · decided 2026-10-23
 - Following your HB2-1 answer (Flying does not count toward two skills), the ravens keep every skill: Raven Harbinger Flying + Poison 2 + Evolute, Raven Hexcaller Flying + Render + Evolute Alpha, Bone Diviner Flying + On Kill +2 Lumber + Evolute Omega. With Flying's x1.5 the formula puts all three at 1/1 (flagged, skills kept). In a stack they add to the base's stats, so the stack is still big. Without Flying, the Hexcaller and the Bone Diviner were 1/7.
@@ -811,7 +882,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Cut Flying on the Hexcaller and the Bone Diviner (back to 1/7)
   - Lower the stage costs for these three
 - **Default:** Keep: every skill, 1/1
-- **Outcome:** Owner (10-23 00:10): "Okay" Keep: every skill, 1/1 (the default).
+- **Outcome:** Owner (10-23 00:10): "Okay" Keep: every skill, 1/1 (the default). Built (EN): kept; the Hexcaller and the Bone Diviner moved off 1/1 with Alpha and Omega at 3 (2/2, 4/4).
 
 **RK1. Raid Ticket price in the Shop** · Decide · Raid · asked 2026-10-21 · decided 2026-10-23
 - Package RK sells the Raid Ticket (one extra raid fight, past the cap of 10) for 300 Maple Leaves, beside the Rename Ticket (250 Maple Leaves); a fight also pays about 16 Maple Leaves and 12 Dust back. Gold Leaves would make it scarcer.
@@ -983,6 +1054,13 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** Keep
 - **Outcome:** Owner (10-23 00:10): "OKAY (7 cards should be rare - 8 7s is okay i think)" Keep (the default): 8 skirmishes with 7 cards stays; 7 is meant to be rare.
 
+**T3. Apply the server-checked fights migration** · Decide · Server · asked 2026-10-03 · decided 2026-10-23
+- The fight_sessions migration (single-use seed, transcript, server replay) is written and the client is ready. Nothing changes until it is applied. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
+  - Say "apply it" and I run supabase/migrations/20261003_fight_sessions.sql
+  - Wait
+- **Default:** Wait (local seeds keep working)
+- **Outcome:** Owner (10-23 06:59): "Apply it". Checked live (read-only): the fight_sessions migration was already applied on 2026-10-16 (Supabase migration 20261016012658); nothing to run. This item was out of date.
+
 **D18. Play Maps 1–4 and say how difficulty and rewards feel** · Feedback · Balance · asked 2026-10-03 · decided 2026-10-23
 - Map 1 is an on-ramp; Maps 1–2 have reward cards; Map 2 retuned. Note: since 2026-10-08 Conquest fights default to Open mode (no collapsing), which changes how the AI and positions play, so the old difficulty numbers need a re-check.
 - **Default:** I re-simulate win rates under Open mode next
@@ -1120,6 +1198,21 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 **D8. Trench** · Decide · Raids · asked 2026-10-02 · decided 2026-10-03
 - **Outcome:** Built: you play your row; allies CPU; telegraphed columns.
 
+**S1. Apply the admin player list function** · Decide · Server · asked 2026-10-08 · decided 2026-10-23
+- The Admin → Players portal reads one admin-only, read-only database function (admin_list_players: profiles, levels, currencies, cards, matches; no emails). Written in supabase/proposed/20261008_admin_list_players.sql. Applying it (and the panel that reads it, already drafted) was held for your OK. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
+  - Say "apply it" (admin list)
+  - Wait
+- **Default:** Apply
+- **Outcome:** Owner (10-23 06:59): "Apply it". Checked live: admin_list_players was already applied on 2026-10-16 (migration 20261016012550); nothing to run.
+
+**S2. Anti-cheat tier 1** · Decide · Security · asked 2026-10-08 · decided 2026-10-23
+- Players can currently edit their own rating and currencies from the browser console. Tier 1 makes rating read-only and refuses any single write that adds more than 2,000 Maple / 200 Gold Leaves. supabase/proposed/20261008_anticheat_tier1.sql. Owner answered OKAY on 10-23; this is a live database write, so it waits for him to say 'apply it'.
+  - Apply tier 1
+  - Change the caps
+  - Wait
+- **Default:** Apply tier 1
+- **Outcome:** Owner (10-23 06:59): "Apply it". Checked live: anticheat_tier1 was already applied on 2026-10-16 (migration 20261016012841); nothing to run.
+
 **E7. Pack contents and foil odds** · Decide · Economy · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Pack editor (Admin): per pack price, size, pool, rarity weights, foil chance per card, guaranteed foil, and finish weights (By rarity 60, Prism 9, Hex 8, Etched 7, Ice 7, Reverse 6, Gold 3). Sprout Pouch 4% foil per card, Acorn Chest 8%, Golden Bramble Case 12% with one guaranteed. A card's From picks its pack pool. Publishes live as __cfg:shop-packs.
 
@@ -1212,7 +1305,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Something else (tell me)
   - Drop it
 - **Default:** Use the suggestion
-- **Outcome:** Owner (10-23 00:10): "No idea. But if the enemy has a status that makes them less effective at combat or YOU have a skill that makes you MORE effective at combat (blind vs evade e.g.)" Not the suggestion: Backstab gains its bonus when the target has a status that makes it less effective at combat, or the attacker has a skill that makes it more effective (blind against evade, for example). To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "No idea. But if the enemy has a status that makes them less effective at combat or YOU have a skill that makes you MORE effective at combat (blind vs evade e.g.)" Not the suggestion: Backstab gains its bonus when the target has a status that makes it less effective at combat, or the attacker has a skill that makes it more effective (blind against evade, for example). To build in package EN. Built (EN): Backstab N still strikes the nearest enemy unit and never the bramble; its +N now lands when that unit is worse at combat: Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it would swing blind in the dark while the attacker sees (was: a unit not directly in front). Bonus +N (the card's number), Tall Grass still doubles it. Price 0.6 a point (Assault's 1.8 x about 1 swing in 3; an estimate, call EN-5). Re-fit: Stoat Cutthroat 3/11 -> 3/12, Wrong-Way Salmon 1/8 -> 1/10, Cunning Vixen 1/8 -> 1/10.
 
 **D22. Fast Forward counters: build next?** · Decide · Design · asked 2026-10-10 · decided 2026-10-23
 - Your rule: with N counters, a unit runs its turn, upkeep included, N extra times before joining the main action order. It needs a pre-combat pass in the engine, about half a day of work with tests.
@@ -1235,7 +1328,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Add the second-player card to Conquest too
   - Change the rotation
 - **Default:** Keep Conquest as is
-- **Outcome:** Owner (10-23 00:10): "OKAY. 2nd player has no benefit except +1 Shield to Bramble." Keep Conquest as is (the default); in the Arena the second player's extra card is replaced by +1 Shield on its Bramble, and nothing else. To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "OKAY. 2nd player has no benefit except +1 Shield to Bramble." Keep Conquest as is (the default); in the Arena the second player's extra card is replaced by +1 Shield on its Bramble, and nothing else. To build in package EN. Built (EN): the second player gets +1 Shield on its bramble and nothing else, in every mode that gave a second-player bonus (the Arena rule sets and Double Time fights); no extra card, Health or Lumber. Texts in the 12 packs.
 
 **B6. The hummingbird starter deck beats the otter starter deck ~99% of the time** · Decide · Balance · asked 2026-10-09
 - Starter vs starter in simulation (300 matches): otters win 0.9%. All 10 hummingbird Basics fly (dodge half of ground attacks), most are Diurnal (+1 by day), and they run 2 copies each of 10 solid cards against the otters' 20 singles with several 1-Attack fillers. Removing Diurnal alone: 3.7%; a gentler 1-in-3 dodge: 3.3%. Packages that land near even: (C) the 7 hummingbird Basics with 2+ Attack lose 1 Attack, and 5 otter ground Basics (Otter Guard, River Carp, Otter Paddler, Burrow Rabbit, Ant Scout) gain Reach (their attacks ignore the Flying dodge): 47.7%. (F) the same hummingbird nerf, +1 Attack on 6 otter 1-Attack fillers (Honey Bee, Silver Minnow, Duckling, Otter Kit, Worker Ant, Chipmunk Forager), and Reach on Otter Guard and River Carp only: 46.8%. Reach is already in the engine (no card uses it yet). Not applied because it changes the faction players picked, their saved decks and the tutorial. 2026-10-10: superseded by your new basic set (shared six + three per side): the starter mirror now measures 52.9%.
@@ -1387,7 +1480,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Keep it as a view-only rule
   - Also make the CPU unable to target units it cannot reach (an engine change)
 - **Default:** Keep it as a view-only rule
-- **Outcome:** Owner (10-23 00:10): "Both sides" Not the view-only default: fog applies to both sides, so the CPU also cannot target what it cannot reach (the engine change). To build in package EN.
+- **Outcome:** Owner (10-23 00:10): "Both sides" Not the view-only default: fog applies to both sides, so the CPU also cannot target what it cannot reach (the engine change). To build in package EN. Built (EN): with Fog of War on, the CPU plays through the fog from its side (its reach, its revealers): where it plays, what it plays and what its hazards and fields are worth read only your units it can see. The rules themselves (swings, arrows, skills) still reach fogged units on both sides, the player's too (call EN-8).
 
 **FOG2. Fog reach is the unit's column and the ones beside it; revealers add only permanence** · Decide · Battle UI · asked 2026-10-21 · decided 2026-10-23
 - Reach follows your Parasite note (a live unit in the column or beside it; the centre is always open, as for placement). Illuminate has no radius, so Darksight, Keen Eye and Illuminate cover the same three columns, but what they cover stays revealed for the rest of the fight.
@@ -1402,6 +1495,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Keep the Mist scene
 - **Default:** Keep the Mist scene
 - **Outcome:** Owner (10-23 00:10): "OKAY" Keep the Mist scene (the default).
+
+**RW3-9. T-1's first-clear card** · Decide · Tutorial · asked 2026-10-23 · decided 2026-10-23
+- The Quarry Mole left T-1 (it is 8-1's now). T-1 pays no card until one is picked in the Tutorial editor (or keep it so). The live tutorial config still lists the mole; the game skips it, and supabase/proposed/20261023_rw3_tutorial_reward.sql clears it (waits for "apply it").
+  - No card on T-1
+  - A plain Common (name it)
+  - The Rabbit Kit (D46)
+- **Default:** No card on T-1
+- **Outcome:** Owner (10-23 06:59): "Apply it". Applied supabase/proposed/20261023_rw3_tutorial_reward.sql on the live database: __cfg:tutorial cfg.rewards ["quarry-mole"] → [] (row updated 2026-10-22 23:00 UTC). T-1 pays no card until one is picked in the Tutorial editor.
 
 ## Stated rules · 2026-10-21
 
