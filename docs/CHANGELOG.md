@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 release 10-24a (batch: DC3, HUB2, EN2, BL, HUB3, EN3, OPT, RW5, OPT2, EN4, PRO, MAP)
+- Rules: Windy (Headwind skills twice, Tailwind = Quick), Boomerang (Speed 0, return path, throws on a miss), Guardian (steps in, no chain), Swarm by Type, live stats; Bleed/Poison order; Rampart, Bramble Armor, Hemorrhage, Greater Poison, Shore Up, Pulse; Bloom rebuilt; CPU lanes. New cards placed in Maps 1-18.
+- Rewards: packs by map range, faction pool and pattern, end-of-map packs, Collector packs, speed unlocks, admin resource buttons, guild shop.
+- Map: resume where you left off, floating ambushes, raiders once, locked tiles, admin bramble editor. Hidden N-PRO-k fights (admin, editor, #pro= link).
+- Hub: Upgrade costs, Progression plan, Resources, Deck optimizer tabs; decision sweep. Tools: deck optimizer (tools/opt, exe, GitHub Action).
+- Server: AR3-6 applied (2-4 player online co-op rooms).
+- Checks: full unit tier, no new failures against release 10-23d (4 stale tests updated, two-player test fixed); ui_smoke 0 failures; flows 0 issues; card-matrix golden refreshed.
+
 ## 2026-10-24 (package MAP: back where you left off, the floating Ambush, locked map tiles, an admin bramble editor)
 - **Back where you left off (owner 17:01 #1):** a reload or a new session on the same device opens the Conquest pane on the map you last stood on,
   with the pawn at its fight (no walk from Map 0). A map that is not open, a hidden daily dungeon or a corrupt value falls back to the old rules;
