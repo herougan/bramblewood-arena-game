@@ -104,7 +104,7 @@ ok(/bits\.push\(packLevelUpsHTML\(levels, defs\)\)/.test(app), '5. the pack summ
 ok(/const MAP_END_PACKS = true, MAP_END_PACK_CARDS = 3;/.test(app) && /function grantMapEndPacks\(idx\)/.test(app) && /const REWARD_NEW_FIRST = true;/.test(app), '5. the end of each map: a pack of 3 (new cards first) + a faction pack (owner call, on)');
 ok(/if\(opts && opts\.newFirst\)\{ const fresh = left\.filter/.test(app) && !/rollPackCards\(pack, \{/.test(app.slice(app.indexOf('function buyPack'), app.indexOf('function buyPack') + 4000)), '5. new cards first only in reward packs (a bought pack stays random)');
 const dec = JSON.parse(rd('docs/decisions.json')), ids = dec.items.map(x=> x.id);
-ok(['PP-1', 'PP-2', 'PP-3'].every(id=> (dec.items.find(x=> x.id === id) || {}).built), '5. PP-1..3 say their defaults are built');
+ok(['PP-1', 'PP-2', 'PP-3'].every(id=> { const x = dec.items.find(x=> x.id === id) || {}; return x.built || x.status === 'DONE'; }), '5. PP-1..3 say their defaults are built (or the owner decided; PP-2 owner 10-23 22:23)');
 ok(dec.items.some(x=> /^RW5-/.test(x.id) && /end of each map|end-of-map/i.test(x.title || '')), '5. the end-of-map packs are an owner call in decisions.json');
 
 // ---- 6. texts
