@@ -98,7 +98,7 @@ ok(/clearFacing\(\); \(uids \|\| \[\]\)\.forEach\(u=> showFacing\(u, \{keep:true
 ok(/async function resolveRoundCore\(opts\)\{[\s\S]{0,1200}if\(!retry\) await waitForBlockingCoach\(m\);/.test(src), 'the round waits for the blocking step before its fight');
 
 // --- 2. the Outskirts wait for the "Add to deck" window
-ok(/const onToMap = \(\)=>\{ toMap\(null\); after\(\); \};/.test(src) && /if\(first\) popTutorialRewardStep\(\(\)=> openDeckTopUpStep\(tutorialRewards2\(pick\), onToMap\), onToMap\); else onToMap\(\);/.test(src), 'part 2: the map loads from the window\'s close (or at once on a replay)');
+ok(/const onToMap = \(\)=>\{ toMap\(null\); after\(\); \};/.test(src) && /if\(first\) popTutorialRewardStep\(\(\)=> openDeckTopUpStep\(tutorialRewards2\(pick(, true[^)]*\*\/)?\), onToMap\), onToMap\); else onToMap\(\);/ /* 2026-10-23 (RW5): the grant passes forGrant */.test(src), 'part 2: the map loads from the window\'s close (or at once on a replay)');
 ok(!/toMap\(null\); \/\/ the training-wheels dialogue says it \(2026-10-12: fewer toasts\)\n\s*\/\/ 2026-10-16: out of the fight and onto the map first/.test(src), 'the map no longer loads before the window');
 { const pt = fnSrc('popTutorialRewardStep'); ok(/function popTutorialRewardStep\(open, onFail\)/.test(pt) && /if\(onFail\) try\{ onFail\(\); \}/.test(pt), 'a window that fails to open still loads the map'); }
 ok(/tutRewardClose\(ov, onDone\)/.test(fnSrc('openDeckTopUpStep')), 'the window calls back once it has faded out');

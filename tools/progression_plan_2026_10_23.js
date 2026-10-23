@@ -55,10 +55,11 @@ const tierOf = n=> n == null ? null : (TIERS.find(t=> n >= t.from && n <= t.to) 
 
 // where each card sits in the map pools: the earliest map (a side map counts from its unlock map)
 const poolAt = {}, poolWhere = {};
+const NOT_TIERING = new Set(['mtut', ...ALL.filter(m=> m.endless || m.tower).map(m=> m.id)]); // 2026-10-23 (RW5): the Tutorial side map (T-2/3/4 on Maps 1/8/18) and the endless dungeons hold every map's cards
 Object.entries(POOLS).forEach(([mid, e])=>{
   const n = num(mid); if(n == null) return;
-  const note = (id, at, where)=>{ if(poolAt[id] == null || at < poolAt[id]){ poolAt[id] = at; poolWhere[id] = where; } };
-  (e.cards || []).forEach(id=> note(id, n, mid));
+  const note = (id, at, where)=>{ if(NOT_TIERING.has(where)) return; if(poolAt[id] == null || at < poolAt[id]){ poolAt[id] = at; poolWhere[id] = where; } };
+  (e.cards || []).forEach(id=> note(id, n, mid)); (e.special || []).forEach(id=> note(id, n, mid)); // + the map's SPECIAL list (RW5: a fight draws MAP + SPECIAL)
   Object.entries(e.submaps || {}).forEach(([sid, ids])=> ids.forEach(id=> note(id, unlockNo(sid) != null ? unlockNo(sid) : n, sid)));
 });
 
@@ -66,6 +67,9 @@ Object.entries(POOLS).forEach(([mid, e])=>{
 const tutorialSet = new Set();
 ['starterShared', 'starterOtters', 'starterHummingbirds', 'starterBoth', 'starterFiller'].forEach(k=> Object.keys(STARTER[k] || {}).forEach(id=> tutorialSet.add(id)));
 (STARTER.starterTopUp || []).forEach(id=> tutorialSet.add(id));
+// 2026-10-23 (RW5): + the tutorial config the game ships (TUTORIAL_CFG_DEFAULT: the owner's live config folded in, e.g. the Cobalt-talon Fledgling in the Hummingbird deck)
+const STARTER_CFG_DEFAULT = STARTER, TUTORIAL_SEED = 0; // what TUTORIAL_CFG_DEFAULT spreads
+{ let TC = null; try{ TC = ev('TUTORIAL_CFG_DEFAULT'); }catch(e){ TC = null; } if(TC) ['starterShared', 'starterOtters', 'starterHummingbirds', 'starterBoth', 'starterFiller', 'myDeck', 'myDeck2', 'rivalDeck', 'rivalDeck2'].forEach(k=> Object.keys(TC[k] || {}).forEach(id=> tutorialSet.add(id))); }
 const tutRewards = new Set([...(TUT_REWARDS || []), ...(STARTER.rewards || []), ...Object.values(STARTER.rewards2 || {}).flat(), STARTER.bothBonus].filter(Boolean));
 let tutDecks = {}; try{ tutDecks = rd('docs/balance/decks.json').tutorial || {}; }catch(e){}
 Object.values(tutDecks).forEach(parts=> parts.forEach(p=> [...(p.mine || []), ...(p.rival || [])].forEach(c=> tutorialSet.add(c.id))));
@@ -131,36 +135,47 @@ const targets = T.map(t=>{ const actual = count(t.key), planned = cards.filter(c
   return Object.assign({}, t, {actual, unplaced: planned, gap}); });
 
 // ---------- mistakes (proposed fixes only) ----------
-const mistakes = [];
-const add = (kind, what, fix, ids)=> mistakes.push({kind, what, fix, ids: ids || []});
-const p1Lava = liveC.filter(c=> c.bucket.startsWith('pack-') && c.lava);
-const packAll = liveC.filter(c=> c.src === 'pack' && c.tier === 1);
-const lateInP1 = packAll.filter(c=> c.adv != null && c.adv > 6);
-add('packs', `The three packs share one pool: Hedgerow Pouch (Pack 1), Tidemire Chest and Highcrest Case all draw from all ${packAll.length} pool-1 cards, and since RW3 with no map gate. So Pack 1 (on sale at Map 5) can give any of the ${lateInP1.length} cards that belong to Maps 7+ (Pack 2/3 or later), including ${p1Lava.length} volcanic (lava) cards.`,
-  'Give each pack its own pool by the owner tiers (Maps 0-6 → Pack 1, 7-13 → Pack 2, 14-20 → Pack 3): set source.tier to 1 / 2 / 3 from the card\'s first map pool (the list below), and point SHOP_PACKS_DEFAULT pool at 1 / 2 / 3 (the base track and the skirmish drop read packCardPool too).', p1Lava.map(c=> c.id));
-const srcVsPool = packAll.filter(c=> c.sm && c.pool != null && num(c.sm) != null && tierOf(num(c.sm)) !== tierOf(c.pool));
-if(srcVsPool.length) add('packs', `${srcVsPool.length} pack cards name a source map whose pack tier differs from where map-pools.json first puts them (a side map counts from the map that unlocks it, owner: "Submap cards are found in the Pack tier following the maps that unlock them").`,
-  'Re-point source.map to the pool map (or move the card in map-pools.json), then re-tier.', srcVsPool.map(c=> c.id));
+// 2026-10-23 (package RW5): each mistake is re-checked against the files; `fixed` names the package that fixed it (the hub shows it ticked).
+const mistakes = [], APP = B.src;
+const add = (kind, what, fix, ids, fixed)=> mistakes.push({kind, what, fix, ids: ids || [], fixed: fixed || null});
+const RW5 = 'RW5 (2026-10-23)';
+const packAll = liveC.filter(c=> c.src === 'pack' && c.tier >= 1 && c.tier <= 4);
+const SHOP = ev('SHOP_PACKS_DEFAULT'), shopPools = [...new Set(SHOP.filter(p=> ['bronze', 'silver', 'gold'].includes(p.id)).map(p=> p.pool || 1))];
+const p1Lava = packAll.filter(c=> c.tier === 1 && c.lava), lateInP1 = packAll.filter(c=> c.tier === 1 && c.adv != null && c.adv > 6);
+const tierNo = k=> ({p1: 1, p2: 2, p3: 3, p4: 4})[k];
+const wrongTier = packAll.filter(c=> c.adv != null && c.bucket.startsWith('pack-p') && c.tier !== tierNo(c.bucket.slice(5)));
+if(shopPools.length < 3 || p1Lava.length || lateInP1.length) add('packs', `The packs do not have their own pools by map: shop pools ${JSON.stringify(shopPools)}; ${lateInP1.length} Pack 1 cards belong to Maps 7+, ${p1Lava.length} of them volcanic.`, 'Give each pack its own pool by the owner tiers (Maps 0-6 → Pack 1, 7-13 → Pack 2, 14-20 → Pack 3; tools/rw5_pack_tiers_2026_10_23.js) and point SHOP_PACKS_DEFAULT pool at 1 / 2 / 3.', p1Lava.concat(wrongTier).map(c=> c.id));
+else add('packs', `Each pack has its own pool by map (Pack 1 Maps 0-6: ${packAll.filter(c=> c.tier === 1).length} cards, Pack 2 Maps 7-13: ${packAll.filter(c=> c.tier === 2).length}, Pack 3 Maps 14-20: ${packAll.filter(c=> c.tier === 3).length}, after Map 20: ${packAll.filter(c=> c.tier === 4).length}); no volcanic card in Pack 1.`, 'Done: tools/rw5_pack_tiers_2026_10_23.js set source.tier; SHOP_PACKS_DEFAULT pools 1 / 2 / 3.', [], RW5);
+const srcVsPool = packAll.filter(c=> c.sm && c.pool != null && unlockNo(c.sm) != null && tierOf(unlockNo(c.sm)) !== tierOf(c.pool));
+add('packs', srcVsPool.length ? `${srcVsPool.length} pack cards name a source map whose pack tier differs from where map-pools.json first puts them (held by RW5: re-pointing them puts them over budget; re-fit them or take them out of the early side map's pool) (a side map counts from the map that unlocks it, owner: "Submap cards are found in the Pack tier following the maps that unlock them").` : 'Every pack card\'s source map and its first map pool agree on the pack tier (the Tutorial side map and the endless dungeons do not place cards).',
+  'Re-point source.map to the pool map (or move the card in map-pools.json), then re-tier.', srcVsPool.map(c=> c.id), srcVsPool.length ? null : RW5);
 const noPool = packAll.filter(c=> c.bucket === 'pack-nomap');
-if(noPool.length) add('packs', `${noPool.length} live pack-pool cards are in no map pool and name no map, so they have no pack tier (the base track and drops treat them as Map 5, packs give them anywhere).`, 'Place each in a map pool (canonical/map-pools.json) and give it source.map, or retire it.', noPool.map(c=> c.id));
+add('packs', noPool.length ? `${noPool.length} live pack-pool cards are in no map pool and name no map, so they have no pack tier.` : 'Every live pack card has a map (the 39 without one got a map by theme: tools/rw5_pack_tiers_2026_10_23.js NOMAP).', 'Place each in a map pool (canonical/map-pools.json) and give it source.map, or retire it.', noPool.map(c=> c.id), noPool.length ? null : RW5);
 const poolOnlySrc = packAll.filter(c=> c.bucket !== 'pack-nomap' && c.pool == null);
-if(poolOnlySrc.length) add('packs', `${poolOnlySrc.length} live pack cards name a source map but are in no map pool (map-pools.json), so no fight of that map uses them.`, 'Add them to their map\'s pool, or re-point source.map.', poolOnlySrc.map(c=> c.id));
-const humBase = liveC.filter(c=> c.src === 'base' && c.fac === 'hummingbirds' && !tutorialSet.has(c.id) && !tutRewards.has(c.id));
-if(humBase.length) add('faction', `${humBase.length} Hummingbird faction cards come "from the start" as Base (no source, unlocked), outside the faction pool.`, 'Give them source {kind:pack, tier:11, side:tribes} (faction pool) unless they are the Hummingbird starter cards.', humBase.map(c=> c.id));
+add('packs', poolOnlySrc.length ? `${poolOnlySrc.length} live pack cards name a source map but are in no map pool (map-pools.json), so no fight of that map uses them.` : 'Every live pack card that names a map is in that map\'s pool.', 'Add them to their map\'s pool, or re-point source.map.', poolOnlySrc.map(c=> c.id), poolOnlySrc.length ? null : RW5);
+const humBase = liveC.filter(c=> c.src === 'base' && c.fac === 'hummingbirds' && !tutorialSet.has(c.id) && !tutRewards.has(c.id) && !(RAWBY[c.id] || {}).awaitingSource); // RW5: a card awaiting the owner's placement is not one
+add('faction', humBase.length ? `${humBase.length} Hummingbird faction cards come "from the start" as Base (no source, unlocked), outside the faction pool.` : 'The Hummingbird faction cards that came "from the start" as Base are in the faction pool (side tribes); the Cobalt-talon Fledgling stays Base (the Hummingbird starting deck).', 'Give them source {kind:pack, tier:11, side:tribes} (faction pool) unless they are the Hummingbird starter cards.', humBase.map(c=> c.id), humBase.length ? null : RW5);
 const baseNonTut = liveC.filter(c=> c.bucket === 'base');
-add('base', `Base (not tutorial) holds ${baseNonTut.length} cards; the owner's target is about 10 or fewer.`, 'Move the non-starter Base cards with skills (and the Rare/Uncommon ones) to the faction pool, a skirmish reward or Pack 1; keep the plain Map 0 animals as Tutorial base.', baseNonTut.map(c=> c.id));
-const outside = liveC.filter(c=> (c.otter || c.hum) && !c.bucket.startsWith('faction') && c.bucket !== 'tutorialBase');
-add('faction', `Outside the faction pool there are ${outside.filter(c=> c.otter).length} Otter-type and ${outside.filter(c=> c.hum).length} Hummingbird-type cards (owner 19:36: only 1-2 neutral otters and 1-2 traitor / neutral hummingbirds).`, 'Keep 1-2 of each as named neutrals / traitors; move the rest into the faction pool (or rename them out of the faction).', outside.map(c=> c.id));
-add('faction', 'The faction pool holds your side + shared cards only (factionCardsOfMine); the owner\'s pool holds both sides ("that\'s how you would get the other faction\'s cards").', 'factionCardsOfMine: both sides + shared, the other side\'s cards weighted lower or later on the pattern.', []);
-add('faction', `Pool copies per card are FACTION_POOL_COPIES ${JSON.stringify(POOL_COPIES)}; the owner's rule is "pool size = the most duplicates you can hold in a deck" (RARITY_MAX_COPIES: common ${MAX_COPIES.common}, uncommon ${MAX_COPIES.uncommon}, rare ${MAX_COPIES.rare}, very rare ${MAX_COPIES.veryrare}, super rare ${MAX_COPIES.superrare}).`, 'Read the copies from maxCopiesForRarity (Super Rare 2 → 1).', []);
-add('faction', 'No Base cards are added to the faction pool ("add 1 of each base card inside as well").', 'loadFactionPool: 1 copy of each Base card in the pool too.', []);
-add('faction', 'The standard faction reward is a weighted random draw behind rarity gates (FACTION_RARITY_GATES: 25 received for Uncommon, 40 + Map 14 for Rare ...), not the fixed C, C, C, U, C, C, U, C, U, R ... pattern.', 'A fixed pattern table (see the pacing check) and "set" vs "random" faction rewards as two hand-out kinds.', []);
+const junkId = c=> /-[a-z0-9]{4}$/.test(c.id) && /\d/.test(c.id.slice(-4));
+add('base', `Base (not tutorial) holds ${baseNonTut.length} cards; the owner's target is about 10 or fewer.`, 'Move the non-starter Base cards with skills (and the Rare/Uncommon ones) to the faction pool, a skirmish reward or Pack 1; keep the plain Map 0 animals as Tutorial base.', baseNonTut.map(c=> c.id), baseNonTut.length <= 10 && !baseNonTut.some(junkId) ? RW5 : null);
+const outside = liveC.filter(c=> (c.otter || c.hum) && !c.bucket.startsWith('faction') && c.bucket !== 'tutorialBase' && c.bucket !== 'unsorted'); // RW5: an unsorted card (awaiting a source) is not obtainable
+const outO = outside.filter(c=> c.otter).length, outH = outside.filter(c=> c.hum).length;
+add('faction', `Outside the faction pool there are ${outO} Otter-type and ${outH} Hummingbird-type cards (owner 19:36: only 1-2 neutral otters and 1-2 traitor / neutral hummingbirds).`, 'Keep 1-2 of each as named neutrals / traitors; move the rest into the faction pool (or rename them out of the faction).', outside.map(c=> c.id), outO <= 2 && outH <= 2 ? RW5 : null);
+const rw5Pool = /const FACTION_POOL_RW5 = true;/.test(APP), rw5Pattern = /const FACTION_STANDARD_PATTERN = \[/.test(APP);
+add('faction', 'The faction pool held your side + shared cards only (factionCardsOfMine); the owner\'s pool holds both sides ("that\'s how you would get the other faction\'s cards").', rw5Pool ? 'Done: factionPoolCardIds (both sides + shared; your side weighted x3, shared x2, the other side x1).' : 'factionCardsOfMine: both sides + shared, the other side\'s cards weighted lower or later on the pattern.', [], rw5Pool ? RW5 : null);
+add('faction', `Pool copies per card were FACTION_POOL_COPIES ${JSON.stringify(POOL_COPIES)}; the owner's rule is "pool size = the most duplicates you can hold in a deck" (RARITY_MAX_COPIES: common ${MAX_COPIES.common}, uncommon ${MAX_COPIES.uncommon}, rare ${MAX_COPIES.rare}, very rare ${MAX_COPIES.veryrare}, super rare ${MAX_COPIES.superrare}).`, rw5Pool ? 'Done: factionPoolCopiesOf reads maxCopiesForRarity.' : 'Read the copies from maxCopiesForRarity (Super Rare 2 → 1).', [], rw5Pool ? RW5 : null);
+add('faction', 'No Base cards were in the faction pool ("add 1 of each base card inside as well").', rw5Pool ? 'Done: factionPoolBaseIds, 1 copy of each Base card.' : 'loadFactionPool: 1 copy of each Base card in the pool too.', [], rw5Pool ? RW5 : null);
+add('faction', 'The standard faction reward was a weighted random draw behind rarity gates, not the fixed C, C, C, U, C, C, U, C, U, R ... pattern.', rw5Pattern ? 'Done: set rewards follow FACTION_STANDARD_PATTERN (factionPatternRarity; R skipped before Map 14, PP-2); random rewards (tokens, faction packs) keep the gates.' : 'A fixed pattern table (see the pacing check) and "set" vs "random" faction rewards as two hand-out kinds.', [], rw5Pattern ? RW5 : null);
 const sec = cards.filter(c=> c.bucket === 'secrets');
 if(sec.length && sec.every(c=> c.un)) add('packs', `All ${sec.length} Mystery Booster (pool 99) cards are unattainable, so the Mystery Booster / future Pack Secrets I pool is empty in play.`, 'Clear `unattainable` on the ones ready, then make it the Pack Secrets I pool (a <1% slot in Packs 1-6).', sec.map(c=> c.id));
-const lvl0Bad = liveC.filter(c=> c.lvl === 0 && c.bucket !== 'tutorialBase');
-add('level', `${lvl0Bad.length} cards outside Tutorial base start at Level 0 (${lvl0Bad.map(c=> c.name).join(', ')}: cardBaseLevel gives 0 to every basic / starter / quest / source-Base card), and since TU2 every new faction copy comes at Level 0; the owner: only the tutorial base units and the baby cards start at 0.`, 'cardBaseLevel: 0 only for tutorial base (and babies); undo TU2\'s faction Level 0 copies.', lvl0Bad.map(c=> c.id));
-add('naming', 'The advanced packs are "Advanced <pack>" (advancedPackOf); the owner calls them Collector packs.', 'Rename to "Collector <pack>" (TX key + 12 language packs).', []);
+const isBaby = c=> /baby|hatchling|chick|kit$|-kit\b|pup|cub|fledgling|duckling|calf/i.test(c.id) && !/^egg-/.test(c.id);
+const lvl0Bad = liveC.filter(c=> c.lvl === 0 && c.bucket !== 'tutorialBase' && !isBaby(c)), tu2Off = /const FACTION_COPY_LEVEL0 = false;/.test(APP);
+add('level', lvl0Bad.length || !tu2Off ? `${lvl0Bad.length} cards outside Tutorial base and the babies start at Level 0 (${lvl0Bad.map(c=> c.name).join(', ')})${tu2Off ? '' : ', and since TU2 every new faction copy comes at Level 0'}; the owner (PP-3): only the tutorial base units and the baby cards start at 0.` : 'Only the tutorial base and the babies start at Level 0 (PP-3: the Bee Knight and Forager Ant start at 1; the Sparrow Chick is a baby); TU2\'s faction Level 0 copies are off (FACTION_COPY_LEVEL0).', 'cardBaseLevel: 0 only for tutorial base (and babies); undo TU2\'s faction Level 0 copies.', lvl0Bad.map(c=> c.id), lvl0Bad.length || !tu2Off ? null : RW5);
+const collector = /ui\.rw5-collector-pack/.test(APP);
+add('naming', 'The advanced packs were "Advanced <pack>" (advancedPackOf); the owner calls them Collector packs.', 'Rename to "Collector <pack>" (TX key + 12 language packs).', [], collector ? RW5 : null);
 add('naming', 'The game calls faction:"base" cards and skirmish rewards "Base" (UT, 2026-10-19: "Base cards just mean they come from Skirmish rewards"); the owner now says Skirmish base for skirmish rewards and Base for the starting cards.', 'Rename the Codex sections and cardWhereToGetText lines.', []);
+const junk = liveC.filter(junkId);
+add('naming', junk.length ? `${junk.length} cards carry a junk id suffix from a live card (${junk.map(c=> c.id).join(', ')}).` : 'No card id carries a junk suffix (ember-tetra-3caj is ember-tetra, a Pack 3 card of the Ashen Spurn).', 'Rename the id (and skip the old live row).', junk.map(c=> c.id), junk.length ? null : RW5);
 
 // ---------- eggs and babies ----------
 const eggCards = cards.filter(c=> /^egg-/.test(c.id)).map(c=> Object.assign({}, c, {hatch: RAWBY[c.id].hatchInto || null}));
@@ -236,6 +251,12 @@ const poolOwner = (own, other)=>{ const o = {}; [[7, 5, 3, 1, own], [7, 5, 3, 1,
   pacing.push({label, pool, copies: m.total, first: at, lastUncommon: lastU ? {reward: lastU, map: lastUMap} : null, dryAt: {reward: m.total, map: dry}, verdict: verdictOf(at, lastUMap, dry)}); });
 const lit = literalModel(80), litAt = {}; Object.entries(lit).forEach(([r, k])=> litAt[r] = {reward: k, map: mapOr(k)});
 pacing.push({label: 'literal pattern (the block of 10 repeats, its 10th step one rarity up each block: R, VR, SR ...)', first: litAt, verdict: verdictOf(litAt, null, null)});
+// 2026-10-23 (package RW5): the rules as built, walked on the road (tools/rw5_faction_pacing_2026_10_23.js: the game's factionPatternRarity and
+// factionTrackPick, median of 20 seeds), with and without the end-of-map faction pack (MAP_END_PACKS, an owner call).
+let rw5Pacing = null; try{ rw5Pacing = require(path.join(ROOT, 'tools', 'rw5_faction_pacing_2026_10_23.js')); }catch(e){ rw5Pacing = null; }
+if(rw5Pacing) ['otters', 'hummingbirds'].forEach(side=> [true, false].forEach(endPacks=>{ const r = rw5Pacing.summary({side, seeds: 20, endPacks});
+  pacing.push({label: `RW5 as built, ${side}${endPacks ? ', end-of-map faction packs on' : ', without the end-of-map faction packs'} (median of 20 seeds)`, live: true, side, endPacks, pool: r.pool.byRarity, copies: r.pool.copies,
+    first: {rare: {map: r.median.firstRare}, veryrare: {map: r.median.firstVeryRarePlus}}, lastUncommon: {map: r.median.lastUncommonSet}, dryAt: {map: r.median.dryAt}, receivedBy: r.receivedBy, verdict: r.verdict}); }));
 // how many hand-outs a map the window needs: the 20th reward (the literal pattern's first Very Rare) after Map 15
 const handoutsByMap15 = (recvByMap.find(x=> x.map === 15) || {}).received || null;
 

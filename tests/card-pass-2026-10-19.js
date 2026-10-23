@@ -26,7 +26,10 @@ const live = cards.filter(c=> !c.token && !c.test && !c.hallOfFame && !c.baseId 
 // one unique reward a side map, plain rewards on Maps 0-1, the Devilry / Ecclesia gates, Otters and Hummingbirds to the faction
 // rewards). A card it moved is checked against its new source there.
 const RP_MOVES = (()=>{ try{ return Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'rewards-pass-2026-10-21.json'), 'utf8')).moves.map(m=> [m.id, m])); }catch(e){ return {}; } })();
-const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to); };
+// 2026-10-23 (package RW5, owner item 15): a basic-pack source's tier (1-4) and map are now set by the map where the card is first found
+// (tools/rw5_pack_tiers_2026_10_23.js); a planned basic-pack source still counts as kept when only those two changed.
+const rw5Pack = src=>{ if(!src || src.kind !== 'pack' || !((+src.tier || 1) >= 1 && (+src.tier || 1) <= 4)) return src; return {kind: 'pack', tier: 1}; };
+const rpMoved = c=>{ const m = c && RP_MOVES[c.id]; if(!m) return false; if(m.to === 'awaitingSource') return !c.source && c.awaitingSource === true; if(m.to === 'base') return !c.source; return JSON.stringify(c.source) === JSON.stringify(m.to) || JSON.stringify(rw5Pack(c.source)) === JSON.stringify(rw5Pack(m.to)); };
 
 // ---- 1. budget v3
 const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm']);
@@ -77,7 +80,7 @@ const none = live.filter(c=> c.cardType !== 'materia' && !c.easterEgg && !c.awai
 ok(!none.length, '3. every live card has a source or is on the allowed sourceless list: ' + none.slice(0, 10).join(', '));
 Object.keys(P.SOURCELESS).forEach(id=> ok(defs[id] && !obtainable(defs[id]) && P.SOURCELESS[id].length > 10, `3. ${id} stays sourceless, with its reason`));
 const srcPlain = src=>{ if(!src || !src.challenge) return src; const o = Object.assign({}, src); delete o.challenge; return o; }; // 2026-10-22 (RW2): a challenge flag on the source is not a move
-(PLAN.sources || []).forEach(s=> ok(defs[s.id] && (JSON.stringify(srcPlain(defs[s.id].source)) === JSON.stringify(s.source) || rpMoved(defs[s.id])) && /package CB/.test(defs[s.id].creatorNote || ''), `3. ${s.id}: sourced as planned (${s.where}), or moved on by package RP`));
+(PLAN.sources || []).forEach(s=> ok(defs[s.id] && (JSON.stringify(srcPlain(defs[s.id].source)) === JSON.stringify(s.source) || JSON.stringify(rw5Pack(srcPlain(defs[s.id].source))) === JSON.stringify(rw5Pack(s.source)) /* RW5 */ || rpMoved(defs[s.id])) && /package CB/.test(defs[s.id].creatorNote || ''), `3. ${s.id}: sourced as planned (${s.where}), or moved on by package RP`));
 const per = {}; live.forEach(c=>{ const s = c.source; if(s && s.kind === 'map' && s.node && c.cardType !== 'equipment') per[s.id + ':' + s.node] = (per[s.id + ':' + s.node] || 0) + 1; });
 const crowd = Object.entries(per).filter(([k, v])=> v > 3 && (PLAN.sources || []).some(s=> s.source.kind === 'map' && s.source.id + ':' + s.source.node === k));
 ok(!crowd.length, '3. no fight the pass gave a card to gives more than 3: ' + crowd.map(([k, v])=> k + ' ' + v).join(', '));

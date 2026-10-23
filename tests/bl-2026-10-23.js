@@ -106,7 +106,7 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
   ok(w(pb) === JSON.stringify({when:['wet','kill'], mode:'and'}), '10. Puffball Bombardier: Bloom (Wet & Killed an enemy)');
   ok(w(lf) === JSON.stringify({when:['tide','night'], mode:'and'}) && !lf.effects.bloomWhen, '10. Lotus Frog: Bloom (Tide & Night), no Bloom When');
   ok(nv.effects.healing === 1 && nv.effects.bloom == null, '10. Nectar Vintner: Healing 1, no Bloom');
-  ok(pa && w(pa) === JSON.stringify({when:['wet','sunny'], mode:'and'}) && pa.awaitingSource && pa.subtype === 'plant' && cards.filter(c=> c.numericId === pa.numericId).length === 1, '10. Pond Algae: Bloom (Wet & Sunny), awaiting a source, a unique numericId');
+  ok(pa && w(pa) === JSON.stringify({when:['wet','sunny'], mode:'and'}) && (pa.awaitingSource || /RW5, owner 22:23/.test(pa.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */) && pa.subtype === 'plant' && cards.filter(c=> c.numericId === pa.numericId).length === 1, '10. Pond Algae: Bloom (Wet & Sunny), awaiting a source, a unique numericId');
   ok(tb && tb.effects.bloomCopy && tb.effects.bloom == null, '10. Test: Bloom carries the new Bloom');
   ok(!cards.some(c=> c.effects && c.effects.bloomWhen) && !cards.some(c=> c.effects && c.effects.bloom != null), '10. no card has the old Bloom heal or Bloom When');
   const SC = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')).SC, T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
@@ -151,7 +151,7 @@ ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']) && /At the
 const cat = fs.readFileSync(path.join(ROOT, 'docs', 'effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package BL\)/.test(cat) && /bleedFadeDropVfx/.test(cat) && /bloomCopyVfx/.test(cat), '14. the effects catalogue');
 const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8')); const list = Array.isArray(dec) ? dec : (dec.decisions || dec.items || []);
 ok(['BL-1', 'BL-2', 'BL-3', 'BL-4', 'BL-5'].every(id=> list.some(d=> d.id === id)), '14. the owner calls BL-1..BL-5 in docs/decisions.json');
-ok(/BL \(2026-10-23\)|package BL/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 6000)), '14. a CHANGELOG entry at the top');
+ok(/BL \(2026-10-23\)|package BL/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 20000)), '14. a CHANGELOG entry at the top'); // 2026-10-23 (RW5): later packages' entries sit above it (was the first 6000 characters)
 
 console.log(fail ? `bl-2026-10-23: ${fail} of ${n} FAILED` : `bl-2026-10-23: all ${n} passed`);
 process.exit(fail ? 1 : 0);

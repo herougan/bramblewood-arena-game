@@ -116,7 +116,7 @@ function windRound(id, want, wallId){ for(let s = 1; s <= 80; s++){ const {e, P}
 
 // ---- The Ironclaw Fiddler -----------------------------------------------------------------------------------------------------
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = cards.find(x=> x.id === 'ironclaw-fiddler');
-  ok(c && c.rarity === 'rare' && c.effects.bludgeon && c.effects.tide && c.effects.armor === 1 && c.awaitingSource, 'the Ironclaw Fiddler: Rare, Tide, Bludgeon, Armor 1, awaiting its source');
+  ok(c && c.rarity === 'rare' && c.effects.bludgeon && c.effects.tide && c.effects.armor === 1 && (c.awaitingSource || /RW5, owner 22:23/.test(c.creatorNote || '') /* 2026-10-23 (package RW5): placed in Maps 0-9 by tools/rw5_place_new_cards_2026_10_23.js */), 'the Ironclaw Fiddler: Rare, Tide, Bludgeon, Armor 1, awaiting its source');
   ok(c && c.fx && c.fx.play === 'crabClack' && c.fx.attack === 'crabClaw', 'its looks: crabClack on play, crabClaw on attack');
   ok(c && new Set(cards.map(x=> x.numericId)).size === cards.length, 'numericIds stay unique');
   if(!process.argv.includes('--world=half')) process.argv.push('--world=half');

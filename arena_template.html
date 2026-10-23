@@ -12497,6 +12497,23 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .raid-editor .re-warn{color:var(--danger);}
 .raid-editor .re-restart{display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
 @media (max-width:600px){ .raid-hub .rh-art{width:64px; height:64px; font-size:36px;} }
+/* 2026-10-23 (package RW5, owner item 18): "2× unlocked!" in the fight, under the top bar; the speed button pulses with it */
+.rw5-speed-banner{position:fixed; left:50%; top:calc(env(safe-area-inset-top, 0px) + 64px); transform:translateX(-50%); z-index:9000; display:flex; flex-direction:column; align-items:center; gap:2px;
+  padding:10px 18px; border-radius:14px; background:linear-gradient(180deg, #3a2a12, #1f160a); color:#ffe9b0; border:2px solid #e7b04a; box-shadow:0 8px 26px rgba(0,0,0,.45);
+  pointer-events:none; max-width:calc(100vw - 32px); text-align:center; animation:rw5SpeedIn .45s cubic-bezier(.2,1.4,.4,1) both;}
+.rw5-speed-banner b{font-size:20px; letter-spacing:.02em;}
+.rw5-speed-banner small{font-size:12px; opacity:.85;}
+.rw5-speed-banner.is-out{transition:opacity .6s, transform .6s; opacity:0; transform:translate(-50%, -12px);}
+@keyframes rw5SpeedIn{from{opacity:0; transform:translate(-50%, -16px) scale(.85);} to{opacity:1; transform:translate(-50%, 0) scale(1);}}
+#ffBtn.rw5-ff-new{animation:rw5FfPulse 1s ease-in-out 3; box-shadow:0 0 0 3px #e7b04a;}
+@keyframes rw5FfPulse{50%{transform:scale(1.12);}}
+@media (prefers-reduced-motion: reduce){ .rw5-speed-banner, #ffBtn.rw5-ff-new{animation:none;} }
+/* 2026-10-23 (package RW5): the admin resource buttons, the guild shop */
+.rw5-admin-res{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+.rw5-guild-shop .rw5-gs-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; background:var(--surface-2);}
+.rw5-guild-shop .rw5-gs-row .rw5-gs-ico{font-size:26px;}
+.rw5-guild-shop .rw5-gs-row .rw5-gs-text{flex:1 1 180px; min-width:0;}
+.rw5-guild-shop .rw5-gs-row .rw5-gs-text small{display:block; opacity:.8;}
 </style>
 <style id="nvStyles">
 /* ===== Package NV (2026-10-19, owner on an iPhone 10:55): Home on the map and the Arena, no map strip on phones, the pre-battle
