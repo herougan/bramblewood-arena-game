@@ -36,7 +36,8 @@ The standing rules that limit how a skirmish is built (2026-10-23). A tuning mov
 
 ### 4. Enemy levels by map
 - **Map 0: every enemy card fights at Level 0.** Map 1: 0 / 25 / 25 / 50 / 50% of the copies are Level 1 by the fight's place. Map 2 on follows the schedule below. EB-3 (owner 10-23 01:57). `EARLY_ENEMY_LEVEL`. The fight panel still shows printed stats. The owner rebalances Maps 0-2 himself.
-- **The schedule:** Maps 1-4 Level 1; Maps 5-9 rise from 1 to 2; Map 10 Level 2, then +0.2 a map (Level 4 at Map 20, 4.8 at Map 24). A boss counts 2 maps further on, a side map 1. Owner 10-19 16:22 (B10, BF3). `roadEnemyScheduleLevel`, `ROAD_LEVEL_CURVE.enemySchedule`.
+- **Owner's targets (10-23 20:44):** Map 20 Lv 5, Map 40 Lv 7, Map 60 Lv 8, Map 80 Lv 9, Map 100 Lv 10; the mega boss gets a limit break. Not yet in the code (package BAL2).
+- **The schedule today:** Maps 1-4 Level 1; Maps 5-9 rise from 1 to 2; Map 10 Level 2, then +0.2 a map (Level 4 at Map 20, 4.8 at Map 24). A boss counts 2 maps further on, a side map 1. Owner 10-19 16:22 (B10, BF3). `roadEnemyScheduleLevel`, `ROAD_LEVEL_CURVE.enemySchedule`.
 - **No Forge before Map 11:** Maps 0-10 are won by deck building. B7 (owner 10-19 09:52: "The player has to deck build to win"). `ROAD_LEVEL_CURVE.playerForgeMap = 11`.
 - **Levels gate by map, not by resources, and Base cards stop at Level 4.** DF-2 (owner 10-23 17:34, and the grind to each gate still counts). A card's Map term in the stat budget is 0.2 a map (DF-1; to be set in `bramblewood-budget.js`).
 - **A fight's Level is read from its map number, not set per fight,** unless the skirmish editor's Enemy level overrides it.
@@ -88,7 +89,7 @@ The standing rules that limit how a skirmish is built (2026-10-23). A tuning mov
 - **The CPU plays through the fog from its side;** it never sees a fogged unit it could not reach. FOG1, EN-8.
 
 ### Where sources disagree (the engine and data win)
-- **Enemy levels.** The request quoted Map 20 Lv 5, 40 Lv 7, 60 Lv 8, 80 Lv 9, 100 Lv 10 with a limit break for the mega boss. No decision or doc defines that. The old closed note BAL says Lv 5 at Map 20, but `roadEnemyScheduleLevel` gives Lv 4 at Map 20, and nothing sets levels past Map 24 (the line would give Lv 8 at Map 40). Needs an owner call before it is written as a rule.
+- **Enemy levels.** Settled by the owner (10-23 20:44): Map 20 Lv 5, Map 40 Lv 7, Map 60 Lv 8, Map 80 Lv 9, Map 100 Lv 10, and a limit break for the mega boss. The code (`roadEnemyScheduleLevel`) still gives Lv 4 at Map 20 and stops at Map 24; queued to change in BAL2.
 - **Win-rate targets.** The table below (85 / 60 / 45 / 35) is older than the game's road curve (90 to 60, mini-boss 50, boss 40). The game's curve wins.
 - **Fewest cards.** "Keep at least 3 different cards" (below) is old; the rule is 5-7 (SK).
 - **Leaders from Map 11.** The owner's 01:03 note said past Map 10; SK's Map 2 rule already covers it (LEAD-5).
