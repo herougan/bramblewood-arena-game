@@ -1,0 +1,774 @@
+{
+ "generated": "2026-10-23",
+ "tool": "node tools/resources_week_2026_10_23.js",
+ "assumptions": {
+  "awakeHours": 16,
+  "winShare": 1,
+  "rank": "S",
+  "noticesPerDay": 6,
+  "dailyTiers": 3,
+  "weeklyTiers": 3,
+  "pvpPerDay": 10,
+  "pvpWin": 0.55,
+  "raidsPerDay": 1,
+  "raidDamage": 600,
+  "farmKind": "skirmish",
+  "energyCapAt": {
+   "0": 20,
+   "3": 30,
+   "10": 50,
+   "20": 60
+  },
+  "session": {
+   "minutes": 45,
+   "minutesPerFight": 3,
+   "winRate": 0.75
+  }
+ },
+ "numbers": {
+  "noticeEV": {
+   "gold": 71.78,
+   "dust": 82.55,
+   "gems": 0.39,
+   "metal": 0.006,
+   "xp": 46.63,
+   "raidTickets": 0.018000000000000002,
+   "kit": 0.192
+  },
+  "dailyTiers": {
+   "gold": 105,
+   "dust": 14
+  },
+  "weeklyTiers": {
+   "gold": 675,
+   "dust": 1035,
+   "metal": 4
+  },
+  "packs": [
+   {
+    "id": "bronze",
+    "name": "Hedgerow Pouch",
+    "cards": 3,
+    "gold": 50,
+    "gems": 0,
+    "metal": 0
+   },
+   {
+    "id": "silver",
+    "name": "Tidemire Chest",
+    "cards": 5,
+    "gold": 120,
+    "gems": 10,
+    "metal": 1
+   },
+   {
+    "id": "mystery",
+    "name": "Mystery Booster",
+    "cards": 3,
+    "gold": 80,
+    "gems": 0,
+    "metal": 0
+   },
+   {
+    "id": "gold",
+    "name": "Highcrest Case",
+    "cards": 8,
+    "gold": 250,
+    "gems": 30,
+    "metal": 0
+   }
+  ],
+  "energyCapAt": {
+   "0": 20,
+   "3": 30,
+   "10": 50,
+   "20": 60
+  }
+ },
+ "resources": [
+  {
+   "key": "gold",
+   "name": "Maple Leaves",
+   "icon": "🍁",
+   "kind": "currency",
+   "from": "First clears (skirmish 40, elite 70, boss 120 ...) and repeat wins (8 / 14 / 24, x the rank multiplier); daily notices (40-1,100) and the daily / weekly quest tiers; PvP (4 a win); raids (damage / 48); achievements; the Gauntlet, Async and dungeon runs.",
+   "spent": "Packs (50 / 120 / 250, Advanced x12), levelling and the Forge, prestige, finishes (Refine), Nest building and training, Tavern recruits, Energy upgrades (150 a step), dungeon key ring, Raid Tickets (300), Rename Tickets (250).",
+   "notes": "",
+   "refs": [
+    "CONQUEST_NODE_REWARDS",
+    "QUEST_TIERS",
+    "QUEST_RANK_REWARD"
+   ]
+  },
+  {
+   "key": "gems",
+   "name": "Gold Leaves",
+   "icon": "🍂",
+   "kind": "currency",
+   "from": "S / SS / SSS daily notices (6 / 15 / 30); daily dungeon floors (hidden today, DAILY_DUNGEONS_HIDDEN); raid claims.",
+   "spent": "The Tidemire Chest (10) and Highcrest Case (30), the Prism finish (5), Advanced packs.",
+   "notes": "The rarest everyday currency: a dedicated player sees well under 1 S notice a day.",
+   "refs": [
+    "QUEST_RANK_REWARD",
+    "SHOP_PACKS_DEFAULT"
+   ]
+  },
+  {
+   "key": "dust",
+   "name": "Magic Dust",
+   "icon": "✨",
+   "kind": "currency",
+   "from": "First clears (20 / 68 / 169); daily notices (the main faucet, ~50-1,200) and quest tiers; raids; elite / boss repeats (5 / 10); melting (disenchanting) cards.",
+   "spent": "Levelling and limit breaks (the Forge road), prestige, finishes, crafting cards, Materia crystals (bench), Nest building and training, Tavern recruits, Max Energy steps, the key ring.",
+   "notes": "",
+   "refs": [
+    "CONQUEST_NODE_REWARDS",
+    "DISENCHANT_DUST",
+    "FORGE_STEP_DUST"
+   ]
+  },
+  {
+   "key": "metal",
+   "name": "Metal",
+   "icon": "🔩",
+   "kind": "currency",
+   "from": "Weekly quest tiers (3 + 1), a raid win (1), Gauntlet / Async / dungeon runs (2), SSS notices (3), the Tidemire Chest (1), achievements.",
+   "spent": "Nothing spends it today (no cost lists Metal); raid claims weigh it.",
+   "notes": "Earned, never spent: a candidate for the Forge tiers or the Blacksmith.",
+   "refs": [
+    "grantCurrency('metal')"
+   ]
+  },
+  {
+   "key": "kibble",
+   "name": "Kibble",
+   "icon": "🦴",
+   "kind": "currency",
+   "from": "Conquest first clears (1 / 2 / 3 / 5 by kind); repeat wins 15% for 1; a grown baby +2.",
+   "spent": "Training a Level-0 card to Level 1 in the Nest (2, +1 per card of that species already raised, up to 8).",
+   "notes": "",
+   "refs": [
+    "KIBBLE_FIRST",
+    "NURTURE_COST"
+   ]
+  },
+  {
+   "key": "beer",
+   "name": "Beer",
+   "icon": "🍺",
+   "kind": "currency",
+   "from": "1 every Monday once the Tavern is open, +1 for each of the first two weekly quest tiers; you hold at most 3.",
+   "spent": "Tavern recruits (1 each, with Dust and Maple Leaves; a Rare also an Iron Shard).",
+   "notes": "",
+   "refs": [
+    "BEER_CAP",
+    "TAVERN_RECRUIT_COST"
+   ]
+  },
+  {
+   "key": "laurels",
+   "name": "Laurels",
+   "icon": "🌿",
+   "kind": "currency",
+   "from": "PvP only: 3 a win, 2 a draw, 1 a loss.",
+   "spent": "Nothing yet (planned: a Laurel shelf, cosmetics, Arena cards).",
+   "notes": "Earned, never spent.",
+   "refs": [
+    "settlePvpAfterMatch"
+   ]
+  },
+  {
+   "key": "kroon",
+   "name": "Krooni",
+   "icon": "👑",
+   "kind": "retired",
+   "from": "Retired (TU2, 2026-10-23); the Highcrest Case no longer gives them.",
+   "spent": "Nothing.",
+   "notes": "Admin Mode only.",
+   "refs": [
+    "KROONI_RETIRED"
+   ]
+  },
+  {
+   "key": "food",
+   "name": "Food tokens",
+   "icon": "🍯",
+   "kind": "retired",
+   "from": "Retired 2026-10-11.",
+   "spent": "Nothing.",
+   "notes": "Old saves only.",
+   "refs": []
+  },
+  {
+   "key": "energy",
+   "name": "Energy",
+   "icon": "⚡",
+   "kind": "stamina",
+   "from": "1 every 5 minutes (288 a day) up to the cap: 20, raised to 30 (Nest), 50 (Forge), 60 (Tavern) with Dust and Materia; +5 free a day; Energy capsules (+8, from rewards).",
+   "spent": "Conquest fights: 1-2 a fight on Maps 0-1, 4 on Map 3, 7 on Map 10, 2x for bosses (mapEnergyBase); Sweeps.",
+   "notes": "",
+   "refs": [
+    "ENERGY_MAX_BASE",
+    "ENERGY_REGEN_MS",
+    "STAMINA_PLACES",
+    "mapEnergyBase"
+   ]
+  },
+  {
+   "key": "capsule",
+   "name": "Energy capsule",
+   "icon": "🔋",
+   "kind": "item",
+   "from": "Reward tokens on some fights and achievements; the Map 2 capsule.",
+   "spent": "Opened for +8 Energy.",
+   "notes": "",
+   "refs": [
+    "ENERGY_CAPSULE_AMOUNT"
+   ]
+  },
+  {
+   "key": "pvpTickets",
+   "name": "PvP tickets",
+   "icon": "🎟️",
+   "kind": "ticket",
+   "from": "10 a day (1 an hour).",
+   "spent": "A PvP match each.",
+   "notes": "",
+   "refs": [
+    "PVP_TICKETS_PER_DAY"
+   ]
+  },
+  {
+   "key": "raidPoints",
+   "name": "Raid points",
+   "icon": "🐙",
+   "kind": "ticket",
+   "from": "1 a day, held up to 10.",
+   "spent": "A raid attempt each.",
+   "notes": "",
+   "refs": [
+    "RAID_POINTS_MAX",
+    "RAID_POINTS_REGEN_MS"
+   ]
+  },
+  {
+   "key": "raidTicket",
+   "name": "Raid Ticket",
+   "icon": "🎫",
+   "kind": "item",
+   "from": "S notices or better at 40% (~0.6 a week); the shop (300 Maple Leaves, sometimes in stock); quests.",
+   "spent": "An extra raid attempt.",
+   "notes": "Owner 19:27 #16: should cost more and need some advanced resources.",
+   "refs": [
+    "QUEST_RAID_TICKET_CHANCE",
+    "RAID_TICKET_ITEM_PRICE"
+   ]
+  },
+  {
+   "key": "dungeonKey",
+   "name": "Dungeon keys / tickets",
+   "icon": "🗝️",
+   "kind": "ticket",
+   "from": "A daily dungeon ticket each day (hold 3); the key ring holds 3-5 (upgrade 800 / 2,000 Maple Leaves + Strange Materia).",
+   "spent": "Entering a daily dungeon (hidden today).",
+   "notes": "",
+   "refs": [
+    "DUNGEON_TICKETS_CAP",
+    "DUNGEON_KEY_CAP_STEPS"
+   ]
+  },
+  {
+   "key": "renameTicket",
+   "name": "Rename Ticket",
+   "icon": "🎫",
+   "kind": "item",
+   "from": "The shop (250 Maple Leaves); a gift before 2026-10-26.",
+   "spent": "Renaming your guild.",
+   "notes": "",
+   "refs": [
+    "RENAME_TICKET_PRICE"
+   ]
+  },
+  {
+   "key": "kitItems",
+   "name": "Field-kit items",
+   "icon": "🎒",
+   "kind": "item",
+   "from": "Conquest wins (2% per Energy used, at most 3 a day), A+ notices (1-3), weekly tiers (3 / 2 / 1), item bosses (from Map 12), the shop.",
+   "spent": "Used in a fight (Draught, Kindling, Scout map, Firepot, Honeycake, Whetstone, Caltrops); hold 5 each.",
+   "notes": "",
+   "refs": [
+    "SKIRMISH_KIT_PER_DAY",
+    "KIT_DROP_PER_ENERGY",
+    "ITEM_CAP"
+   ]
+  },
+  {
+   "key": "ironShard",
+   "name": "Iron Shard (Materia)",
+   "icon": "⛓️",
+   "kind": "materia",
+   "from": "Elite first clear 1, boss 2, raid / final boss 3; any repeat win 15%.",
+   "spent": "Max Energy steps, Rare Tavern recruits, Blacksmith equipment.",
+   "notes": "Materia are collection cards (cardType materia).",
+   "refs": [
+    "rollMateriaDrops"
+   ]
+  },
+  {
+   "key": "riverPearl",
+   "name": "River Pearl (Materia)",
+   "icon": "🦪",
+   "kind": "materia",
+   "from": "Boss first clear 1.",
+   "spent": "Max Energy steps, Blacksmith.",
+   "notes": "",
+   "refs": [
+    "rollMateriaDrops"
+   ]
+  },
+  {
+   "key": "temperingStone",
+   "name": "Tempering Stone (Materia)",
+   "icon": "🪨",
+   "kind": "materia",
+   "from": "Boss first clear 1, raid / final boss 2; elite / boss repeats 5%.",
+   "spent": "Max Energy (Forge, Tavern steps).",
+   "notes": "",
+   "refs": [
+    "rollMateriaDrops"
+   ]
+  },
+  {
+   "key": "emberCore",
+   "name": "Ember Core (Materia)",
+   "icon": "🔥",
+   "kind": "materia",
+   "from": "Raid / final boss first clear 1; an SS / SSS win 10%.",
+   "spent": "Blacksmith (Siege Hammer, Dragonscale Mail, Lava Waders).",
+   "notes": "",
+   "refs": [
+    "rollMateriaDrops"
+   ]
+  },
+  {
+   "key": "dragonScale",
+   "name": "Dragon Scale (Materia)",
+   "icon": "🐉",
+   "kind": "materia",
+   "from": "The Scale Trail.",
+   "spent": "Dragonscale Mail.",
+   "notes": "",
+   "refs": []
+  },
+  {
+   "key": "abyssalInk",
+   "name": "Abyssal Ink (Materia)",
+   "icon": "🦑",
+   "kind": "materia",
+   "from": "The raid.",
+   "spent": "Blacksmith.",
+   "notes": "",
+   "refs": []
+  },
+  {
+   "key": "strangeMateria",
+   "name": "Strange Materia",
+   "icon": "🌀",
+   "kind": "materia",
+   "from": "Map bosses' first clears (Maps 12, 15, 25, 30: 1 / 1 / 2 / 3).",
+   "spent": "Forge tier upgrades, the key ring.",
+   "notes": "",
+   "refs": [
+    "STRANGE_MATERIA_DROPS",
+    "FORGE_TIERS"
+   ]
+  },
+  {
+   "key": "materiaCrystal",
+   "name": "Materia crystals (Ember, Tide, Grove, Stone)",
+   "icon": "💎",
+   "kind": "materia",
+   "from": "Crafted on the Forge bench from Magic Dust.",
+   "spent": "Enchanting a card (one socket).",
+   "notes": "",
+   "refs": [
+    "MATERIA_KINDS",
+    "MATERIA_DUST_COST"
+   ]
+  },
+  {
+   "key": "materiaUnit",
+   "name": "Materia Unit / Mote",
+   "icon": "⚖️",
+   "kind": "unit",
+   "from": "A unit of account, not held: a Unit = {\"dust\":675,\"gold\":450}, a Mote = the Unit / 45.",
+   "spent": "Prices the Forge road (Lv 0 to 1 costs a Mote).",
+   "notes": "",
+   "refs": [
+    "MATERIA_UNIT",
+    "MATERIA_MOTE"
+   ]
+  },
+  {
+   "key": "trophyShards",
+   "name": "Trophy shards (per raid)",
+   "icon": "🏆",
+   "kind": "shard",
+   "from": "Raid attempts and claims.",
+   "spent": "Crafting that raid's cards in the Forge's Raid tab.",
+   "notes": "",
+   "refs": [
+    "raidShardName",
+    "RaidM.raidRecipeFor"
+   ]
+  },
+  {
+   "key": "cloudShards",
+   "name": "Cloud shards (raid)",
+   "icon": "☁️",
+   "kind": "shard",
+   "from": "The online raid.",
+   "spent": "Raid claims.",
+   "notes": "Server-side column.",
+   "refs": [
+    "cloudShardsColumnMissing"
+   ]
+  },
+  {
+   "key": "forgeCredit",
+   "name": "Forge credit",
+   "icon": "🔨",
+   "kind": "credit",
+   "from": "Fusing duplicates (a share of the card's road, by rarity: duplicateDivisor).",
+   "spent": "Levelling that card.",
+   "notes": "",
+   "refs": [
+    "DUPLICATE_DIVISOR",
+    "forgeCreditOf"
+   ]
+  },
+  {
+   "key": "castleSpares",
+   "name": "Bramble spares",
+   "icon": "🏰",
+   "kind": "credit",
+   "from": "A map boss beaten again at S+; bramble drops.",
+   "spent": "Fused into that bramble's road (Reinforce).",
+   "notes": "",
+   "refs": [
+    "addCastleDuplicate"
+   ]
+  },
+  {
+   "key": "fragments",
+   "name": "Upgrade fragments (finishes)",
+   "icon": "🌈",
+   "kind": "planned",
+   "from": "Not in the game yet (owner 19:27 #14: \"Foil treatment upgrade fragments needed / bars need 10% more\").",
+   "spent": "Finishes are paid in Dust, Maple Leaves and Gold Leaves today (REFINE_LADDER).",
+   "notes": "Planned.",
+   "refs": [
+    "REFINE_LADDER"
+   ]
+  },
+  {
+   "key": "eggs",
+   "name": "Eggs",
+   "icon": "🥚",
+   "kind": "nest",
+   "from": "First clears 2-20% by kind, repeats 0.1% per Energy x kind, raids 1%; guaranteed on Map 1 (1-3) and Map 3.",
+   "spent": "Set in a nest: hatch in 6-10 h into a random Common-Rare card of the egg's type at Level 0.",
+   "notes": "",
+   "refs": [
+    "EGG_FIRST_CHANCE",
+    "EGG_REPEAT_MULT",
+    "EGG_KINDS"
+   ]
+  },
+  {
+   "key": "babies",
+   "name": "Rescued babies",
+   "icon": "🍼",
+   "kind": "nest",
+   "from": "A 6% rescue after any won Conquest fight.",
+   "spent": "Grow in a nest in 4 h into a random card of its type at Level 0 (+2 Kibble).",
+   "notes": "",
+   "refs": [
+    "rollBabyRescue",
+    "BABY_GROW_HOURS"
+   ]
+  },
+  {
+   "key": "freePacks",
+   "name": "Free / faction packs",
+   "icon": "🎁",
+   "kind": "pack",
+   "from": "Map bosses (MAP_FREE_PACKS: Maps 3, 7, 10, 11, 13, 15, 16, 18, 20), Map 0's 0-2 faction pack, first-clear pack cards.",
+   "spent": "Opened at once.",
+   "notes": "",
+   "refs": [
+    "MAP_FREE_PACKS",
+    "FACTION_PACKS"
+   ]
+  },
+  {
+   "key": "xp",
+   "name": "Player XP / Hero XP",
+   "icon": "⭐",
+   "kind": "progress",
+   "from": "Wins and notices (25-750 XP).",
+   "spent": "Levels and milestones.",
+   "notes": "",
+   "refs": [
+    "QUEST_RANK_REWARD",
+    "heroGainXp"
+   ]
+  },
+  {
+   "key": "inFight",
+   "name": "In-fight resources (Lumber, Stone, Metal ore, Grace, Devilry, Acorns, fight Gold)",
+   "icon": "🪵",
+   "kind": "in-fight",
+   "from": "Cards and brambles during a fight.",
+   "spent": "Card costs during that fight; nothing carries over.",
+   "notes": "Listed for completeness; not saved.",
+   "refs": [
+    "KEYWORD_RESOURCES"
+   ]
+  }
+ ],
+ "weeks": [
+  {
+   "map": 3,
+   "mapName": "Gannet Cliffs",
+   "farm": "3-2",
+   "energyPerFight": 4,
+   "energyPerDay": 227,
+   "fightsPerDay": 56,
+   "repeatPay": {
+    "gold": 8,
+    "dust": 0
+   },
+   "week": {
+    "gold": 8178.7,
+    "dust": 4676,
+    "gems": 16.4,
+    "metal": 7.8,
+    "kibble": 58.8,
+    "laurels": 147,
+    "beer": 3,
+    "ironShard": 58.8,
+    "temperingStone": 0,
+    "raidTickets": 0.8,
+    "kitItems": 35.1,
+    "eggs": 0.8,
+    "babies": 23.5,
+    "cardDrops": 3.9,
+    "energy": 1589,
+    "fights": 392,
+    "xp": 1958.5
+   },
+   "hedgerowPouchesAffordable": 163,
+   "split": {
+    "conquestGold": 3481,
+    "noticeGold": 3015,
+    "questTierGold": 1410,
+    "noticeDust": 3467,
+    "questTierDust": 1133
+   }
+  },
+  {
+   "map": 10,
+   "mapName": "Coral Current",
+   "farm": "10-2",
+   "energyPerFight": 7,
+   "energyPerDay": 247,
+   "fightsPerDay": 35,
+   "repeatPay": {
+    "gold": 8,
+    "dust": 0
+   },
+   "week": {
+    "gold": 6873.4,
+    "dust": 4676,
+    "gems": 16.4,
+    "metal": 7.8,
+    "kibble": 36.8,
+    "laurels": 147,
+    "beer": 3,
+    "ironShard": 36.8,
+    "temperingStone": 0,
+    "raidTickets": 0.8,
+    "kitItems": 35.1,
+    "eggs": 0.9,
+    "babies": 14.7,
+    "cardDrops": 2.5,
+    "energy": 1729,
+    "fights": 245,
+    "xp": 1958.5
+   },
+   "hedgerowPouchesAffordable": 137,
+   "split": {
+    "conquestGold": 2176,
+    "noticeGold": 3015,
+    "questTierGold": 1410,
+    "noticeDust": 3467,
+    "questTierDust": 1133
+   }
+  },
+  {
+   "map": 20,
+   "mapName": "The Sundered Peak",
+   "farm": "20-2",
+   "energyPerFight": 9,
+   "energyPerDay": 257,
+   "fightsPerDay": 28,
+   "repeatPay": {
+    "gold": 8,
+    "dust": 0
+   },
+   "week": {
+    "gold": 6438.2,
+    "dust": 4676,
+    "gems": 16.4,
+    "metal": 7.8,
+    "kibble": 29.4,
+    "laurels": 147,
+    "beer": 3,
+    "ironShard": 29.4,
+    "temperingStone": 0,
+    "raidTickets": 0.8,
+    "kitItems": 35.1,
+    "eggs": 0.9,
+    "babies": 11.8,
+    "cardDrops": 2,
+    "energy": 1799,
+    "fights": 196,
+    "xp": 1958.5
+   },
+   "hedgerowPouchesAffordable": 128,
+   "split": {
+    "conquestGold": 1740,
+    "noticeGold": 3015,
+    "questTierGold": 1410,
+    "noticeDust": 3467,
+    "questTierDust": 1133
+   }
+  }
+ ],
+ "road": [
+  {
+   "map": 0,
+   "name": "Bramblewood Outskirts",
+   "fights": 4,
+   "energy": 7,
+   "gold": 160,
+   "dust": 80
+  },
+  {
+   "map": 1,
+   "name": "Thistlewood",
+   "fights": 9,
+   "energy": 16,
+   "gold": 390,
+   "dust": 228
+  },
+  {
+   "map": 2,
+   "name": "Pebble Beach",
+   "fights": 14,
+   "energy": 30,
+   "gold": 620,
+   "dust": 376
+  },
+  {
+   "map": 3,
+   "name": "Gannet Cliffs",
+   "fights": 21,
+   "energy": 58,
+   "gold": 990,
+   "dust": 660
+  },
+  {
+   "map": 4,
+   "name": "Sunken Hollow",
+   "fights": 26,
+   "energy": 83,
+   "gold": 1280,
+   "dust": 904
+  },
+  {
+   "map": 5,
+   "name": "Gatorback Swamp",
+   "fights": 33,
+   "energy": 123,
+   "gold": 1700,
+   "dust": 1289
+  },
+  {
+   "map": 7,
+   "name": "The Morel Hollow",
+   "fights": 47,
+   "energy": 207,
+   "gold": 2440,
+   "dust": 1857
+  },
+  {
+   "map": 10,
+   "name": "Coral Current",
+   "fights": 71,
+   "energy": 374,
+   "gold": 3720,
+   "dust": 2870
+  },
+  {
+   "map": 13,
+   "name": "The Redwood Deep",
+   "fights": 97,
+   "energy": 571,
+   "gold": 5310,
+   "dust": 4264
+  },
+  {
+   "map": 15,
+   "name": "The Long Grass",
+   "fights": 112,
+   "energy": 699,
+   "gold": 6170,
+   "dust": 5001
+  },
+  {
+   "map": 20,
+   "name": "The Sundered Peak",
+   "fights": 151,
+   "energy": 1062,
+   "gold": 8670,
+   "dust": 7294
+  }
+ ],
+ "sessions": {
+  "gannetCleared": {
+   "map": 3,
+   "sessions": 2.7,
+   "byTime": 1.9,
+   "byEnergy": 2.7,
+   "attempts": 28,
+   "energy": 77,
+   "energyPerSession": 29,
+   "fightsPerSession": 15
+  },
+  "gatorReached": {
+   "map": 5,
+   "note": "Maps 0-4 cleared: Map 5 (Gatorback Swamp) opens the Hedgerow Pouch (50 Maple Leaves)",
+   "sessions": 3.8,
+   "byTime": 2.3,
+   "byEnergy": 3.8,
+   "attempts": 35,
+   "energy": 111,
+   "energyPerSession": 29,
+   "fightsPerSession": 15
+  },
+  "goldAtMap4": 1280
+ }
+}

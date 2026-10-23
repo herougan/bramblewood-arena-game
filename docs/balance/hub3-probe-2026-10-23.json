@@ -1,0 +1,1048 @@
+{
+ "about": "HUB3 balance probe (tools/hub3_balance_probe_2026_10_23.js): trials in memory, nothing in the game changed.",
+ "games": 100,
+ "generated": "2026-10-23",
+ "early": {
+  "decks": {
+   "otters": {
+    "otter-kit": 1,
+    "fleetfootd": 1,
+    "otter-centurion": 2,
+    "pond-trout": 1,
+    "meadow-frog": 1,
+    "crossed-eyes": 1,
+    "duck-paddler": 1,
+    "river-carp": 1,
+    "burrow-rabbit": 1,
+    "farm-dog": 1,
+    "chipmunk-forager": 1,
+    "pond-duck": 1,
+    "acorn-chipmunk": 1,
+    "cottontail": 1,
+    "otter-paddler": 1,
+    "meadow-rabbit": 1,
+    "honey-bee": 1,
+    "silver-minnow": 1,
+    "river-warden": 1
+   },
+   "hummingbirds": {
+    "mosswing-laborer": 1,
+    "crimson-wing-recruit": 2,
+    "cobalt-talon-fledgling": 1,
+    "pond-trout": 1,
+    "meadow-frog": 1,
+    "crossed-eyes": 1,
+    "duck-paddler": 1,
+    "river-carp": 1,
+    "burrow-rabbit": 1,
+    "farm-dog": 1,
+    "chipmunk-forager": 1,
+    "otter-kit": 1,
+    "pond-duck": 1,
+    "acorn-chipmunk": 1,
+    "cottontail": 1,
+    "otter-paddler": 1,
+    "honey-bee": 1,
+    "silver-minnow": 1,
+    "sunspire-envoy": 1
+   },
+   "both": {
+    "dormouse": 1,
+    "otter-kit": 1,
+    "otter-paddler": 1,
+    "pond-trout": 1,
+    "meadow-frog": 1,
+    "crossed-eyes": 1,
+    "duck-paddler": 1,
+    "river-carp": 1,
+    "burrow-rabbit": 1,
+    "farm-dog": 1,
+    "chipmunk-forager": 1,
+    "pond-duck": 1,
+    "acorn-chipmunk": 1,
+    "cottontail": 1,
+    "meadow-rabbit": 1,
+    "harvest-mouse": 1,
+    "honey-bee": 1,
+    "silver-minnow": 1,
+    "riverwing-envoy": 1,
+    "sunspire-envoy": 1
+   }
+  },
+  "variants": [
+   {
+    "key": "now",
+    "label": "today"
+   },
+   {
+    "key": "hp5",
+    "label": "your bramble +5"
+   },
+   {
+    "key": "hp10",
+    "label": "your bramble +10"
+   },
+   {
+    "key": "tut80",
+    "label": "tutorial-base cards at 80% (both sides)"
+   },
+   {
+    "key": "tut80hp5",
+    "label": "tutorial base 80% + your bramble +5"
+   },
+   {
+    "key": "tut80foe",
+    "label": "tutorial-base cards at 80% in the enemy decks only"
+   }
+  ],
+  "fights": [
+   {
+    "code": "0-1",
+    "target": 90,
+    "res": {
+     "now": {
+      "mean": 92,
+      "sides": {
+       "otters": 98,
+       "hummingbirds": 87,
+       "both": 91
+      },
+      "rounds": 5.1,
+      "my": 15,
+      "foe": "5+0"
+     },
+     "hp5": {
+      "mean": 96,
+      "sides": {
+       "otters": 99,
+       "hummingbirds": 95,
+       "both": 94
+      },
+      "rounds": 5.1,
+      "my": 20,
+      "foe": "5+0"
+     },
+     "hp10": {
+      "mean": 97.7,
+      "sides": {
+       "otters": 100,
+       "hummingbirds": 96,
+       "both": 97
+      },
+      "rounds": 5.1,
+      "my": 25,
+      "foe": "5+0"
+     },
+     "tut80": {
+      "mean": 97,
+      "sides": {
+       "otters": 99,
+       "hummingbirds": 97,
+       "both": 95
+      },
+      "rounds": 5.5,
+      "my": 15,
+      "foe": "5+0"
+     },
+     "tut80hp5": {
+      "mean": 98,
+      "sides": {
+       "otters": 99,
+       "hummingbirds": 98,
+       "both": 97
+      },
+      "rounds": 5.5,
+      "my": 20,
+      "foe": "5+0"
+     },
+     "tut80foe": {
+      "mean": 100,
+      "sides": {
+       "otters": 100,
+       "hummingbirds": 100,
+       "both": 100
+      },
+      "rounds": 4.3,
+      "my": 15,
+      "foe": "5+0"
+     }
+    }
+   },
+   {
+    "code": "0-2",
+    "target": 75,
+    "res": {
+     "now": {
+      "mean": 83.7,
+      "sides": {
+       "otters": 85,
+       "hummingbirds": 85,
+       "both": 81
+      },
+      "rounds": 6.3,
+      "my": 15,
+      "foe": "6+0"
+     },
+     "hp5": {
+      "mean": 87.7,
+      "sides": {
+       "otters": 89,
+       "hummingbirds": 89,
+       "both": 85
+      },
+      "rounds": 6.4,
+      "my": 20,
+      "foe": "6+0"
+     },
+     "hp10": {
+      "mean": 89.7,
+      "sides": {
+       "otters": 91,
+       "hummingbirds": 90,
+       "both": 88
+      },
+      "rounds": 6.5,
+      "my": 25,
+      "foe": "6+0"
+     },
+     "tut80": {
+      "mean": 77.7,
+      "sides": {
+       "otters": 77,
+       "hummingbirds": 82,
+       "both": 74
+      },
+      "rounds": 6.2,
+      "my": 15,
+      "foe": "6+0"
+     },
+     "tut80hp5": {
+      "mean": 80,
+      "sides": {
+       "otters": 81,
+       "hummingbirds": 83,
+       "both": 76
+      },
+      "rounds": 6.3,
+      "my": 20,
+      "foe": "6+0"
+     },
+     "tut80foe": {
+      "mean": 91.7,
+      "sides": {
+       "otters": 94,
+       "hummingbirds": 91,
+       "both": 90
+      },
+      "rounds": 5.6,
+      "my": 15,
+      "foe": "6+0"
+     }
+    }
+   },
+   {
+    "code": "0-3",
+    "target": 60,
+    "res": {
+     "now": {
+      "mean": 71.3,
+      "sides": {
+       "otters": 70,
+       "hummingbirds": 71,
+       "both": 73
+      },
+      "rounds": 6.7,
+      "my": 15,
+      "foe": "12+0"
+     },
+     "hp5": {
+      "mean": 81,
+      "sides": {
+       "otters": 82,
+       "hummingbirds": 80,
+       "both": 81
+      },
+      "rounds": 6.9,
+      "my": 20,
+      "foe": "12+0"
+     },
+     "hp10": {
+      "mean": 88.3,
+      "sides": {
+       "otters": 86,
+       "hummingbirds": 88,
+       "both": 91
+      },
+      "rounds": 7.2,
+      "my": 25,
+      "foe": "12+0"
+     },
+     "tut80": {
+      "mean": 47.3,
+      "sides": {
+       "otters": 33,
+       "hummingbirds": 55,
+       "both": 54
+      },
+      "rounds": 6.7,
+      "my": 15,
+      "foe": "12+0"
+     },
+     "tut80hp5": {
+      "mean": 59.3,
+      "sides": {
+       "otters": 45,
+       "hummingbirds": 68,
+       "both": 65
+      },
+      "rounds": 7.2,
+      "my": 20,
+      "foe": "12+0"
+     },
+     "tut80foe": {
+      "mean": 73.7,
+      "sides": {
+       "otters": 73,
+       "hummingbirds": 71,
+       "both": 77
+      },
+      "rounds": 6.4,
+      "my": 15,
+      "foe": "12+0"
+     }
+    }
+   },
+   {
+    "code": "0-4",
+    "target": 45,
+    "res": {
+     "now": {
+      "mean": 41,
+      "sides": {
+       "otters": 38,
+       "hummingbirds": 43,
+       "both": 42
+      },
+      "rounds": 6,
+      "my": 15,
+      "foe": "5+0"
+     },
+     "hp5": {
+      "mean": 47,
+      "sides": {
+       "otters": 44,
+       "hummingbirds": 49,
+       "both": 48
+      },
+      "rounds": 6.4,
+      "my": 20,
+      "foe": "5+0"
+     },
+     "hp10": {
+      "mean": 52.7,
+      "sides": {
+       "otters": 49,
+       "hummingbirds": 58,
+       "both": 51
+      },
+      "rounds": 6.7,
+      "my": 25,
+      "foe": "5+0"
+     },
+     "tut80": {
+      "mean": 34.3,
+      "sides": {
+       "otters": 24,
+       "hummingbirds": 39,
+       "both": 40
+      },
+      "rounds": 6,
+      "my": 15,
+      "foe": "5+0"
+     },
+     "tut80hp5": {
+      "mean": 38.7,
+      "sides": {
+       "otters": 29,
+       "hummingbirds": 41,
+       "both": 46
+      },
+      "rounds": 6.4,
+      "my": 20,
+      "foe": "5+0"
+     },
+     "tut80foe": {
+      "mean": 53.3,
+      "sides": {
+       "otters": 49,
+       "hummingbirds": 58,
+       "both": 53
+      },
+      "rounds": 5.7,
+      "my": 15,
+      "foe": "5+0"
+     }
+    }
+   },
+   {
+    "code": "1-1",
+    "target": 90,
+    "res": {
+     "now": {
+      "mean": 87,
+      "sides": {
+       "otters": 87,
+       "hummingbirds": 89,
+       "both": 85
+      },
+      "rounds": 5.7,
+      "my": 15,
+      "foe": "5+1"
+     },
+     "hp5": {
+      "mean": 92,
+      "sides": {
+       "otters": 91,
+       "hummingbirds": 93,
+       "both": 92
+      },
+      "rounds": 5.8,
+      "my": 20,
+      "foe": "5+1"
+     },
+     "hp10": {
+      "mean": 93.7,
+      "sides": {
+       "otters": 92,
+       "hummingbirds": 95,
+       "both": 94
+      },
+      "rounds": 5.8,
+      "my": 25,
+      "foe": "5+1"
+     },
+     "tut80": {
+      "mean": 68,
+      "sides": {
+       "otters": 62,
+       "hummingbirds": 74,
+       "both": 68
+      },
+      "rounds": 6,
+      "my": 15,
+      "foe": "5+1"
+     },
+     "tut80hp5": {
+      "mean": 74,
+      "sides": {
+       "otters": 69,
+       "hummingbirds": 78,
+       "both": 75
+      },
+      "rounds": 6.2,
+      "my": 20,
+      "foe": "5+1"
+     },
+     "tut80foe": {
+      "mean": 87.3,
+      "sides": {
+       "otters": 86,
+       "hummingbirds": 89,
+       "both": 87
+      },
+      "rounds": 5.3,
+      "my": 15,
+      "foe": "5+1"
+     }
+    }
+   },
+   {
+    "code": "1-2",
+    "target": 80,
+    "res": {
+     "now": {
+      "mean": 78.7,
+      "sides": {
+       "otters": 75,
+       "hummingbirds": 79,
+       "both": 82
+      },
+      "rounds": 5.9,
+      "my": 15,
+      "foe": "6+1"
+     },
+     "hp5": {
+      "mean": 82,
+      "sides": {
+       "otters": 79,
+       "hummingbirds": 83,
+       "both": 84
+      },
+      "rounds": 6.1,
+      "my": 20,
+      "foe": "6+1"
+     },
+     "hp10": {
+      "mean": 87.7,
+      "sides": {
+       "otters": 87,
+       "hummingbirds": 89,
+       "both": 87
+      },
+      "rounds": 6.3,
+      "my": 25,
+      "foe": "6+1"
+     },
+     "tut80": {
+      "mean": 58.7,
+      "sides": {
+       "otters": 52,
+       "hummingbirds": 63,
+       "both": 61
+      },
+      "rounds": 6.1,
+      "my": 15,
+      "foe": "6+1"
+     },
+     "tut80hp5": {
+      "mean": 68,
+      "sides": {
+       "otters": 62,
+       "hummingbirds": 70,
+       "both": 72
+      },
+      "rounds": 6.5,
+      "my": 20,
+      "foe": "6+1"
+     },
+     "tut80foe": {
+      "mean": 85,
+      "sides": {
+       "otters": 82,
+       "hummingbirds": 85,
+       "both": 88
+      },
+      "rounds": 5.7,
+      "my": 15,
+      "foe": "6+1"
+     }
+    }
+   },
+   {
+    "code": "1-3",
+    "target": 70,
+    "res": {
+     "now": {
+      "mean": 76,
+      "sides": {
+       "otters": 77,
+       "hummingbirds": 74,
+       "both": 77
+      },
+      "rounds": 6.3,
+      "my": 15,
+      "foe": "7+1"
+     },
+     "hp5": {
+      "mean": 82,
+      "sides": {
+       "otters": 84,
+       "hummingbirds": 81,
+       "both": 81
+      },
+      "rounds": 6.5,
+      "my": 20,
+      "foe": "7+1"
+     },
+     "hp10": {
+      "mean": 87,
+      "sides": {
+       "otters": 85,
+       "hummingbirds": 88,
+       "both": 88
+      },
+      "rounds": 6.7,
+      "my": 25,
+      "foe": "7+1"
+     },
+     "tut80": {
+      "mean": 48,
+      "sides": {
+       "otters": 45,
+       "hummingbirds": 46,
+       "both": 53
+      },
+      "rounds": 6.9,
+      "my": 15,
+      "foe": "7+1"
+     },
+     "tut80hp5": {
+      "mean": 55,
+      "sides": {
+       "otters": 51,
+       "hummingbirds": 56,
+       "both": 58
+      },
+      "rounds": 7.6,
+      "my": 20,
+      "foe": "7+1"
+     },
+     "tut80foe": {
+      "mean": 78.7,
+      "sides": {
+       "otters": 80,
+       "hummingbirds": 78,
+       "both": 78
+      },
+      "rounds": 6.3,
+      "my": 15,
+      "foe": "7+1"
+     }
+    }
+   },
+   {
+    "code": "1-4",
+    "target": 60,
+    "res": {
+     "now": {
+      "mean": 59.7,
+      "sides": {
+       "otters": 57,
+       "hummingbirds": 62,
+       "both": 60
+      },
+      "rounds": 6.7,
+      "my": 15,
+      "foe": "6+1"
+     },
+     "hp5": {
+      "mean": 66,
+      "sides": {
+       "otters": 63,
+       "hummingbirds": 69,
+       "both": 66
+      },
+      "rounds": 7.1,
+      "my": 20,
+      "foe": "6+1"
+     },
+     "hp10": {
+      "mean": 72.7,
+      "sides": {
+       "otters": 69,
+       "hummingbirds": 74,
+       "both": 75
+      },
+      "rounds": 7.4,
+      "my": 25,
+      "foe": "6+1"
+     },
+     "tut80": {
+      "mean": 31.3,
+      "sides": {
+       "otters": 20,
+       "hummingbirds": 36,
+       "both": 38
+      },
+      "rounds": 6.6,
+      "my": 15,
+      "foe": "6+1"
+     },
+     "tut80hp5": {
+      "mean": 37,
+      "sides": {
+       "otters": 26,
+       "hummingbirds": 43,
+       "both": 42
+      },
+      "rounds": 7.2,
+      "my": 20,
+      "foe": "6+1"
+     },
+     "tut80foe": {
+      "mean": 58,
+      "sides": {
+       "otters": 57,
+       "hummingbirds": 60,
+       "both": 57
+      },
+      "rounds": 6.7,
+      "my": 15,
+      "foe": "6+1"
+     }
+    }
+   },
+   {
+    "code": "1-5",
+    "target": 40,
+    "res": {
+     "now": {
+      "mean": 41.3,
+      "sides": {
+       "otters": 34,
+       "hummingbirds": 49,
+       "both": 41
+      },
+      "rounds": 6.9,
+      "my": 15,
+      "foe": "6+2"
+     },
+     "hp5": {
+      "mean": 49,
+      "sides": {
+       "otters": 40,
+       "hummingbirds": 58,
+       "both": 49
+      },
+      "rounds": 7.4,
+      "my": 20,
+      "foe": "6+2"
+     },
+     "hp10": {
+      "mean": 54.7,
+      "sides": {
+       "otters": 46,
+       "hummingbirds": 63,
+       "both": 55
+      },
+      "rounds": 7.9,
+      "my": 25,
+      "foe": "6+2"
+     },
+     "tut80": {
+      "mean": 15.7,
+      "sides": {
+       "otters": 7,
+       "hummingbirds": 21,
+       "both": 19
+      },
+      "rounds": 6.6,
+      "my": 15,
+      "foe": "6+2"
+     },
+     "tut80hp5": {
+      "mean": 18.7,
+      "sides": {
+       "otters": 9,
+       "hummingbirds": 24,
+       "both": 23
+      },
+      "rounds": 7.3,
+      "my": 20,
+      "foe": "6+2"
+     },
+     "tut80foe": {
+      "mean": 43,
+      "sides": {
+       "otters": 34,
+       "hummingbirds": 52,
+       "both": 43
+      },
+      "rounds": 7,
+      "my": 15,
+      "foe": "6+2"
+     }
+    }
+   }
+  ]
+ },
+ "race": {
+  "about": "reference deck (referenceFightSetup), per map",
+  "maps": [
+   {
+    "map": "mf",
+    "num": 1,
+    "name": "Thistlewood",
+    "win": 84.2,
+    "rounds": 6.8,
+    "myFace": 18.8,
+    "foeFace": 16.8,
+    "myKills": 2.8,
+    "foeKills": 1.7,
+    "fights": [
+     {
+      "code": "1-1",
+      "win": 96,
+      "rounds": 5.9,
+      "myFace": 21.2,
+      "foeFace": 15.8,
+      "myKills": 2.5,
+      "foeKills": 1,
+      "my": 15,
+      "foe": "5+1"
+     },
+     {
+      "code": "1-2",
+      "win": 89,
+      "rounds": 6.1,
+      "myFace": 23.4,
+      "foeFace": 17.2,
+      "myKills": 2.7,
+      "foeKills": 1.3,
+      "my": 15,
+      "foe": "6+1"
+     },
+     {
+      "code": "1-3",
+      "win": 95,
+      "rounds": 6.8,
+      "myFace": 20.5,
+      "foeFace": 14.9,
+      "myKills": 3.2,
+      "foeKills": 1.5,
+      "my": 15,
+      "foe": "7+1"
+     },
+     {
+      "code": "1-4",
+      "win": 79,
+      "rounds": 7.2,
+      "myFace": 15.6,
+      "foeFace": 16.2,
+      "myKills": 2.8,
+      "foeKills": 2.2,
+      "my": 15,
+      "foe": "6+1"
+     },
+     {
+      "code": "1-5",
+      "win": 62,
+      "rounds": 7.8,
+      "myFace": 13.1,
+      "foeFace": 19.9,
+      "myKills": 2.9,
+      "foeKills": 2.7,
+      "my": 15,
+      "foe": "6+2"
+     }
+    ]
+   },
+   {
+    "map": "mb",
+    "num": 2,
+    "name": "Pebble Beach",
+    "win": 45.4,
+    "rounds": 9.8,
+    "myFace": 30.3,
+    "foeFace": 17.8,
+    "myKills": 3.4,
+    "foeKills": 4.6,
+    "fights": [
+     {
+      "code": "2-1",
+      "win": 61,
+      "rounds": 8.9,
+      "myFace": 41.1,
+      "foeFace": 18.8,
+      "myKills": 3.9,
+      "foeKills": 3.7,
+      "my": 15,
+      "foe": "15+1"
+     },
+     {
+      "code": "2-2",
+      "win": 47,
+      "rounds": 10.1,
+      "myFace": 28,
+      "foeFace": 17.2,
+      "myKills": 4.2,
+      "foeKills": 4.8,
+      "my": 15,
+      "foe": "15+1"
+     },
+     {
+      "code": "2-3",
+      "win": 41,
+      "rounds": 10.1,
+      "myFace": 24.3,
+      "foeFace": 17,
+      "myKills": 3.9,
+      "foeKills": 4.9,
+      "my": 15,
+      "foe": "15+1"
+     },
+     {
+      "code": "2-4",
+      "win": 53,
+      "rounds": 10.4,
+      "myFace": 34.8,
+      "foeFace": 16.8,
+      "myKills": 2.5,
+      "foeKills": 4.1,
+      "my": 15,
+      "foe": "15+1"
+     },
+     {
+      "code": "2-5",
+      "win": 25,
+      "rounds": 9.6,
+      "myFace": 23.1,
+      "foeFace": 19.2,
+      "myKills": 2.3,
+      "foeKills": 5.3,
+      "my": 15,
+      "foe": "17+2"
+     }
+    ]
+   },
+   {
+    "map": "mc",
+    "num": 3,
+    "name": "Gannet Cliffs",
+    "win": 95.7,
+    "rounds": 6.6,
+    "myFace": 45.1,
+    "foeFace": 11.5,
+    "myKills": 2.5,
+    "foeKills": 1.3,
+    "fights": [
+     {
+      "code": "3-1",
+      "win": 98,
+      "rounds": 6.5,
+      "myFace": 44.4,
+      "foeFace": 8,
+      "myKills": 2.3,
+      "foeKills": 1,
+      "my": 15,
+      "foe": "15+2"
+     },
+     {
+      "code": "3-2",
+      "win": 99,
+      "rounds": 6.3,
+      "myFace": 44.9,
+      "foeFace": 6.6,
+      "myKills": 2.2,
+      "foeKills": 0.9,
+      "my": 15,
+      "foe": "15+2"
+     },
+     {
+      "code": "3-3",
+      "win": 98,
+      "rounds": 6.5,
+      "myFace": 44.4,
+      "foeFace": 8,
+      "myKills": 2.3,
+      "foeKills": 1,
+      "my": 15,
+      "foe": "15+2"
+     },
+     {
+      "code": "3-4",
+      "win": 87,
+      "rounds": 6.8,
+      "myFace": 47.2,
+      "foeFace": 17.8,
+      "myKills": 2.8,
+      "foeKills": 2.1,
+      "my": 15,
+      "foe": "15+2"
+     },
+     {
+      "code": "3-5",
+      "win": 96,
+      "rounds": 6.3,
+      "myFace": 42.7,
+      "foeFace": 14.4,
+      "myKills": 2.8,
+      "foeKills": 1.3,
+      "my": 15,
+      "foe": "14+0"
+     },
+     {
+      "code": "3-6",
+      "win": 98,
+      "rounds": 6.9,
+      "myFace": 45.3,
+      "foeFace": 14.8,
+      "myKills": 2.4,
+      "foeKills": 1.6,
+      "my": 15,
+      "foe": "15+3"
+     },
+     {
+      "code": "3-7",
+      "win": 94,
+      "rounds": 6.9,
+      "myFace": 46.9,
+      "foeFace": 10.8,
+      "myKills": 2.8,
+      "foeKills": 1.5,
+      "my": 15,
+      "foe": "15+4"
+     }
+    ]
+   },
+   {
+    "map": "m2",
+    "num": 4,
+    "name": "Sunken Hollow",
+    "win": 42,
+    "rounds": 8,
+    "myFace": 19.6,
+    "foeFace": 22.9,
+    "myKills": 2,
+    "foeKills": 3.7,
+    "fights": [
+     {
+      "code": "4-1",
+      "win": 27,
+      "rounds": 7.6,
+      "myFace": 14.5,
+      "foeFace": 24.1,
+      "myKills": 1.2,
+      "foeKills": 4.2,
+      "my": 15,
+      "foe": "10+0"
+     },
+     {
+      "code": "4-2",
+      "win": 18,
+      "rounds": 7.7,
+      "myFace": 14.6,
+      "foeFace": 24.9,
+      "myKills": 1.4,
+      "foeKills": 4.2,
+      "my": 15,
+      "foe": "11+1"
+     },
+     {
+      "code": "4-3",
+      "win": 64,
+      "rounds": 8.4,
+      "myFace": 32.2,
+      "foeFace": 21.5,
+      "myKills": 2.3,
+      "foeKills": 3.1,
+      "my": 15,
+      "foe": "13+3"
+     },
+     {
+      "code": "4-4",
+      "win": 50,
+      "rounds": 8.3,
+      "myFace": 24.5,
+      "foeFace": 22.5,
+      "myKills": 2.7,
+      "foeKills": 3.5,
+      "my": 15,
+      "foe": "13+2"
+     },
+     {
+      "code": "4-5",
+      "win": 51,
+      "rounds": 8,
+      "myFace": 12.2,
+      "foeFace": 21.7,
+      "myKills": 2.3,
+      "foeKills": 3.7,
+      "my": 15,
+      "foe": "8+0"
+     }
+    ]
+   }
+  ]
+ }
+}

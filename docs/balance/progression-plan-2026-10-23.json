@@ -1,0 +1,7326 @@
+{
+ "generated": "2026-10-23",
+ "tool": "node tools/progression_plan_2026_10_23.js",
+ "doc": "docs/progression-plan.md",
+ "about": "Owner's progression plan (2026-10-23 19:27 / 19:36): targets vs today, by advancement, leftover mistakes, eggs and babies, Map 0-1 skills, Ants, faction pacing, collection by map. Nothing in the game was changed.",
+ "tiers": [
+  {
+   "key": "p1",
+   "label": "Pack 1",
+   "from": 0,
+   "to": 6
+  },
+  {
+   "key": "p2",
+   "label": "Pack 2",
+   "from": 7,
+   "to": 13
+  },
+  {
+   "key": "p3",
+   "label": "Pack 3",
+   "from": 14,
+   "to": 20
+  },
+  {
+   "key": "p4",
+   "label": "After Map 20",
+   "from": 21,
+   "to": 999
+  }
+ ],
+ "maps": [
+  {
+   "id": "m1",
+   "num": 0,
+   "name": "Bramblewood Outskirts",
+   "sub": false,
+   "parent": null,
+   "unlock": 0,
+   "fights": 4
+  },
+  {
+   "id": "mf",
+   "num": 1,
+   "name": "Thistlewood",
+   "sub": false,
+   "parent": null,
+   "unlock": 1,
+   "fights": 5
+  },
+  {
+   "id": "mb",
+   "num": 2,
+   "name": "Pebble Beach",
+   "sub": false,
+   "parent": null,
+   "unlock": 2,
+   "fights": 5
+  },
+  {
+   "id": "mc",
+   "num": 3,
+   "name": "Gannet Cliffs",
+   "sub": false,
+   "parent": null,
+   "unlock": 3,
+   "fights": 7
+  },
+  {
+   "id": "m2",
+   "num": 4,
+   "name": "Sunken Hollow",
+   "sub": false,
+   "parent": null,
+   "unlock": 4,
+   "fights": 5
+  },
+  {
+   "id": "mw",
+   "num": 5,
+   "name": "Gatorback Swamp",
+   "sub": false,
+   "parent": null,
+   "unlock": 5,
+   "fights": 7
+  },
+  {
+   "id": "m8",
+   "num": 6,
+   "name": "Sable Swampmire",
+   "sub": false,
+   "parent": null,
+   "unlock": 6,
+   "fights": 8
+  },
+  {
+   "id": "mu",
+   "num": 7,
+   "name": "The Morel Hollow",
+   "sub": false,
+   "parent": null,
+   "unlock": 7,
+   "fights": 6
+  },
+  {
+   "id": "m4",
+   "num": 8,
+   "name": "Caves & Alcoves",
+   "sub": false,
+   "parent": null,
+   "unlock": 8,
+   "fights": 8
+  },
+  {
+   "id": "mk",
+   "num": 9,
+   "name": "The Kelp Mangroves",
+   "sub": false,
+   "parent": null,
+   "unlock": 9,
+   "fights": 7
+  },
+  {
+   "id": "m7",
+   "num": 10,
+   "name": "Coral Current",
+   "sub": false,
+   "parent": null,
+   "unlock": 10,
+   "fights": 9
+  },
+  {
+   "id": "m10",
+   "num": 11,
+   "name": "Eyrie Heights",
+   "sub": false,
+   "parent": null,
+   "unlock": 11,
+   "fights": 11
+  },
+  {
+   "id": "mh",
+   "num": 12,
+   "name": "The Briar Maze",
+   "sub": false,
+   "parent": null,
+   "unlock": 12,
+   "fights": 7
+  },
+  {
+   "id": "mr",
+   "num": 13,
+   "name": "The Redwood Deep",
+   "sub": false,
+   "parent": null,
+   "unlock": 13,
+   "fights": 8
+  },
+  {
+   "id": "m5",
+   "num": 14,
+   "name": "Savanna Reaches",
+   "sub": false,
+   "parent": null,
+   "unlock": 14,
+   "fights": 8
+  },
+  {
+   "id": "ml",
+   "num": 15,
+   "name": "The Long Grass",
+   "sub": false,
+   "parent": null,
+   "unlock": 15,
+   "fights": 7
+  },
+  {
+   "id": "mt",
+   "num": 16,
+   "name": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "unlock": 16,
+   "fights": 7
+  },
+  {
+   "id": "m6",
+   "num": 17,
+   "name": "Wolfsbane Tundra",
+   "sub": false,
+   "parent": null,
+   "unlock": 17,
+   "fights": 8
+  },
+  {
+   "id": "md",
+   "num": 18,
+   "name": "The Glass Dunes",
+   "sub": false,
+   "parent": null,
+   "unlock": 18,
+   "fights": 7
+  },
+  {
+   "id": "m3",
+   "num": 19,
+   "name": "Ashen Spurn",
+   "sub": false,
+   "parent": null,
+   "unlock": 19,
+   "fights": 6
+  },
+  {
+   "id": "m11",
+   "num": 20,
+   "name": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
+   "unlock": 20,
+   "fights": 11
+  },
+  {
+   "id": "m21",
+   "num": 21,
+   "name": "The Quiet Summit",
+   "sub": false,
+   "parent": null,
+   "unlock": 21,
+   "fights": 6
+  },
+  {
+   "id": "m22",
+   "num": 22,
+   "name": "The Rimefire Caldera",
+   "sub": false,
+   "parent": null,
+   "unlock": 22,
+   "fights": 8
+  },
+  {
+   "id": "m23",
+   "num": 23,
+   "name": "The Goldfeather Siege",
+   "sub": false,
+   "parent": null,
+   "unlock": 23,
+   "fights": 8
+  },
+  {
+   "id": "m24",
+   "num": 24,
+   "name": "Goldfeather Keep",
+   "sub": false,
+   "parent": null,
+   "unlock": 24,
+   "fights": 8
+  },
+  {
+   "id": "mtut",
+   "num": 0,
+   "name": "Tutorial",
+   "sub": true,
+   "parent": "m1",
+   "unlock": 0,
+   "fights": 3
+  },
+  {
+   "id": "mq",
+   "num": 1,
+   "name": "Clovermead",
+   "sub": true,
+   "parent": "mf",
+   "unlock": 12,
+   "fights": 5
+  },
+  {
+   "id": "mp",
+   "num": 2,
+   "name": "Lilypad Reach",
+   "sub": true,
+   "parent": "mb",
+   "unlock": 6,
+   "fights": 7
+  },
+  {
+   "id": "m9",
+   "num": 19,
+   "name": "Basalt Foundry",
+   "sub": true,
+   "parent": "m3",
+   "unlock": 23,
+   "fights": 10
+  },
+  {
+   "id": "mj",
+   "num": 10,
+   "name": "The Sunken Depths",
+   "sub": true,
+   "parent": "m7",
+   "unlock": 11,
+   "fights": 5
+  },
+  {
+   "id": "mg",
+   "num": 2,
+   "name": "Smugglers' Grotto",
+   "sub": true,
+   "parent": "mb",
+   "unlock": 7,
+   "fights": 4
+  },
+  {
+   "id": "mz",
+   "num": 7,
+   "name": "The Mycelium Deep",
+   "sub": true,
+   "parent": "mu",
+   "unlock": 8,
+   "fights": 5
+  },
+  {
+   "id": "my",
+   "num": 14,
+   "name": "The Canopy",
+   "sub": true,
+   "parent": "m5",
+   "unlock": 18,
+   "fights": 5
+  },
+  {
+   "id": "me",
+   "num": 20,
+   "name": "Eye of the Volcano",
+   "sub": true,
+   "parent": "m11",
+   "unlock": 20,
+   "fights": 7
+  },
+  {
+   "id": "mx",
+   "num": 20,
+   "name": "Volcano Lair",
+   "sub": true,
+   "parent": "m11",
+   "unlock": 20,
+   "fights": 4
+  },
+  {
+   "id": "ms",
+   "num": 5,
+   "name": "The Sunken Grove",
+   "sub": true,
+   "parent": "mw",
+   "unlock": 13,
+   "fights": 4
+  },
+  {
+   "id": "mn",
+   "num": 8,
+   "name": "The Glimmer Depths",
+   "sub": true,
+   "parent": "m4",
+   "unlock": 16,
+   "fights": 4
+  },
+  {
+   "id": "mv",
+   "num": 11,
+   "name": "The Aerie Vault",
+   "sub": true,
+   "parent": "m10",
+   "unlock": 15,
+   "fights": 4
+  },
+  {
+   "id": "mi",
+   "num": 17,
+   "name": "The Ice Hollow",
+   "sub": true,
+   "parent": "m6",
+   "unlock": 21,
+   "fights": 4
+  },
+  {
+   "id": "mo",
+   "num": 0,
+   "name": "The Old Bramble",
+   "sub": true,
+   "parent": "m1",
+   "unlock": 21,
+   "fights": 4
+  },
+  {
+   "id": "mpd",
+   "num": 18,
+   "name": "The Pale Desert",
+   "sub": true,
+   "parent": "md",
+   "unlock": 19,
+   "fights": 9
+  },
+  {
+   "id": "mm",
+   "num": 6,
+   "name": "Murgle Mayhem",
+   "sub": true,
+   "parent": "m8",
+   "unlock": 6,
+   "fights": 50
+  },
+  {
+   "id": "mlb",
+   "num": 22,
+   "name": "The Long Burrow",
+   "sub": true,
+   "parent": "m22",
+   "unlock": 22,
+   "fights": 50
+  },
+  {
+   "id": "muc",
+   "num": 11,
+   "name": "The Undercroft",
+   "sub": true,
+   "parent": "m10",
+   "unlock": 11,
+   "fights": 50
+  }
+ ],
+ "targets": [
+  {
+   "key": "factionOtter",
+   "label": "Faction pool: Otter side",
+   "target": "~16",
+   "lo": 14,
+   "hi": 18,
+   "actual": 9,
+   "unplaced": 13,
+   "gap": -5
+  },
+  {
+   "key": "factionHummingbird",
+   "label": "Faction pool: Hummingbird side",
+   "target": "~16",
+   "lo": 14,
+   "hi": 18,
+   "actual": 4,
+   "unplaced": 11,
+   "gap": -10
+  },
+  {
+   "key": "factionShared",
+   "label": "Faction pool: shared",
+   "target": "10-20",
+   "lo": 10,
+   "hi": 20,
+   "actual": 0,
+   "unplaced": 6,
+   "gap": -10
+  },
+  {
+   "key": "base",
+   "label": "Base (not Tutorial base; incl. Wandering Traveller)",
+   "target": "≤ ~10",
+   "lo": 0,
+   "hi": 10,
+   "actual": 10,
+   "unplaced": 4,
+   "gap": 0
+  },
+  {
+   "key": "tutorialBase",
+   "label": "Tutorial base",
+   "target": "no number (the tutorial and half of Map 0)",
+   "lo": null,
+   "hi": null,
+   "actual": 36,
+   "unplaced": 1,
+   "gap": null
+  },
+  {
+   "key": "pack-p1",
+   "label": "Pack 1 (Maps 0-6)",
+   "target": "30",
+   "lo": 27,
+   "hi": 33,
+   "actual": 33,
+   "unplaced": 48,
+   "gap": 0
+  },
+  {
+   "key": "skirmish-p1",
+   "label": "Skirmish base, Maps 0-6",
+   "target": "15",
+   "lo": 13,
+   "hi": 17,
+   "actual": 12,
+   "unplaced": 15,
+   "gap": -1
+  },
+  {
+   "key": "pack-p2",
+   "label": "Pack 2 (Maps 7-13)",
+   "target": "30",
+   "lo": 27,
+   "hi": 33,
+   "actual": 67,
+   "unplaced": 68,
+   "gap": 34
+  },
+  {
+   "key": "skirmish-p2",
+   "label": "Skirmish base, Maps 7-13",
+   "target": "15",
+   "lo": 13,
+   "hi": 17,
+   "actual": 18,
+   "unplaced": 12,
+   "gap": 1
+  },
+  {
+   "key": "pack-p3",
+   "label": "Pack 3 (Maps 14-20)",
+   "target": "30",
+   "lo": 27,
+   "hi": 33,
+   "actual": 38,
+   "unplaced": 44,
+   "gap": 5
+  },
+  {
+   "key": "skirmish-p3",
+   "label": "Skirmish base, Maps 14-20",
+   "target": "15",
+   "lo": 13,
+   "hi": 17,
+   "actual": 20,
+   "unplaced": 16,
+   "gap": 3
+  },
+  {
+   "key": "tavern",
+   "label": "Tavern-unique",
+   "target": "15",
+   "lo": 15,
+   "hi": 15,
+   "actual": 0,
+   "unplaced": 0,
+   "gap": -15
+  },
+  {
+   "key": "secrets",
+   "label": "Pack Secrets I (Mystery Booster pool)",
+   "target": "no number",
+   "lo": null,
+   "hi": null,
+   "actual": 0,
+   "unplaced": 11,
+   "gap": null
+  },
+  {
+   "key": "quest",
+   "label": "Quest-only specials (10 / 15, Map 20)",
+   "target": "no number",
+   "lo": null,
+   "hi": null,
+   "actual": 0,
+   "unplaced": 2,
+   "gap": null
+  },
+  {
+   "key": "pack-nomap",
+   "label": "Pack pool cards with no map (no pack tier yet)",
+   "target": "0",
+   "lo": 0,
+   "hi": 0,
+   "actual": 39,
+   "unplaced": 44,
+   "gap": 39
+  },
+  {
+   "key": "pack-p4",
+   "label": "Pack cards after Map 20",
+   "target": "(Pack 4+, later)",
+   "lo": null,
+   "hi": null,
+   "actual": 17,
+   "unplaced": 12,
+   "gap": null
+  },
+  {
+   "key": "skirmish-p4",
+   "label": "Skirmish base after Map 20",
+   "target": "(later)",
+   "lo": null,
+   "hi": null,
+   "actual": 12,
+   "unplaced": 2,
+   "gap": null
+  }
+ ],
+ "mistakes": [
+  {
+   "kind": "packs",
+   "what": "The three packs share one pool: Hedgerow Pouch (Pack 1), Tidemire Chest and Highcrest Case all draw from all 194 pool-1 cards, and since RW3 with no map gate. So Pack 1 (on sale at Map 5) can give any of the 122 cards that belong to Maps 7+ (Pack 2/3 or later), including 14 volcanic (lava) cards.",
+   "fix": "Give each pack its own pool by the owner tiers (Maps 0-6 → Pack 1, 7-13 → Pack 2, 14-20 → Pack 3): set source.tier to 1 / 2 / 3 from the card's first map pool (the list below), and point SHOP_PACKS_DEFAULT pool at 1 / 2 / 3 (the base track and the skirmish drop read packCardPool too).",
+   "ids": [
+    "weathervane-swift",
+    "ashbone-ghoul",
+    "cinder-skeleton",
+    "pall-wraith",
+    "obsidian-lich",
+    "ember-centipede",
+    "cinder-gecko",
+    "ash-moth",
+    "glasswing-butterfly",
+    "firefly-swarm",
+    "ice-petrel",
+    "fire-hawk",
+    "fumarole-ibex",
+    "ashwing-ptarmigan"
+   ]
+  },
+  {
+   "kind": "packs",
+   "what": "19 pack cards name a source map whose pack tier differs from where map-pools.json first puts them (a side map counts from the map that unlocks it, owner: \"Submap cards are found in the Pack tier following the maps that unlock them\").",
+   "fix": "Re-point source.map to the pool map (or move the card in map-pools.json), then re-tier.",
+   "ids": [
+    "frostmoon-howler",
+    "skull-vulture",
+    "siege-rhino",
+    "fennec-fox",
+    "scree-goat",
+    "dynamite-packrat",
+    "mudpuppy",
+    "snow-ermine",
+    "ember-centipede",
+    "cinder-gecko",
+    "shallows-fry",
+    "dhole-runner",
+    "hoopoe-herald",
+    "roadrunner-courier",
+    "pangolin-roller",
+    "bison-bulldozer",
+    "weaver-bird",
+    "dromedary",
+    "fumarole-ibex"
+   ]
+  },
+  {
+   "kind": "packs",
+   "what": "39 live pack-pool cards are in no map pool and name no map, so they have no pack tier (the base track and drops treat them as Map 5, packs give them anywhere).",
+   "fix": "Place each in a map pool (canonical/map-pools.json) and give it source.map, or retire it.",
+   "ids": [
+    "alley-cat",
+    "pill-bug",
+    "gatling-hog",
+    "buzzed-chipmunk",
+    "glimmer-spider",
+    "electric-catfish",
+    "elephant-nose-fish",
+    "paper-wasp",
+    "anaconda-coil",
+    "amber-cicada",
+    "signal-crayfish",
+    "woodcock-lookout",
+    "hedgerow-shrew",
+    "slow-worm",
+    "robin-redbreast",
+    "rock-pool-starfish",
+    "oystercatcher",
+    "limpet-clinger",
+    "diving-bell-spider",
+    "marsh-harrier",
+    "raft-spider",
+    "leopard-slug",
+    "fungus-gnat-cloud",
+    "springtail-hopper",
+    "red-backed-salamander",
+    "cave-pseudoscorpion",
+    "guano-beetle",
+    "proboscis-monkey",
+    "horseshoe-crab",
+    "sea-hare",
+    "lionfish",
+    "giant-clam",
+    "alpine-swift",
+    "alpine-salamander",
+    "hawthorn-shieldbug",
+    "muntjac-barker",
+    "anvil-thrush",
+    "garden-tiger-moth",
+    "musk-ox-calf"
+   ]
+  },
+  {
+   "kind": "packs",
+   "what": "53 live pack cards name a source map but are in no map pool (map-pools.json), so no fight of that map uses them.",
+   "fix": "Add them to their map's pool, or re-point source.map.",
+   "ids": [
+    "plague-gnat-cloud",
+    "glasswing-moth",
+    "weathervane-swift",
+    "pall-wraith",
+    "obsidian-lich",
+    "marching-elephant",
+    "subterraneaner",
+    "cave-centipede",
+    "millipede-hauler",
+    "bombardier-beetle",
+    "fox-sharpshot",
+    "frillneck-duelist",
+    "monitor-rambler",
+    "ash-moth",
+    "baby-bat",
+    "mongoose-duelist",
+    "nightjar-drifter",
+    "mudflat-godwit",
+    "werebadger",
+    "carrion-beetle",
+    "tarantula-hawk",
+    "glasswing-butterfly",
+    "margay",
+    "lotus-frog",
+    "vampire-bat-nurse",
+    "sawfish",
+    "mantis-shrimp",
+    "firefly-swarm",
+    "piranha-shoal",
+    "cone-snail",
+    "lamprey",
+    "skunk-gasser",
+    "fire-hawk",
+    "cleaner-wrasse",
+    "lovebird",
+    "marula-monkey",
+    "ashwing-ptarmigan",
+    "magnate-duck",
+    "gallery-orb-weaver",
+    "cottonmouth-matriarch",
+    "sea-cucumber",
+    "grotto-lobster",
+    "pine-marten",
+    "fire-ant-raft",
+    "anhinga-spearbird",
+    "giant-water-bug",
+    "greater-siren",
+    "ghost-crayfish",
+    "fishing-cat",
+    "yellow-bellied-sea-snake",
+    "crown-of-thorns-star",
+    "whale-shark",
+    "beluga"
+   ]
+  },
+  {
+   "kind": "faction",
+   "what": "9 Hummingbird faction cards come \"from the start\" as Base (no source, unlocked), outside the faction pool.",
+   "fix": "Give them source {kind:pack, tier:11, side:tribes} (faction pool) unless they are the Hummingbird starter cards.",
+   "ids": [
+    "cobalt-talon-fledgling",
+    "gold-throated-acolyte",
+    "violet-vane-fletcher",
+    "sunthroat-courier",
+    "voidfeather-scout",
+    "crimson-wing-duelist-cadet",
+    "cobalt-talon-skirmisher",
+    "dominion-nestguard",
+    "greyplume-fledgling"
+   ]
+  },
+  {
+   "kind": "base",
+   "what": "Base (not tutorial) holds 10 cards; the owner's target is about 10 or fewer.",
+   "fix": "Move the non-starter Base cards with skills (and the Rare/Uncommon ones) to the faction pool, a skirmish reward or Pack 1; keep the plain Map 0 animals as Tutorial base.",
+   "ids": [
+    "bee-knight",
+    "forager-ant",
+    "otter-guard",
+    "tunnel-ant",
+    "gold-throated-acolyte",
+    "sunthroat-courier",
+    "voidfeather-scout",
+    "dominion-nestguard",
+    "wandering-traveller",
+    "ember-tetra-3caj"
+   ]
+  },
+  {
+   "kind": "faction",
+   "what": "Outside the faction pool there are 3 Otter-type and 4 Hummingbird-type cards (owner 19:36: only 1-2 neutral otters and 1-2 traitor / neutral hummingbirds).",
+   "fix": "Keep 1-2 of each as named neutrals / traitors; move the rest into the faction pool (or rename them out of the faction).",
+   "ids": [
+    "otter-guard",
+    "gold-throated-acolyte",
+    "sunthroat-courier",
+    "voidfeather-scout",
+    "dominion-nestguard",
+    "egg-otter",
+    "anvilwhisker-otter"
+   ]
+  },
+  {
+   "kind": "faction",
+   "what": "The faction pool holds your side + shared cards only (factionCardsOfMine); the owner's pool holds both sides (\"that's how you would get the other faction's cards\").",
+   "fix": "factionCardsOfMine: both sides + shared, the other side's cards weighted lower or later on the pattern.",
+   "ids": []
+  },
+  {
+   "kind": "faction",
+   "what": "Pool copies per card are FACTION_POOL_COPIES {\"common\":5,\"uncommon\":4,\"rare\":3,\"veryrare\":2,\"superrare\":2}; the owner's rule is \"pool size = the most duplicates you can hold in a deck\" (RARITY_MAX_COPIES: common 5, uncommon 4, rare 3, very rare 2, super rare 1).",
+   "fix": "Read the copies from maxCopiesForRarity (Super Rare 2 → 1).",
+   "ids": []
+  },
+  {
+   "kind": "faction",
+   "what": "No Base cards are added to the faction pool (\"add 1 of each base card inside as well\").",
+   "fix": "loadFactionPool: 1 copy of each Base card in the pool too.",
+   "ids": []
+  },
+  {
+   "kind": "faction",
+   "what": "The standard faction reward is a weighted random draw behind rarity gates (FACTION_RARITY_GATES: 25 received for Uncommon, 40 + Map 14 for Rare ...), not the fixed C, C, C, U, C, C, U, C, U, R ... pattern.",
+   "fix": "A fixed pattern table (see the pacing check) and \"set\" vs \"random\" faction rewards as two hand-out kinds.",
+   "ids": []
+  },
+  {
+   "kind": "packs",
+   "what": "All 11 Mystery Booster (pool 99) cards are unattainable, so the Mystery Booster / future Pack Secrets I pool is empty in play.",
+   "fix": "Clear `unattainable` on the ones ready, then make it the Pack Secrets I pool (a <1% slot in Packs 1-6).",
+   "ids": [
+    "two-headed-calf",
+    "upside-down-bat",
+    "teatime-toad",
+    "mirror-moth",
+    "snail-mail",
+    "glass-golem",
+    "wrong-way-salmon",
+    "inside-out-hedgehog",
+    "glass-changeling",
+    "irradiated-axolotl",
+    "irradiated-glow-wyrm"
+   ]
+  },
+  {
+   "kind": "level",
+   "what": "3 cards outside Tutorial base start at Level 0 (Bee Knight, Forager Ant, Sparrow Chick: cardBaseLevel gives 0 to every basic / starter / quest / source-Base card), and since TU2 every new faction copy comes at Level 0; the owner: only the tutorial base units and the baby cards start at 0.",
+   "fix": "cardBaseLevel: 0 only for tutorial base (and babies); undo TU2's faction Level 0 copies.",
+   "ids": [
+    "bee-knight",
+    "forager-ant",
+    "sparrow-chick"
+   ]
+  },
+  {
+   "kind": "naming",
+   "what": "The advanced packs are \"Advanced <pack>\" (advancedPackOf); the owner calls them Collector packs.",
+   "fix": "Rename to \"Collector <pack>\" (TX key + 12 language packs).",
+   "ids": []
+  },
+  {
+   "kind": "naming",
+   "what": "The game calls faction:\"base\" cards and skirmish rewards \"Base\" (UT, 2026-10-19: \"Base cards just mean they come from Skirmish rewards\"); the owner now says Skirmish base for skirmish rewards and Base for the starting cards.",
+   "fix": "Rename the Codex sections and cardWhereToGetText lines.",
+   "ids": []
+  }
+ ],
+ "eggs": {
+  "eggCards": [
+   {
+    "id": "egg-woodland",
+    "name": "Woodland Egg",
+    "r": "common",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 7,
+    "hatchInto": {
+     "any": true
+    }
+   },
+   {
+    "id": "egg-bird",
+    "name": "Speckled Egg",
+    "r": "uncommon",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 8,
+    "hatchInto": {
+     "species": [
+      "Bird"
+     ],
+     "archetypes": [
+      "Bird",
+      "Hummingbird",
+      "Owl",
+      "Eagle",
+      "Duck",
+      "Raven"
+     ]
+    }
+   },
+   {
+    "id": "egg-otter",
+    "name": "River Bundle",
+    "r": "uncommon",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 8,
+    "hatchInto": {
+     "species": [
+      "Mustelid"
+     ],
+     "archetypes": [
+      "Otter"
+     ]
+    }
+   },
+   {
+    "id": "egg-scaly",
+    "name": "Leathery Egg",
+    "r": "uncommon",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 10,
+    "hatchInto": {
+     "species": [
+      "Reptile",
+      "Amphibian"
+     ],
+     "archetypes": [
+      "Reptile",
+      "Snake",
+      "Frog",
+      "Turtle"
+     ]
+    }
+   },
+   {
+    "id": "egg-bug",
+    "name": "Cocoon",
+    "r": "uncommon",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 5,
+    "hatchInto": {
+     "species": [
+      "Insect",
+      "Arachnid"
+     ],
+     "archetypes": [
+      "Insect",
+      "Arachnid",
+      "Bee",
+      "Ants"
+     ]
+    }
+   },
+   {
+    "id": "egg-water",
+    "name": "Roe Pearl",
+    "r": "uncommon",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 6,
+    "hatchInto": {
+     "species": [
+      "Fish",
+      "Cetacean",
+      "Mollusc",
+      "Crustacean"
+     ],
+     "archetypes": [
+      "Fish",
+      "Cetacean",
+      "Cephalopod"
+     ]
+    }
+   },
+   {
+    "id": "egg-beast",
+    "name": "Den Bundle",
+    "r": "uncommon",
+    "src": "nest",
+    "un": false,
+    "lvl": 1,
+    "wait": 9,
+    "hatchInto": {
+     "species": [
+      "Canid",
+      "Felid",
+      "Ursid",
+      "Cervid",
+      "Suid",
+      "Rodent",
+      "Lagomorph",
+      "Equid",
+      "Bovine",
+      "Primate",
+      "Mammal",
+      "Megafauna",
+      "Feline",
+      "Procyonid",
+      "Mustelid",
+      "Erinaceid",
+      "Herpestid",
+      "Hyaenid",
+      "Xenarthran",
+      "Bat",
+      "Pinniped",
+      "Cetacean"
+     ]
+    }
+   },
+   {
+    "id": "egg-red-dragon",
+    "name": "Red Dragon Egg",
+    "r": "legendary",
+    "src": "quest",
+    "un": true,
+    "lvl": 0,
+    "wait": 12,
+    "hatchInto": {
+     "defId": "red-dragon"
+    }
+   }
+  ],
+  "babyCards": [
+   {
+    "id": "terrier-pup",
+    "name": "Terrier Pup",
+    "r": "common",
+    "src": "map",
+    "bucket": "skirmish-p1",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "snapper-hatchling",
+    "name": "Snapper Hatchling",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p1",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "bear-cub",
+    "name": "Bear Cub",
+    "r": "uncommon",
+    "src": "pack",
+    "bucket": "pack-p3",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "fox-kit",
+    "name": "Fox Kit",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p1",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "fire-drake-hatchling",
+    "name": "Fire Drake Hatchling",
+    "r": "heroic",
+    "src": "map",
+    "bucket": "skirmish-p3",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "duckling-squadron",
+    "name": "Duckling Squadron",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p4",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "phoenix-fledgling",
+    "name": "Phoenix Fledgling",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p3",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "otter-kit",
+    "name": "Otter Kit",
+    "r": "starter",
+    "src": "base",
+    "bucket": "tutorialBase",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "duckling",
+    "name": "Duckling",
+    "r": "starter",
+    "src": "base",
+    "bucket": "tutorialBase",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "cobalt-talon-fledgling",
+    "name": "Cobalt Fledgling",
+    "r": "starter",
+    "src": "base",
+    "bucket": "tutorialBase",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "sparrow-chick",
+    "name": "Sparrow Chick",
+    "r": "starter",
+    "src": "pack",
+    "bucket": "pack-p1",
+    "un": false,
+    "lvl": 0
+   },
+   {
+    "id": "rabbit-kit",
+    "name": "Rabbit Kit",
+    "r": "common",
+    "src": "base",
+    "bucket": "tutorialBase",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "puppeteer-imp",
+    "name": "Puppeteer Imp",
+    "r": "rare",
+    "src": "unsorted",
+    "bucket": "unsorted",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "two-headed-calf",
+    "name": "Two-Headed Calf",
+    "r": "rare",
+    "src": "pack",
+    "bucket": "secrets",
+    "un": true,
+    "lvl": 1
+   },
+   {
+    "id": "caiman-hatchling",
+    "name": "Caiman Hatchling",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p1",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "mudpuppy",
+    "name": "Mudpuppy",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p1",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "baby-bat",
+    "name": "Baby Bat",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p2",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "baby-horned-capybara",
+    "name": "Baby Horned Capybara",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p2",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "harp-seal-pup",
+    "name": "Harp Seal Pup",
+    "r": "common",
+    "src": "pack",
+    "bucket": "pack-p4",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "musk-ox-calf",
+    "name": "Musk Ox Calf",
+    "r": "uncommon",
+    "src": "pack",
+    "bucket": "pack-nomap",
+    "un": false,
+    "lvl": 1
+   },
+   {
+    "id": "greyplume-fledgling",
+    "name": "Greyplume Fledgling",
+    "r": "starter",
+    "src": "base",
+    "bucket": "tutorialBase",
+    "un": false,
+    "lvl": 1
+   }
+  ],
+  "facts": [
+   "Egg items (EGG_KINDS, 7 kinds) drop from first clears (2-20% by fight kind), 0.1% per Energy on repeats, 1% from raids; Map 1's 1-3 and Map 3 each guarantee one. They sit in \"🥚 Eggs in your pack\" (the Nest picker's first section) until set in a nest; they hatch in 6-10 h into a random Common-Rare map or pack card of their type, at Level 0 (a \"hatchling\"), and the 🌱 Train section raises it to Level 1 for Kibble, Dust and Maple Leaves.",
+   "Egg cards (egg-woodland ... egg-beast) are different: a collection card given once when you first set that kind of egg in a nest (grantEggCardFor). They are playable (0 Attack, Wait 5-10) and crack open in battle into a random card of their type when Ready (engine hatchEggCard). They start at Level 1 and level like any card. They never show in the Nest's first section (that lists egg items and Level-0 cards).",
+   "Babies today are Nest items, not cards: a 6% \"rescue\" after any won Conquest fight (rollBabyRescue) gives a baby of the deck's main type; it grows in 4 h into a random card of that type at Level 0 (+2 Kibble), which the Nest then trains to Level 1.",
+   "The \"baby\" cards in the card list (Baby Bat, Baby Horned Capybara, Caiman Hatchling, Duckling, Otter Kit, Fox Kit, Rabbit Kit, Terrier Pup ...) are ordinary pack, skirmish or base cards: they do not hatch or change, start at Level 1 (pack) or 0 (base) and Forge to 10."
+  ],
+  "inconsistencies": [
+   "Owner: babies drop like eggs, hatch / change into something else, and can never reach Level 1. Today no card behaves like that: the baby cards are normal cards that level to 10, and the Nest's \"hatchlings\" (Level 0 cards from eggs and rescued babies) are exactly what the Nest trains to Level 1.",
+   "Owner: \"I don't see them in Raise or Hatch, the first section.\" Egg cards and baby cards never appear in the Nest picker: its first section lists egg ITEMS, its second only Level-0 copies. An egg card is Level 1 at once; a baby card is Level 1 (pack) or a base card at 0.",
+   "Owner: \"you can play Eggs and babies\". Egg cards: yes (they crack open in battle). Baby cards: yes, as ordinary units. Rescued babies and egg items: no (items).",
+   "Two of the egg-like cards are unattainable (Snapper Hatchling, Fire Drake Hatchling; the Red Dragon Egg is the Scale Trail quest's and unattainable), and Nest Hatchling has no source."
+  ],
+  "proposal": "A \"Baby\" card kind (cardType baby): dropped like an egg (same rates), shown in the Nest's first section next to egg items, playable at Level 0, cannot be trained or Forged, and grows into a named card (hatchInto.defId) or a random card of its type after N hours in a nest. Rename the Nest's two sections \"Hatch\" (eggs and babies) and \"Raise\" (Level-0 tutorial base cards to Level 1)."
+ },
+ "skillsSeen": [
+  {
+   "key": "flying",
+   "label": "Flying",
+   "where": {
+    "tutorial": [
+     "Honey Bee"
+    ],
+    "starter": [
+     "Honey Bee",
+     "Mosswing",
+     "Crimson Recruit",
+     "Cobalt Fledgling",
+     "Sunspire Envoy"
+    ],
+    "map0enemy": [
+     "Honey Bee",
+     "Bee Forager",
+     "Bee Sentry",
+     "Cobalt Fledgling"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "quick",
+   "label": "Quick",
+   "where": {
+    "starter": [
+     "Fleetfoot'd"
+    ],
+    "map0enemy": [
+     "Tomcat"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "swarm",
+   "label": "Swarm",
+   "where": {
+    "map0enemy": [
+     "Ant Scout",
+     "Bee Forager"
+    ],
+    "map1enemy": [
+     "Field Vole",
+     "Ant Scout"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "lumberjack",
+   "label": "Lumberjack",
+   "where": {
+    "map1enemy": [
+     "Badger Lumberjack"
+    ],
+    "map1rewards": [
+     "Badger Lumberjack"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "tide",
+   "label": "Tide",
+   "where": {
+    "starter": [
+     "Fleetfoot'd",
+     "River Warden"
+    ]
+   },
+   "hidden": "\"?\" until Map 2"
+  },
+  {
+   "key": "boomerang",
+   "label": "Boomerang",
+   "where": {
+    "starter": [
+     "Otter Centurion"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "esprit",
+   "label": "Esprit",
+   "where": {
+    "starter": [
+     "Sunspire Envoy",
+     "Riverwing Envoy"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "armor",
+   "label": "Armor",
+   "where": {
+    "map0enemy": [
+     "Garden Snail",
+     "Beetle Grunt"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "trigger",
+   "label": "Triggered ability",
+   "where": {
+    "map0enemy": [
+     "Bee Forager",
+     "Forager Ant"
+    ]
+   },
+   "hidden": ""
+  },
+  {
+   "key": "poison",
+   "label": "Poison",
+   "where": {
+    "map0enemy": [
+     "Bee Sentry"
+    ]
+   },
+   "hidden": ""
+  }
+ ],
+ "groups": {
+  "tutorial": 13,
+  "starter": 26,
+  "map0enemy": 22,
+  "map0rewards": 3,
+  "map1enemy": 12,
+  "map1rewards": 5
+ },
+ "ants": {
+  "live": [
+   {
+    "id": "worker-ant",
+    "name": "Worker Ant",
+    "r": "starter",
+    "bucket": "tutorialBase",
+    "adv": -1,
+    "sk": [
+     "trigger"
+    ]
+   },
+   {
+    "id": "ant-scout",
+    "name": "Ant Scout",
+    "r": "starter",
+    "bucket": "tutorialBase",
+    "adv": -1,
+    "sk": [
+     "swarm"
+    ]
+   },
+   {
+    "id": "forager-ant",
+    "name": "Forager Ant",
+    "r": "common",
+    "bucket": "base",
+    "adv": 0,
+    "sk": [
+     "trigger"
+    ]
+   },
+   {
+    "id": "tunnel-ant",
+    "name": "Tunnel Ant",
+    "r": "rare",
+    "bucket": "base",
+    "adv": 0,
+    "sk": [
+     "swarm",
+     "ambush"
+    ]
+   },
+   {
+    "id": "fire-ant-raft",
+    "name": "Fire Ant Raft",
+    "r": "uncommon",
+    "bucket": "pack-p1",
+    "adv": 5,
+    "sk": [
+     "poison",
+     "swarm",
+     "tide"
+    ]
+   },
+   {
+    "id": "leafcutter-gardener",
+    "name": "Leafcutter Gardener",
+    "r": "common",
+    "bucket": "pack-p2",
+    "adv": 7,
+    "sk": [
+     "growth"
+    ]
+   }
+  ],
+  "unplaced": [
+   {
+    "id": "soldier-ant",
+    "name": "Soldier Ant",
+    "r": "common",
+    "bucket": "base"
+   },
+   {
+    "id": "ant-warrior",
+    "name": "Ant Warrior",
+    "r": "uncommon",
+    "bucket": "pack-p2"
+   },
+   {
+    "id": "ant-hill",
+    "name": "Ant Hill",
+    "r": "common",
+    "bucket": "unsorted"
+   }
+  ],
+  "byTier": {
+   "tutorialBase": 2,
+   "base": 2,
+   "p1": 1,
+   "p2": 1,
+   "p3": 0,
+   "p4": 0,
+   "faction": 0
+  }
+ },
+ "outsideFaction": [
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "r": "uncommon",
+   "bucket": "base",
+   "kind": "otter",
+   "src": "base"
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "r": "uncommon",
+   "bucket": "base",
+   "kind": "hummingbird",
+   "src": "base"
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "r": "common",
+   "bucket": "base",
+   "kind": "hummingbird",
+   "src": "base"
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "r": "uncommon",
+   "bucket": "base",
+   "kind": "hummingbird",
+   "src": "base"
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Dominion Nestguard",
+   "r": "common",
+   "bucket": "base",
+   "kind": "hummingbird",
+   "src": "base"
+  },
+  {
+   "id": "egg-otter",
+   "name": "River Bundle",
+   "r": "uncommon",
+   "bucket": "nest",
+   "kind": "otter",
+   "src": "nest"
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "kind": "otter",
+   "src": "unsorted"
+  }
+ ],
+ "factionTrack": {
+  "everyWins": 8,
+  "receivedByMap15": 45,
+  "perMap": [
+   {
+    "map": 0,
+    "received": 5
+   },
+   {
+    "map": 1,
+    "received": 8
+   },
+   {
+    "map": 2,
+    "received": 9
+   },
+   {
+    "map": 3,
+    "received": 12
+   },
+   {
+    "map": 4,
+    "received": 16
+   },
+   {
+    "map": 5,
+    "received": 18
+   },
+   {
+    "map": 6,
+    "received": 23
+   },
+   {
+    "map": 7,
+    "received": 26
+   },
+   {
+    "map": 8,
+    "received": 28
+   },
+   {
+    "map": 9,
+    "received": 30
+   },
+   {
+    "map": 10,
+    "received": 32
+   },
+   {
+    "map": 11,
+    "received": 35
+   },
+   {
+    "map": 12,
+    "received": 38
+   },
+   {
+    "map": 13,
+    "received": 40
+   },
+   {
+    "map": 14,
+    "received": 42
+   },
+   {
+    "map": 15,
+    "received": 45
+   },
+   {
+    "map": 16,
+    "received": 47
+   },
+   {
+    "map": 17,
+    "received": 49
+   },
+   {
+    "map": 18,
+    "received": 52
+   },
+   {
+    "map": 19,
+    "received": 55
+   },
+   {
+    "map": 20,
+    "received": 64
+   },
+   {
+    "map": 21,
+    "received": 67
+   },
+   {
+    "map": 22,
+    "received": 69
+   },
+   {
+    "map": 23,
+    "received": 72
+   },
+   {
+    "map": 24,
+    "received": 74
+   },
+   {
+    "map": 25,
+    "received": 76
+   },
+   {
+    "map": 26,
+    "received": 79
+   },
+   {
+    "map": 27,
+    "received": 81
+   },
+   {
+    "map": 28,
+    "received": 83
+   },
+   {
+    "map": 29,
+    "received": 86
+   },
+   {
+    "map": 30,
+    "received": 88
+   }
+  ]
+ },
+ "pacing": [
+  {
+   "label": "today's live faction cards (both sides + shared), copies = deck cap",
+   "pool": {
+    "uncommon": 20,
+    "rare": 9,
+    "common": 10,
+    "superrare": 1,
+    "heroic": 2
+   },
+   "copies": 40,
+   "first": {
+    "common": {
+     "reward": 1,
+     "map": 0
+    },
+    "uncommon": {
+     "reward": 4,
+     "map": 0
+    },
+    "rare": {
+     "reward": 10,
+     "map": 3
+    },
+    "superrare": {
+     "reward": 30,
+     "map": 9
+    }
+   },
+   "lastUncommon": {
+    "reward": 38,
+    "map": 12
+   },
+   "dryAt": {
+    "reward": 40,
+    "map": 13
+   },
+   "verdict": "too few cards: Very Rare or higher by Map 9; the pool runs dry at Map 13"
+  },
+  {
+   "label": "owner target pool (16 + 16 + 15 shared; assumed 7 C / 5 U / 3 R / 1 VR per 16), copies = deck cap",
+   "pool": {
+    "common": 100,
+    "uncommon": 60,
+    "rare": 27,
+    "veryrare": 6,
+    "superrare": 0
+   },
+   "copies": 193,
+   "first": {
+    "common": {
+     "reward": 1,
+     "map": 0
+    },
+    "uncommon": {
+     "reward": 4,
+     "map": 0
+    },
+    "rare": {
+     "reward": 10,
+     "map": 3
+    },
+    "veryrare": {
+     "reward": 180,
+     "map": 99
+    }
+   },
+   "lastUncommon": {
+    "reward": 181,
+    "map": 99
+   },
+   "dryAt": {
+    "reward": 193,
+    "map": 99
+   },
+   "verdict": "too many: Uncommons still come at Map 60+"
+  },
+  {
+   "label": "owner target pool, \"1-2x of each\": 2 of your side and shared, 1 of the other side",
+   "pool": {
+    "common": 33,
+    "uncommon": 25,
+    "rare": 15,
+    "veryrare": 5
+   },
+   "copies": 78,
+   "first": {
+    "common": {
+     "reward": 1,
+     "map": 0
+    },
+    "uncommon": {
+     "reward": 4,
+     "map": 0
+    },
+    "rare": {
+     "reward": 10,
+     "map": 3
+    },
+    "veryrare": {
+     "reward": 70,
+     "map": 23
+    }
+   },
+   "lastUncommon": {
+    "reward": 65,
+    "map": 21
+   },
+   "dryAt": {
+    "reward": 78,
+    "map": 26
+   },
+   "verdict": "too many: Uncommons still come at Map 21"
+  },
+  {
+   "label": "literal pattern (the block of 10 repeats, its 10th step one rarity up each block: R, VR, SR ...)",
+   "first": {
+    "common": {
+     "reward": 1,
+     "map": 0
+    },
+    "uncommon": {
+     "reward": 4,
+     "map": 0
+    },
+    "rare": {
+     "reward": 10,
+     "map": 3
+    },
+    "veryrare": {
+     "reward": 20,
+     "map": 6
+    },
+    "superrare": {
+     "reward": 30,
+     "map": 9
+    },
+    "epic": {
+     "reward": 40,
+     "map": 13
+    },
+    "heroic": {
+     "reward": 50,
+     "map": 18
+    }
+   },
+   "verdict": "too few cards: Very Rare or higher by Map 6"
+  }
+ ],
+ "collection": [
+  {
+   "map": 3,
+   "name": "Gannet Cliffs",
+   "fights": 21,
+   "starter": 20,
+   "starterUnique": 19,
+   "skirmishRewards": 12,
+   "firstClearPackCards": 9,
+   "freePackCards": 3,
+   "factionRewards": 12,
+   "bossBaseGifts": 4,
+   "drops": 0.3,
+   "today": 60,
+   "notStarter": 40,
+   "withProposal": 84,
+   "proposalAdds": 24
+  },
+  {
+   "map": 7,
+   "name": "The Morel Hollow",
+   "fights": 47,
+   "starter": 20,
+   "starterUnique": 19,
+   "skirmishRewards": 28,
+   "firstClearPackCards": 18,
+   "freePackCards": 8,
+   "factionRewards": 26,
+   "bossBaseGifts": 8,
+   "drops": 0.8,
+   "today": 109,
+   "notStarter": 89,
+   "withProposal": 157,
+   "proposalAdds": 48
+  },
+  {
+   "map": 13,
+   "name": "The Redwood Deep",
+   "fights": 97,
+   "starter": 20,
+   "starterUnique": 19,
+   "skirmishRewards": 51,
+   "firstClearPackCards": 35,
+   "freePackCards": 22,
+   "factionRewards": 40,
+   "bossBaseGifts": 14,
+   "drops": 1.8,
+   "today": 184,
+   "notStarter": 164,
+   "withProposal": 268,
+   "proposalAdds": 84
+  },
+  {
+   "map": 20,
+   "name": "The Sundered Peak",
+   "fights": 151,
+   "starter": 20,
+   "starterUnique": 19,
+   "skirmishRewards": 79,
+   "firstClearPackCards": 50,
+   "freePackCards": 41,
+   "factionRewards": 64,
+   "bossBaseGifts": 21,
+   "drops": 2.9,
+   "today": 278,
+   "notStarter": 258,
+   "withProposal": 404,
+   "proposalAdds": 126
+  }
+ ],
+ "cards": [
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 12,
+   "where": "mq",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "swarm"
+   ],
+   "lvl": 1,
+   "ant": true
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "swarm",
+    "trigger",
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "flying",
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Fledgling",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "diurnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "diurnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 0
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [],
+   "lvl": 0
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "armor"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 6,
+   "where": "mp",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 1,
+   "where": "mf",
+   "sk": [],
+   "lvl": 0
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "taunt"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "r": "starter",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [
+    "trigger"
+   ],
+   "lvl": 1,
+   "ant": true
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "r": "common",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": 1,
+   "where": "mf",
+   "sk": [],
+   "lvl": 0
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "name": "Meerkat Wayfarer",
+   "r": "common",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "reach",
+    "inspiring"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "r": "uncommon",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide",
+    "quick"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "r": "uncommon",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "esprit"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "otter-centurion",
+   "name": "Otter Centurion",
+   "r": "rare",
+   "bucket": "tutorialBase",
+   "adv": -1,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "boomerang"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Knight",
+   "r": "common",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [
+    "swarm",
+    "flying"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Dominion Nestguard",
+   "r": "common",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 0,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "r": "common",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [
+    "trigger"
+   ],
+   "lvl": 0,
+   "ant": true
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 0,
+   "first": 0,
+   "pool": 0,
+   "where": "m1",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "r": "common",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 0,
+   "first": 8,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [
+    "dynamite"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ember-tetra-3caj",
+   "name": "Ember Tetra",
+   "r": "uncommon",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide",
+    "tideGrant"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "r": "uncommon",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "r": "uncommon",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "arrow"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "scree-goat",
+   "name": "Scree Goat",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 0,
+   "first": 19,
+   "pool": 0,
+   "where": "mtut",
+   "sk": [
+    "landslide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "r": "uncommon",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "r": "rare",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": 8,
+   "where": "mz",
+   "sk": [
+    "swarm",
+    "ambush"
+   ],
+   "lvl": 1,
+   "ant": true
+  },
+  {
+   "id": "wandering-traveller",
+   "name": "Wandering Traveller",
+   "r": "rare",
+   "bucket": "base",
+   "adv": 0,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "leader"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 1,
+   "first": 1,
+   "pool": 1,
+   "where": "mf",
+   "sk": [
+    "swarm"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 2,
+   "first": 2,
+   "pool": 2,
+   "where": "mb",
+   "sk": [
+    "thorns",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 2,
+   "first": 2,
+   "pool": 2,
+   "where": "mb",
+   "sk": [
+    "hunter",
+    "crabClaws"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 2,
+   "first": 2,
+   "pool": 2,
+   "where": "mb",
+   "sk": [
+    "tide",
+    "guardian"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "r": "starter",
+   "bucket": "pack-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 0
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "flying",
+    "swarm"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "r": "common",
+   "bucket": "skirmish-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "flying",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "flying",
+    "mountainClimber"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "egg-woodland",
+   "name": "Woodland Egg",
+   "r": "common",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "egg-bug",
+   "name": "Cocoon",
+   "r": "uncommon",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "chrysalis"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "egg-beast",
+   "name": "Den Bundle",
+   "r": "uncommon",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "flying",
+    "thorns"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "egg-scaly",
+   "name": "Leathery Egg",
+   "r": "uncommon",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "pounce",
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": 3,
+   "where": "mc",
+   "sk": [
+    "flying",
+    "bleed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "egg-otter",
+   "name": "River Bundle",
+   "r": "uncommon",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "egg-water",
+   "name": "Roe Pearl",
+   "r": "uncommon",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "egg-bird",
+   "name": "Speckled Egg",
+   "r": "uncommon",
+   "bucket": "nest",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "stem"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "r": "heroic",
+   "bucket": "skirmish-p1",
+   "adv": 3,
+   "first": 3,
+   "pool": null,
+   "where": "mc",
+   "sk": [
+    "flying",
+    "pounce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "box-turtle",
+   "name": "Box Turtle",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "cower"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "venomous"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "tide",
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "tide",
+    "bulwark"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "armor",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "venomous"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 4,
+   "first": 4,
+   "pool": 4,
+   "where": "m2",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "quick"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "pierce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "buzzed-chipmunk",
+   "name": "Buzzed Chipmunk",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "coffee"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": 5,
+   "where": "mw",
+   "sk": [
+    "quick"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "name": "Cave Pseudoscorpion",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "swarm"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "garden-tiger-moth",
+   "name": "Garden Tiger Moth",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "shell",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "guano-beetle",
+   "name": "Guano Beetle",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "carrion"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "quick"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "shell",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "pierce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "wilting"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "mw",
+   "sk": [
+    "proliferate"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "regen",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sea-hare",
+   "name": "Sea Hare",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "smokeBomb"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor",
+    "crabClaws"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "revive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "springtail-hopper",
+   "name": "Springtail Hopper",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "r": "common",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "crepuscular",
+    "keenEye"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "scare",
+    "trigger"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "mw",
+   "sk": [
+    "pounce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "diving-bell-spider",
+   "name": "Diving Bell Spider",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "psychic"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": 5,
+   "where": "mw",
+   "sk": [
+    "hunter"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "mw",
+   "sk": [
+    "poison",
+    "swarm",
+    "tide"
+   ],
+   "lvl": 1,
+   "ant": true
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": 5,
+   "where": "mw",
+   "sk": [
+    "revive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide",
+    "thorns"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "predator"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "muntjac-barker",
+   "name": "Muntjac Barker",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "sentry"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "musk-ox-calf",
+   "name": "Musk Ox Calf",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor",
+    "frostbite"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide",
+    "taunt"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "r": "uncommon",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "diurnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "r": "rare",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "bleed",
+    "twinStrike"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "r": "rare",
+   "bucket": "skirmish-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": 5,
+   "where": "mw",
+   "sk": [
+    "armor",
+    "bleed",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "r": "rare",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "strangle"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "electric-catfish",
+   "name": "Electric Catfish",
+   "r": "rare",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "shockBolt"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "r": "rare",
+   "bucket": "pack-nomap",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "arrow",
+    "twinStrike"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "r": "heroic",
+   "bucket": "skirmish-p1",
+   "adv": 5,
+   "first": 5,
+   "pool": null,
+   "where": "mw",
+   "sk": [
+    "bleed",
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "great-crested-grebe",
+   "name": "Great Crested Grebe",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 5,
+   "pool": 6,
+   "where": "mp",
+   "sk": [
+    "tide",
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": null,
+   "where": "m8",
+   "sk": [
+    "weaken"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": 6,
+   "where": "mp",
+   "sk": [
+    "flying",
+    "fragile"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 9,
+   "pool": 6,
+   "where": "mp",
+   "sk": [
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "r": "common",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 9,
+   "pool": 6,
+   "where": "mp",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": 6,
+   "where": "m8",
+   "sk": [
+    "poison",
+    "detonate"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": 6,
+   "where": "m8",
+   "sk": [
+    "invisible",
+    "daunt"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "carrion-beetle",
+   "name": "Carrion Beetle",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": null,
+   "where": "m8",
+   "sk": [
+    "festering"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": null,
+   "where": "m8",
+   "sk": [
+    "tide",
+    "venomous"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "r": "uncommon",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": null,
+   "where": "m8",
+   "sk": [
+    "bloomWhen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "r": "uncommon",
+   "bucket": "skirmish-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": 6,
+   "where": "m8",
+   "sk": [
+    "healing"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch",
+   "r": "rare",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": null,
+   "where": "m8",
+   "sk": [
+    "poison",
+    "venomMaster"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "r": "rare",
+   "bucket": "pack-p1",
+   "adv": 6,
+   "first": 6,
+   "pool": null,
+   "where": "m8",
+   "sk": [
+    "tide",
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": 7,
+   "where": "mu",
+   "sk": [
+    "decay"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": 7,
+   "where": "mu",
+   "sk": [
+    "growth"
+   ],
+   "lvl": 1,
+   "ant": true
+  },
+  {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": null,
+   "where": "mu",
+   "sk": [
+    "crepuscular"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": null,
+   "where": "mu",
+   "sk": [
+    "rocket"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": 7,
+   "where": "mu",
+   "sk": [
+    "meiosis"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "r": "uncommon",
+   "bucket": "skirmish-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": 7,
+   "where": "mu",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": null,
+   "where": "mu",
+   "sk": [
+    "pounce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 7,
+   "first": 7,
+   "pool": 7,
+   "where": "mu",
+   "sk": [
+    "brood"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "baby-bat",
+   "name": "Baby Bat",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "flying",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cave-centipede",
+   "name": "Cave Centipede",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "r": "common",
+   "bucket": "skirmish-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "keenSense"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Golem",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "shell"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "r": "common",
+   "bucket": "skirmish-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "purblind"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "coffer-mimic",
+   "name": "Coffer Mimic",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "thorns"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "armor",
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "armor",
+    "onDeathSpawn"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "subterraneaner",
+   "name": "Subterraneaner",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "stealth",
+    "ambush"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "flying",
+    "sap",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "nursing"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "sonar",
+    "bleed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "web",
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": 8,
+   "where": "m4",
+   "sk": [
+    "pounce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 8,
+   "first": 8,
+   "pool": null,
+   "where": "m4",
+   "sk": [
+    "crabClaws",
+    "brood"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "archerfish",
+   "name": "Archerfish",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": 9,
+   "where": "mk",
+   "sk": [
+    "acidBolt"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "r": "uncommon",
+   "bucket": "skirmish-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": 9,
+   "where": "mk",
+   "sk": [
+    "venomous",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mudflat-godwit",
+   "name": "Mudflat Godwit",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": null,
+   "where": "mk",
+   "sk": [
+    "tideGrant",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "piranha-shoal",
+   "name": "Piranha Shoal",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": null,
+   "where": "mk",
+   "sk": [
+    "bloodlust"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": 9,
+   "where": "mk",
+   "sk": [
+    "diurnalGrant",
+    "diurnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": null,
+   "where": "mk",
+   "sk": [
+    "pounce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 9,
+   "first": 9,
+   "pool": 9,
+   "where": "mk",
+   "sk": [
+    "regen",
+    "guardian",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": 10,
+   "where": "m7",
+   "sk": [
+    "tide",
+    "pierce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cleaner-wrasse",
+   "name": "Cleaner Wrasse",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "cure"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cone-snail",
+   "name": "Cone Snail",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "toxin"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "thorns",
+    "poison",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "r": "uncommon",
+   "bucket": "skirmish-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": 10,
+   "where": "m7",
+   "sk": [
+    "charge"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": 10,
+   "where": "m7",
+   "sk": [
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sawfish",
+   "name": "Sawfish",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "puncture"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sea-cucumber",
+   "name": "Sea Cucumber",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "trigger",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": 10,
+   "where": "m7",
+   "sk": [
+    "tide",
+    "quick"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mantis-shrimp",
+   "name": "Mantis Shrimp",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "recoil"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "swordfish-spearman",
+   "name": "Swordfish Spearman",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": 10,
+   "where": "m7",
+   "sk": [
+    "trident"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "armor",
+    "scare",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": null,
+   "where": "m7",
+   "sk": [
+    "tide",
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "r": "veryrare",
+   "bucket": "skirmish-p2",
+   "adv": 10,
+   "first": 10,
+   "pool": 10,
+   "where": "m7",
+   "sk": [
+    "fork",
+    "gash",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "r": "common",
+   "bucket": "skirmish-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "guardian"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dhole-runner",
+   "name": "Dhole Runner",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 16,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "pack"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 14,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "nightblind"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "iron-shard",
+   "name": "Iron Shard",
+   "r": "common",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "evasive",
+    "frostbite"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 18,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "haste"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "name": "Seed-cache Squirrel",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 12,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "sprout"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 17,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 13,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "fastForward"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 14,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "tangle"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "abyssal-ink",
+   "name": "Abyssal Ink",
+   "r": "uncommon",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "flying",
+    "thorns"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "flying",
+    "arrow"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 15,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "bulldoze"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "r": "uncommon",
+   "bucket": "skirmish-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "mountainClimber",
+    "pounce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dromedary",
+   "name": "Dromedary",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 18,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "dry"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 18,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "dry"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 12,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "predator"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lava-waders",
+   "name": "Lava Waders",
+   "r": "uncommon",
+   "bucket": "smith",
+   "adv": 11,
+   "first": 11,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "lyrebird-mimic",
+   "name": "Lyrebird Mimic",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 12,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "confuse"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 14,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "sturdy"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "river-pearl",
+   "name": "River Pearl",
+   "r": "uncommon",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 11,
+   "first": 10,
+   "pool": 11,
+   "where": "mj",
+   "sk": [
+    "octolash"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "arrow",
+    "fletcher",
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ember-core",
+   "name": "Ember Core",
+   "r": "rare",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "frostmoon-howler",
+   "name": "Frostmoon Howler",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 11,
+   "first": 17,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "packHowl"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "strange-materia",
+   "name": "Strange Materia",
+   "r": "rare",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "tempering-stone",
+   "name": "Tempering Stone",
+   "r": "rare",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "r": "veryrare",
+   "bucket": "skirmish-p2",
+   "adv": 11,
+   "first": 11,
+   "pool": 11,
+   "where": "m10",
+   "sk": [
+    "avalanche"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dragon-scale",
+   "name": "Dragon Scale",
+   "r": "legendary",
+   "bucket": "materia",
+   "adv": 11,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "r": "common",
+   "bucket": "skirmish-p2",
+   "adv": 12,
+   "first": 12,
+   "pool": 12,
+   "where": "mh",
+   "sk": [
+    "regen"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 5,
+   "pool": 12,
+   "where": "mq",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 5,
+   "pool": 12,
+   "where": "mq",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fox-sharpshot",
+   "name": "Fox Sharpshot",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 12,
+   "pool": null,
+   "where": "mh",
+   "sk": [
+    "snipe"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 5,
+   "pool": 12,
+   "where": "mq",
+   "sk": [
+    "swipe"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 5,
+   "pool": 12,
+   "where": "mq",
+   "sk": [
+    "guardian"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 5,
+   "pool": 12,
+   "where": "mq",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "r": "uncommon",
+   "bucket": "skirmish-p2",
+   "adv": 12,
+   "first": 12,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "evasive",
+    "backstab"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "skunk-gasser",
+   "name": "Skunk Gasser",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 12,
+   "pool": null,
+   "where": "mh",
+   "sk": [
+    "poisonGas"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 5,
+   "pool": 12,
+   "where": "mq",
+   "sk": [
+    "armor",
+    "sweep"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 12,
+   "first": 12,
+   "pool": 12,
+   "where": "mh",
+   "sk": [
+    "flying",
+    "bleed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 13,
+   "first": 9,
+   "pool": 13,
+   "where": "ms",
+   "sk": [
+    "thorns"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "inkcloud-squid",
+   "name": "Inkcloud Squid",
+   "r": "common",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": null,
+   "where": "goliath",
+   "sk": [
+    "evasive",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 13,
+   "first": 5,
+   "pool": 13,
+   "where": "ms",
+   "sk": [
+    "flying",
+    "bleed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "swamp-rabbit",
+   "name": "Swamp Rabbit",
+   "r": "common",
+   "bucket": "pack-p2",
+   "adv": 13,
+   "first": 5,
+   "pool": 13,
+   "where": "ms",
+   "sk": [
+    "tide",
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "abyss-lantern-squid",
+   "name": "Abyss Lantern Squid",
+   "r": "uncommon",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": 11,
+   "where": "mj",
+   "sk": [
+    "tide",
+    "shock"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 13,
+   "first": 13,
+   "pool": 13,
+   "where": "mr",
+   "sk": [
+    "berserk"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "r": "uncommon",
+   "bucket": "pack-p2",
+   "adv": 13,
+   "first": 13,
+   "pool": 13,
+   "where": "mr",
+   "sk": [
+    "perforate"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "r": "rare",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": 11,
+   "where": "mj",
+   "sk": [
+    "corrode",
+    "stealth"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "r": "rare",
+   "bucket": "skirmish-p2",
+   "adv": 13,
+   "first": 5,
+   "pool": 13,
+   "where": "ms",
+   "sk": [
+    "herbalist"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "r": "rare",
+   "bucket": "pack-p2",
+   "adv": 13,
+   "first": 13,
+   "pool": null,
+   "where": "mr",
+   "sk": [
+    "shadow"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "vampire-squid",
+   "name": "Vampire Squid",
+   "r": "rare",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": 11,
+   "where": "mj",
+   "sk": [
+    "bleed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "r": "epic",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": null,
+   "where": "goliath",
+   "sk": [
+    "sweep",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "r": "legendary",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": null,
+   "where": "goliath",
+   "sk": [
+    "supreme",
+    "tide",
+    "tsunami",
+    "wave"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "goliath-broodmother",
+   "name": "Goliath Broodmother",
+   "r": "legendary",
+   "bucket": "raid",
+   "adv": 13,
+   "first": 13,
+   "pool": null,
+   "where": "goliath",
+   "sk": [
+    "onDeathSpawn",
+    "inspiring"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lovebird",
+   "name": "Lovebird",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": null,
+   "where": "m5",
+   "sk": [
+    "amore"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "marula-monkey",
+   "name": "Marula Monkey",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": null,
+   "where": "m5",
+   "sk": [
+    "tipsy"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": 14,
+   "where": "m5",
+   "sk": [
+    "darksight"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "springbok-pronker",
+   "name": "Springbok Pronker",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": 14,
+   "where": "m5",
+   "sk": [
+    "prey"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "executioner"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": 14,
+   "where": "m5",
+   "sk": [
+    "drunk"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mongoose-duelist",
+   "name": "Mongoose Duelist",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": null,
+   "where": "m5",
+   "sk": [
+    "defiance"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "monitor-rambler",
+   "name": "Monitor Rambler",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": null,
+   "where": "m5",
+   "sk": [
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "r": "rare",
+   "bucket": "skirmish-p3",
+   "adv": 14,
+   "first": 14,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "twinShot"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 15,
+   "first": 15,
+   "pool": 15,
+   "where": "ml",
+   "sk": [
+    "speed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 15,
+   "first": 15,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "converge"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cave-cricket",
+   "name": "Cave Cricket",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 16,
+   "first": 5,
+   "pool": 16,
+   "where": "mn",
+   "sk": [
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 16,
+   "first": 5,
+   "pool": 16,
+   "where": "mn",
+   "sk": [
+    "flying",
+    "sonar"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 16,
+   "first": 8,
+   "pool": 16,
+   "where": "mn",
+   "sk": [
+    "flying",
+    "illuminate"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 16,
+   "first": 16,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "mountainClimber",
+    "frostbite"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 16,
+   "first": 16,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "packLeader"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": 17,
+   "where": "m6",
+   "sk": [
+    "tide",
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": 17,
+   "where": "m6",
+   "sk": [
+    "iceArrow"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": 17,
+   "where": "m6",
+   "sk": [
+    "poisonBolt"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": null,
+   "where": "m6",
+   "sk": [
+    "sonar",
+    "inspiring",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "loneWolf"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "ambush"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 17,
+   "first": 17,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "freeze",
+    "shatter"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "glasswing-moth",
+   "name": "Glasswing Moth",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": null,
+   "where": "md",
+   "sk": [
+    "brittle"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": 18,
+   "where": "md",
+   "sk": [
+    "invisible"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "r": "common",
+   "bucket": "skirmish-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": 18,
+   "where": "md",
+   "sk": [
+    "thorns"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "trap"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 18,
+   "first": 14,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "nocturnalGrant",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "tarantula-hawk",
+   "name": "Tarantula Hawk",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": null,
+   "where": "md",
+   "sk": [
+    "primed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": null,
+   "where": "md",
+   "sk": [
+    "quick",
+    "fencing"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "r": "rare",
+   "bucket": "skirmish-p3",
+   "adv": 18,
+   "first": 14,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "mighty"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 18,
+   "first": 23,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "siege"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 18,
+   "first": 18,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "tornado"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "shield"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 22,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "evasive"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "sociable"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 19,
+   "first": 19,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "spitfire"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "blind"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "fullMoon"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pale-oryx",
+   "name": "Pale Oryx",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "dry",
+    "pierce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 14,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "rabid"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 6,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "flying",
+    "daunt",
+    "nocturnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "flying",
+    "archer",
+    "archerStyle"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "echidna-quillshot",
+   "name": "Echidna Quillshot",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 19,
+   "first": 19,
+   "pool": 11,
+   "where": "muc",
+   "sk": [
+    "volley"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "r": "veryrare",
+   "bucket": "skirmish-p3",
+   "adv": 19,
+   "first": 18,
+   "pool": 19,
+   "where": "mpd",
+   "sk": [
+    "trap",
+    "tangle"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": null,
+   "where": "m11",
+   "sk": [
+    "flying",
+    "nocturnal"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": 20,
+   "where": "m11",
+   "sk": [
+    "remember",
+    "trigger"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": 20,
+   "where": "m11",
+   "sk": [
+    "revive"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "r": "common",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 22,
+   "pool": 20,
+   "where": "mx",
+   "sk": [
+    "quick",
+    "dry"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "firefly-swarm",
+   "name": "Firefly Swarm",
+   "r": "uncommon",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": null,
+   "where": "m11",
+   "sk": [
+    "fireBolt"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "r": "uncommon",
+   "bucket": "skirmish-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": 20,
+   "where": "m11",
+   "sk": [
+    "evasive",
+    "fireArrow"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "fire-hawk",
+   "name": "Fire Hawk",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": null,
+   "where": "m11",
+   "sk": [
+    "slashBurn"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 22,
+   "pool": 20,
+   "where": "me",
+   "sk": [
+    "mountainClimber",
+    "pounce"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": null,
+   "where": "m11",
+   "sk": [
+    "ghost"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": null,
+   "where": "m11",
+   "sk": [
+    "regen",
+    "armor"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "r": "rare",
+   "bucket": "pack-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": null,
+   "where": "m11",
+   "sk": [
+    "castDarkness",
+    "darksight"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "r": "superrare",
+   "bucket": "skirmish-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": 20,
+   "where": "m11",
+   "sk": [
+    "flying",
+    "carrion"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "r": "epic",
+   "bucket": "skirmish-p3",
+   "adv": 20,
+   "first": 20,
+   "pool": 20,
+   "where": "me",
+   "sk": [
+    "rage",
+    "regen"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "harp-seal-pup",
+   "name": "Harp Seal Pup",
+   "r": "common",
+   "bucket": "pack-p4",
+   "adv": 21,
+   "first": 5,
+   "pool": 21,
+   "where": "mi",
+   "sk": [
+    "molting"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "r": "common",
+   "bucket": "pack-p4",
+   "adv": 21,
+   "first": 5,
+   "pool": 21,
+   "where": "mi",
+   "sk": [
+    "tide",
+    "swarm"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "r": "common",
+   "bucket": "pack-p4",
+   "adv": 21,
+   "first": 5,
+   "pool": 21,
+   "where": "mi",
+   "sk": [
+    "swarm",
+    "brood"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "r": "common",
+   "bucket": "skirmish-p4",
+   "adv": 21,
+   "first": 21,
+   "pool": 21,
+   "where": "m21",
+   "sk": [
+    "scatterbrained"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "r": "common",
+   "bucket": "pack-p4",
+   "adv": 21,
+   "first": 5,
+   "pool": 21,
+   "where": "mi",
+   "sk": [
+    "tide",
+    "invisible"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "r": "uncommon",
+   "bucket": "pack-p4",
+   "adv": 21,
+   "first": 5,
+   "pool": 21,
+   "where": "mi",
+   "sk": [
+    "flying",
+    "diurnal"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ent",
+   "name": "Ent",
+   "r": "rare",
+   "bucket": "skirmish-p4",
+   "adv": 21,
+   "first": 0,
+   "pool": 21,
+   "where": "mo",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "r": "rare",
+   "bucket": "skirmish-p4",
+   "adv": 21,
+   "first": 17,
+   "pool": 21,
+   "where": "mi",
+   "sk": [
+    "carrion",
+    "armor",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "r": "veryrare",
+   "bucket": "pack-p4",
+   "adv": 21,
+   "first": 21,
+   "pool": 21,
+   "where": "m21",
+   "sk": [
+    "mountainClimber"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "r": "uncommon",
+   "bucket": "pack-p4",
+   "adv": 22,
+   "first": 22,
+   "pool": 22,
+   "where": "m22",
+   "sk": [
+    "iceBolt"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "name": "Ashwing Ptarmigan",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 22,
+   "first": 22,
+   "pool": null,
+   "where": "m22",
+   "sk": [
+    "flying"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "rimefire-salamander",
+   "name": "Rimefire Salamander",
+   "r": "rare",
+   "bucket": "skirmish-p4",
+   "adv": 22,
+   "first": 22,
+   "pool": 22,
+   "where": "m22",
+   "sk": [
+    "fireArrow",
+    "iceArrow"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "weathervane-swift",
+   "name": "Weathervane Swift",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 22,
+   "first": 22,
+   "pool": null,
+   "where": "m22",
+   "sk": [
+    "fieldBreaker"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "r": "veryrare",
+   "bucket": "skirmish-p4",
+   "adv": 22,
+   "first": 22,
+   "pool": 22,
+   "where": "m22",
+   "sk": [
+    "overwhelm",
+    "rage"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "r": "superrare",
+   "bucket": "skirmish-p4",
+   "adv": 22,
+   "first": 22,
+   "pool": 22,
+   "where": "m22",
+   "sk": [
+    "pounce"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "howdah-archers",
+   "name": "Howdah Archers",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": 23,
+   "where": "m23",
+   "sk": [
+    "arrow"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "marching-elephant",
+   "name": "Marching Elephant",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": null,
+   "where": "m23",
+   "sk": [
+    "overwhelm",
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "testudo-tortoise",
+   "name": "Testudo Tortoise",
+   "r": "rare",
+   "bucket": "skirmish-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": 23,
+   "where": "m23",
+   "sk": [
+    "armor",
+    "guardian"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "trebuchet-crew",
+   "name": "Trebuchet Crew",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": 23,
+   "where": "m23",
+   "sk": [
+    "volley",
+    "siege"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "werebadger",
+   "name": "Werebadger",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": null,
+   "where": "m23",
+   "sk": [
+    "transform"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "r": "superrare",
+   "bucket": "skirmish-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": 23,
+   "where": "m23",
+   "sk": [
+    "armor",
+    "arrow"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "r": "epic",
+   "bucket": "skirmish-p4",
+   "adv": 23,
+   "first": 19,
+   "pool": 23,
+   "where": "m9",
+   "sk": [
+    "revive",
+    "pierce"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "triumvirate",
+   "name": "Triumphvirate",
+   "r": "unique",
+   "bucket": "skirmish-p4",
+   "adv": 23,
+   "first": 23,
+   "pool": null,
+   "where": "m23",
+   "sk": [
+    "dictator",
+    "inspiring"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "r": "uncommon",
+   "bucket": "pack-p4",
+   "adv": 24,
+   "first": 24,
+   "pool": 24,
+   "where": "m24",
+   "sk": [
+    "swipe",
+    "hoard",
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "r": "rare",
+   "bucket": "skirmish-p4",
+   "adv": 24,
+   "first": 24,
+   "pool": 24,
+   "where": "m24",
+   "sk": [
+    "arrow",
+    "sentry"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 24,
+   "first": 24,
+   "pool": 24,
+   "where": "m24",
+   "sk": [
+    "taunt",
+    "sentry"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "mallard-halberdier",
+   "name": "Mallard Halberdier",
+   "r": "rare",
+   "bucket": "pack-p4",
+   "adv": 24,
+   "first": 24,
+   "pool": 24,
+   "where": "m24",
+   "sk": [
+    "reach",
+    "pierce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "gilded-swan-knight",
+   "name": "Gilded Swan Knight",
+   "r": "superrare",
+   "bucket": "skirmish-p4",
+   "adv": 24,
+   "first": 24,
+   "pool": 24,
+   "where": "m24",
+   "sk": [
+    "armor",
+    "inspiring"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "r": "epic",
+   "bucket": "pack-p4",
+   "adv": 24,
+   "first": 24,
+   "pool": null,
+   "where": "m24",
+   "sk": [
+    "armor",
+    "midas",
+    "hoard",
+    "king"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "aye-aye-prowler",
+   "name": "Aye-aye Prowler",
+   "r": "common",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "sunshy"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "great-gate",
+   "name": "Great Gate",
+   "r": "common",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "guardian"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hellbender",
+   "name": "Hellbender",
+   "r": "common",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 23,
+   "where": "m9",
+   "sk": [
+    "coreEvil"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "helmeted-otter",
+   "name": "Helmeted Otter",
+   "r": "common",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "helmet"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "r": "common",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide",
+    "moonpull",
+    "poison"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "r": "common",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "shell"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "slow-loris",
+   "name": "Slow Loris",
+   "r": "common",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "feeble"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "trigger"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "chained-binturong",
+   "name": "Chained Binturong",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 23,
+   "where": "m9",
+   "sk": [
+    "chained"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "chapel-tortoise",
+   "name": "Chapel Tortoise",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "prayer",
+    "prayerWard"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "chilli-parrot",
+   "name": "Chilli Parrot",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "chilli"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "flagellant-vulture",
+   "name": "Flagellant Vulture",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 23,
+   "where": "m9",
+   "sk": [
+    "penance"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "fruit-bat-familiar",
+   "name": "Fruit-bat Familiar",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 23,
+   "where": "m9",
+   "sk": [
+    "inherentDarkness"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "glintsnatch-magpie",
+   "name": "Glintsnatch Magpie",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "disarm",
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "glowing-gecko",
+   "name": "Glowing Gecko",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "irradiated"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "r": "uncommon",
+   "bucket": "factionHummingbird",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "pierce",
+    "bleed"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "leaf-chameleon",
+   "name": "Leaf Chameleon",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "invisible"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "oilbird",
+   "name": "Oilbird",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 16,
+   "where": "mn",
+   "sk": [
+    "sonar"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "otter-flag-bearer",
+   "name": "Otter Flag Bearer",
+   "r": "uncommon",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "inspiring"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "otter-lantern-bearer",
+   "name": "Otter Lantern Bearer",
+   "r": "uncommon",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "illuminate"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "riverbed-diver",
+   "name": "Riverbed Diver",
+   "r": "uncommon",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "evasive"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "r": "uncommon",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "kinRally"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "vampire-finch",
+   "name": "Vampire Finch",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 23,
+   "where": "m9",
+   "sk": [
+    "bloodTithe"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "velvet-worm",
+   "name": "Velvet Worm",
+   "r": "uncommon",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": 18,
+   "where": "my",
+   "sk": [
+    "ichor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "wither"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "geode-scorpion",
+   "name": "Geode Scorpion",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "crystallise"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "gloom-gibbon",
+   "name": "Gloom Gibbon",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "shade"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "nullify"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "ironclaw-fiddler",
+   "name": "Ironclaw Fiddler",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide",
+    "bludgeon",
+    "armor"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "leopard-seal",
+   "name": "Leopard Seal",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "predator"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "lichen-tortoise",
+   "name": "Lichen Tortoise",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "natureForce"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "magnet",
+   "name": "Magnet",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "mirrorhide-mutant",
+   "name": "Mirrorhide Mutant",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "mimic"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "petrified-tree",
+   "name": "Petrified Tree",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "trigger"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "r": "rare",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "smoke-screen",
+   "name": "Smoke Screen",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "r": "rare",
+   "bucket": "factionHummingbird",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "esprit",
+    "flying"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "nova"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "swordbill-challenger",
+   "name": "Swordbill Challenger",
+   "r": "rare",
+   "bucket": "factionHummingbird",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "taunt",
+    "counterattack"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "tardigrade",
+   "name": "Tardigrade",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "invincible"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "wandering-mage",
+   "name": "Wandering Mage",
+   "r": "rare",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "leader",
+    "magic"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "r": "superrare",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor",
+    "boomerang"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "grave-call",
+   "name": "Grave Call",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [],
+   "lvl": 1
+  },
+  {
+   "id": "ice-fish",
+   "name": "Ice Fish",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "absoluteZero"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor",
+    "overwhelm",
+    "inspiring",
+    "vanguard"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "immolation",
+    "freeze",
+    "armor",
+    "frostbite"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "fireball"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "tsunami"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "r": "epic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "dragonLightning"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "r": "heroic",
+   "bucket": "factionOtter",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor",
+    "kinship"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "r": "heroic",
+   "bucket": "factionHummingbird",
+   "adv": null,
+   "first": 5,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "flying",
+    "esprit"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "r": "heroic",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "armor",
+    "trigger",
+    "pounce"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "ashmantle-fiend",
+   "name": "Ashmantle Fiend",
+   "r": "unique",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "immolation",
+    "shade",
+    "scare"
+   ],
+   "lvl": 1,
+   "lava": true
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "name": "Grovebearer Dragon-Turtle",
+   "r": "legendary",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "sturdy",
+    "regen",
+    "guardian",
+    "sprout",
+    "tide"
+   ],
+   "lvl": 1
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "r": "legendary",
+   "bucket": "unsorted",
+   "adv": null,
+   "first": 0,
+   "pool": null,
+   "where": "",
+   "sk": [
+    "meteor"
+   ],
+   "lvl": 1
+  }
+ ]
+}
