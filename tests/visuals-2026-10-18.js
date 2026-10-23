@@ -19,7 +19,7 @@ ok(/try\{ syncTideScene\(matchState\); \}catch\(e\)\{\} \/\/ the standing Tide: 
 ok(/function tideWaveVfx\(kind\)\{[\s\S]{0,600}tideSceneSet\(matchState/.test(src), 'a tide event moves the water');
 ok(/if\(!\(m\.resolving && m\._tideScene\)\)/.test(src), 'while a round replays, the water waits for the tide event');
 // 2026-10-18 (package M): the tilt is named (TIDE_RISE_SKEW on a Flood coming in, TIDE_BASE_SKEW otherwise; tests/m-2026-10-19.js)
-ok(/const rising = TIDE_SCENE_RANK\[st\.k\] > TIDE_SCENE_RANK\[st\.from\]/.test(src) && /'--tw-skew', \(flooding \? TIDE_RISE_SKEW : rising \? TIDE_BASE_SKEW : -TIDE_BASE_SKEW\)/.test(src), 'the water comes in from the left (skew by direction)');
+ok(/const rising = TIDE_SCENE_RANK\[st\.k\] > TIDE_SCENE_RANK\[st\.from\]/.test(src) && /const tilt = flooding \? \(st\.tilt != null \? st\.tilt : tideRiseTilt\(\)\) : \(rising \? ebbDeg : -ebbDeg\);/.test(src) && /'--tw-skew', tilt\.toFixed\(2\) \+ 'deg'/.test(src), 'the water comes in tilted (2026-10-24, BV: a Flood picks its high side, an Ebb leans a few px)');
 ['.tide-scene{', '.tw-sheet', '.tw-water', '.tw-caus', '.tw-edge', '.tw-wet', '.tw-sheen', '.board-card .unit-wet', '.board-card > .swim-splash', '@keyframes twMoveA', '@keyframes twMoveB', '@keyframes twDryA', '@keyframes twSurgeA', '@keyframes twWetIn', '@keyframes twSettleA', '@keyframes tideLift{']
   .forEach(k=> ok(tpl.includes(k), 'tide CSS: ' + k));
 // 2026-10-18 (package M follow-up, "The ebb effect should grow into the tide effect"): the level is the translate, the tilt ramps in and out

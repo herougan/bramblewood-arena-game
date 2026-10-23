@@ -1749,8 +1749,115 @@ M.ownsSpawn = function(ev){
 // Defeat: your own castle shudders and sinks into the ground (SkillFX.castleCrumble 'sink', the lab's castle-crumble-variants B).
 // arena_app awaits info.wait before the end sign, like the enemy castle's crumble.
 M.hooks.castleFallMine = function(el, info, env){
-  if(!el || !info || !env.fxAtLeast('med') || !(root.SkillFX && SkillFX.castleCrumble)) return;
-  try{ SkillFX.castleCrumble(el, {variant:'sink', restore:false}); snd('castleCollapse'); info.wait = 1500; }catch(e){}
+  if(!el || !info || !env.fxAtLeast('med')) return;
+  // 2026-10-24 (package BV, owner 19:30: "castle destruction consistent for both sides = drop-into-ground with dust (not crumbling)"):
+  // your bramble and theirs fall the same way now, FX.C.castleSink below.
+  try{ M.castleSink(el, {host:document.querySelector('.battlefield')}); snd('castleCollapse'); info.wait = CASTLE_SINK_MS; }catch(e){}
+};
+// The bramble drops into the ground (2026-10-24, package BV, owner 19:30: "both sides use the 'drops into the ground' version with a
+// dust animation (drop the laggy crumble)"). One look for either side's bramble when it falls: it shudders, the ground cracks along its
+// foot, and it sinks straight down through that line (the part below it is clipped away, so it goes INTO the ground), tipping a
+// little, while a bank of dust rolls out from its foot both ways and a few pebbles hop out; as the top goes under, a last puff of dust
+// closes over the hole and the crack fades. Transforms, opacity and one clip-path on the falling card; about 25 soft puffs; nothing
+// per frame in script (the old enemy crumble, ProcFX.crumble, ate the card cell by cell on the main thread). The card stays down
+// (hidden) when it ends, unless opts.restore (the Effects Lab). opts: host (shaken a little as it lands), restore, speed, onDone.
+const CASTLE_SINK_MS = 1900;
+css('castle-sink', `
+.fxc-sinkcrack{overflow:visible;} .fxc-sinkcrack polyline{fill:none; stroke:#2b2016; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round;}
+.fxc-sinkcrack polyline.lite{stroke:rgba(255,236,200,.35); stroke-width:1; transform:translateY(1.4px);}
+.fxc-sink-dust{border-radius:50%; will-change:transform,opacity; filter:blur(1.5px);}`);
+M.castleSink = function(el, opts){
+  opts = opts || {}; const g = G(), t = tileOf(el);
+  if(!g || !t || !t.isConnected){ call(opts.onDone); return Promise.resolve(); }
+  const c = centre(t); if(!c.w){ call(opts.onDone); return Promise.resolve(); }
+  const base = c.r.bottom - 2, h = c.h, w = c.w, tip = rnd(2, 3.5)*(Math.random() < .5 ? -1 : 1);
+  g.killTweensOf(t);
+  return run(opts, (tl, mk, bag)=>{
+    // 1. the shudder, a trickle of grit at its foot
+    tl.to(t, {keyframes:[{x:-3, duration:.045}, {x:3, duration:.045}, {x:-2, duration:.045}, {x:2, duration:.045}, {x:0, duration:.045}]}, 0);
+    puffs(tl, mk, .05, c.x, base, {n:3, w:w*.7, size:[10, 16], rise:-8, drift:10, dur:[.5, .7], color:'rgba(150,128,96,.55)', alpha:.7});
+    // 2. the ground cracks along its foot, from the middle out
+    const cw = w*1.5, sv = svgNode('svg', {class:'fxc fxc-sinkcrack', width:Math.ceil(cw), height:16, viewBox:`0 0 ${Math.ceil(cw)} 16`}); document.body.appendChild(sv); bag.push(sv);
+    const pts = zig(0, 8, cw, 8, 9, 3.2); svgNode('polyline', {points:pts}, sv); svgNode('polyline', {points:pts, class:'lite'}, sv);
+    tl.set(sv, {x:c.x - cw/2, y:base - 8, scaleX:0, opacity:1, transformOrigin:'50% 50%'}, .12);
+    tl.to(sv, {scaleX:1, duration:.3, ease:'power2.out'}, .12);
+    // 3. it sinks through that line: the move and the clip share one tween (and one ease), so only the part above the ground shows
+    tl.fromTo(t, {y:0, rotation:0, clipPath:'inset(-30% -30% 0% -30%)'}, {y:h, rotation:tip, clipPath:'inset(-30% -30% 100% -30%)', duration:.95, ease:'power2.in'}, .26);
+    tl.to(t, {keyframes:[{x:-2.5, duration:.05}, {x:2.5, duration:.05}, {x:-1, duration:.05}, {x:0, duration:.05}]}, .62);
+    // 4. the dust bank rolls out from its foot both ways (the near puffs first), and a few pebbles hop out
+    for(let i = 0; i < 12; i++){ const f = (i + .5)/12 - .5, p = mk('fxc-sink-dust'), s = rnd(22, 40), t0 = .3 + Math.abs(f)*.35 + rnd(0, .08), dur = rnd(.9, 1.3);
+      p.style.width = p.style.height = s.toFixed(0) + 'px'; p.style.background = 'radial-gradient(circle, rgba(160,138,104,.78) 0, rgba(160,138,104,0) 70%)';
+      tl.set(p, {x:c.x + f*w*.9, y:base - 4, xPercent:-50, yPercent:-50, scale:.35, opacity:0}, t0);
+      tl.to(p, {opacity:.95, duration:.1}, t0);
+      tl.to(p, {x:c.x + f*w*.9 + Math.sign(f || rnd(-1, 1))*rnd(30, 70)*(.5 + Math.abs(f)), y:base - rnd(10, 30), scale:rnd(1.6, 2.4), duration:dur, ease:'power2.out'}, t0);
+      tl.to(p, {opacity:0, duration:dur*.55, ease:'power1.in'}, t0 + dur*.45); }
+    puffs(tl, mk, .45, c.x, base - 6, {n:5, w:w*.9, size:[34, 56], rise:-26, drift:26, dur:[1.2, 1.6], color:'rgba(128,116,98,.5)', alpha:.75, stagger:.06});
+    spray(tl, mk, .36, c.x, base - 2, {n:9, colors:['#6b5a44', '#8a7556', '#4e4234'], size:[3, 6], angle:-90, arc:150, dist:[22, 58], gravity:46, dur:[.55, .85], shard:true, stagger:.03});
+    // 5. the top goes under: a last puff closes over the hole, the ground jolts, the crack fades
+    puffs(tl, mk, 1.12, c.x, base - 4, {n:6, w:w*.55, size:[30, 52], rise:-42, drift:18, dur:[.9, 1.2], color:'rgba(170,148,112,.7)', alpha:.85, stagger:.03});
+    ringAt(tl, mk, 1.14, c.x, base, {from:w*.4, to:w*2.2, squash:.28, color:'rgba(150,128,96,.55)', width:4, dur:.7});
+    tl.add(()=>{ if(opts.host && g) g.fromTo(opts.host, {y:0}, {keyframes:[{y:3, duration:.05}, {y:-2, duration:.05}, {y:1, duration:.05}, {y:0, duration:.06}], clearProps:'y'}); }, 1.16);
+    tl.to(sv, {opacity:0, duration:.55}, 1.3);
+    tl.set(t, {opacity:0, visibility:'hidden'}, 1.22);
+    tl.to({}, {duration:.01}, CASTLE_SINK_MS/1000 - .01);
+    if(opts.restore) tl.add(()=>{ g.set(t, {clearProps:'opacity,visibility,transform,clipPath'}); g.fromTo(t, {opacity:0}, {opacity:1, duration:.3}); }, CASTLE_SINK_MS/1000);
+  });
+};
+M.CASTLE_SINK_MS = CASTLE_SINK_MS;
+// Smoke Bomb (2026-10-24, package BV, owner 19:39: "improve the smoke bomb and smoke animations"; it was a grey ball and seven puffs,
+// SkillFX.smokeBomb). A real little bomb: a dark round shell with a sputtering fuse, lobbed high in a spinning arc that trails fuse
+// smoke; it lands with a soft white pop and bursts into a ring of billows that roll outward fast and then hang, a denser column rising
+// out of the middle, the target ducking under it. The cloud's colour says what it did: pale for an ally hidden in Smoke, a darker,
+// heavier grey for an enemy Blinded, thin and quickly gone when it sniffed it off. opts: effect ('smoke' | 'blind' | 'none'),
+// onImpact (as it bursts), speed, onDone. Soft blobs (radial gradients) and transforms only; no filter on the cards.
+const SMOKE_LOOK = {smoke:{core:'rgba(236,238,242,.95)', rim:'rgba(196,201,209,.8)', n:10, hang:1}, blind:{core:'rgba(122,127,138,.95)', rim:'rgba(84,88,98,.85)', n:12, hang:1.15},
+  none:{core:'rgba(214,217,222,.8)', rim:'rgba(180,184,192,.6)', n:7, hang:.6}};
+css('smoke-bomb', `
+.fxc-sbomb{width:17px; height:17px; border-radius:50%; background:radial-gradient(circle at 36% 32%, #b8bec7 0, #565c65 30%, #23272d 62%, #0f1114 100%); box-shadow:inset -2px -3px 4px rgba(0,0,0,.45), 0 2px 3px rgba(0,0,0,.35);}
+.fxc-sbomb::before{content:''; position:absolute; left:10px; top:-5px; width:3px; height:7px; border-radius:2px; background:linear-gradient(#8a6a44, #4b3824); transform:rotate(28deg); transform-origin:50% 100%;}
+.fxc-sbomb::after{content:''; position:absolute; left:12px; top:-9px; width:7px; height:7px; border-radius:50%; background:radial-gradient(circle, #fff7c2 0, #ffcf4a 35%, rgba(255,120,30,.0) 70%); animation:fxcFuse .09s steps(2) infinite alternate;}
+@keyframes fxcFuse{from{transform:scale(.7); opacity:.75;} to{transform:scale(1.25); opacity:1;}}
+.fxc-sblob{border-radius:50%; will-change:transform,opacity;}
+@media (prefers-reduced-motion: reduce){ .fxc-sbomb::after{animation:none;} }`);
+function smokeBlob(mk, s, look, dense){ const p = mk('fxc-sblob'); p.style.width = p.style.height = s.toFixed(0) + 'px';
+  p.style.background = `radial-gradient(circle at 42% 38%, ${dense ? look.rim : look.core} 0, ${look.rim} 38%, ${look.rim.replace(/[\d.]+\)$/, '0)')} 70%)`; return p; }
+M.smokeBomb = function(thrower, target, opts){
+  opts = opts || {}; const g = G(); const look = SMOKE_LOOK[opts.effect] || SMOKE_LOOK.smoke;
+  if(!g || !thrower || !target){ later(opts.onImpact, 400); call(opts.onDone); return Promise.resolve(); }
+  const a = centre(tileOf(thrower)), b = centre(tileOf(target)); if(!a.w || !b.w){ call(opts.onImpact); call(opts.onDone); return Promise.resolve(); }
+  const apex = {x:(a.x + b.x)/2 + rnd(-20, 20), y:Math.min(a.r.top, b.r.top) - rnd(70, 110)}, FLY = .56, R = Math.max(b.w, b.h*.8);
+  const at = k=>{ const u = 1 - k; return {x:u*u*a.x + 2*u*k*apex.x + k*k*b.x, y:u*u*a.y + 2*u*k*apex.y + k*k*(b.y - b.h*.05)}; };
+  return run(opts, (tl, mk)=>{
+    // the throw: the bomb arcs over, turning, its fuse spitting little wisps behind it
+    const bm = mk('fxc-sbomb'), s = {k:0};
+    tl.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50, scale:.7, opacity:1}, 0);
+    tl.to(s, {k:1, duration:FLY, ease:'power1.in', onUpdate:()=>{ const q = at(s.k); g.set(bm, {x:q.x, y:q.y}); }}, 0);
+    tl.to(bm, {rotation:rnd(430, 560), scale:1.05, duration:FLY, ease:'none'}, 0);
+    for(let i = 1; i <= 9; i++){ const k = i/10, q = at(k), w = smokeBlob(mk, rnd(7, 11), SMOKE_LOOK.smoke), t0 = FLY*(k*k*.6 + k*.4);
+      tl.set(w, {x:q.x + 5, y:q.y - 8, xPercent:-50, yPercent:-50, scale:.5, opacity:0}, t0);
+      tl.to(w, {opacity:.7, duration:.05}, t0).to(w, {y:'-=' + rnd(8, 16), x:'+=' + rnd(-6, 6), scale:rnd(1.6, 2.2), opacity:0, duration:rnd(.45, .7), ease:'power1.out'}, t0 + .05); }
+    tl.set(bm, {opacity:0}, FLY);
+    // the burst: a soft pop, then a ring of billows thrown out fast that slow and hang, and a denser column out of the middle
+    tl.add(()=> call(opts.onImpact), FLY);
+    flashAt(tl, mk, FLY, b.x, b.y, R*1.1, R*1.1, 'rgba(255,255,255,.85)', .16);
+    ringAt(tl, mk, FLY, b.x, b.y, {from:R*.3, to:R*1.9, color:look.rim, width:5, dur:.45, ease:'power3.out', alpha:.7});
+    for(let i = 0; i < look.n; i++){ const ang = (i/look.n)*Math.PI*2 + rnd(-.25, .25), d = R*rnd(.42, .62), s0 = rnd(30, 46), p = smokeBlob(mk, s0, look), hold = rnd(1.1, 1.5)*look.hang, t0 = FLY + rnd(0, .05);
+      tl.set(p, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, scale:.3, opacity:0}, t0);
+      tl.to(p, {opacity:.92, duration:.07}, t0);
+      tl.to(p, {x:b.x + Math.cos(ang)*d, y:b.y + Math.sin(ang)*d*.72, scale:rnd(1.5, 1.9), duration:.42, ease:'power3.out'}, t0);
+      tl.to(p, {x:'+=' + (Math.cos(ang)*rnd(6, 16)).toFixed(1), y:'-=' + rnd(8, 22).toFixed(1), scale:'+=' + rnd(.3, .6).toFixed(2), duration:hold, ease:'sine.out'}, t0 + .42);
+      tl.to(p, {opacity:0, duration:hold*.6, ease:'power1.in'}, t0 + .42 + hold*.4); }
+    for(let i = 0; i < 5; i++){ const p = smokeBlob(mk, rnd(34, 52), look, true), t0 = FLY + .03 + i*.05, hold = rnd(1, 1.3)*look.hang;
+      tl.set(p, {x:b.x + rnd(-b.w*.18, b.w*.18), y:b.y + b.h*.12, xPercent:-50, yPercent:-50, scale:.4, opacity:0}, t0);
+      tl.to(p, {opacity:.95, duration:.08}, t0);
+      tl.to(p, {y:b.y - b.h*rnd(.15, .45), x:'+=' + rnd(-10, 10).toFixed(1), scale:rnd(1.7, 2.3), duration:hold, ease:'power2.out'}, t0);
+      tl.to(p, {opacity:0, duration:hold*.55, ease:'power1.in'}, t0 + hold*.45); }
+    spray(tl, mk, FLY, b.x, b.y, {n:6, colors:['#fff2b8', '#ffd25a', '#ffffff'], size:[2, 4], dist:[18, 40], dur:[.25, .4]});
+    // the target ducks under it (the face's own squash, cleared at the end)
+    const ft = tileOf(target);
+    tl.fromTo(ft, {scaleX:1, scaleY:1}, {scaleX:1.05, scaleY:.93, duration:.07, ease:'power2.out', transformOrigin:'50% 100%'}, FLY)
+      .to(ft, {scaleX:1, scaleY:1, duration:.32, ease:'elastic.out(1, .5)', clearProps:'transform'}, FLY + .07);
+  });
 };
 M.hooks.castleSpeech = function(el, text, info, env){ if(!env || !env.fxAtLeast('med') || !info) return; info.handled = true; M.castleSpeech(el, text); };
 const SKIP_OWN = new Set(['frozen', 'asleep', 'paralyzed', 'stunned', 'chained', 'petrified', 'shell', 'ritual', 'zeroAttack']);

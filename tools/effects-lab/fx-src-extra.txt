@@ -65,6 +65,13 @@ tideSceneSet
 syncTideScene
 TIDE_EBB_OFFSET
 tideSceneY
+# 2026-10-24 (package BV): a Flood's random high side, no arrival swell, the Ebb's few-px lean (manifest/bv.js)
+TIDE_ARRIVE_SWELL_BV
+TIDE_RISE_TILT_MAX
+tideRiseTilt
+TIDE_FLOOD_LIFT
+SKY_CREEP_BV
+SKY_PHASE_EASE
 # 2026-10-21 (package LAB2): the day's visual effects, so the Lab's "Built 10-21" tab plays the game's own code.
 # TR: the Crown (take / drop / liege / steal / fade sprites, the 👑 badge) and the named Transforms (Gilded's sheen and falling leaf, the rings)
 TRANSFORM_ICON

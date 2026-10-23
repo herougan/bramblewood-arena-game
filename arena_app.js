@@ -8359,7 +8359,10 @@ function abilityBadges(d, bopts){
   if(e.bounty) out.push(`<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
   if(e.explode) out.push(`${iconHTML('explode', '💣')}${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
-  if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${n1(e.armor)}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
+  // 2026-10-24 (package BV, owner 13:16 #21: "Snail shields aren't centred; at 5+ show one shield with a number (like lumber)"): up
+  // to 4 shields overlap by half, evenly, inside their pip (.ab-stack: they used to pile up to the left, out of it); 5 or more are one
+  // shield with the number set over it, as a 5+ Lumber cost is (.is-num, the .pips.is-res-num look).
+  if(e.armor){ const na = Math.max(0, Math.round(+e.armor) || 0); if(na > 0) out.push(na >= 5 ? `<span class="ab-shields is-num" data-n="${na}" title="Armor ${na}"><i>🛡</i><b>${na}</b></span>` : `<span class="ab-shields ab-stack" data-n="${na}">${'<i>🛡</i>'.repeat(na)}</span>`); } // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
   if(e.thorns) out.push(`${iconHTML('thorns', '🌵')}${n1(e.thorns)}`);
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
@@ -8540,8 +8543,7 @@ function abilityBadges(d, bopts){
   // Tailwind also lights a Quick boot beside it (its own Quick boot when it has one), so the card reads wing + quick; a Headwind marks
   // the wing ×2 (skills twice). See liveWindState.
   const lw = e.flying && bopts && bopts.live ? liveWindState(bopts.live.pid) : null;
-  if(e.flying) out.push(lw ? `<span class="ab-wing wind-live wind-${lw.k}" title="${escapeAttr((lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')))}">${iconHTML('flying', '🪽')}${lw.k === 'head' ? '<b class="wind-x2">×2</b>' : ''}</span>` : `<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
-  if(e.quick || (lw && lw.k === 'tail')) out.push(lw && lw.k === 'tail' ? `<span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span>` : `<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
+  out.push(...flyerWindPips(e, lw)); // the wing and the Quick boot (2026-10-24, package BV: under the wind they share one pip)
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
@@ -32911,6 +32913,8 @@ function tryFacingHover(c, n){
   if(!facingCardBusy(c)){ showFacing(c.dataset.uid); return; }
   if(n < FACING_RETRY_MAX) facingRetryT = setTimeout(()=>{ const cur = facingHoverUid != null ? boardCardEl(facingHoverUid) : null; tryFacingHover(cur && cur.matches(':hover') ? cur : null, n + 1); }, FACING_RETRY_MS);
 }
+function castleFallenNow(side, hp){ try{ const m = matchState; return !!(m && !(hp > 0) && m.mode !== 'sandbox' && (m.over || (m._castleGone && m._castleGone[side]))); }catch(e){ return false; } }
+function noteCastleGone(side){ try{ const m = matchState; if(!m) return; (m._castleGone = m._castleGone || {})[side] = true; const t = hqTileEl(side); if(t) t.classList.add('castle-fallen'); }catch(e){} }
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   const def = charDef || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:maxHp};
   // Some Conquest/Raid opponents are given a bare placeholder character with no real Bramble
@@ -32925,7 +32929,10 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
     isCastle: true,
     liveHp: hp,
     sideLabel: sideLabel,
-    extraClass: 'match-castle-tile' + (def.id === 'raid-castles' || def.raidMerged ? ' raid-castles' : ''), // raidMerged: "<your castle> & Co." (2026-10-18)
+    extraClass: 'match-castle-tile' + (def.id === 'raid-castles' || def.raidMerged ? ' raid-castles' : '') // raidMerged: "<your castle> & Co." (2026-10-18)
+      // 2026-10-24 (package BV, owner 19:30: "post-battle analysis must not show the castle back at 0 HP, it stays gone"): once the match
+      // is over, a bramble at 0 Health is drawn fallen (gone into the ground, its spot left empty) on every redraw of the board.
+      + (castleFallenNow(hqSide, hp) ? ' castle-fallen' : ''),
     // No native `title` here (2026-09-30) -- castleHoverHTML now gives this tile the same rich
     // popover every other card gets; stacking a plain browser title tooltip on top of it is
     // exactly the double-tooltip bug already fixed once this session for the leader widget.
@@ -35452,10 +35459,16 @@ function setBoardLean(lean, scale, panMax){
   if(panMax > 0.5){ lo = -panMax; hi = panMax; }
   lo = Math.min(lo, 0); hi = Math.max(hi, 0);
   battlefieldPanLo = lo; battlefieldPanHi = hi;
-  const skew = lean.c*scale; // how far the cards' centre sits from the middle, on screen
-  battlefieldLeanX = Math.abs(skew) < 18 ? 0 : Math.max(lo, Math.min(hi, -0.4*skew));
-  const reduce = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || (typeof fxAtLeast==='function' && !fxAtLeast('med')); // low effects setting: no turn either
-  battlefieldTilt = (reduce || Math.abs(skew) < 18) ? 0 : Math.max(-3, Math.min(3, (skew/half)*6));
+  // 2026-10-24 (package BV, owner 17:01 #6: "The battlefield should only move to zoom out or capture cards outside the field of
+  // vision"): the camera no longer leans 40% of the way toward the cards' centre nor turns toward them (both moved the board on a
+  // play that needed no move). It shifts only as far as it takes to bring cards that would sit outside the frame (24 px margin)
+  // into view, and not at all when they all fit. A span wider than the frame is centred on the cards.
+  const L = -half + margin, Rr = half - margin, a = lean.minX*scale, b = lean.maxX*scale;
+  let need = 0;
+  if(b - a > Rr - L) need = -(a + b)/2; // wider than the frame: centre on the cards
+  else if(a < L) need = L - a; else if(b > Rr) need = Rr - b;
+  battlefieldLeanX = Math.abs(need) < 0.5 ? 0 : Math.max(lo, Math.min(hi, need));
+  battlefieldTilt = 0;
 }
 // The raid's camera is fixed (2026-10-18, user: "the raid shouldnt keep zooming in and out when i place a card"): the three-row board is
 // framed once and keeps that scale for the whole fight; it is framed again only when the window changes size (or the board grows past
@@ -36300,7 +36313,7 @@ function boardCardHTML(c, defs, opts){
       ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
       ${c.paralyzed>0?`<div class="status-overlay paralyze-overlay">⚡</div>`:''}
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
-      ${c.smoke>0?`<div class="status-overlay smoke-overlay" aria-hidden="true"></div>`:''}
+      ${c.smoke>0?`<div class="status-overlay smoke-overlay" aria-hidden="true">${SMOKE_BILLOWS_HTML}</div>`:''}
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
@@ -36846,8 +36859,14 @@ function syncWindField(m){
     const W = window.SkillFX; if(!W || !W.windField) return;
     if(!m || m.over){ W.windFieldClear(bf); return; }
     const w = m._windNow, rules = matchFieldRules(m) || {}, mode = rules.wind;
-    if(w && w.windy) W.windField(bf, 'strong', w.mine ? 'north' : 'south');
-    else if(mode === 'windy' && m._windLastMine != null) W.windField(bf, 'soft', m._windLastMine ? 'north' : 'south');
+    // 2026-10-24 (package BV, owner 17:34 #1): when the wind changes direction, the lines on the board turn (FX.B.windTurn: a few
+    // draw in, then out the other way) instead of the layer being swapped at once; while it turns, a redraw leaves it alone.
+    if(bf.dataset.windTurning) return;
+    const want = w && w.windy ? ['strong', w.mine ? 'north' : 'south'] : (mode === 'windy' && m._windLastMine != null) ? ['soft', m._windLastMine ? 'north' : 'south'] : null;
+    const cur = bf.querySelector(':scope > .sfx-windfield:not(.is-out)'), curDir = cur && (cur.dataset.key || '').split(':')[1];
+    const B = window.FX && FX.B;
+    if(want && cur && curDir && curDir !== want[1] && B && B.windTurn && fxAtLeast('med') && !reducedMotion()){ B.windTurn(bf, {strength: want[0], dir: want[1]}); return; }
+    if(want) W.windField(bf, want[0], want[1]);
     else W.windFieldClear(bf);
   }catch(e){}
 }
@@ -37534,7 +37553,24 @@ function playAnimWatchdog(){
   handFlightDue.forEach((f, uid)=>{ if(now < f.due) return; handFlightDue.delete(uid); if(f.squash ? f.land() : handFlightsLive.has(uid) && (f.land(), true)){ w.fixed++; w.last = {kind: f.squash ? 'squash' : 'flight', uid}; } });
   document.querySelectorAll('.board-card[data-uid]').forEach(el=>{ if(el.style.visibility === 'hidden' && !handFlightsLive.has(String(el.getAttribute('data-uid')))){ el.style.visibility = ''; w.fixed++; w.last = {kind:'hidden', uid: el.getAttribute('data-uid')}; } });
   if(!handFlightsLive.size) document.querySelectorAll('.hand-flight-proxy').forEach(p=>{ p.remove(); w.fixed++; w.last = {kind:'proxy'}; });
+  // 2026-10-24 (package BV, owner 13:16 #1, "Cards freeze mid-way when played (elongated or squished)"): a board card's face left
+  // squashed, stretched, scaled or nudged with nothing animating it (an interrupted flourish: see animateAttacker's kill) is eased
+  // back to rest once it has sat like that for two checks in a row (~0.4 s). Its last odd pose is remembered per face (tileRestSeen).
+  document.querySelectorAll('#battlefieldInner .board-card[data-uid] > .card-tile, #battlefieldInner .board-card[data-uid] > .float-body > .card-tile').forEach(t=>{
+    const card = t.closest('.board-card'); if(!card || card.matches('.falling, .burning, .bleeding, .ghost-preview, .is-entering, .is-attacking')) { tileRestSeen.delete(t); return; }
+    if(gsap.isTweening(t) || attackingUids.has(String(card.dataset.uid))){ tileRestSeen.delete(t); return; }
+    let off = false; const st = t.style;
+    if(!((st.transform && st.transform !== 'none') || st.scale || st.translate || st.rotate)){ tileRestSeen.delete(t); return; } // only a pose GSAP left inline (CSS idle loops are the stylesheet's)
+    try{ const sx = +gsap.getProperty(t, 'scaleX'), sy = +gsap.getProperty(t, 'scaleY'), x = +gsap.getProperty(t, 'x') || 0, y = +gsap.getProperty(t, 'y') || 0, r = +gsap.getProperty(t, 'rotation') || 0;
+      off = Math.abs(sx - 1) > 0.01 || Math.abs(sy - 1) > 0.01 || Math.abs(x) > 1 || Math.abs(y) > 1 || Math.abs(r) > 0.5; }catch(e){}
+    if(!off){ tileRestSeen.delete(t); return; }
+    const n = (tileRestSeen.get(t) || 0) + 1; tileRestSeen.set(t, n); if(n < 2) return;
+    tileRestSeen.delete(t);
+    gsap.to(t, {scaleX:1, scaleY:1, x:0, y:0, rotation:0, duration:.18, ease:'power2.out', clearProps:'transform,scale,translate,rotate'});
+    w.fixed++; w.last = {kind:'face', uid: card.dataset.uid};
+  });
 }
+const tileRestSeen = new WeakMap();
 setInterval(()=>{ try{ playAnimWatchdog(); }catch(e){} }, 200);
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
@@ -37970,9 +38006,11 @@ function updateCardStatusDisplay(uid){
     blindEl.remove();
   }
   // Smoke (2026-10-14, Smoke Bomb): a grey puff drifting over the card while attacks at it miss 1 in 2.
-  let smokeEl = tile.querySelector('.smoke-overlay');
-  if(c.smoke>0){ if(!smokeEl){ smokeEl = document.createElement('div'); smokeEl.className = 'status-overlay smoke-overlay'; smokeEl.setAttribute('aria-hidden', 'true'); tile.insertBefore(smokeEl, tile.firstChild); } }
-  else if(smokeEl) smokeEl.remove();
+  // 2026-10-24 (package BV, owner 19:39: "improve the smoke bomb and smoke animations"): four soft billows curl over the card at their
+  // own slow paces instead of one blob sliding side to side; it thickens in as the Smoke comes and thins away when it lifts.
+  let smokeEl = tile.querySelector(':scope > .smoke-overlay:not(.is-lifting)');
+  if(c.smoke>0){ if(!smokeEl){ smokeEl = document.createElement('div'); smokeEl.className = 'status-overlay smoke-overlay is-new'; smokeEl.setAttribute('aria-hidden', 'true'); smokeEl.innerHTML = SMOKE_BILLOWS_HTML; tile.insertBefore(smokeEl, tile.firstChild); const se = smokeEl; setTimeout(()=> se.classList.remove('is-new'), 900); } }
+  else if(smokeEl){ const se = smokeEl; se.classList.add('is-lifting'); setTimeout(()=> se.remove(), 750); }
   let shockEl = tile.querySelector('.shock-overlay');
   if(c.shocked>0){
     if(!shockEl){ shockEl = document.createElement('div'); shockEl.className = 'status-overlay shock-overlay'; shockEl.textContent = '🌩'; tile.insertBefore(shockEl, tile.firstChild); }
@@ -38063,6 +38101,7 @@ function updateCardAtkDisplay(uid){
   a.innerHTML = atkLabelHTML(tot, d.attack, d);
   a.classList.toggle('is-atk-zero', (Number(d.attack)||0) <= 0 && tot <= 0); // 2026-10-21 (package UI3): back when a buff lifts it above 0
 }
+const SMOKE_BILLOWS_HTML = '<i class="sb1"></i><i class="sb2"></i><i class="sb3"></i><i class="sb4"></i>'; // the Smoke's billows (2026-10-24, BV)
 function updateCardHpDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
@@ -38308,8 +38347,11 @@ const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam 
 // throne moment itself (drop, ring, crown, beam) still plays in full over the top.
 const LEADER_CALLOUT_BASE_MS = 2400, LEADER_CALLOUT_FADE = 0.8, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
 const LEADER_QUEUE_WAIT = 0.75, LEADER_THRONE_WAIT_MS = Math.round(LEADER_THRONE_FX_MS * LEADER_QUEUE_WAIT);
+// When an enemy card's fall from their hand (renderBoard's hand entrance: its first leg is handDur*0.82) touches down, in ms.
+function enemyLeaderLandMs(){ try{ const mult = (matchState && matchState.speedMult) || 1, handDur = Math.max(0.12, entranceCardTweenDur(mult)*0.62); return Math.round(Math.max(.12, handDur*0.82)*1000); }catch(e){ return 380; } }
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
+  const landed = !!(opts.fromHand || opts.landed); // 2026-10-24 (BV): it has already arrived (a hand flight, or the enemy's fall in): no second drop
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
   noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_WAIT_MS : 500); // 2026-10-14: the round waits for it (×0.75 since 2026-10-18)
   const enemy = !!opts.enemy;
@@ -38325,7 +38367,7 @@ function leaderThroneVfx(uid, opts){
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
   // 2026-10-17: a leader that flew in from your hand (opts.fromHand, handFlightProxy) has already landed: no second drop, the ring at once.
-  if(!opts.fromHand){ const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  if(!landed){ const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
   // 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as well."):
   // the "👑 Leader" ribbon now comes out as the leader lands (and no longer on its death, see FX.C deathPlan): it pops out under the card,
   // holds, and fades, following the card.
@@ -38337,7 +38379,7 @@ function leaderThroneVfx(uid, opts){
     at(); gsap.ticker.add(at);
     gsap.timeline({onComplete:()=>{ gsap.ticker.remove(at); rb.remove(); }})
       .fromTo(rb, {xPercent:-50, yPercent:-50, scale:.3, opacity:0}, {scale:1, opacity:1, duration:.26, ease:'back.out(2.6)'})
-      .to(rb, {opacity:0, y:8, duration:.45, ease:'power1.in'}, '+=1.15'); }catch(e){} }, opts.fromHand ? 60 : 420);
+      .to(rb, {opacity:0, y:8, duration:.45, ease:'power1.in'}, '+=1.15'); }catch(e){} }, landed ? 60 : 420);
   setTimeout(()=>{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q = cur.getBoundingClientRect(); if(!q.width) return;
     // the shockwave and the flash, as it lands
     const ring = document.createElement('div'); ring.className = 'leader-ring' + (enemy ? ' is-enemy' : ''); ring.setAttribute('aria-hidden', 'true');
@@ -38348,7 +38390,7 @@ function leaderThroneVfx(uid, opts){
     document.body.append(flash, ring, ring2); setTimeout(()=>{ ring.remove(); ring2.remove(); flash.remove(); }, 1300);
     try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
     if(big || opts.fromHand) battlefieldShake(Math.max(big ? 0.35 : 0.22, shakeStrengthForArrival(hp))); // 2026-10-17: a stomp from the hand always jolts the field a little
-  }, opts.fromHand ? 0 : 420);
+  }, landed ? 0 : 420);
   // The field's middle line: halfway between the two rows (or the battlefield's own middle).
   const rm = document.getElementById('rowMine'), re = document.getElementById('rowEnemy'), bfr = (document.querySelector('.battlefield')||el).getBoundingClientRect();
   const midY = (rm && re) ? (re.getBoundingClientRect().bottom + rm.getBoundingClientRect().top)/2 : bfr.top + bfr.height/2;
@@ -38658,10 +38700,18 @@ function glideFromRect(el, from){
     // row: a row that changes width re-centres itself, carrying its cards with it
     const inner = document.getElementById('battlefieldInner');
     const rr = (inner || rows[0]).getBoundingClientRect();
+    // 2026-10-24 (package BV, owner 17:01 #6: "When placing cards, i noticed the battlefield would move suddenly, then rubberband
+    // back. The battlefield should only move to zoom out or capture cards outside the field of vision."): root cause: positions were
+    // read in screen px against the inner layer's box, so a camera zoom (the phone's one-step re-frame after a play, mb2FlipReframe,
+    // or any change of battlefieldScale) moved every card "relative to the board" and this guard took that for a snap: it pushed
+    // the whole board sideways by up to a card's width and glided it back (the jump and the rubber band). Positions and widths are
+    // now read in the board's own (unscaled) px: divided by the inner layer's drawn scale (its box against its layout width), which
+    // a zoom or pan never changes. A real reflow snap still reads as one.
+    const csc = inner && inner.offsetWidth > 0 ? (rr.width / inner.offsetWidth) || 1 : 1;
     rows.forEach(row=>{
       row.querySelectorAll(':scope .board-card').forEach(el=>{
         const r = el.getBoundingClientRect();
-        const pos = {x:r.left - rr.left, y:r.top - rr.top, w:r.width};
+        const pos = {x:(r.left - rr.left)/csc, y:(r.top - rr.top)/csc, w:r.width/csc};
         const prev = last.get(el);
         const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid)) || getComputedStyle(el).position==='absolute';
         // 2026-10-08 (snap test: "a landed card jumps ~50 px down"): a second render mid-entrance kills the
@@ -38687,10 +38737,8 @@ function glideFromRect(el, from){
           // (2026-10-08) widened from 1.6 to 2.5 card widths: on phones a token shifted two slots (160 px) and
           // slipped past the old cap uncorrected.
           if(Math.abs(dx) > 12 && Math.abs(dx) < Math.max(180, pos.w * 2.5) && Math.abs(dy) < 40){
-            // dx is in screen pixels; the card lives inside the (possibly zoomed) board, so its own
-            // x is in board pixels — divide by the board's scale or a zoomed-out board under-corrects.
-            const sc = (typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
-            gsap.fromTo(el, {x:dx/sc}, {x:0, duration:Math.min(.32, .14 + Math.abs(dx)/2200), ease:'power2.out', clearProps:'x'});
+            // dx is in the board's own px (2026-10-24, BV: measured unscaled above), as the card's own x is.
+            gsap.fromTo(el, {x:dx}, {x:0, duration:Math.min(.32, .14 + Math.abs(dx)/2200), ease:'power2.out', clearProps:'x'});
             last.set(el, {x:pos.x + dx, y:pos.y, w:pos.w, busy:true});
             return;
           }
@@ -38776,7 +38824,18 @@ function deckPileStyle(n){
   return `box-shadow:${edges.join(', ')}, ${k}px ${k+3}px 0 rgba(0,0,0,.22); top:${-k}px; left:${-k}px; margin-top:0;`;
 }
 async function castleCrumble(el){
-  if(!el || !el.isConnected || reducedMotion()) return;
+  if(!el || !el.isConnected) return;
+  // 2026-10-24 (package BV, owner 19:30: "castle destruction consistent for both sides = drop-into-ground with dust (not crumbling)"):
+  // the enemy's bramble drops into the ground with a dust bank, the same fall as yours (FX.C.castleSink, the castleFallMine hook); the
+  // cellular crumble below (ProcFX.crumble, which lagged) and the CSS heap are only the fallbacks for a page without FX.C. Like the
+  // crumble it plays at 1x whatever the fight speed, and the Victory sign waits for it. Low effects / reduced motion: it is simply gone.
+  if(reducedMotion() || !fxAtLeast('med')){ el.classList.add('castle-fallen'); noteCastleGone(el.getAttribute('data-hq')); return; }
+  if(window.FX && FX.C && FX.C.castleSink && hasGsap()){
+    const gtl = gsap.globalTimeline, ts0 = gtl.timeScale(); gtl.timeScale(1);
+    try{ SoundKit.castleCollapse ? SoundKit.castleCollapse() : (SoundKit.thud && SoundKit.thud()); }catch(e){}
+    await Promise.race([FX.C.castleSink(el, {host: document.querySelector('.battlefield')}), sleep(3200)]).catch(()=>{});
+    if(gtl.timeScale() === 1) gtl.timeScale(ts0);
+    el.classList.add('castle-fallen'); noteCastleGone(el.getAttribute('data-hq') || (el.closest('[data-hq]') || {getAttribute:()=>null}).getAttribute('data-hq')); await sleep(250); return; }
   // 2026-10-14: the cellular-automaton crumble eats the castle along its own cracks, chips falling as rubble.
   if(window.ProcFX && ProcFX.crumble){ const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile');
     if(tile){ try{ SoundKit.thud ? SoundKit.thud() : (SoundKit.quick && SoundKit.quick()); }catch(e){}
@@ -39052,7 +39111,7 @@ async function resolveRoundCore(opts){
         }
         if(!m.replayCards[u]){
           const liveCard = ['left','center','right'].map(ln=> (m.players[pid].row[ln]||[]).find(c=>c.uid===u)).find(Boolean);
-          if(liveCard) m.replayCards[u] = {slot: ev.fromSlot!=null ? ev.fromSlot : liveCard.slot, atk:liveCard.atk, rallyBonus:0, worshipBonus:0, phaseAtk:0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:0, bleed:0, scar:0, stunned:false, defId:liveCard.defId, wait:0, chained:false, frozen:0, asleep:0, paralyzed:0, blind:0, shocked:0, corrode:0, staggered:0};
+          if(liveCard) m.replayCards[u] = {slot: ev.fromSlot!=null ? ev.fromSlot : liveCard.slot, atk:liveCard.atk, rallyBonus:0, worshipBonus:0, phaseAtk:0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:0, bleed:0, scar:0, stunned:false, defId:liveCard.defId, wait:0, chained:false, frozen:0, asleep:0, paralyzed:0, blind:0, shocked:0, corrode:0, staggered:0, ...replayGuardSnap(liveCard)};
         }
         const originEl = ev.dogUid!=null ? boardCardEl(ev.dogUid) : null;
         if(originEl){ const r = originEl.getBoundingClientRect(); pendingEntranceOrigins.set(String(u), {x:r.left + r.width/2, y:r.top + r.height/2, rotate:0, kind:'spawn'}); }
@@ -39097,11 +39156,11 @@ async function resolveRoundCore(opts){
           // and the blow that killed it played at nothing. It is built from its card instead.
           if(!m.replayCards[u] && !['left','center','right'].some(ln=> (m.players[pid].row[ln]||[]).some(c=> c.uid===u))){
             const sd = getCardDefs()[ev.defId] || {}, near = ev.nearUid!=null ? m.replayCards[ev.nearUid] : null;
-            if(sd.id || ev.defId) m.replayCards[u] = {slot: near && near.slot!=null ? near.slot + (near.slot < 0 ? -1 : 1) * (i + 1) : null, atk:sd.attack||0, rallyBonus:0, worshipBonus:0, phaseAtk:0, hp:sd.health||1, maxHp:sd.health||1, poison:0, bleed:0, scar:0, stunned:false, defId:ev.defId, wait:sd.wait||0, chained:false, frozen:0, asleep:0, paralyzed:0, blind:0, tipsy:0, confused:0, shocked:0, corrode:0, staggered:0};
+            if(sd.id || ev.defId) m.replayCards[u] = {slot: near && near.slot!=null ? near.slot + (near.slot < 0 ? -1 : 1) * (i + 1) : null, atk:sd.attack||0, rallyBonus:0, worshipBonus:0, phaseAtk:0, hp:sd.health||1, maxHp:sd.health||1, poison:0, bleed:0, scar:0, stunned:false, defId:ev.defId, wait:sd.wait||0, chained:false, frozen:0, asleep:0, paralyzed:0, blind:0, tipsy:0, confused:0, shocked:0, corrode:0, staggered:0, shield: ((sd.effects||{}).shield ? (+(sd.effects||{}).shield || 1) : 0)};
           }
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
-            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, tipsy:liveCard.tipsy||0, confused:liveCard.confused||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
+            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, tipsy:liveCard.tipsy||0, confused:liveCard.confused||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0, ...replayGuardSnap(liveCard)};
           }
         });
         // onDeathSpawn tokens get the plain generic landing-impact flourish (the default for
@@ -39272,7 +39331,7 @@ async function resolveRoundCore(opts){
     if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ castleFall = castleCrumble(hqTileEl('B')).catch(()=>{}); m._crumbling = 'B'; await sleep(380); }catch(e){} }
     else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait){ castleFall = sleep(h.wait); m._crumbling = 'A'; await sleep(Math.min(h.wait, 380)); } } // 2026-10-15: your own castle sinks (FX.C)
     if(m.mode!=='sandbox') await showEndSign(m);
-    if(castleFall){ await castleFall; m._crumbling = null; }
+    if(castleFall){ await castleFall; if(m._crumbling) noteCastleGone(m._crumbling); m._crumbling = null; } // 2026-10-24 (BV): it stays down
     m.over = true;
     try{ recordCardStatsForMatch(m); }catch(e){} // 2026-10-17 (card stats): this match's numbers per card, tallied when the browser is idle
     setTimeout(revealBoardCardsAtEnd, 60); setTimeout(revealBoardCardsAtEnd, 700);
@@ -39932,21 +39991,32 @@ function syncSkyFx(m, phase){
 // 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%. It's mainly for the slow transition of the lighting."):
 // the creep is half as strong again (20% of the old full sweep, was 40%); the 10 s timing is unchanged.
 const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .2; // the creep: 20% of the old full-strength sweep (was .4)
+// 2026-10-24 (package BV, owner 19:27 #20: "when day goes to night, it seems like it rapidly goes towards a few colours before
+// transitioning slowly. The whole transition should be gentle."): root causes: (1) the creep (a copy of the new tint behind a ragged
+// edge) shot across the board in its first second (a fast-start curve, full strength by 0.5 s), so the board jumped to the new colour on
+// the left at once; (2) the old and new tints cross-faded on the same curve, so mid-way both were half strength and the board passed
+// through a washed-out in-between (dusk's soft-light amber half gone, night's blue only half in). Now the creep is slow and faint
+// (SKY_CREEP_BV: 8.5 s across on an even pace, peaking at 10%), the new tint comes in over the old before the old one goes (it holds
+// for the first quarter), and every part of the change, the night veil included, follows one gentle sine curve (SKY_PHASE_EASE).
+const SKY_PHASE_EASE = 'cubic-bezier(.37,0,.63,1)';
+const SKY_CREEP_BV = {ms: 8500, peak: .1, tail: 2400};
 let skyPhaseEase = null; // {from, to, t0} while a change of phase is easing
 // Lay out a change of phase on `sky` (the layer showing `pe.from`), `elapsed` ms into it: `sky` fades out, a new layer with `pe.to`
 // fades in, and (while it has time left) the creep slides across. Returns the new main layer.
 function skyPhaseLayers(bf, sky, pe, elapsed){
-  const ease = 'cubic-bezier(.45,.05,.55,.95)', anim = (el, kf, o)=>{ try{ return el.animate(kf, Object.assign({fill:'forwards', easing:ease}, o)); }catch(e){ return null; } };
+  const ease = SKY_PHASE_EASE, anim = (el, kf, o)=>{ try{ return el.animate(kf, Object.assign({fill:'forwards', easing:ease}, o)); }catch(e){ return null; } };
   bf.querySelectorAll(':scope > .sky-fx.sky-out, :scope > .sky-fx.sky-creep, :scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
   sky.className = pe.from + ' sky-out'; sky.style.transition = 'none';
-  const a0 = anim(sky, [{opacity:1}, {opacity:0}], {duration:SKY_PHASE_MS, delay:-elapsed}); if(a0) a0.onfinish = ()=> sky.remove(); else sky.remove();
+  // the old tint holds for the first quarter while the new one comes in over it, then eases out (2026-10-24, BV: no washed-out middle)
+  const a0 = anim(sky, [{opacity:1, offset:0, easing:'linear'}, {opacity:1, offset:.25, easing:ease}, {opacity:0, offset:1}], {duration:SKY_PHASE_MS, delay:-elapsed, easing:'linear'}); if(a0) a0.onfinish = ()=> sky.remove(); else sky.remove();
   const nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = pe.to; nw.style.transition = 'none'; sky.after(nw);
-  const a1 = anim(nw, [{opacity:0}, {opacity:1}], {duration:SKY_PHASE_MS, delay:-elapsed}); if(a1) a1.onfinish = ()=>{ try{ nw.style.opacity = '1'; a1.cancel(); }catch(e){} nw.style.transition = ''; };
-  if(elapsed < SKY_CREEP_MS + 2600){
+  const a1 = anim(nw, [{opacity:0, offset:0, easing:ease}, {opacity:1, offset:.8}, {opacity:1, offset:1}], {duration:SKY_PHASE_MS, delay:-elapsed, easing:'linear'}); if(a1) a1.onfinish = ()=>{ try{ nw.style.opacity = '1'; a1.cancel(); }catch(e){} nw.style.transition = ''; };
+  const C = SKY_CREEP_BV, total = C.ms + C.tail;
+  if(elapsed < total){
     const cr = document.createElement('div'); cr.setAttribute('aria-hidden', 'true'); cr.className = pe.to + ' sky-creep'; nw.after(cr);
-    const total = SKY_CREEP_MS + 2600, f = SKY_CREEP_MS / total;
-    anim(cr, [{maskPosition:'76% 0', webkitMaskPosition:'76% 0'}, {maskPosition:'0% 0', webkitMaskPosition:'0% 0'}], {duration:SKY_CREEP_MS, delay:-elapsed, easing:'cubic-bezier(.35,.1,.45,1)'});
-    const a2 = anim(cr, [{opacity:0, offset:0}, {opacity:SKY_CREEP_PEAK, offset:.12}, {opacity:SKY_CREEP_PEAK, offset:f}, {opacity:0, offset:1}], {duration:total, delay:-elapsed, easing:'linear'});
+    const f = C.ms / total;
+    anim(cr, [{maskPosition:'76% 0', webkitMaskPosition:'76% 0'}, {maskPosition:'0% 0', webkitMaskPosition:'0% 0'}], {duration:C.ms, delay:-elapsed, easing:ease});
+    const a2 = anim(cr, [{opacity:0, offset:0}, {opacity:C.peak, offset:.3}, {opacity:C.peak, offset:f}, {opacity:0, offset:1}], {duration:total, delay:-elapsed, easing:'linear'});
     if(a2) a2.onfinish = ()=> cr.remove(); else cr.remove();
   }
   return nw;
@@ -39975,7 +40045,7 @@ function syncNightVeil(m, phase){
   if(!v){ v = document.createElement('div'); v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); }
   v.className = 'night-veil is-on is-flat';
   if(easing){ if(v._easeT0 !== veilEase.t0){ v._easeT0 = veilEase.t0; try{ v.getAnimations().forEach(a=> a.cancel()); }catch(e){}
-      try{ const a = v.animate([{opacity: want ? 0 : 1}, {opacity: want ? 1 : 0}], {duration:SKY_PHASE_MS, delay:-el, easing:'cubic-bezier(.45,.05,.55,.95)', fill:'forwards'});
+      try{ const a = v.animate([{opacity: want ? 0 : 1}, {opacity: want ? 1 : 0}], {duration:SKY_PHASE_MS, delay:-el, easing:SKY_PHASE_EASE, fill:'forwards'}); // 2026-10-24 (BV): the sky's own gentle curve
         if(!want) a.onfinish = ()=>{ if(veilEase && !veilEase.want) v.remove(); }; }catch(e){ if(!want) v.remove(); } } }
   else { try{ v.getAnimations().forEach(a=> a.cancel()); }catch(e){} v._easeT0 = null; }
 }
@@ -40023,19 +40093,34 @@ function liveWindState(pid){
     return {k: tail ? 'tail' : 'head'};
   }catch(err){ return null; }
 }
+// 2026-10-24 (package BV, owner 17:01 #4: "If the flying x windy, the context pips should be in the same pill. E.g. wings + boots
+// together or wings and 2x, together"): a Flyer's wind marks are one pip. Tailwind: the wing and the Quick boot it gives (its own boot,
+// when it has Quick) in one lit pip; Headwind: the wing and its ×2 in one lit pip (its own Quick, if any, keeps its own plain pip). No
+// wind: the wing, and its own Quick boot, as before. Each entry is one .abadge's inside.
+function flyerWindPips(e, lw){
+  const out = [];
+  if(e.flying){
+    if(lw && lw.k === 'tail') out.push(`<span class="ab-windpair wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-wing') + ' ' + TX('ui.wind-tail-quick'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><span class="ab-quick ab-wind-quick">${iconHTML('quick', '👢')}</span></span>`);
+    else if(lw) out.push(`<span class="ab-windpair wind-live wind-head" title="${escapeAttr(TX('ui.wind-head-wing'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><b class="wind-x2">×2</b></span>`);
+    else out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
+  }
+  if(e.quick && !(e.flying && lw && lw.k === 'tail')) out.push(`<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
+  return out;
+}
 // The wind is announced mid-replay (the 'wind' event), before the next full board render: the Flyers already on the board get their
-// wing (and Tailwind boot) marks at once, the same marks abilityBadges draws. Seat 1 is always the bottom row (renderBoard).
+// wing (and Tailwind boot) marks at once, the same marks abilityBadges draws (flyerWindPips). Seat 1 is always the bottom row (renderBoard).
 function syncWindBadges(){
   try{ const bf = document.getElementById('battlefieldEl'); if(!bf) return; const defs = getCardDefs();
     bf.querySelectorAll('.board-card[data-uid][data-defid]').forEach(el=>{ const e = (defs[el.dataset.defid] || {}).effects || {}; if(!e.flying) return;
       const wing = el.querySelector('.badges .ab-wing'); if(!wing) return;
       const pid = el.closest('#rowMine, [data-respid="1"]') ? 1 : el.closest('#rowEnemy, [data-respid="2"]') ? 2 : null, lw = liveWindState(pid);
-      wing.classList.remove('wind-live', 'wind-tail', 'wind-head'); wing.querySelectorAll('.wind-x2').forEach(x=> x.remove()); wing.removeAttribute('title');
-      if(lw){ wing.classList.add('wind-live', 'wind-' + lw.k); wing.title = (lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')); if(lw.k === 'head') wing.insertAdjacentHTML('beforeend', '<b class="wind-x2">×2</b>'); }
-      const boot = el.querySelector('.badges .ab-quick'), slot = wing.closest('.abadge');
-      if(lw && lw.k === 'tail'){ if(boot){ boot.classList.add('ab-wind-quick', 'wind-live', 'wind-tail'); boot.title = TX('ui.wind-tail-quick'); }
-        else if(slot) slot.insertAdjacentHTML('afterend', `<span class="abadge"><span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span></span>`); }
-      else if(boot){ if(e.quick){ boot.classList.remove('ab-wind-quick', 'wind-live', 'wind-tail'); boot.removeAttribute('title'); } else { const s = boot.closest('.abadge'); (s || boot).remove(); } } }); // its own Quick boot stays, unlit
+      // the wing's pip (and the plain Quick pip right after it, when there is one) give way to the fresh pips
+      const slot = wing.closest('.abadge, .bc-item'); if(!slot) return;
+      const nx = slot.nextElementSibling; if(nx && nx.classList.contains('abadge') && nx.querySelector(':scope > .ab-quick')) nx.remove();
+      const pips = flyerWindPips(e, lw);
+      if(slot.classList.contains('bc-item')){ slot.innerHTML = pips.join(''); return; } // inside a cycling pip: one item
+      slot.innerHTML = pips[0] || '';
+      if(pips[1]) slot.insertAdjacentHTML('afterend', `<span class="abadge">${pips[1]}</span>`); });
   }catch(err){}
 }
 function liveTideState(e){
@@ -40289,6 +40374,7 @@ const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {no
 // out keep their old tilt and surge. Transforms only; Low effects, Minimal and reduced motion still stop all of it (CSS, .tide-scene).
 const TIDE_MOTION_BASE = 5, TIDE_FLOOD_MOTION = 8.5, TIDE_EBB_MOTION = 4; // px; the owner's knobs (x1.7 and x0.8 of the old 5px)
 const TIDE_RISE_SKEW = 8, TIDE_BASE_SKEW = 5, TIDE_ARRIVE_SWELL = 40; // deg, deg, px (the swell clears the top border's bunting, about 20px)
+const TIDE_ARRIVE_SWELL_BV = 0; // 2026-10-24 (BV, owner 17:01 #2): no arrival swell: the Flood eases into place without bouncing over the top border
 function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' || k === 'high') ? TIDE_FLOOD_MOTION : TIDE_MOTION_BASE; }
 // 2026-10-18 (package M follow-up, owner 21:59: "1a) The ebb effect should grow into the tide effect; currently they cancel each other. 1b)
 // The ebb effect should move in and out, and a bit side to side. It's too static. And its centre position should be placed a little
@@ -40297,13 +40383,32 @@ function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' |
 // px (twLap, on top of the TIDE_EBB_MOTION slosh). The rise into a Flood and the drain back are one body of water now (the tilt ramps
 // in and out about the board's right edge, CSS twTilt*), so the Ebb's band grows into the Flood instead of vanishing first.
 const TIDE_EBB_OFFSET = 3, TIDE_EBB_LAP = 6, TIDE_EBB_DRIFT = 10; // px
-function tideSceneY(k){ return k === 'ebb' ? `calc(100% - ${12 - TIDE_EBB_OFFSET}px)` : TIDE_SCENE_Y[k]; } // TIDE_SCENE_Y.ebb, TIDE_EBB_OFFSET lower
+// 2026-10-24 (package BV, owner 17:01 #2: "the front wave in flood was like bouncing below then above the top battlefield boundary"):
+// a settled Flood sat exactly at the top (0%), so its slosh (TIDE_FLOOD_MOTION, 8.5 px down and back every 6 s) brought the front wave
+// down into view below the top border and took it out again, over and over. A Flood and High Tide now rest TIDE_FLOOD_LIFT px higher
+// (the slosh's reach plus a margin): the water still fills the board (.tw-water reaches 14 px past its bottom), and the wave stays out of
+// sight above the border while it sloshes.
+const TIDE_FLOOD_LIFT = 12; // px
+function tideSceneY(k){ return k === 'ebb' ? `calc(100% - ${12 - TIDE_EBB_OFFSET}px)` : (k === 'flow' || k === 'high') ? `-${TIDE_FLOOD_LIFT}px` : TIDE_SCENE_Y[k]; } // TIDE_SCENE_Y.ebb, TIDE_EBB_OFFSET lower
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
 }
+// 2026-10-24 (package BV, owner 17:01 #2: "The tide bounces up a bit too much after it goes to ebb or flood or from nothing to first ebb
+// ... the front wave in flood was like bouncing below then above the top battlefield boundary ... at the ebb face, it's like angled such
+// that the ebb is very high on the left, and low on the right. ... When the ebb rises to flood, the wave can pick a random high point
+// (left or right or centre) when going up. The leftness or rightness can shift from 0 to a max of 10 degrees (& -10, so that makes it
+// [-10, 10])"). Root causes: the Flood's arrival swell (twArrive, TIDE_ARRIVE_SWELL 40 px down, then up past its rest, then down again)
+// pulled the settled front wave back down into view below the top border and out again; and the Ebb rose and fell with the same 5deg
+// tilt as a Flood, which across a 1300 px board put its thin band over 100 px higher at the left than at the right. Now: a rising Flood
+// or High Tide picks its own tilt once (tideRiseTilt: uniform in [-TIDE_RISE_TILT_MAX, +TIDE_RISE_TILT_MAX] deg; above 0 the left side
+// leads, below 0 the right side, near 0 the middle), kept on the move so a redraw resumes the same wave, and comes in with no swell and
+// no overshoot; the crest's surge is gentler (CSS twSurge*). An Ebb (and a drain to Ebb or to nothing) tilts by at most TIDE_EBB_TILT_PX
+// across the board, whatever its width.
+const TIDE_RISE_TILT_MAX = 10, TIDE_EBB_TILT_PX = 10; // deg, px (the owner's [-10, 10]; the Ebb's lean, end to end)
+function tideRiseTilt(){ return Math.round((Math.random()*2 - 1)*TIDE_RISE_TILT_MAX*10)/10; }
 function tideSceneSet(m, k){
   if(!m || !TIDE_SCENE_Y[k]) return; const cur = m._tideScene; if(cur && cur.k === k) return;
-  m._tideScene = {k, from: cur ? cur.k : 'none', at: cur ? Date.now() : 0}; // the first sight of a running tide draws it in place
+  m._tideScene = {k, from: cur ? cur.k : 'none', at: cur ? Date.now() : 0, tilt: tideRiseTilt()}; // the first sight of a running tide draws it in place
 }
 function syncTideScene(m){
   m = m || matchState; const bf = document.getElementById('battlefieldEl'); if(!m || !bf) return;
@@ -40321,9 +40426,14 @@ function syncTideScene(m){
     w.style.setProperty('--tw-from', tideSceneY(st.from) || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', tideSceneY(st.k)); // (package M follow-up: the Ebb a little lower)
     w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
     const rising = TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from], flooding = rising && (st.k === 'flow' || st.k === 'high');
-    w.style.setProperty('--tw-skew', (flooding ? TIDE_RISE_SKEW : rising ? TIDE_BASE_SKEW : -TIDE_BASE_SKEW) + 'deg'); // in from the left (owner, 10:27); steeper on a Flood (package M)
+    // 2026-10-24 (BV): a Flood picks its high side (st.tilt, [-10, 10] deg: + the left leads, - the right); the skew turns about the far
+    // edge from the side that leads, so the water never dips below where it stood. Anything to or from an Ebb leans only a few px.
+    const bw = Math.max(200, bf.clientWidth || 800), ebbDeg = Math.atan(TIDE_EBB_TILT_PX / bw)*180/Math.PI;
+    const tilt = flooding ? (st.tilt != null ? st.tilt : tideRiseTilt()) : (rising ? ebbDeg : -ebbDeg);
+    w.style.setProperty('--tw-skew', tilt.toFixed(2) + 'deg'); // (was TIDE_RISE_SKEW / TIDE_BASE_SKEW: in from the left, owner 10:27; package M)
+    w.style.setProperty('--tw-origin', tilt >= 0 ? '100% 0' : '0 0');
     w.style.setProperty('--tw-slosh', tideMotionPx(st.k) + 'px'); // the settled slosh: Flood x1.7, Ebb x0.8 (package M, owner 20:45)
-    w.style.setProperty('--tw-swell', TIDE_ARRIVE_SWELL + 'px');
+    w.style.setProperty('--tw-swell', (flooding ? TIDE_ARRIVE_SWELL_BV : TIDE_ARRIVE_SWELL) + 'px');
     w.style.setProperty('--tw-lap', TIDE_EBB_LAP + 'px'); w.style.setProperty('--tw-drift', TIDE_EBB_DRIFT + 'px'); // the settled Ebb's lap and drift (package M follow-up)
     w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
     w.classList.toggle('is-moving', moving);
@@ -41338,6 +41448,11 @@ async function showEndSign(m){
     const hq = m.players[side==='A' ? 1 : 2].hq; if(!hq || hq.hp > 0) return;
     if(m._crumbling === side) return; // 2026-10-15: still crumbling under the sign (resolveRound), it has its own fall
     const tile = hqTileEl(side); if(!tile) return;
+    // 2026-10-24 (package BV, owner 19:30): a bramble that fell without its own fall (a draw, a forced end) drops into the ground the
+    // same way (FX.C.castleSink); it was shaken and burnt away here. Low effects: it is simply gone.
+    if(tile.classList.contains('castle-fallen')) return;
+    if(!(window.FX && FX.C && FX.C.castleSink) || !fxAtLeast('med') || reducedMotion() || !hasGsap()){ noteCastleGone(side); return; }
+    if(window.FX && FX.C && FX.C.castleSink){ try{ FX.C.castleSink(tile, {host: battlefield}).then(()=> noteCastleGone(side)); SoundKit.castleCollapse(); }catch(e){} return; }
     shakeEl(tile);
     const r = tile.getBoundingClientRect(), br = battlefield.getBoundingClientRect();
     for(let i = 0; i < 7; i++){
@@ -42218,6 +42333,12 @@ const STATUS_END_NAMES = {brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, we
 // wavy-line look), the battle-log lines and floats. Every string is a TX key.
 Object.assign(STATUS_END_NAMES, {silenced:TX('ui.stn3-silenced'), stymied:TX('ui.stn3-stymied'), exhaust:TX('ui.stn3-exhausted'), grounded:TX('ui.stn3-grounded'), stench:TX('ui.skn-stench')});
 CHIP_FALLBACK_SKILLS.push('spawner', 'banner', 'warcry', 'shieldwall', 'corpsefeeder', 'amplifier', 'stench', 'broodkeeper', 'herald', 'harbinger', 'spotter', 'silence', 'stymie', 'exhaust', 'petrify'); // their chips on the card face
+// 2026-10-24 (package BV, owner 13:16 #23: "the blue diamond shield-3 symbol vanishes after on-play: the card comes down with its
+// health, ticks up, then the symbol goes"): a unit that joins the board mid-round (a token, a summon, a shield call) got a replay
+// snapshot without its guard layers, so the round's next redraw of it dropped its 💠 Shield chip (and the blue Health that goes with
+// it), its Shell and its Durian thorns, though the unit still had them. The backfilled snapshots now carry them, as the round's own
+// snapshot does.
+function replayGuardSnap(c){ c = c || {}; return {shield:c.shield||0, tempHp:c.tempHp||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, thornsBonus:c.thornsBonus||0, smoke:c.smoke||0, exposed:c.exposed||0}; }
 function sk3Snap(c){ const o = {}; if(c) ['silenced', 'stymied', 'exhaust', 'petrifyLeft', 'grounded', 'stench'].forEach(k=>{ if(c[k] > 0) o[k] = c[k]; }); return o; }
 function sk3StatusBadges(c, badges){
   if(c.silenced > 0) badges.push(`<span class="abadge sk3-silenced" title="${escapeAttr(TX('ui.sk3-tip-silenced', {n: c.silenced}))}">🚫${c.silenced}</span>`);
@@ -43342,7 +43463,14 @@ function animateAttacker(attUid, isMine, opts){
   const tile = el.querySelector('.card-tile') || el;
   if(hasGsap()){
     const dir = isMine ? 1 : -1; // mine reels back/down then lunges up; enemy is mirrored
-    gsap.killTweensOf(tile, 'y,x,rotation,scale');
+    // 2026-10-24 (package BV, owner 13:16 #1: "Cards freeze mid-way when played (elongated or squished)"): a card that is hit and
+    // then swings straight away (a counter, its own turn) had its impactSquash (scaleX/scaleY) cut off here mid-squash: 'scale'
+    // does not reach scaleX/scaleY, so the squash's springing-back leg (and its clearProps) died with the kill while its squashed
+    // scaleX/scaleY stayed in GSAP's cache, and every later tween on the face wrote them back: the card sat squashed (1.07 x 0.90)
+    // or stretched (0.97 x 1.04, the spring's overshoot) for good. The kill now takes scaleX/scaleY too and the face starts its
+    // lunge from an even scale. (playAnimWatchdog also settles any face left off its rest pose with nothing animating it.)
+    gsap.killTweensOf(tile, 'y,x,rotation,scale,scaleX,scaleY');
+    try{ const sx = +gsap.getProperty(tile, 'scaleX'), sy = +gsap.getProperty(tile, 'scaleY'); if(Math.abs(sx - sy) > 0.001) gsap.set(tile, {scaleX:(sx + sy)/2, scaleY:(sx + sy)/2}); }catch(e){}
     attackingUids.add(String(attUid));
     // .is-attacking (2026-09-21 bug-report pass, "Cards should have higher layer order"): lifts
     // the OUTER .board-card (not the inner .card-tile the lunge itself animates) a few z-levels
@@ -44548,7 +44676,11 @@ function sixthPassVfx(ev){
     const me = boardCardEl(ev.uid), t = boardCardEl(ev.targetUid), rc = rcs[ev.targetUid];
     if(rc){ if(ev.effect === 'smoke') rc.smoke = 1; else if(ev.effect === 'blind') rc.blind = Math.max(rc.blind||0, 1); }
     const land = ()=>{ try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} if(t) try{ floatText(t, ev.effect === 'smoke' ? '🌫️ Smoke' : ev.effect === 'blind' ? '👁 Blinded' : '👃 Sniffs it off', ev.effect === 'blind' ? 'debuff' : 'buff'); }catch(e){} };
-    if(F && F.smokeBomb && me && t) F.smokeBomb(me, t, {onImpact: land}); else land();
+    // 2026-10-24 (package BV, owner 19:39: "improve the smoke bomb and smoke animations"): the new throw and cloud (FX.C.smokeBomb: a
+    // fused bomb in a spinning arc, a ring of billows that hang, its colour per outcome); SkillFX's older lob stays the fallback.
+    const C = window.FX && FX.C;
+    if(C && C.smokeBomb && me && t && fxAtLeast('med') && !reducedMotion()) C.smokeBomb(me, t, {onImpact: land, effect: ev.effect});
+    else if(F && F.smokeBomb && me && t) F.smokeBomb(me, t, {onImpact: land}); else land();
     sfx('boomerangWhirr');
   }
   if(ev.type==='statusFx' && ev.kind==='unitShield'){
@@ -46672,7 +46804,11 @@ function renderVfxForEvent(ev){
   if(ev.type==='discard') try{ enemyPitchVfx(ev); }catch(e){} // 2026-10-15: the opponent's pitched card sinks into the ground, then their pill counts it
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
-  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_WAIT_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
+  // 2026-10-24 (package BV, owner 17:34 #16: "Enemy leader play animation - it comes down, then it comes down again, with the warning.
+  // Duplicate anim."): their leader already falls in from their hand like any card they play (renderBoard's entrance, enemyHand); the
+  // throne moment used to drop it a second time 0.38 s later. It now starts as that fall lands (enemyLeaderLandMs) and skips its own
+  // drop (opts.landed): one arrival, then the ring, the banner, the beam and the crown.
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ const at = enemyLeaderLandMs(); noteMatchFx(at + LEADER_THRONE_WAIT_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId, landed:true}), at); } // 2026-10-14: the round waits for it
   // Voice barks (2026-10-16): a card that arrives may speak once it has landed (a leader after its throne entrance).
   if(ev.type==='play' && !ev.reserve && ev.uid != null){ const u = ev.uid, dId = ev.defId, lead = !!ev.leader; setTimeout(()=>{ try{ maybeBark(u, 'play', {defId:dId, leader:lead}); }catch(e){} }, lead ? 380 + LEADER_THRONE_FX_MS + 200 : 650); }
 }
@@ -52408,7 +52544,7 @@ function openPackAnimation(pack, opened, opts){
       const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false}) + (r.bonusCopy ? '<b class="po2-mini-x">×2</b>' : ''); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
       // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
       // from the deck down into its slot in the row, and the slot fills as it lands.
-      if(!reduce && mini.animate){
+      if(!reduce && mini.animate && cur + 1 < cards.length){ // the last card goes straight into the summary (2026-10-24, BV: see poClearFlights)
         const from = c.getBoundingClientRect(), to = mini.getBoundingClientRect();
         if(from.width && to.width){
           const ghost = document.createElement('div'); ghost.className = 'po2-fly';
@@ -52488,14 +52624,21 @@ function openPackAnimation(pack, opened, opts){
     const go = ()=> openCardInspector(c.dataset.poview, {returnFocus: c, pull: {foil: c.dataset.pofoil === '1', finish: c.dataset.pofinish || null, shiny: c.dataset.poshiny === '1'}});
     c.addEventListener('click', go); c.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
   });
+  // 2026-10-24 (package BV, owner 19:27 #1, SS#1: "during this screen, there is a brief square shine far outside from the cards - I
+  // think that is an error"): root cause: collecting the last card sends a glowing copy of it flying to the little pile under the stage
+  // (.po2-fly, ~0.6 s), but the summary replaces the stage 0.38 s later, pile and all; the copy flew on to where the pile had been and
+  // hung there, a small lit card well off to the side of the three, until its own timer removed it. The summary (and Open all) now
+  // clear any flight still in the air, and the last card no longer flies (it goes straight into the summary).
+  const poClearFlights = ()=>{ try{ document.querySelectorAll('.po2-fly').forEach(g=>{ try{ g.getAnimations().forEach(a=> a.cancel()); }catch(e){} g.remove(); }); }catch(e){} };
   const showSummary = ()=>{
     phase = 'summary';
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
       <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
-      <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
+      <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</p>${footActions()}</div>
     </div>`;
+    poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
     wireTop(); wireFoot(); wireView(); wireEdit(); wireTilt();
   };
   // ---- Open all (sets only): everything left, grouped ----
@@ -52512,8 +52655,9 @@ function openPackAnimation(pack, opened, opts){
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
       <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
-      <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
+      <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
+    poClearFlights();
     wireFoot(); wireView(); wireEdit(); wireTilt();
     sfx('gold');
   };

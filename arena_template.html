@@ -1713,6 +1713,12 @@
   /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
      Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
   .wind-live .wind-x2{font:900 .7em/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 2px #0d4f86, 0 0 3px #0d4f86; margin-left:1px; vertical-align:super;}
+  /* 2026-10-24 (package BV, owner 17:01 #4: "If the flying x windy, the context pips should be in the same pill"): the wing and its
+     Tailwind boot, or the wing and its Headwind ×2, sit together in one lit pill (.ab-windpair, flyerWindPips in arena_app.js). */
+  .ab-windpair{display:inline-flex; align-items:center; gap:1px; padding:0 3px 0 2px; white-space:nowrap; line-height:1;}
+  .ab-windpair > .ab-wing{display:inline-block; font-size:1.2em; line-height:.9;}
+  .ab-windpair > .ab-quick{display:inline-block; line-height:1;}
+  .ab-windpair.wind-head .wind-x2{vertical-align:baseline; margin-left:0; font-size:.78em; position:relative; top:-.05em;}
   .granted-skill.tide-live{font-weight:800;}
   /* Environment cards (2026-10-14, user: "effect cards need to have a different frame - so we know its an environmental field
      effect" and "For field effects with many multiple effects, split into multiple field cards"): a mossy stone frame with a gold
@@ -3073,6 +3079,10 @@
   #deckWidgetTop .grave-peek-badge{top:auto; bottom:-8px;}
   #deckWidgetTop .grave-peek-badge ~ .removal-badge{bottom:14px;}
   @media (max-width:640px){ .enemy-hand-count{font-size:9.5px; padding:0 6px; top:-9px;} }
+  /* 2026-10-24 (package BV, owner 13:16 #24: "the code above the deck during a fight: shrink or remove on small screens"): on a phone the
+     fight's top row sits at the very top of the screen, so the pill over their Deck was cut in half by the screen edge. It now sits
+     just inside the Deck's top edge, smaller, with a thinner border. */
+  @media (max-width:640px){ #deckWidgetTop .enemy-hand-count{top:3px; font-size:8.5px; line-height:1.25; padding:0 5px; border-width:1px; box-shadow:0 1px 3px rgba(0,0,0,.35);} }
   /* 2026-10-17 (user: "Opposing pitch animation ... it should look like it landed in a slot, them, faded off then a clearer +1 lumber
      anim."): enemyPitchSlotFx — a card-shaped recess, the card settling into it, then a big gain label rising out of it. */
   .enemy-pitch-slot-fx .eps-slot{position:absolute; inset:-4px; border-radius:10px; border:2px dashed rgba(255,226,160,.7); background:rgba(20,14,8,.38);
@@ -3620,6 +3630,12 @@
   @keyframes crumbleShake{0%,100%{translate:0 0;} 20%{translate:-3px 1px;} 40%{translate:3px -1px;} 60%{translate:-2px 0;} 80%{translate:2px 1px;}}
   @keyframes crumbleSink{to{translate:0 14%; filter:grayscale(1) brightness(.6); opacity:.35; clip-path:inset(35% 0 0 0);}}
   .is-crumbled{translate:0 14%; filter:grayscale(1) brightness(.6); opacity:.35; clip-path:inset(35% 0 0 0);}
+  /* 2026-10-24 (package BV, owner 19:30: "post-battle analysis must not show the castle back at 0 HP, it stays gone"): a bramble that
+     has dropped into the ground (FX.C.castleSink) stays down on every redraw after it: its spot is kept (the row doesn't shift), with
+     only a low mound of earth where it stood. */
+  .match-castle-tile.castle-fallen{visibility:hidden !important; pointer-events:none;}
+  .match-castle-tile.castle-fallen::before{content:''; visibility:visible; position:absolute; left:8%; right:8%; bottom:-2px; height:12%; border-radius:50% 50% 6px 6px / 100% 100% 6px 6px;
+    background:radial-gradient(ellipse at 50% 30%, #7d6448 0, #5a4530 55%, #3b2c1e 100%); box-shadow:0 2px 4px rgba(0,0,0,.35); opacity:.9; animation:none !important; z-index:5;}
   /* 2026-10-13 (user, SS#1: the yellow outline sat under the red and green castle bars): while a unit on the field is
      outlined (a tip pointing at it, or picking a target), the field's cards rise above the bars. */
   .battlefield > .battlefield-inner:has(.coach-anchor, .tk-subject), body.tk-picking .battlefield > .battlefield-inner{z-index:4;}
@@ -6885,6 +6901,9 @@
   /* 2026-10-18 (owner, 10:27: "the wave is coming up from the btm, sure, but it starts coming in from the left"): the water's edge starts
      tilted (--tw-skew about the board's left edge: the left leads as it rises, and drains first as it falls) and levels out as it settles. */
   .tide-scene .tw-sheet{transform-origin:100% 0;}
+  /* 2026-10-24 (package BV, owner 17:01 #2): the tilt turns about the edge away from the side that leads (--tw-origin: the right edge
+     when the left leads, the left edge when the right does), set by syncTideScene with the Flood's own random high side. */
+  .tide-scene .tw-sheet{transform-origin:var(--tw-origin, 100% 0);}
   @keyframes twMoveA{from{translate:0 var(--tw-from);} to{translate:0 var(--tw-to);}}
   @keyframes twMoveB{from{translate:0 var(--tw-from);} to{translate:0 var(--tw-to);}}
   @keyframes twTiltA{0%{transform:skewY(0deg);} 30%{transform:skewY(var(--tw-skew, 0deg));} 100%{transform:skewY(0deg);}}
@@ -6938,15 +6957,17 @@
   .tide-scene.is-moving .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeA 1.8s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-moving.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeB;}
   /* (package M follow-up, 2026-10-18: the surge builds up from the crest's rest height instead of starting tall) */
-  @keyframes twSurgeA{0%{scale:1 1;} 18%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
-  @keyframes twSurgeB{0%{scale:1 1;} 18%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  /* 2026-10-24 (package BV, owner 17:01 #2: "The tide bounces up a bit too much after it goes to ebb or flood"): the crest rises and
+     eases back once, lower (1.9 -> 1.4 high), with no second lift. */
+  @keyframes twSurgeA{0%{scale:1 1;} 22%{scale:1 1.4;} 100%{scale:1 1;}}
+  @keyframes twSurgeB{0%{scale:1 1;} 22%{scale:1 1.4;} 100%{scale:1 1;}}
   /* a Flood's rise (package M, 2026-10-18): a taller surge, and the back foam line bright while it climbs */
   .tide-scene.is-moving.is-rising .tw-edge{animation:twEdge 8s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-moving.is-rising.mv-b .tw-edge{animation-name:twEdge, twSurgeRB;}
   .tide-scene.is-moving.is-rising .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both, twFoamRA 2.2s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-moving.is-rising.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeRB, twFoamRB;}
-  @keyframes twSurgeRA{0%{scale:1 1;} 18%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
-  @keyframes twSurgeRB{0%{scale:1 1;} 18%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twSurgeRA{0%{scale:1 1;} 22%{scale:1 2;} 100%{scale:1 1;}} /* 2026-10-24 (BV): 2.9 -> 2, one smooth rise and settle */
+  @keyframes twSurgeRB{0%{scale:1 1;} 22%{scale:1 2;} 100%{scale:1 1;}}
   @keyframes twFoamRA{0%{opacity:.6;} 15%,70%{opacity:1;} 100%{opacity:.6;}}
   @keyframes twFoamRB{0%{opacity:.6;} 15%,70%{opacity:1;} 100%{opacity:.6;}}
   /* an ebb (or the tide ending) leaves the sand wet and dark, drying out over about seven seconds */
@@ -10365,6 +10386,19 @@
   .card-tile .badges .abadge{white-space:nowrap;}
   .ab-shields i{display:inline-block; width:.44em; overflow:visible; margin:0 !important;}
   .ab-shields i:last-child{width:auto;}
+  /* 2026-10-24 (package BV, owner 13:16 #21: "Snail shields aren't centred; at 5+ show one shield with a number (like lumber)"): the
+     stack's glyphs overlap by half and stay inside their pip (the two older overlap rules above fought: a -.66em margin on top of a
+     .44em box pulled every next shield out past the pip's left edge), so the stack is centred under the card; Armor 5+ is one shield
+     with its number over it, white with a dark outline, as a 5+ Lumber cost is. */
+  .ab-shields.ab-stack{display:inline-flex; align-items:center; justify-content:center;}
+  .ab-shields.ab-stack > i{display:inline-block; width:.5em !important; margin:0 !important; overflow:visible; flex:none;}
+  .ab-shields.ab-stack > i:last-child{width:auto !important;}
+  .ab-shields.ab-stack > i + i{margin-left:0 !important;}
+  .ab-shields.is-num{position:relative; display:inline-grid; place-items:center;}
+  .ab-shields.is-num > i{font-style:normal; display:inline-block; font-size:1.18em; line-height:1; width:auto !important; margin:0 !important;}
+  .ab-shields.is-num > b{position:absolute; left:50%; top:52%; transform:translate(-50%, -50%); margin:0; color:#fff; font:900 .86em/1 'Baloo 2', system-ui, sans-serif;
+    letter-spacing:-.04em; pointer-events:none; -webkit-text-stroke:.6px #0d2a44; paint-order:stroke fill;
+    text-shadow:0 0 1px #0d2a44, 1px 1px 0 #0d2a44, -1px -1px 0 #0d2a44, 1px -1px 0 #0d2a44, -1px 1px 0 #0d2a44, 0 0 3px rgba(0,0,0,.85);}
   .badge-cycle{display:inline-grid !important; position:relative;}
   .badge-cycle .bc-item{grid-area:1 / 1; opacity:0; transition:opacity .4s ease, transform .4s ease; transform:translateY(3px);}
   .badge-cycle .bc-item.is-shown{opacity:1; transform:none;}
@@ -11895,6 +11929,26 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   .smoke-overlay{background:radial-gradient(ellipse at 50% 55%, rgba(205,208,214,.62) 0, rgba(165,170,180,.42) 45%, rgba(140,146,156,0) 75%); animation:smokeDrift 3.4s ease-in-out infinite; border-radius:inherit;}
   @keyframes smokeDrift{0%,100%{opacity:.75; transform:translateX(-3%) scale(1);} 50%{opacity:1; transform:translateX(3%) scale(1.06);}}
   @media (prefers-reduced-motion: reduce){ .smoke-overlay{animation:none;} }
+  /* 2026-10-24 (package BV, owner 19:39: "improve the smoke bomb and smoke animations"): Smoke on a unit is four soft billows that curl
+     over the card each at its own slow pace (6-9 s, out of step, so it never reads as one blob sliding back and forth), denser at the
+     bottom, with a faint haze under them; it thickens in when the Smoke comes (.is-new) and thins away when it lifts (.is-lifting).
+     Transforms and opacity only, no filter (perf guardrail: no per-card filter on the board). */
+  .card-tile > .smoke-overlay{background:radial-gradient(ellipse at 50% 80%, rgba(196,200,208,.38) 0, rgba(170,175,184,.2) 45%, rgba(150,156,166,0) 78%); animation:none; overflow:hidden; pointer-events:none;}
+  .smoke-overlay > i{position:absolute; border-radius:50%; will-change:transform, opacity;
+    background:radial-gradient(circle at 45% 40%, rgba(232,234,238,.72) 0, rgba(190,195,204,.5) 35%, rgba(160,166,176,0) 70%);}
+  .smoke-overlay > .sb1{left:-18%; bottom:-12%; width:78%; height:58%; animation:smokeBillowA 7.2s ease-in-out infinite;}
+  .smoke-overlay > .sb2{right:-20%; bottom:-6%; width:82%; height:62%; animation:smokeBillowB 8.6s ease-in-out -2.1s infinite;}
+  .smoke-overlay > .sb3{left:14%; top:18%; width:70%; height:48%; opacity:.75; animation:smokeBillowC 9.4s ease-in-out -4.3s infinite;}
+  .smoke-overlay > .sb4{left:-10%; top:-8%; width:60%; height:40%; opacity:.55; animation:smokeBillowB 6.4s ease-in-out -1.2s infinite reverse;}
+  @keyframes smokeBillowA{0%,100%{transform:translate(0, 0) scale(1) rotate(0deg); opacity:.9;} 33%{transform:translate(12%, -8%) scale(1.12) rotate(14deg); opacity:1;} 66%{transform:translate(4%, -14%) scale(.96) rotate(28deg); opacity:.8;}}
+  @keyframes smokeBillowB{0%,100%{transform:translate(0, 0) scale(1.05) rotate(0deg); opacity:.85;} 40%{transform:translate(-14%, -10%) scale(.94) rotate(-18deg); opacity:1;} 75%{transform:translate(-6%, -4%) scale(1.15) rotate(-30deg); opacity:.75;}}
+  @keyframes smokeBillowC{0%,100%{transform:translate(0, 0) scale(.95); opacity:.55;} 50%{transform:translate(8%, 10%) scale(1.2); opacity:.85;}}
+  .smoke-overlay.is-new{animation:smokeIn .8s ease-out both;}
+  .smoke-overlay.is-lifting{animation:smokeOut .7s ease-in both;}
+  @keyframes smokeIn{from{opacity:0; transform:scale(.7);} to{opacity:1; transform:none;}}
+  @keyframes smokeOut{to{opacity:0; transform:translateY(-14%) scale(1.15);}}
+  @media (prefers-reduced-motion: reduce){ .smoke-overlay > i, .smoke-overlay.is-new, .smoke-overlay.is-lifting{animation:none !important;} }
+  html[data-fx="none"] .smoke-overlay > i, html[data-fx="low"] .smoke-overlay > i{animation:none !important;}
   .abadge.smoke{background:rgba(90,96,106,.88); color:#eef1f5;}
   .ab-psychic{color:#b07cff;}
   .ab-fork.ab-crab{color:inherit;}
