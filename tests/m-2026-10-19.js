@@ -29,22 +29,22 @@ if(ctx.tideMotionPx){
 }
 ok(ctx.TIDE_RISE_SKEW > ctx.TIDE_BASE_SKEW && ctx.TIDE_BASE_SKEW === 5, `a Flood tilts in more (${ctx.TIDE_RISE_SKEW}deg) than before / than the Ebb (${ctx.TIDE_BASE_SKEW}deg)`);
 ok(ctx.TIDE_ARRIVE_SWELL >= 20, `the arrival swell clears the top border (${ctx.TIDE_ARRIVE_SWELL}px)`);
-ok(/w\.style\.setProperty\('--tw-slosh', tideMotionPx\(st\.k\) \+ 'px'\)/.test(src) && /w\.style\.setProperty\('--tw-swell', TIDE_ARRIVE_SWELL \+ 'px'\)/.test(src), 'syncTideScene hands the knobs to the CSS');
+ok(/w\.style\.setProperty\('--tw-slosh', tideMotionPx\(st\.k\) \+ 'px'\)/.test(src) && /w\.style\.setProperty\('--tw-swell', \(flooding \? TIDE_ARRIVE_SWELL_BV : TIDE_ARRIVE_SWELL\) \+ 'px'\)/.test(src), 'syncTideScene hands the knobs to the CSS (2026-10-24, BV: a Flood arrives with TIDE_ARRIVE_SWELL_BV, no swell)');
 ok(/w\.classList\.toggle\('is-rising', moving && flooding\)/.test(src), 'only a Flood / High Tide coming in is .is-rising');
 ok(/@keyframes twSlosh\{0%,100%\{transform:translateY\(0\);\} 50%\{transform:translateY\(var\(--tw-slosh, 5px\)\);\}\}/.test(tpl), 'the slosh reads --tw-slosh');
 ok(!/@keyframes twSlosh\{[^}]*translateY\(5px\)/.test(tpl), 'no fixed 5px slosh is left');
 ok(/\.tide-scene\.is-moving\.is-rising \.tw-body\{animation:twSlosh 6s ease-in-out infinite, twArriveA /.test(tpl) && /@keyframes twArriveA\{/.test(tpl) && /@keyframes twArriveB\{/.test(tpl), 'the arrival swell (A/B so a new move restarts it)');
 ok(/@keyframes twArriveA\{[^\n]*translate:0 var\(--tw-swell/.test(tpl) && !/@keyframes twArrive[AB]\{[^\n]*transform:/.test(tpl), 'the swell uses the independent translate (adds to the slosh), never transform');
-ok(/\.tide-scene\.is-moving\.is-rising \.tw-edge\{animation:twEdge 8s linear infinite, twSurgeRA /.test(tpl) && /@keyframes twSurgeRA\{0%\{scale:1 1;\} 18%\{scale:1 2\.9;\}/.test(tpl), 'a Flood\'s crest surges higher (2.9, was 1.9), building up from rest');
-ok(/@keyframes twSurgeA\{0%\{scale:1 1;\} 18%\{scale:1 1\.9;\}/.test(tpl), 'the Ebb keeps its old surge height, building up from rest');
+ok(/\.tide-scene\.is-moving\.is-rising \.tw-edge\{animation:twEdge 8s linear infinite, twSurgeRA /.test(tpl) && /@keyframes twSurgeRA\{0%\{scale:1 1;\} 22%\{scale:1 2;\} 100%\{scale:1 1;\}\}/.test(tpl), 'a Flood\'s crest surges higher than an Ebb\'s, building up from rest (2026-10-24, BV: 2, one rise and settle)');
+ok(/@keyframes twSurgeA\{0%\{scale:1 1;\} 22%\{scale:1 1\.4;\} 100%\{scale:1 1;\}\}/.test(tpl), 'the Ebb\'s surge builds up from rest and eases back once (2026-10-24, BV: 1.4)');
 // ---- 1 (follow-up, owner 21:59): "1a) The ebb effect should grow into the tide effect; currently they cancel each other. 1b) The ebb effect
 //      should move in and out, and a bit side to side. It's too static. And its centre position should be placed a little lower."
 ['TIDE_EBB_OFFSET'].forEach(k=>{ const l = constLine(k); ok(!!l, k + ' is declared'); if(l) vm.runInContext(l.replace(/^const /, 'var '), ctx); });
 ok(ctx.TIDE_EBB_OFFSET > 0 && ctx.TIDE_EBB_OFFSET <= 4, `the Ebb band sits a little lower (${ctx.TIDE_EBB_OFFSET}px, about 10% of its ~28px)`);
 ok(ctx.TIDE_EBB_LAP > 0 && ctx.TIDE_EBB_DRIFT > 0 && ctx.TIDE_EBB_DRIFT < 24, `the Ebb laps ${ctx.TIDE_EBB_LAP}px and drifts ${ctx.TIDE_EBB_DRIFT}px (less than the water's 24px overhang)`);
 const fnY = src.match(/^function tideSceneY\(k\)\{[^\n]*\}/m); ok(!!fnY, 'tideSceneY(k) exists');
-if(fnY){ vm.runInContext('var TIDE_SCENE_Y = {none:"calc(100% + 40px)", ebb:"calc(100% - 12px)", flow:"0%", high:"0%"};' + fnY[0], ctx);
-  ok(ctx.tideSceneY('ebb') === `calc(100% - ${12 - ctx.TIDE_EBB_OFFSET}px)` && ctx.tideSceneY('flow') === '0%', `the Ebb level is TIDE_EBB_OFFSET lower (${ctx.tideSceneY('ebb')})`); }
+if(fnY){ vm.runInContext('var TIDE_FLOOD_LIFT = 12; var TIDE_SCENE_Y = {none:"calc(100% + 40px)", ebb:"calc(100% - 12px)", flow:"0%", high:"0%"};' + fnY[0], ctx);
+  ok(ctx.tideSceneY('ebb') === `calc(100% - ${12 - ctx.TIDE_EBB_OFFSET}px)` && ctx.tideSceneY('flow') === '-12px', `the Ebb level is TIDE_EBB_OFFSET lower (${ctx.tideSceneY('ebb')}); 2026-10-24 (BV): a Flood rests TIDE_FLOOD_LIFT up`); }
 ok(/w\.style\.setProperty\('--tw-from', tideSceneY\(st\.from\)/.test(src) && /w\.style\.setProperty\('--tw-to', tideSceneY\(st\.k\)\)/.test(src), 'the move runs between the offset levels');
 ok(/w\.style\.setProperty\('--tw-lap', TIDE_EBB_LAP \+ 'px'\); w\.style\.setProperty\('--tw-drift', TIDE_EBB_DRIFT \+ 'px'\)/.test(src), 'syncTideScene hands the lap and drift to the CSS');
 ok(/\.tide-scene \.tw-sheet\{transform-origin:100% 0;\}/.test(tpl) && /\.tide-scene\.is-moving \.tw-sheet\{animation:twMoveA [^}]*, twTiltA 1\.8s/.test(tpl), '1a: one sheet moves (translate) while its tilt ramps in and out about the right edge, so the Ebb band never drops off first');

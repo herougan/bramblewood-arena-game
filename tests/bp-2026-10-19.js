@@ -38,9 +38,11 @@ ok(/function headwindDouble\(card, pid\)\{ return windNow && isFlyingCard\(card\
 ok(/\(wind && e\.flying && !ashyNow\(\) && windSideOf\(pid\) === 'tail'\) \? 'tailwind'/.test(eng) && /c\.ffCounters = \(c\.ffCounters\|\|0\) \+ 1;/.test(eng), 'engine: a Tailwind gives a Flyer an extra (Fast Forward) turn');
 { const ab = fnSrc('abilityBadges'); ok(!!ab, 'abilityBadges exists');
   ok(/const lw = e\.flying && bopts && bopts\.live \? liveWindState\(bopts\.live\.pid\) : null;/.test(ab), 'a board Flyer asks liveWindState for its side');
-  ok(/class="ab-wing wind-live wind-\$\{lw\.k\}"/.test(ab) && /<b class="wind-x2">×2<\/b>/.test(ab), 'the wing gets .wind-live (and ×2 on a Headwind)');
-  ok(/if\(e\.quick \|\| \(lw && lw\.k === 'tail'\)\)/.test(ab) && /class="ab-quick ab-wind-quick wind-live wind-tail"/.test(ab), 'a Tailwind adds a lit Quick boot (or lights its own)');
-  ok(/TX\('ui\.wind-tail-wing'\)/.test(ab) && /TX\('ui\.wind-head-wing'\)/.test(ab) && /TX\('ui\.wind-tail-quick'\)/.test(ab), 'the marks\' titles are TX keys'); }
+  // 2026-10-24 (package BV, owner 17:01 #4): the wind's marks are one pip now (flyerWindPips): wing + boot, or wing + ×2
+  const fw = fnSrc('flyerWindPips'); ok(!!fw && /out\.push\(\.\.\.flyerWindPips\(e, lw\)\)/.test(ab), 'the Flyer\'s pips come from flyerWindPips');
+  ok(/class="ab-windpair wind-live wind-tail"/.test(fw) && /class="ab-windpair wind-live wind-head"/.test(fw) && /<b class="wind-x2">×2<\/b>/.test(fw), 'the wing is lit with its boot (Tailwind) or its ×2 (Headwind) in one pip');
+  ok(/if\(e\.quick && !\(e\.flying && lw && lw\.k === 'tail'\)\)/.test(fw), 'a Tailwind takes the Flyer\'s own Quick boot into the pair');
+  ok(/TX\('ui\.wind-tail-wing'\)/.test(fw) && /TX\('ui\.wind-head-wing'\)/.test(fw) && /TX\('ui\.wind-tail-quick'\)/.test(fw), 'the marks\' titles are TX keys'); }
 ['ui.wind-tail-wing', 'ui.wind-head-wing', 'ui.wind-tail-quick'].forEach(k=> ok(texts.includes('"' + k + '": '), 'TX key ' + k));
 ok(/\.ab-tide\.tide-live, \.wind-live\{/.test(tpl), '.wind-live shares the .tide-live highlight rule');
 ok(/pid: live\.pid/.test(src) && /packChainBonus: c\.packChainBonus\|\|0, pid: opts\.pid, atkLabel/.test(src), 'the board card passes its side (pid) down to the badges');

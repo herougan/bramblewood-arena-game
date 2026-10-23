@@ -9,6 +9,37 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Hub: Upgrade costs, Progression plan, Resources, Deck optimizer tabs; decision sweep. Tools: deck optimizer (tools/opt, exe, GitHub Action).
 - Server: AR3-6 applied (2-4 player online co-op rooms).
 - Checks: full unit tier, no new failures against release 10-23d (4 stale tests updated, two-player test fixed); ui_smoke 0 failures; flows 0 issues; card-matrix golden refreshed.
+## 2026-10-24 (package BV: the wind turns, one leader arrival, the Flood's high side, brambles drop into the ground, smoke, camera and freeze fixes)
+- **The wind turns (owner 17:34 #1):** no more swirl. When the wind changes direction, a few of the wind lines already on the board slow and
+  draw in to a point, rest a beat, then draw out the other way and speed off as the new wind fades in (`FX.B.windTurn`).
+- **One leader arrival (17:34 #16):** the CPU's leader falls in from their hand once; the throne moment (banner, ring, beam, crown) starts as
+  it lands instead of dropping it a second time. Root cause: the throne moment played its own drop 0.38 s after the normal entrance.
+- **The Flood comes in calmly (17:01 #2):** no arrival swell and no second crest lift, and a settled Flood rests 12 px higher so its slosh no
+  longer brings the front wave down into view below the top border and out again (the "bounce"). Each Flood picks its own high side, a tilt
+  from -10 to +10 degrees (left, right or level); an Ebb leans by at most 10 px end to end (it leaned 5 degrees, 100+ px on a wide board).
+- **One wind pip (17:01 #4):** a Flyer's wing and its Tailwind boot, or its wing and Headwind ×2, share one lit pill.
+- **No jump and rubber band (17:01 #6):** root cause: the board's snap guard measured cards in screen px, so a camera zoom (the phone's one-step
+  re-frame after a play) read as every card snapping; it pushed the whole board sideways by up to a card's width and glided it back. It now
+  measures in the board's own px. The computer camera also no longer leans or turns toward the cards: it moves only to bring an off-screen card
+  into view (owner call BV-1).
+- **Brambles drop into the ground (19:30):** both sides' brambles fall the same way, a shudder, a crack along the foot, then straight down
+  into the ground in a bank of dust with a few pebbles (`FX.C.castleSink`); the laggy cellular crumble is gone. After the fight a fallen
+  bramble stays down on every redraw (`.castle-fallen`: its spot and a mound of earth), not back at 0 HP.
+- **Smoke (19:39):** the Smoke Bomb is a fused bomb lobbed in a spinning arc that bursts into a ring of billows, pale for an ally hidden in
+  Smoke, dark for a Blinded enemy, thin when it is sniffed off (`FX.C.smokeBomb`). Smoke on a unit is four soft billows curling over the card.
+- **Pack summary (19:27 #1):** no stray glowing card off to the side. Root cause: the last card's flight to the little pile kept going after
+  the summary had replaced the pile. Also no dangling "·" after "3 new cards!".
+- **Water at night, bars and the day/night change (19:27 #20):** the River Rapids current is soft streaks at random places and heights
+  (x0.9 to 1.1) at about a third of its old strength (it was evenly spaced stripes); dusk's shadow bars are 50% more transparent; the change
+  between day and night is one gentle 10 s curve (the creep from the left is slow and faint, the old tint holds while the new comes in).
+- **Squashed or stretched cards (13:16 #1):** root cause: a card hit and then swinging straight away had its squash cut off with its
+  scaleX/scaleY left behind (the kill named only `scale`), so it stayed 1.07 x 0.90 or 0.97 x 1.04 for good. The kill takes them now, and the
+  play-animation watchdog eases back any card face left off its rest pose with nothing animating it.
+- **Armor pips (13:16 #21):** 1 to 4 shields overlap evenly inside their pip (they piled out to the left); 5 or more is one shield with the number.
+- **Shield chip (13:16 #23):** a unit joining the board mid-round keeps its 💠 Shield (and Shell, Durian thorns) through the replay's redraws.
+- **Enemy hand count on phones (13:16 #24):** inside their Deck's top edge, smaller; it was cut by the top of the screen (owner call BV-2).
+- **Effects Lab:** before / after variants (labels "BV ·") on wt-wind-swap, wt-tide-flow, castle-crumble, sk-smoke-bomb, st-smoke-apply and
+  wt-perma-tide. Tests: `tests/bv-2026-10-24.js`, `tests/e2e/bv_2026_10_24.py` (frame sequences at 390 and 1366; sheets in `docs/screens/BV/`).
 
 ## 2026-10-24 (package MAP: back where you left off, the floating Ambush, locked map tiles, an admin bramble editor)
 - **Back where you left off (owner 17:01 #1):** a reload or a new session on the same device opens the Conquest pane on the map you last stood on,

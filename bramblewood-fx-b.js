@@ -899,6 +899,7 @@ M.dawnDraw = function(host, opts){
   });
 };
 // Dusk (wt-dusk, the tone only): the sun sinks in the west, long shadows stretch across the felt, warm turns violet.
+const DUSK_BAR_ALPHA = .175; // 2026-10-24 (BV): was .35
 M.dusk = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
   // 2026-10-16 (user: "The sun thing - i think the static rectangle bars across the screen might look better than the setting sun
@@ -907,7 +908,9 @@ M.dusk = function(host, opts){
   // from the west (the light's direction) that is much weaker than the old wash.
   void r;
   const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,150,70,.22), rgba(200,110,140,.08) 45%, rgba(80,60,140,0) 80%);'}))[0];
-  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0));`}));
+  // 2026-10-24 (package BV, owner 19:27 #20: "in some maps, there is still the parallel bars effect. That effect needs to be 50% more
+  // transparent again!"): the bars are half as dark (.35 -> .175).
+  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,${DUSK_BAR_ALPHA}) 30%, rgba(40,20,50,0));`}));
   return run([box], opts, (t)=>{
     t.fromTo(w, {opacity:0}, {opacity:1, duration:.6}).to(w, {opacity:0, duration:.7}, 1.3)
       .fromTo(sh, {opacity:0}, {opacity:1, duration:.6, stagger:.05, ease:'sine.out'}, .15).to(sh, {opacity:0, duration:.6}, 1.2);
@@ -1006,13 +1009,32 @@ M.tideHigh = function(host, opts){
   });
 };
 // Perma-tide (wt-perma-tide, a pill): a persistent river current along the tide line (lives while the board does).
+// 2026-10-24 (package BV, owner 19:27 #20, SS#5: "the water vfx at night, there are these lines across the screen. Blur them out, place
+// them a bit more randomly, have slight variation in height (+ - 10%), and reduce their opacity by a lot!"): the current was one
+// repeating stripe pattern (a bright 6 px bar every 120 px), which read as evenly spaced lines ruled across the board, plainest at night.
+// It is now a few separate soft streaks (CURRENT_STREAKS) at random places, each its own width, slant, speed and height (the band's
+// height x 0.9 to 1.1), with soft (blurred-looking) edges drawn by their gradients, at about a third of the old strength.
+const CURRENT_STREAKS = 9, CURRENT_ALPHA = .3; // the layer's opacity (was .85; each streak is also fainter: .1-.16, was .22)
 css('current', `.fxb-current{position:absolute; left:0; right:0; bottom:0; height:30%; z-index:1; pointer-events:none; overflow:hidden; border-radius:0 0 14px 14px;
-  background:repeating-linear-gradient(100deg, rgba(220,245,255,0) 0 40px, rgba(220,245,255,.22) 46px 52px, rgba(220,245,255,0) 60px 120px); background-size:240px 100%; animation:fxbFlow 6s linear infinite; opacity:.85;
-  -webkit-mask:linear-gradient(0deg, #000 30%, transparent);}
-@keyframes fxbFlow{to{background-position:240px 0;}}`);
+  opacity:${CURRENT_ALPHA}; container-type:size; -webkit-mask:linear-gradient(0deg, #000 30%, transparent); mask:linear-gradient(0deg, #000 30%, transparent);}
+.fxb-current > b{position:absolute; left:0; bottom:0; width:var(--w, 9%); height:var(--h, 100%); border-radius:40%;
+  background:radial-gradient(60% 50% at 50% 60%, rgba(220,245,255,var(--a, .13)) 0, rgba(220,245,255,calc(var(--a, .13)*.5)) 45%, rgba(220,245,255,0) 72%);
+  transform:translateX(-30cqw) skewX(var(--sk, -14deg)); animation:fxbFlowB var(--d, 9s) linear var(--dl, 0s) infinite; will-change:transform;}
+@keyframes fxbFlowB{from{transform:translateX(-30cqw) skewX(var(--sk, -14deg));} to{transform:translateX(120cqw) skewX(var(--sk, -14deg));}}
+@media (prefers-reduced-motion: reduce){ .fxb-current > b{animation:none; transform:translateX(var(--x0, 40cqw)) skewX(var(--sk, -14deg));} }`);
+function currentStreaksHTML(){ let h = '';
+  for(let i = 0; i < CURRENT_STREAKS; i++){ const d = rnd(8, 14), x0 = rnd(0, 100);
+    h += `<b style="--w:${rnd(6, 13).toFixed(1)}%; --h:${(100*rnd(.9, 1.1)).toFixed(0)}%; --a:${rnd(.1, .16).toFixed(3)}; --sk:${(-rnd(8, 20)).toFixed(0)}deg; --d:${d.toFixed(1)}s; --dl:${(-rnd(0, d)).toFixed(2)}s; --x0:${x0.toFixed(0)}cqw; bottom:${rnd(-6, 6).toFixed(0)}%"></b>`; }
+  return h; }
 M.permaTide = function(host, opts){ opts = opts || {}; host = host || document.getElementById('battlefieldEl'); if(!host) return null;
   let c = host.querySelector(':scope > .fxb-current'); if(opts.off){ if(c) c.remove(); return null; }
-  if(!c){ c = document.createElement('i'); c.className = 'fxb-current fxb-persist'; c.setAttribute('aria-hidden', 'true'); host.appendChild(c); const g = G(); if(g && opts.intro !== false) g.fromTo(c, {opacity:0}, {opacity:.85, duration:1.2}); }
+  if(!c){ c = document.createElement('i'); c.className = 'fxb-current fxb-persist'; c.setAttribute('aria-hidden', 'true'); c.innerHTML = currentStreaksHTML(); host.appendChild(c); const g = G(); if(g && opts.intro !== false) g.fromTo(c, {opacity:0}, {opacity:CURRENT_ALPHA, duration:1.2}); }
+  return c; };
+M.permaTide_A = function(host, opts){ // the look before 2026-10-24 (BV), for the Effects Lab's before/after
+  opts = opts || {}; host = host || document.getElementById('battlefieldEl'); if(!host) return null; let c = host.querySelector(':scope > .fxb-current-a'); if(opts.off){ if(c) c.remove(); return null; }
+  if(!c){ c = document.createElement('i'); c.className = 'fxb-current-a'; c.setAttribute('aria-hidden', 'true');
+    c.style.cssText = 'position:absolute; left:0; right:0; bottom:0; height:30%; z-index:1; pointer-events:none; overflow:hidden; border-radius:0 0 14px 14px; background:repeating-linear-gradient(100deg, rgba(220,245,255,0) 0 40px, rgba(220,245,255,.22) 46px 52px, rgba(220,245,255,0) 60px 120px); background-size:240px 100%; opacity:.85; -webkit-mask:linear-gradient(0deg, #000 30%, transparent);';
+    host.appendChild(c); }
   return c; };
 // Moonpull brings the tide in (wt-moonpull): the Moon Jelly glows silver and the water rises toward it.
 M.moonpull = function(el, opts){
@@ -1053,6 +1075,74 @@ M.windSwap = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
   const s = bits(box, 1, ()=> ({cls:'fxb-swirl'}))[0]; s.innerHTML = '<svg viewBox="-45 -45 90 90" class="fxb-swirl" style="position:static; margin:0"><path d="M0 0 C 10 -8 20 4 10 16 C -4 30 -26 14 -22 -6 C -18 -28 14 -36 30 -18 C 40 -6 40 8 34 20"/><path d="M34 20 l2 -10 M34 20 l-9 -3"/></svg>';
   return run([box], opts, (t)=> t.fromTo(s, {scale:.2, opacity:0, rotation:0}, {scale:1, opacity:1, rotation:-240, duration:.5, ease:'power2.out'}).to(s, {scaleX:-1, duration:.25, ease:'back.out(2)'}).to(s, {rotation:'-=120', opacity:0, scale:1.3, duration:.35}, '+=.1'));
+};
+// The wind turns (2026-10-24, package BV, owner 17:34 #1: "Dont need to show that funny whirly doodle when the wind changes direction.
+// I think having a few wind lines on screen shortening, then lengthening in the new direction would translate this subtly"): replaces
+// windSwap's swirl in the game (windSwap stays for the Effects Lab's before/after). A few of the wind lines already on the board (the
+// standing layer, SkillFX.windField's .sfx-windfield) are lifted out where they are, mid-flight, while the rest of the layer fades.
+// Each one slows and draws in to a point at its leading end (the old wind dying), rests a beat, then draws out again the other way from
+// that same point and speeds off (the new wind taking hold) as the new layer fades in around it. Picked spread across the board, the
+// brighter ones first; their own length, tilt and brightness are kept, so it reads as the same air turning, not a new effect.
+// host: #battlefieldEl (or the Lab's board); opts: strength ('soft' | 'strong'), dir ('north' | 'south'), n (lines, default 6 on a
+// phone, 9 wider), onDone. host.dataset.windTurning is set while it runs (syncWindField waits for it). Transforms and opacity only.
+const WIND_TURN = {shrink:.52, rest:.12, grow:.5, fade:.42, newLayerAt:.62}; // s: draw in, rest, draw out, fade; the new layer's cue
+M.windTurn = function(host, opts){
+  opts = opts || {}; const g = G(), S = root.SkillFX;
+  const fin = ()=>{ if(host) delete host.dataset.windTurning; call(opts.onDone); };
+  if(!host || !S || !S.windField){ fin(); return Promise.resolve(); }
+  const cur = host.querySelector(':scope > .sfx-windfield:not(.is-out)');
+  const toDir = opts.dir === 'south' ? 'south' : 'north', fromDir = cur && /:south$/.test(cur.dataset.key || '') ? 'south' : 'north';
+  if(!g || !cur || fromDir === toDir){ S.windField(host, opts.strength || 'soft', toDir); fin(); return Promise.resolve(); }
+  const hr = host.getBoundingClientRect(), want = opts.n || (hr.width < 560 ? 6 : 9);
+  // the lines in view, bright enough to read, then spread out: the brightest in each of `want` bands across the board
+  const seen = [...cur.querySelectorAll(':scope > i')].map(el=>{ const r = el.getBoundingClientRect(), cs = getComputedStyle(el), op = +cs.opacity || 0;
+    return {el, r, cs, op, cx:(r.left + r.right)/2 - hr.left - host.clientLeft, cy:(r.top + r.bottom)/2 - hr.top - host.clientTop}; })
+    .filter(o=> o.op > .3 && o.cx > 8 && o.cx < hr.width - 8 && o.r.top > hr.top + 6 && o.r.bottom < hr.bottom - 6);
+  const pick = [];
+  for(let k = 0; k < want; k++){ const lo = hr.width*k/want, hi = hr.width*(k + 1)/want, band = seen.filter(o=> o.cx >= lo && o.cx < hi).sort((a, b)=> b.op - a.op); if(band[0]) pick.push(band[0]); }
+  host.dataset.windTurning = '1';
+  const ov = document.createElement('div'); ov.className = 'fxb-windturn'; ov.setAttribute('aria-hidden', 'true');
+  ov.style.cssText = 'position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:2; border-radius:inherit;';
+  host.appendChild(ov);
+  const lines = pick.map(o=>{
+    const m = (o.cs.transform || '').match(/matrix\(([^)]+)\)/), v = m ? m[1].split(',').map(Number) : [1, 0, 0, 1, 0, 0];
+    const ang = Math.atan2(v[1], v[0]), L = o.el.offsetHeight || 40, W = o.el.offsetWidth || 1.5;
+    const up = {x:Math.sin(ang), y:-Math.cos(ang)}; // the line's own "up" (its top end), on screen
+    const d = document.createElement('i');
+    d.style.cssText = `position:absolute; left:0; top:0; width:${W}px; height:${L}px; border-radius:2px; background:${o.cs.backgroundImage}; will-change:transform, opacity;`;
+    ov.appendChild(d);
+    return {d, ang, L, up, cx:o.cx, cy:o.cy, op:o.op};
+  });
+  S.windFieldClear(host); // the rest of the old layer fades (0.6 s)
+  const total = WIND_TURN.shrink + WIND_TURN.rest + WIND_TURN.grow + WIND_TURN.fade;
+  return new Promise(res=>{
+    const sgOld = fromDir === 'north' ? 1 : -1, sgNew = -sgOld; // +1: the head is the line's top end (it blows up the board)
+    const tl = g.timeline({onComplete:()=>{ ov.remove(); fin(); res(); }});
+    lines.forEach((ln, i)=>{
+      const st = {s:1, d:0, a:0, o:ln.op}, jitter = rnd(0, .07);
+      // the leading end at the start, and the point it draws in to (it keeps drifting a little, slowing)
+      const head0 = {x:ln.cx + ln.up.x*sgOld*ln.L/2, y:ln.cy + ln.up.y*sgOld*ln.L/2};
+      const draw = ()=>{
+        let cx, cy;
+        if(st.a === 0){ const hx = head0.x + ln.up.x*sgOld*st.d, hy = head0.y + ln.up.y*sgOld*st.d; cx = hx - ln.up.x*sgOld*st.s*ln.L/2; cy = hy - ln.up.y*sgOld*st.s*ln.L/2; }
+        else { const ax = head0.x + ln.up.x*sgOld*12 + ln.up.x*sgNew*st.d, ay = head0.y + ln.up.y*sgOld*12 + ln.up.y*sgNew*st.d; cx = ax + ln.up.x*sgNew*st.s*ln.L/2; cy = ay + ln.up.y*sgNew*st.s*ln.L/2; }
+        g.set(ln.d, {x:cx - (ln.d.offsetWidth || 1)/2, y:cy - ln.L/2, rotation:ln.ang*180/Math.PI, scaleY:Math.max(.02, st.s), opacity:st.o, transformOrigin:'50% 50%'});
+      };
+      draw();
+      const t0 = jitter;
+      tl.to(st, {s:.05, duration:WIND_TURN.shrink, ease:'power2.in', onUpdate:draw}, t0)
+        .to(st, {d:12, duration:WIND_TURN.shrink, ease:'power2.out', onUpdate:draw}, t0)
+        .to(st, {o:ln.op*.75, duration:WIND_TURN.shrink, ease:'none', onUpdate:draw}, t0)
+        .add(()=>{ st.a = 1; st.d = 0; draw(); }, t0 + WIND_TURN.shrink + WIND_TURN.rest*.5)
+        .to(st, {s:1, duration:WIND_TURN.grow, ease:'power2.out', onUpdate:draw}, t0 + WIND_TURN.shrink + WIND_TURN.rest)
+        .to(st, {o:ln.op, duration:WIND_TURN.grow*.6, ease:'none', onUpdate:draw}, t0 + WIND_TURN.shrink + WIND_TURN.rest)
+        .to(st, {d:46, duration:WIND_TURN.grow + WIND_TURN.fade, ease:'power2.in', onUpdate:draw}, t0 + WIND_TURN.shrink + WIND_TURN.rest)
+        .to(st, {o:0, duration:WIND_TURN.fade, ease:'power1.in', onUpdate:draw}, t0 + WIND_TURN.shrink + WIND_TURN.rest + WIND_TURN.grow);
+    });
+    tl.add(()=>{ try{ delete host.dataset.windTurning; S.windField(host, opts.strength || 'soft', toDir); host.dataset.windTurning = '1'; }catch(e){} }, WIND_TURN.newLayerAt + WIND_TURN.shrink*.3);
+    tl.to({}, {duration:.01}, total + .08);
+    later(()=>{ if(ov.isConnected){ tl.progress(1); } }, (total + 1.5)*1000); // never left on the board
+  });
 };
 // Headwind: a Flyer's skill or trigger goes off twice (wt-headwind): a rune echo is blown off the card sideways.
 css('echo', `.fxb-rune{position:absolute; left:50%; top:45%; width:46px; height:46px; margin:-23px; border-radius:50%; border:2px dashed rgba(255,255,255,.9); box-shadow:0 0 10px rgba(180,230,255,.8); display:grid; place-items:center; color:#fff; font:900 16px/1 system-ui;}`);
@@ -1511,7 +1601,9 @@ M.onEvent = function(ev, env){
   case 'wind': {
     if(!ev.windy){ if(med) M.windCalm(bf); break; }
     const from = isMineSide(m, ev.from) ? 'mine' : 'theirs';
-    if(mo.windFrom && mo.windFrom !== from && med){ M.windSwap(bf); env.at(420, ()=> M.windGust(bf, {from})); } else if(med) M.windGust(bf, {from});
+    // 2026-10-24 (package BV, owner 17:34 #1): a change of direction no longer plays windSwap's swirl and a fresh gust: the standing
+    // wind lines turn instead (M.windTurn, started by syncWindField in arena_app.js when the layer changes direction).
+    if(mo.windFrom && mo.windFrom !== from && med){ /* the turn is the cue */ } else if(med) M.windGust(bf, {from});
     mo.windFrom = from; break; }
   case 'triggerFired': {
     const w = m && m._windNow; if(!w || !w.windy || !effOf(defs, ev.defId).flying) break;
