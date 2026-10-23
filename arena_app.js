@@ -44621,11 +44621,9 @@ function emptyHealEvent(ev){
 }
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
-  // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
-  if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true;
-    setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; }
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
+  if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
   try{ if(typeof FxAutoLower !== 'undefined') FxAutoLower.poke(); }catch(e){} // 2026-10-17: a fight is playing; watch the frame rate (auto-lower effects)

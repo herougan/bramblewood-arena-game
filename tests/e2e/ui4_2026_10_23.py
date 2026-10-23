@@ -75,24 +75,16 @@ async def run(b, url, w):
     await shot(pg, 'pack-cut', w)
     await pg.mouse.move(x + bw * 0.95, y + bh / 2, steps=8); await pg.mouse.up(); await pg.wait_for_timeout(300)
     await pg.close()
-    # 3. the several-swap window
+    # 3. the several-swap window. 2026-10-23 (package FX4, owner on UI4-3): one row with up to 3 pack cards and "Swap Again" now;
+    # tests/e2e/fx4_2026_10_23.py plays it. Here: the pack's cards come as one window in the one-card window's style.
     pg = await fresh(b, url, w)
     r = await pg.evaluate("""(async()=>{ setDialogueFlag(SWAP_TUTORIAL_FLAG, true); const defs = getCardDefs();
       const pool = Object.keys(defs).filter(id=> swapEligibleDef(defs[id]) && !(myDeckCounts[id] > 0) && !(defs[id].cost > 0) && !isUnattainable(defs[id]) && ['common','uncommon'].includes(defs[id].rarity) && Object.keys(myDeckCounts).some(o=> myDeckCounts[o] > 0 && swapStrength(defs[id]) > swapStrength(defs[o]) + 2)).slice(0, 40);
       const ids = []; for(const id of pool){ if(ids.length >= 3) break; unlockCardForPlayer(id, 'test'); if(multiSwapCandidates(id, myDeckCounts, defs).length) ids.push(id); }
-      const before = deckTotal(myDeckCounts);
       pendingDeckSwap = []; queueMultiDeckSwap(ids, 'factionPack'); maybeOfferDeckSwap(); await new Promise(r=> setTimeout(r, 600));
-      return {ids, rows: document.querySelectorAll('.ds3-row').length, before}; })()""")
-    ok(r['rows'] == 3, f"3. a row per pack card ({r['rows']} for {r['ids']})")
+      return {ids, thumbs: document.querySelectorAll('[data-col="in"] .ds2-thumb').length, rows: document.querySelectorAll('.ds3-row').length}; })()""")
+    ok(r['thumbs'] == len(r['ids']) == 3 and r['rows'] == 0, f"3. the pack's 3 cards in one row (FX4: Swap Again) {r}")
     await shot(pg, 'multiswap', w)
-    if r['rows'] >= 2:
-        await pg.click('.ds3-row[data-row="1"] .ds3-tick input'); await pg.wait_for_timeout(150)
-        lbl = await pg.evaluate("document.getElementById('dsSwap').textContent")
-        ok('2' in lbl, f'3. unticking a row counts it out ({lbl.strip()})')
-        await pg.evaluate(HOLD); await pg.click('#dsSwap'); await pg.wait_for_timeout(300); await shot(pg, 'multiswap-mid', w); await pg.wait_for_timeout(500); await shot(pg, 'multiswap-after', w)
-        await pg.evaluate("(()=>{ const ov = document.getElementById('deckSwapOverlay'); if(ov) ov.parentNode.removeChild(ov); })()")
-        r2 = await pg.evaluate(f"(()=>{{ const ids = {json.dumps(r['ids'])}; return {{inDeck: ids.map(id=> myDeckCounts[id]||0), total: deckTotal(myDeckCounts), open: !!document.getElementById('deckSwapOverlay')}}; }})()")
-        ok(r2['inDeck'][0] == 1 and r2['inDeck'][1] == 0 and r2['inDeck'][2] == 1 and r2['total'] == r['before'], f'3. the two ticked cards went in, the deck kept its size {r2}')
     await pg.close()
     # 5. Camp: a new player's single slot; a grandfathered save; the Tavern's slot row
     pg = await fresh(b, url, w, "localStorage.removeItem('bramblewood_deck_slots_v1');")

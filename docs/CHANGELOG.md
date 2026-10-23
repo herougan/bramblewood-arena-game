@@ -29,7 +29,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Lava Waders (FX3-3, new equipment):** Uncommon, Lumber 1, +0/+3 and **Fire Resistance** (`equip.grant {resist:['heat']}`: fire hits
   halved; Scorched Ground, Wildfire Front and Scorching pass the wearer by). Budget by formula, the grant counted as its skills: N 15.88,
   2A+H+S 4. Made at the **Blacksmith** (2 Iron Shards, 1 Ember Core, 1 Basalt Boar from the Sundered Peak; 300 Dust, 400 Leaves): packs and
-  skirmish rewards never give equipment. Placeholder 🥾, NightCafe prompt in `docs/art/new-cards-2026-10-21-briefs.md` (call FX4-4).
+  skirmish rewards never give equipment. Placeholder 👢, NightCafe prompt in `docs/art/new-cards-2026-10-21-briefs.md` (call FX4-4).
   Engine: a granted Resist / Immune list adds to the unit's own (`deriveDef`); the volcano's ground-fire check reads `effects.resist` too.
   The card reads "Fire Resistance" (`eqResistText`).
 - **Bulwark Shields (EN-3):** the two shields Bulwark raises have **Guardian** (were skill-less).
@@ -42,7 +42,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   `scorchSweepVfx`; `fx-src-extra.txt`); the Smoke & war tab's Wildfire front says where it is used now. The hub is rebuilt at release.
 - Texts: 18 TX keys new or changed, 12 packs, the Lava Waders name and flavour (`tools/i18n_2026_10_23_fx4.py`); `ui.ui4-swap-say` /
   `-n` and `ui.fx-scorched-sweep-log` retired. Tests: `tests/fx4-2026-10-23.js` (new, 95 checks), `tests/e2e/fx4_2026_10_23.py` (390 /
-  1366); `fx3-2026-10-23`, `keywords-2026-10-14` (Lava Tide x0.5) and `ui4-2026-10-23` follow the new rules. Card matrix: 0 failures, golden
+  1366); `fx3-2026-10-23`, `keywords-2026-10-14` (Lava Tide x0.5) and `ui4-2026-10-23` (unit and e2e) follow the new rules. Card matrix: 0 failures, golden
   diffs 8341 against 8247 on batch-1023b before FX4 (Backstab, the Guardian shields, Scorched Ground). Screens: `docs/screens/FX4/`.
 
 ## 2026-10-23 (package MK: the map marker stays put after a win; a cleared Map 0 no longer strands you)

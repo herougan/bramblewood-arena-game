@@ -32324,7 +32324,7 @@
   {
     "id": "lava-waders",
     "name": "Lava Waders",
-    "icon": "\ud83e\udd7e",
+    "icon": "\ud83d\udc62",
     "cost": 1,
     "wait": 0,
     "attack": 0,
@@ -32350,6 +32350,6 @@
     },
     "numericId": 9124,
     "uuid": "6f026f55-0503-5f93-b4d8-ee34c87e0220",
-    "creatorNote": "2026-10-23 (package FX4, owner on FX3-3: \"You're supposed to build a fire resistant deck - but i don't want to force it. Also, let's create a fire resistant boots equipment like lava waders that gives units Fire Resistance\"): equipment, +0/+3 and Fire Resistance (Resist heat: fire hits halved; the volcano's ground fires, Scorched Ground and Wildfire Front pass it by). Made at the Blacksmith (SMITH_RECIPES: 2 Iron Shards, 1 Ember Core, 1 Basalt Boar, a Sundered Peak card; 300 Dust, 400 Leaves). Budget by formula (an equipment card: its grant counted as its skills, as for the Crowbar and Terraumbra): Uncommon, Lumber 1, Level 1, N = 15.88; S = 1 (Resist has no price of its own in canonical/skill-costs.json: the default 1); 2A+H+S = 4 (cap 1, well under), A*H + S*|S| = 1 of (N/3)^2 = 28.02 (cap 2). Placeholder icon \ud83e\udd7e; NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md."
+    "creatorNote": "2026-10-23 (package FX4, owner on FX3-3: \"You're supposed to build a fire resistant deck - but i don't want to force it. Also, let's create a fire resistant boots equipment like lava waders that gives units Fire Resistance\"): equipment, +0/+3 and Fire Resistance (Resist heat: fire hits halved; the volcano's ground fires, Scorched Ground and Wildfire Front pass it by). Made at the Blacksmith (SMITH_RECIPES: 2 Iron Shards, 1 Ember Core, 1 Basalt Boar, a Sundered Peak card; 300 Dust, 400 Leaves). Budget by formula (an equipment card: its grant counted as its skills, as for the Crowbar and Terraumbra): Uncommon, Lumber 1, Level 1, N = 15.88; S = 1 (Resist has no price of its own in canonical/skill-costs.json: the default 1); 2A+H+S = 4 (cap 1, well under), A*H + S*|S| = 1 of (N/3)^2 = 28.02 (cap 2). Placeholder icon \ud83d\udc62; NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md."
   }
 ]
