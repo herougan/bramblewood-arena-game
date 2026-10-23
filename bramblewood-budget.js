@@ -96,12 +96,29 @@ const CONTEXT = {
   stemGrant: v=> [obj(v)], // Stem / Chrysalis – {…} (2026-10-21, package EV): what it hands the evolute placed over it, at 0.4 × its S
   liegeGrant: v=> [obj(v)], // Liege – {…} (2026-10-23, package EN): its braces while a King is on its side, at CONTEXT_MULT_BY.liegeGrant (0.3)
   rageGrant: v=> [obj(v)], // Rage – {…} (2026-10-23, package EN): its braces while its Rage is on, at CONTEXT_MULT_BY.rageGrant (0.4), on top of Rage's own price
-  bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null // only Bloom's braces form; the plain +2/+2 keeps its measured worth
+  bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null, // only Bloom's braces form; the plain +2/+2 keeps its measured worth
+  bloomCopy: v=> { const p = bloomOdds(v); return [{attack: p, health: p}]; } // Bloom – {conditions} (BL, 2026-10-23): the copy's +1/+1, x the odds (see bloomOdds)
 };
+// Bloom – {conditions} (2026-10-23, package BL; owner 11:23: "Bloom - {Conditions}. Let's just define bloom as +1/+1, then make a copy of
+// this card"; 19:30: "I think bloom only gives the new one +1/+1, not itself."): once, when its conditions hold at a round's start, a copy of the
+// unit (the same body) grows beside it and the copy gains +1/+1. Priced in two parts by the odds p that it ever blooms (bloomOdds):
+//   S = p × (2×1 + 1) = 3p, the copy's +1/+1 (a context skill: CONTEXT.bloomCopy, multiplier 1);
+//   cap 1's stat terms × (1 + p) (bloomBodyMult, in capScores): with odds p a second body of the same stats arrives. Cap 2 (A·H, how much
+//   is packed into one body) is left alone: the copy is a second body, not a bigger one. The copy's own skills ride on S as they are.
+// p = the conditions' odds over a unit's life (BLOOM_ODDS; 'and' multiplies them, 'or' is 1 − Π(1 − odds)) × BLOOM_LIVE (it is still on
+// the field at a round's start once they hold, with a free slot beside it) × BLOOM_LUMBER per Lumber it pays. These are formula estimates,
+// not measured (the robust skill test does not model the copy yet); Wet & Sunny p 0.27, Wet & Kill 0.17, Wet & Sunny + 1 Lumber 0.23.
+const BLOOM_ODDS = {day: 0.85, sunny: 0.8, night: 0.8, twilight: 0.4, dark: 0.85, tide: 0.35, ebb: 0.3, wet: 0.4, rain: 0.15, wind: 0.25, heat: 0.1, frost: 0.1, fullmoon: 0.15, kill: 0.5};
+const BLOOM_ODDS_OTHER = 0.3, BLOOM_LIVE = 0.85, BLOOM_LUMBER = 0.85;
+function bloomOdds(v){ if(!obj(v)) return 0; const w = (Array.isArray(v.when) ? v.when : [v.when]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, ''));
+  if(!w.length) return 0; const o = w.map(k=> BLOOM_ODDS[k] != null ? BLOOM_ODDS[k] : BLOOM_ODDS_OTHER);
+  const hit = v.mode === 'or' ? 1 - o.reduce((a, x)=> a * (1 - x), 1) : o.reduce((a, x)=> a * x, 1);
+  return r2(hit * BLOOM_LIVE * Math.pow(BLOOM_LUMBER, Math.max(0, Math.round(+v.lumber || 0)))); }
+function bloomBodyMult(effects){ const e = effects || {}; return e.bloomCopy ? 1 + bloomOdds(e.bloomCopy) : 1; }
 // Context skills with their own multiplier (2026-10-23, package EN). Liege – {…}: 0.3 (owner TR-4: "Liege is worth 0.3x {...}").
 // Rage – {…}: 0.4, by logic: Rage is on for the lower half of the unit's Health (0.5), and a unit can
 // fall from above half in one blow (x 0.8). Rage itself keeps its own price beside it (rage is not in CONTEXT_FLAG: the braces add to it).
-const CONTEXT_MULT_BY = {liegeGrant: 0.3, rageGrant: 0.4};
+const CONTEXT_MULT_BY = {liegeGrant: 0.3, rageGrant: 0.4, bloomCopy: 1 /* BL (2026-10-23): the odds are already in its braces */};
 const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */, king: 'kinglyGrant' /* TR (2026-10-21) */, liege: 'liegeGrant' /* EN (2026-10-23): a plain Liege is Liege – {Assault 2}, priced in skill-costs.json */};
 // S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
@@ -214,7 +231,8 @@ function fragileUseOf(effects, cfg){ const e = effects || {}, f = num(cfg, 'frag
 // Archer's is 0, the caller's rule). opts.m / opts.f stand in for the card's own (a caller that knows only the multiplier).
 function capScores(A, H, S, effects, cfg, opts){ A = +A || 0; H = +H || 0; S = +S || 0;
   const m = opts && opts.m != null ? +opts.m : missMultOf(effects, cfg), f = opts && opts.f != null ? +opts.f : fragileUseOf(effects, cfg);
-  return {m, f, x1: r2(f * ((2 * A + H) * m + S)), x2: r2(f * (A * H * m + S * Math.abs(S)))}; }
+  const k = bloomBodyMult(effects); // Bloom (BL, 2026-10-23): a copy of the body with odds p, cap 1's stat terms only
+  return {m, f, k, x1: r2(f * ((2 * A + H) * m * k + S)), x2: r2(f * (A * H * m + S * Math.abs(S)))}; }
 function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (L > 10 && L % 3 === 1)) return 'major'; if(MINOR.includes(L)) return 'minor'; return 'other'; }
 
 // The curve for a card d ({attack, health, rarity, wait, cost, effects}) from its start level `from` (0 or 1) to `top` (11 for the
@@ -229,7 +247,7 @@ function forgeCurve(d, from, top, cfg){
   let A = a0, H = h0, P = 0, bank = 0;
   for(let L = from + 1; L <= top; L++){
     const N = NL(L), kind = levelKind(L), room = h=> cap2Limit(N, cfg) - m * h.a * h.h; /* BF11 */
-    bank = r2(bank + (N - NL(L - 1)) / m);
+    bank = r2(bank + (N - NL(L - 1)) / (m * bloomBodyMult(d.effects))); // + Bloom's copy (BL, 2026-10-23): a stat point costs (1 + p) of N
     let p = Math.floor(bank * SHARE[kind] + 1e-9); if(kind === 'major' || kind === 'limit') p = Math.max(1, p);
     // split p points: Attack toward the shape (never more than p/2), the rest Health; Attack only when there is no Health stat
     const split = (pp, prefer)=>{
@@ -251,5 +269,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

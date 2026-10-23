@@ -350,7 +350,6 @@
  "Blind the target": "Bulagin ang target",
  "Blocked": "Naka-block",
  "Bloodlust: when it kills the unit facing it, it leaps to the next creature": "Uhaw sa Dugo: kapag napatay nito ang yunit sa harap, lumulundag ito sa susunod na nilalang",
- "Bloom heals 1 more.": "Mas magpapagaling nang 1 ang Pamumulaklak.",
  "Bloomtide": "Agos ng Bulaklak",
  "Blossom": "Bulaklak",
  "Bonus from skills and auras": "Bonus mula sa mga kakayahan at aura",
@@ -2584,5 +2583,6 @@
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Atake para sa bawat kakampi na kapareho nito ng uri. Hindi bilang ang mga Istruktura.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Atake sa bawat kakampi na {v2}. Hindi bilang ang mga Istruktura.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Botang hanggang hita na gawa sa balat ng salamander at alkitran. Lumusong ka, buo pa rin ang mga daliri mo.",
- "One claw for waving, one for winning. This one only grew the second.": "Isang sipit para kumaway, isa para manalo. Ang pangalawa lang ang pinalaki nito."
+ "One claw for waving, one for winning. This one only grew the second.": "Isang sipit para kumaway, isa para manalo. Ang pangalawa lang ang pinalaki nito.",
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Isang berdeng sapin sa tahimik na tubig. Bigyan ito ng araw at basang maghapon, at pagsapit ng gabi ay dalawa na."
 }

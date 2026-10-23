@@ -350,7 +350,6 @@
  "Blind the target": "대상을 실명시키기",
  "Blocked": "차단됨",
  "Bloodlust: when it kills the unit facing it, it leaps to the next creature": "피의 갈증: 마주한 유닛을 처치하면 다음 생물에게 뛰어들어요",
- "Bloom heals 1 more.": "개화가 1 더 회복해요.",
  "Bloomtide": "꽃물결",
  "Blossom": "꽃",
  "Bonus from skills and auras": "스킬과 오라 보너스",
@@ -2584,5 +2583,6 @@
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "타입을 공유하는 아군 하나마다 공격 +{v1}. 건축물은 세지 않습니다.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}인 아군마다 공격력 +{v1}. 건축물은 세지 않습니다.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "도롱뇽 가죽과 역청으로 만든 허벅지 높이 장화. 걸어 들어가도 발가락은 무사하다.",
- "One claw for waving, one for winning. This one only grew the second.": "한 집게는 손 흔들기용, 한 집게는 이기기용. 이 녀석은 두 번째만 키웠다."
+ "One claw for waving, one for winning. This one only grew the second.": "한 집게는 손 흔들기용, 한 집게는 이기기용. 이 녀석은 두 번째만 키웠다.",
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "고인 물 위의 초록 막. 햇빛과 젖은 하루를 주면, 저녁엔 둘이 되어 있다."
 }

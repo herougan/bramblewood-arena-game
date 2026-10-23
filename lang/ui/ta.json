@@ -350,7 +350,6 @@
  "Blind the target": "இலக்கைக் குருடாக்கு",
  "Blocked": "தடுக்கப்பட்டது",
  "Bloodlust: when it kills the unit facing it, it leaps to the next creature": "இரத்தவெறி: எதிரே உள்ள அலகைக் கொன்றதும், அடுத்த உயிரினத்திடம் பாய்கிறது",
- "Bloom heals 1 more.": "மலர்ச்சி 1 கூடுதலாகக் குணப்படுத்தும்.",
  "Bloomtide": "மலர் அலை",
  "Blossom": "மலர்",
  "Bonus from skills and auras": "திறன்கள் மற்றும் ஒளிவட்டங்களிலிருந்து போனஸ்",
@@ -2584,5 +2583,6 @@
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2} ஆக உள்ள ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "சாலமாண்டர் தோலும் தாரும் கொண்ட தொடை உயரக் காலணிகள். இறங்கி நட, விரல்கள் பத்திரம்.",
- "One claw for waving, one for winning. This one only grew the second.": "ஒரு கொடுக்கு கையசைக்க, ஒன்று வெல்ல. இது இரண்டாவதை மட்டுமே வளர்த்தது."
+ "One claw for waving, one for winning. This one only grew the second.": "ஒரு கொடுக்கு கையசைக்க, ஒன்று வெல்ல. இது இரண்டாவதை மட்டுமே வளர்த்தது.",
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "அசையாத நீரின் மேல் ஒரு பச்சைப் படலம். வெயிலும் ஈரமான நாளும் கொடுத்தால், மாலைக்குள் இரண்டாகிவிடும்."
 }

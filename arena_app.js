@@ -282,7 +282,7 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   moonpull:'🌙🌊', twin:'👯', sprout:'🌱', growth:'🌿', shade:'🌫️', shadow:'👤', supreme:'✨',
   // 2026-10-14 (third pass). Bloom (conditions) is 🌷 because the old Bloom N heal has 🌸 (the in-bloom chip on the board is 🌸);
   // Wave is 〰️ because Tide has 🌊 and Scatterbrained 🌀; Brood 🥚; Pack Leader 🐺👑; Supreme Tide ✨🌊.
-  bloomWhen:'🌷', wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊',
+  bloomWhen:'🌷', bloomCopy:'🌸' /* Bloom – {…} (BL, 2026-10-23) */, wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊',
   castDarkness:'🌘', trueStrike:'💯', // 2026-10-18 (package D): the Darkness field's own moon; True Strike never misses
   // 2026-10-14 (fourth pass). Crab Claws is 🦞 because Molting already has 🦀; Nullify 🚫 (only the Player Stun action's
   // trigger badge used it); Meiosis 🧫; Restless 👣; Charge ⏲️ (Primed has 🔋, and ⚡ is Frenzy/Lightning).
@@ -583,7 +583,22 @@ function skillIconFor(k, d){ if(k === 'transform'){ const tf = d && d.effects &&
   return (k === 'fork' && isCrabDef(d)) ? '🦞' : (SKILL_ICON[k] || ''); }
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
-const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost', fullmoon:'Full Moon', rain:'Rain'}; // + Full Moon, Rain (CX2, 2026-10-21)
+const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost', fullmoon:'Full Moon', rain:'Rain', sunny:'Sunny'}; // + Full Moon, Rain (CX2, 2026-10-21); + Sunny (BL, 2026-10-23)
+// Bloom – {conditions} (2026-10-23, package BL; owner 11:23: "Bloom - {Conditions}. Let's just define bloom as +1/+1, then make a copy of
+// this card"; 17:34: "Bloom hasn't changed"; 19:30: "bloom only gives the new one +1/+1, not itself"): effects.bloomCopy = {when, mode, lumber} (the engine's bloomCopyPass). Its conditions are
+// Bloom's plus 'kill' (it has killed an enemy unit), and it may cost Lumber: "Bloom (Wet & Sunny + 1 Lumber)". The editor's text form is
+// the same words: "Wet & Sunny + 1 Lumber", "Wet & Kill".
+const BLOOM_COPY_COND_NAMES = Object.assign({}, BLOOM_COND_NAMES, {kill: TX('ui.bl-cond-kill')});
+function bloomCopyWhenText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> BLOOM_COPY_COND_NAMES[k] || k);
+  const L = Math.max(0, Math.round(Number(bc.lumber) || 0)); return (w.join(bc.mode === 'or' ? ' or ' : ' & ') || '?') + (L ? ' + ' + TX('ui.bl-lumber', {n: L}) : ''); }
+function bloomCopyLabel(bc){ return TX('ui.bl-head', {when: bloomCopyWhenText(bc)}); }
+function bloomCopyToText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> k === 'kill' ? 'Kill' : (BLOOM_COND_NAMES[k] || k)); const L = Math.max(0, Math.round(Number(bc.lumber) || 0));
+  return (w.join(bc.mode === 'or' ? ' or ' : ' & ')) + (L ? ` + ${L} Lumber` : ''); }
+function parseBloomCopyText(v){ if(v && typeof v === 'object' && !Array.isArray(v)) return v.when ? v : null;
+  let t = String(v||'').toLowerCase().replace(/full moon/g, 'fullmoon').replace(/killed an enemy|killed|kills?/g, ' kill ');
+  const lm = t.match(/(\d+)\s*lumber/); t = t.replace(lm ? lm[0] : '', ' ');
+  const when = Object.keys(BLOOM_COPY_COND_NAMES).filter(k=> new RegExp('\\b' + k + '\\b').test(t)); if(!when.length) return null;
+  const out = {when, mode: /\bor\b/.test(t) ? 'or' : 'and'}; if(lm && Number(lm[1]) > 0) out.lumber = Number(lm[1]); return out; }
 // 2026-10-21 (package CX2): Bloom (…) – {…}: a bloomWhen.grant lists skills it has while in bloom (no +2/+2 then unless it says so).
 function bloomLabel(bw){ bw = bw || {}; const w = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean).map(k=> BLOOM_COND_NAMES[k] || k), gr = bw.grant && typeof bw.grant === 'object' && Object.keys(bw.grant).length ? bw.grant : null;
   const a = bw.atk != null ? Number(bw.atk)||0 : (gr ? 0 : 2), h = bw.hp != null ? Number(bw.hp)||0 : (gr ? 0 : 2);
@@ -630,6 +645,15 @@ function parseBloomText(v){ const raw = String(v||''), br = raw.match(/\{([^}]*)
 // "Poison 1" reads "Poison" (2026-10-12, 23:12, user: "This omission of N if its default should be standardised everywhere" + "If
 // its just Poison 1 or Bleed 1 or ETC, just omit the number"): a skill value of 1 (or true) is shown without its number.
 function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) ? '' : ' ' + v; }
+// 2026-10-23 (package BL; owner 17:34 #4: "Diurnal +1/+0 is the standard. Nocturnal similarly is +1/+0. When you select default in the card
+// editor (or claude does), the description wouldn't say Diurnal +1/+0 - in the day +1/+0. It would just skip the first +1/+0 since its
+// default. Same with the rest of this kind of skills."): a skill whose value is its default (PASSIVE_DEFS defaultValue: Diurnal, Nocturnal
+// and Crepuscular +1/+0, Cleave 1, Fire Bolt 2, Full Moon 3 ...) has a bare name on its card line ("Diurnal — By day: gain +1/+0."); its
+// short text still says the number. Any other value keeps it in the name ("Diurnal +2/+1").
+function atSkillDefault(p, v){ const d = p && p.defaultValue; if(d == null || v == null) return false;
+  if(Array.isArray(d)){ const a = phaseVals(v); return d.every((x, i)=> (Number(a[i])||0) === (Number(x)||0)); }
+  return v === true || Number(v) === Number(d); }
+function skillValSuffix(p, v){ return atSkillDefault(p, v) ? '' : valSuffix(v); }
 // Swimmer, in words (2026-10-15, user: "Swimmer skill does not seem to show up. It shows up as Tide instead maybe? It should be
 // Swimmer - On tide, { ... }"): what a Swimmer gets while the Tide is in (Flow, or High tide with t === 'high'). A Swimmer is still a
 // Tide unit in the engine (Flow +1 Attack, Ebb +1 Armor), so its own pick is added on top: +2 Attack in all for the plain Swimmer.
@@ -721,15 +745,15 @@ const PASSIVE_DEFS = [
   // (day for Diurnal), lost when the phase turns. The old on/off form reads as +1/+0.
   // 2026-10-13 (10:57 list): Crepuscular (Twilight only), Sun-shy (blind by day), Night-blind (blind at night).
   // 2026-10-21 (package CX2, owner 17:42: "Crepuscular: +1 attack in day, +1 attack at night"): a day part and a night part, like Tide.
-  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); },
+  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:['Attack','Health'], defaultValue:[1, 0] /* BL (2026-10-23, owner 17:34 #4): +1/+0 is the standard */, desc:v=>{ const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); },
     get:e=> e.crepuscularGrant ? undefined : (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
   {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (an Illuminate unit on your side lights it, and so does an enemy Illuminate unit directly facing it).`}, // + facing (2026-10-16)
-  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
+  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], defaultValue:[1, 0] /* BL (2026-10-23, owner 17:34 #4): +1/+0 is the standard */, desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
     get:e=> e.nocturnalGrant ? undefined : (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined, // the advanced form has its own row (2026-10-15)
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
-  {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
+  {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], defaultValue:[1, 0] /* BL (2026-10-23, owner 17:34 #4): +1/+0 is the standard */, desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
     get:e=> e.diurnalGrant ? undefined : (e.diurnal || e.diurnalHp) ? [e.diurnal===true ? 1 : (e.diurnal||0), e.diurnalHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.diurnal = a; if(h>0) e.diurnalHp = h; } }},
 // Zeitgeber format (2026-10-15, user: "Diurnal - +1. At more advanced maps, Diurnal - {}. Day grants skills not +1 attack anymore.
@@ -824,9 +848,17 @@ const PASSIVE_DEFS = [
   // Moonpull (user: "There is a creature that has a cool sounding evergreen effect - its effect brings in the Tide!").
   {key:'moonpull', category:'evergreen', label:'Moonpull', kind:'boolean', desc:()=>`When it arrives, the Tide comes in: it is Flood this round (an Ebb turns to Flood).`},
   // 2026-10-14 (third pass). Bloom (conditions) (user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): a conditional +A/+H.
-  {key:'bloomWhen', category:'passive', label:'Bloom When', kind:'text', placeholder:'Tide & Night +2/+2  ·  Wind or Wet',
+  // 2026-10-23 (package BL): retired (hidden from "+ Add Skill" and the skill lists): Bloom – {conditions} (bloomCopy) is Bloom now. The engine
+  // still runs it, so an old custom card keeps working.
+  {key:'bloomWhen', category:'passive', hidden:true, retired:true, label:'Bloom When', kind:'text', placeholder:'Tide & Night +2/+2  ·  Wind or Wet',
     desc:(v, n, e)=>{ const bw = (e && e.bloomWhen) || (typeof v === 'string' ? parseBloomText(v) : null) || {when:['tide','night']}; return `${bloomLabel(bw)}. While ${(bw.when||[]).map(k=> BLOOM_COND_NAMES[k] || k).join(bw.mode === 'or' ? ' or ' : ' and ')} hold${bw.mode === 'or' ? 's' : ''}, it is in bloom 🌸 and has the bonus. Conditions: Tide (in), Ebb, Night, Day, Twilight, Wind, Wet (rain, the Tide in, or a beach, river or sea map), Dark, Heat, Frost.`; },
     get:e=> e.bloomWhen ? bloomToText(e.bloomWhen) : undefined, apply:(e, v)=>{ const b = parseBloomText(v); if(b) e.bloomWhen = b; }},
+  // Bloom – {conditions} (2026-10-23, package BL; owner 11:23 and 17:34 #3): once, the first round its conditions hold, a copy of it
+  // beside it with +1/+1 (owner 19:30: the unit itself unchanged) (see bloomCopyPass in bramblewood-engine.js). Priced by bramblewood-budget.js (bloomOdds).
+  {key:'bloomCopy', category:'passive', label:'Bloom', kind:'text', placeholder:'Wet & Sunny  ·  Wet & Kill  ·  Wet & Sunny + 1 Lumber',
+    desc:(v, n, e)=>{ const bc = (e && e.bloomCopy) || parseBloomCopyText(v) || {when:['wet','sunny']}; return TX(Math.round(Number(bc.lumber)||0) ? 'ui.bl-desc-lumber' : 'ui.bl-desc', {when: bloomCopyWhenText(Object.assign({}, bc, {lumber: 0})), n: Math.round(Number(bc.lumber)||0)}); },
+    codexNote: TX('ui.bl-codex'),
+    get:e=> e.bloomCopy ? bloomCopyToText(e.bloomCopy) : undefined, apply:(e, v)=>{ const b = parseBloomCopyText(v); if(b) e.bloomCopy = b; }},
   // Wave (user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right - waves.").
   // 2026-10-17 (user: "for Awash skills, there's always a slight bias towards awashing inwards - very slight. If it's awash 1 and there's
   // another unit in the way, push the other way instead."): the "no fixed way" option (value 'room', stored as true) is that rule now.
@@ -1052,7 +1084,7 @@ const PASSIVE_DEFS = [
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
   {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
   {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 every time it lands a killing blow.`},
-  {key:'bloom', category:'evergreen', label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
+  {key:'bloom', category:'evergreen', hidden:true, retired:true /* 2026-10-23 (package BL): the old Bloom N heal; Bloom is Bloom – {conditions} now (bloomCopy), Nectar Vintner has Healing */, label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
   // 2026-10-16 (user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of the Crit)"):
   // Ambush N (default 3; an old Ambush saved as true reads as Ambush 3). The engine's springAmbush.
   // 2026-10-17 (user: "Ambush N - whenever a unit enters this unit's opposing side, deal N damage"): played, spawned or moved in (watchScan).
@@ -2575,6 +2607,7 @@ const SKILL_TEXT = {
   pack: v=> TX('ui.sk-pack'), // 2026-10-16 skill audit: plain words, no "N = …"; 2026-10-18 (package D): terse, the example is in the Codex
   packLeader: ()=> TX('ui.sk-pack-leader'), // 2026-10-18 (package D): terse; the rest in the Codex
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
+  bloomCopy: (v, n, e)=>{ const bc = (e && e.bloomCopy) || parseBloomCopyText(v) || {}; return TX(Math.round(Number(bc.lumber)||0) ? 'ui.bl-short-lumber' : 'ui.bl-short', {n: Math.round(Number(bc.lumber)||0)}); }, // BL (2026-10-23)
   wave: (v, n, e)=>{ const w = waveParts(v, e), s = w.n === 1 ? '' : 's'; // Wave N (2026-10-18): it crashes, no swaps; 2026-10-18 (package D): terse, one text per way
     return w.way === 'left' ? TX('ui.sk-wave-left', {n: w.n, s}) : w.way === 'right' ? TX('ui.sk-wave-right', {n: w.n, s}) : w.way === 'alternate' ? TX('ui.sk-wave-alternate', {n: w.n, s}) : TX('ui.sk-wave-either', {n: w.n, s}); },
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
@@ -3041,10 +3074,13 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span>${legendaryTagHTML(p)} — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
+    if(p.key==='bloomCopy'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // Bloom – {…} (BL, 2026-10-23): spent once it bloomed; a copy can't bloom
+      const tag = lc && lc.bloomCopy ? ` <b class="sk-used-tag">${escapeHtml(TX('ui.bl-is-copy'))}</b>` : lc && lc.bloomed ? ` <b class="sk-used-tag">${escapeHtml(TX('ui.bl-bloomed'))}</b>` : '';
+      const line = `${ic('bloomCopy')}${escapeHtml(bloomCopyLabel(e.bloomCopy))} — ${skillText(p, v, e)}`; lines.push(lc && (lc.bloomCopy || lc.bloomed) ? `<span class="sk-used">${line}</span>${tag}` : line); return; }
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
-      const head0 = p.key==='pack' ? `${p.label}${valSuffix(v === true ? 2 : v)}` : p.label; lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
-    const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
+      const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
+    const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; })(p); if(lines.length > nL0){ const tg = skillNewTagHTML(p.key); if(tg) lines[nL0] += tg; } }); // "Answered by" lives in the Skill Codex now (2026-10-13); NEW! on a freshly revealed skill (2026-10-23, RW4)
@@ -8101,7 +8137,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -8314,6 +8350,7 @@ function abilityBadges(d, bopts){
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
+  if(e.bloomCopy){ const lv = bopts && bopts.live, spent = !!(lv && (lv.bloomed || lv.bloomCopy)); out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
@@ -10459,7 +10496,7 @@ function defaultSkillValue(key){
   const s = SKILL_DEFS.find(x=>x.key===key);
   if(!s) return true;
   if(s.kind==='number') return s.defaultValue != null ? s.defaultValue : 1; // Full Moon 3, Chilli 2 … (2026-10-15)
-  if(s.kind==='twoNumber') return s.key==='dynamite' ? [3, 5] : FXL_CHANCE_TWO.has(s.key) ? [50, 1] : [1,1]; // 2026-10-16 skill audit: Dynamite 3/5, a status 50% for 1 round
+  if(s.kind==='twoNumber') return Array.isArray(s.defaultValue) ? s.defaultValue.slice() /* Diurnal / Nocturnal / Crepuscular +1/+0 (BL, 2026-10-23) */ : s.key==='dynamite' ? [3, 5] : FXL_CHANCE_TWO.has(s.key) ? [50, 1] : [1,1]; // 2026-10-16 skill audit: Dynamite 3/5, a status 50% for 1 round
   if(s.kind==='text' || s.kind==='grant') return '';
   if(s.kind==='grant2') return ['', '']; // Tide – {Flood}, {Ebb} (2026-10-15)
   if(s.kind==='transform') return ['', 'night', '']; // CX2 (2026-10-21): no preset, Night, empty braces
@@ -17804,7 +17841,7 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
 // skill, tier III +1/+2 and the signature. The volcano's signature is its eruption (fightRules, rules.eruption).
 const TERRAIN_BIOMES = {
   forest:  {name:'Old Woods',      icon:'🌲', types:['Forest','Flora','Taiga','Rainforest'], grant:{regen:1},      sig:'Regen 1'},
-  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{bloom:1},      sig:'Bloom 1'},
+  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{healing:1},    sig:'Healing 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal */
   water:   {name:'Riverbank',      icon:'🌊', types:['River','Pond'],                        grant:{inspiring:1},  sig:'Inspiring 1'},
   beach:   {name:'Tideline',       icon:'🐚', types:['Coastal','Ocean'],                     grant:{shell:1},      sig:'Shell 1'},
   reef:    {name:'Coral Shelf',    icon:'🪸', types:['Coral Reef','Ocean'],                  grant:{thorns:1},     sig:'Thorns 1'},
@@ -30201,6 +30238,7 @@ const FXL_SKILL_SETUPS = {
   snipe: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands opposite it.'},
   backstab: {status:{foe:{blind:2}}, note:'The dummy in front is Blind: the Backstab lands.'}, // 2026-10-23 (package EN, owner D21)
   bloom: {steps:[{dmg:'ally', n:6}, 'round', 'round'], note:'The Sparring Partner is wounded first.'},
+  bloomCopy: {rules:{phase:'day', wet:true}, steps:['round', 'round'], note:'Fought by day on a wet map (Wet & Sunny).'}, // BL (2026-10-23)
   festering: {status:{foe:{poison:3}}, steps:['round', 'round'], note:'The dummy in front starts Poisoned.'},
   rupture: {status:{subject:{bleed:3}}, note:'The Specimen starts Bleeding.'},
   kingSlayer: {foeDef:{archetypes:['King'], name:'Dummy King', icon:'👑'}, note:'The dummy in front is a King.'},
@@ -33862,7 +33900,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -35952,7 +35990,7 @@ function boardCardHTML(c, defs, opts){
   const statusClassesShown = fog ? statusClasses.split(' ').filter(k=> /^(is-dancing|is-scattering|is-leader)$/.test(k)).join(' ') : statusClasses; // a fogged unit shows none of its statuses (FOG)
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
@@ -38494,7 +38532,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
       });
     });
   });
@@ -42670,6 +42708,44 @@ function fxHostAt(el, ms, at){
 // shoves the card back toward its own side with a splash of water, its Wait clock flashes +1, and "⏪ +1 Wait" floats up.
 // The board re-renders right after an upkeep's events (and a lunge may still be settling), so the effects look the card up again
 // a moment later; a card that died meanwhile keeps the spot it had.
+// Bleed's fade (2026-10-23, package BL; owner 17:34 #14): one greyed-out 🩸 drops from the card's Bleed pip (the badge, read before it
+// updates) to the ground under the card, bounces once, and sinks away. Drawn on the page, not in the card, so the board's re-render after
+// the upkeep doesn't cut it short. Reduced motion: it fades where it is.
+function bleedFadeDropVfx(uid){
+  const el = boardCardEl(uid); if(!el) return null;
+  const pip = el.querySelector('.abadge.bleed'), r = (pip || el).getBoundingClientRect(), cr = el.getBoundingClientRect();
+  const d = document.createElement('span'); d.className = 'bleed-drop'; d.textContent = '🩸'; d.setAttribute('aria-hidden', 'true');
+  const fs = pip ? Math.max(17, Math.min(24, r.height * 1.15)) : 18, x0 = pip ? r.left + 1 : r.left + r.width / 2 - fs / 2, y0 = pip ? r.top : r.top + r.height * 0.3;
+  d.style.cssText = `position:fixed; left:${x0}px; top:${y0}px; font-size:${fs}px; line-height:1; filter:grayscale(1) brightness(1.05) drop-shadow(0 1px 2px rgba(0,0,0,.55)); opacity:.95; pointer-events:none; z-index:71;`;
+  document.body.appendChild(d);
+  const fall = Math.max(20, cr.bottom - y0 + 6), dx = (pip && r.left > cr.left + cr.width / 2 ? 1 : -1) * Math.max(6, fs * 0.6);
+  if(reducedMotion() || !d.animate){ d.style.transition = 'opacity .5s'; requestAnimationFrame(()=> d.style.opacity = '0'); setTimeout(()=> d.remove(), 600); return d; }
+  const a = d.animate([
+    {transform: 'translate(0, 0) rotate(0deg)', opacity: .9},
+    {transform: `translate(${dx * .7}px, ${fall}px) rotate(${dx > 0 ? 30 : -30}deg)`, opacity: .85, offset: .62},
+    {transform: `translate(${dx * .9}px, ${fall - fs * .45}px) rotate(${dx > 0 ? 38 : -38}deg)`, opacity: .8, offset: .76},
+    {transform: `translate(${dx}px, ${fall}px) rotate(${dx > 0 ? 44 : -44}deg) scaleY(.75)`, opacity: .7, offset: .88},
+    {transform: `translate(${dx}px, ${fall + 2}px) rotate(${dx > 0 ? 44 : -44}deg) scaleY(.4)`, opacity: 0}], {duration: 1100, easing: 'cubic-bezier(.5,0,.85,.55)', fill: 'forwards'});
+  a.onfinish = ()=> d.remove(); setTimeout(()=> d.remove(), 1600); return d; }
+// Bloom's copy (2026-10-23, package BL; brief: "a short bloom animation as the copy appears in a free adjacent slot"): petals (spores for a
+// fungus, a green film for an alga) drift from the blooming unit into the free slot, and the copy opens out of a soft ring of light there, a
+// circle widening from its centre. Reduced motion: the copy fades in.
+function bloomCopyVfx(srcUid, copyUid){
+  setTimeout(()=>{ const el = boardCardEl(copyUid), src = boardCardEl(srcUid); if(!el) return;
+    const r = el.getBoundingClientRect(), d = (getCardDefs()[(currentCardByUidSafe(copyUid) || {}).defId] || getCardDefs()[(src && src.dataset && src.dataset.defId) || ''] || {});
+    const kind = d.subtype === 'fungus' ? 'spore' : d.animal === 'algae' ? 'algae' : 'petal', glyphs = kind === 'spore' ? ['🍄', '·', '•', '✨'] : kind === 'algae' ? ['🌿', '🫧', '·', '✨'] : ['🌸', '🌸', '🌼', '✨'];
+    el.classList.add('is-blooming'); setTimeout(()=> el.classList.remove('is-blooming'), 1300);
+    if(reducedMotion() || !el.animate){ el.animate && el.animate([{opacity: 0}, {opacity: 1}], {duration: 400}); return; }
+    el.animate([{clipPath: 'circle(6% at 50% 55%)', filter: 'brightness(1.9) saturate(1.7)', opacity: .6}, {clipPath: 'circle(48% at 50% 55%)', filter: 'brightness(1.35) saturate(1.3)', opacity: 1, offset: .55}, {clipPath: 'circle(80% at 50% 55%)', filter: 'none', opacity: 1}], {duration: 900, easing: 'cubic-bezier(.2,.7,.3,1)'});
+    const host = fxHostAt(el, 1600, r); host.classList.add('bloom-host');
+    const ring = document.createElement('span'); ring.className = 'bloom-ring'; host.appendChild(ring);
+    ring.animate([{transform: 'translate(-50%, -50%) scale(.2)', opacity: .95}, {transform: 'translate(-50%, -50%) scale(1.25)', opacity: 0}], {duration: 900, easing: 'ease-out', fill: 'forwards'});
+    const sr = src ? src.getBoundingClientRect() : r, sx = sr.left + sr.width / 2 - r.left, sy = sr.top + sr.height / 2 - r.top;
+    for(let i = 0; i < 10; i++){ const p = document.createElement('span'); p.className = 'bloom-petal'; p.textContent = glyphs[i % glyphs.length]; host.appendChild(p);
+      const ex = r.width * (.15 + .7 * ((i * 37) % 10) / 10), ey = r.height * (.2 + .6 * ((i * 53) % 10) / 10), lift = 18 + (i % 4) * 8;
+      p.animate([{transform: `translate(${sx}px, ${sy}px) scale(.5) rotate(0deg)`, opacity: 0}, {transform: `translate(${(sx + ex) / 2}px, ${(sy + ey) / 2 - lift}px) scale(1) rotate(${i % 2 ? 90 : -90}deg)`, opacity: 1, offset: .45},
+        {transform: `translate(${ex}px, ${ey}px) scale(.6) rotate(${i % 2 ? 160 : -160}deg)`, opacity: 0}], {duration: 850 + (i % 3) * 120, delay: i * 25, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'forwards'}); }
+  }, 70); }
 function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? el0.getBoundingClientRect() : null, row0 = el0;
   setTimeout(()=>{ const el = boardCardEl(uid); if(el) fn(el, el.getBoundingClientRect()); else if(r0) fn(null, r0, row0); }, 60); }
 function washPushVfx(ev){
@@ -44296,7 +44372,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
-  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
@@ -44536,6 +44612,8 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
+  if(ev.type === 'bloom') return {cls:'', text: TX(ev.lumber ? 'ui.bl-log-lumber' : 'ui.bl-log', {name: nm(ev.defId), n: ev.lumber||0})}; // BL (2026-10-23)
+  if(ev.type === 'spawn' && ev.kind === 'bloom') return {cls:'', text: ''};
   return null;
 }
 function field2Vfx(ev){
@@ -45897,10 +45975,23 @@ function renderVfxForEvent(ev){
       const rc = matchState && matchState.replayCards && matchState.replayCards[u]; if(rc) rc.hp = Math.max(0, rc.hp - (d|0)); updateCardHpDisplay(u); });
   }
   // Bleed wears down 1 a round at upkeep (2026-10-18): no damage, just the badge counting down.
+  // 2026-10-23 (package BL; owner 17:34 #14: "When does bleed fade? After it triggers? remember to throw 1 greyed out bleed symbol into the
+  // ground from the context pip when this happens"): it fades at each round's start (not when it bleeds), and one greyed-out 🩸 drops from
+  // the card's Bleed pip to the ground below the card as the stack goes down by 1 (bleedFadeDropVfx; the pip is read before it updates).
   if(ev.type==='bleedFade'){
+    try{ bleedFadeDropVfx(ev.uid); }catch(e){}
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.bleed = Math.max(0, ev.left|0);
     try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+  }
+  // Bloom – {conditions} (2026-10-23, package BL; owner 19:30: "bloom only gives the new one +1/+1, not itself"): the unit is marked bloomed and its
+  // copy (the 'spawn' event with kind 'bloom' right after) has the +1/+1: "🌸 +1/+1" floats on the copy.
+  if(ev.type==='bloom'){
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc){ rc.atk = (rc.atk||0) + (ev.atk||0); rc.maxHp = (rc.maxHp||0) + (ev.hp||0); rc.hp = (rc.hp||0) + (ev.hp||0); rc.bloomed = true; }
+    try{ SoundKit.bloomTone(); }catch(e){}
+    setTimeout(()=> afterSettle(boardCardEl(ev.copyUid) ? ev.copyUid : ev.uid, (el, r, row0)=>{ try{ floatText(el || fxHostAt(row0, 1900, r), `🌸 +${ev.copyAtk != null ? ev.copyAtk : 1}/+${ev.copyHp != null ? ev.copyHp : 1}`, 'buff'); }catch(e){} }), 90);
+    try{ updateCardHpDisplay(ev.uid); updateCardAtkDisplay(ev.uid); }catch(e){}
   }
   // Decay tick (2026-09-29): mirrors Poison/Bleed's tick treatment (shake, tint-pulse, emoji-led
   // float), plus its own note on the permanent Attack loss that a plain HP float wouldn't show.
@@ -45929,6 +46020,7 @@ function renderVfxForEvent(ev){
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
   if(ev.type==='collapseIn'){ SoundKit.shift(); }
+  if(ev.type==='spawn' && ev.kind==='bloom'){ try{ bloomCopyVfx(ev.nearUid, ev.uids && ev.uids[0]); }catch(e){} } // BL (2026-10-23): the copy blooms in (no summon portal)
   if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else SoundKit.buzz(); }
   // Floating-number coverage audit (2026-09-18, "every action that changes a number... should
   // get a floating number"): Gold/Grace generation from a card's passive effect (onSpawnGold,
@@ -48934,7 +49026,7 @@ const WILDPATH_TREES = [
     {id:'b2', x:90, y:315, icon:'🃏', name:'Keen Eye', desc:'Start with 4 cards, not 3.', req:['b1']},
     {id:'b3', x:210, y:305, icon:'⛓️', name:'Prospector', desc:'Elite first clear: +1 Iron Shard.', req:['b1']},
     {id:'b4', x:70, y:215, icon:'♻', name:'Second Pitch', desc:'Once a fight, pitch twice in a turn.', req:['b2']},
-    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Bloom heals 1 more.', req:['b3', 'b2'], ranks:2},
+    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Healing heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
     {id:'b6', x:130, y:125, icon:'🔁', name:'Echoing Wood', desc:'First token each fight is doubled.', req:['b4', 'b5']},
     {id:'b7', x:150, y:40, icon:'🌺', name:'Everbloom', desc:'Every 5th round: draw 1, +1 Lumber.', req:['b6'], capstone:true},
   ]},

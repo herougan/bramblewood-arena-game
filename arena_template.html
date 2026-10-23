@@ -10490,6 +10490,15 @@
 .board-card.wave-pushed{animation:wavePush .55s ease-out;}
 @keyframes wavePush{0%{translate:0 0; rotate:0deg;} 30%{translate:var(--wave-dx, 10px) 0; rotate:var(--wave-rot, 3deg);} 100%{translate:0 0; rotate:0deg;}} /* translate / rotate, not transform: it rode over Flip's slot hold (2026-10-17, see readyPulseAnim) */
 @media (prefers-reduced-motion: reduce){ .ab-bloom.is-on, .board-card.wave-pushed{animation:none;} }
+/* Bloom – {conditions} (2026-10-23, package BL): its chip greys once it has bloomed (or on the copy, which can't); the copy opens out of a ring
+   of light with petals / spores drifting in from the unit (bloomCopyVfx). Bleed's fade drops a grey 🩸 from the pip (bleedFadeDropVfx). */
+.ab-bloomcopy.is-spent{filter:grayscale(1); opacity:.55;}
+.bloom-host{overflow:visible;}
+.bloom-ring{position:absolute; left:50%; top:55%; width:118%; aspect-ratio:1; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(255,240,250,.85) 0%, rgba(255,170,220,.55) 38%, rgba(150,230,140,.25) 62%, rgba(255,255,255,0) 72%);}
+.bloom-petal{position:absolute; left:0; top:0; font-size:15px; line-height:1; pointer-events:none; will-change:transform, opacity; text-shadow:0 0 6px rgba(255,200,235,.9);}
+.board-card.is-blooming{box-shadow:0 0 18px 4px rgba(255,170,220,.75), 0 0 34px 10px rgba(160,235,150,.35);}
+.bleed-drop{will-change:transform, opacity; text-shadow:0 1px 1px rgba(0,0,0,.35);}
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
 .stat-irr{color:#3fbf4a; font-weight:800;}

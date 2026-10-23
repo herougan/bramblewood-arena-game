@@ -31,7 +31,7 @@ ok(/function sbNMultLine\(d\)/.test(src) && /ui\.budget-lab-nmult/.test(src), '2
 const TS = JSON.parse(read('docs/balance/two-skills-2026-10-21.json'));
 const SPECIAL = new Set(['epic', 'heroic', 'unique', 'questunique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']);
 const isEgg = c=> !!(c.easterEgg || (c.source && c.source.kind === 'easteregg'));
-const THEMATIC = new Set([]); // 2026-10-21 (HB2): named thematic exceptions to the two-skill rule; empty since TR (HB2-1's count: the Swordbill Challenger counts two)
+const THEMATIC = new Set(['puffball-bombardier' /* 2026-10-23 (package BL, call BL-4): Arrow, Poison and its fungal Bloom */]); // 2026-10-21 (HB2): named thematic exceptions to the two-skill rule; empty since TR (HB2-1's count: the Swordbill Challenger counts two)
 const special = c=> SPECIAL.has(c.rarity) || isEgg(c) || c.token || !!(c.effects && c.effects.supreme) || !!c.hidden || THEMATIC.has(c.id);
 const R = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')), PARAMS = BB.PARAMS.concat(['arrowCount', 'hunterVs']);
 const over = cards.filter(c=> R.live(c) && !special(c) && BB.skillCountOf(c.effects, PARAMS) > 2); // 2026-10-21 (TR, owner HB2-1): plain Flying / Tide / Diurnal / Nocturnal don't count; several count 1

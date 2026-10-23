@@ -427,7 +427,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Fork (`fork`) | 14 | `SkillFX.forkProngs` (2 tines since 2026-10-15) | hit with ev.fork (each prong beyond the first) | 🆕 |
 | Thorns (`thorns`) | 14 | `SkillFX.thorns` | thorns |  |
 | Regeneration (`regen`) | 13 | `SkillFX.regen` | heal (self) |  |
-| Bleed (`bleed`) | 12 | `SkillFX.bleedDrip`, red tint pulse | bleedTick |  |
+| Bleed (`bleed`) | 12 | `SkillFX.bleedDrip`, red tint pulse; a grey 🩸 drops from the pip as a stack fades (`bleedFadeDropVfx`, BL) | bleedTick; bleedFade |  |
 | Dry (`dry`) | 12 | none (a rule or stat with no moment of its own) |  |  |
 | Swarm (`swarm`) | 12 | `SkillFX.swarm` | hit with a live Swarm bonus |  |
 | Guardian (`guardian`) | 11 | `SkillFX.guardian` | play |  |
@@ -472,7 +472,8 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Shock (`shock`) | 3 | glitch flicker | statusFx shock |  |
 | Siege (`siege`) | 3 | floating text / sound only |  | — |
 | Stun (`stunOnHit`) | 3 | `SkillFX.stunStars` | statusFx stunOnHit | 🆕 |
-| Bloom (`bloom`) | 2 | `SkillFX.bloomPollen` | heal from a Bloom unit | 🆕 |
+| Bloom, the old heal (`bloom`, retired 2026-10-23) | 1 | `SkillFX.bloomPollen` | heal from a Bloom unit |  |
+| Bloom – {conditions} (`bloomCopy`) | 4 | `bloomCopyVfx`: petals / spores / a green film drift into the free slot, the copy opens out of a ring of light; "🌸 +1/+1" on the copy | bloom, then spawn (kind bloom) | 🆕 |
 | Boomerang (`boomerang`) | 2 | `SkillFX.boomerang*` | hit / hitHQ by a boomerang unit |  |
 | Bulwark (`bulwark`) | 2 | floating text / sound only |  | — |
 | Coffee (`coffee`) | 2 | `SkillFX.clockTick` fast | statusFx coffee / coffeeCrash | 🆕 |
@@ -545,7 +546,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Twin Strike (`twinStrike`) | 1 | `SkillFX.rageFlare` | frenzy (twin) | 🆕 |
 | Usurper (`usurper`) | 1 | none (a rule or stat with no moment of its own) |  |  |
 | Avalanche (`avalanche`) | 0 | board sweep + frost rings | avalanche |  |
-| Bloom (conditions) (`bloomWhen`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Bloom When, retired 2026-10-23 (`bloomWhen`) | 0 | none (a rule or stat with no moment of its own) |  |  |
 | Charge (`charge`) | 0 | floating text / sound only |  | — |
 | Confuse (`confuse`) | 0 | `SkillFX.stunStars` ❓ | statusFx confuse | 🆕 |
 | Converge (`converge`) | 0 | cards glide to new slots | converge |  |
@@ -936,3 +937,30 @@ attacker's plate (`liveAtk` on its hit).
 
 **Ironclaw Fiddler** (card `fx`): `play: 'crabClack'`: on arrival the card sways side to side four times in 1 s while its one big claw snaps
 beside it ("🦀 Clack!"); `attack: 'crabClaw'`: the claw closes on the target as the blow lands.
+
+## 2026-10-23 additions (package BL): Bloom – {conditions}, Bleed's fade
+
+The rules as built (engine: `bloomCopyPass`, `bloomCond`, `applyPoisonTicks`):
+
+- **Bloom – {conditions}** (`effects.bloomCopy = {when, mode, lumber}`; owner 11:23: "define bloom as +1/+1, then make a copy of this
+  card (only bring over the damage, don't bring over counters)"). At each round's start, after the upkeep heals and On Round Start, a unit
+  whose conditions all hold (or any, with `mode: 'or'`) and whose side has the Lumber it asks for blooms, once: it pays the Lumber and a copy
+  of it grows in a free slot right beside it, the copy with +1/+1 (owner 19:30: "bloom only gives the new one +1/+1, not itself"; the unit
+  itself is unchanged) (a coin flip when both are free; on a packed row its flank; in a
+  raid's middle / back row, beside it in that row). The copy is the same card with the unit's Attack and its Health without the day /
+  night / pack bonus (every stat change made without counters comes along), plus 1/+1, minus the damage the unit has taken, and none
+  of its counters or statuses. It arrives with its printed Wait, can't bloom itself, and leaves no card in the graveyard when it dies.
+  No free slot beside it: no bloom yet; it tries again next round. Stunned or caged: no bloom that round.
+  Conditions: Bloom's (Tide, Ebb, Night, Day, Twilight, Wind, Wet, Dark, Heat, Frost, Full Moon, Rain), **Sunny** (day or Twilight,
+  with no Rain, Fog or darkness) and **Killed an enemy** (`kill`: this unit has killed an enemy unit this fight; marked as its On Kill
+  would fire). Cards: Fungal Colossus (Wet & Sunny + 1 Lumber), Puffball Bombardier (Wet & Killed an enemy), Pond Algae (Wet & Sunny,
+  new), Lotus Frog (Tide & Night, was Bloom When +2/+2). The old Bloom N heal and Bloom When are retired names (the engine still runs them
+  for an old custom card); Nectar Vintner has Healing 1, the Open Meadow grants Healing 1, Pollen Drift adds to Healing.
+- **Bleed's fade**: a Bleeding unit takes its stack as damage each time it attacks or uses a skill (not when it is hit, not while it
+  Waits); the stack drops by 1 at the start of every round, whether it bled that round or not (Festering holds it). Cleanse removes it;
+  heals don't. As a stack fades (`bleedFade`), one greyed-out 🩸 drops from the card's Bleed pip to the ground under the card.
+
+| Look | Function | What you see | Event |
+|---|---|---|---|
+| 🌸 Bloom | `bloomCopyVfx(srcUid, copyUid)` (`arena_app.js`) | Ten petals (spores for a fungus, a green film for an alga) drift from the unit into the free slot; the copy opens out of a soft ring of light, a circle widening from its centre, with a pink-green glow; "🌸 +1/+1" floats on the copy. Reduced motion: the copy fades in | `bloom`, then `spawn` with `kind: 'bloom'` |
+| 🩸 Bleed fades | `bleedFadeDropVfx(uid)` (`arena_app.js`) | One grey 🩸 falls from the Bleed pip to just below the card, bounces once and sinks away (1.1 s). Reduced motion: it fades in place | `bleedFade` |

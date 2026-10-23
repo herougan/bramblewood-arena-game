@@ -521,7 +521,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'death', side:mySide, defId:card.defId, uid:card.uid, reserve:true});
         if(credit) credit.forEach(key=>{ if(kills) kills.add(key); const parts = key.split('|'); ensureStat(stats, parts[0], parts[1]).kills += 1; });
         delete killCredit[card.uid];
-        if(!card.token && pl.graveyard) pl.graveyard.push({defId:card.defId});
+        if(!card.token && !card.bloomCopy && pl.graveyard) pl.graveyard.push({defId:card.defId}); // + a Bloom copy (BL, 2026-10-23)
         if(card.evoStack && pl.graveyard) evoStackToZone(pl, card, pl.graveyard); // Package EV (2026-10-21): its stack goes with it
       })); });
   }
@@ -2387,7 +2387,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // One Bloom condition, as it stands right now. 'night' and 'day' both hold in Twilight (like Nocturnal and Diurnal); 'wet' is
   // rain, or the Tide in, or a wet map (rules.wet: the beach, river and sea maps); 'dark' is a dark map or night.
-  const BLOOM_CONDS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost', 'fullmoon', 'rain']; // + Full Moon, Rain (CX2, 2026-10-21: Transform's conditions)
+  // 'sunny' (2026-10-23, package BL, for Bloom's "Wet & Sunny"): by day (Twilight too, as for Diurnal) with no Rain, Fog or dark over the map.
+  const BLOOM_CONDS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost', 'fullmoon', 'rain', 'sunny']; // + Full Moon, Rain (CX2, 2026-10-21: Transform's conditions); + Sunny (BL)
   function bloomCond(k){
     const ph = phaseActive() ? getPhase() : null, f = field && field.id;
     switch(String(k||'').toLowerCase()){
@@ -2403,8 +2404,66 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       case 'frost': return f === 'frozen';
       case 'fullmoon': case 'full moon': return isFullMoon(); // CX2 (2026-10-21)
       case 'rain': return f === 'rain';
+      case 'sunny': return (ph === 'day' || ph === 'twilight') && f !== 'rain' && f !== 'fog' && !darkRule(); // BL (2026-10-23)
     }
     return false;
+  }
+  // Bloom – {conditions} (2026-10-23, package BL; owner 11:23: "Bloom is meant to represent fungal bloom, algae bloom etc. ... Bloom -
+  // {Conditions}. Let's just define bloom as +1/+1, then make a copy of this card (only bring over the damage, don't bring over counters)
+  // ... if they do this without counters, yes, that transfers to the copy as well. Conditions? Like 'Wet' & 'Sunny' + 1 Lumber Cost. For
+  // Algae, just 'Wet' & 'Sunny' is sufficient. For another Fungi, 'Wet' & Killed an enemy is sufficient."; 17:34: "Bloom hasn't changed").
+  // effects.bloomCopy = {when:[conditions], mode:'and'|'or', lumber:N}. The conditions are Bloom's (BLOOM_CONDS, Sunny among them) plus
+  // 'kill': it has killed an enemy unit this fight (c.bloomKill, set as its On Kill would fire). lumber N: it also needs N Lumber, paid
+  // when it blooms. Checked at each round's start (bloomCopyPass, after the upkeep heals and On Round Start). The first time they all hold,
+  // once per unit: a copy of it grows in a free slot beside it (bloomSlotOf) and the COPY gains +1/+1 (owner 19:30: "I think bloom only gives
+  // the new one +1/+1, not itself."; the unit itself stays as it is): the same card with its Attack and its Health without the day / night /
+  // pack bonus (so every stat change made without counters comes along), plus 1/+1, minus
+  // the damage it has taken, and none of its counters or statuses (Poison, Bleed, Shield, Exposed ...). The copy arrives like a played
+  // card (its printed Wait), never blooms itself (c.bloomCopy, owner call BL-1) and leaves no card in the graveyard when it dies.
+  // No free slot beside it (owner call BL-2): it does not bloom yet; it tries again next round. (The old Bloom N heal, effects.bloom,
+  // and Bloom (conditions), effects.bloomWhen, are retired names: the engine still runs them for an old custom card.)
+  const BLOOM_UNIT_CONDS = ['kill'];
+  function bloomCopyConds(bc){ const w = bc && bc.when; return (Array.isArray(w) ? w : [w]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, '')); }
+  function bloomCopyLumber(bc){ return Math.max(0, Math.round(Number(bc && bc.lumber) || 0)); }
+  function bloomCopyOn(bc, c, pl){ if(!bc || typeof bc !== 'object' || !c) return false; const w = bloomCopyConds(bc);
+    const one = k=> k === 'kill' ? !!c.bloomKill : bloomCond(k);
+    if(!w.length || !(bc.mode === 'or' ? w.some(one) : w.every(one))) return false;
+    return !pl || (pl.lumber||0) >= bloomCopyLumber(bc); }
+  // The slot the copy grows into: a free one right beside it (a coin flip on the fight's rnd when both are), on a packed row its flank,
+  // in a raid's middle / back row the free slot beside it in that row. null: nothing free beside it.
+  function bloomSlotOf(pl, c){
+    if(!slotMode) return {lane: flankOrShorter(pl, findCardSide(pl, c.uid) || 'left')};
+    const r = reserveRowOf(pl, c);
+    if(r){ const sl = rowFreeSlotNear(pl, r, c.slot, false); return sl !== null && Math.abs(sl - c.slot) === 1 ? {row: r, slot: sl} : null; }
+    syncSlots(pl); const used = new Set(allBoardCards(pl).map(x=> x.slot)), free = sl=> !used.has(sl) && inSlotCols(sl) && !eqRubbleBlocks(pl, sl);
+    const a = free(c.slot - 1), b = free(c.slot + 1); if(!a && !b) return null;
+    return {slot: a && b ? (rnd() < .5 ? c.slot - 1 : c.slot + 1) : a ? c.slot - 1 : c.slot + 1}; }
+  function bloomCopyPass(players, sideOf, stats, events){
+    let any = false;
+    [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=>{
+      upkeepUnitsOf(pl).slice().forEach(c=>{
+        if(!c || c.gap || !(c.hp > 0) || c.bloomed || c.bloomCopy || c.cageOf || c.stunned) return;
+        const bc = effectsOf(c).bloomCopy; if(!bloomCopyOn(bc, c, pl)) return;
+        const where = bloomSlotOf(pl, c); if(!where) return; // BL-2: no room beside it yet
+        const L = bloomCopyLumber(bc); if(L) pl.lumber = Math.max(0, (pl.lumber||0) - L);
+        c.bloomed = true; // the unit itself gains nothing (owner 19:30); its copy gets the +1/+1
+        const dmg = Math.max(0, c.maxHp - c.hp), permHp = Math.max(1, c.maxHp - (c.phaseHp||0));
+        const nc = makeBoardCard(c._condBase || c.defId);
+        nc.atk = (c.atk||0) + 1; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + 1; nc.maxHp = permHp + 1; nc.hp = Math.max(1, permHp + 1 - dmg);
+        nc.bloomCopy = true; nc.bloomOf = c.uid; applyArrivalPerks(pl, nc);
+        let lane = null;
+        if(where.row){ rowPut(pl, where.row, where.slot, nc, c); }
+        else if(where.lane){ lane = where.lane; pl.row[lane].push(nc); }
+        else lane = putInSlot(pl, nc, where.slot);
+        { const st = ensureStat(stats, sideOf(pl.id), c.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
+        if(recordEvents && events){
+          events.push({type:'bloom', side:sideOf(pl.id), uid:c.uid, defId:c.defId, copyUid:nc.uid, atk:0, hp:0, copyAtk:1, copyHp:1, lumber:L, slot: nc.slot, row: where.row || 0});
+          events.push(Object.assign({type:'spawn', side:sideOf(pl.id), defId:nc.defId, count:1, cause:'triggerSpawn', kind:'bloom', uids:[nc.uid], lane, nearUid:c.uid}, where.row ? {row: where.row, slot: nc.slot} : {})); }
+        fireSpawnFamilyTriggers(players, sideOf, pl.id, nc, stats, events, 'spawned');
+        any = true;
+      }); });
+    if(any){ try{ syncPhaseStats(players, sideOf, events); }catch(e){} }
+    return any;
   }
   // Transform (2026-10-21, package CX2, owner 17:42: "Those that 'transform' under some condition, should have a {conditions} -> {...}. If
   // the condition is a 'named' thing like 'Lycanthropy' - Under {Full moon} - gain {...}. (This change is 'permanent' until the end of the
@@ -7329,7 +7388,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
         if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
           const hurt = upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.hp<o.maxHp).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
-          if(hurt.length){ const h = applyHeal(hurt[0], def.effects.healing, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
+          if(hurt.length){ const h = applyHeal(hurt[0], (Number(def.effects.healing)||0) + ((pl.perks && pl.perks.pollen) || 0) /* Wildpath "Pollen Drift" moved here from the retired Bloom heal (BL, 2026-10-23) */, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
         }
         // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most poisoned unit (itself included) of up to N Poison.
         // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
@@ -7357,6 +7416,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
       });
     });
+    bloomCopyPass(players, sideOf, stats, events); // Bloom – {conditions} (2026-10-23, package BL), after the upkeep heals and On Round Start
   }
   // Healing triggers (2026-09-16): On Heal (this card healed something, itself included), On
   // Healed (this card was healed — the flip side of On Heal), and On Ally Healed (a DIFFERENT
@@ -7995,7 +8055,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-19 (package TS): a middle- or back-row killer's On Kill too (rowsUnitsOf: the front row first, as before).
     [players[1], players[2]].forEach(pl=> pl && rowsUnitsOf(pl).forEach(c=>{
       if(!c || !(c.hp > 0)) return;
-      if(keys.has(statKey(sideOf(pl.id), c.defId))) runCustomTriggers(players, sideOf, pl.id, c, CARD_DEFS[c.defId], 'onKill', stats || {}, events);
+      if(keys.has(statKey(sideOf(pl.id), c.defId))){ c.bloomKill = true; /* Bloom's 'kill' condition (BL, 2026-10-23) */ runCustomTriggers(players, sideOf, pl.id, c, CARD_DEFS[c.defId], 'onKill', stats || {}, events); }
     }));
   }
   // The killer of a unit no kill-credit book names (2026-10-18): the unit whose blow took it to 0 (noteKiller), when that unit is
@@ -8129,7 +8189,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!rv) deathEv.exiled = true; // 2026-10-15 (log only): it goes to the Removal Zone, not the graveyard
         ensureStat(stats, mySide, card.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:mySide, defId:card.defId, zone:'board'});
-      } else {
+      } else if(!card.bloomCopy){ // a Bloom copy leaves no card behind (BL, 2026-10-23)
         pl.graveyard.push(zoneEntry);
       }
       if(card.evoStack && !rv) evoStackToZone(pl, card, (hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone) ? pl.exile : pl.graveyard); // Package EV (2026-10-21): the whole stack goes with it (a reviving one keeps it)
@@ -9487,7 +9547,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
