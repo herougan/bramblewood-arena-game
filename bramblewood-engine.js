@@ -285,6 +285,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // in the round's main order, both sides, column by column left to right, and in each column the front row first, then the middle
   // row, then the back row (see pickNextAttacker). Without it (the default) reserves act only when the page calls reserveVolley.
   const RESERVE_ACTS = RESERVE_ROWS > 0 && !!opts.reserveActs;
+  // 2026-10-23 (package AR3, the group dungeon): opts.slotCols (a list of columns) bounds an Open board to those columns: no play,
+  // CPU or reserve slot outside them (the co-op board is 7 columns, 4 with a 2-seat party). Unset (every other fight): unbounded as before.
+  const SLOT_COLS = slotMode && Array.isArray(opts.slotCols) && opts.slotCols.length ? new Set(opts.slotCols.map(Number)) : null;
+  const inSlotCols = sl=> !SLOT_COLS || SLOT_COLS.has(sl);
   const GAP = Object.freeze({hp:0, uid:null, gap:true});
   let suddenDeath = false;
   // Raid bosses opt out of the castle half (opts.suddenDeathCastles:false): otherwise simply
@@ -364,11 +368,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const occ = occupiedSlots(pl);
     // A cage (Caged Fight) takes its slot but isn't one of your cards: it doesn't open the slots beside it.
     const own = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0 && !c.cageOf) own.add(c.slot); });
-    if(own.size===0) return (occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0]).filter(sl=> !eqRubbleBlocks(pl, sl)); // + Rubble (EQ, 2026-10-19)
+    if(own.size===0) return (occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0]).filter(sl=> !eqRubbleBlocks(pl, sl) && inSlotCols(sl)); // + Rubble (EQ, 2026-10-19); + slotCols (AR3)
     const out = new Set();
     own.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
     if(!occ.has(0)) out.add(0); // the centre is always open (2026-10-19, BU)
-    return [...out].filter(sl=> !eqRubbleBlocks(pl, sl)).sort((a,b)=>a-b); // Rubble: the foe's hazard closes the slot to your plays (EQ, 2026-10-19)
+    return [...out].filter(sl=> !eqRubbleBlocks(pl, sl) && inSlotCols(sl)).sort((a,b)=>a-b); // Rubble: the foe's hazard closes the slot to your plays (EQ, 2026-10-19); + slotCols (2026-10-23, AR3)
   }
   // Resolves a placement request to a concrete slot: a number is taken as-is if legal; a
   // 'left'/'right'/'center' string (L/R buttons, AI, leader summon) picks the legal slot on that
@@ -386,7 +390,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function legalReserveSlots(pl, r){
     if(!pl || !pl.reserve || !(r >= 1 && r <= pl.reserve.length)) return [];
     const ahead = r === 1 ? new Set(allBoardCards(pl).filter(c=> c.hp > 0 && Number.isInteger(c.slot)).map(c=> c.slot)) : new Set(Object.keys(pl.reserve[r-2]).map(Number));
-    return [...ahead].filter(sl=> !pl.reserve[r-1][sl]).sort((a,b)=> a-b);
+    return [...ahead].filter(sl=> !pl.reserve[r-1][sl] && inSlotCols(sl)).sort((a,b)=> a-b); // + slotCols (2026-10-23, AR3)
+  }
+  // 2026-10-23 (package AR3): a free cell of the board, for placeCard's popts.freeSlot (a co-op seat plays into any free cell of its own
+  // half, not only beside a unit): row 0 = the front, r >= 1 = that reserve row. Inside slotCols, no Rubble on the front.
+  function freeCellOk(pl, r, sl){
+    if(!slotMode || !Number.isInteger(sl) || !inSlotCols(sl)) return false;
+    if(!r) return !occupiedSlots(pl).has(sl) && !eqRubbleBlocks(pl, sl);
+    return !!(pl.reserve && pl.reserve[r-1] && !pl.reserve[r-1][sl]);
   }
   // Put a card straight into a reserve row (a raid boss's set-up), no cost and no checks beyond the slot being free.
   function fillReserve(pl, r, slot, defId){
@@ -3789,7 +3800,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       evoBase = ontoUid != null ? (allLive(pl).find(c=> c.uid === ontoUid) || null) : (typeof side === 'number' ? frontCardAt(pl, side) : null);
       if(!evoBase || (popts && popts.reserve) || !evoLegalBase(pl, hc.defId, evoBase)) return false;
     }
-    const targetSlot = slotMode && !evoBase ? resolvePlacementSlot(pl, side) : null;
+    // popts.freeSlot (2026-10-23, package AR3): a numeric side is taken as-is when that cell is free (freeCellOk), beside a unit or not
+    const freeFront = !!(popts && popts.freeSlot && !popts.reserve && !evoBase && typeof side === 'number' && freeCellOk(pl, 0, side));
+    const targetSlot = slotMode && !evoBase ? (freeFront ? side : resolvePlacementSlot(pl, side)) : null;
     const fdef = CARD_DEFS[hc.defId];
     const firstCardEver = !pl.cardsPlayedEver; // Vanguard (2026-10-17): the first card this player plays this game (any card)
     if(fdef && fdef.field && FIELDS[fdef.field.id]){ pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
@@ -3815,7 +3828,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return true;
     }
     const resRow = (popts && popts.reserve) ? (popts.reserve|0) : 0;
-    if(resRow){ if(!pl.reserve || typeof side !== 'number' || !legalReserveSlots(pl, resRow).includes(side)) return false; }
+    if(resRow){ if(!pl.reserve || typeof side !== 'number' || !(legalReserveSlots(pl, resRow).includes(side) || (popts.freeSlot && freeCellOk(pl, resRow, side)))) return false; } // + freeSlot (2026-10-23, AR3)
     else if(slotMode && targetSlot===null && !evoBase) return false; // + an evolute needs no free slot (EV, 2026-10-21)
     if(offerUid != null){ // the prayer offering: the chosen hand card goes to the Removal Zone first
       const oi = pl.hand.findIndex(h=> h.uid===offerUid), off = pl.hand.splice(oi, 1)[0];

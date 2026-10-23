@@ -128,7 +128,7 @@ ok(/if\(b\.dataset\.nokeys \|\| dungeonTicketsLeft\(\) <= 0\) return dungeonNoKe
 
 // ---- 3. the Forge row
 { let cap = 3, open = true, can = {ok: false, why: 'strange', next: {cap: 4, cost: {gold: 800, dust: 400}, strange: 1}};
-  const ctx = {TX, escapeAttr: esc, escapeHtml: esc, dungeonsTabOpen: ()=> open, dungeonKeyCap: ()=> cap, dungeonKeyCapNext: ()=> cap < 5 ? {cap: cap + 1, cost: {gold: 800, dust: 400}, strange: 1} : null,
+  const ctx = {TX, escapeAttr: esc, escapeHtml: esc, dungeonsTabOpen: ()=> open, dailyDungeonsOpen: ()=> open /* AR3 (2026-10-23): the key ring follows the daily dungeons */, dungeonKeyCap: ()=> cap, dungeonKeyCapNext: ()=> cap < 5 ? {cap: cap + 1, cost: {gold: 800, dust: 400}, strange: 1} : null,
     canRaiseDungeonKeyCap: ()=> can, ownedCount: ()=> 0, strangeMateriaSourceText: ()=> 'Strange Materia',
     btnCostHTML: (c, extra)=> `<span class="btn-cost">${c.gold}|${c.dust}|${(extra || []).map(x=> x.icon + x.need).join('')}</span>`};
   vm.createContext(ctx); vm.runInContext(fnSrc('dungeonKeyRingHTML') + '\nthis.R = dungeonKeyRingHTML;', ctx);

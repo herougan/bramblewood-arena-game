@@ -6,6 +6,33 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Shipped together: LEAD, SX, BF11, BF12, DC2 (decisions sweep), MK (the map marker and the Map 0 self-heal) (entries below). FX4 and AR3 follow in the next release.
 - Release checks: full suite as the 10-23b release (darkness-1013 and skills-sk2b now pass); keywords-2026-10-14's Rabid Jackal check follows BF11's re-fit (2/2); raid-rb and shields follow SX's template and LEAD's 20-A-4 shield. e2e ui_smoke 0 failures (a first run timed out loading the page under load; the rerun passed), flows 0 issues.
 
+## 2026-10-23 (package AR3: the Group Dungeon, co-op for 2-4 players)
+- Owner 10-23 00:10 #26 (AR-3: "This is a big pass. I like this. Can you launch a big pass for this."). D49 / D76 built. Calls AR3-1..AR3-9.
+- **Where it lives:** the Dungeons tab's "Coming soon" Group Dungeon slot is the entrance: Open a room, Play with CPU allies, or Join with a
+  6-letter code (invites from friends appear on the card). Players see the tab once the tutorial is done, holding only the Group Dungeon (and
+  the Spire): the daily dungeons stay hidden (TU2), so no daily slots, keys row or 🗝️ button for them (`dailyDungeonsOpen` vs `dungeonsTabOpen`).
+- **The Hollow Warren:** 4 floors of Hollow Kin country, live cards only: the Bat Roost; the Mole Galleries (cave-ins: the party's fuller row
+  takes 2 each, every other round); the Salamander Pools (the centre cursed on even rounds); the Matriarch's Hall (the Hollow Matriarch, a
+  fight-only copy of the Cave Warlord, who marks a column and strikes it next round). Health x1.7 for 2 seats, x2.8 for 4 (D49, CPU allies
+  counted). A floor lost (or 20 rounds) ends the climb.
+- **The room:** 2-4 players: the host in A (front left), then C (back left), D, B; a 3rd player opens the right half and B gets a CPU ally.
+  Ready-up, leave (tap twice), the host's CPU allies, casual rooms (60 s). The host dropping hands the room to the next player in seat order,
+  who carries the fight on; a player away is played by a CPU ally and gets the state back on return (in step again from the next floor).
+- **The turn (D49):** everyone plans at once (30 s, 60 s casual): tap a card, tap a glowing cell of your half or the shared centre, or pitch
+  one for +1 Lumber, then Ready. Plays land A, B, C, D, then the dungeon (its front row as a CPU, its back row from its own deck, as the
+  raid's rows), then combat on the raid's multi-row board (both rows act). Two players on the same shared cell: who locked first takes it, the
+  other card stays in hand, nothing paid. Each seat has its own deck, hand and Lumber; the castle is shared.
+- **Netcode:** the Ranked Live host model, extended: the host runs the engine (seeded) and sends each round's plans with a state hash; every
+  other player replays them on the same engine, so all screens match (a player out of step mirrors the host's state). Cards fight at Level 1.
+  Transports: Supabase Realtime broadcast (online), BroadcastChannel (tabs of one browser), an in-memory hub (solo and tests).
+- **Rewards:** each floor's chest per player (40 / 55 / 70 / 120 Maple Leaves, 10 / 14 / 18 / 40 Dust); the Matriarch offers a pick of 3 of
+  the dungeon's own cards, once a day. 5 Energy a climb, back if no floor is cleared.
+- **Server:** online rooms use the live `coop_rooms` (host + 1 guest) today. `supabase/proposed/20261023_coop_rooms_4p.sql` (NOT applied)
+  opens 3-4 player online rooms (seats table, join v2, leave, host promotion) and private room channels; the page detects it by itself.
+- Engine (opt-in, no other fight changes): `slotCols` bounds an Open board's columns; `placeCard(..., {freeSlot})` plays any free cell (front
+  or reserve row). New: `bramblewood-coop.js` (rules, room, transports), `tools/coop_sim_2026_10_23.js`, `tools/i18n_2026_10_23_ar3.py`
+  (114 TX keys, 12 packs). Tests: `tests/coop-dungeon-2026-10-23.js`, `tests/coop-lobby-2026-10-23.js`, `tests/e2e/coop_dungeon_2026_10_23.py`.
+  Screens: `docs/screens/ar3/`.
 ## 2026-10-23 (package MK: the map marker stays put after a win; a cleared Map 0 no longer strands you)
 - **Owner (11:28):** "why does completing a skirmish put my conquest map marker ... move to Map N-1?" The results' Back to map ends the fight inside its own click; that click then reached the map's "click outside the skirmish panel closes it" listener, with the button already gone from the page, so the picked fight was dropped and the pawn walked to the next fight, or to the map's first one (N-1) on a cleared map. A click that began during a fight, or whose target left the page, no longer closes the panel; on a cleared map with nothing picked the pawn keeps its spot.
 - **Owner (11:29):** "i'm stuck in Map 0 in my new account." Map 1 was open but out of reach: until Thistlewood's reward fight opens the world, a map shows no map list and no › edge, every page load starts on Map 0, and PG's step onto the next map happened only in memory on the clearing win. `healMapProgress` (on load and each time the map opens) reads old node-id spellings as the new ones and finds the furthest map open in order; with the world still hidden the road opens there, once for each new furthest map. Nothing is marked open: a map whose fights are not won stays locked.

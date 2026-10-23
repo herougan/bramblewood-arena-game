@@ -12514,7 +12514,7 @@ function facilityUpgradeState(place){
   const sum = parts=> parts.reduce((a, b)=> ({done: a.done + b.done, of: a.of + b.of, ready: a.ready || b.ready}), {done:0, of:0, ready:false});
   try{
     if(place === 'forge'){ const parts = [st('forge'), {done: forgeTier() - 1, of: FORGE_TIERS.length - 1, ready: canUpgradeForge().ok}];
-      if(dungeonsTabOpen()) parts.push({done: dungeonKeyCap() - DUNGEON_TICKETS_CAP, of: DUNGEON_KEY_CAP_MAX - DUNGEON_TICKETS_CAP, ready: canRaiseDungeonKeyCap().ok});
+      if(dailyDungeonsOpen()) parts.push({done: dungeonKeyCap() - DUNGEON_TICKETS_CAP, of: DUNGEON_KEY_CAP_MAX - DUNGEON_TICKETS_CAP, ready: canRaiseDungeonKeyCap().ok});
       return sum(parts); }
     if(place === 'nest'){ const nx = nextNestUnlock(); return sum([st('nest'), {done: nestBuiltCount(), of: NEST_UNLOCKS.length - 1, ready: !!(nx && nx.reached && nx.affordable)}]); }
     if(place === 'tavern') return st('tavern');
@@ -23379,7 +23379,7 @@ function raiseDungeonKeyCap(){
 }
 // The Forge's 🗝️ Key ring row (shown once a daily dungeon is open, or in Admin Mode).
 function dungeonKeyRingHTML(){
-  try{ if(!dungeonsTabOpen()) return ''; }catch(e){ return ''; }
+  try{ if(!dailyDungeonsOpen()) return ''; }catch(e){ return ''; }
   const cap = dungeonKeyCap(), next = dungeonKeyCapNext(), c = canRaiseDungeonKeyCap();
   return `<div class="forge-upgrade forge-keyring" role="group" aria-label="${escapeAttr(TX('ui.keyring-title'))}">
     <div class="fu-now" title="${escapeAttr(TX('ui.keyring-tip'))}"><b>${escapeHtml(TX('ui.keyring-title'))}</b> <small>${escapeHtml(TX('ui.keyring-holds', {cap}))}</small></div>
@@ -23504,7 +23504,10 @@ function unlockedDailyDungeons(progress){
 }
 function dungeonsAdminView(){ return (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled); }
 function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : 'Daily Dungeons'; }
-function dungeonsTabOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
+// 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
+// Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
+function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
+function dungeonsTabOpen(){ try{ return dailyDungeonsOpen() || gdPlayerOpen(); }catch(e){ return false; } }
 // The 🗝️ key beside Home and Arena (2026-10-16, user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top
 // right hand corner of Conquest Map UI. (same throughout)"): a small round button with today's ticket count, in the Play screens'
 // top-right group and in the topbar of the other screens. Only once a daily dungeon is open (or in Admin Mode); it opens the tab.
@@ -23516,30 +23519,383 @@ function dungeonKeyBadge(n){
   return {n, text: String(n), empty: n <= 0, tip: `${dungeonTabLabel()} · ${n > 0 ? TX('ui.dungeon-keys-count', {n, cap: dungeonKeyCap()}) : dungeonNoKeysText()}`}; // translated texts (was inline English)
 }
 function dungeonKeyBtnHTML(id){
-  if(!dungeonsTabOpen()) return '';
+  if(!dailyDungeonsOpen()) return '';
   const k = dungeonKeyBadge(dungeonTicketsLeft());
   return `<button class="home-nav-btn dungeon-key-btn ${typeof playSubTab !== 'undefined' && playSubTab === 'dungeons' && currentTab === 'play' ? 'is-here' : ''}${k.empty ? ' is-empty' : ''}" id="${id}" type="button" title="${escapeAttr(k.tip)}" aria-label="${escapeAttr(k.tip)}"><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">${k.text}</span></button>`;
 }
 function refreshTopbarDungeonKey(tab){
   const b = document.getElementById('dungeonKeyBtnTop'); if(!b) return;
-  const show = tab !== 'home' && tab !== 'play' && dungeonsTabOpen(); b.hidden = !show; if(!show) return;
+  const show = tab !== 'home' && tab !== 'play' && dailyDungeonsOpen(); b.hidden = !show; if(!show) return;
   const k = dungeonKeyBadge(dungeonTicketsLeft());
   b.title = k.tip; b.setAttribute('aria-label', k.tip); b.classList.toggle('is-empty', k.empty); const c = b.querySelector('.dk-n'); if(c) c.textContent = k.text;
 }
 function openDungeonsFromKey(){
   if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
-  if(!dungeonsTabOpen()) return;
+  if(!dailyDungeonsOpen()) return;
   try{ SoundKit.woodKnock(); }catch(e){}
   playSubTab = 'dungeons'; try{ playerStatsOpen = false; }catch(e){} try{ exitConquestImmersive(); }catch(e){}
   if(currentTab !== 'play') switchTab('play'); else renderPlay();
 }
 document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('.dungeon-key-btn'); if(b){ e.preventDefault(); openDungeonsFromKey(); } });
-// The group dungeon (2026-10-21, package AR, owner 22:41: "There are group dungeons, which is fun, you play with live players. These are
-// recorded in the Daily Dungeon section."): its slot in the Daily Dungeons list. The co-op dungeon is a design (D49,
-// docs/coop-dungeon-design-2026-10-13.md) with no game code yet, so the slot says it is coming; its runs will be listed here.
+// ============================================================================================
+// The Group Dungeon (2026-10-23, package AR3; owner AR-3: "This is a big pass. I like this. Can you launch a big pass for this.").
+// It was a Coming soon slot (package AR, 2026-10-21: "There are group dungeons, which is fun, you play with live players. These are
+// recorded in the Daily Dungeon section."). D49 / D76 built: 2-4 players (or you and CPU allies) side by side against the Hollow Warren,
+// 4 floors and the Hollow Matriarch. The rules, the room and the netcode are DOM-free in bramblewood-coop.js (CoopM); this block is the
+// page: the Dungeons tab card, the room (lobby), the fight board, the floor chests and the boss's pick. How players meet:
+//   live   signed in: a coop_rooms row (live since 10-16, join_coop_room: friends of the host only) and a Supabase Realtime broadcast
+//          channel, the Ranked Live host's transport. The live table seats a host and ONE guest, so an online room takes 2 players;
+//          3-4 online need supabase/proposed/20261023_coop_rooms_4p.sql (waits for "apply it"; the page finds it by itself once applied).
+//   local  not signed in, or "On this device": tabs of this browser over BroadcastChannel (2-4 players on one machine, for testing).
+//   solo   you and CPU allies, no network.
+// Cards fight at Level 1 (Standard, as Ranked Live, D74) so every player's game runs the same fight in step. The fight is drawn on
+// this co-op board (not the animated battle board): each round's result appears when it lands.
+// ============================================================================================
+const CoopM = (typeof BramblewoodCoop!=='undefined') ? BramblewoodCoop : null;
+const GD_LIVE_MAX_BEFORE_SQL = 2; // the live coop_rooms seats a host and one guest
+const GD_PICK_DAY_KEY = 'bramblewood_gd_pick_day_v1', GD_PEER_KEY = 'bramblewood_gd_peer_v1';
+const GD_SEAT_LABEL = {A:'ui.ar3-seat-front-left', B:'ui.ar3-seat-front-right', C:'ui.ar3-seat-back-left', D:'ui.ar3-seat-back-right'};
+const GD = {s:null, phase:'closed', kind:'local', code:'', sel:null, pitch:null, play:null, note:'', paid:{}, energyPaid:0, picks:null, picked:null, defs:null, defsHash:'',
+  invites:[], inviteSub:null, server4p:null, roomId:null, floorEnd:null, endInfo:null, timerIv:null, joinTimer:null, leaveArm:0, hub:null, hoverAt:0, startSeed:0};
+// Open to players once the tutorial is done (and always in Admin Mode); the daily dungeons stay hidden (TU2) whatever this says.
+function gdPlayerOpen(){ try{ return !!CoopM && (dungeonsAdminView() || tutorialFullyDone()); }catch(e){ return false; } }
+function gdLocalPeerId(){ try{ let id = sessionStorage.getItem(GD_PEER_KEY); if(!id){ id = 'tab-' + Math.random().toString(36).slice(2, 10); sessionStorage.setItem(GD_PEER_KEY, id); } return id; }catch(e){ return 'tab-' + Math.random().toString(36).slice(2, 10); } }
+function gdMyName(){ return (myProfile && myProfile.name) || TX('ui.ar3-you'); }
+function gdCastleHp(){ try{ const ch = brambleChar(CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']); return Math.max(1, Number(ch && ch.health) || 20); }catch(e){ return 20; } }
+function gdDefs(){ if(!GD.defs){ GD.defs = buildStandardDefs(); GD.defsHash = CoopM.defsHash(GD.defs, Object.keys(GD.defs)); } return GD.defs; }
+function gdDefOf(id){ const S = GD.s, v = S && S.view, x = v && v.defsExtra && v.defsExtra[id]; return gdDefs()[id] || x || (S && S.run && S.run.fl && S.run.fl.defs[id]) || null; }
+function gdNameOf(d){ return d ? (d.nameKey ? TX(d.nameKey) : (d.name || d.id || '?')) : '?'; }
+function gdSeatName(seat, info){ const v = GD.s && GD.s.view, x = info || (v && v.seats[seat]); if(!x) return TX('ui.ar3-seat-empty'); return x.cpu ? TX('ui.ar3-cpu-name', {seat}) : (x.name || TX('ui.ar3-you')); }
+function gdFloorName(idx){ const f = CoopM.DUNGEONS.hollow.floors[idx]; return f ? TX(f.nameKey) : ''; }
+function gdCost(){ return CoopM ? CoopM.ENERGY_COST : 5; }
 function groupDungeonCardHTML(){
-  return `<div class="dg-card is-soon dg-group"><div class="dg-diamond map-theme-marena">${compassDiamondSVG('dg-group', true)}<span class="wd-ico">👥</span></div>
-    <div class="dg-body"><b class="dg-name">${escapeHtml(TX('ui.ar-group-name'))}</b><p class="dg-sub">${escapeHtml(TX('ui.ar-group-sub'))}</p><p class="dg-sub">🚧 ${escapeHtml(TX('ui.ar-group-soon'))}</p></div></div>`;
+  if(!CoopM) return '';
+  const dg = CoopM.DUNGEONS.hollow, signed = !!(sbClient && isSignedIn());
+  const inv = (GD.invites || []).slice(0, 3).map(i=> `<p class="dg-sub gd-invite-line">✉️ ${escapeHtml(TX('ui.ar3-invited', {name: i.name || 'Player'}))} <button type="button" class="btn small primary" data-gd-open="join" data-code="${escapeAttr(i.code)}">${escapeHtml(TX('ui.ar3-join'))}</button></p>`).join('');
+  return `<div class="dg-card dg-group"><div class="dg-diamond map-theme-marena">${compassDiamondSVG('dg-group', false)}<span class="wd-ico">👥</span></div>
+    <div class="dg-body"><b class="dg-name">${escapeHtml(TX('ui.ar-group-name'))} · ${dg.icon} ${escapeHtml(TX(dg.nameKey))}</b>
+      <p class="dg-sub">${escapeHtml(TX('ui.ar3-group-sub'))}</p>
+      <p class="dg-sub gd-facts">${escapeHtml(TX('ui.ar3-group-facts', {floors: dg.floors.length, energy: gdCost()}))}</p>${inv}
+      ${GD.s ? `<div class="dg-acts"><button type="button" class="btn primary" data-gd-open="show">👥 ${escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))}</button></div>` : `<div class="dg-acts gd-acts">
+        <button type="button" class="btn primary" data-gd-open="create">👥 ${escapeHtml(TX('ui.ar3-create'))}</button>
+        <button type="button" class="btn" data-gd-open="solo">🤖 ${escapeHtml(TX('ui.ar3-solo'))}</button>
+        <span class="gd-join"><input id="gdJoinCode" class="gd-code-in" maxlength="6" autocomplete="off" spellcheck="false" placeholder="${escapeAttr(TX('ui.ar3-code-ph'))}" aria-label="${escapeAttr(TX('ui.ar3-code-ph'))}"><button type="button" class="btn" data-gd-open="join">${escapeHtml(TX('ui.ar3-join'))}</button></span>
+        ${signed ? `<label class="gd-local-opt"><input type="checkbox" id="gdLocalOpt"> ${escapeHtml(TX('ui.ar3-local-opt'))}</label>` : ''}</div>`}</div></div>`;
+}
+document.addEventListener('click', e=>{
+  const b = e.target && e.target.closest && e.target.closest('[data-gd-open]'); if(!b) return;
+  e.preventDefault(); const k = b.dataset.gdOpen;
+  if(k === 'show') return gdShow();
+  if(k === 'join'){ const inp = document.getElementById('gdJoinCode'); return gdJoin(String(b.dataset.code || (inp && inp.value) || '').trim().toUpperCase()); }
+  gdCreate(k === 'solo');
+});
+function gdWantLocal(){ const c = document.getElementById('gdLocalOpt'); return !(sbClient && isSignedIn()) || !!(c && c.checked); }
+function gdDeckOk(){ try{ return deckSizeOkOrWarn(); }catch(e){ return true; } } // PG's copy limits and DR's rank caps, as every fight with your deck
+function gdEnergyOk(){ if(currentEnergy() >= gdCost()) return true; showToast(TX('ui.ar3-no-energy', {n: gdCost()}), 'warn'); return false; }
+// Is the 3-4 player SQL live? (join_coop_room_v2 answers "room not found" for a made-up code; a missing function answers PGRST202.)
+async function gdProbeServer4p(){
+  if(GD.server4p != null || !sbClient) return GD.server4p;
+  try{ const { error } = await sbClient.rpc('join_coop_room_v2', {p_code: 'ZZZZZZ'}); GD.server4p = !(error && rpcMissing(error)); }catch(e){ GD.server4p = false; }
+  return GD.server4p;
+}
+async function gdCreate(solo){
+  if(!CoopM) return; if(GD.s) return gdShow();
+  if(!gdDeckOk() || !gdEnergyOk()) return;
+  const code = CoopM.newRoomCode();
+  let kind = solo ? 'solo' : gdWantLocal() ? 'local' : 'live';
+  if(kind === 'live'){
+    try{ const { data, error } = await sbClient.from('coop_rooms').insert({code, casual: false, plan_seconds: 30}).select('id').maybeSingle(); if(error) throw error; GD.roomId = data && data.id; await gdProbeServer4p(); }
+    catch(e){ console.warn('coop_rooms', e); kind = 'local'; showToast(TX('ui.ar3-live-off'), 'warn'); }
+  }
+  gdBegin(kind, code, true);
+}
+async function gdJoin(code){
+  if(!CoopM) return; if(GD.s) return gdShow();
+  if(!/^[A-Z0-9]{6}$/.test(code)){ showToast(TX('ui.ar3-not-found'), 'warn'); return; }
+  if(!gdDeckOk()) return;
+  let kind = gdWantLocal() ? 'local' : 'live';
+  if(kind === 'live'){
+    let res; try{ res = await sbClient.rpc('join_coop_room_v2', {p_code: code}); if(res.error && rpcMissing(res.error)){ GD.server4p = false; res = await sbClient.rpc('join_coop_room', {p_code: code}); } else if(!res.error) GD.server4p = true; }catch(e){ res = {error: e}; }
+    if(res && res.error){ const m = String(res.error.message || '');
+      if(/friends only/i.test(m)) return showToast(TX('ui.ar3-friends-only'), 'warn');
+      if(/full/i.test(m)) return showToast(TX('ui.ar3-full') + ' ' + (GD.server4p ? '' : TX('ui.ar3-cap-2')), 'warn');
+      if(/sign in/i.test(m)) return requireSignIn(TX('ui.ar-group-name'), ()=> gdJoin(code));
+      if(/not found/i.test(m)) kind = 'local'; // no such online room: maybe a room in another tab of this browser
+      else return showToast(TX('ui.ar3-live-off'), 'warn'); }
+    else GD.roomId = res && res.data;
+  }
+  gdBegin(kind, code, false);
+}
+function gdBegin(kind, code, host){
+  let transport = kind === 'live' ? CoopM.supabaseTransport(sbClient, code, {private: !!GD.server4p}) : kind === 'local' ? CoopM.broadcastChannelTransport(code) : null;
+  if(!transport){ if(!host){ showToast(TX('ui.ar3-not-found'), 'warn'); return; } GD.hub = CoopM.createHub(); kind = 'solo'; }
+  const peerId = kind === 'live' ? cloudUserId : gdLocalPeerId();
+  if(!transport) transport = GD.hub.connect(peerId);
+  Object.assign(GD, {kind, code, sel: null, pitch: null, play: null, note: '', paid: {}, energyPaid: 0, picks: null, picked: null, floorEnd: null, endInfo: null, leaveArm: 0});
+  const maxHumans = kind === 'live' ? (GD.server4p ? 4 : GD_LIVE_MAX_BEFORE_SQL) : kind === 'solo' ? 1 : 4;
+  gdDefs();
+  GD.s = CoopM.createSession({transport, me: {peerId, name: gdMyName(), deck: publicDeck(myDeckCounts), castleHp: gdCastleHp()}, host, code,
+    deps: {makeSimEngine, defs: gdDefs(), defsHash: GD.defsHash}, maxHumans, onEvent: gdOnEvent});
+  if(kind === 'solo') GD.s.setCpu('C', true);
+  GD.phase = host ? 'lobby' : 'connecting';
+  if(!host){ clearTimeout(GD.joinTimer); GD.joinTimer = setTimeout(()=>{ if(GD.phase === 'connecting'){ showToast(TX('ui.ar3-not-found'), 'warn'); gdClose(true); } }, 6000); }
+  gdShow();
+}
+function gdOnEvent(kind, d){
+  const S = GD.s; if(!S) return;
+  if(kind === 'roster'){ if(GD.phase === 'connecting'){ GD.phase = 'lobby'; clearTimeout(GD.joinTimer); } if(GD.phase === 'lobby') gdRender(); else gdRenderSeats(); return; }
+  if(kind === 'full'){ showToast(TX('ui.ar3-full') + (GD.kind === 'live' && !GD.server4p ? ' ' + TX('ui.ar3-cap-2') : ''), 'warn'); gdClose(true); return; }
+  if(kind === 'start'){ GD.startSeed = d.seed >>> 0; if(spendEnergy(gdCost())) GD.energyPaid = gdCost(); GD.phase = 'fight';
+    if(GD.kind === 'live' && S.isHost && GD.roomId) try{ sbClient.from('coop_rooms').update({status: 'playing', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){}
+    return gdRender(); }
+  if(kind === 'floor' || kind === 'turn'){ GD.sel = GD.pitch = GD.play = null; if(kind === 'floor'){ GD.phase = 'fight'; GD.floorEnd = null; } return gdRender(); }
+  if(kind === 'lock'){ return gdRenderSeats(); }
+  if(kind === 'hover'){ return gdApplyHovers(); }
+  if(kind === 'round' || kind === 'state'){ const me = S.mySeat(), res = d && d.res;
+    GD.note = res && res.bumped && res.bumped.some(b=> b.seat === me) ? TX('ui.ar3-bumped') : '';
+    return gdRender(); }
+  if(kind === 'floorEnd'){ GD.floorEnd = d; GD.phase = 'floorEnd'; if(d.result === 'won') gdPayFloor(d.idx); return gdRender(); }
+  if(kind === 'end'){ gdRunEnded(d.how); return gdRender(); }
+  if(kind === 'hostChanged'){ if(d.hostId === S.me.peerId && GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('promote_coop_host', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} // the room row follows the new host (proposed SQL)
+    showToast(d.hostId === S.me.peerId ? TX('ui.ar3-you-host') : TX('ui.ar3-host-now', {name: gdNameOfPeer(d.hostId)}), 'ok'); return gdRender(); }
+  if(kind === 'hostLost'){ return gdRenderSeats(); }
+}
+function gdNameOfPeer(id){ const r = GD.s && GD.s.room; const k = r && CoopM.SEATS.find(s=> r.seats[s] && r.seats[s].peerId === id); return k ? gdSeatName(k, r.seats[k]) : 'Player'; }
+// Each player's game pays its own chest when a floor falls (Maple Leaves and Magic Dust, the currencies every fight pays)
+function gdPayFloor(idx){
+  const key = GD.startSeed + ':' + idx; if(GD.paid[key]) return;
+  const r = CoopM.floorReward('hollow', idx); if(!r) return; GD.paid[key] = r;
+  grantCurrency('gold', r.gold); grantCurrency('dust', r.dust);
+}
+function gdTodayKey(){ const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+function gdPickTakenToday(){ try{ return localStorage.getItem(GD_PICK_DAY_KEY) === gdTodayKey(); }catch(e){ return false; } }
+function gdRunEnded(how){
+  const v = GD.s && GD.s.view, cleared = v ? v.results.filter(x=> x === 'won').length : 0, total = v ? v.floorCount : 4;
+  GD.phase = 'end'; GD.endInfo = {how, cleared, total};
+  if(how === 'cleared' && cleared >= total && !gdPickTakenToday()) GD.picks = CoopM.bossPicks('hollow', gdDefs(), GD.startSeed, GD.s.me.peerId);
+  if(!cleared && GD.energyPaid){ try{ const s = settleEnergy(); s.current += GD.energyPaid; saveEnergyState(s); refreshEnergyHud(); showToast(TX('ui.ar3-energy-back', {n: GD.energyPaid}), 'ok'); }catch(e){} GD.energyPaid = 0; } // nothing cleared: the Energy comes back (as a lost Spire floor's)
+  if(how === 'hostLeft') showToast(TX('ui.ar3-host-left'), 'warn');
+  if(GD.kind === 'live' && GD.s && GD.s.isHost && GD.roomId) try{ sbClient.from('coop_rooms').update({status: 'done', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){}
+}
+function gdPick(id){
+  if(!GD.picks || !GD.picks.includes(id) || GD.picked) return;
+  GD.picked = id; try{ localStorage.setItem(GD_PICK_DAY_KEY, gdTodayKey()); }catch(e){}
+  try{ unlockCardForPlayer(id, 'groupDungeon'); }catch(e){}
+  showToast(TX('ui.ar3-picked', {name: gdNameOf(gdDefOf(id))}), 'ok'); gdRender();
+}
+function gdClose(silent){
+  const S = GD.s;
+  if(S){ try{ S.leave(); }catch(e){} if(GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('leave_coop_room', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} if(GD.kind === 'live' && S.isHost && GD.roomId && S.room && S.room.status === 'lobby') try{ sbClient.from('coop_rooms').update({status: 'closed', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){} }
+  clearInterval(GD.timerIv); clearTimeout(GD.joinTimer); GD.timerIv = null; GD.s = null; GD.hub = null; GD.phase = 'closed'; GD.roomId = null;
+  const ov = document.getElementById('gdOverlay'); if(ov){ ov.hidden = true; ov.innerHTML = ''; } document.body.classList.remove('gd-open');
+  try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
+}
+function gdShow(){
+  let ov = document.getElementById('gdOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'gdOverlay'; ov.className = 'gd-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); document.body.appendChild(ov); gdWireOverlay(ov); }
+  ov.hidden = false; document.body.classList.add('gd-open');
+  if(!GD.timerIv) GD.timerIv = setInterval(gdTick, 500);
+  gdRender();
+}
+function gdTick(){
+  const S = GD.s; if(!S) return; const el = document.getElementById('gdTimer'); if(!el || GD.phase !== 'fight') return;
+  const ms = S.planLeftMs(), tot = (S.room && S.room.casual ? CoopM.PLAN_SECONDS.casual : CoopM.PLAN_SECONDS.normal) * 1000;
+  el.querySelector('b').textContent = TX('ui.ar3-timer', {s: Math.ceil(ms / 1000)}); const bar = el.querySelector('i'); if(bar) bar.style.width = Math.max(0, Math.min(100, 100 * ms / tot)) + '%';
+  el.classList.toggle('is-low', ms < 8000);
+}
+function gdRender(){
+  const ov = document.getElementById('gdOverlay'); if(!ov || ov.hidden) return;
+  const S = GD.s;
+  const html = !S ? '' : GD.phase === 'connecting' ? gdConnectingHTML() : GD.phase === 'lobby' ? gdLobbyHTML() : gdFightHTML();
+  ov.innerHTML = `<div class="gd-shell gd-phase-${GD.phase}">${html}</div>`;
+  gdTick(); gdApplyHovers();
+}
+function gdKindLine(){ const k = GD.kind; return `<span class="gd-kind gd-kind-${k}">${escapeHtml(TX(k === 'live' ? 'ui.ar3-live-tag' : k === 'solo' ? 'ui.ar3-solo-tag' : 'ui.ar3-local-tag'))}</span>`; }
+function gdHeadHTML(title, sub){
+  return `<header class="gd-head"><div class="gd-title"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</div>
+    <button type="button" class="btn small gd-leave ${GD.leaveArm > Date.now() ? 'is-armed' : ''}" data-gd-act="leave">${escapeHtml(GD.leaveArm > Date.now() ? TX('ui.ar3-leave-sure') : TX('ui.ar3-leave'))}</button></header>`;
+}
+function gdConnectingHTML(){ return gdHeadHTML(`👥 ${escapeHtml(TX('ui.ar-group-name'))}`, escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))) + `<p class="gd-wait">${escapeHtml(TX('ui.ar3-connecting'))}</p>`; }
+function gdLobbyHTML(){
+  const S = GD.s, r = S.room || {seats: {}}, me = S.me.peerId, host = S.isHost, mySeat = S.mySeat(), size = r.size || 2, dg = CoopM.DUNGEONS.hollow;
+  const seatTile = seat=>{
+    const x = r.seats[seat], used = CoopM.seatsFor(size).includes(seat);
+    const label = `<span class="gd-seat-where">${escapeHtml(TX(GD_SEAT_LABEL[seat]))}</span>`;
+    if(!used) return `<div class="gd-seat seat-${seat} is-blocked">${label}<b>${escapeHtml(TX('ui.ar3-seat-blocked'))}</b></div>`;
+    if(!x) return `<div class="gd-seat seat-${seat} is-empty">${label}<b>${escapeHtml(TX('ui.ar3-seat-empty'))}</b><small>${escapeHtml(TX('ui.ar3-seat-cpu-start'))}</small>${host && seat !== 'A' ? `<button type="button" class="btn small" data-gd-act="cpu" data-seat="${seat}">🤖 ${escapeHtml(TX('ui.ar3-add-cpu'))}</button>` : ''}</div>`;
+    if(x.cpu) return `<div class="gd-seat seat-${seat} is-cpu">${label}<b>🤖 ${escapeHtml(TX('ui.ar3-cpu-name', {seat}))}</b><small>${escapeHtml(TX('ui.ar3-cpu-deck'))}</small>${host ? `<button type="button" class="btn small" data-gd-act="uncpu" data-seat="${seat}">${escapeHtml(TX('ui.ar3-remove-cpu'))}</button>` : ''}</div>`;
+    const isHost = x.peerId === r.hostId, isMe = x.peerId === me;
+    const state = isHost ? `👑 ${escapeHtml(TX('ui.ar3-host'))}` : !x.connected ? `📴 ${escapeHtml(TX('ui.ar3-away'))}` : x.ready ? `✅ ${escapeHtml(TX('ui.ar3-ready'))}` : `⏳ ${escapeHtml(TX('ui.ar3-not-ready'))}`;
+    return `<div class="gd-seat seat-${seat} ${isMe ? 'is-me' : ''} ${x.ready || isHost ? 'is-ready' : ''}">${label}<b>${escapeHtml(x.name || '?')}${isMe && x.name !== TX('ui.ar3-you') ? ` <em>(${escapeHtml(TX('ui.ar3-you'))})</em>` : ''}</b><small>${state}</small></div>`;
+  };
+  const mine = mySeat && r.seats[mySeat], others = S.humansIn().filter(s=> r.seats[s].peerId !== me);
+  const waiting = host && !S.canStart();
+  const friends = GD.kind === 'live' && host ? gdFriendsHTML() : '';
+  const kindNote = TX(GD.kind === 'live' ? (GD.server4p ? 'ui.ar3-kind-live' : 'ui.ar3-kind-live-2') : GD.kind === 'solo' ? 'ui.ar3-kind-solo' : 'ui.ar3-kind-local');
+  return gdHeadHTML(`👥 ${escapeHtml(TX('ui.ar-group-name'))} · ${dg.icon} ${escapeHtml(TX(dg.nameKey))}`, gdKindLine()) + `
+    <div class="gd-lobby">
+      ${GD.kind === 'solo' ? '' : `<div class="gd-code-row"><span>${escapeHtml(TX('ui.ar3-code-label'))}</span><b class="gd-code" id="gdCode">${escapeHtml(GD.code)}</b><button type="button" class="btn small" data-gd-act="copy">📋 ${escapeHtml(TX('ui.ar3-copy'))}</button></div>`}
+      <p class="gd-note">${escapeHtml(kindNote)}</p>
+      <div class="gd-seats-grid" aria-label="${escapeAttr(TX('ui.ar3-seats'))}">
+        <div class="gd-enemy-strip">${dg.icon} ${escapeHtml(TX(dg.nameKey))}</div>
+        ${['A', 'B', 'C', 'D'].map(seatTile).join('')}
+      </div>
+      ${host ? `<div class="gd-opts"><label><input type="checkbox" data-gd-act="casual" ${r.casual ? 'checked' : ''}> ${escapeHtml(TX('ui.ar3-casual'))}</label>
+        <label><input type="checkbox" data-gd-act="four" ${size === 4 ? 'checked' : ''} ${S.humansIn().length > 2 ? 'disabled' : ''}> ${escapeHtml(TX('ui.ar3-four-seats'))}</label></div>` : `<p class="gd-note">${escapeHtml(r.casual ? TX('ui.ar3-casual') : TX('ui.ar3-plan-30'))}</p>`}
+      <p class="gd-deckline">🃏 ${escapeHtml(TX('ui.ar3-deck-line', {n: deckTotal(publicDeck(myDeckCounts))}))} · ⚡ ${escapeHtml(TX('ui.ar3-energy-line', {n: gdCost()}))}</p>
+      <ol class="gd-floors">${dg.floors.map((f, i)=> `<li><span>${f.icon}</span> ${escapeHtml(TX(f.nameKey))}${f.mech ? ` <small>· ${escapeHtml(TX('ui.ar3-mech-short-' + f.mech))}</small>` : ''}</li>`).join('')}</ol>
+      ${friends}
+    </div>
+    <footer class="gd-foot">
+      ${host ? `<button type="button" class="btn primary" data-gd-act="start" ${waiting ? 'aria-disabled="true"' : ''}>⚔️ ${escapeHtml(TX('ui.ar3-start'))}</button>${waiting ? `<small>${escapeHtml(TX('ui.ar3-need-ready'))}</small>` : ''}`
+        : `<button type="button" class="btn ${mine && mine.ready ? '' : 'primary'}" data-gd-act="ready">${escapeHtml(mine && mine.ready ? TX('ui.ar3-not-ready-btn') : TX('ui.ar3-ready'))}</button><small>${escapeHtml(TX('ui.ar3-waiting-host'))}</small>`}
+    </footer>`;
+}
+function gdFriendsHTML(){
+  let list = []; try{ list = socialBuckets().friends; }catch(e){}
+  if(!list.length) return `<p class="gd-note">✉️ ${escapeHtml(TX('ui.ar3-no-friends'))}</p>`;
+  return `<div class="gd-friends"><b>✉️ ${escapeHtml(TX('ui.ar3-invite'))}</b>${list.slice(0, 12).map(f=> `<span class="gd-friend">${Social.online.has(f.other.id) ? '🟢' : '⚪'} ${escapeHtml(f.other.display_name || 'Player')} <button type="button" class="btn small" data-gd-act="invite" data-id="${escapeAttr(f.other.id)}" data-name="${escapeAttr(f.other.display_name || 'Player')}">${escapeHtml(TX('ui.ar3-invite-btn'))}</button></span>`).join('')}</div>`;
+}
+// Invites go to a friend's own broadcast channel (bw-coop-inv-<their id>); joining still goes through join_coop_room (friends only)
+function gdInvite(id, name){
+  if(!sbClient || !id) return;
+  try{ const ch = sbClient.channel('bw-coop-inv-' + id); ch.subscribe(st=>{ if(st !== 'SUBSCRIBED') return; ch.send({type: 'broadcast', event: 'invite', payload: {code: GD.code, from: cloudUserId, name: gdMyName()}}); setTimeout(()=>{ try{ sbClient.removeChannel(ch); }catch(e){} }, 4000); });
+    showToast(TX('ui.ar3-invite-sent', {v1: name}), 'ok'); }catch(e){}
+}
+function gdListenInvites(){
+  if(!CoopM || !sbClient || !isSignedIn() || GD.inviteSub) return;
+  try{ GD.inviteSub = sbClient.channel('bw-coop-inv-' + cloudUserId).on('broadcast', {event: 'invite'}, ({payload})=>{
+      const p = payload || {}; let friend = false; try{ friend = socialBuckets().friends.some(f=> f.other.id === p.from); }catch(e){}
+      if(!friend || !/^[A-Z0-9]{6}$/.test(String(p.code || ''))) return;
+      GD.invites = [p].concat((GD.invites || []).filter(i=> i.code !== p.code)).slice(0, 5);
+      showToast(TX('ui.ar3-invited', {name: p.name || 'Player'}), 'ok');
+      try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
+    }).subscribe(); }catch(e){}
+}
+// ---- the fight board
+function gdLegalCells(){
+  const S = GD.s, v = S.view, seat = S.mySeat(); if(!seat || GD.sel == null || !v) return [];
+  if(S.mode === 'lockstep' && S.run && S.run.fl){ const r = CoopM.legalCellsFor(S.run, seat, GD.sel, GD.pitch); return r.cells || []; }
+  const me = v.seats[seat] || {}, h = (me.hand || []).find(x=> x.uid === GD.sel), d = h && gdDefOf(h.defId);
+  if(!d || (d.cost || 0) > (me.lumber || 0) + (GD.pitch != null ? 1 : 0)) return [];
+  const taken = new Set(v.board.party.map(u=> u.row + ':' + u.slot));
+  return CoopM.cellsFor(seat, v.size).filter(c=> !(c.slot === CoopM.SHARED_COL && v.mech.cursed) && !taken.has(c.row + ':' + c.slot));
+}
+function gdHandWhyNot(h, me){ const d = gdDefOf(h.defId) || {}; return (d.cost || 0) > (me.lumber || 0) + (GD.pitch != null && GD.pitch !== h.uid ? 1 : 0) ? TX('ui.ar3-why-cost') : ''; }
+function gdUnitHTML(u, side){
+  const d = gdDefOf(u.defId) || {}, base = String(u.defId).split('~')[0];
+  const st = [u.poison ? '☠️' : '', u.bleed ? '🩸' : '', u.stunned ? '💫' : '', u.frozen ? '🧊' : '', u.asleep ? '💤' : '', u.shield ? '🛡️' : ''].filter(Boolean).join('');
+  return `<button type="button" class="gd-unit ${side === 'party' && u.seat ? 'seat-' + u.seat : ''} ${d.gdBoss ? 'is-boss' : ''} rar-${escapeAttr(d.rarity || 'common')}" data-gd-unit="${escapeAttr(base)}" title="${escapeAttr(gdNameOf(d))}" aria-label="${escapeAttr(gdNameOf(d) + ' ' + (u.atk || 0) + '/' + u.hp)}">
+    <span class="gd-u-art">${cardIcoHTML(d)}</span>${st ? `<span class="gd-u-st">${st}</span>` : ''}${u.wait > 0 ? `<span class="gd-u-wait">⏳${u.wait}</span>` : ''}
+    <span class="gd-u-stats"><b class="gd-u-atk">${Math.max(0, u.atk || 0)}</b><b class="gd-u-hp ${u.hp < (u.maxHp || u.hp) ? 'is-hurt' : ''}">${Math.max(0, Math.round(u.hp))}</b></span>${side === 'party' && u.seat ? `<span class="gd-u-seat">${u.seat}</span>` : ''}</button>`;
+}
+function gdBarHTML(cls, icon, label, hp, max){ const pct = max ? Math.max(0, Math.min(100, 100 * hp / max)) : 0;
+  return `<div class="gd-bar ${cls}"><span class="gd-bar-lbl">${icon} ${escapeHtml(label)}</span><span class="gd-bar-track"><i style="width:${pct}%"></i></span><b>${Math.max(0, Math.round(hp))}/${max}</b></div>`; }
+function gdFightHTML(){
+  const S = GD.s, v = S.view, seat = S.mySeat();
+  if(!v) return gdHeadHTML(`👥 ${escapeHtml(TX('ui.ar-group-name'))}`, '') + `<p class="gd-wait">${escapeHtml(TX('ui.ar3-mirror'))}</p>`;
+  const dg = CoopM.DUNGEONS.hollow, f = dg.floors[v.floorIdx] || {}, cols = v.cols.slice();
+  [].concat(v.board.party, v.board.dungeon).forEach(u=>{ if(Number.isInteger(u.slot) && !cols.includes(u.slot)) cols.push(u.slot); }); cols.sort((a, b)=> a - b);
+  const legal = new Set(gdLegalCells().map(c=> c.row + ':' + c.slot)), locked = !!(seat && S.locked[seat]);
+  const at = (list, row, slot)=> list.find(u=> u.row === row && u.slot === slot);
+  const ownerOf = (row, slot)=>{ const seats = CoopM.seatsFor(v.size).filter(s=> CoopM.cellsFor(s, v.size).some(c=> c.row === row && c.slot === slot)); return seats.length > 1 ? 'S' : seats[0] || ''; };
+  const enemyRow = row=> `<div class="gd-row gd-row-enemy" style="--cols:${cols.length}">${cols.map(sl=>{ const u = at(v.board.dungeon, row, sl); return `<div class="gd-cell is-enemy">${u ? gdUnitHTML(u, 'dungeon') : ''}</div>`; }).join('')}</div>`;
+  const partyRow = row=> `<div class="gd-row gd-row-party" style="--cols:${cols.length}">${cols.map(sl=>{ const u = at(v.board.party, row, sl), own = ownerOf(row, sl), k = row + ':' + sl;
+      const planned = GD.play && GD.play.row === row && GD.play.slot === sl, pu = planned && (v.seats[seat].hand.find(h=> h.uid === GD.play.uid) || null);
+      const cls = ['gd-cell', 'is-party', own ? 'own-' + own : 'is-blocked', legal.has(k) && !locked ? 'is-legal' : '', planned ? 'is-planned' : '', v.mech.cursed && sl === CoopM.SHARED_COL ? 'is-cursed' : '', v.mech.marked === sl ? 'is-marked' : ''].filter(Boolean).join(' ');
+      return `<div class="${cls}" data-gd-cell="${k}">${u ? gdUnitHTML(u, 'party') : planned && pu ? `<span class="gd-ghost">${cardIcoHTML(gdDefOf(pu.defId) || {})}</span>` : own && own !== 'S' && !u ? `<span class="gd-cell-tag">${own}</span>` : ''}<span class="gd-hover-hand" aria-hidden="true">✋</span></div>`; }).join('')}</div>`;
+  const me = seat ? v.seats[seat] : null;
+  const hand = me ? me.hand.map(h=>{ const d = gdDefOf(h.defId) || {id: h.defId, name: h.defId}; const why = gdHandWhyNot(h, me);
+      return `<button type="button" class="gd-hand-card ${GD.sel === h.uid ? 'is-sel' : ''} ${GD.pitch === h.uid ? 'is-pitched' : ''} ${GD.play && GD.play.uid === h.uid ? 'is-played' : ''} ${why ? 'is-short' : ''}" data-gd-card="${h.uid}" ${locked ? 'disabled' : ''} aria-label="${escapeAttr(gdNameOf(d))}">${cardTileHTML(d, {hand: {whyNot: why}, inPlay: true})}${GD.pitch === h.uid ? `<span class="gd-pitch-tag">🪵+1</span>` : ''}</button>`; }).join('') : '';
+  const humans = Object.keys(v.seats).filter(s=> !v.seats[s].cpu), waitingN = humans.filter(s=> !S.locked[s] && !(S.room && S.room.seats[s] && S.room.seats[s].connected === false)).length;
+  const seatsStrip = `<div class="gd-seat-strip" id="gdSeatStrip">${gdSeatStripHTML()}</div>`;
+  const last = v.last ? `<p class="gd-last">${escapeHtml(TX('ui.ar3-last-round', {d: v.last.dmg ? v.last.dmg.dungeon : 0, p: v.last.dmg ? v.last.dmg.party : 0}))}${GD.note ? ` · <b>${escapeHtml(GD.note)}</b>` : ''}</p>` : '';
+  const mechLine = f.mech ? `<p class="gd-mech">${f.icon} ${escapeHtml(TX('ui.ar3-mech-' + f.mech))}${v.mech.cursed ? ` <b>${escapeHtml(TX('ui.ar3-cursed-now'))}</b>` : ''}${v.mech.marked != null ? ` <b>${escapeHtml(TX('ui.ar3-marked-now'))}</b>` : ''}</p>` : '';
+  const selD = GD.sel != null && me ? gdDefOf((me.hand.find(h=> h.uid === GD.sel) || {}).defId) : null, noCell = !!(selD && (selD.field || selD.cardType === 'spell'));
+  const lum = me ? (me.lumber || 0) + (GD.pitch != null ? 1 : 0) : 0;
+  const actions = !me ? '' : locked ? `<div class="gd-actions"><span class="gd-locked">🔒 ${escapeHtml(TX('ui.ar3-locked', {n: waitingN}))}</span></div>`
+    : `<div class="gd-actions"><span class="gd-lumber" title="${escapeAttr(TX('ui.ar3-lumber'))}">🪵 ${lum}</span>
+      <button type="button" class="btn small" data-gd-act="pitch" ${GD.sel == null && GD.pitch == null ? 'disabled' : ''}>${escapeHtml(GD.sel == null && GD.pitch != null ? TX('ui.ar3-unpitch') : TX('ui.ar3-pitch'))}</button>
+      ${noCell ? `<button type="button" class="btn small" data-gd-act="playnocell">${escapeHtml(TX('ui.ar3-play-here'))}</button>` : ''}
+      <button type="button" class="btn small" data-gd-act="clear" ${GD.sel == null && GD.pitch == null && !GD.play ? 'disabled' : ''}>${escapeHtml(TX('ui.ar3-clear'))}</button>
+      <button type="button" class="btn primary gd-lock" data-gd-act="lock">${escapeHtml(GD.play || GD.pitch != null ? TX('ui.ar3-lock') : TX('ui.ar3-pass'))}</button></div>`;
+  const hint = me && !locked ? `<p class="gd-hint">${escapeHtml(GD.sel != null ? (noCell ? TX('ui.ar3-play-nocell') : legal.size ? TX('ui.ar3-pick-cell') : TX('ui.ar3-no-cell')) : GD.play ? TX('ui.ar3-planned') : TX('ui.ar3-plan'))}</p>` : '';
+  const head = gdHeadHTML(`${dg.icon} ${escapeHtml(TX(dg.nameKey))} · ${escapeHtml(TX('ui.ar3-floor', {n: v.floorIdx + 1, total: v.floorCount}))} ${f.icon || ''} ${escapeHtml(gdFloorName(v.floorIdx))}`,
+    `${escapeHtml(TX('ui.ar3-round', {n: v.round, cap: v.roundCap}))} · ${gdKindLine()}${S.mode === 'mirror' ? ` · ${escapeHtml(TX('ui.ar3-mirror'))}` : ''}`);
+  const timer = GD.phase === 'fight' && !v.over ? `<div class="gd-timer" id="gdTimer"><i></i><b></b></div>` : '';
+  const floorPanel = GD.phase === 'floorEnd' ? gdFloorEndHTML() : GD.phase === 'end' ? gdEndHTML() : '';
+  // phones: one column; wide screens: the board on the left, the seats, hand and actions beside it
+  return head + `<div class="gd-main"><div class="gd-left">${timer}${mechLine}
+    <div class="gd-board">
+      ${gdBarHTML('is-dungeon', f.icon || '🕳️', gdFloorName(v.floorIdx), v.dungeon.hp, v.dungeon.maxHp)}
+      ${enemyRow(1)}${enemyRow(0)}
+      <div class="gd-divide" aria-hidden="true"></div>
+      ${partyRow(0)}${partyRow(1)}
+      ${gdBarHTML('is-party', '🏰', TX('ui.ar3-party'), v.party.hp, v.party.maxHp)}
+    </div></div>
+    <div class="gd-side">${seatsStrip}${last}${hint}
+    <div class="gd-hand">${hand}</div>${actions}${floorPanel}</div></div>`;
+}
+function gdSeatStripHTML(){
+  const S = GD.s, v = S && S.view; if(!v) return '';
+  return Object.keys(v.seats).sort((a, b)=> CoopM.SEATS.indexOf(a) - CoopM.SEATS.indexOf(b)).map(s=>{ const x = v.seats[s], rs = S.room && S.room.seats[s], away = rs && !rs.cpu && rs.connected === false;
+    return `<span class="gd-chip seat-${s} ${S.locked[s] ? 'is-locked' : ''} ${away ? 'is-away' : ''} ${s === S.mySeat() ? 'is-me' : ''}"><i>${s}</i>${escapeHtml(gdSeatName(s, x))}${x.cpu ? ' 🤖' : ''}${away ? ` 📴` : S.locked[s] ? ' ✓' : ''}</span>`; }).join('') + (S.room && Object.keys(S.room.seats).some(k=> S.room.seats[k] && !S.room.seats[k].cpu && S.room.seats[k].connected === false) ? `<small class="gd-away-note">${escapeHtml(TX('ui.ar3-cpu-stands-in'))}</small>` : '');
+}
+function gdRenderSeats(){ const el = document.getElementById('gdSeatStrip'); if(el) el.innerHTML = gdSeatStripHTML(); else if(GD.phase === 'lobby') gdRender(); }
+function gdApplyHovers(){
+  const S = GD.s; if(!S) return; const mine = S.mySeat();
+  document.querySelectorAll('#gdOverlay [data-gd-cell]').forEach(el=> el.classList.remove('has-hover'));
+  Object.keys(S.hovers || {}).forEach(seat=>{ const c = S.hovers[seat]; if(!c || seat === mine) return; const el = document.querySelector(`#gdOverlay [data-gd-cell="${c.row}:${c.slot}"]`); if(el) el.classList.add('has-hover'); });
+}
+function gdFloorEndHTML(){
+  const fe = GD.floorEnd || {}, S = GD.s, won = fe.result === 'won', r = won ? CoopM.floorReward('hollow', fe.idx) : null, v = S.view || {};
+  const title = won ? TX('ui.ar3-floor-cleared') : v.reason === 'time' ? TX('ui.ar3-floor-time') : TX('ui.ar3-floor-lost');
+  const nextIdx = (fe.idx | 0) + 1, more = won && nextIdx < (v.floorCount || 4);
+  return `<div class="gd-panel ${won ? 'is-won' : 'is-lost'}" role="status"><h3>${won ? '🏆' : '🪦'} ${escapeHtml(title)}</h3>
+    <p class="gd-panel-sub">${escapeHtml(TX('ui.ar3-floor', {n: (fe.idx | 0) + 1, total: v.floorCount || 4}))} · ${escapeHtml(gdFloorName(fe.idx | 0))}</p>
+    ${r ? `<div class="gd-chest"><span>${escapeHtml(TX('ui.ar3-chest'))}</span><b>${CURRENCY_META.gold.glyph} ${r.gold}</b><b>${CURRENCY_META.dust.glyph} ${r.dust}</b></div>` : ''}
+    ${more ? (S.isHost ? `<button type="button" class="btn primary" data-gd-act="next">⬇️ ${escapeHtml(TX('ui.ar3-continue'))} · ${escapeHtml(gdFloorName(nextIdx))}</button>` : `<p class="gd-note">${escapeHtml(TX('ui.ar3-wait-host-next'))}</p>`) : ''}</div>`;
+}
+function gdEndHTML(){
+  const e = GD.endInfo || {}, cleared = e.cleared || 0, total = e.total || 4, all = e.how === 'cleared';
+  const sum = Object.values(GD.paid).reduce((a, r)=> ({gold: a.gold + r.gold, dust: a.dust + r.dust}), {gold: 0, dust: 0});
+  const picks = GD.picks && !GD.picked ? `<p class="gd-panel-sub">${escapeHtml(TX('ui.ar3-pick-one'))}</p><div class="gd-picks">${GD.picks.map(id=>{ const d = gdDefOf(id) || {}; return `<button type="button" class="gd-pick" data-gd-pick="${escapeAttr(id)}">${cardTileHTML(d, {inPlay: true})}</button>`; }).join('')}</div>`
+    : GD.picked ? `<p class="gd-note">✨ ${escapeHtml(TX('ui.ar3-picked', {name: gdNameOf(gdDefOf(GD.picked))}))}</p>` : all ? `<p class="gd-note">${escapeHtml(TX('ui.ar3-pick-done-today'))}</p>` : '';
+  return `<div class="gd-panel ${all ? 'is-won' : 'is-lost'}" role="status"><h3>${all ? '👑' : '🕳️'} ${escapeHtml(all ? TX('ui.ar3-run-cleared') : TX('ui.ar3-run-over'))}</h3>
+    <p class="gd-panel-sub">${escapeHtml(TX('ui.ar3-floors-cleared', {n: cleared, total}))}</p>
+    ${sum.gold || sum.dust ? `<div class="gd-chest"><span>${escapeHtml(TX('ui.ar3-chests-total'))}</span><b>${CURRENCY_META.gold.glyph} ${sum.gold}</b><b>${CURRENCY_META.dust.glyph} ${sum.dust}</b></div>` : ''}
+    ${picks}<button type="button" class="btn ${GD.picks && !GD.picked ? '' : 'primary'}" data-gd-act="close">${escapeHtml(TX('ui.ar3-back'))}</button></div>`;
+}
+function gdWireOverlay(ov){
+  ov.addEventListener('click', e=>{
+    const S = GD.s; if(!S) return;
+    const t = e.target, act = t.closest('[data-gd-act]'), card = t.closest('[data-gd-card]'), cell = t.closest('[data-gd-cell]'), unit = t.closest('[data-gd-unit]'), pick = t.closest('[data-gd-pick]');
+    if(act && act.tagName === 'INPUT') return; // checkboxes: on change
+    if(act){ const a = act.dataset.gdAct, seat = S.mySeat();
+      if(a === 'leave'){ if(GD.leaveArm > Date.now() || GD.phase === 'end'){ gdClose(); } else { GD.leaveArm = Date.now() + 3000; gdRender(); setTimeout(()=>{ if(GD.s) gdRender(); }, 3100); } return; } // tap twice (on-page, no browser dialog)
+      if(a === 'close') return gdClose();
+      if(a === 'copy'){ try{ navigator.clipboard.writeText(GD.code); showToast(TX('ui.ar3-copied'), 'ok'); }catch(err){} return; }
+      if(a === 'cpu') return S.setCpu(act.dataset.seat, true);
+      if(a === 'uncpu') return S.setCpu(act.dataset.seat, false);
+      if(a === 'invite') return gdInvite(act.dataset.id, act.dataset.name);
+      if(a === 'ready'){ const mine = seat && S.room.seats[seat]; if(!(mine && mine.ready) && (!gdDeckOk() || !gdEnergyOk())) return; return S.setReady(!(mine && mine.ready), publicDeck(myDeckCounts)); }
+      if(a === 'start'){ if(!S.canStart()){ showToast(TX('ui.ar3-need-ready'), 'warn'); return; } if(!gdDeckOk() || !gdEnergyOk()) return; S.room.seats.A && (S.room.seats.A.deck = publicDeck(myDeckCounts)); return S.start(); }
+      if(a === 'next') return S.nextFloor();
+      if(a === 'pitch'){ if(GD.sel != null){ GD.pitch = GD.sel; if(GD.play && GD.play.uid === GD.sel) GD.play = null; GD.sel = null; } else GD.pitch = null; return gdRender(); }
+      if(a === 'clear'){ GD.sel = GD.pitch = GD.play = null; S.hover(null); return gdRender(); }
+      if(a === 'playnocell'){ if(GD.sel != null){ GD.play = {uid: GD.sel}; GD.sel = null; } return gdRender(); }
+      if(a === 'lock'){ const r = S.submitPlan({pitch: GD.pitch, play: GD.play}); if(r && r.ok === false){ showToast(TX('ui.ar3-not-legal'), 'warn'); GD.play = null; } S.hover(null); return gdRender(); }
+      return;
+    }
+    if(pick) return gdPick(pick.dataset.gdPick);
+    if(card && !card.disabled){ const uid = Number(card.dataset.gdCard); GD.sel = GD.sel === uid ? null : uid; if(GD.pitch === uid) GD.pitch = null; return gdRender(); }
+    if(cell && GD.sel != null && cell.classList.contains('is-legal')){ const [row, slot] = cell.dataset.gdCell.split(':').map(Number); GD.play = {uid: GD.sel, row, slot}; GD.sel = null; S.hover({row, slot}); return gdRender(); }
+    if(unit){ try{ openCardDetail(unit.dataset.gdUnit); }catch(err){} return; }
+  });
+  ov.addEventListener('change', e=>{ const S = GD.s, t = e.target; if(!S || !t.dataset) return;
+    if(t.dataset.gdAct === 'casual') S.setCasual(t.checked); if(t.dataset.gdAct === 'four') S.setSize(t.checked ? 4 : 2); });
+  ov.addEventListener('pointerover', e=>{ const S = GD.s; if(!S || GD.sel == null) return; const cell = e.target.closest && e.target.closest('[data-gd-cell].is-legal'); if(!cell) return;
+    if(Date.now() - GD.hoverAt < 150) return; GD.hoverAt = Date.now(); const [row, slot] = cell.dataset.gdCell.split(':').map(Number); S.hover({row, slot}); });
 }
 function renderDungeonsSubTab(body){
   const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
@@ -23559,12 +23915,15 @@ function renderDungeonsSubTab(body){
           ${s.n > 0 ? '' : `<p class="dg-sub dg-nokeys" role="note">🗝️ ${escapeHtml(dungeonNoKeysText()) /* 2026-10-18 (package DK): why there is no fighting today */}</p>`}`
         : `<p class="dg-sub">🔒 ${map.entry && map.entry.after ? 'Clear' : 'Reach' /* 2026-10-18: an entrance with no `after` opens as soon as its map does */} ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
+  // 2026-10-23 (package AR3): while the daily dungeons are hidden from a player (TU2), the tab holds the Group Dungeon (and the Spire
+  // once open), no keys row and no daily slots; they come back with dailyDungeonsOpen
+  const daily = dailyDungeonsOpen();
   body.innerHTML = `<div class="panel dungeons-panel">
-    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">${escapeHtml(TX('ui.dungeons-sub')) /* 2026-10-18 (package DK) */}</p></div>
-    <div class="dg-tickets" title="${escapeAttr(dungeonKeyRuleText())}">
+    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">${escapeHtml(daily ? TX('ui.dungeons-sub') : TX('ui.ar3-tab-sub')) /* 2026-10-18 (package DK); AR3 */}</p></div>
+    ${daily ? `<div class="dg-tickets" title="${escapeAttr(dungeonKeyRuleText())}">
       <span class="dg-tix">${Array.from({length: Math.max(dungeonKeyCap(), s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
-      <span>${escapeHtml(TX('ui.dungeon-keys-row', {n: s.n, cap: dungeonKeyCap(), h}))}</span></div>
-    <div class="dg-list">${cards}${groupDungeonCardHTML()}</div>
+      <span>${escapeHtml(TX('ui.dungeon-keys-row', {n: s.n, cap: dungeonKeyCap(), h}))}</span></div>` : ''}
+    <div class="dg-list">${daily ? cards : ''}${groupDungeonCardHTML()}</div>
     ${towerCardHTML(progress)}
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
@@ -52141,6 +52500,7 @@ async function socialInit(){
       .subscribe();
   }catch(e){}
   socialLoadInvites();
+  try{ gdListenInvites(); }catch(e){} // 2026-10-23 (package AR3): Group Dungeon invites from friends
   // "Last seen" heartbeat while signed in.
   const beat = ()=>{ if(sbClient && cloudUserId) sbClient.from('profiles').update({last_seen_at: new Date().toISOString()}).eq('id', cloudUserId).then(()=>{}, ()=>{}); };
   beat(); Social.heartbeat = setInterval(beat, 120000);
@@ -52148,6 +52508,7 @@ async function socialInit(){
 function socialTeardown(){
   ['presence','friendSub','inviteSub'].forEach(k=>{ try{ if(Social[k] && sbClient) sbClient.removeChannel(Social[k]); }catch(e){} Social[k] = null; });
   if(Social.heartbeat){ clearInterval(Social.heartbeat); Social.heartbeat = null; }
+  try{ if(GD.inviteSub && sbClient) sbClient.removeChannel(GD.inviteSub); }catch(e){} try{ GD.inviteSub = null; GD.invites = []; }catch(e){} // AR3 (2026-10-23)
   Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null; Social.listError = false;
   hideInviteBanner();
 }
