@@ -10,12 +10,6 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - 0-7 / 8-14 / 15-21
 - **Default:** 0-6 / 7-13 / 14-20
 
-**PP-2. First faction Rare: the pattern's 10th reward (lands on Map 3), or the 10-21 rule 'Rare only from Map 14'?** · Decide · Faction · asked 2026-10-23
-- The standard faction pattern C,C,C,U,C,C,U,C,U,R puts the first Rare at the 10th reward; today 12 faction rewards are handed out by Map 3.
-  - Pattern wins (Rare on Map 3)
-  - Rare only from Map 14 (pattern skips R until then)
-- **Default:** Rare only from Map 14 (pattern skips R until then)
-
 **PP-3. Level 0: only tutorial base and baby cards, or every Base card (raised in the Nest)?** · Decide · Levels · asked 2026-10-23
 - Today Bee Knight, Forager Ant and Sparrow Chick start at 0 without being tutorial base, and since TU2 every new faction copy comes at Level 0. Both contradict the 19:27 rule as written.
   - Only tutorial base + babies
@@ -106,6 +100,164 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** Hold them at their stats (built)
 
 ## Decided
+
+**OPT-1. Deck optimizer: how much of the search goes to the whole-spectrum phase?** · Decide · Balance tools · asked 2026-10-23
+- Your 20:44 line "i dont want to put only 10% computing power to this 2nd" can mean more than 10% or at most 10%. tools/opt/deckopt.js gives the out-of-map phase 30% of the search time (--cross-share 0.3); any share is one option away. In the first runs (Maps 0-3, 2.5-4 min each) the out-of-map cards added 1-23 points to the optimum's score.
+  - 30% (built)
+  - 50%
+  - 10% or less
+- **Default:** 30% (built)
+- **Outcome:** Owner, 2026-10-23 22:23: "use logic first - must be related, cannot be selected leaders or boss cards for future skirmishes, cannot be strange Map 40+ cards etc. maybe have similar attacks like arrows in an arrow map - that really limits the number of cards to prob 5-25." Phase 2 becomes a logic-filtered candidate list (queued, OPT2).
+
+**OPT-2. Deck optimizer: phase 1 = the map's cards only, or the map's cards + what you own by then?** · Decide · Balance tools · asked 2026-10-23
+- Built: the map's cards (map-pools MAP + submap tiers, not SPECIAL) plus every Base card and every card obtainable before the map (HUB3 plan). With those, the Maps 1-3 optimum is mostly Base cards (Voidfeather Scout, Ember Tetra, Otter Guard, Otter Centurion); on Map 3 it holds no Gannet Cliffs card at all. With the map's cards only (--owned none) the Map 3 optimum scores 66% and its fight decks sit only 17-436 Elo below it, while the Map 0-2 fight decks sit 296-755 below theirs. docs/balance/opt/deckopt-summary-2026-10-23.md and deckopt-summary-2026-10-23-mapcards.md.
+  - Map cards + owned (built)
+  - Map cards only
+  - Run both every time
+- **Default:** Run both every time
+- **Outcome:** Owner, 2026-10-23 22:23: "see (11)". Same filter.
+
+**OPT-3. Use the optimizer's Elo gap as the difficulty dial for skirmish decks?** · Decide · Skirmishes · asked 2026-10-23
+- The optimizer measures how far each fight deck sits below the best deck its map's cards can make (Elo = 400 log10(p / (1 - p)) of the optimum's fair head-to-head score; +200 = the optimum wins 76%, +400 = 91%). Today the Map 0-2 fight decks sit about 300-750 Elo below the optimum, and the gap does not fall steadily along a map. Proposal: give each fight a gap target that falls from about 600 (first skirmish) to about 150 (the map's boss), and toward 0 by Map 20; tune decks to it with the tool, and keep the level, bramble and field levers for the rest.
+  - Yes, falling gap targets
+  - Measure only (no targets)
+  - Later
+- **Default:** Measure only (no targets)
+- **Outcome:** Owner, 2026-10-23 22:23: "we try to create the optimum (at lvl 1) deck first. then we see how to make a range of weaker decks after that. Idk if its possible to find multiple local maxima. Idk if we should do grid search based discrete descent or just random." Queued, OPT2.
+
+**PP-2. First faction Rare: the pattern's 10th reward (lands on Map 3), or the 10-21 rule 'Rare only from Map 14'?** · Decide · Faction · asked 2026-10-23
+- The standard faction pattern C,C,C,U,C,C,U,C,U,R puts the first Rare at the 10th reward; today 12 faction rewards are handed out by Map 3.
+  - Pattern wins (Rare on Map 3)
+  - Rare only from Map 14 (pattern skips R until then)
+- **Default:** Rare only from Map 14 (pattern skips R until then)
+- **Outcome:** Owner, 2026-10-23 22:23: "It's okay faction rares start slower. For Map 5, the rare is the boss's leader. Normal skirmish rares only start coming in Map 10 onwards. (gently)" Faction track: no Rare before Map 14 (default kept).
+
+**EN3-8. Where the four new bramble-guard cards come from** · Decide · Cards · asked 2026-10-23
+- Owner 20:44: "The new skills we mentioned - implement them in new cards." Built (awaitingSource, placeholder emoji art, NightCafe prompts in docs/art/new-cards-2026-10-21-briefs.md, names and flavour in 12 packs), each fitted to the budget at Level 1 with no map term (tools/en3_new_cards_2026_10_23.js): DAM-KEEPER BEAVER (common, Lumber 1, Wait 1, Rampart) 2/11; BRIARBACK HEDGEHOG (common, Lumber 1, Wait 1, Bramble Armor) 2/11; MOAT SNAPPER (uncommon, Lumber 2, Wait 2, Rampart, Armor 1) 4/14; BARKPLATE BEETLE (uncommon, Lumber 2, Wait 2, Bramble Armor, Thorns 1) 4/14. Proposed: the two commons in Pack 1 (Maps 0-6; your note that the bramble is too weak at Map 0 and before makes early bramble guards useful), the two uncommons in Pack 2 (Maps 7-13: the Snapper beside the turtles, the Beetle in the Redwood Deep). Placing them needs canonical/map-pools.json and canonical/card-obtain-maps.json rows (a later package); the Map term then lifts their lines a little. Pricing (owner 20:44: "just logic is sufficient ... the effect of 1 attack or health across 4 rounds"): both skills were also measured (docs/balance/en3-skill-test-2026-10-23.md) and the logic agrees: Bramble Armor's 1 a bramble hit is about 1 Health a round (1.1), Rampart mostly moves damage from the bramble to a unit 1:1 (0.5).
+  - Commons in Pack 1, uncommons in Pack 2 (as proposed)
+  - All four in Pack 1
+  - Skirmish rewards instead (say which maps)
+- **Default:** Commons in Pack 1, uncommons in Pack 2 (as proposed)
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay"; also #10: place new cards in Maps 0-20 lightly where they add strategic depth.
+
+**EN3-1. Should Guardian also protect the bramble?** · Decide · Battle rules · asked 2026-10-23
+- Your 19:27 #2: "Guardians do not block enemies from attacking the bramble." That is the current design: Guardian steps in for adjacent allies only, never the bramble. Built (EN3): kept, and its text now says so ("... and it never guards the bramble"; the short text "(not the bramble)"). The bramble has two new skills of its own for this (EN3-4): Rampart takes half of each hit on the bramble, Bramble Armor takes 1 off each.
+  - No: Guardian guards allies only; Rampart / Bramble Armor guard the bramble (as built)
+  - Yes: a Guardian next to the lane a bramble hit comes down also takes it
+  - Yes, but only a Guardian standing in the attacker's column
+- **Default:** No: Guardian guards allies only; Rampart / Bramble Armor guard the bramble (as built)
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay". Guardian does not protect the bramble.
+
+**EN3-2. Bleed now fades at the round's end, after it bleeds** · Decide · Battle rules · asked 2026-10-23
+- Your 19:27 #5: "before they TAKE the bleed or poison damage, they -1. They should take the damage first." Bleed lost its stack at each round's START (since 10-18), before the unit acted, so a Bleed 3 dealt 2 then 1 (3 in all) instead of 3, 2, 1 (6). Built: a Bleeding unit loses 1 stack at the END of a round in which it started Bleeding or bled; a stack that lands after its last action that round waits for the next round's end, so it is bled in full first. A Waiting unit (which can't bleed on its own actions) still loses 1 a round from its second round. Festering still holds it. The grey drop plays at the round's end. Poison was already right in the engine (the tick is the whole stack, then -1); the board showed the badge drop at the same instant as the damage, so it now drops about half a second after the damage. Card-matrix results change wherever Bleed is in play (see the CHANGELOG).
+  - As built (round's end, after it bled; a late stack waits a round)
+  - Only after it bleeds (no wear-down at all while it can't act)
+  - Round's end for every stack, late ones too (simpler, a late stack loses 1 unbled)
+- **Default:** As built (round's end, after it bled; a late stack waits a round)
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay". Bleed fade as built.
+
+**EN3-3. A Guardian guarding a Guardian: one hop or a full chain** · Decide · Battle rules · asked 2026-10-23
+- Your 19:27 #8: "Guardian doesn't intercept a guardian's intercept." Built: when a Guardian steps in, a Guardian adjacent to THAT Guardian (not the unit first aimed at) steps in for it and takes the swing; at most one extra hop. On the board the first Guardian steps in front of the ally, the second in front of the first ("🦺 Covered!"), and the second takes the blow. A full chain would run every blow to the end of a line of Guardians, which reads oddly and makes the last one in a line a sponge. #19 is built too: no dashed line is drawn when a Guardian intercepts (its shield pops in, and the step-in shows who it covered).
+  - One hop (as built)
+  - A full chain (to the end of a line of Guardians, never back)
+  - None (a Guardian never steps in for a Guardian)
+- **Default:** One hop (as built)
+- **Outcome:** Owner, 2026-10-23 22:23: "Guardian shouldn't intercept an intercepting guardian." No chain: to be reverted (queued, EN4).
+
+**EN3-4. Names and homes for the two bramble skills: Rampart 🚧 and Bramble Armor 🌿🛡️** · Decide · Skills · asked 2026-10-23
+- Your 19:27 #3: "takes half of bramble damage ... 5/2=3, it takes 3, the bramble takes 2" and "lowers damage taken by Bramble by 1. (Bramble armour basically)". Built: RAMPART (engine key rampart): every hit on its bramble that a unit deals (swings, shots, skills, Pierce, an Overwhelm spill, a boomerang) is split, the unit ceil(half), the bramble the rest; the field's own bramble damage (Ley Lines, Ash Rain) is not split. With two or more, the one nearest the attacker's column takes it (a tie or no attacker: the first listed). Its share is plain damage (its Shield soaks first; no Armor, no Thorns). Looks: a light streak from the bramble to the unit as the blow lands, the unit flinches and its share floats on it. BRAMBLE ARMOR (key brambleArmor): the bramble's part of each such hit is 1 less, after Rampart (5 with both: 3 on the unit, 1 on the bramble). Looks: a small shield ting (🛡️ −1) on the bramble. Supreme crushes both. Prices (tools/skill_test_robust.js, docs/balance/en3-skill-test-2026-10-23.md): Rampart measured worth 0.44 (-0.13 with companions), priced 0.5; Bramble Armor 1.15 (1.06), priced 1.1. Homes (owner 20:44: "implement them in new cards"): four NEW cards, Dam-Keeper Beaver and Moat Snapper (Rampart), Briarback Hedgehog and Barkplate Beetle (Bramble Armor), their source call EN3-8. Also Rampart is on Riverworks Bastion ("A fortress of logs and mud that has outlasted ... at least one siege"; re-fit 0/32 -> 0/30). Existing cards that could also take Bramble Armor: Dam Wall (0/22, no skill), Barnacle Fortress (0/6, Armor), Turtle Bastion (2/23, Tide), Hawthorn Shieldbug (2/12, Armor), Thornwood Palisade (would be a third skill). Other names: Rampart -> Bramblewarden, Hedgewall, Bulwark Keeper; Bramble Armor -> Thornplate, Barkplate, Hedge Armor.
+  - Rampart and Bramble Armor, on the four new cards and Riverworks Bastion (as built)
+  - As built, and Bramble Armor on Dam Wall too
+  - Other names (say which)
+- **Default:** Rampart and Bramble Armor, on the four new cards and Riverworks Bastion (as built)
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay". Rampart and Bramble Armor as named.
+
+**EN3-5. Bramble Armor with two or more units: still 1, or 1 each?** · Decide · Skills · asked 2026-10-23
+- Built: several Bramble Armor units still take 1 off a hit (it doesn't stack), so a wall of them can't make the bramble immune to 1- and 2-damage hits, and one price (1.1) holds. Per unit would make it 1 a unit; the price would then have to rise with the count.
+  - Max 1 (as built)
+  - 1 per unit
+  - 1 per unit, up to 2
+- **Default:** Max 1 (as built)
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay". Max 1 as built.
+
+**EN3-6. 13 cards the Bleed / Poison and Bulwark re-prices would cut: held at their stats (as BF11-1)** · Decide · Balance · asked 2026-10-23
+- Your 19:27 #6 (round each Bleed / Poison price up a tenth: Poison 2.5 -> 2.6, Bleed 2.5 -> 2.6, Gash 1.5 -> 1.6, Venomous, Poison Bolt, Poison Gas 3 -> 3.1, Rabid and Venom Master 5 -> 5.1, Proliferate 6 -> 6.1, Perforate 3.5 -> 3.6, the Poison and Bleed actions 1.3 -> 1.4 and 0.9 -> 1.0; Toxin, Detonate, Hunter and Poison Tick have no wearing stack and are left) and #9 (Bulwark 6 -> 9). 66 cards' skill worth moved; tools/en3_refit_2026_10_23.js re-fitted the band cards: 3 had room and went up (ironmaw-warwolf 6/6 -> 7/7, fire-ant-raft 2/7 -> 2/8, whip-spider 3/7 -> 3/8). These would go down and are held at their stats: alley-cat 1/8 -> 1/6; trapdoor-spider 4/7 -> 4/6; komodo-warlord 1/25 -> 1/24; venomlord-serpent 1/22 -> 1/21; ancient-sloth-titan 2/33 -> 2/27; vampire-squid 4/14 -> 4/13; lions-mane-jelly 1/16 -> 1/15; puffball-bombardier 1/10 -> 1/6; cottonmouth-matriarch 2/12 -> 2/11; muskrat-lodgekeeper 2/10 -> 1/1; alligator-gar 6/6 -> 5/5; banded-sea-krait 4/4 -> 3/3; yellow-bellied-sea-snake 3/3 -> 1/1. poison-dart-frog has no legal line (merged into the flagged list). The biggest: Ancient Sloth Titan 2/33 -> 2/27 and Muskrat Lodgekeeper 2/10 -> 1/1 (both Bulwark). File: docs/balance/en3-refit-2026-10-23.json.
+  - Hold them, trim skills per card later (as built, like BF11-1)
+  - Apply the formula's lines
+  - Apply all but the Bulwark two (Ancient Sloth Titan, Muskrat Lodgekeeper)
+- **Default:** Hold them, trim skills per card later (as built, like BF11-1)
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay". Held cards stay held.
+
+**EN3-7. Shore Up, the opposite of hunkering down: three ideas (not built)** · Decide · Skills · asked 2026-10-23
+- Your 19:27 #4: "New Skill: Shore Up, opposite of Hunker Down? What could they do?" There is no Hunker Down skill; the nearest is Cower (hit last turn: it hides in its shell or backs off, no attack) and Shell. Three ways to turn that round: (A) SHORE UP N, the mason: each hit it survives, its bramble gets N Health back (On Attacked 1.9 x Rebuild 0.2 a point = about 0.4 per N); it fights on, and the beating it takes props up the bramble. (B) SHORE UP, brace the line: when it is hit (and survives) it doesn't hide; the allies beside it get Shield 1 for the next round (On Attacked 1.9 x Shield 0.35 x 2 allies = about 1.3); Cower saves itself, this saves its neighbours. (C) SHORE UP N, dig in when left alone: at the start of a round after one in which nothing hit it, it gains Shield N, up to 2N (On Round Start 3.5 x Shield 0.35 x about half the rounds = about 0.6 per N); Cower fires after a hit, this after a quiet round. Prices are estimates from canonical/skill-costs.json; each would be measured with tools/skill_test_robust.js once built.
+  - (B) Brace the line
+  - (A) The mason (rebuilds the bramble)
+  - (C) Dig in when left alone
+  - None for now
+- **Default:** (B) Brace the line
+- **Outcome:** Owner, 2026-10-23 22:23: "EN stuff - okay". Shore Up default (B): when hit, Shield 1 to the allies beside it; to build later.
+
+**RW5-1. The end of each map: a pack of 3 + 1 faction pack (built ON)** · Decide · Rewards · asked 2026-10-23
+- Your 19:36 note ("i think at the end of each map, give a pack of 3 + 1 faction pack, corresponding to that map series") is built behind MAP_END_PACKS (on): a main map's last fight, first clear, gives a 3-card pack of that map's series (Maps 0-6 the Hedgerow Pouch's pool, 7-13 the Tidemire Chest's, 14+ the Highcrest Case's; new cards first) and one faction pack of your side (2 faction cards out of the faction pool + 1 pack card). It comes on top of the map's free pack where it has one. It is what puts the standard pattern inside your window (tools/rw5_faction_pacing_2026_10_23.js, median of 20 seeds): otters first Rare Map 14, last standard Uncommon Map 15, no Very Rare by Map 24; hummingbirds first Rare Map 14, last standard Uncommon Map 16, no Very Rare by Map 24. Without it: otters first Rare Map 15, last standard Uncommon Map 21, no Very Rare by Map 24; hummingbirds first Rare Map 15, last standard Uncommon Map 22, no Very Rare by Map 24 (too many).
+  - Keep it on
+  - Only the pack of 3
+  - Off
+- **Default:** Keep it on
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5- okay."
+
+**RW5-2. Climbing the rarity tree: the pattern moves up once you hold 2 of each of your side's cards (1 of the other side's)** · Decide · Faction · asked 2026-10-23
+- Your rule "pool copies = the most a deck may hold" makes a big pool: as the game builds it, 60 cards / 204 copies (110 common, 59 uncommon, 26 rare, 4 veryrare, 1 epic, 1 high, 1 superrare, 2 heroic). If the pattern only climbed when a rarity's copies ran out, Uncommons would still come at Map 24 (too many). Built (FACTION_CLIMB_HOLD, from "you will slowly get 1-2x of each copy along the way, climbing the rarity tree"): a rarity is done for the pattern once you hold 2 copies of each of its cards of your side and the shared ones and 1 of the other side's and of each Base card; the rest of the copies stay in the pool for the random faction rewards. Note: the hub counts 30 faction cards as unplaced because they carry the old `unattainable` flag, but the game no longer reads it (obtainability comes from the source), so they are in the pool and in faction rewards today. With only the released 26 cards the pool runs dry around Map 17-19.
+  - Keep 2 / 1
+  - 1 of each (climbs faster)
+  - Climb only when copies run out
+- **Default:** Keep 2 / 1
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5- okay."
+
+**RW5-3. Ten cards met on an earlier side map than the map they are sourced to: re-fit or move?** · Decide · Cards · asked 2026-10-23
+- Beetle Battering Ram (Mycelium Deep / Goldfeather Siege), Fox Kit (Map 0 / Redwood Deep), Lodge Engineer (Lilypad Reach / Goldfeather Keep), Mallard Marauder (Smugglers' Grotto / Goldfeather Keep), Mudpuppy (Lilypad Reach / Kelp Mangroves) and Cinder Gecko (Pale Desert / Rimefire Caldera) are in an early side map's pool, but re-pointing them there puts their stats 0.1-1.2 points over budget (the Map term). RW5 kept their source map (tools/rw5_pack_tiers_2026_10_23.js BUDGET_HOLD); Mudpuppy and Cinder Gecko so sit one pack tier later than where you meet them. Four more keep their map for another reason: Mangrove Mudskipper and Minnow Skitter (Lilypad Reach / Kelp Mangroves), Cinder Hornet (Volcano Lair / Rimefire Caldera) and Siege Rhino (the Canopy / Goldfeather Siege) are those maps' first-clear pack cards (GD5: a card of that map's own pool), so they too sit one pack tier later than the side map where you first meet them.
+  - Re-fit them by formula for the early map
+  - Take them out of the early side map's pool
+  - Leave them
+- **Default:** Re-fit them by formula for the early map
+- **Outcome:** Owner, 2026-10-23 23:45: "if there's a reason you want to move them, you can use the new map's budget." Queued in EN4.
+
+**RW5-4. Ember Tetra (was ember-tetra-3caj): where does it come from?** · Decide · Cards · asked 2026-10-23
+- Its id is fixed (ember-tetra; the live row is skipped and supabase/proposed/20261023_rw5_clear_ember_tetra.sql deletes it on "apply it"). It still has no source, so it is a Base card everyone has. As a Pack 3 card of the Ashen Spurn (hot springs) its 3/7 with Tide braces is 0.6 over budget.
+  - Pack 3 (Ashen Spurn), re-fit to 2/7
+  - A skirmish reward
+  - Keep it Base
+- **Default:** Pack 3 (Ashen Spurn), re-fit to 2/7
+- **Outcome:** Owner, 2026-10-23 23:45: "Ember Tetra can be a pack 1." Queued in EN4.
+
+**RW5-5. Raid Ticket price: 400 Maple Leaves + 5 Gold Leaves?** · Decide · Shop · asked 2026-10-23
+- Item 16: "Raid ticket should be alittle more expensive, and cost at least abit of advanced resources." Built: 400 Maple Leaves and 5 Gold Leaves (was 300 Maple Leaves). Gold Leaves are the advanced currency packs also take.
+  - Keep 400 + 5
+  - Other numbers
+- **Default:** Keep 400 + 5
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5- okay."
+
+**RW5-6. "Upgrade fragments +10%" read as the Refine ladder's costs** · Decide · Forge · asked 2026-10-23
+- Item 14: "Foil treatment 'upgrade fragments' needed/bars need 10% more." The game has no fragments for foils; the foil treatments are upgraded in the Forge's Refine (Plain -> Foil -> Hex -> ... -> Gold leaf), so every Refine step now costs 10% more Dust, Maple Leaves and Gold Leaves (REFINE_COST_MULT 1.1, rounded up). If you meant something else, say what.
+  - That's it
+  - Something else
+- **Default:** That's it
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5- okay."
+
+**RW5-7. One normal-skirmish Rare before Map 10: the Mangrove Kingfisher (9-3)** · Decide · Rewards · asked 2026-10-23
+- Your 22:23 #2: "For Map 5, the rare is the boss's leader. Normal skirmish rares only start coming in Map 10 onwards (gently)." Checked the first-clear rewards of Maps 0-9: every Rare is a boss, mini-boss, elite or side-map boss reward except the Mangrove Kingfisher, the reward of 9-3 (a skirmish, the Kelp Mangroves). Nothing was moved (rewards are set through tools/map_divvy_2026_10_22.js). The faction track's Rare stays at Map 14 (PP-2). Drop rates are unchanged (#3).
+  - Move it to a Map 10 skirmish
+  - Make it the reward of a Map 9 mini-boss
+  - Leave it
+- **Default:** Make it the reward of a Map 9 mini-boss
+- **Outcome:** Owner, 2026-10-23 23:45: "if it doesn't fit with our new philosophy, move it." Queued in EN4.
+
+**RW5-8. Six new cards placed lightly in Maps 1-9 (22:23 #10)** · Decide · Cards · asked 2026-10-23
+- For the strategic depth you missed in Maps 0-9, the new cards that add a decision are placed in those maps' pack pools (tools/rw5_place_new_cards_2026_10_23.js): Briarback Hedgehog (Bramble Armor) Thistlewood, Map 1, Pack 1; Dam-Keeper Beaver (Rampart) and Pond Algae (the first Bloom card) Sunken Hollow, Map 4, Pack 1; Moat Snapper (Rampart + Armor) Gatorback Swamp, Map 5, Pack 1; Barkplate Beetle (Bramble Armor + Thorns) Morel Hollow, Map 7, Pack 2; Ironclaw Fiddler (Tide + Bludgeon + Armor, Rare) Kelp Mangroves, Map 9, Pack 2. All fit the budget at their map. They are in the packs and the base track, not yet in any enemy deck or first-clear reward.
+  - Keep them
+  - Move some
+  - Also put one in each map's enemy decks
+- **Default:** Keep them
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5- okay."
 
 **PR-1. Map 0: a sure card on the first clear only** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
 - Your report: 0-1 paid a card on 5 of 5 wins. Cause: the 2026-10-13 rule "every win on Map 0 brings a card" paid a card on every Map 0 win, skipping the drop chance the fight panel shows. Built (PR): the sure card comes with the first clear only; replays roll the panel's drop (3% for 0-1). The other choice keeps a card on every Map 0 win and changes the panel to say so.

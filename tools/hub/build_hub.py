@@ -372,6 +372,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('💰', 'ucosts', 'Upgrade & Forge costs', 'Edit what levelling, limit breaks, the Forge tiers, duplicates, prestige and disenchanting cost'),  # 2026-10-23 (package HUB2)
   ('🗂', 'units', 'Units by theme', 'Every creature by biome, family and faction; pick units per map for the post-balance step'),
   ('📚', 'progress', 'Progression plan', 'Your definitions (base, skirmish base, Packs 1-3, faction pool ...), targets vs today, cards by advancement, mistakes, balancing suggestions'),  # 2026-10-23 (package HUB3)
+  ('🧬', 'deckopt', 'Deck optimizer', 'The strongest deck per map, the difficulty ladder and how far each fight deck sits below it (tools/opt/deckopt.js)'),  # 2026-10-24 (owner 23:48)
   ('🪙', 'resources', 'Resources', 'Every currency and material, where it comes from and goes, and a dedicated player\'s week'),  # 2026-10-23 (package HUB3)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
@@ -459,6 +460,15 @@ _pp = json.load(open(_pp_path, encoding='utf-8')) if os.path.exists(_pp_path) el
 _pp_md_path = os.path.join(ROOT, 'docs', 'progression-plan.md')
 _pp_doc = md_html(re.sub(r'<!--.*?-->', '', open(_pp_md_path, encoding='utf-8').read(), flags=re.S)) if os.path.exists(_pp_md_path) else ''
 PP_INLINE = (f'const PP_DATA = {_js(_pp)};\nconst PP_DOC = {_js(_pp_doc)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'progression_tab.js'), encoding='utf-8').read()) if _pp else ''
+# 2026-10-24 (owner 23:48: "Where will the results go? in the master hub?"): the 🧬 Deck optimizer tab renders every
+# summary in docs/balance/opt/ (newest first), so a run on GitHub Actions or locally only needs the files committed and the hub rebuilt.
+_opt_dir = os.path.join(ROOT, 'docs', 'balance', 'opt')
+_opt_files = sorted([f for f in os.listdir(_opt_dir) if f.endswith('.md')], key=lambda f: ('summary' not in f, -os.path.getmtime(os.path.join(_opt_dir, f)))) if os.path.isdir(_opt_dir) else []
+deckopt_html = ('<div class="doc guide"><h1>🧬 Deck optimizer</h1><p class="lede">Results of <code>tools/opt/deckopt.js</code>: no Claude tokens are spent on the games. '
+  'Run it from GitHub (Actions → Deck optimizer → Run workflow) or locally (<code>node tools/opt/deckopt.js --maps 0-3 --minutes 20</code>), commit the files in '
+  '<code>docs/balance/opt/</code>, then ask Claude to rebuild the hub. Raw per-map data: the <code>deckopt-map*.json</code> files there.</p>'
+  + (''.join(f'<details{" open" if k == 0 else ""}><summary><b>{H.escape(f)}</b></summary><div class="doc">{md_html(open(os.path.join(_opt_dir, f), encoding="utf-8").read())}</div></details>' for k, f in enumerate(_opt_files)) or '<p>No results yet.</p>')
+  + '</div>')
 _rs_path = os.path.join(ROOT, 'docs', 'balance', 'resources-2026-10-23.json')
 _rs = json.load(open(_rs_path, encoding='utf-8')) if os.path.exists(_rs_path) else None
 RS_INLINE = (f'const RS_DATA = {_js(_rs)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'resources_tab.js'), encoding='utf-8').read()) if _rs else ''
@@ -646,6 +656,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-ucosts" aria-controls="p-ucosts" data-tab="ucosts">💰 Upgrade costs</button>
 <button role="tab" id="t-units" aria-controls="p-units" data-tab="units">🗂 Units by theme</button>
 <button role="tab" id="t-progress" aria-controls="p-progress" data-tab="progress">📚 Progression plan</button>
+<button role="tab" id="t-deckopt" aria-controls="p-deckopt" data-tab="deckopt">🧬 Deck optimizer</button>
 <button role="tab" id="t-resources" aria-controls="p-resources" data-tab="resources">🪙 Resources</button>
 <button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
@@ -685,6 +696,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-ucosts" role="tabpanel" aria-labelledby="t-ucosts" hidden><div class="bal sc" id="ucHost"><p class="dec-empty">Loading the upgrade costs…</p></div></section>
 <section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><p class="hb-xlink pp-xlink"><b>📚 Progression plan:</b> your definitions (base, skirmish base, Packs 1-3, the faction pool ...), targets vs today and the cards by advancement are in <a href="#progress" data-tab="progress">their own tab</a>.</p><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-progress" role="tabpanel" aria-labelledby="t-progress" hidden><div class="bal pp" id="ppHost"><p class="dec-empty">{'Loading the plan…' if _pp else 'Run node tools/progression_plan_2026_10_23.js, then rebuild the hub.'}</p></div></section>
+<section class="panel" id="p-deckopt" role="tabpanel" aria-labelledby="t-deckopt" hidden>{lazy(deckopt_html)}</section>
 <section class="panel" id="p-resources" role="tabpanel" aria-labelledby="t-resources" hidden><div class="bal rs" id="rsHost"><p class="dec-empty">{'Loading the resources…' if _rs else 'Run node tools/resources_week_2026_10_23.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-chips" role="tabpanel" aria-labelledby="t-chips" hidden><div class="bal ch" id="chHost"><p class="dec-empty">{'Loading the chips…' if _ch else 'Run node tools/hub/chips_inventory.js, then rebuild the hub.'}</p></div></section>
 {curve_panel}
