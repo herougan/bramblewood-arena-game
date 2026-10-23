@@ -51,7 +51,7 @@ ok(/const owned = ownedCopiesOf\(id\);\s*\n\s*if\(owned !== Infinity && \(counts
 ok(/deckCopyProblem\(myDeckCounts\)/.test(fnSrc('deckSizeOkOrWarn')), '2. a fight refuses a deck over a copy limit, naming the card');
 ok(/clampDeckToLimits\(result\.deck\.counts, result\.deck\.leaderId\)/.test(src), '2. deck import is cut to the limits');
 ok(/deckCopyLimit\(newId, defs\)/.test(fnSrc('swapOutAllowed')), '2. a swap offer never goes past the limits');
-ok(/deckLimitChipHTML\(id, used\)/.test(fnSrc('renderMyDeckPanels')) && /pg-limit/.test(fnSrc('deckLimitChipHTML')), '2. the Camp pool shows "in deck / limit" on each card');
+ok(/deckLimitChipHTML\(id, used\)/.test(fnSrc('neDeckPoolStackHTML')) && /neDeckPoolStackHTML\(id, defs\)/.test(fnSrc('renderMyDeckPanels')) /* 2026-10-24 (package NE): one stack per card (neDeckPoolStackHTML); the chip shows while Shift is held */ && /pg-limit/.test(fnSrc('deckLimitChipHTML')), '2. the Camp pool shows "in deck / limit" on each card');
 { const rp = fnSrc('renderMyDeckPanels'), at = rp.indexOf("document.querySelectorAll('#myDeckPool .card-tile:not(.locked):not(.is-look-tile)')"), def = rp.indexOf('const fast = id=>');
   // the pool click must sit inside the block that declares fast(): count the braces opened between the two
   const seg = at > def && def > 0 ? rp.slice(def, at) : ''; let d = 0; for(const ch of seg){ if(ch === '{') d++; else if(ch === '}') d--; }

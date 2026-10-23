@@ -6495,7 +6495,25 @@ function syncTextFilterPage(){
   let k = '';
   try{ k = currentTab + ':' + (currentTab === 'codex' ? codexSubTab : currentTab === 'play' ? playSubTab : ''); }catch(e){ return; }
   if(textFilterPage !== null && k !== textFilterPage) resetTextFilters(document, {silent:true}); // the new page draws itself unfiltered
+  if(k !== textFilterPage){ if(neKeepFiltersOnce) neKeepFiltersOnce = false; else resetPageFilters(); } // 2026-10-24 (package NE): every filter, not only the text
   textFilterPage = k;
+}
+// Filters reset on every visit (2026-10-24, package NE, owner 19:27: "Please reset all filters when i visit the codex... it always is stale -
+// the previous filter (Same for the other pages)"): this replaces the 2026-10-16 sticky filters for the filters themselves. Entering a page
+// (or a Codex / Play sub-tab) clears every filter choice of every page: types, animal, phylum, rarity, archetype, skills, the Codex's kind row,
+// the Camp pool's kind and level, the Forge's chip and deck scope, the Brambles' origin / effect / owned, the Flea Market's rarity, in memory
+// and in the saved store (so the popups' bars, which read the store when they open, start clear too). The sort, its direction and the view
+// (album / compressed / full art, group by) are not filters and stay as you left them (owner call NE-2). A jump that opens a page already
+// filtered on purpose (the skills book's "Show cards with this skill") sets neKeepFiltersOnce.
+const NE_FILTER_KEYS = ['archetype', 'animal', 'phylum', 'rarity', 'mechLine', 'skills', 'kind', 'origin', 'fx', 'own', 'filter', 'deck', 'deckKindFilter', 'deckLevelFilter'];
+let neKeepFiltersOnce = false;
+function resetPageFilters(){
+  const z = f=>{ try{ f(); }catch(e){} };
+  z(()=>{ const all = uiStickyAll(); let ch = false; Object.keys(all).forEach(p=>{ const o = all[p]; if(o && typeof o === 'object') NE_FILTER_KEYS.forEach(k=>{ if(k in o){ delete o[k]; ch = true; } }); }); if(ch) localStorage.setItem(UI_FILTERS_KEY, JSON.stringify(all)); });
+  z(()=>{ Object.assign(codexFilter, {archetype:'', animal:'', phylum:'', rarity:'', mechLine:'', kind:'', skills:[]}); });
+  z(()=>{ Object.assign(deckCfState, {archetype:'', animal:'', phylum:'', rarity:'', mechLine:'', skills:[]}); });
+  z(()=>{ forgeFilter = 'all'; }); z(()=>{ forgeDeckScope = 'all'; });
+  z(()=>{ Object.assign(brambleFilter, {origin:'', fx:'', own:''}); }); z(()=>{ Market.rarity = ''; });
 }
 if(typeof window !== 'undefined') window.addEventListener('pageshow', ()=>{ try{ resetTextFilters(document); }catch(e){} }); // a reload or a bfcache return
 function stickyControls(page, ids){
@@ -7407,7 +7425,7 @@ function wireCodexSkillFilter(){
 function codexShowCardsWithSkill(key){
   if(!key) return; codexFilter.skills = [key]; codexFilter.q = ''; codexPage = 0;
   try{ saveCodexFilters(); }catch(e){}
-  codexSubTab = 'browse'; renderCodex(); try{ codexPageTurn('back'); }catch(e){}
+  codexSubTab = 'browse'; neKeepFiltersOnce = true; /* 2026-10-24 (package NE): this jump keeps its skill pick */ renderCodex(); try{ codexPageTurn('back'); }catch(e){}
 }
 /* ---- Package TX (2026-10-21): types, taxonomy and filters [TX_FILTERS_BEGIN] ----
    Owner, Oct 21: "Specific animals are their greater animal type too. Eagles are birds. They should count so in the game, and in the
@@ -9370,6 +9388,7 @@ function openCardDetail(defId, opts){
       <div class="cd-chips">${chips}</div>
       ${creatureRankText(d) ? `<div class="cd-where cd-rank"><span class="cd-where-k">Rank</span> ${escapeHtml(creatureRankText(d))}</div>` : ''}
       <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}</div>
+      ${fromCodex ? neCodexCopiesHTML(defId) : '' /* 2026-10-24 (package NE, owner 17:01 #12) */}
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
@@ -9403,6 +9422,9 @@ function openCardDetail(defId, opts){
   if(adminModeEnabled) wireArtReviewDetail(defId, ()=>{ if(cardDetailOpenId === defId && !overlay.hidden) openCardDetail(defId, opts); }); // 2026-10-21 (package ED)
   const signInBtn = document.getElementById('cdSignInStatsBtn');
   if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId, opts)));
+  overlay.querySelectorAll('[data-ne-cx-copy]').forEach(b=> b.addEventListener('click', ()=>{ const on = !b.classList.contains('is-shown'); // 2026-10-24 (package NE, #12): a copy shows its level
+    overlay.querySelectorAll('[data-ne-cx-copy].is-shown').forEach(x=>{ x.classList.remove('is-shown'); x.setAttribute('aria-pressed', 'false'); });
+    if(on){ b.classList.add('is-shown'); b.setAttribute('aria-pressed', 'true'); try{ SoundKit.shelfPick && SoundKit.shelfPick(); }catch(e){} } }));
   { const lc = document.getElementById('uxCdLevel'); if(lc) lc.addEventListener('click', ()=>{ setCodexLevelMode(codexLevelMode() === 'base' ? 'best' : 'base'); // 2026-10-19 (package UX)
       try{ const row = document.getElementById('cxKindRow'); if(row){ row.querySelectorAll('[data-cxlevel]').forEach(x=>{ const on = x.dataset.cxlevel === codexLevelMode(); x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); }); renderCodexGrid(true); } }catch(e){}
       openCardDetail(defId, opts); try{ const n = document.getElementById('uxCdLevel'); if(n) n.focus(); }catch(e){} }); }
@@ -9416,6 +9438,19 @@ function openCardDetail(defId, opts){
       }
     });
   }
+}
+// Your copies in the Codex's card detail (2026-10-24, package NE, owner 17:01 #12: "When looking at a card in codex, upon clicking, you get to
+// see visually and tacitly, how many cards, each treatment, each as a physical card. And then, you get to see their level by clicking these
+// cards. This subwindow is the individual card detail subwindow"): every copy you own as a small card of its own, grouped by treatment
+// (Plain, then Shiny, foils, alt art), a little stack per treatment; tapping a copy turns up its level on it.
+function neCodexCopiesHTML(defId){
+  const d = getCardDefs()[defId]; if(!d) return ''; try{ if(copyModelOn()) copyModelSync(defId); }catch(e){}
+  const a = (myCardCopies[defId] || []).filter(Boolean); if(!a.length) return '';
+  const groups = new Map(); copyOrder(defId).forEach(i=>{ const c = (myCardCopies[defId] || [])[i]; if(!c) return; const t = forgeCopyTreatment(c); if(!groups.has(t)) groups.set(t, []); groups.get(t).push(c); });
+  const plain = TX('ui.nf-copy-plain'), keys = [...groups.keys()].sort((x, y)=> (x === plain ? -1 : y === plain ? 1 : x.localeCompare(y)));
+  const tile = c=>{ const L = copyLevel(defId, c), cls = [copyFinishClass(d, c), c.shiny ? 'is-shiny' : ''].filter(Boolean).join(' ');
+    return `<button type="button" class="ne-cx-copy" data-ne-cx-copy="${escapeAttr(c.uid || '')}" aria-pressed="false" aria-label="${escapeAttr(forgeCopyTreatment(c) + ': ' + TX('ui.ne-cx-tap-level'))}" style="${c.shiny ? lookStyle(defId, 'shiny') : ''}"><span class="ne-cx-tile">${cardTileHTML(d, {inPlay:true, extraClass: cls})}</span><b class="ne-cx-lv" aria-live="polite">${escapeHtml(TX('ui.nf-copy-level', {n: L}))}</b></button>`; };
+  return `<div class="ne-cx-copies"><h3>${escapeHtml(TX('ui.ne-cx-copies', {n: a.length}))} <small>${escapeHtml(TX('ui.ne-cx-tap-level'))}</small></h3>${keys.map(k=> `<div class="ne-cx-group"><small class="ne-cx-g">${escapeHtml(k)} ×${groups.get(k).length}</small><div class="ne-cx-row">${groups.get(k).map(tile).join('')}</div></div>`).join('')}</div>`;
 }
 // The detail's level chip (2026-10-19, package UX): which level the Codex shows the card at; a button that flips Base level / My best
 // when you own it above its base level, a plain chip otherwise.
@@ -9447,6 +9482,32 @@ function bwInertOthers(keep){
 const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-old','holo-starlight'];
 const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
 let cardInspectStop = null;
+// The pack card viewer's detail column (2026-10-24, package NE, owner 19:27 #13: "When opening a pack, see SS#4, the blown up card should be
+// on the left, then the description and effects (card detail window) on the right. Transition into it btw, dont just - boop - it's there."):
+// the card detail's chips, abilities, flavour and where it comes from, beside the big card (under it on a phone).
+function neInspectDetailHTML(d){
+  let lines = []; try{ lines = describeEffects(d, null, {terse:true}); }catch(e){}
+  const rar = String(d.rarity || 'common').replace(/_/g, ' ');
+  const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity || 'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
+    .concat((d.species || []).slice(0, 2).map(sp=> `<span class="cd-chip cd-species">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`)).join('');
+  let where = ''; try{ where = cardWhereToGetText(d); }catch(e){}
+  return `<aside class="ci-detail" aria-label="${escapeAttr(d.name || '')}">
+    <div class="cd-chips">${chips}</div>
+    <div class="cd-abilities"><h3>Abilities</h3>${lines.length ? abilityListHTML(lines) : '<p class="panel-sub">No special abilities — a plain stat card.</p>'}</div>
+    ${d.flavor ? `<div class="flavor">${d.flavor}</div>` : ''}
+    ${where ? `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(where)}</div>` : ''}
+  </aside>`;
+}
+// The fly-in: the big card starts where the tapped card was (its size and place) and grows into place, the detail column slides in after it.
+function neInspectFlyIn(ov, from){
+  if(reducedMotion() || !from || !from.getBoundingClientRect) return;
+  const st = ov.querySelector('.ci-stage'), fr = from.getBoundingClientRect(); if(!st || !fr.width) return;
+  const tr = st.getBoundingClientRect(); if(!tr.width) return;
+  const s = Math.max(.12, Math.min(1, fr.width / tr.width)), dx = (fr.left + fr.width / 2) - (tr.left + tr.width / 2), dy = (fr.top + fr.height / 2) - (tr.top + tr.height / 2);
+  try{ st.animate([{transform:`translate(${dx}px, ${dy}px) scale(${s})`, opacity:.85}, {transform:'none', opacity:1}], {duration:460, easing:'cubic-bezier(.2,.8,.25,1)'}); }catch(e){}
+  const dt = ov.querySelector('.ci-detail'); if(dt) try{ dt.animate([{transform:'translateX(28px)', opacity:0}, {transform:'translateX(28px)', opacity:0, offset:.45}, {transform:'none', opacity:1}], {duration:620, easing:'ease-out'}); }catch(e){}
+  const bar = ov.querySelector('.ci-bar'); if(bar) try{ bar.animate([{opacity:0}, {opacity:0, offset:.5}, {opacity:1}], {duration:560, easing:'ease-out'}); }catch(e){}
+}
 function openCardInspector(defId, opts){
   opts = opts || {};
   const d = getCardDefs()[defId]; if(!d) return;
@@ -9460,6 +9521,9 @@ function openCardInspector(defId, opts){
   let finish = ownFoil;
   // 2026-10-17: opened from a pack's results, it shows that copy's own finish and Shiny (opts.pull {foil, finish, shiny})
   const pullShiny = !!(opts.pull && opts.pull.shiny);
+  // 2026-10-24 (package NE, owner 19:27 #13): opened from a pack's results, the big card sits on the left with the card's details on the
+  // right, and it flies in from the card you tapped (neInspectDetailHTML / neInspectFlyIn)
+  const split = !!opts.pull;
   if(opts.pull){ finish = opts.pull.foil ? ((copyFinishClass(d, {foil:true, finish: opts.pull.finish}).match(/holo-[a-z]+/) || [''])[0]) : ''; }
   // Skins (2026-10-08): try each skin here; owned ones equip, admins can grant themselves one to test.
   const skins = window.UnitFX ? UnitFX.skinsFor(defId) : [];
@@ -9478,8 +9542,10 @@ function openCardInspector(defId, opts){
       ${skins.length ? `<div class="ci-finishes ci-skins" role="group" aria-label="Skin"><button type="button" class="ci-fin ci-skin${!skin?' is-on':''}" data-skin="">Default</button>${skins.map(k=> `<button type="button" class="ci-fin ci-skin${k.id===skin?' is-on':''}" data-skin="${escapeAttr(k.id)}" title="${escapeAttr(k.blurb||'')}">${escapeHtml(k.icon||'')} ${escapeHtml(k.name)}${k.owned ? '' : ' 🔒'}</button>`).join('')}</div>` : ''}
       <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button>${skins.length ? '<button type="button" class="btn small ci-fxbtn">▶ Attack</button>' : ''}</div>
       <small class="ci-hint ci-skin-msg" aria-live="polite">Drag the card to turn it</small>
-    </div>`;
+    </div>${split ? neInspectDetailHTML(d) : ''}`;
+  if(split) ov.classList.add('ci-split');
   document.body.appendChild(ov);
+  if(split) neInspectFlyIn(ov, opts.returnFocus);
   const front = ov.querySelector('.ci-front'), spin = ov.querySelector('.ci-spin'), shadow = ov.querySelector('.ci-shadow'), stage = ov.querySelector('.ci-stage');
   let tile = null;
   const renderFace = ()=>{
@@ -13595,6 +13661,10 @@ if(typeof setTimeout === 'function') setTimeout(()=>{ try{ if(copyModelOn()) gra
 // card can have, start at its starting level).
 function deckCopyLevels(id, n){
   copyModelOn(); copyModelSync(id); const a = myCardCopies[id] || [], o = copyOrder(id), out = [];
+  // 2026-10-24 (package NE): the copies the deck picked in the Camp's copy fan come first (deckCopyUidsFor), then your strongest
+  let picks = []; try{ picks = typeof deckCopyPicks === 'function' ? deckCopyPicks(id) : []; }catch(e){ picks = []; }
+  if(picks.length){ const uids = deckCopyUidsFor(id, n); uids.forEach(u=>{ const c = a.find(x=> x && x.uid === u); out.push(c ? copyLevel(id, c) : copyBaseLevelOf(id)); });
+    while(out.length < n) out.push(copyBaseLevelOf(id)); return out.sort((x, y)=> y - x); }
   for(let k = 0; k < n; k++) out.push(k < o.length ? copyLevel(id, a[o[k]]) : copyBaseLevelOf(id));
   return out;
 }
@@ -13631,8 +13701,8 @@ function ownedDeckForMatch(counts, engineDefs){
     if(n <= 0 || id === HERO_ID || /[~@]/.test(String(id))){ out[id] = (out[id] || 0) + (counts[id] || 0); return; }
     if(isUnlimitedCard(id)) materializeCopies(id, n);
     if(!(myCardCopies[id] || []).length){ out[id] = (out[id] || 0) + n; return; }
-    const lv = deckCopyLevels(id, n), top = lv[0];
-    lv.forEach(L=>{ const d = L === top ? null : copyDefAt(id, L);
+    const lv = deckCopyLevels(id, n), top = lv[0], best = (myCardCopies[id] || []).length ? copyLevel(id, myCardCopies[id][bestCopyIdx(id)]) : top; // NE: a pick below your best copy fights at its own level
+    lv.forEach(L=>{ const d = L === top && top === best ? null : copyDefAt(id, L);
       if(!d){ out[id] = (out[id] || 0) + 1; return; }
       matchDefsOverlay[d.id] = d; if(engineDefs) engineDefs[d.id] = d; out[d.id] = (out[d.id] || 0) + 1; any = true; }); });
   try{ invalidateCardDefs(); }catch(e){}
@@ -14894,13 +14964,21 @@ function deckSlotPanelHTML(where){
   const n = deckSlotsOwned(), used = myDecks.length, st = nextDeckSlotStep(), gate = deckSlotMapGate(st);
   const pips = Array.from({length: Math.max(n, DECK_SLOT_STEPS[DECK_SLOT_STEPS.length - 1].slot)}, (_, i)=> `<i class="${i < used ? 'is-used' : i < n ? 'on' : ''}"></i>`).join('');
   return `<section class="deck-slot-panel ${where === 'camp' ? 'is-camp' : ''}" id="${where === 'camp' ? 'campDeckSlots' : 'tavernDeckSlots'}" aria-label="${escapeAttr(TX('ui.ui4-slots-title'))}">
-    <h3>🗂 ${escapeHtml(TX('ui.ui4-slots-title'))} <b>${used}/${n}</b></h3>
+    <h3>🗂 ${escapeHtml(TX('ui.ui4-slots-title'))} <b>${used}/${n}</b></h3>${where === 'camp' && st && !gate ? neWalletHTML(['dust', 'gold']) : '' /* 2026-10-24 (package NE, #9) */}
     <div class="wp-stam-row"><span class="wp-stam-pips ds-slot-pips" aria-label="${escapeAttr(TX('ui.ui4-slots-aria', {used, n}))}">${pips}</span>
     ${!st ? `<small>${escapeHtml(TX('ui.ui4-slots-full'))}</small>` : gate ? `<small>${escapeHtml(TX('ui.ui4-slots-gate', {slot: st.slot, map: gate}))}</small>`
       : `<button type="button" class="btn small primary" data-deck-slot-buy="${where}" ${deckSlotAffordable(st) ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.ui4-slots-buy', {slot: st.slot}))}${btnCostHTML(st.cost)}</button>`}</div></section>`;
 }
+// Leather deck slots (2026-10-24, package NE, owner 17:01 #13: "When opening deck slots, you see a leather deck slot appear (similar sized as
+// your deck previews)"): every open slot without a deck is an empty leather deck case beside your decks in the Camp, the size of a deck preview;
+// tapping it starts a new deck there. The slot just opened stitches itself in (neSlotJustOpened: .is-new).
+let neSlotJustOpened = 0;
+function neEmptySlotsHTML(){
+  if(adminModeEnabled) return ''; const free = Math.max(0, deckSlotsOwned() - myDecks.length); if(!free) return '';
+  return Array.from({length: free}, (_, i)=> `<button type="button" class="dmp-btn ne-slot ${neSlotJustOpened && i === free - 1 ? 'is-new' : ''}" data-ne-slot="1" aria-label="${escapeAttr(TX('ui.ne-slot-empty'))}"><span class="ne-slot-case" aria-hidden="true"><i class="ne-slot-stitch"></i><span class="ne-slot-clasp"></span></span><span class="ne-slot-txt"><b>${escapeHtml(TX('ui.ne-slot-empty'))}</b><small>${escapeHtml(TX('ui.ne-slot-tap'))}</small></span></button>`).join('');
+}
 function wireDeckSlots(root, rerender){ (root || document).querySelectorAll('[data-deck-slot-buy]').forEach(b=> b.onclick = ()=>{ const r = buyDeckSlot();
-  if(r === 'ok'){ showToast(TX('toast.ui4-slot-bought', {n: deckSlotsOwned()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} rerender && rerender(); }
+  if(r === 'ok'){ neSlotJustOpened = Date.now(); setTimeout(()=>{ neSlotJustOpened = 0; }, 1500); showToast(TX('toast.ui4-slot-bought', {n: deckSlotsOwned()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} rerender && rerender(); }
   else { denyShake(b); showToast(r === 'locked' ? TX('toast.ui4-slot-locked') : TX('toast.ui4-slot-cost'), 'warn'); } }); }
 // The New / Import buttons when every slot holds a deck: a toast that says where to get one, and the Camp's slot row lights up.
 function deckSlotDenied(btn){
@@ -15205,6 +15283,15 @@ function deckCardsStripHTML(d){
 // deck-medium-preview (2026-10-10, user: "the deck-medium-preview ... does not show the cards and highlights the art of
 // the leader and castle. Castle on the left, leader on the right, as the background of the preview"). The large one is the
 // full deck card with every card (deck-large-preview, hover a card for its details).
+// The deck's type pills' emojis (2026-10-24, package NE, #19): for each type the deck leans on (deckSignature's archetypes, the pills in the
+// card's foot), the icon of the deck's card of that type it holds most of, large, stacked down the right edge of the deck card.
+function deckTypeEmojisHTML(d, sig){
+  const defs = getCardDefs(), counts = (d && d.counts) || {}; sig = sig || deckSignature(d);
+  const icons = (sig.archetypes || []).slice(0, 2).map(a=>{ let best = null, bn = 0;
+    Object.entries(counts).forEach(([id, n])=>{ const c = defs[id]; if(c && n > bn && (c.archetypes || []).includes(a) && c.icon){ best = c; bn = n; } });
+    return best ? {a, icon: best.icon} : null; }).filter(Boolean);
+  return icons.length ? `<div class="dmp-types" aria-hidden="true">${icons.map(x=> `<span class="dmp-type-emo" title="${escapeAttr(x.a)}">${escapeHtml(x.icon)}</span>`).join('')}</div>` : '';
+}
 function deckMediumPreviewHTML(d){
   const defs = getCardDefs();
   const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
@@ -15221,6 +15308,7 @@ function deckMediumPreviewHTML(d){
       <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Bramble') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
       <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" title="${escapeAttr(leader ? 'Leader: ' + leader.name : 'No leader')}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
     </div>
+    ${deckTypeEmojisHTML(d, sig) /* 2026-10-24 (package NE, owner 17:34 #19: "The accompanying emojis should be large and displayed on the right of the deck card") */}
     ${d.id===mainDeckId ? `<div class="dmp-main-ribbon"><b>★ ${escapeHtml(TX('ui.ui4-main-deck'))}</b><small>${escapeHtml(TX('ui.ui4-main-deck-sub'))}</small></div>` : '' /* 2026-10-23 (package UI4) */}
     <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b></div>
     <div class="dmp-foot">
@@ -15691,7 +15779,7 @@ function renderPlayerSubTab(body){
         ${cfBarHTML(deckCfState, 'dk', defs) /* 2026-10-21 (package TX, owner: "every filter power in codex to be in the deck editors"): types (with the hierarchy), animal, phylum, rarity, archetype, skills and groups, sorts both ways */}
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
         <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
-        <button type="button" class="btn small ghost deck-stackfx-btn" id="deckStackFx" aria-pressed="${deckStackTreatments}" title="Stack foil and other finishes together, or show each finish as its own stack">${deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'}</button>
+        ${neShiftHintHTML() /* 2026-10-24 (package NE, owner 11:15): the Shift chip's hint (was the 🗂 finishes toggle: finishes live in the copy fan now) */}
       </div>
       <div class="pool-grid" id="myDeckPool"></div>
     </div>
@@ -15713,6 +15801,7 @@ function renderPlayerSubTab(body){
   document.getElementById('deckSearch').addEventListener('input', renderMyDeckPanels);
   document.getElementById('deckKindFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
+  { const sh = document.getElementById('neShiftHint'); if(sh) sh.addEventListener('click', ()=>{ neShowLimits = !neShowLimits; sh.classList.toggle('is-on', neShowLimits); sh.setAttribute('aria-pressed', neShowLimits); const pool = document.getElementById('myDeckPool'); if(pool) pool.classList.toggle('ne-show-limits', neShowLimits); }); } // 2026-10-24 (package NE)
   { const sb = document.getElementById('deckStackFx'); if(sb) sb.addEventListener('click', ()=>{ deckStackTreatments = !deckStackTreatments; try{ localStorage.setItem('bramblewood_deck_stackfx', deckStackTreatments ? 'stacked' : 'apart'); }catch(e){} sb.textContent = deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'; sb.setAttribute('aria-pressed', deckStackTreatments); renderMyDeckPanels(); }); }
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
   wireDeckTop();
@@ -18337,7 +18426,12 @@ function matchFieldRulesBase(m){ try{ return m && m.conquestNode ? fightRules(m.
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); if(!rows.length) return '';
-  return `<div class="cnp-field" role="note"><b class="cnp-field-k">Field</b><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`;
+  // 2026-10-24 (package NE, owner 11:26: "Put the field effect (if presented) in the top row, under the BR to save vertical space. Make
+  // consistent the margining, pill or no pill, and where the text line starts"): one row of pills under the BR in the panel's head, no
+  // "Field" heading; each pill is the condition's icon and name, its text in the tooltip (and for screen readers); one not seen yet keeps its ?.
+  return `<ul class="cnp-field cnp-field-pills" role="note" aria-label="Field">${rows.map(row=>{ const hid = fieldRowHidden(row.key), st = hid ? 'unknown' : fieldRowState(row.key);
+    const tip = hid ? fieldRowQTip(row) : (row.tip ? row.tip + ' ' : '') + (row.text || '');
+    return `<li class="cnp-fpill ${hid ? 'is-unknown' : ''} ${st === 'new' ? 'is-new' : ''}" title="${escapeAttr(tip)}"><span>${row.icon} ${escapeHtml(row.name)}</span>${hid ? '<b class="fcr-q" aria-hidden="true">?</b>' : ''}<span class="sr-only">: ${escapeHtml(tip)}</span></li>`; }).join('')}</ul>`;
 }
 function noteFieldEvent(ev){
   const m = matchState; if(!m || !ev) return;
@@ -18835,15 +18929,15 @@ function edPopupCount(ov, id, n){
 // copies or finishes, whose stacks are split by copy).
 function tentQuickCount(id, prev){
   const n = myDeckCounts[id] | 0; if((prev > 0) !== (n > 0)) return false;
-  try{ if(Object.keys(deckLooksFor(id)).length) return false; const st = lookStock(id); if(st.shiny || Object.keys(st.skins || {}).length) return false;
-    if(!deckStackTreatments && ownedCopiesOf(id) !== Infinity){ const g = copyGroupsOf(id); if(g && g.length > 1) return false; } }catch(e){ return false; }
+  try{ if(Object.keys(deckLooksFor(id)).length) return false; const st = lookStock(id); if(st.shiny || Object.keys(st.skins || {}).length) return false; }catch(e){ return false; } // 2026-10-24 (package NE): one pool stack per card now (finishes in the fan)
   const sel = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(id) : id;
   const chips = document.querySelectorAll(`#myDeckList .dchip[data-defid="${sel}"]:not([data-look])`); if(chips.length !== 1) return false;
   const tile = document.querySelector(`#myDeckPool .card-tile[data-defid="${sel}"]`), stack = tile && tile.closest('.pool-stack');
   const name = (getCardDefs()[id] || {}).name || id;
   edSetStackCount(chips[0], n, '×' + n); chips[0].title = `${name} ×${n}: click to add one, Shift+click to take one out`;
-  if(stack){ const owned = ownedCopiesOf(id); if(owned !== Infinity){ const left = Math.max(0, owned - n); edSetStackCount(stack, owned, `${left}/${owned}`); stack.classList.toggle('is-spent', left <= 0); }
-    const lc = stack.querySelector(':scope > .pg-limit'); if(lc){ const tmp = document.createElement('div'); tmp.innerHTML = deckLimitChipHTML(id, n); if(tmp.firstElementChild) lc.replaceWith(tmp.firstElementChild); } } // the copy-limit chip (PG)
+  if(stack){ const owned = ownedCopiesOf(id), used = neDeckUsed(id), full = neDeckFull(id); if(owned !== Infinity){ const left = Math.max(0, owned - used); edSetStackCount(stack, owned, `${left}/${owned}`); } stack.classList.toggle('is-spent', full); stack.classList.toggle('ne-full', full); // 2026-10-24 (package NE): the leader counted, greyed when it can't take one more
+    const lc = stack.querySelector(':scope > .pg-limit'); if(lc){ const tmp = document.createElement('div'); tmp.innerHTML = deckLimitChipHTML(id, used); if(tmp.firstElementChild) lc.replaceWith(tmp.firstElementChild); } } // the copy-limit chip (PG)
+  try{ neFanRefresh(); }catch(e){}
   const badgeEl = document.getElementById('myDeckSizeBadge'); if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
   // the deck's banner (its battle rating, its stats: ~100 ms to draw) follows once the clicking stops, not on every click
   clearTimeout(tentQuickCount._t); tentQuickCount._t = setTimeout(()=>{ try{ refreshDeckHeroBanner(); }catch(e){} }, 250);
@@ -25468,7 +25562,7 @@ function renderConquestSubTab(body){
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
-          return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
+          return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div>${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial; 2026-10-24 (package NE, owner 11:26): in the top row, under the BR */}</div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${cnpDropsLineHTML(map.id, selectedNode, done) /* 2026-10-22 (package RW, owner N22-6): one short line of the small drop chances */}
@@ -25476,7 +25570,6 @@ function renderConquestSubTab(body){
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
-      ${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial */}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
@@ -31845,6 +31938,120 @@ function deckLimitChipHTML(id, used){
   const cap = maxCopiesForRarity(d.rarity), tip = TX('ui.pg-limit-tip', {n: used | 0, cap, rarity: _t(rarityDef(d.rarity || 'common').label), owned: ownedCopiesOf(id)});
   return `<span class="pg-limit ${(used|0) >= cap ? 'is-max' : ''}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${used|0}/${cap}</span>`;
 }
+// NE_DECK:BEGIN (tests/ne-2026-10-24.js evaluates this block)
+// The Camp's card pool (2026-10-24, package NE, owner 2026-10-23 11:15 and 17:34 #17):
+//  - "the count/max count counter should be togglable. Only visible when pressing SHIFT. (We'll make this SHIFT language apparent in the
+//    design)": the "2/3" chip (deckLimitChipHTML) shows only while Shift is held (body.ne-shift) or the pool's ⇧ button is on (it says so:
+//    "⇧ Hold Shift: copy limits"; on a phone the button toggles it).
+//  - "When I selected wandering traveller as my leader, it should have made his count in the deck 1/3, not 0/3": the leader counts as one
+//    copy (neDeckUsed), in the chip and in the copies left.
+//  - "When a card has ran out (N/N), it should be greyed out" / #17 "When you reach maxed, grey out the card in the card list as well": a
+//    card that can't take one more (neDeckFull: the leader, all copies in, the rarity limit or a deck cap) is greyed in the pool.
+//  - the copy fan (coordinator's proposal, built unless the owner objects): one stacked tile per card (the separate Shiny / alt-art / finish
+//    stacks went); a plain click adds the best copy not in the deck (highest level first); hovering it (desktop) or a long press (phone)
+//    fans out every copy you own (level, foil / Shiny / alt art), and the fan stays open while the pointer is over it; clicking a fanned
+//    copy adds exactly that copy (the deck remembers it: deckCopyPicks), and copies already in the deck show greyed.
+function neDeckUsed(id){ return (myDeckCounts[id] | 0) + (id && id === myLeaderId ? 1 : 0); }
+function neDeckFull(id, defs){
+  defs = defs || getCardDefs(); const d = defs[id]; if(!d || id === HERO_ID) return false;
+  if(id === myLeaderId) return true;
+  const owned = ownedCopiesOf(id); if(owned !== Infinity && (myDeckCounts[id] | 0) >= owned) return true;
+  try{ if(editionCapReached(myDeckCounts, id, defs)) return true; }catch(e){}
+  try{ if(deckRankBlockFor(myDeckCounts, id, defs, deckLeaderIds())) return true; }catch(e){}
+  return false;
+}
+// Which copies the deck plays with (the deck's picks first, then your strongest): kept in the deck's looks under '~picks' {defId: [uid]},
+// so they ride with the deck (saved, synced and drafted like its Shiny / alt-art looks).
+function deckCopyPicks(id){ const all = deckLooksAll(), p = all['~picks'] && all['~picks'][id]; const a = myCardCopies[id] || [];
+  return Array.isArray(p) ? p.filter(u=> a.some(c=> c && c.uid === u)) : []; }
+function setDeckCopyPicks(id, uids){ const all = deckLooksAll(); const p = all['~picks'] = (all['~picks'] && typeof all['~picks'] === 'object') ? all['~picks'] : {};
+  if(uids && uids.length) p[id] = uids.slice(); else delete p[id]; if(!Object.keys(p).length) delete all['~picks']; }
+function deckCopyUidsFor(id, n){
+  const a = myCardCopies[id] || [], out = deckCopyPicks(id).slice(0, Math.max(0, n));
+  copyOrder(id).forEach(i=>{ if(out.length < n && a[i] && a[i].uid && !out.includes(a[i].uid)) out.push(a[i].uid); });
+  return out;
+}
+// One stacked tile per card in the pool, with its copies left, the Shift chip and the greyed state.
+function neDeckPoolStackHTML(id, defs){
+  const d = defs[id], owned = ownedCopiesOf(id), used = neDeckUsed(id), left = owned === Infinity ? Infinity : Math.max(0, owned - used), full = neDeckFull(id, defs);
+  const fan = neFanCopies(id).length > 1 || neFanSkins(id).length > 0;
+  const tile = cardTileHTML(d, {magnetic:true}); // the card itself; its copies' looks are in the fan
+  const st = stackHTML(tile, owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (full ? 'is-spent ne-full' : '') + (fan ? ' ne-fan-host' : ''), deckLimitChipHTML(id, used));
+  return fan ? st.replace('<div class="pool-stack', `<div data-ne-fan="${escapeAttr(id)}" class="pool-stack`) : st;
+}
+// The fan's entries: every copy (strongest first) and every alt-art skin you own (a skin dresses one plain copy).
+function neFanCopies(id){ if(id === HERO_ID) return []; try{ if(copyModelOn()) copyModelSync(id); }catch(e){} const a = myCardCopies[id] || []; return copyOrder(id).map(i=> a[i]).filter(c=> c && c.uid); }
+function neFanSkins(id){ return skinsOwnedFor(id); }
+let neFanState = null, neLookClick = null, neFanAddCopy = null;
+function neFanHTML(id){
+  const defs = getCardDefs(), d = defs[id]; if(!d) return '';
+  const copies = neFanCopies(id), inDeck = new Set(deckCopyUidsFor(id, myDeckCounts[id] | 0)), looks = deckLooksFor(id), n = copies.length + neFanSkins(id).length;
+  const tilt = k=> n > 1 ? ((k - (n - 1) / 2) * Math.min(7, 36 / n)).toFixed(1) : 0;
+  let k = 0;
+  const items = copies.map(c=>{ const L = copyLevel(id, c); let td = null; try{ td = copyDefAt(id, L); }catch(e){}
+    const show = Object.assign({}, td || d, {id}), cls = [copyFinishClass(d, c), c.shiny ? 'is-shiny' : ''].filter(Boolean).join(' '), on = inDeck.has(c.uid);
+    return `<button type="button" class="ne-fan-card ${on ? 'is-in' : ''}" data-ne-copy="${escapeAttr(c.uid)}" style="--tilt:${tilt(k++)}deg; ${c.shiny ? lookStyle(id, 'shiny') : ''}" aria-pressed="${on}" aria-label="${escapeAttr(d.name + ': ' + TX('ui.nf-copy-level', {n: L}) + ', ' + forgeCopyTreatment(c) + (on ? ', ' + TX('ui.ne-fan-in-deck') : ''))}">
+      <span class="ne-fan-tile">${cardTileHTML(show, {inPlay:true, extraClass: cls})}</span><span class="ne-fan-lbl"><b>${escapeHtml(TX('ui.nf-copy-level', {n: L}))}</b><small>${escapeHtml(forgeCopyTreatment(c))}</small></span>${on ? '<i class="ne-fan-tick" aria-hidden="true">✓</i>' : ''}</button>`; });
+  neFanSkins(id).forEach(s=>{ const key = 'skin:' + s.id, on = (looks[key] | 0) > 0;
+    items.push(`<button type="button" class="ne-fan-card is-skin ${on ? 'is-in' : ''}" data-ne-skin="${escapeAttr(key)}" style="--tilt:${tilt(k++)}deg" aria-pressed="${on}" aria-label="${escapeAttr(d.name + ': ' + lookLabel(id, key) + (on ? ', ' + TX('ui.ne-fan-in-deck') : ''))}">
+      <span class="ne-fan-tile">${cardTileHTML(d, {inPlay:true, extraClass: lookTileClass(id, key)})}</span><span class="ne-fan-lbl"><b>${escapeHtml(lookLabel(id, key))}</b><small>${escapeHtml(TX('ui.ne-fan-skin'))}</small></span>${on ? '<i class="ne-fan-tick" aria-hidden="true">✓</i>' : ''}</button>`); });
+  return `<div class="ne-fan-head"><b>${escapeHtml(d.name)}</b><small>${escapeHtml(TX('ui.ne-fan-help'))}</small></div><div class="ne-fan-row">${items.join('')}</div>`;
+}
+function neFanPlace(fan, host){
+  const r = host.getBoundingClientRect(), fw = fan.offsetWidth, fh = fan.offsetHeight, vw = document.documentElement.clientWidth, vh = innerHeight;
+  let x = r.left + r.width / 2 - fw / 2; x = Math.max(8, Math.min(vw - fw - 8, x));
+  let y = r.top - fh + 18; if(y < 8) y = Math.min(vh - fh - 8, r.bottom - 18);
+  fan.style.left = Math.round(x) + 'px'; fan.style.top = Math.round(Math.max(8, y)) + 'px';
+}
+function neFanClose(){ if(!neFanState) return; clearTimeout(neFanState.t); const f = neFanState.el; neFanState = null; if(f){ f.classList.add('is-out'); setTimeout(()=> f.remove(), reducedMotion() ? 0 : 140); } }
+function neFanOpen(id, host){
+  if(neFanState && neFanState.id === id && neFanState.el && neFanState.el.isConnected){ neFanState.host = host; clearTimeout(neFanState.t); return; }
+  neFanClose();
+  const f = document.createElement('div'); f.className = 'ne-fan'; f.setAttribute('role', 'dialog'); f.setAttribute('aria-label', TX('ui.ne-fan-title', {name: (getCardDefs()[id] || {}).name || id}));
+  f.innerHTML = neFanHTML(id); document.body.appendChild(f); try{ decorateHolo(f); }catch(e){}
+  neFanState = {id, host, el: f, t: 0}; neFanPlace(f, host);
+  f.addEventListener('pointerenter', ()=>{ if(neFanState) clearTimeout(neFanState.t); });
+  f.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') neFanLater(); });
+  f.addEventListener('click', e=>{ e.stopPropagation(); const b = e.target.closest('[data-ne-copy], [data-ne-skin]'); if(!b || !neFanState) return;
+    const fid = neFanState.id;
+    if(b.classList.contains('is-in')){ denyShake(b); floatText(b, TX('ui.ne-fan-in-deck'), 'debuff'); return; }
+    if(b.dataset.neSkin){ if(neLookClick) neLookClick({}, fid, b.dataset.neSkin); return; }
+    if(neFanAddCopy) neFanAddCopy(fid, b.dataset.neCopy, b); });
+}
+function neFanLater(){ if(!neFanState) return; clearTimeout(neFanState.t); neFanState.t = setTimeout(neFanClose, 260); }
+// after the pool redraws: the open fan follows its card's new tile (and shows what is in the deck now)
+function neFanRefresh(){
+  if(!neFanState || !neFanState.el || !neFanState.el.isConnected){ neFanState = null; return; }
+  const host = document.querySelector(`#myDeckPool [data-ne-fan="${cssEsc(neFanState.id)}"]`); if(!host){ neFanClose(); return; }
+  neFanState.host = host; neFanState.el.innerHTML = neFanHTML(neFanState.id); try{ decorateHolo(neFanState.el); }catch(e){} neFanPlace(neFanState.el, host);
+}
+function neWirePoolFan(pool){
+  if(!pool) return;
+  pool.querySelectorAll('[data-ne-fan]').forEach(host=>{ const id = host.dataset.neFan; let lp = null, sx = 0, sy = 0;
+    host.addEventListener('pointerenter', e=>{ if(e.pointerType !== 'mouse') return; if(neFanState && neFanState.id === id){ clearTimeout(neFanState.t); return; }
+      clearTimeout(host._neT); host._neT = setTimeout(()=> neFanOpen(id, host), 260); });
+    host.addEventListener('pointerleave', e=>{ if(e.pointerType !== 'mouse') return; clearTimeout(host._neT); if(neFanState && neFanState.id === id) neFanLater(); });
+    host.addEventListener('pointerdown', e=>{ if(e.pointerType === 'mouse') return; sx = e.clientX; sy = e.clientY; clearTimeout(lp);
+      lp = setTimeout(()=>{ lp = null; host._neLP = Date.now(); neFanOpen(id, host); try{ navigator.vibrate && navigator.vibrate(12); }catch(_){} }, 450); });
+    host.addEventListener('pointermove', e=>{ if(lp && Math.hypot(e.clientX - sx, e.clientY - sy) > 10){ clearTimeout(lp); lp = null; } });
+    ['pointerup', 'pointercancel'].forEach(k=> host.addEventListener(k, ()=>{ clearTimeout(lp); lp = null; }));
+    // a long press opened the fan: the click (and the long-press menu) that follow it don't add or take out a card
+    host.addEventListener('click', e=>{ if(Date.now() - (host._neLP || 0) < 700){ e.stopPropagation(); e.preventDefault(); } }, true);
+    host.addEventListener('contextmenu', e=>{ if(Date.now() - (host._neLP || 0) < 1500){ e.stopPropagation(); e.preventDefault(); } }, true); });
+}
+// The Shift chip: body.ne-shift while Shift is held; the pool's ⇧ button keeps it on (phones have no Shift).
+if(typeof document !== 'undefined'){
+  const neShift = on=>{ try{ document.body.classList.toggle('ne-shift', !!on); }catch(e){} };
+  document.addEventListener('keydown', e=>{ if(e.key === 'Shift') neShift(true); });
+  document.addEventListener('keyup', e=>{ if(e.key === 'Shift') neShift(false); });
+  if(typeof window !== 'undefined') window.addEventListener('blur', ()=> neShift(false));
+  document.addEventListener('scroll', ()=>{ if(!neFanState) return; const h = neFanState.host, r = h && h.isConnected ? h.getBoundingClientRect() : null; // the fan follows its card; it closes once the card scrolls away
+    if(!r || r.bottom < 0 || r.top > innerHeight) neFanClose(); else neFanPlace(neFanState.el, h); }, {passive:true, capture:true});
+  document.addEventListener('pointerdown', e=>{ if(neFanState && !(e.target.closest && (e.target.closest('.ne-fan') || e.target.closest('[data-ne-fan]')))) neFanClose(); }, true);
+}
+let neShowLimits = false;
+function neShiftHintHTML(){ return `<button type="button" class="btn small ghost ne-shift-hint ${neShowLimits ? 'is-on' : ''}" id="neShiftHint" aria-pressed="${neShowLimits}" title="${escapeAttr(TX('ui.ne-shift-tip'))}"><kbd>⇧</kbd> ${escapeHtml(TX('ui.ne-shift-hint'))}</button>`; }
+// NE_DECK:END
 function renderMyDeckPanels(){
   const defs = getCardDefs();
   // Item #12: the rest of the deck-searcher toolbar (search box, Structure/Unit kind filter,
@@ -31891,22 +32098,11 @@ function renderMyDeckPanels(){
     // 2026-10-08 (user: "The locked cards shouldn't appear in the deck editor's card selector. The card
     // selector only shows cards the user literally owns"): locked cards are left out (they live in the Codex).
     (unlockedIds.map(id=>{
-      const owned = ownedCopiesOf(id), used = myDeckCounts[id]||0, left = owned === Infinity ? '∞' : Math.max(0, owned - used);
-      const groups = (!deckStackTreatments && owned !== Infinity) ? copyGroupsOf(id) : null;
-      if(groups && groups.length > 1) return groups.map(g=> stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: copyFinishClass(defs[id], g.copy)}), g.n, `×${g.n}`, 'is-finish')).join('');
-      // 2026-10-16 (user: "...You have to take that shiny version and put it into your deck"): the plain copies are one stack and
-      // each Shiny / alt-art look its own, so you pick which copy goes in. Only cards that have such a look get the extra stacks.
-      const st = lookStock(id), lk = deckLooksFor(id), lookKeys = (st.shiny ? ['shiny'] : []).concat(Object.keys(st.skins).map(k=> 'skin:' + k));
-      if(!lookKeys.length) return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '', deckLimitChipHTML(id, used)); // + the copy-limit chip (PG)
-      const usedSkins = Object.keys(lk).filter(k=> k.startsWith('skin:')).length, plainIn = used - deckLookCount(lk);
-      const plainOwned = st.plain, plainLeft = plainOwned === Infinity ? Infinity : Math.max(0, plainOwned - plainIn - usedSkins);
-      const plainStack = plainOwned > 0 ? stackHTML(cardTileHTML(defs[id], {magnetic:true}), plainOwned === Infinity ? 3 : plainOwned, plainOwned === Infinity ? '' : `${plainLeft}/${plainOwned}`, plainLeft <= 0 ? 'is-spent' : '', deckLimitChipHTML(id, used)) : '';
-      return plainStack + lookKeys.map(key=>{ const have = key === 'shiny' ? st.shiny : 1, inDeck = lk[key] | 0, leftK = Math.max(0, Math.min(have - inDeck, key === 'shiny' ? Infinity : plainLeft));
-        return `<div class="look-stack" data-look="${escapeAttr(key)}" data-lookid="${escapeAttr(id)}" style="${lookStyle(id, key)}" title="${escapeAttr(defs[id].name + ': ' + lookLabel(id, key) + (key === 'shiny' ? '' : ' (dresses one plain copy)'))}">${stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: lookTileClass(id, key)}), have, `${leftK}/${have}`, leftK <= 0 ? 'is-spent' : '')}<span class="look-tag">${escapeHtml(lookLabel(id, key))}</span></div>`; }).join('');
+      return neDeckPoolStackHTML(id, defs); // 2026-10-24 (package NE): one stack per card, the copy fan, the leader counted, greyed when full (NE_DECK)
     }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
   { const after = ()=>{ saveMyDeck(); renderMyDeckPanels(); };
     // 2026-10-21 (package ED, owner #10): a plain +1 / −1 rewrites the counts in place (tentQuickCount); 0 <-> 1 and split copies redraw
-    const fast = id=>{ const prev = myDeckCounts[id] | 0; return ()=>{ saveMyDeck(); if(!tentQuickCount(id, prev)) renderMyDeckPanels(); }; };
+    const fast = id=>{ const prev = myDeckCounts[id] | 0; return ()=>{ { const p = deckCopyPicks(id), n = myDeckCounts[id] | 0; if(p.length > n) setDeckCopyPicks(id, p.slice(0, n)); } /* NE: picks never outnumber the copies */ saveMyDeck(); if(!tentQuickCount(id, prev)) renderMyDeckPanels(); }; };
     // 2026-10-16: a click on a look (a Shiny / alt-art chip or pool stack) adds or takes out that copy; plain ones work as before.
     const lookClick = (e, id, look)=>{
       const remove = !!e.shiftKey, cur = deckLooksFor(id);
@@ -31916,6 +32112,12 @@ function renderMyDeckPanels(){
       if((cur[look] | 0) >= have || (look !== 'shiny' && plainRoom <= 0)){ const el = document.querySelector(`#myDeckPool .look-stack[data-look="${cssEsc(look)}"][data-lookid="${cssEsc(id)}"]`); denyShake(el); if(el) floatText(el, look === 'shiny' ? _t('All in your deck') : _t('No plain copy left to dress'), 'debuff'); return; }
       deckCardClick({}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ setDeckLook(id, look, +1); after(); }, true);
     };
+    // 2026-10-24 (package NE): the copy fan adds exactly the copy clicked (a pick), a Shiny one with its look
+    neLookClick = lookClick;
+    neFanAddCopy = (id, uid, btn)=>{ const c = copyByUid(id, uid); if(!c) return;
+      if(neDeckFull(id)){ denyShake(btn); floatText(btn, id === myLeaderId ? '👑 ' + _t('Your leader') : _t('Max {n} per deck', {n: maxCopiesForRarity((getCardDefs()[id] || {}).rarity)}), 'debuff'); return; }
+      deckCardClick({}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ const p = deckCopyPicks(id).filter(u=> u !== uid); p.push(uid); setDeckCopyPicks(id, p.slice(-(myDeckCounts[id] | 0)));
+        if(c.shiny){ const lk = deckLooksFor(id); if((lk.shiny | 0) < (myDeckCounts[id] | 0)) setDeckLook(id, 'shiny', +1); } after(); }, true); };
     document.querySelectorAll('#myDeckList .dchip').forEach(el=>{ const id = el.getAttribute('data-defid'), look = el.getAttribute('data-look');
       el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); return; } if(look) lookClick(e, id, look); else deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); });
       el.addEventListener('contextmenu', e=>{ e.preventDefault(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); });
@@ -31933,7 +32135,7 @@ function renderMyDeckPanels(){
   // editor should add the card in - not just drag and drop").
   document.querySelectorAll('#myDeckPool .card-tile:not(.locked):not(.is-look-tile)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid');
     // 2026-10-16: a plain tile takes a plain copy. When every plain copy is in (only a Shiny / alt-art look is left), say so.
-    if(!e.shiftKey){ const st = lookStock(id); if(st.plain !== Infinity && (st.shiny || Object.keys(st.skins).length)){ const lk = deckLooksFor(id), plainUsed = (myDeckCounts[id]|0) - deckLookCount(lk) + Object.keys(lk).filter(k=> k.startsWith('skin:')).length; if(plainUsed >= st.plain){ denyShake(el); floatText(el, _t('Every plain copy is in'), 'debuff'); return; } } }
+    // 2026-10-24 (package NE): the one stack adds your best copy not in the deck (deckCopyUidsFor); the "every plain copy is in" refusal went
     deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); })); } // 2026-10-21 (package ED): count-only
   // Item #10: both the pool tiles and the deck-list chips can be dragged (2026-10-18: onto #myDeckList; the leader slot they were
   // also dropped on is gone, the leader is picked in openLoadoutPicker) — a locked pool
@@ -31944,6 +32146,7 @@ function renderMyDeckPanels(){
     el.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', el.getAttribute('data-defid')));
   });
   wireCardTileFlourish(document.getElementById('myDeckPool'));
+  { const pool = document.getElementById('myDeckPool'); if(pool){ pool.classList.toggle('ne-show-limits', !!neShowLimits); neWirePoolFan(pool); } neFanRefresh(); } // 2026-10-24 (package NE)
 }
 // Card hover flourish wiring (2026-09-20) — the tilt half of the same request
 // wireHomeMenuFlourish already covers for the home menu buttons: on mousemove, sets --ctTiltX/
@@ -45698,11 +45901,15 @@ function en2GuardStepIn(ev){
   const am = animMs(), hitAt = am.windup + am.impactPad, sc = en2Local(g), gr = g.getBoundingClientRect(), wr = w.getBoundingClientRect(), at = boardCardEl(ev.attUid), ar = at && at.getBoundingClientRect();
   let dx = wr.left - gr.left, dy = wr.top - gr.top;
   if(ar){ const ty = (ar.top + ar.height/2) - (wr.top + wr.height/2); dy += Math.sign(ty) * Math.min(Math.abs(ty) * .3, wr.height * .32); }
-  const p = {x:0, y:0}, pos0 = getComputedStyle(g).position, put = ()=>{ g.style.left = (p.x/sc) + 'px'; g.style.top = (p.y/sc) + 'px'; }, moveMs = Math.min(240, Math.max(120, hitAt * .55));
+  // 2026-10-24 (package NE, EN5's find: on 1366 at 3x the step-in moved 113-118 px in one frame, tests/e2e/snaps.py on 4-5): the move was a
+  // 120 ms tween of a plain object written to left / top, so at 3x speed (a short windup) on a busy frame it could finish between two frames, and
+  // nothing marked the card as moving. Now GSAP tweens the card's own left / top (the card reads as animating while it moves), over at least
+  // 200 ms with a softer ease (sine.inOut), started early enough to arrive as the blow lands; the slide home is the same.
+  const pos0 = getComputedStyle(g).position, moveMs = Math.min(300, Math.max(200, hitAt * .6));
   g.classList.add('en2-guarding'); g.style.zIndex = '30'; if(pos0 === 'static') g.style.position = 'relative';
-  setTimeout(()=>{ gsap.to(p, {x:dx, y:dy, duration:moveMs/1000, ease:'power2.out', onUpdate:put}); }, Math.max(0, hitAt - moveMs - 30));
+  setTimeout(()=>{ gsap.to(g, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration:moveMs/1000, ease:'sine.inOut'}); }, Math.max(0, hitAt - moveMs - 30));
   if(dies) setTimeout(()=>{ const t = g.querySelector('.card-tile') || g; try{ t.animate([{translate:'0 0', rotate:'0deg'}, {translate:'-5px 0', rotate:'-4deg'}, {translate:'5px 0', rotate:'4deg'}, {translate:'-3px 0', rotate:'-2deg'}, {translate:'0 0', rotate:'0deg'}], {duration:300, easing:'ease-out'}); }catch(e){} }, hitAt + 20); // the flinch; it dies where it stands
-  else setTimeout(()=>{ gsap.to(p, {x:0, y:0, duration:.32, ease:'power2.inOut', onUpdate:put, onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
+  else setTimeout(()=>{ gsap.to(g, {left:'0px', top:'0px', duration:.34, ease:'sine.inOut', onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
 }
 // The Ironclaw Fiddler's looks (owner 13:16 #17: "on-play side-to-side 'clack' animation (1 s), a short claw attack animation"): card fx
 // {play:'crabClack', attack:'crabClaw'} in canonical/cards.json. The clack: the card sways side to side four times over 1 s while its one
@@ -49925,6 +50132,7 @@ function openTavern(){
   const wasOpen = !ov.hidden && !!ov.innerHTML; // 2026-10-18 (package DK): a tab switch redraws an open Tavern without its hello
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; tavernTab = 'recruit'; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
   const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>
+      ${neWalletHTML(['gold', 'dust', 'beer']) /* 2026-10-24 (package NE, owner 17:01 #9): what you hold, where you spend it */}
       ${facilityTabsHTML('tavern', tavernTab, [['recruit', TX('ui.tavern-tab-recruit')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
       ${tavernTab === 'upgrades' ? `<div class="facility-upgrades" id="tavernUpgradesTab">${staminaPanelHTML('tavern')}${deckSlotPanelHTML('tavern') /* 2026-10-23 (package UI4): deck slots */}</div>` : tavernBeerHTML() + tavernRecruitHTML()}</div>`;
     ov.hidden = false; ov.querySelector('#tvClose').onclick = close;
@@ -50203,7 +50411,7 @@ function renderDeckSectionInner(){
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
         </div>
         <div class="play-subtabs-actions">
-          ${deckEditingId===mainDeckId ? '<span class="deck-main-tag" title="You play with this deck">★ Main deck</span>' : '<button type="button" class="btn small" id="deckMakeMainBtn" title="Play with this deck">★ Make main deck</button>'}
+          ${deckEditingId===mainDeckId ? `<span class="deck-main-tag ne-main-tag" title="${escapeAttr(TX('ui.ui4-main-deck-sub'))}"><b>★ ${escapeHtml(TX('ui.ui4-main-deck'))}</b><small>${escapeHtml(TX('ui.ui4-main-deck-sub'))}</small></span>` /* 2026-10-24 (package NE, owner 17:34 #19: the subtitle "you play with this one") */ : '<button type="button" class="btn small" id="deckMakeMainBtn" title="Play with this deck">★ Make main deck</button>'}
           <button type="button" class="btn small ghost" id="deckManageBtn" title="Rename, copy codes, import or delete decks">🗂 Manage decks</button>
         </div>
       </div>
@@ -50266,7 +50474,9 @@ function renderDeckListTab(body){
   if(deckListView==='medium'){
     // 2026-10-23 (package UI4, owner 01:03 #5: "In the camp, it's not so obvious which is your main deck."): the main deck comes first, with
     // its ribbon and gold frame (deckMediumPreviewHTML); the others sit a little quieter
-    grid.innerHTML = myDecks.slice().sort((a, b)=> (b.id === mainDeckId) - (a.id === mainDeckId)).map(d=> `<button type="button" class="dmp-btn ${d.id === mainDeckId ? 'is-main' : 'is-other'}" data-editdeck="${d.id}" aria-label="${escapeAttr((d.id === mainDeckId ? TX('ui.ui4-main-deck') + ': ' : '') + 'Edit ' + d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
+    grid.innerHTML = myDecks.slice().sort((a, b)=> (b.id === mainDeckId) - (a.id === mainDeckId)).map(d=> `<button type="button" class="dmp-btn ${d.id === mainDeckId ? 'is-main' : 'is-other'}" data-editdeck="${d.id}" aria-label="${escapeAttr((d.id === mainDeckId ? TX('ui.ui4-main-deck') + ': ' : '') + 'Edit ' + d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('')
+      + neEmptySlotsHTML(); // 2026-10-24 (package NE, owner 17:01 #13)
+    grid.querySelectorAll('[data-ne-slot]').forEach(b=> b.addEventListener('click', e=>{ if(deckSlotDenied(e.currentTarget)) return; deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); }));
     grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
     document.getElementById('newDeckBtn').addEventListener('click', e=>{ if(deckSlotDenied(e.currentTarget)) return; /* 2026-10-23 (package UI4) */ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
     document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
@@ -50644,6 +50854,10 @@ function shelfDetailHTML(p, qty){
     <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${fmtDropPct(+p.foilChance)} foil per card.` : ''}</span>
     <span class="sd-price">${shelfPriceHTML(c)}${c.discount ? ` <small>(${Math.round(c.discount*1000)/10}% off)</small>` : ''}</span>${st ? `<span class="sd-why">${escapeHtml(st.why)}</span>` : ''}`;
 }
+function shopCounterIntoView(c){
+  try{ requestAnimationFrame(()=>{ const r = c.getBoundingClientRect(), vh = window.innerHeight || document.documentElement.clientHeight;
+    if(r.bottom > vh - 8 || r.top < 0) c.scrollIntoView({block: r.height > vh - 16 ? 'start' : 'end', behavior: reducedMotion() ? 'auto' : 'smooth'}); }); }catch(e){}
+}
 function renderShopShelves(grid, signedIn){
   const rows = shelfRows(), all = rows.flatMap(r=> r.items);
   const keyOf = it=> it.bread ? 'bread:1' : it.ticket ? 'ticket:1' : it.raidTicket ? 'raidticket:1' /* 2026-10-21 (package RK) */ : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
@@ -50731,7 +50945,11 @@ function renderShopShelves(grid, signedIn){
       shopSelected = btn.dataset.shelfitem;
       grid.querySelectorAll('[data-shelfitem]').forEach(b=>{ const on = b===btn; b.classList.toggle('is-selected', on); b.setAttribute('aria-pressed', on); });
       renderCounter(); try{ SoundKit.shelfPick(); }catch(e){}
-      const c = grid.querySelector('#shopCounter'); if(c){ c.classList.remove('is-new'); void c.offsetWidth; c.classList.add('is-new'); }
+      const c = grid.querySelector('#shopCounter'); if(c){ c.classList.remove('is-new'); void c.offsetWidth; c.classList.add('is-new');
+        // 2026-10-24 (package NE, owner 19:27 #12: "clicking an item shows a subwindow with x1, x5, x10 ... because the screen is so vertical, we
+        // cannot see the bottom line buttons"): on a tall phone the counter sat below the shelves, off the screen; it now scrolls up into view,
+        // so its ×1 / ×10 row and the Open / Buy button are on screen (nothing moves when it is already in view).
+        shopCounterIntoView(c); }
     });
   });
   wall.addEventListener('scroll', hideHover, {passive:true});
@@ -50740,6 +50958,9 @@ function renderShopShelves(grid, signedIn){
 let shopTab = 'packs';
 let shopCameFrom = null, pageCameFrom = null;
 const PAGE_SHORTCUTS = [
+  // 2026-10-24 (package NE, owner 17:34 #21: "In the camp/grounds/nest etc screen(s) there should be a conquest map shortcut on the top nav
+  // bar"): 🗺️ first in the places bar, straight to the Conquest map (where you left it).
+  {key:'map', icon:'🗺️', name:'Conquest map', open:()=> true, go:()=>{ playSubTab = 'conquest'; switchTab('play'); }, here:t=> t==='play', map:true},
   {key:'deck', icon:'⛺', name:'Camp', open:()=> tabOpen('deck'), go:()=> switchTab('deck'), here:t=> t==='deck'},
   {key:'stomp', icon:'🐾', name:'Stomping Grounds', open:()=> tabOpen('stomp'), go:()=> switchTab('stomp'), here:t=> t==='stomp'},
   {key:'codex', icon:'📖', name:'Codex', open:()=> tabOpen('codex'), go:()=>{ codexSubTab = 'browse'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab !== 'forge'},
@@ -50994,7 +51215,7 @@ function nextNestUnlock(n){
 function nestBuildRowHTML(){
   const n = nestState(), nx = nextNestUnlock(n), open = nestSlotsOpen(n), max = Math.min(NEST_SLOTS, NEST_UNLOCKS.length);
   return `<div class="forge-upgrade upg-row nest-build-row" role="group" aria-label="${escapeAttr(TX('ui.nest-upg-title'))}"><div class="fu-now"><b>${escapeHtml(TX('ui.nest-upg-title'))}</b> <small>${escapeHtml(TX('ui.nest-upg-built', {open, max}))}</small></div>
-    <div class="fu-next">${!nx ? `<span>${escapeHtml(TX('ui.nest-upg-all'))}</span>` : !nx.reached ? `<span class="fu-gate">🗺️ ${escapeHtml(mapLockText(nx.map, TX('ui.nest-upg-next-map', {n: nx.map})))}</span>`
+    <div class="fu-next">${!nx ? `<span>${escapeHtml(TX('ui.nest-upg-all'))}</span>` : !nx.reached ? `<span class="fu-gate">🔒 ${escapeHtml(TX('ui.ne-nest-locked'))}</span>` /* 2026-10-24 (package NE, owner 17:01 #10: "Don't say when the nest opens. Just say it's locked for now") */
       : `<button type="button" class="btn small primary" data-nest-build="1" ${nx.affordable ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.nest-upg-btn'))}${btnCostHTML(nx.cost)}</button>`}</div></div>`;
 }
 function buildNextNest(){
@@ -51135,22 +51356,45 @@ let nestNurturePrefill = null;
 // too high are greyed out. But when you click them, they give a small central notification that fades 'Need 5 more Kibble' etc."):
 // no prices on the tiles; a card you can afford asks once, with its price in the Train button; one you can't greys out and says
 // what it still needs.
+// 2026-10-24 (package NE, owner 17:01 #9: "Anytime I need currency to upgrade or buy something, i need to see how much i hold. e.g. in the
+// nest"): a small "You have" row of the currencies a place spends (currencyPillHTML pills), shown in the Nest, its subwindow, the Tavern and the
+// Camp's deck slots (the Shop, the Forge and the Profile already had one).
+function neWalletHTML(kinds){
+  return `<div class="ne-wallet" role="group" aria-label="${escapeAttr(TX('ui.ne-wallet-label'))}"><small class="ne-wallet-k">${escapeHtml(TX('ui.ne-wallet-label'))}</small>${(kinds || []).filter(k=> CURRENCY_META[k]).map(k=> currencyPillHTML(k, 'forge-cur-' + k)).join('')}</div>`;
+}
+// A locked nest, tapped (#10): it shakes and a small label says "Locked for now — progress further" under it for a moment.
+function nestLockedPing(b){
+  if(!b) return; denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){}
+  const old = b.querySelector('.ne-lock-label'); if(old) old.remove();
+  const l = document.createElement('span'); l.className = 'ne-lock-label'; l.setAttribute('role', 'status'); l.textContent = TX('ui.ne-nest-locked-progress'); b.appendChild(l);
+  setTimeout(()=>{ try{ l.remove(); }catch(e){} }, 2200);
+}
 function nestNeedToast(text){
   document.querySelectorAll('.np-need-toast').forEach(t=> t.remove());
   const t = document.createElement('div'); t.className = 'np-need-toast'; t.setAttribute('role', 'status'); t.textContent = text;
   document.body.appendChild(t); setTimeout(()=> t.remove(), 2000);
 }
-function openNestPicker(slot){
+// 2026-10-24 (package NE, owner 17:01 #11): the nest's subwindow has two tabs: 🥚 Eggs (your pack's eggs) and 🌱 Younglings (the cards with a
+// Level 0 copy, which a nest trains to Level 1; "Younglings", not "Level 0"). tab: 'eggs' (default) or 'young'. Opens on Younglings when the
+// pack holds no egg but there are younglings. The wallet (#9) sits under the title.
+let nestOpenYoungOnce = false;
+function openNestPicker(slot, tab){
   if(slot != null && typeof slot === 'object') slot = null; // (called as a click handler: no slot)
   const defs = getCardDefs(), eggs = nestPackedEggs(), kids = nurtureCandidates();
+  if(tab !== 'eggs' && tab !== 'young') tab = (!eggs.length && kids.length) || nestNurturePrefill ? 'young' : 'eggs';
   const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.setAttribute('role', 'dialog');
-  ov.innerHTML = `<div class="modal nest-picker" aria-label="Fill a nest"><div class="modal-head-row"><h2>🪺 Fill a nest</h2><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
-    <h3>🥚 Eggs in your pack</h3>${eggs.length ? `<div class="np-grid">${eggs.map(e=>{ const k = EGG_KINDS[e.kind] || EGG_KINDS.woodland, t = NEST_TYPES[k.type] || NEST_TYPES.woodland;
-      return `<button type="button" class="np-item" data-np-egg="${escapeAttr(e.id)}"><span class="np-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${t.icon} ${escapeHtml(t.name)} · hatches in ${k.hatchHours}h</small></button>`; }).join('')}</div>` : '<p class="panel-sub">No eggs in your pack. They turn up on the road.</p>'}
-    <h3>🌱 Train a Level-0 card to Level 1 <small>${NURTURE_HOURS}h · tap a card · you have 🦴${myCurrencies.kibble||0}</small></h3>
+  ov.innerHTML = `<div class="modal nest-picker" aria-label="${escapeAttr(TX('ui.ne-pick-title'))}"><div class="modal-head-row"><h2>🪺 ${escapeHtml(TX('ui.ne-pick-title'))}</h2><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
+    ${neWalletHTML(['kibble', 'dust', 'gold'])}
+    <div class="facility-tabs ne-pick-tabs" role="tablist" aria-label="${escapeAttr(TX('ui.ne-pick-title'))}"><button type="button" role="tab" class="facility-tab ${tab === 'eggs' ? 'on' : ''}" data-np-tab="eggs" aria-selected="${tab === 'eggs'}">🥚 ${escapeHtml(TX('ui.ne-pick-tab-eggs'))} <small>${eggs.length}</small></button><button type="button" role="tab" class="facility-tab ${tab === 'young' ? 'on' : ''}" data-np-tab="young" aria-selected="${tab === 'young'}">🌱 ${escapeHtml(TX('ui.ne-pick-tab-young'))} <small>${kids.length}</small></button></div>
+    <div class="ne-pick-pane" data-np-pane="eggs" ${tab === 'eggs' ? '' : 'hidden'}>${eggs.length ? `<div class="np-grid">${eggs.map(e=>{ const k = EGG_KINDS[e.kind] || EGG_KINDS.woodland, t = NEST_TYPES[k.type] || NEST_TYPES.woodland;
+      return `<button type="button" class="np-item" data-np-egg="${escapeAttr(e.id)}"><span class="np-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${t.icon} ${escapeHtml(t.name)} · hatches in ${k.hatchHours}h</small></button>`; }).join('')}</div>` : '<p class="panel-sub">No eggs in your pack. They turn up on the road.</p>'}</div>
+    <div class="ne-pick-pane" data-np-pane="young" ${tab === 'young' ? '' : 'hidden'}><p class="panel-sub">${escapeHtml(TX('ui.ne-young-help', {h: NURTURE_HOURS}))}</p>
     ${kids.length ? `<div class="np-grid np-cards">${kids.map(id=>{ const ok = canAffordNurture(id); return `<button type="button" class="np-item np-card ${ok ? '' : 'is-short'} ${nestNurturePrefill === id ? 'is-pre' : ''}" data-np-card="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (ok ? '' : ': not enough to train yet'))}">${cardTileHTML(defs[id], {inPlay:true})}<b>${escapeHtml(defs[id].name)}</b></button>`; }).join('')}</div>
-      <div class="np-confirm" hidden></div>` : '<p class="panel-sub">No Level-0 cards to nurture. Your Base cards start at Level 0.</p>'}</div>`;
+      <div class="np-confirm" hidden></div>` : `<p class="panel-sub">${escapeHtml(TX('ui.ne-young-none'))}</p>`}</div></div>`;
   document.body.appendChild(ov); nestNurturePrefill = null;
+  ov.querySelectorAll('[data-np-tab]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); const k = b.dataset.npTab;
+    ov.querySelectorAll('[data-np-tab]').forEach(x=>{ const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-selected', on); });
+    ov.querySelectorAll('[data-np-pane]').forEach(p=> p.hidden = p.dataset.npPane !== k); try{ SoundKit.shelfPick && SoundKit.shelfPick(); }catch(_){} }));
   const close = ()=> ov.remove();
   const conf = ov.querySelector('.np-confirm');
   const train = id=>{ const r = startNurture(id, slot); if(r === 'locked' || r === 'taken' || r === 'full'){ nestNeedToast(nestRefusalText(r)); return false; } if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); try{ fxHook('nestTrain', id); }catch(_){} showToast(TX('toast.is-in-training-back-in-h', {v1: defs[id].name, NURTURE_HOURS}), 'ok'); return true; } return false; };
@@ -51158,6 +51402,7 @@ function openNestPicker(slot){
     const eg = e.target.closest('[data-np-egg]'), cd = e.target.closest('[data-np-card]'), go = e.target.closest('[data-np-train]'), no = e.target.closest('[data-np-cancel]');
     if(eg){ const r = placeEggInNest(eg.dataset.npEgg, slot); if(r === true){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); try{ fxHook('nestEggPlaced', eg.dataset.npEgg); }catch(_){} } else { denyShake(eg); if(r) nestNeedToast(nestRefusalText(r)); } }
     else if(go){ if(!train(go.dataset.npTrain)) denyShake(go); }
+    else if(e.target.closest('[data-np-tab]')) return;
     else if(no){ conf.hidden = true; ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); }
     else if(cd){ const id = cd.dataset.npCard;
       if(!canAffordNurture(id)){ denyShake(cd); nestNeedToast('Need ' + nurtureShortfall(id).join(' and ')); return; }
@@ -51245,8 +51490,11 @@ function nestKeeperHTML(){
       const u = NEST_UNLOCKS[i], isNext = nx && nx.i === i, mapName = (CONQUEST_MAPS.find(m=> m.id === mapIdAt(u.map)) || {}).name || '';
       if(isNext && nx.reached) return `<button type="button" class="hay-nest is-locked is-buildable ${nx.affordable ? '' : 'is-poor'}" style="--x:${x}%; --y:${y}%" data-nest-build="1" aria-label="${escapeAttr(`Build this nest: ${nx.cost.gold||0} Maple Leaves and ${nx.cost.dust||0} Magic Dust`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔨</span><small class="nest-time nest-cost">${mapleLeafIconHTML()}${nx.cost.gold||0} ✨${nx.cost.dust||0}</small></button>`;
       // 2026-10-18 (WP4): nests 6 and 7 wait for Maps 25 (Reserved, no fights) and 30 (not built): no map number for those.
-      if(!mapIsCharted(u.map)) return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`${UNCHARTED_LOCK}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? '<small class="nest-time">🧭</small>' : ''}<span class="sr-only">A nest that ${UNCHARTED_LOCK.toLowerCase()}</span></div>`;
-      return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`Opens on Map ${u.map}${mapName ? ' (' + mapName + ')' : ''}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? `<small class="nest-time">Map ${u.map}</small>` : ''}<span class="sr-only">A nest that opens on Map ${u.map}</span></div>`;
+      // 2026-10-24 (package NE, owner 17:01 #10: "Don't say when the nest opens. Just say it's locked for now. When clicking the locked nests in
+      // the hatchery, they should also shake then have a small label saying its locked for now - progress further"): no map number on any
+      // locked nest; each is a button (data-nest-locked) that shakes and shows that label (nestLockedPing).
+      void u; void mapName;
+      return `<button type="button" class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" data-nest-locked="${i}" title="${escapeAttr(TX('ui.ne-nest-locked'))}" aria-label="${escapeAttr(TX('ui.ne-nest-locked-progress'))}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span></button>`;
     }
     if(!e) return `<button type="button" class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" data-nest-empty="${i}" aria-label="An empty nest: set an egg or nurture a card"><span class="hay"></span><span class="nest-plus" aria-hidden="true">＋</span></button>`;
     if(e.kind === 'nurture'){ const cd = defs[e.cardId] || {}, left = e.hatchAt - Date.now(), pct = Math.max(0, Math.min(100, Math.round((Date.now() - e.laidAt) / Math.max(1, e.hatchAt - e.laidAt) * 100)));
@@ -51261,12 +51509,12 @@ function nestKeeperHTML(){
       <div class="hatch-sky" aria-hidden="true"><i class="wind w1"></i><i class="wind w2"></i><i class="wind w3"></i>${Array.from({length:7}, (_, k)=> `<i class="leaf" style="--d:${(7 + k*1.3).toFixed(1)}s; --delay:${(k*1.1).toFixed(1)}s; --y:${10 + (k*13)%70}%">${['🍂','🍃','🌾'][k%3]}</i>`).join('')}</div>
       <div class="hatch-nests">${nests}</div>
       <div class="hatch-side">
-        <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)} ${nurseChipHTML(n.nurse)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button><small class="nk-speed">${NURSE_ICON} Nursing ${nurseMasteryOf(n.nurse)}: the nests work ${Math.round((1 - nurseTimeFactor()) * 100)}% faster.</small>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their ${NURSE_ICON} Nursing mastery makes eggs hatch and cards train faster.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
+        <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)} ${nurseChipHTML(n.nurse)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button><small class="nk-speed">${NURSE_ICON} Nursing ${nurseMasteryOf(n.nurse)}: the nests work ${Math.round((1 - nurseTimeFactor()) * 100)}% faster.</small><small class="nk-speed ne-nurse-note">${escapeHtml(TX('ui.ne-nurse-note'))}</small>${'' /* 2026-10-24 (package NE, owner 13:16 #26) */}` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their ${NURSE_ICON} Nursing mastery makes eggs hatch and cards train faster.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
         <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
-        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : mapIsCharted(nx.map) ? ` The next one opens on Map ${nx.map}.` : ` The next one ${UNCHARTED_LOCK.toLowerCase()}.`) : ''}</p>
+        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : ' ' + escapeHtml(TX('ui.ne-nest-next-locked'))) : ''}</p>${'' /* 2026-10-24 (package NE, #10): no map number */}
         ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
         ${packed.length ? `<p class="hatch-wait">🎒 ${packed.length} egg${packed.length===1?'':'s'} in your pack. Tap an empty nest to set ${packed.length===1?'it':'one'} down.</p>` : ''}
-        <p class="hatch-help">🌱 Tap an empty nest to train a Level-0 card (a fresh hatchling or a Base card) up to Level 1 with 🦴 Kibble. You have <b>🦴${myCurrencies.kibble||0}</b>. Only the Nest can do that; the Forge takes it from there.</p>
+        <p class="hatch-help">🌱 ${escapeHtml(TX('ui.ne-young-help-side'))}</p>${'' /* 2026-10-24 (package NE, #11): Younglings; the wallet above shows the Kibble (#9) */}
         ${n.eggs.length ? '' : '<p class="hatch-wait">The nests are empty. Rumour says the third map hides an egg, and every fight might turn up a lost baby.</p>'}
       </div>
     </section>`;
@@ -51314,21 +51562,24 @@ function renderNest(){
   // Nest no longer repeats the Codex (every owned card). 🥚 Eggs and babies: the nests and what is in them. 🌱 Level 0: the cards with a
   // Level-0 copy (fresh hatchlings, Base cards, the tutorial's copies, faction cards: nestHasLevel0Copy), the ones a nest trains to
   // Level 1. ⬆️ Upgrades as before. An old 'cards' tab reads as 'eggs'.
-  if(nestTab !== 'recruits' && nestTab !== 'upgrades') nestTab = 'eggs';
-  const ownedIds = nestTab === 'recruits' ? Object.keys(defs).filter(id=> myCardCopies[id] && myCardCopies[id].length>0 && defs[id].cardType!=='materia' && !defs[id].token && !defs[id].test && nestHasLevel0Copy(id)).sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||'')) : [];
+  // 2026-10-24 (package NE, owner 17:01 #11: "The nest tabs say 'Hatchery', 'Upgrades'. No need for the level 0 tab. After clicking on an open
+  // nest, you see Eggs. On a 2nd tab of that subwindow, you see our level 0 cards ... Younglings"): two tabs, 🪺 Hatchery (the nests) and
+  // ⬆️ Upgrades. The Level 0 cards moved into the nest's own subwindow (openNestPicker: 🥚 Eggs | 🌱 Younglings). An old 'recruits' tab (the
+  // pack opener's Nest button) opens the Hatchery with that subwindow on Younglings. #9 ("Anytime I need currency to upgrade or buy something,
+  // i need to see how much i hold. e.g. in the nest"): the wallet row (neWalletHTML) under the title, on both tabs.
+  if(nestTab === 'recruits'){ nestTab = 'eggs'; nestOpenYoungOnce = true; }
+  if(nestTab !== 'upgrades') nestTab = 'eggs';
+  const ownedIds = [];
   const eggN = nestState().eggs.filter(e=> e.kind !== 'nurture').length; // in the nests, the basket and your pack
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
-      <p class="panel-sub">${escapeHtml(nestTab === 'recruits' ? TX('ui.tu2-nest-recruits-sub', {n: ownedIds.length}) : TX('ui.tu2-nest-eggs-sub', {n: eggN}))}</p>
-      ${facilityTabsHTML('nest', nestTab, [['eggs', '🥚 ' + TX('ui.tu2-nest-tab-eggs')], ['recruits', '🌱 ' + TX('ui.tu2-nest-tab-recruits')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08); 2026-10-23 (TU2): two recruit tabs */}
-      ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestTab === 'eggs' ? nestKeeperHTML() : `<div class="tu2-recruit-head"><p class="panel-sub">${escapeHtml(TX('ui.tu2-nest-recruits-help', {kibble: myCurrencies.kibble||0}))}</p>${ownedIds.length ? `<button type="button" class="btn small primary" id="nestTrainBtn">🌱 ${escapeHtml(TX('ui.tu2-nest-train'))}</button>` : ''}</div>`}
+      <p class="panel-sub">${escapeHtml(TX('ui.tu2-nest-eggs-sub', {n: eggN}))}</p>
+      ${neWalletHTML(['gold', 'dust', 'kibble'])}
+      ${facilityTabsHTML('nest', nestTab, [['eggs', '🪺 ' + TX('ui.ne-nest-tab-hatchery')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08); 2026-10-24 (NE #11): Hatchery | Upgrades */}
+      ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestKeeperHTML()}
       <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
     </div>
-    <div class="grid-view" id="nestGrid" ${nestTab !== 'recruits' ? 'hidden' : ''}>${
-      nestTab !== 'recruits' ? '' : ownedIds.length ? nestGridHTML(ownedIds, defs)
-      : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">${escapeHtml(TX('ui.tu2-nest-recruits-none'))}</p>
-          <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button></div></div>`
-    }</div>`;
+    <div class="grid-view" id="nestGrid" hidden></div>`;
   { const tb = root.querySelector('#nestTrainBtn'); if(tb) tb.onclick = ()=> openNestPicker(); }
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   if(nestTab === 'upgrades'){ wireStamina(root, renderNest); root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest();
@@ -51337,6 +51588,8 @@ function renderNest(){
   wireStamina(root, renderNest);
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
   root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = ()=> openNestPicker(+b.dataset.nestEmpty)); // 2026-10-18 (package NF): into this nest
+  root.querySelectorAll('[data-nest-locked]').forEach(b=> b.onclick = ()=> nestLockedPing(b)); // 2026-10-24 (package NE, #10)
+  if(nestOpenYoungOnce){ nestOpenYoungOnce = false; setTimeout(()=> openNestPicker(null, 'young'), 120); } // 2026-10-24 (package NE, #11): the pack opener's Nest button
   root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest(); // 2026-10-16: nests are built one by one
     if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
     else { denyShake(b); showToast(TX('toast.not-enough-to-build-this-nest'), 'warn'); } });
@@ -51359,12 +51612,10 @@ function renderNest(){
 // here and there in the Nest instead, changing the 'Cards you've won…' line"): the per-card hover
 // title is gone; what it said now takes turns with the Nest's own description.
 const NEST_TIPS = [
-  '🥚 Eggs and babies grow in the nests. Level 0 cards wait under 🌱 Level 0.', // 2026-10-23 (TU2): the Nest lists recruits only (was "Cards you've won or pulled from packs...")
-  '🔍 Tap a card to see it up close and spin it in the light.',
-  '🃏 A taller stack means more copies of that card.',
+  '🥚 Eggs and babies grow in the nests. Tap an empty nest to set one, or to train a youngling.', // 2026-10-24 (package NE, #11): Younglings live in a nest's subwindow (was "Level 0 cards wait under 🌱 Level 0.")
   '🔨 Take a card to the Forge to raise its attack and health.',
   '👁️ Hover a card (or hold it on a phone) to see everything it does.',
-  '🦴 A nest and some Kibble train a Level 0 card to Level 1. The Forge takes it from there.', // 2026-10-23 (TU2): was "Packs, first clears and quest rewards all land here." 
+  '🦴 A nest and some Kibble train a youngling to Level 1. The Forge takes it from there.', // 2026-10-24 (package NE, #11): "Younglings" (was "a Level 0 card") 
 ];
 // The Promotion page (2026-10-23, package TU2, owner E10: "it will be its own feature page!"): not built yet, so the page says so and
 // offers nothing to press (the page bar's Back is the way out). Reached from the Forge's card panel, where Promotion used to sit.

@@ -13186,6 +13186,98 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .mc-tier + .mc-tier{border-top:1px solid var(--surface-border); padding-top:10px;}
 @media (max-width: 760px){ .mc-acts select.mc-move{min-height:34px;} }
 .dbp-stack.is-offpool, .se-stack.is-offpool{position:relative;} .dbp-stack.is-offpool::after, .se-stack.is-offpool::after{content:'⚠'; position:absolute; top:-6px; left:-4px; z-index:6; font-size:14px; line-height:1; padding:2px 3px; border-radius:6px; background:#f0b429; color:#3a2600; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+/* NE:BEGIN 2026-10-24 (package NE, owner 2026-10-23 notes) */
+/* #9: "You have" wallet row where a place spends currency (neWalletHTML) */
+.ne-wallet{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 8px;}
+.ne-wallet .ne-wallet-k{font-weight:800; font-size:12px; opacity:.75; margin-right:2px;}
+.ne-wallet .cur-pill{padding:3px 10px; font-size:13px;}
+.modal .ne-wallet{margin:0 0 10px;}
+/* #10: a locked nest is a button; tapped, it shakes and says so */
+.hay-nest.is-locked[data-nest-locked]{cursor:pointer;}
+.ne-lock-label{position:absolute; left:50%; bottom:-30%; transform:translateX(-50%); z-index:5; white-space:nowrap; padding:3px 10px; border-radius:999px; background:rgba(40,28,14,.92); color:#fff3d6; font:800 11.5px/1.2 'Nunito',system-ui,sans-serif; pointer-events:none; animation:neLockIn 2.2s ease forwards;}
+@keyframes neLockIn{0%{opacity:0; transform:translate(-50%, 4px);} 10%,80%{opacity:1; transform:translate(-50%, 0);} 100%{opacity:0;}}
+@media (prefers-reduced-motion: reduce){ .ne-lock-label{animation:none;} }
+/* #11: the nest's subwindow, Eggs | Younglings */
+.ne-pick-tabs{margin:0 0 10px;} .ne-pick-tabs small{opacity:.7; font-weight:700; margin-left:2px;}
+.nk-speed.ne-nurse-note{display:block; opacity:.75; font-size:11.5px; margin-top:2px;}
+/* 11:15 / #17: the Camp pool. The "2/3" chip only while Shift is held (or the ⇧ button is on); a full card is greyed */
+#myDeckPool .pool-stack .pg-limit{opacity:0; transform:scale(.7); transition:opacity .12s ease, transform .12s ease;}
+body.ne-shift #myDeckPool .pool-stack .pg-limit, #myDeckPool.ne-show-limits .pool-stack .pg-limit{opacity:1; transform:none;}
+#myDeckPool .pool-stack.ne-full .card-tile{filter:grayscale(.9) brightness(.85); opacity:.75;}
+#myDeckPool .pool-stack.ne-full .ps-count{opacity:.7;}
+.ne-shift-hint{display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
+.ne-shift-hint kbd{display:inline-grid; place-items:center; min-width:22px; height:20px; padding:0 5px; border-radius:5px; border:1px solid var(--surface-border); border-bottom-width:3px; background:var(--surface); font:800 12px/1 'Nunito',system-ui,sans-serif;}
+body.ne-shift .ne-shift-hint, .ne-shift-hint.is-on{background:var(--accent-strong); color:#fff; border-color:var(--accent-strong);}
+body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
+/* the copy fan: a stacked tile's copies fanned out above it */
+#myDeckPool .pool-stack.ne-fan-host{cursor:pointer;}
+.ne-fan{position:fixed; z-index:9400; max-width:min(560px, calc(100vw - 16px)); padding:8px 12px 10px; border-radius:14px; background:rgba(34,24,14,.95); color:#fff3dc; box-shadow:0 14px 36px rgba(0,0,0,.45), 0 0 0 1px rgba(255,220,160,.18); animation:neFanIn .16s ease-out;}
+.ne-fan.is-out{animation:neFanOut .14s ease-in forwards;}
+@keyframes neFanIn{from{opacity:0; transform:translateY(8px) scale(.96);} to{opacity:1; transform:none;}}
+@keyframes neFanOut{to{opacity:0; transform:translateY(6px) scale(.97);}}
+.ne-fan-head{display:flex; align-items:baseline; gap:8px; margin:0 0 4px;} .ne-fan-head b{font:800 14px 'Baloo 2',system-ui,sans-serif;} .ne-fan-head small{opacity:.7; font-size:11px;}
+.ne-fan-row{display:flex; flex-wrap:wrap; justify-content:center; gap:4px 0; padding:6px 10px 0;}
+.ne-fan-card{position:relative; display:flex; flex-direction:column; align-items:center; gap:2px; width:74px; margin:0 -6px; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; transform:rotate(var(--tilt, 0deg)); transform-origin:50% 120%; transition:transform .14s ease, filter .14s ease; font:inherit;}
+.ne-fan-card:hover, .ne-fan-card:focus-visible{transform:rotate(0deg) translateY(-8px) scale(1.06); z-index:2; outline:none;}
+.ne-fan-card .ne-fan-tile{display:block; width:70px; line-height:0;} .ne-fan-card .ne-fan-tile .card-tile{width:100% !important; margin:0 !important; pointer-events:none;}
+.ne-fan-card .ne-fan-lbl{display:flex; flex-direction:column; align-items:center; line-height:1.1;} .ne-fan-card .ne-fan-lbl b{font:800 11.5px 'Baloo 2',system-ui,sans-serif;} .ne-fan-card .ne-fan-lbl small{font-size:9.5px; opacity:.75; max-width:76px; text-align:center;}
+.ne-fan-card.is-in .ne-fan-tile{filter:grayscale(.9) brightness(.6);} .ne-fan-card.is-in{cursor:default;}
+.ne-fan-tick{position:absolute; top:30%; left:50%; transform:translate(-50%, -50%); width:24px; height:24px; border-radius:50%; display:grid; place-items:center; background:#3d7a3a; color:#fff; font:900 14px/1 system-ui; font-style:normal; box-shadow:0 0 0 2px #fff3dc;}
+@media (max-width:620px){ .ne-fan-card{width:62px;} .ne-fan-card .ne-fan-tile{width:58px;} }
+@media (prefers-reduced-motion: reduce){ .ne-fan, .ne-fan.is-out{animation:none;} .ne-fan-card{transition:none;} }
+/* 11:26: the fight panel. The field sits in the head under the BR as pills; one left edge and one gap for the rows below; less room above the deck */
+.conquest-node-panel .cnp-title .cnp-field.cnp-field-pills{display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; list-style:none; background:none; border-radius:0; font-size:12px; min-height:0; overflow:visible;}
+.cnp-fpill{display:inline-flex; align-items:center; gap:5px; padding:1px 9px; border-radius:999px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); font-weight:800; white-space:nowrap; cursor:help; line-height:1.5;}
+.cnp-fpill.is-new{box-shadow:0 0 0 2px #e8b23a;} .cnp-fpill.is-unknown{opacity:.9;}
+.cnp-fpill .fcr-q{width:16px; height:16px; font-size:11px;}
+.conquest-node-panel .cnp-title .cnp-kind{margin:0; display:flex; flex-wrap:wrap; align-items:center; gap:4px;}
+.conquest-node-panel .cnp-title .cnp-kind .castle-line{display:inline-flex; align-items:center; gap:4px; padding:1px 9px; border-radius:999px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); line-height:1.5;}
+.conquest-node-panel .cnp-title .cnp-kind .cnp-lvl-inline{margin-left:0;}
+.conquest-node-panel > .cnp-drops, .conquest-node-panel > .cnp-journey, .conquest-node-panel > .cnp-grants-item, .conquest-node-panel > .new-skill-ribbon{margin-left:0; margin-right:0;}
+.conquest-node-panel > .cnp-drops{margin-top:4px; margin-bottom:0;}
+.conquest-node-panel .cnp-deck.is-open{margin-top:2px; margin-bottom:0;}
+.conquest-node-panel .cnp-deck.is-open .cnp-squad{padding-top:6px;}
+/* 19:27 #13: the pack's card viewer: the big card on the left, the card's details on the right (under it on a phone) */
+.ci-detail{width:min(400px, 100%); max-height:min(76vh, 640px); overflow-y:auto; padding:14px 16px; border-radius:16px; background:rgba(250,240,220,.96); color:#2b2117; box-shadow:0 14px 40px rgba(0,0,0,.45); text-align:left;}
+.ci-detail .cd-chips{display:flex; flex-wrap:wrap; gap:5px; margin:0 0 8px;}
+.ci-detail-stats{display:flex; gap:10px; margin:0 0 8px; font-weight:700;} .ci-detail-stats b{font:800 18px 'Baloo 2',system-ui,sans-serif;}
+.ci-detail h3{font:800 14px 'Baloo 2',system-ui,sans-serif; margin:6px 0 4px;} .ci-detail .flavor{margin-top:8px;} .ci-detail .cd-where{margin-top:8px; font-size:12.5px;}
+@media (min-width:761px){
+  .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}
+  .card-inspect.ci-split .ci-stage{grid-area:stage;} .card-inspect.ci-split .ci-bar{grid-area:bar; justify-self:center;} .card-inspect.ci-split .ci-detail{grid-area:detail;}
+}
+/* #21: Home is an icon; the Conquest map leads the places bar */
+.topbar .home-nav-btn.ne-home-icon{width:38px; height:38px; padding:0 !important; justify-content:center; gap:0; border-radius:50%;} .home-nav-btn.ne-home-icon .tab-emoji{font-size:18px; margin:0; line-height:1;}
+.page-back-bar .pb-sc[data-pbsc="map"]{margin-right:4px; box-shadow:4px 0 0 -2px rgba(255,236,190,.25);}
+@media (max-width:480px){ .page-back-bar .pb-shortcuts{gap:1px;} .page-back-bar .pb-sc{padding:6px 6px;} .page-back-bar .pb-sc span{font-size:15px;} }
+/* #12: the Codex card detail's copies, one small card each, grouped by treatment; a tapped copy shows its level */
+.ne-cx-copies{margin:10px 0 4px;} .ne-cx-copies h3 small{font-weight:600; font-size:11.5px; opacity:.7; margin-left:6px;}
+.ne-cx-group{margin:4px 0 8px;} .ne-cx-g{display:block; font-weight:800; font-size:12px; opacity:.8; margin:0 0 4px;}
+.ne-cx-row{display:flex; flex-wrap:wrap; gap:6px; padding-left:0;}
+.ne-cx-copy{position:relative; width:58px; padding:0; border:0; background:none; cursor:pointer; line-height:0; border-radius:8px; transition:transform .14s ease;}
+.ne-cx-row .ne-cx-copy + .ne-cx-copy{margin-left:-18px;} .ne-cx-copy:hover, .ne-cx-copy:focus-visible{transform:translateY(-5px); z-index:2; outline:none;}
+.ne-cx-tile .card-tile{width:100% !important; margin:0 !important; pointer-events:none; box-shadow:-2px 2px 4px rgba(0,0,0,.3);}
+.ne-cx-lv{position:absolute; left:50%; top:42%; transform:translate(-50%, -50%) scale(.6); opacity:0; padding:2px 8px; border-radius:999px; background:#2b1d10; color:#ffe9b8; font:800 12px/1.3 'Baloo 2',system-ui,sans-serif; white-space:nowrap; box-shadow:0 0 0 2px #e9c46a; transition:opacity .15s ease, transform .15s ease; pointer-events:none;}
+.ne-cx-copy.is-shown{transform:translateY(-6px); z-index:3;} .ne-cx-copy.is-shown .ne-cx-lv{opacity:1; transform:translate(-50%, -50%) scale(1);}
+@media (prefers-reduced-motion: reduce){ .ne-cx-copy, .ne-cx-lv{transition:none;} }
+/* #19: the deck card's type emojis, large, on its right; the editor's Main deck tag with its subtitle */
+.dmp-types{position:absolute; right:12px; top:44px; bottom:36px; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; pointer-events:none;}
+.dmp-type-emo{font-size:clamp(34px, 4.6vw, 46px); line-height:1.05; filter:drop-shadow(0 2px 3px rgba(0,0,0,.6));}
+.ne-main-tag{display:inline-flex; flex-direction:column; align-items:center; line-height:1.1; padding:3px 12px;} .ne-main-tag small{font:700 10.5px 'Nunito',system-ui,sans-serif; opacity:.85;}
+/* #13: an open deck slot is an empty leather deck case, the size of a deck preview */
+.dmp-btn.ne-slot{position:relative; height:150px; border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; text-align:center; color:#f6e3c4;
+  background:radial-gradient(ellipse at 30% 20%, rgba(255,220,170,.22), transparent 60%), repeating-linear-gradient(35deg, rgba(0,0,0,.06) 0 2px, transparent 2px 5px), linear-gradient(160deg, #8a5a32, #5e3a1e 60%, #4a2c15);
+  box-shadow:inset 0 0 0 2px rgba(40,22,8,.55), inset 0 0 26px rgba(0,0,0,.45), 0 6px 14px rgba(0,0,0,.3);}
+.ne-slot-case{position:absolute; inset:9px; border-radius:10px; pointer-events:none;}
+.ne-slot-stitch{position:absolute; inset:0; border-radius:inherit; border:2px dashed rgba(246,214,160,.55);}
+.ne-slot-clasp{position:absolute; right:-9px; top:50%; width:26px; height:34px; transform:translateY(-50%); border-radius:6px 0 0 6px; background:linear-gradient(180deg, #d9b25a, #9c7426); box-shadow:inset 0 0 0 2px rgba(60,38,6,.5), 0 2px 4px rgba(0,0,0,.4);}
+.ne-slot-txt{position:relative; display:flex; flex-direction:column; gap:2px;} .ne-slot-txt b{font:800 16px 'Baloo 2',system-ui,sans-serif; text-shadow:0 1px 2px rgba(0,0,0,.6);} .ne-slot-txt small{font-size:12px; opacity:.85;}
+.dmp-btn.ne-slot:hover{filter:brightness(1.08);}
+.dmp-btn.ne-slot.is-new{animation:neSlotIn .7s cubic-bezier(.2,.9,.3,1.2);} .dmp-btn.ne-slot.is-new .ne-slot-stitch{animation:neStitch 1s ease-out;}
+@keyframes neSlotIn{from{opacity:0; transform:scale(.8) rotate(-2deg);} to{opacity:1; transform:none;}}
+@keyframes neStitch{from{clip-path:inset(0 100% 0 0);} to{clip-path:inset(0 0 0 0);}}
+@media (prefers-reduced-motion: reduce){ .dmp-btn.ne-slot.is-new, .dmp-btn.ne-slot.is-new .ne-slot-stitch{animation:none;} }
+/* NE:END */
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -13345,7 +13437,8 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
          renderHome() in arena_app.js), so the old always-visible Codex/Play/Forge/Simulator tab
          strip is gone — this single Home button is the one persistent way back to that menu from
          anywhere else in the app. Hidden while already on Home (see switchTab()). -->
-    <button class="home-nav-btn" id="homeNavBtn" type="button" title="Home" hidden><span class="tab-emoji">🏠</span> Home</button>
+    <!-- 2026-10-24 (package NE, owner 17:34 #21: "Home is reduced to just an icon as well"): the 🏠 alone; its name stays in title / aria-label. -->
+    <button class="home-nav-btn ne-home-icon" id="homeNavBtn" type="button" title="Home" aria-label="Home" hidden><span class="tab-emoji" aria-hidden="true">🏠</span></button>
     <!-- 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA ... (same throughout)"): the 🗝️ Dungeons key
          beside Home on every other screen; refreshTopbarDungeonKey() in arena_app.js shows it once a daily dungeon is open. -->
     <button class="home-nav-btn dungeon-key-btn" id="dungeonKeyBtnTop" type="button" title="Daily Dungeons" aria-label="Daily Dungeons" hidden><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">0</span></button>

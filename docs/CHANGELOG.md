@@ -2,6 +2,30 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package NE: the Nest, the Camp's copy fan, deck slots, the Codex's copies, the fight panel, the pack viewer, filters reset)
+- **What you hold where you spend it (17:01 #9):** a "You have" row of the currencies a place spends: the Nest (Maple Leaves, Dust, Kibble), its
+  subwindow, the Tavern (Maple Leaves, Dust, Beer) and the Camp's deck slots (the Shop, Forge and Profile had one).
+- **The Nest (#10, #11, #26):** a locked nest says only "Locked for now" (no map number, also in Upgrades); tapped, it shakes and shows "Locked for
+  now — progress further". Tabs are 🪺 Hatchery | ⬆️ Upgrades; an empty nest opens a subwindow with 🥚 Eggs | 🌱 Younglings (the Level 0 cards, renamed).
+  A Nurse swap never changes what is already growing (the hatch time is fixed when it is set; tested), and the Nest says so (call NE-1).
+- **The Camp's card pool (11:15, 17:34 #17):** the "2/3" chip shows only while Shift is held (a "⇧ Hold Shift: copy limits" button says so and
+  toggles it on a phone); the leader counts as a copy (Wandering Traveller as leader: 1/3); a card that can't take one more is greyed. One stack
+  per card with a copy fan: a click adds your best copy; hover or a long press fans out every copy (level, foil / Shiny / alt art), a fanned copy
+  goes in exactly (the deck remembers it and fights it at its own level), copies in the deck are greyed (call NE-3).
+- **Decks (#13, #19):** each open deck slot is an empty leather deck case the size of a deck preview (tap: a new deck there; a newly opened one
+  stitches in). The deck card's type emojis are large, on its right; the editor's Main deck tag has "You play with this one".
+- **Navigation (#21):** 🗺️ Conquest map leads the places bar (Camp, Grounds, Codex, Forge, Nest, Inventory); Home is the 🏠 icon alone.
+- **The Codex (#12, 19:27):** a card's detail shows every copy you own as a small card, by treatment; tapping one shows its level. Entering any page
+  clears every filter (the sort and the view stay; call NE-2).
+- **The fight panel (11:26):** the field is a row of pills in the head under the BR (no "Field" block); the bramble's Health is a pill like the BR;
+  one left edge for the rows; less room above the deck preview.
+- **Shop and packs (19:27 #12, #13):** tapping a shelf item scrolls the counter (×1 / ×10, Open) onto a tall phone's screen. A card from a pack opens
+  with the big card on the left and its details (abilities, flavour, where to get it) on the right (below on a phone), flying in from the card tapped.
+- **Guardian step-in (EN5's find):** the card itself is tweened over 200-300 ms (was a 120 ms tween of a plain object that could finish between two
+  frames at 3x: 113-118 px jumps in tests/e2e/snaps.py on 4-5).
+- Tests: `tests/ne-2026-10-24.js`, `tests/e2e/ne_2026_10_24.py` (shots in `docs/screens/NE/`); dk, tu2 and pg updated for the new Nest tabs and pool.
+  Texts: 22 TX keys, `tools/i18n_2026_10_24_ne.py` (12 packs; 17 removed UI rows dropped).
+
 ## 2026-10-24 (package EN5: Deadly Poison, Breach, Canopy Cover, state skills, Bleed / Poison by measurement, Bloom chains, tutorials first, people in the Group Dungeon)
 - **Deadly Poison (owner 02:59 #3):** Greater Poison is called Deadly Poison everywhere players read it (skill, status, tips, log, Pulse's texts, 12 packs);
   the key stays `greaterPoison`.

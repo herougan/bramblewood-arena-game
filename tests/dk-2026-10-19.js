@@ -148,12 +148,15 @@ ok(/facility: \{icon:'⬆️', get label\(\)\{ return TX\('ui\.upgrades-tab'\); 
   ok(/if\(forgeMode==='smith' \|\| forgeMode==='facility'( \|\| forgeMode==='raid')?\) return false;/.test(fnSrc('forgeReadyFor')), '5. no "ready" cards counted on it'); }
 { const nest = fnSrc('renderNest');
   // 2026-10-23 (TU2, owner: "Nest only lists baby/eggs or level 0 base cards (in two tabs)"): Eggs | Level 0 recruits | Upgrades
-  ok(/facilityTabsHTML\('nest', nestTab, \[\['eggs', '🥚 ' \+ TX\('ui\.tu2-nest-tab-eggs'\)\], \['recruits', '🌱 ' \+ TX\('ui\.tu2-nest-tab-recruits'\)\], \['upgrades', '⬆️ ' \+ TX\('ui\.upgrades-tab'\)\]\]\)/.test(nest), '5. the Nest has Eggs | Level 0 | ⬆️ Upgrades');
-  ok(/nestTab === 'upgrades' \? `<div class="facility-upgrades" id="nestUpgradesTab">\$\{staminaPanelHTML\('nest'\)[^`]*\$\{nestBuildRowHTML\(\)\}<\/div>` : nestTab === 'eggs' \? nestKeeperHTML/.test(nest) && nest.split("staminaPanelHTML('nest')").length === 2, '5. the Nest\'s Max Energy and next nest are in its Upgrades tab only');
-  ok(/id="nestGrid" \$\{nestTab !== 'recruits' \? 'hidden' : ''\}/.test(nest), '5. the card grid shows only on the Level 0 tab'); }
+  // 2026-10-24 (package NE, owner 17:01 #11: "The nest tabs say 'Hatchery', 'Upgrades'. No need for the level 0 tab."): Hatchery | Upgrades; the
+  // Level 0 cards (Younglings) moved into a nest's subwindow (tests/ne-2026-10-24.js). Was: Eggs | Level 0 | Upgrades, with the grid on Level 0.
+  ok(/facilityTabsHTML\('nest', nestTab, \[\['eggs', '🪺 ' \+ TX\('ui\.ne-nest-tab-hatchery'\)\], \['upgrades', '⬆️ ' \+ TX\('ui\.upgrades-tab'\)\]\]\)/.test(nest), '5. the Nest has Hatchery | ⬆️ Upgrades');
+  ok(/nestTab === 'upgrades' \? `<div class="facility-upgrades" id="nestUpgradesTab">\$\{staminaPanelHTML\('nest'\)[^`]*\$\{nestBuildRowHTML\(\)\}<\/div>` : nestKeeperHTML\(\)/.test(nest) && nest.split("staminaPanelHTML('nest')").length === 2, '5. the Nest\'s Max Energy and next nest are in its Upgrades tab only');
+  ok(/<div class="grid-view" id="nestGrid" hidden><\/div>/.test(nest), '5. no card grid on the Nest page (Younglings live in the nest subwindow)'); }
 { const tav = fnSrc('openTavern');
   ok(/facilityTabsHTML\('tavern', tavernTab, \[\['recruit', TX\('ui\.tavern-tab-recruit'\)\], \['upgrades', '⬆️ ' \+ TX\('ui\.upgrades-tab'\)\]\]\)/.test(tav), '5. the Tavern has 🤝 Recruit | ⬆️ Upgrades');
-  ok(/tavernTab === 'upgrades' \? `<div class="facility-upgrades" id="tavernUpgradesTab">\$\{staminaPanelHTML\('tavern'\)\}<\/div>` : tavernBeerHTML\(\) \+ tavernRecruitHTML\(\)/.test(tav) && tav.split("staminaPanelHTML('tavern')").length === 2, '5. the Tavern\'s Max Energy is in its Upgrades tab only');
+  // 2026-10-24 (package NE): the Upgrades tab also holds the deck slots since package UI4 (2026-10-23), so the stamina panel is no longer the tab's only content
+  ok(/tavernTab === 'upgrades' \? `<div class="facility-upgrades" id="tavernUpgradesTab">\$\{staminaPanelHTML\('tavern'\)\}[^`]*<\/div>` : tavernBeerHTML\(\) \+ tavernRecruitHTML\(\)/.test(tav) && tav.split("staminaPanelHTML('tavern')").length === 2, '5. the Tavern\'s Max Energy is in its Upgrades tab only');
   ok(/if\(!wasOpen\) fxHook\('tavernOpen'/.test(tav), '5. a tab switch does not replay the Tavern\'s hello'); }
 ok(/\$\{profileUpgradesHTML\(\)/.test(fnSrc('renderProfile')), '5. the Profile shows the upgrades summary');
 { const ctx = {TX, escapeAttr: esc, escapeHtml: esc, featureUnlockedSafe: k=> k !== 'tavern', facilityUpgradeState: p=> p === 'forge' ? {done: 2, of: 7, ready: true} : {done: 0, of: 8, ready: false}};
@@ -171,7 +174,7 @@ ok(/\.facility-tabs\{/.test(tpl) && /\.forge-mode\.has-ready::after/.test(tpl) &
 const KEYS = ['ui.keyring-title', 'ui.keyring-tip', 'ui.keyring-holds', 'ui.keyring-next', 'ui.keyring-btn', 'ui.keyring-max', 'toast.keyring-short', 'toast.keyring-up',
   'ui.dungeon-no-keys', 'ui.dungeon-keys-count', 'ui.dungeon-keep-climbing', 'ui.dungeon-each-floor-key', 'ui.dungeon-best-floor', 'ui.dungeon-refill-in', 'ui.dungeon-key-rule',
   'ui.dungeons-sub', 'ui.dungeon-keys-row', 'ui.dungeon-keys-left', 'ui.dungeon-fight-uses-key', 'toast.dungeon-key-used', 'ui.sweep-key-a-run', 'results.sweep-keys-used', 'ui.dungeon-sweep-tip',
-  'ui.upgrades-tab', 'ui.forge-upgrades-blurb', 'ui.tu2-nest-tab-eggs', 'ui.tu2-nest-tab-recruits', 'ui.tavern-tab-recruit', 'ui.nest-upg-title', 'ui.nest-upg-built', 'ui.nest-upg-next-map', 'ui.nest-upg-btn', 'ui.nest-upg-all',
+  'ui.upgrades-tab', 'ui.forge-upgrades-blurb', 'ui.ne-nest-tab-hatchery' /* 2026-10-24 (package NE): was ui.tu2-nest-tab-eggs / -recruits; ui.nest-upg-next-map went (#10: "Locked for now", no map) */, 'ui.tavern-tab-recruit', 'ui.nest-upg-title', 'ui.nest-upg-built', 'ui.nest-upg-btn', 'ui.nest-upg-all',
   'ui.upg-sum-title', 'ui.upg-sum-sub', 'ui.upg-sum-steps', 'ui.upg-sum-ready', 'ui.upg-sum-open', 'ui.place-forge', 'ui.place-nest', 'ui.place-tavern'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`'${k}'`), `6. ${k} is a TX key the code uses`));
 const RETIRED = ['toast.no-dungeon-tickets-left-a-new', 'toast.dungeon-key-in-the-lock-win', 'results.a-win-gives-your-key-back', 'results.dungeon-key-back', 'results.dungeon-key-lost-climb-resets'];

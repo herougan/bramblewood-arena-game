@@ -59,8 +59,10 @@ ok(TEXT['coach.tap-t-2-then-press-fight'] === '🎓 Tap T-2, then press ⚔️ F
 
 // --- 4. the Nest
 const nest = fnSrc('renderNest');
-ok(/\['eggs', '🥚 ' \+ TX\('ui\.tu2-nest-tab-eggs'\)\], \['recruits', '🌱 ' \+ TX\('ui\.tu2-nest-tab-recruits'\)\]/.test(nest) /* 2026-10-23 (release): emoji outside the TX text */, '4. two recruit tabs (+ Upgrades)');
-ok(/nestTab === 'recruits' \? Object\.keys\(defs\)\.filter\([^;]*nestHasLevel0Copy\(id\)/.test(nest), '4. the Level 0 tab lists only cards with a Level-0 copy');
+// 2026-10-24 (package NE, owner 17:01 #11): the Nest's tabs are Hatchery | Upgrades and its Level 0 cards ("Younglings") are a tab of a nest's
+// subwindow, still only the cards with a Level-0 copy (nurtureCandidates: nestHasLevel0Copy). Was: two recruit tabs on the page.
+ok(/\['eggs', '🪺 ' \+ TX\('ui\.ne-nest-tab-hatchery'\)\]/.test(nest) && /data-np-tab="young"/.test(fnSrc('openNestPicker')), '4. the Hatchery, and Younglings in the nest subwindow');
+ok(/nestHasLevel0Copy\(id\)/.test(fnSrc('nurtureCandidates')) && /kids = nurtureCandidates\(\)/.test(fnSrc('openNestPicker')), '4. Younglings lists only cards with a Level-0 copy');
 ok(!/ownedIds\.length \? nestGridHTML\(ownedIds, defs\)\s*\n\s*: `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own/.test(nest), '4. no list of every owned card');
 const fac = fnSrc('factionCopyLevel0');
 ok(/c\.level = 0; c\.lv0 = 1;/.test(fac) && /copyLevel\(id, x\) > 0/.test(fac), '4. a faction card\'s new copy comes at Level 0, unless the card is already raised');
@@ -89,7 +91,7 @@ ok(/PROGRESS_KEYS\.push\(RAID_BONUS_TICKET_KEY\)/.test(src), '8. it travels with
 
 // --- texts: every new TX key is used and translated in the 12 packs
 const keys = Object.keys(TEXT).filter(k=> /\.tu2-/.test(k) || k === 'coach.tap-t-2-then-press-fight');
-ok(keys.length >= 30, `the TU2 keys (${keys.length})`);
+ok(keys.length >= 24, `the TU2 keys (${keys.length})`); // 2026-10-24 (package NE): 6 Nest recruit-tab keys went with that tab (was >= 30)
 for(const k of keys){
   ok(src.includes(`'${k}'`), `${k} is used`);
   const en = TEXT[k].replace(LEAD, '');
