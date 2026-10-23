@@ -2012,7 +2012,7 @@
     color:var(--danger); text-shadow:0 0 18px color-mix(in srgb, var(--danger) 55%, transparent), 0 3px 0 rgba(0,0,0,.35);
     animation:fightSignIn 220ms cubic-bezier(.2,.9,.25,1.4) forwards;}
   .fight-sign.fight-sign-out{animation:fightSignOut 220ms ease-in forwards;}
-  .fight-sign.end-sign{font-size:72px; z-index:30; background:radial-gradient(ellipse at center, rgba(0,0,0,.35), transparent 65%);}
+  .fight-sign.end-sign{font-size:72px; z-index:30; background:radial-gradient(ellipse at center, rgba(0,0,0,.14), transparent 60%);} /* 2026-10-23 (package RW4, owner #10): was .35, darkened the board before the results */
   .fight-sign.end-victory{color:#ffd76a; text-shadow:0 0 24px rgba(255,200,80,.85), 0 4px 0 rgba(90,50,0,.6);}
   .fight-sign.end-defeat{color:#c9c2d6; text-shadow:0 0 18px rgba(40,30,60,.8), 0 4px 0 rgba(0,0,0,.5);}
   .fight-sign.end-draw{color:#f4ecd8;}
@@ -7422,7 +7422,7 @@
   @media (min-width:821px) and (max-width:1299px){ body.conquest-full .conquest-main > .map-layout-bar{position:absolute; top:122px; left:18px; max-width:calc(100% - 36px); z-index:7; margin:0;} }
   /* Reward reveal (2026-10-08): playRewardReveal() in arena_app.js. */
   .rr-stage{position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .rr-dim{position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(20,14,30,.55), rgba(6,4,10,.86));}
+  .rr-dim{position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(20,14,30,.38), rgba(6,4,10,.62));} /* 2026-10-23 (package RW4, owner #10): lighter; it rises with the first card (playRewardReveal) */
   .rr-hint{position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font:700 12px 'Baloo 2',system-ui,sans-serif; color:#f3e3bf; opacity:.7; letter-spacing:.05em; text-transform:uppercase;}
   .rr-card{position:relative; width:220px; height:275px;}
   .rr-card .rr-front, .rr-card .rr-back{position:absolute; inset:0;}
@@ -11288,6 +11288,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* 2026-10-12 (22:04, user: "in skirmish editor's deck editor, the card details pane is darkened and hidden below. Show it"): card
    details float above every modal, so the editor's deck popup and deck preview show them too. */
 #cardPop{z-index:2100 !important;}
+body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package RW4, owner #3): the card details show over the swap window */
 .deck-popup{width:min(1100px, 96vw); max-height:92vh; display:flex; flex-direction:column; gap:10px;}
 .dbp-deck{flex:0 0 auto; display:flex; flex-wrap:wrap; gap:14px 12px; padding:14px 12px 10px; border-radius:12px; background:rgba(125,82,42,.12); min-height:126px; max-height:34vh; overflow-y:auto;}
 .dbp-tools{flex:0 0 auto; display:flex; gap:8px;} .dbp-tools input{flex:1;}
@@ -11962,7 +11963,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
   .ds2{width:min(600px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55); transform-origin:50% 55%;}
   /* 2026-10-17 (user: "Left is your deck, Right is cards not in your deck"): two columns, each its pick, ‹ › and the other candidates. */
-  .ds2-stage{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:54px;} /* 2026-10-18 (package U, user: "In the swap window, place the left cards UI and the right to-swap UI abit further apart."): 34 -> 54px; phones 18 -> 30px */
+  .ds2-stage{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:96px;} /* 2026-10-18 (package U, user: "In the swap window, place the left cards UI and the right to-swap UI abit further apart."): 34 -> 54px; phones 18 -> 30px */
   .ds2-col{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0;}
   .ds2-col-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:#7a5a30;}
   .ds2-pick{display:flex; align-items:center; gap:4px;}
@@ -11970,10 +11971,21 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   .ds2-nav:hover, .ds2-nav:focus-visible{background:rgba(138,90,32,.28);}
   .ds2-thumbs{display:flex; gap:6px; justify-content:center;}
   .ds2-thumb{position:relative; padding:0; border:2px solid transparent; border-radius:9px; background:none; cursor:pointer; opacity:.55; filter:saturate(.7); transition:opacity .15s, transform .15s;}
-  .ds2-thumb .card-tile{width:46px !important; pointer-events:none;}
+  .ds2-thumb .card-tile{width:46px !important; border-radius:4px;} /* 2026-10-23 (package RW4, owner #3): a squarer mini card; hover reaches the tile (card details) */
+  .ds2-thumb{border-radius:6px !important;}
   .ds2-thumb.is-on{opacity:1; filter:none; border-color:#c9a25a; transform:translateY(-2px);}
   .ds2-thumb:hover{opacity:.9;}
   .ds2-rec{position:absolute; top:-7px; right:-6px; font-style:normal; font-size:11px; line-height:1; padding:2px 3px; border-radius:999px; background:#e9b949; color:#4a2c08; box-shadow:0 1px 3px rgba(0,0,0,.3);}
+
+  /* 2026-10-23 (package RW4, owner 13:16 #6 #7 #13 #14): NEW! on a freshly revealed skill; first-clear items as bare icons; the energy panel's capsule row; the card back in the drops line */
+  .sk-new{display:inline-block; font:900 10px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; color:#4a2c08; background:#e9b949; border-radius:4px; padding:2px 4px; vertical-align:middle; box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .cnp-rw-item{display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; font-size:28px; line-height:1; padding:0 4px; cursor:help; filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));}
+  .cnp-rw-item.is-got{filter:grayscale(1) brightness(.7);}
+  .cnp-rw-item:focus-visible, .cnp-rw-cur:focus-visible{outline:2px solid #ffd76a; outline-offset:2px; border-radius:8px;}
+  .rw-act.rw-icon-only{font-size:20px; padding:3px 8px; gap:0;}
+  .ep-cap{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:6px 8px; border-radius:10px; background:rgba(138,90,32,.12);}
+  .ep-cap-l{display:flex; align-items:center; gap:8px; line-height:1.15; font-size:15px;} .ep-cap-l i{font-style:normal; font-size:22px;} .ep-cap-l span{display:flex; flex-direction:column; align-items:flex-start;} .ep-cap-l small{font-size:11px; opacity:.8;}
+  .cnp-drop-back{display:inline-block; width:15px; aspect-ratio:4/5; border-radius:3px; vertical-align:-3px; box-shadow:0 1px 2px rgba(0,0,0,.4);}
   .ds2-old .card-tile, .ds2-new .card-tile{width:112px !important;}
   .ds2-old, .ds2-new{transition:transform .6s cubic-bezier(.3,1.3,.5,1), opacity .5s ease, filter .5s ease;}
   .ds2-new{filter:drop-shadow(0 0 10px rgba(255,214,110,.8));}
@@ -11987,7 +11999,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
     .ds2-overlay{align-items:flex-end; padding:0;}
     .ds2{width:100%; max-height:78vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 10px calc(12px + env(safe-area-inset-bottom)); transform-origin:50% 100%;}
     .ds2-lbl-x{display:none;}
-    .ds2-stage{gap:30px;}
+    .ds2-stage{gap:52px;}
     .ds2-nav{width:22px; height:38px; font-size:18px;}
     .ds2-thumb .card-tile{width:36px !important;}
     .ds2-arrows{top:76px; font-size:18px;}
@@ -12004,24 +12016,24 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   @media (prefers-reduced-motion: reduce){ .ds2-actions.is-again .btn{animation:none;} }
   /* 2026-10-23 (package UI4, owner 01:03 #3): the several-swap window (a faction pack's cards), rows inside the same .ds2 window */
   .ds3{width:min(520px, 100%);}
-  .ds3-head{display:grid; grid-template-columns:1fr 26px 1fr 64px; gap:8px; margin:0 0 6px;}
+  .ds3-head{display:grid; grid-template-columns:1fr 40px 1fr 64px; gap:16px; margin:0 0 6px;}
   .ds3-head .ds2-col-h:first-child{grid-column:1;} .ds3-head .ds2-col-h:last-child{grid-column:3;}
   .ds3-rows{display:flex; flex-direction:column; gap:8px; max-height:min(58vh, 560px); overflow-y:auto; overflow-x:hidden; padding:4px 2px;}
-  .ds3-row{position:relative; display:grid; grid-template-columns:1fr 26px 1fr 64px; align-items:center; gap:8px; padding:6px 8px; border-radius:14px; background:rgba(138,90,32,.08); transition:opacity .2s, background .2s;}
+  .ds3-row{position:relative; display:grid; grid-template-columns:1fr 40px 1fr 64px; align-items:center; gap:16px; padding:6px 8px; border-radius:14px; background:rgba(138,90,32,.08); transition:opacity .2s, background .2s;}
   .ds3-row.is-off{opacity:.5;} .ds3-row.is-off .ds2-new{filter:none;}
   .ds3-side{display:flex; align-items:center; justify-content:center; gap:3px; min-width:0;}
   .ds3-card{padding:0; border:0; background:none; cursor:pointer;}
-  .ds3-row .ds2-old .card-tile, .ds3-row .ds2-new .card-tile{width:86px !important; pointer-events:none;}
+  .ds3-row .ds2-old .card-tile, .ds3-row .ds2-new .card-tile{width:86px !important;} /* 2026-10-23 (package RW4): no pointer-events:none, so hovering shows the card details */
   .ds3-arrow{font-size:20px; font-weight:800; color:#8a5a20; text-align:center;}
-  .ds3-names{grid-column:1 / 4; display:grid; grid-template-columns:1fr 26px 1fr; margin-top:-4px; font:800 11.5px/1.15 'Baloo 2',system-ui,sans-serif; color:#5a4630;} .ds3-names span{text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .ds3-names span + span{grid-column:3;}
+  .ds3-names{grid-column:1 / 4; display:grid; grid-template-columns:1fr 40px 1fr; column-gap:16px; margin-top:-4px; font:800 11.5px/1.15 'Baloo 2',system-ui,sans-serif; color:#5a4630;} .ds3-names span{text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .ds3-names span + span{grid-column:3;}
   .ds3-tick{display:flex; flex-direction:column; align-items:center; gap:2px; font:800 11px/1.1 'Baloo 2',system-ui,sans-serif; color:#6b4418; cursor:pointer;}
   .ds3-tick input{width:22px; height:22px; accent-color:#3a8f4b; cursor:pointer; margin:0;}
   .ds3-row.is-swapped .ds2-old{opacity:.45; filter:grayscale(1);} .ds3-row.is-skipped{opacity:.35;}
   .ds3-row.is-swapped .ds2-nav, .ds3-row.is-swapped .ds3-tick, .ds3-row.is-swapped .ds3-arrow, .ds3-row.is-skipped .ds3-tick{opacity:0; pointer-events:none; transition:opacity .2s;}
   .ds2-overlay.is-done .ds3-rows{overflow:visible;}
   @media (max-width: 560px){
-    .ds3-head, .ds3-row{grid-template-columns:1fr 18px 1fr 46px; gap:4px;}
-    .ds3-names{grid-template-columns:1fr 18px 1fr; font-size:10.5px;}
+    .ds3-head, .ds3-row{grid-template-columns:1fr 22px 1fr 46px; gap:8px;}
+    .ds3-names{grid-template-columns:1fr 22px 1fr; column-gap:8px; font-size:10.5px;}
     .ds3-row{padding:4px;}
     .ds3-row .ds2-old .card-tile, .ds3-row .ds2-new .card-tile{width:72px !important;}
     .ds3-rows{max-height:52vh;}

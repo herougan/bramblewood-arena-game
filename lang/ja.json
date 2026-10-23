@@ -2958,5 +2958,14 @@
  "The Hollow Warren is cleared!": "うつろの巣穴を踏破！",
  "The climb is over": "挑戦は終わりました",
  "Floors cleared: {n}/{total}": "突破した階：{n}/{total}",
- "Back to the dungeons": "ダンジョンへ戻る"
+ "Back to the dungeons": "ダンジョンへ戻る",
+ "Good Choice!": "いい選択！",
+ "A card you'll get with this win.": "この勝利でもらえるカード。",
+ "You get {n} Maple Leaves.": "メープルの葉を{n}枚もらえます。",
+ "You get {n} Magic Dust.": "魔法の粉を{n}個もらえます。",
+ "Energy capsules: {n}": "エネルギーカプセル：{n}",
+ "+{n} Energy each": "1個につき+{n}エネルギー",
+ "Use": "使う",
+ "An egg! You'll need a nest to hatch it!": "たまご！ふ化させるには巣が必要です！",
+ "You got an egg!": "たまごを手に入れた！"
 }

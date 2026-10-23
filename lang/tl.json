@@ -2958,5 +2958,14 @@
  "The Hollow Warren is cleared!": "Natapos ang Guwang na Lungga!",
  "The climb is over": "Tapos na ang pag-akyat",
  "Floors cleared: {n}/{total}": "Natapos na palapag: {n}/{total}",
- "Back to the dungeons": "Bumalik sa mga dungeon"
+ "Back to the dungeons": "Bumalik sa mga dungeon",
+ "Good Choice!": "Magandang pili!",
+ "A card you'll get with this win.": "Isang card na makukuha mo sa panalong ito.",
+ "You get {n} Maple Leaves.": "Makakakuha ka ng {n} Dahon ng Maple.",
+ "You get {n} Magic Dust.": "Makakakuha ka ng {n} Mahiwagang Alikabok.",
+ "Energy capsules: {n}": "Mga Energy capsule: {n}",
+ "+{n} Energy each": "+{n} Energy bawat isa",
+ "Use": "Gamitin",
+ "An egg! You'll need a nest to hatch it!": "Isang itlog! Kakailanganin mo ng pugad para mapisa ito!",
+ "You got an egg!": "Nakakuha ka ng itlog!"
 }

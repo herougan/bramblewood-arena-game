@@ -2960,5 +2960,14 @@
  "The Hollow Warren is cleared!": "வெற்றுப் புதர்க்குகை வெல்லப்பட்டது!",
  "The climb is over": "ஏற்றம் முடிந்தது",
  "Floors cleared: {n}/{total}": "முடிந்த தளங்கள்: {n}/{total}",
- "Back to the dungeons": "நிலவறைகளுக்குத் திரும்பு"
+ "Back to the dungeons": "நிலவறைகளுக்குத் திரும்பு",
+ "Good Choice!": "நல்ல தேர்வு!",
+ "A card you'll get with this win.": "இந்த வெற்றியில் உனக்குக் கிடைக்கும் ஒரு அட்டை.",
+ "You get {n} Maple Leaves.": "{n} மேப்பிள் இலைகள் கிடைக்கும்.",
+ "You get {n} Magic Dust.": "{n} மந்திரத் தூள் கிடைக்கும்.",
+ "Energy capsules: {n}": "ஆற்றல் காப்ஸ்யூல்கள்: {n}",
+ "+{n} Energy each": "ஒவ்வொன்றும் +{n} ஆற்றல்",
+ "Use": "பயன்படுத்து",
+ "An egg! You'll need a nest to hatch it!": "ஒரு முட்டை! அதைப் பொரிக்க உனக்கு ஒரு கூடு தேவை!",
+ "You got an egg!": "உனக்கு ஒரு முட்டை கிடைத்தது!"
 }

@@ -89,7 +89,7 @@ ok(/function ds2CrossSwap/.test(app) && /ds2CrossSwap\(ov\);/.test(app), '3. the
 ok(/keptRows\.forEach\(old=>/.test(app) && /el\.__bwMatch === m/.test(app), '3. the results keep the board rows (no redraw under them)');
 ok(/function fitTopRowControls/.test(app) && /\.top-row-controls\.is-compact \.trc-lbl/.test(tpl) && /👑<span class="trc-lbl"> Auto-win<\/span>/.test(app), '3. the top row goes icon-only when short; Auto-win / Auto-play have labels to drop');
 ok(/--env-tight:calc\(1 \+ \.8 \* min\(1, max\(0, \(var\(--n, 1\) - 2\) \/ 4\)\)\)/.test(tpl), '3. the Environment fan tightens up to 1.8x');
-ok(/data-tip="\$\{escapeAttr\(kd\.desc\)\}"/.test(app), "3. the results' item chip says what the item does");
+ok(/data-tip="\$\{escapeAttr\(kd\.name \+ ': ' \+ kd\.desc\)\}"/.test(app), "3. the results' item chip says what the item does (RW4, 2026-10-23: its name, then what it does; the chip is the icon alone)");
 ok(/const fit = L=> early != null \? Math\.max\(0, L\) : Math\.max\(base, L\);/.test(app), "3. the map panel's enemy tiles follow the fight's level (EB's Level 0 too)");
 ok(/is-desk-centre/.test(app) && /html\.is-desk-centre #appWrap\.in-match\{padding-top:var\(--fs-shift/.test(tpl), '3. a desktop window centres the field outside full screen too');
 ok(/\.fxd-seal\{position:absolute; left:50%; top:calc\(50\.5% - 19px\)/.test(fxd) && /\.po2-label \.po2-ico\{position:absolute; top:0; left:50%; margin:0;/.test(tpl), "3. the pack's seal and badge stay off its name");

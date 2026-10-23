@@ -2178,7 +2178,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-run-cleared": "The Hollow Warren is cleared!",
   "ui.ar3-run-over": "The climb is over",
   "ui.ar3-floors-cleared": "Floors cleared: {n}/{total}",
-  "ui.ar3-back": "Back to the dungeons"
+  "ui.ar3-back": "Back to the dungeons",
+  "ui.rw4-swap-good": "Good Choice!",
+  "ui.rw4-tip-card-token": "A card you'll get with this win.",
+  "ui.rw4-tip-leaves-t": "Maple Leaves",
+  "ui.rw4-tip-leaves": "You get {n} Maple Leaves.",
+  "ui.rw4-tip-dust-t": "Magic Dust",
+  "ui.rw4-tip-dust": "You get {n} Magic Dust.",
+  "ui.rw4-capsules": "Energy capsules: {n}",
+  "ui.rw4-capsule-each": "+{n} Energy each",
+  "ui.rw4-use": "Use",
+  "ui.rw4-egg-nest": "An egg! You'll need a nest to hatch it!",
+  "ui.rw4-got-egg": "You got an egg!"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
