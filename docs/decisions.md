@@ -4,6 +4,124 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**PR-1. Map 0: a sure card on the first clear only** · Decide · Rewards · asked 2026-10-23
+- Your report: 0-1 paid a card on 5 of 5 wins. Cause: the 2026-10-13 rule "every win on Map 0 brings a card" paid a card on every Map 0 win, skipping the drop chance the fight panel shows. Built (PR): the sure card comes with the first clear only; replays roll the panel's drop (3% for 0-1). The other choice keeps a card on every Map 0 win and changes the panel to say so.
+  - First clear only (built)
+  - Every Map 0 win
+- **Default:** First clear only (built)
+
+**RW4-1. How much better is "much better" from fight 2-1** · Decide · Swap · asked 2026-10-23
+- Built (RW4): from your first fight on Map 2 a swap window opens only when the incoming card scores at least 35% (and at least 2 points) above the deck card, by the stat budget (2A + H + skills). "As good or better in every stat" no longer counts on its own. Maps 0 and 1 and the forced teaching swaps keep today's 10% rule. The numbers are three named constants (SWAP_MUCH_BETTER_MARGIN, _MIN_GAIN, _FROM_MAP) so they can scale by rarity and collection score later.
+  - 35% and +2 points (built)
+  - 25%
+  - 50%
+- **Default:** 35% and +2 points (built)
+
+**RW4-2. Where the NEW! tag for a revealed skill shows** · Decide · Skills · asked 2026-10-23
+- Built (RW4): the "Skill revealed" popup is off. When a map opens a hidden skill (Diurnal on Map 1, Tide on Map 2) its line in the card details wears a small NEW! tag, one skill at a time, until the next fight starts after you saw it. Crepuscular and Nocturnal never get a tag. Say if you would rather have the tag on the skill chip on the card face too, or on the Skills codex entry.
+  - Card details only (built)
+  - Also the card-face chip
+  - Also the Skills codex
+- **Default:** Card details only (built)
+
+**RW4-3. The B label on items (#14)** · Decide · Rewards · asked 2026-10-23
+- Built (RW4): items (Energy capsule, Raid Ticket, field-kit items) are bare icons in the first-clear box and on the results, explained on hover, and never carry a rank emblem. I read "don't show the B rank/unlock label on them" as the rank hex on item chips. The rank hex on a reward CARD (and after the card back in the "Possible drops" line) is unchanged. Tell me if the B you saw was on something else.
+  - Items only, cards keep it (built)
+  - Drop it from the drops line too
+- **Default:** Items only, cards keep it (built)
+
+**RW4-4. The egg: no toast, "You got an egg!" on the results** · Decide · Rewards · asked 2026-10-23
+- Built (RW4): finding an egg shows no toast. The results screen's egg chip reads "You got an egg!" and its hover says "An egg! You'll need a nest to hatch it!" until the Nest opens. The old long line that named the Map and the Nest is gone. If you meant the toast itself to say "You got an egg!", that is a one-line change.
+  - No toast (built)
+  - Short toast "You got an egg!"
+- **Default:** No toast (built)
+
+**AR3-6. Apply the Group Dungeon SQL: 3-4 player online rooms** · Apply · Server · asked 2026-10-23
+- supabase/proposed/20261023_coop_rooms_4p.sql (not applied). Live today, coop_rooms seats a host and ONE guest, so an online Group Dungeon room takes 2 players. The file adds seats for 4 (coop_room_members, RLS on), join_coop_room_v2 (friends of the host only, seats C, D, B; a rejoin keeps its seat), leave_coop_room, promote_coop_host (host migration recorded) and private room channels (only a room's members hear its topic). The game finds it by itself once applied. Checked on a throwaway local Postgres with stand-ins for Supabase's auth and realtime: applied twice, 4 joins, a 5th refused, a non-friend refused, an outsider can't send on the room's topic.
+  - Apply it
+  - Not yet
+- **Default:** Not yet
+
+**AR3-1. Group Dungeon rows: 7 columns (3 + shared centre + 3)** · Decide · Dungeons · asked 2026-10-23
+- D49 drew 10 cells a row (4 left, 2 shared, 4 right). Built on the raid's board, which is 7 columns: each seat has 3 cells and the centre column is shared by the row's two seats. A 2-seat party (1-2 players) plays columns -3..0 only; the right half is blocked ground on both sides.
+  - As built (7 columns, 1 shared)
+  - 10 columns (4 + 2 shared + 4)
+- **Default:** As built (7 columns, 1 shared)
+
+**AR3-2. Who sees the Group Dungeon** · Decide · Dungeons · asked 2026-10-23
+- The Dungeons tab now opens for every player past the tutorial, holding only the Group Dungeon (and the Spire once open). The daily dungeons stay hidden (TU2): no daily slots, no keys row and no key button for players. Admin Mode sees everything as before.
+  - As built (after the tutorial)
+  - Only after a map is cleared (say Map 3)
+  - Admins only until it is tested live
+- **Default:** As built (after the tutorial)
+
+**AR3-3. Group Dungeon cost: 5 Energy a climb** · Decide · Dungeons · asked 2026-10-23
+- The design sets no cost. Built: each player pays 5 Energy when the climb starts, given back if the party clears no floor (as a lost Spire floor). No daily dungeon key (the keys are hidden with the daily dungeons).
+  - As built (5 Energy, back if nothing cleared)
+  - A dungeon key
+  - Free
+- **Default:** As built (5 Energy, back if nothing cleared)
+
+**AR3-4. Group Dungeon rewards** · Decide · Rewards · asked 2026-10-23
+- Each player's own game pays each floor's chest: 40 / 55 / 70 / 120 Maple Leaves and 10 / 14 / 18 / 40 Magic Dust. Clearing the Matriarch offers a pick of 3 of the dungeon's own cards (the Salamander Pools' and the Matriarch's decks), once a day per player. D49's co-op-only card pool doesn't exist: those would be new cards.
+  - As built
+  - Design a co-op-only card pool
+  - The pick once a week
+- **Default:** As built
+
+**AR3-5. Group Dungeon cards fight at Level 1** · Decide · Dungeons · asked 2026-10-23
+- Every card fights at Level 1 (Standard, as Ranked Live, D74), so every player's game runs the very same fight from the plans alone. Your own levels would need each player's card stats sent and checked.
+  - As built (Level 1)
+  - Each player's own levels
+- **Default:** As built (Level 1)
+
+**AR3-7. Party size counts CPU allies** · Decide · Dungeons · asked 2026-10-23
+- D49 scales the dungeon's Health x1 / x1.7 / x2.3 / x2.8 for 1-4 players. Built by seats on the board, CPU allies included: a solo player with a CPU ally fights two decks, as a duo does, so both get x1.7; a 4-seat board x2.8. CPU parties (tools/coop_sim_2026_10_23.js, 40 runs, each floor's rate among parties that reached it): 2 seats 95% / 82% / 52% / 38%; 4 seats 100% / 98% / 92% / 47%.
+  - As built (seats)
+  - Human players only
+- **Default:** As built (seats)
+
+**AR3-8. Group Dungeon placement: any free cell of your half** · Decide · Battle rules · asked 2026-10-23
+- A seat plays into any free cell of its own half (and the shared centre), not only beside a unit as in other open fights; the back-row seats play their row directly. A back-row unit steps up when the cell ahead empties (D49), into the front seat's half. What combat gives the party (draws, Bounty Lumber) goes to the round's lead seat, which rotates.
+  - As built
+  - The usual beside-a-unit rule
+- **Default:** As built
+
+**AR3-9. Group Dungeon board: its own screen for now** · Decide · UI · asked 2026-10-23
+- The fight is drawn on a co-op board of its own (the cave screen in docs/screens/ar3/), not on the animated battle board: each round's result appears when it lands, without hit animations. Porting it to the main battle board (animations, hover details) would be a follow-up package.
+  - As built for now, port next
+  - Keep its own board
+- **Default:** As built for now, port next
+
+**FX4-1. The line of fire's name: Wildfire Front** · Decide · Battle rules · asked 2026-10-23
+- Your 11:11 answer on FX3-1: "Still do the line of fire thing ... all take 1 fire damage ... (Find a name for this field effect)". Built (FX4): the line of fire is its own field effect, Wildfire Front (rules.wildfire): from round 2, every round, a flame band crosses both front lines from left to right and each unit takes 1 fire as the band reaches it (fire-resistant units, Lava Waders wearers and Mountain Climbers are passed by). On 14-6 Jaguar Run (Savanna Reaches, was Scorching I) and 20-8 The Iron Cataphract (Sundered Peak, was Scorching III, which FX3 had already turned into Scorched Ground); one ground fire a fight, so neither has Scorched Ground or Scorching beside it. In Edit skirmish as "Wildfire Front". Its card borrows Scorching's picture until it has its own.
+  - Wildfire Front
+  - Grass Fire
+  - Fire Line
+- **Default:** Wildfire Front
+
+**FX4-2. How often Wildfire Front burns** · Decide · Balance · asked 2026-10-23
+- Built: every round from round 2, 1 fire to every unit on both front lines (FX3's line as it was). On a full board that is 5 a side a round, more than Scorched Ground's 1 a side. Both sides take it, so it mostly shortens the fight and punishes low-Health swarms.
+  - Every round (as built)
+  - Every other round
+  - Every 3rd round
+- **Default:** Every round (as built)
+
+**FX4-3. Scorched Ground's hit on its one unit: 1 or 2** · Decide · Balance · asked 2026-10-23
+- Your 11:11 answer on FX3-1: "it only hits one unit. It looks like the ground boils beneath the units chosen." Built: one random unit a side, 1 fire, every round from round 2 (your FX3 rule "1 for every turn ones"), shown as a lava pool boiling under the chosen card. Your other rule ("2 for single target") would make it 2, as the Eruption and Lava Tide are. Map 20's elite and boss fights and 22-7 carry it.
+  - 1 (an every-round hazard, as built)
+  - 2 (a single target)
+  - The fight's own number again (elites 2, bosses 3)
+- **Default:** 1 (an every-round hazard, as built)
+
+**FX4-4. Lava Waders: stats, price and where it comes from** · Decide · Cards · asked 2026-10-23
+- Your 11:11 answer on FX3-3: "let's create a fire resistant boots equipment like lava waders that gives units Fire Resistance". Built: Lava Waders, Uncommon equipment, Lumber 1, +0/+3 and Fire Resistance (fire hits halved; the volcano's ground fires, Scorched Ground and Wildfire Front pass the wearer by). By formula (its grant counted as its skills, like the other Blacksmith pieces): N 15.88 at Level 1; 2A+H+S = 4, well under. Resist has no price of its own in canonical/skill-costs.json, so it counts the default 1. Source: the Blacksmith (2 Iron Shards, 1 Ember Core and a Basalt Boar, a Sundered Peak card; 300 Dust and 400 Leaves), because packs and skirmish rewards never give equipment today. Placeholder icon; NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md.
+  - As built (+0/+3, Blacksmith)
+  - +1/+2 instead
+  - Rare, +0/+5
+  - A volcano skirmish reward (equipment rewards to be allowed)
+- **Default:** As built (+0/+3, Blacksmith)
+
 **BF11-1. 23 cards the new cap would cut down: held at their stats** · Decide · Balance · asked 2026-10-23
 - With cap 2 at 2×(N/3)², these cards (over budget before, kept as they were) now have a legal line, but it is lower than their stats, so the re-fit would cut them: alley-cat 1/8 → 1/6; colony 0/11 → 0/9; honey-badger-fury 2/9 → 1/7; chipmunk-hoarder 3/8 → 2/5; pyroclast-wyrm 5/17 → 3/12; otter-guard 4/8 → 3/6; tunnel-ant 2/9 → 2/8; beaver-lumberjack 4/4 → 2/2; sunfeather-scout 1/7 → 1/4; sunspire-choirmother 3/6 → 2/5; old-willow-of-the-ford 2/24 → 2/20; thornwood-palisade 0/16 → 0/12; the-contradiction 2/19 → 1/14; magma-wraith 1/9 → 1/6; lone-grey-wolf 4/15 → 1/3; puffball-bombardier 1/10 → 1/8; sheep 1/7 → 1/4; starfall-owl 5/26 → 2/11; fumarole-ibex 1/13 → 1/11; battlement-heron 1/14 → 1/10; ashmantle-fiend 5/22 → 4/17; truffle-piglet 3/11 → 2/8; krill-swarm 1/7 → 1/5. The biggest: Lone Grey Wolf 4/15 → 1/3 and Starfall Owl 5/26 → 2/11. They were held at their stats; the cure would usually be trimming a skill instead.
   - Hold them, trim skills per card later
@@ -136,6 +254,10 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** Rarer SS / SSS notices (about 0.5%)
 
 ## Decided
+
+**MAP2-AP. Armor Piercing first appears on Map 2** · Decide · Content · asked 2026-10-23
+- Owner, 2026-10-23 13:16: "Armor piercing: Which map? Map 2".
+- **Outcome:** Map 2
 
 **SX-1. The armour konk is folded into the new armour ting** · Decide · Sound · asked 2026-10-23 · decided 2026-10-23
 - Your #95: a target-modifier sound after the source's. Built (SX): every damage mark plays its own short cue 75 ms after the hit (armour ting, full-block ring, Shield thud, Shell tok, Sturdy thunk, stone clack, Resist / Rage / Scare muffle, Fragile crack, Weakness sting, Shock zap, Immune whiff). Armor already had the 10-16 konk ("the attacker hit metal"); two metal sounds on one hit blurred, so the ting carries a soft konk body and the separate konk now plays only in replays recorded before the marks existed.
@@ -792,7 +914,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Keep the slot for now
   - Remove the slot
 - **Default:** Keep the slot for now
-- **Outcome:** Owner (10-23 00:10): "AR-3 This is a big pass. I like this. Can you launch a big pass for this." Build the co-op dungeon next (the first option), as one large pass. To build in package AR3.
+- **Outcome:** Owner (10-23 00:10): "AR-3 This is a big pass. I like this. Can you launch a big pass for this." Build the co-op dungeon next (the first option), as one large pass. To build in package AR3. Built (AR3): the Group Dungeon, the Hollow Warren (4 floors: the Bat Roost; the Mole Galleries, cave-ins; the Salamander Pools, a cursed centre; the Matriarch's Hall, the Hollow Matriarch and her marked column). The Dungeons tab's Group Dungeon slot is the entrance now (Open a room / Play with CPU allies / Join by code; invites from the friends list), shown to every player past the tutorial while the daily dungeons stay hidden. A room seats 2-4 players (the host A, then C, D, B; 3 players add a CPU ally in B), ready-up, leave, host migration (the next player in seat order takes over; a player who can't run the fight ends the run cleanly), drops played by a CPU ally and reconnects. The fight: the raid's multi-row engine board (a front and a back row a side, 7 columns: each row's left seat, the shared centre, the right seat), simultaneous plans with a 30 s timer (60 s casual), landing A, B, C, D then the dungeon; a shared-cell contest goes to who locked first; one host runs the engine and sends each round's plans; every other player replays them on the same seeded engine (a hash per round checks it; a player out of step mirrors the host's state until the next floor). Rewards per player: each floor's chest (Maple Leaves and Magic Dust), the Matriarch's pick of three of the dungeon's own cards (once a day); 5 Energy per climb, back if no floor is cleared. Online today: 2 players (the live coop_rooms seats a host and one guest); 3-4 online wait for supabase/proposed/20261023_coop_rooms_4p.sql (AR3-6). Local: 2-4 players in tabs of one browser. Solo: you and CPU allies.
 
 **AR-4. The match log is this device's last 40 fights** · Decide · Profile · asked 2026-10-21 · decided 2026-10-23
 - Recent opponents moved from the Arena to the Profile as a match log with PvP and PvE tabs (opponent, mode, result, date, the deck you faced, and from now on your deck's name). It is what this device records: the last 40 fights (was 20), not Ranked Live, which stays in the signed-in Match History below it. Syncing the log to the account would need a new column or table (SQL for your apply).
