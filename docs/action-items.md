@@ -393,6 +393,7 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 | Card backings | ✅ By card type (10-16): Unit, Structure, Castle and Field effect backs in `art/backings/`. Still open: faction backs as images (faction packs still use the CSS placeholders on their unit cards) |
 | Evade to non-swimmers | ✅ Built to test (10-16): Admin → 🧪 Rule tests → 🌊 Tide evade, also in the Test Lab and the skirmish editor. Off for players |
 | Journeys | Hidden for now (`JOURNEYS_HIDDEN`). While hidden nobody gets the subfaction cards, which only Journeys give |
+| Spirits, amalgams, ethereal creatures (owner 10-23 20:44) | Non-combat ways to make cards for Pack 7+ (expensive, needs unique resources): star forges; spirits found like eggs, made corporeal; certain animals combined into amalgams, or turned ethereal by another mechanic. Ties to E10 (the combining/converting page). Design first, not built. |
 | The rest | Pool of card and play ideas in `docs/design-notes-2026-10-14-ideas.md`; late game in `docs/design-2026-10-14-late-game.md` |
 
 ## Done at 2026-10-16 07:00 (all your notes from 10-14 10:45 to 10-16 04:58)

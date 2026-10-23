@@ -31,6 +31,12 @@ Use this setup for any new skill-worth measurement. It is fast and every result 
 - **Robust mode** (package ST, owner 2026-10-22 18:20: "lumber, wait, multi-skill ... Field effects of various types"): `tools/skill_test_robust.js --mono|--duo|--multi`. Each unit of both decks draws a rarity / Wait 0-3 / Lumber 0-3 profile from the live band cards and gets its stats from the budget (Level 1, the skill's S priced in; the enemy 0.8x a vanilla unit's points, `--foe-ratio`, since at the owner's 19/16 the vanilla deck never wins). Each fight rolls its field from `FIELD_CONFIG` at the top of the tool: Day/Night and Tide 20% each, each uncommon field 2%, each rare one 0.2%, and 20% of fights get one more non-common field (classes from `--census`, `docs/balance/field-census-2026-10-22.json`). `--multi`: each unit carries the skill and 0-2 live companions, read as the marginal worth (with minus without). The report gives per skill its net (+ = under-priced), the stat points paid, the worth, and the worth per field condition. `--seed`, `--games` (10,000), `--jobs 2`, `--skills`, `--quick` (smoke). Output: `docs/balance/skill-test-robust-<modes>-<date>.json` + `.md`. The full sweep takes most of a day on 2 cores; run it alone.
 - Fixed-number skills (damage, heals, armor, +N stats) are priced by the amount they deal. Relative skills (that multiply or copy the unit's own stats, speed or odds) scale with stats. When stats change scale, re-measure the relative ones first.
 
+## Pricing by logic: the owner's 4-round rule (owner, 2026-10-23 20:44)
+"balancing - just logic is sufficient. To me, in my head, i compare to the effect of 1 attack or health across 4 rounds to estimate. On play arrow is equivalent to only N damage across 4 rounds but it has the advantage of on play!"
+- Yardstick: +1 Attack or +1 Health held over a typical 4-round life. Price a skill by what it does over those 4 rounds in that currency, then adjust for timing (on play, first strike, Wait) and reliability (conditions, odds).
+- Example: On Play Arrow N deals N once, so it is worth less than +N Attack over 4 rounds, plus a premium for landing at once.
+- Measurement (the robust skill test) is optional: use it when cheap; otherwise price by this logic and say so in the cost entry's note.
+
 ## Checks
 `node tests/run.js --only 'level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool'`, then the card matrix. Reviewed golden changes are accepted at release.
 
