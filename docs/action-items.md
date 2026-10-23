@@ -1,5 +1,23 @@
 # Action items
 
+## 10-23 17:34: building
+
+From the owner's 10-23 17:34 answers and Claude's sweep of the easy defaults at his request (#7, package DC3). Quotes and meaning in `docs/decisions.json`. His other 17:34 notes (wind lines, Boomerang, Bleed, Swarm, deck UI, ...) are briefed separately.
+
+| Decision | Package | Item |
+|---|---|---|
+| DF-1 | Later package (balance) | The budget's Map term back to 0.2 per map (`perMap` is 0.1 since BF6); a pack card's map is the first main-line map it appears on, never a submap (was: where its pack goes on sale). Change `cardObtainMap`, regenerate `canonical/card-obtain-maps.json`, re-fit the cards. |
+| DF-2 | Later package (balance) | Base cards stop at Lv 4 and pay the full Forge cost; a fight's own first-clear card drops 10% a repeat. Count the grind to each tier's gate in the model (his note). |
+| DF-3 | Later package (map effects) | Selfish boons: one per map from Map 5 (the 15 proposed), on every fight of the map, on at half the enemy deck sharing the theme; the Environment card shows the count. |
+| DF-4 | With DF-3 | Retune Maps 7, 11 and 14 to the road targets in the same pass as DF-3's road retune. |
+| RW3-2 | Later package (raids) | Notice rates: SS about once a month, SSS about once every 2-3 months for a full-clearing player (passive: first one after about 6-8 months); check the tickets' 40% cut doesn't stack. |
+| TU2-3 | Small editor package | The tutorial brambles' Health in the editor is the value the tutorial fights use (9 and 11 stay until he edits them). |
+| H1 | Later package (design + build) | Materia socketing: Unique rarity and above take one materia (gem) socket, never more; applying and removing both cost (placeholder prices, editable in the hub). |
+| AR3-9 | Later package (UI) | Port the Group Dungeon to the main animated battle board. |
+| A3 | Waiting on A1 | Trailer prompts are ready (`docs/art-style-prompts.md`, "Trailer (A3)"); generating the clips needs his keys, caps and an OK on the spend. |
+
+Still waiting on the owner (9): FLY-1, DF-1b (his own play-through), AR3-6 ("apply it"), EQ-1, C1, G2, S3, A1, A2.
+
 ## 10-23 11:11: building
 
 From the owner's 10-23 11:11 answers and Claude's sweep of the easy calls (package DC2). Quotes and meaning in `docs/decisions.json`. Order: FX4, then HUB2; BF11 is the coordinator's.

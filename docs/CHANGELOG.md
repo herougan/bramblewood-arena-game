@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package DC3: the owner's 17:34 answers, and the easy defaults cleared)
+- Decisions only, no code. `docs/decisions.json`: 9 of the owner's 17:34 answers recorded (PR-1, RW4-1, DF-1, DF-2, DF-3, RW3-2,
+  TU2-3, A3, H1). At his request (#7, "clear all those easy defaults"), 22 more closed as "Default taken (DC3)": RW4-2..4,
+  AR3-1..5, AR3-7..9, FX4-1..4, BF11-1, SX-2, LEAD-4, DF-4, D17, L1, S4. 9 stay open, each titled as one question: FLY-1,
+  DF-1b (new: his play-through of Maps 16-24, split from DF-1), AR3-6, EQ-1, C1, G2, S3, A1, A2.
+- A1 (owner 17:38) now lists the AI services that could help, free tiers and routers first (OpenRouter, LiteLLM, Google AI
+  Studio, DeepL API Free, CodeRabbit, local models, image / sound / voice free tiers), with limits, accounts and sources.
+- A3: the trailer's six Kling shot prompts and the 30 s cut, in `docs/art-style-prompts.md` ("Trailer (A3)"). Nothing generated.
+- Build list in `docs/action-items.md` ("10-23 17:34: building"): DF-1's Map term (0.2 per map, pack cards from their first
+  main-line map), DF-2, DF-3 with DF-4, RW3-2's notice rates, TU2-3's editable tutorial Health, H1's materia socket, AR3-9's port.
+
 ## 2026-10-23 release 10-23d (batch: AR3, PR, FX4, RW4)
 - Group Dungeon (AR3), Map 0's sure card on first clears only (PR), swaps/fields/Lava Waders (FX4), swap and reward screens (RW4).
 - Release fixes: the swap window's mini-card star came back through the FX4 merge (removed again); two old tests follow RW4's code (item tip, NEW! tag loop); card-matrix golden refreshed.
