@@ -8545,6 +8545,10 @@
   .vs-opener.is-boss .vs-rival-ico{border-color:#ff5a3d; box-shadow:0 0 30px rgba(255,90,61,.6);}
   .vs-name{font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:clamp(20px,3vw,34px); line-height:1.05; text-shadow:0 2px 0 rgba(0,0,0,.4); max-width:100%; overflow:hidden; text-overflow:ellipsis;}
   .vs-sub{font-size:clamp(12px,1.4vw,15px); opacity:.85;}
+  /* 2026-10-23 (package LEAD): an elite's or a boss's leader(s) on the VS opener */
+  .vs-leaders{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; font-size:clamp(12px,1.4vw,14px); font-weight:800; padding:3px 10px 3px 4px; border-radius:999px; background:rgba(255,208,90,.16); border:1px solid rgba(255,208,90,.5); color:#ffe9b0; max-width:100%;}
+  .vs-leaders .vs-leader-face{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; background:rgba(0,0,0,.28); font-size:15px;}
+  .vs-leaders.is-pair .vs-leader-face + .vs-leader-face{margin-left:-10px;}
   .vs-people{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);}
   /* CPU difficulty pill (2026-10-18): how the CPU plays this fight (Basic / Smart / Smartest) */
   .vs-ai-pill{font-size:11px; font-weight:800; letter-spacing:.04em; padding:2px 9px; border-radius:999px; background:rgba(120,170,255,.16); border:1px solid rgba(150,190,255,.45); color:#dfe9ff;}
@@ -10813,6 +10817,10 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* Skirmish panel, simpler (2026-10-10): the showcase card leads, the deck folds away */
 .cnp-showcase{flex:0 0 auto; width:74px; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
 .cnp-showcase .card-tile{width:100% !important;}
+/* 2026-10-23 (package LEAD): a paired boss's two leaders side by side, the second tucked behind the first */
+.cnp-pair{flex:0 0 auto; display:flex; align-items:flex-start; margin-right:4px;}
+.cnp-pair > .cnp-showcase{width:64px; margin-right:0;}
+.cnp-pair > .cnp-showcase + .cnp-showcase{margin-left:-14px; transform:rotate(4deg) translateY(6px);}
 /* 2026-10-12 (22:04, user: "put the S emblem on the top right hand corner (sitting absolute, on the top-right boundary of the
    div)", "make [the reward card] the same size as the card highlight", "battle rating ... <Sword Icon> [value] beside the hp
    and shield values") */
@@ -10872,7 +10880,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .conquest-node-panel .cnp-squad{padding-bottom:6px;}
 .conquest-node-panel > :last-child, .conquest-node-panel .cnp-deck:last-child{margin-bottom:0 !important;}
 @media (min-width:821px){ .conquest-main > .conquest-node-panel{padding-top:32px !important;} }
-@media (max-width:620px){ .conquest-node-panel .cnp-head > .cnp-showcase, .conquest-node-panel .cnp-head > .cnp-ico{grid-row:span 2;}
+@media (max-width:620px){ .conquest-node-panel .cnp-head > .cnp-showcase, .conquest-node-panel .cnp-head > .cnp-ico, .conquest-node-panel .cnp-head > .cnp-pair{grid-row:span 2;}
   .conquest-node-panel .cnp-head > .cnp-rw:last-child{grid-column:2; justify-self:end; align-self:end; margin-top:12px;} }
 /* Glimmer Depths campfire and the cleared-gem shine (2026-10-13) */
 .map-campfire{position:absolute; z-index:5; width:40px; height:40px; transform:translate(-50%,-50%); pointer-events:none;}

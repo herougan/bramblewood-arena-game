@@ -2824,5 +2824,6 @@
  "Health if played now: {n} (printed {printed})": "Buhay kung ilalaro ngayon: {n} (nakalimbag {printed})",
  "Auto-win": "Auto-panalo",
  "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "May deck na ang nag-iisa mong puwang. Magbukas ng isa pa sa Kampo o sa Tavern.",
- "Swap": "Ipalit"
+ "Swap": "Ipalit",
+ "Leaders: {a} and {b}": "Mga pinuno: {a} at {b}"
 }

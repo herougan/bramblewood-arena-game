@@ -2824,5 +2824,6 @@
  "Attack if played now: {n} (printed {printed})": "Attaque si jouée maintenant : {n} (imprimée {printed})",
  "Health if played now: {n} (printed {printed})": "Santé si jouée maintenant : {n} (imprimée {printed})",
  "Auto-win": "Victoire auto",
- "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "Ton seul emplacement de deck est occupé. Ouvre-en un autre au Camp ou à la Taverne."
+ "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "Ton seul emplacement de deck est occupé. Ouvre-en un autre au Camp ou à la Taverne.",
+ "Leaders: {a} and {b}": "Chefs : {a} et {b}"
 }

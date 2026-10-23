@@ -2825,5 +2825,6 @@
  "Health if played now: {n} (printed {printed})": "Vida se jogada agora: {n} (impresso {printed})",
  "Auto-win": "Vitória automática",
  "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "O teu único espaço de baralho está ocupado. Abre outro no Acampamento ou na Taberna.",
- "Swap": "Trocar"
+ "Swap": "Trocar",
+ "Leaders: {a} and {b}": "Líderes: {a} e {b}"
 }

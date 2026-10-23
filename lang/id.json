@@ -2825,5 +2825,6 @@
  "Health if played now: {n} (printed {printed})": "Nyawa jika dimainkan sekarang: {n} (tercetak {printed})",
  "Auto-win": "Menang otomatis",
  "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "Satu-satunya slot dekmu sudah terisi. Buka satu lagi di Kemah atau Kedai.",
- "Swap": "Tukar"
+ "Swap": "Tukar",
+ "Leaders: {a} and {b}": "Pemimpin: {a} dan {b}"
 }

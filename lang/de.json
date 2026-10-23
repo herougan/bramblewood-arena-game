@@ -2823,5 +2823,6 @@
  "Attack if played now: {n} (printed {printed})": "Angriff, wenn jetzt gespielt: {n} (aufgedruckt {printed})",
  "Health if played now: {n} (printed {printed})": "Leben, wenn jetzt gespielt: {n} (aufgedruckt {printed})",
  "Auto-win": "Auto-Sieg",
- "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "Dein einziger Deckplatz ist belegt. Öffne im Lager oder in der Taverne einen weiteren."
+ "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "Dein einziger Deckplatz ist belegt. Öffne im Lager oder in der Taverne einen weiteren.",
+ "Leaders: {a} and {b}": "Anführer: {a} und {b}"
 }
