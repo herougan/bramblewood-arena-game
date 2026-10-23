@@ -1,5 +1,21 @@
 # Action items
 
+## 10-23 20:50: open items after the audit (queued in this order)
+
+An audit of every dated section below sorted built from not built (evidence in git and the CHANGELOG). These are the genuinely open ones, queued after the current list (rewards RW5, map, board visuals, camp/nest/codex, triggers tutorial).
+
+| # | Package | Items |
+|---|---|---|
+| 6 | BAL2 (balance) | DF-1 Map term 0.2 and first main-line map rule; DF-2 base cards stop at Lv 4 (full Forge cost), own first-clear card 10% on repeats; RW3-2 notice rates; N22-10 Bounty re-measure; T21-2 Pale Desert 18-A-5; Caldera Wyrm's source; T21-4 stale tests |
+| 7 | DF3 (map boons) | DF-3 selfish boons from Map 5 with the Environment count; DF-4 retune Maps 7, 11, 14 |
+| 8 | EQ2 (engine) | EQ-1 equipment durability (hits, acid/Corrode); N21-5 Dive; N21-7 bonus and temp HP bars; Parasite; N22-12 single-target boss attack and tanky guardian raiders |
+| 9 | H1 | Materia socket: Unique and above, one socket, apply and remove costs (editable in the hub) |
+| 10 | CONTENT2 | N21-1 beach diegesis + Starfish placed; N21-2 cute Maps 2-5; C21-2 Mirrorhide flavour; Cataphract Destrier → Gilded Roadwarden; thin factions (Gnawed, Tidefolk); 10-16 data fixes (confirm first); unlocks that sit on uncharted maps (Forge 4/5, Lv 9/10, Nest 6/7, Strange Materia, dungeon slot 3) |
+| 11 | N22-1 | Maps 21-40 divvy and sources for the 67 cards waiting for one |
+| 12 | HUB4 | #71: move the still-relevant .md docs into the master hub |
+
+Later or the owner's: AR3-9 board port, N22-7 mystery enemies, art for 132 cards (NightCafe credits), soundtrack (CC0 files), pixel icons, device-only data sync check.
+
 ## 10-23 17:34: building
 
 From the owner's 10-23 17:34 answers and Claude's sweep of the easy defaults at his request (#7, package DC3). Quotes and meaning in `docs/decisions.json`. His other 17:34 notes (wind lines, Boomerang, Bleed, Swarm, deck UI, ...) are briefed separately.
