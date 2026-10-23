@@ -38,11 +38,12 @@ function apply(engine, players, pid, act, stats, events){
   if(act.type==='play'){
     const h = pl.hand.find(x=> x.uid===act.uid);
     if(!h || pl.playedThisTurn || !engine.canPlay(pl, h.defId, h.uid)) return {pid, type:'refused'};
-    engine.placeCard(players, H.sideOf, pid, act.uid, act.side, stats, events);
+    const placed1 = engine.placeCard(players, H.sideOf, pid, act.uid, act.side, stats, events);
     // Field cards (2026-10-09) are a free extra action, so only a second UNIT counts as cheating.
     // Dark Summon cards (2026-10-10) use their own allowance too.
     const isField = id=> { const d = H.loadCardDefs()[id]; return !!(d && (d.field || d.darkSummon)); };
-    if(act.cheat && !isField(h.defId)){ const h2 = pl.hand.find(x=> !isField(x.defId) && engine.canPlay(pl, x.defId, x.uid)); if(h2){ const before = H.boardCards(pl).length; engine.placeCard(players, H.sideOf, pid, h2.uid, 'left', stats, events); if(H.boardCards(pl).length>before) failures.push('second play in one turn was accepted'); } }
+    // 2026-10-24: only when the first play landed (an Evolute with no legal base is refused, so the next card is the turn's first play, not a cheat)
+    if(act.cheat && placed1 !== false && !isField(h.defId)){ const h2 = pl.hand.find(x=> !isField(x.defId) && engine.canPlay(pl, x.defId, x.uid)); if(h2){ const before = H.boardCards(pl).length; engine.placeCard(players, H.sideOf, pid, h2.uid, 'left', stats, events); if(H.boardCards(pl).length>before) failures.push('second play in one turn was accepted'); } }
     return {pid, type:'play', uid:act.uid, side:act.side};
   }
   if(act.type==='discard'){
