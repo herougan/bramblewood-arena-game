@@ -2,7 +2,6 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
-<<<<<<< HEAD
 ## 2026-10-23 (package AR3: the Group Dungeon, co-op for 2-4 players)
 - Owner 10-23 00:10 #26 (AR-3: "This is a big pass. I like this. Can you launch a big pass for this."). D49 / D76 built. Calls AR3-1..AR3-9.
 - **Where it lives:** the Dungeons tab's "Coming soon" Group Dungeon slot is the entrance: Open a room, Play with CPU allies, or Join with a
@@ -30,7 +29,6 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   or reserve row). New: `bramblewood-coop.js` (rules, room, transports), `tools/coop_sim_2026_10_23.js`, `tools/i18n_2026_10_23_ar3.py`
   (114 TX keys, 12 packs). Tests: `tests/coop-dungeon-2026-10-23.js`, `tests/coop-lobby-2026-10-23.js`, `tests/e2e/coop_dungeon_2026_10_23.py`.
   Screens: `docs/screens/ar3/`.
-=======
 ## 2026-10-23 (package MK: the map marker stays put after a win; a cleared Map 0 no longer strands you)
 - **Owner (11:28):** "why does completing a skirmish put my conquest map marker ... move to Map N-1?" The results' Back to map ends the fight inside its own click; that click then reached the map's "click outside the skirmish panel closes it" listener, with the button already gone from the page, so the picked fight was dropped and the pawn walked to the next fight, or to the map's first one (N-1) on a cleared map. A click that began during a fight, or whose target left the page, no longer closes the panel; on a cleared map with nothing picked the pawn keeps its spot.
 - **Owner (11:29):** "i'm stuck in Map 0 in my new account." Map 1 was open but out of reach: until Thistlewood's reward fight opens the world, a map shows no map list and no › edge, every page load starts on Map 0, and PG's step onto the next map happened only in memory on the clearing win. `healMapProgress` (on load and each time the map opens) reads old node-id spellings as the new ones and finds the furthest map open in order; with the world still hidden the road opens there, once for each new furthest map. Nothing is marked open: a map whose fights are not won stays locked.
@@ -53,7 +51,6 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   (superseded by EN-2). 19 stay open for him, with shorter bodies and a recommended default (DF-1..4, SX-2, LEAD-4, TU2-3, RW3-2 among
   them), including the new EQ-1 (how equipment is damaged or removed, 4 designs, recommended: durability with acid / Corrode wear).
 - Build list in `docs/action-items.md` ("10-23 11:11: building"): FX4, HUB2, BF11 and two later-package items.
->>>>>>> origin/batch-1023b
 
 ## 2026-10-23 (package SX: target-modifier sounds, poison's crit colour, the 3-part Hero XP bar, number-aware translations)
 - Owner 10-23 00:10 #95, #11 (DN2-4), #66 (H2), #64 (I2). Calls SX-1..SX-3.
