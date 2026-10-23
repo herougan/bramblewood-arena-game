@@ -1,0 +1,91 @@
+# 2026-10-23 (package OPT, owner 20:44: "not using tokens but a constructed exe"): runs the deck optimizer (tools/opt/deckopt.js) on
+# GitHub's free runners, by hand only (Actions tab -> "Deck optimizer" -> Run workflow). Never on push. The results (one JSON per map and
+# a summary) are uploaded as the run's artifact "deckopt-results"; nothing is committed or deployed. Maps run in parallel jobs (one map
+# per job, up to 20 at a time; a job has 4 cores on a public repo's ubuntu-latest runner, and 6 hours at most).
+name: Deck optimizer
+on:
+  workflow_dispatch:
+    inputs:
+      maps:
+        description: 'Maps, e.g. "0-3" or "0,5,12" (map numbers or ids)'
+        required: true
+        default: '0-3'
+      minutes:
+        description: 'Search minutes per map'
+        required: true
+        default: '20'
+      cross_share:
+        description: 'Share of the search for the whole-spectrum phase (0-1)'
+        required: true
+        default: '0.3'
+      seed:
+        description: 'Seed'
+        required: true
+        default: 'bramble'
+      extra:
+        description: 'Extra options (e.g. "--owned none --road-weight 0.5")'
+        required: false
+        default: ''
+permissions:
+  contents: read
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      maps: ${{ steps.list.outputs.maps }}
+    steps:
+      - id: list
+        env:
+          MAPS: ${{ inputs.maps }}
+        run: |
+          node -e 'const s=process.env.MAPS, out=[]; s.split(",").forEach(p=>{ const m=/^(\d+)-(\d+)$/.exec(p.trim()); if(m){ for(let i=+m[1]; i<=+m[2]; i++) out.push(String(i)); } else if(p.trim()) out.push(p.trim()); }); console.log("maps=" + JSON.stringify(out));' >> "$GITHUB_OUTPUT"
+  optimize:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        map: ${{ fromJson(needs.plan.outputs.maps) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Optimize
+        env:
+          MAP: ${{ matrix.map }}
+          MINUTES: ${{ inputs.minutes }}
+          SHARE: ${{ inputs.cross_share }}
+          SEED: ${{ inputs.seed }}
+          EXTRA: ${{ inputs.extra }}
+        run: |
+          # shellcheck disable=SC2086
+          node tools/opt/deckopt.js --map "$MAP" --minutes "$MINUTES" --cross-share "$SHARE" --seed "$SEED" --workers "$(nproc)" \
+            --out out --ckpt-dir ckpt --no-summary $EXTRA
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deckopt-map-${{ matrix.map }}
+          path: out/
+  summary:
+    needs: optimize
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: deckopt-map-*
+          path: out
+          merge-multiple: true
+      - name: Summary
+        run: |
+          node -e 'const fs=require("fs"), o=require("./tools/opt/deckopt.js"); const f=fs.readdirSync("out").filter(x=>/^deckopt-map.*\.json$/.test(x)).sort(); const r=f.map(x=>JSON.parse(fs.readFileSync("out/"+x,"utf8"))); const md=o.summaryMd(r, new Date().toISOString().slice(0,10)); fs.writeFileSync("out/deckopt-summary.md", md); fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deckopt-results
+          path: out/

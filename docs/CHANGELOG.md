@@ -40,6 +40,16 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   poisonTick replay, the editor rows; styles in `arena_template.html`; TX keys `ui.skn-rampart` ... `ui.en3-float-*`; `tools/i18n_2026_10_23_en3.py`,
   `tools/en3_skill_costs_2026_10_23.py`; tests `tests/en3-2026-10-23.js`, `tests/e2e/en3_2026_10_23.py` (screens `docs/screens/EN3/`); `bl`, `en2` and
   `poison-fx` follow the new texts and the poisonTick code. Decisions EN3-1 .. EN3-8.
+## 2026-10-23 (package OPT: the deck optimizer, a tool that needs no Claude)
+- **`tools/opt/deckopt.js`** (owner 20:44: "find the most optimum combination of cards given the typical field effect ... also finding cards in
+  the whole spectrum ... a constructed exe"): per map, a genetic search with successive halving over the real seeded engine finds the
+  strongest legal deck from the map's cards (+ what a player owns by then), fighting the map's fight decks and the reference decks in a fair
+  mirror under each fight's field, plus the fights as the game builds them. Phase 2 (`--cross-share`, default 0.3, OPT-1) screens every
+  other obtainable card as a swap and searches the whole list. Output per map in `docs/balance/opt/`: the best decks, win rates per
+  opponent with 95% intervals, the field effects' impact, and each fight deck's gap to the optimum (Elo and win-rate points). Worker
+  threads, deterministic seeds (same result on any worker count), checkpoints and `--resume`.
+- **Without Claude:** `tools/opt/build-exe.sh` builds one executable (Node SEA); `.github/workflows/deckopt.yml` runs it on GitHub's free
+  runners by hand and uploads the results. No game code changed; first results for Maps 0-3 in `docs/balance/opt/deckopt-summary-2026-10-23.md` (map cards + owned) and `deckopt-summary-2026-10-23-mapcards.md` (map cards only).
 
 ## 2026-10-23 (package BL: Bloom rebuilt, Nectar Vintner's Heal, default values, Bleed's fade)
 - **Bloom – {conditions} (11:23, 17:34 #3 "Bloom hasn't changed"):** a new skill (`effects.bloomCopy`). Once, the first round its conditions hold at
