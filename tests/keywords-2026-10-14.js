@@ -61,7 +61,7 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
   const R = byDef(P[1], 'k4-rabid'), hp = R.hp; e.debugAttack(P, so, byDef(P[2], 'k4-water').uid, {}, []); ok(hp - R.hp === 6, `water damage is double too (${hp - R.hp}, want 6)`); }
 // 2026-10-21 (package TT): 3/5 since the 2026-10-19 card retune (BF3, v5 L/10 + Map term: raised to 65% of N); was 2/3
 // 2026-10-21 (BF5): N halved, Rabid's measured worth (S 6.23) kept: 3/5 -> 1/1 (docs/balance/halve-2026-10-19.md)
-{ const d = defs['rabid-jackal']; ok(d && d.attack === 1 && d.health === 1 && d.effects.rabid && d.rarity === 'uncommon', 'Rabid Jackal is a 1/1 uncommon with Rabid (BF5; was 3/5)'); }
+{ const d = defs['rabid-jackal']; ok(d && d.attack === 2 && d.health === 2 && d.effects.rabid && d.rarity === 'uncommon', 'Rabid Jackal is a 2/2 uncommon with Rabid (BF11 re-fit, 2026-10-23; BF5 1/1, was 3/5)'); }
 // ---- Cower: hit last round -> this round it hides (shell: no attack, no damage from attacks) or backs off (flee: no attack, heals 2)
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-cower', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-hit', 'left', {}, []);
   const C = byDef(P[1], 'k4-cower'), F = byDef(P[2], 'k4-hit');
