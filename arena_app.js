@@ -22555,6 +22555,29 @@ function rollSRankFind(mapId, rank, rng){
 // 2026-10-23 (package PG, owner item 13: "After map 0 complete, it doesnt unlock Map 1 automatically"): the win that clears a main map
 // opens the next one at once (isMapUnlocked) and, back on the map, the road takes you there (renderConquestSubTab reads this once).
 var conquestAutoAdvanceTo = null;
+// 2026-10-23 (package MK, owner 11:29: "I told you previously that i'm stuck in Map 0 in my new account ... check if the last unlocking
+// map is completed, if so, manually unlock the next map for the person"): Map 1 was open (isMapUnlocked) but out of reach. Until the
+// world opens (worldRevealed: Thistlewood's reward fight) a map shows no map list and no › edge, every page load starts on Map 0
+// (conquestSelectedMap's default), and PG's step onto the next map lives in memory, once, on the clearing win. A reload, or a Map 0
+// cleared before PG, left the player on Map 0 for good. healMapProgress repairs the progress (old node-id spellings, from a cloud blob
+// or an older build, are read the way the load-time migration reads them) and returns the furthest main map open in order; nothing is
+// ever marked open here, so a map whose fights are not won stays locked (isMapUnlocked is the only rule). renderConquestSubTab then
+// takes a player with the world still hidden there, once for each new furthest map (mkRoadLandedFor).
+var mkRoadLandedFor = null;
+function healMapProgress(){
+  try{
+    const p = loadConquestProgress(); let changed = false;
+    if(Array.isArray(p.completed)){ const fixed = [...new Set(p.completed.map(id=> migrateNodeIdString(String(id))))];
+      if(fixed.length !== p.completed.length || fixed.some((id, i)=> id !== p.completed[i])){ p.completed = fixed; changed = true; } }
+    ['ranks', 'clearedAt'].forEach(f=>{ const o = p[f]; if(!o || typeof o !== 'object') return;
+      Object.keys(o).forEach(k=>{ const nk = migrateNodeIdString(k); if(nk === k) return; changed = true;
+        if(o[nk] == null || (f === 'ranks' && rankAtLeast(o[k], o[nk])) || (f === 'clearedAt' && o[k] < o[nk])) o[nk] = o[k]; delete o[k]; }); });
+    if(changed) saveConquestProgress(p);
+    let far = null; for(const m of mainConquestMaps()){ if(!isMapUnlocked(m, p)) break; far = m; }
+    return far;
+  }catch(e){ return null; }
+}
+setTimeout(()=>{ try{ healMapProgress(); }catch(e){} }, 0); // on load, once the whole script has run
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
   const id = conquestNodeId(node.mapId, node.nodeId);
@@ -23058,10 +23081,16 @@ let conquestSelectedNodeKey = null;
 // the map's fights closes it (a drag to pan the map doesn't count).
 (function closeNodePanelOnOutsideClick(){
   if(typeof document === 'undefined') return;
+  // 2026-10-23 (package MK, owner 11:28: "why does completing a skirmish put my conquest map marker ... move to Map N-1?"): the results'
+  // Back to map button ends the match inside its own click, so by the time that click bubbled up here the fight was gone, the map with
+  // its panel was back and the button was no longer in the page: it counted as a click outside the panel. The selection was dropped and
+  // the pawn walked off to the next fight, or to the map's first one (N-1) on a cleared map. A click that began during a fight, or whose
+  // target has left the page, never closes the panel.
   let down = null;
-  document.addEventListener('pointerdown', e=>{ down = {x:e.clientX, y:e.clientY}; }, true);
+  document.addEventListener('pointerdown', e=>{ down = {x:e.clientX, y:e.clientY, inMatch: !!(typeof matchState !== 'undefined' && matchState)}; }, true);
   document.addEventListener('click', e=>{
     if(!conquestSelectedNodeKey || (typeof matchState !== 'undefined' && matchState)) return;
+    if((down && down.inMatch) || (e.target && e.target.isConnected === false)) return;
     const panel = document.getElementById('conquestNodePanel'); if(!panel || panel.hidden) return;
     if(down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
     if(e.target.closest && e.target.closest('#conquestNodePanel, .map-node, #conquestFightFab, .modal-overlay, [role=dialog], .toast, .coach-tip')) return;
@@ -23091,6 +23120,8 @@ function placeMapPawn(canvas, map, positions, progress, visibleFlags){
   if(!target){
     const next = map.nodes.findIndex((n, i)=> visibleFlags[i] && n.kind!=='tutorial' && !progress.completed.includes(conquestNodeId(map.id, n.key)));
     target = map.nodes[next >= 0 ? next : 0] && map.nodes[next >= 0 ? next : 0].key;
+    // 2026-10-23 (package MK): on a map with every fight won, nothing selected keeps the pawn where it stood (was: back to the first fight)
+    if(next < 0 && spots[map.id] != null && idxOf(spots[map.id]) >= 0) target = spots[map.id];
   }
   const ti = idxOf(target); if(ti < 0 || !positions[ti]) return;
   const live = mapPawnNow(map.id);
@@ -24224,6 +24255,11 @@ function renderConquestSubTab(body){
   healTutorial2Flag();
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
   { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1'; } // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
+  // 2026-10-23 (package MK): a next map that is open but out of reach (world still hidden, a reload since the clearing win, or a save
+  // from before PG) is the road's next stop, once for each new furthest map.
+  if(loadTutorial2Done() && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const far = healMapProgress();
+    if(far && far.id !== mkRoadLandedFor){ mkRoadLandedFor = far.id; const mains = mainConquestMaps(), here = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap);
+      if(!conquestAutoAdvanceTo && here && !here.sub && !worldRevealed() && mains.indexOf(here) < mains.indexOf(far)) conquestAutoAdvanceTo = far.id; } }
   // 2026-10-23 (package PG): the fight that just cleared a map opened the next one; back on the map, you are taken there (once)
   if(conquestAutoAdvanceTo && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const nx = CONQUEST_MAPS.find(m=> m.id === conquestAutoAdvanceTo); conquestAutoAdvanceTo = null;
     if(nx && isMapUnlocked(nx, loadConquestProgress())){ conquestSelectedMap = nx.id; conquestSelectedNodeKey = null; conquestWorldView = false; } }
