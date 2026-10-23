@@ -3046,5 +3046,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "它的攻击让目标的中毒和流血立刻再结算 {n} 次。",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "命中时：脉冲。每次结算造成目标全部中毒（含剧毒）和全部流血的伤害；层数都不减少。",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} 让 {name} 体内的中毒和流血发作。",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "所选目标的中毒（含剧毒）和流血立刻结算 N 次，每次按全部层数；层数不减少。"
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "所选目标的中毒（含剧毒）和流血立刻结算 N 次，每次按全部层数；层数不减少。",
+ "PRO fights": "PRO 对战",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "隐藏的遭遇战：对手是牌组优化器为每张地图找到的最强牌组，在该地图最常见的场地下进行。不在地图上，不计进度，没有奖励。",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "还没有 PRO 对战。先运行牌组优化器，再运行 tools/opt/pro_skirmishes.js --apply。",
+ "Map {n} · {name}": "地图 {n} · {name}",
+ "Copy link": "复制链接",
+ "Link copied.": "链接已复制。",
+ "Gauntlet {n}%": "试炼 {n}%",
+ "{elo} Elo vs PRO-1": "对 PRO-1 {elo} Elo",
+ "PRO fights on this map": "本地图的 PRO 对战",
+ "{key} is a PRO fight: no rewards.": "{key} 是 PRO 对战：没有奖励。",
+ "There is no PRO fight called {key}.": "没有名为 {key} 的 PRO 对战。",
+ "Finish the fight you are in first.": "请先打完当前的对战。",
+ "Finish the tutorial first.": "请先完成教程。"
 }

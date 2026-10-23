@@ -3046,5 +3046,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "Pinapagana agad ng mga tama nito nang {n} pang beses ang Lason at Pagdurugo ng target.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "Sa Tama: Pintig. Bawat tik ay buong Lason (at Matinding Lason) at buong Pagdurugo ng target; walang patong na nababawasan.",
  "{att} makes the Poison and Bleed in {name} pulse.": "Pinapintig ni {att} ang Lason at Pagdurugo ni {name}.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Gagana agad nang N beses ang Lason (at Matinding Lason) at Pagdurugo ng napiling target, bawat isa ang buong patong; walang nababawasan."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Gagana agad nang N beses ang Lason (at Matinding Lason) at Pagdurugo ng napiling target, bawat isa ang buong patong; walang nababawasan.",
+ "PRO fights": "Mga PRO na laban",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "Mga nakatagong labanan gamit ang pinakamalakas na deck na nahanap ng deck optimizer para sa bawat mapa, sa pinakakaraniwang field ng mapang iyon. Wala sa mapa, walang progreso, walang gantimpala.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "Wala pang PRO na laban. Patakbuhin ang deck optimizer, saka ang tools/opt/pro_skirmishes.js --apply.",
+ "Map {n} · {name}": "Mapa {n} · {name}",
+ "Copy link": "Kopyahin ang link",
+ "Link copied.": "Nakopya ang link.",
+ "Gauntlet {n}%": "Gauntlet {n}%",
+ "{elo} Elo vs PRO-1": "{elo} Elo laban sa PRO-1",
+ "PRO fights on this map": "Mga PRO na laban sa mapang ito",
+ "{key} is a PRO fight: no rewards.": "Ang {key} ay isang PRO na laban: walang gantimpala.",
+ "There is no PRO fight called {key}.": "Walang PRO na laban na {key}.",
+ "Finish the fight you are in first.": "Tapusin muna ang laban mo ngayon.",
+ "Finish the tutorial first.": "Tapusin muna ang tutorial."
 }

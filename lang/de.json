@@ -3045,5 +3045,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "Seine Treffer lassen Gift und Blutung des Ziels sofort {n}-mal mehr wirken.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "Bei Treffer: Puls. Jeder Schlag macht das ganze Gift (und Starke Gift) des Ziels und seine ganze Blutung; kein Stapel nimmt ab.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} lässt Gift und Blutung in {name} pulsieren.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Gift (und Starkes Gift) und Blutung des gewählten Ziels wirken sofort N-mal, jeweils der ganze Stapel; kein Stapel nimmt ab."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Gift (und Starkes Gift) und Blutung des gewählten Ziels wirken sofort N-mal, jeweils der ganze Stapel; kein Stapel nimmt ab.",
+ "PRO fights": "PRO-Kämpfe",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "Versteckte Gefechte mit dem stärksten Deck, das der Deck-Optimierer für jede Karte gefunden hat, unter dem häufigsten Feld dieser Karte. Nicht auf der Karte, kein Fortschritt, keine Belohnungen.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "Noch keine PRO-Kämpfe. Starte den Deck-Optimierer, dann tools/opt/pro_skirmishes.js --apply.",
+ "Map {n} · {name}": "Karte {n} · {name}",
+ "Copy link": "Link kopieren",
+ "Link copied.": "Link kopiert.",
+ "Gauntlet {n}%": "Parcours {n}%",
+ "{elo} Elo vs PRO-1": "{elo} Elo gegen PRO-1",
+ "PRO fights on this map": "PRO-Kämpfe auf dieser Karte",
+ "{key} is a PRO fight: no rewards.": "{key} ist ein PRO-Kampf: keine Belohnungen.",
+ "There is no PRO fight called {key}.": "Es gibt keinen PRO-Kampf namens {key}.",
+ "Finish the fight you are in first.": "Beende zuerst deinen laufenden Kampf.",
+ "Finish the tutorial first.": "Beende zuerst das Tutorial."
 }

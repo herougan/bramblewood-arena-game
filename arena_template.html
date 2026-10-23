@@ -12526,6 +12526,22 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .rw5-guild-shop .rw5-gs-row .rw5-gs-ico{font-size:26px;}
 .rw5-guild-shop .rw5-gs-row .rw5-gs-text{flex:1 1 180px; min-width:0;}
 .rw5-guild-shop .rw5-gs-row .rw5-gs-text small{display:block; opacity:.8;}
+/* 2026-10-24 (package PRO): the hidden PRO fights in Admin and the skirmish editor, and the results' note */
+.pro-admin .pro-map{margin-top:10px; padding:8px 10px; border-radius:10px; background:var(--surface-2);}
+.pro-admin .pro-map-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px; margin-bottom:4px;}
+.pro-field{display:inline-flex; flex-wrap:wrap; gap:4px;}
+.pro-field span{font-size:12px; padding:1px 7px; border-radius:999px; background:rgba(127,127,127,.16);}
+.pro-row{padding:6px 0; border-top:1px solid rgba(127,127,127,.18); min-width:0;}
+.pro-map .pro-row:first-of-type, .pro-editor .pro-row:first-of-type{border-top:0;}
+.pro-row-head{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px;}
+.pro-row .pro-id{font-variant-numeric:tabular-nums; white-space:nowrap;}
+.pro-row .pro-stat{font-size:12px; opacity:.85; white-space:nowrap;}
+.pro-row .pro-acts{display:inline-flex; gap:6px; margin-left:auto;}
+.pro-row .pro-deck{display:flex; flex-wrap:wrap; gap:3px 6px; margin-top:4px; font-size:12px; opacity:.9;}
+.pro-row .pro-card{white-space:nowrap;}
+.pro-editor .pro-row{padding:4px 0;}
+.wl-pro-note{margin:6px 0 0; font-size:13px; font-weight:700; color:#e7c66a;}
+@media (max-width: 520px){ .pro-row .pro-acts{margin-left:0; width:100%;} .pro-row .pro-acts .btn{flex:1;} }
 </style>
 <style id="nvStyles">
 /* ===== Package NV (2026-10-19, owner on an iPhone 10:55): Home on the map and the Arena, no map strip on phones, the pre-battle

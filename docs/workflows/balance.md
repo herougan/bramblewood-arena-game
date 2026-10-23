@@ -50,6 +50,14 @@ The strongest deck per map, for building skirmishes of rising difficulty, with n
 - Without Claude: `bash tools/opt/build-exe.sh` builds one executable (Node SEA) that runs from a game checkout; `.github/workflows/deckopt.yml` runs it on GitHub's free runners by hand (Actions → Deck optimizer → Run workflow) and uploads the results as an artifact.
 - Like every sim, run it alone on the machine; its games/s fall when other agents' builds or browser tests share the 2 cores.
 
+## PRO fights (package PRO, owner 2026-10-24 00:28)
+Each main map has 1-4 hidden skirmishes, `<map>-PRO-<k>` (e.g. `3-PRO-1`), with the best decks the optimizer found: `canonical/pro-skirmishes.json`, baked into the game by `assemble_arena.py`. They are not on the map, not counted for progress and pay nothing; Admin (🏆 PRO fights), the skirmish editor and `#pro=3-PRO-1` open them.
+- Routine, after an optimizer run: `node tools/opt/deckopt.js --maps 0-3 --budget 16000 --workers 2 --tag <tag>` → `node tools/opt/pro_skirmishes.js` (dry run: read the plan) → `node tools/opt/pro_skirmishes.js --apply` → rebuild (`python3 assemble_arena.py && mv bramblewood-arena.html index.html`) → `node tests/run.js --only 'pro'` → release with the batch.
+- The rule (`--help`): candidates are every run's distinct optima for the map (renamed card ids mapped, illegal decks skipped). A map's first fill takes the newest run's optimum as PRO-1. After that PRO-1 is replaced only by a candidate that beats it head to head at 55% or more over at least 400 games with its 95% interval above 50% (`--replace-at`, `--games`). Other decks within 100 Elo of PRO-1 (`--band`) and at least 6 copies apart (`--distinct`) become PRO-2.., best first, at most 4 a map (`--max`); they are renumbered by Elo. Replaced decks are kept under the map's `replaced`.
+- Head to head: a fair mirror under the PRO's own field, both decks at Level 1, CPU skill 1 (Smart), seats swapped, no leaders, seeded by the two decks (a pairing always gives the same result).
+- The field ("the average skirmish of that map"): per field rule (day / night, Mist, Tide, wind, terrain tier, ...) the value most of the map's fights have; a tie goes to the boss's (the map's last fight when it has no boss). From Map 2 a PRO fight leads with its deck's showcase card, as the map's skirmishes do.
+- Each PRO lists `later`: its cards first obtainable after the map (phase 2's related cards can be). Report it; the deck stays.
+
 ## Checks
 `node tests/run.js --only 'level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool'`, then the card matrix. Reviewed golden changes are accepted at release.
 

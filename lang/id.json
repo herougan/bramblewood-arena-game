@@ -3047,5 +3047,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "Serangannya membuat Racun dan Pendarahan target bekerja {n} kali lagi, seketika.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "Saat Kena: Denyut. Tiap detak memberi seluruh Racun (dan Racun Agung) serta seluruh Pendarahan target; tak ada tumpukan yang berkurang.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} membuat Racun dan Pendarahan {name} berdenyut.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Racun (dan Racun Agung) serta Pendarahan target terpilih bekerja N kali sekarang, masing-masing seluruh tumpukannya; tak ada yang berkurang."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Racun (dan Racun Agung) serta Pendarahan target terpilih bekerja N kali sekarang, masing-masing seluruh tumpukannya; tak ada yang berkurang.",
+ "PRO fights": "Pertarungan PRO",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "Pertempuran tersembunyi dengan dek terkuat yang ditemukan pengoptimal dek untuk tiap peta, di medan paling umum peta itu. Tidak ada di peta, tanpa kemajuan, tanpa hadiah.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "Belum ada pertarungan PRO. Jalankan pengoptimal dek, lalu tools/opt/pro_skirmishes.js --apply.",
+ "Map {n} · {name}": "Peta {n} · {name}",
+ "Copy link": "Salin tautan",
+ "Link copied.": "Tautan disalin.",
+ "Gauntlet {n}%": "Uji {n}%",
+ "{elo} Elo vs PRO-1": "{elo} Elo vs PRO-1",
+ "PRO fights on this map": "Pertarungan PRO di peta ini",
+ "{key} is a PRO fight: no rewards.": "{key} adalah pertarungan PRO: tanpa hadiah.",
+ "There is no PRO fight called {key}.": "Tidak ada pertarungan PRO bernama {key}.",
+ "Finish the fight you are in first.": "Selesaikan dulu pertarunganmu saat ini.",
+ "Finish the tutorial first.": "Selesaikan tutorial dulu."
 }

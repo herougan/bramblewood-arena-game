@@ -3047,5 +3047,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "I suoi colpi fanno scattare subito altre {n} volte il Veleno e il Sanguinamento del bersaglio.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "Al colpo: Impulso. Ogni tick infligge tutto il Veleno (e il Veleno superiore) del bersaglio e tutto il suo Sanguinamento; nessuna carica cala.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} fa pulsare il Veleno e il Sanguinamento di {name}.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Il Veleno (e il Veleno superiore) e il Sanguinamento del bersaglio scelto scattano subito N volte, ognuno con tutta la sua carica; nessuna cala."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Il Veleno (e il Veleno superiore) e il Sanguinamento del bersaglio scelto scattano subito N volte, ognuno con tutta la sua carica; nessuna cala.",
+ "PRO fights": "Scontri PRO",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "Schermaglie nascoste con il mazzo più forte che l'ottimizzatore di mazzi ha trovato per ogni mappa, con il campo più comune di quella mappa. Fuori dalla mappa, nessun progresso, nessuna ricompensa.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "Ancora nessuno scontro PRO. Avvia l'ottimizzatore di mazzi, poi tools/opt/pro_skirmishes.js --apply.",
+ "Map {n} · {name}": "Mappa {n} · {name}",
+ "Copy link": "Copia link",
+ "Link copied.": "Link copiato.",
+ "Gauntlet {n}%": "Percorso {n}%",
+ "{elo} Elo vs PRO-1": "{elo} Elo contro PRO-1",
+ "PRO fights on this map": "Scontri PRO di questa mappa",
+ "{key} is a PRO fight: no rewards.": "{key} è uno scontro PRO: nessuna ricompensa.",
+ "There is no PRO fight called {key}.": "Non esiste uno scontro PRO chiamato {key}.",
+ "Finish the fight you are in first.": "Prima finisci lo scontro in corso.",
+ "Finish the tutorial first.": "Prima finisci il tutorial."
 }

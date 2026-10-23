@@ -3046,5 +3046,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "その攻撃は、対象の毒と出血をすぐにあと{n}回発動させる。",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "命中時：脈動。毎回、対象の毒（猛毒も）と出血のスタック全部のダメージを与える。スタックは減らない。",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att}が{name}の毒と出血を脈動させる。",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "選んだ対象の毒（猛毒も）と出血を今すぐN回、毎回スタック全部で発動させる。スタックは減らない。"
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "選んだ対象の毒（猛毒も）と出血を今すぐN回、毎回スタック全部で発動させる。スタックは減らない。",
+ "PRO fights": "PROバトル",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "デッキ最適化ツールが各マップで見つけた最強のデッキによる隠しスカーミッシュ。そのマップで最も多いフィールドで戦います。マップには出ず、進行にも報酬にも含まれません。",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "PROバトルはまだありません。デッキ最適化ツールを実行してから tools/opt/pro_skirmishes.js --apply を実行してください。",
+ "Map {n} · {name}": "マップ{n}・{name}",
+ "Copy link": "リンクをコピー",
+ "Link copied.": "リンクをコピーしました。",
+ "Gauntlet {n}%": "ガントレット {n}%",
+ "{elo} Elo vs PRO-1": "PRO-1に対して {elo} Elo",
+ "PRO fights on this map": "このマップのPROバトル",
+ "{key} is a PRO fight: no rewards.": "{key} はPROバトルです：報酬はありません。",
+ "There is no PRO fight called {key}.": "{key} というPROバトルはありません。",
+ "Finish the fight you are in first.": "まず今のバトルを終えてください。",
+ "Finish the tutorial first.": "まずチュートリアルを終えてください。"
 }

@@ -362,6 +362,19 @@ app_src = sub_once(app_src, "__SKILL_COSTS__", json.dumps(json.load(open(SCRATCH
 app_src = sub_once(app_src, "__UPGRADE_COSTS__", json.dumps(json.load(open(SCRATCH + "canonical/upgrade-costs.json", encoding="utf-8")), ensure_ascii=False))
 # 2026-10-22 (package MP): which cards belong to which map (canonical/map-pools.json); the admin's live edits (card_overrides __cfg:map-pools:<id>) win over it at load, tools/fold_map_pools.js folds them back
 app_src = sub_once(app_src, "__MAP_POOLS__", json.dumps(json.load(open(SCRATCH + "canonical/map-pools.json", encoding="utf-8")), ensure_ascii=False))
+# 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
+# only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)
+def _pro_for_game(d):
+    keep = ("id", "name", "level", "leaders", "deck", "later")
+    out = {}
+    for mid, m in (d.get("maps") or {}).items():
+        f = m.get("field") or {}
+        out[mid] = {"map": m.get("map"), "name": m.get("name"), "field": {k: f.get(k) for k in ("rules", "terrain", "summary", "boss")},
+                    "pro": [dict({k: e.get(k) for k in keep}, source={k: (e.get("source") or {}).get(k) for k in ("file", "optimum", "score", "ci", "generated")},
+                                 h2h=(None if not e.get("h2h") else {k: e["h2h"].get(k) for k in ("p", "n", "elo", "ci")})) for e in (m.get("pro") or [])]}
+    return {"updated": d.get("updated"), "rule": d.get("rule"), "maps": out}
+_pro_file = SCRATCH + "canonical/pro-skirmishes.json"
+app_src = sub_once(app_src, "__PRO_SKIRMISHES__", json.dumps(_pro_for_game(json.load(open(_pro_file, encoding="utf-8"))) if os.path.exists(_pro_file) else {"maps": {}}, ensure_ascii=False))
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # 2026-10-19 (package UT): each animal's kind, for the Codex's animal filter (canonical/animal-tags.json, python3 tools/animal_tags.py)
 app_src = sub_once(app_src, "__ANIMAL_GROUPS__", json.dumps({r["animal"]: r["group"] for r in json.load(open(SCRATCH + "canonical/animal-tags.json", encoding="utf-8"))["cards"] if r.get("animal")}, ensure_ascii=False, sort_keys=True))

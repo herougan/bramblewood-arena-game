@@ -3047,5 +3047,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "Os seus golpes fazem o Veneno e o Sangramento do alvo atuar mais {n} vezes, de imediato.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "Ao acertar: Pulso. Cada tique causa todo o Veneno (e o Veneno maior) do alvo e todo o seu Sangramento; nenhuma acumulação desce.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} faz pulsar o Veneno e o Sangramento de {name}.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "O Veneno (e o Veneno maior) e o Sangramento do alvo escolhido atuam N vezes já, cada um com toda a sua acumulação; nenhuma desce."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "O Veneno (e o Veneno maior) e o Sangramento do alvo escolhido atuam N vezes já, cada um com toda a sua acumulação; nenhuma desce.",
+ "PRO fights": "Combates PRO",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "Escaramuças ocultas com o baralho mais forte que o otimizador de baralhos encontrou para cada mapa, sob o campo mais comum desse mapa. Fora do mapa, sem progresso, sem recompensas.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "Ainda não há combates PRO. Executa o otimizador de baralhos e depois tools/opt/pro_skirmishes.js --apply.",
+ "Map {n} · {name}": "Mapa {n} · {name}",
+ "Copy link": "Copiar link",
+ "Link copied.": "Link copiado.",
+ "Gauntlet {n}%": "Circuito {n}%",
+ "{elo} Elo vs PRO-1": "{elo} Elo contra PRO-1",
+ "PRO fights on this map": "Combates PRO deste mapa",
+ "{key} is a PRO fight: no rewards.": "{key} é um combate PRO: sem recompensas.",
+ "There is no PRO fight called {key}.": "Não há nenhum combate PRO chamado {key}.",
+ "Finish the fight you are in first.": "Termina primeiro o combate em curso.",
+ "Finish the tutorial first.": "Termina primeiro o tutorial."
 }

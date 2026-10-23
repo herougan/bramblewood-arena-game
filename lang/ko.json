@@ -3048,5 +3048,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "공격할 때마다 대상의 독과 출혈이 즉시 {n}번 더 발동해요.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "적중 시: 맥동. 매번 대상의 독(맹독 포함)과 출혈 중첩 전부만큼 피해를 줘요. 중첩은 줄지 않아요.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att}이(가) {name}의 독과 출혈을 맥동시켜요.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "고른 대상의 독(맹독 포함)과 출혈이 지금 N번 발동해요. 매번 중첩 전부만큼이고, 중첩은 줄지 않아요."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "고른 대상의 독(맹독 포함)과 출혈이 지금 N번 발동해요. 매번 중첩 전부만큼이고, 중첩은 줄지 않아요.",
+ "PRO fights": "PRO 전투",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "덱 최적화 도구가 각 맵에서 찾은 가장 강한 덱과 싸우는 숨겨진 전투로, 그 맵에서 가장 흔한 필드에서 진행됩니다. 맵에 나오지 않으며 진행도와 보상이 없습니다.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "아직 PRO 전투가 없습니다. 덱 최적화 도구를 실행한 뒤 tools/opt/pro_skirmishes.js --apply 를 실행하세요.",
+ "Map {n} · {name}": "맵 {n} · {name}",
+ "Copy link": "링크 복사",
+ "Link copied.": "링크를 복사했습니다.",
+ "Gauntlet {n}%": "건틀릿 {n}%",
+ "{elo} Elo vs PRO-1": "PRO-1 상대 {elo} Elo",
+ "PRO fights on this map": "이 맵의 PRO 전투",
+ "{key} is a PRO fight: no rewards.": "{key}은(는) PRO 전투입니다: 보상 없음.",
+ "There is no PRO fight called {key}.": "{key}(이)라는 PRO 전투가 없습니다.",
+ "Finish the fight you are in first.": "먼저 진행 중인 전투를 끝내세요.",
+ "Finish the tutorial first.": "먼저 튜토리얼을 끝내세요."
 }

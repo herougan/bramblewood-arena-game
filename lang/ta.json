@@ -3048,5 +3048,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "அதன் தாக்குதல்கள் இலக்கின் நஞ்சையும் இரத்தப்போக்கையும் உடனே இன்னும் {n} முறை இயக்கும்.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "தாக்கும்போது: துடிப்பு. ஒவ்வொரு துடிப்பும் இலக்கின் முழு நஞ்சையும் (பெருநஞ்சையும்) முழு இரத்தப்போக்கையும் தரும்; எந்த அடுக்கும் குறையாது.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} {name} இன் நஞ்சையும் இரத்தப்போக்கையும் துடிக்கச் செய்கிறது.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "தேர்ந்த இலக்கின் நஞ்சும் (பெருநஞ்சும்) இரத்தப்போக்கும் இப்போதே N முறை இயங்கும், ஒவ்வொன்றும் முழு அடுக்கோடு; எந்த அடுக்கும் குறையாது."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "தேர்ந்த இலக்கின் நஞ்சும் (பெருநஞ்சும்) இரத்தப்போக்கும் இப்போதே N முறை இயங்கும், ஒவ்வொன்றும் முழு அடுக்கோடு; எந்த அடுக்கும் குறையாது.",
+ "PRO fights": "PRO சண்டைகள்",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "ஒவ்வொரு வரைபடத்துக்கும் டெக் உகப்பாக்கி கண்டறிந்த வலிமையான டெக்குடன் மறைக்கப்பட்ட மோதல்கள், அந்த வரைபடத்தின் பொதுவான களத்தில். வரைபடத்தில் இல்லை, முன்னேற்றம் இல்லை, வெகுமதி இல்லை.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "இன்னும் PRO சண்டைகள் இல்லை. டெக் உகப்பாக்கியை இயக்கி, பிறகு tools/opt/pro_skirmishes.js --apply இயக்கவும்.",
+ "Map {n} · {name}": "வரைபடம் {n} · {name}",
+ "Copy link": "இணைப்பை நகலெடு",
+ "Link copied.": "இணைப்பு நகலெடுக்கப்பட்டது.",
+ "Gauntlet {n}%": "சோதனை {n}%",
+ "{elo} Elo vs PRO-1": "PRO-1-க்கு எதிராக {elo} Elo",
+ "PRO fights on this map": "இந்த வரைபடத்தின் PRO சண்டைகள்",
+ "{key} is a PRO fight: no rewards.": "{key} ஒரு PRO சண்டை: வெகுமதி இல்லை.",
+ "There is no PRO fight called {key}.": "{key} என்ற PRO சண்டை இல்லை.",
+ "Finish the fight you are in first.": "முதலில் நடக்கும் சண்டையை முடிக்கவும்.",
+ "Finish the tutorial first.": "முதலில் பயிற்சியை முடிக்கவும்."
 }

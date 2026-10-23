@@ -12841,7 +12841,7 @@ function formatEnergyCountdown(ms){
 // 2026-10-10 (user: "Play Again always plays the same skirmish again. It is greyed out if you don't have enough Energy.
 // (Fight and Fight again too)"): every fight-starting button carries its cost; refreshEnergyHud re-checks them as Energy refills.
 function playAgainEnergyAttrs(m){
-  if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
+  if(!m || m.mode !== 'conquest' || !m.conquestNode || m.proFight) return ''; // 2026-10-24 (package PRO): a PRO fight costs no Energy
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
   const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
   if(!m.adminTest && isDailyDungeonMap(f.map) && dungeonTicketsLeft() <= 0) return `data-energy-cost="${c}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}"`; // 2026-10-18 (package DK)
@@ -19449,6 +19449,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       ${skirmishCurveHTML(mapId, draft.key)}
+      ${draft.kind === 'tutorial' ? '' : proEditorRowHTML(mapId) /* 2026-10-24 (package PRO): this map's hidden PRO fights */}
       </div>
       <div class="se-actions">
         <button type="button" class="btn" id="seSim">📊 Simulate 200 vs my deck</button>
@@ -20845,7 +20846,7 @@ function saveAndExitAsyncMatch(){ if(matchResultPending(matchState)){ showToast(
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['matchUid' /* 2026-10-21 (package ED): which match the save is */, 'aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z)
+const RESUME_FIELDS = ['matchUid' /* 2026-10-21 (package ED): which match the save is */, 'aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded', 'proFight']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z); + a PRO fight's key (2026-10-24, PRO: a resumed one still pays nothing)
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -20875,6 +20876,7 @@ function resumeAbandonedMatchNow(){
     const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'open', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && fightRules(snap.conquestNode.mapId, (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node)) || undefined});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
+    if(matchState.proFight) matchState.adminTest = true; // 2026-10-24 (package PRO): a PRO fight resumed is still unpaid
     lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
     switchTab('play');
     showToast(TX('toast.picking-up-your-unfinished-match-where'));
@@ -22730,9 +22732,99 @@ function completeConquestNode(node, rank){
 }
 function findConquestNode(mapId, nodeKey){
   const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return null;
-  const node = map.nodes.find(n=>n.key===nodeKey); if(!node) return null;
+  const node = map.nodes.find(n=>n.key===nodeKey);
+  if(!node){ const pro = PRO_KEY_RE.test(nodeKey || '') ? findProFight(nodeKey) : null; return pro && pro.map.id === mapId ? pro : null; } // 2026-10-24 (package PRO): a hidden PRO fight of this map
   return {map, node};
 }
+// PRO fights (2026-10-24, package PRO, owner 00:28: "Can you add a special hidden skirmish in each map, with the best deck you could make
+// (replacing it when you find something better?). It has the field effects of the average skirmish of that map. If there are multiple high
+// elo, form multiple. Name them as N-PRO-1, -2 -3 etc."). The data is canonical/pro-skirmishes.json (tools/opt/pro_skirmishes.js keeps it
+// from the deck optimizer's distinct optima; assemble_arena.py bakes it in). A PRO fight is a skirmish of its map that is NOT in map.nodes:
+// never on the road, never counted for the map's progress, its stars or its rewards. findConquestNode finds it by its key, so its castle,
+// Shield, field, CPU and leader come from the same code as a road fight: the map's own castle and Shield rule for a skirmish, the field the
+// tool chose (the value most of the map's fights have, a tie the boss's), the enemy at the PRO's level (1), the CPU at the skill the deck
+// was measured with (Smart), from Map 2 the deck's showcase card as its leader. Fighting one costs no Energy and pays nothing (it runs as an
+// admin test: no rank, cards, XP or quest counts; a resumed one stays one). Reached from Admin (🏆 PRO fights), the skirmish editor (its
+// map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
+// cosmetic flag for a win; default none).
+const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
+const PRO_KEY_RE = /^\d+-PRO-\d+$/;
+const PRO_NODE_CACHE = new Map();
+function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; }
+function proNodeOf(mapId, e, ent){
+  const ck = mapId + ':' + e.id; let n = PRO_NODE_CACHE.get(ck); if(n) return n;
+  const f = (ent && ent.field) || {}, rules = Object.assign({}, f.rules || {}), ai = CPU_AI_KEYS[((PRO_SKIRMISHES.rule || {}).ai != null ? PRO_SKIRMISHES.rule.ai : 1)] || 'smart';
+  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, deck: Object.assign({}, e.deck || {}), enemyLevel: e.level != null ? e.level : 1,
+    leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
+  if((e.leaders || [])[0]) n.showcase = e.leaders[0];
+  NODE_MAP_HINT.set(n, mapId);
+  if(f.terrain) rules.terrain = terrainObj(f.terrain.biome, f.terrain.tier) || false; // the tool's tier, whatever the PRO's place would give
+  else { try{ if(fightRules(mapId, n).terrain) rules.terrain = false; }catch(err){} } // the average fight has none
+  PRO_NODE_CACHE.set(ck, n); return n;
+}
+function proFightsOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); const id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id];
+  return ent ? (ent.pro || []).map(e=> proNodeOf(id, e, ent)) : []; }
+function findProFight(key){
+  for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = (ent.pro || []).find(x=> x.id === key);
+    if(e){ const map = CONQUEST_MAPS.find(m=> m.id === id); if(map) return {map, node: proNodeOf(id, e, ent), entry: e}; } }
+  return null;
+}
+function proLinkFor(key){ try{ return location.origin + location.pathname + '#pro=' + encodeURIComponent(key); }catch(e){ return '#pro=' + key; } }
+function startProFight(key){
+  const f = findProFight(key); if(!f){ showToast(TX('ui.pro-unknown', {key: String(key || '')}), 'warn'); return false; }
+  if(matchState && !matchState.over){ showToast(TX('ui.pro-busy'), 'warn'); return false; }
+  if(matchState && matchState.over) endMatch();
+  { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
+  playSubTab = 'conquest'; switchTab('play');
+  const ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true});
+  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; }
+  return ok;
+}
+// #pro=<key>: the link opens the fight once the page has loaded (and on a later hash change); the hash is cleared so a reload doesn't
+// start it again. Anyone with the link can play it (it pays nothing); the tutorial comes first.
+function proDeepLinkKey(hash){ const m = /(?:^#|&)pro=([^&]+)/.exec(hash == null ? ((typeof location !== 'undefined' && location.hash) || '') : hash); try{ return m ? decodeURIComponent(m[1]) : null; }catch(e){ return null; } }
+function proDeepLinkGo(){
+  const key = proDeepLinkKey(); if(!key) return false;
+  try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+  if(!loadTutorialDone()){ showToast(TX('ui.pro-tutorial-first'), 'warn'); return false; }
+  return startProFight(key);
+}
+try{ if(typeof window !== 'undefined'){ window.addEventListener('load', ()=> setTimeout(proDeepLinkGo, 1500)); window.addEventListener('hashchange', ()=> proDeepLinkGo()); } }catch(e){}
+function proDeckLineHTML(deck){ const defs = getCardDefs();
+  return Object.keys(deck || {}).filter(id=> deck[id] > 0).sort((a, b)=> deck[b] - deck[a] || ((defs[a] || {}).name || a).localeCompare((defs[b] || {}).name || b))
+    .map(id=> `<span class="pro-card" title="${escapeAttr((defs[id] || {}).name || id)}">${deck[id]}× ${escapeHtml((defs[id] || {}).icon || '')} ${escapeHtml((defs[id] || {}).name || id)}</span>`).join(''); }
+function proFieldHTML(mapId, node){
+  const bits = []; try{ skirmishFieldChips(mapId, node).filter(c=> c.on).forEach(c=> bits.push(`${c.icon} ${c.name}`)); }catch(e){}
+  const t = node.rules && node.rules.terrain; if(t && t.name) bits.push(`${t.icon || ''} ${t.name} ${ROMAN_TIER[t.tier] || t.tier}`);
+  return bits.length ? `<span class="pro-field">${bits.map(b=> `<span>${escapeHtml(b)}</span>`).join('')}</span>` : '';
+}
+function proRowHTML(mapId, e, node, opts){
+  const defs = getCardDefs(), lead = (e.leaders || []).filter(id=> defs[id]).map(id=> defs[id].name).join(', ');
+  const score = e.source && e.source.score != null ? TX('ui.pro-score', {n: Math.round(e.source.score * 1000) / 10}) : '';
+  const vs = e.h2h ? TX('ui.pro-vs1', {elo: (e.h2h.elo >= 0 ? '+' : '') + e.h2h.elo}) : '';
+  return `<div class="pro-row" data-pro-key="${escapeAttr(e.id)}"><div class="pro-row-head"><b class="pro-id">🏆 ${escapeHtml(e.id)}</b>${score ? `<span class="pro-stat">${escapeHtml(score)}</span>` : ''}${vs ? `<span class="pro-stat" title="${escapeAttr(e.h2h.p != null ? Math.round(e.h2h.p * 1000) / 10 + '% · ' + e.h2h.n : '')}">${escapeHtml(vs)}</span>` : ''}${lead ? `<span class="pro-stat">${escapeHtml(TX('ui.pro-leader', {name: lead}))}</span>` : ''}
+    <span class="pro-acts"><button type="button" class="btn small primary" data-pro-start="${escapeAttr(e.id)}">▶ ${escapeHtml(TX('ui.pro-fight'))}</button>${opts && opts.compact ? '' : `<button type="button" class="btn small ghost" data-pro-copy="${escapeAttr(e.id)}" title="${escapeAttr(proLinkFor(e.id))}">🔗 ${escapeHtml(TX('ui.pro-copy-link'))}</button>`}</span></div>
+    ${opts && opts.compact ? '' : `<div class="pro-deck">${proDeckLineHTML(node.deck)}</div>`}</div>`;
+}
+function proFightsAdminHTML(){
+  const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
+  const body = ids.length ? ids.map(id=>{ const ent = ents[id], map = CONQUEST_MAPS.find(m=> m.id === id); if(!map) return ''; const nodes = proFightsOf(id);
+    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${(ent.pro || []).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}</div>`; }).join('')
+    : `<p class="panel-sub">${escapeHtml(TX('ui.pro-none'))}</p>`;
+  return `<div class="panel admin-subpanel pro-admin" id="adminProFights"><h3>🏆 ${escapeHtml(TX('ui.pro-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.pro-admin-sub'))}</p>${body}</div>`;
+}
+function proEditorRowHTML(mapId){
+  const nodes = proFightsOf(mapId); if(!nodes.length) return '';
+  const m = CONQUEST_MAPS.find(x=> x.id === mapId), id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id] || {};
+  return `<fieldset class="se-wide pro-editor"><legend>🏆 ${escapeHtml(TX('ui.pro-editor'))}</legend>${(ent.pro || []).map((e, i)=> proRowHTML(id, e, nodes[i], {compact: true})).join('')}</fieldset>`;
+}
+try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{
+  const b = ev.target && ev.target.closest && ev.target.closest('[data-pro-start],[data-pro-copy]'); if(!b) return;
+  ev.preventDefault();
+  if(b.dataset.proStart){ startProFight(b.dataset.proStart); return; }
+  const url = proLinkFor(b.dataset.proCopy);
+  try{ navigator.clipboard.writeText(url).then(()=> showToast(TX('ui.pro-link-copied'), 'ok'), ()=> showToast(url, 'ok')); }catch(err){ showToast(url, 'ok'); }
+}); }catch(e){}
 // Node visibility (2026-09-17, per explicit request, "Caves & Alcoves... skirmish icons hidden
 // until a nearby one is defeated"): only maps that opt in via `sequential:true` gate node-by-
 // node — the trail's first node is always visible the instant its map unlocks, and every node
@@ -31138,6 +31230,7 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
+    ${proFightsAdminHTML() /* 2026-10-24 (package PRO): the hidden PRO fights, per map */}
     ${adminModeEnabled ? `<div class="panel admin-subpanel"><h3>🃏 ${escapeHtml(TX('ui.mp-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.mp-admin-sub'))}</p>
       <button type="button" class="btn small" id="adminMapCardsBtn">🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>` : '' /* 2026-10-22 (package MP) */}
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
@@ -33021,7 +33114,7 @@ function renderMatchUI(){
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
-        ${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
+        ${m.proFight ? `<p class="wl-pro-note">🏆 ${escapeHtml(TX('ui.pro-result', {key: m.proFight}))}</p>` : '' /* 2026-10-24 (package PRO) */}${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
         ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) /* 2026-10-18 (package DK): the key was used at the start either way */}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
@@ -33246,6 +33339,7 @@ function renderMatchUI(){
       }
       // 2026-10-05 (user: "Play Again seems to make me fight the old deck instead of the Skirmish I
       // just fought"): a Conquest fight replays the same node, not a generic AI match.
+      if(mode==='conquest' && m.proFight){ const key = m.proFight; endMatch(); startProFight(key); return; } // 2026-10-24 (package PRO): again, free and unpaid
       if(mode==='conquest' && m.conquestNode){ const cn = m.conquestNode, bm = m.battleMode; endMatch(); holdPacksForReplay(); if(!startConquestMatch(cn.mapId, cn.nodeId, bm ? {battleMode: bm} : undefined)) packHoldForReplay = 0; return; }
       // 2026-10-19 (package NV, owner's raid screenshots): a raid's Play again fell through to startMatch('raidOffline'), which builds a
       // plain Quick Battle against the default deck. It now builds a fresh fight on the same raid part (raidReplayPart: the raid's current
@@ -39100,7 +39194,7 @@ async function resolveRoundCore(opts){
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw'), standard: !!m.standard || undefined, myDeck: m.standard ? 'Standard deck' : ((getActiveDeck() || {}).name || undefined)}); }catch(e){} // 2026-10-21 (package AR): + your deck's name and the format, for the Profile's match log
     }
-    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay && !m.rewardDuplicate){ // 2026-10-18 (package Z): not on a free Spire replay; 2026-10-21 (ED): nor twice
+    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay && !m.rewardDuplicate && !m.proFight){ // 2026-10-18 (package Z): not on a free Spire replay; 2026-10-21 (ED): nor twice; 2026-10-24 (PRO): nor a PRO fight
       awardXp(3);
       bumpQuestCounter('wins', 1);
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);

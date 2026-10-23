@@ -18,7 +18,10 @@ ok(m0.id === 'm1' && G.mapNumberOf(m3.id) === 3, 'maps by number and id');
 const p0 = O.poolsFor(gm, m0, { owned: 'plan', crossPool: 'plan', submaps: true }), p3 = O.poolsFor(gm, m3, { owned: 'plan', crossPool: 'plan', submaps: true });
 ok(p0.p1.length >= 20 && p0.all.length > p0.p1.length * 3, 'Map 0 pool ' + p0.p1.length + ', whole spectrum ' + p0.all.length);
 ok(p0.owned.every(id => p3.p1.includes(id)) && p3.owned.length > p0.owned.length, 'what you own on Map 0 you still own on Map 3, and more (' + p0.owned.length + ' -> ' + p3.owned.length + ')');
-ok(['voidfeather-scout', 'otter-centurion'].every(id => p0.p1.includes(id)), 'Base and tutorial-base cards are owned from Map 0');
+// 2026-10-24 (package PRO): RW5 moved the Voidfeather Scout out of Base (a Hummingbird faction card, first on Map 5), so this named a
+// card that is no longer Base. The check now reads the plan: every deckable Base / tutorial-base card is in Map 0's pool.
+{ const base = gm.plan.cards.filter(c => (c.bucket === 'base' || c.bucket === 'tutorialBase') && gm.D[c.id] && !['token', 'test', 'hero', 'hallOfFame', 'pool'].some(k => gm.D[c.id][k]) && c.id !== 'wandering-traveller').map(c => c.id);
+  ok(base.length >= 20 && base.includes('otter-centurion') && base.every(id => p0.p1.includes(id)), 'Base and tutorial-base cards are owned from Map 0 (' + base.filter(id => !p0.p1.includes(id)).join(', ') + ')'); }
 ok(O.fightsOf(m3).every(f => Object.keys(f.deck).every(id => p3.p1.includes(id) || !O.poolsFor(gm, m3, {}).all.includes(id))), "a map's fight-deck cards are in its pool");
 ok(p0.p1.every(id => !gm.D[id].token && !gm.D[id].pool), 'no tokens or pool candidates');
 const rng = O.mulberry(7);
@@ -58,8 +61,13 @@ ok(a.ladder.every(x => x.eloCI[0] <= x.eloGap && x.eloGap <= x.eloCI[1] && (x.el
 ok(a.throughput.games > 0 && a.throughput.gamesPerSecond > 0, 'throughput recorded');
 ok(fs.readdirSync(path.join(OUT, 'w0')).some(f => /^deckopt-summary-.*\.md$/.test(f)), 'summary markdown');
 // resume: a finished checkpoint replays to the same report without new search games
-run('w0r', ['--workers', '0', '--resume', '--ckpt-dir', path.join(OUT, 'ck-w0')]);
-const c = file('w0r'); ok(c && strip(c) === strip(a), 'resume from the checkpoint gives the same report');
+// 2026-10-24 (package PRO): the batch's run reported this check failing; it passed 5 times here (alone and under tests/run.js -j 2), so
+// the check now says why when it fails: whether the run resumed at all (a checkpoint name that changed between the two runs, e.g. card
+// data or the progression plan edited by a concurrent run, starts a fresh search instead) and which part of the report differs.
+const logR = cp.execFileSync(process.execPath, [OPT].concat(common.filter(x => x !== '--quiet'), ['--out', path.join(OUT, 'w0r'), '--workers', '0', '--resume', '--ckpt-dir', path.join(OUT, 'ck-w0')]), { cwd: ROOT, encoding: 'utf8' });
+ok(/resumed from .*stages done: .*ladder/.test(logR), 'resume: the run picked up the finished checkpoint (' + (logR.split('\n').find(x => /resumed from/.test(x)) || 'no "resumed from" line: the checkpoint name changed') + ')');
+const c = file('w0r'), parts = ['phase1', 'phase2', 'gap', 'road', 'fieldImpact', 'optima', 'optimaH2H', 'ladder'];
+ok(c && strip(c) === strip(a), 'resume from the checkpoint gives the same report' + (c && strip(c) !== strip(a) ? ' (differs: ' + parts.filter(k => JSON.stringify(c[k]) !== JSON.stringify(a[k])).join(', ') + ')' : ''));
 // 2026-10-23 (OPT2): --redo ladder runs the ladder again from the checkpoint and gets the same ladder (its own generator)
 run('w0l', ['--workers', '0', '--resume', '--redo', 'ladder', '--ckpt-dir', path.join(OUT, 'ck-w0')]);
 const l = file('w0l'); ok(l && JSON.stringify(l.ladder) === JSON.stringify(a.ladder), '--redo ladder repeats the ladder exactly');

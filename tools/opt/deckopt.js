@@ -854,5 +854,6 @@ async function main(argv) {
     const sf = path.join(outDir, `deckopt-summary-${tag}.md`); fs.writeFileSync(sf, summaryMd(all, tag)); log('summary -> ' + path.relative(root, sf)); }
   return reports;
 }
-if (typeof module !== 'undefined') module.exports = { parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
+// 2026-10-24 (package PRO): + mineFor and playOne, for tools/opt/pro_skirmishes.js's head-to-head under a PRO fight's field
+if (typeof module !== 'undefined') module.exports = { mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
 if (isMainThread && (require.main === module || SEA)) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

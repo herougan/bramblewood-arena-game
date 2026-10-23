@@ -2,6 +2,24 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package PRO: hidden PRO fights per map)
+- **PRO fights (owner 00:28: "a special hidden skirmish in each map, with the best deck you could make ... Name them as N-PRO-1, -2 -3"):**
+  7 fights from OPT2's distinct optima: Map 0 `0-PRO-1..3`, Map 1 `1-PRO-1..2`, Map 2 `2-PRO-1`, Map 3 `3-PRO-1`. Each is a skirmish of
+  its map that is not in the map's nodes: never on the road, not counted for progress, no Energy, no rank, cards, XP or quest counts (a
+  resumed one too); the results say so. Field = the value most of the map's fights have per rule, a tie the boss's (Map 0 Mist; Map 1
+  day / night + Old Woods I; Map 2 day / night, Tide, Wet, Tideline I; Map 3 day / night, wind, High Crags II by the boss tie-break). Enemy
+  at Level 1, the Smart CPU the decks were measured with, from Map 2 the deck's showcase card as leader.
+- **Where:** Admin → 🏆 PRO fights (per map: field, gauntlet score, Elo vs PRO-1, leader, the deck, Fight and Copy link); the skirmish
+  editor's "PRO fights on this map" row; the link `#pro=3-PRO-1` (after the tutorial; the hash is cleared). Shots `docs/screens/PRO/`.
+- **Data and tool:** `canonical/pro-skirmishes.json` (baked in by `assemble_arena.py` as `PRO_SKIRMISHES`), kept by
+  `tools/opt/pro_skirmishes.js` (dry run by default, `--apply`): PRO-1 is replaced only by a deck beating it 55%+ over 400+ games with
+  the interval above 50%; more PROs within 100 Elo and 6+ copies apart, at most 4 a map; head to head under the PRO's own field, seeded.
+  Routine in `docs/workflows/balance.md` ("PRO fights"). `deckopt.js` exports `mineFor` and `playOne`.
+- **Tests:** `tests/pro-2026-10-23.js`, `tests/e2e/pro_2026_10_23.py`. `tests/opt-2026-10-23.js`: the Base-card check reads the plan
+  (RW5 made the Voidfeather Scout a Map 5 faction card); the resume check now says whether the run resumed and which part differs.
+- Owner calls PRO-1 (reveal after a map's boss, default No), PRO-2 (a win's reward, default nothing), PRO-3 (re-run the optimizer on
+  today's cards first: the decks predate RW5 / EN4, e.g. the Ember Tetra 3/7 -> 2/6). Texts in 12 packs.
+
 ## 2026-10-23 (package EN4: no Guardian for a Guardian, Hemorrhage, Greater Poison, Shore Up, Pulse, six new cards, RW5's held cards)
 - **Guardian (22:23 #9: "Guardian shouldn't intercept an intercepting guardian."):** EN3's one hop is reverted. One Guardian steps in for the
   ally and takes the swing; the Guardian beside it doesn't cover it. Kept from EN3: no guard line, never the bramble. The hit has no

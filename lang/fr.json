@@ -3046,5 +3046,18 @@
  "Its hits make the target's Poison and Bleed tick {n} more times, at once.": "Ses coups font agir le Poison et le Saignement de la cible {n} fois de plus, aussitôt.",
  "On Hit: Pulse. Each tick deals the target's whole Poison (and Greater Poison) and its whole Bleed; no stack wears down.": "Au coup : Pulsation. Chaque tic inflige tout le Poison (et le Poison majeur) de la cible et tout son Saignement ; aucun cumul ne diminue.",
  "{att} makes the Poison and Bleed in {name} pulse.": "{att} fait palpiter le Poison et le Saignement de {name}.",
- "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Le Poison (et le Poison majeur) et le Saignement de la cible choisie agissent N fois tout de suite, chacun de tout son cumul ; aucun cumul ne diminue."
+ "The chosen target's Poison (and Greater Poison) and Bleed tick N times now, each its whole stack; no stack wears down.": "Le Poison (et le Poison majeur) et le Saignement de la cible choisie agissent N fois tout de suite, chacun de tout son cumul ; aucun cumul ne diminue.",
+ "PRO fights": "Combats PRO",
+ "Hidden skirmishes with the strongest deck the deck optimizer found for each map, under that map's most common field. Not on the map, no progress, no rewards.": "Escarmouches cachées avec le deck le plus fort que l'optimiseur de decks a trouvé pour chaque carte, sous le terrain le plus courant de cette carte. Hors de la carte, sans progression ni récompense.",
+ "No PRO fights yet. Run the deck optimizer, then tools/opt/pro_skirmishes.js --apply.": "Pas encore de combats PRO. Lance l'optimiseur de decks, puis tools/opt/pro_skirmishes.js --apply.",
+ "Map {n} · {name}": "Carte {n} · {name}",
+ "Copy link": "Copier le lien",
+ "Link copied.": "Lien copié.",
+ "Gauntlet {n}%": "Parcours {n} %",
+ "{elo} Elo vs PRO-1": "{elo} Elo contre PRO-1",
+ "PRO fights on this map": "Combats PRO de cette carte",
+ "{key} is a PRO fight: no rewards.": "{key} est un combat PRO : aucune récompense.",
+ "There is no PRO fight called {key}.": "Aucun combat PRO ne s'appelle {key}.",
+ "Finish the fight you are in first.": "Termine d'abord ton combat en cours.",
+ "Finish the tutorial first.": "Termine d'abord le tutoriel."
 }
