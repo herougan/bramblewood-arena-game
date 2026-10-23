@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package DC2: the owner's 11:11 answers, and the easy calls settled)
+- Decisions only, no code. `docs/decisions.json`: 19 of the owner's 11:11 answers recorded (UI4-1..3, FX3-1..3, EN-1..8, EB-1..5),
+  and GD-1 / GD2-5 note his "Adjacent / Surrounding: Okay!". At his request ("many of them are basically confirmed ... make the call"),
+  Claude settled 28 more: 24 kept as built, plus TU2-1, RW3-3, BF10-1 (Evasive ×1.37, Shadow ×1.1; later package) and BF10-2
+  (superseded by EN-2). 19 stay open for him, with shorter bodies and a recommended default (DF-1..4, SX-2, LEAD-4, TU2-3, RW3-2 among
+  them), including the new EQ-1 (how equipment is damaged or removed, 4 designs, recommended: durability with acid / Corrode wear).
+- Build list in `docs/action-items.md` ("10-23 11:11: building"): FX4, HUB2, BF11 and two later-package items.
+
 ## 2026-10-23 (package SX: target-modifier sounds, poison's crit colour, the 3-part Hero XP bar, number-aware translations)
 - Owner 10-23 00:10 #95, #11 (DN2-4), #66 (H2), #64 (I2). Calls SX-1..SX-3.
 - **A sound for each damage mark (#95):** every damage number with a mark plays that mark's own SoundKit cue 75 ms after the hit, so the
