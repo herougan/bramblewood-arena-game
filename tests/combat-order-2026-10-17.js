@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1. Quick happens at Speed = 2." and "Settle death
 // effects after a skill or attack finishes"): one Speed order for the whole round. Quick swings at Speed 2, every shooter's Arrows /
-// Bolts / Snipe at Speed 1, a Boomerang throw at Speed 1, everyone else at Speed 0 (Speed / Haste add on top). The dead are cleared
+// Bolts / Snipe at Speed 1, a Boomerang throw at Speed 0 since EN2 (was 1), everyone else at Speed 0 (Speed / Haste add on top). The dead are cleared
 // after each action, and a unit an arrival kills (Pounce) dies as the arrival ends.
 'use strict';
 const H = require('./lib/harness.js');
@@ -44,11 +44,12 @@ const shotOf = (ev, uid)=> idx(ev, x=> (x.type==='arrow' || x.type==='bolt') && 
   const q = byDef(P[1], 'co-quick'), qf = byDef(P[1], 'co-qfast'), f3 = byDef(P[2], 'co-fast3'); const ev = []; e.resolveCombat(P, so, {}, ev, 2);
   const iq = swingOf(ev, q.uid), iqf = swingOf(ev, qf.uid), if3 = swingOf(ev, f3.uid);
   ok(if3 < iqf && iqf < iq, `3. Speed 3 (initiative) ${if3}, Quick+1 ${iqf}, Quick ${iq}`); }
-// 4. A Boomerang throw goes at Speed 1: before a plain swing from the side with initiative
+// 4. A Boomerang throw goes at Speed 0 since EN2 (2026-10-23, owner 13:16 #9; it was Speed 1): the plain swing from the side with
+//    initiative goes first
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'co-plain', 'center', {}, []); e.debugSpawnCard(P, so, 2, 'co-boom', 'center', {}, []);
   const pl = byDef(P[1], 'co-plain'), bm = byDef(P[2], 'co-boom'); const ev = []; e.resolveCombat(P, so, {}, ev, 1);
   const s = swingOf(ev, pl.uid), t = swingOf(ev, bm.uid);
-  ok(t >= 0 && s >= 0 && t < s, `4. the Boomerang throw (${t}) before the plain swing (${s})`); }
+  ok(t >= 0 && s >= 0 && s < t, `4. the Boomerang throw (${t}) after the initiative's plain swing (${s}): both Speed 0 (EN2)`); }
 // 5. An arrow kill dies before the next action (not after the round's other swings)
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'co-archer', 'center', {}, []); e.debugSpawnCard(P, so, 1, 'co-plain', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'co-frail', 'center', {}, []); e.debugSpawnCard(P, so, 2, 'co-wall', 'left', {}, []);
   const A = byDef(P[1], 'co-archer'), pl = byDef(P[1], 'co-plain'), fr = byDef(P[2], 'co-frail'); const ev = []; e.resolveCombat(P, so, {}, ev, 1);

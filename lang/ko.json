@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "짚 허수아비",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "연승: {gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "좌우의 적 둘을 친다. 하나라도 없으면 정면의 적만 친다.",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "매 라운드 강풍, 뒤 또는 앞에서. 순풍이면 비행 유닛이 먼저 행동하고, 역풍이면 두 번 발동하고 쏜다.",
  "Stronger allies in your raid rows.": "레이드 줄의 아군이 더 강해짐.",
  "Structures never catch it.": "건축물은 걸리지 않는다.",
  "Stunned: skips its attack this round.": "기절: 이번 라운드 공격을 건너뛰어요.",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "성찰하지 않는 덱은 쓸 가치가 없다.",
  "The water is still. Something down there remembers you.": "물이 고요해요. 저 아래 무언가가 당신을 기억해요.",
  "The wind spins the sand into a pillar and walks it straight at you.": "바람이 모래를 기둥처럼 말아 올려 곧장 당신에게 걸어오게 합니다.",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "바람이 매 라운드 바뀐다(뒤, 앞, 고요). 순풍이면 비행 유닛이 먼저 행동하고, 역풍이면 두 번 발동하고 쏜다.",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "세상이 열려요. 갈 수 있는 지도는 모두 왼쪽에 있고, 🧭 에서 전부 볼 수 있어요.",
  "Their bramble has a passive of its own.": "상대의 덤불에도 자기만의 패시브가 있어요.",
  "There are three jackals. Now there are six. There were never any.": "자칼이 세 마리. 이제 여섯 마리. 처음부터 한 마리도 없었습니다.",
@@ -2969,5 +2967,16 @@
  "+{n} Energy each": "개당 에너지 +{n}",
  "Use": "사용",
  "An egg! You'll need a nest to hatch it!": "알이다! 부화시키려면 둥지가 필요해요!",
- "You got an egg!": "알을 얻었어요!"
+ "You got an egg!": "알을 얻었어요!",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "공격할 때 던집니다. 다음 라운드에 빠르게 돌아와 같은 대상을 다시 맞힙니다. 가시덤불을 향해 던지면 그대로 날아갔다가 돌아오는 길에 가시덤불을, 이어서 그 줄의 유닛을 맞힙니다. 비행 유닛을 절대 놓치지 않습니다. 꼭 받아내세요!",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "인접한 아군(양옆, 레이드에서는 앞뒤도) 앞을 막아서서 그 아군을 노린 일반 공격을 대신 받습니다. 스킬과 범위 공격은 막지 않습니다. 도발은 다릅니다: 마주한 적이 자신을 노리게 만듭니다.",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "비행 – 순풍: 이번 라운드 신속 (속도 2로 공격, 대기 중인 유닛은 계속 대기)",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "비행 – 역풍: 액티브 스킬(화살, 볼트, 저격)이 두 번 발동, 공격과 패시브는 한 번",
+ "Tailwind: Quick this round (swings at Speed 2)": "순풍: 이번 라운드 신속 (속도 2로 공격)",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "{v1} 쪽에서 강풍: 그쪽 비행 유닛은 순풍(신속), 반대쪽은 역풍(액티브 스킬 두 번).",
+ "caught the Tailwind: Quick this round 🪁": "순풍을 탔다: 이번 라운드 신속 🪁",
+ "Tailwind: Quick!": "순풍: 신속!",
+ "Clack!": "딸깍!",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "바람은 매 라운드 바뀝니다(순풍, 역풍, 무풍): 순풍 비행 유닛은 신속, 역풍의 사격과 저격은 두 번.",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "매 라운드 강풍, 순풍 또는 역풍: 순풍 비행 유닛은 신속, 역풍의 사격과 저격은 두 번."
 }

@@ -778,7 +778,7 @@ const PASSIVE_DEFS = [
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=> TX('ui.sk-backstab', {n: numOr(n, 2)})}, // 2026-10-23 (package EN, owner D21); the EN block below patches it
   {key:'shieldCall', category:'passive', hidden:true, retired:true /* 2026-10-21 (BF6, owner 15:15: "Shield call -> Armor"): no card has it now; the engine's rule stays so an old save or a server override with it still works */, label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
-  {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
+  {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!`, // EN2 (2026-10-23, owner 13:16 #9): + the bramble throw's way back // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`One swing with three prongs, always aimed straight ahead: the unit in front takes its full Attack, the units to its left and right half (rounded down, at least 1). With nobody in front, the middle prong hits the bramble.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
@@ -991,7 +991,7 @@ const PASSIVE_DEFS = [
   // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
-  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.`} /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
+  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.`} /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
@@ -37658,7 +37658,16 @@ function atkAmpTier(eff, base){
 }
 // Swarm on the attack number (2026-10-11, user: "Swarm changes to +1 Attack ... let their attack value be dynamically
 // modified when I play Ants or when they die"): the board shows each Swarm card's Attack with its current bonus in.
-function liveSwarmBonus(c){ try{ const m = matchState; return (m && m.engine && m.engine.swarmBonusOf) ? m.engine.swarmBonusOf(m.players, c) : 0; }catch(e){ return 0; } }
+// EN2 (2026-10-23, owner 17:34 #22: "dynamic changes to stats (and visualisation) are applied immediately. so as you lose or gain ants DURING
+// a combat, the attack changes"): while a round replays, the count is taken from the replay's own living units (m.replayRows /
+// m.replayCards, which lose a unit as its death plays), not from the end-of-round board, so the number steps down as each ally falls.
+function liveSwarmBonus(c){ try{ const m = matchState; if(!(m && m.engine && c)) return 0;
+  if(m.replayRows && m.replayCards && m.engine.swarmBonusFromAllies){ const u = c.uid, rc0 = m.replayCards[u], defId = c.defId || (rc0 && rc0.defId);
+    for(const pid of [1,2]){ const rr = m.replayRows[pid]; if(!rr) continue; const uids = [...(rr.left||[]), ...(rr.center||[]), ...(rr.right||[])];
+      if(!uids.some(x=> String(x) === String(u))) continue;
+      const allies = uids.filter(x=> String(x) !== String(u)).map(x=>{ const rc = m.replayCards[x] || currentCardByUid(x); return rc && rc.hp > 0 ? {uid:x, defId: rc.defId, cageOf: rc.cageOf} : null; }).filter(a=> a && a.defId);
+      return defId ? m.engine.swarmBonusFromAllies({uid:u, defId, hp:1}, allies) : 0; } }
+  return m.engine.swarmBonusOf ? m.engine.swarmBonusOf(m.players, c) : 0; }catch(e){ return 0; } }
 // 2026-10-12 (user: "At super-minimised forms, remove the emojis from the attack and health labels"): the glyphs sit in their
 // own <i class="sg"> so the tiny-card rule can hide them.
 function atkLabelHTML(eff, base, d){ const g = atkGlyphOf(d), /* every element (EL, 2026-10-21) */ t = atkAmpTier(eff, base); return t ? `<i class="sg">${g}</i><span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `<i class="sg">${g}</i>${eff}`; }
@@ -41905,7 +41914,7 @@ function logText(ev){
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : ev.phase==='twilight' ? '🌆 Twilight: day and night creatures are both awake.' : '☀️ Day breaks.'};
-    case 'wind': return !ev.windy ? {cls:'', text:'🍂 The wind drops for a round.'} : {cls:'', text: `🌬️ Strong wind from side ${ev.from}: Tailwind for its Flyers (an extra turn), Headwind for the other side's (skills twice).`};
+    case 'wind': return !ev.windy ? {cls:'', text:'🍂 The wind drops for a round.'} : {cls:'', text: `🌬️ Strong wind from side ${ev.from}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).`};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
@@ -42039,7 +42048,7 @@ function logText(ev){
         phaseGrow: (()=>{ const ph = ev.phase, hid = ph === 'night' ? skillHiddenNow('nocturnal') : ph === 'twilight' ? (skillHiddenNow('crepuscular') || skillHiddenNow('nocturnal') || skillHiddenNow('diurnal')) : skillHiddenNow('diurnal'), st = `+${ev.amount||0}⚔${ev.hp ? ' +' + ev.hp + '❤' : ''}`;
           return hid ? `grows stronger (${st}) ❔` : `grows stronger ${ph === 'night' ? 'in the night' : ph === 'twilight' ? 'in the twilight' : 'in the sun'} (${st}) ${ph === 'night' ? '🌙' : ph === 'twilight' ? '🌆' : '☀️'}`; })(),
         phaseFade: `loses that extra strength again`,
-        tailwind: `caught the Tailwind for an extra turn 🪁`,
+        tailwind: ev.quick ? `caught the Tailwind: Quick this round 🪁` : `caught the Tailwind for an extra turn 🪁`, // EN2 (2026-10-23, 17:34 #15): a wind's Tailwind is Quick, not an extra turn (the spell still gives one)
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
         chilli: `ate a chilli: +${ev.amount}⚔, and its attacks burn now 🌶️🔥`, // Chilli (2026-10-15)
         chilliBurn: `is very hot from its chilli: ${dnLogNum(ev.amount, ev)} damage 🌶️`,
@@ -45016,10 +45025,128 @@ function emptyHealEvent(ev){
   }
   return false;
 }
+// ---- EN2 (2026-10-23): Guardian stepping in, Boomerang flights past the bramble and home without a thrower, the Ironclaw's clack and
+// claw, and the swing's live Attack on the attacker's plate. All on fixed overlays / the tiles, timed off animMs(); nothing here changes
+// the fight (the engine decides; these only show it).
+const EN2_BOOM = {}, EN2_BOOM_FLIGHTS = {};
+function en2Local(el){ const s = (el && el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1; return s; }
+function en2Ctr(el){ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height}; }
+function en2Layer(html, cls){ const e = document.createElement('div'); e.className = 'sfx ' + (cls || 'sfx-boomerang'); e.setAttribute('aria-hidden', 'true'); e.innerHTML = html; document.body.appendChild(e); return e; }
+function en2Ring(x, y, size){ if(!hasGsap()) return; const r = en2Layer('', 'sfx-ring sfx-ring-dust'); gsap.set(r, {x, y, xPercent:-50, yPercent:-50, width:8, height:8, opacity:.95}); gsap.to(r, {width:size||60, height:size||60, opacity:0, duration:.42, ease:'power2.out', onComplete:()=> r.remove()}); }
+function en2Knock(el, ang, k){ if(!hasGsap() || !el) return; const t = el.querySelector('.card-tile') || el; k = k || 1; const dx = Math.cos(ang*Math.PI/180)*8*k, dy = Math.sin(ang*Math.PI/180)*8*k;
+  gsap.timeline().to(t, {x:dx, y:dy, duration:.06, ease:'power2.out'}).to(t, {x:0, y:0, duration:.4, ease:'elastic.out(1, 0.45)', clearProps:'transform'}); }
+// Boomerang at the bramble (owner 13:16 #9: "on hitting the castle it continues at the same speed"): it strikes the bramble and flies
+// straight on past it, off the field, at the speed it came in (was: a bounce up and out of the top).
+function en2BoomCastleThrow(thrower, castle, o){
+  o = o || {}; if(!hasGsap() || reducedMotion() || !fxAtLeast('low')){ o.onImpact && o.onImpact(); return; }
+  const a = en2Ctr(thrower), b = en2Ctr(castle), dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, out = (o.flight || 520)/1000, v = L / out;
+  const D = Math.max(innerWidth, innerHeight) * 1.1, far = {x:b.x + dx/L*D, y:b.y + dy/L*D}, bm = en2Layer('🪃');
+  if(o.key != null) EN2_BOOM[String(o.key)] = {ux:dx/L, uy:dy/L};
+  gsap.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  gsap.timeline({onComplete:()=> bm.remove()})
+    .to(bm, {x:b.x, y:b.y, duration:out, ease:'none'})
+    .to(bm, {rotation:`+=${360*5}`, duration:out + D/v, ease:'none'}, 0)
+    .add(()=>{ en2Knock(castle, dy < 0 ? -90 : 90, .8); en2Ring(b.x, b.y, 60); o.onImpact && o.onImpact(); }, out)
+    .to(bm, {x:far.x, y:far.y, duration:D/v, ease:'none'}, out); // the same speed, straight on
+}
+// Its return (13:16 #9: "coming back it hits the bramble again and the opposing unit"): straight back in along the line it left on, into
+// the bramble, on through the unit now in its lane (unitEl, if any), and home to the thrower (or whatever stands in for it).
+function en2BoomCastleReturn(home, castle, unitEl, o){
+  o = o || {}; if(!hasGsap() || reducedMotion() || !fxAtLeast('low') || !home){ o.onImpact && o.onImpact(); return; }
+  const a = en2Ctr(home), b = en2Ctr(castle), key = o.key != null ? String(o.key) : null, th = key ? EN2_BOOM[key] : null;
+  const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, ux = th ? th.ux : dx/L, uy = th ? th.uy : dy/L, D = Math.max(innerWidth, innerHeight) * 1.1;
+  const out = (o.flight || 520)/1000, v = L / out, inT = Math.min(.45, D / v), u = unitEl ? en2Ctr(unitEl) : null, toU = u ? Math.max(.12, Math.hypot(u.x - b.x, u.y - b.y) / v) : 0, homeT = out * 1.1;
+  const bm = en2Layer('🪃'); gsap.set(bm, {x:b.x + ux*D, y:b.y + uy*D, xPercent:-50, yPercent:-50});
+  if(key) EN2_BOOM_FLIGHTS[key] = Date.now() + Math.round((inT + toU + homeT + .5)*1000);
+  const tl = gsap.timeline({onComplete:()=>{ bm.remove(); if(key){ delete EN2_BOOM_FLIGHTS[key]; delete EN2_BOOM[key]; } }});
+  tl.to(bm, {x:b.x, y:b.y, duration:inT, ease:'none'})
+    .to(bm, {rotation:`+=${360*7}`, duration:inT + toU + homeT, ease:'none'}, 0)
+    .add(()=>{ en2Knock(castle, uy < 0 ? 90 : -90, .8); en2Ring(b.x, b.y, 60); o.onImpact && o.onImpact(); }, inT);
+  let t0 = inT;
+  if(u){ tl.to(bm, {x:u.x, y:u.y, duration:toU, ease:'none'}, t0).add(()=>{ en2Knock(unitEl, uy < 0 ? 90 : -90, .9); }, t0 + toU); t0 += toU; }
+  const from = u || b, m1 = {x:(from.x + a.x)/2 + (a.y - from.y)*0.22, y:(from.y + a.y)/2 - (a.x - from.x)*0.22}, s = {t:0};
+  tl.to(s, {t:1, duration:homeT, ease:'power1.out', onUpdate:()=>{ const q = s.t, x = (1-q)*(1-q)*from.x + 2*(1-q)*q*m1.x + q*q*a.x, y = (1-q)*(1-q)*from.y + 2*(1-q)*q*m1.y + q*q*a.y; gsap.set(bm, {x, y}); }}, t0)
+    .add(()=>{ en2Ring(a.x, a.y, 54); en2Knock(home, 90, .45); }, t0 + homeT).to(bm, {scale:.55, opacity:0, duration:.16}, t0 + homeT);
+}
+// Owner 17:34 #2: with its thrower gone, the boomerang still comes home: one flight from past its far target, through it, to the unit now
+// in the thrower's slot (homeUid: hit, or caught by a Boomerang unit) or the side's own bramble. The far and home hits' own events only
+// shake the cards (their boomerang looks need the thrower's card, which is gone).
+function en2BoomOrphanFlight(ev){
+  if(!hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const home = (ev.homeUid != null && boardCardEl(ev.homeUid)) || hqTileEl(ev.side); if(!home) return;
+  const foeSide = ev.side === 'A' ? 'B' : 'A', far = (ev.farUid != null && boardCardEl(ev.farUid)) || (ev.hitCastle ? hqTileEl(foeSide) : null);
+  const h = en2Ctr(home), f = far ? en2Ctr(far) : {x:h.x, y: ev.side === 'A' ? -60 : innerHeight + 60};
+  const dx = h.x - f.x, dy = h.y - f.y, L = Math.hypot(dx, dy) || 1, D = Math.max(innerWidth, innerHeight) * .8;
+  const bm = en2Layer('🪃'); gsap.set(bm, {x:f.x - dx/L*D, y:f.y - dy/L*D, xPercent:-50, yPercent:-50});
+  try{ SoundKit.boomerangWhirr(); }catch(e){}
+  gsap.timeline({onComplete:()=> bm.remove()})
+    .to(bm, {x:f.x, y:f.y, duration:.38, ease:'none'})
+    .to(bm, {rotation:`+=${360*6}`, duration:.38 + .55, ease:'none'}, 0)
+    .add(()=>{ if(far) en2Knock(far, dy < 0 ? 90 : -90, .8); }, .38)
+    .to(bm, {x:h.x, y:h.y, duration:.55, ease:'power1.in'}, .38)
+    .add(()=>{ en2Ring(h.x, h.y, 56); en2Knock(home, dy > 0 ? 90 : -90, .7); }, .93)
+    .to(bm, {scale:.5, opacity:0, duration:.14}, .93);
+}
+// Guardian (owner 13:16 #22: "the guardian moves in to take the hit; if it dies there, it flinches and dies there"): a beat before the blow
+// lands the Guardian slides over in front of the ally it guards (between it and the attacker), takes the hit there, and slides home after;
+// a Guardian the blow kills stays where it fell, flinches, and its death plays on that spot. Offsets are used (not
+// transform), so the hit's knock and the death's own tweens, which drive transform, play on top of the move. (Not the CSS translate property:
+// GSAP 3.12 resets translate to none whenever it tweens a transform on the same element.) It moves by left / top (position: relative).
+function en2GuardStepIn(ev){
+  const g = boardCardEl(ev.targetUid), w = boardCardEl(ev.guardedUid); if(!g || !w || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid], dies = !!(rc && (rc.hp - (ev.dmg || 0)) <= 0);
+  const am = animMs(), hitAt = am.windup + am.impactPad, sc = en2Local(g), gr = g.getBoundingClientRect(), wr = w.getBoundingClientRect(), at = boardCardEl(ev.attUid), ar = at && at.getBoundingClientRect();
+  let dx = wr.left - gr.left, dy = wr.top - gr.top;
+  if(ar){ const ty = (ar.top + ar.height/2) - (wr.top + wr.height/2); dy += Math.sign(ty) * Math.min(Math.abs(ty) * .3, wr.height * .32); }
+  const p = {x:0, y:0}, pos0 = getComputedStyle(g).position, put = ()=>{ g.style.left = (p.x/sc) + 'px'; g.style.top = (p.y/sc) + 'px'; }, moveMs = Math.min(240, Math.max(120, hitAt * .55));
+  g.classList.add('en2-guarding'); g.style.zIndex = '30'; if(pos0 === 'static') g.style.position = 'relative';
+  setTimeout(()=>{ gsap.to(p, {x:dx, y:dy, duration:moveMs/1000, ease:'power2.out', onUpdate:put}); }, Math.max(0, hitAt - moveMs - 30));
+  if(dies) setTimeout(()=>{ const t = g.querySelector('.card-tile') || g; try{ t.animate([{translate:'0 0', rotate:'0deg'}, {translate:'-5px 0', rotate:'-4deg'}, {translate:'5px 0', rotate:'4deg'}, {translate:'-3px 0', rotate:'-2deg'}, {translate:'0 0', rotate:'0deg'}], {duration:300, easing:'ease-out'}); }catch(e){} }, hitAt + 20); // the flinch; it dies where it stands
+  else setTimeout(()=>{ gsap.to(p, {x:0, y:0, duration:.32, ease:'power2.inOut', onUpdate:put, onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
+}
+// The Ironclaw Fiddler's looks (owner 13:16 #17: "on-play side-to-side 'clack' animation (1 s), a short claw attack animation"): card fx
+// {play:'crabClack', attack:'crabClaw'} in canonical/cards.json. The clack: the card sways side to side four times over 1 s while its one
+// big claw snaps open and shut beside it. The claw: the big claw closes on the target as the blow lands.
+const EN2_CLAW_SVG = '<svg viewBox="0 0 64 48" width="100%" height="100%" style="display:block;overflow:visible"><g class="en2-jaw-top"><path d="M10 26 C 14 6, 40 0, 58 12 C 46 12, 34 16, 26 26 Z" fill="#e2552d" stroke="#7a1f0c" stroke-width="2.5" stroke-linejoin="round"/></g><g class="en2-jaw-bot"><path d="M10 26 C 18 40, 40 44, 54 34 C 42 32, 32 30, 26 26 Z" fill="#c43d1c" stroke="#7a1f0c" stroke-width="2.5" stroke-linejoin="round"/></g><circle cx="12" cy="26" r="7" fill="#e2552d" stroke="#7a1f0c" stroke-width="2.5"/></svg>';
+function en2Claw(x, y, size, flip){ const c = en2Layer(EN2_CLAW_SVG, 'en2-claw'); c.style.width = size + 'px'; c.style.height = Math.round(size*.75) + 'px';
+  gsap.set(c, {x, y, xPercent:-50, yPercent:-50, scaleX: flip ? -1 : 1}); return {el:c, top:c.querySelector('.en2-jaw-top'), bot:c.querySelector('.en2-jaw-bot')}; }
+function en2Snap(cl, at, tl){ tl.to(cl.top, {rotation:-26, svgOrigin:'12 26', duration:.08, ease:'power2.out'}, at).to(cl.bot, {rotation:22, svgOrigin:'12 26', duration:.08, ease:'power2.out'}, at)
+  .to([cl.top, cl.bot], {rotation:0, svgOrigin:'12 26', duration:.07, ease:'power3.in'}, at + .1); }
+function en2CrabClack(el){
+  if(!el || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const t = el.querySelector('.card-tile') || el, c = en2Ctr(el), cl = en2Claw(c.x + c.w*.48, c.y - c.h*.08, Math.max(34, c.w*.62), false);
+  gsap.set(cl.el, {opacity:0, scale:.6});
+  const tl = gsap.timeline({onComplete:()=> cl.el.remove()});
+  tl.to(cl.el, {opacity:1, scale:1, duration:.12, ease:'back.out(2)'}, 0);
+  [0, .24, .48, .72].forEach((at, i)=>{ const side = i % 2 ? 1 : -1; tl.to(t, {x:side*7, rotation:side*4, duration:.12, ease:'sine.inOut'}, at); en2Snap(cl, at + .04, tl);
+    tl.add(()=>{ try{ SoundKit.clang(); }catch(e){} }, at + .12); });
+  tl.to(t, {x:0, rotation:0, duration:.16, ease:'sine.out', clearProps:'transform'}, .88).to(cl.el, {opacity:0, scale:.7, duration:.14}, .86);
+  floatText(el, '🦀 Clack!', 'quick');
+}
+function en2CrabClawHit(attEl, targetEl, impactMs){
+  if(!targetEl || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const c = en2Ctr(targetEl), from = attEl ? en2Ctr(attEl) : null, flip = !!(from && from.x > c.x);
+  setTimeout(()=>{ const cl = en2Claw(c.x, c.y, Math.max(30, c.w*.55), flip); gsap.set(cl.el, {opacity:0, scale:.7}); gsap.set(cl.top, {rotation:-26, svgOrigin:'12 26'}); gsap.set(cl.bot, {rotation:22, svgOrigin:'12 26'});
+    gsap.timeline({onComplete:()=> cl.el.remove()}).to(cl.el, {opacity:1, scale:1, duration:.08}).to([cl.top, cl.bot], {rotation:0, svgOrigin:'12 26', duration:.07, ease:'power3.in'})
+      .add(()=>{ try{ SoundKit.clang(); }catch(e){} en2Knock(targetEl, flip ? 180 : 0, .9); }).to(cl.el, {opacity:0, scale:.85, duration:.18, delay:.1}); }, Math.max(0, impactMs - 150));
+}
+function en2Vfx(ev){
+  if(!ev || !matchState) return; en2PatchInFlight();
+  const defs = getCardDefs();
+  // 17:34 #22: the swing's live Attack (Swarm, Tide, Rage ... as the engine used it) on the attacker's plate at the moment it swings
+  if((ev.type === 'hit' || ev.type === 'hitHQ') && ev.liveAtk != null && ev.attUid != null && !ev.ranged){ const el = boardCardEl(ev.attUid), d = defs[ev.attDefId] || {};
+    const a = el && el.querySelector('.stats .atk'); if(a && !(Number(d.attack) <= 0 && ev.liveAtk <= 0)) a.innerHTML = atkLabelHTML(ev.liveAtk, d.attack, d); }
+  if(ev.type === 'hit' && ev.guardianRedirect && ev.guardedUid != null) en2GuardStepIn(ev);
+  if(ev.type === 'boomerangReturn' && ev.thrownBy == null){ if(matchState) matchState.boomerangBack = null; en2BoomOrphanFlight(ev); }
+  if(ev.type === 'play' && !ev.reserve && ev.uid != null && ((defs[ev.defId] || {}).fx || {}).play === 'crabClack'){ const u = ev.uid; setTimeout(()=> en2CrabClack(boardCardEl(u)), 620); }
+  if(ev.type === 'hit' && !ev.ranged && ((defs[ev.attDefId] || {}).fx || {}).attack === 'crabClaw'){ const am = animMs(); en2CrabClawHit(boardCardEl(ev.attUid), boardCardEl(ev.targetUid), am.windup + am.impactPad); }
+}
+function en2PatchInFlight(){ try{ if(window.SkillFX && SkillFX.boomerangInFlight && !SkillFX.__en2){ const inF = SkillFX.boomerangInFlight; SkillFX.boomerangInFlight = key=> (key != null && (EN2_BOOM_FLIGHTS[String(key)] || 0) > Date.now()) || inF(key); SkillFX.__en2 = true; } }catch(e){} } // EN2: FX.A skips its catch / whiff looks while an EN2 flight is home-bound
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
+  try{ en2Vfx(ev); }catch(e){} // EN2 (2026-10-23)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
@@ -45340,9 +45467,9 @@ function renderVfxForEvent(ev){
     try{ if(el && window.SkillFX && SkillFX.backstab){ const fromLeft = at ? at.getBoundingClientRect().left < el.getBoundingClientRect().left : true; SkillFX.backstab(el, fromLeft); } }catch(e){} }
   // Anti-Air (2026-10-10): a hit on a flier from an Anti-Air unit throws a boomerang that knocks feathers loose.
   if(ev.type==='hit' && !ev.source){ try{ const defs = getCardDefs(), ad = defs[ev.attDefId], td = defs[ev.targetDefId];
-    if(ad && td && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if((ev.boomerang && !ev.friendly) || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420, key}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420, key}); } } }catch(e){} } // key (2026-10-17): the return retraces this throw
+    if(ad && td && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t && !ev.viaCastle /* EN2: the castle return's flight (en2BoomCastleReturn) already passes through this unit */){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if((ev.boomerang && !ev.friendly) || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420, key}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420, key}); } } }catch(e){} } // key (2026-10-17): the return retraces this throw
   // A boomerang thrown at the castle bounces off it and flies out the top (2026-10-13).
-  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if(ev.boomerang || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; SkillFX.boomerangReturn(a, c, {flight:420, key, castle:true}); } else SkillFX.boomerangCastle(a, c, {flight:420, key}); } } }catch(e){} }
+  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if(ev.boomerang || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; en2BoomCastleReturn(a, c, ev.thenUid != null ? boardCardEl(ev.thenUid) : null, {flight:420, key}); } else en2BoomCastleThrow(a, c, {flight:420, key}); } /* EN2 (2026-10-23, owner 13:16 #9): it flies on past the bramble at the same speed, and comes back the same way: the bramble, then the unit in its lane, then home */ } }catch(e){} }
   // Boomerang return (2026-10-12): the next hit from this unit is the boomerang flying home.
   // 2026-10-17 (user: "2 boomerangs come back by the way - this is wrong. Only 1 should come back."): the cause was two looks for one
   // return. This event also played FX.A.boomerangInbound (a boomerang swinging in from the edge of the field to hang by its thrower),
@@ -45457,7 +45584,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
-    else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🪁 Tailwind!', 'quick'); }
+    else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
     else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + [ev.atkLost ? '−1⚔' : '', ev.broke ? w2BrokeName(ev.broke) + ' broken' : ''].filter(Boolean).join(' · '), 'debuff'); if(ev.atkLost && rc && rc.atk != null){ rc.atk = Math.max(0, rc.atk - ev.atkLost); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} } } // 2026-10-16: -1 Attack, and any skill
     else if(ev.kind==='shed'){ if(el) floatText(el, ev.molt ? `🦀 +${ev.amount||1}/+${ev.amount||1} · ⏪ +1 Wait` : '🐍 +1/+1', 'heal'); if(ev.molt && rc){ rc.wait = (rc.wait||0) + 1; try{ updateCardWaitDisplay(ev.targetUid, rc.wait); }catch(e){} } } // Molting (2026-10-16): +N/+N and +1 Wait
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }

@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "Mannequin de paille",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "Série : {gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "Frappe les deux ennemies à sa gauche et à sa droite ; s’il en manque une, seulement celle d’en face.",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Vent fort à chaque tour, dans le dos ou de face. Vent arrière : les volantes agissent d’abord ; vent de face : elles déclenchent et tirent deux fois.",
  "Stronger allies in your raid rows.": "Des alliés plus forts dans vos rangées de raid.",
  "Structures never catch it.": "Les Structures ne l’attrapent jamais.",
  "Stunned: skips its attack this round.": "Étourdi : saute son attaque ce tour-ci.",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "Un deck qu’on n’examine pas ne vaut pas la peine d’être joué.",
  "The water is still. Something down there remembers you.": "L’eau est immobile. Quelque chose, en bas, se souvient de vous.",
  "The wind spins the sand into a pillar and walks it straight at you.": "Le vent tord le sable en colonne et la pousse droit sur vous.",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Le vent tourne à chaque tour (dans le dos, de face ou calme). Vent arrière : les volantes agissent d’abord ; vent de face : elles déclenchent et tirent deux fois.",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "Le monde s’ouvre : chaque carte accessible est à gauche, et la 🧭 les montre toutes.",
  "Their bramble has a passive of its own.": "Leur roncier a son propre passif.",
  "There are three jackals. Now there are six. There were never any.": "Il y a trois chacals. Puis six. Il n'y en a jamais eu.",
@@ -2967,5 +2965,16 @@
  "+{n} Energy each": "+{n} Énergie chacune",
  "Use": "Utiliser",
  "An egg! You'll need a nest to hatch it!": "Un œuf ! Il vous faut un nid pour le faire éclore !",
- "You got an egg!": "Vous avez un œuf !"
+ "You got an egg!": "Vous avez un œuf !",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "Lance en attaquant. Au tour suivant, il revient vite et frappe de nouveau la même cible ; lancé sur la ronce, il file plus loin et, au retour, frappe la ronce puis l'unité de son couloir. Ne rate jamais les unités volantes. Ne le laisse pas t'échapper !",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "S'interpose devant un allié adjacent (à côté ; en raid, devant ou derrière) et encaisse les attaques normales qui le visent. Pas les compétences ni les attaques de zone. La Provocation est différente : elle force les ennemis en face à la viser.",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "Vol – Vent arrière : Rapide cette manche (frappe à la Vitesse 2 ; une unité en attente attend toujours)",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "Vol – Vent de face : ses compétences actives (Flèche, Éclairs, Tir précis) se déclenchent deux fois ; son attaque et ses passifs une fois",
+ "Tailwind: Quick this round (swings at Speed 2)": "Vent arrière : Rapide cette manche (frappe à la Vitesse 2)",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "Vent fort du côté {v1} : vent arrière pour ses volants (Rapides), vent de face pour ceux d'en face (compétences actives deux fois).",
+ "caught the Tailwind: Quick this round 🪁": "a pris le vent arrière : Rapide cette manche 🪁",
+ "Tailwind: Quick!": "Vent arrière : Rapide !",
+ "Clack!": "Clac !",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Le vent tourne à chaque manche (dos, face, calme) : volants au vent arrière Rapides, tirs et Tir précis au vent de face deux fois.",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Vent fort à chaque manche, dans le dos ou de face : volants au vent arrière Rapides, tirs et Tir précis au vent de face deux fois."
 }

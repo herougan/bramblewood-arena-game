@@ -1813,7 +1813,6 @@
  "Hit last turn: it backs off this turn (no attack, heals 2).": "Golpeada el turno pasado: este turno retrocede (no ataca, se cura 2).",
  "Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).": "Golpeada el turno pasado: este turno se esconde en su caparazón (no ataca, los ataques no pueden herirla).",
  "Hit through front gaps": "Golpea por los huecos delanteros",
- "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Los ataques normales dirigidos a un aliado adyacente impactan en esta carta. Las habilidades y los golpes de área no.",
  "Hits like a landslide. Please don't touch it.": "Pega como un desprendimiento. Por favor, no lo toques.",
  "hits more than one target at once — avoid clustering your own weak units together.": "golpea a más de un objetivo a la vez — no agrupes tus unidades débiles.",
  "Hits the 8 nearest enemy units with full Attack.": "Golpea a las 8 unidades enemigas más cercanas con Ataque completo.",
@@ -3471,7 +3470,6 @@
  "strikes again, quick as a flash ❔": "golpea otra vez, rápida como un rayo ❔",
  "Strikes first, bows second, never apologises.": "Golpea primero, hace una reverencia después, nunca se disculpa.",
  "stripped {v1} Armor from {v2} for good 🛡": "le arrancó {v1} de Armadura a {v2} para siempre 🛡",
- "Strong wind from side {v1}: Tailwind for its Flyers (an extra turn), Headwind for the other side's (skills twice).": "Viento fuerte desde el lado {v1}: Viento de cola para sus Voladores (un turno extra), Viento de cara para los del otro bando (habilidades dos veces).",
  "Strong wind, random way": "Viento fuerte, dirección al azar",
  "Strong, and absolutely no fun to stand next to.": "Fuerte, y nada divertido de tener al lado.",
  "Struck once, and a swarmling boils out immediately to keep the line held.": "Basta un golpe para que salga en tropel una enjambrilla a mantener la línea.",
@@ -4079,7 +4077,6 @@
  "Three points, three targets, one very fast fish.": "Tres puntas, tres objetivos, un pez muy rápido.",
  "Three rows a side": "Tres filas por bando",
  "Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.": "Por fin cruzas la puerta. Dentro de las murallas todo está dorado, vigilado y contado, y el Pato Magnate espera en lo alto del torreón.",
- "Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!": "Lo lanza al atacar. La ronda siguiente vuelve rápido y golpea de nuevo al mismo objetivo. Nunca falla contra unidades voladoras. ¡Que no se te escape al atraparlo!",
  "Tickets": "Billetes",
  "Tidal Ring": "Anillo de mareas",
  "Tide & Night +2/+2  ·  Wind or Wet": "Marea y Noche +2/+2  ·  Viento o Mojado",
@@ -5060,5 +5057,6 @@
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "+{v1} de Ataque por cada aliado que comparta un tipo con ella (p. ej., cada otra Hormiga junto a una Hormiga). Las Estructuras no cuentan.",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} de Ataque por cada aliado que comparta un tipo con ella. Las Estructuras no cuentan.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} de Ataque por cada aliado que sea {v2}. Las Estructuras no cuentan.",
- "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Botas hasta el muslo de piel de salamandra y brea. Métete y conserva los dedos."
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Botas hasta el muslo de piel de salamandra y brea. Métete y conserva los dedos.",
+ "One claw for waving, one for winning. This one only grew the second.": "Una pinza para saludar, otra para ganar. Este solo dejó crecer la segunda."
 }

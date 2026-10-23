@@ -55,3 +55,15 @@ A pair of tall thigh-high wading boots made of dark scaly salamander hide with t
 ```
 
 Names offered: **Lava Waders** (used, the owner's), Cinderstride Boots, Salamander Waders.
+
+## Package EN2 (2026-10-23: the Ironclaw Fiddler)
+
+#### Ironclaw Fiddler (`ironclaw-fiddler`), placeholder 🦀
+
+The owner (2026-10-23, 13:16 #17): "A strong crab card, one large claw." A male fiddler crab, whose one claw is real and huge (as big as its whole body) while the other stays tiny. Rare, Mangrove, Tide, Bludgeon, Armor 1; proposed for The Kelp Mangroves (Map 9). One bright accent: the big claw's orange-red against the grey-green mangrove mud.
+
+```
+A sturdy fiddler crab standing tall on wet mangrove mud, one enormous bright orange-red pincer raised proudly, as large as its whole body and gleaming like polished enamel, the other pincer tiny and pale, a dark slate-blue shell with small barnacles and a confident stalk-eyed stare, tangled mangrove roots, shallow tide pools and soft green light through the leaves in the background, detailed pixel art, full background
+```
+
+Names offered: **Ironclaw Fiddler** (used), Onegrip, Big-Claw Bosun.

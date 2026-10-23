@@ -1813,7 +1813,6 @@
  "Hit last turn: it backs off this turn (no attack, heals 2).": "前のターンに被弾：このターンは後退する（攻撃せず、2回復）。",
  "Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).": "前のターンに被弾：このターンは甲羅に隠れる（攻撃せず、攻撃では傷つかない）。",
  "Hit through front gaps": "前の隙間を抜けて攻撃",
- "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "隣接する味方を狙った通常攻撃は、代わりにこのカードに当たる。スキルと範囲攻撃は対象外。",
  "Hits like a landslide. Please don't touch it.": "地すべりのように打ちつける。さわらないでください。",
  "hits more than one target at once — avoid clustering your own weak units together.": "一度に複数の対象を攻撃する — 弱いユニットを固めて置かないように。",
  "Hits the 8 nearest enemy units with full Attack.": "最も近い敵ユニット8体を全攻撃で打つ。",
@@ -3471,7 +3470,6 @@
  "strikes again, quick as a flash ❔": "電光石火でもう一度攻撃 ❔",
  "Strikes first, bows second, never apologises.": "まず打ち、次に一礼し、決して謝らない。",
  "stripped {v1} Armor from {v2} for good 🛡": "{v2}のアーマーを{v1}永久にはぎ取った 🛡",
- "Strong wind from side {v1}: Tailwind for its Flyers (an extra turn), Headwind for the other side's (skills twice).": "{v1}側から強風：その側の飛行には追い風（追加ターン）、反対側の飛行には向かい風（スキル2回）。",
  "Strong wind, random way": "強風、向きはランダム",
  "Strong, and absolutely no fun to stand next to.": "強い。そして隣に立っていてまったく楽しくない。",
  "Struck once, and a swarmling boils out immediately to keep the line held.": "一度叩かれると、すぐに小さな群れが湧き出して戦列を守る。",
@@ -4079,7 +4077,6 @@
  "Three points, three targets, one very fast fish.": "三つの穂先、三つの標的、とても速い魚が一匹。",
  "Three rows a side": "各陣営3列",
  "Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.": "ついに門をくぐった。城壁の中はすべてが金ぴかで、見張られ、数えられている。大富豪ガモは天守のてっぺんで待っている。",
- "Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!": "攻撃時に投げる。次のラウンドに素早く戻ってきて、同じ対象にもう一度当たる。飛行ユニットには決して外れない。受け止め損ねないように！",
  "Tickets": "チケット",
  "Tidal Ring": "潮の輪",
  "Tide & Night +2/+2  ·  Wind or Wet": "潮と夜 +2/+2 ・ 風または濡れ",
@@ -5060,5 +5057,6 @@
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "タイプを共有する味方1体ごとに攻撃+{v1}（例：アリの隣にいる他のアリそれぞれ）。 建造物は数えない。",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "同じタイプを持つ味方1体ごとに攻撃+{v1}。 建造物は数えない。",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}の味方1体ごとに攻撃+{v1}。 建造物は数えない。",
- "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "サラマンダーの革と松脂でできた腿まであるブーツ。踏み込んでも、つま先は無事。"
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "サラマンダーの革と松脂でできた腿まであるブーツ。踏み込んでも、つま先は無事。",
+ "One claw for waving, one for winning. This one only grew the second.": "片方のはさみは手を振るため、もう片方は勝つため。こいつは二つ目しか育てなかった。"
 }

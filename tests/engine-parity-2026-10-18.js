@@ -187,7 +187,9 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
     for(let seed = 1; seed <= 60; seed++) rulesets.forEach(rs=>{ total++; const a = run(OldE, 0, seed, rs), b = run(E, 0, seed, rs);
       if(a === b) same++; else if(shown++ < 3) console.log('    level 0 vs pre-change:', a, '\n                           ', b);
       if(run(E, 1, seed, rs) !== b) smartDiff++; });
-    ok(same === total, `level 0 makes the pre-change CPU's choices on fixed seeds (${same} of ${total} the same)`);
+    // EN2 (2026-10-23, owner 13:16 #2 / #11): the basic CPU's "anywhere legal" slot is weighted to the middle and contested lanes now
+    // (aiLanePick), so a few fixed seeds pick another slot (174 of 180 the same at EN2); the rest of its play is the pre-change CPU's.
+    ok(same >= total * 0.9, `level 0 makes the pre-change CPU's choices on fixed seeds, bar EN2's lane weights (${same} of ${total} the same)`);
     ok(smartDiff > 0, `level 1 (smart) differs from level 0 somewhere on the same seeds (${smartDiff} of ${total})`);
   }
 }
