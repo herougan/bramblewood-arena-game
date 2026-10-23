@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package SKD: design restrictions in the skirmish tuning guide)
+- **The hub's Design tab now lists the rules we set ourselves** (owner 21:07). `docs/skirmish-tuning-guide.md` has a new section near the top, "Design restrictions we set ourselves": 11 groups (deck shape, leaders, rarity by map, enemy levels, brambles, field effects, rewards, theme, road structure, win-rate bands, CPU), each rule with its decision id or owner note and, where code enforces it, the constant. A last list names where dated docs and code disagree. No code or card changed.
+
 ## 2026-10-23 (package BL: Bloom rebuilt, Nectar Vintner's Heal, default values, Bleed's fade)
 - **Bloom – {conditions} (11:23, 17:34 #3 "Bloom hasn't changed"):** a new skill (`effects.bloomCopy`). Once, the first round its conditions hold at
   the round's start, a copy of it grows in a free slot beside it and the copy gains +1/+1 (19:30: "bloom only gives the new one +1/+1, not
