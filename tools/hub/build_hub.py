@@ -371,6 +371,8 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🧮', 'costs', 'Skill costs', 'Edit what skills, triggers and actions cost; see who goes over budget'),
   ('💰', 'ucosts', 'Upgrade & Forge costs', 'Edit what levelling, limit breaks, the Forge tiers, duplicates, prestige and disenchanting cost'),  # 2026-10-23 (package HUB2)
   ('🗂', 'units', 'Units by theme', 'Every creature by biome, family and faction; pick units per map for the post-balance step'),
+  ('📚', 'progress', 'Progression plan', 'Your definitions (base, skirmish base, Packs 1-3, faction pool ...), targets vs today, cards by advancement, mistakes, balancing suggestions'),  # 2026-10-23 (package HUB3)
+  ('🪙', 'resources', 'Resources', 'Every currency and material, where it comes from and goes, and a dedicated player\'s week'),  # 2026-10-23 (package HUB3)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
@@ -448,6 +450,19 @@ UC_INLINE = (f'const UC_SEED = {_js(_uc_seed)};\n' + re.sub(r'^#!.*\n', '', open
              + '\n' + open(os.path.join(ROOT, 'tools', 'hub', 'upgrade_costs_tab.js'), encoding='utf-8').read())
 UT_INLINE = (f'const UT_DATA = {_js(_ut)};\nconst SM_DATA = {_js(_sm_slim)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.js'), encoding='utf-8').read()) if _ut else ''
 UT_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.css'), encoding='utf-8').read()
+# 2026-10-23 (package HUB3, owner 19:27: "let's all discuss this in the 'Units by theme' tab (maybe) ... Help me remember my definitions and log
+# it in the master hub as well"; #17: "a tab called resources"): the 📚 Progression plan tab (docs/progression-plan.md, the canonical text, and
+# docs/balance/progression-plan-2026-10-23.json from node tools/progression_plan_2026_10_23.js) beside 🗂 Units by theme, and the 🪙 Resources
+# tab (docs/balance/resources-2026-10-23.json from node tools/resources_week_2026_10_23.js). Read only: no db, no browser storage.
+_pp_path = os.path.join(ROOT, 'docs', 'balance', 'progression-plan-2026-10-23.json')
+_pp = json.load(open(_pp_path, encoding='utf-8')) if os.path.exists(_pp_path) else None
+_pp_md_path = os.path.join(ROOT, 'docs', 'progression-plan.md')
+_pp_doc = md_html(re.sub(r'<!--.*?-->', '', open(_pp_md_path, encoding='utf-8').read(), flags=re.S)) if os.path.exists(_pp_md_path) else ''
+PP_INLINE = (f'const PP_DATA = {_js(_pp)};\nconst PP_DOC = {_js(_pp_doc)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'progression_tab.js'), encoding='utf-8').read()) if _pp else ''
+_rs_path = os.path.join(ROOT, 'docs', 'balance', 'resources-2026-10-23.json')
+_rs = json.load(open(_rs_path, encoding='utf-8')) if os.path.exists(_rs_path) else None
+RS_INLINE = (f'const RS_DATA = {_js(_rs)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'resources_tab.js'), encoding='utf-8').read()) if _rs else ''
+PP_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'plan_tabs.css'), encoding='utf-8').read()
 # 2026-10-19 (package HB, owner 17:44: "Where is our balance, monsters, and skills file -> can it be put into the artefact for my assessment.
 # Also s.t. i can edit the values"): the 🎚️ Budget & stats tab. Budget constants, card Attack / Health and the special monsters, each an
 # editable number saved in the artifact's db (collections budgetEdits, cardEdits, monsterEdits; tools/hub/pull_balance_edits.md), with a
@@ -616,7 +631,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style></head><body>
+</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style><style>{PP_CSS}</style></head><body>
 <header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
@@ -630,6 +645,8 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
 <button role="tab" id="t-ucosts" aria-controls="p-ucosts" data-tab="ucosts">💰 Upgrade costs</button>
 <button role="tab" id="t-units" aria-controls="p-units" data-tab="units">🗂 Units by theme</button>
+<button role="tab" id="t-progress" aria-controls="p-progress" data-tab="progress">📚 Progression plan</button>
+<button role="tab" id="t-resources" aria-controls="p-resources" data-tab="resources">🪙 Resources</button>
 <button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
@@ -666,7 +683,9 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-budget" role="tabpanel" aria-labelledby="t-budget" hidden><div class="bal hb" id="hbHost"><p class="dec-empty">Loading the budget…</p></div></section>
 <section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
 <section class="panel" id="p-ucosts" role="tabpanel" aria-labelledby="t-ucosts" hidden><div class="bal sc" id="ucHost"><p class="dec-empty">Loading the upgrade costs…</p></div></section>
-<section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
+<section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><p class="hb-xlink pp-xlink"><b>📚 Progression plan:</b> your definitions (base, skirmish base, Packs 1-3, the faction pool ...), targets vs today and the cards by advancement are in <a href="#progress" data-tab="progress">their own tab</a>.</p><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
+<section class="panel" id="p-progress" role="tabpanel" aria-labelledby="t-progress" hidden><div class="bal pp" id="ppHost"><p class="dec-empty">{'Loading the plan…' if _pp else 'Run node tools/progression_plan_2026_10_23.js, then rebuild the hub.'}</p></div></section>
+<section class="panel" id="p-resources" role="tabpanel" aria-labelledby="t-resources" hidden><div class="bal rs" id="rsHost"><p class="dec-empty">{'Loading the resources…' if _rs else 'Run node tools/resources_week_2026_10_23.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-chips" role="tabpanel" aria-labelledby="t-chips" hidden><div class="bal ch" id="chHost"><p class="dec-empty">{'Loading the chips…' if _ch else 'Run node tools/hub/chips_inventory.js, then rebuild the hub.'}</p></div></section>
 {curve_panel}
 {decks_panel}
@@ -756,6 +775,8 @@ const SEARCH = {SEARCH_JSON};
 {HUB_JS}
 {SC_INLINE}
 {UT_INLINE}
+{PP_INLINE}
+{RS_INLINE}
 {UC_INLINE}
 {HB_INLINE}
 {CH_INLINE}

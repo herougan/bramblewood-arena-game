@@ -26,6 +26,20 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   under the card.
 - Texts in 12 packs (`tools/i18n_2026_10_23_bl.py`); `docs/effects-catalogue.md`; tests `tests/bl-2026-10-23.js`, `tests/e2e/bl_2026_10_23.py`
   (screens in `docs/screens/BL/`); `tests/bf5-2026-10-21.js` lists the Puffball as a thematic exception.
+## 2026-10-23 (package HUB3: the progression plan and the resources, in the hub)
+- Hub only, no game changes. New tab 📚 Progression plan, next to 🗂 Units by theme, which links to it. It holds the owner's
+  definitions of 19:27 / 19:36 (tutorial base, base, skirmish base, Packs 1-3, the faction pool, standard / set / random faction
+  rewards, Collector packs, Pack Secrets I, Tavern cards, quest specials, Level 0, babies ...), written in `docs/progression-plan.md`.
+  It also shows the targets against today's counts, every card sorted by advancement, 15 leftover mistakes with fixes (for RW5), the
+  eggs and babies audit, the skills met in Maps 0-1, Ant cards, faction-reward pacing, the collection by map, and the balancing
+  suggestions. Data: `node tools/progression_plan_2026_10_23.js` → `docs/balance/progression-plan-2026-10-23.json`.
+- New tab 🪙 Resources: every currency, material and token (where it comes from, what spends it), a dedicated player's week at
+  Maps 3 / 10 / 20, the road's first-clear totals, and the sessions to Gannet Cliffs and the Gatorback Swamp.
+  `node tools/resources_week_2026_10_23.js` → `docs/balance/resources-2026-10-23.json`.
+- Measurements for the suggestions: `tools/hub3_balance_probe_2026_10_23.js` → `docs/balance/hub3-probe-2026-10-23.json`. It
+  covers Maps 0-1 with your bramble +5 / +10 and the tutorial-base cards at 80%, and the damage race on Maps 1-4.
+  Test: `tests/progression-resources-2026-10-23.js`.
+
 ## 2026-10-23 (package DC3: the owner's 17:34 answers, and the easy defaults cleared)
 - Decisions only, no code. `docs/decisions.json`: 9 of the owner's 17:34 answers recorded (PR-1, RW4-1, DF-1, DF-2, DF-3, RW3-2,
   TU2-3, A3, H1). At his request (#7, "clear all those easy defaults"), 22 more closed as "Default taken (DC3)": RW4-2..4,
