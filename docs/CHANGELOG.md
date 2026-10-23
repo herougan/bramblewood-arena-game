@@ -2,6 +2,34 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package AR3: the Group Dungeon, co-op for 2-4 players)
+- Owner 10-23 00:10 #26 (AR-3: "This is a big pass. I like this. Can you launch a big pass for this."). D49 / D76 built. Calls AR3-1..AR3-9.
+- **Where it lives:** the Dungeons tab's "Coming soon" Group Dungeon slot is the entrance: Open a room, Play with CPU allies, or Join with a
+  6-letter code (invites from friends appear on the card). Players see the tab once the tutorial is done, holding only the Group Dungeon (and
+  the Spire): the daily dungeons stay hidden (TU2), so no daily slots, keys row or 🗝️ button for them (`dailyDungeonsOpen` vs `dungeonsTabOpen`).
+- **The Hollow Warren:** 4 floors of Hollow Kin country, live cards only: the Bat Roost; the Mole Galleries (cave-ins: the party's fuller row
+  takes 2 each, every other round); the Salamander Pools (the centre cursed on even rounds); the Matriarch's Hall (the Hollow Matriarch, a
+  fight-only copy of the Cave Warlord, who marks a column and strikes it next round). Health x1.7 for 2 seats, x2.8 for 4 (D49, CPU allies
+  counted). A floor lost (or 20 rounds) ends the climb.
+- **The room:** 2-4 players: the host in A (front left), then C (back left), D, B; a 3rd player opens the right half and B gets a CPU ally.
+  Ready-up, leave (tap twice), the host's CPU allies, casual rooms (60 s). The host dropping hands the room to the next player in seat order,
+  who carries the fight on; a player away is played by a CPU ally and gets the state back on return (in step again from the next floor).
+- **The turn (D49):** everyone plans at once (30 s, 60 s casual): tap a card, tap a glowing cell of your half or the shared centre, or pitch
+  one for +1 Lumber, then Ready. Plays land A, B, C, D, then the dungeon (its front row as a CPU, its back row from its own deck, as the
+  raid's rows), then combat on the raid's multi-row board (both rows act). Two players on the same shared cell: who locked first takes it, the
+  other card stays in hand, nothing paid. Each seat has its own deck, hand and Lumber; the castle is shared.
+- **Netcode:** the Ranked Live host model, extended: the host runs the engine (seeded) and sends each round's plans with a state hash; every
+  other player replays them on the same engine, so all screens match (a player out of step mirrors the host's state). Cards fight at Level 1.
+  Transports: Supabase Realtime broadcast (online), BroadcastChannel (tabs of one browser), an in-memory hub (solo and tests).
+- **Rewards:** each floor's chest per player (40 / 55 / 70 / 120 Maple Leaves, 10 / 14 / 18 / 40 Dust); the Matriarch offers a pick of 3 of
+  the dungeon's own cards, once a day. 5 Energy a climb, back if no floor is cleared.
+- **Server:** online rooms use the live `coop_rooms` (host + 1 guest) today. `supabase/proposed/20261023_coop_rooms_4p.sql` (NOT applied)
+  opens 3-4 player online rooms (seats table, join v2, leave, host promotion) and private room channels; the page detects it by itself.
+- Engine (opt-in, no other fight changes): `slotCols` bounds an Open board's columns; `placeCard(..., {freeSlot})` plays any free cell (front
+  or reserve row). New: `bramblewood-coop.js` (rules, room, transports), `tools/coop_sim_2026_10_23.js`, `tools/i18n_2026_10_23_ar3.py`
+  (114 TX keys, 12 packs). Tests: `tests/coop-dungeon-2026-10-23.js`, `tests/coop-lobby-2026-10-23.js`, `tests/e2e/coop_dungeon_2026_10_23.py`.
+  Screens: `docs/screens/ar3/`.
+
 ## 2026-10-23 (package SX: target-modifier sounds, poison's crit colour, the 3-part Hero XP bar, number-aware translations)
 - Owner 10-23 00:10 #95, #11 (DN2-4), #66 (H2), #64 (I2). Calls SX-1..SX-3.
 - **A sound for each damage mark (#95):** every damage number with a mark plays that mark's own SoundKit cue 75 ms after the hit, so the

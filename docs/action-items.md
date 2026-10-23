@@ -43,7 +43,7 @@ From the owner's 10-23 00:10 answers (numbers are his list's). Packages: TU2, RW
 | 95 | — | SX (built 10-23) | Damage affected by its target (armor, for one) gets its own sound effect (an armor "ting"); if the source has an sfx, play it and the target-effect sound too. |
 | 11 | DN2-4 | SX (built 10-23) | Element colour shift +12 degrees, with poison less blue and a little brighter. |
 | 66 | H2 | SX (built 10-23) | Hero XP bar: Battle XP, Materia XP, and a third section that takes either; Battle XP there is 25% less efficient. |
-| 26 | AR-3 | AR3 | The co-op group dungeon: a big pass, launched as one package. |
+| 26 | AR-3 | AR3 (built 10-23) | The co-op group dungeon: a big pass, launched as one package. Built: the Hollow Warren, 2-4 players (online 2 until AR3-6 is applied), CPU allies, calls AR3-1..AR3-9. |
 | 48 | RP3 | RW3 (built 10-23) | Quarry Mole moves to 8-1 (its first-clear card; out of Base and off T-1). |
 | 64 | I2 | SX (built 10-23) | Number-aware translation templates: numbered data texts are TX templates, the packs hold one row per template, numbers in the language's own format. |
 | 60 | D17 | (owner files) | Music: only 2-3 tracks are usable; better tracks are needed, and they need CC0 files from the owner. |
