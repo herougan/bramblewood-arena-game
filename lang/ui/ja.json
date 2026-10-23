@@ -3558,7 +3558,6 @@
  "takes no damage of any kind{v1}.": "あらゆるダメージを受けない{v1}。",
  "takes that much more damage from every hit.": "受けるダメージがその分増える。",
  "Takes the hits": "攻撃を受け止める",
- "Takes the plain attacks aimed at its adjacent allies.": "隣接する味方を狙った通常攻撃を引き受ける。",
  "takes {v1} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.": "アップキープ時に{v1}ダメージを受け、1スタック減る。回復は効かないが、治療なら治る。",
  "takes {v1} damage every round. It never wears off and can’t be cured.": "毎ラウンド{v1}ダメージを受ける。決して消えず、治せない。",
  "Takes {v1} extra turn{s} when it arrives.": "登場時に{v1}回の追加ターンを行う。",
@@ -5058,5 +5057,9 @@
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}の味方1体ごとに攻撃+{v1}。 建造物は数えない。",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "サラマンダーの革と松脂でできた腿まであるブーツ。踏み込んでも、つま先は無事。",
  "One claw for waving, one for winning. This one only grew the second.": "片方のはさみは手を振るため、もう片方は勝つため。こいつは二つ目しか育てなかった。",
- "A green film on still water. Give it sun and a wet day, and by evening there are two.": "よどんだ水に張る緑の膜。日差しと雨の一日を与えれば、夕方には二つになっている。"
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "よどんだ水に張る緑の膜。日差しと雨の一日を与えれば、夕方には二つになっている。",
+ "Forty winters patching the dam. The bramble is just a dam that argues back.": "四十の冬、ダムを繕ってきた。砦なんて、口答えするダムにすぎない。",
+ "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.": "堀に住み、堀で眠り、堀を渡ろうとするものには噛みつく。",
+ "It curls up in the roots until nobody can tell which spines are whose.": "根のあいだに丸まって、どのトゲが誰のものか誰にもわからなくなる。",
+ "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.": "樹皮をかんで板にして、砦に貼りつける。誰も頼んでいない。誰も気にしない。"
 }

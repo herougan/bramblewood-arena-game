@@ -130,7 +130,7 @@ function windRound(id, want, wallId){ for(let s = 1; s <= 80; s++){ const {e, P}
   const TX = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
   ok(/Tailwind Flyers are Quick/.test(TX) && !/Tailwind Flyers act first/.test(TX), 'the wind texts: Tailwind is Quick');
   const keys = ["Clack!", "Tailwind: Quick!", "caught the Tailwind: Quick this round 🪁", "Tailwind: Quick this round (swings at Speed 2)",
-    "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it."];
+    "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian next to it steps in for it in turn. Taunt is different: it makes the enemies facing it aim at it."]; // the Guardian text as EN3 (2026-10-23) has it
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')), cp = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'cards', code + '.json'), 'utf8'));
     ok(keys.every(k=> p[k]) && cp['Ironclaw Fiddler'], `lang ${code}: EN2 texts and the card name`); });
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8');

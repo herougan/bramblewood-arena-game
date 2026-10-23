@@ -3558,7 +3558,6 @@
  "takes no damage of any kind{v1}.": "erleidet keinerlei Schaden{v1}.",
  "takes that much more damage from every hit.": "erleidet durch jeden Treffer so viel mehr Schaden.",
  "Takes the hits": "Steckt die Treffer ein",
- "Takes the plain attacks aimed at its adjacent allies.": "Fängt normale Angriffe auf angrenzende Verbündete ab.",
  "takes {v1} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.": "erleidet in der Unterhaltsphase {v1} Schaden und verliert dann 1 Stapel. Heilung wirkt nicht; Kurieren schon.",
  "takes {v1} damage every round. It never wears off and can’t be cured.": "erleidet jede Runde {v1} Schaden. Es klingt nie ab und kann nicht geheilt werden.",
  "Takes {v1} extra turn{s} when it arrives.": "Macht bei ihrer Ankunft {v1} Extrazug/-züge.",
@@ -5058,5 +5057,9 @@
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der {v2} ist. Bauwerke zählen nicht.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Hüfthohe Stiefel aus Salamanderhaut und Pech. Hineinwaten, Zehen behalten.",
  "One claw for waving, one for winning. This one only grew the second.": "Eine Schere zum Winken, eine zum Siegen. Diese hier ließ nur die zweite wachsen.",
- "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Ein grüner Film auf stillem Wasser. Gib ihm Sonne und einen nassen Tag, und am Abend sind es zwei."
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Ein grüner Film auf stillem Wasser. Gib ihm Sonne und einen nassen Tag, und am Abend sind es zwei.",
+ "Forty winters patching the dam. The bramble is just a dam that argues back.": "Vierzig Winter hat er den Damm geflickt. Der Dorn ist nur ein Damm, der widerspricht.",
+ "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.": "Sie lebt im Graben, schläft im Graben und beißt alles, was über den Graben will.",
+ "It curls up in the roots until nobody can tell which spines are whose.": "Er rollt sich in den Wurzeln ein, bis keiner mehr weiß, welche Stacheln wem gehören.",
+ "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.": "Er kaut Rinde zu Platten und klebt sie an den Dorn. Keiner hat gefragt. Keinen stört's."
 }
