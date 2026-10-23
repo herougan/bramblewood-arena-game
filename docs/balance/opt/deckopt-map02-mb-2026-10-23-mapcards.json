@@ -1,0 +1,1564 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "1.0.0 (2026-10-23)",
+ "generated": "2026-10-23T13:36:13.609Z",
+ "map": {
+  "id": "mb",
+  "num": 2,
+  "name": "Pebble Beach"
+ },
+ "level": 0,
+ "settings": {
+  "seed": "bramble",
+  "crossShare": 0.3,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "none",
+  "crossPool": "plan",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": 2.5,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --gens1 3 --gens2 1 --final-games 40 --screen-max 40 --cross-share 0.3 --road-weight 0.25 --owned none",
+ "pools": {
+  "phase1": 37,
+  "mapCards": [
+   "beaver-builder",
+   "blind-cave-fish",
+   "camouflage-frog",
+   "conch-crawler",
+   "conch-herald",
+   "duckling",
+   "elder-tortoise",
+   "fiddler-crab-swarm",
+   "ford-kingfisher",
+   "great-crested-grebe",
+   "grey-seal-bull",
+   "gull-thief",
+   "guppy",
+   "lodge-engineer",
+   "mallard-marauder",
+   "mangrove-mudskipper",
+   "mayfly-dancer",
+   "minnow-skitter",
+   "mudpuppy",
+   "octopus-tactician",
+   "old-sturgeon",
+   "open-ocean-hermit-crab",
+   "otter-riverguard",
+   "pelican-diver",
+   "pike-lancer",
+   "pincushion-urchin",
+   "poison-dart-croaker",
+   "pond-duck",
+   "river-carp",
+   "riverworks-bastion",
+   "sea-turtle-elder",
+   "shallows-fry",
+   "sulfur-vent-crab",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trash-panda-trickster",
+   "water-shrew"
+  ],
+  "owned": [],
+  "wholeSpectrum": 360
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-1",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs 2-1 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, tide, wet"
+  },
+  {
+   "key": "mirror|fight:2-2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs 2-2 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:2-3",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs 2-3 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:2-4",
+   "kind": "mirror",
+   "node": "2-4",
+   "label": "vs 2-4 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, tideSpout, wet"
+  },
+  {
+   "key": "mirror|fight:2-5",
+   "kind": "mirror",
+   "node": "2-5",
+   "label": "vs 2-5 elite's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "highTide, phase cycle, terrain Tideline T2 (Shell 1), tide, wet"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs reference starter deck under 2-1's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, tide, wet"
+  },
+  {
+   "key": "mirror|ref:road2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs reference deck (Map 2) under 2-2's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "road|2-1",
+   "kind": "road",
+   "node": "2-1",
+   "label": "2-1 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "phase cycle, tide, wet"
+  },
+  {
+   "key": "road|2-2",
+   "kind": "road",
+   "node": "2-2",
+   "label": "2-2 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "road|2-3",
+   "kind": "road",
+   "node": "2-3",
+   "label": "2-3 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "road|2-4",
+   "kind": "road",
+   "node": "2-4",
+   "label": "2-4 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "phase cycle, terrain Tideline T1, tide, tideSpout, wet"
+  },
+  {
+   "key": "road|2-5",
+   "kind": "road",
+   "node": "2-5",
+   "label": "2-5 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "highTide, phase cycle, terrain Tideline T2 (Shell 1), tide, wet"
+  },
+  {
+   "key": "neutral|fight:2-1",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs 2-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs 2-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-3",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs 2-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-4",
+   "kind": "mirror",
+   "node": "2-4",
+   "label": "vs 2-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-5",
+   "kind": "mirror",
+   "node": "2-5",
+   "label": "vs 2-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs reference starter deck under 2-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs reference deck (Map 2) under 2-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 20894,
+  "seconds": 171.8,
+  "gamesPerSecond": 121.6,
+  "workers": 2,
+  "searchGamesPerSecond": 123.8
+ },
+ "phase1": {
+  "generations": 3,
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "blind-cave-fish": 1,
+    "duckling": 1,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 1,
+    "mallard-marauder": 2,
+    "mangrove-mudskipper": 2,
+    "mayfly-dancer": 2,
+    "open-ocean-hermit-crab": 1,
+    "pelican-diver": 1,
+    "pike-lancer": 3,
+    "shallows-fry": 1,
+    "sulfur-vent-crab": 4
+   },
+   "cards": [
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "pike-lancer",
+     "name": "Pike Lancer",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mallard-marauder",
+     "name": "Mallard Marauder",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "shallows-fry",
+     "name": "Shallows Fry",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.847,
+   "ci": [
+    0.819,
+    0.875
+   ],
+   "mirror": 0.837,
+   "road": 0.875,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.9,
+     "lo": 0.769,
+     "hi": 0.96,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.9,
+     "lo": 0.769,
+     "hi": 0.96,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.9,
+     "lo": 0.769,
+     "hi": 0.96,
+     "n": 40
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.675,
+     "lo": 0.52,
+     "hi": 0.799,
+     "n": 40
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.4,
+     "lo": 0.263,
+     "hi": 0.554,
+     "n": 40
+    },
+    {
+     "entry": "road|2-1",
+     "label": "2-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.8,
+     "lo": 0.652,
+     "hi": 0.895,
+     "n": 40
+    },
+    {
+     "entry": "road|2-2",
+     "label": "2-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "road|2-3",
+     "label": "2-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.95,
+     "lo": 0.835,
+     "hi": 0.986,
+     "n": 40
+    },
+    {
+     "entry": "road|2-4",
+     "label": "2-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.8,
+     "lo": 0.652,
+     "hi": 0.895,
+     "n": 40
+    },
+    {
+     "entry": "road|2-5",
+     "label": "2-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.85,
+     "lo": 0.709,
+     "hi": 0.929,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-1",
+     "label": "vs 2-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-2",
+     "label": "vs 2-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.95,
+     "lo": 0.835,
+     "hi": 0.986,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-3",
+     "label": "vs 2-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.739,
+     "hi": 0.945,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-4",
+     "label": "vs 2-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-5",
+     "label": "vs 2-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.95,
+     "lo": 0.835,
+     "hi": 0.986,
+     "n": 40
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 2-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.825,
+     "lo": 0.68,
+     "hi": 0.913,
+     "n": 40
+    },
+    {
+     "entry": "neutral|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.425,
+     "lo": 0.285,
+     "hi": 0.578,
+     "n": 40
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.675,
+     "lo": 0.52,
+     "hi": 0.799,
+     "n": 40
+    }
+   ]
+  },
+  "runnersUp": [
+   {
+    "deck": {
+     "duckling": 1,
+     "fiddler-crab-swarm": 2,
+     "ford-kingfisher": 1,
+     "grey-seal-bull": 2,
+     "mayfly-dancer": 2,
+     "minnow-skitter": 2,
+     "mudpuppy": 2,
+     "open-ocean-hermit-crab": 1,
+     "pike-lancer": 2,
+     "pincushion-urchin": 1,
+     "sulfur-vent-crab": 4
+    },
+    "score": 0.839
+   },
+   {
+    "deck": {
+     "duckling": 1,
+     "fiddler-crab-swarm": 2,
+     "grey-seal-bull": 1,
+     "mayfly-dancer": 2,
+     "minnow-skitter": 2,
+     "mudpuppy": 2,
+     "pelican-diver": 1,
+     "pike-lancer": 2,
+     "pincushion-urchin": 1,
+     "river-carp": 2,
+     "sulfur-vent-crab": 4
+    },
+    "score": 0.834
+   },
+   {
+    "deck": {
+     "blind-cave-fish": 1,
+     "duckling": 1,
+     "grey-seal-bull": 1,
+     "mallard-marauder": 2,
+     "mangrove-mudskipper": 1,
+     "mayfly-dancer": 2,
+     "minnow-skitter": 2,
+     "open-ocean-hermit-crab": 1,
+     "pelican-diver": 1,
+     "pike-lancer": 1,
+     "pincushion-urchin": 3,
+     "sulfur-vent-crab": 4
+    },
+    "score": 0.825
+   }
+  ]
+ },
+ "phase2": {
+  "generations": 1,
+  "screenBaseline": 0.844,
+  "screened": 40,
+  "screenSkipped": 283,
+  "topSwaps": [
+   {
+    "card": "ember-tetra-3caj",
+    "name": "Ember Tetra",
+    "rarity": "uncommon",
+    "obtainMap": 0,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.939,
+    "delta": 0.096,
+    "n": 32
+   },
+   {
+    "card": "alley-cat",
+    "name": "Alley Cat",
+    "rarity": "rare",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.888,
+    "delta": 0.044,
+    "n": 16
+   },
+   {
+    "card": "hedge-weasel",
+    "name": "Hedge Weasel",
+    "rarity": "uncommon",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.884,
+    "delta": 0.04,
+    "n": 16
+   },
+   {
+    "card": "frostmoon-howler",
+    "name": "Frostmoon Howler",
+    "rarity": "rare",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.882,
+    "delta": 0.038,
+    "n": 32
+   },
+   {
+    "card": "glasswing-moth",
+    "name": "Glasswing Moth",
+    "rarity": "common",
+    "obtainMap": 18,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "hoopoe-herald",
+    "name": "Hoopoe Herald",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "house-cat",
+    "name": "House Cat",
+    "rarity": "common",
+    "obtainMap": 0,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "leafcutter-gardener",
+    "name": "Leafcutter Gardener",
+    "rarity": "common",
+    "obtainMap": 7,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "mosquito-cloud",
+    "name": "Mosquito Cloud",
+    "rarity": "common",
+    "obtainMap": 13,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "mountain-hare",
+    "name": "Mountain Hare",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "otter-lantern-bearer",
+    "name": "Otter Lantern Bearer",
+    "rarity": "uncommon",
+    "obtainMap": null,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "paper-wasp",
+    "name": "Paper Wasp",
+    "rarity": "common",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "stonedrop-vulture",
+    "name": "Stonedrop Vulture",
+    "rarity": "uncommon",
+    "obtainMap": 19,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "vampire-bat",
+    "name": "Vampire Bat",
+    "rarity": "uncommon",
+    "obtainMap": 8,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   },
+   {
+    "card": "voidfeather-scout",
+    "name": "Voidfeather Scout",
+    "rarity": "uncommon",
+    "obtainMap": 0,
+    "copies": 3,
+    "out": [
+     "shallows-fry",
+     "pelican-diver",
+     "blind-cave-fish"
+    ],
+    "score": 0.881,
+    "delta": 0.037,
+    "n": 2
+   }
+  ],
+  "best": {
+   "name": "optimum (whole spectrum)",
+   "deck": {
+    "duckling": 1,
+    "ember-tetra-3caj": 3,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 1,
+    "mallard-marauder": 2,
+    "mangrove-mudskipper": 2,
+    "mayfly-dancer": 2,
+    "open-ocean-hermit-crab": 1,
+    "pike-lancer": 3,
+    "sulfur-vent-crab": 4
+   },
+   "cards": [
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ember-tetra-3caj",
+     "name": "Ember Tetra",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "pike-lancer",
+     "name": "Pike Lancer",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mallard-marauder",
+     "name": "Mallard Marauder",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.936,
+   "ci": [
+    0.916,
+    0.956
+   ],
+   "mirror": 0.925,
+   "road": 0.97,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.9,
+     "lo": 0.769,
+     "hi": 0.96,
+     "n": 40
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.6,
+     "lo": 0.446,
+     "hi": 0.737,
+     "n": 40
+    },
+    {
+     "entry": "road|2-1",
+     "label": "2-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.975,
+     "lo": 0.871,
+     "hi": 0.996,
+     "n": 40
+    },
+    {
+     "entry": "road|2-2",
+     "label": "2-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "road|2-3",
+     "label": "2-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.925,
+     "lo": 0.801,
+     "hi": 0.974,
+     "n": 40
+    },
+    {
+     "entry": "road|2-4",
+     "label": "2-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "road|2-5",
+     "label": "2-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.95,
+     "lo": 0.835,
+     "hi": 0.986,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-1",
+     "label": "vs 2-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-2",
+     "label": "vs 2-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-3",
+     "label": "vs 2-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-4",
+     "label": "vs 2-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "neutral|fight:2-5",
+     "label": "vs 2-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.912,
+     "hi": 1,
+     "n": 40
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 2-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.825,
+     "lo": 0.68,
+     "hi": 0.913,
+     "n": 40
+    },
+    {
+     "entry": "neutral|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.425,
+     "lo": 0.285,
+     "hi": 0.578,
+     "n": 40
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.8,
+     "lo": 0.652,
+     "hi": 0.895,
+     "n": 40
+    }
+   ]
+  },
+  "gainOverPhase1": 0.089
+ },
+ "road": [
+  {
+   "node": "2-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.8,
+   "ci": [
+    0.652,
+    0.895
+   ],
+   "n": 40
+  },
+  {
+   "node": "2-2",
+   "kind": "skirmish",
+   "target": 0.8,
+   "optimum": 0.975,
+   "ci": [
+    0.871,
+    0.996
+   ],
+   "n": 40
+  },
+  {
+   "node": "2-3",
+   "kind": "skirmish",
+   "target": 0.7,
+   "optimum": 0.95,
+   "ci": [
+    0.835,
+    0.986
+   ],
+   "n": 40
+  },
+  {
+   "node": "2-4",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 0.8,
+   "ci": [
+    0.652,
+    0.895
+   ],
+   "n": 40
+  },
+  {
+   "node": "2-5",
+   "kind": "elite",
+   "target": 0.4,
+   "optimum": 0.85,
+   "ci": [
+    0.709,
+    0.929
+   ],
+   "n": 40
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:2-1",
+   "node": "2-1",
+   "rules": "phase cycle, tide, wet",
+   "withField": 0.975,
+   "noField": 0.975,
+   "delta": 0,
+   "ci": [
+    -0.068,
+    0.068
+   ]
+  },
+  {
+   "opponent": "fight:2-2",
+   "node": "2-2",
+   "rules": "phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.975,
+   "noField": 0.95,
+   "delta": 0.025,
+   "ci": [
+    -0.058,
+    0.108
+   ]
+  },
+  {
+   "opponent": "fight:2-3",
+   "node": "2-3",
+   "rules": "phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.9,
+   "noField": 0.875,
+   "delta": 0.025,
+   "ci": [
+    -0.113,
+    0.163
+   ]
+  },
+  {
+   "opponent": "fight:2-4",
+   "node": "2-4",
+   "rules": "phase cycle, terrain Tideline T1, tide, tideSpout, wet",
+   "withField": 0.9,
+   "noField": 1,
+   "delta": -0.1,
+   "ci": [
+    -0.193,
+    -0.007
+   ]
+  },
+  {
+   "opponent": "fight:2-5",
+   "node": "2-5",
+   "rules": "highTide, phase cycle, terrain Tideline T2 (Shell 1), tide, wet",
+   "withField": 0.975,
+   "noField": 0.95,
+   "delta": 0.025,
+   "ci": [
+    -0.058,
+    0.108
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "2-1",
+   "rules": "phase cycle, tide, wet",
+   "withField": 0.9,
+   "noField": 0.825,
+   "delta": 0.075,
+   "ci": [
+    -0.075,
+    0.225
+   ]
+  },
+  {
+   "opponent": "ref:road2",
+   "node": "2-2",
+   "rules": "phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.675,
+   "noField": 0.425,
+   "delta": 0.25,
+   "ci": [
+    0.039,
+    0.461
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "2-3",
+   "rules": "phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.4,
+   "noField": 0.675,
+   "delta": -0.275,
+   "ci": [
+    -0.485,
+    -0.065
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:2-1",
+   "label": "2-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-1",
+   "target": 0.9,
+   "h2h": 0.975,
+   "h2hCI": [
+    0.871,
+    0.996
+   ],
+   "elo": 636,
+   "eloCI": [
+    332,
+    759
+   ],
+   "n": 40,
+   "asPlayer": 0.374,
+   "optimumSame": 0.834,
+   "pointsBelow": 46,
+   "pointsCI": 6.4
+  },
+  {
+   "opponent": "fight:2-2",
+   "label": "2-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-2",
+   "target": 0.8,
+   "h2h": 0.975,
+   "h2hCI": [
+    0.871,
+    0.996
+   ],
+   "elo": 636,
+   "eloCI": [
+    332,
+    759
+   ],
+   "n": 40,
+   "asPlayer": 0.451,
+   "optimumSame": 0.834,
+   "pointsBelow": 38.2,
+   "pointsCI": 6.7
+  },
+  {
+   "opponent": "fight:2-3",
+   "label": "2-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-3",
+   "target": 0.7,
+   "h2h": 0.9,
+   "h2hCI": [
+    0.769,
+    0.96
+   ],
+   "elo": 382,
+   "eloCI": [
+    209,
+    554
+   ],
+   "n": 40,
+   "asPlayer": 0.477,
+   "optimumSame": 0.841,
+   "pointsBelow": 36.5,
+   "pointsCI": 6.5
+  },
+  {
+   "opponent": "fight:2-4",
+   "label": "2-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-4",
+   "target": 0.6,
+   "h2h": 0.9,
+   "h2hCI": [
+    0.769,
+    0.96
+   ],
+   "elo": 382,
+   "eloCI": [
+    209,
+    554
+   ],
+   "n": 40,
+   "asPlayer": 0.304,
+   "optimumSame": 0.841,
+   "pointsBelow": 53.7,
+   "pointsCI": 6.5
+  },
+  {
+   "opponent": "fight:2-5",
+   "label": "2-5 elite's deck",
+   "kind": "elite",
+   "node": "2-5",
+   "target": 0.4,
+   "h2h": 0.975,
+   "h2hCI": [
+    0.871,
+    0.996
+   ],
+   "elo": 636,
+   "eloCI": [
+    332,
+    759
+   ],
+   "n": 40,
+   "asPlayer": 0.386,
+   "optimumSame": 0.834,
+   "pointsBelow": 44.8,
+   "pointsCI": 6.7
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 2-1's field",
+   "kind": "reference",
+   "node": "2-1",
+   "target": null,
+   "h2h": 0.9,
+   "h2hCI": [
+    0.769,
+    0.96
+   ],
+   "elo": 382,
+   "eloCI": [
+    209,
+    554
+   ],
+   "n": 40,
+   "asPlayer": 0.329,
+   "optimumSame": 0.841,
+   "pointsBelow": 51.2,
+   "pointsCI": 6.3
+  },
+  {
+   "opponent": "ref:road2",
+   "label": "reference deck (Map 2) under 2-2's field",
+   "kind": "reference",
+   "node": "2-2",
+   "target": null,
+   "h2h": 0.675,
+   "h2hCI": [
+    0.52,
+    0.799
+   ],
+   "elo": 127,
+   "eloCI": [
+    14,
+    240
+   ],
+   "n": 40,
+   "asPlayer": 0.598,
+   "optimumSame": 0.865,
+   "pointsBelow": 26.7,
+   "pointsCI": 6.3
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 2-3's field",
+   "kind": "reference",
+   "node": "2-3",
+   "target": null,
+   "h2h": 0.4,
+   "h2hCI": [
+    0.263,
+    0.554
+   ],
+   "elo": -70,
+   "eloCI": [
+    -179,
+    38
+   ],
+   "n": 40,
+   "asPlayer": 0.924,
+   "optimumSame": 0.893,
+   "pointsBelow": -3.1,
+   "pointsCI": 4.4
+  }
+ ]
+}

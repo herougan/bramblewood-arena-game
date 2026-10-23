@@ -11,7 +11,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   opponent with 95% intervals, the field effects' impact, and each fight deck's gap to the optimum (Elo and win-rate points). Worker
   threads, deterministic seeds (same result on any worker count), checkpoints and `--resume`.
 - **Without Claude:** `tools/opt/build-exe.sh` builds one executable (Node SEA); `.github/workflows/deckopt.yml` runs it on GitHub's free
-  runners by hand and uploads the results. No game code changed; first results for Maps 0-3 in `docs/balance/opt/deckopt-summary-2026-10-23.md`.
+  runners by hand and uploads the results. No game code changed; first results for Maps 0-3 in `docs/balance/opt/deckopt-summary-2026-10-23.md` (map cards + owned) and `deckopt-summary-2026-10-23-mapcards.md` (map cards only).
 
 ## 2026-10-23 (package BL: Bloom rebuilt, Nectar Vintner's Heal, default values, Bleed's fade)
 - **Bloom – {conditions} (11:23, 17:34 #3 "Bloom hasn't changed"):** a new skill (`effects.bloomCopy`). Once, the first round its conditions hold at

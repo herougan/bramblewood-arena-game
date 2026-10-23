@@ -1,0 +1,1309 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "1.0.0 (2026-10-23)",
+ "generated": "2026-10-23T13:28:06.249Z",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts"
+ },
+ "level": 0,
+ "settings": {
+  "seed": "bramble",
+  "crossShare": 0.3,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "plan",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": 4,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --gens1 13 --gens2 2 --final-games 144 --screen-max 137 --cross-share 0.3 --road-weight 0.25",
+ "pools": {
+  "phase1": 67,
+  "mapCards": [
+   "ant-scout",
+   "ash-cloud-condor",
+   "badger-berserker",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "beetle-grunt",
+   "burrow-rabbit",
+   "caustic-scorpion",
+   "chipmunk-forager",
+   "chipmunk-skirmisher",
+   "cobalt-talon-fledgling",
+   "cottontail",
+   "crossed-eyes",
+   "duck-paddler",
+   "duckling",
+   "dynamite-packrat",
+   "eagle-sharpshooter",
+   "earthworm",
+   "elder-willow",
+   "ent",
+   "farm-dog",
+   "feral-tomcat",
+   "forager-ant",
+   "fox-kit",
+   "garden-snail",
+   "glacier-wolf-pack",
+   "golden-eagle-diver",
+   "gull-thief",
+   "honey-bee",
+   "house-cat",
+   "meadow-rabbit",
+   "otter-kit",
+   "otter-paddler",
+   "pond-duck",
+   "pond-trout",
+   "river-carp",
+   "rockslide-ram",
+   "scree-goat",
+   "silver-minnow",
+   "terrier-pup",
+   "thornwood-palisade",
+   "toucan-courier",
+   "trash-panda-trickster",
+   "tunnel-ant",
+   "worker-ant"
+  ],
+  "owned": [
+   "acorn-chipmunk",
+   "cobalt-talon-skirmisher",
+   "crimson-wing-duelist-cadet",
+   "crimson-wing-recruit",
+   "dominion-nestguard",
+   "ember-tetra-3caj",
+   "fleetfootd",
+   "gold-throated-acolyte",
+   "greyplume-fledgling",
+   "guppy",
+   "harvest-mouse",
+   "meadow-frog",
+   "meerkat-wayfarer",
+   "mosswing-laborer",
+   "otter-centurion",
+   "otter-guard",
+   "riverwing-envoy",
+   "sheep",
+   "sunthroat-courier",
+   "violet-vane-fletcher",
+   "voidfeather-scout"
+  ],
+  "wholeSpectrum": 353
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-1",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs 0-1 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "mirror|fight:0-2",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs 0-2 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "mirror|fight:0-3",
+   "kind": "mirror",
+   "node": "0-3",
+   "label": "vs 0-3 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T1"
+  },
+  {
+   "key": "mirror|fight:0-4",
+   "kind": "mirror",
+   "node": "0-4",
+   "label": "vs 0-4 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T2 (Healing 1)"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs reference starter deck under 0-1's field",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "road|0-1",
+   "kind": "road",
+   "node": "0-1",
+   "label": "0-1 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "road|0-2",
+   "kind": "road",
+   "node": "0-2",
+   "label": "0-2 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "road|0-3",
+   "kind": "road",
+   "node": "0-3",
+   "label": "0-3 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T1"
+  },
+  {
+   "key": "road|0-4",
+   "kind": "road",
+   "node": "0-4",
+   "label": "0-4 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T2 (Healing 1)"
+  },
+  {
+   "key": "neutral|fight:0-1",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs 0-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:0-2",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs 0-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:0-3",
+   "kind": "mirror",
+   "node": "0-3",
+   "label": "vs 0-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:0-4",
+   "kind": "mirror",
+   "node": "0-4",
+   "label": "vs 0-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs reference starter deck under 0-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 44368,
+  "seconds": 242.5,
+  "gamesPerSecond": 182.9,
+  "workers": 2,
+  "searchGamesPerSecond": 186.4
+ },
+ "phase1": {
+  "generations": 13,
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "badger-berserker": 1,
+    "beetle-grunt": 4,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 3,
+    "ent": 2,
+    "fox-kit": 4,
+    "otter-guard": 2,
+    "otter-kit": 1,
+    "river-carp": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 3,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-kit",
+     "name": "Otter Kit",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "river-carp",
+     "name": "River Carp",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.961,
+   "ci": [
+    0.95,
+    0.971
+   ],
+   "mirror": 0.949,
+   "road": 0.995,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.986,
+     "lo": 0.951,
+     "hi": 0.996,
+     "n": 144
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.944,
+     "lo": 0.894,
+     "hi": 0.972,
+     "n": 144
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.885,
+     "hi": 0.967,
+     "n": 144
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.882,
+     "lo": 0.819,
+     "hi": 0.925,
+     "n": 144
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.974,
+     "hi": 1,
+     "n": 144
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.944,
+     "lo": 0.894,
+     "hi": 0.972,
+     "n": 144
+    },
+    {
+     "entry": "road|0-1",
+     "label": "0-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.974,
+     "hi": 1,
+     "n": 144
+    },
+    {
+     "entry": "road|0-2",
+     "label": "0-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.993,
+     "lo": 0.962,
+     "hi": 0.999,
+     "n": 144
+    },
+    {
+     "entry": "road|0-3",
+     "label": "0-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.993,
+     "lo": 0.962,
+     "hi": 0.999,
+     "n": 144
+    },
+    {
+     "entry": "road|0-4",
+     "label": "0-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.993,
+     "lo": 0.962,
+     "hi": 0.999,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-1",
+     "label": "vs 0-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.986,
+     "lo": 0.951,
+     "hi": 0.996,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-2",
+     "label": "vs 0-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.931,
+     "lo": 0.877,
+     "hi": 0.962,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-3",
+     "label": "vs 0-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.931,
+     "lo": 0.877,
+     "hi": 0.962,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-4",
+     "label": "vs 0-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.811,
+     "hi": 0.919,
+     "n": 144
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 0-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.986,
+     "lo": 0.951,
+     "hi": 0.996,
+     "n": 144
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.951,
+     "lo": 0.903,
+     "hi": 0.976,
+     "n": 144
+    }
+   ]
+  },
+  "runnersUp": [
+   {
+    "deck": {
+     "beetle-grunt": 5,
+     "burrow-rabbit": 1,
+     "duck-paddler": 3,
+     "ent": 3,
+     "fox-kit": 3,
+     "honey-bee": 1,
+     "otter-guard": 2,
+     "otter-kit": 1,
+     "scree-goat": 1
+    },
+    "score": 0.975
+   },
+   {
+    "deck": {
+     "beetle-grunt": 5,
+     "duck-paddler": 3,
+     "earthworm": 1,
+     "ent": 3,
+     "fox-kit": 3,
+     "honey-bee": 1,
+     "otter-guard": 2,
+     "otter-kit": 1,
+     "scree-goat": 1
+    },
+    "score": 0.975
+   },
+   {
+    "deck": {
+     "beetle-grunt": 5,
+     "duck-paddler": 3,
+     "ent": 3,
+     "farm-dog": 1,
+     "fox-kit": 3,
+     "honey-bee": 1,
+     "otter-guard": 2,
+     "otter-kit": 1,
+     "scree-goat": 1
+    },
+    "score": 0.975
+   }
+  ]
+ },
+ "phase2": {
+  "generations": 2,
+  "screenBaseline": 0.975,
+  "screened": 137,
+  "screenSkipped": 149,
+  "topSwaps": [
+   {
+    "card": "alley-cat",
+    "name": "Alley Cat",
+    "rarity": "rare",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.992,
+    "delta": 0.018,
+    "n": 32
+   },
+   {
+    "card": "battlement-heron",
+    "name": "Battlement Heron",
+    "rarity": "rare",
+    "obtainMap": 24,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.99,
+    "delta": 0.016,
+    "n": 32
+   },
+   {
+    "card": "otter-royal-guard",
+    "name": "Royal Guard",
+    "rarity": "superrare",
+    "obtainMap": null,
+    "copies": 1,
+    "out": [
+     "river-carp"
+    ],
+    "score": 0.988,
+    "delta": 0.014,
+    "n": 32
+   },
+   {
+    "card": "rimefire-salamander",
+    "name": "Rimefire Salamander",
+    "rarity": "rare",
+    "obtainMap": 22,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.984,
+    "delta": 0.01,
+    "n": 32
+   },
+   {
+    "card": "archerfish",
+    "name": "Archerfish",
+    "rarity": "uncommon",
+    "obtainMap": 9,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.982,
+    "delta": 0.008,
+    "n": 32
+   },
+   {
+    "card": "baby-horned-capybara",
+    "name": "Baby Horned Capybara",
+    "rarity": "common",
+    "obtainMap": 13,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.982,
+    "delta": 0.008,
+    "n": 32
+   },
+   {
+    "card": "apollo-butterfly",
+    "name": "Apollo Butterfly",
+    "rarity": "uncommon",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.977,
+    "delta": 0.002,
+    "n": 32
+   },
+   {
+    "card": "dung-beetle",
+    "name": "Dung Beetle",
+    "rarity": "common",
+    "obtainMap": 7,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.977,
+    "delta": 0.002,
+    "n": 32
+   },
+   {
+    "card": "spitting-cobra",
+    "name": "Spitting Cobra",
+    "rarity": "rare",
+    "obtainMap": 14,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.977,
+    "delta": 0.002,
+    "n": 16
+   },
+   {
+    "card": "ashbone-ghoul",
+    "name": "Ashbone Ghoul",
+    "rarity": "common",
+    "obtainMap": 20,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.973,
+    "delta": -0.002,
+    "n": 16
+   },
+   {
+    "card": "sunspire-sky-sovereign",
+    "name": "Sunspire Sky-Sovereign",
+    "rarity": "heroic",
+    "obtainMap": null,
+    "copies": 1,
+    "out": [
+     "river-carp"
+    ],
+    "score": 0.973,
+    "delta": -0.002,
+    "n": 32
+   },
+   {
+    "card": "echidna-quillshot",
+    "name": "Echidna Quillshot",
+    "rarity": "veryrare",
+    "obtainMap": 19,
+    "copies": 2,
+    "out": [
+     "river-carp",
+     "badger-berserker"
+    ],
+    "score": 0.973,
+    "delta": -0.002,
+    "n": 16
+   },
+   {
+    "card": "hedge-weasel",
+    "name": "Hedge Weasel",
+    "rarity": "uncommon",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.973,
+    "delta": -0.002,
+    "n": 16
+   },
+   {
+    "card": "hoopoe-herald",
+    "name": "Hoopoe Herald",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.973,
+    "delta": -0.002,
+    "n": 16
+   },
+   {
+    "card": "armadillo-guard",
+    "name": "Armadillo Guard",
+    "rarity": "common",
+    "obtainMap": 19,
+    "copies": 3,
+    "out": [
+     "river-carp",
+     "badger-berserker",
+     "ent"
+    ],
+    "score": 0.969,
+    "delta": -0.006,
+    "n": 16
+   }
+  ],
+  "best": {
+   "name": "optimum (whole spectrum)",
+   "deck": {
+    "alley-cat": 3,
+    "beetle-grunt": 4,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 3,
+    "ent": 1,
+    "fox-kit": 4,
+    "otter-guard": 2,
+    "otter-kit": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 3,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-kit",
+     "name": "Otter Kit",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.978,
+   "ci": [
+    0.97,
+    0.986
+   ],
+   "mirror": 0.976,
+   "road": 0.986,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.986,
+     "lo": 0.951,
+     "hi": 0.996,
+     "n": 144
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.986,
+     "lo": 0.951,
+     "hi": 0.996,
+     "n": 144
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.951,
+     "lo": 0.903,
+     "hi": 0.976,
+     "n": 144
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.951,
+     "lo": 0.903,
+     "hi": 0.976,
+     "n": 144
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.974,
+     "hi": 1,
+     "n": 144
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.979,
+     "lo": 0.941,
+     "hi": 0.993,
+     "n": 144
+    },
+    {
+     "entry": "road|0-1",
+     "label": "0-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.974,
+     "hi": 1,
+     "n": 144
+    },
+    {
+     "entry": "road|0-2",
+     "label": "0-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.979,
+     "lo": 0.941,
+     "hi": 0.993,
+     "n": 144
+    },
+    {
+     "entry": "road|0-3",
+     "label": "0-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.974,
+     "hi": 1,
+     "n": 144
+    },
+    {
+     "entry": "road|0-4",
+     "label": "0-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.965,
+     "lo": 0.921,
+     "hi": 0.985,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-1",
+     "label": "vs 0-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.974,
+     "hi": 1,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-2",
+     "label": "vs 0-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.979,
+     "lo": 0.941,
+     "hi": 0.993,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-3",
+     "label": "vs 0-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.885,
+     "hi": 0.967,
+     "n": 144
+    },
+    {
+     "entry": "neutral|fight:0-4",
+     "label": "vs 0-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.931,
+     "lo": 0.877,
+     "hi": 0.962,
+     "n": 144
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 0-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.993,
+     "lo": 0.962,
+     "hi": 0.999,
+     "n": 144
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.972,
+     "lo": 0.931,
+     "hi": 0.989,
+     "n": 144
+    }
+   ]
+  },
+  "gainOverPhase1": 0.017
+ },
+ "road": [
+  {
+   "node": "0-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 1,
+   "ci": [
+    0.974,
+    1
+   ],
+   "n": 144
+  },
+  {
+   "node": "0-2",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.993,
+   "ci": [
+    0.962,
+    0.999
+   ],
+   "n": 144
+  },
+  {
+   "node": "0-3",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 0.993,
+   "ci": [
+    0.962,
+    0.999
+   ],
+   "n": 144
+  },
+  {
+   "node": "0-4",
+   "kind": "skirmish",
+   "target": 0.45,
+   "optimum": 0.993,
+   "ci": [
+    0.962,
+    0.999
+   ],
+   "n": 144
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:0-1",
+   "node": "0-1",
+   "rules": "misty, phase off",
+   "withField": 0.986,
+   "noField": 0.986,
+   "delta": 0,
+   "ci": [
+    -0.027,
+    0.027
+   ]
+  },
+  {
+   "opponent": "fight:0-2",
+   "node": "0-2",
+   "rules": "misty, phase off",
+   "withField": 0.944,
+   "noField": 0.931,
+   "delta": 0.014,
+   "ci": [
+    -0.042,
+    0.07
+   ]
+  },
+  {
+   "opponent": "fight:0-3",
+   "node": "0-3",
+   "rules": "misty, phase off, terrain Open Meadow T1",
+   "withField": 0.938,
+   "noField": 0.931,
+   "delta": 0.007,
+   "ci": [
+    -0.05,
+    0.064
+   ]
+  },
+  {
+   "opponent": "fight:0-4",
+   "node": "0-4",
+   "rules": "misty, phase off, terrain Open Meadow T2 (Healing 1)",
+   "withField": 0.882,
+   "noField": 0.875,
+   "delta": 0.007,
+   "ci": [
+    -0.069,
+    0.082
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "0-1",
+   "rules": "misty, phase off",
+   "withField": 1,
+   "noField": 0.986,
+   "delta": 0.014,
+   "ci": [
+    -0.005,
+    0.033
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "0-2",
+   "rules": "misty, phase off",
+   "withField": 0.944,
+   "noField": 0.951,
+   "delta": -0.007,
+   "ci": [
+    -0.058,
+    0.044
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:0-1",
+   "label": "0-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-1",
+   "target": 0.9,
+   "h2h": 0.986,
+   "h2hCI": [
+    0.951,
+    0.996
+   ],
+   "elo": 741,
+   "eloCI": [
+    514,
+    967
+   ],
+   "n": 144,
+   "asPlayer": 0.463,
+   "optimumSame": 0.957,
+   "pointsBelow": 49.4,
+   "pointsCI": 3.6
+  },
+  {
+   "opponent": "fight:0-2",
+   "label": "0-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-2",
+   "target": 0.75,
+   "h2h": 0.944,
+   "h2hCI": [
+    0.894,
+    0.972
+   ],
+   "elo": 492,
+   "eloCI": [
+    371,
+    614
+   ],
+   "n": 144,
+   "asPlayer": 0.446,
+   "optimumSame": 0.963,
+   "pointsBelow": 51.6,
+   "pointsCI": 3.9
+  },
+  {
+   "opponent": "fight:0-3",
+   "label": "0-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-3",
+   "target": 0.6,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.885,
+    0.967
+   ],
+   "elo": 470,
+   "eloCI": [
+    355,
+    586
+   ],
+   "n": 144,
+   "asPlayer": 0.566,
+   "optimumSame": 0.964,
+   "pointsBelow": 39.7,
+   "pointsCI": 3.7
+  },
+  {
+   "opponent": "fight:0-4",
+   "label": "0-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-4",
+   "target": 0.45,
+   "h2h": 0.882,
+   "h2hCI": [
+    0.819,
+    0.925
+   ],
+   "elo": 349,
+   "eloCI": [
+    262,
+    436
+   ],
+   "n": 144,
+   "asPlayer": 0.885,
+   "optimumSame": 0.972,
+   "pointsBelow": 8.7,
+   "pointsCI": 2.8
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 0-1's field",
+   "kind": "reference",
+   "node": "0-1",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.974,
+    1
+   ],
+   "elo": 983,
+   "eloCI": [
+    630,
+    983
+   ],
+   "n": 144,
+   "asPlayer": 0.514,
+   "optimumSame": 0.955,
+   "pointsBelow": 44.1,
+   "pointsCI": 3.7
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 0-2's field",
+   "kind": "reference",
+   "node": "0-2",
+   "target": null,
+   "h2h": 0.944,
+   "h2hCI": [
+    0.894,
+    0.972
+   ],
+   "elo": 492,
+   "eloCI": [
+    371,
+    614
+   ],
+   "n": 144,
+   "asPlayer": 0.547,
+   "optimumSame": 0.963,
+   "pointsBelow": 41.6,
+   "pointsCI": 3.9
+  }
+ ]
+}
