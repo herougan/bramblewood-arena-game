@@ -3031,11 +3031,13 @@
     "cost": 3,
     "wait": 3,
     "attack": 0,
-    "health": 32,
+    "health": 30,
     "resist": [
       "cold"
     ],
-    "effects": {},
+    "effects": {
+      "rampart": true
+    },
     "flavor": "A fortress of logs and mud that has outlasted three winters and at least one siege.",
     "locked": true,
     "archetypes": [
@@ -3057,7 +3059,7 @@
     },
     "unattainable": true,
     "art": "data:image/png;base64,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",
-    "creatorNote": "2026-10-19 halve (BF5): was 4/48. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/22. 2026-10-21 (owner 18:52: \"Structures have no attack.\"): was 2/25, Attack 0. Health not re-fitted yet (action item N21-12). 2026-10-21 TR (re-fit by formula): was 0/25. 2026-10-21 human pass I (owner's hub skill costs): 0/29 -> 0/25. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 0/25 -> 0/32."
+    "creatorNote": "2026-10-19 halve (BF5): was 4/48. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/22. 2026-10-21 (owner 18:52: \"Structures have no attack.\"): was 2/25, Attack 0. Health not re-fitted yet (action item N21-12). 2026-10-21 TR (re-fit by formula): was 0/25. 2026-10-21 human pass I (owner's hub skill costs): 0/29 -> 0/25. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 0/25 -> 0/32. 2026-10-23 (package EN3, owner 19:27 #3): Rampart (a fortress that takes half of each hit on its bramble); re-fit by formula 0/32 -> 0/30 (S 0.5, no longer skill-less)."
   },
   {
     "id": "grass-viper",
@@ -14884,8 +14886,8 @@
     "id": "ironmaw-warwolf",
     "name": "Ironmaw Warwolf",
     "icon": "\ud83d\udc3a",
-    "attack": 6,
-    "health": 6,
+    "attack": 7,
+    "health": 7,
     "rarity": "epic",
     "species": [
       "Canid",
@@ -14922,7 +14924,7 @@
         "*steel claws click, waiting*"
       ]
     },
-    "creatorNote": "2026-10-19 retune (v5 L/10): was 9/26 (over budget: 2A+H+S 102.4% -> 95.6% of N 58.59). 2026-10-19 halve (BF5): was 8/24. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/7 (flag: its skills leave no room; at the floor of its shape, skills kept). 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 1/1 -> 6/6."
+    "creatorNote": "2026-10-19 retune (v5 L/10): was 9/26 (over budget: 2A+H+S 102.4% -> 95.6% of N 58.59). 2026-10-19 halve (BF5): was 8/24. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/7 (flag: its skills leave no room; at the floor of its shape, skills kept). 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 1/1 -> 6/6. 2026-10-23 EN3 re-fit (Bleed / Poison family +0.1, Bulwark 9): 6/6 -> 7/7."
   },
   {
     "cost": 1,
@@ -29443,7 +29445,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 7,
+    "health": 8,
     "rarity": "uncommon",
     "species": [
       "Insect"
@@ -29467,7 +29469,7 @@
     "test": false,
     "numericId": 1268,
     "uuid": "8f0b809b-9c83-5599-a6bd-46803e327235",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The floating colony that stings: Tide, Poison 1, Swarm. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, poison 1, swarm 1); 2A+H+S = 6 + 12 + 3 = 21 < 34.9 and A*H+S = 36 + 3 = 39 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9034) as the 5-3 reward: the floating colony in the cypress roots. 2026-10-21 (BF5, two skills at most): cut tide; keeps swarm + poison. 2026-10-19 halve (BF5): was 3/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/6. 2026-10-21 (TR, owner HB2-1: Flying, Tide, Diurnal and Nocturnal don't count toward two skills): tide back (BF5 cut it only because one of these counted). 2026-10-21 TR (re-fit by formula): was 2/11. 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 1/3 -> 2/7.",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The floating colony that stings: Tide, Poison 1, Swarm. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, poison 1, swarm 1); 2A+H+S = 6 + 12 + 3 = 21 < 34.9 and A*H+S = 36 + 3 = 39 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9034) as the 5-3 reward: the floating colony in the cypress roots. 2026-10-21 (BF5, two skills at most): cut tide; keeps swarm + poison. 2026-10-19 halve (BF5): was 3/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/6. 2026-10-21 (TR, owner HB2-1: Flying, Tide, Diurnal and Nocturnal don't count toward two skills): tide back (BF5 cut it only because one of these counted). 2026-10-21 TR (re-fit by formula): was 2/11. 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 1/3 -> 2/7. 2026-10-23 EN3 re-fit (Bleed / Poison family +0.1, Bulwark 9): 2/7 -> 2/8.",
     "source": {
       "kind": "pack",
       "tier": 1,
@@ -30110,7 +30112,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 7,
+    "health": 8,
     "rarity": "uncommon",
     "species": [
       "Arachnid"
@@ -30132,7 +30134,7 @@
     "test": false,
     "numericId": 1286,
     "uuid": "24e5dff1-7d95-573f-8236-13e8c6b78fe7",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Feels the dark with its whip legs, strikes with spiny arms: Sonar, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (sonar 1, bleed 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 65.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9053) as the 8-4 reward: feels its way through the Echo Chamber. 2026-10-19 retune (v5 L/10): was 4/9 (well under: 2A+H+S 55.1% -> 66.3% of N 35.75). 2026-10-19 halve (BF5): was 5/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/5. 2026-10-21 human pass I (owner's hub skill costs): 4/8 -> 3/6. 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 3/6 -> 3/7.",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Feels the dark with its whip legs, strikes with spiny arms: Sonar, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (sonar 1, bleed 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 65.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9053) as the 8-4 reward: feels its way through the Echo Chamber. 2026-10-19 retune (v5 L/10): was 4/9 (well under: 2A+H+S 55.1% -> 66.3% of N 35.75). 2026-10-19 halve (BF5): was 5/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/5. 2026-10-21 human pass I (owner's hub skill costs): 4/8 -> 3/6. 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 3/6 -> 3/7. 2026-10-23 EN3 re-fit (Bleed / Poison family +0.1, Bulwark 9): 3/7 -> 3/8.",
     "source": {
       "kind": "pack",
       "tier": 1,
@@ -32444,5 +32446,128 @@
     "uuid": "b1c0a1ae-0b1d-5a19-9c3e-7a2c6f0d1e26",
     "awaitingSource": true,
     "creatorNote": "2026-10-23 (package BL) (owner 11:23: \"For Algae, just 'Wet' & 'Sunny' is sufficient.\"): no algae card existed, so this one carries Bloom (Wet & Sunny). Stats by the budget (fit below). Art: placeholder (the emoji). Awaiting a source (call BL-3). Fit: 1/6 -> 1/9 (100% of N)."
+  },
+  {
+    "id": "dam-keeper-beaver",
+    "name": "Dam-Keeper Beaver",
+    "icon": "\ud83e\uddab",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 11,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Beaver"
+    ],
+    "species": [
+      "Rodent"
+    ],
+    "animal": "beaver",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "rampart": true
+    },
+    "flavor": "Forty winters patching the dam. The bramble is just a dam that argues back.",
+    "numericId": 9127,
+    "uuid": "81c2aa7a-d652-5287-b1a8-25f751171efb",
+    "awaitingSource": true,
+    "creatorNote": "2026-10-23 (package EN3, owner 20:44: \"The new skills we mentioned - implement them in new cards.\"): rampart. Priced with the budget (tools/skill_costs.js budget, Level 1, map term 0): S 0.5, N 17.07, 2A+H+S 15.5: 2/11. Proposed source: Pack 1 (with the Map 0-6 beavers) (call EN3-8). Art: placeholder (the emoji); NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md (package EN3)."
+  },
+  {
+    "id": "moat-snapper",
+    "name": "Moat Snapper",
+    "icon": "\ud83d\udc22",
+    "cost": 2,
+    "wait": 2,
+    "attack": 4,
+    "health": 14,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Turtle"
+    ],
+    "species": [
+      "Reptile"
+    ],
+    "animal": "snapping turtle",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "rampart": true,
+      "armor": 1
+    },
+    "flavor": "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.",
+    "numericId": 9128,
+    "uuid": "38b7de74-15b8-51b7-a81d-85b25514713b",
+    "awaitingSource": true,
+    "creatorNote": "2026-10-23 (package EN3, owner 20:44: \"The new skills we mentioned - implement them in new cards.\"): rampart + armor. Priced with the budget (tools/skill_costs.js budget, Level 1, map term 0): S 2, N 24.66, 2A+H+S 24: 4/14. Proposed source: Pack 2 (Maps 7-13, beside the turtles) (call EN3-8). Art: placeholder (the emoji); NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md (package EN3)."
+  },
+  {
+    "id": "briarback-hedgehog",
+    "name": "Briarback Hedgehog",
+    "icon": "\ud83e\udd94",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 11,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Hedgehog"
+    ],
+    "species": [
+      "Erinaceid"
+    ],
+    "animal": "hedgehog",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "brambleArmor": true
+    },
+    "flavor": "It curls up in the roots until nobody can tell which spines are whose.",
+    "numericId": 9129,
+    "uuid": "463081c0-38e4-5fc4-b72a-f198ce8173e8",
+    "awaitingSource": true,
+    "creatorNote": "2026-10-23 (package EN3, owner 20:44: \"The new skills we mentioned - implement them in new cards.\"): brambleArmor. Priced with the budget (tools/skill_costs.js budget, Level 1, map term 0): S 1.1, N 17.07, 2A+H+S 16.1: 2/11. Proposed source: Pack 1 (Maps 0-6) (call EN3-8). Art: placeholder (the emoji); NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md (package EN3)."
+  },
+  {
+    "id": "barkplate-beetle",
+    "name": "Barkplate Beetle",
+    "icon": "\ud83e\udeb2",
+    "cost": 2,
+    "wait": 2,
+    "attack": 4,
+    "health": 14,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Insect",
+      "Forest"
+    ],
+    "species": [
+      "Insect"
+    ],
+    "animal": "bark beetle",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "brambleArmor": true,
+      "thorns": 1
+    },
+    "flavor": "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.",
+    "numericId": 9130,
+    "uuid": "74cce257-ff1b-5d36-938d-a56ef4b0eedf",
+    "awaitingSource": true,
+    "creatorNote": "2026-10-23 (package EN3, owner 20:44: \"The new skills we mentioned - implement them in new cards.\"): brambleArmor + thorns. Priced with the budget (tools/skill_costs.js budget, Level 1, map term 0): S 2.35, N 24.66, 2A+H+S 24.35: 4/14. Proposed source: Pack 2 (Maps 7-13, the Redwood Deep) (call EN3-8). Art: placeholder (the emoji); NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md (package EN3)."
   }
 ]

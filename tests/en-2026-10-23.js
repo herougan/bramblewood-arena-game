@@ -112,7 +112,7 @@ ok(sk('king').value === 1.4 && sk('kingly').value === 3.5, `King 1.4, Kingly 3.5
 ok(sk('assault').scale === 'n' && sk('assault').value === 1.8, `Assault 1.8 a point (${sk('assault').value})`);
 ok(sk('liege').value === 1.08 && BB.CONTEXT_MULT_BY.liegeGrant === 0.3, `Liege 0.3 x Assault 2 = 1.08 (${sk('liege').value}; braces x${BB.CONTEXT_MULT_BY.liegeGrant})`);
 ok(BB.CONTEXT_MULT_BY.rageGrant === 0.4 && !BB.CONTEXT_FLAG.rage, 'Rage – {…}: Rage keeps its price, + 0.4 x the braces');
-ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 6, `Bulwark 6 a point (BF11, owner 11:11) (${sk('bulwark').value})`);
+ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 9, `Bulwark 9 a point (EN3, owner 19:27 #9; was 6, BF11) (${sk('bulwark').value})`);
 ok(sk('backstab').scale === 'n' && sk('backstab').value === 0.6, `Backstab 0.6 a point (${sk('backstab').value})`);
 ok(sk('evoluteAlpha').value === 3 && sk('evoluteOmega').value === 3 && sk('evolute').value === 3, 'EV-5: Evolute, Alpha and Omega 3');
 ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' || x.id === 'enraged'), 'GD2-1 / TR-6: spellward priced; no spellshield or enraged entry');

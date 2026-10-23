@@ -3558,7 +3558,6 @@
  "takes no damage of any kind{v1}.": "不受任何傷害{v1}。",
  "takes that much more damage from every hit.": "每次受擊多受到這麼多傷害。",
  "Takes the hits": "承受攻擊",
- "Takes the plain attacks aimed at its adjacent allies.": "替相鄰的友方承受普通攻擊。",
  "takes {v1} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.": "在維持階段受到 {v1} 點傷害，然後減少 1 層。治療無效；淨化有效。",
  "takes {v1} damage every round. It never wears off and can’t be cured.": "每輪受到 {v1} 點傷害。永不消退，也無法治癒。",
  "Takes {v1} extra turn{s} when it arrives.": "登場時進行 {v1} 個額外回合。",
@@ -5058,5 +5057,9 @@
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "每有一個{v2}友軍，+{v1} 攻擊。 建築不算。",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "用蠑螈皮和瀝青做的過膝長靴。蹚進去，腳趾還在。",
  "One claw for waving, one for winning. This one only grew the second.": "一隻鉗子用來揮手，一隻用來取勝。這隻只長了第二隻。",
- "A green film on still water. Give it sun and a wet day, and by evening there are two.": "靜水上的一層綠膜。給它陽光和一個潮溼的日子，到傍晚就變成兩片了。"
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "靜水上的一層綠膜。給它陽光和一個潮溼的日子，到傍晚就變成兩片了。",
+ "Forty winters patching the dam. The bramble is just a dam that argues back.": "修補水壩四十個冬天。荊棘不過是一座會頂嘴的水壩。",
+ "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.": "住在護城河，睡在護城河，誰想過護城河就咬誰。",
+ "It curls up in the roots until nobody can tell which spines are whose.": "牠蜷在根鬚間，直到沒人分得清哪根刺是誰的。",
+ "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.": "牠把樹皮嚼成甲片，黏到荊棘上。沒人要求，也沒人介意。"
 }

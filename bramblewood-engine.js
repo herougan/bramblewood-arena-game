@@ -2810,6 +2810,33 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'statusFx', kind:'bulwark', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(pid), targetUid:src.uid, targetDefId:src.defId, amount:out.length, hp: CARD_DEFS[defId].health}); }
     return out;
   }
+  // Rampart and Bramble Armor (EN3, 2026-10-23, owner 19:27 #3: "takes half of bramble damage. and the other amount (not half) e.g. 5/2=3,
+  // it takes 3, the bramble takes 2" / "lowers damage taken by Bramble by 1. (Bramble armour basically)"; names: call EN3-4).
+  //   Rampart: every hit that reaches damageHQ (a unit's swing, shot, skill, a Pierce, an Overwhelm spill, a boomerang; every bramble hit
+  //     that has a unit behind it) is split: ONE Rampart unit takes ceil(half), the bramble the rest (5: 3 and 2; 1: 1 and 0). The field's own
+  //     ticks on a bramble (Ley Lines, Ash Rain) never come here, so they are not split. Which unit: the live Rampart unit (its side's
+  //     rows, a raid's middle and back too) nearest the attacker's column; a tie, or no attacker, the one listed first (front row, nearest the
+  //     centre first). Its share is plain damage (its Shield soaks first; no Armor, Thorns or On Attacked: it is not a hit on it). Supreme crushes it as it crushes
+  //     the rest. The 'rampart' event carries the share; the hit's own event keeps the bramble's part.
+  //   Bramble Armor: the bramble's part of each hit is 1 less (after Rampart). Several Bramble Armor units: still 1 (call EN3-5: max 1).
+  //     Supreme crushes it. Event 'brambleArmor' (a small shield ting on the bramble).
+  function isRampartUnit(c){ return !!(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).rampart); }
+  function rampartShare(pl, amount){
+    if(!(amount > 0) || !pl) return amount;
+    if(currentAttacker && effectsOf(currentAttacker).supreme) return amount;
+    const rs = rowsUnitsOf(pl).filter(isRampartUnit); if(!rs.length) return amount;
+    const ac = currentAttacker && Number.isInteger(currentAttacker.slot) ? currentAttacker.slot : null;
+    let r = rs[0]; if(ac != null) rs.forEach(c=>{ if(Number.isInteger(c.slot) && Math.abs(c.slot - ac) < Math.abs((Number.isInteger(r.slot) ? r.slot : 99) - ac)) r = c; });
+    const share = Math.ceil(amount / 2), dmg = applyDamage(r, share, {wake: true}).dmg; // its Shield / Shell soak first, as on any damage
+    if(recordEvents && shieldEvents) shieldEvents.push({type:'rampart', side: shieldSideOf ? shieldSideOf(pl.id) : undefined, uid:r.uid, defId:r.defId, dmg, share, bramble: amount - share, mods:dnModsFor(r.uid)});
+    return amount - share;
+  }
+  function brambleArmorCut(pl, amount, crush){
+    if(!(amount > 0) || !pl || crush) return amount;
+    const u = rowsUnitsOf(pl).find(c=> c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).brambleArmor); if(!u) return amount;
+    if(recordEvents && shieldEvents) shieldEvents.push({type:'brambleArmor', side: shieldSideOf ? shieldSideOf(pl.id) : undefined, uid:u.uid, defId:u.defId, blocked:1});
+    return amount - 1;
+  }
   // damageHQ takes the DEFENDING PLAYER (not just their hq object) so Bulwark can be applied
   // uniformly at the one place all castle damage funnels through, rather than re-deriving the
   // reduction at every call site.
@@ -2818,6 +2845,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(typeof pl.onHqHit === 'function'){ const r = pl.onHqHit(amount, currentAttacker); if(typeof r === 'number') return r; }
     const crush = !!(currentAttacker && effectsOf(currentAttacker).supreme); // Supreme (2026-10-14, user: "They crush armour and ward etc.")
     if(pl.perks && pl.perks.ward && amount > 0 && !crush){ pl.perks.ward = false; return 0; } // Wildpath "Unmoving": the first castle hit is ignored
+    amount = rampartShare(pl, amount); // EN3 (2026-10-23): a Rampart unit takes half of the hit (rounded up) first
+    amount = brambleArmorCut(pl, amount, crush); // EN3: Bramble Armor, 1 less on the bramble's part
     const reduced = Math.max(0, amount - (crush ? 0 : bulwarkReductionFor(pl)));
     if(reduced > 0) pl._hqHitTurn = turnNo;
     if(isGladiator && pl.gladiatorLeaderUid!=null){
@@ -3102,11 +3131,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Archer, Snipe), Bolts, shots, damage skills, status skills and areas all reach the unit they were aimed at. Skills have their
   // own interceptor now: Spellward (spellwardFor, called from shieldCall).
   function isLiveGuardian(n){ return !!(n && !n.gap && n.hp > 0 && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian); }
+  // EN3 (2026-10-23, owner 19:27 #8: "Guardian doesn't intercept a guardian's intercept."): one hop more. When a Guardian steps in, a
+  // Guardian adjacent to THAT Guardian (not the first one, not the unit first aimed at) steps in for it, and takes the swing. At most one
+  // extra hop (call EN3-3: one hop reads plainly on the board; a full chain would always run the blow to the end of a Guardian line).
+  // Several at a hop: one at random, as before. lastGuardHop names the first Guardian when the blow hopped (the hit event's guardChain).
+  let lastGuardHop = null;
   function redirectToGuardian(enemyPl, card){
+    lastGuardHop = null;
     if(!enemyPl || !card) return card;
-    const gs = adjacentOf(enemyPl, card).filter(n=> n !== card && isLiveGuardian(n));
-    if(!gs.length) return card;
-    return gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)];
+    const pick = (around, skip)=>{ const gs = adjacentOf(enemyPl, around).filter(n=> !skip.includes(n) && isLiveGuardian(n)); return !gs.length ? null : gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)]; };
+    const g1 = pick(card, [card]); if(!g1) return card;
+    const g2 = pick(g1, [card, g1]); if(!g2) return g1;
+    lastGuardHop = g1.uid; return g2;
   }
   // Spellward (2026-10-22, package GD2, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for
   // shielding allies from skills."): a single-target enemy skill aimed at a unit adjacent to a Spellward unit hits the Spellward
@@ -3333,6 +3369,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // a Festering unit is on the field (statusDecayHeld).
     if(cause==='defend') return;
     const dmg = damageCardFlat(card, card.bleed, 'bleed');
+    card._bledOn = combatNo; // EN3 (2026-10-23): it has bled this round, so this round's end takes a stack off (bleedFadeAtEnd)
     ensureStat(stats, sideOf(ownerId), card.defId).taken += dmg;
     // 2026-10-18 (user: "Bleed and poison both tick down by 1 per turn."): the stack no longer wears down per action; it loses 1
     // once a round at upkeep, like Poison (applyPoisonTicks, a 'bleedFade' event). decay:false keeps old replays' badge maths right.
@@ -7271,9 +7308,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Bleed wears down by 1 every round (2026-10-18, user: "Bleed and poison both tick down by 1 per turn."). Its damage still comes
     // on the unit's own attacks and skills (bleedTick); only the stack's countdown moved here. Festering holds it, as before.
     // upkeepUnitsOf (2026-10-19, package TS): in a raid the middle and back rows' Bleed, Poison, Chilli, Toxin and Strangle tick too.
-    if(!statusDecayHeld()) [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || !(c.bleed > 0)) return;
-      c.bleed -= 1; if(c.ichorBleed > c.bleed) c.ichorBleed = c.bleed;
-      if(recordEvents && events) events.push({type:'bleedFade', side:sideOf(pl.id), defId:c.defId, uid:c.uid, left:c.bleed}); }));
+    // EN3 (2026-10-23, owner 19:27 #5: "before they TAKE the bleed or poison damage, they -1. They should take the damage first."): the
+    // fade moved to the round's end (bleedFadeAtEnd, from endOfRoundUpkeep). Here the round only notes who starts it Bleeding.
+    [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(c && !c.gap && c.hp > 0 && c.bleed > 0) c._bleedFrom = combatNo; }));
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(c.poison>0 && isStructureCard(c)) c.poison = 0; /* Structures are immune (2026-10-15) */ if(c.poison>0) poisoned.push({pl,card:c}); }));
     // Curses tick alongside poison: every unit standing on a cursed cell takes the cell's total.
     const cursed = [];
@@ -7760,9 +7797,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return false;
   }
   // ==== [SK2 END] ====
+  // Bleed's fade (EN3, 2026-10-23, owner 19:27 #5: "They should take the damage first."; was each round's START since 2026-10-18, so a
+  // 3-stack bled 2 then 1, never 3). At the END of each round a Bleeding unit loses 1 stack if it started the round Bleeding or bled during
+  // it. A stack that lands after the unit's last action this round waits for the next round's end, so it is bled in full first: Bleed 3
+  // deals 3, 2, 1 on three rounds' actions. A unit that can't act (Waiting) still loses 1 a round from its second round on. Festering
+  // holds it, as before. The 'bleedFade' event (the grey 🩸 drop, package BL) is unchanged; it now plays after the round's swings.
+  function bleedFadeAtEnd(players, sideOf, events){
+    if(statusDecayHeld()) return;
+    [players[1], players[2]].filter(Boolean).filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{
+      if(!c || c.gap || !(c.hp > 0) || !(c.bleed > 0)) return;
+      if(c._bleedFrom !== combatNo && c._bledOn !== combatNo) return; // it landed after this round's bleeding: next round's end
+      c.bleed -= 1; if(c.ichorBleed > c.bleed) c.ichorBleed = c.bleed;
+      if(recordEvents && events) events.push({type:'bleedFade', side:sideOf(pl.id), defId:c.defId, uid:c.uid, left:c.bleed, atEnd:true}); }));
+  }
   function endOfRoundUpkeep(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     sk1PunishTick(players, sideOf, stats, events); // Punish N (2026-10-19, package SK1, flagged): the round's hitters pay first
+    bleedFadeAtEnd(players, sideOf, events); // EN3 (2026-10-23): Bleed loses its stack after the round's bleeding, not before
     // 2026-10-19 (package TS): in a raid (RESERVE_ACTS) the middle and back rows go through this upkeep too (Shell, Crit, Frenzy, and
     // every status counter: a Frozen or Asleep back-row unit used to stay so for good). Their Wait is not ticked here: a middle /
     // back-row unit counts its Wait down on its action (rowSwing in resolveCombat), as since 2026-10-18. No Explode or On Ready there.
@@ -9078,12 +9129,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
                 return;
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
-              const c2GuardianRedirect = c2.uid !== c2raw.uid;
+              const c2GuardianRedirect = c2.uid !== c2raw.uid; const c2Hop = lastGuardHop; // EN3: the Guardian it hopped through
               const r3 = damageCard(c2, rowHalf(strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol)), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
-              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
+              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, guardChain: c2Hop != null ? [c2Hop] : undefined /* EN3 */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -9128,6 +9179,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const atExposed = !!(target && target.kind === 'card' && target.card && target.card.exposed > 0);
       const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = !atExposed && sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
       const blindNow = (!atExposed && a.att.blind>0 && !keenSense && !trueStrikes(a.att) && rnd() < 0.5) || nightMiss; // + True Strike (2026-10-18)
+      let boomMiss = !!blindNow; // EN3 (2026-10-23): a Boomerang swing that misses (Blind, the dark, a dodge) still throws (below)
       // Each extra hit rolls its own miss (2026-10-15): the hits beside the target, and its lashes and prongs, don't share the main swing's.
       const extraHitBlind = card=>{ if(!card || card.exposed > 0 || trueStrikes(a.att)) return false; // + True Strike (2026-10-18) const ks = !!(attDef.effects && attDef.effects.keenSense) && !effectsOf(card).flying; if(ks) return false;
         if(a.att.blind > 0) return rnd() < 0.5; const sm = sightMiss(a.att, otherId(a.enemyId)); return sm > 0 && (sm >= 1 || rnd() < sm); };
@@ -9141,12 +9193,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // unaffected by a dodged primary hit.
       if(target.kind==='card' && !combatHitLands(a.att, target.card, true)){
         if(recordEvents && events) events.push(rowEv(fkTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid})));
+        boomMiss = true;
       } else if(target.kind==='card'){
         // Guardian: an adjacent protector (left / right, or in front / behind on the raid board since 2026-10-22, GD) takes the hit
         // instead, if alive. Sweep/Swipe continuation still uses target.col (the ORIGINAL
         // target's position), so protection redirects damage without warping geometry.
         const defCard = redirectToGuardian(players[a.enemyId], target.card);
-        const guardianRedirect = defCard.uid !== target.card.uid;
+        const guardianRedirect = defCard.uid !== target.card.uid; const guardHop = lastGuardHop; // EN3 (2026-10-23): the first Guardian, when a second one took it from it
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
         const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col); // + a middle / back-row swing, on the row it aims at (2026-10-19, RR)
@@ -9157,7 +9210,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
+        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, guardChain: guardHop != null ? [guardHop] : undefined /* EN3: the Guardian it hopped through (the board walks both) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -9427,10 +9480,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           forkStrike(c, false, prongSpec.kind, ln); swingLanded = true;
         });
       }
-      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // + a middle / back-row thrower: b.row (2026-10-19, RR) // thrown: it flies on even if the thrower falls
+      // EN3 (2026-10-23, owner 19:27 #7: "Even if the boomerang-er would miss, they should still throw the boomerang."): a missed swing
+      // (Blind, the dark, Evasive or another dodge) throws too (was: no throw on a Blind / dark miss, and no throw look on any miss). It
+      // flies at the unit (or bramble) it aimed at and comes back next round as any throw does (boomerangReturnPass). The miss's own event
+      // is followed by a 'boomerangThrow' {miss:true} so the board plays the throw.
+      if(isBoomerangDef(attDef) && !a.att._boomerangReturning){ // + a middle / back-row thrower: b.row (2026-10-19, RR) // thrown: it flies on even if the thrower falls
         const pl = players[a.attId]; if(!Array.isArray(pl.boomerangs)) pl.boomerangs = [];
-        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null, row: rowSwing || undefined});
+        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null, row: rowSwing || undefined, missed: boomMiss || undefined});
         a.att.boomerangOut = true;
+        if(boomMiss && recordEvents && events) events.push({type:'boomerangThrow', miss:true, side:mySide, uid:a.att.uid, defId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : undefined, castle: target && target.kind === 'hq' ? true : undefined});
       }
       a.att.inspired = 0; // Inspiring's bonus is spent on this swing
       sk2AfterSwing(players, sideOf, a, stats, events); // Package SK2 (2026-10-19): Pickpocket, Sabotage, Arson on what the swing hit

@@ -3558,7 +3558,6 @@
  "takes no damage of any kind{v1}.": "no recibe daño de ningún tipo{v1}.",
  "takes that much more damage from every hit.": "recibe esa cantidad de daño más de cada golpe.",
  "Takes the hits": "Recibe los golpes",
- "Takes the plain attacks aimed at its adjacent allies.": "Recibe los ataques normales dirigidos a sus aliados adyacentes.",
  "takes {v1} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.": "recibe {v1} de daño en el mantenimiento y luego pierde 1 acumulación. Las curaciones no le afectan; Sanar sí.",
  "takes {v1} damage every round. It never wears off and can’t be cured.": "recibe {v1} de daño cada ronda. Nunca se pasa y no se puede curar.",
  "Takes {v1} extra turn{s} when it arrives.": "Juega {v1} turno{s} extra al llegar.",
@@ -5058,5 +5057,9 @@
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} de Ataque por cada aliado que sea {v2}. Las Estructuras no cuentan.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Botas hasta el muslo de piel de salamandra y brea. Métete y conserva los dedos.",
  "One claw for waving, one for winning. This one only grew the second.": "Una pinza para saludar, otra para ganar. Este solo dejó crecer la segunda.",
- "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Una película verde sobre el agua quieta. Dale sol y un día húmedo, y al anochecer ya son dos."
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Una película verde sobre el agua quieta. Dale sol y un día húmedo, y al anochecer ya son dos.",
+ "Forty winters patching the dam. The bramble is just a dam that argues back.": "Cuarenta inviernos remendando la presa. La zarza es solo una presa que replica.",
+ "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.": "Vive en el foso, duerme en el foso y muerde a quien intente cruzar el foso.",
+ "It curls up in the roots until nobody can tell which spines are whose.": "Se enrosca entre las raíces hasta que nadie sabe de quién es cada púa.",
+ "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.": "Mastica corteza en placas y las pega a la zarza. Nadie lo pidió. A nadie le importa."
 }

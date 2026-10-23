@@ -32,8 +32,9 @@ ok(!/☠ cured/i.test(fxc), 'no "☠ cured" chip text left in FX.C');
 ok(/if\(S\.label\) chip\(tl, mk, \.12, t, S\.label, S\.chip\);/.test(fxc), 'statusEnd skips the chip when a status has no label');
 ok(/if\(ev\.status === 'poison'\) break;\n\s+if\(e && STATUS_END\[ev\.status\]\) M\.statusEnd/.test(fxc), "FX.C's onEvent leaves Poison's end to FX.D's look");
 { const h0 = app.indexOf('// Poison tick (item #1, 2026-09-16): a bubbling sound'), h = app.slice(h0, app.indexOf("if(ev.type==='bleedTick'){", h0));
-  ok(/if\(ev\.decay && el && fxAtLeast\('low'\) && !reducedMotion\(\)\) try\{ if\(window\.FX && FX\.D && FX\.D\.poisonDrop\) FX\.D\.poisonDrop\(el\); \}catch\(e\)\{\}/.test(h), 'poisonTick: ev.decay drops a grey counter (FX.D.poisonDrop)');
-  ok(h.indexOf('FX.D.poisonDrop(el)') < h.indexOf('updateCardStatusDisplay(ev.uid)'), 'the drop is measured before the badge is redrawn');
+  // EN3 (2026-10-23, owner 19:27 #5): the drop and the badge's -1 wait EN3_STACK_DROP_MS after the tick's damage (the card is looked up again then)
+  ok(/if\(ev\.decay\)\{ const u = ev\.uid; setTimeout\(\(\)=>\{ const el2 = boardCardEl\(u\);\s*if\(el2 && fxAtLeast\('low'\) && !reducedMotion\(\)\) try\{ if\(window\.FX && FX\.D && FX\.D\.poisonDrop\) FX\.D\.poisonDrop\(el2\); \}catch\(e\)\{\}/.test(h), 'poisonTick: ev.decay drops a grey counter (FX.D.poisonDrop), after the damage');
+  ok(h.indexOf('FX.D.poisonDrop(el2)') > 0 && h.indexOf('FX.D.poisonDrop(el2)') < h.indexOf('updateCardStatusDisplay(u)'), 'the drop is measured before the badge is redrawn');
   ok(!/cured/i.test(h.replace(/\/\/[^\n]*/g, '')), 'the poisonTick handler never says cured (comments aside)'); }
 ok(/case 'cure': snd\('cleanseTone'\); fl\(el, `💊 Cured \$\{ev\.amount\}`/.test(app), 'a real Cure still floats "💊 Cured N"');
 ok(/M\.syncStatusLooks\(el, statusStates\(c, uid, env\), env\);/.test(fxd) && /if\(c\) M\.syncStatusLooks\(el, statusStates\(c, uid, env\), env\);/.test(fxd), 'both hooks pass env to syncStatusLooks');

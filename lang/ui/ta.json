@@ -2577,12 +2577,15 @@
  "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": "நகங்களால் பனியில் ஒரு சுவாசத் துளையைச் சுரண்டி, குளிர்காலம் முழுவதும் அதைத் திறந்தே வைத்திருக்கும்.",
  "Its bill is longer than its body. It bows first, then asks who would like to try it.": "அதன் அலகு உடலை விட நீளமானது. முதலில் வணங்கும்; பிறகு யார் முயன்று பார்க்க விரும்புகிறார் என்று கேட்கும்.",
  "Blinding": "குருடாக்கல்",
- "Takes the plain attacks aimed at its adjacent allies.": "அடுத்துள்ள கூட்டாளிகளை நோக்கிய சாதாரணத் தாக்குதல்களை ஏற்கும்.",
  "{v1} foil per card.": "ஒரு அட்டைக்கு {v1} மினுமினுப்பு.",
  "Every cave has one chest too heavy to open. Grab it and it grabs back.": "ஒவ்வொரு குகையிலும் திறக்க முடியாத அளவு கனமான ஒரு பெட்டி உண்டு. அதைப் பிடித்தால், அது உங்களைப் பிடிக்கும்.",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2} ஆக உள்ள ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "சாலமாண்டர் தோலும் தாரும் கொண்ட தொடை உயரக் காலணிகள். இறங்கி நட, விரல்கள் பத்திரம்.",
  "One claw for waving, one for winning. This one only grew the second.": "ஒரு கொடுக்கு கையசைக்க, ஒன்று வெல்ல. இது இரண்டாவதை மட்டுமே வளர்த்தது.",
- "A green film on still water. Give it sun and a wet day, and by evening there are two.": "அசையாத நீரின் மேல் ஒரு பச்சைப் படலம். வெயிலும் ஈரமான நாளும் கொடுத்தால், மாலைக்குள் இரண்டாகிவிடும்."
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "அசையாத நீரின் மேல் ஒரு பச்சைப் படலம். வெயிலும் ஈரமான நாளும் கொடுத்தால், மாலைக்குள் இரண்டாகிவிடும்.",
+ "Forty winters patching the dam. The bramble is just a dam that argues back.": "நாற்பது குளிர்காலம் அணையை ஒட்டியது. முட்புதர் எதிர்த்துப் பேசும் ஒரு அணை, அவ்வளவுதான்.",
+ "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.": "அகழியில் வாழ்கிறது, அகழியில் உறங்குகிறது, அகழியைக் கடக்க முயலும் எதையும் கடிக்கிறது.",
+ "It curls up in the roots until nobody can tell which spines are whose.": "எந்த முள் யாருடையது என்று யாருக்கும் தெரியாதவரை வேர்களுக்குள் சுருண்டு கொள்கிறது.",
+ "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.": "பட்டையை மென்று தகடுகளாக்கி முட்புதரில் ஒட்டுகிறது. யாரும் கேட்கவில்லை. யாரும் கவலைப்படவில்லை."
 }

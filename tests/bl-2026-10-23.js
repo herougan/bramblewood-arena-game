@@ -142,7 +142,8 @@ const tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8'); ok(
 const TXm = require(path.join(ROOT, 'bramblewood-texts.js'));
 const keys = ['ui.bl-head', 'ui.bl-cond-kill', 'ui.bl-short', 'ui.bl-short-lumber', 'ui.bl-desc', 'ui.bl-desc-lumber', 'ui.bl-codex', 'ui.bl-is-copy', 'ui.bl-bloomed', 'ui.bl-log', 'ui.bl-log-lumber'];
 ok(keys.every(k=> TXm.TEXT[k]), '13. the Bloom texts are TX keys');
-ok(/−1 stack each round start, bled or not/.test(TXm.TEXT['ui.st-bleed']) && /At the start of each round the stack drops by 1, whether it bled or not; Cleanse removes it/.test(TXm.TEXT['coach.bleeding-this-card-takes-damage-every']) && /−1 stack each round start, bled or not/.test(TXm.TEXT['ui.ls-bleed']), '13. Bleed\'s fade rule said plainly (each round\'s start, whether it bled or not; Cleanse, not heals)');
+// EN3 (2026-10-23, owner 19:27 #5): the fade moved to the round's end, after it bled (tests/en3-2026-10-23.js)
+ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']) && /At the end of each round the stack drops by 1, after it has bled; Cleanse removes it/.test(TXm.TEXT['coach.bleeding-this-card-takes-damage-every']) && /then −1 stack at the round's end/.test(TXm.TEXT['ui.ls-bleed']), '13. Bleed\'s fade rule said plainly (each round\'s end, after it bled; Cleanse, not heals)');
 ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')), cp = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'cards', code + '.json'), 'utf8'));
   ok(keys.concat(['ui.st-bleed', 'ui.ls-bleed', 'coach.bleeding-this-card-takes-damage-every']).every(k=> p[TXm.TEXT[k]] || p[TXm.TEXT[k].replace(/^🌸 /, '')] /* a leading emoji is peeled before the lookup */) && p['Sunny'] && cp['Pond Algae'], `13. lang ${code}: the BL texts and the Pond Algae`); });
 

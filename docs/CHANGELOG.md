@@ -4,6 +4,42 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-10-23 (package SKD: design restrictions in the skirmish tuning guide)
 - **The hub's Design tab now lists the rules we set ourselves** (owner 21:07). `docs/skirmish-tuning-guide.md` has a new section near the top, "Design restrictions we set ourselves": 11 groups (deck shape, leaders, rarity by map, enemy levels, brambles, field effects, rewards, theme, road structure, win-rate bands, CPU), each rule with its decision id or owner note and, where code enforces it, the constant. A last list names where dated docs and code disagree. No code or card changed.
+## 2026-10-23 (package EN3: Bleed bleeds first, a Boomerang thrown on a miss, a Guardian for a Guardian, Rampart and Bramble Armor, Bleed / Poison and Bulwark re-priced)
+- **Bleed and Poison: the damage first, then the stack (19:27 #5):** Bleed lost its stack at each round's START, before the unit acted, so Bleed 3
+  dealt 2 + 1. It now fades at the round's END (`bleedFadeAtEnd`), for a unit that started the round Bleeding or bled in it: Bleed 3 deals 3, 2, 1. A stack
+  that lands after the unit's last action waits a round; a Waiting unit still loses 1 a round; Festering holds it. BL's grey 🩸 drop is kept (it plays at
+  the round's end). Poison's engine tick was already the whole stack then -1; the board now drops the badge and the grey ☠−1 about half a second after
+  the damage float (it showed both at once). Texts (`ui.st-bleed`, `ui.ls-bleed`, the Bleeding tip) say "then −1 stack at the round's end". Call EN3-2.
+- **Boomerang throws on a miss (#7):** a Blind or dark miss and a dodge throw too (a Blind / dark miss used not to throw at all, and no miss showed the
+  throw); the boomerang flies just past its target and comes back next round as built in EN2. New event `boomerangThrow {miss}`.
+- **A Guardian for a Guardian (#8), no guard line (#19):** a Guardian adjacent to the Guardian that stepped in takes the swing in its place (one hop;
+  call EN3-3); the hit carries `guardChain`; on the board both step in ("🦺 Covered!"). The dashed line from the attacker to the Guardian is gone
+  (FX.A.guardPull swapped in arena_app.js; its shield still pops in).
+- **Guardian and the bramble (#2):** unchanged (Guardian guards adjacent allies, never the bramble); its texts now say so. Call EN3-1 (default No).
+- **Two new bramble skills (#3; names: call EN3-4):** 🚧 **Rampart** takes ceil(half) of each unit-dealt hit on its bramble (5: 3 and 2), the one
+  nearest the attacker's column when there are several; the field's own bramble damage isn't shared; a gold streak runs from the bramble to it.
+  🌿🛡️ **Bramble Armor**: the bramble takes 1 less a hit, after Rampart; several still 1 (call EN3-5); a shield ting on the bramble. Supreme crushes
+  both. In the card editor, the skill lists, the log and the Codex; texts in 12 packs. Measured with `tools/skill_test_robust.js --mono --multi`
+  (3000 games a setup, `docs/balance/en3-skill-test-2026-10-23.md`): Rampart worth 0.44 (-0.13 with companions), priced 0.5; Bramble Armor 1.15
+  (1.06), priced 1.1 (the owner's 20:44 logic, 1 Health a round for Bramble Armor, agrees). Rampart is on **Riverworks Bastion** (0/32 -> 0/30 by formula).
+- **Four new cards (owner 20:44: "implement them in new cards"):** 🦫 **Dam-Keeper Beaver** (common, W1, Rampart) 2/11, 🐢 **Moat Snapper** (uncommon, W2,
+  Rampart, Armor 1) 4/14, 🦔 **Briarback Hedgehog** (common, W1, Bramble Armor) 2/11, 🪲 **Barkplate Beetle** (uncommon, W2, Bramble Armor, Thorns 1) 4/14;
+  fitted by formula (`tools/en3_new_cards_2026_10_23.js`), awaitingSource (proposed Pack 1 / Pack 2: call EN3-8), emoji placeholders, NightCafe prompts in
+  `docs/art/new-cards-2026-10-21-briefs.md`, names and flavour in 12 packs.
+- **Prices (#6, #9):** the Bleed / Poison family up to the next tenth, +0.1 where already on one: Poison and Bleed 2.5 -> 2.6, Gash 1.5 -> 1.6,
+  Venomous / Poison Bolt / Poison Gas 3 -> 3.1, Rabid and Venom Master 5 -> 5.1, Proliferate 6 -> 6.1, Perforate 3.5 -> 3.6, the Poison / Bleed actions
+  1.3 -> 1.4 and 0.9 -> 1.0 (Toxin, Detonate, Hunter, Poison Tick left: no wearing stack). Bulwark 6 -> 9. `bramblewood-budget.js` has no skill weights.
+  Re-fit (`tools/en3_refit_2026_10_23.js`, `docs/balance/en3-refit-2026-10-23.json`): 66 cards' S moved; 3 band cards had room and went up
+  (Ironmaw Warwolf 6/6 -> 7/7, Fire Ant Raft 2/7 -> 2/8, Whip Spider 3/7 -> 3/8); 13 that would drop are held at their stats (call EN3-6, as BF11-1);
+  Poison Dart Frog has no legal line (merged into `human-pass-1-flagged-2026-10-21.json`).
+- **Shore Up (#4):** not built; three proposals with price estimates in call EN3-7.
+- Card matrix: against a golden regenerated on batch-1023e's engine, 1433 diffs (1345 duels, 70 squads, 18 matches), 137 winner changes, 0 failures;
+  1309 of them have Bleed in play (the fade moved), the rest the re-fits and Bulwark. The stale golden reads 53872 (53566 before EN3).
+- Files: engine `bleedFadeAtEnd`, `redirectToGuardian` (one hop, `lastGuardHop`), `rampartShare` / `brambleArmorCut` in `damageHQ`, the Boomerang throw on
+  a miss; `arena_app.js` EN3 block (`en3Vfx`, `en3GuardChain`, `en3BoomMissThrow`, `en3RampartVfx`, `en3BrambleArmorVfx`, `en3PatchGuardPull`), the
+  poisonTick replay, the editor rows; styles in `arena_template.html`; TX keys `ui.skn-rampart` ... `ui.en3-float-*`; `tools/i18n_2026_10_23_en3.py`,
+  `tools/en3_skill_costs_2026_10_23.py`; tests `tests/en3-2026-10-23.js`, `tests/e2e/en3_2026_10_23.py` (screens `docs/screens/EN3/`); `bl`, `en2` and
+  `poison-fx` follow the new texts and the poisonTick code. Decisions EN3-1 .. EN3-8.
 
 ## 2026-10-23 (package BL: Bloom rebuilt, Nectar Vintner's Heal, default values, Bleed's fade)
 - **Bloom – {conditions} (11:23, 17:34 #3 "Bloom hasn't changed"):** a new skill (`effects.bloomCopy`). Once, the first round its conditions hold at

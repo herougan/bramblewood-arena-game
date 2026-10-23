@@ -1023,7 +1023,7 @@ const PASSIVE_DEFS = [
   // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
-  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.`} /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
+  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian next to it steps in for it in turn. Taunt is different: it makes the enemies facing it aim at it.`} /* EN3 (2026-10-23, owner 19:27 #2 / #8): not the bramble (call EN3-1); a Guardian guarding a Guardian (one hop, call EN3-3) */ /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
@@ -1697,6 +1697,13 @@ Object.assign(SKILL_ICON, {formation:'🔗', isolation:'🏝️', anchor:'⚓', 
 // canonical/skill-costs.json (an estimate); no card has it yet. An old key is migrated (enMigrateCard).
 PASSIVE_DEFS.push({key:'spellward', category:'passive', label:TX('ui.skn-spellward'), kind:'boolean', desc:()=> TX('ui.sk-spellward'), codexNote:TX('ui.sk-spellward-codex')});
 Object.assign(SKILL_ICON, {spellward:'🪬'});
+// ==== Package EN3 (2026-10-23, owner 19:27 #3: "New Skill: ____ - takes half of bramble damage ... New Skill: ____ - lowers damage taken by
+// Bramble by 1. (Bramble armour basically)"; names proposed, call EN3-4): Rampart 🚧 and Bramble Armor 🌿🛡️. Rules: bramblewood-engine.js
+// rampartShare / brambleArmorCut (damageHQ). Priced in canonical/skill-costs.json. Guardian guards adjacent allies, never the bramble (#2,
+// call EN3-1): these two are the bramble's.
+PASSIVE_DEFS.push({key:'rampart', category:'passive', label:TX('ui.skn-rampart'), kind:'boolean', desc:()=> TX('ui.sk-rampart'), codexNote:TX('ui.sk-rampart-codex')},
+  {key:'brambleArmor', category:'passive', label:TX('ui.skn-bramble-armor'), kind:'boolean', desc:()=> TX('ui.sk-bramble-armor'), codexNote:TX('ui.sk-bramble-armor-codex')});
+Object.assign(SKILL_ICON, {rampart:'🚧', brambleArmor:'🌿🛡️'});
 // ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
 // action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
 // the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
@@ -2674,7 +2681,7 @@ const SKILL_TEXT = {
   fullMoon: v=> `The first full moon over it: +${numOr(v, 3)}/+${numOr(v, 3)} for the rest of the fight.`, fullMoonGrant: v=> `The first full moon over it: ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
-  guardian: ()=> `Takes the plain attacks aimed at its adjacent allies.`, // 2026-10-22 (package GD): + in front / behind; (GD2, GD-3): swings only
+  guardian: ()=> `Takes the plain attacks aimed at its adjacent allies (not the bramble).`, // EN3 (2026-10-23, owner 19:27 #2) // 2026-10-22 (package GD): + in front / behind; (GD2, GD-3): swings only
   quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
@@ -5945,6 +5952,7 @@ Object.assign(SKILL_TEXT, {
   demolisher: v=> TX('ui.sk-siege', {n: numOr(v, SK1_DEFAULTS.siege)}),
   formation: v=> TX('ui.sk-formation', {n: numOr(v, SK1_DEFAULTS.formation)}),
   spellward: ()=> TX('ui.sk-spellward'), // GD2 (2026-10-22); Spellward since 2026-10-23 (EN)
+  rampart: ()=> TX('ui.sk-rampart'), brambleArmor: ()=> TX('ui.sk-bramble-armor'), // EN3 (2026-10-23)
   isolation: ()=> TX('ui.sk-isolation'),
   anchor: ()=> TX('ui.sk-anchor'),
   spoils: v=> TX('ui.sk-spoils', {n: numOr(v, SK1_DEFAULTS.spoils)}),
@@ -42006,6 +42014,10 @@ function logText(ev){
     case 'bloodTithe': return {cls:'bleed', text: ev.castle ? `⛧ Blood Tithe for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.` : `⛧ Blood Tithe for ${nm(ev.defId)}: ${nm(ev.targetDefId)} takes ${ev.dmg != null ? ev.dmg : ev.amount}.`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${dnLogNum(ev.dmg, ev)} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${dnLogNum(ev.dmg, ev)} 🩸 bleed damage. 🩸`};
+    // EN3 (2026-10-23): Rampart's share of a bramble hit, Bramble Armor's 1, and a Boomerang thrown on a miss
+    case 'rampart': return {cls:'', text:TX('ui.en3-log-rampart', {name: nm(ev.defId), n: ev.dmg != null ? ev.dmg : ev.share, b: ev.bramble != null ? ev.bramble : 0})};
+    case 'brambleArmor': return {cls:'', text:TX('ui.en3-log-bramble-armor', {name: nm(ev.defId)})};
+    case 'boomerangThrow': return {cls:'quick', text:TX('ui.en3-log-boom-miss', {name: nm(ev.defId)})};
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
     case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
@@ -45209,17 +45221,79 @@ function en2Vfx(ev){
   // 17:34 #22: the swing's live Attack (Swarm, Tide, Rage ... as the engine used it) on the attacker's plate at the moment it swings
   if((ev.type === 'hit' || ev.type === 'hitHQ') && ev.liveAtk != null && ev.attUid != null && !ev.ranged){ const el = boardCardEl(ev.attUid), d = defs[ev.attDefId] || {};
     const a = el && el.querySelector('.stats .atk'); if(a && !(Number(d.attack) <= 0 && ev.liveAtk <= 0)) a.innerHTML = atkLabelHTML(ev.liveAtk, d.attack, d); }
-  if(ev.type === 'hit' && ev.guardianRedirect && ev.guardedUid != null) en2GuardStepIn(ev);
+  if(ev.type === 'hit' && ev.guardianRedirect && ev.guardedUid != null){ if(!(Array.isArray(ev.guardChain) && ev.guardChain.length && en3GuardChain(ev))) en2GuardStepIn(ev); } // + EN3: a Guardian guarding the Guardian
   if(ev.type === 'boomerangReturn' && ev.thrownBy == null){ if(matchState) matchState.boomerangBack = null; en2BoomOrphanFlight(ev); }
   if(ev.type === 'play' && !ev.reserve && ev.uid != null && ((defs[ev.defId] || {}).fx || {}).play === 'crabClack'){ const u = ev.uid; setTimeout(()=> en2CrabClack(boardCardEl(u)), 620); }
   if(ev.type === 'hit' && !ev.ranged && ((defs[ev.attDefId] || {}).fx || {}).attack === 'crabClaw'){ const am = animMs(); en2CrabClawHit(boardCardEl(ev.attUid), boardCardEl(ev.targetUid), am.windup + am.impactPad); }
 }
 function en2PatchInFlight(){ try{ if(window.SkillFX && SkillFX.boomerangInFlight && !SkillFX.__en2){ const inF = SkillFX.boomerangInFlight; SkillFX.boomerangInFlight = key=> (key != null && (EN2_BOOM_FLIGHTS[String(key)] || 0) > Date.now()) || inF(key); SkillFX.__en2 = true; } }catch(e){} } // EN2: FX.A skips its catch / whiff looks while an EN2 flight is home-bound
+// ---- EN3 (2026-10-23, owner 19:27 #3, #7, #8, #19): the Guardian's step-in without a line, a Guardian guarding a Guardian, a Boomerang
+// thrown on a miss, Rampart's share and Bramble Armor's ting. Looks only; the engine decides.
+// #19 ("When a guardian intercepts, dont draw that line"): FX.A.guardPull drew a dashed line from the attacker, curving past the unit it
+// aimed at, to the Guardian. The step-in (en2GuardStepIn) already shows who it guarded, so the guard keeps only its shield, popping in on
+// the side the blow comes from, and a ring. (bramblewood-fx-a.js is outside EN3's files, so the function is swapped here, once.)
+function en3PatchGuardPull(){ try{ if(!(window.FX && FX.A && FX.A.guardPull) || FX.A.__en3) return; FX.A.__en3 = true;
+  FX.A.guardPull = function(att, guard){ if(!guard || !hasGsap() || reducedMotion()) return Promise.resolve();
+    const b = en2Ctr(guard), a = att ? en2Ctr(att) : {x:b.x, y:b.y - 140}, fy = b.y + (a.y < b.y ? -1 : 1) * b.h * .42, sh = en2Layer('🛡️', 'en3-guard-shield');
+    gsap.set(sh, {x:b.x - b.w*.9, y:fy, xPercent:-50, yPercent:-50, opacity:0, rotation:-30});
+    gsap.timeline({onComplete:()=> sh.remove()}).to(sh, {x:b.x, opacity:1, rotation:0, duration:.22, ease:'back.out(1.8)'}).add(()=> en2Ring(b.x, fy, 64)).to(sh, {opacity:0, y:'+=6', duration:.3, delay:.35});
+    return new Promise(r=> setTimeout(r, 900)); }; }catch(e){} }
+// #8: a Guardian guarding the Guardian that stepped in (the hit's guardChain): the first one steps in front of the unit aimed at, the
+// second steps in front of the first and takes the blow (en2GuardStepIn twice: the first with no damage, so it slides home).
+function en3GuardChain(ev){
+  const g1 = ev.guardChain[0]; if(g1 == null) return false;
+  en2GuardStepIn({targetUid: g1, guardedUid: ev.guardedUid, attUid: ev.attUid, dmg: 0});
+  en2GuardStepIn(Object.assign({}, ev, {guardedUid: g1}));
+  const e1 = boardCardEl(g1); if(e1) setTimeout(()=>{ try{ floatText(e1, TX('ui.en3-float-guard-hop'), 'buff'); }catch(e){} }, Math.max(0, animMs().windup - 80));
+  return true;
+}
+// #7: a Boomerang that misses (Blind, the dark, a dodge) still throws: the 'boomerangThrow' {miss} after the miss. It flies just past
+// the unit (or bramble) it aimed at, at a point beside it (a stand-in tile, so nothing is knocked), and on off the field as any throw does;
+// next round's return is the usual one (it retraces this line by the thrower's key).
+function en3BoomMissThrow(ev){
+  const a = boardCardEl(ev.uid), t = ev.castle ? hqTileEl(ev.targetSide) : (ev.targetUid != null ? boardCardEl(ev.targetUid) : null); if(!a || !t) return;
+  const r = t.getBoundingClientRect(), side = (a.getBoundingClientRect().left + a.getBoundingClientRect().width/2) > (r.left + r.width/2) ? -1 : 1;
+  const ghost = document.createElement('div'); ghost.className = 'en3-boom-miss-at'; ghost.setAttribute('aria-hidden', 'true');
+  ghost.style.cssText = `position:fixed; left:${r.left + side * r.width * .62}px; top:${r.top + r.height * .1}px; width:${r.width}px; height:${r.height * .8}px; pointer-events:none; opacity:0;`;
+  document.body.appendChild(ghost); setTimeout(()=> ghost.remove(), 2600);
+  const key = String(ev.uid), go = ()=>{ try{ SoundKit.boomerangWhirr(); }catch(e){}
+    if(ev.castle) en2BoomCastleThrow(a, ghost, {flight:420, key});
+    else if(window.SkillFX && (SkillFX.boomerangThrow || SkillFX.boomerang)) (SkillFX.boomerangThrow || SkillFX.boomerang)(a, ghost, {flight:420, key}); };
+  setTimeout(go, Math.max(0, animMs().windup - 60));
+  setTimeout(()=>{ try{ floatText(a, TX('ui.en3-float-boom-miss'), 'quick'); }catch(e){} }, Math.max(0, animMs().windup + 120));
+}
+// #3 Rampart: a streak of light from the bramble to the unit taking its share as the blow lands, the unit flinches and the share floats on
+// it. Bramble Armor: a small shield ting on the bramble ("🛡️ −1").
+function en3RampartVfx(ev){
+  const am = animMs(), at = am.windup + am.impactPad, rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+  if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.dmg||0));
+  setTimeout(()=>{ const u = boardCardEl(ev.uid), c = hqTileEl(ev.side); if(!u) return;
+    if(c && hasGsap() && !reducedMotion() && fxAtLeast('low')){ const p = en2Ctr(c), q = en2Ctr(u), L = Math.hypot(q.x - p.x, q.y - p.y), ang = Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI;
+      const st = en2Layer('', 'en3-rampart-streak'); gsap.set(st, {x:p.x, y:p.y, width:L, height:6, rotation:ang, transformOrigin:'0% 50%', yPercent:-50, scaleX:0, opacity:1});
+      gsap.timeline({onComplete:()=> st.remove()}).to(st, {scaleX:1, duration:.16, ease:'power2.out'}).to(st, {opacity:0, duration:.28}); }
+    try{ shakeEl(u); tintPulse(u, 'en3-rampart-pulse'); dnFloat(u, ev.dmg||0, {mods: ev.mods}); floatText(u, '🚧', 'buff'); }catch(e){}
+    try{ updateCardHpDisplay(ev.uid); }catch(e){} }, at);
+}
+function en3BrambleArmorVfx(ev){
+  const am = animMs(); setTimeout(()=>{ const c = hqTileEl(ev.side); if(!c) return; try{ floatText(c, TX('ui.en3-float-bramble-armor'), 'buff'); }catch(e){}
+    try{ SoundKit.markArmor ? SoundKit.markArmor() : SoundKit.clang(); }catch(e){}
+    if(hasGsap() && !reducedMotion() && fxAtLeast('low')){ const b = en2Ctr(c), s = en2Layer('🛡️', 'en3-bramble-ting'); gsap.set(s, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+      gsap.timeline({onComplete:()=> s.remove()}).to(s, {scale:1.15, opacity:1, duration:.14, ease:'back.out(2.4)'}).add(()=> en2Ring(b.x, b.y, 70)).to(s, {scale:1, duration:.08}).to(s, {opacity:0, y:'-=10', duration:.32, delay:.22}); } }, am.windup + am.impactPad + 40);
+}
+// #5: a Poison tick's stack drops this long after its damage lands (the poisonTick replay)
+function EN3_STACK_DROP_MS(){ return Math.max(160, Math.round(520 / ((matchState && matchState.speedMult) || 1))); }
+function en3Vfx(ev){
+  if(!ev || !matchState) return; en3PatchGuardPull();
+  if(ev.type === 'boomerangThrow' && ev.miss) en3BoomMissThrow(ev);
+  if(ev.type === 'rampart') en3RampartVfx(ev);
+  if(ev.type === 'brambleArmor') en3BrambleArmorVfx(ev);
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
   try{ en2Vfx(ev); }catch(e){} // EN2 (2026-10-23)
+  try{ en3Vfx(ev); }catch(e){} // EN3 (2026-10-23)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
@@ -45949,10 +46023,16 @@ function renderVfxForEvent(ev){
     // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!' It just drops a greyed out toxin
     // counter from your toxin context label"): the 1-a-round wear-down drops a grey "☠−1" off the Poison badge (FX.D.poisonDrop, measured
     // before the badge is redrawn below). The last counter's look fades off with its bubbles in FX.D.syncStatusLooks.
-    if(ev.decay && el && fxAtLeast('low') && !reducedMotion()) try{ if(window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el); }catch(e){}
+    // EN3 (2026-10-23, owner 19:27 #5: "before they TAKE the bleed or poison damage, they -1. They should take the damage first."): the
+    // engine always dealt the tick on the whole stack, then took 1 off; the board showed the badge drop (and the grey ☠−1) at the same
+    // instant as the damage, so it read as -1 first. Now the damage lands first and the stack drops EN3_STACK_DROP_MS later.
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
-    if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.poison = Math.max(0, (rc.poison||0) - 1); }
-    updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+    if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
+    updateCardHpDisplay(ev.uid);
+    if(ev.decay){ const u = ev.uid; setTimeout(()=>{ const el2 = boardCardEl(u);
+      if(el2 && fxAtLeast('low') && !reducedMotion()) try{ if(window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el2); }catch(e){}
+      const rc2 = matchState && matchState.replayCards && matchState.replayCards[u]; if(rc2) rc2.poison = Math.max(0, (rc2.poison||0) - 1);
+      try{ updateCardStatusDisplay(u); }catch(e){} }, EN3_STACK_DROP_MS()); }
   }
   // Bleed tick (item #9 gap found in the same pass): previously had NO front-end handler
   // at all — a bled card ticking damage on its own attack/defend/skill use showed nothing.

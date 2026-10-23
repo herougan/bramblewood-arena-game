@@ -188,8 +188,8 @@ function sameEverywhere(r, label){
     {
       const hubM = C.createHub({defer: fn=> setImmediate(fn)}), clockM = fakeClock(), mkM = (id, host, seed)=> C.createSession({transport: hubM.connect(id), me: {peerId: id, name: id, deck: deckFrom(seed), castleHp: 20}, host, code: 'MIGRAT', deps, clock: clockM, seed: 52, autoPlan: 500});
       const hm = mkM('h', true, 4), am = mkM('a', false, 5); await settle(hubM); const bm = mkM('b', false, 6); await settle(hubM);
-      am.setReady(true); bm.setReady(true); await settle(hubM); hm.start(); await settle(hubM); await elapse(clockM, hubM, 1600);
-      ok(hm.history.length >= 2 && hm.room.status === 'playing', `migration: the room is mid-floor (${hm.history.length} rounds)`);
+      am.setReady(true); bm.setReady(true); await settle(hubM); hm.start(); await settle(hubM); await elapse(clockM, hubM, 1200); // EN3 (2026-10-23): 1200 ms (was 1600): after EN3's Bleed fix the seeded party won floor 0 by round 10, before the drop
+      ok(hm.history.length >= 2 && hm.room.status === 'playing' && !(hm.run && hm.run.fl && hm.run.fl.over), `migration: the room is mid-floor (${hm.history.length} rounds)`);
       const heir = [am, bm].find(p=> p.mySeat() === 'C'), other = [am, bm].find(p=> p !== heir);
       hubM.drop('h'); await elapse(clockM, hubM, C.DROP_MS + 2 * C.PING_MS);
       ok(heir.isHost && heir.room.hostId === heir.me.peerId, 'migration: C (next in seat order) became the host');

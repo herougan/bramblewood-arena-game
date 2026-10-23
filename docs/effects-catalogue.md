@@ -958,9 +958,47 @@ The rules as built (engine: `bloomCopyPass`, `bloomCond`, `applyPoisonTicks`):
   for an old custom card); Nectar Vintner has Healing 1, the Open Meadow grants Healing 1, Pollen Drift adds to Healing.
 - **Bleed's fade**: a Bleeding unit takes its stack as damage each time it attacks or uses a skill (not when it is hit, not while it
   Waits); the stack drops by 1 at the start of every round, whether it bled that round or not (Festering holds it). Cleanse removes it;
-  heals don't. As a stack fades (`bleedFade`), one greyed-out 🩸 drops from the card's Bleed pip to the ground under the card.
+  heals don't. *(Superseded by EN3, below: the stack now drops at the round's END, after it bled.)* As a stack fades (`bleedFade`), one greyed-out 🩸 drops from the card's Bleed pip to the ground under the card.
 
 | Look | Function | What you see | Event |
 |---|---|---|---|
 | 🌸 Bloom | `bloomCopyVfx(srcUid, copyUid)` (`arena_app.js`) | Ten petals (spores for a fungus, a green film for an alga) drift from the unit into the free slot; the copy opens out of a soft ring of light, a circle widening from its centre, with a pink-green glow; "🌸 +1/+1" floats on the copy. Reduced motion: the copy fades in | `bloom`, then `spawn` with `kind: 'bloom'` |
 | 🩸 Bleed fades | `bleedFadeDropVfx(uid)` (`arena_app.js`) | One grey 🩸 falls from the Bleed pip to just below the card, bounces once and sinks away (1.1 s). Reduced motion: it fades in place | `bleedFade` |
+
+## 2026-10-23 additions (package EN3): Bleed takes its damage first, a Boomerang thrown on a miss, a Guardian for a Guardian, Rampart, Bramble Armor
+
+The rules as built (engine: `bleedFadeAtEnd`, `redirectToGuardian`, `rampartShare`, `brambleArmorCut` in `damageHQ`; owner 19:27 #2-#9, #19):
+
+- **Bleed's fade, at the round's end** (#5: "They should take the damage first"): a Bleeding unit loses 1 stack at the END of a round in
+  which it started Bleeding or bled (was: each round's start, before it acted, so Bleed 3 dealt 2 + 1). A stack that lands after the unit's
+  last action that round waits for the next round's end. Bleed 3 on a unit that acts every round: 3, 2, 1. A Waiting unit still loses 1 a
+  round from its second round on. Festering holds it. `bleedFade` carries `atEnd: true`; the grey drop (BL) plays after the round's swings.
+  Poison's tick was already damage then -1 in the engine; on the board the badge drop and the grey ☠−1 now come `EN3_STACK_DROP_MS` (about
+  half a second) after the damage float, so the damage reads first. (Call EN3-2.)
+- **Boomerang on a miss** (#7): a Blind or dark miss and a dodge (Evasive and the rest) throw too; the boomerang flies just past the unit or
+  bramble it aimed at and comes back next round as any throw does. Event `boomerangThrow {miss: true, uid, targetUid | castle}` after the
+  miss's own event; a landed throw has no extra event (its hit plays the throw).
+- **A Guardian for a Guardian** (#8): when a Guardian steps in, a Guardian adjacent to it (not the unit first aimed at) steps in for it
+  and takes the swing; one hop at most (call EN3-3). The hit names the unit first aimed at (`guardedUid`) and the Guardian it hopped
+  through (`guardChain: [uid]`). **No guard line** (#19): the dashed line from the attacker to the Guardian (`FX.A.guardPull`) is gone; the
+  shield still pops in on the side the blow comes from (`en3PatchGuardPull` swaps it once in `arena_app.js`).
+- **Guardian and the bramble** (#2): Guardian never guards the bramble (as before; now said in its text; call EN3-1).
+- **Rampart 🚧** (`effects.rampart`, #3; price 0.5): every hit on its own bramble that reaches `damageHQ` (a unit's swing, shot, skill,
+  Pierce, an Overwhelm spill, a boomerang) is split: one Rampart unit takes ceil(half) (5: 3 and 2; 1: 1 and 0), the bramble the rest.
+  The field's own bramble damage (Ley Lines, Ash Rain) doesn't come through `damageHQ` and isn't split. Which unit: the live one (any row)
+  nearest the attacker's column; a tie or no attacker, the first listed. Its share is plain damage (`applyDamage`: its Shield and Shell
+  soak first; no Armor, Thorns or On Attacked). Supreme crushes it. Event `rampart {uid, dmg, share, bramble}`, pushed inside `damageHQ`,
+  so before the hit's own `hitHQ` (which keeps the bramble's part).
+- **Bramble Armor 🌿🛡️** (`effects.brambleArmor`, #3; price 1.1): the bramble's part of each such hit is 1 less, after Rampart; two or
+  more still 1 (call EN3-5). Supreme crushes it. Event `brambleArmor {uid, blocked: 1}`.
+- Cards: Rampart on Riverworks Bastion (0/32 -> 0/30) and the new Dam-Keeper Beaver and Moat Snapper; Bramble Armor on the new Briarback Hedgehog
+  and Barkplate Beetle (all four awaiting their source, call EN3-8).
+
+| Look | Function | What you see | Event |
+|---|---|---|---|
+| 🪃 Thrown on a miss | `en3BoomMissThrow(ev)` (`arena_app.js`) | The boomerang curves out from the thrower to a point just beside its target (a stand-in tile, so nothing is knocked), flies on off the field; "🪃 Thrown!" floats on the thrower | `boomerangThrow` (`miss`) |
+| 🦺 Guardian for a Guardian | `en3GuardChain(ev)` (`arena_app.js`) | The first Guardian slides in front of the ally, the second in front of the first ("🦺 Covered!") and takes the blow; both slide home (`en2GuardStepIn` twice) | `hit` with `guardChain` |
+| 🛡 Guard, no line | `FX.A.guardPull` (swapped by `en3PatchGuardPull`) | Only the shield pops in on the side the blow comes from, with a ring; no dashed line | `hit` with `guardianRedirect` |
+| 🚧 Rampart | `en3RampartVfx(ev)` (`arena_app.js`) | As the blow lands, a gold streak runs from the bramble to the Rampart unit; the unit flinches, its share floats on it with 🚧 | `rampart` |
+| 🌿🛡️ Bramble Armor | `en3BrambleArmorVfx(ev)` (`arena_app.js`) | A small 🛡️ pops on the bramble with a ring and an armour ting; "🛡️ −1" floats | `brambleArmor` |
+| ☠ Poison's stack | the `poisonTick` replay (`arena_app.js`) | The damage floats first; the badge drops and the grey ☠−1 falls about half a second later | `poisonTick` |

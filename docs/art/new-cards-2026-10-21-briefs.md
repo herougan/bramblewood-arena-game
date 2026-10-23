@@ -67,3 +67,52 @@ A sturdy fiddler crab standing tall on wet mangrove mud, one enormous bright ora
 ```
 
 Names offered: **Ironclaw Fiddler** (used), Onegrip, Big-Claw Bosun.
+
+## Package EN3 (2026-10-23: the bramble's guardians, owner 20:44: "implement them in new cards")
+
+Two cards with **Rampart** (takes half of each hit on its bramble) and two with **Bramble Armor** (the bramble takes 1 less a hit). All four
+wait for their source (call EN3-8). Each shows the creature *at* the bramble, so the card reads as "it protects the castle".
+
+#### Dam-Keeper Beaver (`dam-keeper-beaver`), placeholder 🦫
+
+Common, Rampart; proposed for Pack 1. An old beaver who patches the bramble the way it patches a dam. One bright accent: fresh pale-gold
+timber against the dark wet logs.
+
+```
+An old grey-muzzled beaver standing firm in front of a thick bramble hedge wall, broad flat tail braced on the ground, pressing a fresh pale-gold log into a gap in the woven branches, a stubby pencil behind one ear, mud on its paws, a river dam of dark wet logs and a calm pond with reeds in the background, warm evening light, detailed pixel art, full background
+```
+
+Names offered: **Dam-Keeper Beaver** (used), Old Patchwork, Lodge Mason.
+
+#### Moat Snapper (`moat-snapper`), placeholder 🐢
+
+Uncommon, Rampart, Armor 1; proposed for Pack 2. A snapping turtle that lives in the moat round the bramble and takes the blows meant for it.
+One bright accent: a moss-green shell edge lit by the low sun.
+
+```
+A big snapping turtle half out of a murky moat at the foot of a bramble hedge wall, its ridged dark shell rimmed with bright moss-green algae, heavy hooked beak open in a warning hiss, water dripping from its claws, lily pads and cattails in the moat, the thorny bramble wall and a small wooden footbridge in the background, low golden sun, detailed pixel art, full background
+```
+
+Names offered: **Moat Snapper** (used), Ditchjaw, Moatwarden.
+
+#### Briarback Hedgehog (`briarback-hedgehog`), placeholder 🦔
+
+Common, Bramble Armor; proposed for Pack 1. A hedgehog curled into the bramble's roots, its spines and the thorns one tangle. One bright
+accent: a few red rose hips caught in its spines.
+
+```
+A round hedgehog curled snugly among the roots of a bramble hedge, its brown spines woven together with the thorny stems so you cannot tell which is which, a few bright red rose hips caught in its spines, one sleepy eye peeking out, ferns and fallen autumn leaves on the ground, a soft misty woodland in the background, dappled morning light, detailed pixel art, full background
+```
+
+Names offered: **Briarback Hedgehog** (used), Thornknot, Rootcurl.
+
+#### Barkplate Beetle (`barkplate-beetle`), placeholder 🪲
+
+Uncommon, Bramble Armor, Thorns 1; proposed for Pack 2. A beetle that chews bark into plates and fixes them onto the bramble like shingles.
+One bright accent: an amber-gold gleam on its wing cases.
+
+```
+A sturdy bark beetle clinging to a bramble hedge wall, pressing a curved plate of chewed tree bark onto the branches like a roof shingle, more neat bark plates already overlapping behind it, glossy dark-brown wing cases with an amber-gold gleam, tiny feelers, tall redwood trunks and soft green forest light in the background, detailed pixel art, full background
+```
+
+Names offered: **Barkplate Beetle** (used), Shinglebug, Bark Mason.

@@ -3558,7 +3558,6 @@
  "takes no damage of any kind{v1}.": "ne subit aucun dégât{v1}.",
  "takes that much more damage from every hit.": "subit d’autant plus de dégâts à chaque coup.",
  "Takes the hits": "Encaisse les coups",
- "Takes the plain attacks aimed at its adjacent allies.": "Encaisse les attaques simples visant ses alliés adjacents.",
  "takes {v1} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.": "subit {v1} dégâts à l’entretien, puis perd 1 cumul. Les soins n’y font rien ; la Guérison, si.",
  "takes {v1} damage every round. It never wears off and can’t be cured.": "subit {v1} dégâts à chaque tour. Ça ne s’estompe jamais et ne se soigne pas.",
  "Takes {v1} extra turn{s} when it arrives.": "Joue {v1} tour{s} en plus à son arrivée.",
@@ -5058,5 +5057,9 @@
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Attaque pour chaque allié qui est {v2}. Les Structures ne comptent pas.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Des cuissardes en peau de salamandre et en poix. Entre dans la lave, garde tes orteils.",
  "One claw for waving, one for winning. This one only grew the second.": "Une pince pour saluer, une pour gagner. Celui-ci n'a fait pousser que la seconde.",
- "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Une pellicule verte sur l'eau dormante. Donnez-lui du soleil et un jour humide, et le soir elles sont deux."
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Une pellicule verte sur l'eau dormante. Donnez-lui du soleil et un jour humide, et le soir elles sont deux.",
+ "Forty winters patching the dam. The bramble is just a dam that argues back.": "Quarante hivers à colmater le barrage. La ronce n'est qu'un barrage qui répond.",
+ "It lives in the moat, sleeps in the moat, and bites whatever tries to cross the moat.": "Elle vit dans les douves, dort dans les douves et mord tout ce qui tente de traverser les douves.",
+ "It curls up in the roots until nobody can tell which spines are whose.": "Il se roule dans les racines jusqu'à ce que personne ne sache à qui sont les épines.",
+ "It chews bark into plates and glues them to the bramble. Nobody asked. Nobody minds.": "Il mâche l'écorce en plaques et les colle sur la ronce. Personne n'a demandé. Personne ne s'en plaint."
 }
