@@ -14680,6 +14680,63 @@ function switchActiveDeck(id){
   deckGlobalsLoading = true;
   try{ saveMyDeck(); saveMyCharacter(); saveMyLeader(); } finally { deckGlobalsLoading = false; }
 }
+// DECK_SLOTS (2026-10-23, package UI4, owner 01:03 #5: "I want a max deck of 1 at first. Only through upgrading (reasonably low
+// resources) the max number of decks to be in the camp and tavern pages. (4 onwards requires slightly more resources and specialised
+// resources from Map 15/21/27/33... onwards)"): a new player has 1 deck slot; each further slot is bought, in order, from the Camp
+// (under My Decks) or the Tavern's ⬆️ Upgrades tab. Slots 2–3: Magic Dust and Maple Leaves. Slot 4 on: more of both plus a Materia
+// that map's road pays, and the map cleared first:
+//   slot 2  ✨150 + 🍁150                       slot 5  ✨900 + 🍁450 + 1 Ember Core (Map 21 cleared; the Map 20 raid / world bosses)
+//   slot 3  ✨300 + 🍁250                       slot 6  ✨1200 + 🍁600 + 2 Ember Cores (Map 27 cleared)
+//   slot 4  ✨600 + 🍁350 + 1 River Pearl        slot 7  ✨1500 + 🍁750 + 1 Strange Materia + 1 Ember Core (Map 33 cleared)
+//           + 1 Tempering Stone (Map 15 cleared; its boss pays both)
+// Existing saves keep every deck they have: the first time this runs, the slots owned are set to the decks the save already holds
+// (at least 1), and a deck that arrives later from the cloud raises them the same way, so no one loses a deck. The cap only stops a
+// NEW deck (➕ New, Import a code); deleting a deck frees its slot.
+const DECK_SLOTS_KEY = 'bramblewood_deck_slots_v1';
+const DECK_SLOT_STEPS = [
+  {slot:2, cost:{dust:150, gold:150}},
+  {slot:3, cost:{dust:300, gold:250}},
+  {slot:4, map:15, cost:{dust:600, gold:350, mats:{'river-pearl':1, 'tempering-stone':1}}},
+  {slot:5, map:21, cost:{dust:900, gold:450, mats:{'ember-core':1}}},
+  {slot:6, map:27, cost:{dust:1200, gold:600, mats:{'ember-core':2}}},
+  {slot:7, map:33, cost:{dust:1500, gold:750, mats:{'strange-materia':1, 'ember-core':1}}},
+];
+function deckSlotsOwned(){
+  let n = 0; try{ n = parseInt(localStorage.getItem(DECK_SLOTS_KEY) || '0', 10) || 0; }catch(e){}
+  const have = (typeof myDecks !== 'undefined' && myDecks) ? myDecks.length : 1;
+  if(n < Math.max(1, have)){ n = Math.max(1, have); try{ localStorage.setItem(DECK_SLOTS_KEY, String(n)); }catch(e){} } // grandfathered
+  return n;
+}
+function deckSlotFree(){ return adminModeEnabled || myDecks.length < deckSlotsOwned(); }
+function nextDeckSlotStep(){ const n = deckSlotsOwned(); return DECK_SLOT_STEPS.find(s=> s.slot === n + 1) || null; }
+function deckSlotMapGate(step){ if(!step || !step.map || adminModeEnabled) return null; const m = mainConquestMaps().find(x=> mapNumberOf(x.id) === step.map); return m && conquestMapCleared(m.id) ? null : step.map; }
+function deckSlotAffordable(step){ const c = step && step.cost; return !!c && (myCurrencies.dust||0) >= (c.dust||0) && (myCurrencies.gold||0) >= (c.gold||0) && Object.entries(c.mats||{}).every(([id, n])=> ownedCount(id) >= n); }
+function buyDeckSlot(){
+  const st = nextDeckSlotStep(); if(!st) return 'full'; if(deckSlotMapGate(st)) return 'locked'; if(!deckSlotAffordable(st)) return 'cost';
+  const c = st.cost; myCurrencies.dust -= (c.dust||0); myCurrencies.gold -= (c.gold||0); saveCurrencies(); Object.entries(c.mats||{}).forEach(([id, n])=> spendCopies(id, n));
+  try{ localStorage.setItem(DECK_SLOTS_KEY, String(st.slot)); }catch(e){} return 'ok';
+}
+function deckSlotPanelHTML(where){
+  const n = deckSlotsOwned(), used = myDecks.length, st = nextDeckSlotStep(), gate = deckSlotMapGate(st);
+  const pips = Array.from({length: Math.max(n, DECK_SLOT_STEPS[DECK_SLOT_STEPS.length - 1].slot)}, (_, i)=> `<i class="${i < used ? 'is-used' : i < n ? 'on' : ''}"></i>`).join('');
+  return `<section class="deck-slot-panel ${where === 'camp' ? 'is-camp' : ''}" id="${where === 'camp' ? 'campDeckSlots' : 'tavernDeckSlots'}" aria-label="${escapeAttr(TX('ui.ui4-slots-title'))}">
+    <h3>🗂 ${escapeHtml(TX('ui.ui4-slots-title'))} <b>${used}/${n}</b></h3>
+    <div class="wp-stam-row"><span class="wp-stam-pips ds-slot-pips" aria-label="${escapeAttr(TX('ui.ui4-slots-aria', {used, n}))}">${pips}</span>
+    ${!st ? `<small>${escapeHtml(TX('ui.ui4-slots-full'))}</small>` : gate ? `<small>${escapeHtml(TX('ui.ui4-slots-gate', {slot: st.slot, map: gate}))}</small>`
+      : `<button type="button" class="btn small primary" data-deck-slot-buy="${where}" ${deckSlotAffordable(st) ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.ui4-slots-buy', {slot: st.slot}))}${btnCostHTML(st.cost)}</button>`}</div></section>`;
+}
+function wireDeckSlots(root, rerender){ (root || document).querySelectorAll('[data-deck-slot-buy]').forEach(b=> b.onclick = ()=>{ const r = buyDeckSlot();
+  if(r === 'ok'){ showToast(TX('toast.ui4-slot-bought', {n: deckSlotsOwned()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} rerender && rerender(); }
+  else { denyShake(b); showToast(r === 'locked' ? TX('toast.ui4-slot-locked') : TX('toast.ui4-slot-cost'), 'warn'); } }); }
+// The New / Import buttons when every slot holds a deck: a toast that says where to get one, and the Camp's slot row lights up.
+function deckSlotDenied(btn){
+  if(deckSlotFree()) return false;
+  try{ if(btn) denyShake(btn); }catch(e){}
+  { const n = deckSlotsOwned(); showToast(n === 1 ? TX('toast.ui4-slot-needed-1') : TX('toast.ui4-slot-needed', {n}), 'warn'); }
+  const p = document.getElementById('campDeckSlots'); if(p){ p.classList.remove('is-ping'); void p.offsetWidth; p.classList.add('is-ping'); try{ p.scrollIntoView({block:'nearest', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(e){} }
+  return true;
+}
+// DECK_SLOTS:END
 function createNewDeck(){
   const n = myDecks.length + 1;
   const d = {id: genDeckId(), name: `Deck ${n}`, characterId: 'castle', leaderId: null, counts: {}};
@@ -14936,7 +14993,8 @@ function deckMediumPreviewHTML(d){
       <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Bramble') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
       <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" title="${escapeAttr(leader ? 'Leader: ' + leader.name : 'No leader')}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
     </div>
-    <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b>${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}</div>
+    ${d.id===mainDeckId ? `<div class="dmp-main-ribbon"><b>★ ${escapeHtml(TX('ui.ui4-main-deck'))}</b><small>${escapeHtml(TX('ui.ui4-main-deck-sub'))}</small></div>` : '' /* 2026-10-23 (package UI4) */}
+    <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b></div>
     <div class="dmp-foot">
       <span class="dmp-meta"><span class="dmp-rating" title="Battle rating: how strong this deck plays overall">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span><span class="dmp-tot" title="Total Attack of the cards in this deck">🗡️ ${tot.atk}</span><span class="dmp-tot" title="Total Health of the cards in this deck">❤️ ${tot.hp}</span>${total===DECK_SIZE ? '' : `<span class="short" title="A deck needs exactly ${DECK_SIZE} cards to play">🃏 ${total}/${DECK_SIZE}</span>`}${sig.archetypes.slice(0, 2).map(a=> `<span>${escapeHtml(a)}</span>`).join('')}</span>
     </div>
@@ -18409,16 +18467,23 @@ function nodeEnemyLevelOverride(node){
 // the node as the road reads it: itself when its map is known (a map's node, or the skirmish editor's draft through NODE_MAP_HINT, so an
 // unsaved Enemy level shows at once), else the map's node with its key (a copy such as the tutorial's summary)
 function edRealNode(node){ if(!node) return node; try{ if(mapOfNode(node)) return node; }catch(e){} try{ return CONQUEST_MAPS.flatMap(m=> m.nodes || []).find(n=> n.key === node.key) || node; }catch(e){ return node; } }
+// 2026-10-23 (package UI4, EB's note: "Map fight panels' deck tiles show printed stats (2/8) while the fight plays the enemy's level (2/7)"):
+// the level is now the one levelledEnemyDeck gives the fight: on the early road (EB's Level 0 copies on Maps 0 and 1, earlyEnemyLevel) it
+// may sit below a card's own level, as it does in the fight; elsewhere never below it; a fight with no level at all shows the card as printed.
 function edShownLevel(node, id){
   const b = CARD_DEFS_BASELINE[id] || (typeof liveCards !== 'undefined' && liveCards[id]) || getCardDefs()[id], base = b ? cardBaseLevel(b) : 0;
-  const set = node && node.cardLevels && node.cardLevels[id]; if(set != null && set !== '' && isFinite(Number(set))) return Math.max(0, Math.round(Number(set)));
-  let road = 0; try{ road = roadEnemyLevel(edRealNode(node)); }catch(e){}
-  return Math.max(base, road || base);
+  const rn = edRealNode(node);
+  let early = null; try{ early = nodeEnemyLevelOverride(rn) == null ? earlyEnemyLevel(rn) : null; }catch(e){}
+  const fit = L=> early != null ? Math.max(0, L) : Math.max(base, L);
+  const set = node && node.cardLevels && node.cardLevels[id]; if(set != null && set !== '' && isFinite(Number(set))) return fit(Math.round(Number(set)));
+  let road = 0; try{ road = roadEnemyLevelExact(rn) || 0; }catch(e){}
+  if(!road && early == null) return base;
+  return fit(Math.round(road));
 }
 function defAtShownLevel(id, L){
   const shown = getCardDefs()[id], b0 = (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id];
   if(!b0 || !shown || L == null || !isFinite(Number(L))) return shown;
-  const base = cardBaseLevel(b0), lvl = Math.max(base, Math.min(20, Math.round(Number(L))));
+  const base = cardBaseLevel(b0), lvl = Math.max(0, Math.min(20, Math.round(Number(L)))); // 2026-10-23 (package UI4): may sit below the card's own level (edShownLevel decides, as the fight does)
   const out = Object.assign({}, b0, {art: b0.art || (CARD_DEFS_BASELINE[id] || {}).art || shown.art, level: lvl, baseLevel: base, locked: false, edShownLevel: lvl});
   if(b0.attack == null && b0.health == null) return out;
   const st = statsBeyondLevel(b0, lvl); out.attack = st.attack; out.health = st.health;
@@ -23809,12 +23874,112 @@ function noteGainedForSwap(id, source){
 // Deck swap (2026-10-13, user: "Later suggestions are more natural, like swapping: preview some deck cards fading off left and
 // right, focus on one weaker 1-attack or 1-defence card, a swap animation and a Swap button, with text recommending the switch").
 // A teaching card (Maps 0–1) must be swapped in; a later one can be turned down, and after three no-thanks they stop.
+// MULTI_SWAP (2026-10-23, package UI4, owner 01:03 #3: "After 0-2 I open a faction pack. They should let me swap all 3 cards for 3
+// cards. (May need different UI - medium pass)"): a faction pack's cards come as one swap window with a row per card: the deck card it
+// would replace on the left (‹ › or a tap on it picks another), the pack card on the right, and a tick per row. "Swap N" trades every
+// ticked row at once; the cards cross over like the one-card swap. A pack card only gets a row when a deck card may go for it
+// (swapOutAllowed: weak starter / baby / tutorial cards, the copy and rank caps) and it is stronger (swapStrength, the budget score);
+// two rows never take the same deck copy. One row only: the one-card window. The first faction pack's window (0-2) always shows; later
+// ones count as one of the SWAP_OFFERS_MAX offers.
+const MULTI_SWAP_FIRST_FLAG = 'swap:multiFirst';
+function queueMultiDeckSwap(ids, source){
+  try{
+    ids = (ids || []).filter(Boolean); if(ids.length < 2 || SWAP_SKIP_SOURCES.has(source) || adminModeEnabled) return;
+    pendingDeckSwap = (pendingDeckSwap || []).filter(x=> typeof x === 'object' && (x.forced || x.multi) || !ids.includes(typeof x === 'string' ? x : x.id));
+    pendingDeckSwap.push({multi: ids.slice(), id: ids[0], source});
+  }catch(e){}
+}
+function multiSwapCandidates(inId, deckLeft, defs){
+  const dIn = defs[inId]; if(!swapEligibleDef(dIn)) return [];
+  const pw = k=> (defs[k].attack||0) + (defs[k].health||0);
+  return Object.keys(deckLeft).filter(k=> deckLeft[k] > 0 && defs[k] && swapEligibleDef(defs[k]) && swapOutAllowed(k, inId) && (swapClearlyBetter(dIn, defs[k], {anyCost:true}) || swapStrength(dIn) > swapStrength(defs[k])))
+    .sort((a, b)=> (swapClearlyBetter(dIn, defs[b]) ? 1 : 0) - (swapClearlyBetter(dIn, defs[a]) ? 1 : 0) || pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
+}
+function openMultiDeckSwap(item){
+  const defs = getCardDefs();
+  if(!swapTutorialDone()) return false;
+  const first = !loadDialogueFlags()[MULTI_SWAP_FIRST_FLAG];
+  if(!first && swapOffersShown() >= SWAP_OFFERS_MAX) return false;
+  // rows: each pack card with the deck cards it could replace; a deck copy is only offered to one row
+  const deckLeft = Object.assign({}, myDeckCounts), inLeft = {};
+  const rows = [];
+  (item.multi || []).forEach(inId=>{ const d = defs[inId]; if(!d || ((d.cost||0) > 0 && !pitchingUnlocked())) return;
+    const room = deckCopyLimit(inId, defs) - (myDeckCounts[inId]||0) - (inLeft[inId]||0); if(room <= 0) return;
+    const cands = multiSwapCandidates(inId, deckLeft, defs); if(!cands.length) return;
+    rows.push({inId, cands, sel: cands[0], on: true}); deckLeft[cands[0]]--; inLeft[inId] = (inLeft[inId]||0) + 1; });
+  if(!rows.length) return false;
+  if(rows.length === 1){ // one row: the one-card window, first in line
+    if(!dominatedDeckCard(rows[0].inId)) return false;
+    pendingDeckSwap = pendingDeckSwap || []; pendingDeckSwap.unshift({id: rows[0].inId, natural:true}); return false; }
+  if(first) setDialogueFlag(MULTI_SWAP_FIRST_FLAG, true); else noteSwapOfferShown();
+  const used = except=>{ const u = {}; rows.forEach((r, i)=>{ if(i !== except) u[r.sel] = (u[r.sel]||0) + 1; }); return u; };
+  const free = i=>{ const u = used(i); return rows[i].cands.filter(k=> (myDeckCounts[k]||0) - (u[k]||0) > 0); };
+  const rowHTML = (r, i)=>{ const opts = free(i), many = opts.length > 1, dIn = defs[r.inId], dOut = defs[r.sel];
+    return `<div class="ds3-row ${r.on ? 'is-on' : 'is-off'}" data-row="${i}">
+      <div class="ds3-side is-out">${many ? `<button type="button" class="ds2-nav" data-rnav="${i}" data-dir="-1" aria-label="${escapeAttr(TX('ui.ui4-swap-prev'))}">‹</button>` : ''}<button type="button" class="ds2-old ds3-card" data-rcycle="${i}" aria-label="${escapeAttr(dOut.name)}">${cardTileHTML(dOut, {inPlay:true})}</button>${many ? `<button type="button" class="ds2-nav" data-rnav="${i}" data-dir="1" aria-label="${escapeAttr(TX('ui.ui4-swap-next'))}">›</button>` : ''}</div>
+      <span class="ds3-arrow" aria-hidden="true">⇄</span>
+      <div class="ds3-side is-in"><div class="ds2-new ds3-card">${cardTileHTML(dIn, {inPlay:true})}</div></div>
+      <label class="ds3-tick"><input type="checkbox" data-rtick="${i}" ${r.on ? 'checked' : ''}><span>${escapeHtml(TX('ui.ui4-swap-tick'))}</span></label>
+      <small class="ds3-names"><span>${escapeHtml(dOut.name)}</span><span>${escapeHtml(dIn.name)}</span></small>
+    </div>`; };
+  const nOn = ()=> rows.filter(r=> r.on).length;
+  const ov = document.createElement('div'); ov.id = 'deckSwapOverlay'; ov.className = 'ds2-overlay is-multi';
+  let drawn = 0;
+  const draw = ()=>{
+    const sc = ov.querySelector('.ds3-rows'), top = sc ? sc.scrollTop : 0;
+    ov.innerHTML = `<div class="ds2 ds3" role="dialog" aria-modal="true" aria-label="${escapeAttr(TX('ui.ui4-swap-title'))}">
+      <div class="ds3-head"><span class="ds2-col-h">${escapeHtml(TX('ui.ui4-swap-your-deck'))}</span><span class="ds2-col-h">${escapeHtml(TX('ui.ui4-swap-from-pack'))}</span></div>
+      <div class="ds3-rows">${rows.map(rowHTML).join('')}</div>
+      <p class="ds2-say"><b>${escapeHtml(TX('ui.ui4-swap-say', {n: rows.length}))}</b></p>
+      <div class="ds2-actions"><button type="button" class="btn ghost small" id="dsKeep">${escapeHtml(TX('ui.ui4-swap-keep'))}</button><button type="button" class="btn primary big" id="dsSwap" ${nOn() ? '' : 'disabled'}>🔁 ${escapeHtml(TX('ui.ui4-swap-n', {n: nOn()}))}</button></div></div>`;
+    if(drawn++) ov.querySelector('.ds2').style.animation = 'none';
+    const sc2 = ov.querySelector('.ds3-rows'); if(sc2) sc2.scrollTop = top;
+    ov.querySelector('#dsKeep').onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
+    const sw = ov.querySelector('#dsSwap'); sw.onclick = ()=> doSwap(sw); };
+  const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, reducedMotion() ? 60 : 240); };
+  const cycle = (i, dir)=>{ if(ov.classList.contains('is-done')) return; const opts = free(i); if(opts.length < 2) return; const r = rows[i]; r.sel = opts[(opts.indexOf(r.sel) + dir + opts.length) % opts.length]; draw(); try{ SoundKit.quick && SoundKit.quick(); }catch(e){} };
+  ov.addEventListener('click', e=>{ const nv = e.target.closest('[data-rnav]'); if(nv){ cycle(+nv.dataset.rnav, +nv.dataset.dir); return; }
+    const cy = e.target.closest('[data-rcycle]'); if(cy) cycle(+cy.dataset.rcycle, 1); });
+  ov.addEventListener('change', e=>{ const t = e.target.closest('[data-rtick]'); if(!t || ov.classList.contains('is-done')) return; rows[+t.dataset.rtick].on = t.checked; draw(); });
+  ov.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); const k = ov.querySelector('#dsKeep'); if(k && !k.disabled) k.click(); } });
+  const doSwap = sw=>{ if(ov.classList.contains('is-done')) return; ov.classList.add('is-done'); sw.disabled = true; ov.querySelector('#dsKeep').disabled = true;
+    const done = [];
+    rows.forEach((r, i)=>{ if(!r.on || !(myDeckCounts[r.sel] > 0) || !swapOutAllowed(r.sel, r.inId)) return;
+      myDeckCounts[r.sel] -= 1; if(myDeckCounts[r.sel] <= 0) delete myDeckCounts[r.sel]; myDeckCounts[r.inId] = (myDeckCounts[r.inId]||0) + 1; done.push(i); });
+    saveMyDeck();
+    try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
+    ov.querySelectorAll('.ds3-row').forEach(el=> el.classList.add(done.includes(+el.dataset.row) ? 'is-swapped' : 'is-skipped'));
+    ds2CrossSwap(ov, done.map(i=>{ const el = ov.querySelector(`.ds3-row[data-row="${i}"]`); return {a: el && el.querySelector('.ds2-old'), b: el && el.querySelector('.ds2-new')}; }));
+    { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">' + escapeHtml(TX('ui.ui4-swap-nice')) + '</b>'; }
+    const rm = reducedMotion();
+    setTimeout(()=> ov.classList.add('is-happy'), rm ? 0 : 520);
+    setTimeout(()=>{ try{ if(done.length) showToast(TX('toast.ui4-swapped-n', {n: done.length}), 'ok'); }catch(e){} close(); }, rm ? 200 : 1200); };
+  document.body.appendChild(ov); draw();
+  setTimeout(()=>{ try{ ov.querySelector('#dsSwap').focus(); }catch(e){} }, 60);
+  return true;
+}
+// MULTI_SWAP:END
+// 2026-10-23 (package UI4): the swap's crossing motion, shared by the one-card and the several-card swap windows. Each pair is
+// {a: the deck card's element (left), b: the offered card's element (right)}; b travels left over the top, a travels right below.
+function ds2CrossSwap(root, pairs){
+  try{
+    if(!pairs){ const a = root.querySelector('.ds2-old'), b = root.querySelector('.ds2-new'); pairs = a && b ? [{a, b}] : []; }
+    pairs.forEach(({a, b})=>{ if(!a || !b) return; const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      const dx = (rb.left + rb.width / 2) - (ra.left + ra.width / 2), dy = (rb.top + rb.height / 2) - (ra.top + ra.height / 2);
+      if(reducedMotion() || !hasGsap()){ a.style.transform = `translate(${dx}px, ${dy}px) scale(.88)`; b.style.transform = `translate(${-dx}px, ${-dy}px) scale(1.08)`; return; }
+      a.style.transition = b.style.transition = 'none'; b.style.zIndex = '3'; b.style.position = 'relative';
+      gsap.timeline().to(b, {duration:.62, ease:'power2.inOut', keyframes:[{x:-dx / 2, y:-dy / 2 - 34, scale:1.14}, {x:-dx, y:-dy, scale:1.08}]}, 0)
+        .to(a, {duration:.62, ease:'power2.inOut', keyframes:[{x:dx / 2, y:dy / 2 + 22, scale:.9}, {x:dx, y:dy, scale:.88}]}, 0);
+    });
+  }catch(e){}
+}
 function maybeOfferDeckSwap(){
   if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending) return;
   // not over a pack being opened, nor with one still waiting to be shown (2026-10-15); the opener calls back when it closes
   // 2026-10-18: ...nor while a won pack is floating up into the opener (packRevealBusy covers the queue, the flight and the opener)
   if(packRevealBusy()) return;
   const defs = getCardDefs(); let item = pendingDeckSwap.shift(); if(typeof item === 'string') item = {id:item};
+  if(item.multi){ if(!openMultiDeckSwap(item)) setTimeout(maybeOfferDeckSwap, 50); return; } // 2026-10-23 (package UI4): a faction pack's several swaps at once
   const id = item.id, d = defs[id]; if(!d){ maybeOfferDeckSwap(); return; }
   if((myDeckCounts[id]||0) > 0 && (myDeckCounts[id]||0) >= Math.min(maxCopiesForRarity(d.rarity), copiesOwned(id))){ setTimeout(maybeOfferDeckSwap, 50); return; }
   // 2026-10-15: a forced (teaching) swap trades out the weakest card; any other offer needs a deck card it strictly dominates,
@@ -23877,6 +24042,9 @@ function maybeOfferDeckSwap(){
     myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck();
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
     ov.querySelector('.ds2-stage').classList.add('is-swapped');
+    // 2026-10-23 (package UI4, owner: "Swapping the card should show the card going to the left and your card going to the right."):
+    // the two big cards trade places: the offered card arcs over to the deck side (left), yours dips under to the right.
+    ds2CrossSwap(ov);
     // 2026-10-14 (user: "When you click Swap, it says 'Nice!' then the window fades abit faster than now."): the line under the
     // cards turns into a "Nice!"; 2026-10-17: then the happy bounce, then the fade-and-shrink.
     { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">Nice!</b>'; }
@@ -31853,6 +32021,26 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
     extraAttrs: `data-hq="${hqSide}"`,
   });
 }
+// TOP_ROW_FIT (2026-10-23, package UI4, owner 01:57 #7: "The buttons are all screwed up. If there's no space - they collapse to icons."):
+// the fight's top-right buttons show their words while they fit; when the row would run past the screen (or into the Environment
+// cards beside it) it goes .is-compact: icons only, the same look a phone has (the words stay in each button's title and aria-label).
+function autoplayBtnInner(on){ return on ? '⏸<span class="trc-lbl"> Auto-play on</span>' : '🤖<span class="trc-lbl"> Auto-play</span>'; }
+function fitTopRowControls(){
+  try{
+    const row = document.querySelector('#view-play .top-row-controls'); if(!row) return;
+    const play = row.closest('.top-play-row') || row.parentNode;
+    row.classList.remove('is-compact');
+    const vw = document.documentElement.clientWidth || window.innerWidth;
+    const pr = play.getBoundingClientRect(), rr = row.getBoundingClientRect();
+    let prevRight = -Infinity; const stack = row.closest('.top-right-stack') || row;
+    for(let el = stack.previousElementSibling; el; el = el.previousElementSibling){ const r = el.getBoundingClientRect(); if(r.width) { prevRight = Math.max(prevRight, r.right); break; } }
+    const over = row.scrollWidth > row.clientWidth + 1 || rr.right > Math.min(vw, pr.right) + 1 || rr.left < prevRight + 4;
+    row.classList.toggle('is-compact', over);
+  }catch(e){}
+}
+window.addEventListener('resize', ()=>{ clearTimeout(fitTopRowControls._t); fitTopRowControls._t = setTimeout(fitTopRowControls, 80); });
+// TOP_ROW_FIT:END
+const BOARD_ROW_IDS = ['resEnemy2', 'resEnemy1', 'rowEnemy', 'rowMine', 'resMine1', 'resMine2']; // 2026-10-23 (package UI4): the battlefield's card rows
 function renderMatchUI(){
   try{ if(matchState && !matchState._preloaded) preloadFightAssets(matchState); }catch(e){} // 2026-10-16: the fight's assets, up front
   try{ centreFieldInFs(); }catch(e){}
@@ -31979,6 +32167,13 @@ function renderMatchUI(){
   `;
   const tkKeep = testKitCaptureForRerender(m);
   try{ repaintBoardRects = hasGsap() ? captureBoardCardRects() : null; }catch(e){ repaintBoardRects = null; } // 2026-10-15: no teleport across the repaint (renderBoard glides them)
+  // 2026-10-23 (package UI4, owner 01:09 #2: "Tokens or maybe last card played disappear on the winning screen (then appear again). I
+  // think its the redrawing issue"): root cause, from a per-card probe of the results opening: this function rebuilds the whole match
+  // screen (root.innerHTML) when m.over turns true, so every card on the board was thrown away and drawn again (7 of 7 elements new)
+  // under the results: art re-decoded, a token or a card still landing from the hand (its flight proxy, its entrance) started over.
+  // Once the match is decided nothing on the board changes any more, so the board rows (with their cards) are kept as they are and
+  // put back into the rebuilt screen; renderBoard then sees full rows with an unchanged signature and leaves them alone.
+  const keptRows = m.over ? BOARD_ROW_IDS.map(id=> document.getElementById(id)).filter(el=> el && el.__bwMatch === m && el.children.length) : [];
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -32003,7 +32198,7 @@ function renderMatchUI(){
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
-        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${adminModeEnabled && !m.fxLib && m.mode!=='sandbox' ? `<button type="button" class="btn small admin-edit-btn${m._editMode ? ' is-on' : ''}" id="adminEditModeBtn" role="switch" aria-checked="${!!m._editMode}" title="${escapeAttr(TX('ui.ui3-edit-mode-tip'))}">✏️<span class="trc-lbl"> ${escapeHtml(TX('ui.ui3-edit-mode'))}</span></button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : TX('ui.rw-autoplay-tip') /* 2026-10-22 (RW): no rank letter in words */}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
+        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now" aria-label="Auto-win">👑<span class="trc-lbl"> Auto-win</span></button>` : ''}${adminModeEnabled && !m.fxLib && m.mode!=='sandbox' ? `<button type="button" class="btn small admin-edit-btn${m._editMode ? ' is-on' : ''}" id="adminEditModeBtn" role="switch" aria-checked="${!!m._editMode}" title="${escapeAttr(TX('ui.ui3-edit-mode-tip'))}">✏️<span class="trc-lbl"> ${escapeHtml(TX('ui.ui3-edit-mode'))}</span></button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : TX('ui.rw-autoplay-tip') /* 2026-10-22 (RW): no rank letter in words */}" aria-label="${m.autoplay ? 'Auto-play on' : 'Auto-play'}">${autoplayBtnInner(m.autoplay)}</button>` : ''}
         <button class="btn small" id="quitMatchBtn" aria-label="${isAsync?'Save & Exit':'Quit'}" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':`title="${isAsync?'Save & Exit':'Quit'}"`}><span class="trc-ico" aria-hidden="true">${isAsync?'💾':'🚪'}</span><span class="trc-lbl">${isAsync?'Save & Exit':'Quit'}</span></button>
       </div>
       ${'' /* 2026-10-15 (user: "On the opposite side of the field in the same position, I should see the enemy's currencies."): the
@@ -32130,8 +32325,9 @@ function renderMatchUI(){
   document.body.classList.toggle('bw-battle-edit', !!(m._editMode && adminModeEnabled));
   if(showWinModal) lockResultButtonsUntilRecorded(m); // 2026-10-21 (package ED, owner #9): the results' buttons wait for the rewards
   { const ap = document.getElementById('autoplayBtn'); if(ap) ap.addEventListener('click', ()=>{ const m2 = matchState; if(!m2) return; m2.autoplay = !m2.autoplay;
-      ap.classList.toggle('is-on', m2.autoplay); ap.setAttribute('aria-pressed', String(m2.autoplay)); ap.textContent = m2.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'; if(m2.autoplay) autoplayStep(); }); }
+      ap.classList.toggle('is-on', m2.autoplay); ap.setAttribute('aria-pressed', String(m2.autoplay)); ap.innerHTML = autoplayBtnInner(m2.autoplay); ap.setAttribute('aria-label', m2.autoplay ? 'Auto-play on' : 'Auto-play'); fitTopRowControls(); if(m2.autoplay) autoplayStep(); }); }
   wireLeaderWidget();
+  fitTopRowControls(); // 2026-10-23 (package UI4): words while they fit, icons when they don't
   try{ castleShieldSync('A'); castleShieldSync('B'); }catch(e){}
   try{ syncNightVeil(m); }catch(e){}
   try{ syncSceneFx(document.getElementById('battlefieldEl')); }catch(e){} // 2026-10-17: the Abyss / the Arena's own layers
@@ -32370,7 +32566,9 @@ function renderMatchUI(){
       wireWinLossRewardAnim();
     }
   }
+  keptRows.forEach(old=>{ const fresh = document.getElementById(old.id); if(fresh && fresh !== old){ try{ fresh.replaceWith(old); }catch(e){} } }); // 2026-10-23 (package UI4)
   renderBoard();
+  BOARD_ROW_IDS.forEach(id=>{ const el = document.getElementById(id); if(el) el.__bwMatch = m; }); // 2026-10-23 (package UI4): which match drew these rows
   syncWindField(m); // 2026-10-15: the wind layer survives the repaint
   try{ fxHook('matchUI', m); }catch(e){} // FX batch B (2026-10-15): darkness falls / lifts, field layers, dusk, perma-tide
   try{ syncTideScene(m); }catch(e){} // the standing Tide's water (2026-10-18)
@@ -35522,6 +35720,28 @@ function drawFlipVfx(cards, deck, baseDelay){
   });
 }
 function syncLeaderAfford(){ try{ const m = matchState, el = document.getElementById('leaderWidget'); if(!m || !el || !el.classList.contains('summonable')) return; el.classList.toggle('is-unaffordable', !m.engine.canPlay(m.players[myPidInMatch(m)], m.leaderDefId, null)); }catch(e){} }
+// HAND_PREVIEW (2026-10-23, package UI4, owner 01:57 #11: "You cards in hand can show blue numbers for their simulated numbers if you WOULD
+// play them."): each hand card asks the engine what it would be on the board right now (engine.previewPlayStats: the engine's own
+// arrival, aura and count rules on a copy of the board). Where its Attack or Health differs from the number printed on the card, that
+// number turns blue and shows the would-be value; the title says both. Nothing changes where they agree, nor in the opponent's hand.
+function applyHandPreviewStats(m, me, strip){
+  try{
+    if(!m || !m.engine || !m.engine.previewPlayStats || m.over || !strip) return;
+    const pid = viewerHandPid(m), defs = getCardDefs();
+    strip.querySelectorAll('[data-handuid]').forEach(el=>{
+      const uid = Number(el.getAttribute('data-handuid')), hc = me.hand.find(h=> h.uid === uid); if(!hc) return;
+      const d = defs[hc.defId]; if(!d) return;
+      const pa = Math.max(0, (d.attack|0) - (hc.consterned|0)), ph = Math.max(1, (d.health|0) - (hc.consterned|0));
+      const pv = m.engine.previewPlayStats(m.players, pid, uid); if(!pv) return;
+      const setNum = (sel, val, printed, kind)=>{ const sp = el.querySelector('.stats ' + sel); if(!sp || val === printed) return;
+        const ic = sp.querySelector('i.sg'), icHTML = ic ? ic.outerHTML : '';
+        sp.innerHTML = `${icHTML}<span class="sim-stat ${val > printed ? 'is-up' : 'is-down'}">${val}</span>`;
+        sp.title = TX(kind === 'atk' ? 'ui.ui4-sim-atk' : 'ui.ui4-sim-hp', {n: val, printed}); el.classList.add('has-sim'); };
+      setNum('.atk', pv.atk, pa, 'atk'); setNum('.hp', pv.hp, ph, 'hp');
+    });
+  }catch(e){}
+}
+// HAND_PREVIEW:END
 function renderHand(){
   try{ setTimeout(syncLeaderAfford, 0); }catch(e){}
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
@@ -35559,6 +35779,7 @@ function renderHand(){
     return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
   }).join('');
+  applyHandPreviewStats(m, me, strip); // 2026-10-23 (package UI4): blue numbers for what a card would have if played now
   drawFlipNewHandCards(m, strip);
   if(prevHandRects.size && !reducedMotion()){
     strip.querySelectorAll('[data-handuid]').forEach(el=>{
@@ -36395,7 +36616,11 @@ function centreFieldInFs(){
     const wrap = document.getElementById('appWrap'), bf = document.getElementById('battlefieldEl');
     const fs = document.documentElement.classList.contains('is-fs');
     if(!wrap) return;
-    if(!fs || !bf || !wrap.classList.contains('in-match')){ wrap.style.removeProperty('--fs-shift'); return; }
+    // 2026-10-23 (package UI4, owner 01:57 #6: "On the browser, centre the field on the centre of the browser when in not fullscreen mode
+    // as well!"): a desktop window (wide, with a mouse) gets the same shift outside full screen; phones and tablets keep their layout.
+    const desk = !fs && window.innerWidth >= 900 && !!(window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches);
+    document.documentElement.classList.toggle('is-desk-centre', desk && !!bf && wrap.classList.contains('in-match'));
+    if(!(fs || desk) || !bf || !wrap.classList.contains('in-match')){ wrap.style.removeProperty('--fs-shift'); return; }
     const pad = parseFloat(wrap.style.getPropertyValue('--fs-shift')) || 0;
     const vh = window.innerHeight;
     const wr = wrap.getBoundingClientRect(), r = bf.getBoundingClientRect();
@@ -36405,7 +36630,7 @@ function centreFieldInFs(){
     const spare = Math.max(0, vh - contentH);
     const want = Math.round(Math.min(spare, Math.max(0, vh / 2 - centre)));
     if(Math.abs(want - pad) > 1) wrap.style.setProperty('--fs-shift', want + 'px');
-    if(contentH > vh) window.scrollTo({top: Math.max(0, wr.top + window.scrollY + centre - vh / 2), behavior: 'auto'});
+    if(fs && contentH > vh) window.scrollTo({top: Math.max(0, wr.top + window.scrollY + centre - vh / 2), behavior: 'auto'});
   });
 }
 document.addEventListener('fullscreenchange', ()=> setTimeout(centreFieldInFs, 120));
@@ -40695,13 +40920,14 @@ function rewardsPanelHTML(m){
   // 2026-10-17: everything else that was its own block (Kibble, Spare castle, Dungeon key, Found) is a chip in the Rewards block.
   const acts = [];
   if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.trains-a-level-0-card-to'))}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
-  // 2026-10-17: a field-kit item from one of the day's first 3 Conquest wins, with which of the 3 it was.
+  // 2026-10-17: a field-kit item found on the road. 2026-10-23 (package UI4, owner 01:57 #8: "Don't explain so much in SS#2. Just say what
+  // the healing draught is."): its tip is the item's own line (ITEM_DEFS desc), no rule about where items come from (that rule changed, EB).
   if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
-    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(kd.desc)}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   (m.conquestItemTokens || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(!T) return; // 2026-10-23 (package EB): a first-clear Energy capsule / Raid Ticket
     acts.push(`<span class="rw-act rw-kit rw-token" data-tip="${escapeAttr(t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : TX('results.eb-ticket-tip'))}">${T.icon} ${escapeHtml(t === 'energyCapsule' ? TX('results.eb-capsule', {n: ENERGY_CAPSULE_AMOUNT}) : _t(T.label))}</span>`); });
   if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
-    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.kit-boss-item'))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(kd.desc) /* 2026-10-23 (package UI4): what the item does */}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   { const lk = lockedCardChipsHTML(m, 'rw-act'); if(lk) acts.push(lk); } // 2026-10-22 (RW): a reward card waiting for a better win, as lock + card + the rank emblem
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
@@ -48099,9 +48325,9 @@ function openTavern(){
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; tavernTab = 'recruit'; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
   const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>
       ${facilityTabsHTML('tavern', tavernTab, [['recruit', TX('ui.tavern-tab-recruit')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
-      ${tavernTab === 'upgrades' ? `<div class="facility-upgrades" id="tavernUpgradesTab">${staminaPanelHTML('tavern')}</div>` : tavernBeerHTML() + tavernRecruitHTML()}</div>`;
+      ${tavernTab === 'upgrades' ? `<div class="facility-upgrades" id="tavernUpgradesTab">${staminaPanelHTML('tavern')}${deckSlotPanelHTML('tavern') /* 2026-10-23 (package UI4): deck slots */}</div>` : tavernBeerHTML() + tavernRecruitHTML()}</div>`;
     ov.hidden = false; ov.querySelector('#tvClose').onclick = close;
-    wireStamina(ov, draw);
+    wireStamina(ov, draw); wireDeckSlots(ov, draw);
     ov.querySelectorAll('[data-tv-recruit]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.tvRecruit, r = tavernRecruit(id);
       if(r === 'ok'){ const d = getCardDefs()[id] || {}; showToast(TX('toast.joins-you', {v1: d.name || 'A new card'}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} draw(); }
       else { denyShake(b); showToast(r === 'beer' ? TX('toast.you-need-a-beer-to-recruit') : r === 'gone' ? TX('toast.that-one-has-moved-on') : TX('toast.not-enough-to-recruit-yet'), 'warn'); } }); };
@@ -48382,7 +48608,7 @@ function renderDeckSectionInner(){
       <div id="deckBuilderBody"></div>`;
     // Clicking the deck you're already in renames it (it's obvious which deck you mean).
     root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = b.dataset.switchdeck; renderDeckSection(); }); }));
-    document.getElementById('deckNewChip').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); }));
+    document.getElementById('deckNewChip').addEventListener('click', e=>{ if(deckSlotDenied(e.currentTarget)) return; /* 2026-10-23 (package UI4): deck slots */ deckLeaveGuard(()=>{ endDeckDraft(); const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); }); });
     const mm = document.getElementById('deckMakeMainBtn');
     if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
@@ -48427,16 +48653,20 @@ function renderDeckListTab(body){
       <p class="panel-sub">Your ★ main deck is the one you play with. Decks can hold any number of cards while you build; only a ${DECK_SIZE}-card deck can be played.</p>
       <div class="deck-menu-grid ${deckListView==='medium'?'is-medium':''}" id="deckMenuGrid"></div>
       <div class="deck-menu-bottom-actions">
-        <button class="btn primary" id="newDeckBtn">➕ New Deck</button>
+        <button class="btn primary ${deckSlotFree() ? '' : 'is-slot-full'}" id="newDeckBtn" ${deckSlotFree() ? '' : 'aria-disabled="true"'}>${deckSlotFree() ? '➕' : '🔒'} New Deck</button>
         <button class="btn" id="importDeckCodeBtn">📥 Import Deck Code</button>
       </div>
+      ${deckSlotPanelHTML('camp') /* 2026-10-23 (package UI4): deck slots */}
     </div>`;
+  wireDeckSlots(body, ()=> renderDeckSection());
   const grid = document.getElementById('deckMenuGrid');
   // 2026-10-18 (audit R3-WP6): the Large/Medium buttons went on 2026-10-13; their handler (and its never-read bramblewood_deck_view key) went too.
   if(deckListView==='medium'){
-    grid.innerHTML = myDecks.map(d=> `<button type="button" class="dmp-btn" data-editdeck="${d.id}" aria-label="Edit ${escapeAttr(d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
+    // 2026-10-23 (package UI4, owner 01:03 #5: "In the camp, it's not so obvious which is your main deck."): the main deck comes first, with
+    // its ribbon and gold frame (deckMediumPreviewHTML); the others sit a little quieter
+    grid.innerHTML = myDecks.slice().sort((a, b)=> (b.id === mainDeckId) - (a.id === mainDeckId)).map(d=> `<button type="button" class="dmp-btn ${d.id === mainDeckId ? 'is-main' : 'is-other'}" data-editdeck="${d.id}" aria-label="${escapeAttr((d.id === mainDeckId ? TX('ui.ui4-main-deck') + ': ' : '') + 'Edit ' + d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
     grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
-    document.getElementById('newDeckBtn').addEventListener('click', ()=>{ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
+    document.getElementById('newDeckBtn').addEventListener('click', e=>{ if(deckSlotDenied(e.currentTarget)) return; /* 2026-10-23 (package UI4) */ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
     document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
     return;
   }
@@ -48469,7 +48699,7 @@ function renderDeckListTab(body){
     inp.addEventListener('click', e=> e.stopPropagation());
     inp.addEventListener('change', ()=>{ renameDeck(inp.getAttribute('data-deckid'), inp.value); renderDeckSection(); });
   });
-  document.getElementById('newDeckBtn').addEventListener('click', ()=>{ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
+  document.getElementById('newDeckBtn').addEventListener('click', e=>{ if(deckSlotDenied(e.currentTarget)) return; /* 2026-10-23 (package UI4) */ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
   document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
 }
 // Copies `d`'s code to the clipboard (async Clipboard API, needs a real user gesture — this is
@@ -48551,6 +48781,7 @@ function exportDeckCode(d, btnEl){
 // back via a plain-language summary rather than silently importing something subtly different
 // from what the code actually said.
 async function importDeckCodeFlow(btnEl){
+  if(deckSlotDenied(btnEl)) return; // 2026-10-23 (package UI4): an imported deck takes a deck slot too
   const raw = await bwTextDialog({title:'Import a deck', body:'Paste a Bramblewood deck code. It becomes a new deck; none of yours are changed.', placeholder:'Paste the code here', okLabel:'⬇ Import'});
   if(raw==null || !raw.trim()) return; // cancelled or empty — not an error, just a no-op
   const result = decodeDeckCode(raw);
@@ -49946,6 +50177,7 @@ function creditFactionPack(id){
   const foils = rollPackFoils(pack, roll.pulls.length);
   const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
   results.forEach(r=> rollBonusCopy(r, 'factionPack')); // 2026-10-17
+  try{ queueMultiDeckSwap(results.map(r=> r.id), 'factionPack'); }catch(e){} // 2026-10-23 (package UI4): the pack's cards as one several-swap window
   try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
   return {pack, o:{results, leveledId:null, glow: rollPackGlow(results, getCardDefs()), jackpot:false, bonus:false}};
 }
@@ -50555,7 +50787,7 @@ function openPackAnimation(pack, opened, opts){
       later(()=> pk.classList.add('is-rising'), 450);
       later(()=> showReveal(), 1100);
     };
-    strip.addEventListener('pointerdown', e=>{ startX = e.clientX; try{ strip.setPointerCapture(e.pointerId); }catch(_){} pk.classList.add('is-gripped'); });
+    strip.addEventListener('pointerdown', e=>{ strip.classList.add('is-pointer'); /* 2026-10-23 (package UI4): no focus ring while cutting */ startX = e.clientX; try{ strip.setPointerCapture(e.pointerId); }catch(_){} pk.classList.add('is-gripped'); });
     strip.addEventListener('pointermove', e=>{
       if(startX === null || torn) return;
       const w = strip.getBoundingClientRect().width || 200;
@@ -50564,7 +50796,8 @@ function openPackAnimation(pack, opened, opts){
     });
     const release = ()=>{ if(startX === null) return; startX = null; pk.classList.remove('is-gripped'); if(!torn && prog < 0.85){ hint.textContent = 'Keep dragging all the way across'; pk.classList.add('is-nudge'); later(()=> pk.classList.remove('is-nudge'), 500); } };
     strip.addEventListener('pointerup', release); strip.addEventListener('pointercancel', release);
-    strip.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tear(); } });
+    strip.addEventListener('keydown', e=>{ strip.classList.add('is-kbd'); /* 2026-10-23 (package UI4): the ring is for keyboard players only */ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tear(); } });
+    { const kb = e=>{ if(!strip.isConnected){ document.removeEventListener('keydown', kb, true); return; } if(e.key === 'Tab') strip.classList.add('is-kbd'); }; document.addEventListener('keydown', kb, true); }
     // A plain click (screen readers, switch access) tears it too; a real drag already did.
     strip.addEventListener('click', ()=>{ if(prog < 0.05) tear(); });
     if(!reduce){ later(()=> pk.classList.add('is-idle'), 300); }

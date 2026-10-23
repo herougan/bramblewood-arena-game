@@ -1484,7 +1484,7 @@ M.revealDuplicate = function(card, opts){
 const FACTION_LOOK = {otter:{seal:'#a8463c', ring:'#c98a3e', ico:'🦦', wrap:'river'}, hummingbird:{seal:'#3a6fae', ring:'#f6e2c0', ico:'🌺', wrap:'feather'},
   road:{seal:'#8a6a3a', ring:'#e8d0a0', ico:'🧳'}, beast:{seal:'#7a4a2a', ring:'#c8a070', ico:'🐾'}, hive:{seal:'#b08a1a', ring:'#ffd45a', ico:'🐝'}, deep:{seal:'#2a5a7a', ring:'#9fd8ff', ico:'🌊'}, folk:{seal:'#5a7a3a', ring:'#e8e0a0', ico:'🌾'}};
 const DRESS_CSS = `
-  .fxd-seal{position:absolute; left:50%; bottom:16%; width:38px; height:38px; margin-left:-19px; border-radius:50%; z-index:6; pointer-events:none; display:flex; align-items:center; justify-content:center; font-size:18px;
+  .fxd-seal{position:absolute; left:50%; top:calc(50.5% - 19px); width:38px; height:38px; margin-left:-19px; border-radius:50%; z-index:6; pointer-events:none; display:flex; align-items:center; justify-content:center; font-size:18px;
     background:radial-gradient(circle at 38% 32%, color-mix(in srgb, var(--seal) 60%, #fff), var(--seal) 55%, color-mix(in srgb, var(--seal) 60%, #000)); box-shadow:0 0 0 3px var(--ring), 0 3px 6px rgba(0,0,0,.45), inset 0 -3px 4px rgba(0,0,0,.3);
     clip-path:polygon(50% 0, 62% 6%, 76% 4%, 82% 16%, 95% 22%, 94% 36%, 100% 50%, 94% 64%, 95% 78%, 82% 84%, 76% 96%, 62% 94%, 50% 100%, 38% 94%, 24% 96%, 18% 84%, 5% 78%, 6% 64%, 0 50%, 6% 36%, 5% 22%, 18% 16%, 24% 4%, 38% 6%);}
   .fxd-band{position:absolute; left:-2%; right:-2%; top:44%; height:13%; z-index:5; pointer-events:none; background:linear-gradient(180deg, var(--ring), color-mix(in srgb, var(--ring) 55%, #000)); box-shadow:0 2px 4px rgba(0,0,0,.35);}
@@ -1498,6 +1498,7 @@ const DRESS_CSS = `
   .fxd-pity{position:absolute; right:-10px; top:-10px; width:62px; height:62px; z-index:8; pointer-events:none; border-radius:50%; display:flex; align-items:center; justify-content:center; text-align:center; font:900 9px/1.05 'Baloo 2', system-ui, sans-serif; color:#fff8e0;
     background:radial-gradient(circle at 38% 32%, #ffd76a, #d8901a 55%, #8a4a00); box-shadow:0 0 0 3px #fff3c0, 0 4px 10px rgba(0,0,0,.45);}
   @media (prefers-reduced-motion: reduce){ .fxd-feathers i, .fxd-myst i{animation:none;} }`;
+// 2026-10-23 (package UI4, owner: the flower badge covered "Sunfeather Pack"): the seal sits on the band, over the art, never on the name label.
 // A: wax seal and a coloured band (River wave band for the Rivergate); B: a wrap — River ribbon / hummingbird feathers round the pack.
 M.packDress = function(packEl, pack, opts){
   opts = opts || {}; if(!packEl) return; css('dress', DRESS_CSS); css('foil-base', FOIL_BASE);

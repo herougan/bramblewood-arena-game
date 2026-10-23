@@ -2,6 +2,46 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package UI4: swaps that cross over, several swaps at once, deck slots, the hand's blue numbers, no redraw under the results)
+- Owner notes 01:03 #1 #2 #3 #5 #7, 01:09 #2, 01:57 #6 #7 #8 #11, and EB's panel-level note. Owner calls UI4-1..UI4-3.
+- **Swap (01:03 #1):** pressing Swap sends the offered card over the top to your deck's side (left) and your card under it to the right
+  (`ds2CrossSwap`), then the happy bounce as before.
+- **Pack opening (01:03 #2):** the pack's flower badge (`.po2-ico`) hangs from the label's top edge with room kept for it, and the faction
+  seal sits on the band over the art (fx-d `.fxd-seal`), so neither covers the pack's name. The yellow box while cutting was the tear
+  strip's keyboard focus ring (`.po2-strip:focus-visible`, the strip is focused when the pack opens): it now shows only after a key press,
+  never while a pointer cuts; no tap highlight or text selection on the pack.
+- **Several swaps at once (01:03 #3):** a faction pack's cards come as one window in the swap window's style: a row per card (your deck card
+  left, with ‹ › to pick another; the pack card right; a tick), "Swap N" trades the ticked rows together and the cards cross over. A row
+  only where a weak deck card may go (`swapOutAllowed`) and the pack card scores higher; two rows never take the same copy; one row falls
+  back to the one-card window. The first faction pack (0-2) always shows it; later ones count as one of the 10 offers (UI4-3).
+- **Camp (01:03 #5):** the main deck comes first with a gold "★ Main deck · You play with this one" ribbon and a glowing gold frame; the
+  other decks sit a little quieter. **Deck slots:** a new player has 1; more are bought in order under My Decks in the Camp and in the
+  Tavern's Upgrades tab: slot 2 ✨150 + 🍁150, slot 3 ✨300 + 🍁250, slot 4 (Map 15 cleared) ✨600 + 🍁350 + River Pearl + Tempering Stone,
+  slot 5 (Map 21) ✨900 + 🍁450 + Ember Core, slot 6 (Map 27) ✨1200 + 🍁600 + 2 Ember Cores, slot 7 (Map 33) ✨1500 + 🍁750 + Strange Materia
+  + Ember Core (UI4-1). New Deck and Import ask for a free slot (a toast and the slot row lights up). Existing saves keep every deck: the
+  slots owned start at the decks a save holds, and a deck arriving from the cloud raises them the same way.
+- **Tent deck editor (01:03 #7):** checked after PG's fix: a click (desktop) or a tap (phone) on a pool card adds it.
+- **Win screen (01:09 #2):** root cause: `renderMatchUI` rebuilds the whole match screen when the result comes in (`m.over`), so every card
+  on the board was thrown away and drawn again under the results (a probe of the results opening: 7 of 7 card elements new), the art
+  re-decoded and a token or a card still landing started over. Once the match is decided the board rows are kept and put back into the
+  rebuilt screen (`BOARD_ROW_IDS`, `__bwMatch`); renderBoard sees full rows with the same signature and leaves them alone (7 of 7 kept).
+- **Desktop field (01:57 #6):** outside full screen, a desktop window (900px and wider, with a mouse) gets the same shift as full screen,
+  so the battlefield's middle sits on the window's middle (`is-desk-centre`, `centreFieldInFs`).
+- **Fight header (01:57 #7):** the top-right buttons show their words while they fit and go icon-only when they don't (`fitTopRowControls`,
+  `.is-compact`; words stay in title / aria-label; labels never wrap). Auto-win and Auto-play now have icon + label. The Environment cards
+  fan tighter the more there are, from the old step at 2 to 1.8x closer at 6+ (`--env-tight`); hover or a tap lifts one.
+- **Results item (01:57 #8):** the item chip's tip is just what the item does ("Your bramble heals 5 Health."); the old "your first 3
+  Conquest wins each day bring an item" text is gone from the game and the 12 packs (both item tips; EB changed the rule).
+- **Blue numbers in hand (01:57 #11):** a hand card shows in blue the Attack / Health it would have if played now, where that differs from
+  the card: the engine's own rules on a copy of the board (`engine.previewPlayStats`: placeCard's arrival bonuses, now shared as
+  `arrivalBoardCard`; Rally / War Banner / Herald / Amplifier, Formation / Isolation, day and night, Pack chains; Swarm, Defiance, Tide,
+  Rage at the swing). Nothing real changes (uid counter, full-moon mark and derived defs put back; a seeded fight with previews plays the
+  same events). An Ant Scout with 3 ants out shows 4 (the engine counts the other allies; UI4-2 asks about 5).
+- **Map panel level (EB):** the fight panels' enemy tiles show the level the fight uses, Level 0 on the early road included (27 tiles on
+  Maps 0-11 showed printed stats, e.g. 0-2's Ant Scout 1/5 for a 1/4 fight; now 0 of 471).
+- 25 TX keys, 19 new rows in 12 packs (+ "Swap" where a pack lacked it) (`tools/i18n_2026_10_23_ui4.py`), tests/ui4-2026-10-23.js (79 checks), tests/e2e/ui4_2026_10_23.py
+  (390 / 1366), docs/screens/ui4/.
+
 ## 2026-10-23 (package FX3: the volcano by shape, Scorched Ground as a line of fire, one ground fire a fight)
 - Owner 01:57 notes 3 ("a line of fire moves from the left side to the right side. As it touches a card, it takes fire damage") and 7
   ("1 damage for every turn ones, 2 for single target or higher if rare and single-target. (max 3) The burning from scorched ground seems

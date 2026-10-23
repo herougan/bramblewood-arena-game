@@ -245,7 +245,7 @@
      every renderBoard(), so narrowing this container is the whole fix — the battlefield's own
      auto zoom-to-fit just recomputes against the smaller width, no JS change needed. */
   #appWrap.in-match .content-wrap{max-width:min(1500px, 94vw);}
-  html.is-fs #appWrap.in-match{min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; justify-content:flex-start; padding-top:var(--fs-shift, 0px);} /* 2026-10-12: --fs-shift puts the field in the middle of the screen (centreFieldInFs) */ html.is-fs #appWrap.in-match .content-wrap{width:100%;}
+  html.is-fs #appWrap.in-match{min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; justify-content:flex-start; padding-top:var(--fs-shift, 0px);} html.is-desk-centre #appWrap.in-match{padding-top:var(--fs-shift, 0px);} /* 2026-10-23 (package UI4): a desktop window outside full screen too */ /* 2026-10-12: --fs-shift puts the field in the middle of the screen (centreFieldInFs) */ html.is-fs #appWrap.in-match .content-wrap{width:100%;}
   /* 2026-09-22 (explicit bug report: "there is significant portion of the screen that is blocked
      off from the field. Remove that, use the full width when zoomed out!"): fitBattlefieldZoom()
      (arena_app.js) toggles this class on #appWrap specifically (and only) while the battlefield
@@ -1717,9 +1717,12 @@
   /* Environment cards (2026-10-14, user: "effect cards need to have a different frame - so we know its an environmental field
      effect" and "For field effects with many multiple effects, split into multiple field cards"): a mossy stone frame with a gold
      inner line and an ENVIRONMENT ribbon over the top edge, so a field rule never reads as a unit. Several fan out in one stack. */
-  .env-stack{position:relative; flex-shrink:0; height:var(--match-card-h); width:calc(var(--match-card-w) + (var(--n, 1) - 1) * var(--match-card-w) * .82); margin-top:6px;}
-  .env-stack .env-card{position:absolute; top:0; left:calc(var(--i, 0) * var(--match-card-w) * .82); z-index:calc(1 + var(--i, 0)); transform:rotate(calc((var(--i, 0) - (var(--n, 1) - 1) / 2) * 2.5deg)); transform-origin:50% 120%; transition:transform .18s ease, z-index 0s, box-shadow .18s ease;}
-  .env-stack .env-card:hover, .env-stack .env-card:focus-visible{z-index:20; transform:translateY(-8px) rotate(0deg) scale(1.04);}
+  /* 2026-10-23 (package UI4, owner 01:57 #7: "the field effects can be stacked closer together the more there are ... they can be 1.8x closer"):
+     the fan's step shrinks with the count, from the old step at 2 cards to 1.8x closer at 6 or more (--env-tight 1 -> 1.8) */
+  .env-stack{--env-tight:calc(1 + .8 * min(1, max(0, (var(--n, 1) - 2) / 4)));}
+  .env-stack{position:relative; flex-shrink:0; height:var(--match-card-h); width:calc(var(--match-card-w) + (var(--n, 1) - 1) * var(--match-card-w) * .82 / var(--env-tight)); margin-top:6px;}
+  .env-stack .env-card{position:absolute; top:0; left:calc(var(--i, 0) * var(--match-card-w) * .82 / var(--env-tight)); z-index:calc(1 + var(--i, 0)); transform:rotate(calc((var(--i, 0) - (var(--n, 1) - 1) / 2) * 2.5deg)); transform-origin:50% 120%; transition:transform .18s ease, z-index 0s, box-shadow .18s ease;}
+  .env-stack .env-card:hover, .env-stack .env-card:focus-visible, .env-stack .env-card:focus{z-index:20; transform:translateY(-8px) rotate(0deg) scale(1.04);} /* + :focus: a tap lifts one too (2026-10-23, UI4) */
   .env-stack.is-landing{animation:fieldLand .65s cubic-bezier(.2,1.4,.4,1);}
   .card-tile.env-card{overflow:visible; border-radius:12px; border:3px solid transparent !important;
     background-clip:padding-box !important;
@@ -1742,8 +1745,8 @@
   .card-tile.env-card .nm{margin-top:4px;}
   .env-hover .fh-left{font-style:italic;}
   @media (max-width:699px){
-    .env-stack{width:calc(var(--match-card-w) + (var(--n, 1) - 1) * var(--match-card-w) * .58); margin-top:4px;}
-    .env-stack .env-card{left:calc(var(--i, 0) * var(--match-card-w) * .58);}
+    .env-stack{width:calc(var(--match-card-w) + (var(--n, 1) - 1) * var(--match-card-w) * .58 / var(--env-tight)); margin-top:4px;}
+    .env-stack .env-card{left:calc(var(--i, 0) * var(--match-card-w) * .58 / var(--env-tight));}
     .card-tile.env-card .env-ribbon{font-size:6.5px; padding:0 5px 1px; top:-7px;}
     .card-tile.env-card .env-line{font-size:8px; padding:2px 3px;}
   }
@@ -7698,6 +7701,10 @@
   .po2-art{position:absolute; left:9%; right:9%; top:9%; height:56%; border-radius:10px; background:#2b1d3a center/cover no-repeat; image-rendering:pixelated; box-shadow:inset 0 0 0 3px rgba(255,255,255,.75), 0 4px 10px rgba(60,20,80,.35);}
   .po2-label{position:absolute; left:6%; right:6%; bottom:9%; display:flex; flex-direction:column; align-items:center; gap:0; padding:8px 6px 7px; border-radius:12px; background:linear-gradient(180deg, #5a2d7a, #3a1a55); color:#fff; box-shadow:0 0 0 2px #ffd98a, 0 6px 14px rgba(40,10,60,.4); text-align:center;}
   .po2-label .po2-ico{font-size:clamp(20px, 4vh, 30px); line-height:1; margin-top:-22px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));}
+  /* 2026-10-23 (package UI4, owner 01:03 #2: the flower badge sat on top of "Sunfeather Pack"): the pack's badge hangs from the label's top edge,
+     out of the text's way; the label keeps room for its lower half, so it can never cover the name at any height */
+  .po2-label{--po2-ico:clamp(20px, 4vh, 30px); padding-top:calc(var(--po2-ico) * .5 + 5px);}
+  .po2-label .po2-ico{position:absolute; top:0; left:50%; margin:0; font-size:var(--po2-ico); transform:translate(-50%, -50%); pointer-events:none;}
   .po2-label b{font:800 clamp(16px, 2.6vh, 21px) 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em;}
   .po2-label small{font:700 11px 'Nunito',system-ui,sans-serif; opacity:.8; letter-spacing:.05em; text-transform:uppercase;}
   .po2-crimp{position:absolute; left:0; right:0; height:7%; background:repeating-linear-gradient(90deg, rgba(80,40,110,.22) 0 2px, transparent 2px 6px);}
@@ -7708,6 +7715,10 @@
   /* the tear strip */
   .po2-strip{position:absolute; left:0; right:0; top:0; height:13%; padding:0; border:0; background:none; cursor:ew-resize; touch-action:none; --tear:0;}
   .po2-strip:focus-visible{outline:3px solid #ffd98a; outline-offset:3px;}
+  /* 2026-10-23 (package UI4, owner: "A yellow box also appears when I try to cut the pack (shouldn't!)"): the strip's keyboard focus ring and the
+     browser's tap highlight / text selection stay off while a pointer cuts the pack; the ring still shows for keyboard players. */
+  .po2-strip:not(.is-kbd):focus-visible, .po2-strip.is-pointer:focus-visible, .po2-strip.is-tearing:focus-visible, .po2-strip.is-pointer:focus{outline:none;}
+  .po2-pack, .po2-pack *{-webkit-tap-highlight-color:transparent; -webkit-user-select:none; user-select:none;}
   .po2-strip-face{position:absolute; inset:0; display:block; transform-origin:100% 100%; transform:rotate(calc(var(--tear) * -9deg)) translateY(calc(var(--tear) * -8px));
     -webkit-mask:linear-gradient(#000 0 0) bottom/100% calc(100% - 6px) no-repeat, conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/12px 6px repeat-x; mask:linear-gradient(#000 0 0) bottom/100% calc(100% - 6px) no-repeat, conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/12px 6px repeat-x;}
   .po2-strip-face .po2-crimp{top:6px; height:calc(100% - 10px);}
@@ -9715,6 +9726,8 @@
   @keyframes countPop{0%{transform:scale(1);} 40%{transform:scale(1.25);} 100%{transform:scale(1);}}
   /* Attack = base + bonus (2026-10-10) */
   .atk-buffed{color:#8fd0ff; text-shadow:0 0 6px rgba(80,170,255,.6);}
+  /* 2026-10-23 (package UI4, owner 01:57 #11): a hand card's would-be Attack / Health if played now (applyHandPreviewStats), in blue */
+  .card-tile .stats .sim-stat{color:#7cc8ff; text-shadow:0 0 6px rgba(70,160,255,.75), 0 1px 0 rgba(0,20,60,.6);} .card-tile .stats .sim-stat.is-down{color:#a9b8ff;}
   .atk-bonus{color:#2f74c8; font-weight:800;} .atk-bonus.is-neg{color:#b5372a;}
   #cardPop .atk-bonus{color:#1f5fae;} #cardPop .atk-total{color:var(--pn-ink-soft); font-weight:700;}
   /* 2026-10-21 (package UI3, owner: "The card can be larger, but not at expense of the window but instead, the top of the card expands to
@@ -10543,6 +10556,27 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .deck-medium-preview{position:relative; height:150px; border-radius:14px; overflow:hidden; isolation:isolate; color:#fff8e6; box-shadow:0 0 0 2px rgba(107,74,42,.7), 0 8px 18px rgba(0,0,0,.35); transition:transform .18s ease, box-shadow .18s ease;}
 .dmp-btn:hover .deck-medium-preview{transform:translateY(-2px); box-shadow:0 0 0 2px #d7b46a, 0 12px 22px rgba(0,0,0,.4);}
 .deck-medium-preview.is-main{box-shadow:0 0 0 3px #d7b46a, 0 8px 18px rgba(0,0,0,.35);}
+/* 2026-10-23 (package UI4, owner 01:03 #5: "In the camp, it's not so obvious which is your main deck."): the main deck wears a gold
+   ribbon across its top and a thick glowing gold frame, and comes first; the other decks are a touch quieter until hovered. */
+.deck-medium-preview.is-main{box-shadow:0 0 0 4px #f0c44c, 0 0 0 7px rgba(240,196,76,.35), 0 0 26px 4px rgba(240,196,76,.45), 0 10px 22px rgba(0,0,0,.4);}
+.dmp-btn.is-main:hover .deck-medium-preview{box-shadow:0 0 0 4px #ffd866, 0 0 0 8px rgba(240,196,76,.4), 0 0 30px 6px rgba(240,196,76,.55), 0 12px 22px rgba(0,0,0,.4);}
+.dmp-main-ribbon{position:absolute; top:0; right:12px; z-index:2; display:flex; flex-direction:column; align-items:center; padding:3px 16px 4px; border-radius:0 0 12px 12px; background:linear-gradient(180deg, #ffe08a, #e0a92c); color:#4a2c02; box-shadow:0 3px 8px rgba(0,0,0,.4); text-shadow:none; white-space:nowrap; pointer-events:none;}
+.dmp-main-ribbon b{font:900 13px/1.1 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase;}
+.dmp-main-ribbon small{font:700 10.5px/1.1 'Nunito',system-ui,sans-serif; opacity:.85;}
+.deck-medium-preview.is-main .dmp-top{padding-right:150px;} .deck-medium-preview.is-main .dmp-name{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.dmp-btn.is-other .deck-medium-preview{filter:saturate(.72) brightness(.9); transition:filter .15s, transform .15s, box-shadow .15s;}
+.dmp-btn.is-other:hover .deck-medium-preview, .dmp-btn.is-other:focus-visible .deck-medium-preview{filter:none;}
+.deck-chip.on:has(.dc-star), .deck-chip:has(.dc-star){box-shadow:inset 0 0 0 2px #e3b23c;}
+.deck-slot-panel{margin-top:14px; padding:10px 12px; border-radius:12px; background:rgba(138,90,32,.08); box-shadow:inset 0 0 0 1px rgba(138,90,32,.18);}
+.deck-slot-panel h3{margin:0 0 6px; font:800 15px 'Baloo 2',system-ui,sans-serif; display:flex; gap:8px; align-items:center;}
+.deck-slot-panel h3 b{font-size:13px; padding:1px 8px; border-radius:999px; background:rgba(0,0,0,.08);}
+.deck-slot-panel .wp-stam-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+.ds-slot-pips{display:inline-flex; gap:4px;} .ds-slot-pips i{width:14px; height:18px; border-radius:3px; border:1.5px dashed rgba(138,90,32,.45);}
+.ds-slot-pips i.on{border-style:solid; border-color:#c9a25a; background:rgba(240,196,76,.25);} .ds-slot-pips i.is-used{border-style:solid; border-color:#a7731f; background:#e0a92c;}
+.deck-slot-panel.is-ping{animation:dsSlotPing 1s ease 2;}
+@keyframes dsSlotPing{0%,100%{box-shadow:inset 0 0 0 1px rgba(138,90,32,.18);} 50%{box-shadow:inset 0 0 0 1px rgba(138,90,32,.18), 0 0 0 3px #f0c44c, 0 0 18px rgba(240,196,76,.7);}}
+#newDeckBtn.is-slot-full{opacity:.7;}
+@media (prefers-reduced-motion: reduce){ .deck-slot-panel.is-ping{animation:none; box-shadow:0 0 0 3px #f0c44c;} }
 .dmp-bg{position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; z-index:-1;}
 .dmp-castle{display:grid; place-items:center; background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 22px), repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 2px, transparent 2px 34px), linear-gradient(160deg, #8a7a66, #5b4b3a);}
 .dmp-castle.has-art{background-size:cover; background-position:center; background-repeat:no-repeat; image-rendering:pixelated;}
@@ -11670,6 +11704,12 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   /* Phone fight controls (user: "for mobile, simplify the UI on the top row ... Use icons only if needed"): icon-only buttons
      in one tight row; the words stay in each button's aria-label and title. */
   .top-row-controls .trc-ico{display:none;}
+  /* 2026-10-23 (package UI4, owner 01:57 #7): a row that doesn't fit (fitTopRowControls) collapses to icons at any width */
+  #view-play .top-row-controls > .btn{white-space:nowrap;} /* a label never wraps onto two lines: the row goes icon-only instead (fitTopRowControls) */
+  #view-play .top-row-controls.is-compact{gap:4px; flex-wrap:nowrap;}
+  #view-play .top-row-controls.is-compact .trc-lbl, #view-play .top-row-controls.is-compact .hud-opponent-tag{display:none;}
+  #view-play .top-row-controls.is-compact .trc-ico{display:inline;}
+  #view-play .top-row-controls.is-compact > .btn.small{padding:0 8px; min-width:34px; display:inline-flex; align-items:center; justify-content:center; gap:2px;}
   @media (max-width:560px){
     #view-play .top-row-controls{gap:4px; flex-wrap:nowrap;}
     #view-play .top-row-controls .trc-lbl, #view-play .top-row-controls .hud-opponent-tag{display:none;}
@@ -11782,8 +11822,8 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   .ds2-old, .ds2-new{transition:transform .6s cubic-bezier(.3,1.3,.5,1), opacity .5s ease, filter .5s ease;}
   .ds2-new{filter:drop-shadow(0 0 10px rgba(255,214,110,.8));}
   .ds2-arrows{position:absolute; left:50%; top:96px; transform:translateX(-50%); font-size:22px; font-weight:800; color:#8a5a20;}
-  .ds2-stage.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
-  .ds2-stage.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-stage.is-swapped .ds2-old{opacity:.45; filter:grayscale(1);} /* 2026-10-23 (package UI4): the cards now cross over (ds2CrossSwap moves them) */
+  .ds2-stage.is-swapped .ds2-arrows{opacity:0; transition:opacity .2s;}
   .ds2-stage.is-swapped .ds2-thumbs, .ds2-stage.is-swapped .ds2-nav{opacity:0; pointer-events:none; transition:opacity .2s;}
   .ds2-say{margin:12px 0 10px; font-size:15px; line-height:1.4; color:#2b1d10;} .ds2-say span{font-size:13px; color:#5a4630;}
   .ds2-actions{display:flex; gap:10px; justify-content:center; align-items:center;}
@@ -11799,6 +11839,31 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
     .ds2-say{font-size:14px; margin:8px 0;}
     .ds2-actions .btn{flex:1; min-height:42px;}
     .ds2-actions .btn.big{font-size:16px; padding:8px 12px;}
+  }
+  /* 2026-10-23 (package UI4, owner 01:03 #3): the several-swap window (a faction pack's cards), rows inside the same .ds2 window */
+  .ds3{width:min(520px, 100%);}
+  .ds3-head{display:grid; grid-template-columns:1fr 26px 1fr 64px; gap:8px; margin:0 0 6px;}
+  .ds3-head .ds2-col-h:first-child{grid-column:1;} .ds3-head .ds2-col-h:last-child{grid-column:3;}
+  .ds3-rows{display:flex; flex-direction:column; gap:8px; max-height:min(58vh, 560px); overflow-y:auto; overflow-x:hidden; padding:4px 2px;}
+  .ds3-row{position:relative; display:grid; grid-template-columns:1fr 26px 1fr 64px; align-items:center; gap:8px; padding:6px 8px; border-radius:14px; background:rgba(138,90,32,.08); transition:opacity .2s, background .2s;}
+  .ds3-row.is-off{opacity:.5;} .ds3-row.is-off .ds2-new{filter:none;}
+  .ds3-side{display:flex; align-items:center; justify-content:center; gap:3px; min-width:0;}
+  .ds3-card{padding:0; border:0; background:none; cursor:pointer;}
+  .ds3-row .ds2-old .card-tile, .ds3-row .ds2-new .card-tile{width:86px !important; pointer-events:none;}
+  .ds3-arrow{font-size:20px; font-weight:800; color:#8a5a20; text-align:center;}
+  .ds3-names{grid-column:1 / 4; display:grid; grid-template-columns:1fr 26px 1fr; margin-top:-4px; font:800 11.5px/1.15 'Baloo 2',system-ui,sans-serif; color:#5a4630;} .ds3-names span{text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;} .ds3-names span + span{grid-column:3;}
+  .ds3-tick{display:flex; flex-direction:column; align-items:center; gap:2px; font:800 11px/1.1 'Baloo 2',system-ui,sans-serif; color:#6b4418; cursor:pointer;}
+  .ds3-tick input{width:22px; height:22px; accent-color:#3a8f4b; cursor:pointer; margin:0;}
+  .ds3-row.is-swapped .ds2-old{opacity:.45; filter:grayscale(1);} .ds3-row.is-skipped{opacity:.35;}
+  .ds3-row.is-swapped .ds2-nav, .ds3-row.is-swapped .ds3-tick, .ds3-row.is-swapped .ds3-arrow, .ds3-row.is-skipped .ds3-tick{opacity:0; pointer-events:none; transition:opacity .2s;}
+  .ds2-overlay.is-done .ds3-rows{overflow:visible;}
+  @media (max-width: 560px){
+    .ds3-head, .ds3-row{grid-template-columns:1fr 18px 1fr 46px; gap:4px;}
+    .ds3-names{grid-template-columns:1fr 18px 1fr; font-size:10.5px;}
+    .ds3-row{padding:4px;}
+    .ds3-row .ds2-old .card-tile, .ds3-row .ds2-new .card-tile{width:72px !important;}
+    .ds3-rows{max-height:52vh;}
+    .ds3-row .ds2-nav{width:18px; height:34px; font-size:16px;}
   }
   @media (prefers-reduced-motion: reduce){ .ds2-overlay, .ds2-overlay .ds2, .ds2-overlay.is-happy .ds2, .ds2-overlay.is-out .ds2{animation:none;} .ds2-old, .ds2-new{transition:none;} }
   /* 2026-10-17 (menus): the Tutorial map's later fights say which fight opens them */

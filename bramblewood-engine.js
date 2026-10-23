@@ -3713,6 +3713,64 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return true;
   }
 
+  // 2026-10-23 (package UI4): the unit a hand card becomes as it enters (placeCard's arrival bonuses, moved here unchanged so the hand's
+  // preview, previewPlayStats, reads the very same rules): Vanguard, Consternation, the castle's and the perks' arrival bonuses, Logjam,
+  // the flyer and first-unit bonuses.
+  function arrivalBoardCard(players, sideOf, playerId, hc, fdef, firstCardEver, events){
+    const pl = players[playerId];
+    const boardCard = makeBoardCard(hc.defId);
+    if(firstCardEver && fdef && fdef.effects && fdef.effects.vanguard){ const vn = s17N(fdef, 'vanguard'); // Vanguard N (2026-10-17): +N/+N as the first card
+      boardCard.atk += vn; boardCard.baseAtk += vn; boardCard.hp += vn; boardCard.maxHp += vn; boardCard.vanguardUp = vn; }
+    // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep. This holds even after playing it."): what the card lost in
+    // the hand comes onto the field with it, for good: Attack down to 0 at least, Health down to 1 at least.
+    if(hc.consterned > 0){ const n = hc.consterned|0, a0 = boardCard.atk|0, h0 = boardCard.maxHp|0;
+      boardCard.atk = Math.max(0, a0 - n); boardCard.baseAtk = Math.max(0, (boardCard.baseAtk|0) - n); boardCard.maxHp = Math.max(1, h0 - n); boardCard.hp = Math.min(boardCard.hp, boardCard.maxHp); boardCard.consterned = n; } // the 'play' event carries it (consterned: n)
+    // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
+    // to whichever card is the very first one this player plays in the match.
+    if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
+    applyArrivalPerks(pl, boardCard);
+    { const foeP = players[otherId(playerId)]; if(foeP && foeP.enemyWaitBonus > 0 && (foeP._logjamLeft == null ? (foeP._logjamLeft = 3) : foeP._logjamLeft) > 0){ foeP._logjamLeft--; boardCard.wait = (boardCard.wait||0) + foeP.enemyWaitBonus; if(recordEvents && events) events.push({type:'statusFx', kind:'logjam', side:sideOf(playerId), targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:foeP.enemyWaitBonus}); } }
+    if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
+    if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
+      boardCard.atk += pl.firstUnitAtkBonus;
+      boardCard.baseAtk += pl.firstUnitAtkBonus;
+      pl.firstUnitBonusUsed = true;
+    }
+    return boardCard;
+  }
+  // PLAY_PREVIEW (2026-10-23, package UI4, owner 01:57 #11: "You cards in hand can show blue numbers for their simulated numbers if you WOULD
+  // play them. E.g. if Swarm - your ant scout would show 5 let's say, if there were 3 ants on the board"): the Attack and Health a hand card
+  // would have on the board if it were played now, by the engine's own rules: it enters a copy of the board (arrivalBoardCard, the slot a
+  // plain play takes), the auras and the count skills are worked out on that copy (Rally / War Banner / Herald / Amplifier, Formation /
+  // Isolation, day and night, Pack chains, Sociable / Lone Wolf), and its Attack is the swing the engine uses (effAtk + Swarm + Defiance +
+  // phase + Inspired + Tide - Choke, Rage doubled). Nothing real changes: the players are a JSON copy, and the uid counter, the full-moon
+  // mark, the current board and any derived def it made are put back. null for a card that doesn't enter as a unit (spell, field,
+  // equipment, hazard, evolute), with no free slot, or on any error.
+  function previewPlayStats(players, playerId, handUid){
+    const pl0 = players && players[playerId]; const hc0 = pl0 && (pl0.hand || []).find(h=> h.uid === handUid); if(!hc0) return null;
+    const fdef = CARD_DEFS[hc0.defId];
+    if(!fdef || fdef.field || fdef.cardType === 'spell' || isEquipDef(fdef) || isHazardDef(fdef) || isEvoluteDef(hc0.defId) || typeof fdef.attack !== 'number' || !(fdef.health > 0)) return null;
+    const u0 = uidCounter, cur0 = curPlayers, fm0 = fullMoonWas, ds0 = derivedSeq;
+    try{
+      const clone = JSON.parse(JSON.stringify(players)), pl = clone[playerId], hc = pl.hand.find(h=> h.uid === handUid);
+      const sideOf = pid=> pid === 1 ? 'A' : 'B';
+      const c = arrivalBoardCard(clone, sideOf, playerId, hc, fdef, !pl.cardsPlayedEver, null);
+      if(slotMode){ const t = resolvePlacementSlot(pl, 'right'); if(t === null) return null; putInSlot(pl, c, t); }
+      else pl.row[pl.row.center.length === 0 ? 'center' : 'right'].push(c);
+      curPlayers = clone;
+      computeRallyBonuses(clone);
+      sk1SyncAuras(clone, sideOf, null);
+      syncPhaseStats(clone, sideOf, null);
+      let atk = Math.max(0, effAtk(c) + swarmBonus(c) + defianceBonus(c) + phaseBonus(c) + (c.inspired||0) + tideAtk(c) - chokeOf(c));
+      if(isRaging(c) && !quietOn()) atk *= 2;
+      return {atk: Math.round(atk), hp: c.hp, maxHp: c.maxHp, wait: c.wait};
+    }catch(e){ return null; }
+    finally{
+      uidCounter = u0; curPlayers = cur0; fullMoonWas = fm0;
+      if(derivedSeq !== ds0){ Object.keys(derivedDefs).forEach(id=>{ const n = Number(String(id).split('~dv').pop()); if(n > ds0){ delete derivedDefs[id]; delete CARD_DEFS[id]; } }); derivedSeq = ds0; }
+    }
+  }
+  // PLAY_PREVIEW:END
   function placeCard(players, sideOf, playerId, uid, side, stats, events, popts){
     const pl = players[playerId];
     const idx = pl.hand.findIndex(h=>h.uid===uid);
@@ -3775,24 +3833,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     payExileCost(players, sideOf, playerId, exileCostOfCard(hc.defId), uid, stats, events);
     if(fdef && fdef.darkSummon) pl.darkUsed = (pl.darkUsed||0) + 1; else markPlayed(pl);
     pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
-    const boardCard = makeBoardCard(hc.defId);
-    if(firstCardEver && fdef && fdef.effects && fdef.effects.vanguard){ const vn = s17N(fdef, 'vanguard'); // Vanguard N (2026-10-17): +N/+N as the first card
-      boardCard.atk += vn; boardCard.baseAtk += vn; boardCard.hp += vn; boardCard.maxHp += vn; boardCard.vanguardUp = vn; }
-    // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep. This holds even after playing it."): what the card lost in
-    // the hand comes onto the field with it, for good: Attack down to 0 at least, Health down to 1 at least.
-    if(hc.consterned > 0){ const n = hc.consterned|0, a0 = boardCard.atk|0, h0 = boardCard.maxHp|0;
-      boardCard.atk = Math.max(0, a0 - n); boardCard.baseAtk = Math.max(0, (boardCard.baseAtk|0) - n); boardCard.maxHp = Math.max(1, h0 - n); boardCard.hp = Math.min(boardCard.hp, boardCard.maxHp); boardCard.consterned = n; } // the 'play' event carries it (consterned: n)
-    // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
-    // to whichever card is the very first one this player plays in the match.
-    if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
-    applyArrivalPerks(pl, boardCard);
-    { const foeP = players[otherId(playerId)]; if(foeP && foeP.enemyWaitBonus > 0 && (foeP._logjamLeft == null ? (foeP._logjamLeft = 3) : foeP._logjamLeft) > 0){ foeP._logjamLeft--; boardCard.wait = (boardCard.wait||0) + foeP.enemyWaitBonus; if(recordEvents && events) events.push({type:'statusFx', kind:'logjam', side:sideOf(playerId), targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:foeP.enemyWaitBonus}); } }
-    if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
-    if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
-      boardCard.atk += pl.firstUnitAtkBonus;
-      boardCard.baseAtk += pl.firstUnitAtkBonus;
-      pl.firstUnitBonusUsed = true;
-    }
+    const boardCard = arrivalBoardCard(players, sideOf, playerId, hc, fdef, firstCardEver, events); // 2026-10-23 (package UI4): shared with previewPlayStats
     if(evoBase) return evoluteMerge(players, sideOf, playerId, boardCard, evoBase, stats, events); // Package EV (2026-10-21): onto its base, as one stack
     // Center slot (2026-09-16, per explicit request: "the first card should be placed on
     // the centre, not the L or R"): whenever the center is empty — the very first card
@@ -9327,7 +9368,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

@@ -62,7 +62,7 @@ ok(/\.hud-pack\.is-spent\{animation:kitSpentFade/.test(tpl) && /@keyframes kitSp
   ok(maps[14].nodes[1].grantsItem === false, '1. grantsItem:false is kept');
   ok(!maps[15].nodes[0].grantsItem, '1. side maps are left alone'); }
 ok(fnSrc('grantBossKitItem') && /if\(isFirstClear && bn && bn\.grantsItem\)\{ const bi = grantBossKitItem\(\); if\(bi\) m\.conquestBossKitItem = bi; \}/.test(src), '1. a grantsItem boss\'s first clear gives a kit item');
-ok(/TX\('results\.kit-boss-item'\)/.test(src) && /TX\('ui\.node-grants-item'/.test(src), '1. the results chip and the node panel line');
+ok(/conquestBossKitItem[\s\S]{0,260}data-tip="\$\{escapeAttr\(kd\.desc\)/.test(src) /* 2026-10-23 (UI4): the chip's tip is the item's own line */ && /TX\('ui\.node-grants-item'/.test(src), '1. the results chip and the node panel line');
 ok(/const SKIRMISH_KIT_PER_DAY = 3[,;]/.test(src) /* 2026-10-23 (EB): + KIT_DROP_PER_ENERGY on the same line */ && /const QUEST_KIT_ITEMS = \{daily:\{A:1, S:1, SS:2, SSS:3\}, weekly:\[3, 2, 1\]\};/.test(src), '1. the daily earning rules are unchanged');
 
 // ---- 2. premium Sweep of the daily dungeons
@@ -135,7 +135,7 @@ ok(/const energyCost = selectedNode\.virtual \? 0 : fightEnergyCost\(map, select
   ok(top.includes(TX('ui.tower-summit-free')) && /data-tower-replay title="⚡ 0 · free · 0 reward/.test(top) && top.includes('<span class="dg-tower-cost is-free">0 reward · free</span>'), '3. the summit picker says the replay is free, 0 reward'); }
 
 // ---- 4. texts, packs, the ads page
-const KEYS = ['ui.kit-pill-title', 'ui.kit-pill-aria', 'ui.kit-spent', 'ui.kit-head-sub', 'ui.kit-boss-bonus', 'toast.kit-limit', 'results.kit-boss-item', 'ui.node-grants-item',
+const KEYS = ['ui.kit-pill-title', 'ui.kit-pill-aria', 'ui.kit-spent', 'ui.kit-head-sub', 'ui.kit-boss-bonus', 'toast.kit-limit', /* 'results.kit-boss-item' went 2026-10-23 (UI4) */ 'ui.node-grants-item',
   'ui.kit-inv-head', 'ui.kit-inv-note', 'ui.kit-shop-rule', 'ui.dungeon-sweep', 'ui.premium-badge', 'ui.dungeon-sweep-locked', 'ui.dungeon-sweep-tip',
   'ui.tower-free-tag', 'ui.tower-cost-refund', 'ui.tower-cost-free', 'ui.tower-rule', 'ui.tower-summit-free', 'results.tower-refunded', 'results.tower-replay'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`'${k}'`), `4. ${k} is a TX key the code uses`));
