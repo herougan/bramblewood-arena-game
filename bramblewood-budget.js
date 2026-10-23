@@ -200,7 +200,7 @@ function productScore(A, H, S){ A = +A || 0; H = +H || 0; S = +S || 0; return A 
 // Per-skill half-miss multipliers (2026-10-23, package BF10; owner 01:03: "I think Flying may be overcosted."): the robust skill test
 // (docs/balance/skill-test-robust-mono-2000-2026-10-22.md) measured Flying's worth at 5.88 stat points against 6.89 paid at x1.5, so
 // Flying is x1.4. A skill not listed uses missMult (1.5). cfg.missMultBy overrides the table.
-const MISS_MULT_BY = {flying: 1.39}; // owner 01:57: "I estimate Flying is worth x1.39"
+const MISS_MULT_BY = {flying: 1.39, evasive: 1.37, shadow: 1.1}; // owner 01:57: "I estimate Flying is worth x1.39"; 2026-10-23 (BF12, call BF10-1): Evasive and Shadow at their measured worth
 // Cap 2's limit (2026-10-23, package BF11; owner 11:11: "Im also starting to think N/3 ^2 is too restrictive. Maybe 2*(N/3)^2 since we
 // have A*H + S*|S|."): cap2Mult × (N/3)², cap2Mult 2 (was 1). Every cap-2 check reads this one helper.
 function cap2Limit(N, cfg){ const k = cfg && cfg.cap2Mult != null ? +cfg.cap2Mult : DEFAULTS.cap2Mult; return (N / 3) * (N / 3) * k; }

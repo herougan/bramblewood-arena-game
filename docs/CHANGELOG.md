@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package BF12: Evasive ×1.37, Shadow ×1.1)
+- **Call BF10-1** (settled by Claude, the owner asked to settle the easy calls): the robust skill test measured both as overpriced at ×1.5 (Evasive worth 5.77 vs 7.14 paid, its deck won 23.8%; Shadow 1.94 vs 7.14, 1.8%). `MISS_MULT_BY` in `bramblewood-budget.js` is now Flying 1.39, Evasive 1.37, Shadow 1.1; Swift stays 1.5. `tools/skill_costs.js` follows.
+- **Re-fit:** no card moves up a whole stat point; the Magma Wraith would go down and stays held (BF11-1).
+
 ## 2026-10-23 (package BF11: cap 2 doubled, Thorns 1.25, Bulwark 6, two cards trimmed)
 - **Owner (11:11):** "Thorn 1 is roughly worse than Attack +1. So it must be less than 2." "Maybe 2*(N/3)^2 since we have A*H + S*|S|." "Bulwark should be scored only for 6." "Those 2 cards have too many skills or at too high number. Trim. For the muskrat, just bulwark 1 and Tide is sufficient." "Thorns 2" (Coffer Mimic).
 - **Formula:** cap 2 is A·H×m + S·|S| ≤ **2**×(N/3)² (`cap2Mult` in `bramblewood-budget.js` DEFAULTS, one helper `cap2Limit` read by the helper's level room, `tools/skill_costs.js`, the game's Test Lab (`sbCheck`), the hub's Budget & stats tab and `tools/special_monsters.js`).

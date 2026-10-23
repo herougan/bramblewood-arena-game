@@ -42612,7 +42612,7 @@ function productScore(A, H, S){ A = +A || 0; H = +H || 0; S = +S || 0; return A 
 // Per-skill half-miss multipliers (2026-10-23, package BF10; owner 01:03: "I think Flying may be overcosted."): the robust skill test
 // (docs/balance/skill-test-robust-mono-2000-2026-10-22.md) measured Flying's worth at 5.88 stat points against 6.89 paid at x1.5, so
 // Flying is x1.4. A skill not listed uses missMult (1.5). cfg.missMultBy overrides the table.
-const MISS_MULT_BY = {flying: 1.39}; // owner 01:57: "I estimate Flying is worth x1.39"
+const MISS_MULT_BY = {flying: 1.39, evasive: 1.37, shadow: 1.1}; // owner 01:57: "I estimate Flying is worth x1.39"; 2026-10-23 (BF12, call BF10-1): Evasive and Shadow at their measured worth
 // Cap 2's limit (2026-10-23, package BF11; owner 11:11: "Im also starting to think N/3 ^2 is too restrictive. Maybe 2*(N/3)^2 since we
 // have A*H + S*|S|."): cap2Mult × (N/3)², cap2Mult 2 (was 1). Every cap-2 check reads this one helper.
 function cap2Limit(N, cfg){ const k = cfg && cfg.cap2Mult != null ? +cfg.cap2Mult : DEFAULTS.cap2Mult; return (N / 3) * (N / 3) * k; }
@@ -42804,7 +42804,7 @@ if(typeof require !== 'undefined' && typeof module !== 'undefined' && require.ma
   const T = SC.make(JSON.parse(fs.readFileSync(file, 'utf8'))), cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).filter(SC.measured);
   if(args.includes('--diff')){
     const rows = cards.map(c=>{ const b = T.budget(c), oldS = SC.legacyS(c.effects), r2 = v=> Math.round(v * 100) / 100;
-      let m = 1; ['evasive','swift','flying','shadow'].forEach(h=>{ if((c.effects || {})[h]) m *= (h === 'flying' ? 1.39 : 1.5); }); /* BF10 (2026-10-23): Flying x1.39 */
+      let m = 1; ['evasive','swift','flying','shadow'].forEach(h=>{ if((c.effects || {})[h]) m *= ({flying: 1.39, evasive: 1.37, shadow: 1.1}[h] || 1.5); }); /* BF10 / BF12 (2026-10-23): per-skill half-miss */
       const A = c.attack || 0, H = c.health || 0, oldOk = r2((2*A + H + oldS)*m) < b.N && r2((A*H + oldS)*m) < b.N2;
       return {id:c.id, name:c.name, oldS, S:b.S, d:r2(b.S - oldS), oldOk, ok:b.ok, missing:b.missing, parts:b.parts}; });
     const big = rows.filter(r=> Math.abs(r.d) > 2).sort((a, b)=> b.d - a.d), flip = rows.filter(r=> r.oldOk !== r.ok), miss = [...new Set(rows.flatMap(r=> r.missing))];
@@ -46095,7 +46095,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a012db3c6c71', BUILD_CARD_HASH = '762fac3f64d02cafa9c4e11733e449a49e43be23de82c145da376c2afb3e696c';
+const BUILD_ID = '31b44c4cdd9d', BUILD_CARD_HASH = '762fac3f64d02cafa9c4e11733e449a49e43be23de82c145da376c2afb3e696c';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
